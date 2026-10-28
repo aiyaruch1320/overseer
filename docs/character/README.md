@@ -20,6 +20,11 @@
 | [10-jobs-secret.md](10-jobs-secret.md) | อาชีพลับ 27 อย่าง |
 | [11-jobs-special.md](11-jobs-special.md) | อาชีพพิเศษ 16 อย่างที่ได้จากเส้นเรื่อง |
 | [12-job-support.md](12-job-support.md) | ความถนัดใหม่ 20 นิสัยใหม่ 8 พรใหม่ 16 คำสาปใหม่ 10 เพื่อรองรับอาชีพ |
+| [13-companions-overview.md](13-companions-overview.md) | ระบบสัตว์คู่หู: โอกาสได้ตามอาชีพ ความผูกพัน ชีวิต ข้อจำกัด กติกา PR-01 ถึง PR-20 |
+| [14-companion-abilities.md](14-companion-abilities.md) | ความสามารถของสัตว์ 60 อย่าง |
+| [15-companion-species.md](15-companion-species.md) | ชนิดสัตว์ 102 ชนิดตามระดับ C ถึง L |
+| [16-companion-stories.md](16-companion-stories.md) | เรื่องราวการได้สัตว์ 31 เรื่อง |
+| [17-companion-support.md](17-companion-support.md) | skill 12 พร 8 คำสาป 6 สำหรับสัตว์คู่หู |
 | [catalog/](catalog/) | รายการในโค้ดปัจจุบัน (สร้างจากโค้ดอัตโนมัติ) |
 
 ## จำนวนรวม
