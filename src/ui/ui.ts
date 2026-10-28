@@ -1,3 +1,4 @@
+import { FATES as LAND_FATES, fateOf } from '../sim/fate';
 import type Phaser from 'phaser';
 import { Game, COSTS, SEASONS, giftCost, BIRTH_TIME_TH, BIRTH_SIGN_TH, type Meta } from '../sim/game';
 import type { Storylet, LogEntry, StatKey, Axis, Choice } from '../sim/types';
@@ -646,6 +647,7 @@ export class UI {
     const info = `<div class="countryinfo"><b style="font-size:16px">${esc(co.name)}</b>${id === g.c.countryId ? ` <span style="color:var(--gold)">${ic('target', 12)} ตัวละครอยู่ที่นี่</span>` : ''}<br>
       <span class="muted">ทวีป${esc(cont.name)} · ${ic(co.climate, 14)} ${cl.name} · อันตราย ${'☠'.repeat(co.danger)} · ${RELIGIONS[co.religion]}</span><br>
       เผ่าพันธุ์: ${co.races.map((r) => `${raceById(r.race).name} ${Math.round((r.w / total) * 100)}%`).join(', ')}<br>
+      ${fateOf(co) ? `<span style="color:var(--gold)">${esc(LAND_FATES[fateOf(co)!].name)}</span> <span class="muted">· ${esc(LAND_FATES[fateOf(co)!].event)} — ${esc(LAND_FATES[fateOf(co)!].summary)}</span><br>` : ''}
       ${festLine}
       ${co.flags.length ? `สถานะ: ${co.flags.filter((f) => !f.startsWith('fest_')).map((f) => `${ic(FI[f] || f, 14)} ${FL[f] || f}`).join(' ')}${co.warWith !== null ? ` กับ ${esc(g.s.countries[co.warWith].name)}` : ''}<br>` : ''}
       <b>เมือง</b> <span class="muted" style="font-size:12px">(กดเพื่อเข้าไปดูในเมือง)</span><div class="towns">${towns}</div>

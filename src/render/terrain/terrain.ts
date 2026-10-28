@@ -37,6 +37,7 @@ export class TerrainRenderer {
   private labels: string[] = [];
   private roads: { kind: Road['kind']; full: number[]; cut: number[]; bb: [number, number, number, number] }[] = [];
   private highlight: Path2D | null = null;
+  private fateLoops: { loops: ReturnType<typeof traceMask>; tint: string }[] = [];
   private hlLoops: Float32Array[] = [];
   dpr = 1;
   stats = { ms: 0, glyphs: 0 };
@@ -110,6 +111,22 @@ export class TerrainRenderer {
   /** outline a country (tile mask) with a warm wash; `null` clears it */
   setHighlight(inside: ((i: number) => boolean) | null, w = 0, h = 0, tileMU = 0) {
     this.hlLoops = inside ? traceMask(inside, w, h, tileMU) : [];
+  }
+
+  /** lands the story has reshaped (docs/world-events.md §15): a tint over each, in the colour of what became of them */
+  setFates(regions: { inside: (i: number) => boolean; tint: string }[], w = 0, h = 0, tileMU = 0) {
+    this.fateLoops = regions.map((r) => ({ loops: traceMask(r.inside, w, h, tileMU), tint: r.tint }));
+  }
+
+  private drawFates(ground: Path2D, sky: Path2D, s: number, view: ViewRect) {
+    if (!this.fateLoops.length) return;
+    const { ctx } = this;
+    for (const f of this.fateLoops) {
+      const path = coastPath(f.loops.map((pts) => ({ def: 0, pts, area: 0 })), s, view);
+      for (const clip of [ground, sky]) {
+        ctx.save(); ctx.clip(clip, 'evenodd'); ctx.fillStyle = f.tint; ctx.fill(path, 'evenodd'); ctx.restore();
+      }
+    }
   }
 
   private fit(w: number, h: number) {
@@ -219,6 +236,7 @@ export class TerrainRenderer {
     this.floating.drawLip(ctx, s, view);
     this.drawRoads(s, view, v.zoom, ['sky']);
 
+    this.drawFates(ground, sky, s, view);
     this.drawHighlight(ground, s, view);
     this.drawLabels(v, s);
     this.stats.ms = performance.now() - t0;
