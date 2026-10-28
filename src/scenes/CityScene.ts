@@ -9,6 +9,8 @@ import { iconTex, raceTex } from './sprites';
 import { relRole, goalText } from '../sim/society';
 import { lookFor, heroLook, personFrames, cradleTex, idleFrames, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
 import { PersonImage } from '../render/characters/sprite';
+import { themeOf } from '../render/characters/themes';
+import { castForCountry } from '../data/cast';
 import { townLifeEvent, EMOTE, TOWN_PLACES, type LifeKind } from '../data/townlife';
 import { NPC_JOBS, NPC_GOALS, npcJob, type Place, type NpcJob } from '../data/npclife';
 import { pickTownJob, townSpecialty } from '../sim/locale';
@@ -195,6 +197,11 @@ export class CityScene extends Phaser.Scene {
       }
     }
     const fest = this.festival();
+    // the people of docs/npcs live in their country's capital, each in a look designed for them (data/cast.ts, data/specials.ts)
+    if (this.town.capital && co.code) for (const c of castForCountry(co.code)) {
+      const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome() });
+      per.goesHome = true; n--;
+    }
     if (flags.includes('plague')) n = Math.round(n * 0.6);
     if (flags.includes('golden') || fest) n += 12;
     for (let i = 0; i < n; i++) {
@@ -244,7 +251,7 @@ export class CityScene extends Phaser.Scene {
   }
 
   describe(p: Person): string {
-    const bits = [`${p.name} (${raceById(p.race).name}·${p.role})`];
+    const bits = [`${p.name} (${(raceById(p.race) || themeOf(p.race)).name}·${p.role})`];
     if (p.job && p.skill !== undefined) bits.push(`ฝีมือ${p.job.skill} ${Math.round(p.skill)}/100`);
     if (p.goal) bits.push(`ใฝ่ฝัน: ${p.goal}`);
     return bits.join('\n');
