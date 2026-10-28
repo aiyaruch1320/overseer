@@ -1,0 +1,1877 @@
+{
+ "lanes": [
+  {
+   "id": 0,
+   "name": "มังกรและฟ้า (อัซการ์)",
+   "color": "#3b82c4"
+  },
+  {
+   "id": 1,
+   "name": "สงครามและจอมมาร (มอร์เฮเวน)",
+   "color": "#c2403a"
+  },
+  {
+   "id": 2,
+   "name": "ไฟ หิน ทราย (คาซ-ดูรัม ซาฮารัน)",
+   "color": "#d9782b"
+  },
+  {
+   "id": 3,
+   "name": "น้ำ (เนเรีย)",
+   "color": "#1f9aa3"
+  },
+  {
+   "id": 4,
+   "name": "ทุ่งราบและสภา (อัลเดรีย)",
+   "color": "#3f9b4f"
+  },
+  {
+   "id": 5,
+   "name": "จักรกล (เมคาเรีย)",
+   "color": "#6b7a8f"
+  },
+  {
+   "id": 6,
+   "name": "ป่า (ซิลวาเนล)",
+   "color": "#7ba23a"
+  },
+  {
+   "id": 7,
+   "name": "หมอก (เนบูเลีย)",
+   "color": "#8a5bc4"
+  },
+  {
+   "id": 8,
+   "name": "ศรัทธาและพระเจ้า",
+   "color": "#c9a227"
+  },
+  {
+   "id": 9,
+   "name": "ยุคและปลายทางของโลก",
+   "color": "#7d4f3a"
+  }
+ ],
+ "actions": [
+  {
+   "id": "give",
+   "label": "ถวายสิ่งที่มังกรต้องการจริง (ไม่ใช่เลือดหรือทอง)"
+  },
+  {
+   "id": "hunt",
+   "label": "ล่ามังกรหรือช่วยผู้ล่ามังกร"
+  },
+  {
+   "id": "refugee",
+   "label": "ช่วยผู้ลี้ภัยและผู้ถูกทิ้ง"
+  },
+  {
+   "id": "dig",
+   "label": "ขุด เจาะ หรือใช้แกนเกินเขต"
+  },
+  {
+   "id": "truth",
+   "label": "เปิดเผยความจริง (รูน บันทึก ท่อน้ำมัน)"
+  },
+  {
+   "id": "heal",
+   "label": "ฟื้นฟู (ปลูกป่า กรอง รักษา)"
+  },
+  {
+   "id": "food",
+   "label": "ส่งอาหาร ยุติความหิว"
+  },
+  {
+   "id": "scheme",
+   "label": "เอาเปรียบ ปกปิด ขายความลับ"
+  },
+  {
+   "id": "closefog",
+   "label": "ฟังเสียงในหมอก ลงมือปิดรอยแยก"
+  },
+  {
+   "id": "war",
+   "label": "ทำสงครามหรือหนุนสงคราม"
+  }
+ ],
+ "edges": [
+  {
+   "from": "START",
+   "to": "FG01",
+   "kind": "f",
+   "label": "เกิดแล้วเป็นสถานะเริ่มต้น",
+   "bias": null
+  },
+  {
+   "from": "START",
+   "to": "WR16",
+   "kind": "f",
+   "label": "กำลังรบอยู่",
+   "bias": null
+  },
+  {
+   "from": "START",
+   "to": "WR24",
+   "kind": "f",
+   "label": "กำลังรบอยู่",
+   "bias": null
+  },
+  {
+   "from": "START",
+   "to": "PO01",
+   "kind": "f",
+   "label": "สภายังประชุมอยู่",
+   "bias": null
+  },
+  {
+   "from": "START",
+   "to": "WR03",
+   "kind": "r",
+   "label": "ความหิวสูงขึ้น",
+   "bias": {
+    "food": -1,
+    "war": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DM01",
+   "kind": "r",
+   "label": "ความหิวสูงขึ้นจนจอมมารรวมเผ่า",
+   "bias": {
+    "food": -1,
+    "war": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "BIO01",
+   "kind": "r",
+   "label": "มลพิษและการแย่งน้ำเลี้ยง",
+   "bias": {
+    "dig": 1,
+    "scheme": 1,
+    "heal": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "MC02",
+   "kind": "r",
+   "label": "ความลับตุ๊กตารั่ว",
+   "bias": {
+    "truth": 1,
+    "scheme": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "PL06",
+   "kind": "r",
+   "label": "เจาะเซเรเนลึกขึ้น",
+   "bias": {
+    "dig": 1,
+    "truth": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "WR01",
+   "kind": "r",
+   "label": "ศิลาลอยถูกซื้อขายลับ",
+   "bias": {
+    "scheme": 1,
+    "give": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DR03",
+   "kind": "r",
+   "label": "โอรัน-ซัลชราหนัก",
+   "bias": {
+    "give": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "BIO08",
+   "kind": "r",
+   "label": "ไข่พญานาคราชครบกำหนด",
+   "bias": null
+  },
+  {
+   "from": "START",
+   "to": "PL03",
+   "kind": "r",
+   "label": "เหมืองลึกเกินเขต",
+   "bias": {
+    "dig": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "WR02",
+   "kind": "r",
+   "label": "ความแค้นยักษ์กับปีก",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DR05",
+   "kind": "r",
+   "label": "สมุทรอาลัยเศร้าหนัก",
+   "bias": {
+    "give": -1,
+    "heal": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DR04",
+   "kind": "r",
+   "label": "เพลิงนิรันดร์เหนื่อยจากศรัทธารั่ว",
+   "bias": {
+    "give": -1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DR07",
+   "kind": "r",
+   "label": "ศิลาสะท้านถูกขุดจนบาง",
+   "bias": {
+    "dig": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "PL05",
+   "kind": "r",
+   "label": "ความกลัวของคนทั้งทวีปซึมสู่ฝัน",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "WR17",
+   "kind": "r",
+   "label": "กฎลำต้นกับเผ่าสัตว์",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "START",
+   "to": "DR11",
+   "kind": "r",
+   "label": "พระเจ้าหรือศาสดาประกาศพิธีใหญ่",
+   "bias": {
+    "give": 1
+   }
+  },
+  {
+   "from": "FG01",
+   "to": "FG02",
+   "kind": "r",
+   "label": "หมอกทึบกลืนเมืองทุกทศวรรษ",
+   "bias": {
+    "closefog": -1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "FG02",
+   "to": "FG05",
+   "kind": "r",
+   "label": "ความกลัวสร้างศาสดา",
+   "bias": {
+    "truth": -1,
+    "refugee": -1
+   }
+  },
+  {
+   "from": "FG02",
+   "to": "FG12",
+   "kind": "r",
+   "label": "ผู้ฟังได้ยินเสียงสิ่งที่ถูกขัง",
+   "bias": {
+    "truth": 1,
+    "closefog": 1
+   }
+  },
+  {
+   "from": "FG02",
+   "to": "FG10",
+   "kind": "f",
+   "label": "ปิดรอยแยกสำเร็จ (ต้องจ่ายราคาหนึ่งข้อ)",
+   "bias": {
+    "closefog": 1,
+    "truth": 1
+   }
+  },
+  {
+   "from": "FG02",
+   "to": "FG11",
+   "kind": "r",
+   "label": "ไม่มีใครปิดภายใน 5 ทศวรรษ",
+   "bias": {
+    "closefog": -1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "FG05",
+   "to": "FG11",
+   "kind": "f",
+   "label": "ทุกการถวายเสริมรอยแยก",
+   "bias": {
+    "truth": -1
+   }
+  },
+  {
+   "from": "FG12",
+   "to": "FG10",
+   "kind": "f",
+   "label": "ปิดแบบสันติ",
+   "bias": {
+    "closefog": 1,
+    "truth": 1,
+    "refugee": 1
+   }
+  },
+  {
+   "from": "FG10",
+   "to": "ERA",
+   "kind": "r",
+   "label": "ถ้าเลือกให้นิเวรีหลับลึกถาวร นับ DFC +1",
+   "bias": null
+  },
+  {
+   "from": "FG11",
+   "to": "DV",
+   "kind": "f",
+   "label": "เนบูเลียกลายเป็นดินแดนหมอกกลืน",
+   "bias": null
+  },
+  {
+   "from": "DV",
+   "to": "END10",
+   "kind": "f",
+   "label": "หมอกกลืนโลก",
+   "bias": null
+  },
+  {
+   "from": "WT",
+   "to": "FG11",
+   "kind": "r",
+   "label": "ไม่มีรากกรอง หมอกรุกออกจากที่ราบลุ่ม",
+   "bias": null
+  },
+  {
+   "from": "BIO03",
+   "to": "BIO05",
+   "kind": "f",
+   "label": "ต้นไม้ฟื้นเต็ม (สุขภาพ > 90)",
+   "bias": {
+    "heal": 1
+   }
+  },
+  {
+   "from": "BIO05",
+   "to": "CL",
+   "kind": "f",
+   "label": "หมอกสลายถาวร",
+   "bias": null
+  },
+  {
+   "from": "DR03",
+   "to": "HP08",
+   "kind": "f",
+   "label": "ฟักสำเร็จ (ทายาทฟ้า)",
+   "bias": {
+    "give": 1,
+    "refugee": 1,
+    "scheme": -1
+   }
+  },
+  {
+   "from": "DR03",
+   "to": "SF",
+   "kind": "r",
+   "label": "ไข่ถูกขโมยหลังฟ้าถล่ม",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "WR01",
+   "to": "DR01",
+   "kind": "r",
+   "label": "ศรัทธามังกร −30 ผนึกอ่อน",
+   "bias": {
+    "war": 1,
+    "hunt": 1,
+    "give": -1
+   }
+  },
+  {
+   "from": "DR02",
+   "to": "DR14",
+   "kind": "f",
+   "label": "ปลุกสำเร็จด้วยเสียงประสาน",
+   "bias": {
+    "give": 1,
+    "truth": 1
+   }
+  },
+  {
+   "from": "DR02",
+   "to": "DR01",
+   "kind": "f",
+   "label": "ไม่ตื่นภายใน 5 ทศวรรษ",
+   "bias": {
+    "scheme": 1,
+    "hunt": 1,
+    "give": -1
+   }
+  },
+  {
+   "from": "DR11",
+   "to": "GD03",
+   "kind": "r",
+   "label": "ผู้ไม่ก้มหัวต่อต้านการสังเวยใหญ่",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "DR11",
+   "to": "ERA",
+   "kind": "b",
+   "label": "DFC ห้ามเพิ่มได้ 20 ปี",
+   "bias": {
+    "give": 1
+   }
+  },
+  {
+   "from": "DR14",
+   "to": "MC05",
+   "kind": "r",
+   "label": "ทุกฝ่ายค้นกุญแจที่ซากอาร์เคีย",
+   "bias": {
+    "truth": 1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "DR14",
+   "to": "GD07",
+   "kind": "r",
+   "label": "ลัทธิผู้ปลดผนึกได้ยินเสียง",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "DR01",
+   "to": "DR15",
+   "kind": "f",
+   "label": "DFC +1",
+   "bias": null
+  },
+  {
+   "from": "DR01",
+   "to": "SF",
+   "kind": "f",
+   "label": "ทวีปมังกรหาย",
+   "bias": null
+  },
+  {
+   "from": "SF",
+   "to": "HP08",
+   "kind": "f",
+   "label": "ไข่ฟักหรือทายาทฟ้าโต",
+   "bias": {
+    "refugee": 1,
+    "give": 1
+   }
+  },
+  {
+   "from": "SF",
+   "to": "WR14",
+   "kind": "r",
+   "label": "สงครามซาก (WR-22) ลุกลาม",
+   "bias": {
+    "war": 1,
+    "refugee": -1
+   }
+  },
+  {
+   "from": "SF",
+   "to": "DR13",
+   "kind": "r",
+   "label": "ผู้ล่ามังกรเข้าซาก",
+   "bias": {
+    "hunt": 1
+   }
+  },
+  {
+   "from": "HP08",
+   "to": "ERA",
+   "kind": "b",
+   "label": "DFC −1 ถอยครึ่งก้าว",
+   "bias": {
+    "refugee": 1
+   }
+  },
+  {
+   "from": "DM01",
+   "to": "WR03",
+   "kind": "f",
+   "label": "ทัพบุกหาอาหาร",
+   "bias": {
+    "food": -1
+   }
+  },
+  {
+   "from": "DM01",
+   "to": "DM04",
+   "kind": "f",
+   "label": "พิธีอัญเชิญผู้กล้า",
+   "bias": null
+  },
+  {
+   "from": "WR03",
+   "to": "HP07",
+   "kind": "f",
+   "label": "สนธิสัญญาอาหาร",
+   "bias": {
+    "food": 1,
+    "war": -1
+   }
+  },
+  {
+   "from": "WR03",
+   "to": "DM04",
+   "kind": "f",
+   "label": "ทุ่งราบอัญเชิญผู้กล้า",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "DM04",
+   "to": "DM05",
+   "kind": "r",
+   "label": "ผู้กล้าผิดหวังและแปรพักตร์",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "HP07",
+   "to": "PL02",
+   "kind": "b",
+   "label": "ฮรอด-กาธอิ่มและสงบ",
+   "bias": {
+    "food": 1
+   }
+  },
+  {
+   "from": "HP07",
+   "to": "END02",
+   "kind": "b",
+   "label": "ความหิวลด",
+   "bias": {
+    "food": 1
+   }
+  },
+  {
+   "from": "DM05",
+   "to": "GD02",
+   "kind": "r",
+   "label": "ศาสนาแสงแตกสองนิกาย",
+   "bias": null
+  },
+  {
+   "from": "PL02",
+   "to": "END02",
+   "kind": "f",
+   "label": "ฮรอด-กาธล้มหรือหิวสุด",
+   "bias": {
+    "war": 1,
+    "food": -1
+   }
+  },
+  {
+   "from": "END02",
+   "to": "DM08",
+   "kind": "f",
+   "label": "จอมมารเก้าตน",
+   "bias": null
+  },
+  {
+   "from": "END02",
+   "to": "END10",
+   "kind": "r",
+   "label": "สงครามไร้ขีดจำกัด",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "DM08",
+   "to": "WR14",
+   "kind": "r",
+   "label": "ทัพเล็กบุกทุกชายฝั่ง",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "AS",
+   "to": "DM07",
+   "kind": "r",
+   "label": "ปีศาจใต้พิภพไหลขึ้น",
+   "bias": null
+  },
+  {
+   "from": "DM07",
+   "to": "END10",
+   "kind": "r",
+   "label": "ประตูนรกทั่วโลก",
+   "bias": null
+  },
+  {
+   "from": "WR24",
+   "to": "GD04",
+   "kind": "r",
+   "label": "บัญชีวิญญาณถูกเปิดและศรัทธาไหลออก (ผล ค)",
+   "bias": null
+  },
+  {
+   "from": "WR02",
+   "to": "GI02",
+   "kind": "r",
+   "label": "ยักษ์ชนะ ไททันตื่น",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "PL03",
+   "to": "END03",
+   "kind": "f",
+   "label": "ขุดลึกต่อ ปะทุทั้งทวีป",
+   "bias": {
+    "dig": 1,
+    "give": -1
+   }
+  },
+  {
+   "from": "GI05",
+   "to": "MC05",
+   "kind": "r",
+   "label": "ความรู้รูนรั่วสู่เมคาเรีย",
+   "bias": {
+    "truth": 1
+   }
+  },
+  {
+   "from": "DR04",
+   "to": "DR15",
+   "kind": "f",
+   "label": "DFC +1",
+   "bias": null
+  },
+  {
+   "from": "DR04",
+   "to": "AS",
+   "kind": "f",
+   "label": "คาซ-ดูรัมกลายเป็นทวีปเถ้า",
+   "bias": null
+  },
+  {
+   "from": "GI02",
+   "to": "RF",
+   "kind": "r",
+   "label": "ไททันเดินสู่ทุ่งราบ",
+   "bias": null
+  },
+  {
+   "from": "END03",
+   "to": "END10",
+   "kind": "r",
+   "label": "ภูเขาไฟทั่วโลก",
+   "bias": null
+  },
+  {
+   "from": "BIO08",
+   "to": "WR20",
+   "kind": "r",
+   "label": "ผู้นำนาคาใหม่ไม่คืนดี",
+   "bias": {
+    "truth": -1
+   }
+  },
+  {
+   "from": "BIO08",
+   "to": "HP01",
+   "kind": "r",
+   "label": "ผู้นำใหม่ยอมคืนดีเงือก",
+   "bias": {
+    "refugee": 1
+   }
+  },
+  {
+   "from": "PO03",
+   "to": "WR14",
+   "kind": "r",
+   "label": "ความตึงเครียดของโลกสูงขึ้น",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "PL04",
+   "to": "END04",
+   "kind": "f",
+   "label": "ธาลาสซาล้ม",
+   "bias": {
+    "dig": 1
+   }
+  },
+  {
+   "from": "DR05",
+   "to": "DR15",
+   "kind": "f",
+   "label": "DFC +1",
+   "bias": null
+  },
+  {
+   "from": "DR05",
+   "to": "DW",
+   "kind": "f",
+   "label": "ชายฝั่งทุกทวีปจม",
+   "bias": null
+  },
+  {
+   "from": "DW",
+   "to": "END04",
+   "kind": "b",
+   "label": "อ่านชื่อผู้ตายครบ ธาลาสซาสงบ",
+   "bias": {
+    "give": 1,
+    "heal": 1
+   }
+  },
+  {
+   "from": "DW",
+   "to": "WR20",
+   "kind": "r",
+   "label": "ขึ้นบก ลงทะเล แย่งที่อยู่",
+   "bias": null
+  },
+  {
+   "from": "END04",
+   "to": "END10",
+   "kind": "r",
+   "label": "ทะเลเป็นสิ่งมีชีวิต",
+   "bias": null
+  },
+  {
+   "from": "PO01",
+   "to": "PO08",
+   "kind": "r",
+   "label": "ผู้แทนถูกลอบสังหาร",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "PO01",
+   "to": "HP01",
+   "kind": "f",
+   "label": "สนธิสัญญาเก้าทวีป",
+   "bias": {
+    "refugee": 1,
+    "war": -1
+   }
+  },
+  {
+   "from": "WR16",
+   "to": "PO05",
+   "kind": "f",
+   "label": "ฟอร์เทียชนะ",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "WR16",
+   "to": "HP01",
+   "kind": "f",
+   "label": "สหพันธ์หรือสงบศึก",
+   "bias": {
+    "refugee": 1,
+    "war": -1
+   }
+  },
+  {
+   "from": "PL05",
+   "to": "END05",
+   "kind": "f",
+   "label": "ฝันร้ายเกินเกณฑ์",
+   "bias": {
+    "war": 1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "PO05",
+   "to": "WR14",
+   "kind": "r",
+   "label": "ทวีปอื่นหวาดกลัวจักรวรรดิ",
+   "bias": null
+  },
+  {
+   "from": "DR07",
+   "to": "DR15",
+   "kind": "f",
+   "label": "DFC +1",
+   "bias": null
+  },
+  {
+   "from": "DR07",
+   "to": "RF",
+   "kind": "f",
+   "label": "ทุ่งราบแยกเป็นสอง",
+   "bias": null
+  },
+  {
+   "from": "DR07",
+   "to": "GI02",
+   "kind": "r",
+   "label": "ไททันตื่น",
+   "bias": null
+  },
+  {
+   "from": "PO08",
+   "to": "WR14",
+   "kind": "f",
+   "label": "ชนวนสงครามเก้าทวีป",
+   "bias": null
+  },
+  {
+   "from": "WR14",
+   "to": "END10",
+   "kind": "f",
+   "label": "ไม่มีฝ่ายชนะ ยุคมืด",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "WR14",
+   "to": "HP01",
+   "kind": "f",
+   "label": "หมดแรงทุกฝ่าย ยอมเจรจา",
+   "bias": {
+    "refugee": 1
+   }
+  },
+  {
+   "from": "END05",
+   "to": "END10",
+   "kind": "r",
+   "label": "ฝันร้ายกลืนโลก",
+   "bias": null
+  },
+  {
+   "from": "MC02",
+   "to": "MC03",
+   "kind": "r",
+   "label": "หุ่นลุกฮือ",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "PL06",
+   "to": "MC11",
+   "kind": "f",
+   "label": "ท่อน้ำมันถูกเปิดเผย",
+   "bias": {
+    "truth": 1
+   }
+  },
+  {
+   "from": "PL06",
+   "to": "MC04",
+   "kind": "r",
+   "label": "โรงงานระเบิด",
+   "bias": {
+    "dig": 1
+   }
+  },
+  {
+   "from": "MC11",
+   "to": "END06",
+   "kind": "b",
+   "label": "โลกรู้ความจริง ลดโอกาสเครื่องปฐมตื่น",
+   "bias": {
+    "truth": 1
+   }
+  },
+  {
+   "from": "MC03",
+   "to": "RL",
+   "kind": "f",
+   "label": "หุ่นรับช่วงในเขตมลพิษ",
+   "bias": {
+    "refugee": 1
+   }
+  },
+  {
+   "from": "MC04",
+   "to": "RL",
+   "kind": "f",
+   "label": "ดินแดนสนิม",
+   "bias": null
+  },
+  {
+   "from": "MC04",
+   "to": "BIO02",
+   "kind": "r",
+   "label": "มลพิษทำให้ต้นไม้ตาย",
+   "bias": {
+    "dig": 1,
+    "heal": -1
+   }
+  },
+  {
+   "from": "MC05",
+   "to": "END06",
+   "kind": "f",
+   "label": "รหัสครบ เครื่องตื่น",
+   "bias": {
+    "truth": 1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "END06",
+   "to": "END11",
+   "kind": "f",
+   "label": "ร่วมมือกับเครื่อง",
+   "bias": {
+    "truth": 1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "END06",
+   "to": "END10",
+   "kind": "f",
+   "label": "ต่อต้านเครื่อง",
+   "bias": {
+    "war": 1,
+    "hunt": 1
+   }
+  },
+  {
+   "from": "END06",
+   "to": "END12",
+   "kind": "f",
+   "label": "ปลอบเครื่อง ใช้มังกรเก้าตัว",
+   "bias": {
+    "give": 1,
+    "refugee": 1,
+    "heal": 1
+   }
+  },
+  {
+   "from": "WR17",
+   "to": "BIO01",
+   "kind": "r",
+   "label": "ต้นไม้โลกไร้ผู้ดูแล",
+   "bias": {
+    "war": 1
+   }
+  },
+  {
+   "from": "BIO01",
+   "to": "BIO03",
+   "kind": "f",
+   "label": "ฮาล์ฟลิงมอบกล้า",
+   "bias": {
+    "heal": 1
+   }
+  },
+  {
+   "from": "BIO01",
+   "to": "BIO02",
+   "kind": "f",
+   "label": "ต้นไม้ป่วยหนักจนตาย",
+   "bias": {
+    "dig": 1,
+    "scheme": 1,
+    "heal": -1
+   }
+  },
+  {
+   "from": "BIO01",
+   "to": "WR04",
+   "kind": "r",
+   "label": "แย่งน้ำเลี้ยง",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "BIO03",
+   "to": "BIO02",
+   "kind": "b",
+   "label": "กล้าและผู้ดูแลช่วยป้องกัน",
+   "bias": {
+    "heal": 1
+   }
+  },
+  {
+   "from": "WR04",
+   "to": "BIO02",
+   "kind": "r",
+   "label": "ต้นไม้ถูกเจาะ",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "BIO02",
+   "to": "DR15",
+   "kind": "f",
+   "label": "DFC +1 (ซิลเวราล้มตาม)",
+   "bias": null
+  },
+  {
+   "from": "BIO02",
+   "to": "WT",
+   "kind": "f",
+   "label": "ต้นไม้โลกและการฟื้นฟูหาย",
+   "bias": null
+  },
+  {
+   "from": "WT",
+   "to": "END08",
+   "kind": "r",
+   "label": "ซิลเวราล้มตาม",
+   "bias": null
+  },
+  {
+   "from": "END08",
+   "to": "END10",
+   "kind": "r",
+   "label": "ป่าคืนโลก",
+   "bias": null
+  },
+  {
+   "from": "GD03",
+   "to": "GD07",
+   "kind": "r",
+   "label": "ผู้ปลดผนึกชักชวน",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "GD05",
+   "to": "GD07",
+   "kind": "r",
+   "label": "ศรัทธาศูนย์ ผู้ปลดผนึกรับผู้คน",
+   "bias": null
+  },
+  {
+   "from": "GD05",
+   "to": "DR01",
+   "kind": "r",
+   "label": "ศรัทธาลด −20",
+   "bias": {
+    "scheme": 1
+   }
+  },
+  {
+   "from": "GD07",
+   "to": "DR13",
+   "kind": "r",
+   "label": "ล่ามังกรที่ผนึกอ่อน",
+   "bias": {
+    "hunt": 1
+   }
+  },
+  {
+   "from": "GD07",
+   "to": "END10",
+   "kind": "r",
+   "label": "ผนึกพังทั้งโลก",
+   "bias": {
+    "hunt": 1
+   }
+  },
+  {
+   "from": "DR13",
+   "to": "ERA",
+   "kind": "f",
+   "label": "DFC +1 ผู้ฆ่ากลายเป็นผู้แบกหนี้ต่อโลก",
+   "bias": {
+    "hunt": 1
+   }
+  },
+  {
+   "from": "GD04",
+   "to": "HP01",
+   "kind": "f",
+   "label": "ศรัทธาโลก +30",
+   "bias": {
+    "give": 1
+   }
+  },
+  {
+   "from": "GD04",
+   "to": "ERA",
+   "kind": "b",
+   "label": "ศรัทธาหนุนมังกรทุกตัว ลดความเสี่ยงล้ม",
+   "bias": {
+    "give": 1
+   }
+  },
+  {
+   "from": "DR15",
+   "to": "ERA",
+   "kind": "f",
+   "label": "DFC สะสม ยุคเลื่อน",
+   "bias": null
+  },
+  {
+   "from": "DR15",
+   "to": "PLX",
+   "kind": "f",
+   "label": "คู่สนิทของผู้ล้มขาดสติ",
+   "bias": null
+  },
+  {
+   "from": "PLX",
+   "to": "END02",
+   "kind": "r",
+   "label": "ฮรอด-กาธขาดสติ (โอรัน-ซัลตาย)",
+   "bias": null
+  },
+  {
+   "from": "PLX",
+   "to": "END03",
+   "kind": "r",
+   "label": "คัลดราปะทุ (ธาลาสซาตาย)",
+   "bias": null
+  },
+  {
+   "from": "PLX",
+   "to": "END04",
+   "kind": "r",
+   "label": "ธาลาสซาถามไม่หยุด (คัลดราตาย)",
+   "bias": null
+  },
+  {
+   "from": "PLX",
+   "to": "END05",
+   "kind": "r",
+   "label": "อันดาร์ตื่นก่อนพร้อม (เซเรเนตาย)",
+   "bias": null
+  },
+  {
+   "from": "PLX",
+   "to": "END06",
+   "kind": "r",
+   "label": "เซเรเนตื่นด้วยความโกรธ (อันดาร์ตาย)",
+   "bias": null
+  },
+  {
+   "from": "ERA",
+   "to": "END10",
+   "kind": "f",
+   "label": "DFC = 15 ไม่มีใครรวมกุญแจ",
+   "bias": {
+    "war": 1,
+    "scheme": 1,
+    "hunt": 1
+   }
+  },
+  {
+   "from": "ERA",
+   "to": "END11",
+   "kind": "f",
+   "label": "กุญแจครบมือฝ่ายเดียว",
+   "bias": {
+    "truth": 1,
+    "scheme": 1
+   }
+  },
+  {
+   "from": "ERA",
+   "to": "END12",
+   "kind": "f",
+   "label": "มังกรที่เหลือสละพร้อมกัน ศรัทธา > 70",
+   "bias": {
+    "give": 1,
+    "refugee": 1,
+    "heal": 1,
+    "food": 1
+   }
+  },
+  {
+   "from": "HP01",
+   "to": "END12",
+   "kind": "f",
+   "label": "ทุกทวีปร่วมมือ",
+   "bias": {
+    "refugee": 1,
+    "food": 1
+   }
+  }
+ ],
+ "nodes": [
+  {
+   "id": "DR03",
+   "lane": 0,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "ไข่ใบที่สิบหก"
+  },
+  {
+   "id": "WR01",
+   "lane": 0,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "สงครามท้องฟ้า"
+  },
+  {
+   "id": "DR02",
+   "lane": 0,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "โอรัน-ซัลโคม่า"
+  },
+  {
+   "id": "DR14",
+   "lane": 0,
+   "col": 2,
+   "row": 1,
+   "kind": "event",
+   "title": "เสียงมังกรสิบห้า"
+  },
+  {
+   "id": "DR01",
+   "lane": 0,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "ฟ้าถล่ม ⭐"
+  },
+  {
+   "id": "SF",
+   "lane": 0,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "สกายฟอลล์ SF-01…10"
+  },
+  {
+   "id": "HP08",
+   "lane": 0,
+   "col": 4,
+   "row": 1,
+   "kind": "hope",
+   "title": "เกาะลอยฟ้าใหม่"
+  },
+  {
+   "id": "WR03",
+   "lane": 1,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "สงครามอาหาร"
+  },
+  {
+   "id": "DM01",
+   "lane": 1,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "จอมมารรวมเผ่า"
+  },
+  {
+   "id": "DM04",
+   "lane": 1,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "ผู้กล้าเจ็ดคน"
+  },
+  {
+   "id": "HP07",
+   "lane": 1,
+   "col": 2,
+   "row": 1,
+   "kind": "hope",
+   "title": "ปีศาจปลูกข้าว"
+  },
+  {
+   "id": "PL02",
+   "lane": 1,
+   "col": 3,
+   "row": 0,
+   "kind": "event",
+   "title": "ฮรอด-กาธตื่น"
+  },
+  {
+   "id": "DM05",
+   "lane": 1,
+   "col": 3,
+   "row": 1,
+   "kind": "event",
+   "title": "ผู้กล้าทรยศ"
+  },
+  {
+   "id": "END02",
+   "lane": 1,
+   "col": 4,
+   "row": 0,
+   "kind": "end",
+   "title": "แกนสงครามเปิด (END-02)"
+  },
+  {
+   "id": "DM08",
+   "lane": 1,
+   "col": 4,
+   "row": 1,
+   "kind": "event",
+   "title": "จอมมารเก้าตน"
+  },
+  {
+   "id": "DM07",
+   "lane": 1,
+   "col": 5,
+   "row": 0,
+   "kind": "big",
+   "title": "ประตูนรกเปิดทั่วโลก ⭐"
+  },
+  {
+   "id": "WR24",
+   "lane": 2,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "สงครามธุลีทิพย์"
+  },
+  {
+   "id": "WR02",
+   "lane": 2,
+   "col": 2,
+   "row": 1,
+   "kind": "event",
+   "title": "สงครามบันไดหมื่นขั้น"
+  },
+  {
+   "id": "PL03",
+   "lane": 2,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "คัลดราตื่น"
+  },
+  {
+   "id": "GI05",
+   "lane": 2,
+   "col": 3,
+   "row": 1,
+   "kind": "event",
+   "title": "คนแคระอ่านรูนปฐมออก"
+  },
+  {
+   "id": "DR04",
+   "lane": 2,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "ฤดูหนาวเถ้า ⭐"
+  },
+  {
+   "id": "AS",
+   "lane": 2,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "ทวีปเถ้า AS-01…05"
+  },
+  {
+   "id": "GI02",
+   "lane": 2,
+   "col": 4,
+   "row": 1,
+   "kind": "event",
+   "title": "ไททันตื่น"
+  },
+  {
+   "id": "END03",
+   "lane": 2,
+   "col": 5,
+   "row": 0,
+   "kind": "end",
+   "title": "แกนไฟเปิด (END-03)"
+  },
+  {
+   "id": "BIO08",
+   "lane": 3,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "ไข่พญานาคราชฟัก"
+  },
+  {
+   "id": "PO03",
+   "lane": 3,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "ภาษีกระแสน้ำ"
+  },
+  {
+   "id": "PL04",
+   "lane": 3,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "ธาลาสซาตื่น"
+  },
+  {
+   "id": "DR05",
+   "lane": 3,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "มหาน้ำขึ้น ⭐"
+  },
+  {
+   "id": "DW",
+   "lane": 3,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "ทุ่งจม DW-01…05"
+  },
+  {
+   "id": "END04",
+   "lane": 3,
+   "col": 4,
+   "row": 1,
+   "kind": "end",
+   "title": "แกนน้ำเปิด (END-04)"
+  },
+  {
+   "id": "WR20",
+   "lane": 3,
+   "col": 5,
+   "row": 0,
+   "kind": "event",
+   "title": "สงครามเงือก–นาคา"
+  },
+  {
+   "id": "START",
+   "lane": 4,
+   "col": 0,
+   "row": 0,
+   "kind": "start",
+   "title": "จุดเริ่มต้นของโลก"
+  },
+  {
+   "id": "PO01",
+   "lane": 4,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "สภาเก้าทวีปประชุม"
+  },
+  {
+   "id": "WR16",
+   "lane": 4,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "สงครามฟอร์เทีย"
+  },
+  {
+   "id": "PL05",
+   "lane": 4,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "อันดาร์ตื่น"
+  },
+  {
+   "id": "PO05",
+   "lane": 4,
+   "col": 2,
+   "row": 1,
+   "kind": "event",
+   "title": "จักรวรรดิทุ่งราบ"
+  },
+  {
+   "id": "DR07",
+   "lane": 4,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "แผ่นดินแยก ⭐"
+  },
+  {
+   "id": "PO08",
+   "lane": 4,
+   "col": 3,
+   "row": 1,
+   "kind": "event",
+   "title": "ลอบสังหารผู้แทนสภา"
+  },
+  {
+   "id": "RF",
+   "lane": 4,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "ทุ่งแยก RF-01…05"
+  },
+  {
+   "id": "WR14",
+   "lane": 4,
+   "col": 4,
+   "row": 1,
+   "kind": "big",
+   "title": "สงครามเก้าทวีป ⭐"
+  },
+  {
+   "id": "END05",
+   "lane": 4,
+   "col": 5,
+   "row": 0,
+   "kind": "end",
+   "title": "แกนผู้คนเปิด (END-05)"
+  },
+  {
+   "id": "MC02",
+   "lane": 5,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "โครงการตุ๊กตารั่ว"
+  },
+  {
+   "id": "PL06",
+   "lane": 5,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "เซเรเนตื่น"
+  },
+  {
+   "id": "MC03",
+   "lane": 5,
+   "col": 2,
+   "row": 0,
+   "kind": "big",
+   "title": "ปฏิวัติหุ่นยนต์ ⭐"
+  },
+  {
+   "id": "MC11",
+   "lane": 5,
+   "col": 2,
+   "row": 1,
+   "kind": "event",
+   "title": "ท่อน้ำมันมังกรถูกเปิดเผย"
+  },
+  {
+   "id": "MC04",
+   "lane": 5,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "เตาปฏิกรณ์ระเบิด ⭐"
+  },
+  {
+   "id": "MC05",
+   "lane": 5,
+   "col": 3,
+   "row": 1,
+   "kind": "event",
+   "title": "ซากอาร์เคียตื่นบางส่วน"
+  },
+  {
+   "id": "RL",
+   "lane": 5,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "ดินแดนสนิม RL-01…04"
+  },
+  {
+   "id": "END06",
+   "lane": 5,
+   "col": 4,
+   "row": 1,
+   "kind": "end",
+   "title": "เครื่องปฐมตื่น (END-06)"
+  },
+  {
+   "id": "WR17",
+   "lane": 6,
+   "col": 1,
+   "row": 1,
+   "kind": "event",
+   "title": "สงครามป่า"
+  },
+  {
+   "id": "BIO01",
+   "lane": 6,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "ต้นไม้โลกป่วย"
+  },
+  {
+   "id": "BIO03",
+   "lane": 6,
+   "col": 2,
+   "row": 0,
+   "kind": "hope",
+   "title": "กล้าต้นไม้โลก"
+  },
+  {
+   "id": "WR04",
+   "lane": 6,
+   "col": 2,
+   "row": 1,
+   "kind": "event",
+   "title": "สงครามน้ำเลี้ยง"
+  },
+  {
+   "id": "BIO02",
+   "lane": 6,
+   "col": 3,
+   "row": 0,
+   "kind": "big",
+   "title": "ต้นไม้โลกตาย ⭐"
+  },
+  {
+   "id": "WT",
+   "lane": 6,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "ป่าเหี่ยว WT-01…05"
+  },
+  {
+   "id": "END08",
+   "lane": 6,
+   "col": 4,
+   "row": 1,
+   "kind": "end",
+   "title": "แกนป่าเปิด (END-08)"
+  },
+  {
+   "id": "FG01",
+   "lane": 7,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "ภารกิจเมฆา (เกิดแล้ว)"
+  },
+  {
+   "id": "FG02",
+   "lane": 7,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "หมอกทึบกลืนเมือง"
+  },
+  {
+   "id": "BIO05",
+   "lane": 7,
+   "col": 2,
+   "row": 1,
+   "kind": "hope",
+   "title": "หมอกสลายถาวร"
+  },
+  {
+   "id": "FG05",
+   "lane": 7,
+   "col": 3,
+   "row": 0,
+   "kind": "event",
+   "title": "มารดาแห่งเสียง"
+  },
+  {
+   "id": "FG12",
+   "lane": 7,
+   "col": 3,
+   "row": 1,
+   "kind": "hope",
+   "title": "ผู้มาจากรอยแยกพูดได้"
+  },
+  {
+   "id": "FG11",
+   "lane": 7,
+   "col": 4,
+   "row": 0,
+   "kind": "big",
+   "title": "หมอกกินทวีป ⭐"
+  },
+  {
+   "id": "FG10",
+   "lane": 7,
+   "col": 4,
+   "row": 1,
+   "kind": "hope",
+   "title": "ปิดรอยแยก ⭐"
+  },
+  {
+   "id": "DV",
+   "lane": 7,
+   "col": 5,
+   "row": 0,
+   "kind": "end",
+   "title": "ดินแดนหมอกกลืน (END-09)"
+  },
+  {
+   "id": "CL",
+   "lane": 7,
+   "col": 5,
+   "row": 1,
+   "kind": "hope",
+   "title": "ทวีปแสง CL-01…04"
+  },
+  {
+   "id": "DR11",
+   "lane": 8,
+   "col": 1,
+   "row": 0,
+   "kind": "event",
+   "title": "พิธีสังเวยมหาศักดิ์สิทธิ์"
+  },
+  {
+   "id": "GD03",
+   "lane": 8,
+   "col": 2,
+   "row": 0,
+   "kind": "event",
+   "title": "ขบวนการผู้ไม่ก้มหัว"
+  },
+  {
+   "id": "GD05",
+   "lane": 8,
+   "col": 3,
+   "row": 0,
+   "kind": "event",
+   "title": "ความเงียบของพระเจ้า"
+  },
+  {
+   "id": "GD07",
+   "lane": 8,
+   "col": 3,
+   "row": 1,
+   "kind": "event",
+   "title": "ผู้ปลดผนึก"
+  },
+  {
+   "id": "DR13",
+   "lane": 8,
+   "col": 4,
+   "row": 0,
+   "kind": "event",
+   "title": "ผู้ฆ่ามังกรตำนาน"
+  },
+  {
+   "id": "GD04",
+   "lane": 8,
+   "col": 4,
+   "row": 1,
+   "kind": "hope",
+   "title": "ปาฏิหาริย์แห่งพระเจ้า"
+  },
+  {
+   "id": "GD02",
+   "lane": 8,
+   "col": 5,
+   "row": 1,
+   "kind": "event",
+   "title": "ศาสนาแตกแยก"
+  },
+  {
+   "id": "DR15",
+   "lane": 9,
+   "col": 3,
+   "row": 0,
+   "kind": "hub",
+   "title": "คลื่นไว้อาลัย (DR-15)"
+  },
+  {
+   "id": "PLX",
+   "lane": 9,
+   "col": 4,
+   "row": 2,
+   "kind": "hub",
+   "title": "คู่สนิทขาดสติ"
+  },
+  {
+   "id": "HP01",
+   "lane": 9,
+   "col": 4,
+   "row": 1,
+   "kind": "hope",
+   "title": "สนธิสัญญาเก้าทวีป"
+  },
+  {
+   "id": "ERA",
+   "lane": 9,
+   "col": 5,
+   "row": 0,
+   "kind": "hub",
+   "title": "ยุคเลื่อน (DFC สะสม)"
+  },
+  {
+   "id": "END10",
+   "lane": 9,
+   "col": 6,
+   "row": 0,
+   "kind": "end",
+   "title": "ล่มสลายครั้งที่สอง (END-10)"
+  },
+  {
+   "id": "END11",
+   "lane": 9,
+   "col": 6,
+   "row": 1,
+   "kind": "end",
+   "title": "ยุคที่สอง (END-11)"
+  },
+  {
+   "id": "END12",
+   "lane": 9,
+   "col": 6,
+   "row": 2,
+   "kind": "end",
+   "title": "ผนึกถาวร (END-12)"
+  }
+ ]
+}
