@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แผนที่ NPC ของโลก</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --panel: #ffffff; --ink: #1f2430; --muted: #646b7a; --line: #d9d5ca;
+    --good: #1f8a5b; --bad: #c2403a; --accent: #3b5bdb; --soft: #efece4; --warn: #d9902f;
+    --shadow: 0 1px 2px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15171d; --panel: #1e212a; --ink: #e9e7e1; --muted: #9aa0ae; --line: #323746;
+      --good: #4cc38a; --bad: #ff7b72; --accent: #8fa6ff; --soft: #1a1d25; --warn: #f0b34d;
+      --shadow: 0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171d; --panel: #1e212a; --ink: #e9e7e1; --muted: #9aa0ae; --line: #323746;
+    --good: #4cc38a; --bad: #ff7b72; --accent: #8fa6ff; --soft: #1a1d25; --warn: #f0b34d;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: "Sarabun", "Noto Sans Thai", "Thonburi", "Tahoma", system-ui, sans-serif; line-height: 1.5; }
+  header { padding: 18px 16px 6px; max-width: 1600px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  .sub { margin: 0; color: var(--muted); font-size: 14px; max-width: 95ch; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 16px; padding: 12px 16px 32px; max-width: 1600px; margin: 0 auto; align-items: start; }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+  .toolbar { padding: 10px 12px; margin-bottom: 12px; display: grid; gap: 8px; font-size: 13px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+  .row label { color: var(--muted); font-size: 12.5px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip, .btn { font: inherit; font-size: 12.5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .chip[aria-pressed="true"] .dot { box-shadow: 0 0 0 1.5px #fff; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  input[type="search"], input[type="text"], select { font: inherit; font-size: 13px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); min-width: 190px; }
+  input[type="text"].seed { min-width: 0; width: 110px; }
+  input[type="range"] { vertical-align: middle; width: 110px; }
+  .theme { margin-left: auto; }
+  .count { color: var(--muted); }
+  .stage { padding: 4px 14px 16px; }
+  .cont { margin-top: 14px; }
+  .cont > h2 { margin: 0 0 2px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .cont > h2 i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .cont > h2 small { color: var(--muted); font-weight: 400; font-size: 12.5px; }
+  .ctry { margin: 10px 0 0; }
+  .ctry > h3 { margin: 0 0 6px; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .ctry > h3 b { color: var(--ink); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; }
+  .npc { text-align: left; font: inherit; border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 8px; background: var(--panel); color: var(--ink); padding: 7px 10px; cursor: pointer; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 2px; min-height: 92px; }
+  .npc:hover { outline: 2px solid var(--accent); }
+  .npc:focus-visible { outline: 3px solid var(--accent); }
+  .npc.sel { outline: 3px solid var(--accent); }
+  .npc .top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: 10.5px; color: var(--muted); }
+  .npc .nm { font-size: 13px; font-weight: 600; line-height: 1.25; }
+  .npc .rl { font-size: 11.5px; color: var(--muted); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .npc .bar { margin-top: auto; height: 5px; border-radius: 3px; background: var(--soft); overflow: hidden; }
+  .npc .bar i { display: block; height: 100%; background: var(--c); }
+  .npc .foot { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+  .npc.leader .top b { color: var(--warn); }
+  .npc.gone { opacity: .28; }
+  .npc .res { color: var(--accent); font-weight: 600; }
+  .empty { padding: 30px; text-align: center; color: var(--muted); }
+  aside.card { padding: 14px; position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; }
+  @media (max-width: 960px) { aside.card { position: static; max-height: none; } }
+  aside h2 { margin: 0 0 4px; font-size: 17px; }
+  aside h3 { margin: 14px 0 6px; font-size: 12.5px; color: var(--muted); letter-spacing: .03em; }
+  aside p { margin: 4px 0; font-size: 13.5px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .badge { font-size: 11.5px; border: 1px solid var(--line); padding: 1px 8px; border-radius: 999px; color: var(--muted); }
+  .badge.good { color: var(--good); border-color: var(--good); }
+  .branch { margin: 8px 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); }
+  .branch.chosen { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+  .branch.cut { opacity: .55; }
+  .branch .bh { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; }
+  .branch .meter { flex: 1; height: 7px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .branch .meter i { display: block; height: 100%; background: var(--accent); }
+  .branch.rest .meter i { background: var(--muted); }
+  .branch p { font-size: 13px; }
+  .branch.cut p { text-decoration: line-through; }
+  .links { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+  .lk { font: inherit; font-size: 11.5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 2px 8px; cursor: pointer; }
+  .lk:hover { border-color: var(--accent); }
+  .lk.ev { border-color: var(--warn); }
+  .lk.tag { color: var(--good); border-color: var(--good); cursor: default; }
+  .lk.cutmark { color: var(--bad); border-color: var(--bad); cursor: default; }
+  .hint { font-size: 12.5px; color: var(--muted); }
+  ul.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+  ul.list li button { width: 100%; text-align: left; font: inherit; font-size: 12.5px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+  ul.list li button:hover { border-color: var(--accent); }
+  ul.list .n { color: var(--muted); white-space: nowrap; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>แผนที่ NPC ของโลก</h1>
+  <p class="sub">NPC 572 ตัวใน 143 ประเทศ แต่ละตัวอาจปรากฏหรือไม่ก็ได้ ตามโอกาสสุ่ม กดการ์ดเพื่อดูเส้นเรื่อง ก) ข) ค) พร้อมร้อยละ เหตุการณ์ที่ส่งผล และ NPC ที่เกี่ยวข้อง กด “สุ่มโลก” เพื่อทดลองว่าโลกหนึ่งรอบมีใครปรากฏและเลือกเส้นไหน เส้นที่ผูกกับ NPC ที่ไม่ปรากฏจะถูกตัดแล้วปรับสัดส่วนใหม่</p>
+</header>
+<div class="layout">
+  <section>
+    <div class="card toolbar">
+      <div class="row">
+        <input type="search" id="search" placeholder="ค้นหาชื่อ รหัส หรือเนื้อหา เช่น ไอรัสวาร์ AZ01-1 ธุลีทิพย์">
+        <select id="country" aria-label="ประเทศ"></select>
+        <input type="text" id="evsel" list="evlist" placeholder="ส่งผลต่อเหตุการณ์ เช่น DR-01" aria-label="ส่งผลต่อเหตุการณ์">
+        <datalist id="evlist"></datalist>
+        <button class="btn" id="clear">ล้างตัวกรอง</button>
+        <button class="chip theme" id="themeBtn" aria-pressed="false">โหมดมืด</button>
+      </div>
+      <div class="chips" id="contChips" aria-label="ทวีป"></div>
+      <div class="row">
+        <button class="chip" id="leaderOnly" aria-pressed="false">เฉพาะผู้นำ</button>
+        <label>ปรากฏอย่างน้อย <b id="mv">0</b>% <input type="range" id="minSpawn" min="0" max="100" step="5" value="0"></label>
+        <span class="chips" id="tagChips" aria-label="รูปแบบการโต้ตอบ"></span>
+      </div>
+      <div class="row">
+        <label for="seed">เมล็ดสุ่ม</label>
+        <input type="text" id="seed" class="seed" value="world-1">
+        <button class="btn primary" id="roll">สุ่มโลก</button>
+        <button class="btn" id="shuffle">เมล็ดใหม่แล้วสุ่ม</button>
+        <button class="btn" id="unroll">ล้างผลสุ่ม</button>
+        <span class="count" id="count"></span>
+      </div>
+    </div>
+    <div class="card stage" id="stage"></div>
+  </section>
+  <aside class="card" id="panel" aria-live="polite"></aside>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const { continents: CONTS, countries: CTRY, npcs: NPCS, events: EVT } = DATA;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const byId = Object.fromEntries(NPCS.map((n) => [n.id, n]));
+const contBy = Object.fromEntries(CONTS.map((c) => [c.id, c]));
+const ctryBy = Object.fromEntries(CTRY.map((c) => [c.id, c]));
+const TAGS = ['ช่วย', 'ขัดขวาง', 'ร่วม', 'ปล่อย'];
+const BY_EVENT = {};
+const REFBY = {};
+NPCS.forEach((n) => {
+  REFBY[n.id] = REFBY[n.id] || [];
+  n.branches.forEach((b) => {
+    b.events.forEach((e) => (BY_EVENT[e] = BY_EVENT[e] || []).push({ n, b }));
+    b.npcs.forEach((r) => (REFBY[r] = REFBY[r] || []).push(n.id));
+  });
+});
+
+const S = { conts: new Set(), country: '', leader: false, min: 0, tags: new Set(), q: '', ev: '', sel: null, roll: null };
+
+// ---------- rng ----------
+function hashSeed(s) { let h = 2166136261; for (const c of String(s)) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rng(a) { return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+function rollWorld(seed) {
+  const r = rng(hashSeed(seed));
+  const appear = {};
+  NPCS.forEach((n) => { appear[n.id] = n.leader || r() * 100 < n.spawn; });
+  const out = {};
+  let cut = 0;
+  NPCS.forEach((n) => {
+    if (!appear[n.id]) return;
+    const live = [], cutKs = [];
+    n.branches.forEach((b) => (b.npcs.some((x) => !appear[x]) ? cutKs.push(b.k) : live.push(b)));
+    cut += cutKs.length;
+    const total = live.reduce((a, b) => a + b.pct, 0) + n.rest;
+    let x = r() * total, pick = 'rest';
+    for (const b of live) { if (x < b.pct) { pick = b.k; break; } x -= b.pct; }
+    out[n.id] = { pick, cut: cutKs, total };
+  });
+  const pushed = {};
+  Object.entries(out).forEach(([id, o]) => {
+    const b = byId[id].branches.find((x) => x.k === o.pick);
+    if (b) b.events.forEach((e) => (pushed[e] = (pushed[e] || 0) + 1));
+  });
+  const count = Object.keys(out).length;
+  return { seed, appear, out, pushed, count, cut };
+}
+
+// ---------- filtering ----------
+function matches(n) {
+  if (S.conts.size && !S.conts.has(n.continent)) return false;
+  if (S.country && n.country !== S.country) return false;
+  if (S.leader && !n.leader) return false;
+  if (n.spawn < S.min) return false;
+  if (S.tags.size) {
+    const ok = [...S.tags].every((t) => n.branches.some((b) => (t === 'คืนบุญ' ? b.favor : b.tags.includes(t))));
+    if (!ok) return false;
+  }
+  if (S.ev && !n.branches.some((b) => b.events.includes(S.ev))) return false;
+  if (S.q) {
+    const hay = (n.id + ' ' + n.name + ' ' + n.meta + ' ' + n.role + ' ' + n.unique + ' ' + n.branches.map((b) => b.text).join(' ') + ' ' + ctryBy[n.country].name).toLowerCase();
+    if (!hay.includes(S.q)) return false;
+  }
+  return true;
+}
+
+// ---------- render list ----------
+function pct(n) { return Math.round(n); }
+function render() {
+  const list = NPCS.filter(matches);
+  $('#count').textContent = `แสดง ${list.length} จาก ${NPCS.length} ตัว`;
+  const stage = $('#stage');
+  if (!list.length) { stage.innerHTML = '<div class="empty">ไม่พบ NPC ที่ตรงกับตัวกรอง</div>'; return renderPanel(); }
+  const groups = {};
+  list.forEach((n) => { ((groups[n.continent] ||= {})[n.country] ||= []).push(n); });
+  let h = '';
+  for (const c of CONTS) {
+    const g = groups[c.id]; if (!g) continue;
+    const total = Object.values(g).reduce((a, x) => a + x.length, 0);
+    h += `<section class="cont"><h2><i style="background:${c.color}"></i>${esc(c.name)} <small>${total} ตัว</small></h2>`;
+    for (const cid of Object.keys(g)) {
+      const k = ctryBy[cid];
+      h += `<div class="ctry"><h3><b>${cid}</b> ${esc(k.name)} <span>${esc(k.desc)}</span></h3><div class="grid">`;
+      for (const n of g[cid]) {
+        const gone = S.roll && !S.roll.appear[n.id];
+        const res = S.roll && S.roll.appear[n.id] ? S.roll.out[n.id].pick : '';
+        h += `<button class="npc${n.leader ? ' leader' : ''}${gone ? ' gone' : ''}${S.sel === n.id ? ' sel' : ''}" style="--c:${c.color}" data-id="${n.id}">
+          <span class="top"><span>${n.id}</span>${n.leader ? '<b>ผู้นำ</b>' : ''}</span>
+          <span class="nm">${esc(n.name)}</span>
+          <span class="rl">${esc(n.meta ? n.meta + ' ' : '')}${esc(n.role)}</span>
+          <span class="bar"><i style="width:${n.spawn}%"></i></span>
+          <span class="foot"><span>ปรากฏ ${n.spawn}%</span>${S.roll ? (gone ? '<span>ไม่ปรากฏ</span>' : `<span class="res">เส้น ${res === 'rest' ? 'ปล่อย' : res}</span>`) : ''}</span>
+        </button>`;
+      }
+      h += '</div></div>';
+    }
+    h += '</section>';
+  }
+  stage.innerHTML = h;
+  renderPanel();
+}
+
+// ---------- panel ----------
+function evChip(e) { return `<button class="lk ev" data-ev="${e}" title="กรอง NPC ที่ส่งผลต่อ ${e}">${e} ${esc(EVT[e] || '')}</button>`; }
+function npcChip(id) { const n = byId[id]; return `<button class="lk" data-id="${id}">${id} ${esc(n.name)}</button>`; }
+
+function worldSummary() {
+  const R = S.roll;
+  const exp = NPCS.reduce((a, n) => a + n.spawn / 100, 0);
+  let h = `<h2>ภาพรวมโลก</h2>`;
+  if (!R) {
+    h += `<p class="hint">ยังไม่ได้สุ่ม โดยเฉลี่ยโลกหนึ่งรอบมี NPC ปรากฏประมาณ ${Math.round(exp)} จาก ${NPCS.length} ตัว (ผู้นำ 143 ตัวปรากฏเสมอ) กด “สุ่มโลก” เพื่อดูตัวอย่าง หรือกดการ์ด NPC เพื่ออ่านเส้นเรื่อง</p>`;
+    h += `<h3>เหตุการณ์ที่ NPC ผลักดันมากที่สุด (ตามจำนวนเส้นเรื่อง)</h3><ul class="list">`;
+    Object.entries(BY_EVENT).sort((a, b) => b[1].length - a[1].length).slice(0, 12).forEach(([e, v]) => {
+      h += `<li><button data-ev="${e}"><span>${e} ${esc(EVT[e] || '')}</span><span class="n">${v.length} เส้น</span></button></li>`;
+    });
+    return h + '</ul>';
+  }
+  const byC = {};
+  NPCS.forEach((n) => { if (R.appear[n.id]) byC[n.continent] = (byC[n.continent] || 0) + 1; });
+  h += `<p>เมล็ด <b>${esc(R.seed)}</b> · ปรากฏ <b>${R.count}</b> จาก ${NPCS.length} ตัว · ถูกตัดเส้น ${R.cut} เส้น</p><div class="badges">`;
+  CONTS.forEach((c) => (h += `<span class="badge">${esc(c.name)} ${byC[c.id] || 0}</span>`));
+  h += `</div><h3>เหตุการณ์ที่ NPC ในโลกนี้ผลักดัน</h3>`;
+  const ev = Object.entries(R.pushed).sort((a, b) => b[1] - a[1]);
+  if (!ev.length) h += '<p class="hint">ยังไม่มี</p>';
+  else {
+    h += '<ul class="list">';
+    ev.slice(0, 18).forEach(([e, c]) => (h += `<li><button data-ev="${e}"><span>${e} ${esc(EVT[e] || '')}</span><span class="n">${c} ตัว</span></button></li>`));
+    h += '</ul>';
+    if (ev.length > 18) h += `<p class="hint">และอีก ${ev.length - 18} เหตุการณ์</p>`;
+  }
+  return h;
+}
+
+function eventSummary(e) {
+  const v = BY_EVENT[e] || [];
+  let none = 1;
+  v.forEach(({ n, b }) => { none *= 1 - (n.spawn / 100) * (b.pct / 100); });
+  let h = `<h3>เหตุการณ์ที่กรองอยู่</h3><p><b>${e}</b> ${esc(EVT[e] || '')}</p>
+    <p class="hint">${v.length} เส้นเรื่องจาก ${new Set(v.map((x) => x.n.id)).size} NPC ผลักดันเหตุการณ์นี้ โอกาสที่ NPC อย่างน้อยหนึ่งตัวผลักดันในโลกหนึ่งรอบ ประมาณ ${pct((1 - none) * 100)}% (คำนวณจากโอกาสปรากฏคูณร้อยละของเส้น สมมติว่าแต่ละตัวเป็นอิสระต่อกัน) ตัวเลขนี้คือการผลักดัน ไม่ใช่โอกาสที่เหตุการณ์จะเกิดจริง</p>`;
+  return h;
+}
+
+function renderPanel() {
+  const p = $('#panel');
+  if (!S.sel) { p.innerHTML = worldSummary() + (S.ev ? eventSummary(S.ev) : ''); return; }
+  const n = byId[S.sel], k = ctryBy[n.country], c = contBy[n.continent];
+  const R = S.roll, here = R && R.out[n.id], gone = R && !R.appear[n.id];
+  let h = `<button class="chip" id="back">← ภาพรวมโลก</button><h2 style="margin-top:10px">${esc(n.name)}</h2>
+    <div class="badges"><span class="badge">${n.id}</span><span class="badge">${n.country} ${esc(k.name)}</span><span class="badge">${esc(c.name)}</span>
+    <span class="badge ${n.leader ? 'good' : ''}">${n.leader ? 'ผู้นำ ปรากฏเสมอ' : `ปรากฏ ${n.spawn}%`}</span></div>
+    <p>${esc(n.meta)} ${esc(n.role)}</p>`;
+  if (gone) h += `<p class="hint">ในโลกที่สุ่มนี้ NPC ตัวนี้ไม่ปรากฏ เส้นเรื่องทั้งหมดไม่เกิด</p>`;
+  h += `<h3>ยูนีคและเป้าหมาย</h3><p>${esc(n.unique)}</p><h3>เส้นเรื่อง</h3>`;
+  n.branches.forEach((b) => {
+    const isCut = here && here.cut.includes(b.k), chosen = here && here.pick === b.k;
+    const live = here && !isCut ? Math.round((b.pct / here.total) * 100) : null;
+    h += `<div class="branch${chosen ? ' chosen' : ''}${isCut ? ' cut' : ''}"><div class="bh"><span>${b.k}) ${b.pct}%${live !== null && live !== b.pct ? ` → ${live}%` : ''}</span><span class="meter"><i style="width:${b.pct}%"></i></span>${chosen ? '<span class="lk tag">ถูกเลือก</span>' : ''}${isCut ? '<span class="lk cutmark">ตัด</span>' : ''}</div>
+      <p>${esc(b.text)}</p><div class="links">${b.events.map(evChip).join('')}${b.npcs.map(npcChip).join('')}${b.tags.map((t) => `<span class="lk tag">โต้ตอบ: ${t}</span>`).join('')}${b.favor ? '<span class="lk tag">คืนบุญ</span>' : ''}</div></div>`;
+  });
+  if (n.rest > 0) {
+    const chosen = here && here.pick === 'rest';
+    h += `<div class="branch rest${chosen ? ' chosen' : ''}"><div class="bh"><span>ไม่มีเหตุการณ์เด่น ${n.rest}%</span><span class="meter"><i style="width:${n.rest}%"></i></span>${chosen ? '<span class="lk tag">ถูกเลือก</span>' : ''}</div><p>เส้นเรื่องไม่เกิด NPC ใช้ชีวิตตามน้ำหนักปกติของโลก</p></div>`;
+  }
+  const rb = [...new Set(REFBY[n.id] || [])];
+  if (rb.length) h += `<h3>ถูกอ้างถึงโดย</h3><div class="links">${rb.map(npcChip).join('')}</div>`;
+  h += `<p class="hint" style="margin-top:14px">แหล่งข้อมูล: <a href="npcs/${n.file}">docs/npcs/${n.file}</a></p>`;
+  p.innerHTML = h;
+}
+
+// ---------- wiring ----------
+function setupControls() {
+  const cc = $('#contChips');
+  CONTS.forEach((c) => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.setAttribute('aria-pressed', 'false'); b.dataset.c = c.id;
+    b.innerHTML = `<span class="dot" style="background:${c.color}"></span>${esc(c.name)}`;
+    cc.appendChild(b);
+  });
+  const tc = $('#tagChips');
+  [...TAGS, 'คืนบุญ'].forEach((t) => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.setAttribute('aria-pressed', 'false'); b.dataset.t = t; b.textContent = t === 'คืนบุญ' ? 'คืนบุญ' : `[${t}]`;
+    tc.appendChild(b);
+  });
+  const dl = $('#evlist');
+  Object.keys(EVT).sort().forEach((e) => { const o = document.createElement('option'); o.value = e; o.label = EVT[e]; dl.appendChild(o); });
+  fillCountries();
+}
+function fillCountries() {
+  const sel = $('#country');
+  const list = CTRY.filter((c) => !S.conts.size || S.conts.has(c.continent));
+  sel.innerHTML = '<option value="">ทุกประเทศ</option>' + list.map((c) => `<option value="${c.id}">${c.id} ${esc(c.name)}</option>`).join('');
+  if (!list.some((c) => c.id === S.country)) S.country = '';
+  sel.value = S.country;
+}
+const setPressed = (el, v) => el.setAttribute('aria-pressed', v ? 'true' : 'false');
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.c) { S.conts.has(t.dataset.c) ? S.conts.delete(t.dataset.c) : S.conts.add(t.dataset.c); setPressed(t, S.conts.has(t.dataset.c)); fillCountries(); render(); return; }
+  if (t.dataset.t) { S.tags.has(t.dataset.t) ? S.tags.delete(t.dataset.t) : S.tags.add(t.dataset.t); setPressed(t, S.tags.has(t.dataset.t)); render(); return; }
+  if (t.dataset.ev) { S.ev = t.dataset.ev; $('#evsel').value = S.ev; S.sel = null; render(); return; }
+  if (t.dataset.id) { S.sel = t.dataset.id; history.replaceState(null, '', '#' + S.sel); render(); if (t.classList.contains('lk')) $('#panel').scrollTop = 0; return; }
+  if (t.id === 'back') { S.sel = null; history.replaceState(null, '', location.pathname); render(); return; }
+  if (t.id === 'leaderOnly') { S.leader = !S.leader; setPressed(t, S.leader); render(); return; }
+  if (t.id === 'clear') {
+    S.conts.clear(); S.tags.clear(); S.country = ''; S.leader = false; S.min = 0; S.q = ''; S.ev = '';
+    document.querySelectorAll('#contChips .chip, #tagChips .chip, #leaderOnly').forEach((b) => setPressed(b, false));
+    $('#search').value = ''; $('#evsel').value = ''; $('#minSpawn').value = 0; $('#mv').textContent = 0; fillCountries(); render(); return;
+  }
+  if (t.id === 'roll') { S.roll = rollWorld($('#seed').value.trim() || 'world-1'); render(); return; }
+  if (t.id === 'shuffle') { $('#seed').value = 'world-' + Math.random().toString(36).slice(2, 7); S.roll = rollWorld($('#seed').value); render(); return; }
+  if (t.id === 'unroll') { S.roll = null; render(); return; }
+  if (t.id === 'themeBtn') {
+    const dark = document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.dataset.theme = dark ? 'light' : 'dark'; setPressed(t, !dark); t.textContent = dark ? 'โหมดมืด' : 'โหมดสว่าง';
+  }
+});
+$('#search').addEventListener('input', (e) => { S.q = e.target.value.trim().toLowerCase(); render(); });
+$('#country').addEventListener('change', (e) => { S.country = e.target.value; render(); });
+$('#minSpawn').addEventListener('input', (e) => { S.min = +e.target.value; $('#mv').textContent = S.min; render(); });
+$('#evsel').addEventListener('input', (e) => {
+  const v = e.target.value.trim().toUpperCase();
+  if (!v) { S.ev = ''; render(); } else if (EVT[v]) { S.ev = v; render(); }
+});
+
+setupControls();
+if (location.hash && byId[location.hash.slice(1)]) S.sel = location.hash.slice(1);
+render();
+</script>
+</body>
+</html>
