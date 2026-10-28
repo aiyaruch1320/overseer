@@ -1,0 +1,25 @@
+{
+  "name": "isekai-god-sim",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && npm run build:server",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "sim": "tsx scripts/simtest.ts",
+    "build:server": "esbuild server/main.ts --bundle --platform=node --format=esm --target=node22 --outfile=server-dist/main.mjs --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\"",
+    "start": "node server-dist/main.mjs"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.19.4",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
