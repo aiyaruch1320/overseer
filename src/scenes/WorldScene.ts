@@ -1,6 +1,10 @@
 import Phaser from 'phaser';
-import { generateWorld, CONTINENTS, SCALE, type WorldMap } from '../sim/worldgen';
-import { makePainter, type PaintWorld } from '../render/mappaint';
+import { generateWorld, CONTINENTS, type WorldMap } from '../sim/worldgen';
+import { TerrainRenderer } from '../render/terrain/terrain';
+import { MU_TO_WU } from '../world/geo';
+import { CITY_S, CITY_WU, CW, CH, T as CT, getCity, extentOf, setLandProbe, setTownLinks } from '../city/citygen';
+import { buildRoads } from '../world/roads';
+import type { CityScene } from './CityScene';
 import type { Game } from '../sim/game';
 import { iconTex, raceTex } from './sprites';
 import { cradleTex } from './people';
@@ -10,16 +14,16 @@ import { DISASTERS } from '../data/disasters';
 import { FESTIVALS } from '../data/npclife';
 
 export { drawPortrait } from './sprites';
-// World coordinates: 8 units per tile. The whole map is drawn once at 2 px/tile (overview) and, when zoomed in,
-// detail chunks are painted at 8 px/tile around the camera (one per frame, kept in a small cache).
+// World coordinates: 8 units per tile. The terrain itself is vector art drawn by TerrainRenderer onto its own DPR-sized
+// canvas behind this (transparent) Phaser canvas, so it is re-drawn at the screen's real resolution at every zoom;
+// this scene owns the camera, the labels, towns and markers on top.
 export const TILE = 8;
-const BASE_PX = 2;
-const CHUNK = 32; // tiles per detail chunk side (256 px: a few ms to paint, no hitch)
-const MAX_CHUNKS = 160;
 const FLAG_ICON: Record<string, string> = { war: 'war', plague: 'plague', famine: 'famine', golden: 'golden', demon_raid: 'demon', ...Object.fromEntries(REGION_EVENTS.map((e) => [e.flag, e.icon])), ...Object.fromEntries(DISASTERS.map((d) => [d.flag, d.icon])), ...Object.fromEntries(FESTIVALS.map((f) => [`fest_${f.id}`, f.icon])) };
 const ACTOR_ICON: Record<string, string> = { hero: 'herosword', demonlord: 'demon', caravan: 'gold' };
-// zoom levels: world → continent → country → town → (enter the town)
-export const Z = { detail: 0.42, country: 0.33, capital: 0.42, town: 0.75, townName: 1.15, max: 3.6 };
+// zoom levels, all one continuous camera: world → continent → country → town markers → city blocks seen from above (sprites on
+// the map) → the living city (people, light and weather on top) → down to the cobbles
+export const Z = { country: 0.33, capital: 0.42, town: 0.75, townName: 1.15, cityLod: 0.9, icons: 2.2, live: 7, liveOff: 5, max: 48 };
+const CITY_HALF_H = ((CITY_WU / 2) * CH) / CW; // half the plan's height in world units
 
 
 export class WorldScene extends Phaser.Scene {
@@ -30,14 +34,13 @@ export class WorldScene extends Phaser.Scene {
   charBox!: Phaser.GameObjects.Container;
   flagIcons: Phaser.GameObjects.Image[] = [];
   actorMarks = new Map<string, { img: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text }>();
-  contLabels: Phaser.GameObjects.Text[] = [];
   countryLabels: Phaser.GameObjects.Text[] = [];
   townMarks: { img: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text; capital: boolean; id: number }[] = [];
-  highlight!: Phaser.GameObjects.Image;
-  chunks = new Map<string, { img: Phaser.GameObjects.Image; used: number }>();
+  terrain!: TerrainRenderer;
   onCountryClick: (id: number) => void = () => {};
   onTownClick: (id: number) => void = () => {};
   onEnterTown: (id: number) => void = () => {};
+  onCityChange: (townId: number) => void = () => {};
   onZoom: (level: string) => void = () => {};
   onReady: () => void = () => {};
   follow = true;
@@ -48,6 +51,11 @@ export class WorldScene extends Phaser.Scene {
   private charRace = '';
   private clickedTown = false;
   private lastLodZoom = 0;
+  private lastView = '';
+  private lastDraw = 0;
+  private cityImgs = new Map<number, { img: Phaser.GameObjects.Image; mip: number }>();
+  private liveTown = -1;
+  private livePending = false;
 
   constructor() { super('world'); }
 
@@ -61,17 +69,45 @@ export class WorldScene extends Phaser.Scene {
 
   create() {
     this.world = generateWorld();
-    this.startPainter();
-    this.baseImg = this.add.image(0, 0, '__DEFAULT').setOrigin(0).setDepth(0).setVisible(false);
-    this.paintBase();
-    this.highlight = this.add.image(0, 0, '__DEFAULT').setOrigin(0).setDepth(2).setVisible(false);
+    this.terrain = new TerrainRenderer(document.getElementById('terrain') as HTMLCanvasElement);
+    this.terrain.setLabels(CONTINENTS.map((c) => c.name));
+    // towns read the real coast, and the map's own trees and fields stay out of the built-up ground
+    setLandProbe((mx, my) => { const p = this.terrain.probe(mx, my); return { land: p.land, inland: p.inland }; });
+    // roads between the towns: drawn on the map, and each town's streets run out to meet them
+    const roads = buildRoads(this.world);
+    const hw = CITY_WU / 2, hh = CITY_HALF_H, tw = CT * CITY_S;
+    const links = new Map<number, { pts: number[]; w: number }[]>();
+    const trimmed = roads.map((r) => {
+      const ends: [number, number[]][] = [[r.a, r.pts], [r.b, (() => { const q: number[] = []; for (let i = r.pts.length - 2; i >= 0; i -= 2) q.push(r.pts[i], r.pts[i + 1]); return q; })()]];
+      const cuts = ends.map(([id, pts]) => {
+        const t = this.world.towns[id], cx = t.x * TILE + TILE / 2, cy = t.y * TILE + TILE / 2;
+        const line: number[] = [CW / 2, CH / 2];
+        let k = 0;
+        for (; k * 2 < pts.length; k++) {
+          const dx = pts[k * 2] - cx, dy = pts[k * 2 + 1] - cy;
+          if (Math.abs(dx) >= hw || Math.abs(dy) >= hh) {
+            line.push(dx / tw + CW / 2, dy / tw + CH / 2);
+            break;
+          }
+          line.push(dx / tw + CW / 2, dy / tw + CH / 2);
+        }
+        if (r.kind === 'road' || r.kind === 'highway') { const l = links.get(id) || []; l.push({ pts: line, w: r.kind === 'highway' ? 3 : 2 }); links.set(id, l); }
+        return k;
+      });
+      // the line the map draws with the stretch inside each end town's plan left out
+      const n = r.pts.length / 2;
+      const from = Math.min(n - 1, cuts[0]), to = Math.max(from, n - 1 - cuts[1]);
+      const mu = (a: number[]) => a.map((v) => v / MU_TO_WU);
+      return { kind: r.kind, full: mu(r.pts), cut: mu(r.pts.slice(from * 2, to * 2 + 2)) };
+    });
+    setTownLinks(links);
+    this.terrain.setRoads(trimmed);
+    this.terrain.setTownAreas(this.world.towns.map((t) => { const e = extentOf(t), k = (CT * CITY_S) / MU_TO_WU; return { x: (t.x * TILE + TILE / 2) / MU_TO_WU, y: (t.y * TILE + TILE / 2) / MU_TO_WU, rx: e.rx * k, ry: e.ry * k }; }));
+    // the terrain canvas sits behind this one, so the Phaser canvas stays transparent
+    // (Itim is used by the continent names; draw again once the web font has arrived)
+    document.fonts?.load('30px Itim').then(() => { this.lastView = ''; });
 
     const font = 'Itim, Sarabun, sans-serif';
-    for (const ct of CONTINENTS) {
-      this.contLabels.push(this.add.text(ct.cx * SCALE * TILE, (ct.cy - ct.r * 0.55) * SCALE * TILE, ct.name, {
-        fontFamily: font, fontSize: '48px', color: '#fff8e0', stroke: '#2a1a0a', strokeThickness: 9,
-      }).setOrigin(0.5).setDepth(9));
-    }
     for (const co of this.world.countries) {
       this.countryLabels.push(this.add.text(co.cx * TILE, co.cy * TILE, co.name.replace(co.gov, ''), {
         fontFamily: font, fontSize: '24px', color: '#fffbe8', stroke: '#1a120a', strokeThickness: 6,
@@ -93,32 +129,30 @@ export class WorldScene extends Phaser.Scene {
     this.charBox = this.add.container(0, 0, [this.ring, this.charSprite]).setDepth(8);
 
     const cam = this.cameras.main;
+    // pixelArt turns on camera pixel rounding, which floors the scroll to whole world units: zoomed in 40× that is a 40 px jump per step
+    // (a drag to the right never moves, a drag to the left leaps, and the zoom easing drifts). The map needs a free camera.
+    cam.setRoundPixels(false);
     cam.setBounds(0, 0, this.W, this.H);
-    cam.setBackgroundColor('#13243a');
-    this.minZoom = Math.max(this.scale.width / this.W, this.scale.height / this.H);
+    this.minZoom = Math.min(this.scale.width / this.W, this.scale.height / this.H);
     cam.setZoom(this.minZoom);
     this.targetZoom = this.minZoom;
     cam.centerOn(this.W / 2, this.H / 2);
 
-    // smooth zoom toward the cursor: the wheel sets a target, update() eases toward it
+    // smooth zoom toward the cursor: the wheel sets a target, update() eases toward it (one continuous move from the continent to the street)
     this.input.on('wheel', (p: Phaser.Input.Pointer, _o: unknown, _dx: number, dy: number) => {
-      if (dy < 0 && this.targetZoom >= Z.max - 0.01) {
-        const wp = cam.getWorldPoint(p.x, p.y);
-        const t = this.nearestTown(wp.x, wp.y);
-        if (t !== null) this.onEnterTown(t);
-        return;
-      }
+      this.stopFollowing();
       this.anchor = { x: p.x, y: p.y };
-      this.targetZoom = Phaser.Math.Clamp(this.targetZoom * (dy > 0 ? 0.82 : 1.22), this.minZoom, Z.max);
+      this.targetZoom = Phaser.Math.Clamp(this.targetZoom * Math.exp(-Math.max(-300, Math.min(300, dy)) * 0.002), this.minZoom, Z.max);
     });
     let dragging = false, sx = 0, sy = 0, moved = 0;
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { dragging = true; sx = p.x; sy = p.y; moved = 0; this.clickedTown = false; });
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
+      if (!p.isDown) this.cityScene()?.hoverAt(p.x, p.y);
       if (!dragging || !p.isDown) return;
       cam.scrollX -= (p.x - sx) / cam.zoom; cam.scrollY -= (p.y - sy) / cam.zoom;
       moved += Math.abs(p.x - sx) + Math.abs(p.y - sy);
       sx = p.x; sy = p.y;
-      if (moved > 6) this.follow = false;
+      if (moved > 6) this.stopFollowing();
     });
     this.input.on('pointerup', (p: Phaser.Input.Pointer) => {
       dragging = false;
@@ -128,7 +162,7 @@ export class WorldScene extends Phaser.Scene {
       }
     });
     this.scale.on('resize', () => {
-      this.minZoom = Math.max(this.scale.width / this.W, this.scale.height / this.H);
+      this.minZoom = Math.min(this.scale.width / this.W, this.scale.height / this.H);
       if (this.targetZoom < this.minZoom) this.targetZoom = this.minZoom;
       if (cam.zoom < this.minZoom) cam.setZoom(this.minZoom);
       this.updateLod();
@@ -153,88 +187,18 @@ export class WorldScene extends Phaser.Scene {
     return best;
   }
 
-  // ----- painting (in a Web Worker; synchronous fallback if workers are unavailable) -----
-  private worker: Worker | null = null;
-  private painter: ReturnType<typeof makePainter> | null = null;
-  private pending = new Set<string>();
-  private baseImg!: Phaser.GameObjects.Image;
-
-  private startPainter() {
-    const world: PaintWorld = { w: this.world.w, h: this.world.h, country: this.world.country, height: this.world.height, climates: this.world.countries.map((c) => c.climate), scale: SCALE };
-    try {
-      this.worker = new Worker(new URL('../render/map.worker.ts', import.meta.url), { type: 'module' });
-      this.worker.onmessage = (e) => this.onPainted(e.data.key, e.data.w, e.data.h, e.data.data);
-      this.worker.onerror = () => { this.worker = null; this.painter = makePainter(world); this.pending.clear(); };
-      this.worker.postMessage({ type: 'init', world });
-    } catch { this.painter = makePainter(world); }
-  }
-
-  private request(key: string, x0: number, y0: number, w: number, h: number, ppt: number) {
-    if (this.pending.has(key)) return;
-    this.pending.add(key);
-    if (this.worker) this.worker.postMessage({ type: 'paint', key, x0, y0, w, h, ppt });
-    else if (this.painter) this.onPainted(key, w, h, this.painter(x0, y0, w, h, ppt));
-  }
-
-  private onPainted(key: string, w: number, h: number, data: Uint8ClampedArray) {
-    this.pending.delete(key);
-    if (!this.sys?.isActive() && !this.sys?.isSleeping()) return;
-    const cv = document.createElement('canvas');
-    cv.width = w; cv.height = h;
-    cv.getContext('2d')!.putImageData(new ImageData(data, w, h), 0, 0);
-    if (this.textures.exists(key)) this.textures.remove(key);
-    this.textures.addCanvas(key, cv);
-    if (key === 'mapbase') { this.baseImg.setTexture('mapbase').setScale(TILE / BASE_PX).setVisible(true); return; }
-    const [cx, cy] = key.slice(6).split(',').map(Number);
-    const img = this.add.image(cx * CHUNK * TILE, cy * CHUNK * TILE, key).setOrigin(0).setDepth(1).setVisible(this.cameras.main.zoom >= Z.detail);
-    this.chunks.set(key.slice(6), { img, used: this.time.now });
-  }
-
-  paintBase() {
-    this.request('mapbase', 0, 0, this.world.w * BASE_PX, this.world.h * BASE_PX, BASE_PX);
-  }
-
-  // ask for the detail chunks the camera can see (a few in flight at once); drop the least recently seen
-  private updateChunks() {
-    const cam = this.cameras.main;
-    const visible = cam.zoom >= Z.detail;
-    this.chunks.forEach((c) => c.img.setVisible(visible));
-    if (!visible) return;
-    const v = cam.worldView;
-    const span = CHUNK * TILE;
-    const cx0 = Math.max(0, Math.floor(v.x / span)), cy0 = Math.max(0, Math.floor(v.y / span));
-    const cx1 = Math.min(Math.ceil(this.world.w / CHUNK) - 1, Math.floor(v.right / span)), cy1 = Math.min(Math.ceil(this.world.h / CHUNK) - 1, Math.floor(v.bottom / span));
-    const now = this.time.now;
-    for (let cy = cy0; cy <= cy1; cy++) for (let cx = cx0; cx <= cx1; cx++) {
-      const key = `${cx},${cy}`;
-      const hit = this.chunks.get(key);
-      if (hit) { hit.used = now; continue; }
-      if (this.pending.size >= 4) continue;
-      const wTiles = Math.min(CHUNK, this.world.w - cx * CHUNK), hTiles = Math.min(CHUNK, this.world.h - cy * CHUNK);
-      this.request(`chunk_${key}`, cx * CHUNK * TILE, cy * CHUNK * TILE, wTiles * TILE, hTiles * TILE, TILE);
-    }
-    if (this.chunks.size > MAX_CHUNKS) {
-      const old = [...this.chunks.entries()].sort((a, b) => a[1].used - b[1].used).slice(0, this.chunks.size - MAX_CHUNKS);
-      for (const [key, c] of old) { c.img.destroy(); this.textures.remove(`chunk_${key}`); this.chunks.delete(key); }
-    }
-  }
-
   showHighlight(id: number) {
     const { w, h, country } = this.world;
-    const cv = document.createElement('canvas');
-    cv.width = w * BASE_PX; cv.height = h * BASE_PX;
-    const ctx = cv.getContext('2d')!;
-    ctx.fillStyle = 'rgba(255,240,150,0.30)';
-    for (let i = 0; i < w * h; i++) if (country[i] === id) ctx.fillRect((i % w) * BASE_PX, Math.floor(i / w) * BASE_PX, BASE_PX, BASE_PX);
-    if (this.textures.exists('hl')) this.textures.remove('hl');
-    this.textures.addCanvas('hl', cv);
-    this.highlight.setTexture('hl').setScale(TILE / BASE_PX).setVisible(true);
+    this.terrain.setHighlight((i) => country[i] === id, w, h, TILE / MU_TO_WU);
+    this.lastView = '';
   }
 
   level(): string {
     const z = this.cameras.main.zoom;
-    if (z >= Z.town) return 'ประเทศ · เมือง';
-    if (z >= Z.country) return 'ทวีป · ประเทศ';
+    if (z >= Z.live) return 'ในเมือง';
+    if (z >= 2) return 'เมือง';
+    if (z >= Z.town) return 'ประเทศ';
+    if (z >= Z.country) return 'ทวีป';
     return 'โลก';
   }
 
@@ -242,21 +206,20 @@ export class WorldScene extends Phaser.Scene {
   updateLod() {
     const z = this.cameras.main.zoom;
     this.lastLodZoom = z;
-    this.contLabels.forEach((l) => l.setVisible(z < Z.country * 1.6).setAlpha(z < Z.country ? 0.95 : 0.45).setScale(30 / (48 * z)));
     const townNames = z >= Z.townName;
     this.countryLabels.forEach((l, i) => {
       const co = this.world.countries[i];
-      l.setVisible(z >= Z.country && z < Z.max * 0.98).setScale(16 / (24 * z)).setAlpha(townNames ? 0.75 : 1);
+      l.setVisible(z >= Z.country && z < Z.icons).setScale(16 / (24 * z)).setAlpha(townNames ? 0.75 : 1);
       l.setPosition(co.cx * TILE + TILE / 2, co.cy * TILE + (townNames ? -36 / z : 12 / z)).setOrigin(0.5, townNames ? 1 : 0);
     });
     for (const m of this.townMarks) {
       const show = m.capital ? z >= Z.capital : z >= Z.town;
-      m.img.setVisible(show).setScale((m.capital ? 22 : 16) / (24 * z));
-      m.label.setVisible(show && townNames).setScale(13 / (18 * z)).setY(m.img.y + 12 / z);
+      m.img.setVisible(show && z < Z.icons).setScale((m.capital ? 22 : 16) / (24 * z));
+      m.label.setVisible(show && townNames && z < Z.live).setScale(13 / (18 * z)).setY(m.img.y + (z >= Z.icons ? -CITY_HALF_H * 0.9 : 12 / z));
     }
     this.flagIcons.forEach((t) => t.setScale(18 / (24 * z)));
     this.actorMarks.forEach((m, id) => { m.img.setScale((id.startsWith('caravan') ? 16 : 24) / (24 * z)); m.label.setScale(12 / (16 * z)).setVisible(z >= Z.country).setY(m.img.y + 14 / z); });
-    if (this.charBox) this.charBox.setScale(30 / (32 * z));
+    if (this.charBox) this.charBox.setScale(30 / (32 * z)).setVisible(!(this.game_ && this.liveTown === this.game_.c.townId));
     this.onZoom(this.level());
   }
 
@@ -273,7 +236,7 @@ export class WorldScene extends Phaser.Scene {
       if (this.lastTown === -1 || force) this.charBox.setPosition(tx, ty);
       else this.tweens.add({ targets: this.charBox, x: tx, y: ty, duration: 1200, ease: 'Sine.inOut' });
       this.lastTown = c.townId;
-      if (this.follow) this.cameras.main.pan(tx, ty, 900, 'Sine.easeInOut');
+      if (this.follow && this.cameras.main.zoom < Z.cityLod) this.cameras.main.pan(tx, ty, 900, 'Sine.easeInOut');
     }
     this.charSprite.setAlpha(c.alive ? 1 : 0.4);
     let k = 0;
@@ -318,17 +281,145 @@ export class WorldScene extends Phaser.Scene {
   }
 
   zoomBy(f: number) {
+    this.stopFollowing();
     this.anchor = { x: this.scale.width / 2, y: this.scale.height / 2 };
     this.targetZoom = Phaser.Math.Clamp(this.targetZoom * f, this.minZoom, Z.max);
   }
 
-  // fly down toward a town, then hand over (used for the dive into a city)
-  diveTo(townId: number, done: () => void) {
+  /** fly toward a town in one smooth move (pan while zooming), no cuts */
+  flyToTown(townId: number, zoom = 16) {
     const t = this.world.towns[townId];
-    this.cameras.main.pan(t.x * TILE, t.y * TILE, 800, 'Sine.easeInOut');
+    this.follow = false;
+    this.cameras.main.pan(t.x * TILE + TILE / 2, t.y * TILE + TILE / 2, 1800, 'Sine.easeInOut');
     this.anchor = { x: this.scale.width / 2, y: this.scale.height / 2 };
-    this.targetZoom = Z.max;
-    this.time.delayedCall(850, done);
+    this.targetZoom = Math.max(this.targetZoom, zoom);
+  }
+
+  /** back out to the country view */
+  flyOut(zoom = 1.1) {
+    this.anchor = { x: this.scale.width / 2, y: this.scale.height / 2 };
+    this.targetZoom = Math.min(this.targetZoom, zoom);
+  }
+
+  /** the player took the camera: nothing may move it again until they ask (target button) */
+  stopFollowing() {
+    this.follow = false;
+    (this.scene.get('city') as CityScene).follow = false;
+  }
+
+  cityScene(): CityScene | null {
+    const c = this.scene.get('city') as CityScene | null;
+    return c && c.sys && c.sys.isActive() && this.liveTown >= 0 && c.town ? c : null;
+  }
+
+  private townTex(id: number, mip: number) { return mip === 1 ? `city_${id}` : `city_${id}_${mip}`; }
+
+  /** the towns in view appear as built-up plans on the map; the one under the camera, close enough, comes alive */
+  private updateCities() {
+    const cam = this.cameras.main;
+    const z = cam.zoom;
+    const mx = cam.midPoint.x, my = cam.midPoint.y;
+    if (z < Z.cityLod) {
+      this.cityImgs.forEach((c) => c.img.setVisible(false));
+      this.stopLive();
+      return;
+    }
+    const hw = CITY_WU / 2, vw = cam.width / z / 2 + hw, vh = cam.height / z / 2 + CITY_HALF_H;
+    const near: { id: number; d: number }[] = [];
+    for (const t of this.world.towns) {
+      const dx = t.x * TILE + TILE / 2 - mx, dy = t.y * TILE + TILE / 2 - my;
+      if (Math.abs(dx) < vw && Math.abs(dy) < vh) near.push({ id: t.id, d: dx * dx + dy * dy });
+    }
+    near.sort((a, b) => a.d - b.d);
+    const show = new Set<number>();
+    let built = 0;
+    const r = 1 / (CITY_S * z); // texture pixels per screen pixel
+    const mip = r >= 7 ? 8 : r >= 3.5 ? 4 : r >= 1.8 ? 2 : 1;
+    for (const n of near.slice(0, 9)) {
+      const t = this.world.towns[n.id];
+      let rec = this.cityImgs.get(n.id);
+      if (!rec) {
+        if (built >= 1) continue; // one new plan per frame keeps the camera moving
+        built++;
+        const data = getCity(t, this.game_?.s.countries[t.countryId] || this.world.countries[t.countryId]);
+        const key = `city_${n.id}`;
+        if (!this.textures.exists(key)) this.textures.addCanvas(key, data.cv);
+        rec = { img: this.add.image(t.x * TILE + TILE / 2, t.y * TILE + TILE / 2, key).setDepth(3), mip: 1 };
+        this.cityImgs.set(n.id, rec);
+      }
+      if (rec.mip !== mip) {
+        const key = this.townTex(n.id, mip);
+        if (!this.textures.exists(key)) {
+          const src = this.textures.get(`city_${n.id}`).getSourceImage() as HTMLCanvasElement;
+          const cv = document.createElement('canvas');
+          cv.width = Math.ceil(src.width / mip); cv.height = Math.ceil(src.height / mip);
+          const c2 = cv.getContext('2d')!; c2.imageSmoothingEnabled = true; c2.imageSmoothingQuality = 'high'; c2.drawImage(src, 0, 0, cv.width, cv.height);
+          const tex = this.textures.addCanvas(key, cv);
+          tex?.setFilter(Phaser.Textures.FilterMode.LINEAR);
+        }
+        rec.img.setTexture(key); rec.mip = mip;
+      }
+      rec.img.setScale(CITY_S * mip).setVisible(true).setAlpha(Math.min(1, (z - Z.cityLod) / 0.5));
+      show.add(n.id);
+    }
+    this.cityImgs.forEach((c, id) => { if (!show.has(id)) c.img.setVisible(false); });
+    if (this.cityImgs.size > 24) {
+      for (const [id, c] of this.cityImgs) {
+        if (show.has(id)) continue;
+        c.img.destroy(); this.cityImgs.delete(id);
+        for (const m of [1, 2, 4, 8]) { const k = this.townTex(id, m); if (this.textures.exists(k)) this.textures.remove(k); }
+        if (this.cityImgs.size <= 16) break;
+      }
+    }
+    // life: starts when we are close enough over one town, ends when we leave it
+    const first = near[0];
+    if (first) {
+      const t = this.world.towns[first.id];
+      const inside = Math.abs(t.x * TILE + TILE / 2 - mx) < hw * 1.05 && Math.abs(t.y * TILE + TILE / 2 - my) < CITY_HALF_H * 1.05;
+      // not while the camera is still flying (zooming or panning): a town we only pass over should not wake up
+      const flying = Math.abs(z - this.targetZoom) / z > 0.02 || cam.panEffect.isRunning;
+      if (this.liveTown !== first.id && z >= Z.live && inside && !flying && this.cityImgs.has(first.id)) this.startLive(first.id);
+    }
+    if (this.liveTown >= 0) {
+      const t = this.world.towns[this.liveTown];
+      const gone = Math.abs(t.x * TILE + TILE / 2 - mx) > hw * 1.7 || Math.abs(t.y * TILE + TILE / 2 - my) > CITY_HALF_H * 1.7;
+      if (z < Z.liveOff || gone) this.stopLive();
+    }
+    this.syncLive();
+  }
+
+  private startLive(id: number) {
+    if (this.livePending) return;
+    this.stopLive();
+    this.liveTown = id;
+    this.livePending = true;
+    this.scene.launch('city', { townId: id });
+    this.time.delayedCall(60, () => { this.livePending = false; });
+    this.onCityChange(id);
+  }
+
+  private stopLive() {
+    if (this.liveTown < 0) return;
+    this.liveTown = -1;
+    this.scene.stop('city');
+    this.onCityChange(-1);
+    this.updateLod();
+  }
+
+  /** the living city's camera is the world camera, scaled and re-centred */
+  private syncLive() {
+    const city = this.cityScene();
+    if (!city || !city.plan) return;
+    const cam = this.cameras.main;
+    const t = this.world.towns[this.liveTown];
+    const tx = t.x * TILE + TILE / 2, ty = t.y * TILE + TILE / 2;
+    // following the protagonist: drift the world camera toward them
+    if (city.follow && city.hero) {
+      const wx = tx + (city.hero.root.x - (CW * CT) / 2) * CITY_S, wy = ty + (city.hero.root.y - 20 - (CH * CT) / 2) * CITY_S;
+      cam.centerOn(cam.midPoint.x + (wx - cam.midPoint.x) * 0.06, cam.midPoint.y + (wy - cam.midPoint.y) * 0.06);
+    }
+    cam.preRender();
+    city.syncCamera(cam.zoom * CITY_S, (cam.midPoint.x - tx) / CITY_S + (CW * CT) / 2, (cam.midPoint.y - ty) / CITY_S + (CH * CT) / 2);
   }
 
   // camera state for the sky overlay (clouds and weather drawn in the DOM above the map)
@@ -348,6 +439,17 @@ export class WorldScene extends Phaser.Scene {
       cam.scrollX += before.x - after.x; cam.scrollY += before.y - after.y;
       if (Math.abs(cam.zoom - this.lastLodZoom) / cam.zoom > 0.04) this.updateLod();
     } else if (cam.zoom !== this.lastLodZoom) this.updateLod();
-    this.updateChunks();
+    this.updateCities();
+    this.drawTerrain(_t);
+  }
+
+  // re-draw the terrain whenever the camera moves, and ~15×/s otherwise so clouds, smoke and water keep drifting
+  private drawTerrain(t: number) {
+    const cam = this.cameras.main;
+    cam.preRender();
+    const key = `${cam.midPoint.x.toFixed(2)},${cam.midPoint.y.toFixed(2)},${cam.zoom.toFixed(5)},${cam.width}x${cam.height}`;
+    if (key === this.lastView && t - this.lastDraw < 66) return;
+    this.lastView = key; this.lastDraw = t;
+    this.terrain.render({ cx: cam.midPoint.x, cy: cam.midPoint.y, zoom: cam.zoom, w: cam.width, h: cam.height }, t / 1000);
   }
 }

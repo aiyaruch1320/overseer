@@ -77,7 +77,6 @@ export class UI {
   questPick: string | null = null;
   private logSig = '';
   sky!: Sky;
-  private diving = false;
   private panelScroll = 0;
   private lastPendingMonster: string | null = null;
   private pendingSetup: Setup | null = null;
@@ -128,7 +127,11 @@ export class UI {
     this.scene.onTownClick = (id) => { this.selectedTown = id; this.selectedCountry = generateWorld().towns[id].countryId; this.tab = 'world'; this.dirty = true; };
     this.scene.onEnterTown = (id) => this.enterCity(id);
     this.scene.onZoom = (lv) => { if (lv !== this.zoomLevel) { this.zoomLevel = lv; this.renderMapCtl(); } };
-    this.city.onBack = () => this.exitCity(true);
+    this.scene.onCityChange = (id) => {
+      this.cityTown = id;
+      this.view = id >= 0 ? 'city' : 'world';
+      this.renderMapCtl();
+    };
     this.city.onNews = (text) => {
       const g = this.game;
       if (!g) return;
@@ -140,50 +143,17 @@ export class UI {
     requestAnimationFrame((t) => this.loop(t));
   }
 
-  // ================= views: world map ↔ city =================
-  // dive from the sky: fly toward the town through the clouds, fog over, land in the streets
-  async enterCity(townId: number) {
-    if (this.diving || (this.view === 'city' && this.cityTown === townId)) return;
-    if (this.view === 'world') {
-      this.diving = true;
-      this.scene.diveTo(townId, () => {});
-      await this.sky.fogTo(1, 750);
-      this.openCity(townId);
-      this.diving = false;
-      this.sky.fogTo(0, 700);
-      return;
-    }
-    this.openCity(townId);
+  // ================= views: the city is the map, seen close up =================
+  // One continuous camera: flying "into" a town is just zooming and panning; the view flips to 'city'
+  // by itself (onCityChange) once the camera is close enough for the town to come alive.
+  enterCity(townId: number) {
+    const g = this.game;
+    this.city.follow = !!g && g.c.townId === townId;
+    this.scene.flyToTown(townId);
   }
 
-  private openCity(townId: number) {
-    this.cityTown = townId;
-    this.view = 'city';
-    const sm = this.phaser.scene;
-    sm.sleep('world');
-    if (sm.isActive('city') || sm.isSleeping('city')) sm.stop('city');
-    sm.start('city', { townId });
-    if (this.game) this.city.setGame(this.game);
-    this.renderMapCtl();
-  }
-
-  exitCity(animate = false) {
-    if (this.view !== 'city') return;
-    const leave = () => {
-      this.view = 'world';
-      const sm = this.phaser.scene;
-      sm.stop('city');
-      sm.wake('world');
-      // come back out above the town, then rise
-      const t = generateWorld().towns[this.cityTown];
-      const cam = this.scene.cameras.main;
-      cam.setZoom(Z.max * 0.9); cam.centerOn(t.x * 8, t.y * 8);
-      this.scene.targetZoom = 1.0;
-      this.scene.refresh();
-      this.renderMapCtl();
-    };
-    if (!animate) { leave(); return; }
-    this.sky.fogTo(1, 350).then(() => { leave(); this.sky.fogTo(0, 800); });
+  exitCity(_animate = false) {
+    this.scene.flyOut();
   }
 
   cityActive() { return this.view === 'city' && this.phaser.scene.isActive('city'); }
@@ -292,11 +262,7 @@ export class UI {
   skyFrame(dt: number) {
     const g = this.game;
     const countries = g?.s.countries;
-    if (this.view === 'city') {
-      this.sky.mode = 'city';
-      const t = generateWorld().towns[this.cityTown];
-      this.sky.weather = (countries && t && countries[t.countryId].weather) || 'clear';
-    } else if (this.scene.cameras?.main) {
+    if (this.scene.cameras?.main) {
       this.sky.mode = 'world';
       const v = this.scene.view();
       this.sky.view = { ...v, townZoom: Z.town };
@@ -524,7 +490,7 @@ export class UI {
     const g = this.game;
     if (this.view === 'city') {
       const t = generateWorld().towns[this.cityTown];
-      $('#mapctl').innerHTML = `<button data-act="exitcity" title="กลับแผนที่โลก (หรือหมุนล้อเมาส์ออก)">${ic('globe', 20)}</button>
+      $('#mapctl').innerHTML = `<button data-act="exitcity" title="ซูมออกไปดูทั้งประเทศ (หรือหมุนล้อเมาส์ออก)">${ic('globe', 20)}</button>
         <button data-act="cityfollow" title="ติดตามตัวละคร">${ic('target', 20)}</button>
         <button data-act="sidefold" title="${this.sideFold ? 'เปิด' : 'หุบ'}แผงข้อมูลด้านข้าง">${ic(this.sideFold ? 'up' : 'down', 18)}</button>
         <div class="maplabel">${ic(t?.capital ? 'castle' : 'home', 16)} ${esc(t?.name || '')}${t && g ? ` · ${ic(townSpecialty(t.id, g.s.countries[t.countryId]).icon, 14)} ${esc(townSpecialty(t.id, g.s.countries[t.countryId]).name)}` : ''}${g && g.c.townId === this.cityTown ? ' · ตัวละครอยู่ที่นี่' : ''}</div>`;
@@ -533,7 +499,7 @@ export class UI {
         <button data-act="focus" title="ไปที่ตัวละคร">${ic('target', 20)}</button>
         <button data-act="sidefold" title="${this.sideFold ? 'เปิด' : 'หุบ'}แผงข้อมูลด้านข้าง">${ic(this.sideFold ? 'up' : 'down', 18)}</button>
         ${g ? `<button data-act="entercity" title="เข้าไปในเมืองของตัวละคร">${ic('castle', 20)}</button>` : ''}
-        <div class="maplabel">มุมมอง: ${this.zoomLevel} · ${WEATHER_TH[this.sky?.weather || 'clear'] || ''} · ซูมสุดเพื่อเข้าเมือง</div>`;
+        <div class="maplabel">มุมมอง: ${this.zoomLevel} · ${WEATHER_TH[this.sky?.weather || 'clear'] || ''} · ซูมต่อเนื่องจนเห็นชีวิตในเมือง</div>`;
     }
   }
 

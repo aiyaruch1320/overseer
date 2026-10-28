@@ -9,26 +9,23 @@ export interface SkyView { zoom: number; minZoom: number; maxZoom: number; cx: n
 interface Cloud { x: number; y: number; s: number; sprite: number; drift: number }
 interface Drop { x: number; y: number; v: number; len: number }
 
+// soft cloud puffs (radial gradients), drawn at their full size so they stay smooth however far the camera dives
 function cloudSprites(): HTMLCanvasElement[] {
   const r = new RNG(7);
   const out: HTMLCanvasElement[] = [];
   for (let k = 0; k < 6; k++) {
-    const w = 48, h = 22;
-    const small = document.createElement('canvas');
-    small.width = w; small.height = h;
-    const c = small.getContext('2d')!;
+    const w = 288, h = 132;
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    const c = cv.getContext('2d')!;
     for (let i = 0; i < 9; i++) {
-      const cx = r.float(8, w - 8), cy = r.float(8, h - 6), rad = r.float(4, 9);
-      c.fillStyle = i < 3 ? '#d8dee8' : '#ffffff';
-      c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI * 2); c.fill();
+      const cx = r.float(48, w - 48), cy = r.float(48, h - 34), rad = r.float(24, 54);
+      const g = c.createRadialGradient(cx, cy, rad * 0.15, cx, cy, rad);
+      const base = i < 3 ? '214,222,236' : '255,255,255';
+      g.addColorStop(0, `rgba(${base},0.95)`); g.addColorStop(0.55, `rgba(${base},0.7)`); g.addColorStop(1, `rgba(${base},0)`);
+      c.fillStyle = g; c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI * 2); c.fill();
     }
-    // upscale with hard pixels
-    const big = document.createElement('canvas');
-    big.width = w * 6; big.height = h * 6;
-    const b = big.getContext('2d')!;
-    b.imageSmoothingEnabled = false;
-    b.drawImage(small, 0, 0, w * 6, h * 6);
-    out.push(big);
+    out.push(cv);
   }
   return out;
 }
@@ -52,7 +49,7 @@ export class Sky {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
     const r = new RNG(11);
-    for (let i = 0; i < 70; i++) this.clouds.push({ x: r.next(), y: r.next(), s: r.float(0.7, 1.6), sprite: r.int(0, 5), drift: r.float(0.4, 1.2) });
+    for (let i = 0; i < 46; i++) this.clouds.push({ x: r.next(), y: r.next(), s: r.float(0.7, 1.6), sprite: r.int(0, 5), drift: r.float(0.4, 1.2) });
     for (let i = 0; i < 220; i++) this.drops.push({ x: Math.random(), y: Math.random(), v: 0.5 + Math.random(), len: 0.5 + Math.random() });
   }
 
@@ -80,7 +77,7 @@ export class Sky {
     let weatherStrength = 1;
     if (this.mode === 'world' && v) {
       const t = Math.max(0, Math.min(1, (v.zoom - v.minZoom) / (v.townZoom - v.minZoom)));
-      const alpha = t < 0.35 ? 0.42 + t * 1.1 : Math.max(0, 0.8 - (t - 0.35) * 2.2);
+      const alpha = t < 0.35 ? 0.3 + t * 1.2 : Math.max(0, 0.72 - (t - 0.35) * 2.2);
       const alt = 1 + t * 5; // clouds sit high above the ground: they grow faster as the camera dives
       weatherStrength = Math.max(0, Math.min(1, (t - 0.25) * 2));
       if (alpha > 0.01) {

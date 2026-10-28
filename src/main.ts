@@ -12,7 +12,7 @@ const host = document.getElementById('map')!;
 const game = new Phaser.Game({
   type: Phaser.CANVAS,
   parent: 'map',
-  backgroundColor: '#13243a',
+  transparent: true,
   pixelArt: true,
   scale: { mode: Phaser.Scale.RESIZE, width: Math.max(320, host.clientWidth), height: Math.max(240, host.clientHeight) },
   scene: [world, city],
