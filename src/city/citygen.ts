@@ -9,6 +9,7 @@ import { townSpecialty } from '../sim/locale';
 import type { Specialty } from '../data/npclife';
 import { themeFor, pickStyle, type Theme, type BStyle } from './themes';
 import { paintCity } from './paint';
+import { FOOT, SITE } from './landmarks';
 import { MU_TO_WU } from '../world/geo';
 
 export const T = 16; // px per tile
@@ -24,6 +25,9 @@ export interface CityData {
   grid: Uint8Array; buildings: BuildingRec[]; walk: [number, number][]; lamps: Pt[]; stalls: Pt[];
   plaza: { x: number; y: number; w: number; h: number }; extent: { rx: number; ry: number };
   spec: Specialty; cv: HTMLCanvasElement; edge: boolean;
+  landmark?: { kind: string; x: number; y: number }; // the monument (px of the plan), when this town has one
+  solid: number[]; // tiles that keep their ground but cannot be walked: the foot of the monument, the market stalls
+  gates: { ax: number; ay: number; bx: number; by: number }[]; // the wall tiles on each side of a street that passes through the wall
   fate?: Fate; // set when the story has reshaped the land (ruins, ash, flood...)
 }
 
@@ -136,10 +140,19 @@ function generate(town: Town, country: CityCountry): CityData {
   // walls around a capital, stakes around a camp, hedges around a grove
   if ((town.capital || (theme.wall === 'palisade') || (!village && theme.wall !== 'none')) && theme.wall !== 'none') {
     for (let a = 0; a < 6.3; a += 0.012) {
-      const x = Math.round(cx + Math.cos(a) * rx * 1.04), y = Math.round(cy + Math.sin(a) * ry * 1.04);
+      const x = Math.round(cx + Math.cos(a) * rx * 1.01), y = Math.round(cy + Math.sin(a) * ry * 1.01);
       const t = get(x, y);
       if (t === Tile.Ground || t === Tile.Tree) set(x, y, Tile.Wall);
     }
+  }
+  // the gates: where a street (one or two tiles wide) passes through the wall; a tower stands on the wall tile at each side
+  const gates: CityData['gates'] = [];
+  const seenGate = new Set<string>();
+  const addGate = (ax: number, ay: number, bx: number, by: number) => { const k = `${ax},${ay},${bx},${by}`; if (!seenGate.has(k)) { seenGate.add(k); gates.push({ ax, ay, bx, by }); } };
+  for (let y = 1; y < CH - 1; y++) for (let x = 1; x < CW - 1; x++) {
+    if (get(x, y) !== Tile.Road) continue;
+    if (get(x, y - 1) === Tile.Wall) { let j = y + 1; while (get(x, j) === Tile.Road && j < y + 4) j++; if (get(x, j) === Tile.Wall) addGate(x, y - 1, x, j); }
+    if (get(x - 1, y) === Tile.Wall) { let i = x + 1; while (get(i, y) === Tile.Road && i < x + 4) i++; if (get(i, y) === Tile.Wall) addGate(x - 1, y, i, y); }
   }
   // buildings along the streets
   const buildings: BuildingRec[] = [];
@@ -149,9 +162,60 @@ function generate(town: Town, country: CityCountry): CityData {
   const clear = (x: number, y: number, w: number, h: number, side = 1) => { for (let i = x - side; i <= x + w - 1 + side; i++) for (let j = y - 1; j <= y + h; j++) if (get(i, j) !== Tile.Ground) return false; return true; };
   const wallOf = () => rng.pick(theme.walls);
   // the landmark in the square takes its ground; nobody builds or walks there
-  const CENTRE: Record<string, [number, number]> = { worldtree: [6, 3], abyss: [5, 2], arkea: [6, 3], gate: [4, 2], lake: [4, 2], airship: [6, 2], lighthouse: [1, 1], council: [6, 3], pyramid: [4, 2], crystal: [2, 1], obelisk: [2, 1], oasis: [3, 2], statue: [2, 1], forge: [2, 1], gear: [2, 1], bonfire: [2, 1], clock: [1, 1], sapling: [2, 1], fountain: [2, 1], skynest: [3, 2], caldera: [3, 3], stairgate: [3, 1], twinpalace: [3, 2], eridan: [3, 1], liftmine: [3, 1], pump: [2, 1], rainspire: [2, 1] };
-  const [crx, cry] = CENTRE[theme.centre] || [1, 1];
-  for (let y = cy - cry; y <= cy + cry; y++) for (let x = cx - crx; x <= cx + crx + 1; x++) if (get(x, y) === Tile.Plaza) set(x, y, Tile.Building);
+  // ---- the monument: only the capitals (and now and then a great town) have one, and it stands where the country's theme puts it
+  const solid = new Set<number>();
+  const stalls: Pt[] = [];
+  for (let k = 0; k < (village ? 3 : 6); k++) stalls.push({ x: (plaza.x + 2 + k * 3) * T, y: (plaza.y + plaza.h - 1) * T });
+  for (const s of stalls) for (let x = Math.floor(s.x / T); x <= Math.floor((s.x + 22) / T); x++) solid.add(Math.floor(s.y / T) * CW + x);
+  let landmark: CityData['landmark'];
+  const foot = FOOT[theme.centre];
+  if (foot && (town.capital || (town.size >= 2 && hashString('lm' + town.id) % 7 === 0))) {
+    const open = (px: number, py: number, strict: boolean) => {
+      for (let y = Math.floor((py - foot.up) / T); y <= Math.floor((py + foot.ry) / T); y++) for (let x = Math.floor((px - Math.max(foot.rx, foot.upW / 2)) / T); x <= Math.floor((px + Math.max(foot.rx, foot.upW / 2)) / T); x++) {
+        const cxp = (x + 0.5) * T, cyp = (y + 0.5) * T;
+        const inBase = ((cxp - px) / (foot.rx + 6)) ** 2 + ((cyp - py) / (foot.ry + 6)) ** 2 <= 1;
+        const inCol = foot.up > 0 && Math.abs(cxp - px) <= foot.upW / 2 + 4 && cyp <= py && cyp >= py - foot.up;
+        if (!inBase && !inCol) continue;
+        const t = get(x, y);
+        if (t === Tile.Void || t === Tile.Water || t === Tile.Wall || t === Tile.Dock || t === Tile.Building || solid.has(y * CW + x)) return false;
+        if (strict && t === Tile.Road) return false;
+        if (!inb(x, y)) return false;
+      }
+      return true;
+    };
+    const site = SITE[theme.centre] ?? 'plaza';
+    const pcx = (plaza.x + plaza.w / 2) * T, pcy = (plaza.y + plaza.h / 2) * T;
+    const cand: { x: number; y: number; s: number }[] = [];
+    if (site === 'core') cand.push({ x: pcx, y: pcy, s: 1 });
+    else if (site === 'plaza') { const side = rng.chance(0.5) ? 1 : -1; for (const dx of [0.2, 0.14, 0.08, 0]) for (const dy of [-0.1, 0, 0.1]) for (const sd of [side, -side]) cand.push({ x: pcx + sd * dx * plaza.w * T, y: pcy + dy * plaza.h * T, s: 1 - dx }); }
+    else {
+      const [k0, k1] = site === 'shore' ? [0.55, 0.92] : site === 'edge' ? [0.5, 0.88] : [0.4, 0.72];
+      for (let i = 0; i < 160; i++) {
+        const a = rng.float(0, Math.PI * 2), k = rng.float(k0, k1), x = (cx + Math.cos(a) * rx * k) * T, y = (cy + Math.sin(a) * ry * k) * T;
+        let score = rng.float(0, 0.4);
+        if (site === 'edge' || site === 'shore') { let voids = 0; for (let dy = -10; dy <= 10; dy += 2) for (let dx = -14; dx <= 14; dx += 2) if (get(Math.floor(x / T) + dx, Math.floor(y / T) + dy) === Tile.Void) voids++; score += voids / 60; }
+        if (site === 'craft') score += Math.abs(Math.cos(a)) * 0.6; // the working quarter lies out along the main street
+        if (Math.hypot(x - pcx, (y - pcy) * 1.4) < plaza.w * T * 0.6) score -= 2; // not on the square itself
+        cand.push({ x, y, s: score });
+      }
+    }
+    cand.sort((p, q) => q.s - p.s);
+    for (const strict of [true, false]) {
+      const hit = cand.find((q) => open(q.x, q.y, strict));
+      if (hit) { landmark = { kind: theme.centre, x: Math.round(hit.x), y: Math.round(hit.y) }; break; }
+    }
+    if (landmark) {
+      const { x: lx, y: ly } = landmark;
+      for (let y = Math.floor((ly - foot.up) / T); y <= Math.floor((ly + foot.ry) / T); y++) for (let x = Math.floor((lx - Math.max(foot.rx, foot.upW / 2)) / T); x <= Math.floor((lx + Math.max(foot.rx, foot.upW / 2)) / T); x++) {
+        const cxp = (x + 0.5) * T, cyp = (y + 0.5) * T;
+        const inBase = ((cxp - lx) / (foot.rx + 6)) ** 2 + ((cyp - ly) / (foot.ry + 6)) ** 2 <= 1;
+        const inCol = foot.up > 0 && Math.abs(cxp - lx) <= foot.upW / 2 + 4 && cyp <= ly && cyp >= ly - foot.up;
+        if (!inBase && !inCol) continue;
+        const t = get(x, y);
+        if (t === Tile.Plaza) solid.add(y * CW + x); else if (t === Tile.Ground || t === Tile.Road || t === Tile.Tree) set(x, y, Tile.Building);
+      }
+    }
+  }
   // what the country is known for first (near the square), then the houses
   const DIM: Record<string, [number, number, number, number]> = { arena: [10, 12, 8, 9], warehouse: [8, 11, 5, 6], granary: [7, 10, 5, 6], market: [8, 12, 5, 7], cathedral: [8, 10, 6, 8], library: [7, 9, 6, 7], barracks: [8, 11, 5, 6], minehead: [6, 8, 5, 6], fortress: [11, 13, 8, 9], drill: [7, 9, 5, 6], shops: [8, 11, 4, 5], bank: [6, 8, 5, 6], hospital: [8, 10, 5, 6], aerie: [4, 5, 7, 8], skydock: [6, 8, 6, 7] };
   const base = ['temple', 'tavern', 'smithy', 'guild', 'tavern', 'smithy'].slice(0, town.capital ? 6 : village ? 3 : 5);
@@ -179,27 +243,52 @@ function generate(town: Town, country: CityCountry): CityData {
     for (let i = x; i < x + w; i++) for (let j = y; j < y + h; j++) set(i, j, Tile.Building);
     buildings.push({ x, y, w, h, kind, roof: rng.pick(theme.roofs), wall: wallOf(), style: kind === 'temple' ? theme.temple : kind === 'smithy' && theme.id === 'kazdurum' ? 'forge' : pickStyle(theme, rng), seed: rng.int(1, 1e9) });
   };
+  // districts, as in a real town: the civic buildings gather round the square, the trades along the streets out from it, the noisy and the bulky
+  // toward the wall, the soldiers in one quarter by the gates
+  const radOf = (x: number, y: number) => Math.hypot((x - cx) / rx, (y - cy) / ry);
+  const angOf = (x: number, y: number) => Math.atan2((y - cy) / ry, (x - cx) / rx);
+  const adiff = (a: number, b: number) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+  const milAng = rng.float(0, Math.PI * 2);
+  const nearVoid = (x: number, y: number) => { for (let dy = -6; dy <= 6; dy += 3) for (let dx = -8; dx <= 8; dx += 4) if (get(x + dx, y + dy) === Tile.Void) return true; return false; };
+  const PREF: Record<string, (x: number, y: number) => number> = {
+    temple: (x, y) => (radOf(x, y) < 0.5 ? 1 : 0.15), cathedral: (x, y) => (radOf(x, y) < 0.5 ? 1 : 0.1), guild: (x, y) => (radOf(x, y) < 0.5 ? 1 : 0.2), bank: (x, y) => (radOf(x, y) < 0.45 ? 1 : 0.05),
+    library: (x, y) => (radOf(x, y) < 0.55 ? 1 : 0.2), shops: (x, y) => (radOf(x, y) < 0.5 ? 1 : 0.2), market: (x, y) => (radOf(x, y) < 0.5 ? 1 : 0.2), tavern: (x, y) => (radOf(x, y) < 0.75 ? 1 : 0.3),
+    hospital: (x, y) => (radOf(x, y) > 0.25 && radOf(x, y) < 0.7 && adiff(angOf(x, y), milAng) > 1.6 ? 1 : 0.1),
+    smithy: (x, y) => (radOf(x, y) > 0.4 && radOf(x, y) < 0.9 ? 1 : 0.15), minehead: (x, y) => (radOf(x, y) > 0.5 ? 1 : 0.1),
+    warehouse: (x, y) => (nearVoid(x, y) ? 1 : radOf(x, y) > 0.55 ? 0.6 : 0.1), skydock: (x, y) => (nearVoid(x, y) ? 1 : 0.05), granary: (x, y) => (radOf(x, y) > 0.55 ? 1 : 0.15),
+    barracks: (x, y) => (radOf(x, y) > 0.5 && adiff(angOf(x, y), milAng) < 0.8 ? 1 : 0.06), fortress: (x, y) => (radOf(x, y) > 0.45 && adiff(angOf(x, y), milAng) < 0.6 ? 1 : 0.04),
+    drill: (x, y) => (radOf(x, y) > 0.5 && adiff(angOf(x, y), milAng) < 0.9 ? 1 : 0.05), aerie: (x, y) => (nearVoid(x, y) ? 1 : 0.15),
+    arena: (x, y) => (radOf(x, y) > 0.45 && radOf(x, y) < 0.9 && adiff(angOf(x, y), milAng + Math.PI / 2) < 0.9 ? 1 : 0.1),
+  };
   for (const kind of must) {
     const dim = DIM[kind] || [5, 8, 5, 6];
-    for (let tries = 0; tries < 2500; tries++) {
+    const pref = PREF[kind];
+    for (let tries = 0; tries < 6000; tries++) {
       const w = rng.int(dim[0], dim[1]), h = rng.int(dim[2], dim[3]);
       const a = rng.float(0, Math.PI * 2), rr = Math.sqrt(rng.next());
       const x = Math.round(cx + Math.cos(a) * rx * rr * 0.95 - w / 2), y = Math.round(cy + Math.sin(a) * ry * rr * 0.95 - h / 2);
       if (!inb(x, y) || !clear(x, y, w, h) || !nearRoad(x, y, w, h)) continue;
-      if (Math.hypot(x - cx, (y - cy) * 1.6) > rx * (0.4 + tries / 2500)) continue;
+      // the wish of the district fades as the search goes on, so a crowded town still gets its building somewhere
+      if (pref && !rng.chance(Math.max(pref(x + w / 2, y + h / 2), tries / 6000))) continue;
       place(kind, w, h, x, y);
       break;
     }
   }
   // about two fifths of the built-up ground is houses, each 3–6 tiles wide and 3–5 deep
-  const want = buildings.length + Math.round((Math.PI * rx * ry * 0.4) / 18);
+  const want = buildings.length + Math.round((Math.PI * rx * ry * 0.5) / 18);
   const TERRACE: string[] = ['gable', 'stone', 'brick', 'spire', 'dome', 'forge', 'keep', 'aframe', 'terrace', 'tower', 'carved', 'boomtown', 'adobe'];
-  for (let tries = 0; buildings.length < want && tries < 40000; tries++) {
-    const w = rng.int(3, 6), h = rng.int(3, 5);
+  const poor: BStyle = theme.styles.some(([s]) => s === 'tent') ? 'tent' : theme.styles.some(([s]) => s === 'hut') ? 'hut' : theme.id === 'nerea' ? 'stilt' : 'gable';
+  // a house stands with its door to a street: the row below it is road or square
+  const fronts = (x: number, y: number, w: number, h: number) => { for (let i = x; i < x + w; i++) for (let j = y + h; j <= y + h + 1; j++) { const t = get(i, j); if (t === Tile.Road || t === Tile.Plaza) return true; } return false; };
+  for (let tries = 0; buildings.length < want && tries < 60000; tries++) {
     const a = rng.float(0, Math.PI * 2), rr = Math.sqrt(rng.next());
-    const x = Math.round(cx + Math.cos(a) * rx * rr * 0.97 - w / 2), y = Math.round(cy + Math.sin(a) * ry * rr * 0.97 - h / 2);
-    const style = pickStyle(theme, rng);
+    const k = rr * 0.97; // the rich live in the middle, the poor out toward the wall
+    const w = k < 0.4 ? rng.int(4, 6) : k > 0.75 ? rng.int(3, 4) : rng.int(3, 6), h = k < 0.4 ? rng.int(4, 5) : k > 0.75 ? rng.int(3, 4) : rng.int(3, 5);
+    const x = Math.round(cx + Math.cos(a) * rx * k - w / 2), y = Math.round(cy + Math.sin(a) * ry * k - h / 2);
+    let style = pickStyle(theme, rng);
+    if (k > 0.75 && !village && rng.chance(0.55)) style = poor;
     if (!inb(x, y) || !clear(x, y, w, h, !village && TERRACE.includes(style) ? 0 : 1) || !nearRoad(x, y, w, h)) continue;
+    if (!fronts(x, y, w, h) && !rng.chance(0.16)) continue;
     for (let i = x; i < x + w; i++) for (let j = y; j < y + h; j++) set(i, j, Tile.Building);
     buildings.push({ x, y, w, h, kind: 'house', roof: rng.pick(theme.roofs), wall: wallOf(), style, seed: rng.int(1, 1e9) });
   }
@@ -251,13 +340,11 @@ function generate(town: Town, country: CityCountry): CityData {
     if (rng.chance(theme.treeDensity * out)) g[i] = Tile.Tree;
   }
   const walk: [number, number][] = [];
-  for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) { const t = g[y * CW + x]; if (t === Tile.Road || t === Tile.Plaza || t === Tile.Dock) walk.push([x, y]); }
+  for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) { const t = g[y * CW + x]; if ((t === Tile.Road || t === Tile.Plaza || t === Tile.Dock) && !solid.has(y * CW + x)) walk.push([x, y]); }
   const lamps: Pt[] = [];
   if (theme.lamps) for (let y = 0; y < CH; y += 1) for (let x = 0; x < CW; x += 1) if (g[y * CW + x] === Tile.Road && (x * 7 + y * 13) % 19 === 0 && g[y * CW + x - 1] !== Tile.Building && inExt(x, y, 1)) lamps.push({ x: x * T + T / 2, y: y * T + T - 2 });
-  const stalls: Pt[] = [];
-  for (let k = 0; k < (village ? 3 : 6); k++) stalls.push({ x: (plaza.x + 2 + k * 3) * T, y: (plaza.y + plaza.h - 1) * T });
   const spec = townSpecialty(town.id, country);
-  const data: CityData = { townId: town.id, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
+  const data: CityData = { townId: town.id, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, landmark, solid: [...solid], gates, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
   paintCity(data, town);
   return data;
 }

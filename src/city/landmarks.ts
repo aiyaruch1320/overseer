@@ -233,3 +233,22 @@ const rainspire: Draw = (p, d, px, py) => {
 
 // ---------------------------------------------------------------- registry
 export const LANDMARKS: Record<string, Draw> = { fountain, statue, bonfire, clock, sapling, obelisk, skynest, caldera, stairgate, twinpalace, eridan, liftmine, pump, rainspire };
+
+// ---------------------------------------------------------------- where each monument stands, and the ground it takes
+/** the ground a landmark takes, in px around its base point: the elliptical base, and the tall part rising above it that people must not walk "behind" */
+export const FOOT: Record<string, { rx: number; ry: number; up: number; upW: number }> = {
+  fountain: { rx: 42, ry: 22, up: 44, upW: 14 }, statue: { rx: 40, ry: 21, up: 82, upW: 26 }, bonfire: { rx: 48, ry: 18, up: 30, upW: 60 }, clock: { rx: 32, ry: 16, up: 82, upW: 30 },
+  sapling: { rx: 40, ry: 20, up: 94, upW: 60 }, obelisk: { rx: 36, ry: 18, up: 94, upW: 24 }, skynest: { rx: 62, ry: 30, up: 150, upW: 72 }, caldera: { rx: 60, ry: 30, up: 0, upW: 0 },
+  stairgate: { rx: 56, ry: 22, up: 74, upW: 100 }, twinpalace: { rx: 58, ry: 28, up: 62, upW: 100 }, eridan: { rx: 52, ry: 20, up: 54, upW: 50 }, liftmine: { rx: 54, ry: 22, up: 76, upW: 60 },
+  pump: { rx: 46, ry: 22, up: 72, upW: 70 }, rainspire: { rx: 46, ry: 18, up: 112, upW: 24 }, worldtree: { rx: 72, ry: 36, up: 150, upW: 120 }, abyss: { rx: 52, ry: 30, up: 0, upW: 0 },
+  arkea: { rx: 64, ry: 36, up: 0, upW: 0 }, gate: { rx: 46, ry: 24, up: 0, upW: 0 }, lake: { rx: 50, ry: 30, up: 0, upW: 0 }, airship: { rx: 70, ry: 16, up: 44, upW: 120 },
+  lighthouse: { rx: 22, ry: 10, up: 58, upW: 22 }, council: { rx: 62, ry: 35, up: 24, upW: 90 }, pyramid: { rx: 56, ry: 16, up: 66, upW: 100 }, crystal: { rx: 30, ry: 10, up: 56, upW: 40 },
+  oasis: { rx: 38, ry: 22, up: 30, upW: 30 }, forge: { rx: 22, ry: 12, up: 30, upW: 30 }, gear: { rx: 22, ry: 22, up: 0, upW: 0 },
+};
+/** where a country's monument belongs: in the square (to one side of it), at the rim of the town toward the cliff or shore, or in a quarter of its own */
+export type Site = 'plaza' | 'core' | 'edge' | 'shore' | 'offset' | 'craft';
+export const SITE: Record<string, Site> = {
+  worldtree: 'core', fountain: 'plaza', statue: 'plaza', council: 'plaza', clock: 'plaza', obelisk: 'offset', bonfire: 'plaza', sapling: 'offset', oasis: 'offset', crystal: 'offset',
+  skynest: 'edge', caldera: 'edge', stairgate: 'edge', twinpalace: 'plaza', eridan: 'offset', liftmine: 'craft', pump: 'craft', rainspire: 'edge', lake: 'shore',
+  airship: 'shore', lighthouse: 'shore', pyramid: 'edge', abyss: 'edge', arkea: 'edge', gate: 'edge', forge: 'craft', gear: 'craft',
+};

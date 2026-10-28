@@ -497,6 +497,7 @@ export function paintCity(d: CityData, town: Town) {
   // the square's landmark, then stalls
   const px = (d.plaza.x + d.plaza.w / 2) * T, py = (d.plaza.y + d.plaza.h / 2) * T;
   paintSquare(p, d, px, py);
+  for (const gt of d.gates) gatehouse(p, d.theme, gt);
   const awnings = [0xe04848, 0x5aa0ea, 0xf2c94c, 0x6cc05a, theme.banner[0], theme.banner[1]];
   d.stalls.forEach((s, k) => {
     fill(0x8a5a3a, s.x + 2, s.y + 6, 2, 8); fill(0x8a5a3a, s.x + 18, s.y + 6, 2, 8);
@@ -509,7 +510,9 @@ export function paintCity(d: CityData, town: Town) {
   let sx2 = spr.getContext('2d')!;
   const PADX = 28, PADT = 70, PADB = 22;
   const DENSE = ['terrace', 'tower', 'boomtown', 'brick', 'spire', 'forge', 'keep', 'carved', 'adobe', 'hut', 'tent', 'tree', 'mushroom'];
+  let lmDone = !d.landmark;
   for (const b0 of [...buildings].sort((a, c) => a.y + a.h - (c.y + c.h))) {
+    if (!lmDone && d.landmark && (b0.y + b0.h) * T > d.landmark.y) { landmark(p, d, d.landmark.x, d.landmark.y); lmDone = true; }
     const GX = b0.x * T, GY = b0.y * T, Wd = b0.w * T, Ht = b0.h * T;
     const br = new RNG(b0.seed);
     const jr = new RNG(b0.seed ^ 0x7f4a);
@@ -568,7 +571,7 @@ export function paintCity(d: CityData, town: Town) {
       else { fill(0x5e3a26, ex, ey + 2, 11, 5); fill(0xd8b040, ex + 1, ey, 9, 3); circ(0x3a2a1a, ex + 2, ey + 8, 2); circ(0x3a2a1a, ex + 9, ey + 8, 2); }
     }
   }
-  landmark(p, d, px, py);
+  if (!lmDone && d.landmark) landmark(p, d, d.landmark.x, d.landmark.y);
   // street lamps and the town's flags along the main street
   for (const l of d.lamps) { fill(0x2a2a30, l.x - 1, l.y - 12, 2, 12); fill(0xffd070, l.x - 2, l.y - 15, 4, 4); }
   for (const [fx, fy] of [[d.plaza.x + 1, d.plaza.y], [d.plaza.x + d.plaza.w - 2, d.plaza.y]]) flag(p, fx * T + 8, fy * T + 12, theme.banner[0], theme.banner[1]);
@@ -618,8 +621,9 @@ function paintFate(d: CityData, x2: CanvasRenderingContext2D, r: RNG) {
     if (fire) { x2.fillStyle = 'rgba(255,150,40,0.85)'; x2.fillRect(hx - 2, Y + H * 0.3, 4, 6); x2.fillStyle = 'rgba(255,220,120,0.9)'; x2.fillRect(hx - 1, Y + H * 0.33, 2, 3); x2.fillStyle = 'rgba(60,56,54,0.4)'; x2.beginPath(); x2.arc(hx + 2, Y + H * 0.1, 6, 0, 6.3); x2.fill(); x2.beginPath(); x2.arc(hx + 5, Y - 6, 8, 0, 6.3); x2.fill(); }
   };
   // the monument in the square suffers with its town: toppled and cratered, buried in ash, or standing in water
-  const mx = (d.plaza.x + d.plaza.w / 2) * T, my = (d.plaza.y + d.plaza.h / 2) * T;
-  if (fate === 'skyfall' || fate === 'fallen' || fate === 'split') {
+  const mx = d.landmark ? d.landmark.x : -999, my = d.landmark ? d.landmark.y : -999;
+  if (!d.landmark) { /* a town without a monument has nothing in the square to ruin */ }
+  else if (fate === 'skyfall' || fate === 'fallen' || fate === 'split') {
     x2.fillStyle = 'rgba(26,20,16,0.82)'; x2.beginPath(); x2.ellipse(mx, my + 2, 46, 17, 0, 0, 6.3); x2.fill();
     x2.fillStyle = 'rgba(70,60,52,0.9)'; x2.beginPath(); x2.ellipse(mx, my, 36, 12, 0, 0, 6.3); x2.fill();
     for (let k = 0; k < 16; k++) { const a = r.float(0, 6.28), rr = r.float(8, 40); x2.fillStyle = ['#8a8478', '#6a645a', '#a09a8c', '#4a4238'][k % 4]; const w = r.int(5, 14), h = r.int(4, 10); x2.save(); x2.translate(mx + Math.cos(a) * rr, my + Math.sin(a) * rr * 0.4); x2.rotate(r.float(-0.5, 0.5)); x2.fillRect(-w / 2, -h / 2, w, h); x2.restore(); }
@@ -651,4 +655,20 @@ function paintFate(d: CityData, x2: CanvasRenderingContext2D, r: RNG) {
     }
     case 'fog': speck('rgba(40,30,60,0.4)', 1200, 4, 3); break;
   }
+}
+
+
+/** where a street goes through the wall: a tower on the wall tile at each side */
+function gatehouse(p: Pen, th: Theme, g: { ax: number; ay: number; bx: number; by: number }) {
+  const stone = th.wall === 'palisade' ? 0x6a4a2a : th.wall === 'iron' ? 0x4a4a52 : th.wall === 'hedge' ? 0x4a7a3a : 0x8a8478;
+  const tw = (tx: number, ty: number) => {
+    const cx = tx * T + T / 2, base = ty * T + T;
+    p.ell('rgba(0,0,0,0.25)', cx + 4, base + 2, 11, 4);
+    p.fill(stone, cx - 8, base - 28, 16, 28); p.fill(shadeC(stone, 1.2), cx - 8, base - 28, 4, 28); p.fill(shadeC(stone, 0.72), cx + 4, base - 28, 4, 28);
+    for (let j = 8; j < 26; j += 8) p.fill(shadeC(stone, 0.75), cx - 8, base - 28 + j, 16, 1);
+    p.fill(0x14101a, cx - 1, base - 18, 3, 7);
+    p.fill(shadeC(stone, 1.1), cx - 10, base - 31, 20, 4); for (let i = 0; i < 18; i += 6) p.fill(shadeC(stone, 1.25), cx - 10 + i, base - 36, 4, 5);
+    if (th.wall !== 'hedge') { p.poly(th.banner[0], [cx - 10, base - 31, cx, base - 46, cx + 10, base - 31]); p.fill(0x4a3a22, cx, base - 56, 1, 12); p.poly(th.banner[1], [cx + 1, base - 56, cx + 8, base - 53, cx + 1, base - 50]); }
+  };
+  tw(g.ax, g.ay); tw(g.bx, g.by);
 }
