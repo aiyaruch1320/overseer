@@ -4,7 +4,7 @@
 import { COUNTRY_DOCS } from '../data/countries';
 import type { BStyle, Centre, Plan, WallKind, Ambient } from './themes';
 
-export type Special = 'cathedral' | 'granary' | 'warehouse' | 'library' | 'barracks' | 'minehead' | 'arena' | 'market';
+export type Special = 'cathedral' | 'granary' | 'warehouse' | 'library' | 'barracks' | 'minehead' | 'arena' | 'market' | 'fortress' | 'drill' | 'shops' | 'bank' | 'hospital' | 'aerie' | 'skydock';
 export interface Flavor {
   styles?: [BStyle, number][]; roofs?: number[]; walls?: number[]; leaf?: number[]; plan?: Plan; wall?: WallKind; centre?: Centre; ambient?: Ambient;
   extra?: Special[]; lamps?: boolean; farm?: number; tree?: 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none'; cobble?: boolean; graves?: boolean;
@@ -17,16 +17,16 @@ const WITHER = [0xd8b040, 0xc88a30, 0xb8a050, 0x9a7a30], FUNGI = [0x9a4a8a, 0xc8
 
 const F: Record<string, Flavor> = {
   // ---- อัซการ์: the sky islands
-  'AZ-01': { styles: [['spire', 6], ['dome', 2], ['gable', 1]], extra: ['cathedral', 'barracks', 'library'], centre: 'statue', roofs: [0x3d78c4, 0xc9a23a, 0xe9e9f6] },
-  'AZ-02': { styles: [['forge', 4], ['stone', 3], ['spire', 1]], roofs: [0xa83a2a, 0x7a2e24, 0x4a3a3a], centre: 'forge', ambient: 'embers', extra: ['barracks', 'arena'] },
-  'AZ-03': { styles: [['gable', 4], ['stilt', 2], ['aframe', 1]], centre: 'airship', roofs: [0xf0f0f0, 0x5a8ad0, 0xe0c060], ambient: 'clouds', extra: ['warehouse', 'warehouse'] },
-  'AZ-04': { styles: [['stone', 4], ['carved', 3], ['keep', 2]], roofs: [0x6a6a72, 0x5a5a60], wall: 'stone', extra: ['barracks', 'barracks'], centre: 'obelisk' },
-  'AZ-05': { styles: [['spire', 5], ['dome', 3]], roofs: [0xe8d070, 0x8a60c8, 0xf4f4ff, 0x4a3a8a], centre: 'council', extra: ['library'] },
+  'AZ-01': { styles: [['spire', 6], ['dome', 2], ['gable', 1]], extra: ['aerie', 'aerie', 'aerie', 'fortress', 'cathedral', 'barracks', 'drill', 'library'], centre: 'skynest', roofs: [0x3d78c4, 0xc9a23a, 0xe9e9f6] },
+  'AZ-02': { styles: [['forge', 4], ['stone', 3], ['spire', 1]], roofs: [0xa83a2a, 0x7a2e24, 0x4a3a3a], centre: 'caldera', ambient: 'embers', extra: ['barracks', 'arena'] },
+  'AZ-03': { styles: [['gable', 4], ['stilt', 2], ['aframe', 1]], centre: 'airship', roofs: [0xf0f0f0, 0x5a8ad0, 0xe0c060], ambient: 'clouds', extra: ['skydock', 'skydock', 'warehouse', 'warehouse'] },
+  'AZ-04': { styles: [['stone', 4], ['carved', 3], ['keep', 2]], roofs: [0x6a6a72, 0x5a5a60], wall: 'stone', extra: ['barracks', 'barracks'], centre: 'stairgate' },
+  'AZ-05': { styles: [['spire', 5], ['dome', 3]], roofs: [0xe8d070, 0x8a60c8, 0xf4f4ff, 0x4a3a8a], centre: 'twinpalace', extra: ['library'] },
   'AZ-06': { styles: [['dome', 4], ['spire', 3], ['stilt', 1]], roofs: [0x5ac0d8, 0xf4fbff, 0x3a8ad8], centre: 'lake', extra: ['library', 'cathedral'], ambient: 'clouds' },
-  'AZ-07': { styles: [['gable', 6], ['hut', 1]], roofs: [0xf4f0e0, 0xd8c890, 0x9ac060], extra: ['granary', 'granary', 'market'], farm: 2 },
-  'AZ-08': { styles: [['hut', 3], ['carved', 3], ['stone', 2]], roofs: [0x8a6a4a, 0x6a5440], extra: ['minehead', 'minehead', 'warehouse'], centre: 'bonfire' },
-  'AZ-09': { styles: [['brick', 5], ['gable', 2]], roofs: [0x7a7a80, 0x8a5a4a], centre: 'gear', extra: ['warehouse', 'library'], lamps: true },
-  'AZ-10': { styles: [['spire', 4], ['gable', 3], ['stone', 2]], roofs: [0x2a2a5a, 0x3a3a6a, 0x1e1e40], lamps: true, plan: 'organic', ambient: 'fog', extra: ['library'] },
+  'AZ-07': { centre: 'eridan', styles: [['gable', 6], ['hut', 1]], roofs: [0xf4f0e0, 0xd8c890, 0x9ac060], extra: ['granary', 'granary', 'market'], farm: 2 },
+  'AZ-08': { styles: [['hut', 3], ['carved', 3], ['stone', 2]], roofs: [0x8a6a4a, 0x6a5440], extra: ['minehead', 'minehead', 'warehouse'], centre: 'liftmine' },
+  'AZ-09': { styles: [['brick', 5], ['gable', 2]], roofs: [0x7a7a80, 0x8a5a4a], centre: 'pump', extra: ['warehouse', 'library'], lamps: true },
+  'AZ-10': { centre: 'rainspire', styles: [['spire', 4], ['gable', 3], ['stone', 2]], roofs: [0x2a2a5a, 0x3a3a6a, 0x1e1e40], lamps: true, plan: 'organic', ambient: 'fog', extra: ['library'] },
   // ---- มอร์เฮเวน: the hungry lands
   'MH-01': { styles: [['tent', 5], ['hut', 3]], extra: ['barracks', 'barracks', 'arena'], centre: 'bonfire' },
   'MH-02': { styles: [['stone', 4], ['spire', 3]], roofs: [0x2a1a1a, 0x6a1a1a, 0x3a2030], extra: ['cathedral', 'library'], centre: 'obelisk', lamps: true, wall: 'stone' },
@@ -179,13 +179,27 @@ const KEYWORDS: [RegExp, Special[]][] = [
 
 const DOC = new Map(COUNTRY_DOCS.map((d) => [d.code, d]));
 
+/** what a country is about, read from its own text: the buildings that make its towns look the part (a land at war has fortresses and drill yards...) */
+function roleExtras(d: { title: string; story: string; gov: string; hook: string }): Special[] {
+  const text = `${d.title} ${d.story} ${d.gov} ${d.hook}`;
+  const hits = (re: RegExp) => (text.match(new RegExp(re.source, 'g')) || []).length;
+  const out: Special[] = [];
+  if (hits(/สงคราม|ทัพ|ทหาร|นักรบ|ป้อม|อัศวิน|ชายแดน|เกณฑ์|กองเรือรบ|ปืนใหญ่|สนามเพลาะ|ธงรบ|ล้อมเมือง|แนวหน้า/) >= 2) out.push('fortress', 'barracks', 'drill');
+  if (hits(/ดวล|ประลอง|ชิงมงกุฎ|แชมเปี้ยน|สังเวียน|นักสู้/) >= 1) out.push('arena');
+  if (hits(/ธนาคาร|เงินกู้|สินเชื่อ|การเงิน/) >= 1) out.push('bank');
+  if (hits(/โรงพยาบาล|หมอ|รักษา|แพทย์/) >= 1) out.push('hospital');
+  if (hits(/ค้า|ตลาด|พ่อค้า|ท่าเรือ|เมืองท่า/) >= 1) out.push('shops');
+  return out;
+}
+
 export function flavorOf(code: string): Flavor {
   const f = F[code];
-  if (f) return f;
   const d = DOC.get(code);
+  const role = d ? roleExtras(d) : [];
+  if (f) return { ...f, extra: [...role, ...(f.extra || [])] };
   if (!d) return {};
   const text = `${d.title} ${d.story} ${d.gov}`;
-  const extra: Special[] = [];
+  const extra: Special[] = [...role];
   for (const [re, k] of KEYWORDS) if (re.test(text)) extra.push(...k);
   return { extra };
 }

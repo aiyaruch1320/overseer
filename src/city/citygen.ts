@@ -3,7 +3,8 @@
 // so shores, floating-island edges and the countryside around a town are the real ones; the town only adds what people built.
 import { RNG, hashString } from '../sim/rng';
 import { generateWorld, type Town } from '../sim/worldgen';
-import type { Country } from '../sim/types';
+import type { Country, Fate } from '../sim/types';
+import { fateOf } from '../sim/fate';
 import { townSpecialty } from '../sim/locale';
 import type { Specialty } from '../data/npclife';
 import { themeFor, pickStyle, type Theme, type BStyle } from './themes';
@@ -23,6 +24,7 @@ export interface CityData {
   grid: Uint8Array; buildings: BuildingRec[]; walk: [number, number][]; lamps: Pt[]; stalls: Pt[];
   plaza: { x: number; y: number; w: number; h: number }; extent: { rx: number; ry: number };
   spec: Specialty; cv: HTMLCanvasElement; edge: boolean;
+  fate?: Fate; // set when the story has reshaped the land (ruins, ash, flood...)
 }
 
 export interface LandInfo { land: boolean; inland: number }
@@ -38,16 +40,20 @@ export function setTownLinks(m: Map<number, { pts: number[]; w: number }[]>) { l
 /** footprint of a town's built-up area, in tiles of the plan: size 1 villages are small, capitals fill the plan */
 export const extentOf = (town: Town) => { const f = town.capital ? 0.97 : [0.5, 0.78, 0.97][Math.min(2, town.size - 1)]; return { rx: (CW / 2) * f, ry: (CH / 2) * f }; };
 
-export function getCity(town: Town, country: Pick<Country, 'id' | 'code' | 'continent' | 'races' | 'religion' | 'gov' | 'climate'>): CityData {
+/** what the city needs to know of its country: who they are, and how the story has reshaped them */
+export type CityCountry = Pick<Country, 'id' | 'code' | 'continent' | 'races' | 'religion' | 'gov' | 'climate'> & { fate?: Fate; flags?: string[] };
+
+export function getCity(town: Town, country: CityCountry): CityData {
+  const fate = fateOf({ fate: country.fate, flags: country.flags ?? [] });
   const hit = cache.get(town.id);
-  if (hit) { cache.delete(town.id); cache.set(town.id, hit); return hit; }
+  if (hit && hit.fate === fate) { cache.delete(town.id); cache.set(town.id, hit); return hit; }
   const data = generate(town, country);
   cache.set(town.id, data);
   if (cache.size > 8) cache.delete(cache.keys().next().value as number);
   return data;
 }
 
-function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent' | 'races' | 'religion' | 'gov' | 'climate'>): CityData {
+function generate(town: Town, country: CityCountry): CityData {
   const rng = new RNG(hashString('town' + town.id));
   const theme = themeFor(country);
   const g = new Uint8Array(CW * CH);
@@ -143,20 +149,25 @@ function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent'
   const clear = (x: number, y: number, w: number, h: number, side = 1) => { for (let i = x - side; i <= x + w - 1 + side; i++) for (let j = y - 1; j <= y + h; j++) if (get(i, j) !== Tile.Ground) return false; return true; };
   const wallOf = () => rng.pick(theme.walls);
   // the landmark in the square takes its ground; nobody builds or walks there
-  const CENTRE: Record<string, [number, number]> = { worldtree: [6, 3], abyss: [5, 2], arkea: [6, 3], gate: [4, 2], lake: [4, 2], airship: [6, 2], lighthouse: [1, 1], council: [6, 3], pyramid: [4, 2], crystal: [2, 1], obelisk: [1, 1], oasis: [3, 2], statue: [1, 1], forge: [2, 1], gear: [2, 1], bonfire: [1, 1], clock: [1, 1], sapling: [1, 1], fountain: [1, 1] };
+  const CENTRE: Record<string, [number, number]> = { worldtree: [6, 3], abyss: [5, 2], arkea: [6, 3], gate: [4, 2], lake: [4, 2], airship: [6, 2], lighthouse: [1, 1], council: [6, 3], pyramid: [4, 2], crystal: [2, 1], obelisk: [2, 1], oasis: [3, 2], statue: [2, 1], forge: [2, 1], gear: [2, 1], bonfire: [2, 1], clock: [1, 1], sapling: [2, 1], fountain: [2, 1], skynest: [3, 2], caldera: [3, 3], stairgate: [3, 1], twinpalace: [3, 2], eridan: [3, 1], liftmine: [3, 1], pump: [2, 1], rainspire: [2, 1] };
   const [crx, cry] = CENTRE[theme.centre] || [1, 1];
   for (let y = cy - cry; y <= cy + cry; y++) for (let x = cx - crx; x <= cx + crx + 1; x++) if (get(x, y) === Tile.Plaza) set(x, y, Tile.Building);
   // what the country is known for first (near the square), then the houses
-  const DIM: Record<string, [number, number, number, number]> = { arena: [10, 12, 8, 9], warehouse: [8, 11, 5, 6], granary: [7, 10, 5, 6], market: [8, 12, 5, 7], cathedral: [8, 10, 6, 8], library: [7, 9, 6, 7], barracks: [8, 11, 5, 6], minehead: [6, 8, 5, 6] };
+  const DIM: Record<string, [number, number, number, number]> = { arena: [10, 12, 8, 9], warehouse: [8, 11, 5, 6], granary: [7, 10, 5, 6], market: [8, 12, 5, 7], cathedral: [8, 10, 6, 8], library: [7, 9, 6, 7], barracks: [8, 11, 5, 6], minehead: [6, 8, 5, 6], fortress: [11, 13, 8, 9], drill: [7, 9, 5, 6], shops: [8, 11, 4, 5], bank: [6, 8, 5, 6], hospital: [8, 10, 5, 6], aerie: [4, 5, 7, 8], skydock: [6, 8, 6, 7] };
   const base = ['temple', 'tavern', 'smithy', 'guild', 'tavern', 'smithy'].slice(0, town.capital ? 6 : village ? 3 : 5);
-  const extraCap = town.capital ? 99 : village ? 2 : 5;
-  const must = [...base, ...theme.extra.slice(0, extraCap)];
+  const extraCap = town.capital ? 99 : village ? 3 : 7;
+  // a town of a land at war keeps its fortress for the larger towns; every town has its shops
+  const role = theme.extra.filter((k) => !(k === 'fortress' && village));
+  const must = [...base, ...(town.capital ? ['shops', 'shops', 'shops'] : village ? ['shops'] : ['shops', 'shops']), ...role.slice(0, extraCap)];
   let hall = 0;
   if (town.capital) {
     // the seat of government: a large hall just off the square
     for (let tries = 0; tries < 600; tries++) {
-      const w = rng.int(11, 13), h = rng.int(7, 8), x = rng.int(cx - 22, cx + 22), y = cy - ph - h - 3 - rng.int(0, 3);
-      if (!clear(x, y, w, h)) continue;
+      const w = rng.int(11, 13), h = rng.int(7, 8), x = rng.int(cx - 30, cx + 30), y = cy - ph - h - 2 - rng.int(0, 3 + Math.floor(tries / 100));
+      // the hall may cut across a street: the street simply ends at its walls
+      let free = true;
+      for (let i = x - 1; i <= x + w && free; i++) for (let j = y - 1; j <= y + h && free; j++) { const t = get(i, j); if (t !== Tile.Ground && t !== Tile.Road && t !== Tile.Tree) free = false; }
+      if (!free) continue;
       for (let i = x; i < x + w; i++) for (let j = y; j < y + h; j++) set(i, j, Tile.Building);
       buildings.push({ x, y, w, h, kind: 'palace', roof: theme.roofs[0], wall: wallOf(), style: theme.temple === 'tree' ? 'stone' : theme.temple, seed: rng.int(1, 1e9) });
       hall = 1;
@@ -246,7 +257,7 @@ function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent'
   const stalls: Pt[] = [];
   for (let k = 0; k < (village ? 3 : 6); k++) stalls.push({ x: (plaza.x + 2 + k * 3) * T, y: (plaza.y + plaza.h - 1) * T });
   const spec = townSpecialty(town.id, country);
-  const data: CityData = { townId: town.id, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, cv: document.createElement('canvas'), edge };
+  const data: CityData = { townId: town.id, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
   paintCity(data, town);
   return data;
 }

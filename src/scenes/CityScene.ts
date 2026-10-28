@@ -154,7 +154,7 @@ export class CityScene extends Phaser.Scene {
     }
     for (const b of buildings) {
       const door = at(b.x + Math.floor(b.w / 2), b.y + b.h);
-      const MAP: Record<string, Place> = { house: 'home', palace: 'guild', cathedral: 'temple', library: 'guild', barracks: 'gate', granary: 'smithy', warehouse: 'dock', minehead: 'smithy', arena: 'plaza', market: 'market' };
+      const MAP: Record<string, Place> = { house: 'home', palace: 'guild', cathedral: 'temple', library: 'guild', barracks: 'gate', granary: 'smithy', warehouse: 'dock', minehead: 'smithy', arena: 'plaza', market: 'market', fortress: 'gate', drill: 'plaza', shops: 'market', bank: 'guild', hospital: 'temple', aerie: 'gate', skydock: 'dock' };
       const place = (MAP[b.kind] || b.kind) as Place;
       S[place].push(door);
       if (b.kind !== 'house') S.home.push(door);
@@ -607,11 +607,15 @@ export class CityScene extends Phaser.Scene {
     this.nightAmt = night;
     let dark = night * 0.5;
     const flags = this.country.flags;
+    const fate = this.plan.fate;
+    if (fate === 'light') dark = 0; // the land of light has no night
+    else if (fate === 'fog') dark = Math.max(dark, 0.4);
+    else if (fate === 'ash') dark = Math.max(dark, 0.18);
     if (flags.includes('eclipse')) dark = Math.max(dark, 0.62);
     else if (flags.includes('long_night')) dark = Math.max(dark, 0.55);
     this.shade.setAlpha(dark);
-    this.shade.setFillStyle(flags.includes('eclipse') ? 0x14081c : flags.includes('dragon_raid') || flags.includes('eruption') ? 0x3a1008 : 0x101840);
-    for (const l of this.glows) l.setAlpha(Math.min(1, night * 1.6 + (flags.includes('eclipse') ? 1 : 0)) * 0.85);
+    this.shade.setFillStyle(fate === 'fog' ? 0x1a1030 : fate === 'ash' ? 0x3a3a44 : flags.includes('eclipse') ? 0x14081c : flags.includes('dragon_raid') || flags.includes('eruption') ? 0x3a1008 : 0x101840);
+    for (const l of this.glows) l.setAlpha(fate === 'light' ? 0.7 : fate === 'fog' || fate === 'fallen' || fate === 'skyfall' ? 0 : Math.min(1, night * 1.6 + (flags.includes('eclipse') ? 1 : 0)) * 0.85);
   }
 
   // ambience that follows what is happening in this land: festivals, disasters, specialties
@@ -662,6 +666,9 @@ export class CityScene extends Phaser.Scene {
     else if (amb === 'fog' && this.rng.chance(0.5)) bit(0xdcdcf0, -10, ey, W + 40, rnd(-10, 10), 6500, 14);
     else if (amb === 'clouds' && this.rng.chance(0.3)) bit(0xffffff, -10, ey, W + 40, rnd(-10, 10), 7000, 10);
     else if (amb === 'gulls' && this.rng.chance(0.15)) bit(0xf4f4f4, -6, rnd(0, H * 0.5), W + 20, rnd(-20, 20), 6000, 3);
+    else if (amb === 'ash') for (let i = 0; i < 3; i++) bit(this.rng.pick([0xdcdce2, 0xc4c4cc, 0x8a8a92]), rnd(0, W), -4, rnd(-24, 10), H, 6000, 2);
+    else if (amb === 'dust' && this.rng.chance(0.7)) bit(this.rng.pick([0x8a8478, 0x6a645c, 0xa09a8c]), rnd(0, W), rnd(H * 0.3, H), rnd(-30, 30), -rnd(20, 60), 3200, 3);
+    else if (amb === 'motes') for (let i = 0; i < 2; i++) bit(this.rng.pick([0xfff2b0, 0xffe680, 0xffffff]), ex + rnd(-40, 40), ey + rnd(0, 40), rnd(-8, 8), -rnd(30, 80), 3400, 2);
     // town specialties show in the air too
     const sp = this.spec.id;
     if (sp === 'forge' || sp === 'mine') { const s = this.buildings.find((b) => b.kind === 'smithy'); if (s && this.rng.chance(0.5)) bit(0x9a9a9a, (s.x + 1) * T, s.y * T, rnd(-6, 10), -rnd(20, 40), 1800, 3); }

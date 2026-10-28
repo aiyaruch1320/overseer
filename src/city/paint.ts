@@ -6,6 +6,9 @@ import { T, CW, CH, Tile, type CityData, type BuildingRec } from './citygen';
 import type { Theme, TreeKind } from './themes';
 
 import { NEW_STYLES, doorPath, fence } from './houses';
+import { LANDMARKS, paintSquare } from './landmarks';
+import { CIVIC } from './civic';
+import { FATES } from '../sim/fate';
 import { type Pen, type Col, makePen, hex, shadeC, mixC, shadow, shingles, slates, thatch, stoneWall, planks, bricks, windowAt, archWindow, doorAt, chimney, eaves, flag } from './draw';
 
 // ---------------------------------------------------------------- building styles (X, Y, W, H in px; wall height F at the bottom)
@@ -334,9 +337,13 @@ export const SPECIAL: Record<string, Paint> = {
   },
 };
 
+Object.assign(SPECIAL, CIVIC);
+
 // ---------------------------------------------------------------- landmark in the square
 function landmark(p: Pen, d: CityData, px: number, py: number) {
   const th = d.theme, r = p.r;
+  const drawNew = LANDMARKS[th.centre];
+  if (drawNew) { drawNew(p, d, px, py); return; }
   const rock = (c: number, x: number, y: number, rad: number) => { p.circ(shadeC(c, 0.75), x + 1, y + 1, rad); p.circ(c, x, y, rad); };
   switch (th.centre) {
     case 'statue': rock(0xb8b0a0, px, py, 16); p.fill(0xd8d0c0, px - 4, py - 22, 8, 22); p.poly(0xf2c94c, [px - 6, py - 22, px, py - 32, px + 6, py - 22]); break;
@@ -489,6 +496,7 @@ export function paintCity(d: CityData, town: Town) {
 
   // the square's landmark, then stalls
   const px = (d.plaza.x + d.plaza.w / 2) * T, py = (d.plaza.y + d.plaza.h / 2) * T;
+  paintSquare(p, d, px, py);
   const awnings = [0xe04848, 0x5aa0ea, 0xf2c94c, 0x6cc05a, theme.banner[0], theme.banner[1]];
   d.stalls.forEach((s, k) => {
     fill(0x8a5a3a, s.x + 2, s.y + 6, 2, 8); fill(0x8a5a3a, s.x + 18, s.y + 6, 2, 8);
@@ -531,6 +539,7 @@ export function paintCity(d: CityData, town: Town) {
     const ao = sx2.createLinearGradient(0, Y + Ht - 7, 0, Y + Ht);
     ao.addColorStop(0, 'rgba(0,0,0,0)'); ao.addColorStop(1, 'rgba(0,0,0,0.32)');
     sx2.fillStyle = ao; sx2.fillRect(X - 6, Y + Ht - 7, Wd + 12, 7);
+    fateSprite(sx2, d.fate, X, Y, Wd, Ht, jr);
     sx2.globalCompositeOperation = 'source-over';
     // ground first (the path from the door), then the building on top of it
     const doorG = bp.doorX === undefined ? undefined : GX + bp.doorX - X;
@@ -564,4 +573,82 @@ export function paintCity(d: CityData, town: Town) {
   for (const l of d.lamps) { fill(0x2a2a30, l.x - 1, l.y - 12, 2, 12); fill(0xffd070, l.x - 2, l.y - 15, 4, 4); }
   for (const [fx, fy] of [[d.plaza.x + 1, d.plaza.y], [d.plaza.x + d.plaza.w - 2, d.plaza.y]]) flag(p, fx * T + 8, fy * T + 12, theme.banner[0], theme.banner[1]);
   props(d, x2, fill, new RNG(hashString('props' + town.id)));
+  paintFate(d, x2, new RNG(hashString('fate' + town.id)));
+}
+
+
+// ---------------------------------------------------------------- a land the story has reshaped (docs/world-events.md §15)
+/** the look of each fate on one building's own sprite: ash on the roof, water at the walls, rust streaks, golden light, shutters in the fog */
+function fateSprite(c: CanvasRenderingContext2D, fate: CityData['fate'], X: number, Y: number, W: number, H: number, r: RNG) {
+  if (!fate) return;
+  c.globalCompositeOperation = 'source-atop';
+  const band = (y0: number, y1: number, c0: string, c1: string) => { const g = c.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, c0); g.addColorStop(1, c1); c.fillStyle = g; c.fillRect(X - 30, y0, W + 60, y1 - y0); };
+  if (fate === 'ash') band(Y - 40, Y + H * 0.55, 'rgba(238,238,244,0.82)', 'rgba(238,238,244,0)');
+  else if (fate === 'flood') { band(Y + H - 22, Y + H + 2, 'rgba(70,130,196,0.1)', 'rgba(70,130,196,0.62)'); c.fillStyle = 'rgba(210,236,250,0.6)'; for (let k = 0; k < W; k += 6) c.fillRect(X + k, Y + H - 22 + (k % 12 ? 0 : 2), 4, 1); }
+  else if (fate === 'rust') { for (let k = 0; k < Math.max(3, W / 14); k++) { const x = X + r.int(0, W - 3); c.fillStyle = 'rgba(160,70,24,0.45)'; c.fillRect(x, Y + r.int(0, H / 2), 2, r.int(10, H / 2)); } }
+  else if (fate === 'light') { band(Y - 40, Y + H, 'rgba(255,244,180,0.34)', 'rgba(255,236,150,0.06)'); }
+  else if (fate === 'fog') { band(Y - 40, Y + H, 'rgba(90,70,130,0.34)', 'rgba(40,30,70,0.5)'); }
+  else if (fate === 'withered') band(Y - 40, Y + H, 'rgba(190,150,40,0.22)', 'rgba(120,90,20,0.2)');
+}
+
+/** whole-town effects drawn over everything: the colour grade, cracks, ruins, ash on the ground, water in the streets, golden motes */
+function paintFate(d: CityData, x2: CanvasRenderingContext2D, r: RNG) {
+  const fate = d.fate;
+  if (!fate) return;
+  const { buildings, grid } = d;
+  const info = FATES[fate];
+  x2.save(); x2.globalCompositeOperation = 'source-atop'; x2.fillStyle = info.tint; x2.fillRect(0, 0, CW * T, CH * T); x2.restore();
+  const cx = (CW * T) / 2, cy = (CH * T) / 2, rx = d.extent.rx * T, ry = d.extent.ry * T;
+  const inTown = (x: number, y: number) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 < 1;
+  const speck = (c: string, n: number, w: number, h: number, only?: Tile[]) => {
+    x2.fillStyle = c;
+    for (let k = 0; k < n; k++) { const x = r.int(0, CW * T - 1), y = r.int(0, CH * T - 1); if (!inTown(x, y)) continue; const t = grid[Math.floor(y / T) * CW + Math.floor(x / T)]; if (t === Tile.Void || t === Tile.Building || (only && !only.includes(t))) continue; x2.fillRect(x, y, w, h); }
+  };
+  const crack = (x: number, y: number, len: number) => {
+    let a = r.float(0, 6.28); x2.beginPath(); x2.moveTo(x, y);
+    for (let s = 0; s < len; s++) { a += r.float(-0.7, 0.7); x += Math.cos(a) * 6; y += Math.sin(a) * 4; x2.lineTo(x, y); }
+    x2.strokeStyle = 'rgba(14,10,8,0.8)'; x2.lineWidth = 2.2; x2.stroke(); x2.strokeStyle = 'rgba(0,0,0,0.25)'; x2.lineWidth = 5; x2.stroke();
+  };
+  const ruin = (b: BuildingRec, fire: boolean) => {
+    const X = b.x * T, Y = b.y * T, W = b.w * T, H = b.h * T, hx = X + r.int(Math.round(W * 0.25), Math.round(W * 0.75));
+    x2.fillStyle = 'rgba(22,16,12,0.82)'; x2.beginPath(); x2.moveTo(hx - 14, Y + H * 0.32); x2.lineTo(hx - 5, Y + H * 0.1); x2.lineTo(hx + 1, Y + H * 0.3); x2.lineTo(hx + 9, Y + H * 0.14); x2.lineTo(hx + 17, Y + H * 0.42); x2.lineTo(hx + 6, Y + H * 0.58); x2.lineTo(hx - 11, Y + H * 0.5); x2.closePath(); x2.fill();
+    x2.strokeStyle = '#6a4a2a'; x2.lineWidth = 2; for (let k = 0; k < 3; k++) { x2.beginPath(); x2.moveTo(hx - 12 + k * 10, Y + H * 0.2 + k * 4); x2.lineTo(hx - 6 + k * 9 + r.int(-5, 5), Y + H * 0.58); x2.stroke(); }
+    x2.fillStyle = 'rgba(0,0,0,0.28)'; x2.beginPath(); x2.ellipse(X + W / 2, Y + H * 0.6, W * 0.3, H * 0.18, 0, 0, 6.3); x2.fill();
+    for (let k = 0; k < 14; k++) { x2.fillStyle = ['#6a645c', '#8a8478', '#4a4238', '#a09a8c'][k % 4]; x2.fillRect(X - 6 + r.int(0, W + 8), Y + H - 4 + r.int(0, 10), r.int(2, 6), r.int(2, 4)); }
+    if (fire) { x2.fillStyle = 'rgba(255,150,40,0.85)'; x2.fillRect(hx - 2, Y + H * 0.3, 4, 6); x2.fillStyle = 'rgba(255,220,120,0.9)'; x2.fillRect(hx - 1, Y + H * 0.33, 2, 3); x2.fillStyle = 'rgba(60,56,54,0.4)'; x2.beginPath(); x2.arc(hx + 2, Y + H * 0.1, 6, 0, 6.3); x2.fill(); x2.beginPath(); x2.arc(hx + 5, Y - 6, 8, 0, 6.3); x2.fill(); }
+  };
+  // the monument in the square suffers with its town: toppled and cratered, buried in ash, or standing in water
+  const mx = (d.plaza.x + d.plaza.w / 2) * T, my = (d.plaza.y + d.plaza.h / 2) * T;
+  if (fate === 'skyfall' || fate === 'fallen' || fate === 'split') {
+    x2.fillStyle = 'rgba(26,20,16,0.82)'; x2.beginPath(); x2.ellipse(mx, my + 2, 46, 17, 0, 0, 6.3); x2.fill();
+    x2.fillStyle = 'rgba(70,60,52,0.9)'; x2.beginPath(); x2.ellipse(mx, my, 36, 12, 0, 0, 6.3); x2.fill();
+    for (let k = 0; k < 16; k++) { const a = r.float(0, 6.28), rr = r.float(8, 40); x2.fillStyle = ['#8a8478', '#6a645a', '#a09a8c', '#4a4238'][k % 4]; const w = r.int(5, 14), h = r.int(4, 10); x2.save(); x2.translate(mx + Math.cos(a) * rr, my + Math.sin(a) * rr * 0.4); x2.rotate(r.float(-0.5, 0.5)); x2.fillRect(-w / 2, -h / 2, w, h); x2.restore(); }
+    x2.fillStyle = '#9a9484'; x2.save(); x2.translate(mx + 6, my - 4); x2.rotate(0.9); x2.fillRect(-4, -26, 8, 28); x2.restore(); x2.fillStyle = '#7a7468'; x2.fillRect(mx - 18, my - 10, 7, 12);
+  } else if (fate === 'ash') {
+    x2.fillStyle = 'rgba(238,238,244,0.8)'; x2.beginPath(); x2.ellipse(mx, my - 6, 44, 24, 0, 0, 6.3); x2.fill();
+  } else if (fate === 'flood') {
+    x2.fillStyle = 'rgba(64,126,196,0.6)'; x2.beginPath(); x2.ellipse(mx, my + 4, 80, 34, 0, 0, 6.3); x2.fill(); x2.fillStyle = 'rgba(214,238,252,0.7)'; for (let k = -3; k <= 3; k++) x2.fillRect(mx + k * 18 - 6, my + 8 + (k % 2) * 6, 12, 1);
+  }
+  switch (fate) {
+    case 'skyfall': case 'split': case 'fallen': {
+      for (let k = 0; k < (fate === 'split' ? 7 : 22); k++) crack(cx + r.float(-rx, rx) * 0.9, cy + r.float(-ry, ry) * 0.9, r.int(14, 40));
+      for (const b of buildings) if (r.chance(fate === 'fallen' ? 0.75 : fate === 'skyfall' ? 0.6 : 0.35)) ruin(b, fate === 'fallen' && r.chance(0.4));
+      speck('rgba(110,104,96,0.55)', 900, 3, 2);
+      break;
+    }
+    case 'ash': speck('rgba(236,236,242,0.6)', 2400, 2, 1, [Tile.Ground, Tile.Road, Tile.Plaza, Tile.Tree]); speck('rgba(70,66,70,0.4)', 500, 2, 2, [Tile.Ground, Tile.Road]); break;
+    case 'flood': {
+      for (let k = 0; k < 260; k++) { const x = r.int(0, CW * T - 1), y = r.int(0, CH * T - 1); if (!inTown(x, y)) continue; const t = grid[Math.floor(y / T) * CW + Math.floor(x / T)]; if (t === Tile.Void || t === Tile.Building) continue; x2.fillStyle = 'rgba(64,126,196,0.55)'; x2.beginPath(); x2.ellipse(x, y, r.int(12, 34), r.int(5, 12), 0, 0, 6.3); x2.fill(); x2.fillStyle = 'rgba(214,238,252,0.65)'; x2.fillRect(x - 8, y - 1, 8, 1); }
+      for (let k = 0; k < 10; k++) { const x = cx + r.float(-rx, rx) * 0.8, y = cy + r.float(-ry, ry) * 0.8; x2.fillStyle = '#6a4a2a'; x2.beginPath(); x2.moveTo(x - 12, y); x2.lineTo(x + 12, y); x2.lineTo(x + 8, y + 5); x2.lineTo(x - 8, y + 5); x2.fill(); x2.fillStyle = '#e8e0d0'; x2.fillRect(x - 1, y - 12, 1, 12); x2.fillRect(x, y - 12, 8, 7); }
+      break;
+    }
+    case 'withered': speck('rgba(190,150,40,0.55)', 900, 3, 2, [Tile.Ground]); speck('rgba(120,86,30,0.45)', 500, 2, 2, [Tile.Ground, Tile.Road]); break;
+    case 'rust': speck('rgba(150,70,30,0.5)', 700, 3, 2, [Tile.Ground, Tile.Road]); speck('rgba(40,30,26,0.4)', 300, 4, 2, [Tile.Road, Tile.Plaza]); break;
+    case 'light': {
+      for (const b of buildings) { if (!r.chance(0.7)) continue; const gx = (b.x + b.w / 2) * T, gy = (b.y + b.h) * T; const g = x2.createRadialGradient(gx, gy - 14, 0, gx, gy - 14, 40); g.addColorStop(0, 'rgba(255,240,170,0.5)'); g.addColorStop(1, 'rgba(255,240,170,0)'); x2.fillStyle = g; x2.fillRect(gx - 40, gy - 54, 80, 80); }
+      speck('rgba(255,246,190,0.9)', 500, 2, 2);
+      break;
+    }
+    case 'fog': speck('rgba(40,30,60,0.4)', 1200, 4, 3); break;
+  }
 }

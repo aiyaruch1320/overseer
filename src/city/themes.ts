@@ -2,7 +2,8 @@
 // every country then bends it by its own faith, people and a stable hash so no two countries share a skyline.
 import { CONT } from '../world/geo';
 import { RNG, hashString } from '../sim/rng';
-import type { Country } from '../sim/types';
+import type { Country, Fate } from '../sim/types';
+import { fateOf } from '../sim/fate';
 import { flavorOf, type Special } from './flavor';
 import { mixC } from './draw';
 
@@ -10,8 +11,8 @@ export type BStyle = 'gable' | 'dome' | 'hut' | 'aframe' | 'tree' | 'stone' | 't
 export type TreeKind = 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none';
 export type Plan = 'grid' | 'organic' | 'radial' | 'canal';
 export type WallKind = 'stone' | 'palisade' | 'hedge' | 'iron' | 'none';
-export type Centre = 'fountain' | 'statue' | 'forge' | 'gear' | 'oasis' | 'bonfire' | 'clock' | 'sapling' | 'worldtree' | 'abyss' | 'arkea' | 'gate' | 'lake' | 'airship' | 'lighthouse' | 'council' | 'pyramid' | 'crystal' | 'obelisk';
-export type Ambient = 'none' | 'embers' | 'fog' | 'leaves' | 'smoke' | 'sand' | 'clouds' | 'gulls';
+export type Centre = 'fountain' | 'statue' | 'forge' | 'gear' | 'oasis' | 'bonfire' | 'clock' | 'sapling' | 'worldtree' | 'abyss' | 'arkea' | 'gate' | 'lake' | 'airship' | 'lighthouse' | 'council' | 'pyramid' | 'crystal' | 'obelisk' | 'skynest' | 'caldera' | 'stairgate' | 'twinpalace' | 'eridan' | 'liftmine' | 'pump' | 'rainspire';
+export type Ambient = 'none' | 'embers' | 'fog' | 'leaves' | 'smoke' | 'sand' | 'clouds' | 'gulls' | 'ash' | 'dust' | 'motes';
 
 export interface Theme {
   id: string;
@@ -97,7 +98,7 @@ const ACCENTS = [0xc83a2a, 0x2a7ab0, 0xf2c94c, 0x3a9a4a, 0x8a3ac0, 0xe07a30, 0x2
 const hash = (s: string) => hashString(s);
 
 /** the theme of one country: the continent's base, bent by the country's own people, faith and a stable hash */
-export function themeFor(co: Pick<Country, 'id' | 'code' | 'continent' | 'races' | 'religion' | 'gov' | 'climate'>): Theme {
+export function themeFor(co: Pick<Country, 'id' | 'code' | 'continent' | 'races' | 'religion' | 'gov' | 'climate'> & { fate?: Fate; flags?: string[] }): Theme {
   const base = BASE[co.continent] || BASE[CONT.aldria];
   const r = new RNG(hash(`theme${co.id}`));
   const major = co.races[0].race;
@@ -146,7 +147,28 @@ export function themeFor(co: Pick<Country, 'id' | 'code' | 'continent' | 'races'
   if (f.graves) t.graves = true;
   t.extra = (f.extra || []).slice();
   t.id = `${base.id}`;
+  const fate = fateOf({ fate: co.fate, flags: co.flags ?? [] });
+  if (fate) bendToFate(t, fate);
   return t;
 }
 
 export const pickStyle = (t: Theme, r: RNG): BStyle => r.weighted(t.styles, (s) => s[1])![0];
+
+
+/** a land the story has reshaped keeps its people's buildings but loses its colour, its lamps, its green: the palette of each fate */
+function bendToFate(t: Theme, fate: Fate) {
+  const grade = (c: number, to: number, k: number) => mixC(c, to, k);
+  const all = (to: number, k: number) => { t.roofs = t.roofs.map((c) => grade(c, to, k)); t.walls = t.walls.map((c) => grade(c, to, k)); t.ground = grade(t.ground, to, k * 0.9); t.road = grade(t.road, to, k * 0.6); t.plaza = grade(t.plaza, to, k * 0.6); };
+  t.extra = t.extra.slice();
+  switch (fate) {
+    case 'skyfall': all(0x7a766e, 0.5); t.lamps = false; t.ambient = 'dust'; t.farm = 0; t.tree = 'dead'; t.wall = 'none'; break;
+    case 'ash': all(0xc8c8d0, 0.55); t.lamps = true; t.ambient = 'ash'; t.farm = 0; t.tree = 'dead'; t.treeDensity *= 0.4; break;
+    case 'flood': all(0x6a8aa0, 0.3); t.ambient = 'gulls'; t.farm = 0; break;
+    case 'split': all(0x8a6a58, 0.4); t.lamps = false; t.ambient = 'dust'; t.farm *= 0.4; break;
+    case 'withered': all(0xb89a3a, 0.45); t.leaf = [0xc8a030, 0xb88a28, 0x9a7a30, 0xd8b850]; t.tree = 'dead'; t.ambient = 'leaves'; t.lamps = false; break;
+    case 'rust': all(0x9a5a30, 0.5); t.lamps = false; t.ambient = 'none'; t.farm *= 0.3; break;
+    case 'light': all(0xfff2c0, 0.4); t.lamps = true; t.ambient = 'motes'; break;
+    case 'fog': all(0x3a3050, 0.55); t.lamps = false; t.ambient = 'fog'; t.tree = 'dead'; break;
+    case 'fallen': all(0x5a524c, 0.55); t.lamps = false; t.ambient = 'dust'; t.farm = 0; t.tree = 'dead'; t.graves = true; break;
+  }
+}

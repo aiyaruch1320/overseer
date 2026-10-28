@@ -12,6 +12,8 @@ import { actorPos } from '../sim/society';
 import { REGION_EVENTS } from '../data/people';
 import { DISASTERS } from '../data/disasters';
 import { FESTIVALS } from '../data/npclife';
+import { FATES, fateOf, setFate } from '../sim/fate';
+import type { Fate } from '../sim/types';
 
 export { drawPortrait } from './sprites';
 // World coordinates: 8 units per tile. The terrain itself is vector art drawn by TerrainRenderer onto its own DPR-sized
@@ -35,7 +37,7 @@ export class WorldScene extends Phaser.Scene {
   flagIcons: Phaser.GameObjects.Image[] = [];
   actorMarks = new Map<string, { img: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text }>();
   countryLabels: Phaser.GameObjects.Text[] = [];
-  townMarks: { img: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text; capital: boolean; id: number }[] = [];
+  townMarks: { img: Phaser.GameObjects.Image; label: Phaser.GameObjects.Text; capital: boolean; id: number; size: number; halo?: Phaser.GameObjects.Arc }[] = [];
   terrain!: TerrainRenderer;
   onCountryClick: (id: number) => void = () => {};
   onTownClick: (id: number) => void = () => {};
@@ -114,12 +116,16 @@ export class WorldScene extends Phaser.Scene {
       }).setOrigin(0.5, 0).setDepth(7));
     }
     for (const t of this.world.towns) {
-      const img = this.add.image(t.x * TILE + TILE / 2, t.y * TILE + TILE / 2, iconTex(this, t.capital ? 'castle' : 'home', 2)).setDepth(6).setInteractive({ useHandCursor: true });
+      // the seat of the first dragon, Oran-Sal, is the greatest city of the world: its own icon, larger, in a halo of gold
+      const throne = t.capital && this.world.countries[t.countryId].code === 'AZ-01';
+      const img = this.add.image(t.x * TILE + TILE / 2, t.y * TILE + TILE / 2, iconTex(this, throne ? 'dragon' : t.capital ? 'castle' : 'home', 2)).setDepth(6).setInteractive({ useHandCursor: true });
+      const halo = throne ? this.add.circle(img.x, img.y, 24, 0xf2c94c, 0.28).setDepth(5.9) : undefined;
+      halo?.setStrokeStyle(3, 0xfff0a0, 0.7);
       const label = this.add.text(t.x * TILE + TILE / 2, t.y * TILE + TILE / 2, t.name, {
         fontFamily: font, fontSize: '18px', color: '#ffffff', stroke: '#000000', strokeThickness: 5,
       }).setOrigin(0.5, 0).setDepth(6);
       img.on('pointerup', (p: Phaser.Input.Pointer) => { if (p.getDistance() < 8) { this.clickedTown = true; this.onTownClick(t.id); } });
-      this.townMarks.push({ img, label, capital: t.capital, id: t.id });
+      this.townMarks.push({ img, label, capital: t.capital, id: t.id, size: throne ? 36 : t.capital ? 22 : 16, halo });
     }
 
     this.ring = this.add.ellipse(0, 0, 40, 14, 0xffe680, 0.6);
@@ -193,6 +199,31 @@ export class WorldScene extends Phaser.Scene {
     this.lastView = '';
   }
 
+  // ---------- lands the story has reshaped ----------
+  private fateSig = '';
+  private countries() { return this.game_?.s.countries ?? this.world.countries; }
+
+  /** reshape a continent (or the listed countries) by a story event, or restore it with null; towns and the world map redraw at once */
+  setFate(scope: { continent?: number; ids?: number[] }, fate: Fate | null) {
+    setFate(this.countries(), scope, fate);
+    this.refreshFates();
+  }
+
+  /** put the tint of each fated land on the world map and rebuild the towns that changed (called when the set of fates changes) */
+  private refreshFates() {
+    const cs = this.countries(), { w, h, country } = this.world;
+    this.fateSig = cs.map((c) => fateOf(c) ?? '').join('|');
+    const regions = (Object.keys(FATES) as Fate[]).flatMap((f) => {
+      const ids = new Set(cs.filter((c) => fateOf(c) === f).map((c) => c.id));
+      return ids.size ? [{ inside: (i: number) => ids.has(country[i]), tint: FATES[f].tint }] : [];
+    });
+    this.terrain.setFates(regions, w, h, TILE / MU_TO_WU);
+    this.cityImgs.forEach((c, id) => { c.img.destroy(); for (const m of [1, 2, 4, 8]) { const k = this.townTex(id, m); if (this.textures.exists(k)) this.textures.remove(k); } });
+    this.cityImgs.clear();
+    this.stopLive();
+    this.lastView = '';
+  }
+
   level(): string {
     const z = this.cameras.main.zoom;
     if (z >= Z.live) return 'ในเมือง';
@@ -214,7 +245,8 @@ export class WorldScene extends Phaser.Scene {
     });
     for (const m of this.townMarks) {
       const show = m.capital ? z >= Z.capital : z >= Z.town;
-      m.img.setVisible(show && z < Z.icons).setScale((m.capital ? 22 : 16) / (24 * z));
+      m.img.setVisible(show && z < Z.icons).setScale(m.size / (24 * z));
+      m.halo?.setVisible(show && z < Z.icons).setScale((m.size * 1.7) / (24 * z)).setAlpha(0.22 + 0.08 * Math.sin(this.time.now / 500));
       m.label.setVisible(show && townNames && z < Z.live).setScale(13 / (18 * z)).setY(m.img.y + (z >= Z.icons ? -CITY_HALF_H * 0.9 : 12 / z));
     }
     this.flagIcons.forEach((t) => t.setScale(18 / (24 * z)));
@@ -439,6 +471,7 @@ export class WorldScene extends Phaser.Scene {
       cam.scrollX += before.x - after.x; cam.scrollY += before.y - after.y;
       if (Math.abs(cam.zoom - this.lastLodZoom) / cam.zoom > 0.04) this.updateLod();
     } else if (cam.zoom !== this.lastLodZoom) this.updateLod();
+    if (this.countries().some((c) => (fateOf(c) ?? '') !== '') || this.fateSig.replace(/\|/g, '') !== '') { const sig = this.countries().map((c) => fateOf(c) ?? '').join('|'); if (sig !== this.fateSig) this.refreshFates(); }
     this.updateCities();
     this.drawTerrain(_t);
   }
