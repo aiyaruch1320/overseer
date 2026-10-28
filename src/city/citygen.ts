@@ -11,8 +11,8 @@ import { paintCity } from './paint';
 import { MU_TO_WU } from '../world/geo';
 
 export const T = 16; // px per tile
-export const CW = 108, CH = 67;
-export const CITY_WU = 80; // world units across the whole plan
+export const CW = 162, CH = 101;
+export const CITY_WU = 120; // world units across the whole plan (15 tiles of the map)
 export const CITY_S = CITY_WU / (CW * T); // world units per city pixel
 export enum Tile { Ground, Road, Plaza, Building, Water, Tree, Wall, Dock, Field, Grave, Void }
 
@@ -43,7 +43,7 @@ export function getCity(town: Town, country: Pick<Country, 'id' | 'code' | 'cont
   if (hit) { cache.delete(town.id); cache.set(town.id, hit); return hit; }
   const data = generate(town, country);
   cache.set(town.id, data);
-  if (cache.size > 14) cache.delete(cache.keys().next().value as number);
+  if (cache.size > 8) cache.delete(cache.keys().next().value as number);
   return data;
 }
 
@@ -106,8 +106,9 @@ function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent'
   } else {
     // winding lanes: walkers that wander outward from the square, sometimes forking
     const walkers: { x: number; y: number; a: number; life: number }[] = [];
-    const n = village ? 4 : 8;
-    for (let k = 0; k < n; k++) walkers.push({ x: cx, y: cy, a: (k / n) * Math.PI * 2 + rng.float(-0.3, 0.3), life: rng.int(village ? 22 : 30, village ? 46 : 70) });
+    const n = village ? 5 : 10;
+    const reach = Math.max(1, rx / 52); // lanes run as far as the town is wide
+    for (let k = 0; k < n; k++) walkers.push({ x: cx, y: cy, a: (k / n) * Math.PI * 2 + rng.float(-0.3, 0.3), life: Math.round(rng.int(village ? 22 : 30, village ? 46 : 70) * reach) });
     while (walkers.length) {
       const w = walkers.pop()!;
       for (let s = 0; s < w.life; s++) {
@@ -116,7 +117,7 @@ function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent'
         const x = Math.round(w.x), y = Math.round(w.y);
         if (!inExt(x, y, 1.05)) break;
         road(x, y); if (s % 3 === 0) road(x + 1, y);
-        if (s > 8 && s % 14 === 0 && walkers.length < 14 && rng.chance(0.5)) walkers.push({ x: w.x, y: w.y, a: w.a + (rng.chance(0.5) ? 1.2 : -1.2), life: rng.int(14, 34) });
+        if (s > 8 && s % 14 === 0 && walkers.length < 22 && rng.chance(0.5)) walkers.push({ x: w.x, y: w.y, a: w.a + (rng.chance(0.5) ? 1.2 : -1.2), life: Math.round(rng.int(14, 34) * reach) });
       }
     }
   }

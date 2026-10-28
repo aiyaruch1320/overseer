@@ -335,7 +335,7 @@ export class WorldScene extends Phaser.Scene {
     let built = 0;
     const r = 1 / (CITY_S * z); // texture pixels per screen pixel
     const mip = r >= 7 ? 8 : r >= 3.5 ? 4 : r >= 1.8 ? 2 : 1;
-    for (const n of near.slice(0, 9)) {
+    for (const n of near.slice(0, 6)) {
       const t = this.world.towns[n.id];
       let rec = this.cityImgs.get(n.id);
       if (!rec) {
@@ -363,12 +363,12 @@ export class WorldScene extends Phaser.Scene {
       show.add(n.id);
     }
     this.cityImgs.forEach((c, id) => { if (!show.has(id)) c.img.setVisible(false); });
-    if (this.cityImgs.size > 24) {
+    if (this.cityImgs.size > 12) {
       for (const [id, c] of this.cityImgs) {
         if (show.has(id)) continue;
         c.img.destroy(); this.cityImgs.delete(id);
         for (const m of [1, 2, 4, 8]) { const k = this.townTex(id, m); if (this.textures.exists(k)) this.textures.remove(k); }
-        if (this.cityImgs.size <= 16) break;
+        if (this.cityImgs.size <= 8) break;
       }
     }
     // life: starts when we are close enough over one town, ends when we leave it

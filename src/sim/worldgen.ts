@@ -277,7 +277,7 @@ export function generateWorld(): WorldMap {
       const t = rng.pick(tilesOf[c.id]);
       const x = t % W, y = Math.floor(t / W);
       if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
-      if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 11)) pts.push([x, y]);
+      if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 16)) pts.push([x, y]);
     }
     pts.forEach(([x, y], k) => {
       let name = '';
