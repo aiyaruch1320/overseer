@@ -161,7 +161,7 @@ export function spawnActors(g: Game) {
   const T = towns();
   const capitals = T.filter((t) => t.capital);
   const lightCaps = capitals.filter((t) => ['light', 'war'].includes(g.s.countries[t.countryId].religion));
-  const darkCaps = capitals.filter((t) => g.s.countries[t.countryId].religion === 'demon' || [5, 8].includes(g.s.countries[t.countryId].continent));
+  const darkCaps = capitals.filter((t) => g.s.countries[t.countryId].religion === 'demon' || [1, 2].includes(g.s.countries[t.countryId].continent));
   const mk = (kind: Actor['kind'], name: string, race: string, at: number): Actor => ({ id: `${kind}_${g.s.actors.length}`, kind, name, race, from: at, to: at, prog: 1, alive: true, deeds: 0 });
   g.s.actors.push(mk('hero', g.rng.pick(HERO_NAMES), 'human', g.rng.pick(lightCaps.length ? lightCaps : capitals).id));
   g.s.actors.push(mk('demonlord', g.rng.pick(DEMON_NAMES), 'demonkin', g.rng.pick(darkCaps.length ? darkCaps : capitals).id));
@@ -220,7 +220,7 @@ function respawn(g: Game, a: Actor) {
     news(g, `:herosword: ผู้กล้าคนใหม่ ${a.name} ถูกอัญเชิญมาที่${T[a.to].name}`);
   } else {
     a.name = g.rng.pick(DEMON_NAMES);
-    a.from = a.to = g.rng.pick(T.filter((t) => [5, 8].includes(g.s.countries[t.countryId].continent))).id;
+    a.from = a.to = g.rng.pick(T.filter((t) => [1, 2].includes(g.s.countries[t.countryId].continent))).id;
     news(g, `:demon: จอมมารตนใหม่ ${a.name} ฟื้นคืนชีพที่${T[a.to].name}`);
   }
 }

@@ -1,24 +1,26 @@
 import { RNG, makeNoise } from './rng';
 import type { Continent, Country } from './types';
-import { CLIMATES, climateById } from '../data/races';
+import { climateById } from '../data/races';
+import { DEFS, ownerAt, MU_TO_WU } from '../world/geo';
+import { COUNTRY_DOCS, type CountryDoc } from '../data/countries';
 
 export const WORLD_SEED = 'อาเธเรีย';
-// the continent table below is authored on a 256×144 grid and scaled up by SCALE (3 → 9× the area)
+// the tile grid is 8 world units per tile; the continents' shapes live in src/world/geo.ts (the same field the map is drawn from)
 export const SCALE = 3;
 export const MAP_W = 256 * SCALE;
 export const MAP_H = 144 * SCALE;
 
-// 9 ทวีป รวม 143 ประเทศ
+// 9 ทวีป รวม 143 ประเทศ (ลำดับและจำนวนตาม docs/continents.md; รูปร่างและตำแหน่งอยู่ที่ src/world/geo.ts)
 export const CONTINENTS: Continent[] = [
-  { id: 0, name: 'อัลเดรีย', desc: 'ทวีปกลางแห่งอาณาจักรมนุษย์ ศูนย์กลางการค้าและสงครามชิงบัลลังก์', climates: ['temperate', 'temperate', 'tropical'], races: ['human', 'human', 'human', 'halfling', 'elf', 'beast', 'dwarf'], count: 22, cx: 128, cy: 72, r: 26 },
-  { id: 1, name: 'ซิลวาเนล', desc: 'ป่าพันปีของเอลฟ์และภูตพราย ต้นไม้โลกตั้งตระหง่านใจกลาง', climates: ['tropical', 'temperate'], races: ['elf', 'elf', 'fae', 'fae', 'beast', 'human', 'slime'], count: 16, cx: 60, cy: 45, r: 22 },
-  { id: 2, name: 'คาซ-ดูรัม', desc: 'แนวภูเขาไฟและเหมืองลึก บ้านของคนแคระและรังมังกร', climates: ['volcanic', 'frozen', 'volcanic'], races: ['dwarf', 'dwarf', 'dragonkin', 'human', 'orc'], count: 14, cx: 195, cy: 35, r: 20 },
-  { id: 3, name: 'ซาฮารัน', desc: 'ผืนทรายไร้ขอบ รัฐสุลต่าน เผ่าออร์ค และกองคาราวานลึกลับ', climates: ['desert', 'desert', 'temperate'], races: ['orc', 'orc', 'human', 'beast', 'demonkin', 'naga'], count: 19, cx: 190, cy: 95, r: 24 },
-  { id: 4, name: 'นิวาลิส', desc: 'ทุ่งน้ำแข็งเหนือสุดของโลก ราตรีหกเดือน ปราสาทแวมไพร์ซ่อนในหมอก', climates: ['frozen', 'frozen', 'temperate'], races: ['human', 'human', 'dwarf', 'vampire', 'beast'], count: 15, cx: 120, cy: 17, r: 21 },
-  { id: 5, name: 'มอร์เฮเวน', desc: 'ทวีปมืดใต้สุด ดินแดนของดาร์กเอลฟ์ ปีศาจ และผู้ถูกเนรเทศ', climates: ['frozen', 'volcanic'], races: ['darkelf', 'darkelf', 'demonkin', 'vampire', 'orc', 'human'], count: 12, cx: 40, cy: 118, r: 19 },
-  { id: 6, name: 'เนเรีย', desc: 'หมู่เกาะนับร้อยกลางทะเล อาณาจักรเงือก นาคา และโจรสลัด', climates: ['islands'], races: ['merfolk', 'merfolk', 'naga', 'human', 'halfling', 'slime'], count: 18, cx: 92, cy: 108, r: 21 },
-  { id: 7, name: 'วานารา', desc: 'ป่าดิบชื้นและแม่น้ำใหญ่ อาณาจักรนาคา เผ่าสัตว์ และสไลม์ยักษ์', climates: ['tropical', 'tropical', 'islands'], races: ['naga', 'beast', 'beast', 'slime', 'human', 'fae'], count: 17, cx: 152, cy: 122, r: 19 },
-  { id: 8, name: 'อัซการ์', desc: 'ดินแดนมังกรที่ร้อนระอุ สนามประลองของผู้แข็งแกร่ง', climates: ['volcanic', 'desert'], races: ['dragonkin', 'dragonkin', 'demonkin', 'orc'], count: 10, cx: 236, cy: 68, r: 15 },
+  { id: 0, name: 'อัซการ์', desc: 'ทวีปมังกร หมู่เกาะลอยฟ้านับร้อย รัฐเทวาธิปไตยที่ส่งบรรณาการให้มังกรอุปถัมภ์', climates: ['temperate', 'frozen'], races: ['dragonkin', 'human', 'human', 'fae', 'beast'], count: 10 },
+  { id: 1, name: 'มอร์เฮเวน', desc: 'ทวีปปีศาจ ดินแดนรกร้างที่ทุกเผ่าหิวโหยและต้องรบเพื่อกิน', climates: ['desert', 'volcanic'], races: ['orc', 'orc', 'demonkin', 'demonkin', 'darkelf', 'human'], count: 12 },
+  { id: 2, name: 'คาซ-ดูรัม', desc: 'ทวีปแห่งไฟ ภูเขาไฟ เหมืองลึก และช่างตีที่ดีที่สุดในโลก', climates: ['volcanic', 'volcanic', 'frozen'], races: ['dwarf', 'dwarf', 'dragonkin', 'darkelf', 'human', 'demonkin'], count: 12 },
+  { id: 3, name: 'เนเรีย', desc: 'ทวีปแห่งสายน้ำ หมู่เกาะที่คุมเส้นทางเดินเรือของโลก', climates: ['islands'], races: ['merfolk', 'merfolk', 'naga', 'human', 'halfling', 'slime'], count: 16 },
+  { id: 4, name: 'อัลเดรีย', desc: 'ทวีปทุ่งราบ ใหญ่ที่สุด คนมากที่สุด และเป็นที่ตั้งของสภาเก้าทวีป', climates: ['temperate', 'temperate', 'tropical'], races: ['human', 'human', 'human', 'halfling', 'elf', 'beast', 'dwarf'], count: 28 },
+  { id: 5, name: 'เมคาเรีย', desc: 'ทวีปจักรกล เรือเหาะ โรงงาน และด้านมืดที่ซ่อนอยู่ใต้ความเจริญ', climates: ['temperate', 'temperate', 'frozen'], races: ['human', 'human', 'dwarf', 'halfling', 'elf'], count: 16 },
+  { id: 6, name: 'ซาฮารัน', desc: 'ทวีปภูเขาและทะเลทราย ยักษ์เฝ้าบันได กองคาราวานเฝ้าโอเอซิส', climates: ['desert', 'desert', 'temperate'], races: ['orc', 'human', 'human', 'beast', 'demonkin', 'naga'], count: 17 },
+  { id: 7, name: 'ซิลวาเนล', desc: 'ทวีปพงไพร ต้นไม้โลกที่ฟื้นฟูทุกสิ่งและกรองพิษหมอก', climates: ['tropical', 'tropical', 'temperate'], races: ['elf', 'elf', 'fae', 'fae', 'beast', 'human', 'slime'], count: 18 },
+  { id: 8, name: 'เนบูเลีย', desc: 'ทวีปหมอก ที่ราบลุ่มไร้กลางวันกลางคืน ตลาดมืด และเมืองปฐมที่จมอยู่ใต้หมอก', climates: ['temperate', 'frozen'], races: ['human', 'human', 'vampire', 'vampire', 'darkelf', 'fae'], count: 14 },
 ];
 
 export const RELIGIONS: Record<string, string> = {
@@ -43,17 +45,57 @@ const GOV_BY_RACE: Record<string, string[]> = {
   darkelf: ['มาตาธิปไตย', 'นครใต้พิภพ'], human: GOVS,
 };
 
+// syllables per continent, in CONTINENTS order
 const NAME_SYL: string[][][] = [
-  [['เอล', 'คาร์', 'วาล', 'ลอร์', 'แบร', 'ซิล', 'อาร์', 'เม', 'รอส', 'เท'], ['ดอ', 'เว', 'มา', 'ลิ', 'นอ', 'ทา'], ['เรีย', 'เนีย', 'ฮาร์ต', 'ฟอร์ด', 'มอนต์', 'แลนด์', 'กาด', 'ดอร์']],
-  [['ซิล', 'เอ', 'ลู', 'ไอ', 'ธา', 'เฟ', 'ลา'], ['วา', 'ริ', 'เล', 'นิ'], ['เนล', 'ธิล', 'ลอร์', 'เดล', 'วิน', 'ลิส']],
-  [['คาซ', 'ดูร์', 'บาร์', 'กรอม', 'ธรอ', 'อิร', 'ฮัล'], ['-', 'ก', 'ดู', 'มา'], ['รัม', 'ดิน', 'กาด', 'มอร์', 'ฮอล์ม', 'ดัล']],
-  [['ซา', 'อัล', 'คา', 'มา', 'ซุ', 'ฮา', 'รา'], ['ฮา', 'ซี', 'บา', 'มี'], ['ราน', 'ซาร์', 'บัด', 'มีร์', 'ดีน', 'กัช']],
-  [['นิฟ', 'ส', 'วอล', 'ฟรอ', 'ฮรีม', 'แยร์', 'บอร์'], ['ก', 'วา', 'ลิ', 'เดน'], ['เฮล์ม', 'กราด', 'วิก', 'สตาด', 'ฮาฟ', 'ลิส']],
-  [['มอร์', 'นอค', 'วี', 'เซ', 'ดรา', 'อุล', 'กาธ'], ['ธ', 'ซา', 'รี', 'วา'], ['เฮเวน', 'เรธ', 'ซาร์', 'โมธ', 'ดรีน', 'กูล']],
-  [['เน', 'มา', 'โอ', 'คอ', 'ทา', 'ไอ', 'ลา'], ['รี', 'ลา', 'นู', 'วา'], ['เรีย', 'ทอล', 'โมอา', 'นีส', 'ไอล์', 'ปาเล']],
-  [['วา', 'นา', 'สุ', 'กา', 'ภู', 'จัน', 'ปา'], ['นา', 'ริ', 'ทะ', 'มา'], ['รา', 'ปุระ', 'วดี', 'ภูมิ', 'นคร', 'ศรี']],
   [['อัซ', 'ดรา', 'วีร์', 'โค', 'ซาก', 'ธี'], ['กา', 'โร', 'ซา'], ['การ์', 'ธรักซ์', 'โมเรีย', 'วาส', 'ดุส']],
+  [['มอร์', 'นอค', 'วี', 'เซ', 'ดรา', 'อุล', 'กาธ'], ['ธ', 'ซา', 'รี', 'วา'], ['เฮเวน', 'เรธ', 'ซาร์', 'โมธ', 'ดรีน', 'กูล']],
+  [['คาซ', 'ดูร์', 'บาร์', 'กรอม', 'ธรอ', 'อิร', 'ฮัล'], ['-', 'ก', 'ดู', 'มา'], ['รัม', 'ดิน', 'กาด', 'มอร์', 'ฮอล์ม', 'ดัล']],
+  [['เน', 'มา', 'โอ', 'คอ', 'ทา', 'ไอ', 'ลา'], ['รี', 'ลา', 'นู', 'วา'], ['เรีย', 'ทอล', 'โมอา', 'นีส', 'ไอล์', 'ปาเล']],
+  [['เอล', 'คาร์', 'วาล', 'ลอร์', 'แบร', 'ซิล', 'อาร์', 'เม', 'รอส', 'เท'], ['ดอ', 'เว', 'มา', 'ลิ', 'นอ', 'ทา'], ['เรีย', 'เนีย', 'ฮาร์ต', 'ฟอร์ด', 'มอนต์', 'แลนด์', 'กาด', 'ดอร์']],
+  [['เฮ', 'ครอน', 'โนวา', 'อาร์', 'ดอร์', 'เซฟ', 'แวร์', 'ไซ'], ['ฟา', 'ไซ', 'มิน'], ['กริด', 'ไซต์', 'พอร์ต', 'ดาล', 'ฟอร์จ', 'เวิร์ค']],
+  [['ซา', 'อัล', 'คา', 'มา', 'ซุ', 'ฮา', 'รา'], ['ฮา', 'ซี', 'บา', 'มี'], ['ราน', 'ซาร์', 'บัด', 'มีร์', 'ดีน', 'กัช']],
+  [['ซิล', 'เอ', 'ลู', 'ไอ', 'ธา', 'เฟ', 'ลา'], ['วา', 'ริ', 'เล', 'นิ'], ['เนล', 'ธิล', 'ลอร์', 'เดล', 'วิน', 'ลิส']],
+  [['เวล', 'ซอร์', 'ลู', 'ไอ', 'มอร์', 'เล', 'เน'], ['เนบ', 'มิ', 'ธา'], ['มีร์', 'ธาล', 'ลิน', 'วาน', 'โนวา']],
 ];
+
+// first matching word wins; the order decides which people count as which of the sim's races
+const RACE_KW: [string, string][] = [
+  ['ดาร์กเอลฟ์', 'darkelf'], ['เอลฟ์', 'elf'], ['คนแคระ', 'dwarf'], ['ออร์ค', 'orc'], ['โอเกอร์', 'orc'], ['ยักษ์', 'orc'], ['กูล', 'demonkin'], ['ปีศาจ', 'demonkin'],
+  ['ฮาล์ฟลิง', 'halfling'], ['เผ่าสัตว์', 'beast'], ['สัตว์', 'beast'], ['หมาป่า', 'beast'], ['นาคา', 'naga'], ['เผ่ามังกร', 'dragonkin'], ['อาเวียน', 'fae'], ['ปีก', 'fae'],
+  ['ภูต', 'fae'], ['แวมไพร์', 'vampire'], ['สไลม์', 'slime'], ['เงือก', 'merfolk'], ['ไซเรน', 'merfolk'], ['กัปปะ', 'merfolk'], ['เห็ด', 'slime'], ['มนุษย์', 'human'], ['ชาวพื้น', 'human'], ['ชาวหมอก', 'human'],
+];
+const RELIGION_KW: [string, string][] = [
+  ['ลัทธิปีศาจ', 'demon'], ['เทพแห่งสงคราม', 'war'], ['สงคราม', 'war'], ['มังกร', 'dragon'], ['พญานาค', 'naga'], ['สมุทร', 'sea'], ['วาฬ', 'sea'], ['วังวน', 'sea'], ['คราเคน', 'sea'], ['ธาลาสซา', 'sea'],
+  ['น้ำ', 'sea'], ['ปะการัง', 'sea'], ['ต้นไม้โลก', 'nature'], ['ธรรมชาติ', 'nature'], ['ราก', 'nature'], ['เห็ด', 'nature'], ['จันทรา', 'moon'], ['แสง', 'light'], ['บรรพบุรุษ', 'ancestor'],
+  ['เตาหลอม', 'ancestor'], ['ศิลา', 'ancestor'], ['เสียงกระซิบ', 'moon'], ['เพลิง', 'dragon'], ['พายุ', 'dragon'], ['ราหู', 'dragon'], ['ไม่มี', 'none'], ['เฟือง', 'none'],
+];
+/** the people and faith of a documented country, in the sim's own terms */
+function readDoc(d: CountryDoc, fallbackRaces: string[]) {
+  const races: { race: string; w: number }[] = [];
+  d.races.split(/\s+/).forEach((tok, i) => {
+    const hit = RACE_KW.find(([k]) => tok.includes(k));
+    if (!hit) return;
+    const w = Math.max(3, 10 - i * 2);
+    const ex = races.find((r) => r.race === hit[1]);
+    if (ex) ex.w += w; else races.push({ race: hit[1], w });
+  });
+  if (!races.length) for (const r of new Set(fallbackRaces)) races.push({ race: r, w: 4 });
+  races.sort((a, b) => b.w - a.w);
+  const rel = RELIGION_KW.find(([k]) => d.religion.includes(k));
+  return { races, religion: rel ? rel[1] : '' };
+}
+
+/** where the docs put a country on its continent (map units); everything else is spread out around them */
+const SEED_HINTS: Record<string, [number, number]> = {
+  'AL-01': [722, 440], 'AL-20': [770, 318], 'AL-28': [960, 400], 'AL-04': [680, 590], 'AL-17': [800, 520], 'AL-02': [640, 480],
+  'SV-01': [262, 280], 'SV-02': [350, 290], 'SV-03': [395, 330], 'SV-04': [150, 300], 'SV-05': [130, 250], 'SV-06': [330, 190], 'SV-07': [250, 165], 'SV-08': [225, 405], 'SV-09': [170, 385],
+  'SV-10': [255, 225], 'SV-11': [300, 240], 'SV-12': [265, 335], 'SV-13': [225, 320], 'SV-14': [345, 235], 'SV-15': [310, 330],
+  'MK-01': [1150, 250], 'MK-04': [1112, 300], 'MK-09': [1280, 200], 'MK-07': [1250, 170], 'MK-13': [1060, 255],
+  'KD-10': [935, 755], 'KD-08': [780, 805], 'KD-01': [1000, 725],
+  'NB-08': [705, 130], 'NB-01': [770, 120], 'NB-12': [780, 75], 'NB-09': [900, 150], 'NB-03': [620, 160],
+  'SH-03': [1285, 500], 'SH-17': [1260, 560], 'SH-01': [1200, 650], 'SH-15': [1130, 500],
+  'MH-10': [215, 640], 'MH-08': [335, 725], 'MH-11': [450, 800],
+};
 
 const HISTORY_TEMPLATES = [
   'เมื่อ {n} ปีก่อน มังกรเผาเมืองหลวงจนวอด แต่ชาวเมืองสร้างใหม่บนเถ้าถ่าน',
@@ -74,7 +116,6 @@ export interface WorldMap {
   w: number;
   h: number;
   country: Int16Array; // -1 = ocean
-  height: Float32Array;
   countries: Country[];
   towns: Town[];
 }
@@ -87,30 +128,15 @@ export function generateWorld(): WorldMap {
   const noise = makeNoise(rng.int(1, 1e9));
   const noise2 = makeNoise(rng.int(1, 1e9));
   const W = MAP_W, H = MAP_H;
-  const contOf = new Int8Array(W * H).fill(-1);
-  const height = new Float32Array(W * H);
-
   const S = SCALE;
-  for (let y = 0; y < H; y++) {
-    for (let x = 0; x < W; x++) {
-      let best = -9, bi = -1;
-      // noise once per tile (two variants alternate between continents) keeps the bigger map fast to build
-      const nA = noise(x / (14 * S), y / (14 * S)) - 0.5, nB = noise(x / (14 * S) + 31, y / (14 * S) + 17) - 0.5;
-      const n2 = noise2(x / (5 * S), y / (5 * S)) - 0.5;
-      const fine = noise2(x / 4 + 70, y / 4, 2) - 0.5;
-      for (const c of CONTINENTS) {
-        const dx = (x - c.cx * S) / (c.r * S * 1.25), dy = (y - c.cy * S) / (c.r * S);
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d > 2.2) continue;
-        const isl = c.climates[0] === 'islands';
-        const n = c.id % 2 ? nA : nB;
-        const v = 1 - d + n * 0.9 + (isl ? n2 * 1.1 - 0.12 : n2 * 0.25) + fine * 0.08;
-        if (v > best) { best = v; bi = c.id; }
-      }
-      const i = y * W + x;
-      height[i] = best;
-      if (best > 0.08) contOf[i] = bi;
-    }
+
+  // which landmass (src/world/geo.ts) owns each tile; the map is painted from the same field
+  const tileDef = new Int16Array(W * H).fill(-1);
+  const contOf = new Int8Array(W * H).fill(-1);
+  const tilePerMU = 8 / MU_TO_WU;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const d = ownerAt((x + 0.5) * tilePerMU, (y + 0.5) * tilePerMU);
+    if (d >= 0) { tileDef[y * W + x] = d; contOf[y * W + x] = DEFS[d].cont; }
   }
 
   const country = new Int16Array(W * H).fill(-1);
@@ -121,46 +147,62 @@ export function generateWorld(): WorldMap {
     const tiles: number[] = [];
     for (let i = 0; i < W * H; i++) if (contOf[i] === cont.id) tiles.push(i);
     const seeds: number[] = [];
-    let minD = Math.sqrt(tiles.length / cont.count) * 0.8;
-    let guard = 0;
-    while (seeds.length < cont.count && guard < 20000) {
-      guard++;
-      if (guard % 2000 === 0) minD *= 0.8;
-      const t = rng.pick(tiles);
-      const tx = t % W, ty = Math.floor(t / W);
-      if (seeds.every((s) => Math.hypot((s % W) - tx, Math.floor(s / W) - ty) >= minD)) seeds.push(t);
+    const docs = COUNTRY_DOCS.filter((d) => d.cont === cont.id);
+    const docOrder: CountryDoc[] = [];
+    // archipelagos (Azgar, Nerea): every island is one country, in the order of the docs
+    const archipelago = DEFS.some((d) => d.cont === cont.id && d.country !== undefined);
+    if (archipelago) {
+      for (let k = 0; k < cont.count; k++) {
+        const own = tiles.filter((t) => DEFS[tileDef[t]].country === k);
+        if (!own.length) { seeds.push(rng.pick(tiles)); continue; }
+        let mx = 0, my = 0;
+        for (const t of own) { mx += t % W; my += Math.floor(t / W); }
+        mx /= own.length; my /= own.length;
+        seeds.push(own.reduce((best, t) => (Math.hypot((t % W) - mx, Math.floor(t / W) - my) < Math.hypot((best % W) - mx, Math.floor(best / W) - my) ? t : best)));
+      }
+    } else {
+      // documented places first, at the spot the docs give them
+      for (const d of docs) {
+        const h = SEED_HINTS[d.code];
+        if (!h) continue;
+        const gx = (h[0] * MU_TO_WU) / 8, gy = (h[1] * MU_TO_WU) / 8;
+        let best = -1, bd = Infinity;
+        for (const t of tiles) { const dd = Math.hypot((t % W) - gx, Math.floor(t / W) - gy); if (dd < bd) { bd = dd; best = t; } }
+        if (best >= 0 && seeds.every((q) => Math.hypot((q % W) - (best % W), Math.floor(q / W) - Math.floor(best / W)) >= 5)) { seeds.push(best); docOrder.push(d); }
+      }
+      let minD = Math.sqrt(tiles.length / cont.count) * 0.8;
+      let guard = 0;
+      while (seeds.length < cont.count && guard < 20000) {
+        guard++;
+        if (guard % 2000 === 0) minD *= 0.8;
+        const t = rng.pick(tiles);
+        const tx = t % W, ty = Math.floor(t / W);
+        if (seeds.every((s) => Math.hypot((s % W) - tx, Math.floor(s / W) - ty) >= minD)) seeds.push(t);
+      }
     }
+    if (archipelago) docOrder.push(...docs);
+    else docOrder.push(...rng.shuffle(docs.filter((d) => !docOrder.includes(d))));
     const baseId = countries.length;
     seeds.forEach((s, k) => {
+      const doc = docOrder[k];
       const id = baseId + k;
       const sx = s % W, sy = Math.floor(s / W);
       const climate = cont.climates.length === 1 ? cont.climates[0] : cont.climates[Math.min(cont.climates.length - 1, Math.floor(noise2(sx / (20 * S) + 50, sy / (20 * S)) * cont.climates.length * 1.15))];
-      const races: { race: string; w: number }[] = [];
-      const counts: Record<string, number> = {};
-      for (const r of cont.races) counts[r] = (counts[r] || 0) + 1;
-      for (const [race, c] of Object.entries(counts)) races.push({ race, w: c * rng.float(0.4, 1.6) * 10 });
-      if (rng.chance(0.15)) races.push({ race: rng.pick(['human', 'elf', 'dwarf', 'orc', 'beast', 'halfling', 'slime', 'fae']), w: 3 });
-      races.sort((a, b) => b.w - a.w);
+      const parsed = readDoc(doc, cont.races);
+      const races = parsed.races;
       const major = races[0].race;
-      const gov = rng.chance(0.6) ? rng.pick(GOV_BY_RACE[major] || GOVS) : rng.pick(GOVS);
-      let name = '';
-      for (let tries = 0; tries < 50; tries++) {
-        const syl = NAME_SYL[cont.id];
-        const mid = rng.chance(0.45) ? rng.pick(syl[1]).replace('-', '') : '';
-        name = rng.pick(syl[0]) + mid + rng.pick(syl[2]);
-        if (!usedNames.has(name)) break;
-      }
-      usedNames.add(name);
-      const history = rng.sample(HISTORY_TEMPLATES, 2).map((h) => h.replace('{n}', String(rng.int(30, 900))).replace('{k}', String(rng.int(2, 12))));
+      const religion = parsed.religion || rng.weighted(RELIGION_BY_RACE[major] || [['none', 1]], (x) => x[1])![0];
+      const history = [doc.story, doc.hook].filter(Boolean);
       countries.push({
-        id, name: `${gov}${name}`, continent: cont.id, climate, gov, races,
+        id, code: doc.code, title: doc.title, name: doc.name, continent: cont.id, climate, gov: doc.gov, races,
         danger: Math.max(1, Math.min(5, climateById(climate).danger + rng.int(-1, 1))),
         cx: sx, cy: sy, tiles: 0, neighbors: [], flags: [], warWith: null, until: {}, history,
-        religion: rng.weighted(RELIGION_BY_RACE[major] || [['none', 1]], (x) => x[1])![0], towns: [],
+        religion, towns: [],
       });
     });
     // Voronoi with warped distance
     for (const t of tiles) {
+      if (archipelago) { country[t] = baseId + DEFS[tileDef[t]].country!; continue; }
       const tx = t % W, ty = Math.floor(t / W);
       let best = Infinity, bi = baseId;
       const wx = (noise(tx / (9 * S) + 100, ty / (9 * S)) - 0.5) * 10 * S, wy = (noise(tx / (9 * S), ty / (9 * S) + 100) - 0.5) * 10 * S;
@@ -219,11 +261,23 @@ export function generateWorld(): WorldMap {
     const n = 1 + Math.max(4, Math.min(16, Math.round(c.tiles / 100)));
     const syl = NAME_SYL[c.continent];
     const used = new Set<string>();
+    // keep towns a tile away from the shore so they never sit on the drawn coastline
+    const inland = (x: number, y: number) => { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (country[(y + dy) * W + x + dx] !== c.id) return false; return true; };
+    if (!inland(c.cx, c.cy)) {
+      let bd = Infinity;
+      for (const i of tilesOf[c.id]) {
+        const x = i % W, y = Math.floor(i / W);
+        if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1 || !inland(x, y)) continue;
+        const d = Math.hypot(x - c.cx, y - c.cy);
+        if (d < bd) { bd = d; c.cx = x; c.cy = y; }
+      }
+    }
     const pts: [number, number][] = [[c.cx, c.cy]];
     for (let tries = 0; pts.length < n && tries < 1200; tries++) {
       const t = rng.pick(tilesOf[c.id]);
       const x = t % W, y = Math.floor(t / W);
-      if (pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 9)) pts.push([x, y]);
+      if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
+      if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 11)) pts.push([x, y]);
     }
     pts.forEach(([x, y], k) => {
       let name = '';
@@ -237,8 +291,6 @@ export function generateWorld(): WorldMap {
       c.towns.push(town.id);
     });
   }
-  cached = { w: W, h: H, country, height, countries, towns };
+  cached = { w: W, h: H, country, countries, towns };
   return cached;
 }
-
-export const climateCount = () => CLIMATES.length;

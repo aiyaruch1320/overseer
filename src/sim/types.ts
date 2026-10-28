@@ -165,6 +165,8 @@ export interface Character {
 
 export interface Country {
   id: number;
+  code: string; // docs/countries id, e.g. SV-01
+  title: string; // docs subtitle, e.g. นครลำต้น
   name: string;
   continent: number;
   climate: string;
@@ -191,9 +193,6 @@ export interface Continent {
   climates: string[];
   races: string[];
   count: number;
-  cx: number;
-  cy: number;
-  r: number;
 }
 
 export interface DreamBias {
