@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แผนภาพความเป็นไปได้ของเรื่องราว</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --panel: #ffffff; --ink: #1f2430; --muted: #646b7a; --line: #d9d5ca;
+    --good: #1f8a5b; --bad: #c2403a; --accent: #3b5bdb; --lane-alt: #efece4; --warn: #d9902f;
+    --shadow: 0 1px 2px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15171d; --panel: #1e212a; --ink: #e9e7e1; --muted: #9aa0ae; --line: #323746;
+      --good: #4cc38a; --bad: #ff7b72; --accent: #8fa6ff; --lane-alt: #1a1d25; --warn: #f0b34d;
+      --shadow: 0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171d; --panel: #1e212a; --ink: #e9e7e1; --muted: #9aa0ae; --line: #323746;
+    --good: #4cc38a; --bad: #ff7b72; --accent: #8fa6ff; --lane-alt: #1a1d25; --warn: #f0b34d;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: "Sarabun", "Noto Sans Thai", "Thonburi", "Tahoma", system-ui, sans-serif; line-height: 1.5; }
+  header { padding: 18px 16px 6px; max-width: 1600px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  .sub { margin: 0; color: var(--muted); font-size: 14px; max-width: 90ch; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; padding: 12px 16px 32px; max-width: 1600px; margin: 0 auto; align-items: start; }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+  .toolbar { padding: 10px 12px; margin-bottom: 12px; display: grid; gap: 8px; font-size: 13px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+  .row label { color: var(--muted); font-size: 12.5px; }
+  .legend { color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .legend i { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--muted); vertical-align: middle; margin-right: 5px; }
+  .legend i.rnd { border-top-style: dotted; border-top-width: 3px; }
+  .legend i.blk { border-top-style: dashed; border-top-color: var(--bad); }
+  .legend i.cho { border-top-color: var(--good); border-top-width: 3px; }
+  .legend i.drv { border-top-color: var(--muted); opacity: .5; border-top-width: 1px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip, .act, .btn { font: inherit; font-size: 12.5px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+  .chip[aria-pressed="true"], .act[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  input[type="search"], select { font: inherit; font-size: 13px; padding: 5px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); min-width: 220px; }
+  input[type="range"] { vertical-align: middle; width: 110px; }
+  .stage { overflow: auto; max-height: 76vh; position: relative; }
+  #canvas { position: relative; }
+  .lane { position: absolute; left: 0; right: 0; border-bottom: 1px solid var(--line); }
+  .lane.alt { background: var(--lane-alt); }
+  .lane .lname { position: absolute; left: 10px; top: 4px; font-size: 11.5px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--muted); z-index: 3; }
+  .colhead { position: absolute; top: 0; font-size: 11px; color: var(--muted); text-align: center; border-left: 1px dashed var(--line); pointer-events: none; }
+  .colhead span { position: sticky; top: 0; display: block; padding: 3px 0; background: var(--bg); z-index: 4; font-weight: 600; }
+  svg#edges { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; }
+  .node { position: absolute; z-index: 2; width: 200px; height: 58px; text-align: left; padding: 6px 10px 6px 12px; border: 1px solid var(--line); border-left-width: 5px; border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; font: inherit; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .node:hover { outline: 2px solid var(--accent); }
+  .node:focus-visible { outline: 3px solid var(--accent); }
+  .node .nid { font-size: 10.5px; color: var(--muted); letter-spacing: .03em; }
+  .node .nt { font-size: 12.5px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .node.start { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .node.start .nid { color: #dfe6ff; }
+  .node.big { border-width: 2px; border-left-width: 5px; }
+  .node.minor { opacity: .92; }
+  .node.hope { border-style: dashed; }
+  .node.end { border-width: 2px; border-left-width: 5px; background: var(--lane-alt); }
+  .node.seed { box-shadow: 0 0 0 3px var(--warn); }
+  .node.sel { outline: 3px solid var(--accent); }
+  .node.rel-out { outline: 2px solid var(--good); }
+  .node.rel-in { outline: 2px solid var(--warn); }
+  .node.dim { opacity: .25; }
+  .edge path.line { fill: none; stroke: var(--c); stroke-width: 1.4; opacity: .4; }
+  .edge path.head { fill: var(--c); stroke: none; opacity: .5; }
+  .edge.derived path.line { stroke-width: 1; opacity: .22; }
+  .edge.derived path.head { opacity: .3; }
+  .edge.random path.line { stroke-dasharray: 2 4; stroke-width: 2; }
+  .edge.block { --c: var(--bad); }
+  .edge.block path.line { stroke-dasharray: 7 4; }
+  .edge.choice path.line { stroke-width: 2.2; opacity: .6; }
+  .edge.on path.line { opacity: 1; stroke-width: 2.6; }
+  .edge.on path.head { opacity: 1; }
+  .edge.in.on { --c: var(--warn); }
+  .edge.boost { --c: var(--good); }
+  .edge.boost.on path.line { stroke-width: 3.4; }
+  .edge.reduce { --c: var(--bad); }
+  .edge.reduce path.line { stroke-dasharray: 3 3; }
+  .edge.faint path.line, .edge.faint path.head { opacity: .05; }
+  .elabel rect { fill: var(--panel); stroke: var(--line); }
+  .elabel text { fill: var(--ink); font-size: 11.5px; }
+  aside.card { padding: 14px; position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; }
+  @media (max-width: 960px) { aside.card { position: static; max-height: none; } }
+  aside h2 { margin: 0 0 4px; font-size: 16px; }
+  aside h3 { margin: 14px 0 6px; font-size: 12.5px; color: var(--muted); letter-spacing: .03em; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .badge { font-size: 11.5px; border: 1px solid var(--line); padding: 1px 8px; border-radius: 999px; color: var(--muted); }
+  aside p { margin: 4px 0; font-size: 13.5px; }
+  aside dl { margin: 0; font-size: 13.5px; }
+  aside dt { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  aside dd { margin: 0; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .links button { width: 100%; text-align: left; font: inherit; font-size: 13px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; }
+  .links button:hover { border-color: var(--accent); }
+  .links .k { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 999px; margin-right: 6px; border: 1px solid var(--line); color: var(--muted); }
+  .links .k.b { color: var(--bad); border-color: var(--bad); }
+  .links .k.c { color: var(--good); border-color: var(--good); }
+  .links .lb { color: var(--muted); display: block; margin-top: 2px; font-size: 12.5px; }
+  .links .hid { opacity: .6; }
+  .actions { display: grid; gap: 6px; }
+  .act { text-align: left; border-radius: 8px; padding: 6px 10px; }
+  .hint { font-size: 12.5px; color: var(--muted); }
+  .theme { margin-left: auto; }
+  .start { padding: 18px; }
+  .start h2 { margin: 0 0 4px; font-size: 18px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin: 12px 0; }
+  .pcard { text-align: left; font: inherit; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+  .pcard:hover { border-color: var(--accent); }
+  .pcard strong { display: block; font-size: 14px; }
+  .pcard span { font-size: 12.5px; color: var(--muted); }
+  .pcard em { font-style: normal; font-size: 11.5px; color: var(--accent); }
+  .empty { padding: 30px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>แผนภาพความเป็นไปได้ของเรื่องราว</h1>
+  <p class="sub">เหตุการณ์ทุกรายการในคลังอยู่ในแผนภาพนี้ กล่องคือเหตุการณ์ เส้นคือความเป็นไปได้ที่จะไปต่อ เลือกเส้นทางที่อยากดูก่อน แล้วขยายหรือย้อนดูต้นเหตุได้ การกระทำของตัวละครหลักทางขวาเปลี่ยนน้ำหนักของบางเส้น</p>
+</header>
+<div class="layout">
+  <section>
+    <div class="card toolbar">
+      <div class="row">
+        <label for="search">เริ่มจากเหตุการณ์</label>
+        <input type="search" id="search" list="evlist" placeholder="พิมพ์รหัสหรือชื่อ เช่น DR-01 หรือ ฟ้าถล่ม">
+        <datalist id="evlist"></datalist>
+        <label>ไปข้างหน้า <b id="fv">3</b> ชั้น <input type="range" id="fwd" min="0" max="8" value="3"></label>
+        <label>ย้อนกลับ <b id="bv">1</b> ชั้น <input type="range" id="bwd" min="0" max="5" value="1"></label>
+        <button class="btn" id="reset">เริ่มใหม่</button>
+        <button class="btn" id="allBtn">ดูทั้งหมด</button>
+        <button class="chip theme" id="themeBtn" aria-pressed="false">โหมดมืด</button>
+      </div>
+      <div class="chips" id="presetChips" aria-label="เส้นทาง"></div>
+      <div class="chips" id="laneChips" aria-label="กรองตามสาย"></div>
+      <div class="legend" aria-label="คำอธิบายเส้น">
+        <span><i></i>ไปต่อตามเงื่อนไข</span>
+        <span><i class="rnd"></i>สุ่มเกิด</span>
+        <span><i class="blk"></i>ลดโอกาส / ชะลอ</span>
+        <span><i class="cho"></i>ถูกเปลี่ยนน้ำหนักโดยการกระทำ</span>
+        <span><i class="drv"></i>ตามที่ระบุไว้ในรายการ (จางกว่า)</span>
+        <span id="count"></span>
+      </div>
+    </div>
+    <div class="card stage" id="stage">
+      <div class="start" id="start"></div>
+      <div id="canvas" hidden></div>
+    </div>
+  </section>
+  <aside class="card" id="panel" aria-live="polite"></aside>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const { lanes: LANES, actions: ACTIONS, presets: PRESETS, nodes: NODES, edges: EDGES } = DATA;
+
+const NW = 200, NH = 58, CW = 232, X0 = 20, ROWH = NH + 14, LTOP = 30, LBOT = 12, HEAD = 26;
+const NS = 'http://www.w3.org/2000/svg';
+const $ = (s) => document.querySelector(s);
+const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
+const OUT = {}, INN = {};
+NODES.forEach((n) => { OUT[n.id] = []; INN[n.id] = []; });
+EDGES.forEach((e) => { OUT[e.from].push(e); INN[e.to].push(e); });
+const KIND = { f: 'ไปต่อ', r: 'สุ่ม', b: 'ลดโอกาส' };
+
+const state = { presets: new Set(), extra: new Set(), f: 3, b: 1, all: false, sel: null, actions: new Set(), lanes: new Set(LANES.map((l) => l.id)), vis: new Set(), pos: {}, layers: 0 };
+
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+const laneColor = (id) => LANES[id].color;
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+// ---------- visibility ----------
+function reach(seeds, depth, adj, pick) {
+  const seen = new Map(seeds.map((s) => [s, 0])); let frontier = seeds.slice();
+  for (let d = 1; d <= depth; d++) {
+    const next = [];
+    for (const id of frontier) for (const e of adj[id]) { const t = e[pick]; if (!seen.has(t)) { seen.set(t, d); next.push(t); } }
+    frontier = next;
+  }
+  return seen;
+}
+function seedsList() {
+  const s = new Set(state.extra);
+  state.presets.forEach((pid) => PRESETS.find((p) => p.id === pid).seeds.forEach((x) => s.add(x)));
+  return [...s];
+}
+function computeVisible() {
+  if (state.all) return new Set(NODES.map((n) => n.id));
+  const seeds = seedsList();
+  if (!seeds.length) return new Set();
+  const v = new Set(seeds);
+  reach(seeds, state.f, OUT, 'to').forEach((_, id) => v.add(id));
+  reach(seeds, state.b, INN, 'from').forEach((_, id) => v.add(id));
+  return v;
+}
+
+// ---------- layout ----------
+function layout(vis) {
+  const hint = (id) => byId[id].hint || 1;
+  const layer = {}; vis.forEach((id) => { layer[id] = Math.max(0, hint(id) - 1); });
+  const es = EDGES.filter((e) => vis.has(e.from) && vis.has(e.to) && e.from !== e.to && hint(e.from) <= hint(e.to));
+  const pair = new Set(es.map((e) => e.from + '>' + e.to));
+  const usable = es.filter((e) => !(pair.has(e.to + '>' + e.from) && e.from > e.to));
+  for (let pass = 0; pass < 16; pass++) {
+    let ch = false;
+    for (const e of usable) if (layer[e.to] < layer[e.from] + 1 && layer[e.from] < 14) { layer[e.to] = layer[e.from] + 1; ch = true; }
+    if (!ch) break;
+  }
+  const used = [...new Set(Object.values(layer))].sort((a, b) => a - b);
+  const remap = Object.fromEntries(used.map((l, i) => [l, i]));
+  vis.forEach((id) => { layer[id] = remap[layer[id]]; });
+  state.layers = used.length;
+  const cells = {};
+  [...vis].sort((a, b) => hint(a) - hint(b) || a.localeCompare(b)).forEach((id) => {
+    const n = byId[id]; const k = n.lane + '|' + layer[id];
+    (cells[k] = cells[k] || []).push(id);
+  });
+  const laneRows = {};
+  Object.entries(cells).forEach(([k, list]) => { const l = +k.split('|')[0]; laneRows[l] = Math.max(laneRows[l] || 0, list.length); });
+  const laneIds = LANES.map((l) => l.id).filter((id) => laneRows[id]);
+  const laneTop = {}; let acc = HEAD;
+  laneIds.forEach((id) => { laneTop[id] = acc; acc += LTOP + laneRows[id] * ROWH + LBOT; });
+  const pos = {};
+  Object.entries(cells).forEach(([k, list]) => {
+    const [l, c] = k.split('|').map(Number);
+    list.forEach((id, r) => { pos[id] = { x: X0 + c * CW, y: laneTop[l] + LTOP + r * ROWH, col: c, lane: l }; });
+  });
+  return { pos, laneIds, laneTop, laneRows, w: X0 * 2 + used.length * CW, h: acc + 10 };
+}
+
+function pathFor(e, L) {
+  const a = L.pos[e.from], b = L.pos[e.to];
+  if (b.col > a.col) {
+    const x1 = a.x + NW, y1 = a.y + NH / 2, x2 = b.x, y2 = b.y + NH / 2;
+    const dx = Math.max(40, (x2 - x1) * 0.45);
+    return { d: `M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`, tip: [x2, y2, 'r'], mid: [(x1 + x2) / 2, (y1 + y2) / 2] };
+  }
+  if (b.col === a.col) {
+    const off = 8 + (e.i % 5) * 4;
+    const x1 = a.x + NW, y1 = a.y + NH / 2, gx = a.x + NW + off, x2 = b.x + NW, y2 = b.y + NH / 2;
+    return { d: `M${x1},${y1} H${gx} V${y2} H${x2}`, tip: [x2, y2, 'l'], mid: [gx, (y1 + y2) / 2] };
+  }
+  const x1 = a.x + NW / 2, y1 = a.y, x2 = b.x + NW / 2, y2 = b.y, up = 34 + (e.i % 4) * 6;
+  return { d: `M${x1},${y1} C${x1},${y1 - up} ${x2},${y2 - up} ${x2},${y2}`, tip: [x2, y2, 'd'], mid: [(x1 + x2) / 2, Math.min(y1, y2) - up * 0.7] };
+}
+function headPath(tx, ty, dir) {
+  if (dir === 'r') return `M${tx},${ty} L${tx - 9},${ty - 5} L${tx - 9},${ty + 5} Z`;
+  if (dir === 'l') return `M${tx},${ty} L${tx + 9},${ty - 5} L${tx + 9},${ty + 5} Z`;
+  return `M${tx},${ty} L${tx - 5},${ty - 9} L${tx + 5},${ty - 9} Z`;
+}
+
+// ---------- render ----------
+function nodeClass(n) {
+  if (n.id === 'START') return 'start';
+  if (n.mark === '⭐') return 'big';
+  if (n.group === 'HP') return 'hope';
+  if (n.group === 'END') return 'end';
+  if (n.mark === '○') return 'minor';
+  return '';
+}
+function render() {
+  state.vis = computeVisible();
+  const has = state.vis.size > 0;
+  $('#start').hidden = has; $('#canvas').hidden = !has;
+  if (state.sel && !state.vis.has(state.sel)) state.sel = null;
+  $('#count').textContent = has ? `แสดง ${state.vis.size} จาก ${NODES.length} เหตุการณ์` : '';
+  const canvas = $('#canvas'); canvas.innerHTML = '';
+  if (!has) { renderStart(); renderPanel(); return; }
+  const shown = new Set([...state.vis].filter((id) => state.lanes.has(byId[id].lane) || id === state.sel));
+  const L = layout(shown); state.pos = L.pos;
+  canvas.style.width = L.w + 'px'; canvas.style.height = L.h + 'px';
+  L.laneIds.forEach((id, i) => {
+    const d = document.createElement('div'); d.className = 'lane' + (i % 2 ? ' alt' : '');
+    d.style.top = L.laneTop[id] + 'px'; d.style.height = LTOP + L.laneRows[id] * ROWH + LBOT + 'px';
+    d.innerHTML = `<span class="lname" style="border-left:4px solid ${laneColor(id)}">${esc(LANES[id].name)}</span>`;
+    canvas.appendChild(d);
+  });
+  for (let c = 0; c < state.layers; c++) {
+    const d = document.createElement('div'); d.className = 'colhead'; d.style.left = X0 + c * CW - 8 + 'px'; d.style.width = CW + 'px'; d.style.height = L.h + 'px';
+    d.innerHTML = `<span>${c === 0 ? 'ต้นทาง' : 'ขั้นที่ ' + (c + 1)}</span>`; canvas.appendChild(d);
+  }
+  const svg = el('svg', { id: 'edges', width: L.w, height: L.h, viewBox: `0 0 ${L.w} ${L.h}` }); canvas.appendChild(svg);
+  const gE = el('g', {}, svg), gL = el('g', { id: 'gLabels' }, svg);
+  const seeds = new Set(seedsList());
+  EDGES.forEach((e) => {
+    e.g = null;
+    if (!shown.has(e.from) || !shown.has(e.to)) return;
+    const p = pathFor(e, L);
+    const cls = 'edge ' + ({ f: 'flow', r: 'random', b: 'block' }[e.kind]) + (e.bias ? ' choice' : '') + (e.derived ? ' derived' : '');
+    const g = el('g', { class: cls }, gE); g.style.setProperty('--c', laneColor(byId[e.from].lane));
+    el('path', { class: 'line', d: p.d }, g); el('path', { class: 'head', d: headPath(...p.tip) }, g);
+    el('title', {}, g).textContent = `${byId[e.from].title} → ${byId[e.to].title}: ${e.label}`;
+    e.g = g; e.mid = p.mid;
+  });
+  shown.forEach((id) => {
+    const n = byId[id], p = L.pos[id];
+    const b = document.createElement('button'); b.className = 'node ' + nodeClass(n) + (seeds.has(id) && !state.all ? ' seed' : '');
+    b.dataset.id = id; b.style.left = p.x + 'px'; b.style.top = p.y + 'px';
+    if (n.id !== 'START') b.style.borderLeftColor = laneColor(n.lane);
+    b.innerHTML = `<span class="nid">${esc(id)}${n.mark ? ' ' + n.mark : ''}</span><span class="nt">${esc(n.title)}</span>`;
+    b.addEventListener('click', () => select(id)); canvas.appendChild(b); n.el = b;
+  });
+  state.shown = shown;
+  highlight(); renderPanel();
+}
+
+function addLabel(e, cls) {
+  const [mx, my] = e.mid; const text = e.label.length > 34 ? e.label.slice(0, 33) + '…' : e.label;
+  const w = Math.min(260, text.length * 7.2 + 14);
+  const grp = el('g', { class: 'elabel ' + cls }, $('#gLabels'));
+  el('rect', { x: mx - w / 2, y: my - 11, width: w, height: 20, rx: 6 }, grp);
+  el('text', { x: mx, y: my + 4, 'text-anchor': 'middle' }, grp).textContent = text;
+}
+function highlight() {
+  const sel = state.sel, acts = state.actions, shown = state.shown;
+  const lg = $('#gLabels'); if (lg) lg.innerHTML = '';
+  const focus = !!sel || acts.size > 0; const rel = new Set();
+  EDGES.forEach((e) => {
+    const g = e.g; if (!g) return; g.classList.remove('on', 'in', 'out', 'boost', 'reduce', 'faint');
+    let on = false;
+    if (sel && (e.from === sel || e.to === sel)) { on = true; g.classList.add(e.from === sel ? 'out' : 'in'); rel.add(e.from); rel.add(e.to); addLabel(e, e.from === sel ? 'out' : 'in'); }
+    if (acts.size && e.bias) {
+      let s = 0; acts.forEach((a) => { if (e.bias[a]) s += e.bias[a]; });
+      if (s > 0) { on = true; g.classList.add('boost'); rel.add(e.from); rel.add(e.to); }
+      else if (s < 0) { on = true; g.classList.add('reduce'); rel.add(e.from); rel.add(e.to); }
+    }
+    if (on) g.classList.add('on'); else if (focus) g.classList.add('faint');
+  });
+  shown.forEach((id) => {
+    const b = byId[id].el; b.classList.remove('sel', 'rel-in', 'rel-out', 'dim');
+    if (id === sel) b.classList.add('sel');
+    else if (focus && !rel.has(id)) b.classList.add('dim');
+    else if (sel && rel.has(id)) b.classList.add(EDGES.some((e) => e.from === sel && e.to === id && e.g) ? 'rel-out' : 'rel-in');
+  });
+}
+
+function select(id) {
+  state.sel = state.sel === id ? null : id;
+  highlight(); renderPanel();
+  if (state.sel) {
+    const p = state.pos[state.sel], st = $('#stage');
+    if (p) st.scrollTo({ left: Math.max(0, p.x - st.clientWidth / 2 + NW / 2), top: Math.max(0, p.y - st.clientHeight / 2 + NH / 2), behavior: 'smooth' });
+  }
+}
+function focusOn(id) { // jump to any event, adding it as a start if hidden
+  if (!state.all && !state.vis.has(id)) { state.extra.add(id); render(); }
+  else if (state.lanes.has(byId[id].lane) === false) { state.lanes.add(byId[id].lane); syncChips(); render(); }
+  state.sel = null; select(id);
+}
+
+// ---------- panel ----------
+function linkList(list, dir) {
+  if (!list.length) return '<p class="hint">ไม่มี</p>';
+  return '<ul class="links">' + list.map((e) => {
+    const o = byId[e[dir]]; const shown = state.vis.has(o.id);
+    const bias = e.bias ? Object.entries(e.bias).map(([a, v]) => (v > 0 ? '↑ ' : '↓ ') + ACTIONS.find((x) => x.id === a).label).join(' · ') : '';
+    const k = e.bias ? `<span class="k c">${KIND[e.kind]}</span>` : e.kind === 'b' ? `<span class="k b">${KIND[e.kind]}</span>` : `<span class="k">${KIND[e.kind]}</span>`;
+    return `<li><button data-go="${o.id}" class="${shown ? '' : 'hid'}">${k}<strong>${esc(o.id)}</strong> ${esc(o.title)}<span class="lb">${esc(e.label)}${bias ? '<br>' + esc(bias) : ''}${shown ? '' : '<br>(ยังไม่แสดง กดเพื่อเพิ่ม)'}</span></button></li>`;
+  }).join('') + '</ul>';
+}
+function renderPanel() {
+  const p = $('#panel'); const n = state.sel ? byId[state.sel] : null; let h = '';
+  if (n) {
+    const outs = OUT[n.id], ins = INN[n.id];
+    h += `<h2>${esc(n.id)} · ${esc(n.title)}${n.mark ? ' ' + n.mark : ''}</h2><div class="badges"><span class="badge">${esc(LANES[n.lane].name)}</span>${n.extra ? `<span class="badge">${esc(n.extra)}</span>` : ''}</div>`;
+    h += '<dl>' + (n.cond ? `<dt>เงื่อนไข</dt><dd>${esc(n.cond)}</dd>` : '') + (n.what ? `<dt>เกิดอะไรขึ้น / ผลลัพธ์</dt><dd>${esc(n.what)}</dd>` : '') + (n.result ? `<dt>ผลถาวร / ผลที่ตามมา</dt><dd>${esc(n.result)}</dd>` : '') + '</dl>';
+    h += `<h3>ไปต่อได้ที่ (${outs.length})</h3>${linkList(outs, 'to')}<h3>มาจาก (${ins.length})</h3>${linkList(ins, 'from')}<p><button class="chip" id="clearSel">ล้างการเลือก</button></p>`;
+  } else if (!state.vis.size) {
+    h += '<h2>เริ่มจากตรงไหนดี</h2><p>เลือกเส้นทางด้านซ้ายหรือพิมพ์ค้นหาเหตุการณ์ แล้วแผนภาพจะแสดงเฉพาะเส้นทางนั้น กดขยายความลึกได้ทีหลัง</p>';
+  } else {
+    h += '<h2>วิธีอ่าน</h2><p>คลิกกล่องเพื่อดูว่าไปต่อได้ที่ไหน (ส้ม = มาจาก, สีของสาย = ไปต่อ) ป้ายบนเส้นคือเหตุผลของการไปต่อ ขอบเหลืองคือเหตุการณ์เริ่มต้นของเส้นทางที่เลือก</p><p class="hint">เส้นจางคือความเชื่อมที่ระบุไว้ในรายการเหตุการณ์ เส้นเข้มคือเส้นที่คัดไว้พร้อมน้ำหนักจากการกระทำ</p>';
+  }
+  h += `<h3>การกระทำของตัวละครหลัก</h3><p class="hint">เลือกได้หลายข้อ เส้นสีเขียว = ถูกดึงให้เกิดง่ายขึ้น เส้นสีแดงประ = ถูกกดให้เกิดยากลง (มีน้ำหนักเฉพาะเส้นที่คัดไว้)</p><div class="actions">` +
+    ACTIONS.map((a) => `<button class="act" aria-pressed="${state.actions.has(a.id)}" data-act="${a.id}">${esc(a.label)}</button>`).join('') + '</div>';
+  p.innerHTML = h;
+  p.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => focusOn(b.dataset.go)));
+  p.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => { const id = b.dataset.act; state.actions.has(id) ? state.actions.delete(id) : state.actions.add(id); highlight(); renderPanel(); }));
+  const c = $('#clearSel'); if (c) c.addEventListener('click', () => { state.sel = null; highlight(); renderPanel(); });
+}
+
+// ---------- start screen & controls ----------
+function renderStart() {
+  $('#start').innerHTML = '<h2>เลือกเส้นทางที่อยากดูก่อน</h2><p class="hint">แต่ละเส้นทางคือกลุ่มเหตุการณ์ที่ร้อยกัน กดเพื่อดูว่าไปต่อได้ที่ไหน หรือพิมพ์ค้นหาเหตุการณ์ด้านบน</p><div class="cards">' +
+    PRESETS.map((p) => `<button class="pcard" data-p="${p.id}"><strong>${esc(p.name)}</strong><span>${esc(p.desc)}</span><br><em>${p.seeds.length} จุดเริ่ม</em></button>`).join('') + '</div><button class="btn primary" id="startAll">ดูทั้งหมด (แน่นมาก)</button>';
+  document.querySelectorAll('#start [data-p]').forEach((b) => b.addEventListener('click', () => togglePreset(b.dataset.p, true)));
+  $('#startAll').addEventListener('click', () => { state.all = true; render(); syncChips(); });
+}
+function togglePreset(id, solo) {
+  const p = PRESETS.find((x) => x.id === id);
+  if (state.presets.has(id)) state.presets.delete(id);
+  else { if (solo && !state.presets.size) { state.f = p.f; state.b = p.b; $('#fwd').value = p.f; $('#bwd').value = p.b; $('#fv').textContent = p.f; $('#bv').textContent = p.b; } state.presets.add(id); }
+  state.all = false; render(); syncChips();
+}
+function syncChips() {
+  document.querySelectorAll('#presetChips .chip').forEach((c) => c.setAttribute('aria-pressed', String(state.presets.has(c.dataset.p))));
+  document.querySelectorAll('#laneChips .chip').forEach((c) => c.setAttribute('aria-pressed', String(state.lanes.has(+c.dataset.lane))));
+  $('#allBtn').textContent = state.all ? 'กลับไปเลือกเส้นทาง' : 'ดูทั้งหมด';
+}
+function initControls() {
+  const pc = $('#presetChips');
+  PRESETS.forEach((p) => { const c = document.createElement('button'); c.className = 'chip'; c.dataset.p = p.id; c.setAttribute('aria-pressed', 'false'); c.textContent = p.name; c.addEventListener('click', () => togglePreset(p.id, true)); pc.appendChild(c); });
+  const lc = $('#laneChips');
+  LANES.forEach((l) => { const c = document.createElement('button'); c.className = 'chip'; c.dataset.lane = l.id; c.setAttribute('aria-pressed', 'true'); c.innerHTML = `<span class="dot" style="background:${l.color}"></span>${esc(l.name.split(' (')[0])}`; c.addEventListener('click', () => { state.lanes.has(l.id) ? state.lanes.delete(l.id) : state.lanes.add(l.id); syncChips(); render(); }); lc.appendChild(c); });
+  $('#evlist').innerHTML = NODES.filter((n) => n.group !== 'VIRT').map((n) => `<option value="${esc(n.id + ' ' + n.title)}">`).join('');
+  $('#search').addEventListener('change', (ev) => {
+    const m = ev.target.value.trim().match(/^([A-Z]{2,3}-\d{2})/);
+    if (m && byId[m[1]]) { state.all = false; state.extra.add(m[1]); ev.target.value = ''; render(); syncChips(); state.sel = null; select(m[1]); }
+  });
+  const sync = () => { state.f = +$('#fwd').value; state.b = +$('#bwd').value; $('#fv').textContent = state.f; $('#bv').textContent = state.b; render(); };
+  $('#fwd').addEventListener('input', sync); $('#bwd').addEventListener('input', sync);
+  $('#reset').addEventListener('click', () => { state.presets.clear(); state.extra.clear(); state.all = false; state.sel = null; state.lanes = new Set(LANES.map((l) => l.id)); syncChips(); render(); });
+  $('#allBtn').addEventListener('click', () => { state.all = !state.all; syncChips(); render(); });
+}
+function themeInit() {
+  const btn = $('#themeBtn'); let t = null; try { t = localStorage.getItem('storymap-theme'); } catch (e) {}
+  if (t) document.documentElement.dataset.theme = t;
+  const isDark = () => document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+  const apply = () => { btn.setAttribute('aria-pressed', String(isDark())); btn.textContent = isDark() ? 'โหมดสว่าง' : 'โหมดมืด'; };
+  btn.addEventListener('click', () => { const next = isDark() ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('storymap-theme', next); } catch (e) {} apply(); });
+  apply();
+}
+initControls(); themeInit(); syncChips(); render();
+</script>
+</body>
+</html>
