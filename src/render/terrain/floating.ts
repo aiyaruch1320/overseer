@@ -60,7 +60,8 @@ export class Floating {
     for (const bl of DEFS[a1].blobs.slice(1)) this.chains.push([main.x, main.y, bl.x, bl.y]);
     // AZ-06 is a lake in the sky; its overflow falls toward NR-02
     const a6 = DEFS[defIndex('az06')].blobs[0];
-    this.fall = { x: a6.x + 6, y0: a6.y + a6.ry * 0.6, y1: a6.y + a6.ry + 62 };
+    const n2 = DEFS[defIndex('nr02')].blobs[0];
+    this.fall = { x: a6.x + 6, y0: a6.y + a6.ry * 0.6, y1: n2.y - n2.ry * 0.5 };
   }
 
   private visible(isl: Island, view: ViewRect, pad: number) {

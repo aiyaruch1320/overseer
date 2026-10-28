@@ -1,7 +1,7 @@
 // The shape of the world, authored from docs/continents.md §12 and docs/world-politics.md.
 // Everything is in "map units" (MU) on a 1600 × 900 sheet; 1 MU = 3.84 world units (the sim's tile grid is 768 × 432).
 // The same field function drives the sim's tile grid and the vector coastlines, so towns always sit on drawn land.
-import { makeNoise } from '../sim/rng';
+import { makeNoise, RNG } from '../sim/rng';
 
 export const MAP_MW = 1600;
 export const MAP_MH = 900;
@@ -24,6 +24,7 @@ export interface LandDef {
   zones?: Zone[];
   bridge?: boolean; // land neck between two continents (a ground route in the docs); never carved by its neighbours
   float?: boolean; // sky island
+  join?: boolean; // island that may touch its neighbours (allies share a shore): no channel is carved between it and another landmass
   amp?: number; // coastline roughness multiplier
 }
 
@@ -93,40 +94,45 @@ const BRIDGES: LandDef[] = [
   bridge('br_mor_kaz', CONT.kazdurum, 640, 812, 765, 802),
 ];
 
-// ---- Azgar: ten floating islands (AZ-01 … AZ-10) over the eastern sea ----
-const sky = (key: string, country: number, blobs: Blob[], zones: Zone[] = []): LandDef => ({ key, cont: CONT.azgar, country, blobs, zones, float: true, amp: 0.45 });
+// an island that is not a circle: a body with lobes along its long axis, the same every run
+const lumpy = (key: number, x: number, y: number, rx: number, ry: number, rot = 0, lobes = 2): Blob[] => {
+  const r = new RNG(key * 7717 + 31);
+  const out = [b(x, y, rx, ry, rot)];
+  for (let i = 0; i < lobes; i++) {
+    const a = rot + (i % 2 ? Math.PI : 0) + r.float(-0.9, 0.9), d = r.float(0.5, 0.95) * rx;
+    out.push(b(x + Math.cos(a) * d, y + Math.sin(a) * d * (ry / rx + 0.35), rx * r.float(0.38, 0.7), ry * r.float(0.55, 0.95), rot + r.float(-0.7, 0.7)));
+  }
+  return out;
+};
+
+// ---- Azgar: ten floating islands (AZ-01 … AZ-10) over the eastern sea; the throne's allies (AZ-02 … AZ-06) hang against AZ-01 or each other ----
+const sky = (key: string, country: number, blobs: Blob[], zones: Zone[] = []): LandDef => ({ key, cont: CONT.azgar, country, blobs, zones, float: true, join: true, amp: 0.8 });
 const AZGAR: LandDef[] = [
-  sky('az01', 0, [b(1478, 305, 78, 46), b(1425, 332, 22, 15), b(1537, 270, 20, 14), b(1405, 290, 14, 10), b(1548, 335, 16, 11), b(1445, 262, 15, 10), b(1500, 360, 14, 10)], [z('city', 1478, 305, 70, 40)]),
-  sky('az02', 1, [b(1522, 128, 40, 30)], [z('crater', 1522, 128, 18, 14), z('lava', 1522, 128, 22, 16)]),
-  sky('az03', 2, [b(1425, 195, 30, 21), b(1465, 215, 13, 9)]),
-  sky('az04', 3, [b(1418, 618, 38, 27)], [z('mountain', 1418, 618, 22, 16)]),
-  sky('az05', 4, [b(1535, 435, 38, 28)], [z('ruin', 1535, 435, 16, 12)]),
-  sky('az06', 5, [b(1472, 722, 38, 28)], [z('oasis', 1472, 722, 26, 18)]),
-  sky('az07', 6, [b(1402, 470, 52, 32), b(1445, 495, 20, 12)], [z('farm', 1402, 470, 44, 24)]),
-  sky('az08', 7, [b(1532, 572, 31, 23)], [z('badland', 1532, 572, 20, 14)]),
-  sky('az09', 8, [b(1380, 385, 27, 19)], [z('city', 1380, 385, 16, 11)]),
-  sky('az10', 9, [b(1410, 92, 26, 19)], [z('fog', 1410, 92, 24, 16)]),
+  sky('az01', 0, [b(1478, 305, 84, 48, -0.12), b(1420, 335, 26, 17, 0.3), b(1540, 268, 24, 15, -0.4), b(1402, 288, 16, 11), b(1552, 338, 19, 12), b(1442, 258, 17, 11), b(1498, 366, 17, 11)], [z('city', 1478, 305, 74, 42)]),
+  sky('az02', 1, lumpy(2, 1532, 205, 46, 28, 0.35, 3), [z('crater', 1532, 205, 20, 14), z('lava', 1532, 205, 24, 16)]),
+  sky('az03', 2, lumpy(3, 1424, 214, 40, 25, -0.45, 3)),
+  sky('az04', 3, lumpy(4, 1416, 600, 46, 28, 0.5, 3), [z('mountain', 1416, 600, 26, 18)]),
+  sky('az05', 4, lumpy(5, 1530, 420, 44, 27, -0.3, 3), [z('ruin', 1530, 420, 18, 13)]),
+  sky('az06', 5, lumpy(6, 1466, 668, 44, 29, 0.2, 3), [z('oasis', 1466, 668, 28, 19)]),
+  sky('az07', 6, lumpy(7, 1398, 480, 56, 30, 0.15, 3), [z('farm', 1398, 480, 48, 24)]),
+  sky('az08', 7, lumpy(8, 1534, 566, 38, 25, -0.5, 2), [z('badland', 1534, 566, 22, 15)]),
+  sky('az09', 8, lumpy(9, 1376, 384, 32, 21, 0.4, 2), [z('city', 1376, 384, 18, 12)]),
+  sky('az10', 9, lumpy(10, 1412, 100, 38, 24, -0.2, 2), [z('fog', 1412, 100, 26, 17)]),
 ];
 
-// ---- Nerea: sixteen island nations (NR-01 … NR-16): a ring around the inner sea and a chain to the south-east ----
-const isle = (n: number, blobs: Blob[], zones: Zone[] = []): LandDef => ({ key: `nr${String(n).padStart(2, '0')}`, cont: CONT.nerea, country: n - 1, blobs, zones, amp: 0.6 });
+// ---- Nerea: sixteen island nations (NR-01 … NR-16): a ring around the inner sea and a chain to the south-east.
+// Each bloc of docs/countries/04-nerea.md keeps to its own stretch of shore, and allied islands touch. ----
+const isle = (n: number, x: number, y: number, rx: number, ry: number, rot = 0, zones: Zone[] = [], lobes = 2): LandDef =>
+  ({ key: `nr${String(n).padStart(2, '0')}`, cont: CONT.nerea, country: n - 1, blobs: lumpy(100 + n, x, y, rx, ry, rot, lobes), zones, join: true, amp: 0.85 });
 const NEREA: LandDef[] = [
-  isle(1, [b(595, 692, 40, 27), b(625, 672, 20, 12)], [z('city', 595, 692, 26, 18)]),
-  isle(2, [b(1478, 812, 30, 20)], [z('oasis', 1478, 812, 14, 9)]),
-  isle(3, [b(523, 645, 24, 16)]),
-  isle(4, [b(500, 735, 22, 15)]),
-  isle(5, [b(560, 762, 20, 12)]),
-  isle(6, [b(655, 745, 24, 16)]),
-  isle(7, [b(692, 668, 26, 17), b(716, 684, 12, 9)]),
-  isle(8, [b(545, 612, 16, 10)]),
-  isle(9, [b(655, 622, 18, 12)]),
-  isle(10, [b(738, 735, 18, 12)]),
-  isle(11, [b(1148, 836, 24, 15)]),
-  isle(12, [b(1240, 806, 26, 17)]),
-  isle(13, [b(1325, 842, 28, 17)]),
-  isle(14, [b(1395, 806, 22, 14)]),
-  isle(15, [b(1198, 868, 22, 12)]),
-  isle(16, [b(1545, 840, 24, 15)]),
+  isle(1, 598, 692, 48, 32, 0.2, [z('city', 598, 692, 30, 20)], 3),        // the great port in the middle of the inner sea…
+  isle(10, 650, 738, 31, 21, -0.3),                                          // …with its port ally on the southern shore
+  isle(8, 523, 645, 31, 21, 0.6), isle(4, 557, 612, 24, 16, -0.2), isle(6, 612, 612, 28, 17, 0.1), // the deep-water bloc along the north-west arc
+  isle(7, 702, 664, 36, 22, 0.3), isle(9, 738, 716, 27, 17, -0.4),         // the river bloc on the east shore
+  isle(3, 498, 742, 29, 20, 0.2), isle(5, 553, 772, 27, 16, -0.3),         // pirates in the south-west
+  isle(11, 1150, 838, 32, 20, 0.1), isle(15, 1206, 862, 30, 16, 0.3), isle(12, 1252, 820, 35, 22, -0.2), // the chain: pearl isle, then the ports
+  isle(13, 1336, 846, 37, 22, 0.2), isle(14, 1402, 806, 30, 18, -0.3),
+  isle(2, 1478, 812, 35, 23, 0, [z('oasis', 1478, 812, 16, 10)]), isle(16, 1550, 846, 32, 20, 0.3), // the whale bloc beneath the sky
 ];
 
 export const DEFS: LandDef[] = [ALDRIA, SILVANEL, NEBULIA, MECHARIA, SAHARAN, KAZDURUM, MORHAVEN, ...BRIDGES, ...AZGAR, ...NEREA];
@@ -199,11 +205,11 @@ export function sampleLand(x: number, y: number): Sample {
     let v = m + n * (d.amp ?? 1);
     if (d.cuts) for (const c of d.cuts) { const cv = blobValue(c, px, py); if (cv > -6) v = Math.min(v, -cv * 1.1 + n * 0.25 + 1.5); }
     if (v > best) { best = v; bi = i; }
-    if (!d.bridge && !d.float) { if (v > c1) { c2 = c1; c1 = v; } else if (v > c2) c2 = v; }
+    if (!d.bridge && !d.float && !d.join) { if (v > c1) { c2 = c1; c1 = v; } else if (v > c2) c2 = v; }
   }
   // channels between separate landmasses (bridges and floating islands are exempt)
   let v = best;
-  if (bi >= 0 && !DEFS[bi].bridge && !DEFS[bi].float && c2 > -999) v = Math.min(v, c1 - c2 - SEPARATION);
+  if (bi >= 0 && !DEFS[bi].bridge && !DEFS[bi].float && !DEFS[bi].join && c2 > -999) v = Math.min(v, c1 - c2 - SEPARATION);
   out.v = v; out.def = bi;
   return out;
 }

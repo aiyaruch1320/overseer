@@ -181,7 +181,32 @@ export function generateWorld(): WorldMap {
       }
     }
     if (archipelago) docOrder.push(...docs);
-    else docOrder.push(...rng.shuffle(docs.filter((d) => !docOrder.includes(d))));
+    else {
+      // the rest of the countries take the remaining seeds so that each bloc of the docs (allies, a branch of the world tree) sits side by side
+      const slot: (CountryDoc | undefined)[] = seeds.map((_, k) => docOrder[k]);
+      const free = new Set(seeds.map((_, k) => k).filter((k) => !slot[k]));
+      const sp = (k: number): [number, number] => [seeds[k] % W, Math.floor(seeds[k] / W)];
+      const placedBloc = new Map<string, number[]>();
+      slot.forEach((d, k) => { if (d?.bloc) placedBloc.set(d.bloc, [...(placedBloc.get(d.bloc) || []), k]); });
+      const rest = docs.filter((d) => !slot.includes(d));
+      const blocSize = (d: CountryDoc) => (d.bloc ? docs.filter((o) => o.bloc === d.bloc).length : 0);
+      rest.sort((a, b) => blocSize(b) - blocSize(a) || (a.bloc < b.bloc ? -1 : a.bloc > b.bloc ? 1 : 0));
+      const loose = rng.shuffle(rest.filter((d) => !d.bloc)); // countries that belong to no bloc fill what is left, anywhere
+      for (const d of [...rest.filter((d) => d.bloc), ...loose]) {
+        if (!free.size) break;
+        const mates = d.bloc ? placedBloc.get(d.bloc) : undefined;
+        let pick = -1;
+        if (mates?.length) {
+          const cx = mates.reduce((a, k) => a + sp(k)[0], 0) / mates.length, cy = mates.reduce((a, k) => a + sp(k)[1], 0) / mates.length;
+          let bd = Infinity;
+          for (const k of free) { const dd = Math.hypot(sp(k)[0] - cx, sp(k)[1] - cy); if (dd < bd) { bd = dd; pick = k; } }
+        } else pick = rng.pick([...free]);
+        free.delete(pick); slot[pick] = d;
+        if (d.bloc) placedBloc.set(d.bloc, [...(placedBloc.get(d.bloc) || []), pick]);
+      }
+      docOrder.length = 0;
+      docOrder.push(...(slot.filter(Boolean) as CountryDoc[]));
+    }
     const baseId = countries.length;
     seeds.forEach((s, k) => {
       const doc = docOrder[k];
@@ -200,19 +225,65 @@ export function generateWorld(): WorldMap {
         religion, towns: [],
       });
     });
-    // Voronoi with warped distance
+    // Voronoi with warped distance: every country is stretched along an axis of its own and weighted by how big its government is,
+    // so borders are not circles around a point; allies, empires and city-states take shapes and sizes of their own
+    const r0 = Math.sqrt(tiles.length / Math.max(1, seeds.length));
+    const shape = seeds.map((_, k) => {
+      const d = docOrder[k];
+      const gov = d ? d.gov : '';
+      const big = /จักรวรรดิ|มหา|อาณาจักร/.test(gov) ? 0.16 : /นครรัฐ|นคร|เมืองอิสระ/.test(gov) ? -0.08 : 0;
+      return { ang: rng.float(0, Math.PI), stretch: rng.float(1, 1.75), w: (big + rng.float(-0.09, 0.09)) * r0 };
+    });
     for (const t of tiles) {
       if (archipelago) { country[t] = baseId + DEFS[tileDef[t]].country!; continue; }
       const tx = t % W, ty = Math.floor(t / W);
       let best = Infinity, bi = baseId;
-      const wx = (noise(tx / (9 * S) + 100, ty / (9 * S)) - 0.5) * 10 * S, wy = (noise(tx / (9 * S), ty / (9 * S) + 100) - 0.5) * 10 * S;
+      const wx = (noise(tx / (9 * S) + 100, ty / (9 * S)) - 0.5) * 10 * S + (noise(tx / (26 * S) + 300, ty / (26 * S)) - 0.5) * 16 * S;
+      const wy = (noise(tx / (9 * S), ty / (9 * S) + 100) - 0.5) * 10 * S + (noise(tx / (26 * S), ty / (26 * S) + 300) - 0.5) * 16 * S;
       for (let k = 0; k < seeds.length; k++) {
-        const sd = seeds[k];
+        const sd = seeds[k], sh = shape[k];
         const ddx = (sd % W) - tx - wx, ddy = Math.floor(sd / W) - ty - wy;
-        const d = ddx * ddx + ddy * ddy;
+        const u = ddx * Math.cos(sh.ang) + ddy * Math.sin(sh.ang), v = (ddy * Math.cos(sh.ang) - ddx * Math.sin(sh.ang)) * sh.stretch;
+        const d = Math.hypot(u, v) - sh.w;
         if (d < best) { best = d; bi = baseId + k; }
       }
       country[t] = bi;
+    }
+    if (!archipelago) {
+      seeds.forEach((sd, k) => { country[sd] = baseId + k; });
+      // a country is one piece: stray fragments of the warp go to the neighbour they touch most
+      const seen = new Uint8Array(W * H);
+      const comps: { id: number; cells: number[] }[] = [];
+      for (const t0 of tiles) {
+        if (seen[t0]) continue;
+        const id = country[t0], cells: number[] = [t0];
+        seen[t0] = 1;
+        for (let i = 0; i < cells.length; i++) {
+          const c = cells[i], cx = c % W, cy = Math.floor(c / W);
+          for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+            const n = ny * W + nx;
+            if (!seen[n] && country[n] === id && contOf[n] === cont.id) { seen[n] = 1; cells.push(n); }
+          }
+        }
+        comps.push({ id, cells });
+      }
+      const biggest = new Map<number, number>();
+      for (const c of comps) if (c.cells.length > (biggest.get(c.id) ?? 0)) biggest.set(c.id, c.cells.length);
+      for (const c of comps) {
+        if (c.cells.length === biggest.get(c.id)) continue;
+        const votes = new Map<number, number>();
+        for (const cell of c.cells) for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+          const nx = (cell % W) + dx, ny = Math.floor(cell / W) + dy;
+          if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+          const o = country[ny * W + nx];
+          if (o >= 0 && o !== c.id && contOf[ny * W + nx] === cont.id) votes.set(o, (votes.get(o) || 0) + 1);
+        }
+        let win = -1, wv = 0;
+        for (const [o, v] of votes) if (v > wv) { wv = v; win = o; }
+        if (win >= 0) for (const cell of c.cells) country[cell] = win;
+      }
     }
   }
 
