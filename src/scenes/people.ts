@@ -3,10 +3,9 @@
 // a full pose set (walk cycle, work swings, sit, kneel, cheer, wave, talk, read, cast) by src/render/characters.
 import type Phaser from 'phaser';
 import { RNG, hashString } from '../sim/rng';
-import { type Look } from '../render/characters/kit';
+import { type Look, lookKey } from '../render/characters/kit';
 import { THEMES, themeOf, stageOf } from '../render/characters/themes';
 import { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD } from '../render/characters/pose';
-import { personTexture, lookKey } from '../render/characters/sprite';
 
 export { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD };
 export type { Look };
@@ -70,6 +69,7 @@ export function lookFor(seed: string, race: string, role: string, o: { climate?:
   if ((cl === 'tropical' || cl === 'islands') && outfit === 'tunic' && r.chance(0.45)) outfit = 'sarong';
   if ((cl === 'tropical' || cl === 'islands') && hat === '' && r.chance(0.3)) hat = 'flower';
   if (fem && !child && outfit === 'tunic' && r.chance(0.45)) outfit = 'dress';
+  if (th.dress && !child && r.chance(0.8)) outfit = r.pick(th.dress);
   if (ln?.outfit && CASUAL.concat(['tunic']).includes(outfit) && !child) outfit = ln.outfit;
   const beard = !fem && !child && !th.hairless && stage !== 'teen' && r.chance(th.bearded ?? 0) ? r.int(1, 4) : 0;
   const skins = ln?.skins || th.skins;
@@ -95,11 +95,6 @@ export { lookKey };
 
 /** the poses a person cycles through while standing about (a race breathes, flutters or glows its own way) */
 export const idleFrames = (L: Look): number[] => L.sig || themeOf(L.race).idle;
-
-// a strip of poses as a texture key (painted at the lowest resolution, the sprite upgrades itself when the camera comes close)
-export function personFrames(scene: Phaser.Scene, L: Look, _S = 1): string {
-  return personTexture(scene, L, 0);
-}
 
 // a wooden cradle with a baby in it (for the protagonist's first years), two rocking frames
 export function cradleTex(scene: Phaser.Scene, skin: number, S = 2): string {

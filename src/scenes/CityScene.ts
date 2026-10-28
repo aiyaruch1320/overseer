@@ -7,8 +7,8 @@ import { makeName } from '../sim/character';
 import type { Game } from '../sim/game';
 import { iconTex, raceTex } from './sprites';
 import { relRole, goalText } from '../sim/society';
-import { lookFor, heroLook, personFrames, cradleTex, idleFrames, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
-import { PersonImage } from '../render/characters/sprite';
+import { lookFor, heroLook, cradleTex, idleFrames, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
+import { PersonImage, personFrames } from '../render/characters/sprite';
 import { themeOf } from '../render/characters/themes';
 import { castForCountry } from '../data/cast';
 import { townLifeEvent, EMOTE, TOWN_PLACES, type LifeKind } from '../data/townlife';
@@ -196,13 +196,13 @@ export class CityScene extends Phaser.Scene {
         n--;
       }
     }
-    const fest = this.festival();
     // the people of docs/npcs live in their country's capital, each in a look designed for them (data/cast.ts, data/specials.ts)
     if (this.town.capital && co.code) for (const c of castForCountry(co.code)) {
       const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome() });
       per.goesHome = true; n--;
     }
     if (flags.includes('plague')) n = Math.round(n * 0.6);
+    const fest = this.festival();
     if (flags.includes('golden') || fest) n += 12;
     for (let i = 0; i < n; i++) {
       const race = this.rng.weighted(co.races, (r) => r.w)!.race;
@@ -310,6 +310,8 @@ export class CityScene extends Phaser.Scene {
       return;
     }
     if (p.job && this.rng.chance(0.85)) { this.doJob(p, p.job); return; }
+    const gz = themeOf(p.race).gesture; // a moment of their own people's habit: wings stretched, a hammer swung at nothing
+    if (gz && !p.hero && this.rng.chance(0.1)) { this.doAct(p, { frames: gz.frames, fps: gz.fps, fx: gz.fx as Anim['fx'] }, this.rng.float(2.5, 4.5)); return; }
     if (this.rng.chance(0.25)) { // stop and chat with a neighbour
       const near = this.npcs.filter((x) => x !== p && x.state !== 'locked' && !x.asleep && Math.hypot(x.root.x - here.x, x.root.y - here.y) < T * 12);
       const o = near.length ? this.rng.pick(near) : undefined;
@@ -755,7 +757,7 @@ export class CityScene extends Phaser.Scene {
     if (stage === 'infant') {
       // too small to walk: a cradle by the door, a parent watching over
       h.state = 'locked'; h.frozen = true;
-      h.img.setTexture(cradleTex(this, look.skin), undefined).setOrigin(0.5, 1);
+      h.img.setTexture(personFrames(this, { ...look, extra: [...(look.extra || []), 'cradle'] }, 1), POSE.idle).setOrigin(0.5, 1);
       this.tweens.killTweensOf(h.img);
       this.tweens.add({ targets: h.img, angle: { from: -4, to: 4 }, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
       const door = this.spot('home');

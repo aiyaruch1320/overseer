@@ -2,7 +2,7 @@
 // angle, depth all work) but its texture is an atlas of pose frames painted on demand at the resolution the camera needs. Zoomed out
 // it is a 20-pixel-wide atlas; zoomed in the same person is repainted at up to 8 times that, so details (buttons, eyes, runes) appear.
 import Phaser from 'phaser';
-import { FW, FH, FOOT, UNIT, type Look } from './kit';
+import { FW, FH, FOOT, UNIT, lookKey, type Look } from './kit';
 import { paintFrame } from './paint';
 import { FRAMES } from './pose';
 
@@ -11,11 +11,6 @@ export const LODS = [0.35, 0.7, 1.4, 2.8];
 const COLS = 7;
 const ORIGIN_Y = FOOT / FH;
 const MAX_BYTES = 150 * 1024 * 1024;
-
-export function lookKey(L: Look): string {
-  return [L.race, L.line || '', L.outfit, L.skin, L.hair, L.hairStyle, L.beard, L.eye, L.mark, L.build, +L.tall, L.cloth, L.cloth2, L.pattern, L.hat, L.tool,
-    L.stage || (L.child ? 'c' : L.elder ? 'e' : 'a'), +L.fem, L.accent ?? '', (L.extra || []).join('+'), L.role].join('_');
-}
 
 interface Atlas {
   key: string; look: Look; lod: number; ppu: number; fw: number; fh: number; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
@@ -145,4 +140,6 @@ export function personTexture(scene: Phaser.Scene, L: Look, lod = 0): string {
   paint(a, 0);
   return a.key;
 }
-export { FRAMES };
+/** a person at the default resolution, as a texture key (for code that only wants a key) */
+export const personFrames = (scene: Phaser.Scene, L: Look, _S = 1): string => personTexture(scene, L, 0);
+export { FRAMES, lookKey };

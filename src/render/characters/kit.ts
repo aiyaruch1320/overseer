@@ -119,3 +119,10 @@ export function ik(ax: number, ay: number, tx: number, ty: number, l1: number, l
 }
 /** a small seeded wobble so repeated shapes (cracks, fur) are not identical */
 export const jitter = (i: number, s = 1) => (((Math.sin(i * 12.9898 + s * 78.233) * 43758.5453) % 1) + 1) % 1;
+
+/** a string that is the same for two looks that paint the same */
+export function lookKey(L: Look): string {
+  return [L.race, L.line || '', L.outfit, L.skin, L.hair, L.hairStyle, L.beard, L.eye, L.mark, L.build, +L.tall, L.cloth, L.cloth2, L.pattern, L.hat, L.tool,
+    L.stage || (L.child ? 'c' : L.elder ? 'e' : 'a'), +L.fem, L.accent ?? '', (L.extra || []).join('+'), L.role].join('_');
+}
+

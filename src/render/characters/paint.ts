@@ -1,6 +1,6 @@
 // Paints one frame of one person as vector art. Everything is drawn in "units" (see kit.ts) and scaled to whatever resolution the
 // caller wants, so the same code gives the 14-pixel person walking in the street and the 600-pixel portrait in a card.
-import { poseOf, POSE } from './pose';
+import { poseOf, POSE, type Pose } from './pose';
 import { themeOf, type Line } from './themes';
 import {
   type Cx, type Look, FOOT, CX, FW, FH, stageOfLook, hex, rgba, mix, shade, lite, lineOf, INK, jitter, ik,
@@ -21,8 +21,19 @@ export function featuresOf(L: Look): Set<string> {
   return s;
 }
 
+// how a people carries itself: the heavy stamp (more bounce, a lean), the glide (almost none), the shamble (dragging), the float
+const GAIT_BOB: Record<string, number> = { normal: 1, stomp: 1.35, glide: 0.35, hop: 1.8, shamble: 0.7, float: 0.5 };
+function gaited(p: Pose, frame: number, gait: string): Pose {
+  if (gait === 'normal') return p;
+  const walking = (frame >= POSE.walk0 && frame <= POSE.walk7) || frame === POSE.carry1 || frame === POSE.carry2;
+  const q = { ...p };
+  if (walking) { q.bob = p.bob * GAIT_BOB[gait]; if (gait === 'shamble') { q.lean += 1.2; q.tilt += 0.03; } if (gait === 'stomp') q.sway *= 1.8; }
+  if (gait === 'float') q.hover += 2.6;
+  return q;
+}
+
 function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number): Cx {
-  const theme = themeOf(L.race), ln = L.line ? theme.lines[L.line] : undefined, stage = stageOfLook(L), P = poseOf(frame);
+  const theme = themeOf(L.race), ln = L.line ? theme.lines[L.line] : undefined, stage = stageOfLook(L), P = gaited(poseOf(frame), frame, theme.gait);
   const feats = featuresOf(L), st = ST[stage];
   const rs = ln?.scale ?? theme.scale;
   const sz = st.sz * rs * (L.tall && stage !== 'child' && stage !== 'infant' ? 1.04 : 1);
@@ -545,6 +556,14 @@ function infant(k: Cx) {
   // a baby sits on the ground wrapped in a small blanket, hands up
   const bx = CX + k.P.sway * 0.4, by = FOOT - 7;
   const blanket = L.cloth;
+  if (k.feats.has('cradle')) { // a wooden cradle on rockers: a high hood behind the head, planked sides and a blanket
+    const wood = 0x8a5a3a;
+    curve(c, hex(shade(wood, 0.6)), 1.8, bx - 16, FOOT - 0.5, bx, FOOT + 5, bx + 16, FOOT - 0.5);
+    c.beginPath(); c.moveTo(bx - 17, by - 16); c.quadraticCurveTo(bx - 17, by - 28, bx - 6, by - 28); c.lineTo(bx - 5, by - 6); c.lineTo(bx - 17, by - 3); c.closePath();
+    c.fillStyle = lin(c, bx - 17, 0, bx - 5, 0, [0, hex(lite(wood, 0.1))], [1, hex(shade(wood, 0.7))]); c.fill(); c.strokeStyle = hex(lineOf(wood)); c.lineWidth = 0.8; c.stroke();
+    poly(c, [bx - 16, by - 9, bx + 16, by - 9, bx + 12, FOOT - 1, bx - 12, FOOT - 1], lin(c, 0, by - 9, 0, FOOT, [0, hex(lite(wood, 0.15))], [1, hex(shade(wood, 0.75))]), hex(lineOf(wood)), 0.8);
+    for (let i = 1; i < 4; i++) stroke(c, rgba(shade(wood, 0.5), 0.5), 0.4, bx - 15 + i * 0.5, by - 9 + i * 2.6, bx + 15 - i * 0.5, by - 9 + i * 2.6);
+  }
   c.beginPath(); c.moveTo(bx - 9, FOOT - 1); c.bezierCurveTo(bx - 10, by - 6, bx - 5, by - 9, bx, by - 9); c.bezierCurveTo(bx + 5, by - 9, bx + 10, by - 6, bx + 9, FOOT - 1); c.quadraticCurveTo(bx, FOOT + 1.4, bx - 9, FOOT - 1); c.closePath();
   c.fillStyle = lin(c, bx - 9, 0, bx + 9, 0, [0, hex(lite(blanket, 0.25))], [1, hex(shade(blanket, 0.7))]); c.fill(); c.strokeStyle = hex(lineOf(blanket)); c.lineWidth = 0.8; c.stroke();
   for (let i = 0; i < 3; i++) curve(c, rgba(shade(blanket, 0.5), 0.4), 0.5, bx - 8, by - 4 + i * 2.4, bx, by - 3 + i * 2.4 + 1.2, bx + 8, by - 4 + i * 2.4);

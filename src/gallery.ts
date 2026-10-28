@@ -108,6 +108,13 @@ function boot() {
   if (q.get('seed')) st.seed = +q.get('seed')!;
   if (q.get('ppu')) { st.ppu = +q.get('ppu')!; $<HTMLInputElement>('ppu').value = String(st.ppu); }
   renderAll();
+  // ?sheet=mummy,ghoul&frame=2 puts those peoples side by side at the top, for comparing designs
+  const sheet = q.get('sheet');
+  if (sheet) {
+    const box = document.createElement('div'); box.className = 'row'; box.style.marginBottom = '12px';
+    for (const id of sheet.split(',')) if (THEMES[id]) box.append(fig(makeLook(id, +(q.get('age') || 35)), +(q.get('frame') || 0), st.ppu, THEMES[id].name));
+    document.querySelector('main')!.prepend(box);
+  }
   requestAnimationFrame(tick);
 }
 boot();
