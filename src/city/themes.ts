@@ -4,8 +4,9 @@ import { CONT } from '../world/geo';
 import { RNG, hashString } from '../sim/rng';
 import type { Country } from '../sim/types';
 import { flavorOf, type Special } from './flavor';
+import { mixC } from './draw';
 
-export type BStyle = 'gable' | 'dome' | 'hut' | 'aframe' | 'tree' | 'stone' | 'tent' | 'stilt' | 'brick' | 'spire' | 'forge' | 'mushroom' | 'keep';
+export type BStyle = 'gable' | 'dome' | 'hut' | 'aframe' | 'tree' | 'stone' | 'tent' | 'stilt' | 'brick' | 'spire' | 'forge' | 'mushroom' | 'keep' | 'terrace' | 'adobe' | 'carved' | 'boomtown' | 'burrow' | 'tower';
 export type TreeKind = 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none';
 export type Plan = 'grid' | 'organic' | 'radial' | 'canal';
 export type WallKind = 'stone' | 'palisade' | 'hedge' | 'iron' | 'none';
@@ -104,7 +105,7 @@ export function themeFor(co: Pick<Country, 'id' | 'code' | 'continent' | 'races'
   // roofs: a country keeps three of the continent's colours plus its own accent
   t.roofs = r.shuffle(t.roofs.slice()).slice(0, 3);
   const accent = r.pick(ACCENTS);
-  t.roofs.push(accent);
+  t.roofs.push(mixC(accent, t.roofs[0], 0.4)); // the accent is muted toward the continent's own roofs, so a skyline stays believable
   t.banner = [accent, r.pick(ACCENTS.filter((a) => a !== accent))];
   // the dominant people tilt the building shapes
   const pref = BY_RACE[major];

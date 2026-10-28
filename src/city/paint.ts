@@ -5,98 +5,8 @@ import type { Town } from '../sim/worldgen';
 import { T, CW, CH, Tile, type CityData, type BuildingRec } from './citygen';
 import type { Theme, TreeKind } from './themes';
 
-const hex = (c: number) => '#' + c.toString(16).padStart(6, '0');
-export const shadeC = (c: number, f: number) => ((Math.min(255, ((c >> 16) & 255) * f) << 16) | (Math.min(255, ((c >> 8) & 255) * f) << 8) | Math.min(255, (c & 255) * f)) >>> 0;
-const mixC = (a: number, b: number, t: number) => ((Math.round(((a >> 16) & 255) * (1 - t) + ((b >> 16) & 255) * t) << 16) | (Math.round(((a >> 8) & 255) * (1 - t) + ((b >> 8) & 255) * t) << 8) | Math.round((a & 255) * (1 - t) + (b & 255) * t)) >>> 0;
-type Col = number | string;
-
-interface Pen {
-  x2: CanvasRenderingContext2D; r: RNG;
-  fill(c: Col, x: number, y: number, w: number, h: number): void;
-  circ(c: Col, x: number, y: number, rad: number): void;
-  ell(c: Col, x: number, y: number, rx: number, ry: number): void;
-  poly(c: Col, pts: number[]): void;
-  line(c: Col, x0: number, y0: number, x1: number, y1: number, w?: number): void;
-}
-const col = (c: Col) => (typeof c === 'number' ? hex(c) : c);
-function makePen(x2: CanvasRenderingContext2D, r: RNG): Pen {
-  return {
-    x2, r,
-    fill: (c, x, y, w, h) => { x2.fillStyle = col(c); x2.fillRect(x, y, w, h); },
-    circ: (c, x, y, rad) => { x2.fillStyle = col(c); x2.beginPath(); x2.arc(x, y, rad, 0, Math.PI * 2); x2.fill(); },
-    ell: (c, x, y, rx, ry) => { x2.fillStyle = col(c); x2.beginPath(); x2.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); x2.fill(); },
-    poly: (c, pts) => { x2.fillStyle = col(c); x2.beginPath(); x2.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) x2.lineTo(pts[i], pts[i + 1]); x2.closePath(); x2.fill(); },
-    line: (c, x0, y0, x1, y1, w = 1) => { x2.strokeStyle = col(c); x2.lineWidth = w; x2.beginPath(); x2.moveTo(x0, y0); x2.lineTo(x1, y1); x2.stroke(); },
-  };
-}
-
-// ---------------------------------------------------------------- small pieces shared by many houses
-const FOUNDATION = 0x7a746a;
-function shadow(p: Pen, X: number, Y: number, W: number, H: number) { p.fill('rgba(0,0,0,0.16)', X + 6, Y + 8, W, H - 2); p.fill('rgba(0,0,0,0.2)', X + 3, Y + 5, W, H - 2); }
-function shingles(p: Pen, x: number, y: number, w: number, h: number, c: number) {
-  p.fill(c, x, y, w, h);
-  for (let j = 0, row = 0; j < h; j += 4, row++) {
-    p.fill(shadeC(c, 0.78), x, y + j + 3, w, 1);
-    for (let i = (row % 2) * 3; i < w; i += 6) p.fill(shadeC(c, 0.88), x + i, y + j, 1, 3);
-    if (row % 3 === 1) for (let i = 1 + (row % 2) * 2; i < w - 2; i += 9) p.fill(shadeC(c, 1.12), x + i, y + j + 1, 3, 1);
-  }
-  p.fill(shadeC(c, 1.22), x, y, w, 2);
-}
-function slates(p: Pen, x: number, y: number, w: number, h: number, c: number) {
-  p.fill(c, x, y, w, h);
-  for (let j = 0; j < h; j += 3) p.fill(shadeC(c, j % 6 ? 0.82 : 0.7), x, y + j + 2, w, 1);
-  for (let i = 0; i < w; i += 5) for (let j = 0; j < h; j += 6) p.fill(shadeC(c, 0.9), x + i + ((j / 3) % 2) * 2, y + j, 1, 3);
-  p.fill(shadeC(c, 1.25), x, y, w, 2);
-}
-function thatch(p: Pen, x: number, y: number, w: number, h: number, c: number) {
-  p.fill(c, x, y, w, h);
-  for (let i = 0; i < w; i += 3) p.fill(shadeC(c, i % 2 ? 0.85 : 1.1), x + i, y, 1, h);
-  for (let j = 4; j < h; j += 5) p.fill(shadeC(c, 0.7), x, y + j, w, 1);
-}
-function stoneWall(p: Pen, x: number, y: number, w: number, h: number, c: number, r: RNG) {
-  p.fill(c, x, y, w, h);
-  for (let j = 0; j < h; j += 5) {
-    p.fill(shadeC(c, 0.76), x, y + j + 4, w, 1);
-    for (let i = (j / 5 % 2) * 4; i < w; i += 8) p.fill(shadeC(c, 0.8), x + i, y + j, 1, 5);
-  }
-  for (let k = 0; k < 6; k++) p.fill(shadeC(c, r.float(0.9, 1.12)), x + r.int(0, Math.max(1, w - 4)), y + r.int(0, Math.max(1, h - 3)), 3, 2);
-}
-function planks(p: Pen, x: number, y: number, w: number, h: number, c: number) {
-  p.fill(c, x, y, w, h);
-  for (let i = 0; i < w; i += 4) p.fill(shadeC(c, 0.82), x + i, y, 1, h);
-  p.fill(shadeC(c, 1.1), x, y, w, 1);
-}
-function bricks(p: Pen, x: number, y: number, w: number, h: number, c: number) {
-  p.fill(c, x, y, w, h);
-  for (let j = 0; j < h; j += 4) { p.fill(shadeC(c, 0.72), x, y + j + 3, w, 1); for (let i = ((j / 4) % 2) * 4; i < w; i += 8) p.fill(shadeC(c, 0.8), x + i, y + j, 1, 3); }
-}
-function windowAt(p: Pen, x: number, y: number, w: number, h: number, glass: number, frame: number, shutter?: number, flowers = false, lit = false) {
-  if (shutter !== undefined) { p.fill(shutter, x - 3, y, 3, h); p.fill(shutter, x + w, y, 3, h); p.fill(shadeC(shutter, 0.7), x - 3, y, 1, h); p.fill(shadeC(shutter, 0.7), x + w + 2, y, 1, h); }
-  p.fill(frame, x - 1, y - 1, w + 2, h + 2);
-  p.fill(lit ? 0xffe6a0 : glass, x, y, w, h);
-  p.fill('rgba(255,255,255,0.45)', x, y, 2, Math.max(2, h - 3));
-  p.fill(frame, x + Math.floor(w / 2), y, 1, h);
-  p.fill(frame, x, y + Math.floor(h / 2), w, 1);
-  if (flowers) { p.fill(0x6a4a2a, x - 1, y + h + 1, w + 2, 2); for (let i = 0; i < w; i += 2) p.fill([0xe8607a, 0xf2c94c, 0xc07aff, 0xffffff][(i / 2) % 4], x + i, y + h, 1, 1); }
-}
-function archWindow(p: Pen, x: number, y: number, w: number, h: number, glass: number, frame: number) {
-  p.fill(frame, x - 1, y + 2, w + 2, h - 1); p.ell(frame, x + w / 2, y + 2, w / 2 + 1, 4); p.fill(glass, x, y + 3, w, h - 3); p.ell(glass, x + w / 2, y + 3, w / 2, 3);
-  p.fill('rgba(255,255,255,0.4)', x, y + 3, 1, h - 4);
-}
-function doorAt(p: Pen, x: number, y: number, w: number, h: number, c: number, arch = false, step = true) {
-  if (arch) { p.ell(shadeC(c, 0.6), x + w / 2, y + 2, w / 2 + 1, 4); p.fill(shadeC(c, 0.6), x - 1, y + 2, w + 2, h - 1); p.ell(c, x + w / 2, y + 2, w / 2, 3.5); }
-  else p.fill(shadeC(c, 0.6), x - 1, y - 1, w + 2, h + 1);
-  p.fill(c, x, y + (arch ? 2 : 0), w, h - (arch ? 2 : 0));
-  p.fill(shadeC(c, 0.75), x + Math.floor(w / 2), y + 2, 1, h - 2);
-  p.fill(0xf2c94c, x + w - 3, y + Math.floor(h / 2), 1, 1);
-  if (step) { p.fill(0x9a948a, x - 2, y + h, w + 4, 2); p.fill(0xb8b2a6, x - 2, y + h, w + 4, 1); }
-}
-function chimney(p: Pen, x: number, y: number, c: number) {
-  p.fill(shadeC(c, 0.8), x + 2, y + 2, 7, 12); p.fill(c, x, y, 9, 4); p.fill(shadeC(c, 0.6), x + 1, y + 1, 7, 2);
-  p.fill('rgba(60,50,45,0.35)', x + 2, y - 3, 5, 3);
-}
-function eaves(p: Pen, x: number, y: number, w: number) { p.fill('rgba(0,0,0,0.28)', x, y, w, 3); }
-function flag(p: Pen, x: number, y: number, a: number, b: number) { p.fill(0x4a3a22, x, y - 12, 1, 14); p.poly(a, [x + 1, y - 12, x + 9, y - 9, x + 1, y - 6]); p.fill(b, x + 1, y - 12, 2, 6); }
+import { NEW_STYLES, doorPath, fence } from './houses';
+import { type Pen, type Col, makePen, hex, shadeC, mixC, shadow, shingles, slates, thatch, stoneWall, planks, bricks, windowAt, archWindow, doorAt, chimney, eaves, flag } from './draw';
 
 // ---------------------------------------------------------------- building styles (X, Y, W, H in px; wall height F at the bottom)
 type Paint = (p: Pen, b: BuildingRec, th: Theme, X: number, Y: number, W: number, H: number) => void;
@@ -332,10 +242,10 @@ const treeHouse: Paint = (p, b, th, X, Y, W, H) => {
   for (let k = 0; k < 4; k++) p.circ('rgba(150,255,190,0.7)', X + r.int(2, W - 2), base + r.int(-1, 3), 1.2);
 };
 
-const STYLES: Record<string, Paint> = { gable: cottage, stone: stoneHouse, dome: domeHouse, hut: hutHouse, tent: tentHouse, aframe, tree: treeHouse, stilt: stiltHouse, brick: brickHouse, spire: spireHouse, forge: forgeHouse, mushroom: mushroomHouse, keep: keepHouse };
+export const STYLES: Record<string, Paint> = { ...NEW_STYLES, cottage, stone: stoneHouse, dome: domeHouse, hut: hutHouse, tent: tentHouse, aframe, tree: treeHouse, stilt: stiltHouse, brick: brickHouse, spire: spireHouse, forge: forgeHouse, mushroom: mushroomHouse, keep: keepHouse };
 
 // ---------------------------------------------------------------- the buildings a country is known for
-const SPECIAL: Record<string, Paint> = {
+export const SPECIAL: Record<string, Paint> = {
   cathedral(p, b, th, X, Y, W, H) {
     const r = p.r, F = Math.round(H * 0.5), RH = H - F, mid = X + W / 2;
     const wall = b.wall;
@@ -585,28 +495,60 @@ export function paintCity(d: CityData, town: Town) {
     for (let j = 0; j < 22; j += 4) fill(j % 8 ? 0xffffff : awnings[k % awnings.length], s.x + j, s.y, 4, 6);
   });
 
-  // buildings, back to front so a tall roof overlaps the street behind it
-  for (const b of [...buildings].sort((a, c) => a.y + a.h - (c.y + c.h))) {
-    const X = b.x * T, Y = b.y * T, Wd = b.w * T, Ht = b.h * T;
-    const br = new RNG(b.seed);
-    const bp = makePen(x2, br);
-    shadow(bp, X, Y, Wd, Ht);
+  // buildings, back to front so a tall roof overlaps the street behind it. Each is painted on its own sprite so that a light pass
+  // (sun from the upper left, shade lower right, a dark line where the walls meet the ground) can touch only the building.
+  const spr = document.createElement('canvas'), shd = document.createElement('canvas');
+  let sx2 = spr.getContext('2d')!;
+  const PADX = 28, PADT = 70, PADB = 22;
+  const DENSE = ['terrace', 'tower', 'boomtown', 'brick', 'spire', 'forge', 'keep', 'carved', 'adobe', 'hut', 'tent', 'tree', 'mushroom'];
+  for (const b0 of [...buildings].sort((a, c) => a.y + a.h - (c.y + c.h))) {
+    const GX = b0.x * T, GY = b0.y * T, Wd = b0.w * T, Ht = b0.h * T;
+    const br = new RNG(b0.seed);
+    const jr = new RNG(b0.seed ^ 0x7f4a);
+    const b: BuildingRec = { ...b0, roof: shadeC(b0.roof, jr.float(0.92, 1.08)), wall: shadeC(b0.wall, jr.float(0.94, 1.06)) };
+    const sw = Wd + 2 * PADX, sh = Ht + PADT + PADB;
+    if (spr.width < sw || spr.height < sh) { spr.width = Math.max(spr.width, sw); spr.height = Math.max(spr.height, sh); sx2 = spr.getContext('2d')!; } else sx2.clearRect(0, 0, spr.width, spr.height);
+    const bp = makePen(sx2, br);
+    const X = PADX, Y = PADT;
     const sp = SPECIAL[b.kind];
-    if (sp) { sp(bp, b, theme, X, Y, Wd, Ht); continue; }
-    const style = b.kind === 'palace' ? (theme.temple === 'tree' ? 'stone' : theme.temple) : b.kind === 'temple' ? theme.temple : b.style;
-    (STYLES[style] || cottage)(bp, b, theme, X, Y, Wd, Ht);
-    if (b.kind === 'palace') {
-      for (const tx of [X - 4, X + Wd - 8]) { fill(shadeC(b.wall, 0.9), tx, Y - 8, 12, Ht * 0.6); poly(theme.banner[0], [tx - 1, Y - 8, tx + 6, Y - 18, tx + 13, Y - 8]); flag(bp, tx + 6, Y - 18, theme.banner[1], theme.banner[0]); }
-      fill(theme.banner[0], X + Wd / 2 - 9, Y + Ht - 22, 4, 14); fill(theme.banner[1], X + Wd / 2 + 5, Y + Ht - 22, 4, 14);
+    if (sp) sp(bp, b, theme, X, Y, Wd, Ht);
+    else {
+      const style = b.kind === 'palace' ? (theme.temple === 'tree' ? 'stone' : theme.temple) : b.kind === 'temple' ? theme.temple : b.style;
+      (STYLES[style] || cottage)(bp, b, theme, X, Y, Wd, Ht);
+      if (b.kind === 'palace') {
+        for (const tx of [X - 4, X + Wd - 8]) { bp.fill(shadeC(b.wall, 0.9), tx, Y - 8, 12, Ht * 0.6); bp.poly(theme.banner[0], [tx - 1, Y - 8, tx + 6, Y - 18, tx + 13, Y - 8]); flag(bp, tx + 6, Y - 18, theme.banner[1], theme.banner[0]); }
+        bp.fill(theme.banner[0], X + Wd / 2 - 9, Y + Ht - 22, 4, 14); bp.fill(theme.banner[1], X + Wd / 2 + 5, Y + Ht - 22, 4, 14);
+      }
+      if (b.kind === 'tavern') { bp.fill(0xb07a1e, X + Wd - 9, Y + Ht - 26, 8, 6); bp.fill(0xf2c94c, X + Wd - 8, Y + Ht - 25, 6, 4); bp.fill(0x5e3a26, X + Wd - 6, Y + Ht - 32, 2, 7); }
+      if (b.kind === 'smithy') { bp.fill(0x4a4f60, X + 3, Y + Ht - 8, 9, 3); bp.fill(0xf08c3a, X + 5, Y + Ht - 10, 4, 2); }
+      if (b.kind === 'guild') { bp.fill(theme.banner[0], X + 2, Y + Ht - 28, 4, 12); bp.fill(theme.banner[1], X + Wd - 6, Y + Ht - 28, 4, 12); }
     }
-    if (b.kind === 'tavern') { fill(0xb07a1e, X + Wd - 9, Y + Ht - 26, 8, 6); fill(0xf2c94c, X + Wd - 8, Y + Ht - 25, 6, 4); fill(0x5e3a26, X + Wd - 6, Y + Ht - 32, 2, 7); }
-    if (b.kind === 'smithy') { fill(0x4a4f60, X + 3, Y + Ht - 8, 9, 3); fill(0xf08c3a, X + 5, Y + Ht - 10, 4, 2); }
-    if (b.kind === 'guild') { fill(theme.banner[0], X + 2, Y + Ht - 28, 4, 12); fill(theme.banner[1], X + Wd - 6, Y + Ht - 28, 4, 12); }
+    // the light pass
+    sx2.globalCompositeOperation = 'source-atop';
+    const lg = sx2.createLinearGradient(X, Y, X + Wd, Y + Ht);
+    lg.addColorStop(0, 'rgba(255,244,214,0.10)'); lg.addColorStop(0.55, 'rgba(0,0,0,0)'); lg.addColorStop(1, 'rgba(10,12,44,0.2)');
+    sx2.fillStyle = lg; sx2.fillRect(0, 0, sw, sh);
+    const ao = sx2.createLinearGradient(0, Y + Ht - 7, 0, Y + Ht);
+    ao.addColorStop(0, 'rgba(0,0,0,0)'); ao.addColorStop(1, 'rgba(0,0,0,0.32)');
+    sx2.fillStyle = ao; sx2.fillRect(X - 6, Y + Ht - 7, Wd + 12, 7);
+    sx2.globalCompositeOperation = 'source-over';
+    // ground first (the path from the door), then the building on top of it
+    const doorG = bp.doorX === undefined ? undefined : GX + bp.doorX - X;
+    const plain = b.kind === 'house' && !DENSE.includes(b.style);
+    if (b.kind === 'house' && !['tower', 'terrace', 'boomtown', 'brick'].includes(b.style)) doorPath(makePen(x2, br), at, GX, GY + Ht, doorG, theme);
+    // a shadow in the shape of the building, thrown down and to the right
+    shd.width = sw; shd.height = sh;
+    const hx = shd.getContext('2d')!;
+    hx.drawImage(spr, 0, 0, sw, sh, 0, 0, sw, sh);
+    hx.globalCompositeOperation = 'source-in'; hx.fillStyle = 'rgba(8,10,30,0.5)'; hx.fillRect(0, 0, sw, sh);
+    x2.globalAlpha = 0.34; x2.drawImage(shd, GX - PADX + 4, GY - PADT + 5); x2.globalAlpha = 0.2; x2.drawImage(shd, GX - PADX + 8, GY - PADT + 9); x2.globalAlpha = 1;
+    x2.drawImage(spr, 0, 0, sw, sh, GX - PADX, GY - PADT, sw, sh);
+    if (plain && br.chance(0.45)) fence(makePen(x2, br), at, GX, GY + Ht, Wd, doorG, theme);
     // life around the door: a garden plot, a barrel, firewood, a washing line, a bench, a handcart
     const extras = br.int(0, 3);
     for (let k = 0; k < extras; k++) {
-      const left = br.chance(0.5), ex = left ? X - 12 : X + Wd + 2, ey = Y + Ht - 10 - br.int(0, 6);
-      const tx = Math.floor((left ? X - 12 : X + Wd + 2) / T), ty = Math.floor(ey / T);
+      const left = br.chance(0.5), ex = left ? GX - 12 : GX + Wd + 2, ey = GY + Ht - 10 - br.int(0, 6);
+      const tx = Math.floor((left ? GX - 12 : GX + Wd + 2) / T), ty = Math.floor(ey / T);
       if (at(tx, ty) !== Tile.Ground) continue;
       const kind = br.int(0, 5);
       if (kind === 0) { fill(0x6a4a2a, ex, ey, 11, 8); for (let q = 0; q < 4; q++) { fill(0x3aa04a, ex + 1 + q * 3, ey, 2, 4); fill([0xe04848, 0xf2c94c, 0xffffff, 0xc07aff][q], ex + 1 + q * 3, ey - 1, 2, 2); } }

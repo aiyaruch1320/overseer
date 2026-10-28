@@ -182,7 +182,7 @@ function generate(town: Town, country: Pick<Country, 'id' | 'code' | 'continent'
   }
   // about two fifths of the built-up ground is houses, each 3–6 tiles wide and 3–5 deep
   const want = buildings.length + Math.round((Math.PI * rx * ry * 0.4) / 18);
-  const TERRACE: string[] = ['gable', 'stone', 'brick', 'spire', 'dome', 'forge', 'keep', 'aframe'];
+  const TERRACE: string[] = ['gable', 'stone', 'brick', 'spire', 'dome', 'forge', 'keep', 'aframe', 'terrace', 'tower', 'carved', 'boomtown', 'adobe'];
   for (let tries = 0; buildings.length < want && tries < 40000; tries++) {
     const w = rng.int(3, 6), h = rng.int(3, 5);
     const a = rng.float(0, Math.PI * 2), rr = Math.sqrt(rng.next());
