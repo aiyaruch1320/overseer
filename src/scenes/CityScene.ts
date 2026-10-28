@@ -7,7 +7,8 @@ import { makeName } from '../sim/character';
 import type { Game } from '../sim/game';
 import { iconTex, raceTex } from './sprites';
 import { relRole, goalText } from '../sim/society';
-import { lookFor, heroLook, personFrames, cradleTex, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
+import { lookFor, heroLook, personFrames, cradleTex, idleFrames, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
+import { PersonImage } from '../render/characters/sprite';
 import { townLifeEvent, EMOTE, TOWN_PLACES, type LifeKind } from '../data/townlife';
 import { NPC_JOBS, NPC_GOALS, npcJob, type Place, type NpcJob } from '../data/npclife';
 import { pickTownJob, townSpecialty } from '../sim/locale';
@@ -211,8 +212,7 @@ export class CityScene extends Phaser.Scene {
     const look = o.look || lookFor(`${nm}@${this.town.id}`, o.race, o.role, { climate: this.country.climate, gender: o.gender, elder: o.elder });
     const raw = o.at || (o.home ? { x: o.home.x + this.rng.int(-10, 10), y: o.home.y + this.rng.int(4, 16) } : this.tilePos(this.rng.pick(this.walk)));
     const p0 = o.at ? raw : this.snapOpen(raw);
-    const key = personFrames(this, look, 1);
-    const img = this.add.image(0, 0, key, POSE.idle).setOrigin(0.5, 1);
+    const img = new PersonImage(this, 0, 0, look, POSE.idle);
     const per: Person = {
       id: o.id, name: nm, race: o.race, role: o.role, look, img, root: img, job: o.job, skill: o.skill ?? this.rng.int(10, 80), goal: o.goal, hero: !!o.hero,
       state: 'idle', wait: this.rng.float(0.1, 3), actT: 0, frame: 0, carry: false, speed: look.child ? 46 : look.elder ? 22 : this.rng.float(30, 40), fx: 0, tag: 0, asleep: false,
@@ -480,7 +480,8 @@ export class CityScene extends Phaser.Scene {
       if (p.actT <= 0) { p.state = 'idle'; p.wait = this.rng.float(0.3, 1.2); p.img.setFrame(POSE.idle); p.act = undefined; }
     } else if (p.state === 'idle') {
       p.tag += dt * 1.2;
-      p.img.setFrame(Math.floor(p.tag) % 2 ? POSE.breath : POSE.idle);
+      const idl = idleFrames(p.look);
+      p.img.setFrame(idl[Math.floor(p.tag * 0.8) % idl.length]);
       p.wait -= dt;
       if (p.wait <= 0 && !(p.hero && p.frozen)) this.think(p);
     }
@@ -710,7 +711,7 @@ export class CityScene extends Phaser.Scene {
       const ring = this.add.ellipse(0, 0, 22, 8, 0xffe680, 0.7);
       this.tweens.add({ targets: ring, scaleX: 1.6, scaleY: 1.6, alpha: 0, duration: 1200, repeat: -1 });
       const look = heroLook(g.c, this.country.climate);
-      const img = this.add.image(0, 0, personFrames(this, look, 1), POSE.idle).setOrigin(0.5, 1);
+      const img = new PersonImage(this, 0, 0, look, POSE.idle);
       const name = this.txt(0, -HEAD, g.c.name, { fontFamily: 'Sarabun, sans-serif', fontSize: 7, color: '#ffe680', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5, 1);
       const root = this.add.container(home.x, home.y, [ring, img, name]).setDepth(6);
       const per: Person = {
