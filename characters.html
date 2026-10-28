@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ตัวละคร — ห้องแสดงแบบ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#14111f; --panel:#1f1a2e; --line:#3a3150; --txt:#ece6f6; --dim:#a79cc0; --acc:#f2c94c; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 Sarabun, system-ui, sans-serif; }
+  header { position:sticky; top:0; z-index:5; background:rgba(20,17,31,.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:12px 18px; align-items:center; }
+  header h1 { font-size:18px; margin:0 8px 0 0; }
+  label { color:var(--dim); font-size:13px; display:flex; align-items:center; gap:6px; }
+  select, input[type=range], button { font:inherit; color:var(--txt); background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:4px 8px; }
+  button { cursor:pointer; } button.on { border-color:var(--acc); color:var(--acc); }
+  main { padding:16px; max-width:1500px; margin:0 auto; }
+  h2 { font-size:16px; margin:26px 0 10px; color:var(--acc); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px; cursor:pointer; }
+  .card.sel { border-color:var(--acc); }
+  .card canvas { display:block; margin:0 auto; background:radial-gradient(ellipse at 50% 85%, #3a3252, #241e36 70%); border-radius:8px; max-width:100%; height:auto; }
+  .card b { display:block; margin-top:6px; } .card small { color:var(--dim); display:block; line-height:1.35; }
+  #specials { grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); }
+  #specials .row { flex-wrap:nowrap; gap:2px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; }
+  .row figure { margin:0; text-align:center; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px; }
+  .row figcaption { font-size:12px; color:var(--dim); }
+  .row canvas { display:block; background:radial-gradient(ellipse at 50% 85%, #3a3252, #241e36 70%); border-radius:6px; }
+  .note { color:var(--dim); max-width:880px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>ห้องแสดงแบบตัวละคร</h1>
+  <label>ความละเอียด <input id="ppu" type="range" min="1" max="8" step="0.5" value="3" /> <span id="ppuv"></span></label>
+  <label>เพศ <select id="sex"><option value="m">ชาย</option><option value="f">หญิง</option></select></label>
+  <label>สายเลือด <select id="line"></select></label>
+  <label>ชุด <select id="outfit"></select></label>
+  <label>อาชีพ <select id="role"></select></label>
+  <button id="reroll">สุ่มใหม่</button>
+</header>
+<main>
+  <h2>ทั้ง 21 เผ่า (คลิกเพื่อเลือก)</h2>
+  <div id="races" class="grid"></div>
+  <h2 id="hRace"></h2>
+  <p id="motif" class="note"></p>
+  <h2>ช่วงชีวิต (hAge: 0–3 · 4–12 · 13–19 · 20–54 · 55+)</h2>
+  <div id="stages" class="row"></div>
+  <h2>ท่าทางทั้งหมด (ภาพเดียวกับที่ใช้ในเมือง)</h2>
+  <div id="frames" class="row"></div>
+  <h2>อนิเมชัน</h2>
+  <div id="anims" class="row"></div>
+  <h2>นักแสดงพิเศษ (NPC)</h2>
+  <div id="specials" class="grid"></div>
+</main>
+<script type="module" src="/src/gallery.ts"></script>
+</body>
+</html>
