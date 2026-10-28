@@ -1,6 +1,6 @@
 # เผ่าพันธุ์ทั้ง 21 เผ่า
 
-ทวีป: [../continents.md](../continents.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เรื่องราว: [../story-continents.md](../story-continents.md)
+ทวีป: [../continents.md](../continents.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เรื่องราว: [../story-continents.md](../story-continents.md) · เส้นเรื่องตัวละครแต่ละเผ่า: [../storylines/README.md](../storylines/README.md)
 
 ไฟล์ละเผ่า แต่ละไฟล์มี ประวัติ ที่อยู่ สายเลือดย่อย (ถ้ามี) ความสัมพันธ์ ช่วงค่าสถานะเริ่มต้น ความสามารถประจำเผ่า พร 4 ระดับ (U, R, E, L) คำสาป 3 ข้อ สกิลเฉพาะเผ่า 4 ข้อ และเรื่องราวที่ผูกกับเรื่องหลัก รายการพร คำสาป และสกิลทั้งหมดเป็นของเฉพาะเผ่านั้น ไม่นับของพื้นฐานที่ทุกเผ่ามีร่วมกัน
 
