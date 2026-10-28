@@ -74,7 +74,7 @@ h3 { font-family: var(--head); font-weight: 400; color: var(--gold); font-size: 
 /* character */
 .charhead { display: flex; gap: 12px; align-items: center; }
 .portrait { width: 64px; height: 84px; background: radial-gradient(#3a4060, #1e2234); border: 2px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; }
-.portrait canvas { image-rendering: pixelated; width: 48px; height: 64px; }
+.portrait canvas { width: 48px; height: 64px; }
 .charname { font-family: var(--head); font-size: 22px; line-height: 1.1; }
 .charsub { color: var(--muted); font-size: 13px; }
 .bar { height: 10px; background: #0b0d14; border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }

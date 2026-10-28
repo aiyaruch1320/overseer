@@ -534,11 +534,12 @@ export class UI {
     panel.innerHTML = `<div class="tabs">${tb('char', 'birth', 'ตัวละคร')}${tb('fate', 'fate', 'ชะตา')}${tb('world', 'globe', 'โลก')}${tb('codex', 'book', 'Codex')}</div><div class="tabbody">${content}</div>`;
     const nb = panel.querySelector('.tabbody') as HTMLElement;
     nb.scrollTop = this.panelScroll;
-    panel.querySelectorAll('canvas[data-portrait]').forEach((cv) => drawPortrait((cv as HTMLCanvasElement).getContext('2d')!, (cv as HTMLCanvasElement).dataset.portrait!, 4));
+    panel.querySelectorAll('canvas[data-portrait]').forEach((cv) => drawPortrait((cv as HTMLCanvasElement).getContext('2d')!, (cv as HTMLCanvasElement).dataset.portrait!, 12));
   }
 
-  portrait(race: string) {
-    return `<div class="portrait"><canvas width="48" height="64" data-portrait="${race}"></canvas></div>`;
+  portrait(race: string, c?: { name: string; dynastyName: string; gender: string; job?: string | null; hAge: number }) {
+    const who = c ? [race, c.name, c.dynastyName, c.gender, c.job || '', c.hAge].join('~') : race;
+    return `<div class="portrait"><canvas width="144" height="192" style="width:48px;height:64px" data-portrait="${esc(who)}"></canvas></div>`;
   }
 
   giftChip(gf: Gift) {
@@ -565,7 +566,7 @@ export class UI {
       .map(([k, v]) => `<div class="thread" data-tip="thread:${k}"><span>${THREAD_NAMES[k] || k}</span><div class="bar"><i style="width:${Math.min(100, v * 10)}%;background:var(--gold)"></i></div><small>${esc(THREAD_FX[k] || '')}</small></div>`).join('');
     const town = g.town;
     return `
-      <div class="charhead">${this.portrait(c.race)}
+      <div class="charhead">${this.portrait(c.race, c)}
         <div style="flex:1">
           <div class="charname">${esc(c.name)} <span class="muted" style="font-size:14px">แห่งตระกูล${esc(c.dynastyName)}${c.generation > 1 ? ` · รุ่นที่ ${c.generation}` : ''}</span></div>
           <div class="charsub">${r.name} · ${esc(c.gender)} · อายุ ${realAge(c)} ปี (${STAGE_NAMES[g.stage()]})${c.alive ? '' : ' · ✝ เสียชีวิต'}</div>
@@ -695,7 +696,7 @@ export class UI {
   modal(html: string, cls = '') {
     this.modalOpen = true;
     $('#modal-root').innerHTML = `<div class="backdrop"><div class="modal ${cls}">${html}</div></div>`;
-    $('#modal-root').querySelectorAll('canvas[data-portrait]').forEach((cv) => drawPortrait((cv as HTMLCanvasElement).getContext('2d')!, (cv as HTMLCanvasElement).dataset.portrait!, 4));
+    $('#modal-root').querySelectorAll('canvas[data-portrait]').forEach((cv) => drawPortrait((cv as HTMLCanvasElement).getContext('2d')!, (cv as HTMLCanvasElement).dataset.portrait!, 12));
   }
 
   closeModal() {
@@ -823,7 +824,7 @@ export class UI {
     const uniq = c.skills.map(skillById).filter((s) => s.unique);
     const why = (gf: Gift) => { const w = g.whyHint(gf.tags); return w.length ? ` <span class="muted">(สอดคล้องกับ: ${esc(w.join(', '))})</span>` : ''; };
     this.modal(`<h2>${ic('birth', 24)} ชีวิตใหม่ถือกำเนิด</h2>
-      <div class="charhead">${this.portrait(c.race)}<div>
+      <div class="charhead">${this.portrait(c.race, c)}<div>
         <div class="charname">${esc(c.name)}</div>
         <div class="charsub">${r.name} (${r.en}) · ${esc(c.gender)} · ตระกูล${esc(c.dynastyName)}${c.flags.includes('noble') ? ` · ${ic('crown', 14)} ขุนนาง` : ''}</div>
         <div class="charsub">เกิดที่ ${esc(g.town.name)}, ${esc(co.name)} · ทวีป${CONTINENTS[co.continent].name} · ${ic(co.climate, 14)} ${cl.name}</div>
@@ -965,7 +966,7 @@ ${uniq.length ? `Unique Skill: ${uniq.map((u) => esc(u.name)).join(', ')}<br>` :
     const heirs = g.heirs();
     this.modal(`<div class="lifecard" id="lifecard">
         <div class="title2">การ์ดสรุปชีวิต · เกมจำลองต่างโลก</div>
-        <div class="row" style="justify-content:center;margin:8px 0">${this.portrait(c.race)}</div>
+        <div class="row" style="justify-content:center;margin:8px 0">${this.portrait(c.race, c)}</div>
         <div class="big">${esc(c.name)}</div><div style="color:var(--gold)">「${esc(g.title())}」</div>
         <div class="sum">${esc(g.summaryLine())}</div>
         <div class="cardstats"><div><b>${c.fame}</b>ชื่อเสียง</div><div><b>${c.kills}</b>สังหาร</div><div><b>${c.children.length}</b>ลูกหลาน</div><div><b>${g.s.karmaLife}</b>กรรม</div>
@@ -1247,7 +1248,7 @@ ${uniq.length ? `Unique Skill: ${uniq.map((u) => esc(u.name)).join(', ')}<br>` :
     x.fillStyle = grd; x.fillRect(0, 0, 600, 340);
     x.strokeStyle = '#e8c46a'; x.lineWidth = 6; x.strokeRect(3, 3, 594, 334);
     const pc = document.createElement('canvas'); pc.width = 60; pc.height = 80;
-    drawPortrait(pc.getContext('2d')!, c.race, 5);
+    drawPortrait(pc.getContext('2d')!, [c.race, c.name, c.dynastyName, c.gender, c.job || '', c.hAge].join('~'), 5);
     x.imageSmoothingEnabled = false; x.drawImage(pc, 30, 40);
     x.fillStyle = '#e8c46a'; x.font = '16px Itim, sans-serif'; x.fillText('การ์ดสรุปชีวิต · เกมจำลองต่างโลก', 110, 40);
     x.fillStyle = '#efe8d6'; x.font = '32px Itim, sans-serif'; x.fillText(c.name, 110, 80);
