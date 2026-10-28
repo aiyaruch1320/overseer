@@ -15,10 +15,10 @@ export function wingsBack(k: Cx) {
 
 function featherWing(k: Cx, sd: number) {
   const { c } = k, flap = k.P.flap, sz = Math.max(0.5, k.sz);
-  const bx = k.sh[0][0] * 0.5 + k.sh[1][0] * 0.5 + sd * k.sw * 0.5, by = k.shY + 3.5 * sz;
-  const a0 = 0.18 + flap * 0.95, spread = 0.5 + flap * 0.55;
+  const bx = k.sh[0][0] * 0.5 + k.sh[1][0] * 0.5 + sd * k.sw * 0.78, by = k.shY + 4 * sz;
+  const a0 = 0.42 + flap * 0.85, spread = 0.62 + flap * 0.5;
   const base = k.L.race === 'winged' && k.L.line === 'night' ? 0x4a3a6a : lite(k.accent, k.accent === 0xffffff ? 0 : 0.55);
-  const rows = [{ n: 6, len: 22, w: 3.4, col: base, shadeF: 0.9 }, { n: 5, len: 14, w: 3.0, col: lite(base, 0.25), shadeF: 0.95 }, { n: 4, len: 8, w: 2.6, col: lite(base, 0.45), shadeF: 1 }];
+  const rows = [{ n: 7, len: 30, w: 3.6, col: base, shadeF: 0.9 }, { n: 6, len: 20, w: 3.2, col: lite(base, 0.22), shadeF: 0.95 }, { n: 5, len: 11, w: 2.8, col: lite(base, 0.42), shadeF: 1 }];
   for (const row of rows) for (let i = row.n - 1; i >= 0; i--) {
     const u = i / (row.n - 1), ang = a0 + (u - 0.5) * spread + (row === rows[0] ? 0.15 : 0.05);
     const len = row.len * sz * (0.72 + 0.28 * Math.sin(u * Math.PI * 0.9 + 0.5)) * (0.78 + 0.22 * flap);
@@ -55,13 +55,13 @@ function membraneWing(k: Cx, sd: number, scaled: boolean) {
 
 function insectWing(k: Cx, sd: number) {
   const { c } = k, flap = k.P.flap, sz = k.sz;
-  const bx = (k.sh[0][0] + k.sh[1][0]) / 2 + sd * 1.5, by = k.shY + 3 * sz;
-  const open = 0.45 + flap * 0.55, a = k.accent;
-  for (const [len, wid, rot, dy, alpha] of [[17, 5.6, -0.95, 0, 0.5], [12, 4, -0.2, 3, 0.45]] as [number, number, number, number, number][]) {
+  const bx = (k.sh[0][0] + k.sh[1][0]) / 2 + sd * 2, by = k.shY + 3 * sz;
+  const open = 0.55 + flap * 0.45, a = k.accent;
+  for (const [len, wid, rot, dy, alpha] of [[30, 8.5, -0.95, 0, 0.66], [21, 6, -0.15, 4, 0.58]] as [number, number, number, number, number][]) {
     c.save(); c.translate(bx, by + dy * sz); c.rotate(sd * (-rot * open - 0.2)); c.scale(sd, 1);
     c.beginPath(); c.ellipse(len * 0.5 * sz, 0, len * 0.5 * sz, wid * sz, 0, 0, TAU);
-    c.fillStyle = lin(c, 0, -wid * sz, len * sz, wid * sz, [0, rgba(0xffffff, alpha + 0.2)], [0.5, rgba(a, alpha)], [1, rgba(0xd0a0ff, alpha)]); c.fill();
-    c.strokeStyle = rgba(lite(a, 0.5), 0.8); c.lineWidth = 0.5; c.stroke();
+    c.fillStyle = lin(c, 0, -wid * sz, len * sz, wid * sz, [0, rgba(0xffffff, Math.min(1, alpha + 0.25))], [0.5, rgba(lite(a, 0.2), alpha)], [1, rgba(0xb0a0ff, alpha)]); c.fill();
+    c.strokeStyle = rgba(lite(a, 0.2), 0.95); c.lineWidth = 0.5; c.stroke();
     stroke(c, rgba(0xffffff, 0.55), 0.3, 1, 0, len * sz * 0.9, 0); stroke(c, rgba(0xffffff, 0.4), 0.25, len * 0.3 * sz, 0, len * 0.7 * sz, -wid * 0.6 * sz); stroke(c, rgba(0xffffff, 0.4), 0.25, len * 0.3 * sz, 0, len * 0.7 * sz, wid * 0.6 * sz);
     c.restore();
   }

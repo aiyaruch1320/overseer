@@ -45,6 +45,10 @@ function renderAll() {
     card.onclick = () => { st.race = id; st.line = ''; renderAll(); };
     grid.append(card);
   }
+  // sub-lines of the people
+  const lns = $('lines'); lns.innerHTML = '';
+  for (const [key, v] of Object.entries(th.lines)) lns.append(fig(makeLook(st.race, STAGE_AGE.adult, key), POSE.idle, Math.min(st.ppu, 2.6), v.name));
+  if (!Object.keys(th.lines).length) lns.textContent = '(เผ่านี้ไม่มีสายย่อย)';
   // stages
   const stg = $('stages'); stg.innerHTML = '';
   for (const s of STAGES) stg.append(fig(makeLook(st.race, STAGE_AGE[s]), s === 'infant' ? POSE.idle : POSE.idle, st.ppu, `${STAGE_NAME[s]} (${STAGE_AGE[s]})`));
