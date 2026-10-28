@@ -14,6 +14,7 @@ import { pickTownJob, townSpecialty } from '../sim/locale';
 import { DISASTERS } from '../data/disasters';
 import type { Specialty } from '../data/npclife';
 
+import { Heap } from '../world/roads';
 import { T, CW, CH, Tile, getCity, type CityData, type BuildingRec, type Pt } from '../city/citygen';
 
 const TEMPLE_ICON: Record<string, string> = { light: 'bless', dragon: 'dragon', sea: 'river', moon: 'moon', war: 'weapon', demon: 'demon', naga: 'snake', nature: 'leaf', ancestor: 'death' };
@@ -28,7 +29,7 @@ interface Person {
   img: Phaser.GameObjects.Image; root: Phaser.GameObjects.Image | Phaser.GameObjects.Container; hero?: boolean;
   job?: NpcJob; skill?: number; goal?: string;
   state: 'idle' | 'move' | 'act' | 'locked'; wait: number; actT: number; frame: number; carry: boolean; speed: number; moveSpeed?: number;
-  to?: Pt; then?: () => void; act?: Anim; actEnd?: number; fx: number; tag: number; asleep: boolean; goesHome: boolean; frozen?: boolean;
+  to?: Pt; path?: Pt[]; then?: () => void; act?: Anim; actEnd?: number; fx: number; tag: number; asleep: boolean; goesHome: boolean; frozen?: boolean;
   mark?: Phaser.GameObjects.Image; onRemove?: () => void;
   home?: Pt; work?: Pt; roam: number;
 }
@@ -60,6 +61,7 @@ export class CityScene extends Phaser.Scene {
   follow = false; // only when the player asks (the target button, or flying to the protagonist's own town)
   private ambientT = 0;
   private hovered: Person | null = null;
+  private nav!: Uint8Array; // 0 = blocked; otherwise the cost of stepping on the tile (streets are cheapest)
   private newsTimer?: Phaser.Time.TimerEvent;
 
   constructor() { super('city'); }
@@ -92,6 +94,7 @@ export class CityScene extends Phaser.Scene {
     this.walk = data.walk;
     this.spec = data.spec;
     this.computeSpots(this.buildings);
+    this.buildNav();
 
     // temple of the land's faith
     const temple = this.buildings.find((b) => b.kind === 'temple');
@@ -174,7 +177,7 @@ export class CityScene extends Phaser.Scene {
   spawnNpcs() {
     const co = this.country;
     const flags = co.flags;
-    let n = Math.max(14, Math.min(110, Math.round(this.buildings.length * 0.85)));
+    let n = Math.max(14, Math.min(170, Math.round(this.buildings.length * 0.85)));
     const homes = this.rng.shuffle(this.spots.home.slice());
     let hi = 0;
     const nextHome = () => homes[hi++ % homes.length];
@@ -206,7 +209,8 @@ export class CityScene extends Phaser.Scene {
   addPerson(o: { race: string; role: string; name?: string; id?: number; job?: NpcJob; skill?: number; goal?: string; elder?: boolean; gender?: string; at?: Pt; hero?: boolean; look?: Look; home?: Pt }): Person {
     const nm = o.name || makeName(this.rng, o.race);
     const look = o.look || lookFor(`${nm}@${this.town.id}`, o.race, o.role, { climate: this.country.climate, gender: o.gender, elder: o.elder });
-    const p0 = o.at || (o.home ? { x: o.home.x + this.rng.int(-10, 10), y: o.home.y + this.rng.int(4, 16) } : this.tilePos(this.rng.pick(this.walk)));
+    const raw = o.at || (o.home ? { x: o.home.x + this.rng.int(-10, 10), y: o.home.y + this.rng.int(4, 16) } : this.tilePos(this.rng.pick(this.walk)));
+    const p0 = o.at ? raw : this.snapOpen(raw);
     const key = personFrames(this, look, 1);
     const img = this.add.image(0, 0, key, POSE.idle).setOrigin(0.5, 1);
     const per: Person = {
@@ -340,8 +344,96 @@ export class CityScene extends Phaser.Scene {
     });
   }
 
+  // ---------- walking: people follow streets and open ground, never through walls, houses, trees or water ----------
+  private buildNav() {
+    const nav = new Uint8Array(CW * CH);
+    for (let i = 0; i < nav.length; i++) {
+      const t = this.grid[i];
+      nav[i] = t === Tile.Road || t === Tile.Plaza || t === Tile.Dock ? 2 : t === Tile.Ground || t === Tile.Field || t === Tile.Grave ? 4 : 0;
+    }
+    this.nav = nav;
+  }
+
+  /** the tile of a point (feet position) */
+  private tileOf(p: Pt) { return { x: Math.max(0, Math.min(CW - 1, Math.floor(p.x / T))), y: Math.max(0, Math.min(CH - 1, Math.floor(p.y / T))) }; }
+
+  /** the closest walkable tile to (x, y), searching outward in rings */
+  private nearestOpen(x: number, y: number): { x: number; y: number } | null {
+    for (let r = 0; r < 24; r++) {
+      let best: { x: number; y: number } | null = null, bd = Infinity;
+      for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= CW || ny >= CH || !this.nav[ny * CW + nx]) continue;
+        const d = dx * dx + dy * dy;
+        if (d < bd) { bd = d; best = { x: nx, y: ny }; }
+      }
+      if (best) return best;
+    }
+    return null;
+  }
+
+  /** a point moved to the nearest walkable tile (people never start inside a house) */
+  private snapOpen(p: Pt): Pt {
+    const t = this.tileOf(p);
+    if (this.nav[t.y * CW + t.x]) return p;
+    const n = this.nearestOpen(t.x, t.y);
+    return n ? { x: n.x * T + T / 2, y: n.y * T + T - 2 } : p;
+  }
+
+  /** A* over the walkable tiles: waypoints (feet positions) from `from` to `to`, or null if there is no way */
+  route(from: Pt, to: Pt): Pt[] | null {
+    const a0 = this.tileOf(from), b0 = this.tileOf(to);
+    const a = this.nav[a0.y * CW + a0.x] ? a0 : this.nearestOpen(a0.x, a0.y), b = this.nav[b0.y * CW + b0.x] ? b0 : this.nearestOpen(b0.x, b0.y);
+    if (!a || !b) return null;
+    const start = a.y * CW + a.x, goal = b.y * CW + b.x;
+    if (start === goal) return [];
+    const g = new Float32Array(CW * CH).fill(1e9), from_ = new Int32Array(CW * CH).fill(-1), closed = new Uint8Array(CW * CH);
+    const open = new Heap();
+    g[start] = 0; open.push(0, start);
+    let expanded = 0;
+    while (open.size && expanded < 14000) {
+      const cur = open.pop();
+      if (closed[cur]) continue;
+      closed[cur] = 1; expanded++;
+      if (cur === goal) break;
+      const cx = cur % CW, cy = (cur - cx) / CW;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        const nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= CW || ny >= CH) continue;
+        const ni = ny * CW + nx, cost = this.nav[ni];
+        if (!cost || closed[ni]) continue;
+        if (dx && dy && (!this.nav[cy * CW + nx] || !this.nav[ny * CW + cx])) continue; // no cutting a corner of a house
+        const ng = g[cur] + cost * (dx && dy ? 1.41 : 1);
+        if (ng >= g[ni]) continue;
+        g[ni] = ng; from_[ni] = cur;
+        const ddx = Math.abs(nx - b.x), ddy = Math.abs(ny - b.y);
+        open.push(ng + 2 * (Math.max(ddx, ddy) + 0.41 * Math.min(ddx, ddy)), ni);
+      }
+    }
+    if (from_[goal] < 0) return null;
+    const pts: Pt[] = [];
+    for (let n = goal; n !== start; n = from_[n]) pts.push({ x: (n % CW) * T + T / 2, y: Math.floor(n / CW) * T + T - 2 });
+    pts.reverse();
+    // drop waypoints that lie on a straight run
+    const out: Pt[] = [];
+    for (let i = 0; i < pts.length; i++) {
+      const p0 = i ? pts[i - 1] : { x: (a.x) * T + T / 2, y: a.y * T + T - 2 }, p1 = pts[i], p2 = pts[i + 1];
+      if (p2 && Math.sign(p1.x - p0.x) === Math.sign(p2.x - p1.x) && Math.sign(p1.y - p0.y) === Math.sign(p2.y - p1.y)) continue;
+      out.push(p1);
+    }
+    return out;
+  }
+
   go(p: Person, to: Pt, speed: number, then: () => void) {
-    p.state = 'move'; p.to = to; p.moveSpeed = speed; p.then = then; p.actEnd = 0;
+    p.state = 'move'; p.moveSpeed = speed; p.then = then; p.actEnd = 0;
+    const path = this.route({ x: p.root.x, y: p.root.y }, to);
+    if (!path) { p.to = { x: p.root.x, y: p.root.y }; p.path = []; return; } // nowhere to walk: stay put
+    // the last leg ends exactly where it was asked (within its own tile) so people stand at doors and stalls
+    const lastTile = path.length ? this.tileOf(path[path.length - 1]) : this.tileOf({ x: p.root.x, y: p.root.y });
+    const dest = this.nav[this.tileOf(to).y * CW + this.tileOf(to).x] && this.tileOf(to).x === lastTile.x && this.tileOf(to).y === lastTile.y ? to : (path.pop() ?? { x: p.root.x, y: p.root.y });
+    p.path = path; p.to = dest;
   }
 
   doAct(p: Person, a: Anim, secs: number) {
@@ -364,10 +456,12 @@ export class CityScene extends Phaser.Scene {
     const r = p.root;
     r.setDepth(5 + r.y / 1000);
     if (p.state === 'move' && p.to) {
-      const dx = p.to.x - r.x, dy = p.to.y - r.y, d = Math.hypot(dx, dy);
+      const tgt = p.path && p.path.length ? p.path[0] : p.to;
+      const dx = tgt.x - r.x, dy = tgt.y - r.y, d = Math.hypot(dx, dy);
       const sp = (p.moveSpeed || p.speed) * dt;
       if (d <= sp + 0.5) {
-        r.setPosition(p.to.x, p.to.y);
+        r.setPosition(tgt.x, tgt.y);
+        if (p.path && p.path.length) { p.path.shift(); return; }
         p.state = 'idle'; p.wait = 0.15; p.img.setFrame(POSE.idle);
         const cb = p.then; p.then = undefined; cb?.();
         return;
@@ -449,7 +543,8 @@ export class CityScene extends Phaser.Scene {
     if (kind === 'love' || kind === 'trade' || kind === 'talk') {
       a.state = b.state = 'locked';
       b.to = undefined; a.to = undefined;
-      const meet = { x: a.root.x + (b.root.x < a.root.x ? -17 : 17), y: a.root.y };
+      const side = b.root.x < a.root.x ? -17 : 17;
+      const meet = this.nav[this.tileOf({ x: a.root.x + side, y: a.root.y }).y * CW + this.tileOf({ x: a.root.x + side, y: a.root.y }).x] ? { x: a.root.x + side, y: a.root.y } : { x: a.root.x, y: a.root.y };
       this.walkLocked(b, meet, () => { b.img.setFlipX(a.root.x < b.root.x); a.img.setFlipX(b.root.x < a.root.x); if (kind === 'love') this.emote(b, 'lover'); });
       this.pose(a, kind === 'trade' ? [POSE.work0, POSE.idle] : [POSE.idle, POSE.breath], 1.6, 3200);
       this.pose(b, [POSE.idle, POSE.breath], 1.6, 3200);
@@ -473,17 +568,25 @@ export class CityScene extends Phaser.Scene {
 
   // walk a locked person to a point (used when two people meet)
   walkLocked(p: Person, to: Pt, done: () => void) {
-    const d = Math.hypot(to.x - p.root.x, to.y - p.root.y);
-    p.img.setFlipX(to.x < p.root.x);
+    const legs = this.route({ x: p.root.x, y: p.root.y }, to);
+    if (legs === null) { done(); return; }
+    legs.push(to);
     let t = 0;
     const ev = this.time.addEvent({ delay: 110, loop: true, callback: () => { t++; p.img.setFrame(WALK[t % 4]); } });
-    this.tweens.add({ targets: p.root, x: to.x, y: to.y, duration: Math.max(200, (d / 40) * 1000), onComplete: () => { ev.remove(); p.img.setFrame(POSE.idle); done(); } });
+    const next = () => {
+      const leg = legs.shift();
+      if (!leg || !p.root.active) { ev.remove(); p.img.setFrame(POSE.idle); done(); return; }
+      const d = Math.hypot(leg.x - p.root.x, leg.y - p.root.y);
+      if (Math.abs(leg.x - p.root.x) > 0.5) p.img.setFlipX(leg.x < p.root.x);
+      this.tweens.add({ targets: p.root, x: leg.x, y: leg.y, duration: Math.max(60, (d / 40) * 1000), onComplete: next });
+    };
+    next();
   }
 
   brawl(a: Person, b: Person, text: string) {
     a.state = b.state = 'locked';
     this.tweens.killTweensOf([a.root, b.root]);
-    b.root.setPosition(a.root.x + 20, a.root.y);
+    b.root.setPosition(this.nav[this.tileOf({ x: a.root.x + 20, y: a.root.y }).y * CW + this.tileOf({ x: a.root.x + 20, y: a.root.y }).x] ? a.root.x + 20 : a.root.x, a.root.y);
     b.img.setFlipX(true); a.img.setFlipX(false);
     this.bubble(a.root, text);
     const star = this.add.image(a.root.x + 10, a.root.y - 18, iconTex(this, 'miracle', 1)).setDepth(62).setAlpha(0);

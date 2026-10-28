@@ -7,7 +7,7 @@ export interface Road { a: number; b: number; kind: 'road' | 'highway' | 'sea' |
 
 const TILE = 8;
 
-class Heap {
+export class Heap {
   private k: number[] = []; private v: number[] = [];
   get size() { return this.k.length; }
   push(key: number, val: number) {
