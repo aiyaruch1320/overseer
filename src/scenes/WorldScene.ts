@@ -24,7 +24,7 @@ const FLAG_ICON: Record<string, string> = { war: 'war', plague: 'plague', famine
 const ACTOR_ICON: Record<string, string> = { hero: 'herosword', demonlord: 'demon', caravan: 'gold' };
 // zoom levels, all one continuous camera: world → continent → country → town markers → city blocks seen from above (sprites on
 // the map) → the living city (people, light and weather on top) → down to the cobbles
-export const Z = { country: 0.33, capital: 0.42, town: 0.75, townName: 1.15, cityLod: 0.9, icons: 2.2, live: 7, liveOff: 5, max: 48 };
+export const Z = { country: 0.33, capital: 0.42, town: 0.75, townName: 1.15, cityLod: 0.9, icons: 2.2, live: 7, liveOff: 5, max: 160 };
 const CITY_HALF_H = ((CITY_WU / 2) * CH) / CW; // half the plan's height in world units
 
 
