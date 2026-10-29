@@ -79,7 +79,7 @@ export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number
   c.save(); c.translate(x, y); c.scale(s, s);
   // the aura and the shadow the tree throws on the land
   let g: CanvasGradient;
-  if (full) { g = c.createRadialGradient(0, -150, 10, 0, -160, 260); g.addColorStop(0, `rgba(210,255,170,${0.26 * glow})`); g.addColorStop(1, 'rgba(200,255,160,0)'); c.fillStyle = g; c.beginPath(); c.arc(0, -160, 260, 0, TAU); c.fill(); }
+  void glow; // (no baked aura: a haze painted into the sprite would hang over the towns beneath as a pale film)
   c.fillStyle = 'rgba(8,24,10,0.3)'; c.beginPath(); c.ellipse(full ? 14 : 8, 6, full ? 140 : 74, full ? 26 : 18, 0, 0, TAU); c.fill();
   // roots spread over the ground in curving buttresses
   c.lineCap = 'round';

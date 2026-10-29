@@ -136,6 +136,8 @@ export class Sky {
     if (this.mode === 'world' && v && this.fx !== 'none') this.drawPass(v, w, h);
     // ----- weather -----
     const wx = this.weather;
+    // a fog bank lies over the country seen from far; close to a town it must not leave a pale film on what you came to look at
+    if (wx === 'fog' && v) weatherStrength *= 1 - 0.7 * Math.min(1, Math.max(0, (v.zoom - 0.8) / 1.7));
     if (weatherStrength > 0.02 && wx !== 'clear') this.drawWeather(dt, w, h, weatherStrength);
     // ----- fog veil -----
     if (this.fog !== this.fogTarget) {

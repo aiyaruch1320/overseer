@@ -36,10 +36,10 @@ export class Landmarks {
     if (near(view, 265, 280, 110)) {
       const z = s / MU_TO_WU, ss = (lo: number, hi: number) => { const k = Math.max(0, Math.min(1, (z - lo) / (hi - lo))); return k * k * (3 - 2 * k); };
       // from afar the whole tree; as the camera goes in under it the crown is overhead and out of sight, and only the roots and the foot of the trunk remain on the ground the town stands on
-      const fa = 1 - ss(1.3, 2.6), ra = ss(1.0, 2.2);
+      const fa = 1 - ss(1.1, 2.0), ra = ss(0.9, 1.8);
       ctx.save(); ctx.translate(WORLD_TREE.x, WORLD_TREE.y); ctx.scale(WORLD_TREE.scale, WORLD_TREE.scale);
       if (ra > 0.01) { ctx.globalAlpha = ra; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(this.holes.length ? this.rootsHoled(ss(1.2, 2.3)) : this.roots(), -TREE_SPR.fx, -TREE_SPR.fy, TREE_SPR.w, TREE_SPR.h); }
-      if (fa > 0.01) { ctx.globalAlpha = fa; this.worldTree(ctx, 0, 0, time, hair / WORLD_TREE.scale); }
+      if (fa > 0.01) { ctx.globalAlpha = fa; this.worldTree(ctx, 0, 0, time, hair / WORLD_TREE.scale, 1 - ss(0.45, 0.95)); }
       ctx.restore();
     }
     if (near(view, 1112, 302, 50)) this.arkea(ctx, 1112, 302, time, hair);
@@ -131,46 +131,48 @@ export class Landmarks {
     return (this.puff = cv);
   }
   /** a ring of cloud turning slowly round the trunk and the crown (tree units): the half behind the tree is drawn before it, the half in front after */
-  private cloudRing(ctx: CanvasRenderingContext2D, cy: number, rx: number, ry: number, n: number, size: number, speed: number, rise: number, time: number, front: boolean) {
+  private cloudRing(ctx: CanvasRenderingContext2D, cy: number, rx: number, ry: number, n: number, size: number, speed: number, rise: number, time: number, front: boolean, atm: number) {
     const p = this.cloudPuff();
     for (let i = 0; i < n; i++) {
       const a = time * speed + (i * TAU) / n + rise;
       if ((Math.sin(a) > 0) !== front) continue;
       const s = size * (0.75 + 0.5 * (((i * 7) % 5) / 5)) * (front ? 1 + 0.22 * Math.sin(a) : 0.9), x = Math.cos(a) * rx, y = cy + Math.sin(a) * ry + ((i / n) - 0.5) * rise * 6;
-      ctx.globalAlpha = front ? 0.6 : 0.5; ctx.drawImage(p, x - s, y - s * 0.6, s * 2, s * 1.2);
+      ctx.globalAlpha = (front ? 0.6 : 0.5) * atm; ctx.drawImage(p, x - s, y - s * 0.6, s * 2, s * 1.2);
     }
     ctx.globalAlpha = 1;
   }
 
   /** the world tree as the whole continent sees it: a vast umbrella crown on a pillar of a trunk, cloud turning round it in rings, shafts of light through the
    *  leaves, mist in the valley under it and fireflies over the land (all in tree units, the foot of the trunk at x, y) */
-  private worldTree(ctx: CanvasRenderingContext2D, x: number, y: number, time: number, hair: number) {
+  private worldTree(ctx: CanvasRenderingContext2D, x: number, y: number, time: number, hair: number, atm: number) {
     void hair;
     const pulse = 0.85 + 0.15 * Math.sin(time * 0.8), a0 = ctx.globalAlpha;
     const rings: [number, number, number, number, number, number, number][] = [[-70, 140, 22, 22, 32, 0.05, 0.4], [-128, 190, 30, 28, 40, -0.04, 1.7], [-172, 250, 38, 30, 48, 0.035, 3.1]];
     ctx.save(); ctx.translate(x, y);
-    for (const [cy, rx, ry, n, size, sp, ph] of rings) this.cloudRing(ctx, cy, rx, ry, n, size, sp, ph, time, false);
+    ctx.globalAlpha = a0 * atm;
+    if (atm > 0.02) for (const [cy, rx, ry, n, size, sp, ph] of rings) this.cloudRing(ctx, cy, rx, ry, n, size, sp, ph, time, false, atm);
     ctx.globalAlpha = a0;
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(this.tree(), -TREE_SPR.fx, -TREE_SPR.fy, TREE_SPR.w, TREE_SPR.h);
-    for (const [cy, rx, ry, n, size, sp, ph] of rings) this.cloudRing(ctx, cy, rx, ry, n, size, sp, ph, time, true);
+    if (atm > 0.02) for (const [cy, rx, ry, n, size, sp, ph] of rings) this.cloudRing(ctx, cy, rx, ry, n, size, sp, ph, time, true, atm);
     ctx.globalAlpha = a0;
+    if (atm <= 0.02) { ctx.restore(); return; } // up close nothing hangs in the air between the camera and the towns
     // light falling through the crown in slanting shafts
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
     for (let k = 0; k < 7; k++) {
       const tx = -150 + k * 50 + Math.sin(time * 0.3 + k) * 6, w0 = 10 + (k % 3) * 6, w1 = 26 + (k % 3) * 10, lean = 46 + (k % 2) * 16;
-      const g = ctx.createLinearGradient(tx, -196, tx + lean, 0); g.addColorStop(0, `rgba(255,248,200,${0.2 * pulse})`); g.addColorStop(0.7, 'rgba(255,244,190,0.06)'); g.addColorStop(1, 'rgba(255,244,190,0)');
+      const g = ctx.createLinearGradient(tx, -196, tx + lean, 0); g.addColorStop(0, `rgba(255,248,200,${0.2 * pulse * atm})`); g.addColorStop(0.7, 'rgba(255,244,190,0.06)'); g.addColorStop(1, 'rgba(255,244,190,0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(tx - w0, -196); ctx.lineTo(tx + w0, -196); ctx.lineTo(tx + lean + w1, 0); ctx.lineTo(tx + lean - w1, 0); ctx.closePath(); ctx.fill();
     }
     ctx.restore();
     // mist lying in the valley round the foot of the trunk
     const p = this.cloudPuff();
-    for (let k = 0; k < 12; k++) { const mx = -170 + k * 31 + Math.sin(time * 0.1 + k) * 8, s = 34 + (k % 4) * 8; ctx.globalAlpha = a0 * 0.5; ctx.drawImage(p, mx - s, 2 - s * 0.4 + (k % 3) * 4, s * 2, s * 0.9); }
+    for (let k = 0; k < 12; k++) { const mx = -170 + k * 31 + Math.sin(time * 0.1 + k) * 8, s = 34 + (k % 4) * 8; ctx.globalAlpha = a0 * 0.5 * atm; ctx.drawImage(p, mx - s, 2 - s * 0.4 + (k % 3) * 4, s * 2, s * 0.9); }
     ctx.globalAlpha = a0;
     // fireflies and drifting seed-light over the whole land under it
     for (let k = 0; k < 56; k++) {
       const t = time * (0.05 + (k % 5) * 0.012) + k * 1.37, fx = Math.cos(t * 0.7 + k) * (120 + (k * 13) % 110), fy = -(k * 29 % 250) + Math.sin(t + k * 2) * 6 + 6, tw = 0.5 + 0.5 * Math.sin(time * 1.6 + k * 2.1);
-      const g = ctx.createRadialGradient(fx, fy, 0, fx, fy, 5); g.addColorStop(0, `rgba(255,252,190,${0.9 * tw * a0})`); g.addColorStop(1, 'rgba(255,252,190,0)');
+      const g = ctx.createRadialGradient(fx, fy, 0, fx, fy, 5); g.addColorStop(0, `rgba(255,252,190,${0.9 * tw * a0 * atm})`); g.addColorStop(1, 'rgba(255,252,190,0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(fx, fy, 5, 0, TAU); ctx.fill();
     }
     ctx.restore();
