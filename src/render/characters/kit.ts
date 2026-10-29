@@ -24,6 +24,9 @@ export interface Look {
   wear?: number;
 }
 
+/** the way a person faces the camera, which looks down on the street: toward it, away from it, or across (drawn facing right, the sprite flips for left) */
+export type View = 'front' | 'back' | 'side';
+
 export const stageOfLook = (L: Look): Stage => L.stage || (L.child ? 'child' : L.elder ? 'elder' : 'adult');
 
 export const hex = (c: number) => '#' + (c >>> 0).toString(16).padStart(6, '0');
@@ -50,6 +53,8 @@ export interface Cx {
   legLen: number; torsoLen: number; armLen: number;
   hipY: number; shY: number; headX: number; headY: number; headW: number; headH: number;
   sw: number; ww: number;
+  view: View;
+  yaw: number; // how far the face is turned to the right: 0 toward us, about 0.85 in profile
   hf: number; // the head group is drawn in design units (10.6 x 9.6) then scaled by this, so a head is about a fifth of a person's height
   sh: [number, number][]; // shoulder anchors L, R
   hp: [number, number][]; // hip anchors

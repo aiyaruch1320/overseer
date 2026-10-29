@@ -6,11 +6,11 @@ const ph = (k: Cx, o = 0) => Math.sin((k.P.amb + o) * TAU);
 
 // ---------- wings ----------
 export function wingsBack(k: Cx) {
-  const f = k.feats;
-  if (f.has('wings:feather')) for (const sd of [-1, 1]) featherWing(k, sd);
-  if (f.has('wings:bat') || f.has('wings:scale')) for (const sd of [-1, 1]) membraneWing(k, sd, f.has('wings:scale'));
-  if (f.has('wings:insect')) for (const sd of [-1, 1]) insectWing(k, sd);
-  if (f.has('wings:stub')) for (const sd of [-1, 1]) { const x = CX + sd * (k.sw * 0.7) + k.P.sway, y = k.shY + 3; ell(k.c, x + sd * 3, y - 3, 3.2, 6.5, hex(lite(k.accent, 0.1)), hex(lineOf(k.accent)), 0.7, sd * 0.5); }
+  const f = k.feats, sides = k.view === 'side' ? [-1] : [-1, 1]; // in profile only the wing on our side shows, folded toward the back
+  if (f.has('wings:feather')) for (const sd of sides) featherWing(k, sd);
+  if (f.has('wings:bat') || f.has('wings:scale')) for (const sd of sides) membraneWing(k, sd, f.has('wings:scale'));
+  if (f.has('wings:insect')) for (const sd of sides) insectWing(k, sd);
+  if (f.has('wings:stub')) for (const sd of sides) { const x = CX + sd * (k.sw * 0.7) + k.P.sway, y = k.shY + 3; ell(k.c, x + sd * 3, y - 3, 3.2, 6.5, hex(lite(k.accent, 0.1)), hex(lineOf(k.accent)), 0.7, sd * 0.5); }
 }
 
 function featherWing(k: Cx, sd: number) {
@@ -200,7 +200,8 @@ export function slimeBody(k: Cx) {
 // ---------- things that sit on the head ----------
 /** horns, antlers and tall ears: they grow from behind the head shape */
 export function headBack(k: Cx) {
-  const { c, headX: hx, headY: hy, headW: hw, headH: hh, feats: f, L } = k;
+  const { c, headY: hy, headW: hw, headH: hh, feats: f, L } = k;
+  const hx = k.headX + Math.sin(k.yaw) * hw * 0.3;
   const hornCol = k.L.race === 'dragonkin' ? mix(k.accent, 0xd9a030, 0.5) : k.L.race === 'demonkin' ? 0x3a2a34 : k.L.race === 'lavakin' ? 0x2a1a1a : 0xe8dcc0;
   const horn = (sd: number, style: number, scale = 1) => {
     const bx = hx + sd * hw * 0.62, by = hy - hh * 0.8;
@@ -227,11 +228,12 @@ export function headBack(k: Cx) {
 }
 
 export function ears(k: Cx) {
-  const { c, headX: hx, headY: hy, headW: hw, headH: hh } = k, kind = k.theme.ears;
+  const { c, headY: hy, headW: hw, headH: hh } = k, kind = k.theme.ears, prof = k.view === 'side';
+  const hx = k.headX + (prof ? (kind === 'beast' ? hw * 0.3 : hw * 0.5) : 0), sides = prof && kind !== 'beast' ? [-1] : [-1, 1]; // in profile we see one ear, on the near side of the head
   const sk = hex(k.skin), ln = hex(lineOf(k.skin)), inner = hex(mix(k.skin, 0xe07a8a, 0.4));
   const fur = k.feats.has('fur') ? k.L.hair : k.skin;
   const tw = ph(k, 0.5) * 0.12 * (k.frame <= 1 || k.frame >= 29 ? 1 : 0);
-  for (const sd of [-1, 1]) {
+  for (const sd of sides) {
     if (kind === 'round') { ell(c, hx + sd * hw * 1.02, hy + hh * 0.18, 1.8, 2.5, sk, ln, 0.6); ell(c, hx + sd * hw * 1.04, hy + hh * 0.2, 0.8, 1.3, hex(shade(k.skin, 0.88))); }
     else if (kind === 'long' || kind === 'point') {
       const len = kind === 'long' ? 10 : 5.5, rise = kind === 'long' ? 3.5 : 1.5, droop = (k.stage === 'elder' && kind === 'long') ? 3 : 0;

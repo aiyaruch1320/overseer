@@ -449,6 +449,7 @@ export class CityScene extends Phaser.Scene {
     p.state = 'act'; p.act = a; p.actT = secs; p.fx = 0;
     p.img.setFrame(a.frames[0]);
   }
+    (p.img as PersonImage).face(0, 1);
 
   // ---------- per-frame update ----------
   update(_t: number, delta: number) {
@@ -476,8 +477,8 @@ export class CityScene extends Phaser.Scene {
         return;
       }
       r.x += (dx / d) * sp; r.y += (dy / d) * sp;
-      if (Math.abs(dx) > 0.5) p.img.setFlipX(dx < 0);
-      p.tag += dt * Math.max(5, (p.moveSpeed || p.speed) / 6);
+      (p.img as PersonImage).face(dx, dy); // walk facing the way you go: across, away from us or toward us
+      p.tag += dt * (p.moveSpeed || p.speed) / (p.look.child ? 11 : p.look.elder ? 14 : 17) * 8; // one stride cycle (8 frames) per body length so the feet do not skate
       const seq = p.carry ? CARRY_WALK : WALK;
       p.img.setFrame(seq[Math.floor(p.tag) % seq.length]);
     } else if (p.state === 'act' && p.act) {

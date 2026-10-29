@@ -1,9 +1,9 @@
 // Paints one frame of one person as vector art. Everything is drawn in "units" (see kit.ts) and scaled to whatever resolution the
 // caller wants, so the same code gives the 14-pixel person walking in the street and the 600-pixel portrait in a card.
-import { poseOf, POSE, type Pose } from './pose';
+import { poseOf, POSE, walkPhase, DIRECTIONAL, type Pose } from './pose';
 import { themeOf, type Line } from './themes';
 import {
-  type Cx, type Look, FOOT, CX, FW, FH, stageOfLook, hex, rgba, mix, shade, lite, lineOf, INK, jitter, ik,
+  type Cx, type Look, type View, FOOT, CX, FW, FH, stageOfLook, hex, rgba, mix, shade, lite, lineOf, INK, jitter, ik,
   ell, poly, rrect, stroke, curve, lin, rad, glow,
 } from './kit';
 import { hairBack, hairFront, hatBack, hatFront, beard, drawTool } from './gear';
@@ -33,7 +33,7 @@ function gaited(p: Pose, frame: number, gait: string): Pose {
   return q;
 }
 
-function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number): Cx {
+function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number, view: View = 'front'): Cx {
   const theme = themeOf(L.race), ln = L.line ? theme.lines[L.line] : undefined, stage = stageOfLook(L), P = gaited(poseOf(frame), frame, theme.gait);
   const feats = featuresOf(L), st = ST[stage];
   const rs = ln?.scale ?? theme.scale;
@@ -44,27 +44,60 @@ function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number): Cx {
   const legLen = 24 * sz, torsoLen = 20 * sz * (L.build === 0 ? 1.03 : 1), armLen = 21 * sz * (gaunt ? 1.16 : 1);
   const headW = 10.6, headH = 9.6, hf = 0.66 * hsc;
   const stoop = (stage === 'elder' ? 1.3 : 0) + (feats.has('hunched') ? 1.8 : 0) + (gaunt ? 1.4 : 0) + (theme.gait === 'shamble' ? 0.6 : 0);
+  const ph = walkPhase(frame), phi = ph === null ? 0 : ph * TAU, carry = frame >= POSE.carry0 && frame <= POSE.carry2;
+  const side = view === 'side' && P.legs === 'stand' && DIRECTIONAL.has(frame);
+  if (!side && view !== 'front' && (view === 'side' || !DIRECTIONAL.has(frame) || P.legs !== 'stand')) view = 'front'; // a pose that has no side or back drawing is drawn facing us
+  const l1 = legLen * 0.49, l2 = legLen * 0.5;
+  // the legs in profile: thighs swing about the hip, the knee flexes while the foot swings through; the hips sit as low as the stance foot allows
+  const fk: { dx: number; dy: number }[] = [];
+  if (side) {
+    const A = ph === null ? 0.06 : (carry ? 0.3 : 0.46) * (theme.gait === 'glide' ? 0.8 : theme.gait === 'stomp' ? 1.1 : 1), K = ph === null ? 0 : 0.95;
+    for (let n = 0; n < 2; n++) { // 0 = the far leg, 1 = the near leg
+      const f = phi + (n === 0 ? Math.PI : 0), t = ph === null ? (n ? 0.08 : -0.06) : A * Math.sin(f), kf = K * Math.max(0, Math.cos(f)) * (0.55 + 0.45 * Math.abs(Math.cos(f)));
+      fk.push({ dx: l1 * Math.sin(t) + l2 * Math.sin(t - kf), dy: l1 * Math.cos(t) + l2 * Math.cos(t - kf) });
+    }
+  }
   const drop = P.drop * 1.45 * Math.min(1, sz);
-  const hipY = FOOT - legLen + P.bob * PU * Math.min(1.2, sz) + drop - P.hover * PU;
+  const hipY = (side ? FOOT - P.hover * PU - Math.max(fk[0].dy, fk[1].dy) - 0.2 : FOOT - legLen + P.bob * PU * Math.min(1.2, sz) + drop - P.hover * PU);
   const shY = hipY - torsoLen - P.breath * 0.35;
-  const sx = CX + P.sway + (P.lean + stoop) * 0.6;
+  const lean = P.lean + stoop + (side ? (ph === null ? 0.4 : 1.2) : 0);
+  const sx = CX + P.sway + lean * 0.6;
   const hx0 = CX + P.sway * 0.4;
-  const sw = (8.9 + L.build * 0.8) * wide * sz * (L.fem ? 0.9 : 1) * (feats.has('stone') ? 1.1 : 1);
-  const ww = sw * (L.fem ? 0.74 : 0.8);
-  const headX = sx + (P.lean + stoop) * 0.55 + P.tilt * -6;
+  const swF = (8.9 + L.build * 0.8) * wide * sz * (L.fem ? 0.9 : 1) * (feats.has('stone') ? 1.1 : 1);
+  const sw = side ? swF * 0.6 : swF;
+  const ww = (swF * (L.fem ? 0.74 : 0.8)) * (side ? 0.72 : 1);
+  const yaw = view === 'side' ? 0.85 : 0;
+  const headX = sx + lean * 0.55 + P.tilt * -6 + (side ? 1.6 : 0);
   const headY = shY - headH * hf * 0.9 + P.nod * 0.8 + (stoop ? stoop * 0.3 : 0);
   const skin = L.skin, accent = L.accent ?? (ln?.accent?.[0] ?? theme.accent[0]), accent2 = ln?.accent?.[1] ?? theme.accent[1] ?? accent;
   const k: Cx = {
-    c, L, stage, feats, P, frame, sz, hs: hsc, wide, legLen, torsoLen, armLen, hipY, shY, headX, headY, headW, headH, sw, ww, hf,
-    sh: [[sx - (sw - 0.9), shY + 1.6], [sx + (sw - 0.9), shY + 1.6]],
-    hp: [[hx0 - ww * 0.52, hipY], [hx0 + ww * 0.52, hipY]],
-    hand: [], foot: [], fx: 1.2, skin, hair: L.hair, accent, accent2, skinD: shade(skin, 0.8), skinL: lite(skin, 0.28), theme,
+    c, L, stage, feats, P, frame, sz, hs: hsc, wide, legLen, torsoLen, armLen, hipY, shY, headX, headY, headW, headH, sw, ww, view, yaw, hf,
+    sh: side ? [[sx - 0.5, shY + 1.8], [sx + 0.5, shY + 1.8]] : [[sx - (sw - 0.9), shY + 1.6], [sx + (sw - 0.9), shY + 1.6]],
+    hp: side ? [[hx0 - 0.3, hipY], [hx0 + 0.3, hipY]] : [[hx0 - ww * 0.52, hipY], [hx0 + ww * 0.52, hipY]],
+    hand: [], foot: [], fx: side ? 4.4 : 0, skin, hair: L.hair, accent, accent2, skinD: shade(skin, 0.8), skinL: lite(skin, 0.28), theme,
   };
-  const lh = k.sh[0], rh = k.sh[1], reach = armLen * 0.94;
-  k.hand = [[lh[0] - 1.4 + P.lh[0] * PU * sz ** 0.5, lh[1] + reach + P.lh[1] * PU * sz ** 0.7], [rh[0] + 1.4 + P.rh[0] * PU * sz ** 0.5, rh[1] + reach + P.rh[1] * PU * sz ** 0.7]];
-  const fy = FOOT - P.hover * PU;
-  const spread = P.legs === 'stand' ? ww * 0.5 + 0.9 : P.legs === 'sit' ? ww * 1.25 + 2.5 * sz : ww * 0.9 + 1.5;
-  k.foot = [[hx0 - spread + P.lf[0] * PU * sz ** 0.5, fy + P.lf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)], [hx0 + spread + P.rf[0] * PU * sz ** 0.5, fy + P.rf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)]];
+  const reach = armLen * 0.94, fy = FOOT - P.hover * PU;
+  if (side) {
+    // arms swing against the legs: the near arm goes forward with the far leg
+    const Aa = ph === null ? 0.05 : carry ? 0.0 : 0.5;
+    for (let n = 0; n < 2; n++) {
+      const sh = k.sh[n];
+      if (P.bundle || carry && false) { k.hand[n] = [sh[0] + 4.2 * sz, sh[1] + armLen * 0.55]; continue; }
+      const t = ph === null ? (n ? 0.1 : -0.08) : Aa * Math.sin(phi + (n === 1 ? Math.PI : 0)), r = armLen * (0.93 - 0.05 * Math.max(0, Math.sin(t)));
+      k.hand[n] = [sh[0] + r * Math.sin(t), sh[1] + r * Math.cos(t)];
+    }
+    k.foot = [[hx0 + fk[0].dx, hipY + fk[0].dy + 0.3], [hx0 + fk[1].dx, hipY + fk[1].dy + 0.3]];
+  } else if (ph !== null && P.legs === 'stand') {
+    // seen from the front or the back the walk is a foot that reaches toward (or away from) us and a foot that trails, with the hands swinging the other way
+    const dirn = view === 'back' ? -1 : 1, narrow = ww * 0.4 + 0.7;
+    k.foot = [0, 1].map((n) => { const f = phi + (n ? Math.PI : 0), z = Math.sin(f), lift = Math.max(0, Math.cos(f)) * 1.3 * sz; return [hx0 + (n ? narrow : -narrow), fy - lift * 0.7 + z * 1.9 * sz ** 0.8 * dirn]; }) as [number, number][];
+    k.hand = [0, 1].map((n) => { const f = phi + (n ? 0 : Math.PI), z = Math.sin(f), sh = k.sh[n]; return carry ? [sh[0] + (n ? -1.6 : 1.6), sh[1] + armLen * 0.66] : [sh[0] + (n ? 0.9 : -0.9), sh[1] + armLen * 0.985 - (1 - (z * dirn + 1) / 2) * 3 * sz ** 0.8]; }) as [number, number][];
+  } else {
+    const lh = k.sh[0], rh = k.sh[1];
+    k.hand = [[lh[0] - 1.4 + P.lh[0] * PU * sz ** 0.5, lh[1] + reach + P.lh[1] * PU * sz ** 0.7], [rh[0] + 1.4 + P.rh[0] * PU * sz ** 0.5, rh[1] + reach + P.rh[1] * PU * sz ** 0.7]];
+    const spread = P.legs === 'stand' ? ww * 0.5 + 0.9 : P.legs === 'sit' ? ww * 1.25 + 2.5 * sz : ww * 0.9 + 1.5;
+    k.foot = [[hx0 - spread + P.lf[0] * PU * sz ** 0.5, fy + P.lf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)], [hx0 + spread + P.rf[0] * PU * sz ** 0.5, fy + P.rf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)]];
+  }
   return k;
 }
 
@@ -133,12 +166,12 @@ function legs(k: Cx, fit: Fit) {
   const { c, sz } = k;
   const lw = 6.4 * sz ** 0.85 * (k.feats.has('gaunt') ? 0.78 : 1) * (k.theme.wide > 1.2 ? 1.2 : 1);
   for (let i = 0; i < 2; i++) {
-    const side = i ? 1 : -1, hp = k.hp[i], ft = k.foot[i];
+    const prof = k.view === 'side', side = prof ? 1 : i ? 1 : -1, hp = k.hp[i], ft = k.foot[i], dim = prof && i === 0 ? 0.72 : 1;
     const l1 = k.legLen * 0.49, l2 = k.legLen * 0.5;
     const an: [number, number] = [ft[0], ft[1] - 0.3];
     const kn = ik(hp[0], hp[1], an[0], an[1], l1, l2, side);
     const metal = k.feats.has('mecharm') && i === 0, bareShin = (fit.skirt === 1 || fit.skirt === 2 || fit.bare) && fit.skirt !== 3;
-    const c1 = fit.pants, c2 = metal ? 0x9aa0b0 : bareShin ? k.skin : fit.pants;
+    const c1 = shade(fit.pants, dim), c2 = shade(metal ? 0x9aa0b0 : bareShin ? k.skin : fit.pants, dim);
     taper(c, hp, kn, lw * 1.12, lw * 0.9, c1);
     joint(c, kn, lw * 0.42, c1 === c2 ? c1 : mix(c1, c2, 0.5));
     taper(c, kn, an, lw * 0.9, lw * 0.62, c2);
@@ -146,22 +179,22 @@ function legs(k: Cx, fit: Fit) {
     // boot
     const barefoot = fit.bare && fit.boot === 0x6a5a4a || k.feats.has('hairyfeet') || fit.top === k.skin || k.feats.has('claws');
     const fw = 3.9 * sz ** 0.75 + (k.feats.has('hairyfeet') ? 0.6 : 0), fh = 2.6 * sz ** 0.75;
-    const fxo = side * 0.6;
+    const fxo = prof ? fw * 0.55 : side * 0.6, shoeW = prof ? fw * 1.18 : fw;
     if (barefoot) {
-      ell(c, ft[0] + fxo, ft[1] - fh * 0.5, fw, fh, hex(k.skin), hex(lineOf(k.skin)), 0.6);
+      ell(c, ft[0] + fxo, ft[1] - fh * 0.5, shoeW, fh, hex(shade(k.skin, dim)), hex(lineOf(k.skin)), 0.6);
       for (let t = -1; t <= 1; t++) stroke(c, rgba(shade(k.skin, 0.5), 0.5), 0.3, ft[0] + fxo + t * fw * 0.5, ft[1] - 0.2, ft[0] + fxo + t * fw * 0.55, ft[1] - fh * 0.9);
       if (k.feats.has('hairyfeet')) for (let t = -2; t <= 2; t++) stroke(c, hex(shade(k.hair, 0.8)), 0.4, ft[0] + fxo + t * 0.9, ft[1] - 0.3, ft[0] + fxo + t * 1.1, ft[1] + 0.9);
     } else {
-      const bc = k.L.outfit === 'sarong' ? 0x5a3e24 : fit.boot, tall = fit.skirt === 3 ? 0 : 0.2 * k.legLen * (k.L.outfit === 'rags' ? 0.3 : 1);
+      const bc = shade(k.L.outfit === 'sarong' ? 0x5a3e24 : fit.boot, dim), tall = fit.skirt === 3 ? 0 : 0.2 * k.legLen * (k.L.outfit === 'rags' ? 0.3 : 1);
       if (tall > 0) { // the shaft of the boot over the trouser
         const top: [number, number] = [an[0] + (kn[0] - an[0]) * (tall / k.legLen / 0.5), an[1] + (kn[1] - an[1]) * (tall / k.legLen / 0.5)];
         taper(c, top, an, lw * 0.86, lw * 0.7, bc);
         taper(c, [top[0], top[1] - 0.2], [top[0], top[1] + 1.1], lw * 0.98, lw * 0.98, lite(bc, 0.12), false);
         stroke(c, hex(shade(bc, 0.4)), 0.4, top[0] - lw * 0.45, top[1] + 1.1, top[0] + lw * 0.45, top[1] + 1.1);
       }
-      rrect(c, ft[0] + fxo - fw, ft[1] - fh * 1.7, fw * 2, fh * 1.8, fh * 0.75, hex(bc), hex(lineOf(bc)), 0.6);
-      rrect(c, ft[0] + fxo - fw, ft[1] - fh * 0.5, fw * 2, fh * 0.55, 0.3, hex(shade(bc, 0.45)));
-      stroke(c, rgba(lite(bc, 0.5), 0.5), 0.4, ft[0] + fxo - fw * 0.6, ft[1] - fh * 1.35, ft[0] + fxo + fw * 0.3, ft[1] - fh * 1.4);
+      rrect(c, ft[0] + fxo - shoeW, ft[1] - fh * 1.7, shoeW * 2, fh * 1.8, fh * 0.75, hex(bc), hex(lineOf(bc)), 0.6);
+      rrect(c, ft[0] + fxo - shoeW, ft[1] - fh * 0.5, shoeW * 2, fh * 0.55, 0.3, hex(shade(bc, 0.45)));
+      stroke(c, rgba(lite(bc, 0.5), 0.5), 0.4, ft[0] + fxo - shoeW * 0.6, ft[1] - fh * 1.35, ft[0] + fxo + shoeW * 0.3, ft[1] - fh * 1.4);
     }
   }
 }
@@ -208,19 +241,22 @@ function torso(k: Cx, fit: Fit) {
   const { c, shY, hipY, sw } = k, L = k.L, o = L.outfit;
   const sx = (k.sh[0][0] + k.sh[1][0]) / 2, hx = (k.hp[0][0] + k.hp[1][0]) / 2, tw = sw * 2, th = hipY - shY;
   const top = fit.top;
-  // cape behind the shoulders
-  if (fit.cape !== undefined) {
+  const back = k.view === 'back';
+  const cape = () => {
+    if (fit.cape === undefined) return;
     c.beginPath(); c.moveTo(sx - sw - 0.8, shY + 1); c.quadraticCurveTo(sx - sw - 3, shY + th * 0.8, hx - k.ww - 4 + Math.sin(k.P.amb * TAU) * 1.2, FOOT - k.P.hover - 8);
     c.quadraticCurveTo(hx, FOOT - k.P.hover - 5, hx + k.ww + 4 + Math.sin(k.P.amb * TAU) * 1.2, FOOT - k.P.hover - 8); c.quadraticCurveTo(sx + sw + 3, shY + th * 0.8, sx + sw + 0.8, shY + 1); c.closePath();
     c.fillStyle = lin(c, 0, shY, 0, FOOT, [0, hex(fit.cape)], [1, hex(shade(fit.cape, 0.6))]); c.fill(); c.strokeStyle = hex(lineOf(fit.cape)); c.lineWidth = 0.8; c.stroke();
-  }
+    if (back) for (let i = -2; i <= 2; i++) stroke(c, rgba(shade(fit.cape, 0.4), 0.4), 0.5, sx + i * sw * 0.3, shY + 3, hx + i * (k.ww + 2.4) * 0.5, FOOT - k.P.hover - 9);
+  };
+  if (!back) cape(); // a cape hangs behind the shoulders, seen from behind it covers the back
   torsoPath(k);
   c.fillStyle = lin(c, sx - sw, 0, sx + sw, 0, [0, hex(lite(top, 0.2))], [0.45, hex(top)], [1, hex(shade(top, 0.68))]); c.fill();
   c.save(); torsoPath(k); c.clip();
   c.fillStyle = lin(c, 0, shY, 0, hipY + 1, [0, 'rgba(255,255,255,0.1)'], [0.5, 'rgba(0,0,0,0)'], [1, 'rgba(10,6,30,0.28)']); c.fillRect(sx - tw, shY - 2, tw * 2, th + 6);
   const bare = o === 'sarong' || (o === 'rags' && false);
   if (bare) { c.fillStyle = lin(c, sx - sw, 0, sx + sw, 0, [0, hex(k.skinL)], [1, hex(k.skinD)]); c.fillRect(sx - tw, shY - 2, tw * 2, th + 4); stroke(c, rgba(k.skinD, 0.6), 0.5, sx, shY + 3, sx, shY + 8); }
-  outfitDetails(k, fit, sx, hx, shY, hipY, sw);
+  if (back) backDetails(k, fit, sx, shY, hipY, sw); else outfitDetails(k, fit, sx, hx, shY, hipY, sw);
   // folds that follow the motion of the walk
   const f = Math.sin(k.P.amb * TAU);
   stroke(c, rgba(shade(top, 0.5), 0.35), 0.5, sx - sw * 0.5, shY + th * 0.4, sx - sw * 0.2, shY + th * 0.6 + f * 0.4);
@@ -228,7 +264,20 @@ function torso(k: Cx, fit: Fit) {
   c.restore();
   torsoPath(k); c.strokeStyle = hex(lineOf(top)); c.lineWidth = 0.9; c.lineJoin = 'round'; c.stroke();
   stroke(c, rgba(lite(top, 0.5), 0.5), 0.6, sx - sw + 0.9, shY + 2.5, sx - sw + 1.4, shY + th * 0.5); // rim light
+  if (back) cape();
   void L;
+}
+
+/** the back of a garment: a seam down the spine, the yoke across the shoulders and the belt that goes all the way round */
+function backDetails(k: Cx, fit: Fit, sx: number, sy: number, hy: number, sw: number) {
+  const { c } = k, o = k.L.outfit, th = hy - sy, top = fit.top;
+  stroke(c, rgba(shade(top, 0.45), 0.5), 0.55, sx, sy + 1, sx, hy);
+  curve(c, rgba(shade(top, 0.5), 0.4), 0.5, sx - sw, sy + 4, sx, sy + 6.5, sx + sw, sy + 4); // the yoke
+  if (['armor', 'knight', 'plate'].includes(o)) { poly(c, [sx - sw, sy + 1, sx + sw, sy + 1, sx + sw * 0.8, sy + th * 0.55, sx, sy + th * 0.7, sx - sw * 0.8, sy + th * 0.55], lin(c, sx - sw, 0, sx + sw, 0, [0, '#d4d8e2'], [0.5, '#9aa2b4'], [1, '#5a6278']), '#3a4258', 0.7); stroke(c, 'rgba(58,66,88,0.7)', 0.6, sx, sy + 2, sx, sy + th * 0.65); }
+  if (['tunic', 'leather', 'cloak', 'vest', 'farmer', 'sailor', 'fur', 'miner', 'bard', 'noble', 'regal', 'apron', 'mage', 'scholar', 'otherworld', 'chef'].includes(o)) { rrect(c, sx - sw - 1, hy - 3.1, sw * 2 + 2, 2.1, 0.5, hex(fit.trim && o !== 'tunic' ? shade(fit.trim, 0.8) : shade(k.L.cloth2, 0.55))); }
+  if (o === 'apron') { stroke(c, '#8a7a5a', 0.7, sx - sw * 0.2, sy + 1, sx + sw * 0.2, sy + 1); poly(c, [sx - 1.6, hy - 3.2, sx - 3.4, hy + 4, sx - 1.2, hy + 2.5, sx, hy + 5, sx + 1.2, hy + 2.5, sx + 3.4, hy + 4, sx + 1.6, hy - 3.2], '#d8c8a8', '#8a7a5a', 0.4); }
+  if (o === 'fur') rrect(c, sx - sw - 0.5, sy - 0.5, sw * 2 + 1, 3.2, 1.3, '#eee6d6', '#a09886', 0.5);
+  if (['robe', 'priest', 'regal', 'monk'].includes(o)) rrect(c, sx - 1.2, sy, 2.4, th + 8, 0.4, hex(fit.trim));
 }
 
 function outfitDetails(k: Cx, fit: Fit, sx: number, hx: number, sy: number, hy: number, sw: number) {
@@ -277,17 +326,19 @@ function outfitDetails(k: Cx, fit: Fit, sx: number, hx: number, sy: number, hy: 
   }
 }
 
-function arms(k: Cx, fit: Fit) {
-  const { c, sz } = k, th = k.theme;
+function arms(k: Cx, fit: Fit, which: 'both' | 'far' | 'near' = 'both') {
+  const { c, sz } = k, th = k.theme, prof = k.view === 'side';
   const aw = 5 * sz ** 0.85 * (k.feats.has('gaunt') ? 0.75 : 1) * (th.wide > 1.2 ? 1.18 : 1);
   const sleeveCol = fit.sleeve === 0 ? k.skin : fit.metalArms ? 0xa6adbc : fit.top;
   const forearm = fit.sleeve === 2 ? (fit.metalArms ? 0x9aa0b0 : fit.top) : k.skin;
   const mech = k.feats.has('mecharm');
   for (let i = 0; i < 2; i++) {
-    const side = i ? 1 : -1, sh = k.sh[i], hd = k.hand[i];
+    if (prof && (which === 'far' ? i !== 0 : which === 'near' ? i !== 1 : false)) continue;
+    const side = prof ? 1 : i ? 1 : -1, sh = k.sh[i], hd = k.hand[i];
     const metal = mech && i === 1;
     const fc = metal ? 0xb89a54 : fit.sleeve === 0 && k.L.outfit !== 'sarong' ? k.skin : forearm;
-    const kn = limb(k, sh, hd, side, aw * 1.05, aw * 0.9, metal ? 0xb89a54 : sleeveCol, fc);
+    const dim = prof && i === 0 ? 0.72 : 1;
+    const kn = limb(k, sh, hd, side, aw * 1.05, aw * 0.9, shade(metal ? 0xb89a54 : sleeveCol, dim), shade(fc, dim));
     // cuffs and the shoulder cap
     if (fit.sleeve === 2 && !metal && !fit.metalArms) { const dx = hd[0] - kn[0], dy = hd[1] - kn[1], d = Math.hypot(dx, dy) || 1; stroke(c, hex(fit.trim ?? 0xe8e0d0), aw * 0.9, hd[0] - dx / d * 1.6, hd[1] - dy / d * 1.6, hd[0] - dx / d * 2.6, hd[1] - dy / d * 2.6); }
     if (metal) { ell(c, kn[0], kn[1], aw * 0.6, aw * 0.6, '#d8dce8', '#4a5064', 0.5); for (const t of [0.35, 0.7]) ell(c, kn[0] + (hd[0] - kn[0]) * t, kn[1] + (hd[1] - kn[1]) * t, 0.5, 0.5, '#8a6a2a'); }
@@ -296,13 +347,13 @@ function arms(k: Cx, fit: Fit) {
     if (k.feats.has('scales') || k.feats.has('sandscales')) for (let s = 0; s < 4; s++) { const t = 0.2 + s * 0.22; ell(c, kn[0] + (hd[0] - kn[0]) * t, kn[1] + (hd[1] - kn[1]) * t, 0.75, 0.55, rgba(lite(k.skin, 0.4), 0.55), undefined); }
     const glove = ['armor', 'knight', 'plate', 'leather', 'miner', 'cloak', 'fur'].includes(k.L.outfit) && !metal ? (k.L.outfit === 'fur' ? 0x6a4a2a : k.L.outfit === 'knight' || k.L.outfit === 'armor' || k.L.outfit === 'plate' ? 0x4a3a2c : 0x3a2a1c) : 0;
     if (glove) { const dx = hd[0] - kn[0], dy = hd[1] - kn[1], d = Math.hypot(dx, dy) || 1; taper(c, [hd[0] - dx / d * 4.6, hd[1] - dy / d * 4.6], [hd[0] - dx / d * 0.4, hd[1] - dy / d * 0.4], aw * 0.78, aw * 0.68, glove); stroke(c, hex(lite(glove, 0.2)), 0.4, hd[0] - dx / d * 4.6 - aw * 0.3, hd[1] - dy / d * 4.6, hd[0] - dx / d * 4.6 + aw * 0.3, hd[1] - dy / d * 4.6); }
-    hand(k, hd, side, metal, kn, glove);
+    hand(k, hd, side, metal, kn, glove, dim);
   }
 }
 
-function hand(k: Cx, hd: [number, number], side: number, metal: boolean, from?: [number, number], glove = 0) {
+function hand(k: Cx, hd: [number, number], side: number, metal: boolean, from?: [number, number], glove = 0, dim = 1) {
   const { c, sz } = k, r = 2.3 * sz ** 0.8 * (k.feats.has('stone') ? 1.2 : 1);
-  const col = glove ? glove : metal ? 0xb89a54 : k.skin;
+  const col = shade(glove ? glove : metal ? 0xb89a54 : k.skin, dim);
   const dx = from ? hd[0] - from[0] : 0, dy = from ? hd[1] - from[1] : 1, ang = Math.atan2(dy, dx) - Math.PI / 2;
   c.save(); c.translate(hd[0], hd[1]); c.rotate(ang);
   if (k.feats.has('pawhands') || (k.feats.has('fur') && k.L.race === 'beast')) {
@@ -376,10 +427,10 @@ function wrapHead(k: Cx) {
   }
 }
 
-function eyeAt(k: Cx, ex: number, ey: number, sd: number, big: number) {
+function eyeAt(k: Cx, ex: number, ey: number, sd: number, big: number, cw = 1) {
   const { c, L, feats: f, P } = k;
   const es = (k.stage === 'infant' ? 1.3 : k.stage === 'child' ? 1.14 : k.stage === 'elder' ? 0.94 : 1) * big * (P.eyes === 'wide' ? 1.15 : 1);
-  const ew = k.headW * 0.185 * es, eh = ew * (L.fem ? 0.5 : 0.44);
+  const eh = k.headW * 0.185 * es * (L.fem ? 0.5 : 0.44), ew = k.headW * 0.185 * es * cw;
   const inner = ex - sd * ew, outer = ex + sd * ew, lift = eh * 0.35;
   const top = ey - eh * 1.75, low = ey + eh * 1.15;
   const lens = (t: number, b: number) => { c.beginPath(); c.moveTo(inner, ey + eh * 0.1); c.quadraticCurveTo(ex - sd * ew * 0.1, t, outer, ey - lift); c.quadraticCurveTo(ex + sd * ew * 0.1, b, inner, ey + eh * 0.1); c.closePath(); };
@@ -414,7 +465,9 @@ function eyeAt(k: Cx, ex: number, ey: number, sd: number, big: number) {
 
 function drawFace(k: Cx) {
   const { c, headX: hx, headY: hy, headW: hw, headH: hh, L, feats: f, P } = k, id = k.theme.id;
-  const ey = hy + hh * 0.04, ex = hw * 0.44, fx = k.fx;
+  const ey = hy + hh * 0.04, fx = k.fx, yaw = k.yaw;
+  const X = (phi: number) => hx + hw * 0.98 * Math.sin(phi + yaw), CW = (phi: number) => Math.max(0.3, Math.cos(phi + yaw));
+  const ex = hw * 0.44, prof = yaw > 0.3;
   const dark = hex(shade(k.skin, 0.5));
   const lipC = mix(k.skin, 0x9a4048, L.fem ? 0.5 : 0.32);
   if (f.has('visor')) { // a smooth face plate with two lights
@@ -423,7 +476,7 @@ function drawFace(k: Cx) {
   } else if (f.has('cyclops')) {
     eyeAt(k, hx + fx * 0.5, ey - hh * 0.05, 1, 1.9);
   } else {
-    eyeAt(k, hx - ex + fx, ey, -1, 1); eyeAt(k, hx + ex + fx, ey, 1, 1);
+    eyeAt(k, X(-0.46), ey, -1, 1, CW(-0.46)); eyeAt(k, X(0.46), ey, 1, 1, CW(0.46));
     if (f.has('mecheye')) { const mx = hx + ex + fx, my = ey; ell(c, mx, my, hw * 0.27, hw * 0.27, '#3a4050', '#12161f', 0.6); ell(c, mx, my, hw * 0.16, hw * 0.16, rad(c, mx, my, hw * 0.16, [0, '#ff8a8a'], [0.5, '#d02020'], [1, '#601010'])); ell(c, mx - 0.5, my - 0.5, 0.5, 0.5, '#fff'); stroke(c, '#8a92a4', 0.5, mx - hw * 0.32, my - hw * 0.3, mx + hw * 0.32, my - hw * 0.3); }
     if (f.has('glasseye')) ell(c, hx - ex + fx, ey, hw * 0.2, hw * 0.2, rgba(0xffffff, 0.35));
   }
@@ -432,7 +485,7 @@ function drawFace(k: Cx) {
     const bc = hex(k.stage === 'elder' ? 0xc8c8d0 : shade(k.hair, 0.78)), bw = f.has('heavybrow') ? 2.1 : f.has('gaunt') ? 0.8 : L.fem ? 0.75 : 1.25;
     const by = ey - hh * 0.27 - P.brow * 0.7, inn = 0.45 + (P.brow < -0.1 ? 1 : 0) - (P.brow > 0.2 ? 0.5 : 0);
     for (const sd of [-1, 1]) {
-      const x0 = hx + sd * ex * 0.5 + fx, x1 = hx + sd * ex * 1.5 + fx;
+      const x0 = X(sd * 0.2), x1 = X(sd * 0.78);
       c.beginPath(); c.moveTo(x0, by + inn); c.quadraticCurveTo((x0 + x1) / 2, by - 0.7 - (L.fem ? 0.4 : 0), x1, by + 0.6); c.strokeStyle = bc; c.lineWidth = bw; c.lineCap = 'round'; c.stroke();
     }
   }
@@ -440,14 +493,15 @@ function drawFace(k: Cx) {
   const ny = hy + hh * 0.36;
   if (f.has('fur') && L.race === 'beast') { poly(c, [hx + fx - 1.5, ny - 0.5, hx + fx + 1.5, ny - 0.5, hx + fx, ny + 1], '#2a1e1e', undefined); ell(c, hx + fx, hy + hh * 0.56, hw * 0.5, hh * 0.28, rgba(0xfff4e4, 0.45)); stroke(c, '#2a1e1e', 0.4, hx + fx, ny + 1, hx + fx, ny + 2.4); }
   else if (!f.has('visor')) {
-    const wide = id === 'dwarf' || id === 'orc' || id === 'giant' ? 1.45 : 1, nx = hx + fx * 0.9;
+    const wide = id === 'dwarf' || id === 'orc' || id === 'giant' ? 1.45 : 1, nx = X(0);
+    if (prof) { poly(c, [nx - 0.6, ey + 0.8, nx + 2.4 * wide, ny + 0.9, nx + 0.4, ny + 1.5], hex(k.skin), hex(lineOf(k.skin)), 0.45); } // the nose in profile breaks the outline
     stroke(c, rgba(shade(k.skin, 0.45), 0.4), 0.7, nx + 1.3 * wide, ey + 0.5, nx + 1.1 * wide, ny - 0.4);
     c.beginPath(); c.moveTo(nx - 1.6 * wide, ny - 0.2); c.quadraticCurveTo(nx - 2.1 * wide, ny + 1.1, nx - 0.9 * wide, ny + 1.4); c.moveTo(nx + 1.6 * wide, ny - 0.2); c.quadraticCurveTo(nx + 2.1 * wide, ny + 1.1, nx + 0.9 * wide, ny + 1.4); c.strokeStyle = rgba(shade(k.skin, 0.4), 0.7); c.lineWidth = 0.45; c.stroke();
     ell(c, nx - 0.6, ny - 0.2, 0.7, 1.4, rgba(lite(k.skin, 0.5), 0.35));
     ell(c, nx, ny + 1.5, 1.3 * wide, 0.45, rgba(shade(k.skin, 0.4), 0.25));
   }
   // mouth
-  const my = hy + hh * 0.66, mx = hx + fx * 0.9, mo = P.mouth, mw = hw * (L.fem ? 0.2 : 0.23);
+  const my = hy + hh * 0.66, mx = X(0) - (prof ? 0.4 : 0), mo = P.mouth, mw = hw * (L.fem ? 0.2 : 0.23) * Math.max(0.5, CW(0));
   if (f.has('visor')) { for (let i = -2; i <= 2; i++) stroke(c, 'rgba(10,12,18,0.7)', 0.4, mx + i * 0.9, hy + hh * 0.68, mx + i * 0.9, hy + hh * 0.82); }
   else if (mo === 'open' || mo === 'sing') { poly(c, [mx - mw, my, mx, my - 0.5, mx + mw, my, mx + mw * 0.75, my + 1.7, mx, my + 2.2, mx - mw * 0.75, my + 1.7], '#3a1018', hex(INK), 0.5); stroke(c, '#e8e0d4', 0.7, mx - mw * 0.7, my + 0.1, mx + mw * 0.7, my + 0.1); ell(c, mx, my + 1.6, mw * 0.5, 0.5, '#a04050'); }
   else if (mo === 'oh') ell(c, mx, my + 0.6, mw * 0.4, 0.9, '#3a1018', hex(INK), 0.4);
@@ -494,6 +548,25 @@ function headTop(k: Cx) {
   if (f.has('featherhair')) { poly(c, [hx + hw * 0.9, hy - hh * 0.5, hx + hw * 1.5, hy - hh * 1.2, hx + hw * 1.7, hy - hh * 0.9, hx + hw * 1.1, hy - hh * 0.3], '#d8ecf8', '#6a8aa8', 0.4); }
   if (f.has('mushcap') && false) { /* head back */ }
   if (f.has('wisdom')) { curve(c, hex(0x2a1a3a), 0.5, k.headX - hw * 0.25, hy + hh * 0.9, k.headX, hy + hh * 0.7, k.headX + hw * 0.25, hy + hh * 0.9); }
+}
+
+/** seen from behind: hair or a hat over the whole skull, no face */
+function backOfHead(k: Cx) {
+  const { c, headX: hx, headY: hy, headW: hw, headH: hh, L } = k, hat = L.hat;
+  drawHead(k);
+  const hidden = ['helmet', 'hood', 'turban', 'furhat', 'minerhat', 'veil', 'nemes', 'horned', 'mitre', 'cowl'].includes(hat);
+  if (hidden || L.hairStyle === 3 || k.theme.hairless || k.feats.has('hairless') || hat === 'hood' || hat === 'cowl') return;
+  const hair = k.hair, ln = hex(lineOf(hair));
+  c.beginPath(); c.moveTo(hx - hw * 1.04, hy + hh * 0.2);
+  c.bezierCurveTo(hx - hw * 1.22, hy - hh * 1.0, hx - hw * 0.7, hy - hh * 1.36, hx, hy - hh * 1.32);
+  c.bezierCurveTo(hx + hw * 0.7, hy - hh * 1.36, hx + hw * 1.22, hy - hh * 1.0, hx + hw * 1.04, hy + hh * 0.2);
+  c.quadraticCurveTo(hx + hw * 0.9, hy + hh * 0.8, hx, hy + hh * 0.86); c.quadraticCurveTo(hx - hw * 0.9, hy + hh * 0.8, hx - hw * 1.04, hy + hh * 0.2); c.closePath();
+  c.fillStyle = lin(c, 0, hy - hh * 1.3, 0, hy + hh * 0.9, [0, hex(lite(hair, 0.22))], [0.5, hex(hair)], [1, hex(shade(hair, 0.62))]); c.fill(); c.strokeStyle = ln; c.lineWidth = 0.8; c.stroke();
+  c.save(); c.clip();
+  for (let i = -4; i <= 4; i++) stroke(c, rgba(shade(hair, 0.5), 0.35), 0.5, hx, hy - hh * 1.1, hx + i * hw * 0.24, hy + hh * 0.8); // strands from the crown
+  stroke(c, rgba(lite(hair, 0.55), 0.45), 0.7, hx - hw * 0.5, hy - hh * 0.9, hx - hw * 0.2, hy - hh * 0.5);
+  ell(c, hx, hy - hh * 1.0, 1.1, 0.8, rgba(shade(hair, 0.4), 0.5));
+  c.restore();
 }
 
 // the multi-headed hood of a naga
@@ -725,8 +798,8 @@ export function headCentre(L: Look): { x: number; y: number; r: number } {
   return { x: k.headX, y: k.headY, r: k.headH * k.hf };
 }
 
-export function paintFrame(c: CanvasRenderingContext2D, L: Look, frame: number) {
-  const k = makeCx(c, L, frame);
+export function paintFrame(c: CanvasRenderingContext2D, L: Look, frame: number, view: View = 'front') {
+  const k = makeCx(c, L, frame, view);
   c.lineJoin = 'round'; c.lineCap = 'round';
   shadow(k);
   if (k.stage === 'infant' && k.theme.lower !== 'blob') { c.save(); c.translate(CX, FOOT); c.scale(1.2, 1.2); c.translate(-CX, -FOOT); infant(k); c.restore(); ambient(k); return; }
@@ -737,25 +810,36 @@ export function paintFrame(c: CanvasRenderingContext2D, L: Look, frame: number) 
     ambient(k);
     return;
   }
-  wingsBack(k);
-  tailBack(k);
+  const back = k.view === 'back', prof = k.view === 'side';
+  if (!back) wingsBack(k);
+  if (prof) { c.save(); c.translate(CX * 2, 0); c.scale(-1, 1); tailBack(k); c.restore(); } else if (!back) tailBack(k);
   if (lower === 'serpent') serpentBody(k);
   else if (lower === 'gown') gownBody(k);
   else legs(k, fit);
   if (lower === 'legs') skirt(k, fit);
+  if (prof) arms(k, fit, 'far'); // the far arm is behind the body
   neck(k);
   torso(k, fit);
   bodyOverlay(k);
+  if (back) { wingsBack(k); tailBack(k); } // from behind the wings and the tail lie over the back
   carried(k, fit);
-  arms(k, fit);
+  arms(k, fit, prof ? 'near' : 'both');
   if (k.P.bundle) { // a bundle of cloth and bread held at the chest
     const sx = (k.sh[0][0] + k.sh[1][0]) / 2, y = k.shY + k.torsoLen * 0.38;
-    ell(c, sx, y + 1, k.sw * 0.95, 4.2, lin(c, 0, y - 3, 0, y + 5, [0, '#f6eedc'], [1, '#d4c4a0']), '#8a7a5a', 0.6); ell(c, sx + 2, y - 2, 2.4, 2, '#e8b870', '#8a5a1a', 0.5); stroke(c, '#8a7a5a', 0.5, sx - k.sw * 0.7, y + 1.4, sx + k.sw * 0.7, y + 1.4);
+    ell(c, sx + (prof ? 3 : 0), y + 1, k.sw * (prof ? 1.6 : 0.95), 4.2, lin(c, 0, y - 3, 0, y + 5, [0, '#f6eedc'], [1, '#d4c4a0']), '#8a7a5a', 0.6); ell(c, sx + 2 + (prof ? 3 : 0), y - 2, 2.4, 2, '#e8b870', '#8a5a1a', 0.5); stroke(c, '#8a7a5a', 0.5, sx - k.sw * 0.7, y + 1.4, sx + k.sw * 0.7, y + 1.4);
     for (const i of [0, 1]) hand(k, k.hand[i], i ? 1 : -1, false, k.sh[i]);
   }
   // the head and everything on it
   onHead(k, () => {
     nagaHood(k);
+    if (back) {
+      hatBack(k); headBack(k); ears(k);
+      backOfHead(k);
+      hairBack(k);
+      if (!['hood', 'cowl'].includes(k.L.hat)) hatFront(k);
+      headTop(k);
+      return;
+    }
     hatBack(k); hairBack(k); headBack(k); ears(k);
     drawHead(k);
     drawFace(k);

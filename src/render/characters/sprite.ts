@@ -2,9 +2,9 @@
 // angle, depth all work) but its texture is an atlas of pose frames painted on demand at the resolution the camera needs. Zoomed out
 // it is a 20-pixel-wide atlas; zoomed in the same person is repainted at up to 8 times that, so details (buttons, eyes, runes) appear.
 import Phaser from 'phaser';
-import { FW, FH, FOOT, UNIT, lookKey, type Look } from './kit';
+import { FW, FH, FOOT, UNIT, lookKey, type Look, type View } from './kit';
 import { paintFrame } from './paint';
-import { FRAMES } from './pose';
+import { FRAMES, DIRECTIONAL } from './pose';
 
 /** texture pixels per unit; one unit is a third of a city pixel */
 export const LODS = [0.35, 0.7, 1.4, 2.8];
@@ -13,21 +13,21 @@ const ORIGIN_Y = FOOT / FH;
 const MAX_BYTES = 150 * 1024 * 1024;
 
 interface Atlas {
-  key: string; look: Look; lod: number; ppu: number; fw: number; fh: number; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
+  key: string; look: Look; view: View; lod: number; ppu: number; fw: number; fh: number; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D;
   tex: Phaser.Textures.CanvasTexture; drawn: Uint8Array; users: number; used: number; bytes: number;
 }
 const atlases = new Map<string, Atlas>();
 let totalBytes = 0;
 
-function atlasFor(scene: Phaser.Scene, L: Look, lod: number): Atlas {
-  const key = `pv_${lookKey(L)}@${lod}`;
+function atlasFor(scene: Phaser.Scene, L: Look, lod: number, view: View = 'front'): Atlas {
+  const key = `pv_${lookKey(L)}@${lod}${view === 'front' ? '' : ':' + view}`;
   const have = atlases.get(key);
   if (have && scene.textures.exists(key)) return have;
   const ppu = LODS[lod], fw = Math.ceil(FW * ppu), fh = Math.ceil(FH * ppu), rows = Math.ceil(FRAMES / COLS);
   const tex = scene.textures.createCanvas(key, fw * COLS, fh * rows)!;
   tex.setFilter(Phaser.Textures.FilterMode.LINEAR);
   for (let i = 0; i < FRAMES; i++) tex.add(i, 0, (i % COLS) * fw, Math.floor(i / COLS) * fh, fw, fh);
-  const a: Atlas = { key, look: L, lod, ppu, fw, fh, canvas: tex.getSourceImage() as HTMLCanvasElement, ctx: tex.getContext(), tex, drawn: new Uint8Array(FRAMES), users: 0, used: performance.now(), bytes: fw * COLS * fh * rows * 4 };
+  const a: Atlas = { key, look: L, view, lod, ppu, fw, fh, canvas: tex.getSourceImage() as HTMLCanvasElement, ctx: tex.getContext(), tex, drawn: new Uint8Array(FRAMES), users: 0, used: performance.now(), bytes: fw * COLS * fh * rows * 4 };
   atlases.set(key, a);
   totalBytes += a.bytes;
   if (totalBytes > MAX_BYTES) evict(scene);
@@ -53,7 +53,7 @@ function paint(a: Atlas, frame: number): boolean {
   const x = (frame % COLS) * a.fw, y = Math.floor(frame / COLS) * a.fh;
   const c = a.ctx;
   c.save(); c.beginPath(); c.rect(x, y, a.fw, a.fh); c.clip(); c.translate(x, y); c.scale(a.ppu, a.ppu);
-  paintFrame(c, a.look, frame);
+  paintFrame(c, a.look, frame, a.view);
   c.restore();
   a.drawn[frame] = 1;
   a.tex.refresh();
@@ -69,6 +69,7 @@ export class PersonImage extends Phaser.GameObjects.Image {
   declare private atlas: Atlas;
   declare private lodT: number;
   declare private lastFrame: number;
+  declare private want: View;
 
   constructor(scene: Phaser.Scene, x: number, y: number, look: Look, frame = 0) {
     const a = atlasFor(scene, look, 0);
@@ -77,6 +78,7 @@ export class PersonImage extends Phaser.GameObjects.Image {
     this.look = look;
     this.atlas = a;
     this.lastFrame = 0;
+    this.want = 'front';
     this.lodT = Math.random() * 0.3;
     this.setScale(UNIT / a.ppu);
     scene.add.existing(this); // having a preUpdate puts it on the update list: it checks the zoom a few times a second
@@ -88,8 +90,11 @@ export class PersonImage extends Phaser.GameObjects.Image {
   setOrigin(_x?: number, _y?: number) { return super.setOrigin(0.5, ORIGIN_Y); }
 
   setFrame(frame: string | number | Phaser.Textures.Frame, updateSize?: boolean, updateOrigin?: boolean) {
-    const a = byKey(this.texture?.key);
+    let a = byKey(this.texture?.key);
     if (a && typeof frame === 'number') {
+      // the person faces the way they walk; poses with no side or back drawing (work, prayer, sitting) are painted facing us
+      const eff: View = DIRECTIONAL.has(frame) ? this.want : 'front';
+      if (eff !== a.view) { const b = atlasFor(this.scene, this.look, a.lod, eff); this.setTexture(b.key); a = b; }
       a.used = performance.now();
       if (paint(a, frame)) this.lastFrame = frame; else frame = a.drawn[this.lastFrame] ? this.lastFrame : 0;
     }
@@ -107,10 +112,21 @@ export class PersonImage extends Phaser.GameObjects.Image {
     return this;
   }
 
+  /** turn toward the direction of travel (dx, dy in screen pixels): across the screen, away from us (up), or toward us (down) */
+  face(dx: number, dy: number) {
+    const ax = Math.abs(dx), ay = Math.abs(dy), cur = this.want;
+    let v: View = cur;
+    if (cur === 'side') { if (ay > ax * 1.6) v = dy < 0 ? 'back' : 'front'; }
+    else if (ax > ay * 1.6) v = 'side'; else if (ay > 0.01) v = dy < 0 ? 'back' : 'front';
+    if (v === 'side') { if (ax > 0.01) this.setFlipX(dx < 0); } else this.setFlipX(false);
+    if (v !== cur) { this.want = v; this.setFrame(this.lastFrame); }
+    return this;
+  }
+
   /** switch this person to a different look (the protagonist grows up) */
   setLook(look: Look) {
     this.look = look;
-    const a = atlasFor(this.scene, look, this.atlas.lod);
+    const a = atlasFor(this.scene, look, this.atlas.lod, this.atlas.view);
     this.setTexture(a.key, this.lastFrame);
     return this;
   }
@@ -128,7 +144,7 @@ export class PersonImage extends Phaser.GameObjects.Image {
     if (want < 0) want = LODS.length - 1;
     if (!near) want = Math.min(want, 0);
     if (want === this.atlas.lod) return;
-    const a = atlasFor(this.scene, this.look, want);
+    const a = atlasFor(this.scene, this.look, want, this.atlas.view);
     if (!a.drawn[this.lastFrame] && !paint(a, this.lastFrame)) return;
     this.setTexture(a.key, this.lastFrame);
   }

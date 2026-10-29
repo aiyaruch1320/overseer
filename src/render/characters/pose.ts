@@ -96,3 +96,13 @@ export const poseOf = (frame: number): Pose => POSES[frame] || POSES[0];
 /** the frames a person cycles through while standing about, their "signature" (a race adds breathing glow, tails, wings) */
 export const IDLE_STANDARD = [POSE.idle, POSE.idle2, POSE.breath, POSE.idle3];
 export const IDLE_FLUTTER = [POSE.flutter0, POSE.flutter1];
+
+/** the phase (0..1) of the walk a frame shows, or null when it is not a walking frame */
+export function walkPhase(frame: number): number | null {
+  if (frame >= POSE.walk0 && frame <= POSE.walk7) return (frame - POSE.walk0) / 8;
+  if (frame === POSE.carry1) return 0.25;
+  if (frame === POSE.carry2) return 0.75;
+  return null;
+}
+/** the poses that are drawn from behind and from the side; every other pose (work, sit, pray...) is drawn facing us */
+export const DIRECTIONAL = new Set<number>([POSE.idle, POSE.breath, POSE.idle2, POSE.idle3, POSE.walk0, POSE.walk1, POSE.walk2, POSE.walk3, POSE.walk4, POSE.walk5, POSE.walk6, POSE.walk7, POSE.carry0, POSE.carry1, POSE.carry2]);

@@ -159,7 +159,7 @@ export function hatFront(k: Cx) {
   } else if (h === 'cap') {
     c.beginPath(); c.moveTo(hx - hw * 1.08, hy - hh * 0.25); c.bezierCurveTo(hx - hw * 1.2, hy - hh * 1.3, hx + hw * 1.2, hy - hh * 1.3, hx + hw * 1.08, hy - hh * 0.25); c.quadraticCurveTo(hx, hy - hh * 0.5, hx - hw * 1.08, hy - hh * 0.25);
     c.fillStyle = lin(c, 0, top, 0, hy, [0, hex(lite(c2, 0.15))], [1, hex(shade(c2, 0.75))]); c.fill(); c.strokeStyle = ln(c2); c.lineWidth = 0.75; c.stroke();
-    poly(c, [hx + hw * 0.2, hy - hh * 0.32, hx + hw * 1.5, hy - hh * 0.2, hx + hw * 1.3, hy - hh * 0.05, hx + hw * 0.2, hy - hh * 0.15], hex(shade(c2, 0.82)), ln(c2), 0.6);
+    if (k.view !== 'back') poly(c, [hx + hw * 0.2, hy - hh * 0.32, hx + hw * 1.5, hy - hh * 0.2, hx + hw * 1.3, hy - hh * 0.05, hx + hw * 0.2, hy - hh * 0.15], hex(shade(c2, 0.82)), ln(c2), 0.6);
     ell(c, hx, top + 0.6, 0.9, 0.9, hex(shade(c2, 0.7)), ln(c2), 0.4);
   } else if (h === 'bandana') {
     const bd = hex(shade(c2, 0.78)), be = hex(lineOf(c2));

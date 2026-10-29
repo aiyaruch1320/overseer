@@ -4,10 +4,10 @@ import { THEMES, STAGES, STAGE_NAME, STAGE_AGE, RACE_IDS } from './render/charac
 import { POSE, WALK, CARRY_WALK, FRAMES } from './render/characters/pose';
 import { renderFrame } from './render/characters/portrait';
 import { SPECIALS, specialLook, specialStageLook } from './data/specials';
-import type { Look } from './render/characters/kit';
+import type { Look, View } from './render/characters/kit';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const st = { race: 'human', line: '', sex: 'm', outfit: '', role: 'ชาวบ้าน', seed: 7, ppu: 3 };
+const st = { view: 'front' as View, race: 'human', line: '', sex: 'm', outfit: '', role: 'ชาวบ้าน', seed: 7, ppu: 3 };
 const ROLES = ['ชาวบ้าน', 'พ่อค้า', 'ทหาร', 'อัศวิน', 'นักบวช', 'ชาวนา', 'ช่างตีเหล็ก', 'นักเวท', 'นักกวีพเนจร', 'ขุนนาง', 'นักผจญภัย', 'นักล่า', 'คนงานเหมือง', 'หมอยา', 'ขอทาน'];
 const OUTFITS = ['', 'tunic', 'vest', 'armor', 'knight', 'robe', 'farmer', 'apron', 'cloak', 'noble', 'regal', 'rags', 'dress', 'sarong', 'light', 'fur', 'leather', 'chef', 'miner', 'mage', 'scholar', 'bard', 'sailor', 'monk', 'otherworld', 'priest', 'plate'];
 const FRAME_NAMES = Object.entries(POSE).sort((a, b) => a[1] - b[1]).map(([k]) => k);
@@ -20,7 +20,7 @@ function makeLook(race = st.race, hAge = STAGE_AGE.adult, line = st.line): Look 
 
 function fig(L: Look, frame: number, ppu: number, caption?: string) {
   const f = document.createElement('figure');
-  const cv = renderFrame(L, frame, ppu);
+  const cv = renderFrame(L, frame, ppu, undefined, st.view);
   f.append(cv);
   if (caption) { const c = document.createElement('figcaption'); c.textContent = caption; f.append(c); }
   return f;
@@ -87,7 +87,7 @@ const anim: { cv: HTMLCanvasElement; L: Look; frames: number[]; fps: number; las
 function tick(t: number) {
   for (const a of anim) {
     const i = Math.floor((t / 1000) * a.fps) % a.frames.length;
-    if (i !== a.last) { a.last = i; renderFrame(a.L, a.frames[i], st.ppu, a.cv); }
+    if (i !== a.last) { a.last = i; renderFrame(a.L, a.frames[i], st.ppu, a.cv, st.view); }
   }
   requestAnimationFrame(tick);
 }
@@ -96,6 +96,7 @@ function boot() {
   $<HTMLSelectElement>('outfit').innerHTML = OUTFITS.map((o) => `<option value="${o}">${o || '(ตามอาชีพ)'}</option>`).join('');
   $<HTMLSelectElement>('role').innerHTML = ROLES.map((o) => `<option>${o}</option>`).join('');
   $<HTMLInputElement>('ppu').oninput = (e) => { st.ppu = +(e.target as HTMLInputElement).value; renderAll(); };
+  $<HTMLSelectElement>('view').onchange = (e) => { st.view = (e.target as HTMLSelectElement).value as View; renderAll(); };
   $<HTMLSelectElement>('sex').onchange = (e) => { st.sex = (e.target as HTMLSelectElement).value; renderAll(); };
   $<HTMLSelectElement>('line').onchange = (e) => { st.line = (e.target as HTMLSelectElement).value; renderAll(); };
   $<HTMLSelectElement>('outfit').onchange = (e) => { st.outfit = (e.target as HTMLSelectElement).value; renderAll(); };
@@ -105,6 +106,7 @@ function boot() {
   if (q.get('race') && THEMES[q.get('race')!]) st.race = q.get('race')!;
   if (q.get('line')) st.line = q.get('line')!;
   if (q.get('sex')) { st.sex = q.get('sex')!; $<HTMLSelectElement>('sex').value = st.sex; }
+  if (q.get('view')) { st.view = q.get('view') as View; $<HTMLSelectElement>('view').value = st.view; }
   if (q.get('seed')) st.seed = +q.get('seed')!;
   if (q.get('ppu')) { st.ppu = +q.get('ppu')!; $<HTMLInputElement>('ppu').value = String(st.ppu); }
   renderAll();
