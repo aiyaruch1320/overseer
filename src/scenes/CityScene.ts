@@ -10,7 +10,9 @@ import { relRole, goalText } from '../sim/society';
 import { lookFor, heroLook, cradleTex, idleFrames, POSE, WALK, CARRY_WALK, JOB_WORK, type Look } from './people';
 import { PersonImage, personFrames } from '../render/characters/sprite';
 import { themeOf } from '../render/characters/themes';
-import { castForCountry } from '../data/cast';
+import { castForCountry, castById } from '../data/cast';
+import { blendOf } from '../data/blood';
+import { birthText } from '../data/birth';
 import { townLifeEvent, EMOTE, TOWN_PLACES, type LifeKind } from '../data/townlife';
 import { NPC_JOBS, NPC_GOALS, npcJob, type Place, type NpcJob } from '../data/npclife';
 import { Routine, DAY_LEN, jobOfLook, type Life, type Venue } from './routine';
@@ -262,7 +264,10 @@ export class CityScene extends Phaser.Scene {
   }
 
   describe(p: Person): string {
-    const bits = [`${p.name} (${(raceById(p.race) || themeOf(p.race)).name}·${p.role})`];
+    const mix = blendOf(p.look);
+    const bits = [`${p.name} (${(raceById(p.race) || themeOf(p.race)).name}${mix ? `ครึ่ง${(raceById(mix) || themeOf(mix)).name}` : ''}·${p.role})`];
+    const birth = p.look.special ? castById(p.look.special)?.birth : undefined;
+    if (birth) bits.push(birthText(birth));
     if (p.job && p.skill !== undefined && !p.look.special) bits.push(`ฝีมือ${p.job.skill} ${Math.round(p.skill)}/100`);
     bits.push(...this.routine.describe(p));
     if (p.goal) bits.push(`ใฝ่ฝัน: ${p.goal}`);
