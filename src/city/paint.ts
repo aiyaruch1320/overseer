@@ -6,7 +6,7 @@ import { T, CW, CH, Tile, type CityData, type BuildingRec } from './citygen';
 import type { Theme, TreeKind } from './themes';
 
 import { NEW_STYLES, doorPath, fence } from './houses';
-import { LANDMARKS, paintSquare } from './landmarks';
+import { LANDMARKS, paintSquare, paintFurniture } from './landmarks';
 import { CIVIC } from './civic';
 import { paintShip, paintCrane, paintBeacon, paintRaft } from './ships';
 import { paintWorldTree, leafCluster, leafRng } from '../render/treeart';
@@ -344,11 +344,18 @@ Object.assign(SPECIAL, CIVIC);
 
 // ---------------------------------------------------------------- landmark in the square
 function landmark(p: Pen, d: CityData, px: number, py: number) {
+  const kind = d.landmark?.kind ?? d.theme.centre, k = d.landmark?.k ?? 1;
+  // an ordinary town's monument is the capital's kind drawn smaller, about its own origin
+  if (k !== 1) { p.x2.save(); p.x2.translate(px, py); p.x2.scale(k, k); monument(p, d, kind, 0, 0); p.x2.restore(); } else monument(p, d, kind, px, py);
+  paintFurniture(p, d, 'front'); // what stands in front of the monument is drawn over its foot
+}
+
+function monument(p: Pen, d: CityData, kind: string, px: number, py: number) {
   const th = d.theme, r = p.r;
-  const drawNew = LANDMARKS[th.centre];
+  const drawNew = LANDMARKS[kind];
   if (drawNew) { drawNew(p, d, px, py); return; }
   const rock = (c: number, x: number, y: number, rad: number) => { p.circ(shadeC(c, 0.75), x + 1, y + 1, rad); p.circ(c, x, y, rad); };
-  switch (th.centre) {
+  switch (kind) {
     case 'statue': rock(0xb8b0a0, px, py, 16); p.fill(0xd8d0c0, px - 4, py - 22, 8, 22); p.poly(0xf2c94c, [px - 6, py - 22, px, py - 32, px + 6, py - 22]); break;
     case 'forge': rock(0x5a5a62, px, py, 17); p.fill(0x34343a, px - 11, py - 16, 22, 14); p.fill(0xf08c3a, px - 8, py - 13, 16, 6); p.fill(0xffd36a, px - 4, py - 11, 8, 3); p.fill(0x4a4f60, px - 16, py + 4, 12, 5); p.fill(0x7a7f90, px - 17, py + 2, 14, 3); p.fill(0x34343a, px + 6, py - 28, 8, 14); break;
     case 'gear': { rock(0x6a6a70, px, py, 19); p.x2.fillStyle = hex(0x8a8a90); for (let k = 0; k < 12; k++) { const a = (k / 12) * Math.PI * 2; p.x2.fillRect(px + Math.cos(a) * 17 - 2, py + Math.sin(a) * 17 - 2, 4, 4); } p.circ(0x44444a, px, py, 10); p.circ(0xd8a030, px, py, 4); break; }
@@ -489,6 +496,8 @@ export function paintCity(d: CityData, town: Town) {
   // the square's landmark, then stalls
   const px = (d.plaza.x + d.plaza.w / 2) * T, py = (d.plaza.y + d.plaza.h / 2) * T;
   paintSquare(p, d, px, py);
+  paintFurniture(p, d, 'behind');
+  if (d.centrepiece) { const c = d.centrepiece; p.x2.save(); p.x2.translate(c.x, c.y); p.x2.scale(c.k, c.k); monument(p, d, c.kind, 0, 0); p.x2.restore(); }
   for (const gt of d.gates) gatehouse(p, d.theme, gt);
   for (const sh of d.ships) paintShip(p, sh, d.theme);
   for (const cr of d.cranes) paintCrane(p, cr.x, cr.y);
