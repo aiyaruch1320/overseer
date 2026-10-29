@@ -41,8 +41,8 @@ const COUNTRIES = { AZ: 10, MH: 12, KD: 12, NR: 16, AL: 28, MK: 16, SH: 17, SV: 
 const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV']);
 const storyFiles = list('storylines');
 const raceFiles = storyFiles.filter((f) => /\/\d\d-/.test(f) && !f.endsWith('00-convergence.md'));
-const nodeRow = /^\| ([a-z]{2}\.[btae]\d) \|/;
-const nodes = collect(storyFiles, /^\| ([a-z]{2}\.[btae]\d) \|/gm);
+const nodeRow = /^\| ([a-z]{2}\.[btael]\d) \|/;
+const nodes = collect(storyFiles, /^\| ([a-z]{2}\.[btael]\d) \|/gm);
 const itemFiles = list('items').filter((f) => !f.endsWith('09-catalog.md'));
 const weapons = new Map();
 for (const f of itemFiles.filter((x) => /\/0[1-8]-/.test(x))) for (const line of lines(f)) if (/^\| w[a-z]_/.test(line)) weapons.set(cells(line)[0], { f, c: cells(line) });
