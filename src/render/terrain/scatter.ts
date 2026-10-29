@@ -41,7 +41,14 @@ function rule(def: number, x: number, y: number, e: number, inl: number, t: numb
       const tree = z('tree'), sw = z('swamp'), hi = z('highland');
       if (sw > 0.3 && r2 < 0.65) return t >= 3 && r1 < 0.5 ? [G.reed, 0.8] : [G.jungle, 0.9];
       if (hi > 0.4 && r2 < 0.5) return [PEAK_ROCK, 1.0];
-      if (r2 < 0.7) return [G.jungle, tree > 0.4 ? 1.5 : 1.2];
+      if (r2 < 0.7) {
+        // each stretch of forest has its own character (a hash of the 120 MU patch it lies in): one is mostly ferns, another bamboo, another pines,
+        // so the continent reads as many woods and not one round bush repeated
+        const kind = hash3(Math.floor(x / 120), Math.floor(y / 120), 7) % 5, v = r1;
+        const mixes: G.GlyphFn[][] = [[G.jungle, G.fern, G.pine, G.broadleaf], [G.jungle, G.bamboo, G.palm, G.fern], [G.pine, G.jungle, G.fern, G.willow], [G.broadleaf, G.palm, G.jungle, G.bamboo], [G.willow, G.jungle, G.fern, G.pine]];
+        const m = mixes[kind];
+        return [v < 0.4 ? m[0] : v < 0.65 ? m[1] : v < 0.85 ? m[2] : m[3], tree > 0.4 ? 1.5 : 1.2];
+      }
       if (t >= 3) return [G.tuft, 0.7];
       return null;
     }

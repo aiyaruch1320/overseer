@@ -300,11 +300,48 @@ export const ship: GlyphFn = (g, x, y, u, r) => {
   c.strokeStyle = 'rgba(230,248,250,0.7)'; c.lineWidth = Math.max(g.hair * 0.8, u * 0.025); c.beginPath(); c.moveTo(x - u * 0.5 * dir, y + u * 0.02); c.lineTo(x - u * 0.9 * dir, y + u * 0.04); c.stroke();
 };
 
+// ---- the forest country's other plants: so a whole continent of forest is not one round bush repeated ----
+const FOLIAGE = ['#2f8a42', '#3d9a4a', '#27743a', '#4aa856'];
+export const fern: GlyphFn = (g, x, y, u, r) => {
+  const c = g.ctx; shadow(g, x, y, u * 0.34);
+  c.lineCap = 'round';
+  for (let k = 0; k < 8; k++) {
+    const a = -Math.PI / 2 + (k - 3.5) * 0.46, L = u * (0.62 + ((k * 7) % 4) * 0.06);
+    c.strokeStyle = pick(FOLIAGE, (r + k * 0.13) % 1); c.lineWidth = Math.max(g.hair, u * 0.07);
+    c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + Math.cos(a) * L * 0.5, y + Math.sin(a) * L * 0.9, x + Math.cos(a) * L, y + Math.sin(a) * L * 0.7 + L * 0.2); c.stroke();
+  }
+};
+export const bamboo: GlyphFn = (g, x, y, u, r) => {
+  const c = g.ctx; shadow(g, x, y, u * 0.3);
+  for (let k = 0; k < 5; k++) {
+    const sx = x + (k - 2) * u * 0.11, h = u * (0.8 + ((k * 5 + Math.floor(r * 10)) % 5) * 0.12), lean = (k - 2) * u * 0.03;
+    c.strokeStyle = '#7ab05a'; c.lineWidth = Math.max(g.hair, u * 0.06); c.beginPath(); c.moveTo(sx, y); c.lineTo(sx + lean, y - h); c.stroke();
+    c.strokeStyle = '#4a7a3a'; c.lineWidth = Math.max(g.hair, u * 0.02); for (let j = 1; j < 4; j++) { c.beginPath(); c.moveTo(sx + lean * j / 4 - u * 0.04, y - h * j / 4); c.lineTo(sx + lean * j / 4 + u * 0.04, y - h * j / 4); c.stroke(); }
+    c.fillStyle = '#5fbd57'; poly(c, [sx + lean, y - h, sx + lean + u * 0.2, y - h + u * 0.06, sx + lean, y - h + u * 0.1]); c.fill(); poly(c, [sx + lean, y - h, sx + lean - u * 0.18, y - h + u * 0.07, sx + lean, y - h + u * 0.1]); c.fill();
+  }
+};
+export const willow: GlyphFn = (g, x, y, u, r) => {
+  const c = g.ctx; shadow(g, x, y, u * 0.4);
+  c.strokeStyle = TRUNK; c.lineWidth = Math.max(g.hair, u * 0.1); c.lineCap = 'round'; c.beginPath(); c.moveTo(x, y); c.lineTo(x + (r - 0.5) * u * 0.1, y - u * 0.5); c.stroke();
+  c.fillStyle = '#3f8a4a'; circle(c, x, y - u * 0.62, u * 0.34);
+  c.strokeStyle = '#5fb060'; c.lineWidth = Math.max(g.hair, u * 0.035);
+  for (let k = -5; k <= 5; k++) { c.beginPath(); c.moveTo(x + k * u * 0.06, y - u * 0.62); c.quadraticCurveTo(x + k * u * 0.09, y - u * 0.4, x + k * u * 0.08, y - u * (0.12 + ((k * k) % 4) * 0.05)); c.stroke(); }
+};
+export const broadleaf: GlyphFn = (g, x, y, u, r) => {
+  const c = g.ctx; shadow(g, x, y, u * 0.3);
+  c.fillStyle = TRUNK; c.fillRect(x - u * 0.04, y - u * 0.3, u * 0.08, u * 0.3);
+  for (let k = 0; k < 6; k++) {
+    const a = -Math.PI / 2 + (k - 2.5) * 0.55, L = u * 0.62;
+    c.fillStyle = pick(FOLIAGE, (r + k * 0.2) % 1);
+    poly(c, [x, y - u * 0.3, x + Math.cos(a - 0.3) * L, y - u * 0.3 + Math.sin(a - 0.3) * L, x + Math.cos(a) * L * 1.15, y - u * 0.3 + Math.sin(a) * L * 1.15, x + Math.cos(a + 0.3) * L, y - u * 0.3 + Math.sin(a + 0.3) * L]); c.fill();
+  }
+};
+
 // ---- sprite metadata: the box a glyph can paint into (in units of u: half width, height above, depth below) and whether part of it moves ----
 export interface Meta { box: [number, number, number]; anim?: boolean }
 const DEF_BOX: [number, number, number] = [0.95, 1.4, 0.3];
 export const META = new Map<GlyphFn, Meta>();
 const reg = (fn: GlyphFn, box: [number, number, number] = DEF_BOX, anim = false) => META.set(fn, { box, anim });
-[oak, pine, jungle, palm, deadtree, hills, dune, mesa, spire, boulder, tuft, crack, field, hut, mistcurl, reed, ashheap, ruin, tower, cloudfarm, wave].forEach((f) => reg(f));
+[fern, bamboo, willow, broadleaf, oak, pine, jungle, palm, deadtree, hills, dune, mesa, spire, boulder, tuft, crack, field, hut, mistcurl, reed, ashheap, ruin, tower, cloudfarm, wave].forEach((f) => reg(f));
 reg(ship, [1.0, 1.1, 0.25]); reg(volcano, [1.0, 2.1, 0.3], true); reg(factory, [1.4, 2.2, 0.3], true); reg(lamp, [0.8, 1.0, 0.2], true); reg(lavapool, [0.9, 0.5, 0.5], true); reg(tent, [0.9, 1.4, 0.3], true); reg(gear, [1.0, 0.8, 0.8]);
 export const regPeak = (fn: GlyphFn) => { reg(fn, [0.8, 1.15, 0.3]); return fn; };
