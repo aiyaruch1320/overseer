@@ -641,6 +641,49 @@ function neck(k: Cx) {
   ell(c, hx, top + 1.6, w * 0.95, 1.5, rgba(0x120a1e, 0.28)); // the jaw's shadow on the neck
 }
 
+/** a newborn's head, facing the viewer: a big round skull, a high forehead, a small face low in it, full cheeks, a button nose and a tiny chin */
+function babyHead(k: Cx) {
+  const { c, headX: hx, headY: hy, headW: hw, headH: hh, P } = k, skin = lite(k.skin, 0.05);
+  const warm = mix(skin, 0xe0907a, 0.35);
+  c.beginPath(); c.moveTo(hx - hw * 1.02, hy + hh * 0.12);
+  c.bezierCurveTo(hx - hw * 1.1, hy - hh * 0.75, hx - hw * 0.65, hy - hh * 1.12, hx, hy - hh * 1.12);
+  c.bezierCurveTo(hx + hw * 0.65, hy - hh * 1.12, hx + hw * 1.1, hy - hh * 0.75, hx + hw * 1.02, hy + hh * 0.12);
+  c.bezierCurveTo(hx + hw * 1.04, hy + hh * 0.62, hx + hw * 0.62, hy + hh * 0.98, hx, hy + hh * 0.98); // full cheeks, then a small round chin
+  c.bezierCurveTo(hx - hw * 0.62, hy + hh * 0.98, hx - hw * 1.04, hy + hh * 0.62, hx - hw * 1.02, hy + hh * 0.12); c.closePath();
+  c.fillStyle = rad(c, hx - hw * 0.3, hy - hh * 0.5, hw * 1.9, [0, hex(lite(skin, 0.14))], [0.55, hex(skin)], [1, hex(shade(skin, 0.8))]); c.fill();
+  c.save(); c.clip();
+  ell(c, hx, hy - hh * 0.62, hw * 0.55, hh * 0.28, rgba(0xffffff, 0.14)); // the round forehead catches the light
+  for (const sd of [-1, 1]) { ell(c, hx + sd * hw * 0.62, hy + hh * 0.5, hw * 0.34, hh * 0.3, rgba(warm, 0.22)); ell(c, hx + sd * hw * 0.55, hy + hh * 0.42, hw * 0.16, hh * 0.12, rgba(0xffffff, 0.12)); } // cheeks
+  c.fillStyle = lin(c, hx, 0, hx + hw, 0, [0, 'rgba(0,0,0,0)'], [1, 'rgba(60,20,40,0.16)']); c.fillRect(hx, hy - hh * 1.2, hw * 1.2, hh * 2.4);
+  c.restore();
+  c.beginPath(); c.moveTo(hx - hw * 1.02, hy + hh * 0.12);
+  c.bezierCurveTo(hx - hw * 1.1, hy - hh * 0.75, hx - hw * 0.65, hy - hh * 1.12, hx, hy - hh * 1.12);
+  c.bezierCurveTo(hx + hw * 0.65, hy - hh * 1.12, hx + hw * 1.1, hy - hh * 0.75, hx + hw * 1.02, hy + hh * 0.12);
+  c.bezierCurveTo(hx + hw * 1.04, hy + hh * 0.62, hx + hw * 0.62, hy + hh * 0.98, hx, hy + hh * 0.98);
+  c.bezierCurveTo(hx - hw * 0.62, hy + hh * 0.98, hx - hw * 1.04, hy + hh * 0.62, hx - hw * 1.02, hy + hh * 0.12); c.closePath();
+  c.strokeStyle = hex(lineOf(skin)); c.lineWidth = 0.7; c.lineJoin = 'round'; c.stroke();
+  // the face sits in the lower half: eyes below the middle and wide apart
+  const ey = hy + hh * 0.2, ex = hw * 0.4, ew = hw * 0.16, eh = ew * 0.7;
+  for (const sd of [-1, 1]) {
+    const x = hx + sd * ex;
+    if (P.eyes === 'closed') { curve(c, hex(INK), 0.9, x - ew, ey, x, ey + eh * 0.9, x + ew, ey); continue; }
+    ell(c, x, ey, ew, eh, '#ece6e0', hex(INK), 0.45);
+    c.save(); c.beginPath(); c.ellipse(x, ey, ew, eh, 0, 0, TAU); c.clip();
+    ell(c, x, ey, eh * 1.05, eh * 1.05, rad(c, x, ey, eh * 1.1, [0, hex(lite(k.L.eye, 0.15))], [1, hex(shade(k.L.eye, 0.35))])); ell(c, x, ey, eh * 0.5, eh * 0.5, hex(INK));
+    ell(c, x - eh * 0.35, ey - eh * 0.35, eh * 0.22, eh * 0.22, 'rgba(255,255,255,0.9)');
+    c.restore();
+    curve(c, hex(shade(skin, 0.3)), 0.6, x - ew * 1.05, ey - eh * 0.2, x, ey - eh * 1.5, x + ew * 1.05, ey - eh * 0.2); // the upper lid
+    curve(c, rgba(shade(skin, 0.6), 0.25), 0.4, x - ew, ey - eh * 2.2, x, ey - eh * 2.9, x + ew, ey - eh * 2.2); // a faint brow, barely there
+  }
+  ell(c, hx, hy + hh * 0.52, hw * 0.12, hh * 0.09, rgba(lite(skin, 0.35), 0.9)); // the button nose
+  for (const sd of [-1, 1]) ell(c, hx + sd * hw * 0.07, hy + hh * 0.57, 0.3, 0.2, rgba(shade(skin, 0.3), 0.6));
+  const mc = mix(skin, 0xb0505a, 0.5);
+  if (P.mouth === 'open' || P.mouth === 'sing') ell(c, hx, hy + hh * 0.78, hw * 0.12, hh * 0.08, '#4a1a22');
+  else { ell(c, hx, hy + hh * 0.78, hw * 0.13, hh * 0.05, rgba(mc, 0.85)); curve(c, rgba(shade(mc, 0.5), 0.8), 0.4, hx - hw * 0.14, hy + hh * 0.77, hx, hy + hh * 0.8, hx + hw * 0.14, hy + hh * 0.77); }
+  // sparse, fine hair
+  if (k.L.hairStyle !== 3 && !k.theme.hairless) for (let i = 0; i < 6; i++) curve(c, rgba(k.hair, 0.7), 0.45, hx - hw * 0.5 + i * hw * 0.2, hy - hh * 1.0, hx - hw * 0.4 + i * hw * 0.2 + (i % 2 ? 1 : -1), hy - hh * 1.2, hx - hw * 0.25 + i * hw * 0.18, hy - hh * 0.92);
+}
+
 function infant(k: Cx) {
   const { c, L } = k, cradle = k.feats.has('cradle'), wood = 0x8a5a3a;
   // a baby lies swaddled with its head on a small pillow, propped a little; in a cradle it lies inside the wooden basin
@@ -653,7 +696,7 @@ function infant(k: Cx) {
     ell(c, cx - 11, gy - 17, 6, 8, rgba(0x120a1e, 0.25));
   }
   // pillow
-  ell(c, bx - 9, gy - 5 - lift, 9, 3.4, lin(c, 0, gy - 9, 0, gy - 2, [0, hex(lite(band, 0.35))], [1, hex(shade(band, 0.8))]), hex(lineOf(band)), 0.6);
+  ell(c, bx - 8, gy - 4.5 - lift, 9.5, 3.4, lin(c, 0, gy - 9, 0, gy - 2, [0, hex(lite(band, 0.35))], [1, hex(shade(band, 0.8))]), hex(lineOf(band)), 0.6);
   // the swaddled body: a long soft bundle, bound with bands
   const x0 = bx - 4, x1 = bx + 17, y0 = gy - 13 - lift - rise, y1 = gy - 2 - lift;
   c.beginPath(); c.moveTo(x0, y1); c.quadraticCurveTo(x0 - 2, y0 + 3, x0 + 4, y0 + 0.5); c.quadraticCurveTo((x0 + x1) / 2, y0 - 2.4, x1 - 3, y0 + 2); c.quadraticCurveTo(x1 + 2, y0 + 5, x1, y1); c.closePath();
@@ -663,20 +706,11 @@ function infant(k: Cx) {
   for (const t of [0.38, 0.72]) { const x = x0 + (x1 - x0) * t; poly(c, [x - 1.1, y0 - 0.6 + Math.sin(t * 4) * 0.4, x + 1.1, y0 + 0.2, x + 1.7, y1, x - 0.7, y1], hex(band), hex(lineOf(band)), 0.4); }
   // a small fist out of the wrap
   ell(c, bx - 1, y0 + 2.2, 2.2, 1.9, hex(k.skin), hex(lineOf(k.skin)), 0.5); stroke(c, rgba(shade(k.skin, 0.4), 0.5), 0.3, bx - 1.6, y0 + 1.5, bx - 0.4, y0 + 3);
-  // the head
-  k.hf = 0.6;
-  k.headX = bx - 10 + k.P.tilt * -6; k.headY = gy - 12.5 - lift + k.P.nod * 0.4 - rise * 0.6;
-  c.save(); c.translate(k.headX, k.headY); c.rotate(-0.1); c.translate(-k.headX, -k.headY);
-  onHead(k, () => {
-    headBack(k); ears(k); drawHead(k); drawFace(k);
-    if (k.L.hairStyle !== 3 && !k.theme.hairless) { // a soft cap of baby hair
-      const { headX: hx, headY: hy, headW: hw, headH: hh } = k;
-      c.beginPath(); c.moveTo(hx - hw * 1.0, hy - hh * 0.08); c.bezierCurveTo(hx - hw * 1.12, hy - hh * 1.18, hx + hw * 1.12, hy - hh * 1.18, hx + hw * 1.0, hy - hh * 0.08); c.quadraticCurveTo(hx + hw * 0.5, hy - hh * 0.62, hx, hy - hh * 0.56); c.quadraticCurveTo(hx - hw * 0.5, hy - hh * 0.62, hx - hw * 1.0, hy - hh * 0.08); c.closePath();
-      c.fillStyle = rgba(k.hair, 0.88); c.fill(); c.strokeStyle = rgba(lineOf(k.hair), 0.6); c.lineWidth = 0.5; c.stroke();
-      curve(c, rgba(k.hair, 0.9), 0.7, hx + hw * 0.1, hy - hh * 1.05, hx + hw * 0.35, hy - hh * 1.5, hx + hw * 0.1, hy - hh * 1.55);
-    }
-    headTop(k);
-  });
+  // the head: turned to face us, resting on the pillow
+  k.hf = 0.56;
+  k.headX = bx - 7; k.headY = gy - 11.5 - lift + k.P.nod * 0.4 - rise * 0.6;
+  c.save(); c.translate(k.headX, k.headY); c.rotate(0.04); c.translate(-k.headX, -k.headY);
+  onHead(k, () => { headBack(k); ears(k); babyHead(k); headTop(k); });
   c.restore();
   if (cradle) { // the front board of the cradle hides the lower half of the bundle
     poly(c, [cx - 17, gy - 9, cx + 17, gy - 9, cx + 13, gy - 1, cx - 13, gy - 1], lin(c, 0, gy - 9, 0, gy, [0, hex(lite(wood, 0.15))], [1, hex(shade(wood, 0.75))]), hex(lineOf(wood)), 0.8);

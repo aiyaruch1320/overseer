@@ -12,8 +12,8 @@ export function drawPortrait(ctx: CanvasRenderingContext2D, raceId: string, scal
   const L = name
     ? heroLook({ name, dynastyName: dyn, race, gender, job: job || null, hAge: +hAge }, '')
     : lookFor(`portrait:${race}`, race, 'ชาวบ้าน', { hAge: 30, gender: 'ชาย' });
-  const h = headCentre(L), span = Math.max(30, h.r * 3.4), ppu = (12 * scale) / span;
-  ctx.save(); ctx.scale(ppu, ppu); ctx.translate(-(h.x - span / 2), -(h.y - span * 0.42));
+  const h = headCentre(L), span = Math.max(30, h.r * 4.8), ppu = (12 * scale) / span;
+  ctx.save(); ctx.scale(ppu, ppu); ctx.translate(-(h.x - span / 2), -(h.y - span * 0.46));
   paintFrame(ctx, L, POSE.idle);
   ctx.restore();
 }
