@@ -4,7 +4,7 @@ import { DEFS, defIndex } from '../../world/geo';
 import { coastPath, type ViewRect } from './coast';
 import type { Loop } from './land';
 
-interface Island { def: number; loops: Loop[]; cx: number; cy: number; w: number; h: number; depth: number; seed: number; hull: Float32Array }
+interface Island { def: number; loops: Loop[]; cx: number; cy: number; w: number; h: number; depth: number; seed: number; layers: { loops: Float32Array[]; color: string }[] }
 
 const CLOUD_COUNT = 8;
 
@@ -21,21 +21,18 @@ function cloudSprite(): HTMLCanvasElement {
   return cv;
 }
 
-/** outline of the rock under an island: the island's rim and a smaller copy sunk below it, joined by their convex hull */
-function undersideHull(loops: Loop[], cx: number, cy: number, depth: number): Float32Array {
-  const pts: [number, number][] = [];
-  for (const l of loops) for (let i = 0; i < l.pts.length; i += 6) {
-    const x = l.pts[i], y = l.pts[i + 1];
-    pts.push([x, y]);
-    pts.push([cx + (x - cx) * 0.2, cy + depth + (y - cy) * 0.18]);
+const hex2 = (c: number[]) => '#' + c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+/** the rock under an island: copies of its own outline, each sunk lower and shrunk toward the middle, so the underside follows the island's shape
+ *  (an island with bays and lobes keeps them, instead of being filled in by a convex hull) */
+function undersideLayers(loops: Loop[], cx: number, cy: number, depth: number) {
+  const top = [0xb9, 0x98, 0x74], bottom = [0x3a, 0x2c, 0x26], out: { loops: Float32Array[]; color: string }[] = [];
+  const STEPS = 12;
+  for (let k = STEPS; k >= 1; k--) {
+    const t = k / STEPS, sc = 1 - 0.8 * t, dy = depth * t;
+    const color = hex2(top.map((v, i) => v + (bottom[i] - v) * Math.pow(t, 0.8)));
+    out.push({ color, loops: loops.map((l) => { const a = new Float32Array(l.pts.length); for (let i = 0; i < l.pts.length; i += 2) { a[i] = cx + (l.pts[i] - cx) * sc; a[i + 1] = cy + dy + (l.pts[i + 1] - cy) * sc; } return a; }) });
   }
-  pts.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  const cross = (o: [number, number], a: [number, number], b: [number, number]) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const lower: [number, number][] = [], upper: [number, number][] = [];
-  for (const p of pts) { while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop(); lower.push(p); }
-  for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop(); upper.push(p); }
-  const hull = lower.slice(0, -1).concat(upper.slice(0, -1));
-  return Float32Array.from(hull.flat());
+  return out;
 }
 
 export class Floating {
@@ -51,7 +48,7 @@ export class Floating {
       for (const l of loops) for (let i = 0; i < l.pts.length; i += 2) { x0 = Math.min(x0, l.pts[i]); x1 = Math.max(x1, l.pts[i]); y0 = Math.min(y0, l.pts[i + 1]); y1 = Math.max(y1, l.pts[i + 1]); }
       const w = x1 - x0, h = y1 - y0;
       const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, depth = Math.max(7, Math.min(34, 0.3 * w + 0.25 * h));
-      this.islands.push({ def, loops, cx, cy, w, h, depth, seed: def * 7919, hull: undersideHull(loops, cx, cy, depth) });
+      this.islands.push({ def, loops, cx, cy, w, h, depth, seed: def * 7919, layers: undersideLayers(loops, cx, cy, depth) });
     });
     this.islands.sort((a, b) => a.cy - b.cy);
     // AZ-01 is forty islands bound by chain bridges: link its satellites to the main isle
@@ -101,12 +98,12 @@ export class Floating {
     ctx.beginPath(); for (const [x1, y1, x2, y2] of this.chains) { ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 + 7, x2, y2); } ctx.stroke();
     ctx.setLineDash([]);
     for (const isl of vis) {
-      // rock underside: one gradient-filled hull, ragged crags hanging from it
-      const hl = isl.hull;
-      const g = ctx.createLinearGradient(0, isl.cy - isl.h * 0.2, 0, isl.cy + isl.depth + isl.h * 0.1);
-      g.addColorStop(0, '#b99874'); g.addColorStop(0.45, '#8a6a52'); g.addColorStop(1, '#3a2c26');
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.moveTo(hl[0], hl[1]); for (let i = 2; i < hl.length; i += 2) ctx.lineTo(hl[i], hl[i + 1]); ctx.closePath(); ctx.fill();
+      // rock underside: the island's outline sunk in shrinking layers, ragged crags hanging from it
+      for (const layer of isl.layers) {
+        ctx.fillStyle = layer.color; ctx.beginPath();
+        for (const pts of layer.loops) { ctx.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) ctx.lineTo(pts[i], pts[i + 1]); ctx.closePath(); }
+        ctx.fill('evenodd');
+      }
       ctx.fillStyle = 'rgba(30,20,16,0.35)';
       for (let k = 0; k < 4; k++) {
         const h = ((isl.seed + k * 977) * 2654435761) >>> 0;
