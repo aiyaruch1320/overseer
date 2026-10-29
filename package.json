@@ -12,6 +12,7 @@
     "build:server": "esbuild server/main.ts --bundle --platform=node --format=esm --target=node22 --outfile=server-dist/main.mjs --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\"",
     "start": "node server-dist/main.mjs",
     "docs:visuals": "tsx scripts/gen-visual-docs.ts",
+    "docs:birth": "tsx scripts/gen-birth.ts",
     "docs:cast": "tsx scripts/gen-npc-cast.ts"
   },
   "dependencies": {
