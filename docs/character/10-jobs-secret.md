@@ -100,3 +100,5 @@
 | third_home_founder | ผู้ก่อบ้านหลังที่สาม | hb.a3 ทาง ค | ชุมชนลูกครึ่งที่มีอยู่ (hb.a3 ทาง ก) | — |
 | old_water_singer | ผู้ร้องเพลงฟัก | ow.a2 ทาง ก | ow.t1 | BIO-08 cv.7 |
 | contract_redeemer | ผู้ไถ่ถอนสัญญา | ct.a1 ทาง ก | ct.t1 ทาง ค | DM-07 cv.5 |
+
+คำว่า "ต่อปี" ในไฟล์นี้คือปีชีวิต ([../world-time.md](../world-time.md))
