@@ -104,7 +104,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('combat'), ...itemFiles, ...list('heirs')].forEach(checkRefs);
+[...storyFiles, ...list('combat'), ...itemFiles, ...list('heirs'), ...list('economy')].forEach(checkRefs);
 
 // ---------- storylines ----------
 for (const f of raceFiles) {
