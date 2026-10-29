@@ -47,6 +47,16 @@ const itemFiles = list('items').filter((f) => !f.endsWith('09-catalog.md'));
 const weapons = new Map();
 for (const f of itemFiles.filter((x) => /\/0[1-8]-/.test(x))) for (const line of lines(f)) if (/^\| w[a-z]_/.test(line)) weapons.set(cells(line)[0], { f, c: cells(line) });
 const materials = tableIds(['items/02-materials.md']);
+// non-weapon items (armor, accessories, talismans, consumables, life tools, materials, key items) and the flags key items set
+const gear = new Map();
+const gearFlags = new Set();
+for (const f of itemFiles.filter((x) => /\/1[2-8]-/.test(x))) for (const line of lines(f)) {
+  const m = line.match(/^\| ((?:ar|ac|tm|cn|lt|mt|ky)_[a-z0-9_]+) \|/);
+  if (!m) continue;
+  const c = cells(line);
+  gear.set(m[1], { f, c });
+  if (m[1].startsWith('ky_')) for (const [, t] of (c[3] || '').matchAll(/`([a-z_0-9]+)`/g)) gearFlags.add(t);
+}
 
 const STAT = /^(pow|mag|spd|luk|int|vit)([+-]\d+)$/;
 const ATTACK = new Set(['blade', 'blunt', 'pierce', 'ranged', 'poison', 'silver', 'iron', 'light', 'fire', 'water', 'ice', 'lightning', 'wind', 'earth', 'dark', 'blood', 'holy', 'cursed_weapon']);
@@ -65,7 +75,7 @@ const docTags = new Set([
   ...[...read('combat/02-type-matrix.md').matchAll(/^\| [^|`]*`([a-z_]+)`/gm)].map((m) => m[1]),
   'spirit_bane',
 ]);
-const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...materials, ...codeWords, ...docTags]);
+const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...codeWords, ...docTags]);
 const aptLevel = (t) => { const m = t.match(/^([a-z_]+)_(\d)$/); return m && apts.has(m[1]); };
 
 // ---------- reference check ----------
@@ -75,7 +85,7 @@ function checkRefs(file) {
     for (const [, t] of line.matchAll(/`([^`]+)`/g)) {
       if (t === '#แท็ก') continue;
       if (t.startsWith('#')) { if (!tags.has(t)) err(file, n, 'tag', t); continue; }
-      if (t.length < 2 || t === '#แท็ก' || STAT.test(t) || ATTACK.has(t) || NOT_IDS.has(t) || /^chain_/.test(t) || /^w[a-z]_$/.test(t) || /^ws_[a-z_]+_[a-z_]+$/.test(t)) continue;
+      if (t.length < 2 || t === '#แท็ก' || STAT.test(t) || ATTACK.has(t) || NOT_IDS.has(t) || /^chain_/.test(t) || /^[a-z]{2}_(f_)?$/.test(t) || /^ws_[a-z_]+_[a-z_]+$/.test(t)) continue;
       if (/^[a-z_0-9]+$/.test(t) && !known.has(t) && !aptLevel(t)) err(file, n, 'id', t);
     }
     for (const m of line.matchAll(/\b([A-Z]{2,3})-(\d+)\b/g)) {
@@ -144,6 +154,16 @@ for (const [id, { f, c }] of weapons) {
   const { pos, neg } = budget(stats);
   if (pos > max + neg || (pos < min && !['C', 'ของใช้'].includes(rarity))) err(f, 0, 'budget', `${id} ${rarity} +${pos} -${neg}`);
   for (const [, t] of tagCell.matchAll(/`([^`]+)`/g)) if (!t.startsWith('#') && !ATTACK.has(t) && !apts.has(t)) err(f, 0, 'attack-tag', `${id} ${t}`);
+}
+for (const [id, { f, c }] of gear) {
+  if (!/^(ar|ac|tm)_/.test(id)) continue;
+  const [, , rarity, slot, , , stats] = c;
+  const band = BAND[rarity];
+  if (!band || rarity === 'ของใช้') { err(f, 0, 'rarity', `${id} ${rarity}`); continue; }
+  const [lo, hi, min, max] = band;
+  if (id.startsWith('ar_') && (Number(slot) < lo || Number(slot) > hi)) err(f, 0, 'defense', `${id} ${rarity} ${slot}`);
+  const { pos, neg } = budget(stats);
+  if (pos > max + neg || (pos < min && !['C'].includes(rarity))) err(f, 0, 'budget', `${id} ${rarity} +${pos} -${neg}`);
 }
 if (fs.existsSync(path.join(docs, 'items/09-catalog.md'))) {
   let section = '';
