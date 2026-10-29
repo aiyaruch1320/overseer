@@ -28,13 +28,13 @@ export function hairBack(k: Cx) {
       const y = hy + hh * 0.2 + i * (s === 5 ? hh * 0.3 : hh * 0.36), x = bx + Math.sin(i * 0.9 + k.P.amb * 6.28) * 0.7 + (s === 2 ? i * 0.5 : 0);
       ell(c, x, y, s === 5 ? hw * 0.2 : hw * 0.26 - i * 0.2, hh * 0.2, hex(i % 2 ? shade(k.hair, 0.82) : k.hair), ln, 0.5);
     }
-    if (s === 5) ell(c, bx + 0.3, hy + hh * 0.2 + segs * hh * 0.3, hw * 0.13, hh * 0.1, '#e04848', ln, 0.4);
+    if (s === 5) ell(c, bx + 0.3, hy + hh * 0.2 + segs * hh * 0.3, hw * 0.13, hh * 0.1, '#7a2a2a', ln, 0.4);
   }
   if (s === 9) for (const sd of [-1, 1]) {
     const bx = hx + sd * hw * 1.2, by = hy - hh * 0.3;
     c.beginPath(); c.moveTo(bx, by); c.quadraticCurveTo(bx + sd * hw * 0.9, by + hh * 0.9 + sway, bx + sd * hw * 0.4, by + hh * 1.9); c.quadraticCurveTo(bx - sd * hw * 0.1, by + hh * 1.2, bx - sd * hw * 0.1, by + hh * 0.2); c.closePath();
     c.fillStyle = hairFill(k, by, by + hh * 2); c.fill(); c.strokeStyle = ln; c.lineWidth = 0.6; c.stroke();
-    ell(c, bx, by + hh * 0.05, hw * 0.16, hh * 0.14, '#e04848', ln, 0.4);
+    ell(c, bx, by + hh * 0.05, hw * 0.16, hh * 0.14, '#7a2a2a', ln, 0.4);
   }
   if (s === 12) { // topknot sits on top, drawn in front
   }
@@ -162,12 +162,10 @@ export function hatFront(k: Cx) {
     poly(c, [hx + hw * 0.2, hy - hh * 0.32, hx + hw * 1.5, hy - hh * 0.2, hx + hw * 1.3, hy - hh * 0.05, hx + hw * 0.2, hy - hh * 0.15], hex(shade(c2, 0.82)), ln(c2), 0.6);
     ell(c, hx, top + 0.6, 0.9, 0.9, hex(shade(c2, 0.7)), ln(c2), 0.4);
   } else if (h === 'bandana') {
-    poly(c, [hx - hw * 1.05, hy - hh * 0.55, hx, hy - hh * 0.72, hx + hw * 1.05, hy - hh * 0.55, hx + hw * 1.05, hy - hh * 0.2, hx, hy - hh * 0.36, hx - hw * 1.05, hy - hh * 0.2], '#c03a3a', '#601818', 0.7);
-    poly(c, [hx + hw * 1.0, hy - hh * 0.4, hx + hw * 1.7, hy - hh * 0.1, hx + hw * 1.45, hy + hh * 0.2, hx + hw * 1.0, hy - hh * 0.2], '#c03a3a', '#601818', 0.6);
-    for (let i = 0; i < 4; i++) ell(c, hx - hw * 0.7 + i * hw * 0.45, hy - hh * 0.46, 0.5, 0.5, '#f0d0d0');
-  } else if (h === 'flower') {
-    for (let i = 0; i < 5; i++) { const a = i * 1.2566; ell(c, hx + hw * 0.78 + Math.cos(a) * 1.7, top + 2.8 + Math.sin(a) * 1.7, 1.5, 1.2, '#f06aa0', '#a02a60', 0.35, a); }
-    ell(c, hx + hw * 0.78, top + 2.8, 1, 1, '#f2c94c', '#a07020', 0.3);
+    const bd = hex(shade(c2, 0.78)), be = hex(lineOf(c2));
+    poly(c, [hx - hw * 1.05, hy - hh * 0.55, hx, hy - hh * 0.72, hx + hw * 1.05, hy - hh * 0.55, hx + hw * 1.05, hy - hh * 0.2, hx, hy - hh * 0.36, hx - hw * 1.05, hy - hh * 0.2], bd, be, 0.7);
+    poly(c, [hx + hw * 1.0, hy - hh * 0.4, hx + hw * 1.7, hy - hh * 0.1, hx + hw * 1.45, hy + hh * 0.2, hx + hw * 1.0, hy - hh * 0.2], bd, be, 0.6);
+    for (let i = 0; i < 4; i++) ell(c, hx - hw * 0.7 + i * hw * 0.45, hy - hh * 0.46, 0.5, 0.5, hex(lite(c2, 0.5)));
   } else if (h === 'turban') {
     c.beginPath(); c.moveTo(hx - hw * 1.12, hy - hh * 0.1); c.bezierCurveTo(hx - hw * 1.5, hy - hh * 1.8, hx + hw * 1.5, hy - hh * 1.8, hx + hw * 1.12, hy - hh * 0.1); c.quadraticCurveTo(hx, hy - hh * 0.55, hx - hw * 1.12, hy - hh * 0.1); c.closePath();
     c.fillStyle = lin(c, 0, top - 3, 0, hy, [0, '#fffaf0'], [1, '#d8ccb0']); c.fill(); c.strokeStyle = '#9a8a6a'; c.lineWidth = 0.7; c.stroke();
@@ -212,8 +210,8 @@ export function hatFront(k: Cx) {
   } else if (h === 'feather') {
     c.beginPath(); c.moveTo(hx - hw * 1.08, hy - hh * 0.3); c.bezierCurveTo(hx - hw * 1.1, hy - hh * 1.3, hx + hw * 1.1, hy - hh * 1.3, hx + hw * 1.08, hy - hh * 0.3); c.quadraticCurveTo(hx, hy - hh * 0.55, hx - hw * 1.08, hy - hh * 0.3);
     c.fillStyle = hex(c2); c.fill(); c.strokeStyle = ln(c2); c.lineWidth = 0.75; c.stroke();
-    poly(c, [hx + hw * 0.55, hy - hh * 0.9, hx + hw * 1.1, hy - hh * 2.2, hx + hw * 1.5, hy - hh * 1.6, hx + hw * 1.0, hy - hh * 0.8], '#e04848', '#701818', 0.5);
-    stroke(c, '#701818', 0.4, hx + hw * 0.7, hy - hh * 0.9, hx + hw * 1.3, hy - hh * 1.9);
+    poly(c, [hx + hw * 0.55, hy - hh * 0.9, hx + hw * 1.1, hy - hh * 2.2, hx + hw * 1.5, hy - hh * 1.6, hx + hw * 1.0, hy - hh * 0.8], hex(mix(c2, 0x8a2a2a, 0.5)), '#401818', 0.5);
+    stroke(c, '#401818', 0.4, hx + hw * 0.7, hy - hh * 0.9, hx + hw * 1.3, hy - hh * 1.9);
   } else if (h === 'minerhat') {
     c.beginPath(); c.moveTo(hx - hw * 1.1, hy - hh * 0.15); c.bezierCurveTo(hx - hw * 1.2, hy - hh * 1.5, hx + hw * 1.2, hy - hh * 1.5, hx + hw * 1.1, hy - hh * 0.15); c.closePath();
     c.fillStyle = lin(c, 0, top, 0, hy, [0, '#f0c050'], [1, '#b07a20']); c.fill(); c.strokeStyle = '#5a3a10'; c.lineWidth = 0.75; c.stroke();
@@ -258,6 +256,7 @@ export function drawTool(k: Cx, hx: number, hy: number, mode: string, name?: str
   let ang = (hand as Record<string, number>)[mode] ?? 0;
   if (mode === 'strike' && longPole && t !== 'spear' && t !== 'scythe') ang = 0.5;
   c.save(); c.translate(hx, hy); c.rotate(ang);
+  const ts = 0.85 + 0.35 * Math.min(1, k.sz); c.scale(ts, ts); // tools were drawn for a shorter hand
   const edge = hex(lineOf(IRON));
   switch (t) {
     case 'spear': shaft(c, -30, 12); poly(c, [-1.5, -30, 0, -38, 1.5, -30], metal(c, -1.5, 1.5), edge, 0.5); stroke(c, '#c03030', 1, 0, -29, -1.2, -25); stroke(c, '#c03030', 1, 0, -29, 1.2, -25); break;

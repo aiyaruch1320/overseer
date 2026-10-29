@@ -10,30 +10,41 @@ import { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD } from '../render/charact
 export { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD };
 export type { Look };
 
-const HAIR = [0x2a1a10, 0x5a3a1e, 0x9a5a2a, 0xd9a030, 0xe8e0a0, 0xc0c0c8, 0x9a2a1a, 0x2a4a8a, 0x6a2a8a, 0x2a6a4a, 0xf0f0f0, 0x1a1020, 0xe07a9a, 0x3a8ac0];
-const CLOTH = [0x8a3a2a, 0x2a5a8a, 0x3a7a3a, 0x7a5a2a, 0x5a3a7a, 0x8a7a3a, 0x3a3a4a, 0xa05a2a, 0x2a7a7a, 0xb0a080, 0xc06a8a, 0x4a6a9a, 0x6a8a3a, 0x9a4a6a];
-const EYES = [0x1b1626, 0x2a1a10, 0x2a5a8a, 0x3a7a3a, 0x7a4a2a, 0x8a2a8a, 0x5a3a1e];
+// natural hair and eye colours: the fantastic ones belong to the peoples whose themes list them
+const HAIR = [0x16110e, 0x241810, 0x34210f, 0x4a3018, 0x6a4424, 0x8a5a2c, 0xa87a3e, 0xc4a05a, 0xd8c088, 0x7a2e1a, 0x9a9aa2, 0x0e0c10];
+const EYES = [0x1b1626, 0x2a1a10, 0x3a2a1a, 0x2a4a6a, 0x3a5a3a, 0x5a3a1e, 0x4a3a2a, 0x5a7a8a];
+
+// What a person wears is one colour with one trim, not two colours at random: [base, trim]. Muted bases keep the eye on faces and on
+// the few saturated accents; each calling and each people has its own family, so a crowd reads as one world.
+type Scheme = [number, number];
+const EARTH: Scheme[] = [[0x6b5a43, 0xb89a5a], [0x4d5a3c, 0xa8986a], [0x5e3b2e, 0xb08a52], [0x3c4a5c, 0x9aa6b4], [0x6a3430, 0xb89a5a], [0x4a4a52, 0xa89a6a], [0x7a6a52, 0x4a3a2a],
+  [0x2f4a44, 0xb4a672], [0x58485e, 0xb8a880], [0x8a7a62, 0x5a4a3a], [0x3a3a3e, 0x8a3a32], [0x6e5c2e, 0x3a2a1a], [0x39503c, 0xc8b88a], [0x4a3a30, 0x9a8a6a]];
+const JEWEL: Scheme[] = [[0x5a1f2e, 0xd0a84a], [0x1f3558, 0xd0a84a], [0x24493a, 0xd0a84a], [0x3f2a5a, 0xd0a84a], [0x22222a, 0xb0b4c0], [0x6a2a1a, 0xd0a84a]];
+const MAGE: Scheme[] = [[0x24365a, 0xb8c0d8], [0x2e2a54, 0xc0a8e0], [0x1f4a50, 0xa8d0c8], [0x3a2a4a, 0xb0a0c0], [0x2a2a30, 0x8a94b0]];
+const CLERGY: Scheme[] = [[0xe8e2d2, 0xc8a84a], [0xd6d0c0, 0x6a1a1a], [0x2a2a30, 0xb0b4c0], [0xe8e2d2, 0x3a5a8a], [0x6a5a3a, 0xe8e2d2]];
+const HOUSE: Scheme[] = [[0x6a1a1a, 0xb0b4c0], [0x1f3558, 0xb0b4c0], [0x24493a, 0xb0b4c0], [0x22222a, 0xa8a090], [0x5a4a1a, 0xb0b4c0], [0x4a2a4a, 0xb0b4c0]];
+const SCHEME_BY_OUTFIT: Record<string, Scheme[]> = { noble: JEWEL, regal: JEWEL, mage: MAGE, scholar: MAGE, robe: CLERGY, priest: CLERGY, monk: CLERGY, knight: HOUSE, armor: HOUSE, plate: HOUSE };
 
 // what a role wears and carries (headwear is one of the options)
 interface Style { o: string; t?: string; h?: string[] }
 const ROLE_STYLE: Record<string, Style> = {
-  ชาวบ้าน: { o: 'tunic', h: ['', '', 'cap', 'hood', 'flower'] }, พ่อค้า: { o: 'vest', h: ['cap', '', 'turban'] }, พ่อค้าใหญ่: { o: 'vest', h: ['feather', 'cap'] },
+  ชาวบ้าน: { o: 'tunic', h: ['', '', 'cap', 'hood'] }, พ่อค้า: { o: 'vest', h: ['cap', '', 'turban'] }, พ่อค้าใหญ่: { o: 'vest', h: ['feather', 'cap'] },
   ทหารยาม: { o: 'armor', t: 'spear', h: ['helmet'] }, หัวหน้าทหารยาม: { o: 'knight', t: 'spear', h: ['helmet'] }, ทหาร: { o: 'armor', t: 'sword', h: ['helmet', 'helmet', 'bandana'] },
-  อัศวิน: { o: 'knight', t: 'sword', h: ['helmet', ''] }, ผู้กล้า: { o: 'knight', t: 'sword', h: ['', 'circlet'] }, เด็ก: { o: 'tunic', h: ['', '', 'cap', 'flower'] },
+  อัศวิน: { o: 'knight', t: 'sword', h: ['helmet', ''] }, ผู้กล้า: { o: 'knight', t: 'sword', h: ['', 'circlet'] }, เด็ก: { o: 'tunic', h: ['', '', 'cap'] },
   นักบวช: { o: 'robe', t: 'staff', h: ['hood', ''] }, นักบวชประจำวิหาร: { o: 'robe', t: 'staff', h: ['hood', ''] }, ชาวนา: { o: 'farmer', t: 'hoe', h: ['straw'] },
   ช่างฝีมือ: { o: 'apron', t: 'hammer', h: ['', 'bandana'] }, ช่างไม้: { o: 'apron', t: 'hammer', h: ['', 'cap'] }, ช่างตีเหล็ก: { o: 'apron', t: 'hammer', h: ['', 'bandana'] },
   นักผจญภัย: { o: 'cloak', t: 'sword', h: ['hood', 'bandana', '', 'feather'] }, ผู้ใหญ่บ้าน: { o: 'noble', h: ['circlet', '', 'feather'] }, ขุนนาง: { o: 'noble', h: ['circlet', 'feather'] },
   ขอทาน: { o: 'rags', t: 'bowl', h: ['', 'hood'] }, เจ้าของโรงเตี๊ยม: { o: 'apron', t: 'mug', h: ['', 'bandana'] }, หมอยา: { o: 'robe', t: 'flask', h: ['hood', ''] },
-  หมอยาประจำเมือง: { o: 'robe', t: 'flask', h: ['hood', ''] }, นักกวีพเนจร: { o: 'bard', t: 'lute', h: ['feather'] }, คนรัก: { o: 'tunic', h: ['', 'flower'] },
+  หมอยาประจำเมือง: { o: 'robe', t: 'flask', h: ['hood', ''] }, นักกวีพเนจร: { o: 'bard', t: 'lute', h: ['feather'] }, คนรัก: { o: 'tunic', h: [''] },
   เพื่อน: { o: 'tunic', h: ['', 'cap'] }, คู่แข่ง: { o: 'cloak', t: 'sword', h: ['', 'bandana'] }, อาจารย์: { o: 'scholar', t: 'book', h: ['', 'hood'] },
-  คู่อาฆาต: { o: 'cloak', t: 'sword', h: ['hood'] }, คู่ชีวิต: { o: 'tunic', h: ['', 'flower'] }, พ่อแม่: { o: 'tunic', h: ['', 'cap', 'bandana'] },
+  คู่อาฆาต: { o: 'cloak', t: 'sword', h: ['hood'] }, คู่ชีวิต: { o: 'tunic', h: [''] }, พ่อแม่: { o: 'tunic', h: ['', 'cap', 'bandana'] },
   ชาวเรือ: { o: 'sailor', h: ['bandana', ''] }, ชาวประมง: { o: 'sailor', t: 'rod', h: ['straw', 'bandana'] }, นักเวท: { o: 'mage', t: 'orbstaff', h: ['wizard'] },
   นักปราชญ์: { o: 'scholar', t: 'book', h: ['', 'hood'] }, คนตัดไม้: { o: 'leather', t: 'axe', h: ['cap', 'hood', ''] }, คนงานเหมือง: { o: 'miner', t: 'pickaxe', h: ['minerhat'] },
   คนทำขนมปัง: { o: 'chef', t: 'ladle', h: ['chef'] }, ช่างตัดเสื้อ: { o: 'vest', h: ['', 'cap'] }, คนซักผ้า: { o: 'tunic', h: ['bandana', ''] },
   นายพราน: { o: 'leather', t: 'bow', h: ['hood', 'feather'] }, สัปเหร่อ: { o: 'cloak', t: 'shovel', h: ['hood'] }, คนกวาดถนน: { o: 'tunic', t: 'broom', h: ['cap', ''] },
   คนส่งสาร: { o: 'tunic', h: ['cap'] }, นักเล่นแร่แปรธาตุ: { o: 'robe', t: 'flask', h: ['wizard', 'hood'] }, คนเลี้ยงแกะ: { o: 'tunic', t: 'crook', h: ['straw', 'hood'] },
   ผู้ฝึกสัตว์: { o: 'leather', t: 'crook', h: ['', 'feather'] }, ผู้เฒ่า: { o: 'robe', h: ['', 'hood'] }, นักบวชนักรบ: { o: 'knight', t: 'staff', h: ['helmet'] },
-  ทาส: { o: 'rags', h: [''] }, นักเต้น: { o: 'dress', h: ['flower', 'veil'] }, ทารก: { o: 'tunic' },
+  ทาส: { o: 'rags', h: [''] }, นักเต้น: { o: 'dress', h: ['veil', ''] }, ทารก: { o: 'tunic' },
 };
 
 
@@ -65,12 +76,13 @@ export function lookFor(seed: string, race: string, role: string, o: { climate?:
   if (cl === 'desert' && ['tunic', 'farmer', 'vest'].includes(outfit) && r.chance(0.6)) outfit = 'light';
   if (cl === 'desert' && ['', 'cap', 'hood'].includes(hat) && r.chance(0.5)) hat = fem && r.chance(0.5) ? 'veil' : 'turban';
   if (cl === 'frozen' && ['tunic', 'farmer', 'vest', 'apron'].includes(outfit) && r.chance(0.6)) outfit = 'fur';
-  if (cl === 'frozen' && ['', 'cap', 'flower', 'straw'].includes(hat) && r.chance(0.6)) hat = 'furhat';
+  if (cl === 'frozen' && ['', 'cap', 'straw'].includes(hat) && r.chance(0.6)) hat = 'furhat';
   if ((cl === 'tropical' || cl === 'islands') && outfit === 'tunic' && r.chance(0.45)) outfit = 'sarong';
-  if ((cl === 'tropical' || cl === 'islands') && hat === '' && r.chance(0.3)) hat = 'flower';
   if (fem && !child && outfit === 'tunic' && r.chance(0.45)) outfit = 'dress';
   if (th.dress && !child && r.chance(0.8)) outfit = r.pick(th.dress);
   if (ln?.outfit && CASUAL.concat(['tunic']).includes(outfit) && !child) outfit = ln.outfit;
+  const people = th.cloth && r.chance(0.75) ? th.cloth : EARTH;
+  const scheme = r.pick(SCHEME_BY_OUTFIT[outfit] || people);
   const beard = !fem && !child && !th.hairless && stage !== 'teen' && r.chance(th.bearded ?? 0) ? r.int(1, 4) : 0;
   const skins = ln?.skins || th.skins;
   const hairs = ln?.hair || th.hairs || HAIR;
@@ -86,7 +98,7 @@ export function lookFor(seed: string, race: string, role: string, o: { climate?:
     race, role, child, fem, beard, outfit, hat, line, stage: stage === 'teen' || stage === 'infant' ? stage : undefined,
     skin: r.pick(skins), hair: r.pick(hairs), hairStyle: elder && !fem && r.chance(0.3) ? 3 : hairStyle,
     eye: r.pick(th.eyes || EYES), mark: r.chance(0.35) ? r.int(1, 4) : 0, build,
-    tall: r.chance(race === 'elf' || race === 'darkelf' ? 0.6 : 0.25), cloth: r.pick(CLOTH), cloth2: r.pick(CLOTH), pattern: r.int(0, 5),
+    tall: r.chance(race === 'elf' || race === 'darkelf' ? 0.6 : 0.25), cloth: scheme[0], cloth2: scheme[1], pattern: r.int(0, 5),
     tool: st.t || '', elder, accent: r.pick(ln?.accent || th.accent),
   };
 }
@@ -133,4 +145,4 @@ export function heroLook(c: { name: string; dynastyName: string; race: string; g
 }
 
 /** every race has its own look; how many distinct people the painter can produce */
-export const LOOK_COMBOS = Object.values(THEMES).reduce((a, t) => a + t.skins.length * (Object.keys(t.lines).length + 1), 0) * 12 * HAIR.length * 5 * 5 * 3 * 2 * 18 * CLOTH.length * CLOTH.length * 6 * 6;
+export const LOOK_COMBOS = Object.values(THEMES).reduce((a, t) => a + t.skins.length * (Object.keys(t.lines).length + 1), 0) * 12 * HAIR.length * 5 * 5 * 3 * 2 * 18 * EARTH.length * 6 * 6;

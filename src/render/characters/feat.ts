@@ -149,7 +149,7 @@ export function slimeBody(k: Cx) {
   const { c, P } = k, sz = Math.max(0.55, k.sz);
   const squash = P.bob * 0.06 + (k.frame >= 2 && k.frame <= 9 ? Math.cos((k.frame - 2) / 8 * TAU * 2) * 0.1 : 0) + ph(k) * 0.025;
   const jump = (k.frame >= 2 && k.frame <= 9 ? -Math.abs(Math.sin((k.frame - 2) / 8 * TAU)) * 3.2 : 0) + (k.frame === 18 ? -5 : 0) + P.bob * 0.5 - P.hover;
-  const w = 17 * sz * (1 + squash) * k.theme.wide * (k.stage === 'infant' ? 0.6 : 1), h = 21 * sz * (1 - squash * 1.3), x = CX + P.sway, yb = FOOT - 1 + jump * 0.2, yt = yb - h + jump;
+  const w = 17 * sz * (1 + squash) * k.theme.wide * (k.stage === 'infant' ? 0.6 : 1), h = 46 * sz * (1 - squash * 1.3), x = CX + P.sway, yb = FOOT - 1 + jump * 0.2, yt = yb - h + jump;
   const col = k.skin;
   // body: a dome with a soft flat base and a wavy lip
   c.beginPath(); c.moveTo(x - w, yb);
@@ -174,26 +174,27 @@ export function slimeBody(k: Cx) {
   // shine
   ell(c, x - w * 0.5, yt + h * 0.2, w * 0.17, h * 0.1, rgba(0xffffff, 0.7), undefined, 0, -0.6);
   ell(c, x - w * 0.62, yt + h * 0.42, 0.9, 0.9, rgba(0xffffff, 0.55));
-  // small arms of gel that follow the hands
+  // tendrils of gel that reach where the hands would: tapered, with no hands on the ends
   for (let i = 0; i < 2; i++) {
-    const sd = i ? 1 : -1, ax = x + sd * w * 0.85, ay = yb - h * 0.38, hx = ax + sd * 3.6 + k.P[i ? 'rh' : 'lh'][0] * sd * 0.5, hy = ay + 2.2 + k.P[i ? 'rh' : 'lh'][1] * 0.75;
-    stroke(c, hex(lineOf(col)), 4.2 * sz + 0.9, ax, ay, hx, hy); stroke(c, rgba(lite(col, 0.1), 0.95), 4.2 * sz, ax, ay, hx, hy);
-    ell(c, hx, hy, 2.3 * sz, 2.3 * sz, rgba(col, 0.95), hex(lineOf(col)), 0.7);
+    const sd = i ? 1 : -1, ax = x + sd * w * 0.82, ay = yb - h * 0.5, hx = ax + sd * 4.2 + k.P[i ? 'rh' : 'lh'][0] * sd * 0.6, hy = ay + 11 * sz + k.P[i ? 'rh' : 'lh'][1] * 0.9 * sz;
+    const mx = ax + sd * 4.4 * sz, my = ay + (hy - ay) * 0.4;
+    for (let n = 0; n < 8; n++) {
+      const t0 = n / 8, t1 = (n + 1) / 8, q = (t: number): [number, number] => [(1 - t) * (1 - t) * ax + 2 * (1 - t) * t * mx + t * t * hx, (1 - t) * (1 - t) * ay + 2 * (1 - t) * t * my + t * t * hy];
+      const [x0, y0] = q(t0), [x1, y1] = q(t1), wd = (5.2 - 3.8 * t1) * sz;
+      stroke(c, hex(lineOf(col)), wd + 0.9, x0, y0, x1, y1);
+    }
+    for (let n = 0; n < 8; n++) {
+      const t0 = n / 8, t1 = (n + 1) / 8, q = (t: number): [number, number] => [(1 - t) * (1 - t) * ax + 2 * (1 - t) * t * mx + t * t * hx, (1 - t) * (1 - t) * ay + 2 * (1 - t) * t * my + t * t * hy];
+      const [x0, y0] = q(t0), [x1, y1] = q(t1);
+      stroke(c, rgba(mix(col, 0xffffff, 0.12), 0.93), (5.2 - 3.8 * t1) * sz, x0, y0, x1, y1);
+    }
     k.hand[i] = [hx, hy];
   }
-  k.headX = x; k.headY = yb - h * 0.5 + jump * 0.5;
-  // the face sits on the body
-  const ey = yb - h * 0.52 + jump * 0.5, es = k.stage === 'infant' ? 0.9 : 1.2;
-  if (k.P.eyes === 'closed') { for (const sd of [-1, 1]) curve(c, hex(INK), 0.9, x + sd * w * 0.34 - 1.8, ey, x + sd * w * 0.34, ey + 1.2, x + sd * w * 0.34 + 1.8, ey); }
-  else for (const sd of [-1, 1]) {
-    const ex = x + sd * w * 0.34 + k.fx * 0.8;
-    ell(c, ex, ey, 2.1 * es, 2.6 * es, hex(INK), undefined);
-    ell(c, ex - 0.6, ey - 0.9 * es, 0.85, 0.85, '#ffffff'); ell(c, ex + 0.6, ey + 0.9 * es, 0.4, 0.4, rgba(0xffffff, 0.8));
-  }
-  const mo = k.P.mouth;
-  if (mo === 'open' || mo === 'sing' || mo === 'oh') ell(c, x + k.fx * 0.8, ey + 5, 1.6, 1.8, hex(INK));
-  else curve(c, hex(INK), 0.8, x - 1.8 + k.fx * 0.8, ey + 4.4, x + k.fx * 0.8, ey + 6.2, x + 1.8 + k.fx * 0.8, ey + 4.4);
-  ell(c, x - w * 0.55, ey + 3.4, 1.6, 1, rgba(0xff8aa8, 0.55)); ell(c, x + w * 0.55, ey + 3.4, 1.6, 1, rgba(0xff8aa8, 0.55));
+  // no eyes and no mouth: an ooze senses with its whole body. What shows it is alive is a nucleus that pulses inside the gel
+  const nx = x + Math.sin(k.P.amb * TAU) * w * 0.08, ny = yb - h * 0.46 + jump * 0.4 + Math.cos(k.P.amb * TAU) * 0.5, nr = Math.max(2.4, w * 0.2);
+  glow(c, nx, ny, nr * 3.2, lite(col, 0.4), 0.45 + 0.15 * Math.sin(k.P.amb * TAU));
+  ell(c, nx, ny, nr, nr * 0.95, rad(c, nx - nr * 0.3, ny - nr * 0.3, nr * 1.4, [0, rgba(0xffffff, 0.95)], [0.4, rgba(lite(col, 0.4), 0.9)], [1, rgba(shade(col, 0.45), 0.9)]), rgba(shade(col, 0.4), 0.8), 0.5);
+  for (let i = 0; i < 5; i++) { const a = i * 1.27 + k.P.amb * 2; stroke(c, rgba(lite(col, 0.5), 0.35), 0.35, nx + Math.cos(a) * nr, ny + Math.sin(a) * nr, nx + Math.cos(a + 0.6) * w * 0.7, ny + Math.sin(a + 0.6) * h * 0.38); } // strands of the cell's skeleton
 }
 
 // ---------- things that sit on the head ----------

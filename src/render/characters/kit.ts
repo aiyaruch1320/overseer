@@ -1,8 +1,8 @@
 // Shared pieces of the vector painter: the frame geometry, colour maths, the Look a person is drawn from and small drawing helpers.
 import type { Stage } from './themes';
 
-/** One frame is 56 x 84 "units"; a unit is a third of a city pixel, so an adult is about 50 units (17 px) tall at the street scale. */
-export const FW = 56, FH = 84, FOOT = 78, CX = 28;
+/** One frame is 56 x 92 "units"; a unit is a third of a city pixel, so an adult is about 56 units (19 px) tall at the street scale. */
+export const FW = 56, FH = 92, FOOT = 86, CX = 28;
 export const UNIT = 1 / 3; // city pixels per unit
 
 export interface Look {
@@ -50,6 +50,7 @@ export interface Cx {
   legLen: number; torsoLen: number; armLen: number;
   hipY: number; shY: number; headX: number; headY: number; headW: number; headH: number;
   sw: number; ww: number;
+  hf: number; // the head group is drawn in design units (10.6 x 9.6) then scaled by this, so a head is about a fifth of a person's height
   sh: [number, number][]; // shoulder anchors L, R
   hp: [number, number][]; // hip anchors
   hand: [number, number][]; // hand positions L, R

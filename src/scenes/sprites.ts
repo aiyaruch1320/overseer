@@ -1,21 +1,19 @@
 import Phaser from 'phaser';
 import { lookFor, heroLook } from './people';
-import { paintFrame } from '../render/characters/paint';
+import { paintFrame, headCentre } from '../render/characters/paint';
 import { POSE } from '../render/characters/pose';
-import { stageOfLook } from '../render/characters/kit';
 import { iconCanvas } from '../ui/icons';
 
 // A bust of a person for cards and markers: the vector painter, cropped to head and shoulders. `raceId` is a race id, or
 // "race~name~dynasty~gender~job~hAge" to paint the actual character at their stage of life.
-const BUST_Y: Record<string, number> = { infant: -38, child: -29, teen: -23, adult: -18, elder: -19 };
 export function drawPortrait(ctx: CanvasRenderingContext2D, raceId: string, scale: number) {
   ctx.clearRect(0, 0, 12 * scale, 16 * scale);
   const [race, name, dyn, gender, job, hAge] = raceId.split('~');
   const L = name
     ? heroLook({ name, dynastyName: dyn, race, gender, job: job || null, hAge: +hAge }, '')
     : lookFor(`portrait:${race}`, race, 'ชาวบ้าน', { hAge: 30, gender: 'ชาย' });
-  const ppu = (12 * scale) / 34;
-  ctx.save(); ctx.scale(ppu, ppu); ctx.translate(-11, BUST_Y[stageOfLook(L)] ?? -18);
+  const h = headCentre(L), span = Math.max(30, h.r * 3.4), ppu = (12 * scale) / span;
+  ctx.save(); ctx.scale(ppu, ppu); ctx.translate(-(h.x - span / 2), -(h.y - span * 0.42));
   paintFrame(ctx, L, POSE.idle);
   ctx.restore();
 }

@@ -121,7 +121,7 @@ export const SPECIALS: Special[] = [
   // ---- Silvanel: the forest ----
   { id: 'SV04-1', name: 'ไททาเนีย-เวล', title: 'ราชินีภูต', race: 'fae', fem: true, age: 40, stages: ALL, regalia: ['crown', 'sparkle'],
     design: 'ราชินีภูตตัวจิ๋วลอยเหนือพื้น ปีกใสสะท้อนรุ้งใหญ่เกินตัว ชุดกลีบดอกไม้ ไม่มีโลหะบนตัวเพราะแพ้เหล็ก ยิ้มซุกซนของคนที่รู้ทุกสัญญา',
-    look: { outfit: 'dress', hat: '', tool: 'wand', cloth: 0xf0a0d0, cloth2: 0x9af0d8, hair: 0xe07a9a, hairStyle: 13, eye: 0x6a3aa0, skin: 0xf0d0f0, accent: 0xffd0f0 } },
+    look: { outfit: 'dress', hat: '', tool: 'wand', cloth: 0x6a7a5a, cloth2: 0xd8d0a0, hair: 0xb89ab0, hairStyle: 13, eye: 0x6a4a90, skin: 0xe8dcd8, accent: 0xd8d0a0 } },
   { id: 'SV05-1', name: 'สังฆราชจันทรา เซเลเน่', title: 'สังฆราชจันทรา', race: 'elf', line: 'moon', fem: true, age: 55, stages: ALL, regalia: ['halo'],
     design: 'นักบวชหญิงเอลฟ์จันทรา ผมเงินยาว ตราเสี้ยวจันทร์บนหน้าผาก ชุดน้ำเงินม่วงปักดาว ไม้เท้าปลายเป็นพระจันทร์ครึ่งเสี้ยว',
     look: { outfit: 'robe', hat: '', tool: 'orbstaff', cloth: 0x3a3a8a, cloth2: 0xe8e8ff, hair: 0xf0f0f8, hairStyle: 13, eye: 0x7a8ae0, skin: 0xe8e0e8, accent: 0xe8e8ff } },
