@@ -83,7 +83,7 @@ function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number, view: View 
     for (let n = 0; n < 2; n++) {
       const sh = k.sh[n];
       if (P.bundle || carry && false) { k.hand[n] = [sh[0] + 4.2 * sz, sh[1] + armLen * 0.55]; continue; }
-      const t = ph === null ? (n ? 0.1 : -0.08) : Aa * Math.sin(phi + (n === 1 ? Math.PI : 0)), r = armLen * (0.93 - 0.05 * Math.max(0, Math.sin(t)));
+      const t = ph === null ? (n ? 0.1 : -0.08) : Aa * Math.sin(phi + (n === 1 ? Math.PI : 0)), r = armLen * (0.96 - 0.2 * Math.max(0, Math.sin(t)) - 0.02 * Math.max(0, -Math.sin(t)));
       k.hand[n] = [sh[0] + r * Math.sin(t), sh[1] + r * Math.cos(t)];
     }
     k.foot = [[hx0 + fk[0].dx, hipY + fk[0].dy + 0.3], [hx0 + fk[1].dx, hipY + fk[1].dy + 0.3]];
@@ -91,13 +91,14 @@ function makeCx(c: CanvasRenderingContext2D, L: Look, frame: number, view: View 
     // seen from the front or the back the walk is a foot that reaches toward (or away from) us and a foot that trails, with the hands swinging the other way
     const dirn = view === 'back' ? -1 : 1, narrow = ww * 0.4 + 0.7;
     k.foot = [0, 1].map((n) => { const f = phi + (n ? Math.PI : 0), z = Math.sin(f), lift = Math.max(0, Math.cos(f)) * 1.3 * sz; return [hx0 + (n ? narrow : -narrow), fy - lift * 0.7 + z * 1.9 * sz ** 0.8 * dirn]; }) as [number, number][];
-    k.hand = [0, 1].map((n) => { const f = phi + (n ? 0 : Math.PI), z = Math.sin(f), sh = k.sh[n]; return carry ? [sh[0] + (n ? -1.6 : 1.6), sh[1] + armLen * 0.66] : [sh[0] + (n ? 0.9 : -0.9), sh[1] + armLen * 0.985 - (1 - (z * dirn + 1) / 2) * 3 * sz ** 0.8]; }) as [number, number][];
+    k.hand = [0, 1].map((n) => { const f = phi + (n ? 0 : Math.PI), z = Math.sin(f), sh = k.sh[n]; return carry ? [sh[0] + (n ? -1.6 : 1.6), sh[1] + armLen * 0.66] : [sh[0] + (n ? 0.9 : -0.9), sh[1] + armLen * 0.975 - (1 - (z * dirn + 1) / 2) * 1.6 * sz ** 0.8]; }) as [number, number][];
   } else {
     const lh = k.sh[0], rh = k.sh[1];
     k.hand = [[lh[0] - 1.4 + P.lh[0] * PU * sz ** 0.5, lh[1] + reach + P.lh[1] * PU * sz ** 0.7], [rh[0] + 1.4 + P.rh[0] * PU * sz ** 0.5, rh[1] + reach + P.rh[1] * PU * sz ** 0.7]];
     const spread = P.legs === 'stand' ? ww * 0.5 + 0.9 : P.legs === 'sit' ? ww * 1.25 + 2.5 * sz : ww * 0.9 + 1.5;
     k.foot = [[hx0 - spread + P.lf[0] * PU * sz ** 0.5, fy + P.lf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)], [hx0 + spread + P.rf[0] * PU * sz ** 0.5, fy + P.rf[1] * PU * sz ** 0.7 - (P.legs === 'stand' ? 0 : 0.5)]];
   }
+  if (view === 'back' && P.bundle) k.hand = [0, 1].map((n) => [k.sh[n][0] + (n ? 2.2 : -2.2), k.sh[n][1] + armLen * 0.8]) as [number, number][]; // what is carried is in front of them: from behind the arms just curl at the sides
   return k;
 }
 
@@ -338,7 +339,7 @@ function arms(k: Cx, fit: Fit, which: 'both' | 'far' | 'near' = 'both') {
     const metal = mech && i === 1;
     const fc = metal ? 0xb89a54 : fit.sleeve === 0 && k.L.outfit !== 'sarong' ? k.skin : forearm;
     const dim = prof && i === 0 ? 0.72 : 1;
-    const kn = limb(k, sh, hd, side, aw * 1.05, aw * 0.9, shade(metal ? 0xb89a54 : sleeveCol, dim), shade(fc, dim));
+    const kn = limb(k, sh, hd, prof ? -1 : side, aw * 1.05, aw * 0.9, shade(metal ? 0xb89a54 : sleeveCol, dim), shade(fc, dim));
     // cuffs and the shoulder cap
     if (fit.sleeve === 2 && !metal && !fit.metalArms) { const dx = hd[0] - kn[0], dy = hd[1] - kn[1], d = Math.hypot(dx, dy) || 1; stroke(c, hex(fit.trim ?? 0xe8e0d0), aw * 0.9, hd[0] - dx / d * 1.6, hd[1] - dy / d * 1.6, hd[0] - dx / d * 2.6, hd[1] - dy / d * 2.6); }
     if (metal) { ell(c, kn[0], kn[1], aw * 0.6, aw * 0.6, '#d8dce8', '#4a5064', 0.5); for (const t of [0.35, 0.7]) ell(c, kn[0] + (hd[0] - kn[0]) * t, kn[1] + (hd[1] - kn[1]) * t, 0.5, 0.5, '#8a6a2a'); }
@@ -824,7 +825,7 @@ export function paintFrame(c: CanvasRenderingContext2D, L: Look, frame: number, 
   if (back) { wingsBack(k); tailBack(k); } // from behind the wings and the tail lie over the back
   carried(k, fit);
   arms(k, fit, prof ? 'near' : 'both');
-  if (k.P.bundle) { // a bundle of cloth and bread held at the chest
+  if (k.P.bundle && !back) { // a bundle of cloth and bread held at the chest
     const sx = (k.sh[0][0] + k.sh[1][0]) / 2, y = k.shY + k.torsoLen * 0.38;
     ell(c, sx + (prof ? 3 : 0), y + 1, k.sw * (prof ? 1.6 : 0.95), 4.2, lin(c, 0, y - 3, 0, y + 5, [0, '#f6eedc'], [1, '#d4c4a0']), '#8a7a5a', 0.6); ell(c, sx + 2 + (prof ? 3 : 0), y - 2, 2.4, 2, '#e8b870', '#8a5a1a', 0.5); stroke(c, '#8a7a5a', 0.5, sx - k.sw * 0.7, y + 1.4, sx + k.sw * 0.7, y + 1.4);
     for (const i of [0, 1]) hand(k, k.hand[i], i ? 1 : -1, false, k.sh[i]);
