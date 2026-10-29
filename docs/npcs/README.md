@@ -1,21 +1,21 @@
 # NPC ของโลก
 
-ผู้นำและตัวละครสำคัญรายประเทศ รวม **572 ตัว** (ประเทศละ 4) ทุกตัวมีเรื่องราวและความยูนีคของตัวเอง และ **อาจเกิดหรือไม่เกิดก็ได้** ตามโอกาสสุ่ม
+ผู้นำและตัวละครสำคัญรายประเทศ รวม **591 ตัว** (ประเทศละ 4 และ NPC ลูกครึ่งตัวที่ 5 อีก 19 ประเทศ รหัสลงท้าย -5) ทุกตัวมีเรื่องราวและความยูนีคของตัวเอง และ **อาจเกิดหรือไม่เกิดก็ได้** ตามโอกาสสุ่ม
 
 ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world-events.md](../world-events.md) · เส้นทางแตกแขนง: [../branches/README.md](../branches/README.md)
 
 | ไฟล์ | ทวีป | NPC |
 | --- | --- | --- |
 | [01-azgar.md](01-azgar.md) | อัซการ์ | 40 |
-| [02-morhaven.md](02-morhaven.md) | มอร์เฮเวน | 48 |
-| [03-kaz-durum.md](03-kaz-durum.md) | คาซ-ดูรัม | 48 |
-| [04-nerea.md](04-nerea.md) | เนเรีย | 64 |
+| [02-morhaven.md](02-morhaven.md) | มอร์เฮเวน | 51 |
+| [03-kaz-durum.md](03-kaz-durum.md) | คาซ-ดูรัม | 51 |
+| [04-nerea.md](04-nerea.md) | เนเรีย | 66 |
 | [05-aldria-a.md](05-aldria-a.md) | อัลเดรีย AL-01 ถึง AL-14 | 56 |
-| [06-aldria-b.md](06-aldria-b.md) | อัลเดรีย AL-15 ถึง AL-28 | 56 |
-| [07-mecharia.md](07-mecharia.md) | เมคาเรีย | 64 |
-| [08-saharan.md](08-saharan.md) | ซาฮารัน | 68 |
-| [09-silvanel.md](09-silvanel.md) | ซิลวาเนล | 72 |
-| [10-nebulia.md](10-nebulia.md) | เนบูเลีย | 56 |
+| [06-aldria-b.md](06-aldria-b.md) | อัลเดรีย AL-15 ถึง AL-28 | 60 |
+| [07-mecharia.md](07-mecharia.md) | เมคาเรีย | 65 |
+| [08-saharan.md](08-saharan.md) | ซาฮารัน | 70 |
+| [09-silvanel.md](09-silvanel.md) | ซิลวาเนล | 74 |
+| [10-nebulia.md](10-nebulia.md) | เนบูเลีย | 58 |
 
 ---
 
