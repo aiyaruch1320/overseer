@@ -44,6 +44,33 @@ export function leafCluster(c: CanvasRenderingContext2D, cx: number, cy: number,
   c.strokeStyle = css(cs[cs.length - 1], 1.5, 0.35); c.lineWidth = Math.max(0.6, rx * 0.025); c.beginPath(); c.ellipse(cx, cy, rx * 0.98, ry * 0.98, 0, Math.PI * 1.05, Math.PI * 1.85); c.stroke();
 }
 
+/** the roots as short straight pieces in tree units (the foot of the trunk at 0, 0): drawn by paintWorldTree, and read by the town generator so
+ *  that streets and houses keep to the ground between them instead of lying on top of them */
+export function rootSegs(base: boolean): { x0: number; y0: number; x1: number; y1: number; w: number; seg: number }[] {
+  const out: { x0: number; y0: number; x1: number; y1: number; w: number; seg: number }[] = [], n = base ? 22 : 14;
+  for (let k = 0; k < n; k++) {
+    const a = (k / n) * TAU + 0.3, len = (base ? 70 : 40) + (k % 4) * (base ? 22 : 12), bend = (k % 2 ? 1 : -1) * 0.55;
+    let px = 0, py = 0;
+    for (let seg = 0; seg < 4; seg++) {
+      const aa = a + bend * seg * 0.28, nx = px + Math.cos(aa) * (len / 4), ny = py + Math.sin(aa) * (len / 4) * 0.42 + 0.8;
+      out.push({ x0: px, y0: py, x1: nx, y1: ny, w: (base ? 13 : 9) - seg * (base ? 3 : 2.1), seg }); px = nx; py = ny;
+    }
+  }
+  return out;
+}
+const ROOTS = rootSegs(true);
+/** is a point of the map (map units) on the root of the world tree, or on the foot of its trunk? */
+export function onTreeRoot(mx: number, my: number, margin = 0): boolean {
+  const ux = (mx - WORLD_TREE.x) / WORLD_TREE.scale, uy = (my - WORLD_TREE.y) / WORLD_TREE.scale;
+  if (Math.abs(ux) > 170 || uy < -90 || uy > 120) return false;
+  if (Math.abs(ux) < 25 + margin && uy > -78 - margin && uy < 6 + margin) return true; // the trunk
+  for (const r of ROOTS) {
+    const dx = r.x1 - r.x0, dy = r.y1 - r.y0, l2 = dx * dx + dy * dy, k = Math.max(0, Math.min(1, ((ux - r.x0) * dx + (uy - r.y0) * dy) / l2));
+    if (Math.hypot(ux - (r.x0 + dx * k), uy - (r.y0 + dy * k)) < r.w / 2 + margin) return true;
+  }
+  return false;
+}
+
 /** the great tree itself: buttressed roots, a barked trunk, branches reaching out, a canopy of leaf masses, vines and blossoms. `s` is px per unit; (x, y) is the foot of the trunk */
 export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number, s: number, leaves: number[], seed = 7, glow = 1, mode: 'full' | 'base' = 'full') {
   const rnd = leafRng(seed), bark = [0x5b4030, 0x4a3322, 0x7a5a40].map(rgb);
@@ -54,14 +81,8 @@ export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number
   c.fillStyle = 'rgba(8,24,10,0.3)'; c.beginPath(); c.ellipse(8, 6, 74, 18, 0, 0, TAU); c.fill();
   // roots spread over the ground in curving buttresses
   c.lineCap = 'round';
-  const base = mode === 'base', nRoots = base ? 22 : 14;
-  for (let k = 0; k < nRoots; k++) {
-    const a = (k / nRoots) * TAU + 0.3, len = (base ? 70 : 40) + (k % 4) * (base ? 22 : 12), bend = (k % 2 ? 1 : -1) * 0.55;
-    let px = 0, py = 0;
-    for (let seg = 0; seg < 4; seg++) {
-      const aa = a + bend * seg * 0.28, nx = px + Math.cos(aa) * (len / 4), ny = py + Math.sin(aa) * (len / 4) * 0.42 + 0.8;
-      c.strokeStyle = css(bark[seg % 2 ? 2 : 0], 1, 1); c.lineWidth = (base ? 13 : 9) - seg * (base ? 3 : 2.1); c.beginPath(); c.moveTo(px, py); c.lineTo(nx, ny); c.stroke(); px = nx; py = ny;
-    }
+  for (const r of rootSegs(mode === 'base')) {
+    c.strokeStyle = css(bark[r.seg % 2 ? 2 : 0], 1, 1); c.lineWidth = r.w; c.beginPath(); c.moveTo(r.x0, r.y0); c.lineTo(r.x1, r.y1); c.stroke();
   }
   // the trunk: a swelling column with ridged bark, lit from the left, a hollow with a warm light in it
   const tw = 17;

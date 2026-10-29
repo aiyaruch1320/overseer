@@ -13,6 +13,7 @@ import { REGION_EVENTS } from '../data/people';
 import { DISASTERS } from '../data/disasters';
 import { FESTIVALS } from '../data/npclife';
 import { FATES, fateOf, setFate } from '../sim/fate';
+import { canopyCover } from '../render/treeart';
 import type { Fate } from '../sim/types';
 
 export { drawPortrait } from './sprites';
@@ -391,7 +392,9 @@ export class WorldScene extends Phaser.Scene {
         }
         rec.img.setTexture(key); rec.mip = mip;
       }
-      rec.img.setScale(CITY_S * mip).setVisible(true).setAlpha(Math.min(1, (z - Z.cityLod) / 0.5));
+      // a town under the world tree's crown only comes out of the foliage as the camera goes in beneath it
+      const cover = canopyCover((t.x * 8 + 4) / MU_TO_WU, (t.y * 8 + 4) / MU_TO_WU), under = Math.min(1, Math.max(0, (z - 1.5) / 1.1));
+      rec.img.setScale(CITY_S * mip).setVisible(true).setAlpha(Math.min(1, (z - Z.cityLod) / 0.5) * (1 - cover * (1 - under * under * (3 - 2 * under))));
       show.add(n.id);
     }
     this.cityImgs.forEach((c, id) => { if (!show.has(id)) c.img.setVisible(false); });
