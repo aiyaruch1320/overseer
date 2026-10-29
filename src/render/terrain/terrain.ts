@@ -39,6 +39,7 @@ export class TerrainRenderer {
   private highlight: Path2D | null = null;
   private fateLoops: { loops: ReturnType<typeof traceMask>; tint: string }[] = [];
   private hlLoops: Float32Array[] = [];
+  private borders: { bb: [number, number, number, number]; pts: Float32Array }[] = [];
   dpr = 1;
   stats = { ms: 0, glyphs: 0 };
 
@@ -111,6 +112,45 @@ export class TerrainRenderer {
   /** outline a country (tile mask) with a warm wash; `null` clears it */
   setHighlight(inside: ((i: number) => boolean) | null, w = 0, h = 0, tileMU = 0) {
     this.hlLoops = inside ? traceMask(inside, w, h, tileMU) : [];
+  }
+
+  /** the line between countries: every country's outline traced once (inside its own bounding box, so 143 of them stay cheap) */
+  setBorders(owner: ArrayLike<number>, w: number, h: number, tileMU: number) {
+    const box = new Map<number, [number, number, number, number]>();
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const id = owner[y * w + x];
+      if (id < 0) continue;
+      const b = box.get(id);
+      if (!b) box.set(id, [x, y, x, y]); else { if (x < b[0]) b[0] = x; if (x > b[2]) b[2] = x; if (y < b[1]) b[1] = y; if (y > b[3]) b[3] = y; }
+    }
+    this.borders = [];
+    for (const [id, [x0, y0, x1, y1]] of box) {
+      const bw = x1 - x0 + 1, bh = y1 - y0 + 1;
+      for (const pts of traceMask((i) => owner[(y0 + Math.floor(i / bw)) * w + x0 + (i % bw)] === id, bw, bh, tileMU)) {
+        let a = Infinity, b = Infinity, c = -Infinity, d = -Infinity;
+        for (let i = 0; i < pts.length; i += 2) { pts[i] += x0 * tileMU; pts[i + 1] += y0 * tileMU; a = Math.min(a, pts[i]); c = Math.max(c, pts[i]); b = Math.min(b, pts[i + 1]); d = Math.max(d, pts[i + 1]); }
+        this.borders.push({ bb: [a, b, c, d], pts });
+      }
+    }
+  }
+
+  /** faint dashed borders, only while countries are the thing to read (continent to city-block zoom) */
+  private drawBorders(ground: Path2D, sky: Path2D, s: number, view: ViewRect, zoom: number) {
+    const a = Math.min(1, Math.max(0, (zoom - 0.36) / 0.1)) * Math.min(1, Math.max(0, (3.4 - zoom) / 1.2));
+    if (a <= 0.02 || !this.borders.length) return;
+    const { ctx } = this;
+    const loops = this.borders.filter((b) => b.bb[2] >= view.x0 && b.bb[0] <= view.x1 && b.bb[3] >= view.y0 && b.bb[1] <= view.y1).map((b) => ({ def: 0, pts: b.pts, area: 0 }));
+    if (!loops.length) return;
+    const path = coastPath(loops, s, view);
+    ctx.save();
+    ctx.lineJoin = 'round'; ctx.globalAlpha = a;
+    for (const clip of [ground, sky]) {
+      ctx.save(); ctx.clip(clip, 'evenodd');
+      ctx.strokeStyle = 'rgba(20,14,6,0.45)'; ctx.lineWidth = 3 / s; ctx.stroke(path);
+      ctx.setLineDash([6 / s, 5 / s]); ctx.strokeStyle = 'rgba(228,242,255,0.85)'; ctx.lineWidth = 1.4 / s; ctx.stroke(path); ctx.setLineDash([]);
+      ctx.restore();
+    }
+    ctx.restore();
   }
 
   setRootHoles(list: { x: number; y: number }[]) { this.landmarks.setRootHoles(list); }
@@ -240,6 +280,7 @@ export class TerrainRenderer {
     this.drawRoads(s, view, v.zoom, ['sky']);
 
     this.drawFates(ground, sky, s, view);
+    this.drawBorders(ground, sky, s, view, v.zoom);
     this.drawHighlight(ground, s, view);
     this.drawLabels(v, s);
     this.stats.ms = performance.now() - t0;

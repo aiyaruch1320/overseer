@@ -5,7 +5,7 @@ import type Phaser from 'phaser';
 import { Game, COSTS, SEASONS, giftCost, BIRTH_TIME_TH, BIRTH_SIGN_TH, type Meta } from '../sim/game';
 import type { Storylet, LogEntry, StatKey, Axis, Choice } from '../sim/types';
 import { STATS, STAT_NAMES, AXES, AXIS_NAMES, STAGE_NAMES, TONE_ICON } from '../sim/types';
-import { WorldScene, drawPortrait, Z } from '../scenes/WorldScene';
+import { WorldScene, drawPortrait, Z, type Locus } from '../scenes/WorldScene';
 import { Sky } from './sky';
 import { WEATHER_TH } from '../sim/society';
 import type { CityScene } from '../scenes/CityScene';
@@ -76,6 +76,7 @@ export class UI {
   epitaph = '';
   dirty = true;
   zoomLevel = 'โลก';
+  locus: Locus = { cont: -1, contName: '', country: -1, countryName: '', town: -1, townName: '' };
   logFilter: LogFilter = 'all';
   dockH = 220;
   dockOpen = true;
@@ -132,6 +133,7 @@ export class UI {
     };
     this.scene.onTownClick = (id) => { this.selectedTown = id; this.selectedCountry = generateWorld().towns[id].countryId; this.tab = 'world'; this.dirty = true; };
     this.scene.onEnterTown = (id) => this.enterCity(id);
+    this.scene.onLocate = (l) => { this.locus = l; this.renderMapCtl(); };
     this.scene.onZoom = (lv) => { if (lv !== this.zoomLevel) { this.zoomLevel = lv; this.renderMapCtl(); } };
     this.scene.onCityChange = (id) => {
       this.cityTown = id;
@@ -496,6 +498,16 @@ export class UI {
       <div class="res">${res}<button class="iconbtn" data-act="settings" title="ตั้งค่า">${ic('gear', 20)}</button><button class="iconbtn" data-act="menu" title="เมนูหลัก">${ic('home', 20)}</button></div>`;
   }
 
+  /** "โลก › ซิลวาเนล › เฟเลนิ › นครหลวงไอวิน": where the camera is, each step a button back out to that level */
+  crumbs() {
+    const l = this.locus, steps: string[] = [`<button class="crumb" data-act="crumb" data-v="world">${ic('globe', 14)} โลก</button>`];
+    if (l.cont >= 0) steps.push(`<button class="crumb" data-act="crumb" data-v="cont:${l.cont}">${esc(l.contName)}</button>`);
+    if (l.country >= 0) steps.push(`<button class="crumb" data-act="crumb" data-v="country:${l.country}">${esc(l.countryName)}</button>`);
+    if (l.town >= 0) steps.push(`<span class="crumb here">${esc(l.townName)}</span>`);
+    else steps[steps.length - 1] = steps[steps.length - 1].replace('class="crumb"', 'class="crumb here"');
+    return `<div class="crumbs">${steps.join('<i>›</i>')}</div>`;
+  }
+
   renderMapCtl() {
     const g = this.game;
     if (this.view === 'city') {
@@ -503,13 +515,13 @@ export class UI {
       $('#mapctl').innerHTML = `<button data-act="exitcity" title="ซูมออกไปดูทั้งประเทศ (หรือหมุนล้อเมาส์ออก)">${ic('globe', 20)}</button>
         <button data-act="cityfollow" title="ติดตามตัวละคร">${ic('target', 20)}</button>
         <button data-act="sidefold" title="${this.sideFold ? 'เปิด' : 'หุบ'}แผงข้อมูลด้านข้าง">${ic(this.sideFold ? 'up' : 'down', 18)}</button>
-        <div class="maplabel">${ic(t?.capital ? 'castle' : 'home', 16)} ${esc(t?.name || '')}${t && g ? ` · ${ic(townSpecialty(t.id, g.s.countries[t.countryId]).icon, 14)} ${esc(townSpecialty(t.id, g.s.countries[t.countryId]).name)}` : ''}${g && g.c.townId === this.cityTown ? ' · ตัวละครอยู่ที่นี่' : ''}</div>`;
+        <div class="maplabel">${this.crumbs()}${ic(t?.capital ? 'castle' : 'home', 16)}${t && g ? ` · ${ic(townSpecialty(t.id, g.s.countries[t.countryId]).icon, 14)} ${esc(townSpecialty(t.id, g.s.countries[t.countryId]).name)}` : ''}${g && g.c.townId === this.cityTown ? ' · ตัวละครอยู่ที่นี่' : ''}</div>`;
     } else {
       $('#mapctl').innerHTML = `<button data-act="zoomin" title="ซูมเข้า">${ic('plus', 18)}</button><button data-act="zoomout" title="ซูมออก">${ic('minus', 18)}</button>
         <button data-act="focus" title="ไปที่ตัวละคร">${ic('target', 20)}</button>
         <button data-act="sidefold" title="${this.sideFold ? 'เปิด' : 'หุบ'}แผงข้อมูลด้านข้าง">${ic(this.sideFold ? 'up' : 'down', 18)}</button>
         ${g ? `<button data-act="entercity" title="เข้าไปในเมืองของตัวละคร">${ic('castle', 20)}</button>` : ''}
-        <div class="maplabel">มุมมอง: ${this.zoomLevel} · ${WEATHER_TH[this.sky?.weather || 'clear'] || ''} · ซูมต่อเนื่องจนเห็นชีวิตในเมือง</div>`;
+        <div class="maplabel">${this.crumbs()}<span class="crumbnote">${this.zoomLevel} · ${WEATHER_TH[this.sky?.weather || 'clear'] || ''}</span></div>`;
     }
   }
 
@@ -1119,6 +1131,7 @@ ${uniq.length ? `Unique Skill: ${uniq.map((u) => esc(u.name)).join(', ')}<br>` :
       case 'godfold': this.godFold = !this.godFold; try { localStorage.setItem('isekai.godFold', this.godFold ? 'on' : 'off'); } catch { /* ignore */ } this.dirty = true; break;
       case 'cineclose': if (this.cineOpen) this.closeCine(); else this.hideBanner(); break;
       case 'tab': this.tab = v as Tab; this.dirty = true; break;
+      case 'crumb': { const [k, id] = v!.split(':'); if (k === 'world') this.scene.flyToWorld(); else if (k === 'cont') this.scene.flyToContinent(+id); else this.scene.flyToCountry(+id); break; }
       case 'zoomin': this.scene.zoomBy(1.4); break;
       case 'zoomout': this.scene.zoomBy(1 / 1.4); break;
       case 'focus': if (g) { this.scene.focusChar(); this.selectedCountry = g.c.countryId; this.dirty = true; } break;

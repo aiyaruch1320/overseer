@@ -212,6 +212,13 @@ img.px { image-rendering: pixelated; vertical-align: -3px; display: inline-block
 .townbtn { background: var(--panel3); border: 1px solid var(--border); color: var(--ink); border-radius: 6px; padding: 3px 8px; font-size: 12.5px; }
 .townbtn:hover, .townbtn.on { border-color: var(--gold); }
 .maplabel { background: rgba(25,28,39,.85); border: 2px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--ink); white-space: nowrap; }
+.crumbs { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.crumbs i { color: var(--muted); font-style: normal; }
+#mapctl button.crumb, .crumb { width: auto; height: auto; background: none; border: none; border-radius: 0; color: var(--ink); padding: 0 2px; font-size: 12.5px; display: inline-flex; align-items: center; gap: 3px; cursor: pointer; }
+#mapctl .crumb.here { color: var(--gold); font-weight: 600; }
+button.crumb:hover { color: var(--gold); text-decoration: underline; }
+.crumb.here { color: var(--gold); font-weight: 600; }
+.crumbnote { margin-left: 8px; color: var(--muted); }
 #mapctl { align-items: flex-start; }
 #dock { position: fixed; left: calc((100vw - 430px) / 2); transform: translateX(-50%); top: 64px; z-index: 900; display: none; gap: 12px; align-items: center; background: var(--panel); border: 2px solid var(--gold); border-radius: 10px; padding: 10px 12px; max-width: 420px; box-shadow: 0 8px 30px rgba(0,0,0,.6); font-size: 13px; animation: pop .2s; }
 .howto { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; font-size: 14.5px; line-height: 1.55; }
