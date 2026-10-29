@@ -8,21 +8,21 @@
 
 | รหัส | ชื่อ | เปิดเมื่อ | ที่ | เข้าจาก |
 | --- | --- | --- | --- | --- |
-| cv.1 | ค่ายผู้ลี้ภัยฟ้า | DR-01 แล้ว (SF-01 ถึง SF-04) | SH-09 SH-16 | wi.a1 hu.a3 dk.a3 gi.a2 be.a3 |
-| cv.2 | สภาเก้าทวีป | PO-01 หรือ HP-01 · PO-08 | AL-01 | hu.a5 el.a4 dk.a5 ha.a5 so.a5 me.a5 dw.a5 mu.a2 |
-| cv.3 | สงครามเก้าทวีป | WR-14 | ทุ่งราบ AL-08 และแนวรบทุกทวีป | hu.a4 or.a3 dm.a4 co.a4 be.a5 gi.a4 |
-| cv.4 | ประตูเมืองปฐม | FG-01 (เกิดแล้วตั้งแต่ต้นโลก) · FG-10 FG-12 FG-14 | NB-08 | va.a4 de.a4 co.a5 so.a4 fa.a4 hu.a6 |
-| cv.5 | ปากเหวนรก | DM-07 หรือ WR-13 หรือ PL-03 | KD-08 KD-05 | de.a3 dm.a3 dw.a4 la.a4 hu.a4 |
-| cv.6 | น้ำเลี้ยงสุดท้าย | BIO-01 · WR-04 · PO-04 หรือ WT-03 | SV-01 SV-15 AL-16 | el.a3 fa.a3 be.a4 ha.a3 sl.a3 na.t2 |
-| cv.7 | ไข่พญานาคราช | BIO-08 ใกล้เกิด (ยุค 1–2) · WR-20 | NR-07 NR-06 | na.a3 me.a3 hu.a3 (นาคาลูกครึ่ง) |
-| cv.8 | ไฟสุดท้าย | GI-04 หรือ DR-04 (AS-01 AS-02 AS-03) | KD-06 KD-11 KD-12 | dw.a3 la.a3 dk.a4 de.a5 dm.a5 |
+| cv.1 | ค่ายผู้ลี้ภัยฟ้า | DR-01 แล้ว (SF-01 ถึง SF-04) | SH-09 SH-16 | wi.a1 hu.a3 dk.a3 gi.a2 be.a3 sw.a1 |
+| cv.2 | สภาเก้าทวีป | PO-01 หรือ HP-01 · PO-08 | AL-01 | hu.a5 el.a4 dk.a5 ha.a5 so.a5 me.a5 dw.a5 mu.a2 hl.a2 |
+| cv.3 | สงครามเก้าทวีป | WR-14 | ทุ่งราบ AL-08 และแนวรบทุกทวีป | hu.a4 or.a3 dm.a4 co.a4 be.a5 gi.a4 bw.a2 |
+| cv.4 | ประตูเมืองปฐม | FG-01 (เกิดแล้วตั้งแต่ต้นโลก) · FG-10 FG-12 FG-14 | NB-08 | va.a4 de.a4 co.a5 so.a4 fa.a4 hu.a6 vb.a2 sh.a2 |
+| cv.5 | ปากเหวนรก | DM-07 หรือ WR-13 หรือ PL-03 | KD-08 KD-05 | de.a3 dm.a3 dw.a4 la.a4 hu.a4 ct.a2 |
+| cv.6 | น้ำเลี้ยงสุดท้าย | BIO-01 · WR-04 · PO-04 หรือ WT-03 | SV-01 SV-15 AL-16 | el.a3 fa.a3 be.a4 ha.a3 sl.a3 na.t2 eb.a2 fy.a2 |
+| cv.7 | ไข่พญานาคราช | BIO-08 ใกล้เกิด (ยุค 1–2) · WR-20 | NR-07 NR-06 | na.a3 me.a3 hu.a3 (นาคาลูกครึ่ง) ow.a2 nh.a2 |
+| cv.8 | ไฟสุดท้าย | GI-04 หรือ DR-04 (AS-01 AS-02 AS-03) | KD-06 KD-11 KD-12 | dw.a3 la.a3 dk.a4 de.a5 dm.a5 fh.a2 |
 | cv.9 | คืนที่เครื่องลุก | MC-03 หรือ MC-04 (RL-01 ถึง RL-03) | MK-03 MK-02 MK-12 | co.a3 so.a3 sl.a4 ha.a4 dw.a6 |
-| cv.10 | นาข้าวเถ้า | DM-06 หรือ DM-11 → HP-07 | MH-06 | or.a4 gh.a3 dm.a5 hu.a5 ha.a6 |
-| cv.11 | บันไดหมื่นขั้น | WR-02 หรือ HP-03 หรือ GI-02 | SH-03 AZ-04 | gi.a3 wi.a3 dw.a6 hu.a6 |
+| cv.10 | นาข้าวเถ้า | DM-06 หรือ DM-11 → HP-07 | MH-06 | or.a4 gh.a3 dm.a5 hu.a5 ha.a6 ho.a2 |
+| cv.11 | บันไดหมื่นขั้น | WR-02 หรือ HP-03 หรือ GI-02 | SH-03 AZ-04 | gi.a3 wi.a3 dw.a6 hu.a6 cy.a2 |
 | cv.12 | ธุลีทิพย์ | WR-24 หรือ GI-06 หรือ GI-10 | SH-01 SH-02 SH-14 | mu.a3 va.a5 hu.a4 be.a4 gi.a5 |
 | cv.13 | คลื่นไว้อาลัย | DR-15 | ทุกทวีป (ในความฝัน) | ทุกเผ่า ทุกช่วงอายุ |
 | cv.14 | ผู้กล้าเจ็ดคน | DM-01 → DM-04 · DM-05 · DM-06 | AL-02 MH-02 | hu.a4 ha.a5 or.a5 dm.a6 gh.a5 el.a6 |
-| cv.15 | ขบวนหนีหมอก | FG-02 หรือ FG-03 → FG-07 · FG-11 → DV-02 | NB-14 AL-20 | va.a6 co.a5 so.a4 hu.a6 de.a6 fa.a5 |
+| cv.15 | ขบวนหนีหมอก | FG-02 หรือ FG-03 → FG-07 · FG-11 → DV-02 | NB-14 AL-20 | va.a6 co.a5 so.a4 hu.a6 de.a6 fa.a5 vb.a1 |
 | cv.16 | ปลายโลก | ยุค 4 · WR-15 · END-10 END-11 END-12 | ที่ตั้งของกุญแจ | ทุกเผ่า ช่วงผู้เฒ่า (e2) |
 
 ลำดับโหนดที่เข้า เช่น `wi.a1` หมายถึงโหนดผู้ใหญ่ลำดับที่หนึ่งของเผ่าปีก ([09-dragonkin.md](09-dragonkin.md) [15-winged.md](15-winged.md) ฯลฯ) ตัวละครเข้าจุดบรรจบเดียวกันได้ครั้งเดียวต่อชีวิต ยกเว้น cv.13 ที่เกิดทุกครั้งที่ DFC +1
