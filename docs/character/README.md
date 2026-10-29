@@ -2,7 +2,7 @@
 
 เนื้อหาของตัวละครหลักที่ผูกกับโลกของเอกสารชุดนี้ ใช้ของที่มีอยู่ในโค้ดเกม (`src/data/traits.ts` `src/data/gifts.ts` `src/data/races.ts` `src/sim/fortune.ts`) เป็นแกน แล้วเพิ่มชั้นเนื้อเรื่อง ได้แก่ ที่เกิด เผ่า ความเสริมและขัดกัน และของใหม่ที่ผูกกับโลก
 
-เผ่าพันธุ์: [../races/README.md](../races/README.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world-events.md](../world-events.md) · ผลต่อตัวละคร: [../branches/03-character-and-quests.md](../branches/03-character-and-quests.md) · เส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) · อาวุธ: [../items/README.md](../items/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md)
+เผ่าพันธุ์: [../races/README.md](../races/README.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world-events.md](../world-events.md) · ผลต่อตัวละคร: [../branches/03-character-and-quests.md](../branches/03-character-and-quests.md) · เส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) · อาวุธ: [../items/README.md](../items/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
 
 ## ไฟล์
 
@@ -15,8 +15,8 @@
 | [05-new-blessings.md](05-new-blessings.md) | พรใหม่ที่ผูกกับโลก |
 | [06-new-curses.md](06-new-curses.md) | คำสาปใหม่ที่ผูกกับโลก |
 | [07-new-skills.md](07-new-skills.md) | skill ใหม่ที่ผูกกับโลก |
-| [08-jobs-overview.md](08-jobs-overview.md) | อาชีพ 149 อย่าง: จำนวน น้ำหนักการเสนอ ชีวิตช้า โบนัสเผ่า |
-| [09-jobs-common.md](09-jobs-common.md) | อาชีพทั่วไป 107 อย่าง (เดิม 39 ใหม่ 61 ย้ายจากลับ 7) |
+| [08-jobs-overview.md](08-jobs-overview.md) | อาชีพ 157 อย่าง: จำนวน น้ำหนักการเสนอ ชีวิตช้า โบนัสเผ่า |
+| [09-jobs-common.md](09-jobs-common.md) | อาชีพทั่วไป 115 อย่าง (เดิม 39 ใหม่ 61 ย้ายจากลับ 7 การค้า 8) |
 | [10-jobs-secret.md](10-jobs-secret.md) | อาชีพลับ 26 อย่าง |
 | [11-jobs-special.md](11-jobs-special.md) | อาชีพพิเศษ 16 อย่างที่ได้จากเส้นเรื่อง |
 | [12-job-support.md](12-job-support.md) | ความถนัดใหม่ 20 นิสัยใหม่ 8 พรใหม่ 16 คำสาปใหม่ 10 เพื่อรองรับอาชีพ |
@@ -36,7 +36,7 @@
 | skill | 150 | 45 ([07](07-new-skills.md)) + 60 (จากความถนัดใหม่) | 255 | 84 |
 | พร | 107 | 69 ([05](05-new-blessings.md)) + 16 ([12](12-job-support.md)) | 192 | 84 |
 | คำสาป | 103 | 33 ([06](06-new-curses.md)) + 10 ([12](12-job-support.md)) | 146 | 63 |
-| อาชีพ | 56 | 93 ([08](08-jobs-overview.md) ถึง [11](11-jobs-special.md)) | 149 | |
+| อาชีพ | 56 | 101 ([08](08-jobs-overview.md) ถึง [11](11-jobs-special.md)) | 157 | |
 
 กติกาเสริม ขัด และตรงข้าม 59 ข้อใน [03-synergy-rules.md](03-synergy-rules.md)
 
