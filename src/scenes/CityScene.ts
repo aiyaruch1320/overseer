@@ -219,6 +219,7 @@ export class CityScene extends Phaser.Scene {
       if (flags.includes('famine') && i < 2) job = npcJob('beggar');
       this.addPerson({ race, role: kid ? 'เด็ก' : job!.role, job, elder: !kid && this.rng.chance(0.12), home: nextHome() });
     }
+    this.routine.formFamilies();
   }
 
   addPerson(o: { race: string; role: string; name?: string; id?: number; job?: NpcJob; skill?: number; goal?: string; elder?: boolean; gender?: string; at?: Pt; hero?: boolean; look?: Look; home?: Pt }): Person {

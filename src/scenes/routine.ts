@@ -32,6 +32,7 @@ export interface Life {
   homeV?: Venue; workV?: Venue; station?: Pt; stall?: Pt; trade?: Trade;
   doing: string; inside?: Venue; sleeping?: boolean; wakeAt?: number;
   hunger: number; shop: number; piety: number; sick: boolean; nightShift: boolean; lastErrand: string;
+  parents: Person[]; kids: Person[]; spouse?: Person; kin?: Person; escortDay?: number; // the household they belong to
 }
 
 // ---------- the day ----------
@@ -80,6 +81,7 @@ export const ACT: Record<string, Act> = {
   rest: { frames: [P.sit, P.sit2], fps: 0.8, fx: 'none' },
   bench: { frames: [P.sit, P.sit2, P.sit], fps: 0.6, fx: 'none' },
   play: { frames: [P.cheer, P.idle, P.cheer2, P.wave0], fps: 3, fx: 'none' },
+  wave: { frames: [P.wave0, P.wave1], fps: 2.4, fx: 'none' },
   fest: { frames: [P.cheer, P.idle, P.cheer, P.breath], fps: 3.2, fx: 'note' },
   stand: { frames: [P.idle, P.breath], fps: 1, fx: 'none' },
 };
@@ -200,7 +202,7 @@ export class Routine {
   /** give a new townsperson a home, a place of work and a station at it */
   settle(p: Person) {
     const s = this.s, r = s.rng;
-    const L: Life = { doing: '', hunger: r.float(0, 0.6), shop: r.float(0, 0.7), piety: r.float(0.1, 1), sick: false, nightShift: false, lastErrand: '' };
+    const L: Life = { doing: '', hunger: r.float(0, 0.6), shop: r.float(0, 0.7), piety: r.float(0.1, 1), sick: false, nightShift: false, lastErrand: '', parents: [], kids: [] };
     p.life = L;
     L.homeV = p.home ? this.houseAt.get(`${p.home.x},${p.home.y}`) : undefined;
     const job = p.job;
@@ -327,6 +329,7 @@ export class Routine {
     if (s.festival() && rng.chance(0.3)) { s.go(p, s.spot('plaza'), p.speed * 1.2, () => { L.doing = 'ร่วมงานเทศกาลกลางลาน'; s.doAct(p, ACT.fest, rng.float(5, 10)); }); L.doing = 'เดินไปร่วมงานเทศกาล'; return; }
     if (p.look.child) { this.child(p, ph); return; }
     if (L.sick) { this.ill(p); return; }
+    if (!hero && L.kids.length && (ph === 'dawn' || ph === 'morning') && L.escortDay !== this.day() && this.escort(p)) return;
     const gz = themeOf(p.race).gesture; // a moment of their own people's habit: wings stretched, a hammer swung at nothing
     if (gz && !hero && rng.chance(0.06)) { L.doing = 'ท่าประจำเผ่า'; s.doAct(p, { frames: gz.frames, fps: gz.fps, fx: gz.fx as Act['fx'] }, rng.float(2.5, 4.5)); return; }
 
@@ -542,6 +545,7 @@ export class Routine {
     if (!st || !this.reach(p, st, 560)) { L.shop = 0.3; this.stroll(p); return; }
     L.doing = v ? `ซื้อของจาก${v.name}ที่ตลาด` : 'เดินเลือกซื้อของที่ตลาด';
     const side = rng.chance(0.5) ? -13 : 13;
+    this.bring(p, { x: st.x - side * 0.8, y: st.y + 8 }, ACT.wave, 'ตามพ่อแม่ไปตลาด');
     s.go(p, { x: st.x + side, y: st.y + 4 }, p.speed, () => {
       this.trade(p, st, v);
       this.after(p, () => {
@@ -568,6 +572,7 @@ export class Routine {
     const v = this.nearest('worship', here);
     if (!v || !this.reach(p, v.door, 800)) { this.stroll(p); return; }
     L.piety = Math.max(0.1, L.piety - 0.25);
+    this.bring(p, { x: v.door.x + rng.int(-22, 22), y: v.door.y + rng.int(8, 14) }, ACT.pray, 'ตามพ่อแม่ไปสวดมนต์');
     if (rng.chance(0.5)) this.enter(p, v, rng.float(10, 20), 'เข้าไปสวดมนต์ในวิหาร');
     else {
       L.doing = 'สวดมนต์หน้าวิหาร';
@@ -624,10 +629,84 @@ export class Routine {
     });
   }
 
+  // ---------- families ----------
+  private day() { return Math.floor(this.s.dayT / DAY_LEN); }
+
+  private rehome(p: Person, v: Venue) {
+    const L = p.life!, r = this.s.rng;
+    if (L.homeV === v) return;
+    if (p.state === 'inside') this.leave(p);
+    if (L.homeV) this.load.set(L.homeV, Math.max(0, (this.load.get(L.homeV) ?? 1) - 1));
+    L.homeV = v; p.home = v.door; this.load.set(v, (this.load.get(v) ?? 0) + 1);
+    p.root.setPosition(v.door.x + r.int(-8, 8), v.door.y + r.int(3, 8));
+  }
+
+  /** after the town is populated: couples share a house, children live with a parent, some elders with their family */
+  formFamilies() {
+    const s = this.s, r = s.rng;
+    const gen = s.npcs.filter((p) => p.life?.homeV && !p.hero && !p.look.special);
+    const adults = gen.filter((p) => !p.look.child && !p.look.elder), kids = gen.filter((p) => p.look.child), elders = gen.filter((p) => p.look.elder);
+    const dist = (a: Person, b: Person) => this.dist(a.life!.homeV!.door, b.life!.homeV!.door);
+    for (const a of r.shuffle(adults.slice())) {
+      if (a.life!.spouse || !r.chance(0.6)) continue;
+      const b = adults.filter((x) => x !== a && !x.life!.spouse && x.race === a.race && x.look.fem !== a.look.fem && dist(a, x) < 520).sort((x, y) => dist(a, x) - dist(a, y))[0];
+      if (!b) continue;
+      a.life!.spouse = b; b.life!.spouse = a; this.rehome(b, a.life!.homeV!);
+    }
+    for (const k of kids) {
+      const open = adults.filter((a) => a.life!.kids.length < 3);
+      const pool = open.filter((a) => a.race === k.race);
+      const a = r.weighted(pool.length ? pool : open, (x) => (x.life!.spouse ? 2 : 1) / (1 + x.life!.kids.length));
+      if (!a) continue;
+      for (const par of [a, a.life!.spouse]) if (par) { k.life!.parents.push(par); par.life!.kids.push(k); }
+      this.rehome(k, a.life!.homeV!);
+    }
+    for (const e of elders) {
+      const a = adults.filter((x) => !x.life!.kin && dist(e, x) < 600).sort((x, y) => dist(e, x) - dist(e, y))[0];
+      if (a && r.chance(0.5)) { e.life!.kin = a; this.rehome(e, a.life!.homeV!); }
+    }
+  }
+
+  /** the children of `p` who are at home or close by and free to come along */
+  private kidsAround(p: Person): Person[] {
+    const L = p.life!, day = this.day();
+    return L.kids.filter((k) => k.life && k.life.escortDay !== day && ((k.state === 'inside' && k.life.inside === L.homeV) || ((k.state === 'idle' || k.state === 'act') && this.dist({ x: k.root.x, y: k.root.y }, { x: p.root.x, y: p.root.y }) < 320)));
+  }
+
+  /** a parent walks the children to school on the way to work */
+  private escort(p: Person): boolean {
+    const s = this.s, L = p.life!, rng = s.rng, day = this.day();
+    L.escortDay = day;
+    if (!rng.chance(0.6)) return false;
+    const kids = this.kidsAround(p);
+    const school = this.nearest('study', p.home ?? { x: p.root.x, y: p.root.y }) ?? this.nearest('worship', p.home ?? { x: p.root.x, y: p.root.y });
+    if (!kids.length || !school || !this.reach(p, school.door, 700)) return false;
+    L.doing = 'พาลูกไปส่งที่โรงเรียน';
+    for (const k of kids) {
+      k.life!.escortDay = day;
+      if (k.state === 'inside') this.leave(k);
+      this.enter(k, school, rng.float(26, 40), 'ไปเรียนหนังสือกับพ่อแม่', undefined, false, p.speed);
+    }
+    s.go(p, { x: school.door.x + rng.int(-10, 10), y: school.door.y + 7 }, p.speed, () => { s.emote(p, 'heart'); s.doAct(p, ACT.wave, 2); });
+    return true;
+  }
+
+  /** children tag along to a place the parent is going (the stall, the temple) and join in */
+  private bring(p: Person, to: Pt, act: Act, doing: string) {
+    const s = this.s, rng = s.rng, day = this.day();
+    if (!p.life!.kids.length || !rng.chance(0.5)) return;
+    for (const k of this.kidsAround(p).slice(0, 2)) {
+      k.life!.escortDay = day;
+      if (k.state === 'inside') this.leave(k);
+      k.life!.doing = doing;
+      s.go(k, { x: to.x + rng.int(-8, 8), y: to.y + rng.int(0, 5) }, p.speed, () => s.doAct(k, act, rng.float(5, 10)));
+    }
+  }
+
   // ---------- children ----------
   private child(p: Person, ph: Phase) {
     const s = this.s, L = p.life!, rng = s.rng, base = p.home ?? { x: p.root.x, y: p.root.y };
-    if (ph === 'morning' && rng.chance(0.4)) {
+    if (ph === 'morning' && !L.parents.length && rng.chance(0.4)) { // children with a parent go to school with them (escort)
       const school = this.nearest('study', base) ?? this.nearest('worship', base);
       if (school) { this.enter(p, school, rng.float(24, 40), 'ไปเรียนหนังสือ'); return; }
     }
@@ -660,6 +739,12 @@ export class Routine {
     if (L.homeV) out.push('มีบ้านอยู่ในเมือง');
     if (L.doing) out.push(`ตอนนี้: ${L.doing}`);
     if (L.sick) out.push('ไม่สบาย');
+    const kin: string[] = [];
+    if (L.spouse) kin.push(`คู่ชีวิต: ${L.spouse.name}`);
+    if (L.parents.length) kin.push(`พ่อแม่: ${L.parents.map((x) => x.name).join(', ')}`);
+    if (L.kids.length) kin.push(`ลูก: ${L.kids.map((x) => x.name).join(', ')}`);
+    if (L.kin) kin.push(`อยู่กับครอบครัวของ ${L.kin.name}`);
+    out.push(...kin);
     return out;
   }
 }
