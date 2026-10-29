@@ -2,7 +2,7 @@ import { RNG, makeNoise } from './rng';
 import type { Continent, Country } from './types';
 import { climateById } from '../data/races';
 import { DEFS, ownerAt, MU_TO_WU } from '../world/geo';
-import { portOf } from '../city/flavor';
+import { portOf, wealthOf } from '../city/flavor';
 import { COUNTRY_DOCS, type CountryDoc } from '../data/countries';
 
 export const WORLD_SEED = 'อาเธเรีย';
@@ -329,10 +329,17 @@ export function generateWorld(): WorldMap {
   // towns: a capital near the centroid plus 1-4 more, spaced apart on the country's own tiles
   const towns: Town[] = [];
   const TOWN_PRE = ['เมือง', 'บ้าน', 'ป้อม', 'ท่า', 'หมู่บ้าน', 'ตำบล', 'นิคม'];
+  const rootOf = (n: string) => n.replace(/^(นครหลวง|หมู่บ้าน|เมือง|บ้าน|ป้อม|ท่า|ตำบล|นิคม)/, '');
+  const MIN_GAP = 15; // a town plan is 15 tiles wide: towns of one country sit this close at most, so their plans touch without drawing over each other
+  const BORDER_GAP = 10; // towns of different countries may stand nearer, across a border
+  const usedBase = new Set<string>(); // a name (and its root) belongs to one town in the whole world, so no two towns can be mistaken for each other
+  const seats = countries.filter((o) => o.tiles > 0).map((o) => [o.cx, o.cy] as [number, number]); // every capital's own seat, kept clear
   for (const c of countries) {
-    const n = 1 + Math.max(4, Math.min(16, Math.round(c.tiles / 100)));
+    const n0 = 1 + Math.max(4, Math.min(16, Math.round(c.tiles / 100)));
+    // rich and trading countries are more densely built: their extra towns crowd in around the ones they already have
+    const dense = wealthOf(c.code, c.continent) >= 0.65 || portOf(c.code, true) >= 2;
+    const n = n0 + (dense ? Math.min(6, Math.round(n0 * 0.4)) : 0);
     const syl = NAME_SYL[c.continent];
-    const used = new Set<string>();
     // keep towns a tile away from the shore so they never sit on the drawn coastline
     const inland = (x: number, y: number) => { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (country[(y + dy) * W + x + dx] !== c.id) return false; return true; };
     if (!inland(c.cx, c.cy)) {
@@ -357,20 +364,22 @@ export function generateWorld(): WorldMap {
       }
     }
     const pts: [number, number][] = [[c.cx, c.cy]];
-    for (let tries = 0; pts.length < n && tries < 1200; tries++) {
+    for (let tries = 0; pts.length < n && tries < 2500; tries++) {
       const t = rng.pick(tilesOf[c.id]);
       const x = t % W, y = Math.floor(t / W);
       if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
       if (portC && pts.length % 2 === 1 && tries < 500 && !coastal(x, y)) continue;
-      if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 16)) pts.push([x, y]);
+      if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= MIN_GAP) && (pts.length < n0 || tries > 1800 || pts.some(([px, py]) => Math.hypot(px - x, py - y) <= 24)) && towns.every((o) => Math.hypot(o.x - x, o.y - y) >= BORDER_GAP) && seats.every(([px, py]) => (px === c.cx && py === c.cy) || Math.hypot(px - x, py - y) >= BORDER_GAP)) pts.push([x, y]);
     }
     pts.forEach(([x, y], k) => {
       let name = '';
-      for (let g = 0; g < 20 && (!name || used.has(name)); g++) {
-        const base = rng.pick(syl[0]) + rng.pick(syl[2]);
+      for (let g = 0; g < 80 && (!name || usedBase.has(rootOf(name))); g++) {
+        // a short two-syllable name first; once the short ones run out, a middle syllable multiplies the choices
+        const mid = g >= 4 ? rng.pick(syl[1]) : '';
+        const base = rng.pick(syl[0]) + (mid === '-' ? '' : mid) + rng.pick(syl[2]);
         name = k === 0 ? `นครหลวง${base}` : rng.pick(TOWN_PRE) + base;
       }
-      used.add(name);
+      usedBase.add(rootOf(name));
       const town: Town = { id: towns.length, countryId: c.id, name, x, y, capital: k === 0, size: k === 0 ? 3 : rng.int(1, 2) };
       towns.push(town);
       c.towns.push(town.id);
