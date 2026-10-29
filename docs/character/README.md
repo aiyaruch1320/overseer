@@ -33,9 +33,9 @@
 | --- | --- | --- | --- | --- |
 | นิสัย | 48 | 8 ([12-job-support.md](12-job-support.md)) | 56 | |
 | ความถนัด | 45 | 20 ([12-job-support.md](12-job-support.md)) | 65 | |
-| skill | 150 | 45 ([07](07-new-skills.md)) + 60 (จากความถนัดใหม่) | 255 | 84 |
-| พร | 107 | 69 ([05](05-new-blessings.md)) + 16 ([12](12-job-support.md)) | 192 | 84 |
-| คำสาป | 103 | 33 ([06](06-new-curses.md)) + 10 ([12](12-job-support.md)) | 146 | 63 |
+| skill | 150 | 70 ([07](07-new-skills.md)) + 12 ([17](17-companion-support.md)) | 232 | 84 |
+| พร | 107 | 69 ([05](05-new-blessings.md)) + 16 ([12](12-job-support.md)) + 8 ([17](17-companion-support.md)) | 200 | 84 |
+| คำสาป | 103 | 33 ([06](06-new-curses.md)) + 10 ([12](12-job-support.md)) + 6 ([17](17-companion-support.md)) | 152 | 63 |
 | อาชีพ | 56 | 101 ([08](08-jobs-overview.md) ถึง [11](11-jobs-special.md)) | 157 | |
 
 กติกาเสริม ขัด และตรงข้าม 59 ข้อใน [03-synergy-rules.md](03-synergy-rules.md)
