@@ -27,7 +27,7 @@ export function paintStreet(p: Pen, th: Theme, surf: Surface, X: number, Y: numb
   switch (surf) {
     case 'clay': {
       p.fill(clay, X, Y, T, T);
-      for (let k = 0; k < 7; k++) p.fill(shadeC(clay, r.float(0.8, 1.18)), X + r.int(0, 13), Y + r.int(0, 13), r.int(2, 4), r.int(1, 3));
+      for (let k = 0; k < 4; k++) p.fill(shadeC(clay, r.float(0.9, 1.1)), X + r.int(0, 13), Y + r.int(0, 13), r.int(2, 4), r.int(1, 3));
       // wheel ruts and the odd puddle
       const rut = shadeC(clay, 0.72);
       if (horiz) { p.fill(rut, X, Y + 4, T, 2); p.fill(rut, X, Y + 10, T, 2); } else { p.fill(rut, X + 4, Y, 2, T); p.fill(rut, X + 10, Y, 2, T); }
@@ -37,8 +37,8 @@ export function paintStreet(p: Pen, th: Theme, surf: Surface, X: number, Y: numb
     }
     case 'earth': {
       p.fill(earth, X, Y, T, T);
-      for (let k = 0; k < 9; k++) p.fill(shadeC(earth, r.float(0.82, 1.15)), X + r.int(0, 14), Y + r.int(0, 14), r.int(1, 3), r.int(1, 2));
-      for (let k = 0; k < 5; k++) p.fill(shadeC(earth, 1.3), X + r.int(0, 14), Y + r.int(0, 14), 2, 1); // gravel
+      for (let k = 0; k < 5; k++) p.fill(shadeC(earth, r.float(0.9, 1.08)), X + r.int(0, 14), Y + r.int(0, 14), r.int(1, 3), r.int(1, 2));
+      for (let k = 0; k < 2; k++) p.fill(shadeC(earth, 1.2), X + r.int(0, 14), Y + r.int(0, 14), 2, 1); // gravel
       if (horiz) p.fill(shadeC(earth, 0.86), X, Y + 7, T, 1); else if (up && down) p.fill(shadeC(earth, 0.86), X + 7, Y, 1, T);
       break;
     }
@@ -46,7 +46,7 @@ export function paintStreet(p: Pen, th: Theme, surf: Surface, X: number, Y: numb
       p.fill(shadeC(th.road, 0.78), X, Y, T, T);
       for (let row = 0; row < 3; row++) for (let i = 0; i < 4; i++) {
         const sx = X + i * 4 + (row % 2) * 2, sy = Y + row * 5 + 1;
-        const c = shadeC(th.road, r.float(0.92, 1.14));
+        const c = shadeC(th.road, r.float(0.96, 1.07));
         p.fill(c, sx, sy, 3, 4); p.fill(shadeC(c, 1.18), sx, sy, 3, 1);
       }
       break;
