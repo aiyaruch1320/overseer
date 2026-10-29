@@ -147,7 +147,7 @@ function generate(town: Town, country: CityCountry): CityData {
   // the roads that really leave this town: they run on, outside the streets, to the edge of the plan where the map's own road takes over
   for (const l of links.get(town.id) || []) for (let i = 0; i + 3 < l.pts.length; i += 2) line(l.pts[i], l.pts[i + 1], l.pts[i + 2], l.pts[i + 3], l.w, 99);
   // the square
-  const pw = village ? 5 : theme.centre === 'worldtree' ? 11 : 8, ph = village ? 3 : theme.centre === 'worldtree' ? 7 : 5;
+  const pw = village ? 5 : 8, ph = village ? 3 : 5; // (the world tree has no monument in the square: the tree itself, drawn on the map, is what the town stands under)
   for (let y = cy - ph; y <= cy + ph; y++) for (let x = cx - pw; x <= cx + pw + 1; x++) { const t = get(x, y); if (t !== Tile.Water && t !== Tile.Void) set(x, y, Tile.Plaza); }
   const plaza = { x: cx - pw, y: cy - ph, w: pw * 2 + 2, h: ph * 2 + 1 };
   // walls around a capital, stakes around a camp, hedges around a grove

@@ -66,7 +66,6 @@ export class Sky {
   private sprites = cloudSprites();
   fx: PassFx = 'none';
   canopy = 0; // how far under the world tree's crown the camera is (0 outside, 1 beneath its middle)
-  private ceil: HTMLCanvasElement[] = [];
   private pass: Record<string, HTMLCanvasElement[]> | null = null;
   private passDots: { a: number; r: number; ph: number; s: number }[] = [];
   private clouds: Cloud[] = [];
@@ -207,21 +206,8 @@ export class Sky {
       ctx.globalAlpha = 1;
     }
     if (under <= 0.01) return;
-    // 2. shade: the whole view dims and takes the green of light through leaves
-    ctx.fillStyle = `rgba(8,34,14,${0.3 * under})`; ctx.fillRect(0, 0, w, h);
-    // the canopy overhead: dense foliage along the top and sides, dark toward the edges, open in the middle where the light comes through
-    if (!this.ceil.length) for (let k = 0; k < 4; k++) {
-      const cv = document.createElement('canvas'); cv.width = 520; cv.height = 360; const c = cv.getContext('2d')!, rnd = leafRng(91 + k * 13);
-      leafCluster(c, 260, 180, 250, 165, [0x0f4a22, 0x1a6a2e, 0x2a8a3c, 0x144e26, 0x4aa04e], rnd, 1.15);
-      this.ceil.push(cv);
-    }
-    ctx.globalAlpha = Math.min(1, under * 1.1);
-    const cw = R * 0.5, ch = cw * 0.69, sway = Math.sin(t * 0.0004) * 6;
-    for (let i = 0; i < 5; i++) ctx.drawImage(this.ceil[i % 4], (i / 4) * w - cw / 2 + sway * (i % 2 ? 1 : -1), -ch * 0.62, cw, ch);
-    for (let i = 0; i < 2; i++) { const sw = cw * 0.7, sh = ch * 0.7; ctx.drawImage(this.ceil[(i + 1) % 4], -sw * 0.62, h * (0.25 + i * 0.42) - sh / 2, sw, sh); ctx.drawImage(this.ceil[(i + 2) % 4], w - sw * 0.38, h * (0.4 - i * 0.22) - sh / 2, sw, sh); }
-    ctx.globalAlpha = 1;
-    const vg = ctx.createRadialGradient(cx, cy * 1.05, R * 0.22, cx, cy, R * 0.75); vg.addColorStop(0, 'rgba(6,26,10,0)'); vg.addColorStop(1, `rgba(6,26,10,${0.55 * under})`);
-    ctx.fillStyle = vg; ctx.fillRect(0, 0, w, h);
+    // 2. under the crown the view is not framed in foliage (that only costs the player sight): just a faint green cast
+    ctx.fillStyle = `rgba(8,34,14,${0.07 * under})`; ctx.fillRect(0, 0, w, h);
     // light through the leaves: slanting shafts with dust in them, and moving pools of sun on the ground
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
     for (let k = 0; k < 6; k++) {
@@ -235,9 +221,9 @@ export class Sky {
       const g = ctx.createRadialGradient(px, py, 0, px, py, rr); g.addColorStop(0, `rgba(255,246,190,${0.2 * under})`); g.addColorStop(1, 'rgba(255,246,190,0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(px, py, rr, 0, Math.PI * 2); ctx.fill();
     }
-    for (let k = 0; k < 30; k++) { // dust and pollen turning in the light
+    for (let k = 0; k < 12; k++) { // dust and pollen turning in the light
       const px = ((k * 0.3819 + t * 0.00001) % 1) * w, py = ((k * 0.6180339 + t * 0.000025 * (1 + (k % 4) * 0.3)) % 1) * h;
-      ctx.fillStyle = `rgba(255,250,200,${0.5 * under})`; ctx.fillRect(px, py, 1.6, 1.6);
+      ctx.fillStyle = `rgba(255,250,200,${0.32 * under})`; ctx.fillRect(px, py, 1.4, 1.4);
     }
     ctx.restore();
     // a few leaves coming down, turning as they fall

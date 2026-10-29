@@ -33,8 +33,15 @@ export class Landmarks {
   /** drawn after the ground symbols: the tree, the machine, the rift, the whirlpool */
   drawGround(ctx: CanvasRenderingContext2D, s: number, view: ViewRect, time: number) {
     const hair = 1 / s;
-    if (near(view, 265, 280, 110)) { { const z = s / MU_TO_WU, fade = 1 - Math.min(1, Math.max(0, (z - 1.4) / 1.6)); // from under its crown the tree is no longer a thing on the ground: the canopy overhead (sky.ts) takes over
-      if (fade > 0.01) { ctx.save(); ctx.globalAlpha = fade * fade * (3 - 2 * fade); ctx.translate(265, 282); ctx.scale(0.7, 0.7); this.worldTree(ctx, 0, 0, time, hair / 0.7); ctx.restore(); } } }
+    if (near(view, 265, 280, 110)) {
+      const z = s / MU_TO_WU, ss = (lo: number, hi: number) => { const k = Math.max(0, Math.min(1, (z - lo) / (hi - lo))); return k * k * (3 - 2 * k); };
+      // from afar the whole tree; as the camera goes in under it the crown is overhead and out of sight, and only the roots and the foot of the trunk remain on the ground the town stands on
+      const fa = 1 - ss(1.3, 2.6), ra = ss(1.0, 2.2);
+      ctx.save(); ctx.translate(265, 282); ctx.scale(0.7, 0.7);
+      if (ra > 0.01) { ctx.globalAlpha = ra; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(this.roots(), -160, -200, 320, 262); }
+      if (fa > 0.01) { ctx.globalAlpha = fa; this.worldTree(ctx, 0, 0, time, hair / 0.7); }
+      ctx.restore();
+    }
     if (near(view, 1112, 302, 50)) this.arkea(ctx, 1112, 302, time, hair);
     if (near(view, 710, 150, 60)) this.whirlpool(ctx, 708, 150, 44, 19, time, hair);
     if (near(view, 705, 808, 120)) this.rift(ctx, time, hair);
@@ -53,6 +60,16 @@ export class Landmarks {
   }
 
   private treeSprite: HTMLCanvasElement | null = null;
+  private rootSprite: HTMLCanvasElement | null = null;
+  /** the same tree seen from under its crown: only roots and the foot of the trunk, as the town below it would see it */
+  private roots(): HTMLCanvasElement {
+    if (this.rootSprite) return this.rootSprite;
+    const k = 4, cv = document.createElement('canvas');
+    cv.width = 320 * k; cv.height = 262 * k;
+    paintWorldTree(cv.getContext('2d')!, 160 * k, 200 * k, k, [0x2a7a3a, 0x3d8f45, 0x5aa04e, 0x86c44e, 0x1f6a34], 11, 1, 'base');
+    return (this.rootSprite = cv);
+  }
+
   /** the tree is painted once, leaf by leaf, into a big sprite; only the pulse of its aura and the drifting motes are live */
   private tree(): HTMLCanvasElement {
     if (this.treeSprite) return this.treeSprite;

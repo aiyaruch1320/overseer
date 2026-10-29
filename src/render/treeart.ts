@@ -45,20 +45,22 @@ export function leafCluster(c: CanvasRenderingContext2D, cx: number, cy: number,
 }
 
 /** the great tree itself: buttressed roots, a barked trunk, branches reaching out, a canopy of leaf masses, vines and blossoms. `s` is px per unit; (x, y) is the foot of the trunk */
-export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number, s: number, leaves: number[], seed = 7, glow = 1) {
+export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number, s: number, leaves: number[], seed = 7, glow = 1, mode: 'full' | 'base' = 'full') {
   const rnd = leafRng(seed), bark = [0x5b4030, 0x4a3322, 0x7a5a40].map(rgb);
   c.save(); c.translate(x, y); c.scale(s, s);
   // the aura and the shadow on the ground
-  let g = c.createRadialGradient(0, -52, 6, 0, -52, 108); g.addColorStop(0, `rgba(200,255,160,${0.3 * glow})`); g.addColorStop(1, 'rgba(200,255,160,0)'); c.fillStyle = g; c.beginPath(); c.arc(0, -52, 108, 0, TAU); c.fill();
+  let g = c.createRadialGradient(0, -52, 6, 0, -52, 108);
+  if (mode === 'full') { g.addColorStop(0, `rgba(200,255,160,${0.3 * glow})`); g.addColorStop(1, 'rgba(200,255,160,0)'); c.fillStyle = g; c.beginPath(); c.arc(0, -52, 108, 0, TAU); c.fill(); }
   c.fillStyle = 'rgba(8,24,10,0.3)'; c.beginPath(); c.ellipse(8, 6, 74, 18, 0, 0, TAU); c.fill();
   // roots spread over the ground in curving buttresses
   c.lineCap = 'round';
-  for (let k = 0; k < 14; k++) {
-    const a = (k / 14) * TAU + 0.3, len = 40 + (k % 4) * 12, bend = (k % 2 ? 1 : -1) * 0.55;
+  const base = mode === 'base', nRoots = base ? 22 : 14;
+  for (let k = 0; k < nRoots; k++) {
+    const a = (k / nRoots) * TAU + 0.3, len = (base ? 70 : 40) + (k % 4) * (base ? 22 : 12), bend = (k % 2 ? 1 : -1) * 0.55;
     let px = 0, py = 0;
     for (let seg = 0; seg < 4; seg++) {
       const aa = a + bend * seg * 0.28, nx = px + Math.cos(aa) * (len / 4), ny = py + Math.sin(aa) * (len / 4) * 0.42 + 0.8;
-      c.strokeStyle = css(bark[seg % 2 ? 2 : 0], 1, 1); c.lineWidth = 9 - seg * 2.1; c.beginPath(); c.moveTo(px, py); c.lineTo(nx, ny); c.stroke(); px = nx; py = ny;
+      c.strokeStyle = css(bark[seg % 2 ? 2 : 0], 1, 1); c.lineWidth = (base ? 13 : 9) - seg * (base ? 3 : 2.1); c.beginPath(); c.moveTo(px, py); c.lineTo(nx, ny); c.stroke(); px = nx; py = ny;
     }
   }
   // the trunk: a swelling column with ridged bark, lit from the left, a hollow with a warm light in it
@@ -69,6 +71,14 @@ export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number
   c.strokeStyle = 'rgba(22,12,6,0.5)'; c.lineWidth = 1.1;
   for (let k = 0; k < 9; k++) { const bx = -tw + 4 + k * ((tw * 2 - 8) / 8); c.beginPath(); c.moveTo(bx, 2); c.bezierCurveTo(bx * 0.9, -22, bx * 0.8 + (rnd() - 0.5) * 3, -50, bx * 0.55, -74); c.stroke(); }
   c.fillStyle = '#1a0e06'; c.beginPath(); c.ellipse(-2, -10, 7, 10, 0, 0, TAU); c.fill(); g = c.createRadialGradient(-2, -8, 0, -2, -8, 9); g.addColorStop(0, 'rgba(255,220,130,0.95)'); g.addColorStop(1, 'rgba(255,200,100,0)'); c.fillStyle = g; c.beginPath(); c.arc(-2, -8, 9, 0, TAU); c.fill();
+  if (mode === 'base') {
+    // from the ground the crown is overhead and out of sight: the trunk climbs into a dark roof of leaves at the top of the picture
+    const rnd2 = leafRng(seed + 3);
+    leafCluster(c, 0, -84, 40, 18, [0x0f4a22, 0x1a6a2e, 0x2a8a3c], rnd2, 1.1);
+    for (let k = 0; k < 6; k++) leafCluster(c, -70 + k * 28, -88 + (k % 2) * 6, 26, 14, [0x0f4a22, 0x1a6a2e, 0x2a8a3c], rnd2, 1);
+    c.restore();
+    return;
+  }
   // branches into the canopy, then the canopy: back masses first, front last
   c.strokeStyle = css(bark[0]); c.lineCap = 'round';
   const arms: [number, number, number, number][] = [[-8, -70, -90, -96], [8, -70, 90, -96], [-6, -72, -62, -130], [6, -72, 62, -130], [-4, -74, -26, -140], [4, -74, 26, -140], [0, -76, 0, -150]];
