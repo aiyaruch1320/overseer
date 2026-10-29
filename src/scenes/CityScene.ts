@@ -13,6 +13,7 @@ import { themeOf } from '../render/characters/themes';
 import { castForCountry } from '../data/cast';
 import { townLifeEvent, EMOTE, TOWN_PLACES, type LifeKind } from '../data/townlife';
 import { NPC_JOBS, NPC_GOALS, npcJob, type Place, type NpcJob } from '../data/npclife';
+import { Routine, DAY_LEN, jobOfLook, type Life, type Venue } from './routine';
 import { pickTownJob, townSpecialty } from '../sim/locale';
 import { DISASTERS } from '../data/disasters';
 import type { Specialty } from '../data/npclife';
@@ -22,19 +23,19 @@ import { T, CW, CH, Tile, getCity, type CityData, type BuildingRec, type Pt } fr
 
 const TEMPLE_ICON: Record<string, string> = { light: 'bless', dragon: 'dragon', sea: 'river', moon: 'moon', war: 'weapon', demon: 'demon', naga: 'snake', nature: 'leaf', ancestor: 'death' };
 const HEAD = 30; // px above a person's feet where bubbles and marks sit
-const DAY_LEN = 150; // seconds of real time for a full day in town
 
 interface Anim { frames: number[]; fps: number; fx?: 'spark' | 'dust' | 'chip' | 'steam' | 'splash' | 'sparkle' | 'note' | 'halo' | 'none' }
 
 // A person in town: a sprite that walks with a step cycle, works with its hands and goes home at night
-interface Person {
+export interface Person {
   id?: number; name: string; race: string; role: string; look: Look;
   img: Phaser.GameObjects.Image; root: Phaser.GameObjects.Image | Phaser.GameObjects.Container; hero?: boolean;
   job?: NpcJob; skill?: number; goal?: string;
-  state: 'idle' | 'move' | 'act' | 'locked'; wait: number; actT: number; frame: number; carry: boolean; speed: number; moveSpeed?: number;
+  state: 'idle' | 'move' | 'act' | 'locked' | 'inside'; wait: number; actT: number; frame: number; carry: boolean; speed: number; moveSpeed?: number;
   to?: Pt; path?: Pt[]; then?: () => void; act?: Anim; actEnd?: number; fx: number; tag: number; asleep: boolean; goesHome: boolean; frozen?: boolean;
   mark?: Phaser.GameObjects.Image; onRemove?: () => void;
   home?: Pt; work?: Pt; roam: number;
+  life?: Life; // the daily routine: home, workplace, needs, what they are doing (scenes/routine.ts)
 }
 
 export class CityScene extends Phaser.Scene {
@@ -64,8 +65,10 @@ export class CityScene extends Phaser.Scene {
   follow = false; // only when the player asks (the target button, or flying to the protagonist's own town)
   private ambientT = 0;
   private hovered: Person | null = null;
+  private hoveredB: Venue | null = null;
   private nav!: Uint8Array; // 0 = blocked; otherwise the cost of stepping on the tile (streets are cheapest)
   private newsTimer?: Phaser.Time.TimerEvent;
+  routine!: Routine;
 
   constructor() { super('city'); }
 
@@ -98,6 +101,7 @@ export class CityScene extends Phaser.Scene {
     this.spec = data.spec;
     this.computeSpots(this.buildings);
     this.buildNav();
+    this.routine = new Routine(this);
 
     // temple of the land's faith
     const temple = this.buildings.find((b) => b.kind === 'temple');
@@ -182,7 +186,8 @@ export class CityScene extends Phaser.Scene {
     const co = this.country;
     const flags = co.flags;
     let n = Math.max(14, Math.min(170, Math.round(this.buildings.length * 0.85)));
-    const homes = this.rng.shuffle(this.spots.home.slice());
+    const doors = this.routine.houseDoors();
+    const homes = this.rng.shuffle(doors.length ? doors : this.spots.home.slice());
     let hi = 0;
     const nextHome = () => homes[hi++ % homes.length];
     const g = this.game_;
@@ -199,7 +204,8 @@ export class CityScene extends Phaser.Scene {
     }
     // the people of docs/npcs live in their country's capital, each in a look designed for them (data/cast.ts, data/specials.ts)
     if (this.town.capital && co.code) for (const c of castForCountry(co.code)) {
-      const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome() });
+      const jid = jobOfLook(c.role, c.look.outfit, c.look.tool);
+      const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome(), job: jid ? npcJob(jid) : undefined });
       per.goesHome = true; n--;
     }
     const fest = this.festival();
@@ -226,10 +232,10 @@ export class CityScene extends Phaser.Scene {
       state: 'idle', wait: this.rng.float(0.1, 3), actT: 0, frame: 0, carry: false, speed: look.child ? 46 : look.elder ? 22 : this.rng.float(30, 40), fx: 0, tag: 0, asleep: false,
       goesHome: this.rng.chance(0.75), home: o.home, roam: this.rng.float(6, 14),
     };
-    if (o.job && o.home) per.work = this.spot(o.job.place);
-    if (!o.goal && o.job) per.goal = this.randomGoal(per);
+    if (!o.goal && o.job && !o.look) per.goal = this.randomGoal(per);
     img.setPosition(p0.x, p0.y).setDepth(5);
     this.npcs.push(per);
+    this.routine.settle(per);
     return per;
   }
 
@@ -249,11 +255,15 @@ export class CityScene extends Phaser.Scene {
       }
     }
     this.hovered = null;
+    // no one under the cursor: a building says who lives, works and sits inside
+    const v = this.routine.venueAt(wp.x, wp.y);
+    if (v) { if (this.hoveredB !== v) { this.hoveredB = v; this.bubble({ x: (v.b.x + v.b.w / 2) * T, y: v.b.y * T + 10 }, this.routine.describeBuilding(v), 3000, '#2a2438'); } } else this.hoveredB = null;
   }
 
   describe(p: Person): string {
     const bits = [`${p.name} (${(raceById(p.race) || themeOf(p.race)).name}·${p.role})`];
-    if (p.job && p.skill !== undefined) bits.push(`ฝีมือ${p.job.skill} ${Math.round(p.skill)}/100`);
+    if (p.job && p.skill !== undefined && !p.look.special) bits.push(`ฝีมือ${p.job.skill} ${Math.round(p.skill)}/100`);
+    bits.push(...this.routine.describe(p));
     if (p.goal) bits.push(`ใฝ่ฝัน: ${p.goal}`);
     return bits.join('\n');
   }
@@ -284,48 +294,11 @@ export class CityScene extends Phaser.Scene {
   }
 
   // ---------- behaviour ----------
-  // what to do next: dusk sends people home, festivals draw them to the plaza, trades keep them busy
+  // what to do next is decided by the routine of the town (scenes/routine.ts): the clock, the trade, the needs of the day
   think(p: Person) {
     if (!p.root.active || p.state === 'locked') return;
-    const here = { x: p.root.x, y: p.root.y };
     p.carry = false;
-    if (this.panic() && !p.hero) { this.go(p, this.spot('road'), 78, () => { p.wait = this.rng.float(0.2, 1); }); this.emote(p, 'warning'); return; }
-    if (this.nightAmt > 0.55 && p.goesHome && !p.hero) {
-      this.go(p, p.home ? { x: p.home.x + this.rng.int(-3, 3), y: p.home.y } : this.spot('home', here), p.speed, () => { p.asleep = true; this.tweens.add({ targets: p.root, alpha: 0, duration: 500 }); p.wait = 2; });
-      return;
-    }
-    if (p.asleep) { p.asleep = false; this.tweens.add({ targets: p.root, alpha: 1, duration: 500 }); }
-    // everyone lives in their own corner of town: they work, rest and roam near it, and only a festival pulls them to the square
-    const base = p.home || here;
-    if (this.festival() && this.rng.chance(0.3)) {
-      this.go(p, this.spot('plaza'), p.speed * 1.2, () => this.doAct(p, FEST_ANIM, this.rng.float(5, 10)));
-      return;
-    }
-    if (p.look.child) {
-      if (this.rng.chance(0.5)) this.go(p, this.nearby(base, 6), 44, () => this.doAct(p, { frames: [POSE.cheer, POSE.idle], fps: 3, fx: 'none' }, this.rng.float(1, 2.5)));
-      else this.go(p, this.nearby(base, 4), 38, () => { p.wait = this.rng.float(2, 6); });
-      return;
-    }
-    if (p.look.elder && this.rng.chance(0.5)) {
-      this.go(p, this.nearby(base, 5), p.speed, () => this.doAct(p, { frames: [POSE.sit], fps: 1, fx: 'none' }, this.rng.float(8, 18)));
-      return;
-    }
-    const gz = themeOf(p.race).gesture; // a moment of their own people's habit: wings stretched, a hammer swung at nothing
-    if (gz && !p.hero && this.rng.chance(0.1)) { this.doAct(p, { frames: gz.frames, fps: gz.fps, fx: gz.fx as Anim['fx'] }, this.rng.float(2.5, 4.5)); return; }
-    if (p.job && this.rng.chance(0.85)) { this.doJob(p, p.job); return; }
-    if (this.rng.chance(0.25)) { // stop and chat with a neighbour
-      const near = this.npcs.filter((x) => x !== p && x.state !== 'locked' && !x.asleep && Math.hypot(x.root.x - here.x, x.root.y - here.y) < T * 12);
-      const o = near.length ? this.rng.pick(near) : undefined;
-      if (o) {
-        this.go(p, { x: o.root.x + (p.root.x < o.root.x ? -12 : 12), y: o.root.y }, p.speed, () => {
-          p.img.setFlipX(o.root.x < p.root.x);
-          this.doAct(p, { frames: [POSE.idle, POSE.breath], fps: 1.6, fx: 'none' }, this.rng.float(3, 6));
-          if (this.rng.chance(0.5)) this.emote(p, 'bubble');
-        });
-        return;
-      }
-    }
-    this.go(p, this.nearby(base, p.roam), p.speed, () => { p.wait = this.rng.float(3, 9); });
+    this.routine.think(p);
   }
 
   nearby(from: Pt, tiles: number): Pt {
@@ -334,25 +307,6 @@ export class CityScene extends Phaser.Scene {
   }
 
   tilePos(t: [number, number]) { return { x: t[0] * T + T / 2, y: t[1] * T + T - 2 }; }
-
-  // each trade: where it is done and what the hands do
-  doJob(p: Person, job: NpcJob) {
-    const here = { x: p.root.x, y: p.root.y };
-    const w = job.work;
-    const A = ANIM[w];
-    if (w === 'patrol') { this.go(p, this.spot('gate'), p.speed * 0.9, () => this.go(p, this.spot('plaza'), p.speed * 0.9, () => { p.wait = 1; })); return; }
-    if (w === 'run') { this.go(p, this.spot('road'), 80, () => this.go(p, this.spot('road'), 80, () => { p.wait = 0.5; this.emote(p, 'scroll'); })); return; }
-    if (w === 'haul') { p.carry = true; this.go(p, this.spot('dock'), p.speed, () => { p.carry = true; this.go(p, this.spot('market'), p.speed, () => { p.carry = false; p.wait = 1; }); }); return; }
-    if (w === 'stroll') { this.go(p, this.nearby(p.home || here, 10), p.speed * 0.6, () => { p.wait = this.rng.float(4, 9); }); return; }
-    if (w === 'hunt') { this.go(p, this.spot('gate'), p.speed, () => { this.go(p, this.spot('tree'), p.speed, () => this.doAct(p, ANIM.tend, 4)); }); return; }
-    if (w === 'serve') { this.go(p, this.spot('tavern', here), p.speed, () => { p.carry = true; this.go(p, this.spot('plaza'), p.speed, () => { p.carry = false; this.emote(p, 'mug'); p.wait = 1; }); }); return; }
-    const at = p.work ? { x: p.work.x + this.rng.int(-8, 8), y: p.work.y + this.rng.int(-3, 3) } : this.spot(job.place, here);
-    this.go(p, at, p.speed, () => {
-      this.doAct(p, A || ANIM.tend, this.rng.float(10, 24));
-      if (w === 'sell') this.bubble(p.root, this.rng.pick(['ของสดจ้า!', 'ลดราคา วันนี้วันเดียว', 'มาดูก่อนได้นะ', 'ของดีราคาถูก']), 2200);
-      if (this.rng.chance(0.25) && p.goal) this.bubble(p.root, `อยาก${p.goal.replace(/^อยาก/, '')}`, 2800, '#4a3a6a');
-    });
-  }
 
   // ---------- walking: people follow streets and open ground, never through walls, houses, trees or water ----------
   private buildNav() {
@@ -438,6 +392,7 @@ export class CityScene extends Phaser.Scene {
   }
 
   go(p: Person, to: Pt, speed: number, then: () => void) {
+    if (p.state === 'inside') return; // indoors: nothing moves them until they come out
     p.state = 'move'; p.moveSpeed = speed; p.then = then; p.actEnd = 0;
     const path = this.route({ x: p.root.x, y: p.root.y }, to);
     if (!path) { p.to = { x: p.root.x, y: p.root.y }; p.path = []; return; } // nowhere to walk: stay put
@@ -448,7 +403,7 @@ export class CityScene extends Phaser.Scene {
   }
 
   doAct(p: Person, a: Anim, secs: number) {
-    p.state = 'act'; p.act = a; p.actT = secs; p.fx = 0;
+    p.state = 'act'; p.act = a; p.actT = secs; p.fx = 0; p.then = undefined;
     (p.img as PersonImage).face(0, 1);
     p.img.setFrame(a.frames[0]);
   }
@@ -458,10 +413,11 @@ export class CityScene extends Phaser.Scene {
     const dt = Math.min(delta, 100) / 1000;
     this.dayT += dt;
     this.updateDay();
+    this.routine.tick(dt);
     for (const p of this.npcs) this.step(p, dt);
     if (this.hero) this.step(this.hero, dt);
     this.updateFx(dt);
-    for (const n of this.npcs) if (n.mark) n.mark.setPosition(n.root.x, n.root.y - HEAD - 4);
+    for (const n of this.npcs) if (n.mark) n.mark.setPosition(n.root.x, n.root.y - HEAD - 4).setVisible(!n.asleep);
   }
 
   step(p: Person, dt: number) {
@@ -489,7 +445,13 @@ export class CityScene extends Phaser.Scene {
       p.img.setFrame(p.act.frames[Math.floor(p.tag) % p.act.frames.length]);
       p.fx -= dt;
       if (p.fx <= 0) { p.fx = p.act.fps > 0 ? 1 / p.act.fps : 1; this.workFx(p, p.act); }
-      if (p.actT <= 0) { p.state = 'idle'; p.wait = this.rng.float(0.3, 1.2); p.img.setFrame(POSE.idle); p.act = undefined; }
+      if (p.actT <= 0) {
+        p.state = 'idle'; p.wait = this.rng.float(0.3, 1.2); p.img.setFrame(POSE.idle); p.act = undefined;
+        const cb = p.then; p.then = undefined; if (cb) { p.wait = 0.1; cb(); } // what comes next in a chain of errands
+      }
+    } else if (p.state === 'inside') {
+      p.actT -= dt;
+      if (p.actT <= 0 && !p.life?.sleeping) this.routine.leave(p);
     } else if (p.state === 'idle') {
       p.tag += dt * 1.2;
       const idl = idleFrames(p.look);
@@ -628,7 +590,11 @@ export class CityScene extends Phaser.Scene {
     else if (flags.includes('long_night')) dark = Math.max(dark, 0.55);
     this.shade.setAlpha(dark);
     this.shade.setFillStyle(fate === 'fog' ? 0x1a1030 : fate === 'ash' ? 0x3a3a44 : flags.includes('eclipse') ? 0x14081c : flags.includes('dragon_raid') || flags.includes('eruption') ? 0x3a1008 : 0x101840);
-    for (const l of this.glows) l.setAlpha(fate === 'light' ? 0.7 : fate === 'fog' || fate === 'fallen' || fate === 'skyfall' ? 0 : Math.min(1, night * 1.6 + (flags.includes('eclipse') ? 1 : 0)) * 0.85);
+    // a lit window shows that someone is home (or at the tavern, or at the forge): occupied buildings glow first as dusk comes
+    this.glows.forEach((l, i) => {
+      const lit = i < this.buildings.length && this.routine.occupied(i) > 0 && night > 0.12 ? 0.55 : 0;
+      l.setAlpha(fate === 'light' ? 0.7 : fate === 'fog' || fate === 'fallen' || fate === 'skyfall' ? 0 : Math.min(1, night * 1.6 + (flags.includes('eclipse') ? 1 : 0) + lit) * 0.85);
+    });
   }
 
   // ambience that follows what is happening in this land: festivals, disasters, specialties
@@ -870,33 +836,6 @@ export class CityScene extends Phaser.Scene {
     this.time.delayedCall(200, () => this.playOutcome(win ? 'win' : 'lose'));
   }
 }
-
-// ---------- animation tables ----------
-interface Anim { frames: number[]; fps: number; fx?: 'spark' | 'dust' | 'chip' | 'steam' | 'splash' | 'sparkle' | 'note' | 'halo' | 'none' }
-const ANIM: Record<string, Anim> = {
-  hammer: { frames: [POSE.work0, POSE.work1], fps: 2.4, fx: 'spark' },
-  hoe: { frames: [POSE.work0, POSE.work1], fps: 1.5, fx: 'dust' },
-  chop: { frames: [POSE.work0, POSE.work1], fps: 1.8, fx: 'chip' },
-  dig: { frames: [POSE.work0, POSE.work1], fps: 1.6, fx: 'dust' },
-  train: { frames: [POSE.work1, POSE.work0, POSE.idle], fps: 3, fx: 'spark' },
-  sweep: { frames: [POSE.work1, POSE.work0], fps: 1.4, fx: 'dust' },
-  cook: { frames: [POSE.work0, POSE.idle], fps: 1.4, fx: 'steam' },
-  brew: { frames: [POSE.work0, POSE.idle, POSE.cheer], fps: 1.2, fx: 'steam' },
-  sew: { frames: [POSE.sit, POSE.breath], fps: 1.1, fx: 'none' },
-  read: { frames: [POSE.sit, POSE.sit, POSE.breath], fps: 0.9, fx: 'none' },
-  cast: { frames: [POSE.cheer, POSE.idle, POSE.work0], fps: 1.2, fx: 'sparkle' },
-  sing: { frames: [POSE.cheer, POSE.idle], fps: 1.6, fx: 'note' },
-  pray: { frames: [POSE.kneel], fps: 1, fx: 'halo' },
-  beg: { frames: [POSE.kneel, POSE.sit], fps: 0.5, fx: 'none' },
-  wash: { frames: [POSE.kneel, POSE.work0], fps: 1.3, fx: 'splash' },
-  fish: { frames: [POSE.sit, POSE.sit, POSE.work0], fps: 0.9, fx: 'splash' },
-  sell: { frames: [POSE.idle, POSE.cheer, POSE.breath], fps: 1, fx: 'none' },
-  heal: { frames: [POSE.kneel, POSE.work0], fps: 0.9, fx: 'sparkle' },
-  tend: { frames: [POSE.idle, POSE.breath, POSE.work0], fps: 0.8, fx: 'none' },
-  stroll: { frames: [POSE.idle, POSE.breath], fps: 1, fx: 'none' },
-  play: { frames: [POSE.cheer, POSE.idle], fps: 3, fx: 'none' },
-};
-const FEST_ANIM: Anim = { frames: [POSE.cheer, POSE.idle, POSE.cheer, POSE.breath], fps: 3.2, fx: 'note' };
 
 export const WORK_JOB = (w: string) => NPC_JOBS.find((j) => j.work === w);
 function jobFor(heroJob: string): NpcJob | undefined {
