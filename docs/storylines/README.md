@@ -96,7 +96,8 @@
 | [08-naga.md](08-naga.md) | นาคา | [19-soulmachine.md](19-soulmachine.md) | หุ่นวิญญาณ |
 | [09-dragonkin.md](09-dragonkin.md) | เผ่ามังกร | [20-mummy.md](20-mummy.md) | มัมมี่ |
 | [10-vampire.md](10-vampire.md) | แวมไพร์ | [21-ghoul.md](21-ghoul.md) | กูล |
-| [22-halfblood.md](22-halfblood.md) | ลูกครึ่ง (โหนดกลาง hb และชุดเสริม 16 ชุด) | [llm-ideas.md](llm-ideas.md) | การใช้ LLM |
+| [22-halfblood.md](22-halfblood.md) | ลูกครึ่ง (โหนดกลาง hb และชุดเสริม 16 ชุด) | [23-heir.md](23-heir.md) | ทายาท (โหนด hr 9 โหนด) · กติกาอยู่ใน [../heirs/README.md](../heirs/README.md) |
+| [llm-ideas.md](llm-ideas.md) | การใช้ LLM | | |
 
 แต่ละเผ่ามี 14 โหนด (b1 b2 · t1 t2 t3 · a1 ถึง a7 · e1 e2) โหนดละสามทาง โหนดที่เขียนว่า "→ cv.N" ใช้ทางเลือกของจุดบรรจบนั้นแทนทางของเผ่า มัมมี่ กูล และหุ่นวิญญาณไม่ได้เกิด แต่ตื่นหรือลุก ช่วงทารกและเด็กจึงเป็นปีแรกหลังตื่น
 
