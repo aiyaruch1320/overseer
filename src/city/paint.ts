@@ -7,6 +7,7 @@ import type { Theme, TreeKind } from './themes';
 
 import { NEW_STYLES, doorPath, fence } from './houses';
 import { LANDMARKS, paintSquare, paintFurniture } from './landmarks';
+import { HEARTS, isHeart } from './hearts';
 import { CIVIC } from './civic';
 import { paintShip, paintCrane, paintBeacon, paintRaft } from './ships';
 import { paintWorldTree, leafCluster, leafRng } from '../render/treeart';
@@ -352,7 +353,7 @@ function landmark(p: Pen, d: CityData, px: number, py: number) {
 
 function monument(p: Pen, d: CityData, kind: string, px: number, py: number) {
   const th = d.theme, r = p.r;
-  const drawNew = LANDMARKS[kind];
+  const drawNew = isHeart(kind) ? HEARTS[kind] : LANDMARKS[kind];
   if (drawNew) { drawNew(p, d, px, py); return; }
   const rock = (c: number, x: number, y: number, rad: number) => { p.circ(shadeC(c, 0.75), x + 1, y + 1, rad); p.circ(c, x, y, rad); };
   switch (kind) {
@@ -444,7 +445,7 @@ export function paintCity(d: CityData, town: Town) {
     const t = grid[y * CW + x];
     const X = x * T, Y = y * T;
     if (t === Tile.Void) continue;
-    if (t === Tile.Ground) { if ((x * 31 + y * 17) % 5 === 0) fill(shadeC(theme.ground, r.float(0.8, 1.15)), X + r.int(0, 13), Y + r.int(0, 13), 2, 2); continue; }
+    if (t === Tile.Ground) { if ((x * 31 + y * 17) % 11 === 0) fill(shadeC(theme.ground, r.float(0.9, 1.08)), X + r.int(0, 13), Y + r.int(0, 13), 2, 2); continue; } // (a few quiet specks only: the ground is calm so the buildings and streets carry the eye)
     if (t === Tile.Road) {
       const isR = (xx: number, yy: number) => { const k = at(xx, yy); return k === Tile.Road || k === Tile.Plaza || k === Tile.Dock; };
       const rad = Math.hypot((x - CW / 2) / d.extent.rx, (y - CH / 2) / d.extent.ry);
@@ -483,13 +484,37 @@ export function paintCity(d: CityData, town: Town) {
       if ((x + y) % 2 === 0) { fill(0x9aa0a8, X + 5, Y + 4, 6, 9); fill(0x7a8088, X + 5, Y + 11, 6, 2); fill(0x6a7078, X + 7, Y + 6, 2, 4); }
     } else if (t === Tile.Tree) tree(theme.tree, X, Y);
   }
+  /** the plants of a forest country: each tile draws one of the country's own kinds (theme.flora), the first the commonest, so no two countries look alike
+   *  and a grove is not one round bush repeated */
+  function jungle(X: number, Y: number) {
+    const L = theme.leaf, h = ((X * 73856093) ^ (Y * 19349663)) >>> 0, fl = theme.flora, pick = (h >> 5) % 10;
+    const kind = pick < 4 ? fl[0] : pick < 7 ? fl[1 % fl.length] : pick < 9 ? fl[2 % fl.length] : fl[3 % fl.length];
+    const c0 = L[h % L.length], c1 = L[(h >> 3) % L.length], dk = shadeC(c0, 0.62), lt = shadeC(c1, 1.3), bx = X + 8, by = Y + 14, trunk = 0x5e3a26;
+    const ln = (c: number, x0: number, y0: number, x1: number, y1: number, w: number) => p.line(c, x0, y0, x1, y1, w);
+    switch (kind) {
+      case 'conifer': for (let k = 0; k < 3; k++) { poly(shadeC(c0, 0.55 + k * 0.1), [bx - 7 + k, by - 3 - k * 6, bx, by - 12 - k * 6, bx + 7 - k, by - 3 - k * 6]); } fill(trunk, bx - 1, by - 3, 2, 4); fill(lt, bx - 1, by - 28, 1, 2); break;
+      case 'fern': for (let k = 0; k < 7; k++) { const a = -Math.PI / 2 + (k - 3) * 0.5; ln(k % 2 ? c1 : c0, bx, by, bx + Math.cos(a) * 11, by + Math.sin(a) * 12, 2); ln(lt, bx, by, bx + Math.cos(a) * 9, by + Math.sin(a) * 10, 0.8); } break;
+      case 'bamboo': for (let k = 0; k < 4; k++) { const sx = bx - 5 + k * 3.4, hh = 18 + (k * 5) % 9; fill(shadeC(c0, 0.9), sx, by - hh, 2, hh); fill(dk, sx, by - hh + 5, 2, 1); fill(dk, sx, by - hh + 11, 2, 1); ln(lt, sx + 1, by - hh + 2, sx + 6, by - hh + 5, 1.4); ln(lt, sx + 1, by - hh + 2, sx - 4, by - hh + 6, 1.4); } break;
+      case 'palm': ln(trunk, bx, by, bx + 2, by - 14, 3); for (let k = 0; k < 7; k++) { const a = (k / 7) * Math.PI * 2; ln(k % 2 ? c0 : c1, bx + 2, by - 14, bx + 2 + Math.cos(a) * 10, by - 14 + Math.sin(a) * 4 + 4, 2.4); } circ(0xc4801c, bx + 2, by - 11, 1.5); break;
+      case 'willow': ln(trunk, bx, by, bx, by - 16, 3); circ(shadeC(c0, 0.8), bx, by - 18, 6); for (let k = -6; k <= 6; k += 2) ln(k % 4 ? c1 : c0, bx + k, by - 18, bx + k * 1.2, by - 3 - (k * k) % 4, 1.3); break;
+      case 'shrub': circ(shadeC(c0, 0.7), bx, by - 4, 5.5); circ(c0, bx - 1, by - 5, 4.5); for (let k = 0; k < 5; k++) circ([0xf2c94c, 0xf4a0c0, 0xffffff, 0xc07aff, 0xff9a4a][(h + k) % 5], bx - 4 + ((h >> k) % 8), by - 8 + (k * 3) % 5, 1.2); break;
+      case 'boulder': poly(0x7a8070, [bx - 7, by, bx - 5, by - 7, bx + 1, by - 9, bx + 6, by - 5, bx + 7, by]); poly(0x969c88, [bx - 5, by - 7, bx + 1, by - 9, bx + 2, by - 5]); poly(c0, [bx - 6, by - 4, bx - 1, by - 8, bx + 3, by - 5]); for (let k = 0; k < 3; k++) ln(c1, bx + 5 + k, by, bx + 6 + k * 2, by - 6 - k, 1.4); break;
+      case 'log': fill(0x6a4a30, bx - 8, by - 5, 16, 5); fill(0x8a6a44, bx - 8, by - 5, 16, 1); circ(0xb88a5a, bx - 8, by - 2.5, 2.5); fill(c0, bx - 3, by - 6, 5, 2); circ(0xe8e0c8, bx + 2, by - 8, 1.2); fill(0xe8e0c8, bx + 1.6, by - 7, 0.8, 2); circ(0xc8603a, bx + 5, by - 8, 1.6); break;
+      case 'banana': for (let k = 0; k < 5; k++) { const a = -Math.PI / 2 + (k - 2) * 0.6; poly(k % 2 ? c0 : c1, [bx, by - 2, bx + Math.cos(a - 0.25) * 11, by - 2 + Math.sin(a - 0.25) * 13, bx + Math.cos(a + 0.25) * 11, by - 2 + Math.sin(a + 0.25) * 13]); } fill(trunk, bx - 1, by - 3, 2, 4); break;
+      case 'mushroom': for (const [dx, hh, rr, c] of [[-4, 6, 4, 0xc8603a], [3, 11, 5.5, 0x9a4a8a], [7, 5, 3, 0x6a8ad8]] as [number, number, number, number][]) { fill(0xe8e0c8, bx + dx - 1, by - hh, 2, hh); p.ell(c, bx + dx, by - hh, rr, rr * 0.6); circ('rgba(255,255,255,0.7)', bx + dx - rr * 0.3, by - hh - rr * 0.2, 0.9); } break;
+      case 'dead': fill(0x3a2a22, bx - 1, by - 16, 2.4, 16); ln(0x3a2a22, bx, by - 10, bx - 6, by - 17, 1.6); ln(0x3a2a22, bx, by - 13, bx + 6, by - 19, 1.6); ln(0x3a2a22, bx - 6, by - 17, bx - 8, by - 21, 1); fill(0x5a6a3a, bx + 1, by - 6, 2, 2); break;
+      case 'thorn': for (let k = 0; k < 9; k++) { const a = -Math.PI * (k / 8); ln(k % 3 ? 0x7a2e3a : 0x5a3a2a, bx, by - 2, bx + Math.cos(a) * 9, by - 2 + Math.sin(a) * 9, 1.8); circ(0xe85a5a, bx + Math.cos(a) * 9, by - 2 + Math.sin(a) * 9, 0.9); } circ(0x5a3a2a, bx, by - 3, 3); break;
+      case 'reed': for (let k = 0; k < 6; k++) { const sx = bx - 5 + k * 2, hh = 12 + (k * 7) % 8; ln(c0, sx, by, sx + (k - 3) * 0.6, by - hh, 1.2); if (k % 2) fill(0x6a4a2a, sx - 1 + (k - 3) * 0.6, by - hh - 3, 2, 4); } break;
+      default: circ(shadeC(c0, 0.7), X + 8, Y + 8, 8); circ(c1, X + 7, Y + 6, 6); circ(shadeC(c1, 1.4), X + 5, Y + 4, 2.5); fill(trunk, X + 7, Y + 12, 2, 4);
+    }
+  }
   function tree(kind: TreeKind, X: number, Y: number) {
     fill('rgba(0,0,0,0.2)', X + 3, Y + 12, 11, 3);
     if (kind === 'cactus') { fill(0x4a8a3a, X + 6, Y + 2, 4, 12); fill(0x4a8a3a, X + 2, Y + 6, 4, 2); fill(0x4a8a3a, X + 10, Y + 4, 4, 2); }
     else if (kind === 'pine') { fill(0x2e5a3e, X + 4, Y + 2, 8, 10); fill(0xffffff, X + 4, Y + 2, 8, 2); fill(0x5e3a26, X + 7, Y + 12, 2, 3); }
     else if (kind === 'dead') { fill(0x3a2a22, X + 7, Y + 3, 2, 11); fill(0x3a2a22, X + 4, Y + 5, 3, 1); fill(0x3a2a22, X + 9, Y + 7, 3, 1); fill(0x3a2a22, X + 5, Y + 3, 2, 1); }
     else if (kind === 'palm') { fill(0x8a5a3a, X + 7, Y + 6, 2, 9); fill(0x2e8a3e, X + 2, Y + 2, 12, 4); fill(0x3eaa4e, X + 4, Y + 1, 8, 2); fill(0x2e8a3e, X + 6, Y, 4, 3); }
-    else if (kind === 'jungle') { const L = theme.leaf; circ(shadeC(L[0], 0.7), X + 8, Y + 8, 8); circ(r.pick(L), X + 7, Y + 6, 6); circ(shadeC(r.pick(L), 1.4), X + 5, Y + 4, 2.5); fill(0x5e3a26, X + 7, Y + 12, 2, 4); }
+    else if (kind === 'jungle') jungle(X, Y);
     else { fill(0x5e3a26, X + 7, Y + 10, 2, 5); circ(0x2e7a3e, X + 8, Y + 7, 6); circ(0x4aa04e, X + 6, Y + 5, 3); }
   }
 

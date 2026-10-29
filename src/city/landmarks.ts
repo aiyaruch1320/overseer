@@ -37,7 +37,7 @@ export function paintSquare(p: Pen, d: CityData, px: number, py: number) {
   x2.beginPath();
   for (let ty = y; ty < y + h; ty++) for (let tx = x; tx < x + w; tx++) if (live(tx, ty)) x2.rect(tx * T, ty * T, T, T);
   x2.clip();
-  const id = th.id;
+  const id = th.id, plain = d.plazaMode === 'none' || d.plazaMode === 'heart';
   // the field of the paving
   if (id === 'kazdurum' || id === 'mecharia') {
     // slabs of iron / steel plate with rivets; on Kaz-Durum the seams glow like a banked forge
@@ -87,11 +87,13 @@ export function paintSquare(p: Pen, d: CityData, px: number, py: number) {
   }
   // the inlay: a ring and a star of the country's colours around the monument, so the square has a heart even where the monument is small
   const rr = Math.min(W * 0.3, H * 0.62), ry = rr * 0.5;
+  if (!plain) {
   p.ell(shadeC(base, 0.6), px, py, rr + 4, ry + 3); p.ell(mixC(base, b0, 0.5), px, py, rr + 1, ry + 1); p.ell(shadeC(base, 1.04), px, py, rr - 3, ry - 2);
   p.ell(mixC(base, b1, 0.35), px, py, rr * 0.72, ry * 0.72); p.ell(shadeC(base, 1.08), px, py, rr * 0.72 - 3, ry * 0.72 - 2);
   x2.strokeStyle = hex(mixC(base, b0, 0.6)); x2.lineWidth = 1.6;
   for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2; x2.beginPath(); x2.moveTo(px + Math.cos(a) * rr * 0.34, py + Math.sin(a) * ry * 0.34); x2.lineTo(px + Math.cos(a) * (rr - 2), py + Math.sin(a) * (ry - 1)); x2.stroke(); }
   for (let k = 0; k < 16; k++) { const a = (k / 16) * Math.PI * 2; p.circ(mixC(base, k % 2 ? b1 : b0, 0.8), px + Math.cos(a) * (rr + 1), py + Math.sin(a) * (ry + 1), 1.8); }
+  }
   // the kerb all round the square, and the four corner stones
   x2.strokeStyle = hex(shadeC(base, 0.55)); x2.lineWidth = 3; x2.strokeRect(X + 1.5, Y + 1.5, W - 3, H - 3);
   x2.strokeStyle = hex(shadeC(base, 1.18)); x2.lineWidth = 1; x2.strokeRect(X + 3.5, Y + 3.5, W - 7, H - 7);
@@ -349,6 +351,8 @@ const oasis: Draw = (p, d, px, py) => {
   for (let j = 0; j < 30; j += 6) p.fill((j / 6) % 2 ? 0xf4eedc : d.theme.banner[0], px + 49 + j, py - 24, 6, 5);
   p.fill('rgba(0,0,0,0.18)', px + 50, py + 4, 30, 5);
 };
+
+export { dais, banner, flame, glow };
 
 /** the monuments an ordinary town may keep, drawn smaller than the capital's: the ones that stand in a square */
 export const MINOR_CENTRE = new Set(['fountain', 'statue', 'bonfire', 'clock', 'sapling', 'obelisk', 'forge', 'gear', 'oasis']);

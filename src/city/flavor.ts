@@ -3,11 +3,12 @@
 // get theirs from the keywords of their own text (harbour, fortress, mine, granary, college...).
 import { COUNTRY_DOCS } from '../data/countries';
 import type { BStyle, Centre, Plan, WallKind, Ambient } from './themes';
+import type { Heart } from './hearts';
 
 export type Special = 'cathedral' | 'granary' | 'warehouse' | 'library' | 'barracks' | 'minehead' | 'arena' | 'market' | 'fortress' | 'drill' | 'shops' | 'bank' | 'hospital' | 'aerie' | 'skydock';
 export interface Flavor {
   styles?: [BStyle, number][]; roofs?: number[]; walls?: number[]; leaf?: number[]; plan?: Plan; wall?: WallKind; centre?: Centre; ambient?: Ambient;
-  extra?: Special[]; lamps?: boolean; farm?: number; tree?: 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none'; cobble?: boolean; graves?: boolean;
+  flora?: string[]; extra?: Special[]; lamps?: boolean; farm?: number; tree?: 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none'; cobble?: boolean; graves?: boolean;
 }
 
 // branches of the world tree (docs/countries/08-silvanel.md): each gives its countries a light of their own
@@ -135,24 +136,24 @@ const F: Record<string, Flavor> = {
   'SH-16': { styles: [['hut', 4], ['stone', 3], ['gable', 2]], plan: 'organic', extra: ['market'] },
   'SH-17': { styles: [['carved', 6], ['stone', 2]], centre: 'obelisk', extra: ['cathedral', 'cathedral'], roofs: [0x8a7a6a, 0x6a5a4a] },
   // ---- ซิลวาเนล: the world tree and its seven branches
-  'SV-01': { styles: [['tree', 6], ['stone', 1]], leaf: DAWN, centre: 'worldtree', extra: ['library', 'cathedral'], wall: 'hedge' },
-  'SV-02': { centre: 'fountain', styles: [['tree', 5], ['gable', 2]], leaf: DAWN, extra: ['cathedral', 'library', 'library'], lamps: true },
-  'SV-03': { centre: 'bonfire', styles: [['tree', 4], ['keep', 3]], leaf: [0xb0b060, 0x8a9a50, 0xc8a050], extra: ['barracks', 'barracks'], wall: 'palisade', ambient: 'smoke' },
-  'SV-04': { centre: 'council', styles: [['tree', 6], ['mushroom', 2]], leaf: TWILIGHT, lamps: true, ambient: 'leaves', extra: ['library'] },
-  'SV-05': { centre: 'crystal', styles: [['tree', 5], ['dome', 2]], leaf: TWILIGHT, extra: ['cathedral', 'cathedral'], lamps: true },
-  'SV-06': { centre: 'pump', styles: [['tree', 5], ['keep', 2]], leaf: DEW, extra: ['barracks', 'library'], ambient: 'fog' },
-  'SV-07': { styles: [['tree', 5], ['stone', 2]], leaf: DEW, extra: ['library', 'library', 'library'] },
-  'SV-08': { styles: [['tree', 3], ['keep', 4]], leaf: THORN, extra: ['barracks', 'barracks', 'barracks'], wall: 'palisade' },
-  'SV-09': { styles: [['tree', 4], ['hut', 4]], leaf: THORN, extra: ['warehouse', 'arena'] },
-  'SV-10': { centre: 'skynest', styles: [['tree', 5], ['spire', 3]], leaf: CLOUD, ambient: 'clouds', extra: ['cathedral'] },
-  'SV-11': { centre: 'lighthouse', styles: [['tree', 4], ['spire', 4]], leaf: CLOUD, ambient: 'clouds', extra: ['warehouse', 'warehouse'] },
-  'SV-12': { styles: [['mushroom', 6], ['tree', 2]], leaf: FUNGI, lamps: true, extra: ['library'], ambient: 'leaves' },
-  'SV-13': { centre: 'obelisk', styles: [['tree', 5], ['stone', 2]], leaf: ROOT, graves: true, lamps: true, extra: ['cathedral'], ambient: 'fog' },
-  'SV-14': { styles: [['tree', 6], ['hut', 2]], leaf: WITHER, tree: 'dead', ambient: 'leaves', extra: ['barracks'], wall: 'palisade' },
-  'SV-15': { centre: 'lake', styles: [['tree', 4], ['gable', 3]], leaf: WITHER, extra: ['market', 'market', 'warehouse'], lamps: true },
-  'SV-16': { styles: [['hut', 5], ['tree', 3]], leaf: THORN, extra: ['arena', 'warehouse'], wall: 'palisade' },
-  'SV-17': { styles: [['stilt', 4], ['gable', 3], ['tree', 2]], leaf: RIVER, centre: 'lake', extra: ['warehouse', 'warehouse', 'market'] },
-  'SV-18': { styles: [['mushroom', 8]], leaf: FUNGI, ambient: 'leaves', lamps: true },
+  'SV-01': { flora: ['round', 'fern', 'conifer', 'shrub'], styles: [['tree', 6], ['stone', 1]], leaf: DAWN, centre: 'worldtree', extra: ['library', 'cathedral'], wall: 'hedge' },
+  'SV-02': { flora: ['shrub', 'fern', 'round', 'banana'], centre: 'fountain', styles: [['tree', 5], ['gable', 2]], leaf: DAWN, extra: ['cathedral', 'library', 'library'], lamps: true },
+  'SV-03': { flora: ['conifer', 'boulder', 'dead', 'shrub'], centre: 'bonfire', styles: [['tree', 4], ['keep', 3]], leaf: [0xb0b060, 0x8a9a50, 0xc8a050], extra: ['barracks', 'barracks'], wall: 'palisade', ambient: 'smoke' },
+  'SV-04': { flora: ['willow', 'fern', 'mushroom', 'shrub'], centre: 'council', styles: [['tree', 6], ['mushroom', 2]], leaf: TWILIGHT, lamps: true, ambient: 'leaves', extra: ['library'] },
+  'SV-05': { flora: ['willow', 'conifer', 'shrub', 'fern'], centre: 'crystal', styles: [['tree', 5], ['dome', 2]], leaf: TWILIGHT, extra: ['cathedral', 'cathedral'], lamps: true },
+  'SV-06': { flora: ['fern', 'conifer', 'boulder', 'willow'], centre: 'pump', styles: [['tree', 5], ['keep', 2]], leaf: DEW, extra: ['barracks', 'library'], ambient: 'fog' },
+  'SV-07': { flora: ['conifer', 'round', 'fern', 'bamboo'], styles: [['tree', 5], ['stone', 2]], leaf: DEW, extra: ['library', 'library', 'library'] },
+  'SV-08': { flora: ['thorn', 'conifer', 'boulder', 'dead'], styles: [['tree', 3], ['keep', 4]], leaf: THORN, extra: ['barracks', 'barracks', 'barracks'], wall: 'palisade' },
+  'SV-09': { flora: ['thorn', 'shrub', 'conifer', 'fern'], styles: [['tree', 4], ['hut', 4]], leaf: THORN, extra: ['warehouse', 'arena'] },
+  'SV-10': { flora: ['palm', 'banana', 'fern', 'bamboo'], centre: 'skynest', styles: [['tree', 5], ['spire', 3]], leaf: CLOUD, ambient: 'clouds', extra: ['cathedral'] },
+  'SV-11': { flora: ['conifer', 'palm', 'shrub', 'willow'], centre: 'lighthouse', styles: [['tree', 4], ['spire', 4]], leaf: CLOUD, ambient: 'clouds', extra: ['warehouse', 'warehouse'] },
+  'SV-12': { flora: ['mushroom', 'fern', 'boulder', 'log'], styles: [['mushroom', 6], ['tree', 2]], leaf: FUNGI, lamps: true, extra: ['library'], ambient: 'leaves' },
+  'SV-13': { flora: ['dead', 'log', 'fern', 'mushroom'], centre: 'obelisk', styles: [['tree', 5], ['stone', 2]], leaf: ROOT, graves: true, lamps: true, extra: ['cathedral'], ambient: 'fog' },
+  'SV-14': { flora: ['dead', 'shrub', 'log', 'boulder'], styles: [['tree', 6], ['hut', 2]], leaf: WITHER, tree: 'dead', ambient: 'leaves', extra: ['barracks'], wall: 'palisade' },
+  'SV-15': { flora: ['shrub', 'round', 'dead', 'banana'], centre: 'lake', styles: [['tree', 4], ['gable', 3]], leaf: WITHER, extra: ['market', 'market', 'warehouse'], lamps: true },
+  'SV-16': { flora: ['conifer', 'boulder', 'log', 'fern'], styles: [['hut', 5], ['tree', 3]], leaf: THORN, extra: ['arena', 'warehouse'], wall: 'palisade' },
+  'SV-17': { flora: ['palm', 'willow', 'banana', 'bamboo'], styles: [['stilt', 4], ['gable', 3], ['tree', 2]], leaf: RIVER, centre: 'lake', extra: ['warehouse', 'warehouse', 'market'] },
+  'SV-18': { flora: ['mushroom', 'willow', 'log', 'reed'], styles: [['mushroom', 8]], leaf: FUNGI, ambient: 'leaves', lamps: true },
   // ---- เนบูเลีย: the fog
   'NB-01': { styles: [['terrace', 3], ['gable', 3], ['stone', 2]], centre: 'clock', extra: ['cathedral', 'library'], lamps: true },
   'NB-02': { styles: [['spire', 4], ['stone', 4]], roofs: [0x3a1a2a, 0x2a1a3a, 0x5a1a2a], wall: 'stone', lamps: true, extra: ['cathedral', 'barracks'], ambient: 'fog' },
@@ -228,3 +229,25 @@ export function portOf(code: string, capital: boolean): number {
 /** the sea nations whose towns float on the water: rafts, pontoons and moored hulls, not land */
 const FLOATING = new Set(['NR-03', 'NR-05', 'NR-10', 'NR-13', 'NR-14', 'NR-11']);
 export const floatsOf = (code: string, hash: number) => FLOATING.has(code) || (code.startsWith('NR-') && hash % 100 < 28);
+
+// ---------------------------------------------------------------- what a land is known for: the heart of its towns
+const HEART_WORDS: [Heart, RegExp, number][] = [
+  ['minster', /วิหาร|ศาสนจักร|แสวงบุญ|ศักดิ์สิทธิ์|นักบวช|สังฆราช|เทวาธิปไตย|ธรรมราชา|พิธี|ผู้ศรัทธา|ศาสนา|เทพี/g, 1],
+  ['towers', /หอคอย|ตึก|บริษัท|โรงงาน|ธนาคาร|เรือเหาะ|จักรกล|ยอดไม้|เมฆ|เวทมนตร์ขั้นสูง|เทคโนโลยี|รถไฟ/g, 1],
+  ['citadel', /สงคราม|ทัพ|ทหาร|นักรบ|ป้อม|อัศวิน|ชายแดน|เกณฑ์|ปืนใหญ่|ปราการ|แนวหน้า|ล้อมเมือง/g, 1],
+  ['academy', /ห้องสมุด|วิทยาลัย|ปราชญ์|มหาวิทยาลัย|บันทึก|นักวิชาการ|สถาบัน|สภา|หอเวท|ความรู้/g, 1],
+  ['bazaar', /ตลาด|พ่อค้า|การค้า|คาราวาน|ตลาดมืด|เส้นทางการค้า|ท่าเรือ|สินค้า/g, 1],
+  ['arena', /ดวล|ประลอง|ชิงมงกุฎ|แชมเปี้ยน|สังเวียน|นักสู้|ลานประลอง/g, 2],
+  ['tomb', /สุสาน|บรรพบุรุษ|หลุมศพ|ผู้ตาย/g, 2],
+];
+/** the one great thing a country's capital keeps in place of a square (null when the text has no clear answer), read from its own docs */
+const HEART_OVERRIDE: Record<string, Heart> = { 'SV-02': 'minster', 'SV-05': 'minster', 'SV-06': 'citadel', 'SV-10': 'towers', 'SV-13': 'tomb', 'SV-12': 'tomb' };
+export function heartOf(code: string): Heart | null {
+  if (HEART_OVERRIDE[code]) return HEART_OVERRIDE[code];
+  const d = DOC.get(code);
+  if (!d) return null;
+  const text = `${d.title} ${d.story} ${d.gov} ${d.religion} ${d.hook}`;
+  let best: Heart | null = null, bs = 0;
+  for (const [h, re, w] of HEART_WORDS) { const n = (text.match(re) || []).length * w; if (n > bs) { bs = n; best = h; } }
+  return bs >= 2 ? best : null;
+}

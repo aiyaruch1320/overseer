@@ -1,7 +1,7 @@
 // A town's streets and buildings: layout on a 108 × 67 tile plan (5× the area of the old 48 × 30 scene), painted into one
 // transparent pixel texture that sits on the world map at the town's real position. The ground itself is the map's own terrain,
 // so shores, floating-island edges and the countryside around a town are the real ones; the town only adds what people built.
-import { RNG, hashString } from '../sim/rng';
+import { RNG, hashString, makeNoise } from '../sim/rng';
 import { generateWorld, type Town } from '../sim/worldgen';
 import type { Country, Fate } from '../sim/types';
 import { fateOf } from '../sim/fate';
@@ -10,7 +10,8 @@ import type { Specialty } from '../data/npclife';
 import { themeFor, pickStyle, type Theme, type BStyle } from './themes';
 import { paintCity } from './paint';
 import { FOOT, SITE, MINOR_CENTRE, FURNITURE } from './landmarks';
-import { wealthOf, portOf, floatsOf } from './flavor';
+import { HEART_FOOT, type Heart } from './hearts';
+import { wealthOf, portOf, floatsOf, heartOf } from './flavor';
 import { MU_TO_WU } from '../world/geo';
 
 export const T = 16; // px per tile
@@ -27,6 +28,7 @@ export interface CityData {
   grid: Uint8Array; buildings: BuildingRec[]; walk: [number, number][]; lamps: Pt[]; stalls: Pt[];
   plaza: { x: number; y: number; w: number; h: number }; extent: { rx: number; ry: number };
   spec: Specialty; cv: HTMLCanvasElement; edge: boolean;
+  plazaMode: 'centre' | 'offset' | 'none' | 'heart'; // where the square is: in the middle, off to one side, hardly there (a crossing), or given over to the town's one great building
   landmark?: { kind: string; x: number; y: number; k: number }; // the monument (px of the plan) and its scale: a capital's is full size, an ordinary town's a smaller one of the same kind
   centrepiece?: { kind: string; x: number; y: number; k: number }; // a capital whose great monument stands away from the square (a lighthouse on the shore, a spire on the cliff) still has this one in the middle of it
   furniture: { kind: string; x: number; y: number; v: number }[]; // what stands around the square (benches, lamps, braziers...): one tile each, never walked through
@@ -132,27 +134,55 @@ function generate(town: Town, country: CityCountry): CityData {
   } else {
     // winding lanes: walkers that wander outward from the square, sometimes forking
     const walkers: { x: number; y: number; a: number; life: number }[] = [];
+    // each lane bends slowly (its curvature drifts, it does not jitter) and is two tiles wide, so it reads as one smooth road and not a staircase of single tiles
     const n = village ? 5 : 10;
     const reach = Math.max(1, rx / 52); // lanes run as far as the town is wide
     for (let k = 0; k < n; k++) walkers.push({ x: cx, y: cy, a: (k / n) * Math.PI * 2 + rng.float(-0.3, 0.3), life: Math.round(rng.int(village ? 22 : 30, village ? 46 : 70) * reach) });
     while (walkers.length) {
       const w = walkers.pop()!;
+      let curv = rng.float(-0.03, 0.03);
       for (let s = 0; s < w.life; s++) {
-        w.a += rng.float(-0.28, 0.28);
-        w.x += Math.cos(w.a) * 1.1; w.y += Math.sin(w.a) * 0.75;
+        curv = Math.max(-0.07, Math.min(0.07, curv * 0.92 + rng.float(-0.018, 0.018)));
+        w.a += curv;
+        w.x += Math.cos(w.a) * 1.2; w.y += Math.sin(w.a) * 0.85;
         const x = Math.round(w.x), y = Math.round(w.y);
         if (!inExt(x, y, 1.05)) break;
-        road(x, y); if (s % 3 === 0) road(x + 1, y);
-        if (s > 8 && s % 14 === 0 && walkers.length < 22 && rng.chance(0.5)) walkers.push({ x: w.x, y: w.y, a: w.a + (rng.chance(0.5) ? 1.2 : -1.2), life: Math.round(rng.int(14, 34) * reach) });
+        road(x, y);
+        if (Math.abs(Math.cos(w.a)) > Math.abs(Math.sin(w.a)) * 1.3) road(x, y + 1); else road(x + 1, y);
+        if (s > 10 && s % 18 === 0 && walkers.length < 18 && rng.chance(0.5)) walkers.push({ x: w.x, y: w.y, a: w.a + (rng.chance(0.5) ? 1.0 : -1.0), life: Math.round(rng.int(16, 34) * reach) });
       }
     }
   }
   // the roads that really leave this town: they run on, outside the streets, to the edge of the plan where the map's own road takes over
   for (const l of links.get(town.id) || []) for (let i = 0; i + 3 < l.pts.length; i += 2) line(l.pts[i], l.pts[i + 1], l.pts[i + 2], l.pts[i + 3], l.w, 99);
-  // the square
-  const pw = village ? 5 : town.capital ? 10 : 8, ph = village ? 3 : town.capital ? 6 : 5; // (the world tree has no monument in the square: the tree itself, drawn on the map, is what the town stands under)
-  for (let y = cy - ph; y <= cy + ph; y++) for (let x = cx - pw; x <= cx + pw + 1; x++) { const t = get(x, y); if (t !== Tile.Water && t !== Tile.Void) set(x, y, Tile.Plaza); }
-  const plaza = { x: cx - pw, y: cy - ph, w: pw * 2 + 2, h: ph * 2 + 1 };
+  // the square: not every town has one, and where it has, it is not always in the middle. A town known for one great thing (a holy city, a fortress, a bazaar) keeps that in place of a square
+  const spec0 = townSpecialty(town.id, country);
+  const pr = new RNG(hashString('plz' + town.id));
+  const roll = pr.next();
+  const HEART_OF_SPEC: Record<string, Heart> = { pilgrim: 'minster', scholar: 'academy', magic: 'academy', arena: 'arena', trade: 'bazaar', spice: 'bazaar' };
+  let heart: Heart | null = null;
+  if (theme.centre !== 'worldtree' && !floating) {
+    if (town.capital) heart = heartOf(country.code) && roll < 0.85 ? heartOf(country.code) : null;
+    else if (!village && HEART_OF_SPEC[spec0.id] && roll < 0.4) heart = HEART_OF_SPEC[spec0.id];
+  }
+  let plazaMode: CityData['plazaMode'] = heart ? 'heart' : 'centre';
+  if (!heart) {
+    const r2 = pr.next();
+    plazaMode = town.capital ? (r2 < 0.55 ? 'centre' : 'offset') : village ? (r2 < 0.2 ? 'centre' : r2 < 0.55 ? 'offset' : 'none') : (r2 < 0.25 ? 'centre' : r2 < 0.65 ? 'offset' : 'none');
+  }
+  const pw = plazaMode === 'none' ? 2 : plazaMode === 'heart' ? 6 : village ? 5 : town.capital ? 10 : 8, ph = plazaMode === 'none' ? 1 : plazaMode === 'heart' ? 4 : village ? 3 : town.capital ? 6 : 5; // (the world tree has no monument in the square: the tree itself, drawn on the map, is what the town stands under)
+  let plx = cx, ply = cy;
+  if (plazaMode === 'offset' || (plazaMode === 'none' && pr.chance(0.6))) {
+    const sx = pr.chance(0.5) ? 1 : -1, sy = pr.chance(0.5) ? 1 : -1;
+    plx = cx + sx * Math.round(rx * pr.float(0.26, 0.4)); ply = cy + sy * Math.round(ry * pr.float(0.12, 0.3));
+    if (plazaMode === 'none') { plx = cx + sx * Math.round(rx * pr.float(0.15, 0.4)); }
+  }
+  if (plazaMode === 'heart') ply = cy + 3; // the forecourt lies in front of the great building, which rises behind it
+  const rect = { x0: plx - pw, y0: ply - ph, x1: plx + pw + 1, y1: ply + ph };
+  // a street from the middle of the town to the square, if the square stands to one side
+  if (plx !== cx || ply !== cy) { line(cx, cy, plx, ply, 2, 1.3); line(plx - pw - 3, ply, plx + pw + 4, ply, 2, 1.3); }
+  for (let y = rect.y0; y <= rect.y1; y++) for (let x = rect.x0; x <= rect.x1; x++) { const t = get(x, y); if (t !== Tile.Water && t !== Tile.Void) set(x, y, Tile.Plaza); }
+  const plaza = { x: plx - pw, y: ply - ph, w: pw * 2 + 2, h: ph * 2 + 1 };
   // walls around a capital, stakes around a camp, hedges around a grove
   if ((town.capital || (theme.wall === 'palisade') || (!village && theme.wall !== 'none')) && theme.wall !== 'none') {
     for (let a = 0; a < 6.3; a += 0.012) {
@@ -186,9 +216,9 @@ function generate(town: Town, country: CityCountry): CityData {
   let landmark: CityData['landmark'];
   // every town has a monument in its square: a capital (or now and then a great town) the full one of its country, the rest a smaller one of the same kind
   const major = town.capital || (town.size >= 2 && hashString('lm' + town.id) % 7 === 0);
-  const kind0 = major || MINOR_CENTRE.has(theme.centre) ? theme.centre : (BASE_CENTRE[theme.id] ?? 'fountain');
-  const k = major ? (MINOR_CENTRE.has(kind0) ? 1.25 : 1) : village ? 0.6 : 0.78; // the monuments that stand in a square are drawn a little larger for a capital
-  const foot0 = FOOT[kind0];
+  const kind0: string = heart ?? (major || MINOR_CENTRE.has(theme.centre) ? theme.centre : (BASE_CENTRE[theme.id] ?? 'fountain'));
+  const k = heart ? (town.capital ? 1 : 0.75) : major ? (MINOR_CENTRE.has(kind0) ? 1.25 : 1) : village ? 0.6 : 0.78; // the monuments that stand in a square are drawn a little larger for a capital
+  const foot0 = plazaMode === 'none' ? undefined : heart ? HEART_FOOT[heart] : FOOT[kind0];
   const foot = foot0 && { rx: foot0.rx * k, ry: foot0.ry * k, up: foot0.up * k, upW: foot0.upW * k };
   if (foot) {
     const open = (px: number, py: number, strict: boolean) => {
@@ -204,7 +234,7 @@ function generate(town: Town, country: CityCountry): CityData {
       }
       return true;
     };
-    const site = major ? (SITE[kind0] ?? 'plaza') : 'core';
+    const site = heart ? 'core' : major ? (SITE[kind0] ?? 'plaza') : 'core';
     const pcx = (plaza.x + plaza.w / 2) * T, pcy = (plaza.y + plaza.h / 2) * T;
     const cand: { x: number; y: number; s: number }[] = [];
     if (site === 'core') cand.push({ x: pcx, y: pcy, s: 1 });
@@ -238,7 +268,7 @@ function generate(town: Town, country: CityCountry): CityData {
     }
   }
   let centrepiece: CityData['centrepiece'];
-  const inSquare = landmark && Math.abs(landmark.x - (plaza.x + plaza.w / 2) * T) < plaza.w * T * 0.3 && Math.abs(landmark.y - (plaza.y + plaza.h / 2) * T) < plaza.h * T * 0.4;
+  const inSquare = plazaMode === 'none' || landmark && Math.abs(landmark.x - (plaza.x + plaza.w / 2) * T) < plaza.w * T * 0.3 && Math.abs(landmark.y - (plaza.y + plaza.h / 2) * T) < plaza.h * T * 0.4;
   if (!inSquare && kind0 !== 'worldtree') {
     const kc = MINOR_CENTRE.has(kind0) ? kind0 : (BASE_CENTRE[theme.id] ?? 'fountain'), f = FOOT[kc], kk = 1.15;
     if (f) {
@@ -249,14 +279,14 @@ function generate(town: Town, country: CityCountry): CityData {
   // the square's furniture: what the country puts around its square, spaced along the edge and clear of the monument, the stalls and the streets that enter it
   const furniture: CityData['furniture'] = [];
   const kinds = FURNITURE[theme.id] ?? FURNITURE.aldria;
-  const nF = town.capital ? 22 : village ? 7 : 14;
+  const nF = plazaMode === 'none' ? 2 : heart ? 6 : town.capital ? 22 : village ? 7 : 14;
   const fr = new RNG(hashString('furn' + town.id));
   for (let tries = 0; tries < 400 && furniture.length < nF; tries++) {
     const side = fr.int(0, 3), u = fr.float(0.04, 0.96), inset = fr.float(0.9, 1.9);
     const tx = side < 2 ? plaza.x + Math.floor(u * plaza.w) : side === 2 ? plaza.x + Math.floor(inset) : plaza.x + plaza.w - 1 - Math.floor(inset);
     const ty = side >= 2 ? plaza.y + Math.floor(u * plaza.h) : side === 0 ? plaza.y + Math.floor(inset) : plaza.y + plaza.h - 1 - Math.floor(inset);
     if (ty >= plaza.y + plaza.h - 2 || get(tx, ty) !== Tile.Plaza || solid.has(ty * CW + tx) || wet[ty * CW + tx]) continue; // (the bottom rows hold the stalls)
-    const clearOfRoads = Math.abs(tx - cx) > 2 && Math.abs(ty - cy) > 1; // the two avenues cross the square through its middle: keep them open
+    const clearOfRoads = Math.abs(tx - plx) > 2 && Math.abs(ty - ply) > 1; // the two avenues cross the square through its middle: keep them open
     const fx = tx * T + T / 2, fy = ty * T + T - 3;
     if (!clearOfRoads || furniture.some((o) => Math.hypot(o.x - fx, (o.y - fy) * 1.6) < 38)) continue;
     if (landmark && foot && Math.hypot((fx - landmark.x) / (foot.rx + 18), (fy - landmark.y) / (foot.ry + 14)) < 1) continue;
@@ -275,7 +305,7 @@ function generate(town: Town, country: CityCountry): CityData {
   if (town.capital) {
     // the seat of government: a large hall just off the square
     for (let tries = 0; tries < 600; tries++) {
-      const w = rng.int(11, 13), h = rng.int(7, 8), x = rng.int(cx - 30, cx + 30), y = cy - ph - h - 2 - rng.int(0, 3 + Math.floor(tries / 100));
+      const w = rng.int(11, 13), h = rng.int(7, 8), x = rng.int(plx - 30, plx + 30), y = ply - ph - h - 2 - rng.int(0, 3 + Math.floor(tries / 100));
       // the hall may cut across a street: the street simply ends at its walls
       let free = true;
       for (let i = x - 1; i <= x + w && free; i++) for (let j = y - 1; j <= y + h && free; j++) { const t = get(i, j); if (t !== Tile.Ground && t !== Tile.Road && t !== Tile.Tree) free = false; }
@@ -413,11 +443,15 @@ function generate(town: Town, country: CityCountry): CityData {
     if (port >= 1 && longest && !sky) beacons.push({ x: longest.x * T + T / 2, y: longest.y * T + T });
   }
   // trees in what is left
-  if (theme.tree !== 'none') for (let i = 0; i < CW * CH; i++) {
-    if (g[i] !== Tile.Ground || wet[i]) continue;
-    const x = i % CW, y = Math.floor(i / CW);
-    const out = inExt(x, y, 0.95) ? 1 : 2.2;
-    if (rng.chance(theme.treeDensity * out)) g[i] = Tile.Tree;
+  // (they stand in groves and leave clearings, not as a dust of single trees over every open tile)
+  if (theme.tree !== 'none') {
+    const grove = makeNoise(hashString('grove' + town.id));
+    for (let i = 0; i < CW * CH; i++) {
+      if (g[i] !== Tile.Ground || wet[i]) continue;
+      const x = i % CW, y = Math.floor(i / CW);
+      const out = inExt(x, y, 0.95) ? 0.45 : 2.2, n = grove(x * 0.085, y * 0.11);
+      if (n > 0.52 && rng.chance(theme.treeDensity * out * 4.2 * (n - 0.45))) g[i] = Tile.Tree;
+    }
   }
   if (floating) for (let i = 0; i < CW * CH; i++) if (wet[i] && g[i] === Tile.Ground) g[i] = Tile.Void; // what the town did not build on is open water again
   const walk: [number, number][] = [];
@@ -426,7 +460,7 @@ function generate(town: Town, country: CityCountry): CityData {
   if (theme.lamps) for (let y = 0; y < CH; y += 1) for (let x = 0; x < CW; x += 1) if (g[y * CW + x] === Tile.Road && (x * 7 + y * 13) % 19 === 0 && g[y * CW + x - 1] !== Tile.Building && inExt(x, y, 1)) lamps.push({ x: x * T + T / 2, y: y * T + T - 2 });
   const spec = townSpecialty(town.id, country);
   const wealth = Math.max(0, Math.min(1, wealthOf(country.code, country.continent) + (town.capital ? 0.14 : town.size >= 3 ? 0.1 : town.size === 1 ? -0.1 : 0) + ((hashString('w' + town.id) % 100) / 100 - 0.5) * 0.16));
-  const data: CityData = { townId: town.id, roadCls, wealth, wet, ships, cranes, beacons, port, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, landmark, centrepiece, furniture, solid: [...solid], gates, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
+  const data: CityData = { townId: town.id, roadCls, wealth, wet, ships, cranes, beacons, port, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, plazaMode, landmark, centrepiece, furniture, solid: [...solid], gates, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
   paintCity(data, town);
   return data;
 }
