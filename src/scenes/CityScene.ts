@@ -202,8 +202,8 @@ export class CityScene extends Phaser.Scene {
       const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome() });
       per.goesHome = true; n--;
     }
-    if (flags.includes('plague')) n = Math.round(n * 0.6);
     const fest = this.festival();
+    if (flags.includes('plague')) n = Math.round(n * 0.6);
     if (flags.includes('golden') || fest) n += 12;
     for (let i = 0; i < n; i++) {
       const race = this.rng.weighted(co.races, (r) => r.w)!.race;
@@ -310,9 +310,9 @@ export class CityScene extends Phaser.Scene {
       this.go(p, this.nearby(base, 5), p.speed, () => this.doAct(p, { frames: [POSE.sit], fps: 1, fx: 'none' }, this.rng.float(8, 18)));
       return;
     }
-    if (p.job && this.rng.chance(0.85)) { this.doJob(p, p.job); return; }
     const gz = themeOf(p.race).gesture; // a moment of their own people's habit: wings stretched, a hammer swung at nothing
     if (gz && !p.hero && this.rng.chance(0.1)) { this.doAct(p, { frames: gz.frames, fps: gz.fps, fx: gz.fx as Anim['fx'] }, this.rng.float(2.5, 4.5)); return; }
+    if (p.job && this.rng.chance(0.85)) { this.doJob(p, p.job); return; }
     if (this.rng.chance(0.25)) { // stop and chat with a neighbour
       const near = this.npcs.filter((x) => x !== p && x.state !== 'locked' && !x.asleep && Math.hypot(x.root.x - here.x, x.root.y - here.y) < T * 12);
       const o = near.length ? this.rng.pick(near) : undefined;
@@ -449,9 +449,9 @@ export class CityScene extends Phaser.Scene {
 
   doAct(p: Person, a: Anim, secs: number) {
     p.state = 'act'; p.act = a; p.actT = secs; p.fx = 0;
+    (p.img as PersonImage).face(0, 1);
     p.img.setFrame(a.frames[0]);
   }
-    (p.img as PersonImage).face(0, 1);
 
   // ---------- per-frame update ----------
   update(_t: number, delta: number) {
