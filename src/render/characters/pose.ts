@@ -40,9 +40,12 @@ export const POSE = {
   work0: 10, work1: 11, work2: 12, sit: 13, sit2: 14, carry0: 15, carry1: 16, carry2: 17, cheer: 18, cheer2: 19,
   kneel: 20, kneel2: 21, wave0: 22, wave1: 23, talk0: 24, talk1: 25, read: 26, cast0: 27, cast1: 28,
   idle2: 29, idle3: 30, flutter0: 31, flutter1: 32,
+  // trade poses: what the hands do at a broom, a pot, a rod, a loom, a counter, a door
+  sweep0: 33, sweep1: 34, stir0: 35, stir1: 36, fish0: 37, fish1: 38, drink: 39, bless0: 40, bless1: 41, hawk0: 42, hawk1: 43,
+  sew0: 44, sew1: 45, write: 46, knock0: 47, knock1: 48, bow: 49, eat0: 50, eat1: 51, cough: 52, aim: 53, salute: 54,
 } as const;
 export type PoseName = keyof typeof POSE;
-export const FRAMES = 33;
+export const FRAMES = 55;
 export const WALK = [POSE.walk0, POSE.walk1, POSE.walk2, POSE.walk3, POSE.walk4, POSE.walk5, POSE.walk6, POSE.walk7];
 export const CARRY_WALK = [POSE.carry1, POSE.carry0, POSE.carry2, POSE.carry0];
 
@@ -90,6 +93,41 @@ POSES[POSE.idle2] = P({ amb: 0.25, bob: 0.15, tilt: 0.015 });
 POSES[POSE.idle3] = P({ amb: 0.75, breath: 1, bob: 0.3, tilt: -0.015, lh: [0, -0.3], rh: [0, -0.3] });
 POSES[POSE.flutter0] = P({ hover: 3, bob: -1.5, flap: 1, amb: 0.25, lf: [0.5, -1.5], rf: [-0.5, -1], lh: [-1, -2], rh: [1, -2], mouth: 'smile' });
 POSES[POSE.flutter1] = P({ hover: 4, bob: -2.4, flap: 0.05, amb: 0.75, lf: [-0.5, -1], rf: [0.5, -1.5], lh: [-1.5, -2.6], rh: [1.5, -2.6], mouth: 'smile' });
+
+// sweeping: the broom leans out and drags, the body follows it
+POSES[POSE.sweep0] = P({ rh: [4.2, -4], lh: [2.4, -6], tool: 'strike', lean: 1.8, bob: 0.8, sway: -0.6, brow: -0.2 });
+POSES[POSE.sweep1] = P({ rh: [3.2, -3.4], lh: [1.6, -5], tool: 'strike', lean: 2.6, bob: 1.1, sway: 0.7, brow: -0.2, amb: 0.5 });
+// stirring a pot, kneading: both hands forward and low, the head bent to the work
+POSES[POSE.stir0] = P({ rh: [4, -8], lh: [-1.5, -7.5], tool: 'hold', lean: 1, nod: 0.9, bob: 0.3 });
+POSES[POSE.stir1] = P({ rh: [3.2, -8.6], lh: [-2.4, -7], tool: 'hold', lean: 1.3, nod: 1.1, bob: 0.5, amb: 0.5 });
+// fishing: rod out over the water, then a jerk when something bites
+POSES[POSE.fish0] = P({ rh: [3.8, -9], lh: [1, -7.5], tool: 'hold', lean: 0.6, bob: 0.2, brow: -0.1 });
+POSES[POSE.fish1] = P({ rh: [3.2, -14], lh: [0.4, -9], tool: 'raise', lean: -1, bob: -0.5, mouth: 'open', brow: 0.6, eyes: 'wide' });
+// a seated customer with a cup at the lips
+POSES[POSE.drink] = P({ drop: 9, legs: 'sit', rh: [2.4, -13], lh: [-1.6, -3], tool: 'none', lean: -0.6, tilt: -0.06, mouth: 'chew' });
+// blessing: a priest's open hands raised over the crowd
+POSES[POSE.bless0] = P({ lh: [-5, -12], rh: [5, -12], tool: 'none', eyes: 'closed', mouth: 'closed', bob: -0.4, tilt: 0.02, nod: -0.4 });
+POSES[POSE.bless1] = P({ lh: [-6, -8.5], rh: [6, -8.5], tool: 'none', eyes: 'closed', mouth: 'open', bob: 0.1, nod: 0.5, amb: 0.5 });
+// a seller calling out, then holding the goods up for the buyer
+POSES[POSE.hawk0] = P({ rh: [5, -15], lh: [-1, -1.5], tool: 'none', mouth: 'open', brow: 0.6, tilt: 0.05, bob: -0.3 });
+POSES[POSE.hawk1] = P({ rh: [5.5, -6.5], lh: [-4.5, -7], tool: 'none', mouth: 'smile', brow: 0.3, tilt: -0.04, lean: 0.8, amb: 0.5 });
+// sewing and writing: seated, hands in the lap or on the desk, the head bent
+POSES[POSE.sew0] = P({ drop: 9, legs: 'sit', lh: [1.2, -4.4], rh: [-1.2, -4.4], tool: 'none', nod: 1.5, lean: 0.9 });
+POSES[POSE.sew1] = P({ drop: 9, legs: 'sit', lh: [1.6, -5.4], rh: [-1.6, -3.8], tool: 'none', nod: 1.7, lean: 1, amb: 0.5 });
+POSES[POSE.write] = P({ drop: 9, legs: 'sit', lh: [-3, -5.6], rh: [3.6, -6.4], tool: 'none', nod: 1.8, lean: 1.4, breath: 1 });
+// knocking at a door
+POSES[POSE.knock0] = P({ rh: [4.4, -10], lh: [-0.4, -1], tool: 'none', lean: 0.8, brow: 0.2 });
+POSES[POSE.knock1] = P({ rh: [5.4, -10.4], lh: [-0.4, -1], tool: 'none', lean: 1.6, brow: 0.2, amb: 0.5 });
+// a bow of greeting or thanks
+POSES[POSE.bow] = P({ lh: [1, -2.5], rh: [-1, -2.5], tool: 'none', lean: 3.2, nod: 2.6, bob: 1.2, eyes: 'closed', mouth: 'smile' });
+// eating standing or seated: the hand to the mouth, then down
+POSES[POSE.eat0] = P({ drop: 9, legs: 'sit', rh: [2.2, -12.4], lh: [-2, -3], tool: 'none', mouth: 'chew', lean: 0.3 });
+POSES[POSE.eat1] = P({ drop: 9, legs: 'sit', rh: [2.6, -5.4], lh: [-2.4, -4], tool: 'none', mouth: 'closed', nod: 0.9, amb: 0.5 });
+// a cough into the fist, bent over
+POSES[POSE.cough] = P({ rh: [2, -12.6], lh: [-0.4, -1.4], tool: 'none', lean: 2.6, nod: 1.8, bob: 0.9, brow: -0.8, mouth: 'open', eyes: 'closed' });
+// drawing a bow (a hunter) and standing to attention (a guard)
+POSES[POSE.aim] = P({ rh: [5.5, -13], lh: [-1.4, -12.6], tool: 'strike', lean: -0.6, brow: -0.4, eyes: 'open' });
+POSES[POSE.salute] = P({ rh: [2.6, -17.6], lh: [-0.3, -1.4], tool: 'rest', bob: -0.5, brow: -0.2 });
 
 export const poseOf = (frame: number): Pose => POSES[frame] || POSES[0];
 

@@ -62,6 +62,9 @@ function renderAll() {
     ['ยืนพัก', THEMES[st.race].idle, 1.2], ['เดิน', WALK, 9], ['เดินแบกของ', CARRY_WALK, 6], ['ทำงาน (ตี/ขุด)', [POSE.work0, POSE.work1, POSE.work2], 3],
     ['นั่งพัก', [POSE.sit, POSE.sit2], 1], ['สวดมนต์', [POSE.kneel, POSE.kneel2], 0.8], ['ฉลอง', [POSE.cheer, POSE.cheer2], 3], ['โบกมือ', [POSE.wave0, POSE.wave1], 3],
     ['พูดคุย', [POSE.talk0, POSE.talk1], 2], ['อ่านหนังสือ', [POSE.read, POSE.sit2], 1], ['ร่ายเวท', [POSE.cast0, POSE.cast1, POSE.idle], 2],
+    ['กวาดถนน', [POSE.sweep0, POSE.sweep1], 1.3], ['ทำอาหาร/นวดแป้ง', [POSE.stir0, POSE.stir1], 1.6], ['ตกปลา', [POSE.fish0, POSE.fish0, POSE.fish1], 1], ['ให้พร', [POSE.bless0, POSE.bless1], 0.9],
+    ['ตะโกนขายของ', [POSE.hawk0, POSE.hawk1, POSE.talk0], 1.2], ['เย็บผ้า', [POSE.sew0, POSE.sew1], 1.1], ['จดบันทึก', [POSE.write, POSE.sit2], 0.9], ['เคาะประตู', [POSE.knock0, POSE.knock1], 2.6],
+    ['กินข้าว', [POSE.eat0, POSE.eat1], 1.2], ['ดื่ม', [POSE.drink, POSE.sit, POSE.drink], 0.9], ['ไอ (ป่วย)', [POSE.cough, POSE.idle], 1.4], ['ธนู/ยืนยาม', [POSE.aim, POSE.salute], 0.8], ['โค้งคำนับ', [POSE.bow, POSE.idle], 0.9],
   ];
   anim.length = 0;
   for (const [name, frames, fps] of anims) {

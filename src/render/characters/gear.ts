@@ -250,7 +250,7 @@ const shaft = (c: CanvasRenderingContext2D, y0: number, y1: number, w = 1.1, col
 export function drawTool(k: Cx, hx: number, hy: number, mode: string, name?: string) {
   const { c, L } = k, t = name ?? L.tool;
   if (!t || mode === 'none') return;
-  const longPole = ['spear', 'staff', 'orbstaff', 'crook', 'banner', 'scythe', 'trident', 'scepter', 'wand', 'cane', 'censer'].includes(t);
+  const longPole = ['spear', 'staff', 'orbstaff', 'crook', 'banner', 'scythe', 'trident', 'scepter', 'wand', 'cane', 'censer', 'broom'].includes(t);
   const hand = t === 'sword' || t === 'greatsword' ? { rest: 2.75, raise: -0.2, strike: 1.95, hold: 2.4, read: 2.75, cast: -0.1 }
     : longPole ? { rest: 0, raise: -0.15, strike: 0.9, hold: 0.1, read: 0, cast: -0.25 } : { rest: Math.PI, raise: -0.35, strike: 1.7, hold: 0.6, read: 0, cast: -0.2 };
   let ang = (hand as Record<string, number>)[mode] ?? 0;
