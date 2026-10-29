@@ -94,7 +94,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('combat'), ...itemFiles].forEach(checkRefs);
+[...storyFiles, ...list('combat'), ...itemFiles, ...list('heirs')].forEach(checkRefs);
 
 // ---------- storylines ----------
 for (const f of raceFiles) {
