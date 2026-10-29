@@ -7,8 +7,9 @@ import { lookFor } from '../scenes/people';
 import { RNG, hashString } from '../sim/rng';
 import { stageOf } from '../render/characters/themes';
 import { mix, type Look } from '../render/characters/kit';
+import { birthOf, climateOfCode, type Birth } from './birth';
 
-export interface Cast { id: string; name: string; people: string; role: string; chance: number; race: string; line?: string; fem: boolean; hAge: number; look: Look; special: boolean }
+export interface Cast { id: string; name: string; people: string; role: string; chance: number; race: string; line?: string; fem: boolean; hAge: number; look: Look; special: boolean; birth: Birth; blend?: string }
 
 // how the docs name a people -> [race, sub-line, extra painter features]
 const PEOPLE: [RegExp, string, string?, string[]?][] = [
@@ -54,29 +55,54 @@ const ROLES: [RegExp, string, string, string][] = [
   [/เด็ก|ลูก/, 'tunic', '', ''],
 ];
 
-const humanAge = (row: CastRow, race: string): number => {
+const humanAge = (row: CastRow, race: string, blend?: string): number => {
   const raw = row[3].replace(/,/g, '');
   const dead = /ตายมา/.test(raw);
   const n = parseFloat(raw.match(/\d+(\.\d+)?/)?.[0] ?? '');
   if (/เด็ก/.test(row[2]) || /เด็ก/.test(row[4])) return 8;
   if (!Number.isFinite(n)) return 35 + (hashString(row[0]) % 30);
   if (dead) return 68;
-  return Math.max(1, Math.min(95, (n * 75) / (LIFESPAN[race] || 75)));
+  // a half-blood lives between the lifespans of the two peoples, and one with a title is never a child
+  const span = blend ? ((LIFESPAN[race] || 75) + (LIFESPAN[blend] || 75)) / 2 : LIFESPAN[race] || 75;
+  const age = Math.max(1, Math.min(95, (n * 75) / span));
+  return blend && age < 13 && !/เด็ก/.test(row[1] + row[4]) && n > 20 ? 22 + (hashString(row[0]) % 20) : age;
 };
 
+// the second people of a half-blood: "มนุษย์ครึ่งเงือก" is a human raised among humans with a merfolk parent
+const SECOND: [RegExp, string][] = [
+  [/ดาร์กเอลฟ์/, 'darkelf'], [/เอลฟ์/, 'elf'], [/มนุษย์/, 'human'], [/คนแคระ/, 'dwarf'], [/ออร์ค/, 'orc'], [/ฮาล์ฟลิง/, 'halfling'], [/เผ่าสัตว์|หมาป่า/, 'beast'], [/นาคา/, 'naga'],
+  [/เผ่ามังกร/, 'dragonkin'], [/แวมไพร์/, 'vampire'], [/ภูต/, 'fae'], [/เผ่าปีศาจ/, 'demonkin'], [/เงือก/, 'merfolk'], [/เผ่าปีก/, 'winged'], [/ยักษ์/, 'giant'], [/เผ่าลาวา/, 'lavakin'],
+];
+const MIXED_POOL = ['elf', 'orc', 'dwarf', 'halfling'];
+
+function parsePeople(people: string, id: string): { race: string; line?: string; extra: string[]; blend?: string } {
+  const resolve = (text: string) => { for (const [re, r, l, ex] of PEOPLE) if (re.test(text)) return { race: r, line: l, extra: ex || [] }; return { race: 'human', line: undefined, extra: [] as string[] }; };
+  const hy = people.match(/^(.+?)ครึ่ง(.+)$/);
+  if (hy) {
+    const sec = SECOND.find(([re]) => re.test(hy[2]));
+    if (sec) return { ...resolve(hy[1]), blend: sec[1] };
+    if (/สองสาย/.test(hy[2])) return { ...resolve(hy[1]), blend: 'dragonkin' };
+  }
+  if (/^ฮาล์ฟออร์ค/.test(people)) return { race: 'human', extra: [], blend: 'orc' };
+  if (/เลือดผสม/.test(people)) return { ...resolve(people.replace('เลือดผสม', '')), blend: 'human' };
+  if (people === 'ผสม') return { race: 'human', extra: [], blend: MIXED_POOL[hashString('mixed:' + id) % MIXED_POOL.length] };
+  return resolve(people);
+}
+
 export function castOf(row: CastRow): Cast {
-  const [id, name, people, , role, chance] = row;
+  const [id, name, people, , role, chance, flag = '', note = ''] = row;
   const sp = specialById(id);
+  const parsed = sp ? { race: sp.race, line: sp.line, extra: [] as string[], blend: sp.blend } : parsePeople(people, id);
+  const birth = birthOf(id, parsed.race, parsed.blend, flag, note);
   if (sp) {
     const hAge = sp.age;
-    return { id, name: sp.name, people, role: sp.title, chance, race: sp.race, line: sp.line, fem: sp.fem, hAge, look: specialStageLook(sp.id, hAge < 13 ? 'child' : hAge < 20 ? 'teen' : hAge < 55 ? 'adult' : 'elder')!, special: true };
+    return { id, name: sp.name, people, role: sp.title, chance, race: sp.race, line: sp.line, fem: sp.fem, hAge, look: specialStageLook(sp.id, hAge < 13 ? 'child' : hAge < 20 ? 'teen' : hAge < 55 ? 'adult' : 'elder')!, special: true, birth, blend: sp.blend };
   }
-  let race = 'human', line: string | undefined, extra: string[] = [];
-  for (const [re, r, l, ex] of PEOPLE) if (re.test(people)) { race = r; line = l; extra = ex || []; break; }
-  const hAge = humanAge(row, race);
+  const { race, line, extra, blend } = parsed;
+  const hAge = humanAge(row, race, blend);
   const rng = new RNG(hashString('cast:' + id));
   const fem = !SEXLESS.has(race) && (FEM.test(name + ' ' + role + ' ' + people) || (!/ชาย|ราชา|พระเจ้า|จักรพรรดิ|สังฆราช/.test(role + people) && rng.chance(0.42)));
-  const look = lookFor('cast:' + id, race, 'ชาวบ้าน', { gender: fem ? 'หญิง' : 'ชาย', hAge, line });
+  const look = lookFor('cast:' + id, race, 'ชาวบ้าน', { gender: fem ? 'หญิง' : 'ชาย', hAge, line, climate: climateOfCode(birth.code), blend });
   const r = ROLES.find(([re]) => re.test(role + ' ' + name));
   if (r) {
     look.outfit = r[1]; look.hat = r[2]; look.tool = r[3];
@@ -89,7 +115,7 @@ export function castOf(row: CastRow): Cast {
   look.extra = [...(look.extra || []), ...extra];
   look.special = id; look.role = role;
   look.sig = undefined;
-  return { id, name, people, role, chance, race, line, fem, hAge, look, special: false };
+  return { id, name, people, role, chance, race, line, fem, hAge, look, special: false, birth, blend };
 }
 
 const CAST = new Map<string, Cast>();

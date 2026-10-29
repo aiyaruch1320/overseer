@@ -6,6 +6,7 @@ import { lookFor } from '../scenes/people';
 import { POSE } from '../render/characters/pose';
 import { STAGES, STAGE_AGE, stageOf, type Stage } from '../render/characters/themes';
 import { mix, type Look } from '../render/characters/kit';
+import { HALF_SPECIALS } from './specialsHalf';
 
 export interface Special {
   id: string; // the NPC id in docs/npcs (AZ01-1), or a code of its own for people who belong to the lore at large
@@ -13,6 +14,7 @@ export interface Special {
   title: string;
   race: string;
   line?: string;
+  blend?: string; // the people of the other parent of a half-blood
   fem: boolean;
   age: number; // human-equivalent age of the documented person
   design: string; // why they look like this (shown in the gallery and docs/characters/specials.md)
@@ -147,6 +149,7 @@ export const SPECIALS: Special[] = [
     look: { outfit: 'tunic', hat: 'crown', tool: 'book', cloth: 0x4a6aa0, cloth2: 0xd9a030, eye: 0x1b1626, skin: 0x5ab0e8, accent: 0xd9a030 }, sig: [POSE.idle, POSE.read, POSE.idle2, POSE.talk0] },
 ];
 
+SPECIALS.push(...HALF_SPECIALS);
 const byId = new Map(SPECIALS.map((s) => [s.id, s]));
 export const specialById = (id: string) => byId.get(id);
 
@@ -154,10 +157,11 @@ export const specialById = (id: string) => byId.get(id);
 export function specialStageLook(id: string, stage: Stage): Look | undefined {
   const s = byId.get(id);
   if (!s) return undefined;
-  const L = lookFor(`special:${s.id}`, s.race, 'ชาวบ้าน', { gender: s.fem ? 'หญิง' : 'ชาย', hAge: STAGE_AGE[stage], line: s.line });
+  const L = lookFor(`special:${s.id}`, s.race, 'ชาวบ้าน', { gender: s.fem ? 'หญิง' : 'ชาย', hAge: STAGE_AGE[stage], line: s.line, blend: s.blend });
+  const graft = L.extra || []; // marks of the other parent (src/data/blood.ts)
   Object.assign(L, s.look);
   L.line = s.line; L.special = s.id; L.fem = s.fem;
-  L.extra = [...(s.look.extra || []), ...(stage === 'adult' || stage === 'elder' ? s.regalia || [] : [])];
+  L.extra = [...graft, ...(s.look.extra || []), ...(stage === 'adult' || stage === 'elder' ? s.regalia || [] : [])];
   L.sig = s.sig;
   L.stage = stage === 'adult' || stage === 'elder' ? undefined : stage;
   L.child = stage === 'child' || stage === 'infant';
