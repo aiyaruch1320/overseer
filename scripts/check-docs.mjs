@@ -98,8 +98,13 @@ function checkRefs(file) {
 
 // ---------- storylines ----------
 for (const f of raceFiles) {
-  const starts = [];
+  let starts = [];
+  const flush = () => {
+    if (starts.join() !== [...starts].sort((a, b) => a - b).join()) err(f, 0, 'age-order', starts.join(' '));
+    starts = [];
+  };
   lines(f).forEach((line, i) => {
+    if (/^#{2,3} /.test(line)) flush(); // ages must rise within one section (a file may hold several node tables)
     const m = line.match(nodeRow);
     if (!m) return;
     const c = cells(line);
@@ -112,7 +117,7 @@ for (const f of raceFiles) {
       if (sum !== 100) err(f, i + 1, 'weights', `${m[1]} = ${sum}`);
     }
   });
-  if (starts.join() !== [...starts].sort((a, b) => a - b).join()) err(f, 0, 'age-order', starts.join(' '));
+  flush();
 }
 const nodeText = {};
 for (const f of raceFiles) for (const line of lines(f)) { const m = line.match(nodeRow); if (m) nodeText[m[1]] = (nodeText[m[1]] || '') + line; }
