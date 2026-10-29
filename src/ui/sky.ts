@@ -65,6 +65,8 @@ export class Sky {
   ctx: CanvasRenderingContext2D;
   private sprites = cloudSprites();
   fx: PassFx = 'none';
+  canopy = 0; // how far under the world tree's crown the camera is (0 outside, 1 beneath its middle)
+  private ceil: HTMLCanvasElement[] = [];
   private pass: Record<string, HTMLCanvasElement[]> | null = null;
   private passDots: { a: number; r: number; ph: number; s: number }[] = [];
   private clouds: Cloud[] = [];
@@ -161,10 +163,11 @@ export class Sky {
       const r = new RNG(77);
       for (let i = 0; i < 22; i++) this.passDots.push({ a: r.float(0, Math.PI * 2), r: r.float(0.2, 1), ph: r.next(), s: r.float(0.7, 1.4) });
     }
+    if (this.fx === 'leaves') { this.drawCanopy(v, w, h); return; }
     const lo = 0.75, hi = v.townZoom * 9; // the dive that matters: from the country down to the town
     const p = Math.log(Math.max(v.zoom, lo) / lo) / Math.log(hi / lo);
     if (p <= 0.02 || p >= 0.98) return;
-    const amount = Math.pow(Math.sin(Math.PI * p), 1.1) * (this.fx === 'clouds' || this.fx === 'leaves' ? 1 : 0.8);
+    const amount = Math.pow(Math.sin(Math.PI * p), 1.1) * (this.fx === 'clouds' ? 1 : 0.8);
     const { ctx } = this, set = this.pass[this.fx]; if (!set) return;
     const cx = w / 2, cy = h / 2, R = Math.max(w, h);
     const dots = this.passDots.map((d, i) => ({ ...d, u: (((p * 2.2 + d.ph) % 1) + 1) % 1, i })).sort((a, b) => a.u - b.u);
@@ -172,7 +175,7 @@ export class Sky {
       const sp = set[d.i % set.length], grow = 0.18 + d.u * d.u * 3.6;
       const sw = sp.width * grow * d.s * (R / 900) * 1.5, sh = sp.height * grow * d.s * (R / 900) * 1.5;
       const dist = (0.12 + d.u * 1.5) * d.r * R * 0.55, x = cx + Math.cos(d.a + this.t * 0.0001) * dist, y = cy + Math.sin(d.a + this.t * 0.0001) * dist * 0.8;
-      ctx.globalAlpha = Math.min(1, Math.sin(Math.PI * d.u) * 1.5) * amount * (this.fx === 'leaves' ? 0.95 : 0.7);
+      ctx.globalAlpha = Math.min(1, Math.sin(Math.PI * d.u) * 1.5) * amount * 0.7;
       ctx.drawImage(sp, x - sw / 2, y - sh / 2, sw, sh);
     }
     ctx.globalAlpha = 1;
@@ -180,6 +183,74 @@ export class Sky {
     const tint: Partial<Record<PassFx, string>> = { leaves: '34,92,40', clouds: '240,246,255', fog: '80,70,120', mist: '200,224,240', smoke: '60,54,52', embers: '90,40,20', steam: '210,212,218', sand: '220,184,120' };
     const g = ctx.createRadialGradient(cx, cy, R * 0.18, cx, cy, R * 0.8), t = tint[this.fx];
     if (t) { g.addColorStop(0, `rgba(${t},0)`); g.addColorStop(1, `rgba(${t},${0.34 * amount})`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
+  }
+
+  /** under the world tree, as a person on the ground sees it: bundles of leaves swing past on the way in, then the canopy closes overhead,
+   *  light falls through it in shafts and dapples on the ground, and the odd leaf drifts down. Only where the camera really is beneath the crown. */
+  private drawCanopy(v: SkyView, w: number, h: number) {
+    const cover = this.canopy;
+    if (cover < 0.03) return;
+    const { ctx } = this, cx = w / 2, cy = h / 2, R = Math.max(w, h), t = this.t;
+    const ss = (a: number, b: number, x: number) => { const k = Math.max(0, Math.min(1, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+    const under = ss(1.7, 4.6, v.zoom) * cover;
+    // 1. on the way in: boughs swing past the camera from the middle of the view outward
+    const pA = Math.log(Math.max(v.zoom, 0.9) / 0.9) / Math.log(3.4 / 0.9);
+    if (pA > 0.02 && pA < 0.98 && this.pass) {
+      const set = this.pass.leaves, amount = Math.sin(Math.PI * pA) * cover;
+      const dots = this.passDots.map((d, i) => ({ ...d, u: (((pA * 1.9 + d.ph) % 1) + 1) % 1, i })).sort((a, b) => a.u - b.u);
+      for (const d of dots) {
+        const sp = set[d.i % set.length], grow = 0.16 + d.u * d.u * 3.4;
+        const sw = sp.width * grow * d.s * (R / 900) * 1.5, sh = sp.height * grow * d.s * (R / 900) * 1.5, dist = (0.12 + d.u * 1.5) * d.r * R * 0.55;
+        ctx.globalAlpha = Math.min(1, Math.sin(Math.PI * d.u) * 1.5) * amount * 0.95;
+        ctx.drawImage(sp, cx + Math.cos(d.a) * dist - sw / 2, cy + Math.sin(d.a) * dist * 0.8 - sh / 2, sw, sh);
+      }
+      ctx.globalAlpha = 1;
+    }
+    if (under <= 0.01) return;
+    // 2. shade: the whole view dims and takes the green of light through leaves
+    ctx.fillStyle = `rgba(8,34,14,${0.3 * under})`; ctx.fillRect(0, 0, w, h);
+    // the canopy overhead: dense foliage along the top and sides, dark toward the edges, open in the middle where the light comes through
+    if (!this.ceil.length) for (let k = 0; k < 4; k++) {
+      const cv = document.createElement('canvas'); cv.width = 520; cv.height = 360; const c = cv.getContext('2d')!, rnd = leafRng(91 + k * 13);
+      leafCluster(c, 260, 180, 250, 165, [0x0f4a22, 0x1a6a2e, 0x2a8a3c, 0x144e26, 0x4aa04e], rnd, 1.15);
+      this.ceil.push(cv);
+    }
+    ctx.globalAlpha = Math.min(1, under * 1.1);
+    const cw = R * 0.5, ch = cw * 0.69, sway = Math.sin(t * 0.0004) * 6;
+    for (let i = 0; i < 5; i++) ctx.drawImage(this.ceil[i % 4], (i / 4) * w - cw / 2 + sway * (i % 2 ? 1 : -1), -ch * 0.62, cw, ch);
+    for (let i = 0; i < 2; i++) { const sw = cw * 0.7, sh = ch * 0.7; ctx.drawImage(this.ceil[(i + 1) % 4], -sw * 0.62, h * (0.25 + i * 0.42) - sh / 2, sw, sh); ctx.drawImage(this.ceil[(i + 2) % 4], w - sw * 0.38, h * (0.4 - i * 0.22) - sh / 2, sw, sh); }
+    ctx.globalAlpha = 1;
+    const vg = ctx.createRadialGradient(cx, cy * 1.05, R * 0.22, cx, cy, R * 0.75); vg.addColorStop(0, 'rgba(6,26,10,0)'); vg.addColorStop(1, `rgba(6,26,10,${0.55 * under})`);
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, w, h);
+    // light through the leaves: slanting shafts with dust in them, and moving pools of sun on the ground
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let k = 0; k < 6; k++) {
+      const x0 = (0.06 + k * 0.17) * w + Math.sin(t * 0.00025 + k * 1.7) * 26, wd = 30 + (k % 3) * 24, sl = h * 0.5;
+      const g = ctx.createLinearGradient(x0, 0, x0 + sl, h);
+      g.addColorStop(0, `rgba(255,244,190,${0.16 * under})`); g.addColorStop(0.65, `rgba(255,240,170,${0.05 * under})`); g.addColorStop(1, 'rgba(255,240,170,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x0, 0); ctx.lineTo(x0 + wd, 0); ctx.lineTo(x0 + wd + sl, h); ctx.lineTo(x0 + sl, h); ctx.closePath(); ctx.fill();
+    }
+    for (let k = 0; k < 24; k++) {
+      const px = ((k * 0.6180339 + t * 0.000012 * (1 + (k % 3) * 0.4)) % 1) * w, py = (0.3 + ((k * 0.7548776) % 1) * 0.7) * h, rr = (24 + (k % 5) * 12) * (R / 900);
+      const g = ctx.createRadialGradient(px, py, 0, px, py, rr); g.addColorStop(0, `rgba(255,246,190,${0.2 * under})`); g.addColorStop(1, 'rgba(255,246,190,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(px, py, rr, 0, Math.PI * 2); ctx.fill();
+    }
+    for (let k = 0; k < 30; k++) { // dust and pollen turning in the light
+      const px = ((k * 0.3819 + t * 0.00001) % 1) * w, py = ((k * 0.6180339 + t * 0.000025 * (1 + (k % 4) * 0.3)) % 1) * h;
+      ctx.fillStyle = `rgba(255,250,200,${0.5 * under})`; ctx.fillRect(px, py, 1.6, 1.6);
+    }
+    ctx.restore();
+    // a few leaves coming down, turning as they fall
+    for (let k = 0; k < 12; k++) {
+      const f = ((k * 0.4142 + t * 0.00003 * (0.6 + (k % 4) * 0.25)) % 1), x = ((k * 0.7071) % 1) * w + Math.sin(t * 0.0008 + k * 2) * 26 * (R / 900), y = f * h * 1.1 - h * 0.05;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(t * 0.0012 * (k % 2 ? 1 : -1) + k); ctx.scale(Math.cos(t * 0.002 + k) * 0.6 + 0.7, 1);
+      const L = (8 + (k % 3) * 4) * (R / 900) * 1.6;
+      ctx.globalAlpha = under * 0.9; ctx.fillStyle = ['#3a8a3a', '#6aaa40', '#c8a030', '#2e7a34'][k % 4];
+      ctx.beginPath(); ctx.moveTo(0, -L); ctx.quadraticCurveTo(L * 0.5, -L * 0.1, 0, L); ctx.quadraticCurveTo(-L * 0.5, -L * 0.1, 0, -L); ctx.fill();
+      ctx.strokeStyle = 'rgba(20,50,20,0.6)'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.moveTo(0, -L * 0.9); ctx.lineTo(0, L * 0.9); ctx.stroke();
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
   }
 
   private drawWeather(dt: number, w: number, h: number, k: number) {

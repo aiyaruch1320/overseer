@@ -1,4 +1,6 @@
 import { FATES as LAND_FATES, fateOf } from '../sim/fate';
+import { canopyCover } from '../render/treeart';
+import { MU_TO_WU } from '../world/geo';
 import type Phaser from 'phaser';
 import { Game, COSTS, SEASONS, giftCost, BIRTH_TIME_TH, BIRTH_SIGN_TH, type Meta } from '../sim/game';
 import type { Storylet, LogEntry, StatKey, Axis, Choice } from '../sim/types';
@@ -273,6 +275,8 @@ export class UI {
       this.sky.weather = (countries && v.country >= 0 && countries[v.country].weather) || 'clear';
       const wc = v.country >= 0 ? (countries ?? generateWorld().countries)[v.country] : null;
       this.sky.fx = wc ? PASS_FX[wc.continent] ?? 'none' : 'none';
+      this.sky.canopy = canopyCover(v.cx / MU_TO_WU, v.cy / MU_TO_WU); // leaves only where the camera really is under the world tree's crown
+      if (this.sky.canopy > 0.03) this.sky.fx = 'leaves'; else if (this.sky.fx === 'leaves') this.sky.fx = 'none';
     }
     this.sky.frame(dt);
   }

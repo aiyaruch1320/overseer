@@ -2,6 +2,7 @@
 // ruin at Arkea, the hell rift between Morhaven and Kaz-Durum, the sunken city's whirlpool in Nebulia, and Nebulia's drifting fog.
 import type { ViewRect } from './coast';
 import { paintWorldTree } from '../treeart';
+import { MU_TO_WU } from '../../world/geo';
 
 const TAU = Math.PI * 2;
 
@@ -32,7 +33,8 @@ export class Landmarks {
   /** drawn after the ground symbols: the tree, the machine, the rift, the whirlpool */
   drawGround(ctx: CanvasRenderingContext2D, s: number, view: ViewRect, time: number) {
     const hair = 1 / s;
-    if (near(view, 265, 280, 110)) { ctx.save(); ctx.translate(265, 282); ctx.scale(0.7, 0.7); this.worldTree(ctx, 0, 0, time, hair / 0.7); ctx.restore(); }
+    if (near(view, 265, 280, 110)) { { const z = s / MU_TO_WU, fade = 1 - Math.min(1, Math.max(0, (z - 1.4) / 1.6)); // from under its crown the tree is no longer a thing on the ground: the canopy overhead (sky.ts) takes over
+      if (fade > 0.01) { ctx.save(); ctx.globalAlpha = fade * fade * (3 - 2 * fade); ctx.translate(265, 282); ctx.scale(0.7, 0.7); this.worldTree(ctx, 0, 0, time, hair / 0.7); ctx.restore(); } } }
     if (near(view, 1112, 302, 50)) this.arkea(ctx, 1112, 302, time, hair);
     if (near(view, 710, 150, 60)) this.whirlpool(ctx, 708, 150, 44, 19, time, hair);
     if (near(view, 705, 808, 120)) this.rift(ctx, time, hair);

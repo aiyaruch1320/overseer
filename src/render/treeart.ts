@@ -88,3 +88,13 @@ export function paintWorldTree(c: CanvasRenderingContext2D, x: number, y: number
   }
   c.restore();
 }
+
+/** where the world tree stands on the map (map units) and how much of the ground around it lies under its crown: 1 under the middle of the
+ *  canopy, thinning to 0 at its drip line. Only towns under it get the leaf-light of the dive; the rest of the forest does not. */
+export const WORLD_TREE = { x: 265, y: 282, scale: 0.7 };
+export function canopyCover(mx: number, my: number): number {
+  const cx = WORLD_TREE.x, cy = WORLD_TREE.y - 72, rx = 100, ry = 86;
+  const d = Math.hypot((mx - cx) / rx, (my - cy) / ry);
+  const k = Math.max(0, Math.min(1, (d - 0.45) / 0.55));
+  return 1 - k * k * (3 - 2 * k);
+}
