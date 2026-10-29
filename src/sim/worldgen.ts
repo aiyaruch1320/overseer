@@ -2,6 +2,7 @@ import { RNG, makeNoise } from './rng';
 import type { Continent, Country } from './types';
 import { climateById } from '../data/races';
 import { DEFS, ownerAt, MU_TO_WU } from '../world/geo';
+import { portOf } from '../city/flavor';
 import { COUNTRY_DOCS, type CountryDoc } from '../data/countries';
 
 export const WORLD_SEED = 'อาเธเรีย';
@@ -343,11 +344,24 @@ export function generateWorld(): WorldMap {
         if (d < bd) { bd = d; c.cx = x; c.cy = y; }
       }
     }
+    // a trading port stands on the water: its capital (and about every other town) is moved to within a few tiles of the sea
+    const portC = portOf(c.code, true) >= 1;
+    const coastal = (x: number, y: number) => { for (let dy = -6; dy <= 6; dy += 2) for (let dx = -8; dx <= 8; dx += 2) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H && country[yy * W + xx] < 0) return true; } return false; };
+    if (portC && !coastal(c.cx, c.cy)) {
+      let bd = Infinity;
+      for (const i of tilesOf[c.id]) {
+        const x = i % W, y = Math.floor(i / W);
+        if (x < 2 || y < 2 || x >= W - 2 || y >= H - 2 || !inland(x, y) || !coastal(x, y)) continue;
+        const d = Math.hypot(x - c.cx, y - c.cy);
+        if (d < bd) { bd = d; c.cx = x; c.cy = y; }
+      }
+    }
     const pts: [number, number][] = [[c.cx, c.cy]];
     for (let tries = 0; pts.length < n && tries < 1200; tries++) {
       const t = rng.pick(tilesOf[c.id]);
       const x = t % W, y = Math.floor(t / W);
       if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
+      if (portC && pts.length % 2 === 1 && tries < 500 && !coastal(x, y)) continue;
       if ((tries > 600 || inland(x, y)) && pts.every(([px, py]) => Math.hypot(px - x, py - y) >= 16)) pts.push([x, y]);
     }
     pts.forEach(([x, y], k) => {

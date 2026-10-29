@@ -3,6 +3,7 @@
 // own, taken from docs/countries/01-azgar.md (the dragon's nest of Oran-Sal, the caldera of the fire elder, the stair gate...).
 import { type Pen, hex, shadeC, mixC } from './draw';
 import type { CityData } from './citygen';
+import { leafCluster, leafRng } from '../render/treeart';
 import { T } from './citygen';
 
 type Draw = (p: Pen, d: CityData, px: number, py: number) => void;
@@ -91,8 +92,8 @@ const sapling: Draw = (p, d, px, py) => {
   for (const s of [-1, 1]) for (let k = 0; k < 3; k++) { p.x2.strokeStyle = hex(0x4a3322); p.x2.lineWidth = 4 - k; p.x2.beginPath(); p.x2.moveTo(px, py - 8); p.x2.quadraticCurveTo(px + s * (10 + k * 7), py - 1 + k, px + s * (18 + k * 8), py + 3 + k * 2); p.x2.stroke(); }
   p.fill(0x5e3a26, px - 6, py - 38, 12, 34); p.fill(0x7a5238, px - 6, py - 38, 4, 34); p.fill(0x3e2616, px + 3, py - 38, 3, 34);
   p.line(0x5e3a26, px, py - 30, px - 18, py - 46, 4); p.line(0x5e3a26, px, py - 34, px + 18, py - 50, 4);
-  const crown = (cx: number, cy: number, r: number, c: number) => { p.circ(shadeC(c, 0.62), cx + 2, cy + 3, r); p.circ(c, cx, cy, r); p.circ(shadeC(c, 1.3), cx - r * 0.3, cy - r * 0.3, r * 0.55); };
-  crown(px - 20, py - 52, 15, L[0]); crown(px + 20, py - 54, 15, L[1 % L.length]); crown(px, py - 62, 20, L[2 % L.length]); crown(px - 8, py - 78, 12, L[3 % L.length]);
+  const rr = leafRng(5);
+  leafCluster(p.x2, px - 22, py - 52, 22, 17, L, rr); leafCluster(p.x2, px + 22, py - 54, 22, 17, L, rr); leafCluster(p.x2, px, py - 64, 30, 22, L, rr); leafCluster(p.x2, px - 6, py - 82, 20, 14, L, rr);
   for (let k = 0; k < 14; k++) p.circ('rgba(255,252,170,0.95)', px - 34 + ((k * 37) % 68), py - 92 + ((k * 23) % 62), 1.4);
   for (let k = 0; k < 5; k++) p.circ(0xf2c94c, px - 22 + k * 11, py - 50 - (k % 2) * 8, 2);
   for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; p.fill(0x8a9a78, px + Math.cos(a) * 34 - 2, py + Math.sin(a) * 14 - 5, 4, 6); p.fill('rgba(120,255,180,0.8)', px + Math.cos(a) * 34 - 1, py + Math.sin(a) * 14 - 3, 2, 2); }
@@ -240,7 +241,7 @@ export const FOOT: Record<string, { rx: number; ry: number; up: number; upW: num
   fountain: { rx: 42, ry: 22, up: 44, upW: 14 }, statue: { rx: 40, ry: 21, up: 82, upW: 26 }, bonfire: { rx: 48, ry: 18, up: 30, upW: 60 }, clock: { rx: 32, ry: 16, up: 82, upW: 30 },
   sapling: { rx: 40, ry: 20, up: 94, upW: 60 }, obelisk: { rx: 36, ry: 18, up: 94, upW: 24 }, skynest: { rx: 62, ry: 30, up: 150, upW: 72 }, caldera: { rx: 60, ry: 30, up: 0, upW: 0 },
   stairgate: { rx: 56, ry: 22, up: 74, upW: 100 }, twinpalace: { rx: 58, ry: 28, up: 62, upW: 100 }, eridan: { rx: 52, ry: 20, up: 54, upW: 50 }, liftmine: { rx: 54, ry: 22, up: 76, upW: 60 },
-  pump: { rx: 46, ry: 22, up: 72, upW: 70 }, rainspire: { rx: 46, ry: 18, up: 112, upW: 24 }, worldtree: { rx: 72, ry: 36, up: 150, upW: 120 }, abyss: { rx: 52, ry: 30, up: 0, upW: 0 },
+  pump: { rx: 46, ry: 22, up: 72, upW: 70 }, rainspire: { rx: 46, ry: 18, up: 112, upW: 24 }, worldtree: { rx: 96, ry: 40, up: 210, upW: 96 }, abyss: { rx: 52, ry: 30, up: 0, upW: 0 },
   arkea: { rx: 64, ry: 36, up: 0, upW: 0 }, gate: { rx: 46, ry: 24, up: 0, upW: 0 }, lake: { rx: 50, ry: 30, up: 0, upW: 0 }, airship: { rx: 70, ry: 16, up: 44, upW: 120 },
   lighthouse: { rx: 22, ry: 10, up: 58, upW: 22 }, council: { rx: 62, ry: 35, up: 24, upW: 90 }, pyramid: { rx: 56, ry: 16, up: 66, upW: 100 }, crystal: { rx: 30, ry: 10, up: 56, upW: 40 },
   oasis: { rx: 38, ry: 22, up: 30, upW: 30 }, forge: { rx: 22, ry: 12, up: 30, upW: 30 }, gear: { rx: 22, ry: 22, up: 0, upW: 0 },

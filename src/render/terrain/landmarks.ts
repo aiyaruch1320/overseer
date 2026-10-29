@@ -1,6 +1,7 @@
 // Hand-placed story landmarks drawn live on top of the terrain (few, so they can breathe): the world tree, the nine-axis machine
 // ruin at Arkea, the hell rift between Morhaven and Kaz-Durum, the sunken city's whirlpool in Nebulia, and Nebulia's drifting fog.
 import type { ViewRect } from './coast';
+import { paintWorldTree } from '../treeart';
 
 const TAU = Math.PI * 2;
 
@@ -31,7 +32,7 @@ export class Landmarks {
   /** drawn after the ground symbols: the tree, the machine, the rift, the whirlpool */
   drawGround(ctx: CanvasRenderingContext2D, s: number, view: ViewRect, time: number) {
     const hair = 1 / s;
-    if (near(view, 265, 280, 110)) { ctx.save(); ctx.translate(265, 282); ctx.scale(1.25, 1.25); this.worldTree(ctx, 0, 0, time, hair / 1.25); ctx.restore(); }
+    if (near(view, 265, 280, 110)) { ctx.save(); ctx.translate(265, 282); ctx.scale(0.7, 0.7); this.worldTree(ctx, 0, 0, time, hair / 0.7); ctx.restore(); }
     if (near(view, 1112, 302, 50)) this.arkea(ctx, 1112, 302, time, hair);
     if (near(view, 710, 150, 60)) this.whirlpool(ctx, 708, 150, 44, 19, time, hair);
     if (near(view, 705, 808, 120)) this.rift(ctx, time, hair);
@@ -49,37 +50,29 @@ export class Landmarks {
     ctx.globalAlpha = 1;
   }
 
+  private treeSprite: HTMLCanvasElement | null = null;
+  /** the tree is painted once, leaf by leaf, into a big sprite; only the pulse of its aura and the drifting motes are live */
+  private tree(): HTMLCanvasElement {
+    if (this.treeSprite) return this.treeSprite;
+    const k = 5, cv = document.createElement('canvas');
+    cv.width = 320 * k; cv.height = 262 * k;
+    paintWorldTree(cv.getContext('2d')!, 160 * k, 238 * k, k, [0x2a7a3a, 0x3d8f45, 0x5aa04e, 0x86c44e, 0x1f6a34], 11);
+    return (this.treeSprite = cv);
+  }
+
   private worldTree(ctx: CanvasRenderingContext2D, x: number, y: number, time: number, hair: number) {
+    void hair;
     const pulse = 0.85 + 0.15 * Math.sin(time * 0.8);
-    // aura, roots, trunk
-    let g = ctx.createRadialGradient(x, y - 16, 4, x, y - 16, 78);
-    g.addColorStop(0, `rgba(190,255,150,${0.34 * pulse})`); g.addColorStop(1, 'rgba(190,255,150,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y - 16, 78, 0, TAU); ctx.fill();
-    ctx.lineCap = 'round';
-    for (let k = 0; k < 13; k++) {
-      const a = (k / 13) * TAU + 0.4, len = 38 + (k % 4) * 10, bend = (k % 2 ? 1 : -1) * 0.5;
-      let px = x, py = y + 2;
-      for (let seg = 0; seg < 3; seg++) {
-        const aa = a + bend * seg * 0.35, nx = px + Math.cos(aa) * (len / 3), ny = py + Math.sin(aa) * (len / 3) * 0.55 + 1.2;
-        ctx.strokeStyle = seg < 2 ? '#4a3322' : '#5c4330'; ctx.lineWidth = 3.4 - seg * 1.1;
-        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny); ctx.stroke();
-        px = nx; py = ny;
-      }
-    }
-    ctx.fillStyle = '#5b4030'; ctx.beginPath(); ctx.moveTo(x - 9, y + 4); ctx.quadraticCurveTo(x - 6, y - 12, x - 5, y - 24); ctx.lineTo(x + 5, y - 24); ctx.quadraticCurveTo(x + 6, y - 12, x + 9, y + 4); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#7a5a40'; ctx.fillRect(x - 2, y - 22, 3, 24);
-    // canopy: three layers of overlapping crowns
-    const crowns: [number, number, number][] = [[-26, -34, 16], [26, -34, 16], [0, -28, 20], [-34, -52, 15], [34, -52, 15], [-14, -58, 18], [14, -58, 18], [0, -74, 19], [-22, -74, 14], [22, -74, 14]];
-    for (const [dx, dy, r] of crowns) { ctx.fillStyle = '#1f5f2e'; ctx.beginPath(); ctx.arc(x + dx + 1.5, y + dy + 2.5, r, 0, TAU); ctx.fill(); }
-    for (const [dx, dy, r] of crowns) { ctx.fillStyle = '#2f8a3f'; ctx.beginPath(); ctx.arc(x + dx, y + dy, r, 0, TAU); ctx.fill(); }
-    for (const [dx, dy, r] of crowns) { ctx.fillStyle = 'rgba(170,240,120,0.55)'; ctx.beginPath(); ctx.arc(x + dx - r * 0.25, y + dy - r * 0.3, r * 0.55, 0, TAU); ctx.fill(); }
-    ctx.strokeStyle = 'rgba(15,45,20,0.55)'; ctx.lineWidth = hair;
-    for (const [dx, dy, r] of crowns) { ctx.beginPath(); ctx.arc(x + dx, y + dy, r, 0, TAU); ctx.stroke(); }
-    // motes of light drifting up
-    for (let k = 0; k < 16; k++) {
+    const g = ctx.createRadialGradient(x, y - 60, 6, x, y - 80, 160);
+    g.addColorStop(0, `rgba(190,255,150,${0.3 * pulse})`); g.addColorStop(1, 'rgba(190,255,150,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y - 80, 160, 0, TAU); ctx.fill();
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(this.tree(), x - 160, y - 238, 320, 262);
+    // motes of light drifting up from the canopy
+    for (let k = 0; k < 22; k++) {
       const t = (time * 0.07 + k * 0.137) % 1, a = k * 2.4;
       ctx.fillStyle = `rgba(255,252,190,${0.85 * (1 - t)})`;
-      ctx.beginPath(); ctx.arc(x + Math.cos(a) * (14 + 30 * t) , y - 40 - 55 * t + Math.sin(a + time) * 3, 1.1 + (k % 3) * 0.3, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.arc(x + Math.cos(a) * (20 + 50 * t), y - 120 - 70 * t + Math.sin(a + time) * 3, 1.1 + (k % 3) * 0.35, 0, TAU); ctx.fill();
     }
   }
 

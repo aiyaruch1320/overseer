@@ -29,9 +29,10 @@ export interface Theme {
   leaf: number[]; // foliage of the tree and mushroom houses
   extra: Special[]; // the buildings this country is known for
   graves: boolean;
+  religion: string; // the faith of the country: its temples are drawn from it (src/city/sacred.ts)
 }
 
-const BASE: Record<number, Omit<Theme, 'leaf' | 'extra' | 'graves'>> = {
+const BASE: Record<number, Omit<Theme, 'leaf' | 'extra' | 'graves' | 'religion'>> = {
   [CONT.azgar]: {
     id: 'azgar', ground: 0xa4da7e, road: 0xdcd6c8, roadDot: 0xc4bdae, cobble: true, plaza: 0xf0eadc,
     roofs: [0x3d78c4, 0xc9a23a, 0xe9e9f6, 0x6aa0d8], walls: [0xf4eedc, 0xe6e0d0],
@@ -102,7 +103,7 @@ export function themeFor(co: Pick<Country, 'id' | 'code' | 'continent' | 'races'
   const base = BASE[co.continent] || BASE[CONT.aldria];
   const r = new RNG(hash(`theme${co.id}`));
   const major = co.races[0].race;
-  const t: Theme = { ...base, leaf: [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a], extra: [], graves: false, roofs: base.roofs.slice(), walls: base.walls.slice(), styles: base.styles.map((s) => [...s] as [BStyle, number]), field: base.field.slice() };
+  const t: Theme = { ...base, leaf: [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a], extra: [], graves: false, religion: co.religion || 'none', roofs: base.roofs.slice(), walls: base.walls.slice(), styles: base.styles.map((s) => [...s] as [BStyle, number]), field: base.field.slice() };
   // roofs: a country keeps three of the continent's colours plus its own accent
   t.roofs = r.shuffle(t.roofs.slice()).slice(0, 3);
   const accent = r.pick(ACCENTS);

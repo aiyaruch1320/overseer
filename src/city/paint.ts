@@ -8,6 +8,9 @@ import type { Theme, TreeKind } from './themes';
 import { NEW_STYLES, doorPath, fence } from './houses';
 import { LANDMARKS, paintSquare } from './landmarks';
 import { CIVIC } from './civic';
+import { paintShip, paintCrane, paintBeacon, paintRaft } from './ships';
+import { paintWorldTree, leafCluster, leafRng } from '../render/treeart';
+import { paintStreet, surfaceOf, quality } from './streets';
 import { FATES } from '../sim/fate';
 import { type Pen, type Col, makePen, hex, shadeC, mixC, shadow, shingles, slates, thatch, stoneWall, planks, bricks, windowAt, archWindow, doorAt, chimney, eaves, flag } from './draw';
 
@@ -224,7 +227,7 @@ const treeHouse: Paint = (p, b, th, X, Y, W, H) => {
   const tx = X + (r.chance(0.5) ? W * 0.3 : W * 0.7), trR = Math.min(13, W * 0.2), base = Y + H - 4;
   p.ell('rgba(0,0,0,0.26)', X + W / 2 + 6, base + 3, W / 2 + 4, 7);
   // canopy behind: soft layers of foliage
-  const crown = (cx: number, cy: number, rad: number) => { p.circ(shadeC(L0, 0.6), cx + 2, cy + 3, rad); p.circ(L0, cx, cy, rad); p.circ(L1, cx - rad * 0.3, cy - rad * 0.3, rad * 0.62); p.circ(shadeC(L2, 1.1), cx + rad * 0.4, cy - rad * 0.2, rad * 0.4); };
+  const crown = (cx: number, cy: number, rad: number) => leafCluster(p.x2, cx, cy, rad * 1.25, rad * 1.05, [L0, L1, L2], leafRng(b.seed + Math.round(cx * 7 + cy)), 1);
   crown(tx - 14, Y + 16, 16); crown(tx + 12, Y + 14, 15); crown(tx, Y + 6, 17);
   // roots and trunk
   for (const d of [-1, 1]) { p.x2.strokeStyle = hex(0x4a3322); p.x2.lineWidth = 4; p.x2.beginPath(); p.x2.moveTo(tx, base - 8); p.x2.quadraticCurveTo(tx + d * trR, base, tx + d * (trR + 12), base + 2); p.x2.stroke(); }
@@ -353,23 +356,7 @@ function landmark(p: Pen, d: CityData, px: number, py: number) {
     case 'bonfire': p.circ(0x3a2a22, px, py + 2, 14); p.fill(0x5e3a26, px - 11, py - 1, 22, 3); p.fill(0x5e3a26, px - 4, py - 9, 7, 14); p.poly(0xe04820, [px - 7, py - 2, px, py - 22, px + 7, py - 2]); p.poly(0xffb030, [px - 4, py - 2, px, py - 14, px + 4, py - 2]); for (let k = 0; k < 6; k++) p.circ(0xd8cfb8, px - 16 + k * 6, py + 10, 1.5); break;
     case 'clock': p.fill(0x6a7088, px - 11, py - 32, 22, 36); p.fill(0x8a90a8, px - 11, py - 32, 5, 36); p.poly(0x3a4660, [px - 13, py - 32, px, py - 46, px + 13, py - 32]); p.circ(0xe8e0c0, px, py - 21, 6); p.fill(0x1a1a22, px - 1, py - 26, 2, 6); p.fill(0x1a1a22, px, py - 21, 5, 1); p.circ(0xf2c94c, px, py - 26 + 4, 0.1); break;
     case 'sapling': p.circ('rgba(160,255,140,0.28)', px, py - 8, 30); p.fill(0x5e3a26, px - 4, py - 14, 8, 16); p.circ(0x2f8a3f, px, py - 22, 15); p.circ(0x4aa04e, px - 6, py - 27, 8); p.circ(0x9be07a, px + 7, py - 20, 3.5); break;
-    case 'worldtree': {
-      // the trunk the city grows in: a mountain of bark with roots for streets, windows lit in its fissures, a crown filling the sky
-      const R = 62;
-      p.ell('rgba(0,0,0,0.3)', px + 8, py + 12, R + 8, R * 0.5);
-      const root = (a: number, len: number, w: number) => { p.x2.strokeStyle = hex(0x4a3322); p.x2.lineWidth = w; p.x2.lineCap = 'round'; p.x2.beginPath(); p.x2.moveTo(px + Math.cos(a) * R * 0.6, py + Math.sin(a) * R * 0.3); p.x2.quadraticCurveTo(px + Math.cos(a) * (R + len * 0.5), py + Math.sin(a) * (R * 0.5 + len * 0.2) + 6, px + Math.cos(a) * (R + len), py + Math.sin(a) * (R * 0.5 + len * 0.3)); p.x2.stroke(); };
-      for (let k = 0; k < 11; k++) root((k / 11) * Math.PI * 2 + 0.2, 36 + (k % 3) * 14, 9 - (k % 3) * 2);
-      p.ell(0x4a3322, px, py + 6, R, R * 0.58); p.fill(0x5a4030, px - R * 0.82, py - 70, R * 1.64, 80); p.ell(0x5a4030, px, py - 70, R * 0.82, R * 0.3);
-      p.fill(shadeC(0x5a4030, 1.25), px - R * 0.82, py - 70, 10, 80); p.fill(shadeC(0x5a4030, 0.6), px + R * 0.82 - 14, py - 70, 14, 80);
-      for (let k = 0; k < 14; k++) p.fill(shadeC(0x5a4030, 0.55), px - R * 0.75 + k * (R * 1.5) / 13, py - 66 + (k % 4) * 10, 2, 28 + (k % 3) * 8);
-      for (let k = 0; k < 9; k++) { const wx = px - R * 0.6 + (k % 3) * R * 0.6, wy = py - 52 + Math.floor(k / 3) * 22; p.ell(0x1a120a, wx, wy, 6, 9); p.ell(0xffd878, wx, wy + 1, 4, 6); p.circ('rgba(255,216,120,0.25)', wx, wy, 11); }
-      p.fill(0x3a2a1a, px - 10, py - 12, 20, 22); p.ell(0x3a2a1a, px, py - 12, 10, 8); p.ell(0xffe6a0, px, py - 4, 4, 6);
-      const crown = (cx: number, cy: number, rad: number, c: number) => { p.circ(shadeC(c, 0.6), cx + 3, cy + 4, rad); p.circ(c, cx, cy, rad); p.circ(shadeC(c, 1.3), cx - rad * 0.3, cy - rad * 0.3, rad * 0.55); };
-      const L = th.leaf;
-      for (const [cx, cy, rad] of [[-52, -86, 30], [52, -86, 30], [0, -96, 38], [-30, -118, 28], [30, -118, 28], [0, -132, 30]] as [number, number, number][]) crown(px + cx, py + cy, rad, L[(Math.abs(cx) + rad) % L.length]);
-      for (let k = 0; k < 14; k++) p.circ('rgba(255,252,190,0.85)', px - 70 + r.int(0, 140), py - 150 + r.int(0, 90), 1.4);
-      break;
-    }
+    case 'worldtree': paintWorldTree(p.x2, px, py + 14, 1.5, th.leaf, 5, 1); break;
     case 'abyss': p.ell('rgba(0,0,0,0.3)', px + 4, py + 6, 50, 30); p.ell(0x4a3a34, px, py, 48, 28); p.ell(0x140a08, px, py + 2, 38, 21); p.ell(0x5a1408, px, py + 5, 28, 14); p.ell(0xc2360c, px, py + 6, 20, 9); p.ell(0xff8a2a, px, py + 7, 11, 4); for (let k = 0; k < 14; k++) { const a = (k / 14) * Math.PI * 2; p.fill(0x6a5a52, px + Math.cos(a) * 44 - 2, py + Math.sin(a) * 25 - 3, 4, 6); } for (let k = 0; k < 4; k++) { const a = k * 1.57 + 0.4; p.line(0x2a2a30, px + Math.cos(a) * 44, py + Math.sin(a) * 25, px + Math.cos(a) * 20, py + Math.sin(a) * 10 + 3, 2); } break;
     case 'arkea': { p.ell('rgba(0,0,0,0.3)', px + 4, py + 6, 62, 36); p.ell(0x5a5a60, px, py, 60, 34); p.ell(0x34343c, px, py, 52, 29); p.x2.strokeStyle = hex(0xd8d2b8); for (const [rr, w] of [[48, 2], [38, 1.5], [26, 1.5], [14, 2]] as [number, number][]) { p.x2.lineWidth = w; p.x2.beginPath(); p.x2.ellipse(px, py, rr * 1.12, rr * 0.62, 0, 0, Math.PI * 2); p.x2.stroke(); }
       for (let k = 0; k < 9; k++) { const a = (k / 9) * Math.PI * 2 - Math.PI / 2, nx = px + Math.cos(a) * 36, ny = py + Math.sin(a) * 20; p.circ('rgba(120,255,235,0.35)', nx, ny, 8); p.circ(0xd8f8f2, nx, ny, 2.4); p.line(0xd8d2b8, px, py, nx, ny, 1); }
@@ -452,12 +439,12 @@ export function paintCity(d: CityData, town: Town) {
     if (t === Tile.Void) continue;
     if (t === Tile.Ground) { if ((x * 31 + y * 17) % 5 === 0) fill(shadeC(theme.ground, r.float(0.8, 1.15)), X + r.int(0, 13), Y + r.int(0, 13), 2, 2); continue; }
     if (t === Tile.Road) {
-      fill(theme.road, X, Y, T, T);
-      if (theme.boardwalk) { for (let k = 0; k < T; k += 4) fill(shadeC(theme.road, 0.8), X, Y + k, T, 1); fill(shadeC(theme.road, 1.1), X + (x % 2) * 8, Y, 1, T); }
-      else if (theme.cobble) { for (let k = 0; k < 5; k++) fill(theme.roadDot, X + r.int(0, 12), Y + r.int(0, 12), 4, 3); fill(shadeC(theme.road, 0.9), X, Y + 7, T, 1); }
-      else for (let k = 0; k < 5; k++) fill(theme.roadDot, X + r.int(0, 13), Y + r.int(0, 13), 3, 2);
-      if (at(x, y - 1) !== Tile.Road && at(x, y - 1) !== Tile.Plaza && at(x, y - 1) !== Tile.Dock) fill(shadeC(theme.road, 1.15), X, Y, T, 1);
-      if (at(x, y + 1) !== Tile.Road && at(x, y + 1) !== Tile.Plaza && at(x, y + 1) !== Tile.Dock) fill(shadeC(theme.road, 0.82), X, Y + T - 1, T, 1);
+      const isR = (xx: number, yy: number) => { const k = at(xx, yy); return k === Tile.Road || k === Tile.Plaza || k === Tile.Dock; };
+      const rad = Math.hypot((x - CW / 2) / d.extent.rx, (y - CH / 2) / d.extent.ry);
+      const q = quality(d.wealth, d.roadCls[y * CW + x], Math.min(1, rad));
+      paintStreet(p, theme, d.wet[y * CW + x] ? 'board' : surfaceOf(q, theme), X, Y, [isR(x, y - 1), isR(x, y + 1), isR(x - 1, y), isR(x + 1, y)], r, x + y);
+    } else if (t === Tile.Plaza && d.wet[y * CW + x]) {
+      fill(0x9a7a50, X, Y, T, T); for (let k = 0; k < T; k += 4) fill(0x7a5a38, X, Y + k, T, 1); fill(0xb08a5a, X + (x % 2) * 8, Y, 1, T);
     } else if (t === Tile.Plaza) {
       fill(theme.plaza, X, Y, T, T); fill(shadeC(theme.plaza, 0.9), X, Y, T, 1); fill(shadeC(theme.plaza, 0.9), X, Y, 1, T);
       if ((x + y) % 2 === 0) fill(shadeC(theme.plaza, 1.06), X + 1, Y + 1, T - 2, T - 2);
@@ -468,8 +455,13 @@ export function paintCity(d: CityData, town: Town) {
     } else if (t === Tile.Dock) {
       const over = at(x, y - 1) === Tile.Void || at(x, y + 1) === Tile.Void || at(x - 1, y) === Tile.Void || at(x + 1, y) === Tile.Void;
       if (over) fill('rgba(0,0,0,0.22)', X + 2, Y + 3, T, T);
-      fill(theme.id === 'azgar' ? 0xf0eadc : 0x8a5a3a, X + 1, Y, T - 2, T);
-      for (let k = 0; k < T; k += 4) fill(theme.id === 'azgar' ? 0xd0c8b4 : 0x6a4228, X + 1, Y + k, T - 2, 1);
+      if (theme.id === 'azgar') { fill(0xf0eadc, X + 1, Y, T - 2, T); for (let k = 0; k < T; k += 4) fill(0xd0c8b4, X + 1, Y + k, T - 2, 1); }
+      else if (d.port >= 1 && d.wealth > 0.5) {
+        // a stone quay of dressed blocks, bollards at the edge
+        fill(0x9a948a, X, Y, T, T); for (let j = 0; j < T; j += 8) { fill(shadeC(0x9a948a, 0.78), X, Y + j + 7, T, 1); for (let i = ((j / 8) % 2) * 8; i < T; i += 16) fill(shadeC(0x9a948a, 0.82), X + i, Y + j, 1, 8); }
+        fill(0xb8b2a6, X, Y, T, 1);
+        if (over && (x + y) % 3 === 0) { fill(0x2a2a30, X + 6, Y + 6, 4, 5); fill(0x4a4a52, X + 5, Y + 5, 6, 2); }
+      } else { fill(0x8a5a3a, X + 1, Y, T - 2, T); for (let k = 0; k < T; k += 4) fill(0x6a4228, X + 1, Y + k, T - 2, 1); if (over && (x + y) % 4 === 0) fill(0x3a2a1a, X + 6, Y + 6, 4, 4); }
     } else if (t === Tile.Wall) {
       if (theme.wall === 'palisade') { fill(0x5e3a26, X + 1, Y + 2, 3, 13); fill(0x6a4630, X + 6, Y + 1, 3, 14); fill(0x5e3a26, X + 11, Y + 3, 3, 12); poly(0x4a2c1c, [X + 1, Y + 2, X + 2.5, Y - 1, X + 4, Y + 2]); poly(0x4a2c1c, [X + 6, Y + 1, X + 7.5, Y - 2, X + 9, Y + 1]); poly(0x4a2c1c, [X + 11, Y + 3, X + 12.5, Y, X + 14, Y + 3]); }
       else if (theme.wall === 'hedge') { circ(0x2e7a3e, X + 8, Y + 8, 7); circ(0x4aa04e, X + 6, Y + 6, 4); circ(0x6acb6a, X + 11, Y + 9, 1.5); }
@@ -498,6 +490,9 @@ export function paintCity(d: CityData, town: Town) {
   const px = (d.plaza.x + d.plaza.w / 2) * T, py = (d.plaza.y + d.plaza.h / 2) * T;
   paintSquare(p, d, px, py);
   for (const gt of d.gates) gatehouse(p, d.theme, gt);
+  for (const sh of d.ships) paintShip(p, sh, d.theme);
+  for (const cr of d.cranes) paintCrane(p, cr.x, cr.y);
+  for (const bc of d.beacons) paintBeacon(p, bc.x, bc.y);
   const awnings = [0xe04848, 0x5aa0ea, 0xf2c94c, 0x6cc05a, theme.banner[0], theme.banner[1]];
   d.stalls.forEach((s, k) => {
     fill(0x8a5a3a, s.x + 2, s.y + 6, 2, 8); fill(0x8a5a3a, s.x + 18, s.y + 6, 2, 8);
@@ -517,6 +512,8 @@ export function paintCity(d: CityData, town: Town) {
     const br = new RNG(b0.seed);
     const jr = new RNG(b0.seed ^ 0x7f4a);
     const b: BuildingRec = { ...b0, roof: shadeC(b0.roof, jr.float(0.92, 1.08)), wall: shadeC(b0.wall, jr.float(0.94, 1.06)) };
+    let wetN = 0; for (let i = b0.x; i < b0.x + b0.w; i++) for (let j = b0.y; j < b0.y + b0.h; j++) if (d.wet[j * CW + i]) wetN++;
+    if (wetN > (b0.w * b0.h) * 0.4) paintRaft(makePen(x2, br), theme, GX, GY, Wd, Ht, br);
     const sw = Wd + 2 * PADX, sh = Ht + PADT + PADB;
     if (spr.width < sw || spr.height < sh) { spr.width = Math.max(spr.width, sw); spr.height = Math.max(spr.height, sh); sx2 = spr.getContext('2d')!; } else sx2.clearRect(0, 0, spr.width, spr.height);
     const bp = makePen(sx2, br);

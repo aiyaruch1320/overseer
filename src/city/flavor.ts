@@ -203,3 +203,28 @@ export function flavorOf(code: string): Flavor {
   for (const [re, k] of KEYWORDS) if (re.test(text)) extra.push(...k);
   return { extra };
 }
+
+const BASE_WEALTH = [0.7, 0.15, 0.5, 0.66, 0.5, 0.56, 0.4, 0.5, 0.45]; // by continent: sky kingdoms, the hungry lands, forge, sea, plains, machines, desert, forest, fog
+const RICH = /ร่ำรวย|มั่งคั่ง|ธนาคาร|เงินกู้|การค้า|พ่อค้า|เมืองท่า|สินเชื่อ|ราชสำนัก|ทอง|ไข่มุก|ผ้าไหม/g;
+const POOR = /ผู้ลี้ภัย|ยากจน|ค่าย|หิว|ร่อนเร่|ชนชั้นล่าง|ถูกยึด|สนามเพลาะ|ซากเมือง|ไม่มีเมืองถาวร|โจรสลัด|ตื่นทอง|เมืองเถื่อน/g;
+/** how rich a country is, from its own text: its streets, its houses and its harbours follow */
+export function wealthOf(code: string, continent: number): number {
+  const d = DOC.get(code);
+  let w = BASE_WEALTH[continent] ?? 0.5;
+  if (d) { const t = `${d.title} ${d.story} ${d.gov} ${d.races}`; w += Math.min(0.3, (t.match(RICH) || []).length * 0.1) - Math.min(0.3, (t.match(POOR) || []).length * 0.12); }
+  return Math.max(0, Math.min(1, w));
+}
+
+const PORT = /ท่าเรือ|เมืองท่า|กองเรือ|ต่อเรือ|เส้นเดินเรือ|การค้า|พ่อค้า|ธนาคาร|ตลาด|สินค้า|ขนส่ง/g;
+/** 0 no harbour, 1 a port, 2 a great trading port (the grand quays, piers full of ships, cranes and warehouses) */
+export function portOf(code: string, capital: boolean): number {
+  const d = DOC.get(code);
+  if (!d) return 0;
+  const text = `${d.title} ${d.story} ${d.gov}`, n = (text.match(PORT) || []).length, sea = /ท่าเรือ|เมืองท่า|กองเรือ|ต่อเรือ|เส้นเดินเรือ|เรือ/.test(text);
+  if (n >= 4 && sea) return 2;
+  if (capital && n >= 2 && sea) return 2;
+  return n >= 1 && sea ? 1 : 0;
+}
+/** the sea nations whose towns float on the water: rafts, pontoons and moored hulls, not land */
+const FLOATING = new Set(['NR-03', 'NR-05', 'NR-10', 'NR-13', 'NR-14', 'NR-11']);
+export const floatsOf = (code: string, hash: number) => FLOATING.has(code) || (code.startsWith('NR-') && hash % 100 < 28);

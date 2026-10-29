@@ -2,6 +2,7 @@
 // people who settle things by duel, rows of shops with their signs, the bank, the hospital.
 import type { BuildingRec } from './citygen';
 import type { Theme } from './themes';
+import { sacred } from './sacred';
 import { type Pen, shadeC, mixC, stoneWall, planks, windowAt, doorAt, archWindow, flag } from './draw';
 
 type Paint = (p: Pen, b: BuildingRec, th: Theme, X: number, Y: number, W: number, H: number) => void;
@@ -170,5 +171,5 @@ export const skydock: Paint = (p, b, th, X, Y, W, H) => {
   p.doorX = cx;
 };
 
-export const CIVIC: Record<string, Paint> = { fortress, drill, shops, bank, hospital, arena, aerie, skydock };
+export const CIVIC: Record<string, Paint> = { fortress, drill, shops, bank, hospital, arena, aerie, skydock, temple: sacred, cathedral: sacred };
 void planks; void archWindow;

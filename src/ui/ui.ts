@@ -49,6 +49,9 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
 type Tab = 'char' | 'fate' | 'world' | 'codex';
 type LogFilter = 'all' | 'life' | 'god' | 'world';
 
+/** what the camera dives through on the way down to a town, by continent: foliage under the world tree, thick cloud over the sky isles, fog banks... */
+const PASS_FX: Record<number, import('./sky').PassFx> = { 0: 'clouds', 1: 'smoke', 2: 'embers', 3: 'mist', 5: 'steam', 6: 'sand', 7: 'leaves', 8: 'fog' };
+
 export class UI {
   scene: WorldScene;
   city: CityScene;
@@ -268,6 +271,8 @@ export class UI {
       const v = this.scene.view();
       this.sky.view = { ...v, townZoom: Z.town };
       this.sky.weather = (countries && v.country >= 0 && countries[v.country].weather) || 'clear';
+      const wc = v.country >= 0 ? (countries ?? generateWorld().countries)[v.country] : null;
+      this.sky.fx = wc ? PASS_FX[wc.continent] ?? 'none' : 'none';
     }
     this.sky.frame(dt);
   }

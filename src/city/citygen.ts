@@ -10,6 +10,7 @@ import type { Specialty } from '../data/npclife';
 import { themeFor, pickStyle, type Theme, type BStyle } from './themes';
 import { paintCity } from './paint';
 import { FOOT, SITE } from './landmarks';
+import { wealthOf, portOf, floatsOf } from './flavor';
 import { MU_TO_WU } from '../world/geo';
 
 export const T = 16; // px per tile
@@ -26,6 +27,11 @@ export interface CityData {
   plaza: { x: number; y: number; w: number; h: number }; extent: { rx: number; ry: number };
   spec: Specialty; cv: HTMLCanvasElement; edge: boolean;
   landmark?: { kind: string; x: number; y: number }; // the monument (px of the plan), when this town has one
+  roadCls: Uint8Array; wealth: number; // street class per tile, and how rich the town is (0 poor … 1 great): decides what its streets are made of
+  wet: Uint8Array; // tiles standing on water (a floating town): their streets are boardwalks and their houses sit on rafts
+  ships: { x: number; y: number; len: number; horizontal: boolean; kind: string; seed: number }[]; // moored ships, in tiles
+  cranes: Pt[]; beacons: Pt[]; // harbour cranes and the light at a pier's end (px)
+  port: number; // 0 none, 1 harbour, 2 a great trading port
   solid: number[]; // tiles that keep their ground but cannot be walked: the foot of the monument, the market stalls
   gates: { ax: number; ay: number; bx: number; by: number }[]; // the wall tiles on each side of a street that passes through the wall
   fate?: Fate; // set when the story has reshaped the land (ruins, ash, flood...)
@@ -78,18 +84,25 @@ function generate(town: Town, country: CityCountry): CityData {
       if (!info.land || info.inland < 0.55) { g[y * CW + x] = Tile.Void; if (inExt(x, y, 1.25)) edge = true; }
     }
   }
+  // a floating town builds out over the water: the sea inside its plan becomes buildable (boardwalks and rafts), and what is left empty goes back to sea
+  const wet = new Uint8Array(CW * CH);
+  const floating = !!probe && floatsOf(country.code, hashString('fl' + town.id));
+  if (floating) for (let i = 0; i < CW * CH; i++) if (g[i] === Tile.Void && inExt(i % CW, Math.floor(i / CW), 0.99)) { g[i] = Tile.Ground; wet[i] = 1; }
+  const port = edge || floating ? portOf(country.code, town.capital) : 0;
+  if (floating) { theme.farm = 0; theme.graves = false; theme.wall = 'none'; theme.ambient = 'gulls'; theme.tree = 'none'; if (!theme.styles.some(([s]) => s === 'stilt')) theme.styles.push(['stilt', 6]); }
   const sky = theme.id === 'azgar';
   const river = false; // the map has no rivers yet: a stream that stops at the plan's edge would look like a cut
   const kind: CityData['kind'] = edge ? (sky ? 'sky' : 'coast') : village ? 'village' : river ? 'river' : 'grid';
 
   const free = (x: number, y: number) => get(x, y) === Tile.Ground;
-  const road = (x: number, y: number) => { const t = get(x, y); if (t === Tile.Ground || t === Tile.Tree) set(x, y, Tile.Road); else if (t === Tile.Water) set(x, y, Tile.Dock); };
+  const roadCls = new Uint8Array(CW * CH); // 0 lane, 1 street, 2 avenue: the better the street, the better its surface
+  const road = (x: number, y: number, cls = 0) => { const t = get(x, y); if (t === Tile.Ground || t === Tile.Tree) set(x, y, Tile.Road); else if (t === Tile.Water) set(x, y, Tile.Dock); if (inb(x, y)) roadCls[y * CW + x] = Math.max(roadCls[y * CW + x], cls); };
   const line = (x0: number, y0: number, x1: number, y1: number, w = 1, clip = 1.04) => {
     const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
     for (let i = 0; i <= n; i++) {
       const x = Math.round(x0 + ((x1 - x0) * i) / n), y = Math.round(y0 + ((y1 - y0) * i) / n);
       if (!inExt(x, y, clip)) continue;
-      for (let a = 0; a < w; a++) for (let b = 0; b < w; b++) road(x + a, y + b);
+      for (let a = 0; a < w; a++) for (let b = 0; b < w; b++) road(x + a, y + b, Math.min(2, w));
     }
   };
 
@@ -111,7 +124,7 @@ function generate(town: Town, country: CityCountry): CityData {
       for (const dy of [-Math.floor(ry * 0.45), Math.floor(ry * 0.45)]) for (let x = Math.floor(cx - rx * 1.1); x <= cx + rx * 1.1; x++) for (let w = 0; w < 3; w++) { const t = get(x, cy + dy + w); if (inExt(x, cy + dy + w, 1.12) && (t === Tile.Ground || t === Tile.Tree)) set(x, cy + dy + w, Tile.Water); else if (t === Tile.Road) set(x, cy + dy + w, Tile.Dock); }
     }
   } else if (plan === 'radial') {
-    for (const f of [0.38, 0.7, 0.97]) for (let a = 0; a < 6.3; a += 0.03) { const x = Math.round(cx + Math.cos(a) * rx * f), y = Math.round(cy + Math.sin(a) * ry * f); road(x, y); road(x + 1, y); }
+    for (const f of [0.38, 0.7, 0.97]) for (let a = 0; a < 6.3; a += 0.03) { const x = Math.round(cx + Math.cos(a) * rx * f), y = Math.round(cy + Math.sin(a) * ry * f); road(x, y, 1); road(x + 1, y, 1); }
     for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2 + 0.2; line(cx, cy, Math.round(cx + Math.cos(a) * rx), Math.round(cy + Math.sin(a) * ry), 1); }
   } else {
     // winding lanes: walkers that wander outward from the square, sometimes forking
@@ -217,7 +230,7 @@ function generate(town: Town, country: CityCountry): CityData {
     }
   }
   // what the country is known for first (near the square), then the houses
-  const DIM: Record<string, [number, number, number, number]> = { arena: [10, 12, 8, 9], warehouse: [8, 11, 5, 6], granary: [7, 10, 5, 6], market: [8, 12, 5, 7], cathedral: [8, 10, 6, 8], library: [7, 9, 6, 7], barracks: [8, 11, 5, 6], minehead: [6, 8, 5, 6], fortress: [11, 13, 8, 9], drill: [7, 9, 5, 6], shops: [8, 11, 4, 5], bank: [6, 8, 5, 6], hospital: [8, 10, 5, 6], aerie: [4, 5, 7, 8], skydock: [6, 8, 6, 7] };
+  const DIM: Record<string, [number, number, number, number]> = { arena: [10, 12, 8, 9], warehouse: [8, 11, 5, 6], granary: [7, 10, 5, 6], market: [8, 12, 5, 7], cathedral: [8, 10, 6, 8], library: [7, 9, 6, 7], barracks: [8, 11, 5, 6], minehead: [6, 8, 5, 6], temple: [8, 10, 6, 8], fortress: [11, 13, 8, 9], drill: [7, 9, 5, 6], shops: [8, 11, 4, 5], bank: [6, 8, 5, 6], hospital: [8, 10, 5, 6], aerie: [4, 5, 7, 8], skydock: [6, 8, 6, 7] };
   const base = ['temple', 'tavern', 'smithy', 'guild', 'tavern', 'smithy'].slice(0, town.capital ? 6 : village ? 3 : 5);
   const extraCap = town.capital ? 99 : village ? 3 : 7;
   // a town of a land at war keeps its fortress for the larger towns; every town has its shops
@@ -261,7 +274,7 @@ function generate(town: Town, country: CityCountry): CityData {
     arena: (x, y) => (radOf(x, y) > 0.45 && radOf(x, y) < 0.9 && adiff(angOf(x, y), milAng + Math.PI / 2) < 0.9 ? 1 : 0.1),
   };
   for (const kind of must) {
-    const dim = DIM[kind] || [5, 8, 5, 6];
+    const dim = village && kind === 'temple' ? [5, 6, 5, 6] : DIM[kind] || [5, 8, 5, 6];
     const pref = PREF[kind];
     for (let tries = 0; tries < 6000; tries++) {
       const w = rng.int(dim[0], dim[1]), h = rng.int(dim[2], dim[3]);
@@ -315,36 +328,70 @@ function generate(town: Town, country: CityCountry): CityData {
       break;
     }
   }
-  // piers over the water (or landing stages over the sky)
-  if (edge) {
+  // the harbour: piers over the water (or landing stages over the sky). A great trading port has a stone quay along its whole shore, many long
+  // broad piers with ships moored at their sides, cranes, and a light at the end of the longest mole.
+  const ships: CityData['ships'] = [], cranes: Pt[] = [], beacons: Pt[] = [];
+  if (edge || floating) {
     const shore: [number, number, number, number][] = [];
     for (let y = 1; y < CH - 1; y++) for (let x = 1; x < CW - 1; x++) {
       const t = get(x, y);
       if ((t !== Tile.Ground && t !== Tile.Road) || !inExt(x, y, 1.15)) continue;
       for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (get(x + dx, y + dy) === Tile.Void) { shore.push([x, y, dx, dy]); break; }
     }
-    const piers: [number, number][] = [];
-    for (let k = 0; k < 90 && piers.length < 5 && shore.length; k++) {
-      const [x, y, dx, dy] = rng.pick(shore);
-      if (piers.some(([px, py]) => Math.hypot(px - x, py - y) < 12)) continue;
-      const len = rng.int(6, 11);
-      for (let s = 1; s <= len; s++) for (let wd = 0; wd < 2; wd++) { const px = x + dx * s + (dy !== 0 ? wd : 0), py = y + dy * s + (dx !== 0 ? wd : 0); if (get(px, py) === Tile.Void) set(px, py, Tile.Dock); }
-      piers.push([x, y]);
+    if (port >= 1 && !sky) {
+      // the quay: a paved band along the water's edge, the water side planked out two tiles
+      for (const [x, y, dx, dy] of shore) {
+        if (!inExt(x, y, 1.02)) continue;
+        if (get(x, y) === Tile.Ground) { set(x, y, Tile.Road); roadCls[y * CW + x] = Math.max(roadCls[y * CW + x], 2); }
+        for (let s = 1; s <= (port >= 2 ? 2 : 1); s++) if (get(x + dx * s, y + dy * s) === Tile.Void) set(x + dx * s, y + dy * s, Tile.Dock);
+      }
     }
+    const want = port >= 2 ? 12 : port === 1 ? 7 : 5, wide = port >= 2 ? 3 : 2;
+    const piers: [number, number][] = [];
+    let longest: { x: number; y: number } | null = null, longLen = 0;
+    for (let k = 0; k < 400 && piers.length < want && shore.length; k++) {
+      const [x, y, dx, dy] = rng.pick(shore);
+      if (piers.some(([px, py]) => Math.hypot(px - x, py - y) < (port >= 2 ? 10 : 12))) continue;
+      const len = port >= 2 ? rng.int(10, 20) : rng.int(6, 11);
+      let ok = 0;
+      for (let s = 1; s <= len; s++) for (let wd = 0; wd < wide; wd++) { const px = x + dx * s + (dy !== 0 ? wd : 0), py = y + dy * s + (dx !== 0 ? wd : 0); if (get(px, py) === Tile.Void) { set(px, py, Tile.Dock); ok = s; } else if (get(px, py) !== Tile.Dock) { s = len + 1; break; } }
+      if (!ok) continue;
+      piers.push([x, y]);
+      if (ok > longLen) { longLen = ok; longest = { x: x + dx * ok, y: y + dy * ok }; }
+      // ships lie alongside, on both sides of a long pier, each with its own look
+      if (port >= 1 && ok >= 6 && !sky) {
+        for (const side of [-1, 1]) {
+          let s0 = 2;
+          while (s0 + 5 < ok) {
+            const l = rng.int(5, port >= 2 ? 9 : 7);
+            const sx = dy !== 0 ? x + (side < 0 ? -2 : wide + 0) : x + dx * s0 - (dx > 0 ? 0 : l - 1), sy = dy !== 0 ? y + dy * s0 - (dy > 0 ? 0 : l - 1) : y + (side < 0 ? -2 : wide);
+            const horizontal = dy === 0;
+            let free = true;
+            for (let i = 0; i < l && free; i++) for (let j = 0; j < 2 && free; j++) { const tx = horizontal ? sx + i : sx + j, ty = horizontal ? sy + j : sy + i; if (get(tx, ty) !== Tile.Void) free = false; }
+            if (free && rng.chance(0.8)) { ships.push({ x: sx, y: sy, len: l, horizontal, kind: theme.id, seed: rng.int(1, 1e9) }); }
+            s0 += l + 1;
+          }
+        }
+      }
+      if (port >= 2 && rng.chance(0.7)) cranes.push({ x: (x + dx) * T + T / 2, y: (y + dy) * T + T });
+    }
+    if (port >= 1 && longest && !sky) beacons.push({ x: longest.x * T + T / 2, y: longest.y * T + T });
   }
   // trees in what is left
   if (theme.tree !== 'none') for (let i = 0; i < CW * CH; i++) {
-    if (g[i] !== Tile.Ground) continue;
+    if (g[i] !== Tile.Ground || wet[i]) continue;
     const x = i % CW, y = Math.floor(i / CW);
     const out = inExt(x, y, 0.95) ? 1 : 2.2;
     if (rng.chance(theme.treeDensity * out)) g[i] = Tile.Tree;
   }
+  if (floating) for (let i = 0; i < CW * CH; i++) if (wet[i] && g[i] === Tile.Ground) g[i] = Tile.Void; // what the town did not build on is open water again
   const walk: [number, number][] = [];
   for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) { const t = g[y * CW + x]; if ((t === Tile.Road || t === Tile.Plaza || t === Tile.Dock) && !solid.has(y * CW + x)) walk.push([x, y]); }
   const lamps: Pt[] = [];
   if (theme.lamps) for (let y = 0; y < CH; y += 1) for (let x = 0; x < CW; x += 1) if (g[y * CW + x] === Tile.Road && (x * 7 + y * 13) % 19 === 0 && g[y * CW + x - 1] !== Tile.Building && inExt(x, y, 1)) lamps.push({ x: x * T + T / 2, y: y * T + T - 2 });
   const spec = townSpecialty(town.id, country);
-  const data: CityData = { townId: town.id, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, landmark, solid: [...solid], gates, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
+  const wealth = Math.max(0, Math.min(1, wealthOf(country.code, country.continent) + (town.capital ? 0.14 : town.size >= 3 ? 0.1 : town.size === 1 ? -0.1 : 0) + ((hashString('w' + town.id) % 100) / 100 - 0.5) * 0.16));
+  const data: CityData = { townId: town.id, roadCls, wealth, wet, ships, cranes, beacons, port, theme, kind, grid: g, buildings, walk, lamps, stalls, plaza, extent: { rx, ry }, spec, landmark, solid: [...solid], gates, cv: document.createElement('canvas'), edge, fate: fateOf({ fate: country.fate, flags: country.flags ?? [] }) };
   paintCity(data, town);
   return data;
 }

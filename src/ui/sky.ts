@@ -4,6 +4,7 @@
 //  • the weather of the country under the camera (rain, snow, sand, fog, storm, ash, heat)
 //  • a fog veil used as the transition into and out of a town
 import { RNG } from '../sim/rng';
+import { leafCluster, leafRng } from '../render/treeart';
 
 export interface SkyView { zoom: number; minZoom: number; maxZoom: number; cx: number; cy: number; W: number; H: number; townZoom: number }
 interface Cloud { x: number; y: number; s: number; sprite: number; drift: number }
@@ -30,10 +31,42 @@ function cloudSprites(): HTMLCanvasElement[] {
   return out;
 }
 
+export type PassFx = 'none' | 'leaves' | 'clouds' | 'fog' | 'mist' | 'smoke' | 'embers' | 'steam' | 'sand';
+
+/** soft puffs of one colour, for the haze a camera dives through (smoke, fog, mist, sand) */
+function puffSprites(lit: string, shade: string, seed: number, n = 4): HTMLCanvasElement[] {
+  const r = new RNG(seed), out: HTMLCanvasElement[] = [];
+  for (let k = 0; k < n; k++) {
+    const cv = document.createElement('canvas'); cv.width = 320; cv.height = 240; const c = cv.getContext('2d')!;
+    for (let i = 0; i < 12; i++) {
+      const cx = r.float(60, 260), cy = r.float(60, 180), rad = r.float(34, 70), g = c.createRadialGradient(cx, cy, rad * 0.1, cx, cy, rad);
+      const col = i < 5 ? shade : lit;
+      g.addColorStop(0, `rgba(${col},0.85)`); g.addColorStop(0.6, `rgba(${col},0.45)`); g.addColorStop(1, `rgba(${col},0)`);
+      c.fillStyle = g; c.beginPath(); c.arc(cx, cy, rad, 0, Math.PI * 2); c.fill();
+    }
+    out.push(cv);
+  }
+  return out;
+}
+/** a bough with its leaves, seen from inside the canopy: the thing the camera passes through under the world tree */
+function leafSprites(): HTMLCanvasElement[] {
+  const out: HTMLCanvasElement[] = [];
+  for (let k = 0; k < 5; k++) {
+    const cv = document.createElement('canvas'); cv.width = 360; cv.height = 300; const c = cv.getContext('2d')!, rnd = leafRng(31 + k * 17);
+    c.strokeStyle = '#4a3322'; c.lineWidth = 7; c.lineCap = 'round'; c.beginPath(); c.moveTo(20, 150 + (k % 2) * 40); c.quadraticCurveTo(160, 110 + k * 12, 330, 150 - (k % 3) * 30); c.stroke();
+    for (const [x, y, rx, ry] of [[90, 130, 70, 50], [190, 120, 80, 56], [270, 140, 60, 46], [150, 170, 60, 44]] as number[][]) leafCluster(c, x, y + (k % 2) * 20, rx, ry, [0x1f6a34, 0x2e8a40, 0x4aa04e, 0x8acc50, 0x2a7a3a], rnd, 1.1);
+    out.push(cv);
+  }
+  return out;
+}
+
 export class Sky {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   private sprites = cloudSprites();
+  fx: PassFx = 'none';
+  private pass: Record<string, HTMLCanvasElement[]> | null = null;
+  private passDots: { a: number; r: number; ph: number; s: number }[] = [];
   private clouds: Cloud[] = [];
   private drops: Drop[] = [];
   private fog = 0;
@@ -99,6 +132,7 @@ export class Sky {
         ctx.globalAlpha = 1;
       }
     }
+    if (this.mode === 'world' && v && this.fx !== 'none') this.drawPass(v, w, h);
     // ----- weather -----
     const wx = this.weather;
     if (weatherStrength > 0.02 && wx !== 'clear') this.drawWeather(dt, w, h, weatherStrength);
@@ -114,6 +148,38 @@ export class Sky {
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
     }
+  }
+
+  /** zooming through a country's own sky: bundles of foliage, cloud, fog or smoke swell past the camera from the middle of the screen outward,
+   *  each born a little earlier or later in the dive, so the descent to a town feels like passing through something, not just growing */
+  private drawPass(v: SkyView, w: number, h: number) {
+    if (!this.pass) {
+      this.pass = {
+        leaves: leafSprites(), clouds: this.sprites, fog: puffSprites('196,190,226', '120,110,160', 21), mist: puffSprites('232,244,252', '170,200,220', 22),
+        smoke: puffSprites('120,112,108', '60,54,52', 23), embers: puffSprites('150,120,110', '70,56,52', 24), steam: puffSprites('226,226,230', '150,150,158', 25), sand: puffSprites('226,198,140', '190,150,90', 26),
+      };
+      const r = new RNG(77);
+      for (let i = 0; i < 22; i++) this.passDots.push({ a: r.float(0, Math.PI * 2), r: r.float(0.2, 1), ph: r.next(), s: r.float(0.7, 1.4) });
+    }
+    const lo = 0.75, hi = v.townZoom * 9; // the dive that matters: from the country down to the town
+    const p = Math.log(Math.max(v.zoom, lo) / lo) / Math.log(hi / lo);
+    if (p <= 0.02 || p >= 0.98) return;
+    const amount = Math.pow(Math.sin(Math.PI * p), 1.1) * (this.fx === 'clouds' || this.fx === 'leaves' ? 1 : 0.8);
+    const { ctx } = this, set = this.pass[this.fx]; if (!set) return;
+    const cx = w / 2, cy = h / 2, R = Math.max(w, h);
+    const dots = this.passDots.map((d, i) => ({ ...d, u: (((p * 2.2 + d.ph) % 1) + 1) % 1, i })).sort((a, b) => a.u - b.u);
+    for (const d of dots) {
+      const sp = set[d.i % set.length], grow = 0.18 + d.u * d.u * 3.6;
+      const sw = sp.width * grow * d.s * (R / 900) * 1.5, sh = sp.height * grow * d.s * (R / 900) * 1.5;
+      const dist = (0.12 + d.u * 1.5) * d.r * R * 0.55, x = cx + Math.cos(d.a + this.t * 0.0001) * dist, y = cy + Math.sin(d.a + this.t * 0.0001) * dist * 0.8;
+      ctx.globalAlpha = Math.min(1, Math.sin(Math.PI * d.u) * 1.5) * amount * (this.fx === 'leaves' ? 0.95 : 0.7);
+      ctx.drawImage(sp, x - sw / 2, y - sh / 2, sw, sh);
+    }
+    ctx.globalAlpha = 1;
+    // a tint over the whole view while inside it: green light under the canopy, white in cloud, grey in smoke
+    const tint: Partial<Record<PassFx, string>> = { leaves: '34,92,40', clouds: '240,246,255', fog: '80,70,120', mist: '200,224,240', smoke: '60,54,52', embers: '90,40,20', steam: '210,212,218', sand: '220,184,120' };
+    const g = ctx.createRadialGradient(cx, cy, R * 0.18, cx, cy, R * 0.8), t = tint[this.fx];
+    if (t) { g.addColorStop(0, `rgba(${t},0)`); g.addColorStop(1, `rgba(${t},${0.34 * amount})`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
   }
 
   private drawWeather(dt: number, w: number, h: number, k: number) {
