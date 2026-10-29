@@ -623,32 +623,6 @@ function shadow(k: Cx) {
   c.save(); c.translate(CX, y); c.scale(1, 0.26); c.translate(-CX, -y); c.fillRect(CX - w, y - w, w * 2, w * 2); c.restore();
 }
 
-function infant(k: Cx) {
-  const { c, L } = k;
-  // a baby sits on the ground wrapped in a small blanket, hands up
-  const bx = CX + k.P.sway * 0.4, by = FOOT - 7;
-  const blanket = L.cloth;
-  if (k.feats.has('cradle')) { // a wooden cradle on rockers: a high hood behind the head, planked sides and a blanket
-    const wood = 0x8a5a3a;
-    curve(c, hex(shade(wood, 0.6)), 1.8, bx - 16, FOOT - 0.5, bx, FOOT + 5, bx + 16, FOOT - 0.5);
-    c.beginPath(); c.moveTo(bx - 17, by - 16); c.quadraticCurveTo(bx - 17, by - 28, bx - 6, by - 28); c.lineTo(bx - 5, by - 6); c.lineTo(bx - 17, by - 3); c.closePath();
-    c.fillStyle = lin(c, bx - 17, 0, bx - 5, 0, [0, hex(lite(wood, 0.1))], [1, hex(shade(wood, 0.7))]); c.fill(); c.strokeStyle = hex(lineOf(wood)); c.lineWidth = 0.8; c.stroke();
-    poly(c, [bx - 16, by - 9, bx + 16, by - 9, bx + 12, FOOT - 1, bx - 12, FOOT - 1], lin(c, 0, by - 9, 0, FOOT, [0, hex(lite(wood, 0.15))], [1, hex(shade(wood, 0.75))]), hex(lineOf(wood)), 0.8);
-    for (let i = 1; i < 4; i++) stroke(c, rgba(shade(wood, 0.5), 0.5), 0.4, bx - 15 + i * 0.5, by - 9 + i * 2.6, bx + 15 - i * 0.5, by - 9 + i * 2.6);
-  }
-  c.beginPath(); c.moveTo(bx - 9, FOOT - 1); c.bezierCurveTo(bx - 10, by - 6, bx - 5, by - 9, bx, by - 9); c.bezierCurveTo(bx + 5, by - 9, bx + 10, by - 6, bx + 9, FOOT - 1); c.quadraticCurveTo(bx, FOOT + 1.4, bx - 9, FOOT - 1); c.closePath();
-  c.fillStyle = lin(c, bx - 9, 0, bx + 9, 0, [0, hex(lite(blanket, 0.25))], [1, hex(shade(blanket, 0.7))]); c.fill(); c.strokeStyle = hex(lineOf(blanket)); c.lineWidth = 0.8; c.stroke();
-  for (let i = 0; i < 3; i++) curve(c, rgba(shade(blanket, 0.5), 0.4), 0.5, bx - 8, by - 4 + i * 2.4, bx, by - 3 + i * 2.4 + 1.2, bx + 8, by - 4 + i * 2.4);
-  rrect(c, bx - 9, by - 1, 18, 2.2, 1, hex(L.cloth2), hex(lineOf(L.cloth2)), 0.45);
-  for (let i = 0; i < 2; i++) { const sd = i ? 1 : -1; ell(c, bx + sd * 7.4, by - 5.8 + (i ? Math.sin(k.P.amb * TAU) * 1 : 0) + k.P[i ? 'rh' : 'lh'][1] * 0.12, 1.8, 1.8, hex(k.skin), hex(lineOf(k.skin)), 0.5); }
-  k.headX = bx + k.P.tilt * -6; k.headY = by - 11 + k.P.nod * 0.5 - k.P.breath * 0.3;
-  onHead(k, () => {
-    headBack(k); ears(k); drawHead(k); drawFace(k);
-    if (k.L.hairStyle !== 3 && !k.theme.hairless) { const { headX: hx, headY: hy, headW: hw, headH: hh } = k; ell(c, hx, hy - hh * 0.98, hw * 0.92, hh * 0.3, hex(k.hair), hex(lineOf(k.hair)), 0.5); poly(c, [hx - 1.6, hy - hh * 1.1, hx, hy - hh * 1.7, hx + 1.6, hy - hh * 1.1], hex(k.hair), hex(lineOf(k.hair)), 0.4); }
-    headTop(k);
-  });
-}
-
 /** the head group (hair, hat, face, horns) is drawn in design units around the head centre, then shrunk to a realistic size */
 function onHead(k: Cx, draw: () => void) {
   const { c, headX: hx, headY: hy, hf } = k;
@@ -667,9 +641,53 @@ function neck(k: Cx) {
   ell(c, hx, top + 1.6, w * 0.95, 1.5, rgba(0x120a1e, 0.28)); // the jaw's shadow on the neck
 }
 
+function infant(k: Cx) {
+  const { c, L } = k, cradle = k.feats.has('cradle'), wood = 0x8a5a3a;
+  // a baby lies swaddled with its head on a small pillow, propped a little; in a cradle it lies inside the wooden basin
+  const cx = CX + k.P.sway * 0.4, gy = FOOT, lift = cradle ? 4 : 0, bx = cx + 2, rise = k.P.breath * 0.7;
+  const cloth = L.cloth, band = L.cloth2;
+  if (cradle) { // the rockers and the hood behind the head
+    curve(c, hex(shade(wood, 0.6)), 1.8, cx - 17, gy - 0.5, cx, gy + 5, cx + 17, gy - 0.5);
+    c.beginPath(); c.moveTo(cx - 18, gy - 16); c.quadraticCurveTo(cx - 18, gy - 31, cx - 6, gy - 31); c.lineTo(cx - 4, gy - 8); c.lineTo(cx - 18, gy - 4); c.closePath();
+    c.fillStyle = lin(c, cx - 18, 0, cx - 4, 0, [0, hex(lite(wood, 0.1))], [1, hex(shade(wood, 0.7))]); c.fill(); c.strokeStyle = hex(lineOf(wood)); c.lineWidth = 0.8; c.stroke();
+    ell(c, cx - 11, gy - 17, 6, 8, rgba(0x120a1e, 0.25));
+  }
+  // pillow
+  ell(c, bx - 9, gy - 5 - lift, 9, 3.4, lin(c, 0, gy - 9, 0, gy - 2, [0, hex(lite(band, 0.35))], [1, hex(shade(band, 0.8))]), hex(lineOf(band)), 0.6);
+  // the swaddled body: a long soft bundle, bound with bands
+  const x0 = bx - 4, x1 = bx + 17, y0 = gy - 13 - lift - rise, y1 = gy - 2 - lift;
+  c.beginPath(); c.moveTo(x0, y1); c.quadraticCurveTo(x0 - 2, y0 + 3, x0 + 4, y0 + 0.5); c.quadraticCurveTo((x0 + x1) / 2, y0 - 2.4, x1 - 3, y0 + 2); c.quadraticCurveTo(x1 + 2, y0 + 5, x1, y1); c.closePath();
+  c.fillStyle = lin(c, 0, y0 - 2, 0, y1, [0, hex(lite(cloth, 0.28))], [0.5, hex(cloth)], [1, hex(shade(cloth, 0.6))]); c.fill(); c.strokeStyle = hex(lineOf(cloth)); c.lineWidth = 0.8; c.lineJoin = 'round'; c.stroke();
+  for (let i = 0; i < 3; i++) curve(c, rgba(shade(cloth, 0.45), 0.55), 0.55, x0 + 3 + i * 4.6, y0 + 1 + i * 0.2, x0 + 5 + i * 4.6, (y0 + y1) / 2 + 1, x0 + 2.6 + i * 4.6, y1 - 0.4);
+  curve(c, rgba(lite(cloth, 0.5), 0.5), 0.5, x0 + 3, y0 + 2.2, (x0 + x1) / 2, y0 - 0.4, x1 - 3, y0 + 3);
+  for (const t of [0.38, 0.72]) { const x = x0 + (x1 - x0) * t; poly(c, [x - 1.1, y0 - 0.6 + Math.sin(t * 4) * 0.4, x + 1.1, y0 + 0.2, x + 1.7, y1, x - 0.7, y1], hex(band), hex(lineOf(band)), 0.4); }
+  // a small fist out of the wrap
+  ell(c, bx - 1, y0 + 2.2, 2.2, 1.9, hex(k.skin), hex(lineOf(k.skin)), 0.5); stroke(c, rgba(shade(k.skin, 0.4), 0.5), 0.3, bx - 1.6, y0 + 1.5, bx - 0.4, y0 + 3);
+  // the head
+  k.hf = 0.6;
+  k.headX = bx - 10 + k.P.tilt * -6; k.headY = gy - 12.5 - lift + k.P.nod * 0.4 - rise * 0.6;
+  c.save(); c.translate(k.headX, k.headY); c.rotate(-0.1); c.translate(-k.headX, -k.headY);
+  onHead(k, () => {
+    headBack(k); ears(k); drawHead(k); drawFace(k);
+    if (k.L.hairStyle !== 3 && !k.theme.hairless) { // a soft cap of baby hair
+      const { headX: hx, headY: hy, headW: hw, headH: hh } = k;
+      c.beginPath(); c.moveTo(hx - hw * 1.0, hy - hh * 0.08); c.bezierCurveTo(hx - hw * 1.12, hy - hh * 1.18, hx + hw * 1.12, hy - hh * 1.18, hx + hw * 1.0, hy - hh * 0.08); c.quadraticCurveTo(hx + hw * 0.5, hy - hh * 0.62, hx, hy - hh * 0.56); c.quadraticCurveTo(hx - hw * 0.5, hy - hh * 0.62, hx - hw * 1.0, hy - hh * 0.08); c.closePath();
+      c.fillStyle = rgba(k.hair, 0.88); c.fill(); c.strokeStyle = rgba(lineOf(k.hair), 0.6); c.lineWidth = 0.5; c.stroke();
+      curve(c, rgba(k.hair, 0.9), 0.7, hx + hw * 0.1, hy - hh * 1.05, hx + hw * 0.35, hy - hh * 1.5, hx + hw * 0.1, hy - hh * 1.55);
+    }
+    headTop(k);
+  });
+  c.restore();
+  if (cradle) { // the front board of the cradle hides the lower half of the bundle
+    poly(c, [cx - 17, gy - 9, cx + 17, gy - 9, cx + 13, gy - 1, cx - 13, gy - 1], lin(c, 0, gy - 9, 0, gy, [0, hex(lite(wood, 0.15))], [1, hex(shade(wood, 0.75))]), hex(lineOf(wood)), 0.8);
+    for (let i = 1; i < 3; i++) stroke(c, rgba(shade(wood, 0.5), 0.5), 0.4, cx - 16 + i * 0.5, gy - 9 + i * 2.7, cx + 16 - i * 0.5, gy - 9 + i * 2.7);
+  }
+}
+
 /** where the head sits in an idle frame, for cropping busts */
 export function headCentre(L: Look): { x: number; y: number; r: number } {
   const k = makeCx(document.createElement('canvas').getContext('2d')!, L, POSE.idle);
+  if (k.stage === 'infant') return { x: CX + (-8 + (k.feats.has('cradle') ? 0 : 0)) * 1.2 + 0, y: FOOT - (12.5 + (k.feats.has('cradle') ? 4 : 0)) * 1.2, r: 9.6 * 0.6 * 1.2 };
   return { x: k.headX, y: k.headY, r: k.headH * k.hf };
 }
 
@@ -677,7 +695,7 @@ export function paintFrame(c: CanvasRenderingContext2D, L: Look, frame: number) 
   const k = makeCx(c, L, frame);
   c.lineJoin = 'round'; c.lineCap = 'round';
   shadow(k);
-  if (k.stage === 'infant' && k.theme.lower !== 'blob') { infant(k); ambient(k); return; }
+  if (k.stage === 'infant' && k.theme.lower !== 'blob') { c.save(); c.translate(CX, FOOT); c.scale(1.2, 1.2); c.translate(-CX, -FOOT); infant(k); c.restore(); ambient(k); return; }
   const fit = fitOf(k);
   const lower = k.theme.lower === 'legs' || k.feats.has('legs') ? 'legs' : k.theme.lower;
   if (lower === 'blob') {
