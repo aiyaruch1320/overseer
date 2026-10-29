@@ -38,7 +38,7 @@ export class Landmarks {
       // from afar the whole tree; as the camera goes in under it the crown is overhead and out of sight, and only the roots and the foot of the trunk remain on the ground the town stands on
       const fa = 1 - ss(1.3, 2.6), ra = ss(1.0, 2.2);
       ctx.save(); ctx.translate(265, 282); ctx.scale(0.7, 0.7);
-      if (ra > 0.01) { ctx.globalAlpha = ra; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(this.roots(), -160, -200, 320, 262); }
+      if (ra > 0.01) { ctx.globalAlpha = ra; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(this.holes.length ? this.rootsHoled(ss(1.2, 2.3)) : this.roots(), -160, -200, 320, 262); }
       if (fa > 0.01) { ctx.globalAlpha = fa; this.worldTree(ctx, 0, 0, time, hair / 0.7); }
       ctx.restore();
     }
@@ -61,6 +61,47 @@ export class Landmarks {
 
   private treeSprite: HTMLCanvasElement | null = null;
   private rootSprite: HTMLCanvasElement | null = null;
+  private coverGrid: Uint8ClampedArray | null = null;
+  private holes: { x: number; y: number }[] = [];
+  private holed: { key: number; cv: HTMLCanvasElement } | null = null;
+
+  /** towns (map units) that stand on or among the roots: the roots become see-through around each as the camera goes in, so a town is never drawn over a root */
+  setRootHoles(list: { x: number; y: number }[]) { this.holes = list; this.holed = null; }
+
+  /** how much of the tree (crown, trunk) is drawn at a point of the map: 0 clear ground, 1 solid tree. A town behind it is seen through it as the tree fades. */
+  treeCover(mx: number, my: number): number {
+    const gw = 160, gh = 131;
+    if (!this.coverGrid) {
+      const cv = document.createElement('canvas'); cv.width = gw; cv.height = gh;
+      const c = cv.getContext('2d', { willReadFrequently: true })!; c.drawImage(this.tree(), 0, 0, gw, gh);
+      const px = c.getImageData(0, 0, gw, gh).data, g = new Uint8ClampedArray(gw * gh);
+      for (let i = 0; i < g.length; i++) g[i] = px[i * 4 + 3];
+      this.coverGrid = g;
+    }
+    const gx = Math.floor((((mx - 265) / 0.7) + 160) / 2), gy = Math.floor((((my - 282) / 0.7) + 238) / 2);
+    let sum = 0, n = 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const x = gx + dx, y = gy + dy; n++; if (x >= 0 && y >= 0 && x < gw && y < gh) sum += this.coverGrid[y * gw + x]; }
+    return sum / n / 255;
+  }
+
+  /** the root sprite with a clearing at each town on it, opened to `open` (0..1) */
+  private rootsHoled(open: number): HTMLCanvasElement {
+    const src = this.roots(), key = Math.round(open * 10);
+    if (this.holed && this.holed.key === key) return this.holed.cv;
+    const cv = this.holed?.cv ?? document.createElement('canvas');
+    cv.width = src.width; cv.height = src.height;
+    const c = cv.getContext('2d')!, k = src.width / 320;
+    c.drawImage(src, 0, 0);
+    c.globalCompositeOperation = 'destination-out';
+    for (const h of this.holes) {
+      const x = (((h.x - 265) / 0.7) + 160) * k, y = (((h.y - 282) / 0.7) + 200) * k, rx = (19 / 0.7) * k, ry = (13 / 0.7) * k;
+      c.save(); c.translate(x, y); c.scale(1, ry / rx);
+      const g = c.createRadialGradient(0, 0, rx * 0.55, 0, 0, rx); g.addColorStop(0, `rgba(0,0,0,${open})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+      c.fillStyle = g; c.beginPath(); c.arc(0, 0, rx, 0, TAU); c.fill(); c.restore();
+    }
+    this.holed = { key, cv };
+    return cv;
+  }
   /** the same tree seen from under its crown: only roots and the foot of the trunk, as the town below it would see it */
   private roots(): HTMLCanvasElement {
     if (this.rootSprite) return this.rootSprite;

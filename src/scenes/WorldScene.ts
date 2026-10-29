@@ -13,7 +13,7 @@ import { REGION_EVENTS } from '../data/people';
 import { DISASTERS } from '../data/disasters';
 import { FESTIVALS } from '../data/npclife';
 import { FATES, fateOf, setFate } from '../sim/fate';
-import { canopyCover } from '../render/treeart';
+import { onTreeRoot } from '../render/treeart';
 import type { Fate } from '../sim/types';
 
 export { drawPortrait } from './sprites';
@@ -128,6 +128,7 @@ export class WorldScene extends Phaser.Scene {
       img.on('pointerup', (p: Phaser.Input.Pointer) => { if (p.getDistance() < 8) { this.clickedTown = true; this.onTownClick(t.id); } });
       this.townMarks.push({ img, label, capital: t.capital, id: t.id, size: throne ? 36 : t.capital ? 22 : 16, halo });
     }
+    this.setupTreeTowns();
 
     this.ring = this.add.ellipse(0, 0, 40, 14, 0xffe680, 0.6);
     this.tweens.add({ targets: this.ring, scaleX: 1.8, scaleY: 1.8, alpha: 0, duration: 1400, repeat: -1 });
@@ -200,6 +201,26 @@ export class WorldScene extends Phaser.Scene {
     this.lastView = '';
   }
 
+  // ---------- the world tree stands in front of the towns behind it ----------
+  townCover: number[] = [];
+  countryCover: number[] = [];
+  /** 1 while the whole tree is drawn, fading to 0 as the camera goes in under it */
+  private treeOpacity(z: number) { const k = Math.max(0, Math.min(1, (z - 1.3) / 1.3)); return 1 - k * k * (3 - 2 * k); }
+  private treeCover(mx: number, my: number) { return this.terrain.treeCover(mx, my); }
+  private setupTreeTowns() {
+    const holes: { x: number; y: number }[] = [];
+    this.townCover = this.world.towns.map((t) => {
+      const mx = (t.x * 8 + 4) / MU_TO_WU, my = (t.y * 8 + 4) / MU_TO_WU;
+      if (Math.abs(mx - 265) < 150 && Math.abs(my - 282) < 140) {
+        // a town on, or among, the roots or the trunk: the roots open around it
+        if ([[0, 0], [17, 0], [-17, 0], [0, 11], [0, -11], [12, 8], [-12, 8], [12, -8], [-12, -8]].some(([dx, dy]) => onTreeRoot(mx + dx, my + dy, 0))) holes.push({ x: mx, y: my });
+      }
+      return this.treeCover(mx, my);
+    });
+    this.countryCover = this.world.countries.map((c) => this.treeCover((c.cx * 8 + 4) / MU_TO_WU, (c.cy * 8 + 4) / MU_TO_WU));
+    this.terrain.setRootHoles(holes);
+  }
+
   // ---------- lands the story has reshaped ----------
   private fateSig = '';
   private countries() { return this.game_?.s.countries ?? this.world.countries; }
@@ -241,14 +262,15 @@ export class WorldScene extends Phaser.Scene {
     const townNames = z >= Z.townName;
     this.countryLabels.forEach((l, i) => {
       const co = this.world.countries[i];
-      l.setVisible(z >= Z.country && z < Z.icons).setScale(16 / (24 * z)).setAlpha(townNames ? 0.75 : 1);
+      l.setVisible(z >= Z.country && z < Z.icons).setScale(16 / (24 * z)).setAlpha((townNames ? 0.75 : 1) * (1 - (this.countryCover[co.id] ?? 0) * this.treeOpacity(z)));
       l.setPosition(co.cx * TILE + TILE / 2, co.cy * TILE + (townNames ? -36 / z : 12 / z)).setOrigin(0.5, townNames ? 1 : 0);
     });
     for (const m of this.townMarks) {
       const show = m.capital ? z >= Z.capital : z >= Z.town;
-      m.img.setVisible(show && z < Z.icons).setScale(m.size / (24 * z));
+      const hide = 1 - this.townCover[m.id] * this.treeOpacity(z); // behind the tree's crown or trunk: no marker over the tree
+      m.img.setVisible(show && z < Z.icons && hide > 0.05).setScale(m.size / (24 * z)).setAlpha(hide);
       m.halo?.setVisible(show && z < Z.icons).setScale((m.size * 1.7) / (24 * z)).setAlpha(0.22 + 0.08 * Math.sin(this.time.now / 500));
-      m.label.setVisible(show && townNames && z < Z.live).setScale(13 / (18 * z)).setY(m.img.y + (z >= Z.icons ? -CITY_HALF_H * 0.9 : 12 / z));
+      m.label.setVisible(show && townNames && z < Z.live && hide > 0.05).setAlpha(hide).setScale(13 / (18 * z)).setY(m.img.y + (z >= Z.icons ? -CITY_HALF_H * 0.9 : 12 / z));
     }
     this.flagIcons.forEach((t) => t.setScale(18 / (24 * z)));
     this.actorMarks.forEach((m, id) => { m.img.setScale((id.startsWith('caravan') ? 16 : 24) / (24 * z)); m.label.setScale(12 / (16 * z)).setVisible(z >= Z.country).setY(m.img.y + 14 / z); });
@@ -392,9 +414,9 @@ export class WorldScene extends Phaser.Scene {
         }
         rec.img.setTexture(key); rec.mip = mip;
       }
-      // a town under the world tree's crown only comes out of the foliage as the camera goes in beneath it
-      const cover = canopyCover((t.x * 8 + 4) / MU_TO_WU, (t.y * 8 + 4) / MU_TO_WU), under = Math.min(1, Math.max(0, (z - 1.5) / 1.1));
-      rec.img.setScale(CITY_S * mip).setVisible(true).setAlpha(Math.min(1, (z - Z.cityLod) / 0.5) * (1 - cover * (1 - under * under * (3 - 2 * under))));
+      // a town behind the world tree is seen through it: its plan comes out as the tree fades with the zoom
+      const cov = this.treeCover((t.x * 8 + 4) / MU_TO_WU, (t.y * 8 + 4) / MU_TO_WU), fa = this.treeOpacity(z);
+      rec.img.setScale(CITY_S * mip).setVisible(true).setAlpha(Math.min(1, (z - Z.cityLod) / 0.5) * (1 - cov * fa));
       show.add(n.id);
     }
     this.cityImgs.forEach((c, id) => { if (!show.has(id)) c.img.setVisible(false); });

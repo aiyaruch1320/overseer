@@ -113,6 +113,9 @@ export class TerrainRenderer {
     this.hlLoops = inside ? traceMask(inside, w, h, tileMU) : [];
   }
 
+  setRootHoles(list: { x: number; y: number }[]) { this.landmarks.setRootHoles(list); }
+  treeCover(mx: number, my: number) { return this.landmarks.treeCover(mx, my); }
+
   /** lands the story has reshaped (docs/world-events.md §15): a tint over each, in the colour of what became of them */
   setFates(regions: { inside: (i: number) => boolean; tint: string }[], w = 0, h = 0, tileMU = 0) {
     this.fateLoops = regions.map((r) => ({ loops: traceMask(r.inside, w, h, tileMU), tint: r.tint }));

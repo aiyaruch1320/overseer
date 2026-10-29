@@ -11,7 +11,6 @@ import { themeFor, pickStyle, type Theme, type BStyle } from './themes';
 import { paintCity } from './paint';
 import { FOOT, SITE } from './landmarks';
 import { wealthOf, portOf, floatsOf } from './flavor';
-import { onTreeRoot } from '../render/treeart';
 import { MU_TO_WU } from '../world/geo';
 
 export const T = 16; // px per tile
@@ -151,19 +150,6 @@ function generate(town: Town, country: CityCountry): CityData {
   const pw = village ? 5 : 8, ph = village ? 3 : 5; // (the world tree has no monument in the square: the tree itself, drawn on the map, is what the town stands under)
   for (let y = cy - ph; y <= cy + ph; y++) for (let x = cx - pw; x <= cx + pw + 1; x++) { const t = get(x, y); if (t !== Tile.Water && t !== Tile.Void) set(x, y, Tile.Plaza); }
   const plaza = { x: cx - pw, y: cy - ph, w: pw * 2 + 2, h: ph * 2 + 1 };
-  // the great roots of the world tree: a town under it is built in the ground between them. Streets may cross a root (they pass over it like a bridge),
-  // but houses and walls keep off it, and nobody walks along its back: the root is cut out of the plan and the tree on the map shows through.
-  const rootMask = new Uint8Array(CW * CH);
-  {
-    const wx = town.x * 8 + 4, wy = town.y * 8 + 4, tw = T * CITY_S;
-    if (Math.abs(wx / MU_TO_WU - 265) < 140 && Math.abs(wy / MU_TO_WU - 282) < 130) {
-      for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) {
-        const t = g[y * CW + x];
-        if (t !== Tile.Ground && t !== Tile.Tree) continue;
-        if (onTreeRoot((wx + (x + 0.5 - CW / 2) * tw) / MU_TO_WU, (wy + (y + 0.5 - CH / 2) * tw) / MU_TO_WU, 1.5)) { g[y * CW + x] = Tile.Void; rootMask[y * CW + x] = 1; }
-      }
-    }
-  }
   // walls around a capital, stakes around a camp, hedges around a grove
   if ((town.capital || (theme.wall === 'palisade') || (!village && theme.wall !== 'none')) && theme.wall !== 'none') {
     for (let a = 0; a < 6.3; a += 0.012) {
@@ -350,7 +336,7 @@ function generate(town: Town, country: CityCountry): CityData {
     for (let y = 1; y < CH - 1; y++) for (let x = 1; x < CW - 1; x++) {
       const t = get(x, y);
       if ((t !== Tile.Ground && t !== Tile.Road) || !inExt(x, y, 1.15)) continue;
-      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (get(x + dx, y + dy) === Tile.Void && !rootMask[(y + dy) * CW + x + dx]) { shore.push([x, y, dx, dy]); break; }
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (get(x + dx, y + dy) === Tile.Void) { shore.push([x, y, dx, dy]); break; }
     }
     if (port >= 1 && !sky) {
       // the quay: a paved band along the water's edge, the water side planked out two tiles
