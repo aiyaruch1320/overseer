@@ -76,8 +76,8 @@ const BASE: Record<number, Omit<Theme, 'leaf' | 'extra' | 'graves' | 'religion'>
     field: [0xc8a050, 0x8ab05a], farm: 0.15, plan: 'organic', wall: 'stone', centre: 'oasis', ambient: 'sand', lamps: false, river: false, boardwalk: false, banner: [0xc83a2a, 0xf2c94c],
   },
   [CONT.silvanel]: {
-    id: 'silvanel', ground: 0x3c8f45, road: 0x7a6a4a, roadDot: 0x5e5038, cobble: false, plaza: 0x8a9a62,
-    roofs: [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a], walls: [0x7a5a3a, 0x8a6a46],
+    id: 'silvanel', ground: 0x9aa466, road: 0x5e4a30, roadDot: 0x4a3a26, cobble: false, plaza: 0xdccf9a, // a clearing in the forest: lighter than the trees around it, so the town stands out from them
+    roofs: [0x6a4228, 0x7a5232, 0x5a3a26, 0x8a6038], walls: [0x7a5a3a, 0x8a6a46],
     styles: [['tree', 7], ['hut', 1]], temple: 'tree', tree: 'jungle', treeDensity: 0.1,
     field: [0x7ab05a, 0x5a9a4a], farm: 0.3, plan: 'organic', wall: 'hedge', centre: 'sapling', ambient: 'leaves', lamps: true, river: true, boardwalk: false, banner: [0x2e7a3e, 0xe8e0a0],
   },

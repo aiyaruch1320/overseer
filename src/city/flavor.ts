@@ -11,9 +11,9 @@ export interface Flavor {
 }
 
 // branches of the world tree (docs/countries/08-silvanel.md): each gives its countries a light of their own
-const DAWN = [0xc8d85a, 0x9ac84a, 0xe6c85a, 0x7cbf4a], TWILIGHT = [0x6a5ac8, 0x4a9a9a, 0x8a6ad8, 0x3a7a8a], DEW = [0x4a9aa8, 0x7ac0c8, 0x3a8a9a, 0x9ad0d8];
-const THORN = [0x2e5a34, 0x3a6a3a, 0x8a3a3a, 0x24482c], CLOUD = [0xa8e0c8, 0xc8f0e0, 0x88d0b0, 0xe0f8f0], ROOT = [0x6a4a34, 0x4a6a4a, 0x8a5a8a, 0x5a3a2a];
-const WITHER = [0xd8b040, 0xc88a30, 0xb8a050, 0x9a7a30], FUNGI = [0x9a4a8a, 0xc8603a, 0x6a8ad8, 0xd8c070], GREEN = [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a];
+const DAWN = [0xe8c850, 0xf0a860, 0xd8d868, 0xf4e090], TWILIGHT = [0x6a5ac8, 0x4a9a9a, 0x8a6ad8, 0x3a7a8a], DEW = [0x4a9aa8, 0x7ac0c8, 0x3a8a9a, 0x9ad0d8];
+const THORN = [0x7a2e3a, 0x5a3a2a, 0x9a4a3a, 0x3a2a30], CLOUD = [0xa8e0c8, 0xc8f0e0, 0x88d0b0, 0xe0f8f0], ROOT = [0x6a4a34, 0x4a6a4a, 0x8a5a8a, 0x5a3a2a];
+const WITHER = [0xd8b040, 0xc88a30, 0xb8a050, 0x9a7a30], FUNGI = [0x9a4a8a, 0xc8603a, 0x6a8ad8, 0xd8c070], GREEN = [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a], RIVER = [0x3a9a8a, 0x5ab8a0, 0x2f8a7a, 0xc8b060];
 
 const F: Record<string, Flavor> = {
   // ---- อัซการ์: the sky islands
@@ -136,22 +136,22 @@ const F: Record<string, Flavor> = {
   'SH-17': { styles: [['carved', 6], ['stone', 2]], centre: 'obelisk', extra: ['cathedral', 'cathedral'], roofs: [0x8a7a6a, 0x6a5a4a] },
   // ---- ซิลวาเนล: the world tree and its seven branches
   'SV-01': { styles: [['tree', 6], ['stone', 1]], leaf: DAWN, centre: 'worldtree', extra: ['library', 'cathedral'], wall: 'hedge' },
-  'SV-02': { styles: [['tree', 5], ['gable', 2]], leaf: DAWN, extra: ['cathedral', 'library', 'library'], lamps: true },
-  'SV-03': { styles: [['tree', 4], ['keep', 3]], leaf: [0xb0b060, 0x8a9a50, 0xc8a050], extra: ['barracks', 'barracks'], wall: 'palisade', ambient: 'smoke' },
-  'SV-04': { styles: [['tree', 6], ['mushroom', 2]], leaf: TWILIGHT, lamps: true, ambient: 'leaves', extra: ['library'] },
-  'SV-05': { styles: [['tree', 5], ['dome', 2]], leaf: TWILIGHT, extra: ['cathedral', 'cathedral'], lamps: true },
-  'SV-06': { styles: [['tree', 5], ['keep', 2]], leaf: DEW, extra: ['barracks', 'library'], ambient: 'fog' },
+  'SV-02': { centre: 'fountain', styles: [['tree', 5], ['gable', 2]], leaf: DAWN, extra: ['cathedral', 'library', 'library'], lamps: true },
+  'SV-03': { centre: 'bonfire', styles: [['tree', 4], ['keep', 3]], leaf: [0xb0b060, 0x8a9a50, 0xc8a050], extra: ['barracks', 'barracks'], wall: 'palisade', ambient: 'smoke' },
+  'SV-04': { centre: 'council', styles: [['tree', 6], ['mushroom', 2]], leaf: TWILIGHT, lamps: true, ambient: 'leaves', extra: ['library'] },
+  'SV-05': { centre: 'crystal', styles: [['tree', 5], ['dome', 2]], leaf: TWILIGHT, extra: ['cathedral', 'cathedral'], lamps: true },
+  'SV-06': { centre: 'pump', styles: [['tree', 5], ['keep', 2]], leaf: DEW, extra: ['barracks', 'library'], ambient: 'fog' },
   'SV-07': { styles: [['tree', 5], ['stone', 2]], leaf: DEW, extra: ['library', 'library', 'library'] },
   'SV-08': { styles: [['tree', 3], ['keep', 4]], leaf: THORN, extra: ['barracks', 'barracks', 'barracks'], wall: 'palisade' },
   'SV-09': { styles: [['tree', 4], ['hut', 4]], leaf: THORN, extra: ['warehouse', 'arena'] },
-  'SV-10': { styles: [['tree', 5], ['spire', 3]], leaf: CLOUD, ambient: 'clouds', extra: ['cathedral'] },
-  'SV-11': { styles: [['tree', 4], ['spire', 4]], leaf: CLOUD, ambient: 'clouds', extra: ['warehouse', 'warehouse'] },
+  'SV-10': { centre: 'skynest', styles: [['tree', 5], ['spire', 3]], leaf: CLOUD, ambient: 'clouds', extra: ['cathedral'] },
+  'SV-11': { centre: 'lighthouse', styles: [['tree', 4], ['spire', 4]], leaf: CLOUD, ambient: 'clouds', extra: ['warehouse', 'warehouse'] },
   'SV-12': { styles: [['mushroom', 6], ['tree', 2]], leaf: FUNGI, lamps: true, extra: ['library'], ambient: 'leaves' },
-  'SV-13': { styles: [['tree', 5], ['stone', 2]], leaf: ROOT, graves: true, lamps: true, extra: ['cathedral'], ambient: 'fog' },
+  'SV-13': { centre: 'obelisk', styles: [['tree', 5], ['stone', 2]], leaf: ROOT, graves: true, lamps: true, extra: ['cathedral'], ambient: 'fog' },
   'SV-14': { styles: [['tree', 6], ['hut', 2]], leaf: WITHER, tree: 'dead', ambient: 'leaves', extra: ['barracks'], wall: 'palisade' },
-  'SV-15': { styles: [['tree', 4], ['gable', 3]], leaf: WITHER, extra: ['market', 'market', 'warehouse'], lamps: true },
+  'SV-15': { centre: 'lake', styles: [['tree', 4], ['gable', 3]], leaf: WITHER, extra: ['market', 'market', 'warehouse'], lamps: true },
   'SV-16': { styles: [['hut', 5], ['tree', 3]], leaf: THORN, extra: ['arena', 'warehouse'], wall: 'palisade' },
-  'SV-17': { styles: [['stilt', 4], ['gable', 3], ['tree', 2]], leaf: GREEN, extra: ['warehouse', 'warehouse', 'market'] },
+  'SV-17': { styles: [['stilt', 4], ['gable', 3], ['tree', 2]], leaf: RIVER, centre: 'lake', extra: ['warehouse', 'warehouse', 'market'] },
   'SV-18': { styles: [['mushroom', 8]], leaf: FUNGI, ambient: 'leaves', lamps: true },
   // ---- เนบูเลีย: the fog
   'NB-01': { styles: [['terrace', 3], ['gable', 3], ['stone', 2]], centre: 'clock', extra: ['cathedral', 'library'], lamps: true },
