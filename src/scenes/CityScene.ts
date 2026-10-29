@@ -142,11 +142,12 @@ export class CityScene extends Phaser.Scene {
   computeSpots(buildings: BuildingRec[]) {
     const S: Record<Place, Pt[]> = { field: [], dock: [], smithy: [], temple: [], tavern: [], guild: [], market: [], plaza: [], gate: [], tree: [], grave: [], home: [], road: [], water: [] };
     const at = (tx: number, ty: number): Pt => ({ x: tx * T + T / 2, y: ty * T + T - 2 });
+    const solidSet = new Set(this.plan.solid);
     for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) {
       const t = this.grid[y * CW + x];
       if (t === Tile.Field) S.field.push(at(x, y));
       else if (t === Tile.Dock) S.dock.push(at(x, y));
-      else if (t === Tile.Plaza) S.plaza.push(at(x, y));
+      else if (t === Tile.Plaza) { if (!solidSet.has(y * CW + x)) S.plaza.push(at(x, y)); }
       else if (t === Tile.Grave) S.grave.push(at(x, y));
       else if (t === Tile.Road) { S.road.push(at(x, y)); if (((x - CW / 2) / this.plan.extent.rx) ** 2 + ((y - CH / 2) / this.plan.extent.ry) ** 2 > 0.62) S.gate.push(at(x, y)); }
       else if (t === Tile.Tree && y + 1 < CH && this.grid[(y + 1) * CW + x] === Tile.Ground) S.tree.push(at(x, y + 1));
@@ -360,6 +361,7 @@ export class CityScene extends Phaser.Scene {
       const t = this.grid[i];
       nav[i] = t === Tile.Road || t === Tile.Plaza || t === Tile.Dock ? 2 : t === Tile.Ground || t === Tile.Field || t === Tile.Grave ? 4 : 0;
     }
+    for (const i of this.plan.solid) nav[i] = 0;
     this.nav = nav;
   }
 
