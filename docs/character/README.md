@@ -15,9 +15,9 @@
 | [05-new-blessings.md](05-new-blessings.md) | พรใหม่ที่ผูกกับโลก |
 | [06-new-curses.md](06-new-curses.md) | คำสาปใหม่ที่ผูกกับโลก |
 | [07-new-skills.md](07-new-skills.md) | skill ใหม่ที่ผูกกับโลก |
-| [08-jobs-overview.md](08-jobs-overview.md) | อาชีพ 143 อย่าง: จำนวน น้ำหนักการเสนอ ชีวิตช้า โบนัสเผ่า |
-| [09-jobs-common.md](09-jobs-common.md) | อาชีพทั่วไป 100 อย่าง (เดิม 39 ใหม่ 61) |
-| [10-jobs-secret.md](10-jobs-secret.md) | อาชีพลับ 27 อย่าง |
+| [08-jobs-overview.md](08-jobs-overview.md) | อาชีพ 149 อย่าง: จำนวน น้ำหนักการเสนอ ชีวิตช้า โบนัสเผ่า |
+| [09-jobs-common.md](09-jobs-common.md) | อาชีพทั่วไป 107 อย่าง (เดิม 39 ใหม่ 61 ย้ายจากลับ 7) |
+| [10-jobs-secret.md](10-jobs-secret.md) | อาชีพลับ 26 อย่าง |
 | [11-jobs-special.md](11-jobs-special.md) | อาชีพพิเศษ 16 อย่างที่ได้จากเส้นเรื่อง |
 | [12-job-support.md](12-job-support.md) | ความถนัดใหม่ 20 นิสัยใหม่ 8 พรใหม่ 16 คำสาปใหม่ 10 เพื่อรองรับอาชีพ |
 | [13-companions-overview.md](13-companions-overview.md) | ระบบสัตว์คู่หู: โอกาสได้ตามอาชีพ ความผูกพัน ชีวิต ข้อจำกัด กติกา PR-01 ถึง PR-20 |
@@ -36,7 +36,7 @@
 | skill | 150 | 45 ([07](07-new-skills.md)) + 60 (จากความถนัดใหม่) | 255 | 84 |
 | พร | 107 | 69 ([05](05-new-blessings.md)) + 16 ([12](12-job-support.md)) | 192 | 84 |
 | คำสาป | 103 | 33 ([06](06-new-curses.md)) + 10 ([12](12-job-support.md)) | 146 | 63 |
-| อาชีพ | 56 | 87 ([08](08-jobs-overview.md) ถึง [11](11-jobs-special.md)) | 143 | |
+| อาชีพ | 56 | 93 ([08](08-jobs-overview.md) ถึง [11](11-jobs-special.md)) | 149 | |
 
 กติกาเสริม ขัด และตรงข้าม 59 ข้อใน [03-synergy-rules.md](03-synergy-rules.md)
 
