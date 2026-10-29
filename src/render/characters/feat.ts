@@ -228,7 +228,7 @@ export function headBack(k: Cx) {
 }
 
 export function ears(k: Cx) {
-  const { c, headY: hy, headW: hw, headH: hh } = k, kind = k.theme.ears, prof = k.view === 'side';
+  const { c, headY: hy, headW: hw, headH: hh } = k, kind = ([...k.feats].find((f) => f.startsWith('ears:'))?.slice(5) as typeof k.theme.ears | undefined) ?? k.theme.ears, prof = k.view === 'side'; // a half-blood may carry the ears of the other people
   const hx = k.headX + (prof ? (kind === 'beast' ? hw * 0.3 : hw * 0.5) : 0), sides = prof && kind !== 'beast' ? [-1] : [-1, 1]; // in profile we see one ear, on the near side of the head
   const sk = hex(k.skin), ln = hex(lineOf(k.skin)), inner = hex(mix(k.skin, 0xe07a8a, 0.4));
   const fur = k.feats.has('fur') ? k.L.hair : k.skin;

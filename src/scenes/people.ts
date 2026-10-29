@@ -6,6 +6,7 @@ import { RNG, hashString } from '../sim/rng';
 import { type Look, lookKey } from '../render/characters/kit';
 import { THEMES, themeOf, stageOf } from '../render/characters/themes';
 import { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD } from '../render/characters/pose';
+import { applyBlend } from '../data/blood';
 
 export { POSE, FRAMES, WALK, CARRY_WALK, IDLE_STANDARD };
 export type { Look };
@@ -52,7 +53,7 @@ const ROLE_STYLE: Record<string, Style> = {
 const RARE_LINES = new Set(['summoned', 'reborn', 'king', 'emperor', 'pharaoh', 'high', 'mother', 'merrow', 'silent', 'chosen', 'shadowless']);
 const CASUAL = ['tunic', 'vest', 'apron', 'farmer', 'light', 'sarong', 'fur', 'dress'];
 
-export function lookFor(seed: string, race: string, role: string, o: { climate?: string; gender?: string; elder?: boolean; line?: string; hAge?: number } = {}): Look {
+export function lookFor(seed: string, race: string, role: string, o: { climate?: string; gender?: string; elder?: boolean; line?: string; hAge?: number; blend?: string } = {}): Look {
   const r = new RNG(hashString(seed));
   const th = themeOf(race);
   const st = ROLE_STYLE[role] || ROLE_STYLE.ชาวบ้าน;
@@ -94,13 +95,14 @@ export function lookFor(seed: string, race: string, role: string, o: { climate?:
     return fem ? r.pick([1, 2, 5, 6, 7, 9, 10, 11, 0]) : r.pick([0, 0, 3, 4, 8, 10, 11, 2, 7]);
   })();
   const build = race === 'dwarf' || race === 'orc' || race === 'giant' ? r.pick([1, 2, 2]) : race === 'elf' || race === 'fae' ? r.pick([0, 0, 1]) : r.pick([0, 1, 1, 2]);
-  return {
+  const look: Look = {
     race, role, child, fem, beard, outfit, hat, line, stage: stage === 'teen' || stage === 'infant' ? stage : undefined,
     skin: r.pick(skins), hair: r.pick(hairs), hairStyle: elder && !fem && r.chance(0.3) ? 3 : hairStyle,
     eye: r.pick(th.eyes || EYES), mark: r.chance(0.35) ? r.int(1, 4) : 0, build,
     tall: r.chance(race === 'elf' || race === 'darkelf' ? 0.6 : 0.25), cloth: scheme[0], cloth2: scheme[1], pattern: r.int(0, 5),
     tool: st.t || '', elder, accent: r.pick(ln?.accent || th.accent),
   };
+  return o.blend ? applyBlend(look, o.blend, seed) : look;
 }
 
 export { lookKey };
