@@ -11,6 +11,6 @@
 คำสั่งตรวจ
 
 ```bash
-node scripts/check-docs.mjs
-node scripts/build-docs-manifest.mjs
+node scripts/docs/check-docs.mjs
+node scripts/docs/build-docs-manifest.mjs
 ```

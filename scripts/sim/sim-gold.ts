@@ -1,6 +1,6 @@
 // Measures how much gold characters hold, to price shops and commissions in the design docs.
-// Run: npx tsx scripts/sim-gold.ts [lives]   (default 300)
-import { Game, type Meta } from '../src/sim/game';
+// Run: npx tsx scripts/sim/sim-gold.ts [lives]   (default 300)
+import { Game, type Meta } from '../../src/sim/game';
 
 const N = Number(process.argv[2] || 300);
 const meta: Meta = { karma: 0, codex: [], lives: [], racesPlayed: [] };

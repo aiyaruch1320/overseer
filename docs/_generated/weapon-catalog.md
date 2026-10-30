@@ -1,6 +1,6 @@
 # รายการอาวุธทั้งหมด
 
-สร้างโดย `node scripts/build-weapon-catalog.mjs` จากไฟล์ 01 ถึง 08 อย่าแก้ไฟล์นี้โดยตรง กติกาอยู่ที่ [../systems/items/README.md](../systems/items/README.md)
+สร้างโดย `node scripts/docs/build-weapon-catalog.mjs` จากไฟล์ 01 ถึง 08 อย่าแก้ไฟล์นี้โดยตรง กติกาอยู่ที่ [../systems/items/README.md](../systems/items/README.md)
 
 ## สรุป
 

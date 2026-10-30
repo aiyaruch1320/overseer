@@ -1,10 +1,9 @@
 // Builds docs/_generated/npc-map.html from docs/lore/npcs/*.md and the event tables.
-// Run: node scripts/build-npc-map.mjs
+// Run: node scripts/docs/build-npc-map.mjs
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { root } from '../lib/paths.mjs';
 
-const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 
 // ---------- event titles ----------
@@ -88,7 +87,7 @@ for (const e of eventSet) events[e] = titles[e] || e;
 const missing = [...eventSet].filter((e) => !titles[e]);
 
 const data = { continents: CONTINENTS, countries, npcs, events };
-const tpl = read('scripts/npc-map.template.html');
+const tpl = read('scripts/docs/templates/npc-map.template.html');
 fs.writeFileSync(path.join(root, 'docs/_generated/npc-map.html'), tpl.replace('/*__DATA__*/null', JSON.stringify(data)));
 const expected = npcs.reduce((a, n) => a + n.spawn / 100, 0);
 console.log(`npcs ${npcs.length} · countries ${countries.length} · events referenced ${eventSet.size}${missing.length ? ` (no title: ${missing.join(', ')})` : ''} · expected appear ${expected.toFixed(0)}`);

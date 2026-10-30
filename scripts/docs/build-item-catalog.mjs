@@ -1,11 +1,10 @@
 // Builds docs/_generated/item-catalog.md: every non-weapon item (armor, accessories, talismans, consumables,
 // life tools, materials, key items) with its price at a W3 market, from the tables in docs/systems/items and
-// the price rules in docs/systems/items/19-prices.md.  Run: node scripts/build-item-catalog.mjs
+// the price rules in docs/systems/items/19-prices.md.  Run: node scripts/docs/build-item-catalog.mjs
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { root } from '../lib/paths.mjs';
 
-const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dir = path.join(root, 'docs/systems/items');
 const read = (f) => fs.readFileSync(path.join(dir, f), 'utf8').split('\n');
 
@@ -70,7 +69,7 @@ const groups = [
 ];
 let md = `# รายการไอเทมที่ไม่ใช่อาวุธ
 
-สร้างโดย \`node scripts/build-item-catalog.mjs\` จากไฟล์ 12 ถึง 18 อย่าแก้ไฟล์นี้โดยตรง กติการาคาอยู่ที่ [../systems/items/19-prices.md](../systems/items/19-prices.md) ราคาในตารางคือราคาซื้อที่ตลาดประเทศ W 3 ปกติ (ดัชนีราคา ×1.0) ราคารับซื้อ 40% ราคาขายตรงให้ผู้ใช้ 70% ของไอเทมที่ขาย
+สร้างโดย \`node scripts/docs/build-item-catalog.mjs\` จากไฟล์ 12 ถึง 18 อย่าแก้ไฟล์นี้โดยตรง กติการาคาอยู่ที่ [../systems/items/19-prices.md](../systems/items/19-prices.md) ราคาในตารางคือราคาซื้อที่ตลาดประเทศ W 3 ปกติ (ดัชนีราคา ×1.0) ราคารับซื้อ 40% ราคาขายตรงให้ผู้ใช้ 70% ของไอเทมที่ขาย
 
 อาวุธอยู่ที่ [weapon-catalog.md](weapon-catalog.md)
 

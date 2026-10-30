@@ -1,11 +1,11 @@
 // Writes docs/_generated/poc-visuals/races.md and docs/_generated/poc-visuals/specials.md from the theme and special-NPC data, so the docs cannot drift from the art.
 import { writeFileSync } from 'node:fs';
-import { THEMES, STAGES, STAGE_NAME, STAGE_AGE } from '../src/render/characters/themes';
-import { SPECIALS } from '../src/data/specials';
-import { NPC_CAST } from '../src/data/npcCast';
-import { castById } from '../src/data/cast';
-import { COUNTRY_DOCS } from '../src/data/countries';
-import { blendOf } from '../src/data/blood';
+import { THEMES, STAGES, STAGE_NAME, STAGE_AGE } from '../../src/render/characters/themes';
+import { SPECIALS } from '../../src/data/specials';
+import { NPC_CAST } from '../../src/data/npcCast';
+import { castById } from '../../src/data/cast';
+import { COUNTRY_DOCS } from '../../src/data/countries';
+import { blendOf } from '../../src/data/blood';
 
 const hex = (c: number) => '#' + c.toString(16).padStart(6, '0');
 const EARS: Record<string, string> = { round: 'หูกลม', long: 'หูยาวชี้ขึ้น', point: 'หูแหลมสั้น', beast: 'หูสัตว์บนหัว', fin: 'หูเป็นครีบ', none: 'ไม่มีหู' };

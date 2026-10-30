@@ -84,8 +84,8 @@
 ## 8. ก่อนส่งงาน
 
 ```bash
-node scripts/check-docs.mjs
-node scripts/build-docs-manifest.mjs
+node scripts/docs/check-docs.mjs
+node scripts/docs/build-docs-manifest.mjs
 ```
 
 สองคำสั่งนี้ตรวจรหัสอ้างอิง ลิงก์ และโครงโฟลเดอร์ แล้วสร้างดัชนี ถ้าแก้ไฟล์ที่สคริปต์สร้างข้อมูลจาก (ดู [../_generated/README.md](../_generated/README.md)) ให้รันสคริปต์ที่เกี่ยวข้องด้วย

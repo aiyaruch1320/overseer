@@ -1,6 +1,6 @@
 # แท็กผลพิเศษ 188 รายการ
 
-สร้างจากโค้ดเกม (`ผล #แท็ก ในพร คำสาป นิสัย skill`) ด้วย `scripts/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
+สร้างจากโค้ดเกม (`ผล #แท็ก ในพร คำสาป นิสัย skill`) ด้วย `scripts/codegen/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
 
 | แท็ก | จำนวนที่ใช้ |
 | --- | --- |

@@ -1,6 +1,6 @@
 # พร 107 รายการ
 
-สร้างจากโค้ดเกม (`src/data/gifts.ts`) ด้วย `scripts/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
+สร้างจากโค้ดเกม (`src/data/gifts.ts`) ด้วย `scripts/codegen/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
 
 ระดับ C ธรรมดา · U ไม่ธรรมดา · R หายาก · E มหากาพย์ · L ตำนาน (ระดับราคา 1–3 กำหนดความแพงเมื่อซื้อ)
 

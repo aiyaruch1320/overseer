@@ -1,6 +1,6 @@
 # นิสัย 48 รายการ
 
-สร้างจากโค้ดเกม (`src/data/traits.ts`) ด้วย `scripts/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
+สร้างจากโค้ดเกม (`src/data/traits.ts`) ด้วย `scripts/codegen/export-character-catalog.ts` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)
 
 | ID | ชื่อ | ผล | คำอธิบาย |
 | --- | --- | --- | --- |

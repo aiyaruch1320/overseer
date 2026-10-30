@@ -4,7 +4,7 @@
 
 โค้ดใน `src/` เป็นตัวทดลอง (POC) เมื่อโค้ดขัดกับเอกสาร **เอกสารชนะ** เมื่อเอกสารสองไฟล์ขัดกัน ไฟล์ที่ใหม่กว่า (ดูประวัติ git) ชนะ แล้วบันทึกข้อขัดแย้งใน [guide/consistency-checks.md](guide/consistency-checks.md)
 
-ดัชนีที่เครื่องอ่านได้อยู่ที่ [_generated/manifest.json](_generated/manifest.json) (สร้างด้วย `node scripts/build-docs-manifest.mjs`) แผนงานและสถานะอยู่ที่ [../RAW_PLAN.md](../RAW_PLAN.md)
+ดัชนีที่เครื่องอ่านได้อยู่ที่ [_generated/manifest.json](_generated/manifest.json) (สร้างด้วย `node scripts/docs/build-docs-manifest.mjs`) แผนงานและสถานะอยู่ที่ [../RAW_PLAN.md](../RAW_PLAN.md)
 
 ## สามชั้นของเอกสาร
 
@@ -25,7 +25,7 @@
 3. **แต่ละชั้นเก็บของชั้นตัวเอง** ชั้นโลกไม่มีสูตร ชั้นระบบไม่มีการบรรยายยาว ชั้นภาพไม่มีตัวเลขของเกม (ยกเว้นค่าที่อ้างมาและระบุที่มา)
 4. **ไฟล์ใน `_generated/` ห้ามแก้ด้วยมือ** แก้ที่ต้นทางแล้วสร้างใหม่
 5. **ทุกรายการที่มีรหัสอยู่ในตาราง** หนึ่งแถวหนึ่งรหัส ใช้รหัสเดิมเสมอเมื่ออ้างข้ามไฟล์
-6. **ลิงก์เป็นลิงก์สัมพัทธ์** ทุกลิงก์ต้องไม่เสีย `node scripts/check-docs.mjs` ตรวจให้
+6. **ลิงก์เป็นลิงก์สัมพัทธ์** ทุกลิงก์ต้องไม่เสีย `node scripts/docs/check-docs.mjs` ตรวจให้
 7. **ไทย ตรงไปตรงมา** เขียนสิ่งที่เป็นจริงในโลก ไม่บอกผู้อ่านว่าควรรู้สึกอย่างไร
 8. **ระบบพระเจ้าออกแบบเป็นลำดับสุดท้าย** เอกสารที่อ้างถึงทำเป็นตัวบอกตำแหน่งเท่านั้น
 
@@ -72,8 +72,8 @@
 | ทำแอนิเมชันเหตุการณ์โลก | [appearance/11-world-changes.md](appearance/11-world-changes.md) → [appearance/12-event-visuals.md](appearance/12-event-visuals.md) → [systems/events/world-events.md](systems/events/world-events.md) → [systems/events/branches/README.md](systems/events/branches/README.md) |
 | ทำฉากชีวิตและเส้นเรื่อง | [systems/experience/README.md](systems/experience/README.md) → [appearance/13-storyline-scenes.md](appearance/13-storyline-scenes.md) → [lore/storylines/README.md](lore/storylines/README.md) |
 | เขียนระบบตัวละคร | [systems/character/README.md](systems/character/README.md) → [systems/character/races/README.md](systems/character/races/README.md) → [systems/combat/README.md](systems/combat/README.md) |
-| ปรับสมดุล | [systems/simulation/world-sim.md](systems/simulation/world-sim.md) → [systems/economy/README.md](systems/economy/README.md) → `node scripts/sim-world.mjs` |
-| ตรวจความสอดคล้อง | `node scripts/check-docs.mjs` (ต้องได้ 0 errors 0 warnings) และ [guide/consistency-checks.md](guide/consistency-checks.md) |
+| ปรับสมดุล | [systems/simulation/world-sim.md](systems/simulation/world-sim.md) → [systems/economy/README.md](systems/economy/README.md) → `node scripts/sim/sim-world.mjs` |
+| ตรวจความสอดคล้อง | `node scripts/docs/check-docs.mjs` (ต้องได้ 0 errors 0 warnings) และ [guide/consistency-checks.md](guide/consistency-checks.md) |
 
 ## รหัสที่พบบ่อย
 
@@ -88,4 +88,4 @@
 | เหตุการณ์โลก · เหตุการณ์สืบทอด | 152 · 42 |
 | โหนดเส้นเรื่อง | 423 |
 
-เมื่อเพิ่มหรือแก้เอกสาร ให้รัน `node scripts/check-docs.mjs` และ `node scripts/build-docs-manifest.mjs` ก่อนส่งงาน
+เมื่อเพิ่มหรือแก้เอกสาร ให้รัน `npm run docs:verify` (ตรวจแล้วสร้างไฟล์อัตโนมัติใหม่) คู่มือสคริปต์ทั้งหมดอยู่ที่ [../scripts/README.md](../scripts/README.md)

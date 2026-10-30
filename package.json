@@ -8,12 +8,17 @@
     "build": "tsc --noEmit && vite build && npm run build:server",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "sim": "tsx scripts/simtest.ts",
+    "sim": "tsx scripts/sim/simtest.ts",
     "build:server": "esbuild server/main.ts --bundle --platform=node --format=esm --target=node22 --outfile=server-dist/main.mjs --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\"",
     "start": "node server-dist/main.mjs",
-    "docs:visuals": "tsx scripts/gen-visual-docs.ts",
-    "docs:birth": "tsx scripts/gen-birth.ts",
-    "docs:cast": "tsx scripts/gen-npc-cast.ts"
+    "docs:check": "node scripts/docs/check-docs.mjs",
+    "docs:build": "node scripts/docs/build-weapon-catalog.mjs && node scripts/docs/build-item-catalog.mjs && node scripts/docs/build-npc-map.mjs && node scripts/docs/build-story-map.mjs && node scripts/docs/build-docs-manifest.mjs",
+    "docs:verify": "npm run docs:check && npm run docs:build",
+    "gen:data": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts",
+    "gen:docs": "tsx scripts/codegen/export-character-catalog.ts && tsx scripts/codegen/gen-visual-docs.ts",
+    "sim:world": "node scripts/sim/sim-world.mjs",
+    "sim:items": "node scripts/sim/sim-items.mjs",
+    "sim:gold": "tsx scripts/sim/sim-gold.ts 300"
   },
   "dependencies": {
     "phaser": "3.90.0"

@@ -1,11 +1,10 @@
 // Builds docs/_generated/manifest.json: a machine-readable index of every markdown doc
 // (path, title, layer, group, kind, size, level-2 headings) plus a description of every layer and group.
-// Run: node scripts/build-docs-manifest.mjs
+// Run: node scripts/docs/build-docs-manifest.mjs
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { root } from '../lib/paths.mjs';
 
-const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs');
 
 export const LAYERS = {
@@ -46,13 +45,13 @@ export const GROUPS = {
 const GROUP_KEYS = Object.keys(GROUPS).sort((a, b) => b.length - a.length);
 
 const SOURCE = {
-  '_generated/npc-map.html': 'scripts/build-npc-map.mjs',
-  '_generated/story-map.html': 'scripts/build-story-map.mjs',
-  '_generated/weapon-catalog.md': 'scripts/build-weapon-catalog.mjs',
-  '_generated/item-catalog.md': 'scripts/build-item-catalog.mjs',
-  '_generated/character-catalog': 'scripts/export-character-catalog.ts',
-  '_generated/poc-visuals': 'scripts/gen-visual-docs.ts',
-  '_generated/manifest.json': 'scripts/build-docs-manifest.mjs',
+  '_generated/npc-map.html': 'scripts/docs/build-npc-map.mjs',
+  '_generated/story-map.html': 'scripts/docs/build-story-map.mjs',
+  '_generated/weapon-catalog.md': 'scripts/docs/build-weapon-catalog.mjs',
+  '_generated/item-catalog.md': 'scripts/docs/build-item-catalog.mjs',
+  '_generated/character-catalog': 'scripts/codegen/export-character-catalog.ts',
+  '_generated/poc-visuals': 'scripts/codegen/gen-visual-docs.ts',
+  '_generated/manifest.json': 'scripts/docs/build-docs-manifest.mjs',
 };
 
 function kindOf(rel, layer) {
@@ -94,6 +93,6 @@ const files = ['_generated/npc-map.html', '_generated/story-map.html'].filter((f
   .map((f) => ({ path: f, title: path.basename(f), layer: 'generated', group: '_generated', kind: 'generated', source: SOURCE[f] }));
 fs.writeFileSync(
   path.join(docs, '_generated', 'manifest.json'),
-  JSON.stringify({ generatedBy: 'scripts/build-docs-manifest.mjs', count: out.length, layers: LAYERS, groups: Object.fromEntries(GROUP_KEYS.reverse().map((k) => [k, { layer: GROUPS[k][0], role: GROUPS[k][1] }])), files: out, extra: files }, null, 1),
+  JSON.stringify({ generatedBy: 'scripts/docs/build-docs-manifest.mjs', count: out.length, layers: LAYERS, groups: Object.fromEntries(GROUP_KEYS.reverse().map((k) => [k, { layer: GROUPS[k][0], role: GROUPS[k][1] }])), files: out, extra: files }, null, 1),
 );
 console.log(`manifest: ${out.length} docs`);

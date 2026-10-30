@@ -1,6 +1,6 @@
 // Headless smoke test: plays many lives with random god actions, checks for crashes and pacing.
-import { Game, type Meta } from '../src/sim/game';
-import { SYMBOLS } from '../src/data/lore';
+import { Game, type Meta } from '../../src/sim/game';
+import { SYMBOLS } from '../../src/data/lore';
 
 const N = Number(process.argv[2] || 200);
 const meta: Meta = { karma: 0, codex: [], lives: [], racesPlayed: [] };

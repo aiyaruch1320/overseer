@@ -1,10 +1,9 @@
 // Checks design docs for broken references and table rules (storylines, combat, items).
-// Run: node scripts/check-docs.mjs   (exit code 1 when an error is found)
+// Run: node scripts/docs/check-docs.mjs   (exit code 1 when an error is found)
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { root } from '../lib/paths.mjs';
 
-const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs');
 const read = (p) => fs.readFileSync(path.join(docs, p), 'utf8');
 const list = (dir) => fs.readdirSync(path.join(docs, dir)).filter((f) => f.endsWith('.md')).map((f) => `${dir}/${f}`);

@@ -1,12 +1,11 @@
 // Docs-level world simulation: reads docs/systems/events/world-events.md, docs/lore/storylines/00-convergence.md and docs/lore/races/README.md,
 // runs many worlds on the world clock (ศ.ม., decade steps) and reports how events, eras and convergence points play out.
 // It models structure (era gates, prerequisites, caps, dragon moods), not the prose conditions: see docs/systems/simulation/world-sim.md for limits.
-// Usage: node scripts/sim-world.mjs [worlds=2000] [--json]
+// Usage: node scripts/sim/sim-world.mjs [worlds=2000] [--json]
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { root } from '../lib/paths.mjs';
 
-const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs');
 const read = (p) => fs.readFileSync(path.join(docs, p), 'utf8');
 const WORLDS = Number(process.argv[2]) || 2000;
