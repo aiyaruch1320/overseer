@@ -127,7 +127,7 @@ for (const f of raceFiles) {
     const c = cells(line);
     if (c.length < 7) return;
     const age = c[1].match(/^\d+/);
-    if (age && !line.includes('→ cv.')) starts.push(Number(age[0]));
+    if (age && !/^→ cv\./.test(c[3])) starts.push(Number(age[0]));
     const w = c.slice(3, 6).map((x) => x.match(/^(\d+) /));
     if (w.every(Boolean)) {
       const sum = w.reduce((s, x) => s + Number(x[1]), 0);

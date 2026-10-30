@@ -237,17 +237,37 @@ export function cvWindows(w, cv, p = P) {
   return out;
 }
 const STAGE = { b: [0, 12], t: [13, 19], a: [20, 54], e: [55, 99] };
-function lifeSeesCv(race, birth, L, cv, w, p = P) {
+// A node that is only "→ cv.N" enters for sure. A node that names the convergence inside one choice enters with that choice's weight (30–40 of 100).
+const nodeRows = new Map();
+for (const f of fs.readdirSync(path.join(docs, 'lore/storylines')).filter((n) => /^\d\d-.*\.md$/.test(n)))
+  for (const l of read(`lore/storylines/${f}`).split('\n')) {
+    const m = l.match(/^\| ([a-z]{2}\.[btael]\d) \|/);
+    const c = l.split('|').slice(1, -1).map((x) => x.trim());
+    if (m && c.length >= 7 && !nodeRows.has(m[1])) nodeRows.set(m[1], c);
+  }
+function entryChance(node, cvId) {
+  const c = nodeRows.get(node);
+  if (!c || c[3].startsWith('→ cv.')) return 1;
+  const re = new RegExp('cv\\.' + cvId.slice(3) + '(?!\\d)');
+  const opt = c.slice(3, 6).find((x) => re.test(x));
+  const wt = opt && opt.match(/^(\d+) /);
+  return wt ? Number(wt[1]) / 100 : 1;
+}
+function lifeSeesCv(race, birth, L, cv, w, p = P, r = null) {
   const k = L / 75;
-  const stages = cv.all ? ['b', 't', 'a', 'e'] : [...new Set(cv.entry.filter((n) => n.startsWith(race.code + '.')).map((n) => n[3]))];
+  const nodes = cv.entry.filter((n) => n.startsWith(race.code + '.'));
+  const stages = cv.all ? ['b', 't', 'a', 'e'] : [...new Set(nodes.map((n) => n[3]))];
   if (!stages.length) return null; // race has no entry
   const wins = cvWindows(w, cv, p);
+  let miss = 1;
   for (const s of cv.elderOnly ? ['e'] : stages) {
     const [a, b] = STAGE[s];
     const lo = birth + a * k, hi = Math.min(birth + b * k, birth + L);
-    if (wins.some(([x, y]) => x <= hi && y >= lo)) return true;
+    if (!wins.some(([x, y]) => x <= hi && y >= lo)) continue;
+    if (cv.all || !r) return true;
+    for (const n of nodes.filter((x) => x[3] === s)) miss *= 1 - entryChance(n, cv.id);
   }
-  return false;
+  return miss < 1 && r ? r() < 1 - miss : false;
 }
 
 // ---------- main ----------
@@ -273,7 +293,7 @@ export function study(n = WORLDS, opt = {}) {
       const L = race.lo + r() * (race.hi - race.lo);
       let seen = 0, possible = 0;
       for (const cv of cvs) {
-        const v = lifeSeesCv(race, birth, L, cv, w, { ...P, ...opt });
+        const v = lifeSeesCv(race, birth, L, cv, w, { ...P, ...opt }, r);
         if (v === null) continue;
         possible++;
         if (v) { seen++; const key = race.code + '|' + cv.id; res.cvRace.set(key, (res.cvRace.get(key) || 0) + 1); }
@@ -296,7 +316,7 @@ export function study(n = WORLDS, opt = {}) {
         for (const [id, ys] of w.fired) if (id.startsWith('_fall_')) for (const y of ys) if (y >= b2 && y <= e2) fl++;
         if (w.ended && w.ended[1] >= b2 && w.ended[1] <= e2) endHit = true;
         let cvSeen = 0;
-        for (const cv of cvs) { const v = lifeSeesCv(race, b2, L, cv, w, { ...P, ...opt }); if (v) cvSeen++; }
+        for (const cv of cvs) { const v = lifeSeesCv(race, b2, L, cv, w, { ...P, ...opt }, r); if (v) cvSeen++; }
         const a = res.fresh.get(race.code) || { n: 0, fall: 0, end: 0, cv: 0, noEv: 0, sigs: new Set(), ev: 0 };
         a.n++; if (fl) a.fall++; if (endHit) a.end++; if (cvSeen) a.cv++; if (!ids.size) a.noEv++; a.ev += ids.size; a.sigs.add([...ids].sort().join(','));
         res.fresh.set(race.code, a);
