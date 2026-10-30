@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/build-docs-manifest.mjs",
- "count": 235,
+ "count": 239,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -130,8 +130,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 19,
-   "bytes": 2106,
+   "lines": 20,
+   "bytes": 2341,
    "headings": []
   },
   {
@@ -193,6 +193,27 @@
     "นิสัยที่อยู่ร่วมกันไม่ได้"
    ],
    "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/item-catalog.md",
+   "title": "รายการไอเทมที่ไม่ใช่อาวุธ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 371,
+   "bytes": 28544,
+   "headings": [
+    "สรุป",
+    "เกราะและโล่",
+    "เครื่องประดับ",
+    "ของขลังพื้นบ้าน",
+    "เครื่องรางโบราณ",
+    "ของใช้ในศึก",
+    "เครื่องมือชีวิต",
+    "วัสดุจากสิ่งมีชีวิตและพืช",
+    "ของสำคัญ"
+   ],
+   "source": "scripts/build-item-catalog.mjs"
   },
   {
    "path": "_generated/poc-visuals/birthplaces.md",
@@ -500,13 +521,30 @@
    ]
   },
   {
+   "path": "appearance/14-consumables-tools-materials.md",
+   "title": "รูปลักษณ์ของใช้ในศึก เครื่องมือชีวิต วัสดุ และของสำคัญ",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 372,
+   "bytes": 101461,
+   "headings": [
+    "กติกา",
+    "ของใช้ในศึก 47 ชิ้น",
+    "เครื่องมือชีวิต 83 ชิ้น",
+    "วัสดุ 35 ชิ้น",
+    "ของสำคัญ 27 ชิ้น",
+    "จำนวน"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 77,
-   "bytes": 15538,
+   "lines": 78,
+   "bytes": 15910,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -1831,7 +1869,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 94,
-   "bytes": 16929,
+   "bytes": 17261,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -1850,7 +1888,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 85,
-   "bytes": 14227,
+   "bytes": 14342,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -1888,7 +1926,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 83,
-   "bytes": 11860,
+   "bytes": 12009,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2023,7 +2061,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 82,
-   "bytes": 11438,
+   "bytes": 11645,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2100,7 +2138,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 13381,
+   "bytes": 13617,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2120,7 +2158,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 85,
-   "bytes": 11348,
+   "bytes": 11672,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2178,7 +2216,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 82,
-   "bytes": 11258,
+   "bytes": 11389,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
@@ -2197,7 +2235,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 80,
-   "bytes": 11826,
+   "bytes": 12006,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
@@ -2290,7 +2328,7 @@
    "group": "lore/storylines",
    "kind": "index",
    "lines": 139,
-   "bytes": 21077,
+   "bytes": 21297,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2595,13 +2633,14 @@
    "layer": "systems",
    "group": "systems/character",
    "kind": "data",
-   "lines": 105,
-   "bytes": 18305,
+   "lines": 131,
+   "bytes": 22764,
    "headings": [
     "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
     "ข. อาชีพลับใหม่ 8 อย่าง",
     "ค. อาชีพลับของลูกครึ่ง 3 อย่าง",
-    "ง. ความยากและโอกาสได้อาชีพลับ"
+    "ง. ความยากและโอกาสได้อาชีพลับ",
+    "จ. ทางสู่อาชีพลับ 6 อย่างที่เคยไม่มีทาง"
    ]
   },
   {
@@ -3263,7 +3302,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 172,
-   "bytes": 21971,
+   "bytes": 21970,
    "headings": [
     "1. รายได้ของอาชีพ",
     "2. ขุนนางและผู้ถือที่ดิน",
@@ -3738,8 +3777,8 @@
    "layer": "systems",
    "group": "systems/items",
    "kind": "data",
-   "lines": 138,
-   "bytes": 16966,
+   "lines": 140,
+   "bytes": 17389,
    "headings": [
     "1. หลักการ",
     "2. ช่องและงบ",
@@ -3841,13 +3880,53 @@
    ]
   },
   {
+   "path": "systems/items/19-prices.md",
+   "title": "ราคาของไอเทมที่ไม่ใช่อาวุธ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 95,
+   "bytes": 11652,
+   "headings": [
+    "1. สูตร",
+    "2. ตัวปรับของชิ้น",
+    "3. ตัวปรับที่ซื้อ",
+    "4. ขายคืน",
+    "5. บริการ",
+    "6. ตรวจราคากับรายได้",
+    "7. เมื่อประเทศขายไม่ได้",
+    "8. สิ่งที่ยังต้องทดสอบด้วยการจำลองในโค้ด"
+   ]
+  },
+  {
+   "path": "systems/items/20-npc-talisman.md",
+   "title": "เครื่องรางในมือ NPC",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 120,
+   "bytes": 18786,
+   "headings": [
+    "1. หลักการ",
+    "2. เครื่องรางเข้ามือ NPC อย่างไร",
+    "3. ผู้ซื้อ 6 ชนิด",
+    "4. ขั้นของ NPC",
+    "5. ทางออกของ NPC",
+    "6. ผลต่อตัวละครหลัก",
+    "7. ผลถาวรเมื่อ NPC ยอมรับ (ทาง ค)",
+    "8. กรณีตัวอย่างจาก NPC ที่มีอยู่",
+    "9. หน้าต่างพระเจ้า",
+    "10. ความสอดคล้อง"
+   ]
+  },
+  {
    "path": "systems/items/README.md",
    "title": "อาวุธและไอเทม",
    "layer": "systems",
    "group": "systems/items",
    "kind": "index",
-   "lines": 147,
-   "bytes": 18316,
+   "lines": 149,
+   "bytes": 18587,
    "headings": [
     "ไฟล์",
     "1. ระดับความหายาก",
