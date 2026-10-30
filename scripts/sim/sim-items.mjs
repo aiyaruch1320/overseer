@@ -13,7 +13,7 @@ const pct = (a, p) => { const s = [...a].sort((x, y) => x - y); return s[Math.mi
 
 if (mode === 'all' || mode === 'tools') {
   // tier: base income (C 14 U 22 R 36), tool price, tool bonus, tool lifetime in years (docs/systems/economy/04, items/11 section 6)
-  const TIERS = [['C', 14, 6, 0.05, 15], ['U', 22, 24, 0.10, 25], ['R', 36, 80, 0.20, 40]];
+  const TIERS = [['C', 14, 6, 0.06, 15], ['U', 22, 24, 0.10, 25], ['R', 36, 80, 0.20, 40]];
   const W = [['W1', 0.7, 0.5], ['W2', 0.85, 0.75], ['W3', 1.0, 1.0], ['W4', 1.2, 1.4], ['W5', 1.5, 1.9]]; // price index, income index
   console.log('life tools: years to pay back (median / p90) and gold earned over the tool lifetime per gold of price');
   console.log('tier  W   price  median  p90   lifetime-return');
