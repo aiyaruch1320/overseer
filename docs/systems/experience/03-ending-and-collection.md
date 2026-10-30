@@ -46,7 +46,7 @@
 
 | หมวด | จำนวนในเอกสาร | ที่มา |
 | --- | --- | --- |
-| เส้นเรื่อง (โหนดที่เคยผ่าน) | 530 | [../../lore/storylines/README.md](../../lore/storylines/README.md) |
+| เส้นเรื่อง (โหนดที่เคยผ่าน) | 543 | [../../lore/storylines/README.md](../../lore/storylines/README.md) |
 | อาชีพลับ | 26 | [../character/10-jobs-secret.md](../character/10-jobs-secret.md) |
 | สัตว์คู่หู | 102 ชนิด | [../character/15-companion-species.md](../character/15-companion-species.md) |
 | เครื่องรางโบราณ | 24 | [../items/14-talismans.md](../items/14-talismans.md) |

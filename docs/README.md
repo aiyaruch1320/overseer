@@ -50,6 +50,7 @@
 | เส้นเรื่องของเผ่าและจุดบรรจบ | [lore/storylines/](lore/storylines/README.md) |
 | การเดินทางและการเจอต่างเผ่า (กติกา) | [systems/travel/](systems/travel/README.md) |
 | ตระกูลและทายาท | [lore/heirs/](lore/heirs/README.md) |
+| พวกพ้อง เพื่อน คู่หู คนรัก ครู ญาติ ไอเทมคู่ | [systems/bonds/](systems/bonds/README.md) |
 | เหตุการณ์โลก 152 รายการ (เงื่อนไขและผล) | [systems/events/world-events.md](systems/events/world-events.md) |
 | ผลเมื่อมังกรล้มและทวีปเปลี่ยนรูป | [systems/events/branches/](systems/events/branches/README.md) |
 | ความมั่งคั่งของประเทศ (W G M) | [systems/economy/02-countries.md](systems/economy/02-countries.md) |
@@ -87,6 +88,6 @@
 | ทวีป · ประเทศ · เผ่า · มังกร | 9 · 143 · 21 · 15 |
 | NPC · ศัตรู · อาวุธ | 614 · 138 · 816 |
 | เหตุการณ์โลก · เหตุการณ์สืบทอด | 152 · 42 |
-| โหนดเส้นเรื่อง | 530 |
+| โหนดเส้นเรื่อง | 543 |
 
 เมื่อเพิ่มหรือแก้เอกสาร ให้รัน `npm run docs:verify` (ตรวจแล้วสร้างไฟล์อัตโนมัติใหม่) คู่มือสคริปต์ทั้งหมดอยู่ที่ [../scripts/README.md](../scripts/README.md)

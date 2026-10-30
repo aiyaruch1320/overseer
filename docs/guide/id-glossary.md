@@ -11,6 +11,9 @@
 | `SF-` `AS-` `DW-` `RF-` `WT-` `RL-` `CL-` `DV-` | เหตุการณ์สืบทอดหลังทวีปเปลี่ยนรูป 42 รายการ | [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) |
 | `NF-MH02-1` | ศึกของ NPC (NF- + รหัส NPC) | [../systems/combat/07-npc-clashes.md](../systems/combat/07-npc-clashes.md) · ฉาก [../appearance/15-npc-clash-scenes.md](../appearance/15-npc-clash-scenes.md) |
 | `hu.t1` `va.a4` ฯลฯ | โหนดเส้นเรื่อง (เผ่า + ช่วงชีวิต + ลำดับ) | [../lore/storylines/README.md](../lore/storylines/README.md) |
+| `bn.a1` `kn.a1` | โหนดเส้นซ้อนทับพวกพ้อง (bn พวกพ้องทั่วไป kn ญาติ) | [../lore/storylines/28-allies.md](../lore/storylines/28-allies.md) |
+| `FT-01` `KN-01` `PR-01` `pr_twin_whistle_a` | แม่แบบเรื่องของพวกพ้อง · แม่แบบญาติ · คู่ไอเทมคู่ · ซีกของไอเทมคู่ (ลงท้าย _a _b) | [../systems/bonds/](../systems/bonds/README.md) |
+| `{สหาย:น้อยใจ@2}` | เครื่องหมายอารมณ์ของตัวละครต่อพวกพ้อง รูปแบบ {สาย:อารมณ์@ระดับ} ตัวตรวจอ่านตารางใน [../systems/bonds/02-feelings.md](../systems/bonds/02-feelings.md) | [../systems/bonds/02-feelings.md](../systems/bonds/02-feelings.md) |
 | `bd.a1` `bo.a1` `ab.a1` | โหนดเส้นซ้อนทับการผูกตัว (ผู้ถูกผูกตัว ผู้ซื้อ ผู้ช่วย) | [../lore/storylines/27-bondage.md](../lore/storylines/27-bondage.md) |
 | `cr.a1` `md.a1` `ld.a1` `fm.a1` | โหนดเส้นซ้อนทับชีวิตประจำที่ (ช่าง ผู้รักษา ผู้นำในถิ่น ชาวบ้านผู้ผลิต) | [../lore/storylines/26-hearth.md](../lore/storylines/26-hearth.md) |
 | `sf.a1` `ps.a1` `ml.a1` `sc.a1` `ex.a1` `wd.a1` `xc.a1` | โหนดเส้นซ้อนทับการเดินทาง (ลูกเรือ ผู้แสวงบุญ ทหารรับจ้าง ผู้เรียน ผู้ลี้ภัย นักเร่ เจอต่างเผ่า) | [../lore/storylines/25-journeys.md](../lore/storylines/25-journeys.md) |

@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 253,
+ "count": 261,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -48,6 +48,10 @@
   "lore/dragons": {
    "layer": "lore",
    "role": "15 legendary dragons: who they are and how they relate"
+  },
+  "systems/bonds": {
+   "layer": "systems",
+   "role": "Allies: ties, bond levels, feelings by tie, how friends form, friend arcs, family, paired items"
   },
   "systems/items": {
    "layer": "systems",
@@ -117,8 +121,8 @@
    "layer": "root",
    "group": "",
    "kind": "index",
-   "lines": 93,
-   "bytes": 13177,
+   "lines": 94,
+   "bytes": 13346,
    "headings": [
     "สามชั้นของเอกสาร",
     "ข้อตกลง",
@@ -935,8 +939,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 24,
-   "bytes": 4216,
+   "lines": 27,
+   "bytes": 5159,
    "headings": []
   },
   {
@@ -2476,7 +2480,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 60,
-   "bytes": 16578,
+   "bytes": 16734,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2487,13 +2491,30 @@
    ]
   },
   {
+   "path": "lore/storylines/28-allies.md",
+   "title": "เส้นเรื่อง: พวกพ้อง (bn kn)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 237,
+   "bytes": 52761,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. bn พวกพ้องทั่วไป",
+    "4. kn ญาติ",
+    "5. พวกพ้องตัวหลัก (ชุดแรก 10 คน)",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 142,
-   "bytes": 22070,
+   "lines": 143,
+   "bytes": 22326,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2631,12 +2652,123 @@
    "layer": "systems",
    "group": "systems",
    "kind": "index",
-   "lines": 31,
-   "bytes": 4291,
+   "lines": 32,
+   "bytes": 4599,
    "headings": [
     "โฟลเดอร์",
     "สิ่งที่ไม่อยู่ในชั้นนี้",
     "กติกาของชั้นนี้"
+   ]
+  },
+  {
+   "path": "systems/bonds/01-ties-and-levels.md",
+   "title": "สายสัมพันธ์และระดับความผูกพัน",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 110,
+   "bytes": 16396,
+   "headings": [
+    "1. สายสัมพันธ์ 9 แบบ",
+    "2. ความผูกพันและระดับ",
+    "3. ผลตามสายและระดับ",
+    "4. การเปลี่ยนสาย",
+    "5. การสิ้นสุดของสาย",
+    "6. ที่ต้องทดสอบเมื่อมีโค้ด"
+   ]
+  },
+  {
+   "path": "systems/bonds/02-feelings.md",
+   "title": "ความรู้สึกของตัวละครต่อพวกพ้อง",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 130,
+   "bytes": 18072,
+   "headings": [
+    "1. อารมณ์ 24 อย่าง",
+    "2. ตารางว่าสายไหนแสดงอารมณ์ไหนได้",
+    "3. ข้อห้ามที่ทำให้เรื่องไม่สมเหตุสมผล",
+    "4. กติกาอื่น",
+    "5. วิธีแสดงออก",
+    "6. สัญญาที่ตัวตรวจใช้"
+   ]
+  },
+  {
+   "path": "systems/bonds/03-formation.md",
+   "title": "การเกิดพวกพ้อง การชวน และชีวิตที่เดินต่อเมื่อห่างกัน",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 96,
+   "bytes": 15850,
+   "headings": [
+    "1. พวกพ้องมาจากไหน",
+    "2. ข้อพิจารณาตอนจับคู่",
+    "3. การชวน",
+    "4. ชีวิตของพวกพ้องเมื่อห่างกัน",
+    "5. อาชีพกับสายที่เกิดบ่อย",
+    "6. ที่ต้องทดสอบเมื่อมีโค้ด"
+   ]
+  },
+  {
+   "path": "systems/bonds/04-friend-arcs.md",
+   "title": "เรื่องของพวกพ้อง",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 96,
+   "bytes": 21008,
+   "headings": [
+    "1. สามชั้นของเรื่อง",
+    "2. ห้าขั้นของหนึ่งเรื่อง",
+    "3. แม่แบบ 12 แบบ",
+    "4. กติกาคุณภาพของเรื่อง",
+    "5. เกณฑ์เลือก NPC ธง"
+   ]
+  },
+  {
+   "path": "systems/bonds/05-family.md",
+   "title": "ครอบครัวและญาติ",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 76,
+   "bytes": 15724,
+   "headings": [
+    "1. โครงญาติตอนเกิด",
+    "2. แม่แบบญาติ 8 แบบ",
+    "3. ญาติรุ่นเยาว์ (ลูก หลาน ลูกบุญธรรม)",
+    "4. ครอบครัวกับระบบอื่น"
+   ]
+  },
+  {
+   "path": "systems/bonds/06-paired-items.md",
+   "title": "ไอเทมคู่",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 79,
+   "bytes": 14413,
+   "headings": [
+    "1. กติกา",
+    "2. ที่มา",
+    "3. ซีกของไอเทมคู่",
+    "4. คู่และผล",
+    "5. ที่ต้องทำต่อ"
+   ]
+  },
+  {
+   "path": "systems/bonds/README.md",
+   "title": "ระบบพวกพ้อง",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "index",
+   "lines": 44,
+   "bytes": 6605,
+   "headings": [
+    "ที่มาในโค้ดและเอกสารเดิม",
+    "ตัวเลขสรุป"
    ]
   },
   {
@@ -3603,7 +3735,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 139,
-   "bytes": 21246,
+   "bytes": 21448,
    "headings": [
     "1. เจตนาของระบบ",
     "2. ระดับการผูกตัว",
@@ -3782,8 +3914,8 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 76,
-   "bytes": 10277,
+   "lines": 78,
+   "bytes": 10556,
    "headings": [
     "1. คำถามของชีวิต",
     "2. ตัวละครอธิษฐานต่อเรา",

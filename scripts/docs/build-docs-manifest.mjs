@@ -31,6 +31,7 @@ export const GROUPS = {
   'systems/character/races': ['systems', 'Per-people starting stats, abilities, blessings, curses, skills'],
   'systems/combat': ['systems', 'Combat core, type matrix, enemies, encounters, rewards'],
   'systems/items': ['systems', 'Weapons, armor, accessories, talismans, consumables, materials, forging'],
+  'systems/bonds': ['systems', 'Allies: ties, bond levels, feelings by tie, how friends form, friend arcs, family, paired items'],
   'systems/economy': ['systems', 'Money, classes, income, trade, investment, wealth of every country'],
   'systems/events': ['systems', 'World events (conditions and effects) and branches after dragon falls'],
   'systems/travel': ['systems', 'Travel levels, why a life travels, destination filters by people and morals, road events, contact targets'],
