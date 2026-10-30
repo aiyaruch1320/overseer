@@ -1,5 +1,5 @@
 {
- "generatedBy": "scripts/build-docs-manifest.mjs",
+ "generatedBy": "scripts/docs/build-docs-manifest.mjs",
  "count": 239,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
@@ -114,7 +114,7 @@
    "group": "",
    "kind": "index",
    "lines": 92,
-   "bytes": 12876,
+   "bytes": 13027,
    "headings": [
     "สามชั้นของเอกสาร",
     "ข้อตกลง",
@@ -131,7 +131,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 20,
-   "bytes": 2341,
+   "bytes": 2403,
    "headings": []
   },
   {
@@ -141,12 +141,12 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 76,
-   "bytes": 10793,
+   "bytes": 10801,
    "headings": [
     "ความถนัด",
     "skill เฉพาะตัว"
    ],
-   "source": "scripts/export-character-catalog.ts"
+   "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
    "path": "_generated/character-catalog/blessings.md",
@@ -155,9 +155,9 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 116,
-   "bytes": 14995,
+   "bytes": 15003,
    "headings": [],
-   "source": "scripts/export-character-catalog.ts"
+   "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
    "path": "_generated/character-catalog/curses.md",
@@ -166,9 +166,9 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 112,
-   "bytes": 14540,
+   "bytes": 14548,
    "headings": [],
-   "source": "scripts/export-character-catalog.ts"
+   "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
    "path": "_generated/character-catalog/tags.md",
@@ -177,9 +177,9 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 195,
-   "bytes": 3725,
+   "bytes": 3733,
    "headings": [],
-   "source": "scripts/export-character-catalog.ts"
+   "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
    "path": "_generated/character-catalog/traits.md",
@@ -188,11 +188,11 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 83,
-   "bytes": 7787,
+   "bytes": 7795,
    "headings": [
     "นิสัยที่อยู่ร่วมกันไม่ได้"
    ],
-   "source": "scripts/export-character-catalog.ts"
+   "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
    "path": "_generated/item-catalog.md",
@@ -201,7 +201,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 371,
-   "bytes": 28544,
+   "bytes": 28549,
    "headings": [
     "สรุป",
     "เกราะและโล่",
@@ -213,7 +213,7 @@
     "วัสดุจากสิ่งมีชีวิตและพืช",
     "ของสำคัญ"
    ],
-   "source": "scripts/build-item-catalog.mjs"
+   "source": "scripts/docs/build-item-catalog.mjs"
   },
   {
    "path": "_generated/poc-visuals/birthplaces.md",
@@ -224,7 +224,7 @@
    "lines": 602,
    "bytes": 137997,
    "headings": [],
-   "source": "scripts/gen-visual-docs.ts"
+   "source": "scripts/codegen/gen-visual-docs.ts"
   },
   {
    "path": "_generated/poc-visuals/races.md",
@@ -257,7 +257,7 @@
     "มัมมี่ (`mummy`)",
     "กูล (`ghoul`)"
    ],
-   "source": "scripts/gen-visual-docs.ts"
+   "source": "scripts/codegen/gen-visual-docs.ts"
   },
   {
    "path": "_generated/poc-visuals/specials.md",
@@ -268,7 +268,7 @@
    "lines": 67,
    "bytes": 37204,
    "headings": [],
-   "source": "scripts/gen-visual-docs.ts"
+   "source": "scripts/codegen/gen-visual-docs.ts"
   },
   {
    "path": "_generated/weapon-catalog.md",
@@ -277,7 +277,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 1405,
-   "bytes": 280413,
+   "bytes": 280418,
    "headings": [
     "สรุป",
     "ของใช้และมาตรฐาน",
@@ -288,7 +288,7 @@
     "ตำนาน",
     "รุ่นวัสดุ"
    ],
-   "source": "scripts/build-weapon-catalog.mjs"
+   "source": "scripts/docs/build-weapon-catalog.mjs"
   },
   {
    "path": "appearance/01-continents.md",
@@ -838,7 +838,7 @@
    "group": "guide",
    "kind": "index",
    "lines": 17,
-   "bytes": 777,
+   "bytes": 787,
    "headings": []
   },
   {
@@ -870,7 +870,7 @@
    "group": "guide",
    "kind": "guide",
    "lines": 92,
-   "bytes": 11334,
+   "bytes": 11344,
    "headings": [
     "1. แบ่งตามคำถามที่ตอบ ไม่ใช่ตามหัวข้อ",
     "2. ถามสามข้อก่อนวางข้อมูลใหม่",
@@ -2417,7 +2417,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 208,
-   "bytes": 41482,
+   "bytes": 41490,
    "headings": [
     "1. ผังทวีป",
     "2. วิธีวาด (`src/render/terrain/`)",
@@ -3384,7 +3384,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 141,
-   "bytes": 20911,
+   "bytes": 20919,
    "headings": [
     "1. โค้ดมีอะไรอยู่แล้ว",
     "2. สิ่งที่ต้องเพิ่ม",
@@ -3404,7 +3404,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 68,
-   "bytes": 12352,
+   "bytes": 12357,
    "headings": [
     "1. ผลสรุป",
     "2. ตรวจแล้วสอดคล้อง",
@@ -3885,8 +3885,8 @@
    "layer": "systems",
    "group": "systems/items",
    "kind": "data",
-   "lines": 95,
-   "bytes": 11652,
+   "lines": 115,
+   "bytes": 14050,
    "headings": [
     "1. สูตร",
     "2. ตัวปรับของชิ้น",
@@ -3895,7 +3895,8 @@
     "5. บริการ",
     "6. ตรวจราคากับรายได้",
     "7. เมื่อประเทศขายไม่ได้",
-    "8. สิ่งที่ยังต้องทดสอบด้วยการจำลองในโค้ด"
+    "8. ผลทดสอบคืนทุนด้วยการจำลอง",
+    "9. ที่ยังต้องทดสอบ"
    ]
   },
   {
@@ -3904,8 +3905,8 @@
    "layer": "systems",
    "group": "systems/items",
    "kind": "data",
-   "lines": 120,
-   "bytes": 18786,
+   "lines": 135,
+   "bytes": 20991,
    "headings": [
     "1. หลักการ",
     "2. เครื่องรางเข้ามือ NPC อย่างไร",
@@ -3916,7 +3917,8 @@
     "7. ผลถาวรเมื่อ NPC ยอมรับ (ทาง ค)",
     "8. กรณีตัวอย่างจาก NPC ที่มีอยู่",
     "9. หน้าต่างพระเจ้า",
-    "10. ความสอดคล้อง"
+    "10. ความสอดคล้อง",
+    "11. ผลทดสอบด้วยการจำลอง"
    ]
   },
   {
@@ -3926,7 +3928,7 @@
    "group": "systems/items",
    "kind": "index",
    "lines": 149,
-   "bytes": 18587,
+   "bytes": 18592,
    "headings": [
     "ไฟล์",
     "1. ระดับความหายาก",
@@ -3946,7 +3948,7 @@
    "group": "systems/simulation",
    "kind": "index",
    "lines": 11,
-   "bytes": 958,
+   "bytes": 962,
    "headings": []
   },
   {
@@ -3969,7 +3971,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 186,
-   "bytes": 26903,
+   "bytes": 26915,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
@@ -3986,7 +3988,7 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "source": "scripts/build-npc-map.mjs"
+   "source": "scripts/docs/build-npc-map.mjs"
   },
   {
    "path": "_generated/story-map.html",
@@ -3994,7 +3996,7 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "source": "scripts/build-story-map.mjs"
+   "source": "scripts/docs/build-story-map.mjs"
   }
  ]
 }
