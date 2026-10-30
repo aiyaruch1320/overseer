@@ -287,18 +287,25 @@ for (const abs of walk(docs)) {
     if (m) for (const id of [m[1], m[2]]) if (!pairedItems.has(id)) err('systems/bonds/06-paired-items.md', 0, 'paired-item', `${id} is in a pair row but not in the halves table`);
   }
   // the named allies in 28-allies: the cover table and the sections must list the same NPCs, each section declaring its ties
-  const A = 'lore/storylines/28-allies.md';
-  const cover = lines(A).map((l) => l.match(/^\| ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
-  const secs = lines(A).map((l) => l.match(/^### ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
-  for (const id of cover) if (!secs.includes(id)) err(A, 0, 'ally', `${id} is in the cover table but has no section`);
-  for (const id of secs) if (!cover.includes(id)) err(A, 0, 'ally', `${id} has a section but is not in the cover table`);
-  const text = read(A);
-  for (const id of secs) {
-    const body = text.split(new RegExp(`^### ${id} .*$`, 'm'))[1]?.split(/^#{2,3} /m)[0] || '';
-    if (!/^สาย: /m.test(body)) err(A, 0, 'ally', `${id} has no "สาย:" line`);
-    if (!/ปลายทาง: ก\) /.test(body)) err(A, 0, 'ally', `${id} has no ending line`);
-    if (!/\*\*ขอบเขต/.test(body)) err(A, 0, 'ally', `${id} has no boundary scene (ขอบเขต)`);
+  for (const A of ['lore/storylines/28-allies.md', 'lore/storylines/29-allies-flagship.md']) {
+    const cover = lines(A).map((l) => l.match(/^\| ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
+    const secs = lines(A).map((l) => l.match(/^### ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
+    for (const id of cover) if (!secs.includes(id)) err(A, 0, 'ally', `${id} is in the cover table but has no section`);
+    for (const id of secs) if (!cover.includes(id)) err(A, 0, 'ally', `${id} has a section but is not in the cover table`);
+    const text = read(A);
+    for (const id of secs) {
+      const body = text.split(new RegExp(`^### ${id} .*$`, 'm'))[1]?.split(/^#{2,3} /m)[0] || '';
+      if (!/^สาย: /m.test(body)) err(A, 0, 'ally', `${id} has no "สาย:" line`);
+      if (!/ปลายทาง: ก\) /.test(body)) err(A, 0, 'ally', `${id} has no ending line`);
+      const ending = body.match(/^ปลายทาง: .*$/m);
+      const pct = ending ? [...ending[0].matchAll(/[กขค]\) (\d+) /g)].map((m) => Number(m[1])) : [];
+      if (ending && (pct.length !== 3 || pct.reduce((s, x) => s + x, 0) !== 100)) err(A, 0, 'ally', `${id} ending weights must be three numbers that sum to 100`);
+      if (!/\*\*ขอบเขต/.test(body)) err(A, 0, 'ally', `${id} has no boundary scene (ขอบเขต)`);
+    }
   }
+  // one NPC, one ally section across both files
+  const allSecs = ['lore/storylines/28-allies.md', 'lore/storylines/29-allies-flagship.md'].flatMap((f) => lines(f).map((l) => l.match(/^### ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]));
+  for (const id of new Set(allSecs)) if (allSecs.filter((x) => x === id).length > 1) err('lore/storylines', 0, 'ally', `${id} has two ally sections`);
 }
 
 for (const w of warnings) console.log('warn', w);
