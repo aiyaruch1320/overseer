@@ -60,7 +60,7 @@ for (const f of itemFiles.filter((x) => /\/1[2-8]-/.test(x))) for (const line of
 const STAT = /^(pow|mag|spd|luk|int|vit)([+-]\d+)$/;
 const ATTACK = new Set(['blade', 'blunt', 'pierce', 'ranged', 'poison', 'silver', 'iron', 'light', 'fire', 'water', 'ice', 'lightning', 'wind', 'earth', 'dark', 'blood', 'holy', 'cursed_weapon']);
 // words that appear in backticks but are not ids: code fields, LLM roles, proposed chain ids
-const NOT_IDS = new Set(['npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
+const NOT_IDS = new Set(['npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'affinity', 'deeds', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
 // string literals in the game code (country flags, monster tags, choice tags, effect tokens) count as known words
 function srcFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? srcFiles(path.join(dir, e.name)) : /\.ts$/.test(e.name) ? [path.join(dir, e.name)] : []));
@@ -74,7 +74,8 @@ const docTags = new Set([
   ...[...read('systems/combat/02-type-matrix.md').matchAll(/^\| [^|`]*`([a-z_]+)`/gm)].map((m) => m[1]),
   'spirit_bane',
 ]);
-const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...codeWords, ...docTags]);
+const pairedItems = tableIds(['systems/bonds/06-paired-items.md']);
+const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...pairedItems, ...codeWords, ...docTags]);
 const aptLevel = (t) => { const m = t.match(/^([a-z_]+)_(\d)$/); return m && apts.has(m[1]); };
 
 // ---------- reference check ----------
@@ -103,7 +104,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), 'systems/events/local-events.md'].forEach(checkRefs);
+[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), ...list('systems/bonds'), 'systems/events/local-events.md'].forEach(checkRefs);
 
 // NPC rows may name other NPCs and events: every id they mention must exist.
 for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
@@ -234,6 +235,70 @@ for (const abs of walk(docs)) {
     for (const [, id] of text.matchAll(/^#### NF-([A-Z]{2}\d{2}-\d) /gm)) if (!fighters.includes(id)) err(f, 0, 'npc-clash', `NF-${id} is not in 03-enemies section ง`);
   }
   if (!fighters.length) err('systems/combat/03-enemies.md', 0, 'npc-clash', 'no fighters found in section ง');
+}
+
+// ---------- bonds: feelings by tie ----------
+// The matrix in 02-feelings.md says which tie can show which feeling from which bond level. Every {tie:feeling@level} mark in the docs must obey it.
+{
+  const F = 'systems/bonds/02-feelings.md';
+  const rows = lines(F);
+  const head = rows.findIndex((l) => /^\| อารมณ์ \| สหาย \|/.test(l));
+  const ties = head < 0 ? [] : cells(rows[head]).slice(1);
+  const matrix = {};
+  for (let i = head + 2; head >= 0 && i < rows.length && rows[i].startsWith('|'); i++) {
+    const c = cells(rows[i]);
+    matrix[c[0].replace(/\*/g, '')] = Object.fromEntries(ties.map((t, k) => [t, c[k + 1] === '-' ? null : Number(c[k + 1])]));
+  }
+  if (ties.length !== 9 || Object.keys(matrix).length !== 24) err(F, 0, 'feelings-matrix', `expected 9 ties and 24 feelings, got ${ties.length} and ${Object.keys(matrix).length}`);
+  const TOKEN = /\{([^{}:@]+):([^{}:@]+)@(\d)\}/g;
+  for (const f of [...list('systems/bonds'), ...list('lore/storylines')]) {
+    let declared = null;
+    lines(f).forEach((line, i) => {
+      const n = i + 1;
+      if (/^#{2,3} /.test(line)) declared = null;
+      const d = line.match(/^สาย: (.+)$/);
+      if (d) declared = d[1].split('·').map((s) => s.trim());
+      const st = line.match(/^\| \d [^|]+\| (\d) \|/);
+      for (const [, tie, feel, lv] of line.matchAll(TOKEN)) {
+        const level = Number(lv);
+        if (!ties.includes(tie)) { err(f, n, 'feeling-tie', `unknown tie ${tie}`); continue; }
+        if (!matrix[feel]) { err(f, n, 'feeling', `unknown feeling ${feel}`); continue; }
+        const min = matrix[feel][tie];
+        if (min === null) err(f, n, 'feeling-tie', `${tie} cannot show ${feel}`);
+        else if (level < min) err(f, n, 'feeling-level', `${tie} shows ${feel} from level ${min}, not ${level}`);
+        if (level < 1 || level > 5) err(f, n, 'feeling-level', `${feel}@${level}`);
+        if (declared && !declared.includes(tie)) err(f, n, 'feeling-declared', `${tie} is not in this story's declared ties (${declared.join(', ')})`);
+        if (st && level > Number(st[1])) err(f, n, 'feeling-stage', `${feel}@${level} is above the stage level ${st[1]}`);
+      }
+    });
+  }
+  // ids of the bond templates and paired items that other docs mention must exist
+  const defs = { FT: new Set(), KN: new Set(), PR: new Set() };
+  for (const [f, k] of [['systems/bonds/04-friend-arcs.md', 'FT'], ['systems/bonds/05-family.md', 'KN'], ['systems/bonds/06-paired-items.md', 'PR']])
+    for (const line of lines(f)) { const m = line.match(new RegExp(`^\\| \`(${k}-\\d{2})\` \\|`)); if (m) defs[k].add(m[1]); }
+  for (const f of [...list('systems/bonds'), ...list('lore/storylines')]) lines(f).forEach((line, i) => {
+    for (const [, k, num] of line.matchAll(/\b(FT|KN|PR)-(\d{2})\b/g)) if (!defs[k].has(`${k}-${num}`)) err(f, i + 1, 'bond-id', `${k}-${num}`);
+  });
+  // every paired item has both halves, and each pair row names two existing halves
+  const halves = [...pairedItems];
+  for (const id of halves) if (/_a$/.test(id) && !pairedItems.has(id.replace(/_a$/, '_b'))) err('systems/bonds/06-paired-items.md', 0, 'paired-item', `${id} has no _b half`);
+  for (const line of lines('systems/bonds/06-paired-items.md')) {
+    const m = line.match(/^\| `PR-\d{2}` \| (pr_[a-z_]+) กับ (pr_[a-z_]+) \|/);
+    if (m) for (const id of [m[1], m[2]]) if (!pairedItems.has(id)) err('systems/bonds/06-paired-items.md', 0, 'paired-item', `${id} is in a pair row but not in the halves table`);
+  }
+  // the named allies in 28-allies: the cover table and the sections must list the same NPCs, each section declaring its ties
+  const A = 'lore/storylines/28-allies.md';
+  const cover = lines(A).map((l) => l.match(/^\| ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
+  const secs = lines(A).map((l) => l.match(/^### ([A-Z]{2}\d{2}-\d) /)).filter(Boolean).map((m) => m[1]);
+  for (const id of cover) if (!secs.includes(id)) err(A, 0, 'ally', `${id} is in the cover table but has no section`);
+  for (const id of secs) if (!cover.includes(id)) err(A, 0, 'ally', `${id} has a section but is not in the cover table`);
+  const text = read(A);
+  for (const id of secs) {
+    const body = text.split(new RegExp(`^### ${id} .*$`, 'm'))[1]?.split(/^#{2,3} /m)[0] || '';
+    if (!/^สาย: /m.test(body)) err(A, 0, 'ally', `${id} has no "สาย:" line`);
+    if (!/ปลายทาง: ก\) /.test(body)) err(A, 0, 'ally', `${id} has no ending line`);
+    if (!/\*\*ขอบเขต/.test(body)) err(A, 0, 'ally', `${id} has no boundary scene (ขอบเขต)`);
+  }
 }
 
 for (const w of warnings) console.log('warn', w);
