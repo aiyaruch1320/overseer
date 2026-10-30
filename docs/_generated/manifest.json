@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 261,
+ "count": 264,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -576,8 +576,8 @@
    "layer": "appearance",
    "group": "appearance",
    "kind": "visual",
-   "lines": 90,
-   "bytes": 23252,
+   "lines": 94,
+   "bytes": 25548,
    "headings": [
     "1. กติกากลางของฉากในเส้นเรื่อง",
     "2. พิธีของเผ่า (โหนด `.t1`)",
@@ -618,13 +618,50 @@
    ]
   },
   {
+   "path": "appearance/16-ally-scenes.md",
+   "title": "ภาพของพวกพ้อง",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 265,
+   "bytes": 49247,
+   "headings": [
+    "1. กติกากลาง",
+    "2. สีและรูปของสาย",
+    "3. ลักษณะเส้นตามระดับ",
+    "4. อีโมตของอารมณ์ 24 อย่าง",
+    "5. ไอเทมคู่",
+    "6. ฉากของโหนด bn และ kn",
+    "7. ฉากของพวกพ้องตัวหลัก",
+    "8. ฉากของแม่แบบญาติ (`KN-01` ถึง `KN-08`)",
+    "9. ฉากของแม่แบบเรื่องของเพื่อน (`FT-01` ถึง `FT-12`)",
+    "10. สถานะ"
+   ]
+  },
+  {
+   "path": "appearance/17-local-event-visuals.md",
+   "title": "ภาพและ UI ของเหตุการณ์ท้องถิ่น",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 135,
+   "bytes": 47469,
+   "headings": [
+    "1. กติกากลาง",
+    "2. สีเส้นในของทวีป",
+    "3. เหตุการณ์ที่เขียนมือ 76 รายการ",
+    "4. เหตุการณ์ที่สร้างอัตโนมัติ (LC-1xx)",
+    "5. สถานะ"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 79,
-   "bytes": 16292,
+   "lines": 81,
+   "bytes": 17017,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -940,7 +977,7 @@
    "group": "guide",
    "kind": "guide",
    "lines": 27,
-   "bytes": 5159,
+   "bytes": 5317,
    "headings": []
   },
   {
@@ -2508,13 +2545,35 @@
    ]
   },
   {
+   "path": "lore/storylines/29-allies-flagship.md",
+   "title": "เส้นเรื่อง: พวกพ้องตัวหลัก ชุดที่สอง (40 คน)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 682,
+   "bytes": 120616,
+   "headings": [
+    "1. ตารางครอบคลุม",
+    "2. อัซการ์",
+    "3. มอร์เฮเวน",
+    "4. คาซ-ดูรัม",
+    "5. เนเรีย",
+    "6. อัลเดรีย",
+    "7. เมคาเรีย",
+    "8. ซาฮารัน",
+    "9. ซิลวาเนล",
+    "10. เนบูเลีย",
+    "11. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 143,
-   "bytes": 22326,
+   "lines": 144,
+   "bytes": 22609,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2717,8 +2776,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 96,
-   "bytes": 21008,
+   "lines": 110,
+   "bytes": 22619,
    "headings": [
     "1. สามชั้นของเรื่อง",
     "2. ห้าขั้นของหนึ่งเรื่อง",
@@ -2764,8 +2823,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "index",
-   "lines": 44,
-   "bytes": 6605,
+   "lines": 46,
+   "bytes": 7045,
    "headings": [
     "ที่มาในโค้ดและเอกสารเดิม",
     "ตัวเลขสรุป"
