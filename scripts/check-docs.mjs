@@ -22,31 +22,31 @@ function collect(files, re) {
   for (const f of files) for (const line of lines(f)) for (const m of line.matchAll(re)) out.add(m[1]);
   return out;
 }
-const charFiles = [...list('character'), ...list('character/catalog')];
+const charFiles = [...list('systems/character'), ...list('_generated/character-catalog')];
 const gifts = collect(charFiles, /\b((?:nb|nc|ns|b|c|sp|cs|u|pa)_[a-z0-9_]+)\b/g);
 const jobs = new Set();
-for (const f of ['character/09-jobs-common.md', 'character/10-jobs-secret.md', 'character/11-jobs-special.md'])
+for (const f of ['systems/character/09-jobs-common.md', 'systems/character/10-jobs-secret.md', 'systems/character/11-jobs-special.md'])
   for (const line of lines(f)) { const m = line.match(/^\| ([a-z_]+) \| /); if (m && m[1] !== 'ID') jobs.add(m[1]); }
 const tableIds = (files) => collect(files, /^\| `?([a-z_]+)`? \| /gm);
-const traits = tableIds(['character/catalog/traits.md', 'character/12-job-support.md']);
-const apts = tableIds(['character/catalog/aptitudes-skills.md', 'character/12-job-support.md']);
-const tags = new Set([...collect([...charFiles, ...list('combat')], /`(#[a-z_]+)`/g), ...collect(['character/catalog/tags.md'], /^\| (#[a-z_]+) /gm)]);
+const traits = tableIds(['_generated/character-catalog/traits.md', 'systems/character/12-job-support.md']);
+const apts = tableIds(['_generated/character-catalog/aptitudes-skills.md', 'systems/character/12-job-support.md']);
+const tags = new Set([...collect([...charFiles, ...list('systems/combat')], /`(#[a-z_]+)`/g), ...collect(['_generated/character-catalog/tags.md'], /^\| (#[a-z_]+) /gm)]);
 const enemies = new Set();
-for (const line of lines('combat/03-enemies.md')) { const m = line.match(/^\| `?([a-z_]+|[A-Z]{2}\d{2}-\d)`? \| /); if (m && m[1] !== 'ID') enemies.add(m[1]); }
+for (const line of lines('systems/combat/03-enemies.md')) { const m = line.match(/^\| `?([a-z_]+|[A-Z]{2}\d{2}-\d)`? \| /); if (m && m[1] !== 'ID') enemies.add(m[1]); }
 const npcNames = {};
-for (const f of list('npcs')) for (const line of lines(f)) { const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*(.+?)\*\*/); if (m) npcNames[m[1]] = m[2]; }
+for (const f of list('lore/npcs')) for (const line of lines(f)) { const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*(.+?)\*\*/); if (m) npcNames[m[1]] = m[2]; }
 const events = new Set();
-for (const f of ['world/world-events.md', 'branches/02-new-lands.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
+for (const f of ['systems/events/world-events.md', 'systems/events/branches/02-new-lands.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
 const COUNTRIES = { AZ: 10, MH: 12, KD: 12, NR: 16, AL: 28, MK: 16, SH: 17, SV: 18, NB: 14 };
 const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV']);
-const storyFiles = list('storylines');
+const storyFiles = list('lore/storylines');
 const raceFiles = storyFiles.filter((f) => /\/\d\d-/.test(f) && !f.endsWith('00-convergence.md'));
 const nodeRow = /^\| ([a-z]{2}\.[btael]\d) \|/;
 const nodes = collect(storyFiles, /^\| ([a-z]{2}\.[btael]\d) \|/gm);
-const itemFiles = list('items').filter((f) => !f.endsWith('09-catalog.md'));
+const itemFiles = list('systems/items');
 const weapons = new Map();
 for (const f of itemFiles.filter((x) => /\/0[1-8]-/.test(x))) for (const line of lines(f)) if (/^\| w[a-z]_/.test(line)) weapons.set(cells(line)[0], { f, c: cells(line) });
-const materials = tableIds(['items/02-materials.md']);
+const materials = tableIds(['systems/items/02-materials.md']);
 // non-weapon items (armor, accessories, talismans, consumables, life tools, materials, key items) and the flags key items set
 const gear = new Map();
 const gearFlags = new Set();
@@ -70,9 +70,9 @@ const codeWords = new Set();
 for (const f of srcFiles(path.join(root, 'src'))) for (const m of fs.readFileSync(f, 'utf8').matchAll(/['"`]([a-z][a-z0-9_]*)['"`]/g)) codeWords.add(m[1]);
 // tags defined inside the docs themselves: race tags in the synergy rules, enemy types and traits in the type matrix
 const docTags = new Set([
-  ...collect(['character/03-synergy-rules.md'], /\*\*([a-z_]+)\*\*/g),
-  ...collect(['character/03-synergy-rules.md'], /`([a-z_]+)`/g),
-  ...[...read('combat/02-type-matrix.md').matchAll(/^\| [^|`]*`([a-z_]+)`/gm)].map((m) => m[1]),
+  ...collect(['systems/character/03-synergy-rules.md'], /\*\*([a-z_]+)\*\*/g),
+  ...collect(['systems/character/03-synergy-rules.md'], /`([a-z_]+)`/g),
+  ...[...read('systems/combat/02-type-matrix.md').matchAll(/^\| [^|`]*`([a-z_]+)`/gm)].map((m) => m[1]),
   'spirit_bane',
 ]);
 const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...codeWords, ...docTags]);
@@ -104,7 +104,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('combat'), ...itemFiles, ...list('heirs'), ...list('economy')].forEach(checkRefs);
+[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy')].forEach(checkRefs);
 
 // ---------- storylines ----------
 for (const f of raceFiles) {
@@ -131,11 +131,11 @@ for (const f of raceFiles) {
 }
 const nodeText = {};
 for (const f of raceFiles) for (const line of lines(f)) { const m = line.match(nodeRow); if (m) nodeText[m[1]] = (nodeText[m[1]] || '') + line; }
-for (const line of lines('storylines/00-convergence.md')) {
+for (const line of lines('lore/storylines/00-convergence.md')) {
   const m = line.trim().match(/^\| (cv\.\d+) \|.*\| ([^|]*) \|$/);
   if (!m) continue;
   for (const [node] of m[2].matchAll(/[a-z]{2}\.[btae]\d/g))
-    if (!new RegExp(`${m[1].replace('.', '\\.')}(?!\\d)`).test(nodeText[node] || '')) err('storylines/00-convergence.md', 0, 'cv-entry', `${m[1]} ${node}`);
+    if (!new RegExp(`${m[1].replace('.', '\\.')}(?!\\d)`).test(nodeText[node] || '')) err('lore/storylines/00-convergence.md', 0, 'cv-entry', `${m[1]} ${node}`);
 }
 
 // ---------- items ----------
@@ -165,16 +165,31 @@ for (const [id, { f, c }] of gear) {
   const { pos, neg } = budget(stats);
   if (pos > max + neg || (pos < min && !['C'].includes(rarity))) err(f, 0, 'budget', `${id} ${rarity} +${pos} -${neg}`);
 }
-if (fs.existsSync(path.join(docs, 'items/09-catalog.md'))) {
+if (fs.existsSync(path.join(docs, '_generated/weapon-catalog.md'))) {
   let section = '';
-  for (const line of lines('items/09-catalog.md')) {
+  for (const line of lines('_generated/weapon-catalog.md')) {
     if (line.startsWith('## ')) section = line;
     if (section !== '## รุ่นวัสดุ' || !line.startsWith('| ws_')) continue;
     const c = cells(line);
     const { pos, neg } = budget(c[6]);
-    if (pos > BAND[c[2]][3] + neg) err('items/09-catalog.md', 0, 'variant-budget', `${c[0]} ${c[6]}`);
+    if (pos > BAND[c[2]][3] + neg) err('_generated/weapon-catalog.md', 0, 'variant-budget', `${c[0]} ${c[6]}`);
   }
 }
+
+// ---------- structure ----------
+// every doc lives in one of the five top-level folders, and every folder with docs has a README.md index
+const TOP = new Set(['guide', 'lore', 'systems', 'appearance', '_generated']);
+function folders(dir, rel = '') {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const r = rel ? `${rel}/${e.name}` : e.name;
+    if (e.isDirectory()) {
+      if (!rel && !TOP.has(e.name)) err(r, 0, 'structure', 'unknown top-level folder');
+      folders(path.join(dir, e.name), r);
+    } else if (!rel && e.name !== 'README.md') err(r, 0, 'structure', 'doc outside a layer folder');
+  }
+  if (rel && !rel.startsWith('_generated') && fs.readdirSync(dir).some((f) => f.endsWith('.md')) && !fs.existsSync(path.join(dir, 'README.md'))) err(rel, 0, 'structure', 'folder has no README.md');
+}
+folders(docs);
 
 // ---------- links ----------
 function walk(dir) {

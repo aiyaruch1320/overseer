@@ -165,7 +165,7 @@ export interface Character {
 
 export interface Country {
   id: number;
-  code: string; // docs/countries id, e.g. SV-01
+  code: string; // docs/lore/countries id, e.g. SV-01
   title: string; // docs subtitle, e.g. นครลำต้น
   name: string;
   continent: number;
@@ -181,7 +181,7 @@ export interface Country {
   warWith: number | null;
   religion: string;
   towns: number[];
-  fate?: Fate; // set when a great event of the world's story (docs/world/world-events.md §15) has reshaped this land
+  fate?: Fate; // set when a great event of the world's story (docs/systems/events/world-events.md §15) has reshaped this land
   weather?: string; // this season's weather (clear, rain, storm, snow, blizzard, sandstorm, fog, heat, ashfall, cloudy)
   until: Record<string, number>; // flag -> tick when it expires
   history: string[];

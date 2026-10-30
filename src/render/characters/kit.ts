@@ -11,7 +11,7 @@ export interface Look {
   child: boolean; elder: boolean; fem: boolean;
   /** life stage when it is finer than child/adult/elder (teen, infant) */
   stage?: Stage;
-  /** sub-line of the people (docs/races/README.md: สายเลือดย่อย), a key of the race theme's `lines` */
+  /** sub-line of the people (docs/lore/races/README.md: สายเลือดย่อย), a key of the race theme's `lines` */
   line?: string;
   /** a signature colour that tints jewellery, trim and glow */
   accent?: number;

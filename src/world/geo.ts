@@ -1,4 +1,4 @@
-// The shape of the world, authored from docs/world/continents.md §12 and docs/world/world-politics.md.
+// The shape of the world, authored from docs/lore/world/continents.md §12 and docs/lore/world/world-politics.md.
 // Everything is in "map units" (MU) on a 1600 × 900 sheet; 1 MU = 3.84 world units (the sim's tile grid is 768 × 432).
 // The same field function drives the sim's tile grid and the vector coastlines, so towns always sit on drawn land.
 import { makeNoise, RNG } from '../sim/rng';
@@ -121,7 +121,7 @@ const AZGAR: LandDef[] = [
 ];
 
 // ---- Nerea: sixteen island nations (NR-01 … NR-16): a ring around the inner sea and a chain to the south-east.
-// Each bloc of docs/countries/04-nerea.md keeps to its own stretch of shore, and allied islands touch. ----
+// Each bloc of docs/lore/countries/04-nerea.md keeps to its own stretch of shore, and allied islands touch. ----
 const isle = (n: number, x: number, y: number, rx: number, ry: number, rot = 0, zones: Zone[] = [], lobes = 2): LandDef =>
   ({ key: `nr${String(n).padStart(2, '0')}`, cont: CONT.nerea, country: n - 1, blobs: lumpy(100 + n, x, y, rx, ry, rot, lobes), zones, join: true, amp: 0.85 });
 const NEREA: LandDef[] = [

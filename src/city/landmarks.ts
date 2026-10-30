@@ -1,6 +1,6 @@
 // The heart of a town: the paved square and the monument that stands in it. Every landmark is drawn large, on a stepped dais, with
 // the town's own banners, so a visitor reads it at once as "the place this town is about". The sky nations of Azgar each have their
-// own, taken from docs/countries/01-azgar.md (the dragon's nest of Oran-Sal, the caldera of the fire elder, the stair gate...).
+// own, taken from docs/lore/countries/01-azgar.md (the dragon's nest of Oran-Sal, the caldera of the fire elder, the stair gate...).
 import { type Pen, hex, shadeC, mixC } from './draw';
 import type { CityData } from './citygen';
 import { leafCluster, leafRng } from '../render/treeart';

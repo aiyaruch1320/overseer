@@ -1,6 +1,6 @@
-// A visual theme for each of the 21 peoples in docs/races. A theme is the people's "silhouette language" (what you can read from a
+// A visual theme for each of the 21 peoples in docs/lore/races. A theme is the people's "silhouette language" (what you can read from a
 // dark outline at a glance), their palette, the features the painter adds (horns, wings, cracks, wraps...) and how they carry
-// themselves. Sub-lines (docs/races/README.md: สายเลือดย่อย) bend the theme: an avian of the night wing is not a white one.
+// themselves. Sub-lines (docs/lore/races/README.md: สายเลือดย่อย) bend the theme: an avian of the night wing is not a white one.
 import { POSE, IDLE_STANDARD, IDLE_FLUTTER } from './pose';
 
 export type Ears = 'round' | 'long' | 'point' | 'beast' | 'fin' | 'none';
@@ -324,7 +324,7 @@ const ALIAS: Record<string, string> = { avian: 'winged', ogre: 'giant', lava: 'l
 export const themeOf = (race: string): RaceTheme => THEMES[race] || THEMES[ALIAS[race]] || THEMES.human;
 export const RACE_IDS = Object.keys(THEMES);
 
-/** stage of life by human-equivalent age (docs/storylines/README.md §2: 0-3 infant, 4-12 child, 13-19 teen, 20-54 adult, 55+ elder) */
+/** stage of life by human-equivalent age (docs/lore/storylines/README.md §2: 0-3 infant, 4-12 child, 13-19 teen, 20-54 adult, 55+ elder) */
 export type Stage = 'infant' | 'child' | 'teen' | 'adult' | 'elder';
 export const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
 export const STAGE_NAME: Record<Stage, string> = { infant: 'ทารก', child: 'เด็ก', teen: 'วัยรุ่น', adult: 'ผู้ใหญ่', elder: 'ผู้เฒ่า' };

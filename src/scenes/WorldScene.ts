@@ -24,7 +24,7 @@ export { drawPortrait } from './sprites';
 // this scene owns the camera, the labels, towns and markers on top.
 export const TILE = 8;
 const FLAG_ICON: Record<string, string> = { war: 'war', plague: 'plague', famine: 'famine', golden: 'golden', demon_raid: 'demon', ...Object.fromEntries(REGION_EVENTS.map((e) => [e.flag, e.icon])), ...Object.fromEntries(DISASTERS.map((d) => [d.flag, d.icon])), ...Object.fromEntries(FESTIVALS.map((f) => [`fest_${f.id}`, f.icon])) };
-// the seven branches of the world tree (docs/countries/08-silvanel.md) each have a light of their own; a country's name is underlined in its branch's colour
+// the seven branches of the world tree (docs/lore/countries/08-silvanel.md) each have a light of their own; a country's name is underlined in its branch's colour
 const BRANCH_COLOR: Record<string, number> = { 'กิ่งอรุณ': 0xe8c850, 'กิ่งสนธยา': 0x8a6ad8, 'กิ่งน้ำค้าง': 0x4a9aa8, 'กิ่งขวากหนาม': 0xc8483a, 'กิ่งเมฆ': 0xa8e0c8, 'กิ่งดิน': 0x9a6a44, 'กิ่งเหี่ยว': 0xd8a030 };
 const ACTOR_ICON: Record<string, string> = { hero: 'herosword', demonlord: 'demon', caravan: 'gold' };
 // zoom levels, all one continuous camera: world → continent → country → town markers → city blocks seen from above (sprites on

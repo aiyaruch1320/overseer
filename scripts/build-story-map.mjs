@@ -1,4 +1,4 @@
-// Builds docs/story-map.html from the lore docs.
+// Builds docs/_generated/story-map.html from the lore docs.
 // Run: node scripts/build-story-map.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,8 +30,8 @@ function parseEvents(md, source) {
   return out;
 }
 const events = [
-  ...parseEvents(read('docs/world/world-events.md'), 'world-events'),
-  ...parseEvents(read('docs/branches/02-new-lands.md'), 'new-lands'),
+  ...parseEvents(read('docs/systems/events/world-events.md'), 'world-events'),
+  ...parseEvents(read('docs/systems/events/branches/02-new-lands.md'), 'new-lands'),
 ];
 const ids = new Set(events.map((e) => e.id));
 
@@ -138,5 +138,5 @@ for (const p of PRESETS) for (const s of p.seeds) if (!ids.has(s)) throw new Err
 
 const data = { lanes: LANES, actions: curated.actions, presets: PRESETS, nodes, edges };
 const tpl = read('scripts/story-map.template.html');
-fs.writeFileSync(path.join(root, 'docs/story-map.html'), tpl.replace('/*__DATA__*/null', JSON.stringify(data)));
+fs.writeFileSync(path.join(root, 'docs/_generated/story-map.html'), tpl.replace('/*__DATA__*/null', JSON.stringify(data)));
 console.log(`nodes ${nodes.length} (events ${events.length}) · edges ${edges.length} (curated ${edges.filter((e) => !e.derived).length}, derived ${edges.filter((e) => e.derived).length}) · presets ${PRESETS.length}`);

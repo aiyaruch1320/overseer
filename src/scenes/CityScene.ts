@@ -204,7 +204,7 @@ export class CityScene extends Phaser.Scene {
         n--;
       }
     }
-    // the people of docs/npcs live in their country's capital, each in a look designed for them (data/cast.ts, data/specials.ts)
+    // the people of docs/lore/npcs live in their country's capital, each in a look designed for them (data/cast.ts, data/specials.ts)
     if (this.town.capital && co.code) for (const c of castForCountry(co.code)) {
       const jid = jobOfLook(c.role, c.look.outfit, c.look.tool);
       const per = this.addPerson({ race: c.race, role: c.role, name: c.name, look: c.look, elder: c.look.elder, home: nextHome(), job: jid ? npcJob(jid) : undefined });

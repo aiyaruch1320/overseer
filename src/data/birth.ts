@@ -1,5 +1,5 @@
 // Where every NPC was born, as the story allows. A person lives in one country but was not always born there: the people of a land are born at
-// home (docs/character/01-origin.md หัวข้อ 3), a half-blood is born where the parents of two peoples can live together (หัวข้อ 4), and what an
+// home (docs/systems/character/01-origin.md หัวข้อ 3), a half-blood is born where the parents of two peoples can live together (หัวข้อ 4), and what an
 // NPC's own story says (born in a camp, a refugee, an exile) overrides the odds. The same person always gets the same answer.
 import { HOMES, PAIRS } from './birthTables';
 import { COUNTRY_DOCS } from './countries';

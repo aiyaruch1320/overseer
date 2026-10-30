@@ -1,11 +1,11 @@
-// Builds docs/items/09-catalog.md from the weapon tables in docs/items/01-08 plus material variants.
+// Builds docs/_generated/weapon-catalog.md from the weapon tables in docs/systems/items/01-08 plus material variants.
 // Run: node scripts/build-weapon-catalog.mjs
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dir = path.join(root, 'docs/items');
+const dir = path.join(root, 'docs/systems/items');
 const read = (f) => fs.readFileSync(path.join(dir, f), 'utf8');
 
 const SOURCES = [
@@ -80,7 +80,7 @@ const count = (pred) => all.filter(pred).length;
 const sources = [...new Set([...SOURCES.map(([, s]) => s), 'รุ่นวัสดุ'])];
 let md = `# รายการอาวุธทั้งหมด
 
-สร้างโดย \`node scripts/build-weapon-catalog.mjs\` จากไฟล์ 01 ถึง 08 อย่าแก้ไฟล์นี้โดยตรง กติกาอยู่ที่ [README.md](README.md)
+สร้างโดย \`node scripts/build-weapon-catalog.mjs\` จากไฟล์ 01 ถึง 08 อย่าแก้ไฟล์นี้โดยตรง กติกาอยู่ที่ [../systems/items/README.md](../systems/items/README.md)
 
 ## สรุป
 
@@ -103,5 +103,5 @@ for (const s of sources) {
     md += `| ${w.id} | ${w.name} | ${w.rarity} | ${w.power} | ${w.type} | ${w.tags} | ${w.stats} | ${w.ability} |\n`;
   }
 }
-fs.writeFileSync(path.join(dir, '09-catalog.md'), md);
+fs.writeFileSync(path.join(root, 'docs/_generated/weapon-catalog.md'), md);
 console.log(`weapons: ${weapons.length} hand-written + ${variants.length} variants = ${all.length}`);

@@ -62,7 +62,7 @@ export function lookFor(seed: string, race: string, role: string, o: { climate?:
   const stage = o.hAge !== undefined ? stageOf(o.hAge) : role === 'เด็ก' ? 'child' : o.elder ? 'elder' : 'adult';
   const child = stage === 'child' || stage === 'infant';
   const elder = stage === 'elder';
-  // a sub-line of the people (docs/races/README.md): most townspeople are of the commonest lines, a few are of the rare ones
+  // a sub-line of the people (docs/lore/races/README.md): most townspeople are of the commonest lines, a few are of the rare ones
   const lineKeys = Object.keys(th.lines);
   let line = o.line;
   if (line === undefined && lineKeys.length && r.chance(0.7)) {

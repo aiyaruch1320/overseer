@@ -1,5 +1,5 @@
 // Half-bloods. A person of two peoples keeps the build and the dress of the people they were raised in and carries one or two marks of the
-// other: the ears, a tail, tusks, gills, a little of the skin and the eyes (docs/storylines/22-halfblood.md). Only the signature marks are
+// other: the ears, a tail, tusks, gills, a little of the skin and the eyes (docs/lore/storylines/22-halfblood.md). Only the signature marks are
 // grafted on, never the whole costume of the second people, so a half-orc is still a person first and the crowd keeps reading as people.
 import { mix, type Look } from '../render/characters/kit';
 import { themeOf } from '../render/characters/themes';

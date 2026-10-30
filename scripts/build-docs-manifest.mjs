@@ -1,4 +1,5 @@
-// Builds docs/manifest.json: a machine-readable index of every markdown doc (path, title, category, size).
+// Builds docs/_generated/manifest.json: a machine-readable index of every markdown doc
+// (path, title, layer, group, kind, size, level-2 headings) plus a description of every layer and group.
 // Run: node scripts/build-docs-manifest.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -6,12 +7,62 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const docs = path.join(root, 'docs');
-const CATEGORY = {
-  world: 'world', countries: 'world', dragons: 'world', races: 'world', religions: 'world', economy: 'world', branches: 'world',
-  character: 'character', storylines: 'character', heirs: 'character', npcs: 'character', experience: 'character',
-  combat: 'systems', items: 'systems',
-  appearance: 'appearance', visuals: 'appearance',
+
+export const LAYERS = {
+  lore: 'Facts of the world: history, places, peoples, characters, storylines. No formulas.',
+  systems: 'Rules and data the game computes: numbers, tables, conditions and effects.',
+  appearance: 'How things look and move: colors, shapes, poses, effects, scenes, UI values.',
+  guide: 'How to read, add and fix the docs.',
+  generated: 'Built by scripts. Never edit by hand.',
 };
+
+// path prefix (inside docs/) -> [layer, one-line role]; longest prefix wins
+export const GROUPS = {
+  lore: ['lore', 'Layer index'],
+  systems: ['systems', 'Layer index'],
+  'lore/world': ['lore', 'Main story, continents, map layout, cross-continent politics, the two clocks'],
+  'lore/countries': ['lore', '143 countries, one file per continent'],
+  'lore/races': ['lore', '21 peoples: history, homes, sub-lines, relations (stats are in systems/character/races)'],
+  'lore/dragons': ['lore', '15 legendary dragons: who they are and how they relate'],
+  'lore/religions': ['lore', 'How faith flows; major and regional faiths; movements'],
+  'lore/npcs': ['lore', '591 NPCs, one file per country group'],
+  'lore/storylines': ['lore', 'Life storylines per people, half-bloods, heirs, economy, convergence points'],
+  'lore/heirs': ['lore', 'Houses, inheritance and what carries across lives'],
+  'systems/character': ['systems', 'Origin, blessings, curses, skills, jobs, companions'],
+  'systems/character/races': ['systems', 'Per-people starting stats, abilities, blessings, curses, skills'],
+  'systems/combat': ['systems', 'Combat core, type matrix, enemies, encounters, rewards'],
+  'systems/items': ['systems', 'Weapons, armor, accessories, talismans, consumables, materials, forging'],
+  'systems/economy': ['systems', 'Money, classes, income, trade, investment, wealth of every country'],
+  'systems/events': ['systems', 'World events (conditions and effects) and branches after dragon falls'],
+  'systems/simulation': ['systems', 'World simulation results and dragon mood values'],
+  'systems/experience': ['systems', 'What the player sees and feels in one life and across lives'],
+  appearance: ['appearance', 'Look of continents, countries, peoples, NPCs, enemies, items, events and scenes'],
+  'appearance/countries': ['appearance', 'Per-country look, city scale, sacred sites, war and landmarks'],
+  'appearance/npcs': ['appearance', 'Look of the 591 NPCs'],
+  'appearance/poc-visuals': ['appearance', 'Vector-art design notes of the proof-of-concept (superseded by the files above)'],
+  guide: ['guide', 'Organization rules, ID glossary, consistency notes'],
+  _generated: ['generated', 'Script output'],
+};
+const GROUP_KEYS = Object.keys(GROUPS).sort((a, b) => b.length - a.length);
+
+const SOURCE = {
+  '_generated/npc-map.html': 'scripts/build-npc-map.mjs',
+  '_generated/story-map.html': 'scripts/build-story-map.mjs',
+  '_generated/weapon-catalog.md': 'scripts/build-weapon-catalog.mjs',
+  '_generated/character-catalog': 'scripts/export-character-catalog.ts',
+  '_generated/poc-visuals': 'scripts/gen-visual-docs.ts',
+  '_generated/manifest.json': 'scripts/build-docs-manifest.mjs',
+};
+
+function kindOf(rel, layer) {
+  if (layer === 'generated') return 'generated';
+  if (path.basename(rel) === 'README.md') return 'index';
+  if (layer === 'lore') return 'fact';
+  if (layer === 'systems') return 'data';
+  if (layer === 'appearance') return 'visual';
+  return 'guide';
+}
+
 const out = [];
 function walk(dir) {
   for (const name of fs.readdirSync(dir).sort()) {
@@ -21,10 +72,27 @@ function walk(dir) {
     const rel = path.relative(docs, full).split(path.sep).join('/');
     const text = fs.readFileSync(full, 'utf8');
     const title = (text.match(/^# (.+)$/m) || [, name])[1].trim();
-    const top = rel.includes('/') ? rel.split('/')[0] : 'root';
-    out.push({ path: rel, title, category: CATEGORY[top] || 'root', folder: top, lines: text.split('\n').length, generated: rel === 'items/09-catalog.md' });
+    const group = GROUP_KEYS.find((k) => rel.startsWith(k + '/'));
+    const layer = group ? GROUPS[group][0] : rel.includes('/') ? 'unknown' : 'root';
+    const entry = {
+      path: rel, title, layer, group: group || '', kind: kindOf(rel, layer),
+      lines: text.split('\n').length, bytes: Buffer.byteLength(text),
+      headings: [...text.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim()),
+    };
+    const src = Object.keys(SOURCE).find((k) => `${rel}` === k || rel.startsWith(k + '/'));
+    if (src) entry.source = SOURCE[src];
+    out.push(entry);
   }
 }
 walk(docs);
-fs.writeFileSync(path.join(docs, 'manifest.json'), JSON.stringify({ generatedBy: 'scripts/build-docs-manifest.mjs', count: out.length, files: out }, null, 1));
+
+const unknown = out.filter((f) => f.layer === 'unknown').map((f) => f.path);
+if (unknown.length) { console.error('files outside any known group:', unknown.join(', ')); process.exitCode = 1; }
+
+const files = ['_generated/npc-map.html', '_generated/story-map.html'].filter((f) => fs.existsSync(path.join(docs, f)))
+  .map((f) => ({ path: f, title: path.basename(f), layer: 'generated', group: '_generated', kind: 'generated', source: SOURCE[f] }));
+fs.writeFileSync(
+  path.join(docs, '_generated', 'manifest.json'),
+  JSON.stringify({ generatedBy: 'scripts/build-docs-manifest.mjs', count: out.length, layers: LAYERS, groups: Object.fromEntries(GROUP_KEYS.reverse().map((k) => [k, { layer: GROUPS[k][0], role: GROUPS[k][1] }])), files: out, extra: files }, null, 1),
+);
 console.log(`manifest: ${out.length} docs`);

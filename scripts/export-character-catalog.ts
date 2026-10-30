@@ -1,4 +1,4 @@
-// Dumps the in-game traits, aptitudes, skills, blessings and curses to docs/character/catalog/*.md
+// Dumps the in-game traits, aptitudes, skills, blessings and curses to docs/_generated/character-catalog/*.md
 // Run: npx tsx scripts/export-character-catalog.ts
 import fs from 'node:fs';
 import path from 'node:path';
@@ -7,10 +7,10 @@ import { BLESSINGS, CURSES } from '../src/data/gifts';
 import { TRAITS, TRAIT_CONFLICTS, APTITUDES, SKILLS, UNIQUE_SKILLS } from '../src/data/traits';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const out = (f: string, s: string) => fs.writeFileSync(path.join(root, 'docs/character/catalog', f), s);
+const out = (f: string, s: string) => fs.writeFileSync(path.join(root, 'docs/_generated/character-catalog', f), s);
 const cell = (s: unknown) => String(s ?? '').replace(/\|/g, '/');
 const table = (head: string[], rows: unknown[][]) => [`| ${head.join(' | ')} |`, `| ${head.map(() => '---').join(' | ')} |`, ...rows.map((r) => `| ${r.map(cell).join(' | ')} |`)].join('\n');
-const hdr = (title: string, note: string) => `# ${title}\n\nสร้างจากโค้ดเกม (\`${note}\`) ด้วย \`scripts/export-character-catalog.ts\` · ระบบ: [../README.md](../README.md)\n\n`;
+const hdr = (title: string, note: string) => `# ${title}\n\nสร้างจากโค้ดเกม (\`${note}\`) ด้วย \`scripts/export-character-catalog.ts\` · ระบบ: [../../systems/character/README.md](../../systems/character/README.md)\n\n`;
 
 // traits
 out('traits.md', hdr(`นิสัย ${TRAITS.length} รายการ`, 'src/data/traits.ts') +

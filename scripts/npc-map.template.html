@@ -303,7 +303,7 @@ function renderPanel() {
   }
   const rb = [...new Set(REFBY[n.id] || [])];
   if (rb.length) h += `<h3>ถูกอ้างถึงโดย</h3><div class="links">${rb.map(npcChip).join('')}</div>`;
-  h += `<p class="hint" style="margin-top:14px">แหล่งข้อมูล: <a href="npcs/${n.file}">docs/npcs/${n.file}</a></p>`;
+  h += `<p class="hint" style="margin-top:14px">แหล่งข้อมูล: <a href="npcs/${n.file}">docs/lore/npcs/${n.file}</a></p>`;
   p.innerHTML = h;
 }
 

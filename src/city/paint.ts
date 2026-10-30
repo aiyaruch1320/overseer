@@ -611,7 +611,7 @@ export function paintCity(d: CityData, town: Town) {
 }
 
 
-// ---------------------------------------------------------------- a land the story has reshaped (docs/world/world-events.md §15)
+// ---------------------------------------------------------------- a land the story has reshaped (docs/systems/events/world-events.md §15)
 /** the look of each fate on one building's own sprite: ash on the roof, water at the walls, rust streaks, golden light, shutters in the fog */
 function fateSprite(c: CanvasRenderingContext2D, fate: CityData['fate'], X: number, Y: number, W: number, H: number, r: RNG) {
   if (!fate) return;

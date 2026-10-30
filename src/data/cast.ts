@@ -1,4 +1,4 @@
-// Gives every one of the 572 NPCs of docs/npcs a look of their own, derived from what the docs say about them: the people and
+// Gives every one of the 572 NPCs of docs/lore/npcs a look of their own, derived from what the docs say about them: the people and
 // sub-line they belong to, their age (scaled to their race's lifespan), their sex where the title or name tells it, and their role
 // (a queen is dressed as a queen, a smith as a smith). The 33 in specials.ts are designed by hand instead.
 import { NPC_CAST, type CastRow } from './npcCast';

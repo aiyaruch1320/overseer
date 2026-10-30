@@ -1,5 +1,5 @@
 // What the docs say about each of the 143 countries, turned into how its towns are built: the buildings it is known for, the shape
-// of its streets, the landmark in its square. Every country of docs/countries/ with a story that shows has an entry here; the rest
+// of its streets, the landmark in its square. Every country of docs/lore/countries/ with a story that shows has an entry here; the rest
 // get theirs from the keywords of their own text (harbour, fortress, mine, granary, college...).
 import { COUNTRY_DOCS } from '../data/countries';
 import type { BStyle, Centre, Plan, WallKind, Ambient } from './themes';
@@ -11,7 +11,7 @@ export interface Flavor {
   flora?: string[]; extra?: Special[]; lamps?: boolean; farm?: number; tree?: 'oak' | 'pine' | 'palm' | 'dead' | 'jungle' | 'cactus' | 'none'; cobble?: boolean; graves?: boolean;
 }
 
-// branches of the world tree (docs/countries/08-silvanel.md): each gives its countries a light of their own
+// branches of the world tree (docs/lore/countries/08-silvanel.md): each gives its countries a light of their own
 const DAWN = [0xe8c850, 0xf0a860, 0xd8d868, 0xf4e090], TWILIGHT = [0x6a5ac8, 0x4a9a9a, 0x8a6ad8, 0x3a7a8a], DEW = [0x4a9aa8, 0x7ac0c8, 0x3a8a9a, 0x9ad0d8];
 const THORN = [0x7a2e3a, 0x5a3a2a, 0x9a4a3a, 0x3a2a30], CLOUD = [0xa8e0c8, 0xc8f0e0, 0x88d0b0, 0xe0f8f0], ROOT = [0x6a4a34, 0x4a6a4a, 0x8a5a8a, 0x5a3a2a];
 const WITHER = [0xd8b040, 0xc88a30, 0xb8a050, 0x9a7a30], FUNGI = [0x9a4a8a, 0xc8603a, 0x6a8ad8, 0xd8c070], GREEN = [0x2e7a3e, 0x3d8f45, 0x5aa04e, 0x4a8a5a], RIVER = [0x3a9a8a, 0x5ab8a0, 0x2f8a7a, 0xc8b060];

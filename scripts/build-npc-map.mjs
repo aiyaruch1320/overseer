@@ -1,4 +1,4 @@
-// Builds docs/npc-map.html from docs/npcs/*.md and the event tables.
+// Builds docs/_generated/npc-map.html from docs/lore/npcs/*.md and the event tables.
 // Run: node scripts/build-npc-map.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,7 +16,7 @@ function eventTitles(md) {
   }
   return out;
 }
-const titles = { ...eventTitles(read('docs/world/world-events.md')), ...eventTitles(read('docs/branches/02-new-lands.md')) };
+const titles = { ...eventTitles(read('docs/systems/events/world-events.md')), ...eventTitles(read('docs/systems/events/branches/02-new-lands.md')) };
 
 // ---------- continents ----------
 const CONTINENTS = [
@@ -32,7 +32,7 @@ const CONTINENTS = [
 ];
 
 // ---------- parse NPC tables ----------
-const dir = path.join(root, 'docs/npcs');
+const dir = path.join(root, 'docs/lore/npcs');
 const files = fs.readdirSync(dir).filter((f) => /^\d\d-.*\.md$/.test(f)).sort();
 const countries = [];
 const npcs = [];
@@ -42,7 +42,7 @@ const TAGS = ['ช่วย', 'ขัดขวาง', 'ปล่อย', 'ร�
 
 for (const f of files) {
   let cur = null;
-  for (const line of read(`docs/npcs/${f}`).split('\n')) {
+  for (const line of read(`docs/lore/npcs/${f}`).split('\n')) {
     const h = line.match(/^## ([A-Z]{2}-\d{2}) (\S+)(?: \((.*)\))?\s*$/);
     if (h) {
       cur = { id: h[1], name: h[2], desc: h[3] || '', continent: h[1].slice(0, 2) };
@@ -89,6 +89,6 @@ const missing = [...eventSet].filter((e) => !titles[e]);
 
 const data = { continents: CONTINENTS, countries, npcs, events };
 const tpl = read('scripts/npc-map.template.html');
-fs.writeFileSync(path.join(root, 'docs/npc-map.html'), tpl.replace('/*__DATA__*/null', JSON.stringify(data)));
+fs.writeFileSync(path.join(root, 'docs/_generated/npc-map.html'), tpl.replace('/*__DATA__*/null', JSON.stringify(data)));
 const expected = npcs.reduce((a, n) => a + n.spawn / 100, 0);
 console.log(`npcs ${npcs.length} · countries ${countries.length} · events referenced ${eventSet.size}${missing.length ? ` (no title: ${missing.join(', ')})` : ''} · expected appear ${expected.toFixed(0)}`);

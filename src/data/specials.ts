@@ -1,4 +1,4 @@
-// Special NPCs: people of docs/npcs whose look is designed by hand, one by one, instead of generated from their race and job.
+// Special NPCs: people of docs/lore/npcs whose look is designed by hand, one by one, instead of generated from their race and job.
 // Each has a signature (colours, regalia, a prop, a way of standing) and art for every stage of life. The stages other than the one the docs
 // describe are the person as they were or will be: a child in plain clothes with the family colours, a youth, the prime, an elder whose
 // hair has gone white. Regalia (crowns, halos, weapons) only come with adulthood.
@@ -9,7 +9,7 @@ import { mix, type Look } from '../render/characters/kit';
 import { HALF_SPECIALS } from './specialsHalf';
 
 export interface Special {
-  id: string; // the NPC id in docs/npcs (AZ01-1), or a code of its own for people who belong to the lore at large
+  id: string; // the NPC id in docs/lore/npcs (AZ01-1), or a code of its own for people who belong to the lore at large
   name: string;
   title: string;
   race: string;

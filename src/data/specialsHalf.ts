@@ -1,4 +1,4 @@
-// The half-blood people of docs/npcs (the fifth NPC of nineteen countries, and the half-blood figures the story of docs/storylines/22-halfblood.md leans
+// The half-blood people of docs/lore/npcs (the fifth NPC of nineteen countries, and the half-blood figures the story of docs/lore/storylines/22-halfblood.md leans
 // on), designed by hand. A half-blood keeps the dress and build of the people who raised them and carries marks of the other parent (src/data/blood.ts);
 // each is also a person of the place they were born (src/data/birth.ts): the dress, the colours and the trade come from there.
 import { POSE } from '../render/characters/pose';
