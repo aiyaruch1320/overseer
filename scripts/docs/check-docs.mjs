@@ -201,6 +201,20 @@ for (const abs of walk(docs)) {
   });
 }
 
+// Every named NPC fighter in 03-enemies (section ง) needs a clash entry in the system and the scene file.
+{
+  const read = (f) => fs.readFileSync(path.join(docs, f), 'utf8');
+  const enemies = read('systems/combat/03-enemies.md');
+  const fighters = [...(enemies.split(/^## ง\./m)[1] || '').split(/^## จ\./m)[0].matchAll(/^\| ([A-Z]{2}\d{2}-\d) \|/gm)].map((m) => m[1]);
+  const clashFiles = ['systems/combat/07-npc-clashes.md', 'appearance/15-npc-clash-scenes.md'];
+  for (const f of clashFiles) {
+    const text = read(f);
+    for (const id of fighters) if (!new RegExp(`^#### NF-${id} `, 'm').test(text)) err(f, 0, 'npc-clash', `missing NF-${id}`);
+    for (const [, id] of text.matchAll(/^#### NF-([A-Z]{2}\d{2}-\d) /gm)) if (!fighters.includes(id)) err(f, 0, 'npc-clash', `NF-${id} is not in 03-enemies section ง`);
+  }
+  if (!fighters.length) err('systems/combat/03-enemies.md', 0, 'npc-clash', 'no fighters found in section ง');
+}
+
 for (const w of warnings) console.log('warn', w);
 for (const e of errors) console.log('error', e);
 console.log(`checked: ${storyFiles.length} storyline files · ${nodes.size} nodes · ${weapons.size} weapons · ${errors.length} errors · ${warnings.length} warnings`);

@@ -25,7 +25,7 @@ npm run docs:verify
 
 | สคริปต์ | คำสั่ง npm | ทำอะไร | ผ่านเมื่อ |
 | --- | --- | --- | --- |
-| `check-docs.mjs` | `npm run docs:check` | ตรวจรหัสอ้างอิง ตารางงบอาวุธ ลิงก์ และโครงโฟลเดอร์ (27 ไฟล์เส้นเรื่อง 423 โหนด 816 อาวุธ) | exit 0 และ `0 errors` `0 warnings` |
+| `check-docs.mjs` | `npm run docs:check` | ตรวจรหัสอ้างอิง ตารางงบอาวุธ ลิงก์ โครงโฟลเดอร์ และศึกของ NPC ครบทุกคนใน `03-enemies.md` หัวข้อ ง (27 ไฟล์เส้นเรื่อง 423 โหนด 816 อาวุธ) | exit 0 และ `0 errors` `0 warnings` |
 | `build-weapon-catalog.mjs` | | สร้าง `_generated/weapon-catalog.md` (816 ชิ้นเขียนมือ + 520 รุ่นวัสดุ) | พิมพ์ `weapons: 816 hand-written + 520 variants = 1336` |
 | `build-item-catalog.mjs` | | สร้าง `_generated/item-catalog.md` (311 ชิ้นพร้อมราคา) | พิมพ์ `items: 311` |
 | `build-npc-map.mjs` | | สร้าง `_generated/npc-map.html` | พิมพ์ `npcs 591 · countries 143` |
