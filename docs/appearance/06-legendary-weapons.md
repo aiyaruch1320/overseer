@@ -1,6 +1,6 @@
 # รูปลักษณ์อาวุธตำนาน 36 ชิ้น
 
-ภาพรวม: [README.md](README.md) · ตัวเลขและเงื่อนไข: [../items/08-legendary.md](../items/08-legendary.md) · กติกาลักษณะอาวุธ: [05-weapons-rules.md](05-weapons-rules.md) · มังกร: [03-dragons.md](03-dragons.md)
+ภาพรวม: [README.md](README.md) · ตัวเลขและเงื่อนไข: [../systems/items/08-legendary.md](../systems/items/08-legendary.md) · กติกาลักษณะอาวุธ: [05-weapons-rules.md](05-weapons-rules.md) · มังกร: [03-dragons.md](03-dragons.md)
 
 อาวุธตำนานมีชิ้นเดียวในโลก และต้องดูต่างจากอาวุธทั่วไปตั้งแต่ไกล ทุกชิ้นมีวัสดุที่ไม่มีในตารางวัสดุปกติ (เกล็ดมังกร กระดูกผู้ตาย หินหัวใจ หมอก) มีแสงหรือเอฟเฟกต์ติดตัวหนึ่งอย่าง และมีรอยที่บอกว่าเคยผ่านมือใคร ชุดสีของ 15 ชิ้นแรกตรงกับมังกรเจ้าของใน [03-dragons.md](03-dragons.md) ตาราง ค่า UI
 

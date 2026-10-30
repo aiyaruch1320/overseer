@@ -1,6 +1,6 @@
 # รูปลักษณ์เครื่องราง 48 ชิ้น
 
-ภาพรวม: [README.md](README.md) · ตัวเลขและเรื่องราว: [../items/14-talismans.md](../items/14-talismans.md) และ [../items/15-talisman-stories.md](../items/15-talisman-stories.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md)
+ภาพรวม: [README.md](README.md) · ตัวเลขและเรื่องราว: [../systems/items/14-talismans.md](../systems/items/14-talismans.md) และ [../systems/items/15-talisman-stories.md](../systems/items/15-talisman-stories.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md)
 
 เครื่องรางต่างจากอาวุธตรงที่ตัวมันเล็กและดูธรรมดา สิ่งที่บอกว่าเป็นของพิเศษคือ **ผู้สถิต** ที่ผู้ถือรู้สึกได้ ไม่ใช่รูปทรง กติกาคือ
 

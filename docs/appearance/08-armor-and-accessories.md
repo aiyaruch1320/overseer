@@ -1,6 +1,6 @@
 # รูปลักษณ์เกราะและเครื่องประดับ
 
-ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../items/12-armor.md](../items/12-armor.md) และ [../items/13-accessories.md](../items/13-accessories.md) · เผ่าที่สวม: [02-races.md](02-races.md)
+ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../systems/items/12-armor.md](../systems/items/12-armor.md) และ [../systems/items/13-accessories.md](../systems/items/13-accessories.md) · เผ่าที่สวม: [02-races.md](02-races.md)
 
 เกราะและเครื่องประดับเป็นสิ่งที่ผู้เล่นเห็นบนตัวละครตลอดเวลา จึงต้องอ่านได้ทั้งในไอคอนช่องและบนสไปรต์ตัวละคร กติกาสามข้อ
 

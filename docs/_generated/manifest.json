@@ -1,0 +1,3921 @@
+{
+ "generatedBy": "scripts/build-docs-manifest.mjs",
+ "count": 235,
+ "layers": {
+  "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
+  "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
+  "appearance": "How things look and move: colors, shapes, poses, effects, scenes, UI values.",
+  "guide": "How to read, add and fix the docs.",
+  "generated": "Built by scripts. Never edit by hand."
+ },
+ "groups": {
+  "lore": {
+   "layer": "lore",
+   "role": "Layer index"
+  },
+  "guide": {
+   "layer": "guide",
+   "role": "Organization rules, ID glossary, consistency notes"
+  },
+  "systems": {
+   "layer": "systems",
+   "role": "Layer index"
+  },
+  "lore/npcs": {
+   "layer": "lore",
+   "role": "591 NPCs, one file per country group"
+  },
+  "_generated": {
+   "layer": "generated",
+   "role": "Script output"
+  },
+  "appearance": {
+   "layer": "appearance",
+   "role": "Look of continents, countries, peoples, NPCs, enemies, items, events and scenes"
+  },
+  "lore/heirs": {
+   "layer": "lore",
+   "role": "Houses, inheritance and what carries across lives"
+  },
+  "lore/races": {
+   "layer": "lore",
+   "role": "21 peoples: history, homes, sub-lines, relations (stats are in systems/character/races)"
+  },
+  "lore/world": {
+   "layer": "lore",
+   "role": "Main story, continents, map layout, cross-continent politics, the two clocks"
+  },
+  "lore/dragons": {
+   "layer": "lore",
+   "role": "15 legendary dragons: who they are and how they relate"
+  },
+  "systems/items": {
+   "layer": "systems",
+   "role": "Weapons, armor, accessories, talismans, consumables, materials, forging"
+  },
+  "systems/events": {
+   "layer": "systems",
+   "role": "World events (conditions and effects) and branches after dragon falls"
+  },
+  "systems/combat": {
+   "layer": "systems",
+   "role": "Combat core, type matrix, enemies, encounters, rewards"
+  },
+  "lore/religions": {
+   "layer": "lore",
+   "role": "How faith flows; major and regional faiths; movements"
+  },
+  "lore/countries": {
+   "layer": "lore",
+   "role": "143 countries, one file per continent"
+  },
+  "appearance/npcs": {
+   "layer": "appearance",
+   "role": "Look of the 591 NPCs"
+  },
+  "systems/economy": {
+   "layer": "systems",
+   "role": "Money, classes, income, trade, investment, wealth of every country"
+  },
+  "lore/storylines": {
+   "layer": "lore",
+   "role": "Life storylines per people, half-bloods, heirs, economy, convergence points"
+  },
+  "systems/character": {
+   "layer": "systems",
+   "role": "Origin, blessings, curses, skills, jobs, companions"
+  },
+  "systems/experience": {
+   "layer": "systems",
+   "role": "What the player sees and feels in one life and across lives"
+  },
+  "systems/simulation": {
+   "layer": "systems",
+   "role": "World simulation results and dragon mood values"
+  },
+  "appearance/countries": {
+   "layer": "appearance",
+   "role": "Per-country look, city scale, sacred sites, war and landmarks"
+  },
+  "appearance/poc-visuals": {
+   "layer": "appearance",
+   "role": "Vector-art design notes of the proof-of-concept (superseded by the files above)"
+  },
+  "systems/character/races": {
+   "layer": "systems",
+   "role": "Per-people starting stats, abilities, blessings, curses, skills"
+  }
+ },
+ "files": [
+  {
+   "path": "README.md",
+   "title": "คัมภีร์ของโลก: ดัชนีเอกสารทั้งหมด",
+   "layer": "root",
+   "group": "",
+   "kind": "index",
+   "lines": 92,
+   "bytes": 12876,
+   "headings": [
+    "สามชั้นของเอกสาร",
+    "ข้อตกลง",
+    "ไฟล์เจ้าของของแต่ละเรื่อง",
+    "อ่านอะไรตามงานที่ทำ",
+    "รหัสที่พบบ่อย",
+    "ขนาดของเอกสาร"
+   ]
+  },
+  {
+   "path": "_generated/README.md",
+   "title": "ไฟล์ที่สร้างอัตโนมัติ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 19,
+   "bytes": 2106,
+   "headings": []
+  },
+  {
+   "path": "_generated/character-catalog/aptitudes-skills.md",
+   "title": "ความถนัด 45 หมวด และ skill 150 รายการ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 76,
+   "bytes": 10793,
+   "headings": [
+    "ความถนัด",
+    "skill เฉพาะตัว"
+   ],
+   "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/character-catalog/blessings.md",
+   "title": "พร 107 รายการ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 116,
+   "bytes": 14995,
+   "headings": [],
+   "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/character-catalog/curses.md",
+   "title": "คำสาป 103 รายการ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 112,
+   "bytes": 14540,
+   "headings": [],
+   "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/character-catalog/tags.md",
+   "title": "แท็กผลพิเศษ 188 รายการ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 195,
+   "bytes": 3725,
+   "headings": [],
+   "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/character-catalog/traits.md",
+   "title": "นิสัย 48 รายการ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 83,
+   "bytes": 7787,
+   "headings": [
+    "นิสัยที่อยู่ร่วมกันไม่ได้"
+   ],
+   "source": "scripts/export-character-catalog.ts"
+  },
+  {
+   "path": "_generated/poc-visuals/birthplaces.md",
+   "title": "ถิ่นเกิดและลักษณะของ NPC ทั้ง 591 ตัว",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 602,
+   "bytes": 137997,
+   "headings": [],
+   "source": "scripts/gen-visual-docs.ts"
+  },
+  {
+   "path": "_generated/poc-visuals/races.md",
+   "title": "ธีมภาพของทั้ง 21 เผ่า",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 461,
+   "bytes": 37994,
+   "headings": [
+    "มนุษย์ (`human`)",
+    "เอลฟ์ (`elf`)",
+    "ดาร์กเอลฟ์ (`darkelf`)",
+    "คนแคระ (`dwarf`)",
+    "ออร์ค (`orc`)",
+    "ฮาล์ฟลิง (`halfling`)",
+    "เผ่าสัตว์ (`beast`)",
+    "นาคา (`naga`)",
+    "เผ่ามังกร (`dragonkin`)",
+    "แวมไพร์ (`vampire`)",
+    "ภูตพราย (`fae`)",
+    "สไลม์ (`slime`)",
+    "เผ่าปีศาจ (`demonkin`)",
+    "เงือก (`merfolk`)",
+    "เผ่าปีก (`winged`)",
+    "ยักษ์ (`giant`)",
+    "เผ่าลาวา (`lavakin`)",
+    "ลูกผสมจักรกล (`construct`)",
+    "หุ่นวิญญาณ (`soulmachine`)",
+    "มัมมี่ (`mummy`)",
+    "กูล (`ghoul`)"
+   ],
+   "source": "scripts/gen-visual-docs.ts"
+  },
+  {
+   "path": "_generated/poc-visuals/specials.md",
+   "title": "NPC พิเศษที่ออกแบบด้วยมือ",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 67,
+   "bytes": 37204,
+   "headings": [],
+   "source": "scripts/gen-visual-docs.ts"
+  },
+  {
+   "path": "_generated/weapon-catalog.md",
+   "title": "รายการอาวุธทั้งหมด",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 1405,
+   "bytes": 280413,
+   "headings": [
+    "สรุป",
+    "ของใช้และมาตรฐาน",
+    "อาชีพทั่วไป",
+    "อาชีพลับและพิเศษ",
+    "ประเทศและทวีป",
+    "ชาติช่าง",
+    "ตำนาน",
+    "รุ่นวัสดุ"
+   ],
+   "source": "scripts/build-weapon-catalog.mjs"
+  },
+  {
+   "path": "appearance/01-continents.md",
+   "title": "รูปลักษณ์ของทวีปทั้งเก้า",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 172,
+   "bytes": 28700,
+   "headings": [
+    "1. อัซการ์ ทวีปมังกร",
+    "2. มอร์เฮเวน ทวีปปีศาจ",
+    "3. คาซ-ดูรัม ทวีปแห่งไฟ",
+    "4. เนเรีย ทวีปแห่งสายน้ำ",
+    "5. อัลเดรีย ทุ่งราบ",
+    "6. เมคาเรีย ทวีปจักรกล",
+    "7. ซาฮารัน ทวีปภูเขาและทะเลทราย",
+    "8. ซิลวาเนล ทวีปพงไพร",
+    "9. เนบูเลีย ทวีปหมอก",
+    "ทวีปใหม่ที่เกิดจากเหตุการณ์"
+   ]
+  },
+  {
+   "path": "appearance/02-races.md",
+   "title": "รูปลักษณ์ของเผ่าทั้ง 21",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 140,
+   "bytes": 41650,
+   "headings": [
+    "1. มนุษย์",
+    "2. เอลฟ์",
+    "3. ดาร์กเอลฟ์",
+    "4. คนแคระ",
+    "5. ออร์ค",
+    "6. ฮาล์ฟลิง",
+    "7. เผ่าสัตว์",
+    "8. นาคา",
+    "9. เผ่ามังกร",
+    "10. แวมไพร์",
+    "11. ภูตพราย",
+    "12. สไลม์",
+    "13. เผ่าปีศาจ",
+    "14. เงือก",
+    "15. เผ่าปีก",
+    "16. ยักษ์",
+    "17. เผ่าลาวา",
+    "18. ลูกผสมจักรกล",
+    "19. หุ่นวิญญาณ",
+    "20. มัมมี่",
+    "21. กูล",
+    "ที่ต้องแก้ในไฟล์ที่สร้างจากโค้ด"
+   ]
+  },
+  {
+   "path": "appearance/03-dragons.md",
+   "title": "รูปลักษณ์ของมังกรตำนานทั้ง 15",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 66,
+   "bytes": 16445,
+   "headings": [
+    "ปฐมและผู้อาวุโส",
+    "เสาทวีป",
+    "ค่า UI ของมังกรทั้ง 15"
+   ]
+  },
+  {
+   "path": "appearance/04-enemies.md",
+   "title": "รูปลักษณ์ของศัตรู 118 แบบ",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 236,
+   "bytes": 155786,
+   "headings": [
+    "กติกาภาพของการต่อสู้",
+    "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
+    "ข. มอนสเตอร์ผูกโลก 40 ตัว",
+    "ค. NPC แบบทั่วไป 20 แบบ",
+    "ง. ร่างต่อสู้ของ NPC มีชื่อ 20 คน",
+    "จ. บอสระดับโลก 6 ตัว"
+   ]
+  },
+  {
+   "path": "appearance/05-weapons-rules.md",
+   "title": "กติการูปลักษณ์อาวุธและอาวุธมาตรฐาน",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 227,
+   "bytes": 77291,
+   "headings": [
+    "1. สูตรประกอบภาพอาวุธ",
+    "2. ทรงตามประเภท 12 แบบ",
+    "3. วัสดุ 17 ชนิด",
+    "4. การตกแต่งตามระดับ",
+    "5. เอฟเฟกต์ตามแท็ก",
+    "6. ร่องรอยการใช้",
+    "7. ของใช้ที่หยิบมาสู้ได้และอาวุธมาตรฐาน",
+    "ของใช้ที่หยิบมาสู้ได้ 40 ชิ้น",
+    "อาวุธมาตรฐาน 55 ชิ้น"
+   ]
+  },
+  {
+   "path": "appearance/06-legendary-weapons.md",
+   "title": "รูปลักษณ์อาวุธตำนาน 36 ชิ้น",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 51,
+   "bytes": 46678,
+   "headings": [
+    "อาวุธตำนาน 36 ชิ้น"
+   ]
+  },
+  {
+   "path": "appearance/07-regional-and-forge-weapons.md",
+   "title": "รูปลักษณ์อาวุธประจำประเทศ ทวีป และโรงตี",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 243,
+   "bytes": 157900,
+   "headings": [
+    "อาวุธประจำประเทศ 143 ชิ้น",
+    "อาวุธประจำทวีป 27 ชิ้น",
+    "อาวุธจากโรงตีทั้งเก้า 44 ชิ้น"
+   ]
+  },
+  {
+   "path": "appearance/08-armor-and-accessories.md",
+   "title": "รูปลักษณ์เกราะและเครื่องประดับ",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 97,
+   "bytes": 47151,
+   "headings": [
+    "เกราะและโล่ 37 ชิ้น",
+    "เครื่องประดับ 34 ชิ้น"
+   ]
+  },
+  {
+   "path": "appearance/09-talismans.md",
+   "title": "รูปลักษณ์เครื่องราง 48 ชิ้น",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 74,
+   "bytes": 35427,
+   "headings": [
+    "เครื่องรางโบราณ 24 ชิ้น (มีผู้สถิต)",
+    "ของขลังพื้นบ้าน 24 ชิ้น"
+   ]
+  },
+  {
+   "path": "appearance/10-job-weapons.md",
+   "title": "รูปลักษณ์อาวุธประจำอาชีพ 157 ชุด",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 184,
+   "bytes": 131711,
+   "headings": [
+    "อาชีพทั่วไป ชุดที่ 1 (50 อาชีพ)",
+    "อาชีพทั่วไป ชุดที่ 2 (65 อาชีพ)",
+    "อาชีพลับและอาชีพพิเศษ (42 อาชีพ)"
+   ]
+  },
+  {
+   "path": "appearance/11-world-changes.md",
+   "title": "ภาพและแอนิเมชันเมื่อโลกเปลี่ยนรูป",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 304,
+   "bytes": 48032,
+   "headings": [
+    "1. หลักการภาพของการเปลี่ยนรูป",
+    "2. ทวีปที่เปลี่ยนรูป 8 แบบ",
+    "3. มังกรล้ม 15 ตัว",
+    "4. เหตุการณ์ใหญ่ที่ไม่เปลี่ยนรูปทวีป",
+    "5. จุดจบของโลก (END-10 ถึง END-12) และการล่มสลายหลังจบ"
+   ]
+  },
+  {
+   "path": "appearance/12-event-visuals.md",
+   "title": "ภาพและ UI ของเหตุการณ์โลก 152 รายการ",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 301,
+   "bytes": 64129,
+   "headings": [
+    "รูปแบบการแสดง 4 แบบ",
+    "สีกรอบการ์ดตามหมวด",
+    "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
+    "2. มังกรเสาตื่น (PL) — 9 เหตุการณ์",
+    "3. สงครามระหว่างทวีป (WR) — 24 เหตุการณ์",
+    "4. ภัยระดับโลก (CT) — 10 เหตุการณ์",
+    "5. จอมมารและผู้กล้า (DM) — 11 เหตุการณ์",
+    "6. จักรกลและเครื่องจักรปฐม (MC) — 12 เหตุการณ์",
+    "7. ต้นไม้โลก หมอก และท้องทะเล (BIO) — 10 เหตุการณ์",
+    "8. ศาสนาและพระเจ้า (GD) — 8 เหตุการณ์",
+    "9. สันติภาพและการฟื้นตัว (HP) — 8 เหตุการณ์",
+    "10. การเมืองโลก (PO) — 8 เหตุการณ์",
+    "11. ยักษ์ ไฟ ทราย (GI) — 10 เหตุการณ์",
+    "12. หมอกกินคน (FG) — 15 เหตุการณ์",
+    "13. แกนตื่น และจุดจบ (END) — 12 เหตุการณ์",
+    "เหตุการณ์สืบทอดหลังทวีปเปลี่ยนรูป 42 รายการ"
+   ]
+  },
+  {
+   "path": "appearance/13-storyline-scenes.md",
+   "title": "ภาพของฉากสำคัญในเส้นเรื่องตัวละคร",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 90,
+   "bytes": 23252,
+   "headings": [
+    "1. กติกากลางของฉากในเส้นเรื่อง",
+    "2. พิธีของเผ่า (โหนด `.t1`)",
+    "3. ฉากปลายทาง (โหนด `.e` และไฟล์ ปลายทาง)",
+    "4. เส้นเรื่องที่ไม่ใช่เผ่า",
+    "5. สิ่งที่ยังไม่มี (บันทึกไว้)"
+   ]
+  },
+  {
+   "path": "appearance/README.md",
+   "title": "รูปลักษณ์ของโลก",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "index",
+   "lines": 77,
+   "bytes": 15538,
+   "headings": [
+    "น้ำเสียงภาพของโลก",
+    "กติกาการเขียน",
+    "ไฟล์",
+    "วิธีอ่านช่อง ค่า UI",
+    "คำของโค้ดที่ UI ใช้ตอนนี้",
+    "ข้อควรรู้ก่อนนำไปใช้"
+   ]
+  },
+  {
+   "path": "appearance/countries/01-azgar.md",
+   "title": "รูปลักษณ์ประเทศในอัซการ์ (10 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 108,
+   "bytes": 29420,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/02-morhaven.md",
+   "title": "รูปลักษณ์ประเทศในมอร์เฮเวน (12 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 126,
+   "bytes": 33231,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/03-kaz-durum.md",
+   "title": "รูปลักษณ์ประเทศในคาซ-ดูรัม (12 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 126,
+   "bytes": 34270,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/04-nerea.md",
+   "title": "รูปลักษณ์ประเทศในเนเรีย (16 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 166,
+   "bytes": 47670,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/05-aldria.md",
+   "title": "รูปลักษณ์ประเทศในอัลเดรีย (28 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 286,
+   "bytes": 78733,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/06-mecharia.md",
+   "title": "รูปลักษณ์ประเทศในเมคาเรีย (16 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 166,
+   "bytes": 44927,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/07-saharan.md",
+   "title": "รูปลักษณ์ประเทศในซาฮารัน (17 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 176,
+   "bytes": 48763,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/08-silvanel.md",
+   "title": "รูปลักษณ์ประเทศในซิลวาเนล (18 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 188,
+   "bytes": 53513,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/09-nebulia.md",
+   "title": "รูปลักษณ์ประเทศในเนบูเลีย (14 ประเทศ)",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 146,
+   "bytes": 40155,
+   "headings": []
+  },
+  {
+   "path": "appearance/countries/10-scale-and-sacred.md",
+   "title": "ขนาดเมือง ที่ประทับ และศาสนสถาน 143 ประเทศ",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 215,
+   "bytes": 61894,
+   "headings": [
+    "กติกา",
+    "ตารางรายประเทศ"
+   ]
+  },
+  {
+   "path": "appearance/countries/11-context-and-landmarks.md",
+   "title": "บริบทของประเทศ: สงคราม การป้องกัน กฎหมาย และจุดเด่นของเมือง",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "visual",
+   "lines": 476,
+   "bytes": 112479,
+   "headings": [
+    "กติกา",
+    "ตารางประเทศ",
+    "ค่า `wall=` เดิมที่ต้องเปลี่ยน",
+    "สรุปจำนวน"
+   ]
+  },
+  {
+   "path": "appearance/countries/README.md",
+   "title": "หน้าตาของประเทศ 143 แห่ง",
+   "layer": "appearance",
+   "group": "appearance/countries",
+   "kind": "index",
+   "lines": 12,
+   "bytes": 1498,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/01-azgar.md",
+   "title": "รูปลักษณ์ NPC ในอัซการ์ (40 ตัว)",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 96,
+   "bytes": 38307,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/02-morhaven.md",
+   "title": "รูปลักษณ์ NPC ในมอร์เฮเวน",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 117,
+   "bytes": 49171,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/03-kaz-durum.md",
+   "title": "รูปลักษณ์ NPC ในคาซ-ดูรัม",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 117,
+   "bytes": 51906,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/04-nerea.md",
+   "title": "รูปลักษณ์ NPC ในเนเรีย",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 152,
+   "bytes": 63310,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/05-aldria-a.md",
+   "title": "รูปลักษณ์ NPC ในอัลเดรีย (AL-01–AL-14)",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 132,
+   "bytes": 58319,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/06-aldria-b.md",
+   "title": "รูปลักษณ์ NPC ในอัลเดรีย (AL-15–AL-28)",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 136,
+   "bytes": 57942,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/07-mecharia.md",
+   "title": "รูปลักษณ์ NPC ในเมคาเรีย",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 151,
+   "bytes": 64556,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/08-saharan.md",
+   "title": "รูปลักษณ์ NPC ในซาฮารัน",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 161,
+   "bytes": 67360,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/09-silvanel.md",
+   "title": "รูปลักษณ์ NPC ในซิลวาเนล",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 170,
+   "bytes": 69514,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/10-nebulia.md",
+   "title": "รูปลักษณ์ NPC ในเนบูเลีย",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "visual",
+   "lines": 134,
+   "bytes": 55854,
+   "headings": []
+  },
+  {
+   "path": "appearance/npcs/README.md",
+   "title": "หน้าตาของ NPC 591 ตัว",
+   "layer": "appearance",
+   "group": "appearance/npcs",
+   "kind": "index",
+   "lines": 18,
+   "bytes": 1316,
+   "headings": []
+  },
+  {
+   "path": "appearance/poc-visuals/README.md",
+   "title": "ภาพและอนิเมชันตัวละคร",
+   "layer": "appearance",
+   "group": "appearance/poc-visuals",
+   "kind": "index",
+   "lines": 97,
+   "bytes": 19232,
+   "headings": [
+    "วิธีที่ภาพถูกสร้าง",
+    "แนวภาพ: จริงจัง สมจริง สีกลมกลืน",
+    "ช่วงชีวิต",
+    "ท่าทางและอนิเมชัน",
+    "NPC",
+    "เพิ่มเผ่าหรือลักษณะใหม่",
+    "ที่มาของการออกแบบ",
+    "ข้อจำกัดที่รู้",
+    "ลูกครึ่ง"
+   ]
+  },
+  {
+   "path": "appearance/poc-visuals/npc-life.md",
+   "title": "ชีวิตประจำวันของ NPC ในเมือง",
+   "layer": "appearance",
+   "group": "appearance/poc-visuals",
+   "kind": "visual",
+   "lines": 116,
+   "bytes": 19410,
+   "headings": [
+    "วันหนึ่งของเมือง",
+    "บ้านและที่ทำงาน",
+    "ความต้องการและธุระ",
+    "ครอบครัว",
+    "การเข้าอาคาร",
+    "ท่าทางประจำอาชีพ",
+    "ปรับค่าได้ที่ไหน",
+    "ที่ยังทำต่อได้ (ข้อเสนอ)"
+   ]
+  },
+  {
+   "path": "guide/README.md",
+   "title": "คู่มือการดูแลเอกสาร",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "index",
+   "lines": 17,
+   "bytes": 777,
+   "headings": []
+  },
+  {
+   "path": "guide/consistency-checks.md",
+   "title": "บันทึกการตรวจความสอดคล้อง",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 30,
+   "bytes": 6122,
+   "headings": [
+    "ที่พบเพิ่มระหว่างจำลอง"
+   ]
+  },
+  {
+   "path": "guide/id-glossary.md",
+   "title": "รหัสที่พบในเอกสาร",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 19,
+   "bytes": 2657,
+   "headings": []
+  },
+  {
+   "path": "guide/organization.md",
+   "title": "วิธีจัดเอกสาร: อะไรอยู่ด้วยกัน อะไรแยก",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 92,
+   "bytes": 11334,
+   "headings": [
+    "1. แบ่งตามคำถามที่ตอบ ไม่ใช่ตามหัวข้อ",
+    "2. ถามสามข้อก่อนวางข้อมูลใหม่",
+    "3. เมื่อไหร่รวมในไฟล์เดียว",
+    "4. เมื่อไหร่แยกไฟล์",
+    "5. ไฟล์ที่ผสมกันโดยตั้งใจ",
+    "6. แบบฟอร์มของไฟล์ในแต่ละชั้น",
+    "7. ชื่อไฟล์และโฟลเดอร์",
+    "8. ก่อนส่งงาน"
+   ]
+  },
+  {
+   "path": "lore/README.md",
+   "title": "ชั้นโลก (lore): ความจริงของโลก",
+   "layer": "lore",
+   "group": "lore",
+   "kind": "index",
+   "lines": 41,
+   "bytes": 5079,
+   "headings": [
+    "สิ่งที่อยู่ในชั้นนี้",
+    "สิ่งที่ไม่อยู่ในชั้นนี้",
+    "โฟลเดอร์",
+    "รูปแบบไฟล์ในชั้นนี้"
+   ]
+  },
+  {
+   "path": "lore/countries/01-azgar.md",
+   "title": "ประเทศในอัซการ์ (ทวีปมังกร) — 10 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 101,
+   "bytes": 19857,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/02-morhaven.md",
+   "title": "ประเทศในมอร์เฮเวน (ทวีปปีศาจ) — 12 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 119,
+   "bytes": 18509,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/03-kaz-durum.md",
+   "title": "ประเทศในคาซ-ดูรัม (ทวีปแห่งไฟ) — 12 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 112,
+   "bytes": 17359,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/04-nerea.md",
+   "title": "ประเทศในเนเรีย (ทวีปแห่งสายน้ำ) — 16 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 135,
+   "bytes": 20532,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/05-aldria.md",
+   "title": "ประเทศในอัลเดรีย (ทวีปทุ่งราบ) — 28 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 213,
+   "bytes": 35387,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/06-mecharia.md",
+   "title": "ประเทศในเมคาเรีย (ทวีปจักรกล) — 16 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 137,
+   "bytes": 20581,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/07-saharan.md",
+   "title": "ประเทศในซาฮารัน (ทวีปภูเขาและทะเลทราย) — 17 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 143,
+   "bytes": 20556,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/08-silvanel.md",
+   "title": "ประเทศในซิลวาเนล (ทวีปพงไพร) — 18 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 154,
+   "bytes": 20782,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ"
+   ]
+  },
+  {
+   "path": "lore/countries/09-nebulia.md",
+   "title": "ประเทศในเนบูเลีย (ทวีปหมอก) — 14 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "fact",
+   "lines": 159,
+   "bytes": 28532,
+   "headings": [
+    "ภาพรวมการเมือง",
+    "ประเทศ",
+    "หมอกกินคน"
+   ]
+  },
+  {
+   "path": "lore/countries/README.md",
+   "title": "ดัชนีประเทศทั้ง 143 ประเทศ",
+   "layer": "lore",
+   "group": "lore/countries",
+   "kind": "index",
+   "lines": 37,
+   "bytes": 6218,
+   "headings": [
+    "รายชื่อ"
+   ]
+  },
+  {
+   "path": "lore/dragons/01-primordial-and-elders.md",
+   "title": "มังกรปฐมและห้าผู้อาวุโส",
+   "layer": "lore",
+   "group": "lore/dragons",
+   "kind": "fact",
+   "lines": 117,
+   "bytes": 20644,
+   "headings": [
+    "1. โอรัน-ซัล — มังกรปฐม ผู้ถือฟ้า",
+    "2. เพลิงนิรันดร์ — ผู้อาวุโสเพลิง",
+    "3. สมุทรอาลัย — ผู้อาวุโสสมุทร",
+    "4. พายุไร้ทิศ — ผู้อาวุโสพายุ",
+    "5. ศิลาสะท้าน — ผู้อาวุโสศิลา",
+    "6. ราหูแห่งสุริยคราส — ผู้อาวุโสสุริยันจันทรา"
+   ]
+  },
+  {
+   "path": "lore/dragons/02-pillars.md",
+   "title": "มังกรเสาทั้งเก้า",
+   "layer": "lore",
+   "group": "lore/dragons",
+   "kind": "fact",
+   "lines": 173,
+   "bytes": 27838,
+   "headings": [
+    "7. อีริดาน — เสาทวีปมังกร",
+    "8. ฮรอด-กาธ — เสาทวีปปีศาจ ผู้กลืนกิน",
+    "9. คัลดรา — เสาทวีปไฟ",
+    "10. ธาลาสซา — เสาทวีปสายน้ำ",
+    "11. อันดาร์ — เสาทุ่งราบ",
+    "12. เซเรเน — เสาทวีปจักรกล",
+    "13. กรอม-ธาร — เสาภูเขาและทะเลทราย",
+    "14. ซิลเวรา — เสาทวีปพงไพร",
+    "15. นิเวรี — เสาทวีปหมอก"
+   ]
+  },
+  {
+   "path": "lore/dragons/README.md",
+   "title": "มังกรตำนานทั้ง 15",
+   "layer": "lore",
+   "group": "lore/dragons",
+   "kind": "index",
+   "lines": 68,
+   "bytes": 10325,
+   "headings": [
+    "อารมณ์ของมังกร",
+    "ที่คนเชื่อ กับที่ต้องการจริง",
+    "ตารางรวม",
+    "พี่น้องสิบห้า",
+    "คู่ที่สนิทที่สุด"
+   ]
+  },
+  {
+   "path": "lore/heirs/01-inheritance.md",
+   "title": "การสืบทอด",
+   "layer": "lore",
+   "group": "lore/heirs",
+   "kind": "fact",
+   "lines": 119,
+   "bytes": 16500,
+   "headings": [
+    "1. ใครเป็นทายาท",
+    "2. ส่งต่ออะไร",
+    "3. อาวุธผูกเจ้าของ",
+    "4. ไม่ส่งต่อ",
+    "5. พระเจ้ากับตระกูล",
+    "6. เมื่อตระกูลสิ้น"
+   ]
+  },
+  {
+   "path": "lore/heirs/02-no-repeat.md",
+   "title": "เรื่องของทายาทไม่ซ้ำกับรุ่นก่อน",
+   "layer": "lore",
+   "group": "lore/heirs",
+   "kind": "fact",
+   "lines": 142,
+   "bytes": 25435,
+   "headings": [
+    "1. สามชั้นที่ไม่ซ้ำ",
+    "2. สมุดตระกูล",
+    "3. ประเภทของโหนด",
+    "4. ลำดับเลือกโหนดของทายาท",
+    "5. รูปสืบของจุดบรรจบ",
+    "6. ปลายทางที่ใช้แล้ว",
+    "7. NPC ไม่เล่นเส้นเรื่องเดิมซ้ำ",
+    "8. ตัวอย่าง",
+    "9. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/heirs/03-open-threads.md",
+   "title": "เรื่องค้าง",
+   "layer": "lore",
+   "group": "lore/heirs",
+   "kind": "fact",
+   "lines": 87,
+   "bytes": 12493,
+   "headings": [
+    "1. ชนิดของเรื่องค้าง",
+    "2. จำนวนและการเลือก",
+    "3. วงจรของเรื่องค้าง",
+    "4. ตัวอย่างจากเนื้อเรื่องที่มีอยู่",
+    "5. พระเจ้ากับเรื่องค้าง",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/heirs/README.md",
+   "title": "ทายาทและรุ่นถัดไป",
+   "layer": "lore",
+   "group": "lore/heirs",
+   "kind": "index",
+   "lines": 49,
+   "bytes": 7078,
+   "headings": [
+    "1. ศัพท์",
+    "2. ความต่างจากโค้ดปัจจุบัน",
+    "3. ลำดับการทำในโค้ด (เสนอ)"
+   ]
+  },
+  {
+   "path": "lore/npcs/01-azgar.md",
+   "title": "NPC ของอัซการ์ (ทวีปมังกร) — 40 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 94,
+   "bytes": 25627,
+   "headings": [
+    "AZ-01 โอรันธาร์",
+    "AZ-02 ซากโรการ์",
+    "AZ-03 วีร์กาดุส",
+    "AZ-04 ธีโรวาส",
+    "AZ-05 โคซาโมเรีย",
+    "AZ-06 ดราซาวาส",
+    "AZ-07 อัซเมโรส",
+    "AZ-08 โคธีดุส",
+    "AZ-09 วีร์เนกา",
+    "AZ-10 นอคโมรา"
+   ]
+  },
+  {
+   "path": "lore/npcs/02-morhaven.md",
+   "title": "NPC ของมอร์เฮเวน (ทวีปปีศาจ) — 51 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 115,
+   "bytes": 33837,
+   "headings": [
+    "MH-01 กาธเรธ (ธงกระดูก)",
+    "MH-02 ดราซาร์ (ธงเลือด)",
+    "MH-03 อุลโมธ (ธงหิว)",
+    "MH-04 เซวาร์ธ (ธงเถ้า)",
+    "MH-05 นอคดรีน (ธงเหล็ก)",
+    "MH-06 วีซาเฮเวน (ดินแดนผู้ไม่รบ)",
+    "MH-07 เทนเซอริส (ผู้กลับชาติ)",
+    "MH-08 อุลซาร์เวลล์ (วิหารน้ำ)",
+    "MH-09 โมธมาร์ต (ตลาดเลือด)",
+    "MH-10 ทรอนกาธ (ดินแดนมงกุฎกระดูก)",
+    "MH-11 ซาร์ดรีน (ชาวเรือเถ้า)",
+    "MH-12 เซร์วอร์ (สนามรบผี)"
+   ]
+  },
+  {
+   "path": "lore/npcs/03-kaz-durum.md",
+   "title": "NPC ของคาซ-ดูรัม (ทวีปแห่งไฟ) — 51 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 115,
+   "bytes": 31883,
+   "headings": [
+    "KD-01 กรอมฮอล์ม (ชาติช่างตีเหล็ก)",
+    "KD-02 ดูร์ดิน (เหล็กไหล)",
+    "KD-03 คาซรัม (ผู้ปิดรูน)",
+    "KD-04 บาร์ดิน (ผู้เปิดรูน)",
+    "KD-05 อิรมอร์ (นครใต้พิภพ)",
+    "KD-06 ฮัลดัล (จักรวรรดิเผ่าลาวา)",
+    "KD-07 ธรอกาด (ราชวงศ์มังกรเผา)",
+    "KD-08 มอร์ดิน (ผู้เฝ้าปากเหว)",
+    "KD-09 ดัลฮอล์ม (เมืองแก้วออบซิเดียน)",
+    "KD-10 คาซมา (เหมืองลึก)",
+    "KD-11 ฮัลกาด (รัฐนักบวชเตาหลอม)",
+    "KD-12 ธรอ-ดู (ขอบน้ำแข็ง)"
+   ]
+  },
+  {
+   "path": "lore/npcs/04-nerea.md",
+   "title": "NPC ของเนเรีย (ทวีปแห่งสายน้ำ) — 66 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 150,
+   "bytes": 38548,
+   "headings": [
+    "NR-01 ทาลานีส (สาธารณรัฐเมืองท่าใหญ่)",
+    "NR-02 นูวาปาเล (ประเทศน้ำตกย้อนฟ้า)",
+    "NR-03 คอโมอา (ประเทศน้ำวน)",
+    "NR-04 ไอทอล (ราชอาณาจักรร่องลึก)",
+    "NR-05 ทอร์ตูโมอา (สหพันธ์โจรสลัดเก้าธงดำ)",
+    "NR-06 เมอร์เรีย (อาณาจักรเงือกประภาคาร)",
+    "NR-07 นาคาไอล์ (อาณาจักรพญานาค)",
+    "NR-08 ลาโอทอล (อาณาจักรเสียงขับ)",
+    "NR-09 คอปาเล (ที่ราบลุ่มกัปปะ)",
+    "NR-10 ไอลานู (สหพันธ์มนุษย์เรือ)",
+    "NR-11 โมอาเรีย (ผู้เฝ้าไข่มุกน้ำตา)",
+    "NR-12 ทอลวา (อู่ต่อเรือ)",
+    "NR-13 ปาเลนู (แนวปะการังมีชีวิต)",
+    "NR-14 ลารีทอล (ผู้กู้ซากเมืองใต้น้ำ)",
+    "NR-15 นูไอล์ (สมาคมผู้อ่านลม)",
+    "NR-16 ไอทาเรีย (ผู้เลี้ยงวาฬฟ้า)"
+   ]
+  },
+  {
+   "path": "lore/npcs/05-aldria-a.md",
+   "title": "NPC ของอัลเดรีย ตอนแรก (AL-01 ถึง AL-14) — 56 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 130,
+   "bytes": 40826,
+   "headings": [
+    "AL-01 คองคอร์เดีย (นครสภาเก้าทวีป)",
+    "AL-02 ลูเมียร์ (จักรวรรดิศาสนจักรแห่งแสง)",
+    "AL-03 อัลเดอร์ฮาร์ต (ราชอาณาจักรเก่า)",
+    "AL-04 เวนทาเรีย (จักรวรรดิกองเรือหลวง)",
+    "AL-05 ลาโรเซล (ราชสำนักแฟชั่น)",
+    "AL-06 คาร์แลนด์ (สาธารณรัฐประชาธิปไตย)",
+    "AL-07 รอสกราด (สหภาพแรงงาน)",
+    "AL-08 ฟอร์เทีย (จักรวรรดิฟอร์เทีย)",
+    "AL-09 เฮเธอร์วิก (จักรวรรดิเครื่องจักร)",
+    "AL-10 มาร์เชลโล (สันนิบาตนครการค้า)",
+    "AL-11 ซาเปียนเซีย (รัฐแห่งความรู้)",
+    "AL-12 คริสตาเลีย (นครผลึกสองชั้น)",
+    "AL-13 เนออนเวย์ (มหานครนีออน)",
+    "AL-14 ดรีมมอร์ (ดินแดนแห่งความฝัน)"
+   ]
+  },
+  {
+   "path": "lore/npcs/06-aldria-b.md",
+   "title": "NPC ของอัลเดรีย ตอนหลัง (AL-15 ถึง AL-28) — 60 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 134,
+   "bytes": 39862,
+   "headings": [
+    "AL-15 ซอมเมอร์เรน (สาธารณรัฐสนามเพลาะ)",
+    "AL-16 ไชร์วิก (ไชร์ฮาล์ฟลิง)",
+    "AL-17 เซเรเลีย (ยุ้งฉางโลก)",
+    "AL-18 ไรน์วอลด์ (รัฐอัศวินสมาคม)",
+    "AL-19 นิวเฮเวน (ดินแดนผู้ลี้ภัย)",
+    "AL-20 มิสต์วอตช์ (แนวป้องกันหมอก)",
+    "AL-21 ดวาร์ฟสตาด (นครคนแคระพ่อค้า)",
+    "AL-22 เซเลสเทีย (เอลฟ์พลัดถิ่น)",
+    "AL-23 ไวลด์มาร์ก (สหพันธ์เผ่าสัตว์ทุ่งราบ)",
+    "AL-24 เคอร์แลนด์ (ทุ่งหญ้าขุนม้า)",
+    "AL-25 เกรฟฮอลล์ (ประเทศสุสานผู้กล้า)",
+    "AL-26 เมดิกา (นครหมอ)",
+    "AL-27 โกลด์ครีก (แดนตื่นทอง)",
+    "AL-28 เรลเฮด (ศูนย์กลางทางรถไฟ)"
+   ]
+  },
+  {
+   "path": "lore/npcs/07-mecharia.md",
+   "title": "NPC ของเมคาเรีย (ทวีปจักรกล) — 65 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 149,
+   "bytes": 44248,
+   "headings": [
+    "MK-01 เฮฟากริด (นครโครงข่าย)",
+    "MK-02 ครอนไซต์ (สหภาพผู้ติดตั้ง)",
+    "MK-03 โนวามินด์ (สาธารณรัฐหุ่นผู้ตื่น)",
+    "MK-04 อาร์เคียพอร์ต (รัฐผู้เฝ้าซาก)",
+    "MK-05 แวร์ดาล (สหภาพรถไฟ)",
+    "MK-06 เซฟฟอร์จ (สมาพันธ์อาวุธ)",
+    "MK-07 ดอร์ไซต์ (สาธารณรัฐวิศวกร)",
+    "MK-08 เฮเลนโนวา (นครสถาบันตุ๊กตา)",
+    "MK-09 สกายพอร์ต (ราชสำนักเรือเหาะ)",
+    "MK-10 รัสต์ดาล (นครชนชั้นล่าง)",
+    "MK-11 อีลาเวียร์ (เอลฟ์ผู้ลี้ภัยช่างกล)",
+    "MK-12 ทวิดเวิร์ค (สหกรณ์ช่างซ่อม)",
+    "MK-13 ไซเฟอร์ (สมาคมรหัส)",
+    "MK-14 ครอมเฟลด์ (เมืองควันดำ)",
+    "MK-15 แอสเทรีย (นครเฟือง)",
+    "MK-16 รีเวนพอร์ต (บริษัททหารรับจ้าง)"
+   ]
+  },
+  {
+   "path": "lore/npcs/08-saharan.md",
+   "title": "NPC ของซาฮารัน (ทวีปภูเขาและทะเลทราย) — 70 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 159,
+   "bytes": 43281,
+   "headings": [
+    "SH-01 ซาร์ฮาดีน (ดินแดนธุลีทิพย์)",
+    "SH-02 อัมเมนรา (ราชวงศ์มัมมี่นิรันดร์)",
+    "SH-03 กัชมีร์ (สภาหินยักษ์)",
+    "SH-04 ซุฮาบัด (สุลต่านกองคาราวาน)",
+    "SH-05 ฮาซีมา (ประเทศโอเอซิสใหญ่)",
+    "SH-06 ซากกัช (เผ่านักบวชไททัน)",
+    "SH-07 รามีร์ (ยักษ์ช่างตี)",
+    "SH-08 คาซิบา (ราชอาณาจักรแก้วทราย)",
+    "SH-09 รามาดีน (นครผู้แสวงบุญ)",
+    "SH-10 อัลมา (สหพันธ์เผ่าสัตว์ทราย)",
+    "SH-11 ซาร์กัช (ทัพออร์คทราย)",
+    "SH-12 บาดาซี (ชนใต้ทราย)",
+    "SH-13 ซีมาร์ (สำนักผู้เงียบ)",
+    "SH-14 มาราซาร์ (เมืองมายาร้อยปี)",
+    "SH-15 ฮาบัดมี (ด่านเหนือ)",
+    "SH-16 ซุมบา (รัฐเศษเกาะร่วง)",
+    "SH-17 บัดมีร์ (สำนักศรัทธาศิลา)"
+   ]
+  },
+  {
+   "path": "lore/npcs/09-silvanel.md",
+   "title": "NPC ของซิลวาเนล (ทวีปพงไพร) — 74 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 168,
+   "bytes": 43632,
+   "headings": [
+    "SV-01 ซิลนเนลลอร์ (นครลำต้น)",
+    "SV-02 ธิลเอวา (สถานพยาบาลแห่งรุ่งอรุณ)",
+    "SV-03 เฟเลนิ (แนวหน้ามลพิษ)",
+    "SV-04 วาริเดล (ราชสำนักภูต)",
+    "SV-05 ลูไอลิส (เมืองจันทรา)",
+    "SV-06 ธาเนล (ผู้เฝ้ากรองหมอก)",
+    "SV-07 เอนิลอร์ (ผู้เก็บบันทึกป่า)",
+    "SV-08 ไอเลวิน (ผู้เฝ้าชายแดนใต้)",
+    "SV-09 ลาเฟธิล (ผู้ขี่หมาป่า)",
+    "SV-10 ซิลเฟลิส (เอลฟ์ฟ้า)",
+    "SV-11 อาริเลนอร์ (ผู้ส่งสารเผ่านก)",
+    "SV-12 เดลวินธ์ (ผู้ใต้ราก)",
+    "SV-13 นิวาเลน (เมืองวิญญาณบรรพบุรุษ)",
+    "SV-14 มอร์ธิล (กิ่งเหี่ยว)",
+    "SV-15 ฟาลิลอร์ (ตลาดน้ำเลี้ยง)",
+    "SV-16 ธาลาวิน (สหพันธ์มนุษย์สัตว์)",
+    "SV-17 วานาลิส (อาณาจักรแม่น้ำ)",
+    "SV-18 ฟังกัลเดล (บึงสปอร์)"
+   ]
+  },
+  {
+   "path": "lore/npcs/10-nebulia.md",
+   "title": "NPC ของเนบูเลีย (ทวีปหมอก) — 58 ตัว",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 134,
+   "bytes": 38001,
+   "headings": [
+    "NB-01 เวลมิร์ (นครระฆังกลาง)",
+    "NB-02 ซอร์เนบ (เคานตีแวมไพร์)",
+    "NB-03 ลูเมนธาล (สหพันธ์นครโคม)",
+    "NB-04 ไอเลวัน (นครคนตาบอด)",
+    "NB-05 มอร์เนบ (กิลด์เงา)",
+    "NB-06 เลซิล (นครนักเล่นแร่ยาพิษ)",
+    "NB-07 เมอลิน (สำนักกระซิบ)",
+    "NB-08 เนวานธาล (ผู้เฝ้าประตูเมืองปฐม)",
+    "NB-09 ซอร์วาน (ตลาดมืดข้ามทวีป)",
+    "NB-10 ไอซิลโนวา (ที่ลี้ภัยตุ๊กตา)",
+    "NB-11 ลูเวลิน (ช่างทำหน้ากาก)",
+    "NB-12 เมอเนบ (ประตูเหนือ)",
+    "NB-13 เลนิธาล (แดนไร้เงา)",
+    "NB-14 เนบลิน (เมืองผู้หลงทาง)"
+   ]
+  },
+  {
+   "path": "lore/npcs/README.md",
+   "title": "NPC ของโลก",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "index",
+   "lines": 114,
+   "bytes": 13437,
+   "headings": [
+    "1. NPC คือเส้นเรื่องที่อาจเกิด",
+    "2. วงจรชีวิตของ NPC",
+    "3. เส้นเรื่องและการตัดเส้นที่ไม่มีทางเกิด",
+    "4. การโต้ตอบกับตัวละครหลัก",
+    "4.1 ชนชั้นและความมั่งคั่งของ NPC",
+    "5. NPC ส่งผลต่อโลก",
+    "6. ความเป็นไปได้",
+    "7. รูปแบบตารางและสัญลักษณ์"
+   ]
+  },
+  {
+   "path": "lore/races/01-human.md",
+   "title": "มนุษย์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 40,
+   "bytes": 5404,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/02-elf.md",
+   "title": "เอลฟ์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 36,
+   "bytes": 4162,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/03-darkelf.md",
+   "title": "ดาร์กเอลฟ์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3385,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/04-dwarf.md",
+   "title": "คนแคระ",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 37,
+   "bytes": 3754,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/05-orc.md",
+   "title": "ออร์ค",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 36,
+   "bytes": 3818,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/06-halfling.md",
+   "title": "ฮาล์ฟลิง",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3072,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/07-beast.md",
+   "title": "เผ่าสัตว์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 36,
+   "bytes": 3649,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/08-naga.md",
+   "title": "นาคา",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 2714,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/09-dragonkin.md",
+   "title": "เผ่ามังกร",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3197,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/10-vampire.md",
+   "title": "แวมไพร์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3220,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/11-fae.md",
+   "title": "ภูตพราย",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 2856,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/12-slime.md",
+   "title": "สไลม์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3288,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/13-demonkin.md",
+   "title": "เผ่าปีศาจ",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3166,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/14-merfolk.md",
+   "title": "เงือก",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 35,
+   "bytes": 3538,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/15-winged.md",
+   "title": "เผ่าปีก",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 36,
+   "bytes": 3923,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/16-giant.md",
+   "title": "ยักษ์",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 35,
+   "bytes": 3624,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/17-lavakin.md",
+   "title": "เผ่าลาวา",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3209,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/18-construct.md",
+   "title": "ลูกผสมจักรกล",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 35,
+   "bytes": 3789,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "สายเลือดย่อย",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/19-soulmachine.md",
+   "title": "หุ่นวิญญาณ",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 2970,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/20-mummy.md",
+   "title": "มัมมี่",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 3005,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/21-ghoul.md",
+   "title": "กูล",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "fact",
+   "lines": 26,
+   "bytes": 2829,
+   "headings": [
+    "ประวัติ",
+    "ที่อยู่",
+    "ความสัมพันธ์",
+    "เรื่องราวที่ผูกกับเรื่องหลัก"
+   ]
+  },
+  {
+   "path": "lore/races/README.md",
+   "title": "เผ่าพันธุ์ทั้ง 21 เผ่า",
+   "layer": "lore",
+   "group": "lore/races",
+   "kind": "index",
+   "lines": 53,
+   "bytes": 6134,
+   "headings": [
+    "สายเลือดย่อยที่ไม่นับเป็นเผ่าแยก",
+    "ที่มาของเผ่า ตามธาตุของมหาล่มสลาย",
+    "การจับคู่ชื่อเผ่าในไฟล์ประเทศ กับรายชื่อ 21 เผ่า"
+   ]
+  },
+  {
+   "path": "lore/religions/01-faith-flow.md",
+   "title": "กระแสความเชื่อ",
+   "layer": "lore",
+   "group": "lore/religions",
+   "kind": "fact",
+   "lines": 68,
+   "bytes": 6929,
+   "headings": [
+    "หลักการ",
+    "ห้าช่องทาง",
+    "ตัวแปรต่อประเทศ",
+    "สัดส่วนผู้ศรัทธา ณ ศ.ม. 10,400",
+    "กฎการเปลี่ยนแปลงของศรัทธา",
+    "พรและคำสาปจากศรัทธา",
+    "ผลของศาสนาต่อเหตุการณ์"
+   ]
+  },
+  {
+   "path": "lore/religions/02-major-faiths.md",
+   "title": "ศาสนาหลัก",
+   "layer": "lore",
+   "group": "lore/religions",
+   "kind": "fact",
+   "lines": 119,
+   "bytes": 16627,
+   "headings": [
+    "1. ลัทธิบูชามังกร",
+    "2. ศาสนจักรแห่งแสง",
+    "3. ศรัทธาต้นไม้โลก",
+    "4. เทพแห่งสมุทร",
+    "5. พญานาคราช",
+    "6. เทพีแห่งจันทรา",
+    "7. เทพแห่งสงคราม",
+    "8. ลัทธิปีศาจ",
+    "9. การบูชาบรรพบุรุษ",
+    "10. ผู้ไร้ศาสนาและเหตุผลนิยม"
+   ]
+  },
+  {
+   "path": "lore/religions/03-regional-faiths.md",
+   "title": "ศาสนาตามดินแดน",
+   "layer": "lore",
+   "group": "lore/religions",
+   "kind": "fact",
+   "lines": 112,
+   "bytes": 16672,
+   "headings": [
+    "11. ศรัทธาเตาหลอม",
+    "12. ลัทธิเฟืองหมุน",
+    "13. ศรัทธาศิลา",
+    "14. ศรัทธาเสียงกระซิบ",
+    "15. ศรัทธาฟาโรห์ (บัญชีวิญญาณ)",
+    "16. ลัทธิผู้ชี้ทาง",
+    "17. ศรัทธาความฝัน",
+    "18. ศรัทธาวิญญาณสัตว์",
+    "19. ลางนิยม"
+   ]
+  },
+  {
+   "path": "lore/religions/04-movements.md",
+   "title": "ขบวนการทางศาสนา",
+   "layer": "lore",
+   "group": "lore/religions",
+   "kind": "fact",
+   "lines": 52,
+   "bytes": 7941,
+   "headings": [
+    "20. ลัทธิคำพิพากษา",
+    "21. ผู้ไม่ก้มหัว",
+    "22. ผู้ปลดผนึก",
+    "23. ผู้ล่าเทพ"
+   ]
+  },
+  {
+   "path": "lore/religions/README.md",
+   "title": "ศาสนาและความเชื่อ",
+   "layer": "lore",
+   "group": "lore/religions",
+   "kind": "index",
+   "lines": 88,
+   "bytes": 9973,
+   "headings": [
+    "รายการศาสนาทั้ง 23",
+    "ศาสนาหลักของแต่ละทวีป",
+    "เส้นแบ่งความขัดแย้งทางศาสนา",
+    "การจับคู่ชื่อศาสนาท้องถิ่นในไฟล์ประเทศ กับรายการ 23 ศาสนา"
+   ]
+  },
+  {
+   "path": "lore/storylines/00-convergence.md",
+   "title": "จุดบรรจบของเส้นเรื่อง",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 244,
+   "bytes": 35043,
+   "headings": [
+    "1. ภาพรวม",
+    "2. รายละเอียด",
+    "3. เมื่อจุดบรรจบยังไม่เปิด",
+    "4. การตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/01-human.md",
+   "title": "เส้นเรื่อง: มนุษย์ (hu)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 94,
+   "bytes": 16929,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. พิธีของถิ่น (hu.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/02-elf.md",
+   "title": "เส้นเรื่อง: เอลฟ์ (el)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 85,
+   "bytes": 14227,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. พิธีผูกราก (el.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/03-darkelf.md",
+   "title": "เส้นเรื่อง: ดาร์กเอลฟ์ (de)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 11426,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. พิธีเผชิญเงา (de.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/04-dwarf.md",
+   "title": "เส้นเรื่อง: คนแคระ (dw)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 83,
+   "bytes": 11860,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. วันทั่งแรก (dw.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/05-orc.md",
+   "title": "เส้นเรื่อง: ออร์ค (or)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 90,
+   "bytes": 13009,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. พิธีกระดูกแรก (or.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/06-halfling.md",
+   "title": "เส้นเรื่อง: ฮาล์ฟลิง (ha)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 80,
+   "bytes": 11170,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. วันให้ของขวัญ (ha.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/07-beast.md",
+   "title": "เส้นเรื่อง: เผ่าสัตว์ (be)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 92,
+   "bytes": 13722,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การล่าครั้งแรก (be.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/08-naga.md",
+   "title": "เส้นเรื่อง: นาคา (na)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 79,
+   "bytes": 11948,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การทดสอบนาคา (na.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/09-dragonkin.md",
+   "title": "เส้นเรื่อง: เผ่ามังกร (dk)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 11598,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. เปลวแรก (dk.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/10-vampire.md",
+   "title": "เส้นเรื่อง: แวมไพร์ (va)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 80,
+   "bytes": 11626,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. คืนแรกแห่งเลือด (va.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/11-fae.md",
+   "title": "เส้นเรื่อง: ภูตพราย (fa)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 11438,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. ชื่อจริง (fa.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/12-slime.md",
+   "title": "เส้นเรื่อง: สไลม์ (sl)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 88,
+   "bytes": 13595,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การกลืนครั้งแรก (sl.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/13-demonkin.md",
+   "title": "เส้นเรื่อง: เผ่าปีศาจ (dm)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 10843,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การลงนามครั้งแรก (dm.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/14-merfolk.md",
+   "title": "เส้นเรื่อง: เงือก (me)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 79,
+   "bytes": 10812,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. พิธีของสาย (me.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/15-winged.md",
+   "title": "เส้นเรื่อง: เผ่าปีก (wi)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 92,
+   "bytes": 13381,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การบินครั้งแรก (wi.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/16-giant.md",
+   "title": "เส้นเรื่อง: ยักษ์ (gi)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 85,
+   "bytes": 11348,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การสลักชื่อ (gi.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/17-lavakin.md",
+   "title": "เส้นเรื่อง: เผ่าลาวา (la)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 88,
+   "bytes": 13258,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. การจุ่มลาวา (la.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/18-construct.md",
+   "title": "เส้นเรื่อง: ลูกผสมจักรกล (co)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 80,
+   "bytes": 11385,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด",
+    "3. ชิ้นแรกหรือชื่อแรก (co.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/19-soulmachine.md",
+   "title": "เส้นเรื่อง: หุ่นวิญญาณ (so)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 11258,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด (การตื่น)",
+    "3. คำถามแรก (so.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/20-mummy.md",
+   "title": "เส้นเรื่อง: มัมมี่ (mu)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 80,
+   "bytes": 11826,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด (การตื่น)",
+    "3. การชั่งหัวใจ (mu.t1)",
+    "4. โหนด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/21-ghoul.md",
+   "title": "เส้นเรื่อง: กูล (gh)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 90,
+   "bytes": 12934,
+   "headings": [
+    "1. ธีม",
+    "2. จุดกำเนิด (การลุก)",
+    "3. มื้อแรก (gh.t1)",
+    "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
+    "5. จุดบรรจบ",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/22-halfblood.md",
+   "title": "เส้นเรื่อง: ลูกครึ่ง (hb และชุดเสริมเฉพาะคู่)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 361,
+   "bytes": 77532,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. คู่ทั้งหมดและชุดเสริมที่ใช้",
+    "4. โหนดกลาง (hb)",
+    "5. ชุดเสริมเฉพาะคู่",
+    "6. ปลายทาง",
+    "7. หน้าต่างพระเจ้า",
+    "8. ความเป็นไปได้",
+    "9. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/23-heir.md",
+   "title": "เส้นเรื่อง: ทายาท (hr)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 72,
+   "bytes": 13143,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. โหนด",
+    "4. ปลายทาง",
+    "5. หน้าต่างพระเจ้า",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/24-economy.md",
+   "title": "เส้นเรื่อง: เศรษฐกิจและชนชั้น (ec pv tr iv nl wk)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 133,
+   "bytes": 36955,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. โหนด",
+    "4. ปลายทาง",
+    "5. หน้าต่างพระเจ้า",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/README.md",
+   "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "index",
+   "lines": 139,
+   "bytes": 21077,
+   "headings": [
+    "1. ชิ้นส่วนของเส้นเรื่อง",
+    "2. ช่วงชีวิต",
+    "3. รหัสในไฟล์เผ่า",
+    "4. แม่แบบไฟล์ของแต่ละเผ่า",
+    "5. ความเป็นไปได้ทั้งหมด",
+    "6. หลักความสอดคล้อง",
+    "7. ไฟล์",
+    "8. ศึกในเส้นเรื่อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/llm-ideas.md",
+   "title": "การใช้ LLM เป็นระบบเสริม",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 62,
+   "bytes": 9373,
+   "headings": [
+    "1. สิ่งที่มีในโค้ดแล้ว",
+    "2. หลักการที่ใช้ต่อ",
+    "3. ไอเดียบทบาทใหม่",
+    "4. คำใบ้ของพระเจ้า (MVP)",
+    "5. ใช้ LLM ตอนพัฒนา (ไม่ใช่ในเกม)",
+    "6. ความเสี่ยง"
+   ]
+  },
+  {
+   "path": "lore/world/README.md",
+   "title": "โลกและประวัติ",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "index",
+   "lines": 22,
+   "bytes": 1740,
+   "headings": []
+  },
+  {
+   "path": "lore/world/continents.md",
+   "title": "ข้อมูลทวีป",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "fact",
+   "lines": 398,
+   "bytes": 47182,
+   "headings": [
+    "1. ภาพรวมเก้าทวีป",
+    "2. อัซการ์ — ทวีปมังกร (หมู่เกาะลอยฟ้า)",
+    "3. มอร์เฮเวน — ทวีปปีศาจ",
+    "4. คาซ-ดูรัม — ทวีปแห่งไฟ",
+    "5. เนเรีย — ทวีปแห่งสายน้ำ",
+    "6. อัลเดรีย — ทุ่งราบ",
+    "7. เมคาเรีย — ทวีปจักรกล",
+    "8. ซาฮารัน — ทวีปภูเขาและทะเลทราย",
+    "9. ซิลวาเนล — ทวีปพงไพร",
+    "10. เนบูเลีย — ทวีปหมอก",
+    "11. กฎของอาวุธตำนาน",
+    "12. เส้นทางเชื่อมระหว่างทวีป",
+    "13. การค้า",
+    "14. ความขัดแย้งสำคัญระหว่างทวีป"
+   ]
+  },
+  {
+   "path": "lore/world/story-continents.md",
+   "title": "เรื่องราวของโลก — ภาคทวีป",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "fact",
+   "lines": 423,
+   "bytes": 63243,
+   "headings": [
+    "1. ตำนานที่ผู้คนเล่า",
+    "2. ความจริง",
+    "3. มังกร 15 ตัว",
+    "4. ทวีปทั้งเก้า",
+    "5. ความสัมพันธ์ระหว่างทวีป",
+    "6. พระเจ้าในเรื่องนี้",
+    "7. คำศัพท์ในโลก"
+   ]
+  },
+  {
+   "path": "lore/world/world-map.md",
+   "title": "แผนที่โลก",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "fact",
+   "lines": 208,
+   "bytes": 41482,
+   "headings": [
+    "1. ผังทวีป",
+    "2. วิธีวาด (`src/render/terrain/`)",
+    "3. ระดับซูม (กล้องเดียว ซูมต่อเนื่อง ไม่มีภาพตัด)",
+    "4. หน้าตาเมืองของแต่ละประเทศ (`src/city/themes.ts`)",
+    "5. รูปร่างและตำแหน่งของประเทศ"
+   ]
+  },
+  {
+   "path": "lore/world/world-politics.md",
+   "title": "การเมืองข้ามทวีป",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "fact",
+   "lines": 156,
+   "bytes": 13673,
+   "headings": [
+    "1. ที่ตั้งของสิ่งสำคัญในเรื่องหลัก",
+    "2. พันธมิตรและแกนความขัดแย้งข้ามทวีป",
+    "3. ห่วงโซ่เหตุและผลระหว่างประเทศ",
+    "4. ชั้นของประเทศ ตามอำนาจ"
+   ]
+  },
+  {
+   "path": "lore/world/world-time.md",
+   "title": "เวลาของโลก",
+   "layer": "lore",
+   "group": "lore/world",
+   "kind": "fact",
+   "lines": 165,
+   "bytes": 25801,
+   "headings": [
+    "1. สองนาฬิกา",
+    "2. จุดยึดบนเส้นเวลา",
+    "3. อายุขัยของเผ่า",
+    "4. ความเร็วของเส้นเวลาหลัก",
+    "5. ผลการตรวจอายุขัยกับเนื้อเรื่อง",
+    "6. ข้อยกเว้นอายุ",
+    "7. ทายาทและต่างเผ่า",
+    "8. ที่ยังไม่ตัดสิน"
+   ]
+  },
+  {
+   "path": "systems/README.md",
+   "title": "ชั้นระบบ (systems): กติกาและข้อมูลที่เกมคำนวณ",
+   "layer": "systems",
+   "group": "systems",
+   "kind": "index",
+   "lines": 30,
+   "bytes": 4019,
+   "headings": [
+    "โฟลเดอร์",
+    "สิ่งที่ไม่อยู่ในชั้นนี้",
+    "กติกาของชั้นนี้"
+   ]
+  },
+  {
+   "path": "systems/character/01-origin.md",
+   "title": "กำเนิดตัวละครหลัก",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 255,
+   "bytes": 43721,
+   "headings": [
+    "1. ลำดับการสุ่มเกิด",
+    "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
+    "3. ถิ่นเกิดของแต่ละเผ่า",
+    "4. ลูกครึ่ง",
+    "5. เกิดนอกถิ่น และเรื่องที่ทิ้งไว้",
+    "6. พรถิ่นเกิดตามทวีป",
+    "7. เพศ และข้อจำกัดของสถาบัน",
+    "8. ดวงวันเกิด × เผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/02-race-affinity.md",
+   "title": "ความเข้ากับเผ่า",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 87,
+   "bytes": 16009,
+   "headings": [
+    "กติกา",
+    "ก. นิสัยและความถนัด",
+    "ข. พรและคำสาปที่เข้ากับเผ่า",
+    "ค. ผลที่ต่างกันของเผ่า ต่อพรและคำสาปชนิดเดียวกัน"
+   ]
+  },
+  {
+   "path": "systems/character/03-synergy-rules.md",
+   "title": "กติกาเสริม ขัด และตรงข้าม",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 125,
+   "bytes": 19078,
+   "headings": [
+    "แท็กเผ่า",
+    "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "ข. ของที่ขัดกับร่างของตัวเอง",
+    "ค. พรชนกับคำสาป",
+    "ง. นิสัยกับเผ่าและของ",
+    "จ. ความถนัดกับเผ่า",
+    "ฉ. ถิ่นเกิดกับเหตุการณ์"
+   ]
+  },
+  {
+   "path": "systems/character/04-skill-effects.md",
+   "title": "ผลการเล่นของ skill",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 86,
+   "bytes": 18285,
+   "headings": [
+    "ความถนัดการต่อสู้",
+    "ความถนัดเวท",
+    "ความถนัดงานช่างและชีวิต",
+    "skill เฉพาะตัว (15 รายการ)"
+   ]
+  },
+  {
+   "path": "systems/character/05-new-blessings.md",
+   "title": "พรใหม่ที่ผูกกับโลก",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 142,
+   "bytes": 18508,
+   "headings": [
+    "ก. พรถิ่นเกิด",
+    "ข. พรสายเลือดและกำเนิดพิเศษ",
+    "ค. พรจากการรอดจากเหตุการณ์",
+    "ง. ตรามังกร",
+    "จ. พรศาสนา",
+    "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+    "แท็กใหม่"
+   ]
+  },
+  {
+   "path": "systems/character/06-new-curses.md",
+   "title": "คำสาปใหม่ที่ผูกกับโลก",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 72,
+   "bytes": 10915,
+   "headings": [
+    "ก. คำสาปถิ่นเกิด",
+    "ข. คำสาปจากการรอดเหตุการณ์",
+    "ค. คำสาปจากตรามังกรและศาสนา",
+    "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+    "แท็กใหม่"
+   ]
+  },
+  {
+   "path": "systems/character/07-new-skills.md",
+   "title": "skill ใหม่ที่ผูกกับโลก",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 116,
+   "bytes": 26240,
+   "headings": [
+    "ก. การเดินทางและนำทาง",
+    "ข. งานช่างและประดิษฐ์",
+    "ค. สังคมและการเมือง",
+    "ง. เวท ความตาย และผู้ตาย",
+    "จ. การรบและเอาตัวรอด",
+    "ฉ. ลูกครึ่งและสองบ้าน",
+    "ช. การค้าและเส้นทาง"
+   ]
+  },
+  {
+   "path": "systems/character/08-jobs-overview.md",
+   "title": "อาชีพ: ภาพรวมและกติกา",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 134,
+   "bytes": 16177,
+   "headings": [
+    "จำนวน",
+    "1. การเสนออาชีพทั่วไป",
+    "2. ประเภทของอาชีพ",
+    "3. การทำงานและการเติบโต",
+    "4. ชีวิตช้า (slow life)",
+    "5. โบนัสเผ่าต่ออาชีพ (แทนที่ `raceJobBonus` ในโค้ด)",
+    "6. เงื่อนไขจากสถาบัน เพศ และเผ่า",
+    "7. อาชีพตายหรือเปลี่ยนเมื่อที่ยึดหาย"
+   ]
+  },
+  {
+   "path": "systems/character/09-jobs-common.md",
+   "title": "อาชีพทั่วไป 115 อย่าง",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 183,
+   "bytes": 30975,
+   "headings": [
+    "ก. อาชีพเดิมในโค้ด 39 อย่าง",
+    "ข. อาชีพใหม่ 61 อย่าง",
+    "ค. อาชีพที่ย้ายมาจากอาชีพลับ 7 อย่าง",
+    "ง. อาชีพการค้า 8 อย่าง"
+   ]
+  },
+  {
+   "path": "systems/character/10-jobs-secret.md",
+   "title": "อาชีพลับ 26 อย่าง",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 105,
+   "bytes": 18305,
+   "headings": [
+    "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "ข. อาชีพลับใหม่ 8 อย่าง",
+    "ค. อาชีพลับของลูกครึ่ง 3 อย่าง",
+    "ง. ความยากและโอกาสได้อาชีพลับ"
+   ]
+  },
+  {
+   "path": "systems/character/11-jobs-special.md",
+   "title": "อาชีพพิเศษ 16 อย่าง",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 25,
+   "bytes": 7379,
+   "headings": []
+  },
+  {
+   "path": "systems/character/12-job-support.md",
+   "title": "ของที่เพิ่มเพื่อรองรับอาชีพ",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 104,
+   "bytes": 17198,
+   "headings": [
+    "ก. ความถนัดใหม่ 20 หมวด",
+    "ข. นิสัยใหม่ 8 อย่าง",
+    "ค. พรใหม่ 16 อย่าง",
+    "ง. คำสาปใหม่ 10 อย่าง",
+    "จ. ข้อจำกัดเชิงร่างกายและความสมเหตุสมผลของอาชีพ"
+   ]
+  },
+  {
+   "path": "systems/character/13-companions-overview.md",
+   "title": "ระบบสัตว์คู่หู: ภาพรวมและกติกา",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 181,
+   "bytes": 25788,
+   "headings": [
+    "1. ตัวสัตว์คู่หูมีอะไรบ้าง",
+    "2. โอกาสได้สัตว์คู่หู",
+    "3. วิธีได้สัตว์คู่หู",
+    "4. ความผูกพัน",
+    "5. ชีวิตของสัตว์",
+    "6. บุคลิกของสัตว์ (สุ่ม 1 อย่าง)",
+    "7. ค่าใช้จ่ายและข้อจำกัดในการอยู่ร่วม",
+    "8. กติกาปฏิสัมพันธ์ระหว่างเผ่า อาชีพ และสัตว์",
+    "9. สัตว์คู่หูกับโลก"
+   ]
+  },
+  {
+   "path": "systems/character/14-companion-abilities.md",
+   "title": "ความสามารถของสัตว์คู่หู",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 113,
+   "bytes": 17700,
+   "headings": [
+    "ก. รักษาและปกป้อง",
+    "ข. สถานะและโชค",
+    "ค. ช่วยต่อสู้",
+    "ง. ค้าขายและเศรษฐกิจ",
+    "จ. งานและฟาร์ม",
+    "ฉ. รับรู้และนำทาง",
+    "ช. พาหนะและเคลื่อนที่",
+    "ซ. สังคมและการสื่อสาร",
+    "ฌ. ศรัทธาและเวท"
+   ]
+  },
+  {
+   "path": "systems/character/15-companion-species.md",
+   "title": "ชนิดของสัตว์คู่หู 102 ชนิด",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 141,
+   "bytes": 20956,
+   "headings": [
+    "ระดับ C ธรรมดา (30)",
+    "ระดับ U ไม่ธรรมดา (29)",
+    "ระดับ R หายาก (22)",
+    "ระดับ E มหากาพย์ (14)",
+    "ระดับ L ตำนาน (7)"
+   ]
+  },
+  {
+   "path": "systems/character/16-companion-stories.md",
+   "title": "เรื่องราวการได้สัตว์คู่หู 31 เรื่อง",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 57,
+   "bytes": 15142,
+   "headings": [
+    "ก. เรื่องสำหรับทุกคน",
+    "ข. เรื่องสำหรับอาชีพกลุ่ม A (เกี่ยวข้อง)",
+    "ค. เรื่องสำหรับอาชีพกลุ่ม S (เฉพาะทาง)",
+    "ง. เรื่องผูกกับโลก"
+   ]
+  },
+  {
+   "path": "systems/character/17-companion-support.md",
+   "title": "ของเสริมสำหรับสัตว์คู่หู",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 59,
+   "bytes": 9937,
+   "headings": [
+    "ก. skill ใหม่ 12 อย่าง",
+    "ข. พรใหม่ 8 อย่าง",
+    "ค. คำสาปใหม่ 6 อย่าง",
+    "ง. นิสัยที่เกี่ยวข้อง (ใช้ของเดิม)",
+    "จ. ชนิดสัตว์ที่ได้จากคำสาป"
+   ]
+  },
+  {
+   "path": "systems/character/README.md",
+   "title": "ตัวละครหลัก: นิสัย ความถนัด skill พร คำสาป",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "index",
+   "lines": 66,
+   "bytes": 9128,
+   "headings": [
+    "ไฟล์",
+    "จำนวนรวม",
+    "ค่าพื้นฐาน",
+    "หลักการเลือกของให้ตัวละคร",
+    "ความต่างระหว่างเอกสารกับโค้ดที่ต้องปรับเมื่อทำจริง"
+   ]
+  },
+  {
+   "path": "systems/character/races/01-human.md",
+   "title": "มนุษย์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 42,
+   "bytes": 4254,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/02-elf.md",
+   "title": "เอลฟ์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3683,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/03-darkelf.md",
+   "title": "ดาร์กเอลฟ์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3256,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/04-dwarf.md",
+   "title": "คนแคระ: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3170,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/05-orc.md",
+   "title": "ออร์ค: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3231,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/06-halfling.md",
+   "title": "ฮาล์ฟลิง: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3154,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/07-beast.md",
+   "title": "เผ่าสัตว์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3149,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/08-naga.md",
+   "title": "นาคา: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3270,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/09-dragonkin.md",
+   "title": "เผ่ามังกร: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3173,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/10-vampire.md",
+   "title": "แวมไพร์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3612,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/11-fae.md",
+   "title": "ภูตพราย: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 2904,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/12-slime.md",
+   "title": "สไลม์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 42,
+   "bytes": 3474,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/13-demonkin.md",
+   "title": "เผ่าปีศาจ: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3140,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/14-merfolk.md",
+   "title": "เงือก: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3093,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/15-winged.md",
+   "title": "เผ่าปีก: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3058,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/16-giant.md",
+   "title": "ยักษ์: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3086,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/17-lavakin.md",
+   "title": "เผ่าลาวา: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3102,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/18-construct.md",
+   "title": "ลูกผสมจักรกล: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 40,
+   "bytes": 3217,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/19-soulmachine.md",
+   "title": "หุ่นวิญญาณ: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 42,
+   "bytes": 3603,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/20-mummy.md",
+   "title": "มัมมี่: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 42,
+   "bytes": 3594,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/21-ghoul.md",
+   "title": "กูล: ค่าสถานะและความสามารถ",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "data",
+   "lines": 42,
+   "bytes": 3537,
+   "headings": [
+    "ช่วงค่าสถานะเริ่มต้น",
+    "ความสามารถประจำเผ่า",
+    "พรเฉพาะเผ่า",
+    "คำสาปเฉพาะเผ่า",
+    "สกิลเฉพาะเผ่า"
+   ]
+  },
+  {
+   "path": "systems/character/races/README.md",
+   "title": "เผ่าทั้ง 21: ค่าสถานะเริ่มต้นและกติกาการสุ่ม",
+   "layer": "systems",
+   "group": "systems/character/races",
+   "kind": "index",
+   "lines": 43,
+   "bytes": 6618,
+   "headings": [
+    "กติกาการสุ่มค่าสถานะเริ่มต้น",
+    "ช่วงค่าสถานะเริ่มต้นของทุกเผ่า"
+   ]
+  },
+  {
+   "path": "systems/combat/01-core.md",
+   "title": "ระบบต่อสู้: แกนการคำนวณ",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 142,
+   "bytes": 18382,
+   "headings": [
+    "1. ของเดิมในโค้ดที่เป็นฐาน",
+    "2. ลำดับการต่อสู้",
+    "3. ท่าทีของตัวละคร",
+    "4. โบนัสและ DC",
+    "5. ความเสียหายและบาดแผล",
+    "6. ตัวละครเลือกท่าทีอย่างไร",
+    "7. ผลของการต่อสู้",
+    "8. พระเจ้าแทรกแซงการต่อสู้"
+   ]
+  },
+  {
+   "path": "systems/combat/02-type-matrix.md",
+   "title": "ธาตุ ชนิดศัตรู และการแพ้ทาง",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 132,
+   "bytes": 13443,
+   "headings": [
+    "1. แท็กการโจมตีของตัวละครมาจากไหน",
+    "2. ตารางกายภาพ",
+    "3. ตารางธาตุ",
+    "4. ตารางศักดิ์สิทธิ์ ความมืด และพิเศษ",
+    "5. ลักษณะเสริมของศัตรู",
+    "6. เผ่าที่เล่นได้เมื่อเป็นศัตรู (NPC)",
+    "7. กติกาความสมเหตุสมผล"
+   ]
+  },
+  {
+   "path": "systems/combat/03-enemies.md",
+   "title": "ศัตรู",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 157,
+   "bytes": 24002,
+   "headings": [
+    "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
+    "ข. มอนสเตอร์ใหม่ผูกกับโลก 40 ตัว",
+    "ค. NPC แบบทั่วไป 20 แบบ",
+    "ง. NPC ที่มีชื่อ 20 คน",
+    "จ. บอสระดับโลก 6 ตัว"
+   ]
+  },
+  {
+   "path": "systems/combat/04-encounters.md",
+   "title": "เหตุการณ์ที่นำไปสู่การต่อสู้",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 117,
+   "bytes": 12997,
+   "headings": [
+    "1. ความถี่",
+    "2. แบบของเหตุการณ์ต่อสู้",
+    "3. ธงโลกเปลี่ยนศัตรู",
+    "4. อาชีพเปลี่ยนการต่อสู้",
+    "5. บุกหมู่บ้าน",
+    "6. ปะทะกับ NPC",
+    "7. ศึกใหญ่ (สงครามแบบมวลชน)"
+   ]
+  },
+  {
+   "path": "systems/combat/05-rewards.md",
+   "title": "ของรางวัลและผลหลังการต่อสู้",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 100,
+   "bytes": 10611,
+   "headings": [
+    "1. หลักการ",
+    "2. ตารางสุ่มรางวัลพิเศษตามระดับศัตรู",
+    "3. วัสดุ",
+    "4. อาวุธที่สุ่มได้",
+    "5. พรและคำสาปที่สุ่มได้ตามชนิดศัตรู",
+    "6. รางวัลเมื่อชนะโดยไม่ฆ่า",
+    "7. ฉายาและสถิติ"
+   ]
+  },
+  {
+   "path": "systems/combat/06-dragon-encounters.md",
+   "title": "การปะทะกับมังกร",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 78,
+   "bytes": 11846,
+   "headings": [
+    "1. มังกรป่า",
+    "2. มังกรสิบห้า: แบบของการพบ",
+    "3. การต่อสู้จริงกับมังกรสิบห้า",
+    "4. การทดสอบของมังกรแต่ละตัว"
+   ]
+  },
+  {
+   "path": "systems/combat/README.md",
+   "title": "ระบบต่อสู้",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "index",
+   "lines": 41,
+   "bytes": 6353,
+   "headings": [
+    "ความต่างจากโค้ดปัจจุบัน",
+    "ลำดับการทำในโค้ด (เสนอ)"
+   ]
+  },
+  {
+   "path": "systems/economy/01-world-economy.md",
+   "title": "เศรษฐกิจโลก",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 210,
+   "bytes": 29722,
+   "headings": [
+    "1. เงินและความเชื่อมั่น",
+    "2. สินค้า 9 หมวด",
+    "3. ราคา",
+    "4. เส้นทางและต้นทุนขนส่ง",
+    "5. สัญญาณเศรษฐกิจของโลกต่อยุค",
+    "6. เหตุการณ์ของโลกกับเศรษฐกิจ",
+    "7. ทองเข้าและทองออก",
+    "8. ตลาดมืดและเศรษฐกิจเงา",
+    "9. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/02-countries.md",
+   "title": "ความมั่งคั่งของ 143 ประเทศ",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 237,
+   "bytes": 43541,
+   "headings": [
+    "1. ตัวชี้วัด",
+    "2. วิธีได้ค่า W",
+    "3. ผลของระดับ W",
+    "4. ตาราง 143 ประเทศ",
+    "5. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/03-classes.md",
+   "title": "ชนชั้น",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 176,
+   "bytes": 21621,
+   "headings": [
+    "1. ห้าชั้น",
+    "2. ชนชั้นที่เกิดตาม W และ G",
+    "3. ของที่ได้ตอนเกิด",
+    "4. ชนชั้นกับอาชีพ",
+    "5. ขึ้นและตกชั้น",
+    "6. ระบอบการปกครองกับชนชั้น",
+    "7. เผ่าและชนชั้น",
+    "8. NPC",
+    "9. เรื่องราวของชนชั้น",
+    "10. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/04-income-and-living.md",
+   "title": "รายได้ ค่าครองชีพ และราคาของ",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 172,
+   "bytes": 21971,
+   "headings": [
+    "1. รายได้ของอาชีพ",
+    "2. ขุนนางและผู้ถือที่ดิน",
+    "3. ค่าครองชีพ",
+    "4. ภาษีและค่าธรรมเนียม",
+    "5. ความจน",
+    "6. ธนาคารและหนี้",
+    "7. ราคาของ",
+    "8. ทองที่คาดว่าตัวละครสะสมได้",
+    "9. NPC",
+    "10. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/05-trade.md",
+   "title": "การค้า การส่งของ และการคุ้มกัน",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 202,
+   "bytes": 21991,
+   "headings": [
+    "1. ห้าทางหาทอง",
+    "2. การต่อรอง",
+    "3. ค้าขายเอง",
+    "4. รับจ้างส่งของ",
+    "5. คุ้มกัน",
+    "6. ล่าวัสดุไปขาย",
+    "7. ลักลอบ",
+    "8. อาชีพการค้าใหม่",
+    "9. NPC ผู้ค้า",
+    "10. หน้าต่างพระเจ้า",
+    "11. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/06-investment.md",
+   "title": "การลงทุน",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 95,
+   "bytes": 14944,
+   "headings": [
+    "1. เก้าช่องทาง",
+    "2. ผลตอบแทนต่อปี",
+    "3. การตัดสินใจของตัวละคร",
+    "4. ล้มละลายและหนี้",
+    "5. กันเงินล้น",
+    "6. ทายาท",
+    "7. เรื่องราวของการลงทุน",
+    "8. ตัวอย่างพอร์ตสามชีวิต",
+    "9. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/07-economic-history.md",
+   "title": "ประวัติศาสตร์และอำนาจของเศรษฐกิจโลก",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 100,
+   "bytes": 21467,
+   "headings": [
+    "1. เงินเกิดจากคำสัตย์",
+    "2. แปดอำนาจ",
+    "3. สี่เส้นเลือดที่โลกขาดไม่ได้",
+    "4. ทวีปต่อทวีป",
+    "5. ห้าแรงตึงเครียด",
+    "6. ใครได้ใครเสียเมื่อโลกเปลี่ยน",
+    "7. ข่าวลือเศรษฐกิจ (ตัวอย่างสำหรับบทบาท LLM `rumor` `legend`)",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/economy/08-implementation.md",
+   "title": "การนำเศรษฐกิจลงเกม",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 141,
+   "bytes": 20911,
+   "headings": [
+    "1. โค้ดมีอะไรอยู่แล้ว",
+    "2. สิ่งที่ต้องเพิ่ม",
+    "3. ลูปประจำปี",
+    "4. จุดที่ต้องแก้ในโค้ด",
+    "5. ลำดับทำ",
+    "6. การทดสอบ",
+    "7. ความเสี่ยงและวิธีลด",
+    "8. อ้างอิงจากเกมอื่น",
+    "9. ตัดสินใจต่อ"
+   ]
+  },
+  {
+   "path": "systems/economy/09-audit.md",
+   "title": "รายงานตรวจความสอดคล้องของเศรษฐกิจกับระบบและเรื่องราวเดิม",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 68,
+   "bytes": 12352,
+   "headings": [
+    "1. ผลสรุป",
+    "2. ตรวจแล้วสอดคล้อง",
+    "3. พบความขัดแย้งและแก้แล้ว",
+    "4. ที่ยังต้องทำต่อ",
+    "5. ตัวเลขที่เปลี่ยนในเอกสารอื่น",
+    "6. ความเห็นต่อการนำลงเกม"
+   ]
+  },
+  {
+   "path": "systems/economy/README.md",
+   "title": "เศรษฐกิจของโลก",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "index",
+   "lines": 43,
+   "bytes": 6937,
+   "headings": [
+    "หลักสำคัญ",
+    "ตัวเลขสรุป"
+   ]
+  },
+  {
+   "path": "systems/events/README.md",
+   "title": "เหตุการณ์โลกและเส้นทางแตกแขนง",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "index",
+   "lines": 14,
+   "bytes": 1702,
+   "headings": []
+  },
+  {
+   "path": "systems/events/branches/01-dragon-falls.md",
+   "title": "ผลถาวรเมื่อมังกรแต่ละตัวล้ม",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 158,
+   "bytes": 16363,
+   "headings": [
+    "1. โอรัน-ซัล → สกายฟอลล์",
+    "2. เพลิงนิรันดร์ → ทวีปเถ้า",
+    "3. สมุทรอาลัย → ทุ่งจม",
+    "4. พายุไร้ทิศ → ยุคลมสุ่ม",
+    "5. ศิลาสะท้าน → ทุ่งแยก",
+    "6. ราหู → วัน-คืนปั่นป่วน",
+    "7. อีริดาน → แกนฟ้าเปิด",
+    "8. ฮรอด-กาธ → แกนสงครามเปิด",
+    "9. คัลดรา → แกนไฟเปิด",
+    "10. ธาลาสซา → แกนน้ำเปิด",
+    "11. อันดาร์ → แกนผู้คนเปิด",
+    "12. เซเรเน → แกนจักรกลเปิด",
+    "13. กรอม-ธาร → แกนหินเปิด",
+    "14. ซิลเวรา → ป่าเหี่ยว / แกนป่าเปิด",
+    "15. นิเวรี → หมอกกลืนโลก"
+   ]
+  },
+  {
+   "path": "systems/events/branches/02-new-lands.md",
+   "title": "ทวีปใหม่และเหตุการณ์สืบทอด",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 151,
+   "bytes": 24783,
+   "headings": [
+    "1. สกายฟอลล์ (ซากฟ้า) — หลัง DR-01",
+    "2. ทวีปเถ้า — หลัง DR-04",
+    "3. ทุ่งจม — หลัง DR-05",
+    "4. ทุ่งแยก — หลัง DR-07",
+    "5. ป่าเหี่ยว — หลัง BIO-02",
+    "6. ดินแดนสนิม — หลัง MC-04",
+    "7. ทวีปแสง — หลัง BIO-05",
+    "8. ดินแดนหมอกกลืน — หลัง FG-11"
+   ]
+  },
+  {
+   "path": "systems/events/branches/03-character-and-quests.md",
+   "title": "ผลต่อตัวละครหลัก ชะตา และภารกิจ",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 137,
+   "bytes": 19273,
+   "headings": [
+    "1. สถานะของตัวละครต่อเหตุการณ์",
+    "2. ที่เกิดเปลี่ยนไป",
+    "3. อาชีพและเผ่า",
+    "4. ชะตาที่เปลี่ยนรูป",
+    "5. รอยแห่งการไว้อาลัย",
+    "6. ภารกิจของพระเจ้าที่เปลี่ยนไป",
+    "7. เส้นเรื่องหลักที่แตกแขนง"
+   ]
+  },
+  {
+   "path": "systems/events/branches/README.md",
+   "title": "เส้นทางที่แตกแขนง",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "index",
+   "lines": 68,
+   "bytes": 6306,
+   "headings": [
+    "หลักการ",
+    "ผลต่อเรื่องและตัวละครหลัก"
+   ]
+  },
+  {
+   "path": "systems/events/world-events.md",
+   "title": "คลังเหตุการณ์เปลี่ยนโลก",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 450,
+   "bytes": 97033,
+   "headings": [
+    "0. กติกาของเหตุการณ์",
+    "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
+    "2. มังกรเสาตื่น (PL) — 9 เหตุการณ์",
+    "3. สงครามระหว่างทวีป (WR) — 24 เหตุการณ์",
+    "4. ภัยระดับโลก (CT) — 10 เหตุการณ์",
+    "5. จอมมารและผู้กล้า (DM) — 11 เหตุการณ์",
+    "6. จักรกลและเครื่องจักรปฐม (MC) — 12 เหตุการณ์",
+    "7. ต้นไม้โลก หมอก และท้องทะเล (BIO) — 10 เหตุการณ์",
+    "8. ศาสนาและพระเจ้า (GD) — 8 เหตุการณ์",
+    "9. สันติภาพและการฟื้นตัว (HP) — 8 เหตุการณ์",
+    "10. การเมืองโลก (PO) — 8 เหตุการณ์",
+    "11. ยักษ์ ไฟ ทราย (GI) — 10 เหตุการณ์",
+    "12. หมอกกินคน (FG) — 15 เหตุการณ์",
+    "13. แกนตื่น และจุดจบ (END) — 12 เหตุการณ์",
+    "14. มหาเหตุการณ์แบบละเอียด",
+    "15. ความสอดคล้องเมื่อทวีปเปลี่ยนรูป",
+    "16. สรุปจำนวน"
+   ]
+  },
+  {
+   "path": "systems/experience/01-one-life.md",
+   "title": "โครงหนึ่งชีวิต",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 67,
+   "bytes": 8130,
+   "headings": [
+    "1. ก่อนเริ่ม",
+    "2. ห้านาทีแรก",
+    "3. จุดหยุดตามอายุ",
+    "4. ช่วงกลาง",
+    "5. ห้านาทีสุดท้าย",
+    "6. ความเร็วและโหมดดูเฉย ๆ",
+    "7. สิ่งที่ผู้เล่นต้องไม่พบ"
+   ]
+  },
+  {
+   "path": "systems/experience/02-hooks.md",
+   "title": "ตะขอที่ดึงผู้เล่นไว้",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 76,
+   "bytes": 10277,
+   "headings": [
+    "1. คำถามของชีวิต",
+    "2. ตัวละครอธิษฐานต่อเรา",
+    "3. ผู้คนที่เจอซ้ำ",
+    "4. ของเล่นพระเจ้า",
+    "5. เห็นอนาคตเปลี่ยน",
+    "6. ฉากตระการตา",
+    "7. ตระกูลและร่องรอยในโลก",
+    "8. ความลับที่ค้นหา"
+   ]
+  },
+  {
+   "path": "systems/experience/03-ending-and-collection.md",
+   "title": "ตอนจบและของสะสม",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 64,
+   "bytes": 6717,
+   "headings": [
+    "1. บันทึกชีวิต",
+    "2. ผลของชีวิตต่อโลก",
+    "3. หน้าตำนาน",
+    "4. การ์ดแชร์",
+    "5. ของสะสม",
+    "6. สิ่งที่คงข้ามรอบ"
+   ]
+  },
+  {
+   "path": "systems/experience/04-start-modes.md",
+   "title": "แบบเริ่มต้น",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 28,
+   "bytes": 5332,
+   "headings": [
+    "กติกา"
+   ]
+  },
+  {
+   "path": "systems/experience/05-world-across-lives.md",
+   "title": "โลกข้ามชีวิต",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 38,
+   "bytes": 5877,
+   "headings": [
+    "1. สามแบบ",
+    "2. สิ่งที่โลกจำ",
+    "3. เวลาของโลก"
+   ]
+  },
+  {
+   "path": "systems/experience/06-system-roles.md",
+   "title": "บทบาทของระบบต่อประสบการณ์",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 37,
+   "bytes": 5475,
+   "headings": []
+  },
+  {
+   "path": "systems/experience/README.md",
+   "title": "ประสบการณ์ผู้เล่น",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "index",
+   "lines": 45,
+   "bytes": 7069,
+   "headings": [
+    "ประโยคจุดขาย",
+    "ที่มาของแรงบันดาลใจ",
+    "เสาหลักห้าข้อ",
+    "ไฟล์",
+    "สิ่งที่ยังไม่ได้ทำในชุดนี้"
+   ]
+  },
+  {
+   "path": "systems/items/01-everyday-and-standard.md",
+   "title": "ของใช้และอาวุธมาตรฐาน",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 138,
+   "bytes": 17390,
+   "headings": [
+    "1. ของใช้ที่หยิบมาสู้ได้",
+    "2. อาวุธมาตรฐาน",
+    "3. ประเภทเริ่มต้นตามความถนัด"
+   ]
+  },
+  {
+   "path": "systems/items/02-materials.md",
+   "title": "วัสดุ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 56,
+   "bytes": 7287,
+   "headings": [
+    "1. กติกาการรวม",
+    "2. วัสดุโลหะ",
+    "3. วัสดุไม้",
+    "4. ความสอดคล้องกับโลก"
+   ]
+  },
+  {
+   "path": "systems/items/03-job-weapons-common-1.md",
+   "title": "อาวุธประจำอาชีพทั่วไป ชุดที่ 1",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 159,
+   "bytes": 42318,
+   "headings": []
+  },
+  {
+   "path": "systems/items/04-job-weapons-common-2.md",
+   "title": "อาวุธประจำอาชีพทั่วไป ชุดที่ 2",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 204,
+   "bytes": 54989,
+   "headings": []
+  },
+  {
+   "path": "systems/items/05-job-weapons-secret-special.md",
+   "title": "อาวุธของอาชีพลับและอาชีพพิเศษ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 142,
+   "bytes": 62133,
+   "headings": [
+    "1. อาชีพลับ",
+    "2. อาชีพพิเศษ"
+   ]
+  },
+  {
+   "path": "systems/items/06-regional-weapons.md",
+   "title": "อาวุธประจำประเทศและทวีป",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 188,
+   "bytes": 74836,
+   "headings": [
+    "1. อาวุธประจำประเทศ",
+    "2. อาวุธประจำทวีป"
+   ]
+  },
+  {
+   "path": "systems/items/07-forge-weapons.md",
+   "title": "อาวุธจากชาติช่างตีเหล็ก",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 77,
+   "bytes": 26629,
+   "headings": [
+    "1. โรงตีทั้งเก้า",
+    "2. อาวุธ"
+   ]
+  },
+  {
+   "path": "systems/items/08-legendary.md",
+   "title": "อาวุธตำนาน",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 142,
+   "bytes": 44002,
+   "headings": [
+    "1. ตารางรวม",
+    "2. เรื่องราวและเงื่อนไข",
+    "3. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/items/10-forging.md",
+   "title": "การตีอาวุธ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 247,
+   "bytes": 30896,
+   "headings": [
+    "1. ภาพรวม",
+    "2. ความต้องการ",
+    "3. วัสดุ",
+    "4. ช่าง",
+    "5. เรื่องราวการตามหาช่าง",
+    "6. การสั่ง (`chain_forge_order`)",
+    "7. การรอ (`chain_forge_wait`)",
+    "8. ผลการตี (`chain_forge_result`)",
+    "9. ตัวละครที่เป็นช่างเอง",
+    "10. หน้าต่างพระเจ้า",
+    "11. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/items/11-item-system.md",
+   "title": "ระบบไอเทมที่ไม่ใช่อาวุธ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 138,
+   "bytes": 16966,
+   "headings": [
+    "1. หลักการ",
+    "2. ช่องและงบ",
+    "3. การสวมอัตโนมัติ",
+    "4. เกราะกับการต่อสู้",
+    "5. ของใช้ในศึก",
+    "6. เครื่องมือชีวิตช้า",
+    "7. ที่มาของไอเทม",
+    "8. รหัส",
+    "9. ความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/items/12-armor.md",
+   "title": "เกราะและโล่",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 48,
+   "bytes": 12204,
+   "headings": []
+  },
+  {
+   "path": "systems/items/13-accessories.md",
+   "title": "เครื่องประดับ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 43,
+   "bytes": 11624,
+   "headings": []
+  },
+  {
+   "path": "systems/items/14-talismans.md",
+   "title": "เครื่องราง",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 71,
+   "bytes": 24176,
+   "headings": [
+    "1. เครื่องรางโบราณ",
+    "2. ของขลังพื้นบ้าน"
+   ]
+  },
+  {
+   "path": "systems/items/15-talisman-stories.md",
+   "title": "เส้นเรื่องของเครื่องราง",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 162,
+   "bytes": 24670,
+   "headings": [
+    "1. ห้าขั้น",
+    "2. โอกาสต่อปี",
+    "3. ผู้สถิต 8 ชนิด",
+    "4. การสิง",
+    "5. ทางออก",
+    "6. ถือสองชิ้น",
+    "7. ทายาทและมรดก",
+    "8. การพบเครื่องราง (ผจญภัย)",
+    "9. หน้าต่างพระเจ้า",
+    "10. ตัวอย่าง",
+    "11. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "systems/items/16-consumables.md",
+   "title": "ของใช้ในศึก",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 56,
+   "bytes": 13475,
+   "headings": []
+  },
+  {
+   "path": "systems/items/17-life-tools.md",
+   "title": "เครื่องมือชีวิต",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 94,
+   "bytes": 24141,
+   "headings": []
+  },
+  {
+   "path": "systems/items/18-materials-and-keys.md",
+   "title": "วัสดุและของสำคัญ",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "data",
+   "lines": 89,
+   "bytes": 17407,
+   "headings": [
+    "1. วัสดุจากสิ่งมีชีวิตและพืช",
+    "2. ของสำคัญ"
+   ]
+  },
+  {
+   "path": "systems/items/README.md",
+   "title": "อาวุธและไอเทม",
+   "layer": "systems",
+   "group": "systems/items",
+   "kind": "index",
+   "lines": 147,
+   "bytes": 18316,
+   "headings": [
+    "ไฟล์",
+    "1. ระดับความหายาก",
+    "2. ประเภทและความถนัด",
+    "3. ความสามารถ",
+    "4. ทางที่ได้อาวุธ",
+    "5. ความทื่อและการซ่อม",
+    "6. อาวุธที่พระเจ้าประทาน",
+    "7. ข้อเสนอสำหรับโค้ด",
+    "8. รหัส"
+   ]
+  },
+  {
+   "path": "systems/simulation/README.md",
+   "title": "การจำลองโลก",
+   "layer": "systems",
+   "group": "systems/simulation",
+   "kind": "index",
+   "lines": 11,
+   "bytes": 958,
+   "headings": []
+  },
+  {
+   "path": "systems/simulation/dragon-mood.md",
+   "title": "อารมณ์มังกร: ผลเมื่อมังกรล้มและค่าเริ่มต้น",
+   "layer": "systems",
+   "group": "systems/simulation",
+   "kind": "data",
+   "lines": 62,
+   "bytes": 7809,
+   "headings": [
+    "เมื่อมังกรตัวหนึ่งตาย",
+    "ค่าเริ่มต้นของอารมณ์และอัตราเปลี่ยน"
+   ]
+  },
+  {
+   "path": "systems/simulation/world-sim.md",
+   "title": "จำลองโลกจากเอกสาร",
+   "layer": "systems",
+   "group": "systems/simulation",
+   "kind": "data",
+   "lines": 186,
+   "bytes": 26903,
+   "headings": [
+    "1. วิธีจำลอง",
+    "2. ค่าที่จูนแล้ว",
+    "3. ผลและสิ่งที่พบ",
+    "4. สิ่งที่แก้แล้วและสิ่งที่ต้องปรับต่อ",
+    "5. วิธีใช้ซ้ำ"
+   ]
+  }
+ ],
+ "extra": [
+  {
+   "path": "_generated/npc-map.html",
+   "title": "npc-map.html",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "source": "scripts/build-npc-map.mjs"
+  },
+  {
+   "path": "_generated/story-map.html",
+   "title": "story-map.html",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "source": "scripts/build-story-map.mjs"
+  }
+ ]
+}

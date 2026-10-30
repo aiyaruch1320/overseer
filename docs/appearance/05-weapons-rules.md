@@ -1,6 +1,6 @@
 # กติการูปลักษณ์อาวุธและอาวุธมาตรฐาน
 
-ภาพรวม: [README.md](README.md) · ตัวเลขอาวุธ: [../items/README.md](../items/README.md) · วัสดุ: [../items/02-materials.md](../items/02-materials.md) · ตำนาน: [06-legendary-weapons.md](06-legendary-weapons.md)
+ภาพรวม: [README.md](README.md) · ตัวเลขอาวุธ: [../systems/items/README.md](../systems/items/README.md) · วัสดุ: [../systems/items/02-materials.md](../systems/items/02-materials.md) · ตำนาน: [06-legendary-weapons.md](06-legendary-weapons.md)
 
 อาวุธในโลกนี้มี 816 ชิ้น ไม่มีใครวาดทีละชิ้นได้เหมือนกันหมด ไฟล์นี้จึงให้ **กติกาประกอบภาพ** ที่ทำให้ชิ้นไหนก็ออกมาไม่ซ้ำและอ่านออกจากไกล แล้วบอกรายตัวสำหรับสองกลุ่มที่ผู้เล่นเห็นบ่อยที่สุด คือของใช้ 40 ชิ้นกับอาวุธมาตรฐาน 55 ชิ้น อาวุธประจำอาชีพ ประเทศ ทวีป โรงตี ตำนาน และของเกราะเครื่องประดับเครื่องรางอยู่ในไฟล์ถัดไป
 

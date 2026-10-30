@@ -1,6 +1,6 @@
 # รูปลักษณ์อาวุธประจำอาชีพ 157 ชุด
 
-ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../items/03-job-weapons-common-1.md](../items/03-job-weapons-common-1.md) [../items/04-job-weapons-common-2.md](../items/04-job-weapons-common-2.md) [../items/05-job-weapons-secret-special.md](../items/05-job-weapons-secret-special.md) · อาชีพ: [../character/08-jobs-overview.md](../character/08-jobs-overview.md)
+ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../systems/items/03-job-weapons-common-1.md](../systems/items/03-job-weapons-common-1.md) [../systems/items/04-job-weapons-common-2.md](../systems/items/04-job-weapons-common-2.md) [../systems/items/05-job-weapons-secret-special.md](../systems/items/05-job-weapons-secret-special.md) · อาชีพ: [../systems/character/08-jobs-overview.md](../systems/character/08-jobs-overview.md)
 
 อาชีพละ 3 ชิ้น (อาชีพลับและพิเศษมีระดับ U R E) ไฟล์นี้เขียนเป็น **ชุด** เพราะสามชิ้นของอาชีพเดียวกันต้องดูเป็นครอบครัวเดียวกัน ผู้เล่นที่เห็นชิ้นระดับสูงต้องรู้ทันทีว่ามาจากอาชีพเดิมที่ตัวเองเคยใช้ กติกา
 

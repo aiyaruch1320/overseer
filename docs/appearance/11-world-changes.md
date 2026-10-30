@@ -1,6 +1,6 @@
 # ภาพและแอนิเมชันเมื่อโลกเปลี่ยนรูป
 
-ภาพรวม: [README.md](README.md) · ทวีป: [01-continents.md](01-continents.md) · มังกร: [03-dragons.md](03-dragons.md) · ประเทศ: [countries/](countries) · เนื้อหาเหตุการณ์: [../world/world-events.md](../world/world-events.md) หัวข้อ 14–15 · ทวีปใหม่และเหตุการณ์สืบทอด: [../branches/02-new-lands.md](../branches/02-new-lands.md) · ผลของมังกรล้มแต่ละตัว: [../branches/01-dragon-falls.md](../branches/01-dragon-falls.md)
+ภาพรวม: [README.md](README.md) · ทวีป: [01-continents.md](01-continents.md) · มังกร: [03-dragons.md](03-dragons.md) · ประเทศ: [countries](countries) · เนื้อหาเหตุการณ์: [../systems/events/world-events.md](../systems/events/world-events.md) หัวข้อ 14–15 · ทวีปใหม่และเหตุการณ์สืบทอด: [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) · ผลของมังกรล้มแต่ละตัว: [../systems/events/branches/01-dragon-falls.md](../systems/events/branches/01-dragon-falls.md)
 
 เมื่อมังกรตำนานล้มหรือทวีปล่มสลาย ภาพของโลกต้องเปลี่ยนจริง ไม่ใช่แค่ข้อความในการ์ดเหตุการณ์ ไฟล์นี้บอกว่าแต่ละเหตุการณ์ **เกิดขึ้นให้เห็นอย่างไร** (ลำดับฉาก เวลา เสียง แสง) และ **หลังเกิดแล้วโลกหน้าตาเป็นอย่างไร** (ค่าสีใหม่ ประเทศที่เปลี่ยน ชั้นบนแผนที่) เพื่อให้คนทำแอนิเมชันและ UI ใช้ได้ตรง ๆ
 
@@ -39,7 +39,7 @@
 
 ### 2.1 สกายฟอลล์ — อัซการ์หลังฟ้าถล่ม (DR-01)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) 14.1 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 1
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) 14.1 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 1
 
 **ชุดสี** ก่อน `#3d78c4 #f4f0e0 #c9a24a #8a8a96 #1e2a4a` (ฟ้า ขาวควัน ทอง เทาเงิน น้ำเงินเข้ม) → หลัง `#6a6a70 #8a7a62 #3a4a5a #c8b890 #1a1a22` (เทาซากหิน น้ำตาลดินแห้ง เทาน้ำเงินหม่น ครีมเก่า ดำเข้ม) ฟ้าแทบหาย เหลือท้องฟ้าขุ่นเทาอมเหลือง
 
@@ -74,7 +74,7 @@
 
 ### 2.2 ทวีปเถ้า — คาซ-ดูรัมหลังฤดูหนาวเถ้า (DR-04)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) 14.5 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 2
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) 14.5 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 2
 
 **ชุดสี** ก่อน `#1a1414 #e0662a #f0a830 #8a90a0 #5a2a22` → หลัง `#8a8a86 #4a4a4e #c8d0d8 #2a2a2e #5a6a7a` ลาวาแดงส้มหายหมด เหลือเทาถ่านและฟ้าขาวของน้ำแข็ง
 
@@ -103,7 +103,7 @@
 
 ### 2.3 ทุ่งจม — ชายฝั่งหลังมหาน้ำขึ้น (DR-05)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) 14.3 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 3
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) 14.3 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 3
 
 **ชุดสี** ชายฝั่งทุกทวีปเลื่อนไปที่ `#3a5a6a #8a9a94 #c8c0a0 #4a4a40 #2a3a44` เขียวน้ำตาลหม่นของน้ำท่วม เหลือเมืองเป็นสีไม้ซีดและเสาเปียก
 
@@ -130,7 +130,7 @@
 
 ### 2.4 ทุ่งแยก — อัลเดรียหลังแผ่นดินแยก (DR-07)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) หัวข้อ 15 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 4
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) หัวข้อ 15 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 4
 
 **ชุดสี** เขียวน้ำตาลของทุ่งราบ `#5aa04e #d8b44a #8a5a3a #e8e4d8 #3a5a8a` → หลังเหตุการณ์ฝั่งเหนือ `#7a8a6a #a89878 #6a5a4a #d8d4c8 #5a6a7a` ฝั่งใต้ `#8a7a4a #a86a3a #6a4a3a #e0d0b0 #4a4a5a` หุบเหวกลางเป็นแถบดำลึก
 
@@ -155,7 +155,7 @@
 
 ### 2.5 ป่าเหี่ยว — ซิลวาเนลหลังต้นไม้โลกตาย (BIO-02)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) 14.4 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 5
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) 14.4 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 5
 
 **ชุดสี** ก่อน `#2e7a3e #e0c060 #6a4a34 #8a5a8a #9ad0a0` → หลัง `#5a5a50 #8a8a70 #3a3a30 #a8a890 #7a8a7a` เขียวสดกลายเป็นเทาน้ำตาลแห้ง ประกายแสงสีทองหายไป
 
@@ -183,7 +183,7 @@
 
 ### 2.6 ดินแดนสนิม — เมคาเรียหลังเตาปฏิกรณ์ระเบิด (MC-04)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) ตาราง 15 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 6
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) ตาราง 15 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 6
 
 **ชุดสี** ก่อน `#8a94a4 #c08a3a #6a3a2a #d8d070 #6ad0ff` → หลัง `#6a4a2a #7a3a22 #3a3030 #8a8a70 #4a8a6a` เทาเงินและฟ้าไฟฟ้าแทนด้วยน้ำตาลสนิม แดงสนิม และเขียวพิษ
 
@@ -209,7 +209,7 @@
 
 ### 2.7 ทวีปแสง — เนบูเลียหลังหมอกสลาย (BIO-05)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) ตาราง 15 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 7
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) ตาราง 15 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 7
 
 **ชุดสี** ก่อน `#8a8e94 #e8e4dc #d8b060 #7a1a2a #3a3a4a` → หลัง `#e8e0c0 #d8b060 #a8c0d8 #8a6a4a #4a6a4a` เทาและแดงเลือดหมูเปลี่ยนเป็นสีอุ่นอ่อนของแสงแดด
 
@@ -234,7 +234,7 @@
 
 ### 2.8 ดินแดนหมอกกลืน — เนบูเลียหลังหมอกกินทวีป (FG-11)
 
-เนื้อหา: [../world/world-events.md](../world/world-events.md) 14.7 · [../branches/02-new-lands.md](../branches/02-new-lands.md) หัวข้อ 8
+เนื้อหา: [../systems/events/world-events.md](../systems/events/world-events.md) 14.7 · [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) หัวข้อ 8
 
 **ชุดสี** ก่อน `#8a8e94 #e8e4dc #d8b060 #7a1a2a #3a3a4a` → หลัง `#2a2a30 #4a4a52 #6a6a74 #e8e8f0 #1a1a22` โทนดำเทาเกือบไม่เห็นสี มีแต่ขาวของหมอกและแสงโคมจุดเล็กเหลือง
 
@@ -258,7 +258,7 @@
 
 ## 3. มังกรล้ม 15 ตัว
 
-ใช้กับเหตุการณ์ที่มังกรตำนานสิ้นหรือถูกปลด แต่ละตัวมีฉากสั้น 10–15 วินาที (สั้นกว่าฉากเปลี่ยนรูปทวีป) ตามไวยากรณ์ 1.2 โดยตัดจังหวะ 5 ออกและให้ผู้เล่นเห็นร่างมังกรเป็นส่วนเดียว ตามกฎ "ไม่วาดตัวเต็ม" ใน [03-dragons.md](03-dragons.md) เนื้อหาผลของมังกรแต่ละตัวอยู่ใน [../branches/01-dragon-falls.md](../branches/01-dragon-falls.md)
+ใช้กับเหตุการณ์ที่มังกรตำนานสิ้นหรือถูกปลด แต่ละตัวมีฉากสั้น 10–15 วินาที (สั้นกว่าฉากเปลี่ยนรูปทวีป) ตามไวยากรณ์ 1.2 โดยตัดจังหวะ 5 ออกและให้ผู้เล่นเห็นร่างมังกรเป็นส่วนเดียว ตามกฎ "ไม่วาดตัวเต็ม" ใน [03-dragons.md](03-dragons.md) เนื้อหาผลของมังกรแต่ละตัวอยู่ใน [../systems/events/branches/01-dragon-falls.md](../systems/events/branches/01-dragon-falls.md)
 
 | # | มังกร | ฉากล้ม | สิ่งที่ค้างบนจอ | ผลต่อภาพโลก |
 | --- | --- | --- | --- | --- |
@@ -292,7 +292,7 @@
 
 ## 5. จุดจบของโลก (END-10 ถึง END-12) และการล่มสลายหลังจบ
 
-จุดจบเป็นหน้าจอเฉพาะ ไม่ใช่การ์ดเหตุการณ์ ใช้ร่วมกับหน้าตำนานตัวละคร ([../experience/03-ending-and-collection.md](../experience/03-ending-and-collection.md)) ตัวละครยังคงตายตามอายุของตน จุดจบของโลกเป็นสิ่งที่ตัวละครอาจไม่ได้เห็น หลังจบโลกถือว่าล่มสลายและไม่เล่นต่อ (บันทึกเป็นงาน MVP 2)
+จุดจบเป็นหน้าจอเฉพาะ ไม่ใช่การ์ดเหตุการณ์ ใช้ร่วมกับหน้าตำนานตัวละคร ([../systems/experience/03-ending-and-collection.md](../systems/experience/03-ending-and-collection.md)) ตัวละครยังคงตายตามอายุของตน จุดจบของโลกเป็นสิ่งที่ตัวละครอาจไม่ได้เห็น หลังจบโลกถือว่าล่มสลายและไม่เล่นต่อ (บันทึกเป็นงาน MVP 2)
 
 | จุดจบ | ภาพสุดท้าย | ชุดสี | เสียงสุดท้าย |
 | --- | --- | --- | --- |

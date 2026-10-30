@@ -1,8 +1,8 @@
 # ภาพและ UI ของเหตุการณ์โลก 152 รายการ
 
-ภาพรวม: [README.md](README.md) · เนื้อหาเหตุการณ์: [../world/world-events.md](../world/world-events.md) · มหาเหตุการณ์ที่เปลี่ยนรูปทวีป: [11-world-changes.md](11-world-changes.md) · การจำลอง: [../world/world-sim.md](../world/world-sim.md)
+ภาพรวม: [README.md](README.md) · เนื้อหาเหตุการณ์: [../systems/events/world-events.md](../systems/events/world-events.md) · มหาเหตุการณ์ที่เปลี่ยนรูปทวีป: [11-world-changes.md](11-world-changes.md) · การจำลอง: [../systems/simulation/world-sim.md](../systems/simulation/world-sim.md)
 
-เหตุการณ์ในคลัง [../world/world-events.md](../world/world-events.md) มีเนื้อหาครบแต่ไม่ได้บอกว่าผู้เล่นเห็นอะไร ไฟล์นี้บอกรูปแบบการแสดงของทุกเหตุการณ์ในหนึ่งบรรทัด เพื่อให้คนทำ UI รู้ว่าต้องทำฉากใหญ่ ชั้นบนแผนที่ ฉากย่อยในเมือง หรือแค่การ์ด
+เหตุการณ์ในคลัง [../systems/events/world-events.md](../systems/events/world-events.md) มีเนื้อหาครบแต่ไม่ได้บอกว่าผู้เล่นเห็นอะไร ไฟล์นี้บอกรูปแบบการแสดงของทุกเหตุการณ์ในหนึ่งบรรทัด เพื่อให้คนทำ UI รู้ว่าต้องทำฉากใหญ่ ชั้นบนแผนที่ ฉากย่อยในเมือง หรือแค่การ์ด
 
 ## รูปแบบการแสดง 4 แบบ
 
@@ -252,7 +252,7 @@
 
 ## เหตุการณ์สืบทอดหลังทวีปเปลี่ยนรูป 42 รายการ
 
-เกิดได้เฉพาะหลังทวีปเปลี่ยนรูปตาม [../branches/02-new-lands.md](../branches/02-new-lands.md) ใช้ชุดสีหลังเหตุการณ์ของทวีปนั้นจาก [11-world-changes.md](11-world-changes.md) หัวข้อ 2 ทุกรายการใช้สีกรอบการ์ดตามทวีปใหม่ ไม่ใช่สีหมวดด้านบน
+เกิดได้เฉพาะหลังทวีปเปลี่ยนรูปตาม [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) ใช้ชุดสีหลังเหตุการณ์ของทวีปนั้นจาก [11-world-changes.md](11-world-changes.md) หัวข้อ 2 ทุกรายการใช้สีกรอบการ์ดตามทวีปใหม่ ไม่ใช่สีหมวดด้านบน
 
 | ID · ชื่อ | รูปแบบ | ภาพและ UI |
 | --- | --- | --- |

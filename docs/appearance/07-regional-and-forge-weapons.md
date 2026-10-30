@@ -1,6 +1,6 @@
 # รูปลักษณ์อาวุธประจำประเทศ ทวีป และโรงตี
 
-ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../items/06-regional-weapons.md](../items/06-regional-weapons.md) และ [../items/07-forge-weapons.md](../items/07-forge-weapons.md) · ประเทศ: [countries/](countries)
+ภาพรวม: [README.md](README.md) · กติกาประกอบภาพ: [05-weapons-rules.md](05-weapons-rules.md) · ตัวเลข: [../systems/items/06-regional-weapons.md](../systems/items/06-regional-weapons.md) และ [../systems/items/07-forge-weapons.md](../systems/items/07-forge-weapons.md) · ประเทศ: [countries](countries)
 
 อาวุธในไฟล์นี้บอกที่มาด้วยรูปทรงโดยตรง ผู้เล่นที่เห็นด้ามหุ้มธงห้าผืนต้องรู้ว่ามาจากมอร์เฮเวน ผู้ที่เห็นใบสองสีร้อนเย็นต้องรู้ว่ามาจากขอบน้ำแข็ง หนึ่งชิ้นต้องมีสัญลักษณ์ของที่มาอย่างน้อยหนึ่งอย่าง (ธง ตรา ลายสลัก เศษวัสดุเฉพาะถิ่น) และมีเอฟเฟกต์ติดตัวหนึ่งอย่างตามหัวข้อ 5 ของกติกา ถ้าอาวุธไม่มีเอฟเฟกต์ให้ระบุว่า ไม่มี
 

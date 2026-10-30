@@ -1,6 +1,6 @@
 # รูปลักษณ์ของทวีปทั้งเก้า
 
-ภาพรวม: [README.md](README.md) · เรื่องราว: [../world/story-continents.md](../world/story-continents.md) · ที่ตั้ง: [../world/continents.md](../world/continents.md)
+ภาพรวม: [README.md](README.md) · เรื่องราว: [../lore/world/story-continents.md](../lore/world/story-continents.md) · ที่ตั้ง: [../lore/world/continents.md](../lore/world/continents.md)
 
 ทุกทวีปเขียนตามแบบเดียวกัน ค่า UI ท้ายแต่ละทวีปเป็นชุดสีที่แนะนำและคำของโค้ดที่ใกล้ที่สุด
 
@@ -168,4 +168,4 @@
 
 ## ทวีปใหม่ที่เกิดจากเหตุการณ์
 
-ทวีปที่เกิดหลังมังกรล้ม ([../branches/02-new-lands.md](../branches/02-new-lands.md)) เก็บภาพของทวีปเดิมและเพิ่มร่องรอยของความเสียหาย เขียนรูปลักษณ์เต็มเมื่อทำเหตุการณ์สืบทอดของแต่ละแห่ง
+ทวีปที่เกิดหลังมังกรล้ม ([../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md)) เก็บภาพของทวีปเดิมและเพิ่มร่องรอยของความเสียหาย เขียนรูปลักษณ์เต็มเมื่อทำเหตุการณ์สืบทอดของแต่ละแห่ง
