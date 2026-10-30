@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 239,
+ "count": 241,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -538,13 +538,27 @@
    ]
   },
   {
+   "path": "appearance/15-npc-clash-scenes.md",
+   "title": "เรื่องเล่าของศึก NPC",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 242,
+   "bytes": 48333,
+   "headings": [
+    "1. วิธีใช้",
+    "2. ท่าปิดมาตรฐาน",
+    "3. ศึกของ NPC 20 คน"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 78,
-   "bytes": 15910,
+   "lines": 79,
+   "bytes": 16292,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -859,8 +873,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 19,
-   "bytes": 2657,
+   "lines": 20,
+   "bytes": 2890,
    "headings": []
   },
   {
@@ -1408,7 +1422,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 114,
-   "bytes": 13437,
+   "bytes": 13661,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -3165,7 +3179,7 @@
    "group": "systems/combat",
    "kind": "data",
    "lines": 157,
-   "bytes": 24002,
+   "bytes": 24206,
    "headings": [
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
     "ข. มอนสเตอร์ใหม่ผูกกับโลก 40 ตัว",
@@ -3181,7 +3195,7 @@
    "group": "systems/combat",
    "kind": "data",
    "lines": 117,
-   "bytes": 12997,
+   "bytes": 13163,
    "headings": [
     "1. ความถี่",
     "2. แบบของเหตุการณ์ต่อสู้",
@@ -3226,13 +3240,29 @@
    ]
   },
   {
+   "path": "systems/combat/07-npc-clashes.md",
+   "title": "ศึกในเส้นของ NPC",
+   "layer": "systems",
+   "group": "systems/combat",
+   "kind": "data",
+   "lines": 335,
+   "bytes": 37868,
+   "headings": [
+    "1. หลักการ",
+    "2. เงื่อนไขเปิดศึก",
+    "3. ผลมาตรฐานของศึก",
+    "4. ศึกของ NPC 20 คน",
+    "5. ที่ยังไม่ได้ทำ"
+   ]
+  },
+  {
    "path": "systems/combat/README.md",
    "title": "ระบบต่อสู้",
    "layer": "systems",
    "group": "systems/combat",
    "kind": "index",
-   "lines": 41,
-   "bytes": 6353,
+   "lines": 42,
+   "bytes": 6584,
    "headings": [
     "ความต่างจากโค้ดปัจจุบัน",
     "ลำดับการทำในโค้ด (เสนอ)"

@@ -8,6 +8,7 @@
 | `AL01-1` `NB02-3` | NPC (รหัสประเทศ + ลำดับ) | [../lore/npcs/README.md](../lore/npcs/README.md) |
 | `DR-` `PL-` `WR-` `CT-` `DM-` `MC-` `BIO-` `GD-` `HP-` `PO-` `GI-` `FG-` `END-` | เหตุการณ์โลก 152 รายการ | [../systems/events/world-events.md](../systems/events/world-events.md) |
 | `SF-` `AS-` `DW-` `RF-` `WT-` `RL-` `CL-` `DV-` | เหตุการณ์สืบทอดหลังทวีปเปลี่ยนรูป 42 รายการ | [../systems/events/branches/02-new-lands.md](../systems/events/branches/02-new-lands.md) |
+| `NF-MH02-1` | ศึกของ NPC (NF- + รหัส NPC) | [../systems/combat/07-npc-clashes.md](../systems/combat/07-npc-clashes.md) · ฉาก [../appearance/15-npc-clash-scenes.md](../appearance/15-npc-clash-scenes.md) |
 | `hu.t1` `va.a4` ฯลฯ | โหนดเส้นเรื่อง (เผ่า + ช่วงชีวิต + ลำดับ) | [../lore/storylines/README.md](../lore/storylines/README.md) |
 | `cv.1` ถึง `cv.16` | จุดบรรจบของเส้นเรื่อง | [../lore/storylines/00-convergence.md](../lore/storylines/00-convergence.md) |
 | `wi_` `ws_` `wj_` `wc_` `wk_` `wf_` `wl_` | อาวุธ (ของใช้ มาตรฐาน อาชีพ ประเทศ ทวีป โรงตี ตำนาน) | [../systems/items/README.md](../systems/items/README.md) |
