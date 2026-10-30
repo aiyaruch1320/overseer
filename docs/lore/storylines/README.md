@@ -98,6 +98,7 @@
 | [10-vampire.md](10-vampire.md) | แวมไพร์ | [21-ghoul.md](21-ghoul.md) | กูล |
 | [22-halfblood.md](22-halfblood.md) | ลูกครึ่ง (โหนดกลาง hb และชุดเสริม 16 ชุด) | [23-heir.md](23-heir.md) | ทายาท (โหนด hr 9 โหนด) · กติกาอยู่ใน [../heirs/README.md](../heirs/README.md) |
 | [24-economy.md](24-economy.md) | เศรษฐกิจและชนชั้น (โหนด ec pv tr iv nl wk 39 โหนด) · กติกาอยู่ใน [../../systems/economy/README.md](../../systems/economy/README.md) | [llm-ideas.md](llm-ideas.md) | การใช้ LLM |
+| [27-bondage.md](27-bondage.md) | การผูกตัว (โหนด bd bo ab 12 โหนด) · กติกาอยู่ใน [../../systems/economy/10-bondage.md](../../systems/economy/10-bondage.md) | | |
 | [26-hearth.md](26-hearth.md) | ชีวิตประจำที่ (โหนด cr md ld fm 16 โหนด) เส้นตามอาชีพช่าง ผู้รักษา ผู้นำในถิ่น ชาวบ้านผู้ผลิต | | |
 | [25-journeys.md](25-journeys.md) | การเดินทางและการเจอต่างเผ่า (โหนด sf ps ml sc ex wd xc 46 โหนด) · กติกาอยู่ใน [../../systems/travel/README.md](../../systems/travel/README.md) | | |
 
