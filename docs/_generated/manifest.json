@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 251,
+ "count": 253,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -23,7 +23,7 @@
   },
   "lore/npcs": {
    "layer": "lore",
-   "role": "608 NPCs, one file per country group"
+   "role": "614 NPCs, one file per country group"
   },
   "_generated": {
    "layer": "generated",
@@ -75,7 +75,7 @@
   },
   "appearance/npcs": {
    "layer": "appearance",
-   "role": "Look of the 608 NPCs"
+   "role": "Look of the 614 NPCs"
   },
   "systems/economy": {
    "layer": "systems",
@@ -205,7 +205,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 181,
-   "bytes": 15355,
+   "bytes": 15398,
    "headings": [
     "1. สรุป",
     "2. ความขัดกันที่พบ",
@@ -323,7 +323,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 73,
-   "bytes": 6680,
+   "bytes": 6681,
    "headings": [
     "1. ต่อเผ่า",
     "2. สรุป",
@@ -774,8 +774,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 118,
-   "bytes": 50163,
+   "lines": 119,
+   "bytes": 51248,
    "headings": []
   },
   {
@@ -794,8 +794,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 154,
-   "bytes": 65073,
+   "lines": 155,
+   "bytes": 65958,
    "headings": []
   },
   {
@@ -814,8 +814,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 136,
-   "bytes": 57942,
+   "lines": 137,
+   "bytes": 59025,
    "headings": []
   },
   {
@@ -824,8 +824,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 153,
-   "bytes": 66407,
+   "lines": 154,
+   "bytes": 67417,
    "headings": []
   },
   {
@@ -834,8 +834,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 165,
-   "bytes": 71168,
+   "lines": 166,
+   "bytes": 72046,
    "headings": []
   },
   {
@@ -844,8 +844,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 173,
-   "bytes": 71968,
+   "lines": 174,
+   "bytes": 72954,
    "headings": []
   },
   {
@@ -860,7 +860,7 @@
   },
   {
    "path": "appearance/npcs/README.md",
-   "title": "หน้าตาของ NPC 608 ตัว",
+   "title": "หน้าตาของ NPC 614 ตัว",
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "index",
@@ -935,8 +935,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 23,
-   "bytes": 3959,
+   "lines": 24,
+   "bytes": 4216,
    "headings": []
   },
   {
@@ -1264,12 +1264,12 @@
   },
   {
    "path": "lore/npcs/02-morhaven.md",
-   "title": "NPC ของมอร์เฮเวน (ทวีปปีศาจ) — 52 ตัว",
+   "title": "NPC ของมอร์เฮเวน (ทวีปปีศาจ) — 53 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 116,
-   "bytes": 34916,
+   "lines": 117,
+   "bytes": 35931,
    "headings": [
     "MH-01 กาธเรธ (ธงกระดูก)",
     "MH-02 ดราซาร์ (ธงเลือด)",
@@ -1310,12 +1310,12 @@
   },
   {
    "path": "lore/npcs/04-nerea.md",
-   "title": "NPC ของเนเรีย (ทวีปแห่งสายน้ำ) — 68 ตัว",
+   "title": "NPC ของเนเรีย (ทวีปแห่งสายน้ำ) — 69 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 152,
-   "bytes": 40733,
+   "lines": 153,
+   "bytes": 41669,
    "headings": [
     "NR-01 ทาลานีส (สาธารณรัฐเมืองท่าใหญ่)",
     "NR-02 นูวาปาเล (ประเทศน้ำตกย้อนฟ้า)",
@@ -1362,12 +1362,12 @@
   },
   {
    "path": "lore/npcs/06-aldria-b.md",
-   "title": "NPC ของอัลเดรีย ตอนหลัง (AL-15 ถึง AL-28) — 60 ตัว",
+   "title": "NPC ของอัลเดรีย ตอนหลัง (AL-15 ถึง AL-28) — 61 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 134,
-   "bytes": 39862,
+   "lines": 135,
+   "bytes": 40785,
    "headings": [
     "AL-15 ซอมเมอร์เรน (สาธารณรัฐสนามเพลาะ)",
     "AL-16 ไชร์วิก (ไชร์ฮาล์ฟลิง)",
@@ -1387,12 +1387,12 @@
   },
   {
    "path": "lore/npcs/07-mecharia.md",
-   "title": "NPC ของเมคาเรีย (ทวีปจักรกล) — 67 ตัว",
+   "title": "NPC ของเมคาเรีย (ทวีปจักรกล) — 68 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 151,
-   "bytes": 46380,
+   "lines": 152,
+   "bytes": 47300,
    "headings": [
     "MK-01 เฮฟากริด (นครโครงข่าย)",
     "MK-02 ครอนไซต์ (สหภาพผู้ติดตั้ง)",
@@ -1414,12 +1414,12 @@
   },
   {
    "path": "lore/npcs/08-saharan.md",
-   "title": "NPC ของซาฮารัน (ทวีปภูเขาและทะเลทราย) — 74 ตัว",
+   "title": "NPC ของซาฮารัน (ทวีปภูเขาและทะเลทราย) — 75 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 163,
-   "bytes": 47883,
+   "lines": 164,
+   "bytes": 48697,
    "headings": [
     "SH-01 ซาร์ฮาดีน (ดินแดนธุลีทิพย์)",
     "SH-02 อัมเมนรา (ราชวงศ์มัมมี่นิรันดร์)",
@@ -1442,12 +1442,12 @@
   },
   {
    "path": "lore/npcs/09-silvanel.md",
-   "title": "NPC ของซิลวาเนล (ทวีปพงไพร) — 77 ตัว",
+   "title": "NPC ของซิลวาเนล (ทวีปพงไพร) — 78 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 171,
-   "bytes": 46709,
+   "lines": 172,
+   "bytes": 47599,
    "headings": [
     "SV-01 ซิลนเนลลอร์ (นครลำต้น)",
     "SV-02 ธิลเอวา (สถานพยาบาลแห่งรุ่งอรุณ)",
@@ -1501,7 +1501,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 114,
-   "bytes": 13782,
+   "bytes": 13920,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -2418,7 +2418,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 135,
-   "bytes": 39387,
+   "bytes": 39535,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2470,13 +2470,30 @@
    ]
   },
   {
+   "path": "lore/storylines/27-bondage.md",
+   "title": "เส้นเรื่อง: การผูกตัว (bd bo ab)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 60,
+   "bytes": 16578,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. bd ผู้ถูกผูกตัว",
+    "4. bo ผู้ซื้อและผู้ครอบครอง",
+    "5. ab ผู้ช่วยและผู้ต่อต้าน",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 141,
-   "bytes": 21849,
+   "lines": 142,
+   "bytes": 22070,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -3446,7 +3463,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 176,
-   "bytes": 21621,
+   "bytes": 21615,
    "headings": [
     "1. ห้าชั้น",
     "2. ชนชั้นที่เกิดตาม W และ G",
@@ -3467,7 +3484,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 172,
-   "bytes": 21970,
+   "bytes": 22021,
    "headings": [
     "1. รายได้ของอาชีพ",
     "2. ขุนนางและผู้ถือที่ดิน",
@@ -3510,7 +3527,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 95,
-   "bytes": 14944,
+   "bytes": 14936,
    "headings": [
     "1. เก้าช่องทาง",
     "2. ผลตอบแทนต่อปี",
@@ -3549,7 +3566,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 141,
-   "bytes": 20919,
+   "bytes": 20965,
    "headings": [
     "1. โค้ดมีอะไรอยู่แล้ว",
     "2. สิ่งที่ต้องเพิ่ม",
@@ -3569,7 +3586,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 68,
-   "bytes": 12357,
+   "bytes": 12412,
    "headings": [
     "1. ผลสรุป",
     "2. ตรวจแล้วสอดคล้อง",
@@ -3580,13 +3597,34 @@
    ]
   },
   {
+   "path": "systems/economy/10-bondage.md",
+   "title": "การผูกตัว: หนี้ ผู้รับใช้ และทาส",
+   "layer": "systems",
+   "group": "systems/economy",
+   "kind": "data",
+   "lines": 139,
+   "bytes": 21246,
+   "headings": [
+    "1. เจตนาของระบบ",
+    "2. ระดับการผูกตัว",
+    "3. ท่าทีของประเทศ",
+    "4. ชนชั้น 1 ในแต่ละท่าที",
+    "5. ทางที่คนถูกผูกตัว",
+    "6. ทางออก",
+    "7. ราคา",
+    "8. ผู้ครอบครอง ผู้ไถ่ และพวกพ้อง",
+    "9. การแทรกแซงของพระเจ้า",
+    "10. ข้อมูลที่ต้องทดสอบเมื่อมีโค้ด"
+   ]
+  },
+  {
    "path": "systems/economy/README.md",
    "title": "เศรษฐกิจของโลก",
    "layer": "systems",
    "group": "systems/economy",
    "kind": "index",
-   "lines": 43,
-   "bytes": 6937,
+   "lines": 44,
+   "bytes": 7361,
    "headings": [
     "หลักสำคัญ",
     "ตัวเลขสรุป"
@@ -3684,11 +3722,11 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 111,
-   "bytes": 110655,
+   "lines": 117,
+   "bytes": 121231,
    "headings": [
     "1. หลักการ",
-    "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 70 รายการ",
+    "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 76 รายการ",
     "3. แม่แบบและเหตุการณ์ที่สร้างจากแม่แบบ"
    ]
   },
@@ -4166,7 +4204,7 @@
    "group": "systems/travel",
    "kind": "data",
    "lines": 151,
-   "bytes": 24692,
+   "bytes": 24739,
    "headings": [
     "1. ระดับการเดินทางของชีวิต",
     "2. เหตุที่ทำให้ได้เดินทาง",

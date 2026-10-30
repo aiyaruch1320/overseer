@@ -1,20 +1,20 @@
 # NPC ของโลก
 
-ผู้นำและตัวละครสำคัญรายประเทศ รวม **608 ตัว** (ประเทศละ 4 · NPC ลูกครึ่งตัวที่ 5 อีก 19 ประเทศ รหัสลงท้าย -5 · NPC เผ่าเล็กที่เพิ่มภายหลัง 17 ตัว รหัสลงท้าย -6) ทุกตัวมีเรื่องราวและความยูนีคของตัวเอง และ **อาจเกิดหรือไม่เกิดก็ได้** ตามโอกาสสุ่ม
+ผู้นำและตัวละครสำคัญรายประเทศ รวม **614 ตัว** (ประเทศละ 4 · NPC ลูกครึ่งตัวที่ 5 อีก 19 ประเทศ รหัสลงท้าย -5 · NPC เผ่าเล็กที่เพิ่มภายหลัง 17 ตัว รหัสลงท้าย -6 · NPC ผู้ถูกผูกตัวและผู้เกี่ยวข้อง 6 ตัว รหัสลงท้าย -7) ทุกตัวมีเรื่องราวและความยูนีคของตัวเอง และ **อาจเกิดหรือไม่เกิดก็ได้** ตามโอกาสสุ่ม
 
 ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../../systems/events/world-events.md](../../systems/events/world-events.md) · เส้นทางแตกแขนง: [../../systems/events/branches/README.md](../../systems/events/branches/README.md) · เศรษฐกิจและชนชั้น: [../../systems/economy/README.md](../../systems/economy/README.md)
 
 | ไฟล์ | ทวีป | NPC |
 | --- | --- | --- |
 | [01-azgar.md](01-azgar.md) | อัซการ์ | 41 |
-| [02-morhaven.md](02-morhaven.md) | มอร์เฮเวน | 52 |
+| [02-morhaven.md](02-morhaven.md) | มอร์เฮเวน | 53 |
 | [03-kaz-durum.md](03-kaz-durum.md) | คาซ-ดูรัม | 53 |
-| [04-nerea.md](04-nerea.md) | เนเรีย | 68 |
+| [04-nerea.md](04-nerea.md) | เนเรีย | 69 |
 | [05-aldria-a.md](05-aldria-a.md) | อัลเดรีย AL-01 ถึง AL-14 | 56 |
-| [06-aldria-b.md](06-aldria-b.md) | อัลเดรีย AL-15 ถึง AL-28 | 60 |
-| [07-mecharia.md](07-mecharia.md) | เมคาเรีย | 67 |
-| [08-saharan.md](08-saharan.md) | ซาฮารัน | 74 |
-| [09-silvanel.md](09-silvanel.md) | ซิลวาเนล | 77 |
+| [06-aldria-b.md](06-aldria-b.md) | อัลเดรีย AL-15 ถึง AL-28 | 61 |
+| [07-mecharia.md](07-mecharia.md) | เมคาเรีย | 68 |
+| [08-saharan.md](08-saharan.md) | ซาฮารัน | 75 |
+| [09-silvanel.md](09-silvanel.md) | ซิลวาเนล | 78 |
 | [10-nebulia.md](10-nebulia.md) | เนบูเลีย | 60 |
 
 ---

@@ -46,7 +46,7 @@
 | ตัวตนของมังกรและความสัมพันธ์ | [lore/dragons/](lore/dragons/README.md) |
 | อารมณ์มังกร ผลเมื่อมังกรล้ม | [systems/simulation/dragon-mood.md](systems/simulation/dragon-mood.md) |
 | ศาสนา | [lore/religions/](lore/religions/README.md) |
-| NPC 608 ตัว | [lore/npcs/](lore/npcs/README.md) |
+| NPC 614 ตัว | [lore/npcs/](lore/npcs/README.md) |
 | เส้นเรื่องของเผ่าและจุดบรรจบ | [lore/storylines/](lore/storylines/README.md) |
 | การเดินทางและการเจอต่างเผ่า (กติกา) | [systems/travel/](systems/travel/README.md) |
 | ตระกูลและทายาท | [lore/heirs/](lore/heirs/README.md) |
@@ -85,8 +85,8 @@
 | ชุด | จำนวน |
 | --- | --- |
 | ทวีป · ประเทศ · เผ่า · มังกร | 9 · 143 · 21 · 15 |
-| NPC · ศัตรู · อาวุธ | 608 · 138 · 816 |
+| NPC · ศัตรู · อาวุธ | 614 · 138 · 816 |
 | เหตุการณ์โลก · เหตุการณ์สืบทอด | 152 · 42 |
-| โหนดเส้นเรื่อง | 518 |
+| โหนดเส้นเรื่อง | 530 |
 
 เมื่อเพิ่มหรือแก้เอกสาร ให้รัน `npm run docs:verify` (ตรวจแล้วสร้างไฟล์อัตโนมัติใหม่) คู่มือสคริปต์ทั้งหมดอยู่ที่ [../scripts/README.md](../scripts/README.md)
