@@ -1,4 +1,4 @@
-# หน้าตาของ NPC 591 ตัว
+# หน้าตาของ NPC 608 ตัว
 
 ภาพรวมชั้นภาพ: [../README.md](../README.md) · ตัวตนของ NPC: [../../lore/npcs/README.md](../../lore/npcs/README.md)
 
