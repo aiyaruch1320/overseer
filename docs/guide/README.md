@@ -6,6 +6,7 @@
 | --- | --- |
 | [organization.md](organization.md) | จะวางข้อมูลใหม่ตรงไหน จะรวมหรือแยกไฟล์ แบบฟอร์มของแต่ละชนิดไฟล์ |
 | [id-glossary.md](id-glossary.md) | เจอรหัสที่ไม่รู้จัก |
+| [story-seeds.md](story-seeds.md) | เนื้อหามาจากสามระดับ (สคริปต์ Claude เจ้าของโลก) และวิธีให้เมล็ดเรื่องเพื่อให้ Claude ขยาย |
 | [consistency-checks.md](consistency-checks.md) | บันทึกความขัดแย้งระหว่างเอกสารและวิธีแก้ |
 
 คำสั่งตรวจ

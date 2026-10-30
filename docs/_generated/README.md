@@ -8,6 +8,10 @@
 | --- | --- | --- |
 | [manifest.json](manifest.json) | ทุกไฟล์ใน `docs/` | `node scripts/docs/build-docs-manifest.mjs` |
 | [npc-map.html](npc-map.html) | [../lore/npcs/](../lore/npcs/README.md) และเหตุการณ์ | `node scripts/docs/build-npc-map.mjs` |
+| [local-events-by-country.md](local-events-by-country.md) | แม่แบบ LT ใน [../systems/events/local-events.md](../systems/events/local-events.md) บริบทประเทศและ NPC | `node scripts/docs/build-local-events.mjs` |
+| [country-links.md](country-links.md) | [../lore/countries/](../lore/countries/README.md) NPC เส้นเรื่อง เหตุการณ์ และตารางถิ่นเกิด | `node scripts/docs/build-country-links.mjs` |
+| [event-coverage.md](event-coverage.md) | [../systems/events/](../systems/events/README.md) [../lore/npcs/](../lore/npcs/README.md) [../lore/countries/](../lore/countries/README.md) | `node scripts/docs/build-event-coverage.mjs` |
+| [storyline-balance.md](storyline-balance.md) | [../lore/storylines/](../lore/storylines/README.md) NPC และประเทศ | `node scripts/docs/build-storyline-balance.mjs` |
 | [story-map.html](story-map.html) | [../systems/events/](../systems/events/README.md) และเส้นเรื่อง | `node scripts/docs/build-story-map.mjs` |
 | [item-catalog.md](item-catalog.md) | [../systems/items/](../systems/items/README.md) ไฟล์ 12 ถึง 18 และราคาตาม [19-prices.md](../systems/items/19-prices.md) | `node scripts/docs/build-item-catalog.mjs` |
 | [weapon-catalog.md](weapon-catalog.md) | [../systems/items/](../systems/items/README.md) ไฟล์ 01 ถึง 08 และวัสดุ | `node scripts/docs/build-weapon-catalog.mjs` |

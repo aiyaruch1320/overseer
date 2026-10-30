@@ -79,7 +79,10 @@ for (const l of read('lore/storylines/00-convergence.md').split('\n')) {
   const m = l.match(/^\| (cv\.\d+) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$/);
   if (!m) continue;
   const trig = [...new Set(m[3].match(idRe) || [])];
-  const entry = [...new Set((m[5].match(/\b[a-z]{2}\.[btae]\d\b/g) || []))];
+  // xc nodes (25-journeys.md) are numbered a1-a9 b1-b9 t1-t2 in the order of the non-human peoples; they enter as adult nodes of that people
+  const XC = ['el', 'de', 'dw', 'or', 'ha', 'be', 'na', 'dk', 'va', 'fa', 'sl', 'dm', 'me', 'wi', 'gi', 'la', 'co', 'so', 'mu', 'gh'];
+  const xcRace = (id) => XC[({ a: 0, b: 9, t: 18 })[id[3]] + Number(id[4]) - 1];
+  const entry = [...new Set((m[5].match(/\b[a-z]{2}\.[btae]\d\b/g) || []).map((n) => (n.startsWith('xc.') ? `${xcRace(n)}.a0` : n)))];
   cvs.push({ id: m[1], name: m[2], open: m[3], trig, entry, all: /ทุกเผ่า/.test(m[5]), elderOnly: /e2/.test(m[5]) });
 }
 

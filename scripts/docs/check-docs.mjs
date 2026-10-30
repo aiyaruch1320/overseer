@@ -35,9 +35,9 @@ for (const line of lines('systems/combat/03-enemies.md')) { const m = line.match
 const npcNames = {};
 for (const f of list('lore/npcs')) for (const line of lines(f)) { const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*(.+?)\*\*/); if (m) npcNames[m[1]] = m[2]; }
 const events = new Set();
-for (const f of ['systems/events/world-events.md', 'systems/events/branches/02-new-lands.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
+for (const f of ['systems/events/world-events.md', 'systems/events/branches/02-new-lands.md', 'systems/events/local-events.md', '_generated/local-events-by-country.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
 const COUNTRIES = { AZ: 10, MH: 12, KD: 12, NR: 16, AL: 28, MK: 16, SH: 17, SV: 18, NB: 14 };
-const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV']);
+const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV', 'LC']);
 const storyFiles = list('lore/storylines');
 const raceFiles = storyFiles.filter((f) => /\/\d\d-/.test(f) && !f.endsWith('00-convergence.md'));
 const nodeRow = /^\| ([a-z]{2}\.[btael]\d) \|/;
@@ -103,7 +103,14 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy')].forEach(checkRefs);
+[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), 'systems/events/local-events.md'].forEach(checkRefs);
+
+// NPC rows may name other NPCs and events: every id they mention must exist.
+for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
+  if (!/^\| [A-Z]{2}\d{2}-\d \|/.test(line)) return;
+  for (const [, id] of line.matchAll(/\b([A-Z]{2}\d{2}-\d)\b/g)) if (!npcNames[id]) err(f, i + 1, 'npc-ref', id);
+  for (const [, id] of line.matchAll(/\b([A-Z]{1,3}-\d{2})\b/g)) if (EVENT_PREFIX.has(id.split('-')[0]) && !events.has(id)) err(f, i + 1, 'npc-event', id);
+});
 
 // ---------- storylines ----------
 for (const f of raceFiles) {

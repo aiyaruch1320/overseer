@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 241,
+ "count": 251,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -23,7 +23,7 @@
   },
   "lore/npcs": {
    "layer": "lore",
-   "role": "591 NPCs, one file per country group"
+   "role": "608 NPCs, one file per country group"
   },
   "_generated": {
    "layer": "generated",
@@ -53,6 +53,10 @@
    "layer": "systems",
    "role": "Weapons, armor, accessories, talismans, consumables, materials, forging"
   },
+  "systems/travel": {
+   "layer": "systems",
+   "role": "Travel levels, why a life travels, destination filters by people and morals, road events, contact targets"
+  },
   "systems/events": {
    "layer": "systems",
    "role": "World events (conditions and effects) and branches after dragon falls"
@@ -71,7 +75,7 @@
   },
   "appearance/npcs": {
    "layer": "appearance",
-   "role": "Look of the 591 NPCs"
+   "role": "Look of the 608 NPCs"
   },
   "systems/economy": {
    "layer": "systems",
@@ -113,8 +117,8 @@
    "layer": "root",
    "group": "",
    "kind": "index",
-   "lines": 92,
-   "bytes": 13027,
+   "lines": 93,
+   "bytes": 13177,
    "headings": [
     "สามชั้นของเอกสาร",
     "ข้อตกลง",
@@ -130,8 +134,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 20,
-   "bytes": 2403,
+   "lines": 24,
+   "bytes": 3326,
    "headings": []
   },
   {
@@ -195,6 +199,37 @@
    "source": "scripts/codegen/export-character-catalog.ts"
   },
   {
+   "path": "_generated/country-links.md",
+   "title": "การเชื่อมของแต่ละประเทศกับตัวละครหลัก (สร้างอัตโนมัติ)",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 181,
+   "bytes": 15355,
+   "headings": [
+    "1. สรุป",
+    "2. ความขัดกันที่พบ",
+    "3. ตารางทุกประเทศ"
+   ],
+   "source": "scripts/docs/build-country-links.mjs"
+  },
+  {
+   "path": "_generated/event-coverage.md",
+   "title": "ความครอบคลุมของเหตุการณ์ต่อประเทศและ NPC (สร้างอัตโนมัติ)",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 35,
+   "bytes": 5018,
+   "headings": [
+    "1. ต่อทวีป",
+    "2. ประเทศที่ไม่มีเหตุการณ์ระบุชื่อ",
+    "3. ประเทศที่มีเหตุการณ์ผูกมากที่สุดและน้อยที่สุด (ไม่นับศูนย์)",
+    "4. NPC ที่ไม่ผูกเหตุการณ์และไม่เชื่อกับ NPC อื่น (เรื่องของเขาอยู่โดดเดี่ยว)"
+   ],
+   "source": "scripts/docs/build-event-coverage.mjs"
+  },
+  {
    "path": "_generated/item-catalog.md",
    "title": "รายการไอเทมที่ไม่ใช่อาวุธ",
    "layer": "generated",
@@ -214,6 +249,17 @@
     "ของสำคัญ"
    ],
    "source": "scripts/docs/build-item-catalog.mjs"
+  },
+  {
+   "path": "_generated/local-events-by-country.md",
+   "title": "เหตุการณ์ท้องถิ่นรายประเทศ (สร้างอัตโนมัติ)",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 70,
+   "bytes": 89339,
+   "headings": [],
+   "source": "scripts/docs/build-local-events.mjs"
   },
   {
    "path": "_generated/poc-visuals/birthplaces.md",
@@ -269,6 +315,22 @@
    "bytes": 37204,
    "headings": [],
    "source": "scripts/codegen/gen-visual-docs.ts"
+  },
+  {
+   "path": "_generated/storyline-balance.md",
+   "title": "สมดุลของเส้นเรื่องระหว่างเผ่า (สร้างอัตโนมัติ)",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 73,
+   "bytes": 6680,
+   "headings": [
+    "1. ต่อเผ่า",
+    "2. สรุป",
+    "3. อ่านอย่างไร",
+    "4. ช่องว่างเมื่อจุดบรรจบไม่เปิด"
+   ],
+   "source": "scripts/docs/build-storyline-balance.mjs"
   },
   {
    "path": "_generated/weapon-catalog.md",
@@ -360,18 +422,18 @@
   },
   {
    "path": "appearance/04-enemies.md",
-   "title": "รูปลักษณ์ของศัตรู 130 แบบ",
+   "title": "รูปลักษณ์ของศัตรู 138 แบบ",
    "layer": "appearance",
    "group": "appearance",
    "kind": "visual",
-   "lines": 248,
-   "bytes": 168547,
+   "lines": 256,
+   "bytes": 176824,
    "headings": [
     "กติกาภาพของการต่อสู้",
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
     "ข. มอนสเตอร์ผูกโลก 40 ตัว",
     "ค. NPC แบบทั่วไป 20 แบบ",
-    "ง. ร่างต่อสู้ของ NPC มีชื่อ 32 คน",
+    "ง. ร่างต่อสู้ของ NPC มีชื่อ 40 คน",
     "จ. บอสระดับโลก 6 ตัว"
    ]
   },
@@ -543,12 +605,12 @@
    "layer": "appearance",
    "group": "appearance",
    "kind": "visual",
-   "lines": 371,
-   "bytes": 75494,
+   "lines": 453,
+   "bytes": 92023,
    "headings": [
     "1. วิธีใช้",
     "2. ท่าปิดมาตรฐาน",
-    "3. ศึกของ NPC 32 คน"
+    "3. ศึกของ NPC 40 คน"
    ]
   },
   {
@@ -702,8 +764,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 96,
-   "bytes": 38307,
+   "lines": 97,
+   "bytes": 39305,
    "headings": []
   },
   {
@@ -712,8 +774,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 117,
-   "bytes": 49171,
+   "lines": 118,
+   "bytes": 50163,
    "headings": []
   },
   {
@@ -722,8 +784,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 117,
-   "bytes": 51906,
+   "lines": 119,
+   "bytes": 53883,
    "headings": []
   },
   {
@@ -732,8 +794,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 152,
-   "bytes": 63310,
+   "lines": 154,
+   "bytes": 65073,
    "headings": []
   },
   {
@@ -762,8 +824,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 151,
-   "bytes": 64556,
+   "lines": 153,
+   "bytes": 66407,
    "headings": []
   },
   {
@@ -772,8 +834,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 161,
-   "bytes": 67360,
+   "lines": 165,
+   "bytes": 71168,
    "headings": []
   },
   {
@@ -782,8 +844,8 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 170,
-   "bytes": 69514,
+   "lines": 173,
+   "bytes": 71968,
    "headings": []
   },
   {
@@ -792,13 +854,13 @@
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "visual",
-   "lines": 134,
-   "bytes": 55854,
+   "lines": 136,
+   "bytes": 57907,
    "headings": []
   },
   {
    "path": "appearance/npcs/README.md",
-   "title": "หน้าตาของ NPC 591 ตัว",
+   "title": "หน้าตาของ NPC 608 ตัว",
    "layer": "appearance",
    "group": "appearance/npcs",
    "kind": "index",
@@ -851,8 +913,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "index",
-   "lines": 17,
-   "bytes": 787,
+   "lines": 18,
+   "bytes": 1057,
    "headings": []
   },
   {
@@ -873,8 +935,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 20,
-   "bytes": 2890,
+   "lines": 23,
+   "bytes": 3959,
    "headings": []
   },
   {
@@ -894,6 +956,23 @@
     "6. แบบฟอร์มของไฟล์ในแต่ละชั้น",
     "7. ชื่อไฟล์และโฟลเดอร์",
     "8. ก่อนส่งงาน"
+   ]
+  },
+  {
+   "path": "guide/story-seeds.md",
+   "title": "วิธีใส่ไอเดียเนื้อเรื่องลงโลก: เมล็ดเรื่อง แล้วขยาย",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 73,
+   "bytes": 10460,
+   "headings": [
+    "1. เนื้อหาตอนนี้มาจากสามระดับ",
+    "2. เมล็ดเรื่องคืออะไร",
+    "3. ช่องที่ใส่ได้ (ไม่บังคับ)",
+    "4. Claude ทำอะไรเมื่อได้เมล็ดเรื่อง",
+    "5. ลำดับที่แนะนำ",
+    "6. ตัวอย่างข้อความถึง Claude"
    ]
   },
   {
@@ -918,7 +997,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 101,
-   "bytes": 19857,
+   "bytes": 19969,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -931,7 +1010,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 119,
-   "bytes": 18509,
+   "bytes": 18699,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -944,7 +1023,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 112,
-   "bytes": 17359,
+   "bytes": 17519,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -970,7 +1049,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 213,
-   "bytes": 35387,
+   "bytes": 35585,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -983,7 +1062,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 20581,
+   "bytes": 20624,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -996,7 +1075,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 143,
-   "bytes": 20556,
+   "bytes": 20696,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1009,7 +1088,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 154,
-   "bytes": 20782,
+   "bytes": 20810,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1022,7 +1101,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 159,
-   "bytes": 28532,
+   "bytes": 28924,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ",
@@ -1164,12 +1243,12 @@
   },
   {
    "path": "lore/npcs/01-azgar.md",
-   "title": "NPC ของอัซการ์ (ทวีปมังกร) — 40 ตัว",
+   "title": "NPC ของอัซการ์ (ทวีปมังกร) — 41 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 94,
-   "bytes": 25627,
+   "lines": 95,
+   "bytes": 26769,
    "headings": [
     "AZ-01 โอรันธาร์",
     "AZ-02 ซากโรการ์",
@@ -1185,12 +1264,12 @@
   },
   {
    "path": "lore/npcs/02-morhaven.md",
-   "title": "NPC ของมอร์เฮเวน (ทวีปปีศาจ) — 51 ตัว",
+   "title": "NPC ของมอร์เฮเวน (ทวีปปีศาจ) — 52 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 115,
-   "bytes": 33837,
+   "lines": 116,
+   "bytes": 34916,
    "headings": [
     "MH-01 กาธเรธ (ธงกระดูก)",
     "MH-02 ดราซาร์ (ธงเลือด)",
@@ -1208,12 +1287,12 @@
   },
   {
    "path": "lore/npcs/03-kaz-durum.md",
-   "title": "NPC ของคาซ-ดูรัม (ทวีปแห่งไฟ) — 51 ตัว",
+   "title": "NPC ของคาซ-ดูรัม (ทวีปแห่งไฟ) — 53 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 115,
-   "bytes": 31883,
+   "lines": 117,
+   "bytes": 34272,
    "headings": [
     "KD-01 กรอมฮอล์ม (ชาติช่างตีเหล็ก)",
     "KD-02 ดูร์ดิน (เหล็กไหล)",
@@ -1231,12 +1310,12 @@
   },
   {
    "path": "lore/npcs/04-nerea.md",
-   "title": "NPC ของเนเรีย (ทวีปแห่งสายน้ำ) — 66 ตัว",
+   "title": "NPC ของเนเรีย (ทวีปแห่งสายน้ำ) — 68 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 150,
-   "bytes": 38548,
+   "lines": 152,
+   "bytes": 40733,
    "headings": [
     "NR-01 ทาลานีส (สาธารณรัฐเมืองท่าใหญ่)",
     "NR-02 นูวาปาเล (ประเทศน้ำตกย้อนฟ้า)",
@@ -1308,12 +1387,12 @@
   },
   {
    "path": "lore/npcs/07-mecharia.md",
-   "title": "NPC ของเมคาเรีย (ทวีปจักรกล) — 65 ตัว",
+   "title": "NPC ของเมคาเรีย (ทวีปจักรกล) — 67 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 149,
-   "bytes": 44248,
+   "lines": 151,
+   "bytes": 46380,
    "headings": [
     "MK-01 เฮฟากริด (นครโครงข่าย)",
     "MK-02 ครอนไซต์ (สหภาพผู้ติดตั้ง)",
@@ -1335,12 +1414,12 @@
   },
   {
    "path": "lore/npcs/08-saharan.md",
-   "title": "NPC ของซาฮารัน (ทวีปภูเขาและทะเลทราย) — 70 ตัว",
+   "title": "NPC ของซาฮารัน (ทวีปภูเขาและทะเลทราย) — 74 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 159,
-   "bytes": 43281,
+   "lines": 163,
+   "bytes": 47883,
    "headings": [
     "SH-01 ซาร์ฮาดีน (ดินแดนธุลีทิพย์)",
     "SH-02 อัมเมนรา (ราชวงศ์มัมมี่นิรันดร์)",
@@ -1363,12 +1442,12 @@
   },
   {
    "path": "lore/npcs/09-silvanel.md",
-   "title": "NPC ของซิลวาเนล (ทวีปพงไพร) — 74 ตัว",
+   "title": "NPC ของซิลวาเนล (ทวีปพงไพร) — 77 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 168,
-   "bytes": 43632,
+   "lines": 171,
+   "bytes": 46709,
    "headings": [
     "SV-01 ซิลนเนลลอร์ (นครลำต้น)",
     "SV-02 ธิลเอวา (สถานพยาบาลแห่งรุ่งอรุณ)",
@@ -1392,12 +1471,12 @@
   },
   {
    "path": "lore/npcs/10-nebulia.md",
-   "title": "NPC ของเนบูเลีย (ทวีปหมอก) — 58 ตัว",
+   "title": "NPC ของเนบูเลีย (ทวีปหมอก) — 60 ตัว",
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 134,
-   "bytes": 38001,
+   "lines": 136,
+   "bytes": 40284,
    "headings": [
     "NB-01 เวลมิร์ (นครระฆังกลาง)",
     "NB-02 ซอร์เนบ (เคานตีแวมไพร์)",
@@ -1422,7 +1501,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 114,
-   "bytes": 13661,
+   "bytes": 13782,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -1868,7 +1947,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 244,
-   "bytes": 35043,
+   "bytes": 35173,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -1883,7 +1962,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 94,
-   "bytes": 17318,
+   "bytes": 17326,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -1901,13 +1980,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 85,
-   "bytes": 14342,
+   "lines": 93,
+   "bytes": 16162,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. พิธีผูกราก (el.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -1920,13 +2000,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 82,
-   "bytes": 11426,
+   "lines": 92,
+   "bytes": 14500,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. พิธีเผชิญเงา (de.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -1939,13 +2020,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 83,
-   "bytes": 12045,
+   "lines": 92,
+   "bytes": 14372,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. วันทั่งแรก (dw.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -1978,13 +2060,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 80,
-   "bytes": 11170,
+   "lines": 90,
+   "bytes": 14118,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. วันให้ของขวัญ (ha.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2017,13 +2100,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 79,
-   "bytes": 11948,
+   "lines": 88,
+   "bytes": 14314,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. การทดสอบนาคา (na.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2036,13 +2120,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 82,
-   "bytes": 11598,
+   "lines": 91,
+   "bytes": 14032,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. เปลวแรก (dk.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2055,13 +2140,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 80,
-   "bytes": 11626,
+   "lines": 89,
+   "bytes": 13973,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. คืนแรกแห่งเลือด (va.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2074,13 +2160,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 82,
-   "bytes": 11645,
+   "lines": 91,
+   "bytes": 13878,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. ชื่อจริง (fa.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2113,13 +2200,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 82,
-   "bytes": 10843,
+   "lines": 92,
+   "bytes": 13570,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. การลงนามครั้งแรก (dm.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2132,13 +2220,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 79,
-   "bytes": 10812,
+   "lines": 88,
+   "bytes": 12991,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. พิธีของสาย (me.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2171,13 +2260,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 85,
-   "bytes": 11672,
+   "lines": 95,
+   "bytes": 14792,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. การสลักชื่อ (gi.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2210,13 +2300,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 80,
-   "bytes": 11385,
+   "lines": 90,
+   "bytes": 14201,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
     "3. ชิ้นแรกหรือชื่อแรก (co.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2229,13 +2320,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 82,
-   "bytes": 11425,
+   "lines": 91,
+   "bytes": 13610,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
     "3. คำถามแรก (so.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2248,13 +2340,14 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 80,
-   "bytes": 12128,
+   "lines": 88,
+   "bytes": 13761,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
     "3. การชั่งหัวใจ (mu.t1)",
     "4. โหนด",
+    "4ก. โหนดสำรองเมื่อจุดบรรจบไม่เปิด",
     "5. จุดบรรจบ",
     "6. ปลายทาง",
     "7. หน้าต่างพระเจ้า",
@@ -2324,8 +2417,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 133,
-   "bytes": 36955,
+   "lines": 135,
+   "bytes": 39387,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2336,13 +2429,54 @@
    ]
   },
   {
+   "path": "lore/storylines/25-journeys.md",
+   "title": "เส้นเรื่อง: การเดินทางและการเจอต่างเผ่า (sf ps ml sc ex wd xc)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 141,
+   "bytes": 43492,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. เงื่อนไขเปิดเส้น",
+    "4. sf ลูกเรือและนักเดินเรือ",
+    "5. ps ผู้แสวงบุญ",
+    "6. ml ทหารรับจ้างข้ามแดน",
+    "7. sc ผู้เรียนต่างแดน",
+    "8. ex ผู้ลี้ภัยและผู้ถูกเนรเทศ",
+    "9. wd นักเดินทางเร่ร่อน",
+    "10. xc เจอต่างเผ่า",
+    "11. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
+   "path": "lore/storylines/26-hearth.md",
+   "title": "เส้นเรื่อง: ชีวิตประจำที่ (cr md ld fm)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 82,
+   "bytes": 19678,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. เงื่อนไขเปิดเส้น",
+    "4. cr ช่างและร้านประจำที่",
+    "5. md ผู้รักษา",
+    "6. ld ผู้นำในถิ่น",
+    "7. fm ชาวบ้านผู้ผลิต",
+    "8. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 139,
-   "bytes": 21297,
+   "lines": 141,
+   "bytes": 21849,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2480,8 +2614,8 @@
    "layer": "systems",
    "group": "systems",
    "kind": "index",
-   "lines": 30,
-   "bytes": 4019,
+   "lines": 31,
+   "bytes": 4291,
    "headings": [
     "โฟลเดอร์",
     "สิ่งที่ไม่อยู่ในชั้นนี้",
@@ -2495,7 +2629,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 255,
-   "bytes": 43721,
+   "bytes": 44438,
    "headings": [
     "1. ลำดับการสุ่มเกิด",
     "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
@@ -3179,13 +3313,13 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 169,
-   "bytes": 27951,
+   "lines": 177,
+   "bytes": 30439,
    "headings": [
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
     "ข. มอนสเตอร์ใหม่ผูกกับโลก 40 ตัว",
     "ค. NPC แบบทั่วไป 20 แบบ",
-    "ง. NPC ที่มีชื่อ 32 คน",
+    "ง. NPC ที่มีชื่อ 40 คน",
     "จ. บอสระดับโลก 6 ตัว"
    ]
   },
@@ -3246,13 +3380,13 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 500,
-   "bytes": 57049,
+   "lines": 606,
+   "bytes": 68724,
    "headings": [
     "1. หลักการ",
     "2. เงื่อนไขเปิดศึก",
     "3. ผลมาตรฐานของศึก",
-    "4. ศึกของ NPC 32 คน",
+    "4. ศึกของ NPC 40 คน",
     "5. ที่ยังไม่ได้ทำ"
    ]
   },
@@ -3464,8 +3598,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "index",
-   "lines": 14,
-   "bytes": 1702,
+   "lines": 16,
+   "bytes": 2385,
    "headings": []
   },
   {
@@ -3542,6 +3676,20 @@
    "headings": [
     "หลักการ",
     "ผลต่อเรื่องและตัวละครหลัก"
+   ]
+  },
+  {
+   "path": "systems/events/local-events.md",
+   "title": "เหตุการณ์ท้องถิ่น: จุดบรรจบของ NPC",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 111,
+   "bytes": 110655,
+   "headings": [
+    "1. หลักการ",
+    "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 70 รายการ",
+    "3. แม่แบบและเหตุการณ์ที่สร้างจากแม่แบบ"
    ]
   },
   {
@@ -4010,6 +4158,33 @@
     "4. สิ่งที่แก้แล้วและสิ่งที่ต้องปรับต่อ",
     "5. วิธีใช้ซ้ำ"
    ]
+  },
+  {
+   "path": "systems/travel/01-travel-rules.md",
+   "title": "กติกาการเดินทาง",
+   "layer": "systems",
+   "group": "systems/travel",
+   "kind": "data",
+   "lines": 151,
+   "bytes": 24692,
+   "headings": [
+    "1. ระดับการเดินทางของชีวิต",
+    "2. เหตุที่ทำให้ได้เดินทาง",
+    "3. ตัวกรองจุดหมาย",
+    "4. ระหว่างทาง",
+    "5. เป้าการเจอต่างเผ่า",
+    "6. ที่มาของแนวคิดตาราง"
+   ]
+  },
+  {
+   "path": "systems/travel/README.md",
+   "title": "การเดินทางและการเจอต่างเผ่า",
+   "layer": "systems",
+   "group": "systems/travel",
+   "kind": "index",
+   "lines": 12,
+   "bytes": 1882,
+   "headings": []
   }
  ],
  "extra": [
