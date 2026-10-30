@@ -2,7 +2,7 @@
 
 เมื่อมังกรล้มหรือทวีปเปลี่ยนรูป โลกไม่ได้แค่ "มีข้อความใหม่" เหตุการณ์บางอย่างจะ **เป็นไปไม่ได้อีก** และเหตุการณ์ใหม่เกิดขึ้นแทน ทำให้เรื่องราวและชีวิตของตัวละครหลักเดินคนละทางกับโลกที่มังกรยังอยู่
 
-มังกร: [../dragons/README.md](../dragons/README.md) · คลังเหตุการณ์: [../world-events.md](../world-events.md)
+มังกร: [../dragons/README.md](../dragons/README.md) · คลังเหตุการณ์: [../world/world-events.md](../world/world-events.md)
 
 ผลของมังกรแต่ละตัว: [01-dragon-falls.md](01-dragon-falls.md) · ทวีปใหม่และเหตุการณ์สืบทอด: [02-new-lands.md](02-new-lands.md) · ผลต่อตัวละครหลัก: [03-character-and-quests.md](03-character-and-quests.md)
 

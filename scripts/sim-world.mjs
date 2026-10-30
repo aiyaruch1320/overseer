@@ -1,6 +1,6 @@
-// Docs-level world simulation: reads docs/world-events.md, docs/storylines/00-convergence.md and docs/races/README.md,
+// Docs-level world simulation: reads docs/world/world-events.md, docs/storylines/00-convergence.md and docs/races/README.md,
 // runs many worlds on the world clock (ศ.ม., decade steps) and reports how events, eras and convergence points play out.
-// It models structure (era gates, prerequisites, caps, dragon moods), not the prose conditions: see docs/world-sim.md for limits.
+// It models structure (era gates, prerequisites, caps, dragon moods), not the prose conditions: see docs/world/world-sim.md for limits.
 // Usage: node scripts/sim-world.mjs [worlds=2000] [--json]
 import fs from 'fs';
 import path from 'path';
@@ -23,7 +23,7 @@ export const P = {
   faithDrift: -0.5, // world faith change per decade
   hero: 0.1, // DR-13 chance per decade once a dragon has fallen (the spear wl_dragon_bane is forged from a fallen dragon's bone)
   hero0: 0.02, // before any dragon has fallen only wl_hrod can start DR-13
-  capYears: { '⭐': 80, '●': 25, '○': 8 }, // docs/world-events.md section 0.2
+  capYears: { '⭐': 80, '●': 25, '○': 8 }, // docs/world/world-events.md section 0.2
   windowYears: 100, // how long a convergence point stays open after its trigger (docs/storylines/00-convergence.md)
   strictCap: false, // apply the section 0.2 cap to dragon falls too
 };
@@ -32,7 +32,7 @@ export const P = {
 const EVENT_PREFIX = ['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END'];
 const idRe = new RegExp(`\\b(?:${EVENT_PREFIX.join('|')})-\\d{2}\\b`, 'g');
 const events = [];
-for (const l of read('world-events.md').split('\n')) {
+for (const l of read('world/world-events.md').split('\n')) {
   const m = l.match(/^\| \*\*([A-Z]{2,3}-\d{2}) ([⭐●○])? ?([^*]*)\*\*(.*?)\| (.*?) \| (.*?) \| (.*) \|$/);
   if (m) events.push({ id: m[1], mk: m[2] || '○', name: (m[3] + m[4]).trim(), cond: m[5], what: m[6], eff: m[7] });
 }

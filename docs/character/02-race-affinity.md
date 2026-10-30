@@ -1,6 +1,6 @@
 # ความเข้ากับเผ่า
 
-ระบบ: [README.md](README.md) · เผ่า: [../races/README.md](../races/README.md) · ของเดิมในโค้ด: [catalog/](catalog/)
+ระบบ: [README.md](README.md) · เผ่า: [../races/README.md](../races/README.md) · ของเดิมในโค้ด: [catalog/](catalog)
 
 ## กติกา
 

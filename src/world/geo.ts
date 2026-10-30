@@ -1,4 +1,4 @@
-// The shape of the world, authored from docs/continents.md §12 and docs/world-politics.md.
+// The shape of the world, authored from docs/world/continents.md §12 and docs/world/world-politics.md.
 // Everything is in "map units" (MU) on a 1600 × 900 sheet; 1 MU = 3.84 world units (the sim's tile grid is 768 × 432).
 // The same field function drives the sim's tile grid and the vector coastlines, so towns always sit on drawn land.
 import { makeNoise, RNG } from '../sim/rng';

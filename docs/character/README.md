@@ -2,7 +2,7 @@
 
 เนื้อหาของตัวละครหลักที่ผูกกับโลกของเอกสารชุดนี้ ใช้ของที่มีอยู่ในโค้ดเกม (`src/data/traits.ts` `src/data/gifts.ts` `src/data/races.ts` `src/sim/fortune.ts`) เป็นแกน แล้วเพิ่มชั้นเนื้อเรื่อง ได้แก่ ที่เกิด เผ่า ความเสริมและขัดกัน และของใหม่ที่ผูกกับโลก
 
-เผ่าพันธุ์: [../races/README.md](../races/README.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world-events.md](../world-events.md) · ผลต่อตัวละคร: [../branches/03-character-and-quests.md](../branches/03-character-and-quests.md) · เส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) · อาวุธ: [../items/README.md](../items/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
+เผ่าพันธุ์: [../races/README.md](../races/README.md) · ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world/world-events.md](../world/world-events.md) · ผลต่อตัวละคร: [../branches/03-character-and-quests.md](../branches/03-character-and-quests.md) · เส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) · อาวุธ: [../items/README.md](../items/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
 
 ## ไฟล์
 
@@ -25,7 +25,7 @@
 | [15-companion-species.md](15-companion-species.md) | ชนิดสัตว์ 102 ชนิดตามระดับ C ถึง L |
 | [16-companion-stories.md](16-companion-stories.md) | เรื่องราวการได้สัตว์ 31 เรื่อง |
 | [17-companion-support.md](17-companion-support.md) | skill 12 พร 8 คำสาป 6 สำหรับสัตว์คู่หู |
-| [catalog/](catalog/) | รายการในโค้ดปัจจุบัน (สร้างจากโค้ดอัตโนมัติ) |
+| [catalog/](catalog) | รายการในโค้ดปัจจุบัน (สร้างจากโค้ดอัตโนมัติ) |
 
 ## จำนวนรวม
 

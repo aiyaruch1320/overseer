@@ -2,7 +2,7 @@
 
 ตัวละครหลักปะทะกับ NPC มอนสเตอร์ ฝูงสัตว์ และมังกร ผลคำนวณจากค่าสถานะ skill พร คำสาป อาวุธ และสัตว์คู่หู แบบที่อธิบายได้ (เวทแสงชนะผี ภูตพรายแพ้เหล็ก) พระเจ้าแทรกแซงได้ก่อน ระหว่าง และหลังการต่อสู้
 
-ตัวละคร: [../character/README.md](../character/README.md) · NPC: [../npcs/README.md](../npcs/README.md) · เหตุการณ์โลก: [../world-events.md](../world-events.md) · มังกร: [../dragons/README.md](../dragons/README.md) · ศึกในเส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) หัวข้อ 8 · อาวุธ: [../items/README.md](../items/README.md)
+ตัวละคร: [../character/README.md](../character/README.md) · NPC: [../npcs/README.md](../npcs/README.md) · เหตุการณ์โลก: [../world/world-events.md](../world/world-events.md) · มังกร: [../dragons/README.md](../dragons/README.md) · ศึกในเส้นเรื่องของแต่ละเผ่า: [../storylines/README.md](../storylines/README.md) หัวข้อ 8 · อาวุธ: [../items/README.md](../items/README.md)
 
 | ไฟล์ | เนื้อหา |
 | --- | --- |

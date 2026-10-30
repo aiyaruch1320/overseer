@@ -16,7 +16,7 @@ function eventTitles(md) {
   }
   return out;
 }
-const titles = { ...eventTitles(read('docs/world-events.md')), ...eventTitles(read('docs/branches/02-new-lands.md')) };
+const titles = { ...eventTitles(read('docs/world/world-events.md')), ...eventTitles(read('docs/branches/02-new-lands.md')) };
 
 // ---------- continents ----------
 const CONTINENTS = [

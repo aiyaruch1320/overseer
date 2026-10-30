@@ -2,7 +2,7 @@
 
 เอกสารชุดนี้เก็บสิ่งที่อยากให้ผู้เล่นรู้สึกและทำตั้งแต่เปิดเกมจนจบรอบ ไม่ใช่กติกาของระบบ กติกาของระบบและพลังพระเจ้าออกแบบทีหลังจากสิ่งที่เขียนไว้ที่นี่ โค้ดปัจจุบันเป็นตัวทดลอง (demo) เพื่อลองระบบ เอกสารออกแบบใหม่กว่าและละเอียดกว่า เมื่อขัดกันให้เอกสารชนะ
 
-โลก: [../story-continents.md](../story-continents.md) · ตัวละคร: [../character/README.md](../character/README.md) · เส้นเรื่อง: [../storylines/README.md](../storylines/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md)
+โลก: [../world/story-continents.md](../world/story-continents.md) · ตัวละคร: [../character/README.md](../character/README.md) · เส้นเรื่อง: [../storylines/README.md](../storylines/README.md) · ทายาท: [../heirs/README.md](../heirs/README.md)
 
 ## ประโยคจุดขาย
 

@@ -11,7 +11,7 @@ export const SCALE = 3;
 export const MAP_W = 256 * SCALE;
 export const MAP_H = 144 * SCALE;
 
-// 9 ทวีป รวม 143 ประเทศ (ลำดับและจำนวนตาม docs/continents.md; รูปร่างและตำแหน่งอยู่ที่ src/world/geo.ts)
+// 9 ทวีป รวม 143 ประเทศ (ลำดับและจำนวนตาม docs/world/continents.md; รูปร่างและตำแหน่งอยู่ที่ src/world/geo.ts)
 export const CONTINENTS: Continent[] = [
   { id: 0, name: 'อัซการ์', desc: 'ทวีปมังกร หมู่เกาะลอยฟ้านับร้อย รัฐเทวาธิปไตยที่ส่งบรรณาการให้มังกรอุปถัมภ์', climates: ['temperate', 'frozen'], races: ['dragonkin', 'human', 'human', 'fae', 'beast'], count: 10 },
   { id: 1, name: 'มอร์เฮเวน', desc: 'ทวีปปีศาจ ดินแดนรกร้างที่ทุกเผ่าหิวโหยและต้องรบเพื่อกิน', climates: ['desert', 'volcanic'], races: ['orc', 'orc', 'demonkin', 'demonkin', 'darkelf', 'human'], count: 12 },

@@ -1,6 +1,6 @@
 # ศาสนาและความเชื่อ
 
-กระแสความเชื่อและกติกา: [01-faith-flow.md](01-faith-flow.md) · เรื่องราว: [../story-continents.md](../story-continents.md) · เหตุการณ์: [../world-events.md](../world-events.md)
+กระแสความเชื่อและกติกา: [01-faith-flow.md](01-faith-flow.md) · เรื่องราว: [../world/story-continents.md](../world/story-continents.md) · เหตุการณ์: [../world/world-events.md](../world/world-events.md)
 
 ## รายการศาสนาทั้ง 23
 

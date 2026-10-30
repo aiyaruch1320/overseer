@@ -1,6 +1,6 @@
 # รูปลักษณ์ของทวีปทั้งเก้า
 
-ภาพรวม: [README.md](README.md) · เรื่องราว: [../story-continents.md](../story-continents.md) · ที่ตั้ง: [../continents.md](../continents.md)
+ภาพรวม: [README.md](README.md) · เรื่องราว: [../world/story-continents.md](../world/story-continents.md) · ที่ตั้ง: [../world/continents.md](../world/continents.md)
 
 ทุกทวีปเขียนตามแบบเดียวกัน ค่า UI ท้ายแต่ละทวีปเป็นชุดสีที่แนะนำและคำของโค้ดที่ใกล้ที่สุด
 

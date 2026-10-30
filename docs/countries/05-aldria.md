@@ -1,6 +1,6 @@
 # ประเทศในอัลเดรีย (ทวีปทุ่งราบ) — 28 ประเทศ
 
-ทวีป: [continents.md](../continents.md) · เรื่องราว: [story-continents.md](../story-continents.md) · เหตุการณ์: [world-events.md](../world-events.md)
+ทวีป: [../world/continents.md](../world/continents.md) · เรื่องราว: [../world/story-continents.md](../world/story-continents.md) · เหตุการณ์: [../world/world-events.md](../world/world-events.md)
 
 ---
 

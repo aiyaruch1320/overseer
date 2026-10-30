@@ -1,4 +1,4 @@
-// The great events of docs/world-events.md §15 that change a continent's shape: what the land becomes, and how each look is drawn
+// The great events of docs/world/world-events.md §15 that change a continent's shape: what the land becomes, and how each look is drawn
 // (town palette and ruins in src/city/themes.ts + paint.ts, the tint on the world map in src/render/terrain). The sim sets `Country.fate`
 // (a country with the `fallen` flag counts as fallen); everything that draws reads it, so a story event only has to call `setFate`.
 import type { Country, Fate } from './types';

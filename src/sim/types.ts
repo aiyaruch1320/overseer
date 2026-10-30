@@ -181,7 +181,7 @@ export interface Country {
   warWith: number | null;
   religion: string;
   towns: number[];
-  fate?: Fate; // set when a great event of the world's story (docs/world-events.md §15) has reshaped this land
+  fate?: Fate; // set when a great event of the world's story (docs/world/world-events.md §15) has reshaped this land
   weather?: string; // this season's weather (clear, rain, storm, snow, blizzard, sandstorm, fog, heat, ashfall, cloudy)
   until: Record<string, number>; // flag -> tick when it expires
   history: string[];

@@ -30,7 +30,7 @@ function parseEvents(md, source) {
   return out;
 }
 const events = [
-  ...parseEvents(read('docs/world-events.md'), 'world-events'),
+  ...parseEvents(read('docs/world/world-events.md'), 'world-events'),
   ...parseEvents(read('docs/branches/02-new-lands.md'), 'new-lands'),
 ];
 const ids = new Set(events.map((e) => e.id));

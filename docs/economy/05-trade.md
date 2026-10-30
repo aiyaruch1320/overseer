@@ -197,5 +197,5 @@ NPC ค้าขายด้วยสูตรเดียวกัน ขบว
 ## 11. ความสอดคล้อง
 
 - ศัตรูในหัวข้อ 3 อยู่ใน [../combat/03-enemies.md](../combat/03-enemies.md) ทั้งหมด
-- ทางลัดที่ผิดกฎ (ลักลอบ น้ำเลี้ยง) ตรงกับเหตุการณ์ PO-04 PO-06 PO-07 ใน [../world-events.md](../world-events.md)
+- ทางลัดที่ผิดกฎ (ลักลอบ น้ำเลี้ยง) ตรงกับเหตุการณ์ PO-04 PO-06 PO-07 ใน [../world/world-events.md](../world/world-events.md)
 - อาชีพใหม่ 8 อย่างมีอาวุธประจำอาชีพตามหลักเดียวกับอาชีพอื่น ([../items/04-job-weapons-common-2.md](../items/04-job-weapons-common-2.md))

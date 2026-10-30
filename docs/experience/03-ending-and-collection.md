@@ -52,7 +52,7 @@
 | เครื่องรางโบราณ | 24 | [../items/14-talismans.md](../items/14-talismans.md) |
 | อาวุธระดับตำนาน | 36 | [../items/08-legendary.md](../items/08-legendary.md) |
 | จุดบรรจบ | 16 | [../storylines/00-convergence.md](../storylines/00-convergence.md) |
-| เหตุการณ์ใหญ่ที่เคยเห็น | ตามรายการเหตุการณ์ | [../world-events.md](../world-events.md) |
+| เหตุการณ์ใหญ่ที่เคยเห็น | ตามรายการเหตุการณ์ | [../world/world-events.md](../world/world-events.md) |
 | แบบเริ่มต้น | ดู [04-start-modes.md](04-start-modes.md) | |
 | ฉากจบ | กำหนดพร้อมเป้าหมายต่อชีวิต | |
 

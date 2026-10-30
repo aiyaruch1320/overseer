@@ -1,6 +1,6 @@
 # การเมืองข้ามทวีป
 
-ประเทศทั้งหมด: [countries/README.md](countries/README.md) · เรื่องราว: [story-continents.md](story-continents.md) · เหตุการณ์: [world-events.md](world-events.md)
+ประเทศทั้งหมด: [countries/README.md](../countries/README.md) · เรื่องราว: [story-continents.md](story-continents.md) · เหตุการณ์: [world-events.md](world-events.md)
 
 สถานะ ณ ศ.ม. 10,400
 

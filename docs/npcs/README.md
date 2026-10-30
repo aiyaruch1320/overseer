@@ -2,7 +2,7 @@
 
 ผู้นำและตัวละครสำคัญรายประเทศ รวม **591 ตัว** (ประเทศละ 4 และ NPC ลูกครึ่งตัวที่ 5 อีก 19 ประเทศ รหัสลงท้าย -5) ทุกตัวมีเรื่องราวและความยูนีคของตัวเอง และ **อาจเกิดหรือไม่เกิดก็ได้** ตามโอกาสสุ่ม
 
-ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world-events.md](../world-events.md) · เส้นทางแตกแขนง: [../branches/README.md](../branches/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
+ประเทศ: [../countries/README.md](../countries/README.md) · เหตุการณ์: [../world/world-events.md](../world/world-events.md) · เส้นทางแตกแขนง: [../branches/README.md](../branches/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
 
 | ไฟล์ | ทวีป | NPC |
 | --- | --- | --- |

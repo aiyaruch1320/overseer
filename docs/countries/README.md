@@ -1,6 +1,6 @@
 # ดัชนีประเทศทั้ง 143 ประเทศ
 
-การเมืองข้ามทวีป: [../world-politics.md](../world-politics.md)
+การเมืองข้ามทวีป: [../world/world-politics.md](../world/world-politics.md)
 
 | ทวีป | ไฟล์ | จำนวน |
 | --- | --- | --- |

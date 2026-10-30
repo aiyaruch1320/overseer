@@ -180,7 +180,7 @@
 
 ### เมื่อเส้นเรื่องเปลี่ยนโฉมแผ่นดิน (`src/sim/fate.ts`)
 
-`docs/world-events.md` §15 ระบุว่าบางเหตุการณ์ทำให้ทวีปเปลี่ยนรูป แต่ละแบบมีหน้าตาเตรียมไว้แล้ว ตั้งด้วย `Country.fate` (หรือ `scene.setFate({ continent }, 'ash')` ใน `WorldScene`) ประเทศที่มีธง `fallen` นับเป็น `fallen` เอง
+`docs/world/world-events.md` §15 ระบุว่าบางเหตุการณ์ทำให้ทวีปเปลี่ยนรูป แต่ละแบบมีหน้าตาเตรียมไว้แล้ว ตั้งด้วย `Country.fate` (หรือ `scene.setFate({ continent }, 'ash')` ใน `WorldScene`) ประเทศที่มีธง `fallen` นับเป็น `fallen` เอง
 
 | fate | เหตุการณ์ | แผนที่โลก | เมือง |
 | --- | --- | --- | --- |

@@ -36,7 +36,7 @@ for (const line of lines('combat/03-enemies.md')) { const m = line.match(/^\| `?
 const npcNames = {};
 for (const f of list('npcs')) for (const line of lines(f)) { const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*(.+?)\*\*/); if (m) npcNames[m[1]] = m[2]; }
 const events = new Set();
-for (const f of ['world-events.md', 'branches/02-new-lands.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
+for (const f of ['world/world-events.md', 'branches/02-new-lands.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
 const COUNTRIES = { AZ: 10, MH: 12, KD: 12, NR: 16, AL: 28, MK: 16, SH: 17, SV: 18, NB: 14 };
 const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV']);
 const storyFiles = list('storylines');
