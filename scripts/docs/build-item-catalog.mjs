@@ -18,6 +18,7 @@ const BASE = {
   consumable: [3, 12, 55, 300, null],
   tool: [6, 24, 80, 600, null],
   material: [3.5, 14, 65, 200, 600],
+  paired: [null, null, null, null, null], // paired items are never sold: they come from the story between two people
 };
 // median stat budget per tier (docs/systems/items/11-item-system.md section 2)
 const MID = { C: 1, U: 1.5, R: 2.5, E: 3.5, L: 5 };
@@ -53,6 +54,13 @@ parse('16-consumables.md', 'consumable', 'ของใช้ในศึก');
 parse('17-life-tools.md', 'tool', 'เครื่องมือชีวิต');
 parse('18-materials-and-keys.md', (id) => (id.startsWith('ky_') ? 'key' : 'material'), 'วัสดุและของสำคัญ');
 
+// paired items (docs/systems/bonds/06-paired-items.md): one row per half
+for (const l of fs.readFileSync(path.join(root, 'docs/systems/bonds/06-paired-items.md'), 'utf8').split('\n')) {
+  if (!l.startsWith('| pr_')) continue;
+  const c = cells(l);
+  if (TIERS.includes(c[2])) items.push({ id: c[0], name: c[1], tier: c[2], label: 'ไอเทมคู่', k: 'paired', net: stat(l), tags: 0, sell: '' });
+}
+
 const price = (it) => {
   if (it.k === 'key') return null;
   const base = BASE[it.k][TIERS.indexOf(it.tier)];
@@ -65,11 +73,11 @@ const price = (it) => {
 
 const groups = [
   ['armor', 'เกราะและโล่'], ['accessory', 'เครื่องประดับ'], ['folk', 'ของขลังพื้นบ้าน'], ['ancient', 'เครื่องรางโบราณ'],
-  ['consumable', 'ของใช้ในศึก'], ['tool', 'เครื่องมือชีวิต'], ['material', 'วัสดุจากสิ่งมีชีวิตและพืช'], ['key', 'ของสำคัญ'],
+  ['paired', 'ไอเทมคู่ (ไม่ขาย)'], ['consumable', 'ของใช้ในศึก'], ['tool', 'เครื่องมือชีวิต'], ['material', 'วัสดุจากสิ่งมีชีวิตและพืช'], ['key', 'ของสำคัญ'],
 ];
 let md = `# รายการไอเทมที่ไม่ใช่อาวุธ
 
-สร้างโดย \`node scripts/docs/build-item-catalog.mjs\` จากไฟล์ 12 ถึง 18 อย่าแก้ไฟล์นี้โดยตรง กติการาคาอยู่ที่ [../systems/items/19-prices.md](../systems/items/19-prices.md) ราคาในตารางคือราคาซื้อที่ตลาดประเทศ W 3 ปกติ (ดัชนีราคา ×1.0) ราคารับซื้อ 40% ราคาขายตรงให้ผู้ใช้ 70% ของไอเทมที่ขาย
+สร้างโดย \`node scripts/docs/build-item-catalog.mjs\` จากไฟล์ 12 ถึง 18 และไอเทมคู่ใน [../systems/bonds/06-paired-items.md](../systems/bonds/06-paired-items.md) อย่าแก้ไฟล์นี้โดยตรง กติการาคาอยู่ที่ [../systems/items/19-prices.md](../systems/items/19-prices.md) ราคาในตารางคือราคาซื้อที่ตลาดประเทศ W 3 ปกติ (ดัชนีราคา ×1.0) ราคารับซื้อ 40% ราคาขายตรงให้ผู้ใช้ 70% ของไอเทมที่ขาย
 
 อาวุธอยู่ที่ [weapon-catalog.md](weapon-catalog.md)
 
