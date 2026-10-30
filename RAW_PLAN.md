@@ -201,7 +201,7 @@
 
 ## 5. เมื่อเริ่ม session ใหม่
 
-1. อ่านไฟล์นี้ และ `.agent/RULE.md`
+1. อ่านไฟล์นี้ และ `.agent/RULE.md` (งานภาพที่สร้างด้วยโมเดล ComfyUI ใช้ได้เฉพาะเครื่อง Linux ของเจ้าของ: `.agent/ART.md` อ่านเมื่อถูกขอให้ทำงานภาพเท่านั้น)
 2. อ่าน `docs/README.md` (สามชั้น lore · systems · appearance ไฟล์เจ้าของของแต่ละเรื่อง ลำดับอ่านตามงาน) แล้วอ่าน `README.md` ของโฟลเดอร์ที่จะทำงาน ถ้าจะเพิ่มข้อมูลใหม่ให้อ่าน `docs/guide/organization.md` ก่อนว่าวางชั้นไหน
 3. ก่อนอ้างรหัสใด ให้ค้นในเอกสารต้นทางก่อน
    - รหัสเหตุการณ์: `docs/systems/events/world-events.md` และ `docs/systems/events/branches/02-new-lands.md`

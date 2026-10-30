@@ -1,0 +1,91 @@
+{
+  "comfyui": {
+    "tested_version": "0.40.0",
+    "custom_nodes": [
+      "ComfyUI-GGUF"
+    ],
+    "machine": "AMD RX 7900 XTX 24 GB, 32 GB RAM, ROCm, Docker"
+  },
+  "models": [
+    {
+      "file": "qwen-image-2.1-UC-Q6_K.gguf",
+      "folder": "unet",
+      "size": 5876556576,
+      "sha256": "e14bb312109333b3d73b92ad9b9ac8b29b51f2edca1e7b86d1af1981bf1c4ee3",
+      "used_by": [
+        "qwen21_t2i",
+        "qwen21_edit"
+      ],
+      "source": "provided by the user, origin not recorded",
+      "role": "image model (loaded with ComfyUI-GGUF)"
+    },
+    {
+      "file": "qwen3vl_8b_int8_convrot.safetensors",
+      "folder": "clip",
+      "size": 9350798360,
+      "sha256": "8bfd0f6e12abf2d2d697ecc888e5e90b0d6741d6708f05799f53afa560452e8f",
+      "used_by": [
+        "qwen21_t2i",
+        "qwen21_edit"
+      ],
+      "source": "provided by the user, origin not recorded",
+      "role": "text encoder"
+    },
+    {
+      "file": "qwen_image_2.1_vae_bf16.safetensors",
+      "folder": "vae",
+      "size": 675509688,
+      "sha256": "bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9",
+      "used_by": [
+        "qwen21_t2i",
+        "qwen21_edit"
+      ],
+      "source": "provided by the user, origin not recorded",
+      "role": "VAE"
+    },
+    {
+      "file": "birefnet.safetensors",
+      "folder": "background_removal",
+      "size": 444473596,
+      "sha256": "9ab37426bf4de0567af6b5d21b16151357149139362e6e8992021b8ce356a154",
+      "used_by": [
+        "cutout_birefnet"
+      ],
+      "source": "https://huggingface.co/Comfy-Org/BiRefNet/resolve/main/background_removal/birefnet.safetensors",
+      "role": "background removal (BiRefNet, MIT)"
+    },
+    {
+      "file": "wan2.2_ti2v_5B_fp16.safetensors",
+      "folder": "diffusion_models",
+      "size": 9999658848,
+      "sha256": "456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e",
+      "used_by": [
+        "wan22_ti2v5b_i2v"
+      ],
+      "source": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors",
+      "role": "video model (Wan 2.2 TI2V 5B, Apache-2.0)"
+    },
+    {
+      "file": "wan2.2_vae.safetensors",
+      "folder": "vae",
+      "size": 1409400960,
+      "sha256": "e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156",
+      "used_by": [
+        "wan22_ti2v5b_i2v"
+      ],
+      "source": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors",
+      "role": "Wan VAE"
+    },
+    {
+      "file": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "folder": "text_encoders",
+      "size": 6735906897,
+      "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+      "used_by": [
+        "wan22_ti2v5b_i2v"
+      ],
+      "source": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "role": "Wan text encoder"
+    }
+  ]
+}

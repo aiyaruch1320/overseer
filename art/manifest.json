@@ -1,0 +1,53 @@
+{
+  "note": "Source of truth for the painted assets that live in public/art. Build one with: python3 art/tools/gen.py build <id>. Prompts are English because the image model follows them best.",
+  "assets": {
+    "icons-power": {
+      "title": "ไอคอนพลังเทพ 9 ชิ้น (แถบพลังเทพและทรัพยากร): bless curse weapon dream heal globe fate faith dread",
+      "kind": "icon-sheet",
+      "made": "2026-10-30",
+      "workflow": "qwen21_t2i.json",
+      "cutout_workflow": "cutout_birefnet.json",
+      "seed_key": "6.seed",
+      "set": {
+        "4.prompt": "A sheet of nine fantasy game power icons in a 3 by 3 grid on a plain flat dark grey background, each icon separate and centred in its own cell with generous margin, realistic hand-painted rendering, consistent soft top-left lighting, rich but restrained colours, no text, no frames. Row 1: a golden halo ring with soft radiant light rays; a violet cursed skull wreathed in dark purple flame; an ornate steel longsword with a gold crossguard. Row 2: a crescent moon with drifting dream clouds and tiny stars in blue and violet; a glowing white feather inside golden light; a small brass world globe with painted continents. Row 3: a golden spindle with a glowing silver thread; a golden holy flame; a menacing violet eye in darkness with dark tendrils.",
+        "5.width": 1536,
+        "5.height": 1536,
+        "6.steps": 10,
+        "6.seed": 33
+      },
+      "grid": [3, 3],
+      "icons": [
+        { "name": "bless", "cut": "matte" },
+        { "name": "curse", "cut": "matte" },
+        { "name": "weapon", "cut": "birefnet" },
+        { "name": "dream", "cut": "matte" },
+        { "name": "heal", "cut": "birefnet" },
+        { "name": "globe", "cut": "birefnet" },
+        { "name": "fate", "cut": "matte" },
+        { "name": "faith", "cut": "birefnet" },
+        { "name": "dread", "cut": "matte" }
+      ],
+      "size": 128,
+      "margin": 0.06,
+      "out": "public/art/ui/icons/{name}.webp",
+      "used_by": "src/ui/icons.ts (PAINTED)"
+    },
+    "cine-flood": {
+      "title": "ฉากเหตุการณ์น้ำท่วม (ภาพ 16:9 สำหรับกล่องเหตุการณ์ใหญ่)",
+      "kind": "image",
+      "made": "2026-10-30",
+      "workflow": "qwen21_t2i.json",
+      "seed_key": "6.seed",
+      "set": {
+        "4.prompt": "Cinematic wide painting of a great flood surging into a medieval coastal town at dusk, timber houses, people fleeing along a stone quay, dark storm clouds with a break of golden light, realistic painterly game cutscene art",
+        "5.width": 1280,
+        "5.height": 720,
+        "6.steps": 10,
+        "6.seed": 21
+      },
+      "quality": 84,
+      "out": "public/art/ui/cine/flood.webp",
+      "used_by": "src/ui/cine.ts (PAINTED.flood)"
+    }
+  }
+}

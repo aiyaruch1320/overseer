@@ -1,0 +1,135 @@
+{
+ "prompt": {
+  "1": {
+   "class_type": "UNETLoader",
+   "inputs": {
+    "unet_name": "wan2.2_ti2v_5B_fp16.safetensors",
+    "weight_dtype": "default"
+   }
+  },
+  "2": {
+   "class_type": "CLIPLoader",
+   "inputs": {
+    "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "type": "wan",
+    "device": "default"
+   }
+  },
+  "3": {
+   "class_type": "VAELoader",
+   "inputs": {
+    "vae_name": "wan2.2_vae.safetensors"
+   }
+  },
+  "4": {
+   "class_type": "LoadImage",
+   "inputs": {
+    "image": "input.png"
+   }
+  },
+  "5": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "clip": [
+     "2",
+     0
+    ],
+    "text": "gentle waves on the sea, static camera, top-down view, calm"
+   }
+  },
+  "6": {
+   "class_type": "CLIPTextEncode",
+   "inputs": {
+    "clip": [
+     "2",
+     0
+    ],
+    "text": "camera movement, zoom, blurry, distorted, text, subtitles, people appearing"
+   }
+  },
+  "7": {
+   "class_type": "ModelSamplingSD3",
+   "inputs": {
+    "model": [
+     "1",
+     0
+    ],
+    "shift": 8.0
+   }
+  },
+  "8": {
+   "class_type": "Wan22ImageToVideoLatent",
+   "inputs": {
+    "vae": [
+     "3",
+     0
+    ],
+    "start_image": [
+     "4",
+     0
+    ],
+    "width": 832,
+    "height": 480,
+    "length": 49,
+    "batch_size": 1
+   }
+  },
+  "9": {
+   "class_type": "KSampler",
+   "inputs": {
+    "model": [
+     "7",
+     0
+    ],
+    "positive": [
+     "5",
+     0
+    ],
+    "negative": [
+     "6",
+     0
+    ],
+    "latent_image": [
+     "8",
+     0
+    ],
+    "seed": 1,
+    "steps": 20,
+    "cfg": 5.0,
+    "sampler_name": "uni_pc",
+    "scheduler": "simple",
+    "denoise": 1.0
+   }
+  },
+  "10": {
+   "class_type": "VAEDecodeTiled",
+   "inputs": {
+    "samples": [
+     "9",
+     0
+    ],
+    "vae": [
+     "3",
+     0
+    ],
+    "tile_size": 256,
+    "overlap": 64,
+    "temporal_size": 32,
+    "temporal_overlap": 8
+   }
+  },
+  "11": {
+   "class_type": "SaveWEBM",
+   "inputs": {
+    "images": [
+     "10",
+     0
+    ],
+    "filename_prefix": "video/wan",
+    "codec": "vp9",
+    "fps": 24.0,
+    "crf": 30.0
+   }
+  }
+ }
+}
