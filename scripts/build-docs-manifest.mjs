@@ -49,6 +49,7 @@ const SOURCE = {
   '_generated/npc-map.html': 'scripts/build-npc-map.mjs',
   '_generated/story-map.html': 'scripts/build-story-map.mjs',
   '_generated/weapon-catalog.md': 'scripts/build-weapon-catalog.mjs',
+  '_generated/item-catalog.md': 'scripts/build-item-catalog.mjs',
   '_generated/character-catalog': 'scripts/export-character-catalog.ts',
   '_generated/poc-visuals': 'scripts/gen-visual-docs.ts',
   '_generated/manifest.json': 'scripts/build-docs-manifest.mjs',

@@ -9,6 +9,7 @@
 | [manifest.json](manifest.json) | ทุกไฟล์ใน `docs/` | `node scripts/build-docs-manifest.mjs` |
 | [npc-map.html](npc-map.html) | [../lore/npcs/](../lore/npcs/README.md) และเหตุการณ์ | `node scripts/build-npc-map.mjs` |
 | [story-map.html](story-map.html) | [../systems/events/](../systems/events/README.md) และเส้นเรื่อง | `node scripts/build-story-map.mjs` |
+| [item-catalog.md](item-catalog.md) | [../systems/items/](../systems/items/README.md) ไฟล์ 12 ถึง 18 และราคาตาม [19-prices.md](../systems/items/19-prices.md) | `node scripts/build-item-catalog.mjs` |
 | [weapon-catalog.md](weapon-catalog.md) | [../systems/items/](../systems/items/README.md) ไฟล์ 01 ถึง 08 และวัสดุ | `node scripts/build-weapon-catalog.mjs` |
 | [character-catalog/](character-catalog/) | ข้อมูลในโค้ดเกม (`src/`) | `npx tsx scripts/export-character-catalog.ts` |
 | [poc-visuals/](poc-visuals/) | ธีมภาพและ NPC พิเศษในโค้ด (`src/render/`, `src/data/`) | `npm run docs:visuals` |
