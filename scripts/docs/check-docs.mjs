@@ -137,6 +137,20 @@ for (const line of lines('lore/storylines/00-convergence.md')) {
     if (!new RegExp(`${m[1].replace('.', '\\.')}(?!\\d)`).test(nodeText[node] || '')) err('lore/storylines/00-convergence.md', 0, 'cv-entry', `${m[1]} ${node}`);
 }
 
+// Tag source table in the secret jobs file (section ฉ): the gift named in a row must appear in the node it points to.
+{
+  const rows = lines('systems/character/10-jobs-secret.md').filter((l) => /^\| `#[a-z_]+` \|/.test(l));
+  if (!rows.length) err('systems/character/10-jobs-secret.md', 0, 'tag-source', 'no rows in the tag source table');
+  for (const row of rows) {
+    const cells = row.split('|').map((c) => c.trim());
+    const gift = (cells[3].match(/`([a-z]+_[a-z_]+)`/) || [])[1];
+    const node = (cells[4].match(/\b[a-z]{2}\.[btae]\d/) || [])[0];
+    if (!node) continue;
+    if (!gift) { err('systems/character/10-jobs-secret.md', 0, 'tag-source', `${cells[1]} has a node but no gift id`); continue; }
+    if (!(nodeText[node] || '').includes(`\`${gift}\``)) err('systems/character/10-jobs-secret.md', 0, 'tag-source', `${cells[1]} ${gift} not in ${node}`);
+  }
+}
+
 // ---------- items ----------
 const BAND = { 'ของใช้': [0, 0, 0, 1], C: [1, 1, 0, 1], U: [1, 2, 1, 2], R: [2, 3, 2, 3], E: [3, 4, 3, 4], L: [5, 6, 4, 6] };
 function budget(stats) {
