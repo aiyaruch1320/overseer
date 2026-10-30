@@ -328,7 +328,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 73,
-   "bytes": 6681,
+   "bytes": 6683,
    "headings": [
     "1. ต่อเผ่า",
     "2. สรุป",
@@ -1988,8 +1988,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 244,
-   "bytes": 35173,
+   "lines": 258,
+   "bytes": 39831,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -2083,7 +2083,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 13009,
+   "bytes": 13398,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2123,7 +2123,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 13722,
+   "bytes": 14029,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2223,7 +2223,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 13595,
+   "bytes": 13863,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2283,7 +2283,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 13617,
+   "bytes": 14105,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2323,7 +2323,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 13258,
+   "bytes": 13529,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2403,7 +2403,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 12934,
+   "bytes": 13447,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การลุก)",
@@ -4380,8 +4380,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 186,
-   "bytes": 26915,
+   "lines": 188,
+   "bytes": 28611,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
