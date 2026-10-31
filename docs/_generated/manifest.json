@@ -2757,7 +2757,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 197,
-   "bytes": 35928,
+   "bytes": 36224,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -3666,8 +3666,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 1587,
-   "bytes": 223280,
+   "lines": 1597,
+   "bytes": 227026,
    "headings": [
     "1. หลักการ",
     "2. เงื่อนไขเปิดศึก",
@@ -3979,7 +3979,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 163,
-   "bytes": 29307,
+   "bytes": 29348,
    "headings": [
     "1. ช่วงย่อย",
     "2. กติกาความหนาแน่น",
@@ -4475,8 +4475,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 215,
-   "bytes": 34413,
+   "lines": 214,
+   "bytes": 34562,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
