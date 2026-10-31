@@ -94,6 +94,10 @@ for (let s = 1; s <= WORLDS; s++) {
   const E = w.ended ? w.ended[1] - START : 1800;
   const evs = [];
   for (const [y, id] of w.log) { if (id === 'DR-15') continue; evs.push({ y: y - START, id, mk: id.startsWith('END') || id.startsWith('DR') ? '⭐' : '●' }); }
+  // the last-era events are anchors too (they are the events of the last era); the two countdown scenes sit next to the end and are left out
+  const LE_MARK = { 'LE-01': '○', 'LE-02': '○', 'LE-03': '●', 'LE-04': '○', 'LE-05': '●', 'LE-06': '●', 'LE-07': '○', 'LE-08': '●', 'LE-09': '●', 'LE-11': '●' };
+  for (const [y, id] of w.le) if (LE_MARK[id] && !process.env.NO_LE_ANCHOR) evs.push({ y: y - START, id, mk: LE_MARK[id] });
+  const leYears = w.le.filter(([, id]) => LE_MARK[id]).map(([y]) => y - START);
   const falls = [];
   for (const [id, ys] of w.fired) if (id.startsWith('_fall_')) for (const y of ys) falls.push(y - START);
   for (const race of races) {
@@ -101,7 +105,7 @@ for (let s = 1; s <= WORLDS; s++) {
     for (const rule of RULES) {
       const b = pick(rule, w, race.code, L, E, evs);
       const lo = b + ADULT * L, hi = Math.min(b + L, E);
-      const a = ((acc[rule] ||= {})[race.code] ||= { n: 0, ev: 0, evLife: 0, noEvLife: 0, cv: 0, cvPos: 0, noCv: 0, fall: 0, fallLife: 0, cast: 0, endHit: 0, late: 0, sigs: new Set(), arcFixed: 0, arcClock: 0, arcFixedNow: 0, arcClockNow: 0, arcFixedNowZero: 0, arcClockNowZero: 0 });
+      const a = ((acc[rule] ||= {})[race.code] ||= { n: 0, ev: 0, evLife: 0, noEvLife: 0, cv: 0, cvPos: 0, noCv: 0, fall: 0, fallLife: 0, cast: 0, endHit: 0, late: 0, le: 0, leLives: 0, sigs: new Set(), arcFixed: 0, arcClock: 0, arcFixedNow: 0, arcClockNow: 0, arcFixedNowZero: 0, arcClockNowZero: 0 });
       a.n++;
       const adultEv = evs.filter((e) => e.y >= lo && e.y <= hi).length;
       const lifeEv = evs.filter((e) => e.y >= b && e.y <= Math.min(b + L, E));
@@ -110,6 +114,8 @@ for (let s = 1; s <= WORLDS; s++) {
       let seen = 0, possible = 0;
       for (const c of cvs) { const v = lifeSeesCv(race, START + b, L, c, w); if (v === null) continue; possible++; if (v) seen++; }
       a.cv += seen; a.cvPos = possible; if (!seen) a.noCv++;
+      const leIn = leYears.filter((y) => y >= b && y <= b + L).length;
+      a.le += leIn; if (leIn) a.leLives++;
       const fl = falls.filter((y) => y >= b && y <= b + L).length;
       a.fall += fl; if (fl) a.fallLife++;
       a.cast += castAlive(race.code, lo);
@@ -136,8 +142,8 @@ if (process.argv.includes('--tables')) {
   for (const race of races) { const a = acc.mixed[race.code]; out.push(`| ${race.name} | ${pc(a.cast / a.n)} |`); }
   out.push('<<END>>');
 } else {
-  out.push('| กติกา | เหตุการณ์ต่อชีวิต (เฉลี่ยทุกเผ่า) | มังกรล้มที่เห็น | จุดบรรจบที่เจอ | NPC ต้นฉบับยังมีชีวิตตอนโตเป็นผู้ใหญ่ | ชีวิตที่โลกจบ | เกิดหลังปี 200 |', '| --- | --- | --- | --- | --- | --- | --- |');
-  for (const rule of RULES) out.push(`| ${rule} | ${f1(avgOf(rule, 'ev'))} | ${f1(avgOf(rule, 'fall'))} | ${f1(avgOf(rule, 'cv'))} | ${pc(avgOf(rule, 'cast'))} | ${pc(avgOf(rule, 'endHit'))} | ${pc(avgOf(rule, 'late'))} |`);
+  out.push('| กติกา | เหตุการณ์ต่อชีวิต (เฉลี่ยทุกเผ่า) | มังกรล้มที่เห็น | จุดบรรจบที่เจอ | NPC ต้นฉบับยังมีชีวิตตอนโตเป็นผู้ใหญ่ | ชีวิตที่โลกจบ | เกิดหลังปี 200 | LE ต่อชีวิต | ชีวิตที่เจอ LE |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
+  for (const rule of RULES) out.push(`| ${rule} | ${f1(avgOf(rule, 'ev'))} | ${f1(avgOf(rule, 'fall'))} | ${f1(avgOf(rule, 'cv'))} | ${pc(avgOf(rule, 'cast'))} | ${pc(avgOf(rule, 'endHit'))} | ${pc(avgOf(rule, 'late'))} | ${f2(avgOf(rule, 'le'))} | ${pc(avgOf(rule, 'leLives'))} |`);
   out.push('', 'เรื่องของ NPC ในประเทศ (4 ตำแหน่ง): ทุกเรื่องเปิดตอนโลกเริ่ม (fixed) เทียบกับนาฬิกาของแต่ละผู้ถือ (clock) · "ช่วงผู้ใหญ่" = เรื่องที่เปิดอย่างน้อยครั้งหนึ่ง · "ขณะหนึ่ง" = เรื่องที่เปิดอยู่ ณ จังหวะสุ่มหนึ่งของช่วงผู้ใหญ่', '| กติกาจุดเกิด | fixed ช่วงผู้ใหญ่ | fixed ขณะหนึ่ง | fixed ขณะหนึ่งไม่มีเลย | clock ช่วงผู้ใหญ่ | clock ขณะหนึ่ง | clock ขณะหนึ่งไม่มีเลย |', '| --- | --- | --- | --- | --- | --- | --- |');
   for (const rule of RULES) out.push(`| ${rule} | ${f2(avgOf(rule, 'arcFixed'))} | ${f2(avgOf(rule, 'arcFixedNow'))} | ${pc(avgOf(rule, 'arcFixedNowZero'))} | ${f2(avgOf(rule, 'arcClock'))} | ${f2(avgOf(rule, 'arcClockNow'))} | ${pc(avgOf(rule, 'arcClockNowZero'))} |`);
 }
