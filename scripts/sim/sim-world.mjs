@@ -16,15 +16,19 @@ const HORIZON = 1800; // years simulated per world
 export const P = {
   rate: { '⭐': 0.08, '●': 0.12, '○': 0.2 }, // chance per decade once an event is enabled
   stateBoost: 2, // multiplier when the event has a numeric state condition that holds
-  stress: 1.0, // mood decay per decade (times each dragon's own factor)
+  stress: 0.7, // mood decay per decade (times each dragon's own factor)
   rec: 0.03, // mood recovery per decade toward the cap, scaled by world faith / 60
-  wave: 0.35, // scale of the mourning wave on other dragons (docs: -15 to -25, closest -40)
-  faithDrift: -0.5, // world faith change per decade
-  hero: 0.1, // DR-13 chance per decade once a dragon has fallen (the spear wl_dragon_bane is forged from a fallen dragon's bone)
+  wave: 0.2, // scale of the mourning wave on other dragons (docs: -15 to -25, closest -40)
+  faithDrift: -0.3, // world faith change per decade
+  hero: 0.07, // DR-13 chance per decade once a dragon has fallen (the spear wl_dragon_bane is forged from a fallen dragon's bone)
   hero0: 0.02, // before any dragon has fallen only wl_hrod can start DR-13
   capYears: { '⭐': 80, '●': 25, '○': 8 }, // docs/systems/events/world-events.md section 0.2
   windowYears: 100, // how long a convergence point stays open after its trigger (docs/lore/storylines/00-convergence.md)
   strictCap: false, // apply the section 0.2 cap to dragon falls too
+  conj: true, // the world ends only when several things come together (docs/systems/events/world-events.md section 13); false = the old rule that DFC 15 ends it at once
+  capDfc: 3, // each fallen dragon lowers the mood cap of the others by this much
+  end12: 0.02, // chance per decade of END-12 once WR-15 has happened, faith is above 70 and two peace events have happened
+  end11: 0.01, // chance per decade of END-11 once WR-15 and MC-12 have happened
 };
 
 // ---------- data ----------
@@ -130,6 +134,8 @@ export function runWorld(seed, opt = {}) {
   };
   const eraStart = [START, null, null, null];
   let ended = null;
+  const rl = rng(seed ^ 0x9e3779b9); // its own random stream, so adding the LE events does not move any other result
+  const le = []; // last-era events (docs/systems/events/branches/04-last-era.md); they change nothing else in the sim
   fire('FG-01', START - 12);
   const cap = (cls, year) => year - lastClass[cls] >= p.capYears[cls];
 
@@ -158,16 +164,18 @@ export function runWorld(seed, opt = {}) {
     S.T = Math.min(100, Math.max(0, S.T - 0.8 + gauss(r) * 1.5));
     S.D = Math.min(100, Math.max(0, S.D + 0.6 + gauss(r) * 2));
     S.F = Math.min(100, Math.max(0, S.F + p.faithDrift + gauss(r) * 2.5));
-    const capM = 100 - 3 * dfc;
+    const capM = 100 - p.capDfc * dfc;
     for (let i = 0; i < 15; i++) {
       if (!alive[i]) continue;
       const drift = p.rec * (capM - mood[i]) * (S.F / 60) - DRAGONS[i][3] * p.stress;
+      // (mood decay per dragon: see P.stress)
       mood[i] = Math.min(capM, mood[i] + drift + gauss(r) * 1.5);
     }
     // dragon falls by mood
     const order = DRAGONS.map((_, i) => i).sort((a, b) => mood[a] - mood[b]);
     for (const i of order) {
       if (!alive[i] || mood[i] >= 10) continue;
+      if (p.conj && alive.filter(Boolean).length === 1) continue; // the last dragon falls only together with the end of the world
       const [, id, minEra] = DRAGONS[i];
       if (era() < minEra) continue; // the docs gate elder falls by era
       const star = id.startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(id) ? '⭐' : '●';
@@ -177,7 +185,7 @@ export function runWorld(seed, opt = {}) {
     // hero kills a legend dragon (DR-13), allowed in every era
     if (r() < (dfc === 0 ? p.hero0 : p.hero)) {
       const live = alive.map((a, i) => (a ? i : -1)).filter((i) => i >= 0);
-      if (live.length > 1 && !(p.strictCap && !cap('●', year))) {
+      if (live.length > (p.conj ? 1 : 1) && !(p.strictCap && !cap('●', year))) {
         const w = live.map((i) => 100 - mood[i] + 10);
         let x = r() * w.reduce((a, b) => a + b, 0), k = 0;
         while (x > w[k]) { x -= w[k]; k++; }
@@ -195,6 +203,8 @@ export function runWorld(seed, opt = {}) {
       const er = era();
       if (er < e.gate[0] || er > e.gate[1]) continue;
       if (e.prereq.length && !e.prereq.some((x) => fired.has(x))) continue;
+      if (p.conj && e.id === 'WR-15' && !(er === 4 && dfc >= 11)) continue; // five keys are only in play late in era 4
+      if (p.conj && e.id === 'WR-23' && !(er === 4 && S.F < 45)) continue; // every side has lost its faith
       let boost = 1;
       if (e.thr.length) {
         const ok = e.thr.every(([v, op, n]) => {
@@ -215,15 +225,46 @@ export function runWorld(seed, opt = {}) {
       if (e.id === 'HP-07') S.H -= 25;
       if (e.id === 'DR-11') { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - 3 * dfc, mood[i] + 40); S.F += 10; }
       if (e.id === 'FG-10') { S.D -= 40; }
-      if (e.id === 'DR-09' && r() < 0.4) { const live = [0, 1, 2, 3, 4, 5].filter((i) => alive[i]); if (live.length) fall(live[Math.floor(r() * live.length)], year, null, null); }
-      if (e.id === 'DR-10') { const live = alive.map((a, i) => (a ? i : -1)).filter((i) => i >= 0); if (live.length) fall(live[Math.floor(r() * live.length)], year, null, null); }
+      if (e.id === 'DR-09' && r() < 0.4) { const live = [0, 1, 2, 3, 4, 5].filter((i) => alive[i]); if (live.length && alive.filter(Boolean).length > 1) fall(live[Math.floor(r() * live.length)], year, null, null); }
+      if (e.id === 'DR-10') { const live = alive.map((a, i) => (a ? i : -1)).filter((i) => i >= 0); if (live.length > 1) fall(live[Math.floor(r() * live.length)], year, null, null); }
+    }
+    // last-era events: phases by DFC (4a 10-11, 4b 12-13, 4c 14), repeatable ones keep 30 years apart
+    {
+      const has = (id) => le.some((x) => x[1] === id);
+      const lastOf = (id) => Math.max(-1e9, ...le.filter((x) => x[1] === id).map((x) => x[0]));
+      const a = dfc >= 10 && dfc <= 11 || dfc >= 12 && dfc <= 13, b = dfc >= 12 && dfc <= 13;
+      const defs = [
+        ['LE-01', '○', dfc >= 10 && !has('LE-01')],
+        ['LE-02', '○', a && has('LE-01') && year - lastOf('LE-02') >= 30],
+        ['LE-03', '●', a && has('LE-02') && year - lastOf('LE-03') >= 30],
+        ['LE-04', '○', a && has('LE-01') && year - lastOf('LE-04') >= 30],
+        ['LE-05', '●', b && !has('LE-05')],
+        ['LE-06', '●', b && has('LE-05') && year - lastOf('LE-06') >= 30],
+        ['LE-07', '○', b && !has('LE-07')],
+        ['LE-08', '●', b && has('LE-03') && year - lastOf('LE-08') >= 30],
+        ['LE-09', '●', dfc >= 14 && !has('LE-09')],
+      ];
+      if (p.le !== false) for (const [id, mk, ok] of defs) if (ok && rl() < p.rate[mk]) le.push([year, id]);
+      if (p.le !== false && fired.has('WR-15') && !has('LE-11') && dfc >= 11) le.push([fired.get('WR-15')[0], 'LE-11']);
     }
     // endings
-    if (dfc >= 9 && S.F > 70 && r() < 0.03) { fire('END-12', year, '⭐'); ended = ['END-12', year]; }
-    else if (era() === 4 && r() < 0.01) { fire('END-11', year, '⭐'); ended = ['END-11', year]; }
-    else if (dfc >= 15) { fire('END-10', year, '⭐'); ended = ['END-10', year]; }
+    if (!p.conj) {
+      if (dfc >= 9 && S.F > 70 && r() < 0.03) { fire('END-12', year, '⭐'); ended = ['END-12', year]; }
+      else if (era() === 4 && r() < 0.01) { fire('END-11', year, '⭐'); ended = ['END-11', year]; }
+      else if (dfc >= 15) { fire('END-10', year, '⭐'); ended = ['END-10', year]; }
+    } else {
+      const peace = ['HP-01', 'HP-02', 'HP-03', 'HP-05', 'HP-06', 'HP-07', 'HP-08'].filter((x) => fired.has(x)).length;
+      if (era() === 4 && fired.has('WR-15') && S.F > 70 && peace >= 2 && r() < p.end12) { fire('END-12', year, '⭐'); ended = ['END-12', year]; }
+      else if (era() === 4 && fired.has('WR-15') && fired.has('MC-12') && r() < p.end11) { fire('END-11', year, '⭐'); ended = ['END-11', year]; }
+      else if (dfc === 14 && fired.has('WR-23')) {
+        const last = alive.findIndex(Boolean);
+        if (last >= 0) fall(last, year, null, null);
+        fire('END-10', year, '⭐'); ended = ['END-10', year];
+      }
+    }
   }
-  return { fired, log, dfc, ended, eraStart, alive };
+  if (ended && p.le !== false) { le.push([ended[1] - 10, 'LE-10']); le.push([ended[1] - 10, 'LE-12']); } // the countdown scenes
+  return { fired, log, dfc, ended, eraStart, alive, le };
 }
 
 // ---------- convergence windows ----------

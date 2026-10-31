@@ -132,6 +132,8 @@ if (process.argv.includes('--tables')) {
   for (const race of races) { const a = acc.mixed[race.code]; out.push(`| ${race.name} | ${f1(a.fall / a.n)} | ${(a.evLife / a.n).toFixed(0)} | ${f2(a.cv / a.n)} (${a.cvPos}) | ${pc(a.noCv / a.n)} |`); }
   out.push('<<TABLE-FRESH>>', '| เผ่า | เห็นมังกรล้มในชีวิต | โลกจบในชีวิต | เหตุการณ์โลกต่อชีวิต | ชีวิตที่ไม่มีเหตุการณ์โลกเลย | ชุดเหตุการณ์ไม่ซ้ำกัน |', '| --- | --- | --- | --- | --- | --- |');
   for (const race of races) { const a = acc.mixed[race.code]; out.push(`| ${race.name} | ${pc(a.fallLife / a.n)} | ${pc(a.endHit / a.n)} | ${f1(a.evLife / a.n)} | ${pc(a.noEvLife / a.n)} | ${pc(a.sigs.size / a.n)} |`); }
+  out.push('<<TABLE-CAST>>', '| เผ่า | NPC ต้นฉบับยังอยู่ตอนตัวละครโตเป็นผู้ใหญ่ |', '| --- | --- |');
+  for (const race of races) { const a = acc.mixed[race.code]; out.push(`| ${race.name} | ${pc(a.cast / a.n)} |`); }
   out.push('<<END>>');
 } else {
   out.push('| กติกา | เหตุการณ์ต่อชีวิต (เฉลี่ยทุกเผ่า) | มังกรล้มที่เห็น | จุดบรรจบที่เจอ | NPC ต้นฉบับยังมีชีวิตตอนโตเป็นผู้ใหญ่ | ชีวิตที่โลกจบ | เกิดหลังปี 200 |', '| --- | --- | --- | --- | --- | --- | --- |');

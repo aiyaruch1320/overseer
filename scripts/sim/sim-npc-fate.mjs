@@ -9,9 +9,10 @@ const read = (p) => fs.readFileSync(path.join(docs, p), 'utf8');
 const md = process.argv.includes('--md');
 
 // ---- inputs the doc defines ----
-const ERA4_START = 830; // median world year (from 10,400) at which DFC reaches 10, world-time.md section 4
-const END = 870; // median end of the world
-const PHASE_YEARS = [15, 15, 10]; // 4a, 4b, 4c lengths used for natural mortality
+const ERA4_START = 1320; // median world year (from 10,400) at which DFC reaches 10, world-time.md section 4
+const END = 1800; // the horizon of the world sim; most worlds do not end
+const PHASE_YEARS = [140, 130, 130]; // 4a, 4b, 4c lengths used for natural mortality (falls are 130 to 140 years apart, world-sim.md section 3.1)
+const ADULT_SHARE = 0.27, ELDER_SHARE = 0.73; // share of lifespan, world-time.md section 3
 const REVISED = !process.argv.includes('--old'); // the adjusted table is the one in the doc; --old prints the first draft
 const TABLE = REVISED ? {
   keeper: [[50, 20, 15, 15], [35, 20, 25, 20], [40, 10, 35, 15]],
@@ -87,18 +88,21 @@ for (const [cls, rows] of Object.entries(TABLE)) {
   cum[cls] = { stay, moved, dead, vanished, at4c };
 }
 
-// ---- C: natural death in the 40 years of era 4 for a holder of typical adult age ----
-const natural = {};
+// ---- C: natural death for a holder of typical adult age: over one phase and the number of holders over the whole late era ----
+const ONE_PHASE = 135;
+const natural = {}, turnover = {};
 for (const code of CODES) {
   const [lo, hi] = life[code];
-  let dead = 0;
+  let dead = 0, holders = 0;
   const M = 4000;
   for (let i = 0; i < M; i++) {
     const L = lo + rnd() * (hi - lo);
-    const age = L * (0.27 + rnd() * 0.6); // uniform between adult (27% of lifespan) and old (87%)
-    if (age + PHASE_YEARS.reduce((x, y) => x + y, 0) > L) dead++;
+    const age = L * (ADULT_SHARE + rnd() * (ELDER_SHARE - ADULT_SHARE)); // between adult and elder
+    if (age + ONE_PHASE > L) dead++;
+    holders += 1 + PHASE_YEARS.reduce((x, y) => x + y, 0) / ((ELDER_SHARE - ADULT_SHARE) * L); // tenure = the adult part of a life
   }
   natural[code] = dead / M;
+  turnover[code] = holders / M;
 }
 
 // ---- output ----
@@ -118,8 +122,8 @@ for (const r of byRace) { const alive = (1 - r.nat) * (cum.other.stay + cum.othe
 console.log(lines.join('\n'));
 if (md) {
   console.log('\n<<TABLE-RACES>>');
-  console.log('| เผ่า | NPC ในรายชื่อ | ตัวเดิมยังเป็นผู้ถือตำแหน่งที่จุดเริ่มสุ่ม | ตายตามอายุขัยใน 40 ปีของยุค 4 | ตายรวมก่อนจบ (ชั้น NPC อื่น) | ยังมีชีวิตตอนจบ |\n| --- | --- | --- | --- | --- | --- |');
-  for (const r of byRace) { const alive = (1 - r.nat) * (cum.other.stay + cum.other.moved); console.log(`| ${r.name} | ${r.npc} | ${r.start === null ? '-' : pct(r.start)} | ${pct(r.nat)} | ${pct(1 - (1 - r.nat) * (1 - cum.other.dead))} | ${pct(alive)} |`); }
+  console.log('| เผ่า | NPC ในรายชื่อ | ผู้ถือตายตามอายุขัยภายในหนึ่งช่วง (135 ปี) | ผู้ถือตำแหน่งตลอดยุคปลาย (ราว 400 ปี) | ตายรวมในหนึ่งช่วง (ชั้น NPC อื่น ช่วง 4ข) |\n| --- | --- | --- | --- | --- |');
+  for (const r of byRace) console.log(`| ${r.name} | ${r.npc} | ${pct(r.nat)} | ${turnover[r.c].toFixed(1)} คน | ${pct(1 - (1 - r.nat) * (1 - TABLE.other[1][2] / 100))} |`);
   console.log('<<END>>');
 }
 if (!md) console.log('\n(numbers are Monte Carlo with a fixed seed; --md prints one combined table)');
