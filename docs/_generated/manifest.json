@@ -2757,7 +2757,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 197,
-   "bytes": 35579,
+   "bytes": 35928,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -3978,8 +3978,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 143,
-   "bytes": 26450,
+   "lines": 163,
+   "bytes": 29307,
    "headings": [
     "1. ช่วงย่อย",
     "2. กติกาความหนาแน่น",
@@ -4023,7 +4023,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 451,
-   "bytes": 98607,
+   "bytes": 99132,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4475,8 +4475,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 212,
-   "bytes": 32257,
+   "lines": 215,
+   "bytes": 34413,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
