@@ -11,5 +11,6 @@
 | [branches/01-dragon-falls.md](branches/01-dragon-falls.md) | ผลของมังกรแต่ละตัวที่ล้ม |
 | [branches/02-new-lands.md](branches/02-new-lands.md) | ทวีปใหม่และเหตุการณ์สืบทอด 42 รายการ |
 | [branches/03-character-and-quests.md](branches/03-character-and-quests.md) | ผลต่อตัวละครและภารกิจ |
+| [branches/04-last-era.md](branches/04-last-era.md) | ยุคปลาย (ยุค 4) แบ่งเป็นสามช่วงย่อย เหตุการณ์ LE 12 รายการ ชะตาของ NPC |
 
 เหตุการณ์ใช้รหัส `DR-01` `WR-03` ฯลฯ ดู [../../guide/id-glossary.md](../../guide/id-glossary.md) แผนที่เส้นเรื่องที่สร้างจากไฟล์นี้อยู่ที่ [../../_generated/story-map.html](../../_generated/story-map.html)

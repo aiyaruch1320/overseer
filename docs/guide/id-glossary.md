@@ -12,6 +12,8 @@
 | `NF-MH02-1` | ศึกของ NPC (NF- + รหัส NPC) | [../systems/combat/07-npc-clashes.md](../systems/combat/07-npc-clashes.md) · ฉาก [../appearance/15-npc-clash-scenes.md](../appearance/15-npc-clash-scenes.md) |
 | `hu.t1` `va.a4` ฯลฯ | โหนดเส้นเรื่อง (เผ่า + ช่วงชีวิต + ลำดับ) | [../lore/storylines/README.md](../lore/storylines/README.md) |
 | `bn.a1` `kn.a1` | โหนดเส้นซ้อนทับพวกพ้อง (bn พวกพ้องทั่วไป kn ญาติ) | [../lore/storylines/28-allies.md](../lore/storylines/28-allies.md) · พวกพ้องตัวหลักชุดที่สอง [../lore/storylines/29-allies-flagship.md](../lore/storylines/29-allies-flagship.md) |
+| `LE-01` ถึง `LE-12` | เหตุการณ์ยุคปลาย (ยุค 4) 12 รายการ | [../systems/events/branches/04-last-era.md](../systems/events/branches/04-last-era.md) |
+| `le.a1` `le.e1` | โหนดเส้นซ้อนทับยุคปลาย | [../lore/storylines/30-last-era.md](../lore/storylines/30-last-era.md) |
 | `FT-01` `KN-01` `PR-01` `pr_twin_whistle_a` | แม่แบบเรื่องของพวกพ้อง · แม่แบบญาติ · คู่ไอเทมคู่ · ซีกของไอเทมคู่ (ลงท้าย _a _b) | [../systems/bonds/](../systems/bonds/README.md) |
 | `{สหาย:น้อยใจ@2}` | เครื่องหมายอารมณ์ของตัวละครต่อพวกพ้อง รูปแบบ {สาย:อารมณ์@ระดับ} ตัวตรวจอ่านตารางใน [../systems/bonds/02-feelings.md](../systems/bonds/02-feelings.md) | [../systems/bonds/02-feelings.md](../systems/bonds/02-feelings.md) |
 | `bd.a1` `bo.a1` `ab.a1` | โหนดเส้นซ้อนทับการผูกตัว (ผู้ถูกผูกตัว ผู้ซื้อ ผู้ช่วย) | [../lore/storylines/27-bondage.md](../lore/storylines/27-bondage.md) |

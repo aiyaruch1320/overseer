@@ -23,8 +23,8 @@ const RACES = [
 const PREFIX = [['ดาร์กเอลฟ์', 'de'], ['เอลฟ์ใต้ดิน', 'de'], ['เอลฟ์', 'el'], ['คนแคระ', 'dw'], ['ฮาล์ฟลิง', 'ha'], ['เผ่าปีศาจ', 'dm'], ['ออร์ค', 'or'], ['โอเกอร์', 'or'], ['ยักษ์', 'gi'], ['ลูกผสมจักรกล', 'co'], ['เผ่าลาวา', 'la'], ['กูล', 'gh'], ['เผ่าสัตว์', 'be'], ['เผ่าเสือ', 'be'], ['เผ่าหมี', 'be'], ['เผ่าหมาป่า', 'be'], ['เผ่ามังกร', 'dk'], ['อาเวียน', 'wi'], ['ปีก', 'wi'], ['เผ่านก', 'wi'], ['แวมไพร์', 'va'], ['นาคา', 'na'], ['สไลม์', 'sl'], ['มัมมี่', 'mu'], ['หุ่น', 'so'], ['ภูต', 'fa'], ['เงือก', 'me'], ['ไซเรน', 'me'], ['มนุษย์', 'hu']];
 const raceOfLabel = (l) => (PREFIX.find(([p]) => l.startsWith(p)) || [, 'other'])[1];
 const CV_OPEN = { 4: 1, 10: 1, 12: 1, 13: 1, 8: 0.95, 1: 0.95, 16: 0.95, 2: 0.8, 15: 0.8, 6: 0.72, 14: 0.72, 5: 0.72, 7: 0.63, 9: 0.52, 11: 0.48, 3: 0.12 };
-// share of lives that open each overlay (from systems/travel/01-travel-rules.md section 2 and 25-journeys.md section 3; bd bo ab are rough guesses for 27-bondage.md, bn kn follow the allies rule that every life has friends and kin)
-const OVERLAY_RATE = { sf: 0.08, ps: 0.06, ml: 0.08, sc: 0.08, ex: 0.10, wd: 0.08, tr: 0.15, cr: 0.12, md: 0.06, ld: 0.06, fm: 0.30, bd: 0.05, bo: 0.04, ab: 0.12, bn: 0.85, kn: 0.60 };
+// share of lives that open each overlay (from systems/travel/01-travel-rules.md section 2 and 25-journeys.md section 3; bd bo ab are rough guesses for 27-bondage.md, bn kn follow the allies rule that every life has friends and kin; le is a guess for the share of lives that overlap era 4 and will change once the start year is random)
+const OVERLAY_RATE = { sf: 0.08, ps: 0.06, ml: 0.08, sc: 0.08, ex: 0.10, wd: 0.08, tr: 0.15, cr: 0.12, md: 0.06, ld: 0.06, fm: 0.30, bd: 0.05, bo: 0.04, ab: 0.12, bn: 0.85, kn: 0.60, le: 0.10 };
 const XC_RATE = 0.45;
 
 const read = (f) => fs.readFileSync(path.join(docs, f), 'utf8');
@@ -55,6 +55,7 @@ for (const p of ['cr', 'md', 'ld', 'fm']) overlays[p] = parseNodes('lore/storyli
 overlays.tr = parseNodes('lore/storylines/24-economy.md', 'tr');
 for (const p of ['bd', 'bo', 'ab']) overlays[p] = parseNodes('lore/storylines/27-bondage.md', p);
 for (const p of ['bn', 'kn']) overlays[p] = parseNodes('lore/storylines/28-allies.md', p);
+overlays.le = parseNodes('lore/storylines/30-last-era.md', 'le');
 const xcByName = Object.fromEntries(RACES.map(([code, name]) => [code, parseNodes('lore/storylines/25-journeys.md', 'xc').filter((n) => n.event.startsWith(name))]));
 
 const pick = (branches) => {
@@ -65,7 +66,7 @@ const pick = (branches) => {
 };
 
 // Sample mode applies an overlay only when the life so far fits it (coarse text match); statistics mode keeps the plain rates.
-const GATE = { sf: /sailor|ship|pirate|เรือ|ท่าเรือ|ทะเล/, ps: /pilgrim|priest|monk|devout|ศรัทธา|แสวงบุญ|นักบวช/, ml: /soldier|mercenary|knight|ทหาร|รับจ้าง/, sc: /scholar|scribe|librarian|teacher|mage|หอสมุด|เรียน|นักปราชญ์/, ex: /(WR|FG|DR|BIO|CT|MC)-\d+|ลี้ภัย|หนีออก|เนรเทศ|c_wanted/, wd: /bard|explorer|adventurer|performer|เร่|ผจญภัย|สำรวจ/, tr: /merchant|trade|peddler|พ่อค้า|ค้า/, cr: /smith|carpenter|weaver|potter|ช่าง/, md: /healer|apothecary|physician|midwife|หมอ|รักษา/, ld: /mayor|noble|tax_collector|ผู้นำ|นายก|ผู้ปกครอง/, fm: /farmer|shepherd|miller|fisher|ชาวนา|ชาวไร่|ฟาร์ม/ , bd: /หนี้|ผูกตัว|ขาย|สัญญา|ทาส/, bo: /ค้า|พ่อค้า|ทอง|trade|merchant/, ab: /ช่วย|ใจบุญ|kind|brave/, bn: /./, kn: /./ };
+const GATE = { sf: /sailor|ship|pirate|เรือ|ท่าเรือ|ทะเล/, ps: /pilgrim|priest|monk|devout|ศรัทธา|แสวงบุญ|นักบวช/, ml: /soldier|mercenary|knight|ทหาร|รับจ้าง/, sc: /scholar|scribe|librarian|teacher|mage|หอสมุด|เรียน|นักปราชญ์/, ex: /(WR|FG|DR|BIO|CT|MC)-\d+|ลี้ภัย|หนีออก|เนรเทศ|c_wanted/, wd: /bard|explorer|adventurer|performer|เร่|ผจญภัย|สำรวจ/, tr: /merchant|trade|peddler|พ่อค้า|ค้า/, cr: /smith|carpenter|weaver|potter|ช่าง/, md: /healer|apothecary|physician|midwife|หมอ|รักษา/, ld: /mayor|noble|tax_collector|ผู้นำ|นายก|ผู้ปกครอง/, fm: /farmer|shepherd|miller|fisher|ชาวนา|ชาวไร่|ฟาร์ม/ , bd: /หนี้|ผูกตัว|ขาย|สัญญา|ทาส/, bo: /ค้า|พ่อค้า|ทอง|trade|merchant/, ab: /ช่วย|ใจบุญ|kind|brave/, bn: /./, kn: /./, le: /./ };
 function lifeOf(code, log) {
   let pathText = '';
   const fallback = main[code].filter((n) => n.id.includes('.l'));

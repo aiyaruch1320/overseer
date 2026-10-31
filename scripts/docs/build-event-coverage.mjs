@@ -7,7 +7,7 @@ import { docs } from '../lib/paths.mjs';
 
 const read = (f) => fs.readFileSync(path.join(docs, f), 'utf8');
 const CODE = /\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}\b/g;
-const EVT = /\b(?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|SF|AS|DW|RF|WT|RL|CL|DV|LC)-\d{2,3}\b/g;
+const EVT = /\b(?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|SF|AS|DW|RF|WT|RL|CL|DV|LC|LE)-\d{2,3}\b/g;
 const NPC = /\b[A-Z]{2}\d{2}-\d\b/g;
 const CONT = { AZ: 'อัซการ์', MH: 'มอร์เฮเวน', KD: 'คาซ-ดูรัม', NR: 'เนเรีย', AL: 'อัลเดรีย', MK: 'เมคาเรีย', SH: 'ซาฮารัน', SV: 'ซิลวาเนล', NB: 'เนบูเลีย' };
 

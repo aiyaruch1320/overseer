@@ -35,7 +35,7 @@ const dir = path.join(root, 'docs/lore/npcs');
 const files = fs.readdirSync(dir).filter((f) => /^\d\d-.*\.md$/.test(f)).sort();
 const countries = [];
 const npcs = [];
-const eventRe = /\b((?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|SF|AS|DW|RF|WT|RL|CL|DV)-\d{2})\b/g;
+const eventRe = /\b((?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|SF|AS|DW|RF|WT|RL|CL|DV|LE)-\d{2})\b/g;
 const npcRe = /\b([A-Z]{2}\d{2}-\d)\b/g;
 const TAGS = ['ช่วย', 'ขัดขวาง', 'ปล่อย', 'ร่วม'];
 

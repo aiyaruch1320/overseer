@@ -4,7 +4,7 @@
 
 มังกร: [../../../lore/dragons/README.md](../../../lore/dragons/README.md) · คลังเหตุการณ์: [../world-events.md](../world-events.md)
 
-ผลของมังกรแต่ละตัว: [01-dragon-falls.md](01-dragon-falls.md) · ทวีปใหม่และเหตุการณ์สืบทอด: [02-new-lands.md](02-new-lands.md) · ผลต่อตัวละครหลัก: [03-character-and-quests.md](03-character-and-quests.md)
+ผลของมังกรแต่ละตัว: [01-dragon-falls.md](01-dragon-falls.md) · ทวีปใหม่และเหตุการณ์สืบทอด: [02-new-lands.md](02-new-lands.md) · ผลต่อตัวละครหลัก: [03-character-and-quests.md](03-character-and-quests.md) · ยุคปลายและเหตุการณ์ LE 12 รายการ: [04-last-era.md](04-last-era.md)
 
 ---
 
