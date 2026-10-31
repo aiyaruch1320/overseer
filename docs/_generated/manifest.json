@@ -1591,7 +1591,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 112,
-   "bytes": 19315,
+   "bytes": 19314,
    "headings": [
     "1. ทำไมต้องมีไฟล์นี้",
     "2. NPC สามชั้น",
@@ -2035,8 +2035,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 258,
-   "bytes": 40027,
+   "lines": 264,
+   "bytes": 41570,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -2190,7 +2190,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 14314,
+   "bytes": 14605,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2210,7 +2210,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 91,
-   "bytes": 14032,
+   "bytes": 14244,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2310,7 +2310,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 12991,
+   "bytes": 13218,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2622,7 +2622,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 59,
-   "bytes": 10725,
+   "bytes": 11093,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2708,7 +2708,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 423,
-   "bytes": 63507,
+   "bytes": 63753,
    "headings": [
     "1. ตำนานที่ผู้คนเล่า",
     "2. ความจริง",
@@ -2756,8 +2756,8 @@
    "layer": "lore",
    "group": "lore/world",
    "kind": "fact",
-   "lines": 192,
-   "bytes": 35034,
+   "lines": 197,
+   "bytes": 35579,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -3978,8 +3978,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 142,
-   "bytes": 24879,
+   "lines": 143,
+   "bytes": 26450,
    "headings": [
     "1. ช่วงย่อย",
     "2. กติกาความหนาแน่น",
@@ -4022,8 +4022,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 450,
-   "bytes": 97327,
+   "lines": 451,
+   "bytes": 98607,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4088,7 +4088,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 84,
-   "bytes": 9804,
+   "bytes": 10052,
    "headings": [
     "1. บันทึกชีวิต",
     "2. ผลของชีวิตต่อโลก",
@@ -4117,8 +4117,8 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 50,
-   "bytes": 7750,
+   "lines": 51,
+   "bytes": 9136,
    "headings": [
     "1. สามแบบ",
     "2. สิ่งที่โลกจำ",
@@ -4463,7 +4463,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 62,
-   "bytes": 7809,
+   "bytes": 8224,
    "headings": [
     "เมื่อมังกรตัวหนึ่งตาย",
     "ค่าเริ่มต้นของอารมณ์และอัตราเปลี่ยน"
@@ -4475,8 +4475,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 191,
-   "bytes": 30275,
+   "lines": 212,
+   "bytes": 32257,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
