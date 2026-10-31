@@ -29,6 +29,9 @@ export const P = {
   capDfc: 3, // each fallen dragon lowers the mood cap of the others by this much
   end12: 0.02, // chance per decade of END-12 once WR-15 has happened, faith is above 70 and two peace events have happened
   end11: 0.01, // chance per decade of END-11 once WR-15 and MC-12 have happened
+  wr23F: 38, // WR-23 needs world faith below this
+  leanCF: 30, // END-10 can also come from a scatter outcome of WR-15 when faith is below this
+  leFeedback: true, // the LE events change the world state (docs/systems/events/branches/04-last-era.md section 3.1); false = they only count
 };
 
 // ---------- data ----------
@@ -135,6 +138,9 @@ export function runWorld(seed, opt = {}) {
   const eraStart = [START, null, null, null];
   let ended = null;
   const rl = rng(seed ^ 0x9e3779b9); // its own random stream, so adding the LE events does not move any other result
+  let K = 0; // most keys held by one side (0-9), raised by the LE events; WR-15 needs 5
+  let warUntil = -1e9, hpBlockUntil = -1e9; // LE-05 raises the weight of wars and blocks peace events for a while
+  let lean = null; // outcome of WR-15 / LE-11: 'a' seal (END-12), 'b' open (END-11), 'c' scatter (END-10)
   const le = []; // last-era events (docs/systems/events/branches/04-last-era.md); they change nothing else in the sim
   fire('FG-01', START - 12);
   const cap = (cls, year) => year - lastClass[cls] >= p.capYears[cls];
@@ -203,8 +209,9 @@ export function runWorld(seed, opt = {}) {
       const er = era();
       if (er < e.gate[0] || er > e.gate[1]) continue;
       if (e.prereq.length && !e.prereq.some((x) => fired.has(x))) continue;
-      if (p.conj && e.id === 'WR-15' && !(er === 4 && dfc >= 11)) continue; // five keys are only in play late in era 4
-      if (p.conj && e.id === 'WR-23' && !(er === 4 && S.F < 45)) continue; // every side has lost its faith
+      if (p.conj && e.id === 'WR-15' && !(er === 4 && dfc >= 11 && (p.le === false || !p.leFeedback || K >= 5))) continue; // five keys are only in play late in era 4, once one side holds five
+      if (e.id.startsWith('HP') && year < hpBlockUntil) continue; // LE-05: the council is split, peace events wait
+      if (p.conj && e.id === 'WR-23' && !(er === 4 && S.F < p.wr23F)) continue; // every side has lost its faith
       let boost = 1;
       if (e.thr.length) {
         const ok = e.thr.every(([v, op, n]) => {
@@ -214,6 +221,8 @@ export function runWorld(seed, opt = {}) {
         if (!ok) continue;
         boost = p.stateBoost;
       }
+      if (e.id.startsWith('WR') && year < warUntil) boost *= 1.5; // LE-05
+      if (e.id === 'WR-15' && p.leFeedback && p.le !== false) boost *= 1 + (K - 4) * 0.5; // the more keys one side holds, the closer the war
       cand.push([e, p.rate[e.mk] * boost]);
     }
     for (let i = cand.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [cand[i], cand[j]] = [cand[j], cand[i]]; }
@@ -222,6 +231,7 @@ export function runWorld(seed, opt = {}) {
       if (!cap(e.mk, year)) continue;
       fire(e.id, year, e.mk);
       // a few effects that other events read
+      if (e.id === 'WR-15') { const x = rl(); lean = x < 0.35 ? 'a' : x < 0.65 ? 'b' : 'c'; }
       if (e.id === 'HP-07') S.H -= 25;
       if (e.id === 'DR-11') { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - 3 * dfc, mood[i] + 40); S.F += 10; }
       if (e.id === 'FG-10') { S.D -= 40; }
@@ -244,7 +254,19 @@ export function runWorld(seed, opt = {}) {
         ['LE-08', '●', b && has('LE-03') && year - lastOf('LE-08') >= 30],
         ['LE-09', '●', dfc >= 14 && !has('LE-09')],
       ];
-      if (p.le !== false) for (const [id, mk, ok] of defs) if (ok && rl() < p.rate[mk]) le.push([year, id]);
+      const moodAll = (d) => { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - p.capDfc * dfc, mood[i] + d); };
+      const apply = (id) => {
+        if (!p.leFeedback) return;
+        if (id === 'LE-01') { K = 1; S.F -= 1; }
+        else if (id === 'LE-02') { moodAll(-1); if (rl() < 0.5) K = Math.min(9, K + 1); }
+        else if (id === 'LE-03') { K = Math.min(9, K + 2); moodAll(-1); }
+        else if (id === 'LE-04') S.F -= 0.5;
+        else if (id === 'LE-05') { S.F -= 2; moodAll(-2); warUntil = year + 40; hpBlockUntil = year + 30; }
+        else if (id === 'LE-06') { S.F += 2; moodAll(2); warUntil = -1e9; }
+        else if (id === 'LE-07') S.F += 1;
+        else if (id === 'LE-08') K = Math.max(0, Math.min(9, K + (rl() < 0.4 ? -1 : 1)));
+      };
+      if (p.le !== false) for (const [id, mk, ok] of defs) if (ok && rl() < p.rate[mk]) { le.push([year, id]); apply(id); }
       if (p.le !== false && fired.has('WR-15') && !has('LE-11') && dfc >= 11) le.push([fired.get('WR-15')[0], 'LE-11']);
     }
     // endings
@@ -254,9 +276,10 @@ export function runWorld(seed, opt = {}) {
       else if (dfc >= 15) { fire('END-10', year, '⭐'); ended = ['END-10', year]; }
     } else {
       const peace = ['HP-01', 'HP-02', 'HP-03', 'HP-05', 'HP-06', 'HP-07', 'HP-08'].filter((x) => fired.has(x)).length;
-      if (era() === 4 && fired.has('WR-15') && S.F > 70 && peace >= 2 && r() < p.end12) { fire('END-12', year, '⭐'); ended = ['END-12', year]; }
-      else if (era() === 4 && fired.has('WR-15') && fired.has('MC-12') && r() < p.end11) { fire('END-11', year, '⭐'); ended = ['END-11', year]; }
-      else if (dfc === 14 && fired.has('WR-23')) {
+      const m12 = p.leFeedback ? (lean === 'a' ? 2 : lean ? 0.5 : 1) : 1, m11 = p.leFeedback ? (lean === 'b' ? 2 : lean ? 0.5 : 1) : 1;
+      if (era() === 4 && fired.has('WR-15') && S.F > 70 && peace >= 2 && r() < p.end12 * m12) { fire('END-12', year, '⭐'); ended = ['END-12', year]; }
+      else if (era() === 4 && fired.has('WR-15') && fired.has('MC-12') && r() < p.end11 * m11) { fire('END-11', year, '⭐'); ended = ['END-11', year]; }
+      else if (dfc === 14 && (fired.has('WR-23') || (p.leFeedback && lean === 'c' && S.F < p.leanCF))) {
         const last = alive.findIndex(Boolean);
         if (last >= 0) fall(last, year, null, null);
         fire('END-10', year, '⭐'); ended = ['END-10', year];
@@ -264,7 +287,7 @@ export function runWorld(seed, opt = {}) {
     }
   }
   if (ended && p.le !== false) { le.push([ended[1] - 10, 'LE-10']); le.push([ended[1] - 10, 'LE-12']); } // the countdown scenes
-  return { fired, log, dfc, ended, eraStart, alive, le };
+  return { fired, log, dfc, ended, eraStart, alive, le, K, lean };
 }
 
 // ---------- convergence windows ----------
