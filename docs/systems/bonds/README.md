@@ -14,6 +14,7 @@
 | [04-friend-arcs.md](04-friend-arcs.md) | เรื่องของพวกพ้อง 3 ชั้น แม่แบบ 12 แบบ กติกาคุณภาพ |
 | [05-family.md](05-family.md) | พี่น้อง ลุง น้า ป้า อา ปู่ย่าตายาย ญาติใกล้ชิด ลูก |
 | [06-paired-items.md](06-paired-items.md) | ไอเทมคู่ 10 คู่ ของเพื่อนวัยเด็ก คู่รัก ครู คู่แข่ง |
+| [07-successors.md](07-successors.md) | ผู้สืบของพวกพ้องตัวหลัก 55 คน เมื่อต้นแบบไม่ปรากฏ · กติกา 8 ข้อ |
 | [../../lore/storylines/28-allies.md](../../lore/storylines/28-allies.md) | โหนด bn kn และเรื่องของพวกพ้องตัวหลักชุดแรก 10 คน |
 | [../../lore/storylines/29-allies-flagship.md](../../lore/storylines/29-allies-flagship.md) | เรื่องของพวกพ้องตัวหลักชุดที่สอง 45 คน (รวม 55) |
 | [../../appearance/16-ally-scenes.md](../../appearance/16-ally-scenes.md) | ภาพของสาย ระดับ อารมณ์ ไอเทมคู่ และฉากของพวกพ้อง 55 คน |
