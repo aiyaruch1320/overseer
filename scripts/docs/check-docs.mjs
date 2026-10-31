@@ -202,6 +202,7 @@ if (fs.existsSync(path.join(docs, '_generated/weapon-catalog.md'))) {
 const TOP = new Set(['guide', 'lore', 'systems', 'appearance', '_generated']);
 function folders(dir, rel = '') {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue; // OS files such as .DS_Store
     const r = rel ? `${rel}/${e.name}` : e.name;
     if (e.isDirectory()) {
       if (!rel && !TOP.has(e.name)) err(r, 0, 'structure', 'unknown top-level folder');
