@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 264,
+ "count": 270,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -656,13 +656,42 @@
    ]
   },
   {
+   "path": "appearance/18-last-era-scenes.md",
+   "title": "ภาพของยุคปลายและผู้มาใหม่",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 70,
+   "bytes": 19562,
+   "headings": [
+    "1. กติกากลาง",
+    "2. เหตุการณ์ LE",
+    "3. โหนดเส้นซ้อนทับ le",
+    "4. NPC ที่มาใหม่ (NT)",
+    "5. ที่ยังไม่ได้ทำ"
+   ]
+  },
+  {
+   "path": "appearance/19-ally-successors.md",
+   "title": "ภาพของผู้สืบพวกพ้อง",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 76,
+   "bytes": 14445,
+   "headings": [
+    "1. กติกา",
+    "2. รายตัว"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 81,
-   "bytes": 17019,
+   "lines": 83,
+   "bytes": 17456,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -977,8 +1006,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 27,
-   "bytes": 5317,
+   "lines": 29,
+   "bytes": 5685,
    "headings": []
   },
   {
@@ -1542,8 +1571,8 @@
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "index",
-   "lines": 114,
-   "bytes": 13920,
+   "lines": 130,
+   "bytes": 18831,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -1553,6 +1582,24 @@
     "5. NPC ส่งผลต่อโลก",
     "6. ความเป็นไปได้",
     "7. รูปแบบตารางและสัญลักษณ์"
+   ]
+  },
+  {
+   "path": "lore/npcs/succession.md",
+   "title": "ผู้สืบตำแหน่งและ NPC ที่มาใหม่ตามยุค",
+   "layer": "lore",
+   "group": "lore/npcs",
+   "kind": "fact",
+   "lines": 112,
+   "bytes": 19315,
+   "headings": [
+    "1. ทำไมต้องมีไฟล์นี้",
+    "2. NPC สามชั้น",
+    "3. ผู้สืบตำแหน่ง (ชั้น 2)",
+    "4. พวกพ้องตัวหลักเมื่อต้นฉบับไม่อยู่ (ชั้น 1)",
+    "5. NPC ที่มาใหม่ตามยุค (ชั้น 3 ที่ถูกเติม)",
+    "6. ผลต่อส่วนอื่น",
+    "7. ที่ยังไม่ได้ทำ"
    ]
   },
   {
@@ -1989,7 +2036,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 258,
-   "bytes": 39831,
+   "bytes": 40027,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -2569,13 +2616,28 @@
    ]
   },
   {
+   "path": "lore/storylines/30-last-era.md",
+   "title": "เส้นเรื่อง: ยุคปลาย (le)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 59,
+   "bytes": 10725,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. โหนด",
+    "4. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 144,
-   "bytes": 22609,
+   "lines": 145,
+   "bytes": 22970,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2646,7 +2708,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 423,
-   "bytes": 63243,
+   "bytes": 63507,
    "headings": [
     "1. ตำนานที่ผู้คนเล่า",
     "2. ความจริง",
@@ -2694,8 +2756,8 @@
    "layer": "lore",
    "group": "lore/world",
    "kind": "fact",
-   "lines": 165,
-   "bytes": 25801,
+   "lines": 192,
+   "bytes": 35034,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -2704,7 +2766,7 @@
     "5. ผลการตรวจอายุขัยกับเนื้อเรื่อง",
     "6. ข้อยกเว้นอายุ",
     "7. ทายาทและต่างเผ่า",
-    "8. ที่ยังไม่ตัดสิน"
+    "8. จุดเริ่มเรื่องและฉากจบ"
    ]
   },
   {
@@ -2820,13 +2882,27 @@
    ]
   },
   {
+   "path": "systems/bonds/07-successors.md",
+   "title": "ผู้สืบของพวกพ้องตัวหลัก",
+   "layer": "systems",
+   "group": "systems/bonds",
+   "kind": "data",
+   "lines": 84,
+   "bytes": 22365,
+   "headings": [
+    "1. กติกา",
+    "2. รายชื่อ 55 คน",
+    "3. ที่ยังไม่ได้ทำ"
+   ]
+  },
+  {
    "path": "systems/bonds/README.md",
    "title": "ระบบพวกพ้อง",
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "index",
-   "lines": 46,
-   "bytes": 7045,
+   "lines": 47,
+   "bytes": 7257,
    "headings": [
     "ที่มาในโค้ดและเอกสารเดิม",
     "ตัวเลขสรุป"
@@ -3829,8 +3905,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "index",
-   "lines": 16,
-   "bytes": 2385,
+   "lines": 17,
+   "bytes": 2615,
    "headings": []
   },
   {
@@ -3897,13 +3973,30 @@
    ]
   },
   {
+   "path": "systems/events/branches/04-last-era.md",
+   "title": "ยุคปลาย (ยุค 4) ช่วงย่อยและเหตุการณ์",
+   "layer": "systems",
+   "group": "systems/events",
+   "kind": "data",
+   "lines": 142,
+   "bytes": 24879,
+   "headings": [
+    "1. ช่วงย่อย",
+    "2. กติกาความหนาแน่น",
+    "3. เหตุการณ์ LE (12 รายการ)",
+    "4. ชะตาของ NPC ในยุคปลาย",
+    "5. ผลต่อตัวละครหลัก",
+    "6. ที่ยังไม่ได้ทำ"
+   ]
+  },
+  {
    "path": "systems/events/branches/README.md",
    "title": "เส้นทางที่แตกแขนง",
    "layer": "systems",
    "group": "systems/events",
    "kind": "index",
    "lines": 68,
-   "bytes": 6306,
+   "bytes": 6426,
    "headings": [
     "หลักการ",
     "ผลต่อเรื่องและตัวละครหลัก"
@@ -3930,7 +4023,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 450,
-   "bytes": 97033,
+   "bytes": 97327,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -3994,15 +4087,16 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 64,
-   "bytes": 6717,
+   "lines": 84,
+   "bytes": 9804,
    "headings": [
     "1. บันทึกชีวิต",
     "2. ผลของชีวิตต่อโลก",
     "3. หน้าตำนาน",
     "4. การ์ดแชร์",
     "5. ของสะสม",
-    "6. สิ่งที่คงข้ามรอบ"
+    "6. สิ่งที่คงข้ามรอบ",
+    "7. หน้าสรุปโลก"
    ]
   },
   {
@@ -4023,12 +4117,13 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 38,
-   "bytes": 5877,
+   "lines": 50,
+   "bytes": 7750,
    "headings": [
     "1. สามแบบ",
     "2. สิ่งที่โลกจำ",
-    "3. เวลาของโลก"
+    "3. เวลาของโลก",
+    "4. เมื่อชีวิตจบในแคมเปญ"
    ]
   },
   {
@@ -4380,8 +4475,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 188,
-   "bytes": 28611,
+   "lines": 191,
+   "bytes": 30275,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
