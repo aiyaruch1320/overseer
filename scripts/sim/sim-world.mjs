@@ -253,7 +253,7 @@ function entryChance(node, cvId) {
   const wt = opt && opt.match(/^(\d+) /);
   return wt ? Number(wt[1]) / 100 : 1;
 }
-function lifeSeesCv(race, birth, L, cv, w, p = P, r = null) {
+export function lifeSeesCv(race, birth, L, cv, w, p = P, r = null) {
   const k = L / 75;
   const nodes = cv.entry.filter((n) => n.startsWith(race.code + '.'));
   const stages = cv.all ? ['b', 't', 'a', 'e'] : [...new Set(nodes.map((n) => n[3]))];
