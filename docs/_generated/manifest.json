@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 290,
+ "count": 291,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -709,8 +709,8 @@
    "layer": "appearance",
    "group": "appearance",
    "kind": "visual",
-   "lines": 203,
-   "bytes": 44739,
+   "lines": 212,
+   "bytes": 46591,
    "headings": [
     "1. น้ำเสียงภาพ",
     "2. หน้าจอเฝ้ามอง",
@@ -1035,8 +1035,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 149,
-   "bytes": 51388,
+   "lines": 162,
+   "bytes": 56647,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -4133,7 +4133,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 551,
-   "bytes": 118139,
+   "bytes": 118376,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4160,8 +4160,8 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 67,
-   "bytes": 8130,
+   "lines": 69,
+   "bytes": 8790,
    "headings": [
     "1. ก่อนเริ่ม",
     "2. ห้านาทีแรก",
@@ -4247,13 +4247,30 @@
    "headings": []
   },
   {
+   "path": "systems/experience/07-attention.md",
+   "title": "จังหวะที่เกมเรียกผู้เล่น",
+   "layer": "systems",
+   "group": "systems/experience",
+   "kind": "data",
+   "lines": 126,
+   "bytes": 21191,
+   "headings": [
+    "1. หลัก",
+    "2. สามระดับของการเรียก",
+    "3. กติกาการเรียก",
+    "4. การตั้งค่าของผู้เล่น",
+    "5. ผลจำลอง",
+    "6. สิ่งที่โค้ดเดิมต้องเปลี่ยน"
+   ]
+  },
+  {
    "path": "systems/experience/README.md",
    "title": "ประสบการณ์ผู้เล่น",
    "layer": "systems",
    "group": "systems/experience",
    "kind": "index",
-   "lines": 45,
-   "bytes": 7111,
+   "lines": 46,
+   "bytes": 7420,
    "headings": [
     "ประโยคจุดขาย",
     "ที่มาของแรงบันดาลใจ",
@@ -4269,7 +4286,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 143,
-   "bytes": 17625,
+   "bytes": 18035,
    "headings": [
     "1. รายได้",
     "2. ราคา",
@@ -4323,7 +4340,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 160,
-   "bytes": 40070,
+   "bytes": 41354,
    "headings": [
     "1. ทำงานอย่างไร",
     "2. กติกาเหล็ก",
@@ -4360,8 +4377,8 @@
    "layer": "systems",
    "group": "systems/god",
    "kind": "data",
-   "lines": 86,
-   "bytes": 14411,
+   "lines": 187,
+   "bytes": 33663,
    "headings": [
     "1. โครงข้อมูล",
     "2. ลำดับการทำ",
@@ -4396,7 +4413,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 137,
-   "bytes": 16622,
+   "bytes": 16787,
    "headings": [
     "1. หลัก",
     "2. คำปฏิญาณของพระเจ้า",
@@ -4414,7 +4431,7 @@
    "group": "systems/god",
    "kind": "index",
    "lines": 97,
-   "bytes": 18059,
+   "bytes": 18894,
    "headings": [
     "1. หลักของระบบ",
     "2. การแทรกแซงหกแบบ",
@@ -4808,8 +4825,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "index",
-   "lines": 11,
-   "bytes": 962,
+   "lines": 13,
+   "bytes": 1272,
    "headings": []
   },
   {
@@ -4832,7 +4849,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 216,
-   "bytes": 40660,
+   "bytes": 41064,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
