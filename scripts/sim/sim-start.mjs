@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import { root } from '../lib/paths.mjs';
-import { runWorld, races, cvs, lifeSeesCv } from './sim-world.mjs';
+import { runWorld, races, cvs, lifeSeesCv, drawLife } from './sim-world.mjs';
 
 const START = 10400;
 const WORLDS = Number(process.argv[2]) || 600;
@@ -38,15 +38,15 @@ let seed = 5;
 const rnd = () => { seed = (seed + 0x6d2b79f5) >>> 0; let t = seed; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 
 const MARK_W = { '⭐': 3, '●': 2, '○': 1 };
-const ADULT = 0.27, ELDER = 0.73; // share of lifespan, world-time.md section 3
+const ADULT = 20, ELDER = 55; // equivalent ages, world-time.md section 3 (drawLife maps them to world years)
 
 // ---- rules: each returns a birth offset (world years after START) ----
-function pick(rule, w, race, L, E, evs) {
-  const adult = ADULT * L, span = (ELDER - ADULT) * L;
+function pick(rule, w, race, life, E, evs) {
+  const adult = life.at(ADULT), span = life.at(ELDER) - adult;
   const maxB = Math.max(0, E - adult - 5);
   if (rule === 'uniform') return rnd() * maxB;
   if (rule === 'early') return rnd() * Math.min(60, maxB);
-  if (rule === 'mixed') return rnd() < P_EARLY ? rnd() * Math.min(60, maxB) : pick('aligned+cast', w, race, L, E, evs);
+  if (rule === 'mixed') return rnd() < P_EARLY ? rnd() * Math.min(60, maxB) : pick('aligned+cast', w, race, life, E, evs);
   // aligned: pick an anchor event the character comes of age just before; r3 favours anchors early enough that the original cast is still around
   // an anchor must leave at least half an adult span before the world ends, and the three endings are never anchors
   const pool = evs.filter((e) => e.y >= adult * 0.5 && e.y <= E - 0.5 * span && !['END-10', 'END-11', 'END-12'].includes(e.id));
@@ -72,7 +72,7 @@ function arcsOpen(model, lo, hi) {
   let any = 0, now = 0;
   for (let k = 0; k < 4; k++) {
     const code = raceMix[Math.floor(rnd() * raceMix.length)], rc = races.find((x) => x.code === code);
-    const L = rc.lo + rnd() * (rc.hi - rc.lo), D = ARC_FRACTION * L, a = ADULT * L, e = ELDER * L;
+    const lf = drawLife(rc, rnd), L = lf.L, D = ARC_FRACTION * L, a = lf.at(ADULT), e = lf.at(ELDER);
     if (model === 'fixed') { if (D >= lo) any++; if (D >= tm) now++; continue; } // every story opens when the world starts
     // clock: each holder opens a story at a random time in the adult part of their life, holders follow one another
     let t = -rnd() * (e - a), hitAny = false, hitNow = false;
@@ -101,10 +101,10 @@ for (let s = 1; s <= WORLDS; s++) {
   const falls = [];
   for (const [id, ys] of w.fired) if (id.startsWith('_fall_')) for (const y of ys) falls.push(y - START);
   for (const race of races) {
-    const L = race.lo + rnd() * (race.hi - race.lo);
+    const life = drawLife(race, rnd), L = life.L;
     for (const rule of RULES) {
-      const b = pick(rule, w, race.code, L, E, evs);
-      const lo = b + ADULT * L, hi = Math.min(b + L, E);
+      const b = pick(rule, w, race.code, life, E, evs);
+      const lo = b + life.at(ADULT), hi = Math.min(b + L, E);
       const a = ((acc[rule] ||= {})[race.code] ||= { n: 0, ev: 0, evLife: 0, noEvLife: 0, cv: 0, cvPos: 0, noCv: 0, fall: 0, fallLife: 0, cast: 0, endHit: 0, late: 0, le: 0, leLives: 0, sigs: new Set(), arcFixed: 0, arcClock: 0, arcFixedNow: 0, arcClockNow: 0, arcFixedNowZero: 0, arcClockNowZero: 0 });
       a.n++;
       const adultEv = evs.filter((e) => e.y >= lo && e.y <= hi).length;
@@ -112,7 +112,7 @@ for (let s = 1; s <= WORLDS; s++) {
       a.ev += adultEv; a.evLife += lifeEv.length; if (!lifeEv.length) a.noEvLife++;
       a.sigs.add(lifeEv.map((e) => e.id).sort().join(','));
       let seen = 0, possible = 0;
-      for (const c of cvs) { const v = lifeSeesCv(race, START + b, L, c, w); if (v === null) continue; possible++; if (v) seen++; }
+      for (const c of cvs) { const v = lifeSeesCv(race, START + b, life, c, w); if (v === null) continue; possible++; if (v) seen++; }
       a.cv += seen; a.cvPos = possible; if (!seen) a.noCv++;
       const leIn = leYears.filter((y) => y >= b && y <= b + L).length;
       a.le += leIn; if (leIn) a.leLives++;

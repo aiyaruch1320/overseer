@@ -327,8 +327,27 @@ function entryChance(node, cvId) {
   const wt = opt && opt.match(/^(\d+) /);
   return wt ? Number(wt[1]) / 100 : 1;
 }
-export function lifeSeesCv(race, birth, L, cv, w, p = P, r = null) {
-  const k = L / 75;
+// One life on the world clock: lifespan L in world years and at(x), the world years from birth (or waking) to equivalent age x
+// (lore/world/world-time.md section 3). Woken peoples wake at equivalent 17, their b and t nodes fill the first three life-years and
+// one life-year after that is L ÷ 58. A construct born human lives on the human clock until the first fitting (co.b2 way ก, 40%, at
+// equivalent 6–12, else co.t1 at 13–17), then draws a new lifespan (systems/character/races/18-construct.md); co.b1 way ข (30%) is a doll.
+const WOKEN = ['so', 'mu', 'gh'];
+const DOLL = 0.3;
+export function drawLife(race, r) {
+  const draw = (x) => x.lo + r() * (x.hi - x.lo);
+  if (WOKEN.includes(race.code)) {
+    const L = draw(race), year = L / 58;
+    return { L, at: (x) => (x < 20 ? (3 * year * x) / 20 : (x - 17) * year) };
+  }
+  if (race.code === 'co' && r() >= DOLL) {
+    const h = draw(races.find((x) => x.code === 'hu')), age = r() < 0.4 ? 6 + r() * 6 : 13 + r() * 4, fit = (age * h) / 75, L = draw(race);
+    return { L, at: (x) => (x <= age ? (x * h) / 75 : fit + ((x - age) * (L - fit)) / (75 - age)) };
+  }
+  const L = draw(race);
+  return { L, at: (x) => (x * L) / 75 };
+}
+
+export function lifeSeesCv(race, birth, life, cv, w, p = P, r = null) {
   const nodes = cv.entry.filter((n) => n.startsWith(race.code + '.'));
   const stages = cv.all ? ['b', 't', 'a', 'e'] : [...new Set(nodes.map((n) => n[3]))];
   if (!stages.length) return null; // race has no entry
@@ -336,7 +355,7 @@ export function lifeSeesCv(race, birth, L, cv, w, p = P, r = null) {
   let miss = 1;
   for (const s of cv.elderOnly ? ['e'] : stages) {
     const [a, b] = STAGE[s];
-    const lo = birth + a * k, hi = Math.min(birth + b * k, birth + L);
+    const lo = birth + life.at(a), hi = Math.min(birth + life.at(b), birth + life.L);
     if (!wins.some(([x, y]) => x <= hi && y >= lo)) continue;
     if (cv.all || !r) return true;
     for (const n of nodes.filter((x) => x[3] === s)) miss *= 1 - entryChance(n, cv.id);
@@ -364,10 +383,10 @@ export function study(n = WORLDS, opt = {}) {
     const r = rng(s * 104729);
     for (const race of races) {
       const birth = START + r() * 1000;
-      const L = race.lo + r() * (race.hi - race.lo);
+      const life = drawLife(race, r), L = life.L;
       let seen = 0, possible = 0;
       for (const cv of cvs) {
-        const v = lifeSeesCv(race, birth, L, cv, w, { ...P, ...opt }, r);
+        const v = lifeSeesCv(race, birth, life, cv, w, { ...P, ...opt }, r);
         if (v === null) continue;
         possible++;
         if (v) { seen++; const key = race.code + '|' + cv.id; res.cvRace.set(key, (res.cvRace.get(key) || 0) + 1); }
@@ -384,13 +403,13 @@ export function study(n = WORLDS, opt = {}) {
       res.falls.set(race.code, b);
       // a fresh game: born in the first 20 years of the story (docs: the story starts at ศ.ม. 10,400)
       {
-        const b2 = START + r() * 20, e2 = b2 + L, k2 = L / 75;
+        const b2 = START + r() * 20, e2 = b2 + L;
         const ids = new Set(); let fl = 0, endHit = false;
         for (const [y, id] of w.log) { if (y < b2 || y > e2 || id === 'DR-15') continue; if (byId.get(id)) ids.add(id); }
         for (const [id, ys] of w.fired) if (id.startsWith('_fall_')) for (const y of ys) if (y >= b2 && y <= e2) fl++;
         if (w.ended && w.ended[1] >= b2 && w.ended[1] <= e2) endHit = true;
         let cvSeen = 0;
-        for (const cv of cvs) { const v = lifeSeesCv(race, b2, L, cv, w, { ...P, ...opt }, r); if (v) cvSeen++; }
+        for (const cv of cvs) { const v = lifeSeesCv(race, b2, life, cv, w, { ...P, ...opt }, r); if (v) cvSeen++; }
         const a = res.fresh.get(race.code) || { n: 0, fall: 0, end: 0, cv: 0, noEv: 0, sigs: new Set(), ev: 0 };
         a.n++; if (fl) a.fall++; if (endHit) a.end++; if (cvSeen) a.cv++; if (!ids.size) a.noEv++; a.ev += ids.size; a.sigs.add([...ids].sort().join(','));
         res.fresh.set(race.code, a);
