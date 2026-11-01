@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 272,
+ "count": 273,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -138,8 +138,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 24,
-   "bytes": 3326,
+   "lines": 25,
+   "bytes": 3699,
    "headings": []
   },
   {
@@ -265,6 +265,17 @@
    "bytes": 89383,
    "headings": [],
    "source": "scripts/docs/build-local-events.mjs"
+  },
+  {
+   "path": "_generated/npc-economy.md",
+   "title": "ชนชั้นและทองของ NPC (สร้างอัตโนมัติ)",
+   "layer": "generated",
+   "group": "_generated",
+   "kind": "generated",
+   "lines": 623,
+   "bytes": 65709,
+   "headings": [],
+   "source": "scripts/docs/build-npc-economy.mjs"
   },
   {
    "path": "_generated/poc-visuals/birthplaces.md",
@@ -994,8 +1005,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 140,
-   "bytes": 46847,
+   "lines": 147,
+   "bytes": 49911,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1589,7 +1600,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 153,
-   "bytes": 29419,
+   "bytes": 29592,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -2022,8 +2033,8 @@
    "layer": "lore",
    "group": "lore/religions",
    "kind": "fact",
-   "lines": 52,
-   "bytes": 7992,
+   "lines": 54,
+   "bytes": 8606,
    "headings": [
     "20. ลัทธิคำพิพากษา",
     "21. ผู้ไม่ก้มหัว",
@@ -2931,8 +2942,8 @@
    "layer": "systems",
    "group": "systems/character",
    "kind": "data",
-   "lines": 260,
-   "bytes": 48547,
+   "lines": 262,
+   "bytes": 51012,
    "headings": [
     "1. ลำดับการสุ่มเกิด",
     "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
@@ -3728,8 +3739,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 210,
-   "bytes": 29762,
+   "lines": 248,
+   "bytes": 37995,
    "headings": [
     "1. เงินและความเชื่อมั่น",
     "2. สินค้า 9 หมวด",
@@ -3764,8 +3775,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 177,
-   "bytes": 22318,
+   "lines": 211,
+   "bytes": 26359,
    "headings": [
     "1. ห้าชั้น",
     "2. ชนชั้นที่เกิดตาม W และ G",
@@ -3888,7 +3899,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 68,
-   "bytes": 12412,
+   "bytes": 12636,
    "headings": [
     "1. ผลสรุป",
     "2. ตรวจแล้วสอดคล้อง",
@@ -4056,8 +4067,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 541,
-   "bytes": 116827,
+   "lines": 551,
+   "bytes": 118139,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4510,7 +4521,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 216,
-   "bytes": 40661,
+   "bytes": 40660,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
