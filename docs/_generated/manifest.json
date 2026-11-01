@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 271,
+ "count": 272,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -995,7 +995,7 @@
    "group": "guide",
    "kind": "guide",
    "lines": 82,
-   "bytes": 20544,
+   "bytes": 21255,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -3209,13 +3209,27 @@
    ]
   },
   {
+   "path": "systems/character/18-fates.md",
+   "title": "ชะตาชีวิตและลาง",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 67,
+   "bytes": 25290,
+   "headings": [
+    "1. กติกา",
+    "2. ชะตา 22 อย่าง",
+    "3. ตรวจตัวเลข"
+   ]
+  },
+  {
    "path": "systems/character/README.md",
    "title": "ตัวละครหลัก: นิสัย ความถนัด skill พร คำสาป",
    "layer": "systems",
    "group": "systems/character",
    "kind": "index",
-   "lines": 68,
-   "bytes": 9822,
+   "lines": 69,
+   "bytes": 10082,
    "headings": [
     "ไฟล์",
     "จำนวนรวม",
@@ -3979,7 +3993,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 137,
-   "bytes": 19668,
+   "bytes": 19827,
    "headings": [
     "1. สถานะของตัวละครต่อเหตุการณ์",
     "2. ที่เกิดเปลี่ยนไป",
@@ -4087,7 +4101,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 78,
-   "bytes": 10556,
+   "bytes": 10569,
    "headings": [
     "1. คำถามของชีวิต",
     "2. ตัวละครอธิษฐานต่อเรา",
@@ -4151,7 +4165,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 37,
-   "bytes": 5475,
+   "bytes": 5530,
    "headings": []
   },
   {
