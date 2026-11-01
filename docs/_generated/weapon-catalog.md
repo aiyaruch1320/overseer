@@ -387,7 +387,7 @@
 | wj_temple_servant_r | ตะเกียงที่ไม่ดับในวงเวทของเซลีน | R | 2 | เวท | `light` `holy` | `mag+2` `vit+1` | ไล่ ผู้ตาย · เพิ่มพลังพรแสงที่ได้รับในปีนั้น |
 | wj_exorcist_c | กระดิ่งไล่ผี | C | 1 | ค้อน | `blunt` `holy` | `mag+1` | ไล่ วิญญาณ |
 | wj_exorcist_u | ดาบไม้ท้อลงยันต์ | U | 2 | ดาบ | `blunt` `holy` | `mag+1` `vit+1` | ไล่ ผู้ตาย |
-| wj_exorcist_r | สายประคำที่มัดผีปอบ | R | 3 | แส้ | `holy` `light` | `mag+2` `vit+1` | `#undead_bane` เฉพาะ `pop` `krasue` `wraith` (ไม่รวมผู้ตายอื่น) · ผนึกวิญญาณหนึ่งตัวต่อศึก |
+| wj_exorcist_r | สายประคำที่มัดผีปอบ | R | 3 | แส้ | `holy` `light` | `mag+2` `vit+1` | ไล่ `pop` `krasue` `wraith` (ไม่รวมผู้ตายอื่น) · ผนึกวิญญาณหนึ่งตัวต่อศึก |
 | wj_inquisitor_c | กระบองตราศาลศาสนา | C | 1 | ค้อน | `blunt` `holy` | `vit+1` | ข่ม |
 | wj_inquisitor_u | ดาบเงินศาลศาสนา | U | 2 | ดาบ | `blade` `silver` | `pow+1` `mag+1` | — |
 | wj_inquisitor_r | ดาบคำพิพากษาของแคทเธอรีน | R | 3 | ดาบ | `blade` `light` `holy` | `pow+1` `mag+2` | ไล่ ผู้ตาย · ท่าทีเจรจา −2 (ไม่มีใครอยากคุย) |

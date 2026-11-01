@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 270,
+ "count": 271,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -122,7 +122,7 @@
    "group": "",
    "kind": "index",
    "lines": 94,
-   "bytes": 13346,
+   "bytes": 13465,
    "headings": [
     "สามชั้นของเอกสาร",
     "ข้อตกลง",
@@ -209,7 +209,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 177,
-   "bytes": 14426,
+   "bytes": 14451,
    "headings": [
     "1. สรุป",
     "2. ความขัดกันที่พบ",
@@ -262,7 +262,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 70,
-   "bytes": 89339,
+   "bytes": 89350,
    "headings": [],
    "source": "scripts/docs/build-local-events.mjs"
   },
@@ -328,7 +328,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 73,
-   "bytes": 6684,
+   "bytes": 6690,
    "headings": [
     "1. ต่อเผ่า",
     "2. สรุป",
@@ -344,7 +344,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 1405,
-   "bytes": 280418,
+   "bytes": 280397,
    "headings": [
     "สรุป",
     "ของใช้และมาตรฐาน",
@@ -432,7 +432,7 @@
    "group": "appearance",
    "kind": "visual",
    "lines": 318,
-   "bytes": 261898,
+   "bytes": 261916,
    "headings": [
     "กติกาภาพของการต่อสู้",
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
@@ -611,7 +611,7 @@
    "group": "appearance",
    "kind": "visual",
    "lines": 1135,
-   "bytes": 229988,
+   "bytes": 229991,
    "headings": [
     "1. วิธีใช้",
     "2. ท่าปิดมาตรฐาน",
@@ -846,7 +846,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 119,
-   "bytes": 51248,
+   "bytes": 51267,
    "headings": []
   },
   {
@@ -856,7 +856,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 119,
-   "bytes": 53883,
+   "bytes": 53987,
    "headings": []
   },
   {
@@ -866,7 +866,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 155,
-   "bytes": 65958,
+   "bytes": 66050,
    "headings": []
   },
   {
@@ -876,7 +876,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 132,
-   "bytes": 58319,
+   "bytes": 58325,
    "headings": []
   },
   {
@@ -886,7 +886,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 137,
-   "bytes": 59025,
+   "bytes": 59132,
    "headings": []
   },
   {
@@ -896,7 +896,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 154,
-   "bytes": 67417,
+   "bytes": 67437,
    "headings": []
   },
   {
@@ -906,7 +906,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 166,
-   "bytes": 72046,
+   "bytes": 72160,
    "headings": []
   },
   {
@@ -916,7 +916,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 174,
-   "bytes": 72954,
+   "bytes": 73321,
    "headings": []
   },
   {
@@ -926,7 +926,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 136,
-   "bytes": 57907,
+   "bytes": 58070,
    "headings": []
   },
   {
@@ -984,8 +984,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "index",
-   "lines": 18,
-   "bytes": 1057,
+   "lines": 19,
+   "bytes": 1357,
    "headings": []
   },
   {
@@ -994,10 +994,11 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 30,
-   "bytes": 6122,
+   "lines": 69,
+   "bytes": 17633,
    "headings": [
-    "ที่พบเพิ่มระหว่างจำลอง"
+    "ที่พบเพิ่มระหว่างจำลอง",
+    "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
    ]
   },
   {
@@ -1027,6 +1028,22 @@
     "6. แบบฟอร์มของไฟล์ในแต่ละชั้น",
     "7. ชื่อไฟล์และโฟลเดอร์",
     "8. ก่อนส่งงาน"
+   ]
+  },
+  {
+   "path": "guide/semantic-audit.md",
+   "title": "วิธีตรวจเชิงความหมายของทั้งโลก",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 76,
+   "bytes": 14292,
+   "headings": [
+    "1. หลักของเกมที่ใช้ตัดสิน",
+    "2. รายการตรวจตามชนิดไฟล์",
+    "3. สคริปต์ที่ใช้ร่วม",
+    "4. การแบ่งผู้อ่าน",
+    "5. กติกาการแก้"
    ]
   },
   {
@@ -1068,7 +1085,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 101,
-   "bytes": 19969,
+   "bytes": 20146,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1081,7 +1098,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 119,
-   "bytes": 18764,
+   "bytes": 18937,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1094,7 +1111,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 112,
-   "bytes": 17628,
+   "bytes": 17923,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1106,8 +1123,8 @@
    "layer": "lore",
    "group": "lore/countries",
    "kind": "fact",
-   "lines": 135,
-   "bytes": 20585,
+   "lines": 136,
+   "bytes": 20901,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1120,7 +1137,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 213,
-   "bytes": 35634,
+   "bytes": 36589,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1133,7 +1150,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 20661,
+   "bytes": 21047,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1146,7 +1163,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 143,
-   "bytes": 20696,
+   "bytes": 20839,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1159,7 +1176,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 154,
-   "bytes": 20810,
+   "bytes": 21152,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1172,7 +1189,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 159,
-   "bytes": 28924,
+   "bytes": 29233,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ",
@@ -1198,7 +1215,7 @@
    "group": "lore/dragons",
    "kind": "fact",
    "lines": 117,
-   "bytes": 20644,
+   "bytes": 20810,
    "headings": [
     "1. โอรัน-ซัล — มังกรปฐม ผู้ถือฟ้า",
     "2. เพลิงนิรันดร์ — ผู้อาวุโสเพลิง",
@@ -1215,7 +1232,7 @@
    "group": "lore/dragons",
    "kind": "fact",
    "lines": 173,
-   "bytes": 27838,
+   "bytes": 28163,
    "headings": [
     "7. อีริดาน — เสาทวีปมังกร",
     "8. ฮรอด-กาธ — เสาทวีปปีศาจ ผู้กลืนกิน",
@@ -1250,8 +1267,8 @@
    "layer": "lore",
    "group": "lore/heirs",
    "kind": "fact",
-   "lines": 119,
-   "bytes": 16500,
+   "lines": 122,
+   "bytes": 17551,
    "headings": [
     "1. ใครเป็นทายาท",
     "2. ส่งต่ออะไร",
@@ -1267,8 +1284,8 @@
    "layer": "lore",
    "group": "lore/heirs",
    "kind": "fact",
-   "lines": 142,
-   "bytes": 25435,
+   "lines": 144,
+   "bytes": 27021,
    "headings": [
     "1. สามชั้นที่ไม่ซ้ำ",
     "2. สมุดตระกูล",
@@ -1288,7 +1305,7 @@
    "group": "lore/heirs",
    "kind": "fact",
    "lines": 87,
-   "bytes": 12493,
+   "bytes": 12700,
    "headings": [
     "1. ชนิดของเรื่องค้าง",
     "2. จำนวนและการเลือก",
@@ -1305,7 +1322,7 @@
    "group": "lore/heirs",
    "kind": "index",
    "lines": 49,
-   "bytes": 7078,
+   "bytes": 7215,
    "headings": [
     "1. ศัพท์",
     "2. ความต่างจากโค้ดปัจจุบัน",
@@ -1319,7 +1336,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 95,
-   "bytes": 26769,
+   "bytes": 27275,
    "headings": [
     "AZ-01 โอรันธาร์",
     "AZ-02 ซากโรการ์",
@@ -1340,7 +1357,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 117,
-   "bytes": 35931,
+   "bytes": 35990,
    "headings": [
     "MH-01 กาธเรธ (ธงกระดูก)",
     "MH-02 ดราซาร์ (ธงเลือด)",
@@ -1363,7 +1380,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 117,
-   "bytes": 34272,
+   "bytes": 34707,
    "headings": [
     "KD-01 กรอมฮอล์ม (ชาติช่างตีเหล็ก)",
     "KD-02 ดูร์ดิน (เหล็กไหล)",
@@ -1386,7 +1403,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 153,
-   "bytes": 41669,
+   "bytes": 42109,
    "headings": [
     "NR-01 ทาลานีส (สาธารณรัฐเมืองท่าใหญ่)",
     "NR-02 นูวาปาเล (ประเทศน้ำตกย้อนฟ้า)",
@@ -1413,7 +1430,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 130,
-   "bytes": 40826,
+   "bytes": 40921,
    "headings": [
     "AL-01 คองคอร์เดีย (นครสภาเก้าทวีป)",
     "AL-02 ลูเมียร์ (จักรวรรดิศาสนจักรแห่งแสง)",
@@ -1438,7 +1455,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 135,
-   "bytes": 40785,
+   "bytes": 40894,
    "headings": [
     "AL-15 ซอมเมอร์เรน (สาธารณรัฐสนามเพลาะ)",
     "AL-16 ไชร์วิก (ไชร์ฮาล์ฟลิง)",
@@ -1463,7 +1480,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 152,
-   "bytes": 47300,
+   "bytes": 47546,
    "headings": [
     "MK-01 เฮฟากริด (นครโครงข่าย)",
     "MK-02 ครอนไซต์ (สหภาพผู้ติดตั้ง)",
@@ -1490,7 +1507,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 164,
-   "bytes": 48697,
+   "bytes": 49274,
    "headings": [
     "SH-01 ซาร์ฮาดีน (ดินแดนธุลีทิพย์)",
     "SH-02 อัมเมนรา (ราชวงศ์มัมมี่นิรันดร์)",
@@ -1518,7 +1535,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 172,
-   "bytes": 47599,
+   "bytes": 47807,
    "headings": [
     "SV-01 ซิลนเนลลอร์ (นครลำต้น)",
     "SV-02 ธิลเอวา (สถานพยาบาลแห่งรุ่งอรุณ)",
@@ -1547,7 +1564,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 136,
-   "bytes": 40284,
+   "bytes": 40622,
    "headings": [
     "NB-01 เวลมิร์ (นครระฆังกลาง)",
     "NB-02 ซอร์เนบ (เคานตีแวมไพร์)",
@@ -1571,8 +1588,8 @@
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "index",
-   "lines": 130,
-   "bytes": 18831,
+   "lines": 151,
+   "bytes": 28548,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -1590,8 +1607,8 @@
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 112,
-   "bytes": 19314,
+   "lines": 115,
+   "bytes": 21904,
    "headings": [
     "1. ทำไมต้องมีไฟล์นี้",
     "2. NPC สามชั้น",
@@ -1749,7 +1766,7 @@
    "group": "lore/races",
    "kind": "fact",
    "lines": 26,
-   "bytes": 3220,
+   "bytes": 3406,
    "headings": [
     "ประวัติ",
     "ที่อยู่",
@@ -1809,7 +1826,7 @@
    "group": "lore/races",
    "kind": "fact",
    "lines": 35,
-   "bytes": 3538,
+   "bytes": 3615,
    "headings": [
     "ประวัติ",
     "ที่อยู่",
@@ -1824,8 +1841,8 @@
    "layer": "lore",
    "group": "lore/races",
    "kind": "fact",
-   "lines": 36,
-   "bytes": 3923,
+   "lines": 37,
+   "bytes": 4045,
    "headings": [
     "ประวัติ",
     "ที่อยู่",
@@ -1932,8 +1949,8 @@
    "layer": "lore",
    "group": "lore/races",
    "kind": "index",
-   "lines": 53,
-   "bytes": 6134,
+   "lines": 56,
+   "bytes": 6792,
    "headings": [
     "สายเลือดย่อยที่ไม่นับเป็นเผ่าแยก",
     "ที่มาของเผ่า ตามธาตุของมหาล่มสลาย",
@@ -1947,7 +1964,7 @@
    "group": "lore/religions",
    "kind": "fact",
    "lines": 68,
-   "bytes": 6929,
+   "bytes": 7221,
    "headings": [
     "หลักการ",
     "ห้าช่องทาง",
@@ -2006,7 +2023,7 @@
    "group": "lore/religions",
    "kind": "fact",
    "lines": 52,
-   "bytes": 7941,
+   "bytes": 7992,
    "headings": [
     "20. ลัทธิคำพิพากษา",
     "21. ผู้ไม่ก้มหัว",
@@ -2035,8 +2052,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 264,
-   "bytes": 41570,
+   "lines": 265,
+   "bytes": 43258,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -2070,7 +2087,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 93,
-   "bytes": 16162,
+   "bytes": 16725,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2089,8 +2106,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 92,
-   "bytes": 14500,
+   "lines": 93,
+   "bytes": 14913,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2110,7 +2127,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 14372,
+   "bytes": 14384,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2130,7 +2147,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 13398,
+   "bytes": 13462,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2150,7 +2167,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 14118,
+   "bytes": 14184,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2190,7 +2207,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 14605,
+   "bytes": 14716,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2210,7 +2227,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 91,
-   "bytes": 14244,
+   "bytes": 14524,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2230,7 +2247,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 89,
-   "bytes": 13973,
+   "bytes": 14085,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2250,7 +2267,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 91,
-   "bytes": 13878,
+   "bytes": 14017,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2290,7 +2307,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 13570,
+   "bytes": 13589,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2330,7 +2347,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 14105,
+   "bytes": 15481,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2350,7 +2367,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 95,
-   "bytes": 14792,
+   "bytes": 14861,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2370,7 +2387,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 13529,
+   "bytes": 13775,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2390,7 +2407,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 14201,
+   "bytes": 14284,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2410,7 +2427,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 91,
-   "bytes": 13610,
+   "bytes": 13678,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
@@ -2430,7 +2447,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 13761,
+   "bytes": 13826,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การตื่น)",
@@ -2450,7 +2467,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 13447,
+   "bytes": 13794,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด (การลุก)",
@@ -2469,8 +2486,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 361,
-   "bytes": 77532,
+   "lines": 360,
+   "bytes": 78215,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2489,8 +2506,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 72,
-   "bytes": 13143,
+   "lines": 73,
+   "bytes": 14992,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2507,7 +2524,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 135,
-   "bytes": 39535,
+   "bytes": 39632,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2524,7 +2541,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 141,
-   "bytes": 43492,
+   "bytes": 44707,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2546,7 +2563,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 82,
-   "bytes": 19678,
+   "bytes": 19741,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2564,8 +2581,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 60,
-   "bytes": 16734,
+   "lines": 61,
+   "bytes": 17572,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2582,7 +2599,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 237,
-   "bytes": 52761,
+   "bytes": 53484,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2599,7 +2616,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 766,
-   "bytes": 137183,
+   "bytes": 138862,
    "headings": [
     "1. ตารางครอบคลุม",
     "2. อัซการ์",
@@ -2621,8 +2638,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 59,
-   "bytes": 11093,
+   "lines": 60,
+   "bytes": 11918,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2636,8 +2653,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 145,
-   "bytes": 22970,
+   "lines": 148,
+   "bytes": 26442,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2656,7 +2673,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 62,
-   "bytes": 9373,
+   "bytes": 9521,
    "headings": [
     "1. สิ่งที่มีในโค้ดแล้ว",
     "2. หลักการที่ใช้ต่อ",
@@ -2683,7 +2700,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 398,
-   "bytes": 47182,
+   "bytes": 48358,
    "headings": [
     "1. ภาพรวมเก้าทวีป",
     "2. อัซการ์ — ทวีปมังกร (หมู่เกาะลอยฟ้า)",
@@ -2708,7 +2725,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 423,
-   "bytes": 63753,
+   "bytes": 64029,
    "headings": [
     "1. ตำนานที่ผู้คนเล่า",
     "2. ความจริง",
@@ -2742,7 +2759,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 156,
-   "bytes": 13673,
+   "bytes": 13676,
    "headings": [
     "1. ที่ตั้งของสิ่งสำคัญในเรื่องหลัก",
     "2. พันธมิตรและแกนความขัดแย้งข้ามทวีป",
@@ -2756,8 +2773,8 @@
    "layer": "lore",
    "group": "lore/world",
    "kind": "fact",
-   "lines": 197,
-   "bytes": 36224,
+   "lines": 198,
+   "bytes": 37306,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -2790,7 +2807,7 @@
    "group": "systems/bonds",
    "kind": "data",
    "lines": 110,
-   "bytes": 16396,
+   "bytes": 16674,
    "headings": [
     "1. สายสัมพันธ์ 9 แบบ",
     "2. ความผูกพันและระดับ",
@@ -2807,7 +2824,7 @@
    "group": "systems/bonds",
    "kind": "data",
    "lines": 130,
-   "bytes": 18072,
+   "bytes": 18091,
    "headings": [
     "1. อารมณ์ 24 อย่าง",
     "2. ตารางว่าสายไหนแสดงอารมณ์ไหนได้",
@@ -2823,8 +2840,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 96,
-   "bytes": 15850,
+   "lines": 97,
+   "bytes": 16904,
    "headings": [
     "1. พวกพ้องมาจากไหน",
     "2. ข้อพิจารณาตอนจับคู่",
@@ -2840,8 +2857,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 110,
-   "bytes": 22399,
+   "lines": 120,
+   "bytes": 23854,
    "headings": [
     "1. สามชั้นของเรื่อง",
     "2. ห้าขั้นของหนึ่งเรื่อง",
@@ -2856,8 +2873,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 78,
-   "bytes": 16463,
+   "lines": 88,
+   "bytes": 18653,
    "headings": [
     "1. โครงญาติตอนเกิด",
     "2. แม่แบบญาติ 8 แบบ",
@@ -2872,7 +2889,7 @@
    "group": "systems/bonds",
    "kind": "data",
    "lines": 79,
-   "bytes": 14413,
+   "bytes": 14568,
    "headings": [
     "1. กติกา",
     "2. ที่มา",
@@ -2887,8 +2904,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 84,
-   "bytes": 22365,
+   "lines": 86,
+   "bytes": 24610,
    "headings": [
     "1. กติกา",
     "2. รายชื่อ 55 คน",
@@ -2914,8 +2931,8 @@
    "layer": "systems",
    "group": "systems/character",
    "kind": "data",
-   "lines": 255,
-   "bytes": 44438,
+   "lines": 258,
+   "bytes": 46552,
    "headings": [
     "1. ลำดับการสุ่มเกิด",
     "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
@@ -2934,7 +2951,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 87,
-   "bytes": 16009,
+   "bytes": 16030,
    "headings": [
     "กติกา",
     "ก. นิสัยและความถนัด",
@@ -2949,7 +2966,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 125,
-   "bytes": 19078,
+   "bytes": 19288,
    "headings": [
     "แท็กเผ่า",
     "ก. ธาตุ แสง ความมืด ต่อเผ่า",
@@ -3034,7 +3051,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 134,
-   "bytes": 16177,
+   "bytes": 16304,
    "headings": [
     "จำนวน",
     "1. การเสนออาชีพทั่วไป",
@@ -3068,7 +3085,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 153,
-   "bytes": 28353,
+   "bytes": 28694,
    "headings": [
     "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
     "ข. อาชีพลับใหม่ 8 อย่าง",
@@ -3111,7 +3128,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 181,
-   "bytes": 25788,
+   "bytes": 26102,
    "headings": [
     "1. ตัวสัตว์คู่หูมีอะไรบ้าง",
     "2. โอกาสได้สัตว์คู่หู",
@@ -3151,7 +3168,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 141,
-   "bytes": 20956,
+   "bytes": 21044,
    "headings": [
     "ระดับ C ธรรมดา (30)",
     "ระดับ U ไม่ธรรมดา (29)",
@@ -3162,12 +3179,12 @@
   },
   {
    "path": "systems/character/16-companion-stories.md",
-   "title": "เรื่องราวการได้สัตว์คู่หู 31 เรื่อง",
+   "title": "เรื่องราวการได้สัตว์คู่หู 32 เรื่อง",
    "layer": "systems",
    "group": "systems/character",
    "kind": "data",
-   "lines": 57,
-   "bytes": 15142,
+   "lines": 58,
+   "bytes": 15941,
    "headings": [
     "ก. เรื่องสำหรับทุกคน",
     "ข. เรื่องสำหรับอาชีพกลุ่ม A (เกี่ยวข้อง)",
@@ -3197,8 +3214,8 @@
    "layer": "systems",
    "group": "systems/character",
    "kind": "index",
-   "lines": 66,
-   "bytes": 9128,
+   "lines": 68,
+   "bytes": 9822,
    "headings": [
     "ไฟล์",
     "จำนวนรวม",
@@ -3230,7 +3247,7 @@
    "group": "systems/character/races",
    "kind": "data",
    "lines": 40,
-   "bytes": 3683,
+   "bytes": 3722,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3421,8 +3438,8 @@
    "layer": "systems",
    "group": "systems/character/races",
    "kind": "data",
-   "lines": 40,
-   "bytes": 3093,
+   "lines": 42,
+   "bytes": 3521,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3437,8 +3454,8 @@
    "layer": "systems",
    "group": "systems/character/races",
    "kind": "data",
-   "lines": 40,
-   "bytes": 3058,
+   "lines": 42,
+   "bytes": 3571,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3469,8 +3486,8 @@
    "layer": "systems",
    "group": "systems/character/races",
    "kind": "data",
-   "lines": 40,
-   "bytes": 3102,
+   "lines": 42,
+   "bytes": 3711,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3502,7 +3519,7 @@
    "group": "systems/character/races",
    "kind": "data",
    "lines": 42,
-   "bytes": 3603,
+   "bytes": 3643,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3518,7 +3535,7 @@
    "group": "systems/character/races",
    "kind": "data",
    "lines": 42,
-   "bytes": 3594,
+   "bytes": 4022,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3581,8 +3598,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 132,
-   "bytes": 13443,
+   "lines": 133,
+   "bytes": 13653,
    "headings": [
     "1. แท็กการโจมตีของตัวละครมาจากไหน",
     "2. ตารางกายภาพ",
@@ -3600,7 +3617,7 @@
    "group": "systems/combat",
    "kind": "data",
    "lines": 239,
-   "bytes": 65642,
+   "bytes": 65721,
    "headings": [
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
     "ข. มอนสเตอร์ใหม่ผูกกับโลก 40 ตัว",
@@ -3616,7 +3633,7 @@
    "group": "systems/combat",
    "kind": "data",
    "lines": 117,
-   "bytes": 13163,
+   "bytes": 13164,
    "headings": [
     "1. ความถี่",
     "2. แบบของเหตุการณ์ต่อสู้",
@@ -3634,7 +3651,7 @@
    "group": "systems/combat",
    "kind": "data",
    "lines": 100,
-   "bytes": 10611,
+   "bytes": 10920,
    "headings": [
     "1. หลักการ",
     "2. ตารางสุ่มรางวัลพิเศษตามระดับศัตรู",
@@ -3651,8 +3668,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 78,
-   "bytes": 11846,
+   "lines": 82,
+   "bytes": 13488,
    "headings": [
     "1. มังกรป่า",
     "2. มังกรสิบห้า: แบบของการพบ",
@@ -3666,8 +3683,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 1597,
-   "bytes": 227026,
+   "lines": 1600,
+   "bytes": 229481,
    "headings": [
     "1. หลักการ",
     "2. เงื่อนไขเปิดศึก",
@@ -3731,8 +3748,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 176,
-   "bytes": 21615,
+   "lines": 177,
+   "bytes": 22318,
    "headings": [
     "1. ห้าชั้น",
     "2. ชนชั้นที่เกิดตาม W และ G",
@@ -3753,7 +3770,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 172,
-   "bytes": 22021,
+   "bytes": 21985,
    "headings": [
     "1. รายได้ของอาชีพ",
     "2. ขุนนางและผู้ถือที่ดิน",
@@ -3774,7 +3791,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 202,
-   "bytes": 21991,
+   "bytes": 21985,
    "headings": [
     "1. ห้าทางหาทอง",
     "2. การต่อรอง",
@@ -3871,8 +3888,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 139,
-   "bytes": 21448,
+   "lines": 141,
+   "bytes": 22654,
    "headings": [
     "1. เจตนาของระบบ",
     "2. ระดับการผูกตัว",
@@ -3906,7 +3923,7 @@
    "group": "systems/events",
    "kind": "index",
    "lines": 17,
-   "bytes": 2615,
+   "bytes": 2706,
    "headings": []
   },
   {
@@ -3916,7 +3933,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 158,
-   "bytes": 16363,
+   "bytes": 16551,
    "headings": [
     "1. โอรัน-ซัล → สกายฟอลล์",
     "2. เพลิงนิรันดร์ → ทวีปเถ้า",
@@ -3941,8 +3958,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 151,
-   "bytes": 24783,
+   "lines": 190,
+   "bytes": 32592,
    "headings": [
     "1. สกายฟอลล์ (ซากฟ้า) — หลัง DR-01",
     "2. ทวีปเถ้า — หลัง DR-04",
@@ -3951,7 +3968,8 @@
     "5. ป่าเหี่ยว — หลัง BIO-02",
     "6. ดินแดนสนิม — หลัง MC-04",
     "7. ทวีปแสง — หลัง BIO-05",
-    "8. ดินแดนหมอกกลืน — หลัง FG-11"
+    "8. ดินแดนหมอกกลืน — หลัง FG-11",
+    "9. เหตุการณ์เดิมหลังทวีปเปลี่ยนรูป"
    ]
   },
   {
@@ -3961,7 +3979,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 137,
-   "bytes": 19273,
+   "bytes": 19668,
    "headings": [
     "1. สถานะของตัวละครต่อเหตุการณ์",
     "2. ที่เกิดเปลี่ยนไป",
@@ -3978,8 +3996,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 163,
-   "bytes": 29348,
+   "lines": 164,
+   "bytes": 30623,
    "headings": [
     "1. ช่วงย่อย",
     "2. กติกาความหนาแน่น",
@@ -4008,8 +4026,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 117,
-   "bytes": 121231,
+   "lines": 120,
+   "bytes": 125927,
    "headings": [
     "1. หลักการ",
     "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 76 รายการ",
@@ -4022,8 +4040,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 451,
-   "bytes": 99132,
+   "lines": 467,
+   "bytes": 104523,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4106,7 +4124,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 28,
-   "bytes": 5332,
+   "bytes": 5602,
    "headings": [
     "กติกา"
    ]
@@ -4118,7 +4136,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 51,
-   "bytes": 9136,
+   "bytes": 9244,
    "headings": [
     "1. สามแบบ",
     "2. สิ่งที่โลกจำ",
@@ -4143,7 +4161,7 @@
    "group": "systems/experience",
    "kind": "index",
    "lines": 45,
-   "bytes": 7069,
+   "bytes": 7111,
    "headings": [
     "ประโยคจุดขาย",
     "ที่มาของแรงบันดาลใจ",
@@ -4198,7 +4216,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 204,
-   "bytes": 54989,
+   "bytes": 54968,
    "headings": []
   },
   {
@@ -4208,7 +4226,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 142,
-   "bytes": 62133,
+   "bytes": 62112,
    "headings": [
     "1. อาชีพลับ",
     "2. อาชีพพิเศษ"
@@ -4391,7 +4409,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 115,
-   "bytes": 14024,
+   "bytes": 14096,
    "headings": [
     "1. สูตร",
     "2. ตัวปรับของชิ้น",
@@ -4411,7 +4429,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 135,
-   "bytes": 20991,
+   "bytes": 21177,
    "headings": [
     "1. หลักการ",
     "2. เครื่องรางเข้ามือ NPC อย่างไร",
@@ -4476,7 +4494,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 214,
-   "bytes": 34562,
+   "bytes": 34556,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
@@ -4491,8 +4509,8 @@
    "layer": "systems",
    "group": "systems/travel",
    "kind": "data",
-   "lines": 151,
-   "bytes": 24739,
+   "lines": 173,
+   "bytes": 32062,
    "headings": [
     "1. ระดับการเดินทางของชีวิต",
     "2. เหตุที่ทำให้ได้เดินทาง",
