@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 133,
-   "bytes": 37729,
+   "lines": 134,
+   "bytes": 39584,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1982,7 +1982,7 @@
    "group": "lore/religions",
    "kind": "fact",
    "lines": 119,
-   "bytes": 16627,
+   "bytes": 16636,
    "headings": [
     "1. ลัทธิบูชามังกร",
     "2. ศาสนจักรแห่งแสง",
@@ -2774,7 +2774,7 @@
    "group": "lore/world",
    "kind": "fact",
    "lines": 219,
-   "bytes": 44347,
+   "bytes": 44522,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -4057,7 +4057,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 477,
-   "bytes": 109485,
+   "bytes": 109626,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4509,8 +4509,8 @@
    "layer": "systems",
    "group": "systems/simulation",
    "kind": "data",
-   "lines": 214,
-   "bytes": 35612,
+   "lines": 216,
+   "bytes": 39784,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
