@@ -32,6 +32,8 @@ export const P = {
   wr23F: 38, // WR-23 needs world faith below this
   leanCF: 30, // END-10 can also come from a scatter outcome of WR-15 when faith is below this
   leFeedback: true, // the LE events change the world state (docs/systems/events/branches/04-last-era.md section 3.1); false = they only count
+  closing: true, // events close once their continent changes shape or their dragon falls (see CLOSE); false = the old sim that ignored it
+  faith: true, // religion weights (see FAITH); false = ignore them
 };
 
 // ---------- data ----------
@@ -81,12 +83,94 @@ for (const e of events) {
   if ((m = c.match(/การรบกวน(\S+?) > (\d+)/))) e.thr.push(['Z:' + m[1], '>', +m[2]]);
 }
 
+// closures: events that can no longer happen once a continent changes shape (world-events.md sections 0.4 rule 1 and 15)
+// read from the ปิด and แทนที่ rows of branches/01-dragon-falls.md and the table in branches/02-new-lands.md section 9
+const ids = (s) => s.match(idRe) || [];
+const FLAGS = {}; // flag name -> trigger id (branches/README.md)
+for (const l of read('systems/events/branches/README.md').split('\n')) {
+  const m = l.match(/^\| (\S+) \| ([A-Z]{2,3}-\d{2}) \|$/);
+  if (m) FLAGS[m[1]] = m[2];
+}
+export const CLOSE = new Map(); // trigger id -> Set of closed event ids
+// a closed event replaced by a branch event (SF AS DW RF WT CL DV, not simulated on their own) still rolls, as its successor
+export const SUCC = new Map(); // trigger id -> Map(closed id -> successor id)
+const close = (t, xs) => { if (!CLOSE.has(t)) CLOSE.set(t, new Set()); for (const x of xs) if (byId.has(x)) CLOSE.get(t).add(x); };
+const succ = (t, from, to) => {
+  const a = ids(from), b = to.match(/\b[A-Z]{2,3}-\d{2}\b/g) || [];
+  if (!SUCC.has(t)) SUCC.set(t, new Map());
+  a.forEach((x, i) => { const y = b.length === a.length ? b[i] : b[0]; if (y && !byId.has(y)) SUCC.get(t).set(x, y); });
+};
+const KEEP = new Map(); // trigger id -> ids that section 9 says stay open, to report clashes
+{
+  let trig = [];
+  for (const l of read('systems/events/branches/01-dragon-falls.md').split('\n')) {
+    const h = l.match(/^## \d+\. (\S+) → (.*)$/);
+    if (h) {
+      trig = [DRAGONS.find((d) => d[0] === h[1])?.[1]].filter(Boolean);
+      for (const [f, id] of Object.entries(FLAGS)) if (h[2].includes(f) && !trig.includes(id)) trig.push(id); // e.g. ซิลเวรา → ป่าเหี่ยว also follows BIO-02
+      continue;
+    }
+    const row = l.match(/^\| \*\*(ปิด|แทนที่)\*\* \| (.*) \|$/);
+    if (!row) continue;
+    // ปิด: every id except an old form that a new form replaces (รูปแบบปกติ, แบบเดิม)
+    // แทนที่: the ids left of each → when the right side names a successor event or none; prose alone is the same event in a new form
+    const xs = row[1] === 'ปิด'
+      ? row[2].split(/,\s*(?![^()]*\))/).filter((x) => !/รูปแบบปกติ|แบบเดิม/.test(x)).flatMap(ids)
+      : row[2].split(' · ').filter((x) => /→.*(?:[A-Z]{2,3}-\d{2}|ไม่มีผู้สืบทอด)/.test(x)).flatMap((x) => (trig.forEach((t) => succ(t, ...x.split('→'))), ids(x.split('→')[0])));
+    for (const t of trig) close(t, xs);
+  }
+  const sec = read('systems/events/branches/02-new-lands.md').split(/^## /m).find((x) => x.startsWith('9.'));
+  for (const l of sec.split('\n')) {
+    const c = l.split(' | ').map((x) => x.replace(/^\| |\s\|$/g, '').trim());
+    const t = FLAGS[c[0]];
+    if (c.length !== 4 || !t) continue; // flags without a world-wide trigger (one country only, or WR-23 below) are not modelled
+    if (c[2] === 'แทนที่' && /^[A-Z]{2}-\d{2}/.test(c[3])) { close(t, ids(c[1])); succ(t, c[1], c[3].replace(/\(.*$/, '')); }
+    else if (c[2].startsWith('ปิด')) close(t, ids(c[1]));
+    else if (c[2].startsWith('คงอยู่')) KEEP.set(t, [...(KEEP.get(t) || []), ...ids(c[1])]);
+  }
+  // ไร้ธง: after WR-23 the PO and HP events close (section 9)
+  close('WR-23', events.filter((e) => /^(PO|HP)-/.test(e.id)).map((e) => e.id));
+}
+export const closeClash = [...KEEP].flatMap(([t, xs]) => xs.filter((x) => CLOSE.get(t)?.has(x)).map((x) => `${t}:${x}`));
+
+// religion weights: หนุน and ต้าน of each faith multiply the event's weight (world-events.md section 0.2, lore/religions/)
+// the sim has no places, so a faith's weight counts on the events its own file names (they sit in its region) unless the event
+// happens to the whole world (ทั้งโลก ทั่วโลก ทุกทวีป ทุกคน): then only a faith above 20% of the world counts
+// faiths 22-23 are main nowhere; a weight with a condition the sim cannot read (เมื่อ …, a sub-group, an effect instead of a chance)
+// is left out; "หลัง … (X)" waits for X
+const SHARE = {};
+for (const l of read('lore/religions/README.md').split('\n')) {
+  const m = l.match(/^\| (\d+) \| [^|]+ \| [A-E] \| ([^|]+) \|/);
+  if (m) SHARE[+m[1]] = Number(m[2]) || 0;
+}
+for (const e of events) e.world = /ทั้งโลก|ทั่วโลก|ทุกทวีป|เก้าทวีป|ทุกคน/.test(e.name + ' ' + e.what);
+export const FAITH = new Map(); // event id -> [[mult, after id or null, faith no]]
+for (const f of ['02-major-faiths.md', '03-regional-faiths.md', '04-movements.md']) {
+  let no = 0;
+  for (const l of read('lore/religions/' + f).split('\n')) {
+    const h = l.match(/^## (\d+)\./);
+    if (h) { no = +h[1]; continue; }
+    if (!l.startsWith('- **หนุน**') || no > 21) continue;
+    const seg = l.replace(/\*\*เปิดเฉพาะ\*\*.*$/, '').replace(/\*\*(หนุน|ต้าน)\*\*/g, ',');
+    for (const tok of seg.split(/,\s*|\s+(?=[A-Z]{2,3}-\d{2}\b)/)) {
+      const m = tok.trim().match(/^([A-Z]{2,3}-\d{2})\s*(?:\(([^)]*)\)\s*)?×([\d.]+)\s*(.*)$/);
+      if (!m || /\((?:[^)]*)(?:เมื่อ|หลัง)/.test(m[2] ? `(${m[2]})` : '') || /\([^)]*เมื่อ/.test(m[4])) continue;
+      if (byId.get(m[1])?.world && !(SHARE[no] > 20)) continue;
+      const rest = m[4].replace(/\((?![A-Z]{2,3}-\d{2}\))[^)]*\)/g, '').trim();
+      const after = rest.match(/^หลัง.*?\(([A-Z]{2,3}-\d{2})\)$/)?.[1] || null;
+      if (rest && !after) continue;
+      if (!FAITH.has(m[1])) FAITH.set(m[1], []);
+      FAITH.get(m[1]).push([+m[3], after, no]);
+    }
+  }
+}
+
 // convergence points
 export const cvs = [];
 for (const l of read('lore/storylines/00-convergence.md').split('\n')) {
   const m = l.match(/^\| (cv\.\d+) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$/);
   if (!m) continue;
-  const trig = [...new Set(m[3].match(idRe) || [])];
+  const trig = [...new Set(m[3].match(/\b[A-Z]{2,3}-\d{2}\b/g) || [])]; // world events and the branch events that replace them
   // xc nodes (25-journeys.md) are numbered a1-a9 b1-b9 t1-t2 in the order of the non-human peoples; they enter as adult nodes of that people
   const XC = ['el', 'de', 'dw', 'or', 'ha', 'be', 'na', 'dk', 'va', 'fa', 'sl', 'dm', 'me', 'wi', 'gi', 'la', 'co', 'so', 'mu', 'gh'];
   const xcRace = (id) => XC[({ a: 0, b: 9, t: 18 })[id[3]] + Number(id[4]) - 1];
@@ -133,7 +217,13 @@ export function runWorld(seed, opt = {}) {
   const log = [];
   const lastClass = { '⭐': -1e9, '●': -1e9, '○': -1e9 };
   const era = () => (dfc <= 2 ? 1 : dfc <= 5 ? 2 : dfc <= 9 ? 3 : 4);
+  const closed = new Set(), succOf = new Map(); // closed ids, and the branch event that rolls in place of a closed one
+  const shut = (t) => {
+    if (!p.closing || !CLOSE.has(t)) return;
+    for (const x of CLOSE.get(t)) { closed.add(x); const y = SUCC.get(t)?.get(x); if (y && !succOf.has(x)) succOf.set(x, y); }
+  };
   const fire = (id, year, cls) => {
+    shut(id);
     if (!fired.has(id)) fired.set(id, []);
     fired.get(id).push(year);
     log.push([year, id]);
@@ -148,10 +238,13 @@ export function runWorld(seed, opt = {}) {
   const le = []; // last-era events (docs/systems/events/branches/04-last-era.md); they change nothing else in the sim
   fire('FG-01', START - 12);
   const cap = (cls, year) => year - lastClass[cls] >= p.capYears[cls];
+  const faithW = (id) => (p.faith ? (FAITH.get(id) || []).reduce((w, [x, after]) => (after && !fired.has(after) ? w : w * x), 1) : 1);
 
   function fall(i, year, id, viaEvent) {
     alive[i] = false;
     dfc++;
+    if (p.closing) { const pl = Object.keys(PL_OF).find((x) => PL_OF[x] === i); if (pl) closed.add(pl); } // the dragon was the event's anchor (section 0.4 rule 8)
+    if (!viaEvent) shut(DRAGONS[i][1]);
     for (let k = 0; k < era(); k++) if (!eraStart[k]) eraStart[k] = year;
     if (viaEvent && !fired.has(DRAGONS[i][1])) fire(DRAGONS[i][1], year, viaEvent); // END-09 may already have opened through FG-11
     fire('DR-15', year);
@@ -192,7 +285,7 @@ export function runWorld(seed, opt = {}) {
       if (era() < minEra) continue; // the docs gate elder falls by era
       const star = id.startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(id) ? '⭐' : '●';
       if (p.strictCap && !cap(star, year)) continue;
-      if (mood[i] < 3 || r() < 0.35) fall(i, year, id, star);
+      if (mood[i] < 3 || r() < Math.min(1, 0.35 * faithW(id))) fall(i, year, id, star);
     }
     // hero kills a legend dragon (DR-13), allowed in every era
     if (r() < (dfc === 0 ? p.hero0 : p.hero)) {
@@ -209,7 +302,9 @@ export function runWorld(seed, opt = {}) {
     const cand = [];
     for (const e of events) {
       if (SPECIAL.has(e.id) || FALL_IDS.has(e.id)) continue;
-      const done = fired.get(e.id);
+      const id = closed.has(e.id) ? succOf.get(e.id) : e.id;
+      if (!id) continue;
+      const done = fired.get(id);
       if (done && !(e.id.startsWith('WR') && year - done[done.length - 1] >= 100)) continue;
       if (done && !e.id.startsWith('WR')) continue;
       const er = era();
@@ -227,15 +322,17 @@ export function runWorld(seed, opt = {}) {
         if (!ok) continue;
         boost = p.stateBoost;
       }
+      boost *= faithW(e.id);
       if (e.id.startsWith('WR') && year < warUntil) boost *= 1.5; // LE-05
       if (e.id === 'WR-15' && p.leFeedback && p.le !== false) boost *= 1 + (K - 4) * 0.5; // the more keys one side holds, the closer the war
-      cand.push([e, p.rate[e.mk] * boost]);
+      cand.push([e, p.rate[e.mk] * boost, id]);
     }
     for (let i = cand.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [cand[i], cand[j]] = [cand[j], cand[i]]; }
-    for (const [e, pr] of cand) {
+    for (const [e, pr, id] of cand) {
       if (r() >= pr) continue;
-      if (!cap(e.mk, year)) continue;
-      fire(e.id, year, e.mk);
+      if (!cap(e.mk, year) || (id !== e.id && fired.has(id))) continue; // two closed events can share one successor
+      fire(id, year, e.mk);
+      if (id !== e.id) continue; // a successor has none of the effects below
       // a few effects that other events read
       if (e.id === 'WR-15') { const x = rl(); lean = x < 0.35 ? 'a' : x < 0.65 ? 'b' : 'c'; }
       if (e.id === 'HP-07') S.H -= 40;
@@ -247,7 +344,7 @@ export function runWorld(seed, opt = {}) {
       if (e.id === 'DR-10') { const live = alive.map((a, i) => (a && i > 0 ? i : -1)).filter((i) => i >= 0); if (live.length && alive.filter(Boolean).length > 1) { const k = live[Math.floor(r() * live.length)]; fall(k, year, null, (DRAGONS[k][1].startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(DRAGONS[k][1]) ? '⭐' : '●')); } } // an elder or a pillar, never the primordial
     }
     // END-09 can open through FG-11 while Niveri still lives: no DFC, no mourning wave (world-events.md section 0.4 rule 10)
-    if (fired.has('FG-11') && !fired.has('END-09') && alive[14] && r() < p.rate['⭐'] && cap('⭐', year)) { fire('END-09', year, '⭐'); mood[14] -= 20; }
+    if (fired.has('FG-11') && !fired.has('END-09') && alive[14] && r() < p.rate['⭐'] * faithW('END-09') && cap('⭐', year)) { fire('END-09', year, '⭐'); mood[14] -= 20; }
     // last-era events: phases by DFC (4a 10-11, 4b 12-13, 4c 14), repeatable ones keep 30 years apart
     {
       const has = (id) => le.some((x) => x[1] === id);
