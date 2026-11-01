@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 136,
-   "bytes": 42321,
+   "lines": 138,
+   "bytes": 43987,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1982,7 +1982,7 @@
    "group": "lore/religions",
    "kind": "fact",
    "lines": 119,
-   "bytes": 16636,
+   "bytes": 16638,
    "headings": [
     "1. ลัทธิบูชามังกร",
     "2. ศาสนจักรแห่งแสง",
@@ -4510,7 +4510,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 216,
-   "bytes": 40038,
+   "bytes": 40220,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
