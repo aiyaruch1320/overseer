@@ -52,6 +52,7 @@ const SOURCE = {
   '_generated/storyline-balance.md': 'scripts/docs/build-storyline-balance.mjs',
   '_generated/event-coverage.md': 'scripts/docs/build-event-coverage.mjs',
   '_generated/country-links.md': 'scripts/docs/build-country-links.mjs',
+  '_generated/npc-economy.md': 'scripts/docs/build-npc-economy.mjs',
   '_generated/local-events-by-country.md': 'scripts/docs/build-local-events.mjs',
   '_generated/weapon-catalog.md': 'scripts/docs/build-weapon-catalog.mjs',
   '_generated/item-catalog.md': 'scripts/docs/build-item-catalog.mjs',

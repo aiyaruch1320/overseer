@@ -31,13 +31,14 @@ npm run docs:verify
 | `build-npc-map.mjs` | | สร้าง `_generated/npc-map.html` | พิมพ์ `npcs 614 · countries 143 …` |
 | `build-local-events.mjs` | | สร้าง `_generated/local-events-by-country.md` (เหตุการณ์ท้องถิ่น LC-1xx ของทุกประเทศที่ไม่มีเหตุการณ์ระบุชื่อ) | พิมพ์ `local events: 61 generated` |
 | `build-country-links.mjs` | | สร้าง `_generated/country-links.md` (ตัวละครหลักไปถึงแต่ละประเทศได้ทางไหน และจุดที่ไฟล์ประเทศ NPC เหตุการณ์ขัดกัน) | พิมพ์ `country links: 143 countries` ควรได้ relation clashes 0 |
+| `build-npc-economy.mjs` | | สร้าง `_generated/npc-economy.md` (ชนชั้นและทองของ NPC ทั้ง 614 ตัว ณ ต้นเรื่อง ตามกติกา `03-classes.md` หัวข้อ 8) | พิมพ์ `npc economy: 614 npcs` |
 | `build-event-coverage.mjs` | | สร้าง `_generated/event-coverage.md` (ประเทศที่ไม่มีเหตุการณ์ระบุชื่อ NPC ที่ไม่ผูกเหตุการณ์หรือ NPC อื่น) ใช้หาที่ที่ต้องเพิ่มจุดบรรจบ | พิมพ์ `event coverage: 143 countries` |
 | `build-storyline-balance.mjs` | | สร้าง `_generated/storyline-balance.md` (โหนด จุดบรรจบ NPC ประเทศ ต่อเผ่า) ใช้ตรวจว่าเผ่าไหนเป็นตัวเอก | พิมพ์ `storyline balance: 21 peoples` |
 | `build-story-map.mjs` | | สร้าง `_generated/story-map.html` | พิมพ์ `nodes 197 … edges …` |
 | `build-docs-manifest.mjs` | | สร้าง `_generated/manifest.json` (ชั้น กลุ่ม ชนิด หัวข้อของทุกไฟล์) | พิมพ์ `manifest: N docs` และไม่มี `files outside any known group` |
 | `templates/` | | แม่แบบ HTML และข้อมูลจัดมือของแผนที่ ไม่ใช่สคริปต์ที่รัน | |
 
-`npm run docs:build` รันตัวสร้างทั้งเก้าตามลำดับ (ดัชนีท้ายสุด) `npm run docs:verify` คือ `docs:check` ตามด้วย `docs:build`
+`npm run docs:build` รันตัวสร้างทั้งสิบตามลำดับ (ดัชนีท้ายสุด) `npm run docs:verify` คือ `docs:check` ตามด้วย `docs:build`
 
 ## แปลงเอกสารกับโค้ด (`scripts/codegen/`)
 

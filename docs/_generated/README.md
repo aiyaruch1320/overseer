@@ -10,6 +10,7 @@
 | [npc-map.html](npc-map.html) | [../lore/npcs/](../lore/npcs/README.md) และเหตุการณ์ | `node scripts/docs/build-npc-map.mjs` |
 | [local-events-by-country.md](local-events-by-country.md) | แม่แบบ LT ใน [../systems/events/local-events.md](../systems/events/local-events.md) บริบทประเทศและ NPC | `node scripts/docs/build-local-events.mjs` |
 | [country-links.md](country-links.md) | [../lore/countries/](../lore/countries/README.md) NPC เส้นเรื่อง เหตุการณ์ และตารางถิ่นเกิด | `node scripts/docs/build-country-links.mjs` |
+| [npc-economy.md](npc-economy.md) | กติกาชนชั้นและทองของ NPC ใน [../systems/economy/03-classes.md](../systems/economy/03-classes.md) หัวข้อ 8 · [../lore/npcs/](../lore/npcs/README.md) · W ใน [../systems/economy/02-countries.md](../systems/economy/02-countries.md) | `node scripts/docs/build-npc-economy.mjs` |
 | [event-coverage.md](event-coverage.md) | [../systems/events/](../systems/events/README.md) [../lore/npcs/](../lore/npcs/README.md) [../lore/countries/](../lore/countries/README.md) | `node scripts/docs/build-event-coverage.mjs` |
 | [storyline-balance.md](storyline-balance.md) | [../lore/storylines/](../lore/storylines/README.md) NPC และประเทศ | `node scripts/docs/build-storyline-balance.mjs` |
 | [story-map.html](story-map.html) | [../systems/events/](../systems/events/README.md) และเส้นเรื่อง | `node scripts/docs/build-story-map.mjs` |
