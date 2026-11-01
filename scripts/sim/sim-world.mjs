@@ -78,6 +78,7 @@ for (const e of events) {
   if ((m = c.match(/(?:ศรัทธาโลก|ศรัทธา|ความเชื่อ) < (\d+)/))) e.thr.push(['F', '<', +m[1]]);
   if ((m = c.match(/ศรัทธา > (\d+)/))) e.thr.push(['F', '>', +m[1]]);
   if (PL_OF[e.id] !== undefined && (m = c.match(/อารมณ์ < (\d+)/))) e.thr.push(['M' + PL_OF[e.id], '<', +m[1]]);
+  if ((m = c.match(/การรบกวน(\S+?) > (\d+)/))) e.thr.push(['Z:' + m[1], '>', +m[2]]);
 }
 
 // convergence points
@@ -125,6 +126,9 @@ export function runWorld(seed, opt = {}) {
   const alive = DRAGONS.map(() => true);
   let dfc = 0;
   const S = { H: 55, T: 70, D: 55, F: 60 };
+  // pillar disturbance from digging, drilling and blocked sea lanes (world-events.md sections 0.1 and 0.1.1)
+  const Z = { 'คัลดรา': 40, 'ธาลาสซา': 35, 'เซเรเน': 45, 'กรอม-ธาร': 40 };
+  const Z_STOP = { 'คัลดรา': ['PL-03', 'DR-04'], 'ธาลาสซา': ['PL-04'], 'เซเรเน': ['PL-06'], 'กรอม-ธาร': ['PL-07'] };
   const fired = new Map(); // id -> [years]
   const log = [];
   const lastClass = { '⭐': -1e9, '●': -1e9, '○': -1e9 };
@@ -149,7 +153,7 @@ export function runWorld(seed, opt = {}) {
     alive[i] = false;
     dfc++;
     for (let k = 0; k < era(); k++) if (!eraStart[k]) eraStart[k] = year;
-    if (viaEvent) fire(DRAGONS[i][1], year, viaEvent);
+    if (viaEvent && !fired.has(DRAGONS[i][1])) fire(DRAGONS[i][1], year, viaEvent); // END-09 may already have opened through FG-11
     fire('DR-15', year);
     S.F += 4;
     const closest = PAIRS.find((q) => q.includes(i));
@@ -171,6 +175,7 @@ export function runWorld(seed, opt = {}) {
     if (!fired.has('BIO-03')) S.T = Math.min(100, Math.max(0, S.T - 0.8 + gauss(r) * 1.5));
     if (!fired.has('FG-10')) S.D = Math.min(100, Math.max(0, S.D + (fired.has('FG-11') ? 1.2 : 0.6) + gauss(r) * 2));
     S.F = Math.min(100, Math.max(0, S.F + p.faithDrift + gauss(r) * 2.5));
+    for (const k of Object.keys(Z)) if (!Z_STOP[k].some((x) => fired.has(x))) Z[k] = Math.min(100, Math.max(0, Z[k] + 0.8 + gauss(r) * 1.5));
     const capM = 100 - p.capDfc * dfc;
     for (let i = 0; i < 15; i++) {
       if (!alive[i]) continue;
@@ -216,7 +221,7 @@ export function runWorld(seed, opt = {}) {
       let boost = 1;
       if (e.thr.length) {
         const ok = e.thr.every(([v, op, n]) => {
-          const val = v[0] === 'M' ? mood[+v.slice(1)] : S[v];
+          const val = v[0] === 'M' ? mood[+v.slice(1)] : v.startsWith('Z:') ? Z[v.slice(2)] : S[v];
           return op === '>' ? val > n : val < n;
         });
         if (!ok) continue;
@@ -236,9 +241,13 @@ export function runWorld(seed, opt = {}) {
       if (e.id === 'HP-07') S.H -= 40;
       if (e.id === 'DR-11') { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - 3 * dfc, mood[i] + 40); S.F += 10; }
       if (e.id === 'FG-10') { S.D -= 40; }
+      if (['WR-06', 'WR-07', 'BIO-07'].includes(e.id)) Z['ธาลาสซา'] = Math.min(100, Z['ธาลาสซา'] + 10);
+      if (e.id === 'MC-04') Z['เซเรเน'] = Math.min(100, Z['เซเรเน'] + 20);
       if (e.id === 'DR-09' && r() < 0.4) { const live = [1, 2, 3, 4, 5].filter((i) => alive[i] && era() >= DRAGONS[i][2]); if (live.length && alive.filter(Boolean).length > 1) { const k = live[Math.floor(r() * live.length)]; fall(k, year, null, (DRAGONS[k][1].startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(DRAGONS[k][1]) ? '⭐' : '●')); } }
       if (e.id === 'DR-10') { const live = alive.map((a, i) => (a && i > 0 ? i : -1)).filter((i) => i >= 0); if (live.length && alive.filter(Boolean).length > 1) { const k = live[Math.floor(r() * live.length)]; fall(k, year, null, (DRAGONS[k][1].startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(DRAGONS[k][1]) ? '⭐' : '●')); } } // an elder or a pillar, never the primordial
     }
+    // END-09 can open through FG-11 while Niveri still lives: no DFC, no mourning wave (world-events.md section 0.4 rule 10)
+    if (fired.has('FG-11') && !fired.has('END-09') && alive[14] && r() < p.rate['⭐'] && cap('⭐', year)) { fire('END-09', year, '⭐'); mood[14] -= 20; }
     // last-era events: phases by DFC (4a 10-11, 4b 12-13, 4c 14), repeatable ones keep 30 years apart
     {
       const has = (id) => le.some((x) => x[1] === id);
