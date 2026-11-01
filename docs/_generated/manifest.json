@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 138,
-   "bytes": 43987,
+   "lines": 140,
+   "bytes": 46847,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -4056,8 +4056,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 477,
-   "bytes": 109645,
+   "lines": 541,
+   "bytes": 116827,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4510,7 +4510,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 216,
-   "bytes": 40220,
+   "bytes": 40661,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
