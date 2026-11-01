@@ -1,6 +1,6 @@
 # การใช้ LLM เป็นระบบเสริม
 
-ระบบเส้นเรื่อง: [README.md](README.md) · โค้ด: `src/llm/narrator.ts`
+ระบบเส้นเรื่อง: [README.md](README.md) · โค้ด: `src/llm/narrator.ts` · ทุกงาน รุ่น และค่าใช้จ่ายรวมอยู่ที่ [../../systems/llm/README.md](../../systems/llm/README.md)
 
 ## 1. สิ่งที่มีในโค้ดแล้ว
 
