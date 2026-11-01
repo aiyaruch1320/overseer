@@ -170,6 +170,15 @@ for (const f of fs.readdirSync(path.join(docs, 'lore/countries')).filter((n) => 
     cur = null;
   }
 }
+// a movement counts as a main faith of its base countries (the ฐาน line of lore/religions/04-movements.md)
+{
+  let no = 0;
+  for (const l of read('lore/religions/04-movements.md').split('\n')) {
+    const h = l.match(/^## (\d+)\./);
+    if (h) no = +h[1];
+    if (l.startsWith('- **ฐาน**')) for (const c of l.match(/\b[A-Z]{2}-\d{2}\b/g) || []) MAIN[c]?.add(no);
+  }
+}
 // home of each event: the table in section 0.2.1, else the countries its row names, else the whole world
 const HOME = new Map();
 for (const l of read('systems/events/world-events.md').split('### 0.2.1')[1].split('### 0.3')[0].split('\n')) {
