@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 297,
+ "count": 298,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -1025,9 +1025,40 @@
    "layer": "guide",
    "group": "guide",
    "kind": "index",
-   "lines": 19,
-   "bytes": 1357,
+   "lines": 20,
+   "bytes": 1974,
    "headings": []
+  },
+  {
+   "path": "guide/code-plan.md",
+   "title": "แผนลงโค้ด",
+   "layer": "guide",
+   "group": "guide",
+   "kind": "guide",
+   "lines": 547,
+   "bytes": 86328,
+   "headings": [
+    "0. วิธีใช้ไฟล์นี้",
+    "1. ที่ตัดสินแล้ว",
+    "2. สถาปัตยกรรม",
+    "3. โครงโฟลเดอร์",
+    "4. เทคโนโลยี",
+    "5. ข้อมูลจากเอกสาร",
+    "6. แกน",
+    "7. ระบบในแกน",
+    "8. UI",
+    "9. ภาพตัวละคร",
+    "10. ด่าน",
+    "11. ขั้น",
+    "12. การแบ่งงานให้ subagent",
+    "13. ความเสี่ยง",
+    "14. เริ่ม session ใหม่",
+    "15. ทำงานต่อเนื่องและกลับมาทำต่อ",
+    "สถานะ",
+    "บันทึก (ใหม่อยู่บน)",
+    "16. รายงานสุดท้าย",
+    "17. Prompt สำหรับ session ใหม่"
+   ]
   },
   {
    "path": "guide/consistency-checks.md",
@@ -4916,7 +4947,7 @@
    "group": "systems/llm",
    "kind": "data",
    "lines": 275,
-   "bytes": 47401,
+   "bytes": 47815,
    "headings": [
     "1. หลัก",
     "2. ชุดที่ทำตอนนี้",
