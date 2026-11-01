@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 273,
+ "count": 290,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -44,6 +44,14 @@
   "lore/world": {
    "layer": "lore",
    "role": "Main story, continents, map layout, cross-continent politics, the two clocks"
+  },
+  "systems/god": {
+   "layer": "systems",
+   "role": "God powers: power economy, bestow offer, dreams, whispers, prayers, miracles, ruins, free conjuring, player goals, LLM role, implementation"
+  },
+  "systems/llm": {
+   "layer": "systems",
+   "role": "LLM in the game: every task, what it may change, model (DeepSeek V4.1 Flash), price and cost per life"
   },
   "lore/dragons": {
    "layer": "lore",
@@ -239,8 +247,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 397,
-   "bytes": 31198,
+   "lines": 398,
+   "bytes": 31261,
    "headings": [
     "สรุป",
     "เกราะและโล่",
@@ -696,13 +704,35 @@
    ]
   },
   {
+   "path": "appearance/20-god-ui.md",
+   "title": "หน้าจอและเอฟเฟกต์ของพระเจ้า",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 203,
+   "bytes": 44739,
+   "headings": [
+    "1. น้ำเสียงภาพ",
+    "2. หน้าจอเฝ้ามอง",
+    "3. หีบประทาน",
+    "4. เข้าฝัน",
+    "5. กระซิบ",
+    "6. คำอธิษฐาน",
+    "7. ปาฏิหาริย์",
+    "8. พงศาวดารพระหัตถ์",
+    "9. เสกตามใจ",
+    "10. คำปฏิญาณและพงศาวดารสายตระกูล",
+    "11. สั่งตัวละครและใบเกิด"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 83,
-   "bytes": 17456,
+   "lines": 84,
+   "bytes": 17888,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -1005,8 +1035,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 147,
-   "bytes": 49911,
+   "lines": 149,
+   "bytes": 51388,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -2659,13 +2689,30 @@
    ]
   },
   {
+   "path": "lore/storylines/31-divine.md",
+   "title": "เส้นเรื่อง: พระหัตถ์ในชีวิต (mr dp)",
+   "layer": "lore",
+   "group": "lore/storylines",
+   "kind": "fact",
+   "lines": 55,
+   "bytes": 11647,
+   "headings": [
+    "1. ธีม",
+    "2. วิธีใช้",
+    "3. mr ผลของปาฏิหาริย์",
+    "4. dp พระเจ้ากับตัวละคร",
+    "5. หน้าต่างพระเจ้า",
+    "6. ตรวจความสอดคล้อง"
+   ]
+  },
+  {
    "path": "lore/storylines/README.md",
    "title": "เส้นเรื่องตัวละครหลัก: โครงสร้าง",
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "index",
-   "lines": 149,
-   "bytes": 28118,
+   "lines": 150,
+   "bytes": 28824,
    "headings": [
     "1. ชิ้นส่วนของเส้นเรื่อง",
     "2. ช่วงชีวิต",
@@ -2684,7 +2731,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 62,
-   "bytes": 9521,
+   "bytes": 9685,
    "headings": [
     "1. สิ่งที่มีในโค้ดแล้ว",
     "2. หลักการที่ใช้ต่อ",
@@ -2803,8 +2850,8 @@
    "layer": "systems",
    "group": "systems",
    "kind": "index",
-   "lines": 32,
-   "bytes": 4599,
+   "lines": 34,
+   "bytes": 5321,
    "headings": [
     "โฟลเดอร์",
     "สิ่งที่ไม่อยู่ในชั้นนี้",
@@ -3234,13 +3281,31 @@
    ]
   },
   {
+   "path": "systems/character/19-wish.md",
+   "title": "สั่งตัวละคร",
+   "layer": "systems",
+   "group": "systems/character",
+   "kind": "data",
+   "lines": 123,
+   "bytes": 17278,
+   "headings": [
+    "1. หลัก",
+    "2. ใบคำขอ",
+    "3. แปลอย่างไร",
+    "4. แต้มชะตา",
+    "5. ใบเกิด",
+    "6. หลังเริ่ม",
+    "7. ข้อมูลที่ต้องขยายในโค้ด"
+   ]
+  },
+  {
    "path": "systems/character/README.md",
    "title": "ตัวละครหลัก: นิสัย ความถนัด skill พร คำสาป",
    "layer": "systems",
    "group": "systems/character",
    "kind": "index",
-   "lines": 69,
-   "bytes": 10221,
+   "lines": 70,
+   "bytes": 10559,
    "headings": [
     "ไฟล์",
     "จำนวนรวม",
@@ -4150,8 +4215,8 @@
    "layer": "systems",
    "group": "systems/experience",
    "kind": "data",
-   "lines": 28,
-   "bytes": 5602,
+   "lines": 29,
+   "bytes": 5878,
    "headings": [
     "กติกา"
    ]
@@ -4195,6 +4260,169 @@
     "เสาหลักห้าข้อ",
     "ไฟล์",
     "สิ่งที่ยังไม่ได้ทำในชุดนี้"
+   ]
+  },
+  {
+   "path": "systems/god/01-power.md",
+   "title": "พลังของพระเจ้า",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 143,
+   "bytes": 17625,
+   "headings": [
+    "1. รายได้",
+    "2. ราคา",
+    "3. ผลต่อศรัทธาเทพ",
+    "4. เพดานและจังหวะ",
+    "5. ทางของ `godslayer`",
+    "6. ข้ามรุ่น",
+    "7. ฉายาของพระเจ้า"
+   ]
+  },
+  {
+   "path": "systems/god/02-bestow.md",
+   "title": "หีบประทาน",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 110,
+   "bytes": 16987,
+   "headings": [
+    "1. หกช่อง",
+    "2. ใครได้อะไร (ตัวกรอง)",
+    "3. การสุ่ม",
+    "4. เลือก ทอยใหม่ ข้าม",
+    "5. อาวุธประทาน",
+    "6. กรณีพิเศษ",
+    "7. ตัวอย่างหีบหนึ่งใบ"
+   ]
+  },
+  {
+   "path": "systems/god/03-dreams.md",
+   "title": "เข้าฝัน กระซิบ และคำอธิษฐาน",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 132,
+   "bytes": 21645,
+   "headings": [
+    "1. ทางทั้งสามมาจากไหน",
+    "2. ความฝันหนึ่งทางประกอบด้วยอะไร",
+    "3. ความเชื่อฟัง",
+    "4. ผลเมื่อตื่น",
+    "5. ความฝันที่จังหวะพิเศษ",
+    "6. กระซิบ",
+    "7. คำอธิษฐาน"
+   ]
+  },
+  {
+   "path": "systems/god/04-miracles.md",
+   "title": "ปาฏิหาริย์: เสก ทำลาย และลิขิต",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 160,
+   "bytes": 40070,
+   "headings": [
+    "1. ทำงานอย่างไร",
+    "2. กติกาเหล็ก",
+    "3. รายการปาฏิหาริย์",
+    "4. ลิขิต: เบนเหตุการณ์โลก",
+    "5. ซากพระเจ้า",
+    "6. ผู้เห็นและปฏิกิริยาของโลก"
+   ]
+  },
+  {
+   "path": "systems/god/05-llm.md",
+   "title": "LLM ในระบบพระเจ้า",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 134,
+   "bytes": 21976,
+   "headings": [
+    "1. หลัก",
+    "2. สามชั้นของถ้อยคำ",
+    "3. งาน",
+    "4. LLM เพิ่มความเป็นไปได้อย่างไร โดยไม่แตะกติกา",
+    "5. ทำให้ถูก",
+    "6. ประมาณค่าต่อชีวิต",
+    "7. ตรวจคำตอบ",
+    "8. ตัวอย่างสัญญาข้อมูล",
+    "9. สิ่งที่ LLM ห้ามทำ",
+    "10. ขั้นต่อไปที่ต้องวัด"
+   ]
+  },
+  {
+   "path": "systems/god/06-implementation.md",
+   "title": "นำระบบพระเจ้าลงโค้ด",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 86,
+   "bytes": 14411,
+   "headings": [
+    "1. โครงข้อมูล",
+    "2. ลำดับการทำ",
+    "3. ลำดับในหนึ่งการแทรกแซง",
+    "4. จำลองสมดุลก่อนเขียนเกม",
+    "5. ทดสอบที่ต้องมี",
+    "6. ความเสี่ยง"
+   ]
+  },
+  {
+   "path": "systems/god/07-conjure.md",
+   "title": "เสกตามใจ",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 127,
+   "bytes": 21063,
+   "headings": [
+    "1. ชิ้นส่วนสามชิ้น",
+    "2. ตารางผล",
+    "3. ปฏิกิริยากับสภาพของที่",
+    "4. เงาสะท้อน",
+    "5. เพดาน",
+    "6. ขั้นตอน",
+    "7. ความเป็นไปได้"
+   ]
+  },
+  {
+   "path": "systems/god/08-goals.md",
+   "title": "เป้าหมายของผู้เล่น",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "data",
+   "lines": 137,
+   "bytes": 16622,
+   "headings": [
+    "1. หลัก",
+    "2. คำปฏิญาณของพระเจ้า",
+    "3. ฉายาชีวิต",
+    "4. พงศาวดารสายตระกูล",
+    "5. จังหวะชะตา",
+    "6. ราคาของการแทรกแซงมากเกิน",
+    "7. ของสะสมที่เพิ่ม"
+   ]
+  },
+  {
+   "path": "systems/god/README.md",
+   "title": "ระบบพระเจ้า",
+   "layer": "systems",
+   "group": "systems/god",
+   "kind": "index",
+   "lines": 97,
+   "bytes": 18059,
+   "headings": [
+    "1. หลักของระบบ",
+    "2. การแทรกแซงหกแบบ",
+    "3. วงจรของหนึ่งชีวิต",
+    "4. สิ่งที่ระบบนี้ปิดจากรายการที่ฝากไว้",
+    "5. ที่ผู้ใช้ตัดสินแล้ว (2026-11-01)",
+    "6. ความเป็นไปได้ที่พระเจ้าเพิ่ม",
+    "7. ไฟล์"
    ]
   },
   {
@@ -4306,7 +4534,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 247,
-   "bytes": 30896,
+   "bytes": 31049,
    "headings": [
     "1. ภาพรวม",
     "2. ความต้องการ",
@@ -4422,8 +4650,8 @@
    "layer": "systems",
    "group": "systems/items",
    "kind": "data",
-   "lines": 89,
-   "bytes": 17407,
+   "lines": 90,
+   "bytes": 17795,
    "headings": [
     "1. วัสดุจากสิ่งมีชีวิตและพืช",
     "2. ของสำคัญ"
@@ -4489,6 +4717,89 @@
     "6. อาวุธที่พระเจ้าประทาน",
     "7. ข้อเสนอสำหรับโค้ด",
     "8. รหัส"
+   ]
+  },
+  {
+   "path": "systems/llm/01-cost.md",
+   "title": "ค่าใช้จ่ายของ LLM",
+   "layer": "systems",
+   "group": "systems/llm",
+   "kind": "data",
+   "lines": 179,
+   "bytes": 20016,
+   "headings": [
+    "1. ราคา",
+    "2. ภาษาไทยกี่โทเคน",
+    "3. โครงของ prompt",
+    "4. ตารางงาน",
+    "5. กุญแจแคชคำตอบ",
+    "6. ผล",
+    "7. ข้อสังเกตจากผล",
+    "8. สิ่งที่โค้ดเดิมต้องเปลี่ยน"
+   ]
+  },
+  {
+   "path": "systems/llm/02-offline.md",
+   "title": "เล่นได้เต็มโดยไม่มี LLM",
+   "layer": "systems",
+   "group": "systems/llm",
+   "kind": "data",
+   "lines": 76,
+   "bytes": 12200,
+   "headings": [
+    "1. หลัก",
+    "2. อะไรอยู่ในตัวเกม",
+    "3. งานที่ต้องเปลี่ยนเพื่อให้ผลเหมือนกัน",
+    "4. งานที่ต้องมีทางสำรองพิเศษ",
+    "5. เมื่อ LLM ล้ม",
+    "6. ทดสอบ"
+   ]
+  },
+  {
+   "path": "systems/llm/03-naming.md",
+   "title": "ชื่อที่โลกจำ",
+   "layer": "systems",
+   "group": "systems/llm",
+   "kind": "data",
+   "lines": 61,
+   "bytes": 9449,
+   "headings": [
+    "1. อะไรมีชื่อ อะไรไม่มี",
+    "2. แม่แบบและคลังคำ",
+    "3. ทะเบียนชื่อของโลก"
+   ]
+  },
+  {
+   "path": "systems/llm/04-story.md",
+   "title": "LLM ที่เปลี่ยนเรื่องได้",
+   "layer": "systems",
+   "group": "systems/llm",
+   "kind": "data",
+   "lines": 130,
+   "bytes": 20373,
+   "headings": [
+    "1. บทบาท",
+    "2. ผู้เรียบเรียง",
+    "3. ผู้กำกับ",
+    "4. ผู้แปล",
+    "5. ผลต่อการเล่นซ้ำ"
+   ]
+  },
+  {
+   "path": "systems/llm/README.md",
+   "title": "LLM ในเกม",
+   "layer": "systems",
+   "group": "systems/llm",
+   "kind": "index",
+   "lines": 79,
+   "bytes": 12505,
+   "headings": [
+    "1. รุ่นที่ใช้",
+    "2. ใช้ LLM สามจุด",
+    "3. สวิตช์",
+    "4. งานที่ยังไม่ทำ",
+    "5. กติการ่วม",
+    "6. ไฟล์"
    ]
   },
   {
