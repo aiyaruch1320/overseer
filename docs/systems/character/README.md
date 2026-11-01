@@ -27,6 +27,7 @@
 | [15-companion-species.md](15-companion-species.md) | ชนิดสัตว์ 102 ชนิดตามระดับ C ถึง L |
 | [16-companion-stories.md](16-companion-stories.md) | เรื่องราวการได้สัตว์ 32 เรื่อง |
 | [17-companion-support.md](17-companion-support.md) | skill 12 พร 8 คำสาป 6 สำหรับสัตว์คู่หู |
+| [18-fates.md](18-fates.md) | ชะตาชีวิต 22 อย่างและลาง: จำนวนต่อชีวิต อายุ ชะตาลับ คำถามของชีวิต ทางที่เป็นไปได้ |
 | [../../_generated/character-catalog](../../_generated/character-catalog) | รายการในโค้ดปัจจุบัน (สร้างจากโค้ดอัตโนมัติ) |
 
 ## จำนวนรวม
