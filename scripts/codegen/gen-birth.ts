@@ -51,5 +51,5 @@ export const HOMES: Record<string, { main: string[]; mainPct: number; dia: strin
 /** where the parents of a half-blood meet: [meeting lands with weights], [home lands that need a special reason], the reason */
 export const PAIRS: { a: string; b: string; meet: [string, number][]; mains: string[]; note: string }[] = ${JSON.stringify(pairs)};
 `;
-writeFileSync('src/data/birthTables.ts', out);
+writeFileSync('legacy/data/birthTables.ts', out);
 console.log(Object.keys(homes).length, 'peoples,', pairs.length, 'pairs');

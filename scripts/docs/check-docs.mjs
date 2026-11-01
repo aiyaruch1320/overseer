@@ -66,7 +66,7 @@ function srcFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? srcFiles(path.join(dir, e.name)) : /\.ts$/.test(e.name) ? [path.join(dir, e.name)] : []));
 }
 const codeWords = new Set();
-for (const f of srcFiles(path.join(root, 'src'))) for (const m of fs.readFileSync(f, 'utf8').matchAll(/['"`]([a-z][a-z0-9_]*)['"`]/g)) codeWords.add(m[1]);
+for (const f of ['legacy', 'src'].filter((d) => fs.existsSync(path.join(root, d))).flatMap((d) => srcFiles(path.join(root, d)))) for (const m of fs.readFileSync(f, 'utf8').matchAll(/['"`]([a-z][a-z0-9_]*)['"`]/g)) codeWords.add(m[1]);
 // tags defined inside the docs themselves: race tags in the synergy rules, enemy types and traits in the type matrix
 const docTags = new Set([
   ...collect(['systems/character/03-synergy-rules.md'], /\*\*([a-z_]+)\*\*/g),

@@ -40,7 +40,7 @@ const WORLD = `โลกนี้หลังมหาล่มสลาย พ�
 const prefix = [{ role: 'system', content: RULES }, { role: 'user', content: WORLD }, { role: 'assistant', content: 'รับทราบ' }];
 
 // ---------- task parts ----------
-const TRAIT_SRC = fs.readFileSync(path.join(root, 'src/data/traits.ts'), 'utf8');
+const TRAIT_SRC = fs.readFileSync(path.join(root, 'legacy/data/traits.ts'), 'utf8');
 const TRAITS = [...TRAIT_SRC.slice(TRAIT_SRC.indexOf('const TRAIT_ROWS'), TRAIT_SRC.indexOf('export interface Trait')).matchAll(/\['([a-z_]+)', '([^']+)', '/g)].map((m) => [m[1], m[2]]);
 const RACES = races.map((r) => [r.code, r.name]);
 const CONT = [['AZ', 'อัซการ์'], ['MH', 'มอร์เฮเวน'], ['KD', 'คาซ-ดูรัม'], ['NR', 'เนเรีย'], ['AL', 'อัลเดรีย'], ['MK', 'เมคาเรีย'], ['SH', 'ซาฮารัน'], ['SV', 'ซิลวาเนล'], ['NB', 'เนบูเลีย']];

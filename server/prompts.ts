@@ -1,6 +1,6 @@
 // Prompts live only on the server. The browser sends a task name and a few short fields; it can never send
 // its own messages, so the API key cannot be used as a general-purpose chat proxy.
-import { setupCatalog } from '../src/sim/setup';
+import { setupCatalog } from '../legacy/sim/setup';
 
 const SYSTEM = 'คุณคือผู้บรรยายเกมจำลองชีวิตในโลกแฟนตาซีต่างโลก สไตล์นิยายไลท์โนเวลผสมนิทานพื้นบ้าน';
 

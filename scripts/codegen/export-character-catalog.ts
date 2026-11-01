@@ -3,8 +3,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BLESSINGS, CURSES } from '../../src/data/gifts';
-import { TRAITS, TRAIT_CONFLICTS, APTITUDES, SKILLS, UNIQUE_SKILLS } from '../../src/data/traits';
+import { BLESSINGS, CURSES } from '../../legacy/data/gifts';
+import { TRAITS, TRAIT_CONFLICTS, APTITUDES, SKILLS, UNIQUE_SKILLS } from '../../legacy/data/traits';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const out = (f: string, s: string) => fs.writeFileSync(path.join(root, 'docs/_generated/character-catalog', f), s);
