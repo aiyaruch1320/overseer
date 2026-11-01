@@ -18,6 +18,8 @@
     "gen:docs": "tsx scripts/codegen/export-character-catalog.ts && tsx scripts/codegen/gen-visual-docs.ts",
     "sim:world": "node scripts/sim/sim-world.mjs",
     "sim:items": "node scripts/sim/sim-items.mjs",
+    "sim:god": "node scripts/sim/sim-god.mjs",
+    "sim:attention": "node scripts/sim/sim-attention.mjs",
     "sim:gold": "tsx scripts/sim/sim-gold.ts 300"
   },
   "dependencies": {

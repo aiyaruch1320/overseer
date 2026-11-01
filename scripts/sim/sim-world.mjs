@@ -39,7 +39,7 @@ export const P = {
 // ---------- data ----------
 const EVENT_PREFIX = ['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END'];
 const idRe = new RegExp(`\\b(?:${EVENT_PREFIX.join('|')})-\\d{2}\\b`, 'g');
-const events = [];
+export const events = [];
 for (const l of read('systems/events/world-events.md').split('\n')) {
   const m = l.match(/^\| \*\*([A-Z]{2,3}-\d{2}) ([⭐●○])? ?([^*]*)\*\*(.*?)\| (.*?) \| (.*?) \| (.*) \|$/);
   if (m) events.push({ id: m[1], mk: m[2] || '○', name: (m[3] + m[4]).trim(), cond: m[5], what: m[6], eff: m[7] });
@@ -54,7 +54,7 @@ function eraGate(c) {
   return [1, 4];
 }
 // dragons: 0-5 primordial and elders, 6-14 pillars
-const DRAGONS = [
+export const DRAGONS = [
   ['โอรัน-ซัล', 'DR-01', 2, 1.2], ['เพลิงนิรันดร์', 'DR-04', 2, 0.8], ['สมุทรอาลัย', 'DR-05', 2, 1.1],
   ['พายุไร้ทิศ', 'DR-06', 2, 0.9], ['ศิลาสะท้าน', 'DR-07', 3, 0.7], ['ราหู', 'DR-08', 2, 0.9],
   ['อีริดาน', 'END-01', 1, 0.8], ['ฮรอด-กาธ', 'END-02', 1, 1.0], ['คัลดรา', 'END-03', 1, 0.8],
@@ -62,7 +62,7 @@ const DRAGONS = [
   ['กรอม-ธาร', 'END-07', 1, 0.8], ['ซิลเวรา', 'END-08', 1, 1.0], ['นิเวรี', 'END-09', 1, 0.9],
 ];
 const INIT = [72, 72, 62, 72, 72, 70, 72, 70, 72, 72, 60, 50, 72, 60, 70];
-const PAIRS = [[0, 7], [1, 2], [3, 6], [4, 12], [8, 9], [10, 11], [13, 14]];
+export const PAIRS = [[0, 7], [1, 2], [3, 6], [4, 12], [8, 9], [10, 11], [13, 14]];
 const FALL_IDS = new Set(DRAGONS.map((d) => d[1]));
 const PL_OF = Object.fromEntries(['PL-01', 'PL-02', 'PL-03', 'PL-04', 'PL-05', 'PL-06', 'PL-07', 'PL-08', 'PL-09'].map((id, i) => [id, 6 + i]));
 const SPECIAL = new Set([...FALL_IDS, 'DR-15', 'DR-13', 'END-10', 'END-11', 'END-12', 'FG-01']);
@@ -289,6 +289,9 @@ export function runWorld(seed, opt = {}) {
   fire('FG-01', START - 12);
   const cap = (cls, year) => year - lastClass[cls] >= p.capYears[cls];
   const faithW = (id) => (p.faith ? (FAITH.get(id) || []).reduce((w, [x, after]) => (after && !fired.has(after) ? w : w * x), 1) : 1);
+  // god hook (scripts/sim/sim-god.mjs): p.god(ctx) acts once per decade, p.godW(id, year) weights an event, p.godOpen(id, year) opens an event whose state condition fails; none is set by default
+  const godW = (id, year) => (p.godW ? p.godW(id, year) : 1);
+  const capDrop = DRAGONS.map(() => 0); // permanent mood-cap loss from strikes on a dragon's home (god/04-miracles.md section 5.4)
 
   function fall(i, year, id, viaEvent) {
     alive[i] = false;
@@ -324,8 +327,9 @@ export function runWorld(seed, opt = {}) {
       if (!alive[i]) continue;
       const drift = p.rec * (capM - mood[i]) * (S.F / 60) - DRAGONS[i][3] * p.stress;
       // (mood decay per dragon: see P.stress)
-      mood[i] = Math.min(capM, mood[i] + drift + gauss(r) * 1.5);
+      mood[i] = Math.min(capM - capDrop[i], mood[i] + drift + gauss(r) * 1.5);
     }
+    if (p.god) p.god({ year, mood, alive, capDrop, S, fired, dfc, era: era(), fall: (i) => fall(i, year, null, null) });
     // dragon falls by mood
     const order = DRAGONS.map((_, i) => i).sort((a, b) => mood[a] - mood[b]);
     for (const i of order) {
@@ -335,7 +339,7 @@ export function runWorld(seed, opt = {}) {
       if (era() < minEra) continue; // the docs gate elder falls by era
       const star = id.startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(id) ? '⭐' : '●';
       if (p.strictCap && !cap(star, year)) continue;
-      if (mood[i] < 3 || r() < Math.min(1, 0.35 * faithW(id))) fall(i, year, id, star);
+      if (mood[i] < 3 || r() < Math.min(1, 0.35 * faithW(id) * godW(id, year))) fall(i, year, id, star);
     }
     // hero kills a legend dragon (DR-13), allowed in every era
     if (r() < (dfc === 0 ? p.hero0 : p.hero)) {
@@ -369,10 +373,10 @@ export function runWorld(seed, opt = {}) {
           const val = v[0] === 'M' ? mood[+v.slice(1)] : v.startsWith('Z:') ? Z[v.slice(2)] : S[v];
           return op === '>' ? val > n : val < n;
         });
-        if (!ok) continue;
+        if (!ok && !(p.godOpen && p.godOpen(e.id, year))) continue; // the god's own deeds can stand in for a state condition (god/04-miracles.md rule 7)
         boost = p.stateBoost;
       }
-      boost *= faithW(e.id);
+      boost *= faithW(e.id) * godW(e.id, year);
       if (e.id.startsWith('WR') && year < warUntil) boost *= 1.5; // LE-05
       if (e.id === 'WR-15' && p.leFeedback && p.le !== false) boost *= 1 + (K - 4) * 0.5; // the more keys one side holds, the closer the war
       cand.push([e, p.rate[e.mk] * boost, id]);
