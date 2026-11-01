@@ -99,19 +99,27 @@ out.push(`- NPC ต่างเผ่าที่โหนดอ้างเฉ�
 out.push(`- ทวีปที่โหนดกล่าวถึงเฉลี่ยของเผ่าที่ไม่ใช่มนุษย์: ${navg('conts')} → ${navg('contsX')} (รวมโหนด xc)`);
 out.push('', '## 3. อ่านอย่างไร', '', '- มนุษย์เป็นตัวเอกเมื่อทุกช่องของมนุษย์สูงกว่าเผ่าอื่นหลายเท่า ช่องที่ควรปรับก่อนคือ "จุดบรรจบที่เข้าได้" และ "NPC ของเผ่า"', '- ต้องการให้เผ่าอื่นอย่างน้อย 3 NPC ต่างเผ่าต่อชีวิตตาม [../systems/travel/01-travel-rules.md](../systems/travel/01-travel-rules.md) หัวข้อ 5', '');
 
-// Rows that only say "→ cv.N" have no content of their own. When the convergence is closed the slot is blank unless the people have fallback (l) nodes.
+// Rows that only say "→ cv.N" have no content of their own. When the convergence is closed the slot is blank unless an l node
+// of that people says "ใช้แทน <node>" for it (00-convergence.md section 3). Covered slots do not count as blank.
 const CV_OPEN = { 4: 1, 10: 1, 12: 1, 13: 1, 8: 0.95, 1: 0.95, 16: 0.95, 2: 0.8, 15: 0.8, 6: 0.72, 14: 0.72, 5: 0.72, 7: 0.63, 9: 0.52, 11: 0.48, 3: 0.12 };
 const gaps = RACES.map(([code, name, file]) => {
   const lines = read(`lore/storylines/${file}`).split('\n').filter((l) => new RegExp(`^\\| ${code}\\.[btael]\\d \\|`).test(l));
   const cvOnly = lines.filter((l) => (l.split('|')[4] || '').trim().startsWith('→ cv.')).map((l) => [l.split('|')[1].trim(), (l.match(/→ cv\.(\d+)/) || [])[1]]);
-  const fallback = lines.filter((l) => new RegExp(`^\\| ${code}\\.l\\d \\|`).test(l)).length;
-  const blank = cvOnly.reduce((sum, [, c]) => sum + (1 - (CV_OPEN[c] ?? 0.5)), 0);
-  return { name, cvOnly, fallback, blank };
+  const fallbacks = lines.filter((l) => new RegExp(`^\\| ${code}\\.l\\d \\|`).test(l));
+  const covered = new Set();
+  for (const l of fallbacks)
+    for (const [, part] of l.matchAll(/ใช้แทน([^·|]*)/g))
+      for (const [id] of part.matchAll(new RegExp(`\\b${code}\\.[btae]\\d\\b`, 'g'))) covered.add(id);
+  const miss = (list) => list.reduce((sum, [, c]) => sum + (1 - (CV_OPEN[c] ?? 0.5)), 0);
+  return { name, cvOnly, fallback: fallbacks.length, covered, raw: miss(cvOnly), blank: miss(cvOnly.filter(([id]) => !covered.has(id))) };
 });
 out.push('## 4. ช่องว่างเมื่อจุดบรรจบไม่เปิด', '');
-out.push('โหนดที่เขียนเพียง "→ cv.N" ไม่มีเนื้อหาของตัวเอง ถ้าจุดบรรจบนั้นไม่เปิดในโลกนั้น ช่วงชีวิตนั้นว่าง ยกเว้นเผ่าที่มีโหนดสำรอง (รหัส `l`) โอกาสเปิดของจุดบรรจบใช้ตาม [../systems/simulation/world-sim.md](../systems/simulation/world-sim.md) หัวข้อ 3.5', '');
-out.push('| เผ่า | โหนดที่เป็น → cv เท่านั้น | โหนดสำรอง | ช่องว่างคาดต่อชีวิต |', '| --- | --- | --- | --- |');
-for (const g of gaps) out.push(`| ${g.name} | ${g.cvOnly.map(([id, c]) => `${id.slice(3)}→cv.${c}`).join(' ') || '-'} | ${g.fallback} | ${g.blank.toFixed(2)} |`);
+out.push('โหนดที่เขียนเพียง "→ cv.N" ไม่มีเนื้อหาของตัวเอง ถ้าจุดบรรจบนั้นไม่เปิดในโลกนั้น ช่วงชีวิตนั้นว่าง เว้นแต่เผ่านั้นมีโหนดสำรอง (รหัส `l` ในหัวข้อ 4ก ของไฟล์เผ่า) ที่เขียน "ใช้แทน" โหนดนั้น ตาม [../lore/storylines/00-convergence.md](../lore/storylines/00-convergence.md) หัวข้อ 3 ช่องที่โหนดสำรองครอบไม่นับเป็นช่องว่าง โอกาสเปิดของจุดบรรจบใช้ตาม [../systems/simulation/world-sim.md](../systems/simulation/world-sim.md) หัวข้อ 3.5 คอลัมน์ "ก่อนนับโหนดสำรอง" คือช่องว่างถ้าไม่มีโหนด `l` เลย ใช้ดูว่าเผ่าพึ่งโหนดสำรองมากเท่าไร', '');
+out.push('| เผ่า | โหนดที่เป็น → cv เท่านั้น | โหนดสำรอง | โหนด → cv ที่โหนดสำรองครอบ | ช่องว่างก่อนนับโหนดสำรอง | ช่องว่างคาดต่อชีวิต |', '| --- | --- | --- | --- | --- | --- |');
+for (const g of gaps) {
+  const hit = g.cvOnly.filter(([id]) => g.covered.has(id)).map(([id]) => id.slice(3));
+  out.push(`| ${g.name} | ${g.cvOnly.map(([id, c]) => `${id.slice(3)}→cv.${c}`).join(' ') || '-'} | ${g.fallback} | ${hit.join(' ') || '-'} | ${g.raw.toFixed(2)} | ${g.blank.toFixed(2)} |`);
+}
 out.push('');
 fs.writeFileSync(path.join(docs, '_generated/storyline-balance.md'), out.join('\n'));
 console.log(`storyline balance: ${rows.length} peoples · ${countries} countries · ${total} npcs`);
