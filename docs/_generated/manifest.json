@@ -209,7 +209,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 177,
-   "bytes": 14468,
+   "bytes": 14469,
    "headings": [
     "1. สรุป",
     "2. ความขัดกันที่พบ",
@@ -328,7 +328,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 73,
-   "bytes": 7803,
+   "bytes": 7806,
    "headings": [
     "1. ต่อเผ่า",
     "2. สรุป",
@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 87,
-   "bytes": 21379,
+   "lines": 133,
+   "bytes": 37729,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1098,7 +1098,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 23163,
+   "bytes": 23813,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1137,7 +1137,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 231,
-   "bytes": 41420,
+   "bytes": 41895,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1268,7 +1268,7 @@
    "group": "lore/heirs",
    "kind": "fact",
    "lines": 139,
-   "bytes": 22517,
+   "bytes": 22950,
    "headings": [
     "1. ใครเป็นทายาท",
     "2. ส่งต่ออะไร",
@@ -1357,7 +1357,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 117,
-   "bytes": 36127,
+   "bytes": 36232,
    "headings": [
     "MH-01 กาธเรธ (ธงกระดูก)",
     "MH-02 ดราซาร์ (ธงเลือด)",
@@ -2187,7 +2187,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 94,
-   "bytes": 21739,
+   "bytes": 23183,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2346,8 +2346,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 92,
-   "bytes": 15481,
+   "lines": 93,
+   "bytes": 16451,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2507,7 +2507,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 73,
-   "bytes": 15288,
+   "bytes": 15300,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2773,8 +2773,8 @@
    "layer": "lore",
    "group": "lore/world",
    "kind": "fact",
-   "lines": 218,
-   "bytes": 43315,
+   "lines": 219,
+   "bytes": 44347,
    "headings": [
     "1. สองนาฬิกา",
     "2. จุดยึดบนเส้นเวลา",
@@ -2807,7 +2807,7 @@
    "group": "systems/bonds",
    "kind": "data",
    "lines": 122,
-   "bytes": 19200,
+   "bytes": 19588,
    "headings": [
     "1. สายสัมพันธ์ 9 แบบ",
     "2. ความผูกพันและระดับ",
@@ -2840,8 +2840,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 110,
-   "bytes": 19370,
+   "lines": 122,
+   "bytes": 24362,
    "headings": [
     "1. พวกพ้องมาจากไหน",
     "2. ข้อพิจารณาตอนจับคู่",
@@ -2858,7 +2858,7 @@
    "group": "systems/bonds",
    "kind": "data",
    "lines": 122,
-   "bytes": 25331,
+   "bytes": 25668,
    "headings": [
     "1. สามชั้นของเรื่อง",
     "2. ห้าขั้นของหนึ่งเรื่อง",
@@ -2932,7 +2932,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 260,
-   "bytes": 48104,
+   "bytes": 48547,
    "headings": [
     "1. ลำดับการสุ่มเกิด",
     "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
@@ -3550,7 +3550,7 @@
    "group": "systems/character/races",
    "kind": "data",
    "lines": 42,
-   "bytes": 4308,
+   "bytes": 4435,
    "headings": [
     "ช่วงค่าสถานะเริ่มต้น",
     "ความสามารถประจำเผ่า",
@@ -3949,7 +3949,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 158,
-   "bytes": 16635,
+   "bytes": 16804,
    "headings": [
     "1. โอรัน-ซัล → สกายฟอลล์",
     "2. เพลิงนิรันดร์ → ทวีปเถ้า",
@@ -4043,7 +4043,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 122,
-   "bytes": 130262,
+   "bytes": 132756,
    "headings": [
     "1. หลักการ",
     "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 76 รายการ",
@@ -4281,7 +4281,7 @@
    "group": "systems/items",
    "kind": "data",
    "lines": 155,
-   "bytes": 49829,
+   "bytes": 50573,
    "headings": [
     "1. ตารางรวม",
     "2. เรื่องราวและเงื่อนไข",
@@ -4467,7 +4467,7 @@
    "group": "systems/items",
    "kind": "index",
    "lines": 149,
-   "bytes": 19084,
+   "bytes": 19538,
    "headings": [
     "ไฟล์",
     "1. ระดับความหายาก",
@@ -4510,7 +4510,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 214,
-   "bytes": 34803,
+   "bytes": 35612,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
@@ -4526,7 +4526,7 @@
    "group": "systems/travel",
    "kind": "data",
    "lines": 213,
-   "bytes": 47311,
+   "bytes": 47773,
    "headings": [
     "1. ระดับการเดินทางของชีวิต",
     "2. เหตุที่ทำให้ได้เดินทาง",
