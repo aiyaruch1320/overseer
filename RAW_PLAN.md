@@ -70,8 +70,8 @@
 | ชั้นทับของประเทศ | `docs/appearance/countries/10-scale-and-sacred.md` `11-context-and-landmarks.md` | ขนาดเมืองและศาสนสถาน ภาวะสงคราม การป้องกัน กฎหมาย และจุดเด่นตามบริบทและเผ่า |
 | จัดเอกสาร | `docs/guide/organization.md` | สามชั้น lore · systems · appearance พร้อม guide และ `_generated` |
 | ตรวจเชิงความหมายทั้งโลก | `docs/guide/semantic-audit.md` `docs/guide/consistency-checks.md` | หลักของเกม P1–P9 ที่ใช้ตัดสิน รายการตรวจต่อชนิดไฟล์ การแบ่งผู้อ่าน กติกาการแก้ · รอบแรก 2026-11-01 อ่านครบทุกไฟล์ใน lore และ systems (18 ชุดขนาน แล้วผู้อ่านใหม่ 4 ชุดตรวจการแก้) ผลบันทึกใน consistency-checks |
-| ระบบพระเจ้า | `docs/systems/god/` `docs/appearance/20-god-ui.md` `docs/lore/storylines/31-divine.md` | ร่างแรก 2026-11-01: พลังสองแหล่ง หีบประทาน เข้าฝัน กระซิบ คำอธิษฐาน ปาฏิหาริย์ 25 แบบ ซากพระเจ้า หมุดผนึก เสกตามใจ เป้าหมายของผู้เล่น ลำดับลงโค้ด (หัวข้อ 4.5) |
-| LLM | `docs/systems/llm/` `scripts/sim/sim-llm-cost.mjs` | DeepSeek V4.1 Flash ใช้สามจุดพร้อมสวิตช์ ค่าใช้จ่าย เล่นได้โดยไม่มี LLM ชื่อที่โลกจำ ผู้กำกับ |
+| ระบบพระเจ้า | `docs/systems/god/` `docs/appearance/20-god-ui.md` `docs/lore/storylines/31-divine.md` `docs/systems/experience/07-attention.md` | ครบในชั้นเอกสาร 2026-11-02: พลังสองแหล่ง หีบประทาน เข้าฝัน กระซิบ คำอธิษฐาน ปาฏิหาริย์ 25 แบบ ซาก เสกตามใจ เป้าหมายของผู้เล่น จังหวะที่เกมเรียก ตัวเลขตัดสินจากเกมอื่นและวัดด้วย `sim-god.mjs` `sim-attention.mjs` |
+| LLM | `docs/systems/llm/` `scripts/llm/` `data/library/` | DeepSeek V4.1 Flash ใช้สามจุด (สั่งตัวละคร ผู้กำกับ สรุปตอนจบ) พร้อมสวิตช์ ทดสอบจริงแล้ว ราว 0.0008 ดอลลาร์ต่อชีวิต · เล่นได้โดยไม่มี LLM: คลังคำของชื่อ แม่แบบชั้น 0 และคลังชั้น 1 ที่ agent Opus เขียน 1,538 บรรทัด |
 | สั่งตัวละคร | `docs/systems/character/19-wish.md` | ใบคำขอ แต้มชะตา ใบเกิด ตัวแปลคำพ้อง |
 
 ### ตัวเลขความเป็นไปได้ของเส้นเรื่อง
