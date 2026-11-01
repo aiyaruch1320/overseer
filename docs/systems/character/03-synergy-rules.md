@@ -10,7 +10,7 @@
 | --- | --- |
 | มนุษย์ | adaptable |
 | เอลฟ์ | nature long_lived keen_eye |
-| ดาร์กเอลฟ์ | darkvision shadow long_lived |
+| ดาร์กเอลฟ์ | darkvision shadow long_lived weak_light |
 | คนแคระ | fire_res poison_res darkvision |
 | ออร์ค | berserk |
 | ฮาล์ฟลิง | lucky small |
@@ -19,7 +19,7 @@
 | เผ่ามังกร | fire_res dragon_blood weak_ice scales |
 | แวมไพร์ | undead weak_light weak_sun blood_drinker darkvision |
 | ภูตพราย | weak_iron flight nature small |
-| สไลม์ | amorphous weak_ice absorb |
+| สไลม์ | amorphous weak_ice weak_fire absorb |
 | เผ่าปีศาจ | fire_res weak_light infernal horned |
 | เงือก | water_breath siren |
 | เผ่าปีก | flight keen_eye |
@@ -37,8 +37,8 @@
 | ID | เงื่อนไข | ผล | เหตุผลในโลก |
 | --- | --- | --- | --- |
 | SR-01 | ผู้โจมตีมี `#light` หรือ `#holy` เป้าหมายมี `undead` | ความเสียหาย ×1.5 | แสงของศาสนจักรทำลายผู้ตาย |
-| SR-02 | ผู้โจมตีมี `#light` หรือ `#holy` เป้าหมายมี `weak_light` และไม่ใช่ undead | ×1.5 | เผ่าปีศาจและกูลหนีจากแสง |
-| SR-03 | ผู้โจมตีมี `#fire` เป้าหมายมี `weak_fire` (มัมมี่) | ×2 | ร่างแห้งไหม้ง่าย |
+| SR-02 | ผู้โจมตีมี `#light` หรือ `#holy` เป้าหมายมี `weak_light` และไม่ใช่ undead | ×1.5 | เผ่าปีศาจและดาร์กเอลฟ์หนีจากแสง (กูลเป็น undead จึงใช้ SR-01 แทน ไม่ซ้อนกัน) |
+| SR-03 | ผู้โจมตีมี `#fire` เป้าหมายมี `weak_fire` (มัมมี่ สไลม์) | ×2 | ร่างแห้งไหม้ง่าย ร่างเหลวเสียรูป |
 | SR-04 | ผู้โจมตีมี `#fire` เป้าหมายมี `fire_res` | ×0.4 | ทนไฟ |
 | SR-05 | ผู้โจมตีมี `#fire` เป้าหมายมี `lava_body` | ×0.2 | ไฟเป็นของเผ่าลาวา |
 | SR-06 | ผู้โจมตีมี `#ice` เป้าหมายมี `weak_ice` | ×1.6 | |
@@ -49,7 +49,7 @@
 | SR-11 | ผู้โจมตีมี `#wind` หรือ `#lightning` เป้าหมายมี `flight` | ×1.3 | ปีกรับลมเต็มที่ |
 | SR-12 | ผู้โจมตีมี `#poison_*` หรือ `venom` เป้าหมายมี `mechanical` | ×0 | ไม่มีเลือด |
 | SR-13 | ผู้โจมตีมี `#dark` หรือ `#necro` เป้าหมายมี `undead` | ×0.5 และอาจกลายเป็นผู้ควบคุมได้ | ความตายเป็นของพวกเดียวกัน |
-| SR-14 | ผู้โจมตีมี `weak_iron` ถูกอาวุธเหล็ก | ×1.5 | ภูตแพ้เหล็ก |
+| SR-14 | เป้าหมายมี `weak_iron` และถูกอาวุธเหล็ก | ×1.5 | ภูตแพ้เหล็ก |
 | SR-15 | เป้าหมายมี `weak_silver` (จาก `c_silverbane`) และถูกอาวุธเงิน | ×1.6 | ถือตามคำสาป `c_silverbane` |
 
 ## ข. ของที่ขัดกับร่างของตัวเอง

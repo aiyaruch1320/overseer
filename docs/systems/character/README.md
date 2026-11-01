@@ -4,6 +4,8 @@
 
 เผ่าพันธุ์: [../../lore/races/README.md](../../lore/races/README.md) · ประเทศ: [../../lore/countries/README.md](../../lore/countries/README.md) · เหตุการณ์: [../events/world-events.md](../events/world-events.md) · ผลต่อตัวละคร: [../events/branches/03-character-and-quests.md](../events/branches/03-character-and-quests.md) · เส้นเรื่องของแต่ละเผ่า: [../../lore/storylines/README.md](../../lore/storylines/README.md) · อาวุธ: [../items/README.md](../items/README.md) · ทายาท: [../../lore/heirs/README.md](../../lore/heirs/README.md) · เศรษฐกิจและชนชั้น: [../economy/README.md](../economy/README.md)
 
+**ใช้กับทุกชีวิต** ตารางกำเนิด พร คำสาป อาชีพ และสัตว์คู่หูในชุดนี้ใช้กับทุกชีวิตที่โลกสร้างขึ้น รวม NPC ที่มาใหม่และผู้สืบตำแหน่ง ([../../lore/npcs/succession.md](../../lore/npcs/succession.md)) ไม่ใช่เฉพาะตัวละครหลัก NPC ในรายชื่อ ศ.ม. 10,400 คงแถวที่เขียนไว้ และจำลองแบบย่อด้วยผลของแถว (ทาง ก ข ค)
+
 ## ไฟล์
 
 | ไฟล์ | เนื้อหา |
@@ -23,7 +25,7 @@
 | [13-companions-overview.md](13-companions-overview.md) | ระบบสัตว์คู่หู: โอกาสได้ตามอาชีพ ความผูกพัน ชีวิต ข้อจำกัด กติกา PR-01 ถึง PR-20 |
 | [14-companion-abilities.md](14-companion-abilities.md) | ความสามารถของสัตว์ 60 อย่าง |
 | [15-companion-species.md](15-companion-species.md) | ชนิดสัตว์ 102 ชนิดตามระดับ C ถึง L |
-| [16-companion-stories.md](16-companion-stories.md) | เรื่องราวการได้สัตว์ 31 เรื่อง |
+| [16-companion-stories.md](16-companion-stories.md) | เรื่องราวการได้สัตว์ 32 เรื่อง |
 | [17-companion-support.md](17-companion-support.md) | skill 12 พร 8 คำสาป 6 สำหรับสัตว์คู่หู |
 | [../../_generated/character-catalog](../../_generated/character-catalog) | รายการในโค้ดปัจจุบัน (สร้างจากโค้ดอัตโนมัติ) |
 

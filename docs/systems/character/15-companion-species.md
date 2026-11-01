@@ -96,7 +96,7 @@
 | sp_storm_hawk | เหยี่ยวพายุ | นก | AZ-03 | 28–35 | pa_keen_eyes:3 pa_shock_touch:1 | |
 | sp_thunder_ram | แกะสายฟ้า | ธาตุ | AZ | 22–28 | pa_shock_touch:2 pa_thick_hide:2 | |
 | sp_fairy_moth | ผีเสื้อภูต | วิญญาณ | SV-04 | 3–5 | pa_bright_mood:2 pa_spirit_bridge:1 | ภูตพรายได้ง่ายขึ้น |
-| sp_nine_fox_cub | จิ้งจอกเก้าหางน้อย | วิญญาณ | SV AL-23 | 100–140 | pa_lie_sense:2 pa_distract:2 | เติบโตเป็น sp_nine_tailed_fox ได้ตลอดชีวิต |
+| sp_nine_fox_cub | จิ้งจอกเก้าหางน้อย | วิญญาณ | SV AL-23 | 100–140 | pa_lie_sense:2 pa_distract:2 | เติบโตเป็น sp_nine_tailed_fox ผ่านเรื่อง cs_ninth_tail เท่านั้น |
 | sp_spirit_cat | แมววิญญาณ | วิญญาณ | SH-14 NB | 35–45 | pa_ghost_sense:2 pa_purr_calm:2 | เผ่าผู้ตายและผู้ไร้เงาได้ง่ายขึ้น |
 | sp_ember_cat | แมวไฟ | ธาตุ | KD-06 | 18–22 | pa_breath_fire:2 pa_lava_core:1 | แมวทั่วไปเกลียดสัตว์ตัวนี้ |
 | sp_crystal_rabbit | กระต่ายผลึกมานา | ธาตุ | AL-12 | 15–20 | pa_mana_well:2 pa_lucky_charm:2 | ถูกล่าโดย MK-14 |
@@ -133,7 +133,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | sp_sixteenth_hatchling | ลูกมังกรไข่ใบที่สิบหก | มังกร | DR-03 เท่านั้น | ไม่ทราบ | pa_dragon_voice:3 pa_intimidate:3 pa_life_share:3 | ผูกเส้นเรื่องพี่น้องมังกร มังกรทั้งสิบห้าทราบการมีอยู่ ถ้า DR-03 ไม่เกิด ไข่ไม่มี |
 | sp_lost_dragonling | ลูกมังกรหลงทาง | มังกร | AZ ซากสกายฟอลล์ KD-07 | 600–900 | pa_breath_fire:3 pa_fly_mount:3 pa_intimidate:2 | ไม่ใช่เสาและไม่ใช่ผู้อาวุโส เป็นลูกหลานเผ่ามังกร |
-| sp_nine_tailed_fox | จิ้งจอกเก้าหาง | วิญญาณ | SV AL-23 | 800–1,100 | pa_lie_sense:3 pa_distract:3 pa_omen:2 | โตจาก sp_nine_fox_cub เมื่อความผูกพันสูงสุด |
+| sp_nine_tailed_fox | จิ้งจอกเก้าหาง | วิญญาณ | SV AL-23 | 800–1,100 | pa_lie_sense:3 pa_distract:3 pa_omen:2 | โตจาก sp_nine_fox_cub ผูกพัน 5 ผ่านเรื่อง cs_ninth_tail ([16-companion-stories.md](16-companion-stories.md)) |
 | sp_leviathan_calf | ลูกเลวีอาธาน | วิเศษ | NR-04 NR-11 | 500–700 | pa_swim_mount:3 pa_intimidate:3 pa_weather_sense:3 | ผูกธาลาสซา (PL-04) |
 | sp_sage_tortoise | เต่าปราชญ์พันปี | วิญญาณ | SH-13 SV-07 | 900–1,200 | pa_wisdom_gaze:3 pa_life_share:3 pa_omen:2 | เก็บบันทึกเหตุการณ์ตั้งแต่มหาล่มสลาย |
 | sp_primordial_slime | สไลม์ปฐม | วิเศษ | SV-12 SV-18 | ไม่ทราบ | pa_curse_eater:3 pa_life_share:3 pa_elemental_core:3 | ชิ้นส่วนของมหาล่มสลาย |

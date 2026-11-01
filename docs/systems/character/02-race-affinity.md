@@ -15,7 +15,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | มนุษย์ ★ | adaptable | ทะเยอทะยาน +15 | ambitious diligent envious family justice | loner skeptic | sword trade leadership farming scholar | absorb | ทุ่งอบอุ่น | — |
 | เอลฟ์ ★ | nature long_lived keen_eye | อยากรู้ +10 · เข้าสังคม −15 | proud serious bookworm animal_lover loner | greedy glutton reckless | bow nature wind music healing | smithing mining unarmed | ป่าดิบ ทุ่งอบอุ่น | ภูเขาไฟ ทะเลทราย |
-| ดาร์กเอลฟ์ ★ | darkvision shadow long_lived | โทสะ −10 | cunning paranoid vengeful proud cold | optimist generous | dagger dark stealth alchemy whip | farming cooking healing | ภูเขาไฟ ดินแดนน้ำแข็ง | ทะเลทราย |
+| ดาร์กเอลฟ์ ★ | darkvision shadow long_lived weak_light | โทสะ −10 | cunning paranoid vengeful proud cold | optimist generous | dagger dark stealth alchemy whip | farming cooking healing | ภูเขาไฟ ดินแดนน้ำแข็ง | ทะเลทราย |
 | คนแคระ ★ | fire_res poison_res darkvision | — | stubborn diligent proud glutton vengeful | flirt moody | smithing axe hammer mining rune | sailing stealth wind | ภูเขาไฟ ดินแดนน้ำแข็ง | หมู่เกาะ |
 | ออร์ค ★ | berserk | กล้าหาญ +15 · โทสะ +15 | reckless bloodlust hot glutton loyal_love | calm serious bookworm | axe unarmed taming hammer leadership | rune divination scholar | ทะเลทราย ภูเขาไฟ | ดินแดนน้ำแข็ง |
 | ฮาล์ฟลิง ★ | lucky small | โชค (ค่าสถานะ) +1 ตอนเกิด | glutton homebody humor optimist lazy | bloodlust vengeful | cooking stealth sling trade farming | mounted hammer | ทุ่งอบอุ่น | ภูเขาไฟ ดินแดนน้ำแข็ง |
@@ -24,7 +24,7 @@
 | เผ่ามังกร ★ | fire_res dragon_blood weak_ice scales | — | proud hot reckless greedy justice | humble coward | fire spear sword leadership mounted | stealth sailing | ภูเขาไฟ | ดินแดนน้ำแข็ง |
 | แวมไพร์ ★ | undead weak_light weak_sun blood_drinker darkvision | เข้าสังคม +10 | proud cold cunning flirt bloodlust | devout humble | blood charm dagger dark illusion | farming healing cooking | ดินแดนน้ำแข็ง | ทะเลทราย ป่าดิบ |
 | ภูตพราย ★ | weak_iron flight nature small | อยากรู้ +15 | humor liar curious dreamer moody | serious pragmatic | illusion nature music wind charm | smithing mining hammer | ป่าดิบ ทุ่งอบอุ่น | ภูเขาไฟ ทะเลทราย |
-| สไลม์ ★ | amorphous weak_ice absorb | — | optimist glutton gullible humor curious | paranoid proud | absorb water healing cooking illusion | sword smithing leadership | ป่าดิบ หมู่เกาะ ทุ่งอบอุ่น | ทะเลทราย ดินแดนน้ำแข็ง |
+| สไลม์ ★ | amorphous weak_ice weak_fire absorb | — | optimist glutton gullible humor curious | paranoid proud | absorb water healing cooking illusion | sword smithing leadership | ป่าดิบ หมู่เกาะ ทุ่งอบอุ่น | ทะเลทราย ดินแดนน้ำแข็ง |
 | เผ่าปีศาจ ★ | fire_res weak_light infernal horned | ทะเยอทะยาน +10 | vengeful ambitious cunning skeptic proud | devout humble | dark contract fire sword curse | healing nature farming | ภูเขาไฟ ทะเลทราย | — |
 | เงือก ★ | water_breath siren | เข้าสังคม +10 | flirt freedom dreamer talkative moody | homebody pragmatic | water music spear sailing charm | mining smithing | หมู่เกาะ | ทะเลทราย ภูเขาไฟ |
 | เผ่าปีก | flight keen_eye | อยากรู้ +10 | freedom adventurer devout proud optimist | homebody lazy | bow wind lightning spear scholar | mining smithing | หมู่เกาะ ทุ่งอบอุ่น | ภูเขาไฟ ทะเลทราย |
