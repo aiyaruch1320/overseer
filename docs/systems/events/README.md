@@ -9,7 +9,7 @@
 | [../../_generated/local-events-by-country.md](../../_generated/local-events-by-country.md) | เหตุการณ์ท้องถิ่น LC-1xx สร้างจากแม่แบบสำหรับประเทศที่ไม่มีแถวมือ (อ่านอย่างเดียว) |
 | [branches/README.md](branches/README.md) | หลักการของเส้นทางแตกแขนง ผลต่อเรื่องและตัวละครหลัก |
 | [branches/01-dragon-falls.md](branches/01-dragon-falls.md) | ผลของมังกรแต่ละตัวที่ล้ม |
-| [branches/02-new-lands.md](branches/02-new-lands.md) | ทวีปใหม่และเหตุการณ์สืบทอด 42 รายการ |
+| [branches/02-new-lands.md](branches/02-new-lands.md) | ทวีปใหม่และเหตุการณ์สืบทอด 42 รายการ รูปหลังเปลี่ยนของเหตุการณ์เดิม |
 | [branches/03-character-and-quests.md](branches/03-character-and-quests.md) | ผลต่อตัวละครและภารกิจ |
 | [branches/04-last-era.md](branches/04-last-era.md) | ยุคปลาย (ยุค 4) แบ่งเป็นสามช่วงย่อย เหตุการณ์ LE 12 รายการ ชะตาของ NPC |
 
