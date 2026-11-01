@@ -60,7 +60,7 @@ for (const f of itemFiles.filter((x) => /\/1[2-8]-/.test(x))) for (const line of
 const STAT = /^(pow|mag|spd|luk|int|vit)([+-]\d+)$/;
 const ATTACK = new Set(['blade', 'blunt', 'pierce', 'ranged', 'poison', 'silver', 'iron', 'light', 'fire', 'water', 'ice', 'lightning', 'wind', 'earth', 'dark', 'blood', 'holy', 'cursed_weapon']);
 // words that appear in backticks but are not ids: code fields, LLM roles, proposed chain ids
-const NOT_IDS = new Set(['npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'affinity', 'deeds', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
+const NOT_IDS = new Set(['mourning', 'npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'affinity', 'deeds', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
 // string literals in the game code (country flags, monster tags, choice tags, effect tokens) count as known words
 function srcFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? srcFiles(path.join(dir, e.name)) : /\.ts$/.test(e.name) ? [path.join(dir, e.name)] : []));
@@ -75,7 +75,9 @@ const docTags = new Set([
   'spirit_bane',
 ]);
 const pairedItems = tableIds(['systems/bonds/06-paired-items.md']);
-const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...pairedItems, ...codeWords, ...docTags]);
+// flags that special jobs set (11-jobs-special column 4)
+const jobFlags = new Set(lines('systems/character/11-jobs-special.md').filter((l) => /^\| [a-z_]+ \|/.test(l)).flatMap((l) => [...(cells(l)[3] || '').matchAll(/`([a-z_]+)`/g)].map((m) => m[1])));
+const known = new Set([...gifts, ...jobs, ...traits, ...apts, ...enemies, ...weapons.keys(), ...gear.keys(), ...gearFlags, ...materials, ...pairedItems, ...jobFlags, ...codeWords, ...docTags]);
 const aptLevel = (t) => { const m = t.match(/^([a-z_]+)_(\d)$/); return m && apts.has(m[1]); };
 
 // ---------- reference check ----------
@@ -84,7 +86,7 @@ function checkRefs(file) {
     const n = i + 1;
     for (const [, t] of line.matchAll(/`([^`]+)`/g)) {
       if (t === '#แท็ก') continue;
-      if (t.startsWith('#')) { if (!tags.has(t)) err(file, n, 'tag', t); continue; }
+      if (t.startsWith('#')) { if (!tags.has(t) && !t.endsWith('_*')) err(file, n, 'tag', t); continue; }
       if (t.length < 2 || t === '#แท็ก' || STAT.test(t) || ATTACK.has(t) || NOT_IDS.has(t) || /^chain_/.test(t) || /^[a-z]{2}_(f_)?$/.test(t) || /^ws_[a-z_]+_[a-z_]+$/.test(t)) continue;
       if (/^[a-z_0-9]+$/.test(t) && !known.has(t) && !aptLevel(t)) err(file, n, 'id', t);
     }
@@ -93,7 +95,7 @@ function checkRefs(file) {
       if (COUNTRIES[p] && !(Number(num) >= 1 && Number(num) <= COUNTRIES[p])) err(file, n, 'country', code);
       else if (EVENT_PREFIX.has(p) && !events.has(code)) err(file, n, 'event', code);
     }
-    for (const [, id] of line.matchAll(/\b([A-Z]{2}\d{2}-\d)\b/g)) if (!npcNames[id]) err(file, n, 'npc', id);
+    for (const [, id] of line.matchAll(/\b([A-Z]{2}\d{2}-\d)\b/g)) if (!npcNames[id] && id !== 'AA00-0') err(file, n, 'npc', id);
     for (const [, id] of line.matchAll(/\b([a-z]{2}\.[btae]\d)\b/g)) if (!nodes.has(id)) err(file, n, 'node', id);
     for (const [, id] of line.matchAll(/\bcv\.(\d+)\b/g)) if (Number(id) < 1 || Number(id) > 16) err(file, n, 'cv', `cv.${id}`);
     // NPC name should appear near its id (warning only; roles are sometimes used instead of names)
@@ -104,7 +106,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), ...list('systems/bonds'), 'systems/events/local-events.md', 'systems/events/branches/04-last-era.md'].forEach(checkRefs);
+[...storyFiles, ...list('systems/character'), ...list('systems/character/races'), ...list('lore/npcs'), ...list('systems/events/branches'), 'systems/events/world-events.md', ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), ...list('systems/bonds'), 'systems/events/local-events.md'].forEach(checkRefs);
 
 // NPC rows may name other NPCs and events: every id they mention must exist.
 for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
@@ -112,6 +114,69 @@ for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
   for (const [, id] of line.matchAll(/\b([A-Z]{2}\d{2}-\d)\b/g)) if (!npcNames[id]) err(f, i + 1, 'npc-ref', id);
   for (const [, id] of line.matchAll(/\b([A-Z]{1,3}-\d{2})\b/g)) if (EVENT_PREFIX.has(id.split('-')[0]) && !events.has(id)) err(f, i + 1, 'npc-event', id);
 });
+
+// ---------- npcs and countries ----------
+// NPC age must fit the people's span in world-time section 3: never above the longest life, and below adulthood only when the row says the NPC is young.
+{
+  const span = {};
+  for (const line of read('lore/world/world-time.md').split('## 3.')[1].split('## 4.')[0].split('\n')) {
+    const c = cells(line);
+    const m = (c[1] || '').match(/^(\d+)–(\d+)$/);
+    if (m && /^\d+$/.test(c[3])) span[c[0]] = { max: Number(m[2]), adult: Number(c[3]) };
+  }
+  // label word -> people row; longer words first so ดาร์กเอลฟ์ wins over เอลฟ์ and ลูกหลานปีก over ปีก
+  const PEOPLE = [['ชาวหมอก', 'ชาวหมอก (ในหมอก)'], ['ดาร์กเอลฟ์', 'ดาร์กเอลฟ์'], ['เอลฟ์', 'เอลฟ์'], ['คนแคระ', 'คนแคระ'], ['ฮาล์ฟลิง', 'ฮาล์ฟลิง'], ['เผ่าปีศาจ', 'เผ่าปีศาจ'], ['ออร์ค', 'ออร์ค'], ['โอเกอร์', 'ออร์ค'], ['ยักษ์', 'ยักษ์'], ['ลูกผสมจักรกล', 'ลูกผสมจักรกล'], ['ตุ๊กตา', 'ลูกผสมจักรกล'], ['เผ่าลาวา', 'เผ่าลาวา'], ['กูล', 'กูล'], ['เผ่ามังกร', 'เผ่ามังกร'], ['เผ่านก', 'เผ่าปีก'], ['เผ่าปีก', 'เผ่าปีก'], ['อาเวียน', 'เผ่าปีก'], ['ลูกหลานปีก', 'เผ่าปีก'], ['ปีก', 'เผ่าปีก'], ['เผ่าสัตว์', 'เผ่าสัตว์'], ['เผ่า', 'เผ่าสัตว์'], ['แวมไพร์', 'แวมไพร์'], ['นาคา', 'นาคา'], ['สไลม์', 'สไลม์'], ['มัมมี่', 'มัมมี่'], ['หุ่น', 'หุ่นวิญญาณ'], ['ภูต', 'ภูตพราย'], ['เงือก', 'เงือก'], ['ไซเรน', 'เงือก'], ['มนุษย์', 'มนุษย์'], ['ชาวพื้น', 'มนุษย์'], ['ชาวทุ่ง', 'มนุษย์'], ['ชาวหิน', 'มนุษย์'], ['ชนผืนทราย', 'มนุษย์'], ['ชนใต้ทราย', 'มนุษย์']];
+  const AWAKENED = new Set(['หุ่นวิญญาณ', 'มัมมี่', 'กูล']); // they wake grown: label ages count from death, the span and adulthood from waking
+  const YOUNG = /เด็ก|ลูก|ทารก|ศิษย์|วัยรุ่น|หลาน|ฝึก|เยาว์|นักเรียน|ผู้ช่วย|เกณฑ์|อัญเชิญ|ต่างภพ/;
+  if (Object.keys(span).length !== 22) err('lore/world/world-time.md', 0, 'npc-age', `expected 22 rows in the lifespan table, got ${Object.keys(span).length}`);
+  for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
+    const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*([^*]+)\*\* \(([^)]*?) · (\d+)\)([^|]*)\| ([^|]*)\|/);
+    if (!m || /ครึ่ง|ผสม/.test(m[3])) return; // half-bloods take a mixed span
+    const [, id, name, label, a, role, unique] = m;
+    const people = (PEOPLE.find(([w]) => label.startsWith(w)) || [])[1];
+    if (!people) return; // beings outside the 21 peoples (kappa, sea beasts)
+    const { max, adult } = span[people], age = Number(a);
+    if (AWAKENED.has(people)) return;
+    if (age > max) err(f, i + 1, 'npc-age', `${id} ${name} is ${age}, above the ${people} span ${max}`);
+    if (age < adult && !YOUNG.test(name + label + role + unique)) err(f, i + 1, 'npc-age', `${id} ${name} is ${age}, below ${people} adulthood ${adult}, and the row does not say the NPC is young`);
+  });
+}
+
+// Every NPC story row needs at least one way that can happen before any world event (README section 2.1 and 3).
+{
+  const EVENT = new RegExp(`\\b(?:${[...EVENT_PREFIX].filter((p) => p !== 'LC').join('|')})-\\d{2}\\b`);
+  for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {
+    if (!/^\| [A-Z]{2}\d{2}-\d \|/.test(line)) return;
+    const c = cells(line);
+    const ways = (c[3] || '').split(/(?=[กขค]\) \d+%)/).filter((w) => /^[กขค]\) \d+%/.test(w));
+    if (ways.length !== 3) { err(f, i + 1, 'npc-ways', `${c[0]} has ${ways.length} ways, not 3`); return; }
+    if (ways.every((w) => EVENT.test(w.split('→')[0]))) err(f, i + 1, 'npc-ways', `${c[0]} every way needs a world event`);
+  });
+}
+
+// Two-sided ties between countries (ally, friend, partner, joint mission, enemy, rival) must be named in both country files.
+// One-sided wording (client, trade, debt, sympathy) and hidden ties (secret, silent, rumour) are left alone.
+{
+  const CODE = /\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}\b/g;
+  const rel = {}, at = {};
+  for (const f of list('lore/countries')) {
+    let cur = null;
+    lines(f).forEach((line, i) => {
+      const h = line.match(/^#### ((?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}) /);
+      if (h) { cur = h[1]; return; }
+      const q = cur && line.match(/^- \*\*ความสัมพันธ์:\*\* (.*)/);
+      if (q) { rel[cur] = q[1]; at[cur] = `${f}:${i + 1}`; }
+    });
+  }
+  const TWO_SIDED = /พันธมิตร|เพื่อน|ร่วมมือ|ร่วมภารกิจ|ศัตรู|คู่แข่ง/, HIDDEN = /ลับ|เงียบ|ข่าวลือ|แทรกซึม/;
+  for (const a of Object.keys(rel)) for (const seg of rel[a].split(' · ')) {
+    if (!TWO_SIDED.test(seg) || HIDDEN.test(seg)) continue;
+    for (const b of new Set(seg.match(CODE) || [])) if (b !== a && rel[b] !== undefined && !rel[b].includes(a)) {
+      const [file, n] = at[a].split(':');
+      err(file, n, 'country-tie', `${a} names ${b} ("${seg.slice(0, 40)}") but ${b} does not name ${a}`);
+    }
+  }
+}
 
 // ---------- storylines ----------
 for (const f of raceFiles) {
