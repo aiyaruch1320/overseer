@@ -208,8 +208,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 181,
-   "bytes": 15398,
+   "lines": 177,
+   "bytes": 14426,
    "headings": [
     "1. สรุป",
     "2. ความขัดกันที่พบ",
@@ -328,7 +328,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 73,
-   "bytes": 6683,
+   "bytes": 6684,
    "headings": [
     "1. ต่อเผ่า",
     "2. สรุป",
@@ -1081,7 +1081,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 119,
-   "bytes": 18699,
+   "bytes": 18764,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1094,7 +1094,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 112,
-   "bytes": 17519,
+   "bytes": 17628,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1107,7 +1107,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 135,
-   "bytes": 20532,
+   "bytes": 20585,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1120,7 +1120,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 213,
-   "bytes": 35585,
+   "bytes": 35634,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1133,7 +1133,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 20624,
+   "bytes": 20661,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
