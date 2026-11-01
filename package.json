@@ -13,8 +13,7 @@
     "start": "node server-dist/main.mjs",
     "docs:check": "node scripts/docs/check-docs.mjs",
     "docs:build": "node scripts/docs/build-weapon-catalog.mjs && node scripts/docs/build-item-catalog.mjs && node scripts/docs/build-npc-map.mjs && node scripts/docs/build-story-map.mjs && node scripts/docs/build-storyline-balance.mjs && node scripts/docs/build-local-events.mjs && node scripts/docs/build-event-coverage.mjs && node scripts/docs/build-country-links.mjs && node scripts/docs/build-npc-economy.mjs && node scripts/docs/build-docs-manifest.mjs",
-    "docs:verify": "npm run docs:check && npm run docs:build",
-    "gen:data": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts",
+    "docs:verify": "npm run docs:check && npm run docs:build && tsx scripts/codegen/run-all.ts --check",
     "gen:docs": "tsx scripts/codegen/export-character-catalog.ts && tsx scripts/codegen/gen-visual-docs.ts",
     "sim:world": "node scripts/sim/sim-world.mjs",
     "sim:items": "node scripts/sim/sim-items.mjs",
@@ -23,16 +22,24 @@
     "test:llm": "node scripts/llm/test-deepseek.mjs",
     "build:library": "node scripts/llm/build-library.mjs",
     "check:library": "node scripts/llm/check-library.mjs",
-    "sim:gold": "tsx scripts/sim/sim-gold.ts 300"
+    "sim:gold": "tsx scripts/sim/sim-gold.ts 300",
+    "test": "vitest run",
+    "test:golden": "vitest run --dir tests/golden",
+    "test:balance": "echo \"no balance tests yet\"",
+    "gen": "tsx scripts/codegen/run-all.ts",
+    "gen:data:legacy": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts"
   },
   "dependencies": {
-    "phaser": "3.90.0"
+    "@preact/signals": "^1.3.4",
+    "phaser": "3.90.0",
+    "preact": "^10.29.8"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
     "esbuild": "^0.28.2",
     "tsx": "^4.19.4",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^3.2.7"
   }
 }
