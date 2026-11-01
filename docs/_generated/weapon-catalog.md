@@ -385,14 +385,14 @@
 | wj_temple_servant_c | ไม้กวาดลานวัด | C | 1 | หอก | `blunt` | `vit+1` | ยาว |
 | wj_temple_servant_u | ตะเกียงวงเวท | U | 1 | เวท | `light` | `mag+1` `vit+1` | ท่าทีสวดภาวนา +1 |
 | wj_temple_servant_r | ตะเกียงที่ไม่ดับในวงเวทของเซลีน | R | 2 | เวท | `light` `holy` | `mag+2` `vit+1` | ไล่ ผู้ตาย · เพิ่มพลังพรแสงที่ได้รับในปีนั้น |
-| wj_exorcist_c | กระดิ่งไล่ผี | C | 1 | ค้อน | `blunt` `holy` | `mag+1` | ไล่ วิญญาณ |
+| wj_exorcist_c | กระดิ่งไล่ผี | C | 1 | ค้อน | `blunt` `holy` | `mag+1` | ไล่ `wraith` |
 | wj_exorcist_u | ดาบไม้ท้อลงยันต์ | U | 2 | ดาบ | `blunt` `holy` | `mag+1` `vit+1` | ไล่ ผู้ตาย |
 | wj_exorcist_r | สายประคำที่มัดผีปอบ | R | 3 | แส้ | `holy` `light` | `mag+2` `vit+1` | ไล่ `pop` `krasue` `wraith` (ไม่รวมผู้ตายอื่น) · ผนึกวิญญาณหนึ่งตัวต่อศึก |
 | wj_inquisitor_c | กระบองตราศาลศาสนา | C | 1 | ค้อน | `blunt` `holy` | `vit+1` | ข่ม |
 | wj_inquisitor_u | ดาบเงินศาลศาสนา | U | 2 | ดาบ | `blade` `silver` | `pow+1` `mag+1` | — |
 | wj_inquisitor_r | ดาบคำพิพากษาของแคทเธอรีน | R | 3 | ดาบ | `blade` `light` `holy` | `pow+1` `mag+2` | ไล่ ผู้ตาย · ท่าทีเจรจา −2 (ไม่มีใครอยากคุย) |
 | wj_pilgrim_c | ไม้เท้าแสวงบุญ | C | 1 | ค้อน | `blunt` | `vit+1` | — |
-| wj_pilgrim_u | ไม้เท้าห้อยกระดิ่งเงิน | U | 1 | ค้อน | `blunt` `silver` | `vit+1` `luk+1` | ไล่ วิญญาณ |
+| wj_pilgrim_u | ไม้เท้าห้อยกระดิ่งเงิน | U | 1 | ค้อน | `blunt` `silver` | `vit+1` `luk+1` | ไล่ `wraith` |
 | wj_pilgrim_r | ไม้เท้าที่เดินรอบเก้าทวีป | R | 2 | ค้อน | `blunt` `holy` | `vit+2` `luk+1` | ไม่หลงทาง · ทุกประเทศที่ผ่านให้ที่พักหนึ่งคืน |
 | wj_dancer_c | พัดเหล็ก | C | 1 | มีดสั้น | `blade` | `spd+1` | ซ่อน |
 | wj_dancer_u | ผ้าแพรถ่วงตุ้มเหล็ก | U | 1 | แส้ | `blunt` | `spd+1` `luk+1` | ยาว · ท่าทีหลอกล่อ +1 |
@@ -401,7 +401,7 @@
 | wj_jester_u | ลูกบอลโยนหนัก | U | 1 | หนังสติ๊ก | `blunt` `ranged` | `luk+1` `spd+1` | ท่าทีหลอกล่อ +1 |
 | wj_jester_r | หัวตัวตลกที่พูดความจริง | R | 2 | ค้อน | `blunt` | `luk+2` `int+1` | ท่าทีเจรจา +2 · พูดความจริงต่อกษัตริย์ได้โดยไม่ถูกลงโทษ |
 | wj_farm_owner_c | ไม้เท้าเจ้าของไร่ | C | 1 | ค้อน | `blunt` | `vit+1` | — |
-| wj_farm_owner_u | ปืนไล่สัตว์ | U | 2 | ปืน | `pierce` `ranged` | `vit+1` `luk+1` | ไล่ สัตว์ป่า |
+| wj_farm_owner_u | ปืนไล่สัตว์ | U | 2 | ปืน | `pierce` `ranged` | `vit+1` `luk+1` | ไล่ `wolf` |
 | wj_farm_owner_r | ส้อมเสียบฟางของวีทฟิลด์ | R | 2 | หอก | `pierce` | `vit+2` `luk+1` | ยาว · เมื่อบุกไร่ของตัวเอง +2 · คนงานเป็นพวกพ้อง |
 | wj_vegetable_gardener_c | เสียมพรวนดิน | C | 1 | มีดสั้น | `blade` | `vit+1` | เครื่องมือ (`gardening`) |
 | wj_vegetable_gardener_u | จอบด้ามสั้นหัวเหล็ก | U | 1 | ขวาน | `blade` | `vit+1` `luk+1` | เครื่องมือ |
@@ -435,7 +435,7 @@
 | wj_bookshop_r | นิยายที่ตอนจบเปลี่ยนตามคนอ่าน | R | 2 | เวท | `illusion` | `int+2` `luk+1` | ท่าทีหลอกล่อ +2 · ทอยใหม่หนึ่งครั้งต่อปี |
 | wj_temple_gardener_c | ไม้กวาดใบไม้ | C | 1 | หอก | `blunt` | `vit+1` | ยาว |
 | wj_temple_gardener_u | กรรไกรตัดแต่งไม้วัด | U | 1 | มีดสั้น | `blade` | `vit+1` `luk+1` | เครื่องมือ |
-| wj_temple_gardener_r | ไม้กวาดที่กวาดเงาออกจากลาน | R | 2 | หอก | `blunt` `light` | `vit+1` `mag+1` `luk+1` | ยาว · ไล่ วิญญาณ · `shadowless_stalker` DC −2 |
+| wj_temple_gardener_r | ไม้กวาดที่กวาดเงาออกจากลาน | R | 2 | หอก | `blunt` `light` | `vit+1` `mag+1` `luk+1` | ยาว · ไล่ `wraith` · `shadowless_stalker` DC −2 |
 | wj_world_walker_c | ไม้เท้าเดินทาง | C | 1 | ค้อน | `blunt` | `vit+1` | — |
 | wj_world_walker_u | ไม้เท้าเก้าตราประทับ | U | 2 | ค้อน | `blunt` | `vit+1` `spd+1` | ไม่หลงทาง |
 | wj_world_walker_r | เข็มทิศเก้าเข็ม | R | 3 | เวท | `wind` | `int+1` `luk+2` | ชี้ไปทุกทวีปพร้อมกัน · ท่าทีหนี +2 |

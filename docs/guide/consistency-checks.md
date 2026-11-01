@@ -84,3 +84,16 @@
 | ข้อ | ที่ | การแก้ |
 | --- | --- | --- |
 | ไม่มีไฟล์เจ้าของของชะตาชีวิต | [../systems/character/18-fates.md](../systems/character/18-fates.md) | ชะตา 22 อย่าง (จากโค้ด 21 เปลี่ยน 4 ที่ขัดโลก: ผู้ถูกอัญเชิญเป็นกำเนิดไม่ใช่ชะตา ไม่มีดันเจี้ยน จอมมารไม่ได้ตาย การทดสอบมาจากศาสนา · เพิ่มชะตาสั้นตามตัวอย่างตะขอข้อ 1) ชื่อชะตาใน branches/03 หัวข้อ 4 ตรงกันแล้ว |
+
+### ช่องว่างกลุ่ม NPC ตัวละคร การเดินทาง (2026-11-01 ต่อ)
+
+| ข้อ | ที่ | การแก้ |
+| --- | --- | --- |
+| NPC ในเหตุการณ์ท้องถิ่นที่เรื่องเป็นของตัวคน | [../systems/events/local-events.md](../systems/events/local-events.md) กติกา 8 | ★ ปิดเหตุการณ์ ☆ ตัดเฉพาะทางที่ต้องใช้เขา ไม่ใช้ผู้ถือตำแหน่งแทน |
+| ผลของเหตุการณ์ท้องถิ่นไม่ส่งต่อกัน | local-events กติกา 9 | ลูกโซ่ LC ต่อ LC 24 ทาง ไม่มีวง |
+| พวกพ้องไม่ผูกกันเอง · พวกพ้องแม่แบบหายไปหลังจบ · แกน NPC ไม่เชื่อมค่า B · เป้าความโศก | [../systems/bonds/](../systems/bonds/README.md) 03 หัวข้อ 4.1 · 04 · 01 หัวข้อ 2.0 และ 6 | กติกาใหม่ตามหัวข้อที่ระบุ |
+| รุ่นผู้กล้าและการชิงมงกุฎไม่มีไฟล์เจ้าของ | [../lore/countries/05-aldria.md](../lore/countries/05-aldria.md) AL-02 · [../lore/countries/02-morhaven.md](../lore/countries/02-morhaven.md) MH-02 | ผู้กล้า 4 รุ่น (AL18-1 แก้จาก 5) รอบละราว 10 ปี · ชิงมงกุฎทุก 24 ปี ครั้งล่าสุด 10,385 |
+| อายุเมื่อตื่น ลูกผสมจักรกล การตาย ทายาท | [../lore/world/world-time.md](../lore/world/world-time.md) หัวข้อ 3 · [../systems/character/races/18-construct.md](../systems/character/races/18-construct.md) · [../lore/heirs/01-inheritance.md](../lore/heirs/01-inheritance.md) | ตื่นเทียบ 17 · ใช้ค่าเผ่าเกิดจนติดชิ้นแรก · อายุขัยสุ่มตอนเกิด e2 เกิดอย่างช้าปีสุดท้าย · ตารางอายุรับช่วง หลานรับช่วง |
+| ทางเลือกที่ใช้ได้ถิ่นเดียว | [../lore/storylines/07-beast.md](../lore/storylines/07-beast.md) · [../lore/storylines/09-dragonkin.md](../lore/storylines/09-dragonkin.md) | รูปตามถิ่น SH-10 MH-04 AL-23 AL-24 KD-07 |
+| เวลาและค่าเดินทาง ช่วงไร้ลม หน้าแนวหมอก "ไล่ X" เลวีอาธาน ผู้เฝ้าอาวุธตำนาน | [../systems/travel/01-travel-rules.md](../systems/travel/01-travel-rules.md) หัวข้อ 3.6 · economy 02 · items README 08 · combat 05 | กติกาใหม่ตามที่ระบุ |
+
