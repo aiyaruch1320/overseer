@@ -133,18 +133,57 @@ const KEEP = new Map(); // trigger id -> ids that section 9 says stay open, to r
 }
 export const closeClash = [...KEEP].flatMap(([t, xs]) => xs.filter((x) => CLOSE.get(t)?.has(x)).map((x) => `${t}:${x}`));
 
-// religion weights: หนุน and ต้าน of each faith multiply the event's weight (world-events.md section 0.2, lore/religions/)
-// the sim has no places, so a faith's weight counts on the events its own file names (they sit in its region) unless the event
-// happens to the whole world (ทั้งโลก ทั่วโลก ทุกทวีป ทุกคน): then only a faith above 20% of the world counts
-// faiths 22-23 are main nowhere; a weight with a condition the sim cannot read (เมื่อ …, a sub-group, an effect instead of a chance)
-// is left out; "หลัง … (X)" waits for X
+// religion weights: หนุน and ต้าน of each faith multiply the event's weight where the faith is a main faith of the event's home
+// (world-events.md sections 0.2 and 0.2.1, lore/religions/). A home is one country (full weight), several countries or a continent
+// (weight scaled by the share of those countries that hold the faith) or the whole world (only a faith above 20% of the world).
+// A weight with a condition the sim cannot read (เมื่อ …, a sub-group, an effect instead of a chance) is left out; "หลัง … (X)" waits for X
 const SHARE = {};
 for (const l of read('lore/religions/README.md').split('\n')) {
   const m = l.match(/^\| (\d+) \| [^|]+ \| [A-E] \| ([^|]+) \|/);
   if (m) SHARE[+m[1]] = Number(m[2]) || 0;
 }
-for (const e of events) e.world = /ทั้งโลก|ทั่วโลก|ทุกทวีป|เก้าทวีป|ทุกคน/.test(e.name + ' ' + e.what);
-export const FAITH = new Map(); // event id -> [[mult, after id or null, faith no]]
+// words of a ศาสนา field -> faith number (section 0.2.1); "ไม่มี" is the faithless, but not "ไม่มีศาสนาเดียว"
+const FAITH_WORDS = [[/มังกร/, 1], [/แสง/, 2], [/ต้นไม้โลก/, 3], [/สมุทร/, 4], [/พญานาค|นาคา/, 5], [/จันทรา/, 6], [/สงคราม/, 7], [/ปีศาจ/, 8], [/บรรพบุรุษ/, 9],
+  [/ไม่มี(?!ศาสนา)|เหตุผล/, 10], [/เตาหลอม/, 11], [/เฟือง/, 12], [/ศิลา|ไททัน/, 13], [/กระซิบ/, 14], [/ฟาโรห์|บัญชีวิญญาณ/, 15], [/ผู้ชี้ทาง/, 16], [/ความฝัน/, 17],
+  [/วิญญาณสัตว์|วิญญาณหมาป่า/, 18], [/ลาง/, 19]];
+const faithsIn = (text) => FAITH_WORDS.filter(([re]) => re.test(text)).map(([, n]) => n);
+// worship of one dragon counts as the faiths that dragon feeds (lore/dragons/README.md)
+const DRAGON_FAITH = [];
+for (const l of read('lore/dragons/README.md').split('\n')) {
+  const c = l.split('|').map((x) => x.trim());
+  if (/^\d+$/.test(c[1] || '') && c[5]) DRAGON_FAITH.push([c[2], faithsIn(c[5])]);
+}
+const CONTINENT = { อัซการ์: 'AZ', มอร์เฮเวน: 'MH', 'คาซ-ดูรัม': 'KD', เนเรีย: 'NR', อัลเดรีย: 'AL', เมคาเรีย: 'MK', ซาฮารัน: 'SH', ซิลวาเนล: 'SV', เนบูเลีย: 'NB' };
+export const MAIN = {}; // country code -> Set of main faiths
+for (const f of fs.readdirSync(path.join(docs, 'lore/countries')).filter((n) => /^\d\d-/.test(n))) {
+  let cur = null;
+  for (const l of read('lore/countries/' + f).split('\n')) {
+    const h = l.match(/^#### ([A-Z]{2}-\d{2}) /);
+    if (h) { cur = h[1]; continue; }
+    const m = cur && l.match(/\*\*ศาสนา:\*\* ([^·]*)/);
+    if (!m) continue;
+    let text = m[1];
+    const s = new Set();
+    for (const [name, ns] of DRAGON_FAITH) if (text.includes(name)) { ns.forEach((n) => s.add(n)); text = text.replace(name, ''); }
+    faithsIn(text).forEach((n) => s.add(n));
+    MAIN[cur] = s;
+    cur = null;
+  }
+}
+// home of each event: the table in section 0.2.1, else the countries its row names, else the whole world
+const HOME = new Map();
+for (const l of read('systems/events/world-events.md').split('### 0.2.1')[1].split('### 0.3')[0].split('\n')) {
+  const m = l.match(/^\| ([A-Z]{2,3}-\d{2}) \| ([^|]+) \|/);
+  if (m) HOME.set(m[1], m[2].trim());
+}
+const COUNTRY = /\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}\b/g;
+const homeCountries = (id) => {
+  const e = byId.get(id);
+  const text = HOME.get(id) ?? (e ? [...new Set([e.cond, e.what, e.eff].join(' ').match(COUNTRY) || [])].join(' ') : '');
+  if (!text || text === 'ทั้งโลก') return null;
+  return text.split(/\s+/).flatMap((t) => (CONTINENT[t] ? Object.keys(MAIN).filter((c) => c.startsWith(CONTINENT[t] + '-')) : [t]));
+};
+export const FAITH = new Map(); // event id -> [[mult after the home share, after id or null, faith no, share]]
 for (const f of ['02-major-faiths.md', '03-regional-faiths.md', '04-movements.md']) {
   let no = 0;
   for (const l of read('lore/religions/' + f).split('\n')) {
@@ -155,12 +194,14 @@ for (const f of ['02-major-faiths.md', '03-regional-faiths.md', '04-movements.md
     for (const tok of seg.split(/,\s*|\s+(?=[A-Z]{2,3}-\d{2}\b)/)) {
       const m = tok.trim().match(/^([A-Z]{2,3}-\d{2})\s*(?:\(([^)]*)\)\s*)?×([\d.]+)\s*(.*)$/);
       if (!m || /\((?:[^)]*)(?:เมื่อ|หลัง)/.test(m[2] ? `(${m[2]})` : '') || /\([^)]*เมื่อ/.test(m[4])) continue;
-      if (byId.get(m[1])?.world && !(SHARE[no] > 20)) continue;
       const rest = m[4].replace(/\((?![A-Z]{2,3}-\d{2}\))[^)]*\)/g, '').trim();
       const after = rest.match(/^หลัง.*?\(([A-Z]{2,3}-\d{2})\)$/)?.[1] || null;
       if (rest && !after) continue;
+      const cs = homeCountries(m[1]);
+      const share = cs ? cs.filter((c) => MAIN[c]?.has(no)).length / cs.length : SHARE[no] > 20 ? 1 : 0;
+      if (!share) continue;
       if (!FAITH.has(m[1])) FAITH.set(m[1], []);
-      FAITH.get(m[1]).push([+m[3], after, no]);
+      FAITH.get(m[1]).push([1 + (Number(m[3]) - 1) * share, after, no, share]);
     }
   }
 }
