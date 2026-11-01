@@ -28,7 +28,7 @@
 | pa_wisdom_gaze | สายตาปราชญ์ | int+1 | int+2 | int+3 | scholar teacher |
 | pa_mana_well | บ่อมานา | mag+1 | mag+2 | mag+3 และฟื้นมานาเร็วขึ้น | mage archmage |
 | pa_stout_heart | ใจแกร่ง | vit+1 | vit+2 | vit+3 | farmer miner |
-| pa_bright_mood | อารมณ์ดี | ลดผลคำสาปสาย `moody` และ `lonely` เล็กน้อย | ได้นิสัยร่าเริงเพิ่มหนึ่งอย่างชั่วคราว | ลบ `c_lonely` ได้ถ้ามี | tea_house innkeeper |
+| pa_bright_mood | อารมณ์ดี | ลดผลคำสาปแท็ก `#moody` และ `#lonely` เล็กน้อย | ได้นิสัยร่าเริงเพิ่มหนึ่งอย่างชั่วคราว | ลบ `c_lonely` ได้ถ้ามี | tea_house innkeeper |
 
 ## ค. ช่วยต่อสู้
 

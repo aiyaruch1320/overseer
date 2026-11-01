@@ -60,10 +60,10 @@
 | --- | --- | --- | --- | --- | --- |
 | woodcutter | คนตัดไม้ | C | carpentry (pow) | ซิลวาเนลห้ามตัดในเขตร่มไม้ (SV กฎลำต้น) · ที่อื่นปกติ | thread:wild |
 | baker | คนทำขนมปัง | C | cooking (luk) | ทุกเมือง · ชนิดขนมตามถิ่น | อนุญาตให้ร้านเป็นศูนย์ข่าวลือ |
-| tailor | ช่างตัดเสื้อ | C | tailoring (luk) | AL-05 เด่นสุด · เปิดขายชุดซ่อนอาวุธได้ (AL05-2) | thread:outlaw ได้ถ้าซ่อนอาวุธ |
+| tailor | ช่างตัดเสื้อ | C | tailoring (luk) | AL-05 เด่นสุด · เปิดขายชุดซ่อนอาวุธได้ แบบของลูเซียน (AL05-2) | thread:outlaw ได้ถ้าซ่อนอาวุธ |
 | potter | ช่างปั้นหม้อ | C | pottery (luk) | ทุกเมือง · ช่างปั้นถ้วยพิธีให้วัด | — |
 | brewer | นักต้มเหล้า | C | brewing (int) | ประเทศที่ศาสนาไม่ห้ามสุรา · คนแคระ ออร์ค | พรเดิม `b_ironstomach` ได้ง่าย |
-| glassblower | ช่างเป่าแก้ว | U | art pottery (luk) | SH-08 KD-09 เด่น | แก้วเห็นอดีต (SH08-2) |
+| glassblower | ช่างเป่าแก้ว | U | art pottery (luk) | SH-08 KD-09 เด่น | แก้วเห็นอดีตของซามีร์ (SH08-2) |
 | jeweler | ช่างเครื่องประดับ | U | jewelry (spd) | AL-05 SH-08 · เงินทุนเริ่มต้น 80 | พรสาย `#treasure` |
 | tanner | ช่างฟอกหนัง | C | tailoring husbandry (vit) | ไม่ใช่เมืองที่ศาสนาห้าม (ศรัทธาวิญญาณสัตว์ห้าม) | `c_smell` ได้ง่าย |
 | stonemason | ช่างหิน | C | masonry (pow) | KD AL-21 SH-17 · ยักษ์เด่น | thread:warrior |
