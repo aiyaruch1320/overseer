@@ -27,6 +27,7 @@
 | mt_slime_gel | เจลสไลม์ | C | ไร้รูป (`slime` `lava_slime`) | ยารักษาแผล | SV-12 SV-18 |
 | mt_fog_ink | หมึกหมอก | R | สิ่งจากรอยแยก (`fog_tentacle` `fog_weaver`) | หน้ากากกรองหมอก โคมพิเศษ `cn_fog_filter` | NB-09 ตลาดมืด |
 | mt_element_core | แก่นธาตุ | U | ธาตุ (`dust_djinn` `magma_salamander`) | อาวุธธาตุ ม้วนเวท | ถ้ำร้อน KD-06 SH ทะเลทราย |
+| mt_star_iron | เหล็กดาว | R | หลุมดาวตกจากปาฏิหาริย์ MR-17 (RU-03) | อาวุธและเกราะที่ช่างเอกตี เครื่องรางของลัทธิหลุมดาว | ซากพระเจ้า ([../god/04-miracles.md](../god/04-miracles.md) หัวข้อ 5) |
 | mt_pearl | มุก | U | สัตว์ทะเล (`siren` `kraken`) | เครื่องประดับ ยา ต่างหู `ac_tide_pearl` | NR-04 NR-13 |
 | mt_sea_tentacle | หนวดทะเล | U | สัตว์ทะเล (`kraken` `hydra`) | ยา เชือกพิเศษ | NR ทุกประเทศ |
 | mt_flax | ป่านดิบ | C | ไร่ | ผ้าลินิน เชือก | AL-17 NR-09 |
