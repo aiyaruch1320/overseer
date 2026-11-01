@@ -35,9 +35,9 @@ for (const line of lines('systems/combat/03-enemies.md')) { const m = line.match
 const npcNames = {};
 for (const f of list('lore/npcs')) for (const line of lines(f)) { const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*(.+?)\*\*/); if (m) npcNames[m[1]] = m[2]; }
 const events = new Set();
-for (const f of ['systems/events/world-events.md', 'systems/events/branches/02-new-lands.md', 'systems/events/branches/04-last-era.md', 'systems/events/local-events.md', '_generated/local-events-by-country.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
+for (const f of ['systems/events/world-events.md', 'systems/events/branches/02-new-lands.md', 'systems/events/branches/04-last-era.md', 'systems/events/local-events.md', '_generated/local-events-by-country.md', 'systems/god/04-miracles.md']) for (const line of lines(f)) { const m = line.match(/^\| \*\*([A-Z]+-\d+) /); if (m) events.add(m[1]); }
 const COUNTRIES = { AZ: 10, MH: 12, KD: 12, NR: 16, AL: 28, MK: 16, SH: 17, SV: 18, NB: 14 };
-const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV', 'LC', 'LE']);
+const EVENT_PREFIX = new Set(['DR', 'PL', 'WR', 'CT', 'DM', 'MC', 'BIO', 'GD', 'HP', 'PO', 'GI', 'FG', 'END', 'SF', 'AS', 'DW', 'RF', 'WT', 'RL', 'CL', 'DV', 'LC', 'LE', 'MR', 'RU']);
 const storyFiles = list('lore/storylines');
 const raceFiles = storyFiles.filter((f) => /\/\d\d-/.test(f) && !f.endsWith('00-convergence.md'));
 const nodeRow = /^\| ([a-z]{2}\.[btael]\d) \|/;
@@ -60,7 +60,7 @@ for (const f of itemFiles.filter((x) => /\/1[2-8]-/.test(x))) for (const line of
 const STAT = /^(pow|mag|spd|luk|int|vit)([+-]\d+)$/;
 const ATTACK = new Set(['blade', 'blunt', 'pierce', 'ranged', 'poison', 'silver', 'iron', 'light', 'fire', 'water', 'ice', 'lightning', 'wind', 'earth', 'dark', 'blood', 'holy', 'cursed_weapon']);
 // words that appear in backticks but are not ids: code fields, LLM roles, proposed chain ids
-const NOT_IDS = new Set(['mourning', 'npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'affinity', 'deeds', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
+const NOT_IDS = new Set(['llm', 'llm_setup', 'llm_director', 'llm_ending', 'chapter', 'director', 'dream_words', 'response_format', 'setup', 'fate', 'flavor', 'world_legend', 'user_id', 'usage', 'prompt_cache_hit_tokens', 'prompt_cache_miss_tokens', 'conjure_name', 'vow_page', 'epitaph', 'enum', 'verb', 'essence', 'scale', 'details', 'detail', 'd1', 'd2', 'd3', 'mourning', 'god_ruin', 'dream_wake', 'answer_twist', 'miracle_day', 'chronicle', 'allowed_names', 'npc_voice', 'homeland_letter', 'side_event', 'hurt', 'doubt', 'faith', 'none', 'loot', 'weak', 'resist', 'hAge', 'affinity', 'deeds', 'legend', 'dream', 'battle', 'naming', 'rumor', 'omen', 'prayer', 'history', 'id', 'type', 'stats', 'abilities', 'source', 'kind', 'cursed', 'mundane', 'materials', 'pow', 'mag', 'spd', 'luk', 'int', 'vit']);
 // string literals in the game code (country flags, monster tags, choice tags, effect tokens) count as known words
 function srcFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? srcFiles(path.join(dir, e.name)) : /\.ts$/.test(e.name) ? [path.join(dir, e.name)] : []));
@@ -106,7 +106,7 @@ function checkRefs(file) {
     }
   });
 }
-[...storyFiles, ...list('systems/character'), ...list('systems/character/races'), ...list('lore/npcs'), ...list('systems/events/branches'), 'systems/events/world-events.md', ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), ...list('systems/bonds'), 'systems/events/local-events.md'].forEach(checkRefs);
+[...storyFiles, ...list('systems/character'), ...list('systems/character/races'), ...list('lore/npcs'), ...list('systems/events/branches'), 'systems/events/world-events.md', ...list('systems/combat'), ...itemFiles, ...list('lore/heirs'), ...list('systems/economy'), ...list('systems/bonds'), ...list('systems/god'), ...list('systems/llm'), 'appearance/20-god-ui.md', 'systems/events/local-events.md'].forEach(checkRefs);
 
 // NPC rows may name other NPCs and events: every id they mention must exist.
 for (const f of list('lore/npcs')) lines(f).forEach((line, i) => {

@@ -37,6 +37,8 @@ export const GROUPS = {
   'systems/travel': ['systems', 'Travel levels, why a life travels, destination filters by people and morals, road events, contact targets'],
   'systems/simulation': ['systems', 'World simulation results and dragon mood values'],
   'systems/experience': ['systems', 'What the player sees and feels in one life and across lives'],
+  'systems/llm': ['systems', 'LLM in the game: every task, what it may change, model (DeepSeek V4.1 Flash), price and cost per life'],
+  'systems/god': ['systems', 'God powers: power economy, bestow offer, dreams, whispers, prayers, miracles, ruins, free conjuring, player goals, LLM role, implementation'],
   appearance: ['appearance', 'Look of continents, countries, peoples, NPCs, enemies, items, events and scenes'],
   'appearance/countries': ['appearance', 'Per-country look, city scale, sacred sites, war and landmarks'],
   'appearance/npcs': ['appearance', 'Look of the 614 NPCs'],
