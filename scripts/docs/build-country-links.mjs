@@ -12,7 +12,9 @@ const PEOPLE = [
   ['มนุษย์', 'hu'], ['เอลฟ์', 'el'], ['ดาร์กเอลฟ์', 'de'], ['คนแคระ', 'dw'], ['ออร์ค', 'or'], ['ฮาล์ฟลิง', 'ha'], ['เผ่าสัตว์', 'be'], ['นาคา', 'na'], ['เผ่ามังกร', 'dk'], ['แวมไพร์', 'va'],
   ['ภูตพราย', 'fa'], ['สไลม์', 'sl'], ['เผ่าปีศาจ', 'dm'], ['เงือก', 'me'], ['เผ่าปีก', 'wi'], ['ยักษ์', 'gi'], ['เผ่าลาวา', 'la'], ['ลูกผสมจักรกล', 'co'], ['หุ่นวิญญาณ', 'so'], ['มัมมี่', 'mu'], ['กูล', 'gh'],
 ];
-const KEYS = [['ดาร์กเอลฟ์', 'de'], ['เอลฟ์', 'el'], ['คนแคระ', 'dw'], ['ฮาล์ฟลิง', 'ha'], ['เผ่าปีศาจ', 'dm'], ['ออร์ค', 'or'], ['โอเกอร์', 'or'], ['ยักษ์', 'gi'], ['ลูกผสมจักรกล', 'co'], ['เผ่าลาวา', 'la'], ['กูล', 'gh'], ['เผ่าสัตว์', 'be'], ['เผ่าเสือ', 'be'], ['เผ่าหมาป่า', 'be'], ['เผ่าอูฐ', 'be'], ['เผ่าหมี', 'be'], ['เผ่ามังกร', 'dk'], ['อาเวียน', 'wi'], ['ปีก', 'wi'], ['เผ่านก', 'wi'], ['แวมไพร์', 'va'], ['นาคา', 'na'], ['สไลม์', 'sl'], ['มัมมี่', 'mu'], ['หุ่น', 'so'], ['ภูต', 'fa'], ['เงือก', 'me'], ['ไซเรน', 'me'], ['มนุษย์', 'hu']];
+const KEYS = [['ดาร์กเอลฟ์', 'de'], ['เอลฟ์', 'el'], ['คนแคระ', 'dw'], ['ฮาล์ฟลิง', 'ha'], ['เผ่าปีศาจ', 'dm'], ['ออร์ค', 'or'], ['โอเกอร์', 'or'], ['ยักษ์', 'gi'], ['ลูกผสมจักรกล', 'co'], ['เผ่าลาวา', 'la'], ['กูล', 'gh'], ['เผ่าสัตว์', 'be'], ['เผ่าเสือ', 'be'], ['เผ่าหมาป่า', 'be'], ['เผ่าอูฐ', 'be'], ['เผ่าหมี', 'be'], ['เผ่ามังกร', 'dk'], ['อาเวียน', 'wi'], ['ปีก', 'wi'], ['เผ่านก', 'wi'], ['แวมไพร์', 'va'], ['นาคา', 'na'], ['สไลม์', 'sl'], ['มัมมี่', 'mu'], ['หุ่น', 'so'], ['ภูต', 'fa'], ['เงือก', 'me'], ['ไซเรน', 'me'], ['มนุษย์', 'hu'],
+  // human lineages from lore/races/README.md
+  ['ชาวทุ่ง', 'hu'], ['ชาวหมอก', 'hu'], ['ชนผืนทราย', 'hu'], ['ชนใต้ทราย', 'hu'], ['ชาวพื้น', 'hu'], ['ผู้กลับชาติ', 'hu'], ['ผู้ถูกอัญเชิญ', 'hu']];
 const groupsIn = (text) => new Set(KEYS.filter(([k]) => text.includes(k)).map(([, c]) => c));
 const groupOfLabel = (label) => (KEYS.find(([k]) => label.startsWith(k)) || [, null])[1];
 
@@ -80,7 +82,7 @@ const npcs = {};
 for (const f of files('lore/npcs'))
   for (const line of read(f).split('\n')) {
     const m = line.match(/^\| ([A-Z]{2}\d{2}-\d) \| \*\*([^*]*)\*\* *\(([^·)]*)/);
-    if (m) (npcs[m[1].replace(/(\d{2})-\d$/, '-$1')] ||= []).push({ id: m[1], name: m[2], group: groupOfLabel(m[3].trim()) });
+    if (m) (npcs[m[1].replace(/(\d{2})-\d$/, '-$1')] ||= []).push({ id: m[1], name: m[2], group: groupOfLabel(m[3].trim()), half: groupOfLabel(m[3].split('ครึ่ง')[1]?.trim() || '') });
   }
 
 // relations: split by " · ", classify, compare both sides
@@ -100,7 +102,7 @@ const raceMismatch = [];
 for (const c of codes) {
   const have = groupsIn(countries[c].races);
   if (/ทุกเผ่า/.test(countries[c].races)) continue;
-  for (const n of npcs[c] || []) if (n.group && !have.has(n.group) && n.group !== 'hu') raceMismatch.push(`${n.id} ${n.name} (${n.group}) ใน ${c} ${countries[c].name} ซึ่งช่อง เผ่า ระบุ "${countries[c].races.slice(0, 40)}"`);
+  for (const n of npcs[c] || []) if (n.group && !have.has(n.group) && !have.has(n.half) && n.group !== 'hu') raceMismatch.push(`${n.id} ${n.name} (${n.group}) ใน ${c} ${countries[c].name} ซึ่งช่อง เผ่า ระบุ "${countries[c].races.slice(0, 40)}"`);
 }
 
 // hand-written local events: every NPC from another country must have a stated relation or share the continent
