@@ -50,7 +50,7 @@ for (const f of ['systems/events/world-events.md', 'systems/events/branches/01-d
     for (const [c, v] of Object.entries(countries)) if (v.name.length >= 4 && scope.includes(v.name)) named.add(c);
   }
 
-const CONT_EVENT = { AZ: ['WR-01', 'DR-01'], MH: ['WR-19', 'DM-01'], KD: ['WR-05', 'DR-04'], NR: ['WR-06', 'DR-05'], AL: ['WR-16', 'WR-14'], MK: ['WR-09', 'MC-03'], SH: ['WR-24', 'GI-07'], SV: ['WR-04', 'BIO-01'], NB: ['FG-02', 'FG-03'] };
+const CONT_EVENT = { AZ: ['WR-01', 'DR-02'], MH: ['WR-19', 'DM-01'], KD: ['WR-05', 'DR-04'], NR: ['WR-06', 'DR-05'], AL: ['WR-16', 'WR-14'], MK: ['WR-09', 'MC-03'], SH: ['WR-24', 'GI-07'], SV: ['WR-04', 'BIO-01'], NB: ['FG-02', 'FG-03'] };
 // lead = the first NPC of the country, knower = the second, affected = the third; the fourth NPC and an outsider are listed as bystanders
 const TEMPLATES = [
   { id: 'LT-1', name: 'ศึกชายแดน', ok: (c) => c.war >= 2, reads: (c, p) => CONT_EVENT[p][0],

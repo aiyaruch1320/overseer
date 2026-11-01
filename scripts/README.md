@@ -27,9 +27,9 @@ npm run docs:verify
 | --- | --- | --- | --- |
 | `check-docs.mjs` | `npm run docs:check` | ตรวจรหัสอ้างอิง ตารางงบอาวุธ ลิงก์ โครงโฟลเดอร์ และศึกของ NPC ครบทุกคนใน `03-enemies.md` หัวข้อ ง ที่มาของแท็กอาชีพลับในโหนดเส้นเรื่อง และรหัส NPC กับเหตุการณ์ที่แถว NPC อ้างถึงต้องมีอยู่จริง (27 ไฟล์เส้นเรื่อง 423 โหนด 816 อาวุธ) | exit 0 และ `0 errors` `0 warnings` |
 | `build-weapon-catalog.mjs` | | สร้าง `_generated/weapon-catalog.md` (816 ชิ้นเขียนมือ + 520 รุ่นวัสดุ) | พิมพ์ `weapons: 816 hand-written + 520 variants = 1336` |
-| `build-item-catalog.mjs` | | สร้าง `_generated/item-catalog.md` (311 ชิ้นพร้อมราคา) | พิมพ์ `items: 311` |
-| `build-npc-map.mjs` | | สร้าง `_generated/npc-map.html` | พิมพ์ `npcs 591 · countries 143` |
-| `build-local-events.mjs` | | สร้าง `_generated/local-events-by-country.md` (เหตุการณ์ท้องถิ่น LC-1xx ของทุกประเทศที่ไม่มีเหตุการณ์ระบุชื่อ) | พิมพ์ `local events: 105 generated` |
+| `build-item-catalog.mjs` | | สร้าง `_generated/item-catalog.md` (331 ชิ้น ตั้งราคา 275 ไม่ขาย 56) | พิมพ์ `items: 331 (priced 275, not sold 56)` |
+| `build-npc-map.mjs` | | สร้าง `_generated/npc-map.html` | พิมพ์ `npcs 614 · countries 143 …` |
+| `build-local-events.mjs` | | สร้าง `_generated/local-events-by-country.md` (เหตุการณ์ท้องถิ่น LC-1xx ของทุกประเทศที่ไม่มีเหตุการณ์ระบุชื่อ) | พิมพ์ `local events: 61 generated` |
 | `build-country-links.mjs` | | สร้าง `_generated/country-links.md` (ตัวละครหลักไปถึงแต่ละประเทศได้ทางไหน และจุดที่ไฟล์ประเทศ NPC เหตุการณ์ขัดกัน) | พิมพ์ `country links: 143 countries` ควรได้ relation clashes 0 |
 | `build-event-coverage.mjs` | | สร้าง `_generated/event-coverage.md` (ประเทศที่ไม่มีเหตุการณ์ระบุชื่อ NPC ที่ไม่ผูกเหตุการณ์หรือ NPC อื่น) ใช้หาที่ที่ต้องเพิ่มจุดบรรจบ | พิมพ์ `event coverage: 143 countries` |
 | `build-storyline-balance.mjs` | | สร้าง `_generated/storyline-balance.md` (โหนด จุดบรรจบ NPC ประเทศ ต่อเผ่า) ใช้ตรวจว่าเผ่าไหนเป็นตัวเอก | พิมพ์ `storyline balance: 21 peoples` |
@@ -58,6 +58,9 @@ npm run docs:verify
 | `sim-world.mjs` | `npm run sim:world` | จำลองโลก 2,000 ใบจากตารางเหตุการณ์ (ยุค มังกรล้ม จุดบรรจบ ปลายโลก) ตัวเลือก `--strict` `--md` `--why` `--cv` `--json` | ราว 3 วินาที | เหตุการณ์ที่ไม่เคยเกิด (`never fired`) และที่หายาก (`rare`) ควรมีเหตุผลรองรับ |
 | `sim-items.mjs` | `npm run sim:items` | คืนทุนเครื่องมือชีวิต และจำนวนเครื่องรางในมือ NPC พร้อมกัน ตัวเลือก `tools` `talisman` และจำนวนรอบ | ไม่กี่วินาที | เทียบกับ [../docs/systems/items/19-prices.md](../docs/systems/items/19-prices.md) หัวข้อ 8 และ [20-npc-talisman.md](../docs/systems/items/20-npc-talisman.md) หัวข้อ 11 |
 | `sim-life.mjs` | `node scripts/sim/sim-life.mjs [จำนวนชีวิต] [--sample=hu] [--no-overlay]` | เดินตามน้ำหนักในตารางเส้นเรื่องของแต่ละเผ่า นับเหตุการณ์ NPC ต่างเผ่า และประเทศที่โหนดกล่าวถึงต่อชีวิต หรือพิมพ์ชีวิตตัวอย่างหนึ่งชีวิต | ไม่กี่วินาที | ใช้เทียบเส้นเรื่องก่อนและหลังเพิ่มเส้นซ้อนทับ ไม่นับเงื่อนไขของโหนดและเวลาเหตุการณ์ (โหมด --sample ใช้เส้นซ้อนทับเฉพาะเมื่อชีวิตที่ผ่านมาเข้ากับเส้นนั้น) จุดบรรจบให้ดูจาก `sim-world.mjs --cv` |
+| `sim-start.mjs` | `node scripts/sim/sim-start.mjs [โลก] [--tables]` | เทียบวิธีเลือกปีเกิดของชีวิต (`world-time.md` หัวข้อ 8.1) `--tables` พิมพ์ตาราง 3.4 และ 3.6 ของ `world-sim.md` | ไม่กี่วินาที | ตัวเลขต้องตรงกับตารางใน `world-sim.md` |
+| `sim-npc-fate.mjs` | `node scripts/sim/sim-npc-fate.mjs [--md]` | ตารางชะตา NPC ยุคปลาย (`branches/04-last-era.md`) เทียบอายุขัย | ไม่กี่วินาที | สัดส่วนอยู่ ย้าย ตาย หายต่อช่วง |
+| `sim-npc-timeline.mjs` | `node scripts/sim/sim-npc-timeline.mjs [โลก] [--md] [--all]` | แถว NPC ที่ผูกเหตุการณ์โลก ผู้ถือคนแรกยังมีชีวิตตอนเหตุการณ์แรกเกิดหรือไม่ (`lore/npcs/README.md` หัวข้อ 2.1 ข้อ 6) | ราว 2 วินาทีต่อ 1,000 โลก | `DEAD` คือเรื่องที่ผู้สืบเล่นเกือบเสมอ ไม่ใช่ข้อผิด ให้ดูว่าข้อความในไฟล์อื่นต้องการตัวผู้ถือคนแรกหรือไม่ |
 | `sim-gold.ts` | `npm run sim:gold` | ทองที่ตัวละครของโค้ดสะสมตามอายุ (ใช้ตั้งราคาตีอาวุธ) | ราว 1 นาทีต่อ 300 ชีวิต | รันซ้ำเมื่อโค้ดเปลี่ยนวิธีให้ทอง แล้วแก้ราคาใน `RAW_PLAN.md` หัวข้อ 3.2 |
 | `simtest.ts` | `npm run sim` | ทดสอบควันของเกมในโค้ด: เล่น 200 ชีวิตด้วยการกระทำสุ่ม ตรวจว่าไม่พังและจังหวะเกมสมเหตุผล | ราว 1 นาที | ต้องไม่มี exception ดู `avgTicksPerLife` `hAge at death` |
 

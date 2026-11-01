@@ -166,9 +166,10 @@ export function runWorld(seed, opt = {}) {
   for (let step = 0; step <= HORIZON / 10 && !ended; step++) {
     const year = START + step * 10;
     // world variables
+    // slow drift per decade (world-events.md section 0.1.1)
     S.H = Math.min(100, Math.max(0, S.H + 1.2 + gauss(r) * 2));
-    S.T = Math.min(100, Math.max(0, S.T - 0.8 + gauss(r) * 1.5));
-    S.D = Math.min(100, Math.max(0, S.D + 0.6 + gauss(r) * 2));
+    if (!fired.has('BIO-03')) S.T = Math.min(100, Math.max(0, S.T - 0.8 + gauss(r) * 1.5));
+    if (!fired.has('FG-10')) S.D = Math.min(100, Math.max(0, S.D + (fired.has('FG-11') ? 1.2 : 0.6) + gauss(r) * 2));
     S.F = Math.min(100, Math.max(0, S.F + p.faithDrift + gauss(r) * 2.5));
     const capM = 100 - p.capDfc * dfc;
     for (let i = 0; i < 15; i++) {
@@ -232,11 +233,11 @@ export function runWorld(seed, opt = {}) {
       fire(e.id, year, e.mk);
       // a few effects that other events read
       if (e.id === 'WR-15') { const x = rl(); lean = x < 0.35 ? 'a' : x < 0.65 ? 'b' : 'c'; }
-      if (e.id === 'HP-07') S.H -= 25;
+      if (e.id === 'HP-07') S.H -= 40;
       if (e.id === 'DR-11') { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - 3 * dfc, mood[i] + 40); S.F += 10; }
       if (e.id === 'FG-10') { S.D -= 40; }
-      if (e.id === 'DR-09' && r() < 0.4) { const live = [0, 1, 2, 3, 4, 5].filter((i) => alive[i]); if (live.length && alive.filter(Boolean).length > 1) fall(live[Math.floor(r() * live.length)], year, null, null); }
-      if (e.id === 'DR-10') { const live = alive.map((a, i) => (a ? i : -1)).filter((i) => i >= 0); if (live.length > 1) fall(live[Math.floor(r() * live.length)], year, null, null); }
+      if (e.id === 'DR-09' && r() < 0.4) { const live = [1, 2, 3, 4, 5].filter((i) => alive[i] && era() >= DRAGONS[i][2]); if (live.length && alive.filter(Boolean).length > 1) { const k = live[Math.floor(r() * live.length)]; fall(k, year, null, (DRAGONS[k][1].startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(DRAGONS[k][1]) ? '⭐' : '●')); } }
+      if (e.id === 'DR-10') { const live = alive.map((a, i) => (a && i > 0 ? i : -1)).filter((i) => i >= 0); if (live.length && alive.filter(Boolean).length > 1) { const k = live[Math.floor(r() * live.length)]; fall(k, year, null, (DRAGONS[k][1].startsWith('END') || ['DR-01', 'DR-04', 'DR-05', 'DR-07'].includes(DRAGONS[k][1]) ? '⭐' : '●')); } } // an elder or a pillar, never the primordial
     }
     // last-era events: phases by DFC (4a 10-11, 4b 12-13, 4c 14), repeatable ones keep 30 years apart
     {
@@ -248,7 +249,7 @@ export function runWorld(seed, opt = {}) {
         ['LE-02', '○', a && has('LE-01') && year - lastOf('LE-02') >= 30],
         ['LE-03', '●', a && has('LE-02') && year - lastOf('LE-03') >= 30],
         ['LE-04', '○', a && has('LE-01') && year - lastOf('LE-04') >= 30],
-        ['LE-05', '●', b && !has('LE-05')],
+        ['LE-05', '●', b && !has('LE-05') && (fired.has('PO-01') || fired.has('HP-01'))], // needs cv.2 (the council) to have opened
         ['LE-06', '●', b && has('LE-05') && year - lastOf('LE-06') >= 30],
         ['LE-07', '○', b && !has('LE-07')],
         ['LE-08', '●', b && has('LE-03') && year - lastOf('LE-08') >= 30],
