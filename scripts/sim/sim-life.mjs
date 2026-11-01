@@ -1,6 +1,8 @@
 // Walks storyline tables by their written weights to estimate what one life meets (doc-level, no game code).
 // Reads docs/lore/storylines and docs/lore/npcs. Prints a table; writes nothing.
-// Run: node scripts/sim/sim-life.mjs [lives-per-race=1500] [--sample=hu|or|...] [--seed=7] [--no-overlay]
+// Run: node scripts/sim/sim-life.mjs [lives-per-race=1500] [--sample=hu|or|...] [--seed=7] [--no-overlay] [--director]
+// --director compares callbacks (a branch that names an NPC or world event this life already met) with and without the rule-based director
+// of docs/systems/llm/04-story.md section 3.1 (×1.75 for a branch that ties back, under the ×2 cap), the experiment of section 3.5.
 import fs from 'node:fs';
 import path from 'node:path';
 import { docs } from '../lib/paths.mjs';
@@ -10,6 +12,8 @@ const N = Number(args.find((a) => /^\d+$/.test(a)) || 1500);
 const sample = (args.find((a) => a.startsWith('--sample=')) || '').slice(9);
 const seed = Number((args.find((a) => a.startsWith('--seed=')) || '--seed=7').slice(7));
 const useOverlay = !args.includes('--no-overlay');
+const directorAB = args.includes('--director');
+let director = false; // weight branches that tie back to this life's memory
 
 let st = seed >>> 0;
 const rnd = () => { st = (st + 0x6d2b79f5) >>> 0; let t = st; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
@@ -58,10 +62,11 @@ for (const p of ['bn', 'kn']) overlays[p] = parseNodes('lore/storylines/28-allie
 overlays.le = parseNodes('lore/storylines/30-last-era.md', 'le');
 const xcByName = Object.fromEntries(RACES.map(([code, name]) => [code, parseNodes('lore/storylines/25-journeys.md', 'xc').filter((n) => n.event.startsWith(name))]));
 
-const pick = (branches) => {
-  const total = branches.reduce((s, b) => s + b.w, 0);
+const pick = (branches, tie = () => false) => {
+  const w = branches.map((b) => b.w * (director && tie(b) ? 1.75 : 1));
+  const total = w.reduce((s, x) => s + x, 0);
   let r = rnd() * total;
-  for (const b of branches) { r -= b.w; if (r <= 0) return b; }
+  for (const [i, b] of branches.entries()) { r -= w[i]; if (r <= 0) return b; }
   return branches[branches.length - 1];
 };
 
@@ -70,7 +75,9 @@ const GATE = { sf: /sailor|ship|pirate|เรือ|ท่าเรือ|ทะ
 function lifeOf(code, log) {
   let pathText = '';
   const fallback = main[code].filter((n) => n.id.includes('.l'));
-  const seen = { nodes: 0, cv: new Set(), events: new Set(), npcs: new Set(), other: new Set(), countries: new Set(), conts: new Set() };
+  const seen = { nodes: 0, cv: new Set(), events: new Set(), npcs: new Set(), other: new Set(), countries: new Set(), conts: new Set(), callbacks: 0, chances: 0 };
+  const ids = (t) => [...t.matchAll(/\b((?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END)-\d{2}|[A-Z]{2}\d{2}-\d)\b/g)].map((m) => m[1]);
+  const ties = (b) => ids(b.text).some((x) => seen.npcs.has(x) || seen.events.has(x));
   const visit = (node) => {
     seen.nodes++;
     let chosen = null;
@@ -80,7 +87,9 @@ function lifeOf(code, log) {
       else if (fallback.length) { log?.push(`${node.id} ปิด → ใช้โหนดสำรอง`); visit(fallback.shift()); }
       else log?.push(`${node.id} ${node.event} → จุดบรรจบไม่เปิด ช่วงนี้ว่าง`);
     } else if (node.branches.length) {
-      chosen = pick(node.branches);
+      if (node.branches.some(ties)) seen.chances++;
+      chosen = pick(node.branches, ties);
+      if (ties(chosen)) seen.callbacks++;
       pathText += ' ' + chosen.text;
       const cv = chosen.text.match(/→ cv\.(\d+)/);
       if (cv && rnd() < (CV_OPEN[cv[1]] ?? 0.5)) seen.cv.add(`cv.${cv[1]}`);
@@ -104,6 +113,14 @@ if (sample) {
   const s = lifeOf(sample, log);
   console.log(log.join('\n'));
   console.log(`\nสรุป: โหนด ${s.nodes} · จุดบรรจบ ${[...s.cv].join(' ') || '-'} · เหตุการณ์โลก ${s.events.size} (${[...s.events].join(' ')}) · NPC ${s.npcs.size} ต่างเผ่า ${s.other.size} · ประเทศ ${s.countries.size} ทวีป ${s.conts.size}`);
+  process.exit(0);
+}
+
+if (directorAB) {
+  // same seed for both arms; a callback is a chosen branch that names someone or something this life met before
+  const arm = (on) => { director = on; st = seed >>> 0; let cb = 0, ch = 0, n = 0; for (const [code] of RACES) for (let i = 0; i < N; i++) { const s = lifeOf(code); cb += s.callbacks; ch += s.chances; n++; } return { cb: cb / n, ch: ch / n }; };
+  const off = arm(false), on = arm(true);
+  console.log(`| ผู้กำกับ | จุดที่มีทางโยงกลับต่อชีวิต | เรื่องโยงกลับต่อชีวิต |\n| --- | --- | --- |\n| ปิด | ${off.ch.toFixed(2)} | ${off.cb.toFixed(2)} |\n| ตามกติกา (×1.75) | ${on.ch.toFixed(2)} | ${on.cb.toFixed(2)} |\n\nเพิ่มขึ้น ${(100 * (on.cb / off.cb - 1)).toFixed(0)}% (เป้าอย่างน้อย 30%) · ${N} ชีวิตต่อเผ่า`);
   process.exit(0);
 }
 

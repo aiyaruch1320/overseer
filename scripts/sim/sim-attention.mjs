@@ -11,14 +11,14 @@ const LIVES = Number(process.argv.slice(2).find((a) => /^\d+$/.test(a))) || 2000
 const RULE = { stopGap: 180, merge: 60, cardGap: 60, stopWait: 60, ...JSON.parse(process.env.ATTN || '{}') };
 const LIFE_MIN = 35; // a full life at normal speed (experience/01-one-life.md: 25 to 45 minutes)
 const SEC = (LIFE_MIN * 60) / 75; // real seconds per life-year
-// assumed trigger rates (07-attention.md section 2 says where each comes from)
+// trigger rates (07-attention.md section 2 says where each comes from; crisis is still assumed)
 const RATE = {
   window: 32 * (123 / 745), // storyline nodes per life × share of god-window rows
   prayer: 4 * (0.8 * 0.035 + 0.2 * 0.105), // per life-year: four ticks, trouble 20% of ticks (game.ts prayerTick)
-  omen: 4, // world-event omens in the character's continent per full life (sim-world fresh lives: 6 to 20 world events per life)
-  majorOmen: 0.5, // ⭐ events in the character's own country per life
-  battle: 4, // battles worth a call (boss, war, named enemy) per life
-  crisis: 1.5, // stage-3 companion crises and bondage escapes per life
+  omen: 3.2, // ⭐ ● world events that touch the character's continent in a human life, birth years spread over the horizon (sim-world)
+  majorOmen: 0.06, // ⭐ events whose home is the character's own continent (world-wide ones are ordinary omen cards)
+  battle: 3, // battle beats in the storyline paths a life takes (sim-life samples: elf 1.2 dwarf 0.9 beastfolk 1.9 human 3.1 orc 4.6)
+  crisis: 1.5, // stage-3 companion crises and bondage escapes per life (assumed: the bonds docs give no rate)
 };
 const DEADLINE = { prayer: 14 / 4, omen: 2, battle: 1, crisis: 1, majorOmen: 1 }; // life-years a call can wait before it is moot
 

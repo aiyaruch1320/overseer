@@ -78,7 +78,7 @@ for (const e of events) {
   if ((m = c.match(/สุขภาพต้นไม้ < (\d+)/))) e.thr.push(['T', '<', +m[1]]);
   if ((m = c.match(/ความหนาหมอก > (\d+)/))) e.thr.push(['D', '>', +m[1]]);
   if ((m = c.match(/(?:ศรัทธาโลก|ศรัทธา|ความเชื่อ) < (\d+)/))) e.thr.push(['F', '<', +m[1]]);
-  if ((m = c.match(/ศรัทธา > (\d+)/))) e.thr.push(['F', '>', +m[1]]);
+  if ((m = c.match(/(?:ศรัทธาโลก|ศรัทธา) > (\d+)/))) e.thr.push(['F', '>', +m[1]]);
   if (PL_OF[e.id] !== undefined && (m = c.match(/อารมณ์ < (\d+)/))) e.thr.push(['M' + PL_OF[e.id], '<', +m[1]]);
   if ((m = c.match(/การรบกวน(\S+?) > (\d+)/))) e.thr.push(['Z:' + m[1], '>', +m[2]]);
 }
@@ -186,7 +186,7 @@ for (const l of read('systems/events/world-events.md').split('### 0.2.1')[1].spl
   if (m) HOME.set(m[1], m[2].trim());
 }
 const COUNTRY = /\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}\b/g;
-const homeCountries = (id) => {
+export const homeCountries = (id) => {
   const e = byId.get(id);
   const text = HOME.get(id) ?? (e ? [...new Set([e.cond, e.what, e.eff].join(' ').match(COUNTRY) || [])].join(' ') : '');
   if (!text || text === 'ทั้งโลก') return null;
@@ -366,6 +366,7 @@ export function runWorld(seed, opt = {}) {
       if (e.prereq.length && !e.prereq.some((x) => fired.has(x))) continue;
       if (p.conj && e.id === 'WR-15' && !(er === 4 && dfc >= 11 && (p.le === false || !p.leFeedback || K >= 5))) continue; // five keys are only in play late in era 4, once one side holds five
       if (e.id.startsWith('HP') && year < hpBlockUntil) continue; // LE-05: the council is split, peace events wait
+      if (e.id === 'GD-05' && !(p.godOpen && p.godOpen('GD-05', year))) continue; // only a god who leaves prayers unanswered for decades (god/03-dreams.md section 7); a sim with no god answers some
       if (p.conj && e.id === 'WR-23' && !(er === 4 && S.F < p.wr23F)) continue; // every side has lost its faith
       let boost = 1;
       if (e.thr.length) {
@@ -390,6 +391,8 @@ export function runWorld(seed, opt = {}) {
       // a few effects that other events read
       if (e.id === 'WR-15') { const x = rl(); lean = x < 0.35 ? 'a' : x < 0.65 ? 'b' : 'c'; }
       if (e.id === 'HP-07') S.H -= 40;
+      if (e.id === 'GD-04') S.F = Math.min(100, S.F + 30); // the god shows itself to the whole world
+      if (e.id === 'GD-05') { S.F -= 20; for (let i = 0; i < 15; i++) if (alive[i]) mood[i] -= 5; } // faith −20 and every dragon's mood falls (world-events.md section 8)
       if (e.id === 'DR-11') { for (let i = 0; i < 15; i++) if (alive[i]) mood[i] = Math.min(100 - 3 * dfc, mood[i] + 40); S.F += 10; }
       if (e.id === 'FG-10') { S.D -= 40; }
       if (['WR-06', 'WR-07', 'BIO-07'].includes(e.id)) Z['ธาลาสซา'] = Math.min(100, Z['ธาลาสซา'] + 10);

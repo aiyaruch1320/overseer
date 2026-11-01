@@ -30,8 +30,11 @@ const START_POWER = { faith: 30, dread: 10 };
 // anchorCd · anchorWorldCd: years between strikes on one seal anchor · on any anchor (04-miracles.md section 5.4)
 // ruinLife · ruinCd: ruin-making miracles per life · years between two in one world (04-miracles.md section 2 rule 5)
 // mahaF · wrathD: light that MR-21 needs · dread that MR-22 needs (04-miracles.md section 3)
+// fallFate: the most MR-25 can speed a dragon's fall (slowing stops at ×0.5)
+// endFate: the most MR-25 can speed an event that an ending needs (WR-15 MC-12 WR-23, 04-miracles.md section 4)
+// burdenAt: burden that sets off a burden event · burdenRelief: burden lost when a dream that fits his traits is obeyed (03-dreams.md section 4)
 // dragonCd: years before MR-23 or MR-24 can reach the same dragon again (04-miracles.md section 3)
-const RULE = { dreamStep: 1, anchorCd: 100, anchorWorldCd: 25, ruinLife: 1, ruinCd: 100, dragonCd: 50, mahaF: 120, wrathD: 150, ...JSON.parse(process.env.GOD_RULE || '{}') };
+const RULE = { dreamStep: 1, anchorCd: 100, anchorWorldCd: 25, ruinLife: 1, ruinCd: 100, dragonCd: 50, mahaF: 120, wrathD: 150, burdenRelief: 0, burdenAt: 2, endFate: 3, fallFate: 2, ...JSON.parse(process.env.GOD_RULE || '{}') };
 // assumed: the god layer only sees these from the rest of the game
 const NODES = 32; // storyline nodes per full life (sim-life.mjs, about 31 to 33 for every race)
 const WINDOW_SHARE = 123 / 745; // god-window rows among storyline node rows
@@ -45,14 +48,14 @@ function chest(r, g, kind, window, lifeOf) {
   const out = [];
   if (kind !== 'curse') {
     const lOk = g.belief >= 50 || window;
-    for (let k = 0; k < 2; k++) { const t = tier(lOk ? 4 : 3, g.belief >= 50); out.push([PRICE.bless[t], 5 + 3 * t, 'faith', false]); }
+    for (let k = 0; k < 2; k++) { const t = tier(lOk ? 4 : 3, g.belief >= 50); if (t === 4) lifeOf.lSeen++; out.push([PRICE.bless[t], 5 + 3 * t, 'faith', false, t]); }
     const ts = tier(3); out.push([PRICE.skill[ts], 5 + 3 * ts, 'faith', false]);
     if (!lifeOf.weapon) { const t = tier(3); out.push([PRICE.holyW[t], 10, 'faith', true]); }
     else if (lifeOf.items < 3) { const t = tier(3); out.push([PRICE.item[t], 5 + 3 * t, 'faith', false]); }
   }
   if (kind !== 'bless') {
     const lOk = g.belief <= -30 || window;
-    for (let k = 0; k < 2; k++) { const t = tier(lOk ? 4 : 3, g.belief <= -30); out.push([PRICE.curse[t], -(4 + 3 * t), 'dread', false]); }
+    for (let k = 0; k < 2; k++) { const t = tier(lOk ? 4 : 3, g.belief <= -30); if (t === 4) lifeOf.lSeen++; out.push([PRICE.curse[t], -(4 + 3 * t), 'dread', false, t]); }
     if (!lifeOf.weapon && kind === 'curse') { const t = tier(3); out.push([PRICE.cursedW[t], -5, 'dread', true]); }
   }
   return out;
@@ -66,7 +69,7 @@ function life(policy, r, carry = {}) {
   let death = 75;
   for (let a = 15; a < 75; a++) if (r() < EARLY_DEATH) { death = a; break; }
   const nodeAges = Array.from({ length: NODES }, () => 3 + r() * 72).filter((a) => a < death).sort((a, b) => a - b);
-  const s = { full: null, fullD: null, gifts: 0, decisions: 0, inter: 0, obeyed: 0, dreams: 0, bestows: 0, fSpent: 0, dSpent: 0, minB: g.belief, maxB: g.belief, prayers: 0, burdenEv: 0, gainF: 0, gainD: 0, prayF: 0, curse: false, weapon: false, items: 0 };
+  const s = { lSeen: 0, lTaken: 0, chests: 0, full: null, fullD: null, gifts: 0, decisions: 0, inter: 0, obeyed: 0, dreams: 0, bestows: 0, fSpent: 0, dSpent: 0, minB: g.belief, maxB: g.belief, prayers: 0, burdenEv: 0, gainF: 0, gainD: 0, prayF: 0, curse: false, weapon: false, items: 0 };
   let burden = 0, quiet = 0, willFails = 0, punishedAt = -99, lastLine = null, switches = 0;
   const pending = [];
   const costF = (c, win) => c * (g.belief < -30 ? 1.5 : 1) * (win ? 0.7 : 1);
@@ -80,9 +83,10 @@ function life(policy, r, carry = {}) {
   const act = (prayer = false) => { s.decisions++; quiet = 0; if (!prayer) s.inter++; };
 
   const openChest = (year, win, kind, pickRandom) => {
-    const opts = chest(r, g, kind, win, s).map(([c, d, line, w]) => [line === 'faith' ? costF(c, win) : costD(c, win), d, line, w]).filter(([c, , line]) => (line === 'faith' ? g.faith : g.dread) >= c);
+    const opts = chest(r, g, kind, win, s).map(([c, d, line, w, t]) => [line === 'faith' ? costF(c, win) : costD(c, win), d, line, w, t]).filter(([c, , line]) => (line === 'faith' ? g.faith : g.dread) >= c);
     if (!opts.length) return;
     const o = pickRandom ? opts[Math.floor(r() * opts.length)] : opts.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
+    s.chests++; if (o[4] === 4) s.lTaken++;
     pay(o[2], o[0], year); bel(o[1]); s.bestows++; if (o[2] === 'faith') s.gifts++; if (o[3]) s.weapon = true; else if (o[2] === 'faith' && o[1] > 0 && s.items < 3 && r() < 0.25) s.items++;
     if (o[2] === 'dread') { s.curse = true; punishedAt = year; }
     act();
@@ -91,7 +95,7 @@ function life(policy, r, carry = {}) {
     const c = costF(DREAM[s.dreamsYear ? 1 : 0] + RULE.dreamStep * s.dreams, win);
     if (g.faith < c || s.dreamsYear >= 2) return;
     const opts = [r() < 0.5 ? 0.15 : 0.05, r() < 0.25 ? -0.3 : -0.2, 0];
-    const k = pickRandom ? Math.floor(r() * 3) : 0;
+    const k = pickRandom ? Math.floor(r() * 3) : policy === 'shaper' && r() < 0.5 ? 1 : 0; // the shaper sends the off-trait path half the time
     const clar = (intel - 10) * 0.02 + (oracle ? 0.1 : 0) + (year - punishedAt < 5 ? -0.1 : 0);
     let p = clamp(0.3 + g.belief / 140 + opts[k] + clar, 0.05, 0.95);
     const willing = p >= 0.7;
@@ -99,10 +103,11 @@ function life(policy, r, carry = {}) {
     pay('faith', c, year); s.dreams++; s.dreamsYear++; act();
     if (r() < p) {
       s.obeyed++; bel(3); if (willing) willFails = 0;
-      if (opts[k] < 0 && ++burden >= 3) {
+      if (opts[k] > 0) burden = Math.max(0, burden - RULE.burdenRelief); // a dream that fits him eases the burden (CK3 stress falls when acting in character)
+      if (opts[k] < 0 && ++burden >= RULE.burdenAt) {
         burden = 0; s.burdenEv++;
         const x = r();
-        if (x < 1 / 3) { if (policy === 'merciful' && g.faith >= 15) { pay('faith', 15, year); bel(12); s.decisions++; } else bel(-8); }
+        if (x < 1 / 3) { if ((policy === 'merciful' || policy === 'shaper') && g.faith >= 15) { pay('faith', 15, year); bel(12); s.decisions++; } else bel(-8); }
       }
     } else {
       if (willing) willFails++;
@@ -130,7 +135,7 @@ function life(policy, r, carry = {}) {
       if (r() >= p) continue;
       s.prayers++;
       const cost = 8 + Math.floor(r() * 18), devout = piety > 30;
-      let ans = { silent: 'none', merciful: 'grant', giver: 'grant', saver: 'grant', grant: 'grant', punish: 'punish', smite: 'punish', random: ['grant', 'deny', 'punish', 'none'][Math.floor(r() * 4)] }[policy];
+      let ans = { silent: 'none', merciful: 'grant', shaper: 'grant', giver: 'grant', saver: 'grant', grant: 'grant', punish: 'punish', smite: 'punish', random: ['grant', 'deny', 'punish', 'none'][Math.floor(r() * 4)] }[policy];
       if (ans === 'grant' && g.faith < costF(cost)) ans = 'none';
       if (ans === 'none') { pending.push({ exp: year * 4 + t + 14 }); continue; }
       act(true);
@@ -142,7 +147,7 @@ function life(policy, r, carry = {}) {
     const moments = nodeAges.filter((a) => a >= year && a < year + 1).map(() => r() < WINDOW_SHARE);
     if (AGE_STOPS.includes(year)) moments.push(true);
     for (const win of moments) {
-      if (policy === 'merciful') {
+      if (policy === 'merciful' || policy === 'shaper') {
         // spends down to a reserve of 20 kept for prayers
         if (g.faith >= 20 + DREAM[0] + RULE.dreamStep * s.dreams) sendDream(year, win, false);
         if (win && s.chestYear < 2 && g.faith >= 40) { openChest(year, win, 'bless', false); s.chestYear++; }
@@ -159,7 +164,7 @@ function life(policy, r, carry = {}) {
       }
     }
     // the yearly chest outside windows
-    if (policy === 'merciful' && s.chestYear < 1 && g.faith >= 40) openChest(year, false, 'bless', false);
+    if ((policy === 'merciful' || policy === 'shaper') && s.chestYear < 1 && g.faith >= 40) openChest(year, false, 'bless', false);
     if (policy === 'punish' && s.chestYear < 1 && g.dread >= 20) openChest(year, false, 'curse', false);
     // feelings fade after ten quiet life-years (01-power.md section 3)
     if (++quiet > 10) g.belief = g.belief > 0 ? Math.max(0, g.belief - 2) : Math.min(0, g.belief + 2);
@@ -168,7 +173,7 @@ function life(policy, r, carry = {}) {
 }
 
 // ---------- life part ----------
-const POL = { silent: 'เงียบ', merciful: 'เมตตา', giver: 'ให้ของ', saver: 'เก็บพลัง', punish: 'ลงโทษ', random: 'สุ่ม' };
+const POL = { silent: 'เงียบ', merciful: 'เมตตา', shaper: 'ปั้นนิสัย', giver: 'ให้ของ', saver: 'เก็บพลัง', punish: 'ลงโทษ', random: 'สุ่ม' };
 const LIFE = {};
 for (const pol of [...Object.keys(POL), 'grant', 'smite']) {
   const r = rng(pol.length * 7919 + 17), rows = [];
@@ -218,6 +223,7 @@ function world(policy, seed) {
     const f = st.fate.get(id);
     if (f && year < f[1]) w *= f[0];
     if (id === 'GD-08') w *= 1.5 ** Math.max(0, st.largeDestroy - 2) * (st.maha ? 2 : 1);
+    if (id === 'GD-04' && year - (st.mr21 ?? -1e9) < 10) w *= 20; // MR-21: GD-04 happens at once
     return w;
   };
   const hook = (ctx) => {
@@ -251,7 +257,7 @@ function world(policy, seed) {
     const fateFall = (sign) => { // a dragon close to falling shows an omen; slow it (faith) or speed it (dread)
       const i = live.filter((k) => mood[k] < 10 && !(st.fate.get(FALL_ID[k])?.[1] > year))[0];
       if (i === undefined) return false;
-      const base = STAR(i) ? 60 : 30, mult = sign < 0 ? 0.5 : 3, cost = Math.max(base / 2, Math.ceil(base * Math.abs(1 - mult)));
+      const base = STAR(i) ? 60 : 30, mult = sign < 0 ? 0.5 : RULE.fallFate, cost = Math.max(base / 2, Math.ceil(base * Math.abs(1 - mult)));
       const line = sign < 0 ? 'faith' : 'dread';
       if (g[line] < cost) return false;
       g[line] -= cost; st.fates++;
@@ -262,7 +268,7 @@ function world(policy, seed) {
       fateFall(-1);
       const low = live.filter((i) => free(st.dragonAt, i, RULE.dragonCd)).sort((a, b) => mood[a] - mood[b])[0];
       if (low !== undefined && g.faith >= 40 && mood[low] < 60) { g.faith -= 40; mood[low] = Math.min(100 - 3 * ctx.dfc - capDrop[low], mood[low] + 10); st.dragonAt.set(low, year); st.soothes++; }
-      if (!used.maha && g.faith >= RULE.mahaF) { g.faith = 0; used.maha = 1; S.F = Math.min(100, S.F + 30); } // MR-21
+      if (!used.maha && g.faith >= RULE.mahaF) { g.faith = 0; used.maha = 1; st.mr21 = year; } // MR-21 opens GD-04 at once, which raises world faith by 30
     } else if (policy === 'punish') {
       ruin();
     } else if (policy === 'seal') {
@@ -274,18 +280,20 @@ function world(policy, seed) {
       if (t !== undefined && !strike(t, true)) strike(t, false);
       const d = live.filter((i) => free(st.dragonAt, i, RULE.dragonCd)).sort((a, b) => mood[a] - mood[b])[0];
       if (d !== undefined && g.dread >= 40) { g.dread -= 40 - 40 / 3; mood[d] -= 10; st.dragonAt.set(d, year); st.taunts++; }
-      for (const id of ['WR-15', 'MC-12', 'WR-23']) if (!ctx.fired.has(id) && !st.fate.has(id) && ctx.era === 4 && g.dread >= 120) { g.dread -= 120; st.fate.set(id, [3, year + 10]); st.fates++; }
+      const ec = Math.max(30, Math.ceil(60 * (RULE.endFate - 1)));
+      for (const id of ['WR-15', 'MC-12', 'WR-23']) if (!ctx.fired.has(id) && !st.fate.has(id) && ctx.era === 4 && g.dread >= ec) { g.dread -= ec; st.fate.set(id, [RULE.endFate, year + 10]); st.fates++; }
     } else if (policy === 'random' && r() < 0.3) {
       const x = Math.floor(r() * 4);
       if (x === 0) ruin(); else if (x === 1 && live.length) strike(live[Math.floor(r() * live.length)], r() < 0.5); else if (x === 2) fateFall(r() < 0.5 ? -1 : 1);
     }
   };
-  const godOpen = (id) => id === 'GD-08' && st.largeDestroy >= 3; // iron rule 7: the third large destruction wakes the other gods
-  const w = runWorld(seed, policy === 'silent' ? {} : { god: hook, godW, godOpen });
+  // iron rule 7: the third large destruction wakes the other gods · MR-21 opens GD-04 · a god who never answers prayers opens GD-05
+  const godOpen = (id, year) => (id === 'GD-08' && st.largeDestroy >= 3) || (id === 'GD-04' && year - (st.mr21 ?? -1e9) < 10) || (id === 'GD-05' && policy === 'silent');
+  const w = runWorld(seed, policy === 'base' ? {} : policy === 'silent' ? { godOpen } : { god: hook, godW, godOpen });
   return { w, st };
 }
 
-const WPOL = { silent: 'เงียบ', merciful: 'เมตตา', punish: 'ลงโทษ (ทำซาก)', seal: 'ลงโทษ (ตีหมุดผนึก)', hasten: 'เร่งจบ', random: 'สุ่ม' };
+const WPOL = { base: 'ไม่จำลองพระเจ้า (ค่าฐานของโลก)', silent: 'เงียบ', merciful: 'เมตตา', punish: 'ลงโทษ (ทำซาก)', seal: 'ลงโทษ (ตีหมุดผนึก)', hasten: 'เร่งจบ', random: 'สุ่ม' };
 const WORLD = {};
 for (const pol of Object.keys(WPOL)) {
   const rows = [];
@@ -307,21 +315,23 @@ for (const [k, name] of Object.entries(POL)) {
   const a = LIFE[k], t = a.map(title);
   out.push(`| ${name} | ${pct(share(t, (x) => x.includes('light')))} | ${pct(share(t, (x) => x.includes('quiet')))} | ${pct(share(t, (x) => x.includes('judge')))} | ${pct(share(t, (x) => x.includes('hated')))} | ${pct(share(t, (x) => !x.length))} | ${pct(share(a, (x) => x.maxB >= 85))} | ${pct(share(a, (x) => x.inter <= 5))} | ${pct(share(a, gv19))} |`);
 }
+const lRow = (k) => { const a = LIFE[k]; return `${POL[k]} หีบ ${mean(a, (x) => x.chests).toFixed(1)} · มี L ขึ้น ${pct(share(a, (x) => x.lSeen > 0))} · รับ L ${pct(share(a, (x) => x.lTaken > 0))} · เหตุการณ์ภาระใจ ${mean(a, (x) => x.burdenEv).toFixed(2)}`; };
+out.push('', `หีบที่เปิดและระดับ L ต่อชีวิต (หีบที่พระเจ้าเปิดจริง) และเหตุการณ์ภาระใจ: ${['merciful', 'shaper', 'giver', 'punish', 'random'].map(lRow).join(' · ')}`);
 const full = (k, f = 'full') => { const a = LIFE[k].filter((x) => x[f] !== null).map((x) => x[f]); return `${pct(a.length / LIFE[k].length)}${a.length ? ` อายุ ${qt(a, 0.5)}` : ''}`; };
 out.push('', `แสงศรัทธาถึง ${RULE.mahaF} (ใช้ MR-21 ได้) ร้อยละของชีวิต และอายุ p50 ที่ถึง: เก็บพลัง ${full('saver')} · เมตตา ${full('merciful')} · ให้ของ ${full('giver')} · ความหวาดกลัวถึง ${RULE.wrathD} (MR-22) ลงโทษผู้ขออย่างเดียว ${full('smite', 'fullD')} · ลงโทษ ${full('punish', 'fullD')}`);
 out.push('', `รายได้ที่เหลือให้โลกต่อปีชีวิต (หลังตอบคำอธิษฐาน): แสงศรัทธา ${WORLD_INCOME.faith.toFixed(1)} · ความหวาดกลัว ${WORLD_INCOME.dread.toFixed(1)} (ลงโทษผู้ขอทุกใบ)`, '');
 
-const base = WORLD.silent;
+const base = WORLD.base; // the world sim alone, the numbers in docs/systems/simulation/world-sim.md
 const ended = (rows) => share(rows, (x) => x.w.ended);
 const eraMed = (rows, k) => { const a = rows.map((x) => x.w.eraStart[k]).filter(Boolean).map((y) => y - START); return a.length ? qt(a, 0.5) : null; };
 const gd8 = (rows) => share(rows, (x) => x.w.fired.has('GD-08'));
 const together = (ys) => Math.max(0, ...ys.map((y) => ys.filter((z) => z <= y && y - z < 60).length)); // RU-07 rebuilds 40 to 80 years after
 out.push(`**ส่วนโลก** ${WORLDS} โลกต่อนโยบาย ${HORIZON} ปีโลก พระเจ้าใช้พลังที่เหลือจากชีวิตกับโลกทั้งหมด สายตระกูลเดียวต่อโลก ทายาทรับพลังครึ่งหนึ่ง`, '');
-out.push('| นโยบาย | โลกจบภายใน 1,800 ปี | ฉากจบ | ยุค 2 · 3 · 4 เริ่ม (p50 ปีโลก) | มังกรล้ม (p50) | ซากต่อโลก (p50 · p90 · สูงสุด) | ซากพร้อมกัน (p90) | ตีหมุดผนึก | GD-08 เกิด |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
+out.push('| นโยบาย | โลกจบภายใน 1,800 ปี | ฉากจบ | ยุค 2 · 3 · 4 เริ่ม (p50 ปีโลก) | มังกรล้ม (p50) | ซากต่อโลก (p50 · p90 · สูงสุด) | ซากพร้อมกัน (p90) | ตีหมุดผนึก | GD-04 · GD-05 · GD-08 เกิด |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
 for (const [k, name] of Object.entries(WPOL)) {
   const a = WORLD[k], ru = a.map((x) => x.st.ruins.length);
   const ends = {}; for (const x of a) if (x.w.ended) ends[x.w.ended[0]] = (ends[x.w.ended[0]] || 0) + 1;
-  out.push(`| ${name} | ${pct(ended(a))} | ${Object.entries(ends).sort().map(([e, n]) => `${e} ${n}`).join(' · ') || '-'} | ${[1, 2, 3].map((e) => eraMed(a, e) ?? '-').join(' · ')} | ${qt(a.map((x) => x.w.dfc), 0.5)} | ${qt(ru, 0.5)} · ${qt(ru, 0.9)} · ${Math.max(...ru)} | ${qt(a.map((x) => together(x.st.ruins)), 0.9)} | ${mean(a, (x) => x.st.strikes).toFixed(1)} | ${pct(gd8(a))} |`);
+  out.push(`| ${name} | ${pct(ended(a))} | ${Object.entries(ends).sort().map(([e, n]) => `${e} ${n}`).join(' · ') || '-'} | ${[1, 2, 3].map((e) => eraMed(a, e) ?? '-').join(' · ')} | ${qt(a.map((x) => x.w.dfc), 0.5)} | ${qt(ru, 0.5)} · ${qt(ru, 0.9)} · ${Math.max(...ru)} | ${qt(a.map((x) => together(x.st.ruins)), 0.9)} | ${mean(a, (x) => x.st.strikes).toFixed(1)} | ${pct(share(a, (x) => x.w.fired.has('GD-04')))} · ${pct(share(a, (x) => x.w.fired.has('GD-05')))} · ${pct(gd8(a))} |`);
 }
 
 // targets (06-implementation.md section 4)
@@ -329,16 +339,18 @@ const T = [];
 const ok = (b) => (b ? 'ผ่าน' : '**ไม่ผ่าน**');
 const lowB = (k) => share(LIFE[k], (x) => x.belief <= -70);
 T.push(['เงียบและเมตตา ศรัทธาเทพ ≤ −70', 'ไม่เกิน 0.4%', `${pct(lowB('silent'))} · ${pct(lowB('merciful'))}`, ok(lowB('silent') <= 0.004 && lowB('merciful') <= 0.004)]);
-T.push(['เร่งจบ ฉากจบภายใน 1,800 ปี', `ไม่เกินสองเท่าของเงียบ (${pct(2 * ended(base))})`, pct(ended(WORLD.hasten)), ok(ended(WORLD.hasten) <= 2 * ended(base))]);
+T.push(['เร่งจบ ฉากจบภายใน 1,800 ปี', `ไม่เกินสองเท่าของค่าฐาน (${pct(2 * ended(base))})`, pct(ended(WORLD.hasten)), ok(ended(WORLD.hasten) <= 2 * ended(base))]);
 const ru90 = qt(WORLD.punish.map((x) => x.st.ruins.length), 0.9), tog90 = qt(WORLD.punish.map((x) => together(x.st.ruins)), 0.9);
 T.push(['ลงโทษ ซากพระเจ้าต่อโลก (p90) · ซากพร้อมกัน (p90)', 'ไม่เกิน 18 (ศตวรรษละหนึ่ง) · ไม่เกิน 2', `${ru90} · ${tog90}`, ok(ru90 <= 18 && tog90 <= 2)]);
 const ob = mean(LIFE.merciful, (x) => x.obeyed);
 T.push(['เมตตา ความฝันที่ทำตามต่อชีวิต', '3 ถึง 8', ob.toFixed(1), ok(ob >= 3 && ob <= 8)]);
 const shift = [1, 2, 3].map((e) => ((eraMed(base, e) ?? HORIZON) - (eraMed(WORLD.seal, e) ?? HORIZON)) / (eraMed(base, e) ?? HORIZON));
-T.push(['ตีหมุดผนึก ยุค 2 · 3 · 4 เริ่มเร็วขึ้นเทียบเงียบ', 'ไม่เกิน 15% ต่อยุค', shift.map(pct).join(' · '), ok(Math.max(...shift) <= 0.15)]);
+T.push(['ตีหมุดผนึก ยุค 2 · 3 · 4 เริ่มเร็วขึ้นเทียบค่าฐาน', 'ไม่เกิน 15% ต่อยุค', shift.map(pct).join(' · '), ok(Math.max(...shift) <= 0.15)]);
 const v11 = share(LIFE.merciful, (x) => x.maxB >= 85), v19 = share(LIFE.punish, gv19), r11 = share(LIFE.random, (x) => x.maxB >= 85), r19 = share(LIFE.random, gv19);
 T.push(['คำปฏิญาณ GV-11 · GV-19 เมื่อตั้งใจทำ (เมตตา · ลงโทษ)', '40% ถึง 90%', `${pct(v11)} · ${pct(v19)}`, ok([v11, v19].every((x) => x >= 0.4 && x <= 0.9))]);
 T.push(['คำปฏิญาณ GV-11 · GV-19 เมื่อไม่ได้ตั้งใจ (สุ่ม)', 'ไม่เกิน 25%', `${pct(r11)} · ${pct(r19)}`, ok(r11 <= 0.25 && r19 <= 0.25)]);
+const sb = mean(LIFE.shaper, (x) => x.burdenEv), mb = mean(LIFE.merciful, (x) => x.burdenEv);
+T.push(['เหตุการณ์ภาระใจต่อชีวิต: ปั้นนิสัย · เมตตา', '0.3 ถึง 1 · ไม่เกิน 0.1', `${sb.toFixed(2)} · ${mb.toFixed(2)}`, ok(sb >= 0.3 && sb <= 1 && mb <= 0.1)]);
 const dm = qt(LIFE.merciful.map((x) => x.decisions), 0.5);
 T.push(['เมตตา ตัดสินใจต่อชีวิต (p50)', '25 ถึง 40', String(dm), ok(dm >= 25 && dm <= 40)]);
 out.push('', '**เป้า**', '', '| เป้า | ค่า | ผล | |', '| --- | --- | --- | --- |', ...T.map((x) => `| ${x.join(' | ')} |`));
