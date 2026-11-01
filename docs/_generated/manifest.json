@@ -262,7 +262,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 70,
-   "bytes": 89350,
+   "bytes": 89383,
    "headings": [],
    "source": "scripts/docs/build-local-events.mjs"
   },
@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 134,
-   "bytes": 39584,
+   "lines": 136,
+   "bytes": 42321,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1085,7 +1085,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 101,
-   "bytes": 20146,
+   "bytes": 20160,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1098,7 +1098,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 23813,
+   "bytes": 23820,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1111,7 +1111,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 112,
-   "bytes": 17923,
+   "bytes": 17972,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1124,7 +1124,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 136,
-   "bytes": 20901,
+   "bytes": 21018,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1137,7 +1137,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 231,
-   "bytes": 41895,
+   "bytes": 42027,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1150,7 +1150,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 137,
-   "bytes": 21047,
+   "bytes": 21127,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1163,7 +1163,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 143,
-   "bytes": 20839,
+   "bytes": 20899,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1176,7 +1176,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 154,
-   "bytes": 21152,
+   "bytes": 21225,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ"
@@ -1189,7 +1189,7 @@
    "group": "lore/countries",
    "kind": "fact",
    "lines": 159,
-   "bytes": 29233,
+   "bytes": 29300,
    "headings": [
     "ภาพรวมการเมือง",
     "ประเทศ",
@@ -1480,7 +1480,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 152,
-   "bytes": 47546,
+   "bytes": 47567,
    "headings": [
     "MK-01 เฮฟากริด (นครโครงข่าย)",
     "MK-02 ครอนไซต์ (สหภาพผู้ติดตั้ง)",
@@ -1507,7 +1507,7 @@
    "group": "lore/npcs",
    "kind": "fact",
    "lines": 164,
-   "bytes": 49274,
+   "bytes": 49323,
    "headings": [
     "SH-01 ซาร์ฮาดีน (ดินแดนธุลีทิพย์)",
     "SH-02 อัมเมนรา (ราชวงศ์มัมมี่นิรันดร์)",
@@ -2999,7 +2999,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 142,
-   "bytes": 18508,
+   "bytes": 18504,
    "headings": [
     "ก. พรถิ่นเกิด",
     "ข. พรสายเลือดและกำเนิดพิเศษ",
@@ -3033,7 +3033,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 116,
-   "bytes": 26240,
+   "bytes": 26279,
    "headings": [
     "ก. การเดินทางและนำทาง",
     "ข. งานช่างและประดิษฐ์",
@@ -3051,7 +3051,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 134,
-   "bytes": 16304,
+   "bytes": 16302,
    "headings": [
     "จำนวน",
     "1. การเสนออาชีพทั่วไป",
@@ -3070,7 +3070,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 183,
-   "bytes": 30975,
+   "bytes": 31042,
    "headings": [
     "ก. อาชีพเดิมในโค้ด 39 อย่าง",
     "ข. อาชีพใหม่ 61 อย่าง",
@@ -3128,7 +3128,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 181,
-   "bytes": 26102,
+   "bytes": 26098,
    "headings": [
     "1. ตัวสัตว์คู่หูมีอะไรบ้าง",
     "2. โอกาสได้สัตว์คู่หู",
@@ -3148,7 +3148,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 113,
-   "bytes": 17700,
+   "bytes": 17705,
    "headings": [
     "ก. รักษาและปกป้อง",
     "ข. สถานะและโชค",
@@ -4057,7 +4057,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 477,
-   "bytes": 109626,
+   "bytes": 109645,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4510,7 +4510,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 216,
-   "bytes": 39784,
+   "bytes": 40038,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
