@@ -661,8 +661,8 @@
    "layer": "appearance",
    "group": "appearance",
    "kind": "visual",
-   "lines": 70,
-   "bytes": 19562,
+   "lines": 112,
+   "bytes": 45538,
    "headings": [
     "1. กติกากลาง",
     "2. เหตุการณ์ LE",
@@ -1036,8 +1036,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 76,
-   "bytes": 14292,
+   "lines": 77,
+   "bytes": 14554,
    "headings": [
     "1. หลักของเกมที่ใช้ตัดสิน",
     "2. รายการตรวจตามชนิดไฟล์",
@@ -1589,7 +1589,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 151,
-   "bytes": 28548,
+   "bytes": 29028,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -1607,8 +1607,8 @@
    "layer": "lore",
    "group": "lore/npcs",
    "kind": "fact",
-   "lines": 115,
-   "bytes": 21904,
+   "lines": 178,
+   "bytes": 82171,
    "headings": [
     "1. ทำไมต้องมีไฟล์นี้",
     "2. NPC สามชั้น",

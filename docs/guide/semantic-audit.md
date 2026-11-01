@@ -38,6 +38,7 @@
 | --- | --- |
 | `npm run docs:verify` | รหัส ตาราง ลิงก์ (โครง) |
 | `node scripts/sim/sim-npc-timeline.mjs` | เรื่องของ NPC ที่ผูกเหตุการณ์ เปิดได้ในช่วงชีวิตของผู้ถือหรือไม่ (P3 P7) |
+| `node scripts/sim/sim-npc-density.mjs` | NPC กระจายตามเวลาหรือกระจุกที่ต้นเรื่อง และหนึ่งชีวิตเจอเรื่อง NPC กี่เรื่อง (P3 P4) |
 | `node scripts/sim/sim-npc-fate.mjs` | ชะตา NPC ยุคปลายกับอายุขัย |
 | `node scripts/sim/sim-world.mjs --why` | เหตุการณ์ที่เกิดยากหรือไม่เกิดเลย (P2) |
 | `node scripts/sim/sim-start.mjs 3000 --tables` | ชีวิตแต่ละเผ่าเจออะไร (P9) |
