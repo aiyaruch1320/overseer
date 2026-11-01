@@ -994,8 +994,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 69,
-   "bytes": 17633,
+   "lines": 82,
+   "bytes": 20544,
    "headings": [
     "ที่พบเพิ่มระหว่างจำลอง",
     "รอบตรวจเชิงความหมายทั้งโลก (2026-11-01)"
@@ -1589,7 +1589,7 @@
    "group": "lore/npcs",
    "kind": "index",
    "lines": 151,
-   "bytes": 29028,
+   "bytes": 29029,
    "headings": [
     "1. NPC คือเส้นเรื่องที่อาจเกิด",
     "2. วงจรชีวิตของ NPC",
@@ -1964,7 +1964,7 @@
    "group": "lore/religions",
    "kind": "fact",
    "lines": 68,
-   "bytes": 7221,
+   "bytes": 7520,
    "headings": [
     "หลักการ",
     "ห้าช่องทาง",
@@ -3958,8 +3958,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 190,
-   "bytes": 32592,
+   "lines": 204,
+   "bytes": 35834,
    "headings": [
     "1. สกายฟอลล์ (ซากฟ้า) — หลัง DR-01",
     "2. ทวีปเถ้า — หลัง DR-04",
@@ -4040,8 +4040,8 @@
    "layer": "systems",
    "group": "systems/events",
    "kind": "data",
-   "lines": 467,
-   "bytes": 104523,
+   "lines": 477,
+   "bytes": 109418,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",
@@ -4481,7 +4481,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 62,
-   "bytes": 8224,
+   "bytes": 9026,
    "headings": [
     "เมื่อมังกรตัวหนึ่งตาย",
     "ค่าเริ่มต้นของอารมณ์และอัตราเปลี่ยน"
@@ -4494,7 +4494,7 @@
    "group": "systems/simulation",
    "kind": "data",
    "lines": 214,
-   "bytes": 34556,
+   "bytes": 34803,
    "headings": [
     "1. วิธีจำลอง",
     "2. ค่าที่จูนแล้ว",
