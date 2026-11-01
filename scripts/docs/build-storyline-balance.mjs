@@ -103,7 +103,10 @@ out.push('', '## 3. อ่านอย่างไร', '', '- มนุษย�
 // of that people says "ใช้แทน <node>" for it (00-convergence.md section 3). Covered slots do not count as blank.
 const CV_OPEN = { 4: 1, 10: 1, 12: 1, 13: 1, 8: 0.95, 1: 0.95, 16: 0.95, 2: 0.8, 15: 0.8, 6: 0.72, 14: 0.72, 5: 0.72, 7: 0.63, 9: 0.52, 11: 0.48, 3: 0.12 };
 const gaps = RACES.map(([code, name, file]) => {
-  const lines = read(`lore/storylines/${file}`).split('\n').filter((l) => new RegExp(`^\\| ${code}\\.[btael]\\d \\|`).test(l));
+  // First row per node id only: later tables (god window) repeat node ids.
+  const seen = new Set();
+  const lines = read(`lore/storylines/${file}`).split('\n').filter((l) => new RegExp(`^\\| ${code}\\.[btael]\\d \\|`).test(l))
+    .filter((l) => { const id = l.split('|')[1].trim(); return !seen.has(id) && seen.add(id); });
   const cvOnly = lines.filter((l) => (l.split('|')[4] || '').trim().startsWith('→ cv.')).map((l) => [l.split('|')[1].trim(), (l.match(/→ cv\.(\d+)/) || [])[1]]);
   const fallbacks = lines.filter((l) => new RegExp(`^\\| ${code}\\.l\\d \\|`).test(l));
   const covered = new Set();
