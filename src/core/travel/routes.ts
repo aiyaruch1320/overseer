@@ -186,30 +186,20 @@ export function edgesOf(c: ContinentId): { to: ContinentId; edge: Edge; flip: bo
   return out;
 }
 
-/** The continent path with the fewest hops (breadth first). */
-export function continentPath(from: ContinentId, to: ContinentId, usable: (e: Edge) => boolean): { c: ContinentId; edge: Edge; flip: boolean }[] | undefined {
-  if (from === to) return [];
-  const prev = new Map<ContinentId, { c: ContinentId; edge: Edge; flip: boolean }>();
-  const seen = new Set<ContinentId>([from]);
-  const queue: ContinentId[] = [from];
-  while (queue.length) {
-    const c = queue.shift()!;
-    for (const n of edgesOf(c)) {
-      if (seen.has(n.to) || !usable(n.edge)) continue;
-      seen.add(n.to);
-      prev.set(n.to, { c, edge: n.edge, flip: n.flip });
-      if (n.to === to) {
-        const path: { c: ContinentId; edge: Edge; flip: boolean }[] = [];
-        let at: ContinentId = to;
-        while (at !== from) {
-          const p = prev.get(at)!;
-          path.unshift({ c: at, edge: p.edge, flip: p.flip });
-          at = p.c;
-        }
-        return path;
-      }
-      queue.push(n.to);
+/** Every simple path over the continents from `from` to `to` with at most `max` hops, the shortest first. */
+export function continentPaths(from: ContinentId, to: ContinentId, max = 3): { c: ContinentId; edge: Edge; flip: boolean }[][] {
+  const out: { c: ContinentId; edge: Edge; flip: boolean }[][] = [];
+  const walk = (at: ContinentId, seen: Set<ContinentId>, path: { c: ContinentId; edge: Edge; flip: boolean }[]) => {
+    if (at === to) {
+      out.push(path);
+      return;
     }
-  }
-  return undefined;
+    if (path.length >= max) return;
+    for (const n of edgesOf(at)) {
+      if (seen.has(n.to)) continue;
+      walk(n.to, new Set([...seen, n.to]), [...path, { c: n.to, edge: n.edge, flip: n.flip }]);
+    }
+  };
+  if (from !== to) walk(from, new Set([from]), []);
+  return out.sort((x, y) => x.length - y.length);
 }

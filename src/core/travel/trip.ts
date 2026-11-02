@@ -7,7 +7,7 @@ import { apply, type EffectSource } from '../rules';
 import { happened, world, year } from '../world/access';
 import type { ContinentId, CountryId, LifeState } from '../types';
 import { entryOf, flagsOf } from './access';
-import { continentPath, routeState, type Edge, type Link, type RouteId, type RouteState } from './routes';
+import { continentPaths, routeState, type Edge, type Link, type RouteId, type RouteState } from './routes';
 import { geo, inRange, type CountryInfo } from './data';
 import { addOnce, extOf, lifeOf } from './state';
 import { DAYS_PER_QUARTER, FOG_MASK, GOODS_SHARE, MASK_PRICE, STAIR_PASS, TOLL_SHARE } from './tuning';
@@ -129,6 +129,66 @@ function inside(ctx: Ctx, life: LifeState, a: CountryInfo, b: CountryInfo, opts:
   return undefined;
 }
 
+/** Walks one continent path: in each hop the open way with the lowest fare (the character's own wings count), with the legs to reach a gateway and to leave it. */
+function planPath(ctx: Ctx, life: LifeState, a: CountryInfo, b: CountryInfo, path: { c: ContinentId; edge: Edge; flip: boolean }[], opts: PlanOpts): { legs: Leg[]; smuggle: boolean } | undefined {
+  const g = geo(ctx);
+  const flyer = life.race === 'winged' || holds(ctx, life, 'skill', 'pa_fly_mount', 3);
+  const legs: Leg[] = [];
+  let smuggle = false;
+  let at: CountryInfo = a;
+  for (let i = 0; i < path.length; i++) {
+    const hop = path[i];
+    const last = i === path.length - 1;
+    const to2 = hop.c;
+    let bestLeg: Leg | undefined;
+    let bestPre: Leg | undefined;
+    let bestPost: Leg | undefined;
+    const options: (Link | { route: 'fly'; ends: [null, null] })[] = [...hop.edge.links];
+    if (flyer) options.push({ route: 'fly', ends: [null, null] });
+    let shutLeg: { leg: Leg; pre?: Leg; post?: Leg } | undefined;
+    for (const l of options) {
+      const [endA, endB] = l.ends;
+      const gFrom = hop.flip ? endB : endA;
+      const gTo = hop.flip ? endA : endB;
+      const needCoast = l.route === 'sea';
+      const s = gate(ctx, gFrom, at.continent, at, needCoast);
+      const t = gate(ctx, gTo, to2, last ? b : undefined, needCoast);
+      if (!s || !t) continue;
+      const st = routeState(ctx, life, l.route as RouteId, s, t);
+      const pre = s.id !== at.id ? inside(ctx, life, at, s, { smuggle: false }) : undefined;
+      if (s.id !== at.id && !pre) continue;
+      const post = last && t.id !== b.id ? inside(ctx, life, t, b, { smuggle: false }) : undefined;
+      if (last && t.id !== b.id && !post) continue;
+      const cost = (x: Leg | undefined) => (x ? x.fare : 0);
+      if (!st.open) {
+        if (opts.smuggle && st.smuggle && canSmuggle(ctx, life)) {
+          const leg = legOf(ctx, life, l.route as RouteId, s, t, st, true, true);
+          if (!shutLeg || leg.fare < shutLeg.leg.fare) shutLeg = { leg, pre, post };
+        }
+        continue;
+      }
+      const leg = legOf(ctx, life, l.route as RouteId, s, t, st, true);
+      if (!bestLeg || leg.fare + cost(pre) + cost(post) < bestLeg.fare + cost(bestPre) + cost(bestPost)) {
+        bestLeg = leg;
+        bestPre = pre;
+        bestPost = post;
+      }
+    }
+    if (!bestLeg && shutLeg) {
+      bestLeg = shutLeg.leg;
+      bestPre = shutLeg.pre;
+      bestPost = shutLeg.post;
+      smuggle = true;
+    }
+    if (!bestLeg) return undefined;
+    if (bestPre) legs.push(bestPre);
+    legs.push(bestLeg);
+    if (bestPost) legs.push(bestPost);
+    at = g.countries.get(bestPost ? bestPost.to : bestLeg.to)!;
+  }
+  return { legs, smuggle };
+}
+
 /**
  * Plans the trip from `from` to `to` (country ids). Across continents it follows the continent graph (routes.ts) and takes, in each hop, the way
  * that is open and cheapest; a way with a gateway that the character is not at adds a leg to get there.
@@ -151,65 +211,19 @@ export function plan(ctx: Ctx, life: LifeState, from: CountryId, to: CountryId, 
     if (!leg) return fail('route closed');
     legs.push(leg);
   } else {
-    const flyer = life.race === 'winged' || holds(ctx, life, 'skill', 'pa_fly_mount', 3);
-    const canUse = (e: Edge) => e.links.some((l) => linkOpen(ctx, life, l, e, a, b, opts, flyer)) || flyer;
-    const path = continentPath(a.continent, b.continent, canUse);
-    if (!path) return fail('no route');
-    let at: CountryInfo = a;
-    for (let i = 0; i < path.length; i++) {
-      const hop = path[i];
-      const last = i === path.length - 1;
-      const from2 = hop.flip ? hop.edge.b : hop.edge.a;
-      const to2 = hop.c;
-      void from2;
-      // the options of this hop: the links of the edge and the character's own wings
-      let bestLeg: Leg | undefined;
-      let bestPre: Leg | undefined;
-      let bestPost: Leg | undefined;
-      const options: (Link | { route: 'fly'; ends: [null, null] })[] = [...hop.edge.links];
-      if (flyer) options.push({ route: 'fly', ends: [null, null] });
-      let shutLeg: { leg: Leg; pre?: Leg; post?: Leg } | undefined;
-      for (const l of options) {
-        const [endA, endB] = l.ends;
-        const gFrom = hop.flip ? endB : endA;
-        const gTo = hop.flip ? endA : endB;
-        const needCoast = l.route === 'sea';
-        const s = gate(ctx, gFrom, at.continent, at, needCoast);
-        const wantTo = last ? b : undefined;
-        const t = gate(ctx, gTo, to2, wantTo, needCoast);
-        if (!s || !t) continue;
-        const st = routeState(ctx, life, l.route as RouteId, s, t);
-        const pre = s.id !== at.id ? inside(ctx, life, at, s, { smuggle: false }) : undefined;
-        if (s.id !== at.id && !pre) continue;
-        const post = last && t.id !== b.id ? inside(ctx, life, t, b, { smuggle: false }) : undefined;
-        if (last && t.id !== b.id && !post) continue;
-        const cost = (x: Leg | undefined) => (x ? x.fare : 0);
-        if (!st.open) {
-          if (opts.smuggle && st.smuggle && canSmuggle(ctx, life)) {
-            const leg = legOf(ctx, life, l.route as RouteId, s, t, st, true, true);
-            if (!shutLeg || leg.fare < shutLeg.leg.fare) shutLeg = { leg, pre, post };
-          }
-          continue;
-        }
-        const leg = legOf(ctx, life, l.route as RouteId, s, t, st, true);
-        if (!bestLeg || leg.fare + cost(pre) + cost(post) < bestLeg.fare + cost(bestPre) + cost(bestPost)) {
-          bestLeg = leg;
-          bestPre = pre;
-          bestPost = post;
-        }
-      }
-      if (!bestLeg && shutLeg) {
-        bestLeg = shutLeg.leg;
-        bestPre = shutLeg.pre;
-        bestPost = shutLeg.post;
-        smuggle = true;
-      }
-      if (!bestLeg) return fail('route closed');
-      if (bestPre) legs.push(bestPre);
-      legs.push(bestLeg);
-      if (bestPost) legs.push(bestPost);
-      at = g.countries.get(bestPost ? bestPost.to : bestLeg.to)!;
+    // every path of up to three hops over the continents (routes.ts), each walked hop by hop; the cheapest open one is taken
+    let best: { legs: Leg[]; smuggle: boolean; fare: number; days: number } | undefined;
+    for (const path of continentPaths(a.continent, b.continent, 3).slice(0, 8)) {
+      const r = planPath(ctx, life, a, b, path, opts);
+      if (!r) continue;
+      const fare = r.legs.reduce((n, l) => n + l.fare, 0);
+      const days = r.legs.reduce((n, l) => n + l.days, 0);
+      // a way that needs no smuggling beats one that does; then the fare, then the days
+      if (!best || (best.smuggle && !r.smuggle) || (best.smuggle === r.smuggle && (fare < best.fare - 1e-9 || (Math.abs(fare - best.fare) < 1e-9 && days < best.days)))) best = { ...r, fare, days };
     }
+    if (!best) return fail(continentPaths(a.continent, b.continent, 3).length ? 'route closed' : 'no route');
+    legs.push(...best.legs);
+    if (best.smuggle) smuggle = true;
   }
   if (legs.some((l) => l.smuggle)) smuggle = true;
   // the fog asks a mask (§3.6): a leg that starts or ends in Nebulia, for a character the fog is not at home with
@@ -226,23 +240,12 @@ export function plan(ctx: Ctx, life: LifeState, from: CountryId, to: CountryId, 
   return { ok: true, legs, days, fare, smuggle, mask };
 }
 
-function linkOpen(ctx: Ctx, life: LifeState, l: Link, e: Edge, a: CountryInfo, b: CountryInfo, opts: PlanOpts, _flyer: boolean): boolean {
-  const g = geo(ctx);
-  const pick = (cont: ContinentId, list: CountryId[] | null, want: CountryInfo) =>
-    list ? g.countries.get(list[0]) : want.continent === cont ? want : (g.byContinent.get(cont) ?? [])[0];
-  const s = pick(e.a, l.ends[0], a);
-  const t = pick(e.b, l.ends[1], b);
-  if (!s || !t) return false;
-  const st = routeState(ctx, life, l.route, s, t);
-  return st.open || (!!opts.smuggle && st.smuggle);
-}
-
 // ---------- walking the trip ----------
 
 const ENCOUNTER_STREAM = 'life.travel.road';
 
 /** Weights of the d12 (§4): fixed, changed only by the world flags of the places the leg touches. */
-function weights(ctx: Ctx, leg: Leg): number[] {
+export function roadWeights(ctx: Ctx, leg: Pick<Leg, 'from' | 'to' | 'route'>): number[] {
   const w = Array<number>(12).fill(1);
   const flags = [...flagsOf(ctx, leg.from), ...flagsOf(ctx, leg.to)];
   for (const m of geo(ctx).travel.encounterMods) {
@@ -261,7 +264,7 @@ const src = (id?: string): EffectSource => ({ sys: 'travel', id, stream: ENCOUNT
 /** One roll of the road table for a leg. Returns quarters of delay it causes. */
 function road(ctx: Ctx, life: LifeState, leg: Leg, why: string): number {
   const rng = ctx.rng(ENCOUNTER_STREAM);
-  const d = rng.weighted(weights(ctx, leg)) + 1;
+  const d = rng.weighted(roadWeights(ctx, leg)) + 1;
   const ex = extOf(life);
   const flags = [...flagsOf(ctx, leg.from), ...flagsOf(ctx, leg.to)];
   const row = geo(ctx).travel.encounters.find((e) => e.d === d);

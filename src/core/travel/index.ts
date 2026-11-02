@@ -57,24 +57,26 @@ function placesOf(effects: readonly Effect[]): string[] {
   return out;
 }
 
+/** The way of a node was taken: if it names a place (`place` effect), the character moves there when the filters and the tuning (FOLLOW_STORY) allow. */
+export function followStory(ctx: Ctx, node: { id: string; choices: { key: string; effects: readonly Effect[] }[] }, key: string): boolean {
+  if (key === '-') return false;
+  const life = lifeOf(ctx);
+  if (!life) return false;
+  const choice = node.choices.find((c) => c.key === key);
+  for (const to of placesOf(choice?.effects ?? [])) {
+    if (to === life.country || !/^[A-Z]{2}-\d{2}$/.test(to)) continue;
+    const p = to.slice(0, 2) === life.country.slice(0, 2) ? FOLLOW_STORY.same : FOLLOW_STORY.cross;
+    if (p < 1 && !ctx.rng('life.travel.story').chance(p)) continue;
+    if (relocate(ctx, to, `story:${node.id}`)) return true;
+  }
+  return false;
+}
+
 let hooked = false;
 function hookStory(): void {
   if (hooked) return;
   hooked = true;
-  onNode({
-    after(ctx, node, _id, key) {
-      if (key === '-') return;
-      const life = lifeOf(ctx);
-      if (!life) return;
-      const choice = node.choices.find((c) => c.key === key);
-      for (const to of placesOf(choice?.effects ?? [])) {
-        if (to === life.country || !/^[A-Z]{2}-\d{2}$/.test(to)) continue;
-        const p = to.slice(0, 2) === life.country.slice(0, 2) ? FOLLOW_STORY.same : FOLLOW_STORY.cross;
-        if (p < 1 && !ctx.rng('life.travel.story').chance(p)) continue;
-        if (relocate(ctx, to, `story:${node.id}`)) break;
-      }
-    },
-  });
+  onNode({ after: (ctx, node, _id, key) => void followStory(ctx, node, key) });
 }
 hookStory();
 
