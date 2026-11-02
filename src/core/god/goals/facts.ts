@@ -219,7 +219,7 @@ export function factsOf(ctx: Ctx, l: LifeState): Facts {
     boundNow: (bond?.level ?? 0) > 0,
     wasBound: t.boundAtBirth || (bond?.counts?.entered ?? 0) > 0 || (bond?.history?.length ?? 0) > 0,
     freed: !!bond && bond.level === 0 && ((bond.history?.length ?? 0) > 0 || t.boundAtBirth),
-    dragon: t.dragon || (combatOf(l)?.tally?.wild_dragon ?? 0) > 0 || (story?.seen.events ?? []).some((e) => dragonFall(ctx, e)),
+    dragon: t.dragon || (story?.seen.events ?? []).some((e) => dragonScene(ctx, e, countriesLived(l), continentsSeen(l))),
     homeLost: t.homeLost,
     built: ['hr.e1', 'hr.a4', 'fm.e1', 'nl.e1'].some((n) => l.passed[n] !== undefined && l.passed[n] !== '-') || hasStudent(l) || selfForged(l),
     keySide: ['a', 'b'].includes(String(l.passed['le.a4'] ?? '')),
@@ -229,10 +229,17 @@ export function factsOf(ctx: Ctx, l: LifeState): Facts {
 
 const godGoals = (ctx: Ctx) => ({ elder: Math.max(0, Number((godData(ctx).goals.vows.find((v) => v.id === 'GV-01')?.done.match(/\d+/) ?? [55])[0])) });
 
-/** Is the event the fall of a dragon (a scene with a dragon of legend)? */
-function dragonFall(ctx: Ctx, id: string): boolean {
+/**
+ * Is the event the fall of a dragon of legend in a place the character lived (a scene with a dragon, 08-goals.md GV-15)? A fall is a scene for the ones who stand in the
+ * countries or the continent it falls in; a dragon that fell on the other side of the world is not a scene of his. (The wild dragons the combat system counts are not dragons of legend.)
+ */
+function dragonScene(ctx: Ctx, id: string, countries: string[], continents: string[]): boolean {
   try {
-    return tablesOf(ctx).dragons.some((d) => d.fallEvent === id);
+    const tb = tablesOf(ctx);
+    if (!tb.dragons.some((d) => d.fallEvent === id)) return false;
+    const home = tb.byId.get(id)?.home;
+    if (!home) return false;
+    return home.countries.some((c) => countries.includes(c)) || (home.continents as string[]).some((k) => continents.includes(k));
   } catch {
     return false;
   }
