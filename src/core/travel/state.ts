@@ -52,6 +52,8 @@ export interface TravelExt {
   yearLegs: Record<number, number>;
   /** Days on the road per life year, by hAge. */
   yearDays: Record<number, number>;
+  /** Years worked in a travelling job and the legs made in them (for the cap check against the table of §1). */
+  job: { years: number; legs: number };
   /** Quarters added by delays (festival, quarantine, a broken cart) to wait out. */
   delay: number;
 }
@@ -59,7 +61,7 @@ export interface TravelExt {
 export function fresh(country: CountryId): TravelExt {
   return {
     base: country, born: country, level: 0, visited: [], continents: [country.slice(0, 2) as ContinentId], trips: 0, legs: 0, days: 0, spent: 0, lastTrip: -99,
-    opened: [], seen: [], stats: {}, met: 0, wantedIn: [], invited: [], smuggled: 0, spontaneous: false, pilgrim: false, yearLegs: {}, yearDays: {}, delay: 0,
+    opened: [], seen: [], stats: {}, met: 0, wantedIn: [], invited: [], smuggled: 0, spontaneous: false, pilgrim: false, yearLegs: {}, yearDays: {}, job: { years: 0, legs: 0 }, delay: 0,
   };
 }
 

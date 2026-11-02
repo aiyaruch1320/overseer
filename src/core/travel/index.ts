@@ -6,11 +6,11 @@ import { write } from '../log';
 import { onNode } from '../story';
 import type { Effect, LifeState } from '../types';
 import { rollCauses, disasters } from './causes';
-import { openJobLines, jobYear } from './jobs';
+import { cityYear, openJobLines, jobYear } from './jobs';
 import './rules';
 import { beatOf, extOf, fresh, lifeOf } from './state';
 import { go, move, plan, queueLine, reachable } from './trip';
-import { MIN_AGE } from './tuning';
+import { FOLLOW_STORY, MIN_AGE } from './tuning';
 import type { Ctx } from '../game';
 
 export { registerTravelRules } from './rules';
@@ -43,7 +43,7 @@ export function relocate(ctx: Ctx, to: string, why: string): boolean {
   if (!life || life.country === to) return false;
   const ex = extOf(life);
   const free = life.hAge < 18;
-  let r = go(ctx, to, why, { free, smuggle: true });
+  let r = go(ctx, to, why, { free, smuggle: true, walk: true });
   if (!r.legs && !free) r = go(ctx, to, why, { free: true, smuggle: true });
   if (!r.legs) return false;
   ex.away = undefined;
@@ -69,6 +69,8 @@ function hookStory(): void {
       const choice = node.choices.find((c) => c.key === key);
       for (const to of placesOf(choice?.effects ?? [])) {
         if (to === life.country || !/^[A-Z]{2}-\d{2}$/.test(to)) continue;
+        const p = to.slice(0, 2) === life.country.slice(0, 2) ? FOLLOW_STORY.same : FOLLOW_STORY.cross;
+        if (p < 1 && !ctx.rng('life.travel.story').chance(p)) continue;
         if (relocate(ctx, to, `story:${node.id}`)) break;
       }
     },
@@ -120,6 +122,7 @@ export const travelSystem: System = {
     rollCauses(ctx, life, ex, new Set(begins));
     if (!lifeOf(ctx)) return;
     jobYear(ctx, life, ex);
+    cityYear(ctx, life, ex);
     // §3 of 25-journeys: a stranger comes to a character who stays home (35%, human-equivalent age 24 to 36, L0, not a human)
     if (!ex.spontaneous && life.race !== 'human' && life.hAge >= 24 && life.hAge <= 36 && ex.level === 0) {
       ex.spontaneous = true;

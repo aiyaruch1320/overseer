@@ -91,7 +91,8 @@ export const CAUSES: CauseDef[] = [
   {
     key: 'exile',
     row: 'เนรเทศหรือหนีโทษ',
-    eligible: (ctx, life) => ({ ok: holds(ctx, life, 'curse', 'c_wanted'), mul: 1 }),
+    // wanted where the character stands: a character who has run from the place is not run out of the next one
+    eligible: (ctx, life, ex) => ({ ok: holds(ctx, life, 'curse', 'c_wanted') && ex.wantedIn.includes(life.country), mul: 1 }),
   },
   {
     key: 'xc',
@@ -172,11 +173,12 @@ export function rollCauses(ctx: Ctx, life: LifeState, ex: TravelExt, fresh: Read
 export function leave(ctx: Ctx, life: LifeState, ex: TravelExt, cause: string, forced?: string): boolean {
   const shape = shapeOf(cause);
   const rng = ctx.rng('life.travel');
+  if (!forced && !rng.chance(shape.go)) return false;
   const dest = forced ?? pickDestination(ctx, life, cause, rng.chance(shape.near));
   if (!dest) return false;
   const smuggle = cause === 'ex' || cause === 'exile';
   const free = cause === 'ml' || cause === 'ex' || cause === 'exile';
-  const r = go(ctx, dest, cause, { free, smuggle });
+  const r = go(ctx, dest, cause, { free, smuggle, walk: true });
   if (!r.legs) return false;
   let stay = rng.int(shape.stay[0], shape.stay[1]);
   const here = geo(ctx).countries.get(life.country) as CountryInfo;

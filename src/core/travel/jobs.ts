@@ -10,7 +10,8 @@ import { geo } from './data';
 import { pickDestination } from './dest';
 import { addOnce, extOf, type TravelExt } from './state';
 import { go, queueLine } from './trip';
-import { EMPLOYER_PAYS, JOB_ABROAD_SHARE, JOB_CROSS_RATE, JOB_SETTLE_RATE, LINE_JOBS, MIN_AGE, TRAVEL_JOBS } from './tuning';
+import { leave } from './causes';
+import { CITY_TRIP, EMPLOYER_PAYS, JOB, LINE_JOBS, MIN_AGE, TRAVEL_JOBS, jobGroup } from './tuning';
 import { moveMul } from '../god/acts';
 
 /** Legs per life year for the job: the row of the table that names it, else the row of the wanderers (adventurers) or of the sailors. */
@@ -36,8 +37,25 @@ export function openJobLines(ctx: Ctx, life: LifeState, ex: TravelExt): void {
   }
 }
 
-/** One life year of a travelling job: the legs it makes. */
+/** A city job (§1 targets 45/40/15): now and then a post, a course or a congress in another country. */
+export function cityYear(ctx: Ctx, life: LifeState, ex: TravelExt): void {
+  if (life.hAge < MIN_AGE + 3 || ex.away || jobGroup(life.job) !== 'city') return;
+  if (!ctx.rng('life.travel.job').chance(CITY_TRIP * moveMul(ctx))) return;
+  leave(ctx, life, ex, 'city');
+}
+
+/** One life year of a travelling job: the legs it makes (counted in `ex.job` for the check against the table of §1). */
 export function jobYear(ctx: Ctx, life: LifeState, ex: TravelExt): void {
+  const before = ex.legs;
+  const worked = !!life.job && TRAVEL_JOBS.has(life.job) && life.hAge >= MIN_AGE && !ex.away;
+  jobYearInner(ctx, life, ex);
+  if (worked) {
+    ex.job.years += 1;
+    ex.job.legs += ex.legs - before;
+  }
+}
+
+function jobYearInner(ctx: Ctx, life: LifeState, ex: TravelExt): void {
   const job = life.job;
   if (!job || !TRAVEL_JOBS.has(job) || life.hAge < MIN_AGE || ex.away) return;
   const rng = ctx.rng('life.travel.job');
@@ -61,20 +79,20 @@ export function jobYear(ctx: Ctx, life: LifeState, ex: TravelExt): void {
   // an outing is out and back: two legs inside a continent, more across
   for (let guard = 0; legs < want && guard < 4; guard++) {
     if (!rng.chance(moveMul(ctx))) break;
-    const abroad = rng.chance(JOB_ABROAD_SHARE);
+    const abroad = rng.chance(JOB.abroad);
     if (!abroad) {
       legs += 2; // a round inside the home country: no border crossed, no leg of the table
       continue;
     }
-    const cross = rng.chance(JOB_CROSS_RATE);
+    const cross = rng.chance(JOB.cross);
     const dest = pickDestination(ctx, life, job, !cross);
     if (!dest) continue;
     if ((ex.yearDays[life.hAge] ?? 0) >= cap) break;
-    const out = go(ctx, dest, `job:${job}`, { free });
+    const out = go(ctx, dest, `job:${job}`, { free, walk: true });
     if (!out.legs) continue;
     legs += out.legs;
     // migration: the last stop becomes home (or the way back is shut and the character is stranded there)
-    if (rng.chance(JOB_SETTLE_RATE * (cross ? 6 : 1))) {
+    if (rng.chance(JOB.settle * (cross ? 6 : 1))) {
       ex.base = life.country;
       write(ctx.state, { sys: 'travel', kind: 'settle', id: life.country, data: { from: base, why: job }, level: 1 });
       return;

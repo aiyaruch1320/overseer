@@ -39,6 +39,8 @@ export interface Plan {
   fare: number;
   smuggle: boolean;
   mask: boolean;
+  /** The character goes on foot: no fare, twice the days. */
+  walk?: boolean;
 }
 
 export interface PlanOpts {
@@ -46,6 +48,8 @@ export interface PlanOpts {
   free?: boolean;
   /** May take a closed way or a closed border by smuggling (§3.4). */
   smuggle?: boolean;
+  /** A purse that cannot pay may walk the overland ways for nothing, in twice the time (§1 rule 3: "หรือทางที่ถูกกว่า"). */
+  walk?: boolean;
 }
 
 const fail = (why: string): Plan => ({ ok: false, why, legs: [], days: 0, fare: 0, smuggle: false, mask: false });
@@ -214,7 +218,11 @@ export function plan(ctx: Ctx, life: LifeState, from: CountryId, to: CountryId, 
   const fogMul = legs.some((l) => l.from.startsWith('NB') || l.to.startsWith('NB')) ? 1.5 : 1;
   const days = legs.reduce((n, l) => n + l.days, 0) * fogMul;
   const fare = legs.reduce((n, l) => n + l.fare, 0) + (mask ? MASK_PRICE : 0);
-  if (!opts.free && fare > life.gold) return { ok: false, why: 'purse', legs, days, fare, smuggle, mask };
+  if (!opts.free && fare > life.gold) {
+    const overland = legs.every((l) => ['land', 'isthmus', 'coast', 'chasm', 'rail', 'caravan'].includes(l.route) && !l.smuggle);
+    if (opts.walk && overland) return { ok: true, legs, days: days * 2, fare: 0, smuggle, mask: false, walk: true };
+    return { ok: false, why: 'purse', legs, days, fare, smuggle, mask };
+  }
   return { ok: true, legs, days, fare, smuggle, mask };
 }
 
@@ -401,14 +409,14 @@ export function go(ctx: Ctx, to: CountryId, why: string, opts: PlanOpts & { stay
   let days = 0;
   let delay = 0;
   let stopped: CountryId | undefined;
-  if (pl.mask) {
+  if (pl.mask && !pl.walk) {
     life.items.push(FOG_MASK);
     spent += MASK_PRICE;
   }
   let legs = 0;
   for (const leg of pl.legs) {
-    let d = inRange(rng, leg.rows, [10, 20]) * leg.state.timeMul;
-    let fare = leg.smuggle ? inRange(rng, geo(ctx).travel.smuggle.cost, [30, 100]) : Math.round(inRange(rng, leg.fares, [1, 3]) * leg.state.fareMul * (leg.route === 'sea' || leg.route === 'airship' ? 1 : leg.toll));
+    let d = inRange(rng, leg.rows, [10, 20]) * leg.state.timeMul * (pl.walk ? 2 : 1);
+    let fare = pl.walk ? 0 : leg.smuggle ? inRange(rng, geo(ctx).travel.smuggle.cost, [30, 100]) : Math.round(inRange(rng, leg.fares, [1, 3]) * leg.state.fareMul * (leg.route === 'sea' || leg.route === 'airship' ? 1 : leg.toll));
     if (leg.route === 'stair') {
       // wait for the giants' test 1 to 4 seasons, then climb; the test is passed by the stance of SH-03 (§3.6)
       d = rng.int(1, 4) * DAYS_PER_QUARTER + inRange(rng, [10, 15], [10, 15]);

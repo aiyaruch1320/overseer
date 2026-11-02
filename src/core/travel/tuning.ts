@@ -21,6 +21,22 @@ export const CITY_JOBS: ReadonlySet<string> = new Set([
   'scholar', 'engineer', 'mechanic', 'diplomat', 'spy', 'archaeologist', 'broker', 'appraiser', 'investor', 'moneylender', 'mayor', 'rail_driver', 'clockmaker',
 ]);
 
+/** "อาชีพประจำที่ (เกษตร ช่าง ชีวิตช้า นักบวชวัด ขุนนางท้องถิ่น)": the targets 65 / 28 / 7. The craft jobs and the slow-life jobs of data/gen/jobs.json (group) count too. */
+export const STATIC_JOBS: ReadonlySet<string> = new Set([
+  'farmer', 'shepherd', 'fisher', 'hunter', 'smith', 'cook', 'carpenter', 'weaver', 'servant', 'noble', 'monk', 'priest', 'temple_servant', 'innkeeper', 'gravekeeper', 'miner', 'tamer', 'druid',
+  'woodcutter', 'baker', 'tailor', 'potter', 'brewer', 'glassblower', 'jeweler', 'tanner', 'stonemason', 'shipwright', 'rune_carver', 'painter', 'sculptor',
+  'farm_owner', 'vegetable_gardener', 'orchardist', 'beekeeper', 'tea_grower', 'flower_grower', 'cheesemaker', 'miller', 'herb_shop', 'tea_house', 'bookshop', 'temple_gardener',
+]);
+
+export type JobGroup = 'static' | 'city' | 'travel' | 'other';
+
+export function jobGroup(job: string | undefined): JobGroup {
+  if (!job) return 'other';
+  if (TRAVEL_JOBS.has(job)) return 'travel';
+  if (CITY_JOBS.has(job)) return 'city';
+  return STATIC_JOBS.has(job) ? 'static' : 'other';
+}
+
 /** Jobs whose employer pays the fare (01-travel-rules.md §1 rule 3). */
 export const EMPLOYER_PAYS: ReadonlySet<string> = new Set(['courier', 'caravan_guard', 'sailor', 'mercenary', 'airship_pilot', 'navigator', 'pirate']);
 
@@ -28,15 +44,13 @@ export const EMPLOYER_PAYS: ReadonlySet<string> = new Set(['courier', 'caravan_g
  * Chance per life year that a travelling job crosses into another continent. The documents give the legs per year, not how far they go
  * ("ข้ามทวีปปีละหนึ่งครั้งเมื่อทุนพอ" for a merchant), but the target is 55% of travelling lives at L2, so the rate is tuned to it (balance test).
  */
-export const JOB_CROSS_RATE = 0.022;
-/** Chance per life year that a travelling job stays abroad where the last leg ended and makes it the base (migration). */
-export const JOB_SETTLE_RATE = 0.03;
-/** Share of the trips of a travelling job that leave the country at all in a year (the rest of the year's legs stay inside the country). */
-export const JOB_ABROAD_SHARE = 0.55;
+export const JOB = { cross: 0.03, settle: 0.03, abroad: 0.8 };
 
 // ---------- trips caused by §2 ----------
 
 export interface TripShape {
+  /** Chance that a success of the cause sends the character abroad at all (the line it opens may do without a trip). */
+  go: number;
   /** Quarters spent at the destination. */
   stay: [number, number];
   /** Chance of staying for good (the destination becomes the base). */
@@ -47,15 +61,20 @@ export interface TripShape {
 
 /** How long each cause keeps the character away. The documents name the cause and the line it opens, not the stay. */
 export const TRIP: Record<string, TripShape> = {
-  sc: { stay: [8, 16], settle: 0.15, near: 0.8 },
-  ps: { stay: [2, 6], settle: 0.05, near: 0.6 },
-  ml: { stay: [4, 12], settle: 0.15, near: 0.8 },
-  ex: { stay: [4, 20], settle: 0.6, near: 0.85 },
-  exile: { stay: [8, 24], settle: 0.5, near: 0.7 },
-  xc: { stay: [4, 20], settle: 0.25, near: 0.8 },
-  wd: { stay: [4, 12], settle: 0.1, near: 0.55 },
-  tr: { stay: [2, 8], settle: 0.1, near: 0.85 },
+  sc: { go: 0.4, stay: [8, 16], settle: 0.15, near: 0.9 },
+  ps: { go: 1, stay: [2, 6], settle: 0.05, near: 0.6 },
+  ml: { go: 0.15, stay: [4, 12], settle: 0.15, near: 0.9 },
+  ex: { go: 0.7, stay: [4, 20], settle: 0.6, near: 0.9 },
+  exile: { go: 0.2, stay: [8, 24], settle: 0.5, near: 0.9 },
+  xc: { go: 0.4, stay: [4, 20], settle: 0.25, near: 0.9 },
+  wd: { go: 0.6, stay: [4, 12], settle: 0.1, near: 0.6 },
+  tr: { go: 0.3, stay: [2, 8], settle: 0.1, near: 0.9 },
+  // the clerk, the teacher, the doctor who goes to a congress, a post in another city (assumption: the table gives no cause for the city jobs)
+  city: { go: 1, stay: [1, 6], settle: 0.1, near: 0.75 },
 };
+
+/** Chance per life year that a city job (clerk, teacher, doctor) takes a post or a course in another country. */
+export const CITY_TRIP = 0.011;
 
 /** The holy places of the pilgrim line (25-journeys.md §5). */
 export const HOLY_PLACES: readonly string[] = ['SH-09', 'AZ-01', 'AL-02', 'SV-01', 'NB-07', 'SH-06'];
@@ -96,3 +115,6 @@ export const FOG_MASK = 'cn_fog_filter';
 export const TOLL_SHARE: [number, number] = [0.05, 0.15];
 /** The goods carried are a part of the purse (the documents say "ของสินค้า"). */
 export const GOODS_SHARE = 0.5;
+
+/** Share of the ways of the story that name a place (the `place` effect) that the character follows by moving there (the filters still apply). */
+export const FOLLOW_STORY = { same: 0.2, cross: 0.015 };
