@@ -103,3 +103,17 @@ export const CAUSE_TH: Record<string, string> = { old: 'ชราภาพ', ill
 export const GIFT_TH: Record<string, string> = {
   blessing: 'พร', curse: 'คำสาป', trait: 'นิสัย', aptitude: 'ความถนัด', skill: 'ทักษะ', job: 'อาชีพ', companion: 'สหาย', story: 'เรื่อง', gear: 'ของ', weapon: 'อาวุธ', flag: 'เครื่องหมาย',
 };
+
+/** Words for the ways a life begins that the character system writes (`special` of its birth entry). */
+export const SPECIAL_TH: Record<string, string> = { summoned: 'ผู้ถูกอัญเชิญจากต่างโลก', reincarnated: 'ผู้กลับชาติ', woken: 'ผู้ตื่นขึ้นเป็นครั้งแรก' };
+
+/** Where the character was born, by the `born` of the character birth entry. */
+export const BORN_TH: Record<string, string> = { main: 'ในแผ่นดินของเผ่า', diaspora: 'ในถิ่นที่เผ่าไปอยู่', outside: 'นอกถิ่นของเผ่า' };
+
+/** The death line for each cause the character system writes; `{who}` `{where}` `{age}` are filled by the reader. */
+export const DEATH_TH: Record<string, string> = {
+  old: '{who}จากไปด้วยชราภาพ{where} เมื่ออายุ {age}',
+  illness: '{who}สิ้นชีวิตด้วยโรคภัย{where} เมื่ออายุ {age}',
+  accident: '{who}สิ้นชีวิตจากอุบัติเหตุ{where} เมื่ออายุ {age}',
+  violence: '{who}ถูกทำร้ายจนสิ้นชีวิต{where} เมื่ออายุ {age}',
+};

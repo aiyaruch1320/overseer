@@ -1,78 +1,20 @@
 // Turns log entries into readable Thai (code-plan §6.3: screens and text read only the log).
-// Pure: the same entry gives the same line, nothing is drawn from the seed streams and nothing is written to the state.
-// Used by `npm run life`, `npm run play` and the debug page. The real screens (M5) will use the same function for their story log.
+// Pure: the same log gives the same lines, nothing is drawn from the seed streams and nothing is written to the state.
+// Used by `npm run life`, `npm run play` and the debug page. The real screens (M5) will use the same functions for their story log.
+//
+// A line holds words only (review M1 T1 T3): ids become names, the notes of a table cell are cut (`plain.ts`). A reader keeps what
+// earlier lines told (the name, the country, the people met) so that a death names the place and an NPC the character never heard
+// of stays out (T5). Mood and bond-template lines wait for the bond system (T4); death says the cause and the place (T8).
 import type { GameData } from '../game';
-import type { LogEntry } from '../types';
+import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
-import { CALENDAR_BASE, CAUSE_TH, GIFT_TH } from './tuning';
+import { items, labels, type Labels } from './labels';
+import { plainName, riteSentence, scrub, sentence, tidy } from './plain';
+import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SPECIAL_TH } from './tuning';
 
 type D = LogEntry['data'];
 
-interface Labels {
-  /** id → name for events, nodes, convergence points, local events, countries, continents, NPCs. */
-  name: Map<string, string>;
-  /** node id → choice key → label */
-  choice: Map<string, Map<string, string>>;
-}
-
-const cache = new WeakMap<GameData, Labels>();
-
-function items<T>(data: GameData, file: string): T | undefined {
-  return data[file]?.items as T | undefined;
-}
-
-export function labels(data: GameData): Labels {
-  const hit = cache.get(data);
-  if (hit) return hit;
-  const name = new Map<string, string>();
-  const choice = new Map<string, Map<string, string>>();
-  const put = (list: { id: string; name?: string; title?: string }[] | undefined) => {
-    for (const x of list ?? []) name.set(x.id, x.title ?? x.name ?? x.id);
-  };
-  const we = items<{ events: { id: string; name: string }[]; branch: { id: string; name: string }[]; lastEra: { id: string; name: string }[] }>(data, 'world-events');
-  if (we) {
-    put(we.events);
-    put(we.branch);
-    put(we.lastEra);
-  }
-  const le = items<{ events: { id: string; name: string }[]; generated: { id: string; name: string }[] }>(data, 'local-events');
-  if (le) {
-    put(le.events);
-    put(le.generated);
-  }
-  const sl = items<{ nodes: { id: string; title: string; choices: { key: string; label: string }[] }[] }>(data, 'storylines');
-  const cv = items<{ points: { id: string; title: string; choices: { key: string; label: string }[] }[] }>(data, 'convergence');
-  for (const list of [sl?.nodes, cv?.points]) {
-    for (const n of list ?? []) {
-      name.set(n.id, n.title);
-      choice.set(n.id, new Map(n.choices.map((c) => [c.key, c.label])));
-    }
-  }
-  put(items<{ id: string; name: string }[]>(data, 'countries'));
-  put(items<{ continents: { id: string; name: string }[] }>(data, 'continents')?.continents);
-  put(items<{ npcs: { id: string; name: string }[] }>(data, 'npcs')?.npcs);
-  // every other generated file that lists things with an id and a name (blessings, curses, jobs, skills, enemies ...): the first name wins
-  for (const [file, f] of Object.entries(data)) {
-    if (file.startsWith('library.') || file === 'names' || file.startsWith('templates')) continue;
-    const top = f.items;
-    const lists = Array.isArray(top) ? [top] : top && typeof top === 'object' ? Object.values(top as Record<string, unknown>).filter(Array.isArray) : [];
-    for (const list of lists as unknown[][]) {
-      for (const x of list) {
-        const o = x as { id?: unknown; name?: unknown };
-        if (typeof o?.id === 'string' && typeof o?.name === 'string' && !name.has(o.id)) name.set(o.id, o.name);
-      }
-    }
-  }
-  const out = { name, choice };
-  cache.set(data, out);
-  return out;
-}
-
-/** Name of anything with an id the data knows; the id itself when it is unknown. */
-export function nameOfId(data: GameData, id: string | undefined): string {
-  if (!id) return '';
-  return labels(data).name.get(id) ?? id;
-}
+export { labels, nameOfId, knownName, type Labels, type RiteLite } from './labels';
 
 // ---------- pure choice among variants ----------
 
@@ -113,124 +55,327 @@ function sub(text: string, v: Record<string, string | number | undefined>): stri
 
 const s = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
 /** `c3` → the name of class 3 in the economy file (สามัญชน), or `ชั้น 3` when the economy file is not loaded. */
-function classWord(data: GameData, cls: unknown): string {
+export function classWord(data: GameData, cls: unknown): string {
   const n = Number(/\d/.exec(s(cls))?.[0]);
   if (!n) return s(cls);
   return items<{ classes?: { n: number; name: string }[] }>(data, 'economy')?.classes?.find((c) => c.n === n)?.name ?? `ชั้น ${n}`;
 }
-const cause = (v: unknown): string => CAUSE_TH[s(v)] ?? s(v);
 
-// ---------- entries ----------
+/** The Thai for a cause of death: a known word, Thai text as written, or nothing (never a code). */
+export function causeWord(cause: unknown): string {
+  const c = s(cause);
+  if (CAUSE_TH[c]) return CAUSE_TH[c];
+  return /[฀-๿]/.test(c) ? c : '';
+}
 
-/** The line for one log entry, or null when the entry is not for reading (trace noise the screens skip). */
-export function describe(data: GameData, e: LogEntry): string | null {
-  const d: D = e.data;
-  const L = labels(data);
-  const nm = (id: unknown) => (typeof id === 'string' ? L.name.get(id) ?? id : '');
-  const at = (p: unknown) => (p ? `ที่${nm(p)}` : '');
+/** The question of the life for a race (`human` or `hu`): the sentence of the race file's section 1; empty when the data has none. */
+export function questionOf(data: GameData, race: string | undefined): string {
+  if (!race) return '';
+  const r = items<{ races?: { id: string; storyPrefix: string }[] }>(data, 'races')?.races?.find((x) => x.id === race || x.storyPrefix === race);
+  return labels(data).lines.get(r?.storyPrefix ?? race)?.question ?? '';
+}
 
-  if (e.sys === 'npc' && e.kind === 'npc') {
-    const who = s(d.holder);
-    const role = d.role ? ` (${s(d.role)})` : '';
-    const w = ` ${who} `;
-    switch (d.what) {
-      case 'open':
-        return `เรื่องของ${w}${role}เริ่มขึ้น${at(d.place)}`;
-      case 'event':
-        return `${who}: ${nm(d.id)} เปิดเรื่องของเขา`;
-      case 'end': {
-        if (d.path === '-' || d.path === undefined) return `${who}${role}: เรื่องจางหายไปโดยไม่เกิดอะไร`;
-        const forced = d.forced ? ' (เกิดโดยปริยาย)' : '';
-        return `${who}${role} · ทาง ${s(d.path)}) ${s(d.text)}${forced}`;
-      }
-      case 'die':
-        return `${who}${role} ตาย${at(d.place)} อายุ ${s(d.age)} · ${s(d.cause)}`;
-      case 'vanish':
-        return `${who}${role} หายสาบสูญ${at(d.place)}`;
-      case 'succeed':
-        return `${who} รับตำแหน่ง${s(d.role)}${at(d.place)}${d.from ? ` ต่อจาก ${s(d.from)}` : ''}${d.twist ? ` · ${s(d.twist)}` : ''}`;
-      case 'move':
-        return `${who} ย้ายไปอยู่ที่${nm(d.to)}${d.cause ? ` · ${s(d.cause)}` : ''}`;
-      case 'meet':
-        return `ได้พบ${w}${role}${at(d.place)}`;
-      case 'ally':
-        return `${who} ยินดีเป็นพวกพ้อง`;
+// ---------- what the player sees at which level ----------
+
+/**
+ * The level a line is shown at. Mood lines per bond line and the bond templates are written to the log (the bond system of M3
+ * will read them) but mean nothing to the player until there is someone behind them (review M1 T4), so they are trace here.
+ */
+export function displayLevel(e: LogEntry): LogLevel {
+  if (e.sys === 'story' && (e.kind === 'mood' || e.kind === 'bond' || e.kind === 'template')) return 0;
+  return e.level;
+}
+
+export interface ReadOpts {
+  /** Show also what has no phrasing yet, plainly (`[sys/kind id k=v]`), for the developer. */
+  raw?: boolean;
+}
+
+const DEAD_NPC = new Set(['die', 'vanish']);
+
+// ---------- the reader ----------
+
+/**
+ * Reads entries one after another. It remembers the name and the country of the main character and the NPCs met,
+ * so that lines about NPCs the character has nothing to do with are left out and a death can say where.
+ */
+export class Reader {
+  name = '';
+  country = '';
+  readonly met = new Set<string>();
+  /** The last story node played, for a death caused by a node. */
+  private node: { id: string; title: string; year: number } | undefined;
+  private readonly L: Labels;
+
+  constructor(
+    readonly data: GameData,
+    readonly opts: ReadOpts = {},
+  ) {
+    this.L = labels(data);
+  }
+
+  private nm(id: unknown): string {
+    return plainName(this.data, id);
+  }
+  private at(p: unknown): string {
+    const n = this.nm(p);
+    return n ? `ที่${n}` : '';
+  }
+
+  /** The line for this entry (or null), then the entry is remembered. */
+  read(e: LogEntry): string | null {
+    const line = this.say(e);
+    this.remember(e);
+    return line === null ? null : tidy(line, false);
+  }
+
+  private remember(e: LogEntry): void {
+    const d = e.data;
+    if (e.sys === 'text' && e.kind === 'named') {
+      this.name = s(d.name);
+      if (s(d.country)) this.country = s(d.country);
     }
-    return `${who}: ${s(d.what)}`;
+    if (e.sys === 'character' && e.kind === 'birth' && s(d.country)) this.country = s(d.country);
+    if (e.sys === 'npc' && d.what === 'meet' && e.id) this.met.add(e.id);
+    if (e.sys === 'story' && e.kind === 'node') this.node = { id: s(e.id), title: s(d.title) || this.nm(e.id), year: e.worldYear };
   }
 
-  if (e.kind === 'named' && e.sys === 'text') {
-    const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e));
-    const line = t && sub(t, { name: s(d.name), race: s(d.race), home: s(d.home), class_birth: s(d.cls), year: s(d.year) });
-    if (line) return line;
-    return `${s(d.name)} เกิดเป็น${s(d.race)}ที่${s(d.home)}`;
+  /** NPC lines are for NPCs the character met or that live in the character's country (T5). */
+  private knows(e: LogEntry): boolean {
+    if (this.opts.raw || !this.country) return true;
+    return (e.id !== undefined && this.met.has(e.id)) || s(e.data.place) === this.country;
   }
 
-  if (e.kind === 'death') {
-    const why = d.cause ? ` · ${cause(d.cause)}` : '';
-    return `ตายเมื่ออายุ ${s(d.hAge ?? e.age)}${why}`;
-  }
+  private say(e: LogEntry): string | null {
+    const d: D = e.data;
+    const nm = (id: unknown) => this.nm(id);
+    const at = (p: unknown) => this.at(p);
+    const data = this.data;
 
-  if (e.sys === 'character') {
-    switch (e.kind) {
-      case 'birth': {
-        const second = d.second ? ` ครึ่ง${nm(d.second) || s(d.second)}` : '';
-        const born = d.born === 'main' ? 'แผ่นดินของเผ่า' : d.born === 'diaspora' ? 'ถิ่นที่เผ่าไปอยู่' : s(d.born);
-        const sign = d.sign && d.sign !== 'none' ? ` · ดวง ${s(d.sign)}` : '';
-        return `กำเนิด: ${nm(d.race) || s(d.race)}${second} ${d.gender === 'f' ? 'หญิง' : d.gender === 'm' ? 'ชาย' : ''} ${at(d.country)} (${born}) ชนชั้น ${classWord(data, d.cls)}${sign}${d.special ? ` · เกิดพิเศษ ${s(d.special)}` : ''}`.replace(/ {2,}/g, ' ');
+    if (e.sys === 'npc' && e.kind === 'npc') {
+      if (d.what !== 'meet' && !this.knows(e)) return null;
+      const who = scrub(data, s(d.holder));
+      const role = d.role ? ` (${scrub(data, s(d.role))})` : '';
+      const where = at(d.place);
+      switch (d.what) {
+        case 'open':
+          return `เรื่องของ ${who}${role} เริ่มขึ้น${where}`;
+        case 'event': {
+          const ev = nm(d.id);
+          return ev ? `${who}: ${ev} เปิดเรื่องของเขา` : `${who}: เรื่องของเขาเปิดขึ้น`;
+        }
+        case 'end': {
+          if (d.path === '-' || d.path === undefined) return `${who}${role}: เรื่องจางหายไปโดยไม่เกิดอะไร`;
+          const text = this.npcText(s(d.text), d.mc === true);
+          const forced = d.forced ? ' (เกิดโดยปริยาย)' : '';
+          return text ? `${who}${role}: ${text}${forced}` : `${who}${role}: เรื่องของเขาคลี่คลาย${forced}`;
+        }
+        case 'die': {
+          const c = causeWord(d.cause);
+          return `${who}${role} ตาย${where} เมื่ออายุ ${s(d.age)}${c ? ` (${c})` : ''}`;
+        }
+        case 'vanish':
+          return `${who}${role} หายสาบสูญ${where}`;
+        case 'succeed': {
+          const from = d.from ? ` ต่อจาก ${scrub(data, s(d.from))}` : '';
+          const twist = this.npcText(s(d.twist), false);
+          return `${who} รับตำแหน่ง${scrub(data, s(d.role))}${where}${from}${twist ? ` · ${twist}` : ''}`;
+        }
+        case 'move': {
+          const to = nm(d.to);
+          const why = this.npcText(s(d.cause), false);
+          return `${who} ย้ายไปอยู่${to ? `ที่${to}` : 'ที่อื่น'}${why ? ` · ${why}` : ''}`;
+        }
+        case 'meet':
+          return `ได้พบ ${who}${role}${where ? ` ${where}` : ''}`;
+        case 'ally':
+          return `${who} ยินดีเป็นพวกพ้อง`;
       }
-      case 'grant':
-      case 'remove': {
-        const kind = GIFT_TH[s(d.kind)] ?? s(d.kind);
-        return `${e.kind === 'grant' ? 'ได้รับ' : 'สูญเสีย'}${kind} ${nm(e.id)}${d.from ? ` (จาก ${nm(d.from)})` : ''}`;
-      }
-      case 'job':
-        return `${d.type === 'secret' ? 'ได้อาชีพลับ' : 'ได้เป็น'} ${nm(e.id)}`;
-      case 'jobFail':
-        return `สมัครเป็น ${nm(e.id)} ไม่สำเร็จ${d.reason === 'req' ? ' (ยังไม่ถึงเงื่อนไข)' : d.reason ? ` (${s(d.reason)})` : ''}`;
-      case 'secretJobRefused':
-        return `อาชีพลับ ${nm(e.id)} เรียกหา แต่ไม่ใช่ทางของเขา`;
-      case 'wound':
-        return 'ได้บาดแผลถาวร';
+      return this.opts.raw ? `${who}: ${s(d.what)}` : null;
     }
+
+    if (e.sys === 'text') return this.text(e);
+
+    if (e.sys === 'game' && e.kind === 'death') return this.death(e);
+
+    if (e.sys === 'tools' && e.kind === 'class') {
+      const from = classWord(data, d.from);
+      const to = classWord(data, d.to);
+      return Number(d.up) > 0 ? `ฐานะสูงขึ้นจาก${from} เป็น${to}` : `ฐานะตกจาก${from} เหลือ${to}`;
+    }
+
+    if (e.sys === 'character') {
+      switch (e.kind) {
+        case 'birth':
+          return null; // the text system says the birth in words
+        case 'grant':
+        case 'remove': {
+          const k = s(d.kind);
+          const kindMap = this.L.kind[k as keyof Labels['kind']];
+          const named = kindMap?.get(s(e.id)) ?? this.nm(e.id);
+          if (!named) return null;
+          const from = this.nm(d.from);
+          return `${e.kind === 'grant' ? 'ได้รับ' : 'สูญเสีย'}${GIFT_TH[k] ?? ''} ${named}${from ? ` (จาก ${from})` : ''}`;
+        }
+        case 'job': {
+          const named = this.L.kind.job.get(s(e.id)) ?? this.nm(e.id);
+          return named ? `${d.type === 'secret' ? 'ได้อาชีพลับ' : 'ได้เป็น'} ${named}` : null;
+        }
+        case 'jobFail': {
+          const named = this.L.kind.job.get(s(e.id)) ?? this.nm(e.id);
+          return named ? `สมัครเป็น ${named} ไม่สำเร็จ${d.reason === 'req' ? ' (ยังไม่ถึงเงื่อนไข)' : ''}` : null;
+        }
+        case 'secretJobRefused': {
+          const named = this.L.kind.job.get(s(e.id)) ?? this.nm(e.id);
+          return named ? `อาชีพลับ ${named} เรียกหา แต่ไม่ใช่ทางของเขา` : null;
+        }
+        case 'wound':
+          return 'ได้บาดแผลถาวร';
+      }
+    }
+
+    if (e.sys === 'world' || e.kind === 'event') {
+      const ev = s(d.name) || this.nm(e.id);
+      const place = at(d.country ?? d.place);
+      const where = place ? ` ${place}` : '';
+      const year = e.worldYear !== undefined ? ` (ศ.ม. ${CALENDAR_BASE + e.worldYear})` : '';
+      if (e.kind === 'event' || e.kind === 'fire' || e.kind === 'happened') return ev ? `เหตุการณ์โลก: ${ev}${where}${year}` : null;
+      if (e.kind === 'omen') return ev ? `ลางของเหตุการณ์โลก: ${ev}${where}` : null;
+      if (e.kind === 'ending') return ev ? `โลกถึงจุดจบ: ${ev}${year}` : 'โลกถึงจุดจบ';
+      if (e.kind === 'era') return `ยุคที่ ${s(d.era ?? d.to)} เริ่มขึ้น${year}`;
+      if (e.kind === 'dragon') {
+        const dn = s(d.name) || this.nm(e.id);
+        return `มังกร${dn ? ` ${dn}` : ''} ${scrub(data, s(d.what ?? d.state)) || 'ล้ม'}${year}`;
+      }
+    }
+
+    if (e.sys === 'story' || e.kind === 'node' || e.kind === 'choice') {
+      if (e.kind === 'node' || e.kind === 'choice' || e.kind === 'pass') return this.node_(e);
+      if (e.kind === 'converge') return `เส้นเรื่องบรรจบที่ ${this.nodeTitle(e)}`;
+      if (e.kind === 'jump') return `เรื่องข้ามไป ${this.nodeTitle(e)}`;
+      if (e.kind === 'battle') return this.battle(e);
+      if (e.kind === 'mood') return this.opts.raw ? `สาย${s(e.id)} รู้สึก${s(d.mood)}` : null;
+      if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
+      // bond templates and openings belong to the bond system (M3): nothing to read yet
+      if (e.kind === 'template' || e.kind === 'bond' || e.kind === 'skip') return null;
+    }
+
+    if (e.kind === 'unhandled') return null;
+    if (e.level === 0) return null;
+    if (!this.opts.raw) return null;
+    // an entry of a system that has no phrasing yet: shown plainly only for the developer
+    const tail = Object.entries(d).map(([k, v]) => `${k}=${s(v)}`).join(' ');
+    return `[${e.sys}/${e.kind}${e.id ? ` ${e.id}` : ''}${tail ? ` ${tail}` : ''}]`;
   }
 
-  if (e.sys === 'world' || e.kind === 'event') {
-    const ev = e.id ? nm(e.id) : s(d.name);
-    const where = d.country || d.place ? ` ${at(d.country ?? d.place)}` : '';
-    const year = e.worldYear !== undefined ? ` (ศ.ม. ${CALENDAR_BASE + e.worldYear})` : '';
-    if (e.kind === 'event' || e.kind === 'fire' || e.kind === 'happened') return `เหตุการณ์โลก: ${ev}${where}${year}`;
-    if (e.kind === 'omen') return `ลางของเหตุการณ์โลก: ${ev}${where}`;
-    if (e.kind === 'era') return `ยุคที่ ${s(d.era ?? d.to)} เริ่มขึ้น${year}`;
-    if (e.kind === 'dragon') return `มังกร ${s(d.name ?? e.id)} ${s(d.what ?? d.state ?? 'ล้ม')}${year}`;
+  /**
+   * What happened to an NPC, as the roster writes it: the event, then `[ช่วย]` `[ร่วม]` `[ขัดขวาง]` `[ปล่อย]` branches that happen
+   * when the main character is in it, and notes with numbers or conditions. The branches are read only when the character was in it.
+   */
+  npcText(text: string, withMc: boolean): string {
+    const parts = text.split(/\s*\[(?:ช่วย|ร่วม|ขัดขวาง|ปล่อย)\]\s*/);
+    const who = this.name || 'ตัวละคร';
+    const take = (t: string) => sentence(this.data, t.replace(/ตัวละครหลัก/g, who));
+    const out = [take(parts[0])];
+    if (withMc) for (const p of parts.slice(1)) out.push(take(p));
+    return out.filter(Boolean).join(' — ');
   }
 
-  if (e.sys === 'story' || e.kind === 'node' || e.kind === 'choice') {
-    const title = e.id ? nm(e.id) : s(d.title);
+  private nodeTitle(e: LogEntry): string {
+    return s(e.data.title) || this.nm(e.id) || s(e.id);
+  }
+
+  /** The node played and the way taken, as `title — the sentence of the way`. */
+  private node_(e: LogEntry): string | null {
+    const d = e.data;
+    const data = this.data;
+    const L = this.L;
+    // a convergence standing in for a row carries the id of the row and the convergence in `cv`
+    const nodeId = s(d.cv) || s(e.id);
+    const title = s(d.title) || this.nm(nodeId);
+    if (!title) return null;
     const key = s(d.choice ?? d.key ?? d.path);
-    const label = e.id && key ? L.choice.get(e.id)?.get(key) : undefined;
-    if (e.kind === 'node' || e.kind === 'choice' || e.kind === 'pass') {
-      if (label) return `${title} → ${key}) ${label}`;
-      return key && key !== '-' ? `${title} → ${key}` : title;
+    // the story keeps the first 120 letters of the way it took: the whole cell is in the data
+    const full = L.choice.get(nodeId)?.get(s(d.choice ?? d.key ?? d.path));
+    const lab = s(d.label);
+    const given = full && lab.length >= 100 && full.startsWith(lab) ? full : lab;
+    const rite = !d.cv ? L.rites.get(s(e.id)) : undefined;
+    let way = '';
+    if (key && key !== '-') {
+      if (rite) way = riteSentence(data, rite, key, given);
+      if (!way) way = sentence(data, given) || sentence(data, L.choice.get(nodeId)?.get(key));
     }
-    if (e.kind === 'converge') return `เส้นเรื่องบรรจบที่ ${title}`;
-    if (e.kind === 'jump') return `เรื่องข้ามไป ${title}`;
-    if (e.kind === 'battle') {
-      const names = s(d.enemies).split(',').filter(Boolean).map((x) => nm(x)).join(' · ');
-      const res = d.result === 'win' ? 'ชนะ' : d.result === 'lose' ? 'แพ้' : d.result === 'flee' ? 'หนี' : s(d.result);
-      return `ศึก: ${names || s(d.text)} · ${res}`;
-    }
-    if (e.kind === 'mood') return `${nm(e.id)} รู้สึก${s(d.mood)}`;
-    if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
-    // story templates and bond openings belong to the bond system (M3): nothing to read yet
-    if (e.kind === 'template' || e.kind === 'bond' || e.kind === 'skip') return null;
+    const t = scrub(data, title) || title;
+    return way ? `${t} — ${way}` : t;
   }
 
-  if (e.kind === 'unhandled') return null;
-  if (e.level === 0) return null;
-  // an entry of a system that has no phrasing yet: show it plainly so nothing is silently lost
-  const tail = Object.entries(d).map(([k, v]) => `${k}=${s(v)}`).join(' ');
-  return `[${e.sys}/${e.kind}${e.id ? ` ${e.id}` : ''}${tail ? ` ${tail}` : ''}]`;
+  private battle(e: LogEntry): string {
+    const d = e.data;
+    const data = this.data;
+    const ids = s(d.enemies).split(',').filter(Boolean);
+    let names = ids.map((x) => this.L.kind.enemy.get(x) ?? '').filter(Boolean);
+    if (!names.length) {
+      // a battle the document names in words: find an enemy of the roster in the text
+      const text = s(d.text);
+      const found = this.L.enemies.find((x) => text.includes(x.name));
+      if (found) names = [found.name];
+    }
+    const res = d.result === 'win' ? 'ชนะ' : d.result === 'lose' ? 'แพ้' : d.result === 'flee' ? 'หนี' : scrub(data, s(d.result));
+    return names.length ? `ศึก: ${names.join(' · ')} · ${res}` : `ศึก · ${res}`;
+  }
+
+  private text(e: LogEntry): string | null {
+    const d = e.data;
+    const data = this.data;
+    switch (e.kind) {
+      case 'named': {
+        const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e));
+        const line = t && sub(t, { name: s(d.name), race: s(d.race), home: s(d.home), class_birth: s(d.cls), year: s(d.year) });
+        // the templates say `ชนชั้น{class_birth}` and the class names of the economy file begin with ชนชั้น themselves
+        return (line || `${s(d.name)} เกิดเป็น${s(d.race)}ที่${s(d.home)}`).replace(/ชนชั้น\s*(?=ชนชั้น)/g, '');
+      }
+      case 'family': {
+        const who = s(d.name) || this.name || 'ตัวละคร';
+        const parts: string[] = [];
+        if (d.gender === 'f') parts.push('เป็นเพศหญิง');
+        else if (d.gender === 'm') parts.push('เป็นเพศชาย');
+        if (s(d.born) && BORN_TH[s(d.born)]) parts.push(`เกิด${BORN_TH[s(d.born)]}`);
+        if (s(d.cls)) parts.push(`ครอบครัวเป็น${classWord(data, d.cls)}`);
+        const tail: string[] = [];
+        if (s(d.second)) tail.push(`เลือดผสมกับ${this.L.kind.race.get(s(d.second)) ?? ''}`);
+        if (s(d.meet)) tail.push(`พ่อแม่พบกันเพราะ${this.L.kind.meet.get(s(d.meet)) ?? ''}`);
+        if (s(d.special) && SPECIAL_TH[s(d.special)]) tail.push(`เกิดพิเศษเป็น${SPECIAL_TH[s(d.special)]}`);
+        if (s(d.sign) && s(d.sign) !== 'none') tail.push(`ดวงวันเกิดคือ${this.L.kind.sign.get(s(d.sign)) ?? ''}`);
+        return `${who}${parts.length ? ' ' : ''}${parts.join(' ')}${tail.length ? ` · ${tail.join(' · ')}` : ''}`;
+      }
+      case 'traits':
+        return s(d.traits) ? `นิสัยเด่น: ${s(d.traits).split(',').join(' · ')}` : null;
+      case 'question':
+        return s(d.question) ? `คำถามของชีวิต: ${s(d.question)}` : null;
+    }
+    return this.opts.raw ? `[text/${e.kind}]` : null;
+  }
+
+  private death(e: LogEntry): string {
+    const d = e.data;
+    const age = s(d.hAge ?? e.age);
+    const cause = s(d.cause);
+    const who = this.name || 'ตัวละคร';
+    const where = this.country ? this.at(this.country) : '';
+    const form = DEATH_TH[cause];
+    if (form) return form.replace('{who}', who).replace('{where}', where).replace('{age}', age);
+    // another cause: the node that ended the life, when the log says which
+    const nodeId = s(d.node) || (this.node && this.node.year === e.worldYear ? this.node.id : '');
+    const title = nodeId ? this.nm(nodeId) || (this.node?.id === nodeId ? this.node.title : '') : '';
+    const c = causeWord(cause);
+    const why = title ? `จากเหตุ “${title}”` : c ? `(${c})` : '';
+    return `${who}สิ้นชีวิต${why ? ` ${why}` : ''}${where} เมื่ออายุ ${age}`;
+  }
+}
+
+/** The line for one log entry, or null when the entry is not for reading. Without the entries before it, a death cannot name the place. */
+export function describe(data: GameData, e: LogEntry, opts: ReadOpts = {}): string | null {
+  return new Reader(data, opts).read(e);
 }
 
 export interface Line {
@@ -240,16 +385,66 @@ export interface Line {
   level: LogEntry['level'];
   sys: string;
   text: string;
+  /** The entry the line came from. */
+  entry: LogEntry;
 }
 
-/** Lines of a log at or above `minLevel`, with the age and the ศ.ม. year the readers print in front. */
-export function lines(data: GameData, log: LogEntry[], minLevel: LogEntry['level'] = 1): Line[] {
+/**
+ * Lines of a log at or above `minLevel` (by `displayLevel`), with the age and the ศ.ม. year the readers print in front.
+ * The whole log is read in order so that later lines know the name, the country and the people met; `fromN` keeps only the
+ * entries from that running number on (the new part of a log that was read before).
+ */
+export function lines(data: GameData, log: LogEntry[], minLevel: LogEntry['level'] = 1, fromN = -Infinity, opts: ReadOpts = {}): Line[] {
   const out: Line[] = [];
+  const reader = new Reader(data, opts);
+  let prev: { line: Line; e: LogEntry } | undefined;
   for (const e of log) {
-    if (e.level < minLevel) continue;
-    const text = describe(data, e);
-    if (text === null) continue;
-    out.push({ n: e.n, age: e.age, year: CALENDAR_BASE + e.worldYear, level: e.level, sys: e.sys, text });
+    const text = reader.read(e);
+    if (text === null || displayLevel(e) < minLevel || e.n < fromN) continue;
+    const line: Line = { n: e.n, age: e.age, year: CALENDAR_BASE + e.worldYear, level: displayLevel(e), sys: e.sys, text, entry: e };
+    // a holder who dies and the successor who takes the post in the same year: one line instead of two
+    if (prev && e.sys === 'npc' && e.data.what === 'succeed' && prev.e.sys === 'npc' && DEAD_NPC.has(s(prev.e.data.what)) && prev.e.id === e.id && prev.e.worldYear === e.worldYear) {
+      const who = scrub(data, s(e.data.holder));
+      const twist = new Reader(data).npcText(s(e.data.twist), false);
+      prev.line.text = `${prev.line.text} · ${who} รับตำแหน่งสืบต่อ${twist ? ` (${twist})` : ''}`;
+      continue;
+    }
+    out.push(line);
+    prev = { line, e };
+  }
+  return birthFirst(out, log);
+}
+
+const BIRTH_KINDS = new Set(['named', 'family', 'traits', 'question']);
+
+/**
+ * The four lines of the birth open the life: who the character is comes before anything the other systems wrote in the same
+ * moment (people met, the first node), because the hooks of those systems run first (one-life.md §2 ข้อ 1).
+ */
+function birthFirst(out: Line[], log: LogEntry[]): Line[] {
+  const at = out.findIndex((l) => l.sys === 'text' && l.entry.kind === 'named');
+  if (at < 0) return out;
+  const named = out[at].entry;
+  const born = [...log].reverse().find((e) => e.sys === 'character' && e.kind === 'birth' && e.n < named.n);
+  if (!born) return out;
+  let end = at;
+  while (end + 1 < out.length && out[end + 1].sys === 'text' && BIRTH_KINDS.has(out[end + 1].entry.kind)) end++;
+  const block = out.slice(at, end + 1);
+  const before = out.slice(0, at);
+  const split = before.findIndex((l) => l.entry.n > born.n);
+  if (split < 0) return out;
+  return [...before.slice(0, split), ...block, ...before.slice(split), ...out.slice(end + 1)];
+}
+
+/** Entries of level 1 or more that have no phrasing yet, counted by `sys/kind`: for the developer's summary, never for the player. */
+export function unphrased(data: GameData, log: LogEntry[]): Record<string, number> {
+  const out: Record<string, number> = {};
+  const reader = new Reader(data);
+  const raw = new Reader(data, { raw: true });
+  for (const e of log) {
+    const a = reader.read(e);
+    const b = raw.read(e);
+    if (a === null && b !== null && displayLevel(e) >= 1 && e.kind !== 'unhandled') out[`${e.sys}/${e.kind}`] = (out[`${e.sys}/${e.kind}`] ?? 0) + 1;
   }
   return out;
 }
@@ -260,3 +455,4 @@ export function formatLine(l: Line): string {
   const mark = l.level >= 3 ? '!' : l.level === 2 ? '*' : ' ';
   return `${mark} ${when} │ ${l.text}`;
 }
+

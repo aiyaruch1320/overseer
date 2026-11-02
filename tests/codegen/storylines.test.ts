@@ -1,7 +1,8 @@
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import run from '../../scripts/codegen/groups/storylines';
+import run, { themeOf } from '../../scripts/codegen/groups/storylines';
 import { RACE_WORDS, parseCell, parseChoice, parseConditionX, parseWeightCell, textConditions } from '../../scripts/codegen/lib/effects';
 import { idIndex } from '../../scripts/codegen/lib/ids';
 import { genDir, listDocs, tables } from '../../scripts/codegen/lib/table';
@@ -561,5 +562,49 @@ describe('no choice or condition without a pick or an if (regression)', () => {
       }
     }
     expect(miss).toEqual([]);
+  });
+});
+
+describe('M1 T6: the theme and the question of the life of each race', () => {
+  const fileOf = (t: string) =>
+    listDocs('docs/lore/storylines', /^\d\d-.*\.md$/).find((f) => new RegExp(`^# เส้นเรื่อง.*\\(${t}\\)`, 'm').test(readFileSync(f, 'utf8')));
+
+  it('gives each of the 21 race lines a theme paragraph and one question, and no other line has them', () => {
+    for (const t of TRIBES) {
+      const l = story.lines.find((x) => x.id === t)!;
+      expect(l.theme, t).toBeTruthy();
+      expect(l.question, t).toBeTruthy();
+      expect(l.theme, t).not.toContain('คำถามหลัก');
+      expect(l.theme, t).not.toContain('**');
+      expect(l.question, t).not.toContain('**');
+      expect(l.question!.length, t).toBeLessThan(120);
+    }
+    expect(story.lines.filter((l) => !TRIBES.includes(l.id)).filter((l) => l.theme || l.question)).toEqual([]);
+  });
+
+  it('takes the question from the bold `คำถามหลัก:` of section 1, word for word', () => {
+    const human = story.lines.find((l) => l.id === 'hu')!;
+    expect(human.question).toBe('จะใช้ชีวิตสั้น ๆ นี้เพื่อตัวเอง หรือเป็นคนที่รวมเผ่าอื่นได้ (คำสัตย์ร้อยเผ่า)');
+    expect(human.theme).toContain('มนุษย์อายุสั้น');
+    for (const t of TRIBES) {
+      const f = fileOf(t);
+      expect(f, t).toBeTruthy();
+      expect(readFileSync(f!, 'utf8'), t).toContain(`**คำถามหลัก: ${story.lines.find((l) => l.id === t)!.question}**`);
+    }
+  });
+
+  it('falls back to the first sentence of the theme when a file marks no question', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-theme-'));
+    const f = path.join(dir, '99-test.md');
+    writeFileSync(f, '# เส้นเรื่อง: ทดสอบ (zz)\n\n## 1. ธีม\n\nเผ่านี้ไม่มีคำถามหลักที่ทำเครื่องหมาย ประโยคที่สองอยู่ตรงนี้\n\n## 2. จุดกำเนิด\n');
+    try {
+      const t = themeOf(f);
+      expect(t.marked).toBe(false);
+      expect(t.theme).toContain('ประโยคที่สอง');
+      expect(t.question).toBeTruthy();
+      expect(t.question.length).toBeLessThanOrEqual(t.theme.length);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
