@@ -60,6 +60,7 @@ export const godSystem: System = {
     e.lastLine = null;
     e.punishedAge = null;
     e.willFails = 0;
+    delete e.policyAt;
     e.questions = [];
     e.history = [];
     e.answered = 0;

@@ -79,13 +79,17 @@ export function momentsOf(ctx: Ctx): number {
 
 
 /**
- * One life year of a god who plays by a rule (call it once a life year, after the income, which `godSystem` does when
- * `state.god.ext.policy` names a policy). `policy` is the Thai name the tools pass (`เมตตา`) or the English one (`merciful`).
+ * One life year of a god who plays by a rule. `godSystem` calls it once a life year, after the income, when `state.god.ext.policy` names a
+ * policy; the test tools call it after every beat: the year is played by the first call and the others do nothing. `policy` is the Thai name the tools pass (`เมตตา`) or the English one (`merciful`).
  */
 export function policyStep(ctx: Ctx, policy: string): void {
   const name = policyName(policy);
   const life = lifeOf(ctx);
   if (!name || !life) return;
+  // one life year is played once, whoever asks and however often (the tools call after every beat, the system once a life year)
+  const e = gx(ctx);
+  if (e.policyAt === life.hAge) return;
+  e.policyAt = life.hAge;
   const rng = ctx.rng('god.policy');
   switch (name) {
     case 'merciful':

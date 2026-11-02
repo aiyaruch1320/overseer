@@ -58,6 +58,8 @@ export interface GodExt {
   history: { age: number; node: string; choice: Key }[];
   /** Prayers answered since GD-05 (01-power.md §1 last row). Acts report them through `noteAnswered`. */
   answered: number;
+  /** hAge the policy last played a year at (a policy plays each life year once). */
+  policyAt?: number;
   /** Belief the next life starts with: 60% of the one that just died (01-power.md §6). */
   heirBelief?: number;
   /** The gifted weapon of this life. */
