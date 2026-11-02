@@ -258,7 +258,7 @@ export function heldIncomeBonus(ctx: Ctx): number {
   const life = ctx.state.life;
   if (!life) return 0;
   const cap = bondageIndex(ctx).data.roleRules.buyer.incomeBonusMax;
-  return Math.min(cap, extOf(life).held.filter((h) => !h.gone).reduce((n, h) => n + (h.good ? HOLD_INCOME.good : HOLD_INCOME.strained), 0));
+  return Math.min(Math.round(cap * 100), extOf(life).held.filter((h) => !h.gone).reduce((n, h) => n + (h.good ? HOLD_INCOME.good : HOLD_INCOME.strained), 0));
 }
 
 // ---------- a life year ----------

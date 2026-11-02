@@ -91,11 +91,15 @@ function after(ctx: Ctx, life: LifeState, e: BondageExt, id: string, key: 'a' | 
   }
 }
 
+/** What the node `id` does to the bondage of the life once the way `key` was taken (the hook below calls this; tests call it directly). */
+export function afterNode(ctx: Ctx, id: string, key: 'a' | 'b' | 'c' | '-'): void {
+  const life = lifeOf(ctx);
+  if (life) after(ctx, life, extOf(life), id, key);
+}
+
 const hooks = {
-  after(ctx: Ctx, n: StoryNode, id: string, key: 'a' | 'b' | 'c' | '-') {
-    const life = lifeOf(ctx);
-    if (!life) return;
-    after(ctx, life, extOf(life), id, key);
+  after(ctx: Ctx, _n: StoryNode, id: string, key: 'a' | 'b' | 'c' | '-') {
+    afterNode(ctx, id, key);
   },
 };
 

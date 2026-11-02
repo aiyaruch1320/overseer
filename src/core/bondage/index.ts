@@ -8,7 +8,7 @@ import { bondageIndex, extOf, stanceOf } from './state';
 
 registerBondageRules();
 
-export { registerBondageRules } from './rules';
+export { registerBondageRules, afterNode } from './rules';
 export { enter, leave, flee, buy, free, sell, allyFrom, ransomPrice, freeLand, heldIncomeBonus, type ExitWay } from './engine';
 export { extOf, stanceOf, bondageIndex, type BondageExt, type Held, type Level } from './state';
 
@@ -26,7 +26,7 @@ export const bondageSystem: System = {
     if (!share) return;
     // a child is not in debt (B1 needs a debt of his own): that share goes to the free born
     const i = rng.weighted([0, share.b2, share.b3, share.b1 + share.rest]);
-    if (i === 1 || i === 2) enter(ctx, life, rng.chance(0.65) ? 'เกิดในพันธะ' : 'ถูกทิ้ง', i as 2 | 3, { born: true });
+    if (i === 1 || i === 2) enter(ctx, life, rng.chance(0.65) ? 'เกิดในพันธะ' : 'ถูกทิ้ง', (i + 1) as 2 | 3, { born: true });
     void e;
   },
   lifeYear(ctx) {
