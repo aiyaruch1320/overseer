@@ -12,6 +12,7 @@ import { addMod, clearFlag, faithAt, setFlag } from '../acts/mods';
 import { actsOf, yearOf } from '../acts/state';
 import { slotsOf } from '../../npc/types';
 import { npcIndex } from '../../npc/data';
+import { FLAG_TH } from '../../text/tuning';
 import { DEFAULT_YEARS, EVENT_RANGE } from './tuning';
 
 export type Test = 'cold' | 'dr04' | 'desert' | 'coastal' | 'coastDry';
@@ -87,6 +88,10 @@ export function flatten(ctx: Ctx, ops: readonly Op[], country: string): Exclude<
   return out;
 }
 
+/** The flags the conjuring names that the text tuning has no word for. */
+const EXTRA_FLAG_TH: Record<string, string> = { nightmare: 'ฝันร้ายระบาด', forest_blight: 'ป่าเหี่ยว', wildfire: 'ไฟป่า' };
+const flagWord = (f: string): string => FLAG_TH[f] ?? EXTRA_FLAG_TH[f] ?? f;
+
 const SUBJECT_TH: Record<string, string> = {
   W: 'ความมั่งคั่งของประเทศ',
   C: 'ความเชื่อมั่นทองกลาง',
@@ -118,9 +123,9 @@ export function opText(op: Exclude<Op, { op: 'when' }>): string {
   const y = (n?: number) => (n === undefined ? ' ถาวร' : ` ${n} ปี`);
   switch (op.op) {
     case 'flag':
-      return `ธง ${op.flag}${y(op.years)}`;
+      return `ธง${flagWord(op.flag)}${y(op.years)}`;
     case 'unflag':
-      return `ธง ${op.flag} หาย`;
+      return `ธง${flagWord(op.flag)}หาย`;
     case 'mod':
       return `${SUBJECT_TH[op.subject] ?? op.subject} ${op.mul !== undefined ? `×${op.mul}` : `${(op.add ?? 0) >= 0 ? '+' : '−'}${Math.abs(op.add ?? 0)}`}${y(op.years)}`;
     case 'faith':

@@ -225,12 +225,14 @@ export function dayDetail(ctx: Ctx, mix: Mix, t: Target): { seen: string; spot: 
 // ---------- the whole plan ----------
 
 /** The part of the cell's words that holds at this size (`คน:` `ทวีป:` parts follow the first). */
-function expectedText(ctx: Ctx, mix: Mix): string {
+function expectedText(ctx: Ctx, mix: Mix, say: string): string {
   const cell = rows(ctx).cells.find((c) => c.verb === mix.verb && c.core === mix.core);
   const parts = (cell?.text ?? '').split(/\s+·\s+/);
   const tag = mix.scale === 'person' ? 'คน:' : mix.scale === 'continent' ? 'ทวีป:' : '';
   const own = tag ? parts.find((p) => p.startsWith(tag)) : undefined;
-  return (own ?? parts.filter((p) => !p.startsWith('คน:') && !p.startsWith('ทวีป:'))[0] ?? cell?.text ?? '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+  const text = (own ?? parts.filter((p) => !p.startsWith('คน:') && !p.startsWith('ทวีป:'))[0] ?? cell?.text ?? '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+  // a cell that points at a listed miracle says it by its code, which the player does not read: the short name of the result stands for it
+  return /MR-\d{2}/.test(text) ? say : text;
 }
 
 /** Works out the whole conjuring for a command, or says why the circle and target do not make one. */
@@ -264,7 +266,7 @@ export function plan(ctx: Ctx, args: Record<string, unknown>, taken: string[] = 
       ...(reaction ? { reaction } : {}),
       ops,
       say: replaced ? reaction!.say : cell.say,
-      expected: replaced ? reaction!.text(ctx) : expectedText(ctx, mix),
+      expected: replaced ? reaction!.text(ctx) : expectedText(ctx, mix, cell.say),
       cost: price.cost,
       pay: price.pay,
       shadow: shadowChance(ctx, mix, target),
