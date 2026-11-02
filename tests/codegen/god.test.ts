@@ -99,3 +99,67 @@ describe('god generator: references and spot checks', () => {
     expect(G.conjure.cells.find((c) => c.verb === 'destroy' && c.core === 'wind')!.pureMr).toBe('MR-09');
   });
 });
+
+describe('god generator: the ruins, the seals and the grand miracles (G5)', () => {
+  const countries = new Set(Object.values((JSON.parse(readFileSync('data/gen/countries.json', 'utf8')) as { items: Record<string, { id: string }> }).items).map((c) => c.id));
+  const ev = (id: string) => G.miracles.ruin.events.find((e) => e.id === id)!;
+
+  it('the dice of a ruin are the numbers of §5.1', () => {
+    expect(G.miracles.ruin.numbers).toEqual({
+      pop: [10, 40],
+      npc: { die: 50, flee: 30, stay: 20 },
+      allyDie: 25,
+      mcCurse: { id: 'nc_homeland_ghost', chance: 50 },
+      mcBelief: -10,
+      exileCurseChance: 30,
+      w: 1,
+      trade: -5,
+      neighbourFaith: -10,
+      dread: 20,
+      seenBelief: -10,
+    });
+    expect(G.miracles.ruin.numbers.npc.die + G.miracles.ruin.numbers.npc.flee + G.miracles.ruin.numbers.npc.stay).toBe(100);
+  });
+
+  it('the days of RU-01 to RU-08 are the windows of §5.2, and what each asks for', () => {
+    expect(G.miracles.ruin.events.map((e) => e.id)).toEqual(['RU-01', 'RU-02', 'RU-03', 'RU-04', 'RU-05', 'RU-06', 'RU-07', 'RU-08']);
+    expect([ev('RU-01').from, ev('RU-01').to, ev('RU-01').after]).toEqual([0, 1, ['MR-17']]);
+    expect([ev('RU-02').from, ev('RU-02').to]).toEqual([0, 2]);
+    expect([ev('RU-03').from, ev('RU-03').to]).toEqual([3, 10]);
+    expect([ev('RU-04').from, ev('RU-04').to, ev('RU-04').dreadMin]).toEqual([5, null, 60]);
+    expect([ev('RU-05').from, ev('RU-05').unlessCult]).toEqual([5, true]);
+    expect(ev('RU-06').from).toBe(10);
+    expect([ev('RU-07').from, ev('RU-07').to, ev('RU-07').noWar]).toEqual([40, 80, true]);
+    expect([ev('RU-08').after, ev('RU-08').rainy]).toEqual([['MR-18', 'MR-17'], true]);
+    // the nodes the events open are the ones the storylines have
+    const story = readFileSync('data/gen/storylines.json', 'utf8');
+    for (const e of G.miracles.ruin.events) if (e.opens) expect(story, e.id).toContain(`"id": "${e.opens}"`);
+  });
+
+  it('the seals: every dragon has a place that is a country of the map; AL-01 is the key; the crack, the replies and the caps are §5.4', () => {
+    const s = G.miracles.seal;
+    expect(s.homes.length).toBe(15);
+    for (const h of s.homes) {
+      expect(h.countries.length, h.name).toBeGreaterThan(0);
+      for (const c of h.countries) expect(countries.has(c), `${h.name} ${c}`).toBe(true);
+    }
+    expect(s.homes.find((h) => h.name === 'สมุทรอาลัย')!.countries).toEqual(['AZ-06', 'NR-04']);
+    expect(s.keyCountry).toBe('AL-01');
+    expect(s.crack).toEqual({ buildings: 35, pop: 70, npc: { die: 20, flee: 20, stay: 60 }, w: -2, wYears: 10, mood: -20, capLoss: 5, opens: ['RU-02', 'RU-03'], shut: ['RU-01', 'RU-07'] });
+    expect([s.anchorCdYears, s.anyAnchorCdYears, s.protectYears, s.midMood, s.midWorshippers]).toEqual([100, 25, 50, -10, -5]);
+    expect(s.reply.map((r) => [r.name, r.moodMin, r.moodMax])).toEqual([['ปกป้อง', 50, 100], ['คำราม', 25, 49], ['ตื่นด้วยความเจ็บ', 0, 24]]);
+    expect(s.concordia).toEqual({ c: -20, le05Mul: 2, po08Mul: 2, years: 10 });
+  });
+
+  it('the wrath, the flood and the new land: MR-22 ten years of peace, −15, ×2, ×2 · MR-19 three years, food ×1.3 · MR-20 twenty years', () => {
+    expect(G.miracles.grand).toEqual({ wrath: { warYears: 10, faith: -15, dreadMul: 2, gd08Mul: 2, moodAll: -15 }, flood: { years: 3, refugeeFood: 1.3 }, land: { settleWithin: 20 } });
+    expect(G.miracles.list.find((m) => m.id === 'MR-22')).toMatchObject({ cost: { dread: 150 }, oncePerLife: true });
+    expect(G.miracles.list.find((m) => m.id === 'MR-19')).toMatchObject({ cost: { dread: 50 }, wait: 50, wDeltas: [{ delta: -2, years: 5 }] });
+    expect(G.miracles.list.find((m) => m.id === 'MR-20')).toMatchObject({ cost: { faith: 80 }, wait: 100, newCountryW: 2 });
+    expect(G.miracles.limits).toMatchObject({ ruinGapYears: 100, worldBigGapYears: 25, gd08ThirdBigDestroy: 3, gd08Mul: 1.5 });
+  });
+
+  it('the caps the ruins and the seals use are the ones the sim tuned', () => {
+    expect(G.rule).toMatchObject({ anchorCd: 100, anchorWorldCd: 25, ruinLife: 1, ruinCd: 100, mahaF: 120, wrathD: 150 });
+  });
+});

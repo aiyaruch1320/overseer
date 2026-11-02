@@ -93,6 +93,8 @@ export interface RuinExt {
   protect: Record<string, number>;
   /** Large destroying miracles in this world (a blow on a seal counts two): from the third, GD-08 wakes (04-miracles.md iron rule 7). */
   bigDestroy: number;
+  /** Blows on the seals (a mid miracle or above), for the balance tests and the tools. */
+  strikes: number;
   /** The country of the latest ruin or blow, where the movement of the god-hunters has its base. */
   base?: string;
   followers: string[];
@@ -108,7 +110,7 @@ export interface RuinExt {
 }
 
 export function fresh(): RuinExt {
-  return { v: 1, ruins: [], cracks: [], lands: [], replies: [], protect: {}, bigDestroy: 0, followers: [], peace: {}, moved: {}, made: [], reach: { life: '', seen: {}, wrote: [] } };
+  return { v: 1, ruins: [], cracks: [], lands: [], replies: [], protect: {}, bigDestroy: 0, strikes: 0, followers: [], peace: {}, moved: {}, made: [], reach: { life: '', seen: {}, wrote: [] } };
 }
 
 export function ruinExt(state: GameState): RuinExt {

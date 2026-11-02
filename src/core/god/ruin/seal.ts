@@ -200,6 +200,7 @@ const layer: Intercept = {
     const c = hit ? targetsOf(ctx, m, args)[0] : undefined;
     const s = c ? sealAt(ctx, c) : null;
     if (!hit || !c || !s) return null;
+    ruinExt(ctx.state).strikes++;
     if (hit === 'mid') {
       const result = sealedMid(ctx, s);
       return { target: c, result, country: c, reaction: 'destroySmall' };

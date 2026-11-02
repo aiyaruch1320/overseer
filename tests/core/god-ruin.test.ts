@@ -570,6 +570,63 @@ describe('G5: the story nodes mr hang on the events', () => {
   });
 });
 
+describe('G5: the iron rules on the large deeds (04-miracles.md §2)', () => {
+  it('rule 1: a star on his own country, a flood, the wrath: the character lives (hurt at most), belief −10 for what he sees, the curse of the homeland at 50%', () => {
+    let cursed = 0;
+    let hurt = 0;
+    const n = 14;
+    for (let i = 0; i < n; i++) {
+      const { g, ctx, st } = mk(40 + i);
+      const life = st.life!;
+      const c = life.country;
+      if (sealAt(ctx, c)) continue;
+      const belief = life.godFaith;
+      expect(run(ctx, { id: 'MR-17', country: c }).ok).toBe(true);
+      omen(g);
+      expect(st.life!.dead, `seed ${40 + i}`).toBeUndefined();
+      expect(st.world.countryFlags[c]).toContain('god_ruin');
+      expect(life.godFaith).toBeLessThanOrEqual(belief - 10);
+      if (life.curses.includes('nc_homeland_ghost')) cursed++;
+      if (life.flags.includes('wounded')) hurt++;
+    }
+    // a coin and a quarter: the numbers of the doc (50%) and of the code (25% to be hurt), over a dozen lives
+    expect(cursed).toBeGreaterThan(1);
+    expect(cursed).toBeLessThan(13);
+    expect(hurt).toBeLessThan(12);
+  });
+
+  it('rule 1: the wrath on his continent does not kill him either', () => {
+    const { g, ctx, st } = mk(60);
+    expect(run(ctx, { id: 'MR-22', continent: continentOf(st.life!.country) }).ok).toBe(true);
+    omen(g, 2);
+    expect(st.life!.dead).toBeUndefined();
+  });
+
+  it('rules 2 and 4: a dragon is hurt, never killed; no miracle makes an ending or an era by itself', () => {
+    const { g, ctx, st } = mk(61);
+    st.world.dragons[1].mood = 12; // close to its fall
+    expect(run(ctx, { id: 'MR-18', country: 'AZ-02' }).ok).toBe(true);
+    omen(g);
+    expect(st.world.dragons[1].mood).toBeLessThan(0);
+    expect(st.world.dragons[1].alive).toBe(true);
+    expect(st.world.happened[tablesOf(ctx).dragons[1].fallEvent]).toBeUndefined();
+    const dfc = st.world.dfc;
+    years(ctx, 3);
+    expect(st.world.dfc).toBe(dfc);
+    expect(Object.keys(st.world.happened).filter((k) => k.startsWith('END-'))).toEqual([]);
+    expect(st.world.ended).toBeUndefined();
+    expect(st.world.era).toBe(1);
+  });
+
+  it('rule 3: a country with a living legend dragon, and AL-01, is a seal and is never made a ruin by the policies', () => {
+    const { ctx, st } = mk(62);
+    for (const d of st.world.dragons) d.alive = true; // a world of 120 years may have lost one
+    for (const h of god.miracles.seal.homes) for (const c of h.countries) expect(sealAt(ctx, c), c).not.toBeNull();
+    expect(sealAt(ctx, 'AL-01')).not.toBeNull();
+    expect(sealCountries(ctx).length).toBeGreaterThan(15);
+  });
+});
+
 describe('G5: a whole life next to a ruin walks the nodes mr', () => {
   /** A life from birth to death; at 22 a star falls on `where(country)`; the god keeps both powers full. */
   function lifeWith(seed: number, where: (ctx: Game['ctx'], home: string) => string | undefined): { passed: string[]; happened: string[]; place?: string } {
