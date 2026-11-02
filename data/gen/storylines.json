@@ -1,5 +1,5 @@
 {
- "version": "3fda89e6bf9e",
+ "version": "5cc7fa8eb685",
  "sources": [
   "docs/lore/storylines/01-human.md",
   "docs/lore/storylines/02-elf.md",
@@ -39461,7 +39461,7 @@
      "RU-02"
     ],
     "notesText": "NPC ผู้นำซาก ([../../systems/god/04-miracles.md](../../systems/god/04-miracles.md) หัวข้อ 5.1) · ถ้า RU-02 ยังไม่เกิด ข้าม",
-    "src": "docs/lore/storylines/31-divine.md:23",
+    "src": "docs/lore/storylines/31-divine.md:24",
     "when": {
      "k": "event",
      "id": "RU-02",
@@ -39556,7 +39556,7 @@
      "RU-08"
     ],
     "notesText": "ศึก `bandits` (ทาง ก) · รูปใต้น้ำของ RU-08 ใช้การหายใจใต้น้ำหรือเรือ",
-    "src": "docs/lore/storylines/31-divine.md:24",
+    "src": "docs/lore/storylines/31-divine.md:25",
     "when": {
      "k": "or",
      "of": [
@@ -39633,7 +39633,7 @@
      "RU-04"
     ],
     "notesText": "ศึก `npc_cultist` (ทาง ค) · ถ้า RU-04 ยังไม่เกิด ข้าม",
-    "src": "docs/lore/storylines/31-divine.md:25",
+    "src": "docs/lore/storylines/31-divine.md:26",
     "when": {
      "k": "event",
      "id": "RU-04",
@@ -39712,7 +39712,7 @@
      "RU-05"
     ],
     "notesText": "ศึก `npc_assassin` (ทาง ค สิบปีหลัง)",
-    "src": "docs/lore/storylines/31-divine.md:26",
+    "src": "docs/lore/storylines/31-divine.md:27",
     "when": {
      "k": "event",
      "id": "RU-05",
@@ -39803,7 +39803,7 @@
      "MR-14"
     ],
     "notesText": "ผู้พิทักษ์จากฟ้า (MR-14) เป็นสัตว์คู่หูได้ในทาง ก ถ้ามี `taming`",
-    "src": "docs/lore/storylines/31-divine.md:27",
+    "src": "docs/lore/storylines/31-divine.md:28",
     "when": {
      "k": "or",
      "of": [
@@ -39912,7 +39912,7 @@
      "MR-20"
     ],
     "notesText": "ศึก `reef_serpent` (ทาง ก)",
-    "src": "docs/lore/storylines/31-divine.md:28",
+    "src": "docs/lore/storylines/31-divine.md:29",
     "when": {
      "k": "event",
      "id": "MR-20",
@@ -39967,7 +39967,7 @@
     "notes": [],
     "titleEvents": [],
     "notesText": "ใช้ได้เมื่อ mr.a1 หรือ mr.a2 หรือ mr.a3 หรือ mr.a4 หรือ mr.a5 หรือ mr.a6",
-    "src": "docs/lore/storylines/31-divine.md:29",
+    "src": "docs/lore/storylines/31-divine.md:30",
     "when": {
      "k": "or",
      "of": [
@@ -40052,8 +40052,13 @@
     ],
     "notes": [],
     "titleEvents": [],
-    "notesText": "",
-    "src": "docs/lore/storylines/31-divine.md:35"
+    "notesText": "ใช้เมื่อ `god_dream_obeyed`",
+    "src": "docs/lore/storylines/31-divine.md:36",
+    "when": {
+     "k": "has",
+     "kind": "unknown",
+     "id": "god_dream_obeyed"
+    }
    },
    {
     "id": "dp.a1",
@@ -40121,8 +40126,13 @@
     ],
     "notes": [],
     "titleEvents": [],
-    "notesText": "ศาสนาหลักของถิ่นส่งคนมาสอบ (ทาง ก)",
-    "src": "docs/lore/storylines/31-divine.md:36"
+    "notesText": "ศาสนาหลักของถิ่นส่งคนมาสอบ (ทาง ก) · ใช้เมื่อ `god_dreams_3`",
+    "src": "docs/lore/storylines/31-divine.md:37",
+    "when": {
+     "k": "has",
+     "kind": "unknown",
+     "id": "god_dreams_3"
+    }
    },
    {
     "id": "dp.a2",
@@ -40172,8 +40182,13 @@
     ],
     "notes": [],
     "titleEvents": [],
-    "notesText": "",
-    "src": "docs/lore/storylines/31-divine.md:37",
+    "notesText": "ใช้เมื่อ `god_prayers_ignored_3`",
+    "src": "docs/lore/storylines/31-divine.md:38",
+    "when": {
+     "k": "has",
+     "kind": "unknown",
+     "id": "god_prayers_ignored_3"
+    },
     "godWindow": {
      "what": "ตอบคำอธิษฐานใบถัดไปแบบให้แปลก",
      "effect": "ทาง ข ถูกตัด ศรัทธาเทพ +12"
@@ -40247,8 +40262,15 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "ทาง ก ต้องมี GD-08 หรือ RU-05 หรือ `faith.23` · RU-05 คือผู้แค้นฟ้าที่ให้ขบวนการได้ฐานที่ซาก · ขบวนการผู้ล่าเทพเป็นศาสนาที่มีมาตั้งแต่ต้น",
-    "src": "docs/lore/storylines/31-divine.md:38"
+    "notesText": "ทาง ก ต้องมี GD-08 หรือ RU-05 หรือ `faith.23` · RU-05 คือผู้แค้นฟ้าที่ให้ขบวนการได้ฐานที่ซาก · ขบวนการผู้ล่าเทพเป็นศาสนาที่มีมาตั้งแต่ต้น · ใช้เมื่อ ศรัทธาเทพ ≤ −30",
+    "src": "docs/lore/storylines/31-divine.md:39",
+    "when": {
+     "k": "cmp",
+     "stat": "godFaith",
+     "op": "<=",
+     "value": -30,
+     "label": "ศรัทธาเทพ"
+    }
    },
    {
     "id": "dp.e1",
@@ -40293,7 +40315,7 @@
     "notes": [],
     "titleEvents": [],
     "notesText": "ความฝันสุดท้าย ([../../systems/god/03-dreams.md](../../systems/god/03-dreams.md) หัวข้อ 5) ตามหลังโหนดนี้",
-    "src": "docs/lore/storylines/31-divine.md:39",
+    "src": "docs/lore/storylines/31-divine.md:40",
     "godWindow": {
      "what": "ไม่ทำอะไร",
      "effect": "ทาง ค ×2 พงศาวดารบันทึกว่า \"พระเจ้านิ่งจนวันสุดท้าย\""

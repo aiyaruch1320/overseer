@@ -52,6 +52,12 @@ export interface StoryExt {
   external: string[];
   /** Overlay lines whose opening was drawn and passed but wait for a free place (tuning OVERLAY_AT_ONCE, JOURNEY_AT_ONCE). */
   queue: string[];
+  /**
+   * Nodes with a god window that were announced (a `story/window` entry) and wait to be decided: node → the log number of the announcement and
+   * the beats since. The node is decided at the next beat once the attention system has answered (07-attention.md §3), at the latest after
+   * WINDOW_MAX_BEATS.
+   */
+  announced: Record<NodeId, { n: number; beats: number }>;
   /** What this life year already holds: nodes played, battles fought and the enemies fought (tuning NODES_PER_YEAR, BATTLES_PER_YEAR). */
   year: { age: number; nodes: number; battles: number; fought: string[] };
 }
@@ -60,7 +66,7 @@ export function fresh(): StoryExt {
   return {
     line: '', start: 0, open: {}, fire: {}, due: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
     seen: { npcs: [], events: [], pivots: [] }, jobpaths: [], places: [], endings: [], endingLines: {}, levels: {}, battles: { win: 0, lose: 0, flee: 0 }, checks: [], external: [],
-    queue: [], year: { age: -1, nodes: 0, battles: 0, fought: [] },
+    queue: [], announced: {}, year: { age: -1, nodes: 0, battles: 0, fought: [] },
   };
 }
 
@@ -83,6 +89,7 @@ export function extOf(life: LifeState): StoryExt {
   e.queue ??= f.queue;
   e.due ??= f.due;
   e.year ??= f.year;
+  e.announced ??= f.announced;
   return e;
 }
 

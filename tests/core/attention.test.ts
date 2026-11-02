@@ -219,7 +219,7 @@ function mockGame(mocks: Mock[], opts: { seed?: number; deathAge?: number; annou
   return g;
 }
 
-const win = (age: number, id = `w${age}`): Mock => ({ age, sys: 'story', kind: 'node', id, level: 3 });
+const win = (age: number, id = `w${age}`): Mock => ({ age, sys: 'story', kind: 'window', id, level: 3 });
 const pray = (age: number, q = 0): Mock => ({ age, q, sys: 'god', kind: 'prayer', id: `p${age}.${q}`, level: 2 });
 const omen = (age: number, id = `o${age}`): Mock => ({ age, sys: 'world', kind: 'event', id, level: 2, data: { mark: '⭐', name: id } });
 
@@ -397,11 +397,12 @@ describe('attention: nextCall for the tools', () => {
 });
 
 describe('attention: reads the log of the real systems', () => {
-  it('a story node with a window is a window; one without is nothing', () => {
-    const g = mockGame([win(22, 'a'), { age: 23, sys: 'story', kind: 'node', id: 'b', level: 1 }]);
+  it('the announcement of a node with a window (`story/window`) is a window; a node played, with a window or without, is nothing', () => {
+    const g = mockGame([win(22, 'a'), { age: 23, sys: 'story', kind: 'node', id: 'b', level: 1 }, { age: 24, sys: 'story', kind: 'node', id: 'a', level: 2 }]);
     g.runLife();
     const srcIds = callLog(g).flatMap((e) => String(e.data.ids).split(','));
     expect(srcIds).toContain('a');
+    expect(srcIds.filter((x) => x === 'a')).toHaveLength(1);
     expect(srcIds).not.toContain('b');
     expect(g.state.log.some((e) => e.sys === 'attention' && e.kind === 'glow' && e.id === 'b')).toBe(false);
   });

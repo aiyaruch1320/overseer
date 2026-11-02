@@ -8,7 +8,7 @@ import { command } from '../../src/core/command';
 import { sortSystems, makeCtx, type Ctx, type GameData, type Game } from '../../src/core/game';
 import {
   scaleCost, addBelief, canPay, checkDream, checkOpen, compOf, currentChest, dreamWeight, dreamsOf, earn, godSystem, incomeOf, offersNow, openChest, pathsNow, pay, pickSlot,
-  priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, sourceOf, policyName, policyStep, registerPolicyPart, type Chest, type ChestSlot,
+  priceOf, resolveDream, rerollChest, settleDreams, settleNode, armNode, obeyChance, tierChances, sourceOf, policyName, policyStep, registerPolicyPart, type Chest, type ChestSlot,
 } from '../../src/core/god';
 import { OPPOSITES, TIERS } from '../../src/core/god/tuning';
 import { bump, count, gx } from '../../src/core/god/state';
@@ -542,6 +542,7 @@ describe('god G1: the chest (02-bestow.md)', () => {
   it('opens once a year, a second time in a god window; the child of the year counters is cleared by the next year', () => {
     const w = world(43, { years: 25 });
     const { ctx } = w;
+    (w.life.ext.story as { announced: Record<string, unknown> }).announced = {}; // no window from the story itself
     ctx.state.god.chest = null;
     delete ctx.state.god.counters['y.chest'];
     gx(ctx).window = { age: w.life.hAge, nodes: [], stop: false, played: 0 };
@@ -549,7 +550,7 @@ describe('god G1: the chest (02-bestow.md)', () => {
     openChest(ctx);
     ctx.state.god.chest = null;
     expect(checkOpen(ctx)).toMatch(/เพดาน/);
-    gx(ctx).window = { age: w.life.hAge, nodes: ['hu.a1'], stop: false, played: 1 };
+    gx(ctx).window = { age: w.life.hAge, nodes: ['x.window'], stop: false, played: 1 }; // announced, not decided (a node that has passed closes its window)
     expect(checkOpen(ctx)).toBeNull();
     openChest(ctx);
     expect(checkOpen(ctx)).toMatch(/เปิดอยู่/);
@@ -906,11 +907,10 @@ describe('god G2: dreams (03-dreams.md)', () => {
       life.godFaith = [60, 0, -10, -50][k % 4];
       const o = sendOne(w);
       const d = dreamsOf(ctx)[0];
-      // a dream whose node is near is rolled at once (and its weights are in the story's pulls); the others when the story asks
+      // nothing is rolled when a dream is sent; the story rolls it when it decides the node (armNode), or a story that asks does (dreamWeight)
+      expect(d.resolved).toBeUndefined();
+      if (k % 2) armNode(ctx, o.node);
       if (d.applied) armed++;
-      const b = d.applied ? life.godFaith : life.godFaith;
-      void b;
-      const before = d.applied ? undefined : life.godFaith;
       const weights = weightsOf(w, o.node);
       expect(d.resolved).toBeTruthy();
       const r = d.resolved!;
@@ -930,7 +930,6 @@ describe('god G2: dreams (03-dreams.md)', () => {
       } else {
         expect(weights[ci]).toBe(0.3);
       }
-      void before;
       // asking again does not roll again
       expect(weightsOf(w, o.node)).toEqual(weights);
     }
@@ -961,24 +960,94 @@ describe('god G2: dreams (03-dreams.md)', () => {
     expect([...seen].sort()).toEqual(['defy', 'misread', 'obey', 'refuse']);
   });
 
-  it('the story reads the dream: a dream whose node is near puts its weights into the story pulls, and they are gone once the node has passed', () => {
+  it('the story reads the dream: just before it decides the node the dream is rolled once and its weights go into the story pulls; after, they are gone and the result is told once with the way taken', () => {
     let done = 0;
-    for (let k = 0; k < 80 && done < 4; k++) {
+    for (let k = 0; k < 80 && done < 6; k++) {
       const w = dreamWorld(3000 + k, 6);
       const { ctx, life } = w;
-      life.godFaith = 100;
+      life.godFaith = 90;
       sendOne(w);
       const d = dreamsOf(ctx)[0];
-      if (!d.applied) continue;
+      // sent: nothing rolled, nothing told, the belief is as it was
+      const sent = life.godFaith;
+      expect(d.resolved).toBeUndefined();
+      expect(ctx.state.log.some((e) => e.sys === 'god' && e.kind === 'dream' && e.id === d.node && e.data.outcome !== undefined)).toBe(false);
+      armNode(ctx, d.node);
+      expect(d.applied).toBe(true);
       const mods = (life.ext.story as { entryMods: { to: string }[] }).entryMods;
       expect(mods.filter((m) => m.to === d.node).length).toBeGreaterThanOrEqual(d.resolved!.outcome === 'refuse' ? 0 : 1);
-      life.passed[d.node] = 'a';
-      settleDreams(ctx);
+      // once: another ask does not roll again or change the belief
+      const rolled = life.godFaith;
+      armNode(ctx, d.node);
+      expect(life.godFaith).toBe(rolled);
+      const delta = { obey: 3, misread: 1, refuse: -2, defy: -2 }[d.resolved!.outcome];
+      expect(rolled - sent).toBeCloseTo(delta);
+      const outcome = d.resolved!.outcome;
+      settleNode(ctx, d.node, 'b');
       expect((life.ext.story as { entryMods: { to: string }[] }).entryMods.some((m) => m.to === d.node)).toBe(false);
       expect(dreamsOf(ctx).length).toBe(0);
+      expect(life.godFaith).toBe(rolled); // told, not paid twice
+      const told = ctx.state.log.filter((e) => e.sys === 'god' && e.kind === 'dream' && e.id === d.node && e.data.outcome !== undefined);
+      expect(told.length).toBe(1);
+      expect(told[0].data).toMatchObject({ outcome, took: 'b', kept: d.choice === 'b' });
+      expect(ctx.state.god.chronicle.filter((c) => c.kind === 'dream' && c.id === d.node && c.result !== undefined && !c.result.startsWith('sent')).length).toBe(1);
       done++;
     }
     expect(done).toBeGreaterThanOrEqual(2);
+  });
+
+  it('a window is announced, the dream offered then is a way of that node, and the node is decided the next beat with the dream rolled then (G1 G2)', () => {
+    let checked = 0;
+    for (let seed = 5100; seed < 5260 && checked < 4; seed++) {
+      const w = world(seed, { policy: undefined });
+      const { game, ctx } = w;
+      const logAt = ctx.state.logN;
+      let windowEntry;
+      for (let i = 0; i < 4 * 70 && !windowEntry && game.state.life && !game.state.life.dead; i++) {
+        game.beat();
+        windowEntry = ctx.state.log.find((e) => e.n >= logAt && e.sys === 'story' && e.kind === 'window' && String(e.data.ways).split(' | ').length >= 2);
+        if (windowEntry && dreamsOf(ctx).some((d) => d.node === windowEntry!.id)) windowEntry = undefined;
+      }
+      if (!windowEntry || !game.state.life || game.state.life.dead) continue;
+      const life = game.state.life;
+      const id = String(windowEntry.id);
+      if (life.passed[id] !== undefined) continue;
+      const offers = offersNow(ctx);
+      if (!offers.length || offers[0].node !== id) continue;
+      expect(offers.every((o) => o.node === id)).toBe(true); // the ways of the node that was announced
+      ctx.state.god.light = 200;
+      life.godFaith = 20;
+      const belief = life.godFaith;
+      const o = offers[0];
+      expect(command(ctx, { type: 'god', action: 'dream.send', args: { node: o.node, choice: o.choice }, confirm: true })).toMatchObject({ ok: true });
+      expect(life.godFaith).toBe(belief); // sending changes nothing in his heart
+      expect(dreamsOf(ctx)[0].resolved).toBeUndefined();
+      expect(life.passed[id]).toBeUndefined();
+      let guard = 0;
+      while (life.passed[id] === undefined && guard++ < 12) game.beat();
+      expect(life.passed[id]).toBeDefined();
+      const told = ctx.state.log.filter((e) => e.sys === 'god' && e.kind === 'dream' && e.id === id && e.data.outcome !== undefined);
+      expect(told.length).toBe(1);
+      const played = ctx.state.log.find((e) => e.sys === 'story' && e.kind === 'node' && e.id === id)!;
+      expect(told[0].n).toBeGreaterThan(played.n); // told after the way was taken, with the way
+      expect(told[0].data.took).toBe(life.passed[id]);
+      expect(ctx.state.god.chronicle.filter((c) => c.kind === 'dream' && c.id === id && !String(c.result).startsWith('sent')).length).toBe(1);
+      checked++;
+    }
+    expect(checked).toBeGreaterThanOrEqual(2);
+  });
+
+  it('a dream sent for a node that never comes is never rolled: no belief, no result, only a line that it faded', () => {
+    const w = dreamWorld(21, 4);
+    const { ctx, life } = w;
+    const o = sendOne(w);
+    const belief = life.godFaith;
+    life.hAge += 3;
+    settleDreams(ctx);
+    expect(dreamsOf(ctx).length).toBe(0);
+    expect(life.godFaith).toBe(belief);
+    expect(ctx.state.log.some((e) => e.sys === 'god' && e.kind === 'dream' && e.id === o.node && e.data.outcome !== undefined && e.data.outcome !== 'fade')).toBe(false);
+    expect(ctx.state.god.chronicle.at(-1)).toMatchObject({ id: o.node, result: 'faded' });
   });
 
   it('the dreamed way is taken far more often when the dream is obeyed (the story takes it into account)', () => {

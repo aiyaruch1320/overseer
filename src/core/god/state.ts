@@ -4,6 +4,7 @@
 import { dataOf, type Ctx } from '../game';
 import type { GodData } from '../data/types-god';
 import type { LifeState } from '../types';
+import { announcedNodes } from '../story/walk';
 import { AGE_STOPS_DEFAULT } from './tuning';
 
 export type Key = 'a' | 'b' | 'c';
@@ -62,6 +63,8 @@ export interface GodExt {
   policyAt?: number;
   /** Belief the next life starts with: 60% of the one that just died (01-power.md §6). */
   heirBelief?: number;
+  /** Length of the chronicle when the living character was born: the lines after it are his (stats.ts). */
+  born?: number;
   /** The gifted weapon of this life. */
   weapon?: { id: string; variant: 'holy' | 'cursed' };
 }
@@ -108,18 +111,24 @@ export function ageStops(ctx: Ctx): number[] {
   return a?.length ? a : AGE_STOPS_DEFAULT;
 }
 
-/** Is the character in a god window now: a window node played this life year, or an age stop (01-power.md §2 "หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ")? */
+/**
+ * Is the character in a god window now (01-power.md §2 "หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ")? A node with a window was announced and has not been decided,
+ * or an age stop falls in this life year. The window of a node ends when the node is decided.
+ */
 export function inWindow(ctx: Ctx): boolean {
   const life = lifeOf(ctx);
+  if (!life) return false;
   const w = gx(ctx).window;
-  return !!life && !!w && w.age === life.hAge && (w.stop || w.nodes.length > 0);
+  return (!!w && w.age === life.hAge && w.stop) || windowNodes(ctx).length > 0;
 }
 
-/** The window node ids of this life year (empty outside a window). */
+/** The window node ids open now: announced (`story/window`) this life year or still waiting from before, and not yet decided (empty outside a window). */
 export function windowNodes(ctx: Ctx): string[] {
   const life = lifeOf(ctx);
+  if (!life) return [];
   const w = gx(ctx).window;
-  return life && w && w.age === life.hAge ? w.nodes : [];
+  const mine = w && w.age === life.hAge ? w.nodes : [];
+  return [...new Set([...announcedNodes(ctx), ...mine.filter((id) => life.passed[id] === undefined)])];
 }
 
 /** The log number where the entries of the living life begin (those written at or after its birth year, at the tail of the log). */
@@ -131,7 +140,7 @@ export function birthMark(ctx: Ctx): number {
   return n;
 }
 
-/** Reads the story's log for god-window nodes played since the last scan and sets the window of this year. */
+/** Reads the story's log for nodes played and god windows announced since the last scan and sets the window of this year (the age stop, the moments of the policies). */
 export function scanWindow(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
@@ -141,9 +150,9 @@ export function scanWindow(ctx: Ctx): void {
   const log = ctx.state.log;
   for (let i = log.length - 1; i >= 0 && log[i].n >= e.scan; i--) {
     const x = log[i];
-    if (x.sys !== 'story' || x.kind !== 'node') continue;
-    played++;
-    if (x.level >= 3 && x.id) nodes.unshift(String(x.id));
+    if (x.sys !== 'story') continue;
+    if (x.kind === 'window' && x.id) nodes.unshift(String(x.id));
+    else if (x.kind === 'node') played++;
   }
   e.scan = ctx.state.logN;
   const stop = ageStops(ctx).includes(life.hAge);

@@ -56,6 +56,18 @@ export const OPEN_PRED: Record<string, (s: { lives: number; chronicle: number })
   dp: (s) => s.chronicle > 0,
 };
 
+/**
+ * Lines that keep no draw of their own: `mr` and `dp` read what the god did, which cannot be known when the line is first due, so the
+ * decision to open is made again each year until the god has acted (docs/lore/storylines/31-divine.md §2 rule 3).
+ */
+export const RETRY_OPEN: ReadonlySet<string> = new Set(['mr', 'dp']);
+
+/**
+ * Lines whose nodes wait for their own condition instead of drawing an age and being skipped when it fails (31-divine.md §2 rule 6): a node
+ * plays the year its condition holds, in any order, and is skipped once its age window is over. The closing node waits for the last year.
+ */
+export const ROLLING_LINES: ReadonlySet<string> = new Set(['dp']);
+
 /** The pair sets cover half-bloods (22-halfblood.md §3): they open with the half-blood line. */
 export const PAIR_RATE = 1;
 
@@ -174,3 +186,11 @@ export const JOURNEY_AT_ONCE = 1;
  * an heir, the last era) or another system (`openLine`) are not counted.
  */
 export const OVERLAY_AT_ONCE = 4;
+
+// ---------- god windows (07-attention.md §3, M2 review G1) ----------
+
+/**
+ * A node with a god window is announced (`story/window`) and decided at a later beat, once the attention system has answered the announcement
+ * (a call or a glow). Attention may hold a window up to `stopWait` (60 s, about 2.1 life years) for the gap rules; the node waits that long, no longer.
+ */
+export const WINDOW_MAX_BEATS = 10;

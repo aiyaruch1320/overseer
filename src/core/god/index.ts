@@ -10,23 +10,29 @@ import { onStat } from '../rules';
 import { registerGodActions } from './actions';
 import { fade, syncTags } from './belief';
 import { currentChest } from './chest';
-import { settleDreams } from './dream';
+import { onNode } from '../story/walk';
+import { armNode, settleDreams, settleNode } from './dream';
 import { earn, incomeOf, startPower } from './power';
 import { policyStep } from './policy';
+import { registerGodStats } from './stats';
 import { birthMark, bump, clearCounters, count, godData, gx, scanWindow, touch } from './state';
 import { POWER_CAP } from './tuning';
 
 registerGodActions();
 registerGodRules();
 
+// the story tells the god when it decides a node: a dream sent for it is rolled just before, and told just after (dream.ts)
+onNode({ before: (ctx, _n, id) => armNode(ctx, id), after: (ctx, _n, id, key) => settleNode(ctx, id, key) });
+
 export * from './power';
 export * from './belief';
 export { chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, checkOpen, checkPick, checkReroll, slotPrice, tierChances, compOf, effectsOf, type Chest, type ChestSlot } from './chest';
-export { pathsNow, offersNow, offerCards, sourceOf, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, armDreams, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
+export { pathsNow, offersNow, offerCards, sourceOf, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, armNode, settleNode, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
 export { policyStep, policyName, momentsOf, registerPolicyPart, clearPolicyParts, type PolicyName, type PolicyPart } from './policy';
 export { registerGodActions } from './actions';
 export { bump, count, gx, godData, inWindow, windowNodes, touch, ageStops, type Dream, type GodExt } from './state';
 export { upcomingNodes } from './story-view';
+export * from './stats';
 
 /** Numbers the grammar can compare and change: `god.light` `god.dread` (and the Thai names the documents use). */
 export function registerGodRules(force = false): void {
@@ -43,6 +49,7 @@ export function registerGodRules(force = false): void {
       if (!force) throw err;
     }
   }
+  registerGodStats(force);
 }
 
 export const godSystem: System = {
@@ -66,6 +73,7 @@ export const godSystem: System = {
     e.answered = 0;
     delete e.weapon;
     e.window = null;
+    e.born = ctx.state.god.chronicle.length;
     // an heir feels about the god 60% of what the parent felt (01-power.md §6)
     if (e.heirBelief !== undefined && ctx.state.life) {
       ctx.state.life.godFaith = e.heirBelief;

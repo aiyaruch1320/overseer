@@ -3,10 +3,10 @@
 import type { System } from '../game';
 import { chooseEnding } from './ending';
 import './rules';
-import { begin, drain, yearStep } from './walk';
+import { begin, decideWindows, drain, yearStep } from './walk';
 
 export { registerStoryRules } from './rules';
-export { openLine, lineOfRace } from './walk';
+export { openLine, lineOfRace, onNode, announcedNodes, type NodeHooks } from './walk';
 export { chooseEnding, candidates as endingCandidates } from './ending';
 export { MEMORY_LINES } from './tuning';
 export type { StoryExt } from './state';
@@ -18,6 +18,7 @@ export const storySystem: System = {
     yearStep(ctx);
   },
   beat(ctx) {
+    decideWindows(ctx);
     drain(ctx);
   },
   lifeYear(ctx) {
