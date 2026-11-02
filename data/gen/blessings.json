@@ -1,7 +1,8 @@
 {
- "version": "32f9f8344ccc",
+ "version": "c616c6c13a38",
  "sources": [
   "docs/_generated/character-catalog/blessings.md",
+  "docs/lore/religions/README.md",
   "docs/systems/character/05-new-blessings.md",
   "docs/systems/character/12-job-support.md",
   "docs/systems/character/17-companion-support.md"
@@ -24,6 +25,7 @@
    "desc": "กำลังวังชาเพิ่มขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -54,6 +56,7 @@
    "desc": "ยกเกวียนได้ด้วยมือเดียว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -89,6 +92,7 @@
    "desc": "พลังของเผ่าก่อนยุคเทพ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -119,6 +123,7 @@
    "desc": "นิ้วมีประกายไฟเล็ก ๆ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -149,6 +154,7 @@
    "desc": "มานาไหลเวียนดั่งแม่น้ำ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -184,6 +190,7 @@
    "desc": "ดาวทั้งฟ้ากระซิบสูตรเวท",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -214,6 +221,7 @@
    "desc": "ขาไวขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -244,6 +252,7 @@
    "desc": "เร็วดั่งเหยี่ยวโฉบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -279,6 +288,7 @@
    "desc": "ลมพัดหนุนทุกก้าว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -309,6 +319,7 @@
    "desc": "โชคเล็ก ๆ ตามติด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -339,6 +350,7 @@
    "desc": "เหรียญหล่นใส่หัวบ่อย ๆ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -374,6 +386,7 @@
    "desc": "ชะตาเอียงเข้าหาเสมอ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -404,6 +417,7 @@
    "desc": "คิดรอบคอบขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -434,6 +448,7 @@
    "desc": "ความรู้ซึมเข้าสมอง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -469,6 +484,7 @@
    "desc": "มองเห็นสิ่งที่คนอื่นมองไม่เห็น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -499,6 +515,7 @@
    "desc": "ร่างกายแข็งแรงขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -534,6 +551,7 @@
    "desc": "มั่นคงดั่งภูผา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -569,6 +587,7 @@
    "desc": "แผลหายในชั่วข้ามคืน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -604,6 +623,7 @@
    "desc": "แสงอ่อน ๆ ไล่สิ่งชั่วร้าย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -634,6 +654,7 @@
    "desc": "เดินผ่านกองไฟได้สบาย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -664,6 +685,7 @@
    "desc": "ไม่หนาวแม้ในพายุหิมะ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -694,6 +716,7 @@
    "desc": "แดดไม่แผดเผา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -724,6 +747,7 @@
    "desc": "พิษงูก็แค่น้ำหวาน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -754,6 +778,7 @@
    "desc": "คำสาปเด้งกลับ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -784,6 +809,7 @@
    "desc": "มอนสเตอร์เลี่ยงทาง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -814,6 +840,7 @@
    "desc": "โรคระบาดไม่กล้าแตะ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -844,6 +871,7 @@
    "desc": "หายใจในน้ำได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -874,6 +902,7 @@
    "desc": "เมื่อใกล้ตาย จะรอดหวุดหวิดหนึ่งครั้ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -909,6 +938,7 @@
    "desc": "โล่ใสโปร่งปกป้องร่าง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -944,6 +974,7 @@
    "desc": "มีใครบางคนคอยปัดคมดาบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -974,6 +1005,7 @@
    "desc": "มองเห็นในที่มืด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1009,6 +1041,7 @@
    "desc": "มีดทื่อเมื่อแทง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1049,6 +1082,7 @@
    "desc": "ผิวงอกเกล็ดแข็ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1079,6 +1113,7 @@
    "desc": "มายาและเสน่ห์ใช้ไม่ได้ผล",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1109,6 +1144,7 @@
    "desc": "ฟ้าผ่าแล้วแค่ผมชี้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1139,6 +1175,7 @@
    "desc": "คลื่นลมเป็นใจ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1169,6 +1206,7 @@
    "desc": "ศัตรูมองข้ามไป",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1209,6 +1247,7 @@
    "desc": "เลือดเรืองแสงจาง ๆ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1244,6 +1283,7 @@
    "desc": "ไม่เคยหลงทาง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1274,6 +1314,7 @@
    "desc": "ได้กลิ่นทองใต้ดิน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1309,6 +1350,7 @@
    "desc": "จับอะไรก็เป็นเงิน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1339,6 +1381,7 @@
    "desc": "ทอยใหม่เมื่อพลาดครั้งสำคัญ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1374,6 +1417,7 @@
    "desc": "ฝืนชะตาใช้พลังน้อยลง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1404,6 +1448,7 @@
    "desc": "ดาวมงคลส่องตอนเกิด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1439,6 +1484,7 @@
    "desc": "ทุกทิศเป็นทิศมงคล",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1469,6 +1515,7 @@
    "desc": "การพนันมักชนะ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1499,6 +1546,7 @@
    "desc": "พบหีบสมบัติของตระกูล",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1534,6 +1582,7 @@
    "desc": "เจอหม้อทองปลายรุ้ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1569,6 +1618,7 @@
    "desc": "ปลูกอะไรก็งอกงาม",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1604,6 +1654,7 @@
    "desc": "ค้าขายไม่เคยขาดทุน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1634,6 +1685,7 @@
    "desc": "คนเหลียวมอง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1669,6 +1721,7 @@
    "desc": "พูดโน้มน้าวใครก็ได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1704,6 +1757,7 @@
    "desc": "ทุกคนอยากช่วยเหลือ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1734,6 +1788,7 @@
    "desc": "จะได้พบรักแท้แน่นอน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1764,6 +1819,7 @@
    "desc": "ลูกหลานเต็มบ้าน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1794,6 +1850,7 @@
    "desc": "ครอบครัวไม่มีวันแตกแยก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1829,6 +1886,7 @@
    "desc": "ผู้คนอยากเดินตาม",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1859,6 +1917,7 @@
    "desc": "เรื่องราวถูกเล่าต่อ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1889,6 +1948,7 @@
    "desc": "คุยกับทุกเผ่ารู้เรื่อง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1929,6 +1989,7 @@
    "desc": "ราชสำนักรับรองตระกูล",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1959,6 +2020,7 @@
    "desc": "ทะเลาะกับใครก็คืนดีได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1994,6 +2056,7 @@
    "desc": "ชื่อนี้จะถูกจดจำ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2024,6 +2087,7 @@
    "desc": "ข้อความในฝันชัดเจนขึ้นมาก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2059,6 +2123,7 @@
    "desc": "อ่านครั้งเดียวจำได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2089,6 +2154,7 @@
    "desc": "เห็นลางล่วงหน้า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2124,6 +2190,7 @@
    "desc": "ได้ยินเสียงเทพชัดเจน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2154,6 +2221,7 @@
    "desc": "ความโกรธมลายหาย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2184,6 +2252,7 @@
    "desc": "ความกลัวหายไป",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2214,6 +2283,7 @@
    "desc": "เห็นใจผู้อื่นมากขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2249,6 +2319,7 @@
    "desc": "จดจ่อได้ยาวนาน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2284,6 +2355,7 @@
    "desc": "เรียนอะไรก็เก่ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2314,6 +2386,7 @@
    "desc": "ได้ทักษะใหม่บ่อยขึ้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2344,6 +2417,7 @@
    "desc": "มองทะลุคำโกหก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2379,6 +2453,7 @@
    "desc": "ไอเดียผุดไม่หยุด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2409,6 +2484,7 @@
    "desc": "อายุยืนกว่าปกติ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2444,6 +2520,7 @@
    "desc": "บาดแผลหายเร็ว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2479,6 +2556,7 @@
    "desc": "หน้าไม่แก่ไปตามวัย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2514,6 +2592,7 @@
    "desc": "หัวใจเต้นแรง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2549,6 +2628,7 @@
    "desc": "งดงามจนเป็นที่เลื่องลือ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2584,6 +2664,7 @@
    "desc": "เดินทางทั้งวันได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2619,6 +2700,7 @@
    "desc": "กลางคืนคือเวลาของเรา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2654,6 +2736,7 @@
    "desc": "กินอะไรก็ไม่ท้องเสีย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2689,6 +2772,7 @@
    "desc": "งอกปีกขนนกสีขาว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2724,6 +2808,7 @@
    "desc": "กลั้นหายใจได้ครึ่งวัน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2759,6 +2844,7 @@
    "desc": "ดาบเชื่อฟังดั่งแขนขา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2794,6 +2880,7 @@
    "desc": "ศรไม่เคยพลาดเป้า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2829,6 +2916,7 @@
    "desc": "ยิ่งเจ็บยิ่งแกร่ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2864,6 +2952,7 @@
    "desc": "ปลุกใจพวกพ้อง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2899,6 +2988,7 @@
    "desc": "มังกรรู้สึกหนาวสันหลัง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2934,6 +3024,7 @@
    "desc": "ปีศาจเกรงกลัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2969,6 +3060,7 @@
    "desc": "อันเดดสลายเมื่อสัมผัส",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3004,6 +3096,7 @@
    "desc": "สัตว์ป่ายอมสยบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3039,6 +3132,7 @@
    "desc": "ปลายนิ้วร้อนระอุ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3074,6 +3168,7 @@
    "desc": "ลมหายใจเป็นไอเย็น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3109,6 +3204,7 @@
    "desc": "ผมชี้ตลอดเวลา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3144,6 +3240,7 @@
    "desc": "น้ำไหลตามใจ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3179,6 +3276,7 @@
    "desc": "ผืนดินตอบรับ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3214,6 +3312,7 @@
    "desc": "หายตัวในเงาได้ชั่วครู่",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3259,6 +3358,7 @@
    "desc": "ตราเรืองแสงกลางหน้าผาก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3294,6 +3394,7 @@
    "desc": "วันหนึ่งอาจเผยแผ่ศรัทธา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3329,6 +3430,7 @@
    "desc": "สัมผัสแล้วแผลสมาน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3364,6 +3466,7 @@
    "desc": "ฝนตกตามคำขอ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3394,6 +3497,7 @@
    "desc": "คุยกับนกได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3424,6 +3528,7 @@
    "desc": "มีภูตน้อยติดตาม",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3464,6 +3569,7 @@
    "desc": "รากของโลกโอบอุ้ม",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3499,6 +3605,7 @@
    "desc": "ฟื้นจากเถ้าถ่านได้หนึ่งครั้ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3534,6 +3641,7 @@
    "desc": "ไฟที่เผาเฉพาะความชั่ว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3575,6 +3683,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3611,6 +3720,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3652,6 +3762,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3693,6 +3804,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3734,6 +3846,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3775,6 +3888,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3816,6 +3930,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3862,6 +3977,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3898,6 +4014,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3939,6 +4056,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3969,10 +4087,12 @@
    "from": "เกิดนอกถิ่นหลักของเผ่า",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เกิดนอกถิ่นหลักของเผ่า"
+     "k": "has",
+     "kind": "flag",
+     "id": "born_outside"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4012,6 +4132,7 @@
      "text": "ดาร์กเอลฟ์ ผู้ไร้เงา"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4047,10 +4168,13 @@
    "from": "สไลม์",
    "fromCond": [
     {
-     "k": "text",
-     "text": "สไลม์"
+     "k": "race",
+     "ids": [
+      "slime"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4081,10 +4205,13 @@
    "from": "เผ่าปีศาจ",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เผ่าปีศาจ"
+     "k": "race",
+     "ids": [
+      "demonkin"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4120,10 +4247,13 @@
    "from": "เผ่าลาวา",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เผ่าลาวา"
+     "k": "race",
+     "ids": [
+      "lavakin"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4158,6 +4288,7 @@
      "text": "ลูกครึ่งของสายเลือดที่เป็นศัตรูกัน"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4193,10 +4324,12 @@
    "from": "เกิดใต้ดวงสุริยคราส",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เกิดใต้ดวงสุริยคราส"
+     "k": "has",
+     "kind": "flag",
+     "id": "sign_eclipse"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4232,10 +4365,13 @@
    "from": "ยักษ์",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ยักษ์"
+     "k": "race",
+     "ids": [
+      "giant"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4271,10 +4407,13 @@
    "from": "เผ่าปีก",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เผ่าปีก"
+     "k": "race",
+     "ids": [
+      "winged"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4305,10 +4444,13 @@
    "from": "มัมมี่",
    "fromCond": [
     {
-     "k": "text",
-     "text": "มัมมี่"
+     "k": "race",
+     "ids": [
+      "mummy"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4344,10 +4486,13 @@
    "from": "หุ่นวิญญาณ",
    "fromCond": [
     {
-     "k": "text",
-     "text": "หุ่นวิญญาณ"
+     "k": "race",
+     "ids": [
+      "soulmachine"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4383,10 +4528,13 @@
    "from": "ลูกผสมจักรกล",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ลูกผสมจักรกล"
+     "k": "race",
+     "ids": [
+      "construct"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4417,10 +4565,13 @@
    "from": "เผ่ามังกร",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เผ่ามังกร"
+     "k": "race",
+     "ids": [
+      "dragonkin"
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4461,6 +4612,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-01"
@@ -4508,6 +4660,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-04"
@@ -4550,6 +4703,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-05"
@@ -4587,6 +4741,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-07"
@@ -4624,6 +4779,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "BIO-02"
@@ -4661,6 +4817,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "MC-04"
@@ -4703,6 +4860,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "FG-01"
@@ -4740,6 +4898,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "BIO-05"
@@ -4777,6 +4936,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-15"
@@ -4819,16 +4979,22 @@
    "from": "มังกรปฐม DR-01 DR-02",
    "fromCond": [
     {
-     "k": "event",
-     "id": "DR-01",
-     "happened": true
-    },
-    {
-     "k": "event",
-     "id": "DR-02",
-     "happened": true
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DR-02",
+       "happened": true
+      }
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-01",
@@ -4878,6 +5044,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4927,6 +5094,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4971,6 +5139,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5014,6 +5183,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5062,6 +5232,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5100,6 +5271,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5138,6 +5310,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5181,6 +5354,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5224,6 +5398,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5267,6 +5442,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5310,6 +5486,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5354,6 +5531,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5399,6 +5577,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5443,6 +5622,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -5480,10 +5660,12 @@
    "from": "ลัทธิบูชามังกร (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ลัทธิบูชามังกร (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.01"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5519,10 +5701,12 @@
    "from": "ศาสนจักรแห่งแสง (B)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศาสนจักรแห่งแสง (B)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.02"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5553,10 +5737,12 @@
    "from": "ศรัทธาต้นไม้โลก (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาต้นไม้โลก (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.03"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5592,10 +5778,12 @@
    "from": "เทพแห่งสมุทร (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เทพแห่งสมุทร (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.04"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5626,10 +5814,12 @@
    "from": "พญานาคราช (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "พญานาคราช (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.05"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5660,10 +5850,12 @@
    "from": "เทพีแห่งจันทรา (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เทพีแห่งจันทรา (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.06"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5699,10 +5891,12 @@
    "from": "เทพแห่งสงคราม (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เทพแห่งสงคราม (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.07"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5733,10 +5927,12 @@
    "from": "การบูชาบรรพบุรุษ (C)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "การบูชาบรรพบุรุษ (C)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.09"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5772,10 +5968,12 @@
    "from": "ศรัทธาเตาหลอม (C)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาเตาหลอม (C)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.11"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5811,10 +6009,12 @@
    "from": "ศรัทธาศิลา (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาศิลา (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.13"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5850,10 +6050,12 @@
    "from": "ศรัทธาความฝัน (A)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาความฝัน (A)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.17"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5889,10 +6091,12 @@
    "from": "ศรัทธาวิญญาณสัตว์ (C)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาวิญญาณสัตว์ (C)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.18"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5923,10 +6127,12 @@
    "from": "ลัทธิผู้ชี้ทาง (B)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ลัทธิผู้ชี้ทาง (B)"
+     "k": "has",
+     "kind": "flag",
+     "id": "faith.16"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5967,6 +6173,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "GD-03"
@@ -6005,9 +6212,10 @@
    "fromCond": [
     {
      "k": "text",
-     "text": "NPC ที่เคยถูกช่วยกลับมาตอบแทนตัวละครหลัก ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) หัวข้อ 4"
+     "text": "NPC ที่เคยถูกช่วยกลับมาตอบแทนตัวละครหลัก"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6042,6 +6250,7 @@
      "text": "NPC หนึ่งคนที่ไว้ใจถึงระดับสูงสุด (+5)"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6081,6 +6290,7 @@
      "text": "นักกวีเขียนเพลงถึงตัวละคร"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6120,6 +6330,7 @@
      "text": "ได้รับเลือกเป็นหัวหน้ากลุ่มครั้งแรก"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6155,16 +6366,22 @@
    "from": "ตัวละครหยุดสงครามหนึ่งครั้ง (เช่น WR-06 WR-13)",
    "fromCond": [
     {
-     "k": "event",
-     "id": "WR-06",
-     "happened": true
-    },
-    {
-     "k": "event",
-     "id": "WR-13",
-     "happened": true
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true
+      }
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "WR-06",
@@ -6207,6 +6424,7 @@
      "text": "เดินทางไปครบสี่ทวีปขึ้นไป"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6242,6 +6460,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "GD-07"
@@ -6283,6 +6502,7 @@
      "text": "พระเจ้าส่งสัญญาณตรงถึงตัวละคร (ต้นทุนศรัทธาสูง)"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6317,6 +6537,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6348,6 +6569,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6377,6 +6599,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6415,6 +6638,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6453,6 +6677,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6484,6 +6709,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6516,6 +6742,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6548,6 +6775,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6586,6 +6814,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6623,6 +6852,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6655,6 +6885,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6687,6 +6918,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6719,6 +6951,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6755,6 +6988,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6786,6 +7020,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6815,6 +7050,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6845,11 +7081,19 @@
    "from": "เผ่าสัตว์ เอลฟ์ ภูตพราย · เส้น thread:wild",
    "fromCond": [
     {
-     "k": "has",
-     "kind": "unknown",
-     "id": "thread:wild"
+     "k": "race",
+     "ids": [
+      "beast",
+      "elf",
+      "fae"
+     ]
+    },
+    {
+     "k": "text",
+     "text": "เส้น thread:wild"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6891,6 +7135,7 @@
      "text": "ผูกพันสัตว์ระดับ 3"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6925,6 +7170,7 @@
      "text": "เกิดในครอบครัวเลี้ยงสัตว์"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6959,6 +7205,7 @@
      "text": "อยู่ในป่าหรือภูเขาตั้งแต่เด็ก"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -6993,6 +7240,7 @@
      "text": "ผูกพันสัตว์ระดับ 5 ต่อเนื่องหนึ่งทศวรรษ"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -7038,6 +7286,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -7072,6 +7321,7 @@
      "text": "ฟักไข่สำเร็จหนึ่งครั้ง"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -7106,6 +7356,7 @@
      "text": "สัตว์ช่วยชีวิตตัวละครหนึ่งครั้ง"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],

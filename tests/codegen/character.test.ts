@@ -236,6 +236,7 @@ describe('character generator: references across files', () => {
   const inJob = (c: CharCond): string[] => {
     if (c.k === 'and' || c.k === 'or') return c.of.flatMap(inJob);
     if (c.k === 'not') return inJob(c.of);
+    if (c.k === 'anyOf') return c.ids.map((id) => `${c.kind}:${id}`);
     return c.k === 'has' ? [`${c.kind}:${c.id}`] : [];
   };
   const level = (id: string) => id.replace(/_\d$/, '');
@@ -269,7 +270,7 @@ describe('character generator: references across files', () => {
     missing('job nodes', nodes.filter((n) => !/^cv\.\d+$/.test(n)), ids.nodes);
     missing('job nodes cv', nodes.filter((n) => /^cv\.\d+$/.test(n)), new Set(Array.from({ length: 16 }, (_, i) => `cv.${i + 1}`)));
     const has = js.flatMap((j) => [...j.req, ...j.ban].flatMap(inJob));
-    missing('required blessings', has.filter((x) => x.startsWith('blessing:')).map((x) => x.slice(9)), blessIds, ['nb_mark_*']);
+    missing('required blessings', has.filter((x) => x.startsWith('blessing:')).map((x) => x.slice(9)), blessIds);
     missing('required curses', has.filter((x) => x.startsWith('curse:')).map((x) => x.slice(6)), curseIds);
     missing('required jobs', has.filter((x) => x.startsWith('job:')).map((x) => x.slice(4)), jobIds);
     missing('required aptitudes', has.filter((x) => x.startsWith('aptitude:')).map((x) => x.slice(9)), aptIds);
@@ -348,7 +349,260 @@ describe('character generator: reproducible', () => {
       expect(j.sources.length).toBeGreaterThan(0);
     }
   });
-  it('the unparsed report stays small', () => {
-    expect(first.rep.unparsed).toBeLessThan(60);
+  it('the unparsed report is bounded (every condition and number the grammar cannot read is listed, none dropped)', () => {
+    expect(first.rep.unparsed).toBeLessThan(250);
+  });
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// Regression tests for the data review of M0-b (review/m0/data-review.md): H7 H8 M5 M9 M10 H2 L2
+// ---------------------------------------------------------------------------------------------------------------
+
+const unparsedMd = readFileSync(path.join(genDir, '_unparsed', 'character.md'), 'utf8');
+const unparsedRows = unparsedMd.split('\n').filter((l) => l.startsWith('| docs/'));
+const jobOf = (id: string) => jobs.jobs.find((j) => j.id === id)!;
+type Cond = CharCond;
+const textsOf = (c: Cond): string[] => {
+  if (c.k === 'text') return [c.text];
+  if (c.k === 'and' || c.k === 'or') return c.of.flatMap(textsOf);
+  if (c.k === 'not') return textsOf(c.of);
+  return [];
+};
+const walkAll = (o: unknown, f: (x: Record<string, unknown>) => void) => {
+  if (Array.isArray(o)) o.forEach((x) => walkAll(x, f));
+  else if (o && typeof o === 'object') {
+    f(o as Record<string, unknown>);
+    Object.values(o).forEach((x) => walkAll(x, f));
+  }
+};
+
+describe('H7: job bans keep the polarity of the words', () => {
+  it('dragonknight is banned when the dragon continent is gone and no dragon mark is held', () => {
+    const marks = blessings.filter((b) => b.id.startsWith('nb_mark_')).map((b) => b.id);
+    expect(marks).toHaveLength(15);
+    expect(jobOf('dragonknight').ban).toEqual([
+      { k: 'and', of: [{ k: 'event', id: 'DR-01', happened: true }, { k: 'not', of: { k: 'anyOf', kind: 'blessing', ids: marks, min: 1 } }] },
+    ]);
+  });
+  it('contract_redeemer, seal_keeper and the others that name a held id are `has`, not text', () => {
+    expect(jobOf('contract_redeemer').ban).toEqual([{ k: 'has', kind: 'curse', id: 'c_oathbreaker' }]);
+    expect(jobOf('seal_keeper').ban).toEqual([{ k: 'has', kind: 'curse', id: 'nc_seal_scar' }]);
+    expect(jobOf('seal_breaker').ban).toEqual([{ k: 'has', kind: 'blessing', id: 'nb_seal_hand' }]);
+    expect(jobOf('peacemaker_legend').ban).toEqual([{ k: 'has', kind: 'tag', id: 'bloodlust' }]);
+    expect(jobOf('demonlord').ban).toEqual([{ k: 'has', kind: 'blessing', id: 'b_saintmark' }]);
+  });
+  it('a ban cell that says "ต้อง …" or "เฉพาะ …" is the opposite of that requirement', () => {
+    expect(jobOf('piratelord').ban).toEqual([{ k: 'not', of: { k: 'country', ids: ['NR-05'] } }]);
+    expect(jobOf('slimeking').ban).toEqual([{ k: 'not', of: { k: 'race', ids: ['slime'] } }]);
+    expect(jobOf('third_home_founder').ban[0]).toMatchObject({ k: 'not' });
+    expect(jobOf('vampirelord').ban[0]).toMatchObject({ k: 'and' }); // ถ้าไม่ใช่แวมไพร์แท้ ต้องมี ns_blood_ledger
+  });
+  it('every secret job whose ban cell starts "ถ้า … ต้อง" is and[condition, not requirement]', () => {
+    const rows = jobs.jobs.filter((j) => /^ถ้า.+ต้อง/.test(j.banText));
+    expect(rows.map((j) => j.id).sort()).toEqual(['dragonknight', 'vampirelord']);
+    for (const j of rows) {
+      const b = j.ban[0];
+      expect(b.k, j.id).toBe('and');
+      expect((b as { of: Cond[] }).of.some((c) => c.k === 'not'), j.id).toBe(true);
+    }
+  });
+  it('a "ผูก" link and a weight are notes of the ban cell, not bans', () => {
+    expect(jobOf('prophet').ban).toEqual([]);
+    expect(jobOf('prophet').banNotes.join(' ')).toContain('GD-01');
+    expect(jobOf('hero').ban).toEqual([]);
+    expect(jobOf('archmage').ban).toEqual([]);
+    expect(jobOf('swordsaint').ban).toEqual([]);
+  });
+  it('a fate "ทุกคน ยกเว้นผู้มี b_destiny" excludes the holders', () => {
+    expect(fates.fates.find((f) => f.id === 'fate_shortlife')!.eligibleCond).toEqual([{ k: 'not', of: { k: 'has', kind: 'blessing', id: 'b_destiny' } }]);
+  });
+});
+
+describe('H8: synergy chances stay with the thing granted', () => {
+  const rule = (id: string) => races.synergy.find((r) => r.id === id)!;
+  it('SR-39 and SR-65 grants carry their own chance and leave no loose percent', () => {
+    expect(rule('SR-39').effects).toEqual([{ k: 'grant', kind: 'curse', id: 'c_outcast', chance: 0.3 }]);
+    expect(rule('SR-65').effects).toEqual([
+      { k: 'grant', kind: 'curse', id: 'nc_homeland_ghost', chance: 0.35 },
+      { k: 'grant', kind: 'blessing', id: 'nb_homeland_call', chance: 0.2 },
+    ]);
+    expect(rule('SR-61').effects).toEqual([{ k: 'grant', kind: 'curse', id: 'nc_war_orphan', chance: 0.1 }]);
+  });
+  it('no rule keeps a `pct` that equals the chance of one of its grants', () => {
+    for (const r of races.synergy) {
+      const chances = r.effects.flatMap((e) => (e.k === 'grant' && e.chance !== undefined ? [Math.round(e.chance * 100)] : []));
+      for (const e of r.effects) if ((e as { k: string }).k === 'pct') expect(chances, r.id).not.toContain((e as unknown as { pct: number }).pct);
+    }
+  });
+  it('SR-29 "ลดความสามารถทั้งหมด 20%" is a cut', () => {
+    expect(rule('SR-29').effects).toEqual([{ k: 'pct', text: 'ร่างพองน้ำ ลดความสามารถทั้งหมด', pct: -20 }]);
+    expect(rule('SR-31').effects).toEqual([{ k: 'pct', text: 'คำสาปถูกสะท้อน', pct: 50 }]); // "สะท้อน 50%" is not a cut
+  });
+  it('"ลบ" and "เสีย" remove, "ง่ายขึ้น" favours, "ผลเป็น 2 เท่า" grants nothing', () => {
+    expect(rule('SR-20').effects).toEqual([{ k: 'remove', kind: 'tag', id: 'weak_light' }]);
+    expect(rule('SR-23').effects).toContainEqual({ k: 'remove', kind: 'tag', id: 'infernal' });
+    expect(rule('SR-62').effects).toEqual([
+      { k: 'favour', kind: 'blessing', id: 'b_plagueward', mul: 2 },
+      { k: 'favour', kind: 'curse', id: 'c_sickly', mul: 2 },
+    ]);
+    expect(rule('SR-42').effects).toEqual([
+      { k: 'favour', kind: 'tag', id: 'holy', mul: 2 },
+      { k: 'favour', kind: 'tag', id: 'oracle', mul: 2 },
+    ]);
+    expect(rule('SR-44').effects).toEqual([]);
+    expect(rule('SR-44').mul).toBe(2);
+  });
+  it('the values that matched the docs still match', () => {
+    expect(rule('SR-01').mul).toBe(1.5);
+    expect(rule('SR-07').mul).toBe(2);
+    expect(rule('SR-12').mul).toBe(0);
+    expect(rule('SR-32').effects).toEqual([{ k: 'grant', kind: 'curse', id: 'c_echo' }]);
+  });
+});
+
+describe('M5: birth signs raise the draw weight, they do not grant', () => {
+  const sign = (id: string) => origin.birthSigns.find((b) => b.id === id)!;
+  it('comet, storm, night, dawn and dusk are favour only', () => {
+    expect(sign('comet').fx).toEqual([
+      { k: 'favour', kind: 'tag', id: 'hero_luck', mul: 3 },
+      { k: 'favour', kind: 'tag', id: 'fate_shift', mul: 3 },
+    ]);
+    expect(sign('storm').fx).toEqual([
+      { k: 'favour', kind: 'tag', id: 'lightning', mul: 3 },
+      { k: 'favour', kind: 'tag', id: 'wind', mul: 3 },
+    ]);
+    expect(sign('night').fx).toEqual([
+      { k: 'favour', kind: 'blessing', id: 'b_nighteye' },
+      { k: 'favour', kind: 'blessing', id: 'b_nightowl' },
+    ]);
+    expect(sign('dawn').fx.every((e) => e.k === 'favour')).toBe(true);
+    expect(sign('dusk').fx.every((e) => e.k === 'favour')).toBe(true);
+  });
+  it('a full moon favours the werewolf curse only for the beast race; a day-born vampire gets the sunburn curse', () => {
+    expect(sign('fullmoon').fx).toEqual([{ k: 'if', cond: { k: 'race', ids: ['beast'] }, then: [{ k: 'favour', kind: 'curse', id: 'c_moonfrenzy', mul: 3 }] }]);
+    expect(sign('day').fx).toEqual([{ k: 'if', cond: { k: 'race', ids: ['vampire'] }, then: [{ k: 'grant', kind: 'curse', id: 'c_sunburn' }] }]);
+  });
+  it('the eclipse blessing keeps its 25% and the curse chance the doc leaves out is reported', () => {
+    expect(sign('eclipse').fx).toEqual([
+      { k: 'grant', kind: 'blessing', id: 'nb_eclipse_born', chance: 0.25 },
+      { k: 'grant', kind: 'curse', id: 'c_shadow' },
+    ]);
+    expect(unparsedRows.some((r) => r.includes('01-origin.md:255') && r.includes('c_shadow'))).toBe(true);
+  });
+  it('no sign whose effect says "ง่ายขึ้น" or "เพิ่ม n เท่า" grants anything outside an if', () => {
+    for (const b of origin.birthSigns) {
+      if (!/ง่ายขึ้น|เพิ่ม\s*[\d.]+\s*เท่า/.test(b.effect)) continue;
+      expect(b.fx.some((e) => e.k === 'grant'), b.id).toBe(false);
+    }
+  });
+});
+
+describe('M9: jobs read as has / not race, and the music curse names a job that does not exist', () => {
+  it('noble needs `noble` only; farmer is anyone but a giant', () => {
+    expect(jobOf('noble').req).toEqual([{ k: 'has', kind: 'job', id: 'noble' }]);
+    expect(jobOf('farmer').req[0]).toEqual({ k: 'not', of: { k: 'race', ids: ['giant'] } });
+    expect(jobOf('royal_guard').req).toEqual([{ k: 'or', of: [{ k: 'has', kind: 'job', id: 'noble' }, { k: 'cmp', stat: 'fame', op: '>=', value: 15 }] }]);
+  });
+  it('mummies and ghouls do not take the jobs the cell says they refuse', () => {
+    const refuse = jobs.jobs.filter((j) => j.req.some((c) => c.k === 'not' && c.of.k === 'race' && c.of.ids.includes('ghoul')));
+    expect(refuse.length).toBeGreaterThan(0);
+  });
+  it('nc_tone_deaf lists "นักดนตรี" but no job has that name: only dancer matches, and the gap is in the report', () => {
+    const c = curses.find((x) => x.id === 'nc_tone_deaf')!;
+    expect(c.jobs).toEqual(['dancer']);
+    expect(jobs.jobs.some((j) => j.name === 'นักดนตรี')).toBe(false);
+    expect(unparsedRows.some((r) => r.includes('nc_tone_deaf: นักดนตรี'))).toBe(true);
+  });
+  it('dragon_whisperer asks for any dragon mark, as one anyOf over the marks that exist', () => {
+    const flat = JSON.stringify(jobOf('dragon_whisperer').req);
+    expect(flat).not.toContain('nb_mark_*');
+    expect(flat).toContain('"anyOf"');
+  });
+});
+
+describe('M10: fate eligibility is a condition where the doc allows one', () => {
+  const fate = (id: string) => fates.fates.find((f) => f.id === id)!;
+  it('"ทุกคน" is no condition and its remarks are notes', () => {
+    for (const id of ['fate_mentor', 'fate_war', 'fate_plague', 'fate_beast', 'fate_treasure', 'fate_exile', 'fate_demon']) expect(fate(id).eligibleCond, id).toEqual([]);
+    expect(fate('fate_war').eligibleNotes.join(' ')).toContain('ศึกชายแดน');
+    expect(fate('fate_demon').eligibleNotes.join(' ')).toContain('น้ำหนัก ×2');
+  });
+  it('religion channels, a continent, a reincarnation flag, a class and events', () => {
+    const trial = fate('fate_trial').eligibleCond[0];
+    expect(trial).toMatchObject({ k: 'anyOf', kind: 'flag', min: 1 });
+    expect((trial as { ids: string[] }).ids).toEqual(['faith.01', 'faith.02', 'faith.03', 'faith.04', 'faith.05', 'faith.06', 'faith.07', 'faith.13', 'faith.16', 'faith.17']);
+    expect(fate('fate_chosen').eligibleCond).toEqual([{ k: 'or', of: [{ k: 'continent', ids: ['AL'] }, { k: 'has', kind: 'flag', id: 'faith.02' }] }]);
+    expect(fate('fate_pastlife').eligibleCond).toEqual([{ k: 'has', kind: 'flag', id: 'reincarnated' }]);
+    expect(fate('fate_demonlord').eligibleCond).toEqual([{ k: 'or', of: [{ k: 'event', id: 'DM-01', happened: true }, { k: 'event', id: 'PL-02', happened: true }] }]);
+    expect(JSON.stringify(fate('fate_throne').eligibleCond)).toContain('{"k":"class","min":5}');
+  });
+  it('"หรือ" between events is an or, never both', () => {
+    for (const f of fates.fates) {
+      const top = f.eligibleCond.filter((c) => c.k === 'event');
+      expect(top.length, f.id).toBeLessThanOrEqual(1);
+    }
+  });
+  it('fewer fates carry a text condition than the 18 of 22 the review found, and each is reported', () => {
+    const withText = fates.fates.filter((f) => f.eligibleCond.some((c) => textsOf(c).length));
+    expect(withText.length).toBeLessThanOrEqual(10);
+    expect(withText.length).toBeGreaterThan(0);
+  });
+});
+
+describe('H2: a text condition is never kept silently', () => {
+  type Row = { where: string; conds: Cond[] };
+  const rows: Row[] = [
+    ...jobs.jobs.map((j) => ({ where: j.src, conds: [...j.req, ...j.ban] })),
+    ...fates.fates.map((f) => ({ where: f.src, conds: f.eligibleCond })),
+    ...[...blessings, ...curses].map((g) => ({ where: g.at, conds: g.fromCond })),
+    ...comp.stories.map((s) => ({ where: s.src, conds: s.condCond })),
+  ];
+  it('every text condition has a line in _unparsed/character.md at the row it came from', () => {
+    const miss: string[] = [];
+    for (const r of rows)
+      for (const c of r.conds)
+        for (const t of textsOf(c)) if (!unparsedRows.some((u) => u.includes(r.where.replace(/:\d+$/, '') + ':') && u.includes(t.replace(/\|/g, '\\|')))) miss.push(`${r.where} ${t}`);
+    expect(miss).toEqual([]);
+  });
+  it('the text conditions went down from 123 / 18 / 38 / 17 / 4 and none is a bare "ทุก…" or a weight', () => {
+    const n = (cs: Cond[][]) => cs.reduce((a, c) => a + c.reduce((b, x) => b + textsOf(x).length, 0), 0);
+    expect(n(jobs.jobs.map((j) => [...j.req, ...j.ban]))).toBeLessThanOrEqual(85);
+    expect(n(fates.fates.map((f) => f.eligibleCond))).toBeLessThanOrEqual(15);
+    expect(n(blessings.map((g) => g.fromCond))).toBeLessThanOrEqual(20);
+    expect(n(curses.map((g) => g.fromCond))).toBeLessThanOrEqual(25);
+    for (const r of rows) for (const c of r.conds) for (const t of textsOf(c)) expect(t, r.where).not.toMatch(/^(ทุก(เผ่า|เมือง|เมืองเล็ก|ประเทศ|ทวีป|คน)|ไม่จำกัด(เพศ|เผ่า)?)$/);
+  });
+  it('the explaining words went to notes, not away', () => {
+    expect(jobOf('bard').reqNotes.join(' ')).toContain('ไซเรนและเงือกได้ง่ายขึ้น');
+    expect(jobOf('smith').reqNotes.join(' ')).toContain('SR-52');
+    expect(jobOf('swordsaint').banNotes.join(' ')).toContain('ns_giant_forge');
+  });
+  it('religion names in a grant source become faith flags', () => {
+    const dragon = blessings.find((b) => b.from.startsWith('ลัทธิบูชามังกร'));
+    expect(dragon?.fromCond).toEqual([{ k: 'has', kind: 'flag', id: 'faith.01' }]);
+    const curse = curses.find((c) => c.from.includes('ศาสนาช่อง D'));
+    expect(curse?.fromCond[0]).toMatchObject({ k: 'anyOf', kind: 'flag' });
+  });
+  it('several events in one source cell are alternatives', () => {
+    const oran = blessings.find((b) => b.id === 'nb_mark_oran')!;
+    expect(oran.fromCond.length).toBe(1);
+    expect(oran.fromCond[0]).toMatchObject({ k: 'or' });
+  });
+});
+
+describe('L2: tag ids carry no leading #', () => {
+  it('no id, tag or event-grant id in the character files starts with #', () => {
+    const bad: string[] = [];
+    for (const f of FILES) {
+      walkAll(JSON.parse(read(f)).items, (o) => {
+        if (o.kind === 'tag' && typeof o.id === 'string' && o.id.startsWith('#')) bad.push(`${f} ${o.id}`);
+        if (typeof o.tag === 'string' && o.tag.startsWith('#')) bad.push(`${f} ${o.tag}`);
+        for (const key of ['tags', 'attacker', 'target', 'newTags']) {
+          const v = o[key];
+          if (Array.isArray(v)) for (const x of v) if (typeof x === 'string' && x.startsWith('#')) bad.push(`${f} ${key} ${x}`);
+        }
+      });
+    }
+    expect(bad).toEqual([]);
   });
 });

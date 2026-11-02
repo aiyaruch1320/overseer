@@ -1,6 +1,7 @@
 {
- "version": "43f2edcd95cd",
+ "version": "549476241f89",
  "sources": [
+  "docs/lore/religions/README.md",
   "docs/systems/character/13-companions-overview.md",
   "docs/systems/character/14-companion-abilities.md",
   "docs/systems/character/15-companion-species.md",
@@ -5266,6 +5267,7 @@
       "max": 14
      }
     ],
+    "condNotes": [],
     "weight": 10,
     "species": [
      "sp_dog",
@@ -5314,11 +5316,11 @@
     "cond": "ถิ่นมีธงสงคราม (war)",
     "condCond": [
      {
-      "k": "has",
-      "kind": "unknown",
-      "id": "war"
+      "k": "text",
+      "text": "ถิ่นมีธงสงคราม (war)"
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_war_dog",
@@ -5356,10 +5358,20 @@
     "cond": "NPC ที่ไว้ใจ +4 ขึ้นไปและมีสัตว์",
     "condCond": [
      {
-      "k": "text",
-      "text": "NPC ที่ไว้ใจ +4 ขึ้นไปและมีสัตว์"
+      "k": "and",
+      "of": [
+       {
+        "k": "text",
+        "text": "NPC ที่ไว้ใจ +4 ขึ้นไป"
+       },
+       {
+        "k": "text",
+        "text": "สัตว์"
+       }
+      ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [],
     "speciesText": "ตามที่ NPC มี (C ถึง R)",
@@ -5392,10 +5404,20 @@
     "cond": "พ่อแม่ ครู หรือคู่หูของ NPC ตาย",
     "condCond": [
      {
-      "k": "text",
-      "text": "พ่อแม่ ครู หรือคู่หูของ NPC ตาย"
+      "k": "or",
+      "of": [
+       {
+        "k": "text",
+        "text": "พ่อแม่ ครู"
+       },
+       {
+        "k": "text",
+        "text": "คู่หูของ NPC ตาย"
+       }
+      ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [],
     "speciesText": "สัตว์ของผู้ตาย (C ถึง R)",
@@ -5431,6 +5453,7 @@
       "text": "พบพ่อค้าสัตว์ในเมืองใหญ่"
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_parrot",
@@ -5484,6 +5507,7 @@
       "text": "เหตุการณ์ภัยพิบัติท้องถิ่น"
      }
     ],
+    "condNotes": [],
     "weight": 4,
     "species": [
      "sp_dog",
@@ -5537,6 +5561,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 8,
     "species": [
      "sp_sheepdog"
@@ -5576,6 +5601,7 @@
       "id": "hunter"
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_wolf_pup",
@@ -5640,6 +5666,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 7,
     "species": [
      "sp_ox",
@@ -5705,6 +5732,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 7,
     "species": [
      "sp_tea_cat",
@@ -5761,6 +5789,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_camel",
@@ -5824,6 +5853,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_gull",
@@ -5867,6 +5897,7 @@
       "id": "gravekeeper"
      }
     ],
+    "condNotes": [],
     "weight": 7,
     "species": [
      "sp_bone_hound",
@@ -5920,6 +5951,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [
      "sp_war_horse"
@@ -5969,6 +6001,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_dog",
@@ -6012,6 +6045,7 @@
       "id": "tamer"
      }
     ],
+    "condNotes": [],
     "weight": 10,
     "species": [
      "sp_wolf",
@@ -6063,6 +6097,7 @@
       "id": "druid"
      }
     ],
+    "condNotes": [],
     "weight": 10,
     "species": [
      "sp_moon_deer",
@@ -6110,6 +6145,7 @@
       "id": "veterinarian"
      }
     ],
+    "condNotes": [],
     "weight": 9,
     "species": [],
     "speciesText": "สัตว์ที่รักษา (C ถึง R)",
@@ -6146,6 +6182,7 @@
       "id": "beast_hunter"
      }
     ],
+    "condNotes": [],
     "weight": 8,
     "species": [
      "sp_wyvern_young",
@@ -6195,6 +6232,7 @@
       "id": "nb_mark_"
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_lost_dragonling",
@@ -6240,13 +6278,9 @@
       "k": "has",
       "kind": "job",
       "id": "naga_egg_warden"
-     },
-     {
-      "k": "has",
-      "kind": "unknown",
-      "id": "naga_egg"
      }
     ],
+    "condNotes": [],
     "weight": 10,
     "species": [
      "sp_naga_hatchling"
@@ -6291,6 +6325,7 @@
       "id": "beastking"
      }
     ],
+    "condNotes": [],
     "weight": 10,
     "species": [],
     "speciesText": "สุ่ม 1 ตัวระดับ R ถึง E ต่อปี",
@@ -6329,6 +6364,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [
      "sp_sand_worm_pup"
@@ -6375,6 +6411,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 4,
     "species": [
      "sp_whale_calf"
@@ -6421,6 +6458,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [
      "sp_lava_toad",
@@ -6470,6 +6508,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [
      "sp_snow_fox",
@@ -6517,6 +6556,7 @@
       "happened": true
      }
     ],
+    "condNotes": [],
     "weight": 6,
     "species": [
      "sp_mist_hound",
@@ -6565,6 +6605,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 4,
     "species": [
      "sp_rust_dog"
@@ -6611,6 +6652,7 @@
       ]
      }
     ],
+    "condNotes": [],
     "weight": 5,
     "species": [
      "sp_dream_moth"
@@ -6654,13 +6696,9 @@
        "SV-04",
        "SV-05"
       ]
-     },
-     {
-      "k": "has",
-      "kind": "trait",
-      "id": "kind"
      }
     ],
+    "condNotes": [],
     "weight": 2,
     "species": [
      "sp_unicorn"
@@ -6712,6 +6750,7 @@
       "id": "sp_nine_fox_cub"
      }
     ],
+    "condNotes": [],
     "weight": 2,
     "species": [
      "sp_nine_tailed_fox"
@@ -6756,6 +6795,7 @@
       "happened": true
      }
     ],
+    "condNotes": [],
     "weight": 1,
     "species": [
      "sp_sixteenth_hatchling"
