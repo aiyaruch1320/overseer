@@ -1,0 +1,5943 @@
+{
+ "version": "f93825037c22",
+ "sources": [
+  "docs/systems/combat/03-enemies.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/combat.ts",
+ "items": {
+  "counts": {
+   "total": 200,
+   "code": 32,
+   "world": 40,
+   "npcGeneric": 20,
+   "npcNamed": 102,
+   "boss": 6
+  },
+  "items": [
+   {
+    "id": "goblin",
+    "name": "ฝูงก๊อบลิน",
+    "group": "code",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 9,
+    "where": "อัลเดรีย ซิลวาเนล",
+    "continents": [
+     "AL",
+     "SV"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ฝูง 4–8 ตัว",
+    "src": "docs/systems/combat/03-enemies.md:13"
+   },
+   {
+    "id": "wolf",
+    "name": "หมาป่าเงา",
+    "group": "code",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 10,
+    "where": "อัลเดรีย KD-12",
+    "continents": [
+     "AL",
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ใช้ในเหตุการณ์ฝูงหมาป่าบุกหมู่บ้าน",
+    "src": "docs/systems/combat/03-enemies.md:14"
+   },
+   {
+    "id": "slime",
+    "name": "สไลม์ป่า",
+    "group": "code",
+    "kinds": [
+     "amorphous"
+    ],
+    "traits": [],
+    "tier": "ลูกกระจ๊อก",
+    "wounds": null,
+    "dc": 6,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:15"
+   },
+   {
+    "id": "troll",
+    "name": "โทรลล์ภูเขา",
+    "group": "code",
+    "kinds": [
+     "giant",
+     "regen"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "KD-12 อัลเดรีย",
+    "continents": [
+     "AL",
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ไฟ ★",
+    "src": "docs/systems/combat/03-enemies.md:16"
+   },
+   {
+    "id": "skeleton",
+    "name": "กองทัพโครงกระดูก",
+    "group": "code",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 11,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "MH-12 บ่อยสุด",
+    "src": "docs/systems/combat/03-enemies.md:17"
+   },
+   {
+    "id": "vampire",
+    "name": "เคานต์แวมไพร์",
+    "group": "code",
+    "kinds": [
+     "undead",
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "NB KD-12",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "กลางวันอ่อนแรง",
+    "src": "docs/systems/combat/03-enemies.md:18"
+   },
+   {
+    "id": "lich",
+    "name": "ลิชโบราณ",
+    "group": "code",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ผูก DM-09 ถ้าเกิดในเนบูเลีย",
+    "src": "docs/systems/combat/03-enemies.md:19"
+   },
+   {
+    "id": "wyvern",
+    "name": "ไวเวิร์น",
+    "group": "code",
+    "kinds": [
+     "dragon"
+    ],
+    "traits": [
+     "flying"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "KD AZ ซาฮารัน",
+    "continents": [
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ไม่ใช่มังกรสิบห้า ฆ่าได้โดยไม่เกิด DR",
+    "src": "docs/systems/combat/03-enemies.md:20"
+   },
+   {
+    "id": "firedragon",
+    "name": "มังกรเพลิง",
+    "group": "code",
+    "kinds": [
+     "dragon"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 6,
+    "dc": 24,
+    "where": "คาซ-ดูรัม",
+    "continents": [
+     "KD"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "มังกรป่า ลูกหลานไม่ใช่หนึ่งในสิบห้า (ดู [06-dragon-encounters.md](06-dragon-encounters.md))",
+    "src": "docs/systems/combat/03-enemies.md:21"
+   },
+   {
+    "id": "icedragon",
+    "name": "มังกรน้ำแข็ง",
+    "group": "code",
+    "kinds": [
+     "dragon"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 6,
+    "dc": 23,
+    "where": "KD-12",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "มังกรป่า เหมือนข้างบน",
+    "src": "docs/systems/combat/03-enemies.md:22"
+   },
+   {
+    "id": "sandworm",
+    "name": "หนอนทรายยักษ์",
+    "group": "code",
+    "kinds": [
+     "beast",
+     "giant"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 16,
+    "where": "ซาฮารัน",
+    "continents": [
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ชนใต้ทรายสงบได้",
+    "src": "docs/systems/combat/03-enemies.md:23"
+   },
+   {
+    "id": "scorpion",
+    "name": "แมงป่องเหล็ก",
+    "group": "code",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "ซาฮารัน คาซ-ดูรัม",
+    "continents": [
+     "KD",
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:24"
+   },
+   {
+    "id": "mummy",
+    "name": "มัมมี่ฟาโรห์",
+    "group": "code",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 16,
+    "where": "ซาฮารัน",
+    "continents": [
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ผูก SH-02 ถ้าเป็นข้ารับใช้ของฟาโรห์",
+    "src": "docs/systems/combat/03-enemies.md:25"
+   },
+   {
+    "id": "yeti",
+    "name": "เยติ",
+    "group": "code",
+    "kinds": [
+     "beast",
+     "giant"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "KD-12",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:26"
+   },
+   {
+    "id": "siren",
+    "name": "ไซเรน",
+    "group": "code",
+    "kinds": [
+     "fey",
+     "sea"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "เนเรีย",
+    "continents": [
+     "NR"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ไซเรนลาโอทอล (NR-08) ไม่ใช่ศัตรู",
+    "src": "docs/systems/combat/03-enemies.md:27"
+   },
+   {
+    "id": "kraken",
+    "name": "คราเคน",
+    "group": "code",
+    "kinds": [
+     "beast",
+     "giant",
+     "sea"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 22,
+    "where": "เนเรีย",
+    "continents": [
+     "NR"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "คราเคนผู้เฝ้า (NR11-2) สงบได้ถ้าไม่ขโมยไข่มุก",
+    "src": "docs/systems/combat/03-enemies.md:28"
+   },
+   {
+    "id": "firedemon",
+    "name": "อสูรเพลิง",
+    "group": "code",
+    "kinds": [
+     "demon"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 18,
+    "where": "KD-08 MH",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "จากปากเหว",
+    "src": "docs/systems/combat/03-enemies.md:29"
+   },
+   {
+    "id": "ent",
+    "name": "เอนท์ผู้คลั่งแค้น",
+    "group": "code",
+    "kinds": [
+     "plant"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 14,
+    "where": "ซิลวาเนล",
+    "continents": [
+     "SV"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "มักเกิดหลัง BIO-01",
+    "src": "docs/systems/combat/03-enemies.md:30"
+   },
+   {
+    "id": "griffon",
+    "name": "กริฟฟอน",
+    "group": "code",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "flying"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "อัซการ์ ซาฮารัน",
+    "continents": [
+     "AZ",
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "สงบได้ อาจเป็นสัตว์คู่หู",
+    "src": "docs/systems/combat/03-enemies.md:31"
+   },
+   {
+    "id": "hydra",
+    "name": "ไฮดราเก้าเศียร",
+    "group": "code",
+    "kinds": [
+     "beast",
+     "regen"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 20,
+    "where": "ซิลวาเนล เนเรีย",
+    "continents": [
+     "NR",
+     "SV"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:32"
+   },
+   {
+    "id": "golem",
+    "name": "โกเลมหินโบราณ",
+    "group": "code",
+    "kinds": [
+     "construct"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "KD-03 MK-04",
+    "continents": [
+     "KD",
+     "MK"
+    ],
+    "countries": [
+     "KD-03",
+     "MK-04"
+    ],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "รูน ★",
+    "src": "docs/systems/combat/03-enemies.md:33"
+   },
+   {
+    "id": "krasue",
+    "name": "ผีกระสือ",
+    "group": "code",
+    "kinds": [
+     "undead",
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "ซิลวาเนล",
+    "continents": [
+     "SV"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:34"
+   },
+   {
+    "id": "pop",
+    "name": "ผีปอบ",
+    "group": "code",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "ซิลวาเนล อัลเดรีย",
+    "continents": [
+     "AL",
+     "SV"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:35"
+   },
+   {
+    "id": "werewolf",
+    "name": "มนุษย์หมาป่า",
+    "group": "code",
+    "kinds": [
+     "beast",
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "อัลเดรีย KD-12",
+    "continents": [
+     "AL",
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ผู้มี `c_moonfrenzy` กลายเป็นตัวนี้ได้",
+    "src": "docs/systems/combat/03-enemies.md:36"
+   },
+   {
+    "id": "mimic",
+    "name": "มิมิค",
+    "group": "code",
+    "kinds": [
+     "construct"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 10,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "`#truth` `u_appraisal` เห็นก่อน",
+    "src": "docs/systems/combat/03-enemies.md:37"
+   },
+   {
+    "id": "ogre",
+    "name": "โอเกอร์",
+    "group": "code",
+    "kinds": [
+     "giant",
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "อัลเดรีย มอร์เฮเวน",
+    "continents": [
+     "AL",
+     "MH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "โอเกอร์ของ MH-01 เป็นคน เจรจาได้",
+    "src": "docs/systems/combat/03-enemies.md:38"
+   },
+   {
+    "id": "harpy",
+    "name": "ฮาร์ปี้",
+    "group": "code",
+    "kinds": [],
+    "traits": [
+     "flying"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 11,
+    "where": "เนเรีย ซาฮารัน",
+    "continents": [
+     "NR",
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:39"
+   },
+   {
+    "id": "manticore",
+    "name": "แมนติคอร์",
+    "group": "code",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "ซาฮารัน คาซ-ดูรัม",
+    "continents": [
+     "KD",
+     "SH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:40"
+   },
+   {
+    "id": "wraith",
+    "name": "วิญญาณอาฆาต",
+    "group": "code",
+    "kinds": [
+     "undead",
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:41"
+   },
+   {
+    "id": "bandits",
+    "name": "กลุ่มโจรภูเขา",
+    "group": "code",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 11,
+    "where": "ทุกทวีป",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ดูหมวด NPC",
+    "src": "docs/systems/combat/03-enemies.md:42"
+   },
+   {
+    "id": "demongeneral",
+    "name": "แม่ทัพปีศาจ",
+    "group": "code",
+    "kinds": [
+     "demon"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 23,
+    "where": "มอร์เฮเวน",
+    "continents": [
+     "MH"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "ผูก DM-01 DM-02",
+    "src": "docs/systems/combat/03-enemies.md:43"
+   },
+   {
+    "id": "kappa",
+    "name": "กัปปะ",
+    "group": "code",
+    "kinds": [
+     "fey"
+    ],
+    "traits": [],
+    "tier": "ลูกกระจ๊อก",
+    "wounds": null,
+    "dc": 9,
+    "where": "เนเรีย",
+    "continents": [
+     "NR"
+    ],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "note": "กัปปะ NR-09 เป็นเผ่าที่สุภาพ โค้งคำนับก่อนแล้วไม่สู้",
+    "src": "docs/systems/combat/03-enemies.md:44"
+   },
+   {
+    "id": "storm_harpy",
+    "name": "ฮาร์ปี้พายุ",
+    "group": "world",
+    "kinds": [
+     "elemental"
+    ],
+    "traits": [
+     "flying"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "AZ-03",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-03"
+    ],
+    "weak": [
+     {
+      "tag": "earth",
+      "name": "ดิน",
+      "mark": "▲"
+     },
+     {
+      "tag": "ranged",
+      "name": "ยิง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "✕"
+     }
+    ],
+    "attack": "lightning",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:50"
+   },
+   {
+    "id": "cloud_serpent",
+    "name": "งูเมฆ",
+    "group": "world",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "flying"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 16,
+    "where": "อัซการ์",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "ice",
+      "name": "น้ำแข็ง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "▼"
+     }
+    ],
+    "attack": "pierce",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:51"
+   },
+   {
+    "id": "sky_debris_golem",
+    "name": "โกเลมซากเกาะ",
+    "group": "world",
+    "kinds": [
+     "construct"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "หลัง DR-01 (SF-01 SF-08)",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "blunt",
+      "name": "ทุบ",
+      "mark": "▲"
+     },
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blade",
+      "name": "ฟัน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "blunt",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:52"
+   },
+   {
+    "id": "ash_wolf_pack",
+    "name": "ฝูงหมาป่าเถ้า",
+    "group": "world",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "MH-04",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-04"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     },
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:53"
+   },
+   {
+    "id": "ghoul_horde",
+    "name": "ฝูงกูลหิว",
+    "group": "world",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 14,
+    "where": "MH-03 MH-12",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-03",
+     "MH-12"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "curse",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:54"
+   },
+   {
+    "id": "ghost_legion",
+    "name": "กองทัพผีห้าธง",
+    "group": "world",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "MH-12",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-12"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "music",
+      "name": "ดนตรี",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "กายภาพ",
+      "name": "กายภาพ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "dark",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:55"
+   },
+   {
+    "id": "crown_wraith",
+    "name": "เงามงกุฎกระดูก",
+    "group": "world",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "MH-10",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-10"
+    ],
+    "weak": [
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "dark",
+      "name": "มืด",
+      "mark": "▼"
+     }
+    ],
+    "attack": "curse hunger",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:56"
+   },
+   {
+    "id": "lava_slime",
+    "name": "สไลม์ลาวา",
+    "group": "world",
+    "kinds": [
+     "amorphous",
+     "elemental"
+    ],
+    "traits": [],
+    "tier": "ลูกกระจ๊อก",
+    "wounds": null,
+    "dc": 9,
+    "where": "KD-02 KD-06",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-02",
+     "KD-06"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "★"
+     },
+     {
+      "tag": "ice",
+      "name": "น้ำแข็ง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:57"
+   },
+   {
+    "id": "magma_salamander",
+    "name": "ซาลาแมนเดอร์แมกมา",
+    "group": "world",
+    "kinds": [
+     "elemental"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "KD-06 KD-10",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-06",
+     "KD-10"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:58"
+   },
+   {
+    "id": "rune_guardian",
+    "name": "ผู้เฝ้ารูนใต้เหมือง",
+    "group": "world",
+    "kinds": [
+     "construct"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "KD-03 KD-10",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-03",
+     "KD-10"
+    ],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "กายภาพ",
+      "name": "กายภาพ",
+      "mark": "▼"
+     }
+    ],
+    "attack": "blunt",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:59"
+   },
+   {
+    "id": "hellmouth_imps",
+    "name": "ฝูงอิมพ์ปากเหว",
+    "group": "world",
+    "kinds": [
+     "demon"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "KD-08 DM-07",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-08"
+    ],
+    "weak": [
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     },
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:60"
+   },
+   {
+    "id": "ash_drake",
+    "name": "ไดรค์เถ้า",
+    "group": "world",
+    "kinds": [
+     "dragon"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "หลัง DR-04 (AS-05)",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "ice",
+      "name": "น้ำแข็ง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▼"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:61"
+   },
+   {
+    "id": "drowned_dead",
+    "name": "ผู้จมน้ำ",
+    "group": "world",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "หลัง DR-05 (DW-01)",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "water",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:62"
+   },
+   {
+    "id": "reef_serpent",
+    "name": "งูปะการัง",
+    "group": "world",
+    "kinds": [
+     "sea"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "NR-13",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-13"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:63"
+   },
+   {
+    "id": "ghost_crew",
+    "name": "ลูกเรือผีทองสาป",
+    "group": "world",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "NR-05",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blade",
+      "name": "ฟัน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "curse",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:64"
+   },
+   {
+    "id": "abyss_lurker",
+    "name": "ผู้ซุ่มร่องลึก",
+    "group": "world",
+    "kinds": [
+     "sea"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "NR-04 (PL-04)",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-04"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     },
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "ความมืด",
+      "name": "ความมืด",
+      "mark": "▼"
+     }
+    ],
+    "attack": "pierce",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:65"
+   },
+   {
+    "id": "trench_deserters",
+    "name": "ทหารหนีทัพ",
+    "group": "world",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "AL-15",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-15"
+    ],
+    "weak": [
+     {
+      "tag": "talk",
+      "name": "เจรจา",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:66"
+   },
+   {
+    "id": "gas_ghoul",
+    "name": "ผีก๊าซสนามเพลาะ",
+    "group": "world",
+    "kinds": [
+     "undead"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "AL-15 (WR-16)",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-15"
+    ],
+    "weak": [
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "★"
+     },
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:67"
+   },
+   {
+    "id": "glow_mutant",
+    "name": "ผู้กลายพันธุ์ผงเรืองแสง",
+    "group": "world",
+    "kinds": [
+     "humanoid",
+     "beast"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "AL-12",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-12"
+    ],
+    "weak": [
+     {
+      "tag": "ice",
+      "name": "น้ำแข็ง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "blunt",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:68"
+   },
+   {
+    "id": "dream_eater",
+    "name": "ผู้กินฝัน",
+    "group": "world",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 16,
+    "where": "AL-14 (PL-05)",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-14"
+    ],
+    "weak": [],
+    "resist": [
+     {
+      "tag": "กายภาพ",
+      "name": "กายภาพ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "mind",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:69"
+   },
+   {
+    "id": "locust_swarm",
+    "name": "ฝูงตั๊กแตนมหาภัย",
+    "group": "world",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 14,
+    "where": "AL-17 (CT-08)",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-17"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     },
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blade",
+      "name": "ฟัน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "—",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:70"
+   },
+   {
+    "id": "rogue_doll",
+    "name": "ตุ๊กตาคลั่ง",
+    "group": "world",
+    "kinds": [
+     "construct",
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "MK-02 MK-08 (MC-02)",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-02",
+     "MK-08"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:71"
+   },
+   {
+    "id": "war_automaton",
+    "name": "หุ่นรบบริษัท",
+    "group": "world",
+    "kinds": [
+     "construct"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "MK-06 MK-16 (MC-08)",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-06",
+     "MK-16"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "★"
+     },
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blade",
+      "name": "ฟัน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "ranged",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:72"
+   },
+   {
+    "id": "rust_swarm",
+    "name": "ฝูงหนูสนิม",
+    "group": "world",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ลูกกระจ๊อก",
+    "wounds": null,
+    "dc": 9,
+    "where": "MK-10",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-10"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:73"
+   },
+   {
+    "id": "reactor_wraith",
+    "name": "วิญญาณเตาปฏิกรณ์",
+    "group": "world",
+    "kinds": [
+     "elemental",
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 18,
+    "where": "MK-14 (MC-04)",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-14"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "★"
+     },
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:74"
+   },
+   {
+    "id": "mirage_phantom",
+    "name": "ภาพลวงเมืองมายา",
+    "group": "world",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "SH-14 (GI-06)",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-14"
+    ],
+    "weak": [
+     {
+      "tag": "#truth",
+      "name": "#truth",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "กายภาพ",
+      "name": "กายภาพ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "mind",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:75"
+   },
+   {
+    "id": "dust_djinn",
+    "name": "วิญญาณพายุทราย",
+    "group": "world",
+    "kinds": [
+     "elemental"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 17,
+    "where": "SH-01 SH-15 (GI-07)",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-01",
+     "SH-15"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "✕"
+     },
+     {
+      "tag": "earth",
+      "name": "ดิน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "wind",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:76"
+   },
+   {
+    "id": "sand_raiders",
+    "name": "ทัพออร์คทราย",
+    "group": "world",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "SH-11",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-11"
+    ],
+    "weak": [
+     {
+      "tag": "talk",
+      "name": "เจรจา",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:77"
+   },
+   {
+    "id": "blighted_ent",
+    "name": "เอนท์ป่วย",
+    "group": "world",
+    "kinds": [
+     "plant"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "SV-03 SV-14 (BIO-01)",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-03",
+     "SV-14"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:78"
+   },
+   {
+    "id": "spore_thrall",
+    "name": "ทาสสปอร์",
+    "group": "world",
+    "kinds": [
+     "humanoid",
+     "plant"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "SV-18 (BIO-10)",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-18"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "charm",
+      "name": "เสน่ห์",
+      "mark": "✕"
+     }
+    ],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:79"
+   },
+   {
+    "id": "shadow_pack",
+    "name": "ฝูงหมาป่าเงาคลั่ง",
+    "group": "world",
+    "kinds": [
+     "beast"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 15,
+    "where": "SV-09 SV-16 (WR-17)",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-09",
+     "SV-16"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     },
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "dark",
+      "name": "มืด",
+      "mark": "▼"
+     }
+    ],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:80"
+   },
+   {
+    "id": "fog_tentacle",
+    "name": "หนวดหมอก",
+    "group": "world",
+    "kinds": [
+     "fog"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "เนบูเลียหลัง FG-01",
+    "continents": [
+     "NB"
+    ],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "charm",
+      "name": "เสน่ห์",
+      "mark": "✕"
+     }
+    ],
+    "attack": "grab",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:81"
+   },
+   {
+    "id": "fog_moth_swarm",
+    "name": "ฝูงแมลงปีกขาว",
+    "group": "world",
+    "kinds": [
+     "fog"
+    ],
+    "traits": [
+     "swarm"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "เนบูเลียหลัง FG-01",
+    "continents": [
+     "NB"
+    ],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     },
+     {
+      "tag": "wind",
+      "name": "ลม",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "poison",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:82"
+   },
+   {
+    "id": "fog_weaver",
+    "name": "ใยดำ",
+    "group": "world",
+    "kinds": [
+     "fog"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 16,
+    "where": "เนบูเลียหลัง FG-01",
+    "continents": [
+     "NB"
+    ],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blade",
+      "name": "ฟัน",
+      "mark": "▼"
+     }
+    ],
+    "attack": "bind",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:83"
+   },
+   {
+    "id": "flesh_flyer",
+    "name": "เนื้อบิน",
+    "group": "world",
+    "kinds": [
+     "fog"
+    ],
+    "traits": [
+     "flying"
+    ],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "เนบูเลียหลัง FG-01",
+    "continents": [
+     "NB"
+    ],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "ranged",
+      "name": "ยิง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "sound",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:84"
+   },
+   {
+    "id": "vampire_spawn",
+    "name": "ลูกแวมไพร์คลั่ง",
+    "group": "world",
+    "kinds": [
+     "undead",
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "NB-02",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-02"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "silver",
+      "name": "เงิน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "dark",
+      "name": "มืด",
+      "mark": "▼"
+     }
+    ],
+    "attack": "blood",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:85"
+   },
+   {
+    "id": "shadowless_stalker",
+    "name": "ผู้ล่าไร้เงา",
+    "group": "world",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 15,
+    "where": "NB-13 NB-05",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-13",
+     "NB-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "attack": "blade",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:86"
+   },
+   {
+    "id": "bell_wraith",
+    "name": "วิญญาณระฆัง",
+    "group": "world",
+    "kinds": [
+     "spirit"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "NB-01 (FG-06)",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-01"
+    ],
+    "weak": [
+     {
+      "tag": "music",
+      "name": "ดนตรี",
+      "mark": "★"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "กายภาพ",
+      "name": "กายภาพ",
+      "mark": "✕"
+     }
+    ],
+    "attack": "sound",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:87"
+   },
+   {
+    "id": "titan_shard",
+    "name": "เศษไททัน",
+    "group": "world",
+    "kinds": [
+     "giant",
+     "construct"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": null,
+    "dc": 18,
+    "where": "SH-06 (GI-02)",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-06"
+    ],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "▲"
+     },
+     {
+      "tag": "pierce",
+      "name": "แทง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "blunt",
+      "name": "ทุบ",
+      "mark": "▼"
+     }
+    ],
+    "attack": "blunt",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:88"
+   },
+   {
+    "id": "scale_wyrmling",
+    "name": "ลูกมังกรป่า",
+    "group": "world",
+    "kinds": [
+     "dragon"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 14,
+    "where": "KD-07 อัซการ์",
+    "continents": [
+     "AZ",
+     "KD"
+    ],
+    "countries": [
+     "KD-07"
+    ],
+    "weak": [
+     {
+      "tag": "ice",
+      "name": "น้ำแข็ง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▼"
+     }
+    ],
+    "attack": "fire",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:89"
+   },
+   {
+    "id": "npc_bandit",
+    "name": "โจรปล้นทาง",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 11,
+    "where": "ทุกถิ่น",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ซุ่ม"
+    ],
+    "negotiable": "ได้ (ยอมเงิน)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:97"
+   },
+   {
+    "id": "npc_deserter",
+    "name": "ทหารหนีทัพ",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "AL-15 AL-08",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-15",
+     "AL-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:98"
+   },
+   {
+    "id": "npc_mercenary",
+    "name": "ทหารรับจ้าง",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 14,
+    "where": "AL-10 MH-09 MK-16",
+    "continents": [
+     "AL",
+     "MH",
+     "MK"
+    ],
+    "countries": [
+     "AL-10",
+     "MH-09",
+     "MK-16"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ตั้งรับ"
+    ],
+    "negotiable": "ได้ (ต่อรองค่าจ้าง)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:99"
+   },
+   {
+    "id": "npc_city_guard",
+    "name": "ทหารยาม",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "ทุกเมือง",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ตั้งรับ"
+    ],
+    "negotiable": "ได้ (ถ้าไม่มี `c_wanted`)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:100"
+   },
+   {
+    "id": "npc_knight",
+    "name": "อัศวิน",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "AL-18 AL-02",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-18",
+     "AL-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ขี่ม้า"
+    ],
+    "negotiable": "ได้ (ท้าดวล)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:101"
+   },
+   {
+    "id": "npc_inquisitor",
+    "name": "ผู้พิพากษาศาลศาสนา",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "AL-02",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "เวทแสง",
+     "(★",
+     "ต่อผู้ตายและปีศาจ)"
+    ],
+    "negotiable": "ยาก",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:102"
+   },
+   {
+    "id": "npc_assassin",
+    "name": "นักฆ่า",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ยอดฝีมือ",
+    "wounds": null,
+    "dc": 16,
+    "where": "NB-05 KD-05",
+    "continents": [
+     "KD",
+     "NB"
+    ],
+    "countries": [
+     "NB-05",
+     "KD-05"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ซุ่ม",
+     "มีดพิษ"
+    ],
+    "negotiable": "ยาก",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:103"
+   },
+   {
+    "id": "npc_pirate",
+    "name": "โจรสลัด",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "NR-05 MH-11",
+    "continents": [
+     "MH",
+     "NR"
+    ],
+    "countries": [
+     "NR-05",
+     "MH-11"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:104"
+   },
+   {
+    "id": "npc_cultist",
+    "name": "ผู้ศรัทธาคำพิพากษา",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 11,
+    "where": "NB-07 NB-03",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-07",
+     "NB-03"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "สวดภาวนา"
+    ],
+    "negotiable": "ยาก (เชื่อมั่น)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:105"
+   },
+   {
+    "id": "npc_warlock",
+    "name": "ผู้ทำสัญญา",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "MH-02",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "เวทมืด",
+     "สัญญาปีศาจ"
+    ],
+    "negotiable": "ได้ (ต่อรองสัญญา)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:106"
+   },
+   {
+    "id": "npc_rogue_mage",
+    "name": "นักเวทนอกรีต",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "AL-11 AL-12",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-11",
+     "AL-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "เวทธาตุ"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:107"
+   },
+   {
+    "id": "npc_duelist",
+    "name": "นักดาบท้าดวล",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ยอดฝีมือ",
+    "wounds": null,
+    "dc": 16,
+    "where": "ทุกเมืองใหญ่",
+    "continents": [],
+    "countries": [],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ"
+    ],
+    "negotiable": "ได้ (ยอมแพ้ตามกติกาดวล)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:108"
+   },
+   {
+    "id": "npc_rival_adventurer",
+    "name": "นักผจญภัยคู่แข่ง",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "AL-18",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-18"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ยิง"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:109"
+   },
+   {
+    "id": "npc_tamer",
+    "name": "ผู้ฝึกอสูรศัตรู",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 14,
+    "where": "SV-09 MH-04",
+    "continents": [
+     "MH",
+     "SV"
+    ],
+    "countries": [
+     "SV-09",
+     "MH-04"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "สัตว์คู่หูของศัตรู",
+     "(เพิ่มหนึ่งตัวในฝูง)"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:110"
+   },
+   {
+    "id": "npc_slaver",
+    "name": "พ่อค้าทาสตลาดเลือด",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 13,
+    "where": "MH-09",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-09"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ตั้งรับ"
+    ],
+    "negotiable": "ได้ (ซื้อตัวทาส)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:111"
+   },
+   {
+    "id": "npc_smuggler",
+    "name": "ผู้ลักลอบ",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ปกติ",
+    "wounds": null,
+    "dc": 12,
+    "where": "NB-09 NR-05",
+    "continents": [
+     "NB",
+     "NR"
+    ],
+    "countries": [
+     "NB-09",
+     "NR-05"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "หนี",
+     "ลอบ"
+    ],
+    "negotiable": "ได้",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:112"
+   },
+   {
+    "id": "npc_blood_collector",
+    "name": "ผู้ทวงหนี้เลือด",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "NB-02",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "เวทโลหิต"
+    ],
+    "negotiable": "ได้ (จ่ายหนี้)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:113"
+   },
+   {
+    "id": "npc_gladiator",
+    "name": "นักสู้สังเวียน",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ทหารผ่านศึก",
+    "wounds": null,
+    "dc": 15,
+    "where": "MH-02 MH-09",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-02",
+     "MH-09"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ"
+    ],
+    "negotiable": "ได้ (ยอมแพ้)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:114"
+   },
+   {
+    "id": "npc_summoned_hero",
+    "name": "ผู้กล้าที่ถูกอัญเชิญ",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ยอดฝีมือ",
+    "wounds": null,
+    "dc": 18,
+    "where": "AL-02",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "เวทแสง"
+    ],
+    "negotiable": "ได้ (ถามถึงบ้าน)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:115"
+   },
+   {
+    "id": "npc_demon_champion",
+    "name": "แชมเปี้ยนปีศาจ",
+    "group": "npc_generic",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "ยอดฝีมือ",
+    "wounds": null,
+    "dc": 18,
+    "where": "MH-02",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "stances": [
+     "ปะทะ",
+     "ไฟ"
+    ],
+    "negotiable": "ได้ (ดวลเพื่อเกียรติ)",
+    "note": "",
+    "src": "docs/systems/combat/03-enemies.md:116"
+   },
+   {
+    "id": "MH02-1",
+    "name": "ดราซาร์โมธ จอมมาร",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 22,
+    "where": "MH-02",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-02"
+    ],
+    "weak": [
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่อยากสู้ เจรจาได้ ▲",
+    "opens": "DM-03 หรือ DM-06 (ถ้าเจรจา)",
+    "src": "docs/systems/combat/03-enemies.md:124"
+   },
+   {
+    "id": "MH01-1",
+    "name": "กรอมกาธ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "MH-01",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-01"
+    ],
+    "weak": [
+     {
+      "tag": "pierce",
+      "name": "แทง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ยอมรับคนที่ส่งอาหารให้",
+    "opens": "DM-01 ถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:125"
+   },
+   {
+    "id": "NB02-1",
+    "name": "เคานต์วลาดิเมียร์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 22,
+    "where": "NB-02",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-02"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "sun",
+      "name": "แดด",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่เคยสู้ในปราสาทตัวเอง",
+    "opens": "ปราสาทเปิดให้ผู้ลี้ภัยต่อหรือล่ม",
+    "src": "docs/systems/combat/03-enemies.md:126"
+   },
+   {
+    "id": "NB05-1",
+    "name": "นิกซ์ เจ้าแห่งเงา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "NB-05",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่มเสมอ",
+    "opens": "กิลด์เงาแตก",
+    "src": "docs/systems/combat/03-enemies.md:127"
+   },
+   {
+    "id": "NR05-1",
+    "name": "เบรนดา \"ธงแดง\"",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "NR-05",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-05"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ฆ่าไม่ได้จนกว่าจะพบหีบ",
+    "opens": "WR-06 เปลี่ยน",
+    "src": "docs/systems/combat/03-enemies.md:128"
+   },
+   {
+    "id": "AL02-3",
+    "name": "ฮารุโตะ ผู้กล้า",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AL-02",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-02"
+    ],
+    "weak": [
+     {
+      "tag": "เจรจาเรื่องบ้าน",
+      "name": "เจรจาเรื่องบ้าน",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่อยากเป็นอาวุธ",
+    "opens": "DM-05 ถูกตัดถ้าเจรจาสำเร็จ",
+    "src": "docs/systems/combat/03-enemies.md:129"
+   },
+   {
+    "id": "AL08-2",
+    "name": "จอมพลคาร์ล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AL-08",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "มีกองทัพหนุน +4",
+    "opens": "WR-16 เปลี่ยน",
+    "src": "docs/systems/combat/03-enemies.md:130"
+   },
+   {
+    "id": "MH07-3",
+    "name": "ผู้ทดสอบเอส",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "MH-07",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-07"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "หวังให้มีคนชนะ",
+    "opens": "ตัวละครได้ชื่อเสียงสูงสุดในเทนเซอริส",
+    "src": "docs/systems/combat/03-enemies.md:131"
+   },
+   {
+    "id": "MH10-3",
+    "name": "กาธซาร์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 18,
+    "where": "MH-10",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-10"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ไม่อยากรับมงกุฎ",
+    "opens": "DM-01 ถูกตัดถ้าตัวละครขัดขวาง",
+    "src": "docs/systems/combat/03-enemies.md:132"
+   },
+   {
+    "id": "KD05-2",
+    "name": "เซลวา นักฆ่ามารดา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "KD-05",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่ม",
+    "opens": "ไว้ชีวิตได้ (คืนบุญ)",
+    "src": "docs/systems/combat/03-enemies.md:133"
+   },
+   {
+    "id": "KD06-2",
+    "name": "ราดาร์ แม่ทัพลาวา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 18,
+    "where": "KD-06",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-06"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไฟ ✕",
+    "opens": "GI-04 ชะลอ",
+    "src": "docs/systems/combat/03-enemies.md:134"
+   },
+   {
+    "id": "SH02-1",
+    "name": "ฟาโรห์อัมเมนรา-เนบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "SH-02",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-02"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างแห้ง",
+    "opens": "WR-24 เปลี่ยน",
+    "src": "docs/systems/combat/03-enemies.md:135"
+   },
+   {
+    "id": "SV14-1",
+    "name": "ผู้ถือขวานโค่นโลก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 18,
+    "where": "SV-14",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-14"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ไม่เปิดเผยตัว",
+    "opens": "BIO-02 ถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:136"
+   },
+   {
+    "id": "NB07-2",
+    "name": "มารดาแห่งเสียง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "NB-07",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-07"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ผู้ติดตามรุม (ฝูง +2)",
+    "opens": "FG-05 ล่ม",
+    "src": "docs/systems/combat/03-enemies.md:137"
+   },
+   {
+    "id": "MK02-1",
+    "name": "ครอนซ์ที่สอง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 20,
+    "where": "MK-02",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-02"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "คลั่งเหล็ก",
+    "opens": "MC-02 ชะลอ",
+    "src": "docs/systems/combat/03-enemies.md:138"
+   },
+   {
+    "id": "MK16-4",
+    "name": "ริวะ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 18,
+    "where": "MK-16",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-16"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่รู้ว่าสู้เพื่ออะไร (เจรจา ▲)",
+    "opens": "MC-08 เปลี่ยน",
+    "src": "docs/systems/combat/03-enemies.md:139"
+   },
+   {
+    "id": "AL27-1",
+    "name": "เจสซี่ ฮาร์ต",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AL-27",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-27"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "แก๊งหนุน +2",
+    "opens": "แดนทองไร้นายอำเภอ",
+    "src": "docs/systems/combat/03-enemies.md:140"
+   },
+   {
+    "id": "SV08-1",
+    "name": "ไลกอลัส",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "SV-08",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ยิงธนูไม่พลาด",
+    "opens": "ชายแดนใต้ซิลวาเนลอ่อนแอ",
+    "src": "docs/systems/combat/03-enemies.md:141"
+   },
+   {
+    "id": "NR11-2",
+    "name": "คราเคนออร์โธ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 22,
+    "where": "NR-11",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-11"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "สงบได้ถ้าไม่ขโมย",
+    "opens": "ไข่มุกน้ำตาไม่มีผู้เฝ้า",
+    "src": "docs/systems/combat/03-enemies.md:142"
+   },
+   {
+    "id": "NB08-1",
+    "name": "เนวัน ผู้เฝ้าประตู",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NB-08",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ไม่สู้ถ้าไม่ถูกบังคับ",
+    "opens": "DM-09 เร็วขึ้น",
+    "src": "docs/systems/combat/03-enemies.md:143"
+   },
+   {
+    "id": "AZ02-1",
+    "name": "ซากโรวีร์ ดยุกนักดวล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "AZ-02",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ดวลตามกติกา ยอมแพ้ได้ · ไม่เคยแพ้ดวลมาสามสิบปี",
+    "opens": "แพ้ครองเกาะต่อไม่ได้ หรือตาย → ผู้สืบทอด AZ02-2",
+    "src": "docs/systems/combat/03-enemies.md:144"
+   },
+   {
+    "id": "AZ10-3",
+    "name": "ราตรีซาก นักฆ่าผู้อยากไถ่โทษ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "AZ-10",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-10"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่ม · ไม่อยากฆ่าอีก เจรจา ▲",
+    "opens": "เส้นนักบวชเปิดหรือถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:145"
+   },
+   {
+    "id": "MH01-3",
+    "name": "เรธวี นักรบหญิงผู้เกลียดสงคราม",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MH-01",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-01"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ไม่อยากสู้ เจรจา ▲ · สู้เต็มฝีมือเมื่อถูกบังคับ",
+    "opens": "ผู้พาข้ามเขตทัพ หรือเส้นชาวนาที่วีซาเฮเวนปิด",
+    "src": "docs/systems/combat/03-enemies.md:146"
+   },
+   {
+    "id": "MH02-4",
+    "name": "อุลรีเซ แชมเปี้ยนหญิง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "MH-02",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ดวลเพื่อเกียรติ ยอมแพ้ได้ · เคารพผู้ชนะ",
+    "opens": "DM-03 ถูกตัดในรอบนี้",
+    "src": "docs/systems/combat/03-enemies.md:147"
+   },
+   {
+    "id": "MH12-1",
+    "name": "เซร์ไกลวัน วิญญาณแม่ทัพ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "MH-12",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-12"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "ข่าวสงบศึก",
+      "name": "ข่าวสงบศึก",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "กายภาพ ✕ · ทหารผีหนุน +2",
+    "opens": "กองทัพห้าธงหลับหรือสลาย",
+    "src": "docs/systems/combat/03-enemies.md:148"
+   },
+   {
+    "id": "KD08-1",
+    "name": "มอร์ดินเกียร์ ผู้บัญชาการป้อม",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "KD-08",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-08"
+    ],
+    "weak": [
+     {
+      "tag": "water",
+      "name": "น้ำ",
+      "mark": "▲"
+     },
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "resist": [],
+    "note": "ทหารป้อมหนุน +2 · เจรจาด้วยความจริงเรื่องผู้ถูกกักขัง ▲",
+    "opens": "GI-08 ถูกตัด WR-13 น้ำหนักเพิ่ม",
+    "src": "docs/systems/combat/03-enemies.md:149"
+   },
+   {
+    "id": "AL02-2",
+    "name": "แคทเธอรีน ผู้พิพากษาศาลศาสนา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "AL-02",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-02"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "เวทแสง ★ ต่อผู้ตายและปีศาจ · เจรจาด้วยหลักฐาน ▲",
+    "opens": "ลัทธิลับยึดศาล หรือเธอลาออก",
+    "src": "docs/systems/combat/03-enemies.md:150"
+   },
+   {
+    "id": "AL18-1",
+    "name": "ซิกฟรีด อัศวินสูงสุด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AL-18",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-18"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ทดสอบฝีมือ ยอมแพ้ได้ · ศิษย์หนุน +2",
+    "opens": "ผู้กล้ารุ่นใหม่ขาดครู",
+    "src": "docs/systems/combat/03-enemies.md:151"
+   },
+   {
+    "id": "MK04-1",
+    "name": "คอนราด นายพลผู้เฝ้า",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "MK-04",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-04"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทหารเฝ้าหนุน +2 · เจรจา ▲ ถ้าตัวละครได้ยินเสียงเดียวกัน",
+    "opens": "MC-05 น้ำหนักเพิ่ม END-06 ถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:152"
+   },
+   {
+    "id": "SV08-2",
+    "name": "ซิลเวีย นักล่าเงา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "SV-08",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ซุ่มเสมอ · ยิงจากที่กำบัง",
+    "opens": "ป้อมใต้ซิลวาเนลขาดนักล่า",
+    "src": "docs/systems/combat/03-enemies.md:153"
+   },
+   {
+    "id": "SH03-1",
+    "name": "โกรม-ทอร์ ผู้เฝ้าบันได",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "SH-03",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-03"
+    ],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างหินใหญ่ · ทดสอบแล้วไม่ฆ่าผู้ผ่าน",
+    "opens": "GI-01 น้ำหนักเพิ่ม",
+    "src": "docs/systems/combat/03-enemies.md:154"
+   },
+   {
+    "id": "NB05-3",
+    "name": "ครอว์ นักฆ่าแวมไพร์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "NB-05",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่ม · ภาพหลอนเหยื่อทำให้ตัวละครสะดุ้งจังหวะแรก",
+    "opens": "เส้นเสียสติถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:155"
+   },
+   {
+    "id": "AZ04-1",
+    "name": "ธีวาสกรอม ผู้เฝ้าประตูบนของบันได",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AZ-04",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-04"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ร่างหนักปีกสั้น เกราะแข็ง · เจรจาเรื่องยักษ์ ▲",
+    "opens": "WR-02 ถูกตัดหรือ HP-03 เปิดทาง",
+    "src": "docs/systems/combat/03-enemies.md:156"
+   },
+   {
+    "id": "SV03-1",
+    "name": "ธอร์นวาลด์ ผู้บัญชาการเดรุยด์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SV-03",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-03"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "พิษ ✕ · ไกล่เกลี่ยก่อนสงคราม ▲",
+    "opens": "WR-04 ชะลอหรือถูกตัด",
+    "src": "docs/systems/combat/03-enemies.md:157"
+   },
+   {
+    "id": "SV03-2",
+    "name": "ไวร่า นักรบเดรุยด์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "SV-03",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-03"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "พิษ ✕ · ไม่รับกลิ่น ซุ่มด้วยกลิ่นไม่ได้",
+    "opens": "เส้น ค ร่วม หรือถอนจากโรงกลั่น",
+    "src": "docs/systems/combat/03-enemies.md:158"
+   },
+   {
+    "id": "NR07-1",
+    "name": "สุวรรณนาคี ผู้เฝ้าไข่",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "NR-07",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-07"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่ลุกจากเตียงไข่ · สงบได้ถ้าไม่แตะไข่ ▲",
+    "opens": "BIO-08 เปลี่ยน หรือไข่ไม่มีผู้เฝ้า",
+    "src": "docs/systems/combat/03-enemies.md:159"
+   },
+   {
+    "id": "MH03-3",
+    "name": "เซกูล แม่ทัพกูล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "MH-03",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-03"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "กองกูลหนุน +2 · เจรจาด้วยอาหารที่ไม่ใช่เนื้อ ▲",
+    "opens": "กองกูลแตกหรือตั้งกองใหม่",
+    "src": "docs/systems/combat/03-enemies.md:160"
+   },
+   {
+    "id": "AL20-1",
+    "name": "จัสติน เวสเตอร์ ผู้บัญชาการป้อม",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "AL-20",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-20"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ทหารป้อมหนุน +2 · โคมไล่หมอก",
+    "opens": "ป้อมแตกหรือยืนต่อ",
+    "src": "docs/systems/combat/03-enemies.md:161"
+   },
+   {
+    "id": "KD12-1",
+    "name": "ธรอดูไกล หัวหน้าตระกูลนักรบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "KD-12",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "อาวุธเย็นไม่แตก · ไม่อยากรบ เจรจา ▲",
+    "opens": "ทวีปเถ้าเปลี่ยนศูนย์กลาง",
+    "src": "docs/systems/combat/03-enemies.md:162"
+   },
+   {
+    "id": "AL15-2",
+    "name": "เกรกอร์ ผู้บัญชาการหน่วยหุ้มเกราะ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "AL-15",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-15"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "รถหุ้มเกราะหนุน +2 · เสียเปรียบเมื่อรถพัง",
+    "opens": "หน่วยถอยหรือติดตามตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:163"
+   },
+   {
+    "id": "AZ01-2",
+    "name": "ธรักซ์มาร์ ราชาปีก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "AZ-01",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-01"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไวเวิร์น \"ซาก\" หนุน +2 · ไวเวิร์นล้มแล้วเสียเปรียบ · เจรจาเรื่องความเงียบของโอรัน-ซัล ▲",
+    "opens": "WR-01 เปลี่ยนหรือกองบินแตก",
+    "src": "docs/systems/combat/03-enemies.md:164"
+   },
+   {
+    "id": "AZ10-1",
+    "name": "นอคโรซ์ เจ้าแห่งเงาที่หนึ่ง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AZ-10",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-10"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่มเสมอ · ไม่สู้ในที่สว่าง · ซื้อตัวได้ด้วยความลับ ▲",
+    "opens": "ความลับของเกาะถูกเปิดโปงหรือเขากลายเป็นสายให้ตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:165"
+   },
+   {
+    "id": "AZ03-1",
+    "name": "วีร์ดุสโร กัปตันกองเรือลม",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "AZ-03",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-03"
+    ],
+    "weak": [
+     {
+      "tag": "ปีกฟ้าเสียสมดุลเมื่อลมหยุด",
+      "name": "ปีกฟ้าเสียสมดุลเมื่อลมหยุด",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กองเรือลมหนุน +2 · ไม่วางแผนเกินสามวัน เสียเปรียบเมื่อศึกยืดเกินวันที่สอง",
+    "opens": "เรือลมขายให้ MK-09 หรือไปช่วยผู้ลี้ภัย",
+    "src": "docs/systems/combat/03-enemies.md:166"
+   },
+   {
+    "id": "MH03-1",
+    "name": "อุลโมธกาธ ราชันย์กูล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "MH-03",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-03"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ความหิวไม่ใช่ความโกรธ · กองกูลหนุน +2 · อาหารที่ไม่ใช่เนื้อทำให้หยุดชั่วครู่ ▲ · เจรจาด้วยชื่อบนหลุมของเขา ▲",
+    "opens": "MH-03 กลืนเมืองติดกันหรือสนธิสัญญากับ MH-06",
+    "src": "docs/systems/combat/03-enemies.md:167"
+   },
+   {
+    "id": "MH09-1",
+    "name": "โมธเซน นายตลาดเลือด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MH-09",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-09"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ผู้คุ้มกันตลาดหนุน +2 · ทุกอย่างมีราคา เจรจาด้วยสัญญาใหม่ ▲ · เกลียดสงครามจริง",
+    "opens": "MC-08 เปลี่ยนหรือตลาดเลือดแตก",
+    "src": "docs/systems/combat/03-enemies.md:168"
+   },
+   {
+    "id": "MH11-2",
+    "name": "เรธอ โจรสลัดปีศาจ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MH-11",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-11"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เรือเล็กไว หนุน +1 · ไม่ยอมเปิดหีบของน้อง · เจรจาเมื่อตัวละครช่วยตามหาน้อง ▲",
+    "opens": "น้องถูกพบที่ MH-09 หรือเธอถูกแขวนบนเรือหลวง",
+    "src": "docs/systems/combat/03-enemies.md:169"
+   },
+   {
+    "id": "KD08-2",
+    "name": "ซันเรธ ทหารศาสนาแสง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "KD-08",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-08"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ทนแสง ✕ · เกราะสวดหนุน +1 · เจรจาเมื่อได้เห็นว่าผู้ถูกกักขังคือคนจริง ▲",
+    "opens": "ผู้ถูกกักขังถูกปล่อยหรือสงครามศักดิ์สิทธิ์ WR-13 เร็วขึ้น",
+    "src": "docs/systems/combat/03-enemies.md:170"
+   },
+   {
+    "id": "KD12-2",
+    "name": "ไอซ์วาร์ด นักล่ายักษ์น้ำแข็ง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "KD-12",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-12"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เขี้ยวสัตว์ใหญ่ทำให้สัตว์ป่าหวาดกลัว · ศึกในหิมะ +1 · เจรจาเมื่อตัวละครล่าด้วยกัน ▲",
+    "opens": "ธรอ-ดูเปลี่ยนตำนานหรือเขาตายจากการล่า",
+    "src": "docs/systems/combat/03-enemies.md:171"
+   },
+   {
+    "id": "NR05-2",
+    "name": "กัปตันเงือก ซาลาซาร์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 18,
+    "where": "NR-05",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-05"
+    ],
+    "weak": [
+     {
+      "tag": "ทองสาปทำให้เขาลังเล",
+      "name": "ทองสาปทำให้เขาลังเล",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ลูกเรือผีหนุน +2 · ห้องเก็บหมวกลูกเรือ · เจรจาเมื่อตัวละครทำลายทองสาป ▲",
+    "opens": "ทองสาปถูกทำลายหรือเขาตายในเรือผี",
+    "src": "docs/systems/combat/03-enemies.md:172"
+   },
+   {
+    "id": "NR07-2",
+    "name": "ธารานาค ผู้ทดสอบมนุษย์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "NR-07",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-07"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ผู้ผ่านการทดสอบไม่ถูกฆ่า · ผู้แพ้ขาข้างหนึ่งเป็นหิน · เจรจาด้วยการทดสอบที่ไม่ใช่การต่อสู้ ▲",
+    "opens": "NR07-3 แก้แค้นหรือถอนหิน",
+    "src": "docs/systems/combat/03-enemies.md:173"
+   },
+   {
+    "id": "AL04-2",
+    "name": "พลเรือเอก ซามูเอล เดรก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "AL-04",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-04"
+    ],
+    "weak": [
+     {
+      "tag": "เรือหลวงล่มแล้วเสียเปรียบ",
+      "name": "เรือหลวงล่มแล้วเสียเปรียบ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เรือหลวงหนุน +2 · กลล่อที่ไม่เคยเปิดเผย (ทอยรับรู้ตัวละคร −1 ในจังหวะแรก) · เจรจาเมื่อตัวละครรู้กลล่อ ▲",
+    "opens": "เขาถูกโจรสลัดจับ แปรพักตร์ หรือเข้ากองเรือตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:174"
+   },
+   {
+    "id": "AL23-2",
+    "name": "ราชา นักล่าเผ่าเสือ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "AL-23",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-23"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ล่าเฉพาะสัตว์ที่ท้า · เสือเงียบ (ซุ่มเสมอ) · เจรจาเมื่อตัวละครไม่ได้ท้าสัตว์ใดในเขตเขา ▲",
+    "opens": "เขาถูกจ้างเป็นองครักษ์หรือเป็นพันธมิตร",
+    "src": "docs/systems/combat/03-enemies.md:175"
+   },
+   {
+    "id": "AL07-3",
+    "name": "ไทรอส ตำรวจลับ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AL-07",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-07"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "ผู้ช่วยในเงา +1 · บันทึกส่วนตัวในสมุดที่เขาไม่ยอมเสีย · เจรจาด้วยการสัญญาจดจำเขา ▲",
+    "opens": "เขาขายบันทึกให้ AL-06 ถูกฆ่า หรือเป็นแหล่งข่าวของตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:176"
+   },
+   {
+    "id": "MK02-2",
+    "name": "เรกซ์ ทหารสี่แขน",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MK-02",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-02"
+    ],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ยิงสองกระบอกพร้อมกัน · ไม่เคยหลับ จังหวะแรกของศึกไวกว่าปกติ · เจรจาเมื่อเรียกชื่อแขนเดิม ▲",
+    "opens": "เขาเสียสติ ถูกส่งไป MK-16 หรือเข้าร่วมตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:177"
+   },
+   {
+    "id": "MK16-2",
+    "name": "ครูส ทหารปีศาจรับจ้าง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "MK-16",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-16"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "เกราะค่ายบริษัทหนุน +1 · เหรียญในผ้าขาวม้าไม่ยอมเสีย · เจรจาด้วยค่าจ้างที่ค้างครบ ▲",
+    "opens": "เขาลาออกกลับมอร์เฮเวนหรือเข้าร่วมตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:178"
+   },
+   {
+    "id": "SH03-4",
+    "name": "ผู้เก็บดวงตาศิลา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SH-03",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-03"
+    ],
+    "weak": [
+     {
+      "tag": "ผู้ที่มาพร้อมผู้ชี้ทางตามตำนาน",
+      "name": "ผู้ที่มาพร้อมผู้ชี้ทางตามตำนาน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างหินใหญ่ · ถือดวงตาศิลาห่อผ้า · เจรจาเมื่อพา SH01-2 ยัสมีนมาถึง ▲",
+    "opens": "ดวงตาถูกส่งให้ผู้ชี้ทางหรือถูกปล้นตอนสงครามธุลี",
+    "src": "docs/systems/combat/03-enemies.md:179"
+   },
+   {
+    "id": "SH10-2",
+    "name": "ราสกัล นักล่าหมาป่าทราย",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "SH-10",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-10"
+    ],
+    "weak": [
+     {
+      "tag": "เสียเปรียบเมื่อต้องทำร้ายผู้นำทางที่พาเด็กมา",
+      "name": "เสียเปรียบเมื่อต้องทำร้ายผู้นำทางที่พาเด็กมา",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "หมาป่าทรายหนุน +1 · ซุ่มกลางคืน · เจรจาเมื่อตัวละครพาเด็กหรือสัตว์ที่มีลูกเดินด้วยกัน ▲",
+    "opens": "ผู้นำทางรอดหรือเขาเป็นผู้ล่านำทางของตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:180"
+   },
+   {
+    "id": "SH11-1",
+    "name": "กรัมชาร์ ขุนศึกออร์ค",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "SH-11",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-11"
+    ],
+    "weak": [
+     {
+      "tag": "ทัพขาดเสบียงเสียเปรียบ",
+      "name": "ทัพขาดเสบียงเสียเปรียบ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทัพออร์คหนุน +2 · ไม่ยอมแพ้ · เจรจาเมื่อตัวละครเสนอที่ทำกินให้ทัพที่ถูกทอดทิ้ง ▲",
+    "opens": "เขาเข้าร่วมกวาดล้างกับ MH-01 ทัพสลาย หรือเป็นพันธมิตรกับตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:181"
+   },
+   {
+    "id": "SV03-3",
+    "name": "โรเกอร์ นักรบเผ่าหมี",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "SV-03",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-03"
+    ],
+    "weak": [
+     {
+      "tag": "พิษทำให้แผลที่เขารับไม่ปิด",
+      "name": "พิษทำให้แผลที่เขารับไม่ปิด",
+      "mark": "▲"
+     },
+     {
+      "tag": "ยาที่ตัวละครมีมีผลต่อเขา",
+      "name": "ยาที่ตัวละครมีมีผลต่อเขา",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทนบาดแผลทั่วไป · ร่างค่อย ๆ เทา · เจรจาเมื่อตัวละครมียาแก้พิษ ▲",
+    "opens": "เขาหนีไปนิวเฮเวน เสียสติ หรือเป็นทหารหน้าด่านให้ตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:182"
+   },
+   {
+    "id": "SV16-2",
+    "name": "ฮาร์ด นักล่าแก่",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "SV-16",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-16"
+    ],
+    "weak": [],
+    "resist": [],
+    "note": "กับดักซ่อนในพื้นที่ล่า · ซุ่มเสมอ · เจรจาเมื่อให้ผู้ที่เคยจับสัตว์ไถ่โทษต่อหน้าเขา ▲",
+    "opens": "เขาถูกจับ ตายระหว่างล่า หรือเป็นผู้ล่านำทางของตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:183"
+   },
+   {
+    "id": "NB05-2",
+    "name": "เรเวน นักฆ่าหญิง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NB-05",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ซุ่มเสมอ · ขโมยสมุดของเป้าหมายเป็นงานเสริม · เจรจาเมื่อตัวละครปกป้องเป้าหมายที่เป็นเด็ก ▲",
+    "opens": "เธอทรยศกิลด์ ถูกลงโทษ หรือเป็นผู้ช่วยตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:184"
+   },
+   {
+    "id": "NB05-5",
+    "name": "วีวา รองหัวหน้ากิลด์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "NB-05",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-05"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "สมุดเงาไม่เสียหายง่าย · ซุ่ม · เจรจาเมื่อตัวละครแลกชื่อผู้จ่ายด้วยสิ่งที่ไม่ใช่ทอง ▲",
+    "opens": "วีวาขึ้นเป็นเจ้าแห่งเงา ขายสมุด หรือลบชื่อตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:185"
+   },
+   {
+    "id": "AZ09-4",
+    "name": "ไนซา ผู้ล่าเทพวัยรุ่น",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AZ-09",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-09"
+    ],
+    "weak": [
+     {
+      "tag": "เทพที่ไม่ใช่เทพจริงทำให้เธอลังเล",
+      "name": "เทพที่ไม่ใช่เทพจริงทำให้เธอลังเล",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไม่เชื่อเทพทุกองค์ · โจมตีสัญลักษณ์ศาสนาก่อน · เจรจาเมื่อตัวละครไม่อ้างเทพ ▲",
+    "opens": "GD-07 เปิด หรือเธอตายก่อนถึงวัยผู้ใหญ่",
+    "src": "docs/systems/combat/03-enemies.md:186"
+   },
+   {
+    "id": "AZ10-4",
+    "name": "ดุสวาร์ ผู้ฝึกไวเวิร์นราตรี",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "AZ-10",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-10"
+    ],
+    "weak": [
+     {
+      "tag": "เสียงดังที่ไวเวิร์นไม่ฟัง",
+      "name": "เสียงดังที่ไวเวิร์นไม่ฟัง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ไวเวิร์นราตรีหนุน +2 · พูดกับไวเวิร์นโดยไม่ใช้ปาก · เจรจาเมื่อตัวละครให้ไวเวิร์นเลือกเอง ▲",
+    "opens": "ไวเวิร์นถูกส่งให้ MK-09 หรือไวเวิร์นกัดเขาตาย",
+    "src": "docs/systems/combat/03-enemies.md:187"
+   },
+   {
+    "id": "AZ02-4",
+    "name": "อัซโคร ผู้ตัดสินดวล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AZ-02",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-02"
+    ],
+    "weak": [
+     {
+      "tag": "จึงเสียเปรียบเมื่อถูกขอให้ลำเอียง",
+      "name": "จึงเสียเปรียบเมื่อถูกขอให้ลำเอียง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ตัดสินแล้วไม่กลับคำ · กรรมการกลางดวลทั้งสอง · เจรจาเมื่อตัวละครให้หลักฐานดวลถูกซื้อ ▲",
+    "opens": "เขาเปิดโปงดวลที่ถูกซื้อ หรือถูกลอบฆ่า",
+    "src": "docs/systems/combat/03-enemies.md:188"
+   },
+   {
+    "id": "AZ08-1",
+    "name": "ผู้ว่าโคดุสธาร์ ผู้ว่าทุจริต",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AZ-08",
+    "continents": [
+     "AZ"
+    ],
+    "countries": [
+     "AZ-08"
+    ],
+    "weak": [
+     {
+      "tag": "ผู้คุ้มกันของเขาไม่ภักดี",
+      "name": "ผู้คุ้มกันของเขาไม่ภักดี",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ผู้คุ้มกันเหมืองหนุน +2 · ยัดสินบนก่อนสู้ · เจรจาเมื่อตัวละครเสนอส่วนแบ่ง ▲",
+    "opens": "เขาถูกเปิดโปงหรือถูกลอบสังหารโดยคนงาน",
+    "src": "docs/systems/combat/03-enemies.md:189"
+   },
+   {
+    "id": "MH04-1",
+    "name": "เซวาร์ธวา หัวหน้าฝูงที่หนึ่ง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "MH-04",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-04"
+    ],
+    "weak": [
+     {
+      "tag": "น้ำและเสบียงขาด",
+      "name": "น้ำและเสบียงขาด",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ฝูงหมาป่าเถ้าหนุน +2 · ไม่เคยอยู่ที่เดียวสองคืน · เจรจาด้วยค่าจ้างล่วงหน้า ▲",
+    "opens": "ศึกบ่อน้ำเปลี่ยน หรือเขาเข้าร่วมตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:190"
+   },
+   {
+    "id": "MH04-3",
+    "name": "ดรีนซาร์ ทหารรับจ้างขี่ฝูง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "MH-04",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-04"
+    ],
+    "weak": [
+     {
+      "tag": "คิดถึงบ้าน",
+      "name": "คิดถึงบ้าน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "หมาป่าขี่หนุน +1 · เก็บเงินไว้ซื้อที่นา · เจรจาด้วยข่าวของแม่ ▲",
+    "opens": "เขาถอนตัวไปปลูกข้าว หรือตายในศึกกับ MK-16",
+    "src": "docs/systems/combat/03-enemies.md:191"
+   },
+   {
+    "id": "MH05-2",
+    "name": "ฮาร์ทวิก วิศวกรล้อมเมือง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MH-05",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-05"
+    ],
+    "weak": [
+     {
+      "tag": "รูนที่เปิดตกลงมาเป็นของตัวเขาเอง",
+      "name": "รูนที่เปิดตกลงมาเป็นของตัวเขาเอง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กำแพงรูนหนุน +2 · ไม่ปิดรูน · เจรจาเมื่อตัวละครยอมรับแบบกำแพง ▲",
+    "opens": "เขาสอนรูนหรือถูกฝ่ายปิดรูนฆ่า",
+    "src": "docs/systems/combat/03-enemies.md:192"
+   },
+   {
+    "id": "MH08-3",
+    "name": "เรธไลรา สายลับห้าธง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MH-08",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-08"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ขายข่าวทุกฝ่าย · ซุ่มเสมอ · เจรจาเมื่อตัวละครซื้อข่าวด้วยข่าวเท่ากัน ▲",
+    "opens": "เธอถูกจับโดยธงที่ถูกหลอก หนีไป MH-09 หรือขายข่าวให้ตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:193"
+   },
+   {
+    "id": "MH09-2",
+    "name": "คาร์เวน ทหารที่ขายตัวเอง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "MH-09",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-09"
+    ],
+    "weak": [
+     {
+      "tag": "ลายมือของเขาเอง",
+      "name": "ลายมือของเขาเอง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทหารรับจ้างฝีมือมาตรฐาน · สัญญาขายตัวเองเขียนด้วยลายมือที่ดีที่สุดในตลาด · เจรจาด้วยการไถ่หรืออ่านข้อสุดท้ายของสัญญา ▲",
+    "opens": "เขาตายไกลบ้าน กลับมามีเงินแต่ครอบครัวหาย หรือถูกไถ่",
+    "src": "docs/systems/combat/03-enemies.md:194"
+   },
+   {
+    "id": "MH10-1",
+    "name": "กูลชราธรอน ผู้ตัดสินศึกสูงสุด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "MH-10",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-10"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "ตัดสินศึกไม่เคยผิด · ผู้ตัดสินกูลหนุน +2 · เจรจาด้วยความจริงเรื่องมงกุฎ ▲",
+    "opens": "ศึกชิงมงกุฎเปิด หรือฮรอด-กาธเลือกจอมมาร",
+    "src": "docs/systems/combat/03-enemies.md:195"
+   },
+   {
+    "id": "MH11-1",
+    "name": "กัปตันซาร์ดรีน ประมุขเรือธง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "MH-11",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-11"
+    ],
+    "weak": [
+     {
+      "tag": "เสียขวัญเมื่อธงตก",
+      "name": "เสียขวัญเมื่อธงตก",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กองเรือเถ้าหนุน +2 · ไม่อยากให้ลูกเรือปล้น · เจรจาด้วยใบอนุญาตค้าจาก NR-01 ▲",
+    "opens": "WR-07 เปลี่ยนหรือกองเรือค้าขาย",
+    "src": "docs/systems/combat/03-enemies.md:196"
+   },
+   {
+    "id": "MH12-2",
+    "name": "ทหารผีไร้ชื่อ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "MH-12",
+    "continents": [
+     "MH"
+    ],
+    "countries": [
+     "MH-12"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "ข่าวสงบศึก",
+      "name": "ข่าวสงบศึก",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "กายภาพทนครึ่ง · ลืมชื่อตัวเอง · เจรจาด้วยการส่งจดหมายถึงแม่ ▲",
+    "opens": "เขาได้พักผ่อน หายไปในหมอก หรือส่งจดหมายสำเร็จ",
+    "src": "docs/systems/combat/03-enemies.md:197"
+   },
+   {
+    "id": "KD03-4",
+    "name": "ฮอล์มาร์ก ผู้ตัดสินของฝ่ายปิด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "KD-03",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-03"
+    ],
+    "weak": [
+     {
+      "tag": "หลานป่วยทำให้เขาลังเล",
+      "name": "หลานป่วยทำให้เขาลังเล",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ตัดสินรูนไม่เคยผิด · ไม่เคยตัดสินให้ตัวเองได้ฟัง · เจรจาด้วยอาหารและยาให้หลานโดยไม่ขอสิ่งตอบแทน ▲",
+    "opens": "ฝ่ายเปิดซื้อเขาสำเร็จ หรือเขายืนหยัดจนโดดเดี่ยว",
+    "src": "docs/systems/combat/03-enemies.md:198"
+   },
+   {
+    "id": "KD07-1",
+    "name": "ธรอกาดเพลิง ราชาแห่งธรอกาด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "KD-07",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-07"
+    ],
+    "weak": [
+     {
+      "tag": "น้ำเย็นและความเงียบของเพลิง",
+      "name": "น้ำเย็นและความเงียบของเพลิง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "รู้สึกอารมณ์เพลิงนิรันดร์ทุกวัน · เกล็ดทนไฟ ✕ · เจรจาเมื่อตัวละครรับรู้อารมณ์เพลิงนั้น ▲",
+    "opens": "ความศรัทธาถ่ายทอดผ่านคัลดราต่อ หรือเขาตายเมื่อเพลิงนิรันดร์ล้ม",
+    "src": "docs/systems/combat/03-enemies.md:199"
+   },
+   {
+    "id": "KD03-3",
+    "name": "ธรอกาด ยามประตูเหมืองลึก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "KD-03",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-03"
+    ],
+    "weak": [
+     {
+      "tag": "รูนที่เขาจำไว้ในหัว",
+      "name": "รูนที่เขาจำไว้ในหัว",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ยามประตูหนุน +1 · จำรูนได้ทั้งผืน · เจรจาเมื่อตัวละครให้เขาวาดรูนลงกระดาษแทนการตาย ▲",
+    "opens": "เขาหนีไปบาร์ดินพร้อมรูน หรือถูกประหารโดยฝ่ายปิด",
+    "src": "docs/systems/combat/03-enemies.md:200"
+   },
+   {
+    "id": "KD05-1",
+    "name": "อิรมอร์ไลรา มารดาสูงสุด",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "KD-05",
+    "continents": [
+     "KD"
+    ],
+    "countries": [
+     "KD-05"
+    ],
+    "weak": [
+     {
+      "tag": "พันธมิตรที่เธอเคยหักหลังตอนนี้ไม่เชื่อ",
+      "name": "พันธมิตรที่เธอเคยหักหลังตอนนี้ไม่เชื่อ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กลอุบายสามชั้น (ทอยรับรู้ตัวละคร −1) · ไม่ลืมผู้ที่หักหลัง · เจรจาเมื่อตัวละครรักษาคำเดิมที่เคยให้ ▲",
+    "opens": "เธอเป็นพันธมิตรตัวละคร ถูกเผ่าลาวาลอบสังหาร หรือชี้ทางลงปากเหว",
+    "src": "docs/systems/combat/03-enemies.md:201"
+   },
+   {
+    "id": "NR01-4",
+    "name": "กัปตัน เรเน่ ฮาร์โบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "NR-01",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-01"
+    ],
+    "weak": [
+     {
+      "tag": "ไม่ได้หลับมาสิบสองปี",
+      "name": "ไม่ได้หลับมาสิบสองปี",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "จำเรือจากเสียงสมอได้ · ไม่เคยปิดท่า · เจรจาเมื่อตัวละครเฝ้าท่าแทนหนึ่งคืน ▲",
+    "opens": "เขาถูกซื้อให้เปิดทางเรือโจร ตายในท่า หรือบอกเส้นทางลับ",
+    "src": "docs/systems/combat/03-enemies.md:202"
+   },
+   {
+    "id": "NR06-4",
+    "name": "ทหารเฒ่า โลเรน",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NR-06",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-06"
+    ],
+    "weak": [
+     {
+      "tag": "ความจริงที่ไม่เคยเล่า",
+      "name": "ความจริงที่ไม่เคยเล่า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เกราะประภาคารเก่า +1 · จำว่าใครยิงลูกธนูลูกแรก · เจรจาเมื่อตัวละครขอให้เล่าความจริง ▲",
+    "opens": "ความจริงเรื่องสงครามต้นน้ำถูกเปิดหรือเขาตายก่อนบอก",
+    "src": "docs/systems/combat/03-enemies.md:203"
+   },
+   {
+    "id": "NR04-3",
+    "name": "ซีนอส ผู้เฝ้าร่องธาลาสซา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "NR-04",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-04"
+    ],
+    "weak": [
+     {
+      "tag": "เพลงกล่อม",
+      "name": "เพลงกล่อม",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างสัตว์ทะเลลึกยักษ์ · ปกป้องธาลาสซาที่หลับ · เจรจาด้วยเพลงกล่อมที่เขาร้องทุกคืน ▲",
+    "opens": "PL-04 เปลี่ยนหรือเขาสืบเรื่องขึ้นผิวน้ำ",
+    "src": "docs/systems/combat/03-enemies.md:204"
+   },
+   {
+    "id": "NR05-3",
+    "name": "ออร์คกะลาสี ดรัก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NR-05",
+    "continents": [
+     "NR"
+    ],
+    "countries": [
+     "NR-05"
+    ],
+    "weak": [
+     {
+      "tag": "ค้อนตีสมอสั่นเมื่อถูกสมอสาปแตะ",
+      "name": "ค้อนตีสมอสั่นเมื่อถูกสมอสาปแตะ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ตีสมอสาปสู้ได้ · ไม่แตะสมอที่ตีเสร็จ · เจรจาเมื่อตัวละครสัญญาไม่ใช้สมอสาป ▲",
+    "opens": "เขาตีสมอที่ผู้แตะกลายเป็นผี ทรยศ หรือได้รับไว้ชีวิต",
+    "src": "docs/systems/combat/03-enemies.md:205"
+   },
+   {
+    "id": "AL01-3",
+    "name": "โรแลนด์ ทรูส หัวหน้ากองรักษาสภา",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "AL-01",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-01"
+    ],
+    "weak": [
+     {
+      "tag": "ถูกซื้อแล้วไม่สบายใจ",
+      "name": "ถูกซื้อแล้วไม่สบายใจ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กองรักษาสภาหนุน +2 · ไม่รับคำสั่งจากประเทศใด · เจรจาเมื่อตัวละครนำหลักฐานผู้ซื้อมา ▲",
+    "opens": "ประตูสภาเปิดให้ผู้ลอบสังหารหรือเขากลับมาคุ้มกัน",
+    "src": "docs/systems/combat/03-enemies.md:206"
+   },
+   {
+    "id": "AL03-3",
+    "name": "เซอร์ฮาโรลด์ อัศวินที่ภักดีต่อบัลลังก์",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "AL-03",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-03"
+    ],
+    "weak": [
+     {
+      "tag": "คำสาบานที่ยังไม่มีผู้รับ",
+      "name": "คำสาบานที่ยังไม่มีผู้รับ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เกราะอัศวินหนุน +1 · สาบานต่อบัลลังก์ที่ยังว่าง · เจรจาด้วยทางที่ไม่ต้องฆ่าผู้อ้าง ▲",
+    "opens": "เขาฆ่าผู้อ้างที่สาม เขาถูกฆ่าก่อนสำเร็จ หรือกลับมาเป็นอัศวินของตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:207"
+   },
+   {
+    "id": "AL10-2",
+    "name": "ลูกา ซานติ นายทหารรับจ้าง",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "AL-10",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-10"
+    ],
+    "weak": [
+     {
+      "tag": "ลูกน้องหนีเมื่อไม่ได้ค่าจ้าง",
+      "name": "ลูกน้องหนีเมื่อไม่ได้ค่าจ้าง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ลูกน้องหนุน +2 (เขาไม่ลงมือเอง) · เสียเปรียบเมื่อต้องลงมือเอง · เจรจาด้วยค่าจ้างที่ธนาคารหยุดจ่าย ▲",
+    "opens": "เขาทรยศฝ่ายหนึ่ง ถูกลูกน้องฆ่า หรือเข้าร่วมตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:208"
+   },
+   {
+    "id": "AL15-1",
+    "name": "จอมพลหญิง มาร์การ์ต ดูวัล",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "AL-15",
+    "continents": [
+     "AL"
+    ],
+    "countries": [
+     "AL-15"
+    ],
+    "weak": [
+     {
+      "tag": "เสบียงขาด",
+      "name": "เสบียงขาด",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทัพตรึงแนวหนุน +3 · ไม่เคยถอยมาสองปี · เจรจาด้วยเสบียงและคำสั่งเปลี่ยนแนวที่ไม่ใช่ถอย ▲",
+    "opens": "WR-16 แนวแตก ตรึงจนฟอร์เทียล้า หรือเสบียงถึง",
+    "src": "docs/systems/combat/03-enemies.md:209"
+   },
+   {
+    "id": "MK04-4",
+    "name": "ฮานส์ ผู้บัญชาการกักกัน",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MK-04",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-04"
+    ],
+    "weak": [
+     {
+      "tag": "ผู้ติดตั้งที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "name": "ผู้ติดตั้งที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ผู้คุมกักกันหนุน +1 · ทุกคนเรียกเขาว่าคุณพ่อ · เจรจาเมื่อตัวละครให้เขาอยู่ข้างผู้คลั่งโดยไม่ต้องยิง ▲",
+    "opens": "ผู้ติดตั้งแหกคุก เขาสั่งยิง หรือตัวละครห้ามจนไม่ต้องยิง",
+    "src": "docs/systems/combat/03-enemies.md:210"
+   },
+   {
+    "id": "MK06-4",
+    "name": "ซีโร่ ผู้ทดสอบหุ่นรบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "MK-06",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-06"
+    ],
+    "weak": [
+     {
+      "tag": "คำถามที่เขาตอบไม่ได้",
+      "name": "คำถามที่เขาตอบไม่ได้",
+      "mark": "▲"
+     },
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ตั้งโปรแกรมให้ไม่คิด · ปืนรูนยิงไม่ออกเมื่อคิด · เจรจาเมื่อตัวละครตอบว่าทำไมเป้าหมายถึงร้องไห้ ▲",
+    "opens": "เขาตื่นเป็นวิญญาณและหนีไปโนวามินด์ ถูกทำลาย หรือถูกปล่อยออกจากสนามทดสอบ",
+    "src": "docs/systems/combat/03-enemies.md:211"
+   },
+   {
+    "id": "MK09-1",
+    "name": "พลเรือเอกอากาศ วิลเลียม สกาย",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 18,
+    "where": "MK-09",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-09"
+    ],
+    "weak": [
+     {
+      "tag": "ฝันของเขาคือเมืองลอยฟ้า",
+      "name": "ฝันของเขาคือเมืองลอยฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กองเรือเหาะหนุน +2 · ฝันถึงเมืองลอยฟ้าเทียม · เจรจาเมื่อตัวละครมีที่ให้เมืองของเขา ▲",
+    "opens": "MC-10 เปลี่ยน หรือ WR-01 สงครามท้องฟ้า",
+    "src": "docs/systems/combat/03-enemies.md:212"
+   },
+   {
+    "id": "MK16-5",
+    "name": "ฮอร์ตัน ผู้คุมค่ายพัก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "MK-16",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-16"
+    ],
+    "weak": [
+     {
+      "tag": "ค่ายที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "name": "ค่ายที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ค่ายพักไม่ถามเผ่า · ผู้พักหนุน +1 · เจรจาเมื่อตัวละครเคารพกฎของค่าย ▲",
+    "opens": "เขาส่งทัพให้ซื้อสัญญากับ MK16-1 พบญาติ หรือเป็นค่ายประจำตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:213"
+   },
+   {
+    "id": "MK05-4",
+    "name": "ดีน ผู้ลักลอบขนอาวุธ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "MK-05",
+    "continents": [
+     "MK"
+    ],
+    "countries": [
+     "MK-05"
+    ],
+    "weak": [
+     {
+      "tag": "ตู้สินค้าปลอมที่ถูกเปิดตกอยู่ในตัวเขาเอง",
+      "name": "ตู้สินค้าปลอมที่ถูกเปิดตกอยู่ในตัวเขาเอง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ตู้ปลอมซ่อนอาวุธ · ไม่เคยยิงใคร · เจรจาเมื่อตัวละครซื้อตู้ทั้งหมดเป็นสินค้า ▲",
+    "opens": "เขาถูกจับที่ด่านอาร์เคียพอร์ต ขายสำเร็จให้ AL-08 หรือถูกตัวละครจับ",
+    "src": "docs/systems/combat/03-enemies.md:214"
+   },
+   {
+    "id": "SH01-3",
+    "name": "ธารีค ผู้ขี่หนอนทราย",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 17,
+    "where": "SH-01",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-01"
+    ],
+    "weak": [
+     {
+      "tag": "เสียงสั่นที่ทำให้หนอนสับสน",
+      "name": "เสียงสั่นที่ทำให้หนอนสับสน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "หนอนทรายยักษ์หนุน +3 (หนอนไม่กินเจ้าของ) · เสียเปรียบเมื่อหนอนถูกยั่ว · เจรจาเมื่อตัวละครไม่ยั่วหนอนและจ่ายค่านั่ง ▲",
+    "opens": "เขาถูกกินโดยหนอน พาไปทางเหนือ หรือตัวละครได้นั่งหนอน",
+    "src": "docs/systems/combat/03-enemies.md:215"
+   },
+   {
+    "id": "SH03-2",
+    "name": "บรูมา ผู้ทดสอบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SH-03",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-03"
+    ],
+    "weak": [
+     {
+      "tag": "คำตอบที่ตรงกับตนเอง",
+      "name": "คำตอบที่ตรงกับตนเอง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างหินยักษ์ · ถามคำถามก่อนลงมือ · เจรจาเมื่อตัวละครตอบว่าจะไม่ฆ่าด้วยเหตุผลของตน ▲",
+    "opens": "ตัวละครผ่านการทดสอบ ถูกห้ามขึ้นบันไดตลอดชีวิต หรือบรูมาเป็นผู้นำทางสิบขั้นแรก",
+    "src": "docs/systems/combat/03-enemies.md:216"
+   },
+   {
+    "id": "SH06-4",
+    "name": "ผู้เฝ้าภูเขาไททัน",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SH-06",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-06"
+    ],
+    "weak": [
+     {
+      "tag": "จังหวะหัวใจหินที่ผิด",
+      "name": "จังหวะหัวใจหินที่ผิด",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างหินยักษ์ · ฟังหัวใจหินทุกวัน · เจรจาเมื่อตัวละครไม่แตะหินและรอฟังจนจบจังหวะ ▲",
+    "opens": "จังหวะเปลี่ยนเร็วขึ้น หยุด หรือตัวละครได้ฟังหัวใจไททัน",
+    "src": "docs/systems/combat/03-enemies.md:217"
+   },
+   {
+    "id": "SH17-1",
+    "name": "กรอม-บาดู มหาผู้ดูแลหิน",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 5,
+    "dc": 21,
+    "where": "SH-17",
+    "continents": [
+     "SH"
+    ],
+    "countries": [
+     "SH-17"
+    ],
+    "weak": [
+     {
+      "tag": "พิธีบรรพบุรุษที่ผิด",
+      "name": "พิธีบรรพบุรุษที่ผิด",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ร่างหินภูเขา · เชื่อว่าภูเขาทุกลูกคือบรรพบุรุษ · เจรจาเมื่อตัวละครเรียกชื่อบรรพบุรุษของภูเขาตามพิธี ▲",
+    "opens": "ผู้เฝ้าเสาค้ำฟ้าตื่น กรอม-บาดูตาย หรือตัวละครได้แตะหินศักดิ์สิทธิ์",
+    "src": "docs/systems/combat/03-enemies.md:218"
+   },
+   {
+    "id": "SV06-1",
+    "name": "ธาร์ล หัวหน้าผู้เฝ้า",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SV-06",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-06"
+    ],
+    "weak": [
+     {
+      "tag": "ดินปนเปื้อน",
+      "name": "ดินปนเปื้อน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ผู้เฝ้าหนุน +2 · ตรวจดินและน้ำด้วยมือ ไม่เชื่อเครื่องมือ · เจรจาเมื่อตัวละครนำตัวอย่างดินที่ไม่ปนเปื้อน ▲",
+    "opens": "BIO-04 หมอกรุก WR-08 สงคราม หรือตัวละครได้ยากรองหมอก",
+    "src": "docs/systems/combat/03-enemies.md:219"
+   },
+   {
+    "id": "SV13-2",
+    "name": "ไอโอเนีย ผีเอลฟ์ผู้เฝ้า",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "SV-13",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-13"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "note": "กายภาพทนครึ่ง · ตายมาสามพันปี · เจรจาเมื่อตัวละครฟังเรื่องมหาล่มสลายจนจบ ▲",
+    "opens": "เธอเล่าความจริงให้ผู้ฟัง หายไปเมื่อวิญญาณถูกเรียกกลับ หรือตัวละครได้ฟัง",
+    "src": "docs/systems/combat/03-enemies.md:220"
+   },
+   {
+    "id": "SV08-4",
+    "name": "เรเวน ผู้เฝ้าหอสังเกต",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "SV-08",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-08"
+    ],
+    "weak": [
+     {
+      "tag": "สัญญาณไฟดับ",
+      "name": "สัญญาณไฟดับ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ยิงจากหอสูง +1 · สัญญาณไฟเตือนกองทัพ · เจรจาเมื่อตัวละครรับสารไฟแทนเขา ▲",
+    "opens": "เขาเตือนทัน เตือนไม่ทัน หรือตัวละครรับสาร",
+    "src": "docs/systems/combat/03-enemies.md:221"
+   },
+   {
+    "id": "SV01-2",
+    "name": "ซิลวาร์ ผู้พิทักษ์ราก",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 4,
+    "dc": 19,
+    "where": "SV-01",
+    "continents": [
+     "SV"
+    ],
+    "countries": [
+     "SV-01"
+    ],
+    "weak": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "พันตัวกับรากซิลเวรา · รากหนุน +2 · เจรจาเมื่อตัวละครไม่แตะรากและฟังเสียงมังกรกับเขา ▲",
+    "opens": "เขาตายพร้อมซิลเวรา ถูกมังกรบอกให้ปล่อยราก หรือตัวละครได้ฟังเสียงมังกร",
+    "src": "docs/systems/combat/03-enemies.md:222"
+   },
+   {
+    "id": "NB12-1",
+    "name": "กัปตันท่า เมอเนบ",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NB-12",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-12"
+    ],
+    "weak": [
+     {
+      "tag": "หมอกทึบที่ตามเขามา",
+      "name": "หมอกทึบที่ตามเขามา",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "เปลี่ยนไปจากหมอก · จำภารกิจเมฆาได้ครึ่งเดียว · เจรจาเมื่อตัวละครบอกชื่อผู้ลงนามภารกิจ ▲",
+    "opens": "เขาถูกพบว่าเสียชีวิต อยู่ในหมอกและเปลี่ยนไป หรือตัวละครค้นพบความจริง",
+    "src": "docs/systems/combat/03-enemies.md:223"
+   },
+   {
+    "id": "NB12-4",
+    "name": "โรแลนด์ ผู้บัญชาการมิสต์วอตช์ที่ไปช้า",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 16,
+    "where": "NB-12",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-12"
+    ],
+    "weak": [
+     {
+      "tag": "ความผิดของตัวเอง",
+      "name": "ความผิดของตัวเอง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "ทหารมิสต์วอตช์หนุน +1 · ไม่ให้อภัยตัวเอง · เจรจาเมื่อตัวละครบอกว่าสามวันนั้นไม่ใช่ความผิดเขา ▲",
+    "opens": "เขาขอบคุณตัวละคร ลาออก หรือกลับเป็นผู้บังคับของตัวละคร",
+    "src": "docs/systems/combat/03-enemies.md:224"
+   },
+   {
+    "id": "NB08-2",
+    "name": "ไลเซีย ผู้เฝ้าผีเมืองปฐม",
+    "group": "npc_named",
+    "kinds": [
+     "humanoid"
+    ],
+    "traits": [],
+    "tier": "หัวหน้า",
+    "wounds": 3,
+    "dc": 15,
+    "where": "NB-08",
+    "continents": [
+     "NB"
+    ],
+    "countries": [
+     "NB-08"
+    ],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "ผู้ฟังที่ไม่ขัดจังหวะ",
+      "name": "ผู้ฟังที่ไม่ขัดจังหวะ",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "note": "กายภาพทนครึ่ง · จำเมืองปฐมก่อนจม · เจรจาเมื่อตัวละครฟังเรื่องกุญแจความทรงจำเมฆาจนจบ ▲",
+    "opens": "เธอเล่าความจริงเรื่องกุญแจ หายไปเมื่อเมืองปฐมโผล่ หรือตัวละครได้ฟัง",
+    "src": "docs/systems/combat/03-enemies.md:225"
+   },
+   {
+    "id": "awakened_titan",
+    "name": "ไททันตื่น",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "ตำนาน",
+    "wounds": 8,
+    "dc": 25,
+    "where": "GI-02",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "▲"
+     },
+     {
+      "tag": "pierce",
+      "name": "แทง",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "event": "GI-02",
+    "note": "ไม่ได้ฆ่า แต่ทำให้หลับต่อได้ (ดนตรี ★ ถ้าเป็นเพลงกล่อมของ SH-06)",
+    "src": "docs/systems/combat/03-enemies.md:231"
+   },
+   {
+    "id": "hellgate_lord",
+    "name": "เจ้าประตูนรก",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 6,
+    "dc": 24,
+    "where": "DM-07",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "event": "DM-07",
+    "note": "ปิดประตูได้ด้วยรูนหรือพิธี",
+    "src": "docs/systems/combat/03-enemies.md:232"
+   },
+   {
+    "id": "lich_king",
+    "name": "ลิชผู้ตื่น",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 6,
+    "dc": 24,
+    "where": "DM-09",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "holy",
+      "name": "ศักดิ์สิทธิ์",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "event": "DM-09",
+    "note": "ผูกประตูเมืองปฐม",
+    "src": "docs/systems/combat/03-enemies.md:233"
+   },
+   {
+    "id": "rift_speaker",
+    "name": "ผู้มาจากรอยแยกที่พูดได้",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "บอส",
+    "wounds": 6,
+    "dc": 23,
+    "where": "FG-12",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "★"
+     },
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "event": "FG-12",
+    "note": "เจรจาได้ ▲ เปิดเส้นปิดรอยแยก FG-10",
+    "src": "docs/systems/combat/03-enemies.md:234"
+   },
+   {
+    "id": "primordial_engine",
+    "name": "เครื่องปฐม",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "ตำนาน",
+    "wounds": 8,
+    "dc": 26,
+    "where": "MC-12 END-06",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "rune",
+      "name": "รูน",
+      "mark": "★"
+     }
+    ],
+    "resist": [],
+    "event": "MC-12 END-06",
+    "note": "ไม่ฆ่า ตัดสินว่าจะปิดหรือให้เลือกทาง",
+    "src": "docs/systems/combat/03-enemies.md:235"
+   },
+   {
+    "id": "leviathan",
+    "name": "เลวีอาธาน",
+    "group": "boss",
+    "kinds": [],
+    "traits": [],
+    "tier": "ตำนาน",
+    "wounds": 8,
+    "dc": 25,
+    "where": "PL-04 END-04",
+    "continents": [],
+    "countries": [],
+    "weak": [
+     {
+      "tag": "lightning",
+      "name": "สายฟ้า",
+      "mark": "▲"
+     }
+    ],
+    "resist": [],
+    "event": "PL-04 END-04",
+    "note": "สัตว์ของธาลาสซา ไม่ใช่มังกรสิบห้า · ฟัน `wl_leviathan` ได้เฉพาะหลัง END-04",
+    "src": "docs/systems/combat/03-enemies.md:236"
+   }
+  ]
+ }
+}
