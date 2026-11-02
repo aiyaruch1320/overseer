@@ -131,7 +131,8 @@ describe('story balance', () => {
       const mean = sum / LIVES;
       const simMean = simSum / LIVES;
       rows.push(`${race.padEnd(12)} played ${mean.toFixed(1)} · counted as the sim counts ${simMean.toFixed(1)} · sim-life.mjs ${sim[r].toFixed(1)}`);
-      if (simMean < 30 || simMean > 34 || Math.abs(simMean - sim[r]) > 2.5) bad.push(`${race} ${simMean.toFixed(1)} against ${sim[r].toFixed(1)}`);
+      // ±3 since convergences take the character to their place (M1 lead decision): the sim models their openness as a fixed rate
+      if (simMean < 30 || simMean > 34 || Math.abs(simMean - sim[r]) > 3) bad.push(`${race} ${simMean.toFixed(1)} against ${sim[r].toFixed(1)}`);
       all += simMean;
     }
     console.log(`nodes per life (${LIVES} lives per race)\n${rows.join('\n')}`);

@@ -227,17 +227,15 @@ function retryWaiting(ctx: Ctx, ex: StoryExt): void {
 
 // ---------- convergences ----------
 
-const continentOf = (id: string): string => id.slice(0, 2);
 
 /** Open now (the world events of its row), not yet passed this life, and the character is on a continent it touches. */
 export function canEnter(ctx: Ctx, id: NodeId): boolean {
   const life = lifeOf(ctx);
   const p = indexOf(ctx).cv.get(id);
   if (!life || !p || life.passed[id] !== undefined) return false;
-  if (p.open && !test(ctx, p.open)) return false;
-  if (!p.places.length) return true;
-  const here = new Set([life.country, life.home].filter(Boolean).map(continentOf));
-  return p.places.some((pl) => here.has(continentOf(pl)));
+  // "ที่" of 00-convergence.md §1 is where the convergence takes place: the row that hands the life over takes the
+  // character there, so the place is not a gate (link rows carry their own place conditions)
+  return !p.open || test(ctx, p.open);
 }
 
 /** Plays a convergence, as the replacement of a row or as a node of its own. */

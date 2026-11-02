@@ -333,10 +333,10 @@ describe('convergence', () => {
     expect(e.data.cv).toBe('cv.0');
   });
 
-  it('is cut when the character is on another continent than the convergence touches', () => {
+  it('takes the character to the place of the convergence: the place is not a gate (00-convergence.md §1 "ที่")', () => {
     const far = cvPoint('cv.1', undefined, [choice('a', 100)], { places: ['SH-09'] });
     const data = mini([row('hu.a3', ['cv.1'], [10, 12])], { cv: [far] });
-    expect(play(1, data, person('human', { country: 'AL-01', home: 'AL-01' })).state.life!.passed['cv.1']).toBeUndefined();
+    expect(play(1, data, person('human', { country: 'AL-01', home: 'AL-01' })).state.life!.passed['cv.1']).toBe('a');
     expect(play(1, data, person('human', { country: 'SH-02', home: 'SH-02' })).state.life!.passed['cv.1']).toBe('a');
   });
 
