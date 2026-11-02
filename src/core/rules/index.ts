@@ -18,6 +18,41 @@ export interface EffectSource {
   stream?: string;
 }
 
+/**
+ * Numbers that conditions compare (`cmp`, `count`) and effects change (`stat`): `gold` `fame` `dfc` `axis.curious`
+ * `lineage.open` `travel.continents` ... A system registers a name, or a prefix ending in `.` (`axis.`), with a reader
+ * and, when the number can change, a writer. Names may be Thai words the docs use (`ทอง`); register those as aliases.
+ */
+export interface StatHandler {
+  read(ctx: Ctx, name: string): number;
+  add?(ctx: Ctx, name: string, delta: number): void;
+}
+const stats = new Map<string, StatHandler>();
+
+export function onStat(name: string, h: StatHandler): void {
+  if (stats.has(name)) throw new Error(`stat ${name} registered twice`);
+  stats.set(name, h);
+}
+
+function statOf(name: string): StatHandler | undefined {
+  const exact = stats.get(name);
+  if (exact) return exact;
+  for (let i = name.lastIndexOf('.'); i > 0; i = name.lastIndexOf('.', i - 1)) {
+    const h = stats.get(name.slice(0, i + 1));
+    if (h) return h;
+  }
+  return undefined;
+}
+
+export function readStat(ctx: Ctx, name: string): number | undefined {
+  const h = statOf(name);
+  if (!h) {
+    report(ctx, 'cond', `stat:${name}`);
+    return undefined;
+  }
+  return h.read(ctx, name);
+}
+
 const conds = new Map<string, (ctx: Ctx, c: Condition) => boolean>();
 const effects = new Map<string, (ctx: Ctx, e: Effect, src: EffectSource) => void>();
 const missing = new Set<string>();
@@ -51,6 +86,24 @@ export function test(ctx: Ctx, c: Condition | undefined): boolean {
     case 'text':
       // prose the docs could not express; the generators report every one, so treat it as not met
       return false;
+    case 'cmp': {
+      const v = readStat(ctx, c.stat);
+      if (v === undefined) return false;
+      // "ไว้ใจ ≥ 3 จาก 10 เผ่า": the stat handler of a counted stat returns how many pass; compare that count
+      if (c.count !== undefined) return v >= c.count;
+      switch (c.op) {
+        case '>=': return v >= c.value;
+        case '>': return v > c.value;
+        case '<=': return v <= c.value;
+        case '<': return v < c.value;
+        case '==': return v === c.value;
+      }
+      return false;
+    }
+    case 'count': {
+      const v = readStat(ctx, c.what);
+      return v !== undefined && v >= c.min;
+    }
   }
   const fn = conds.get(c.k);
   if (!fn) {
@@ -85,6 +138,12 @@ function applyOne(ctx: Ctx, e: Effect, src: EffectSource): void {
       return;
     }
   }
+  if (e.k === 'stat') {
+    const h = statOf(e.stat);
+    if (h?.add) h.add(ctx, e.stat, e.delta);
+    else report(ctx, 'effect', `stat:${e.stat}`);
+    return;
+  }
   // a chance on a grant is rolled here so every handler sees a decided effect
   if (e.k === 'grant' && e.chance !== undefined && !rng().chance(e.chance)) return;
   const fn = effects.get(e.k);
@@ -97,11 +156,12 @@ function applyOne(ctx: Ctx, e: Effect, src: EffectSource): void {
 
 /** Kinds that have a handler, for tests that check coverage against the data. */
 export function registered(): { conds: string[]; effects: string[] } {
-  return { conds: [...conds.keys(), 'and', 'or', 'not', 'text'].sort(), effects: [...effects.keys(), 'label', 'if', 'only', 'chance', 'pick'].sort() };
+  return { conds: [...conds.keys(), 'and', 'or', 'not', 'text', 'cmp', 'count'].sort(), effects: [...effects.keys(), 'label', 'if', 'only', 'chance', 'pick', 'stat'].sort() };
 }
 
 /** Test helper: forget every handler (systems register again when their module is imported fresh). */
 export function resetRules(): void {
+  stats.clear();
   conds.clear();
   effects.clear();
   missing.clear();

@@ -32,3 +32,21 @@ describe('rules registry', () => {
     expect(run(5)).toEqual(['a', 'x', 'sure']);
   });
 });
+
+describe('stats', () => {
+  it('cmp, count and stat effects go through the registered numbers, prefixes included', async () => {
+    const { onStat } = await import('../../src/core/rules');
+    resetRules();
+    const ctx = makeCtx(newGame(1), {});
+    let gold = 40;
+    const axes: Record<string, number> = { curious: 55 };
+    onStat('gold', { read: () => gold, add: (_c, _n, d) => { gold += d; } });
+    onStat('axis.', { read: (_c, n) => axes[n.slice(5)] ?? 0 });
+    expect(test(ctx, { k: 'cmp', stat: 'gold', op: '>=', value: 100 })).toBe(false);
+    apply(ctx, [{ k: 'stat', stat: 'gold', delta: 70 }], { sys: 'test' });
+    expect(test(ctx, { k: 'cmp', stat: 'gold', op: '>=', value: 100 })).toBe(true);
+    expect(test(ctx, { k: 'cmp', stat: 'axis.curious', op: '>', value: 40 })).toBe(true);
+    expect(test(ctx, { k: 'count', what: 'lineage.open', min: 1 })).toBe(false);
+    expect(ctx.state.log.some((e) => e.id === 'cond:stat:lineage.open')).toBe(true);
+  });
+});
