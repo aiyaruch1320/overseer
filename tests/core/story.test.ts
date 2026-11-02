@@ -352,7 +352,7 @@ describe('the director: two layers, two switches', () => {
     expect(w()).toEqual([87.5, 50]);
     g.state.settings.llm.director = false;
     expect(w('p1')).toEqual([87.5, 50]);
-    (g.state.settings.llm as { master?: boolean }).master = false;
+    g.state.settings.llm.master = false;
     expect(w('p1')).toEqual([87.5, 50]);
   });
 
@@ -388,7 +388,7 @@ describe('the director: two layers, two switches', () => {
     expect(off.w('p1')).toEqual([87.5, 50]);
     const master = fork();
     master.offer('b');
-    (master.g.state.settings.llm as { master?: boolean }).master = false;
+    master.g.state.settings.llm.master = false;
     expect(master.w('p1')).toEqual([87.5, 50]);
   });
 

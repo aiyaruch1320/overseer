@@ -118,7 +118,7 @@ describe('checks of an answer', () => {
 
 describe('switches', () => {
   it('badSettings accepts the llm keys as booleans and refuses the rest', () => {
-    expect(badSettings({ llm: { setup: false, director: true, epitaph: false } })).toBeNull();
+    expect(badSettings({ llm: { master: true, setup: false, director: true, epitaph: false } })).toBeNull();
     expect(badSettings({ llm: { master: false } as never })).toBeNull();
     expect(badSettings({ llm: { dream: true } as never })).toMatch(/สวิตช์ LLM dream/);
     expect(badSettings({ llm: { director: 'yes' } as never })).toMatch(/director/);
@@ -137,9 +137,9 @@ describe('switches', () => {
     st.settings.llm.setup = false;
     expect(pointOn(st, llm.client, 'command')).toBe(false);
     expect(pointOn(st, llm.client, 'director')).toBe(true);
-    (st.settings.llm as { master?: boolean }).master = false;
+    st.settings.llm.master = false;
     expect(pointOn(st, llm.client, 'director')).toBe(false);
-    delete (st.settings.llm as { master?: boolean }).master;
+    st.settings.llm.master = true;
     const off = fakeLlm(FX, { points: { director: false } }).llm;
     expect(pointOn(st, off.client, 'director')).toBe(false);
     expect(pointOn(st, off.client, 'ending')).toBe(true);
@@ -231,9 +231,9 @@ describe('point 1: command the character', () => {
     st.settings.llm.setup = false;
     expect(await llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).toEqual({ command: null, source: 'template', reason: 'off' });
     st.settings.llm.setup = true;
-    (st.settings.llm as { master?: boolean }).master = false;
+    st.settings.llm.master = false;
     expect((await llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).reason).toBe('off');
-    delete (st.settings.llm as { master?: boolean }).master;
+    st.settings.llm.master = true;
     expect((await interpretWords(ctx, 'อย่าประมาทนะ', menu, null)).reason).toBe('off');
     expect((await fakeLlm(FX, { enabled: false }).llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).reason).toBe('off');
     expect(provider.calls).toHaveLength(0);
@@ -580,8 +580,8 @@ describe('a game with the layer off plays exactly as before', () => {
       const st = s.game.state;
       const { llm, provider } = fakeLlm(FX);
       if (withLayer) {
-        st.settings.llm = { setup: false, director: false, epitaph: false };
-        (st.settings.llm as { master?: boolean }).master = false;
+        st.settings.llm = { master: true, setup: false, director: false, epitaph: false };
+        st.settings.llm.master = false;
       }
       const after = () => {
         if (!withLayer) return;
@@ -594,7 +594,7 @@ describe('a game with the layer off plays exactly as before', () => {
         const sum = await llm.summarizeEnding(summaryInput({ lifeId: st.life!.id }), st);
         expect(sum.source).toBe('template');
         expect(provider.calls).toHaveLength(0);
-        st.settings.llm = { setup: true, director: true, epitaph: true };
+        st.settings.llm = { master: true, setup: true, director: true, epitaph: true };
       }
       return JSON.stringify(st);
     };

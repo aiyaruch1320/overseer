@@ -4,9 +4,9 @@ import type { GameState } from '../types';
 import type { LlmClient } from './client';
 import { SWITCH_OF, type LlmPoint } from './tuning';
 
-/** The player's side alone: the master (`Settings.llm.master`, proposed; missing means on) and the switch of the point. */
+/** The player's side alone: the master (`Settings.llm.master`; a save older than the field has none, which reads as on) and the switch of the point. */
 export function playerOn(state: GameState, point: LlmPoint): boolean {
-  const s = state.settings.llm as GameState['settings']['llm'] & { master?: boolean };
+  const s = state.settings.llm;
   return s.master !== false && s[SWITCH_OF[point]] === true;
 }
 

@@ -2,7 +2,7 @@
 //   1. command the character  `interpretWords`  → a whisper command of the game, or null (the menu)          switch `Settings.llm.setup`
 //   2. the director           `requestDirector` (async, ahead) + `directorMul` (sync, at the point)           switch `Settings.llm.director`
 //   3. the end summary        `summarizeEnding`  → { text, source: 'llm' | 'template' }                      switch `Settings.llm.epitaph`
-// plus the master (server env `OVERSEER_LLM=off`, and `Settings.llm.master` when the lead adds it to the type).
+// plus the master (server env `OVERSEER_LLM=off`, and `Settings.llm.master`).
 //
 // Rules this layer keeps: the core step never waits for it and never calls it; a call is async and outside the step; its answer enters the state only as text
 // in `state.llmAnswers` (with a log entry of level 0), so a save replays without calling; every answer passes a check or the game uses its own text (tier 0);
