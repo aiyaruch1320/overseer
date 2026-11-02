@@ -1,6 +1,7 @@
 {
- "version": "469dcce435e0",
+ "version": "03a0395b58b9",
  "sources": [
+  "docs/lore/dragons/README.md",
   "docs/systems/god/01-power.md",
   "docs/systems/god/02-bestow.md",
   "docs/systems/god/03-dreams.md",
@@ -2096,7 +2097,12 @@
       "cond": "ปีแรกหลัง MR-17",
       "what": "ผู้รอดตั้งค่ายรอบหลุม ไฟยังคุ ฝนเถ้าตกทั้งปี",
       "effect": "อาหารในค่าย ×3 ผู้รอดที่เป็น NPC ได้สถานะผู้ลี้ภัยในถิ่น",
-      "src": "docs/systems/god/04-miracles.md:105"
+      "src": "docs/systems/god/04-miracles.md:105",
+      "from": 0,
+      "to": 1,
+      "after": [
+       "MR-17"
+      ]
      },
      {
       "id": "RU-02",
@@ -2104,7 +2110,14 @@
       "cond": "ภายในสองปี",
       "what": "ผู้รอดเดินไปประเทศข้างเคียงที่รับ",
       "effect": "อาหารที่ประเทศรับ ×1.3 ห้าปี ประเทศที่ไม่รับ ความตึงเครียดชายแดน +10% เปิดโหนด `mr.a1` ให้ตัวละครที่อยู่ประเทศรับ",
-      "src": "docs/systems/god/04-miracles.md:106"
+      "src": "docs/systems/god/04-miracles.md:106",
+      "from": 0,
+      "to": 2,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ],
+      "opens": "mr.a1"
      },
      {
       "id": "RU-03",
@@ -2112,7 +2125,14 @@
       "cond": "สามถึงสิบปีหลัง",
       "what": "นักผจญภัย พ่อค้า และโจรมาขุดเหล็กดาวและสมบัติของเมืองเก่า",
       "effect": "`mt_star_iron` หาได้ที่ซาก ทหารรับจ้างในทวีป ×1.2 เปิดโหนด `mr.a2`",
-      "src": "docs/systems/god/04-miracles.md:107"
+      "src": "docs/systems/god/04-miracles.md:107",
+      "from": 3,
+      "to": 10,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ],
+      "opens": "mr.a2"
      },
      {
       "id": "RU-04",
@@ -2120,7 +2140,15 @@
       "cond": "ห้าปีหลัง · ความหวาดกลัวของพระเจ้า ≥ 60",
       "what": "ผู้รอดบางคนบูชาพระเจ้าผู้ลงโทษ เชื่อว่าเมืองถูกพิพากษา",
       "effect": "ลัทธินับเป็นช่องทาง B ของประเทศ (ความหวาดกลัวรายปีของพระเจ้า +0.5) เปิดโหนด `mr.a3`",
-      "src": "docs/systems/god/04-miracles.md:108"
+      "src": "docs/systems/god/04-miracles.md:108",
+      "from": 5,
+      "to": null,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ],
+      "dreadMin": 60,
+      "opens": "mr.a3"
      },
      {
       "id": "RU-05",
@@ -2128,7 +2156,15 @@
       "cond": "ห้าปีหลัง · ไม่มี RU-04 หรือ NPC ผู้นำซากรอด",
       "what": "ผู้รอดสาบานล้างแค้นพระเจ้า",
       "effect": "ขบวนการผู้ล่าเทพได้ฐานที่ซาก น้ำหนัก GD-08 ×1.2 เปิดโหนด `mr.a4`",
-      "src": "docs/systems/god/04-miracles.md:109"
+      "src": "docs/systems/god/04-miracles.md:109",
+      "from": 5,
+      "to": null,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ],
+      "unlessCult": true,
+      "opens": "mr.a4"
      },
      {
       "id": "RU-06",
@@ -2136,7 +2172,13 @@
       "cond": "สิบปีหลัง",
       "what": "ลูกหลานของผู้นำเดิมเรียกร้องสิทธิ์ในที่ดินและตราประเทศ",
       "effect": "NPC ผู้สืบของผู้นำเดิมเป็นเรื่องเปิด ทาง `[ช่วย]` `[ขัดขวาง]` ใช้กติกา NPC",
-      "src": "docs/systems/god/04-miracles.md:110"
+      "src": "docs/systems/god/04-miracles.md:110",
+      "from": 10,
+      "to": null,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ]
      },
      {
       "id": "RU-07",
@@ -2144,7 +2186,14 @@
       "cond": "40 ถึง 80 ปีหลัง · ไม่มีสงครามในประเทศ",
       "what": "เมืองใหม่สร้างบนขอบหลุม ใช้หินดำจากหลุม",
       "effect": "ธง `god_ruin` หาย ประเทศกลับเป็นประเทศ W 2 ชื่อใหม่ (แม่แบบ NT) เหตุการณ์ท้องถิ่นใหม่ใช้แม่แบบ LT",
-      "src": "docs/systems/god/04-miracles.md:111"
+      "src": "docs/systems/god/04-miracles.md:111",
+      "from": 40,
+      "to": 80,
+      "after": [
+       "MR-17",
+       "MR-18"
+      ],
+      "noWar": true
      },
      {
       "id": "RU-08",
@@ -2152,9 +2201,40 @@
       "cond": "หลัง MR-18 หรือ 20 ปีหลัง MR-17 ในประเทศที่ฝนชุก",
       "what": "หลุมกลายเป็นทะเลสาบ ยอดหอเก่าโผล่พ้นน้ำ",
       "effect": "ของทะเล (S) หาได้ที่ซาก นักดำน้ำหาสมบัติเปิดโหนด `mr.a2` รูปใต้น้ำ",
-      "src": "docs/systems/god/04-miracles.md:112"
+      "src": "docs/systems/god/04-miracles.md:112",
+      "from": 0,
+      "to": null,
+      "after": [
+       "MR-18",
+       "MR-17"
+      ],
+      "rainy": true,
+      "opens": "mr.a2"
      }
-    ]
+    ],
+    "numbers": {
+     "pop": [
+      10,
+      40
+     ],
+     "npc": {
+      "die": 50,
+      "flee": 30,
+      "stay": 20
+     },
+     "allyDie": 25,
+     "mcCurse": {
+      "id": "nc_homeland_ghost",
+      "chance": 50
+     },
+     "mcBelief": -10,
+     "exileCurseChance": 30,
+     "w": 1,
+     "trade": -5,
+     "neighbourFaith": -10,
+     "dread": 20,
+     "seenBelief": -10
+    }
    },
    "seal": {
     "hit": [
@@ -2221,7 +2301,215 @@
       "อารมณ์ของทุกตัวในทวีป −15",
       ""
      ]
-    ]
+    ],
+    "homes": [
+     {
+      "dragon": 0,
+      "name": "โอรัน-ซัล",
+      "countries": [
+       "AZ-01"
+      ],
+      "faiths": [
+       "มังกร"
+      ]
+     },
+     {
+      "dragon": 1,
+      "name": "เพลิงนิรันดร์",
+      "countries": [
+       "AZ-02"
+      ],
+      "faiths": [
+       "มังกร"
+      ]
+     },
+     {
+      "dragon": 2,
+      "name": "สมุทรอาลัย",
+      "countries": [
+       "AZ-06",
+       "NR-04"
+      ],
+      "faiths": [
+       "สมุทร",
+       "นาคา"
+      ]
+     },
+     {
+      "dragon": 3,
+      "name": "พายุไร้ทิศ",
+      "countries": [
+       "AZ-03"
+      ],
+      "faiths": [
+       "มังกร",
+       "ลางนิยม"
+      ]
+     },
+     {
+      "dragon": 4,
+      "name": "ศิลาสะท้าน",
+      "countries": [
+       "AZ-04"
+      ],
+      "faiths": [
+       "มังกร",
+       "ศิลา"
+      ]
+     },
+     {
+      "dragon": 5,
+      "name": "ราหู",
+      "countries": [
+       "AZ-05"
+      ],
+      "faiths": [
+       "มังกร",
+       "จันทรา"
+      ]
+     },
+     {
+      "dragon": 6,
+      "name": "อีริดาน",
+      "countries": [
+       "AZ-07"
+      ],
+      "faiths": [
+       "มังกร"
+      ]
+     },
+     {
+      "dragon": 7,
+      "name": "ฮรอด-กาธ",
+      "countries": [
+       "MH-10"
+      ],
+      "faiths": [
+       "สงคราม"
+      ]
+     },
+     {
+      "dragon": 8,
+      "name": "คัลดรา",
+      "countries": [
+       "KD-10"
+      ],
+      "faiths": [
+       "เตาหลอม"
+      ]
+     },
+     {
+      "dragon": 9,
+      "name": "ธาลาสซา",
+      "countries": [
+       "NR-04"
+      ],
+      "faiths": [
+       "สมุทร",
+       "นาคา"
+      ]
+     },
+     {
+      "dragon": 10,
+      "name": "อันดาร์",
+      "countries": [
+       "AL-14"
+      ],
+      "faiths": [
+       "ความฝัน"
+      ]
+     },
+     {
+      "dragon": 11,
+      "name": "เซเรเน",
+      "countries": [
+       "MK-01"
+      ],
+      "faiths": [
+       "เฟือง"
+      ]
+     },
+     {
+      "dragon": 12,
+      "name": "กรอม-ธาร",
+      "countries": [
+       "SH-03",
+       "SH-17"
+      ],
+      "faiths": [
+       "ศิลา"
+      ]
+     },
+     {
+      "dragon": 13,
+      "name": "ซิลเวรา",
+      "countries": [
+       "SV-01",
+       "SV-13"
+      ],
+      "faiths": [
+       "ต้นไม้โลก"
+      ]
+     },
+     {
+      "dragon": 14,
+      "name": "นิเวรี",
+      "countries": [
+       "NB-08"
+      ],
+      "faiths": [
+       "จันทรา",
+       "กระซิบ"
+      ]
+     }
+    ],
+    "keyCountry": "AL-01",
+    "protectYears": 50,
+    "midMood": -10,
+    "midWorshippers": -5,
+    "crack": {
+     "buildings": 35,
+     "pop": 70,
+     "npc": {
+      "die": 20,
+      "flee": 20,
+      "stay": 60
+     },
+     "w": -2,
+     "wYears": 10,
+     "mood": -20,
+     "capLoss": 5,
+     "opens": [
+      "RU-02",
+      "RU-03"
+     ],
+     "shut": [
+      "RU-01",
+      "RU-07"
+     ]
+    },
+    "concordia": {
+     "c": -20,
+     "le05Mul": 2,
+     "po08Mul": 2,
+     "years": 10
+    }
+   },
+   "grand": {
+    "wrath": {
+     "warYears": 10,
+     "faith": -15,
+     "dreadMul": 2,
+     "gd08Mul": 2,
+     "moodAll": -15
+    },
+    "flood": {
+     "years": 3,
+     "refugeeFood": 1.3
+    },
+    "land": {
+     "settleWithin": 20
+    }
    },
    "reactions": [
     {

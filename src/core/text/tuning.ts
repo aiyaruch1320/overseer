@@ -155,6 +155,10 @@ export const FLAG_TH: Record<string, string> = {
   horde: 'ฝูงอสูร',
   ghoul_plague: 'กูลที่ระบาด',
   golden: 'ยุคทอง',
+  flood: 'น้ำท่วมใหญ่',
+  cracked: 'เมืองร้าว',
+  god_ruin: 'ซากพระเจ้า',
+  fallen: 'ซากของมหาล่มสลาย',
 };
 
 /** The numbers a prayer moves, in words. */

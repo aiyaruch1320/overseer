@@ -7,8 +7,10 @@
 // sim's measured leftover after the prayers (the sim does the same: "พระเจ้าใช้พลังที่เหลือจากการตอบคำอธิษฐานกับโลกทั้งหมด"), the policy is the same
 // `ext.policy`, played by the acts at every world step.
 //
+// G5 adds the large miracles, the ruins and the seals: the world part counts the ruins a world and the ruins that stand together (policy ลงโทษ), the
+// blows on the seals and the eras they quicken (ตีหมุด, เร่งจบ), and the life part checks that no life under any policy of the tools passes the caps of the
+// grand miracles (large 2 · ruin 1 · grand 1).
 // What the acts cannot show alone is skipped, with the reason:
-//   · ruins a world, seal strikes, the eras the seal quickens: the large miracles and the seal are the step M4
 //   · the vows GV-11 GV-19: the goals are the step G6b
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
@@ -18,6 +20,7 @@ import { createSession, startLife } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
 import { Game, type GameData, type System } from '../../src/core/game';
 import { godActsSystem } from '../../src/core/god/acts';
+import { ruinExt } from '../../src/core/god/ruin';
 import { newGame } from '../../src/core/state';
 import { worldSystem } from '../../src/core/world';
 import type { LifeState } from '../../src/core/types';
@@ -56,6 +59,10 @@ function runSim(lives: number, worlds: number): void {
 const POLICY_OF: Record<string, string> = { เงียบ: 'เงียบ', เมตตา: 'เมตตา', ลงโทษ: 'ลงโทษ', สุ่ม: 'สุ่ม' };
 
 interface LifeResult {
+  /** The large (MR-17 to 20), the ruins and the grand miracles (MR-21 MR-22) that happened in the life, by the chronicle. */
+  big: number;
+  ruin: number;
+  grand: number;
   prayers: number;
   answered: number;
   whispers: number;
@@ -73,6 +80,9 @@ function lifeRun(data: GameData, seed: number, policy: string): LifeResult {
   for (let beats = 0; beats < 4 * 400 && !life.dead; beats++) g.beat();
   const log = st.log.filter((e) => e.sys === 'god');
   return {
+    big: st.god.chronicle.filter((e) => e.kind === 'miracle' && /^MR-(17|18|19|20)$/.test(e.id)).length,
+    ruin: ruinExt(st).ruins.length,
+    grand: st.god.chronicle.filter((e) => e.kind === 'miracle' && /^MR-2[12]$/.test(e.id)).length,
     prayers: log.filter((e) => e.kind === 'prayer').length,
     answered: st.god.chronicle.filter((e) => e.kind === 'prayer.give' || e.kind === 'prayer.strange' || e.kind === 'prayer.deny' || e.kind === 'prayer.punish').length,
     whispers: st.god.chronicle.filter((e) => e.kind === 'whisper').length,
@@ -85,7 +95,9 @@ const mean = (a: number[]) => a.reduce((x, y) => x + y, 0) / a.length;
 const share = (a: number[], f: (x: number) => boolean) => a.filter(f).length / a.length;
 
 const LIVES = 160;
+const CAP_LIVES = 40;
 const lives: Record<string, LifeResult[]> = {};
+const capLives: Record<string, LifeResult[]> = {};
 
 // ---------- the world part: the real world with a living stand-in for the character, the income the sim measured, the policy ----------
 
@@ -118,6 +130,9 @@ function standIn(id: number, year: number): LifeState {
 }
 
 interface WorldResult {
+  /** The ruins of the world: the year each was made and the year its city was built, if it was. */
+  ruins: { year: number; ended?: number }[];
+  strikes: number;
   ended: boolean;
   endYear: number;
   eras: number[];
@@ -156,6 +171,8 @@ function worldRun(data: GameData, n: number, policy: string): WorldResult {
   g.worldSteps(HORIZON);
   const w = st.world;
   return {
+    ruins: ruinExt(st).ruins.map((r) => ({ year: r.year, ...(r.ended !== undefined ? { ended: r.ended } : {}) })),
+    strikes: ruinExt(st).strikes,
     ended: !!w.ended,
     endYear: w.ended?.year ?? 0,
     eras: [2, 3, 4].map((k) => w.vars['eraStart' + k]).filter((x) => x !== undefined),
@@ -190,7 +207,12 @@ beforeAll(async () => {
     lives[name] = [];
     for (let i = 0; i < LIVES; i++) lives[name].push(lifeRun(data, 1000 + i * 31, policy));
   }
-  for (const [name, policy, count] of [['ไม่จำลองพระเจ้า', 'base', RATIO_WORLDS], ['เมตตา', 'เมตตา', WORLDS], ['เร่งจบ', 'เร่งจบ', RATIO_WORLDS], ['สุ่ม', 'สุ่ม', WORLDS]] as const) {
+  // the policies of the tools that do the large deeds, for the caps of a life (the rest are counted above)
+  for (const [name, policy] of [['เร่งจบ', 'เร่งจบ'], ['ตีหมุด', 'ตีหมุด'], ['ปั้นนิสัย', 'ปั้นนิสัย'], ['ให้ของ', 'ให้ของ'], ['เก็บพลัง', 'เก็บพลัง']] as const) {
+    capLives[name] = [];
+    for (let i = 0; i < CAP_LIVES; i++) capLives[name].push(lifeRun(data, 5000 + i * 37, policy));
+  }
+  for (const [name, policy, count] of [['ไม่จำลองพระเจ้า', 'base', RATIO_WORLDS], ['เมตตา', 'เมตตา', WORLDS], ['เร่งจบ', 'เร่งจบ', RATIO_WORLDS], ['สุ่ม', 'สุ่ม', WORLDS], ['ลงโทษ (ทำซาก)', 'ลงโทษ', WORLDS], ['ตีหมุดผนึก', 'ตีหมุด', RATIO_WORLDS]] as const) {
     const t0 = Date.now();
     worlds[name] = [];
     for (let n = 1; n <= count; n++) worlds[name].push(worldRun(data, n, policy));
@@ -305,3 +327,57 @@ describe('world part (acts only): the dragons and the fates', () => {
   });
 });
 
+describe('G5: the large deeds stay inside the caps (04-miracles.md §2 rule 6, 01-power.md §4)', () => {
+  const all = () => [...Object.values(lives), ...Object.values(capLives)].flat();
+
+  it('no life, under any policy of the tools, has more than two large miracles, a ruin more than once, or more than one grand miracle', () => {
+    for (const x of all()) {
+      expect(x.big).toBeLessThanOrEqual(2);
+      expect(x.ruin).toBeLessThanOrEqual(1);
+      expect(x.grand).toBeLessThanOrEqual(1);
+    }
+    const seen = Object.entries({ ...lives, ...capLives }).map(([k, v]) => `${k} ${mean(v.map((x) => x.big)).toFixed(2)} large · ${mean(v.map((x) => x.ruin)).toFixed(2)} ruin · ${mean(v.map((x) => x.grand)).toFixed(2)} grand`);
+    console.log('large deeds a life: ' + seen.join(' | '));
+  });
+});
+
+describe('G5: the ruins and the seals in a world of 1,800 years', () => {
+  const median = (a: number[]) => (a.length ? [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)] : NaN);
+  const quant = (a: number[], q: number) => [...a].sort((x, y) => x - y)[Math.min(a.length - 1, Math.floor(q * a.length))];
+  /** Ruins that stand at once: a ruin stands from its day until its city is built. */
+  const together = (rs: WorldResult['ruins']) => Math.max(0, ...rs.map((r) => rs.filter((o) => o.year <= r.year && (o.ended === undefined || o.ended > r.year)).length));
+
+  it('ลงโทษ (ทำซาก): at most 18 ruins a world at the 90th percentile, at most 2 standing together, a hundred years between two', () => {
+    const w = worlds['ลงโทษ (ทำซาก)'];
+    const per = w.map((x) => x.ruins.length);
+    const tog = w.map((x) => together(x.ruins));
+    console.log(`ลงโทษ (ทำซาก): ruins p50 ${quant(per, 0.5)} · p90 ${quant(per, 0.9)} · max ${Math.max(...per)} · together p90 ${quant(tog, 0.9)} (sim 10 · 18 · 18 · 1)`);
+    expect(quant(per, 0.9)).toBeLessThanOrEqual(18);
+    expect(quant(tog, 0.9)).toBeLessThanOrEqual(2);
+    expect(Math.max(...per)).toBeGreaterThan(0);
+    for (const x of w) {
+      const ys = x.ruins.map((r) => r.year).sort((a, b) => a - b);
+      for (let i = 1; i < ys.length; i++) expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(100);
+    }
+  });
+
+  it('ตีหมุดผนึก: the seals are struck, and the eras start no more than 15% sooner than the base', () => {
+    const base = worlds['ไม่จำลองพระเจ้า'];
+    const hit = worlds['ตีหมุดผนึก'];
+    const strikes = mean(hit.map((x) => x.strikes));
+    console.log(`ตีหมุดผนึก: strikes a world ${strikes.toFixed(1)} (sim 41.1) · เร่งจบ ${mean(worlds['เร่งจบ'].map((x) => x.strikes)).toFixed(1)} (sim 31.1) · สุ่ม ${mean(worlds['สุ่ม'].map((x) => x.strikes)).toFixed(1)} (sim 10.0)`);
+    expect(strikes).toBeGreaterThan(5);
+    const eras = [0, 1, 2].map((k) => ({ b: median(base.map((x) => x.eras[k]).filter((v) => v !== undefined)), h: median(hit.map((x) => x.eras[k]).filter((v) => v !== undefined)) }));
+    console.log('eras 2 3 4 (p50): base ' + eras.map((e) => e.b).join(' · ') + ' · ตีหมุด ' + eras.map((e) => e.h).join(' · '));
+    eras.forEach((e, k) => {
+      if (Number.isNaN(e.b) || Number.isNaN(e.h)) return;
+      expect(e.h, `era ${k + 2}`).toBeGreaterThanOrEqual(e.b * 0.85);
+    });
+  });
+
+  it('สุ่ม ruins and strikes sometimes; เมตตา neither', () => {
+    expect(mean(worlds['สุ่ม'].map((x) => x.ruins.length))).toBeGreaterThan(0);
+    expect(mean(worlds['สุ่ม'].map((x) => x.strikes))).toBeGreaterThan(0);
+    expect(mean(worlds['เมตตา'].map((x) => x.ruins.length + x.strikes))).toBe(0);
+  });
+});

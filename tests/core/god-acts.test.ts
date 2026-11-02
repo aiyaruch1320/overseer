@@ -481,10 +481,10 @@ describe('whispers', () => {
 });
 
 describe('miracles: the table', () => {
-  it('MR-01 to 16, 21, 23, 24, 25 are implemented; 17 to 20 and 22 wait for the step of the ruins', () => {
-    expect(implementedMiracles()).toEqual(['MR-01', 'MR-02', 'MR-03', 'MR-04', 'MR-05', 'MR-06', 'MR-07', 'MR-08', 'MR-09', 'MR-10', 'MR-11', 'MR-12', 'MR-13', 'MR-14', 'MR-15', 'MR-16', 'MR-21', 'MR-23', 'MR-24', 'MR-25']);
+  it('all 25 miracles are implemented (MR-17 to 20 and 22 are the step of the ruins, god/ruin); a country the map does not know is refused', () => {
+    expect(implementedMiracles()).toEqual(Array.from({ length: 25 }, (_, i) => `MR-${String(i + 1).padStart(2, '0')}`));
     const { ctx } = mk(7);
-    const r = run(ctx, 'miracle', { id: 'MR-17', country: 'AL-01' });
+    const r = run(ctx, 'miracle', { id: 'MR-17', country: 'XX-99' });
     expect(r.ok).toBe(false);
   });
 

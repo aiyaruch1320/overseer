@@ -8,7 +8,7 @@ import { canPay, dreadOf, lightOf } from './power';
 import { gx, inWindow, lifeOf } from './state';
 import { CHEST_MIN_LIGHT, POLICY_ALIAS, RESERVE, SHAPER_AGAINST, tierIndex } from './tuning';
 
-export type PolicyName = 'silent' | 'merciful' | 'punish' | 'shaper' | 'giver' | 'saver' | 'random' | 'hasten';
+export type PolicyName = 'silent' | 'merciful' | 'punish' | 'shaper' | 'giver' | 'saver' | 'random' | 'hasten' | 'seal';
 
 /**
  * A part of a policy owned by another file (prayers, whispers, miracles), played once a life year inside `policyStep`: `first` before the
@@ -109,6 +109,7 @@ export function policyStep(ctx: Ctx, policy: string): void {
       chestRounds(ctx, 'faith', () => lightOf(ctx) >= CHEST_MIN_LIGHT, 2);
       break;
     case 'punish':
+    case 'seal':
       chestRounds(ctx, 'dread', () => dreadOf(ctx) >= (inWindow(ctx) ? 0 : 20), 2);
       break;
     case 'random': {

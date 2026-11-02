@@ -20,6 +20,7 @@ import { npcsAt } from '../../src/core/npc';
 import { callReason, fxSplit, labels, plainName, reasonText, scrub, sentence } from '../../src/core/text';
 import { CHEST_KIND_TH, FLAG_TH, PENDING_NOTE, TIER_TH, WHY_TH } from '../../src/core/text/tuning';
 import { DESTROY_RETURN_DIV } from '../../src/core/god/acts/tuning';
+import { countriesOf } from '../../src/core/god/acts/geo';
 import type { GodAction, LogEntry } from '../../src/core/types';
 import { tagOf, timeline } from './report';
 import { toolNotes } from './session';
@@ -105,6 +106,8 @@ export function godHelp(): string[] {
     'คำสั่งพระเจ้า (ทุกคำสั่งที่เปลี่ยนโลกจะแสดงตัวอย่างผลก่อน แล้วพิมพ์ yes เพื่อทำจริง หรือ no เพื่อยกเลิก; ใส่ --yes เพื่อทำเลย):',
     ...ORDER.map((a) => `  ${USAGE[a]} — ${TITLE[a]}`),
     '  cancel N — ยกเลิกลางของปาฏิหาริย์ใบที่ N (ได้พลังคืนครึ่งหนึ่ง)',
+    '  ปาฏิหาริย์ใหญ่: miracle MR-17 <ประเทศ> ดาวตก · MR-18 <ประเทศ> แผ่นดินกลืนเมือง (ทำให้เป็นซาก ชีวิตละครั้ง) · MR-19 <ประเทศ> น้ำท่วมใหญ่ · MR-20 <ประเทศ> ยกแผ่นดินใหม่ · MR-22 <ทวีป> พระพิโรธ (ชีวิตละครั้ง)',
+    '    ทุกอย่างมีลางหนึ่งฤดูก่อนเกิดเหตุ ประเทศที่มีมังกรอยู่ (หมุดผนึก) และคองคอร์เดีย รับผลเบากว่าหนึ่งระดับ มังกรเจ็บและตอบกลับภายในหนึ่งปี ตัวอย่างผลบอกก่อนว่าจะเป็นอย่างไร',
     '  power — แสงศรัทธา ความหวาดกลัว ราคา และเพดานที่เหลือ',
     '  options — สิ่งที่ทำได้ตอนนี้ และสิ่งที่รออยู่ (หีบ ความฝัน คำอธิษฐาน ลาง)',
     '  yes / no — ยืนยัน / ยกเลิกคำสั่งที่รออยู่',
@@ -295,16 +298,16 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
       // the road of ruin gives a third of its fear back when the thing happens (01-power.md §1): said in the preview, with the net price (review M2 L4)
       const dread = (p.cost as { dread?: number } | undefined)?.dread ?? 0;
       if (dread > 0 && (p.line === 'destroy' || p.line === 'dragon')) {
-        const back = Math.round(dread / DESTROY_RETURN_DIV);
+        const back = (p.back as { dread?: number } | undefined)?.dread ?? Math.round(dread / DESTROY_RETURN_DIV);
         out.push(`เมื่อเหตุเกิดขึ้น ท่านได้ความหวาดกลัวคืน ${back} (ราคาสุทธิ ความหวาดกลัว ${dread - back})`);
       }
       const row = typeof p.id === 'string' ? MIRACLES(data).find((m) => m.id === p.id) : undefined;
-      if (row?.immediate && typeof p.left !== 'string') out.push(`ผลที่คาด: ${scrub(data, row.immediate)}`);
+      if (row?.immediate && typeof p.left !== 'string' && !p.sealed) out.push(`ผลที่คาด: ${scrub(data, row.immediate)}`);
       if (row?.flagsClear?.length && env.flags) {
         const have = Object.values(env.flags).flat();
         const gone = row.flagsClear.filter((f) => !have.includes(f));
         // the miracle clears a hazard the country does not have: it is paid for and does nothing but the price of goods (review M2 P6 L4)
-        if (gone.length === row.flagsClear.length) out.push(`คำเตือน: ประเทศนั้นไม่มี${gone.map((f) => FLAG_TH[f] ?? f).join(' · ')}ให้ปลด ท่านจะเสียราคาเต็มโดยผลเหลือแค่ราคาของในตลาดที่เปลี่ยนไป`);
+        if (gone.length === row.flagsClear.length) out.push(`คำเตือน: ${typeof p.target === 'string' && p.target.length === 2 ? 'ทวีป' : 'ประเทศ'}นั้นไม่มี${gone.map((f) => FLAG_TH[f] ?? f).join(' · ')}ให้ปลด ท่านจะเสียราคาเต็มโดยผลเหลือแค่ราคาของในตลาดที่เปลี่ยนไป`);
       }
       if (num(p.omen)) out.push(`ลาง: อีก ${num(p.omen)} ฤดูก่อนเกิดเหตุ (ยกเลิกได้ ได้คืนครึ่งหนึ่ง)`);
       if (num(p.wait)) out.push(`ระยะรอหลังใช้: ${num(p.wait)} ปีโลก`);
@@ -321,6 +324,8 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
       if (flagWords.length) out.push(`สิ่งที่ประเทศนั้นเป็นอยู่: ${flagWords.join(' · ')}`);
       if (p.mood !== undefined) out.push(`อารมณ์ของมังกร ${Math.round(num(p.mood))} → ${Math.round(num(p.after))}`);
       if (typeof p.name === 'string' && p.mood !== undefined) out[0] = `${str(p.name)} (ระดับ${str(p.tier)})`;
+      // the large and grand miracles tell what they will do in sentences of their own (ruins, seals, the wrath)
+      if (Array.isArray(p.notes)) for (const n of p.notes) if (str(n)) out.push(str(n));
       return out;
     }
     default:
@@ -809,7 +814,7 @@ export class GodConsole {
     const burden = (this.game.ctx.data.god?.items as { dreams?: { burden?: { at: number } } } | undefined)?.dreams?.burden;
     // a miracle with no country named falls on the country of the character
     const named = [args.country, ...(Array.isArray(args.countries) ? args.countries : [])].filter((x): x is string => typeof x === 'string');
-    const ids = named.length ? named : life && args.id ? [life.country] : [];
+    const ids = named.length ? named : typeof args.continent === 'string' ? countriesOf(this.game.ctx, args.continent) : life && args.id ? [life.country] : [];
     return {
       curses: life ? life.curses.map((c) => plainName(this.data, c)).filter(Boolean) : [],
       heart: life?.heart,

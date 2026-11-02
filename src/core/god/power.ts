@@ -249,6 +249,16 @@ const happenedSince = (ctx: Ctx, id: string, year: number): boolean => {
   return y !== undefined && y >= year;
 };
 
+/**
+ * A part of the income that belongs to another file: the wrath doubles the dread of the rest of a life (MR-22), a cult of a ruin adds to it (RU-04).
+ * Registered at import time, never stored in the state; each one changes the `dread` it is given.
+ */
+export type IncomeAdjust = (ctx: Ctx, income: Income) => void;
+const adjusters: IncomeAdjust[] = [];
+export function addIncomeAdjust(fn: IncomeAdjust): void {
+  if (!adjusters.includes(fn)) adjusters.push(fn);
+}
+
 /** The income of one life year (01-power.md §1): the base, the faith of the country, the belief of the character, a prophet. */
 export function incomeOf(ctx: Ctx): Income {
   const g = godData(ctx).income;
@@ -269,7 +279,9 @@ export function incomeOf(ctx: Ctx): Income {
   if (life && happenedSince(ctx, 'GD-05', life.birthYear) && gx(ctx).answered < g.gd05Until) parts.mul *= g.gd05;
   const faith = (parts.base + parts.channel + parts.belief + parts.prophet) * parts.mul;
   const dread = g.base.dread + Math.max(0, -belief) / g.beliefDiv.dread;
-  return { faith, dread, parts };
+  const income: Income = { faith, dread, parts };
+  for (const fn of adjusters) fn(ctx, income);
+  return income;
 }
 
 /** Called by the prayer files when a prayer is answered with a grant: counts toward the end of GD-05. */

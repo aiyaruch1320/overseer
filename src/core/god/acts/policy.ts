@@ -1,7 +1,7 @@
 // The part the acts play in the policies of the god (god/06-implementation.md §4 table "นโยบาย"): how prayers are answered, when a
 // whisper is sent, and what is done to the dragons and the events of the world. The driver (the tools, the balance tests) calls
 // `actsPolicyStep(ctx, policy, 'beat')` after every beat and `actsPolicyStep(ctx, policy, 'world')` at every world step. The other acts
-// (chests, dreams) belong to the policy step of the rest of the god system. Striking the seals and making ruins join in M4.
+// (chests, dreams) belong to the policy step of the rest of the god system. Making ruins and striking the seals are in the world step (G5).
 import type { Ctx } from '../../game';
 import { moodOf } from '../../world';
 import { crisesWaiting } from '../../bonds';
@@ -10,9 +10,11 @@ import { checkAnswer, runAnswer, cardsOf } from './prayers';
 import { checkMiracle, runMiracle } from './miracles';
 import { fateTargets } from './fate';
 import { checkWhisper, runWhisper } from './whisper';
-import { godOf } from './geo';
+import { allCountries, godOf, hasFlag } from './geo';
+import { homesOf, sealAt } from '../ruin';
 import { actsOf, livingOf, ready, yearOf } from './state';
 import { POLICY } from './tuning';
+import { RUIN_MIRACLE, STRIKE } from '../ruin/tuning';
 import './set';
 
 export type { PolicyName } from '../policy';
@@ -25,6 +27,7 @@ const PRAYER_WAY: Record<PolicyName, 'none' | 'give' | 'punish' | 'random'> = {
   merciful: 'give',
   shaper: 'give',
   punish: 'punish',
+  seal: 'punish',
   giver: 'give',
   saver: 'give',
   random: 'random',
@@ -84,6 +87,31 @@ function lowestDragon(ctx: Ctx): number | undefined {
     .sort((p, q) => p.d.mood - q.d.mood || p.i - q.i)[0]?.i;
 }
 
+/** The countries a god who punishes may make a ruin of: not a seal, not a ruin or a fallen country already. */
+function ruinCandidates(ctx: Ctx): string[] {
+  return allCountries(ctx).filter((c) => !sealAt(ctx, c) && !hasFlag(ctx, c, 'god_ruin', 'fallen'));
+}
+
+/** MR-17 on a country the rng picks, when the miracle can be used at all (caps, waits and the dread are the command layer's). */
+function makeRuinOnce(ctx: Ctx): boolean {
+  const list = ruinCandidates(ctx);
+  if (!list.length || checkMiracle(ctx, { id: RUIN_MIRACLE, country: list[0] })) return false;
+  return try1(ctx, 'miracle', { id: RUIN_MIRACLE, country: list[ctx.rng('god.policy').int(0, list.length - 1)] });
+}
+
+/** A blow on a seal: the large miracle if it can be used, else the mid one (sim `strike(t, true) || strike(t, false)`). `pick` chooses the dragon: the lowest mood or any. */
+function strikeSealOnce(ctx: Ctx, pick: 'lowest' | 'random'): boolean {
+  const w = ctx.state.world;
+  const y = yearOf(ctx);
+  const protect = (ctx.state.god.ext.ruin as { protect?: Record<string, number> } | undefined)?.protect ?? {};
+  const open = w.dragons
+    .map((d, i) => ({ d, i, home: homesOf(ctx, i).find((c) => ready(ctx, 'seal.' + c) && (protect[c] ?? 0) <= y) }))
+    .filter((x) => x.d.alive && x.home);
+  if (!open.length) return false;
+  const t = pick === 'lowest' ? [...open].sort((a, b) => a.d.mood - b.d.mood || a.i - b.i)[0] : open[ctx.rng('god.policy').int(0, open.length - 1)];
+  return try1(ctx, 'miracle', { id: STRIKE.big, country: t.home }) || try1(ctx, 'miracle', { id: STRIKE.mid, country: t.home });
+}
+
 function worldStep(ctx: Ctx, policy: PolicyName): void {
   if (!livingOf(ctx)) return;
   const g = ctx.state.god;
@@ -98,6 +126,7 @@ function worldStep(ctx: Ctx, policy: PolicyName): void {
     }
     case 'hasten': {
       fateFall(ctx, 1);
+      strikeSealOnce(ctx, 'lowest');
       const d = lowestDragon(ctx);
       if (d !== undefined && g.dread >= POLICY.taunt) try1(ctx, 'miracle', { id: 'MR-24', dragon: d });
       if (ctx.state.world.era === 4) {
@@ -112,9 +141,17 @@ function worldStep(ctx: Ctx, policy: PolicyName): void {
       const r = ctx.rng('god.policy');
       if (!r.chance(POLICY.randomAct)) return;
       const x = Math.floor(r.next() * 4);
-      if (x === 2) fateFall(ctx, r.chance(0.5) ? -1 : 1); // the ruin and the seal strike of the sim wait for M4
+      if (x === 0) makeRuinOnce(ctx);
+      else if (x === 1) strikeSealOnce(ctx, 'random');
+      else if (x === 2) fateFall(ctx, r.chance(0.5) ? -1 : 1);
       return;
     }
+    case 'punish':
+      makeRuinOnce(ctx);
+      return;
+    case 'seal':
+      strikeSealOnce(ctx, 'random');
+      return;
     default:
   }
 }

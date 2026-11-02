@@ -55,6 +55,9 @@ export function neighboursOf(ctx: Ctx, id: CountryId): CountryId[] {
   return [...(geo(ctx)?.neighbours.get(id) ?? [])].sort();
 }
 
+/** Every country of the map, sorted. */
+export const allCountries = (ctx: Ctx): CountryId[] => [...(geo(ctx)?.rows.keys() ?? [])].sort();
+
 export function countriesOf(ctx: Ctx, continent: string): CountryId[] {
   const g = geo(ctx);
   return g ? [...g.rows.keys()].filter((c) => continentOf(c) === continent).sort() : [];
