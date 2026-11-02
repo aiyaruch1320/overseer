@@ -1,5 +1,5 @@
 {
- "version": "88b98f4a92be",
+ "version": "a8e8f4d40b23",
  "sources": [
   "docs/systems/bonds/01-ties-and-levels.md",
   "docs/systems/bonds/02-feelings.md",
@@ -4279,10 +4279,10 @@
     "startLevel": 3,
     "stages": [
      {
-      "ageRaw": "0–5",
+      "ageRaw": "0–3",
       "age": [
        0,
-       5
+       3
       ],
       "moods": [
        "เอ็นดู",
@@ -4297,12 +4297,12 @@
         "pct": -5
        }
       ],
-      "src": "docs/systems/bonds/05-family.md:69"
+      "src": "docs/systems/bonds/05-family.md:71"
      },
      {
-      "ageRaw": "6–14",
+      "ageRaw": "4–14",
       "age": [
-       6,
+       4,
        14
       ],
       "moods": [
@@ -4313,13 +4313,13 @@
       ],
       "effectRaw": "ลูกเรียนตามอาชีพของตัวละคร ทำให้ skill ส่งต่อได้",
       "effects": [],
-      "src": "docs/systems/bonds/05-family.md:70"
+      "src": "docs/systems/bonds/05-family.md:72"
      },
      {
-      "ageRaw": "15–25",
+      "ageRaw": "15–19",
       "age": [
        15,
-       25
+       19
       ],
       "moods": [
        "ภูมิใจ",
@@ -4329,7 +4329,7 @@
       ],
       "effectRaw": "ลูกเลือกทางเอง ทางที่ต่างจากตัวละครสร้างเรื่องค้าง",
       "effects": [],
-      "src": "docs/systems/bonds/05-family.md:71"
+      "src": "docs/systems/bonds/05-family.md:73"
      },
      {
       "ageRaw": "ผู้ใหญ่",
@@ -4342,7 +4342,7 @@
       ],
       "effectRaw": "ลูกเป็นสหายหรือถอยห่างตามที่เคยเลี้ยง",
       "effects": [],
-      "src": "docs/systems/bonds/05-family.md:72"
+      "src": "docs/systems/bonds/05-family.md:74"
      }
     ],
     "adopted": {
@@ -8012,17 +8012,17 @@
     ],
     "rows": [
      [
-      "0–5",
+      "0–3",
       "เอ็นดู ห่วง หวงแหน",
       "ตัวละครเสียเวลาทำงาน รายได้ −5% ต่อปีที่เลี้ยงเอง"
      ],
      [
-      "6–14",
+      "4–14",
       "เอ็นดู ห่วง ภูมิใจ น้อยใจ (ถ้าลูกห่างตัวละคร)",
       "ลูกเรียนตามอาชีพของตัวละคร ทำให้ skill ส่งต่อได้"
      ],
      [
-      "15–25",
+      "15–19",
       "ภูมิใจ ผิดหวัง ละอาย กลัวเสีย",
       "ลูกเลือกทางเอง ทางที่ต่างจากตัวละครสร้างเรื่องค้าง"
      ],
@@ -8032,7 +8032,7 @@
       "ลูกเป็นสหายหรือถอยห่างตามที่เคยเลี้ยง"
      ]
     ],
-    "src": "docs/systems/bonds/05-family.md:67"
+    "src": "docs/systems/bonds/05-family.md:69"
    },
    {
     "headings": [
@@ -8068,7 +8068,7 @@
       "พี่น้องและคู่ครองมีไอเทมคู่ ([06-paired-items.md](06-paired-items.md))"
      ]
     ],
-    "src": "docs/systems/bonds/05-family.md:80"
+    "src": "docs/systems/bonds/05-family.md:82"
    },
    {
     "headings": [
