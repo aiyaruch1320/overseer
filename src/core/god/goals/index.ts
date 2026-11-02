@@ -21,7 +21,7 @@ import { goalsOf, lifeGoals, living } from './state';
 import { titlesOf } from './titles';
 import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
 import { crossed } from './unlocks';
-import { checkPick, judge, offer, previewPick, reoffer, runPick, vowName, vowRow } from './vows';
+import { checkPick, judge, offer, previewPick, reoffer, runPick, tellOffer, vowName, vowRow } from './vows';
 import { goalsCarry } from './carry';
 import './policy';
 
@@ -158,10 +158,7 @@ export const godGoalsSystem: System = {
     const t = g.track;
     if (life.godFaith > t.peakBelief) t.peakBelief = life.godFaith;
     sky(ctx, life);
-    if (!g.told) {
-      g.told = true;
-      if (g.offers.length) say(ctx, 'vow.offer', life.id, { ids: g.offers.join(','), names: namesOf(ctx, g.offers, life.race), n: g.offers.length, name: life.name });
-    }
+    tellOffer(ctx, life);
   },
 
   lifeYear(ctx) {

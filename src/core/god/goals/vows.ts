@@ -2,6 +2,7 @@
 // omen of the life), taken by the player, changed once at the age stop of 15, judged when the character dies.
 // Offering draws from its own seed stream `god.vow`, so the same seed and the same lineage offer the same vows (G6b "เสร็จเมื่อ").
 import type { Ctx } from '../../game';
+import { write } from '../../log';
 import type { LifeState } from '../../types';
 import { peopleCode, questionOf } from '../../text';
 import { godData } from '../state';
@@ -207,6 +208,18 @@ export function runPick(ctx: Ctx, args: Record<string, unknown>, say: (kind: str
   if (t.phase === 'change') g.changed = true;
   ctx.state.god.vows = id ? [id] : [];
   say(t.phase === 'change' ? 'vow.change' : 'vow.take', id ?? NO_VOW, { name: id ? vowName(ctx, id, life.race) : 'ไม่ปฏิญาณ', from: before ? vowName(ctx, before, life.race) : null });
+}
+
+/**
+ * Writes the line that tells the vows on the table, once, when the first beat or the first act of a policy comes: the name of the character is not in the log when his vows are
+ * offered at birth (M4 review M6). A life that comes in grown (an heir of more than 15 years) has no choice open, so nothing is told.
+ */
+export function tellOffer(ctx: Ctx, life: LifeState): void {
+  const g = lifeGoals(life);
+  if (g.told) return;
+  g.told = true;
+  if (!g.offers.length || !table(ctx, life).phase) return;
+  write(ctx.state, { sys: 'god', kind: 'vow.offer', id: life.id, data: { ids: g.offers.join(','), names: g.offers.map((i) => vowName(ctx, i, life.race)).join(' · '), n: g.offers.length, name: life.name }, level: 1 });
 }
 
 /** The line in the corner of the screen for the whole life: the vow taken, or null (08-goals.md §2 last line). */

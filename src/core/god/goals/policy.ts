@@ -4,7 +4,7 @@ import type { Ctx } from '../../game';
 import { say as write } from '../acts/record';
 import { registerPolicyPart, type PolicyName } from '../policy';
 import { lifeGoals, living } from './state';
-import { NO_VOW, checkPick, runPick, table } from './vows';
+import { checkPick, runPick, table, tellOffer } from './vows';
 
 /** The vows each policy would take, the best first (a policy that wants none is `[]`). Assumption: the documents name no vow for a policy; each takes what its way of playing earns. */
 const WANTS: Record<PolicyName, string[]> = {
@@ -24,6 +24,7 @@ export function policyVow(ctx: Ctx, policy: PolicyName): void {
   if (!life) return;
   const g = lifeGoals(life);
   const t = table(ctx, life);
+  if (t.phase === 'first') tellOffer(ctx, life);
   if (t.phase !== 'first' || g.decided || !t.ids.length) return;
   let n: number;
   if (policy === 'random') {
@@ -36,7 +37,6 @@ export function policyVow(ctx: Ctx, policy: PolicyName): void {
   }
   if (checkPick(ctx, { pick: n })) return;
   runPick(ctx, { pick: n }, (kind, id, data) => void write(ctx, { kind, id, data, level: 1 }));
-  void NO_VOW;
 }
 
 registerPolicyPart((ctx, p) => policyVow(ctx, p), 'first');
