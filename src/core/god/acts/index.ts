@@ -1,5 +1,5 @@
-// The acts of the god, G3 and G4 (god/06-implementation.md §2): whispers, prayers, the small and mid miracles, the dragon pair and the
-// fate. `godActsSystem` raises the prayers every beat, brings the omens of the miracles due, ends the flags and modifiers whose time is over,
+// The acts of the god, G3 to G5 (god/06-implementation.md §2): whispers, prayers, the small and mid miracles, the dragon pair and the
+// fate; the large and grand miracles, the ruins and the seals are in ../ruin. `godActsSystem` raises the prayers every beat, brings the omens of the miracles due, ends the flags and modifiers whose time is over,
 // and keeps GD-04 and GD-05 open for the world when the god's deeds say so. The commands `whisper` `prayer.answer` `miracle` `decree`
 // are registered with the command layer when this module is imported.
 import { hasAction, onAction } from '../../command';
@@ -15,6 +15,7 @@ import { actsOf, yearOf } from './state';
 import { SILENCE } from './tuning';
 import './set';
 import './fate';
+import { ruinBeat, ruinBirth, ruinWorldStep } from '../ruin';
 
 /** Has the god let the prayers go unanswered for decades (GD-05, god/04 and world-events.md)? */
 export function silent(ctx: Ctx): boolean {
@@ -55,14 +56,17 @@ export const godActsSystem: System = {
     a.seen = [];
     a.gone = {};
     a.whisper = { age: -1, used: [], sent: {}, active: [] };
+    ruinBirth(ctx);
   },
   beat(ctx) {
     expire(ctx);
     prayerBeat(ctx);
     miracleBeat(ctx);
+    ruinBeat(ctx);
   },
   worldStep(ctx) {
     expire(ctx);
+    ruinWorldStep(ctx);
   },
   death(ctx) {
     flush(ctx);
@@ -85,3 +89,4 @@ export { activeWhispers, choiceWhisperMul, decisionMade, travelMul, moveMul, wea
 export { activeMods, modMul, modAdd, setFlag, clearFlag, faithAt } from './mods';
 export { applyFx } from './fx';
 export { actsOf, type ActsExt, type PrayerCard } from './state';
+export * from '../ruin';

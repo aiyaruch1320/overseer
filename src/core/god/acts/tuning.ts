@@ -93,6 +93,8 @@ export const REACTION: Record<string, [number, number]> = {
   createMid: [10, 3],
   destroySmall: [-5, 0],
   destroyMid: [-10, -3],
+  /** A large destroying miracle: the neighbours lose 10 (04-miracles.md §6 and §5.1; what the target country loses is its own, it becomes a ruin or a cracked city). */
+  destroyBig: [-10, -10],
 };
 /** The character's belief when a miracle falls in his country and he sees it (01-power.md §3). */
 export const BELIEF_SEEN = { create: 5, destroy: -10 };

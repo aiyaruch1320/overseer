@@ -24,6 +24,10 @@ export interface Outcome {
   /** The country or continent the miracle fell in, for the reactions of the world. */
   country?: CountryId;
   continent?: string;
+  /** The faith reaction of the world when it is not the one of the miracle's line and tier (a large miracle that fell on a seal is answered as a mid one). */
+  reaction?: 'createSmall' | 'createMid' | 'destroySmall' | 'destroyMid' | 'destroyBig' | 'none';
+  /** Dread the hand gets back when the deed happens, when it is not a third of the price. */
+  back?: number;
 }
 
 export interface Handler {
@@ -40,6 +44,32 @@ export interface Handler {
   unscaled?: boolean;
   /** Faith of the countries (04-miracles.md §6) is not moved by the default table. */
   noReaction?: boolean;
+  /** Does this miracle make a ruin on this target (a large one that falls on a seal makes none)? Default: the table's `makesRuin`. */
+  makesRuin?(ctx: Ctx, m: Miracle, args: Record<string, unknown>): boolean;
+  /** The dread that comes back when the deed happens (a large destroying miracle: 20, 04-miracles.md §6); default a third of the price. */
+  back?(ctx: Ctx, m: Miracle, args: Record<string, unknown>, cost: Cost): number;
+}
+
+/**
+ * A layer between the command and the handler: the seals (god/ruin/seal.ts) refuse a miracle on a protected country, answer a destroying one
+ * with the effect of a lower tier, and want their own caps. Layers are registered at import time and never stored in the state.
+ */
+export interface Intercept {
+  /** Why the miracle cannot fall here (a country the dragon protects, the cap of the seals). Never rolls. */
+  check?(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): string | null;
+  /** Answers instead of `h.run` when it returns an outcome (the deed is then paid and written down as for any other). */
+  run?(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): Outcome | null;
+  /** What the confirm screen shows besides the handler's own preview. */
+  preview?(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): Record<string, unknown> | null;
+  /** The miracle was paid (a cap or a wait that belongs to the layer starts). */
+  spent?(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): void;
+  /** Called when the day of the miracle has come and it has happened. */
+  after?(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>, out: Outcome): void;
+}
+
+const intercepts: Intercept[] = [];
+export function addIntercept(x: Intercept): void {
+  if (!intercepts.includes(x)) intercepts.push(x);
 }
 
 const handlers = new Map<string, Handler>();
@@ -76,7 +106,9 @@ export const priceNow = (ctx: Ctx, m: Miracle, h: Handler, args: Record<string, 
 
 // ---------- the caps (04-miracles.md §2 rule 6, 01-power.md §4) ----------
 
-function capReason(ctx: Ctx, m: Miracle): string | null {
+const ruinOf = (ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): boolean => (h.makesRuin ? h.makesRuin(ctx, m, args) : !!m.makesRuin);
+
+function capReason(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): string | null {
   const caps = godOf(ctx).caps.miraclePerLife;
   const lim = godOf(ctx).miracles.limits;
   const c = peekCounters(ctx);
@@ -87,8 +119,8 @@ function capReason(ctx: Ctx, m: Miracle): string | null {
       return null;
     case 'big':
       if (c.big >= caps.big) return `ปาฏิหาริย์ระดับใหญ่ครบ ${caps.big} ครั้งในชีวิตนี้แล้ว`;
-      if (m.makesRuin && c.ruin >= caps.ruinOfBig) return 'ปาฏิหาริย์ที่ทำให้เป็นซากใช้ได้ชีวิตละครั้ง';
-      if (m.makesRuin && !ready(ctx, 'world.ruin')) return `ซากพระเจ้าห่างกันอย่างน้อย ${lim.ruinGapYears} ปีโลก`;
+      if (ruinOf(ctx, m, h, args) && c.ruin >= caps.ruinOfBig) return 'ปาฏิหาริย์ที่ทำให้เป็นซากใช้ได้ชีวิตละครั้ง';
+      if (ruinOf(ctx, m, h, args) && !ready(ctx, 'world.ruin')) return `ซากพระเจ้าห่างกันอย่างน้อย ${lim.ruinGapYears} ปีโลก`;
       if (!ready(ctx, 'world.big')) return `ระดับใหญ่ห่างกันอย่างน้อย ${lim.worldBigGapYears} ปีโลก`;
       return null;
     case 'grand':
@@ -97,7 +129,7 @@ function capReason(ctx: Ctx, m: Miracle): string | null {
   return null;
 }
 
-function spendCaps(ctx: Ctx, m: Miracle): void {
+function spendCaps(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): void {
   const lim = godOf(ctx).miracles.limits;
   const c = lifeCounters(ctx);
   switch (tierKey(m)) {
@@ -108,7 +140,7 @@ function spendCaps(ctx: Ctx, m: Miracle): void {
     case 'big':
       c.big++;
       startCooldown(ctx, 'world.big', lim.worldBigGapYears);
-      if (m.makesRuin) {
+      if (ruinOf(ctx, m, h, args)) {
         c.ruin++;
         startCooldown(ctx, 'world.ruin', lim.ruinGapYears);
       }
@@ -130,10 +162,14 @@ export function checkMiracle(ctx: Ctx, args: Record<string, unknown>): string | 
   if (!m) return `ไม่มีปาฏิหาริย์ ${id || '(ไม่ระบุ)'}`;
   const h = handlers.get(id);
   if (!h) return `${id} ${m.name} ยังไม่เปิดใช้`;
-  const cap = capReason(ctx, m);
+  const cap = capReason(ctx, m, h, args);
   if (cap) return cap;
   const wk = h.waitKey ? h.waitKey(ctx, m, args) : id;
   if (m.wait && !ready(ctx, wk)) return `${m.name} ต้องรออีก ${Math.ceil((ctx.state.god.cooldowns[wk] ?? 0) - yearOf(ctx))} ปีโลก`;
+  for (const x of intercepts) {
+    const no = x.check?.(ctx, m, h, args);
+    if (no) return no;
+  }
   const why = h.check?.(ctx, m, args);
   if (why) return why;
   return whyNot(ctx, priceNow(ctx, m, h, args));
@@ -162,7 +198,9 @@ export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<
   const c = peekCounters(ctx);
   const cost = priceNow(ctx, m, h, args);
   // the blood and the dragon's provoking give back a third of the dread when they happen (01-power.md §1): the price shown is what is paid, `back` what returns
-  const back = h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread) ? Math.round((cost.dread ?? 0) / DESTROY_RETURN_DIV) : 0;
+  const sealed = intercepts.map((x) => x.preview?.(ctx, m, h, args)).filter((x): x is Record<string, unknown> => !!x);
+  const sealedBack = sealed.find((x) => typeof x.back === 'number')?.back as number | undefined;
+  const back = sealedBack ?? (h.back ? h.back(ctx, m, args, cost) : h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread) ? Math.round((cost.dread ?? 0) / DESTROY_RETURN_DIV) : 0);
   return {
     id,
     name: m.name,
@@ -176,6 +214,7 @@ export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<
     world: m.world,
     left: { mid: caps.mid - c.mid, big: caps.big - c.big, grand: caps.grand - c.grand },
     ...(h.preview?.(ctx, m, args) ?? {}),
+    ...sealed.reduce((a, x) => ({ ...a, ...x, ...(Array.isArray(x.notes) ? { notes: [...(Array.isArray(a.notes) ? a.notes : []), ...x.notes] } : {}) }), {} as Record<string, unknown>),
   };
 }
 
@@ -195,7 +234,8 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
   const h = handlers.get(id)!;
   const cost = priceNow(ctx, m, h, args);
   pay(ctx, cost, `miracle:${id}`);
-  spendCaps(ctx, m);
+  spendCaps(ctx, m, h, args);
+  for (const x of intercepts) x.spent?.(ctx, m, h, args);
   if (m.wait) startCooldown(ctx, h.waitKey ? h.waitKey(ctx, m, args) : id, m.wait);
   const paid = { faith: cost.faith ?? 0, dread: cost.dread ?? 0 };
   const quarters = omenQuarters(m);
@@ -211,8 +251,14 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
 
 /** The day of the miracle: the world changes, the reactions follow, the hand is written down. */
 function happen(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>, paid: { faith: number; dread: number }): void {
-  const out = h.run(ctx, m, args);
+  let out: Outcome | null = null;
+  for (const x of intercepts) {
+    out = x.run?.(ctx, m, h, args) ?? null;
+    if (out) break;
+  }
+  out ??= h.run(ctx, m, args);
   if (!h.noReaction) react(ctx, m, h, out, paid);
+  for (const x of intercepts) x.after?.(ctx, m, h, args, out);
   // the dragon is named by its place in the table; the countries, continents, NPCs and events are named by the text layer from their codes
   const dragon = /^dragon:(\d+)$/.exec(out.target);
   const where = dragon ? tablesOf(ctx).dragons[Number(dragon[1])]?.name ?? '' : '';
@@ -238,7 +284,8 @@ export function miracleBeat(ctx: Ctx): void {
 
 function react(ctx: Ctx, m: Miracle, h: Handler, out: Outcome, paid: { faith: number; dread: number }): void {
   const small = m.tier === 'เล็ก';
-  const key = h.line === 'create' ? (small ? 'createSmall' : 'createMid') : h.line === 'destroy' ? (small ? 'destroySmall' : 'destroyMid') : undefined;
+  const big = m.tier === 'ใหญ่' && h.line === 'destroy';
+  const key = out.reaction === 'none' ? undefined : out.reaction ?? (h.line === 'create' ? (small ? 'createSmall' : 'createMid') : h.line === 'destroy' ? (small ? 'destroySmall' : big ? 'destroyBig' : 'destroyMid') : undefined);
   const life = livingOf(ctx);
   if (key && out.country) {
     let [self, near] = REACTION[key];
@@ -247,7 +294,7 @@ function react(ctx: Ctx, m: Miracle, h: Handler, out: Outcome, paid: { faith: nu
     faithAt(ctx, out.country, self);
     if (near) for (const n of neighboursOf(ctx, out.country)) faithAt(ctx, n, near);
   }
-  if (h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread)) earn(ctx, { dread: Math.round(paid.dread / DESTROY_RETURN_DIV) }, 'miracle.return');
+  if (h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread)) earn(ctx, { dread: out.back ?? Math.round(paid.dread / DESTROY_RETURN_DIV) }, 'miracle.return');
   // the character who stands where it fell sees it
   if (life && h.line !== 'dragon' && ((out.country && out.country === life.country) || (out.continent && out.continent === continentOf(life.country)))) {
     addBelief(ctx, h.line === 'create' ? BELIEF_SEEN.create : BELIEF_SEEN.destroy, 'miracle.seen');

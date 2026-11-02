@@ -36,6 +36,14 @@ export function addMod(ctx: Ctx, m: Omit<Mod, 'id' | 'from' | 'until'> & { years
   return mod;
 }
 
+/** Takes away the modifiers a test picks (the end of a ruin ends its W of 1 and its loss of trade). */
+export function dropMods(ctx: Ctx, pick: (m: Mod) => boolean): number {
+  const a = actsOf(ctx.state);
+  const before = a.mods.length;
+  a.mods = a.mods.filter((m) => !pick(m));
+  return before - a.mods.length;
+}
+
 export const activeMods = (ctx: Ctx): Mod[] => actsOf(ctx.state).mods.filter((m) => m.until === undefined || m.until > yearOf(ctx));
 
 interface Where {

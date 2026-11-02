@@ -298,6 +298,36 @@ function prayers() {
   };
 }
 
+// ---------- the numbers of the ruins, the seals and the grand miracles (04-miracles.md §3, §5) ----------
+const MINUS = /[−\-]/;
+const sgn = (s: string) => Number(s.replace('−', '-'));
+/** The first group of a regexp over a text, or a loud failure: a change of the wording of the doc must not empty the data. */
+const grab = (text: string, re: RegExp, what: string): RegExpMatchArray => must(text.match(re), 'ruin numbers: ' + what);
+
+/** When a ruin event may happen, in years after the miracle (`ปีแรกหลัง` · `ภายในสองปี` · `สามถึงสิบปีหลัง` · `ห้าปีหลัง` · `40 ถึง 80 ปีหลัง`). */
+function ruWindow(id: string, cond: string): { from: number; to: number | null } {
+  const c = cond.split('·')[0].trim();
+  let m: RegExpMatchArray | null;
+  if (/^ปีแรกหลัง/.test(c)) return { from: 0, to: 1 };
+  if ((m = c.match(/^ภายใน(\S+?)ปี/))) return { from: 0, to: must(thaiNum(m[1]), id + ' window') };
+  if ((m = c.match(/^(\S+?)\s*ถึง\s*(\S+?)\s*ปีหลัง/))) return { from: must(thaiNum(m[1]), id + ' from'), to: must(thaiNum(m[2]), id + ' to') };
+  if ((m = c.match(/^(\S+?)\s*ปีหลัง/))) return { from: must(thaiNum(m[1]), id + ' after'), to: null };
+  if (/^หลัง MR-18/.test(c)) return { from: 0, to: null };
+  throw new Error(`god: the time of ${id} cannot be read: "${cond}"`);
+}
+
+/** The places of the dragons (lore/dragons/README.md table "ที่อยู่"): the seals (04-miracles.md iron rule 3). */
+function sealHomes(): { dragon: number; name: string; countries: string[]; faiths: string[] }[] {
+  const t = findTable('docs/lore/dragons/README.md', null, '#');
+  return t.rows.map((r) => ({
+    dragon: Number(r.cells[0]) - 1,
+    name: r.cells[1],
+    countries: [...r.cells[3].matchAll(/[A-Z]{2}-\d{2}/g)].map((x) => x[0]),
+    // the faiths that send faith to the dragon ("ศาสนาหลักที่ส่งศรัทธา"): words, a bracket is a note
+    faiths: r.cells[4].replace(/\([^)]*\)/g, '').split(/\s+/).filter(Boolean),
+  }));
+}
+
 // ---------- 04-miracles ----------
 function miracles() {
   const f = G + '04-miracles.md';
@@ -384,6 +414,62 @@ function miracles() {
   const capText = must(sealText.match(/ครั้งเดียวต่อ\s*(\d+)\s*ปีโลก\s*และหมุดใดก็ได้ทั้งโลกครั้งเดียวต่อ\s*(\d+)\s*ปีโลก/), 'seal caps');
   const replyRows = reply.rows.map((r) => ({ moodMin: r.cells[0].includes('ต่ำกว่า') ? 0 : nums(r.cells[0])[0], moodMax: r.cells[0].includes('ต่ำกว่า') ? nums(r.cells[0])[0] - 1 : r.cells[0].includes('ขึ้นไป') ? 100 : nums(r.cells[0])[1], name: r.cells[1].match(/\*\*(.+?)\*\*/)?.[1] ?? '', effect: r.cells[1] }));
   const sealMood = seal.rows.map((r) => ({ falls: r.cells[0], country: r.cells[1], dragon: r.cells[2], other: r.cells[3], dragonMood: nums(r.cells[2])[0] }));
+
+  // ----- the ruin, as numbers (§5.1), the cracked city (§5.4), the events of the ruin (§5.2) and the grand miracles -----
+  const immCell = (what: string) => must(imm.rows.find((x) => x.cells[0].startsWith(what)), 'ruin row ' + what).cells[1];
+  const popM = grab(immCell('ผู้คน'), /(\d+)%\s*ถึง\s*(\d+)%/, 'population');
+  const npcM = grab(immCell('NPC ของประเทศ'), /ตาย\s*(\d+)\s*·\s*หนี[^\d]*(\d+)\s*·\s*อยู่[^\d]*(\d+)/, 'npc dice');
+  const allyM = grab(immCell('พวกพ้อง'), /ตายเพียง\s*(\d+)/, 'ally dice');
+  const mcM = grab(immCell('ตัวละครหลัก'), /`(\w+)`\s*(\d+)%\s*และศรัทธาเทพ\s*([−\-]\d+)/, 'main character');
+  const econM = grab(immCell('เศรษฐกิจ'), /W เป็น\s*(\d+)[\s\S]*C\s*([−\-]\d+)/, 'economy');
+  const faithM = grab(immCell('ศรัทธา'), /ข้างเคียง\s*([−\-]\d+)\s*ความหวาดกลัวของพระเจ้า\s*\+(\d+)[\s\S]*ศรัทธาเทพของตัวละคร\s*([−\-]\d+)/, 'faith');
+  const exile = grab(section(f, /ซากกับเส้นเรื่องเดิม/).join('\n'), /nc_homeland_ghost`\s*(\d+)%/, 'exile curse');
+  const crackText = seal.rows[1].cells[1];
+  const crackBuild = grab(crackText, /อาคารพังราว\s*(\d+)%/, 'crack buildings');
+  const crackPop = grab(crackText, /ประชากรเหลือ\s*(\d+)%/, 'crack population');
+  const crackNpc = grab(crackText, /ตาย\s*(\d+)\s*หนี\s*(\d+)\s*อยู่\s*(\d+)/, 'crack npc');
+  const crackW = grab(crackText, /W\s*([−\-]\d+)\s*(\S+)ปี/, 'crack W');
+  const crackDragon = grab(seal.rows[1].cells[2], /อารมณ์\s*([−\-]\d+)\s*และเพดาน[^\d−\-]*([−\-]\d+)/, 'crack dragon');
+  const crackOpens = [...seal.rows[1].cells[3].matchAll(/RU-\d\d/g)].map((x) => x[0]);
+  const crackNot = seal.rows[1].cells[3].slice(seal.rows[1].cells[3].indexOf('ไม่เปิด') - 20);
+  const crackShut = [...crackNot.matchAll(/RU-\d\d/g)].map((x) => x[0]);
+  const wrathRow = list.rows.find((r) => r.cells[0].includes('MR-22'))!.cells;
+  const wrathWar = grab(wrathRow[4], /ธง\s*`war`\s*หายทั้งทวีป(\S+?)ปี/, 'wrath war years');
+  const wrathFaith = grab(wrathRow[4], /ศรัทธาตรงทั้งทวีป\s*([−\-]\d+)/, 'wrath faith');
+  const wrathDread = grab(wrathRow[4], /ความหวาดกลัวรายปีของพระเจ้า\s*[×x](\d+)/, 'wrath dread');
+  const wrathGd = grab(wrathRow[4], /GD-08\s*[×x]([\d.]+)/, 'wrath GD-08');
+  const wrathMood = grab(seal.rows[2].cells[2], /อารมณ์ของทุกตัวในทวีป\s*([−\-]\d+)/, 'wrath mood');
+  const floodRow = list.rows.find((r) => r.cells[0].includes('MR-19'))!.cells;
+  const floodYears = grab(floodRow[3], /น้ำท่วม(\S+?)ปี/, 'flood years');
+  const floodFood = grab(floodRow[4], /อาหารที่นั่น\s*[×x]([\d.]+)/, 'flood refugees');
+  const landRow = list.rows.find((r) => r.cells[0].includes('MR-20'))!.cells;
+  const landWithin = grab(landRow[4], /ภายใน\s*(\d+)\s*ปี/, 'land settlers');
+  const ruText = new Map(ruins.rows.map((r) => [r.cells[0].replace(/\*/g, '').match(/RU-\d\d/)![0], r.cells]));
+  const ruEvents = ruins.rows.map((r) => {
+    const id = r.cells[0].replace(/\*/g, '').match(/RU-\d\d/)![0];
+    const cond = r.cells[1];
+    const w = ruWindow(id, cond);
+    const dread = cond.match(/ความหวาดกลัวของพระเจ้า\s*≥\s*(\d+)/);
+    return {
+      id,
+      name: r.cells[0].replace(/\*/g, '').replace(/RU-\d\d\s*/, ''),
+      cond,
+      what: r.cells[2],
+      effect: r.cells[3],
+      src: src(ruins, r.line),
+      /** Years after the miracle it can happen: from, and to (null: stays open until the ruin is gone). */
+      from: w.from,
+      to: w.to,
+      /** Only after this miracle (RU-01 the star) · only in a country with much rain (RU-08 after MR-17) · needs no war in the country (RU-07). */
+      after: id === 'RU-01' ? ['MR-17'] : id === 'RU-08' ? ['MR-18', 'MR-17'] : ['MR-17', 'MR-18'],
+      ...(dread ? { dreadMin: Number(dread[1]) } : {}),
+      ...(/ไม่มีสงครามในประเทศ/.test(cond) ? { noWar: true } : {}),
+      ...(/ฝนชุก/.test(cond) ? { rainy: true } : {}),
+      ...(id === 'RU-05' ? { unlessCult: true } : {}),
+      ...(/เปิดโหนด\s*`(mr\.\w+)`/.test(r.cells[3]) ? { opens: must(r.cells[3].match(/เปิดโหนด\s*`(mr\.\w+)`/), 'opens')[1] } : {}),
+    };
+  });
+  void ruText;
   return {
     lines: lines.rows.map((r) => ({ line: r.cells[0], color: r.cells[1], pay: r.cells[2], examples: r.cells[3] })),
     ironRules: rules.rows.map((r) => ({ n: Number(r.cells[0]), rule: r.cells[1], why: r.cells[2] })),
@@ -408,7 +494,20 @@ function miracles() {
     },
     ruin: {
       immediate: imm.rows.map((r) => ({ what: r.cells[0], effect: r.cells[1] })),
-      events: ruins.rows.map((r) => ({ id: r.cells[0].replace(/\*/g, '').match(/RU-\d\d/)![0], name: r.cells[0].replace(/\*/g, '').replace(/RU-\d\d\s*/, ''), cond: r.cells[1], what: r.cells[2], effect: r.cells[3], src: src(ruins, r.line) })),
+      events: ruEvents,
+      numbers: {
+        pop: [Number(popM[1]), Number(popM[2])] as [number, number],
+        npc: { die: Number(npcM[1]), flee: Number(npcM[2]), stay: Number(npcM[3]) },
+        allyDie: Number(allyM[1]),
+        mcCurse: { id: mcM[1], chance: Number(mcM[2]) },
+        mcBelief: sgn(mcM[3]),
+        exileCurseChance: Number(exile[1]),
+        w: Number(econM[1]),
+        trade: sgn(econM[2]),
+        neighbourFaith: sgn(faithM[1]),
+        dread: Number(faithM[2]),
+        seenBelief: sgn(faithM[3]),
+      },
     },
     seal: {
       hit: sealMood,
@@ -416,6 +515,28 @@ function miracles() {
       anchorCdYears: Number(capText[1]),
       anyAnchorCdYears: Number(capText[2]),
       rows: seal.rows.map((r) => r.cells),
+      homes: sealHomes(),
+      keyCountry: must(sealText.match(/AL-01/), 'seal key country')[0],
+      protectYears: must(Number(must(replyRows[0].effect.match(/อีก\s*(\d+)\s*ปีโลก/), 'protect years')[1]), 'protect'),
+      midMood: sgn(must(seal.rows[0].cells[2].match(/อารมณ์\s*([−\-]\d+)/), 'mid mood')[1]),
+      midWorshippers: sgn(must(seal.rows[0].cells[3].match(/ศรัทธาตรงต่อพระเจ้า\s*([−\-]\d+)/), 'mid worshippers')[1]),
+      crack: {
+        buildings: Number(crackBuild[1]),
+        pop: Number(crackPop[1]),
+        npc: { die: Number(crackNpc[1]), flee: Number(crackNpc[2]), stay: Number(crackNpc[3]) },
+        w: sgn(crackW[1]),
+        wYears: must(thaiNum(crackW[2]), 'crack W years'),
+        mood: sgn(crackDragon[1]),
+        capLoss: Math.abs(sgn(crackDragon[2])),
+        opens: crackOpens.filter((x) => !crackShut.includes(x)),
+        shut: crackShut,
+      },
+      concordia: sealText.includes('ความเชื่อมั่นทองกลาง C −20') ? { c: -20, le05Mul: 2, po08Mul: 2, years: 10 } : (() => { throw new Error('god: the AL-01 sentence changed'); })(),
+    },
+    grand: {
+      wrath: { warYears: must(thaiNum(wrathWar[1]), 'wrath war years'), faith: sgn(wrathFaith[1]), dreadMul: Number(wrathDread[1]), gd08Mul: Number(wrathGd[1]), moodAll: sgn(wrathMood[1]) },
+      flood: { years: must(thaiNum(floodYears[1]), 'flood years'), refugeeFood: Number(floodFood[1]) },
+      land: { settleWithin: Number(landWithin[1]) },
     },
     reactions: react.rows.map((r) => ({ miracle: r.cells[0], country: r.cells[1], neighbors: r.cells[2], dread: r.cells[3] })),
   };
@@ -570,7 +691,7 @@ export default function run() {
     rule,
     raw: raws,
   };
-  writeGen('god', data, listDocs('docs/systems/god').filter((f) => /\/0[1-8]-/.test(f)), GEN);
+  writeGen('god', data, [...listDocs('docs/systems/god').filter((f) => /\/0[1-8]-/.test(f)), 'docs/lore/dragons/README.md'], GEN);
   void dash;
   void tagsOf;
   void parts;

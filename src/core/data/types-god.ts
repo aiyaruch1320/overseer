@@ -35,6 +35,28 @@ export interface Miracle {
   src: string;
 }
 
+/** One event of the ruin (RU-01..08, 04-miracles.md §5.2): when it can happen, in years after the miracle, and what it asks for. */
+export interface RuinEventRow {
+  id: string;
+  name: string;
+  cond: string;
+  what: string;
+  effect: string;
+  src: string;
+  from: number;
+  /** Null: stays open while the ruin stands. */
+  to: number | null;
+  /** The miracles after which it happens (RU-08 after MR-18 at once, after MR-17 only twenty years on and only in a country of much rain). */
+  after: string[];
+  dreadMin?: number;
+  noWar?: boolean;
+  rainy?: boolean;
+  /** RU-05 happens when there is no cult (RU-04) or when the leader of the ruin lives. */
+  unlessCult?: boolean;
+  /** The story node it opens (`mr.a1`). */
+  opens?: string;
+}
+
 export interface GodData {
   counts: Record<string, number>;
   vars: { name: string; key: string; min: number; max: number; owner: string }[];
@@ -159,7 +181,21 @@ export interface GodData {
     };
     ruin: {
       immediate: { what: string; effect: string }[];
-      events: { id: string; name: string; cond: string; what: string; effect: string; src: string }[];
+      events: RuinEventRow[];
+      /** The numbers of 04-miracles.md §5.1 (percent where the doc says percent). */
+      numbers: {
+        pop: Range;
+        npc: { die: number; flee: number; stay: number };
+        allyDie: number;
+        mcCurse: { id: string; chance: number };
+        mcBelief: number;
+        exileCurseChance: number;
+        w: number;
+        trade: number;
+        neighbourFaith: number;
+        dread: number;
+        seenBelief: number;
+      };
     };
     seal: {
       hit: { falls: string; country: string; dragon: string; other: string; dragonMood: number }[];
@@ -167,6 +203,21 @@ export interface GodData {
       anchorCdYears: number;
       anyAnchorCdYears: number;
       rows: string[][];
+      /** The places of the dragons (lore/dragons/README.md): each is a seal while the dragon lives. */
+      homes: { dragon: number; name: string; countries: string[]; faiths: string[] }[];
+      /** The key of the hundred tribes' oath, a seal that has no dragon. */
+      keyCountry: string;
+      protectYears: number;
+      midMood: number;
+      midWorshippers: number;
+      /** "เมืองร้าว": the large miracle that falls on a seal (04-miracles.md §5.4). */
+      crack: { buildings: number; pop: number; npc: { die: number; flee: number; stay: number }; w: number; wYears: number; mood: number; capLoss: number; opens: string[]; shut: string[] };
+      concordia: { c: number; le05Mul: number; po08Mul: number; years: number };
+    };
+    grand: {
+      wrath: { warYears: number; faith: number; dreadMul: number; gd08Mul: number; moodAll: number };
+      flood: { years: number; refugeeFood: number };
+      land: { settleWithin: number };
     };
     reactions: { miracle: string; country: string; neighbors: string; dread: string }[];
   };
