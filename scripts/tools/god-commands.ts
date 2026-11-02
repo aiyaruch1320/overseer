@@ -219,8 +219,11 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
 /** Why the game called the player: the data of the `attention` call, or the old rule (an entry of level 3) in words. */
 export function callLines(data: GameData, e: LogEntry, dev = false): string[] {
   if (e.sys !== 'attention') return [`เกมเรียกเพราะ: เรื่อง [${tagOf(e)}] ถึงจุดที่ต้องการผู้เล่น (บันทึกระดับ 3)`];
-  const why = previewLines(data, e.data, dev);
-  return [`เกมเรียกเพราะ: ${why.join(' · ') || 'ถึงจังหวะที่ผู้เล่นควรดู'}`];
+  const { reason, why, ...others } = e.data;
+  const said = [reason, why].find((x): x is string => typeof x === 'string' && !!scrub(data, x).trim());
+  const more = previewLines(data, others, dev);
+  const parts = [said ? scrub(data, said).trim() : '', ...more].filter(Boolean);
+  return [`เกมเรียกเพราะ: ${parts.join(' · ') || 'ถึงจังหวะที่ผู้เล่นควรดู'}`];
 }
 
 function costText(data: GameData, preview: Record<string, unknown> | undefined): string | undefined {
