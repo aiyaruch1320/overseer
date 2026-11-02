@@ -1,9 +1,10 @@
 // The numbers of the economy in the effect grammar (docs/guide/code-plan.md §5.2): the words the storylines use for money that is not
 // `gold` (the character system owns `gold`, `fame`, `class`). The effects `statPct` `statMul` `range` `pct` that change them are the character
 // system's too: they read and write through these handlers.
-// Numbers: รายได้ ค่าแรง (the income of a year) · ทุน (capital) · ส่วนต่าง (the spread of a trade, percent) · ผลกำไร ขาย ได้กำไร ได้ ส่วนต่างสูงมาก
-// (factors of trade and investment, 1 = as usual) · ผลตอบแทน (percent of a year's return) · สินทรัพย์เสี่ยง (assets at risk) ·
-// ของหมวดอาหารราคา (the price of food against the usual) · country.W country.G country.M (the land the life is in now).
+// Numbers: รายได้ ค่าแรง (the income of a year) · เงินเดือน (a month's pay) · ทุน capital (gold) · ส่วนต่าง (the spread of a trade, percent) ·
+// ผลกำไร ขาย ได้กำไร ได้ ส่วนต่างสูงมาก ราคา (factors of trade and investment, 1 = as usual) · ผลตอบแทน (percent of a year's return) ·
+// สินทรัพย์เสี่ยง (assets at risk) · mine (capital in a mine) · ของหมวดอาหารราคา (the price of food against the usual) ·
+// country.W country.G country.M (the land the life is in now).
 import type { Ctx } from '../game';
 import { onStat, type StatHandler } from '../rules';
 import { eco } from './data';

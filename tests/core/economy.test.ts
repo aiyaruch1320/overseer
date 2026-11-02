@@ -2,7 +2,7 @@
 // and the rules it registers. The balance of the whole (gold by age and class) is in tests/balance/economy.test.ts.
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
-import { birth, characterSystem, extOf as characterExt } from '../../src/core/character';
+import { birth, characterSystem } from '../../src/core/character';
 import {
   armourTier, eco, economySystem, economyYear, eventEcon, expectedYear, extOf, foodShock, grossIncome, inheritanceTax, livingCost, moneyUse, placeOf, priceOf, regimeOf,
   SKIPPED, startGear, syncWorld, taxRate, trust, trustMul, wOf,
@@ -665,8 +665,7 @@ describe('the start (P1) and the heirs', () => {
 
   it('keeps the same life for the same seed with the whole core', () => {
     const run = (seed: number) => {
-      const { g, life } = lifeIn(seed, 'AL-17', {}, [characterSystem, economySystem, storySystem]);
-      life.hAge = characterExt(life).startYear ? life.hAge : 18;
+      const { g } = lifeIn(seed, 'AL-17', { hAge: 18 }, [characterSystem, economySystem, storySystem]);
       g.runLife(4 * 120);
       return JSON.stringify([g.state.life, g.state.log, g.state.world.vars]);
     };

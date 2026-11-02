@@ -122,10 +122,18 @@ export const POVERTY = {
   sellShare: 0.4,
 };
 
-/** Debt (04 §6, simple form until P5): a loan costs the interest of the class; a year without paying it loses a class. */
+/**
+ * Debt (04 §6, simple form until P5): a loan costs the interest of the class and is paid back from the net of the year (`repayShare` of it);
+ * a debt over `defaultMul` times the means (the purse and a year's income) takes a class. 03 §5 says twice the property; the property is not
+ * kept until P5, and with a purse alone the poor would default on their first loan (assumption).
+ */
 export const DEBT = { repayShare: 1, defaultMul: 3 };
 
-/** Lines of the 24-economy storylines the economy opens (24-economy.md §2 rule 2). `ec` is for every life. */
+/**
+ * Lines of the 24-economy storylines the economy opens (24-economy.md §2 rule 2). `ec` is for every life, as the document says: it adds its 9
+ * nodes to the 31 to 33 of the code-plan target (about 30 without it, about 42 with it, with `pv` for the poor lands); turn it to false, or
+ * open it for a share of lives in `startLife`, if the lead wants the target kept.
+ */
 export const OPEN_EC = true;
 /** Countries with W at most this open `pv` (24-economy.md §2 rule 2: "อยู่ประเทศ W 1 ถึง 2"). */
 export const PV_MAX_W = 2;
