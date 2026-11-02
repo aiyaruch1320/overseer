@@ -3,8 +3,8 @@
 import type { GameData } from '../../src/core/game';
 import { calendarYear } from '../../src/core/text';
 import type { GameState } from '../../src/core/types';
-import { metNpcs, summaryLines, timeline } from './report';
-import { createSession, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
+import { godLines, metNpcs, summaryLines, timeline } from './report';
+import { afterBeat, createSession, policyHasEffect, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
 
 export interface LifeRun {
   text: string;
@@ -17,10 +17,12 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   const s = createSession(data, opts);
   const g = s.game;
   const worldMark = g.state.logN;
+  if (opts.policy && !policyHasEffect()) s.notes.push(`ยังไม่พบฟังก์ชันนโยบายของระบบพระเจ้า (policyStep) นโยบาย "${opts.policy}" จึงยังไม่มีผล`);
   const life = startLife(s);
-  const lifeMark = g.state.logN - 1; // the birth entry of the text system is the first of the life
-  void lifeMark;
-  const beats = runToDeath(g);
+  // the policy of the god acts once at the birth and then after every beat (docs/systems/god/06-implementation.md §4)
+  const after = () => void afterBeat(s);
+  after();
+  const beats = runToDeath(g, undefined, after);
   const st = g.state;
   const min = opts.minLevel ?? 1;
   const out: string[] = [];
@@ -39,5 +41,7 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   out.push('');
   out.push('-- สรุป --');
   out.push(...summaryLines(s.data, st, beats));
+  const hand = godLines(s.data, st, opts.policy);
+  if (hand.length) out.push('', '-- พระหัตถ์ --', ...hand);
   return { text: out.join('\n') + '\n', state: st, beats, notes: s.notes };
 }

@@ -8,7 +8,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { runLifeReport } from '../../scripts/tools/life-run';
 import { loadAll } from '../../scripts/tools/node-data';
 import { statusLines } from '../../scripts/tools/report';
-import { createSession, resumeSession, runToCall, runToDeath, startLife, toolNotes } from '../../scripts/tools/session';
+import { createSession, resumeSession, runToCall, runToDeath, startLife, toolNotes, toolSystems } from '../../scripts/tools/session';
 import { versions, type GameData } from '../../src/core/game';
 import { leaks } from '../../src/core/text';
 import { load, save } from '../../src/core/save';
@@ -47,7 +47,8 @@ describe('life: a whole life as text', () => {
   it('records the policy without effect while there is no god system', () => {
     const r = runLifeReport(data, { seed: 3, policy: 'เมตตา' });
     expect(r.text).toContain('นโยบายพระเจ้า เมตตา');
-    expect(r.text).toContain('ยังไม่มีผล');
+    // once the god system is part of the core list the policy has an effect (tests/tools/god.test.ts covers that)
+    if (!toolSystems().systems.some((s) => s.name === 'god')) expect(r.text).toContain('ยังไม่มีผล');
     expect(r.state.god.ext.policy).toBe('เมตตา');
   });
 

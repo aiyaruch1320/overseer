@@ -5,10 +5,25 @@ import type { GameData } from '../../core/game';
 import { npcsAt } from '../../core/npc';
 import { placeName } from '../../core/text';
 import { statusLines, timeline, worldLines } from '../../../scripts/tools/report';
-import { createSession, runToCall, runToDeath, startLife, stepBeat, toolNotes, type Policy, type Session } from '../../../scripts/tools/session';
+import { GodConsole, callLines, godHelp } from '../../../scripts/tools/god-commands';
+import { registerPolicyStep, type PolicyStep } from '../../../scripts/tools/god-hooks';
+import { POLICIES, afterBeat, createSession, runToCall, runToDeath, startLife, stepBeat, toolNotes, type Policy, type Session } from '../../../scripts/tools/session';
 
 const gen = import.meta.glob('../../../data/gen/*.json', { import: 'default' }) as Record<string, () => Promise<{ version: string; items: unknown }>>;
 const lib = import.meta.glob('../../../data/library/*.jsonl', { query: '?raw', import: 'default' }) as Record<string, () => Promise<string>>;
+
+// the policy functions of the god system, when the branch has them (same as scripts/tools/god-hooks-node.ts, for the browser)
+const godMods = import.meta.glob('../../core/god/index.ts') as Record<string, () => Promise<Record<string, unknown>>>;
+const actsMods = import.meta.glob('../../core/god/acts/index.ts') as Record<string, () => Promise<Record<string, unknown>>>;
+
+async function loadGodHooks() {
+  for (const [name, fn, mods] of [['god', 'policyStep', godMods], ['god.acts', 'actsPolicyStep', actsMods]] as const) {
+    for (const load of Object.values(mods)) {
+      const mod = await load();
+      if (typeof mod[fn] === 'function') registerPolicyStep(name, mod[fn] as PolicyStep);
+    }
+  }
+}
 
 const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -27,6 +42,7 @@ async function loadData(): Promise<GameData> {
 }
 
 let session: Session | null = null;
+let god: GodConsole | null = null;
 
 function show() {
   if (!session) return;
@@ -55,6 +71,9 @@ function start(data: GameData) {
   };
   session = createSession(data, opts);
   startLife(session);
+  god = new GodConsole({ game: session.game, data, dev: true });
+  el('god').hidden = false;
+  el('godout').textContent = godHelp().join('\n');
   el('controls').hidden = false;
   show();
 }
@@ -62,11 +81,61 @@ function start(data: GameData) {
 function advance(beats: number) {
   if (!session) return;
   const g = session.game;
-  for (let i = 0; i < beats && g.state.life && !g.state.life.dead; i++) stepBeat(g);
+  god?.drop();
+  for (let i = 0; i < beats && g.state.life && !g.state.life.dead; i++) {
+    stepBeat(g);
+    afterBeat(session);
+  }
   show();
 }
 
-loadData().then((data) => {
+function godPanel() {
+  const panel = document.createElement('div');
+  panel.id = 'god';
+  panel.hidden = true;
+  panel.innerHTML = [
+    '<h2>คำสั่งพระเจ้า</h2>',
+    '<p>พิมพ์คำสั่งแล้วกด Enter: ทุกคำสั่งที่เปลี่ยนโลกแสดงตัวอย่างผลก่อน แล้วกด yes เพื่อทำจริง หรือ no เพื่อยกเลิก</p>',
+    '<form id="godform"><input id="godtext" type="text" size="50" placeholder="เช่น chest · pick 2 · dream 1 · whisper ระวัง · miracle MR-04" /> <button type="submit">ส่ง</button></form>',
+    '<p id="godbtns"></p>',
+    '<pre id="godout"></pre>',
+  ].join('');
+  const controls = el('controls');
+  controls.insertAdjacentElement('afterend', panel);
+  const btns = panel.querySelector('#godbtns') as HTMLElement;
+  for (const c of ['chest', 'reroll', 'skip', 'power', 'options', 'yes', 'no', 'help']) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = c;
+    b.dataset.god = c;
+    btns.append(b, ' ');
+  }
+}
+
+function sendGod(text: string) {
+  if (!session || !god) return;
+  const t = text.trim();
+  if (!t) return;
+  const out = t === 'help' ? godHelp() : god.handle(t) ?? [`คำสั่งไม่รู้จัก: "${t}" (กด help)`];
+  el('godout').textContent = [`> ${t}`, ...out, '', el('godout').textContent ?? ''].join('\n').slice(0, 20000);
+  show();
+}
+
+loadData().then(async (data) => {
+  await loadGodHooks();
+  godPanel();
+  const sel = el<HTMLSelectElement>('policy');
+  sel.replaceChildren(new Option('(ไม่ระบุ)', ''), ...POLICIES.map((p) => new Option(p, p)));
+  el('godform').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const input = el<HTMLInputElement>('godtext');
+    sendGod(input.value);
+    input.value = '';
+  });
+  el('godbtns').addEventListener('click', (ev) => {
+    const b = (ev.target as HTMLElement).closest('button');
+    if (b?.dataset.god) sendGod(b.dataset.god);
+  });
   el('loading').hidden = true;
   const form = el<HTMLFormElement>('new');
   form.hidden = false;
@@ -79,10 +148,13 @@ loadData().then((data) => {
     if (!b || !session) return;
     if (b.dataset.beats) advance(Number(b.dataset.beats));
     else if (b.dataset.call) {
-      runToCall(session.game);
+      god?.drop();
+      const r = runToCall(session.game, undefined, () => void afterBeat(session!));
       show();
+      if (r.call && god) el('godout').textContent = [...callLines(data, r.call, true), `ทำได้ตอนนี้: ${god.doableNow().join(' ') || '(ยังไม่มีพลังใด)'}`, '', el('godout').textContent ?? ''].join('\n');
     } else if (b.dataset.death) {
-      runToDeath(session.game);
+      god?.drop();
+      runToDeath(session.game, undefined, () => void afterBeat(session!));
       show();
     }
   });

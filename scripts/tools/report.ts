@@ -181,3 +181,50 @@ export function summaryLines(data: GameData, state: GameState, beats: number): s
   if (Object.keys(plain).length) out.push(`บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): ${Object.entries(plain).map(([k, v]) => `${k} ×${v}`).join(' ')}`);
   return out;
 }
+
+const CHRONICLE_KIND: Record<string, string> = {
+  chest: 'หีบ',
+  'chest.open': 'เปิดหีบ',
+  'chest.pick': 'เลือกจากหีบ',
+  'chest.reroll': 'ทอยหีบใหม่',
+  'chest.skip': 'ข้ามหีบ',
+  gift: 'ประทาน',
+  bestow: 'ประทาน',
+  dream: 'ฝัน',
+  'dream.send': 'ส่งฝัน',
+  whisper: 'กระซิบ',
+  prayer: 'ตอบคำอธิษฐาน',
+  'prayer.answer': 'ตอบคำอธิษฐาน',
+  miracle: 'ปาฏิหาริย์',
+  decree: 'ลิขิต',
+  conjure: 'เสกตามใจ',
+  vow: 'คำปฏิญาณ',
+  'vow.pick': 'คำปฏิญาณ',
+};
+
+/**
+ * The hand of the god over one life, for the end of `npm run life`: the power left, how many times each kind of act was used, and
+ * the chronicle of the hand (`state.god.chronicle`). Empty when the god did nothing and there is no policy.
+ */
+export function godLines(data: GameData, state: GameState, policy?: string): string[] {
+  const g = state.god;
+  if (!policy && !g.chronicle.length) return [];
+  const out: string[] = [];
+  const round = (n: number) => Math.round(n * 10) / 10;
+  out.push(`พลังที่เหลือ: แสงศรัทธา ${round(g.light)} · ความหวาดกลัว ${round(g.dread)}${state.life ? ` · ศรัทธาเทพ ${state.life.godFaith} · ภาระใจ ${state.life.heart}` : ''}`);
+  const used: Record<string, number> = {};
+  for (const c of g.chronicle) {
+    const k = CHRONICLE_KIND[c.kind] ?? c.kind;
+    used[k] = (used[k] ?? 0) + 1;
+  }
+  out.push(`ใช้พลัง ${g.chronicle.length} ครั้ง${g.chronicle.length ? `: ${Object.entries(used).map(([k, v]) => `${k} ×${v}`).join(' · ')}` : ''}`);
+  if (g.chronicle.length) {
+    out.push('พงศาวดารพระหัตถ์:');
+    for (const c of g.chronicle) {
+      const what = CHRONICLE_KIND[c.kind] ?? c.kind;
+      const tail = [c.target ? `ที่ ${scrub(data, c.target)}` : '', c.result ? `→ ${scrub(data, c.result)}` : ''].filter(Boolean).join(' ');
+      out.push(`  ${c.hAge !== undefined ? `อายุ ${c.hAge} · ` : ''}ศ.ม. ${calendarYear(c.worldYear).toLocaleString('en-US')} │ ${what} ${c.id}${tail ? ` ${tail}` : ''}`);
+    }
+  }
+  return out;
+}
