@@ -462,7 +462,7 @@ describe('choices, conditions and swaps (data review B3 H3 H4 H9)', () => {
         n++;
         expect(md, `${e.id}: ${t}`).toContain(t);
       }
-    expect(n).toBeGreaterThan(40);
+    expect(n).toBe(0); // M0-c2 rewrote every prose leaf of the event docs into codes
     // the parser itself: a phrase with no atom stays text, an or of prose stays one phrase
     expect(parseCond('พงไพรหรือหมอก').cond).toEqual({ k: 'text', text: 'พงไพรหรือหมอก' });
     expect(parseCond('มลพิษ > 60 หรือ PL-06').cond).toEqual({ k: 'or', of: [{ k: 'var', name: 'P', op: '>', n: 60 }, { k: 'event', id: 'PL-06', happened: true }] });
@@ -506,8 +506,8 @@ describe('choices, conditions and swaps (data review B3 H3 H4 H9)', () => {
 
 describe('local events keep their dependency and their opened nodes (data review M6)', () => {
   const lc = (id: string) => L.events.find((e) => e.id === id)!;
-  it('keeps the second dependency of LC-01 as a prose leaf next to the event', () => {
-    expect(lc('LC-01').depends).toEqual({ k: 'or', of: [{ k: 'event', id: 'WR-24', happened: true, phase: 'near' }, { k: 'text', text: 'ธุลีทิพย์ใกล้ขาด' }] });
+  it('LC-01 depends on WR-24 about to fire (the dust running out is that event)', () => {
+    expect(lc('LC-01').depends).toEqual({ k: 'event', id: 'WR-24', happened: true, phase: 'near' });
     expect(lc('LC-01').reads).toEqual([{ id: 'WR-24', phase: 'near' }]);
     expect(lc('LC-07').depends).toEqual({
       k: 'or',
