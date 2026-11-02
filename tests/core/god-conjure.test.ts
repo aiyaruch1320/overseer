@@ -99,7 +99,7 @@ describe('the listed miracles use no quota', () => {
     const { ctx, st } = mk();
     const r = run(ctx, { verb: 'create', core: 'water', scale: 'country' }, false);
     expect(r.ok).toBe(true);
-    expect((r as { ok: true; preview: Record<string, unknown> }).preview.listed).toBe('MR-01');
+    expect((r as unknown as { ok: true; preview: Record<string, unknown> }).preview.listed).toBe('MR-01');
     const light = st.god.light;
     expect(run(ctx, { verb: 'ให้กำเนิด', core: 'น้ำ', scale: 'ประเทศ' }).ok).toBe(true);
     expect(light - st.god.light).toBeGreaterThan(0);
@@ -217,7 +217,7 @@ describe('the result is fixed by the seed', () => {
     expect(stateKey(a.st)).toBe(stateKey(b.st));
     // the preview shows the name the day will use
     const c = mk(5, 30);
-    const pv = (run(c.ctx, args, false) as { ok: true; preview: { name: string } }).preview.name;
+    const pv = (run(c.ctx, args, false) as unknown as { ok: true; preview: { name: string } }).preview.name;
     expect(pv).toBe(name(a.st));
   });
 
@@ -252,7 +252,7 @@ describe('omens, reactions, the shadow', () => {
   it('a famine met by "create · water" ends and gives two golden years instead of the rain (reaction)', () => {
     const { ctx, st } = mk(1, 30);
     st.world.countryFlags['MH-02'] = ['famine'];
-    const r = run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }, false) as { ok: true; preview: { reaction?: { id: string } } };
+    const r = run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }, false) as unknown as { ok: true; preview: { reaction?: { id: string } } };
     expect(r.preview.reaction?.id).toBe('R01');
     expect(run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }).ok).toBe(true);
     expect(st.world.countryFlags['MH-02']).not.toContain('famine');
@@ -269,7 +269,7 @@ describe('omens, reactions, the shadow', () => {
     expect(shadowChance(ctx, mix('continent'), t)).toBe(0.35);
     expect(shadowChance(ctx, mix('country', 'fire'), { country: 'NB-01' })).toBeCloseTo(0.35);
     st.world.happened['DR-05'] = st.clock.worldYear - 1;
-    const r = run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }, false) as { ok: true; preview: { chance: { shadow: number } } };
+    const r = run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }, false) as unknown as { ok: true; preview: { chance: { shadow: number } } };
     expect(r.preview.chance.shadow).toBe(1);
     expect(run(ctx, { verb: 'create', core: 'water', scale: 'place', country: 'MH-02' }).ok).toBe(true);
     expect(st.log.some((e) => e.kind === 'conjure.shadow')).toBe(true);
