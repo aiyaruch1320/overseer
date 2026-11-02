@@ -108,7 +108,13 @@ registerMiracle('MR-05', {
     for (const ev of t.rolled) {
       if (ev.group !== 'WR') continue;
       const party = ev.home.countries.some((x) => list.includes(x)) || (!ev.home.countries.length && ev.home.continents.some((x) => list.some((c) => continentOf(c) === x)));
-      if (party) holdEvent(ctx, ev.id, weightOf(ctx, ev.id) * 0.5, yearOf(ctx) + DURATIONS.warWeight);
+      if (party) {
+        // one weight, with the floor the fate has (04-miracles.md §4: 0.2 to 3): the truce on top of a fate halves what is there, and does not end the fate sooner
+        const f = godOf(ctx).miracles.fate;
+        const fate = actsOf(ctx.state).fates[ev.id];
+        const until = Math.max(yearOf(ctx) + DURATIONS.warWeight, fate && fate.until > yearOf(ctx) ? fate.until : 0);
+        holdEvent(ctx, ev.id, clamp(weightOf(ctx, ev.id) * 0.5, f.slowRange[0], f.fastRange[1]), until);
+      }
     }
     return { target: list.join(' '), result: 'สงครามหยุดห้าปี', country: list[0] };
   },

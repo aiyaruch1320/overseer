@@ -17,6 +17,9 @@ export interface PrayerCard {
   silent?: boolean;
   /** World year it appeared, for the chronicle. */
   year: number;
+  /** How many prayers of this kind this life had before this one, and the kind of the one before it (the words differ from a prayer that came just before). */
+  seen?: number;
+  prev?: string;
 }
 
 export interface ActiveWhisper {
@@ -87,6 +90,10 @@ export interface ActsExt {
   modN: number;
   /** Tick a prayer kind was last raised. */
   recent: Record<string, number>;
+  /** The kinds of the prayers raised in this life, in order. */
+  seen: string[];
+  /** What became of the prayers that are not waiting any more, by number: told when someone answers one (`lapsed` ran out · `moot` no longer true · `answered`). */
+  gone: Record<string, 'lapsed' | 'moot' | 'answered'>;
   /** World year of the last prayer the god answered (given, refused or punished) and the world years prayers lapsed. */
   lastAnswer: number;
   lapsed: number[];
@@ -112,6 +119,8 @@ export function fresh(): ActsExt {
     pendingN: 0,
     modN: 0,
     recent: {},
+    seen: [],
+    gone: {},
     lastAnswer: NEVER,
     lapsed: [],
     life: { key: '', mid: 0, big: 0, ruin: 0, grand: 0 },

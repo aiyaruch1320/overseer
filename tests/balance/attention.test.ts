@@ -95,7 +95,7 @@ function playLife(data: GameData, seed: number, setting: Settings['attention'], 
     lostBy: missed.reduce<Record<string, number>>((a, e) => ({ ...a, [String(e.data.kind)]: (a[String(e.data.kind)] ?? 0) + 1 }), {}),
     glows: log.filter((e) => e.sys === 'attention' && e.kind === 'glow').length,
     folded: calls.reduce((a, c) => a + String(c.data.cards).split(',').filter(Boolean).length * (c.data.call === 'stop' ? 1 : 0), 0),
-    windows: log.filter((e) => e.sys === 'story' && e.kind === 'node' && e.level >= 3).length,
+    windows: log.filter((e) => e.sys === 'story' && e.kind === 'window').length,
     deathAge: g.state.life!.dead!.hAge,
   };
 }

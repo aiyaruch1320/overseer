@@ -423,6 +423,31 @@ function settleComp(ctx: Ctx, slots: (ChestSlot | null)[]): void {
   ctx.state.god.counters.comp = hit ? c.start : Math.min(COMP_MAX, now + c.step);
 }
 
+/** A blessing the chest could give this character now, with the weight inside its tier (the strange answer of a prayer draws from the same pool). */
+export interface GiftChoice {
+  id: string;
+  name: string;
+  tier: Tier;
+  w: number;
+}
+
+/**
+ * Every blessing that passes the filter of the chest for this character now (02-bestow.md §2): not owned, not another people's, not against his race,
+ * the condition of the gift holds (a birthplace gift for another place never comes up), not against a curse he has, not a kind he already has, the
+ * gate of L. The strange answer of a prayer (03-dreams.md §7) draws only from these.
+ */
+export function blessingPool(ctx: Ctx): GiftChoice[] {
+  const life = lifeOf(ctx);
+  if (!life) return [];
+  return giftCands(ctx, life, false, false, new Set()).map((c) => ({ id: c.id, name: c.name, tier: c.tier, w: c.w }));
+}
+
+/** One blessing drawn from a pool by the odds of the tiers of the chest (rarer tiers come up rarely, as in a slot of the chest). */
+export function drawBlessing(ctx: Ctx, rng: Rng, pool: readonly GiftChoice[]): GiftChoice | null {
+  const c = drawFrom(ctx, rng, pool.map((g) => ({ kind: 'bless' as const, id: g.id, name: g.name, tier: g.tier, w: g.w, why: [] })), {});
+  return c ? { id: c.id, name: c.name, tier: c.tier, w: c.w } : null;
+}
+
 // ---------- actions ----------
 
 /** Why the god cannot open a chest now, or null. Does not roll. */
@@ -473,7 +498,8 @@ export function rerollChest(ctx: Ctx, lock?: number): Chest {
   if (lock !== undefined && ch.slots[lock - 1]) keep.set(lock, ch.slots[lock - 1]!);
   for (const s of ch.slots) if (s && !keep.has(s.slot)) ch.discarded.push(s.id);
   const slots = draw(ctx, keep, new Set(ch.discarded), ch.window);
-  settleComp(ctx, slots);
+  // the compensator counts chests, not rolls (02-bestow.md §3): a reroll does not push it up, but a thing of R or better it shows still sends it back
+  if (slots.some((x) => x && x.kind !== 'curse' && tierIndex(x.tier) >= 2)) settleComp(ctx, slots);
   ch.slots = slots;
   ch.rerolls += 1;
   if (lock !== undefined) ch.locked = lock;

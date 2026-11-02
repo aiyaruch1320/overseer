@@ -275,7 +275,9 @@ export function noteAnswered(ctx: Ctx): void {
 /** Called when the god punishes the character (a curse picked, a petitioner punished): dreams are heard less for five years. */
 export function notePunished(ctx: Ctx): void {
   const life = lifeOf(ctx);
-  if (life) gx(ctx).punishedAge = life.hAge;
+  if (!life) return;
+  gx(ctx).punishedAge = life.hAge;
+  bump(ctx, 'l.punished');
 }
 
 /** The start power, given once when the world is made (01-power.md §1 "ค่าเริ่มต้น"). */

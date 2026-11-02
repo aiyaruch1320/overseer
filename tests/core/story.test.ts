@@ -4,9 +4,10 @@ import { Game, makeCtx, type GameData, type System } from '../../src/core/game';
 import type { ConvergenceData, Ending, StoryNodeX, StorylinesData } from '../../src/core/data/types-storylines';
 import { onCond, onEffect, onStat, resetRules, test } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
-import { openLine, registerStoryRules, storySystem } from '../../src/core/story';
+import { write } from '../../src/core/log';
+import { onNode, openLine, registerStoryRules, storySystem } from '../../src/core/story';
 import { fresh } from '../../src/core/story/state';
-import { BATTLES_PER_YEAR, CAUSE, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS } from '../../src/core/story/tuning';
+import { BATTLES_PER_YEAR, CAUSE, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
 import type { Choice, Condition, Effect, LifeState } from '../../src/core/types';
 
 // ---------- a toy character system and the conditions other systems would answer ----------
@@ -168,15 +169,23 @@ describe('walk of the real storylines', () => {
     expect(row.data.cv).toBe('cv.5');
   });
 
-  it('godWindow nodes are written at level 3, others at 1 or 2', () => {
+  it('a godWindow node is announced (story/window, level 3) a beat before it is decided; the other nodes are written at level 1 or 2', () => {
     const g = play(2, real, person('human'));
     const win = (real.storylines.items as StorylinesData).nodes.filter((n) => n.godWindow && n.line === 'hu').map((n) => n.id);
     const logged = nodeLog(g);
-    for (const e of logged) {
-      if (win.includes(String(e.id))) expect(e.level).toBe(3);
-      else expect([1, 2]).toContain(e.level);
+    const announced = g.state.log.filter((e) => e.sys === 'story' && e.kind === 'window');
+    for (const e of logged) expect([1, 2]).toContain(e.level);
+    expect(announced.length).toBeGreaterThan(0);
+    for (const w of announced) {
+      expect(w.level).toBe(3);
+      expect(win).toContain(String(w.id));
+      expect(w.data.ways).toBeTruthy();
+      // the announcement comes before the node it announces, and the node is decided later
+      const played = logged.find((e) => e.id === w.id);
+      expect(played, `${w.id} played`).toBeDefined();
+      expect(played!.n).toBeGreaterThan(w.n);
     }
-    expect(logged.some((e) => e.level === 3)).toBe(true);
+    for (const e of logged.filter((x) => win.includes(String(x.id)))) expect(announced.some((w) => w.id === e.id)).toBe(true);
   });
 
   it('effects nobody handles are reported as unhandled and do not break the walk', () => {
@@ -844,5 +853,113 @@ describe('the memory of the director', () => {
     // 1.75 / (1.75 + 1) = 0.636
     expect(on).toBeGreaterThan(0.58);
     expect(on).toBeLessThan(0.69);
+  });
+});
+
+// ---------- M2 review G1 G3: the god window is announced, the god's lines wait for the god ----------
+
+describe('a god window is announced a beat before it is decided', () => {
+  beforeEach(mockDeath);
+  const windowed = () => mini([node('hu.a1', [20, 20], [choice('a', 50), choice('b', 50)], { godWindow: { what: 'a dream', effect: 'x' } }), node('hu.a2', [20, 20], [choice('a', 100)])]);
+  const announces = (g: Game) => g.state.log.filter((e) => e.sys === 'story' && e.kind === 'window');
+  const start = (data: GameData, patch: Partial<LifeState> = {}): Game => {
+    const g = new Game(newGame(1), data, [toy, storySystem]);
+    g.state.life = person('human', patch);
+    g.born();
+    return g;
+  };
+  const beatsToWindow = (g: Game): void => {
+    for (let i = 0; i < 400 && !announces(g).length; i++) g.beat();
+  };
+
+  it('the node is written as a window at the year step, the ways are not chosen until the next beat, and the line waits with it', () => {
+    const g = start(windowed());
+    beatsToWindow(g);
+    const life = g.state.life!;
+    expect(life.hAge).toBe(20);
+    const w = announces(g)[0];
+    expect(w).toMatchObject({ id: 'hu.a1', level: 3 });
+    expect(String(w.data.ways)).toContain('way a');
+    expect(life.passed['hu.a1']).toBeUndefined();
+    expect(life.passed['hu.a2']).toBeUndefined(); // behind it in the line
+    g.beat();
+    expect(life.passed['hu.a1']).toBeDefined();
+    expect(nodeLog(g).find((e) => e.id === 'hu.a1')!.level).toBe(2);
+    expect(nodeLog(g).find((e) => e.id === 'hu.a1')!.n).toBeGreaterThan(w.n);
+  });
+
+  it('with the attention system, the node waits for its answer (a call or a glow naming it) and no longer than WINDOW_MAX_BEATS', () => {
+    const g = start(windowed(), { ext: { attention: {} } });
+    beatsToWindow(g);
+    const life = g.state.life!;
+    for (let i = 0; i < 4; i++) g.beat();
+    expect(life.passed['hu.a1']).toBeUndefined();
+    write(g.state, { sys: 'attention', kind: 'glow', id: 'hu.a1', level: 1, data: { why: 'gap' } });
+    g.beat();
+    expect(life.passed['hu.a1']).toBeDefined();
+    // never answered: decided after the longest wait
+    const h = start(windowed(), { ext: { attention: {} } });
+    beatsToWindow(h);
+    let beats = 0;
+    while (h.state.life!.passed['hu.a1'] === undefined && beats < 40) (h.beat(), beats++);
+    expect(beats).toBe(WINDOW_MAX_BEATS);
+  });
+
+  it('the hooks of the god are told before the ways are weighed and after the way is taken', () => {
+    const told: string[] = [];
+    const off = onNode({ before: (_c, _n, id) => void told.push(`before ${id}`), after: (_c, _n, id, key) => void told.push(`after ${id} ${key}`) });
+    try {
+      const g = start(windowed());
+      g.runLife();
+      expect(told.filter((t) => t.includes('hu.a1'))).toEqual(['before hu.a1', expect.stringMatching(/^after hu\.a1 [ab]$/)]);
+    } finally {
+      off();
+    }
+  });
+});
+
+describe('the lines that read what the god did', () => {
+  beforeEach(mockDeath);
+  const god = () => {
+    const data = mini([node('hu.a1', [1, 1], [choice('a', 100)])]);
+    const sl = data.storylines.items as StorylinesData;
+    sl.lines.push({ id: 'dp', name: 'dp', file: '', nodeIds: [] });
+    sl.nodes.push(
+      node('dp.t1', [13, 19], [choice('a', 100)], { line: 'dp', kind: 'overlay', when: { k: 'has', kind: 'unknown', id: 'f1' } }),
+      node('dp.a1', [20, 54], [choice('a', 100)], { line: 'dp', kind: 'overlay', when: { k: 'has', kind: 'unknown', id: 'f3' } }),
+    );
+    return data;
+  };
+  const start = (): Game => {
+    const g = new Game(newGame(1), god(), [toy, storySystem]);
+    g.state.life = person();
+    g.born();
+    return g;
+  };
+  const until = (g: Game, age: number) => {
+    while (!g.state.life!.dead && g.state.life!.hAge < age) g.beat();
+  };
+
+  it('a node plays the year its condition holds and is skipped once its age window is over', () => {
+    const g = start();
+    g.state.god.chronicle.push({ worldYear: 0, kind: 'dream', id: 'x' });
+    until(g, 24);
+    // the first node's condition never held in 13 to 19: it is skipped as late; the second has not met its condition yet
+    expect(g.state.life!.passed['dp.t1']).toBeUndefined();
+    expect(g.state.log.some((e) => e.sys === 'story' && e.kind === 'skip' && e.id === 'dp.t1' && e.data.why === 'late')).toBe(true);
+    expect(g.state.life!.passed['dp.a1']).toBeUndefined();
+    g.state.life!.traits.push('f3'); // the test's `has` reads traits
+    until(g, 26);
+    expect(g.state.life!.passed['dp.a1']).toBe('a');
+  });
+
+  it('a line that waits for the god opens again each year until the god has acted (no draw, no shut door)', () => {
+    const g = start();
+    until(g, 22);
+    expect((g.state.life!.ext.story as { open: Record<string, boolean> }).open.dp).toBeUndefined();
+    g.state.god.chronicle.push({ worldYear: 0, kind: 'dream', id: 'x' });
+    g.state.life!.traits.push('f3');
+    until(g, 25);
+    expect(g.state.life!.passed['dp.a1']).toBe('a');
   });
 });

@@ -167,6 +167,15 @@ export function prayersWaiting(state: GameState): number {
   return m ? m.queue.filter((c) => c.kind === 'prayer').length : 0;
 }
 
+/**
+ * Has the scene before the end begun (the death stop was made, near death or at the death)? Prayers are not raised from then: the player is called
+ * once more at the most, and a card raised after it could not be shown (07-attention.md §2 "ใกล้ตาย").
+ */
+export function inDeathScene(state: GameState): boolean {
+  const m = state.life ? memOf(state.life) : undefined;
+  return !!m?.near;
+}
+
 export interface NextCall {
   beats: number;
   /** the calls written by the beat that ended the run (a stop may bring several cards with it only as `cards`; usually one) */

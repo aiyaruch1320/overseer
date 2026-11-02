@@ -1,14 +1,16 @@
 // Dreams (docs/systems/god/03-dreams.md §1 to §4, G2): the game offers up to three ways the character can really take, the god sends one,
 // the character obeys, misreads, refuses or defies when he reaches the node, and a way that goes against his nature weighs on his heart.
-// How a dream reaches the story: a dream is rolled once, the year before its node can fire (`armDreams`), and its weights are written into
-// `life.ext.story.entryMods`, the list the story already reads when it weighs the ways of a node, so the story needs no change.
-// `dreamWeight(ctx, nodeId, key)` is the same weight for a story that would rather ask: it rolls a dream that has not been rolled yet.
+// How a dream reaches the story: nothing is rolled when it is sent. When the story decides the node the dream names, it asks through the hooks
+// of `onNode` (registered in index.ts): `before` rolls the dream once (belief, heart) and writes its weights into `life.ext.story.entryMods`, the
+// list the story already reads when it weighs the ways of a node; `after` writes the result with the way the story really took, and the dream is done.
+// A dream whose node does not come within two life years fades without a penalty. A node with a god window is announced a beat before it is
+// decided (`story/window`), and the ways offered then are the ways of that node.
 import { extOf as charExt, giveId, idx, takeId } from '../character';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { test } from '../rules';
 import { weigh, type Pull } from '../story/choose';
-import { canEnter } from '../story/walk';
+import { announcedNodes, canEnter } from '../story/walk';
 import { extOf as storyExt } from '../story/state';
 import { indexOf } from '../story/data';
 import { isNear } from '../world/events';
@@ -17,6 +19,7 @@ import { addBelief, clamp } from './belief';
 import { canPay, isImmune, pay, priceOf, type Cost } from './power';
 import { choicesOf, upcomingNodes, type Upcoming } from './story-view';
 import { bump, count, godData, gx, inWindow, lifeOf, touch, type Dream, type Key } from './state';
+import { syncFlags } from './stats';
 import { BURDEN_QUESTION, DREAM_PENDING_MAX, DREAM_WAIT_YEARS, FIT, IMMORAL_WORDS, REASONS, SOURCE_MUL_DEFAULT, SYMBOLS } from './tuning';
 
 export const dreamsOf = (ctx: Ctx): Dream[] => ctx.state.god.dreams as Dream[];
@@ -130,7 +133,7 @@ export function pathsNow(ctx: Ctx): DreamPath[] {
     const n = u.node;
     if (taken.has(n.id)) continue;
     if (n.when && !test(ctx, n.when)) continue;
-    const choices = choicesOf(n);
+    const choices = choicesOf(ctx, n);
     if (choices.length < 2) continue;
     const cut = (c: Choice) => c.effects.some((e) => e.k === 'converge' && !canEnter(ctx, e.to));
     const w = weigh(ctx, choices, NO_PULL, ex, cut).weights;
@@ -170,8 +173,11 @@ const effectsOf = (p: DreamPath): unknown => [p.node, p.choice];
  * against his nature from S1 to S6, and a way from a rarer source (S2 S4 S7 S8, else S3 or S5). At most two from one source. Pure.
  */
 export function offersNow(ctx: Ctx): DreamPath[] {
-  const all = pathsNow(ctx);
+  let all = pathsNow(ctx);
   if (!all.length) return [];
+  // a node with a god window that was announced and waits for its beat: the ways offered are the ways of that node (the dream is rolled when it is decided)
+  const held = announcedNodes(ctx).find((id) => all.some((p) => p.node === id));
+  if (held) all = all.filter((p) => p.node === held);
   const order = (a: DreamPath, b: DreamPath) => a.due - b.due || a.node.localeCompare(b.node) || a.choice.localeCompare(b.choice);
   all.sort(order);
   const soon = all[0].node;
@@ -332,7 +338,6 @@ export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown; pa
   touch(ctx);
   record(ctx, 'dream', p.node, `sent:${ob.level}`);
   write(ctx.state, { sys: 'god', kind: 'dream', id: p.node, data: { choice: p.choice, source: d.source, symbol: p.symbol, level: ob.level, paid: price.faith ?? 0 }, level: 2 });
-  armDreams(ctx);
   return d;
 }
 
@@ -344,9 +349,9 @@ function record(ctx: Ctx, kind: string, id: string, result: string): void {
 // ---------- the node meets the dream ----------
 
 /**
- * Rolls a dream once, when the character reaches the node (03-dreams.md §4): obeys (belief +3), misreads (+1, a near way ×2),
- * refuses (−2) or, with belief at −30 or below, defies (the way ×0.3). Changes belief and heart; `retro` is true when the node has passed
- * and the story did not ask (the dream then only changes the character, not the weights).
+ * Rolls a dream once, when the story decides the node the dream names (03-dreams.md §4): obeys (belief +3), misreads (+1, a near way ×2),
+ * refuses (−2) or, with belief at −30 or below, defies (the way ×0.3). Changes belief and heart and keeps the result on the dream; the log line
+ * comes with the way the story took (`settleNode`). `retro` is true when the node has passed and the story did not ask.
  */
 export function resolveDream(ctx: Ctx, d: Dream, retro: boolean): NonNullable<Dream['resolved']> {
   if (d.resolved) return d.resolved;
@@ -379,11 +384,11 @@ export function resolveDream(ctx: Ctx, d: Dream, retro: boolean): NonNullable<Dr
   const r: NonNullable<Dream['resolved']> = { outcome, level: ob.level, p: Math.round(ob.p * 1000) / 1000, retro };
   if (outcome === 'misread') {
     const ix = indexOf(ctx);
-    const others = (ix.nodes.get(d.node)?.choices ?? []).filter((c) => c.key !== d.choice);
+    const node = ix.nodes.get(d.node);
+    const others = (node ? choicesOf(ctx, node) : []).filter((c) => c.key !== d.choice);
     if (others.length) r.alt = others[Math.max(0, rng.weighted(others.map((c) => Math.max(0.01, c.weight))))].key;
   }
   d.resolved = r;
-  write(ctx.state, { sys: 'god', kind: 'dream', id: d.node, data: { outcome, level: ob.level, p: r.p, source: d.source, choice: d.choice, symbol: d.symbol, ...(r.alt ? { alt: r.alt } : {}) }, level: 2 });
   return r;
 }
 
@@ -429,24 +434,39 @@ function applyWeights(ctx: Ctx, d: Dream): void {
 }
 
 /**
- * Rolls the dreams whose node can fire in the next story step (the node's own age has come by next year, or it waits in the queue) and puts their
- * weights where the story reads them. Called after the story has played a year, and after a dream is sent.
+ * The story is about to decide `nodeId` (hook `before` of `onNode`): the dream sent for it is rolled now, once, and its weights go where the story reads
+ * them. Nothing is rolled when the dream is sent, so a dream whose node never comes costs nothing and says nothing.
  */
-export function armDreams(ctx: Ctx): void {
+export function armNode(ctx: Ctx, nodeId: string): void {
+  const d = dreamsOf(ctx).find((x) => x.node === nodeId);
+  if (!d || d.resolved || d.via || !lifeOf(ctx)) return;
+  resolveDream(ctx, d, false);
+  applyWeights(ctx, d);
+}
+
+/**
+ * The story decided `nodeId` and took the way `took` (hook `after`): the result is told once, with the way really taken, the chronicle gets
+ * its line, the weights are taken out of the story's pulls and the dream is done.
+ */
+export function settleNode(ctx: Ctx, nodeId: string, took: string, retro = false): void {
+  const list = dreamsOf(ctx);
+  const i = list.findIndex((x) => x.node === nodeId);
   const life = lifeOf(ctx);
-  if (!life || !ctx.data.storylines) return;
-  const ex = storyExt(life);
-  const ix = indexOf(ctx);
-  for (const d of dreamsOf(ctx)) {
-    if (d.resolved || d.via) continue;
-    const n = ix.nodes.get(d.node);
-    if (!n) continue;
-    const lo = Math.max(0, n.age[0] - (ex.earlier[d.node] ?? 0));
-    if (life.pending.includes(d.node) || (ex.fire[d.node] ?? lo) <= life.hAge + 1) {
-      resolveDream(ctx, d, false);
-      applyWeights(ctx, d);
-    }
-  }
+  if (i < 0 || !life) return;
+  const d = list[i];
+  const r = d.resolved ?? resolveDream(ctx, d, retro);
+  write(ctx.state, {
+    sys: 'god',
+    kind: 'dream',
+    id: d.node,
+    data: { outcome: r.outcome, level: r.level, p: r.p, source: d.source, choice: d.choice, symbol: d.symbol, took, kept: took === d.choice, ...(r.alt ? { alt: r.alt } : {}), ...(retro ? { retro: true } : {}) },
+    level: 2,
+  });
+  record(ctx, 'dream', d.node, `${d.level}:${r.outcome}`);
+  const st = life.ext.story as { entryMods?: { to: string }[] } | undefined;
+  if (st?.entryMods) st.entryMods = st.entryMods.filter((m) => m.to !== d.node);
+  list.splice(i, 1);
+  syncFlags(ctx);
 }
 
 // ---------- burden of the heart ----------
@@ -522,19 +542,20 @@ export function settleDreams(ctx: Ctx): void {
   if (!life) return;
   const e = gx(ctx);
   const list = dreamsOf(ctx);
-  const ex = life.ext.story as { skipped?: string[] } | undefined;
+  const ex = life.ext.story as { skipped?: string[]; announced?: Record<string, unknown> } | undefined;
   for (let i = list.length - 1; i >= 0; i--) {
     const d = list[i];
-    const passed = life.passed[d.node] !== undefined;
-    if (passed) {
-      const r = resolveDream(ctx, d, true);
-      record(ctx, 'dream', d.node, `${d.level}:${r.outcome}`);
-      const st = life.ext.story as { entryMods?: { to: string }[] } | undefined;
-      if (st?.entryMods) st.entryMods = st.entryMods.filter((m) => m.to !== d.node);
-      list.splice(i, 1);
+    const way = life.passed[d.node];
+    if (way !== undefined) {
+      // the node passed without the story asking (a path that does not call the hooks): told late
+      settleNode(ctx, d.node, way, true);
+    } else if (ex?.announced?.[d.node]) {
+      continue; // announced and about to be decided: it waits for its beat
     } else if (life.hAge - d.age > DREAM_WAIT_YEARS || ex?.skipped?.includes(d.node)) {
       record(ctx, 'dream', d.node, 'faded');
       write(ctx.state, { sys: 'god', kind: 'dream', id: d.node, data: { outcome: 'fade' }, level: 1 });
+      const st = life.ext.story as { entryMods?: { to: string }[] } | undefined;
+      if (st?.entryMods) st.entryMods = st.entryMods.filter((m) => m.to !== d.node);
       list.splice(i, 1);
     }
   }
@@ -544,6 +565,4 @@ export function settleDreams(ctx: Ctx): void {
       addBelief(ctx, BURDEN_QUESTION.belief, 'burden.question');
     }
   }
-  armDreams(ctx);
 }
-

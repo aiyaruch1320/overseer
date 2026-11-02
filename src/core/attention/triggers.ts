@@ -60,8 +60,8 @@ export function classify(ctx: Ctx, e: LogEntry): Trig | null {
   if (e.sys === 'attention') return null;
   const t = (kind: Trig['kind']): Trig => ({ kind, n: e.n, ...(e.id !== undefined ? { id: e.id } : {}) });
   if (e.sys === 'story') {
-    // a node with a god window is written at level 3 by the story (walk.ts); the other nodes never reach it
-    if (e.kind === 'node' && e.level >= 3) return t('window');
+    // a node with a god window is announced by the story a beat before it is decided (`story/window`, walk.ts); the player is called then, before the way is chosen
+    if (e.kind === 'window') return t('window');
     if (e.kind === 'battle' && typeof e.id === 'string') {
       const set = namedEnemies(ctx);
       return e.id.split(',').some((x) => set.has(x)) ? t('battle') : null;

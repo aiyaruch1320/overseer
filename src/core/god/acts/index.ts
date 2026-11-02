@@ -52,6 +52,8 @@ export const godActsSystem: System = {
     const a = actsOf(ctx.state);
     ctx.state.god.prayers = [];
     a.recent = {};
+    a.seen = [];
+    a.gone = {};
     a.whisper = { age: -1, used: [], sent: {}, active: [] };
   },
   beat(ctx) {

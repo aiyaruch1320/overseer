@@ -10,10 +10,32 @@ import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
 import { entryWeight, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RITE_PASS, SLIP_YEARS, WAIT_STAGES, type Way } from './tuning';
+import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
+
+// ---------- hooks of the god system ----------
+
+/**
+ * Other systems may ask to be told when a node is about to be decided and after it was (the god system rolls a dream the character had
+ * when he reaches the node, 03-dreams.md §4). `before` runs before the ways are weighed and may put pulls in `ex.entryMods`; `after` gets the
+ * way taken (`-` for a node with no ways). `id` is the id the log carries (the row a convergence stands in for, else the node).
+ */
+export interface NodeHooks {
+  before?(ctx: Ctx, node: StoryNodeX, id: string): void;
+  after?(ctx: Ctx, node: StoryNodeX, id: string, key: Key | '-'): void;
+}
+const nodeHooks: NodeHooks[] = [];
+
+/** Registers hooks (once per object); returns the function that takes them away again. */
+export function onNode(h: NodeHooks): () => void {
+  if (!nodeHooks.includes(h)) nodeHooks.push(h);
+  return () => {
+    const i = nodeHooks.indexOf(h);
+    if (i >= 0) nodeHooks.splice(i, 1);
+  };
+}
 
 // ---------- setup ----------
 
@@ -77,7 +99,9 @@ export function drain(ctx: Ctx): void {
 
 /** Does this life year have room for another node (tuning NODES_PER_YEAR; the last year of the life holds one more, for its closing nodes)? */
 function room(ex: StoryExt, life: LifeState): boolean {
-  return yearOf(ex, life).nodes < NODES_PER_YEAR + (life.hAge >= lastYearOf(life) ? LAST_YEAR_EXTRA : 0);
+  // a node announced and waiting for its beat holds its place in the year
+  const waiting = Object.keys(ex.announced).length;
+  return yearOf(ex, life).nodes + waiting < NODES_PER_YEAR + (life.hAge >= lastYearOf(life) ? LAST_YEAR_EXTRA : 0);
 }
 
 /** The last life year before the natural death: the hidden death age the character system drew (storylines/README.md §6 rule 9). */
@@ -97,11 +121,14 @@ function playable(ex: StoryExt, ix: Index, line: string): StoryNodeX[] {
 function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boolean): void {
   if (!line) return;
   const seq = playable(ex, ix, line);
+  if (ROLLING_LINES.has(line) && line !== ex.line) return rolling(ctx, ex, ix, line, seq);
   for (let guard = 0; guard < 400; guard++) {
     const life = lifeOf(ctx);
     if (!life) return;
     const n = nextNode(life, ex, seq);
     if (!n) return;
+    // announced and waiting for its beat: the line waits with it
+    if (ex.announced[n.id]) return;
     if (!closing && line === ex.line && n.id === `${ex.line}.e2`) return;
     const span = ageWindow(ex, life, line, n);
     if (life.hAge < span.lo) return;
@@ -118,7 +145,40 @@ function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boole
         return;
       }
     }
-    fireNode(ctx, ex, ix, n);
+    if (fireNode(ctx, ex, ix, n) === 'held') return;
+  }
+}
+
+/**
+ * A line of nodes that read the god's history (tuning ROLLING_LINES): every node that is not played yet is looked at each year, and plays the
+ * year its age has come and its condition holds. A node whose age window is over is skipped. The closing node plays at an age drawn between its own and the last life year.
+ */
+function rolling(ctx: Ctx, ex: StoryExt, ix: Index, line: string, seq: StoryNodeX[]): void {
+  for (let guard = 0; guard < 50; guard++) {
+    const life = lifeOf(ctx);
+    if (!life || !decideOpen(ctx, ex, ix, line)) return;
+    let played = false;
+    for (const n of seq) {
+      if (life.passed[n.id] !== undefined || ex.skipped.includes(n.id) || ex.announced[n.id]) continue;
+      if (n.age[1] < ex.start) {
+        ex.skipped.push(n.id);
+        continue;
+      }
+      const closing = n.stage === 'e';
+      if (!closing && life.hAge > n.age[1]) {
+        skip(ctx, ex, n.id, 'late');
+        continue;
+      }
+      if (life.hAge < n.age[0]) continue;
+      // the closing node of the line is drawn an age between its own and the last life year, as the other lines do (it is not left for the death scene, which would only make it glow)
+      if (closing && life.hAge < (ex.fire[n.id] ??= ctx.rng('life.story').int(Math.min(Math.max(n.age[0], life.hAge), lastYearOf(life)), Math.max(n.age[0], lastYearOf(life))))) continue;
+      if (n.when && !test(ctx, n.when)) continue;
+      if (!room(ex, life)) continue;
+      fireNode(ctx, ex, ix, n);
+      played = true;
+      break;
+    }
+    if (!played) return;
   }
 }
 
@@ -173,7 +233,7 @@ function decideOpen(ctx: Ctx, ex: StoryExt, ix: Index, line: string): boolean {
       if (ok && rate !== undefined) ok = ctx.rng('life.story').chance(rate);
     }
     if (!ok) {
-      ex.open[line] = false;
+      if (!RETRY_OPEN.has(line)) ex.open[line] = false;
       return false;
     }
   }
@@ -228,12 +288,103 @@ function skip(ctx: Ctx, ex: StoryExt, id: NodeId, why: string): void {
   write(ctx.state, { sys: 'story', kind: 'skip', id, data: { why }, level: 0 });
 }
 
-function fireNode(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX): void {
-  if (n.when && !test(ctx, n.when)) return skip(ctx, ex, n.id, 'when');
-  if (n.converge?.length) return fireRow(ctx, ex, ix, n);
-  const key = play(ctx, ex, ix, n, {});
+/** Plays a node, or announces it when it has a god window; returns `held` for an announced node (it waits for its beat). */
+function fireNode(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX): 'held' | 'done' {
+  if (n.when && !test(ctx, n.when)) return skip(ctx, ex, n.id, 'when'), 'done';
+  if (n.converge?.length) return fireRow(ctx, ex, ix, n), 'done';
+  // the node that ends the life waits one beat, so the scene before the end (07-attention.md §2 "ใกล้ตาย") opens with the character alive: the
+  // god still has his last chance, and the prayers that wait are called before he dies. It is decided after every other node of that beat.
+  if (n.line === ex.line && n.id === `${ex.line}.e2` && !ex.announced[n.id]) {
+    ex.announced[n.id] = { n: -1, beats: 0 };
+    return 'held';
+  }
+  // a node with a god window is announced one beat before it is decided, so the player can reach it before the way is chosen (07-attention.md §3)
+  if (n.godWindow && !ex.announced[n.id]) return announce(ctx, ex, n), 'held';
+  conclude(ctx, ex, ix, n, false);
+  return 'done';
+}
+
+/** Plays a node that was fired or decided, and does what follows from it. */
+function conclude(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, announced: boolean): void {
+  const key = play(ctx, ex, ix, n, { announced });
   if (key === undefined) return skip(ctx, ex, n.id, 'no way');
   if (n.line === ex.line && n.stage === 'a' && WAIT_STAGES.includes(n.stage)) retryWaiting(ctx, ex);
+}
+
+// ---------- god windows ----------
+
+/**
+ * Writes `story/window` (level 3): the node is ahead of the character, with its ways. The attention system calls the player on this entry; the node
+ * is decided at a later beat (`decideWindows`).
+ */
+function announce(ctx: Ctx, ex: StoryExt, n: StoryNodeX): void {
+  const life = lifeOf(ctx)!;
+  const e = write(ctx.state, {
+    sys: 'story',
+    kind: 'window',
+    id: n.id,
+    data: {
+      title: n.title,
+      line: n.line,
+      age: life.hAge,
+      what: n.godWindow?.what ?? '',
+      effect: n.godWindow?.effect ?? '',
+      ways: n.choices.map((c) => `${c.key} ${c.label}`.slice(0, 100)).join(' | '),
+    },
+    level: 3,
+  });
+  ex.announced[n.id] = { n: e.n, beats: 0 };
+}
+
+/** Has the attention system answered the announcement `n` of node `id` (a call or a glow that names it)? Without that system the answer is yes. */
+function answered(ctx: Ctx, life: LifeState, id: NodeId, n: number): boolean {
+  if (!life.ext.attention) return true;
+  const log = ctx.state.log;
+  for (let i = log.length - 1; i >= 0 && log[i].n > n; i--) {
+    const x = log[i];
+    if (x.sys !== 'attention' || (x.kind !== 'call' && x.kind !== 'glow')) continue;
+    if (x.id === id || String(x.data.ids ?? '').split(',').includes(id)) return true;
+  }
+  return false;
+}
+
+/**
+ * Beat hook: decides the announced nodes whose beat has come, the beat after the announcement once the attention system answered it (a window
+ * it holds for the gap rules keeps the node waiting, at most WINDOW_MAX_BEATS). The dream the character had is rolled by `before` of `play`.
+ */
+export function decideWindows(ctx: Ctx): void {
+  const life = lifeOf(ctx);
+  if (!life) return;
+  const ex = extOf(life);
+  const ix = indexOf(ctx);
+  // the node that ends the life is decided last
+  const ends = (id: string) => (id === `${ex.line}.e2` ? 1 : 0);
+  for (const id of Object.keys(ex.announced).sort((a, b) => ends(a) - ends(b) || ex.announced[a].n - ex.announced[b].n)) {
+    const a = ex.announced[id];
+    const n = ix.nodes.get(id);
+    if (!n || life.passed[id] !== undefined || ex.skipped.includes(id)) {
+      delete ex.announced[id];
+      continue;
+    }
+    a.beats += 1;
+    // a node held without an announcement (a.n < 0) is decided at the next beat
+    if (a.n >= 0 && a.beats < WINDOW_MAX_BEATS && !answered(ctx, life, id, a.n)) continue;
+    delete ex.announced[id];
+    if (n.when && !test(ctx, n.when)) {
+      skip(ctx, ex, id, 'when');
+      continue;
+    }
+    conclude(ctx, ex, ix, n, true);
+    if (!lifeOf(ctx)) return;
+  }
+}
+
+/** The nodes announced and not yet decided, in the order they were announced. */
+export function announcedNodes(ctx: Ctx): NodeId[] {
+  const life = lifeOf(ctx);
+  if (!life) return [];
+  const ex = extOf(life);
+  return Object.entries(ex.announced).filter(([, a]) => a.n >= 0).sort((a, b) => a[1].n - b[1].n).map(([id]) => id);
 }
 
 /** `→ cv.N` rows: the convergence stands in for the race's own choices; when none is open the fallback node stands in. */
@@ -324,6 +475,8 @@ interface PlayOpts {
   standIn?: StoryNodeX;
   /** The fallback node stands in for this row. */
   replaces?: NodeId;
+  /** The node was announced before (`story/window`) and is decided now. */
+  announced?: boolean;
 }
 
 /** Splits notes into what changes the choice (before it) and what follows from it (after it), keeping `if` wrappers. */
@@ -376,6 +529,14 @@ interface Content {
   after?: { pass: Effect[]; fail: Effect[] };
   /** The rite's description of each way it supplied. */
   meta: Map<Choice, Meta>;
+}
+
+/** The ways of a rite written as outcomes with weights (`gh.t1` "มื้อแรก"), as the walk plays them; none for a node with ways of its own or another kind of rite. */
+export function outcomeChoices(ix: Index, n: StoryNodeX): { choices: Choice[]; labels: string[] } | undefined {
+  const rite = n.rite ? ix.rites.get(n.rite) : undefined;
+  if (rite?.form !== 'outcomes' || n.choices.length) return undefined;
+  const list = rite.outcomes.filter((o) => o.weight !== null);
+  return { choices: list.map((o, i): Choice => ({ key: keyOf(i), weight: o.weight ?? 0, label: o.label, effects: o.effects, mods: o.mods, when: o.when })), labels: list.map((o) => o.label) };
 }
 
 function contentOf(ctx: Ctx, ix: Index, n: StoryNodeX, pre: readonly Effect[]): Content {
@@ -451,6 +612,10 @@ function pullOf(ctx: Ctx, ex: StoryExt, n: StoryNodeX, pre: readonly Effect[]): 
 function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Key | '-' | undefined {
   const life = lifeOf(ctx)!;
   const src: EffectSource = { sys: 'story', id: n.id };
+  const logId = o.standIn?.id ?? n.id;
+  // a node with a god window that no one announced (a convergence, a fallback): the window opens as it is decided
+  if (n.godWindow && !o.announced) write(ctx.state, { sys: 'story', kind: 'window', id: logId, data: { title: n.title, line: n.line, age: life.hAge, what: n.godWindow.what, effect: n.godWindow.effect, late: true }, level: 3 });
+  for (const h of nodeHooks) h.before?.(ctx, n, logId);
   const [pre, post] = splitNotes(n.notes);
   apply(ctx, pre, src);
   const { choices, after, meta } = contentOf(ctx, ix, n, pre);
@@ -506,8 +671,9 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
       chance: w.ties.some(Boolean),
       callback,
     },
-    level: n.godWindow ? 3 : n.kind === 'convergence' ? 2 : 1,
+    level: n.godWindow || n.kind === 'convergence' ? 2 : 1,
   });
+  for (const h of nodeHooks) h.after?.(ctx, n, id, key);
 
   // a way that says the character dies, dies (the data has no `death` effect for it)
   const cause = deathOf(ctx, ix, n, key, label);

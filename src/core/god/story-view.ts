@@ -5,7 +5,7 @@ import type { StoryNodeX } from '../data/types-storylines';
 import type { Choice, Condition, Effect } from '../types';
 import { indexOf } from '../story/data';
 import { extOf as storyExt } from '../story/state';
-import { canEnter } from '../story/walk';
+import { canEnter, outcomeChoices } from '../story/walk';
 import { lifeOf, windowNodes } from './state';
 
 export interface Upcoming {
@@ -105,7 +105,12 @@ export function windowIds(ctx: Ctx): Set<string> {
   return out;
 }
 
-/** The choices a node offers now: its own, with a rite's or a variant's left to the story (a rite node offers no dream). */
-export function choicesOf(n: StoryNodeX): Choice[] {
-  return n.rite ? [] : n.choices;
+/**
+ * The ways a node offers a dream: its own, or the outcomes of a rite written as a table of weights (the first meal of a ghoul). A rite that draws
+ * a sub-line (pass or fail by chance) offers none. At most three, because a way is named by its key.
+ */
+export function choicesOf(ctx: Ctx, n: StoryNodeX): Choice[] {
+  if (!n.rite) return n.choices;
+  const o = outcomeChoices(indexOf(ctx), n);
+  return o && o.choices.length <= 3 ? o.choices : [];
 }
