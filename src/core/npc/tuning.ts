@@ -40,3 +40,59 @@ export const MEET_AGE = 6;
 
 /** A holder older than the lifespan table of his people lives this share of one more top lifespan (world-time.md §6 exceptions). */
 export const OVER_AGE_SHARE: [number, number] = [0.3, 1];
+
+// ---------- the meeting rate (review/m1/triage.md: elves met too many stories) ----------
+
+/**
+ * README §2.1 item 2 opens a story for 20% of the holder's lifespan, in world years, while the character lives in life years:
+ * one life year of an elf (1,000 years of lifespan) crosses ten times the world time of a human one, so he walked through ten times
+ * as many stories. The documents give no rate per life year, so this is the assumption: a character meets every story open in his
+ * zone (the old behaviour) as long as one life year does not cross more than this many world years (humans 56–94 years of lifespan
+ * make 0.75–1.25, orcs and beast people less); above it, a story he sees is met with the chance FULL ÷ rate, so the stories met per
+ * life year stay that of a human whatever the people.
+ */
+export const MEET_FULL_RATE = 1.3;
+
+// ---------- illness (README §2: nothing is written, the assumptions are here) ----------
+
+/** The last stretch of the natural lifespan (here the last 6%: 4 years of a human) an old holder is gravely ill (the prayer `kin_sick` asks for these). */
+export const SICK_ONSET = 0.94;
+/** A path whose text says the holder falls ill (the story of AL20-2, NR04-4 ...). A death in the same text is handled by the `death` effect, not here. */
+export const SICK_PATH_RE = /ล้มป่วย|ป่วยจาก|แล้วป่วย|ติดโรคเสียเอง|ตกลงมาบาดเจ็บ|ป่วยหนักแล้ว|เป็นพาหะ/;
+/** An illness (not old age) lasts this many world years, then the holder dies with the chance below or recovers. */
+export const ILL_YEARS: [number, number] = [3, 9];
+export const ILL_DEATH = 0.3;
+/** Per world step (10 years), the chance a holder in a country with the flag `plague` falls ill. */
+export const PLAGUE_SICK = 0.12;
+/** After a recovery the old age takes this share of the lifespan before it makes the holder ill again. */
+export const RECOVER_IMMUNE = 0.05;
+/** `healNpc` lets the holder live this share longer (3 years at least). */
+export const HEAL_SPAN = 0.1;
+
+// ---------- grudge ----------
+
+/** The grudge (`mc.grudge`, 0..5) from which an NPC is a nemesis of the character (prayer `vengeance`). */
+export const NEMESIS_GRUDGE = 2;
+/** combat/07 §3: the kin and disciples of an NPC the character killed hold this much grudge. */
+export const KIN_GRUDGE = 2;
+
+// ---------- ties between stories (README §2.2) ----------
+
+/** §2.2 item 2(ค): the weight a tied path gets when the other story ended on the same event. */
+export const TIE_BOOST = 10;
+/** §2.2 item 3: the follow-up story of a tied NPC, as written there. a revenge · b takes over the goal · c lets go. */
+export const FOLLOW_WEIGHTS: Record<'a' | 'b' | 'c', number> = { a: 40, b: 35, c: 25 };
+/**
+ * §2.2 item 2(ข): a path of B that names A and needs him alive is cut when A's holder dies, vanishes or moves. The docs do not mark which
+ * paths those are, so the words of the path decide: a path that goes on without A (a successor, a post taken over) is not cut.
+ */
+export const NEEDS_PARTNER_RE = /ทะเลาะกับ|ขัดแย้งกับ|ความขัดแย้ง|เผชิญหน้า|ปะทะ|แต่งงาน|หนีไปกับ|ไปกับ|ร่วมกับ|ร่วมมือ|ตามหา|เตือน|ช่วย|เปิดโปง|ถอดถอน|ทรยศ|ขายให้|ส่งให้|มอบให้|ติดต่อ/;
+export const PARTNER_GOES_ON_RE = /ผู้สืบ|สืบทอด|ขึ้นแทน|รับตำแหน่ง|ต่อจาก|ลงจากเวที|ตายก่อน|หลังตาย|แทน/;
+
+// ---------- clashes (combat/07-npc-clashes.md) ----------
+
+/** What happens to a clash nobody plays (no handler registered with `onClash`): the share of each standard result of combat/07 §3. Not in the docs. */
+export const CLASH_DEFAULT: Record<string, number> = { talk: 30, win_spare: 15, win_kill: 12, draw: 13, lose: 22, flee: 8 };
+/** combat/07 §2: two clashes per NPC per life of the character, the second only after a draw, a defeat or a flight; one per season. */
+export const CLASH_PER_LIFE = 2;
+export const CLASH_AGAIN_AFTER = ['draw', 'lose', 'flee'];

@@ -3,14 +3,20 @@
 //   wait → open (the age clock reaches the holder's adult..elder age, or the row's world event happens)
 //   open → done (20% of the lifespan later, or at death): a path a b c is drawn by percent after the cuts
 // Holders die of old age; the position then gets a successor (tier 1 and 2 always, tier 3 with 60%).
+// Around the clock: newcomers (newcomers.ts), ties between stories (ties.ts), clashes (clash.ts), illness (status.ts).
+import { worldYearsPerLifeYear } from '../clock';
 import { write } from '../log';
 import { apply, test } from '../rules';
 import type { Ctx } from '../game';
 import type { Rng } from '../rng';
 import type { Condition, Effect, GameState, LogLevel } from '../types';
 import type { NpcPath, NpcRow, RelationAxis } from '../data/types-npcs';
-import { lifeOfRow, npcIndex, type NpcIndex } from './data';
-import { MEET_AGE, OVER_AGE_SHARE, ERA4_FATE, ERA4_LONG_PHASE, ERA4_REROLL_YEARS, MEMORY_LINES, MOVE_RE, NEW_PLAN_MUL, NEW_PLAN_PATH, SUCCESSOR_TWISTS, VANISH_RE, type FateClass } from './tuning';
+import { clashAtResolve, clashYear } from './clash';
+import { NT_ENDS, lifeOfRow, npcIndex, rowOf, type NpcIndex } from './data';
+import { rollNewcomers, stepNewcomers } from './newcomers';
+import { fallIll, pathMakesIll, stepSickness } from './status';
+import { afterEnd, afterResolve, cutNeeders, stepFollow, type Doer } from './ties';
+import { MEET_AGE, MEET_FULL_RATE, OVER_AGE_SHARE, ERA4_FATE, ERA4_LONG_PHASE, ERA4_REROLL_YEARS, MEMORY_LINES, MOVE_RE, NEW_PLAN_MUL, NEW_PLAN_PATH, SUCCESSOR_TWISTS, TIE_BOOST, VANISH_RE, type FateClass } from './tuning';
 import { npcState, slotsOf, type NpcSlotX, type PathKey, type Story } from './types';
 
 const u = (rng: Rng, a: number, b: number) => a + rng.next() * (b - a);
@@ -49,19 +55,19 @@ export function newStory(openAt: number): Story {
  * A holder older than the table is one of the exceptions of world-time.md §6 (mummies kept by the dust, spirits, sea beasts):
  * he lasts a fraction of one more lifespan, not the few years the plain rule would give.
  */
-function drawSpan(rng: Rng, lo: number, hi: number, age: number): number {
+export function drawSpan(rng: Rng, lo: number, hi: number, age: number): number {
   if (age > hi) return age + hi * (OVER_AGE_SHARE[0] + rng.next() * (OVER_AGE_SHARE[1] - OVER_AGE_SHARE[0]));
   const l = lo + rng.next() * (hi - lo);
   return Math.max(l, age + 1 + rng.next() * 5);
 }
 
 /** Years from now until the age clock opens the story (sim-npc-density.mjs holder()). */
-function drawOpenDelay(rng: Rng, adult: number, elder: number, age: number): number {
+export function drawOpenDelay(rng: Rng, adult: number, elder: number, age: number): number {
   return age >= elder ? u(rng, 0, 5) : u(rng, Math.max(0, adult - age), elder - age);
 }
 
-function rowOf(ctx: Ctx, id: string): NpcRow {
-  const r = npcIndex(ctx).rows.get(id);
+function needRow(ctx: Ctx, id: string): NpcRow {
+  const r = rowOf(ctx, id);
   if (!r) throw new Error(`no NPC row ${id}`);
   return r;
 }
@@ -99,20 +105,23 @@ export function initSlots(ctx: Ctx): void {
       evFired: false,
     };
   }
-  npcState(st).last = now;
-  npcState(st).newcomers = [];
+  const nx = npcState(st);
+  nx.last = now;
+  nx.newcomers = [];
+  nx.ntBlock = Math.max(0, Math.floor(now / idx.file.rules.newcomer.everyYears));
+  nx.ntEra = String(Math.min(st.world.era, 4));
 }
 
 // ---------- log ----------
 
 /** What the main character could hear of an NPC event: same country = news (1), anything else is trace (0). */
-function visible(ctx: Ctx, slot: NpcSlotX): LogLevel {
+export function visible(ctx: Ctx, slot: NpcSlotX): LogLevel {
   const life = ctx.state.life;
   if (!life || life.dead) return 0;
   return slot.place === life.country ? 1 : 0;
 }
 
-function note(ctx: Ctx, slot: NpcSlotX, row: NpcRow, what: string, extra: Record<string, string | number | boolean | null> = {}, level?: LogLevel) {
+export function note(ctx: Ctx, slot: NpcSlotX, row: NpcRow, what: string, extra: Record<string, string | number | boolean | null> = {}, level?: LogLevel) {
   const lv = level ?? visible(ctx, slot);
   if (lv === 0 && !npcState(ctx.state).trace && !(ctx.state.life && !ctx.state.life.dead)) return;
   write(ctx.state, {
@@ -136,7 +145,7 @@ interface Cand {
   w: number;
 }
 
-function candidates(ctx: Ctx, row: NpcRow, slot: NpcSlotX, deathOnly: boolean): Cand[] {
+export function candidates(ctx: Ctx, row: NpcRow, slot: NpcSlotX, deathOnly: boolean): Cand[] {
   const s = slot.story;
   const out: Cand[] = [];
   for (const p of row.paths) {
@@ -148,7 +157,24 @@ function candidates(ctx: Ctx, row: NpcRow, slot: NpcSlotX, deathOnly: boolean): 
     const w = Math.max(0, (p.pct + (s.add[p.key] ?? 0)) * (s.mul[p.key] ?? 1));
     if (w > 0) out.push({ path: p, w });
   }
+  // README §2.2 2(ค): a boosted path takes TIE_BOOST points, the others give them back in proportion so the total stays
+  for (const key of s.boost ?? []) {
+    const t = out.find((c) => c.path.key === key);
+    if (!t) continue;
+    const total = out.reduce((a, c) => a + c.w, 0);
+    const rest = total - t.w;
+    const add = Math.min(TIE_BOOST, rest);
+    if (rest <= 0) continue;
+    const f = (rest - add) / rest;
+    for (const c of out) c.w = c === t ? c.w + add : c.w * f;
+  }
   return out;
+}
+
+/** Does the story still have a path that no cut has taken (the follow-up of a tied NPC opens in its place when none is left)? */
+export function anyPathLeft(ctx: Ctx, row: NpcRow, slot: NpcSlotX): boolean {
+  const s = slot.story;
+  return row.paths.some((p) => !s.cut.includes(p.key) && !row.cuts.some((c) => c.cut === p.key && c.when && condOK(ctx, c.when)));
 }
 
 /** The share of a draw each path gets, for tests and for the debug page: rest stays fixed, the paths fill the rest of 100%. */
@@ -174,16 +200,40 @@ export function bumpRel(ctx: Ctx, slot: NpcSlotX, axis: RelationAxis, delta: num
   slot.rel[k] = clampAxis(idx, axis, (slot.rel[k] ?? 0) + delta);
 }
 
+/** The stories being decided now, so a clash that forces one of their paths in the middle of the draw does not draw it twice. */
+const resolving = new Set<string>();
+/** Who is behind an end that comes from outside the story (a clash result, a deed): set around the call. */
+let pendingDoer: Doer | undefined;
+
+/** Who ends the holder when the path says he dies: the NPC the text names (`ถูก AZ05-1 ...`), the character when he hindered it, else the world. */
+function doerOfPath(ctx: Ctx, p: NpcPath, s: Story): Doer {
+  if (pendingDoer) return pendingDoer;
+  const m = /ถูก\s*([A-Z]{2}\d{2}-\d)/.exec(p.text);
+  if (m && slotsOf(ctx.state)[m[1]]) return { kind: 'npc', id: m[1] };
+  if (s.mc && p.tags.includes('hinder')) return { kind: 'mc' };
+  return { kind: 'event' };
+}
+
 function resolve(ctx: Ctx, slot: NpcSlotX, row: NpcRow, byDeath: boolean): void {
   const s = slot.story;
   const rng = ctx.rng('npc.story');
   const year = s.endAt ?? ctx.state.clock.worldYear;
+  resolving.add(row.id);
   let chosen: NpcPath | undefined;
-  if (s.force) {
-    chosen = row.paths.find((p) => p.key === s.force);
-  } else {
-    const cand = candidates(ctx, row, slot, byDeath);
-    if (cand.length && (byDeath || !rng.chance(row.restPct / 100))) chosen = cand[rng.weighted(cand.map((c) => c.w))].path;
+  try {
+    const draw = (): NpcPath | undefined => {
+      if (s.force) return row.paths.find((p) => p.key === s.force);
+      const cand = candidates(ctx, row, slot, byDeath);
+      return cand.length && (byDeath || !rng.chance(row.restPct / 100)) ? cand[rng.weighted(cand.map((c) => c.w))].path : undefined;
+    };
+    chosen = draw();
+    // combat/07 §2 kind X: the path drawn puts the NPC in the character's way
+    if (chosen && s.mc && !byDeath && !s.force && clashAtResolve(ctx, slot, row, chosen.key)) {
+      if (slot.status !== 'alive') return; // the clash ended him: the end of the holder closed the story
+      chosen = s.force ? row.paths.find((p) => p.key === s.force) : chosen && !s.cut.includes(chosen.key) ? chosen : draw();
+    }
+  } finally {
+    resolving.delete(row.id);
   }
   s.state = 'done';
   s.result = chosen ? chosen.key : '-';
@@ -193,8 +243,10 @@ function resolve(ctx: Ctx, slot: NpcSlotX, row: NpcRow, byDeath: boolean): void 
     note(ctx, slot, row, 'end', { path: '-', mc: s.mc, byDeath });
     return;
   }
-  note(ctx, slot, row, 'end', { path: chosen.key, text: chosen.text, mc: s.mc, pct: chosen.pct, byDeath });
+  const tied = (s.boost?.length ?? 0) > 0 || s.cut.length > 0;
+  note(ctx, slot, row, 'end', { path: chosen.key, text: chosen.text, mc: s.mc, pct: chosen.pct, byDeath, ...(tied ? { tied } : {}) });
   applyPath(ctx, slot, row, chosen, year);
+  afterResolve(ctx, slot, row, chosen);
 }
 
 function applyPath(ctx: Ctx, slot: NpcSlotX, row: NpcRow, p: NpcPath, year: number): void {
@@ -214,25 +266,30 @@ function applyPath(ctx: Ctx, slot: NpcSlotX, row: NpcRow, p: NpcPath, year: numb
   }
   const dead = p.effects.find((e) => e.k === 'death');
   if (dead) {
-    end(ctx, slot, row, Math.min(year, ctx.state.clock.worldYear), 'dead', dead.k === 'death' && dead.cause ? dead.cause : 'ตาย');
+    end(ctx, slot, row, Math.min(year, ctx.state.clock.worldYear), 'dead', dead.k === 'death' && dead.cause ? dead.cause : 'ตาย', { by: doerOfPath(ctx, p, s) });
     return;
   }
   const place = p.effects.find((e) => e.k === 'place');
-  if (VANISH_RE.test(p.text) && !(place && MOVE_RE.test(p.text))) {
-    end(ctx, slot, row, Math.min(year, ctx.state.clock.worldYear), 'gone', 'หายสาบสูญ');
+  // a newcomer's ends are read by hand (data.ts NT_ENDS); the roster rows are read from the words of the path
+  const nt = slot.nt ? NT_ENDS[slot.nt.tpl]?.[p.key] : undefined;
+  const vanishes = slot.nt ? nt?.[0] === 'gone' : VANISH_RE.test(p.text) && !(place && MOVE_RE.test(p.text));
+  if (vanishes) {
+    end(ctx, slot, row, Math.min(year, ctx.state.clock.worldYear), 'gone', nt?.[1] ?? 'หายสาบสูญ', { by: doerOfPath(ctx, p, s) });
     return;
   }
-  if (place && place.k === 'place' && place.ids.length === 1 && MOVE_RE.test(p.text) && idx.countries.has(place.ids[0])) {
+  if (place && place.k === 'place' && place.ids.length === 1 && !slot.nt && MOVE_RE.test(p.text) && idx.countries.has(place.ids[0])) {
     const from = slot.place;
     slot.place = place.ids[0];
     note(ctx, slot, row, 'move', { from: from ?? null, to: slot.place }, visible(ctx, slot));
+    cutNeeders(ctx, slot, row, true);
   }
+  if (pathMakesIll(p.text)) fallIll(ctx, slot, row, year, 'story');
 }
 
 // ---------- holder changes ----------
 
-/** The holder dies (`dead`) or vanishes (`gone`); the position gets a successor unless `noSuccessor`. */
-export function end(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number, how: 'dead' | 'gone', cause: string, opt: { noSuccessor?: boolean } = {}): void {
+/** The holder dies (`dead`) or vanishes (`gone`); the position gets a successor unless `noSuccessor`. `by`: who is behind it (rule 3 of README §2.2). */
+export function end(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number, how: 'dead' | 'gone', cause: string, opt: { noSuccessor?: boolean; by?: Doer } = {}): void {
   if (slot.status !== 'alive') return;
   slot.alive = false;
   slot.status = how;
@@ -244,6 +301,8 @@ export function end(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number, how: 'd
     s.result = s.result ?? '-';
   }
   note(ctx, slot, row, how === 'dead' ? 'die' : 'vanish', { cause, year: Math.round(year), age: lifeAge(ctx, row, year - slot.born) });
+  // README §2.2: the paths of tied stories that needed him are cut, and an end that was not old age gives them a follow-up story
+  afterEnd(ctx, slot, row, cause === 'ชราภาพ' || cause === 'โรคภัย', opt.by ?? pendingDoer ?? { kind: 'event' });
   if (!opt.noSuccessor) succeed(ctx, slot, row, year);
 }
 
@@ -285,6 +344,11 @@ function succeed(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number): void {
     step: 0,
     path: undefined,
     rel: {},
+    sick: undefined,
+    sickEnd: undefined,
+    immune: undefined,
+    follow: undefined,
+    clash: undefined,
     // a successor stays where the position is
     place: slot.home,
   } satisfies Partial<NpcSlotX>);
@@ -312,6 +376,9 @@ export function advanceSlot(ctx: Ctx, slot: NpcSlotX, row: NpcRow, now: number):
       end(ctx, slot, row, tDeath, 'dead', 'ชราภาพ');
       continue;
     }
+    // old age, an illness that ends, a plague; a holder who died is replaced and the new one runs the loop again
+    if (stepSickness(ctx, slot, row, now)) continue;
+    stepFollow(ctx, slot, row, now);
     break;
   }
 }
@@ -361,12 +428,11 @@ function fireEvent(ctx: Ctx, slot: NpcSlotX, row: NpcRow, id: string, y: number)
 
 export function stepWorld(ctx: Ctx): void {
   const st = ctx.state;
-  const idx = npcIndex(ctx);
   const now = st.clock.worldYear;
   const slots = slotsOf(st);
   for (const id of Object.keys(slots)) {
     const slot = slots[id];
-    const row = idx.rows.get(id);
+    const row = rowOf(ctx, id);
     if (!row) continue;
     if (slot.status === 'absent') {
       relieveAbsent(ctx, slot, row, now);
@@ -383,6 +449,7 @@ export function stepWorld(ctx: Ctx): void {
   }
   npcState(st).last = now;
   eraFate(ctx, now);
+  stepNewcomers(ctx);
 }
 
 // ---------- the last era (04-last-era.md §4) ----------
@@ -398,6 +465,7 @@ export function lastEraPhase(state: GameState): '4ก' | '4ข' | '4ค' | null 
 }
 
 const PHASE_INDEX = { '4ก': 0, '4ข': 1, '4ค': 2 } as const;
+const PHASE_TAG = { '4ก': '4a', '4ข': '4b', '4ค': '4c' } as const;
 
 /** One roll of the table for one holder: returns the outcome. Natural death is not part of it (it is rolled by the age clock first). */
 export function fateOutcome(rng: Rng, cls: FateClass, phase: '4ก' | '4ข' | '4ค'): 'stay' | 'moved' | 'dead' | 'gone' {
@@ -428,7 +496,7 @@ function eraFate(ctx: Ctx, now: number): void {
   for (const id of Object.keys(slots)) {
     const slot = slots[id];
     if (slot.status !== 'alive') continue;
-    const row = idx.rows.get(id)!;
+    const row = needRow(ctx, id);
     const out = fateOutcome(rng, fateClass(slot, row), phase);
     if (out === 'stay') continue;
     if (out === 'moved') {
@@ -437,37 +505,55 @@ function eraFate(ctx: Ctx, now: number): void {
         const from = slot.place;
         slot.place = near[rng.int(0, near.length - 1)];
         note(ctx, slot, row, 'move', { from: from ?? null, to: slot.place, cause: 'ยุคปลาย' });
+        cutNeeders(ctx, slot, row, true);
       }
       continue;
     }
-    end(ctx, slot, row, now, out === 'dead' ? 'dead' : 'gone', out === 'dead' ? 'ยุคปลาย' : 'หายสาบสูญ', { noSuccessor: slot.keeper });
+    end(ctx, slot, row, now, out === 'dead' ? 'dead' : 'gone', out === 'dead' ? 'ยุคปลาย' : 'หายสาบสูญ', { noSuccessor: slot.keeper, by: { kind: 'event' } });
   }
+  // succession.md §5: the roll of the fate table is also a roll for the newcomers of the sub-period
+  rollNewcomers(ctx, PHASE_TAG[phase]);
 }
 
 // ---------- the main character in the zone ----------
 
-/** Once per life year: stories open in the country of the character count as met. */
+/**
+ * Once per life year: stories open in the country of the character count as met. A character whose life year crosses many world years
+ * (an elf: 4, a vampire: 5) would walk through that many times the stories of a human one, so a story he sees for the first time is met
+ * with the chance MEET_FULL_RATE ÷ (world years per life year) (tuning.ts). Clashes of kind T and S roll their yearly chance here too.
+ */
 export function meetZone(ctx: Ctx): void {
   const st = ctx.state;
   const life = st.life;
   if (!life || life.dead || life.hAge < MEET_AGE) return;
-  const idx = npcIndex(ctx);
   const slots = slotsOf(st);
+  const rate = worldYearsPerLifeYear(life.lifespan, life.race);
+  const p = Math.min(1, MEET_FULL_RATE / rate);
+  const rng = p < 1 ? ctx.rng('npc.meet') : null;
   for (const id of Object.keys(slots)) {
     const slot = slots[id];
-    if (slot.status !== 'alive' || slot.story.state !== 'open' || slot.place !== life.country) continue;
-    if (slot.story.mc) continue;
-    slot.story.mc = true;
-    const row = idx.rows.get(id)!;
-    bumpRel(ctx, slot, 'known', 1);
-    note(ctx, slot, row, 'meet', { age: lifeAge(ctx, row, st.clock.worldYear - slot.born) }, 2);
+    if (slot.status !== 'alive' || slot.place !== life.country) continue;
+    const row = needRow(ctx, id);
+    const s = slot.story;
+    if (s.state === 'open') {
+      if (!s.mc && !s.seen) {
+        s.seen = true;
+        if (!rng || rng.chance(p)) {
+          s.mc = true;
+          bumpRel(ctx, slot, 'known', 1);
+          note(ctx, slot, row, 'meet', { age: lifeAge(ctx, row, st.clock.worldYear - slot.born) }, 2);
+        }
+      }
+      if (s.mc) s.mcYears = (s.mcYears ?? 0) + 1;
+    }
+    if (row.clashes.length && slot.status === 'alive') clashYear(ctx, slot, row);
   }
 }
 
 /** A story node of the character names this NPC (effect `npc`): the character meets the holder now. Returns false when nobody is there. */
 export function meetNamed(ctx: Ctx, id: string): boolean {
   const slot = slotsOf(ctx.state)[id];
-  const row = npcIndex(ctx).rows.get(id);
+  const row = rowOf(ctx, id);
   if (!slot || !row || slot.status !== 'alive') return false;
   const first = !slot.rel['mc.known'];
   if (slot.story.state === 'open') slot.story.mc = true;
@@ -484,10 +570,13 @@ export function meetNamed(ctx: Ctx, id: string): boolean {
   return true;
 }
 
-/** Clash results on an NPC line (effect `npcPath`, combat/07-npc-clashes.md §3.0). */
-export function adjustPath(ctx: Ctx, id: string, path: PathKey, op: 'force' | 'cut' | 'delay' | 'weight', n: number | undefined, unit: 'add' | 'mul' | 'year' | undefined): void {
+/**
+ * Clash results on an NPC line (effect `npcPath`, combat/07-npc-clashes.md §3.0). `by`: who is behind the result, for the follow-up of
+ * the tied stories when the holder dies of it (a result of a clash is the character's doing).
+ */
+export function adjustPath(ctx: Ctx, id: string, path: PathKey, op: 'force' | 'cut' | 'delay' | 'weight', n: number | undefined, unit: 'add' | 'mul' | 'year' | undefined, by?: Doer): void {
   const slot = slotsOf(ctx.state)[id];
-  const row = npcIndex(ctx).rows.get(id);
+  const row = rowOf(ctx, id);
   if (!slot || !row || slot.status === 'absent') return;
   const s = slot.story;
   if (op === 'cut') {
@@ -500,25 +589,32 @@ export function adjustPath(ctx: Ctx, id: string, path: PathKey, op: 'force' | 'c
     if (s.state === 'wait') s.openAt += years;
     else if (s.state === 'open' && s.endAt !== null) s.endAt = Math.min(slot.born + slot.span, s.endAt + years);
   } else if (op === 'force') {
-    if (slot.status === 'alive' && s.state !== 'done') {
-      s.force = path;
-      if (s.state === 'wait') {
-        s.state = 'open';
-        slot.step = 1;
+    const prev = pendingDoer;
+    if (by) pendingDoer = by;
+    try {
+      if (slot.status === 'alive' && s.state !== 'done') {
+        s.force = path;
+        if (resolving.has(row.id)) return; // the draw of this very story is under way: it takes the forced path when the clash is over
+        if (s.state === 'wait') {
+          s.state = 'open';
+          slot.step = 1;
+        }
+        s.endAt = ctx.state.clock.worldYear;
+        resolve(ctx, slot, row, false);
+      } else {
+        // "เกิดโดยปริยาย": the holder is gone or finished, the path still happens around him
+        s.force = path;
+        const p = row.paths.find((x) => x.key === path);
+        s.result = path;
+        slot.path = path;
+        if (p) {
+          note(ctx, slot, row, 'end', { path, text: p.text, mc: s.mc, forced: true });
+          const world: Effect[] = p.effects.filter((e) => e.k === 'event' || e.k === 'eventWeight');
+          if (world.length) apply(ctx, world, { sys: 'npc', id, stream: 'npc.story' });
+        }
       }
-      s.endAt = ctx.state.clock.worldYear;
-      resolve(ctx, slot, row, false);
-    } else {
-      // "เกิดโดยปริยาย": the holder is gone or finished, the path still happens around him
-      s.force = path;
-      const p = row.paths.find((x) => x.key === path);
-      s.result = path;
-      slot.path = path;
-      if (p) {
-        note(ctx, slot, row, 'end', { path, text: p.text, mc: s.mc, forced: true });
-        const world: Effect[] = p.effects.filter((e) => e.k === 'event' || e.k === 'eventWeight');
-        if (world.length) apply(ctx, world, { sys: 'npc', id, stream: 'npc.story' });
-      }
+    } finally {
+      pendingDoer = prev;
     }
   }
 }

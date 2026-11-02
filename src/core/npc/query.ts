@@ -2,7 +2,7 @@
 import type { Ctx } from '../game';
 import type { GameState } from '../types';
 import type { NpcRow } from '../data/types-npcs';
-import { npcIndex } from './data';
+import { rowOf } from './data';
 import { slotsOf, type NpcSlotX } from './types';
 
 export interface NpcView {
@@ -22,7 +22,7 @@ export interface NpcView {
 
 export function viewOf(ctx: Ctx, id: string): NpcView | undefined {
   const slot = slotsOf(ctx.state)[id];
-  const row = npcIndex(ctx).rows.get(id);
+  const row = rowOf(ctx, id);
   if (!slot || !row) return undefined;
   return {
     id,
