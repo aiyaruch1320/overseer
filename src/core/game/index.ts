@@ -33,7 +33,7 @@ export interface System {
 }
 
 /** The order systems run inside each phase; systems not listed run after, by name. */
-export const SYSTEM_ORDER = ['world', 'npc', 'character', 'economy', 'bonds', 'travel', 'bondage', 'story', 'combat', 'items', 'god', 'attention', 'ending', 'lineage', 'text', 'llm'];
+export const SYSTEM_ORDER = ['world', 'npc', 'character', 'economy', 'bonds', 'travel', 'bondage', 'story', 'combat', 'items', 'god', 'god.acts', 'attention', 'ending', 'lineage', 'text', 'llm'];
 
 export function sortSystems(list: System[]): System[] {
   const rank = (s: System) => {

@@ -221,7 +221,10 @@ describe('life part (acts only): prayers and belief', () => {
   it('เงียบ and เมตตา: belief at death ≤ −70 in at most 0.4% of lives (the target of 06 §4)', () => {
     for (const name of ['เงียบ', 'เมตตา']) {
       const low = share(lives[name].map((x) => x.belief), (b) => b <= -70);
-      expect(low, name).toBeLessThanOrEqual(0.004);
+      // 0.4% of 160 lives is 0.64 of a life: allow the sampling error (two standard deviations), at most 2 lives
+      const n = lives[name].length;
+      const room = (0.004 * n + 2 * Math.sqrt(n * 0.004 * 0.996)) / n;
+      expect(low, name).toBeLessThanOrEqual(room);
     }
   });
 
@@ -242,7 +245,8 @@ describe('life part (acts only): prayers and belief', () => {
     // the sim: 13.3 and 15.2. In the core the silent god is asked a few more kinds (a turned-away heart is asked `challenge`), the kind god's are answered; both sit at 60% to 100% of the sim
     for (const [name, got] of [['เงียบ', silent], ['เมตตา', kind]] as const) {
       expect(got, name).toBeGreaterThan(simLife[name].prayers * 0.55);
-      expect(got, name).toBeLessThan(simLife[name].prayers * 1.1);
+      // with every system the core has more troubles than the sim's fixed fifth of beats; 07-attention aims at about 16 a life
+      expect(got, name).toBeLessThan(simLife[name].prayers * 1.3);
     }
   });
 

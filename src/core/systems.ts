@@ -3,12 +3,13 @@
 import { attentionSystem } from './attention';
 import { characterSystem } from './character';
 import type { System } from './game';
+import { godActsSystem } from './god/acts';
 import { npcSystem } from './npc';
 import { storySystem } from './story';
 import { textSystem } from './text';
 import { worldSystem } from './world';
 
-const list: System[] = [worldSystem, characterSystem, npcSystem, storySystem, textSystem, attentionSystem];
+const list: System[] = [worldSystem, characterSystem, npcSystem, storySystem, textSystem, godActsSystem, attentionSystem];
 
 export function allSystems(): System[] {
   return [...list];

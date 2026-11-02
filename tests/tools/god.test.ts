@@ -284,7 +284,7 @@ describe('npm run life --policy', () => {
     const calls = standInPolicy();
     const plain = runLifeReport(data, { seed: 2 });
     expect(calls).toEqual([]);
-    expect(plain.text).not.toContain('-- พระหัตถ์ --');
+    expect(plain.text).not.toContain('ใช้พลัง'); // unanswered prayers may be listed, no power is used
     clearPolicySteps();
     expect(comparable(runLifeReport(data, { seed: 2 }).text)).toBe(comparable(plain.text));
   });

@@ -208,19 +208,23 @@ const CHRONICLE_KIND: Record<string, string> = {
  */
 export function godLines(data: GameData, state: GameState, policy?: string): string[] {
   const g = state.god;
-  if (!policy && !g.chronicle.length) return [];
+  // a prayer that ran out unanswered is in the chronicle (the silence is part of the hand), but it is not a use of power
+  const lapsed = g.chronicle.filter((c) => c.kind === 'prayer.lapse').length;
+  const acts = g.chronicle.filter((c) => c.kind !== 'prayer.lapse');
+  if (!policy && !acts.length) return lapsed ? [`คำอธิษฐานที่ไม่ได้ตอบ ${lapsed} ใบ`] : [];
   const out: string[] = [];
   const round = (n: number) => Math.round(n * 10) / 10;
   out.push(`พลังที่เหลือ: แสงศรัทธา ${round(g.light)} · ความหวาดกลัว ${round(g.dread)}${state.life ? ` · ศรัทธาเทพ ${state.life.godFaith} · ภาระใจ ${state.life.heart}` : ''}`);
   const used: Record<string, number> = {};
-  for (const c of g.chronicle) {
+  for (const c of acts) {
     const k = CHRONICLE_KIND[c.kind] ?? c.kind;
     used[k] = (used[k] ?? 0) + 1;
   }
-  out.push(`ใช้พลัง ${g.chronicle.length} ครั้ง${g.chronicle.length ? `: ${Object.entries(used).map(([k, v]) => `${k} ×${v}`).join(' · ')}` : ''}`);
-  if (g.chronicle.length) {
+  out.push(`ใช้พลัง ${acts.length} ครั้ง${acts.length ? `: ${Object.entries(used).map(([k, v]) => `${k} ×${v}`).join(' · ')}` : ''}`);
+  if (lapsed) out.push(`คำอธิษฐานที่ไม่ได้ตอบ ${lapsed} ใบ`);
+  if (acts.length) {
     out.push('พงศาวดารพระหัตถ์:');
-    for (const c of g.chronicle) {
+    for (const c of acts) {
       const what = CHRONICLE_KIND[c.kind] ?? c.kind;
       const tail = [c.target ? `ที่ ${scrub(data, c.target)}` : '', c.result ? `→ ${scrub(data, c.result)}` : ''].filter(Boolean).join(' ');
       out.push(`  ${c.hAge !== undefined ? `อายุ ${c.hAge} · ` : ''}ศ.ม. ${calendarYear(c.worldYear).toLocaleString('en-US')} │ ${what} ${c.id}${tail ? ` ${tail}` : ''}`);

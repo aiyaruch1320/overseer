@@ -22,7 +22,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const LIVES = Number(process.env.ATTENTION_LIVES ?? 150);
 const S = SEC_PER_YEAR;
 
-const hasGod = allSystems().some((s) => s.name === 'god');
+const hasGod = allSystems().some((s) => s.name === 'god' || s.name === 'god.acts'); // prayers come from god.acts
 const hasBonds = allSystems().some((s) => s.name === 'bonds');
 
 // ---------- stand-ins for the systems that are not written yet (rates of the sim) ----------
