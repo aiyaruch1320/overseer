@@ -10,11 +10,11 @@ import { checkAnswer, runAnswer, cardsOf } from './prayers';
 import { checkMiracle, runMiracle } from './miracles';
 import { fateTargets } from './fate';
 import { checkWhisper, runWhisper } from './whisper';
-import { allCountries, godOf, hasFlag } from './geo';
+import { allCountries, godOf, hasFlag, neighboursOf } from './geo';
 import { homesOf, sealAt } from '../ruin';
 import { actsOf, livingOf, ready, yearOf } from './state';
 import { POLICY } from './tuning';
-import { RUIN_MIRACLE, STRIKE } from '../ruin/tuning';
+import { NEAR_RUIN, RUIN_MIRACLE, STRIKE } from '../ruin/tuning';
 import './set';
 
 export type { PolicyName } from '../policy';
@@ -96,7 +96,12 @@ function ruinCandidates(ctx: Ctx): string[] {
 function makeRuinOnce(ctx: Ctx): boolean {
   const list = ruinCandidates(ctx);
   if (!list.length || checkMiracle(ctx, { id: RUIN_MIRACLE, country: list[0] })) return false;
-  return try1(ctx, 'miracle', { id: RUIN_MIRACLE, country: list[ctx.rng('god.policy').int(0, list.length - 1)] });
+  const r = ctx.rng('god.policy');
+  // one ruin in three falls next to the character (never on his own country, which the vow GV-16 guards): the god who punishes does it where it is seen, and the nodes `mr` of the story have a life to touch
+  const life = livingOf(ctx);
+  const near = life ? neighboursOf(ctx, life.country).filter((c) => list.includes(c)) : [];
+  const pick = near.length && r.chance(NEAR_RUIN) ? near[r.int(0, near.length - 1)] : list[r.int(0, list.length - 1)];
+  return try1(ctx, 'miracle', { id: RUIN_MIRACLE, country: pick });
 }
 
 /** A blow on a seal: the large miracle if it can be used, else the mid one (sim `strike(t, true) || strike(t, false)`). `pick` chooses the dragon: the lowest mood or any. */

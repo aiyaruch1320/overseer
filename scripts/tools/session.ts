@@ -16,8 +16,8 @@ import { policyName, policyStep } from '../../src/core/god';
 import type { ToolNote } from './report';
 import { bearToy, resolveRace, toyDeath, type BirthRequest } from './toy-character';
 
-/** The eight policies of docs/systems/god/06-implementation.md §4 (the same names as scripts/sim/sim-god.mjs). */
-export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'ปั้นนิสัย', 'ให้ของ', 'เก็บพลัง', 'สุ่ม', 'เร่งจบ'] as const;
+/** The policies of docs/systems/god/06-implementation.md §4 (the same names as scripts/sim/sim-god.mjs; `ตีหมุด` is its ninth, the god who strikes the seals). */
+export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'ปั้นนิสัย', 'ให้ของ', 'เก็บพลัง', 'สุ่ม', 'เร่งจบ', 'ตีหมุด'] as const;
 export type Policy = (typeof POLICIES)[number];
 
 /** World year the world is run to before the first life is born (ศ.ม. 10,400 + this). The middle of the first era's end. */

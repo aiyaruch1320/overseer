@@ -19,7 +19,7 @@ import { earn, pay as payPower, whyNot } from '../power';
 import { goalsOf, unlocked } from '../goals';
 import { UNLOCKS } from '../goals/tuning';
 import { runOps, type Op } from './ops';
-import { dayDetail, detail, effectLines, plan, scopeOf, shadowPlaces, coreName, scaleName, verbName, type Plan } from './plan';
+import { dayDetail, detail, effectLines, plan, priceOf, scopeOf, shadowPlaces, coreName, scaleName, verbName, type Plan } from './plan';
 import { conjOf, lifeCount, peekLife, viewConj, type PendingConjure } from './state';
 import { REFUND, SEAL_GAP, SEAL_HOME, SEAL_LIFE_MOOD, SEAL_MOOD } from './tuning';
 
@@ -94,6 +94,14 @@ function capReason(ctx: Ctx, p: Plan): string | null {
 
 // ---------- preview ----------
 
+/** When the multiplier of the belief is on the price (01-power.md §2: light ×1.5 below −30, dread ×1.2 above 60) the preview says the base and why (M4 review M1). */
+function priceRise(ctx: Ctx, pl: Plan): Record<string, unknown> {
+  const { base } = priceOf(ctx, pl.mix);
+  const paid = pl.cost[pl.pay] ?? 0;
+  const mods = godOf(ctx).prices.mods;
+  return paid > base ? { priceBase: base, priceMul: pl.pay === 'faith' ? mods.beliefLow.faithMul : mods.beliefHigh.dreadMul, priceWhy: pl.pay === 'faith' ? 'belief-low' : 'belief-high' } : {};
+}
+
 export function previewConjure(ctx: Ctx, args: Record<string, unknown>): Record<string, unknown> {
   if (args.cancel !== undefined) {
     const p = viewConj(ctx.state).pending.find((x) => x.n === Number(args.cancel))!;
@@ -117,6 +125,7 @@ export function previewConjure(ctx: Ctx, args: Record<string, unknown>): Record<
     expected: pl.expected,
     effects: effectLines(ctx, pl),
     cost: pl.cost,
+    ...priceRise(ctx, pl),
     ...(back > 0 ? { back: { dread: back }, net: { dread: (pl.cost.dread ?? 0) - back } } : {}),
     chance: { shadow: pl.shadowSure ? 1 : pl.shadow },
     omen: pl.quarters,

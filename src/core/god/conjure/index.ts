@@ -6,6 +6,7 @@
 import { hasAction, onAction } from '../../command';
 import type { System } from '../../game';
 import { checkConjure, conjureBeat, conjureFlush, previewConjure, runConjure } from './run';
+import './policy';
 
 export { allMixes, mixKey, parseMix, plan, priceOf, targetOf, nameFor, shadowChance, type Mix, type Plan, type Target } from './plan';
 export { CELLS, type Cell } from './table';
