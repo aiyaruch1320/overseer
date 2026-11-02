@@ -666,6 +666,8 @@ function cellsOf(line: string) {
   return line.split('|').slice(1, -1).map((c) => c.trim());
 }
 
+// The story prefix (`hu` in hu.b1) is read from docs/lore/storylines/NN-<race>.md but those files are left out of `sources` on purpose:
+// the storylines are edited all the time and races.json should not change version for it.
 let PREFIX: Record<string, string> | null = null;
 function storyPrefix(n: number, id: string): string {
   if (!PREFIX) {
