@@ -277,3 +277,14 @@ describe('grammar backlog after the doc fixes (M0-c2)', () => {
     expect(parseCell('ข้าวเถ้า → cv.10', ids).effects).toContainEqual({ k: 'converge', to: 'cv.10' });
   });
 });
+
+describe('event phase and sub-outcomes (M0-c3)', () => {
+  it('reads ใกล้เกิด and a chance arrow inside a choice', async () => {
+    const { parseConditionX } = await import('../../scripts/codegen/lib/effects');
+    expect(parseConditionX('BIO-08 ใกล้เกิด', ids)).toEqual({ k: 'event', id: 'BIO-08', happened: true, phase: 'near' });
+    expect(parseConditionX('WR-20 กำลังเกิด', ids)).toEqual({ k: 'event', id: 'WR-20', happened: true, phase: 'running' });
+    expect(parseCell('40 กู้ · ผิดนัด 30% → `c_debt`', ids, { weighted: true }).effects).toContainEqual({
+      k: 'chance', p: 0.3, text: 'ผิดนัด', then: [{ k: 'grant', kind: 'curse', id: 'c_debt' }],
+    });
+  });
+});

@@ -229,7 +229,9 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
       // "WR-13 ทาง ค": ended with that outcome · "CT-07 ปิดแล้ว": closed before it fired
       const way = after.match(/^\s*ทาง\s*([กขค])/);
       const shut = after.match(/^\s*(?:ถูก)?ปิด(?:ทาง)?(?:แล้ว)?/);
-      if (shut) out.push({ at, end: end + shut[0].length, cond: { k: 'event', id: m[15], happened: false, closed: true } });
+      const soon = after.match(/^\s*(ใกล้เกิด|กำลังจะเกิด|กำลังเกิด|กำลังดำเนิน)/);
+      if (soon) out.push({ at, end: end + soon[0].length, cond: { k: 'event', id: m[15], happened: true, phase: /ใกล้|จะ/.test(soon[1]) ? 'near' : 'running' } });
+      else if (shut) out.push({ at, end: end + shut[0].length, cond: { k: 'event', id: m[15], happened: false, closed: true } });
       else if (way) out.push({ at, end: end + way[0].length, cond: { k: 'event', id: m[15], happened: true, outcome: THAI_KEYS[way[1]] } });
       else out.push({ at, end, cond: { k: 'event', id: m[15], happened: !neg } });
     } else if (m[16]) {
