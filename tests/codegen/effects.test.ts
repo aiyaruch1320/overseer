@@ -258,3 +258,22 @@ describe('weighted pick (M0-c2)', () => {
     expect(p.unparsed).toEqual([]);
   });
 });
+
+describe('grammar backlog after the doc fixes (M0-c2)', () => {
+  it('reads the new forms', async () => {
+    const { parseConditionX } = await import('../../scripts/codegen/lib/effects');
+    expect(parseConditionX('ไม่ใช่ยักษ์', ids)).toEqual({ k: 'not', of: { k: 'race', ids: ['gi'] } });
+    expect(parseConditionX('แกน `curious` > 40', ids)).toEqual({ k: 'cmp', stat: 'axis.curious', op: '>', value: 40, label: 'แกน' });
+    expect(parseConditionX('ผ่าน cv อย่างน้อยสองจุด', ids)).toEqual({ k: 'count', what: 'convergence.passed', min: 2 });
+    expect(parseConditionX('WR-13 ทาง ค', ids)).toEqual({ k: 'event', id: 'WR-13', happened: true, outcome: 'c' });
+    expect(parseConditionX('CT-07 ปิดแล้ว', ids)).toEqual({ k: 'event', id: 'CT-07', happened: false, closed: true });
+    expect(parseConditionX('NB10-2 ตาย', ids)).toEqual({ k: 'npc', id: 'NB10-2', alive: false });
+    expect(parseConditionX('มีเรื่องค้าง', ids)).toEqual({ k: 'count', what: 'lineage.open', min: 1 });
+    expect(parseConditionX('ถิ่นรังเกียจลูกครึ่ง', ids)).toEqual({ k: 'place', kinds: ['halfDislike'] });
+    expect(parseConditionX('ประเทศท่าที D L M', ids)).toEqual({ k: 'stance', ids: ['D', 'L', 'M'] });
+  });
+  it('does not read เถ้า as ถ้า, nor a name like ไรเวอร์-9 as a stat', () => {
+    expect(parseCell('ไรเวอร์-9 ตามล่า', ids).effects.filter((e) => e.k === 'stat')).toEqual([]);
+    expect(parseCell('ข้าวเถ้า → cv.10', ids).effects).toContainEqual({ k: 'converge', to: 'cv.10' });
+  });
+});

@@ -37,7 +37,7 @@ export type IdKind =
 /** A condition that gates an effect or multiplies a choice weight. `text` keeps phrases the parser could not read. */
 export type Condition =
   /** `outcome`: the event ended with that choice (`WR-04 ก)`). `phase`: `near` = about to fire, `running` = in progress. */
-  | { k: 'event'; id: EventId; happened: boolean; outcome?: 'a' | 'b' | 'c'; phase?: 'near' | 'running' }
+  | { k: 'event'; id: EventId; happened: boolean; outcome?: 'a' | 'b' | 'c'; phase?: 'near' | 'running'; closed?: boolean }
   /** trait, job, blessing, curse, skill, item... · `rune ระดับ 3` · an id ending in `*` matches any id with that prefix (`nb_mark_*`). */
   | { k: 'has'; kind: IdKind; id: string; level?: number }
   | { k: 'npc'; id: NpcId; alive: boolean }
@@ -56,9 +56,10 @@ export type Condition =
   /** Names: `H` `T` `D` `F` `P` `M0`..`M14` (dragon moods) `Z:<dragon>` `tension`. `decades`: held that long (`F < 20 นาน 3 ทศวรรษ`). */
   | { k: 'var'; name: string; op: '<' | '>'; n: number; decades?: number }
   | { k: 'node'; id: NodeId; choice?: 'a' | 'b' | 'c' } // passed that node (and took that choice)
+  | { k: 'stance'; ids: string[] } // country stance toward bondage `D` `L` `M` `A` `H` (economy/10-bondage.md §3.1)
   | { k: 'faith'; ids: string[] } // religion `faith.01`..`faith.23` (docs/lore/religions/README.md)
   | { k: 'sign'; ids: string[] } // birth sign (character/01-origin.md)
-  /** Where the character lives: `coast` `river` `city` (large city) · or a country flag `war` `famine` `plague` `golden` `fallen` `god_ruin`. */
+  /** Where the character lives: `coast` `river` `city` (large city) · `halfDislike` (a place that shuns the character's half-blood pair) · or a country flag `war` `famine` `plague` `golden` `fallen` `god_ruin`. */
   | { k: 'place'; kinds: string[] }
   /** A bond line at a level: `สายสหายระดับ 3` (bonds/README.md). */
   | { k: 'bond'; line: string; level: number }

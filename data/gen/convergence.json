@@ -2196,11 +2196,6 @@
      {
       "k": "npc",
       "id": "MK12-2"
-     },
-     {
-      "k": "stat",
-      "stat": "ไวรอน",
-      "delta": -1
      }
     ],
     "titleEvents": [],

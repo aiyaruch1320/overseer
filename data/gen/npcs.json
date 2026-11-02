@@ -7344,22 +7344,9 @@
       "cond": null,
       "effects": [
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "สำเร็จ"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "HP-07",
-          "open": true
-         }
-        ]
-       },
-       {
         "k": "event",
-        "id": "HP-07"
+        "id": "HP-07",
+        "open": true
        }
       ],
       "events": [
@@ -10901,26 +10888,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "ขยายพันธุ์"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "HP-07",
-          "open": true
-         }
-        ]
+        "k": "event",
+        "id": "HP-07",
+        "open": true
        },
        {
         "k": "npc",
         "id": "MH06-2"
-       },
-       {
-        "k": "event",
-        "id": "HP-07"
        }
       ],
       "events": [
@@ -11400,22 +11374,7 @@
        "id": "DR-04",
        "happened": true
       },
-      "effects": [
-       {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "ตกลงมา"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "DR-04",
-          "open": true
-         }
-        ]
-       }
-      ],
+      "effects": [],
       "events": [
        "DR-04"
       ],
@@ -11619,22 +11578,9 @@
       "cond": null,
       "effects": [
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "ก่อนใคร"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "DR-04",
-          "open": true
-         }
-        ]
-       },
-       {
         "k": "event",
-        "id": "DR-04"
+        "id": "DR-04",
+        "open": true
        }
       ],
       "events": [
@@ -13336,22 +13282,9 @@
       "cond": null,
       "effects": [
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "แต่ไม่กล้าพูด"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "DR-04",
-          "open": true
-         }
-        ]
-       },
-       {
         "k": "event",
-        "id": "DR-04"
+        "id": "DR-04",
+        "open": true
        }
       ],
       "events": [

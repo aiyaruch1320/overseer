@@ -142,8 +142,19 @@ interface Atom {
  * A race word is a whole word: the neighbours are not Thai letters (`ตระกูล` has no ghoul in it).
  * The glued connectives of Thai (`ชาว` before, `และ` `หรือ` `กับ` before or after) still count as a border.
  */
-const RACE_RE = `(?:(?<![${TH}])|(?<=ชาว|และ|หรือ|กับ))(?:${[...RACE_WORDS].sort((a, b) => b[0].length - a[0].length).map(([w]) => w).join('|')})(?:(?![${TH}])|(?=และ|หรือ|กับ))`;
+const RACE_RE = `(?:(?<![${TH}])|(?<=ชาว|และ|หรือ|กับ|ไม่ใช่))(?:${[...RACE_WORDS].sort((a, b) => b[0].length - a[0].length).map(([w]) => w).join('|')})(?:(?![${TH}])|(?=และ|หรือ|กับ))`;
 const STAT_RE = STAT_KEYS.map(([w]) => w).join('|');
+/** Fixed phrases the docs use for states that have no code (heir rules, half-blood places). */
+const PHRASES: Record<string, ConditionX> = {
+  มีเรื่องค้าง: { k: 'count', what: 'lineage.open', min: 1 },
+  ปิดเรื่องค้างครบ: { k: 'cmp', stat: 'lineage.open', op: '==', value: 0, label: 'เรื่องค้าง' },
+  มีลูกที่ยังมีชีวิต: { k: 'count', what: 'family.childrenAlive', min: 1 },
+  ชื่อเสียงสูงกว่ารุ่นก่อน: { k: 'cmp', stat: 'fame.overParent', op: '>', value: 0, label: 'ชื่อเสียงเทียบรุ่นก่อน' },
+  อยู่รอดสองยุค: { k: 'count', what: 'eras.lived', min: 2 },
+  ย้ายออกจากถิ่นตระกูล: { k: 'has', kind: 'flag', id: 'left_home' },
+  ถิ่นรังเกียจลูกครึ่ง: { k: 'place', kinds: ['halfDislike'] },
+};
+
 const TOKEN = new RegExp(
   [
     '`([^`]+)`(?:\\s*(≥|>=|>)\\s*(\\d+)|\\s*ระดับ\\s*(\\d))?', // 1 code · 2 op · 3 n · 4 level
@@ -165,6 +176,12 @@ const TOKEN = new RegExp(
     `(?:ถิ่น|อยู่)(?:ที่)?(?:ติด|มี|เป็น|ริม|ใน)?\\s*(ชายฝั่ง|ทะเล|แม่น้ำ|เมืองใหญ่|สงคราม|ทุพภิกขภัย|โรคระบาด)`, // 28 place kind
     `สาย([${TH}]+?)ระดับ\\s*(\\d)(?:\\s*ขึ้นไป)?`, // 29 bond line · 30 level
     `(เดินทาง|ไปเยือน|ชนะศึก|ชนะ)ครบ\\s*(\\d+)\\s*(ทวีป|ประเทศ|ครั้ง)`, // 31 verb · 32 n · 33 unit
+    `ไม่ใช่\\s*(${RACE_RE})`, // 34 not this race
+    `ไม่ได้อยู่(?:ใน)?(?:ทวีป)?\\s*(${CONTINENT_WORDS.map(([w]) => w).join('|')})`, // 35 not on this continent
+    'แกน\\s*`([a-z_]+)`\\s*(≥|>=|>|≤|<=|<)\\s*([+\\-−]?\\d+)', // 36 axis · 37 op · 38 n
+    `ผ่าน(?:จุดบรรจบ|\\s*cv)\\s*(?:ครบ|อย่างน้อย)\\s*(\\d+|สอง|สาม|สี่)\\s*จุด`, // 39 convergences passed
+    `(${Object.keys(PHRASES).join('|')})`, // 40 fixed phrases (heir state, half-blood places)
+    `ประเทศท่าที\\s*((?:[ADHLM](?:\\s+|$|(?=[^A-Z])))+)`, // 41 country stance (economy/10-bondage.md §3.1)
   ].join('|'),
   'g',
 );
@@ -207,8 +224,16 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     else if (m[14]) out.push({ at, end, cond: wrap({ k: 'continent', ids: [m[14] as 'AZ'] }) });
     else if (m[15]) {
       if (/^(NF-|FT-|KN-|PR-)/.test(m[15])) continue;
-      out.push({ at, end, cond: { k: 'event', id: m[15], happened: !neg } });
-    } else if (m[16]) out.push({ at, end, cond: { k: 'npc', id: m[16], alive: !/ตาย/.test(after) } });
+      // "WR-13 ทาง ค": ended with that outcome · "CT-07 ปิดแล้ว": closed before it fired
+      const way = after.match(/^\s*ทาง\s*([กขค])/);
+      const shut = after.match(/^\s*(?:ถูก)?ปิด(?:ทาง)?(?:แล้ว)?/);
+      if (shut) out.push({ at, end: end + shut[0].length, cond: { k: 'event', id: m[15], happened: false, closed: true } });
+      else if (way) out.push({ at, end: end + way[0].length, cond: { k: 'event', id: m[15], happened: true, outcome: THAI_KEYS[way[1]] } });
+      else out.push({ at, end, cond: { k: 'event', id: m[15], happened: !neg } });
+    } else if (m[16]) {
+      const died = after.match(/^\s*(?:ตายแล้ว|ตาย)/);
+      out.push({ at, end: end + (died ? died[0].length : 0), cond: { k: 'npc', id: m[16], alive: !died } });
+    }
     else if (m[17]) out.push({ at, end, cond: { k: 'era', min: Number(m[17]) } });
     else if (m[18]) out.push({ at, end, cond: { k: 'gender', value: m[18] === 'ชาย' ? 'm' : 'f' } });
     else if (m[19]) {
@@ -223,6 +248,14 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     else if (m[28]) out.push({ at, end, cond: wrap({ k: 'place', kinds: [PLACE_WORDS[m[28]]] }) });
     else if (m[29]) out.push({ at, end, cond: wrap({ k: 'bond', line: m[29], level: Number(m[30]) }) });
     else if (m[31]) out.push({ at, end, cond: { k: 'count', what: COUNT_WHAT[`${m[31]}.${m[33]}`] ?? `${m[31]}.${m[33]}`, min: Number(m[32]) } });
+    else if (m[34]) out.push({ at, end, cond: { k: 'not', of: { k: 'race', ids: [RACE_WORDS.find(([w]) => w === m[34].replace(/^ชาว/, ''))![1]] } } });
+    else if (m[35]) out.push({ at, end, cond: { k: 'not', of: { k: 'continent', ids: [CONTINENT_WORDS.find(([w]) => w === m[35])![1] as 'AZ'] } } });
+    else if (m[36]) {
+      const OPS: Record<string, CmpCondition['op']> = { '≥': '>=', '≤': '<=' };
+      out.push({ at, end, cond: { k: 'cmp', stat: `axis.${m[36]}`, op: OPS[m[37]] ?? (m[37] as CmpCondition['op']), value: toNum(m[38]), label: 'แกน' } });
+    } else if (m[39]) out.push({ at, end, cond: wrap({ k: 'count', what: 'convergence.passed', min: THAI_NUM[m[39]] ?? Number(m[39]) }) });
+    else if (m[40]) out.push({ at, end, cond: wrap(PHRASES[m[40]]) });
+    else if (m[41]) out.push({ at, end, cond: wrap({ k: 'stance', ids: m[41].trim().split(/\s+/) }) });
   }
   return out;
 }
@@ -285,6 +318,7 @@ export function parseCondition(text: string, ids: IdIndex): Condition | null {
 
 /** Country flags of the world state (code-plan §6.1) that the docs write in ticks. */
 const FLAG_WORDS = new Set(['war', 'famine', 'plague', 'golden', 'fallen', 'god_ruin']);
+const THAI_NUM: Record<string, number> = { สอง: 2, สาม: 3, สี่: 4 };
 /** `ถิ่นติดทะเล` `อยู่เมืองใหญ่` `ถิ่นมีสงคราม` → place kinds (Condition `place`). */
 const PLACE_WORDS: Record<string, string> = { ชายฝั่ง: 'coast', ทะเล: 'coast', แม่น้ำ: 'river', เมืองใหญ่: 'city', สงคราม: 'war', ทุพภิกขภัย: 'famine', โรคระบาด: 'plague' };
 /** `เดินทางครบ 7 ทวีป` → count `travel.continents`. */
@@ -421,7 +455,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     }
   });
   // "ถ้าไม่มี X ข้าม": the node is played only when X is there
-  take(/ถ้าไม่มี\s*([^·]+?)\s*ข้าม(?:โหนดนี้|ไป)?(?=\s|$)/, (m) => {
+  take(/ถ้าไม่มี\s*([^·]+?)\s*ข้าม(?:โหนด(?:นี้)?|ไป)?(?=\s|$)/, (m) => {
     const c = parseConditionX(m[1], ids, true, 'or');
     if (c) (out.nodeWhen ??= []).push(c);
   });
@@ -557,7 +591,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   }
 
   // conditional: ถ้า MC-03 หรือ MC-04 เกิด → cv.9
-  const iff = rest.match(/ถ้า\s*(.+?)\s*→\s*(cv\.\d+|[a-z]{2}\.[btaelx]\d+)/);
+  const iff = rest.match(/(?<!เ)ถ้า\s*(.+?)\s*→\s*(cv\.\d+|[a-z]{2}\.[btaelx]\d+)/);
   if (iff) {
     const cond = parseConditionX(iff[1], ids, true);
     if (cond) {
@@ -566,7 +600,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     }
   }
   // conditional event: ถ้าเหลือมังกรตัวสุดท้าย (DFC = 14) และกุญแจถูกกระจาย → END-10
-  const ife = rest.match(/ถ้า\s*([^→]+?)\s*→\s*((?:NF-)?[A-Z]{2,4}-\d{2,3})/);
+  const ife = rest.match(/(?<!เ)ถ้า\s*([^→]+?)\s*→\s*((?:NF-)?[A-Z]{2,4}-\d{2,3})/);
   if (ife && ids.events.has(ife[2])) {
     const cond = parseConditionX(ife[1], ids, true);
     if (cond) {
@@ -757,6 +791,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   for (const m of rest.matchAll(STAT)) {
     if (!/[+\-−]/.test(m[2])) continue; // a bare number is not a change
     if (/[A-Za-z]-\d/.test(m[0])) continue; // `DM-08` is an id: the digits that touch a code are not a number (review H4)
+    if (/[฀-๿]-\d/.test(m[0])) continue; // `ไรเวอร์-9` is a name: an ASCII hyphen glued to a word is not a minus
     push({ k: 'stat', stat: m[1].trim(), delta: toNum(m[2]) });
     eat(m[0]);
   }

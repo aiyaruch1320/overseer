@@ -20280,11 +20280,6 @@
      {
       "k": "npc",
       "id": "MK03-1"
-     },
-     {
-      "k": "stat",
-      "stat": "ไวรอน",
-      "delta": -1
      }
     ],
     "titleEvents": [],
@@ -21053,11 +21048,6 @@
         "id": "MK03-1"
        },
        {
-        "k": "stat",
-        "stat": "ถามไวรอน",
-        "delta": -1
-       },
-       {
         "k": "npc",
         "id": "MK03-2"
        },
@@ -21134,11 +21124,6 @@
        {
         "k": "npc",
         "id": "MK03-6"
-       },
-       {
-        "k": "stat",
-        "stat": "ช่วยดูแล ไรเวอร์",
-        "delta": -9
        },
        {
         "k": "trust",
@@ -23216,8 +23201,10 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ถิ่นรังเกียจลูกครึ่ง"
+         "k": "place",
+         "kinds": [
+          "halfDislike"
+         ]
         },
         "then": [
          {
@@ -23339,8 +23326,10 @@
            "id": "hb.a1"
           },
           {
-           "k": "text",
-           "text": "ถิ่นรังเกียจลูกครึ่ง"
+           "k": "place",
+           "kinds": [
+            "halfDislike"
+           ]
           }
          ]
         },
@@ -23571,8 +23560,10 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ถิ่นรังเกียจลูกครึ่ง"
+         "k": "place",
+         "kinds": [
+          "halfDislike"
+         ]
         },
         "then": [
          {
@@ -44500,8 +44491,20 @@
     "legend": "สมุดที่ไม่มีหนี้ค้าง",
     "src": "docs/lore/storylines/23-heir.md:48",
     "cond": {
-     "k": "text",
-     "text": "ปิดเรื่องค้างครบทุกข้อ"
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "lineage.open",
+       "op": "==",
+       "value": 0,
+       "label": "เรื่องค้าง"
+      },
+      {
+       "k": "text",
+       "text": "ทุกข้อ"
+      }
+     ]
     }
    },
    {
@@ -44526,8 +44529,20 @@
     "legend": "คำกล่าวว่าลูกเก่งกว่าพ่อแม่",
     "src": "docs/lore/storylines/23-heir.md:50",
     "cond": {
-     "k": "text",
-     "text": "ชื่อเสียงสูงกว่ารุ่นก่อนสูงสุด"
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "fame.overParent",
+       "op": ">",
+       "value": 0,
+       "label": "ชื่อเสียงเทียบรุ่นก่อน"
+      },
+      {
+       "k": "text",
+       "text": "สูงสุด"
+      }
+     ]
     }
    },
    {
@@ -57614,8 +57629,18 @@
      "k": "or",
      "of": [
       {
-       "k": "text",
-       "text": "ทายาทมีลูกที่ยังมีชีวิต"
+       "k": "and",
+       "of": [
+        {
+         "k": "count",
+         "what": "family.childrenAlive",
+         "min": 1
+        },
+        {
+         "k": "text",
+         "text": "ทายาท"
+        }
+       ]
       },
       {
        "k": "text",
