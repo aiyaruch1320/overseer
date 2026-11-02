@@ -400,7 +400,14 @@ describe('the causes of a journey (§2)', () => {
     expect(eligible('ps', ctx, life).mul).toBe(3);
     expect(eligible('ml', ctx, life).ok).toBe(false);
     world(ctx).countryFlags['AL-01'] = ['war'];
+    // the flag of war alone draws the young who hold a weapon (ML_WAR_AGE, WEAPON_APTS); the old and the untrained are not recruits
+    life.hAge = 25;
+    life.aptitudes = {};
+    expect(eligible('ml', ctx, life).ok).toBe(false);
+    life.aptitudes = { sword: 1 };
     expect(eligible('ml', ctx, life).ok).toBe(true);
+    life.hAge = 50;
+    expect(eligible('ml', ctx, life).ok).toBe(false);
     world(ctx).countryFlags['AL-01'] = [];
     life.job = 'soldier';
     expect(eligible('ml', ctx, life).ok).toBe(true);

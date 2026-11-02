@@ -7,7 +7,7 @@ import { newGame } from '../../src/core/state';
 import { write } from '../../src/core/log';
 import { onNode, openLine, registerStoryRules, setPlaceGate, storySystem } from '../../src/core/story';
 import { fresh, extOf as storyExtOf, yearOf } from '../../src/core/story/state';
-import { enemiesFor } from '../../src/core/combat/story-battle';
+import { indexOf as storyIndex } from '../../src/core/story/data';
 import { BATTLES_PER_YEAR, CAUSE, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
 import type { Choice, Condition, Effect, LifeState } from '../../src/core/types';
 
@@ -44,13 +44,26 @@ function mocks() {
  * The effects that belong to other systems (combat: `battle` `battleFor`; bonds: `mood` `template` `bond`), answered by a stand-in so that the story is
  * tested alone: a battle is one roll of win, lose or flee, at most BATTLES_PER_YEAR a year and an enemy once a year; the other three are a log entry.
  */
+/** The enemies the notes of the node being played name for the way it took (what the combat system reads the same way). */
+function notesEnemies(list: readonly Effect[], key: string, out: Set<string> = new Set()): Set<string> {
+  for (const e of list) {
+    if (e.k === 'battleFor' && e.choices.includes(key as 'a')) e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'battle') e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'if' || e.k === 'only' || e.k === 'chance') notesEnemies(e.then, key, out);
+    else if (e.k === 'pick') e.of.forEach((b) => notesEnemies(b.effects, key, out));
+  }
+  return out;
+}
+
 function standIns() {
   const fight = (ctx: Parameters<Parameters<typeof onEffect>[1]>[0], enemiesIn: readonly string[], src: { id?: string }, text?: string) => {
     const l = ctx.state.life!;
     const ex = storyExtOf(l);
     let enemies = enemiesIn;
     if (!enemies.length) {
-      enemies = enemiesFor(ctx, src as never);
+      const node = src.id ? storyIndex(ctx).nodes.get(src.id) : undefined;
+      const cur = ex.cur;
+      enemies = node && cur && cur.id === node.id && cur.choice !== '-' ? [...notesEnemies(node.notes, cur.choice)] : [];
       if (!enemies.length) return void write(ctx.state, { sys: 'story', kind: 'battleSkip', id: src.id, data: { why: 'none', text: text ?? null }, level: 0 });
     }
     const year = yearOf(ex, l);

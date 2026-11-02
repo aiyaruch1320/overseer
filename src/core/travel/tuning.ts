@@ -42,9 +42,9 @@ export const EMPLOYER_PAYS: ReadonlySet<string> = new Set(['courier', 'caravan_g
 
 /**
  * Chance per life year that a travelling job crosses into another continent. The documents give the legs per year, not how far they go
- * ("ข้ามทวีปปีละหนึ่งครั้งเมื่อทุนพอ" for a merchant), but the target is 55% of travelling lives at L2, so the rate is tuned to it (balance test).
+ * ("ข้ามทวีปปีละหนึ่งครั้งเมื่อทุนพอ" for a merchant), but the target is 55% of travelling lives at L2, so the rate is tuned to it (balance test; 0.03 before the causes of the table sent the travelling jobs across continents too).
  */
-export const JOB = { cross: 0.03, settle: 0.03, abroad: 0.8 };
+export const JOB = { cross: 0.02, settle: 0.03, abroad: 0.8 };
 
 // ---------- trips caused by §2 ----------
 
@@ -61,18 +61,21 @@ export interface TripShape {
   near: number;
 }
 
-/** How long each cause keeps the character away. The documents name the cause and the line it opens, not the stay. */
+/**
+ * How long each cause keeps the character away. The documents name the cause and the line it opens, not the stay. `go` of sc ex exile was 0.4 0.7 0.2 before every adult had a
+ * job: with the causes of the table firing in the lives of the fixed jobs too, the lives of the fixed jobs went abroad in half instead of the third of §1 (M3 wiring).
+ */
 export const TRIP: Record<string, TripShape> = {
-  sc: { go: 0.4, more: 0.35, stay: [8, 16], settle: 0.15, near: 0.9 },
-  ps: { go: 1, more: 0.35, stay: [2, 6], settle: 0.05, near: 0.6 },
+  sc: { go: 0.3, more: 0.35, stay: [8, 16], settle: 0.15, near: 0.9 },
+  ps: { go: 1, more: 0.35, stay: [2, 6], settle: 0.05, near: 0.75 },
   ml: { go: 0.15, more: 0.35, stay: [4, 12], settle: 0.15, near: 0.9 },
-  ex: { go: 0.7, more: 0.35, stay: [4, 20], settle: 0.6, near: 0.9 },
-  exile: { go: 0.2, more: 0.35, stay: [8, 24], settle: 0.5, near: 0.9 },
+  ex: { go: 0.5, more: 0.35, stay: [4, 20], settle: 0.6, near: 0.9 },
+  exile: { go: 0.1, more: 0.35, stay: [8, 24], settle: 0.5, near: 0.9 },
   xc: { go: 0.4, more: 0.35, stay: [4, 20], settle: 0.25, near: 0.9 },
-  wd: { go: 0.6, more: 0.35, stay: [4, 12], settle: 0.1, near: 0.6 },
+  wd: { go: 0.6, more: 0.35, stay: [4, 12], settle: 0.1, near: 0.75 },
   tr: { go: 0.3, more: 0.35, stay: [2, 8], settle: 0.1, near: 0.9 },
   // the clerk, the teacher, the doctor who goes to a congress, a post in another city (assumption: the table gives no cause for the city jobs)
-  city: { go: 1, more: 0.35, stay: [1, 6], settle: 0.1, near: 0.75 },
+  city: { go: 1, more: 0.35, stay: [1, 6], settle: 0.1, near: 0.88 },
 };
 
 /** The ages at which the flag of war alone draws a recruit into the mercenary cause (assumption: the table gives none; ml.a1 is at 18 to 28, a2 at 24 to 36). */
