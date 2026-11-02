@@ -3,14 +3,15 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M3 ระบบลึก (รวมแล้ว: economy npc combat · ค้าง: bonds+bondage travel+items)
-งานที่กำลังทำ (พักเครื่อง 2026-11-02 18.00 agent อาจยังทำไม่จบ):
-เมื่อกลับมา: ทำตาม "เมื่อกลับมาทำต่อ" ใน code-plan หัวข้อ 15 ก่อน: ถ้า agent ส่งรายงานแล้ว รวมตามปกติ ถ้าไม่มีรายงาน ดูสาขา: มี commit และด่านผ่านบนสาขา (`npx tsc --noEmit` `npx vitest run` ใน worktree) ให้รวมตาม 12.7 ข้อ 4 โดยใช้ commit log แทนรายงาน ถ้าด่านไม่ผ่านหรืองานยังไม่ครบ ส่ง agent ใหม่ใน worktree เดิมบอกว่าเหลืออะไรจาก diff · หลังรวมเติม bondsSystem bondageSystem travelSystem itemsSystem ใน src/core/systems.ts แล้วสร้างชีวิตทองคำใหม่
+ขั้นปัจจุบัน: M3 ต่อระบบเข้าหากัน (ระบบ M3 ครบห้าระบบในรายการแล้ว)
+งานที่กำลังทำ: สอง agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+  - ต่อระบบ (story EXTERNAL_LINES canGo ลบ battle-stub · combat ใช้ items bonds · npc onClash → combat · god acts ใช้ npc combat · character tagsOf ชั้น chooseJob · economy toolBonus debt) และวัดเป้า · a1597f6c22e4d3286
+  - ข้อความของบันทึก M3 ทั้งหมด ปลด T4 และ PENDING_FX_TH status ของ play · a6646761a8694aa0c
 งานถัดไป:
-  1. รวมสองสาขาข้างบน · ต่อ npc onClash กับ combat.clash · ลบ story/battle-stub และ story/stubs ที่ถูกแทน · god acts ใช้ isSick nemeses killNpc ของ npc และ addHp ของ combat · ตรวจ prelude ของศึกที่น้อยลงเมื่อรวม economy npc (TODO ใน tests/core/combat.test.ts) · บั๊ก character range ของชั้นทำให้ขึ้นชั้น 5 ราว 15% · chooseJob ตอนเป็นผู้ใหญ่ (อาชีพมีแค่ 43% ที่อายุ 30)
-  2. วัดโหนดต่อชีวิตรวมทุกระบบ (31.8 หลัง economy) · test:balance · รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก)
-  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 M3 (NpcSlotState ช่องเพิ่ม LifeState fame hp) · NT มีชีวิต 0.16 ต่อประเทศ เทียบเอกสาร 0.3–0.5 · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world ลางล่วงหน้าและธง famine plague · text ข้อความของ economy/tight npc newcomer follow tie sick clash
-ด่านล่าสุด: 2026-11-02 17.38 typecheck ผ่าน · test 870/870 · golden 20/20 · run-all --check ผ่าน (balance ยังไม่รันหลังรวม combat)
+  1. รวมสองสาขา สร้างชีวิตทองคำใหม่ test:balance ครบ
+  2. รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก) → review/m3/ · triage · ปิด M3
+  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 M3 (NpcSlotState LifeState fame hp WorldState.ext) · NT มีชีวิต 0.16 ต่อประเทศ เทียบเอกสาร 0.3–0.5 · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world ลางล่วงหน้าและธง famine plague · คำของค่าพระเจ้าใน effects.ts · OPEN_EC ของ economy
+ด่านล่าสุด: 2026-11-02 20.10 typecheck ผ่าน · test 996/996 · golden 20/20 · หลังรวมครบ: โหนดต่อชีวิตเต็ม 35.8 ชีวิตถึงวัยชรา 192 จาก 300 (รอ agent ต่อระบบวัดและปรับ)
 
 ## บันทึก (ใหม่อยู่บน)
 
