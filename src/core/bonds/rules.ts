@@ -216,6 +216,8 @@ export function registerBondsRules(): void {
     if (t.tpl === mark) return;
     t.tpl = mark;
     b.focus = t.id;
+    // a story already on its way goes on; a node starts one only for a tie with none or whose story is done
+    if (t.arc && !t.arc.end && t.arc.stage < 5) return;
     t.light = false;
     const pool = code.filter((c) => ix.templates.has(c));
     if (!pool.length) return;

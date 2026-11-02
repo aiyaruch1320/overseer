@@ -371,6 +371,22 @@ describe('bondage: the nodes of bd bo ab (27-bondage.md)', () => {
     expect(e.level).toBe(0);
   });
 
+  it('the line bd starts at the node of the route: a debt at 25 is not "born in bondage" nor "sold"; a sale at 14 begins at bd.t1', () => {
+    const { ctx, life } = mk(15);
+    at(life, 'MH-09');
+    enter(ctx, life, 'เป็นหนี้', 1);
+    const ex = life.ext.story as { skipped: string[] };
+    expect(ex.skipped).toEqual(expect.arrayContaining(['bd.b1', 'bd.t1']));
+    expect(ex.skipped).not.toContain('bd.a1');
+    leave(ctx, life, 'released');
+    const m = mk(16);
+    at(m.life, 'MH-09');
+    enter(m.ctx, m.life, 'ถูกขาย', 3);
+    const ex2 = m.life.ext.story as { skipped: string[] };
+    expect(ex2.skipped).toContain('bd.b1');
+    expect(ex2.skipped).not.toContain('bd.t1');
+  });
+
   it('takes the lines bd bo ab from the story: they open by this system and no longer by the story’s own chance', () => {
     for (const l of ['bd', 'bo', 'ab']) expect(EXTERNAL_LINES.has(l)).toBe(true);
     // a life that is never bound opens none of bd at all

@@ -3,7 +3,7 @@
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply } from '../rules';
-import { openLine } from '../story';
+import { openLine, type StoryExt } from '../story';
 import type { LifeState } from '../types';
 import type { StanceId } from '../data/types-bondage';
 import { idx as characterIdx } from '../character/data';
@@ -108,8 +108,22 @@ export function enter(ctx: Ctx, life: LifeState, route: string, level: 1 | 2 | 3
     e.opened.push('bd');
     openLine(ctx, 'bd');
   }
+  skipEarlier(ctx, life, route);
   write(ctx.state, { sys: 'bondage', kind: 'enter', id: `B${lv}`, data: { route, level: lv, country, owner: e.owner ?? null, price: e.price, moved: country !== from, stance: stanceOf(ctx, country) }, level: 2 });
   return true;
+}
+
+/**
+ * The line bd starts at the node of the route (10-bondage.md §5 "ผลต่อเส้นเรื่อง": born or left → bd.b1, sold → bd.t1, debt, court, self-sale → bd.a1):
+ * the nodes of an earlier age than the route's own are not played (a man in debt at 25 is not "born in bondage" at the same time).
+ */
+function skipEarlier(ctx: Ctx, life: LifeState, route: string): void {
+  const first = bondageIndex(ctx).data.routes.find((r) => r.way === route)?.nodes[0];
+  const order = ['bd.b1', 'bd.t1', 'bd.a1'];
+  const upTo = first ? order.indexOf(first) : -1;
+  const ex = life.ext.story as StoryExt | undefined;
+  if (!ex || upTo <= 0) return;
+  for (const id of order.slice(0, upTo)) if (life.passed[id] === undefined && !ex.skipped.includes(id)) ex.skipped.push(id);
 }
 
 // ---------- leaving ----------
