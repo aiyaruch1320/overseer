@@ -46,7 +46,7 @@ describe('travel generator: counts the doc states', () => {
 describe('travel generator: the causes that open the overlays', () => {
   const C = (overlay: string, cause?: string) => D.causes.find((c) => c.overlay === overlay && (!cause || c.cause === cause))!;
   it('yearly chances in the order of the doc table', () => {
-    expect(D.causes.map((c) => c.chance)).toEqual([0.03, 0.01, 0.04, 0.15, 0.2, 0.03, 0.015, 0.02]);
+    expect(D.causes.map((c) => c.chance)).toEqual([0.03, 0.01, 0.015, 0.15, 0.08, 0.03, 0.015, 0.02]);
     expect(D.causes.map((c) => c.overlay)).toEqual(['sc', 'ps', 'ml', 'ex', 'ex', 'xc', 'wd', 'tr']);
   });
   it('multipliers', () => {
@@ -78,7 +78,7 @@ describe('travel generator: the causes that open the overlays', () => {
       for (const n of o.nodes) expect(nodes.has(n), n).toBe(true);
     }
     expect(D.overlays.map((o) => o.nodeCount)).toEqual([5, 4, 4, 4, 4, 5, 20]);
-    expect(D.overlays.find((o) => o.id === 'ex')!.causes).toEqual([0.15, 0.2]);
+    expect(D.overlays.find((o) => o.id === 'ex')!.causes).toEqual([0.15, 0.08]);
     expect(D.overlays.find((o) => o.id === 'sf')!.causes).toEqual([]);
     expect(D.overlays.find((o) => o.id === 'xc')!.spontaneous).toEqual({ chance: 0.35, ageMin: 24, ageMax: 36, level: 'L0' });
   });

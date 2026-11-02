@@ -1,5 +1,5 @@
 {
- "version": "7e20c505cf86",
+ "version": "182f223b5e64",
  "sources": [
   "docs/lore/storylines/25-journeys.md",
   "docs/systems/travel/01-travel-rules.md"
@@ -297,7 +297,7 @@
       }
      ]
     },
-    "chance": 0.04,
+    "chance": 0.015,
     "mods": [
      {
       "cond": {
@@ -388,7 +388,7 @@
       }
      ]
     },
-    "chance": 0.2,
+    "chance": 0.08,
     "mods": [],
     "inEventYear": false,
     "opens": [
@@ -633,7 +633,7 @@
     ],
     "otherRaw": "รับจ้างรบตามหัวข้อ 2 ของกติกาเดินทาง (เหตุรับจ้างรบ)",
     "causes": [
-     0.04
+     0.015
     ],
     "src": "docs/lore/storylines/25-journeys.md:29"
    },
@@ -736,7 +736,7 @@
     "otherRaw": "เหตุการณ์โลกอื่นที่ทำให้ถิ่นอยู่ไม่ได้",
     "causes": [
      0.15,
-     0.2
+     0.08
     ],
     "src": "docs/lore/storylines/25-journeys.md:31"
    },
@@ -3121,7 +3121,7 @@
      [
       "รับจ้างรบ",
       "ธงสงคราม `war` ในประเทศ หรืออาชีพทหาร",
-      "4% (`war=total` ×2)",
+      "1.5% (`war=total` ×2)",
       "ml.a1"
      ],
      [
@@ -3133,7 +3133,7 @@
      [
       "เนรเทศหรือหนีโทษ",
       "มี `c_wanted` หรือถูกขับจากสถาบัน",
-      "20%",
+      "8%",
       "ex.a2"
      ],
      [
