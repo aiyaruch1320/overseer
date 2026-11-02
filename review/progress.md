@@ -3,14 +3,17 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M1 แก้ตามรอบตรวจผู้เล่นจำลอง (review/m1/triage.md)
-งานที่กำลังทำ: สอง agent ส่ง 2026-11-02 ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+ขั้นปัจจุบัน: M2 ระบบพระเจ้าและการเรียก
+งานที่กำลังทำ: สี่ agent ส่ง 2026-11-02 ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+  - god G0–G2 (พลัง หีบ ฝัน godSystem power.ts) · ac5db3c5f0c559ee7
+  - god G3–G4 (src/core/god/acts: กระซิบ คำอธิษฐาน ปาฏิหาริย์ ลิขิต) · aaf8bc63dc2171798
+  - attention (src/core/attention) · a51caa09648348854
+  - เครื่องมือ: คำสั่งพระเจ้าใน play หน้าดีบัก life --policy · a6f570d53dcbd8d85
 งานถัดไป:
-  1. รวมทั้งสอง สร้างชีวิตทองคำใหม่ รอบตรวจซ้ำด้วยบุคลิกเดิมอย่างน้อยหนึ่งตัว (12.6 ข้อ 4) ปิด M1
-  2. M2: god G0 ถึง G2 · god G3 G4 · attention (จุดหยุดตามอายุ รวมเรื่องที่ใกล้กัน ลางก่อนตาย) · คำสั่งพระเจ้าใน play
-  3. ข้อเสนอสัญญาที่ยังไม่ทำ: WorldState successors outcomes · NpcSlotState ช่องเพิ่ม · LifeState fame · countries.json coast river · ตัวคูณ NPC ที่ยังมีชีวิตในกติกาจุดเกิด
-  4. ค้างไว้: ตัวละคร 74 วลี ไอเทม 209 (M3) · ตัวสร้าง bonds bondage travel (ก่อน M3) รูปลักษณ์ (ก่อน M6)
-ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 414/414 · golden 20/20 · balance ผ่าน · run-all --check ผ่าน
+  1. รวมทีละสาขา: ต่อ acts/pay.ts เข้ากับ god/power.ts · story เรียก dreamWeight · play หยุดที่ attention call · เติม systems.ts (god god.acts attention)
+  2. เป้า sim-god (ส่วนชีวิต) และ sim-attention บนแกน · ชีวิตทองคำ · รอบตรวจ M2 ผู้เล่นจำลองสามบุคลิก (ผู้มาใหม่ พระเจ้าเมตตา นักหาช่อง) ด้วย play
+  3. ค้างไว้: ข้อเสนอสัญญา M1 (WorldState successors outcomes · NpcSlotState · LifeState fame · countries coast river · ตัวคูณ NPC ในจุดเกิด) · ตัวละคร 74 วลี ไอเทม 209 (M3) · ตัวสร้าง bonds bondage travel (ก่อน M3) รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า และ sl.b2 c_slimelove
+ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 460/460 · golden 20/20 · balance ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
 2026-11-02 · M1 จบ: รอบตรวจสอง ผู้อ่านเรื่อง ไม่มีบล็อกและหนักใหม่ · บรรทัด NPC กรองเหลือคนที่รู้จัก (เอลฟ์ 68 → 35) · ชั้นคำสั่ง (command/) สำหรับ M2
