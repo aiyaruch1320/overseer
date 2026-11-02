@@ -134,7 +134,7 @@ export const DEBT = { repayShare: 1, defaultMul: 3 };
  * nodes to the 31 to 33 of the code-plan target (about 30 without it, about 42 with it, with `pv` for the poor lands); turn it to false, or
  * open it for a share of lives in `startLife`, if the lead wants the target kept.
  */
-export const OPEN_EC = true;
+export const OPEN_EC = false; // lead M3: every life on ec pushed nodes to ~42 against 31–33; revisit when all M3 systems are in
 /** Countries with W at most this open `pv` (24-economy.md §2 rule 2: "อยู่ประเทศ W 1 ถึง 2"). */
 export const PV_MAX_W = 2;
 /** Jobs that open `tr` besides the eight trade jobs (24-economy.md §2: "มีอาชีพการค้า"). */

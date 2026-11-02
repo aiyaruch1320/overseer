@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 8 ==
-ระบบที่ทำงาน: world character npc story text god god.acts attention
+ระบบที่ทำงาน: world character economy npc story text god god.acts attention
 โลกเดินมาถึง ศ.ม. 10,410 แล้วตัวละครเกิด
 
 -- บันทึก --

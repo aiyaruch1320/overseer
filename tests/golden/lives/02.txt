@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 2 ==
-ระบบที่ทำงาน: world character npc story text god god.acts attention
+ระบบที่ทำงาน: world character economy npc story text god god.acts attention
 โลกเดินมาถึง ศ.ม. 11,420 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -190,9 +190,9 @@
 
 -- สรุป --
 เซซิล ตายเมื่ออายุ 64 (อุบัติเหตุ) ศ.ม. 11,594 · 256 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 69 · character 7 · story 63 · text 4 · god 34 · attention 31 · npc 74 · game 1
-กติกาที่ยังไม่มีใครรับ: effect:stat:B cond:stat:capital effect:stat:ผลตอบแทน cond:bond effect:stat:กุญแจที่รวมได้ effect:stat:โบนัสหลบ
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×41 god/prayer.moot ×1 story/window ×4
+บันทึกระดับ 1 ขึ้นไป: world 69 · character 7 · story 63 · text 4 · god 34 · attention 31 · npc 74 · economy 2 · game 1
+กติกาที่ยังไม่มีใครรับ: effect:stat:B cond:bond effect:stat:กุญแจที่รวมได้ effect:stat:โบนัสหลบ
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×41 god/prayer.moot ×1 story/window ×4 economy/tight ×2
 
 -- พระหัตถ์ --
 คำอธิษฐานที่ไม่ได้ตอบ 16 ใบ

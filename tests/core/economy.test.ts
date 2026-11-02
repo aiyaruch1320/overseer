@@ -611,12 +611,14 @@ describe('the lines of the economy storylines (24-economy.md §2)', () => {
   const external = (life: LifeState) => (life.ext.story as { external: string[] }).external;
   const systems = [characterSystem, economySystem, storySystem];
 
-  it('opens ec for every life, and pv where W is 2 or less', () => {
+  it('opens ec for every life when OPEN_EC is on, and pv where W is 2 or less', async () => {
+    const { OPEN_EC } = await import('../../src/core/economy/tuning');
     const rich = lifeIn(1, 'AL-17', {}, systems);
-    expect(external(rich.life)).toContain('ec');
+    if (OPEN_EC) expect(external(rich.life)).toContain('ec');
+    else expect(external(rich.life)).not.toContain('ec');
     expect(external(rich.life)).not.toContain('pv');
     const poor = lifeIn(1, 'SH-12', {}, systems);
-    expect(external(poor.life)).toEqual(expect.arrayContaining(['ec', 'pv']));
+    expect(external(poor.life)).toContain('pv');
   });
 
   it('opens tr for a trader and wk for a worker, once', () => {
