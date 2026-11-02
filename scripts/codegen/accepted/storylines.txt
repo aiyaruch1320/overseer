@@ -1,0 +1,14 @@
+# Unparsed phrases of storylines the lead accepted, each waiting for a grammar form (review/m0/triage.md). One per line: <doc path> | <phrase>
+docs/lore/storylines/00-convergence.md | cv.1: ขับไล่
+docs/lore/storylines/03-darkelf.md | de.a4 → cv.4: เงาแยกตัวหนีในพิธีเผชิญเงา
+docs/lore/storylines/06-halfling.md | ha.a7: ผู้ใหญ่บ้านโลภ
+docs/lore/storylines/12-slime.md | sl.a1: กลืนซากใน
+docs/lore/storylines/12-slime.md | sl.a6 ศึก·NPC·โลก: แต้มนี้นับเข้าเงื่อนไขของอาชีพลับ slimeking (absorb ระดับ 3 หรือ #predator หรือชนะศึกครบ 6 ครั้ง)
+docs/lore/storylines/15-winged.md | wi ปลายทาง ผู้ลี้ภัยคนสุดท้าย: ตายในค่ายก่อนได้บ้าน
+docs/lore/storylines/22-halfblood.md | hb.a3: ถิ่นของเผ่านั้นรังเกียจลูกครึ่ง
+docs/lore/storylines/22-halfblood.md | sw.t1: เลือดมังกรไม่ถึงครึ่งที่ ไม่รับ ทำที่ แทน
+docs/lore/storylines/23-heir.md | hr.b2: โหนด b2 ของเผ่าอยู่ในสมุดตระกูลแล้ว (รุ่นก่อนผ่านมาแล้ว)
+docs/lore/storylines/23-heir.md | hr.e1: e1 ของเผ่าอยู่ในสมุดตระกูลแล้ว
+docs/lore/storylines/23-heir.md | hr.e1: ทายาท ตอนรับช่วง
+docs/lore/storylines/25-journeys.md | sc เปิดเมื่อ: มีความถนัด scholar
+docs/lore/storylines/25-journeys.md | wd เปิดเมื่อ: เป็นนักผจญภัย (อาชีพ adventurer)

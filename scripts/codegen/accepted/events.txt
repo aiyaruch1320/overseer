@@ -1,0 +1,74 @@
+# Unparsed phrases of events the lead accepted, each waiting for a grammar form (review/m0/triage.md). One per line: <doc path> | <phrase>
+docs/systems/events/branches/04-last-era.md | ผู้เฝ้าที่ถูกพรากตายหรือหาย 40%
+docs/systems/events/branches/04-last-era.md | พวกพ้องระดับ 3 ขึ้นไปที่ยังมีชีวิตมาอยู่กับตัวละครหนึ่งฉาก (ดู )
+docs/systems/events/branches/04-last-era.md | ราคาตั๋วเดินทางขึ้น ×2
+docs/systems/events/branches/04-last-era.md | เป็นเงื่อนไขของผล END ใน cv.16 (cv.16 เปิดตั้งแต่ยุค 4) ( )
+docs/systems/events/local-events.md | MH03-4 ทาง ก) เกิดแล้ว
+docs/systems/events/local-events.md | ภายใน 30 ปีหลังไรเวอร์-9 ตื่น
+docs/systems/events/local-events.md | ราคาอาหาร ×1.5 หนึ่งปี
+docs/systems/events/local-events.md | อารมณ์เพลิงนิรันดร์ < 40
+docs/systems/events/world-events.md | 2 ทศวรรษของการฆ่าเงียบ
+docs/systems/events/world-events.md | DFC ห้ามเพิ่มได้ 20 ปี
+docs/systems/events/world-events.md | NB-04 หรือ NB-13 ฟังเสียงพวกมันนานพอ
+docs/systems/events/world-events.md | NB-07 แตกนิกาย
+docs/systems/events/world-events.md | NB-10 มีบทบาท
+docs/systems/events/world-events.md | กรรมดีสูง
+docs/systems/events/world-events.md | การใช้เวทใหญ่
+docs/systems/events/world-events.md | ความรู้ของพิธีมาจาก AL-11 หรือ SV-07 หรือ MK-13 (ถิ่นที่เกิดหรืออยู่)
+docs/systems/events/world-events.md | ความหวังของยุค 3
+docs/systems/events/world-events.md | ความหิว ×2
+docs/systems/events/world-events.md | ความหิวสูง
+docs/systems/events/world-events.md | ช่วง 5 ปีที่ฟ้ามืด
+docs/systems/events/world-events.md | ทวีปนั้นไม่ค้ากับใคร 50 ปี
+docs/systems/events/world-events.md | ทายาทฟ้าโตเต็มวัย
+docs/systems/events/world-events.md | ทุกทศวรรษ ประเทศในเนบูเลียหรือชายแดนติดกันหนึ่งแห่ง
+docs/systems/events/world-events.md | ป่าถูกตัด
+docs/systems/events/world-events.md | ผลผลิตธัญพืชหาย 50%
+docs/systems/events/world-events.md | ผู้กล้าที่ถืออาวุธปราบมังกรระดับ L เข้าเขตมังกร
+docs/systems/events/world-events.md | ผู้กล้าอยู่ในชัยชนะที่ไม่สมบูรณ์
+docs/systems/events/world-events.md | ผู้ร่วม: AL-20, MK-13, NB-12, ทุนจาก NB-09
+docs/systems/events/world-events.md | ผู้อาวุโสสองตัว
+docs/systems/events/world-events.md | ผู้อาวุโสหรือมังกรเสาตัวใดตัวหนึ่ง
+docs/systems/events/world-events.md | ผู้เฝ้า NB-08 ยังอยู่
+docs/systems/events/world-events.md | ผ่านสงครามใหญ่
+docs/systems/events/world-events.md | ผ่านไป ≥ 1 ทศวรรษ
+docs/systems/events/world-events.md | ฝุ่นเถ้าปกคลุมฟ้าครึ่งทวีป 3 ปี
+docs/systems/events/world-events.md | พระเจ้าทำลายระดับใหญ่ครั้งที่สามในโลก (กติกาเหล็กข้อ 7 ของระบบพระเจ้า)
+docs/systems/events/world-events.md | พระเจ้าหรือศาสดาประกาศ
+docs/systems/events/world-events.md | พระเจ้าใช้พลังสูงสุด
+docs/systems/events/world-events.md | พระเจ้าไม่ตอบคำอธิษฐานต่อเนื่องหลายทศวรรษ
+docs/systems/events/world-events.md | มีเมืองปิดตาย ≥ 2
+docs/systems/events/world-events.md | ยังไม่เกิด
+docs/systems/events/world-events.md | ยุคมืด 100 ปี การค้าโลกพัง
+docs/systems/events/world-events.md | รอยแยกเปิดเกิน 5 ทศวรรษ
+docs/systems/events/world-events.md | ราคาที่ต้องจ่าย
+docs/systems/events/world-events.md | ศาสดา
+docs/systems/events/world-events.md | ศาสดาเกิด
+docs/systems/events/world-events.md | ศิลาลอยพอ
+docs/systems/events/world-events.md | สงครามระหว่างทวีปห้ามเริ่มได้ 50 ปี
+docs/systems/events/world-events.md | สงครามเศรษฐกิจ
+docs/systems/events/world-events.md | สถานะเริ่มต้น เกิดแล้วใน ศ.ม. 10,388
+docs/systems/events/world-events.md | สภาแข็งแรง
+docs/systems/events/world-events.md | สละชีวิตเมื่อเกาะร่วงจริง
+docs/systems/events/world-events.md | สัตว์ธรรมดา 10% กลายพันธุ์
+docs/systems/events/world-events.md | สืบสวน
+docs/systems/events/world-events.md | สุ่ม
+docs/systems/events/world-events.md | หมอกกลืนโลก: ทุกทวีปโดนหมอกใน 20 ปี
+docs/systems/events/world-events.md | หมอกร่ำรวย
+docs/systems/events/world-events.md | หรือสองหัวของราหูเอง (สุริยัน–จันทรา)
+docs/systems/events/world-events.md | หรือเมื่อคู่สนิทของตัวหนึ่งตายจนเสียสติ (พี่น้องที่รักกันทำร้ายกันเพราะความเสียใจ ไม่ใช่เพราะเกลียด)
+docs/systems/events/world-events.md | หุ่นที่มีวิญญาณมากพอ
+docs/systems/events/world-events.md | อุณหภูมิโลก −1 ขั้น 3 ทศวรรษ
+docs/systems/events/world-events.md | เกาะร่วงต่อเนื่อง
+docs/systems/events/world-events.md | เทคโนโลยีกระโดด 100 ปี
+docs/systems/events/world-events.md | เป็นธาตุตรงข้าม (เพลิง–สมุทร, พายุ–ศิลา)
+docs/systems/events/world-events.md | เป็นรอยแยกแบบ CT-06 ที่เกิดก่อนยุค 2 → FG-02, FG-14
+docs/systems/events/world-events.md | เผยทางเข้าเมืองปฐมใต้หมอก 3 แห่ง
+docs/systems/events/world-events.md | เผ่าพันธุ์ใหม่ 1 เผ่า เกิด
+docs/systems/events/world-events.md | เผ่าใหม่ 1 เผ่า
+docs/systems/events/world-events.md | เมืองโคมใน NB-03 ถูกปิดตายเกิน 10 วันอีกครั้งหลังต้นเรื่อง (การปิดสิบเอ็ดวันใน ศ.ม. 10,396 ทำให้ตลาดปกครองตนเองโดยพฤตินัยแต่ยังไม่ประกาศ)
+docs/systems/events/world-events.md | เวทมนตร์ใหญ่
+docs/systems/events/world-events.md | เสียงระฆังเรียกสิ่งมีชีวิตสำเร็จ
+docs/systems/events/world-events.md | โรคจากเนบูเลีย/เมคาเรียผ่านการค้า
+docs/systems/events/world-events.md | โอรัน-ซัลยังมีชีวิต
+docs/systems/events/world-events.md | ไม่มี WR 30 ปี

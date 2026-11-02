@@ -34,6 +34,34 @@ const snapshot = () => {
   return out;
 };
 
+/**
+ * Strict groups may keep unparsed phrases only when the lead has accepted them, one per line in
+ * scripts/codegen/accepted/<group>.txt as `<doc path> | <phrase>` (no line number, so edits above do not break it),
+ * each waiting for a grammar form listed in review/m0/triage.md. New phrases and stale entries both fail the gate.
+ */
+function againstAccepted(group: string): { unexpected: string[]; stale: string[] } {
+  const md = path.join(genDir, '_unparsed', `${group}.md`);
+  const rows = existsSync(md)
+    ? readFileSync(md, 'utf8')
+        .split('\n')
+        .filter((l) => l.startsWith('| docs/'))
+        .map((l) => {
+          const c = l.split(' | ');
+          return `${c[0].slice(2).replace(/:\d+$/, '')} | ${c[1]}`;
+        })
+    : [];
+  const accFile = path.join(root, 'scripts/codegen/accepted', `${group}.txt`);
+  const accepted = existsSync(accFile)
+    ? readFileSync(accFile, 'utf8')
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#'))
+    : [];
+  const acc = new Set(accepted);
+  const seen = new Set(rows);
+  return { unexpected: [...new Set(rows.filter((r) => !acc.has(r)))], stale: accepted.filter((a) => !seen.has(a)) };
+}
+
 const dir = path.join(root, 'scripts/codegen/groups');
 const groups = readdirSync(dir)
   .filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))
@@ -46,7 +74,13 @@ for (const g of groups) {
   const mod = await import(pathToFileURL(path.join(dir, g)).href);
   const t0 = Date.now();
   const rep: GenReport = await mod.default();
-  const flag = rep.strict && rep.unparsed ? '  ✗ must be 0' : '';
+  let flag = '';
+  if (rep.strict) {
+    const { unexpected, stale } = againstAccepted(rep.group);
+    if (unexpected.length) flag += `  ✗ ${unexpected.length} not in accepted/${rep.group}.txt`;
+    if (stale.length) flag += `  ✗ ${stale.length} accepted entries no longer occur`;
+    for (const x of [...unexpected.slice(0, 10).map((u) => `    new: ${u}`), ...stale.slice(0, 10).map((u) => `    stale: ${u}`)]) console.log(x);
+  }
   console.log(`${rep.group.padEnd(14)} ${String(rep.unparsed).padStart(5)} unparsed  ${rep.files.join(' ')}  (${Date.now() - t0} ms)${flag}`);
   if (flag) failed = true;
 }
