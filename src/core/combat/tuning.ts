@@ -50,6 +50,8 @@ export const GUARD = { woundRoll: 18, damageMul: 0.5 };
 /** Perception: the roll against this DC (the enemy's stealth; assumption, the doc names no number). */
 export const PERCEIVE_DC = 10;
 /** Damage multipliers by what protects the hero (01-core.md §5). */
+/** A weapon that parries (items README §3 `ปัด`): −20% of the damage of a lost beat. */
+export const PARRY = 0.8;
 export const DAMAGE_MUL = { guardTag: 0.8, tough: 0.87, resistTag: 0.5, weakTag: 1.5, huge: 1.3 };
 /** Companion `pa_thick_hide` by level 1..3; `pa_life_share` takes this share of one blow by level (assumption: "ตามระดับ"). */
 export const THICK_HIDE = [1, 0.95, 0.9, 0.85];

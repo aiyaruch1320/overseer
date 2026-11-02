@@ -2,7 +2,7 @@
 // bosses, wins, defeats, flights, permanent wounds, death in battle, loot, and the fights that come on their own.
 //
 // How it meets the rest of the core:
-//   - the story's `battle` and `battleFor` effects reach it through the seam in story/battle-stub.ts (`setBattleHandler`), set when this module is imported;
+//   - the `battle` and `battleFor` effects of the story rows are owned here (story-battle.ts): the story names the fight, this system fights it;
 //   - the NPC system calls `clash(ctx, clashId, opts)` when the story of an NPC meets the hero's (07-npc-clashes.md);
 //   - attention reads the call `combat/prelude` that a fight with a name writes some beats before it is fought (attention/tuning.ts EXTERNAL);
 //   - the text system reads the result entry `combat/battle` (data: result enemies node text beats hp stances wounds loot);
@@ -10,7 +10,6 @@
 import type { System } from '../game';
 import { write } from '../log';
 import { onStat } from '../rules';
-import { enemiesFor, setBattleHandler } from '../story/battle-stub';
 import { atWar, rollEncounter, warBattle } from './encounter';
 import { chooseEnemies, foeOf } from './foe';
 import { admit, flush, launch } from './launch';
@@ -18,6 +17,7 @@ import { addHp, hpOf, maxHpOf } from './hero';
 import { extOf, lifeOf } from './state';
 import { HP, WAR_BATTLE_PER_YEAR, STREAM } from './tuning';
 import { buildHero } from './hero';
+import { registerStoryBattles } from './story-battle';
 
 export { clash, clashOf, openChance, type ClashOpts, type ClashResult, type Opener } from './clash';
 export { resolve as fightFoe, rerollChance, hpNow, damageOf, type Fought } from './fight';
@@ -68,31 +68,6 @@ export function pendingFights(ctx: Ctx): { enemies: string[]; foe: string; tier:
   });
 }
 
-// ---------- the story's battles ----------
-
-setBattleHandler((ctx, enemiesIn, src, text) => {
-  const life = lifeOf(ctx);
-  if (!life) return 'skip';
-  let ids = [...enemiesIn];
-  // a battle with no enemy named is the battle the node's notes name for the way; with none named it does not happen (M1 review S2)
-  if (!ids.length) ids = enemiesFor(ctx, src);
-  ids = chooseEnemies(ctx, ids);
-  if (!ids.length) {
-    write(ctx.state, { sys: 'combat', kind: 'skip', id: src.id, data: { why: 'no enemy named and none in the notes', text: text ?? null }, level: 0 });
-    return 'skip';
-  }
-  const fresh = admit(ctx, ids);
-  if (!fresh.length) return 'skip';
-  const foe = foeOf(ctx, fresh);
-  if (!foe) {
-    write(ctx.state, { sys: 'combat', kind: 'skip', id: src.id, data: { why: 'unknown enemy', enemies: fresh.join(',') }, level: 0 });
-    return 'skip';
-  }
-  const r = launch(ctx, fresh, { kind: 'story', node: src.id, text }, foe.named);
-  if (r.how !== 'done') return 'skip';
-  return r.fought.word === 'win' ? 'win' : r.fought.word === 'lose' ? 'lose' : r.fought.word === 'flee' || r.fought.word === 'draw' ? 'flee' : 'skip';
-});
-
 // ---------- numbers other rules read ----------
 
 let installed = false;
@@ -107,6 +82,7 @@ export function registerCombatRules(force = false): void {
   onStat('battles.won', { read: (ctx) => (fights(ctx)?.win ?? 0) + (fights(ctx)?.talk ?? 0) + (fights(ctx)?.tame ?? 0) });
   onStat('battles.lost', { read: (ctx) => fights(ctx)?.lose ?? 0 });
   onStat('battles.fled', { read: (ctx) => fights(ctx)?.flee ?? 0 });
+  registerStoryBattles();
 }
 registerCombatRules();
 

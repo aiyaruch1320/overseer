@@ -6,13 +6,14 @@ import type { Ctx } from '../game';
 import { write } from '../log';
 import { extOf as storyExt, yearOf } from '../story/state';
 import { CAUSE } from '../story/tuning';
-import { buildHero, hpOf, shareOf, thickMul, type Hero } from './hero';
+import { afterBattle, damageFloor, shieldMult } from '../items';
+import { buildHero, hpOf, shareOf, statOf, thickMul, type Hero } from './hero';
 import { indexOf } from './data';
 import { choose, options, type Option, type Scene } from './stance';
 import { countWin, keysOf, lootFor, quietReward, rollWound } from './reward';
 import { extOf } from './state';
 import {
-  AFTER_LOSS_HP, DAMAGE_MUL, EVADE, GUARD, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
+  AFTER_LOSS_HP, DAMAGE_MUL, EVADE, GUARD, PARRY, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
 } from './tuning';
 import type { FightOpts, FightResult, Foe, Outcome } from './types';
 
@@ -20,7 +21,7 @@ const mod = (v: number) => Math.floor((v - 10) / 2);
 
 /** The chance the hero rolls again after a failed roll (legacy `rerollChance`: luck × 1.5%, second chance +0.2, jinx −0.1). */
 export function rerollChance(hero: Hero): number {
-  let r = hero.life.stats.luk * 0.015;
+  let r = statOf(hero, 'luk') * 0.015;
   if (hero.tags.has('second_chance')) r += 0.2;
   if (hero.tags.has('lucky')) r += 0.15;
   if (hero.tags.has('jinx')) r -= 0.1;
@@ -32,15 +33,21 @@ const WORD: Record<FightResult, string> = { win: 'win', flawless: 'win', talk: '
 /** The damage of one lost beat (01-core.md §5): DC × 2.4 ÷ the most beats × what guards the hero. */
 export function damageOf(ctx: Ctx, hero: Hero, foe: Foe, stance: string, spent: { guard: boolean; share: boolean }): number {
   const k = indexOf(ctx).combat.damage.dcDamage;
-  let d = (foe.dc * k) / foe.maxBeats;
-  if (stance === 'guard') d *= GUARD.damageMul;
-  if (hero.tags.has('guard')) d *= DAMAGE_MUL.guardTag;
-  if (hero.tags.has('iron_body') || hero.tags.has('stone_blood') || hero.tags.has('stone_skin')) d *= DAMAGE_MUL.tough;
-  if (hero.companion.thick) d *= thickMul(hero.companion);
+  const base = (foe.dc * k) / foe.maxBeats;
+  // the factors multiply and the product is never below the floor (items 11-item-system.md §4: ×0.35); the shield replaces the guard stance's own half
+  let mul = 1;
+  if (stance === 'guard') mul *= hero.armor.shield ? Math.min(GUARD.damageMul, shieldMult(ctx)) : GUARD.damageMul;
+  if (hero.tags.has('guard')) mul *= DAMAGE_MUL.guardTag;
+  if (hero.tags.has('iron_body') || hero.tags.has('stone_blood') || hero.tags.has('stone_skin')) mul *= DAMAGE_MUL.tough;
+  if (hero.companion.thick) mul *= thickMul(hero.companion);
+  if (hero.weapon?.parry) mul *= PARRY;
+  mul *= hero.armor.mult;
+  if (hero.party.cutPct) mul *= 1 - hero.party.cutPct / 100;
   for (const a of foe.attack) {
-    for (const [tag, el] of Object.entries(RESIST_TAG)) if (el === a && hero.tags.has(tag)) d *= DAMAGE_MUL.resistTag;
-    for (const [tag, el] of Object.entries(WEAK_TAG)) if (el === a && hero.tags.has(tag)) d *= DAMAGE_MUL.weakTag;
+    for (const [tag, el] of Object.entries(RESIST_TAG)) if (el === a && hero.tags.has(tag)) mul *= DAMAGE_MUL.resistTag;
+    for (const [tag, el] of Object.entries(WEAK_TAG)) if (el === a && hero.tags.has(tag)) mul *= DAMAGE_MUL.weakTag;
   }
+  let d = base * Math.max(damageFloor(), mul);
   if (hero.companion.guard && !spent.guard) {
     spent.guard = true;
     return 0;
@@ -93,6 +100,8 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   const ext = extOf(life);
   const rng = ctx.rng(STREAM.fight);
   const hero = buildHero(ctx, life);
+  // the people of the party fight beside the hero unless the caller named who does (a raid names its own, 01-core.md §4)
+  if (opts.allies === undefined && hero.party.members) opts = { ...opts, allies: hero.party.members };
   const startHp = hero.hp;
   const roll20 = indexOf(ctx).combat.roll;
   const rolls: Fought['rolls'] = [];
@@ -114,14 +123,15 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
     side = 'foe';
   } else {
     const r = rng.int(1, 20);
-    const b = Math.max(mod(life.stats.spd), mod(life.stats.int)) + whisperBonus(ctx, 'perceive') - (opts.rematch ? 1 : 0) + (opts.env?.includes('dense_fog') ? -2 : 0);
+    const b = Math.max(mod(statOf(hero, 'spd')), mod(statOf(hero, 'int'))) + whisperBonus(ctx, 'perceive') - (opts.rematch ? 1 : 0) + (opts.env?.includes('dense_fog') ? -2 : 0);
     if (r === 20 || (r !== 1 && r + b >= PERCEIVE_DC)) {
       first = roll20.firstBeat.advantage;
       side = 'hero';
     } else if (hero.companion.danger) {
       first = 0;
     } else {
-      first = roll20.firstBeat.ambush;
+      // a long weapon meets the ambush half way (items README §3 `ยาว`)
+      first = hero.weapon?.reach ? Math.ceil(roll20.firstBeat.ambush / 2) : roll20.firstBeat.ambush;
       side = 'foe';
     }
   }
@@ -150,6 +160,11 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
     } else {
       r = rng.int(1, 20);
       ok = r === 20 || (r !== 1 && r + pick.bonus >= pick.dc);
+      // the party beside the hero adds its share to the roll (bonds 01 §3: +3% a partner); the chance is spread over the rolls that failed
+      if (!ok && hero.party.rollPct && rng.chance(hero.party.rollPct / 100 / Math.max(0.05, Math.min(0.95, (pick.dc - pick.bonus - 1) / 20)))) {
+        ok = true;
+        r = Math.max(r, 2);
+      }
       if (!ok && rng.chance(reroll)) {
         const r2 = rng.int(1, 20);
         if (r2 === 20 || (r2 !== 1 && r2 + pick.bonus >= pick.dc)) {
@@ -265,6 +280,8 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   for (const id of foe.ids) if (!ext.met.includes(id)) ext.met.push(id);
   ext.dream = undefined;
   battleDone(ctx);
+  // the weapon in the hand wears and learns the names of the dead, the armour wears when the hero loses (items `afterBattle`)
+  if (result !== 'dead') afterBattle(ctx, { won: result !== 'lose', kills: killed ? foe.ids : [] });
   if (result === 'win' || result === 'flawless') ext.fights.win++;
   if (result === 'flawless') ext.fights.flawless++;
   if (result === 'talk') ext.fights.talk++;

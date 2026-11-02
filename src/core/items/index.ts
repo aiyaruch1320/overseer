@@ -2,12 +2,16 @@
 // forging as a story, the legendary weapons that are one each in the world, the ancient talismans in NPC hands, life tools.
 // State: `life.ext.items` (what is held and worn, wear, smith's marks), `god.ext.items` (the world's legends and talismans). What combat reads: `wielded`, `armorOf`,
 // `gearStats`, `gearTags`, `afterBattle`.
+import { onTags } from '../character';
 import type { System } from '../game';
 import { fresh, extOf } from './state';
 import { jobWeapons, releaseLegends, scan, shop, upkeep } from './gain';
 import { forgeBeat, forgeYear } from './forge';
 import { initTalismans, talismanStep } from './talisman';
-import { equip } from './wield';
+import { equip, gearTags } from './wield';
+
+// the tags of the gear he wears are tags of the character (items README §3 `#แท็ก`)
+onTags((ctx, life) => (ctx.state.life === life && ctx.data.weapons && ctx.data.items && ctx.data.materials ? gearTags(ctx) : []));
 
 export { wielded, armorOf, shieldMult, damageFloor, gearStats, gearTags, engravedBonus, worn, describe, nearAtHand, equip, type Wielded, type Armor } from './wield';
 export { afterBattle, grantable, shopMax, scan, jobWeapons, shop, upkeep, releaseLegends } from './gain';

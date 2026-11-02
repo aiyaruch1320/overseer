@@ -9,10 +9,14 @@ export const WOKEN_AGE = 17;
 /** The summoned hero appears at this age (01-origin.md §1 step 1ข). */
 export const SUMMONED_AGE = 16;
 
-/** Untimely death per life year from hAge 15 (god/06-implementation.md §4: assumption, about 21% die before 75). */
+/**
+ * Untimely death per life year from hAge 15 (god/06-implementation.md §4: assumption). The ways of the story that say the character dies (the
+ * elders ml.e1 sc.e1 ..., storyline DEATH_WAYS) add 12% of the lives before 70 once the journey lines open by their causes and every adult has a
+ * job; the yearly chance gives the rest of the 21% of lives that do not reach old age (M3 wiring, review/progress.md).
+ */
 export const UNTIMELY = {
   fromAge: 15,
-  perYear: 0.004,
+  perYear: 0.0015,
   /** Cause words for the ending text; assumption, the weights only colour the cause. */
   causes: [
     { id: 'illness', w: 5 },
@@ -101,4 +105,6 @@ export const JOBS = {
   slowChangeChance: 0.002,
   freedomChangeChance: 0.015,
   maxAptitudeLevel: 3,
+  /** A job the class favours weighs ×3 in the offer (economy/03-classes.md §4). */
+  classBoost: 3,
 };

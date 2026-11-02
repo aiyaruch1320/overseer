@@ -2,7 +2,9 @@
 //   income = base of the job × index of W × use of money (M) × class × swing
 //   net    = income − living − tax
 // All tables are read from data/gen/economy.json; the choices the docs leave open are in tuning.ts.
+import { extOf as bondageExt, heldIncomeBonus } from '../bondage';
 import type { Ctx } from '../game';
+import { toolBonus } from '../items';
 import type { Rng } from '../rng';
 import type { LifeState } from '../types';
 import { eco, REGIME_ORDER, CLASS_KEY, classNumber, type CountryEco, type EcoIndex, type MoneyUse, type RegimeId } from './data';
@@ -11,6 +13,9 @@ import {
   COMBAT_IDLE, FIELD_LIVING_MUL, FOOD_SHARE, GROUP_ROWS, HALF_PAY_JOBS, IDLE_INCOME_MUL, INCOME_SCALE, JOB_MUL, MERC_BEST, MERC_JOBS, OUTLAW, OUTLAW_JOBS, SPECIAL_SALARY, WORK_JOBS,
 } from './tuning';
 import { foodShock, trust, wOf } from './world';
+
+/** The level of bondage of the life now (0 free, 1 to 3), from the bondage system. */
+const bonded = (ctx: Ctx, life: LifeState): number => (ctx.state.life === life ? bondageExt(life).level : 0);
 
 const MONEY_DOWN: Record<MoneyUse, MoneyUse> = { full: 'mixed', mixed: 'little', little: 'little' };
 
@@ -106,7 +111,15 @@ export function grossIncome(ctx: Ctx, E: EcoIndex, life: LifeState, ext: Economy
       if (OUTLAW_JOBS.has(job.id)) swing = rng ? OUTLAW.swing[0] + (OUTLAW.swing[1] - OUTLAW.swing[0]) * rng.next() : (OUTLAW.swing[0] + OUTLAW.swing[1]) / 2;
       if (MERC_JOBS.has(job.id) && MERC_BEST.countries.includes(life.country)) base *= MERC_BEST.mul;
     }
-    income = free ? base : base * D.classMul[CLASS_KEY[n - 1]] * wi * mu * swing;
+    // a man in debt bondage (B1) earns by the lower class, ×0.8, and what he is bound to pay is taken by the bondage system; B2 and B3 are of the
+    // lowest class already (×0.2) (10-bondage.md §6)
+    const mul = bonded(ctx, life) === 1 ? D.classMul.low : D.classMul[CLASS_KEY[n - 1]];
+    income = free ? base : base * mul * wi * mu * swing;
+    if (!free && ctx.state.life === life) {
+      // the tools of a slow life add to its yield (items `toolBonus`, 0 to 0.5); a held person's work adds to a buyer's income (bondage, at most +15%)
+      if (job && (job.slow || E.groupOf(job) === 'slow')) income *= 1 + toolBonus(ctx);
+      income *= 1 + heldIncomeBonus(ctx) / 100;
+    }
     // 04 §4: under a feudal crown the second class owes two months of labour a year
     if (n === 2 && p.regime === 'monarchy') income *= 10 / 12;
   }

@@ -20,7 +20,7 @@ import type { NpcRow, NpcsFile } from '../../src/core/data/types-npcs';
 let data: GameData;
 let rows: NpcRow[];
 beforeAll(() => {
-  data = loadGen(['npcs', 'countries', 'continents', 'clashes']);
+  data = loadGen(['npcs', 'countries', 'continents', 'clashes', 'world-events', 'local-events', 'convergence']);
   rows = (data.npcs.items as NpcsFile).npcs;
 });
 

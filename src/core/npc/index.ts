@@ -3,8 +3,10 @@
 // Around them: the newcomers NT-01..54 (newcomers.ts), the ties between stories (ties.ts), the clashes with the main character
 // (clash.ts, the combat system plays them through `onClash`), illness and grudge (status.ts).
 // Rule kinds owned here: condition `npc` · effects `npc` `npcPath` (docs/guide/code-plan.md §12.4 task split).
+import { clash as playClash } from '../combat/clash';
 import type { System } from '../game';
 import { onCond, onEffect } from '../rules';
+import { onClash, type ClashDecision, type ClashReq } from './clash';
 import { adjustPath, initSlots, isAlive, meetNamed, meetZone, stepWorld } from './engine';
 import { slotsOf } from './types';
 
@@ -19,6 +21,22 @@ onEffect('npcPath', (ctx, e, src) => {
   const mc = src.sys === 'combat' || (src.id ?? '').startsWith('NF-');
   adjustPath(ctx, e.npc, e.path, e.op, e.n, e.unit, mc ? { kind: 'mc' } : src.sys === 'god' ? { kind: 'god' } : undefined);
 });
+
+/**
+ * The combat system plays the clashes (combat/07-npc-clashes.md): it fights the NPC and answers which standard result came out. The effects of that
+ * result are written back here (`applyClashOutcome`), so the combat system is asked not to apply them itself. A year that is full, or an NPC already
+ * met this season or twice, is a clash that does not open; an NPC with no row of enemies gets the default result.
+ */
+export function combatClashHandler(ctx: Parameters<typeof playClash>[0], req: ClashReq): ClashDecision {
+  const life = ctx.state.life;
+  // a world that loaded no combat data has no fights: the default result is drawn
+  if (!life || life.dead || !ctx.data.combat || !ctx.data.enemies) return undefined;
+  const r = playClash(ctx, req.clash.id, { opener: req.code, apply: false });
+  if (r.result === 'deferred' || r.result === 'closed') return 'veto';
+  if (r.result === 'unknown' || !r.kind) return undefined;
+  return { outcome: r.kind, index: r.index };
+}
+onClash(combatClashHandler);
 
 export const npcSystem: System = {
   name: 'npc',

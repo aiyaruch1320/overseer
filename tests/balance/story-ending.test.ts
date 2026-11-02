@@ -13,7 +13,7 @@ describe('how lives end and pace', () => {
   it(
     `${LIVES} lives`,
     () => {
-      const data = loadAll(['storylines', 'convergence', 'races', 'origin', 'countries', 'continents', 'traits', 'aptitudes', 'skills', 'blessings', 'curses', 'jobs', 'fates', 'clashes', 'economy', 'npcs', 'world-events', 'local-events', 'enemies', 'names', 'synonyms', 'templates-ending', 'weapons', 'items', 'materials', 'companions', 'god', 'combat', 'attention', 'forging', 'wish', 'templates-god']);
+      const data = loadAll();
       let endings = 0;
       let nodes = 0;
       let nodeYears = 0;
@@ -22,6 +22,8 @@ describe('how lives end and pace', () => {
       let battleYears = 0;
       let repeated = 0;
       let wars = 0;
+      let premature = 0;
+      let inBattle = 0;
       const causes: Record<string, number> = {};
       const closed: Record<string, number> = {};
       for (let seed = 1; seed <= LIVES; seed++) {
@@ -31,6 +33,8 @@ describe('how lives end and pace', () => {
         const st = s.game.state;
         const dead = st.life!.dead!;
         causes[dead.cause] = (causes[dead.cause] ?? 0) + 1;
+        if (dead.hAge < 70) premature++;
+        if (dead.cause === CAUSE.battle) inBattle++;
         if (dead.node) closed[dead.node] = (closed[dead.node] ?? 0) + 1;
 
         const told = st.log.filter((e) => e.sys === 'story' && e.kind === 'ending');
@@ -76,6 +80,8 @@ describe('how lives end and pace', () => {
           endingsPerLife: +(endings / LIVES).toFixed(3),
           nodesPerLife: +(nodes / LIVES).toFixed(2),
           warEndings: wars,
+          diedBefore70: +(premature / LIVES).toFixed(3),
+          diedInBattle: +(inBattle / LIVES).toFixed(3),
           nodeYearsOverCap: `${overCap} of ${nodeYears}`,
           mostNodesInAYear: widest,
           yearsWithBattles: battleYears,
@@ -89,6 +95,11 @@ describe('how lives end and pace', () => {
       expect(overCap / nodeYears).toBeLessThan(0.01);
       // (the last year holds LAST_YEAR_EXTRA more, and the end of the life, e2, is never kept out)
       expect(widest).toBeLessThanOrEqual(NODES_PER_YEAR + LAST_YEAR_EXTRA + 1);
+      // about 21% do not reach old age (god/06-implementation.md §4): the untimely deaths of the years (character UNTIMELY) and the ways of the story that say the
+      // character dies (the elders ml.e1 sc.e1 wd.e1 ...) together; the lives that end in battle (the fights and those ways) are a tenth at most
+      expect(premature / LIVES).toBeGreaterThan(0.15);
+      expect(premature / LIVES).toBeLessThan(0.3);
+      expect(inBattle / LIVES).toBeLessThan(0.12);
       // most lives are told an ending
       expect(endings / LIVES).toBeGreaterThan(0.6);
     },

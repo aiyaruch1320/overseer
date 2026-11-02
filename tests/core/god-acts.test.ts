@@ -162,9 +162,9 @@ describe('prayer kinds', () => {
     a.rel['mc.grudge'] = 0;
     expect(holdsKind(ctx, 'vengeance')).toBe(false);
     a.rel['mc.known'] = 3;
-    a.born = st.clock.worldYear - a.span;
+    a.sick = st.clock.worldYear; // gravely ill by the NPC system's reckoning
     expect(holdsKind(ctx, 'kin_sick')).toBe(true);
-    a.born = st.clock.worldYear;
+    a.sick = undefined;
     expect(holdsKind(ctx, 'kin_sick')).toBe(false);
   });
 });
@@ -248,7 +248,7 @@ describe('answering a prayer', () => {
     if (npc && (kind === 'kin_sick' || kind === 'vengeance')) {
       const slot = slotsOf(st)[npc];
       slot.rel['mc.known'] = 9;
-      if (kind === 'kin_sick') slot.born = st.clock.worldYear - slot.span; // old enough to be gravely ill
+      if (kind === 'kin_sick') slot.sick = st.clock.worldYear; // gravely ill by the NPC system's reckoning
       else slot.rel['mc.grudge'] = 9;
       return;
     }
@@ -383,6 +383,7 @@ describe('answering a prayer', () => {
     const span = sa.span;
     run(ctx, 'prayer.answer', { id: card(ctx, 'kin_sick', a).n, answer: 'give' });
     expect(sa.span).toBeGreaterThan(span);
+    expect(sa.sick).toBeUndefined(); // the NPC system's cure: the illness is gone
     expect(sa.status).toBe('alive');
     const genB = slotsOf(st)[b].gen;
     run(ctx, 'prayer.answer', { id: card(ctx, 'kin_sick', b).n, answer: 'punish' });
@@ -1107,7 +1108,7 @@ describe('prayers follow the state of the character (M2 review G5 L5)', () => {
     const id = ids[0];
     const slot = slotsOf(st)[id];
     slot.rel['mc.known'] = 9;
-    slot.born = st.clock.worldYear - slot.span;
+    slot.sick = st.clock.worldYear;
     const c = put(ctx, 'kin_sick', id);
     expect(run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }, false).ok).toBe(true);
     slot.status = 'dead';
@@ -1270,5 +1271,64 @@ describe('the chest compensator counts chests, not rolls (M2 review L6)', () => 
       expect(afterOpen).toBeGreaterThanOrEqual(-5);
       st.god.chest = null;
     }
+  });
+});
+
+describe('the acts use the systems they act on (M3 wiring)', () => {
+  it('the sick and the nemeses are the NPC system\'s, and the deeds of the god are its deeds', async () => {
+    const { ctx, st } = mk(21);
+    const npc = await import('../../src/core/npc');
+    const { sickInCircle, nemeses, killNpc, healNpc } = await import('../../src/core/god/acts/npcs');
+    const slots = slotsOf(st);
+    const ids = Object.keys(slots).filter((k) => slots[k].status === 'alive').sort();
+    const [a, b, c] = ids;
+    // an old holder the character knows is sick for the NPC system and so for the prayer; one he does not know is not in the circle
+    slots[a].sick = st.clock.worldYear;
+    slots[a].rel['mc.known'] = 3;
+    slots[b].sick = st.clock.worldYear;
+    slots[b].rel['mc.known'] = 0;
+    expect(sickInCircle(ctx)).toContain(a);
+    expect(sickInCircle(ctx)).not.toContain(b);
+    expect(npc.sickNpcs(ctx)).toContain(b);
+    slots[c].rel['mc.grudge'] = 3;
+    expect(nemeses(ctx)).toEqual(npc.nemeses(ctx));
+    expect(nemeses(ctx)).toContain(c);
+    // the cure takes the illness away, the kill is a kill by the god (the position gets a successor)
+    expect(healNpc(ctx, a, 0)).toBe(true);
+    expect(npc.isSick(ctx, a)).toBe(false);
+    const gen = slots[c].gen;
+    expect(killNpc(ctx, c, 'ฟ้าผ่า')).toBe(true);
+    expect(slots[c].gen).toBe(gen + 1); // dead, and a successor holds the post
+  });
+
+  it('a prayer of hit points moves the hit points of the combat system and never kills', async () => {
+    const { ctx, st } = mk(22);
+    const life = st.life!;
+    const { hpOf, maxHpOf, addHp } = await import('../../src/core/combat');
+    addHp(ctx, life, -20);
+    const low = hpOf(ctx, life);
+    applyFx(ctx, 'hp+10');
+    expect(hpOf(ctx, life)).toBe(Math.min(maxHpOf(ctx, life), low + 10));
+    applyFx(ctx, 'hp-9999');
+    expect(hpOf(ctx, life)).toBe(1);
+    expect(life.dead).toBeUndefined();
+  });
+
+  it('the prayers for a lover and a child reach the bond system: a partner and a child are born', async () => {
+    const { ctx, st } = mk(23);
+    const life = st.life!;
+    life.hAge = 28;
+    const bonds = await import('../../src/core/bonds');
+    const { reindex } = await import('../../src/core/bonds/state');
+    const e = bonds.extOf(life);
+    const before = { ties: bonds.tiesOf(e).length, children: e.children.length };
+    applyFx(ctx, 'rel:+lover');
+    reindex(e);
+    expect(e.partner).not.toBeNull();
+    expect(bonds.tiesOf(e).find((t) => t.id === e.partner)!.line).toBe('คนรัก');
+    applyFx(ctx, 'child');
+    reindex(e);
+    expect(e.children.length).toBe(before.children + 1);
+    expect(bonds.tiesOf(e).length).toBeGreaterThan(before.ties);
   });
 });

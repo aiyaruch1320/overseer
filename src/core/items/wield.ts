@@ -131,7 +131,8 @@ export function describe(ctx: Ctx, life: LifeState, w: Weapon, ex: ItemsExt = ex
 // ---------- scores ----------
 
 function tagAffinity(ctx: Ctx, life: LifeState, tags: readonly string[]): number {
-  const mine = tagsOf(ctx, life);
+  // the tags the character has without the gear: a piece is not liked for the tags it brings itself
+  const mine = tagsOf(ctx, life, { gear: false });
   let n = 0;
   for (const t of tags) if (mine.has(t.replace(/^#/, ''))) n += 1;
   return n;

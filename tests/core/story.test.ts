@@ -5,9 +5,10 @@ import type { ConvergenceData, Ending, StoryNodeX, StorylinesData } from '../../
 import { onCond, onEffect, onStat, resetRules, test } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { write } from '../../src/core/log';
-import { onNode, openLine, registerStoryRules, storySystem } from '../../src/core/story';
-import { fresh } from '../../src/core/story/state';
-import { BATTLES_PER_YEAR, CAUSE, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
+import { onNode, openLine, registerStoryRules, setPlaceGate, storySystem } from '../../src/core/story';
+import { fresh, extOf as storyExtOf, yearOf } from '../../src/core/story/state';
+import { indexOf as storyIndex } from '../../src/core/story/data';
+import { BATTLES_PER_YEAR, CAUSE, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
 import type { Choice, Condition, Effect, LifeState } from '../../src/core/types';
 
 // ---------- a toy character system and the conditions other systems would answer ----------
@@ -36,6 +37,53 @@ function mocks() {
   onCond('era', (c, x) => c.state.world.era >= x.min && c.state.world.era <= (x.max ?? 9));
   onCond('half', () => false);
   onStat('gold', { read: (c) => life(c).gold, add: (c, _n, d) => void (life(c).gold += d) });
+  standIns();
+}
+
+/**
+ * The effects that belong to other systems (combat: `battle` `battleFor`; bonds: `mood` `template` `bond`), answered by a stand-in so that the story is
+ * tested alone: a battle is one roll of win, lose or flee, at most BATTLES_PER_YEAR a year and an enemy once a year; the other three are a log entry.
+ */
+/** The enemies the notes of the node being played name for the way it took (what the combat system reads the same way). */
+function notesEnemies(list: readonly Effect[], key: string, out: Set<string> = new Set()): Set<string> {
+  for (const e of list) {
+    if (e.k === 'battleFor' && e.choices.includes(key as 'a')) e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'battle') e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'if' || e.k === 'only' || e.k === 'chance') notesEnemies(e.then, key, out);
+    else if (e.k === 'pick') e.of.forEach((b) => notesEnemies(b.effects, key, out));
+  }
+  return out;
+}
+
+function standIns() {
+  const fight = (ctx: Parameters<Parameters<typeof onEffect>[1]>[0], enemiesIn: readonly string[], src: { id?: string }, text?: string) => {
+    const l = ctx.state.life!;
+    const ex = storyExtOf(l);
+    let enemies = enemiesIn;
+    if (!enemies.length) {
+      const node = src.id ? storyIndex(ctx).nodes.get(src.id) : undefined;
+      const cur = ex.cur;
+      enemies = node && cur && cur.id === node.id && cur.choice !== '-' ? [...notesEnemies(node.notes, cur.choice)] : [];
+      if (!enemies.length) return void write(ctx.state, { sys: 'story', kind: 'battleSkip', id: src.id, data: { why: 'none', text: text ?? null }, level: 0 });
+    }
+    const year = yearOf(ex, l);
+    const fresh = enemies.filter((e) => !year.fought.includes(e));
+    if (!fresh.length || year.battles >= BATTLES_PER_YEAR) return;
+    year.battles++;
+    year.fought.push(...fresh);
+    const i = ctx.rng('life.story.battle').weighted([0.6, 0.25, 0.15]);
+    const result = i === 0 ? 'win' : i === 1 ? 'lose' : 'flee';
+    ex.battles[result]++;
+    write(ctx.state, { sys: 'story', kind: 'battle', id: fresh.join(','), data: { result, enemies: fresh.join(','), node: src.id ?? null, text: text ?? null }, level: 2 });
+  };
+  onEffect('battle', (ctx, e, src) => fight(ctx, e.enemies, src, e.text));
+  onEffect('battleFor', (ctx, e, src) => {
+    const cur = storyExtOf(ctx.state.life!).cur;
+    if (cur && cur.choice !== '-' && e.choices.includes(cur.choice)) fight(ctx, e.enemies, src, e.role);
+  });
+  onEffect('mood', (ctx, e, src) => write(ctx.state, { sys: 'story', kind: 'mood', id: e.line, data: { mood: e.mood, node: src.id ?? null }, level: 1 }));
+  onEffect('template', (ctx, e, src) => write(ctx.state, { sys: 'story', kind: 'template', id: e.code, data: { node: src.id ?? null }, level: 1 }));
+  onEffect('bond', (ctx, e, src) => write(ctx.state, { sys: 'story', kind: 'bond', id: e.line, data: { node: src.id ?? null }, level: 1 }));
 }
 
 function person(race = 'human', patch: Partial<LifeState> = {}): LifeState {
@@ -961,5 +1009,40 @@ describe('the lines that read what the god did', () => {
     g.state.life!.traits.push('f3');
     until(g, 25);
     expect(g.state.life!.passed['dp.a1']).toBe('a');
+  });
+});
+
+describe('lines and places that belong to other systems', () => {
+  it('the journey lines, the bondage lines and the economy line have no rate of their own: they open only through openLine', () => {
+    for (const l of ['sf', 'ps', 'ml', 'sc', 'ex', 'wd', 'xc', 'bd', 'bo', 'ab', 'ec']) {
+      expect(EXTERNAL_LINES.has(l), l).toBe(true);
+      expect(OPEN_RATE[l], l).toBeUndefined();
+    }
+  });
+
+  it('a way that names a country the travel filters shut is weighed down, not cut', () => {
+    const data = mini([node('hu.b1', [10, 10], [choice('a', 50), choice('b', 50, { effects: [{ k: 'place', ids: ['AL-02'] }] })])]);
+    const share = () => {
+      let b = 0;
+      for (let seed = 1; seed <= 200; seed++) if (play(seed, data, person()).state.life!.passed['hu.b1'] === 'b') b++;
+      return b / 200;
+    };
+    mocks();
+    const open = share();
+    setPlaceGate(() => false);
+    try {
+      const shut = share();
+      expect(open).toBeGreaterThan(0.4);
+      expect(shut).toBeGreaterThan(0.05);
+      expect(shut).toBeLessThan(0.3);
+    } finally {
+      setPlaceGate(null);
+    }
+    setPlaceGate(() => true);
+    try {
+      expect(share()).toBeGreaterThan(0.4);
+    } finally {
+      setPlaceGate(null);
+    }
   });
 });

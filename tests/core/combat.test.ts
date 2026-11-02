@@ -13,6 +13,9 @@ import type { Scene } from '../../src/core/combat/stance';
 import { RESCUE } from '../../src/core/combat/tuning';
 import { sortSystems, type Ctx, type GameData } from '../../src/core/game';
 import { actsOf } from '../../src/core/god/acts';
+import { addTie as addBondTie, extOf as bondsExtOf, joinParty } from '../../src/core/bonds';
+import { armorOf, equip, itemsExt, scan, wielded } from '../../src/core/items';
+import { openClash, canClash, clashesOf, slotsOf, triggersOf } from '../../src/core/npc';
 import { apply, readStat } from '../../src/core/rules';
 import { CAUSE, BATTLES_PER_YEAR } from '../../src/core/story/tuning';
 import type { LifeState } from '../../src/core/types';
@@ -56,6 +59,9 @@ function mk(seed = 1, p: Patch = {}): { s: Session; ctx: Ctx; life: LifeState } 
   charExt(life).raceTags = [];
   charExt(life).companions = [];
   charExt(life).hpBonus = 0;
+  // the items system picks what the hero holds (what combat reads is items `wielded` and `armorOf`)
+  scan(g.ctx, life);
+  equip(g.ctx, life);
   combatOf(life).hp = maxHpOf(g.ctx, life);
   return { s, ctx: g.ctx, life };
 }
@@ -155,7 +161,7 @@ describe('the weakness matrix (02-type-matrix.md)', () => {
   });
 
   it('shows in the roll: light magic against a wraith rolls +6, a bare sword has no stance that can touch it', () => {
-    const { ctx, life } = mk(1, { aptitudes: { light: 2, sword: 1 }, stats: { mag: 14 } });
+    const { ctx, life } = mk(1, { aptitudes: { light: 2, sword: 1 }, stats: { mag: 14 }, items: ['ws_longsword'] });
     const rows = stanceBonuses(scene(ctx, life, ['wraith']));
     const magic = rows.find((r) => r.id === 'magic')!;
     const melee = rows.find((r) => r.id === 'melee')!;
@@ -168,7 +174,7 @@ describe('the weakness matrix (02-type-matrix.md)', () => {
 
   it('works on the result: the same hero wins far more often with the right tag than with the wrong one', () => {
     const right = winRate(3, { aptitudes: { light: 2 }, stats: { mag: 14 } }, ['wraith'], 150);
-    const wrong = winRate(3, { aptitudes: { sword: 2 }, stats: { pow: 14 } }, ['wraith'], 150);
+    const wrong = winRate(3, { aptitudes: { sword: 2 }, stats: { pow: 14 }, items: ['ws_longsword'] }, ['wraith'], 150);
     expect(right).toBeGreaterThan(0.5);
     expect(wrong).toBeLessThan(0.1);
     // and an enemy that takes the other tag: water on the salamander, fire on the troll
@@ -284,7 +290,7 @@ describe('the stances (01-core.md §3)', () => {
   });
 
   it('a dream before the fight names a stance ×3; the whisper "จุดอ่อนของศัตรู" makes the stance that hits the weak point ×3 and is spent by the fight', () => {
-    const m = mk(1, { aptitudes: { sword: 1, light: 1 }, stats: { mag: 12 } });
+    const m = mk(1, { aptitudes: { sword: 1, light: 1 }, stats: { mag: 12 }, items: ['ws_longsword'] });
     const weigh = (over: Partial<Scene> = {}, opts = {}) => {
       const sc = scene(m.ctx, m.life, ['skeleton'], { opts, ...over });
       const list = stanceOptions(sc);
@@ -615,7 +621,7 @@ describe('the hit points', () => {
   });
 });
 
-describe('the fights of the story (the seam of story/battle-stub.ts)', () => {
+describe('the fights of the story (the effects battle and battleFor are owned here)', () => {
   const battleFx = (...enemies: string[]) => ({ k: 'battle' as const, enemies });
 
   it('a battle row is fought by this system: combat/battle entries, none from the stand-in', () => {
@@ -1040,6 +1046,85 @@ describe('a whole life with the system', () => {
       for (const e of log) if (e.sys === 'combat') for (const v of Object.values(e.data)) expect(['string', 'number', 'boolean'].includes(typeof v) || v === null).toBe(true);
     }
     expect(battles).toBeGreaterThan(20);
-    expect(preludes).toBeGreaterThan(0); // TODO M3: only 2 in 6 lives once economy and npc run (was > 3 on the combat branch)
+    // 1.6 calls a life for a human of year 120 with every system (1.2 of the story's named fights, 0.4 of NPC clashes); tests/balance/combat.test.ts measures about 3 named
+    // story fights over all the races. Fewer than on the combat branch (> 3): the journey lines open by their causes and the lives of the fixed jobs fight less.
+    expect(preludes).toBeGreaterThan(2);
+  });
+});
+
+describe('what the other systems give a fight (items, bonds, npc)', () => {
+  it('the weapon and the armour are the ones the items system says are on the hero', () => {
+    const { ctx, life } = mk(7, { aptitudes: { sword: 2 }, items: ['ws_longsword', 'ar_hard_leather'] });
+    const hero = buildHero(ctx, life);
+    expect(hero.weapon!.id).toBe(wielded(ctx).id);
+    expect(hero.melee!.id).toBe(wielded(ctx).id);
+    expect(hero.power).toBe(wielded(ctx).power);
+    expect(hero.armor.id).toBe(armorOf(ctx).id);
+    expect(hero.armor.defense).toBeGreaterThan(0);
+  });
+
+  it('armour lowers the damage of a lost beat (×(1 − 0.04 N)) and a shield lowers it more in the guard stance, never below ×0.35', () => {
+    const foe = (ctx: Ctx) => dragonFoe(ctx, 'test', 30);
+    const spent = () => ({ guard: false, share: false });
+    const bare = mk(8, { aptitudes: { sword: 2 }, items: ['ws_longsword'] });
+    const mail = mk(8, { aptitudes: { sword: 2 }, items: ['ws_longsword', 'ar_chain_shirt'] });
+    const d0 = damageOf(bare.ctx, buildHero(bare.ctx, bare.life), foe(bare.ctx), 'melee', spent());
+    const d1 = damageOf(mail.ctx, buildHero(mail.ctx, mail.life), foe(mail.ctx), 'melee', spent());
+    expect(armorOf(mail.ctx).defense).toBeGreaterThan(0);
+    expect(d1).toBeLessThan(d0);
+    const shielded = mk(8, { aptitudes: { sword: 2, shield: 2 }, items: ['ar_round_shield'] });
+    const g0 = damageOf(bare.ctx, buildHero(bare.ctx, bare.life), foe(bare.ctx), 'guard', spent());
+    const g1 = damageOf(shielded.ctx, buildHero(shielded.ctx, shielded.life), foe(shielded.ctx), 'guard', spent());
+    expect(g1).toBeLessThan(g0);
+    expect(g1).toBeGreaterThanOrEqual(Math.floor(d0 * 0.35 * 0.5));
+  });
+
+  it('a fight is told to the items system afterwards: the weapon in the hand counts a use', () => {
+    const m = mk(9, { aptitudes: { sword: 2 }, items: ['ws_longsword'] });
+    const id = wielded(m.ctx).id;
+    const before = itemsExt(m.life).uses[id] ?? 0;
+    fight(m.ctx, ['slime'], { log: false, lethal: false });
+    expect(itemsExt(m.life).uses[id] ?? 0).toBe(before + 1);
+  });
+
+  it('the party of the hero fights beside him: people for the roll, a cut of the damage', () => {
+    const m = mk(10, { aptitudes: { sword: 2 }, items: ['ws_longsword'] });
+    const alone = buildHero(m.ctx, m.life);
+    expect(alone.party.members).toBe(0);
+    const t = addBondTie(m.ctx, m.life, { line: 'คู่หู', level: 4, from: 'test', race: 'same' });
+    expect(joinParty(m.ctx, m.life, bondsExtOf(m.life), t)).toBe(true);
+    const together = buildHero(m.ctx, m.life);
+    expect(together.party.members).toBe(1);
+    expect(together.party.cutPct).toBeGreaterThan(0);
+    const foe = foeOf(m.ctx, ['ogre'])!;
+    const spent = () => ({ guard: false, share: false });
+    expect(damageOf(m.ctx, together, foe, 'melee', spent())).toBeLessThanOrEqual(damageOf(m.ctx, alone, foe, 'melee', spent()));
+    // with no word of the caller the people of the party are the allies of the fight
+    const sc = scene(m.ctx, m.life, ['ogre'], { opts: { allies: together.party.members } });
+    expect(stanceBonuses(sc).find((r) => r.id === 'melee')!.bonus).toBeGreaterThan(stanceBonuses(scene(m.ctx, m.life, ['ogre'])).find((r) => r.id === 'melee')!.bonus);
+  });
+
+  it('a clash the NPC system opens is played by this system (the handler of npc), and its result is written back once', () => {
+    let played = 0;
+    for (let seed = 1; seed <= 12 && !played; seed++) {
+      const m = mk(600 + seed, { aptitudes: { sword: 3 }, items: ['ws_longsword'], stats: { pow: 20, vit: 20 } });
+      const state = m.s.game.state;
+      const slots = slotsOf(state);
+      const id = Object.keys(slots).find((k) => {
+        const sl = slots[k];
+        return sl.status === 'alive' && clashesOf(m.ctx, k).some((c) => triggersOf(c).some((t) => t.code === 'B'));
+      });
+      if (!id) continue;
+      m.life.country = slots[id].place!;
+      if (!canClash(m.ctx, slots[id])) continue;
+      const mark = state.logN;
+      const kind = openClash(m.ctx, id, 'B');
+      const log = state.log.filter((e) => e.n >= mark);
+      if (kind === null) continue;
+      expect(log.filter((e) => e.sys === 'combat' && e.kind === 'clash').length).toBe(1);
+      expect(log.filter((e) => e.sys === 'npc' && (e.data as { what?: string }).what === 'clash').length).toBe(1);
+      played++;
+    }
+    expect(played).toBeGreaterThan(0);
   });
 });

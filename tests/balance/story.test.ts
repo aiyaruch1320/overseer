@@ -1,16 +1,18 @@
 // Balance targets of the story system (code-plan §7 row "story"): about 31 to 33 nodes per life for every race, and the rule-based
 // director raises callbacks (a way that ties back to someone or something this life already met) by at least 30%.
 // The test life is the one scripts/sim/sim-life.mjs walks: it lives to hAge 75, nothing kills it earlier, every condition of a
-// node holds (the sim ignores node conditions), and the journey lines open at the sim's rates.
+// node holds (the sim ignores node conditions), and the journey and bondage lines open at the sim's rates (those lines belong to travel and
+// bondage in the core and open only through `openLine`; the test gives them back to the story for the length of this file).
 // Run: npx vitest run tests/balance/story.test.ts   (slow: about a minute)
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
 import { Game, type GameData, type System } from '../../src/core/game';
 import { onCond, onEffect, onStat, resetRules } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { registerStoryRules, storySystem } from '../../src/core/story';
+import { EXTERNAL_LINES, OPEN_RATE } from '../../src/core/story/tuning';
 import type { LifeState } from '../../src/core/types';
 
 const RACES = ['human', 'elf', 'darkelf', 'dwarf', 'orc', 'halfling', 'beast', 'naga', 'dragonkin', 'vampire', 'fae', 'slime', 'demonkin', 'merfolk', 'winged', 'giant', 'lavakin', 'construct', 'soulmachine', 'mummy', 'ghoul'];
@@ -27,9 +29,18 @@ const toy: System = {
   },
 };
 
+/** The rates of scripts/sim/sim-life.mjs OVERLAY_RATE and XC_RATE for the lines that other systems own. */
+const SIM_RATE: Record<string, number> = { sf: 0.08, ps: 0.06, ml: 0.08, sc: 0.08, ex: 0.1, wd: 0.08, bd: 0.05, bo: 0.04, ab: 0.12, xc: 0.45 };
+
 function mockRules() {
   resetRules();
   registerStoryRules();
+  for (const [l, r] of Object.entries(SIM_RATE)) {
+    OPEN_RATE[l] = r;
+    (EXTERNAL_LINES as Set<string>).delete(l);
+  }
+  // the effects that belong to combat and bonds: the sim has no battles or bonds
+  for (const k of ['battle', 'battleFor', 'mood', 'template', 'bond'] as const) onEffect(k, () => undefined);
   const life = (c: { state: { life: LifeState | null } }) => c.state.life!;
   // the sim opens the journey, craft and trade lines by chance, so every job counts, except the labour jobs of the economy line `wk` that the sim does not walk
   onCond('has', (c, x) => (x.kind === 'job' && !['miner', 'laborer', 'factory_worker'].includes(x.id)) || [...life(c).traits, ...life(c).blessings, ...life(c).curses, ...life(c).skills].includes(x.id));
@@ -116,6 +127,12 @@ function simTable(): number[] {
 
 describe('story balance', () => {
   beforeAll(mockRules);
+  afterAll(() => {
+    for (const l of Object.keys(SIM_RATE)) {
+      delete OPEN_RATE[l];
+      (EXTERNAL_LINES as Set<string>).add(l);
+    }
+  });
 
   it('a life meets about 31 to 33 nodes, for every race', () => {
     const rows: string[] = [];

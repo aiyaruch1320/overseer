@@ -10,7 +10,7 @@ import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
 import { entryWeight, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
+import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -133,6 +133,12 @@ function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boole
     const span = ageWindow(ex, life, line, n);
     if (life.hAge < span.lo) return;
     if (!decideOpen(ctx, ex, ix, line)) return;
+    // an overlay line that waited for a free place (one journey at a time) or for its cause comes to a node whose age is long past: the node is lost, as the
+    // nodes of a line that read the god's history are (`rolling`); the first contract of a mercenary is not signed at 59 (M3 wiring)
+    if (line !== ex.line && life.hAge > span.hi + LATE_OVERLAY_YEARS) {
+      skip(ctx, ex, n.id, 'late');
+      continue;
+    }
     const when = (ex.fire[n.id] ??= ctx.rng('life.story').int(Math.min(Math.max(span.lo, life.hAge), span.hi), span.hi));
     if (life.hAge < when) return;
     // the year is full: the node waits for the next one, a few years past its table age (or past the year it first came due) at most;
@@ -270,13 +276,20 @@ function pairOpens(ctx: Ctx, ex: StoryExt, pairs: [string, string][]): boolean {
   return pairs.some(([a, b]) => a === ex.line && tokens.includes(b));
 }
 
-/** Opens an overlay line from outside the story system (economy for ec, travel for the journey lines ...). */
-export function openLine(ctx: Ctx, line: string): void {
+/**
+ * Opens an overlay line from outside the story system (economy for ec, travel for the journey lines ...). A line is not opened when the character
+ * is past every node of it but the elders (stage e): the veteran of a road he never walked. Returns whether it was opened.
+ */
+export function openLine(ctx: Ctx, line: string): boolean {
   const life = lifeOf(ctx);
-  if (!life) return;
+  if (!life) return false;
+  const ix = indexOf(ctx);
+  const nodes = ix.seq.get(line);
+  if (nodes?.length && !nodes.some((n) => n.stage !== 'e' && n.age[1] >= life.hAge)) return false;
   const ex = extOf(life);
   addOnce(ex.external, line);
   delete ex.open[line];
+  return true;
 }
 
 // ---------- firing a node ----------

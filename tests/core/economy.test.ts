@@ -12,6 +12,8 @@ import { Game, versions, type Ctx } from '../../src/core/game';
 import { registered, apply, test as holds } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { storySystem } from '../../src/core/story';
+import { extOf as bondageOf } from '../../src/core/bondage';
+import { itemsSystem, toolBonus } from '../../src/core/items';
 import type { LifeState } from '../../src/core/types';
 
 const data = loadGen();
@@ -314,6 +316,54 @@ describe('income, living cost and tax (04-income-and-living.md)', () => {
     expect(at('c3', 'pilgrim') / common).toBeCloseTo(0.8 * 0.5, 6); // religion ×0.8, and half the formula
     // secret jobs have no formula
     expect(at('c3', 'godslayer')).toBe(0);
+  });
+
+  it('adds the yield of the tools of a slow life, the work of a held person, and takes B1 by the lower class (items, bondage)', () => {
+    const { ctx, life } = lifeIn(1, 'NR-03', { job: 'farm_owner', cls: 'c3' }, [characterSystem, economySystem, itemsSystem]);
+    const ix = E(ctx);
+    const ext = extOf(life);
+    const place = placeOf(ctx, ix, 'NR-03')!;
+    expect(ix.groupOf(ix.jobs.get('farm_owner')!)).toBe('slow');
+    life.items = [];
+    const plain = grossIncome(ctx, ix, life, ext, place);
+    life.items = ['lt_hoe', 'lt_spade'];
+    const bonus = toolBonus(ctx);
+    expect(bonus).toBeGreaterThan(0);
+    expect(grossIncome(ctx, ix, life, ext, place)).toBeCloseTo(plain * (1 + bonus), 6);
+    // a tool of another trade does nothing, and a trade that is not slow takes no tool
+    life.job = 'smith';
+    life.items = ['lt_hoe'];
+    expect(grossIncome(ctx, ix, life, ext, place)).toBeCloseTo(22 * INCOME_SCALE, 6);
+    // a held person adds 10% when treated well (at most 15%)
+    life.items = [];
+    life.job = 'smith';
+    const base = grossIncome(ctx, ix, life, ext, place);
+    bondageOf(life).held.push({ id: 'H1', name: 'x', since: 20, good: true, trust: 0, price: 50 } as never);
+    expect(grossIncome(ctx, ix, life, ext, place)).toBeCloseTo(base * 1.1, 6);
+    bondageOf(life).held = [];
+    // B1 earns by the lower class (×0.8) whatever the class of the life, B2 and B3 by the class of the bondless (×0.2, class 1)
+    life.cls = 'c1';
+    bondageOf(life).level = 1;
+    expect(grossIncome(ctx, ix, life, ext, place) / base).toBeCloseTo(0.8, 6);
+    bondageOf(life).level = 2;
+    expect(grossIncome(ctx, ix, life, ext, place) / base).toBeCloseTo(0.2, 6);
+  });
+
+  it('does not take the fare of the travel system again: the gold left with it, the year counts it as a fare, not as a loss', () => {
+    const { g, life } = lifeIn(2, 'NR-03', { job: 'smith', cls: 'c3', hAge: 25 }, [characterSystem, economySystem]);
+    const ext = extOf(life);
+    life.ext.travel = { spent: 0 };
+    economyYear(g.ctx);
+    const loss = ext.flows.loss;
+    life.gold = Math.max(life.gold, 100);
+    ext.mark = life.gold;
+    life.gold -= 40; // a journey: the travel system took 40 and wrote it down
+    (life.ext.travel as { spent: number }).spent = 40;
+    life.hAge += 1;
+    economyYear(g.ctx);
+    expect(ext.flows.fare).toBe(40);
+    expect(ext.flows.loss).toBeCloseTo(loss, 6);
+    expect(ext.fareSeen).toBe(40);
   });
 
   it('pays a noble from the land, not from a job (04 §2)', () => {

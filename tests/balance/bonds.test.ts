@@ -127,7 +127,8 @@ describe('bonds balance (docs/systems/bonds/01 §6)', () => {
 
   it('at least 85% of the lives that never leave the country have a line at level 3 or more at 40', () => {
     const still = rows.filter((r) => !r.moved && !r.everBound && r.any3At40 !== undefined);
-    expect(still.length).toBeGreaterThan(LIVES * 0.6);
+    // lives that never leave: a third of them once the travel system sends people out by its causes (it only has to leave a sample to measure)
+    expect(still.length).toBeGreaterThan(LIVES * 0.25);
     expect(still.filter((r) => r.any3At40).length / still.length).toBeGreaterThanOrEqual(0.85);
   });
 

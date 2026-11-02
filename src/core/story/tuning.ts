@@ -17,14 +17,13 @@ export const RACE_LINE: Record<string, string> = {
 export const XC_LINE = 'xc';
 
 /**
- * Share of lives that open an overlay line, from scripts/sim/sim-life.mjs OVERLAY_RATE and XC_RATE (travel/01-travel-rules.md §2 and
- * storylines/25-journeys.md §3 for the journey lines; bd bo ab are the sim's own guesses). The rate is read as "chance that a life
- * opens the line once its condition holds", so a life that never meets the condition opens nothing; the travel, economy, bonds and
- * bondage systems (M3) will replace the roll with their own causes through `openLine`.
+ * Share of lives that open an overlay line, from scripts/sim/sim-life.mjs OVERLAY_RATE (storylines/25-journeys.md §3). The rate is read as
+ * "chance that a life opens the line once its condition holds", so a life that never meets the condition opens nothing. The lines whose
+ * cause belongs to another system are not here but in EXTERNAL_LINES: they open only through `openLine`.
  */
 export const OPEN_RATE: Record<string, number> = {
-  sf: 0.08, ps: 0.06, ml: 0.08, sc: 0.08, ex: 0.1, wd: 0.08, tr: 0.15, cr: 0.12, md: 0.06, ld: 0.06, fm: 0.3,
-  bd: 0.05, bo: 0.04, ab: 0.12, bn: 0.85, kn: 0.6, le: 0.1, xc: 0.45,
+  tr: 0.15, cr: 0.12, md: 0.06, ld: 0.06, fm: 0.3,
+  bn: 0.85, kn: 0.6, le: 0.1,
 };
 
 /** Overlay lines whose opening rule is a plain condition, not a share of lives (no rate). Conditions come from the documents. */
@@ -43,11 +42,13 @@ export const OPEN_COND: Record<string, Condition> = {
 /**
  * Lines the story system never opens by itself because another system owns the cause. They open through `openLine(ctx, line)`:
  *  ec: 24-economy.md says "every character", which would add 9 nodes per life on top of the 31 to 33 of the code-plan target;
- *      the economy system (M3) decides when it joins.
+ *      the economy system decides when it joins.
+ *  sf ps ml sc ex wd xc: the journey lines, opened by the travel system (travel/01-travel-rules.md §2).
+ *  bd bo ab: the bondage system opens them (economy/10-bondage.md).
  *  mr dp: after the god acted (god/04-miracles.md, god/03-dreams.md): only when the god chronicle is not empty.
  *  hr: heirs (lineage has an earlier life).
  */
-export const EXTERNAL_LINES: ReadonlySet<string> = new Set(['ec']);
+export const EXTERNAL_LINES: ReadonlySet<string> = new Set(['ec', 'sf', 'ps', 'ml', 'sc', 'ex', 'wd', 'xc', 'bd', 'bo', 'ab']);
 
 /** Lines whose opening depends on the state, not on a condition tree. */
 export const OPEN_PRED: Record<string, (s: { lives: number; chronicle: number }) => boolean> = {
@@ -87,8 +88,11 @@ export const DIRECTOR_CAP = 2;
 /** Eight lines of director memory (llm/04-story.md §3.1 rule 2). */
 export const MEMORY_LINES = 8;
 
-/** Battle stand-in until the combat system (M3): win, lose, flee. */
-export const BATTLE_ODDS = { win: 0.6, lose: 0.25, flee: 0.15 } as const;
+/**
+ * A way that moves the character to a country the travel filters shut (travel `canGo` is false) is weighed this much of what it is written:
+ * the move would be refused, so the way is rarer, not cut (a node whose every way names a place still has a way to take).
+ */
+export const PLACE_SHUT = 0.25;
 
 // ---------- how a life ends (M1 review S1) ----------
 
@@ -172,6 +176,12 @@ export const LAST_YEAR_EXTRA = 1;
 
 /** A node that waits for a free year may slip this many years past the end of its table age (assumption; the age window of the table is a target). */
 export const SLIP_YEARS = 5;
+
+/**
+ * An overlay line that waited for a free place (one journey at a time) plays a node this many years past the end of its table age at most; later the node is
+ * lost (assumption; without it a mercenary signs his first contract at 59 and his veteran's last stand follows in the same year, M3 wiring).
+ */
+export const LATE_OVERLAY_YEARS = 10;
 
 /** Battles fought in one life year (storylines/README.md §8: "นับในเพดานศึก 4 ครั้งต่อปี"). A battle over the number does not happen. */
 export const BATTLES_PER_YEAR = 4;

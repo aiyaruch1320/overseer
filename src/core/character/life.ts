@@ -100,8 +100,26 @@ function fxTags(fx: readonly Effect[] | undefined, out: Set<string>) {
   for (const f of fx ?? []) if (f.k === 'grant' && f.kind === 'tag') out.add(bare(f.id));
 }
 
-/** Every tag the character has: race, traits, skills, blessings, curses and tags granted by effects (`necro` `holy` `huge` ...). */
-export function tagsOf(ctx: Ctx, life: LifeState): Set<string> {
+type TagSource = (ctx: Ctx, life: LifeState) => readonly string[];
+const tagSources: TagSource[] = [];
+
+/**
+ * Another system gives the character tags while something is true of him (the items system: the `#tags` of what he wields and wears, items README §3).
+ * Registered on import; returns the function that removes the source.
+ */
+export function onTags(fn: TagSource): () => void {
+  tagSources.push(fn);
+  return () => {
+    const i = tagSources.indexOf(fn);
+    if (i >= 0) tagSources.splice(i, 1);
+  };
+}
+
+/**
+ * Every tag the character has: race, traits, skills, blessings, curses, tags granted by effects (`necro` `holy` `huge` ...) and the tags of the gear
+ * he wears (the sources of `onTags`; `gear: false` leaves them out, for a system that scores gear by the tags the character has without it).
+ */
+export function tagsOf(ctx: Ctx, life: LifeState, opts: { gear?: boolean } = {}): Set<string> {
   const ix = idx(ctx);
   const e = extOf(life);
   const out = new Set<string>(e.raceTags.map(bare));
@@ -110,6 +128,7 @@ export function tagsOf(ctx: Ctx, life: LifeState): Set<string> {
   for (const id of life.skills) fxTags(ix.skills.get(id)?.fx, out);
   for (const id of [...life.blessings, ...life.curses]) fxTags(ix.gifts.get(id)?.fx, out);
   if (life.flags.includes('noble')) out.add('noble');
+  if (opts.gear !== false) for (const src of tagSources) for (const t of src(ctx, life)) out.add(bare(t));
   return out;
 }
 
