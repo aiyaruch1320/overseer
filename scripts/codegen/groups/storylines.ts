@@ -39,7 +39,7 @@ const NODE_CHOICE_G = /\b([a-z]{2}\.[btaelx]\d+|cv\.\d+)(?:\s*(?:จบ)?ทา�
 const KEY: Record<string, 'a' | 'b' | 'c'> = { ก: 'a', ข: 'b', ค: 'c' };
 const STAGE_BY_AGE = (min: number): LifeStage => (min < 13 ? 'b' : min < 20 ? 't' : min < 55 ? 'a' : 'e');
 
-const unparsed = new Unparsed(GROUP);
+let unparsed = new Unparsed(GROUP); // replaced at the start of every run so a second run in the same process gives the same report
 
 // ---------- small helpers ----------
 
@@ -184,10 +184,16 @@ function nodeFromRow(row: Row, ctx: NodeCtx): StoryNodeX | null {
   unknownIds(notes.effects as EffectX[], ctx, row.line, `${id} ศึก·NPC·โลก`);
   if (notes.rite) rite = true;
   if (notes.nodeWhen) nodeWhen.push(...notes.nodeWhen);
+  if (notes.altForm) delete node.when; // another form is written for the case the title event has not happened
   if (notes.replaces) node.replaces = uniq([...(node.replaces ?? []), ...notes.replaces]);
   Object.assign(choiceWhen, notes.choiceWhen);
   for (const ch of node.choices) if (choiceWhen[ch.key]) ch.when = and(ch.when, choiceWhen[ch.key]!);
-  for (const w of nodeWhen) node.when = and(node.when, w);
+  for (const w of nodeWhen) {
+    const text = w.k === 'text' && /เหตุการณ์/.test(w.text);
+    if (text && titleEvents.length) continue; // the title events already say it
+    if (node.when && JSON.stringify(node.when) === JSON.stringify(w)) continue;
+    node.when = and(node.when, w);
+  }
   if (rite) node.rite = id;
   // entry weight changes written without a target belong to the convergence this row enters
   const conv0 = node.converge?.[0];
@@ -569,6 +575,7 @@ function convergence(ids: IdIndex): ConvergenceData {
 // ---------- run ----------
 
 export default function run(): GenReport {
+  unparsed = new Unparsed(GROUP);
   const ids = idIndex();
   const files = listDocs(DIR, /^\d\d-.*\.md$/).filter((f) => !/\/00-/.test(f));
   const nodes: StoryNodeX[] = [];

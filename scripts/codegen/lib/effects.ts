@@ -91,6 +91,8 @@ export interface Parsed {
   nodeWhen?: ConditionX[];
   /** "ใช้แทน xx.a3 xx.a4". */
   replaces?: NodeId[];
+  /** The notes give another form of the node for when its event has not happened, so the node plays anyway. */
+  altForm?: boolean;
 }
 
 export interface ParseOpts {
@@ -104,6 +106,26 @@ export interface ParseOpts {
 }
 
 const ext = (e: ExtraEffect): Effect => e as unknown as Effect;
+/** "ต้อง" that really is a requirement: ต้องมี, ต้องผ่าน, ต้อง `id`, ต้อง ทุน ≥ 200 — not "จึงต้องหลบ". */
+const REQ = `ต้อง(?:(?:มี|ผ่าน)|(?=\\s*\`)|(?=[${TH}]+\\s*[≥>]))`;
+
+/** The opposite of a condition (events flip, `and`/`or` swap). */
+export function negate(c: ConditionX): ConditionX {
+  switch (c.k) {
+    case 'event':
+      return { ...c, happened: !c.happened };
+    case 'npc':
+      return { ...c, alive: !c.alive };
+    case 'not':
+      return c.of;
+    case 'and':
+      return { k: 'or', of: c.of.map(negate) as Condition[] };
+    case 'or':
+      return { k: 'and', of: c.of.map(negate) as Condition[] };
+    default:
+      return { k: 'not', of: c as Condition };
+  }
+}
 const stripLinks = (s: string) => s.replace(/\[[^\]]*\]\([^)]*\)/g, ' ');
 
 // ---------- conditions ----------
@@ -122,7 +144,7 @@ const TOKEN = new RegExp(
     `((?:${STAT_RE}|DFC)[${TH}]*?)\\s*(≥|>=|>|≤|<=|<|=|ต่ำกว่า|น้อยกว่า|มากกว่า|เกิน)\\s*(\\d+)(?:\\s*จาก\\s*(\\d+)\\s*เผ่า)?(?:\\s*ขึ้นไป)?`, // 5 stat word · 6 op · 7 n · 8 count
     `(ชนชั้น)\\s*(\\d)\\s*ขึ้นไป`, // 9 · 10
     `(${NODE_OR_CV})(?:\\s*(?:จบ)?ทาง\\s*([กขค]))?`, // 11 node · 12 choice
-    '(?<![A-Z-])((?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\\d\\d)\\b', // 13 country
+    '(?<![A-Z-])((?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\\d\\d)\\b|(?<![A-Za-z-])(AZ|MH|KD|NR|AL|MK|SH|SV|NB)(?![A-Za-z0-9-])', // 13 country · 14 continent
     '((?:NF-|FT-|KN-|PR-)?[A-Z]{2,4}-\\d{2,3})', // 14 event
     '\\b([A-Z]{2}\\d{2}-\\d)\\b', // 15 npc
     'ยุค\\s*(?:≥\\s*)?(\\d)(?:\\s*ขึ้นไป)?', // 16 era
@@ -164,14 +186,15 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     } else if (m[9]) out.push({ at, end, cond: { k: 'cmp', stat: 'class', op: '>=', value: Number(m[10]), label: 'ชนชั้น' } });
     else if (m[11]) out.push({ at, end, cond: wrap({ k: 'node', id: m[11], ...(m[12] ? { choice: THAI_KEYS[m[12]] } : {}) }) });
     else if (m[13]) out.push({ at, end, cond: wrap({ k: 'country', ids: [m[13]] }) });
-    else if (m[14]) {
-      if (/^(NF-|FT-|KN-|PR-)/.test(m[14])) continue;
-      out.push({ at, end, cond: { k: 'event', id: m[14], happened: !neg } });
-    } else if (m[15]) out.push({ at, end, cond: { k: 'npc', id: m[15], alive: !/ตาย/.test(after) } });
-    else if (m[16]) out.push({ at, end, cond: { k: 'era', min: Number(m[16]) } });
-    else if (m[17]) out.push({ at, end, cond: { k: 'gender', value: m[17] === 'ชาย' ? 'm' : 'f' } });
-    else if (m[18]) {
-      const code = RACE_WORDS.find(([w]) => w === m[18])![1];
+    else if (m[14]) out.push({ at, end, cond: wrap({ k: 'continent', ids: [m[14] as 'AZ'] }) });
+    else if (m[15]) {
+      if (/^(NF-|FT-|KN-|PR-)/.test(m[15])) continue;
+      out.push({ at, end, cond: { k: 'event', id: m[15], happened: !neg } });
+    } else if (m[16]) out.push({ at, end, cond: { k: 'npc', id: m[16], alive: !/ตาย/.test(after) } });
+    else if (m[17]) out.push({ at, end, cond: { k: 'era', min: Number(m[17]) } });
+    else if (m[18]) out.push({ at, end, cond: { k: 'gender', value: m[18] === 'ชาย' ? 'm' : 'f' } });
+    else if (m[19]) {
+      const code = RACE_WORDS.find(([w]) => w === m[19])![1];
       out.push({ at, end, cond: wrap({ k: 'race', ids: [code] }) });
     }
   }
@@ -200,8 +223,9 @@ export function parseConditionX(text: string, ids: IdIndex, allowText = false, m
       const text1: ConditionX | null = allowText && words.length >= 3 ? { k: 'text', text: rest.replace(/\s+/g, ' ').trim() } : null;
       if (!items.length && !text1) continue;
       if (mode === 'or') {
-        const all = text1 ? [...items, text1] : items;
-        altConds.push(all.length === 1 ? all[0] : { k: 'or', of: all as Condition[] });
+        const anyOf: ConditionX | null = items.length === 0 ? null : items.length === 1 ? items[0] : { k: 'or', of: items as Condition[] };
+        const all = [anyOf, text1].filter((x): x is ConditionX => !!x);
+        altConds.push(all.length === 1 ? all[0] : { k: 'and', of: all as Condition[] });
       } else {
         const all = text1 ? [...items, text1] : items;
         altConds.push(all.length === 1 ? all[0] : { k: 'and', of: all as Condition[] });
@@ -307,6 +331,10 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     scope = { k: 'continent', ids: [CONTINENT_WORDS.find(([w]) => w === m[1])![1] as 'AZ'] };
   });
 
+  take(/^(ผู้ถูกอัญเชิญ|ผู้กลับชาติ)\s*:\s*/, (m) => {
+    scope = { k: 'has', kind: 'flag', id: m[1] === 'ผู้ถูกอัญเชิญ' ? 'summoned' : 'reincarnated' };
+  });
+
   // ---- structure of the row ----
   take(/(?:ดู|ตาม)?หัวข้อ\s*[\d.]+/g, () => {
     if (/ดูหัวข้อ/.test(seg)) out.rite = true;
@@ -347,35 +375,55 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
       if (c) (out.nodeWhen ??= []).push(c);
     }
   });
-  take(/ถ้าไม่มี\s*([^·]+?)\s*ข้าม(?:โหนดนี้)?(?=\s|$)/, (m) => {
-    const c = parseConditionX(m[1], ids, true);
+  // "ถ้าไม่มี X ข้าม": the node is played only when X is there
+  take(/ถ้าไม่มี\s*([^·]+?)\s*ข้าม(?:โหนดนี้|ไป)?(?=\s|$)/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
     if (c) (out.nodeWhen ??= []).push(c);
   });
-  take(/ถ้า\s*([^·]+?)\s*ข้าม(?:โหนดนี้)?(?=\s|$)/, (m) => {
-    const c = parseConditionX(m[1], ids, true);
-    if (c) (out.nodeWhen ??= []).push({ k: 'not', of: c as Condition });
+  // "ถ้า X ข้ามโหนดนี้": skipped when X; X written as "ยังไม่เกิด" is already a negative atom
+  take(/ถ้า\s*([^·]+?)\s*ข้ามโหนดนี้(?=\s|$)/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (c) (out.nodeWhen ??= []).push(negate(c));
+  });
+  // "ข้ามถ้า X ยังไม่เกิด ใช้ <another form> แทน": the node still plays, in that form
+  take(/ข้ามถ้า\s*([^·:→]+?)\s*ยังไม่เกิด\s*ใช้\s*([^·]+)$/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (!c) return;
+    out.altForm = true;
+    push({ k: 'if', cond: negate(c) as Condition, then: [{ k: 'label', text: m[2].trim() }] });
+  });
+  take(/ข้ามถ้า\s*(.+?)\s*(ไม่เกิด)?\s*(?=\(|$)/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (!c || (c.k === 'text' && /เหตุการณ์/.test(c.text))) return; // "ข้ามถ้าไม่มีทั้งสองเหตุการณ์" is the title events
+    (out.nodeWhen ??= []).push(m[2] ? c : negate(c));
+  });
+  take(/ถ้า\s*([^·:]+?)\s*ยังไม่เกิด\s*ข้าม(?:ไป)?(?=\s|$)/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (c) (out.nodeWhen ??= []).push(c);
+  });
+  take(new RegExp(`ถ้า\\s*([^·:]+?)\\s*ยังไม่เกิด\\s*ใช้\\s*(${NODE_OR_CV})`), (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (c) (out.nodeWhen ??= []).push(c);
+    push({ k: 'ref', nodes: [m[2]], rel: 'แทน' });
+  });
+  // "ถ้า X ยังไม่เกิด: <another form of the node>": the node still plays, in that form
+  take(/ถ้า\s*([^·:→]+?)\s*ยังไม่เกิด\s*:?(?!\s*→)\s*([^·]+)$/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (!c) return;
+    out.altForm = true;
+    push({ k: 'if', cond: negate(c) as Condition, then: [{ k: 'label', text: m[2].trim() }] });
   });
   // a condition that moves a weight of this node's own choice: "ความหิวมอร์เฮเวน > 70 → ทาง ข ×2"
   take(/([^·→]*?[^\s·→][^·→]*?)\s*→\s*ทาง\s*([กขค])\s*×\s*(\d+(?:\.\d+)?)/, (m) => {
     const cond = parseConditionX(m[1], ids, true);
     push({ k: 'choiceMod', choice: THAI_KEYS[m[2]], ...(cond ? { cond } : {}), mul: Number(m[3]) });
   });
-  take(/ข้ามถ้า\s*(.+?)\s*(ไม่เกิด)?\s*(?=\(|$)/, (m) => {
-    const c = parseConditionX(m[1], ids, true);
-    if (!c) return;
-    (out.nodeWhen ??= []).push(m[2] ? c : { k: 'not', of: c as Condition });
-  });
-  take(new RegExp(`ถ้า\\s*([^·:]+?)\\s*ยังไม่เกิด\\s*ใช้\\s*(${NODE_OR_CV})`), (m) => {
-    const c = parseConditionX(m[1], ids, true);
-    if (c) (out.nodeWhen ??= []).push(c);
-    push({ k: 'ref', nodes: [m[2]], rel: 'แทน' });
-  });
   take(/(?:ใช้เมื่อ|บังคับถ้า|เกิดเมื่อ)\s*([^·]+)$/, (m) => {
-    const c = parseConditionX(m[1], ids, true);
+    const c = parseConditionX(m[1].replace(/\s*ถ้าไม่มี\s*ข้าม(?:ไป)?\s*$/, ''), ids, true);
     if (c) (out.nodeWhen ??= []).push(c);
   });
   // "ทาง ค ต้อง…" in a notes cell gates another choice
-  take(/ทาง\s*([กขค])\s*ต้อง(?:มี|ผ่าน)?\s*([^()·]+)/, (m) => {
+  take(new RegExp(`ทาง\\s*([กขค])\\s*${REQ}\\s*([^()·]+)`), (m) => {
     const c = parseConditionX(m[2], ids, true);
     if (c) (out.choiceWhen ??= {})[THAI_KEYS[m[1]]] = c;
   });
@@ -438,6 +486,23 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     eat(eraTo[0]);
   }
 
+  // a condition at the head of a notes segment: "ทุ่งราบหลัง DR-07 → RF-01 RF-02" · "NB และ AL-20 → cv.4 cv.15"
+  if (opts.notes) {
+    const am = rest.match(
+      new RegExp(`^\\s*([^→·]*?)\\s*→\\s*((?:${NODE_OR_CV}(?:\\s*\\([^)]*\\))?\\s*(?:หรือ\\s*)?)+|(?:[A-Z]{2,4}-\\d{2,3}\\s*)+)`),
+    );
+    if (am && /\b[A-Z]{2,4}-\d|\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)\b/.test(am[1])) {
+      const cond = parseConditionX(am[1], ids, true, 'or');
+      const then: Effect[] = [];
+      for (const id of am[2].match(new RegExp(NODE_OR_CV, 'g')) ?? []) then.push({ k: 'converge', to: id });
+      for (const id of am[2].match(/\b[A-Z]{2,4}-\d{2,3}\b/g) ?? []) if (ids.events.has(id)) then.push({ k: 'event', id, open: true });
+      if (cond && then.length) {
+        push({ k: 'if', cond: cond as Condition, then });
+        rest = rest.replace(am[0], ' ');
+      }
+    }
+  }
+
   // conditional: ถ้า MC-03 หรือ MC-04 เกิด → cv.9
   const iff = rest.match(/ถ้า\s*(.+?)\s*→\s*(cv\.\d+|[a-z]{2}\.[btaelx]\d+)/);
   if (iff) {
@@ -470,12 +535,10 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     eat(jump[0]);
   }
 
-  // convergence: → cv.6   ·   → cv.4 หรือ cv.15
-  for (const m of rest.matchAll(/→\s*(cv\.\d+)(?:[^→·]*?หรือ\s*(cv\.\d+))?/g)) {
-    push({ k: 'converge', to: m[1] });
-    if (m[2]) push({ k: 'converge', to: m[2] });
-  }
-  rest =rest.replace(/\s*หรือ\s*cv\.\d+(?:\s*\([^)]*\))?/g, ' ').replace(/→\s*cv\.\d+(?:\s*\([^)]*\))?/g, ' ');
+  // convergence: → cv.6   ·   → cv.4 หรือ cv.15   ·   → cv.4 cv.15
+  take(/→\s*((?:cv\.\d+(?:\s*\([^)]*\))?\s*(?:หรือ\s*)?)+)/g, (m) => {
+    for (const id of m[1].match(/cv\.\d+/g) ?? []) push({ k: 'converge', to: id });
+  });
 
   // ---- bond system markers ----
   take(new RegExp(`\`?\\{([${TH}]+):([${TH}]+)@(\\d)\\}\`?`, 'g'), (m) => push({ k: 'mood', line: m[1], mood: m[2], level: Number(m[3]) }));
@@ -503,7 +566,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
 
   // ---- requirements: "ต้องมี …" gates the choice (or wraps this segment in a notes cell) ----
   if (opts.choice || opts.notes) {
-    take(/ต้อง(?:มี|ผ่าน)?\s*((?:[^()]|\([^)]*\))*?)(?=\s*\)|\s*$)/, (m) => {
+    take(new RegExp(`${REQ}\\s*((?:[^()]|\\([^)]*\\))*?)(?=\\s*\\)|\\s*$)`), (m) => {
       const c = parseConditionX(m[1], ids, true);
       if (c) reqCond = c;
     });
@@ -528,25 +591,32 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   take(new RegExp(`ไว้ใจ\\s*(?:จาก|ใน|ต่อ)?\\s*([${TH}]*?)\\s*([+\\-−±]\\s*\\d+)(?![\\d%])`, 'g'), (m) => {
     if (!m[2].startsWith('±')) push({ k: 'trust', toward: m[1], delta: toNum(m[2].replace(/\s/g, '')) });
   });
-  take(new RegExp(`(?:([${TH}]+(?:\\s[${TH}]+)?)\\s*)?(${NUM}[\\d,]*)\\s*ถึง\\s*(${NUM}[\\d,]*)\\s*(%|คน|ตัว|ชิ้น)?`, 'g'), (m) => {
+  take(new RegExp(`(?:([${TH}]+)\\s*)?(${NUM}[\\d,]*)\\s*ถึง\\s*(${NUM}[\\d,]*)\\s*(%|คน|ตัว|ชิ้น)?`, 'g'), (m) => {
     push({ k: 'range', stat: m[1] ?? '', min: toNum(m[2]), max: toNum(m[3]), ...(m[4] ? { unit: m[4] } : {}) });
   });
-  take(new RegExp(`([${TH}]+(?:\\s[${TH}]+)?)\\s*(\\d+)[–-](\\d+)\\s*(ตัว|คน|ชิ้น)`, 'g'), (m) => {
+  take(new RegExp(`([${TH}]+)\\s*(\\d+)[–-](\\d+)\\s*(ตัว|คน|ชิ้น)`, 'g'), (m) => {
     push({ k: 'range', stat: m[1], min: Number(m[2]), max: Number(m[3]), unit: m[4] });
   });
-  take(new RegExp(`([${TH}]+(?:\\s[${TH}]+)?)\\s*±\\s*(\\d+)(%)?(?!\\d)`, 'g'), (m) =>
+  take(new RegExp(`([${TH}]+)\\s*±\\s*(\\d+)(%)?(?!\\d)`, 'g'), (m) =>
     push({ k: 'range', stat: m[1], min: -Number(m[2]), max: Number(m[2]), ...(m[3] ? { unit: '%' } : {}) }),
   );
-  take(new RegExp(`([${TH}]+(?:\\s[${TH}]+)?)\\s*([+\\-−])\\s*(\\d+(?:\\.\\d+)?)%`, 'g'), (m) =>
+  take(new RegExp(`([${TH}]+)\\s*([+\\-−])\\s*(\\d+(?:\\.\\d+)?)%`, 'g'), (m) =>
     push({ k: 'statPct', stat: m[1], pct: toNum(m[2] + m[3]) }),
   );
-  take(new RegExp(`([${TH}]+(?:\\s[${TH}]+)?)\\s*×\\s*(\\d+(?:\\.\\d+)?)`, 'g'), (m) => push({ k: 'statMul', stat: m[1], mul: Number(m[2]) }));
+  take(new RegExp(`([${TH}]+)\\s*×\\s*(\\d+(?:\\.\\d+)?)`, 'g'), (m) => push({ k: 'statMul', stat: m[1], mul: Number(m[2]) }));
   take(/(\d+(?:\.\d+)?)\s*(ปีหน้า|(?:ปี|คน|ตัว|ชิ้น|หน่วย|ครั้ง|เดือน|วัน|ฝูง|เผ่า)(?![ก-๿]))/g, (m) => push({ k: 'qty', n: Number(m[1]), unit: m[2] }));
 
   // a condition that closes the phrase: "… +3 ถ้า `music` ≥ 2" · "เข้าเส้น iv ถ้าชั้น 3 ขึ้นไป"
   let trail: ConditionX | null = null;
   take(/ถ้า\s*([^·()]*?(?:≥|>|<|ขึ้นไป|ต่ำกว่า|มากกว่า)[^·()]*?)\s*$/, (m) => {
     trail = parseConditionX(m[1], ids, true);
+  });
+
+  // "ถูกค้น 40% → ศึก": the chance that what follows the arrow happens
+  take(new RegExp(`([${TH}][${TH} ]*?)\\s*(\\d+(?:\\.\\d+)?)%\\s*→\\s*([^·]+)$`), (m) => {
+    const sub = parseCell(m[3], ids, { notes: opts.notes, choice: false });
+    out.unparsed.push(...sub.unparsed);
+    push({ k: 'chance', p: Number(m[2]) / 100, text: m[1].trim(), then: sub.effects as EffectX[] });
   });
 
   // battle marker
@@ -633,10 +703,11 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
 
   // node references that are left: เปิด ml.a1 · ตรงกับ be.b2 · ใช้ใน hb.t2
   take(
-    new RegExp(`(เปิดเส้นไป|เปิดเส้น|เปิด|ตรงกับ|ใช้ใน|ผูก|ฟัง|เข้า|ต้องผ่าน)?\\s*((?:${NODE_OR_CV}\\s*)+)(?:\\s*ทาง\\s*([กขค]))?`, 'g'),
+    new RegExp(`(เปิดเส้นไป|เปิดเส้น|เปิด|ตรงกับ|ใช้ใน|ผูก|ฟัง|เข้า|ต้องผ่าน)?\\s*((?:${NODE_OR_CV}\\s*)+)(?:\\s*ทาง\\s*([กขค])|\\s+([กขค])\\))?`, 'g'),
     (m) => {
       const nodes = m[2].match(new RegExp(NODE_OR_CV, 'g')) ?? [];
-      push({ k: 'ref', nodes, rel: m[1] ?? '', ...(m[3] ? { choice: THAI_KEYS[m[3]] } : {}) });
+      const ch = m[3] ?? m[4];
+      push({ k: 'ref', nodes, rel: m[1] ?? '', ...(ch ? { choice: THAI_KEYS[ch] } : {}) });
     },
   );
 
@@ -717,7 +788,9 @@ export function parseCell(cell: string, ids: IdIndex, opts: ParseOpts = {}): Par
     const label = seg
       .replace(/`[^`]+`(?:\s*\d+(?:\.\d+)?%)?/g, '')
       .replace(/\{[^}]*\}/g, '')
-      .replace(/\(\s*\)/g, '')
+      .replace(/\(\s*(?:ต้องมี|ให้)?\s*\)/g, '')
+      .replace(/ทาง(?:สู่|ไป|เปิด)\s*(?:อาชีพลับ|อาชีพ)?\s*$/, '')
+      .replace(/\s*หรือ\s*$/, '')
       .replace(/\s+/g, ' ')
       .trim();
     if (label) labels.push(label);

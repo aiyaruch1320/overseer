@@ -338,8 +338,18 @@
         "delta": -50
        },
        {
-        "k": "converge",
-        "to": "cv.14"
+        "k": "only",
+        "cond": {
+         "k": "has",
+         "kind": "flag",
+         "id": "summoned"
+        },
+        "then": [
+         {
+          "k": "converge",
+          "to": "cv.14"
+         }
+        ]
        }
       ],
       "mods": []
@@ -615,35 +625,80 @@
     ],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.1"
-     },
-     {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "converge",
-      "to": "cv.7"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "SV-17"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "DR-01",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "ชาวพื้นหลัง"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.1"
+       }
       ]
      },
      {
-      "k": "event",
-      "id": "RF-01",
-      "open": true
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "country",
+         "ids": [
+          "SV-17"
+         ]
+        },
+        {
+         "k": "text",
+         "text": "ริมน้ำ"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.7"
+       }
+      ]
      },
      {
-      "k": "event",
-      "id": "DR-07"
-     },
-     {
-      "k": "event",
-      "id": "RF-02"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "DR-07",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "ทุ่งราบหลัง"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "RF-01",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "RF-02",
+        "open": true
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -676,7 +731,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "ปกป้องหมู่บ้านตัวเอง · บุกหมู่บ้านระดับหัวหน้า · ถ้าชนะหัวหน้าด้วยดาบ ทางสู่อาชีพลับ (ต้องมี )",
+      "label": "ปกป้องหมู่บ้านตัวเอง · บุกหมู่บ้านระดับหัวหน้า · ถ้าชนะหัวหน้าด้วยดาบ",
       "effects": [
        {
         "k": "jobpath",
@@ -695,7 +750,7 @@
      {
       "key": "c",
       "weight": 20,
-      "label": "หากำไรจากสงคราม · หรือ",
+      "label": "หากำไรจากสงคราม",
       "effects": [
        {
         "k": "grant",
@@ -719,40 +774,70 @@
     ],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.3"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "WR-14",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.3"
+       }
+      ]
      },
      {
-      "k": "event",
-      "id": "WR-14"
+      "k": "if",
+      "cond": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "DM-07",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "WR-13",
+         "happened": true
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.5"
+       }
+      ]
      },
      {
-      "k": "converge",
-      "to": "cv.5"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "WR-24",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.12"
+       }
+      ]
      },
      {
-      "k": "event",
-      "id": "DM-07"
-     },
-     {
-      "k": "event",
-      "id": "WR-13"
-     },
-     {
-      "k": "converge",
-      "to": "cv.12"
-     },
-     {
-      "k": "event",
-      "id": "WR-24"
-     },
-     {
-      "k": "converge",
-      "to": "cv.14"
-     },
-     {
-      "k": "event",
-      "id": "DM-04"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DM-04",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.14"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -833,13 +918,18 @@
     ],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.10"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "MH-06"
+      "k": "if",
+      "cond": {
+       "k": "country",
+       "ids": [
+        "MH-06"
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.10"
+       }
       ]
      },
      {
@@ -893,7 +983,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "ไปเห็นด้วยตาตัวเอง → ประตูเมืองปฐม (NB-08) หรือชายแดนหมอก · อ่านตำราของ DM-09 ในซากปฐม · (ให้ ) · ทางสู่อาชีพลับ (ต้องมี และเงื่อนไขครบ)",
+      "label": "ไปเห็นด้วยตาตัวเอง → ประตูเมืองปฐม (NB-08) หรือชายแดนหมอก · อ่านตำราของ DM-09 ในซากปฐม · ทางสู่อาชีพลับ (ต้องมี และเงื่อนไขครบ)",
       "effects": [
        {
         "k": "place",
@@ -941,30 +1031,48 @@
     ],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.4"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "AL-20"
+      "k": "if",
+      "cond": {
+       "k": "or",
+       "of": [
+        {
+         "k": "continent",
+         "ids": [
+          "NB"
+         ]
+        },
+        {
+         "k": "country",
+         "ids": [
+          "AL-20"
+         ]
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.4"
+       },
+       {
+        "k": "converge",
+        "to": "cv.15"
+       }
       ]
      },
      {
-      "k": "ref",
-      "nodes": [
-       "cv.15"
-      ],
-      "rel": ""
-     },
-     {
-      "k": "converge",
-      "to": "cv.11"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "SH-03"
+      "k": "if",
+      "cond": {
+       "k": "country",
+       "ids": [
+        "SH-03"
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.11"
+       }
       ]
      },
      {
@@ -1608,8 +1716,18 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "BIO-01"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ใบเหลืองเป็นลาง (หนึ่งถึงสามฤดูก่อน)"
+       }
+      ]
      },
      {
       "k": "battle",
@@ -1622,12 +1740,7 @@
      "BIO-01"
     ],
     "notesText": "ถ้า BIO-01 ยังไม่เกิด: ใบเหลืองเป็นลาง (หนึ่งถึงสามฤดูก่อน) · ศึก `blighted_ent` หัวหน้า ในป่าที่ป่วย",
-    "src": "docs/lore/storylines/02-elf.md:42",
-    "when": {
-     "k": "event",
-     "id": "BIO-01",
-     "happened": true
-    }
+    "src": "docs/lore/storylines/02-elf.md:42"
    },
    {
     "id": "el.a2",
@@ -1662,7 +1775,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "เสนอแก้กฎร่วมกับไรกัส (SV09-1) · ต้องผ่าน el.b2 ทาง ก หรือ · WR-17 −30 · BIO-09 −20",
+      "label": "เสนอแก้กฎร่วมกับไรกัส (SV09-1) · ต้องผ่าน el.b2 ทาง ก · WR-17 −30 · BIO-09 −20",
       "effects": [
        {
         "k": "npc",
@@ -1882,11 +1995,7 @@
         "delta": 30
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ตายเพื่อเกิดใหม่"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -2131,7 +2240,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "ปลูกกล้าต้นไม้โลกในทวีปอื่น · (เมื่อ BIO-03 เกิด) · ทางสู่",
+      "label": "ปลูกกล้าต้นไม้โลกในทวีปอื่น · (เมื่อ BIO-03 เกิด)",
       "effects": [
        {
         "k": "grant",
@@ -2153,7 +2262,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "เป็นสมาชิกสภาผู้อาวุโส · มีเสียงเรื่องกฎลำต้น · เข้าคลังตำราของสภา · ทางสู่อาชีพลับ",
+      "label": "เป็นสมาชิกสภาผู้อาวุโส · มีเสียงเรื่องกฎลำต้น · เข้าคลังตำราของสภา",
       "effects": [
        {
         "k": "jobpath",
@@ -3020,7 +3129,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "สอนนักฆ่ารุ่นใหม่ · ทางสู่",
+      "label": "สอนนักฆ่ารุ่นใหม่",
       "effects": [
        {
         "k": "jobpath",
@@ -3438,7 +3547,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ติดอยู่ในความมืดสามวัน ได้ยินเสียงหิน · หรือ",
+      "label": "ติดอยู่ในความมืดสามวัน ได้ยินเสียงหิน",
       "effects": [
        {
         "k": "grant",
@@ -3644,7 +3753,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -3779,7 +3888,7 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "เปิดให้โลกรู้ · ฝ่ายปิดตั้งค่าหัว · (ให้ ) · ทางสู่อาชีพลับ (ต้องมี และปัญญา ≥ 14 เมื่อ HP-05 เกิด)",
+      "label": "เปิดให้โลกรู้ · ฝ่ายปิดตั้งค่าหัว · ทางสู่อาชีพลับ (ต้องมี และปัญญา ≥ 14 เมื่อ HP-05 เกิด)",
       "effects": [
        {
         "k": "grant",
@@ -4228,7 +4337,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "ลงไปฟังหัวใจขุนเขา · ทางสู่อาชีพลับ",
+      "label": "ลงไปฟังหัวใจขุนเขา",
       "effects": [
        {
         "k": "jobpath",
@@ -4720,7 +4829,7 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -5490,14 +5599,16 @@
       "label": "ซ่อนเด็กมนุษย์ไว้ในค่าย · ถูกจับได้ 40% → ศึกกับยามค่าย · ถ้าไม่ถูกจับ เด็กโตเป็นผู้ส่งข่าวในเมืองมนุษย์",
       "effects": [
        {
-        "k": "battle",
-        "enemies": [],
-        "text": "ถูกจับได้ 40% → กับยามค่าย"
-       },
-       {
-        "k": "pct",
+        "k": "chance",
+        "p": 0.4,
         "text": "ถูกจับได้",
-        "pct": 40
+        "then": [
+         {
+          "k": "battle",
+          "enemies": [],
+          "text": "กับยามค่าย"
+         }
+        ]
        },
        {
         "k": "grant",
@@ -5760,7 +5871,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -7028,7 +7139,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -7064,7 +7175,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "(อูฐ) หรือ",
+      "label": "(อูฐ)",
       "effects": [
        {
         "k": "grant",
@@ -7518,13 +7629,19 @@
       ]
      },
      {
-      "k": "event",
-      "id": "BIO-09"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "AL-23"
+      "k": "if",
+      "cond": {
+       "k": "not",
+       "of": {
+        "k": "text",
+        "text": "เหตุการณ์ของถิ่น"
+       }
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "** (BIO-09 หรือตัวแทนของรูปถิ่น) ใช้รูปก่อนเหตุการณ์ แรงกดดันกำลังก่อตัว: ซิลวาเนลและ AL-23 คนตัดไม้ของบริษัทเข้าเขตฝูงหรือเขตญาติ"
+       }
       ]
      },
      {
@@ -7628,12 +7745,7 @@
      "BIO-09"
     ],
     "notesText": "ศึก: `war_automaton` หัวหน้า · `npc_mercenary` · NPC AL23-1 ฟางร้อง · ถ้าอยู่ AL-23 (ผูก BIO-09 และ LC-33): ก) 40 กลับไปนำขบวนญาติจาก SV-16 มาไวลด์มาร์ก ข) 35 ไปช่วยฝูงญาติสู้คนตัดไม้ ศึกเดียวกัน ค) 25 อยู่ทุ่ง ไม่ยุ่ง `freedom` · ถ้าอยู่ SH-10 (ใช้ GI-10 หรือ WR-24 ทาง ค แทน BIO-09: บ่อแห้งและหนอนทรายย้ายขึ้นเหนือ): ก) 40 อพยพทั้งฝูงตามเส้นคาราวานซุฮาบัด (SH-04) ไปไวลด์มาร์ก (AL-23) ข) 35 อยู่สู้ ศึก `sandworm` หัวหน้า (สงบได้) ค) 25 แยกฝูงหาบ่อใหม่เอง `freedom` · ถ้าอยู่ MH-04 (ใช้ DM-01 แทน BIO-09: จอมมารเกณฑ์ฝูงของเซวาร์ธ): ก) 40 อพยพทั้งฝูงไปวีซาเฮเวน (MH-06) ข) 35 อยู่สู้ทัพเกณฑ์ ศึก `ogre` หัวหน้า ค) 25 แยกฝูงขี่หมาป่าเถ้าเร่เอง `freedom` · ถ้าอยู่ AL-24 (ใช้ WR-16 แทน BIO-09: ฟอร์เทียขีดทุ่งเป็นค่ายทหาร): ก) 40 อพยพทั้งฝูงไปไวลด์มาร์ก (AL-23) ข) 35 อยู่สู้ร่วมหัวหน้าเผ่า ธูร์ (AL24-2) ศึก `npc_knight` ค) 25 แยกฝูงเร่ไปเอง `freedom` · **ถ้าเหตุการณ์ของถิ่นยังไม่เกิด** (BIO-09 หรือตัวแทนของรูปถิ่น) ใช้รูปก่อนเหตุการณ์ แรงกดดันกำลังก่อตัว: ซิลวาเนลและ AL-23 คนตัดไม้ของบริษัทเข้าเขตฝูงหรือเขตญาติ · SH-10 บ่อแห้งรอบแรก · MH-04 ทัพเถ้ามาเกณฑ์นักล่าในปีอดอยาก · AL-24 คนของฟอร์เทียมาปักหมุดสำรวจทุ่ง ก) 40 ย้ายฝูงบางส่วนไปที่ใกล้ในถิ่นเดิม ข) 35 ขับผู้มาออก ศึกระดับปกติ: ซิลวาเนลและ AL-23 `npc_mercenary` · MH-04 `ogre` · AL-24 `npc_knight` · SH-10 ไม่มีศึก ขุดบ่อลึกเอง ค) 25 ไปเตือนหัวหน้าเผ่าและเจรจา `ns_mediate` 10% · รูปก่อนเหตุการณ์ไม่ขยับเหตุการณ์โลก และทาง ก ของรูปนี้ไม่นับในฉากจบผู้นำการอพยพ",
-    "src": "docs/lore/storylines/07-beast.md:47",
-    "when": {
-     "k": "event",
-     "id": "BIO-09",
-     "happened": true
-    }
+    "src": "docs/lore/storylines/07-beast.md:47"
    },
    {
     "id": "be.a3",
@@ -7682,17 +7794,37 @@
     ],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.1"
-     },
-     {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "SH-10"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "or",
+         "of": [
+          {
+           "k": "country",
+           "ids": [
+            "SH-10"
+           ]
+          },
+          {
+           "k": "event",
+           "id": "DR-01",
+           "happened": true
+          }
+         ]
+        },
+        {
+         "k": "text",
+         "text": "อยู่ หลัง"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "converge",
+        "to": "cv.1"
+       }
       ]
      },
      {
@@ -7938,7 +8070,7 @@
      {
       "key": "a",
       "weight": 30,
-      "label": "รวมทุกสายเป็นหนึ่ง · ทางสู่อาชีพลับ",
+      "label": "รวมทุกสายเป็นหนึ่ง",
       "effects": [
        {
         "k": "jobpath",
@@ -8603,7 +8735,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "หรือ · ถ้า DR-01 เกิด → cv.1 (พาผู้ลี้ภัยฟ้าข้ามแม่น้ำไปค่าย)",
+      "label": "ถ้า DR-01 เกิด → cv.1 (พาผู้ลี้ภัยฟ้าข้ามแม่น้ำไปค่าย)",
       "effects": [
        {
         "k": "grant",
@@ -9068,6 +9200,20 @@
       "enemies": [
        "hydra"
       ]
+     },
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "PL-04",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ฝูง `drowned_dead` ที่เรือล่ม"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -9075,38 +9221,6 @@
     ],
     "notesText": "`kraken` บอส · `hydra` บอส (ทาง ค) · ข้ามถ้า PL-04 ยังไม่เกิด ใช้ฝูง `drowned_dead` ที่เรือล่ม",
     "src": "docs/lore/storylines/08-naga.md:45",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "PL-04",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "PL-04",
-          "happened": false
-         },
-         {
-          "k": "has",
-          "kind": "enemy",
-          "id": "drowned_dead"
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้ฝูง ที่เรือล่ม"
-         }
-        ]
-       }
-      }
-     ]
-    },
     "godWindow": {
      "what": "คำใบ้ \"จงไป\" ชี้ทิศ",
      "effect": "นำเรือหนีวังวนสำเร็จ"
@@ -9148,29 +9262,25 @@
     ],
     "notes": [
      {
-      "k": "grant",
-      "kind": "job",
-      "id": "naga_egg_warden"
-     },
-     {
-      "k": "npc",
-      "id": "NR07-1"
-     },
-     {
-      "k": "event",
-      "id": "BIO-08"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "BIO-08",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ผู้เฝ้าไข่ชราลง ตัวละครรับอาสาจาก NR07-1 เป็น `naga_egg_warden`"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "BIO-08"
     ],
     "notesText": "ถ้า BIO-08 ยังไม่เกิด: ผู้เฝ้าไข่ชราลง ตัวละครรับอาสาจาก NR07-1 เป็น `naga_egg_warden`",
-    "src": "docs/lore/storylines/08-naga.md:46",
-    "when": {
-     "k": "event",
-     "id": "BIO-08",
-     "happened": true
-    }
+    "src": "docs/lore/storylines/08-naga.md:46"
    },
    {
     "id": "na.e1",
@@ -9556,7 +9666,7 @@
      {
       "key": "a",
       "weight": 30,
-      "label": "ผ่าน · ทางสู่อาชีพลับ",
+      "label": "ผ่าน",
       "effects": [
        {
         "k": "jobpath",
@@ -9611,7 +9721,7 @@
        {
         "key": "a",
         "weight": 30,
-        "label": "ผ่าน ทางสู่อาชีพลับ",
+        "label": "ผ่าน",
         "effects": [
          {
           "k": "jobpath",
@@ -9679,7 +9789,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "หรือ · ถ้า WR-14 เกิด → cv.3 (ทหารเผ่ามังกรแนวหน้า)",
+      "label": "ถ้า WR-14 เกิด → cv.3 (ทหารเผ่ามังกรแนวหน้า)",
       "effects": [
        {
         "k": "grant",
@@ -9781,8 +9891,18 @@
       "label": "เปิดเผยว่าบรรณาการไปไหน · ชาวพื้นลุก (AZ-08 AZ-09 ถ้า DR-01 ยังไม่เกิด) · GD-03 น้ำหนัก +15",
       "effects": [
        {
-        "k": "event",
-        "id": "DR-01"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "DR-01",
+         "happened": false
+        },
+        "then": [
+         {
+          "k": "label",
+          "text": ")"
+         }
+        ]
        },
        {
         "k": "place",
@@ -10765,6 +10885,17 @@
     ],
     "notes": [
      {
+      "k": "chance",
+      "p": 0.3,
+      "text": "คลั่ง",
+      "then": [
+       {
+        "k": "battle",
+        "enemies": []
+       }
+      ]
+     },
+     {
       "k": "battleFor",
       "choices": [
        "c"
@@ -10772,11 +10903,6 @@
       "enemies": [
        "vampire_spawn"
       ]
-     },
-     {
-      "k": "pct",
-      "text": "คลั่ง",
-      "pct": 30
      }
     ],
     "titleEvents": [],
@@ -11177,19 +11303,9 @@
     "notesText": "ข้ามถ้า BIO-05 ไม่เกิด · ใช้ \"ภาพลวงของแสง\" แทน: ก) เชื่อ ข) ไม่เชื่อ ค) ศึก `wraith`",
     "src": "docs/lore/storylines/10-vampire.md:45",
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "BIO-05",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "BIO-05",
-       "happened": true
-      }
-     ]
+     "k": "event",
+     "id": "BIO-05",
+     "happened": true
     },
     "godWindow": {
      "what": "`b_sunward`",
@@ -11211,7 +11327,7 @@
      {
       "key": "a",
       "weight": 30,
-      "label": "ชิงตำแหน่งเคานต์ · ทางสู่อาชีพลับ",
+      "label": "ชิงตำแหน่งเคานต์",
       "effects": [
        {
         "k": "jobpath",
@@ -11434,11 +11550,7 @@
         "pct": 25
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "กลับก่อนรุ่งเช้า"
-      }
+      "mods": []
      }
     ],
     "notes": [
@@ -11650,10 +11762,6 @@
     "titleEvents": [],
     "notesText": "`npc_slaver` หัวหน้า · ภูตแพ้เหล็ก ([../../systems/combat/02-type-matrix.md](../../systems/combat/02-type-matrix.md)) จึงต้องหลบ ไม่ปะทะตรง",
     "src": "docs/lore/storylines/11-fae.md:40",
-    "when": {
-     "k": "text",
-     "text": "หลบ ไม่ปะทะตรง"
-    },
     "godWindow": {
      "what": "คำใบ้ \"ระวัง\"",
      "effect": "ทาง ข ×2"
@@ -11700,7 +11808,7 @@
      {
       "key": "c",
       "weight": 35,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -13503,7 +13611,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -13521,7 +13629,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -13945,7 +14053,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "ราชาปีศาจองค์ใหม่ · ทางสู่",
+      "label": "ราชาปีศาจองค์ใหม่",
       "effects": [
        {
         "k": "jobpath",
@@ -14427,10 +14535,6 @@
     "titleEvents": [],
     "notesText": "ผู้เสนอ: `npc_rogue_mage` · ทาง ข อาจต้องสู้เมื่อเขาบังคับ · ไซเรนที่แลกเสียงเสียเวทเสียงทั้งหมด",
     "src": "docs/lore/storylines/14-merfolk.md:38",
-    "when": {
-     "k": "text",
-     "text": "สู้เมื่อเขาบังคับ"
-    },
     "godWindow": {
      "what": "คำใบ้ \"ระวัง\"",
      "effect": "ทาง ก น้ำหนักลด"
@@ -14451,7 +14555,7 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -15008,19 +15112,9 @@
     "notesText": "ข้ามถ้า DR-05 ไม่เกิด · ใช้ \"พายุใหญ่\" แทน: ศึก `kraken` บอส",
     "src": "docs/lore/storylines/14-merfolk.md:46",
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-05",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "DR-05",
-       "happened": true
-      }
-     ]
+     "k": "event",
+     "id": "DR-05",
+     "happened": true
     }
    },
    {
@@ -15594,19 +15688,9 @@
     "notesText": "ถ้า DR-01 ยังไม่เกิด ใช้ wi.l2",
     "src": "docs/lore/storylines/15-winged.md:44",
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "DR-01",
-       "happened": true
-      }
-     ]
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
     },
     "converge": [
      "cv.1"
@@ -15960,29 +16044,17 @@
     "notesText": "ข้ามถ้าไม่มีทั้งสองเหตุการณ์ · มีเฉพาะ DR-03: ทาง ก เป็นพาไข่ไปซ่อนในรังสูง (ไม่ได้ `ns_whale_ride`) ทาง ค เป็นขโมยไข่ไปขาย (ไข่ถูกขโมยตาม DR-03) · มีเฉพาะ CT-10: ทาง ข เป็นตามฝูงไปนำทาง (ไม่ได้ `cs_sixteenth_egg`) · ศึก: `npc_pirate` อากาศ (ทาง ข)",
     "src": "docs/lore/storylines/15-winged.md:48",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "CT-10",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "DR-03",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "CT-10",
+       "happened": true
       },
       {
-       "k": "not",
-       "of": {
-        "k": "text",
-        "text": "ไม่มีทั้งสองเหตุการณ์"
-       }
+       "k": "event",
+       "id": "DR-03",
+       "happened": true
       }
      ]
     }
@@ -16152,29 +16224,17 @@
     "notesText": "ข้ามถ้าไม่มีทั้งสองเหตุการณ์",
     "src": "docs/lore/storylines/15-winged.md:50",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "SF-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "PL-01",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "SF-02",
+       "happened": true
       },
       {
-       "k": "not",
-       "of": {
-        "k": "text",
-        "text": "ไม่มีทั้งสองเหตุการณ์"
-       }
+       "k": "event",
+       "id": "PL-01",
+       "happened": true
       }
      ]
     }
@@ -17050,11 +17110,7 @@
         "id": "nb_mark_gromdhar"
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "นำคำขอบคุณจากเกาะ"
-      }
+      "mods": []
      }
     ],
     "notes": [
@@ -18128,29 +18184,17 @@
     "notesText": "`ash_drake` หัวหน้า · มังกรลาวาเป็นมังกรป่า ([../../systems/combat/06-dragon-encounters.md](../../systems/combat/06-dragon-encounters.md) หัวข้อ 1) · ข้ามถ้าไม่มีเหตุการณ์",
     "src": "docs/lore/storylines/17-lavakin.md:46",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "GI-09",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "AS-05",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "GI-09",
+       "happened": true
       },
       {
-       "k": "not",
-       "of": {
-        "k": "text",
-        "text": "ไม่มีเหตุการณ์"
-       }
+       "k": "event",
+       "id": "AS-05",
+       "happened": true
       }
      ]
     },
@@ -19643,7 +19687,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "หรือ",
+      "label": "",
       "effects": [
        {
         "k": "grant",
@@ -19950,7 +19994,7 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "เข้าไปหาคำตอบ · ได้รู้ว่าวิญญาณบางดวงมาจากเครื่องปฐม · (ให้ ) · ทางสู่อาชีพลับ ( และ ปัญญา ≥ 18 หรือ และปัญญา ≥ 14)",
+      "label": "เข้าไปหาคำตอบ · ได้รู้ว่าวิญญาณบางดวงมาจากเครื่องปฐม · ทางสู่อาชีพลับ ( และ ปัญญา ≥ 18 หรือ และปัญญา ≥ 14)",
       "effects": [
        {
         "k": "grant",
@@ -20780,7 +20824,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "พบชื่อของตัวเองในชีวิตแรก · ผูกวิญญาณกับสิ่งของแทนธุลีทิพย์ · ถ้ายังไม่มี (ให้ ) · ทางสู่อาชีพลับ (ต้องมี และเงื่อนไขครบ)",
+      "label": "พบชื่อของตัวเองในชีวิตแรก · ผูกวิญญาณกับสิ่งของแทนธุลีทิพย์ · ถ้ายังไม่มี · ทางสู่อาชีพลับ (ต้องมี และเงื่อนไขครบ)",
       "effects": [
        {
         "k": "grant",
@@ -20988,21 +21032,21 @@
        "happened": true
       },
       {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "GI-06",
-          "happened": false
-         },
-         {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "GI-06",
+         "happened": true
+        },
+        {
+         "k": "not",
+         "of": {
           "k": "text",
           "text": "ไม่เกิดในช่วงนี้"
          }
-        ]
-       }
+        }
+       ]
       }
      ]
     }
@@ -21997,29 +22041,17 @@
     "notesText": "อุลโมธควบคุมความหิวไม่ได้ก่อนใครหลัง END-02 (ทาง ก ×2 ถ้าอยู่ MH-03) · หลัง END-02 ฮรอด-กาธสิ้นแล้ว ทาง ค เป็นนำข้าวเถ้าไปวางที่ซาก ไม่มีการทดสอบ · ข้ามถ้าไม่มีทั้งสองเหตุการณ์",
     "src": "docs/lore/storylines/21-ghoul.md:49",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "PL-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "END-02",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "PL-02",
+       "happened": true
       },
       {
-       "k": "not",
-       "of": {
-        "k": "text",
-        "text": "ไม่มีทั้งสองเหตุการณ์"
-       }
+       "k": "event",
+       "id": "END-02",
+       "happened": true
       }
      ]
     },
@@ -22516,7 +22548,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "บอกคนใกล้ชิด · ไว้ใจเพื่อน +1 หรือ",
+      "label": "บอกคนใกล้ชิด · ไว้ใจเพื่อน +1",
       "effects": [
        {
         "k": "trust",
@@ -23261,7 +23293,7 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "เติบโตแบบมนุษย์ ไม่เข้า หรือ",
+      "label": "เติบโตแบบมนุษย์ ไม่เข้า",
       "effects": [
        {
         "k": "grant",
@@ -23793,6 +23825,30 @@
      {
       "k": "npc",
       "id": "SV01-3"
+     },
+     {
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "BIO-01",
+         "happened": false
+        },
+        {
+         "k": "event",
+         "id": "WR-04",
+         "happened": false
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ผู้ป่วยโรคทั่วไปแทน"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -23800,54 +23856,7 @@
      "WR-04"
     ],
     "notesText": "NPC SV01-3 ไลรา · ข้ามถ้า BIO-01 และ WR-04 ยังไม่เกิด ใช้ผู้ป่วยโรคทั่วไปแทน",
-    "src": "docs/lore/storylines/22-halfblood.md:100",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "BIO-01",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "WR-04",
-         "happened": true
-        }
-       ]
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "BIO-01",
-          "happened": true
-         },
-         {
-          "k": "and",
-          "of": [
-           {
-            "k": "event",
-            "id": "WR-04",
-            "happened": false
-           },
-           {
-            "k": "text",
-            "text": "ยังไม่เกิด ใช้ผู้ป่วยโรคทั่วไปแทน"
-           }
-          ]
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:100"
    },
    {
     "id": "lf.b2",
@@ -24044,20 +24053,25 @@
       "id": "SV09-1"
      },
      {
-      "k": "event",
-      "id": "WR-17"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "WR-17",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ใช้การปล่อยฝูงหนีไฟป่า"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "WR-17"
     ],
     "notesText": "ศึก: `ash_wolf_pack` (ทาง ข หรือ ค) · NPC SV09-1 ไรกัส · ถ้า WR-17 ยังไม่เกิด ใช้การปล่อยฝูงหนีไฟป่า",
-    "src": "docs/lore/storylines/22-halfblood.md:110",
-    "when": {
-     "k": "event",
-     "id": "WR-17",
-     "happened": true
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:110"
    },
    {
     "id": "lf.a2",
@@ -24339,40 +24353,27 @@
       "enemies": [
        "npc_mercenary"
       ]
+     },
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "WR-03",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ปีอดอยากทั่วไป"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "WR-03"
     ],
     "notesText": "ศึก: `npc_mercenary` ฝูง (ทาง ข) · ข้ามถ้า WR-03 ยังไม่เกิด ใช้ปีอดอยากทั่วไป",
-    "src": "docs/lore/storylines/22-halfblood.md:121",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "WR-03",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "WR-03",
-          "happened": false
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้ปีอดอยากทั่วไป"
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:121"
    },
    {
     "id": "ho.a2",
@@ -24450,12 +24451,28 @@
       "id": "MH01-1"
      },
      {
-      "k": "event",
-      "id": "DM-06"
-     },
-     {
-      "k": "event",
-      "id": "DM-11"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "DM-06",
+         "happened": false
+        },
+        {
+         "k": "event",
+         "id": "DM-11",
+         "happened": false
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ใช้ปีแล้งข้าวขาดแทน"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -24651,15 +24668,18 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "cv.1"
-      ],
-      "rel": "เข้า"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ใช้ภัยพายุไร้ทิศแทน (ไม่เข้า cv.1)"
+       }
+      ]
      },
      {
       "k": "npc",
@@ -24671,11 +24691,6 @@
     ],
     "notesText": "ถ้า DR-01 ยังไม่เกิด ใช้ภัยพายุไร้ทิศแทน (ไม่เข้า cv.1) · NPC AZ01-3 เซลีนาซา",
     "src": "docs/lore/storylines/22-halfblood.md:132",
-    "when": {
-     "k": "event",
-     "id": "DR-01",
-     "happened": true
-    },
     "godWindow": {
      "what": "`b_wings`",
      "effect": "ตัวละครบินกลับได้แม้ปีกสั้น"
@@ -24932,31 +24947,35 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "FG-02"
-     },
-     {
-      "k": "event",
-      "id": "FG-03"
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "cv.15"
-      ],
-      "rel": "เข้า"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "FG-02",
+         "happened": false
+        },
+        {
+         "k": "event",
+         "id": "FG-03",
+         "happened": false
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ใช้ฝูงหมอกจางเป็นภัยท้องถิ่น (ไม่เข้า cv.15)"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "FG-02"
     ],
     "notesText": "ถ้า FG-02 และ FG-03 ยังไม่เกิด ใช้ฝูงหมอกจางเป็นภัยท้องถิ่น (ไม่เข้า cv.15)",
-    "src": "docs/lore/storylines/22-halfblood.md:143",
-    "when": {
-     "k": "event",
-     "id": "FG-02",
-     "happened": true
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:143"
    },
    {
     "id": "vb.a2",
@@ -25122,11 +25141,7 @@
       "weight": 35,
       "label": "ขอลบชื่อ ต้องทำงานใช้หนี้หนึ่งปี",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ทำงานใช้หนี้หนึ่งปี"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -25178,7 +25193,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ซื้อสัญญาคืน · ทอง −150 · ล้างธง · ทางสู่อาชีพลับ",
+      "label": "ซื้อสัญญาคืน · ทอง −150 · ล้างธง",
       "effects": [
        {
         "k": "stat",
@@ -25547,6 +25562,12 @@
       "label": "ฝ่ายปิดรูน · ต้องออกจาก KD-03 และใช้รูนที่อื่น",
       "effects": [
        {
+        "k": "place",
+        "ids": [
+         "KD-03"
+        ]
+       },
+       {
         "k": "grant",
         "kind": "skill",
         "id": "ns_rune_close"
@@ -25558,31 +25579,7 @@
         "chance": 0.15
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "and",
-       "of": [
-        {
-         "k": "and",
-         "of": [
-          {
-           "k": "country",
-           "ids": [
-            "KD-03"
-           ]
-          },
-          {
-           "k": "text",
-           "text": "ออกจาก"
-          }
-         ]
-        },
-        {
-         "k": "text",
-         "text": "ใช้รูนที่อื่น"
-        }
-       ]
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -25690,37 +25687,17 @@
     "notesText": "ถ้ามีเลือดลาวา ไฟหมดทำให้ร่างเริ่มเย็น (la.a5 ในรูปลูกครึ่ง) · ข้ามถ้า DR-04 และ GI-04 ยังไม่เกิด",
     "src": "docs/lore/storylines/22-halfblood.md:166",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "DR-04",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "GI-04",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "DR-04",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "GI-04",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "GI-04",
+       "happened": true
       }
      ]
     },
@@ -25998,8 +25975,28 @@
       ]
      },
      {
-      "k": "event",
-      "id": "PL-07"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "GI-02",
+         "happened": false
+        },
+        {
+         "k": "event",
+         "id": "WR-02",
+         "happened": false
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ภูเขาร้าว (PL-07) แทน"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -26007,54 +26004,7 @@
      "WR-02"
     ],
     "notesText": "ศึก: `titan_shard` (ทาง ก) · ข้ามถ้า GI-02 และ WR-02 ยังไม่เกิด ใช้ภูเขาร้าว (PL-07) แทน",
-    "src": "docs/lore/storylines/22-halfblood.md:177",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "GI-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "WR-02",
-         "happened": true
-        }
-       ]
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "GI-02",
-          "happened": true
-         },
-         {
-          "k": "and",
-          "of": [
-           {
-            "k": "event",
-            "id": "WR-02",
-            "happened": false
-           },
-           {
-            "k": "text",
-            "text": "ยังไม่เกิด ใช้ภูเขาร้าว"
-           }
-          ]
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:177"
    },
    {
     "id": "sh.b2",
@@ -26276,40 +26226,27 @@
       "enemies": [
        "shadowless_stalker"
       ]
+     },
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "CT-07",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "ผู้ไร้เงาที่ออกมาเป็นหมู่ไม่ได้"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "CT-07"
     ],
     "notesText": "ศึก: `shadowless_stalker` (ทาง ข) · ข้ามถ้า CT-07 ยังไม่เกิด ใช้ผู้ไร้เงาที่ออกมาเป็นหมู่ไม่ได้",
-    "src": "docs/lore/storylines/22-halfblood.md:187",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "CT-07",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "CT-07",
-          "happened": false
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้ผู้ไร้เงาที่ออกมาเป็นหมู่ไม่ได้"
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:187"
    },
    {
     "id": "sh.a2",
@@ -26631,40 +26568,27 @@
      {
       "k": "npc",
       "id": "SV04-1"
+     },
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "สัญญาซื้อขายพรทั่วไปแทน"
+       }
+      ]
      }
     ],
     "titleEvents": [
      "BIO-01"
     ],
     "notesText": "NPC SV04-1 ไททาเนีย-เวล · ข้ามถ้า BIO-01 ยังไม่เกิด ใช้สัญญาซื้อขายพรทั่วไปแทน",
-    "src": "docs/lore/storylines/22-halfblood.md:199",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "BIO-01",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "BIO-01",
-          "happened": false
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้สัญญาซื้อขายพรทั่วไปแทน"
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:199"
    },
    {
     "id": "hl.b2",
@@ -27192,39 +27116,27 @@
       "mods": []
      }
     ],
-    "notes": [],
+    "notes": [
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "WR-14",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "การเกณฑ์ฝูงทั่วไป"
+       }
+      ]
+     }
+    ],
     "titleEvents": [
      "WR-14"
     ],
     "notesText": "ข้ามถ้า WR-14 ยังไม่เกิด ใช้การเกณฑ์ฝูงทั่วไป",
-    "src": "docs/lore/storylines/22-halfblood.md:221",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "WR-14",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "WR-14",
-          "happened": false
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้การเกณฑ์ฝูงทั่วไป"
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:221"
    },
    {
     "id": "wc.b2",
@@ -27495,39 +27407,27 @@
       "mods": []
      }
     ],
-    "notes": [],
+    "notes": [
+     {
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-05",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "พายุใหญ่ทั่วไป"
+       }
+      ]
+     }
+    ],
     "titleEvents": [
      "DR-05"
     ],
     "notesText": "ข้ามถ้า DR-05 ยังไม่เกิด ใช้พายุใหญ่ทั่วไป",
-    "src": "docs/lore/storylines/22-halfblood.md:232",
-    "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-05",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "and",
-        "of": [
-         {
-          "k": "event",
-          "id": "DR-05",
-          "happened": false
-         },
-         {
-          "k": "text",
-          "text": "ยังไม่เกิด ใช้พายุใหญ่ทั่วไป"
-         }
-        ]
-       }
-      }
-     ]
-    }
+    "src": "docs/lore/storylines/22-halfblood.md:232"
    },
    {
     "id": "dd.b2",
@@ -28718,16 +28618,12 @@
       "weight": 35,
       "label": "ได้ทองไม่ถึง 100 · ต้องใช้จ่ายทันที · ซื้อของจำเป็น (เกราะ เครื่องมือชีวิต)",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ใช้จ่ายทันที"
-      }
+      "mods": []
      },
      {
       "key": "c",
       "weight": 25,
-      "label": "ถูกยืมเงินหรือถูกหลอก · ทอง −60 · หรือ",
+      "label": "ถูกยืมเงินหรือถูกหลอก · ทอง −60",
       "effects": [
        {
         "k": "stat",
@@ -29475,7 +29371,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "เข้ากิลด์ผู้ส่งของหรือผู้นำทาง · อาชีพ หรือ",
+      "label": "เข้ากิลด์ผู้ส่งของหรือผู้นำทาง · อาชีพ",
       "effects": [
        {
         "k": "grant",
@@ -29606,7 +29502,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ผู้นำขบวนหรือผู้คุ้มกัน สู้ทำให้สินค้ารอด · ชื่อเสียง +5 · ระดับ 1 หรือ",
+      "label": "ผู้นำขบวนหรือผู้คุ้มกัน สู้ทำให้สินค้ารอด · ชื่อเสียง +5 · ระดับ 1",
       "effects": [
        {
         "k": "stat",
@@ -29911,20 +29807,7 @@
         "delta": -40
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "or",
-       "of": [
-        {
-         "k": "text",
-         "text": "เปลี่ยนเส้น"
-        },
-        {
-         "k": "text",
-         "text": "ใช้ผู้ค้ำ"
-        }
-       ]
-      }
+      "mods": []
      }
     ],
     "notes": [
@@ -30007,21 +29890,12 @@
     ],
     "notes": [
      {
-      "k": "only",
-      "cond": {
-       "k": "text",
-       "text": "ห้าม (ทาง ก ค)"
-      },
-      "then": [
-       {
-        "k": "battleFor",
-        "choices": [
-         "a"
-        ],
-        "enemies": [
-         "npc_bandit"
-        ]
-       }
+      "k": "battleFor",
+      "choices": [
+       "a"
+      ],
+      "enemies": [
+       "npc_bandit"
       ]
      },
      {
@@ -30346,7 +30220,7 @@
       "effects": [
        {
         "k": "statMul",
-        "stat": "ถ้าไม่แตก ได้",
+        "stat": "ได้",
         "mul": 2
        }
       ],
@@ -30497,11 +30371,7 @@
       "weight": 25,
       "label": "ซ่อนทรัพย์ไม่ให้ใครรู้ · ทายาทต้องตามหา (เรื่องค้างชนิดความลับ)",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ตามหา (เรื่องค้างชนิดความลับ)"
-      }
+      "mods": []
      }
     ],
     "notes": [],
@@ -31203,7 +31073,7 @@
       "effects": [
        {
         "k": "statMul",
-        "stat": "ย้ายไปประเทศรวยกว่า ค่าแรง",
+        "stat": "ค่าแรง",
         "mul": 1.5
        }
       ],
@@ -31436,6 +31306,11 @@
        },
        {
         "k": "grant",
+        "kind": "job",
+        "id": "airship_pilot"
+       },
+       {
+        "k": "grant",
         "kind": "curse",
         "id": "c_wanted",
         "chance": 0.2
@@ -31453,21 +31328,7 @@
         "id": "SF-05"
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "and",
-       "of": [
-        {
-         "k": "has",
-         "kind": "job",
-         "id": "airship_pilot"
-        },
-        {
-         "k": "text",
-         "text": "ทำงานบนเรือเหาะ เรียนรู้"
-        }
-       ]
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -31534,11 +31395,7 @@
         "delta": 1
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ข้ามผิวน้ำ ปีกพลัดถิ่น"
-      }
+      "mods": []
      },
      {
       "key": "b",
@@ -31634,7 +31491,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "ขึ้นฝั่งตั้งหลัก · เป็นผู้ซ่อมเรือหรือครูนำร่อง · อาชีพ หรือ",
+      "label": "ขึ้นฝั่งตั้งหลัก · เป็นผู้ซ่อมเรือหรือครูนำร่อง · อาชีพ",
       "effects": [
        {
         "k": "grant",
@@ -32292,22 +32149,7 @@
         "level": 1
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "and",
-       "of": [
-        {
-         "k": "race",
-         "ids": [
-          "dw"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "เข้าเงื่อนไขท่าทีของ"
-        }
-       ]
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -32349,26 +32191,16 @@
       "label": "พบตำราต้องห้ามในห้องสมุด (AL11-4 ทอเรน แอบอ่านอยู่) · อาจเปิดทางลิชตามตารางที่มา",
       "effects": [
        {
+        "k": "npc",
+        "id": "AL11-4"
+       },
+       {
         "k": "grant",
         "kind": "tag",
         "id": "#necro"
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "and",
-       "of": [
-        {
-         "k": "npc",
-         "id": "AL11-4",
-         "alive": true
-        },
-        {
-         "k": "text",
-         "text": "ห้ามในห้องสมุด ( ทอเรน แอบอ่านอยู่)"
-        }
-       ]
-      }
+      "mods": []
      },
      {
       "key": "b",
@@ -32414,17 +32246,8 @@
       ]
      },
      {
-      "k": "only",
-      "cond": {
-       "k": "text",
-       "text": "สงสัย ทอเรน"
-      },
-      "then": [
-       {
-        "k": "npc",
-        "id": "AL11-4"
-       }
-      ]
+      "k": "npc",
+      "id": "AL11-4"
      },
      {
       "k": "npc",
@@ -32450,7 +32273,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "กลับถิ่นเดิมพร้อมความรู้ · อาชีพ หรือ",
+      "label": "กลับถิ่นเดิมพร้อมความรู้ · อาชีพ",
       "effects": [
        {
         "k": "grant",
@@ -32482,11 +32305,7 @@
       "weight": 25,
       "label": "เดินทางต่อไปที่อื่นที่ต้องการความรู้ · เปิด wd",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "การความรู้"
-      }
+      "mods": []
      }
     ],
     "notes": [],
@@ -32646,20 +32465,7 @@
       "weight": 35,
       "label": "ขอลี้ภัยกับศาสนาหรือสถาบัน · อาจต้องสาบานหรือรับใช้",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "or",
-       "of": [
-        {
-         "k": "text",
-         "text": "สาบาน"
-        },
-        {
-         "k": "text",
-         "text": "รับใช้"
-        }
-       ]
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -32863,7 +32669,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "เป็นนักดนตรีหรือนักเล่าเรื่อง · อาชีพ หรือ · ได้ข่าวจากหลายเมือง",
+      "label": "เป็นนักดนตรีหรือนักเล่าเรื่อง · อาชีพ · ได้ข่าวจากหลายเมือง",
       "effects": [
        {
         "k": "grant",
@@ -32889,11 +32695,7 @@
         "id": "guide"
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "การข้ามเขต"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -33005,11 +32807,7 @@
       "weight": 35,
       "label": "ถูกจับ หรือสัญญาผูกมัด · ต้องใช้หนี้",
       "effects": [],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ใช้หนี้"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -33049,7 +32847,7 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "เล่าเรื่องการเดินทางในโรงเตี๊ยม · อาชีพ หรือ",
+      "label": "เล่าเรื่องการเดินทางในโรงเตี๊ยม · อาชีพ",
       "effects": [
        {
         "k": "grant",
@@ -33522,11 +33320,7 @@
         ]
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ปรับตัว"
-      }
+      "mods": []
      },
      {
       "key": "b",
@@ -34233,11 +34027,7 @@
         "delta": -2
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ใช้ใบเชิญ"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -35936,11 +35726,7 @@
         "delta": -2
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "การ"
-      }
+      "mods": []
      },
      {
       "key": "b",
@@ -36012,7 +35798,7 @@
        },
        {
         "k": "statPct",
-        "stat": "ทุกสองปี รายได้",
+        "stat": "รายได้",
         "pct": 10
        }
       ],
@@ -36030,7 +35816,7 @@
        },
        {
         "k": "statPct",
-        "stat": "ทุกสองปี รายได้",
+        "stat": "รายได้",
         "pct": 5
        }
       ],
@@ -36346,7 +36132,7 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "เพื่อนวัยเด็กเผ่าเดียวกันที่เล่นด้วยกันทุกวัน · สายสหายระดับ 2 · 30% ได้ไอเทมคู่ หรือ",
+      "label": "เพื่อนวัยเด็กเผ่าเดียวกันที่เล่นด้วยกันทุกวัน · สายสหายระดับ 2 · 30% ได้ไอเทมคู่",
       "effects": [
        {
         "k": "bond",
@@ -36517,7 +36303,7 @@
       "effects": [
        {
         "k": "range",
-        "stat": "ช่วยเต็มที่ ทอง",
+        "stat": "ทอง",
         "min": -30,
         "max": -150
        },
@@ -37060,11 +36846,7 @@
         "code": "KN-06"
        }
       ],
-      "mods": [],
-      "when": {
-       "k": "text",
-       "text": "ปกป้อง"
-      }
+      "mods": []
      },
      {
       "key": "c",
@@ -37474,14 +37256,15 @@
       "label": "ซ่อนคนที่ถูกตามไว้ในบ้าน · ถูกค้น 40% → ศึก",
       "effects": [
        {
-        "k": "battle",
-        "enemies": [],
-        "text": "ถูกค้น 40% →"
-       },
-       {
-        "k": "pct",
+        "k": "chance",
+        "p": 0.4,
         "text": "ถูกค้น",
-        "pct": 40
+        "then": [
+         {
+          "k": "battle",
+          "enemies": []
+         }
+        ]
        }
       ],
       "mods": []
@@ -37505,14 +37288,16 @@
       "label": "ชี้ทางผิด · ถูกจับได้ 30% →",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted"
-       },
-       {
-        "k": "pct",
+        "k": "chance",
+        "p": 0.3,
         "text": "ถูกจับได้",
-        "pct": 30
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted"
+         }
+        ]
        }
       ],
       "mods": []
@@ -37601,14 +37386,16 @@
         "delta": 120
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted"
-       },
-       {
-        "k": "pct",
+        "k": "chance",
+        "p": 0.3,
         "text": "ถูกจับ",
-        "pct": 30
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted"
+         }
+        ]
        }
       ],
       "mods": []
@@ -37761,18 +37548,14 @@
     ],
     "notes": [
      {
-      "k": "only",
-      "cond": {
-       "k": "text",
-       "text": "การกุญแจ 30%"
-      },
-      "then": [
-       {
-        "k": "battle",
-        "enemies": [],
-        "text": "ค่ายถูกบุกโดยฝ่ายที่ต้องการกุญแจ 30%"
-       }
-      ]
+      "k": "battle",
+      "enemies": [],
+      "text": "ค่ายถูกบุกโดยฝ่ายที่ต้องการกุญแจ 30%"
+     },
+     {
+      "k": "pct",
+      "text": "ค่ายถูกบุกโดยฝ่ายที่ต้องการกุญแจ",
+      "pct": 30
      },
      {
       "k": "battle",
@@ -37865,7 +37648,7 @@
       },
       {
        "k": "text",
-       "text": "มีพวกพ้องระดับ 3 ขึ้นไป ถ้าไม่มี ข้ามไป"
+       "text": "มีพวกพ้องระดับ 3 ขึ้นไป"
       }
      ]
     }
@@ -38166,22 +37949,9 @@
     "notesText": "NPC ผู้นำซาก ([../../systems/god/04-miracles.md](../../systems/god/04-miracles.md) หัวข้อ 5.1) · ถ้า RU-02 ยังไม่เกิด ข้าม",
     "src": "docs/lore/storylines/31-divine.md:23",
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "RU-02",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "event",
-        "id": "RU-02",
-        "happened": false
-       }
-      }
-     ]
+     "k": "event",
+     "id": "RU-02",
+     "happened": true
     },
     "godWindow": {
      "what": "คำใบ้ \"ช่วย\" ชี้ผู้นำซาก",
@@ -38351,22 +38121,9 @@
     "notesText": "ศึก `npc_cultist` (ทาง ค) · ถ้า RU-04 ยังไม่เกิด ข้าม",
     "src": "docs/lore/storylines/31-divine.md:25",
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "RU-04",
-       "happened": true
-      },
-      {
-       "k": "not",
-       "of": {
-        "k": "event",
-        "id": "RU-04",
-        "happened": false
-       }
-      }
-     ]
+     "k": "event",
+     "id": "RU-04",
+     "happened": true
     }
    },
    {
@@ -39433,7 +39190,7 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "race",
@@ -39856,7 +39613,7 @@
         "secret": false
        }
       ],
-      "text": "ทางสู่"
+      "text": ""
      },
      {
       "label": "เปลวไม่ตอบ",
@@ -40490,7 +40247,7 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "event",
@@ -40543,7 +40300,7 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "event",
@@ -46756,7 +46513,18 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "MH09-4"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ]
      },
      {
       "n": 4,
@@ -46764,7 +46532,12 @@
       "level": 4,
       "text": "หลังพ้นพันธะ เธอเลือกระหว่างเป็นบัญชีคู่หูของตัวละคร ไปสอนที่นิวเฮเวนกับ AL19-7 หรือกลับไปเปิดโปงสัญญาที่ไม่ถูกต้องในตลาดโดยไม่สนความเสี่ยง",
       "moods": [],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "AL19-7"
+       }
+      ]
      },
      {
       "n": 5,
@@ -46892,7 +46665,18 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "NR05-4"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-04"
+        ]
+       }
+      ]
      },
      {
       "n": 4,
@@ -48016,7 +47800,12 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "KD01-1"
+       }
+      ]
      },
      {
       "n": 4,
@@ -49375,7 +49164,14 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-12"
+        ]
+       }
+      ]
      },
      {
       "n": 4,
@@ -50070,7 +49866,12 @@
         "level": 2
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "NR07-2"
+       }
+      ]
      },
      {
       "key": "b",
@@ -50410,7 +50211,13 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ผู้กล้าจะออก แรก และเขารู้ว่าต้องป้องกันผู้กล้ามากกว่าเข้าร่วม ตัวละครเลือก: เข้าขบวนไปด้วย ให้ฝึกเพิ่ม หรือห้ามไป **ขอบเขตของเขา:** เขาไม่ยอมทิ้งกระเป๋าของผู้กล้าแม้ถูกขอให้ถือของตัวละครแทน"
+       }
+      ]
      },
      {
       "n": 4,
@@ -51059,7 +50866,12 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "npc",
+        "id": "MK02-3"
+       }
+      ]
      },
      {
       "n": 4,
@@ -51826,7 +51638,12 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "event",
+        "id": "WR-02"
+       }
+      ]
      },
      {
       "key": "c",
@@ -52441,7 +52258,18 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "event",
+        "id": "CT-07"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "KD-05"
+        ]
+       }
+      ]
      },
      {
       "n": 4,
@@ -52999,7 +52827,12 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "event",
+        "id": "PO-08"
+       }
+      ]
      },
      {
       "n": 4,
@@ -53541,7 +53374,14 @@
         "level": 3
        }
       ],
-      "effects": []
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-03"
+        ]
+       }
+      ]
      },
      {
       "n": 4,
@@ -54353,7 +54193,7 @@
       "chance": 0.3
      }
     ],
-    "text": "หรือ · จำชาติก่อนได้บางส่วน",
+    "text": "จำชาติก่อนได้บางส่วน",
     "src": "docs/lore/storylines/01-human.md:21",
     "firstNode": "hu.b1"
    },
@@ -54433,7 +54273,7 @@
     "effects": [
      {
       "k": "statMul",
-      "stat": "ก ในพิธีผูกราก",
+      "stat": "ในพิธีผูกราก",
       "mul": 1.5
      }
     ],

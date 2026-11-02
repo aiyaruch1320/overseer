@@ -57,6 +57,8 @@ export type ExtraEffect =
   | { k: 'qty'; n: number; unit: string }
   /** `น้ำหนัก cv.10 ×2` `น้ำหนักฝ่ายปิดใน dw.t2 ×2`: a weight change on another node (a side of it when `label` is set). */
   | { k: 'nodeWeight'; node?: NodeId; label?: string; mul: number }
+  /** `ถูกค้น 40% → ศึก`: what follows the arrow happens with this chance. */
+  | { k: 'chance'; p: number; text: string; then: EffectX[] }
   /** `ความหิว > 70 → ทาง ข ×2`: weight change on a choice of this very node. */
   | { k: 'choiceMod'; choice: 'a' | 'b' | 'c'; cond?: ConditionX; mul: number }
   /** `บาดแผลถาวร 10%`. */

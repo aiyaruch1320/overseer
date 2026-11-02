@@ -1073,7 +1073,7 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "has",
@@ -1604,7 +1604,7 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "has",
@@ -2725,17 +2725,22 @@
       "mods": [
        {
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
-           "k": "has",
-           "kind": "trait",
-           "id": "greedy"
-          },
-          {
-           "k": "race",
-           "ids": [
-            "or"
+           "k": "or",
+           "of": [
+            {
+             "k": "has",
+             "kind": "trait",
+             "id": "greedy"
+            },
+            {
+             "k": "race",
+             "ids": [
+              "or"
+             ]
+            }
            ]
           },
           {
@@ -3190,17 +3195,8 @@
       "id": "MH07-2"
      },
      {
-      "k": "only",
-      "cond": {
-       "k": "text",
-       "text": "เลือกอีกครั้งว่าจะอยู่ข้างใคร"
-      },
-      "then": [
-       {
-        "k": "event",
-        "id": "DM-05"
-       }
-      ]
+      "k": "event",
+      "id": "DM-05"
      }
     ],
     "titleEvents": [],
