@@ -36,7 +36,8 @@ export type IdKind =
 
 /** A condition that gates an effect or multiplies a choice weight. `text` keeps phrases the parser could not read. */
 export type Condition =
-  | { k: 'event'; id: EventId; happened: boolean }
+  /** `outcome`: the event ended with that choice (`WR-04 ก)`). `phase`: `near` = about to fire, `running` = in progress. */
+  | { k: 'event'; id: EventId; happened: boolean; outcome?: 'a' | 'b' | 'c'; phase?: 'near' | 'running' }
   | { k: 'has'; kind: IdKind; id: string; level?: number } // trait, job, blessing, curse, skill, item... · `rune ระดับ 3`
   | { k: 'npc'; id: NpcId; alive: boolean }
   | { k: 'country'; ids: CountryId[] } // born in or living in one of these
@@ -51,7 +52,8 @@ export type Condition =
   /** A number the character or the world carries: `trust` `fame` `int` `godFaith` `gold` `country.W` `dfc`; `count` for "≥ 3 จาก 10 เผ่า". */
   | { k: 'cmp'; stat: string; op: '>=' | '>' | '<=' | '<' | '=='; value: number; count?: number; label?: string }
   /** A world variable threshold from an event condition cell: `H > 70` `M6 < 40` (events §0). */
-  | { k: 'var'; name: string; op: '<' | '>'; n: number }
+  /** Names: `H` `T` `D` `F` `P` `M0`..`M14` (dragon moods) `Z:<dragon>` `tension`. `decades`: held that long (`F < 20 นาน 3 ทศวรรษ`). */
+  | { k: 'var'; name: string; op: '<' | '>'; n: number; decades?: number }
   | { k: 'node'; id: NodeId; choice?: 'a' | 'b' | 'c' } // passed that node (and took that choice)
   | { k: 'faith'; ids: string[] } // religion `faith.01`..`faith.23` (docs/lore/religions/README.md)
   | { k: 'sign'; ids: string[] } // birth sign (character/01-origin.md)
