@@ -7,7 +7,7 @@ import type { GiftLike } from '../../src/core/character/data';
 import { command } from '../../src/core/command';
 import { sortSystems, makeCtx, type Ctx, type GameData, type Game } from '../../src/core/game';
 import {
-  addBelief, canPay, checkDream, checkOpen, compOf, currentChest, dreamWeight, dreamsOf, earn, godSystem, incomeOf, offersNow, openChest, pathsNow, pay, pickSlot,
+  scaleCost, addBelief, canPay, checkDream, checkOpen, compOf, currentChest, dreamWeight, dreamsOf, earn, godSystem, incomeOf, offersNow, openChest, pathsNow, pay, pickSlot,
   priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, sourceOf, type Chest, type ChestSlot,
 } from '../../src/core/god';
 import { OPPOSITES, TIERS } from '../../src/core/god/tuning';
@@ -125,11 +125,25 @@ describe('god G0: prices (01-power.md §2)', () => {
     life.godFaith = 60;
     expect(priceOf(ctx, 'curse', { tier: 'R' })!.dread).toBe(20);
     life.godFaith = 0;
-    expect(priceOf(ctx, 'bless', { tier: 'U', window: true })!.faith).toBe(11);
+    expect(priceOf(ctx, 'bless', { tier: 'U', window: true })!.faith).toBe(12); // 16 × 0.7 = 11.2, rounded up
     expect(priceOf(ctx, 'dream', { n: 0, window: true })!.faith).toBe(7);
     expect(priceOf(ctx, 'whisper', { hint: 'ระวัง', window: true })!.faith).toBe(4);
     expect(priceOf(ctx, 'reroll', { n: 2, window: true })!.faith).toBe(20);
     expect(priceOf(ctx, 'revive', { line: 'faith', window: true })!.faith).toBe(60);
+  });
+
+  it('scaleCost puts the same multipliers on any base cost (prayers, miracles), rounded up', () => {
+    const { ctx, life } = bare();
+    expect(scaleCost(ctx, { faith: 17, dread: 20 })).toEqual({ faith: 17, dread: 20 });
+    life.godFaith = -40;
+    expect(scaleCost(ctx, { faith: 17 })).toEqual({ faith: 26 }); // 25.5
+    life.godFaith = 70;
+    expect(scaleCost(ctx, { dread: 15 })).toEqual({ dread: 18 });
+    life.godFaith = 0;
+    expect(scaleCost(ctx, { faith: 17 }, { window: true })).toEqual({ faith: 17 }); // no window open
+    gx(ctx).window = { age: life.hAge, nodes: [], stop: true, played: 0 };
+    expect(scaleCost(ctx, { faith: 17 }, { window: true })).toEqual({ faith: 12 }); // 11.9
+    expect(scaleCost(ctx, { faith: 17 })).toEqual({ faith: 17 }); // an act that gets no discount
   });
 
   it('a weapon of the sage makes one dream or whisper a year free; the free act is used up by pay', () => {
@@ -791,7 +805,7 @@ describe('god G2: dreams (03-dreams.md)', () => {
     if (o2) {
       const l1 = ctx.state.god.light;
       expect(command(ctx, { type: 'god', action: 'dream.send', args: { node: o2.node, choice: o2.choice }, confirm: true })).toMatchObject({ ok: true });
-      expect(l1 - ctx.state.god.light).toBe(Math.round((14 + 1) * (o2.window ? 0.7 : 1)));
+      expect(l1 - ctx.state.god.light).toBe(Math.ceil((14 + 1) * (o2.window ? 0.7 : 1) - 1e-9));
       const o3 = offersNow(ctx)[0];
       if (o3) expect(checkDream(ctx, o3)).toMatch(/เพดาน/);
     }

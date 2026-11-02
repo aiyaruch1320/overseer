@@ -64,7 +64,8 @@ export function isImmune(ctx: Ctx): boolean {
 
 // ---------- prices ----------
 
-const round = (x: number) => (x <= 0 ? 0 : Math.max(1, Math.round(x)));
+/** A price after the multipliers is rounded up, so a discount never makes a thing free (the same rule the acts files use). */
+const round = (x: number) => (x <= 0 ? 0 : Math.max(1, Math.ceil(x - 1e-9)));
 
 function tableOf(ctx: Ctx, key: string, tier: string): { v: number; pay: 'faith' | 'dread' } | null {
   const row = godData(ctx).prices.byTier.find((r) => r.key === key);
@@ -151,6 +152,20 @@ export function priceOf(ctx: Ctx, action: PriceAction, opts: PriceOpts = {}): Pr
     notes.push('free');
   } else price[line] = round(base * mul);
   return price;
+}
+
+/**
+ * The multipliers of §2 on a base cost that is not in the tables (a prayer kind, a miracle, a price the docs give in words):
+ * `window: true` takes the ×0.7 off where the act gets it (a gift, a dream, a whisper), and defaults to false. Rounded up.
+ */
+export function scaleCost(ctx: Ctx, base: Cost, opts: { window?: boolean } = {}): Cost {
+  const m = godData(ctx).prices.mods;
+  const belief = lifeOf(ctx)?.godFaith ?? 0;
+  const out: Cost = {};
+  const w = opts.window && inWindow(ctx) ? m.window : 1;
+  if (base.faith) out.faith = round(base.faith * (belief < m.beliefLow.below ? m.beliefLow.faithMul : 1) * w);
+  if (base.dread) out.dread = round(base.dread * (belief > m.beliefHigh.above ? m.beliefHigh.dreadMul : 1) * w);
+  return out;
 }
 
 // ---------- spending ----------
