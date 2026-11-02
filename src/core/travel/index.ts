@@ -67,7 +67,11 @@ export function followStory(ctx: Ctx, node: { id: string; choices: { key: string
   for (const to of placesOf(choice?.effects ?? [])) {
     if (to === life.country || !/^[A-Z]{2}-\d{2}$/.test(to)) continue;
     const p = to.slice(0, 2) === life.country.slice(0, 2) ? FOLLOW_STORY.same : FOLLOW_STORY.cross;
-    if (p < 1 && !ctx.rng('life.travel.story').chance(p)) continue;
+    if (p < 1 && !ctx.rng('life.travel.story').chance(p)) {
+      // the way named a place and the character did not go (M3 review T2): the player is told the place was not reached
+      write(ctx.state, { sys: 'travel', kind: 'stay', id: to, data: { node: node.id, to, here: life.country, why: 'chance' }, level: 1 });
+      continue;
+    }
     if (relocate(ctx, to, `story:${node.id}`)) return true;
   }
   return false;

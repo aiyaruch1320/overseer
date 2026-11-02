@@ -469,9 +469,41 @@ describe('text: the hand of the god and the calls of the game', () => {
     expect(say(data, att({ why: 'nearDeath' }))).toContain('ฉากสุดท้าย');
     expect(say(data, att({ why: 'battle', call: 'card', until: 26 }))).toBe('ศึกกำลังจะมาถึง · รอท่านอยู่จนอายุ 26');
     expect(say(data, att({ why: 'crisis', call: 'card', until: 26 }))).toContain('วิกฤต');
+    // the card of a crisis names the person, read from the announcement the call stands for
+    const crisis = e({ n: 7, sys: 'bonds', kind: 'crisis', id: 'T3', level: 2, age: 20, data: { name: 'ไลลินา', line: 'สหาย', text: 'x', tie: 'T3', kin: null, gender: 'f' } });
+    const card = att({ why: 'crisis', call: 'card', until: 26, n: '7', ids: 'T3' }, 'T3');
+    expect(lines(data, [crisis, card], 0).map((l) => l.text).pop()).toBe('ไลลินา (สหาย) ตกอยู่ในวิกฤต · รอท่านอยู่จนอายุ 26');
+    const stop = att({ why: 'age', age: 30, cards: 'crisis', n: '7', ids: 'T3' });
+    expect(lines(data, [crisis, stop], 0).map((l) => l.text).pop()).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 30 · มีเรื่องรออยู่ด้วย: วิกฤตของ ไลลินา (สหาย)');
     // a glow and a missed card are for the log, not for the player
     expect(say(data, e({ sys: 'attention', kind: 'glow', level: 1, data: { why: 'gap' } }), { raw: true })).toBeNull();
     expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toBeNull();
+  });
+});
+
+describe('text: the war lines vary, the whisper and the dream name the ally (M3 text)', () => {
+  const war = (n: number, over: Partial<LogEntry['data']> = {}): LogEntry =>
+    e({ n, sys: 'combat', kind: 'war', id: 'MH-07', level: 0, age: 30, worldYear: 470 + n, data: { war: 'WR-03', foe: 'goblin', role: 'front', rank: 'soldier', rankN: 1, n, roll: 9, how: 'held', grade: 'steady', first: false, pay: 3, fame: 2, promoted: false, ...over } });
+
+  it('twenty-two battles of one soldier read in many wordings, and the same entry reads the same twice', () => {
+    const log = Array.from({ length: 22 }, (_, i) => war(i + 1));
+    const a = lines(data, log, 0).filter((l) => l.sys === 'combat').map((l) => l.text);
+    const b = lines(data, log, 0).filter((l) => l.sys === 'combat').map((l) => l.text);
+    expect(a).toEqual(b);
+    expect(a).toHaveLength(22);
+    // the pay differs by nothing here: the words before it must differ
+    expect(new Set(a.map((x) => x.split(' · ')[0])).size).toBeGreaterThanOrEqual(5);
+    for (const x of a) expect(leaks(x), x).toEqual([]);
+  });
+
+  it('the whisper that names an ally and the dream of an ally say who, and the dream of a way still says the way', () => {
+    const g = (kind: string, data: LogEntry['data'], id = 'ช่วย') => e({ n: 9, sys: 'god', kind, id, level: 1, age: 20, data });
+    const named = e({ n: 2, sys: 'text', kind: 'named', id: 'L1', age: 0, data: { name: 'มิรา', race: 'มนุษย์', home: 'โอรันธาร์', cls: 'สามัญชน', year: '10,450', country: 'AL-01' } });
+    const out = (x: LogEntry) => lines(data, [named, x], 0).pop()!.text;
+    expect(out(g('whisper', { hint: 'ช่วย', price: 5, level: 'เต็มใจ', obeyed: true, target: 'T3', ally: 'ไลลินา', allyId: 'T3', crisis: true }))).toBe('ท่านกระซิบ “ช่วย” ถึงมิราเรื่อง ไลลินา ที่กำลังตกอยู่ในวิกฤต — เขาได้ยินและทำตาม');
+    expect(out(g('whisper', { hint: 'คนนั้นโกหก', price: 5, level: 'ลังเล', obeyed: false, target: 'T3', ally: 'ไลลินา', allyId: 'T3', crisis: false }, 'คนนั้นโกหก'))).toBe('ท่านกระซิบ “คนนั้นโกหก” ถึงมิราเรื่อง ไลลินา — เขาไม่ใส่ใจ');
+    expect(out(g('dream', { ally: 'ไลลินา', allyId: 'T3', line: 'สหาย', outcome: 'obey', level: 'เต็มใจ', p: 0.7, paid: 5, age: 20 }, 'ally:T3'))).toBe('ท่านส่งฝันถึงมิราเรื่อง ไลลินา ผู้กำลังลำบาก ใจของเขาเต็มใจ — เขาตื่นขึ้นพร้อมใจจะช่วย');
+    expect(out(g('dream', { ally: 'ไลลินา', allyId: 'T3', line: 'สหาย', outcome: 'refuse', level: 'ขัดขืน', p: 0.2, paid: 5, age: 20 }, 'ally:T3'))).toContain('เขาตื่นขึ้นแต่ไม่นำพา');
   });
 });
 
@@ -588,18 +620,32 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [b('arc', { code: 'FT-12', stage: 2, title: 'ความลับที่เพื่อนเก็บ', text: 'เขาหายไปบางเวลาและไม่บอกที่', involved: true }), /ความลับที่เพื่อนเก็บ: เขาหายไปบางเวลา/],
     [b('news', { code: 'FT-12', stage: 3, text: 'ตัวละครรับ ปิดให้ หรือรังเกียจ' }, 'T1', 0), /^ข่าวถึงมิรา: เรื่องของ ไลลินา/],
     [b('news', { text: 'ไลลินา จากไป (illness)', kind: 'death' }), /^ข่าวถึงมิรา: ไลลินา \(สหาย\) จากไป \(โรคภัย\)$/],
-    [b('crisis', { code: 'KN-05', level: 5, text: 'พี่กลับมาเปลี่ยนไปหรือส่งแต่เงินมา', answer: 'refuse' }, 'T1', 2), /ประสบเรื่องหนัก: พี่กลับมา.* — มิราไม่ได้ช่วยเขา$/],
+    [b('crisis', { code: 'KN-05', level: 5, text: 'พี่กลับมาเปลี่ยนไปหรือส่งแต่เงินมา', kin: null, tie: 'T1', gender: 'm' }, 'T1', 2), /^ไลลินา \(สหาย\) ตกอยู่ในวิกฤต: พี่กลับมา.* — มิรายังไม่ได้ตัดสินใจว่าจะช่วยหรือไม่$/],
+    [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'full', tie: 'T1', by: 'whisper', after: true, gender: 'm' }), /^วิกฤตของ ไลลินา \(สหาย\): มิราช่วยเขาเต็มกำลัง ตามที่ท่านกระซิบ$/],
+    [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'refuse', tie: 'T1', by: 'liar', after: true }), /^วิกฤตของ ไลลินา \(สหาย\): มิราไม่ได้ช่วยเขา เพราะท่านกระซิบว่าเขาโกหก$/],
+    [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'refuse', tie: 'T1', by: 'dream', after: true }), /มิราไม่ได้ช่วยเขา แม้ท่านส่งฝันถึงเขา$/],
+    [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'small', tie: 'T1', by: null, after: true }), /^วิกฤตของ ไลลินา \(สหาย\): มิราช่วยได้เพียงเล็กน้อย$/],
     [b('trouble', { code: 'FT-01', level: 3, text: 'ผู้ให้กู้ขู่จะผูกตัวเขา (ตามท่าทีของประเทศใน)', answer: 'full' }), /ผู้ให้กู้ขู่จะผูกตัวเขา — มิราช่วยเขาเต็มกำลัง$/],
     [b('ending', { code: 'FT-12', key: 'c', text: 'ความลับร้ายแรงจนสายแตก', kind: 'split', involved: true }), /^เรื่อง “ความลับที่เพื่อนเก็บ”ของ ไลลินา \(สหาย\) จบลง: ความลับร้ายแรงจนสายแตก$/],
     [b('end', { way: 'death', why: 'ตาย', level: 5, cause: 'old' }, 'T2', 0), /จากไป \(ชราภาพ\)/],
     [b('end', { way: 'fade', why: 'ห่างจนไม่มีข่าว', level: 1 }, 'T3', 0), /จนสายจางหายไป/],
     [b('end', { way: 'split', why: 'FT-12 c', level: 4 }, 'T4'), /แตกหักและแยกทางกัน/],
     [b('end', { way: 'betray', why: 'bn.a4', level: 4 }, 'T5'), /หักหลังมิรา/],
+    [b('end', { way: 'split', why: 'x', level: 4, reason: 'แยกทาง', kin: null, partner: true, spouse: true, age: 40, gender: 'f' }, 'T11'), /^มิรากับ ไลลินา แยกทางกัน ความสัมพันธ์ที่เคยเป็นชีวิตคู่จบลงแล้ว$/],
+    [b('end', { way: 'fade', why: 'x', level: 3, reason: 'ห่างหาย', kin: null, partner: true, spouse: false, age: 40, gender: 'm' }, 'T12'), /^ไลลินา คนรักของมิรา ห่างหายไปจนไม่มีข่าวคราวถึงมิราอีก$/],
+    [b('end', { way: 'betray', why: 'x', level: 3, reason: 'หักหลัง', kin: null, partner: true, spouse: true, age: 40, gender: 'm' }, 'T13'), /^ไลลินา สามีของมิรา หักหลังมิรา/],
+    [b('end', { way: 'death', why: 'ตาย', level: 3, reason: 'ตาย', cause: 'old', kin: 'child', partner: false, spouse: false, age: 60, gender: 'f' }, 'T14'), /^ไลลินา ลูกของมิรา จากไปแล้ว$/],
+    [b('end', { way: 'fade', why: 'x', level: 3, reason: 'หายไป', kin: 'child', partner: false, spouse: false, age: 50, gender: 'f' }, 'T15'), /^ไลลินา ลูกของมิรา หายไปโดยไม่มีใครรู้ว่าไปไหน$/],
     [b('funeral', { cause: 'old', level: 5 }, 'T6', 2), /^งานศพของ ไลลินา \(สหาย\) · ชราภาพ: มิราไปส่งเขาเป็นครั้งสุดท้าย$/],
     [b('letter', { from: 'SV-05' }), /^จดหมายจาก ไลลินา \(สหาย\) ถึงมือมิรา ส่งมาจาก\S+$/],
     [b('invite', { ask: 'travel', ok: true, chance: 70 }), /^มิราชวน ไลลินา ออกเดินทางด้วยกัน — เขาตกลง$/],
     [b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'hurt' }), /ขอให้ ไลลินา เป็นคนรัก — เขาปฏิเสธและเสียน้ำใจ$/],
     [b('child', { adopted: false, from: 'couple', b: 40 }, 'T7', 2), /^มิรามีลูกชื่อ ไลลินา$/],
+    [b('child', { adopted: false, from: 'couple', b: 40, kin: 'child', gender: 'f', age: 0, other: 'อาริน', otherId: 'T3' }, 'T7', 2), /^มิรามีลูกชื่อ ไลลินา กับ อาริน$/],
+    [b('child', { adopted: false, from: 'prayer', b: 40, kin: 'child', gender: 'm', age: 0, other: null, otherId: null }, 'T7', 2), /^มิราได้ลูกชื่อ ไลลินา ตามคำอธิษฐาน$/],
+    [b('news', { kind: 'grow', text: 'โตเป็นหนุ่มสาว', kin: 'child', stage: 'youth', age: 15, gender: 'f', other: 'อาริน', line: 'ญาติรุ่นเยาว์' }, 'T7'), /^ไลลินา ลูกของมิรากับ อาริน โตเป็นสาวแล้ว \(อายุ 15\)$/],
+    [b('news', { kind: 'grow', text: 'x', kin: 'child', stage: 'child', age: 6, gender: 'm', other: null, line: 'ญาติรุ่นเยาว์' }, 'T7'), /^ไลลินา ลูกของมิรา เติบโตเป็นเด็กวัยเรียนแล้ว \(อายุ 6\)$/],
+    [b('news', { kind: 'wed', text: 'แต่งงานกับ ซารา', kin: 'child', spouse: 'ซารา', age: 24, gender: 'f', line: 'ญาติรุ่นเยาว์' }, 'T7'), /^ไลลินา ลูกของมิรา แต่งงานกับ ซารา เมื่ออายุ 24$/],
     [b('child', { adopted: true, from: 'child', b: 40 }, 'T8', 2), /รับ ไลลินา เป็นลูกบุญธรรม/],
     [b('pair', { item: 'pr_ring_halves_a', other: 'pr_ring_halves_b', status: 'full' }, 'PR-05'), /มี .+ ครบทั้งคู่/],
     [b('pair', { item: 'pr_ring_halves_a', status: 'memorial', from: 'full' }, 'PR-05', 0), /กลายเป็นของระลึกถึง ไลลินา/],
@@ -612,6 +658,9 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
 
     [sys('bondage', 'enter', { route: 'ถูกขาย', level: 2, country: 'NB-13', owner: 'นอคโรลิธ', price: 101, moved: false, stance: 'H' }, 'B2', 2), /ตกอยู่ในพันธะ: ผู้รับใช้ตามสัญญา \(ถูกขาย\) ที่\S+ ภายใต้ นอคโรลิธ · ค่าไถ่ราว 101 ทอง/],
     [sys('bondage', 'exit', { way: 'ไถ่ตัวเอง', from: 2, classUp: true }, 'ransom', 2), /พ้นจากพันธะ \(ไถ่ตัวเอง\) ฐานะสูงขึ้นหนึ่งชั้น/],
+    [sys('bondage', 'exit', { way: 'ไถ่ตัวเอง', from: 2, classUp: true, paid: 101, gold: 34, owner: 'นอคโรลิธ', years: 3 }, 'ransom', 2), /^มิราพ้นจากพันธะของ นอคโรลิธ \(ไถ่ตัวเอง\) หลังถูกผูกตัวมา 3 ปี จ่ายค่าไถ่ 101 ทอง เหลือในมือ 34 ทอง ฐานะสูงขึ้นหนึ่งชั้น$/],
+    [sys('story', 'ending', { line: 'bd', cause: 'old', earned: 2, bound: 2, freed: false }, 'ผู้รับใช้ที่ไม่ได้กลับบ้าน'), /^ปลายทาง: ผู้รับใช้ที่ไม่ได้กลับบ้าน — มิราสิ้นชีวิตขณะยังถูกผูกตัว \(ผู้รับใช้ตามสัญญา\)$/],
+    [sys('story', 'ending', { line: 'bd', cause: 'old', earned: 2, bound: 0, freed: true }, 'คนที่ไถ่ตัวเองกลับมา'), /^ปลายทาง: คนที่ไถ่ตัวเองกลับมา — มิราเคยหลุดพ้นจากพันธะมาก่อนสิ้นชีวิต$/],
     [sys('bondage', 'exit', { way: 'หนีข้ามแดน', from: 2, classUp: false }, 'fled', 2), null],
     [sys('bondage', 'escape', { ok: true, to: 'AL-01' }, 'AL-01', 2), /หนีข้ามแดนได้สำเร็จ ถึง\S+ และเป็นอิสระ/],
     [sys('bondage', 'escape', { ok: false, to: null }, '', 2), /ถูกจับกลับมา/],
@@ -626,7 +675,12 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('travel', 'open', { why: 'ml' }, 'ml'), /เรื่องของ “ทหารรับจ้างข้ามแดน” เปิดขึ้น/],
     [sys('travel', 'move', { from: 'SV-09', to: 'SV-06', why: 'sc', legs: 1, level: 1 }, 'SV-06'), null],
     [sys('travel', 'trip', { from: 'SV-09', to: 'SV-06', why: 'sc', legs: 1, days: 10, fare: 3, smuggle: false }, 'SV-06'), /^ไปเรียนต่างแดน: จาก\S+ ไป\S+ 1 ช่วงทาง ราว 10 วัน ค่าเดินทาง 3 ทอง$/],
-    [sys('travel', 'trip', { from: 'SV-09', to: 'NB-04', why: 'job:merchant', legs: 2, days: 30, fare: 5, smuggle: true }, 'NB-04'), /เดินทางตามงาน.*โดยลักลอบข้ามด่าน/],
+    [sys('travel', 'trip', { from: 'SV-09', to: 'NB-04', why: 'job:merchant', legs: 2, days: 30, fare: 5, smuggle: true }, 'NB-04'), /^เดินทางไปทำงานพ่อค้า: จาก\S+ ไป\S+ 2 ช่วงทาง ราว 30 วัน ค่าเดินทาง 5 ทอง โดยลักลอบข้ามด่าน$/],
+    [sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'exile', legs: 3, days: 40, fare: 0, smuggle: false }, 'AL-06'), /^ถูกเนรเทศหรือหนีโทษ: จาก\S+ ไป\S+ 3 ช่วงทาง ราว 40 วัน$/],
+    [sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'story:hu.b2', legs: 3, days: 40, fare: 9, smuggle: false }, 'AL-06'), /^เดินทางตามเรื่อง “.+”: จาก\S+ ไป\S+ 3 ช่วงทาง/],
+    [sys('travel', 'stay', { node: 'hu.b2', to: 'AL-06', here: 'SV-09', why: 'chance' }, 'AL-06'), /^มิราไม่ได้ไปที่\S+ตามเรื่อง “.+” ยังอยู่ที่\S+$/],
+    [sys('travel', 'blocked', { from: 'KD-03', why: 'bound', cause: 'sc' }, 'KD-01', 0), null],
+    [sys('travel', 'blocked', { from: 'KD-03', why: 'route closed', cause: 'story:hu.b2' }, 'KD-01', 1), /^มิราตามเรื่อง “.+” ไป\S+ไม่ได้ เพราะเส้นทางถูกปิด$/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'bandits', name: 'x', why: 'sc' }, 'd2'), /^ระหว่างทาง: ถูกโจรหรือสัตว์ร้ายดักทาง$/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'pay 21', name: 'x', why: 'sc' }, 'd1', 0), /เสียไป 21 ทอง/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'news WR-06', name: 'x', why: 'sc' }, 'd10'), /ได้ข่าวเหตุการณ์โลก/],
@@ -654,6 +708,10 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('items', 'forge', { step: 'result', outcome: 'masterpiece', sum: 14, diff: 9, smith: 'ช่างเมือง', name: 'ดาบของช่างเมือง' }, 'ws_rapier', 2), /ดาบของช่างเมือง ออกมาเป็นผลงานชิ้นเอก ฝีมือ ช่างเมือง/],
 
     [sys('economy', 'tight', { way: 'loan', gold: 219, living: 172, tight: 4 }, 'loan'), /^ปีนี้เงินฝืดเคือง มิรากู้ยืมมาใช้จนติดหนี้$/],
+    [sys('economy', 'year', { kind: 'wage', job: 'soldier', class: 'c3', income: 40, salary: 40, share: 6, gain: 0, loss: 0, fare: 5, tax: 4, living: 22, net: 14, gold: 320, debt: 0, debtChange: 0, why: 'share' }, '31'), /^เงินปีนี้: ได้ 46 ทอง \(เงินเดือน 40 · ส่วนแบ่งศึก 6\) · จ่าย 31 ทอง \(ภาษี 4 · ค่าครองชีพ 22 · ค่าเดินทาง 5\) · เหลือ 15 ทอง · ในมือ 320 ทอง$/],
+    [sys('economy', 'year', { kind: 'trade', job: 'merchant', class: 'c3', income: 20, salary: 0, share: 0, gain: 0, loss: 60, fare: 0, tax: 2, living: 30, net: -12, gold: 15, debt: 90, debtChange: 40, why: 'debt,loss' }, '32'), /^เงินปีนี้: ได้กำไรค้าขาย 20 ทอง · จ่าย 92 ทอง .+ · ขาด 72 ทอง · หนี้เพิ่ม 40 เป็น 90 ทอง · ในมือ 15 ทอง$/],
+    [sys('economy', 'year', { kind: 'none', job: null, class: 'c2', income: 0, salary: 0, share: 0, gain: 0, loss: 0, fare: 0, tax: 0, living: 0, net: 0, gold: 50, debt: 0, debtChange: -30, why: 'debt' }, '33'), /^เงินปีนี้: ใช้หนี้หมดแล้ว · ในมือ 50 ทอง$/],
+    [sys('economy', 'pay', { kind: 'war', amount: 6 }, 'war', 0), null],
     [sys('economy', 'default', { class: 'c3' }, undefined, 2), /^หนี้ท่วมเกินกว่าจะใช้ไหว.*ฐานะของมิราตกลงเหลือ\S+/],
 
     [sys('npc', 'npc', { what: 'sick', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', why: 'old' }, 'AL01-1'), /^ไนลา ล้มป่วย ด้วยวัย$/],
@@ -668,9 +726,14 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('combat', 'prelude', { enemies: 'wolf', foe: 'หมาป่าเงา', tier: 'หัวหน้า', node: 'hu.b2', kind: 'story', text: null }, 'wolf', 2), /^หมาป่าเงา \(หัวหน้า\) ขวางหน้ามิรา ใน “.+” ศึกกำลังจะเริ่ม$/],
     [sys('combat', 'raid', { how: 'saved', warned: true, result: 'win', country: 'SV-05' }, 'bandits', 2), /บุกเข้า ที่\S+ มิรารู้ตัวก่อน · ปกป้องบ้านเมืองไว้ได้/],
     [sys('combat', 'raid', { how: 'lost', warned: false, result: 'lose', country: 'SV-05' }, 'goblin', 2), /ถูกบุกโดยไม่ทันตั้งตัว · พ่ายแพ้/],
-    [sys('combat', 'war', { how: 'held', role: 'front', roll: 6 }, 'MH-07', 1), /ร่วมศึกใหญ่ ที่\S+ ในฐานะแนวหน้า และยืนหยัดได้/],
-    [sys('combat', 'war', { how: 'lost', wounds: 'scar', roll: 2, max: 120 }, 'MH-07', 2), /ถูกตีแตก มิราได้รับแผลเป็นถาวร/],
-    [sys('combat', 'war', { how: 'dead', roll: 1 }, 'MH-07', 2), /สิ้นชีวิตในศึกใหญ่/],
+    [sys('combat', 'war', { how: 'held', role: 'front', roll: 6 }, 'MH-07', 1), /ในหน้าที่แนวหน้า|ในฐานะแนวหน้า/],
+    [sys('combat', 'war', { war: 'WR-03', foe: 'goblin', role: 'front', rank: 'recruit', rankN: 0, n: 1, roll: 12, how: 'held', grade: 'steady', first: true, pay: 3, fame: 3, promoted: false }, 'MH-07', 1), /^มิราเข้าร่วมสงคราม “.+” ที่\S+ ในฐานะพลทหารใหม่ประจำหน้าที่แนวหน้า: ศึกแรกกับ.+ ผ่านไปได้ ฝ่ายเรายังยืนอยู่ · ได้ส่วนแบ่ง 3 ทอง$/],
+    [sys('combat', 'war', { war: 'WR-03', foe: 'goblin', role: 'archer', rank: 'soldier', rankN: 1, n: 5, roll: 20, how: 'held', grade: 'won', first: false, pay: 8, fame: 3, promoted: true }, 'MH-07', 1), /พลธนู.* · ได้ส่วนแบ่ง 8 ทอง$/],
+    [sys('combat', 'war', { how: 'lost', wounds: 'scar', roll: 2, max: 120, war: 'WR-03', foe: 'goblin', role: 'front', rank: 'soldier', n: 6, first: false, pay: 0 }, 'MH-07', 2), /ตีแตก|พ่ายแพ้|ถอยร่น/],
+    [sys('combat', 'war', { how: 'dead', roll: 1, war: 'WR-03', foe: 'goblin', role: 'front', rank: 'soldier', n: 7, first: false, pay: 0 }, 'MH-07', 2), /มิรา.*(สิ้นชีวิต|ล้มลง)|พรากชีวิตมิรา/],
+    [sys('combat', 'campaign', { war: 'WR-03', country: 'MH-07', end: false, years: 3, since: 20, battles: 5, held: 2, won: 2, lost: 1, pay: 24, foes: 'goblin', rank: 'sergeant', rankN: 3, totalBattles: 5 }, 'WR-03', 1), /^ศึกในสงคราม “.+” 3 ปีที่ผ่านมา: มิราผ่านมา 5 ศึก \(ชนะขาด 2 · ยืนหยัดได้ 2 · พ่าย 1\) · ได้ส่วนแบ่งรวม 24 ทอง · ยศจ่า · ข้าศึกคือ .+$/],
+    [sys('combat', 'campaign', { war: null, country: 'MH-07', end: true, years: 1, since: 20, battles: 1, held: 1, won: 0, lost: 0, pay: 0, foes: 'goblin', rank: 'soldier', rankN: 1, totalBattles: 1 }, 'MH-07', 1), /^สรุปศึกใหญ่ ที่\S+ 1 ปีที่ผ่านมา: มิราผ่านมา 1 ศึก \(ยืนหยัดได้ 1\) · ยศพลทหาร · ข้าศึกคือ .+ · สงครามของมิราจบลงแล้ว$/],
+    [sys('combat', 'rank', { war: 'WR-03', from: 'soldier', to: 'corporal', rankN: 2, country: 'MH-07' }, 'WR-03', 2), /สิบตรี/],
     [sys('combat', 'captured', {}, 'MH-04', 2), /ถูกจับเป็นเชลย/],
     [sys('combat', 'wound', { wounds: 'scar,c_oneeye', roll: 78, node: null }, 'ghoul_horde', 2), /^มิราได้รับแผลเป็นถาวร และ.+ติดตัวจาก .+$/],
     [sys('combat', 'title', { key: 'raid', n: 3 }, 'ผู้พิทักษ์', 2), /^มิราได้รับฉายา “ผู้พิทักษ์”$/],
@@ -723,6 +786,20 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
       b('level', { from: 2, to: 3, why: 'story', b: 40 }),
       b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'plain' }),
     ]) expect(displayLevel(x), `${x.sys}/${x.kind}`).toBeGreaterThan(0);
+  });
+
+  it('tells what marks the family and the road: a child the character holds dear, a partner who goes, a story place that was shut (T3 T2)', () => {
+    // the feelings toward a child from the level of a familiar person on, whichever feeling: เอ็นดู ห่วง ภูมิใจ are not in the list of the felt moods
+    for (const mood of ['เอ็นดู', 'ห่วง', 'ภูมิใจ']) expect(displayLevel(b('mood', { mood, asked: mood, level: 2, why: 'child:child' })), mood).toBe(1);
+    expect(displayLevel(b('mood', { mood: 'ห่วง', asked: 'ห่วง', level: 1, why: 'child:infant' }))).toBe(0);
+    expect(displayLevel(b('mood', { mood: 'ภูมิใจ', asked: 'ภูมิใจ', level: 3, why: 'x' }))).toBe(0);
+    // a partner or a companion leaving is told; a death of a close one is told by its funeral
+    expect(displayLevel(b('end', { way: 'fade', level: 3, reason: 'ห่างหาย', partner: true }))).toBe(1);
+    expect(displayLevel(b('end', { way: 'death', level: 5, reason: 'ตาย' }, 'T2', 1))).toBe(0);
+    expect(displayLevel(b('end', { way: 'death', level: 2, reason: 'ตาย' }, 'T2', 1))).toBe(1);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'wanted', cause: 'story:hu.b2' }, 'KD-01', 1))).toBe(1);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'wanted', cause: 'return' }, 'KD-01', 0))).toBe(0);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'bound', cause: 'story:hu.b2' }, 'KD-01', 0))).toBe(0);
   });
 
   it('tells the mood of a story line once the bonds hold someone on that line, and not before (T4)', () => {

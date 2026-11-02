@@ -1,7 +1,7 @@
 // Readable text of a game for the test tools: the log as a timeline, the NPCs met, the status of the life, the summary of a life.
 // Pure TypeScript, shared by `npm run life`, `npm run play` and the debug page.
 import { extOf as bondageOf } from '../../src/core/bondage';
-import { extOf as bondsOf, isLive, levelOf as bondLevelOf, tiesOf, type Tie } from '../../src/core/bonds';
+import { crisesWaiting, extOf as bondsOf, hAgeOf, isChild, isLive, isPartner, levelOf as bondLevelOf, tiesOf, type Tie } from '../../src/core/bonds';
 import { makeCtx, type Ctx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
 import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
@@ -120,6 +120,7 @@ export function metNpcs(data: GameData, log: LogEntry[]): Met[] {
 }
 
 const KIN_LINES = new Set(['ญาติผู้ใหญ่', 'ญาติรุ่นเยาว์', 'พี่น้อง']);
+const STAGE_TH = { infant: 'ทารก', child: 'วัยเรียน', youth: 'วัยรุ่น', adult: 'ผู้ใหญ่' } as const;
 
 /** `ชื่อ (สาย ระดับ)`: a person of the bonds as the status reads him. */
 function tieWord(ctx: Ctx, data: GameData, t: Tie): string {
@@ -138,9 +139,17 @@ export function systemStatus(data: GameData, state: GameState): string[] {
   // ties: the family and the allies, the closest first; a name only, with the line and the level
   const ties = data.bonds ? tiesOf(bondsOf(life)).filter(isLive) : [];
   const byCloseness = (a: Tie, b: Tie) => b.b - a.b;
-  const family = ties.filter((t) => KIN_LINES.has(t.line) && !t.light).sort(byCloseness);
+  const children = ties.filter(isChild).sort((a, b) => hAgeOf(ctx, b) - hAgeOf(ctx, a));
+  const family = ties.filter((t) => KIN_LINES.has(t.line) && !t.light && !isChild(t)).sort(byCloseness);
   const kinFar = ties.filter((t) => KIN_LINES.has(t.line) && t.light).length;
-  const allies = ties.filter((t) => !KIN_LINES.has(t.line)).sort(byCloseness);
+  // the partner, the children (their age, stage and the other parent) and the crises that wait for the character's answer
+  const partnerId = data.bonds ? bondsOf(life).partner : null;
+  const partner = ties.find((t) => t.id === partnerId) ?? ties.find(isPartner);
+  if (partner) out.push(`${partner.spouse ? 'คู่ชีวิต' : 'คนรัก'} ${tieWord(ctx, data, partner)}${partner.country !== life.country ? ` · อยู่ที่${placeName(ctx, partner.country) ?? ''}` : ''}`);
+  if (children.length) out.push(`ลูก ${children.map((c) => `${c.name} (อายุ ${Math.floor(hAgeOf(ctx, c))} ${STAGE_TH[c.stage ?? 'adult']}${c.kin === 'adopted' ? ' · ลูกบุญธรรม' : ''}${c.otherName ? ` · อีกฝ่ายคือ ${c.otherName}` : ''})`).join(' · ')}`);
+  const allies = ties.filter((t) => !KIN_LINES.has(t.line) && t.id !== partner?.id).sort(byCloseness);
+  const waiting = data.bonds ? crisesWaiting(ctx) : [];
+  if (waiting.length) out.push(`วิกฤตที่รอคำตอบ ${waiting.map((w) => `${w.tie.name} (${w.tie.line}): ${scrub(data, w.crisis.text)}`).join(' · ')}`);
   if (allies.length) out.push(`พวกพ้อง ${allies.slice(0, 8).map((t) => tieWord(ctx, data, t)).join(' · ')}${allies.length > 8 ? ` · และอีก ${allies.length - 8} คน` : ''}`);
   if (family.length || kinFar) out.push(`ครอบครัว ${[...family.slice(0, 8).map((t) => tieWord(ctx, data, t)), ...(kinFar ? [`ญาติห่าง ๆ อีก ${kinFar} คน`] : [])].join(' · ')}`);
   // travel: the level of the life and where he stands

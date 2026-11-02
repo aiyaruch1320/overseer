@@ -184,6 +184,12 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       }
       return undefined;
     case 'dream': {
+      // a dream of an ally in trouble: no way of a node, the character wakes readier or not to help him
+      if (d.allyId !== undefined) {
+        const ally = scrub(cx.data, s(d.ally));
+        const lv = s(d.level) ? ` ใจของเขา${s(d.level)}` : '';
+        return `ท่านส่งฝันถึง${who}เรื่อง ${ally || 'พวกพ้องคนหนึ่ง'} ผู้กำลังลำบาก${lv} — ${d.outcome === 'obey' ? 'เขาตื่นขึ้นพร้อมใจจะช่วย' : 'เขาตื่นขึ้นแต่ไม่นำพา'}`;
+      }
       if (d.outcome === 'fade') return 'ความฝันที่ส่งไปเลือนหายก่อนถึงทางแยก';
       if (d.outcome !== undefined) {
         const out = s(d.outcome);
@@ -258,8 +264,11 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
     case 'prayer.lapse':
       return `คำอธิษฐานใบที่ ${num(d.n)} (${s(d.name) || prayerName(cx.data, s(e.id))}) หมดเวลา ไม่มีใครตอบ ศรัทธาของเขาลดลง`;
     case 'whisper': {
-      const target = nm(cx, d.target);
       const heard = d.obeyed ? 'เขาได้ยินและทำตาม' : 'เขาไม่ใส่ใจ';
+      // a whisper about an ally of the character (he is not a person of the roster): it is told as a word to the character about him
+      const ally = scrub(cx.data, s(d.ally));
+      if (ally) return `ท่านกระซิบ “${s(d.hint)}” ถึง${who}เรื่อง ${ally}${d.crisis ? ' ที่กำลังตกอยู่ในวิกฤต' : ''} — ${heard}`;
+      const target = nm(cx, d.target);
       return `ท่านกระซิบ “${s(d.hint)}”${target ? ` ถึง${target}` : ''} — ${heard}`;
     }
     case 'miracle.omen': {
@@ -280,7 +289,7 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
 // ---------- the calls of the game ----------
 
 /** The reason the game called the player, in words: `ถึงจุดหยุดตามอายุ 15` `มีคำอธิษฐานใหม่: ขอหายเจ็บ` ... */
-export function callReason(data: GameData, e: LogEntry): string {
+export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined): string {
   const d = e.data;
   const first = s(e.id).split(',')[0];
   const name = (id: string) => plainName(data, id);
@@ -318,16 +327,29 @@ export function callReason(data: GameData, e: LogEntry): string {
     case 'battle':
       why = 'ศึกกำลังจะมาถึง';
       break;
-    case 'crisis':
-      why = 'คนใกล้ตัวตกอยู่ในวิกฤต';
+    case 'crisis': {
+      // the card names the person: the numbers of the entries it stands for are the `bonds/crisis` announcements
+      const who = s(d.n)
+        .split(',')
+        .map((n) => crisisOf?.(Number(n)))
+        .find((x) => !!x);
+      why = who ? `${who} ตกอยู่ในวิกฤต` : 'คนใกล้ตัวตกอยู่ในวิกฤต';
       break;
+    }
     default:
       why = 'ถึงจังหวะที่ผู้เล่นควรดู';
   }
   const folded = s(d.cards)
     .split(',')
     .filter(Boolean)
-    .map((k) => FOLDED_TH[k])
+    .map((k) => {
+      // a crisis folded into a stop names the person too
+      if (k === 'crisis' && s(d.why) !== 'crisis') {
+        const person = s(d.n).split(',').map((n) => crisisOf?.(Number(n))).find((x) => !!x);
+        if (person) return `วิกฤตของ ${person}`;
+      }
+      return FOLDED_TH[k];
+    })
     .filter(Boolean);
   const uniq = [...new Set(folded)];
   // an age stop folded into another call is still named, so the player sees every stop of 07-attention (review M2 รอบสอง ข้อ 3)
@@ -336,11 +358,11 @@ export function callReason(data: GameData, e: LogEntry): string {
 }
 
 /** The line of an `attention` entry: a stop (the game waits for the player) or a card (time goes on); the glow and the missed card are not told. */
-export function attentionText(data: GameData, e: LogEntry): string | null | undefined {
+export function attentionText(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined): string | null | undefined {
   if (e.kind === 'glow' || e.kind === 'missed') return null;
   if (e.kind !== 'call') return undefined;
   const d = e.data;
-  const reason = callReason(data, e);
+  const reason = callReason(data, e, crisisOf);
   if (d.call === 'stop') return `เกมหยุดรอท่าน: ${reason}`;
   const until = typeof d.until === 'number' ? ` · ${d.why === 'prayer' ? 'ตอบได้' : 'รอท่านอยู่'}จนอายุ ${Math.floor(d.until)}` : '';
   return `${reason}${until}`;

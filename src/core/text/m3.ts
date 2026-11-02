@@ -8,12 +8,13 @@
 // the many small lines of a long life (a mood, a worn blade, a trade trip) are trace for the player (level 0) and still readable at `--level=0`.
 import type { GameData } from '../game';
 import type { LogEntry, LogLevel } from '../types';
-import { items } from './labels';
-import { plainName, scrub, sentence } from './plain';
+import { items, labels } from './labels';
+import { hashText, plainName, scrub, sentence } from './plain';
 import { CAUSE_TH, TIER_TH } from './tuning';
 import {
-  BOND_CAUSE_TH, BOND_LEVEL_TH, BOND_WHY_TH, CLASH_RESULT_TH, CRISIS_ANSWER_TH, FORGE_OUTCOME_TH, FORGE_PAY_TH, FREED_BY_TH, INVITE_TH, LEGEND_GONE_TH, MOOD_TH, RAID_TH, REFUSAL_TH, RESCUE_TH, ROAD_TH,
-  SICK_TH, TALISMAN_TH, TIE_FROM_TH, TIGHT_TH, TRAVEL_CAUSE_TH, TRAVEL_LEVEL_TH, TRIP_WHY_TH, WAR_ROLE_TH, WOUND_TH,
+  BOND_CAUSE_TH, BOND_LEVEL_TH, BOND_WHY_TH, CLASH_RESULT_TH, CRISIS_ANSWER_TH, CRISIS_BY_TH, END_CHILD_TH, END_PARTNER_TH, FORGE_OUTCOME_TH, FORGE_PAY_TH, FREED_BY_TH, GROW_TH, INVITE_TH, LEGEND_GONE_TH,
+  MOOD_TH, RAID_TH, RANK_TH, REFUSAL_TH, RESCUE_TH, ROAD_TH, SICK_TH, TALISMAN_TH, TIE_FROM_TH, TIGHT_TH, TRAVEL_CAUSE_TH, TRAVEL_LEVEL_TH, TRIP_WHY_TH, WAR_DEAD_TH, WAR_FIRST_RESULT_TH, WAR_FIRST_TH,
+  WAR_HELD_TH, WAR_LOST_TH, WAR_RANK_TH, WAR_ROLE_TH, WAR_WON_TH, WOUND_TH,
 } from './words';
 
 type D = LogEntry['data'];
@@ -54,6 +55,30 @@ const at = (cx: M3Cx, id: unknown): string => {
   return n ? ` ที่${n}` : '';
 };
 const tidyLine = (t: string): string => t.replace(/\s{2,}/g, ' ').trim();
+
+/** Fills the `{slot}`s of a wording; a slot with nothing in it is left empty. */
+const fillSlots = (text: string, v: Record<string, string>): string => text.replace(/\{(\w+)\}/g, (_m, k: string) => v[k] ?? '').replace(/\s+:/g, ':');
+
+/** The name of an enemy of the roster (`wolf` `npc_mercenary`), or what the data calls the id. */
+function foeName(cx: M3Cx, id: unknown): string {
+  const f = s(id);
+  return (f && (labels(cx.data).kind.enemy.get(f) ?? nm(cx, f))) || '';
+}
+
+/** What a person of the bonds is to the character, for the line: a child, a partner, or the line the story gave. */
+function tagOf(d: D, who: string): string {
+  if (d.kin === 'adopted') return `ลูกบุญธรรมของ${who}`;
+  if (d.kin === 'child') return `ลูกของ${who}`;
+  if (d.partner || d.spouse) return `${d.spouse ? (d.gender === 'f' ? 'ภรรยา' : d.gender === 'm' ? 'สามี' : 'คู่ชีวิต') : 'คนรัก'}ของ${who}`;
+  return '';
+}
+/** `ไลลินา (สหาย)`: the person with his line; a child is `ไลลินา (ลูก)` and a partner `ไลลินา (คนรัก)` (the line of a child, `ญาติรุ่นเยาว์`, says nothing to the reader). */
+function nameTag(d: D, who: string, ln?: string): string {
+  const name = s(d.name);
+  const tag = tagOf(d, who).replace(`ของ${who}`, '');
+  return tag ? `${name} (${tag})` : `${name}${ln ?? paren(s(d.line))}`;
+}
+const isNear = (d: D): boolean => d.kin === 'child' || d.kin === 'adopted' || !!d.partner || !!d.spouse;
 
 // ---------- names from the data ----------
 
@@ -190,7 +215,8 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'mood': {
       const verb = MOOD_TH[s(d.mood)];
       if (!name || !verb) return undefined;
-      return `${who} ${verb} ${name}${ln}`;
+      // the line of a child (`ญาติรุ่นเยาว์`) says nothing to the reader: he is the character's child
+      return `${who} ${verb} ${name}${s(d.why).startsWith('child:') ? ' (ลูก)' : ln}`;
     }
     case 'mood-held':
       return null; // a feeling that could not show: for the balance counts
@@ -207,17 +233,40 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       if (d.kind === 'death') {
         const m = /\(([^()]*)\)\s*$/.exec(s(d.text));
         const c = m ? deathCause(m[1]) : '';
-        return `ข่าวถึง${who}: ${name}${ln} จากไป${paren(c)}`;
+        return `ข่าวถึง${who}: ${nameTag(d, who)} จากไป${paren(c)}`;
+      }
+      if (d.kind === 'grow') {
+        const kid = d.kin === 'adopted' ? 'ลูกบุญธรรม' : 'ลูก';
+        const stage = s(d.stage);
+        const became = stage === 'youth' ? (d.gender === 'f' ? 'โตเป็นสาวแล้ว' : d.gender === 'm' ? 'โตเป็นหนุ่มแล้ว' : GROW_TH.youth) : GROW_TH[stage] ?? scrub(cx.data, s(d.text));
+        const other = s(d.other);
+        return `${name} ${kid}ของ${who}${other ? `กับ ${other}` : ''} ${became}${num(d.age) ? ` (อายุ ${num(d.age)})` : ''}`;
+      }
+      if (d.kind === 'wed') {
+        const kid = d.kin === 'adopted' ? 'ลูกบุญธรรม' : 'ลูก';
+        return `${name} ${kid}ของ${who} แต่งงานกับ ${s(d.spouse)}${num(d.age) ? ` เมื่ออายุ ${num(d.age)}` : ''}`;
       }
       const text = docSentence(cx.data, s(d.text), who);
       return text ? `ข่าวถึง${who}: เรื่องของ ${name}${ln} — ${text}` : `ข่าวถึง${who}: เรื่องของ ${name}${ln} ก้าวต่อไป`;
     }
-    case 'crisis':
-    case 'trouble': {
+    case 'crisis': {
+      // the announcement: the person, what happens to him, and that the character has not answered yet
       if (!name) return undefined;
       const text = docSentence(cx.data, s(d.text), who);
+      return `${nameTag(d, who, ln)} ตกอยู่ในวิกฤต${text ? `: ${text}` : ''} — ${who}ยังไม่ได้ตัดสินใจว่าจะช่วยหรือไม่`;
+    }
+    case 'trouble': {
+      if (!name) return undefined;
       const answer = CRISIS_ANSWER_TH[s(d.answer)] ?? '';
-      return `${name}${ln} ประสบเรื่องหนัก${text ? `: ${text}` : ''}${answer ? ` — ${who}${answer}` : ''}`;
+      if (d.after) {
+        // the answer to a crisis told before: who moved it is named, the sentence of the crisis is not said again
+        const by = CRISIS_BY_TH[s(d.by)];
+        const helped = s(d.answer) !== 'refuse';
+        const matched = s(d.by) === 'liar' ? !helped : helped;
+        return `วิกฤตของ ${nameTag(d, who, ln)}: ${who}${answer || 'ตัดสินใจแล้ว'}${by ? (matched ? by.with : by.against) : ''}`;
+      }
+      const text = docSentence(cx.data, s(d.text), who);
+      return `${nameTag(d, who, ln)} ประสบเรื่องหนัก${text ? `: ${text}` : ''}${answer ? ` — ${who}${answer}` : ''}`;
     }
     case 'ending': {
       if (!name) return undefined;
@@ -227,7 +276,13 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'end': {
       if (!name) return undefined;
-      if (cx.endedTold(s(e.id))) return null;
+      // a partner and a child are told by the reason of the end, and not left out for the line of their story: the story ending is about the story
+      if (isNear(d)) {
+        const table = d.kin === 'child' || d.kin === 'adopted' ? END_CHILD_TH : END_PARTNER_TH;
+        const text = table[s(d.reason)];
+        if (text) return fillSlots(text, { name, tag: tagOf(d, who), who, role: d.spouse ? 'ชีวิตคู่' : 'คนรัก' });
+      }
+      if (!isNear(d) && cx.endedTold(s(e.id))) return null;
       switch (s(d.way)) {
         case 'death': {
           const c = deathCause(d.cause);
@@ -246,7 +301,7 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'funeral': {
       if (!name) return undefined;
       const c = deathCause(d.cause);
-      return `งานศพของ ${name}${ln}${c ? ` · ${c}` : ''}: ${who}ไปส่งเขาเป็นครั้งสุดท้าย`;
+      return `งานศพของ ${nameTag(d, who, ln)}${c ? ` · ${c}` : ''}: ${who}ไปส่งเขาเป็นครั้งสุดท้าย`;
     }
     case 'letter': {
       if (!name) return undefined;
@@ -261,8 +316,10 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'child': {
       if (!name) return undefined;
-      if (d.adopted) return `${who}รับ ${name} เป็นลูกบุญธรรม`;
-      return d.from === 'prayer' ? `${who}ได้ลูกชื่อ ${name} ตามคำอธิษฐาน` : `${who}มีลูกชื่อ ${name}`;
+      // the other parent is named when the log knows him (a taken-in child has none)
+      const other = s(d.other) ? ` กับ ${s(d.other)}` : '';
+      if (d.adopted) return `${who}รับ ${name}${num(d.age) > 0 ? ` (อายุ ${num(d.age)})` : ''} เป็นลูกบุญธรรม`;
+      return d.from === 'prayer' ? `${who}ได้ลูกชื่อ ${name}${other} ตามคำอธิษฐาน` : `${who}มีลูกชื่อ ${name}${other}`;
     }
     case 'pair': {
       const mine = nm(cx, d.item);
@@ -322,7 +379,7 @@ const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'exit':
       if (s(e.id) === 'fled') return null; // the escape tells where he crossed
-      return `${who}พ้นจากพันธะ${paren(s(d.way))}${d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
+      return `${who}พ้นจากพันธะ${s(d.owner) ? `ของ ${s(d.owner)}` : ''}${paren(s(d.way))}${num(d.years) > 0 ? ` หลังถูกผูกตัวมา ${num(d.years)} ปี` : ''}${num(d.paid) > 0 ? ` จ่ายค่าไถ่ ${num(d.paid)} ทอง เหลือในมือ ${num(d.gold)} ทอง` : ''}${d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
     case 'escape': {
       if (d.who === 'held') return name ? `${name} ผู้ที่${who}ถือสัญญาไว้ หนีไปได้` : undefined;
       if (d.ok) return `${who}หนีข้ามแดนได้สำเร็จ${d.to ? ` ถึง${pl(cx, d.to)}` : ''} และเป็นอิสระ`;
@@ -348,6 +405,20 @@ const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
 
 // ---------- travel ----------
 
+/** Why a trip was made, in words: a cause of the road, the work (`job:sailor`), a story node (`story:hu.b2`), or nothing the data can name. */
+function tripWhy(cx: M3Cx, why: string): string {
+  if (TRIP_WHY_TH[why]) return TRIP_WHY_TH[why];
+  if (why.startsWith('job:')) {
+    const job = labels(cx.data).kind.job.get(why.slice(4));
+    return job ? `เดินทางไปทำงาน${job}` : 'เดินทางตามงาน';
+  }
+  if (why.startsWith('story:')) {
+    const node = nm(cx, why.slice(6));
+    return node ? `เดินทางตามเรื่อง “${node}”` : 'เดินทางตามเรื่องที่เล่น';
+  }
+  return '';
+}
+
 const travel = (cx: M3Cx, e: LogEntry): string | null | undefined => {
   const d = e.data;
   const who = cx.who;
@@ -366,10 +437,16 @@ const travel = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       const from = pl(cx, d.from);
       const to = pl(cx, d.to);
       if (!to) return undefined;
-      const why = TRIP_WHY_TH[s(d.why)] ?? (s(d.why).startsWith('job:') ? 'เดินทางตามงาน' : s(d.why).startsWith('story:') ? 'เดินทางตามเรื่องที่เล่น' : '');
+      const why = tripWhy(cx, s(d.why));
       const route = `${from ? `จาก${from} ` : ''}ไป${to}`;
       const cost = num(d.fare) > 0 ? ` ค่าเดินทาง ${num(d.fare)} ทอง` : '';
       return `${why ? `${why}: ` : 'เดินทาง'}${route} ${num(d.legs)} ช่วงทาง ราว ${num(d.days)} วัน${cost}${d.smuggle ? ' โดยลักลอบข้ามด่าน' : ''}`;
+    }
+    case 'stay': {
+      // a way of the story named a place and the character did not go: the node is told, so is the place he stayed at
+      const to = pl(cx, d.to);
+      const node = nm(cx, d.node);
+      return `${who}ไม่ได้ไป${to ? `ที่${to}` : 'ที่นั่น'}ตามเรื่อง${node ? ` “${node}”` : 'ที่เล่นมา'} ยังอยู่${pl(cx, d.here) ? `ที่${pl(cx, d.here)}` : 'ที่เดิม'}`;
     }
     case 'road': {
       const n = s(d.note);
@@ -387,9 +464,11 @@ const travel = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       return `${who}ตั้งหลักแหล่งใหม่${place ? `ที่${place}` : ''}`;
     }
     case 'blocked': {
+      if (s(d.why) === 'bound') return null; // held by an owner: the bondage tells it
       const to = pl(cx, e.id);
-      const why = s(d.why) === 'wanted' ? 'เพราะที่นั่นตามจับตัวอยู่' : s(d.why) === 'route closed' ? 'เพราะเส้นทางถูกปิด' : '';
-      return `${who}เข้า${to || 'ที่นั่น'}ไม่ได้${why ? ` ${why}` : ''}`;
+      const why = s(d.why) === 'wanted' ? 'เพราะที่นั่นตามจับตัวอยู่' : s(d.why) === 'route closed' ? 'เพราะเส้นทางถูกปิด' : s(d.why) === 'purse' ? 'เพราะเงินไม่พอค่าเดินทาง' : '';
+      const cause = s(d.cause).startsWith('story:') ? nm(cx, s(d.cause).slice(6)) : '';
+      return `${who}${cause ? `ตามเรื่อง “${cause}” ไป${to || 'ที่นั่น'}` : `เข้า${to || 'ที่นั่น'}`}ไม่ได้${why ? ` ${why}` : ''}`;
     }
     case 'stair':
       return `${who}ปีนบันไดหมื่นขั้นไม่ผ่านการทดสอบ ต้องรอและหยุดอยู่ตีนบันไดราว ${num(d.days)} วัน`;
@@ -487,9 +566,36 @@ const itemsLine = (cx: M3Cx, e: LogEntry): string | null | undefined => {
 
 // ---------- economy ----------
 
+/** What the income of a year was, by the kind the economy found: a wage, the land, hands, trade, the takings of an outlaw. */
+const INCOME_TH: Record<string, string> = { wage: 'เงินเดือน', land: 'ผลจากที่ดิน', work: 'ค่าแรง', trade: 'กำไรค้าขาย', outlaw: 'ของที่หามาได้นอกกฎหมาย' };
+
+/** The money of a year in one line: where the gold came from and where it went, what is left, and the debt. A part that is zero is left out. */
+function yearMoney(d: D): string {
+  const list = (parts: [string, number][]): [string, number][] => parts.filter(([, n]) => n > 0);
+  const ins = list([[INCOME_TH[s(d.kind)] ?? 'รายได้', num(d.income)], ['ส่วนแบ่งศึก', num(d.share)], ['การซื้อขายและของที่ได้มา', num(d.gain)]]);
+  const outs = list([['ภาษี', num(d.tax)], ['ค่าครองชีพ', num(d.living)], ['ค่าเดินทาง', num(d.fare)], ['การซื้อและค่าใช้จ่ายอื่น', num(d.loss)]]);
+  const sum = (parts: [string, number][]): number => parts.reduce((n, [, x]) => n + x, 0);
+  const say = (verb: string, parts: [string, number][]): string =>
+    parts.length === 1 ? `${verb}${parts[0][0]} ${parts[0][1]} ทอง` : `${verb} ${sum(parts)} ทอง (${parts.map(([l, n]) => `${l} ${n}`).join(' · ')})`;
+  const out: string[] = [];
+  if (ins.length) out.push(say('ได้', ins));
+  if (outs.length) out.push(say('จ่าย', outs));
+  if (ins.length || outs.length) out.push(sum(ins) >= sum(outs) ? `เหลือ ${sum(ins) - sum(outs)} ทอง` : `ขาด ${sum(outs) - sum(ins)} ทอง`);
+  const debt = num(d.debt);
+  const change = num(d.debtChange);
+  if (change > 0) out.push(`หนี้เพิ่ม ${change} เป็น ${debt} ทอง`);
+  else if (change < 0) out.push(debt > 0 ? `ใช้หนี้ไป ${-change} ยังเหลือ ${debt} ทอง` : 'ใช้หนี้หมดแล้ว');
+  else if (debt > 0) out.push(`ยังติดหนี้ ${debt} ทอง`);
+  return `เงินปีนี้: ${out.length ? `${out.join(' · ')} · ` : ''}ในมือ ${num(d.gold)} ทอง`;
+}
+
 const economy = (cx: M3Cx, e: LogEntry): string | null | undefined => {
   const d = e.data;
   switch (e.kind) {
+    case 'year':
+      return yearMoney(d);
+    case 'pay':
+      return null; // the sums of a payment are for the year line
     case 'tight': {
       const w = TIGHT_TH[s(d.way)];
       return w ? `ปีนี้เงินฝืดเคือง ${cx.who}${w}` : undefined;
@@ -506,7 +612,7 @@ const economy = (cx: M3Cx, e: LogEntry): string | null | undefined => {
 // ---------- combat (beyond the battle line) ----------
 
 const enemyNames = (cx: M3Cx, ids: string): string => {
-  const out = ids.split(',').filter(Boolean).map((id) => nm(cx, id)).filter(Boolean);
+  const out = ids.split(',').filter(Boolean).map((id) => foeName(cx, id)).filter(Boolean);
   return out.join(' · ');
 };
 
@@ -529,16 +635,39 @@ const combat = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'war': {
       const role = WAR_ROLE_TH[s(d.role)] ?? 'ทหารคนหนึ่ง';
       const place = at(cx, e.id);
+      const foe = foeName(cx, d.foe) || 'ข้าศึก';
+      const war = nm(cx, d.war);
+      const slots = { who, role, foe, place: place ? `${place} ` : '', war: war ? ` “${war}”` : '', rank: RANK_TH[s(d.rank)] ?? '' };
       switch (s(d.how)) {
-        case 'held':
-          return `${who}ร่วมศึกใหญ่${place} ในฐานะ${role} และยืนหยัดได้`;
+        case 'held': {
+          const pay = num(d.pay) > 0 ? ` · ได้ส่วนแบ่ง ${num(d.pay)} ทอง` : '';
+          const won = s(d.grade) === 'won';
+          if (d.first) return fillSlots(cx.pick(WAR_FIRST_TH), { ...slots, result: won ? WAR_FIRST_RESULT_TH.won : WAR_FIRST_RESULT_TH.held }) + pay;
+          return fillSlots(cx.pick(won ? WAR_WON_TH : WAR_HELD_TH), slots) + pay;
+        }
         case 'lost': {
-          const wounds = woundWords(cx, s(d.wounds));
-          return `ศึกใหญ่${place}: ฝ่ายของ${who}ถูกตีแตก${wounds ? ` ${who}ได้รับ${wounds}` : ''}`;
+          // the wounds have their own line (`combat/wound`)
+          return fillSlots(cx.pick(WAR_LOST_TH), slots);
         }
         default:
-          return `${who}สิ้นชีวิตในศึกใหญ่${place}`;
+          return fillSlots(cx.pick(WAR_DEAD_TH), slots);
       }
+    }
+    case 'campaign': {
+      const war = nm(cx, d.war);
+      const years = num(d.years);
+      const parts = [
+        num(d.won) > 0 ? `ชนะขาด ${num(d.won)}` : '',
+        num(d.held) > 0 ? `ยืนหยัดได้ ${num(d.held)}` : '',
+        num(d.lost) > 0 ? `พ่าย ${num(d.lost)}` : '',
+      ].filter(Boolean);
+      const foes = enemyNames(cx, s(d.foes));
+      const head = `${d.end ? 'สรุปศึก' : 'ศึก'}${war ? `ในสงคราม “${war}”` : `ใหญ่${at(cx, d.country)}`}${years > 0 ? ` ${years} ปีที่ผ่านมา` : ''}`;
+      return `${head}: ${who}ผ่านมา ${num(d.battles)} ศึก${parts.length ? ` (${parts.join(' · ')})` : ''}${num(d.pay) > 0 ? ` · ได้ส่วนแบ่งรวม ${num(d.pay)} ทอง` : ''} · ยศ${RANK_TH[s(d.rank)] ?? ''}${foes ? ` · ข้าศึกคือ ${foes}` : ''}${d.end ? ' · สงครามของ' + who + 'จบลงแล้ว' : ''}`;
+    }
+    case 'rank': {
+      const war = nm(cx, d.war);
+      return fillSlots(cx.pick(WAR_RANK_TH), { who, from: RANK_TH[s(d.from)] ?? '', to: RANK_TH[s(d.to)] ?? '', war: war ? ` ในสงคราม “${war}”` : '' });
     }
     case 'captured':
       return `${who}ถูกจับเป็นเชลยเมื่อฝ่ายแพ้ศึก${at(cx, e.id)}`;
@@ -632,8 +761,18 @@ const SYSTEMS: Record<string, (cx: M3Cx, e: LogEntry) => string | null | undefin
 export function m3Say(cx: M3Cx, e: LogEntry): string | null | undefined {
   const f = SYSTEMS[e.sys];
   if (!f) return undefined;
-  const t = f(cx, e);
+  // the wording among variants is a hash of what the entry holds: the same entry reads the same, a long war does not read one line
+  const h = hashText(`${e.sys}|${e.kind}|${e.id ?? ''}|${e.worldYear}|${e.age ?? ''}|${JSON.stringify(e.data)}`);
+  const t = f({ ...cx, pick: <T,>(list: T[]): T => list[h % list.length] }, e);
   return typeof t === 'string' ? tidyLine(t) : t;
+}
+
+/** What follows the title of the ending of a life: how the character stood in bondage when he died. */
+export function endingTail(data: GameData, d: D, who: string): string {
+  const level = num(d.bound);
+  if (level > 0) return ` — ${who}สิ้นชีวิตขณะยังถูกผูกตัว${bondageLevel(data, level) ? ` (${bondageLevel(data, level)})` : ''}`;
+  if (d.freed) return ` — ${who}เคยหลุดพ้นจากพันธะมาก่อนสิ้นชีวิต`;
+  return '';
 }
 
 /** Does the entry belong to a system of M3 that this file tells? */
@@ -643,7 +782,7 @@ export const isM3 = (e: LogEntry): boolean => e.sys in SYSTEMS || (e.sys === 'co
 
 const QUIET_KINDS: Record<string, ReadonlySet<string>> = {
   items: new Set(['dull', 'wear', 'repair', 'wornout', 'buy', 'gear', 'talisman', 'unknown']),
-  travel: new Set(['move', 'open', 'blocked']),
+  travel: new Set(['move', 'open']),
   combat: new Set(['clash', 'skip']),
   bonds: new Set(['mood-held', 'among', 'pair-story']),
 };
@@ -671,8 +810,12 @@ export function m3Level(e: LogEntry): LogLevel {
         // a person who is only known (level 1) and met on the road, at school or at work is a name in the book; a person a story brought is told
         return num(d.level) <= 1 && !NODE_ID.test(s(d.from)) ? 0 : e.level;
       case 'mood':
-        // a feeling is told when the bond is close and the cause is not a death that the funeral already tells
-        return num(d.level) >= 3 && FELT_MOODS.has(s(d.mood)) && !/ตาย$/.test(s(d.why)) ? 1 : 0;
+        // a feeling is told when the bond is close and the cause is not a death that the funeral already tells; the feelings toward a child (from the bond of a
+        // familiar person on) and toward the partner mark the family and are told
+        if (/ตาย$/.test(s(d.why))) return 0;
+        if (s(d.why).startsWith('child:')) return num(d.level) >= 2 ? 1 : 0;
+        if (s(d.why) === 'partner') return num(d.level) >= 2 ? 1 : 0;
+        return num(d.level) >= 3 && FELT_MOODS.has(s(d.mood)) ? 1 : 0;
       case 'level': {
         const why = s(d.why);
         if (why === 'meet' || why === 'silent' || why === 'party') return num(d.to) >= 5 && num(d.to) > num(d.from) ? e.level : 0;
@@ -681,12 +824,15 @@ export function m3Level(e: LogEntry): LogLevel {
       case 'invite':
         return ['lover', 'spouse', 'reconcile'].includes(s(d.ask)) ? e.level : 0;
       case 'end':
-        return d.way === 'split' || d.way === 'betray' ? e.level : 0;
+        // a person who was close dies in a funeral or a piece of news that tells it; the other ways a companion goes, the partner and the child are told
+        return d.way === 'death' && num(d.level) >= 3 ? 0 : d.way === 'split' || d.way === 'betray' || e.level >= 1 ? e.level : 0;
       case 'news':
         return e.level;
     }
     return e.level;
   }
+  // the way of a story that names a place was shut to him: the player sees the node's place was not reached
+  if (e.sys === 'travel' && e.kind === 'blocked') return s(d.cause).startsWith('story:') && s(d.why) !== 'bound' ? 1 : 0;
   if (e.sys === 'travel' && e.kind === 'trip') {
     // a trade trip or the way home is trace; a journey that crosses a continent or answers a cause of the road is told
     const why = s(d.why);

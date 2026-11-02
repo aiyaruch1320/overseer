@@ -163,6 +163,20 @@ describe('status after the systems of M3', () => {
   });
 });
 
+describe('status tells the partner and the children (M3 text)', () => {
+  it('lists the partner, and each child with age, stage and the other parent', () => {
+    const s = createSession(data, { seed: 90 });
+    startLife(s);
+    for (let i = 0; i < 4 * 55; i++) s.game.beat();
+    const text = statusLines(data, s.game.state).join('\n');
+    expect(text).toMatch(/(?:คนรัก|คู่ชีวิต) [^\n]+\((?:คนรัก|ไม่|สหาย)/);
+    expect(text).toMatch(/ลูก [^\n]+\(อายุ \d+ (?:ทารก|วัยเรียน|วัยรุ่น|ผู้ใหญ่) · อีกฝ่ายคือ [^\n)]+\)/);
+    // the partner is not listed twice, and a child is told once
+    expect(text.match(/ลูก /g)?.length).toBe(1);
+    for (const l of text.split('\n')) expect(leaks(l), l).toEqual([]);
+  });
+});
+
 describe('what the player reads holds no code (review M1 T1 T3)', () => {
   const PEOPLES = ['hu', 'el', 'de', 'dw', 'or', 'ha', 'be', 'na', 'dk', 'va', 'fa', 'sl', 'dm', 'me', 'wi', 'gi', 'la', 'co', 'so', 'mu', 'gh'];
 
