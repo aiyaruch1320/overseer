@@ -55,7 +55,7 @@ function sameContinent(a: string, b: string): boolean {
 }
 
 /** Meeting, letters and silence (01 §2.1; 03 §4: same country meets, other countries write, far news is late, a war shuts the road). */
-function contact(ctx: Ctx, life: LifeState, e: BondsExt): void {
+export function contact(ctx: Ctx, life: LifeState, e: BondsExt): void {
   const rng = ctx.rng('bonds.contact');
   const ix = bondsIndex(ctx);
   const ch = ix.data.ties.bChanges;
@@ -124,7 +124,7 @@ export function freeTie(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, how: str
 }
 
 /** Over the cap, the lowest and farthest tie fades (01 §2): the partner and the children do not. */
-function caps(ctx: Ctx, life: LifeState, e: BondsExt): void {
+export function caps(ctx: Ctx, life: LifeState, e: BondsExt): void {
   const rule = bondsIndex(ctx).data.ties.caps;
   const fadeable = (list: Tie[]) => list.filter((t) => !NO_FADE_LINES.has(t.line) && t.line !== 'คนรัก' && !t.spouse).sort((a, b) => a.b - b.b || a.last - b.last);
   for (let n = 0; n < 20 && closeTies(ctx, e).length > rule.close; n++) {
