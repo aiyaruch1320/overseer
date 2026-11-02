@@ -22,6 +22,7 @@ import {
   sell,
   stanceOf,
 } from '../../src/core/bondage';
+import { ensureJob, grantJob } from '../../src/core/character';
 import { canRansom, lifeYear } from '../../src/core/bondage/engine';
 import { setWays } from '../../src/core/bondage/line';
 import { readStat } from '../../src/core/rules';
@@ -129,20 +130,53 @@ describe('bondage: entering and leaving (§5 and §6)', () => {
     expect(e.country).toBe(life.country);
   });
 
-  it('buying his own freedom lifts the class by one when he has work; every other way out leaves the class', () => {
+  it('every way out of bondage gives back the class he had before it, and not under the second (M3 review R1; 10-bondage.md §6)', () => {
     const { ctx, life, e } = mk(4);
     at(life, 'MH-09');
     life.job = 'smith';
-    enter(ctx, life, 'เป็นหนี้', 2);
-    expect(life.cls).toBe('c1');
-    leave(ctx, life, 'ransom');
-    expect(e.level).toBe(0);
-    expect(life.cls).toBe('c2');
+    const before = life.cls;
+    expect(before).not.toBe('c1');
+    const ways = ['ransom', 'freed', 'released', 'fled', 'term', 'debt', 'owner'] as const;
+    for (const how of ways) {
+      enter(ctx, life, 'เป็นหนี้', 2);
+      expect(life.cls).toBe('c1');
+      expect(leave(ctx, life, how)).toBe(true);
+      expect(e.level).toBe(0);
+      expect(life.cls, how).toBe(before);
+      expect(leave(ctx, life, how)).toBe(false);
+    }
+    // one born bound (or already of class 1 when he fell) comes out of it to the class above, whichever way
+    life.cls = 'c1';
+    for (const how of ways) {
+      life.cls = 'c1';
+      enter(ctx, life, 'เกิดในพันธะ', 3, { born: true });
+      leave(ctx, life, how);
+      expect(life.cls, how).toBe('c2');
+    }
+    expect(e.history.filter((h) => h.to === 0).map((h) => h.how)).toEqual([...ways, ...ways]);
+  });
+
+  it('the exit of a paid-off B1 debt and of a ransom carry the price paid (M3 review R4)', () => {
+    const { ctx, life } = mk(11);
+    at(life, 'MH-09');
+    enter(ctx, life, 'เป็นหนี้', 1);
+    const e = life.ext.bondage as { debt: number; debt0: number };
+    e.debt = 55;
+    e.debt0 = 55;
+    leave(ctx, life, 'debt');
+    let x = ctx.state.log.filter((l) => l.sys === 'bondage' && l.kind === 'exit').at(-1)!;
+    expect(x.data.paid).toBe(55);
+    expect(x.data.payBy).toBe('wage');
+    enter(ctx, life, 'ถูกขาย', 2);
+    life.gold = 90;
+    leave(ctx, life, 'ransom', 46);
+    x = ctx.state.log.filter((l) => l.sys === 'bondage' && l.kind === 'exit').at(-1)!;
+    expect(x.data.paid).toBe(46);
+    expect(x.data.payBy).toBe('purse');
     enter(ctx, life, 'ถูกขาย', 2);
     leave(ctx, life, 'term');
-    expect(life.cls).toBe('c1');
-    expect(leave(ctx, life, 'term')).toBe(false);
-    expect(e.history.map((h) => h.how)).toEqual(['เป็นหนี้', 'ransom', 'ถูกขาย', 'term']);
+    x = ctx.state.log.filter((l) => l.sys === 'bondage' && l.kind === 'exit').at(-1)!;
+    expect(x.data.paid).toBe(0);
   });
 
   it('a debt is paid down a year at a time and the bound person is free when it is gone; a contract runs out; the gold in the purse buys freedom, the whole price', () => {
@@ -216,6 +250,50 @@ describe('bondage: entering and leaving (§5 and §6)', () => {
     expect(canRansom(life, e)).toBe(true);
     leave(ctx, life, 'released');
     expect(canRansom(life, e)).toBe(false);
+  });
+
+  it('a young bound life with the gold buys himself out after the same years: the doc has no age for it (M3 review R9)', () => {
+    const { ctx, life, e } = mk(12);
+    at(life, 'MH-09', 900);
+    enter(ctx, life, 'ถูกขาย', 2);
+    life.hAge = 17;
+    e.since = 17 - RANSOM_AFTER_YEARS;
+    e.price = 46;
+    life.gold = 380;
+    expect(canRansom(life, e)).toBe(true);
+    life.gold = 45;
+    expect(canRansom(life, e)).toBe(false);
+  });
+
+  it('at B2 and B3 his work is the contract\'s, of the work that needs no rights; at B1 he keeps his own (M3 review R3)', () => {
+    const work = ['servant', 'miner', 'courier', 'woodcutter'];
+    for (const level of [2, 3] as const) {
+      const { ctx, life } = mk(20 + level);
+      at(life, 'MH-09', 50);
+      life.hAge = 25;
+      life.job = 'smith';
+      expect(enter(ctx, life, 'ถูกขาย', level)).toBe(true);
+      expect(work).toContain(life.job);
+      expect(grantJob(ctx, 'smith', { sys: 'story', id: 'x' }, { force: true })).toBe(false);
+      expect(ensureJob(ctx, life)).toBeNull();
+      expect(work).toContain(life.job);
+    }
+    // a child bound before twenty has no work yet; at twenty he is given the contract's, not offered a trade
+    const c = mk(30);
+    at(c.life, 'MH-09', 0);
+    c.life.hAge = 15;
+    c.life.job = undefined;
+    enter(c.ctx, c.life, 'ถูกขาย', 2);
+    expect(c.life.job).toBeUndefined();
+    c.life.hAge = 20;
+    expect(work).toContain(ensureJob(c.ctx, c.life));
+    // B1 is a debtor who works like a free man
+    const d = mk(31);
+    at(d.life, 'MH-09', 0);
+    d.life.hAge = 25;
+    d.life.job = 'smith';
+    enter(d.ctx, d.life, 'เป็นหนี้', 1);
+    expect(d.life.job).toBe('smith');
   });
 
   it('keeps no separate fund: what a bound person puts by in a year is the net of the economy, in the purse (§7 "2 ถึง 14 ทอง")', () => {

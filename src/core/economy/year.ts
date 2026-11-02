@@ -174,7 +174,7 @@ function yearLine(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, y: { 
   const gain = Math.max(0, Math.round(rest));
   const loss = Math.max(0, Math.round(-rest));
   const why: string[] = [];
-  if (debtChange !== 0 || (ext.debt > 0 && ext.yr.debt0 === 0)) why.push('debt');
+  if (debtChange !== 0 || (ext.debt > 0 && ext.yr.debt0 === 0) || (ext.yr.debtPaid ?? 0) > 0) why.push('debt');
   if (gain >= YEAR_NOTE.gain) why.push('gain');
   if (loss >= YEAR_NOTE.loss) why.push('loss');
   if (ext.yr.share >= YEAR_NOTE.share) why.push('share');
@@ -194,6 +194,7 @@ function yearLine(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, y: { 
         share: ext.yr.share,
         gain,
         loss,
+        debtPaid: Math.round(ext.yr.debtPaid ?? 0),
         fare: Math.round(fare),
         tax: Math.round(y.tax),
         living: Math.round(y.living),
@@ -206,7 +207,7 @@ function yearLine(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, y: { 
       level: 1,
     });
   }
-  ext.yr = { share: 0, shares: 0, debt0: ext.debt };
+  ext.yr = { share: 0, shares: 0, debt0: ext.debt, debtPaid: 0 };
 }
 
 // ---------- debt (04 §6, the simple form until P5) ----------
@@ -227,12 +228,13 @@ function runDebt(ctx: Ctx, life: LifeState, ext: EconomyExt, net: number): void 
   const E = eco(ctx)!;
   const n = classNumber(life.cls);
   ext.debt *= 1 + interestOf(E, n);
+  // the gold that goes to the creditor is told apart in the year line (`debtPaid`, M3 review R4), it is not a loss of the catch-all
   if (life.gold >= ext.debt) {
-    addGold(life, -ext.debt);
+    ext.yr.debtPaid = (ext.yr.debtPaid ?? 0) - addGold(life, -ext.debt);
     ext.debt = 0;
   } else if (net > 0) {
     const pay = Math.min(ext.debt, Math.floor(net * DEBT.repayShare), life.gold);
-    addGold(life, -pay);
+    ext.yr.debtPaid = (ext.yr.debtPaid ?? 0) - addGold(life, -pay);
     ext.debt -= pay;
   }
   const means = life.gold + ext.last.income;
