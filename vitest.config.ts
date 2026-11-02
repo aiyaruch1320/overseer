@@ -5,5 +5,8 @@ export default defineConfig({
     include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
     exclude: ['tests/golden/**', 'tests/balance/**', '**/node_modules/**', 'legacy/**'],
     testTimeout: 60000,
+    // full-life tests keep a worker busy for many seconds; fewer workers in their own processes keep the worker RPC from timing out
+    pool: 'forks',
+    maxWorkers: 4,
   },
 });

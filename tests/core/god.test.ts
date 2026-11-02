@@ -1,5 +1,8 @@
 // The god system, steps G0 to G2 (docs/systems/god/06-implementation.md §2 and §5): prices, income, caps, the chest and dreams.
 import { beforeAll, describe, expect, it } from 'vitest';
+
+// many-life statistical checks run with the balance suite (npm run test:balance sets SLOW_TESTS)
+const slow = process.env.SLOW_TESTS ? it : it.skip;
 import { createSession, startLife } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
 import { idx } from '../../src/core/character';
@@ -440,7 +443,7 @@ const ctxReset = (ctx: Ctx) => {
 };
 
 describe('god G1: the chest (02-bestow.md)', () => {
-  it('10,000 chests hold nothing that breaks a filter: no repeats, no gifts of other peoples, no legends, no talismans, one weapon, three things', () => {
+  slow('10,000 chests hold nothing that breaks a filter: no repeats, no gifts of other peoples, no legends, no talismans, one weapon, three things', () => {
     const bad: string[] = [];
     let n = 0;
     const races = ['human', 'elf', 'darkelf', 'dwarf', 'orc', 'halfling', 'beast', 'naga', 'dragonkin', 'vampire', 'fae', 'slime', 'demonkin', 'merfolk', 'winged', 'giant', 'lavakin', 'construct', 'soulmachine', 'mummy', 'ghoul'];
@@ -899,7 +902,7 @@ describe('god G2: dreams (03-dreams.md)', () => {
     return ['a', 'b', 'c'].map((k) => dreamWeight(w.ctx, node, k));
   }
 
-  it('the four results: obey +3 and the way ×4 · misread +1 and a near way ×2 · refuse −2 · defy (belief −30 or less) the way ×0.3', () => {
+  slow('the four results: obey +3 and the way ×4 · misread +1 and a near way ×2 · refuse −2 · defy (belief −30 or less) the way ×0.3', () => {
     const tally: Record<string, number> = { obey: 0, misread: 0, refuse: 0, defy: 0 };
     let armed = 0;
     for (let k = 0; k < 120; k++) {
@@ -1062,7 +1065,7 @@ describe('god G2: dreams (03-dreams.md)', () => {
     expect(ctx.state.god.chronicle.at(-1)).toMatchObject({ id: o.node, result: 'faded' });
   });
 
-  it('the dreamed way is taken far more often when the dream is obeyed (the story takes it into account)', () => {
+  slow('the dreamed way is taken far more often when the dream is obeyed (the story takes it into account)', () => {
     let obeyed = 0;
     let took = 0;
     let base = 0;
@@ -1090,7 +1093,7 @@ describe('god G2: dreams (03-dreams.md)', () => {
     expect(took / obeyed).toBeGreaterThan(0.55);
   });
 
-  it('the level of a dream is honest: over many lives the willing obey as often as the chance says, and a hesitant dream less often', () => {
+  slow('the level of a dream is honest: over many lives the willing obey as often as the chance says, and a hesitant dream less often', () => {
     const by: Record<string, { n: number; obeyed: number; p: number }> = {};
     for (let k = 0; k < 150; k++) {
       const w = world(5000 + k, { policy: k % 2 ? 'เมตตา' : 'สุ่ม' });
