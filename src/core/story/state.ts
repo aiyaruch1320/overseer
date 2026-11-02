@@ -50,6 +50,8 @@ export interface StoryExt {
   cur?: { id: NodeId; choice: Key | '-' };
   /** Lines opened from outside (`openLine`). */
   external: string[];
+  /** Overlay lines of tuning OPEN_SHARE whose share was drawn: line → drawn open (true) or left shut (false). Drawn once, when the condition first holds. */
+  drawn: Record<string, boolean>;
   /** Overlay lines whose opening was drawn and passed but wait for a free place (tuning OVERLAY_AT_ONCE, JOURNEY_AT_ONCE). */
   queue: string[];
   /**
@@ -66,7 +68,7 @@ export function fresh(): StoryExt {
   return {
     line: '', start: 0, open: {}, fire: {}, due: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
     seen: { npcs: [], events: [], pivots: [] }, jobpaths: [], places: [], endings: [], endingLines: {}, levels: {}, battles: { win: 0, lose: 0, flee: 0 }, checks: [], external: [],
-    queue: [], announced: {}, year: { age: -1, nodes: 0, battles: 0, fought: [] },
+    queue: [], drawn: {}, announced: {}, year: { age: -1, nodes: 0, battles: 0, fought: [] },
   };
 }
 
@@ -87,6 +89,7 @@ export function extOf(life: LifeState): StoryExt {
   e.seen.pivots ??= f.seen.pivots;
   e.endingLines ??= f.endingLines;
   e.queue ??= f.queue;
+  e.drawn ??= f.drawn;
   e.due ??= f.due;
   e.year ??= f.year;
   e.announced ??= f.announced;
