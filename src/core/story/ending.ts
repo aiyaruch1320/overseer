@@ -22,6 +22,22 @@ function boundAtDeath(ctx: Ctx): { level: number; freed: boolean } {
   return { level: b?.level ?? 0, freed: !!b?.history?.some((h) => h.to === 0) };
 }
 
+/** The thread-closing ending of the heir line asks for threads closed, not for none to close (heirs/02 §6 "ปิดเรื่องค้างครบทุกข้อก่อนตาย"; storylines/23 §4). */
+const CLOSING_ENDING = 'ผู้ปิดสมุดตระกูล';
+
+/**
+ * May the life take this ending? The endings of the line of the heirs belong to a life that took its place in the family: a newcomer in the old world has no book to close and no
+ * name to cross the eras with; and "closed all the threads" needs at least one closed by this life (a life with no thread open "closes" nothing, review M4 H4).
+ */
+function mayTake(ctx: Ctx, title: string, line: string): boolean {
+  if (line !== 'heir' || !hasX(ctx.state)) return true;
+  const life = ctx.state.life;
+  const x = lx(ctx.state);
+  if (x.recs.find((r) => r.id === life?.id)?.origin === 'newcomer') return false;
+  if (title === CLOSING_ENDING) return x.threads.some((t) => t.holder === life?.id && t.tried === 'closed');
+  return true;
+}
+
 export interface Candidate {
   title: string;
   line: string;
@@ -58,6 +74,7 @@ export function candidates(ctx: Ctx): Candidate[] {
   const out = new Map<string, Candidate>();
   const add = (title: string, line: string, clauses: number) => {
     if (WAR_ENDINGS.has(title) && cause !== CAUSE.battle) return;
+    if (!mayTake(ctx, title, line)) return;
     const w = ENDING_WEIGHT.base + ENDING_WEIGHT.perClause * clauses;
     const weight = line === ex.line ? w * ENDING_WEIGHT.mainLine : w;
     const had = out.get(title);
@@ -73,6 +90,13 @@ export function candidates(ctx: Ctx): Candidate[] {
   // a life that dies still in bondage dies as one who was held (the state at the moment of death, not the table of ages)
   if (boundAtDeath(ctx).level > 0) out.set(BOUND_ENDING.title, { title: BOUND_ENDING.title, line: BOUND_ENDING.line, weight: BOUND_ENDING.weight });
   return [...out.values()];
+}
+
+/** The endings of the line of the heirs whose conditions hold now, for a family that has taken every ending of the race. */
+function succession(ctx: Ctx): Candidate[] {
+  const out: Candidate[] = [];
+  for (const e of indexOf(ctx).endings) if (e.line === 'heir' && e.cond && mayTake(ctx, e.title, e.line) && test(ctx, e.cond)) out.push({ title: e.title, line: e.line, weight: ENDING_WEIGHT.base + ENDING_WEIGHT.perClause * clausesOf(e.cond) });
+  return out;
 }
 
 /** The plain ending of the life's race line ("คนธรรมดาที่รอด": no condition, not a single convergence, died of age). */
@@ -101,9 +125,11 @@ export function chooseEnding(ctx: Ctx): string | undefined {
   const all = candidates(ctx);
   // an ending the family earned in an earlier life is not taken again while another is open (heirs/02-no-repeat.md §6; the book of the lineage lists them)
   const taken = hasX(ctx.state) ? lx(ctx.state).book.endings : [];
+  // the family earns an ending once: when the endings of the race are all taken, the four of the line of the heirs come (heirs/02 §6), and when those are taken too the life has none
   const fresh = all.filter((c) => !taken.includes(c.title));
-  const list = fresh.length ? fresh : all;
-  const pool = list.length ? list : [plainEnding(ctx)].filter((x): x is Candidate => !!x);
+  const list = fresh.length || !taken.length ? fresh : succession(ctx).filter((c) => !taken.includes(c.title));
+  const plain = plainEnding(ctx);
+  const pool = list.length ? list : !taken.length || (plain && !taken.includes(plain.title)) ? [plain].filter((x): x is Candidate => !!x) : [];
   if (!pool.length) return undefined;
   const pick = pool.length === 1 ? pool[0] : pool[Math.max(0, ctx.rng('life.story.ending').weighted(pool.map((c) => c.weight)))];
   ex.ended = pick.title;
