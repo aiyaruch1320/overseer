@@ -29,13 +29,14 @@ export const OPEN_RATE: Record<string, number> = {
 /**
  * Share of the lives that meet the cause or the condition of a line and walk it (M3 review N1), whoever opened it. The documents open these lines by a cause
  * or a condition alone and the sim (scripts/sim/sim-life.mjs, OVERLAY_RATE) does not count them (or counts `tr` at 15%), so on the whole core they sit on
- * top of the 31 to 33 nodes of the target: `pv` (poor lands and class 1 to 2, 6 nodes) · `tr` (the traders: the economy opens it for them, 8 nodes) · `wk` (labour jobs) ·
+ * top of the 31 to 33 nodes of the target: `pv` (poor lands and class 1 to 2, 6 nodes) · `wk` (labour jobs) ·
  * `iv` (class 3 and 150 gold) · `nl` (class 5). Drawn once per life (`StoryExt.drawn`), apart from OPEN_RATE so that they do not fill the places of OVERLAY_AT_ONCE.
- * The journey lines (ex ml sc ...) and the bondage lines have no share: they are what the character lived through, not a shelf of the life. `dp` and `mr` have none either:
+ * `tr` has none: the economy opens it for the traders and its nodes pay (a share of them took the median gold at 60 under its target). The journey lines (ex ml sc ...) and the bondage lines have no share: they are what the character lived through, not a shelf of the life. `dp` and `mr` have none either:
  * the documents say the god's history alone opens them, with no draw (31-divine.md §2 rule 3; a test holds it).
- * Measured on 300 lives of the whole core (seeds 1 to 300, the 249 that reach 70): 34.9 nodes a life before; the figure after is in review/decisions.md.
+ * Measured on 300 lives of the whole core (seeds 1 to 300, the lives that reach 70; tests/balance/story-core.test.ts): 34.9 nodes a life before, 32.7 after.
+ * Not lower: the economy balance (median gold at 60) sits on the edge, since pv and iv nodes pay; the bn rate cannot fall either (the story-only test would drop under 31).
  */
-export const OPEN_SHARE: Record<string, number> = { pv: 0.4, tr: 0.75, wk: 0.45, iv: 0.45, nl: 0.5 };
+export const OPEN_SHARE: Record<string, number> = { pv: 0.4, wk: 0.45, iv: 0.45, nl: 0.5 };
 
 /** Overlay lines whose opening rule is a plain condition, not a share of lives (no rate). Conditions come from the documents. */
 export const OPEN_COND: Record<string, Condition> = {
