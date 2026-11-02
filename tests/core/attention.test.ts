@@ -450,6 +450,61 @@ describe('attention: on a real life of the core', () => {
     expect(c.filter((e) => e.data.why === 'death' || e.data.why === 'nearDeath')).toHaveLength(1);
   });
 
+  // ---------- M2 review G4 ----------
+
+  it('every age stop the life reaches is told by a stop (its own, or the window or death that stands for it), in every life', () => {
+    for (let seed = 1; seed <= 60; seed++) {
+      const g = real(seed);
+      const life = g.state.life!;
+      const stops = callLog(g).filter((e) => e.data.call === 'stop');
+      const told = new Set(stops.map((e) => e.data.age).filter((a) => a !== null));
+      const born = (life.ext.attention as { from: number }).from;
+      for (const a of DEFAULT_AGE_STOPS.filter((x) => x > born && x <= life.dead!.hAge)) expect(told.has(a), `seed ${seed}: age stop ${a}`).toBe(true);
+    }
+  });
+
+  it('a life that ends of age has the scene before the end while the character is alive, one year before he dies, and the prayers that waited are called in it', () => {
+    let natural = 0;
+    let withPrayers = 0;
+    for (let seed = 1; seed <= 80; seed++) {
+      const g = real(seed);
+      const life = g.state.life!;
+      const deathAge = (life.ext.character as { deathAge?: number }).deathAge!;
+      if (life.dead!.cause !== 'old' || life.dead!.hAge < deathAge - 1) continue;
+      natural++;
+      const near = callLog(g).filter((e) => e.data.why === 'nearDeath');
+      expect(near, `seed ${seed}`).toHaveLength(1);
+      expect(near[0].age, `seed ${seed}`).toBe(deathAge - 1);
+      // the stop was written before the death entry: the character was alive
+      const died = g.state.log.find((e) => e.sys === 'game' && e.kind === 'death')!;
+      expect(near[0].n).toBeLessThan(died.n);
+      // no prayer is raised after it, and none waits unseen at the death
+      const afterNear = g.state.log.filter((e) => e.n > near[0].n && e.sys === 'god' && e.kind === 'prayer');
+      expect(afterNear, `seed ${seed}`).toHaveLength(0);
+      expect(g.state.log.some((e) => e.n > near[0].n && e.sys === 'attention' && e.kind === 'missed' && e.data.kind === 'prayer'), `seed ${seed}`).toBe(false);
+      if (String(near[0].data.cards).includes('prayer')) withPrayers++;
+    }
+    expect(natural).toBeGreaterThan(30);
+    expect(withPrayers).toBeGreaterThan(0);
+  });
+
+  it('a window is called when it is announced, before the node is decided', () => {
+    let checked = 0;
+    for (let seed = 1; seed <= 40 && checked < 10; seed++) {
+      const g = real(seed);
+      for (const call of callLog(g).filter((e) => e.data.why === 'window')) {
+        const id = String(call.data.ids).split(',')[0];
+        const announced = g.state.log.find((e) => e.sys === 'story' && e.kind === 'window' && e.id === id);
+        const played = g.state.log.find((e) => e.sys === 'story' && e.kind === 'node' && e.id === id);
+        if (!announced || !played) continue;
+        expect(call.n, `${id}`).toBeGreaterThan(announced.n);
+        expect(call.n, `${id}`).toBeLessThan(played.n);
+        checked++;
+      }
+    }
+    expect(checked).toBeGreaterThan(3);
+  });
+
   it('the three settings call least, more, most on the same life (the lives do not change with the calls)', () => {
     const n = (s: Settings['attention']) => callLog(real(8, s)).length;
     expect(n('low')).toBeLessThan(n('normal'));

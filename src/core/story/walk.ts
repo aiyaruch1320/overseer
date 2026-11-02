@@ -149,7 +149,7 @@ function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boole
 
 /**
  * A line of nodes that read the god's history (tuning ROLLING_LINES): every node that is not played yet is looked at each year, and plays the
- * year its age has come and its condition holds. A node whose age window is over is skipped. The closing node waits for the last life year.
+ * year its age has come and its condition holds. A node whose age window is over is skipped. The closing node plays at an age drawn between its own and the last life year.
  */
 function rolling(ctx: Ctx, ex: StoryExt, ix: Index, line: string, seq: StoryNodeX[]): void {
   for (let guard = 0; guard < 50; guard++) {
@@ -167,7 +167,9 @@ function rolling(ctx: Ctx, ex: StoryExt, ix: Index, line: string, seq: StoryNode
         skip(ctx, ex, n.id, 'late');
         continue;
       }
-      if (life.hAge < Math.max(n.age[0], closing ? lastYearOf(life) : 0)) continue;
+      if (life.hAge < n.age[0]) continue;
+      // the closing node of the line is drawn an age between its own and the last life year, as the other lines do (it is not left for the death scene, which would only make it glow)
+      if (closing && life.hAge < (ex.fire[n.id] ??= ctx.rng('life.story').int(Math.min(Math.max(n.age[0], life.hAge), lastYearOf(life)), Math.max(n.age[0], lastYearOf(life))))) continue;
       if (n.when && !test(ctx, n.when)) continue;
       if (!room(ex, life)) continue;
       fireNode(ctx, ex, ix, n);
@@ -288,6 +290,12 @@ function skip(ctx: Ctx, ex: StoryExt, id: NodeId, why: string): void {
 function fireNode(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX): 'held' | 'done' {
   if (n.when && !test(ctx, n.when)) return skip(ctx, ex, n.id, 'when'), 'done';
   if (n.converge?.length) return fireRow(ctx, ex, ix, n), 'done';
+  // the node that ends the life waits one beat, so the scene before the end (07-attention.md §2 "ใกล้ตาย") opens with the character alive: the
+  // god still has his last chance, and the prayers that wait are called before he dies. It is decided after every other node of that beat.
+  if (n.line === ex.line && n.id === `${ex.line}.e2` && !ex.announced[n.id]) {
+    ex.announced[n.id] = { n: -1, beats: 0 };
+    return 'held';
+  }
   // a node with a god window is announced one beat before it is decided, so the player can reach it before the way is chosen (07-attention.md §3)
   if (n.godWindow && !ex.announced[n.id]) return announce(ctx, ex, n), 'held';
   conclude(ctx, ex, ix, n, false);
@@ -347,7 +355,9 @@ export function decideWindows(ctx: Ctx): void {
   if (!life) return;
   const ex = extOf(life);
   const ix = indexOf(ctx);
-  for (const id of Object.keys(ex.announced)) {
+  // the node that ends the life is decided last
+  const ends = (id: string) => (id === `${ex.line}.e2` ? 1 : 0);
+  for (const id of Object.keys(ex.announced).sort((a, b) => ends(a) - ends(b) || ex.announced[a].n - ex.announced[b].n)) {
     const a = ex.announced[id];
     const n = ix.nodes.get(id);
     if (!n || life.passed[id] !== undefined || ex.skipped.includes(id)) {
@@ -355,7 +365,8 @@ export function decideWindows(ctx: Ctx): void {
       continue;
     }
     a.beats += 1;
-    if (a.beats < WINDOW_MAX_BEATS && !answered(ctx, life, id, a.n)) continue;
+    // a node held without an announcement (a.n < 0) is decided at the next beat
+    if (a.n >= 0 && a.beats < WINDOW_MAX_BEATS && !answered(ctx, life, id, a.n)) continue;
     delete ex.announced[id];
     if (n.when && !test(ctx, n.when)) {
       skip(ctx, ex, id, 'when');
@@ -371,7 +382,7 @@ export function announcedNodes(ctx: Ctx): NodeId[] {
   const life = lifeOf(ctx);
   if (!life) return [];
   const ex = extOf(life);
-  return Object.entries(ex.announced).sort((a, b) => a[1].n - b[1].n).map(([id]) => id);
+  return Object.entries(ex.announced).filter(([, a]) => a.n >= 0).sort((a, b) => a[1].n - b[1].n).map(([id]) => id);
 }
 
 /** `→ cv.N` rows: the convergence stands in for the race's own choices; when none is open the fallback node stands in. */

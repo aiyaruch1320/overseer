@@ -215,7 +215,10 @@ export function dying(m: Mem, rule: AttentionRule, plan: Plan, now: number, trig
   m.queue = [];
   if (!m.near) {
     m.near = true;
-    out.push({ t: 'call', call: 'stop', why: 'death', age: null, src: shown.map((c) => ({ n: c.n, id: c.id })), cards: shown.map((c) => c.kind), until: null, sec: Math.round(now) });
+    // an age stop that fell due in the same moment as the death is told by it (07-attention.md §2: the age stops always happen)
+    const due = plan.ages.filter((a) => !m.ages[String(a)] && secOf(a) <= now);
+    for (const a of due) m.ages[String(a)] = 'done';
+    out.push({ t: 'call', call: 'stop', why: 'death', age: due.length ? due[due.length - 1] : null, src: shown.map((c) => ({ n: c.n, id: c.id })), cards: shown.map((c) => c.kind), until: null, sec: Math.round(now) });
     m.lastStop = now;
     return;
   }

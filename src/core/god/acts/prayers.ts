@@ -2,7 +2,7 @@
 // conditions' words, prices and effects are in data/gen/god.json `prayers`; the conditions themselves are written here, one per kind.
 import { extOf as characterExt, idx, tagsOf } from '../../character';
 import type { Ctx } from '../../game';
-import { prayersWaiting } from '../../attention';
+import { inDeathScene, prayersWaiting } from '../../attention';
 import { MAX_WAITING_PRAYERS } from '../../attention/tuning';
 import { detached } from '../../rng';
 import { apply, readStat } from '../../rules';
@@ -108,7 +108,8 @@ export function prayerBeat(ctx: Ctx): void {
   }
   const t = g.prayers.tick;
   // the attention system holds two prayers at most (07-attention.md §3): the third is not raised, it would be dropped unseen
-  if (cards.length >= t.maxPending || prayersWaiting(ctx.state) >= MAX_WAITING_PRAYERS || life.godFaith < t.silentBelow) return;
+  // from the scene before the end no prayer is raised: the player is called once more at the most, and a card raised later could not be shown (07-attention.md §2)
+  if (cards.length >= t.maxPending || prayersWaiting(ctx.state) >= MAX_WAITING_PRAYERS || life.godFaith < t.silentBelow || inDeathScene(ctx.state)) return;
   const pool = raisable(ctx);
   const rng = ctx.rng('god.prayer');
   if (!pool.length || !rng.chance(raiseChance(ctx, pool))) return;
