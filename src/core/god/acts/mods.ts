@@ -28,12 +28,11 @@ export function clearFlag(ctx: Ctx, country: CountryId, flag: string): void {
 
 // ---------- modifiers ----------
 
-let seq = 0;
-
 export function addMod(ctx: Ctx, m: Omit<Mod, 'id' | 'from' | 'until'> & { years?: number }): Mod {
   const { years, ...rest } = m;
-  const mod: Mod = { id: `m${yearOf(ctx)}.${++seq}`, from: yearOf(ctx), ...rest, ...(years !== undefined ? { until: yearOf(ctx) + years } : {}) };
-  actsOf(ctx.state).mods.push(mod);
+  const a = actsOf(ctx.state);
+  const mod: Mod = { id: `m${yearOf(ctx)}.${++a.modN}`, from: yearOf(ctx), ...rest, ...(years !== undefined ? { until: yearOf(ctx) + years } : {}) };
+  a.mods.push(mod);
   return mod;
 }
 

@@ -84,6 +84,7 @@ export interface ActsExt {
   v: 1;
   prayerN: number;
   pendingN: number;
+  modN: number;
   /** Tick a prayer kind was last raised. */
   recent: Record<string, number>;
   /** World year of the last prayer the god answered (given, refused or punished) and the world years prayers lapsed. */
@@ -113,6 +114,7 @@ export function fresh(): ActsExt {
     v: 1,
     prayerN: 0,
     pendingN: 0,
+    modN: 0,
     recent: {},
     lastAnswer: NEVER,
     lapsed: [],
