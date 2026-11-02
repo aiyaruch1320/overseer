@@ -5,8 +5,6 @@
 ## สถานะ
 ขั้นปัจจุบัน: M3 ระบบลึก (รวมแล้ว: economy npc combat · ค้าง: bonds+bondage travel+items)
 งานที่กำลังทำ (พักเครื่อง 2026-11-02 18.00 agent อาจยังทำไม่จบ):
-  - bonds + bondage · agent abab3198795a4781f · สาขา `worktree-agent-abab3198795a4781f` · worktree `.claude/worktrees/agent-abab3198795a4781f` · **เสร็จแล้ว** commit สุดท้าย 0683838 ด่านผ่านบนสาขา (tsc · vitest 794 · balance) ยังไม่รวม · เป้าบน 200 ชีวิตผ่าน (สายสนิทอายุ 40 เฉลี่ย 2.2 · รักก่อน 40 58% · วิกฤต 1.5 ต่อชีวิต · ผูกตัว 7%) · ตอนรวม: เติม bondsSystem bondageSystem ใน systems.ts · text ยังไม่มีข้อความของ bonds/* bondage/* และต้องปลด T4 (อารมณ์) กับ PENDING_FX_TH พร้อมแก้ tests/core/text.test.ts 481-510 และ tests/tools/god.test.ts 346 · ย้าย bd bo ab เข้า EXTERNAL_LINES ของ story · combat ใช้ partyEffects · economy อ่าน heldIncomeBonus
-  - travel + items · agent ac64c35f01e427c3b · สาขา `worktree-agent-ac64c35f01e427c3b` · worktree `.claude/worktrees/agent-ac64c35f01e427c3b` · **เสร็จแล้ว** commit สุดท้าย fa6779f ด่านผ่านบนสาขา (tsc · vitest 814 · balance 9 ไฟล์) ยังไม่รวม · ตอนรวม: story ต้องหยุดเปิดเส้น sf ps ml sc ex wd xc เอง (ย้ายจาก OPEN_RATE เป็น EXTERNAL_LINES) และถาม canGo ก่อนถ่วงทางที่มีผล place · combat เรียก afterBattle และอ่าน wielded armorOf · character tagsOf รวม gearTags · economy อ่าน toolBonus และ debt ที่ life.ext.economy.debt · เติม travelSystem itemsSystem ใน systems.ts
 เมื่อกลับมา: ทำตาม "เมื่อกลับมาทำต่อ" ใน code-plan หัวข้อ 15 ก่อน: ถ้า agent ส่งรายงานแล้ว รวมตามปกติ ถ้าไม่มีรายงาน ดูสาขา: มี commit และด่านผ่านบนสาขา (`npx tsc --noEmit` `npx vitest run` ใน worktree) ให้รวมตาม 12.7 ข้อ 4 โดยใช้ commit log แทนรายงาน ถ้าด่านไม่ผ่านหรืองานยังไม่ครบ ส่ง agent ใหม่ใน worktree เดิมบอกว่าเหลืออะไรจาก diff · หลังรวมเติม bondsSystem bondageSystem travelSystem itemsSystem ใน src/core/systems.ts แล้วสร้างชีวิตทองคำใหม่
 งานถัดไป:
   1. รวมสองสาขาข้างบน · ต่อ npc onClash กับ combat.clash · ลบ story/battle-stub และ story/stubs ที่ถูกแทน · god acts ใช้ isSick nemeses killNpc ของ npc และ addHp ของ combat · ตรวจ prelude ของศึกที่น้อยลงเมื่อรวม economy npc (TODO ใน tests/core/combat.test.ts) · บั๊ก character range ของชั้นทำให้ขึ้นชั้น 5 ราว 15% · chooseJob ตอนเป็นผู้ใหญ่ (อาชีพมีแค่ 43% ที่อายุ 30)
@@ -15,6 +13,8 @@
 ด่านล่าสุด: 2026-11-02 17.38 typecheck ผ่าน · test 870/870 · golden 20/20 · run-all --check ผ่าน (balance ยังไม่รันหลังรวม combat)
 
 ## บันทึก (ใหม่อยู่บน)
+
+2026-11-02 · M3 รวม bonds bondage travel items: ระบบ M3 ครบห้าระบบในรายการ · เทสต์ 996 ผ่าน
 2026-11-02 17.40 · พักเครื่อง: รวม economy npc combat แล้ว (ec ปิดไว้ โหนดต่อชีวิต 31.8) · bonds+bondage travel+items ยังทำงาน
 2026-11-02 · M3 รวม combat: ชนะ ลูกกระจ๊อก 85% ปกติ 66% หัวหน้า 36% บอส 15% · ตายในศึก 2.5% ของชีวิต · prelude ก่อนศึกมีชื่อ · ค้าง: prelude น้อยลงเมื่อรวม economy npc (2 ใน 6 ชีวิต) · npc onClash ยังไม่ต่อกับ combat.clash · ลบ story battle-stub · god acts ใช้ addHp
 2026-11-02 · M3 รวม npc: NT ครบ 54 แบบ ราว 650 ต่อโลก · พบต่อปีชีวิต มนุษย์ 0.095 เอลฟ์ 0.095 (เดิม 0.27) · ป่วย อาฆาต จุดศึก onClash · ค้าง: NT มีชีวิต 0.16 ต่อประเทศ ต่ำกว่าเอกสาร 0.3–0.5 (ตัดสิน: ผ่อนกติกาแม่แบบหรือแก้เอกสาร) · god acts ใช้ isSick nemeses killNpc ของ npc · text ข้อความของ newcomer follow tie sick clash
