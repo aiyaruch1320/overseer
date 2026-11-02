@@ -155,6 +155,9 @@ export const ENDING_WEIGHT = { base: 1, perClause: 1, mainLine: 3 };
  */
 export const NODES_PER_YEAR = 2;
 
+/** The last life year before the natural death holds this many more (the elders of the lines close their stories there; assumption). */
+export const LAST_YEAR_EXTRA = 1;
+
 /** A node that waits for a free year may slip this many years past the end of its table age (assumption; the age window of the table is a target). */
 export const SLIP_YEARS = 5;
 
@@ -170,4 +173,4 @@ export const JOURNEY_AT_ONCE = 1;
  * drawn open while the places are full waits and opens when one line is done. Lines whose cause is a state (a condition, a half-blood,
  * an heir, the last era) or another system (`openLine`) are not counted.
  */
-export const OVERLAY_AT_ONCE = 3;
+export const OVERLAY_AT_ONCE = 4;

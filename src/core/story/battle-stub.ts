@@ -5,23 +5,56 @@
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { EffectSource } from '../rules';
+import type { Effect } from '../types';
+import { indexOf } from './data';
 import { extOf, lifeOf, yearOf } from './state';
 import { BATTLE_ODDS, BATTLES_PER_YEAR } from './tuning';
 
 export type BattleResult = 'win' | 'lose' | 'flee' | 'skip';
 
-export function battleStub(ctx: Ctx, enemies: readonly string[], src: EffectSource, text?: string): BattleResult {
+/** Enemies the notes of a node name for a way (`battleFor`) or for every way (`battle`), looking inside the wrappers. */
+function enemiesOfNotes(list: readonly Effect[], key: string, out: Set<string> = new Set()): Set<string> {
+  for (const e of list) {
+    if (e.k === 'battleFor' && e.choices.includes(key as 'a')) e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'battle') e.enemies.forEach((x) => out.add(x));
+    else if (e.k === 'if' || e.k === 'only' || e.k === 'chance') enemiesOfNotes(e.then, key, out);
+    else if (e.k === 'pick') e.of.forEach((b) => enemiesOfNotes(b.effects, key, out));
+  }
+  return out;
+}
+
+/**
+ * A battle with no enemy named ("ศึกสุ่มหนึ่งครั้งต่อปี") is the battle the node's notes name for that way; when the notes name none the
+ * data holds nothing to fight (the random enemy by place is the encounter table of the combat system, M3), so the battle does not happen
+ * and the log says why (M1 review S2).
+ */
+function enemiesFor(ctx: Ctx, src: EffectSource): string[] {
+  const life = lifeOf(ctx);
+  const node = src.id ? indexOf(ctx).nodes.get(src.id) : undefined;
+  const cur = life && extOf(life).cur;
+  if (!node || !cur || cur.id !== node.id || cur.choice === '-') return [];
+  return [...enemiesOfNotes(node.notes, cur.choice)];
+}
+
+export function battleStub(ctx: Ctx, enemiesIn: readonly string[], src: EffectSource, text?: string): BattleResult {
   const life = lifeOf(ctx);
   if (!life) return 'skip';
   const ex = extOf(life);
+  let enemies = enemiesIn;
+  if (!enemies.length) {
+    enemies = enemiesFor(ctx, src);
+    if (!enemies.length) {
+      write(ctx.state, { sys: 'story', kind: 'battleSkip', id: src.id, data: { why: 'no enemy named and none in the notes', text: text ?? null }, level: 0 });
+      return 'skip';
+    }
+  }
   const year = yearOf(ex, life);
-  // who is fought: the enemies not yet fought this year; a battle that names none is told apart by its words
-  const fresh = enemies.length ? enemies.filter((e) => !year.fought.includes(e)) : text && !year.fought.includes(`text:${text}`) ? [`text:${text}`] : [];
-  if ((enemies.length || text) && !fresh.length) return 'skip';
+  // who is fought: the enemies not yet fought this year
+  const fresh = enemies.filter((e) => !year.fought.includes(e));
+  if (!fresh.length) return 'skip';
   if (year.battles >= BATTLES_PER_YEAR) return 'skip';
   year.battles++;
   year.fought.push(...fresh);
-  const named = enemies.length ? fresh : [];
   // its own stream: swapping this stub for the real combat never shifts the story's choices
   const i = ctx.rng('life.story.battle').weighted([BATTLE_ODDS.win, BATTLE_ODDS.lose, BATTLE_ODDS.flee]);
   const result: BattleResult = i === 0 ? 'win' : i === 1 ? 'lose' : 'flee';
@@ -29,8 +62,8 @@ export function battleStub(ctx: Ctx, enemies: readonly string[], src: EffectSour
   write(ctx.state, {
     sys: 'story',
     kind: 'battle',
-    id: named.join(',') || undefined,
-    data: { result, enemies: named.join(','), node: src.id ?? null, text: text ?? null },
+    id: fresh.join(','),
+    data: { result, enemies: fresh.join(','), node: src.id ?? null, text: text ?? null },
     level: 2,
   });
   return result;

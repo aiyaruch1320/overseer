@@ -721,6 +721,16 @@ describe('the pace of a year', () => {
     expect((g.state.life!.ext.story as { battles: Record<string, number> }).battles).toBeDefined();
   });
 
+  it('a battle with no enemy is the battle the notes name for that way (one battle, not two); with none named it does not happen', () => {
+    const pv = mini([node('hu.a1', [20, 20], [choice('a', 0), choice('b', 0), choice('c', 100, { effects: [{ k: 'battle', enemies: [], text: 'ศึกสุ่มหนึ่งครั้งต่อปี' }] })], { notes: [{ k: 'battleFor', choices: ['c'], enemies: ['wolf'], role: 'x' }] })]);
+    const g = play(1, pv, person());
+    expect(battleLog(g).map((e) => e.data.enemies)).toEqual(['wolf']);
+    const bare = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'battle', enemies: [], text: 'ศึกสุ่ม' }] })])]);
+    const h = play(1, bare, person());
+    expect(battleLog(h)).toEqual([]);
+    expect(h.state.log.filter((e) => e.kind === 'battleSkip').length).toBe(1);
+  });
+
   it('a year holds BATTLES_PER_YEAR battles at most', () => {
     const enemies = ['wolf', 'goblin', 'bandits', 'troll', 'ogre', 'bat'];
     const data = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: enemies.map((e): Effect => ({ k: 'battle', enemies: [e] })) })])]);

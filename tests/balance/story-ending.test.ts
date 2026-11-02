@@ -5,7 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, runToDeath, startLife } from '../../scripts/tools/session';
-import { BATTLES_PER_YEAR, CAUSE, NODES_PER_YEAR, WAR_ENDINGS } from '../../src/core/story/tuning';
+import { BATTLES_PER_YEAR, CAUSE, LAST_YEAR_EXTRA, NODES_PER_YEAR, WAR_ENDINGS } from '../../src/core/story/tuning';
 
 const LIVES = Number(process.env.ENDING_LIVES ?? 240);
 
@@ -87,7 +87,8 @@ describe('how lives end and pace', () => {
       expect(repeated).toBe(0);
       // a year goes over the number only where a node cannot wait (the closing nodes), and never by much
       expect(overCap / nodeYears).toBeLessThan(0.01);
-      expect(widest).toBeLessThanOrEqual(NODES_PER_YEAR + 1);
+      // (the last year holds LAST_YEAR_EXTRA more, and the end of the life, e2, is never kept out)
+      expect(widest).toBeLessThanOrEqual(NODES_PER_YEAR + LAST_YEAR_EXTRA + 1);
       // most lives are told an ending
       expect(endings / LIVES).toBeGreaterThan(0.6);
     },

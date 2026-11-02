@@ -10,7 +10,7 @@ import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
 import { entryWeight, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RITE_PASS, SLIP_YEARS, WAIT_STAGES, type Way } from './tuning';
+import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RITE_PASS, SLIP_YEARS, WAIT_STAGES, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -75,9 +75,9 @@ export function drain(ctx: Ctx): void {
 
 // ---------- the pace of a year ----------
 
-/** Does this life year have room for another node (tuning NODES_PER_YEAR)? */
+/** Does this life year have room for another node (tuning NODES_PER_YEAR; the last year of the life holds one more, for its closing nodes)? */
 function room(ex: StoryExt, life: LifeState): boolean {
-  return yearOf(ex, life).nodes < NODES_PER_YEAR;
+  return yearOf(ex, life).nodes < NODES_PER_YEAR + (life.hAge >= lastYearOf(life) ? LAST_YEAR_EXTRA : 0);
 }
 
 /** The last life year before the natural death: the hidden death age the character system drew (storylines/README.md §6 rule 9). */
