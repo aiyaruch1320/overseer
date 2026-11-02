@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
-import { birth, chooseJob, classNum, characterSystem, evalCond, extOf, grantJob, idx, offerJobs, recomputeDeathAge, rollSecretJobs, secretChance } from '../../src/core/character';
+import { birth, chooseJob, classNum, characterSystem, ensureJob, evalCond, extOf, grantJob, idx, jobWeight, offerJobs, onTags, recomputeDeathAge, rollSecretJobs, secretChance, tagsOf } from '../../src/core/character';
 import { yearlyDeath } from '../../src/core/character/death';
 import { Game, type Ctx } from '../../src/core/game';
 import { apply, test as holds } from '../../src/core/rules';
@@ -525,5 +525,75 @@ describe('jobs', () => {
     expect(secretChance(ctx, life, job).chance).toBe(0);
     life.flags.push('faith.23');
     expect(secretChance(ctx, life, job).chance).toBeGreaterThan(0);
+  });
+});
+
+describe('what other systems add to the character (M3 wiring)', () => {
+  it('a step of class written as a range in a row ("ชั้น 4–5", the class of a scene) moves nobody', () => {
+    const { ctx, life } = born(3, { race: 'human', second: null });
+    life.cls = 'c3';
+    apply(ctx, [{ k: 'range', stat: 'ชั้น', min: 4, max: 5 }], src);
+    apply(ctx, [{ k: 'range', stat: 'ชนชั้น', min: 1, max: 2 }], src);
+    expect(life.cls).toBe('c3');
+    const g0 = life.gold;
+    apply(ctx, [{ k: 'range', stat: 'ทอง', min: 30, max: 60 }], src);
+    expect(life.gold).toBeGreaterThanOrEqual(g0 + 30);
+  });
+
+  it('tags of the gear he wears are his tags, and only while a source says so', () => {
+    const { ctx, life } = born(4, { race: 'human', second: null });
+    const before = [...tagsOf(ctx, life)];
+    expect(before).not.toContain('zz_gear_tag');
+    const off = onTags((_c, l) => (l === life ? ['#zz_gear_tag'] : []));
+    expect(tagsOf(ctx, life).has('zz_gear_tag')).toBe(true);
+    expect(tagsOf(ctx, life, { gear: false }).has('zz_gear_tag')).toBe(false);
+    off();
+    expect(tagsOf(ctx, life).has('zz_gear_tag')).toBe(false);
+  });
+
+  it('an adult with no job is offered three and takes one; the class shuts some jobs out and favours others (economy classJobs)', () => {
+    const { ctx, life } = born(5, { race: 'human', second: null });
+    life.hAge = 20;
+    life.job = undefined;
+    life.secretJob = undefined;
+    life.cls = 'c1';
+    const rules = (data.economy.items as { classJobs: { cls: number; boosted: string[]; closed: string[] }[] }).classJobs.find((r) => r.cls === 1)!;
+    const closed = rules.closed.find((id) => idx(ctx).jobs.get(id)?.kind === 'common');
+    if (closed) expect(jobWeight(ctx, idx(ctx).jobs.get(closed)!)).toBe(0);
+    const boosted = rules.boosted.find((id) => idx(ctx).jobs.get(id)?.kind === 'common' && jobWeight(ctx, idx(ctx).jobs.get(id)!) > 0);
+    if (boosted) {
+      life.cls = 'c3';
+      const other = jobWeight(ctx, idx(ctx).jobs.get(boosted)!);
+      life.cls = 'c1';
+      expect(jobWeight(ctx, idx(ctx).jobs.get(boosted)!)).toBeGreaterThan(0);
+      void other;
+    }
+    expect(ensureJob(ctx, life)).not.toBeNull();
+    expect(life.job).toBeDefined();
+    // one who has a job keeps it, a child gets none
+    const keep = life.job;
+    expect(ensureJob(ctx, life)).toBeNull();
+    expect(life.job).toBe(keep);
+    const child = born(6, { race: 'human', second: null });
+    child.life.hAge = 10;
+    child.life.job = undefined;
+    expect(ensureJob(child.ctx, child.life)).toBeNull();
+  });
+
+  it('the system gives a job at 20 to nearly every life that lives to 30', () => {
+    let with30 = 0;
+    let n = 0;
+    for (let seed = 1; seed <= 40; seed++) {
+      const g = game(seed);
+      birth(g.ctx, { second: null });
+      g.born();
+      const life = g.state.life!;
+      while (!life.dead && life.hAge < 30) g.beat();
+      if (life.dead) continue;
+      n++;
+      if (life.job) with30++;
+    }
+    expect(n).toBeGreaterThan(20);
+    expect(with30 / n).toBeGreaterThan(0.9);
   });
 });

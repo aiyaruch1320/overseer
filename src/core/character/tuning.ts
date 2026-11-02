@@ -101,4 +101,6 @@ export const JOBS = {
   slowChangeChance: 0.002,
   freedomChangeChance: 0.015,
   maxAptitudeLevel: 3,
+  /** A job the class favours weighs ×3 in the offer (economy/03-classes.md §4). */
+  classBoost: 3,
 };

@@ -174,6 +174,8 @@ export function registerCharacterRules(force = false): void {
     if (v !== undefined) apply(ctx, [{ k: 'stat', stat: e.stat, delta: v * (e.mul - 1) }], src);
   });
   onEffect('range', (ctx, e, src) => {
+    // "ชั้น 4–5" in a row is the class of the scene (ec.b2 bn.a3 ...), not a step up: it moves nobody (economy report)
+    if (STAT_ALIASES[e.stat] === 'class') return;
     const lo = Math.min(e.min, e.max);
     const hi = Math.max(e.min, e.max);
     apply(ctx, [{ k: 'stat', stat: e.stat, delta: ctx.rng(src.stream ?? `life.${src.sys}`).int(lo, hi) }], src);

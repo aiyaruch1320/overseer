@@ -22,7 +22,9 @@ export interface EconomyExt {
   /** Gold at the end of the last economy year, to see what other systems added since. */
   mark?: number;
   /** Money in and out over the life, by cause, in gold. */
-  flows: { years: number; income: number; tax: number; living: number; gain: number; loss: number };
+  flows: { years: number; income: number; tax: number; living: number; gain: number; loss: number; fare?: number };
+  /** The fares the travel system had taken (`life.ext.travel.spent`) when the last year was counted: its gold is gone already and is not taken again. */
+  fareSeen?: number;
   /** The last year's figures. */
   last: { income: number; tax: number; living: number; net: number };
   /** Years in a row gold has stayed under a year of living. */

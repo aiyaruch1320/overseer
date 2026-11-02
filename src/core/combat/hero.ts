@@ -126,7 +126,8 @@ export function buildHero(ctx: Ctx, life: LifeState): Hero {
   const ranged = shoots ? held : undefined;
   const armor = armorOf(ctx);
   const power = melee || ranged ? w.power || (life.job && SOLDIER_JOBS.has(life.job) ? 1 : 0) : life.job && SOLDIER_JOBS.has(life.job) ? 1 : 0;
-  const gift = [...tags].filter((t) => ATTACK_TAGS.has(t) && t !== 'ranged');
+  // the attack tags of gifts: the weapon's own tags go with the weapon (its stance), not with every stance
+  const gift = [...tagsOf(ctx, life, { gear: false })].filter((t) => ATTACK_TAGS.has(t) && t !== 'ranged');
   const party = partyEffects(ctx);
   return {
     life,

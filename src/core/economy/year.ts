@@ -81,9 +81,16 @@ export function economyYear(ctx: Ctx): void {
 
   // gold that other systems (story rewards, battles, gifts) put in or took out since the last year
   if (ext.mark !== undefined) {
-    const other = life.gold - ext.mark;
+    // the fares of the travel system left the purse by its own hand (it keeps the sum in `ext.spent`): they are counted under fares, not as a loss to be reckoned again
+    const spent = (life.ext.travel as { spent?: number } | undefined)?.spent ?? 0;
+    const fare = Math.max(0, spent - (ext.fareSeen ?? 0));
+    ext.fareSeen = spent;
+    ext.flows.fare = (ext.flows.fare ?? 0) + fare;
+    const other = life.gold - ext.mark + fare;
     if (other > 0) ext.flows.gain += other;
     else ext.flows.loss -= other;
+  } else {
+    ext.fareSeen = (life.ext.travel as { spent?: number } | undefined)?.spent ?? 0;
   }
 
   // the year

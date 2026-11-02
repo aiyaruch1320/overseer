@@ -5,7 +5,8 @@ import { write } from '../log';
 import { test, type EffectSource } from '../rules';
 import type { Job } from '../data/types-character';
 import type { Condition, IdKind, LifeState } from '../types';
-import { extOf, idx } from './data';
+import type { EconomyData } from '../data/types-economy';
+import { classNum, extOf, idx } from './data';
 import { holds, jobAptitude, raiseAptitude } from './life';
 import { ADULT_AGE, JOBS, SECRET } from './tuning';
 
@@ -82,7 +83,20 @@ export function jobWeight(ctx: Ctx, job: Job): number {
   const statValue = stat ? life.stats[stat] : 0;
   const raceBonus = job.raceBonus.includes(life.race) ? rules?.raceBonus ?? JOBS.raceBonus : 0;
   const root = rules?.rarityRoot?.[job.tier ?? 'C'] ?? JOBS.rarityRoot[job.tier ?? 'C'] ?? 1;
-  return (1 + match * (rules?.aptMatchWeight ?? JOBS.aptMatch) + statValue / 6 + raceBonus) * root;
+  // the class favours some jobs ×3 and is shut out of others ×0 (economy/03-classes.md §4); a world without economy.json offers every job alike
+  const byClass = (ctx.data.economy?.items as EconomyData | undefined)?.classJobs.find((r) => r.cls === classNum(life));
+  if (byClass?.closed.includes(job.id)) return 0;
+  const classMul = byClass?.boosted.includes(job.id) ? JOBS.classBoost : 1;
+  return classMul * (1 + match * (rules?.aptMatchWeight ?? JOBS.aptMatch) + statValue / 6 + raceBonus) * root;
+}
+
+/**
+ * An adult with no job takes one of the three offered (08-jobs-overview.md §1: every adult is offered a job at 20). A life the story gave a job
+ * keeps it; one whose offer failed is offered again the next year. Returns the job taken.
+ */
+export function ensureJob(ctx: Ctx, life: LifeState): string | null {
+  if (life.job || life.secretJob || life.hAge < ADULT_AGE) return null;
+  return chooseJob(ctx);
 }
 
 /** Three different common jobs, drawn by weight (the player's character then chooses one). */
