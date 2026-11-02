@@ -25,6 +25,7 @@ import {
   rhythmMul,
   rhythms,
   titlesHeld,
+  titlesOf,
   unlockedAt,
   type Facts,
 } from '../../src/core/god/goals';
@@ -32,6 +33,10 @@ import { TEST, THRESH } from '../../src/core/god/goals/titles';
 import { armNode, settleNode } from '../../src/core/god/goals/rhythm';
 import { extOf as storyExt } from '../../src/core/story/state';
 import { factsOf } from '../../src/core/god/goals';
+import { godGoalsSystem } from '../../src/core/god/goals';
+import { tablesOf } from '../../src/core/world';
+
+const god_beat = (ctx: Game['ctx'], _life: LifeState) => godGoalsSystem.beat!(ctx);
 import type { GameState, LifeState } from '../../src/core/types';
 
 let data: GameData;
@@ -362,7 +367,11 @@ describe('the rhythm of fate and the price of too much help', () => {
 describe('the titles', () => {
   it('hold when the life says so', () => {
     const { ctx, st, life } = mk(1);
+    life.hAge = 40;
     expect(titlesHeld(ctx, life)).toContain('ผู้อยู่ที่เดิม');
+    life.hAge = 8; // a child who died has not stayed
+    expect(titlesHeld(ctx, life)).not.toContain('ผู้อยู่ที่เดิม');
+    life.hAge = 40;
     const t = lifeGoals(life).track;
     t.adult = 10;
     t.years50 = 6;
@@ -380,5 +389,52 @@ describe('the titles', () => {
     expect(titlesHeld(ctx, life)).toContain('ผู้เป็นตำนาน');
     expect(gainOf(ctx, 'kept', 2, { cv: 1, secret: 1, legend: 0, ending: 0 }, true).total).toBe(3 + 2 + 4 + 1);
     expect(gainOf(ctx, 'broken', 0, { cv: 0, secret: 0, legend: 0, ending: 0 }, false).total).toBe(1);
+  });
+});
+
+describe('the titles of a lineage (M4 review T1)', () => {
+  it('a lack is told once by a lineage and gives way to a deed; a title the lineage has not earned comes first', () => {
+    const { ctx, st, life } = mk(1);
+    life.hAge = 40;
+    const t = lifeGoals(life).track;
+    // nothing else covers the life: the lacks stand
+    expect(titlesOf(ctx, life)).toEqual(['ผู้ไม่มีใครเห็น', 'ผู้อยู่ที่เดิม']);
+    // a deed covers it: the lack goes
+    life.cls = 'class 1';
+    t.cls0 = 3;
+    expect(titlesOf(ctx, life)).toEqual(['ผู้ตกต่ำ']);
+    life.cls = 'class 3';
+    // the lineage already earned the lacks: the next life of the family has none
+    goalsOf(st).meta.titlesSeen.push('ผู้อยู่ที่เดิม', 'ผู้ไม่มีใครเห็น');
+    expect(titlesOf(ctx, life)).toEqual([]);
+    // two deeds: the one the lineage has not earned goes first
+    life.cls = 'class 5';
+    t.cls0 = 3;
+    st.god.counters['l.gifts'] = 16;
+    goalsOf(st).meta.titlesSeen.push('ผู้รอฟ้า');
+    expect(titlesOf(ctx, life)).toEqual(['ผู้มั่งคั่ง', 'ผู้รอฟ้า']);
+  });
+
+  it('survived the sky: a fall that shakes the whole world does not make every life one who was spared; the country has to be the one that fell', () => {
+    const { ctx, st, life } = mk(2);
+    const tb = tablesOf(ctx);
+    const world = tb.dragons.find((d) => tb.byId.get(d.fallEvent)?.home.world)!;
+    st.world.happened[world.fallEvent] = life.birthYear + 1;
+    st.world.happened.sky_probe = 0;
+    god_beat(ctx, life);
+    expect(lifeGoals(life).track.skyBorn).toBe(false);
+    const there = tb.dragons.find((d) => !tb.byId.get(d.fallEvent)?.home.world && tb.byId.get(d.fallEvent)?.home.countries.length)!;
+    st.world.happened[there.fallEvent] = life.birthYear + 1;
+    life.country = tb.byId.get(there.fallEvent)!.home.countries[0];
+    god_beat(ctx, life);
+    expect(lifeGoals(life).track.skyBorn).toBe(true);
+  });
+
+  it('the vow offer names the character who is born, not the one before', () => {
+    const { g, st } = mk(3);
+    g.beat();
+    const e = st.log.find((x) => x.sys === 'god' && x.kind === 'vow.offer')!;
+    expect(e.data.name).toBe(st.life!.name);
+    expect(e.data.name).not.toBe('');
   });
 });

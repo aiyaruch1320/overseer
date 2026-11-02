@@ -97,7 +97,7 @@ describe('ending card', () => {
   });
 
   it('a template is not used again in the save while another of its kind is open (07 §10.3)', () => {
-    const s = lineage(5, 3);
+    const s = lineage(1, 3);
     const x = lx(s.game.state);
     const cards = Object.values(x.cards);
     // the death sentence and the epitaph of three lives of one family are three different templates
@@ -173,7 +173,8 @@ describe('lineage: lives in one world', () => {
   });
 
   it('open threads go to the heir, at most three, and are settled, dropped or left to become a legend', () => {
-    const s = lineage(11, 3);
+    // a seed whose three lives close a thread (the lives of a seed move with every change of the story's draws)
+    const s = lineage(1, 3);
     const x = lx(s.game.state);
     for (const r of x.recs) expect(r.threads.length).toBeLessThanOrEqual(3);
     expect(x.threads.length).toBeGreaterThan(0);
@@ -293,7 +294,7 @@ describe('lineage: the family the heir wakes with (M4 review F1 F2 N1 M2)', () =
   });
 
   it('a partner who lives is the heir after the children, whatever the years she has left (heirs/01 §6 rung 2)', () => {
-    const s = lineage(2, 3);
+    const s = lineage(1, 3);
     expect(lx(s.game.state).recs.map((r) => r.origin)).toEqual(['first', 'successor', 'successor']);
   });
 

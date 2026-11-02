@@ -1088,6 +1088,45 @@ describe('the lines that read what the god did', () => {
   });
 });
 
+describe('the line mr: the nodes wait for their event and a life walks three at most (31-divine.md §2 rules 2 and 4)', () => {
+  beforeEach(mockDeath);
+  const mr = (ids: string[]) => {
+    const data = mini([node('hu.a1', [1, 1], [choice('a', 100)])]);
+    const sl = data.storylines.items as StorylinesData;
+    sl.lines.push({ id: 'mr', name: 'mr', file: '', nodeIds: [] });
+    ids.forEach((id, i) => sl.nodes.push(node(id, [20, 60], [choice('a', 100)], { line: 'mr', kind: 'overlay', when: { k: 'has', kind: 'unknown', id: `f${i}` } })));
+    return data;
+  };
+  const start = (ids: string[]): Game => {
+    const g = new Game(newGame(1), mr(ids), [toy, storySystem]);
+    g.state.life = person();
+    g.born();
+    g.state.god.chronicle.push({ worldYear: 0, kind: 'dream', id: 'x' });
+    return g;
+  };
+  const until = (g: Game, age: number) => {
+    while (!g.state.life!.dead && g.state.life!.hAge < age) g.beat();
+  };
+
+  it('a node whose event comes after the age it first came due still plays, when the event comes', () => {
+    const g = start(['mr.a1']);
+    until(g, 45);
+    expect(g.state.life!.passed['mr.a1']).toBeUndefined();
+    expect(g.state.log.some((e) => e.sys === 'story' && e.kind === 'skip' && e.id === 'mr.a1')).toBe(false);
+    g.state.life!.traits.push('f0');
+    until(g, 47);
+    expect(g.state.life!.passed['mr.a1']).toBe('a');
+  });
+
+  it('a node whose age window is over is skipped, and no life walks more than three nodes of the line', () => {
+    const g = start(['mr.a1', 'mr.a2', 'mr.a3', 'mr.a4', 'mr.a5']);
+    g.state.life!.traits.push('f0', 'f1', 'f2', 'f3', 'f4');
+    until(g, 62);
+    const passed = Object.keys(g.state.life!.passed).filter((k) => k.startsWith('mr.'));
+    expect(passed).toHaveLength(3);
+  });
+});
+
 describe('lines and places that belong to other systems', () => {
   it('the journey lines, the bondage lines and the economy line have no rate of their own: they open only through openLine', () => {
     for (const l of ['sf', 'ps', 'ml', 'sc', 'ex', 'wd', 'xc', 'bd', 'bo', 'ab', 'ec']) {

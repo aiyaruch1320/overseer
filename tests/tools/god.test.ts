@@ -636,10 +636,61 @@ describe('npm run play', () => {
   });
 
   it('rejects a policy name that is not one of the eight', () => {
-    expect(POLICIES).toHaveLength(8);
+    expect(POLICIES).toHaveLength(9);
     const r = spawnSync('npx', ['tsx', 'scripts/tools/play.ts', '--seed=1', '--policy=เทพบุตร'], { cwd: root, encoding: 'utf8' });
     expect(r.status).toBe(2);
     expect(r.stderr).toContain('--policy ต้องเป็นหนึ่งใน');
+  });
+});
+
+describe('M4 review: what the player reads of the large deeds', () => {
+  it('MR-21 shows no path of the documents, and says what the grand miracle does to the world', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.light = 150;
+    const p = said(god.handle('miracle MR-21'));
+    expect(p).not.toMatch(/\]\(|\[\.\.|\.md/);
+    expect(p).toContain('ผลที่คาด: เกิด ปาฏิหาริย์แห่งพระเจ้า ทันที');
+    expect(p).toContain('ผลต่อโลก: ศรัทธาโลก +30');
+  });
+
+  it('the conjuring says its price multiplier when the belief of the character is below −30', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.light = 200;
+    expect(said(god.handle('conjure ให้กำเนิด ไฟ ประเทศ'))).not.toContain('×1.5');
+    g.state.life!.godFaith = -40;
+    expect(said(god.handle('conjure ให้กำเนิด ไฟ ประเทศ'))).toMatch(/ราคา: แสงศรัทธา 68 \(ฐาน 45 ×1\.5 เพราะศรัทธาเทพของเขาต่ำกว่า −30/);
+  });
+
+  it('a country is a target by the name of the map and by the title the log uses', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.light = 100;
+    const c = (data.countries.items as { id: string; name: string; title: string }[]).find((x) => x.id === g.state.life!.country)!;
+    expect(c.title).not.toBe(c.name);
+    for (const n of [c.name, c.title]) expect(said(god.handle(`miracle MR-04 ${n}`)), n).not.toContain('ไม่รู้จัก');
+  });
+});
+
+describe('M4 review: the policies cover the vows, the conjuring and the seals', () => {
+  it('ตีหมุด is a policy of the tools, and every policy that spends takes a vow', () => {
+    expect(POLICIES).toContain('ตีหมุด');
+    for (const policy of ['เมตตา', 'ลงโทษ', 'สุ่ม', 'ตีหมุด'] as const) {
+      const r = runLifeReport(data, { seed: 4, policy });
+      const taken = r.state.log.filter((e) => e.sys === 'god' && e.kind === 'vow.take').length;
+      expect(taken, policy).toBe(1);
+    }
+  });
+
+  it('the policies that keep their light or play by chance conjure, within the caps of the circle', () => {
+    let conjured = 0;
+    for (const seed of [2, 3, 4, 5]) {
+      for (const policy of ['เก็บพลัง', 'สุ่ม'] as const) {
+        const r = runLifeReport(data, { seed, policy });
+        const n = r.state.god.chronicle.filter((c) => c.kind === 'conjure').length;
+        expect(n).toBeLessThanOrEqual(3);
+        conjured += n;
+      }
+    }
+    expect(conjured).toBeGreaterThan(0);
   });
 });
 

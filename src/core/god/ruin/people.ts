@@ -3,7 +3,7 @@
 // drawn from the stream `god.ruin` in a fixed order (ids sorted), so the same seed gives the same survivors.
 import type { Ctx } from '../../game';
 import { apply } from '../../rules';
-import { alliesOf, endTie } from '../../bonds';
+import { alliesOf, endTie, isChild, isPartner, type Tie } from '../../bonds';
 import { npcIndex } from '../../npc/data';
 import { slotsOf } from '../../npc/types';
 import type { CountryId } from '../../types';
@@ -26,6 +26,29 @@ export interface Fates {
   /** Allies of the character: dead, and came to him. */
   alliesDied: string[];
   alliesCame: string[];
+  /** The people of the character in the country, one by one, for the log (the dead and the ones who came; M4 review G1). */
+  kin: KinFate[];
+  /** The character himself stood in the country (he lives, hurt or not: iron rule 1). */
+  main: boolean;
+}
+
+/** A person of the character the dice reached: how he stands to the character, and whether he died or came to him. */
+export interface KinFate {
+  name: string;
+  rel: 'child' | 'partner' | 'ally';
+  fate: 'died' | 'came';
+}
+
+/** How a tie of the character is told: his child, his partner (lover or spouse), or an ally. */
+export const relOf = (t: Tie): KinFate['rel'] => (isChild(t) ? 'child' : isPartner(t) ? 'partner' : 'ally');
+
+/** The words of the relation, as the log and the preview say it. */
+export const REL_TH: Record<KinFate['rel'], string> = { child: 'ลูก', partner: 'คู่ครอง', ally: 'พวกพ้อง' };
+
+/** The allies, partner and children of the character who stand in the country: the ones the dice of a ruin reach. */
+export function peopleHere(ctx: Ctx, country: CountryId): Tie[] {
+  const here = new Set(npcsIn(ctx, country));
+  return alliesOf(ctx).filter((t) => t.country === country || (t.npc && here.has(t.npc)));
 }
 
 /** The living roster holders who are in this country now. */
@@ -60,10 +83,10 @@ export function acceptors(ctx: Ctx, country: CountryId): CountryId[] {
  */
 export function rollPeople(ctx: Ctx, country: CountryId, dice: Dice, allyDie: number, why: string): Fates {
   const rng = ctx.rng(STREAM);
-  const out: Fates = { died: [], fled: [], stayed: [], alliesDied: [], alliesCame: [] };
+  const out: Fates = { died: [], fled: [], stayed: [], alliesDied: [], alliesCame: [], kin: [], main: !!livingOf(ctx) && livingOf(ctx)!.country === country };
   const life = livingOf(ctx);
   const leaders = new Set(leadersOf(ctx, country));
-  const allies = alliesOf(ctx).filter((t) => t.country === country || (t.npc && npcsIn(ctx, country).includes(t.npc)));
+  const allies = peopleHere(ctx, country);
   const allyNpc = new Set(allies.flatMap((t) => (t.npc ? [t.npc] : [])));
   for (const id of npcsIn(ctx, country)) {
     if (allyNpc.has(id)) continue; // the allies roll their own dice below
@@ -81,9 +104,11 @@ export function rollPeople(ctx: Ctx, country: CountryId, dice: Dice, allyDie: nu
       if (t.npc) killNpc(ctx, t.npc, why);
       endTie(ctx, t, 'death', why, { cause: 'god' });
       out.alliesDied.push(t.id);
+      out.kin.push({ name: t.name, rel: relOf(t), fate: 'died' });
     } else if (life) {
       t.country = life.country;
       out.alliesCame.push(t.id);
+      out.kin.push({ name: t.name, rel: relOf(t), fate: 'came' });
     }
   }
   return out;

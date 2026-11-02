@@ -13,6 +13,7 @@ import { landName } from './names';
 import { noteBig } from './gd08';
 import { acceptors } from './people';
 import { cultsNow } from './events';
+import { kinNotes } from './kin';
 import { makeRuin, ruinFacts } from './ruin';
 import { sealAt, sealCountries, wrathOnSeals } from './seal';
 import { ruinExt, viewRuin, type LandRec, type RuinKind } from './state';
@@ -59,7 +60,7 @@ function ruinHandler(kind: RuinKind): Handler {
         : [
             `เมืองหลักหายจากแผนที่ ประเทศกลายเป็นซาก ผู้คนเหลือ ${n.pop[0]}–${n.pop[1]}% ของเดิม`,
             `NPC ในประเทศ ${npcs.here} คน แต่ละคนทอย: ตาย ${npcs.die}% · หนี ${npcs.flee}% · อยู่เป็นผู้นำซาก ${npcs.stay}% (ผู้นำที่รอดอยู่เสมอ)`,
-            `พวกพ้องของตัวละครในประเทศนี้ตาย ${n.allyDie}% ที่เหลือหนีมาหาเขา`,
+            ...kinNotes(ctx, c, n.allyDie),
             `เหตุการณ์ที่ยึดกับประเทศนี้ปิด ${(f.closes as string[]).length} เรื่อง${(f.closes as string[]).length ? ` (${(f.closes as string[]).join(' · ')})` : ''} และเหตุการณ์ท้องถิ่น ${f.localCloses} เรื่อง`,
             `ศรัทธาตรงของประเทศข้างเคียง ${n.neighbourFaith} · ท่านได้ความหวาดกลัวคืน ${BIG_BACK(ctx)}`,
             kind === 'MR-18' ? 'หลุมจะกลายเป็นทะเลสาบ นักดำน้ำมาแทนนักขุดซาก' : 'ดาวตกทิ้งเหล็กดาวในหลุม',

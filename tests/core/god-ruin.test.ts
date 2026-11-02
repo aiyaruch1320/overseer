@@ -178,6 +178,29 @@ describe('G5: the ruin (MR-17 · MR-18)', () => {
     expect(died + came).toBe(48);
   });
 
+  it('the child and the partner of the character in the ruined country: the preview names them and the character, the log tells each death (M4 review G1)', () => {
+    let dead = 0;
+    for (let i = 0; i < 10; i++) {
+      const { g, ctx, st } = mk(1 + i);
+      const life = st.life!;
+      const child = addTie(ctx, life, { line: 'ครอบครัว', kin: 'child', level: 3, from: 'test', quiet: true, gap: -30, race: 'same', name: 'ดาโลรีน' } as never);
+      const before = prev(run(ctx, { id: 'MR-17', country: life.country }, false)).notes as string[];
+      expect(before.join('\n'), 'the people of the character').toContain('คนของตัวละครในเมืองนี้: ลูก ดาโลรีน');
+      expect(before.join('\n'), 'the character himself').toContain('ตัวละครเองอยู่ที่นี่');
+      const mark = st.logN;
+      run(ctx, { id: 'MR-17', country: life.country });
+      omen(g);
+      const told = st.log.filter((e) => e.n >= mark && e.sys === 'god' && e.kind === 'ruin' && e.id === 'kin' && e.data.name === 'ดาโลรีน');
+      if (child.state === 'dead') {
+        dead++;
+        expect(told.map((e) => [e.data.fate, e.level])).toEqual([['died', 2]]);
+      } else expect(told.map((e) => e.data.fate)).toEqual(['came']);
+      expect(st.log.some((e) => e.n >= mark && e.kind === 'ruin' && e.id === 'main' && e.level === 2)).toBe(true);
+    }
+    expect(dead).toBeGreaterThan(0);
+    expect(dead).toBeLessThan(10);
+  });
+
   it('MR-18 is the lake: RU-08 takes the place of the diggers; the ruin is the same', () => {
     const { g, ctx, st } = mk(8);
     const c = victim(ctx);

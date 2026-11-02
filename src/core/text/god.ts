@@ -275,8 +275,14 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       const place = nm(cx, d.country);
       if (e.id === 'made') {
         const shut = num(d.closed);
-        return `ในซาก${place} ผู้คนล้มตาย ${num(d.died)} คน หนีไป ${num(d.fled)} คน อยู่เป็นผู้นำซาก ${num(d.stayed)} คน${num(d.allies) || num(d.came) ? ` · พวกพ้องของ${who}ตาย ${num(d.allies)} มาหา ${num(d.came)}` : ''}${shut ? ` · เหตุการณ์ที่ผูกกับที่นั่นปิดไป ${shut} เรื่อง` : ''}`;
+        return `ใน${s(d.label) || `ซาก${place}`} ผู้คนล้มตาย ${num(d.died)} คน หนีไป ${num(d.fled)} คน อยู่เป็นผู้นำซาก ${num(d.stayed)} คน${num(d.allies) || num(d.came) ? ` · พวกพ้องของ${who}ตาย ${num(d.allies)} มาหา ${num(d.came)}` : ''}${shut ? ` · เหตุการณ์ที่ผูกกับที่นั่นปิดไป ${shut} เรื่อง` : ''}`;
       }
+      // the people of the character the ruin reached (M4 review G1): told one by one, so a child does not vanish from the book without a word
+      if (e.id === 'kin') {
+        const rel = d.rel === 'child' ? 'ลูก' : d.rel === 'partner' ? 'คู่ครอง' : 'พวกพ้อง';
+        return d.fate === 'died' ? `${rel}ของ${who}ชื่อ ${s(d.name)} ตายในซาก${place}` : `${rel}ของ${who}ชื่อ ${s(d.name)} รอดจากซาก${place}มาหาเขา`;
+      }
+      if (e.id === 'main') return `${who}อยู่ที่${place}ตอนที่เมืองล่ม ฟ้าไม่เอาชีวิตเขา แต่เขาเห็นทุกอย่าง`;
       const what = scrub(cx.data, s(d.what)).trim();
       const cult = s(d.cult);
       const city = s(d.city);

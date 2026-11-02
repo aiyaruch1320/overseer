@@ -35,6 +35,9 @@ export const STRIKE = { big: 'MR-18', mid: 'MR-13' };
 /** The miracle that makes the ruin of the policies. */
 export const RUIN_MIRACLE = 'MR-17';
 
+/** Share of the ruins a policy makes that fall on a neighbour of the character's country (assumption; the simulator picks the country at random). */
+export const NEAR_RUIN = 0.34;
+
 /** How many occurrences of miracles the ruin state keeps (for the nodes of the story). */
 export const MADE_KEEP = 80;
 

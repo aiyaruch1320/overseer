@@ -27,7 +27,7 @@ export function goalsText(cx: GodCx, e: LogEntry): string | undefined {
   const who = cx.who || 'ตัวละคร';
   switch (e.kind) {
     case 'vow.offer':
-      return `เมื่อ${who}เกิด เกมเสนอคำปฏิญาณแก่ท่าน ${num(d.n)} ข้อ: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
+      return `เมื่อ${s(d.name) || who}เกิด เกมเสนอคำปฏิญาณแก่ท่าน ${num(d.n)} ข้อ: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
     case 'vow.reoffer':
       return `${who}ถึงอายุ 15 ${d.current ? `ท่านเปลี่ยนคำปฏิญาณ ${quote(s(d.current))} ได้ครั้งเดียว` : 'ท่านเลือกคำปฏิญาณได้อีกครั้งเดียว'}: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
     case 'vow.take':

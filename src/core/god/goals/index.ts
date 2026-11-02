@@ -12,6 +12,7 @@ import { write } from '../../log';
 import { onNode } from '../../story/walk';
 import type { LifeState } from '../../types';
 import { tablesOf } from '../../world';
+import { homesOf } from '../ruin';
 import { lifeChronicle } from '../stats';
 import { record } from './chronicle';
 import { bondageOf, classOf, factsOf, healJob, rivalsNow } from './facts';
@@ -20,8 +21,9 @@ import { goalsOf, lifeGoals, living } from './state';
 import { titlesOf } from './titles';
 import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
 import { crossed } from './unlocks';
-import { checkPick, judge, offer, previewPick, reoffer, runPick, vowName, vowRow } from './vows';
+import { checkPick, judge, offer, previewPick, reoffer, runPick, tellOffer, vowName, vowRow } from './vows';
 import { goalsCarry } from './carry';
+import './policy';
 
 export * from './carry';
 export * from './state';
@@ -108,16 +110,20 @@ function sky(ctx: Ctx, life: LifeState): void {
   const BIG = new Set(['MR-17', 'MR-18', 'MR-19', 'MR-20']);
   for (let i = t.scan; i < chron.length; i++) {
     const e = chron[i];
-    if (e.kind === 'miracle' && BIG.has(e.id) && e.target && (e.target === life.country || e.target === life.country.slice(0, 2))) t.skyBorn = true;
+    if (e.kind === 'miracle' && BIG.has(e.id) && e.target === life.country) t.skyBorn = true;
   }
   t.scan = chron.length;
-  if (!t.skyBorn && ctx.data['world-events']) {
+  if (ctx.data['world-events']) {
     const tb = tablesOf(ctx);
+    const seen = (t.falls ??= []);
     for (const d of tb.dragons) {
       const y = ctx.state.world.happened[d.fallEvent];
-      if (y === undefined || y < life.birthYear) continue;
+      if (y === undefined || y < life.birthYear || seen.includes(d.fallEvent)) continue;
+      // each fall is judged once, where he stands when it is first seen. A fall that shakes the whole world is not "in the country" (M4 review T1: 11 lives of 21
+      // were "ผู้รอดจากฟ้า"): the country has to be one the table names for the event or the home of the dragon's seal
+      seen.push(d.fallEvent);
       const home = tb.byId.get(d.fallEvent)?.home;
-      if (home && (home.world || home.countries.includes(life.country) || (home.continents as string[]).includes(life.country.slice(0, 2)))) t.skyBorn = true;
+      if ((home?.countries ?? []).includes(life.country) || homesOf(ctx, d.index).includes(life.country)) t.skyBorn = true;
     }
   }
 }
@@ -141,16 +147,18 @@ export const godGoalsSystem: System = {
     g.track.boundAtBirth = (bondageOf(life)?.level ?? 0) > 0;
     g.track.scan = ctx.state.god.chronicle.length;
     g.track.peakBelief = life.godFaith;
-    const ids = offer(ctx, life);
-    if (ids.length) say(ctx, 'vow.offer', life.id, { ids: ids.join(','), names: namesOf(ctx, ids, life.race), n: ids.length });
+    // the vows are on the table now, but the line that tells them waits for the first beat: the name of the character is not in the log until his own birth line is (M4 review M6)
+    offer(ctx, life);
   },
 
   beat(ctx) {
     const life = living(ctx);
     if (!life || !ctx.data.god) return;
-    const t = lifeGoals(life).track;
+    const g = lifeGoals(life);
+    const t = g.track;
     if (life.godFaith > t.peakBelief) t.peakBelief = life.godFaith;
     sky(ctx, life);
+    tellOffer(ctx, life);
   },
 
   lifeYear(ctx) {

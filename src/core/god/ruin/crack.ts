@@ -8,6 +8,7 @@ import { later } from '../acts/miracles';
 import { say } from '../acts/record';
 import { yearOf } from '../acts/state';
 import { noteBig } from './gd08';
+import { tellKin } from './kin';
 import { rollPeople } from './people';
 import type { SealInfo } from './seal';
 import { ruinExt, type CrackRec } from './state';
@@ -40,6 +41,7 @@ export function crackStep(ctx: Ctx, s: SealInfo, strike: CrackStrike, dragons: n
   noteBig(ctx, 2, c);
   later(() => {
     say(ctx, { kind: 'seal', id: 'crack', data: { country: c, dragons: dragons.length, died: fates.died.length, fled: fates.fled.length, stayed: fates.stayed.length, left: d.pop, built: d.buildings }, level: 1 });
+    tellKin(ctx, c, fates);
   });
   return `เมืองร้าว อาคารพังราว ${d.buildings}% คนเหลือ ${d.pop}%`;
 }

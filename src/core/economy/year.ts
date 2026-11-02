@@ -198,7 +198,7 @@ function yearLine(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, y: { 
         fare: Math.round(fare),
         tax: Math.round(y.tax),
         living: Math.round(y.living),
-        net: Math.round(y.net),
+        net: Math.round(y.net) + 0, // + 0: a small loss rounds to -0, which a save does not keep
         gold: life.gold,
         debt: Math.round(ext.debt),
         debtChange,

@@ -24,8 +24,13 @@ const costWords = (c: unknown): string | undefined => {
   const parts = [x?.faith ? `${LINE.faith} ${x.faith}` : '', x?.dread ? `${LINE.dread} ${x.dread}` : ''].filter(Boolean);
   return parts.length ? parts.join(' + ') : undefined;
 };
-/** A document link `[text](path)` read as its text, and a bracket of code kept out of the player's way. */
-const unlink = (t: string): string => t.replace(/\s*\(?\[[^\]]*\]\([^)]*\)\)?/g, '');
+/** The text of a table cell without its links to the documents (`([x](../y.md))` and `[x](y)`): the player reads no paths (M4 review M2). */
+export const unlink = (t: string): string =>
+  t
+    .replace(/\s*\(\s*\[[^\]]*\]\([^)]*\)\s*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, (_m, label: string) => (/[\/.]/.test(label) ? '' : label))
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 
 interface ConjureRows {
   verbs: { id: string; name: string }[];
@@ -82,7 +87,8 @@ export function conjureLines(data: GameData, p: Record<string, unknown>, miracle
     const r = p.reaction as { say?: string; text?: string };
     out.push(`ปฏิกิริยากับที่นั่น: ${str(r.say)} (${scrub(data, str(r.text), { keepNumbers: true })})`);
   }
-  out.push(`ราคา: ${costWords(p.cost) ?? 'ไม่เสียพลัง'}`);
+  const rise = num(p.priceMul) > 1 ? ` (ฐาน ${num(p.priceBase)} ×${num(p.priceMul)} เพราะ${str(p.priceWhy) === 'belief-low' ? 'ศรัทธาเทพของเขาต่ำกว่า −30 แสงศรัทธาแพงขึ้น' : 'ศรัทธาเทพของเขาสูงกว่า 60 ความหวาดกลัวแพงขึ้น'})` : '';
+  out.push(`ราคา: ${costWords(p.cost) ?? 'ไม่เสียพลัง'}${rise}`);
   const back = (p.back as { dread?: number } | undefined)?.dread;
   if (back) out.push(`เมื่อเหตุเกิดขึ้น ท่านได้ความหวาดกลัวคืน ${back} (ราคาสุทธิ ความหวาดกลัว ${num((p.net as { dread?: number } | undefined)?.dread)})`);
   const sh = (p.chance as { shadow?: number } | undefined)?.shadow ?? 0;
