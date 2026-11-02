@@ -41,6 +41,29 @@ export interface CombatExt {
   rewound?: boolean;
   /** Companions the hero calmed or tamed and could take (id of the species). */
   tamed: string[];
+  /** Rank in the army, 0 to 4 (tuning RANKS); the economy reads it for the wage (`life.ext.combat.rank`). */
+  rank: number;
+  /** The war the soldier is in now (M3 review C2): its event, its foes, the count of battles and what a summary of the campaign tells. */
+  war?: WarExt;
+}
+
+export interface WarExt {
+  /** The WR event (`WR-03`), or '' when the flag of war came from elsewhere. */
+  id: string;
+  /** Foes met in this war (ids of enemies.json). */
+  foes: string[];
+  /** hAge the soldier joined it. */
+  since: number;
+  battles: number;
+  held: number;
+  won: number;
+  lost: number;
+  /** Gold of shares paid in this war. */
+  pay: number;
+  /** Points toward the next rank. */
+  points: number;
+  /** What the last summary already told: the age and the counts then. */
+  told: { age: number; battles: number; held: number; won: number; lost: number; pay: number };
 }
 
 export function fresh(): CombatExt {
@@ -57,6 +80,7 @@ export function fresh(): CombatExt {
     clashes: {},
     bossYear: { age: -1, n: 0 },
     tamed: [],
+    rank: 0,
   };
 }
 
@@ -80,6 +104,7 @@ export function extOf(life: LifeState): CombatExt {
   e.titles ??= f.titles;
   e.met ??= f.met;
   e.bossYear ??= f.bossYear;
+  e.rank ??= 0;
   return e;
 }
 

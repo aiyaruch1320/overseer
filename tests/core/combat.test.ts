@@ -1,16 +1,18 @@
 // The combat system (docs/systems/combat/): fights of several beats, the nine stances, the weakness matrix, wounds and death, loot, the
 // fights that come on their own, the call before a named fight, the clashes of the named NPCs. The data is the generated data/gen/.
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { createSession, startLife, type Session } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
 import { classify } from '../../src/core/attention';
 import { extOf as charExt } from '../../src/core/character';
 import {
-  admit, bestHit, buildHero, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, foeOf,
-  hpOf, lootFor, markOf, maxHpOf, pendingFights, rollWound, stanceBonuses, stanceOptions, stanceWeights, addHp,
+  admit, atWar, bestHit, buildHero, capOf, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, foeOf,
+  hpOf, lootFor, markOf, maxHpOf, pendingFights, rollWound, stanceBonuses, stanceOptions, stanceWeights, addHp, warBattle, warEventOf, warFoes, warOn,
 } from '../../src/core/combat';
+import { warYear } from '../../src/core/combat/war';
+import { eco, extOf as economyExt, grossIncome, placeOf } from '../../src/core/economy';
 import type { Scene } from '../../src/core/combat/stance';
-import { RESCUE } from '../../src/core/combat/tuning';
+import { DAMAGE_SCALE, DEATH_ON_LOSS, RANKS, RESCUE, WAR_FOES, WAR_FOES_BY_CONTINENT } from '../../src/core/combat/tuning';
 import { sortSystems, type Ctx, type GameData } from '../../src/core/game';
 import { actsOf } from '../../src/core/god/acts';
 import { addTie as addBondTie, extOf as bondsExtOf, joinParty } from '../../src/core/bonds';
@@ -65,6 +67,15 @@ function mk(seed = 1, p: Patch = {}): { s: Session; ctx: Ctx; life: LifeState } 
   combatOf(life).hp = maxHpOf(g.ctx, life);
   return { s, ctx: g.ctx, life };
 }
+
+/** Makes a beaten hero die for certain (the chance of death on a lost fight is tuning DEATH_ON_LOSS); restored after the test. */
+const savedDeath = { ...DEATH_ON_LOSS };
+function certainDeath(): void {
+  for (const k of Object.keys(DEATH_ON_LOSS)) DEATH_ON_LOSS[k] = 1;
+}
+afterEach(() => {
+  Object.assign(DEATH_ON_LOSS, savedDeath);
+});
 
 /** Full hit points and a stranger to every enemy again. */
 function fresh(ctx: Ctx, life: LifeState): void {
@@ -249,15 +260,15 @@ describe('the stances (01-core.md §3)', () => {
     const foe = foeOf(ctx, ['troll'])!;
     const plain = damageOf(ctx, buildHero(ctx, life), foe, 'melee', { guard: false, share: false });
     const guard = damageOf(ctx, buildHero(ctx, life), foe, 'guard', { guard: false, share: false });
-    expect(plain).toBe(Math.round((foe.dc * 2.4) / foe.maxBeats));
+    expect(plain).toBe(Math.round(((foe.dc * 2.4) / foe.maxBeats) * DAMAGE_SCALE));
     expect(guard).toBeLessThan(plain);
     expect(Math.abs(guard - plain / 2)).toBeLessThanOrEqual(1);
     const guarded = mk(1, { tags: ['guard'] });
-    expect(damageOf(guarded.ctx, buildHero(guarded.ctx, guarded.life), foe, 'melee', { guard: false, share: false })).toBe(Math.round(plain * 0.8));
+    expect(Math.abs(damageOf(guarded.ctx, buildHero(guarded.ctx, guarded.life), foe, 'melee', { guard: false, share: false }) - plain * 0.8)).toBeLessThanOrEqual(1);
     const salamander = foeOf(ctx, ['magma_salamander'])!;
     const resist = mk(1, { tags: ['fire_res'] });
     const raw = damageOf(ctx, buildHero(ctx, life), salamander, 'melee', { guard: false, share: false });
-    expect(damageOf(resist.ctx, buildHero(resist.ctx, resist.life), salamander, 'melee', { guard: false, share: false })).toBe(Math.round(raw * 0.5));
+    expect(Math.abs(damageOf(resist.ctx, buildHero(resist.ctx, resist.life), salamander, 'melee', { guard: false, share: false }) - raw * 0.5)).toBeLessThanOrEqual(1);
     const weakLight = mk(1, { tags: ['weak_light'] });
     const lightFoe = foeOf(ctx, ['rift_speaker'])!;
     expect(lightFoe.attack.length).toBeGreaterThanOrEqual(0);
@@ -540,6 +551,7 @@ describe('wounds and death (01-core.md §5, §7)', () => {
   });
 
   it('dies at zero hit points with the cause "ตายในศึก" and the node; a hero who cannot die yields instead', () => {
+    certainDeath();
     const m = mk(31, { aptitudes: { sword: 1 } });
     combatOf(m.life).hp = 1;
     const r = fight(m.ctx, ['firedragon'], { node: 'hu.a4' })!;
@@ -554,6 +566,7 @@ describe('wounds and death (01-core.md §5, §7)', () => {
   });
 
   it('the old rescues work: b_laststand once, the guardian angel half the time, rewind once a life', () => {
+    certainDeath();
     const a = mk(32, { blessings: ['b_laststand'] });
     combatOf(a.life).hp = 1;
     const ra = fight(a.ctx, ['firedragon'])!;
@@ -583,6 +596,7 @@ describe('wounds and death (01-core.md §5, §7)', () => {
   });
 
   it('the death is the character system\'s: the loop writes it and the story ending that needs a death in battle can read the cause', () => {
+    certainDeath();
     const m = mk(35, { aptitudes: { sword: 1 } });
     combatOf(m.life).hp = 1;
     fight(m.ctx, ['firedragon']);
@@ -908,6 +922,155 @@ describe('the war (04-encounters.md §7)', () => {
     expect(charExt(m.life).fame).toBeGreaterThan(f0);
     expect(seen.has('lost') || seen.has('dead')).toBe(true);
     expect(m.s.game.state.log.some((e) => e.sys === 'combat' && e.kind === 'war')).toBe(true);
+  });
+});
+
+describe('the war of a soldier (M3 review C2)', () => {
+  /** A soldier of MH-01 in a world where WR-19 (the civil war of the demon continent) happened `ago` years back and its flag runs `left` more years. */
+  function soldier(seed: number, ago = 10, left = 20) {
+    const m = mk(seed, { job: 'soldier', stats: { pow: 14, vit: 14 }, aptitudes: { sword: 2 } });
+    m.life.country = 'MH-01';
+    const w = m.s.game.state.world;
+    w.countryFlags['MH-01'] = ['war'];
+    w.happened['WR-19'] = m.s.game.state.clock.worldYear - ago;
+    w.chains['warflag:MH-01'] = m.s.game.state.clock.worldYear + left;
+    return m;
+  }
+  const warLog = (m: ReturnType<typeof mk>) => m.s.game.state.log.filter((e) => e.sys === 'combat' && e.kind === 'war');
+
+  it('knows its war and the foes of it: the entries name the WR event and a foe of that war, and more than one foe comes over the years', () => {
+    const m = soldier(201);
+    m.life.stats.pow = 18;
+    expect(warEventOf(m.ctx, m.life)).toBe('WR-19');
+    expect(warFoes('WR-19', 'MH-01')).toEqual(WAR_FOES['WR-19'].MH);
+    for (let i = 0; i < 40 && !m.life.dead; i++) {
+      m.life.hAge = 22 + (i % 30);
+      warBattle(m.ctx);
+      combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+    }
+    const log = warLog(m);
+    expect(log.length).toBeGreaterThan(10);
+    for (const e of log) {
+      expect(e.data.war).toBe('WR-19');
+      expect(WAR_FOES['WR-19'].MH).toContain(e.data.foe);
+    }
+    expect(new Set(log.map((e) => e.data.foe)).size).toBeGreaterThan(1);
+    // the outcomes differ: a rout, a line held, a battle won outright
+    const kinds = new Set(log.map((e) => `${e.data.how}/${e.data.grade ?? ''}`));
+    expect(kinds.has('held/won')).toBe(true);
+    expect(kinds.size).toBeGreaterThanOrEqual(2);
+  });
+
+  it('pays a share of the spoils through the economy for a battle held, more for one won, and nothing for a rout; the year says how much came that way', () => {
+    const m = soldier(202);
+    const gold0 = m.life.gold;
+    let paid = 0;
+    for (let i = 0; i < 40 && !m.life.dead; i++) {
+      m.life.hAge = 22 + (i % 30);
+      const before = m.life.gold;
+      warBattle(m.ctx);
+      paid += m.life.gold - before;
+      combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+    }
+    const pays = m.s.game.state.log.filter((e) => e.sys === 'economy' && e.kind === 'pay');
+    expect(pays.length).toBeGreaterThan(5);
+    expect(pays.reduce((n, e) => n + Number(e.data.amount), 0)).toBe(paid);
+    expect(m.life.gold).toBe(gold0 + paid);
+    expect(pays.every((e) => e.level === 0 && e.data.why === 'war')).toBe(true);
+    expect(warLog(m).filter((e) => e.data.how === 'lost').every((e) => e.data.pay === 0)).toBe(true);
+    // a share is more for a higher rank and for a battle won outright
+    const byRank = new Map<string, number>();
+    for (const e of warLog(m)) if (e.data.how === 'held' && e.data.grade === 'steady') byRank.set(String(e.data.rank), Number(e.data.pay));
+    const ranks = [...byRank.keys()].map((r) => RANKS.indexOf(r as never)).sort();
+    for (let i = 1; i < ranks.length; i++) expect(byRank.get(RANKS[ranks[i]])!).toBeGreaterThanOrEqual(byRank.get(RANKS[ranks[i - 1]])!);
+    expect(economyExt(m.life).yr.share).toBe(paid);
+  });
+
+  it('rises through the ranks with battles held, writes the promotion, and the wage of the economy follows the rank', () => {
+    const m = soldier(203);
+    m.life.stats.pow = 30;
+    for (let i = 0; i < 60 && !m.life.dead; i++) {
+      m.life.hAge = 22 + (i % 30);
+      warBattle(m.ctx);
+      combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+    }
+    expect(combatOf(m.life).rank).toBeGreaterThan(0);
+    const ranks = m.s.game.state.log.filter((e) => e.sys === 'combat' && e.kind === 'rank');
+    expect(ranks.length).toBe(combatOf(m.life).rank);
+    expect(ranks[0].data).toMatchObject({ from: 'recruit', to: 'soldier' });
+    const wage = (rank: number) => {
+      combatOf(m.life).rank = rank;
+      return grossIncome(m.ctx, eco(m.ctx)!, m.life, economyExt(m.life), placeOf(m.ctx, eco(m.ctx)!, 'MH-01')!);
+    };
+    expect(wage(4)).toBeGreaterThan(wage(0));
+  });
+
+  it('tells the war in a summary every few years instead of a line a battle: the plain battles held are for the developer, the first, a rout and a win outright are told', () => {
+    const m = soldier(204);
+    for (let i = 0; i < 60 && !m.life.dead; i++) {
+      m.life.hAge = 22 + i / 2;
+      m.life.hAge = Math.floor(m.life.hAge);
+      warBattle(m.ctx);
+      if (i % 2) warYear(m.ctx, true);
+      combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+    }
+    const log = warLog(m);
+    const told = log.filter((e) => e.level >= 1);
+    expect(told.length).toBeLessThan(log.length);
+    expect(log.filter((e) => e.data.first).every((e) => e.level >= 1)).toBe(true);
+    expect(log.filter((e) => e.data.how === 'held' && e.data.grade === 'steady' && !e.data.first).every((e) => e.level === 0)).toBe(true);
+    const camp = m.s.game.state.log.filter((e) => e.sys === 'combat' && e.kind === 'campaign');
+    expect(camp.length).toBeGreaterThan(1);
+    for (const c of camp) {
+      expect(c.level).toBe(1);
+      expect(c.data).toMatchObject({ war: 'WR-19', country: 'MH-01' });
+      expect(Number(c.data.battles)).toBeGreaterThan(0);
+      expect(Number(c.data.held) + Number(c.data.won) + Number(c.data.lost)).toBe(Number(c.data.battles));
+    }
+    // each summary tells what came since the last, not the whole again
+    expect(camp.reduce((n, c) => n + Number(c.data.battles), 0)).toBeLessThanOrEqual(log.length);
+  });
+
+  it('is at war while the war lasts: a flag whose timer has run out is not a war (the world never takes it off), a flag with no timer (the hand of the god) stands', () => {
+    const m = soldier(205, 10, 20);
+    expect(warOn(m.ctx, 'MH-01')).toBe(true);
+    expect(atWar(m.ctx, m.life)).toBe(true);
+    m.s.game.state.world.chains['warflag:MH-01'] = m.s.game.state.clock.worldYear - 1;
+    expect(warOn(m.ctx, 'MH-01')).toBe(false);
+    expect(atWar(m.ctx, m.life)).toBe(false);
+    expect(capOf(m.ctx)).toBe(BATTLES_PER_YEAR); // the cap of 8 is for a war that is on
+    delete m.s.game.state.world.chains['warflag:MH-01'];
+    expect(warOn(m.ctx, 'MH-01')).toBe(true);
+    expect(capOf(m.ctx)).toBe(BATTLES_PER_YEAR * 2);
+  });
+
+  it('the war ends with a closing summary, and the next war starts from the rank he reached', () => {
+    const m = soldier(206);
+    m.life.stats.pow = 30;
+    for (let i = 0; i < 20 && !m.life.dead; i++) {
+      m.life.hAge = 22 + i;
+      warBattle(m.ctx);
+      combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+    }
+    const rank = combatOf(m.life).rank;
+    expect(combatOf(m.life).war).toBeDefined();
+    m.s.game.state.world.chains['warflag:MH-01'] = m.s.game.state.clock.worldYear - 1;
+    warYear(m.ctx, atWar(m.ctx, m.life));
+    expect(combatOf(m.life).war).toBeUndefined();
+    const last = m.s.game.state.log.filter((e) => e.sys === 'combat' && e.kind === 'campaign').at(-1)!;
+    expect(last.data.end).toBe(true);
+    expect(combatOf(m.life).rank).toBe(rank);
+  });
+
+  it('without a WR event the flag still makes a war, with a foe of the continent and no name', () => {
+    const m = mk(207, { job: 'soldier', stats: { pow: 14 } });
+    m.life.country = 'AL-01';
+    m.s.game.state.world.countryFlags['AL-01'] = ['war'];
+    expect(warEventOf(m.ctx, m.life)).toBe('');
+    warBattle(m.ctx);
+    const e = warLog(m).at(-1)!;
+    expect(e.data.war).toBeNull();
+    expect(WAR_FOES_BY_CONTINENT.AL).toContain(e.data.foe);
   });
 });
 

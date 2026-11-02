@@ -9,6 +9,18 @@ import { indexOf } from './data';
 import { extOf, type StoryExt } from './state';
 import { CAUSE, ENDING_GROUPS, ENDING_WEIGHT, PLAIN_ENDINGS, WAR_ENDINGS } from './tuning';
 
+/**
+ * The ending of a life that dies in bondage (M3 review B4; 27-bondage.md bd.e1 "ปลายทาง"): its name is the one the node grants, and a life that dies bound earns it
+ * whether or not it reached the node, with a weight that beats the others (assumption). The life reads the bondage system's state as plain data (`life.ext.bondage`).
+ */
+export const BOUND_ENDING = { title: 'ผู้ที่ถูกผูกตัวและไม่ลืมชื่อตนเอง', line: 'bd', weight: 8 };
+
+/** The level of bondage at the moment of death (0 free, 1 to 3) and whether the life ever left it. */
+function boundAtDeath(ctx: Ctx): { level: number; freed: boolean } {
+  const b = ctx.state.life?.ext.bondage as { level?: number; history?: { to: number }[] } | undefined;
+  return { level: b?.level ?? 0, freed: !!b?.history?.some((h) => h.to === 0) };
+}
+
 export interface Candidate {
   title: string;
   line: string;
@@ -57,6 +69,8 @@ export function candidates(ctx: Ctx): Candidate[] {
   }
   // granted by the condition of the table, tested now
   for (const e of ix.endings) if (e.cond && walked(ex, e.line) && test(ctx, e.cond)) add(e.title, e.line, clausesOf(e.cond));
+  // a life that dies still in bondage dies as one who was held (the state at the moment of death, not the table of ages)
+  if (boundAtDeath(ctx).level > 0) out.set(BOUND_ENDING.title, { title: BOUND_ENDING.title, line: BOUND_ENDING.line, weight: BOUND_ENDING.weight });
   return [...out.values()];
 }
 
@@ -64,6 +78,8 @@ export function candidates(ctx: Ctx): Candidate[] {
 function plainEnding(ctx: Ctx): Candidate | undefined {
   const life = ctx.state.life;
   if (!life) return undefined;
+  // nobody who dies bound "survives as an ordinary man"
+  if (boundAtDeath(ctx).level > 0) return undefined;
   const ex = extOf(life);
   for (const e of indexOf(ctx).endings) {
     const plain = PLAIN_ENDINGS[e.title];
@@ -86,6 +102,7 @@ export function chooseEnding(ctx: Ctx): string | undefined {
   if (!pool.length) return undefined;
   const pick = pool.length === 1 ? pool[0] : pool[Math.max(0, ctx.rng('life.story.ending').weighted(pool.map((c) => c.weight)))];
   ex.ended = pick.title;
-  write(ctx.state, { sys: 'story', kind: 'ending', id: pick.title, data: { line: pick.line, cause: life.dead.cause, earned: pool.length }, level: 1 });
+  const bound = boundAtDeath(ctx);
+  write(ctx.state, { sys: 'story', kind: 'ending', id: pick.title, data: { line: pick.line, cause: life.dead.cause, earned: pool.length, bound: bound.level, freed: bound.freed }, level: 1 });
   return pick.title;
 }

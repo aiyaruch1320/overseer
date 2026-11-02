@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
-import { birth, chooseJob, classNum, characterSystem, ensureJob, evalCond, extOf, grantJob, idx, jobWeight, offerJobs, onTags, recomputeDeathAge, rollSecretJobs, secretChance, tagsOf } from '../../src/core/character';
+import { birth, boundBan, boundLevel, chooseJob, classNum, characterSystem, ensureJob, evalCond, extOf, grantJob, idx, jobWeight, offerJobs, onTags, recomputeDeathAge, rollSecretJobs, secretChance, setClass, tagsOf } from '../../src/core/character';
+import { BOUND_BANS } from '../../src/core/character/tuning';
 import { yearlyDeath } from '../../src/core/character/death';
 import { Game, type Ctx } from '../../src/core/game';
 import { apply, test as holds } from '../../src/core/rules';
@@ -595,5 +596,69 @@ describe('what other systems add to the character (M3 wiring)', () => {
     }
     expect(n).toBeGreaterThan(20);
     expect(with30 / n).toBeGreaterThan(0.9);
+  });
+});
+
+describe('a life in bondage (10-bondage.md §2, M3 review B1)', () => {
+  const bound = (life: { ext: Record<string, unknown> }, level: number) => {
+    life.ext.bondage = { level };
+  };
+
+  it('does not rise in class while bound at any level, and the step is refused with a note for the developer; free, it rises', () => {
+    const { ctx, life } = born(31, { race: 'human' });
+    life.cls = 'c1';
+    for (const level of [1, 2, 3]) {
+      bound(life, level);
+      expect(boundBan(life, 'class')).toBe(true);
+      setClass(ctx, life, 2, 'test');
+      apply(ctx, [{ k: 'class', value: 3 }], { sys: 'story', id: 'x.a1' });
+      expect(life.cls).toBe('c1');
+    }
+    const blocked = ctx.state.log.filter((e) => e.sys === 'character' && e.kind === 'classBlocked');
+    expect(blocked.length).toBeGreaterThanOrEqual(3);
+    expect(blocked.every((e) => e.level === 0)).toBe(true);
+    bound(life, 0);
+    setClass(ctx, life, 2, 'test');
+    expect(life.cls).toBe('c2');
+    // falling is not refused
+    bound(life, 2);
+    setClass(ctx, life, 1, 'bondage');
+    expect(life.cls).toBe('c1');
+  });
+
+  it('does not change its own work at B2 and B3; B1 keeps a say; the first work an owner gives, and the owner\'s own hand, are allowed', () => {
+    const { ctx, life } = born(32, { race: 'human' });
+    life.job = 'farmer';
+    for (const level of [2, 3]) {
+      bound(life, level);
+      expect(grantJob(ctx, 'smith', { sys: 'story', id: 'x' }, { force: true })).toBe(false);
+      expect(life.job).toBe('farmer');
+    }
+    const fail = ctx.state.log.filter((e) => e.sys === 'character' && e.kind === 'jobFail' && e.data.reason === 'bound');
+    expect(fail.length).toBe(2);
+    expect(fail.every((e) => e.level === 0)).toBe(true);
+    bound(life, 3);
+    expect(grantJob(ctx, 'smith', { sys: 'bondage', id: 'owner' }, { force: true })).toBe(true);
+    expect(life.job).toBe('smith');
+    bound(life, 1);
+    expect(boundBan(life, 'job')).toBe(false);
+    expect(grantJob(ctx, 'farmer', { sys: 'story', id: 'x' }, { force: true })).toBe(true);
+    bound(life, 0);
+    expect(grantJob(ctx, 'smith', { sys: 'story', id: 'x' }, { force: true })).toBe(true);
+    // a life with no work yet is given some, bound or not
+    life.job = undefined;
+    bound(life, 2);
+    expect(grantJob(ctx, 'farmer', { sys: 'character', id: 'offer' }, { force: true })).toBe(true);
+  });
+
+  it('shuts exactly what the table of BOUND_BANS says, by level, and nothing for the free', () => {
+    const { life } = born(33, { race: 'human' });
+    const row = (level: number) => (['move', 'job', 'class'] as const).filter((w) => (bound(life, level), boundBan(life, w)));
+    expect(row(0)).toEqual([]);
+    expect(row(1)).toEqual(['move', 'class']);
+    expect(row(2)).toEqual(['move', 'job', 'class']);
+    expect(row(3)).toEqual(['move', 'job', 'class']);
+    expect(Object.keys(BOUND_BANS)).toEqual(['1', '2', '3']);
+    expect(boundLevel(life)).toBe(3);
   });
 });

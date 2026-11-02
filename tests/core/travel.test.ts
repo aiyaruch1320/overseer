@@ -1,7 +1,7 @@
 // The travel system (code-plan §7 row "travel", docs/systems/travel/01-travel-rules.md): each rule of the tables on the character system's real data.
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
-import { birth, characterSystem, holds } from '../../src/core/character';
+import { birth, characterSystem, extOf as charExtOf, holds } from '../../src/core/character';
 import { Game, type Ctx, type GameData } from '../../src/core/game';
 import { onNode } from '../../src/core/story';
 import { storySystem } from '../../src/core/story';
@@ -532,5 +532,58 @@ describe('a whole life', () => {
       expect(ex.legs).toBeGreaterThanOrEqual(0);
       expect(holds(g.ctx, life, 'flag', 'zzz')).toBe(false);
     }
+  });
+});
+
+describe('a life in bondage goes nowhere by itself (10-bondage.md §2, M3 review B1)', () => {
+  it('cannot go, relocate or follow the story to another country at any level, and the refusal is for the developer; the owner carries him, a free man goes', () => {
+    const { ctx, life, g } = born(41, { race: 'human', country: 'AL-01' }, { hAge: 30, gold: 500 });
+    for (const level of [1, 2, 3]) {
+      life.ext.bondage = { level };
+      const r = go(ctx, 'AL-02', 'test', { free: true });
+      expect(r.ok).toBe(false);
+      expect(r.why).toBe('bound');
+      expect(relocate(ctx, 'AL-02', 'story:x')).toBe(false);
+      expect(life.country).toBe('AL-01');
+    }
+    expect(g.state.log.filter((e) => e.sys === 'travel' && e.kind === 'trip')).toEqual([]);
+    const blocked = g.state.log.filter((e) => e.sys === 'travel' && e.kind === 'blocked' && e.data.why === 'bound');
+    expect(blocked.length).toBeGreaterThanOrEqual(3);
+    expect(blocked.every((e) => e.level === 0)).toBe(true);
+    life.ext.bondage = { level: 0 };
+    const free = go(ctx, 'AL-02', 'test', { free: true });
+    expect(free.ok).toBe(true);
+    expect(life.country).toBe('AL-02');
+  });
+
+  it('takes no cause of a journey and makes no trip while bound, a trip in the making ends where he stands, and the causes come back with his freedom', () => {
+    let freeCauses = 0;
+    for (let seed = 50; seed < 58; seed++) {
+      const { g, ctx, life } = born(seed, { race: 'human', country: 'AL-01' }, { hAge: 20, gold: 500 });
+      charExtOf(life).axes.curious = 100;
+      life.ext.bondage = { level: 2 };
+      for (let a = 20; a < 70; a++) {
+        life.hAge = a;
+        travelSystem.lifeYear!(ctx);
+      }
+      expect(g.state.log.filter((e) => e.sys === 'travel' && (e.kind === 'cause' || e.kind === 'trip'))).toEqual([]);
+      expect(life.country).toBe('AL-01');
+      life.ext.bondage = { level: 0 };
+      for (let a = 20; a < 70; a++) {
+        life.hAge = a;
+        travelSystem.lifeYear!(ctx);
+      }
+      freeCauses += g.state.log.filter((e) => e.sys === 'travel' && e.kind === 'cause').length;
+    }
+    expect(freeCauses).toBeGreaterThan(0);
+    // away on a trip when taken: the trip is over at the next beat, and he is based where he stands
+    const { ctx, life } = born(60, { race: 'human', country: 'AL-01' }, { hAge: 30, gold: 500 });
+    const ex = travelExt(life);
+    ex.away = { cause: 'wd', to: 'AL-01', until: 9999, settle: false };
+    life.country = 'AL-02';
+    life.ext.bondage = { level: 3 };
+    travelSystem.beat!(ctx);
+    expect(ex.away).toBeUndefined();
+    expect(ex.base).toBe('AL-02');
   });
 });

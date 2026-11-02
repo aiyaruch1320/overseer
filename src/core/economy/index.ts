@@ -16,7 +16,7 @@ registerEconomyRules();
 export { eco, regimeOf, classNumber, GOODS, type CountryEco, type GoodId, type RegimeId, type MoneyUse } from './data';
 export { eventEcon, type EventEcon, type WChange, type PriceShock } from './events';
 export { wOf, priceOf, trust, trustMul, foodShock, syncWorld, syncEvents, writeCountry } from './world';
-export { expectedYear, economyYear, startLife, addGold, type YearFigures } from './year';
+export { expectedYear, economyYear, startLife, addGold, payShare, type YearFigures } from './year';
 export { grossIncome, livingCost, taxRate, moneyUse, placeOf, inheritanceTax } from './income';
 export { extOf, type EconomyExt } from './state';
 export { startGear, armourTier, type GearTier } from './gear';

@@ -12,6 +12,35 @@ export const STREAM = { fight: 'life.combat', encounter: 'life.combat.enc', loot
 export const HP = { base: 40, perVit: 4, regenPerBeat: 3, regenTag: 6, floor: 10 };
 /** A hero at or below this share of maximum hit points yields: the fight is lost (01-core.md §7 "แพ้: hp เหลือน้อย"; assumption for the share). */
 export const YIELD_AT = 0.2;
+
+// ---------- how hard a fight is (M3 review C1) ----------
+
+/**
+ * Added to the DC of a foe by its tier id (assumption). The DC column of 03-enemies.md was written for one roll a fight; with 2 to 8 beats, a
+ * reroll and the stat and skill bonuses of a grown hero the same DC gave a hero who lost 1% of 1,460 fights (M3 review C1: lose 1% draw 40%).
+ * The shift is read by every stance (stance.ts `dcOf`), so the talk, the calm and the flight get harder with it by the same amount.
+ */
+export const TIER_DC_SHIFT: Record<string, number> = { grunt: 0, normal: 2, veteran: 2, chief: 2, elite: 2, boss: 2, legend: 0 };
+/**
+ * The damage of a lost beat is DC × 2.4 ÷ the most beats (01-core.md §5) times this (assumption). The doc keeps "the damage of the whole fight
+ * near the old code" (one failed roll took DC × 2.4); a hero of 80 hit points who meets that once a fight never reaches the yield line, which is why
+ * only bosses ever beat him. With the factor a fight of three failed beats against a chief costs most of his hit points.
+ */
+export const DAMAGE_SCALE = 1.35;
+/**
+ * Chance that a lost fight ends in death, by the tier id of the foe, and the factor when the blow took the hero to zero (assumption). The doc lets
+ * the hero die at zero hit points (01-core.md §7 "ตาย") but a hero at 20% who is struck again almost never reached zero, so no fight killed (M3
+ * review C1 target: about 2.5% of lives end in battle, the ways of the story that say so included). A hero beaten by a boss may still be left alive.
+ */
+export const DEATH_ON_LOSS: Record<string, number> = { grunt: 0, normal: 0.0007, veteran: 0.0013, chief: 0.004, elite: 0.007, boss: 0.013, legend: 0.04 };
+export const DEATH_AT_ZERO_MUL = 3;
+/** … and ×this again when the hero began the fight at or under the yield line (he fought on while hurt; assumption). */
+export const DEATH_LOW_START_MUL = 3;
+/**
+ * A fight that ran out of beats with the foe one wound from falling goes on for one more beat (assumption). The doc ends it as a draw ("เสมอ ครบจังหวะสูงสุด"),
+ * which with 2 wounds in 3 beats made 4 fights in 10 draws in the M3 review; a draw should be a stand-off, not a fight left one blow short.
+ */
+export const OVERTIME = { maxLeft: 1, beats: 1 };
 /** hp below this share: −2 to the roll, flee ×2 (01-core.md §4 and §6; the data rows say 30%). */
 export const LOW_HP = 0.3;
 /** Hit points a last-stand rescue leaves (legacy: `b_laststand` hp 10), `rewind` (half), `guardian_angel` (15, 50%). */
@@ -237,6 +266,48 @@ export const RAID = { allies: 2, warned: -2, fameAll: 8, fameLoss: 4, orphanAge:
 export const RAID_CLEAN = 0.25;
 /** The mass battle of a war (04 §7): the damage of a lost roll is DC × this share of the whole fight's damage (assumption). */
 export const WAR_DAMAGE = 0.25;
+
+// ---------- the war of a soldier (M3 review C2) ----------
+
+/**
+ * Who the soldiers of a war meet: the foes (ids of enemies.json) by the war event (WR-xx of world-events) and the continent the hero stands on
+ * (`*` = any). The docs name the pairs of a war ("ปีศาจ × ทุ่งราบ", "ภายในพงไพร") and the enemies of the war flag (04-encounters.md §3: npc_deserter
+ * npc_mercenary bandits trench_deserters gas_ghoul); which enemy stands on which side is an assumption.
+ */
+export const WAR_FOES: Record<string, Record<string, string[]>> = {
+  'WR-02': { AZ: ['titan_shard', 'sand_raiders'], SH: ['storm_harpy', 'griffon'], '*': ['titan_shard', 'storm_harpy'] },
+  'WR-03': { MH: ['npc_knight', 'trench_deserters', 'npc_inquisitor'], AL: ['npc_demon_champion', 'ghoul_horde', 'ash_wolf_pack'], '*': ['npc_mercenary'] },
+  'WR-07': { MH: ['reef_serpent', 'drowned_dead', 'ghost_crew'], NR: ['npc_pirate', 'ghoul_horde'], '*': ['npc_pirate'] },
+  'WR-10': { SH: ['sand_raiders', 'dust_djinn'], '*': ['sand_raiders'] },
+  'WR-13': { AL: ['npc_inquisitor', 'npc_knight', 'trench_deserters'], '*': ['npc_inquisitor'] },
+  'WR-17': { SV: ['blighted_ent', 'shadow_pack', 'spore_thrall'], '*': ['blighted_ent'] },
+  'WR-18': { AZ: ['storm_harpy', 'cloud_serpent', 'scale_wyrmling'], '*': ['storm_harpy'] },
+  'WR-19': { MH: ['ghost_legion', 'npc_demon_champion', 'ghoul_horde'], '*': ['ghost_legion'] },
+  'WR-20': { NR: ['reef_serpent', 'npc_pirate', 'siren'], '*': ['reef_serpent'] },
+};
+/** A war the table above does not name (a flag of war put on a country by another event): the soldiers of the continent meet these (assumption). */
+export const WAR_FOES_BY_CONTINENT: Record<string, string[]> = {
+  AL: ['trench_deserters', 'npc_knight', 'gas_ghoul'], MH: ['npc_mercenary', 'ghoul_horde'], MK: ['war_automaton', 'npc_mercenary'], SH: ['sand_raiders'],
+  KD: ['npc_mercenary', 'magma_salamander'], NR: ['npc_pirate'], SV: ['shadow_pack'], AZ: ['storm_harpy'], NB: ['npc_assassin'],
+};
+export const WAR_FOE_DEFAULT = 'npc_mercenary';
+/** The roll of a battle against a foe is harder by its tier (DC added to the role's DC; assumption). */
+export const FOE_DC_SHIFT: Record<string, number> = { grunt: -1, normal: 0, veteran: 1, chief: 2, elite: 2, boss: 3, legend: 4 };
+/** A roll this far over the DC wins the battle outright (the foe broken, not only held); a natural 20 does too (assumption). */
+export const WAR_DECISIVE = 8;
+/** Ranks of the army, lowest first, and the points to reach the next (a held battle is 1 point, a won one 2; assumption: the docs name no rank). */
+export const RANKS = ['recruit', 'soldier', 'corporal', 'sergeant', 'captain'] as const;
+export const RANK_POINTS = [3, 4, 5, 6];
+/** The rank a soldier starts at by his job (assumption); the commander of 04 §7 is a captain at least. */
+export const RANK_START: Record<string, number> = { knight: 2, royal_guard: 1, city_guard: 1, general: 4, commander: 4, captain: 4 };
+/** Share of the spoils paid for a battle by rank, in gold (assumption: 04-income-and-living.md §1 says "ส่วนแบ่งศึก" without a sum); a won battle pays double, a lost one nothing. */
+export const WAR_PAY = { byRank: [2, 3, 5, 8, 14], won: 2, lost: 0 };
+/** The best-paying places (04 §1 "MK-16 MH-09 จ่ายดีที่สุด") pay the share × this (the economy's MERC_BEST). */
+export const WAR_PAY_BEST = { countries: ['MK-16', 'MH-09'], mul: 1.3 };
+/** A summary of the campaign is written every this many life years of war, and when the war ends (assumption). */
+export const CAMPAIGN_YEARS = 3;
+/** A lost battle of the war kills the hero with this chance when he is at or below this share of his hit points (the rest of the dead go through `DEATH_ON_LOSS`; assumption). */
+export const WAR_DEATH = { chance: 0.04, hpShare: 0.4 };
 
 /** A hero with the curse `c_wanted` is hunted by a bounty hunter (04-encounters.md §6: 20% a year, `npc_mercenary`); the hunter lies in wait. */
 export const WANTED = { curse: 'c_wanted', perYear: 0.2, enemy: 'npc_mercenary' };

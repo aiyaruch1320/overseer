@@ -5,9 +5,9 @@ import { loadGen } from '../../scripts/tools/load-gen';
 import { birth, characterSystem } from '../../src/core/character';
 import {
   armourTier, eco, economySystem, economyYear, eventEcon, expectedYear, extOf, foodShock, grossIncome, inheritanceTax, livingCost, moneyUse, placeOf, priceOf, regimeOf,
-  SKIPPED, startGear, syncWorld, taxRate, trust, trustMul, wOf,
+  payShare, SKIPPED, startGear, syncWorld, taxRate, trust, trustMul, wOf,
 } from '../../src/core/economy';
-import { INCOME_SCALE } from '../../src/core/economy/tuning';
+import { INCOME_SCALE, RANK_PAY } from '../../src/core/economy/tuning';
 import { Game, versions, type Ctx } from '../../src/core/game';
 import { registered, apply, test as holds } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
@@ -489,6 +489,112 @@ describe('income, living cost and tax (04-income-and-living.md)', () => {
     expect(JSON.stringify(g.state.rng)).toBe(mark);
     expect(y.net).toBeCloseTo(y.income - y.tax - y.living, 9);
     expect(y.place.w).toBe(3);
+  });
+});
+
+describe('the year in one line and the shares of a battle (M3 review T1, C2)', () => {
+  const yearLines = (g: Game) => g.state.log.filter((e) => e.sys === 'economy' && e.kind === 'year');
+  /** A smith of NR-03 whose purse is as the last year left it, so that only what the test does counts as a change. */
+  function quiet(age = 31, gold = 200) {
+    const m = lifeIn(11, 'NR-03', { job: 'scribe', cls: 'c3', gold });
+    m.life.hAge = age;
+    extOf(m.life).mark = m.life.gold;
+    return m;
+  }
+
+  it('writes nothing for a year in which nothing moved but the formula', () => {
+    const { g, ctx, life } = quiet();
+    economyYear(ctx);
+    expect(yearLines(g)).toEqual([]);
+    expect(life.gold).toBeGreaterThan(0);
+  });
+
+  it('writes the year when a windfall, a loss, a share or a debt moved the money, and says which', () => {
+    const win = quiet();
+    win.life.gold += 120;
+    economyYear(win.ctx);
+    expect(yearLines(win.g)).toHaveLength(1);
+    expect(yearLines(win.g)[0].data).toMatchObject({ why: 'gain', gain: 120, loss: 0 });
+
+    const lose = quiet();
+    lose.life.gold -= 90;
+    economyYear(lose.ctx);
+    expect(yearLines(lose.g)[0].data).toMatchObject({ why: 'loss', loss: 90, gain: 0 });
+
+    const paid = quiet();
+    expect(payShare(paid.ctx, 40, 'war', { war: 'WR-19' })).toBe(40);
+    economyYear(paid.ctx);
+    expect(yearLines(paid.g)[0].data).toMatchObject({ why: 'share', share: 40, gain: 0 });
+    // the share is counted for the year it came in and starts again at zero
+    expect(extOf(paid.life).yr.share).toBe(0);
+
+    const debt = quiet(31, 8);
+    extOf(debt.life).debt = 30;
+    economyYear(debt.ctx);
+    const d = yearLines(debt.g)[0].data;
+    expect(String(d.why)).toContain('debt');
+    expect(Number(d.debt)).toBeGreaterThan(0);
+    expect(d.debtChange).not.toBe(0);
+  });
+
+  it('writes a ledger line every tenth year whatever happened, with the numbers the text tells: income, wage, tax, living, net, purse, debt', () => {
+    const { g, ctx, life } = quiet(40);
+    economyYear(ctx);
+    const l = yearLines(g);
+    expect(l).toHaveLength(1);
+    expect(l[0].level).toBe(1);
+    expect(l[0].data).toMatchObject({ why: 'ledger', kind: 'wage', job: 'scribe', class: 'c3', gold: life.gold, debt: 0, debtChange: 0, share: 0 });
+    const d = l[0].data;
+    for (const k of ['income', 'salary', 'gain', 'loss', 'fare', 'tax', 'living', 'net']) expect(typeof d[k], k).toBe('number');
+    expect(Math.abs(Number(d.net) - (Number(d.income) - Number(d.tax) - Number(d.living)))).toBeLessThanOrEqual(1);
+    expect(d.salary).toBe(d.income);
+    for (const v of Object.values(d)) expect(v === null || ['string', 'number', 'boolean'].includes(typeof v)).toBe(true);
+  });
+
+  it('pays the share into the purse and writes economy/pay at level 0; a free hand or a dead life pays nothing', () => {
+    const { g, ctx, life } = quiet();
+    const before = life.gold;
+    expect(payShare(ctx, 12.4, 'war', { war: 'WR-03' })).toBe(12);
+    expect(life.gold).toBe(before + 12);
+    const e = g.state.log.filter((x) => x.sys === 'economy' && x.kind === 'pay');
+    expect(e).toHaveLength(1);
+    expect(e[0]).toMatchObject({ level: 0, id: 'war', data: { amount: 12, why: 'war', war: 'WR-03' } });
+    expect(payShare(ctx, 0, 'war')).toBe(0);
+    expect(payShare(ctx, -5, 'war')).toBe(0);
+    life.dead = { year: 1, hAge: 31, cause: 'old' };
+    expect(payShare(ctx, 10, 'war')).toBe(0);
+  });
+
+  it('pays a soldier by his rank (the army of the combat system keeps it) and nobody else by it', () => {
+    const { ctx, life } = lifeIn(12, 'NR-03', { job: 'soldier', cls: 'c3', gold: 100 });
+    const E_ = E(ctx);
+    const place = placeOf(ctx, E_, 'NR-03')!;
+    const at = (rank: number) => {
+      life.ext.combat = { rank };
+      return grossIncome(ctx, E_, life, extOf(life), place);
+    };
+    expect(at(4)).toBeCloseTo(at(0) * RANK_PAY[4], 6);
+    expect(at(2)).toBeCloseTo(at(0) * RANK_PAY[2], 6);
+    life.job = 'smith';
+    expect(at(4)).toBeCloseTo(at(0), 6);
+  });
+
+  it('a life in bondage does not rise in class while bound, and the economy moves nobody who is not allowed to (10-bondage.md §2)', () => {
+    const { ctx, life } = lifeIn(13, 'AL-19', { job: 'weaver', cls: 'c1', gold: 900, hAge: 40 });
+    life.ext.bondage = { level: 2 };
+    for (let i = 0; i < 30; i++) {
+      life.hAge = 30 + (i % 10);
+      economyYear(ctx);
+    }
+    expect(life.cls).toBe('c1');
+    life.ext.bondage = { level: 0 };
+    let rose = false;
+    for (let i = 0; i < 30 && !rose; i++) {
+      life.hAge = 30 + (i % 10);
+      economyYear(ctx);
+      rose = life.cls !== 'c1';
+    }
+    expect(rose).toBe(true);
   });
 });
 

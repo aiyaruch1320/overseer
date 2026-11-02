@@ -22,7 +22,12 @@ import {
   sell,
   stanceOf,
 } from '../../src/core/bondage';
-import { lifeYear } from '../../src/core/bondage/engine';
+import { canRansom, lifeYear } from '../../src/core/bondage/engine';
+import { setWays } from '../../src/core/bondage/line';
+import { readStat } from '../../src/core/rules';
+import { chooseEnding, endingCandidates } from '../../src/core/story';
+import { BOUND_ENDING } from '../../src/core/story/ending';
+import { RANSOM_AFTER_YEARS } from '../../src/core/bondage/tuning';
 import { EXTERNAL_LINES } from '../../src/core/story/tuning';
 import type { BondageData } from '../../src/core/data/types-bondage';
 import type { LifeState } from '../../src/core/types';
@@ -140,7 +145,7 @@ describe('bondage: entering and leaving (§5 and §6)', () => {
     expect(e.history.map((h) => h.how)).toEqual(['เป็นหนี้', 'ransom', 'ถูกขาย', 'term']);
   });
 
-  it('a debt is paid down a year at a time and the bound person is free when it is gone; a contract runs out; a fund of gold buys freedom', () => {
+  it('a debt is paid down a year at a time and the bound person is free when it is gone; a contract runs out; the gold in the purse buys freedom, the whole price', () => {
     const { ctx, life, e } = mk(5);
     at(life, 'MH-09');
     enter(ctx, life, 'เป็นหนี้', 1);
@@ -163,22 +168,63 @@ describe('bondage: entering and leaving (§5 and §6)', () => {
     expect(['term', 'released']).toContain(e.history.at(-1)!.how);
     enter(ctx, life, 'ถูกขาย', 3);
     e.price = 200;
-    e.fund = 500;
+    life.gold = 500;
     life.hAge = 30;
+    e.since = 20;
     lifeYear(ctx, life);
     expect(e.level).toBe(0);
-    expect(life.gold).toBeGreaterThan(500);
+    // the price came out of the purse (M3 review B3), and the exit line tells it
+    expect(life.gold).toBe(300);
+    const out = ctx.state.log.filter((x) => x.sys === 'bondage' && x.kind === 'exit').at(-1)!;
+    expect(out.data).toMatchObject({ paid: 200, gold: 300 });
   });
 
-  it('saves 2 to 14 gold a year at W 3 toward the ransom, so freedom takes years, inside the adult span (§7)', () => {
+  it('cannot ransom himself with less gold than the price, whatever he saved: the purse is the only money (B3)', () => {
+    const { ctx, life, e } = mk(7);
+    at(life, 'MH-09');
+    enter(ctx, life, 'ถูกขาย', 3);
+    expect(e.level).toBe(3);
+    life.hAge = 40;
+    e.since = 20;
+    e.ransoming = true;
+    e.price = 300;
+    e.fund = 5000; // an old save: it counts for nothing
+    life.gold = 299;
+    expect(canRansom(life, e)).toBe(false);
+    for (let i = 0; i < 5 && e.level > 0; i++) {
+      life.gold = Math.min(life.gold, 299);
+      lifeYear(ctx, life);
+    }
+    // a free ending by luck (an owner who dies, a pardon) leaves the purse as it was; a ransom never does
+    if (e.history.at(-1)!.how === 'ransom') throw new Error('ransomed with too little gold');
+    life.gold = 300;
+    expect(canRansom(life, e)).toBe(e.level > 0);
+  });
+
+  it('thinks of buying his freedom only after some years bound, unless he decided to (bd.a2 way a); a free man pays nothing', () => {
+    const { ctx, life, e } = mk(8);
+    at(life, 'AZ-03', 900);
+    enter(ctx, life, 'ถูกขาย', 3);
+    life.hAge = 30;
+    e.price = 100;
+    e.since = 30;
+    expect(canRansom(life, e)).toBe(false);
+    e.ransoming = true;
+    expect(canRansom(life, e)).toBe(true);
+    e.ransoming = false;
+    e.since = 30 - RANSOM_AFTER_YEARS;
+    expect(canRansom(life, e)).toBe(true);
+    leave(ctx, life, 'released');
+    expect(canRansom(life, e)).toBe(false);
+  });
+
+  it('keeps no separate fund: what a bound person puts by in a year is the net of the economy, in the purse (§7 "2 ถึง 14 ทอง")', () => {
     const { ctx, life, e } = mk(6);
     at(life, 'AZ-03');
     enter(ctx, life, 'ถูกขาย', 3);
     e.price = 99999;
-    const before = e.fund;
     lifeYear(ctx, life);
-    expect(e.fund - before).toBeGreaterThanOrEqual(2);
-    expect(e.fund - before).toBeLessThanOrEqual(14);
+    expect(e.fund).toBe(0);
     expect(bd.income.savingPerYear).toEqual([2, 14]);
   });
 });
@@ -463,5 +509,152 @@ describe('bondage: the first years of a life', () => {
     expect(d.b2 / 300).toBeLessThan(0.38);
     const a = count('AL-06', 100);
     expect(a.b2 + a.b3).toBe(0);
+  });
+});
+
+describe('bondage: the line bd follows the state of the life (M3 review B2)', () => {
+  const skipped = (life: LifeState) => (life.ext.story as { skipped: string[] }).skipped;
+  const mods = (life: LifeState, node: string) => (life.ext.story as { nodeMods: { node: string; label?: string; mul: number }[] }).nodeMods.filter((m) => m.node === node);
+
+  it('parks "หลังพ้นพันธะ" while he is bound and brings it back when he is free; parks "ทางออก" and "รับใช้" once he is free and brings them back if he is bound again', () => {
+    const { ctx, life, e } = mk(61);
+    at(life, 'MH-09');
+    life.hAge = 25;
+    enter(ctx, life, 'ถูกขาย', 3);
+    expect(skipped(life)).toContain('bd.a3');
+    expect(skipped(life)).toContain('bd.b1'); // not born in bondage
+    for (const id of ['bd.t1', 'bd.a1', 'bd.a2', 'bd.e1']) expect(skipped(life), id).not.toContain(id);
+    expect(e.parked).toEqual(expect.arrayContaining(['bd.a3', 'bd.b1']));
+    leave(ctx, life, 'released');
+    expect(skipped(life)).not.toContain('bd.a3');
+    for (const id of ['bd.t1', 'bd.a1', 'bd.a2']) expect(skipped(life), id).toContain(id);
+    expect(skipped(life)).not.toContain('bd.e1');
+    expect(e.parked).not.toContain('bd.a3');
+    enter(ctx, life, 'ถูกจับ', 3);
+    for (const id of ['bd.a1', 'bd.a2']) expect(skipped(life), id).not.toContain(id);
+    expect(skipped(life)).toContain('bd.a3');
+    expect(e.parked).toContain('bd.a3');
+  });
+
+  it('never parks or brings back a node that was played, nor one the story itself skipped', () => {
+    const { ctx, life } = mk(62);
+    at(life, 'MH-09');
+    life.passed['bd.a1'] = 'a';
+    (life.ext.story as { skipped: string[] }).skipped.push('bd.a2');
+    enter(ctx, life, 'ถูกขาย', 3);
+    leave(ctx, life, 'released');
+    expect(skipped(life)).not.toContain('bd.a1');
+    enter(ctx, life, 'ถูกจับ', 3);
+    leave(ctx, life, 'released');
+    expect(skipped(life).filter((x) => x === 'bd.a2')).toHaveLength(1);
+    expect(extOf(life).parked).not.toContain('bd.a2');
+  });
+
+  it('a route that starts later does not play the nodes before it: a debt is not a sale, a birth in bondage is bd.b1', () => {
+    const debt = mk(63);
+    at(debt.life, 'MH-09');
+    debt.life.hAge = 25;
+    enter(debt.ctx, debt.life, 'เป็นหนี้', 1);
+    expect(skipped(debt.life)).toEqual(expect.arrayContaining(['bd.b1', 'bd.t1']));
+    expect(skipped(debt.life)).not.toContain('bd.a1');
+    const born = mk(64);
+    at(born.life, 'MH-09');
+    born.life.hAge = 0;
+    enter(born.ctx, born.life, 'เกิดในพันธะ', 2, { born: true });
+    expect(skipped(born.life)).not.toContain('bd.b1');
+    expect(skipped(born.life)).not.toContain('bd.t1');
+  });
+
+  it('weighs the ways before a node of bd is decided: only a bound life takes "ยังไม่พ้นพันธะ ตายในสัญญา", only a free one "ไถ่ผู้อื่น"', () => {
+    const { ctx, life } = mk(65);
+    at(life, 'MH-09');
+    enter(ctx, life, 'ถูกขาย', 3);
+    const node = {} as never;
+    setWays(ctx, life, node, 'bd.e1');
+    expect(mods(life, 'bd.e1').find((m) => m.label === 'ยังไม่พ้นพันธะ')!.mul).toBeGreaterThan(1);
+    expect(mods(life, 'bd.e1').find((m) => m.label === 'ไถ่ผู้อื่น')!.mul).toBe(0);
+    leave(ctx, life, 'released');
+    setWays(ctx, life, node, 'bd.e1');
+    expect(mods(life, 'bd.e1').find((m) => m.label === 'ยังไม่พ้นพันธะ')!.mul).toBe(0);
+    expect(mods(life, 'bd.e1').find((m) => m.label === 'ไถ่ผู้อื่น')).toBeUndefined(); // ×1 sets nothing
+    expect(mods(life, 'bd.e1')).toHaveLength(1);
+    // a mod the story or another system put there stays
+    (life.ext.story as { nodeMods: unknown[] }).nodeMods.push({ node: 'bd.e1', label: 'x', mul: 2 });
+    setWays(ctx, life, node, 'bd.e1');
+    expect(mods(life, 'bd.e1')).toHaveLength(2);
+    // bd.b1: the way of a B0 child ("ไม่ผูกสัญญา") is shut for a life that is bound
+    const b = mk(66);
+    at(b.life, 'MH-09');
+    b.life.hAge = 0;
+    enter(b.ctx, b.life, 'เกิดในพันธะ', 2, { born: true });
+    setWays(b.ctx, b.life, node, 'bd.b1');
+    expect(mods(b.life, 'bd.b1').find((m) => m.label === 'ไม่ผูกสัญญา')!.mul).toBe(0);
+  });
+
+  it('the node itself is decided by the weights: the story\'s `before` hook sets them and a bound elder is never told he was ransomed', () => {
+    const real = bondageIndex(mk(1).ctx);
+    expect(real.data.routes.length).toBeGreaterThan(0);
+    const { ctx, life } = mk(67);
+    at(life, 'MH-09');
+    enter(ctx, life, 'ถูกขาย', 3);
+    const ix = (ctx.data.storylines.items as { nodes: { id: string; choices: { key: string; label: string }[] }[] }).nodes.find((n) => n.id === 'bd.e1')!;
+    for (const c of ix.choices) expect(['a', 'b', 'c']).toContain(c.key);
+    for (const m of [['ยังไม่พ้นพันธะ', 'c'], ['ไถ่ผู้อื่น', 'b']]) expect(ix.choices.find((c) => c.label.includes(m[0]))!.key).toBe(m[1]);
+  });
+
+  it('answers to the stats a node or a condition may ask: bondage.level, bondage.exits, bondage.years', () => {
+    const { ctx, life } = mk(68);
+    at(life, 'MH-09');
+    life.hAge = 25;
+    expect(readStat(ctx, 'bondage.exits')).toBe(0);
+    enter(ctx, life, 'ถูกขาย', 3);
+    life.hAge = 30;
+    expect(readStat(ctx, 'bondage.level')).toBe(3);
+    expect(readStat(ctx, 'bondage.years')).toBe(5);
+    leave(ctx, life, 'released');
+    life.hAge = 40;
+    expect(readStat(ctx, 'bondage.level')).toBe(0);
+    expect(readStat(ctx, 'bondage.exits')).toBe(1);
+    expect(readStat(ctx, 'bondage.years')).toBe(5);
+  });
+});
+
+describe('bondage: the ending reads the state at death (M3 review B4)', () => {
+  const die = (life: LifeState, ctx: Ctx) => {
+    life.dead = { year: ctx.state.clock.worldYear, hAge: life.hAge, cause: 'old' };
+  };
+  const told = (ctx: Ctx) => ctx.state.log.filter((x) => x.sys === 'story' && x.kind === 'ending');
+
+  it('a life that dies in bondage is told the ending of one who was held, and never the plain "survived" one', () => {
+    for (let seed = 71; seed < 79; seed++) {
+      const { ctx, life } = mk(seed);
+      at(life, 'MH-09');
+      life.hAge = 60;
+      enter(ctx, life, 'ถูกขาย', 3);
+      expect(endingCandidates(ctx).map((c) => c.title)).toContain(BOUND_ENDING.title);
+      die(life, ctx);
+      expect(endingCandidates(ctx).find((c) => c.title === BOUND_ENDING.title)!.weight).toBe(BOUND_ENDING.weight);
+      expect(chooseEnding(ctx)).toBe(BOUND_ENDING.title);
+      expect(told(ctx)).toHaveLength(1);
+      expect(told(ctx)[0].data).toMatchObject({ bound: 3, freed: false, cause: 'old' });
+    }
+  });
+
+  it('a life that was freed, or never bound, is not told it; the log says what he was at death', () => {
+    const { ctx, life } = mk(80);
+    at(life, 'MH-09');
+    life.hAge = 60;
+    enter(ctx, life, 'ถูกขาย', 3);
+    leave(ctx, life, 'released');
+    die(life, ctx);
+    expect(endingCandidates(ctx).map((c) => c.title)).not.toContain(BOUND_ENDING.title);
+    chooseEnding(ctx);
+    expect(told(ctx)[0]?.data).toMatchObject({ bound: 0, freed: true });
+    const never = mk(81);
+    at(never.life, 'MH-09');
+    die(never.life, never.ctx);
+    expect(endingCandidates(never.ctx).map((c) => c.title)).not.toContain(BOUND_ENDING.title);
+    chooseEnding(never.ctx);
+    expect(told(never.ctx)[0]?.data ?? { bound: 0, freed: false }).toMatchObject({ bound: 0, freed: false });
   });
 });

@@ -1,7 +1,7 @@
 // Planning and walking a trip: the legs from the place the character is to a destination (§3.1, §3.6), what they cost, and the d12 of the road (§4).
 // `plan` reads the world and draws nothing; `go` draws days, fares and the events of the road and moves the character.
 import type { Ctx } from '../game';
-import { holds } from '../character';
+import { boundBan, holds } from '../character';
 import { write } from '../log';
 import { apply, type EffectSource } from '../rules';
 import { happened, world, year } from '../world/access';
@@ -412,6 +412,11 @@ export function move(ctx: Ctx, life: LifeState, to: CountryId, why: string, legs
 export function go(ctx: Ctx, to: CountryId, why: string, opts: PlanOpts & { stay?: boolean } = {}): GoResult {
   const life = lifeOf(ctx);
   if (!life) return NOT_GONE;
+  // a life in bondage does not go anywhere by itself (10-bondage.md §2: B1 "ย้ายถิ่นไม่ได้", B2 lives by the contract, B3 is property); the owner carries it
+  if (boundBan(life, 'move')) {
+    write(ctx.state, { sys: 'travel', kind: 'blocked', id: to, data: { from: life.country, why: 'bound', cause: why }, level: 0 });
+    return { ...NOT_GONE, why: 'bound' };
+  }
   const ex = extOf(life);
   const pl = plan(ctx, life, life.country, to, { ...opts, free: opts.free ?? false });
   if (!pl.ok) {
@@ -486,6 +491,7 @@ function entryStance(ctx: Ctx, life: LifeState): number {
 
 /** Everything the road asks, cheaply: can the character get to `to` by a normal way now (no purse test)? */
 export function reachable(ctx: Ctx, life: LifeState, to: CountryId, opts: PlanOpts = {}): boolean {
+  if (boundBan(life, 'move')) return false;
   return plan(ctx, life, life.country, to, { ...opts, free: true }).ok;
 }
 

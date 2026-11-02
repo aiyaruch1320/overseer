@@ -37,7 +37,7 @@ export interface BondageExt {
   years?: number;
   /** Ransom price now. */
   price: number;
-  /** Gold saved toward it. */
+  /** Gold saved toward it: no longer kept apart from the purse (M3 review B3), the purse is what pays; always 0, left for the saves that have it. */
   fund: number;
   skill: number;
   /** He decided to buy his freedom (bd.a2 way a). */
@@ -53,11 +53,13 @@ export interface BondageExt {
   opened: string[];
   /** Years the character has been at each role, for the yearly rolls that fire once. */
   done: string[];
+  /** Nodes of bd put in the story's skipped list because they did not suit the state of the life then (line.ts); they come back when it does. */
+  parked: string[];
 }
 
 export function fresh(): BondageExt {
   return {
-    level: 0, price: 0, fund: 0, skill: 1, held: [], history: [], opened: [], done: [],
+    level: 0, price: 0, fund: 0, skill: 1, held: [], history: [], opened: [], done: [], parked: [],
     counts: { entered: 0, exits: 0, bought: 0, freed: 0, helped: 0, allies: 0, escapes: 0, sold: 0, sued: 0 },
   };
 }

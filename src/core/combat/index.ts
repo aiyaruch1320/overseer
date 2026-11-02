@@ -10,7 +10,8 @@
 import type { System } from '../game';
 import { write } from '../log';
 import { onStat } from '../rules';
-import { atWar, rollEncounter, warBattle } from './encounter';
+import { atWar, rollEncounter } from './encounter';
+import { warBattle, warEnd, warYear } from './war';
 import { chooseEnemies, foeOf } from './foe';
 import { admit, flush, launch } from './launch';
 import { addHp, hpOf, maxHpOf } from './hero';
@@ -23,7 +24,8 @@ export { clash, clashOf, openChance, type ClashOpts, type ClashResult, type Open
 export { resolve as fightFoe, rerollChance, hpNow, damageOf, type Fought } from './fight';
 export { foeOf, dragonFoe, isNamedEnemy } from './foe';
 export { admit, capOf, hasRoom, launch, flush } from './launch';
-export { chanceOf, dangerOf, pickEnemy, poolAt, rollEncounter, raidAt, warBattle, atWar } from './encounter';
+export { chanceOf, dangerOf, pickEnemy, poolAt, rollEncounter, raidAt, atWar } from './encounter';
+export { warBattle, warEventOf, warFoes, warOn } from './war';
 export { buildHero, addHp, hpOf, maxHpOf } from './hero';
 export { options as stanceOptions, stanceBonuses, weights as stanceWeights } from './stance';
 export { markOf, bestHit } from './matrix';
@@ -118,5 +120,12 @@ export const combatSystem: System = {
       return;
     }
     rollEncounter(ctx);
+  },
+  lifeYear(ctx) {
+    const life = lifeOf(ctx);
+    if (life) warYear(ctx, atWar(ctx, life));
+  },
+  death(ctx) {
+    warEnd(ctx);
   },
 };

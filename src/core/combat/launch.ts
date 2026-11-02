@@ -7,6 +7,7 @@ import { BATTLES_PER_YEAR } from '../story/tuning';
 import { foeOf } from './foe';
 import { resolve, type Fought } from './fight';
 import { extOf, lifeOf } from './state';
+import { warOn } from './warflag';
 import { PRELUDE_BEATS, SOLDIER_JOBS } from './tuning';
 import type { FightOpts } from './types';
 
@@ -14,7 +15,7 @@ import type { FightOpts } from './types';
 export function capOf(ctx: Ctx): number {
   const l = lifeOf(ctx);
   if (!l) return 0;
-  const war = (ctx.state.world.countryFlags[l.country] ?? []).includes('war');
+  const war = warOn(ctx, l.country);
   const wide = l.job === 'adventurer' || (!!l.job && SOLDIER_JOBS.has(l.job) && war);
   return wide ? BATTLES_PER_YEAR * 2 : BATTLES_PER_YEAR;
 }
