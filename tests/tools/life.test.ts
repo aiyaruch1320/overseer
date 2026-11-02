@@ -36,6 +36,18 @@ describe('life: a whole life as text', () => {
     expect(a.text).not.toMatch(/undefined|\[object|NaN/);
   });
 
+  it('a seed gives the same life whatever was played before it in the process (the data indexes keep nothing of one world)', () => {
+    // two loads of the data have two sets of indexes: in one, another world is played first; the seed must not notice
+    const after = loadAll();
+    for (const seed of [3, 11]) startLife(createSession(after, { seed }));
+    const birthOf = (d: GameData) => {
+      const s = createSession(d, { seed: 7 });
+      startLife(s);
+      return JSON.stringify(s.game.state);
+    };
+    expect(birthOf(after)).toBe(birthOf(loadAll()));
+  });
+
   it('another seed or another people gives another life', () => {
     const a = runLifeReport(data, { seed: 1 });
     expect(comparable(runLifeReport(data, { seed: 2 }).text)).not.toBe(comparable(a.text));
