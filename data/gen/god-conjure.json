@@ -1,0 +1,28 @@
+{
+ "version": "184219dc2530",
+ "sources": [
+  "docs/systems/god/07-conjure.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/god-conjure.ts",
+ "items": {
+  "verbMul": {
+   "เผย": 0.8,
+   "สงบ": 0.9,
+   "ให้กำเนิด": 1,
+   "ทำลาย": 1.1,
+   "เปลี่ยน": 1.2,
+   "ปลุก": 1.2
+  },
+  "sizeFactor": {
+   "place": 0.5,
+   "continent": 0.6
+  },
+  "clashAdd": 0.15,
+  "src": {
+   "verbMul": "docs/systems/god/07-conjure.md:44",
+   "place": "docs/systems/god/07-conjure.md:40",
+   "continent": "docs/systems/god/07-conjure.md:42",
+   "clash": "docs/systems/god/07-conjure.md:89"
+  }
+ }
+}

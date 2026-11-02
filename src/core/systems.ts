@@ -13,12 +13,14 @@ import { itemsSystem } from './items';
 import { travelSystem } from './travel';
 import { godSystem } from './god';
 import { godActsSystem } from './god/acts';
+import { godConjureSystem } from './god/conjure';
+import { godGoalsSystem } from './god/goals';
 import { npcSystem } from './npc';
 import { storySystem } from './story';
 import { textSystem } from './text';
 import { worldSystem } from './world';
 
-const list: System[] = [worldSystem, characterSystem, economySystem, bondsSystem, travelSystem, bondageSystem, npcSystem, storySystem, combatSystem, itemsSystem, textSystem, godSystem, godActsSystem, attentionSystem, endingSystem, lineageSystem];
+const list: System[] = [worldSystem, characterSystem, economySystem, bondsSystem, travelSystem, bondageSystem, npcSystem, storySystem, combatSystem, itemsSystem, textSystem, godSystem, godActsSystem, godConjureSystem, godGoalsSystem, attentionSystem, endingSystem, lineageSystem];
 
 export function allSystems(): System[] {
   return [...list];

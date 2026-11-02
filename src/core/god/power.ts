@@ -21,6 +21,8 @@ export interface Price extends Cost {
   notes: string[];
   /** The act is free this time (a weapon of the sage); `pay` uses up the free act of the year. */
   free?: boolean;
+  /** The free dream came from the shared dream of a conjuring (wake · shadow): `pay` uses it up. */
+  shared?: boolean;
 }
 
 export type PriceAction = 'bless' | 'curse' | 'skill' | 'item' | 'holyWeapon' | 'cursedWeapon' | 'reroll' | 'dream' | 'whisper' | 'revive' | 'fate' | 'prayerGrant';
@@ -145,10 +147,13 @@ export function priceOf(ctx: Ctx, action: PriceAction, opts: PriceOpts = {}): Pr
     notes.push('window');
   }
   const price: Price = { base, mul, notes };
-  const free = (action === 'dream' || action === 'whisper') && holdsFreeAct(ctx) && count(ctx, 'y.free') === 0;
+  // the shared dream of a conjuring (07-conjure.md wake · shadow) gives the character one free dream
+  const shared = action === 'dream' && (ctx.state.god.ext.conjure as { freeDream?: boolean } | undefined)?.freeDream === true;
+  const free = shared || ((action === 'dream' || action === 'whisper') && holdsFreeAct(ctx) && count(ctx, 'y.free') === 0);
   if (free) {
     price[line] = 0;
     price.free = true;
+    if (shared) price.shared = true;
     notes.push('free');
   } else price[line] = round(base * mul);
   return price;
@@ -190,7 +195,8 @@ export function pay(ctx: Ctx, cost: Cost, why: string): void {
   const god = ctx.state.god;
   const f = cost.faith ?? 0;
   const d = cost.dread ?? 0;
-  if ((cost as Price).free) bump(ctx, 'y.free');
+  if ((cost as Price).shared) delete (god.ext.conjure as { freeDream?: boolean }).freeDream;
+  else if ((cost as Price).free) bump(ctx, 'y.free');
   if (f <= 0 && d <= 0) return;
   god.light -= f;
   god.dread -= d;

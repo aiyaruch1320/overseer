@@ -8,13 +8,14 @@
 // The arguments sent to the actions are the names the actions read (src/core/god/actions.ts and src/core/god/acts/):
 //   chest.open {} · chest.pick {slot} · chest.reroll {lock?} · chest.skip {} · dream.send {path} (1, 2 or 3 of the ways offered)
 //   whisper {hint, target?} · prayer.answer {id, answer, option?} · miracle {id, country | countries | continent | npc | dragon | event+mul}
-//   miracle {cancel} (take back an omen) · decree {event, mul} · conjure {text} · vow.pick {pick} (the last two have no power behind them yet)
+//   miracle {cancel} (take back an omen) · decree {event, mul} · conjure {verb, core, scale, country | continent | npc} or {cancel} · vow.pick {pick} (1 to 3, 4 for none; see god-conjure.ts)
 // Browser safe: no node imports.
 import { command, hasAction } from '../../src/core/command';
 import type { Ctx, Game, GameData } from '../../src/core/game';
 import { actsOf, cardsOf, fateTargets, grantPrice, implementedMiracles, kindOf, nameOfKind, strangeOptions } from '../../src/core/god/acts';
 import { chestLimit, currentChest, inWindow, offerCards } from '../../src/core/god';
 import { crisesWaiting, findAlly } from '../../src/core/bonds';
+import { circleLines, conjureArgText, conjureLines, conjureOption, parseConjure, vowArgText, vowLines, vowOption, vowTable } from './god-conjure';
 import { npcsAt } from '../../src/core/npc';
 import { callReason, fxSplit, labels, plainName, reasonText, scrub, sentence } from '../../src/core/text';
 import { CHEST_KIND_TH, FLAG_TH, PENDING_NOTE, TIER_TH, WHY_TH } from '../../src/core/text/tuning';
@@ -64,8 +65,8 @@ const USAGE: Record<GodAction, string> = {
   'prayer.answer': 'answer <ใบ> <ให้|แปลก N|ปฏิเสธ|ลงโทษ|นิ่ง>',
   miracle: 'miracle MR-xx [เป้าหมาย]',
   decree: 'decree <เหตุการณ์> <ตัวคูณ>',
-  conjure: 'conjure <ถ้อยคำ>',
-  'vow.pick': 'vow N',
+  conjure: 'conjure <กริยา> <แก่น> <ขนาด> [เป้าหมาย]',
+  'vow.pick': 'vow [N]',
 };
 
 const ORDER = Object.keys(TITLE) as GodAction[];
@@ -277,6 +278,10 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
       else out.push('นิ่งเฉย: คำอธิษฐานยังรออยู่จนหมดเวลา (แล้วศรัทธาเทพลด 2)');
       return out;
     }
+    case 'conjure':
+      return conjureLines(data, p, (x) => previewLines(data, x, dev, 'miracle', env));
+    case 'vow.pick':
+      return vowLines(p);
     case 'miracle':
     case 'decree': {
       if (p.cancel !== undefined) {
@@ -421,9 +426,9 @@ function argText(action: GodAction, args: Record<string, unknown>): string {
     case 'decree':
       return ` ×${String(args.mul)}`;
     case 'conjure':
-      return ` "${String(args.text)}"`;
+      return conjureArgText(args);
     case 'vow.pick':
-      return ` ข้อที่ ${String(args.pick)}`;
+      return vowArgText(args);
     default:
       return '';
   }
@@ -572,7 +577,7 @@ export function parseGod(word: string, rest: string[], ref: TargetRef = ID_REF):
       return { action: kind, args: { hint } };
     }
     case 'conjure':
-      return rest.length ? { action: kind, args: { text: rest.join(' ') } } : usage(kind);
+      return parseConjure(rest, ref) ?? usage(kind);
     case 'prayer.answer': {
       if (rest.length < 2) return usage(kind);
       const n = int(rest[0]);
@@ -732,6 +737,9 @@ export class GodConsole {
     if (!isGodWord(word)) return undefined;
     // `decree` alone or `decree list`: every event that can be decreed now (the list in `options` is short)
     if (WORDS[word.toLowerCase()] === 'decree' && (!rest.length || ['list', 'รายการ', 'ทั้งหมด'].includes(rest[0]))) return fateLines(this.game);
+    // `conjure` alone shows the circle · `vow` alone shows the vows on the table (the block at the end of this file)
+    if (WORDS[word.toLowerCase()] === 'conjure' && !rest.length) return circleLines(this.game, this.data);
+    if (WORDS[word.toLowerCase()] === 'vow.pick' && !rest.length) return vowTable(this.game);
     const p = parseGod(word, rest, refOf(this.game, this.data));
     if ('error' in p) return [p.error];
     if ('meta' in p) {
@@ -909,6 +917,10 @@ export class GodConsole {
       }
       if (a === 'miracle') {
         out.push(`${head} — ทำได้ตามเงื่อนไขของแต่ละแบบ (รายการและราคาอยู่ใน power)`);
+        continue;
+      }
+      if (a === 'conjure' || a === 'vow.pick') {
+        out.push(`${head} — ${a === 'conjure' ? conjureOption(this.game) : vowOption(this.game)}`);
         continue;
       }
       if (a === 'whisper') {
