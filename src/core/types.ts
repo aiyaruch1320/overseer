@@ -296,7 +296,7 @@ export interface LifeState {
   name: string;
   race: RaceId;
   blood?: string; // sub-lineage or half-blood pair
-  gender: 'm' | 'f';
+  gender: 'm' | 'f' | 'n'; // n = no sex (slimes, some fae)
   birthYear: number; // world year
   lifespan: number; // natural lifespan in world years, hidden from the player
   hAge: number; // human-equivalent age (life years)
