@@ -1,5 +1,5 @@
 {
- "version": "c14f0f2597aa",
+ "version": "ad7d3dbeba1a",
  "sources": [
   "docs/systems/combat/01-core.md",
   "docs/systems/combat/02-type-matrix.md",
@@ -125,7 +125,7 @@
      "fight"
     ],
     "needs": "เสมอ",
-    "src": "docs/systems/combat/01-core.md:45"
+    "src": "docs/systems/combat/01-core.md:47"
    },
    {
     "id": "ranged",
@@ -136,7 +136,7 @@
      "ranged"
     ],
     "needs": "มีความถนัดธนู หนังสติ๊ก หรืออาวุธยิง",
-    "src": "docs/systems/combat/01-core.md:46"
+    "src": "docs/systems/combat/01-core.md:48"
    },
    {
     "id": "magic",
@@ -147,7 +147,7 @@
      "learn"
     ],
     "needs": "มีความถนัดเวทอย่างน้อยหนึ่ง",
-    "src": "docs/systems/combat/01-core.md:47"
+    "src": "docs/systems/combat/01-core.md:49"
    },
    {
     "id": "guard",
@@ -158,7 +158,7 @@
      "safe"
     ],
     "needs": "มีโล่ หรือ `#guard` หรือพวกพ้องที่ต้องปกป้อง ลดความเสียหายครึ่งหนึ่ง แต่ทำแผลได้เฉพาะเมื่อทอยได้ 18 ขึ้นไป",
-    "src": "docs/systems/combat/01-core.md:48"
+    "src": "docs/systems/combat/01-core.md:50"
    },
    {
     "id": "negotiate",
@@ -169,7 +169,7 @@
      "trust"
     ],
     "needs": "ศัตรูมีความคิด (มนุษย์ เผ่าต่าง ๆ ปีศาจ มังกร)",
-    "src": "docs/systems/combat/01-core.md:49"
+    "src": "docs/systems/combat/01-core.md:51"
    },
    {
     "id": "calm_beast",
@@ -180,7 +180,7 @@
      "trust"
     ],
     "needs": "ศัตรูเป็นสัตว์และตัวละครมี `#beast_friend` `#beast` `taming` หรือ `#polyglot` · สำเร็จแล้วอาจได้สัตว์คู่หู ([../character/13-companions-overview.md](../character/13-companions-overview.md))",
-    "src": "docs/systems/combat/01-core.md:50"
+    "src": "docs/systems/combat/01-core.md:52"
    },
    {
     "id": "evade",
@@ -191,7 +191,7 @@
      "stealth"
     ],
     "needs": "มี `stealth` หรือ `#stealth` หรือสัตว์คู่หูที่ `pa_distract`",
-    "src": "docs/systems/combat/01-core.md:51"
+    "src": "docs/systems/combat/01-core.md:53"
    },
    {
     "id": "pray",
@@ -201,7 +201,7 @@
      "pray"
     ],
     "needs": "ตัวละครมีศรัทธาเทพ ≥ 20 สำเร็จ: เปิดหน้าต่างให้พระเจ้าแทรกแซง (หัวข้อ 8)",
-    "src": "docs/systems/combat/01-core.md:52"
+    "src": "docs/systems/combat/01-core.md:54"
    },
    {
     "id": "flee",
@@ -212,7 +212,7 @@
      "safe"
     ],
     "needs": "เสมอ",
-    "src": "docs/systems/combat/01-core.md:53"
+    "src": "docs/systems/combat/01-core.md:55"
    }
   ],
   "roll": {
@@ -248,79 +248,79 @@
      "part": "ค่าสถานะ",
      "value": "(ค่า − 10) ÷ 2 ปัดลง",
      "note": "ของเดิม",
-     "src": "docs/systems/combat/01-core.md:61"
+     "src": "docs/systems/combat/01-core.md:63"
     },
     {
      "part": "skill ของความถนัดที่ตรงท่าที",
      "value": "ระดับ 1: +1 · ระดับ 2: +2 · ระดับ 3: +4",
      "note": "ใช้ระดับสูงสุดที่ตรง เช่น ปะทะด้วยดาบ ใช้ `sword_*`",
-     "src": "docs/systems/combat/01-core.md:62"
+     "src": "docs/systems/combat/01-core.md:64"
     },
     {
      "part": "พลังอาวุธ",
      "value": "ตามอาวุธ",
      "note": "ของเดิม ใช้เมื่อท่าทีเป็น fight",
-     "src": "docs/systems/combat/01-core.md:63"
+     "src": "docs/systems/combat/01-core.md:65"
     },
     {
      "part": "ธาตุของอาวุธตรงจุดอ่อน",
      "value": "+2",
      "note": "ตาม [02-type-matrix.md](02-type-matrix.md)",
-     "src": "docs/systems/combat/01-core.md:64"
+     "src": "docs/systems/combat/01-core.md:66"
     },
     {
      "part": "แท็กที่ศัตรูแพ้",
      "value": "+4 แพ้ · +6 แพ้รุนแรง",
      "note": "ของเดิม +4 · แพ้รุนแรงเพิ่มใหม่",
-     "src": "docs/systems/combat/01-core.md:65"
+     "src": "docs/systems/combat/01-core.md:67"
     },
     {
      "part": "แท็กที่ศัตรูทน",
      "value": "−4 · ภูมิคุ้มกัน: ท่าทีนั้นใช้ไม่ได้",
      "note": "ของเดิมคือ DC +2 เปลี่ยนเป็นโบนัส −4 เพื่อให้เห็นชัด",
-     "src": "docs/systems/combat/01-core.md:66"
+     "src": "docs/systems/combat/01-core.md:68"
     },
     {
      "part": "แท็กที่ทำให้ตัวเองเสียเปรียบ",
      "value": "−4",
      "note": "ของเดิม เช่น ภูตพรายถูกอาวุธเหล็ก",
-     "src": "docs/systems/combat/01-core.md:67"
+     "src": "docs/systems/combat/01-core.md:69"
     },
     {
      "part": "สัตว์คู่หู",
      "value": "`pa_bite_assist` `pa_flank` `pa_claw_dive` ฯลฯ ระดับ 1: +1 · 2: +2 · 3: +3",
      "note": "ใช้สูงสุดหนึ่งความสามารถต่อจังหวะ",
-     "src": "docs/systems/combat/01-core.md:68"
+     "src": "docs/systems/combat/01-core.md:70"
     },
     {
      "part": "พวกพ้อง NPC ที่สู้ด้วย",
      "value": "+2 ต่อคน สูงสุด +4",
      "note": "ผู้ติดตาม (`[ร่วม]` ในระบบ NPC)",
-     "src": "docs/systems/combat/01-core.md:69"
+     "src": "docs/systems/combat/01-core.md:71"
     },
     {
      "part": "สภาพแวดล้อม",
      "value": "−2 ถึง +2",
      "note": "กลางคืนสำหรับผู้ไม่มี `darkvision` −2 · หมอกสำหรับผู้มี `#fog_sight` +2 · ถิ่นที่ชอบของเผ่า +1 · ในน้ำสำหรับ `water_breath` +2",
-     "src": "docs/systems/combat/01-core.md:70"
+     "src": "docs/systems/combat/01-core.md:72"
     },
     {
      "part": "สภาพร่างกาย",
      "value": "hp ต่ำกว่า 30% −2 · `#berserk` เปลี่ยนเป็น +2",
      "note": "ของเดิม + ใหม่",
-     "src": "docs/systems/combat/01-core.md:71"
+     "src": "docs/systems/combat/01-core.md:73"
     },
     {
      "part": "ได้เปรียบหรือถูกซุ่ม",
      "value": "+2 หรือ −2",
      "note": "จังหวะแรกเท่านั้น",
-     "src": "docs/systems/combat/01-core.md:72"
+     "src": "docs/systems/combat/01-core.md:74"
     },
     {
      "part": "`hero_luck` `dull`",
      "value": "+1 · −2",
      "note": "ของเดิม",
-     "src": "docs/systems/combat/01-core.md:73"
+     "src": "docs/systems/combat/01-core.md:75"
     }
    ]
   },
@@ -332,7 +332,7 @@
      "nums": [
       0.5
      ],
-     "src": "docs/systems/combat/01-core.md:83"
+     "src": "docs/systems/combat/01-core.md:85"
     },
     {
      "what": "`#guard` (`b_aegis` `b_ironskin` ฯลฯ)",
@@ -340,7 +340,7 @@
      "nums": [
       0.8
      ],
-     "src": "docs/systems/combat/01-core.md:84"
+     "src": "docs/systems/combat/01-core.md:86"
     },
     {
      "what": "`iron_body` `stone_blood` `#stone_skin`",
@@ -349,7 +349,7 @@
       0.85,
       0.9
      ],
-     "src": "docs/systems/combat/01-core.md:85"
+     "src": "docs/systems/combat/01-core.md:87"
     },
     {
      "what": "สัตว์คู่หู `pa_thick_hide` (ของตัวละคร)",
@@ -358,13 +358,13 @@
       0.95,
       0.85
      ],
-     "src": "docs/systems/combat/01-core.md:86"
+     "src": "docs/systems/combat/01-core.md:88"
     },
     {
      "what": "`pa_life_share`",
      "value": "รับแทนครั้งหนึ่ง (ตามระดับ)",
      "nums": [],
-     "src": "docs/systems/combat/01-core.md:87"
+     "src": "docs/systems/combat/01-core.md:89"
     },
     {
      "what": "ธาตุของศัตรูที่ตัวละครทน (เช่น ไฟกับ `fire_res`)",
@@ -372,7 +372,7 @@
      "nums": [
       0.5
      ],
-     "src": "docs/systems/combat/01-core.md:88"
+     "src": "docs/systems/combat/01-core.md:90"
     },
     {
      "what": "ธาตุที่ตัวละครแพ้ (เช่น แสงกับ `weak_light`)",
@@ -380,7 +380,7 @@
      "nums": [
       1.5
      ],
-     "src": "docs/systems/combat/01-core.md:89"
+     "src": "docs/systems/combat/01-core.md:91"
     }
    ],
    "wounds": [
@@ -416,42 +416,42 @@
    {
     "cond": "hp ต่ำกว่า 30%",
     "effect": "น้ำหนักหนี ×2 ยกเว้นนิสัย `reckless` `bloodlust` หรือ `#berserk`",
-    "src": "docs/systems/combat/01-core.md:109"
+    "src": "docs/systems/combat/01-core.md:111"
    },
    {
     "cond": "นิสัย `coward` หรือคำสาป `c_rabbitheart`",
     "effect": "หนี ×3 ในจังหวะแรก",
-    "src": "docs/systems/combat/01-core.md:110"
+    "src": "docs/systems/combat/01-core.md:112"
    },
    {
     "cond": "นิสัย `kind` หรือ `#peace` กับศัตรูที่คิดได้",
     "effect": "เจรจา ×2",
-    "src": "docs/systems/combat/01-core.md:111"
+    "src": "docs/systems/combat/01-core.md:113"
    },
    {
     "cond": "ตัวละครรู้จุดอ่อนของศัตรู (เคยเจอ หรือมี `#seer` `u_appraisal` `#truth`)",
     "effect": "เลือกท่าทีที่ตรงจุดอ่อน ×3",
-    "src": "docs/systems/combat/01-core.md:112"
+    "src": "docs/systems/combat/01-core.md:114"
    },
    {
     "cond": "ปกป้องผู้อื่น (หมู่บ้าน ครอบครัว ผู้ติดตาม)",
     "effect": "หนี ×0.3 ตั้งรับ ×2",
-    "src": "docs/systems/combat/01-core.md:113"
+    "src": "docs/systems/combat/01-core.md:115"
    },
    {
     "cond": "อาชีพนักบวช ผู้ขับไล่ผี กับศัตรูผู้ตาย",
     "effect": "สวดภาวนาและเวทแสง ×2",
-    "src": "docs/systems/combat/01-core.md:114"
+    "src": "docs/systems/combat/01-core.md:116"
    },
    {
     "cond": "อาชีพนักฝึกสัตว์ เดรุยด์ กับศัตรูสัตว์",
     "effect": "สงบสัตว์ ×3",
-    "src": "docs/systems/combat/01-core.md:115"
+    "src": "docs/systems/combat/01-core.md:117"
    },
    {
     "cond": "ความฝันจากพระเจ้า (ระบบความฝันเดิม) ที่ตรงท่าที",
     "effect": "×3 (ของเดิม \"ทำตามความฝัน\")",
-    "src": "docs/systems/combat/01-core.md:116"
+    "src": "docs/systems/combat/01-core.md:118"
    }
   ],
   "results": [
@@ -487,7 +487,7 @@
    },
    {
     "result": "ตาย",
-    "cond": "hp ≤ 0",
+    "cond": "hp ≤ 0 หรือทอยตายเมื่อแพ้ (ตารางล่าง)",
     "effect": "กติกาความตายเดิม (`b_laststand` `#rewind` `#guardian_angel`) และหน้าต่างพระเจ้าครั้งสุดท้าย"
    }
   ],

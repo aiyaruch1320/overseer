@@ -58,7 +58,7 @@
 | docs/systems/god/06-implementation.md:163 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
 | docs/systems/god/06-implementation.md:165 | สองเท่า | ตัวเลขเป็นคำ |
 | docs/systems/god/07-conjure.md:40 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
-| docs/systems/combat/01-core.md:48 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
+| docs/systems/combat/01-core.md:50 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
 | docs/systems/combat/03-enemies.md:21 | หนึ่งในสิบ | ตัวเลขเป็นคำ |
 | docs/systems/combat/06-dragon-encounters.md:9 | หนึ่งในสิบ | ตัวเลขเป็นคำ |
 | docs/systems/combat/07-npc-clashes.md:132 | สองร้อย | ตัวเลขเป็นคำ |
