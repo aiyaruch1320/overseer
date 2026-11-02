@@ -232,14 +232,14 @@ describe('lineage: lives in one world', () => {
     const seen: string[] = [];
     const off = onLifeChange((ctx, ev: LifeChange) => {
       seen.push(`${ev.phase}:${ev.life.id}:${ev.origin}`);
-      const goals = (ev.carry.goals ??= { count: 0 }) as { count: number };
+      const goals = (ev.carry.probe ??= { count: 0 }) as { count: number };
       goals.count++;
     });
     try {
       const s = lineage(5, 2);
       expect(seen).toEqual(['begin:L1:first', 'end:L1:first', 'begin:L2:heir', 'end:L2:heir']);
-      expect((lx(s.game.state).carry.goals as { count: number }).count).toBe(4);
-      expect(JSON.parse(save(s.game.state)).lineage.x.carry.goals.count).toBe(4);
+      expect((lx(s.game.state).carry.probe as { count: number }).count).toBe(4);
+      expect(JSON.parse(save(s.game.state)).lineage.x.carry.probe.count).toBe(4);
     } finally {
       off();
     }
