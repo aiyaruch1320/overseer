@@ -7,6 +7,7 @@
 import { birth as characterBirth } from '../../src/core/character';
 import { Game, versions, type Ctx, type GameData, type System } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
+import { chooseStart, type StartPoint } from '../../src/core/start';
 import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
@@ -76,8 +77,33 @@ export function createSession(data: GameData, opts: SessionOpts): Session {
   }
   if (opts.persona) state.god.ext.persona = opts.persona;
   game.init();
-  game.worldSteps(Math.round((opts.startYear ?? DEFAULT_START_YEAR) / 10));
+  let year = opts.startYear;
+  const world = systems.find((x) => x.name === 'world');
+  if (year === undefined && world && !toy) {
+    // the start rule of world-time.md §8.1 needs the race first: draw it as the real birth would, on a scratch state
+    const race = opts.race ? resolveRace(game.ctx, opts.race).id : scratchRace(data, opts.seed, systems);
+    opts = { ...opts, race };
+    const r = (data.races.items as { races?: RaceRow[] } | RaceRow[]);
+    const row = (Array.isArray(r) ? r : r.races ?? []).find((x) => x.id === race);
+    if (row) {
+      const start: StartPoint = chooseStart(data, opts.seed, { adultAge: row.adultAge, elderAge: row.elderAge }, world);
+      year = start.worldYear;
+      state.god.ext.start = start as unknown as Record<string, unknown>;
+    }
+  }
+  game.worldSteps(Math.round((year ?? DEFAULT_START_YEAR) / 10));
   return { game, data, notes, opts };
+}
+
+interface RaceRow {
+  id: string;
+  adultAge: number;
+  elderAge: number;
+}
+
+function scratchRace(data: GameData, seed: number, systems: System[]): string {
+  const g = new Game(newGame(seed, versions(data)), data, systems.filter((x) => x.name === 'character'));
+  return characterBirth(g.ctx, {}).race;
 }
 
 /** Restores a saved state into a running game (play keeps the state in a file between commands). */
