@@ -112,7 +112,7 @@ describe('attention: the call rules (07-attention.md §3)', () => {
   it('the card that runs out of time before it can show becomes a missed line', () => {
     const rule = { ...NORMAL, cardGap: 100 };
     const a = trig('battle'), b = trig('battle'); // a battle card waits one life year (28 s)
-    const { out } = run(rule, { [at(25)]: [a], [at(25.25)]: [b] });
+    const { out } = run(rule, { [at(22)]: [a], [at(22.25)]: [b] });
     expect(calls(out).filter((x) => x.call === 'card')).toHaveLength(1);
     expect(out).toContainEqual(expect.objectContaining({ t: 'missed', kind: 'battle', n: b.n }));
   });
@@ -136,13 +136,12 @@ describe('attention: the call rules (07-attention.md §3)', () => {
     expect(m.queue.filter((c) => c.kind === 'prayer')).toHaveLength(2);
   });
 
-  it('a stop shows the cards that wait most urgent first and drops the ones that ran out', () => {
+  it('a stop shows every card that waits, the one that runs out first at the top, also one held back for it past its time', () => {
     const rule = { ...NORMAL, cardGap: 9999 };
     const old = trig('battle'), omen = trig('omen'), pr = trig('prayer');
     const { out } = run(rule, { [at(28)]: [old, omen, pr] });
     const stop = calls(out).find((x) => x.age === 30)!;
-    expect(stop.cards).toEqual(['omen', 'prayer']); // omen runs out first (2 years), prayer (3.5) last; the battle (1 year) was gone at 30
-    expect(out).toContainEqual(expect.objectContaining({ t: 'missed', kind: 'battle', n: old.n }));
+    expect(stop.cards).toEqual(['battle', 'omen', 'prayer']); // a battle runs out in 1 year, an omen in 2, a prayer in 3.5
   });
 
   it('the death stop: nearDeath once, at the time the plan says, and it takes the age stop that falls on it', () => {
@@ -226,7 +225,7 @@ const omen = (age: number, id = `o${age}`): Mock => ({ age, sys: 'world', kind: 
 function busy(): Mock[] {
   const m: Mock[] = [];
   for (let a = 3; a < 75; a += 3) m.push(win(a, `w${a}`));
-  for (let a = 4; a < 75; a += 2) m.push(pray(a, a % 4));
+  for (let a = 4; a < 75; a += 3) m.push(pray(a, a % 4));
   for (let a = 6; a < 70; a += 9) m.push({ age: a, sys: 'story', kind: 'battle', id: 'boss1', level: 2 });
   for (let a = 8; a < 70; a += 11) m.push(omen(a));
   return m;

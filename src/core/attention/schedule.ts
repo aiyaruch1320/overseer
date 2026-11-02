@@ -47,12 +47,14 @@ export interface Mem {
   ages: Record<string, 'pulled' | 'done'>;
   /** the death stop was made (near death, or at the death) */
   near: boolean;
+  /** time of the last tick: a call that became legal between two ticks is dated when it became legal, not at the later tick */
+  last: number;
 }
 
 export const NEVER = -1e9;
 
 export function newMem(mark: number, from: number): Mem {
-  return { mark, from, lastStop: NEVER, lastCard: NEVER, queue: [], hold: null, ages: {}, near: false };
+  return { mark, from, lastStop: NEVER, lastCard: NEVER, queue: [], hold: null, ages: {}, near: false, last: 0 };
 }
 
 export interface Plan {
@@ -98,23 +100,15 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
   };
   const deathSoon = () => !m.near && plan.nearAt !== null && plan.nearAt - now >= 0 && plan.nearAt - now < rule.cardGap;
 
-  const missed = (c: Wait) => out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
-  const purge = () => {
-    m.queue = m.queue.filter((c) => {
-      if (now - c.s <= c.wait) return true;
-      missed(c);
-      return false;
-    });
-  };
-
-  /** A stop shows every card that waits and has not run out. */
-  const stop = (why: string, ageStop: number | null, own: Src[]) => {
-    purge();
+  const stopComing = () => plan.ages.some((a) => !age(a) && secOf(a) >= now && secOf(a) - now < rule.cardGap);
+  const missed = (c: Wait, at = now) => out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(at - c.s) });
+  /** A stop shows every card that waits (07-attention.md §1 rule 4: the panel holds all of them, also one that was held back for it). */
+  const stop = (why: string, ageStop: number | null, own: Src[], at = now) => {
     m.queue.sort((a, b) => a.s + a.wait - (b.s + b.wait));
     const shown = m.queue;
     m.queue = [];
-    out.push({ t: 'call', call: 'stop', why, age: ageStop, src: [...own, ...shown.map((c) => ({ n: c.n, id: c.id }))], cards: shown.map((c) => c.kind), until: null, sec: Math.round(now) });
-    m.lastStop = now;
+    out.push({ t: 'call', call: 'stop', why, age: ageStop, src: [...own, ...shown.map((c) => ({ n: c.n, id: c.id }))], cards: shown.map((c) => c.kind), until: null, sec: Math.round(at) });
+    m.lastStop = at;
   };
 
   const queueCard = (kind: CardKind, e: Src) => m.queue.push({ kind, s: now, wait: plan.waitOf(kind), n: e.n, id: e.id });
@@ -174,12 +168,15 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
   fixed();
 
   // ---- 3. the held window ----
+  // a call that became legal between two ticks is dated when it did (the rules count seconds, a beat is only how often the core looks)
+  const legal = (since: number) => Math.min(now, Math.max(m.last, lastCall(m) + rule.cardGap, since));
   const h = m.hold;
   if (h) {
-    if (now - lastCall(m) >= rule.cardGap) {
+    const when = legal(h.until - rule.stopWait);
+    if (lastCall(m) + rule.cardGap <= now && when <= h.until) {
       if (h.asAge !== undefined) setAge(h.asAge, 'done');
       m.hold = null;
-      stop(h.kind, h.asAge ?? null, [{ n: h.n, id: h.id }]);
+      stop(h.kind, h.asAge ?? null, [{ n: h.n, id: h.id }], when);
     } else if (now > h.until) {
       m.hold = null;
       if (h.asAge !== undefined) {
@@ -192,33 +189,36 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
   }
 
   // ---- 4. waiting cards ----
-  purge();
   m.queue.sort((a, b) => a.s + a.wait - (b.s + b.wait));
-  if (m.hold) return;
-  if (plan.ages.some((a) => !age(a) && secOf(a) >= now && secOf(a) - now < rule.cardGap)) return; // a stop is coming: the cards wait for its panel
-  if (deathSoon()) return;
-  while (m.queue.length && now - lastCall(m) >= rule.cardGap) {
-    const c = m.queue.shift()!;
-    out.push({ t: 'call', call: 'card', why: c.kind, age: null, src: [{ n: c.n, id: c.id }], cards: [c.kind], until: (c.s + c.wait) / SEC_PER_YEAR, sec: Math.round(now) });
-    m.lastCard = now;
+  if (!m.hold && !stopComing() && !deathSoon()) {
+    while (m.queue.length) {
+      const c = m.queue[0];
+      const when = legal(c.s);
+      if (lastCall(m) + rule.cardGap > now) break;
+      m.queue.shift();
+      if (when - c.s > c.wait) {
+        missed(c, when);
+        continue;
+      }
+      out.push({ t: 'call', call: 'card', why: c.kind, age: null, src: [{ n: c.n, id: c.id }], cards: [c.kind], until: (c.s + c.wait) / SEC_PER_YEAR, sec: Math.round(when) });
+      m.lastCard = when;
+    }
   }
+  m.last = now;
 }
 
-/** The character dies: the death stop is made unless the scene before it already was; whatever still waits is moot. */
+/** The character dies: the death stop is made unless the scene before it already was; it shows what waits. */
 export function dying(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs: readonly Trig[], out: Out[]): void {
   tick(m, rule, plan, now, trigs, out, { dying: true });
   m.hold = null;
+  const shown = m.queue.sort((a, b) => a.s + a.wait - (b.s + b.wait));
+  m.queue = [];
   if (!m.near) {
     m.near = true;
-    // the stop panel shows what waits
-    m.queue.sort((a, b) => a.s + a.wait - (b.s + b.wait));
-    const live = m.queue.filter((c) => now - c.s <= c.wait);
-    for (const c of m.queue) if (!live.includes(c)) out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
-    m.queue = [];
-    out.push({ t: 'call', call: 'stop', why: 'death', age: null, src: live.map((c) => ({ n: c.n, id: c.id })), cards: live.map((c) => c.kind), until: null, sec: Math.round(now) });
+    out.push({ t: 'call', call: 'stop', why: 'death', age: null, src: shown.map((c) => ({ n: c.n, id: c.id })), cards: shown.map((c) => c.kind), until: null, sec: Math.round(now) });
     m.lastStop = now;
     return;
   }
-  for (const c of m.queue) out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
-  m.queue = [];
+  // the scene before the end was made a year ago: what has come since is moot, the log tells it
+  for (const c of shown) out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
 }

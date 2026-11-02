@@ -161,6 +161,12 @@ export function liveCards(state: GameState, max = 2): LogEntry[] {
     .slice(0, max);
 }
 
+/** Prayers that wait for a card now. The rules allow two (07-attention.md §3): the god system should not make a third, attention drops it. */
+export function prayersWaiting(state: GameState): number {
+  const m = state.life ? memOf(state.life) : undefined;
+  return m ? m.queue.filter((c) => c.kind === 'prayer').length : 0;
+}
+
 export interface NextCall {
   beats: number;
   /** the calls written by the beat that ended the run (a stop may bring several cards with it only as `cards`; usually one) */
