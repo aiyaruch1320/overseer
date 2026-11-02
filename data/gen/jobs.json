@@ -195,7 +195,7 @@
     "reqText": "ค่าเวท 10 ขึ้นไป · หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59)",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "mag",
       "op": ">=",
       "value": 10
@@ -306,7 +306,7 @@
       "text": "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52)"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "pow",
       "op": ">=",
       "value": 8
@@ -339,7 +339,7 @@
     "reqText": "ต้องอ่านออก (ปัญญา 8 ขึ้นไป) · AL-11 SV-07 MK-13 เป็นสำนักใหญ่",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "int",
       "op": ">=",
       "value": 8
@@ -1179,7 +1179,7 @@
       "text": "ทุกเมือง"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 50
@@ -1528,7 +1528,7 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 80
@@ -2881,7 +2881,7 @@
       "k": "or",
       "of": [
        {
-        "k": "stat",
+        "k": "cmp",
         "stat": "gold",
         "op": ">=",
         "value": 100
@@ -3313,13 +3313,13 @@
       "id": "ns_market_dark_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 300
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "honest",
       "op": "<",
       "value": -10
@@ -3367,7 +3367,7 @@
       "id": "alchemy_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "int",
       "op": ">=",
       "value": 16
@@ -3432,13 +3432,13 @@
       "id": "stealth_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "luk",
       "op": ">=",
       "value": 14
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "fame",
       "op": ">=",
       "value": 20
@@ -3483,7 +3483,7 @@
       "id": "ns_blood_bridge_2"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "fame",
       "op": ">=",
       "value": 15
@@ -3697,7 +3697,7 @@
     "reqText": "อยู่เมือง W ≥ 3 · M ผสมหรือเต็ม · ชั้น 3 ขึ้นไป",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "country.W",
       "op": ">=",
       "value": 3
@@ -3772,7 +3772,7 @@
       "min": 3
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 120
@@ -3818,7 +3818,7 @@
       "min": 3
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 200
@@ -3854,13 +3854,13 @@
       "min": 3
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 300
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "country.W",
       "op": ">=",
       "value": 3
@@ -3891,7 +3891,7 @@
       "k": "or",
       "of": [
        {
-        "k": "stat",
+        "k": "cmp",
         "stat": "gold",
         "op": ">=",
         "value": 400
@@ -3943,13 +3943,13 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "int",
       "op": ">=",
       "value": 13
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "mag",
       "op": ">=",
       "value": 13
@@ -3968,7 +3968,7 @@
         "id": "lich_seed"
        },
        {
-        "k": "stat",
+        "k": "cmp",
         "stat": "kind",
         "op": "<",
         "value": -20
@@ -4026,13 +4026,13 @@
     "reqText": "เมตตา < −40 · ทะเยอทะยาน > 40 · (#infernal หรือ #demon_mark) · เวท 13",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "kind",
       "op": "<",
       "value": -40
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "ambition",
       "op": ">",
       "value": 40
@@ -4053,7 +4053,7 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "mag",
       "op": ">=",
       "value": 13
@@ -4110,13 +4110,13 @@
     "reqText": "ศรัทธา > 50 · เมตตา > 30 · #holy · ศรัทธาเทพ > 40",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "piety",
       "op": ">",
       "value": 50
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "kind",
       "op": ">",
       "value": 30
@@ -4127,7 +4127,7 @@
       "id": "holy"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "godFaith",
       "op": ">",
       "value": 40
@@ -4195,13 +4195,13 @@
         "k": "and",
         "of": [
          {
-          "k": "stat",
+          "k": "cmp",
           "stat": "brave",
           "op": ">",
           "value": 50
          },
          {
-          "k": "stat",
+          "k": "cmp",
           "stat": "kind",
           "op": ">",
           "value": 20
@@ -4211,7 +4211,7 @@
           "text": "อาวุธศักดิ์สิทธิ์"
          },
          {
-          "k": "stat",
+          "k": "cmp",
           "stat": "fame",
           "op": ">=",
           "value": 30
@@ -4264,13 +4264,13 @@
       "id": "sword_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "pow",
       "op": ">=",
       "value": 15
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "spd",
       "op": ">=",
       "value": 12
@@ -4406,13 +4406,13 @@
     "reqText": "เวท 17 · ปัญญา 14 · skill ธาตุ (ไฟ น้ำ ลม ดิน น้ำแข็ง สายฟ้า แสง มืด) อย่างน้อย 3",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "mag",
       "op": ">=",
       "value": 17
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "int",
       "op": ">=",
       "value": 14
@@ -4489,7 +4489,7 @@
       "id": "taming_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "pow",
       "op": ">=",
       "value": 13
@@ -4544,13 +4544,13 @@
       "id": "pirate"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "fame",
       "op": ">=",
       "value": 25
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 150
@@ -4668,7 +4668,7 @@
       "k": "or",
       "of": [
        {
-        "k": "stat",
+        "k": "cmp",
         "stat": "int",
         "op": ">=",
         "value": 18
@@ -4682,7 +4682,7 @@
           "id": "sage"
          },
          {
-          "k": "stat",
+          "k": "cmp",
           "stat": "int",
           "op": ">=",
           "value": 14
@@ -4765,7 +4765,7 @@
       "id": "blood"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "fame",
       "op": ">=",
       "value": 15
@@ -4878,13 +4878,13 @@
     "reqText": "ศรัทธาเทพ ≤ −70 · กล้าหาญ > 30",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "godFaith",
       "op": "<=",
       "value": -70
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "brave",
       "op": ">",
       "value": 30
@@ -4948,13 +4948,13 @@
     "reqText": "ศรัทธาเทพ ≥ 85 · ศรัทธา > 40",
     "req": [
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "godFaith",
       "op": ">=",
       "value": 85
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "piety",
       "op": ">",
       "value": 40
@@ -5041,13 +5041,13 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "int",
       "op": ">=",
       "value": 12
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "kind",
       "op": ">=",
       "value": 10
@@ -5113,13 +5113,13 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "honest",
       "op": ">=",
       "value": 20
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "piety",
       "op": ">=",
       "value": 20
@@ -5175,7 +5175,7 @@
       "happened": true
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "curious",
       "op": ">",
       "value": 40
@@ -5196,7 +5196,7 @@
       ]
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "godFaith",
       "op": "<=",
       "value": 0
@@ -5255,7 +5255,7 @@
       "id": "ns_mediate_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "fame",
       "op": ">=",
       "value": 30
@@ -5323,7 +5323,7 @@
       "id": "nb_faith_tree"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "kind",
       "op": ">=",
       "value": 20
@@ -5429,13 +5429,13 @@
       "id": "healing_3"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "godFaith",
       "op": ">=",
       "value": 50
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "kind",
       "op": ">",
       "value": 30
@@ -5562,7 +5562,7 @@
       "id": "leadership_2"
      },
      {
-      "k": "stat",
+      "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 200

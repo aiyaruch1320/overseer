@@ -297,7 +297,7 @@ function atom(raw: string, file: string, line: number): CharCond {
     if (whole) return expr(inner, file, line);
   }
   let m: RegExpMatchArray | null;
-  if ((m = s.match(/^(?:อยู่เมือง\s*)?([WGM])\s*(≥|≤|>|<)\s*(\d+)$/))) return { k: 'stat', stat: `country.${m[1]}`, op: (m[2] === '≥' ? '>=' : m[2] === '≤' ? '<=' : m[2]) as '>=' | '<=' | '>' | '<', value: Number(m[3]) };
+  if ((m = s.match(/^(?:อยู่เมือง\s*)?([WGM])\s*(≥|≤|>|<)\s*(\d+)$/))) return { k: 'cmp', stat: `country.${m[1]}`, op: (m[2] === '≥' ? '>=' : m[2] === '≤' ? '<=' : m[2]) as '>=' | '<=' | '>' | '<', value: Number(m[3]) };
   // a condition followed by a remark in parentheses, or a label followed by the real condition: `ชั้น 3 ขึ้นไป (…)` `อ่านออก (ปัญญา 8 ขึ้นไป)`
   if ((m = s.match(/^([^()]+?)\s*\((.+)\)$/)) && !/^\d/.test(m[2])) {
     const base = atom(m[1], file, line);
@@ -308,10 +308,10 @@ function atom(raw: string, file: string, line: number): CharCond {
   // stat comparisons
   if ((m = s.match(new RegExp(`^(?:ค่า)?(${STAT_RE})(?:เริ่มต้น|ขั้นต่ำ|ในหมู่โจร)?\\s*(≥|≤|>|<)?\\s*([+\\-−]?\\d+)\\s*(?:ขึ้นไป)?$`)))) {
     const op = m[2] === '≥' || !m[2] ? '>=' : m[2] === '≤' ? '<=' : m[2];
-    return { k: 'stat', stat: STAT_NAMES[m[1]], op: op as '>=' | '<=' | '>' | '<', value: toNum(m[3]) };
+    return { k: 'cmp', stat: STAT_NAMES[m[1]], op: op as '>=' | '<=' | '>' | '<', value: toNum(m[3]) };
   }
-  if ((m = s.match(/^ชื่อเสียงในหมู่โจร\s*≥\s*(\d+)$/))) return { k: 'stat', stat: 'fame.thief', op: '>=', value: Number(m[1]) };
-  if ((m = s.match(/^เงิน(?:ทุน)?(?:เริ่มต้น)?\s*(\d+)(?:\s*ขึ้นไป)?$/))) return { k: 'stat', stat: 'gold', op: '>=', value: Number(m[1]) };
+  if ((m = s.match(/^ชื่อเสียงในหมู่โจร\s*≥\s*(\d+)$/))) return { k: 'cmp', stat: 'fame.thief', op: '>=', value: Number(m[1]) };
+  if ((m = s.match(/^เงิน(?:ทุน)?(?:เริ่มต้น)?\s*(\d+)(?:\s*ขึ้นไป)?$/))) return { k: 'cmp', stat: 'gold', op: '>=', value: Number(m[1]) };
   if ((m = s.match(/^ชั้น\s*(\d)\s*ถึง\s*(\d)$/))) return { k: 'class', min: Number(m[1]), max: Number(m[2]) };
   if ((m = s.match(/^ชั้น\s*(\d)\s*ขึ้นไป$/))) return { k: 'class', min: Number(m[1]) };
   if ((m = s.match(/^อายุ\s*(\d+)\s*ถึง\s*(\d+)$/))) return { k: 'age', min: Number(m[1]), max: Number(m[2]) };

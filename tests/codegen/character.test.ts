@@ -191,7 +191,7 @@ describe('character generator: data agrees with its sources', () => {
     expect(lich.assist).toEqual([{ id: 'cv.4' }, { id: 'gh.a2', choice: 'b' }]);
     expect(lich.linked!.events).toEqual(['DM-09']);
     expect(lich.baseChance).toBe(0.0075);
-    expect(lich.req[1]).toEqual({ k: 'stat', stat: 'int', op: '>=', value: 13 });
+    expect(lich.req[1]).toEqual({ k: 'cmp', stat: 'int', op: '>=', value: 13 });
     expect(lich.req[3]).toMatchObject({ k: 'or' });
     // 3. a species from 15-companion-species.md
     const fox = comp.species.find((s) => s.id === 'sp_nine_tailed_fox')!;

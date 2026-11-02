@@ -37,12 +37,21 @@ export type IdKind =
 /** A condition that gates an effect or multiplies a choice weight. `text` keeps phrases the parser could not read. */
 export type Condition =
   | { k: 'event'; id: EventId; happened: boolean }
-  | { k: 'has'; kind: IdKind; id: string } // trait, job, blessing, curse, skill, item...
+  | { k: 'has'; kind: IdKind; id: string; level?: number } // trait, job, blessing, curse, skill, item... · `rune ระดับ 3`
   | { k: 'npc'; id: NpcId; alive: boolean }
   | { k: 'country'; ids: CountryId[] } // born in or living in one of these
   | { k: 'continent'; ids: ContinentId[] }
   | { k: 'era'; min: number; max?: number }
   | { k: 'gender'; value: 'm' | 'f' }
+  | { k: 'race'; ids: string[] } // storyline race codes `hu` `gi` ... or race ids
+  | { k: 'age'; min?: number; max?: number } // hAge
+  | { k: 'class'; min?: number; max?: number } // social class 1..5
+  | { k: 'half' } // born with a second race
+  | { k: 'anyOf'; kind: string; ids: string[]; min: number } // "at least 3 of these"
+  /** A number the character or the world carries: `trust` `fame` `int` `godFaith` `gold` `country.W` `dfc`; `count` for "≥ 3 จาก 10 เผ่า". */
+  | { k: 'cmp'; stat: string; op: '>=' | '>' | '<=' | '<' | '=='; value: number; count?: number; label?: string }
+  /** A world variable threshold from an event condition cell: `H > 70` `M6 < 40` (events §0). */
+  | { k: 'var'; name: string; op: '<' | '>'; n: number }
   | { k: 'node'; id: NodeId; choice?: 'a' | 'b' | 'c' } // passed that node (and took that choice)
   | { k: 'and'; of: Condition[] }
   | { k: 'or'; of: Condition[] }
@@ -60,12 +69,76 @@ export type Effect =
   | { k: 'event'; id: EventId; open?: boolean } // opens or references a world/local event
   | { k: 'death'; chance?: number; cause?: string }
   | { k: 'if'; cond: Condition; then: Effect[] }
-  | { k: 'label'; text: string }; // human words kept for display
+  | { k: 'label'; text: string } // human words kept for display
+  | ExtraEffect;
+
+/** Effect kinds the storyline docs added in M0-b (scripts/codegen/lib/effects.ts). */
+export type ExtraEffect =
+  /** `{สหาย:คิดถึง@2}` the feeling the character shows toward a bond line (systems/bonds/02-feelings.md). */
+  | { k: 'mood'; line: string; mood: string; level: number }
+  /** Template codes of the bond system: `FT-03` friend story · `KN-02` kin story · `PR-01` paired item (`to` for `FT-01 ถึง FT-05`). */
+  | { k: 'template'; kind: 'FT' | 'KN' | 'PR'; code: string; to?: string; chance?: number }
+  /** Opens or raises a bond line toward an NPC: `สายสหายระดับ 2` `เปิดสายคู่หู`. */
+  | { k: 'bond'; line: string; level?: number }
+  /** Places named in the text (`ไปไวลด์มาร์ก (AL-23)`). */
+  | { k: 'place'; ids: string[] }
+  /** The director may call an LLM role here (`LLM legend`). */
+  | { k: 'llm'; role: string }
+  /** A level on a scale the docs write as a letter and a digit: bondage `B2`, travel `L0`. */
+  | { k: 'level'; scale: string; values: number[] }
+  /** Sets the social class (`ชั้น 2`, `ขึ้นชั้น 5`). */
+  | { k: 'class'; value: number }
+  /** A quantity with a unit the docs name: `5 ปี` `4 คน` `3 หน่วย`. */
+  | { k: 'qty'; n: number; unit: string }
+  /** `น้ำหนัก cv.10 ×2` `น้ำหนักฝ่ายปิดใน dw.t2 ×2`: a weight change on another node (a side of it when `label` is set). */
+  | { k: 'nodeWeight'; node?: NodeId; label?: string; mul: number }
+  /** `ถูกค้น 40% → ศึก`: what follows the arrow happens with this chance. */
+  | { k: 'chance'; p: number; text: string; then: Effect[] }
+  /** `ความหิว > 70 → ทาง ข ×2`: weight change on a choice of this very node. */
+  | { k: 'choiceMod'; choice: 'a' | 'b' | 'c'; cond?: Condition; mul: number }
+  /** `บาดแผลถาวร 10%`. */
+  | { k: 'wound'; chance?: number; text?: string }
+  /** Raises or lowers a relation number: `ไว้ใจเผ่าปีก +3`. `toward` is the Thai object word, empty when none is named. */
+  | { k: 'trust'; toward: string; delta: number }
+  /** Effects of a notes cell that only apply when the cond holds (`ต้องผ่าน be.a6 ทาง ก`). */
+  | { k: 'only'; cond: Condition; then: Effect[] }
+  /** Opens a job path: `ทางสู่อาชีพลับ swordsaint (ต้องมี sword_3)`. */
+  | { k: 'jobpath'; job: string; secret: boolean; need?: Condition; text?: string }
+  /** `WR-17 −30`: moves an event's weight by percentage points. */
+  | { k: 'eventWeight'; id: string; delta: number }
+  /** A pointer to another node: `เปิด ml.a1` `ตรงกับ be.b2` `ใช้ใน hb.t2`. rel is the Thai verb. */
+  | { k: 'ref'; nodes: NodeId[]; rel: string; choice?: 'a' | 'b' | 'c' }
+  /** `ทอย d20 DC 12` `DC 18`. */
+  | { k: 'check'; dc: number; die?: string }
+  /** A percentage the phrase carries: `ดอก 20%` `ถูกค้น 40%` `ผ่าน 60%`. */
+  | { k: 'pct'; text: string; pct: number }
+  /** `รายได้ +20%` `ราคา −5%`. */
+  | { k: 'statPct'; stat: string; pct: number }
+  /** `รายได้ ×0.8` `ค่าแรง ×1.5`. */
+  | { k: 'statMul'; stat: string; mul: number }
+  /** `ทอง −30 ถึง −150` `ทอง ±5` `เพื่อน 1 ถึง 2 คน`. */
+  | { k: 'range'; stat: string; min: number; max: number; unit?: string }
+  /** `ท่าทีหลอกล่อ ×2`: weight of a combat stance. */
+  | { k: 'stanceMul'; stance: string; mul: number; cond?: Condition }
+  /** `ผ่าน 55 … ไม่ผ่าน 45 …`: one weighted outcome inside a choice (a run of these is a split). */
+  | { k: 'outcome'; label: string; weight: number; effects: Effect[] }
+  /** `ปลายทาง "ผู้ไม่เคยกลับมาจน" ถ้าทอง ≥ 150`: the row names an ending and when it is earned. */
+  | { k: 'ending'; title: string; cond?: Condition }
+  /** A different set of choices under a place or event condition (`ถ้าอยู่ SH-10 (…): ก) 35 … ข) 40 … ค) 25 …`). */
+  | { k: 'variant'; cond?: Condition; text: string; choices: Choice[] }
+  /** A battle the node adds only for some choices or places: `ศึก: npc_inquisitor หัวหน้า (ทาง ข หรือ ค)`. */
+  | { k: 'battleFor'; choices: ('a' | 'b' | 'c')[]; enemies: string[]; role?: string }
+  /** Weight change on a convergence choice that this row sets up (`ทาง ข ของ cv.4 ได้น้ำหนัก ×2`). `to` empty = the converge of the row. */
+  | { k: 'entryMod'; to?: NodeId; choice: 'a' | 'b' | 'c'; cond?: Condition; mul: number }
+  /** The node stands in for others, or is skipped: kept as effects of the notes cell. */
+  | { k: 'replaces'; nodes: NodeId[]; when?: Condition };
 
 /** `(\`freedom\` ×3)` or `(BIO-01 แล้ว ×3)`: multiply a choice weight when the condition holds. */
 export interface WeightMod {
   cond: Condition;
   mul: number;
+  /** Additive change: `40 (+20 kind generous)` or `60 (−20 ถ้า BIO-01 เกิดแล้ว)`; `mul` is 1 for a pure addition. */
+  add?: number;
 }
 
 export interface Choice {
@@ -74,8 +147,10 @@ export interface Choice {
   label: string; // the human text with codes stripped, for screens
   effects: Effect[];
   mods: WeightMod[];
-  /** A choice that only exists under a condition (e.g. ผู้ถูกอัญเชิญ). */
+  /** A choice that only exists under a condition ("ต้อง…", ผู้ถูกอัญเชิญ). */
   when?: Condition;
+  /** Convergence weight cells name who is favoured without a number (`ศรัทธาโลก > 70`). */
+  favours?: string;
 }
 
 export type LifeStage = 'b' | 't' | 'a' | 'e' | 'x';

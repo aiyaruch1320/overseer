@@ -11,19 +11,8 @@ export type Axis = 'brave' | 'kind' | 'ambition' | 'piety' | 'curious' | 'honest
 /** A file and 1-based line in docs/ where a row came from. */
 export type Src = string;
 
-/** The shared conditions that are not boolean connectives, so CharCond can nest its own kinds inside and/or/not. */
-type Leaf = Exclude<Condition, { k: 'and' } | { k: 'or' } | { k: 'not' }>;
-export type CharCond =
-  | Leaf
-  | { k: 'and'; of: CharCond[] }
-  | { k: 'or'; of: CharCond[] }
-  | { k: 'not'; of: CharCond }
-  | { k: 'stat'; stat: string; op: '>=' | '<=' | '>' | '<' | '=='; value: number } // `ปัญญา 13` is >= 13
-  | { k: 'race'; ids: RaceId[] }
-  | { k: 'age'; min?: number; max?: number } // human-equivalent years
-  | { k: 'class'; min?: number; max?: number } // social class 1..5
-  | { k: 'half' } // born with a second race
-  | { k: 'anyOf'; kind: string; ids: string[]; min: number }; // "at least 3 of these"
+/** Character conditions use the shared grammar (src/core/types.ts); the alias stays for the generator. */
+export type CharCond = Condition;
 
 /** Cross references found in a free-text cell: events, countries, nodes, ids in backticks. */
 export interface Refs {
