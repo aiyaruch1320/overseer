@@ -77,6 +77,3 @@ export const MEMORY_LINES = 8;
 
 /** Battle stand-in until the combat system (M3): win, lose, flee. */
 export const BATTLE_ODDS = { win: 0.6, lose: 0.25, flee: 0.15 } as const;
-
-/** A guard against a loop in pending hand-offs. */
-export const MAX_STEPS = 64;
