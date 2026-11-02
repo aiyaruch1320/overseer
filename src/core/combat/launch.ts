@@ -1,5 +1,6 @@
 // Starting a fight: the year's cap (04-encounters.md §1), the call before a fight with a name (07-attention.md §2), and the queue the
 // call waits in so that the god has a beat or two to whisper before the blades meet.
+import { answered } from '../attention';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { extOf as storyExt, yearOf } from '../story/state';
@@ -8,7 +9,7 @@ import { foeOf } from './foe';
 import { resolve, type Fought } from './fight';
 import { extOf, lifeOf } from './state';
 import { warOn } from './warflag';
-import { PRELUDE_BEATS, SOLDIER_JOBS } from './tuning';
+import { PRELUDE_BEATS, PRELUDE_MAX_BEATS, SOLDIER_JOBS } from './tuning';
 import type { FightOpts } from './types';
 
 /** Fights in one life year: 4, or 8 for a soldier in a war and an adventurer (04 §1). The count is the story's own so that story fights and random ones share it. */
@@ -66,14 +67,21 @@ export function launch(ctx: Ctx, ids: readonly string[], opts: FightOpts, announ
   return { how: 'queued', due };
 }
 
-/** Fights that are due this beat (the day after their call). */
+/** Is a waiting fight to be fought this beat? Its day has come and the call that announced it is settled, or it waited PRELUDE_MAX_BEATS (M3 review C3). */
+export function ready(ctx: Ctx, p: { due: number; prelude?: number }, tick: number): boolean {
+  if (p.due > tick) return false;
+  if (p.prelude === undefined || answered(ctx.state, p.prelude)) return true;
+  return tick - (p.due - PRELUDE_BEATS) >= PRELUDE_MAX_BEATS;
+}
+
+/** Fights that are due this beat (the day after their call, once the player has had the card). */
 export function flush(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
   const ext = extOf(life);
-  const due = ext.pending.filter((p) => p.due <= ext.tick && !p.clash);
+  const due = ext.pending.filter((p) => !p.clash && ready(ctx, p, ext.tick));
   if (!due.length) return;
-  ext.pending = ext.pending.filter((p) => p.due > ext.tick || p.clash);
+  ext.pending = ext.pending.filter((p) => !due.includes(p));
   for (const p of due) {
     if (!lifeOf(ctx)) return;
     const foe = foeOf(ctx, p.enemies);

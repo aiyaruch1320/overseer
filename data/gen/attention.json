@@ -1,5 +1,5 @@
 {
- "version": "79f365d8eb8c",
+ "version": "78340ffda4d9",
  "sources": [
   "docs/systems/experience/01-one-life.md",
   "docs/systems/experience/07-attention.md",
@@ -186,7 +186,7 @@
   "deadlines": {
    "prayer": 3.5,
    "omen": 2,
-   "battle": 1,
+   "battle": 2,
    "crisis": 1,
    "majorOmen": 1
   },

@@ -1,5 +1,7 @@
 // The combat system (docs/systems/combat/): fights of several beats, the nine stances, the weakness matrix, wounds and death, loot, the
 // fights that come on their own, the call before a named fight, the clashes of the named NPCs. The data is the generated data/gen/.
+import { write } from '../../src/core/log';
+import type { GameState } from '../../src/core/types';
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { createSession, startLife, type Session } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
@@ -101,6 +103,12 @@ function winRate(seed: number, p: Patch, enemy: string[], n: number, opts = {}):
     if (wins(r)) w++;
   }
   return w / n;
+}
+
+
+/** The attention system settles the calls of the fights waiting in the queue (a glow, as when a card is shown on the life line): the fights may start. */
+function settleCalls(state: GameState): void {
+  for (const e of state.log.filter((x) => x.sys === 'combat' && x.kind === 'prelude')) write(state, { sys: 'attention', kind: 'glow', id: String(e.n), data: { n: e.n }, level: 0 });
 }
 
 describe('the data the system reads', () => {
@@ -1071,6 +1079,10 @@ describe('the war of a soldier (M3 review C2)', () => {
     expect(m.life.dead).toBeUndefined();
     const ext = combatOf(m.life);
     ext.tick += PRELUDE_BEATS;
+    // the blades wait for the card: no fight while the attention system has not settled the call
+    flush(m.ctx);
+    expect(log().filter((e) => e.kind === 'battle').length).toBe(0);
+    settleCalls(m.s.game.state);
     flush(m.ctx);
     const fought = log().filter((e) => e.kind === 'battle');
     expect(fought.length).toBe(1);
@@ -1343,6 +1355,7 @@ describe('what the other systems give a fight (items, bonds, npc)', () => {
       flushClashes(m.ctx);
       expect(state.log.filter((e) => e.n >= mark && e.sys === 'combat' && e.kind === 'clash').length).toBe(0);
       ext.tick += 1;
+      settleCalls(state);
       flushClashes(m.ctx);
       log = state.log.filter((e) => e.n >= mark);
       expect(log.filter((e) => e.sys === 'combat' && e.kind === 'clash').length).toBe(1);

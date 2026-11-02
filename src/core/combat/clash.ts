@@ -8,7 +8,7 @@ import { apply } from '../rules';
 import { indexOf } from './data';
 import { resolve, type Fought } from './fight';
 import { foeOf } from './foe';
-import { admit } from './launch';
+import { admit, ready } from './launch';
 import { quietReward } from './reward';
 import { buildHero } from './hero';
 import { extOf, lifeOf } from './state';
@@ -134,9 +134,9 @@ export function flushClashes(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
   const ext = extOf(life);
-  const due = ext.pending.filter((p) => p.clash && p.due <= ext.tick);
+  const due = ext.pending.filter((p) => p.clash && ready(ctx, p, ext.tick));
   if (!due.length) return;
-  ext.pending = ext.pending.filter((p) => !(p.clash && p.due <= ext.tick));
+  ext.pending = ext.pending.filter((p) => !due.includes(p));
   for (const p of due) {
     if (!lifeOf(ctx) || !p.clash) return;
     const c = clashOf(ctx, p.clash.id);

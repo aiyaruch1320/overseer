@@ -243,6 +243,11 @@ export const WAR_BATTLE_PER_YEAR = 0.5;
 
 /** A fight with a name (story row, NPC, boss) waits this many beats after the `combat/prelude` entry so the god can whisper or dream first (07-attention.md §3: the card waits up to a life year = 4 beats). */
 export const PRELUDE_BEATS = 2;
+/**
+ * … and no fight is fought before the attention system has settled its call (shown, glowing or come too late), at most this many beats after the
+ * call: the card of a battle waits 2 life years (07-attention.md §3, "เกมรั้งจังหวะเริ่มศึกได้"), so a card shown late still comes before the fight.
+ */
+export const PRELUDE_MAX_BEATS = 8;
 
 // ---------- the last stand (a way of the story that dies in battle) ----------
 
