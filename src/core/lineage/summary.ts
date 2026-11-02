@@ -7,7 +7,8 @@ import { lx } from './state';
 import { knownName } from '../text/labels';
 import { calendarYear, placeName, raceName } from '../text/pick';
 import { family } from '../ending/words';
-import { HAND_WORD, LIMIT, dragonName } from '../ending/tuning';
+import { HAND_WORD, LIMIT, dragonName, isHandAct } from '../ending/tuning';
+import type { Template } from '../data/types-text';
 import type { SlotValues } from '../text/pick';
 import type { GameState } from '../types';
 
@@ -61,15 +62,17 @@ export function worldSummary(state: GameState, data: GameData): WorldSummary {
     .sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
 
   const mine = state.god.chronicle;
-  const handKinds = ['chest', 'dream', 'whisper', 'miracle', 'prayer.give', 'prayer.strange', 'prayer.punish'];
+  // the same count as the card of a life and the block of the power used (`isHandAct`): the summary of the world is the sum of the hands of the lives
   const byKind: Record<string, number> = {};
   const byLife: Record<string, number> = {};
-  for (const c of mine.filter((q) => handKinds.includes(q.kind))) {
+  for (const c of mine.filter(isHandAct)) {
     byKind[c.kind] = (byKind[c.kind] ?? 0) + 1;
     // the hand counts from the takeover of a life (an heir was in the world before the player had it)
     const owner = lives.find((l) => c.worldYear >= (x.recs.find((r) => r.id === l.id)?.startYear ?? l.from) && c.worldYear <= l.to);
     if (owner) byLife[owner.id] = (byLife[owner.id] ?? 0) + 1;
   }
+  // a life that has its card keeps the count the card made at its death (the two pages of one life must agree)
+  for (const l of lives) if (x.cards[l.id]) byLife[l.id] = x.cards[l.id].hand.total;
   const handTotal = Object.values(byKind).reduce((a, b) => a + b, 0);
 
   const ended = state.world.ended ? { id: state.world.ended.id, name: knownName(data, state.world.ended.id) ?? state.world.ended.id, year: calendarYear(state.world.ended.year) } : null;
@@ -126,8 +129,8 @@ function legendText(ctx: ReturnType<typeof makeCtx>, state: GameState, fallen: {
   const handTotal = Object.values(byKind).reduce((a, b) => a + b, 0);
   const sentences: string[] = [];
   const yearNow = calendarYear(state.clock.worldYear);
-  const put = (famName: string, keys: Record<string, string>, slots: SlotValues, key: string) => {
-    const cands = family(ctx, famName).filter((t) => Object.entries(keys).every(([k, v]) => t.keys[k] === v));
+  const put = (famName: string, keys: Record<string, string>, slots: SlotValues, key: string, ok: (t: Template) => boolean = () => true) => {
+    const cands = family(ctx, famName).filter((t) => Object.entries(keys).every(([k, v]) => t.keys[k] === v) && ok(t));
     // read-only: choose by hash without writing the memory of used templates
     const filled = cands.map((t) => ({ t, text: t.text.replace(/\{([^{}]+)\}/g, (_m, k: string) => String(slots[k.trim()] ?? '\u0000')) })).filter((c) => !c.text.includes('\u0000') && [...c.text].length <= LIMIT.sentence);
     if (!filled.length) return;
@@ -147,6 +150,7 @@ function legendText(ctx: ReturnType<typeof makeCtx>, state: GameState, fallen: {
   // the hand of the god: with no hand, the line that says so; else the sentences that name the most used kind (07 §9.2)
   const topKind = Object.entries(byKind).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0];
   if (handTotal === 0) put('world_fact', { ชนิด: 'พระหัตถ์ของโลก', แบบ: '3' }, {}, 'hand');
-  else put('world_fact', { ชนิด: 'พระหัตถ์ของโลก' }, { god_total: handTotal, god_top: HAND_WORD[topKind], mr_n: byKind.miracle ?? 0, dream_n: byKind.dream ?? 0 }, 'hand');
+  // a world that has a hand never says it has none (the sentence of "ศูนย์ครั้ง" asks for no act at all: review M4 G4)
+  else put('world_fact', { ชนิด: 'พระหัตถ์ของโลก' }, { god_total: handTotal, god_top: HAND_WORD[topKind] ?? topKind, mr_n: (byKind.miracle ?? 0) + (byKind.conjure ?? 0), dream_n: byKind.dream ?? 0 }, 'hand', (t) => t.when !== 'ศูนย์ครั้ง');
   return sentences.slice(0, 7).join(' ');
 }
