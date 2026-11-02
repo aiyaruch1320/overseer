@@ -107,10 +107,10 @@ describe('bondage generator: ways in and out, prices, roles', () => {
     expect(D.routes.find((r) => r.way === 'ถูกจับ')!.nodes).toEqual(['bd.t1', 'bd.a1']);
     expect(D.routes.find((r) => r.way === 'เป็นหนี้')!.levels).toEqual([1]);
   });
-  it('every way out leads to B0; ransom brings gratitude 3; the self-ransom lifts the class by one when there is work', () => {
+  it('every way out leads to B0; ransom brings gratitude 3; the self-ransom lifts the class by one', () => {
     for (const e of D.exits) expect(e.toLevel, e.way).toBe(0);
     expect(D.exits.find((e) => e.way === 'ถูกไถ่')!.effects).toContainEqual({ k: 'stat', stat: 'บุญคุณ', delta: 3 });
-    expect(D.exits.find((e) => e.way === 'ไถ่ตัวเอง')).toMatchObject({ classUp: 1, classUpIf: 'มีงาน' });
+    expect(D.exits.find((e) => e.way === 'ไถ่ตัวเอง')).toMatchObject({ classUp: 1 }); // "ถ้ามีงาน" dropped 2026-11-03: every exit gives the class back (decisions)
     expect(D.freeLand.text).toContain('ดินแดนเสรี');
   });
   it('ransom prices', () => {

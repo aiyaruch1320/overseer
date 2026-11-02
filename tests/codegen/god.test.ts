@@ -72,7 +72,8 @@ describe('god generator: the values sim-god.mjs uses are in the JSON and agree w
     expect(G.income.base).toEqual({ faith: 1, dread: 0.3 });
     expect(G.income.channelDiv).toBe(25);
     expect(G.income.beliefDiv).toEqual({ faith: 30, dread: 75 });
-    expect(G.prayers.tick).toMatchObject({ base: 0.035, pietyDiv: 2500, oracle: 0.02, maxPending: 2, expiryTicks: 14 });
+    // base 0.055 since review M3 (decisions 2026-11-03): the sim's 0.035 gave about 10 prayers a life on the real core, not the 16 attention is built on
+    expect(G.prayers.tick).toMatchObject({ base: 0.055, pietyDiv: 2500, oracle: 0.02, maxPending: 2, expiryTicks: 14 });
     expect(G.dreams.obey).toMatchObject({ base: 0.3, beliefDiv: 140, clamp: [0.05, 0.95] });
     expect(G.dreams.luckGuard).toMatchObject({ fails: 2, bonus: 0.15 });
     expect(G.belief.prayer).toMatchObject({ grant: 8, deny: -3, punish: -12, ignore: -2 });
