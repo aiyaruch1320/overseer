@@ -14,6 +14,7 @@ import { command, hasAction } from '../../src/core/command';
 import type { Ctx, Game, GameData } from '../../src/core/game';
 import { actsOf, cardsOf, fateTargets, grantPrice, implementedMiracles, kindOf, nameOfKind, strangeOptions } from '../../src/core/god/acts';
 import { chestLimit, currentChest, inWindow, offerCards } from '../../src/core/god';
+import { crisesWaiting, findAlly } from '../../src/core/bonds';
 import { npcsAt } from '../../src/core/npc';
 import { callReason, fxSplit, labels, plainName, reasonText, scrub, sentence } from '../../src/core/text';
 import { CHEST_KIND_TH, FLAG_TH, PENDING_NOTE, TIER_TH, WHY_TH } from '../../src/core/text/tuning';
@@ -344,7 +345,12 @@ export function callLines(data: GameData, e: LogEntry, dev = false, game?: Game)
   if (e.sys !== 'attention') return [`เกมเรียกเพราะ: เรื่อง [${tagOf(e)}] ถึงจุดที่ต้องการผู้เล่น (บันทึกระดับ 3)`];
   const mode = e.data.call === 'stop' ? 'เกมหยุดรอท่าน' : 'มีเรื่องรอท่าน (เวลายังเดินอยู่)';
   const tail = dev ? ` (ดีบัก: ${Object.entries(e.data).map(([k, v]) => `${k}=${String(v)}`).join(' ')})` : '';
-  const out = [`เกมเรียกเพราะ: ${callReason(data, e)} · ${mode}${tail}`];
+  // the card of a crisis names the person: the entries it stands for are the announcements of `bonds/crisis`
+  const crisis = (n: number): string | undefined => {
+    const c = game?.state.log.find((x) => x.n === n && x.sys === 'bonds' && x.kind === 'crisis');
+    return c && String(c.data.name ?? '') ? `${String(c.data.name)}${c.data.line ? ` (${String(c.data.line)})` : ''}` : undefined;
+  };
+  const out = [`เกมเรียกเพราะ: ${callReason(data, e, crisis)} · ${mode}${tail}`];
   const because = game ? becauseLine(game, e) : '';
   if (because) out.push(because);
   return out;
@@ -384,8 +390,11 @@ function becauseLine(game: Game, e: LogEntry): string {
       return 'ทำได้เพราะเรื่องนี้: นี่คือช่วงสุดท้ายของชีวิต ตอบคำอธิษฐานที่ค้างหรือส่งฝันครั้งสุดท้ายได้ก่อนที่ทุกอย่างจะจบ';
     case 'battle':
       return 'ทำได้เพราะเรื่องนี้: ศึกที่กำลังมา กระซิบ “จุดอ่อนของศัตรู” หรือ “ระวัง” ได้';
-    case 'crisis':
-      return 'ทำได้เพราะเรื่องนี้: คนใกล้ตัวตกอยู่ในวิกฤต ตอบคำอธิษฐานหรือกระซิบ “ช่วย” ได้';
+    case 'crisis': {
+      const w = crisesWaiting(ctx).find((x) => x.tie.id === first) ?? crisesWaiting(ctx)[0];
+      if (!w) return 'ทำได้เพราะเรื่องนี้: คนใกล้ตัวตกอยู่ในวิกฤต แต่ตัวละครตัดสินใจไปแล้ว';
+      return `ทำได้เพราะเรื่องนี้: ${w.tie.name} (${w.tie.line}) ตกอยู่ในวิกฤต — กระซิบ ช่วย ${w.tie.name} (หรือ คนนั้นโกหก ${w.tie.name}) หรือส่งฝันถึงเขาได้ก่อนที่ตัวละครจะตอบ`;
+    }
   }
   return '';
 }
@@ -478,7 +487,8 @@ export function refOf(game: Game, data: GameData): TargetRef {
   return {
     country: (t) => ID_REF.country(t) ?? byName(countries, t),
     continent: (t) => ID_REF.continent(t) ?? continents.get(t),
-    npc: (t) => ID_REF.npc(t) ?? byName(seen(), t),
+    // a person of the roster the character stands among, else an ally of his (his name, his tie id or the id of the position he stands for): `whisper ช่วย <ally>`
+    npc: (t) => ID_REF.npc(t) ?? byName(seen(), t) ?? findAlly(ctx, t)?.id,
     dragon: (t) => {
       // a whole name first; a part of a name only when exactly one dragon has it (a syllable must not pick the first dragon it finds, review M2 L8)
       const all = dragons();
