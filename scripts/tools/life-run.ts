@@ -4,7 +4,7 @@ import type { GameData } from '../../src/core/game';
 import { calendarYear } from '../../src/core/text';
 import type { GameState } from '../../src/core/types';
 import { metNpcs, summaryLines, timeline } from './report';
-import { createSession, runToDeath, startLife, toolSystems, type SessionOpts } from './session';
+import { createSession, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
 
 export interface LifeRun {
   text: string;
@@ -30,13 +30,12 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   out.push(`โลกเดินมาถึง ศ.ม. ${calendarYear(life.birthYear).toLocaleString('en-US')} แล้วตัวละครเกิด`);
   out.push('');
   out.push('-- บันทึก --');
-  const born = st.log.filter((e) => e.n >= worldMark);
-  out.push(...timeline(s.data, born, min));
+  out.push(...timeline(s.data, st.log, min, { fromN: worldMark, notes: toolNotes(st) }));
   out.push('');
   out.push('-- NPC ที่พบ --');
   const met = metNpcs(s.data, st.log);
   if (!met.length) out.push('(ไม่ได้พบใครที่มีเรื่องเปิดอยู่)');
-  for (const m of met) out.push(`  ${m.holder}${m.role ? ` (${m.role})` : ''} ${m.place} · พบเมื่ออายุ ${m.age ?? '?'} ศ.ม. ${m.year.toLocaleString('en-US')}`);
+  for (const m of met) out.push(`  ${m.holder}${m.role ? ` (${m.role})` : ''}${m.place ? ` ที่${m.place}` : ''} · พบเมื่ออายุ ${m.age ?? '?'} ศ.ม. ${m.year.toLocaleString('en-US')}`);
   out.push('');
   out.push('-- สรุป --');
   out.push(...summaryLines(s.data, st, beats));

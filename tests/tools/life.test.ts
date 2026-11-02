@@ -7,8 +7,10 @@ import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { runLifeReport } from '../../scripts/tools/life-run';
 import { loadAll } from '../../scripts/tools/node-data';
-import { createSession, resumeSession, runToCall, runToDeath, startLife } from '../../scripts/tools/session';
+import { statusLines } from '../../scripts/tools/report';
+import { createSession, resumeSession, runToCall, runToDeath, startLife, toolNotes } from '../../scripts/tools/session';
 import { versions, type GameData } from '../../src/core/game';
+import { leaks } from '../../src/core/text';
 import { load, save } from '../../src/core/save';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -118,5 +120,83 @@ describe('the commands', () => {
       rmSync(dirA, { recursive: true, force: true });
       rmSync(dirB, { recursive: true, force: true });
     }
+  });
+
+  it('npm run play: status tells who the character is, `world` holds the numbers of the world (T7)', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-c-'));
+    try {
+      const out = cli('play', ['--seed=201', '--new', '--race=be', '--cmd=advance 60; status; world'], { OVERSEER_PLAY_DIR: dir });
+      const status = out.slice(out.indexOf('-- สถานะ --', out.indexOf('-- เดิน')), out.indexOf('-- โลก (ดีบัก) --'));
+      for (const word of ['อายุ', 'เผ่าสัตว์', 'ชนชั้น', 'ทอง', 'อาชีพ', 'นิสัย', 'คำถามของชีวิต']) expect(status, word).toContain(word);
+      expect(status).not.toMatch(/NPC: มีชีวิต|โลก: ยุค|มังกรล้ม/);
+      expect(out.slice(out.indexOf('-- โลก (ดีบัก) --'))).toMatch(/NPC: มีชีวิต[\s\S]*โลก: ยุค/);
+      expect(out).toContain('คำถามของชีวิต: จะล่าตามสิทธิ์เดิม');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('what the player reads holds no code (review M1 T1 T3)', () => {
+  const PEOPLES = ['hu', 'el', 'de', 'dw', 'or', 'ha', 'be', 'na', 'dk', 'va', 'fa', 'sl', 'dm', 'me', 'wi', 'gi', 'la', 'co', 'so', 'mu', 'gh'];
+
+  /** The lines of the story log and the people met, without the tag in front. */
+  const readable = (text: string) =>
+    text
+      .split('\n')
+      .filter((l) => l.includes('│') || l.startsWith('  ') || l.startsWith('!'))
+      .map((l) => l.replace(/^[* !]*อายุ[^│]*│\s*|^[* !]*ศ\.ม\.[^│]*│\s*/, '').replace(/^\[[^\]]*\]\s*/, ''));
+
+  it('twenty-one peoples and a few free seeds give lines with no id, no stray mark and no badly cut sentence', () => {
+    const bad: string[] = [];
+    let n = 0;
+    const lives = [...PEOPLES.map((r, i) => ({ seed: 40 + i, race: r })), { seed: 201, race: 'be' }, { seed: 101, race: 'hu' }, { seed: 7, race: undefined }, { seed: 8, race: undefined }];
+    for (const l of lives) {
+      const run = runLifeReport(data, { seed: l.seed, race: l.race, minLevel: 1 });
+      const body = run.text.split('-- บันทึก --')[1].split('-- สรุป --')[0];
+      for (const line of readable(body)) {
+        n++;
+        const found = leaks(line);
+        if (found.length) bad.push(`${l.seed}${l.race ?? ''} ${found.join(',')}: ${line}`);
+      }
+      for (const line of statusLines(data, run.state)) {
+        const found = leaks(line);
+        if (found.length) bad.push(`status ${l.seed}${l.race ?? ''} ${found.join(',')}: ${line}`);
+      }
+    }
+    expect(n).toBeGreaterThan(1500);
+    expect(bad).toEqual([]);
+  });
+
+  it('the birth tells who, family, traits and the question of the life; the death tells cause, place and age', () => {
+    const run = runLifeReport(data, { seed: 201, race: 'be', minLevel: 1 });
+    const ls = readable(run.text.split('-- บันทึก --')[1].split('-- NPC ที่พบ --')[0]);
+    expect(ls[0]).toContain('เผ่าสัตว์');
+    expect(ls[1]).toContain('เพศหญิง');
+    expect(ls[1]).toContain('ครอบครัว');
+    expect(ls[2]).toMatch(/^นิสัยเด่น: /);
+    expect(ls[3]).toMatch(/^คำถามของชีวิต: จะล่าตามสิทธิ์เดิม/);
+    const last = ls.filter((l) => l.trim()).pop()!;
+    expect(last).toContain(run.state.life!.name);
+    expect(last).toContain('ชราภาพ');
+    expect(last).toContain(`อายุ ${run.state.life!.dead!.hAge}`);
+    expect(last).toMatch(/ที่\S+/);
+  });
+
+  it('a change of social class between two beats is a line of the log (T9)', () => {
+    const run = runLifeReport(data, { seed: 201, race: 'be', minLevel: 1 });
+    const notes = toolNotes(run.state);
+    expect(notes.length).toBeGreaterThan(0);
+    const said = run.text.split('\n').filter((l) => /ฐานะ(สูงขึ้น|ตก)จาก/.test(l));
+    expect(said).toHaveLength(notes.length);
+    // the log of the game itself holds no such entry: the note lives apart from the state of the log
+    expect(run.state.log.some((x) => x.sys === 'tools')).toBe(false);
+  });
+
+  it('the NPCs met are listed by place name, not by id', () => {
+    const run = runLifeReport(data, { seed: 201, race: 'be', minLevel: 1 });
+    const met = run.text.split('-- NPC ที่พบ --')[1].split('-- สรุป --')[0];
+    expect(met).not.toMatch(/\b[A-Z]{2}-\d{2}\b/);
+    expect(met).toMatch(/ที่\S+/);
   });
 });

@@ -4,8 +4,8 @@
 import type { GameData } from '../../core/game';
 import { npcsAt } from '../../core/npc';
 import { placeName } from '../../core/text';
-import { statusLines, timeline } from '../../../scripts/tools/report';
-import { createSession, runToCall, runToDeath, startLife, type Policy, type Session } from '../../../scripts/tools/session';
+import { statusLines, timeline, worldLines } from '../../../scripts/tools/report';
+import { createSession, runToCall, runToDeath, startLife, stepBeat, toolNotes, type Policy, type Session } from '../../../scripts/tools/session';
 
 const gen = import.meta.glob('../../../data/gen/*.json', { import: 'default' }) as Record<string, () => Promise<{ version: string; items: unknown }>>;
 const lib = import.meta.glob('../../../data/library/*.jsonl', { query: '?raw', import: 'default' }) as Record<string, () => Promise<string>>;
@@ -34,8 +34,8 @@ function show() {
   const st = g.state;
   const level = Number(el<HTMLSelectElement>('level').value) as 0 | 1 | 2 | 3;
   el('notes').textContent = session.notes.join('\n') || '(ไม่มี)';
-  el('status').textContent = statusLines(session.data, st).join('\n');
-  const lines = timeline(session.data, st.log, level);
+  el('status').textContent = [...statusLines(session.data, st), '', '-- โลก (ดีบัก) --', ...worldLines(st)].join('\n');
+  const lines = timeline(session.data, st.log, level, { notes: toolNotes(st) });
   el('log').textContent = lines.slice(-300).join('\n');
   const life = st.life;
   el('npcs').textContent = life
@@ -62,7 +62,7 @@ function start(data: GameData) {
 function advance(beats: number) {
   if (!session) return;
   const g = session.game;
-  for (let i = 0; i < beats && g.state.life && !g.state.life.dead; i++) g.beat();
+  for (let i = 0; i < beats && g.state.life && !g.state.life.dead; i++) stepBeat(g);
   show();
 }
 

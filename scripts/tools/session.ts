@@ -11,7 +11,8 @@ import { chooseStart, type StartPoint } from '../../src/core/start';
 import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
-import type { GameState, LifeState } from '../../src/core/types';
+import type { GameState, LifeState, LogEntry } from '../../src/core/types';
+import type { ToolNote } from './report';
 import { bearToy, resolveRace, toyDeath, type BirthRequest } from './toy-character';
 
 export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'สุ่ม'] as const;
@@ -129,11 +130,33 @@ export function startLife(s: Session): LifeState {
   return g.state.life!;
 }
 
+/** The notes the tools took of the game (kept in `god.ext` so a saved `play` keeps them). */
+export function toolNotes(state: GameState): ToolNote[] {
+  return (state.god.ext.toolNotes as ToolNote[] | undefined) ?? [];
+}
+
+/**
+ * One beat of the game. The tools also note a change of the social class between the start and the end of the beat: the character
+ * system writes no log entry for it, and the player should read it (review M1 T9).
+ */
+export function stepBeat(g: Game): LogEntry[] {
+  const st = g.state;
+  const before = st.life?.cls;
+  const out = g.beat();
+  const after = st.life?.cls;
+  if (before && after && before !== after) {
+    const list = (st.god.ext.toolNotes as ToolNote[] | undefined) ?? [];
+    list.push({ n: st.logN, worldYear: st.clock.worldYear, age: st.life?.hAge, quarter: st.clock.quarter, from: before, to: after });
+    st.god.ext.toolNotes = list;
+  }
+  return out;
+}
+
 /** Beats until the character dies or `max` pass; returns the number of beats run. */
 export function runToDeath(g: Game, max = 4 * 400): number {
   let n = 0;
   while (g.state.life && !g.state.life.dead && n < max) {
-    g.beat();
+    stepBeat(g);
     n++;
   }
   return n;
@@ -145,7 +168,7 @@ export function runToCall(g: Game, max = 4 * 400): { beats: number; stoppedBy: '
   while (beats < max) {
     if (!g.state.life || g.state.life.dead) return { beats, stoppedBy: 'death' };
     const mark = g.state.logN;
-    g.beat();
+    stepBeat(g);
     beats++;
     if (g.state.log.some((e) => e.n >= mark && e.level >= 3)) return { beats, stoppedBy: g.state.life?.dead ? 'death' : 'call' };
   }

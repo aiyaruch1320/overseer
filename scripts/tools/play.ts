@@ -3,7 +3,7 @@
 // (docs/guide/code-plan.md §8.0). Each run does the commands given by --cmd (default: advance to the next call of the game),
 // prints what the player sees, and saves the state.
 // State file: <dir>/<seed>.json where dir is $OVERSEER_PLAY_DIR or <os temp dir>/overseer-play (outside the repo on purpose).
-// M1 commands: advance [N] · status · log [N] · npcs · help · quit. God commands arrive in M2.
+// M1 commands: advance [N] · status · log [N] · npcs · world (developer numbers) · help · quit. God commands arrive in M2.
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -11,10 +11,10 @@ import { versions } from '../../src/core/game';
 import { npcsAt } from '../../src/core/npc';
 import { load, save } from '../../src/core/save';
 import { placeName } from '../../src/core/text';
-import { timeline, statusLines } from './report';
+import { timeline, statusLines, worldLines } from './report';
 import { intArg, parseArgs } from './args';
 import { loadAll } from './node-data';
-import { POLICIES, createSession, resumeSession, runToCall, startLife, type Policy, type Session } from './session';
+import { POLICIES, createSession, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
 
 const args = parseArgs(process.argv.slice(2));
 const seed = intArg(args.seed, 'seed', 1);
@@ -52,7 +52,7 @@ if (fresh) for (const n of s.notes) say(`หมายเหตุ: ${n}`);
 else say(`(เล่นต่อจาก ${file})`);
 
 function seen(mark: number, max = 80): string[] {
-  const ls = timeline(g.ctx.data, g.state.log.filter((e) => e.n >= mark), 1);
+  const ls = timeline(g.ctx.data, g.state.log, 1, { fromN: mark, notes: toolNotes(g.state) });
   return ls.length > max ? [...ls.slice(0, max), `… และอีก ${ls.length - max} บรรทัด (ใช้ log เพื่อดูทั้งหมด)`] : ls;
 }
 
@@ -75,7 +75,7 @@ function run(cmdText: string): boolean {
         }
         let done = 0;
         while (done < n && st.life && !st.life.dead) {
-          g.beat();
+          stepBeat(g);
           done++;
         }
         why = `เดิน ${done} จังหวะ`;
@@ -92,10 +92,13 @@ function run(cmdText: string): boolean {
       return true;
     case 'log': {
       const n = rest[0] ? Math.max(1, Math.floor(Number(rest[0]))) : 20;
-      const ls = timeline(g.ctx.data, st.log, 1);
+      const ls = timeline(g.ctx.data, st.log, 1, { notes: toolNotes(st) });
       say(`-- บันทึก ${Math.min(n, ls.length)} บรรทัดล่าสุด --`, ...ls.slice(-n));
       return true;
     }
+    case 'world':
+      say('-- โลก (ดีบัก) --', ...worldLines(st));
+      return true;
     case 'npcs': {
       const life = st.life;
       if (!life) return true;
@@ -104,7 +107,7 @@ function run(cmdText: string): boolean {
       return true;
     }
     case 'help':
-      say('คำสั่ง: advance [N] (N จังหวะ; ไม่ใส่ = จนเกมเรียก) · status · log [N] · npcs · help · quit', 'คำสั่งพระเจ้า (หีบ ฝัน กระซิบ ...) มาใน M2');
+      say('คำสั่ง: advance [N] (N จังหวะ; ไม่ใส่ = จนเกมเรียก) · status · log [N] · npcs · world (ตัวเลขของโลก สำหรับดีบัก) · help · quit', 'คำสั่งพระเจ้า (หีบ ฝัน กระซิบ ...) มาใน M2');
       return true;
     case 'quit':
       say(`จบการเล่น สถานะเก็บไว้ที่ ${file}`);
@@ -116,7 +119,7 @@ function run(cmdText: string): boolean {
 }
 
 if (fresh) {
-  say('-- เกิด --', ...seen(0, 10).filter((l) => l.includes('[เกิด]')), '', ...statusLines(g.ctx.data, g.state));
+  say('-- เกิด --', ...timeline(g.ctx.data, g.state.log, 1).filter((l) => l.includes('[เกิด]')), '', '-- สถานะ --', ...statusLines(g.ctx.data, g.state));
 }
 const cmds = (args.cmd ?? 'advance').split(';').map((x) => x.trim()).filter(Boolean);
 for (const c of cmds) if (!run(c)) break;
