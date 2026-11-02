@@ -104,7 +104,7 @@ const lives: Record<string, LifeResult[]> = {};
 const WORLD_INCOME = { faith: 1.3, dread: 2.0 };
 /** The simulator's world count, and the worlds the base and the haste are run for: their ratio is the target, so they get the most (the sampling error of a 17% rate over 600 worlds is 1.5 points). */
 const WORLDS = 600;
-const RATIO_WORLDS = 1800;
+const RATIO_WORLDS = 1200;
 const HORIZON = 181; // decades: 1,800 years
 
 let sim: { races: { code: string }[]; drawLife: (race: unknown, r: () => number) => { at: (x: number) => number } };
