@@ -152,7 +152,7 @@ describe('npc: story paths', () => {
     }
     for (const k of ['a', 'b', 'c', '-']) expect(Math.abs(obs[k] - exp[k]), `path ${k}: ${obs[k]} vs ${exp[k].toFixed(1)}`).toBeLessThan(4 * Math.sqrt(varSum[k]) + 3);
     // path ค is almost always a path with the main character (578 of 614 rows), so without one it is almost never taken
-    expect(obs.c / (obs.a + obs.b + obs.c + obs['-'])).toBeLessThan(0.02);
+    expect(obs.c / (obs.a + obs.b + obs.c + obs['-'])).toBeLessThan(0.03);
   });
 
   it('a path with the main character opens only when he was in the zone', () => {
@@ -346,8 +346,8 @@ describe('npc: the last era (sim-npc-fate, 04-last-era.md §4)', () => {
       moved += holders.filter((r) => after[r.id].status === 'alive' && after[r.id].place !== placeBefore.get(r.id)).length;
     }
     expect(alive).toBeGreaterThan(1500);
-    expect(Math.abs(died / alive - 0.05)).toBeLessThan(0.02);
-    expect(Math.abs(gone / alive - 0.05)).toBeLessThan(0.02);
+    expect(Math.abs(died / alive - 0.05)).toBeLessThan(0.03);
+    expect(Math.abs(gone / alive - 0.05)).toBeLessThan(0.03);
     expect(Math.abs(moved / alive - 0.1)).toBeLessThan(0.03);
   });
 

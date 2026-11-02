@@ -37,3 +37,6 @@ export const VANISH_RE = /สาบสูญ|หายตัว|หายไป/
 
 /** A child does not yet meet the stories of its country; from this life age the zone counts. */
 export const MEET_AGE = 6;
+
+/** A holder older than the lifespan table of his people lives this share of one more top lifespan (world-time.md §6 exceptions). */
+export const OVER_AGE_SHARE: [number, number] = [0.3, 1];

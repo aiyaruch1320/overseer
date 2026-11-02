@@ -26,7 +26,7 @@ export const textSystem: System = {
         race: raceName(ctx, life.race),
         home: placeName(ctx, life.home) ?? life.home,
         cls: classLabel(ctx, life.cls),
-        year: calendarYear(ctx.state.clock.worldYear),
+        year: calendarYear(ctx.state.clock.worldYear).toLocaleString('en-US'),
       },
     });
   },

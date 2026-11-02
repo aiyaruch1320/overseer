@@ -10,7 +10,7 @@ import type { Rng } from '../rng';
 import type { Condition, Effect, GameState, LogLevel } from '../types';
 import type { NpcPath, NpcRow, RelationAxis } from '../data/types-npcs';
 import { lifeOfRow, npcIndex, type NpcIndex } from './data';
-import { MEET_AGE, ERA4_FATE, ERA4_LONG_PHASE, ERA4_REROLL_YEARS, MEMORY_LINES, MOVE_RE, NEW_PLAN_MUL, NEW_PLAN_PATH, SUCCESSOR_TWISTS, VANISH_RE, type FateClass } from './tuning';
+import { MEET_AGE, OVER_AGE_SHARE, ERA4_FATE, ERA4_LONG_PHASE, ERA4_REROLL_YEARS, MEMORY_LINES, MOVE_RE, NEW_PLAN_MUL, NEW_PLAN_PATH, SUCCESSOR_TWISTS, VANISH_RE, type FateClass } from './tuning';
 import { npcState, slotsOf, type NpcSlotX, type PathKey, type Story } from './types';
 
 const u = (rng: Rng, a: number, b: number) => a + rng.next() * (b - a);
@@ -44,8 +44,13 @@ export function newStory(openAt: number): Story {
   return { state: 'wait', mode: 'age', openAt, endAt: null, mc: false, cut: [], add: {}, mul: {} };
 }
 
-/** Lifespan drawn like sim-npc-fate.mjs: inside the table, but at least a little more than the age the holder already has. */
+/**
+ * Lifespan drawn like sim-npc-fate.mjs: inside the table, but at least a little more than the age the holder already has.
+ * A holder older than the table is one of the exceptions of world-time.md §6 (mummies kept by the dust, spirits, sea beasts):
+ * he lasts a fraction of one more lifespan, not the few years the plain rule would give.
+ */
 function drawSpan(rng: Rng, lo: number, hi: number, age: number): number {
+  if (age > hi) return age + hi * (OVER_AGE_SHARE[0] + rng.next() * (OVER_AGE_SHARE[1] - OVER_AGE_SHARE[0]));
   const l = lo + rng.next() * (hi - lo);
   return Math.max(l, age + 1 + rng.next() * 5);
 }
