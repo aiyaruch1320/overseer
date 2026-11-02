@@ -20,6 +20,7 @@ import { sortSystems, type GameData } from '../../src/core/game';
 import { allSystems } from '../../src/core/systems';
 import { extOf as storyExt, yearOf } from '../../src/core/story/state';
 import { CAUSE } from '../../src/core/story/tuning';
+import { PRELUDE_BEATS, PRELUDE_MAX_BEATS } from '../../src/core/combat/tuning';
 import type { Enemy } from '../../src/core/data/types-combat';
 import type { LogEntry } from '../../src/core/types';
 
@@ -174,7 +175,7 @@ describe('combat balance (whole lives of the real core)', () => {
     expect(lostRate('บอส')).toBeGreaterThan(0.3);
   });
 
-  it('C3: every fight with a name that the story asks for is called first, one beat before it is fought, and the call is never after the fight', () => {
+  it('C3: every fight with a name that the story asks for is called first, fought once its card is settled (PRELUDE_BEATS to PRELUDE_MAX_BEATS beats later), and the call is never after the fight', () => {
     let named = 0;
     for (const l of lives) {
       const used = new Set<number>();
@@ -185,7 +186,8 @@ describe('combat balance (whole lives of the real core)', () => {
         named++;
         const gap = (b.age ?? 0) * 4 + (b.quarter ?? 0) - ((p.age ?? 0) * 4 + (p.quarter ?? 0));
         expect(gap, `seed ${l.seed} ${p.id}`).toBeGreaterThanOrEqual(1);
-        expect(gap, `seed ${l.seed} ${p.id}`).toBeLessThanOrEqual(2);
+        // the blades wait for the card (07-attention.md §3: a battle card waits 2 life years)
+        expect(gap, `seed ${l.seed} ${p.id}`).toBeLessThanOrEqual(PRELUDE_BEATS + PRELUDE_MAX_BEATS);
       }
       // and every story fight with a named foe has its call
       const called = new Set(l.preludes.filter((e) => e.data.kind === 'story').map((e) => e.id));
