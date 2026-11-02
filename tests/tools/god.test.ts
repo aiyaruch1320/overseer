@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { hasAction } from '../../src/core/command';
 import type { Game, GameData } from '../../src/core/game';
+import { crisesWaiting } from '../../src/core/bonds';
 import { extOf } from '../../src/core/character';
 import { actsOf, cardsOf, fateCost, fateTargets, grantPrice, holdsKind, kindOf, whisperPrice } from '../../src/core/god/acts';
 import { slotsOf } from '../../src/core/npc/types';
@@ -702,5 +703,37 @@ describe('npm run life --policy', () => {
     for (const p of ['ปั้นนิสัย', 'เร่งจบ']) expect(cli('life', ['--seed=1', `--policy=${p}`])).toContain(`นโยบายพระเจ้า ${p}`);
     const bad = spawnSync('npx', ['tsx', 'scripts/tools/life.ts', '--seed=1', '--policy=เทพบุตร'], { cwd: root, encoding: 'utf8' });
     expect(bad.status).toBe(2);
+  });
+});
+
+describe('an ally in trouble in the test tools (M3 text)', () => {
+  /** A game run, beat by beat, until the character has a crisis announced to the player that he has not answered. */
+  function withCrisis(): { s: Session; name: string; id: string } {
+    for (const seed of [140, 1, 2, 5, 10, 15, 16, 17, 18, 19, 22]) {
+      const s = createSession(data, { seed });
+      startLife(s);
+      for (let i = 0; i < 4 * 80; i++) {
+        s.game.beat();
+        if (s.game.state.life?.dead) break;
+        const w = crisesWaiting(s.game.ctx)[0];
+        if (w) return { s, name: w.tie.name, id: w.tie.id };
+      }
+    }
+    throw new Error('no crisis waited in any of the seeds');
+  }
+
+  it('`whisper ช่วย <name of the ally>` finds him, the status lists the crisis, and the card of the call names him', () => {
+    const { s, name, id } = withCrisis();
+    const ref = refOf(s.game, data);
+    expect(ref.npc(name)).toBe(id);
+    expect(parseGod('whisper', ['ช่วย', name], ref)).toEqual({ action: 'whisper', args: { hint: 'ช่วย', target: id } });
+    expect(statusLines(data, s.game.state).join('\n')).toMatch(new RegExp(`วิกฤตที่รอคำตอบ ${name} `));
+    const call = [...s.game.state.log].reverse().find((e) => e.sys === 'attention' && e.kind === 'call' && String(e.data.why) === 'crisis' || (e.sys === 'attention' && String(e.data.cards ?? '').includes('crisis')));
+    if (call) expect(said(callLines(data, call, false, s.game))).toContain(name);
+    // the command goes through the core: the ally is the target and the nudge is on him
+    const god = new GodConsole({ game: s.game, data });
+    const out = said(god.handle(`whisper ช่วย ${name}`));
+    expect(out).not.toMatch(/ไม่รู้จัก/);
+    expect(out).toContain('คำใบ้');
   });
 });

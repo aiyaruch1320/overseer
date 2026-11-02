@@ -342,7 +342,14 @@ export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) =
   const folded = s(d.cards)
     .split(',')
     .filter(Boolean)
-    .map((k) => FOLDED_TH[k])
+    .map((k) => {
+      // a crisis folded into a stop names the person too
+      if (k === 'crisis' && s(d.why) !== 'crisis') {
+        const person = s(d.n).split(',').map((n) => crisisOf?.(Number(n))).find((x) => !!x);
+        if (person) return `วิกฤตของ ${person}`;
+      }
+      return FOLDED_TH[k];
+    })
     .filter(Boolean);
   const uniq = [...new Set(folded)];
   // an age stop folded into another call is still named, so the player sees every stop of 07-attention (review M2 รอบสอง ข้อ 3)

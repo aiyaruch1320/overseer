@@ -215,7 +215,8 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'mood': {
       const verb = MOOD_TH[s(d.mood)];
       if (!name || !verb) return undefined;
-      return `${who} ${verb} ${name}${ln}`;
+      // the line of a child (`ญาติรุ่นเยาว์`) says nothing to the reader: he is the character's child
+      return `${who} ${verb} ${name}${s(d.why).startsWith('child:') ? ' (ลูก)' : ln}`;
     }
     case 'mood-held':
       return null; // a feeling that could not show: for the balance counts

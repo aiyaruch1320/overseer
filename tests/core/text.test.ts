@@ -469,9 +469,41 @@ describe('text: the hand of the god and the calls of the game', () => {
     expect(say(data, att({ why: 'nearDeath' }))).toContain('ฉากสุดท้าย');
     expect(say(data, att({ why: 'battle', call: 'card', until: 26 }))).toBe('ศึกกำลังจะมาถึง · รอท่านอยู่จนอายุ 26');
     expect(say(data, att({ why: 'crisis', call: 'card', until: 26 }))).toContain('วิกฤต');
+    // the card of a crisis names the person, read from the announcement the call stands for
+    const crisis = e({ n: 7, sys: 'bonds', kind: 'crisis', id: 'T3', level: 2, age: 20, data: { name: 'ไลลินา', line: 'สหาย', text: 'x', tie: 'T3', kin: null, gender: 'f' } });
+    const card = att({ why: 'crisis', call: 'card', until: 26, n: '7', ids: 'T3' }, 'T3');
+    expect(lines(data, [crisis, card], 0).map((l) => l.text).pop()).toBe('ไลลินา (สหาย) ตกอยู่ในวิกฤต · รอท่านอยู่จนอายุ 26');
+    const stop = att({ why: 'age', age: 30, cards: 'crisis', n: '7', ids: 'T3' });
+    expect(lines(data, [crisis, stop], 0).map((l) => l.text).pop()).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 30 · มีเรื่องรออยู่ด้วย: วิกฤตของ ไลลินา (สหาย)');
     // a glow and a missed card are for the log, not for the player
     expect(say(data, e({ sys: 'attention', kind: 'glow', level: 1, data: { why: 'gap' } }), { raw: true })).toBeNull();
     expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toBeNull();
+  });
+});
+
+describe('text: the war lines vary, the whisper and the dream name the ally (M3 text)', () => {
+  const war = (n: number, over: Partial<LogEntry['data']> = {}): LogEntry =>
+    e({ n, sys: 'combat', kind: 'war', id: 'MH-07', level: 0, age: 30, worldYear: 470 + n, data: { war: 'WR-03', foe: 'goblin', role: 'front', rank: 'soldier', rankN: 1, n, roll: 9, how: 'held', grade: 'steady', first: false, pay: 3, fame: 2, promoted: false, ...over } });
+
+  it('twenty-two battles of one soldier read in many wordings, and the same entry reads the same twice', () => {
+    const log = Array.from({ length: 22 }, (_, i) => war(i + 1));
+    const a = lines(data, log, 0).filter((l) => l.sys === 'combat').map((l) => l.text);
+    const b = lines(data, log, 0).filter((l) => l.sys === 'combat').map((l) => l.text);
+    expect(a).toEqual(b);
+    expect(a).toHaveLength(22);
+    // the pay differs by nothing here: the words before it must differ
+    expect(new Set(a.map((x) => x.split(' · ')[0])).size).toBeGreaterThanOrEqual(5);
+    for (const x of a) expect(leaks(x), x).toEqual([]);
+  });
+
+  it('the whisper that names an ally and the dream of an ally say who, and the dream of a way still says the way', () => {
+    const g = (kind: string, data: LogEntry['data'], id = 'ช่วย') => e({ n: 9, sys: 'god', kind, id, level: 1, age: 20, data });
+    const named = e({ n: 2, sys: 'text', kind: 'named', id: 'L1', age: 0, data: { name: 'มิรา', race: 'มนุษย์', home: 'โอรันธาร์', cls: 'สามัญชน', year: '10,450', country: 'AL-01' } });
+    const out = (x: LogEntry) => lines(data, [named, x], 0).pop()!.text;
+    expect(out(g('whisper', { hint: 'ช่วย', price: 5, level: 'เต็มใจ', obeyed: true, target: 'T3', ally: 'ไลลินา', allyId: 'T3', crisis: true }))).toBe('ท่านกระซิบ “ช่วย” ถึงมิราเรื่อง ไลลินา ที่กำลังตกอยู่ในวิกฤต — เขาได้ยินและทำตาม');
+    expect(out(g('whisper', { hint: 'คนนั้นโกหก', price: 5, level: 'ลังเล', obeyed: false, target: 'T3', ally: 'ไลลินา', allyId: 'T3', crisis: false }, 'คนนั้นโกหก'))).toBe('ท่านกระซิบ “คนนั้นโกหก” ถึงมิราเรื่อง ไลลินา — เขาไม่ใส่ใจ');
+    expect(out(g('dream', { ally: 'ไลลินา', allyId: 'T3', line: 'สหาย', outcome: 'obey', level: 'เต็มใจ', p: 0.7, paid: 5, age: 20 }, 'ally:T3'))).toBe('ท่านส่งฝันถึงมิราเรื่อง ไลลินา ผู้กำลังลำบาก ใจของเขาเต็มใจ — เขาตื่นขึ้นพร้อมใจจะช่วย');
+    expect(out(g('dream', { ally: 'ไลลินา', allyId: 'T3', line: 'สหาย', outcome: 'refuse', level: 'ขัดขืน', p: 0.2, paid: 5, age: 20 }, 'ally:T3'))).toContain('เขาตื่นขึ้นแต่ไม่นำพา');
   });
 });
 
@@ -754,6 +786,20 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
       b('level', { from: 2, to: 3, why: 'story', b: 40 }),
       b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'plain' }),
     ]) expect(displayLevel(x), `${x.sys}/${x.kind}`).toBeGreaterThan(0);
+  });
+
+  it('tells what marks the family and the road: a child the character holds dear, a partner who goes, a story place that was shut (T3 T2)', () => {
+    // the feelings toward a child from the level of a familiar person on, whichever feeling: เอ็นดู ห่วง ภูมิใจ are not in the list of the felt moods
+    for (const mood of ['เอ็นดู', 'ห่วง', 'ภูมิใจ']) expect(displayLevel(b('mood', { mood, asked: mood, level: 2, why: 'child:child' })), mood).toBe(1);
+    expect(displayLevel(b('mood', { mood: 'ห่วง', asked: 'ห่วง', level: 1, why: 'child:infant' }))).toBe(0);
+    expect(displayLevel(b('mood', { mood: 'ภูมิใจ', asked: 'ภูมิใจ', level: 3, why: 'x' }))).toBe(0);
+    // a partner or a companion leaving is told; a death of a close one is told by its funeral
+    expect(displayLevel(b('end', { way: 'fade', level: 3, reason: 'ห่างหาย', partner: true }))).toBe(1);
+    expect(displayLevel(b('end', { way: 'death', level: 5, reason: 'ตาย' }, 'T2', 1))).toBe(0);
+    expect(displayLevel(b('end', { way: 'death', level: 2, reason: 'ตาย' }, 'T2', 1))).toBe(1);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'wanted', cause: 'story:hu.b2' }, 'KD-01', 1))).toBe(1);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'wanted', cause: 'return' }, 'KD-01', 0))).toBe(0);
+    expect(displayLevel(sys('travel', 'blocked', { why: 'bound', cause: 'story:hu.b2' }, 'KD-01', 0))).toBe(0);
   });
 
   it('tells the mood of a story line once the bonds hold someone on that line, and not before (T4)', () => {
