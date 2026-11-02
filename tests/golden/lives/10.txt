@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 10 ==
-ระบบที่ทำงาน: world character npc story text god.acts attention
+ระบบที่ทำงาน: world character npc story text god god.acts attention
 โลกเดินมาถึง ศ.ม. 12,110 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -119,9 +119,9 @@
 
 -- สรุป --
 ธรรา ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 12,174 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 114 · character 6 · npc 43 · story 77 · text 4 · god 34 · attention 29 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 114 · character 6 · npc 43 · story 77 · text 4 · god 33 · attention 29 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:แกนศรัทธา effect:stat:B cond:bond effect:stat:บุญคุณ
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): god/prayer ×17 attention/call ×26 god/prayer.lapse ×17 attention/glow ×3 npc/npc ×21 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): god/prayer ×17 attention/call ×26 god/prayer.lapse ×16 attention/glow ×3 npc/npc ×21 story/jobpath ×1
 
 -- พระหัตถ์ --
-คำอธิษฐานที่ไม่ได้ตอบ 17 ใบ
+คำอธิษฐานที่ไม่ได้ตอบ 16 ใบ

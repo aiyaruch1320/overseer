@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 1 ==
-ระบบที่ทำงาน: world character npc story text god.acts attention
+ระบบที่ทำงาน: world character npc story text god god.acts attention
 โลกเดินมาถึง ศ.ม. 11,450 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -99,9 +99,9 @@
 
 -- สรุป --
 มัลฮาร์ด ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,562 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 80 · character 10 · npc 29 · story 62 · text 4 · god 26 · attention 25 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 80 · character 10 · npc 29 · story 62 · text 4 · god 25 · attention 24 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:แกนศรัทธา effect:stat:ค่าสถานะ effect:stat:B cond:bond effect:stat:โบนัสหลบ
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): god/prayer ×13 attention/call ×22 god/prayer.lapse ×13 npc/npc ×11 attention/glow ×2 story/jobpath ×1 attention/missed ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): god/prayer ×13 attention/call ×21 god/prayer.lapse ×12 npc/npc ×11 attention/glow ×2 story/jobpath ×1 attention/missed ×1
 
 -- พระหัตถ์ --
-คำอธิษฐานที่ไม่ได้ตอบ 13 ใบ
+คำอธิษฐานที่ไม่ได้ตอบ 12 ใบ

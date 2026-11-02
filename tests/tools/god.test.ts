@@ -1,3 +1,4 @@
+import { allSystems } from '../../src/core/systems';
 // The god in the test tools (docs/guide/code-plan.md §8.0): the commands of `npm run play`, the policy of `npm run life`.
 // The god system itself is written elsewhere, so the tests register a stand-in action and a stand-in policy.
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -289,7 +290,8 @@ describe('npm run life --policy', () => {
     expect(comparable(runLifeReport(data, { seed: 2 }).text)).toBe(comparable(plain.text));
   });
 
-  it('says the policy has no effect when no policy function is found', () => {
+  // the god system now exports policyStep, so the tool finds it: this case only holds in a core without the god
+  it.skipIf(allSystems().some((x) => x.name === 'god'))('says the policy has no effect when no policy function is found', () => {
     const r = runLifeReport(data, { seed: 2, policy: 'ลงโทษ' });
     expect(r.text).toContain('ยังไม่พบฟังก์ชันนโยบายของระบบพระเจ้า (policyStep)');
     expect(r.text).toContain('-- พระหัตถ์ --');

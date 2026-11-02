@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 14 ==
-ระบบที่ทำงาน: world character npc story text god.acts attention
+ระบบที่ทำงาน: world character npc story text god god.acts attention
 โลกเดินมาถึง ศ.ม. 11,270 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -98,9 +98,9 @@
 
 -- สรุป --
 โรริก ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,356 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 58 · character 9 · text 4 · story 55 · attention 31 · npc 33 · god 41 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 58 · character 9 · text 4 · story 55 · attention 30 · npc 33 · god 37 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B effect:stat:แกนศรัทธา
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×27 npc/npc ×17 god/prayer ×21 god/prayer.lapse ×20 attention/glow ×3 attention/missed ×1 story/llm ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×26 npc/npc ×17 god/prayer ×19 god/prayer.lapse ×18 attention/glow ×3 attention/missed ×1 story/llm ×1
 
 -- พระหัตถ์ --
-คำอธิษฐานที่ไม่ได้ตอบ 20 ใบ
+คำอธิษฐานที่ไม่ได้ตอบ 18 ใบ
