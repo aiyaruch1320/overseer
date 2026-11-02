@@ -10,8 +10,9 @@ import { openLine } from '../story';
 import { bondsIndex } from './data';
 import { addGratitude, changeB, endTie, hAgeOf, setLine } from './people';
 import { showMood } from './moods';
-import { extOf, isLive, levelOf, type ArcState, type BondsExt, type Tie } from './state';
-import { CRISIS_CARD, ENDING_B, HELP, HELP_BASE, KIN_TEMPLATES, STAGE_GAP, STAGE_PATIENCE } from './tuning';
+import { answered } from '../attention';
+import { extOf, isLive, levelOf, type ArcState, type BondsExt, type Nudge, type Tie } from './state';
+import { CRISIS_CARD, CRISIS_MAX_BEATS, ENDING_B, HELP, HELP_BASE, KIN_TEMPLATES, STAGE_GAP, STAGE_PATIENCE } from './tuning';
 import { grantPair } from './items';
 
 export const SRC = { sys: 'bonds', stream: 'bonds.arc' } as const;
@@ -187,26 +188,18 @@ function traitWeight(life: LifeState): number {
   return ((axes.kind ?? 0) + (axes.brave ?? 0)) / 400;
 }
 
-/** The character's answer to a crisis of his tie: full, small, or none (bn.a1: 40, 35, 25, moved by his nature and by the pair of items). */
-export function crisisAnswer(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie): 'full' | 'small' | 'refuse' {
+/** The character's answer to a crisis of his tie: full, small, or none (bn.a1: 40, 35, 25, moved by his nature, by the pair of items and by the god's hand: `bonus`). */
+export function crisisAnswer(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, bonus = 0): 'full' | 'small' | 'refuse' {
   const rng = ctx.rng('bonds.arc');
   let pair = 0;
   if (e.pairs.some((p) => p.tie === t.id && p.status === 'full' && p.code === 'PR-01')) pair = 0.1;
-  const help = Math.max(0.1, Math.min(0.95, HELP_BASE + traitWeight(life) + 0.03 * levelOf(ctx, t) + pair));
+  const help = Math.max(0.1, Math.min(0.95, HELP_BASE + traitWeight(life) + 0.03 * levelOf(ctx, t) + pair + bonus));
   if (!rng.chance(help)) return 'refuse';
-  return rng.chance(0.55 + traitWeight(life)) ? 'full' : 'small';
+  return rng.chance(Math.max(0.05, Math.min(0.95, 0.55 + traitWeight(life) + bonus / 2))) ? 'full' : 'small';
 }
 
-function crisis(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState, v: StageView, involved: boolean): void {
-  if (!involved) return;
-  arc.involved = true;
-  e.counts.crises++;
-  const answer = crisisAnswer(ctx, life, e, t);
-  arc.helped = answer !== 'refuse';
-  // a card for the player in a share of them (07-attention.md §2: about 1.5 a life with the bondage escapes); the rest are told as trouble
-  const card = rng0(ctx).chance(CRISIS_CARD);
-  if (card) e.counts.cards++;
-  write(ctx.state, { sys: 'bonds', kind: card ? 'crisis' : 'trouble', id: t.id, data: { name: t.name, line: t.line, code: arc.code, level: levelOf(ctx, t), text: v.text, answer }, level: card ? 2 : 1 });
+/** What the answer does: the gold it costs, the bond and the gratitude it moves (bonds/01 §2.1). */
+function answerEffects(ctx: Ctx, life: LifeState, t: Tie, answer: 'full' | 'small' | 'refuse'): void {
   const rng = ctx.rng('bonds.arc');
   if (answer === 'full') {
     const cost = rng.int(HELP.goldMin, HELP.goldMax);
@@ -221,10 +214,74 @@ function crisis(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState, v
   }
 }
 
+/** The god's hand on this tie's crisis, if it is still in force; it is spent by the answer. */
+function takeNudge(e: BondsExt, t: Tie, life: LifeState): Nudge | undefined {
+  const n = e.nudges[t.id];
+  delete e.nudges[t.id];
+  return n && n.until >= life.hAge ? n : undefined;
+}
+
+/**
+ * The crisis of a tie (stage 3). A crisis the player is called for (a card) is announced first: `bonds/crisis` at level 2 names the person, the line and what
+ * is happening, and the attention system calls the player on it. The character answers at the next beat (`decideCrises`), so a whisper, a dream or a word of
+ * the god can move the answer before it is given (M3 review H5; the same order as the god windows of the story). The rest of the crises are told as trouble
+ * and answered at once.
+ */
+function crisis(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState, v: StageView, involved: boolean): void {
+  if (!involved) return;
+  arc.involved = true;
+  e.counts.crises++;
+  // a card for the player in a share of them (07-attention.md §2: about 1.5 a life with the bondage escapes); the rest are told as trouble
+  const card = rng0(ctx).chance(CRISIS_CARD);
+  if (!card) {
+    const answer = crisisAnswer(ctx, life, e, t, takeNudge(e, t, life)?.bonus ?? 0);
+    arc.helped = answer !== 'refuse';
+    write(ctx.state, { sys: 'bonds', kind: 'trouble', id: t.id, data: { name: t.name, line: t.line, code: arc.code, level: levelOf(ctx, t), text: v.text, answer, kin: t.kin ?? null }, level: 1 });
+    answerEffects(ctx, life, t, answer);
+    return;
+  }
+  e.counts.cards++;
+  const entry = write(ctx.state, { sys: 'bonds', kind: 'crisis', id: t.id, data: { name: t.name, line: t.line, code: arc.code, level: levelOf(ctx, t), text: v.text, kin: t.kin ?? null, tie: t.id, gender: t.gender }, level: 2 });
+  e.crises.push({ tie: t.id, n: entry.n, beats: 0, age: life.hAge, code: arc.code, text: v.text });
+}
+
+/**
+ * Beat hook: the character answers the crises announced to the player, the beat after the announcement once the attention system has called for it (a card
+ * that is held for the gap rules keeps the answer waiting, at most CRISIS_MAX_BEATS). The answer is written as `bonds/trouble` at level 1 (`after: true`) with who
+ * moved it (`by`: `whisper` `dream` `liar`, or null when the character chose alone). A person who is gone by then has no answer.
+ */
+export function decideCrises(ctx: Ctx, life: LifeState): void {
+  const e = extOf(life);
+  if (!e.crises.length) return;
+  for (const c of [...e.crises]) {
+    const t = e.ties[c.tie];
+    c.beats++;
+    if (!t || !isLive(t) || !t.arc) {
+      e.crises = e.crises.filter((x) => x !== c);
+      continue;
+    }
+    if (c.beats < CRISIS_MAX_BEATS && !answered(ctx.state, c.n)) continue;
+    e.crises = e.crises.filter((x) => x !== c);
+    const nudge = takeNudge(e, t, life);
+    const answer = crisisAnswer(ctx, life, e, t, nudge?.bonus ?? 0);
+    t.arc.helped = answer !== 'refuse';
+    // told as `trouble` (the text system has it with the answer); `after` marks it as the answer to the `crisis` announced before, whose sentence (`what`) it does not repeat
+    write(ctx.state, { sys: 'bonds', kind: 'trouble', id: t.id, data: { name: t.name, line: t.line, code: c.code, level: levelOf(ctx, t), text: '', what: c.text, answer, kin: t.kin ?? null, tie: t.id, by: nudge?.by ?? null, after: true, gender: t.gender }, level: 1 });
+    answerEffects(ctx, life, t, answer);
+  }
+}
+
+/** Nudges that outlived the years they waited for fall away. */
+export function expireNudges(e: BondsExt, life: LifeState): void {
+  for (const [id, n] of Object.entries(e.nudges)) if (n.until < life.hAge) delete e.nudges[id];
+}
+
 // ---------- the ending (stage 5) ----------
 
 /** What an ending does to the person, read from its words (the documents write the effects as prose: 04 §3, 05 §2). */
 export function endingKind(label: string): 'dies' | 'leaves' | 'split' | 'betrays' | 'stays' {
+  // the words that are about someone else or about a cure, not about the tie going: "พบว่าตายแล้ว" (the one he searched for, FT-02) · "หายด้วยราคาที่แพง" (he is well again, FT-04)
+  if (/^(พบว่า|หายด้วย|หายป่วย|หายดี)/.test(label)) return 'stays';
   if (/(ตาย|สิ้น|หลุมศพ)/.test(label) && !/(ไม่ตาย|ตายแทน)/.test(label)) return 'dies';
   if (/(หักหลัง|ศัตรู)/.test(label)) return 'betrays';
   if (/(สายแตก|สายจาง|แตกกัน|ตัดขาด|ไม่ไว้ใจตัวละคร|แยกทาง)/.test(label)) return 'split';

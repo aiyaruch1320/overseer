@@ -6,6 +6,7 @@
 // A dream whose node does not come within two life years fades without a penalty. A node with a god window is announced a beat before it is
 // decided (`story/window`), and the ways offered then are the ways of that node.
 import { extOf as charExt, giveId, idx, takeId } from '../character';
+import { crisisOf, findAlly, nudgeCrisis } from '../bonds';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { test } from '../rules';
@@ -339,6 +340,58 @@ export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown; pa
   record(ctx, 'dream', p.node, `sent:${ob.level}`);
   write(ctx.state, { sys: 'god', kind: 'dream', id: p.node, data: { choice: p.choice, source: d.source, symbol: p.symbol, level: ob.level, paid: price.faith ?? 0 }, level: 2 });
   return d;
+}
+
+// ---------- a dream of an ally in trouble (M3 review H5) ----------
+
+/**
+ * The god dreams of one of the character's allies whose crisis the game has called the player for (`bonds/crisis`): not a way of a node but the
+ * person himself, named by `ally` (his name, his tie id `T12` or the id of the roster position he stands for). It costs a dream (the same price and the same
+ * cap of the year, taken in the window when there is one) and is rolled when it is sent, by the same chance to obey: if he obeys he is readier to help the ally
+ * through his crisis, which is answered at the next beat. Returns why the god cannot, or null.
+ */
+export function checkAllyDream(ctx: Ctx, args: { ally?: unknown }): string | null {
+  if (!lifeOf(ctx)) return 'ไม่มีตัวละครที่ยังมีชีวิต';
+  if (isImmune(ctx)) return 'ผู้ถืออาวุธนี้ไม่รับการแทรกแซง';
+  if (count(ctx, 'y.dream') >= godData(ctx).caps.dreamPerYear) return 'ส่งฝันครบเพดานของปีนี้แล้ว';
+  const t = findAlly(ctx, String(args.ally ?? ''));
+  if (!t) return 'ไม่รู้จักพวกพ้องที่ชี้ (ใช้ชื่อหรือรหัสของเขา)';
+  if (!crisisOf(ctx, t)) return 'พวกพ้องคนนี้ไม่ได้ตกอยู่ในวิกฤตที่รอคำตอบ';
+  if (!canPay(ctx, dreamPrice(ctx))) return 'แสงศรัทธาไม่พอ';
+  return null;
+}
+
+const ALLY_WAY = { node: 'ally', choice: 'a' as Key, fit: 0, immoral: false };
+
+export function previewAllyDream(ctx: Ctx, args: { ally?: unknown }): Record<string, unknown> {
+  const t = findAlly(ctx, String(args.ally ?? ''))!;
+  const ob = obeyChance(ctx, ALLY_WAY);
+  const price = dreamPrice(ctx);
+  return { ally: t.name, allyId: t.id, line: t.line, text: crisisOf(ctx, t)?.text ?? '', level: ob.level, reasons: ob.reasons, faith: price.faith ?? 0, free: !!price.free };
+}
+
+export function sendAllyDream(ctx: Ctx, args: { ally?: unknown }): { ally: string; obeyed: boolean } {
+  const life = lifeOf(ctx)!;
+  const t = findAlly(ctx, String(args.ally ?? ''))!;
+  const ob = obeyChance(ctx, ALLY_WAY);
+  const price = dreamPrice(ctx);
+  pay(ctx, price, `dream:ally:${t.id}`);
+  bump(ctx, 'l.dream');
+  bump(ctx, 'y.dream');
+  bump(ctx, `l.dream.level.${ob.level}`);
+  touch(ctx);
+  const obeyed = ctx.rng('god.dream').next() < ob.p;
+  if (obeyed) {
+    addBelief(ctx, godData(ctx).belief.dream.obey, 'dream.obey');
+    nudgeCrisis(ctx, t.id, 'dream');
+    bump(ctx, 'l.dream.obeyed');
+  } else {
+    addBelief(ctx, godData(ctx).belief.dream.refuse, 'dream.refuse');
+    bump(ctx, 'l.dream.refuse');
+  }
+  record(ctx, 'dream', `ally:${t.id}`, `${ob.level}:${obeyed ? 'obey' : 'refuse'}`);
+  write(ctx.state, { sys: 'god', kind: 'dream', id: `ally:${t.id}`, data: { ally: t.name, allyId: t.id, line: t.line, outcome: obeyed ? 'obey' : 'refuse', level: ob.level, p: Math.round(ob.p * 1000) / 1000, paid: price.faith ?? 0, age: life.hAge }, level: 2 });
+  return { ally: t.name, obeyed };
 }
 
 function record(ctx: Ctx, kind: string, id: string, result: string): void {

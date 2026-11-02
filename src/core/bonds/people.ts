@@ -115,8 +115,13 @@ export function capB(t: { bound?: string }, b: number): number {
 }
 
 export function tieLog(ctx: Ctx, t: Tie): void {
-  write(ctx.state, { sys: 'bonds', kind: 'tie', id: t.id, data: { name: t.name, line: t.line, from: t.from, level: levelOf(ctx, t), b: t.b, race: t.race, npc: t.npc ?? null }, level: t.light ? 0 : 1 });
+  write(ctx.state, { sys: 'bonds', kind: 'tie', id: t.id, data: { name: t.name, line: t.line, from: t.from, level: levelOf(ctx, t), b: t.b, race: t.race, npc: t.npc ?? null, kin: t.kin ?? null }, level: t.light ? 0 : 1 });
 }
+
+/** The partner of the character: the lover line, or a person who was a lover and is the life partner. */
+export const isPartner = (t: Tie): boolean => t.line === 'คนรัก' || !!t.spouse;
+/** A child of the character, born or taken in. */
+export const isChild = (t: Tie): boolean => t.kin === 'child' || t.kin === 'adopted';
 
 // ---------- age and death of a person ----------
 
@@ -184,14 +189,25 @@ export function setLine(ctx: Ctx, t: Tie, line: string, why: string): void {
   if (t.line === line) return;
   t.past.push(t.line);
   const from = t.line;
+  // the lover who becomes a friend again is no longer the life partner
+  if (from === 'คนรัก') t.spouse = false;
   t.line = line;
   reindex(extOf(ctx.state.life!));
-  write(ctx.state, { sys: 'bonds', kind: 'line', id: t.id, data: { name: t.name, from, to: line, why, level: levelOf(ctx, t) }, level: 1 });
+  write(ctx.state, { sys: 'bonds', kind: 'line', id: t.id, data: { name: t.name, from, to: line, why, level: levelOf(ctx, t), partner: from === 'คนรัก' }, level: 1 });
 }
 
 // ---------- the end of a tie ----------
 
 export type EndWay = 'death' | 'fade' | 'split' | 'betray' | 'goodEnd';
+
+/** The reason of an end in words (the log carries it as `reason`): the player reads why a tie is not there any more. */
+function reasonOf(t: Tie, way: EndWay): string {
+  if (way === 'death') return 'ตาย';
+  if (way === 'split') return 'แยกทาง';
+  if (way === 'betray') return 'หักหลัง';
+  if (way === 'fade') return t.note ? 'หายไป' : 'ห่างหาย';
+  return 'จบสาย';
+}
 
 /** A tie ends (bonds/01 §5). Death keeps the name in the book; the other ways keep it too, but nobody appears from it again. */
 export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?: string } = {}): void {
@@ -218,7 +234,15 @@ export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?
     t.b = Math.max(0, t.b + (rule?.deltaB ?? ix.data.ties.npcAxes.betrayB));
     addGrudge(ctx, t, ix.data.ties.npcAxes.betrayGrudge);
   }
-  write(ctx.state, { sys: 'bonds', kind: 'end', id: t.id, data: { name: t.name, line: t.line, way, why, level: lv, cause: opt.cause ?? null }, level: lv >= 3 && way !== 'fade' ? 1 : 0 });
+  const reason = reasonOf(t, way);
+  t.gone = { age: life?.hAge ?? 0, year: ctx.state.clock.worldYear, way, why, reason };
+  // the partner and the children are told in every way they go (H6 H7 of the M3 review): a fading, a split or a loss is a line too
+  const near = isPartner(t) || isChild(t);
+  write(ctx.state, {
+    sys: 'bonds', kind: 'end', id: t.id,
+    data: { name: t.name, line: t.line, way, why, level: lv, cause: opt.cause ?? null, reason, kin: t.kin ?? null, partner: isPartner(t), spouse: !!t.spouse, age: life?.hAge ?? null, gender: t.gender },
+    level: near || (lv >= 3 && way !== 'fade') ? 1 : 0,
+  });
   if (t.npc) sync(ctx, t);
 }
 

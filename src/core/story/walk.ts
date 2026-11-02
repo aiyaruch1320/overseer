@@ -10,7 +10,7 @@ import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
 import { entryWeight, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
+import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -238,6 +238,10 @@ function decideOpen(ctx: Ctx, ex: StoryExt, ix: Index, line: string): boolean {
       const rate = OPEN_RATE[line];
       if (ok && rate !== undefined) ok = ctx.rng('life.story').chance(rate);
     }
+    // a line of the economy that the documents open by a cause or a condition alone and the sim does not count: only a share of the lives that meet it walk it
+    // (tuning OPEN_SHARE), whoever opened it; drawn once
+    const share = OPEN_SHARE[line];
+    if (ok && share !== undefined) ok = (ex.drawn[line] ??= ctx.rng('life.story.share').chance(share));
     if (!ok) {
       if (!RETRY_OPEN.has(line)) ex.open[line] = false;
       return false;
@@ -650,6 +654,7 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
   const callback = i >= 0 && w.ties[i];
 
   ex.cur = { id: n.id, choice: key };
+  const at = life.country;
   if (ch) {
     apply(ctx, normalize(ch.effects), src);
     if (after && key !== 'c') apply(ctx, normalize(key === 'a' ? after.pass : after.fail), src);
@@ -683,6 +688,7 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
       ties: w.ties.filter(Boolean).length,
       chance: w.ties.some(Boolean),
       callback,
+      ...tripOf(ctx, n.line, life, at, [...(ch?.effects ?? []), ...post]),
     },
     level: n.godWindow || n.kind === 'convergence' ? 2 : 1,
   });
@@ -694,6 +700,36 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
 
   if (n.kind !== 'convergence' && n.kind !== 'fallback') followLinks(ctx, ex, ix, n);
   return key;
+}
+
+/**
+ * What the log of a node keeps for a journey (M3 review T2: where to and why): the countries the way names (`places`, ids), where the character stood
+ * when it began (`at`), where he stands when it was applied if that moved him (`to`), and for the journey lines why the line was opened (`why`: the cause the
+ * travel system wrote when it opened it). The move that follows a way that names a place is travel's own entry (`travel/move`, its `why` is `story:<node>`).
+ */
+function tripOf(ctx: Ctx, line: string, life: LifeState, at: string, effects: readonly Effect[]): Record<string, string> {
+  const places = placesOf(effects);
+  const journey = JOURNEY_LINES.has(line);
+  if (!places.length && !journey) return {};
+  const out: Record<string, string> = { at };
+  if (places.length) out.places = places.join(',');
+  if (life.country !== at) out.to = life.country;
+  if (journey) {
+    const open = [...ctx.state.log].reverse().find((e) => e.sys === 'travel' && e.kind === 'open' && e.id === line);
+    if (open && typeof open.data.why === 'string') out.why = open.data.why;
+  }
+  return out;
+}
+
+/** The countries a list of effects names (`place` effects with a country id, inside `if` `only` `chance` `pick` too). */
+function placesOf(list: readonly Effect[], out: string[] = []): string[] {
+  for (const e of list) {
+    if (e.k === 'place') {
+      for (const id of e.ids) if (/^[A-Z]{2}-\d{2}$/.test(id) && !out.includes(id)) out.push(id);
+    } else if (e.k === 'if' || e.k === 'only' || e.k === 'chance') placesOf(e.then, out);
+    else if (e.k === 'pick') for (const b of e.of) placesOf(b.effects, out);
+  }
+  return out;
 }
 
 /** The cause of death a way brings, when it is one that says the character dies (tuning DEATH_WAYS, DEADLY_OUTCOMES); otherwise undefined. */

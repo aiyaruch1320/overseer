@@ -5,6 +5,7 @@ import type { Ctx } from '../../game';
 import { apply } from '../../rules';
 import type { Choice, Effect } from '../../types';
 import { npcIndex } from '../../npc/data';
+import { changeB, crisisOf, findAlly, nudgeCrisis } from '../../bonds';
 import { chronicle, say } from './record';
 import { clamp, continentOf, countryName, godOf, hasCountry } from './geo';
 import { aliveNpc, nameOf, slotOf } from './npcs';
@@ -72,7 +73,8 @@ export function checkWhisper(ctx: Ctx, args: Record<string, unknown>): string | 
   const target = args.target === undefined ? undefined : String(args.target);
   if (need && !target) return `คำใบ้ "${hint}" ต้องชี้เป้า (target)`;
   if (need === 'place' && !(hasCountry(ctx, target!) || CONTINENTS.includes(target!))) return 'ที่ที่ชี้ไม่มีในโลก';
-  if (need === 'npc' && !(npcIndex(ctx).rows.has(target!) && aliveNpc(ctx, target!))) return 'NPC ที่ชี้ไม่มีชีวิตอยู่';
+  // a person of the roster, or an ally of the character (his name, his id `T12` or the id of the roster position he stands for): "ช่วย" reaches the crisis of an ally (M3 review H5)
+  if (need === 'npc' && !(npcIndex(ctx).rows.has(target!) && aliveNpc(ctx, target!)) && !findAlly(ctx, target!)) return npcIndex(ctx).rows.has(target!) ? 'NPC ที่ชี้ไม่มีชีวิตอยู่' : 'ไม่รู้จัก NPC หรือพวกพ้องที่ชี้ (ใช้ชื่อหรือรหัสในรายการพวกพ้อง)';
   if (hint === 'สางเรื่อง' && ctx.state.lineage.open.length === 0) return 'สายตระกูลไม่มีเรื่องค้าง';
   const why = whyNot(ctx, { faith: whisperPrice(ctx, hint) });
   return why;
@@ -102,7 +104,8 @@ export function runWhisper(ctx: Ctx, args: Record<string, unknown>): void {
     addBelief(ctx, WHISPER.beliefObey, 'whisper.obey');
     take(ctx, hint, target);
   } else addBelief(ctx, l.godFaith >= 0 && rng.chance(0.5) ? 1 : WHISPER.beliefRefuse, 'whisper.refuse');
-  say(ctx, { kind: 'whisper', id: hint, data: { hint, price: price.faith ?? 0, level: o.level, obeyed, ...(target ? { target } : {}) }, level: 1 });
+  const ally = target ? findAlly(ctx, target) : undefined;
+  say(ctx, { kind: 'whisper', id: hint, data: { hint, price: price.faith ?? 0, level: o.level, obeyed, ...(target ? { target } : {}), ...(ally ? { ally: ally.name, allyId: ally.id, crisis: !!crisisOf(ctx, ally) } : {}) }, level: 1 });
   chronicle(ctx, { kind: 'whisper', id: hint, target, result: `${o.level} ${obeyed ? 'ทำตาม' : 'ไม่ทำตาม'}` });
 }
 
@@ -122,13 +125,20 @@ function take(ctx: Ctx, hint: string, target: string | undefined): void {
       return act({ until: l.hAge + WHISPER.stayYears });
     case 'จุดอ่อนของศัตรู':
       return act({ left: 1 });
-    case 'คนนั้นโกหก':
-      return void apply(ctx, [{ k: 'trust', toward: target!, delta: WHISPER.liarTrust }], { sys: 'god', id: 'whisper', stream: 'god.whisper' });
+    case 'คนนั้นโกหก': {
+      if (npcIndex(ctx).rows.has(target!)) apply(ctx, [{ k: 'trust', toward: target!, delta: WHISPER.liarTrust }], { sys: 'god', id: 'whisper', stream: 'god.whisper' });
+      // an ally the character hears is a liar: he trusts him less now and is less ready to help him in his crisis
+      const ally = nudgeCrisis(ctx, target!, 'liar');
+      if (ally) changeB(ctx, ally, WHISPER.liarB, 'whisper');
+      return;
+    }
     case 'ช่วย': {
       // the way of the NPC's story tagged [ช่วย] is weighed ×2
       const row = npcIndex(ctx).rows.get(target!);
       const effects: Effect[] = (row?.paths ?? []).filter((p) => p.tags.includes('help')).map((p) => ({ k: 'npcPath', npc: target!, path: p.key, op: 'weight', n: WHISPER.helpMul, unit: 'mul' }));
       apply(ctx, effects, { sys: 'god', id: 'whisper', stream: 'god.whisper' });
+      // an ally of the character: he is readier to help him through his crisis, the one announced now or one that comes within two years
+      nudgeCrisis(ctx, target!, 'whisper');
       return;
     }
     case 'สางเรื่อง':
@@ -211,4 +221,4 @@ export const pointedHeir = (ctx: Ctx): string | undefined => activeWhispers(ctx)
 export const pointedThread = (ctx: Ctx): string | undefined => activeWhispers(ctx).find((w) => w.hint === 'สางเรื่อง')?.target;
 
 /** A line of text about a whisper target for the card (place or NPC name). */
-export const targetName = (ctx: Ctx, t: string): string => (slotOf(ctx, t) ? nameOf(ctx, t) : hasCountry(ctx, t) ? countryName(ctx, t) : t);
+export const targetName = (ctx: Ctx, t: string): string => (slotOf(ctx, t) ? nameOf(ctx, t) : hasCountry(ctx, t) ? countryName(ctx, t) : findAlly(ctx, t)?.name ?? t);

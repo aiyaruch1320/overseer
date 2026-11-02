@@ -4,6 +4,7 @@
 // (chests, dreams) belong to the policy step of the rest of the god system. Striking the seals and making ruins join in M4.
 import type { Ctx } from '../../game';
 import { moodOf } from '../../world';
+import { crisesWaiting } from '../../bonds';
 import { momentsOf, policyName, type PolicyName } from '../policy';
 import { checkAnswer, runAnswer, cardsOf } from './prayers';
 import { checkMiracle, runMiracle } from './miracles';
@@ -59,6 +60,11 @@ function whisperAtMoment(ctx: Ctx, policy: PolicyName): void {
     if (!ctx.rng('god.policy').chance(POLICY.randomWhisper)) return;
   } else if (ctx.state.god.light < POLICY.whisperAt) return;
   for (const hint of ['ระวัง', 'กล้าเถิด', 'จงอยู่']) if (try1(ctx, 'whisper', { hint })) return;
+}
+
+/** The merciful god helps an ally whose crisis the game has called him for (M3 review H5): a whisper `ช่วย` on him while the light is above the reserve. */
+function helpAllies(ctx: Ctx): void {
+  for (const w of crisesWaiting(ctx)) if (ctx.state.god.light >= POLICY.whisperAt) try1(ctx, 'whisper', { hint: 'ช่วย', target: w.tie.id });
 }
 
 /** Slow (sign −1) or speed (sign +1) the fall of the first dragon that shows an omen and carries no fate yet. */
@@ -127,6 +133,7 @@ export function actsPolicyStep(ctx: Ctx, policy: string, phase: ActsPhase = 'bea
   if (!livingOf(ctx)) return;
   if (phase === 'prayers' || phase === 'beat') answerPrayers(ctx, PRAYER_WAY[p]);
   if (phase === 'whispers' || phase === 'beat') {
+    if (p === 'merciful' || p === 'shaper') helpAllies(ctx);
     if (p === 'merciful' || p === 'shaper' || p === 'random') for (let m = momentsOf(ctx); m > 0 && livingOf(ctx); m--) whisperAtMoment(ctx, p);
   }
 }
