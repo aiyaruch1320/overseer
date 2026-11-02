@@ -18,7 +18,7 @@
 | adventurer | นักผจญภัย | U | sword dagger bow tracking stealth | ประเทศที่มีกิลด์ (AL-18 AL-03 ฯลฯ) อายุ 15 ขึ้นไป | chain_light_sword |
 | merchant | พ่อค้า | U | trade charm sailing | ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56 | chain_caravan_fortune |
 | mage | นักเวท | R | fire water wind earth ice lightning summon rune space | ค่าเวท 10 ขึ้นไป · หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59) | chain_arcane_tome |
-| priest | นักบวช | R | light healing divination | (ศาสนา `faith.02` และ ชาย) หรือ (ศาสนา `faith.06` และ หญิง) หรือ (ศาสนา `faith.01` และ เผ่าปีก) หรือ ศาสนา `faith.05` (ต้องผ่านการทดสอบ) · ทุกเผ่า (ศาสนาแสงให้ชายบวชเป็นพระ ส่วนหญิงเป็นผู้รับใช้ศาสนจักรแทน ลัทธิมังกรให้เผ่าอื่นเป็นผู้ช่วย) | chain_holy_vision |
+| priest | นักบวช | R | light healing divination | (ศาสนา `faith.02` และ ชาย) หรือ (ศาสนา `faith.06` และ หญิง) หรือ (ศาสนา `faith.01` และ เผ่าปีก) หรือ ศาสนา `faith.05` (ต้องผ่านการทดสอบ) หรือ ศาสนา `faith.03` หรือ ศาสนา `faith.04` หรือ ศาสนา `faith.07` หรือ ศาสนา `faith.08` หรือ ศาสนา `faith.09` หรือ ศาสนา `faith.10` หรือ ศาสนา `faith.11` หรือ ศาสนา `faith.12` หรือ ศาสนา `faith.13` หรือ ศาสนา `faith.14` หรือ ศาสนา `faith.15` หรือ ศาสนา `faith.16` หรือ ศาสนา `faith.17` หรือ ศาสนา `faith.18` หรือ ศาสนา `faith.19` หรือ ศาสนา `faith.20` หรือ ศาสนา `faith.21` หรือ ศาสนา `faith.22` หรือ ศาสนา `faith.23` · ทุกเผ่า (สี่ศาสนาแรกเป็นข้อจำกัดเพิ่ม ศาสนาอื่นเป็นนักบวชได้ไม่จำกัด · ศาสนาแสงให้ชายบวชเป็นพระ ส่วนหญิงเป็นผู้รับใช้ศาสนจักรแทน ลัทธิมังกรให้เผ่าอื่นเป็นผู้ช่วย) | chain_holy_vision |
 | thief | โจร | C | dagger stealth whip | ไม่จำกัด · ในประเทศที่มีกฎหมายเข้ม (AL-06 AL-08) น้ำหนักลดและเสี่ยงถูกจับ | chain_guild_invite |
 | smith | ช่างตีเหล็ก | U | smithing mining hammer | คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52) · ต้องค่ากำลัง 8 ขึ้นไป | chain_master_forge |
 | scholar | นักปราชญ์ | R | scholar rune alchemy divination | ต้องอ่านออก (ปัญญา 8 ขึ้นไป) · AL-11 SV-07 MK-13 เป็นสำนักใหญ่ | chain_arcane_tome |
@@ -42,7 +42,7 @@
 | performer | นักแสดงละคร | U | music charm illusion | อยู่เมืองใหญ่ · AL-05 AL-13 | — |
 | teacher | ครู | U | scholar leadership | อ่านออก (ปัญญา 8 ขึ้นไป) · AL-11 MK-07 | — |
 | seer | หมอดู | R | divination illusion | ศาสนา `faith.06` หรือ ศาสนา `faith.17` (ศรัทธาความฝัน ศูนย์กลางที่ AL-14) หรือ ศาสนา `faith.15` | — |
-| archaeologist | นักสำรวจซากโบราณ | R | scholar rune mining | AL-11 NR-14 MK-04 MK-13 · อ่านออก (ปัญญา 8 ขึ้นไป) · ทุกคน (ต้องทนทาน) | — |
+| archaeologist | นักสำรวจซากโบราณ | R | scholar rune mining | AL-11 NR-14 MK-04 MK-13 · อ่านออก (ปัญญา 8 ขึ้นไป) · ต้องทนทาน | — |
 | spy | สายลับ | R | stealth charm illusion | ทุกประเทศ · NB-09 MH-08 AL-05 เด่น | — |
 | diplomat | นักการทูต | R | charm leadership trade | AL-01 NR-01 · ชื่อเสียงขั้นต่ำ 15 | — |
 | gravekeeper | คนเฝ้าสุสาน | U | necro curse light | AL-25 SH-02 MH-12 · กูลและมัมมี่ไม่ทำ (ทำให้ผู้ตายไม่สบายใจ) | — |
@@ -86,10 +86,10 @@
 | cartographer | นักทำแผนที่ | U | art sailing scholar (int) | NR-15 AL-11 | thread:wanderer |
 | accountant | นักบัญชี | U | accounting (int) | AL-10 AL-13 NR-01 | พบความลับทางการเงินของ NPC (ผูก AL10-3) |
 | banker | นายธนาคาร | R | accounting trade (int) | AL-10 NB-02 (เลือด) NR-01 | thread:greed |
-| tax_collector | คนเก็บภาษี | U | accounting law (int) | ทุกประเทศ (ที่มีรัฐ) · ทุกคน (เกลียดง่าย) | ได้ `c_envyaura` ง่าย |
+| tax_collector | คนเก็บภาษี | U | accounting law (int) | ทุกประเทศ (ที่มีรัฐ) · เกลียดง่าย | ได้ `c_envyaura` ง่าย |
 | lawyer | ทนายความ | R | law (int) | AL-06 AL-27 AL-08 | thread:rebel ถ้ารับคดีผู้ถูกกดขี่ |
-| mayor | ผู้ใหญ่บ้าน | U | leadership law (int) | ทุกเมืองเล็ก · อายุ 30 ขึ้นไป · ทุกคน (ต้องได้ความไว้ใจในเมือง) | ผูกเหตุการณ์ท้องถิ่น |
-| midwife | หมอตำแย | U | medicine herbalism (int) | ทุกคน (**หญิงเป็นหลัก** ชายเป็นได้แต่ต้องได้รับความเชื่อใจจากชุมชน) | พรสาย `#fertile` |
+| mayor | ผู้ใหญ่บ้าน | U | leadership law (int) | ทุกเมืองเล็ก · อายุ 30 ขึ้นไป · ต้องได้ความไว้ใจในเมือง | ผูกเหตุการณ์ท้องถิ่น |
+| midwife | หมอตำแย | U | medicine herbalism (int) | **หญิงเป็นหลัก** ชายเป็นได้แต่ต้องได้รับความเชื่อใจจากชุมชน | พรสาย `#fertile` |
 | apothecary | เภสัชกร | U | herbalism alchemy (int) | AL-26 NB-06 SV-02 | เห็นกาฬโรค (CT-03) ก่อนใคร |
 | veterinarian | หมอสัตว์ | U | medicine husbandry (int) | เผ่าสัตว์ ไชร์ AL-16 | thread:wild |
 
@@ -97,7 +97,7 @@
 
 | ID | ชื่อ | ระดับ | ความถนัด (สถานะหลัก) | เงื่อนไขเพิ่มจากโลก | เส้นเรื่องที่เปิด |
 | --- | --- | --- | --- | --- | --- |
-| physician | แพทย์ | R | medicine (int) | AL-26 SV-02 MK-08 · ทุกคน (ต้องผ่านสำนัก) | ผูก CT-03 HP-06 |
+| physician | แพทย์ | R | medicine (int) | AL-26 SV-02 MK-08 · ต้องผ่านสำนัก | ผูก CT-03 HP-06 |
 | engineer | วิศวกร | R | engineering (int) | MK-07 NR-12 AL-09 | ผูก MC-07 |
 | mechanic | ช่างกล | U | mechanics (int) | MK-12 MK-05 AL-28 | ซ่อมหุ่น (ผูก MC-03) |
 | rail_driver | คนขับรถจักร | U | piloting mechanics (spd) | MK-05 AL-28 | ผูก MC-07 WR-16 |
