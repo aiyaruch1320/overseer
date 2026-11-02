@@ -96,8 +96,8 @@ export interface Tie {
   otherName?: string;
   stage?: 'infant' | 'child' | 'youth' | 'adult';
   kidMood?: number;
-  /** The last feeling of a child that was told (mood, stage and hAge): the same one in the same stage waits `repeatYears` before it is told again. */
-  kidFeel?: { mood: string; stage: string; age: number };
+  /** The feelings toward a child that were told, by mood (stage and hAge of the last time): the same one in the same stage waits `repeatYears` before it is told again. */
+  kidFeel?: Record<string, { stage: string; age: number }>;
   /** hAge of the last letter of this person that was told (a person's letters are told once in a few years; the others only mark contact). */
   letterAt?: number;
   married?: { age: number; name: string };

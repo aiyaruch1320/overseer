@@ -680,7 +680,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'story:hu.b2', legs: 3, days: 40, fare: 9, smuggle: false }, 'AL-06'), /^เดินทางตามเรื่อง “.+”: จาก\S+ ไป\S+ 3 ช่วงทาง/],
     [sys('travel', 'stay', { node: 'hu.b2', to: 'AL-06', here: 'SV-09', why: 'chance' }, 'AL-06'), /^มิราไม่ได้ไปที่\S+ตามเรื่อง “.+” ยังอยู่ที่\S+ เพราะยังเลือกอยู่ที่เดิม$/],
     [sys('travel', 'blocked', { from: 'KD-03', why: 'bound', cause: 'sc' }, 'KD-01', 0), null],
-    [sys('travel', 'blocked', { from: 'KD-03', why: 'route closed', cause: 'story:hu.b2' }, 'KD-01', 1), /^มิราตามเรื่อง “.+” ไป\S+ไม่ได้ เพราะเส้นทางถูกปิด$/],
+    [sys('travel', 'blocked', { from: 'KD-03', why: 'route closed', cause: 'story:hu.b2' }, 'KD-01', 1), /^มิราตามเรื่อง “.+” ไป\S+ไม่ได้ เพราะเส้นทางไปที่นั่นถูกปิด$/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'bandits', name: 'x', why: 'sc' }, 'd2'), /^ระหว่างทาง: ถูกโจรหรือสัตว์ร้ายดักทาง$/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'pay 21', name: 'x', why: 'sc' }, 'd1', 0), /เสียไป 21 ทอง/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'news WR-06', name: 'x', why: 'sc' }, 'd10'), /ได้ข่าวเหตุการณ์โลก/],
@@ -950,6 +950,15 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     expect(now).toMatch(/ไม่มีเวลาให้ท่านแทรก/);
     expect(waited).not.toMatch(/ไม่มีเวลาให้ท่านแทรก/);
     expect(waited).toMatch(/^วิกฤตของ/);
+  });
+
+  it('R4: a debt cleared by wages is not a ransom; a ransom paid from the purse is, and several class steps regained are told', () => {
+    const exit = (extra: LogEntry['data']) => read(sys('bondage', 'exit', { way: 'ชำระหนี้', from: 1, owner: 'นอคโรลิธ', years: 11, gold: 4, ...extra }, 'wage', 2))[0];
+    const wage = exit({ paid: 83, payBy: 'wage', classUp: false, classSteps: 0 });
+    expect(wage).toMatch(/ใช้งานใช้หนี้ครบ 83 ทอง/);
+    expect(wage).not.toMatch(/ค่าไถ่/);
+    expect(exit({ paid: 105, payBy: 'purse', classUp: true, classSteps: 1 })).toMatch(/จ่ายค่าไถ่ 105 ทอง เหลือในมือ 4 ทอง ฐานะสูงขึ้นหนึ่งชั้น$/);
+    expect(exit({ paid: 0, payBy: 'none', classUp: false, classSteps: 2 })).toMatch(/ฐานะกลับสูงขึ้น 2 ชั้น$/);
   });
 
   it('R4: the year line says what went to the debt when the economy gives it, and still reads without it', () => {

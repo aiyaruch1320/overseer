@@ -411,6 +411,14 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
 
 // ---------- bondage ----------
 
+/** What the exit cost: a ransom paid from the purse, or a debt the wages cleared (no ransom was paid for it). */
+function payWords(d: D): string {
+  const paid = num(d.paid);
+  if (paid <= 0) return '';
+  if (s(d.payBy) === 'wage') return ` ใช้งานใช้หนี้ครบ ${paid} ทอง`;
+  return ` จ่ายค่าไถ่ ${paid} ทอง เหลือในมือ ${num(d.gold)} ทอง`;
+}
+
 const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
   const d = e.data;
   const who = cx.who;
@@ -424,7 +432,7 @@ const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'exit':
       if (s(e.id) === 'fled') return null; // the escape tells where he crossed
-      return `${who}พ้นจากพันธะ${s(d.owner) ? `ของ ${s(d.owner)}` : ''}${paren(s(d.way))}${num(d.years) > 0 ? ` หลังถูกผูกตัวมา ${num(d.years)} ปี` : ''}${num(d.paid) > 0 ? ` จ่ายค่าไถ่ ${num(d.paid)} ทอง เหลือในมือ ${num(d.gold)} ทอง` : ''}${d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
+      return `${who}พ้นจากพันธะ${s(d.owner) ? `ของ ${s(d.owner)}` : ''}${paren(s(d.way))}${num(d.years) > 0 ? ` หลังถูกผูกตัวมา ${num(d.years)} ปี` : ''}${payWords(d)}${num(d.classSteps) > 1 ? ` ฐานะกลับสูงขึ้น ${num(d.classSteps)} ชั้น` : d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
     case 'escape': {
       if (d.who === 'held') return name ? `${name} ผู้ที่${who}ถือสัญญาไว้ หนีไปได้` : undefined;
       if (d.ok) return `${who}หนีข้ามแดนได้สำเร็จ${d.to ? ` ถึง${pl(cx, d.to)}` : ''} และเป็นอิสระ`;

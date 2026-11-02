@@ -208,9 +208,9 @@ function childrenYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
       if (pool.length) {
         const mood = pool[rng.int(0, pool.length - 1)];
         // the same feeling toward the same child in the same stage is told once, then again only after several years (a feeling that changes is told at once)
-        const f = c.kidFeel;
-        const again = !f || f.mood !== mood || f.stage !== stage || life.hAge - f.age >= CHILD_FEELS.repeatYears;
-        if (again && showMood(ctx, life, c, mood, `child:${stage}`)) c.kidFeel = { mood, stage, age: life.hAge };
+        const f = c.kidFeel?.[mood];
+        const again = !f || f.stage !== stage || life.hAge - f.age >= CHILD_FEELS.repeatYears;
+        if (again && showMood(ctx, life, c, mood, `child:${stage}`)) (c.kidFeel ??= {})[mood] = { stage, age: life.hAge };
       }
     }
     if (!c.married && age >= CHILD_WED.ages[0] && age <= CHILD_WED.ages[1] && c.gender !== 'n' && rng.chance(CHILD_WED.chance)) {

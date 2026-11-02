@@ -250,3 +250,54 @@ describe('what the player reads holds no code (review M1 T1 T3)', () => {
     expect(met).toMatch(/ที่\S+/);
   });
 });
+
+describe('round two of the review: what the lives no longer say (R5 to R9)', () => {
+  let texts: string[] = [];
+  beforeAll(() => {
+    texts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((seed) => runLifeReport(data, { seed }).text);
+  }, 60000);
+
+  it('R9: no leftover of a cut link, no number glued to a number, no price said twice, no "ตัวละครตกอยู่ในพันธะ", no young relative by the name of the line', () => {
+    for (const t of texts) {
+      expect(t).not.toMatch(/\(กติกาตาม\)|ประเทศใน\)|ไปประเทศท่าที|ที่ \d+ที่ \d+|ทอง \d+ ทอง|ตัวละครตกอยู่ในพันธะ|ญาติรุ่นเยาว์|ขั้นที่ \d/);
+    }
+  });
+
+  it('R6: the death stop of a life lists no crisis or prayer that waits', () => {
+    for (const t of texts) expect(t).not.toMatch(/ชีวิตจบลงแล้ว · มีเรื่องรออยู่ด้วย/);
+  });
+
+  it('R7: every "ไม่ได้ไปที่ ... ยังอยู่ที่ ..." says why', () => {
+    for (const t of texts) for (const l of t.split('\n').filter((x) => x.includes('ไม่ได้ไปที่'))) expect(l, l).toMatch(/ เพราะ\S/);
+  });
+
+  it('R8: a partner who parts always says why', () => {
+    for (const t of texts) for (const l of t.split('\n').filter((x) => /แยกทางกัน ความสัมพันธ์ที่เคยเป็น/.test(x))) expect(l, l).toMatch(/จบลงแล้ว เพราะ\S/);
+  });
+
+  it('R5: a feeling toward one child is not told over and over: at most two of the same in one life', () => {
+    for (const t of texts) {
+      const count = new Map<string, number>();
+      for (const l of t.split('\n')) {
+        const m = /\[พวกพ้อง\] (.+ \(ลูก\))$/.exec(l);
+        if (m) count.set(m[1], (count.get(m[1]) ?? 0) + 1);
+      }
+      for (const [k, n] of count) expect(n, k).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it('R9: the stage label in the status follows the age', () => {
+    const s = createSession(data, { seed: 92 });
+    startLife(s);
+    for (let i = 0; i < 4 * 55; i++) s.game.beat();
+    const text = statusLines(data, s.game.state).join('\n');
+    for (const m of text.matchAll(/\(อายุ (\d+) (ทารก|วัยเรียน|วัยรุ่น|ผู้ใหญ่)/g)) {
+      const age = Number(m[1]);
+      // the adult age of a race is about 20 life years (a year or two either way by the race)
+      if (age >= 24) expect(m[2], `${age}`).toBe('ผู้ใหญ่');
+      if (age >= 5 && age <= 14) expect(m[2], `${age}`).toBe('วัยเรียน');
+      if (age <= 2) expect(m[2], `${age}`).toBe('ทารก');
+      if (age < 15) expect(m[2], `${age}`).not.toBe('วัยรุ่น');
+    }
+  });
+});
