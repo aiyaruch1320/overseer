@@ -29,6 +29,9 @@ export interface Dream {
   mul: number;
   paid: { faith?: number; dread?: number };
   /** Set when the dream met its node (or the node passed): what happened. */
+  /** The weights of the rolled dream are in the story's `entryMods` (`via` is `story` when the story asked for them with `dreamWeight`). */
+  applied?: boolean;
+  via?: 'story';
   resolved?: { outcome: 'obey' | 'misread' | 'refuse' | 'defy'; level: string; p: number; alt?: Key; retro?: boolean };
 }
 
@@ -55,6 +58,8 @@ export interface GodExt {
   history: { age: number; node: string; choice: Key }[];
   /** Prayers answered since GD-05 (01-power.md §1 last row). Acts report them through `noteAnswered`. */
   answered: number;
+  /** Belief the next life starts with: 60% of the one that just died (01-power.md §6). */
+  heirBelief?: number;
   /** The gifted weapon of this life. */
   weapon?: { id: string; variant: 'holy' | 'cursed' };
 }

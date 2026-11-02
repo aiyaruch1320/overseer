@@ -1,6 +1,8 @@
 // Dreams (docs/systems/god/03-dreams.md §1 to §4, G2): the game offers up to three ways the character can really take, the god sends one,
 // the character obeys, misreads, refuses or defies when he reaches the node, and a way that goes against his nature weighs on his heart.
-// The story system reads `dreamWeight(ctx, nodeId, key)` when it weighs the ways of a node (see the report for where to call it).
+// How a dream reaches the story: a dream is rolled once, the year before its node can fire (`armDreams`), and its weights are written into
+// `life.ext.story.entryMods`, the list the story already reads when it weighs the ways of a node, so the story needs no change.
+// `dreamWeight(ctx, nodeId, key)` is the same weight for a story that would rather ask: it rolls a dream that has not been rolled yet.
 import { extOf as charExt, giveId, idx, takeId } from '../character';
 import type { Ctx } from '../game';
 import { write } from '../log';
@@ -315,6 +317,7 @@ export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown }):
   touch(ctx);
   record(ctx, 'dream', p.node, `sent:${ob.level}`);
   write(ctx.state, { sys: 'god', kind: 'dream', id: p.node, data: { choice: p.choice, source: d.source, symbol: p.symbol, level: ob.level, paid: price.faith ?? 0 }, level: 2 });
+  armDreams(ctx);
   return d;
 }
 
@@ -369,21 +372,65 @@ export function resolveDream(ctx: Ctx, d: Dream, retro: boolean): NonNullable<Dr
   return r;
 }
 
-/** The weight a dream gives to a way of a node (the story multiplies the way's weight by it): 1 when no dream is waiting at the node. */
-export function dreamWeight(ctx: Ctx, nodeId: string, choiceKey: string): number {
-  if (!ctx.state.life || ctx.state.life.dead) return 1;
-  const d = dreamsOf(ctx).find((x) => x.node === nodeId);
-  if (!d) return 1;
-  const r = resolveDream(ctx, d, false);
+/** The multiplier a rolled dream gives to a way of its node (03-dreams.md §4 table `pathMul`). */
+function weightOf(ctx: Ctx, d: Dream, choiceKey: string): number {
+  const r = d.resolved!;
+  const out = godData(ctx).dreams.outcomes;
   switch (r.outcome) {
     case 'obey':
       return choiceKey === d.choice ? d.mul : 1;
     case 'misread':
-      return choiceKey === r.alt ? godData(ctx).dreams.outcomes.find((x) => x.id === 'misread')?.pathMul ?? 2 : 1;
+      return choiceKey === r.alt ? out.find((x) => x.id === 'misread')?.pathMul ?? 2 : 1;
     case 'defy':
-      return choiceKey === d.choice ? godData(ctx).dreams.outcomes.find((x) => x.id === 'defy')?.pathMul ?? 0.3 : 1;
+      return choiceKey === d.choice ? out.find((x) => x.id === 'defy')?.pathMul ?? 0.3 : 1;
     default:
       return 1;
+  }
+}
+
+/**
+ * The weight a dream gives to a way of a node, for a story that asks (it multiplies the way's weight by it): 1 when no dream waits at the node,
+ * and 1 for a dream whose weights are in `entryMods` already. A dream not rolled yet is rolled by the first call.
+ */
+export function dreamWeight(ctx: Ctx, nodeId: string, choiceKey: string): number {
+  if (!ctx.state.life || ctx.state.life.dead) return 1;
+  const d = dreamsOf(ctx).find((x) => x.node === nodeId);
+  if (!d || d.applied) return 1;
+  resolveDream(ctx, d, false);
+  d.via = 'story';
+  return weightOf(ctx, d, choiceKey);
+}
+
+/** Writes the weights of a rolled dream into the story's list of pulls on the ways of a node. */
+function applyWeights(ctx: Ctx, d: Dream): void {
+  const life = lifeOf(ctx);
+  if (!life || !d.resolved || d.applied) return;
+  const ex = storyExt(life);
+  for (const key of ['a', 'b', 'c'] as const) {
+    const mul = weightOf(ctx, d, key);
+    if (mul !== 1) ex.entryMods.push({ to: d.node, choice: key, mul });
+  }
+  d.applied = true;
+}
+
+/**
+ * Rolls the dreams whose node can fire in the next story step (the node's own age has come by next year, or it waits in the queue) and puts their
+ * weights where the story reads them. Called after the story has played a year, and after a dream is sent.
+ */
+export function armDreams(ctx: Ctx): void {
+  const life = lifeOf(ctx);
+  if (!life || !ctx.data.storylines) return;
+  const ex = storyExt(life);
+  const ix = indexOf(ctx);
+  for (const d of dreamsOf(ctx)) {
+    if (d.resolved || d.via) continue;
+    const n = ix.nodes.get(d.node);
+    if (!n) continue;
+    const lo = Math.max(0, n.age[0] - (ex.earlier[d.node] ?? 0));
+    if (life.pending.includes(d.node) || (ex.fire[d.node] ?? lo) <= life.hAge + 1) {
+      resolveDream(ctx, d, false);
+      applyWeights(ctx, d);
+    }
   }
 }
 
@@ -467,6 +514,8 @@ export function settleDreams(ctx: Ctx): void {
     if (passed) {
       const r = resolveDream(ctx, d, true);
       record(ctx, 'dream', d.node, `${d.level}:${r.outcome}`);
+      const st = life.ext.story as { entryMods?: { to: string }[] } | undefined;
+      if (st?.entryMods) st.entryMods = st.entryMods.filter((m) => m.to !== d.node);
       list.splice(i, 1);
     } else if (life.hAge - d.age > DREAM_WAIT_YEARS || ex?.skipped?.includes(d.node)) {
       record(ctx, 'dream', d.node, 'faded');
@@ -480,5 +529,6 @@ export function settleDreams(ctx: Ctx): void {
       addBelief(ctx, BURDEN_QUESTION.belief, 'burden.question');
     }
   }
+  armDreams(ctx);
 }
 

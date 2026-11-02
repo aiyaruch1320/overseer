@@ -821,45 +821,143 @@ describe('god G2: dreams (03-dreams.md)', () => {
     return o;
   }
 
+  /** The weights a dream gives the three ways of its node: from the story's pulls when the dream is armed already, else from `dreamWeight`. */
+  function weightsOf(w: World, node: string): number[] {
+    const d = dreamsOf(w.ctx).find((x) => x.node === node)!;
+    if (d.applied) {
+      const mods = (w.life.ext.story as { entryMods: { to: string; choice: string; mul: number }[] }).entryMods.filter((m) => m.to === node);
+      return ['a', 'b', 'c'].map((k) => mods.filter((m) => m.choice === k).reduce((a, m) => a * m.mul, 1));
+    }
+    return ['a', 'b', 'c'].map((k) => dreamWeight(w.ctx, node, k));
+  }
+
   it('the four results: obey +3 and the way ×4 · misread +1 and a near way ×2 · refuse −2 · defy (belief −30 or less) the way ×0.3', () => {
     const tally: Record<string, number> = { obey: 0, misread: 0, refuse: 0, defy: 0 };
+    let armed = 0;
     for (let k = 0; k < 120; k++) {
       const w = dreamWorld(900 + k, 4);
       const { ctx, life } = w;
-      const o = sendOne(w);
       life.godFaith = [60, 0, -10, -50][k % 4];
-      const b = life.godFaith;
+      const o = sendOne(w);
       const d = dreamsOf(ctx)[0];
-      const weights = ['a', 'b', 'c'].map((key) => dreamWeight(ctx, o.node, key));
+      // a dream whose node is near is rolled at once (and its weights are in the story's pulls); the others when the story asks
+      if (d.applied) armed++;
+      const b = d.applied ? life.godFaith : life.godFaith;
+      void b;
+      const before = d.applied ? undefined : life.godFaith;
+      const weights = weightsOf(w, o.node);
       expect(d.resolved).toBeTruthy();
       const r = d.resolved!;
       tally[r.outcome]++;
-      const delta = life.godFaith - b;
+      const ci = ['a', 'b', 'c'].indexOf(o.choice);
       if (r.outcome === 'obey') {
-        expect(delta).toBeCloseTo(3);
-        expect(weights[['a', 'b', 'c'].indexOf(o.choice)]).toBe(4);
+        expect(weights[ci]).toBe(4);
         expect(weights.filter((x) => x === 1).length).toBe(2);
       } else if (r.outcome === 'misread') {
-        expect(delta).toBeCloseTo(1);
-        expect(b).toBeGreaterThanOrEqual(0);
+        expect(life.godFaith).toBeGreaterThanOrEqual(-5);
         expect(r.alt).toBeTruthy();
         expect(r.alt).not.toBe(o.choice);
         expect(weights[['a', 'b', 'c'].indexOf(r.alt!)]).toBe(2);
+        expect(weights[ci]).toBe(1);
       } else if (r.outcome === 'refuse') {
-        expect(delta).toBeCloseTo(-2);
         expect(weights).toEqual([1, 1, 1]);
       } else {
-        expect(delta).toBeCloseTo(-2);
-        expect(b).toBeLessThanOrEqual(-30);
-        expect(weights[['a', 'b', 'c'].indexOf(o.choice)]).toBe(0.3);
+        expect(weights[ci]).toBe(0.3);
       }
+      void before;
       // asking again does not roll again
-      expect(['a', 'b', 'c'].map((key) => dreamWeight(ctx, o.node, key))).toEqual(weights);
+      expect(weightsOf(w, o.node)).toEqual(weights);
     }
+    expect(armed).toBeGreaterThan(0);
     expect(tally.obey).toBeGreaterThan(10);
     expect(tally.refuse + tally.defy).toBeGreaterThan(10);
     expect(tally.misread).toBeGreaterThan(0);
     expect(tally.defy).toBeGreaterThan(0);
+  });
+
+  it('the belief moves with the result: obey +3 · misread +1 · refuse or defy −2', () => {
+    const seen = new Set<string>();
+    for (let k = 0; k < 200 && seen.size < 4; k++) {
+      const w = dreamWorld(2000 + k, 4);
+      const { ctx, life } = w;
+      sendOne(w);
+      const d = dreamsOf(ctx)[0];
+      if (d.applied || d.resolved) continue; // rolled by the arming already
+      life.godFaith = [60, 0, -10, -50][k % 4];
+      const b = life.godFaith;
+      resolveDream(ctx, d, false);
+      const r = d.resolved!;
+      seen.add(r.outcome);
+      expect(life.godFaith - b).toBeCloseTo({ obey: 3, misread: 1, refuse: -2, defy: -2 }[r.outcome]);
+      if (r.outcome === 'defy') expect(b).toBeLessThanOrEqual(-30);
+      if (r.outcome === 'misread') expect(b).toBeGreaterThanOrEqual(0);
+    }
+    expect([...seen].sort()).toEqual(['defy', 'misread', 'obey', 'refuse']);
+  });
+
+  it('the story reads the dream: a dream whose node is near puts its weights into the story pulls, and they are gone once the node has passed', () => {
+    let done = 0;
+    for (let k = 0; k < 80 && done < 4; k++) {
+      const w = dreamWorld(3000 + k, 6);
+      const { ctx, life } = w;
+      life.godFaith = 100;
+      sendOne(w);
+      const d = dreamsOf(ctx)[0];
+      if (!d.applied) continue;
+      const mods = (life.ext.story as { entryMods: { to: string }[] }).entryMods;
+      expect(mods.filter((m) => m.to === d.node).length).toBeGreaterThanOrEqual(d.resolved!.outcome === 'refuse' ? 0 : 1);
+      life.passed[d.node] = 'a';
+      settleDreams(ctx);
+      expect((life.ext.story as { entryMods: { to: string }[] }).entryMods.some((m) => m.to === d.node)).toBe(false);
+      expect(dreamsOf(ctx).length).toBe(0);
+      done++;
+    }
+    expect(done).toBeGreaterThanOrEqual(2);
+  });
+
+  it('the dreamed way is taken far more often when the dream is obeyed (the story takes it into account)', () => {
+    let obeyed = 0;
+    let took = 0;
+    let base = 0;
+    for (let k = 0; k < 120; k++) {
+      const w = world(4000 + k, { policy: 'เมตตา' });
+      w.game.runLife();
+      const log = w.ctx.state.log.filter((e) => e.sys === 'god' && e.kind === 'dream');
+      const sent: Record<string, string> = {};
+      for (const e of log) if (e.data.choice) sent[String(e.id)] = String(e.data.choice);
+      for (const e of log) {
+        if (e.data.outcome !== 'obey') continue;
+        const choice = sent[String(e.id)];
+        const got = w.life.passed[String(e.id)];
+        if (!choice || got === undefined) continue;
+        obeyed++;
+        if (got === choice) took++;
+        const nodes = (data.storylines.items as { nodes: { id: string; choices: { key: string; weight: number }[] }[] }).nodes.find((n) => n.id === e.id);
+        const ws = nodes?.choices.find((c) => c.key === choice)?.weight ?? 0;
+        base += ws / ((nodes?.choices ?? []).reduce((a, c) => a + c.weight, 0) || 1);
+      }
+    }
+    expect(obeyed).toBeGreaterThan(80);
+    // the written weights alone would give him the dreamed way about 40% of the time; ×4 makes it about 70%
+    expect(took / obeyed).toBeGreaterThan(base / obeyed + 0.15);
+    expect(took / obeyed).toBeGreaterThan(0.55);
+  });
+
+  it('an heir starts with half of the power and 60% of the belief; the counters of a life start again', () => {
+    const w = world(81, { policy: 'เมตตา' });
+    w.game.runLife();
+    const { ctx } = w;
+    const belief = w.life.godFaith;
+    expect(gx(ctx).heirBelief).toBeCloseTo(belief * 0.6, 1);
+    expect(count(ctx, 'l.dream')).toBeGreaterThan(0);
+    // the next life: the character system places another life, the loop runs the birth hooks
+    ctx.state.life = { ...w.life, id: 'L2', hAge: 0, godFaith: 0, dead: undefined, passed: {}, pending: [], ext: {}, items: [], blessings: [], curses: [] } as LifeState;
+    w.game.born();
+    expect(ctx.state.life!.godFaith).toBeCloseTo(belief * 0.6, 1);
+    expect(count(ctx, 'l.dream')).toBe(0);
+    expect(count(ctx, 'l.pick')).toBe(0);
+    expect(ctx.state.god.dreams.length).toBe(0);
+    expect(gx(ctx).heirBelief).toBeUndefined();
   });
 
   it('a node with no dream keeps its weights', () => {

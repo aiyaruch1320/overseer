@@ -22,7 +22,7 @@ registerGodRules();
 export * from './power';
 export * from './belief';
 export { chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, checkOpen, checkPick, checkReroll, slotPrice, tierChances, compOf, effectsOf, type Chest, type ChestSlot } from './chest';
-export { pathsNow, offersNow, offerCards, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
+export { pathsNow, offersNow, offerCards, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, armDreams, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
 export { policyStep, policyName, registerPolicyPart, clearPolicyParts, type PolicyName, type PolicyPart } from './policy';
 export { registerGodActions } from './actions';
 export { bump, count, gx, godData, inWindow, windowNodes, touch, ageStops, type Dream, type GodExt } from './state';
@@ -65,6 +65,11 @@ export const godSystem: System = {
     e.answered = 0;
     delete e.weapon;
     e.window = null;
+    // an heir feels about the god 60% of what the parent felt (01-power.md §6)
+    if (e.heirBelief !== undefined && ctx.state.life) {
+      ctx.state.life.godFaith = e.heirBelief;
+      delete e.heirBelief;
+    }
     ctx.state.god.chest = null;
     ctx.state.god.dreams = [];
     startPower(ctx);
@@ -96,6 +101,8 @@ export const godSystem: System = {
     const h = ctx.data.god ? godData(ctx).heirs : undefined;
     g.chest = null;
     g.dreams = [];
+    const dead = ctx.state.life;
+    if (h && dead) gx(ctx).heirBelief = Math.round(dead.godFaith * h.beliefShare * 100) / 100;
     if (h) {
       // the heir takes half of both powers (01-power.md §6)
       g.light = Math.round(g.light * h.powerShare * 100) / 100;
