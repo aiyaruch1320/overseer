@@ -2,16 +2,15 @@
 // The world keeps its one clock whoever lives, so an heir who is already in the world needs no gap: the gap is what the heir already lived in the
 // years of the parent (its age at the takeover is the age the bond book gives it). A newcomer (asked for by the player when the family has no heir;
 // the docs say the world is left then, 05 §4: assumption for the test tools) is born after a gap of the dead character's generation.
-import { birth as characterBirth, extOf as characterExt } from '../character';
-import { worldYearsPerLifeYear } from '../clock';
+import { birth as characterBirth } from '../character';
 import type { Game } from '../game';
 import { write } from '../log';
 import type { LifeState } from '../types';
 import { presetStory } from './book';
 import { emitLifeChange } from './carry';
 import { handOver } from './threads';
-import { bindParent, inherit, pickHeir, type Carried } from './heir';
-import { lx, type HeirSpec, type Origin } from './state';
+import { bearHeir, bindParent, inherit, pickHeir, type Carried } from './heir';
+import { familyLives, lx, type HeirSpec, type Origin } from './state';
 
 export interface NextOpts {
   /** The family has no heir: bear a newcomer in the same world after the gap of a generation. */
@@ -53,10 +52,9 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
   if (st.world.ended) return { ok: false, reason: 'world-ended' };
   const x = lx(st);
   const spec = pickHeir(ctx);
-  if (!spec && !opts.newcomer) {
-    x.extinct ??= { generation: st.lineage.lives.length, year: st.clock.worldYear };
-    return { ok: false, reason: 'extinct' };
-  }
+  // the family ends with its last heir (05 §4): the generations of the family are the lives up to here; a newcomer is not one of them (N1 of the M4 review)
+  if (!spec) x.extinct ??= { generation: familyLives(st), year: st.clock.worldYear };
+  if (!spec && !opts.newcomer) return { ok: false, reason: 'extinct' };
   const origin: Origin = spec ? (spec.rung === 0 ? 'heir' : 'successor') : 'newcomer';
   const generation = st.lineage.lives.length + 1;
 
@@ -72,20 +70,11 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
     }
   }
   x.gaps.push({ from: parent.id, to: `L${generation}`, years: gapYears });
-  delete x.extinct;
   x.begin = { origin, parent: parent.id };
 
   // the heir is a person of the bond book: its race, gender, country and name stay; its age is the age the book gives it
   st.life = null;
-  const life = characterBirth(ctx, spec ? { race: spec.race, country: spec.country, ...(spec.gender === 'n' ? {} : { gender: spec.gender }), second: null, special: false } : { race: opts.race, country: opts.country });
-  if (spec) {
-    st.world.names[`char:${life.id}`] = spec.name;
-    life.name = spec.name;
-    life.hAge = spec.age;
-    life.birthYear = Math.round(st.clock.worldYear - spec.age * worldYearsPerLifeYear(life.lifespan, life.race));
-    const cx = characterExt(life);
-    if (cx.deathAge <= spec.age + 2) cx.deathAge = spec.age + 3;
-  }
+  const life = spec ? bearHeir(ctx, spec) : characterBirth(ctx, { race: opts.race, country: opts.country });
   presetStory(ctx, life);
   game.born();
 

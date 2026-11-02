@@ -73,7 +73,9 @@ function tagOf(d: D, who: string): string {
   return '';
 }
 /** The line of a person as the player reads it: the line of a child (`ญาติรุ่นเยาว์`) says nothing, so it is the child, the taken-in child or the young kin by `kin`. */
+const KIN_WORD: Record<string, string> = { father: 'พ่อ', mother: 'แม่', parent: 'ผู้ปกครอง', elder_sibling: 'พี่', younger_sibling: 'น้อง', grand: 'ปู่ย่าตายาย', uncle: 'ลุงหรืออา', aunt: 'ป้าหรือน้า' };
 export function lineWord(line: string, kin?: unknown): string {
+  if ((line === 'ญาติผู้ใหญ่' || line === 'พี่น้อง') && typeof kin === 'string' && KIN_WORD[kin]) return KIN_WORD[kin];
   if (line !== 'ญาติรุ่นเยาว์') return line;
   return kin === 'adopted' ? 'ลูกบุญธรรม' : kin === 'child' ? 'ลูก' : kin ? 'หลาน' : 'ลูกหลาน';
 }

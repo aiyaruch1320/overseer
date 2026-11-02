@@ -158,7 +158,7 @@ describe('status after the systems of M3', () => {
     const life = s.game.state.life!;
     const plain = statusLines(data, s.game.state).join('\n');
     expect(plain).toMatch(/พวกพ้อง [^\n]+\((?:สหาย|คู่หู|คนรัก|ครู|ศิษย์|คู่แข่ง) (?:รู้จัก|คุ้นเคย|สนิท|ไว้ใจ|ชั่วชีวิต)\)/);
-    expect(plain).toMatch(/ครอบครัว [^\n]+\((?:ญาติผู้ใหญ่|ญาติรุ่นเยาว์|พี่น้อง) /);
+    expect(plain).toMatch(/ครอบครัว [^\n]+\((?:ญาติผู้ใหญ่|ญาติรุ่นเยาว์|พี่น้อง|พ่อ|แม่|พี่|น้อง) /);
     expect(plain).toMatch(/การเดินทาง (?:อยู่ถิ่น|ในทวีป|ข้ามทวีป)/);
     expect(plain).not.toMatch(/หนี้ \d|การผูกตัว/);
     // what the other systems keep on the life is read: the arm, the debt, a bondage and a person the character holds

@@ -129,7 +129,7 @@ export function adultAgeOf(ctx: Ctx, t: Pick<Tie, 'race' | 'perYear'>): number {
  * (the partner of the day, as a tie when he is one), the hAge the character was when he came, a stage by his age and the feelings the
  * character shows over the years (05 §3); all of it lives on the tie in `life.ext.bonds` and in the log (`bonds/child`).
  */
-export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; age?: number; from?: string; other?: Tie } = {}): Tie {
+export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; age?: number; from?: string; other?: Tie; quiet?: boolean } = {}): Tie {
   const e = extOf(life);
   const rng = ctx.rng('bonds.people');
   const fam = bondsIndex(ctx).data.family.children;
@@ -148,7 +148,8 @@ export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; ag
     t.other = other.id;
     t.otherName = other.name;
   }
-  write(ctx.state, {
+  // a child of the life before the takeover (an heir's own family, lineage/family.ts) is not told as news of the first day
+  if (!opt.quiet) write(ctx.state, {
     sys: 'bonds', kind: 'child', id: t.id,
     data: { name: t.name, adopted: !!opt.adopted, from: opt.from ?? 'child', b: t.b, kin: t.kin ?? null, gender: t.gender, age, other: other?.name ?? null, otherId: other?.id ?? null },
     level: 2,

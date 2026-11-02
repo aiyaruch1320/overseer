@@ -4,7 +4,7 @@ import { write } from '../log';
 import type { LifeState } from '../types';
 import { bondsIndex } from './data';
 import { grantPair } from './items';
-import { changeB, hAgeOf, setLine, setB } from './people';
+import { addGrudge, changeB, hAgeOf, setLine, setB } from './people';
 import { showMood } from './moods';
 import { closeTies, extOf, isLive, levelOf, reindex, tiesOf, type BondsExt, type Tie } from './state';
 import { ASK_BUSINESS, ASK_LOVER, ASK_SPOUSE, FRIEND_TO_PARTNER, LOVER_FROM, PARTY_YEARS, PAIR_ITEM_SOURCES, RIVAL_TO_FRIEND, STUDENT_TO_FRIEND } from './tuning';
@@ -124,6 +124,10 @@ function accept(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, kind: InviteKind
     case 'reconcile':
       t.state = 'alive';
       setB(ctx, t, Math.floor(t.peak / 2), 'reconcile');
+      // a feud that was forgiven is over: it is no longer a blood feud to hand down (M4 review F2)
+      e.feuds = e.feuds.filter((n) => n !== t.name);
+      addGrudge(ctx, t, -5);
+      reindex(e);
       break;
   }
 }

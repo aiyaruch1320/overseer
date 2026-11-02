@@ -17,11 +17,11 @@ import { keepThreads, settleYear } from './threads';
 registerStat();
 
 export { nextLife, canContinue, type NextOpts, type NextResult } from './next';
-export { pickHeir, pickHeirTie, inherit, type Carried } from './heir';
+export { pickHeir, pickHeirTie, inherit, candidates, previewHeir, type Carried } from './heir';
 export { currentThreads, detect as detectThreads, settleYear, KIND_WEIGHT, MAX_THREADS, DROP_LIMIT } from './threads';
 export { onLifeChange, emitLifeChange, type LifeChange, type LifeChangeFn } from './carry';
 export { worldSummary, type WorldSummary } from './summary';
-export { lx, recOf, generationOf, type LineageX, type LifeRec, type Thread, type HeirSpec, type HeirHow, type Origin, type Book } from './state';
+export { lx, recOf, generationOf, familyLives, type LineageX, type LifeRec, type Thread, type HeirSpec, type HeirHow, type Origin, type Book } from './state';
 
 export const lineageSystem: System = {
   name: 'lineage',
