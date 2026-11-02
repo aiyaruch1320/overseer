@@ -4857,7 +4857,13 @@
     "cond": "ผู้โจมตีมี #light หรือ #holy เป้าหมายมี undead",
     "effect": "ความเสียหาย ×1.5",
     "why": "แสงของศาสนจักรทำลายผู้ตาย",
-    "effects": [],
+    "effects": [
+     {
+      "k": "statMul",
+      "stat": "ความเสียหาย",
+      "mul": 1.5
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5300,6 +5306,11 @@
     "why": "",
     "effects": [
      {
+      "k": "statMul",
+      "stat": "ล่าปีศาจเผ่าเดียวกันได้",
+      "mul": 1.3
+     },
+     {
       "k": "grant",
       "kind": "tag",
       "id": "#infernal"
@@ -5427,7 +5438,13 @@
     "cond": "เผ่ามี dry (มัมมี่) และตัวละครมี #water หรือ b_waterwalk",
     "effect": "ร่างพองน้ำ ลดความสามารถทั้งหมด 20% ขณะเปียก",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "pct",
+      "text": "ร่างพองน้ำ ลดความสามารถทั้งหมด",
+      "pct": 20
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5464,7 +5481,13 @@
     "cond": "ตัวละครมี b_curseward และได้คำสาป",
     "effect": "คำสาปถูกสะท้อน 50% เป็นพรเล็กหนึ่งอย่างแทน",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "pct",
+      "text": "คำสาปถูกสะท้อน",
+      "pct": 50
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5621,6 +5644,11 @@
       "k": "grant",
       "kind": "curse",
       "id": "c_outcast"
+     },
+     {
+      "k": "pct",
+      "text": "ในโอกาส",
+      "pct": 30
      }
     ],
     "refs": {
@@ -5660,8 +5688,8 @@
     "why": "",
     "effects": [
      {
-      "k": "stat",
-      "stat": "ไว้ใจ",
+      "k": "trust",
+      "toward": "",
       "delta": 1
      }
     ],
@@ -5822,6 +5850,12 @@
     "effect": "ผลของ skill ระดับ 1 ถึง 3 เพิ่ม +1 ของสถานะหลัก (เผ่าเกิดมากับแสง)",
     "why": "",
     "effects": [
+     {
+      "k": "range",
+      "stat": "ระดับ",
+      "min": 1,
+      "max": 3
+     },
      {
       "k": "stat",
       "stat": "เพิ่ม",
@@ -6002,7 +6036,13 @@
     "cond": "เกิดในทวีปที่เหตุการณ์ใหญ่ (DR PL WR CT ในไฟล์ [../events/world-events.md](../events/world-events.md)) เกิดขึ้นก่อนวัยรุ่น",
     "effect": "ได้สถานะผู้ผ่านเหตุการณ์ตาม [../events/branches/03-character-and-quests.md](../events/branches/03-character-and-quests.md) และมีโอกาส 40% ได้พรหรือคำสาปจากความทรงจำนั้น",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "pct",
+      "text": "และมีโอกาส",
+      "pct": 40
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -6125,6 +6165,11 @@
       "kind": "blessing",
       "id": "nb_homeland_call",
       "chance": 0.2
+     },
+     {
+      "k": "pct",
+      "text": "คำสาปความคิดถึงบ้านที่หายไป",
+      "pct": 35
      }
     ],
     "refs": {

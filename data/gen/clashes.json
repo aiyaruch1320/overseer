@@ -144,8 +144,8 @@
       "text": "เส้น ข) บังคับเกิด เขายกเลิกดวล ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -159,6 +159,12 @@
        {
         "k": "npc",
         "id": "AZ02-2"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AZ-02"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:88"
@@ -169,17 +175,17 @@
       "text": "ตาย เส้น ค) บังคับเกิด AZ02-2 ขึ้นแทน อัซโคร (AZ02-4) ไว้ใจตัวละคร −1",
       "effects": [
        {
+        "k": "trust",
+        "toward": "ตัวละคร",
+        "delta": -1
+       },
+       {
         "k": "npc",
         "id": "AZ02-2"
        },
        {
         "k": "npc",
         "id": "AZ02-4"
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจตัวละคร",
-        "delta": -1
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:89"
@@ -195,7 +201,11 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขารับการยอมแพ้ ไม่ทอยบาดแผลถาวร เส้นเดินต่อ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "wound"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:91"
      }
     ],
@@ -232,7 +242,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เส้น ก) น้ำหนัก ×2 เธอทิ้งหน้าที่และสอบเป็นนักบวช",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:103"
      },
      {
@@ -255,7 +271,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอหายเข้าวัด ซ้ำได้ปีหน้าถ้ายังถูกตามล่า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:105"
@@ -290,19 +307,18 @@
       "text": "เส้น ก) บังคับเกิด `HP-03` น้ำหนัก +10 ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "HP-03"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": 10
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:117"
@@ -313,8 +329,7 @@
       "text": "ตาย ประตูบนเปิดให้ผู้ที่ไม่ใช่ทหาร `WR-02` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-02"
        },
        {
@@ -367,14 +382,19 @@
       "text": "เส้น ข) บังคับเกิด เขาไว้ใจ +3 และลอบเจรจากับ MK-09 โดยไม่ถูกจับ `WR-01` น้ำหนัก −10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-01"
        },
        {
-        "k": "stat",
-        "stat": "เขาไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
        },
        {
         "k": "stat",
@@ -390,6 +410,11 @@
       "text": "เขาถอนทัพจากเส้น ก) เส้น ค) น้ำหนัก ×2 บุญคุณ +2",
       "effects": [
        {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
+       {
         "k": "stat",
         "stat": "บุญคุณ",
         "delta": 2
@@ -403,8 +428,7 @@
       "text": "ตาย กองบินสับสน `WR-01` น้ำหนัก +10 รองหัวหน้าที่ขึ้นแทนแค้นตัวละคร +1",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-01"
        },
        {
@@ -427,7 +451,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ซากบินขึ้นพาเขาถอย ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:134"
@@ -462,8 +487,8 @@
       "text": "เส้น ข) บังคับเกิด เขาเป็นสายให้ตัวละครหนึ่งปี ไว้ใจ +2 แต่เขาเก็บสำเนาความลับของตัวละครด้วย",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -495,7 +520,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาหายเข้าความมืด ซ้ำได้เมื่อตัวละครถือความลับใหม่"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:149"
@@ -530,13 +556,12 @@
       "text": "เส้น ก) บังคับเกิด เขาส่งกองเรือไปช่วยผู้ลี้ภัยเมื่อ `DR-01` ไว้ใจ +2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DR-01"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -547,6 +572,11 @@
       "kind": "win_spare",
       "text": "เขายกเลิกการขายเรือ เส้น ก) น้ำหนัก ×2 บุญคุณ +1",
       "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
        {
         "k": "stat",
         "stat": "บุญคุณ",
@@ -559,7 +589,15 @@
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย เส้น ข) สำเร็จโดยรองกัปตันที่ขายเรือต่อ MK-09 ตัวละครต้องออกจาก AZ-03 หนึ่งปี",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-09",
+         "AZ-03"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:163"
      },
      {
@@ -569,7 +607,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ลมหยุดทั้งสองฝ่าย ซ้ำได้ฤดูถัดไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:164"
@@ -604,8 +643,8 @@
       "text": "เส้น ข) บังคับเกิด เธอไว้ใจ +2 และเดินตามตัวละครหนึ่งฤดูโดยไม่ตกลงเป็นอะไร",
       "effects": [
        {
-        "k": "stat",
-        "stat": "เธอไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -630,8 +669,7 @@
       "text": "ตาย เส้น ก) เกิดโดยผู้ปลดผนึกอ้างเธอเป็นผู้พลีชีพ `GD-07` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "GD-07"
        },
        {
@@ -649,7 +687,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอปีนลงจากลานและไม่ตามต่อ ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:179"
@@ -684,8 +723,8 @@
       "text": "เส้น ค) บังคับเกิด ไวเวิร์นหนึ่งตัวตามตัวละคร เขาไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "เขาไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -704,9 +743,14 @@
       "text": "ตาย ไวเวิร์นแตกฝูงบินออกจากนอคโมรา `WR-01` น้ำหนัก +5 เพราะ MK-09 ส่งคนมาล่า",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-01"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
        },
        {
         "k": "stat",
@@ -723,7 +767,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ไวเวิร์นตัวหัวหน้ากางปีกกั้นระหว่างสองฝ่าย ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:194"
@@ -758,13 +803,13 @@
       "text": "เส้น ก) บังคับเกิด เขาเปิดโปงและทะเลาะกับ AZ02-1 ไว้ใจ +3",
       "effects": [
        {
-        "k": "npc",
-        "id": "AZ02-1"
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
+        "k": "npc",
+        "id": "AZ02-1"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:206"
@@ -780,7 +825,14 @@
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย เส้น ข) เกิดโดยปริยาย ดวลถูกตัดสินโดยผู้อื่นและตัวละครเสียชื่อใน AZ-02",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AZ-02"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:208"
      },
      {
@@ -820,8 +872,8 @@
       "text": "เส้น ค) บังคับเกิด เขาจ่ายค่าจ้างที่ค้างและไว้ใจ +2 ตัวละครได้ค่าไถ่ครึ่งหนึ่ง",
       "effects": [
        {
-        "k": "stat",
-        "stat": "เขาจ่ายค่าจ้างที่ค้างและไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -833,8 +885,7 @@
       "text": "เขายอมจ่ายค่าไถ่ เส้น ค) บังคับเกิด `MC-01` น้ำหนัก −5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-01"
        },
        {
@@ -849,7 +900,14 @@
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย เส้น ข) เกิดโดยปริยาย คนงานขึ้นบริหารเหมือง แต่ MK-09 ยังซื้อศิลาจากผู้ว่าคนใหม่",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:223"
      },
      {
@@ -889,13 +947,11 @@
       "text": "เส้นเปลี่ยนเป็น ข) สนธิสัญญาอาหารทันที `DM-02` ไม่เกิดในรอบนี้ ขุนนางที่บีบเขาแค้นตัวละคร +1 ถ้ามีผู้กล้าในโลก เปิดโอกาส `DM-06`",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-02"
        },
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-06"
        },
        {
@@ -912,9 +968,14 @@
       "text": "ตาย เปิด `DM-03` จอมมารสิ้นไร้ทายาท ตัวละครต้องออกจาก MH-02 ภายในหนึ่งปี",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-03"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MH-02"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:239"
@@ -932,9 +993,19 @@
       "text": "เขาไม่ฆ่า ให้ข้ารับใช้พาออกจากปราสาท ห้ามกลับ MH-02 5 ปี เส้น ก) เดินต่อ (`DM-02`)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-02"
+       },
+       {
+        "k": "qty",
+        "n": 5,
+        "unit": "ปี"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MH-02"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:241"
@@ -962,13 +1033,12 @@
       "text": "เส้นเปลี่ยนเป็น ข) `HP-07` ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "HP-07"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -980,8 +1050,7 @@
       "text": "ตาย `DM-01` ถูกตัด เส้น ค) บังคับเกิด กาธเรธแตกเป็นสองฝูง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-01"
        }
       ],
@@ -998,7 +1067,13 @@
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยกลับกระโจม เดินเส้นตามเดิม ตัวละครห้ามเข้าลาน 1 ปี",
-      "effects": [],
+      "effects": [
+       {
+        "k": "qty",
+        "n": 1,
+        "unit": "ปี"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:255"
      },
      {
@@ -1039,7 +1114,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาบอกให้กลับมาปีหน้า ครั้งที่ 2 เปิดอัตโนมัติ"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:268"
@@ -1048,7 +1124,11 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครออกจากลาน เส้น ข) หรือ ค) ยังเปิดได้ (เด็กไม่มีชื่อ หรือไม่มีผู้สืบทอด) ไม่มีบาดแผลถาวร",
-      "effects": [],
+      "effects": [
+       {
+        "k": "wound"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:269"
      },
      {
@@ -1063,7 +1143,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ทำไม่ได้ใน นี้ ตัวละครที่ฆ่าเขาเมื่อเขาไม่ป้องกัน ถูกนับเป็น ในมอร์เฮเวน"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:270"
@@ -1091,9 +1172,12 @@
       "text": "เขาไม่รับมงกุฎ `DM-01` ถูกตัด (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-01"
+       },
+       {
+        "k": "bond",
+        "line": "สหาย"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:281"
@@ -1104,8 +1188,7 @@
       "text": "ตาย `DM-01` ถูกตัด แม่ของเขาแค้นตัวละคร +3 เปิดเส้นแก้แค้น",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-01"
        },
        {
@@ -1122,9 +1205,12 @@
       "text": "ตัวละครพาเขาไปซ่อนที่อื่น `DM-01` ถูกตัด เส้น ค) บังคับเกิด (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-01"
+       },
+       {
+        "k": "bond",
+        "line": "สหาย"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:283"
@@ -1179,6 +1265,11 @@
       "text": "เธอหนีไปวีซาเฮเวน เส้น ก) น้ำหนัก ×2 บุญคุณ +1",
       "effects": [
        {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
+       {
         "k": "stat",
         "stat": "บุญคุณ",
         "delta": 1
@@ -1200,7 +1291,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอหนีเข้าเขา ซ้ำได้ปีหน้าถ้ายังถูกตามล่า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:299"
@@ -1209,7 +1301,13 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอไม่ซ้ำ ทิ้งตัวละครไว้แล้วหนีต่อ เส้น ข) น้ำหนัก ×0.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 0.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:300"
      }
     ],
@@ -1235,18 +1333,17 @@
       "text": "เส้น ก) ถูกตัด `DM-03` ถูกตัดในรอบนี้ เธอแค้นแต่เคารพ (แค้น +1 ไว้ใจ +1) เส้น ข) น้ำหนักเพิ่ม",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-03"
        },
        {
-        "k": "stat",
-        "stat": "แค้น",
+        "k": "trust",
+        "toward": "",
         "delta": 1
        },
        {
         "k": "stat",
-        "stat": "ไว้ใจ",
+        "stat": "แค้น",
         "delta": 1
        }
       ],
@@ -1265,8 +1362,7 @@
       "text": "เธอเดินต่อไปท้าจอมมาร เส้น ก) `DM-03` เดินต่อ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-03"
        }
       ],
@@ -1306,19 +1402,21 @@
       "outcome": "เจรจา (บอกข่าวสงบศึก)",
       "kind": "talk",
       "text": "เส้น ก) และ ค) บังคับเกิด ทหารผีหลับ ไม่มีศึกกับกูลในปีนั้น",
-      "effects": [
-       {
-        "k": "battle",
-        "enemies": []
-       }
-      ],
+      "effects": [],
       "src": "docs/systems/combat/07-npc-clashes.md:325"
      },
      {
       "outcome": "ชนะ (ด้วยแสง)",
       "kind": "win_spare",
       "text": "วิญญาณสลาย เส้น ข) บังคับเกิด กูลที่เฝ้าสุสานรอบนั้นไม่ถูกบุก ตัวละครได้ชื่อเสียงใน MH-12",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-12"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:326"
      },
      {
@@ -1328,7 +1426,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ทหารผีถอยเข้าหมอก ซ้ำได้ในคืนถัดไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:327"
@@ -1363,9 +1462,16 @@
       "text": "เส้น ข) บังคับเกิด เขาหยุดบุก ไว้ใจกูล +2 · ผูก gh.l1",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจกูล",
+        "k": "trust",
+        "toward": "กูล",
         "delta": 2
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "gh.l1"
+        ],
+        "rel": "ผูก"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:339"
@@ -1431,18 +1537,17 @@
       "text": "เส้น ข) บังคับเกิด สนธิสัญญากับ MH-06 `HP-07` น้ำหนัก +10 เขาจำชื่อตัวเองได้ครึ่งหนึ่ง ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "HP-07"
        },
        {
-        "k": "stat",
-        "stat": "น้ำหนัก",
+        "k": "eventWeight",
+        "id": "MH-06",
         "delta": 10
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -1475,7 +1580,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขากลับหลุมโดยไม่ลงมือซ้ำ ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:357"
@@ -1510,9 +1616,14 @@
       "text": "เส้น ค) น้ำหนัก ×2 ตลาดปล่อยสัญญาที่พิพาทตามราคา ไว้ใจ +2 ตัวละครเป็นหนี้ตลาดหนึ่งปี",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:369"
@@ -1523,8 +1634,7 @@
       "text": "ตลาดยกเลิกสัญญาที่พิพาท เส้น ก) ช้าลง `MC-08` น้ำหนัก −5 บุญคุณ +1",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-08"
        },
        {
@@ -1584,9 +1694,15 @@
       "text": "เส้น ค) บังคับเกิด เธอไว้ใจ +3 และตามรอยไป MH-09 ด้วยรายชื่อ",
       "effects": [
        {
-        "k": "stat",
-        "stat": "เธอไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MH-09"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:384"
@@ -1659,13 +1775,14 @@
       "text": "เส้น ค) บังคับเกิด เขาพาตัวละครผ่านทะเลทรายเถ้า ไว้ใจ +2 ฝูงหนุนหนึ่งศึก",
       "effects": [
        {
-        "k": "battle",
-        "enemies": []
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
+        "k": "battle",
+        "enemies": [],
+        "text": "เส้น ค) บังคับเกิด เขาพาตัวละครผ่านทะเลทรายเถ้า ไว้ใจ +2 ฝูงหนุนหนึ่ง"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:399"
@@ -1689,8 +1806,7 @@
       "text": "ตาย ฝูงแตกเป็นสามกลุ่ม สงครามแย่งบ่อน้ำยืดเยื้อ และงานใหญ่ `LC-114` ขาดผู้กำหนดผู้ได้เข้า",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-114"
        }
       ],
@@ -1703,7 +1819,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาย้ายค่ายก่อนรุ่งและ ซ้ำได้ตามเส้นทางของฝูง"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:402"
@@ -1738,8 +1855,8 @@
       "text": "เส้น ก) บังคับเกิด เขาถอนตัวไปปลูกข้าวกับแม่ ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -1749,7 +1866,19 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาคืนค่าจ้างให้ MK-16 เส้น ก) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:415"
      },
      {
@@ -1766,7 +1895,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยกลับค่ายและไม่ขี่ตามอีก ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:417"
@@ -1801,8 +1931,8 @@
       "text": "เส้น ค) บังคับเกิด เขาให้แบบกำแพงรูน ไว้ใจ +2 และฝ่ายปิดรูนตามเขาไม่ทัน",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -1812,7 +1942,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาสอนรูนให้ผู้ช่วยอีกคน เส้น ก) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:430"
      },
      {
@@ -1859,8 +1995,8 @@
       "text": "เส้น ค) บังคับเกิด เธอขายข่าวตลาดให้ตัวละครหนึ่งฤดู ไว้ใจ +1",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 1
        }
       ],
@@ -1871,6 +2007,17 @@
       "kind": "win_spare",
       "text": "เธอหนีไป MH-09 เส้น ข) น้ำหนัก ×2 บุญคุณ +1",
       "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MH-09"
+        ]
+       },
        {
         "k": "stat",
         "stat": "บุญคุณ",
@@ -1885,8 +2032,7 @@
       "text": "ตาย ข่าวที่เธอเก็บไว้ถูกเปิดและห้าธงเสียสมดุล `LC-118` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-118"
        },
        {
@@ -1968,7 +2114,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอนตัวจากการส่งและถูกเจ้าของสัญญากักไว้ ซ้ำได้เมื่อเขาถูกปล่อย"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:462"
@@ -2003,13 +2150,14 @@
       "text": "เส้น ค) บังคับเกิด เขาเล่าความจริงเรื่องมงกุฎ ไว้ใจ +2 ศึกชิงมงกุฎเลื่อนหนึ่งฤดู",
       "effects": [
        {
-        "k": "battle",
-        "enemies": []
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
+        "k": "battle",
+        "enemies": [],
+        "text": "เส้น ค) บังคับเกิด เขาเล่าความจริงเรื่องมงกุฎ ไว้ใจ +2 ชิงมงกุฎเลื่อนหนึ่งฤดู"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:474"
@@ -2021,7 +2169,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาประกาศ ตามกำหนด เส้น ก) เดินต่อ แต่ไม่ตัดสินตัวละครเป็นผู้พ่าย"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:475"
@@ -2032,8 +2181,7 @@
       "text": "ตายครั้งที่สอง เส้น ข) บังคับเกิด ฮรอด-กาธเลือกจอมมารเองโดยไม่มีผู้ตัดสิน `PL-02` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PL-02"
        },
        {
@@ -2081,18 +2229,17 @@
       "text": "เส้น ข) บังคับเกิด เขายอมค้าขายกับ NR-01 `WR-07` น้ำหนัก −10 ไว้ใจ +2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-07"
        },
        {
-        "k": "stat",
-        "stat": "น้ำหนัก",
+        "k": "eventWeight",
+        "id": "NR-01",
         "delta": -10
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -2103,6 +2250,11 @@
       "kind": "win_spare",
       "text": "เขาถอนกองเรือกลับท่า เส้น ค) น้ำหนัก ×2 บุญคุณ +1",
       "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
        {
         "k": "stat",
         "stat": "บุญคุณ",
@@ -2117,8 +2269,7 @@
       "text": "ตาย รองกัปตันนำกองเรือบุกต่อ `WR-07` น้ำหนัก +10 เรือธงถูกแบ่ง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-07"
        },
        {
@@ -2166,8 +2317,8 @@
       "text": "เส้น ก) บังคับเกิด เขาส่งจดหมายสำเร็จและได้พักผ่อน ไว้ใจ +3 ตัวละครได้ผลึกวิญญาณ",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -2192,8 +2343,7 @@
       "text": "วิญญาณสลาย จดหมายไม่ถึงผู้รับ เส้น ข) สำเร็จโดยปริยาย `LC-55` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-55"
        },
        {
@@ -2248,9 +2398,13 @@
       "text": "ตาย เส้น ก) ถูกตัด ผู้ลี้ภัยถูกปล่อย ปราสาทไร้ผู้ป้องกัน น้ำหนัก `BIO-05` เพิ่ม ×2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-05"
+       },
+       {
+        "k": "statMul",
+        "stat": "เพิ่ม",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:522"
@@ -2298,8 +2452,7 @@
       "text": "เส้น ค) บังคับเกิด เขาให้ชื่อผู้บงการ `PO-08` ถูกตัดในรอบนี้",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PO-08"
        }
       ],
@@ -2311,8 +2464,7 @@
       "text": "ตาย กิลด์เงาแตก `PO-08` ถูกตัด ผู้จ่ายหาตัวละครเอง (แค้น +2 จากผู้จ่าย)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PO-08"
        },
        {
@@ -2330,7 +2482,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาหายเข้ามืด ครั้งที่ 2 เปิดได้ เขาเลือกซุ่มแบบอื่น"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:537"
@@ -2341,8 +2494,7 @@
       "text": "เขาทิ้งนามบัตรเงา ตัวละครรู้ว่าถูกจ้าง `PO-08` ดำเนินตามเส้น ก)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PO-08"
        }
       ],
@@ -2371,8 +2523,7 @@
       "text": "พิธีล่ม `FG-05` ถูกตัด เธอถูกจับ (เส้น ข) บังคับเกิด) ผู้ติดตามแตกกลุ่ม",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "FG-05"
        }
       ],
@@ -2384,9 +2535,13 @@
       "text": "พิธีหยุดชั่วคราว เธอเลื่อนไปทำพิธีที่อื่น `FG-05` น้ำหนัก ×0.5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "FG-05"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 0.5
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:550"
@@ -2395,7 +2550,13 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "พิธีดำเนินต่อ โอกาส 5% ตัวละครถูกจับเป็นผู้ถูกถวาย (ตาม [04-encounters.md](04-encounters.md) หัวข้อ 7 เชลย)",
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "พิธีดำเนินต่อ โอกาส",
+        "pct": 5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:551"
      },
      {
@@ -2404,8 +2565,7 @@
       "text": "`FG-05` ถูกตัด ผู้ติดตามคลั่ง ตัวละครถูกตามล่าเป็นเส้นสืบทอด (แค้น +3)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "FG-05"
        },
        {
@@ -2446,9 +2606,13 @@
       "text": "ตาย ผู้เฝ้าอ่อนแอลง น้ำหนัก `DM-09` ลิชตื่น ×2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-09"
+       },
+       {
+        "k": "statMul",
+        "stat": "ลิชตื่น",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:564"
@@ -2502,7 +2666,13 @@
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "ภาพหลอนกลืนเขา เขาหนี เส้น ก) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:579"
      },
      {
@@ -2535,8 +2705,8 @@
       "text": "เส้น ก) บังคับเกิด เธอทรยศกิลด์และเป็นผู้ช่วยของตัวละครหนึ่งฤดู ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -2561,8 +2731,7 @@
       "text": "ตาย สมุดที่เธอขโมยตกถึงกิลด์และ `PO-08` น้ำหนัก +5 เด็กที่เป็นเป้าหมายถูกงานอื่นตามต่อ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PO-08"
        },
        {
@@ -2580,7 +2749,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอหายเข้าหมอกและเด็กถูกซ่อนในที่ใหม่ ซ้ำได้เมื่อกิลด์ส่งเธอกลับ"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:594"
@@ -2615,8 +2785,8 @@
       "text": "เส้น ค) บังคับเกิด เธอลบชื่อตัวละครออกและให้งานหนึ่งอย่างจากสมุด ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -2635,8 +2805,7 @@
       "text": "ตาย สมุดเงาตกถึงครอว์หรือผู้พบก่อน (เส้น ข) สำเร็จโดยปริยาย) ชื่อผู้จ่ายหลายสิบรายถูกเปิด `PO-08` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PO-08"
        },
        {
@@ -2684,19 +2853,18 @@
       "text": "เส้น ค) บังคับเกิด เขากลับมาเป็นตัวเองและบอกความจริงเรื่องภารกิจ `FG-01` น้ำหนัก −5 ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "FG-01"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": -5
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:621"
@@ -2714,8 +2882,7 @@
       "text": "ตาย `CT-03` น้ำหนัก +5 ความจริงของภารกิจหายไปกับเขา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "CT-03"
        },
        {
@@ -2763,8 +2930,8 @@
       "text": "เส้น ก) บังคับเกิด เขาขอบคุณตัวละครที่ช่วยเมืองต่อ ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -2774,7 +2941,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาลาออกจากตำแหน่งและให้ตัวละครรับผิดชอบการสืบ เส้น ข) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:637"
      },
      {
@@ -2783,9 +2956,14 @@
       "text": "ตายและมิสต์วอตช์ไม่มีผู้บังคับ NB-12 ถูกยึดโดยผู้ลักลอบ `LC-49` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-49"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "NB-12"
+        ]
        },
        {
         "k": "stat",
@@ -2832,19 +3010,18 @@
       "text": "เส้น ก) บังคับเกิด เธอเล่าความจริงเรื่องกุญแจ `FG-14` น้ำหนัก +5 ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "FG-14"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": 5
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:651"
@@ -2862,8 +3039,7 @@
       "text": "วิญญาณสลาย กุญแจความทรงจำไม่มีผู้เฝ้า `BIO-06` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-06"
        },
        {
@@ -2911,8 +3087,7 @@
       "text": "ตาย `WR-06` เปลี่ยน ตัวละครได้ทองและหีบ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-06"
        }
       ],
@@ -3019,8 +3194,8 @@
       "text": "เส้น ค) บังคับเกิด ไว้ใจนาคา +3 เธอบอกชื่อผู้ขโมยที่เห็นมา",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจนาคา",
+        "k": "trust",
+        "toward": "นาคา",
         "delta": 3
        }
       ],
@@ -3032,8 +3207,7 @@
       "text": "ตาย ไข่ไม่มีผู้เฝ้า `BIO-08` เปลี่ยนรูป ชินา (NR07-3) แค้นตัวละคร +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-08"
        },
        {
@@ -3059,7 +3233,13 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอไม่ตาม เส้นเดินต่อ ตัวละครถูกห้ามเข้านาคาไอล์ 10 ปี",
-      "effects": [],
+      "effects": [
+       {
+        "k": "qty",
+        "n": 10,
+        "unit": "ปี"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:699"
      }
     ],
@@ -3085,13 +3265,12 @@
       "text": "เส้น ก) บังคับเกิด เขาไว้ใจ +3 และปล่อยทองสาปเพื่อทำลาย `LC-23` เปิดทางซาลาซาร์แยกฝั่ง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-23"
        },
        {
-        "k": "stat",
-        "stat": "เขาไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -3101,7 +3280,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาถอยเข้าห้องของเขา ลูกเรือผีสลายครึ่งหนึ่ง เส้น ก) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:711"
      },
      {
@@ -3118,7 +3303,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เรือผีถอยกลับเขตหมอก ซ้ำได้เมื่อผ่านเขตเดิม"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:713"
@@ -3153,13 +3339,13 @@
       "text": "เส้น ข) บังคับเกิด ได้พรน้ำ ไว้ใจ +2 และ NR07-3 ชินาได้ฟังเหตุผลของเขา",
       "effects": [
        {
-        "k": "npc",
-        "id": "NR07-3"
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
+        "k": "npc",
+        "id": "NR07-3"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:725"
@@ -3226,8 +3412,8 @@
       "text": "เส้น ค) บังคับเกิด เขาบอกเส้นทางเข้าท่าที่ไม่มีใครรู้ ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -3246,8 +3432,7 @@
       "text": "ตาย เส้น ข) สำเร็จ ท่าเปิดให้เรือโจรโดยไม่มีผู้เฝ้า `LC-22` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-22"
        },
        {
@@ -3295,19 +3480,18 @@
       "text": "เส้น ก) บังคับเกิด เขาเปิดเผยว่าสงครามเริ่มจากการเข้าใจผิด `WR-20` น้ำหนัก −10 ไว้ใจ +2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-20"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": -10
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:755"
@@ -3331,8 +3515,7 @@
       "text": "ตายก่อนบอก เส้น ข) สำเร็จ ความจริงหายพร้อมเขา `WR-20` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-20"
        },
        {
@@ -3380,8 +3563,7 @@
       "text": "เส้น ค) บังคับเกิด ธาลาสซายังหลับ `PL-04` น้ำหนัก −10 ตัวละครได้ความไว้ใจจากเขา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PL-04"
        },
        {
@@ -3411,8 +3593,7 @@
       "text": "ตาย ธาลาสซาตื่นโดยไม่มีเสียงกล่อม `PL-04` น้ำหนัก +15 ตัวละครต้องหนีขึ้นผิวน้ำ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PL-04"
        },
        {
@@ -3430,7 +3611,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขากลับร่องและร้องดังขึ้นหนึ่งคืน ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:773"
@@ -3465,8 +3647,8 @@
       "text": "เส้น ค) บังคับเกิด เขาไว้ชีวิตตัวละครและตีสมอธรรมดาให้ ไว้ใจ +2 บุญคุณ +1",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        },
        {
@@ -3490,8 +3672,7 @@
       "text": "ตาย สมอสาปที่ตีค้างถูกกัปตันอื่นยึด `LC-23` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-23"
        },
        {
@@ -3509,7 +3690,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาปิดโรงตีและย้ายเตาไปท่าอื่น ซ้ำได้เมื่อตัวละครพบเรือผี"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:788"
@@ -3544,9 +3726,12 @@
       "text": "เส้น ก) ถูกตัด `DM-05` ถูกตัด เส้น ค) ร่วมเดินทางเปิด (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-05"
+       },
+       {
+        "k": "bond",
+        "line": "สหาย"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:802"
@@ -3557,8 +3742,7 @@
       "text": "ตาย `DM-05` ถูกตัด ศาสนาแสงโกรธ ศรัทธาของตัวละครต่อศาสนาแสง −1",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-05"
        },
        {
@@ -3577,6 +3761,12 @@
        {
         "k": "npc",
         "id": "AL18-1"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-02"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:804"
@@ -3587,8 +3777,7 @@
       "text": "เขาหนีไปฝั่งปีศาจ `DM-05` เดินต่อ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-05"
        }
       ],
@@ -3617,9 +3806,13 @@
       "text": "แนวเขาแตก `WR-16` เปลี่ยนผู้ชนะ เส้น ข) แปรพักตร์ น้ำหนัก ×2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-16"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:816"
@@ -3642,7 +3835,13 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ฆ่า เส้น ก) ปราบซอมเมอร์เรน เดินต่อ ตัวละครถูกนับเป็นเชลย 5%",
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "เดินต่อ ตัวละครถูกนับเป็นเชลย",
+        "pct": 5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:819"
      }
     ],
@@ -3680,7 +3879,12 @@
       "outcome": "เจรจา",
       "kind": "talk",
       "text": "เส้น ค) บังคับเกิด ตัวละครได้ป้ายผู้ช่วย (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
-      "effects": [],
+      "effects": [
+       {
+        "k": "bond",
+        "line": "สหาย"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:832"
      },
      {
@@ -3741,7 +3945,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอสั่งพักการพิจารณา ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:847"
@@ -3750,7 +3955,13 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ตัวละครถูกจับเตรียมเผา 5% ถ้าไม่ถูกจับให้ทอยหนีตามปกติ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "ตัวละครถูกจับเตรียมเผา",
+        "pct": 5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:848"
      }
     ],
@@ -3776,14 +3987,21 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้เรียนดาบ (`sword_*` +1 ระดับ ไม่เกินระดับ 3) ไว้ใจ +2",
       "effects": [
        {
+        "k": "trust",
+        "toward": "",
+        "delta": 2
+       },
+       {
         "k": "grant",
         "kind": "unknown",
         "id": "sword_*"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
+        "k": "level",
+        "scale": "ไม่เกิน",
+        "values": [
+         3
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:859"
@@ -3795,7 +4013,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาบอกให้กลับมาเมื่อพร้อม ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:860"
@@ -3805,6 +4024,9 @@
       "kind": "lose",
       "text": "เขาสอนจุดอ่อนที่ทำให้แพ้ ความรู้จัก +1 ไม่มีบาดแผลถาวร",
       "effects": [
+       {
+        "k": "wound"
+       },
        {
         "k": "stat",
         "stat": "ความรู้จัก",
@@ -3825,7 +4047,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ทำไม่ได้ใน นี้ ถ้าตัวละครฆ่าเขาขณะยอมแพ้นับเป็น เส้น ก) ข) ถูกตัด ผู้กล้ารุ่นใหม่ขาดครู"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:862"
@@ -3853,8 +4076,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครผ่านจุดตรวจ ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -3866,9 +4089,13 @@
       "text": "ป้อมไร้ผู้บัญชาการ น้ำหนัก `BIO-04` ×2 ผู้ลี้ภัยเข้าได้ แต่ป้อมแตกเมื่อหมอกรุก",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-04"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:874"
@@ -3886,8 +4113,7 @@
       "text": "ทหารป้อมจับตัวละครกักหนึ่งฤดู `CT-03` ตรวจพบถ้ามีโรค",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "CT-03"
        }
       ],
@@ -3974,8 +4200,8 @@
       "text": "เส้น ค) บังคับเกิด เขาไว้ใจ +2 เข้ากองเรือตัวละครเมื่อเรือหลวงล่ม",
       "effects": [
        {
-        "k": "stat",
-        "stat": "เขาไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4008,7 +4234,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยกองเรือกลับท่า ซ้ำได้ฤดูถัดไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:905"
@@ -4043,8 +4270,8 @@
       "text": "เส้น ค) บังคับเกิด เขาเป็นพันธมิตร ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4107,8 +4334,8 @@
       "text": "เส้น ค) บังคับเกิด เขาเป็นแหล่งข่าว ไว้ใจ +2 และลบชื่อตัวละครออกจากรายงาน",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4140,7 +4367,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาปิดสมุดและยอมให้ตัวละครออกจากห้อง ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:935"
@@ -4175,8 +4403,8 @@
       "text": "เส้น ค) บังคับเกิด เขาปฏิเสธการซื้อและกลับมาคุ้มกันตัวละครในสภา ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4214,7 +4442,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาปิดประตูสภาเอง ซ้ำได้เมื่อฟอร์เทียส่งซ้ำ"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:950"
@@ -4249,8 +4478,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครช่วยเขาไว้ เขาคืนบุญด้วยดาบอัศวิน ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4283,7 +4512,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยกลับปราสาทหลักและส่งคนอื่นแทน ซ้ำได้ฤดูถัดไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:965"
@@ -4318,8 +4548,8 @@
       "text": "เส้น ค) บังคับเกิด เขาเข้าร่วมตัวละครพร้อมลูกน้องห้าคน ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4352,7 +4582,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาสั่งลูกน้องถอยและส่งผู้แทนไปเจรจาแทน ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:980"
@@ -4387,19 +4618,18 @@
       "text": "เส้น ค) บังคับเกิด เธอตรึงแนวจนฟอร์เทียล้า `WR-16` น้ำหนัก −10 ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-16"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": -10
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:992"
@@ -4417,8 +4647,7 @@
       "text": "ตาย แนวแตก `WR-16` น้ำหนัก +15 ทหารถอยโดยไม่มีคำสั่ง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-16"
        },
        {
@@ -4436,7 +4665,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอตรึงแนวต่อโดยไม่รับเสบียงและ ซ้ำได้ฤดูถัดไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:995"
@@ -4471,6 +4701,10 @@
       "text": "เส้น ค) บังคับเกิด เธอคืนบุญด้วยการปกป้อง บุญคุณ +3 (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
+        "k": "bond",
+        "line": "สหาย"
+       },
+       {
         "k": "stat",
         "stat": "บุญคุณ",
         "delta": 3
@@ -4499,7 +4733,13 @@
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอหนีไป เส้น ข) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1011"
      },
      {
@@ -4538,8 +4778,7 @@
       "text": "เขาแข็งเป็นหินที่ประตู เส้น ข) บังคับเกิด `GI-04` ชะลอ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "GI-04"
        }
       ],
@@ -4551,8 +4790,7 @@
       "text": "ตาย `GI-04` ชะลอ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "GI-04"
        }
       ],
@@ -4602,8 +4840,7 @@
       "text": "เส้น ค) บังคับเกิด เขาหยุดผนึกด้วยกำลัง `GI-08` ถูกตัด ผู้ถูกกักขังได้ถูกพิจารณา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "GI-08"
        }
       ],
@@ -4615,9 +4852,13 @@
       "text": "เส้น ก) ถูกตัด ป้อมไร้ผู้บัญชาการ น้ำหนัก `WR-13` ×2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-13"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1039"
@@ -4642,7 +4883,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยเข้าป้อม ปิดประตู ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1041"
@@ -4651,7 +4893,14 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ตัวละครถูกขับออกจาก KD-08 เส้นเดินต่อ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-08"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1042"
      }
     ],
@@ -4675,7 +4924,13 @@
       "outcome": "เจรจา (ไม่เข้าสงคราม)",
       "kind": "talk",
       "text": "เขาเก็บตัวต่อ เส้น ก) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1053"
      },
      {
@@ -4684,8 +4939,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้ดาบเย็น ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4728,13 +4983,12 @@
       "text": "เส้น ก) บังคับเกิด เขาเห็นว่าผู้ถูกกักขังคือคนจริงและเปลี่ยนใจ ไว้ใจ +3 `WR-13` น้ำหนัก −5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-13"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        },
        {
@@ -4749,7 +5003,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาถอนตัวออกจากหน้าที่ตรวจเลือด เส้น ค) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1068"
      },
      {
@@ -4758,8 +5018,7 @@
       "text": "ตาย เส้น ข) สำเร็จโดยปริยาย `WR-13` น้ำหนัก +10 จดหมายถึงแม่ฉบับสุดท้ายยังไม่ได้ส่ง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-13"
        },
        {
@@ -4777,7 +5036,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยเข้าหอสวดและปิดประตู ซ้ำได้เมื่อตัวละครกลับมา"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1070"
@@ -4812,8 +5072,8 @@
       "text": "เส้น ค) บังคับเกิด ติดตามตัวละครหนึ่งฤดู ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -4823,7 +5083,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาเลิกท้า เส้น ข) น้ำหนัก ×2 ตัวละครได้ชื่อเสียงในธรอ-ดู",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1083"
      },
      {
@@ -4846,7 +5112,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขายกเขี้ยวคารวะตามธรรมเนียมนักล่า ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1085"
@@ -4881,8 +5148,8 @@
       "text": "เส้น ค) บังคับเกิด เขาตัดสินตามความเห็นของตัวละครหนึ่งคดี ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -4893,6 +5160,11 @@
       "kind": "win_spare",
       "text": "เขายอมรับข้อเสนอของฝ่ายเปิด เส้น ก) น้ำหนัก ×2 บุญคุณ +1",
       "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
        {
         "k": "stat",
         "stat": "บุญคุณ",
@@ -4945,8 +5217,8 @@
       "text": "เส้น ก) บังคับเกิด เขาถ่ายทอดศรัทธาผ่านคัลดราต่อ ไว้ใจ +3 และตัวละครได้สายสัมพันธ์มังกร",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -4973,7 +5245,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขายืนบังเพลิงและขอให้ตัวละครออก ซ้ำได้เมื่อเพลิงเปลี่ยนสี"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1115"
@@ -5008,8 +5281,8 @@
       "text": "เส้น ก) บังคับเกิด เขาหนีไปบาร์ดินพร้อมรูนทั้งผืน ไว้ใจ +3 ตัวละครได้รูนป้องกันตัว",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -5019,7 +5292,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาส่งตัวละครออกจากเหมืองและถูกฝ่ายปิดตาม เส้น ข) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1128"
      },
      {
@@ -5036,7 +5315,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาปิดประตูและหนีเข้าเหมืองลึก ซ้ำได้เมื่อฝ่ายปิดตามอีก"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1130"
@@ -5071,8 +5351,8 @@
       "text": "เส้น ก) บังคับเกิด เธอเป็นพันธมิตรตัวละคร ไว้ใจ +2 และรับรองทางลงปากเหว",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -5082,7 +5362,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เธอถอนคำสั่งตามล่า เส้น ก) น้ำหนัก ×1.5 แต่ไม่ไว้ใจ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1143"
      },
      {
@@ -5091,9 +5377,14 @@
       "text": "ตาย เส้น ข) เกิดโดยปริยาย KD-05 แตกเป็นสามฝ่ายและ `DM-07` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "DM-07"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "KD-05"
+        ]
        },
        {
         "k": "stat",
@@ -5147,8 +5438,7 @@
       "text": "ร่างแห้งเป็นผง `WR-24` เปลี่ยน",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-24"
        }
       ],
@@ -5158,7 +5448,13 @@
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขากลับบัลลังก์ วิหารปิด 5 ปี",
-      "effects": [],
+      "effects": [
+       {
+        "k": "qty",
+        "n": 5,
+        "unit": "ปี"
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1161"
      },
      {
@@ -5191,8 +5487,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครผ่านขั้นร้อยได้ ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -5204,9 +5500,18 @@
       "text": "เขาบอกว่าเฝ้าไม่ไหว เส้น ก) น้ำหนัก ×2 `GI-01` น้ำหนัก ×2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "GI-01"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1174"
@@ -5224,8 +5529,7 @@
       "text": "เขายกตัวละครวางไว้ที่ขั้นแรกของบันได เส้น ข) `WR-02` น้ำหนักเดิม",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-02"
        }
       ],
@@ -5254,13 +5558,13 @@
       "text": "เส้น ก) บังคับเกิด เขาส่งดวงตาให้ SH01-2 ไว้ใจ +3 ตัวละครได้เห็นภาพข้างในเป็นคนที่สอง",
       "effects": [
        {
-        "k": "npc",
-        "id": "SH01-2"
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
+        "k": "npc",
+        "id": "SH01-2"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1187"
@@ -5322,8 +5626,8 @@
       "text": "เส้น ค) บังคับเกิด เขาไม่ล่าผู้นำทางและกลายเป็นผู้ล่านำทางของตัวละคร ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -5395,8 +5699,8 @@
       "text": "เส้น ค) บังคับเกิด เขาเป็นพันธมิตร ไว้ใจ +2 ทัพเดินตามตัวละครหนึ่งฤดู",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -5421,9 +5725,14 @@
       "text": "ตาย ทัพสลายเป็นสามกลุ่มและปล้นคาราวานรอบ SH-11 (`LC-41` น้ำหนัก +10)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-41"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "SH-11"
+        ]
        },
        {
         "k": "stat",
@@ -5440,7 +5749,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอนทัพไปบ่อน้ำถัดไป ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1220"
@@ -5475,8 +5785,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้นั่งหนอนข้ามผืนทราย ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -5501,8 +5811,7 @@
       "text": "ตาย หนอนไม่มีเจ้าของและอาละวาดหนึ่งฤดู `LC-39` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-39"
        },
        {
@@ -5520,7 +5829,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาให้หนอนมุดทรายและหายไปทั้งสองฝ่าย ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1235"
@@ -5566,7 +5876,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เธอยอมให้ผ่านแต่ห้ามกลับมาโดยไม่มีผู้นำ เส้น ค) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1248"
      },
      {
@@ -5575,8 +5891,7 @@
       "text": "ตายและบันไดหมื่นขั้นไม่มีผู้ทดสอบ ยักษ์ปิดบันไดหนึ่งปี `LC-66` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-66"
        },
        {
@@ -5624,8 +5939,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้ฟังหัวใจไททัน ไว้ใจ +3 ผู้เฝ้าบันทึกจังหวะใหม่",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -5682,8 +5997,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้แตะหินศักดิ์สิทธิ์ ไว้ใจ +3 เสาค้ำฟ้าไม่ตื่น",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -5702,8 +6017,7 @@
       "text": "ตาย ภูเขาบางลูกในแถวสั่นและเสาค้ำฟ้าเริ่มตื่น `PL-07` น้ำหนัก +15",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "PL-07"
        },
        {
@@ -5749,7 +6063,13 @@
       "outcome": "ชนะ",
       "kind": "win_spare",
       "text": "ชายแดนใต้อ่อนแอ เส้น ข) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1294"
      },
      {
@@ -5796,8 +6116,7 @@
       "text": "เขาหายไป `BIO-02` ถูกตัด หน้าไม่ถูกเปิดเผย",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-02"
        }
       ],
@@ -5809,8 +6128,7 @@
       "text": "ขวานตกพื้น เขาหนีไปพร้อมขวาน `BIO-02` ชะลอหนึ่งทศวรรษ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-02"
        }
       ],
@@ -5822,8 +6140,7 @@
       "text": "ขวานโค่นกิ่ง `BIO-02` เดินต่อ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-02"
        }
       ],
@@ -5851,6 +6168,10 @@
       "kind": "talk",
       "text": "เส้น ค) บังคับเกิด เธอเป็นผู้ล่านำทาง ผู้ติดตาม +2 (เป็นผู้สมัครพวกพ้อง สายคู่หู [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
+       {
+        "k": "bond",
+        "line": "คู่หู"
+       },
        {
         "k": "stat",
         "stat": "ผู้ติดตาม",
@@ -5880,7 +6201,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เธอหายเข้าป่า ซ้ำได้เมื่อตัวละครข้ามชายแดนอีกครั้ง"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1324"
@@ -5915,13 +6237,12 @@
       "text": "เส้น ค) บังคับเกิด `WR-04` ถูกตัดในรอบนี้ ไว้ใจเดรุยด์ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-04"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจเดรุยด์",
+        "k": "trust",
+        "toward": "เดรุยด์",
         "delta": 3
        }
       ],
@@ -5933,8 +6254,7 @@
       "text": "ตายหรือถอย เส้น ก) ถูกตัด `WR-04` ช้าลงหนึ่งทศวรรษแต่เดรุยด์แค้น +2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-04"
        },
        {
@@ -5988,6 +6308,10 @@
       "text": "เส้น ค) บังคับเกิด เธอเป็นนักรบผู้ติดตาม +2 (เป็นผู้สมัครพวกพ้อง สายสหาย [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
+        "k": "bond",
+        "line": "สหาย"
+       },
+       {
         "k": "stat",
         "stat": "เธอเป็นนักรบผู้ติดตาม",
         "delta": 2
@@ -6039,8 +6363,8 @@
       "text": "เส้น ค) บังคับเกิด เขาหายบางส่วนและเป็นทหารหน้าด่านให้ตัวละคร ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -6059,13 +6383,12 @@
       "text": "ตาย ผู้นำเผ่าสัตว์ในสหพันธ์ไม่ไว้ใจตัวละคร −1 และ `WR-04` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-04"
        },
        {
-        "k": "stat",
-        "stat": "ผู้นำเผ่าสัตว์ในสหพันธ์ไม่ไว้ใจตัวละคร",
+        "k": "trust",
+        "toward": "ตัวละคร",
         "delta": -1
        },
        {
@@ -6083,7 +6406,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยเข้าป่าและเริ่มหนีไปนิวเฮเวน ซ้ำได้เมื่อตัวละครตามไป"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1367"
@@ -6118,13 +6442,13 @@
       "text": "เส้น ค) บังคับเกิด เขาเป็นผู้ล่านำทางของตัวละคร ไว้ใจ +2 และเปิดเส้นไถ่โทษของ SV16-7 ทาร์น",
       "effects": [
        {
-        "k": "npc",
-        "id": "SV16-7"
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
+        "k": "npc",
+        "id": "SV16-7"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1379"
@@ -6148,8 +6472,7 @@
       "text": "ตาย ผู้ล่าที่เหลือในเขตเขาไม่มีผู้ใหญ่ ผู้ล่าหนุ่มเริ่มล่านอกกฎและ `BIO-09` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-09"
        },
        {
@@ -6197,13 +6520,12 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้ยากรองหมอก ไว้ใจ +2 `BIO-04` น้ำหนัก −5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-04"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        },
        {
@@ -6227,8 +6549,7 @@
       "text": "ตาย ผู้เฝ้ารุ่นหนุ่มตัดสินแทนด้วยเครื่องมือ `BIO-04` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "BIO-04"
        },
        {
@@ -6250,7 +6571,14 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดสิ่งของแปลกปลอมและขับตัวละครออกจาก SV-06 เส้นเดินต่อ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-06"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1398"
      }
     ],
@@ -6276,13 +6604,13 @@
       "text": "เส้น ก) บังคับเกิด เธอเล่าความจริงเรื่องมหาล่มสลายให้ SV13-1 ไว้ใจ +3 ตัวละครได้ฟังเป็นผู้แรก",
       "effects": [
        {
-        "k": "npc",
-        "id": "SV13-1"
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
+        "k": "npc",
+        "id": "SV13-1"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1409"
@@ -6344,8 +6672,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครรับสาร ไว้ใจ +2 เขาเตือนทันในครั้งต่อไป",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -6355,7 +6683,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาลดธนูและจุดไฟเตือนตามเดิม เส้น ก) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1425"
      },
      {
@@ -6402,8 +6736,8 @@
       "text": "เส้น ค) บังคับเกิด ตัวละครได้ฟังเสียงมังกรจากเขา ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -6422,8 +6756,7 @@
       "text": "ตายและรากหลักของซิลเวราเริ่มอ่อน `LC-43` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-43"
        },
        {
@@ -6471,8 +6804,7 @@
       "text": "ต้องโจมตีสายฟ้า ★ ที่อกหลังเกราะแตก เส้น ค) บังคับเกิด สติกลับ `MC-02` ชะลอ บุญคุณ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-02"
        },
        {
@@ -6489,13 +6821,19 @@
       "text": "ตาย `MC-02` ชะลอ MK-04 ยึดซากไปศึกษา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-02"
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ตาย ชะลอ MK-04 ยึดซากไป ษา"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-04"
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1457"
@@ -6504,7 +6842,14 @@
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "ไอน้ำหมดแรงดัน เขาล้มนิ่ง MK-04 มากักกัน เส้น ข) บังคับเกิด",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-04"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1458"
      },
      {
@@ -6513,8 +6858,7 @@
       "text": "เขาคลั่งต่อ `MC-02` เดินต่อ ตัวละครถูกเหวี่ยงออกนอกโรงงาน",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-02"
        }
       ],
@@ -6543,6 +6887,10 @@
       "text": "เส้น ค) บังคับเกิด เข้าร่วมตัวละคร ผู้ติดตาม +2 ในการต่อสู้ (เป็นผู้สมัครพวกพ้อง สายคู่หู [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
+        "k": "bond",
+        "line": "คู่หู"
+       },
+       {
         "k": "stat",
         "stat": "ผู้ติดตาม",
         "delta": 2
@@ -6556,8 +6904,7 @@
       "text": "ตาย `MC-08` เปลี่ยน MK16-1 ส่งผู้แทนมาแทน",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-08"
        },
        {
@@ -6573,8 +6920,12 @@
       "text": "เขาลาออก เส้น ก) เกิดทันที ไว้ใจ +2 (เป็นผู้สมัครพวกพ้อง สายคู่หู [../bonds/03-formation.md](../bonds/03-formation.md))",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "bond",
+        "line": "คู่หู"
+       },
+       {
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -6617,8 +6968,8 @@
       "text": "เส้น ค) บังคับเกิด เขาให้ตัวละครเข้าไปกับเขา ไว้ใจ +3",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -6630,14 +6981,17 @@
       "text": "เส้น ข) ถูกตัด `END-06` ถูกตัดในรอบนี้ น้ำหนัก `MC-05` ×2 ตัวละครเข้าซากได้",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "END-06"
        },
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-05"
+       },
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1486"
@@ -6648,9 +7002,13 @@
       "text": "ตาย ทหารเฝ้าแตก ซากไม่มีผู้เฝ้า `MC-05` ×3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-05"
+       },
+       {
+        "k": "statMul",
+        "stat": "ซากไม่มีผู้เฝ้า",
+        "mul": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1487"
@@ -6662,7 +7020,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยปิดทางเข้า ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1488"
@@ -6697,13 +7056,12 @@
       "text": "เส้น ค) บังคับเกิด เขาไว้ใจ +2 และไม่อัปเกรดครั้งที่ห้า `MC-04` น้ำหนัก −5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-04"
        },
        {
-        "k": "stat",
-        "stat": "เขาไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        },
        {
@@ -6737,13 +7095,13 @@
       "text": "ตาย ชิ้นส่วนของเขาถูกบริษัทเก็บไปศึกษา `MC-04` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-04"
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ตาย ชิ้นส่วนของเขาถูกบริษัทเก็บไป ษา น้ำหนัก +5"
        },
        {
         "k": "stat",
@@ -6764,7 +7122,14 @@
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครส่งไป MK-16 เป็นเชลยที่ไม่ถูกขายเพราะไม่ได้ค่าจ้าง เส้นเดินต่อ",
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1504"
      }
     ],
@@ -6790,8 +7155,8 @@
       "text": "เส้น ค) บังคับเกิด ไว้ใจ +3 เขาลาออกและร่วมตัวละครหนึ่งฤดู",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 3
        }
       ],
@@ -6801,7 +7166,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาถอนตัวจากภารกิจ เส้น ข) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1516"
      },
      {
@@ -6824,7 +7195,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาถอยกลับแนวและจดวันที่ในผ้าขาวม้า ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1518"
@@ -6859,19 +7231,18 @@
       "text": "เส้น ค) บังคับเกิด ไม่ต้องยิง `MC-04` น้ำหนัก −5 ไว้ใจ +3",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-04"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        },
        {
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": -5
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 3
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1530"
@@ -6889,8 +7260,7 @@
       "text": "ตาย กักกันไม่มีผู้บัญชาการ ผู้ติดตั้งทั้งลานแหก `MC-04` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-04"
        },
        {
@@ -6908,7 +7278,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาปิดลานกักกันและเรียกกำลังเสริม ซ้ำได้ปีหน้า"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1533"
@@ -6943,13 +7314,12 @@
       "text": "เส้น ก) บังคับเกิด เขาตื่นเป็นวิญญาณและหนีไปโนวามินด์ ไว้ใจ +2 `MC-05` น้ำหนัก −5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-05"
        },
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        },
        {
@@ -6964,7 +7334,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาถอนตัวจากสนามและรอการซ่อม เส้น ค) น้ำหนัก ×1.5",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 1.5
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1546"
      },
      {
@@ -7011,14 +7387,17 @@
       "text": "เส้น ก) บังคับเกิด เขาสร้างเมืองลอยฟ้า `MC-10` น้ำหนัก +10 `WR-01` น้ำหนัก −10 ไว้ใจ +2",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "MC-10"
        },
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-01"
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 2
        },
        {
         "k": "stat",
@@ -7029,11 +7408,6 @@
         "k": "stat",
         "stat": "น้ำหนัก",
         "delta": -10
-       },
-       {
-        "k": "stat",
-        "stat": "ไว้ใจ",
-        "delta": 2
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1560"
@@ -7042,7 +7416,13 @@
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาถอนกองเรือกลับท่า เส้น ค) น้ำหนัก ×2",
-      "effects": [],
+      "effects": [
+       {
+        "k": "statMul",
+        "stat": "น้ำหนัก",
+        "mul": 2
+       }
+      ],
       "src": "docs/systems/combat/07-npc-clashes.md:1561"
      },
      {
@@ -7051,8 +7431,7 @@
       "text": "ตาย กองเรือเหาะแตกเป็นสองฝ่าย `WR-01` น้ำหนัก +10",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "WR-01"
        },
        {
@@ -7070,7 +7449,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "เขาสั่งเรือเหาะถอยสู่เมฆและเปิด ซ้ำเมื่อฟ้าโปร่ง"
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:1563"
@@ -7105,8 +7485,8 @@
       "text": "เส้น ค) บังคับเกิด เขาเป็นค่ายประจำให้ตัวละคร ไว้ใจ +2",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
        }
       ],
@@ -7163,9 +7543,15 @@
       "text": "เส้น ข) ถูกตัด อาวุธไม่ถึง AL-08 เขากลายเป็นผู้ขายตัวละครเท่านั้น ไว้ใจ +2 บุญคุณ +1",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ไว้ใจ",
+        "k": "trust",
+        "toward": "",
         "delta": 2
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-08"
+        ]
        },
        {
         "k": "stat",
@@ -7194,8 +7580,7 @@
       "text": "ตายและอาวุธในตู้ถูกยึดโดยตำรวจรถไฟ `LC-183` น้ำหนัก +5",
       "effects": [
        {
-        "k": "grant",
-        "kind": "unknown",
+        "k": "event",
         "id": "LC-183"
        },
        {

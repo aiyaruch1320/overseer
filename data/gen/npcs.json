@@ -67,7 +67,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -212,7 +218,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-01"
+        "id": "WR-01",
+        "open": true
        }
       ],
       "events": [
@@ -230,7 +237,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -595,7 +609,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 2
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -1086,12 +1106,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "MK09-3"
+        "k": "event",
+        "id": "PO-07",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "PO-07"
+        "k": "npc",
+        "id": "MK09-3"
        }
       ],
       "events": [
@@ -1229,7 +1250,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -1245,7 +1273,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-15"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -1319,7 +1354,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NB-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -1417,7 +1459,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-15"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -1650,7 +1699,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-03"
+        "id": "HP-03",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "SH-03"
+        ]
        }
       ],
       "events": [
@@ -1671,7 +1727,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-02"
+        "id": "WR-02",
+        "open": true
        }
       ],
       "events": [
@@ -1696,7 +1753,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -2240,7 +2303,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AZ-10"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -2580,7 +2650,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -2667,7 +2744,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AZ-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -3437,7 +3521,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-01"
+        "id": "MC-01",
+        "open": true
        }
       ],
       "events": [
@@ -3548,7 +3633,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-03"
+        "id": "GD-03",
+        "open": true
        }
       ],
       "events": [
@@ -3671,7 +3757,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-13"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -3783,7 +3876,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AZ-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -4193,7 +4293,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-07"
+        "id": "GD-07",
+        "open": true
        }
       ],
       "events": [
@@ -4625,7 +4726,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -4728,7 +4836,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-01"
+        "id": "DM-01",
+        "open": true
        }
       ],
       "events": [
@@ -4756,7 +4865,13 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-07"
+        "id": "HP-07",
+        "open": true
+       },
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
        }
       ],
       "events": [
@@ -4857,7 +4972,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-02"
+        "id": "PL-02",
+        "open": true
        }
       ],
       "events": [
@@ -5188,7 +5304,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-02"
+        "id": "DM-02",
+        "open": true
        }
       ],
       "events": [
@@ -5225,7 +5342,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-03"
+        "id": "DM-03",
+        "open": true
        }
       ],
       "events": [
@@ -5521,7 +5639,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-03"
+        "id": "DM-03",
+        "open": true
        }
       ],
       "events": [
@@ -5641,7 +5760,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-06"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -5728,7 +5854,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-19"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -5828,7 +5961,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-12"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -6065,6 +6205,13 @@
        {
         "k": "npc",
         "id": "MH03-4"
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "cv.10"
+        ],
+        "rel": ""
        }
       ],
       "events": [],
@@ -6103,6 +6250,12 @@
        {
         "k": "npc",
         "id": "AL19-2"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-19"
+        ]
        }
       ],
       "events": [],
@@ -6223,7 +6376,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -6445,6 +6605,12 @@
        {
         "k": "death",
         "cause": "ตายในศึกกับ"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
        }
       ],
       "events": [],
@@ -6636,6 +6802,12 @@
        {
         "k": "npc",
         "id": "MH04-3"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
        }
       ],
       "events": [],
@@ -6753,7 +6925,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-06"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -6770,7 +6949,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-08"
+        "id": "MC-08",
+        "open": true
        }
       ],
       "events": [
@@ -6990,7 +7170,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-07"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -7163,6 +7350,20 @@
       "cond": null,
       "effects": [
        {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "สำเร็จ"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-07",
+          "open": true
+         }
+        ]
+       },
+       {
         "k": "event",
         "id": "HP-07"
        }
@@ -7203,7 +7404,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 4
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -7273,7 +7480,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-08"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -7475,7 +7689,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-11"
+        "id": "DM-11",
+        "open": true
        }
       ],
       "events": [
@@ -7592,7 +7807,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-07"
+        "id": "HP-07",
+        "open": true
        }
       ],
       "events": [
@@ -7817,7 +8033,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-02"
+        "id": "GD-02",
+        "open": true
        }
       ],
       "events": [
@@ -8060,7 +8277,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-05"
+        "id": "PL-05",
+        "open": true
        }
       ],
       "events": [
@@ -8161,7 +8379,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -8357,7 +8582,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-05"
+        "id": "WR-05",
+        "open": true
        }
       ],
       "events": [
@@ -8475,7 +8701,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -8662,7 +8895,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-08"
+        "id": "MC-08",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
        }
       ],
       "events": [
@@ -9123,7 +9363,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -9145,7 +9392,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "พวกพ้อง",
+        "pct": 40
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -9255,7 +9508,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-02"
+        "id": "PL-02",
+        "open": true
        }
       ],
       "events": [
@@ -9350,7 +9604,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-02"
+        "id": "PL-02",
+        "open": true
        }
       ],
       "events": [
@@ -9476,7 +9731,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-01"
+        "id": "DM-01",
+        "open": true
        }
       ],
       "events": [
@@ -9669,7 +9925,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-07"
+        "id": "WR-07",
+        "open": true
        }
       ],
       "events": [
@@ -9687,7 +9944,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -9777,7 +10041,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -10416,7 +10687,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-05"
+        "id": "DM-05",
+        "open": true
        }
       ],
       "events": [
@@ -10634,6 +10906,20 @@
       "weights": [],
       "cond": null,
       "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ขยายพันธุ์"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-07",
+          "open": true
+         }
+        ]
+       },
        {
         "k": "npc",
         "id": "MH06-2"
@@ -10875,7 +11161,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-05"
+        "id": "GI-05",
+        "open": true
        }
       ],
       "events": [
@@ -10984,7 +11271,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-06"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -11110,6 +11404,20 @@
       "cond": null,
       "effects": [
        {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ตกลงมา"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DR-04",
+          "open": true
+         }
+        ]
+       },
+       {
         "k": "event",
         "id": "DR-04"
        }
@@ -11224,7 +11532,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-11"
+        "id": "WR-11",
+        "open": true
        }
       ],
       "events": [
@@ -11315,6 +11624,20 @@
       "weights": [],
       "cond": null,
       "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ก่อนใคร"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DR-04",
+          "open": true
+         }
+        ]
+       },
        {
         "k": "event",
         "id": "DR-04"
@@ -11826,7 +12149,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-06"
+        "id": "MC-06",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-13"
+        ]
        }
       ],
       "events": [
@@ -12139,7 +12469,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-07"
+        "id": "GD-07",
+        "open": true
        }
       ],
       "events": [
@@ -12274,7 +12605,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-07"
+        "id": "DM-07",
+        "open": true
        }
       ],
       "events": [
@@ -12675,7 +13007,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-04"
+        "id": "GI-04",
+        "open": true
        }
       ],
       "events": [
@@ -12789,7 +13122,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -13002,6 +13342,20 @@
       "weights": [],
       "cond": null,
       "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "แต่ไม่กล้าพูด"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DR-04",
+          "open": true
+         }
+        ]
+       },
        {
         "k": "event",
         "id": "DR-04"
@@ -13461,7 +13815,8 @@
        },
        {
         "k": "event",
-        "id": "DR-01"
+        "id": "DR-01",
+        "open": true
        }
       ],
       "events": [
@@ -13593,7 +13948,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DR-14"
+        "id": "DR-14",
+        "open": true
        }
       ],
       "events": [
@@ -13883,9 +14239,9 @@
       "cond": null,
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "dragon_whisperer"
+        "k": "jobpath",
+        "job": "dragon_whisperer",
+        "secret": false
        }
       ],
       "events": [],
@@ -13994,7 +14350,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-08"
+        "id": "GI-08",
+        "open": true
        }
       ],
       "events": [
@@ -14016,6 +14373,12 @@
        {
         "k": "event",
         "id": "WR-13"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-02"
+        ]
        }
       ],
       "events": [
@@ -14131,7 +14494,8 @@
        },
        {
         "k": "event",
-        "id": "WR-13"
+        "id": "WR-13",
+        "open": true
        }
       ],
       "events": [
@@ -14228,7 +14592,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-07"
+        "id": "DM-07",
+        "open": true
        }
       ],
       "events": [
@@ -14990,7 +15355,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-03"
+        "id": "PL-03",
+        "open": true
        }
       ],
       "events": [
@@ -15101,7 +15467,8 @@
        },
        {
         "k": "event",
-        "id": "PL-03"
+        "id": "PL-03",
+        "open": true
        }
       ],
       "events": [
@@ -15850,6 +16217,12 @@
        {
         "k": "npc",
         "id": "KD11-1"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "KD-03"
+        ]
        }
       ],
       "events": [],
@@ -16154,7 +16527,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-18"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -16252,7 +16632,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -16353,7 +16740,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-03"
+        "id": "PO-03",
+        "open": true
        }
       ],
       "events": [
@@ -16460,7 +16848,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-06"
+        "id": "WR-06",
+        "open": true
        }
       ],
       "events": [
@@ -17130,7 +17519,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -17329,7 +17725,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-04"
+        "id": "PL-04",
+        "open": true
        }
       ],
       "events": [
@@ -17652,7 +18049,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-10"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -17744,7 +18148,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-02"
+        "id": "HP-02",
+        "open": true
        }
       ],
       "events": [
@@ -18099,7 +18504,8 @@
        },
        {
         "k": "event",
-        "id": "PL-04"
+        "id": "PL-04",
+        "open": true
        }
       ],
       "events": [
@@ -18219,7 +18625,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -18303,7 +18716,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-04"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -18780,7 +19200,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "พวกพ้อง",
+        "pct": 40
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -18874,7 +19300,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-20"
+        "id": "WR-20",
+        "open": true
        }
       ],
       "events": [
@@ -18993,7 +19420,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DR-05"
+        "id": "DR-05",
+        "open": true
        }
       ],
       "events": [
@@ -19223,7 +19651,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-20"
+        "id": "WR-20",
+        "open": true
        }
       ],
       "events": [
@@ -19337,7 +19766,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-08"
+        "id": "BIO-08",
+        "open": true
        }
       ],
       "events": [
@@ -19690,7 +20120,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-20"
+        "id": "WR-20",
+        "open": true
        }
       ],
       "events": [
@@ -19818,6 +20249,11 @@
         "id": "NR07-4"
        },
        {
+        "k": "eventWeight",
+        "id": "WR-20",
+        "delta": -20
+       },
+       {
         "k": "event",
         "id": "WR-20"
        }
@@ -19875,7 +20311,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "นาคา",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -20475,7 +20917,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-05"
+        "id": "CT-05",
+        "open": true
        }
       ],
       "events": [
@@ -21239,7 +21682,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -21442,7 +21892,8 @@
        },
        {
         "k": "event",
-        "id": "DR-05"
+        "id": "DR-05",
+        "open": true
        }
       ],
       "events": [
@@ -22165,7 +22616,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-07"
+        "id": "BIO-07",
+        "open": true
        }
       ],
       "events": [
@@ -22283,7 +22735,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-07"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -22470,7 +22929,15 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01",
+         "MK-14"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -23392,7 +23859,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-10"
+        "id": "CT-10",
+        "open": true
        }
       ],
       "events": [
@@ -23809,7 +24277,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-01"
+        "id": "PO-01",
+        "open": true
        }
       ],
       "events": [
@@ -23830,7 +24299,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-08"
+        "id": "PO-08",
+        "open": true
        },
        {
         "k": "event",
@@ -24184,7 +24654,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-01"
+        "id": "HP-01",
+        "open": true
        }
       ],
       "events": [
@@ -24283,7 +24754,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-04"
+        "id": "DM-04",
+        "open": true
        }
       ],
       "events": [
@@ -24304,7 +24776,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-02"
+        "id": "GD-02",
+        "open": true
        }
       ],
       "events": [
@@ -24500,7 +24973,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-05"
+        "id": "DM-05",
+        "open": true
        }
       ],
       "events": [
@@ -25141,7 +25615,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-06"
+        "id": "WR-06",
+        "open": true
        }
       ],
       "events": [
@@ -25360,7 +25835,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -25472,7 +25954,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -25981,7 +26470,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-01"
+        "id": "HP-01",
+        "open": true
        }
       ],
       "events": [
@@ -26002,7 +26492,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-05"
+        "id": "PO-05",
+        "open": true
        }
       ],
       "events": [
@@ -26207,7 +26698,13 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "qty",
+        "n": 16,
+        "unit": "อายุ"
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -26609,7 +27106,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-06"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -26838,7 +27342,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-05"
+        "id": "PO-05",
+        "open": true
        }
       ],
       "events": [
@@ -26945,7 +27450,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-16"
+        "id": "WR-16",
+        "open": true
        }
       ],
       "events": [
@@ -27268,7 +27774,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-07"
+        "id": "MC-07",
+        "open": true
        }
       ],
       "events": [
@@ -27520,7 +28027,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-07"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -27910,7 +28424,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-07"
+        "id": "PO-07",
+        "open": true
        }
       ],
       "events": [
@@ -28114,7 +28629,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-05"
+        "id": "HP-05",
+        "open": true
        }
       ],
       "events": [
@@ -28223,7 +28739,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-01"
+        "id": "BIO-01",
+        "open": true
        }
       ],
       "events": [
@@ -28428,7 +28945,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-07"
+        "id": "GD-07",
+        "open": true
        }
       ],
       "events": [
@@ -28535,7 +29053,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-09"
+        "id": "CT-09",
+        "open": true
        }
       ],
       "events": [
@@ -28955,7 +29474,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -29146,7 +29666,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -29358,7 +29879,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-05"
+        "id": "PL-05",
+        "open": true
        }
       ],
       "events": [
@@ -29383,7 +29905,8 @@
        },
        {
         "k": "event",
-        "id": "END-05"
+        "id": "END-05",
+        "open": true
        }
       ],
       "events": [
@@ -29478,12 +30001,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "AL14-1"
+        "k": "event",
+        "id": "PL-05",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "PL-05"
+        "k": "npc",
+        "id": "AL14-1"
        }
       ],
       "events": [
@@ -29794,7 +30318,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-16"
+        "id": "WR-16",
+        "open": true
        }
       ],
       "events": [
@@ -29914,7 +30439,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -30315,7 +30847,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-03"
+        "id": "BIO-03",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "SV-01"
+        ]
        }
       ],
       "events": [
@@ -30431,7 +30970,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-08"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -30776,7 +31322,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-03"
+        "id": "WR-03",
+        "open": true
        }
       ],
       "events": [
@@ -30883,7 +31430,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-08"
+        "id": "CT-08",
+        "open": true
        }
       ],
       "events": [
@@ -31019,7 +31567,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-03"
+        "id": "WR-03",
+        "open": true
        }
       ],
       "events": [
@@ -31556,7 +32105,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -31752,7 +32308,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -32116,7 +32679,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "พวกพ้อง",
+        "pct": 40
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -32219,7 +32788,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-04"
+        "id": "BIO-04",
+        "open": true
        }
       ],
       "events": [
@@ -32352,7 +32922,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-06"
+        "id": "HP-06",
+        "open": true
        }
       ],
       "events": [
@@ -32459,7 +33030,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-09"
+        "id": "MC-09",
+        "open": true
        }
       ],
       "events": [
@@ -33423,7 +33995,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -33592,7 +34171,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-01"
+        "id": "BIO-01",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "SV-01"
+        ]
        }
       ],
       "events": [
@@ -33717,7 +34303,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-22"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -33916,7 +34509,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-17"
+        "id": "WR-17",
+        "open": true
        }
       ],
       "events": [
@@ -34578,7 +35172,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-17"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -34679,7 +35280,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-05"
+        "id": "DM-05",
+        "open": true
        }
       ],
       "events": [
@@ -34885,7 +35487,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-02"
+        "id": "GD-02",
+        "open": true
        }
       ],
       "events": [
@@ -34906,7 +35509,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-05"
+        "id": "DM-05",
+        "open": true
        }
       ],
       "events": [
@@ -35115,7 +35719,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-06"
+        "id": "HP-06",
+        "open": true
        }
       ],
       "events": [
@@ -35233,7 +35838,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -35320,7 +35932,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-03"
+        "id": "CT-03",
+        "open": true
        }
       ],
       "events": [
@@ -35357,7 +35970,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-06"
+        "id": "BIO-06",
+        "open": true
        }
       ],
       "events": [
@@ -35776,7 +36390,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-07"
+        "id": "PO-07",
+        "open": true
        }
       ],
       "events": [
@@ -36266,7 +36881,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -36375,7 +36991,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-11"
+        "id": "MC-11",
+        "open": true
        }
       ],
       "events": [
@@ -36396,7 +37013,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-06"
+        "id": "PL-06",
+        "open": true
        }
       ],
       "events": [
@@ -36633,7 +37251,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-11"
+        "id": "MC-11",
+        "open": true
        }
       ],
       "events": [
@@ -36821,7 +37440,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -36839,7 +37459,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-04"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -36943,7 +37570,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-16"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -37244,12 +37878,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "MK02-1"
+        "k": "event",
+        "id": "MC-02",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "MC-02"
+        "k": "npc",
+        "id": "MK02-1"
        }
       ],
       "events": [
@@ -37276,12 +37911,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "MK02-3"
+        "k": "event",
+        "id": "MC-04",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "MC-04"
+        "k": "npc",
+        "id": "MK02-3"
        }
       ],
       "events": [
@@ -37419,7 +38055,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-03"
+        "id": "MC-03",
+        "open": true
        }
       ],
       "events": [
@@ -37723,7 +38360,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-10"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -37837,7 +38481,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-05"
+        "id": "MC-05",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-06"
+        ]
        }
       ],
       "events": [
@@ -37857,7 +38508,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-12"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -37966,7 +38624,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-05"
+        "id": "MC-05",
+        "open": true
        }
       ],
       "events": [
@@ -37987,7 +38646,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "END-06"
+        "id": "END-06",
+        "open": true
        }
       ],
       "events": [
@@ -38083,7 +38743,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-05"
+        "id": "MC-05",
+        "open": true
        }
       ],
       "events": [
@@ -38388,7 +39049,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-07"
+        "id": "MC-07",
+        "open": true
        }
       ],
       "events": [
@@ -38492,7 +39154,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-15"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -38720,7 +39389,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-08"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -39642,7 +40318,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -39663,7 +40340,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-09"
+        "id": "WR-09",
+        "open": true
        }
       ],
       "events": [
@@ -39804,7 +40482,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -40093,7 +40772,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-10"
+        "id": "MC-10",
+        "open": true
        }
       ],
       "events": [
@@ -40114,7 +40794,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-01"
+        "id": "WR-01",
+        "open": true
        }
       ],
       "events": [
@@ -40330,7 +41011,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-06"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -40438,7 +41126,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AZ-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -40529,7 +41224,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-21"
+        "id": "WR-21",
+        "open": true
        }
       ],
       "events": [
@@ -40639,7 +41335,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-03"
+        "id": "MC-03",
+        "open": true
        }
       ],
       "events": [
@@ -40983,7 +41680,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-01"
+        "id": "BIO-01",
+        "open": true
        }
       ],
       "events": [
@@ -41117,7 +41815,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-03"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -41332,7 +42037,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -41810,7 +42522,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-06"
+        "id": "MC-06",
+        "open": true
        }
       ],
       "events": [
@@ -41828,7 +42541,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-04"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -41919,7 +42639,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-06"
+        "id": "MC-06",
+        "open": true
        }
       ],
       "events": [
@@ -42143,7 +42864,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-12"
+        "id": "MC-12",
+        "open": true
        }
       ],
       "events": [
@@ -42236,7 +42958,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-04"
+        "id": "MC-04",
+        "open": true
        }
       ],
       "events": [
@@ -42350,7 +43073,8 @@
        },
        {
         "k": "event",
-        "id": "MC-04"
+        "id": "MC-04",
+        "open": true
        }
       ],
       "events": [
@@ -42478,7 +43202,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-01"
+        "id": "BIO-01",
+        "open": true
        }
       ],
       "events": [
@@ -42590,7 +43315,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-11"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -42985,7 +43717,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-06"
+        "id": "MC-06",
+        "open": true
        }
       ],
       "events": [
@@ -43078,7 +43811,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-08"
+        "id": "MC-08",
+        "open": true
        }
       ],
       "events": [
@@ -43682,7 +44416,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "pct",
+        "text": "พวกพ้อง",
+        "pct": 40
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -43778,7 +44518,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-24"
+        "id": "WR-24",
+        "open": true
        }
       ],
       "events": [
@@ -43909,7 +44650,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-24"
+        "id": "WR-24",
+        "open": true
        }
       ],
       "events": [
@@ -43929,7 +44671,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-03"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -44477,7 +45226,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NB-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -44798,12 +45554,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "SH01-1"
+        "k": "event",
+        "id": "WR-24",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "WR-24"
+        "k": "npc",
+        "id": "SH01-1"
        }
       ],
       "events": [
@@ -44830,7 +45587,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -44941,7 +45704,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-01"
+        "id": "GI-01",
+        "open": true
        }
       ],
       "events": [
@@ -44962,7 +45726,14 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-02"
+        "id": "WR-02",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AZ-04"
+        ]
        }
       ],
       "events": [
@@ -45163,7 +45934,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-01"
+        "id": "GI-01",
+        "open": true
        }
       ],
       "events": [
@@ -45181,7 +45953,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -45385,7 +46164,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-03"
+        "id": "HP-03",
+        "open": true
        }
       ],
       "events": [
@@ -45405,12 +46185,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "SH03-2"
+        "k": "event",
+        "id": "WR-02",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "WR-02"
+        "k": "npc",
+        "id": "SH03-2"
        }
       ],
       "events": [
@@ -45438,7 +46219,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "ยักษ์",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -45758,7 +46545,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -45877,7 +46671,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -45970,7 +46771,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-10"
+        "id": "GI-10",
+        "open": true
        }
       ],
       "events": [
@@ -46091,7 +46893,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-10"
+        "id": "GI-10",
+        "open": true
        }
       ],
       "events": [
@@ -46293,7 +47096,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -46380,7 +47190,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-02"
+        "id": "GI-02",
+        "open": true
        }
       ],
       "events": [
@@ -46617,7 +47428,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-02"
+        "id": "GI-02",
+        "open": true
        }
       ],
       "events": [
@@ -46947,7 +47759,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-03"
+        "id": "GI-03",
+        "open": true
        }
       ],
       "events": [
@@ -47051,7 +47864,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-04"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -47154,7 +47974,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-08"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -48733,7 +49560,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MH-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -49169,7 +50003,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-06"
+        "id": "GI-06",
+        "open": true
        }
       ],
       "events": [
@@ -50029,7 +50864,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-06"
+        "id": "GI-06",
+        "open": true
        }
       ],
       "events": [
@@ -50492,7 +51328,15 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "mu.a2"
+        ],
+        "rel": ""
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -50599,7 +51443,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-07"
+        "id": "GI-07",
+        "open": true
        }
       ],
       "events": [
@@ -50902,7 +51747,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-07"
+        "id": "GI-07",
+        "open": true
        }
       ],
       "events": [
@@ -51434,7 +52280,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-07"
+        "id": "PL-07",
+        "open": true
        }
       ],
       "events": [
@@ -51767,7 +52614,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-07"
+        "id": "PL-07",
+        "open": true
        }
       ],
       "events": [
@@ -51864,12 +52712,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "SH17-3"
+        "k": "event",
+        "id": "WR-24",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "WR-24"
+        "k": "npc",
+        "id": "SH17-3"
        }
       ],
       "events": [
@@ -51924,7 +52773,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "ยักษ์",
+        "delta": 2
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -52027,7 +52882,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "END-08"
+        "id": "END-08",
+        "open": true
        }
       ],
       "events": [
@@ -52222,7 +53078,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-02"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -52421,7 +53284,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-02"
+        "id": "BIO-02",
+        "open": true
        }
       ],
       "events": [
@@ -52539,7 +53403,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-26"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -52744,7 +53615,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-06"
+        "id": "HP-06",
+        "open": true
        }
       ],
       "events": [
@@ -52861,7 +53733,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-04"
+        "id": "WR-04",
+        "open": true
        }
       ],
       "events": [
@@ -52976,6 +53849,12 @@
        {
         "k": "death",
         "cause": "ตายในการโจมตีโรงกลั่นของ"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-14"
+        ]
        }
       ],
       "events": [],
@@ -52991,7 +53870,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "MK-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -53847,6 +54733,11 @@
       "cond": null,
       "effects": [
        {
+        "k": "trust",
+        "toward": "ภูต",
+        "delta": 3
+       },
+       {
         "k": "npc",
         "id": "SV04-5"
        }
@@ -53868,6 +54759,11 @@
       "cond": null,
       "effects": [
        {
+        "k": "event",
+        "id": "BIO-03",
+        "open": true
+       },
+       {
         "k": "npc",
         "id": "SV04-1"
        },
@@ -53878,10 +54774,6 @@
        {
         "k": "npc",
         "id": "SV04-4"
-       },
-       {
-        "k": "event",
-        "id": "BIO-03"
        }
       ],
       "events": [
@@ -53907,9 +54799,9 @@
       "cond": null,
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "contract_redeemer"
+        "k": "jobpath",
+        "job": "contract_redeemer",
+        "secret": false
        }
       ],
       "events": [],
@@ -54012,7 +54904,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-07"
+        "id": "CT-07",
+        "open": true
        }
       ],
       "events": [
@@ -54468,7 +55361,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -54575,7 +55475,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-04"
+        "id": "BIO-04",
+        "open": true
        }
       ],
       "events": [
@@ -54596,7 +55497,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-08"
+        "id": "WR-08",
+        "open": true
        }
       ],
       "events": [
@@ -54812,7 +55714,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NB-09"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -55800,7 +56709,15 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SV-16",
+         "SV-01"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -56339,7 +57256,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DR-01"
+        "id": "DR-01",
+        "open": true
        }
       ],
       "events": [
@@ -57362,7 +58280,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-08"
+        "id": "PL-08",
+        "open": true
        }
       ],
       "events": [
@@ -57471,7 +58390,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-01"
+        "id": "BIO-01",
+        "open": true
        }
       ],
       "events": [
@@ -57491,12 +58411,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "SV12-1"
+        "k": "event",
+        "id": "PL-08",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "PL-08"
+        "k": "npc",
+        "id": "SV12-1"
        }
       ],
       "events": [
@@ -57524,7 +58445,13 @@
       ],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "trust",
+        "toward": "เอลฟ์ใต้ดิน",
+        "delta": 3
+       }
+      ],
       "events": [],
       "npcs": []
      }
@@ -57933,7 +58860,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DR-14"
+        "id": "DR-14",
+        "open": true
        }
       ],
       "events": [
@@ -58040,7 +58968,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-02"
+        "id": "BIO-02",
+        "open": true
        }
       ],
       "events": [
@@ -58350,7 +59279,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-04"
+        "id": "WR-04",
+        "open": true
        }
       ],
       "events": [
@@ -58457,7 +59387,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-04"
+        "id": "PO-04",
+        "open": true
        }
       ],
       "events": [
@@ -58676,7 +59607,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-11"
+        "id": "MC-11",
+        "open": true
        }
       ],
       "events": [
@@ -58867,7 +59799,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-17"
+        "id": "WR-17",
+        "open": true
        }
       ],
       "events": [
@@ -59081,7 +60014,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-02"
+        "id": "BIO-02",
+        "open": true
        }
       ],
       "events": [
@@ -59523,7 +60457,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-07"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -59621,7 +60562,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NR-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -59825,7 +60773,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-10"
+        "id": "BIO-10",
+        "open": true
        }
       ],
       "events": [
@@ -60259,12 +61208,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "SV18-1"
+        "k": "event",
+        "id": "BIO-10",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "BIO-10"
+        "k": "npc",
+        "id": "SV18-1"
        }
       ],
       "events": [
@@ -60389,7 +61339,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-06"
+        "id": "FG-06",
+        "open": true
        }
       ],
       "events": [
@@ -60410,7 +61361,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-03"
+        "id": "FG-03",
+        "open": true
        }
       ],
       "events": [
@@ -60504,7 +61456,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-06"
+        "id": "FG-06",
+        "open": true
        }
       ],
       "events": [
@@ -60822,7 +61775,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-07"
+        "id": "FG-07",
+        "open": true
        }
       ],
       "events": [
@@ -60843,7 +61797,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-05"
+        "id": "BIO-05",
+        "open": true
        }
       ],
       "events": [
@@ -61239,6 +62194,12 @@
        {
         "k": "npc",
         "id": "AL02-2"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "NB-02"
+        ]
        }
       ],
       "events": [],
@@ -61390,7 +62351,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-04"
+        "id": "FG-04",
+        "open": true
        }
       ],
       "events": [
@@ -61499,7 +62461,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-04"
+        "id": "FG-04",
+        "open": true
        }
       ],
       "events": [
@@ -61619,7 +62582,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-13"
+        "id": "FG-13",
+        "open": true
        }
       ],
       "events": [
@@ -61753,7 +62717,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-02"
+        "id": "FG-02",
+        "open": true
        }
       ],
       "events": [
@@ -61846,7 +62811,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-12"
+        "id": "FG-12",
+        "open": true
        }
       ],
       "events": [
@@ -62257,7 +63223,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-08"
+        "id": "PO-08",
+        "open": true
        }
       ],
       "events": [
@@ -62956,7 +63923,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-06"
+        "id": "HP-06",
+        "open": true
        }
       ],
       "events": [
@@ -63175,7 +64143,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-10"
+        "id": "BIO-10",
+        "open": true
        }
       ],
       "events": [
@@ -63481,7 +64450,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-05"
+        "id": "FG-05",
+        "open": true
        }
       ],
       "events": [
@@ -63603,7 +64573,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "NB-14"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -63793,7 +64770,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-09"
+        "id": "PL-09",
+        "open": true
        }
       ],
       "events": [
@@ -63814,7 +64792,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-09"
+        "id": "DM-09",
+        "open": true
        }
       ],
       "events": [
@@ -63912,7 +64891,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-14"
+        "id": "FG-14",
+        "open": true
        }
       ],
       "events": [
@@ -63933,7 +64913,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-06"
+        "id": "BIO-06",
+        "open": true
        }
       ],
       "events": [
@@ -64045,7 +65026,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-20"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -64131,12 +65119,13 @@
       "cond": null,
       "effects": [
        {
-        "k": "npc",
-        "id": "NB08-1"
+        "k": "event",
+        "id": "FG-10",
+        "open": true
        },
        {
-        "k": "event",
-        "id": "FG-10"
+        "k": "npc",
+        "id": "NB08-1"
        }
       ],
       "events": [
@@ -64175,7 +65164,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-10"
+        "id": "FG-10",
+        "open": true
        }
       ],
       "events": [
@@ -64258,7 +65248,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PO-07"
+        "id": "PO-07",
+        "open": true
        }
       ],
       "events": [
@@ -64279,7 +65270,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-14"
+        "id": "FG-14",
+        "open": true
        }
       ],
       "events": [
@@ -64686,7 +65678,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ],
       "events": [
@@ -64707,7 +65700,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-09"
+        "id": "FG-09",
+        "open": true
        }
       ],
       "events": [
@@ -64836,7 +65830,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-09"
+        "id": "FG-09",
+        "open": true
        }
       ],
       "events": [
@@ -65120,7 +66115,14 @@
       "axes": [],
       "weights": [],
       "cond": null,
-      "effects": [],
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "AL-05"
+        ]
+       }
+      ],
       "events": [],
       "npcs": []
      },
@@ -65139,7 +66141,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-09"
+        "id": "MC-09",
+        "open": true
        }
       ],
       "events": [
@@ -65431,7 +66434,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-09"
+        "id": "MC-09",
+        "open": true
        }
       ],
       "events": [
@@ -65524,7 +66528,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "CT-03"
+        "id": "CT-03",
+        "open": true
        }
       ],
       "events": [
@@ -65545,11 +66550,12 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-01"
+        "id": "FG-14",
+        "open": true
        },
        {
         "k": "event",
-        "id": "FG-14"
+        "id": "FG-01"
        }
       ],
       "events": [
@@ -65649,7 +66655,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-14"
+        "id": "FG-14",
+        "open": true
        }
       ],
       "events": [
@@ -66368,6 +67375,12 @@
        {
         "k": "event",
         "id": "FG-01"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "NB-02"
+        ]
        }
       ],
       "events": [
@@ -66506,7 +67519,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-07"
+        "id": "FG-07",
+        "open": true
        }
       ],
       "events": [
@@ -66829,7 +67843,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "FG-08"
+        "id": "FG-08",
+        "open": true
        }
       ],
       "events": [
@@ -67005,7 +68020,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GD-01"
+        "id": "GD-01",
+        "open": true
        }
       ]
      },
@@ -67629,7 +68645,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-18"
+        "id": "WR-18",
+        "open": true
        }
       ]
      },
@@ -67664,7 +68681,14 @@
       "key": "a",
       "weight": 40,
       "label": "ตั้งท่าลงฟ้าที่ค่ายรามาดีน (SH-09) ชาวพื้นนับพันได้ที่อยู่ใหม่",
-      "effects": []
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "SH-09"
+        ]
+       }
+      ]
      },
      {
       "key": "b",
@@ -67708,7 +68732,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "SF-10"
+        "id": "SF-10",
+        "open": true
        }
       ]
      },
@@ -67719,7 +68744,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-22"
+        "id": "WR-22",
+        "open": true
        }
       ]
      },
@@ -67799,7 +68825,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "DM-11"
+        "id": "DM-11",
+        "open": true
        }
       ]
      },
@@ -67810,7 +68837,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-19"
+        "id": "WR-19",
+        "open": true
        }
       ]
      },
@@ -67849,7 +68877,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-07"
+        "id": "HP-07",
+        "open": true
        }
       ]
      },
@@ -67860,11 +68889,13 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-03"
+        "id": "WR-03",
+        "open": true
        },
        {
         "k": "event",
-        "id": "WR-07"
+        "id": "WR-07",
+        "open": true
        }
       ]
      },
@@ -67945,7 +68976,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "LE-06"
+        "id": "LE-06",
+        "open": true
        }
       ]
      },
@@ -67994,7 +69026,14 @@
       "key": "b",
       "weight": 35,
       "label": "สภาจับได้ ขับออกข้อหาส่งไฟให้มังกร ราชวงศ์มังกรเผา (KD-07) รับไปเป็นผู้ถ่ายทอด",
-      "effects": []
+      "effects": [
+       {
+        "k": "place",
+        "ids": [
+         "KD-07"
+        ]
+       }
+      ]
      },
      {
       "key": "c",
@@ -68042,7 +69081,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "GI-05"
+        "id": "GI-05",
+        "open": true
        }
       ]
      }
@@ -68081,7 +69121,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "AS-02"
+        "id": "AS-02",
+        "open": true
        }
       ]
      },
@@ -68092,7 +69133,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "PL-03"
+        "id": "PL-03",
+        "open": true
        }
       ]
      }
@@ -68126,7 +69168,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "LE-05"
+        "id": "LE-05",
+        "open": true
        }
       ]
      },
@@ -68137,7 +69180,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "LE-03"
+        "id": "LE-03",
+        "open": true
        }
       ]
      },
@@ -68189,7 +69233,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-20"
+        "id": "WR-20",
+        "open": true
        }
       ]
      }
@@ -68355,7 +69400,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-16"
+        "id": "WR-16",
+        "open": true
        }
       ]
      }
@@ -68507,7 +69553,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "MC-02"
+        "id": "MC-02",
+        "open": true
        }
       ]
      },
@@ -68564,7 +69611,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-21"
+        "id": "WR-21",
+        "open": true
        }
       ]
      }
@@ -68718,7 +69766,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "HP-03"
+        "id": "HP-03",
+        "open": true
        }
       ]
      },
@@ -68729,7 +69778,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-02"
+        "id": "WR-02",
+        "open": true
        }
       ]
      },
@@ -68901,7 +69951,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "WR-17"
+        "id": "WR-17",
+        "open": true
        }
       ]
      },
@@ -68912,7 +69963,8 @@
       "effects": [
        {
         "k": "event",
-        "id": "BIO-09"
+        "id": "BIO-09",
+        "open": true
        }
       ]
      }
