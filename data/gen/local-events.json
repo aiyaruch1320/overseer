@@ -486,9 +486,20 @@
      }
     ],
     "depends": {
-     "k": "event",
-     "id": "DR-02",
-     "happened": true
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-02",
+       "happened": true
+      },
+      {
+       "k": "var",
+       "name": "M1",
+       "op": "<",
+       "n": 40
+      }
+     ]
     },
     "npcs": [
      {
@@ -571,9 +582,18 @@
      }
     ],
     "depends": {
-     "k": "event",
-     "id": "HP-07",
-     "happened": true
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "HP-07",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "MH03-4 เลือกทาง ก ไปแล้ว"
+      }
+     ]
     },
     "npcs": [
      {
@@ -780,10 +800,19 @@
      }
     ],
     "depends": {
-     "k": "event",
-     "id": "MC-05",
-     "happened": true,
-     "phase": "near"
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "MC-05",
+       "happened": true,
+       "phase": "near"
+      },
+      {
+       "k": "text",
+       "text": "ภายใน 30 ปีหลังไรเวอร์-9 ตื่น"
+      }
+     ]
     },
     "npcs": [
      {

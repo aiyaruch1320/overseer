@@ -47,7 +47,7 @@ import {
   thresholds,
 } from '../lib/events-grammar';
 import { idIndex } from '../lib/ids';
-import { Unparsed, readDoc, tables, writeGen } from '../lib/table';
+import { Unparsed, listDocs, readDoc, tables, writeGen } from '../lib/table';
 
 const F = {
   world: 'docs/systems/events/world-events.md',
@@ -86,6 +86,8 @@ const HERO = 'DR-13';
 const ENDINGS = ['END-10', 'END-11', 'END-12'];
 const START_EVENT = 'FG-01';
 
+/** Names of the 15 dragons in index order, set by `run` for the condition parser ("อารมณ์เพลิงนิรันดร์ < 40"). */
+let dragonNames: string[] = [];
 const lines = (f: string) => readDoc(f).split('\n');
 const lineOf = (f: string, text: string) => lines(f).findIndex((l) => l.includes(text)) + 1;
 
@@ -150,7 +152,10 @@ export default function run(): GenReport {
     dragons[ia].pair = ib;
     dragons[ib].pair = ia;
   }
+  dragonNames = dragons.map((d) => d.name);
   const pillarIndex = new Map(dragons.filter((d) => d.awakeEvent).map((d) => [d.awakeEvent!, d.index]));
+  // the mood of a dragon is read in the condition of its fall as well ("อารมณ์ต่ำกว่า 10 (สิ้นแรง)" in DR-04 DR-05 END-01…END-08); `thr` keeps the awakening pillar only (the sim's view)
+  const moodIndex = new Map([...pillarIndex, ...dragons.map((d) => [d.fallEvent, d.index] as [string, number])]);
   const fallIds = new Set(dragons.map((d) => d.fallEvent));
 
   // ---------- flags and closures (branches/) ----------
@@ -247,6 +252,48 @@ export default function run(): GenReport {
   {
     const t = tables(F.faiths).find((x) => x.header[1] === 'ศาสนา')!;
     for (const r of t.rows) if (/^\d+$/.test(r.cells[0])) faiths.push({ no: +r.cells[0], name: r.cells[1], pct: r.cells[3] === '' || isNaN(Number(r.cells[3])) ? null : Number(r.cells[3]) });
+  }
+  // main faiths of every country (world-events §0.2.1): the faith numbers its ศาสนา field names, a dragon it worships counts as the faiths that dragon feeds,
+  // and a movement is a main faith of its base countries. Same words and same order as the sim, so the share of a home comes out equal.
+  const mainFaiths: Record<string, number[]> = {};
+  {
+    const WORDS: [RegExp, number][] = [
+      [/มังกร/, 1], [/แสง/, 2], [/ต้นไม้โลก/, 3], [/สมุทร/, 4], [/พญานาค|นาคา/, 5], [/จันทรา/, 6], [/สงคราม/, 7], [/ปีศาจ/, 8], [/บรรพบุรุษ/, 9],
+      [/ไม่มี(?!ศาสนา)|เหตุผล/, 10], [/เตาหลอม/, 11], [/เฟือง/, 12], [/ศิลา|ไททัน/, 13], [/กระซิบ/, 14], [/ฟาโรห์|บัญชีวิญญาณ/, 15], [/ผู้ชี้ทาง/, 16], [/ความฝัน/, 17],
+      [/วิญญาณสัตว์|วิญญาณหมาป่า/, 18], [/ลาง/, 19],
+    ];
+    const faithsIn = (text: string) => WORDS.filter(([re]) => re.test(text)).map(([, n]) => n);
+    const dragonFaith: [string, number[]][] = dragonTable.rows.filter((r) => /^\d+$/.test(r.cells[0]) && r.cells[4]).map((r) => [r.cells[1], faithsIn(r.cells[4])]);
+    const sets: Record<string, Set<number>> = {};
+    for (const f of listDocs('docs/lore/countries', /^\d\d-.*\.md$/)) {
+      let cur: string | null = null;
+      for (const l of readDoc(f).split('\n')) {
+        const h = l.match(/^#### ([A-Z]{2}-\d{2}) /);
+        if (h) {
+          cur = h[1];
+          continue;
+        }
+        const m = cur && l.match(/\*\*ศาสนา:\*\* ([^·]*)/);
+        if (!m) continue;
+        let text = m[1];
+        const set = new Set<number>();
+        for (const [name, ns] of dragonFaith)
+          if (text.includes(name)) {
+            ns.forEach((n) => set.add(n));
+            text = text.replace(name, '');
+          }
+        faithsIn(text).forEach((n) => set.add(n));
+        sets[cur!] = set;
+        cur = null;
+      }
+    }
+    let no = 0;
+    for (const l of lines('docs/lore/religions/04-movements.md')) {
+      const h = l.match(/^## (\d+)\./);
+      if (h) no = +h[1];
+      if (l.startsWith('- **ฐาน**')) for (const c of l.match(/\b[A-Z]{2}-\d{2}\b/g) || []) sets[c]?.add(no);
+    }
+    for (const c of Object.keys(sets).sort()) mainFaiths[c] = [...sets[c]].sort((a, b) => a - b);
   }
   const homeTable = new Map<string, string>();
   for (const l of readDoc(F.world).split('### 0.2.1')[1].split('### 0.3')[0].split('\n')) {
@@ -352,12 +399,17 @@ export default function run(): GenReport {
     return { drift: m ? num(m[1]) : 0, noise: m?.[2] ? Number(m[2]) : 0 };
   };
   // one-time changes and stops in the stop cell: `HP-07 −40 ครั้งเดียว` · `FG-10 −40 และหยุด · FG-11 +1.2 แทน` · `มังกรล้ม +4 · DR-11 +10`
+  const haltIds = new Set<string>();
   const changesOf = (stop: string): WorldVar['changes'] => {
     const list: WorldVar['changes'] = [];
+    haltIds.clear();
     for (const m of stop.matchAll(/((?:[A-Z]{2,3}-\d{2}\s+(?:หรือ\s+)?)*[A-Z]{2,3}-\d{2}|มังกรล้ม)\s+([+\-−]\d+(?:\.\d+)?)(\s*ครั้งเดียว|\s*และหยุด|\s*แทน|\s*ต่อทศวรรษแทน)?/g)) {
       const evs = m[1] === 'มังกรล้ม' ? ['fall'] : m[1].match(/[A-Z]{2,3}-\d{2}/g)!;
       const kind = /แทน/.test(m[3] || '') ? 'drift' : 'once';
-      for (const e of evs) list.push({ event: e, delta: num(m[2]), kind });
+      for (const e of evs) {
+        list.push({ event: e, delta: num(m[2]), kind });
+        if (/และหยุด/.test(m[3] || '')) haltIds.add(e);
+      }
     }
     return list;
   };
@@ -368,6 +420,8 @@ export default function run(): GenReport {
     const startM = r.cells[1].match(/^(\d+)/);
     const { drift, noise } = /^ไม่เปลี่ยนเอง/.test(r.cells[2]) ? { drift: 0, noise: 0 } : driftOf(r.cells[2]);
     const stop = r.cells[3];
+    const stopEvents = [...new Set(stop.match(/\b(?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|WT)-\d{2}\b/g) || [])];
+    const changes = changesOf(stop);
     vars.push({
       code,
       name,
@@ -376,8 +430,10 @@ export default function run(): GenReport {
       noise,
       min,
       max,
-      stopEvents: [...new Set(stop.match(/\b(?:DR|PL|WR|CT|DM|MC|BIO|GD|HP|PO|GI|FG|END|WT)-\d{2}\b/g) || [])],
-      changes: changesOf(stop),
+      stopEvents,
+      // a change with a number (`HP-07 −40 ครั้งเดียว`, `DR-11 +10`, `MC-04 +20`, `MC-09 −3 แทน`) does not end the drift unless it says so; a name with no number does
+      halts: stopEvents.filter((x) => haltIds.has(x) || !changes.some((c) => c.event === x)),
+      changes,
       note: `${r.cells[2]} · ${stop}`,
       inSim: r.cells[4],
       src: `${F.world}:${r.line}`,
@@ -461,7 +517,7 @@ export default function run(): GenReport {
       src: `${F.world}:${e.line}`,
     };
     if (docEra[0] !== sim[0] || docEra[1] !== sim[1]) ev.eraSim = sim;
-    const { cond, note } = condOf(e, pillarIndex.get(e.id), (t) => unp.add(F.world, e.line, t, `${e.id} เงื่อนไขเป็นข้อความ`));
+    const { cond, note } = condOf(e, moodIndex.get(e.id), (t) => unp.add(F.world, e.line, t, `${e.id} เงื่อนไขเป็นข้อความ`));
     if (cond) ev.cond = cond;
     if (note) ev.condNote = note;
     // numbers the prose cell gives beyond thresholds: fallen dragons, keys held, peace events, and which events an ending needs together
@@ -596,6 +652,7 @@ export default function run(): GenReport {
     flags,
     closures,
     faiths,
+    mainFaiths,
     events,
     branch,
     lastEra,
@@ -620,14 +677,14 @@ const MINUS_RE = /[−–]/g;
 function condOf(e: { id: string; cond: string }, pillar: number | undefined, text: (t: string) => void): { cond?: WorldCond; note?: string } {
   const report = (r: ReturnType<typeof parseCond>) => r.texts.forEach(text);
   if (!e.id.startsWith('WR-')) {
-    const r = parseCond(e.cond, { pillar });
+    const r = parseCond(e.cond, { pillar, dragons: dragonNames });
     report(r);
     return r.cond ? { cond: r.cond } : {};
   }
   const notes: string[] = [];
   const conds: WorldCond[] = [];
   for (const part of plain(e.cond).split(/\s+·\s+/)) {
-    const r = parseCond(part, { pillar });
+    const r = parseCond(part, { pillar, dragons: dragonNames });
     if (!r.cond) {
       if (/[฀-๿A-Za-z]/.test(part.replace(/ยุค\s*[≥\d–-]+/g, '').replace(/ทุกยุค/g, ''))) notes.push(part);
       continue;
@@ -770,7 +827,7 @@ function buildLocal(ids: ReturnType<typeof idIndex>, unp: Unparsed, eventIds: Se
     });
     const chain = [...parsedCommon.localChain, ...pathOut.flatMap((p) => p.chain)];
     const receives = [...new Set([...parsedCommon.receives, ...pathOut.flatMap((p) => p.receives)])];
-    const depends = parseCond(cells[2]);
+    const depends = parseCond(cells[2], { dragons: dragonNames });
     depends.texts.forEach((t) => unp.add(file, line, t, `${m[1]} ขึ้นกับ: เงื่อนไขเป็นข้อความ`));
     const chanceM = cells[6].match(/(\d+(?:\.\d+)?)%/);
     if (!chanceM) unp.add(file, line, cells[6], `${m[1]} โอกาสต่อทศวรรษอ่านไม่ได้`);

@@ -176,7 +176,7 @@ const VAR_PHRASES: [string, (pillar: number | undefined, m: RegExpMatchArray) =>
 ];
 
 /** The readable atoms of one clause: era, DFC, keys, HP count, variable thresholds, events. What is not read comes back as `rest`. */
-function atomsOf(s0: string, pillar: number | undefined): { atoms: WorldCond[]; rest: string; hit: boolean } {
+function atomsOf(s0: string, pillar: number | undefined, dragons: readonly string[] = []): { atoms: WorldCond[]; rest: string; hit: boolean } {
   let s = s0;
   let hit = false;
   const atoms: WorldCond[] = [];
@@ -196,10 +196,15 @@ function atomsOf(s0: string, pillar: number | undefined): { atoms: WorldCond[]; 
   take(/DFC\s*=\s*(\d+)/g, (m) => ({ k: 'cmp', stat: 'dfc', op: '==', value: +m[1] }));
   take(/เหตุการณ์ HP เกิดแล้วอย่างน้อย\s*(\d+)\s*รายการ/g, (m) => ({ k: 'cmp', stat: 'happened.HP', op: '>=', value: +m[1] }));
   take(/(?:ผู้ครอบครอง|ผู้ถือ)?กุญแจ[฀-๿]{0,14}?\s*(?:≥\s*)?(\d+)\s*\+?(?:\s*ชิ้น)?/g, (m) => ({ k: 'cmp', stat: 'keys', op: '>=', value: +m[1] }));
-  for (const [name, code] of VAR_PHRASES) {
-    take(new RegExp(`(?:${name})\\s*(?<op>[<>]|ต่ำกว่า)\\s*(?<n>\\d+)`, 'g'), (m) => {
+  // "อารมณ์เพลิงนิรันดร์ < 40": the mood of a dragon named in the words
+  const phrases: typeof VAR_PHRASES = dragons.length
+    ? [[`อารมณ์(?<dn>${[...dragons].sort((a, b) => b.length - a.length).join('|')})`, (_, m) => 'M' + dragons.indexOf(m.groups!.dn)], ...VAR_PHRASES]
+    : VAR_PHRASES;
+  for (const [name, code] of phrases) {
+    // "ศรัทธาโลก < 20 นาน 3 ทศวรรษ": the threshold has to hold that many decades in a row (DR-01)
+    take(new RegExp(`(?:${name})\\s*(?<op>[<>]|ต่ำกว่า)\\s*(?<n>\\d+)(?:\\s*นาน\\s*(?<dec>\\d+)\\s*ทศวรรษ)?`, 'g'), (m) => {
       const c = code(pillar, m);
-      return c ? { k: 'var', name: c, op: m.groups!.op === '>' ? '>' : '<', n: +m.groups!.n } : null;
+      return c ? { k: 'var', name: c, op: m.groups!.op === '>' ? '>' : '<', n: +m.groups!.n, ...(m.groups!.dec ? { decades: +m.groups!.dec } : {}) } : null;
     });
   }
   take(new RegExp(`(${EV})\\s*จบด้วยการ(เปิด|ผนึก|กระจาย)(?:กุญแจ)?`, 'g'), (m) => ({ k: 'event', id: m[1], happened: true, outcome: OUTCOME_WORD[m[2]] }));
@@ -240,9 +245,10 @@ const allOf = (xs: WorldCond[]): WorldCond | null => {
  * only split when one side holds a readable atom, so a prose phrase like "พงไพรหรือหมอก" stays one text. A parenthesis that holds an atom
  * defines the words in front of it (`ทุกฝ่ายหมดศรัทธา (ศรัทธาโลกต่ำกว่า 38)` is the threshold). Left-over prose becomes a `text` leaf.
  */
-export function parseCond(cell: string, opts: { pillar?: number } = {}): CondParse {
+export function parseCond(cell: string, opts: { pillar?: number; dragons?: readonly string[] } = {}): CondParse {
   const texts: string[] = [];
   const pillar = opts.pillar;
+  const dragons = opts.dragons ?? [];
   let t = stripLinks(plain(cell)).replace(/`/g, '').replace(/\s*·\s*\d+(?:\.\d+)?%\s*ต่อทศวรรษ.*$/, '');
   const masks: string[] = [];
   t = t.replace(/\([^()]*\)/g, (m) => {
@@ -250,7 +256,7 @@ export function parseCond(cell: string, opts: { pillar?: number } = {}): CondPar
     return `\u0001${masks.length - 1}\u0002`;
   });
   const unmask = (s: string) => s.replace(/\u0001(\d+)\u0002/g, (_, i) => masks[+i]);
-  const hasAtoms = (s: string) => atomsOf(unmask(s), pillar).hit;
+  const hasAtoms = (s: string) => atomsOf(unmask(s), pillar, dragons).hit;
 
   const leaf = (piece0: string): WorldCond | null => {
     const piece = unmask(piece0);
@@ -265,10 +271,30 @@ export function parseCond(cell: string, opts: { pillar?: number } = {}): CondPar
       parens.push(p);
       return ' ';
     });
-    const out = atomsOf(outside, pillar);
-    const inn = atomsOf(parens.join(' ; '), pillar);
+    const out = atomsOf(outside, pillar, dragons);
+    // A bracket that offers another way ("(หรือเกาะร่วงต่อเนื่อง)", "(หรืออารมณ์เพลิงนิรันดร์ < 40)", "(ศรัทธาเปลี่ยนมือ หรือพระเจ้าทำลาย…)") is a branch of an
+    // or: the atoms it holds, else a text leaf next to the readable part. It is never dropped (the condition would silently get narrower).
+    const alts: WorldCond[] = [];
+    const rest = parens.filter((p) => {
+      const lead = /^\s*หรือ\s*/.test(p);
+      const offers = lead || (/หรือ/.test(p) && out.atoms.some((a) => a.k === 'var'));
+      if (!offers) return true;
+      const body = p.replace(/^\s*หรือ\s*/, '');
+      const a = atomsOf(body, pillar, dragons);
+      if (a.hit) {
+        if (!lead) return true;
+        const c = allOf(a.atoms);
+        if (c) alts.push(c);
+        return false;
+      }
+      const text = tidy(body);
+      texts.push(text);
+      alts.push({ k: 'text', text });
+      return false;
+    });
+    const inn = atomsOf(rest.join(' ; '), pillar, dragons);
     const parts: WorldCond[] = [...out.atoms, ...inn.atoms];
-    if (!parts.length && !out.hit && !inn.hit) {
+    if (!parts.length && !out.hit && !inn.hit && !alts.length) {
       const text = tidy(piece);
       if (thaiLen(text) < 3) return null;
       texts.push(text);
@@ -279,7 +305,9 @@ export function parseCond(cell: string, opts: { pillar?: number } = {}): CondPar
       texts.push(text);
       parts.push({ k: 'text', text });
     }
-    return allOf(parts);
+    const base = allOf(parts);
+    if (!alts.length) return base;
+    return base ? { k: 'or', of: [base, ...alts] } : allOf(alts);
   };
   const andOf = (piece: string): WorldCond | null => {
     const bits = piece.split(/\s*และ\s*/).filter((x) => x.trim());
