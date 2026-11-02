@@ -9,6 +9,7 @@ import type { GameData } from '../game';
 import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
 import { attentionText, godTemplate, godText, type TemplateStyle } from './god';
+import { goalsText } from './goals';
 import { items, labels, type Labels } from './labels';
 import { endingTail, isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
 import { hashText as hash, plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
@@ -265,7 +266,8 @@ export class Reader {
     if (e.sys === 'text') return this.text(e);
 
     if (e.sys === 'god') {
-      const t = godText(this.godCx(e), e, variantOf(e));
+      const cx = this.godCx(e);
+      const t = goalsText(cx, e) ?? godText(cx, e, variantOf(e));
       if (t !== undefined) return t;
     }
     if (e.sys === 'attention') {
