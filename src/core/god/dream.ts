@@ -28,8 +28,10 @@ export interface DreamPath {
   choice: Key;
   label: string;
   line: string;
-  /** Sources the way comes from (S1 to S8, 03-dreams.md §1), the first being the one the card shows. */
+  /** Sources the way comes from (S1 to S8, 03-dreams.md §1). */
   sources: string[];
+  /** The source the card shows: the most particular one the way has (S2 S4 S7 S8 S3 S5 S6), else S1. */
+  kind: string;
   /** The way's share of the node's weight, and what it means for the character (fit: +1 fits, 0 neither, −1 goes against). */
   share: number;
   fit: number;
@@ -91,7 +93,7 @@ function sourcesOf(ctx: Ctx, u: Upcoming, c: Choice): string[] {
   const ev = eventsOf(c.effects);
   if (ev.length && ctx.data['world-events'] && ev.some((id) => safeNear(ctx, id))) out.push('S6');
   if (u.line === 'hr') out.push('S7');
-  if (kinds.has('bond') || kinds.has('mood') || kinds.has('template') || ['bn', 'kn', 'bd', 'bo', 'ab'].includes(u.line)) out.push('S8');
+  if (kinds.has('bond') || kinds.has('mood') || kinds.has('template') || ['bd', 'bo'].includes(u.line)) out.push('S8');
   const npcs = npcsOf(c.effects);
   if (npcs.length && npcs.some((id) => npcAlive(ctx, id))) out.push('S3');
   return [...(u.queued ? [] : ['S1']), ...out];
@@ -137,12 +139,14 @@ export function pathsNow(ctx: Ctx): DreamPath[] {
     choices.forEach((c, i) => {
       if (w[i] <= 0) return;
       const share = w[i] / total;
+      const sources = sourcesOf(ctx, u, c);
       out.push({
         node: n.id,
         choice: c.key,
         label: c.label,
         line: u.line,
-        sources: sourcesOf(ctx, u, c),
+        sources,
+        kind: KIND_ORDER.find((k) => sources.includes(k)) ?? 'S1',
         share,
         fit: fitOf(share),
         immoral: IMMORAL_WORDS.some((x) => c.label.includes(x)),
@@ -155,6 +159,7 @@ export function pathsNow(ctx: Ctx): DreamPath[] {
   return out;
 }
 
+const KIND_ORDER = ['S2', 'S4', 'S7', 'S8', 'S3', 'S5', 'S6'];
 const RARE = ['S2', 'S4', 'S7', 'S8'];
 const MID = ['S3', 'S5'];
 const dull = (a: DreamPath, b: DreamPath) => JSON.stringify(effectsOf(a)) === JSON.stringify(effectsOf(b));
@@ -173,8 +178,9 @@ export function offersNow(ctx: Ctx): DreamPath[] {
   const here = all.filter((p) => p.node === soon);
   const first = [...here].sort((a, b) => b.share - a.share || order(a, b))[0];
   const picks: DreamPath[] = [first];
-  const head = (p: DreamPath) => p.sources[0] ?? 'S1';
-  const sameSource = (p: DreamPath) => picks.filter((q) => head(q) === head(p)).length;
+  // the first way is "from S1" whatever else it is; the others count by their own source (at most two from one source)
+  const label = (p: DreamPath) => (p === first ? 'S1' : p.kind);
+  const sameSource = (p: DreamPath) => picks.filter((q) => label(q) === label(p)).length;
   // the way against his nature: the lowest fit, then the lowest share, from S1 to S6 and not the first way
   const against = all
     .filter((p) => !picks.includes(p) && p.sources.some((s) => ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'].includes(s)) && sameSource(p) < 2)
@@ -187,6 +193,12 @@ export function offersNow(ctx: Ctx): DreamPath[] {
   const third = rare(RARE) ?? rare(MID);
   if (third) picks.push(third);
   return picks;
+}
+
+/** The source the card of an offered way shows: S1 for the first way of the offer, the way's own source for the others. */
+export function sourceOf(ctx: Ctx, p: DreamPath): string {
+  const first = offersNow(ctx)[0];
+  return first && first.node === p.node && first.choice === p.choice ? 'S1' : p.kind;
 }
 
 // ---------- the chance to obey ----------
@@ -249,7 +261,7 @@ export function offerCards(ctx: Ctx) {
   return offersNow(ctx).map((p) => {
     const ob = obeyChance(ctx, p);
     const price = dreamPrice(ctx, p.window || inWindow(ctx));
-    return { ...p, level: ob.level, reasons: ob.reasons, price: price.faith ?? 0, free: !!price.free };
+    return { ...p, source: sourceOf(ctx, p), level: ob.level, reasons: ob.reasons, price: price.faith ?? 0, free: !!price.free };
   });
 }
 
@@ -281,7 +293,7 @@ export function previewDream(ctx: Ctx, args: { node?: unknown; choice?: unknown 
   const p = pick(ctx, args)!;
   const ob = obeyChance(ctx, p);
   const price = dreamPrice(ctx, p.window || inWindow(ctx));
-  return { node: p.node, choice: p.choice, label: p.label, source: p.sources[0] ?? 'S1', symbol: p.symbol, level: ob.level, reasons: ob.reasons, faith: price.faith ?? 0, free: !!price.free, offers: offersNow(ctx).map((o) => `${o.node}.${o.choice}`) };
+  return { node: p.node, choice: p.choice, label: p.label, source: sourceOf(ctx, p), symbol: p.symbol, level: ob.level, reasons: ob.reasons, faith: price.faith ?? 0, free: !!price.free, offers: offersNow(ctx).map((o) => `${o.node}.${o.choice}`) };
 }
 
 /** Sends a dream: pays, keeps it for the node, writes the chronicle. */
@@ -299,7 +311,7 @@ export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown }):
     year: ctx.state.clock.worldYear,
     node: p.node,
     choice: p.choice,
-    source: p.sources[0] ?? 'S1',
+    source: sourceOf(ctx, p),
     symbol: p.symbol,
     level: ob.level,
     reasons: ob.reasons,

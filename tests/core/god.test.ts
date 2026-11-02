@@ -8,7 +8,7 @@ import { command } from '../../src/core/command';
 import { sortSystems, makeCtx, type Ctx, type GameData, type Game } from '../../src/core/game';
 import {
   addBelief, canPay, checkDream, checkOpen, compOf, currentChest, dreamWeight, dreamsOf, earn, godSystem, incomeOf, offersNow, openChest, pathsNow, pay, pickSlot,
-  priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, type Chest, type ChestSlot,
+  priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, sourceOf, type Chest, type ChestSlot,
 } from '../../src/core/god';
 import { OPPOSITES, TIERS } from '../../src/core/god/tuning';
 import { bump, count, gx } from '../../src/core/god/state';
@@ -673,7 +673,8 @@ describe('god G2: dreams (03-dreams.md)', () => {
       expect(new Set(keys).size).toBe(keys.length);
       const bySource: Record<string, number> = {};
       for (const o of list) {
-        bySource[o.sources[0]] = (bySource[o.sources[0]] ?? 0) + 1;
+        const src = sourceOf(w.ctx, o);
+        bySource[src] = (bySource[src] ?? 0) + 1;
         offers++;
         expect(ix.passed[o.node], `${o.node} already passed`).toBeUndefined();
         expect(o.due).toBeLessThanOrEqual(ix.hAge + 2);
@@ -941,6 +942,28 @@ describe('god G2: dreams (03-dreams.md)', () => {
     // the written weights alone would give him the dreamed way about 40% of the time; ×4 makes it about 70%
     expect(took / obeyed).toBeGreaterThan(base / obeyed + 0.15);
     expect(took / obeyed).toBeGreaterThan(0.55);
+  });
+
+  it('the level of a dream is honest: over many lives the willing obey as often as the chance says, and a hesitant dream less often', () => {
+    const by: Record<string, { n: number; obeyed: number; p: number }> = {};
+    for (let k = 0; k < 150; k++) {
+      const w = world(5000 + k, { policy: k % 2 ? 'เมตตา' : 'สุ่ม' });
+      w.game.runLife();
+      for (const e of w.ctx.state.log) {
+        if (e.sys !== 'god' || e.kind !== 'dream' || e.data.outcome === undefined || e.data.outcome === 'fade') continue;
+        const lv = String(e.data.level);
+        const row = (by[lv] ??= { n: 0, obeyed: 0, p: 0 });
+        row.n++;
+        row.p += Number(e.data.p);
+        if (e.data.outcome === 'obey') row.obeyed++;
+      }
+    }
+    expect(by['เต็มใจ'].n).toBeGreaterThan(100);
+    expect(by['ลังเล'].n).toBeGreaterThan(100);
+    for (const row of Object.values(by)) if (row.n > 100) expect(Math.abs(row.obeyed / row.n - row.p / row.n)).toBeLessThan(0.07);
+    expect(by['เต็มใจ'].p / by['เต็มใจ'].n).toBeGreaterThanOrEqual(0.7);
+    expect(by['ลังเล'].p / by['ลังเล'].n).toBeLessThan(0.7);
+    expect(by['เต็มใจ'].obeyed / by['เต็มใจ'].n).toBeGreaterThan(by['ลังเล'].obeyed / by['ลังเล'].n);
   });
 
   it('an heir starts with half of the power and 60% of the belief; the counters of a life start again', () => {
