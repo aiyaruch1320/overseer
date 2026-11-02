@@ -3,17 +3,19 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M3 ระบบลึก
-งานที่กำลังทำ: ห้า agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
-  - bonds + bondage (แทน story/stubs) · abab3198795a4781f
-  - travel + items · ac64c35f01e427c3b
+ขั้นปัจจุบัน: M3 ระบบลึก (รวมแล้ว: economy npc combat · ค้าง: bonds+bondage travel+items)
+งานที่กำลังทำ (พักเครื่อง 2026-11-02 18.00 agent อาจยังทำไม่จบ):
+  - bonds + bondage · agent abab3198795a4781f · สาขา `worktree-agent-abab3198795a4781f` · worktree `.claude/worktrees/agent-abab3198795a4781f` · มี 6 commit ตอนพัก
+  - travel + items · agent ac64c35f01e427c3b · สาขา `worktree-agent-ac64c35f01e427c3b` · worktree `.claude/worktrees/agent-ac64c35f01e427c3b` · มี 6 commit ตอนพัก
+เมื่อกลับมา: ทำตาม "เมื่อกลับมาทำต่อ" ใน code-plan หัวข้อ 15 ก่อน: ถ้า agent ส่งรายงานแล้ว รวมตามปกติ ถ้าไม่มีรายงาน ดูสาขา: มี commit และด่านผ่านบนสาขา (`npx tsc --noEmit` `npx vitest run` ใน worktree) ให้รวมตาม 12.7 ข้อ 4 โดยใช้ commit log แทนรายงาน ถ้าด่านไม่ผ่านหรืองานยังไม่ครบ ส่ง agent ใหม่ใน worktree เดิมบอกว่าเหลืออะไรจาก diff · หลังรวมเติม bondsSystem bondageSystem travelSystem itemsSystem ใน src/core/systems.ts แล้วสร้างชีวิตทองคำใหม่
 งานถัดไป:
-  1. รวมทีละสาขา เติม systems.ts (economy combat) ต่อ combat กับ npc onClash · หลังตัวสร้างรวม ส่ง bonds+bondage และ travel+items
-  2. วัดโหนดต่อชีวิตรวมทุกระบบ (ฐาน M2 27.7) · ชีวิตทองคำ · รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก)
-  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world เขียนลางล่วงหน้าและตั้งธง famine plague · กระซิบเข้าน้ำหนักเรื่อง · คำของค่าพระเจ้าใน effects.ts · คลังถ้อยคำคำอธิษฐาน · บันทึกปาฏิหาริย์ MR-01/02 เมื่อไม่มีภัย
-ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 672/672 · golden 20/20 · balance 44 ผ่าน · run-all --check ผ่าน
+  1. รวมสองสาขาข้างบน · ต่อ npc onClash กับ combat.clash · ลบ story/battle-stub และ story/stubs ที่ถูกแทน · god acts ใช้ isSick nemeses killNpc ของ npc และ addHp ของ combat · ตรวจ prelude ของศึกที่น้อยลงเมื่อรวม economy npc (TODO ใน tests/core/combat.test.ts) · บั๊ก character range ของชั้นทำให้ขึ้นชั้น 5 ราว 15% · chooseJob ตอนเป็นผู้ใหญ่ (อาชีพมีแค่ 43% ที่อายุ 30)
+  2. วัดโหนดต่อชีวิตรวมทุกระบบ (31.8 หลัง economy) · test:balance · รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก)
+  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 M3 (NpcSlotState ช่องเพิ่ม LifeState fame hp) · NT มีชีวิต 0.16 ต่อประเทศ เทียบเอกสาร 0.3–0.5 · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world ลางล่วงหน้าและธง famine plague · text ข้อความของ economy/tight npc newcomer follow tie sick clash
+ด่านล่าสุด: 2026-11-02 17.38 typecheck ผ่าน · test 870/870 · golden 20/20 · run-all --check ผ่าน (balance ยังไม่รันหลังรวม combat)
 
 ## บันทึก (ใหม่อยู่บน)
+2026-11-02 17.40 · พักเครื่อง: รวม economy npc combat แล้ว (ec ปิดไว้ โหนดต่อชีวิต 31.8) · bonds+bondage travel+items ยังทำงาน
 2026-11-02 · M3 รวม combat: ชนะ ลูกกระจ๊อก 85% ปกติ 66% หัวหน้า 36% บอส 15% · ตายในศึก 2.5% ของชีวิต · prelude ก่อนศึกมีชื่อ · ค้าง: prelude น้อยลงเมื่อรวม economy npc (2 ใน 6 ชีวิต) · npc onClash ยังไม่ต่อกับ combat.clash · ลบ story battle-stub · god acts ใช้ addHp
 2026-11-02 · M3 รวม npc: NT ครบ 54 แบบ ราว 650 ต่อโลก · พบต่อปีชีวิต มนุษย์ 0.095 เอลฟ์ 0.095 (เดิม 0.27) · ป่วย อาฆาต จุดศึก onClash · ค้าง: NT มีชีวิต 0.16 ต่อประเทศ ต่ำกว่าเอกสาร 0.3–0.5 (ตัดสิน: ผ่อนกติกาแม่แบบหรือแก้เอกสาร) · god acts ใช้ isSick nemeses killNpc ของ npc · text ข้อความของ newcomer follow tie sick clash
 2026-11-02 · M3 รวม economy: ทองมัธยฐาน 45 374 (390) 60 578 (524) 30 122 (219) · โหนดต่อชีวิต 31.8 · ec ปิดไว้ · ค้าง: บั๊ก character range ของชั้นทำให้ขึ้นชั้น 5 ราว 15% · อาชีพมีแค่ 43% ที่อายุ 30 (ไม่มีใครเรียก chooseJob) · text แม่แบบ economy/tight default
