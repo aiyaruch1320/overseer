@@ -3,15 +3,15 @@
 //
 // Systems come from `allSystems()` (src/core/systems.ts, filled by the lead as branches merge). The npc and text systems are
 // added when the list does not hold them yet. If no `character` system is in the list, a toy life stands in (toy-character.ts).
-// The real character system joins through its birth function: the tools look for one of BIRTH_NAMES on the character
-// system object, or take one from `opts.birther`.
+// The life is made by `birth()` of the character system (src/core/character), or by `opts.birther`.
+import { birth as characterBirth } from '../../src/core/character';
 import { Game, versions, type Ctx, type GameData, type System } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
 import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
 import type { GameState, LifeState } from '../../src/core/types';
-import { bearToy, toyDeath, type BirthRequest } from './toy-character';
+import { bearToy, resolveRace, toyDeath, type BirthRequest } from './toy-character';
 
 export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'สุ่ม'] as const;
 export type Policy = (typeof POLICIES)[number];
@@ -31,9 +31,6 @@ export interface SessionOpts {
 }
 
 export type Birther = (ctx: Ctx, req: BirthRequest) => LifeState | void;
-
-/** Function names a character system may export for making a life. */
-export const BIRTH_NAMES = ['createLife', 'newLife', 'makeLife', 'birthLife', 'bearLife'] as const;
 
 export interface Session {
   game: Game;
@@ -55,14 +52,14 @@ export function toolSystems(): { systems: System[]; toy: boolean } {
   return { systems: list, toy };
 }
 
+/** The life maker of the character system; undefined when the list holds no character system (the toy stands in). */
 export function findBirther(systems: System[]): Birther | undefined {
-  const ch = systems.find((s) => s.name === 'character') as (System & Record<string, unknown>) | undefined;
-  if (!ch) return undefined;
-  for (const n of BIRTH_NAMES) {
-    const f = ch[n];
-    if (typeof f === 'function') return (f as Birther).bind(ch);
-  }
-  return undefined;
+  if (!systems.some((s) => s.name === 'character')) return undefined;
+  return (ctx, req) => {
+    // the tools name a race by its story prefix (`hu`) or its id (`human`); the character system takes the id
+    const race = req.race ? resolveRace(ctx, req.race).id : undefined;
+    return characterBirth(ctx, { race, country: req.country });
+  };
 }
 
 export function createSession(data: GameData, opts: SessionOpts): Session {

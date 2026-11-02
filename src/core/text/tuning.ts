@@ -95,3 +95,11 @@ export const LAND_TAILS: Record<string, string[]> = {
 
 /** How many tries before a name gets the generation number as a last resort. */
 export const NAME_TRIES = 60;
+
+/** Words for the causes of death the character system writes (`life.dead.cause`); a cause it writes in Thai stays as written. */
+export const CAUSE_TH: Record<string, string> = { old: 'ชราภาพ', illness: 'โรคภัย', accident: 'อุบัติเหตุ', violence: 'ถูกทำร้าย' };
+
+/** Kinds of things a grant effect hands out. */
+export const GIFT_TH: Record<string, string> = {
+  blessing: 'พร', curse: 'คำสาป', trait: 'นิสัย', aptitude: 'ความถนัด', skill: 'ทักษะ', job: 'อาชีพ', companion: 'สหาย', story: 'เรื่อง', gear: 'ของ', weapon: 'อาวุธ', flag: 'เครื่องหมาย',
+};

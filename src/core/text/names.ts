@@ -50,7 +50,7 @@ export function nameOf(ctx: Ctx, key: string): string | undefined {
 export interface PersonSpec {
   /** Story prefix of the people (`hu` `el` ...). */
   people: string;
-  gender: 'm' | 'f';
+  gender: 'm' | 'f' | 'n';
   /** Continent id for the tail of the land. */
   continent?: string;
 }
@@ -61,7 +61,7 @@ export function personName(rng: Rng, spec: PersonSpec): string {
   let out = '';
   for (let tries = 0; tries < 20; tries++) {
     const land = spec.continent ? LAND_TAILS[spec.continent] : undefined;
-    const tails = spec.gender === 'f' ? voice.f : voice.m;
+    const tails = spec.gender === 'f' ? voice.f : spec.gender === 'n' ? [...voice.m, ...voice.f] : voice.m;
     const tail = land && rng.chance(LAND_TAIL_CHANCE) ? rng.pick(land) : rng.pick(tails);
     out = rng.pick(voice.heads) + (rng.chance(0.55) ? rng.pick(voice.mids) : '') + tail;
     if ([...out].length <= MAX_NAME && [...out].length >= 3) return out;
@@ -70,7 +70,7 @@ export function personName(rng: Rng, spec: PersonSpec): string {
 }
 
 /** Names the main character: unique in the world, from the `names` seed stream, written to the registry as `char:<life id>`. */
-export function nameCharacter(ctx: Ctx, life: { id: string; race: string; gender: 'm' | 'f'; country: string }): string {
+export function nameCharacter(ctx: Ctx, life: { id: string; race: string; gender: 'm' | 'f' | 'n'; country: string }): string {
   const rng = ctx.rng('names');
   const people = peopleCode(ctx, life.race);
   const continent = life.country.slice(0, 2);

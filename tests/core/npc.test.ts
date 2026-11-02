@@ -383,20 +383,25 @@ describe('npc: rules', () => {
     expect(testCond(ctx, { k: 'npc', id: absent.id, alive: true })).toBe(false);
   });
 
-  it('effect npc records the meeting, the relation and one line of memory', () => {
+  it('effect npc records the meeting, the relation and, for a main ally, one line of memory', () => {
     const g = world(1);
     g.state.life = {
       id: 'L1', name: 'x', race: 'human', gender: 'm', birthYear: 0, lifespan: 75, hAge: 20, country: 'AZ-01', home: 'AZ-01', traits: [], aptitudes: {}, skills: [], blessings: [], curses: [], fate: [], cls: 'c3', gold: 0,
       stats: { pow: 1, mag: 1, spd: 1, luk: 1, int: 1, vit: 1 }, items: [], flags: [], passed: {}, pending: [], memory: [], godFaith: 0, heart: 0, ext: {},
     };
     const ctx = makeCtx(g.state, data);
-    apply(ctx, [{ k: 'npc', id: 'AZ01-1' }], { sys: 'story', id: 'hu.a1' });
-    const s = slotsOf(g.state)['AZ01-1'];
+    const ally = rows.find((r) => r.succession.tier === 1 && slotsOf(g.state)[r.id].status === 'alive')!;
+    apply(ctx, [{ k: 'npc', id: ally.id }], { sys: 'story', id: 'hu.a1' });
+    const s = slotsOf(g.state)[ally.id];
     expect(s.rel['mc.known']).toBe(1);
-    expect(g.state.log.some((e) => e.kind === 'npc' && e.data.what === 'meet' && e.id === 'AZ01-1' && e.level === 2)).toBe(true);
+    expect(g.state.log.some((e) => e.kind === 'npc' && e.data.what === 'meet' && e.id === ally.id && e.level === 2)).toBe(true);
     expect(g.state.life!.memory[0]).toContain(s.name);
+    apply(ctx, [{ k: 'npc', id: ally.id }], { sys: 'story', id: 'hu.a1' });
+    expect(g.state.life!.memory).toHaveLength(1);
+    // a leader is met without a line of memory
     apply(ctx, [{ k: 'npc', id: 'AZ01-1' }], { sys: 'story', id: 'hu.a1' });
     expect(g.state.life!.memory).toHaveLength(1);
+    expect(slotsOf(g.state)['AZ01-1'].rel['mc.known']).toBe(1);
   });
 
   it('effect npcPath cuts, weighs, delays and forces a path (combat/07-npc-clashes.md §3.0)', () => {

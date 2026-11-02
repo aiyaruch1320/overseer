@@ -474,8 +474,8 @@ export function meetNamed(ctx: Ctx, id: string): boolean {
   bumpRel(ctx, slot, 'known', 1);
   note(ctx, slot, row, 'meet', { named: true }, 2);
   const life = ctx.state.life;
-  if (life && !life.dead && first && row.succession.tier <= 2) {
-    const line = `พบ${slot.name} (${row.role})`;
+  if (life && !life.dead && first && row.succession.tier === 1) {
+    const line = `พบ${slot.name}${row.role ? ` (${row.role})` : ''}`;
     if (!life.memory.includes(line)) {
       life.memory.push(line);
       while (life.memory.length > MEMORY_LINES) life.memory.shift();

@@ -4,7 +4,7 @@
 import type { GameData } from '../game';
 import type { LogEntry } from '../types';
 import type { TemplatesData } from '../data/types-text';
-import { CALENDAR_BASE } from './tuning';
+import { CALENDAR_BASE, CAUSE_TH, GIFT_TH } from './tuning';
 
 type D = LogEntry['data'];
 
@@ -51,6 +51,18 @@ export function labels(data: GameData): Labels {
   put(items<{ id: string; name: string }[]>(data, 'countries'));
   put(items<{ continents: { id: string; name: string }[] }>(data, 'continents')?.continents);
   put(items<{ npcs: { id: string; name: string }[] }>(data, 'npcs')?.npcs);
+  // every other generated file that lists things with an id and a name (blessings, curses, jobs, skills, enemies ...): the first name wins
+  for (const [file, f] of Object.entries(data)) {
+    if (file.startsWith('library.') || file === 'names' || file.startsWith('templates')) continue;
+    const top = f.items;
+    const lists = Array.isArray(top) ? [top] : top && typeof top === 'object' ? Object.values(top as Record<string, unknown>).filter(Array.isArray) : [];
+    for (const list of lists as unknown[][]) {
+      for (const x of list) {
+        const o = x as { id?: unknown; name?: unknown };
+        if (typeof o?.id === 'string' && typeof o?.name === 'string' && !name.has(o.id)) name.set(o.id, o.name);
+      }
+    }
+  }
   const out = { name, choice };
   cache.set(data, out);
   return out;
@@ -100,6 +112,13 @@ function sub(text: string, v: Record<string, string | number | undefined>): stri
 }
 
 const s = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
+/** `c3` → the name of class 3 in the economy file (สามัญชน), or `ชั้น 3` when the economy file is not loaded. */
+function classWord(data: GameData, cls: unknown): string {
+  const n = Number(/\d/.exec(s(cls))?.[0]);
+  if (!n) return s(cls);
+  return items<{ classes?: { n: number; name: string }[] }>(data, 'economy')?.classes?.find((c) => c.n === n)?.name ?? `ชั้น ${n}`;
+}
+const cause = (v: unknown): string => CAUSE_TH[s(v)] ?? s(v);
 
 // ---------- entries ----------
 
@@ -148,8 +167,32 @@ export function describe(data: GameData, e: LogEntry): string | null {
   }
 
   if (e.kind === 'death') {
-    const cause = d.cause ? ` · ${s(d.cause)}` : '';
-    return `ตายเมื่ออายุ ${s(d.hAge ?? e.age)}${cause}`;
+    const why = d.cause ? ` · ${cause(d.cause)}` : '';
+    return `ตายเมื่ออายุ ${s(d.hAge ?? e.age)}${why}`;
+  }
+
+  if (e.sys === 'character') {
+    switch (e.kind) {
+      case 'birth': {
+        const second = d.second ? ` ครึ่ง${nm(d.second) || s(d.second)}` : '';
+        const born = d.born === 'main' ? 'แผ่นดินของเผ่า' : d.born === 'diaspora' ? 'ถิ่นที่เผ่าไปอยู่' : s(d.born);
+        const sign = d.sign && d.sign !== 'none' ? ` · ดวง ${s(d.sign)}` : '';
+        return `กำเนิด: ${nm(d.race) || s(d.race)}${second} ${d.gender === 'f' ? 'หญิง' : d.gender === 'm' ? 'ชาย' : ''} ${at(d.country)} (${born}) ชนชั้น ${classWord(data, d.cls)}${sign}${d.special ? ` · เกิดพิเศษ ${s(d.special)}` : ''}`.replace(/ {2,}/g, ' ');
+      }
+      case 'grant':
+      case 'remove': {
+        const kind = GIFT_TH[s(d.kind)] ?? s(d.kind);
+        return `${e.kind === 'grant' ? 'ได้รับ' : 'สูญเสีย'}${kind} ${nm(e.id)}${d.from ? ` (จาก ${nm(d.from)})` : ''}`;
+      }
+      case 'job':
+        return `${d.type === 'secret' ? 'ได้อาชีพลับ' : 'ได้เป็น'} ${nm(e.id)}`;
+      case 'jobFail':
+        return `สมัครเป็น ${nm(e.id)} ไม่สำเร็จ${d.reason === 'req' ? ' (ยังไม่ถึงเงื่อนไข)' : d.reason ? ` (${s(d.reason)})` : ''}`;
+      case 'secretJobRefused':
+        return `อาชีพลับ ${nm(e.id)} เรียกหา แต่ไม่ใช่ทางของเขา`;
+      case 'wound':
+        return 'ได้บาดแผลถาวร';
+    }
   }
 
   if (e.sys === 'world' || e.kind === 'event') {
@@ -172,7 +215,15 @@ export function describe(data: GameData, e: LogEntry): string | null {
     }
     if (e.kind === 'converge') return `เส้นเรื่องบรรจบที่ ${title}`;
     if (e.kind === 'jump') return `เรื่องข้ามไป ${title}`;
-    if (e.kind === 'battle') return `ศึก: ${s(d.enemies ?? d.text ?? e.id)}`;
+    if (e.kind === 'battle') {
+      const names = s(d.enemies).split(',').filter(Boolean).map((x) => nm(x)).join(' · ');
+      const res = d.result === 'win' ? 'ชนะ' : d.result === 'lose' ? 'แพ้' : d.result === 'flee' ? 'หนี' : s(d.result);
+      return `ศึก: ${names || s(d.text)} · ${res}`;
+    }
+    if (e.kind === 'mood') return `${nm(e.id)} รู้สึก${s(d.mood)}`;
+    if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
+    // story templates and bond openings belong to the bond system (M3): nothing to read yet
+    if (e.kind === 'template' || e.kind === 'bond' || e.kind === 'skip') return null;
   }
 
   if (e.kind === 'unhandled') return null;

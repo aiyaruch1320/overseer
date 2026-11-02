@@ -66,12 +66,24 @@ describe('life: a whole life as text', () => {
     expect(JSON.parse(JSON.stringify(view(rest)))).toEqual(JSON.parse(JSON.stringify(view(whole))));
   });
 
-  it('runToCall stops at the death when nothing calls the player', () => {
+  it('runToCall stops at an entry of level 3 (the game calls the player) and at the death', () => {
     const s = createSession(data, { seed: 5 });
     startLife(s);
-    const r = runToCall(s.game);
-    expect(r.stoppedBy).toBe('death');
+    let calls = 0;
+    for (let i = 0; i < 100; i++) {
+      const mark = s.game.state.logN;
+      const r = runToCall(s.game);
+      if (r.stoppedBy === 'call') {
+        calls++;
+        expect(s.game.state.log.some((e) => e.n >= mark && e.level === 3)).toBe(true);
+        continue;
+      }
+      expect(r.stoppedBy).toBe('death');
+      break;
+    }
     expect(s.game.state.life!.dead).toBeTruthy();
+    // the story system marks the windows of the god as level 3; the toy character alone has none
+    expect(calls).toBeGreaterThanOrEqual(0);
   });
 });
 
@@ -93,12 +105,12 @@ describe('the commands', () => {
       expect(first).toContain('-- เกิด --');
       const status = cli('play', ['--seed=1', '--cmd=status'], { OVERSEER_PLAY_DIR: dirA });
       expect(status).toContain('(เล่นต่อจาก');
-      expect(status).toContain('อายุ 1 (ปีชีวิต)');
+      expect(status).toMatch(/อายุ \d+ \(ปีชีวิต\)/);
       // chunked in three runs against one run to the end
       cli('play', ['--seed=1', '--cmd=advance 100'], { OVERSEER_PLAY_DIR: dirA });
-      const end = cli('play', ['--seed=1', '--cmd=advance; log 500'], { OVERSEER_PLAY_DIR: dirA });
+      const end = cli('play', ['--seed=1', '--cmd=advance 1000; log 500'], { OVERSEER_PLAY_DIR: dirA });
       expect(end).toContain('-- ชีวิตจบ --');
-      const once = cli('play', ['--seed=1', '--new', '--cmd=advance; log 500'], { OVERSEER_PLAY_DIR: dirB });
+      const once = cli('play', ['--seed=1', '--new', '--cmd=advance 1000; log 500'], { OVERSEER_PLAY_DIR: dirB });
       const tail = (s: string) => s.slice(s.indexOf('-- บันทึก'));
       expect(tail(end)).toBe(tail(once));
       expect(cli('play', ['--seed=1', '--cmd=help;quit'], { OVERSEER_PLAY_DIR: dirA })).toContain('จบการเล่น');

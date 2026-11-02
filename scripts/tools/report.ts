@@ -3,6 +3,7 @@
 import { makeCtx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
 import { calendarYear, classLabel, describe, formatLine, lines, placeName, raceName } from '../../src/core/text';
+import { CAUSE_TH } from '../../src/core/text/tuning';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
 
 /** The short tag in front of a line: which part of the game said it. */
@@ -70,7 +71,7 @@ export function statusLines(data: GameData, state: GameState): string[] {
   out.push(`${life.name} · ${raceName(ctx, life.race)} · ${life.gender === 'm' ? 'ชาย' : 'หญิง'} · ${classLabel(ctx, life.cls)}`);
   out.push(`อายุ ${life.hAge} (ปีชีวิต) · ศ.ม. ${calendarYear(state.clock.worldYear).toLocaleString('en-US')} · ช่วงที่ ${state.clock.quarter + 1}/4 ของปี`);
   out.push(`อยู่ที่ ${home(life.country)} · เกิดที่ ${home(life.home)} · ทอง ${life.gold}`);
-  if (life.dead) out.push(`ตายแล้ว: ${life.dead.cause} เมื่ออายุ ${life.dead.hAge}`);
+  if (life.dead) out.push(`ตายแล้ว: ${CAUSE_TH[life.dead.cause] ?? life.dead.cause} เมื่ออายุ ${life.dead.hAge}`);
   const c = countSlots(state);
   out.push(`NPC: มีชีวิต ${c.alive} (เรื่องเปิดอยู่ ${c.open} รอ ${c.waiting} จบแล้ว ${c.done}) · ตาย ${c.dead} · หาย ${c.gone} · ไม่ปรากฏ ${c.absent}`);
   if (life.memory.length) out.push(`ความทรงจำ: ${life.memory.join(' · ')}`);
@@ -85,7 +86,7 @@ export function summaryLines(data: GameData, state: GameState, beats: number): s
   const bySys: Record<string, number> = {};
   for (const e of state.log) if (e.level >= 1) bySys[e.sys] = (bySys[e.sys] ?? 0) + 1;
   if (life) {
-    out.push(`${life.name} ${life.dead ? `ตายเมื่ออายุ ${life.dead.hAge} (${life.dead.cause}) ศ.ม. ${calendarYear(life.dead.year).toLocaleString('en-US')}` : `ยังมีชีวิต อายุ ${life.hAge}`} · ${beats} จังหวะ`);
+    out.push(`${life.name} ${life.dead ? `ตายเมื่ออายุ ${life.dead.hAge} (${CAUSE_TH[life.dead.cause] ?? life.dead.cause}) ศ.ม. ${calendarYear(life.dead.year).toLocaleString('en-US')}` : `ยังมีชีวิต อายุ ${life.hAge}`} · ${beats} จังหวะ`);
   }
   out.push(`บันทึกระดับ 1 ขึ้นไป: ${Object.entries(bySys).map(([k, v]) => `${k} ${v}`).join(' · ') || 'ไม่มี'}`);
   const unhandled = state.log.filter((e) => e.sys === 'rules' && e.kind === 'unhandled').map((e) => e.id);
