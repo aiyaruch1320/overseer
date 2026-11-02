@@ -70,6 +70,14 @@ export type Effect =
   | { k: 'death'; chance?: number; cause?: string }
   | { k: 'if'; cond: Condition; then: Effect[] }
   | { k: 'label'; text: string } // human words kept for display
+  /** "A หรือ B": exactly one branch happens; weights are equal when the docs give none. */
+  | { k: 'pick'; of: { weight?: number; label?: string; effects: Effect[] }[] }
+  /** "แทน A ด้วย B": event B takes the place of A from now on (branches README). */
+  | { k: 'replace'; from: EventId; to: EventId | string }
+  /** NPC clash results on an NPC line: `เส้น ก) บังคับเกิด` `ถูกตัด` `ช้าลง` `น้ำหนัก +10` (combat/07). */
+  | { k: 'npcPath'; npc: NpcId; path: 'a' | 'b' | 'c'; op: 'force' | 'cut' | 'delay' | 'weight'; n?: number }
+  /** "ได้ง่ายขึ้น": raises the chance of a later grant instead of granting it. */
+  | { k: 'favour'; kind: IdKind; id: string; mul?: number }
   | ExtraEffect;
 
 /** Effect kinds the storyline docs added in M0-b (scripts/codegen/lib/effects.ts). */

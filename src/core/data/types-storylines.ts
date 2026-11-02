@@ -10,7 +10,7 @@ export type HasLevelCondition = Extract<Condition, { k: 'has' }>;
 export type RaceCondition = Extract<Condition, { k: 'race' }>;
 export type ConditionX = Condition;
 export type WeightModX = WeightMod;
-export type ExtraEffect = Exclude<Effect, { k: 'grant' | 'remove' | 'stat' | 'battle' | 'converge' | 'jump' | 'npc' | 'event' | 'death' | 'if' | 'label' }>;
+export type ExtraEffect = Exclude<Effect, { k: 'grant' | 'remove' | 'stat' | 'battle' | 'converge' | 'jump' | 'npc' | 'event' | 'death' | 'if' | 'label' | 'pick' | 'replace' | 'npcPath' | 'favour' }>;
 export type EffectX = Effect;
 export type ChoiceX = Choice;
 
