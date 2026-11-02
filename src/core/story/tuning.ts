@@ -34,9 +34,12 @@ export const OPEN_RATE: Record<string, number> = {
  * `tr` has none: the economy opens it for the traders and its nodes pay (a share of them took the median gold at 60 under its target). The journey lines (ex ml sc ...) and the bondage lines have no share: they are what the character lived through, not a shelf of the life. `dp` and `mr` have none either:
  * the documents say the god's history alone opens them, with no draw (31-divine.md §2 rule 3; a test holds it).
  * Measured on 300 lives of the whole core (seeds 1 to 300, the lives that reach 70; tests/balance/story-core.test.ts): 34.9 nodes a life before, 32.7 after.
- * Not lower: the economy balance (median gold at 60) sits on the edge, since pv and iv nodes pay; the bn rate cannot fall either (the story-only test would drop under 31).
+ * Which line closes matters (M3 balance after the combat merge): `pv` and `wk` carry the climb out of poverty (their class and blessing effects lifted the yearly income of a life
+ * by 150 to 300 gold when they all opened) and `iv` and `nl` pay nothing the economy counts, so the nodes are taken off `iv` and `nl` and `pv` and `wk` stay nearly open.
+ * Measured on 300 lives of the whole core (seeds 1 to 300): the median gold at 60 was 141 with pv 0.4 wk 0.45 iv 0.45 nl 0.5 and is 204 with the shares below (with INCOME_SCALE 1.46).
+ * The bn rate cannot fall either (the story-only test would drop under 31).
  */
-export const OPEN_SHARE: Record<string, number> = { pv: 0.4, wk: 0.45, iv: 0.45, nl: 0.5 };
+export const OPEN_SHARE: Record<string, number> = { pv: 0.9, wk: 0.8, iv: 0.2, nl: 0.25 };
 
 /** Overlay lines whose opening rule is a plain condition, not a share of lives (no rate). Conditions come from the documents. */
 export const OPEN_COND: Record<string, Condition> = {

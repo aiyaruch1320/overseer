@@ -87,8 +87,12 @@ export const WEAPON_APTS: readonly string[] = ['sword', 'axe', 'spear', 'bow', '
 /** Road event 6 of the table (a column of soldiers or a war check): the share of them that opens the mercenary line instead of drafting the cart (assumption; the table gives no split). */
 export const MERC_ROAD = 0.25;
 
-/** Chance per life year that a city job (clerk, teacher, doctor) takes a post or a course in another country. */
-export const CITY_TRIP = 0.011;
+/**
+ * Chance per life year that a city job (clerk, teacher, doctor) takes a post or a course in another country. 0.011 before the wars ended: the flag of war used to stay on
+ * for the rest of the world and `warred` (routes.ts) shut the land road between two countries at war, so most roads were shut; now a war flag ends with its timer
+ * (world/events.ts expireWarFlags), the roads open again and the city group went from 45/40/15 to 32/48/21 (M3 balance). 0.003 puts it back to about 41/42/17.
+ */
+export const CITY_TRIP = 0.003;
 
 /** The holy places of the pilgrim line (25-journeys.md §5). */
 export const HOLY_PLACES: readonly string[] = ['SH-09', 'AZ-01', 'AL-02', 'SV-01', 'NB-07', 'SH-06'];
