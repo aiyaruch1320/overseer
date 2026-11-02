@@ -254,6 +254,42 @@ describe('the console on the real god', () => {
     expect(said(god.handle('answer 99 ให้'))).toContain('ไม่มีคำอธิษฐานใบนั้น');
   });
 
+  it('the large miracles (G5) typed as a player types them: the preview says what will happen, no id is read, `yes` does it, and the ruin is in the log', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.dread = 200;
+    g.state.god.light = 200;
+    g.state.life!.country = 'AL-01'; // far from the country that falls
+    const countries = data.countries.items as { id: string; name: string }[];
+    const name = (id: string) => countries.find((c) => c.id === id)!.name;
+    const p = said(god.handle(`miracle MR-17 ${name('MK-12')}`));
+    expect(p).toContain('ดาวตก (ระดับใหญ่)');
+    expect(p).toContain(`ที่: ${name('MK-12')}`);
+    expect(p).toContain('ราคา: ความหวาดกลัว 60');
+    expect(p).toContain('ท่านได้ความหวาดกลัวคืน 20');
+    expect(p).toContain('ผู้คนเหลือ 10–40%');
+    expect(p).toMatch(/ลาง: อีก 1 ฤดู/);
+    expect(p).not.toMatch(/RU-|GD-0|nc_|mt_/);
+    const before = JSON.stringify(g.state);
+    expect(said(god.handle('no'))).toContain('ยกเลิก');
+    expect(JSON.stringify(g.state)).toBe(before); // a preview and its refusal change nothing
+    god.handle(`miracle MR-17 ${name('MK-12')}`);
+    const done = said(god.handle('yes'));
+    expect(done).toContain('ลางของดาวตกปรากฏขึ้น');
+    expect(dread(g)).toBe(140);
+    // the day comes with the next beat
+    for (let i = 0; i < 2 && !g.state.world.countryFlags['MK-12']?.includes('god_ruin'); i++) g.beat();
+    expect(g.state.world.countryFlags['MK-12']).toContain('god_ruin');
+    const lines = g.state.log.filter((e) => e.sys === 'god' && (e.kind === 'ruin' || e.kind === 'miracle')).map((e) => e.id);
+    expect(lines).toContain('made');
+    // a seal says so before it is struck, and the dragon that lives there is named
+    g.state.god.cooldowns = {};
+    const s = said(god.handle(`miracle MR-18 ${name('AZ-02')}`));
+    expect(s).toContain('เป็นหมุดผนึกของเพลิงนิรันดร์');
+    expect(s).toContain('ไม่เป็นซาก เป็นเมืองร้าว');
+    expect(said(god.handle('miracle MR-22 อัซการ์'))).toContain('หมุดผนึก');
+    expect(said(god.handle('miracle MR-19 AL-01'))).toContain('ไม่ติดทะเล');
+  });
+
   it('answer แปลก: three gifts to choose from, the one chosen is given', () => {
     const { g, god } = atFirstCall();
     const card = pray(g, 'love');
