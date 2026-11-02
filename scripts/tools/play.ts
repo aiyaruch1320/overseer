@@ -1,4 +1,4 @@
-// npm run play -- --seed=N [--persona=ชื่อ] [--policy=...] [--race=hu] [--cmd="advance 4; status"] [--new] [--yes] [--dev]
+// npm run play -- --seed=N [--persona=ชื่อ] [--policy=<นโยบาย>|ไม่มี] [--race=hu] [--cmd="advance 4; status"] [--new] [--yes] [--dev]
 // Plays one life a command at a time and keeps the state in a file, so many commands can follow each other
 // (docs/guide/code-plan.md §8.0). Each run does the commands given by --cmd (default: advance to the next call of the game),
 // prints what the player sees, and saves the state.
@@ -16,20 +16,23 @@ import type { LogEntry } from '../../src/core/types';
 import { npcsAt } from '../../src/core/npc';
 import { load, save } from '../../src/core/save';
 import { placeName } from '../../src/core/text';
-import { timeline, statusLines, worldLines } from './report';
+import { godLines, timeline, statusLines, worldLines } from './report';
 import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
 import { intArg, parseArgs } from './args';
 import { loadAll } from './node-data';
-import { POLICIES, afterBeat, createSession, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
+import { POLICIES, afterBeat, createSession, policyOf, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
 
 const args = parseArgs(process.argv.slice(2));
 const seed = intArg(args.seed, 'seed', 1);
 const dir = process.env.OVERSEER_PLAY_DIR ?? path.join(os.tmpdir(), 'overseer-play');
 const file = path.join(dir, `${seed}.json`);
 const pendingFile = path.join(dir, `${seed}.pending.json`);
-const policy = args.policy as Policy | undefined;
+// `--policy=ไม่มี` (or `none` `off`) takes the policy out of the save: a policy given once stays in the save and plays for the player in every later run (review M2 L7)
+const NO_POLICY = ['ไม่มี', 'none', 'off'];
+const clearPolicy = args.policy !== undefined && NO_POLICY.includes(args.policy);
+const policy = clearPolicy ? undefined : (args.policy as Policy | undefined);
 if (policy && !POLICIES.includes(policy)) {
-  console.error(`--policy must be one of ${POLICIES.join(' ')}`);
+  console.error(`--policy ต้องเป็นหนึ่งใน ${POLICIES.join(' ')} (หรือ ไม่มี เพื่อปิดนโยบายที่ติดอยู่ในเซฟ)`);
   process.exit(2);
 }
 
@@ -42,6 +45,7 @@ function open(): { s: Session; fresh: boolean } {
   if (existsSync(file)) {
     const { state, stale } = load(readFileSync(file, 'utf8'), versions(data));
     if (policy) state.god.ext.policy = policy;
+    if (clearPolicy) delete state.god.ext.policy;
     const s = resumeSession(data, state, opts);
     if (stale.length) s.notes.push(`ข้อมูลเปลี่ยนตั้งแต่เซฟ (${stale.join(' ')}) ผลอาจไม่ตรงเดิม`);
     return { s, fresh: false };
@@ -59,6 +63,13 @@ const say = (...l: string[]) => out.push(...l);
 say(`== เล่นทดสอบ · เมล็ด ${seed}${g.state.god.ext.persona ? ` · ผู้เล่น ${String(g.state.god.ext.persona)}` : ''} ==`);
 if (fresh) for (const n of s.notes) say(`หมายเหตุ: ${n}`);
 else say(`(เล่นต่อจาก ${file})`);
+// a policy kept in the save plays for the player: say so, and how to stop it (review M2 L7)
+{
+  const kept = policyOf(s);
+  if (kept && (!fresh || !args.policy)) say(`(นโยบาย "${kept}" ทำงานอยู่ ระบบพระเจ้าจะเล่นแทนท่านทุกจังหวะ · ใส่ --policy=ไม่มี เพื่อปิด)`);
+  else if (kept) say(`(นโยบาย "${kept}" ทำงานอยู่ ระบบพระเจ้าจะเล่นแทนท่าน และติดอยู่ในเซฟ · ใส่ --policy=ไม่มี เพื่อปิด)`);
+  if (clearPolicy && !kept) say('(ปิดนโยบายแล้ว ท่านเล่นเอง)');
+}
 
 function seen(mark: number, max = 80): string[] {
   const ls = timeline(g.ctx.data, g.state.log, 1, { fromN: mark, notes: toolNotes(g.state) });
@@ -114,13 +125,17 @@ function run(cmdText: string): boolean {
       }
       say(`-- ${why} --`, ...seen(mark));
       if (call) {
-        say(...callLines(data, call, !!args.dev));
+        say(...callLines(data, call, !!args.dev, g));
         const waiting = waitingLines(g, data);
         if (waiting.length) say('-- รอท่านอยู่ --', ...waiting);
         const doable = god.doableNow();
-        say(doable.length ? `ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)` : 'ยังไม่มีพลังใดให้ใช้ตอนนี้ (พิมพ์ advance เพื่อไปต่อ)');
+        say(st.life?.dead ? 'ชีวิตนี้จบแล้ว (ใช้ --new เพื่อเริ่มโลกใหม่ด้วยเมล็ดเดิม)' : doable.length ? `ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)` : 'ยังไม่มีพลังใดให้ใช้ตอนนี้ (พิมพ์ advance เพื่อไปต่อ)');
       }
-      if (st.life?.dead) say('-- ชีวิตจบ --', ...statusLines(g.ctx.data, st));
+      if (st.life?.dead) {
+        say('-- ชีวิตจบ --', ...statusLines(g.ctx.data, st));
+        const hand = godLines(data, st, policyOf(s));
+        if (hand.length) say('-- พระหัตถ์ของท่านในชีวิตนี้ --', ...hand);
+      }
       return true;
     }
     case 'status':
@@ -143,7 +158,12 @@ function run(cmdText: string): boolean {
       return true;
     }
     case 'help':
-      say('คำสั่ง: advance [N] (N จังหวะ; ไม่ใส่ = จนเกมเรียก) · status · log [N] · npcs · world (ตัวเลขของโลก สำหรับดีบัก) · help · quit', ...godHelp(), 'ตัวเลือก: --yes ทำคำสั่งพระเจ้าทันทีหลังตัวอย่างผล · --dev แสดงช่องที่เครื่องมือยังไม่มีคำพูด · --policy=<นโยบาย> ให้ระบบพระเจ้าเล่นแทนทุกจังหวะ');
+      say(
+        'คำสั่ง: advance [N] (N จังหวะ; ไม่ใส่ = จนเกมเรียก) · status · log [N] · npcs · world (ตัวเลขของโลก สำหรับดีบัก) · help · quit',
+        ...godHelp(),
+        'ตัวเลือก: --yes ทำคำสั่งพระเจ้าทันทีหลังตัวอย่างผล · --dev แสดงช่องที่เครื่องมือยังไม่มีคำพูด · --policy=<นโยบาย> ให้ระบบพระเจ้าเล่นแทนทุกจังหวะ (ติดอยู่ในเซฟ ใช้ --policy=ไม่มี เพื่อปิด)',
+        'คำที่เกมใช้: จังหวะ = หนึ่งในสี่ของปีชีวิต (หนึ่งฤดู) · ปีชีวิต = อายุของตัวละคร · ศ.ม. = ศักราชมังกร นับจากวันที่พระเจ้าตื่น (ปีของโลก) · แสงศรัทธา = พลังสายสร้าง · ความหวาดกลัว = พลังสายทำลาย · ศรัทธาเทพ = ความเชื่อของตัวละครที่มีต่อท่าน · ภาระใจ = ความตึงของใจเมื่อถูกฝันให้ทำขัดนิสัย · หน้าต่างพระเจ้า = ช่วงที่ราคาลด ×0.7',
+      );
       return true;
     case 'quit':
       say(`จบการเล่น สถานะเก็บไว้ที่ ${file}`);
@@ -156,6 +176,16 @@ function run(cmdText: string): boolean {
 
 if (fresh) {
   say('-- เกิด --', ...timeline(g.ctx.data, g.state.log, 1).filter((l) => l.includes('[เกิด]')), '', '-- สถานะ --', ...statusLines(g.ctx.data, g.state));
+  // the game may already be waiting for the god at birth (a crossroads at age 0): the first call is shown, not found later in the log (review M2 P8)
+  const first = g.state.log.find((e) => e.sys === 'attention' && e.kind === 'call' && e.data.call === 'stop');
+  if (first) {
+    say('', '-- เกมหยุดรอท่านตั้งแต่เกิด --', ...timeline(g.ctx.data, g.state.log.filter((e) => e.sys === 'attention' || e.sys === 'story'), 1).slice(-4));
+    say(...callLines(data, first, !!args.dev, g));
+    const waiting = waitingLines(g, data);
+    if (waiting.length) say('-- รอท่านอยู่ --', ...waiting);
+    const doable = god.doableNow();
+    if (doable.length) say(`ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)`);
+  }
 }
 const cmds = (args.cmd ?? 'advance').split(';').map((x) => x.trim()).filter(Boolean);
 for (const c of cmds) if (!run(c)) break;
