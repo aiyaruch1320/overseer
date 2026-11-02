@@ -62,6 +62,8 @@ const STAT_KEYS: [string, string][] = [
   ['ทอง', 'gold'],
   ['ทุน', 'capital'],
   ['ชนชั้น', 'class'],
+  ['เหมือง', 'mine'],
+  ['ระดับ', 'level'],
 ];
 
 const CONTINENT_WORDS: [string, string][] = [
@@ -136,20 +138,30 @@ interface Atom {
   cond: ConditionX;
 }
 
-const RACE_RE = RACE_WORDS.map(([w]) => w).join('|');
+/**
+ * A race word is a whole word: the neighbours are not Thai letters (`ตระกูล` has no ghoul in it).
+ * The glued connectives of Thai (`ชาว` before, `และ` `หรือ` `กับ` before or after) still count as a border.
+ */
+const RACE_RE = `(?:(?<![${TH}])|(?<=ชาว|และ|หรือ|กับ))(?:${[...RACE_WORDS].sort((a, b) => b[0].length - a[0].length).map(([w]) => w).join('|')})(?:(?![${TH}])|(?=และ|หรือ|กับ))`;
 const STAT_RE = STAT_KEYS.map(([w]) => w).join('|');
 const TOKEN = new RegExp(
   [
     '`([^`]+)`(?:\\s*(≥|>=|>)\\s*(\\d+)|\\s*ระดับ\\s*(\\d))?', // 1 code · 2 op · 3 n · 4 level
-    `((?:${STAT_RE}|DFC)[${TH}]*?)\\s*(≥|>=|>|≤|<=|<|=|ต่ำกว่า|น้อยกว่า|มากกว่า|เกิน)\\s*(\\d+)(?:\\s*จาก\\s*(\\d+)\\s*เผ่า)?(?:\\s*ขึ้นไป)?`, // 5 stat word · 6 op · 7 n · 8 count
-    `(ชนชั้น)\\s*(\\d)\\s*ขึ้นไป`, // 9 · 10
+    `((?:${STAT_RE}|DFC)[${TH}]*?)\\s*(≥|>=|>|≤|<=|<|=|ต่ำกว่า|น้อยกว่า|มากกว่า|เกิน)\\s*([+\\-−]?\\d+)(?:\\s*จาก\\s*(\\d+)\\s*เผ่า)?(?:\\s*ขึ้นไป)?`, // 5 stat word · 6 op · 7 n · 8 count
+    `(?<![${TH}])(ชนชั้น|ชั้น)\\s*(\\d)\\s*ขึ้นไป`, // 9 · 10
     `(${NODE_OR_CV})(?:\\s*(?:จบ)?ทาง\\s*([กขค]))?`, // 11 node · 12 choice
     '(?<![A-Z-])((?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\\d\\d)\\b|(?<![A-Za-z-])(AZ|MH|KD|NR|AL|MK|SH|SV|NB)(?![A-Za-z0-9-])', // 13 country · 14 continent
     '((?:NF-|FT-|KN-|PR-)?[A-Z]{2,4}-\\d{2,3})', // 14 event
     '\\b([A-Z]{2}\\d{2}-\\d)\\b', // 15 npc
     'ยุค\\s*(?:≥\\s*)?(\\d)(?:\\s*ขึ้นไป)?', // 16 era
     '(?<![ก-๿])(ชาย|หญิง)(?![ก-๿])', // 17 gender
-    `(${RACE_RE})`, // 18 race
+    `(${RACE_RE})`, // 19 race
+    `ก่อนอายุ\\s*(\\d+)`, // 20 before this age
+    `อายุ\\s*(\\d+)\\s*ขึ้นไป|อายุ\\s*(?:≥|>=)\\s*(\\d+)`, // 21 · 22 at least this age
+    `(เวท)\\s*(\\d+)(?![\\d%])`, // 23 · 24 magic 17
+    `พวกพ้องระดับ\\s*(\\d)\\s*ขึ้นไป`, // 25 ally level
+    `(?<![${TH}])(ผู้ถูกอัญเชิญ|ผู้กลับชาติ)(?![${TH}])`, // 26 summoned / reincarnated
+    `(?<![${TH}])(?:อยู่)?(?:ใน)?(?:ทวีป)?(${CONTINENT_WORDS.map(([w]) => w).join('|')})(?![${TH}])`, // 27 continent by name
   ].join('|'),
   'g',
 );
@@ -161,17 +173,17 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     const end = at + m[0].length;
     const before = text.slice(Math.max(0, at - 12), at);
     const after = text.slice(end, end + 12);
-    const neg = /(ไม่มี|ยังไม่|ไม่)\s*$/.test(before) || /^\s*(ยังไม่เกิด|ไม่เกิด|ไม่มี)/.test(after);
+    const neg = /(ไม่มี|ยังไม่|ไม่ได้อยู่|ไม่ได้|ไม่)\s*$/.test(before) || /^\s*(ยังไม่เกิด|ไม่เกิด|ไม่มี)/.test(after);
     const wrap = (c: ConditionX): ConditionX => (neg ? { k: 'not', of: c as Condition } : c);
     if (m[1]) {
       const id = m[1];
       if (m[3]) {
         const level = Number(m[3]) + (m[2] === '>' ? 1 : 0);
-        out.push({ at, end, cond: wrap({ k: 'has', kind: ids.kind(id), id, level }) });
-      } else if (m[4]) out.push({ at, end, cond: wrap({ k: 'has', kind: ids.kind(id), id, level: Number(m[4]) }) });
+        out.push({ at, end, cond: wrap({ k: 'has', kind: kindOf(id, ids), id, level }) });
+      } else if (m[4]) out.push({ at, end, cond: wrap({ k: 'has', kind: kindOf(id, ids), id, level: Number(m[4]) }) });
       else {
         const lvl = ids.aptLevel(id);
-        out.push({ at, end, cond: wrap(lvl ? { k: 'has', kind: 'aptitude', id: lvl.apt, level: lvl.level } : { k: 'has', kind: ids.kind(id), id }) });
+        out.push({ at, end, cond: wrap(lvl ? { k: 'has', kind: 'aptitude', id: lvl.apt, level: lvl.level } : { k: 'has', kind: kindOf(id, ids), id }) });
       }
     } else if (m[5]) {
       const word = m[5];
@@ -180,10 +192,10 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
       if (key && word.length > key[0].length && key[1] === 'trust') stat = `trust:${word.slice(key[0].length)}`;
       const OPS: Record<string, CmpCondition['op']> = { '≥': '>=', '≤': '<=', '=': '==', ต่ำกว่า: '<', น้อยกว่า: '<', มากกว่า: '>', เกิน: '>' };
       const op = OPS[m[6]] ?? (m[6] as CmpCondition['op']);
-      const c: ConditionX = { k: 'cmp', stat, op, value: Number(m[7]), label: word };
+      const c: ConditionX = { k: 'cmp', stat, op, value: toNum(m[7]), label: word };
       if (m[8]) c.count = Number(m[8]);
       out.push({ at, end, cond: wrap(c) });
-    } else if (m[9]) out.push({ at, end, cond: { k: 'cmp', stat: 'class', op: '>=', value: Number(m[10]), label: 'ชนชั้น' } });
+    } else if (m[9]) out.push({ at, end, cond: { k: 'class', min: Number(m[10]) } });
     else if (m[11]) out.push({ at, end, cond: wrap({ k: 'node', id: m[11], ...(m[12] ? { choice: THAI_KEYS[m[12]] } : {}) }) });
     else if (m[13]) out.push({ at, end, cond: wrap({ k: 'country', ids: [m[13]] }) });
     else if (m[14]) out.push({ at, end, cond: wrap({ k: 'continent', ids: [m[14] as 'AZ'] }) });
@@ -194,13 +206,22 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     else if (m[17]) out.push({ at, end, cond: { k: 'era', min: Number(m[17]) } });
     else if (m[18]) out.push({ at, end, cond: { k: 'gender', value: m[18] === 'ชาย' ? 'm' : 'f' } });
     else if (m[19]) {
-      const code = RACE_WORDS.find(([w]) => w === m[19])![1];
+      const code = RACE_WORDS.find(([w]) => w === m[19].replace(/^ชาว/, ''))![1];
       out.push({ at, end, cond: wrap({ k: 'race', ids: [code] }) });
-    }
+    } else if (m[26]) out.push({ at, end, cond: wrap({ k: 'has', kind: 'flag', id: m[26] === 'ผู้ถูกอัญเชิญ' ? 'summoned' : 'reincarnated' }) });
+    else if (m[27]) out.push({ at, end, cond: wrap({ k: 'continent', ids: [CONTINENT_WORDS.find(([w]) => w === m[27])![1] as 'AZ'] }) });
+    else if (m[20]) out.push({ at, end, cond: { k: 'age', max: Number(m[20]) - 1 } });
+    else if (m[21] || m[22]) out.push({ at, end, cond: { k: 'age', min: Number(m[21] ?? m[22]) } });
+    else if (m[23]) out.push({ at, end, cond: { k: 'cmp', stat: 'magic', op: '>=', value: Number(m[24]), label: 'เวท' } });
+    else if (m[25]) out.push({ at, end, cond: { k: 'cmp', stat: 'allyLevel', op: '>=', value: Number(m[25]), label: 'พวกพ้องระดับ' } });
   }
   return out;
 }
 
+/** Words that sit beside a code to say what it is. They are kept in the label, never in a condition. */
+const DESCRIPTOR = /(?<![฀-๿])(?:สำเร็จ|อาชีพลับ|อาชีพพิเศษ|ชาวพื้นหลัง|ชาวพื้น|ชาว|ธงประเทศ|ธง|อยู่ที่|อยู่ใน|อยู่|เกิดแล้ว|เกิดขึ้นแล้ว|ผ่านแล้ว|แล้ว|เคย)(?![฀-๿])/g;
+/** "SF-08 เกิด": beside an event id the word only says it happened. */
+const HAPPENED = /(?<![฀-๿])(?:เกิดขึ้น|เกิด)(?![฀-๿])/g;
 const STOP = /ต้อง|มี|ผ่าน|ผู้|อาชีพ|และ|หรือ|ที่|ถ้า|ใน|เมื่อ|ทุก|ทาง|ขึ้นไป|เกิด|แล้ว|ได้|เป็น|ของ|ไม่|ยัง|จาก|เผ่า|ระดับ|ใช้|เข้า|ตรา/g;
 
 /**
@@ -209,6 +230,12 @@ const STOP = /ต้อง|มี|ผ่าน|ผู้|อาชีพ|แล�
  * ("(A B ×2)": each one raises the weight; `และ` reads as OR). With `allowText` the words that are not
  * ids stay as a `text` condition so nothing is lost; without it only ids count.
  */
+/** `or[or[a, b], c]` is `or[a, b, c]`: the same word list read in two steps is one list. */
+function join(k: 'and' | 'or', items: ConditionX[]): ConditionX {
+  const of = items.flatMap((x) => (x.k === k ? (x.of as ConditionX[]) : [x]));
+  return of.length === 1 ? of[0] : ({ k, of } as ConditionX);
+}
+
 export function parseConditionX(text: string, ids: IdIndex, allowText = false, mode: 'and' | 'or' = 'and'): ConditionX | null {
   const groups = mode === 'and' ? text.split(/\s+และ\s*/) : [text.replace(/\s+และ\s*/g, ' ')];
   const parts: ConditionX[] = [];
@@ -219,23 +246,27 @@ export function parseConditionX(text: string, ids: IdIndex, allowText = false, m
       let rest = alt;
       for (const a of [...atoms].reverse()) rest = rest.slice(0, a.at) + ' ' + rest.slice(a.end);
       const items: ConditionX[] = atoms.map((a) => a.cond);
+      // a word that explains the code beside it ("hu.a7 สำเร็จ", "อาชีพลับ `beastking`", "DR-01 ชาวพื้นหลัง") is a note, not a condition
+      if (atoms.length) rest = rest.replace(DESCRIPTOR, ' ');
+      if (atoms.some((a) => a.cond.k === 'event')) rest = rest.replace(HAPPENED, ' ');
+      rest = rest.replace(/\(\s*\)/g, ' ').replace(/(^|\s)[()+*,:](?=\s|$)/g, ' ');
       const words = rest.replace(STOP, ' ').replace(/[^฀-๿]+/g, ' ').trim();
       const text1: ConditionX | null = allowText && words.length >= 3 ? { k: 'text', text: rest.replace(/\s+/g, ' ').trim() } : null;
       if (!items.length && !text1) continue;
       if (mode === 'or') {
-        const anyOf: ConditionX | null = items.length === 0 ? null : items.length === 1 ? items[0] : { k: 'or', of: items as Condition[] };
+        const anyOf: ConditionX | null = items.length === 0 ? null : join('or', items);
         const all = [anyOf, text1].filter((x): x is ConditionX => !!x);
-        altConds.push(all.length === 1 ? all[0] : { k: 'and', of: all as Condition[] });
+        altConds.push(join('and', all));
       } else {
         const all = text1 ? [...items, text1] : items;
-        altConds.push(all.length === 1 ? all[0] : { k: 'and', of: all as Condition[] });
+        altConds.push(join('and', all));
       }
     }
     if (!altConds.length) continue;
-    parts.push(altConds.length === 1 ? altConds[0] : { k: 'or', of: altConds as Condition[] });
+    parts.push(join('or', altConds));
   }
   if (!parts.length) return null;
-  return parts.length === 1 ? parts[0] : { k: 'and', of: parts as Condition[] };
+  return join('and', parts);
 }
 
 /** A condition from a short phrase: an event id, a backticked id, an NPC, a node. Null when nothing is readable. */
@@ -380,8 +411,13 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     const c = parseConditionX(m[1], ids, true, 'or');
     if (c) (out.nodeWhen ??= []).push(c);
   });
+  // "(ถ้าเคยผ่าน cv.1 ข้าม)": the node is skipped when X
+  take(/\(\s*ถ้า\s*([^()·]+?)\s*ข้าม\s*\)/, (m) => {
+    const c = parseConditionX(m[1], ids, true, 'or');
+    if (c) (out.nodeWhen ??= []).push(negate(c));
+  });
   // "ถ้า X ข้ามโหนดนี้": skipped when X; X written as "ยังไม่เกิด" is already a negative atom
-  take(/ถ้า\s*([^·]+?)\s*ข้ามโหนดนี้(?=\s|$)/, (m) => {
+  take(/ถ้า\s*([^·]+?)\s*ข้ามโหนด(?:นี้)?(?=\s|$)/, (m) => {
     const c = parseConditionX(m[1], ids, true, 'or');
     if (c) (out.nodeWhen ??= []).push(negate(c));
   });
@@ -418,7 +454,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     const cond = parseConditionX(m[1], ids, true);
     push({ k: 'choiceMod', choice: THAI_KEYS[m[2]], ...(cond ? { cond } : {}), mul: Number(m[3]) });
   });
-  take(/(?:ใช้เมื่อ|บังคับถ้า|เกิดเมื่อ)\s*([^·]+)$/, (m) => {
+  take(/(?:ใช้เมื่อ|ใช้ได้เมื่อ|บังคับถ้า|เกิดเมื่อ)\s*([^·]+)$/, (m) => {
     const c = parseConditionX(m[1].replace(/\s*ถ้าไม่มี\s*ข้าม(?:ไป)?\s*$/, ''), ids, true);
     if (c) (out.nodeWhen ??= []).push(c);
   });
@@ -449,11 +485,11 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
       push({ k: 'entryMod', to: m[3], choice: THAI_KEYS[m[2]], ...(cond ? { cond } : {}), mul: Number(m[4]) });
     },
   );
-  take(/น้ำหนัก\s*ทาง\s*([กขค])\s*×\s*(\d+(?:\.\d+)?)(?:\s*ถ้า\s*(`[^`]+`))?/, (m) => {
+  take(/น้ำหนัก\s*ทาง\s*([กขค])\s*×\s*(\d+(?:\.\d+)?)(?:\s*ถ้า\s*(`[^`]+`|[^()·]+?(?=\s*\)|\s*·|\s*$)))?/, (m) => {
     const cond = m[3] ? parseConditionX(m[3], ids, true) : null;
     push({ k: 'entryMod', choice: THAI_KEYS[m[1]], ...(cond ? { cond } : {}), mul: Number(m[2]) });
   });
-  take(/ทาง\s*([กขค])\s*(?:น้ำหนัก\s*)?×\s*(\d+(?:\.\d+)?)(?:\s*ถ้า\s*(`[^`]+`))?/, (m) => {
+  take(/ทาง\s*([กขค])\s*(?:น้ำหนัก\s*)?×\s*(\d+(?:\.\d+)?)(?:\s*ถ้า\s*(`[^`]+`|[^()·]+?(?=\s*\)|\s*·|\s*$)))?/, (m) => {
     const cond = m[3] ? parseConditionX(m[3], ids, true) : null;
     push({ k: 'entryMod', choice: THAI_KEYS[m[1]], ...(cond ? { cond } : {}), mul: Number(m[2]) });
   });
@@ -464,6 +500,9 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     const cond = m[3] ? parseConditionX(m[3], ids, true) : null;
     push({ k: 'stanceMul', stance: m[1], mul: Number(m[2]), ...(cond ? { cond } : {}) });
   });
+
+  // "เข้าเส้น iv": opens a whole line (two letters) rather than a node
+  take(/เข้าเส้น\s*([a-z]{2})(?![a-z.\d])/g, (m) => push({ k: 'ref', nodes: [m[1]], rel: 'เข้าเส้น' }));
 
   // weight multipliers: (`freedom` ×3) · (BIO-01 แล้ว ×3)
   for (const m of seg.matchAll(/\(([^()]*?)\s*×\s*(\d+(?:\.\d+)?)\)/g)) {
@@ -536,13 +575,13 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   }
 
   // convergence: → cv.6   ·   → cv.4 หรือ cv.15   ·   → cv.4 cv.15
-  take(/→\s*((?:cv\.\d+(?:\s*\([^)]*\))?\s*(?:หรือ\s*)?)+)/g, (m) => {
+  take(/→\s*((?:cv\.\d+(?:\s*\((?!\s*ต้อง)[^)]*\))?\s*(?:หรือ\s*)?)+)/g, (m) => {
     for (const id of m[1].match(/cv\.\d+/g) ?? []) push({ k: 'converge', to: id });
   });
 
   // ---- bond system markers ----
   take(new RegExp(`\`?\\{([${TH}]+):([${TH}]+)@(\\d)\\}\`?`, 'g'), (m) => push({ k: 'mood', line: m[1], mood: m[2], level: Number(m[3]) }));
-  take(/`(?:LC-|\{[^}]*\})?`/g, () => undefined); // template placeholders: `LC-` and empty ticks
+  take(/(?<![^\s])`\s*(?:LC-|\{[^}]*\})?\s*`(?![^\s])/g, () => undefined); // template placeholders: `LC-` and empty ticks
   take(/`((?!FT-|KN-|PR-|NF-)[A-Z]{2,4}-\d{2,3})`/g, (m) => push({ k: 'event', id: m[1] })); // an event id written in ticks
   take(/`(FT|KN|PR)-(\d{2})`(?:\s*ถึง\s*`\1-(\d{2})`)?/g, (m) => {
     const t: ExtraEffect = { k: 'template', kind: m[1] as 'FT' | 'KN' | 'PR', code: `${m[1]}-${m[2]}` };
@@ -563,6 +602,14 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
       push({ k: 'jobpath', job: m[2], secret: m[1] === 'อาชีพลับ', ...(cond ? { need: cond } : {}) });
     },
   );
+
+  // a country flag in a parenthesis of this choice ("(WR-03 CT-08 หรือธงประเทศ `famine`)") says when the path is open
+  if (opts.choice) {
+    take(/\(([^()]*ธง[^()]*`(?:war|famine|plague|golden|fallen|god_ruin)`[^()]*)\)/, (m) => {
+      const c = parseConditionX(m[1], ids, true, 'or');
+      if (c) out.when = out.when ? ({ k: 'and', of: [out.when as Condition, c as Condition] } as Condition) : c;
+    });
+  }
 
   // ---- requirements: "ต้องมี …" gates the choice (or wraps this segment in a notes cell) ----
   if (opts.choice || opts.notes) {
@@ -600,7 +647,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   take(new RegExp(`([${TH}]+)\\s*±\\s*(\\d+)(%)?(?!\\d)`, 'g'), (m) =>
     push({ k: 'range', stat: m[1], min: -Number(m[2]), max: Number(m[2]), ...(m[3] ? { unit: '%' } : {}) }),
   );
-  take(new RegExp(`([${TH}]+)\\s*([+\\-−])\\s*(\\d+(?:\\.\\d+)?)%`, 'g'), (m) =>
+  take(new RegExp(`([${TH}]+|[a-z]{2,})\\s*([+\\-−])\\s*(\\d+(?:\\.\\d+)?)%`, 'g'), (m) =>
     push({ k: 'statPct', stat: m[1], pct: toNum(m[2] + m[3]) }),
   );
   take(new RegExp(`([${TH}]+)\\s*×\\s*(\\d+(?:\\.\\d+)?)`, 'g'), (m) => push({ k: 'statMul', stat: m[1], mul: Number(m[2]) }));
@@ -622,6 +669,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   // battle marker
   const isBattle = /ศึก/.test(rest) || !!opts.battle;
   const battleEnemies: string[] = [];
+  let battleChance: number | undefined;
 
   // a backticked id with a signed number raises or lowers it: `bow` +1
   for (const m of rest.matchAll(new RegExp('`([a-z_]+)`\\s*(' + NUM + ')(?![\\d%])', 'g'))) {
@@ -636,6 +684,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     const kind = kindOf(id, ids);
     if (kind === 'enemy' && isBattle) {
       battleEnemies.push(id);
+      if (m[2]) battleChance = Number(m[2]) / 100; // "คู่แข่งท้าดวล `npc_duelist` 20%": the fight happens with that chance
       eat(m[0]);
       continue;
     }
@@ -649,7 +698,8 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   }
   if (isBattle && (battleEnemies.length || /ศึก/.test(rest))) {
     const words = seg.replace(/`[^`]+`/g, ' ').replace(/ศึก\s*:?/g, ' ').replace(/\s+/g, ' ').trim();
-    push({ k: 'battle', enemies: battleEnemies, ...(!battleEnemies.length && words ? { text: words } : {}) });
+    const fight: Effect = { k: 'battle', enemies: battleEnemies, ...(!battleEnemies.length && words ? { text: words } : {}) };
+    push(battleChance !== undefined ? ext({ k: 'chance', p: battleChance, text: 'ศึก', then: [fight] }) : fight);
     rest = rest.replace(/ศึก/, ' ');
   }
 
@@ -673,7 +723,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   }
   if (places.length) push({ k: 'place', ids: places });
   take(/([ก-๿]+?)\s*ระดับ\s*(\d)(?![\dA-Z])/g, (m) => push({ k: 'level', scale: m[1], values: [Number(m[2])] }));
-  if (trail) {
+  if (trail && mine.length) {
     const then = mine.splice(0);
     mine.push({ k: 'if', cond: trail as Condition, then });
   }
@@ -692,6 +742,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   // stat changes: ทอง −50 · ชื่อเสียง +5
   for (const m of rest.matchAll(STAT)) {
     if (!/[+\-−]/.test(m[2])) continue; // a bare number is not a change
+    if (/[A-Za-z]-\d/.test(m[0])) continue; // `DM-08` is an id: the digits that touch a code are not a number (review H4)
     push({ k: 'stat', stat: m[1].trim(), delta: toNum(m[2]) });
     eat(m[0]);
   }
@@ -740,6 +791,241 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   return rest;
 }
 
+// ---------- "ถ้า … / … เมื่อ …" and "A หรือ B" inside one cell (review H1 B2) ----------
+
+const fresh = (): Parsed => ({ effects: [], mods: [], label: '', unparsed: [] });
+
+/** Anything a branch carries that is not an effect: a branch like that is not wrapped or picked. */
+const hasMeta = (p: Parsed) => !!(p.mods.length || p.when || p.nodeWhen?.length || p.replaces?.length || p.altForm || p.rite || p.choiceWhen);
+
+/** Forms that segment() reads itself (skips, replacements, weight changes, outcomes): the condition wrapper leaves them alone. */
+const NO_WRAP =
+  /เผ่าที่เล่นได้เมื่อเป็นศัตรู|ถ้า[^()·]*ข้าม\s*\)|ข้าม(?:โหนด|ไป|ถ้า)|ยังไม่เกิด|ใช้แทน|ใช้เมื่อ|ใช้ได้เมื่อ|บังคับถ้า|เกิดเมื่อ|ถ้าไม่มี[^·]*ข้าม|ปลายทาง|×|คูณ|น้ำหนัก|(?:ผ่านทั้งคู่|ผ่านเดียว|ไม่ผ่านเลย|ไม่ผ่าน|ผ่าน)\s+\d+(?![\d%])/;
+/** Where the effects of a "ถ้า COND …" phrase begin. */
+const EFFECT_START = /→|`|(?<![฀-๿])ศึก|(?<![฀-๿])เปิด|ทาง(?:สู่|ไป|เปิด)|(?<![฀-๿])ได้(?=\s|`)|[฀-๿]+\s*[+\-−]\s*\d/;
+
+/**
+ * A condition from words: unreadable words stay as a `text` condition (reported by the generators).
+ * A bare "ถ้ามี" / "ถ้าเกิด" / "ถ้าต่ำกว่า 3" points at the effect it follows, so `then` tells what it means.
+ */
+function condOf(raw: string, ids: IdIndex, then: Effect[]): { cond: ConditionX; then: Effect[] } | null {
+  const t = raw
+    .replace(/(เกิด|แล้ว)และ/g, '$1 และ ')
+    .replace(/^\s*(?:อยู่|เป็น)\s*/, '')
+    .replace(/\s*(?:ได้|ให้|เปิด|ทางสู่|ทางไป|ทางเปิด|ใช้)\s*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!t) return null;
+  const grant = then.find((e) => e.k === 'grant');
+  if (t === 'มี' && grant && grant.k === 'grant') return { cond: { k: 'has', kind: grant.kind, id: grant.id }, then: then.filter((e) => e !== grant) };
+  if (t === 'ยังไม่มี' && grant && grant.k === 'grant') return { cond: { k: 'not', of: { k: 'has', kind: grant.kind, id: grant.id } }, then };
+  const ev = then.find((e) => e.k === 'event');
+  if (/^เกิด(?:แล้ว)?$/.test(t) && ev && ev.k === 'event' && then.length === 1) return { cond: { k: 'event', id: ev.id, happened: true }, then };
+  const stat = then.find((e) => e.k === 'stat');
+  const lowHigh = t.match(/^(ต่ำกว่า|น้อยกว่า|มากกว่า|เกิน)\s*(\d+)$/);
+  if (lowHigh && stat && stat.k === 'stat')
+    return {
+      cond: { k: 'cmp', stat: stat.stat, op: lowHigh[1] === 'ต่ำกว่า' || lowHigh[1] === 'น้อยกว่า' ? '<' : '>', value: Number(lowHigh[2]), label: stat.stat },
+      then,
+    };
+  const c = parseConditionX(t, ids, true) ?? (/[฀-๿]{2}/.test(t) ? ({ k: 'text', text: t } as ConditionX) : null);
+  return c ? { cond: c, then } : null;
+}
+
+/** "เลือก ก" in a notes cell binds the battle to that choice, not a world condition. */
+function choiceKeys(cond: string): ('a' | 'b' | 'c')[] | null {
+  const m = cond.trim().match(/^เลือก\s*([กขค](?:\s*(?:หรือ|และ|,)\s*[กขค])*)$/);
+  return m ? (m[1].match(/[กขค]/g) ?? []).map((x) => THAI_KEYS[x]) : null;
+}
+
+function condWrap(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): string | null {
+  if (!/(?<!เ)ถ้า|เมื่อ|\(\s*`[^`]+`\s*ต้อง(?!มี|ผ่าน)/.test(seg) || NO_WRAP.test(seg)) return null;
+  let condText = '';
+  let effText = '';
+  let outside = '';
+  // "ศึก: ถ้า ก) <enemy>" in a notes cell: the battle is for choice ก
+  const cb = seg.match(/^(\s*ศึก\s*:?\s*)?ถ้า\s*([กขค])\)\s*(.*)$/);
+  if (cb) {
+    const sub = fresh();
+    const rest = segmentFull(`${cb[1] ?? ''}${cb[3]}`, ids, sub, opts);
+    if (!sub.effects.length || hasMeta(sub)) return null;
+    out.effects.push(...sub.effects.map((e) => (e.k === 'battle' ? ext({ k: 'battleFor', choices: [THAI_KEYS[cb[2]]], enemies: e.enemies }) : e)));
+    out.unparsed.push(...sub.unparsed);
+    return rest;
+  }
+  const paren = seg.match(/\(\s*([^()]*?)\s*(?:(?<!เ)ถ้า|เมื่อ|(?<=`\s)ต้อง(?!มี|ผ่าน))\s*([^()]+?)\s*\)/);
+  const lead = seg.match(/^\s*(?<!เ)ถ้า\s*/);
+  if (lead) {
+    const body = seg.slice(lead[0].length);
+    const colon = body.indexOf(':');
+    const at = body.search(EFFECT_START);
+    // "ถ้าอยู่ X: <what happens there>": the colon ends the condition
+    if (colon >= 0 && (at < 0 || colon < at)) {
+      condText = body.slice(0, colon);
+      effText = body.slice(colon + 1);
+    } else {
+      if (at < 0) return null;
+      // "ถ้า X → cv.N" and "ถ้า X → EVENT" are read by segment() itself; only a choice between targets is new here
+      if (body[at] === '→' && !/หรือ/.test(body.slice(at))) return null;
+      condText = body.slice(0, at);
+      effText = body.slice(at);
+    }
+  } else if (paren) {
+    // "(… ถ้า X)" in the second alternative of "A หรือ B (… ถ้า X)" belongs to that alternative: the choice splits first
+    if (splitOr(seg)) return null;
+    condText = paren[2];
+    const headHasEffect = /`|[A-Z]{2,4}-\d{2}|→|[+\-−]\s*\d|ศึก/.test(paren[1]);
+    if (headHasEffect) {
+      effText = paren[1];
+      outside = seg.replace(paren[0], ' ');
+    } else effText = seg.replace(paren[0], ` ${paren[1]} `);
+  } else {
+    const m = seg.match(/(?:(?<!เ)ถ้า|เมื่อ)/);
+    if (!m || m.index === undefined) return null;
+    const before = seg.slice(0, m.index);
+    const after = seg.slice(m.index + m[0].length);
+    const tokens = /`|[A-Z]{2,4}-\d{2}|(?:[a-z]{2}\.[btaelx]|cv\.)\d|→|[+\-−]\s*\d/;
+    const tailParen = after.match(/^\s*([^()]+?)\s*\(\s*(`[^)]*)\)\s*$/);
+    if (tokens.test(before)) {
+      condText = after;
+      effText = before;
+      // "… ถ้ายังไม่มี (ให้ `#necro`)": a parenthesis of results at the end belongs to the effects
+      const give = after.match(/^(.*?)\s*\(\s*ให้\s*([^)]*)\)\s*$/);
+      if (give) {
+        condText = give[1];
+        effText = `${before} ${give[2]}`;
+      }
+    } else if (tailParen) {
+      // "ห้ามเข้าถ้าถูกจับ (`c_wanted` 20%)": the results are the parenthesis, the words between are the condition
+      condText = tailParen[1];
+      effText = tailParen[2];
+    } else return null;
+  }
+  if (/→/.test(condText) || !condText.trim() || !effText.trim()) return null;
+  const sub = fresh();
+  const rest = segmentFull(effText, ids, sub, opts);
+  if (!sub.effects.length || hasMeta(sub)) return null;
+  const keys = choiceKeys(condText);
+  if (keys) {
+    out.effects.push(...sub.effects.map((e) => (e.k === 'battle' ? ext({ k: 'battleFor', choices: keys, enemies: e.enemies }) : e)));
+    out.unparsed.push(...sub.unparsed);
+    return rest;
+  }
+  const made = condOf(condText, ids, sub.effects);
+  if (!made) return null;
+  const { cond, then } = made;
+  let tail = rest;
+  if (outside.trim()) {
+    const o = segmentFull(outside, ids, out, opts);
+    tail = `${o} ${rest}`;
+  }
+  out.effects.push({ k: 'if', cond: cond as Condition, then });
+  out.unparsed.push(...sub.unparsed);
+  return tail;
+}
+
+/** Top-level "หรือ" between alternatives (not inside parentheses, not inside a Thai word like "พ่อหรือแม่"). */
+function splitOr(seg: string): string[] | null {
+  const parts: string[] = [];
+  let depth = 0;
+  let from = 0;
+  for (let i = 0; i < seg.length; i++) {
+    const ch = seg[i];
+    if (ch === '(') depth++;
+    else if (ch === ')') depth = Math.max(0, depth - 1);
+    else if (depth === 0 && seg.startsWith('หรือ', i) && (i === 0 || /\s/.test(seg[i - 1]))) {
+      parts.push(seg.slice(from, i).trim());
+      from = i + 4;
+      i += 3;
+    }
+  }
+  if (!parts.length) return null;
+  parts.push(seg.slice(from).trim());
+  return parts;
+}
+
+/** "A หรือ B" of codes or results in one cell: exactly one of them happens (equal weights, the docs give none). */
+function pickSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): string | null {
+  const alts = splitOr(seg);
+  if (!alts || alts.length < 2 || alts.some((a) => !a)) return null;
+  if (/×|คูณ/.test(seg)) return null;
+  // "ถ้า A หรือ B เกิด", "ต้องผ่าน A หรือ B": the alternatives are a condition, read by the condition parser
+  const head = alts[0].replace(/^.*→/, '');
+  if (/(?:^|\s)(?:ถ้า|ต้อง|เมื่อ|ใช้ได้|หาก|ข้ามถ้า|ใช้เมื่อ|เกิดเมื่อ|หลัง)|ต้องผ่าน/.test(head)) return null;
+  if (/(?:^|\s)(?:ถ้า|ต้อง)/.test(alts[alts.length - 1]) && !/→/.test(alts[0])) return null;
+  // "ระดับ B2 หรือ B3" is one level effect with two values, read by segment()
+  if (/ระดับ\s*[BL]\d\s*หรือ\s*[BL]\d/.test(seg)) return null;
+  const texts = [...alts];
+  // "ท่าทีถิ่น −1 หรือ −2": the later alternatives are only the other number of the first one
+  const signed = texts[0].match(/^(.*?)[+\-−]\s*\d+\s*$/);
+  if (signed)
+    for (let i = 1; i < texts.length; i++) {
+      const n = texts[i].match(/^([+\-−]\s*\d+)\s*(.*)$/);
+      if (n) texts[i] = `${signed[1]}${n[1]} ${n[2]}`.trim();
+    }
+  // "→ cv.4 หรือ cv.15": the arrow and a leading "ศึก" belong to every alternative
+  const arrow = /→/.test(texts[0]);
+  const fight = /(?:^|\s)ศึก/.test(texts[0]);
+  for (let i = 1; i < texts.length; i++) {
+    if (arrow && !/→/.test(texts[i]) && /^(?:cv\.\d+|[a-z]{2}\.[btaelx]\d+|[A-Z]{2,4}-\d{2,3})/.test(texts[i])) texts[i] = `→ ${texts[i]}`;
+    if (fight && !/ศึก/.test(texts[i])) texts[i] = `ศึก ${texts[i]}`;
+  }
+  // "ศึก: A หรือ B (ทาง ข)": the choices named at the end hold for every alternative
+  const forChoices = texts[texts.length - 1].match(/^(.*?)\s*(\(\s*ทาง\s*[กขค](?:\s*(?:หรือ|และ|,)\s*[กขค])*\s*\))\s*$/);
+  if (forChoices) {
+    texts[texts.length - 1] = forChoices[1];
+    for (let i = 0; i < texts.length; i++) texts[i] = `${texts[i]} ${forChoices[2]}`;
+  }
+  // "`art` หรือ `music` +1": a number written once after the last alternative counts for the bare codes before it
+  const tail = texts[texts.length - 1].match(/^`[^`]+`\s*([+\-−]\d+)$/);
+  if (tail) for (let i = 0; i < texts.length - 1; i++) if (/^`[^`]+`$/.test(texts[i])) texts[i] = `${texts[i]} ${tail[1]}`;
+  const subs = texts.map((t) => {
+    const sub = fresh();
+    const rest = segmentFull(t, ids, sub, opts);
+    return { sub, rest, t };
+  });
+  if (subs.some((x) => hasMeta(x.sub))) return null;
+  const withEffects = subs.filter((x) => x.sub.effects.length);
+  const adjacent = /[`%\d)]\s*$/.test(alts[0]) || /^\s*`/.test(alts[alts.length - 1]);
+  const battle = withEffects.some((x) => x.sub.effects.some((e) => e.k === 'battle'));
+  // event ids written bare ("เพราะ DR-05 หรือ WR-06") are causes the text mentions, not results to choose between
+  const bare = (e: Effect) => (e.k === 'event' && !e.open) || e.k === 'npc' || e.k === 'place';
+  if (withEffects.every((x) => x.sub.effects.every(bare))) return null;
+  if (withEffects.length < 2 && !(withEffects.length === 1 && adjacent && !battle)) return null;
+  const of = subs.map((x) => ({
+    label: x.t.replace(/^→\s*/, '').replace(/`/g, '').replace(/\s+/g, ' ').trim(),
+    effects: x.sub.effects,
+  }));
+  out.effects.push({ k: 'pick', of });
+  const left = subs.map((x) => x.rest).join(' ');
+  for (const x of subs) out.unparsed.push(...x.sub.unparsed);
+  return /\d|%|×/.test(left.replace(/\s+/g, ' ')) ? left : '';
+}
+
+/** One segment: a condition around its effects, a choice between them, or plain effects. Returns what was left unread. */
+function segmentFull(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): string {
+  const w = condWrap(seg, ids, out, opts);
+  if (w !== null) return w;
+  const p = pickSegment(seg, ids, out, opts);
+  if (p !== null) return p;
+  return segment(seg, ids, out, opts);
+}
+
+/** Every `text` condition inside any effect, condition, choice or node (they cannot be evaluated, so the generators report them). */
+export function textConditions(x: unknown): string[] {
+  const out: string[] = [];
+  const walk = (v: unknown) => {
+    if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') {
+      const o = v as Record<string, unknown>;
+      if (o.k === 'text' && typeof o.text === 'string') out.push(o.text);
+      for (const val of Object.values(o)) walk(val);
+    }
+  };
+  walk(x);
+  return out;
+}
+
 const CHOICE_KEYS = { ก: 'a', ข: 'b', ค: 'c' } as const;
 
 /** "ถ้าอยู่ SH-10 (…): ก) 35 … ข) 40 … ค) 25 …": a whole set of choices under a place or event condition. */
@@ -764,7 +1050,7 @@ function variantSegment(seg: string, ids: IdIndex, out: Parsed, labels: string[]
 
 /** "ถ้าอยู่ KD-07 (…): พิธี…" a note that only applies in some places. */
 function placeSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts, labels: string[]): boolean {
-  const m = seg.match(/^ถ้า(?:อยู่|เป็น)\s*((?:[A-Z]{2}-\d\d[\s,]*)+)(?:\([^)]*\))?\s*:\s*(.+)$/s);
+  const m = seg.match(/^ถ้า(?:อยู่|เป็น)\s*((?:[A-Z]{2}-\d\d(?:[\s,]|หรือ)*)+)(?:\([^)]*\))?\s*:\s*(.+)$/s);
   if (!m) return false;
   const sub = parseCell(m[2], ids, opts);
   const cond: ConditionX = { k: 'country', ids: m[1].match(/[A-Z]{2}-\d\d/g) ?? [] };
@@ -798,12 +1084,23 @@ export function parseCell(cell: string, ids: IdIndex, opts: ParseOpts = {}): Par
       .replace(/\s*หรือ\s*$/, '')
       .replace(/\s+/g, ' ')
       .trim();
-    if (label) labels.push(label);
-    const rest = segment(seg, ids, out, opts);
+    const before = out.effects.length;
+    const rest = segmentFull(seg, ids, out, opts);
+    // a choice between codes keeps both of them in the label ("soldier หรือ mercenary"), the way the doc says it
+    const picked = out.effects.slice(before).some((e) => e.k === 'pick') && splitOr(seg) !== null;
+    if (picked) labels.push(seg.replace(/`/g, '').replace(/\{[^}]*\}/g, '').replace(/\s+/g, ' ').trim());
+    else if (label) labels.push(label);
     const left = rest.replace(/\s+/g, ' ').trim();
     if (/\d|%|×/.test(left)) out.unparsed.push(seg.trim());
   }
   out.label = labels.join(' · ');
+  // a cell made only of codes ("`soldier` หรือ `mercenary`") has no words left: say the codes (review L1)
+  if (!out.label || /^(?:หรือ|\()/.test(out.label))
+    out.label = text
+      .split(/\s+·\s+/)
+      .map((x) => x.replace(/`/g, '').replace(/\{[^}]*\}/g, '').replace(/\s+/g, ' ').trim())
+      .filter(Boolean)
+      .join(' · ');
   return { ...out, weight };
 }
 
