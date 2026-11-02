@@ -10,8 +10,8 @@ import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
 import { attentionText, godTemplate, godText, type TemplateStyle } from './god';
 import { items, labels, type Labels } from './labels';
-import { isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
-import { plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
+import { endingTail, isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
+import { hashText as hash, plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
 import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
 import { BOND_LEVEL_TH, MOOD_TH } from './words';
 
@@ -20,16 +20,6 @@ type D = LogEntry['data'];
 export { labels, nameOfId, knownName, type Labels, type RiteLite } from './labels';
 
 // ---------- pure choice among variants ----------
-
-function hash(text: string): number {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < text.length; i++) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-  h = Math.imul(h ^ (h >>> 15), 0x85ebca6b);
-  return (h ^ (h >>> 13)) >>> 0;
-}
 
 /** What picks the variant of a line: the content of the entry, never its running number (that shifts when an entry before it is not written). */
 function variantOf(e: LogEntry): string {
@@ -115,6 +105,8 @@ export class Reader {
   readonly bondLines = new Set<string>();
   /** Bonds whose end a line already told (the ending of their story): the plain `end` of the same tie is not told again. */
   private readonly endedTies = new Set<string>();
+  /** The people of the crises announced to the player, by the number of the entry: the card that calls for a crisis names the person. */
+  private readonly crisisNames = new Map<number, string>();
   /** The last story node played, for a death caused by a node. */
   private node: { id: string; title: string; year: number } | undefined;
   private readonly L: Labels;
@@ -180,6 +172,7 @@ export class Reader {
         if (s(d.line)) this.bondLines.add(s(d.line));
       } else if (e.kind === 'line' && s(d.to)) this.bondLines.add(s(d.to));
       else if (e.kind === 'ending' && d.involved === true && e.id) this.endedTies.add(e.id);
+      if (e.kind === 'crisis' && s(d.name)) this.crisisNames.set(e.n, `${s(d.name)}${s(d.line) ? ` (${s(d.line)})` : ''}`);
     }
   }
 
@@ -261,7 +254,7 @@ export class Reader {
       if (t !== undefined) return t;
     }
     if (e.sys === 'attention') {
-      const t = attentionText(data, e);
+      const t = attentionText(data, e, (n) => this.crisisNames.get(n));
       if (t !== undefined) return t;
     }
 
@@ -346,7 +339,7 @@ export class Reader {
         const lv = Number(d.level);
         return `สาย${s(e.id)}ของ${this.name || 'ตัวละคร'}${lv ? `ขึ้นเป็นระดับ${BOND_LEVEL_TH[lv] ?? ''}` : 'เปลี่ยนไป'}`;
       }
-      if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
+      if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}${endingTail(data, d, this.name || 'ตัวละคร')}`;
       if (e.kind === 'template' || e.kind === 'skip') return null;
       // the window the story opens for the god and the job a node gave are for the log: the call of the game and the job line tell them
       // and a request the story makes of the LLM system (a role to write) is read by that system, not by the player

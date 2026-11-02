@@ -254,3 +254,14 @@ export function riteSentence(data: GameData, rite: RiteLite, key: string, logLab
     .join(' · ');
   return said ? `${label} — ${said}` : label;
 }
+
+/** A stable number from a text (FNV-1a with a final mix): picks among the variants of a line, never drawn from a seed stream. */
+export function hashText(text: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  h = Math.imul(h ^ (h >>> 15), 0x85ebca6b);
+  return (h ^ (h >>> 13)) >>> 0;
+}

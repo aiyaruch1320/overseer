@@ -54,7 +54,7 @@ export const TRAVEL_CAUSE_TH: Record<string, string> = {
 
 /** Why a trip was made (`why` of a trip), beyond the causes. */
 export const TRIP_WHY_TH: Record<string, string> = {
-  return: 'เดินทางกลับ', city: 'ไปทำงานในเมือง', forge: 'ไปหาช่างตีอาวุธ', visitor: 'ไปตามคำเชิญ', d6: 'ไปตามทางทหารรับจ้าง', ...TRAVEL_CAUSE_TH,
+  return: 'เดินทางกลับ', city: 'ไปทำงานในเมือง', forge: 'ไปหาช่างตีอาวุธ', visitor: 'ไปตามคำเชิญ', d6: 'ไปตามทางทหารรับจ้าง', pilgrimage: 'ไปแสวงบุญ', ...TRAVEL_CAUSE_TH,
 };
 
 /** The things met on the road (`note` of `travel/road`). */
@@ -109,3 +109,82 @@ export const TALISMAN_TH: Record<string, string> = { found: 'ถูกขุด�
 
 /** Why a person who was sick fell ill. */
 export const SICK_TH: Record<string, string> = { old: 'ด้วยวัย', plague: 'ด้วยโรคระบาด' };
+
+/** The ranks of a soldier (`RANKS` of the combat system) as the player reads them. */
+export const RANK_TH: Record<string, string> = { recruit: 'พลทหารใหม่', soldier: 'พลทหาร', corporal: 'สิบตรี', sergeant: 'จ่า', captain: 'หัวหน้ากอง' };
+
+/**
+ * The battle lines of a war, several wordings for each outcome so that a long war does not read the same line twenty times. The entry picks one by
+ * a hash of its content (never the seed streams). Slots: `{who}` `{role}` `{foe}` `{place}`.
+ */
+export const WAR_HELD_TH: string[] = [
+  '{who}ถือแนวในหน้าที่{role} สู้กับ{foe}{place} และยังยืนอยู่',
+  'ศึกกับ{foe}{place}: {who}ทำหน้าที่{role}ได้ครบ ฝ่ายเราไม่เสียแนว',
+  '{foe}โหมเข้ามาอีกระลอก {who}สู้ในฐานะ{role} จนข้าศึกต้องถอยหลัง',
+  '{who}ร่วมรบกับ{foe}{place} ในหน้าที่{role} ผ่านวันนั้นมาได้โดยไม่เสียแนว',
+  'วันนั้น{who}อยู่ในหน้าที่{role}{place} ต้านทัพ{foe}ไว้ได้',
+  '{who}ผ่านศึกกับ{foe}อีกครั้ง ในหน้าที่{role}{place}',
+  'ฝ่ายเรายันทัพ{foe}ไว้{place} {who}ในหน้าที่{role}ได้กลับมาพร้อมเพื่อนร่วมรบ',
+];
+export const WAR_WON_TH: string[] = [
+  '{who}นำชัยเหนือ{foe}{place} ในหน้าที่{role} ฝ่ายตรงข้ามแตกพ่าย',
+  'ศึกกับ{foe}{place}จบด้วยชัยชนะ {who}ทำหน้าที่{role}ได้โดดเด่น',
+  '{who}ในหน้าที่{role}ช่วยให้ฝ่ายเราชนะ{foe}อย่างเด็ดขาด{place}',
+  '{foe}ถูกตีแตก{place} {who}เป็นหนึ่งในผู้ที่พลิกศึกในหน้าที่{role}',
+  'ชัยชนะเหนือ{foe}{place} มีฝีมือของ{who}ในหน้าที่{role}อยู่ในนั้น',
+];
+export const WAR_FIRST_TH: string[] = [
+  '{who}เข้าร่วมสงคราม{war}{place} ในฐานะ{rank}ประจำหน้าที่{role}: ศึกแรกกับ{foe}{result}',
+  'ศึกแรกของ{who}ในสงคราม{war}{place}: {foe}อยู่ตรงหน้า {who}ในฐานะ{rank}ประจำหน้าที่{role}{result}',
+];
+export const WAR_FIRST_RESULT_TH = { held: ' ผ่านไปได้ ฝ่ายเรายังยืนอยู่', won: ' จบด้วยชัยชนะ' };
+export const WAR_LOST_TH: string[] = [
+  'ฝ่ายของ{who}ถูก{foe}ตีแตก{place} {who}ทำหน้าที่{role}ได้เท่านี้',
+  'ศึกกับ{foe}{place}พ่ายแพ้ แนวของ{who}ในหน้าที่{role}ถูกฝ่าเข้ามา',
+  '{who}ถอยร่นจาก{foe}{place} ทัพฝ่ายเราแตกกระเจิง',
+  '{foe}ตีฝ่ายของ{who}แตก{place} {who}ในหน้าที่{role}ต้องหนีเอาตัวรอด',
+];
+export const WAR_DEAD_TH: string[] = [
+  '{who}สิ้นชีวิตในศึกกับ{foe}{place}',
+  '{foe}พรากชีวิต{who}กลางศึก{place}',
+  '{who}ล้มลงในหน้าที่{role}{place} ศึกกับ{foe}จบชีวิตเขา',
+];
+/** A promotion in a war. Slots: `{who}` `{from}` `{to}` `{war}`. */
+export const WAR_RANK_TH: string[] = [
+  '{who}ได้เลื่อนยศจาก{from}เป็น{to}{war}',
+  'ผลงานในสนามรบทำให้{who}ได้เลื่อนเป็น{to} (จาก{from}){war}',
+  '{who}ขึ้นเป็น{to}แล้ว หลังรบมาหลายศึก{war}',
+];
+
+/** How a partner or a child went from the character (`reason` of `bonds/end`). Slots: `{name}` `{tag}` (what he was to the character) `{who}`. */
+export const END_PARTNER_TH: Record<string, string> = {
+  ตาย: '{name} {tag} จากไปแล้ว',
+  แยกทาง: '{who}กับ {name} แยกทางกัน ความสัมพันธ์ที่เคยเป็น{role}จบลงแล้ว',
+  ห่างหาย: '{name} {tag} ห่างหายไปจนไม่มีข่าวคราวถึง{who}อีก',
+  หายไป: '{name} {tag} หายไปโดยไม่มีใครรู้ว่าไปไหน',
+  หักหลัง: '{name} {tag} หักหลัง{who} ความสัมพันธ์จบลงด้วยความเจ็บปวด',
+};
+export const END_CHILD_TH: Record<string, string> = {
+  ตาย: '{name} {tag} จากไปแล้ว',
+  แยกทาง: '{name} {tag} แยกตัวออกไปและตัดขาดจาก{who}',
+  ห่างหาย: '{name} {tag} ห่างหายไปจนไม่มีข่าวคราวถึง{who}อีก',
+  หายไป: '{name} {tag} หายไปโดยไม่มีใครรู้ว่าไปไหน',
+  หักหลัง: '{name} {tag} หันมาทำร้าย{who} สายเลือดจึงขาดลง',
+};
+
+/** What a child has become when he reaches a stage (`stage` of `bonds/news` grow). */
+export const GROW_TH: Record<string, string> = {
+  child: 'เติบโตเป็นเด็กวัยเรียนแล้ว',
+  youth: 'โตเป็นหนุ่มสาวแล้ว',
+  adult: 'เป็นผู้ใหญ่เต็มตัวแล้ว',
+};
+
+/**
+ * What the hand of the god did to the answer to a crisis (`by` of `bonds/trouble`): the push matched the answer (`with`) or the answer went the other way (`against`).
+ * A whisper `ช่วย` and a dream push toward helping, a whisper that he lies pushes away from it.
+ */
+export const CRISIS_BY_TH: Record<string, { with: string; against: string }> = {
+  whisper: { with: ' ตามที่ท่านกระซิบ', against: ' แม้ท่านกระซิบให้ช่วย' },
+  dream: { with: ' หลังความฝันที่ท่านส่งถึงเขา', against: ' แม้ท่านส่งฝันถึงเขา' },
+  liar: { with: ' เพราะท่านกระซิบว่าเขาโกหก', against: ' แม้ท่านกระซิบว่าเขาโกหก' },
+};
