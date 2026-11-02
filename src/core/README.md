@@ -22,3 +22,4 @@
 - สุ่มด้วย `ctx.rng('<สาย>')` เท่านั้น ชื่อสายขึ้นต้นด้วยชื่อระบบ (`world` `life.story` `life.character` `npc` ...)
 - สถานะของระบบที่ยังไม่มีช่องใน `types.ts` เก็บใน `life.ext.<ระบบ>` หรือ `god.ext.<ระบบ>` และเสนอช่องในรายงาน
 - `src/core/systems.ts` (ผู้นำ) รวมทุกระบบตามลำดับ `SYSTEM_ORDER`
+- คำสั่งของพระเจ้าลงทะเบียนด้วย `onAction(action, { check, preview, run })` ใน `command/` (check และ preview ห้ามสุ่มหรือแก้สถานะ) จอเรียก `command(ctx, cmd)`
