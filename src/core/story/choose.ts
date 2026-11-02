@@ -3,7 +3,7 @@
 import type { Ctx } from '../game';
 import { test } from '../rules';
 import type { Choice, Condition, Effect, NodeId } from '../types';
-import { DIRECTOR_CAP, DIRECTOR_TIE } from './tuning';
+import { DIRECTOR_CAP, DIRECTOR_TIE, PLACE_SHUT } from './tuning';
 import type { Key, StoryExt } from './state';
 
 export interface Refs {
@@ -79,6 +79,38 @@ export function ties(c: Choice, met: ReadonlySet<string>): boolean {
   return false;
 }
 
+/**
+ * The places a way names with the effect `place`, looking inside the wrappers (only the ids of a country, `AL-01`: the other ids of that effect are
+ * kinds of place, not a country to go to).
+ */
+export function placesOf(list: readonly Effect[] | undefined, out: Set<string> = new Set()): Set<string> {
+  for (const e of list ?? []) {
+    if (e.k === 'place') {
+      for (const id of e.ids) if (/^[A-Z]{2}-\d{2}$/.test(id)) out.add(id);
+    } else if (e.k === 'if' || e.k === 'only' || e.k === 'chance') placesOf(e.then, out);
+    else if (e.k === 'pick') for (const b of e.of) placesOf(b.effects, out);
+    else if (e.k === 'outcome') placesOf(e.effects, out);
+  }
+  return out;
+}
+
+/**
+ * The travel system sets this gate when it is loaded: can the character get to that country by a normal way now (travel `canGo`)? Without it
+ * every place is open and a way that names one is weighed as written.
+ */
+let placeGate: ((ctx: Ctx, to: string) => boolean) | null = null;
+export function setPlaceGate(fn: ((ctx: Ctx, to: string) => boolean) | null): void {
+  placeGate = fn;
+}
+
+/** A way that moves the character to a country the filters of travel shut does not happen as often (the move would be refused, travel `followStory`). */
+function shut(ctx: Ctx, c: Choice): boolean {
+  if (!placeGate) return false;
+  const life = ctx.state.life;
+  for (const to of placesOf(c.effects)) if (life && to !== life.country && !placeGate(ctx, to)) return true;
+  return false;
+}
+
 export interface Pull {
   /** `choiceMod` of the node: a choice of this very node. */
   choice: { choice: Key; cond?: Condition; mul: number }[];
@@ -112,6 +144,7 @@ export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: Stor
     for (const m of pull.entry) if (m.choice === c.key && test(ctx, m.cond)) w *= m.mul;
     for (const m of pull.label) if (c.label.includes(m.label)) w *= m.mul;
     if (director && tie[i]) w *= Math.min(DIRECTOR_CAP, DIRECTOR_TIE);
+    if (shut(ctx, c)) w *= PLACE_SHUT;
     return w;
   });
   return { weights, ties: tie };

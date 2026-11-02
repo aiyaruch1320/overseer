@@ -5,7 +5,7 @@
 // Registered when this module is imported; tests that call resetRules() register again with registerBondsRules().
 import type { Ctx } from '../game';
 import { write } from '../log';
-import { onCond, onStat, apply, type EffectSource } from '../rules';
+import { onCond, onEffect, onStat, apply, type EffectSource } from '../rules';
 import { onNode } from '../story';
 import type { LifeState, StoryNode } from '../types';
 import { bondsIndex, floorB, lineName } from './data';
@@ -18,7 +18,6 @@ import { hasRoom, meet } from './sources';
 import { extOf, isLive, levelOf, reindex, tiesOf, closeTies, type BondsExt, type Tie } from './state';
 import { JOURNEY_LINES, WORK_LINES } from './tuning';
 import { caps } from './year';
-import { stubHooks } from '../story/stubs';
 
 const life = (ctx: Ctx): LifeState | null => {
   const l = ctx.state.life;
@@ -163,7 +162,7 @@ export function registerBondsRules(): void {
 
   // ---------- effects ----------
   /** `{สหาย:คิดถึง@2}`: the character shows the mood toward the tie the node is about, or toward the best tie of the line. */
-  stubHooks.mood = (ctx, e, src) => {
+  onEffect('mood', (ctx, e, src) => {
     const l = life(ctx);
     if (!l) return;
     const b = extOf(l);
@@ -180,10 +179,10 @@ export function registerBondsRules(): void {
       return;
     }
     showMood(ctx, l, t, e.mood, src.id ?? src.sys);
-  };
+  });
 
   /** `FT-03` `KN-02` `PR-01` (`FT-01 ถึง FT-05`): a story, or a pair of items, for the tie the node is about. */
-  stubHooks.template = (ctx, e, src) => {
+  onEffect('template', (ctx, e, src) => {
     const l = life(ctx);
     if (!l) return;
     const b = extOf(l);
@@ -224,10 +223,10 @@ export function registerBondsRules(): void {
     const pick = e.to ? pool[rng.int(0, pool.length - 1)] : pool[0];
     t.arc = undefined;
     startArc(ctx, l, t, pick);
-  };
+  });
 
   /** `สายสหายระดับ 2` `เปิดสายคู่หู` and the prayers `lover` `child`: a tie of the line opens, or the tie the node is about changes line or rises. */
-  stubHooks.bond = (ctx, e, src) => {
+  onEffect('bond', (ctx, e, src) => {
     const l = life(ctx);
     if (!l) return;
     const b = extOf(l);
@@ -259,7 +258,7 @@ export function registerBondsRules(): void {
     b.focus = t.id;
     startArc(ctx, l, t);
     caps(ctx, l, b);
-  };
+  });
 
   // ---------- stats ----------
   /** `B ±n`: the bond with the tie the node is about. */

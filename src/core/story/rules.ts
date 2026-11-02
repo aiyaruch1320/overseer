@@ -1,16 +1,14 @@
 // The condition kinds, effect kinds and stats the story system owns (src/core/README.md "กติกาของระบบ").
 // Registered when this module is imported; tests that call resetRules() register again with registerStoryRules().
 //   condition: node
-//   effects:   converge jump battle · nodeWeight choiceMod entryMod variant battleFor outcome ending replaces ref jobpath check llm level qty place
+//   effects:   converge jump · nodeWeight choiceMod entryMod variant outcome ending replaces ref jobpath check llm level qty place
 //   stat:      convergence.passed
 import { write } from '../log';
 import { apply, onCond, onEffect, onStat, test } from '../rules';
 import type { Ctx } from '../game';
-import { battleStub } from './battle-stub';
 import { indexOf } from './data';
 import { addOnce, extOf, lifeOf } from './state';
 import { jumpTo, normalize, queueCv } from './walk';
-import { registerStubRules } from './stubs';
 import type { NodeId } from '../types';
 
 const trace = (ctx: Ctx, kind: string, id: string | undefined, data: Record<string, string | number | boolean | null> = {}, level: 0 | 1 = 0) =>
@@ -36,11 +34,7 @@ export function registerStoryRules(): void {
     jumpTo(ctx, src.id, e.to, e.years, forced);
     trace(ctx, 'jump', e.to, { from: src.id ?? null, years: e.years ?? 0 });
   });
-  onEffect('battle', (ctx, e, src) => void battleStub(ctx, e.enemies, src, e.text));
-  onEffect('battleFor', (ctx, e, src) => {
-    const cur = lifeOf(ctx) && extOf(lifeOf(ctx)!).cur;
-    if (cur && cur.choice !== '-' && e.choices.includes(cur.choice)) battleStub(ctx, e.enemies, src, e.role);
-  });
+  // `battle` and `battleFor` belong to the combat system; `mood` `template` `bond` to the bonds system (each registers its own on import)
 
   // ---------- weights that act on a later or the same choice ----------
   onEffect('nodeWeight', (ctx, e, src) => {
@@ -103,8 +97,6 @@ export function registerStoryRules(): void {
     const life = lifeOf(ctx);
     if (life) for (const id of e.ids) addOnce(extOf(life).places, id);
   });
-
-  registerStubRules();
 }
 
 registerStoryRules();

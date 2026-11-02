@@ -6,7 +6,6 @@ import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply, onStat } from '../rules';
 import { onNode, openLine } from '../story';
-import { EXTERNAL_LINES } from '../story/tuning';
 import { grantHeldHelp } from './help';
 import { enter, flee, leave, free, sell, buy, ransomPrice } from './engine';
 import { bondageIndex, extOf, lifeOf, stanceOf, type BondageExt } from './state';
@@ -108,7 +107,6 @@ let remove: (() => void) | undefined;
 export function registerBondageRules(): void {
   // the condition `stance` (`ประเทศท่าที D L M`) is read by the world system from its own table (world/conds.ts); the same table as bondage.json byCountry
   onStat('bondage.level', { read: (ctx) => (lifeOf(ctx) ? extOf(lifeOf(ctx)!).level : 0) });
-  for (const l of ['bd', 'bo', 'ab']) (EXTERNAL_LINES as Set<string>).add(l);
   remove?.();
   remove = onNode(hooks);
 }

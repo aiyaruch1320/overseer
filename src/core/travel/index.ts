@@ -3,7 +3,7 @@
 // story that name a place. State lives in `life.ext.travel`. Importing this file registers its numbers (rules.ts).
 import type { System } from '../game';
 import { write } from '../log';
-import { onNode } from '../story';
+import { onNode, setPlaceGate } from '../story';
 import type { Effect, LifeState } from '../types';
 import { rollCauses, disasters } from './causes';
 import { cityYear, openJobLines, jobYear } from './jobs';
@@ -71,6 +71,8 @@ export function followStory(ctx: Ctx, node: { id: string; choices: { key: string
   }
   return false;
 }
+
+setPlaceGate(canGo);
 
 let hooked = false;
 function hookStory(): void {
