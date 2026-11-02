@@ -5,8 +5,9 @@ import type { System } from './game';
 import { npcSystem } from './npc';
 import { storySystem } from './story';
 import { textSystem } from './text';
+import { worldSystem } from './world';
 
-const list: System[] = [characterSystem, npcSystem, storySystem, textSystem];
+const list: System[] = [worldSystem, characterSystem, npcSystem, storySystem, textSystem];
 
 export function allSystems(): System[] {
   return [...list];
