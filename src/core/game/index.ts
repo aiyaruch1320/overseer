@@ -114,3 +114,10 @@ export class Game {
     for (let i = 0; i < max && this.state.life && !this.state.life.dead; i++) this.beat();
   }
 }
+
+/** The `items` of one generated file, typed by the caller (`src/core/data/types-<group>.ts`). Throws when the file was not loaded. */
+export function dataOf<T>(ctx: Ctx, name: string): T {
+  const f = ctx.data[name];
+  if (!f) throw new Error(`data/gen/${name}.json is not loaded`);
+  return f.items as T;
+}

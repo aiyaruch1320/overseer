@@ -13,3 +13,12 @@
 | `data/` | ตัวโหลดข้อมูลใน `data/gen/` และชนิดของแต่ละกลุ่ม (`types-<กลุ่ม>.ts` เจ้าของคือผู้สร้างข้อมูลของกลุ่มนั้น) |
 
 ระบบอื่น (world story character ...) เพิ่มเป็นโฟลเดอร์ตามหัวข้อ 7
+
+## กติกาของระบบ (M1 ขึ้นไป)
+
+- แต่ละระบบเป็นโฟลเดอร์ `src/core/<ระบบ>/` ที่ `index.ts` export `const <ระบบ>System: System` (ตะขอ init worldStep birth beat lifeYear death ใน `game/`)
+- เงื่อนไขและผลของไวยากรณ์ประเมินผ่าน `rules/` (`test` `apply`) แต่ละระบบลงทะเบียนชนิดของโดเมนตัวเองด้วย `onCond` `onEffect` ตอน import (ชนิดที่ไม่มีใครลงทะเบียนขึ้นบันทึก `rules unhandled`)
+- อ่านข้อมูลด้วย `dataOf<T>(ctx, 'storylines')` ชนิดอยู่ใน `data/types-<กลุ่ม>.ts`
+- สุ่มด้วย `ctx.rng('<สาย>')` เท่านั้น ชื่อสายขึ้นต้นด้วยชื่อระบบ (`world` `life.story` `life.character` `npc` ...)
+- สถานะของระบบที่ยังไม่มีช่องใน `types.ts` เก็บใน `life.ext.<ระบบ>` หรือ `god.ext.<ระบบ>` และเสนอช่องในรายงาน
+- `src/core/systems.ts` (ผู้นำ) รวมทุกระบบตามลำดับ `SYSTEM_ORDER`
