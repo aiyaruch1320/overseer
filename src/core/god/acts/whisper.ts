@@ -10,7 +10,7 @@ import { clamp, continentOf, countryName, godOf, hasCountry } from './geo';
 import { aliveNpc, nameOf, slotOf } from './npcs';
 import { addBelief } from '../belief';
 import { pay, priceOf, whyNot } from '../power';
-import { inWindow } from '../state';
+import { gx, inWindow, touch } from '../state';
 import { actsOf, livingOf, viewActs, type ActiveWhisper } from './state';
 import { WHISPER } from './tuning';
 
@@ -54,7 +54,7 @@ export function obeyChance(ctx: Ctx, hint: string): { p: number; level: 'เต�
   if (l.skills.includes('u_oracle')) p += WHISPER.oracle;
   if (l.blessings.includes('nb_god_whisper')) p += WHISPER.godWhisper;
   if (a.whisper.sent[hint] !== undefined && l.hAge - a.whisper.sent[hint] <= WHISPER.repeatYears) p += WHISPER.repeat;
-  const punished = Math.max(a.punishedAt ?? -99, typeof ctx.state.god.ext.punishedAt === 'number' ? ctx.state.god.ext.punishedAt : -99);
+  const punished = gx(ctx).punishedAge ?? -99;
   if (l.hAge - punished <= WHISPER.punishedYears) p += WHISPER.punished;
   p = clamp(p, WHISPER.clamp[0], WHISPER.clamp[1]);
   return { p, level: p >= WHISPER.willing ? 'เต็มใจ' : p >= WHISPER.hesitant ? 'ลังเล' : 'ขัดขืน' };
@@ -92,6 +92,7 @@ export function runWhisper(ctx: Ctx, args: Record<string, unknown>): void {
   const target = args.target === undefined ? undefined : String(args.target);
   const price = priceOf(ctx, 'whisper', { hint })!;
   pay(ctx, price, `whisper:${hint}`);
+  touch(ctx);
   yearOf(ctx).used.push(hint);
   a.whisper.sent[hint] = l.hAge;
   const o = obeyChance(ctx, hint);

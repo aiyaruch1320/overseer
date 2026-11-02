@@ -282,7 +282,7 @@ export function attentionText(data: GameData, e: LogEntry): string | null | unde
   const d = e.data;
   const reason = callReason(data, e);
   if (d.call === 'stop') return `เกมหยุดรอท่าน: ${reason}`;
-  const until = typeof d.until === 'number' ? ` · ตอบได้จนอายุ ${Math.floor(d.until)}` : '';
+  const until = typeof d.until === 'number' ? ` · ${d.why === 'prayer' ? 'ตอบได้' : 'รอท่านอยู่'}จนอายุ ${Math.floor(d.until)}` : '';
   return `${reason}${until}`;
 }
 

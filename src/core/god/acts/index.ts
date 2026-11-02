@@ -53,7 +53,6 @@ export const godActsSystem: System = {
     ctx.state.god.prayers = [];
     a.recent = {};
     a.whisper = { age: -1, used: [], sent: {}, active: [] };
-    a.punishedAt = undefined;
   },
   beat(ctx) {
     expire(ctx);

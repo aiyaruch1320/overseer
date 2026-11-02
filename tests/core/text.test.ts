@@ -420,3 +420,56 @@ describe('text: what the player is told and not told', () => {
     for (const t of ls) expect(leaks(t), t).toEqual([]);
   });
 });
+
+describe('text: the hand of the god and the calls of the game', () => {
+  const g = (kind: string, over: Partial<LogEntry> = {}): LogEntry => e({ sys: 'god', kind, level: 2, age: 20, ...over });
+  const att = (over: Partial<LogEntry['data']>, id?: string): LogEntry => e({ sys: 'attention', kind: 'call', level: 3, age: 15, ...(id ? { id } : {}), data: { call: 'stop', why: 'age', age: 15, n: '', ids: '', cards: '', until: null, sec: 0, ...over } });
+
+  it('says every entry of the god system in Thai, with no code, and keeps the sums for the panel', () => {
+    const cases: [LogEntry, RegExp][] = [
+      [g('chest', { id: 'open', level: 1, data: { window: true, slots: 6, ids: '' } }), /^หีบประทานเปิดขึ้น มี 6 ใบ.*ราคาลดลง$/],
+      [g('chest', { id: 'reroll', level: 1, data: { n: 2, lock: 0, ids: '' } }), /^ทอยหีบใหม่ครั้งที่ 2$/],
+      [g('chest', { id: 'skip', level: 1 }), /^พับหีบเก็บ/],
+      [g('chest', { id: 'pick', data: { slot: 1, thing: 'nb_craft_eye', kind: 'bless', tier: 'U', paid: 8, warded: false } }), /^ประทานพร .+ ระดับไม่ธรรมดาแก่/],
+      [g('dream', { id: 'hu.a1', data: { choice: 'a', source: 'S1', symbol: 'งู', level: 'ลังเล', paid: 7 } }), /^ส่งฝันถึง.*ภาพงู ใจของเขาดูลังเล$/],
+      [g('dream', { id: 'hu.a1', data: { outcome: 'obey', level: 'ลังเล', p: 0.5, source: 'S1', choice: 'a', symbol: 'งู' } }), /ทำตามความฝันของท่าน/],
+      [g('dream', { id: 'hu.a1', data: { outcome: 'defy' } }), /ขัดขืนความฝัน/],
+      [g('dream', { id: 'hu.a1', level: 1, data: { outcome: 'fade' } }), /เลือนหาย/],
+      [g('burden', { id: 'question', data: { age: 20 } }), /ภาระใจเต็ม.*ตั้งคำถามกับพระเจ้า/],
+      [g('burden', { id: 'flight', data: { age: 20 } }), /ทิ้งงานหรือบ้าน/],
+      [g('prayer', { id: 'heal', data: { n: 3, kind: 'heal', name: 'ขอหายเจ็บ', cost: 6, expires: 14 } }), /^คำอธิษฐานใบที่ 3: ขอหายเจ็บ/],
+      [g('prayer', { id: 'kin_sick', data: { n: 4, kind: 'kin_sick', name: 'ขอให้คนสำคัญหายป่วย', npc: 'AL01-1', npcName: 'ไอรัสวาร์' } }), /ผู้ขอคือ ไอรัสวาร์/],
+      [g('prayer.give', { id: 'wealth', data: { n: 3, name: 'ขอพ้นความจน', price: 10, fx: 'gold+50' } }), /ท่านให้ตามคำอธิษฐานใบที่ 3 \(ขอพ้นความจน\)/],
+      [g('prayer.deny', { id: 'wealth', level: 1, data: { n: 3, name: 'ขอพ้นความจน' } }), /^ท่านปฏิเสธคำอธิษฐานใบที่ 3/],
+      [g('prayer.punish', { id: 'wealth', data: { n: 3, name: 'ขอพ้นความจน', dread: 6, fx: 'gold-10 curse:c_poverty' } }), /ท่านลงโทษผู้ขอ.*เสียทอง 10.*ติดคำสาป/],
+      [g('prayer.silent', { id: 'wealth', level: 1, data: { n: 3, name: 'ขอพ้นความจน' } }), /ท่านนิ่งเฉย/],
+      [g('prayer.lapse', { id: 'wealth', level: 1, data: { n: 3, kind: 'wealth', name: 'ขอพ้นความจน' } }), /หมดเวลา ไม่มีใครตอบ/],
+      [g('whisper', { id: 'ระวัง', level: 1, data: { hint: 'ระวัง', price: 5, level: 'ลังเล', obeyed: true } }), /^ท่านกระซิบ “ระวัง” — เขาได้ยินและทำตาม$/],
+      [g('miracle.omen', { id: 'MR-21', data: { n: 1, name: 'ปาฏิหาริย์แห่งพระเจ้า', quarters: 1 } }), /^ลางของปาฏิหาริย์แห่งพระเจ้า.*อีก 1 ฤดู/],
+      [g('miracle', { id: 'MR-23', data: { name: 'ปลอบมังกร', target: 'dragon:3', result: 'อารมณ์ 40 → 50', tier: 'มังกร', where: 'ฮรอด-กาธ' } }), /^ปาฏิหาริย์ ปลอบมังกร ที่ฮรอด-กาธ: อารมณ์ 40 → 50$/],
+      [g('miracle', { id: 'MR-04', level: 1, data: { name: 'แสงศักดิ์สิทธิ์', target: 'AL-01', result: 'แสงตกกลางเมือง', tier: 'เล็ก' } }), /^ปาฏิหาริย์ แสงศักดิ์สิทธิ์ ที่\S+: แสงตกกลางเมือง$/],
+    ];
+    for (const [entry, re] of cases) {
+      const t = say(data, entry);
+      expect(t, JSON.stringify(entry)).not.toBeNull();
+      expect(t!, entry.kind).toMatch(re);
+      expect(leaks(t!), t!).toEqual([]);
+    }
+    for (const kind of ['income', 'pay', 'gain', 'belief']) expect(say(data, g(kind, { level: 0, data: { faith: 1 } }), { raw: true })).toBeNull();
+    // every kind above is told: none of them is left for the developer's list
+    expect(unphrased(data, cases.map(([x]) => x))).toEqual({});
+  });
+
+  it('tells why the game called the player, in words', () => {
+    expect(say(data, att({ why: 'age', age: 15 }))).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 15');
+    expect(say(data, att({ why: 'prayer', call: 'card', until: 19.4 }, 'heal'))).toBe('มีคำอธิษฐานใหม่: ขอหายเจ็บ · ตอบได้จนอายุ 19');
+    expect(say(data, att({ why: 'age', age: 30, cards: 'prayer,omen' }))).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 30 · มีเรื่องรออยู่ด้วย: คำอธิษฐาน · ลาง');
+    expect(say(data, att({ why: 'window', age: null }, 'hu.b1'))).toMatch(/^เกมหยุดรอท่าน: ถึงทางแยกที่พระเจ้าแทรกได้: \S+/);
+    expect(say(data, att({ why: 'nearDeath' }))).toContain('ฉากสุดท้าย');
+    expect(say(data, att({ why: 'battle', call: 'card', until: 26 }))).toBe('ศึกกำลังจะมาถึง · รอท่านอยู่จนอายุ 26');
+    expect(say(data, att({ why: 'crisis', call: 'card', until: 26 }))).toContain('วิกฤต');
+    // a glow and a missed card are for the log, not for the player
+    expect(say(data, e({ sys: 'attention', kind: 'glow', level: 1, data: { why: 'gap' } }), { raw: true })).toBeNull();
+    expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toBeNull();
+  });
+});

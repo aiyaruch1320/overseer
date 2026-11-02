@@ -279,7 +279,8 @@ describe('answering a prayer', () => {
     expect(st.life!.gold).toBe(90);
     expect(st.life!.curses).toContain('c_poverty');
     expect(st.life!.flags).toContain('god_wronged');
-    expect(actsOf(st).punishedAt).toBe(30);
+    expect(gx(ctx).punishedAge).toBe(30);
+    expect(gx(ctx).answered).toBe(0); // a punishment is no grant
   });
 
   it('deny: free, belief −3 (−1 for the devout)', () => {

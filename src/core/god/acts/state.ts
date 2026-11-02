@@ -90,8 +90,6 @@ export interface ActsExt {
   /** World year of the last prayer the god answered (given, refused or punished) and the world years prayers lapsed. */
   lastAnswer: number;
   lapsed: number[];
-  /** hAge at which the god last punished someone (clarity, 03-dreams.md §3). */
-  punishedAt?: number;
   /** Counters of the life the cap is counted for; a new life starts them again. */
   life: { key: string; mid: number; big: number; ruin: number; grand: number };
   whisper: { age: number; used: string[]; sent: Record<string, number>; active: ActiveWhisper[] };

@@ -12,7 +12,8 @@ import { chronicle, say } from './record';
 import { dangerous, godOf, hasFlag, stageOf } from './geo';
 import { nameOf, nemeses, sickInCircle } from './npcs';
 import { addBelief } from '../belief';
-import { canPay, earn, pay, scaleCost, whyNot } from '../power';
+import { canPay, earn, noteAnswered, notePunished, pay, scaleCost, whyNot } from '../power';
+import { touch } from '../state';
 import { actsOf, livingOf, tickOf, viewActs, yearOf, type PrayerCard } from './state';
 
 type Kind = ReturnType<typeof godOf>['prayers']['kinds'][number];
@@ -210,6 +211,7 @@ export function previewAnswer(ctx: Ctx, args: Record<string, unknown>): Record<s
 }
 
 function settle(ctx: Ctx, card: PrayerCard): void {
+  touch(ctx); // an answer is a deed of the god: the feelings of the character do not fade this year
   const cards = cardsOf(ctx);
   cards.splice(cards.indexOf(card), 1);
   actsOf(ctx.state).lastAnswer = yearOf(ctx);
@@ -245,6 +247,7 @@ export function runAnswer(ctx: Ctx, args: Record<string, unknown>): void {
       if (!life.flags.includes('god_gift_event')) life.flags.push('god_gift_event'); // the small event that follows (03-dreams.md §7)
     }
     earn(ctx, { faith: g.income.prayerGrant }, 'prayer.give');
+    noteAnswered(ctx); // counts toward the end of GD-05 (01-power.md §1)
     settle(ctx, card);
     say(ctx, { kind: 'prayer.give', id: card.kind, data: { n: card.n, name, price, fx: notes.join(' '), ...(gift ? { gift } : {}), ...(card.npc ? { npc: card.npc } : {}) }, level: 2 });
     chronicle(ctx, { kind: ans === 'give' ? 'prayer.give' : 'prayer.strange', id: card.kind, target: card.npc, result: gift ?? notes.join(' ') });
@@ -261,7 +264,7 @@ export function runAnswer(ctx: Ctx, args: Record<string, unknown>): void {
   earn(ctx, { dread: kind.punishGain }, 'prayer.punish');
   const notes = applyFx(ctx, kind.punishFx, who);
   addBelief(ctx, g.belief.prayer.punish, 'prayer.punish');
-  actsOf(ctx.state).punishedAt = life.hAge;
+  notePunished(ctx); // dreams and whispers are heard less for five years
   if (!life.flags.includes('god_wronged')) life.flags.push('god_wronged'); // counted as one the god wronged (the path of the god-slayer)
   settle(ctx, card);
   say(ctx, { kind: 'prayer.punish', id: card.kind, data: { n: card.n, name, dread: kind.punishGain, fx: notes.join(' ') }, level: 2 });
