@@ -151,7 +151,7 @@ export function scanWindow(ctx: Ctx): void {
   const same = prev && prev.age === life.hAge ? prev : null;
   e.window = { age: life.hAge, nodes: [...(same?.nodes ?? []), ...nodes], stop, played: (same?.played ?? 0) + played };
   // the acts files read the window as a plain flag in `god.ext`
-  ctx.state.god.ext.window = stop || e.window.nodes.length > 0;
+  ctx.state.god.ext.window = stop || (e.window?.nodes.length ?? 0) > 0;
 }
 
 /** Marks that the god did something this life year, so the feelings of the character do not fade (01-power.md §3). */

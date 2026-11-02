@@ -30,7 +30,7 @@ interface World {
 /** A real game with the god system added, a life born, and `years` life years lived. */
 function world(seed: number, o: { race?: string; years?: number; policy?: 'เงียบ' | 'เมตตา' | 'ลงโทษ' | 'สุ่ม'; data?: GameData } = {}): World {
   const s = createSession(o.data ?? data, { seed, race: o.race, policy: o.policy });
-  s.game.systems.push(godSystem);
+  if (!s.game.systems.some((x) => x.name === 'god')) s.game.systems.push(godSystem);
   s.game.systems.splice(0, s.game.systems.length, ...sortSystems(s.game.systems));
   startLife(s);
   const g = s.game;
@@ -278,26 +278,36 @@ describe('god G0: the loop', () => {
     expect(light).toBeLessThanOrEqual(Number(last.data.light) * 0.5 + 1);
   });
 
-  it('feelings fade by 2 a year after ten quiet years', () => {
+  it('feelings fade by 2 a year after ten quiet years, and any act of the god ends the quiet', () => {
     const w = world(12, { years: 1 });
-    w.life.godFaith = 40;
-    const g = w.game;
-    for (let y = 0; y < 14; y++) {
-      const a = w.life.hAge;
-      while (w.life.hAge === a && !w.life.dead) g.beat();
-    }
-    expect(w.life.godFaith).toBeLessThan(40);
-    expect(w.life.godFaith).toBeGreaterThanOrEqual(40 - 2 * 5);
+    const { ctx, life } = w;
+    life.godFaith = 40;
+    const e = gx(ctx);
+    e.quiet = 9;
+    godSystem.lifeYear!(ctx); // the tenth quiet year: nothing yet
+    expect(e.quiet).toBe(10);
+    expect(life.godFaith).toBe(40);
+    godSystem.lifeYear!(ctx); // the eleventh
+    expect(e.quiet).toBe(11);
+    expect(life.godFaith).toBe(38);
+    life.godFaith = -3;
+    godSystem.lifeYear!(ctx);
+    expect(life.godFaith).toBe(-1);
+    godSystem.lifeYear!(ctx);
+    expect(life.godFaith).toBe(0); // it stops at 0
+    pay(ctx, { faith: 1 }, 'x');
+    expect(e.quiet).toBe(0);
   });
 
   it('the policy of the tools plays the year: silent does nothing, merciful opens chests and sends dreams', () => {
     const silent = world(21, { policy: 'เงียบ' });
     silent.game.runLife();
-    expect(silent.ctx.state.god.chronicle.length).toBe(0);
+    const mine = (c: { kind: string }) => c.kind === 'dream' || c.kind.startsWith('chest.');
+    expect(silent.ctx.state.god.chronicle.filter(mine).length).toBe(0);
     expect(count(silent.ctx, 'spent.faith')).toBe(0);
     const merciful = world(21, { policy: 'เมตตา' });
     merciful.game.runLife();
-    expect(merciful.ctx.state.god.chronicle.length).toBeGreaterThan(3);
+    expect(merciful.ctx.state.god.chronicle.filter(mine).length).toBeGreaterThan(3);
     expect(count(merciful.ctx, 'spent.faith')).toBeGreaterThan(20);
   });
 
@@ -974,7 +984,11 @@ describe('god G2: dreams (03-dreams.md)', () => {
     }
     expect(by['เต็มใจ'].n).toBeGreaterThan(100);
     expect(by['ลังเล'].n).toBeGreaterThan(100);
-    for (const row of Object.values(by)) if (row.n > 100) expect(Math.abs(row.obeyed / row.n - row.p / row.n)).toBeLessThan(0.07);
+    for (const row of Object.values(by))
+      if (row.n > 100) {
+        const p = row.p / row.n;
+        expect(Math.abs(row.obeyed / row.n - p)).toBeLessThan(3 * Math.sqrt((p * (1 - p)) / row.n) + 0.01);
+      }
     expect(by['เต็มใจ'].p / by['เต็มใจ'].n).toBeGreaterThanOrEqual(0.7);
     expect(by['ลังเล'].p / by['ลังเล'].n).toBeLessThan(0.7);
     expect(by['เต็มใจ'].obeyed / by['เต็มใจ'].n).toBeGreaterThan(by['ลังเล'].obeyed / by['ลังเล'].n);

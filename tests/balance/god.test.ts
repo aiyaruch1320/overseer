@@ -108,7 +108,7 @@ beforeAll(() => {
 
 function playLife(seed: number, policy: PolicyName): Row {
   const s = createSession(data, { seed });
-  s.game.systems.push(godSystem);
+  if (!s.game.systems.some((x) => x.name === 'god')) s.game.systems.push(godSystem);
   s.game.systems.splice(0, s.game.systems.length, ...sortSystems(s.game.systems));
   s.game.state.god.ext.policy = TH[policy];
   startLife(s);
