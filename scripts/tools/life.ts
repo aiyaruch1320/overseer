@@ -32,6 +32,6 @@ const base = {
 const run = lives > 1 ? runLineageReport(data, { ...base, lives, strict: args.strict === 'true' }) : runLifeReport(data, base);
 process.stdout.write(run.text);
 if (tl) {
-  process.stdout.write((await summaryReport(tl, data, run.state, run.beats)).join('\n') + '\n');
+  process.stdout.write((await summaryReport(tl, data, run.state, 'beats' in run ? run.beats : 0)).join('\n') + '\n');
   tl.flush();
 }
