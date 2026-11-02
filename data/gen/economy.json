@@ -1,0 +1,7569 @@
+{
+ "version": "f7c4baebf7f1",
+ "sources": [
+  "docs/systems/economy/01-world-economy.md",
+  "docs/systems/economy/02-countries.md",
+  "docs/systems/economy/03-classes.md",
+  "docs/systems/economy/04-income-and-living.md",
+  "docs/systems/economy/05-trade.md",
+  "docs/systems/economy/06-investment.md",
+  "docs/systems/economy/07-economic-history.md",
+  "docs/systems/economy/08-implementation.md",
+  "docs/systems/economy/README.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/economy.ts",
+ "items": {
+  "counts": {
+   "goods": 9,
+   "routes": 9,
+   "worldEvents": 75,
+   "classes": 5,
+   "classByWG": 20,
+   "startItems": 25,
+   "regimes": 8,
+   "channels": 9,
+   "steps": 8,
+   "tables": 70
+  },
+  "trust": {
+   "start": {
+    "before": 60,
+    "after": 80
+   },
+   "recoverPerYear": 2,
+   "bands": [
+    {
+     "min": 70,
+     "max": null,
+     "effect": "ปกติ ประเทศ M ผสมยอมรับทองในตลาดเมือง",
+     "priceMul": 1,
+     "src": "docs/systems/economy/01-world-economy.md:19"
+    },
+    {
+     "min": 40,
+     "max": 69,
+     "effect": "ราคาในทองสูงขึ้น 10% ประเทศ W 1 ถึง 2 ที่ M ผสม ลดเป็น M น้อย",
+     "priceMul": 1.1,
+     "src": "docs/systems/economy/01-world-economy.md:20"
+    },
+    {
+     "min": null,
+     "max": 40,
+     "effect": "ประเทศ W 3 ลงไปทุกประเทศ M ลดหนึ่งระดับ (เต็ม → ผสม → น้อย) ราคาในทองสูงขึ้น 25% การแลกของและบัญชีสัญญากลับมา",
+     "priceMul": 1.25,
+     "src": "docs/systems/economy/01-world-economy.md:21"
+    },
+    {
+     "min": null,
+     "max": 15,
+     "effect": "ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก",
+     "priceMul": 1,
+     "src": "docs/systems/economy/01-world-economy.md:22"
+    }
+   ],
+   "moneyForms": [
+    {
+     "form": "ส่วยและบรรณาการ",
+     "countries": [
+      "AZ-01",
+      "AZ-05",
+      "KD-07",
+      "SH-02"
+     ],
+     "rule": "รายได้เป็นของและอาหารที่ผู้ปรนนิบัติหรือราชวงศ์ส่งต่อ ทองใช้ซื้อของนอกถิ่นเท่านั้น"
+    },
+    {
+     "form": "น้ำเป็นเงิน",
+     "countries": [
+      "SH-05"
+     ],
+     "rule": "นายธนาคารน้ำ (SH05-2 คามาล) ให้กู้เป็นน้ำและทวงหนี้ด้วยการปิดท่อ หนี้น้ำคิดเป็นทองได้ตามราคาน้ำ"
+    },
+    {
+     "form": "น้ำมันโคมเป็นเงิน",
+     "countries": [
+      "NB-03",
+      "NB-14"
+     ],
+     "rule": "โคมน้ำมันเป็นหน่วยแลก หลัง FG-13 (น้ำมันโคมหมด) ราคา ×5"
+    },
+    {
+     "form": "บัญชีสัญญา",
+     "countries": [
+      "MH-02"
+     ],
+     "rule": "หนี้เลือดคือเงิน ขุนนางถือสัญญาแทนทองเสมอ (ชุด ct ใน [../../lore/storylines/22-halfblood.md](../../lore/storylines/22-halfblood.md))"
+    },
+    {
+     "form": "ข้าวเป็นมาตรฐาน",
+     "countries": [
+      "AL-17",
+      "NR-09",
+      "MH-06"
+     ],
+     "rule": "ราคาข้าว (ข้าวสาลี ข้าวเถ้า) เป็นตัวชี้ราคาอื่นในถิ่น"
+    },
+    {
+     "form": "ของแลกของ",
+     "countries": [
+      "SH-12",
+      "SH-10",
+      "MH-12",
+      "SV-13"
+     ],
+     "rule": "ทองมีค่าเมื่อพบพ่อค้าต่างถิ่นเท่านั้น"
+    },
+    {
+     "form": "สหกรณ์แบ่งปัน",
+     "countries": [
+      "AL-16",
+      "AL-19",
+      "MH-06",
+      "MK-12"
+     ],
+     "rule": "ทุกคนในชุมชนได้ส่วนแบ่งตามความต้องการ ไม่มีค่าจ้างตายตัว"
+    }
+   ]
+  },
+  "goods": [
+   {
+    "code": "F",
+    "name": "อาหาร",
+    "base": 8,
+    "examples": "ข้าว ข้าวสาลี ผัก นม ปลาแห้ง `cn_trail_bread`",
+    "producers": [
+     "AL-17",
+     "AL-03",
+     "AL-16",
+     "NR-09",
+     "AZ-07",
+     "MH-06"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:44"
+   },
+   {
+    "code": "M",
+    "name": "แร่และโลหะ",
+    "base": 14,
+    "examples": "เหล็ก ทองแดง เหล็กไหล อัญมณี ถ่าน",
+    "producers": [
+     "AL-27",
+     "SH-08",
+     "AZ-08",
+     "KD"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:45"
+   },
+   {
+    "code": "T",
+    "name": "ผ้าและเส้นใย",
+    "base": 12,
+    "examples": "ฝ้าย ไหม ลินิน ขนแกะ สีย้อม (`mt_cotton` `mt_silk` `mt_wool`)",
+    "producers": [
+     "AL-05",
+     "AL-14",
+     "AL-24",
+     "SH-04",
+     "NB-11"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:46"
+   },
+   {
+    "code": "W",
+    "name": "ไม้และของป่า",
+    "base": 9,
+    "examples": "ไม้ หนัง ขน เห็ด ยางไม้ (`mt_hide` `mt_sap`)",
+    "producers": [
+     "KD-12",
+     "AL-23",
+     "SV"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:47"
+   },
+   {
+    "code": "S",
+    "name": "ของทะเล",
+    "base": 10,
+    "examples": "ปลา มุก ปะการัง สาหร่าย (`mt_pearl`)",
+    "producers": [
+     "MH-11",
+     "NR"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:48"
+   },
+   {
+    "code": "H",
+    "name": "ยาและสมุนไพร",
+    "base": 16,
+    "examples": "สมุนไพร ยาสำเร็จ (`cn_healing_draught`)",
+    "producers": [
+     "AL-26",
+     "AL-14",
+     "SV-02",
+     "SV-12",
+     "NR-13",
+     "NB-06"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:49"
+   },
+   {
+    "code": "X",
+    "name": "ของวิเศษ",
+    "base": 60,
+    "examples": "ธุลีทิพย์ น้ำเลี้ยง ผลึก ไข่มุกน้ำตา ศิลาลอย (`mt_soul_crystal` `mt_world_seed`)",
+    "producers": [
+     "SH-01",
+     "SV-15",
+     "AL-12",
+     "NR-11"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:50"
+   },
+   {
+    "code": "E",
+    "name": "จักรกลและอาวุธ",
+    "base": 30,
+    "examples": "อาวุธ เกราะ เครื่องกล ชิ้นส่วน ปืน",
+    "producers": [
+     "KD-01",
+     "MK-06",
+     "MK-09",
+     "AL-08",
+     "AL-09"
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:51"
+   },
+   {
+    "code": "V",
+    "name": "บริการ",
+    "base": null,
+    "examples": "ทหารรับจ้าง นำทาง ขนส่ง ค่าตัดสิน ค่าบริจาค",
+    "producers": [],
+    "src": "docs/systems/economy/01-world-economy.md:52"
+   }
+  ],
+  "balance": {
+   "exporter": 1.6,
+   "enough": 1,
+   "short": 0.4
+  },
+  "priceMods": {
+   "wIndex": [
+    0.7,
+    0.85,
+    1,
+    1.2,
+    1.5
+   ],
+   "scarcity": {
+    "exporter": 0.6,
+    "enough": 1,
+    "short": 1.5,
+    "swing": 0.25
+   },
+   "trustMid": 1.1,
+   "trustLow": 1.25
+  },
+  "routes": [
+   {
+    "route": "ในประเทศเดียวกัน",
+    "costPct": 3,
+    "risk": "ต่ำ",
+    "where": "ทั่วไป"
+   },
+   {
+    "route": "ข้ามประเทศในทวีปเดียวกัน (ทางบก)",
+    "costPct": 10,
+    "risk": "กลาง",
+    "where": "เกวียน คาราวาน"
+   },
+   {
+    "route": "ทางแม่น้ำและชายฝั่ง",
+    "costPct": 7,
+    "risk": "กลาง",
+    "where": "NR SV-17 NR-09"
+   },
+   {
+    "route": "ทางทะเล",
+    "costPct": 12,
+    "risk": "สูง (โจรสลัด พายุ)",
+    "where": "NR-01 AL-04 NR-12 เรือ"
+   },
+   {
+    "route": "ทางรถไฟ",
+    "costPct": 4,
+    "risk": "ต่ำ",
+    "where": "AL-28 MK-05 หลัง MC-07"
+   },
+   {
+    "route": "ทางเรือเหาะ",
+    "costPct": 18,
+    "risk": "ต่ำ",
+    "where": "MK-09 AZ (หลัง PO-02 ห้าม)"
+   },
+   {
+    "route": "ข้ามทะเลทราย",
+    "costPct": 15,
+    "risk": "สูง",
+    "where": "SH-04 SH-15 กองคาราวาน"
+   },
+   {
+    "route": "ผ่านหมอก",
+    "costPct": 25,
+    "risk": "สูงมาก",
+    "where": "NB ใช้ `cn_fog_filter` `ns_fog_guide`"
+   },
+   {
+    "route": "ผ่านบันได หมื่นขั้น",
+    "costPct": 20,
+    "risk": "กลาง",
+    "where": "SH-03 ↔ AZ"
+   }
+  ],
+  "eras": [
+   {
+    "era": 1,
+    "name": "ยุคผนึก (0–2)",
+    "trait": "ส่วยมังกรมั่นคง ตลาดโต เส้นทางเปิด ทองกลางเชื่อมั่นสูง",
+    "effect": "ใช้ตาราง 02 ตรง ๆ · C ฟื้นเร็ว",
+    "transportPlus": null
+   },
+   {
+    "era": 2,
+    "name": "ยุคร้าว (3–5)",
+    "trait": "ภัยเริ่มรั่ว ห้ามเรือเหาะ ภาษีกระแสน้ำ บริษัทเริ่มแย่งตลาด",
+    "effect": "ต้นทุนขนส่ง +10% · ความผันผวนราคา ±15%",
+    "transportPlus": 10
+   },
+   {
+    "era": 3,
+    "name": "ยุคสั่น (6–9)",
+    "trait": "แผนที่เปลี่ยน เมืองซากเกิด เหตุการณ์ DR ใหญ่ทำให้ W ของทวีปหนึ่งตก",
+    "effect": "W ที่ปรับตามเหตุการณ์ใช้เต็ม · C ผันผวน",
+    "transportPlus": null
+   },
+   {
+    "era": 4,
+    "name": "ยุคปลาย (10–14)",
+    "trait": "ทุกฝ่ายแย่งกุญแจ ตลาดมืดครอง ทองกลางเสี่ยง",
+    "effect": "ต้นทุนขนส่ง +25% · C มีแนวโน้มต่ำกว่า 50",
+    "transportPlus": 25
+   },
+   {
+    "era": 5,
+    "name": "ยุคไร้มังกร (15)",
+    "trait": "ขึ้นกับตอนจบของโลก",
+    "effect": "ตามฉากจบ",
+    "transportPlus": null
+   }
+  ],
+  "worldEvents": [
+   {
+    "events": [
+     "DR-01"
+    ],
+    "scope": "AZ ทั้งทวีป",
+    "w": "−2 ถาวร (ส่วยหาย) · SH-09 SH-16 +0 แต่มีผู้ลี้ภัยหลายหมื่น",
+    "price": "อาหารใน SH ×1.3 สามปี · ศิลาลอยดิบ (X) ×0.6 จากซากถูกเก็บ",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:126"
+   },
+   {
+    "events": [
+     "DR-04"
+    ],
+    "scope": "KD ทั้งทวีป",
+    "w": "−1 · KD-12 KD-10 −2",
+    "price": "อาหาร KD ×2 สองปี · ถ่านและความร้อน (M) ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:127"
+   },
+   {
+    "events": [
+     "DR-05"
+    ],
+    "scope": "NR ชายฝั่ง NR-09",
+    "w": "−1",
+    "price": "ของทะเล (S) ×0.8 (ล้น) · อาหารจากไร่ท่วม ×1.4",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:128"
+   },
+   {
+    "events": [
+     "DR-06"
+    ],
+    "scope": "ทุกเส้นเรือใบ",
+    "w": "0",
+    "price": "ต้นทุนขนส่งทะเล +30% 20 ปี แล้ว +10% ถาวร (ยุคลมสุ่ม)",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:129"
+   },
+   {
+    "events": [
+     "DR-07"
+    ],
+    "scope": "AL ทุ่งราบ",
+    "w": "−1 ใน AL-08 AL-15 AL-17",
+    "price": "ต้นทุนขนส่งบกในทุ่งราบ +40%",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:130"
+   },
+   {
+    "events": [
+     "WR-03"
+    ],
+    "scope": "MH × AL",
+    "w": "AL-17 +1 (ผู้ขาย) · MH −1",
+    "price": "อาหารใน MH ×2 · AL ×1.3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:131"
+   },
+   {
+    "events": [
+     "WR-04"
+    ],
+    "scope": "MK × SV",
+    "w": "SV-15 +1 · SV-01 −1",
+    "price": "น้ำเลี้ยง (X) ×3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:132"
+   },
+   {
+    "events": [
+     "WR-06"
+    ],
+    "scope": "NR × AL",
+    "w": "NR-01 −1",
+    "price": "ต้นทุนขนส่งทะเลของ AL ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:133"
+   },
+   {
+    "events": [
+     "WR-10"
+    ],
+    "scope": "SH × AL",
+    "w": "SH-04 SH-15 +1 (ค่าผ่าน) · AL-10 −0",
+    "price": "ต้นทุนข้ามทะเลทราย ×2 · ผ้าและอัญมณีใน AL ×1.4",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:134"
+   },
+   {
+    "events": [
+     "WR-14"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "−1 ทุกประเทศที่ทำสงคราม · E-hub (KD-01 MK-06 AL-08) +1",
+    "price": "จักรกลและอาวุธ (E) ×1.5 · ยา (H) ×1.4 · อาหาร ×1.3",
+    "trust": -40,
+    "src": "docs/systems/economy/01-world-economy.md:135"
+   },
+   {
+    "events": [
+     "WR-21"
+    ],
+    "scope": "MK",
+    "w": "−1 ใน MK-01 MK-05 · MK-06 +1",
+    "price": "E ผันผวน ±30% · ธนาคารและบัญชีในเมคาเรียหยุดจ่าย",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:136"
+   },
+   {
+    "events": [
+     "CT-03"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "−1 NB MK · −0 ที่เหลือ",
+    "price": "ยา (H) ×3 · ผู้ค้าที่ผ่านเมืองถูกกักตัว",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:137"
+   },
+   {
+    "events": [
+     "CT-04"
+    ],
+    "scope": "หลัง DR-06 AL SH",
+    "w": "−1",
+    "price": "อาหารและน้ำ ×2 · SH-05 +1 (ผู้คุมน้ำ)",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:138"
+   },
+   {
+    "events": [
+     "CT-05"
+    ],
+    "scope": "หลัง DR-05",
+    "w": "−1 NR AL ชายฝั่ง",
+    "price": "อาหาร ×1.5",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:139"
+   },
+   {
+    "events": [
+     "CT-08"
+    ],
+    "scope": "ทวีปที่เกิด",
+    "w": "−1 (ผู้ปลูก) · ผู้ขายอาหารต่างทวีป +1",
+    "price": "อาหารในทวีปนั้น ×3",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:140"
+   },
+   {
+    "events": [
+     "HP-01"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "+0",
+    "price": "ต้นทุนขนส่ง −10% · ศุลกากรลด",
+    "trust": 10,
+    "src": "docs/systems/economy/01-world-economy.md:141"
+   },
+   {
+    "events": [
+     "HP-02"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "+1 ในประเทศ M ผสมหรือเต็ม (ไม่เกิน 4 ยกเว้น W 5 เดิม)",
+    "price": "ต้นทุนขนส่ง −20% · ราคาส่วนต่างลดเร็ว (ปีละ 45%)",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:142"
+   },
+   {
+    "events": [
+     "HP-07"
+    ],
+    "scope": "MH",
+    "w": "+1 MH ทุกประเทศ (ไม่รวม MH-02)",
+    "price": "อาหารใน MH ×0.6",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:143"
+   },
+   {
+    "events": [
+     "HP-05"
+    ],
+    "scope": "AL",
+    "w": "+0",
+    "price": "ยา (H) ×0.9 · ความรู้ราคาลด",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:144"
+   },
+   {
+    "events": [
+     "PO-01"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "0",
+    "price": "ต้นทุนขนส่ง −5%",
+    "trust": 20,
+    "src": "docs/systems/economy/01-world-economy.md:145"
+   },
+   {
+    "events": [
+     "PO-02"
+    ],
+    "scope": "MK AZ",
+    "w": "MK-09 −2 · NR-12 +1",
+    "price": "ต้นทุนขนส่งอากาศ ×3 หายไป ต้นทุนทะเล −10%",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:146"
+   },
+   {
+    "events": [
+     "PO-03"
+    ],
+    "scope": "NR ผ่าน",
+    "w": "NR-01 +1",
+    "price": "ต้นทุนขนส่งทะเลของทุกทวีปอื่น +20%",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:147"
+   },
+   {
+    "events": [
+     "PO-06"
+    ],
+    "scope": "ทวีปที่ปิด",
+    "w": "−1",
+    "price": "สินค้านำเข้าในทวีปนั้น ×2 · ส่งออกหยุด · ตลาดมืดโต",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:148"
+   },
+   {
+    "events": [
+     "PO-07"
+    ],
+    "scope": "NB MH-09 AL-27",
+    "w": "NB-09 +0 (เต็มอยู่แล้ว) · ที่อื่นที่ติดต่อ −1",
+    "price": "ภาษีรั่ว 20% · ของเถื่อนถูกลง ×0.7",
+    "trust": -15,
+    "src": "docs/systems/economy/01-world-economy.md:149"
+   },
+   {
+    "events": [
+     "PO-08"
+    ],
+    "scope": "AL-01",
+    "w": "0",
+    "price": "ธนาคารสันนิบาตหยุดจ่าย 1 ปี",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:150"
+   },
+   {
+    "events": [
+     "MC-07"
+    ],
+    "scope": "AL MK",
+    "w": "+1 AL-28 MK-05 AL-07",
+    "price": "ต้นทุนขนส่งทางรถไฟ 4% · ผู้ขนส่งทางบกตกงาน",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:151"
+   },
+   {
+    "events": [
+     "FG-02"
+    ],
+    "scope": "NB",
+    "w": "−1 ในเมืองที่ถูกกลืน",
+    "price": "อาหาร ×2 · โคมน้ำมัน ×3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:152"
+   },
+   {
+    "events": [
+     "FG-04"
+    ],
+    "scope": "NB-03",
+    "w": "+1",
+    "price": "โคมเป็นเงินตรา (M น้อย)",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:153"
+   },
+   {
+    "events": [
+     "FG-13"
+    ],
+    "scope": "NB",
+    "w": "−1",
+    "price": "น้ำมันโคม ×5 · โคม (E) ×3",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:154"
+   },
+   {
+    "events": [
+     "SF-05"
+    ],
+    "scope": "SH AZ",
+    "w": "AZ-08 +1",
+    "price": "ศิลาลอย (X) ×0.7",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:155"
+   },
+   {
+    "events": [
+     "SF-08"
+    ],
+    "scope": "AZ SH",
+    "w": "SH-16 +1",
+    "price": "ที่ดินและบ้าน ×0.8",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:156"
+   },
+   {
+    "events": [
+     "AS-02"
+    ],
+    "scope": "KD",
+    "w": "−1",
+    "price": "ถ่านและความร้อน ×3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:157"
+   },
+   {
+    "events": [
+     "AS-03"
+    ],
+    "scope": "KD-06",
+    "w": "−2 ถาวร",
+    "price": "เหล็กไหล (M) ×1.5",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:158"
+   },
+   {
+    "events": [
+     "DW-04"
+    ],
+    "scope": "NR",
+    "w": "NR-12 +1",
+    "price": "ต้นทุนขนส่งทะเล −30%",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:159"
+   },
+   {
+    "events": [
+     "WT-03"
+    ],
+    "scope": "SV",
+    "w": "−1",
+    "price": "น้ำเลี้ยง (X) ×4 · SV-15 +1",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:160"
+   },
+   {
+    "events": [
+     "RL-02"
+    ],
+    "scope": "MK",
+    "w": "MK-10 +0",
+    "price": "ชิ้นส่วนกลไก ×0.6 (เก็บจากซาก) · ผู้เก็บได้รายได้ +20%",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:161"
+   },
+   {
+    "events": [
+     "CL-03"
+    ],
+    "scope": "NB",
+    "w": "NB-09 −1",
+    "price": "ของเถื่อนหายากขึ้น ×1.2",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:162"
+   },
+   {
+    "events": [
+     "DR-02"
+    ],
+    "scope": "AZ",
+    "w": "AZ-01 −1 (ส่วยลดตามเกาะที่จม)",
+    "price": "ศิลาลอย (X) ×1.3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:163"
+   },
+   {
+    "events": [
+     "DR-08"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "0",
+    "price": "อาหาร ×1.3 (ฤดูเพาะปลูกเพี้ยน)",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:164"
+   },
+   {
+    "events": [
+     "DR-09"
+    ],
+    "scope": "ทวีปของผู้อาวุโสสองตัว",
+    "w": "−1 สองทวีปนั้นตลอดศึก",
+    "price": "สินค้าหลักของสองทวีป (คอลัมน์ ผลิตมากที่ หัวข้อ 2) ×1.5",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:165"
+   },
+   {
+    "events": [
+     "DR-11"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "−1 ประเทศ W 1 ถึง 2 ที่ส่งบรรณาการ หนึ่งทศวรรษ",
+    "price": "ของวิเศษ (X) ×1.5 (ถูกส่งให้มังกร)",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:166"
+   },
+   {
+    "events": [
+     "CT-01"
+    ],
+    "scope": "ทวีปที่ตก",
+    "w": "−1 ประเทศที่ตก 20 ปี",
+    "price": "ของวิเศษ (X) ×0.7 (เศษดาวหาง) · อาหารในทวีปนั้น ×1.5",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:167"
+   },
+   {
+    "events": [
+     "CT-02"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "ธง `famine` ประเทศ W 1 ถึง 2 สามปี",
+    "price": "อาหาร ×2 · ไม้และถ่าน ×1.5",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:168"
+   },
+   {
+    "events": [
+     "CT-07"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "−1 ประเทศผลิตอาหารหลัก (AL-17 AL-03 NR-09 MH-06) ตลอดคราส",
+    "price": "อาหาร ×2 · ไม้และน้ำมันโคม ×1.5",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:169"
+   },
+   {
+    "events": [
+     "CT-09"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "0",
+    "price": "ของวิเศษ (X) ×0.8 (ผลึกตกตามพายุ)",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:170"
+   },
+   {
+    "events": [
+     "DM-01"
+    ],
+    "scope": "MH",
+    "w": "ธง `war` ทุกประเทศ MH",
+    "price": "ทหารรับจ้างจาก MH หายจากตลาด (V) ×2 · อาหารใน MH ×1.5",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:171"
+   },
+   {
+    "events": [
+     "DM-07"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "ธง `war` ประเทศที่มีประตู",
+    "price": "อาวุธ (E) ×1.5 · ทหารรับจ้าง (V) ×2",
+    "trust": -15,
+    "src": "docs/systems/economy/01-world-economy.md:172"
+   },
+   {
+    "events": [
+     "MC-03"
+    ],
+    "scope": "MK",
+    "w": "−1 ทุกประเทศ MK ระหว่างลุกฮือ · MK-03 +1 หลังจบ",
+    "price": "จักรกล (E) ×2",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:173"
+   },
+   {
+    "events": [
+     "MC-04"
+    ],
+    "scope": "ประเทศที่ระเบิด",
+    "w": "−2",
+    "price": "ของวิเศษ (X) ×1.5 · จักรกล (E) ×1.3",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:174"
+   },
+   {
+    "events": [
+     "MC-10"
+    ],
+    "scope": "MK AZ",
+    "w": "เมืองใหม่เริ่ม W 4",
+    "price": "ศิลาลอย (X) ×1.5",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:175"
+   },
+   {
+    "events": [
+     "MC-11"
+    ],
+    "scope": "MK",
+    "w": "MK-06 −1 (ถูกคว่ำบาตร)",
+    "price": "จักรกล (E) ×1.2",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:176"
+   },
+   {
+    "events": [
+     "MC-12"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "0",
+    "price": "จักรกล (E) ผันผวน ±30% จนโลกเลือก",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:177"
+   },
+   {
+    "events": [
+     "BIO-01"
+    ],
+    "scope": "SV",
+    "w": "0",
+    "price": "น้ำเลี้ยง (X) ×1.5 · ยา (H) จากป่า ×1.3",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:178"
+   },
+   {
+    "events": [
+     "BIO-02"
+    ],
+    "scope": "SV",
+    "w": "SV-01 −2 ถาวร · SV ที่เหลือ −1",
+    "price": "น้ำเลี้ยง (X) ×5 · ไม้และของป่า (W) ×1.5 · ยา (H) ×1.5",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:179"
+   },
+   {
+    "events": [
+     "BIO-04"
+    ],
+    "scope": "NB และชายแดน",
+    "w": "−1 ประเทศชายแดนที่หมอกถึง",
+    "price": "อาหาร ×1.5 · น้ำมันโคม ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:180"
+   },
+   {
+    "events": [
+     "BIO-05"
+    ],
+    "scope": "NB",
+    "w": "+1 ทุกประเทศ NB (ไม่เกิน 4)",
+    "price": "น้ำมันโคม ×0.3 (หมดค่าเป็นเงิน) · อาหารใน NB ×0.7",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:181"
+   },
+   {
+    "events": [
+     "BIO-07"
+    ],
+    "scope": "NR",
+    "w": "−1 NR-09 NR-13",
+    "price": "ของทะเล (S) ×1.5 · มุก ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:182"
+   },
+   {
+    "events": [
+     "GD-04"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "0",
+    "price": "ของบูชาและค่าบริจาค (V) ×2",
+    "trust": 10,
+    "src": "docs/systems/economy/01-world-economy.md:183"
+   },
+   {
+    "events": [
+     "HP-08"
+    ],
+    "scope": "AZ",
+    "w": "เกาะใหม่เริ่ม W 2",
+    "price": "ศิลาลอย (X) ×0.8",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:184"
+   },
+   {
+    "events": [
+     "PO-05"
+    ],
+    "scope": "AL ทุ่งราบ",
+    "w": "ประเทศเมืองหลวงจักรวรรดิ +1 · ประเทศที่ถูกยึด −1",
+    "price": "ต้นทุนขนส่งบกในทุ่งราบ −20% (ไม่มีด่าน)",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:185"
+   },
+   {
+    "events": [
+     "GI-02"
+    ],
+    "scope": "SH และ AL ทุ่งราบ",
+    "w": "−1 ประเทศบนเส้นทางเดินของไททัน",
+    "price": "ต้นทุนข้ามทะเลทราย ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:186"
+   },
+   {
+    "events": [
+     "GI-07"
+    ],
+    "scope": "AL ทุ่งราบ SH",
+    "w": "−1 AL-15 AL-17",
+    "price": "อาหาร ×1.3",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:187"
+   },
+   {
+    "events": [
+     "GI-08"
+    ],
+    "scope": "KD MH",
+    "w": "KD-08 +1",
+    "price": "ถ่านและความร้อน ×1.5 (ความร้อนจากปากเหวหาย)",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:188"
+   },
+   {
+    "events": [
+     "PL-03"
+    ],
+    "scope": "KD",
+    "w": "−1 KD-10 KD-11",
+    "price": "แร่และโลหะ (M) ×1.5 · ถ่านและความร้อน ×0.7",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:189"
+   },
+   {
+    "events": [
+     "PL-04"
+    ],
+    "scope": "NR",
+    "w": "0",
+    "price": "ต้นทุนขนส่งทะเล +30% สิบปี",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:190"
+   },
+   {
+    "events": [
+     "PL-06"
+    ],
+    "scope": "MK",
+    "w": "MK-01 −1",
+    "price": "จักรกล (E) ×1.5",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:191"
+   },
+   {
+    "events": [
+     "PL-08"
+    ],
+    "scope": "SV",
+    "w": "0",
+    "price": "ไม้และของป่า (W) ×0.6 · ต้นทุนขนส่งบกเข้า SV ×2 (ด่านถูกกลืน)",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:192"
+   },
+   {
+    "events": [
+     "PL-09"
+    ],
+    "scope": "NB และทวีปข้างเคียง",
+    "w": "−1 หนึ่งฤดูในประเทศที่หมอกไหลถึง",
+    "price": "น้ำมันโคม ×1.5",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:193"
+   },
+   {
+    "events": [
+     "FG-03"
+    ],
+    "scope": "NB ชายแดน",
+    "w": "−1 หนึ่งฤดู",
+    "price": "การค้าเข้าออก NB หยุดหนึ่งฤดู · น้ำมันโคม ×2",
+    "trust": -5,
+    "src": "docs/systems/economy/01-world-economy.md:194"
+   },
+   {
+    "events": [
+     "FG-07"
+    ],
+    "scope": "ชายแดน NB กับ AL",
+    "w": "0",
+    "price": "อาหารใน AL-15 AL-20 ×1.3 (ผู้ลี้ภัย)",
+    "trust": 0,
+    "src": "docs/systems/economy/01-world-economy.md:195"
+   },
+   {
+    "events": [
+     "FG-10"
+    ],
+    "scope": "NB",
+    "w": "+1 ประเทศชายแดน NB",
+    "price": "น้ำมันโคม ×0.6",
+    "trust": 5,
+    "src": "docs/systems/economy/01-world-economy.md:196"
+   },
+   {
+    "events": [
+     "FG-11"
+    ],
+    "scope": "NB และชายแดน",
+    "w": "−2 ทุกประเทศ NB · −1 ประเทศชายแดน",
+    "price": "สินค้าทุกหมวดจาก NB หยุด · น้ำมันโคม ×5 · อาหารในชายแดน ×1.5",
+    "trust": -15,
+    "src": "docs/systems/economy/01-world-economy.md:197"
+   },
+   {
+    "events": [
+     "WR-15"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "ธง `war` ประเทศที่ถือกุญแจ",
+    "price": "ของวิเศษ (X) ×2 · อาวุธ (E) ×1.5",
+    "trust": -10,
+    "src": "docs/systems/economy/01-world-economy.md:198"
+   },
+   {
+    "events": [
+     "WR-23"
+    ],
+    "scope": "ทุกทวีป",
+    "w": "−1 ทุกประเทศ W 3 ขึ้นไป",
+    "price": "อาวุธ (E) ×2 · อาหาร ×1.5",
+    "trust": -20,
+    "src": "docs/systems/economy/01-world-economy.md:199"
+   },
+   {
+    "events": [
+     "END-01",
+     "END-09"
+    ],
+    "scope": "ทวีปของแกน",
+    "w": "−1 ถาวรทุกประเทศในทวีป",
+    "price": "สินค้าหลักของทวีป (หัวข้อ 2) ×2",
+    "trust": -15,
+    "src": "docs/systems/economy/01-world-economy.md:200"
+   }
+  ],
+  "faucets": [
+   {
+    "name": "รางวัลและผลของเหตุการณ์ (เดิมของโค้ด)",
+    "size": "มัธยฐาน 219 ที่อายุ 30 ([../../../RAW_PLAN.md](../../../RAW_PLAN.md) หัวข้อ 3.2)"
+   },
+   {
+    "name": "รายได้อาชีพ ([04-income-and-living.md](04-income-and-living.md))",
+    "size": "ตามชนชั้นและ W"
+   },
+   {
+    "name": "ขายวัสดุ ของล่าจากศัตรู",
+    "size": "5 ถึง 60 ต่อศึกที่ชนะ ตามระดับ"
+   },
+   {
+    "name": "ค่าจ้างส่งของและคุ้มกัน ([05-trade.md](05-trade.md))",
+    "size": "20 ถึง 400 ต่องาน"
+   },
+   {
+    "name": "ผลตอบแทนลงทุน ([06-investment.md](06-investment.md))",
+    "size": "4 ถึง 8% ต่อปีของเงินลง"
+   },
+   {
+    "name": "ของขวัญ มรดก บุญคุณ คืนทอง",
+    "size": "ตามเส้นเรื่อง"
+   }
+  ],
+  "sinks": [
+   {
+    "name": "ค่าครองชีพ",
+    "note": "หัวข้อ 3 ของไฟล์รายได้ ชั้นสูงจ่ายมาก"
+   },
+   {
+    "name": "ซื้อไอเทม อาวุธ เกราะ ของใช้",
+    "note": "ราคาตามระดับ"
+   },
+   {
+    "name": "ซ่อมและบำรุง",
+    "note": "เกราะ 20% ของราคา ที่ดินและบ้านปีละ 3%"
+   },
+   {
+    "name": "ภาษีและค่าผ่านทาง",
+    "note": "ตามระบอบการปกครอง"
+   },
+   {
+    "name": "ดอกเบี้ยและค่าธรรมเนียมธนาคาร",
+    "note": "ผู้กู้"
+   },
+   {
+    "name": "สินบนและค่าไถ่",
+    "note": "ตลาดมืด การถูกจับ"
+   },
+   {
+    "name": "ค่าพิธีและการบริจาค",
+    "note": "แต่งงาน งานศพ วัด"
+   },
+   {
+    "name": "ที่ดินและตำแหน่ง (ทองที่คนรวยอยากใช้เอง)",
+    "note": "ซื้อบ้าน ซื้อยศ ตำแหน่ง ผู้ใหญ่ในสภา"
+   },
+   {
+    "name": "ทองสาปและหาย",
+    "note": "ปล้น ทองสาป (`c_cursedgold`) ล้มละลาย"
+   }
+  ],
+  "blackMarket": [
+   {
+    "where": "NB-09 ซอร์วาน",
+    "role": "ตลาดมืดข้ามทวีป นายหน้า ข้อมูล ตัวตนใหม่ เป็นศูนย์กลางระดับ W 5"
+   },
+   {
+    "where": "MH-09 โมธมาร์ต",
+    "role": "ตลาดเลือด ทหารรับจ้างและทาส ผูกหนี้เลือด"
+   },
+   {
+    "where": "AL-27 โกลด์ครีก",
+    "role": "เมืองเถื่อน ทองดิบ ปืน พนัน"
+   },
+   {
+    "where": "NR-05 ทอร์ตูโมอา",
+    "role": "สินค้าปล้น ทองสาป"
+   },
+   {
+    "where": "MK-16 รีเวนพอร์ต",
+    "role": "กองทัพเอกชน ขายอาวุธ"
+   }
+  ],
+  "wLevels": [
+   {
+    "w": 1,
+    "name": "จนมาก",
+    "priceIndex": 0.7,
+    "incomeIndex": 0.5,
+    "shops": "ของใช้ C เท่านั้น ตลาดไม่ประจำ",
+    "look": "กระท่อม เต็นท์ ค่าย ไม่มีกำแพงหิน"
+   },
+   {
+    "w": 2,
+    "name": "จน",
+    "priceIndex": 0.85,
+    "incomeIndex": 0.75,
+    "shops": "C และ U บางชนิด",
+    "look": "บ้านไม้ ตลาดวันเดียว ถนนดิน"
+   },
+   {
+    "w": 3,
+    "name": "พอเพียง",
+    "priceIndex": 1,
+    "incomeIndex": 1,
+    "shops": "C U และ R เฉพาะเมืองใหญ่",
+    "look": "บ้านหิน ตลาดประจำ วัดกลาง"
+   },
+   {
+    "w": 4,
+    "name": "มั่งคั่ง",
+    "priceIndex": 1.2,
+    "incomeIndex": 1.4,
+    "shops": "C U R และ E เฉพาะเมืองหลวงหรือเมืองช่าง",
+    "look": "ถนนปู หอคอย ย่านพ่อค้า คฤหาสน์"
+   },
+   {
+    "w": 5,
+    "name": "มั่งคั่งยิ่ง",
+    "priceIndex": 1.5,
+    "incomeIndex": 1.9,
+    "shops": "ทุกระดับถึง E ช่างที่มีชื่อรับงานได้",
+    "look": "พระราชวัง ท่าเรือใหญ่ หอสูง ย่านทอง"
+   }
+  ],
+  "metrics": [
+   {
+    "name": "W ความมั่งคั่ง",
+    "range": "1 ถึง 5",
+    "meaning": "1 จนมาก · 2 จน · 3 พอเพียง · 4 มั่งคั่ง · 5 มั่งคั่งยิ่ง ผลรวมของผลผลิตอาหาร ทรัพยากร ทำเลการค้า ฝีมือช่าง อำนาจและศาสนา หักความเสียหายและภาระ"
+   },
+   {
+    "name": "G ความเหลื่อมล้ำ",
+    "range": "ต่ำ กลาง สูง สูงมาก",
+    "meaning": "ช่องว่างระหว่างคนรวยกับคนจนในประเทศเดียวกัน ใช้ปรับสัดส่วนชนชั้นที่เกิด ([03-classes.md](03-classes.md))"
+   },
+   {
+    "name": "M การใช้เงิน",
+    "range": "เต็ม ผสม น้อย",
+    "meaning": "เต็ม: ใช้ทองทุกที่ · ผสม: เมืองใช้ทอง ชนบทแลกของ · น้อย: ส่วย บรรณาการ แลกของ หรือสัญญา ทองมีค่าน้อยในถิ่น แต่ใช้ได้ที่ตลาดชายแดน"
+   }
+  ],
+  "classes": [
+   {
+    "n": 1,
+    "name": "ผู้ไร้สิทธิ์",
+    "who": "ทาสและลูกหนี้ผูกตัว (กติกาใน [10-bondage.md](10-bondage.md)) ผู้ลี้ภัยที่ไม่มีที่ ผู้ไร้เงา (NB-13) ผู้ถูกเนรเทศ หุ่นวิญญาณที่ยังไม่มีสิทธิ์ (MK-03 ก่อนมีสภา)",
+    "rights": "ถือที่ดินและอาวุธไม่ได้ ถูกบังคับทำงาน ไม่มีสิทธิ์ในศาล ยกเว้นประเทศที่สหกรณ์รับ (AL-19 MK-12)"
+   },
+   {
+    "n": 2,
+    "name": "ชนชั้นล่าง",
+    "who": "กรรมกร ชาวนาไร้ที่ดิน ลูกจ้างโรงงาน คนงานเหมือง ลูกเรือ",
+    "rights": "เช่าที่ได้ ถืออาวุธเครื่องมือได้ ไม่มีสิทธิ์เข้าสภา"
+   },
+   {
+    "n": 3,
+    "name": "สามัญชน",
+    "who": "ชาวนาที่มีที่เล็ก ช่างฝีมือ พ่อค้ารายย่อย ทหาร เจ้าของร้านเล็ก",
+    "rights": "ถือที่ดินเล็ก เข้าศาลได้ เข้าพิธีของถิ่นได้"
+   },
+   {
+    "n": 4,
+    "name": "ผู้มั่งคั่ง",
+    "who": "พ่อค้าใหญ่ ช่างที่มีชื่อ เจ้าที่ดินกลาง ผู้ถือหุ้น นายธนาคาร นักบวชระดับสูง",
+    "rights": "ถือที่ดินใหญ่ จ้างคนได้ เข้าสภาเมืองในระบอบที่เปิด ซื้อยศไม่ได้ในระบอบศักดินา"
+   },
+   {
+    "n": 5,
+    "name": "ขุนนางและผู้ปกครอง",
+    "who": "ราชวงศ์ ผู้ถือที่ดินใหญ่ ประมุขบริษัท สังฆราช หัวหน้าตระกูล ผู้นำเผ่า",
+    "rights": "ตั้งกฎ เก็บภาษี ตัดสินคดี ตั้งผู้อื่นเข้าชั้นต่ำกว่า"
+   }
+  ],
+  "classByWG": [
+   {
+    "w": 1,
+    "g": "ต่ำ",
+    "pct": [
+     5,
+     45,
+     44,
+     5,
+     1
+    ]
+   },
+   {
+    "w": 1,
+    "g": "กลาง",
+    "pct": [
+     10,
+     50,
+     34,
+     5,
+     1
+    ]
+   },
+   {
+    "w": 1,
+    "g": "สูง",
+    "pct": [
+     16,
+     54,
+     24,
+     5,
+     1
+    ]
+   },
+   {
+    "w": 1,
+    "g": "สูงมาก",
+    "pct": [
+     23,
+     53,
+     18,
+     4,
+     2
+    ]
+   },
+   {
+    "w": 2,
+    "g": "ต่ำ",
+    "pct": [
+     3,
+     34,
+     54,
+     9,
+     0
+    ]
+   },
+   {
+    "w": 2,
+    "g": "กลาง",
+    "pct": [
+     6,
+     40,
+     44,
+     9,
+     1
+    ]
+   },
+   {
+    "w": 2,
+    "g": "สูง",
+    "pct": [
+     10,
+     46,
+     33,
+     9,
+     2
+    ]
+   },
+   {
+    "w": 2,
+    "g": "สูงมาก",
+    "pct": [
+     15,
+     48,
+     26,
+     9,
+     2
+    ]
+   },
+   {
+    "w": 3,
+    "g": "ต่ำ",
+    "pct": [
+     1,
+     22,
+     62,
+     14,
+     1
+    ]
+   },
+   {
+    "w": 3,
+    "g": "กลาง",
+    "pct": [
+     3,
+     27,
+     53,
+     15,
+     2
+    ]
+   },
+   {
+    "w": 3,
+    "g": "สูง",
+    "pct": [
+     5,
+     32,
+     43,
+     17,
+     3
+    ]
+   },
+   {
+    "w": 3,
+    "g": "สูงมาก",
+    "pct": [
+     8,
+     36,
+     35,
+     17,
+     4
+    ]
+   },
+   {
+    "w": 4,
+    "g": "ต่ำ",
+    "pct": [
+     1,
+     15,
+     59,
+     23,
+     2
+    ]
+   },
+   {
+    "w": 4,
+    "g": "กลาง",
+    "pct": [
+     2,
+     18,
+     50,
+     25,
+     5
+    ]
+   },
+   {
+    "w": 4,
+    "g": "สูง",
+    "pct": [
+     4,
+     21,
+     40,
+     27,
+     8
+    ]
+   },
+   {
+    "w": 4,
+    "g": "สูงมาก",
+    "pct": [
+     6,
+     23,
+     33,
+     28,
+     10
+    ]
+   },
+   {
+    "w": 5,
+    "g": "ต่ำ",
+    "pct": [
+     1,
+     10,
+     51,
+     33,
+     5
+    ]
+   },
+   {
+    "w": 5,
+    "g": "กลาง",
+    "pct": [
+     1,
+     12,
+     42,
+     35,
+     10
+    ]
+   },
+   {
+    "w": 5,
+    "g": "สูง",
+    "pct": [
+     2,
+     14,
+     32,
+     37,
+     15
+    ]
+   },
+   {
+    "w": 5,
+    "g": "สูงมาก",
+    "pct": [
+     3,
+     15,
+     26,
+     37,
+     19
+    ]
+   }
+  ],
+  "startGold": [
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "range": [
+     0,
+     0
+    ]
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "range": [
+     2,
+     8
+    ]
+   },
+   {
+    "cls": "สามัญชน",
+    "range": [
+     5,
+     25
+    ]
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "range": [
+     40,
+     120
+    ]
+   },
+   {
+    "cls": "ขุนนาง",
+    "range": [
+     150,
+     400
+    ]
+   }
+  ],
+  "startItems": [
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "w": 1,
+    "pct": {
+     "everyday": 78,
+     "C": 21,
+     "U": 1,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "w": 2,
+    "pct": {
+     "everyday": 74,
+     "C": 24,
+     "U": 2,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "w": 3,
+    "pct": {
+     "everyday": 70,
+     "C": 28,
+     "U": 2,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "w": 4,
+    "pct": {
+     "everyday": 60,
+     "C": 34,
+     "U": 6,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ผู้ไร้สิทธิ์",
+    "w": 5,
+    "pct": {
+     "everyday": 51,
+     "C": 38,
+     "U": 10,
+     "R": 1,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "w": 1,
+    "pct": {
+     "everyday": 43,
+     "C": 50,
+     "U": 7,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "w": 2,
+    "pct": {
+     "everyday": 35,
+     "C": 57,
+     "U": 8,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "w": 3,
+    "pct": {
+     "everyday": 25,
+     "C": 65,
+     "U": 10,
+     "R": 0,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "w": 4,
+    "pct": {
+     "everyday": 21,
+     "C": 59,
+     "U": 18,
+     "R": 2,
+     "E": 0
+    }
+   },
+   {
+    "cls": "ชนชั้นล่าง",
+    "w": 5,
+    "pct": {
+     "everyday": 18,
+     "C": 53,
+     "U": 25,
+     "R": 4,
+     "E": 0
+    }
+   },
+   {
+    "cls": "สามัญชน",
+    "w": 1,
+    "pct": {
+     "everyday": 19,
+     "C": 54,
+     "U": 22,
+     "R": 5,
+     "E": 0
+    }
+   },
+   {
+    "cls": "สามัญชน",
+    "w": 2,
+    "pct": {
+     "everyday": 10,
+     "C": 59,
+     "U": 25,
+     "R": 6,
+     "E": 0
+    }
+   },
+   {
+    "cls": "สามัญชน",
+    "w": 3,
+    "pct": {
+     "everyday": 0,
+     "C": 65,
+     "U": 28,
+     "R": 7,
+     "E": 0
+    }
+   },
+   {
+    "cls": "สามัญชน",
+    "w": 4,
+    "pct": {
+     "everyday": 0,
+     "C": 55,
+     "U": 34,
+     "R": 10,
+     "E": 1
+    }
+   },
+   {
+    "cls": "สามัญชน",
+    "w": 5,
+    "pct": {
+     "everyday": 0,
+     "C": 47,
+     "U": 37,
+     "R": 14,
+     "E": 2
+    }
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "w": 1,
+    "pct": {
+     "everyday": 7,
+     "C": 28,
+     "U": 43,
+     "R": 20,
+     "E": 2
+    }
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "w": 2,
+    "pct": {
+     "everyday": 3,
+     "C": 24,
+     "U": 47,
+     "R": 23,
+     "E": 3
+    }
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "w": 3,
+    "pct": {
+     "everyday": 0,
+     "C": 20,
+     "U": 50,
+     "R": 27,
+     "E": 3
+    }
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "w": 4,
+    "pct": {
+     "everyday": 0,
+     "C": 17,
+     "U": 46,
+     "R": 30,
+     "E": 7
+    }
+   },
+   {
+    "cls": "ผู้มั่งคั่ง",
+    "w": 5,
+    "pct": {
+     "everyday": 0,
+     "C": 14,
+     "U": 41,
+     "R": 33,
+     "E": 12
+    }
+   },
+   {
+    "cls": "ขุนนางและผู้ปกครอง",
+    "w": 1,
+    "pct": {
+     "everyday": 2,
+     "C": 15,
+     "U": 41,
+     "R": 35,
+     "E": 7
+    }
+   },
+   {
+    "cls": "ขุนนางและผู้ปกครอง",
+    "w": 2,
+    "pct": {
+     "everyday": 1,
+     "C": 10,
+     "U": 41,
+     "R": 40,
+     "E": 8
+    }
+   },
+   {
+    "cls": "ขุนนางและผู้ปกครอง",
+    "w": 3,
+    "pct": {
+     "everyday": 0,
+     "C": 5,
+     "U": 40,
+     "R": 45,
+     "E": 10
+    }
+   },
+   {
+    "cls": "ขุนนางและผู้ปกครอง",
+    "w": 4,
+    "pct": {
+     "everyday": 0,
+     "C": 4,
+     "U": 35,
+     "R": 44,
+     "E": 17
+    }
+   },
+   {
+    "cls": "ขุนนางและผู้ปกครอง",
+    "w": 5,
+    "pct": {
+     "everyday": 0,
+     "C": 4,
+     "U": 30,
+     "R": 43,
+     "E": 23
+    }
+   }
+  ],
+  "classJobs": [
+   {
+    "cls": 1,
+    "boosted": [
+     "miner",
+     "servant",
+     "courier",
+     "woodcutter"
+    ],
+    "closed": [
+     "farm_owner",
+     "banker",
+     "shipowner"
+    ]
+   },
+   {
+    "cls": 2,
+    "boosted": [
+     "farmer",
+     "sailor",
+     "miner",
+     "mercenary",
+     "servant",
+     "courier",
+     "city_guard"
+    ],
+    "closed": [
+     "noble",
+     "banker"
+    ]
+   },
+   {
+    "cls": 3,
+    "boosted": [],
+    "closed": [
+     "noble"
+    ]
+   },
+   {
+    "cls": 4,
+    "boosted": [
+     "merchant",
+     "banker",
+     "broker",
+     "investor",
+     "shipowner",
+     "lawyer",
+     "physician"
+    ],
+    "closed": []
+   },
+   {
+    "cls": 5,
+    "boosted": [
+     "noble",
+     "knight",
+     "royal_guard",
+     "mayor",
+     "diplomat"
+    ],
+    "closed": []
+   }
+  ],
+  "classMoves": [
+   {
+    "move": "1 → 2",
+    "cond": "ไถ่ตัวหรือหนี้หมด · สหกรณ์รับ (AL-19 MK-12) · ผู้ช่วยชีวิตเสนอสิทธิ์ · เหตุการณ์ปลดปล่อย"
+   },
+   {
+    "move": "2 → 3",
+    "cond": "ทอง ≥ 150 และมีอาชีพมั่นคงห้าปี หรือได้ที่ดิน"
+   },
+   {
+    "move": "3 → 4",
+    "cond": "ทอง ≥ 600 หรือมีกิจการ ลงทุนสำเร็จ ชื่อเสียง ≥ 30 และรับในกิลด์พ่อค้าหรือช่าง"
+   },
+   {
+    "move": "4 → 5",
+    "cond": "ได้แต่งตั้ง (ระบอบศักดินา) ซื้อยศ (ระบอบพ่อค้า ทอง ≥ 2,500) เลือกตั้ง (สาธารณรัฐ) แต่งงานเข้าตระกูล ผู้ถืออาชีพพิเศษระดับประเทศ (เช่น `nine_delegate` ให้ชั้น 4 ถึง 5 ชั่วคราว)"
+   },
+   {
+    "move": "ตกหนึ่งชั้น",
+    "cond": "หนี้เกินทรัพย์ 2 เท่า · ถูกเนรเทศหรือถูกลดยศ · เหตุการณ์ล้างทรัพย์ (ฟ้าถล่ม DR-01 กับตระกูลผู้ปรนนิบัติ)"
+   },
+   {
+    "move": "ตก 2 ชั้นขึ้นไป",
+    "cond": "ล้มละลายพร้อมถูกจับ · ถูกบังคับขายตัวเป็นทาสหนี้ (กติกาใน [10-bondage.md](10-bondage.md))"
+   }
+  ],
+  "regimes": [
+   {
+    "regime": "ราชาธิปไตยและศักดินา",
+    "examples": [
+     "AL-03",
+     "AL-05",
+     "AL-04",
+     "KD-07",
+     "AZ-02"
+    ],
+    "noble": 1.6,
+    "rich": 0.9,
+    "bondless": 1.2,
+    "climb": "ยากมาก (ต้องได้แต่งตั้ง)"
+   },
+   {
+    "regime": "เทวาธิปไตยและรัฐนักบวช",
+    "examples": [
+     "AL-02",
+     "AZ-01",
+     "KD-11",
+     "NR-11"
+    ],
+    "noble": 1.4,
+    "rich": 1,
+    "bondless": 1.3,
+    "climb": "ยาก (ต้องผ่านพิธีและศรัทธา)"
+   },
+   {
+    "regime": "สาธารณรัฐพ่อค้า",
+    "examples": [
+     "NR-01",
+     "AL-10",
+     "KD-09",
+     "AL-21"
+    ],
+    "noble": 0.7,
+    "rich": 1.6,
+    "bondless": 1,
+    "climb": "ง่าย (ซื้อยศได้)"
+   },
+   {
+    "regime": "สาธารณรัฐและสหภาพแรงงาน",
+    "examples": [
+     "AL-06",
+     "AL-07",
+     "KD-10",
+     "MK-10"
+    ],
+    "noble": 0.3,
+    "rich": 0.8,
+    "bondless": 0.5,
+    "climb": "กลาง (เลือกตั้ง)"
+   },
+   {
+    "regime": "จักรวรรดิทหาร",
+    "examples": [
+     "AL-08",
+     "MK-02",
+     "MH-01"
+    ],
+    "noble": 1.4,
+    "rich": 0.8,
+    "bondless": 1.5,
+    "climb": "กลาง (ผ่านยศทหาร)"
+   },
+   {
+    "regime": "บริษัทและสมาพันธ์",
+    "examples": [
+     "MK-01",
+     "MK-06",
+     "MK-16"
+    ],
+    "noble": 1,
+    "rich": 1.5,
+    "bondless": 1.2,
+    "climb": "กลาง (ผ่านหุ้น)"
+   },
+   {
+    "regime": "สหพันธ์เผ่าและชุมชน",
+    "examples": [
+     "AL-16",
+     "MH-06",
+     "AL-23",
+     "SV-16"
+    ],
+    "noble": 0.4,
+    "rich": 0.5,
+    "bondless": 0.3,
+    "climb": "กลาง (ผ่านฝีมือหรือความกล้า)"
+   },
+   {
+    "regime": "ไม่มีรัฐ",
+    "examples": [
+     "MH-12",
+     "SH-14"
+    ],
+    "noble": 0,
+    "rich": 0.3,
+    "bondless": 1.5,
+    "climb": "—"
+   }
+  ],
+  "raceRules": [
+   {
+    "case": "เผ่ามังกรสายปฐม (KD-07 AZ-02)",
+    "effect": "เกิดชั้น 4 ถึง 5 มากกว่าเผ่าอื่น ×2 (ตามข้อมูลจริงใน [../../lore/races/09-dragonkin.md](../../lore/races/09-dragonkin.md))"
+   },
+   {
+    "case": "ปีกสั้นและมนุษย์ชาวพื้นในอัซการ์",
+    "effect": "ชั้น 2 ถึง 3 เป็นหลัก ผู้ปรนนิบัติผิวขาว (อาเวียนขาว) อยู่ชั้น 4 ถึง 5"
+   },
+   {
+    "case": "ผู้ไร้เงา (NB-13)",
+    "effect": "ชั้น 1 โดยกำเนิด ไม่มีสิทธิ์ถือทรัพย์"
+   },
+   {
+    "case": "ผู้ลี้ภัยทุกเผ่า",
+    "effect": "ชั้น 1 ถึง 2 ในประเทศใหม่ ขึ้นได้หลังอยู่ครบสิบปีหรือสหกรณ์รับ"
+   },
+   {
+    "case": "หุ่นวิญญาณ ลูกผสมจักรกล",
+    "effect": "ชั้น 1 ถึง 2 ใน MK ก่อน MC-03 สภาหุ่น (MK-03) และ RL-03 ขึ้นชั้น 2 ถึง 3"
+   },
+   {
+    "case": "ยักษ์และเผ่าสัตว์ในทุ่งราบ",
+    "effect": "ชั้น 2 เป็นหลัก ยกเว้นผู้นำเผ่าที่ชั้น 4 ถึง 5"
+   },
+   {
+    "case": "ลูกครึ่ง",
+    "effect": "ตามถิ่นเกิด และอาจลดชั้นตามหัวข้อ 2"
+   }
+  ],
+  "income": {
+   "base": {
+    "C": 14,
+    "U": 22,
+    "R": 36,
+    "E": 70
+   },
+   "wIncomeIndex": [
+    0.5,
+    0.75,
+    1,
+    1.4,
+    1.9
+   ],
+   "moneyUse": {
+    "full": 1,
+    "mixed": 0.75,
+    "little": 0.5
+   },
+   "classMul": {
+    "bondless": 0.2,
+    "low": 0.8,
+    "common": 1,
+    "rich": 1.5
+   },
+   "swing": [
+    0.7,
+    1.3
+   ],
+   "jobCategories": [
+    {
+     "category": "ช่างฝีมือ",
+     "mul": 1,
+     "note": ""
+    },
+    {
+     "category": "บริการและพลเรือน",
+     "mul": 1,
+     "note": "`banker` ×1.5 · `tax_collector` ×1.2 พร้อมค่านายหน้า"
+    },
+    {
+     "category": "เทคนิคและวิชาการ",
+     "mul": 1.2,
+     "note": ""
+    },
+    {
+     "category": "ต่อสู้และเสี่ยงอันตราย",
+     "mul": 1.1,
+     "note": "บวกรางวัลศึกตาม [../combat/05-rewards.md](../combat/05-rewards.md) ปีที่ไม่มีงานรายได้ลด ×0.5"
+    },
+    {
+     "category": "ศาสนา",
+     "mul": 0.8,
+     "note": "บวกเครื่องบูชาและบริจาค (ของกินและของใช้)"
+    },
+    {
+     "category": "ศิลปะ",
+     "mul": 0.7,
+     "note": "บวกของขวัญและค่าตอบแทนเฉพาะกิจ"
+    },
+    {
+     "category": "ชีวิตช้า",
+     "mul": 0.5,
+     "note": "ตามกติกาเดิม ([../character/08-jobs-overview.md](../character/08-jobs-overview.md) หัวข้อ 3) บวกโบนัสเครื่องมือชีวิต ([../items/11-item-system.md](../items/11-item-system.md) หัวข้อ 6) ปีละไม่เกิน +50%"
+    },
+    {
+     "category": "อาชีพที่ย้ายจากลับ และใหม่ (ไฟล์ [05-trade.md](05-trade.md))",
+     "mul": null,
+     "note": ""
+    }
+   ],
+   "jobSpecial": [
+    {
+     "jobs": [
+      "merchant"
+     ],
+     "rule": "ฐาน U 22 + กำไรจากการซื้อขายจริง ([05-trade.md](05-trade.md)) ต่อรองด้วย `trade`"
+    },
+    {
+     "jobs": [
+      "adventurer",
+      "bounty_hunter",
+      "explorer"
+     ],
+     "rule": "ไม่มีเงินเดือน ได้ตามงานและรางวัล ปีที่ไม่มีงานรายได้ศูนย์ แต่ค่าครองชีพชั้นสามัญลดเหลือครึ่งเมื่ออยู่นอกเมือง"
+    },
+    {
+     "jobs": [
+      "pirate",
+      "smuggler",
+      "thief"
+     ],
+     "rule": "ผันผวนมาก (0 ถึง ×3) ถูกจับ ยึดทรัพย์ ได้ `c_wanted`"
+    },
+    {
+     "jobs": [
+      "mercenary",
+      "soldier"
+     ],
+     "rule": "เงินเดือนประจำ + ส่วนแบ่งศึก MK-16 MH-09 จ่ายดีที่สุด"
+    },
+    {
+     "jobs": [
+      "noble"
+     ],
+     "rule": "ไม่ได้ค่าจ้าง ใช้รายได้ที่ดิน"
+    },
+    {
+     "jobs": [
+      "pilgrim",
+      "temple_servant"
+     ],
+     "rule": "ได้ที่พักและอาหารเป็นหลัก ทองไม่เกินครึ่งของสูตร"
+    },
+    {
+     "jobs": [],
+     "rule": "ไม่มีรายได้จากสูตร ใช้ผลตามเส้นเรื่อง (ตำแหน่งที่ได้ผูกเงินเดือน เช่น `nine_delegate` ได้เงินเดือนจากสภา 60 ต่อปี)"
+    }
+   ],
+   "nobleIncome": [
+    {
+     "rank": "ขุนนางเล็ก",
+     "income": [
+      60,
+      100
+     ],
+     "upkeep": 0.03,
+     "text": "60 ถึง 100"
+    },
+    {
+     "rank": "ขุนนางใหญ่ (ตระกูลปกครองเมือง)",
+     "income": [
+      100,
+      200
+     ],
+     "upkeep": 0.03,
+     "text": "100 ถึง 200"
+    },
+    {
+     "rank": "ผู้ปกครองประเทศ",
+     "income": null,
+     "upkeep": null,
+     "text": "ไม่ใช้สูตร เป็นรายได้ของรัฐ (งบประเทศ) ตัวละครหรือ NPC ใช้ส่วนตัวได้ไม่เกิน 400 ต่อปี"
+    }
+   ],
+   "living": [
+    {
+     "cls": "ผู้ไร้สิทธิ์",
+     "cost": [
+      0,
+      1
+     ]
+    },
+    {
+     "cls": "ชนชั้นล่าง",
+     "cost": [
+      4,
+      8
+     ]
+    },
+    {
+     "cls": "สามัญชน",
+     "cost": [
+      9,
+      15
+     ]
+    },
+    {
+     "cls": "ผู้มั่งคั่ง",
+     "cost": [
+      22,
+      45
+     ]
+    },
+    {
+     "cls": "ขุนนาง",
+     "cost": [
+      60,
+      120
+     ]
+    }
+   ],
+   "tax": [
+    {
+     "regime": "ราชาธิปไตยและศักดินา",
+     "text": "20% (ชั้น 1 ถึง 3) · 10% (ชั้น 4) · 0% (ชั้น 5)",
+     "rates": [
+      0.2,
+      0.1,
+      0
+     ]
+    },
+    {
+     "regime": "เทวาธิปไตย",
+     "text": "12% + บริจาค 5%",
+     "rates": [
+      0.12,
+      0.05
+     ]
+    },
+    {
+     "regime": "สาธารณรัฐพ่อค้า",
+     "text": "8%",
+     "rates": [
+      0.08
+     ]
+    },
+    {
+     "regime": "สาธารณรัฐและสหภาพ",
+     "text": "15%",
+     "rates": [
+      0.15
+     ]
+    },
+    {
+     "regime": "จักรวรรดิทหาร",
+     "text": "18%",
+     "rates": [
+      0.18
+     ]
+    },
+    {
+     "regime": "บริษัทและสมาพันธ์",
+     "text": "10% (ค่าสมาชิก)",
+     "rates": [
+      0.1
+     ]
+    },
+    {
+     "regime": "สหพันธ์เผ่าและชุมชน",
+     "text": "5% (ส่วนแบ่ง)",
+     "rates": [
+      0.05
+     ]
+    },
+    {
+     "regime": "ไม่มีรัฐ",
+     "text": "0%",
+     "rates": [
+      0
+     ]
+    }
+   ],
+   "poverty": [
+    {
+     "path": "ก) ขอความช่วยเหลือ (ญาติ เพื่อน วัด)",
+     "weight": 30,
+     "text": "30 (`humble` `family` ×1.5) | ใช้บุญคุณ ไว้ใจ −1 หรือ `nc_favor_unpaid` · อยู่รอด"
+    },
+    {
+     "path": "ข) ยืมหรือกู้",
+     "weight": 25,
+     "text": "25 (`optimist` ×1.3) | หนี้ ([หัวข้อ 6](#6-ธนาคารและหนี้))"
+    },
+    {
+     "path": "ค) ออกหางานอันตราย (ล่า ส่งของ คุ้มกัน)",
+     "weight": 25,
+     "text": "25 (`reckless` `adventurer` ×1.5) | ได้เงินเร็วแต่เสี่ยงศึก ([05-trade.md](05-trade.md))"
+    },
+    {
+     "path": "ง) ขายของที่ถืออยู่",
+     "weight": 15,
+     "text": "15 (`greedy` ×1.3) | ขายของตามราคารับซื้อ 40%"
+    },
+    {
+     "path": "จ) ขายตัวหรือยอมเป็นลูกหนี้ผูกตัว",
+     "weight": 5,
+     "text": "5 (`coward` ×1.5 เมื่อครอบครัวหิว) | ตกเป็นผู้ไร้สิทธิ์ เข้าทางระบบการผูกตัว ([10-bondage.md](10-bondage.md))"
+    }
+   ],
+   "bank": [
+    {
+     "service": "ฝากทอง",
+     "rule": "ปลอดภัยจากปล้น ดอกเบี้ย 1% ต่อปี ถอนข้ามประเทศมีค่าธรรมเนียม 3%"
+    },
+    {
+     "service": "กู้",
+     "rule": "วงเงินไม่เกิน 3 เท่าของรายได้ต่อปี ต้องมีหลักประกัน (ที่ดิน ร้าน ของระดับ R ขึ้นไป หรือผู้ค้ำที่ชั้นสูงกว่า)"
+    },
+    {
+     "service": "ดอกเบี้ยกู้",
+     "rule": "ชั้น 4 ถึง 5 ปีละ 6% · ชั้น 3 ปีละ 12% · ชั้น 1 ถึง 2 ปีละ 20%"
+    },
+    {
+     "service": "ผู้ปล่อยกู้นอกระบบ (`moneylender`)",
+     "rule": "30 ถึง 60% ต่อปี ไม่ต้องมีหลักประกัน ทวงด้วยกำลัง (`npc_slaver` `npc_bandit`)"
+    },
+    {
+     "service": "ผิดนัดหนึ่งปี",
+     "rule": "ยึดหลักประกัน ตกหนึ่งชั้น ถ้าไม่มีหลักประกันเป็นทาสหนี้"
+    },
+    {
+     "service": "ธนาคารล่ม",
+     "rule": "เมื่อ WR-14 WR-21 PO-08 เกิด ฝากหาย 50% และกู้ถูกเรียกคืนทันที"
+    }
+   ],
+   "interestByClass": [
+    {
+     "classes": "4 ถึง 5",
+     "rate": 0.06
+    },
+    {
+     "classes": "3",
+     "rate": 0.12
+    },
+    {
+     "classes": "1 ถึง 2",
+     "rate": 0.2
+    }
+   ],
+   "moneylender": [
+    0.3,
+    0.6
+   ],
+   "depositRate": 0.01,
+   "loanCapIncomeMul": 3,
+   "prices": [
+    {
+     "cat": "อาวุธ (ตามราคาตีสั่งใน [../items/10-forging.md](../items/10-forging.md))",
+     "byTier": {
+      "C": 15,
+      "U": 50,
+      "R": 250,
+      "E": 800,
+      "L": null
+     }
+    },
+    {
+     "cat": "เกราะและโล่",
+     "byTier": {
+      "C": 18,
+      "U": 60,
+      "R": 300,
+      "E": 960,
+      "L": null
+     }
+    },
+    {
+     "cat": "เครื่องประดับ",
+     "byTier": {
+      "C": 12,
+      "U": 40,
+      "R": 200,
+      "E": 640,
+      "L": null
+     }
+    },
+    {
+     "cat": "ของขลังพื้นบ้าน",
+     "byTier": {
+      "C": 8,
+      "U": 30,
+      "R": 150,
+      "E": null,
+      "L": null
+     }
+    },
+    {
+     "cat": "เครื่องรางโบราณ (ผู้สะสมรับซื้อ ไม่มีร้านขาย)",
+     "byTier": {
+      "C": null,
+      "U": 120,
+      "R": 600,
+      "E": 1800,
+      "L": null
+     }
+    },
+    {
+     "cat": "ของใช้ในศึก (ต่อชิ้น)",
+     "byTier": {
+      "C": 3,
+      "U": 12,
+      "R": 55,
+      "E": 300,
+      "L": null
+     }
+    },
+    {
+     "cat": "เครื่องมือชีวิต",
+     "byTier": {
+      "C": 6,
+      "U": 24,
+      "R": 80,
+      "E": 600,
+      "L": null
+     }
+    },
+    {
+     "cat": "วัสดุจากสิ่งมีชีวิต (ต่อหน่วย)",
+     "byTier": {
+      "C": 3.5,
+      "U": 14,
+      "R": 65,
+      "E": 200,
+      "L": 600
+     }
+    },
+    {
+     "cat": "ของสำคัญ",
+     "byTier": {
+      "C": null,
+      "U": null,
+      "R": null,
+      "E": null,
+      "L": null
+     }
+    }
+   ],
+   "shopTiers": [
+    {
+     "size": "หมู่บ้าน",
+     "maxTier": "C",
+     "sells": "ของใช้ ยาและอาหารพื้นฐาน เครื่องมือชีวิต C"
+    },
+    {
+     "size": "เมืองเล็ก",
+     "maxTier": "U",
+     "sells": "อาวุธและเกราะมาตรฐาน ของใช้ในศึก U"
+    },
+    {
+     "size": "เมือง",
+     "maxTier": "R",
+     "sells": "ร้านช่างตี ร้านนักเล่นแร่ ของจากประเทศใกล้เคียง"
+    },
+    {
+     "size": "เมืองใหญ่",
+     "maxTier": "R (E ถ้า W 4 ขึ้นไป)",
+     "sells": "ตลาดเต็ม ผู้ค้ารายใหญ่"
+    },
+    {
+     "size": "เมืองหลวงและเมืองช่าง",
+     "maxTier": "E (L ไม่ขาย)",
+     "sells": "ช่างที่มีชื่อรับสั่งตี"
+    }
+   ],
+   "goldAt30": [
+    {
+     "w": 1,
+     "p25": 1,
+     "p50": 3,
+     "p90": 35
+    },
+    {
+     "w": 2,
+     "p25": 11,
+     "p50": 42,
+     "p90": 238
+    },
+    {
+     "w": 3,
+     "p25": 31,
+     "p50": 89,
+     "p90": 414
+    },
+    {
+     "w": 4,
+     "p25": 131,
+     "p50": 161,
+     "p90": 701
+    },
+    {
+     "w": 5,
+     "p25": 210,
+     "p50": 255,
+     "p90": 1115
+    }
+   ]
+  },
+  "trade": {
+   "ways": [
+    [
+     "ค้าขายเอง",
+     "ทุนซื้อสินค้า พาหนะ ความรู้เส้นทาง",
+     "โจร ภาษีผ่านทาง ราคาเปลี่ยน",
+     "ขบวนคาราวาน พ่อค้าคู่แข่ง สงครามเส้นทาง"
+    ],
+    [
+     "รับจ้างส่งของ",
+     "ความไว้ใจ ความเร็ว",
+     "ของหาย ล่าช้า ถูกดัก",
+     "ผู้ว่า NPC ของลับ เครื่องรางโบราณระหว่างทาง"
+    ],
+    [
+     "คุ้มกัน",
+     "ฝีมือสู้ ชื่อเสียง",
+     "ศึกจริง",
+     "ขบวนใหญ่ ผู้จ้างที่ซ่อนความลับ"
+    ],
+    [
+     "ล่าวัสดุไปขาย",
+     "ฝีมือสู้ ความรู้ว่าใครซื้อ",
+     "ศึก ศัตรูแรง",
+     "ล่ามังกรป่า ลงซาก ตลาดมืด"
+    ],
+    [
+     "ลักลอบ",
+     "ความลับ เส้นทางที่ไม่มีใครรู้",
+     "ถูกจับ `c_wanted`",
+     "ตลาดมืด ปิดทวีป (PO-06)"
+    ]
+   ],
+   "raw": [
+    {
+     "headings": [
+      "1. ห้าทางหาทอง"
+     ],
+     "header": [
+      "ทาง",
+      "ใช้อะไร",
+      "ความเสี่ยง",
+      "เรื่องที่เปิด"
+     ],
+     "rows": [
+      [
+       "ค้าขายเอง",
+       "ทุนซื้อสินค้า พาหนะ ความรู้เส้นทาง",
+       "โจร ภาษีผ่านทาง ราคาเปลี่ยน",
+       "ขบวนคาราวาน พ่อค้าคู่แข่ง สงครามเส้นทาง"
+      ],
+      [
+       "รับจ้างส่งของ",
+       "ความไว้ใจ ความเร็ว",
+       "ของหาย ล่าช้า ถูกดัก",
+       "ผู้ว่า NPC ของลับ เครื่องรางโบราณระหว่างทาง"
+      ],
+      [
+       "คุ้มกัน",
+       "ฝีมือสู้ ชื่อเสียง",
+       "ศึกจริง",
+       "ขบวนใหญ่ ผู้จ้างที่ซ่อนความลับ"
+      ],
+      [
+       "ล่าวัสดุไปขาย",
+       "ฝีมือสู้ ความรู้ว่าใครซื้อ",
+       "ศึก ศัตรูแรง",
+       "ล่ามังกรป่า ลงซาก ตลาดมืด"
+      ],
+      [
+       "ลักลอบ",
+       "ความลับ เส้นทางที่ไม่มีใครรู้",
+       "ถูกจับ `c_wanted`",
+       "ตลาดมืด ปิดทวีป (PO-06)"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:9"
+    },
+    {
+     "headings": [
+      "2. การต่อรอง"
+     ],
+     "header": [
+      "ส่วนของ DC",
+      "ค่า"
+     ],
+     "rows": [
+      [
+       "นิสัยฝ่ายตรงข้าม",
+       "`greedy` +3 · `cunning` +2 · พ่อค้าอาชีพ +2 · `generous` −2 · `kind` −1 · `gullible` −3"
+      ],
+      [
+       "สภาพตลาด",
+       "สินค้าขาดแคลนในถิ่น (ผู้ขายได้เปรียบเมื่อตัวละครซื้อ) +2 · ล้นตลาด −2"
+      ],
+      [
+       "ความสัมพันธ์",
+       "ไว้ใจ +3 ขึ้นไป −2 · แค้น +1 ขึ้นไป +3"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:27"
+    },
+    {
+     "headings": [
+      "2. การต่อรอง"
+     ],
+     "header": [
+      "ผลเทียบ DC",
+      "ราคาที่ได้"
+     ],
+     "rows": [
+      [
+       "ทอย 20 หรือเกิน DC อย่างน้อย +10",
+       "ดีกว่าปกติ 25% (ซื้อถูกลง ขายแพงขึ้น)"
+      ],
+      [
+       "เกิน DC +5 ถึง +9",
+       "ดีกว่าปกติ 15%"
+      ],
+      [
+       "ผ่าน DC ถึง +4",
+       "ดีกว่าปกติ 7%"
+      ],
+      [
+       "พลาดไม่เกิน −4",
+       "ราคาปกติ ต่อรองไม่ได้อีกในฤดูนี้"
+      ],
+      [
+       "พลาดเกิน −5 หรือทอย 1",
+       "แย่กว่าปกติ 10% และความไว้ใจ −1 (ผู้ขายรู้สึกถูกดูหมิ่น)"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:33"
+    },
+    {
+     "headings": [
+      "2. การต่อรอง"
+     ],
+     "header": [
+      "ชนิด",
+      "กติกา"
+     ],
+     "rows": [
+      [
+       "พ่อค้าประจำร้าน",
+       "ราคาเดียวทุกคน DC +2 ตัวละครที่ขายสม่ำเสมอได้ลูกค้าประจำ (ราคา −5% หลังซื้อห้าครั้ง)"
+      ],
+      [
+       "ขุนนางและผู้มั่งคั่ง",
+       "ไม่ต่อรอง จ่ายเกินราคา 10% ถ้าไม่ต่อรอง และต่อรองถือเป็นการเสียหน้า (ไว้ใจ −1)"
+      ],
+      [
+       "ชาวบ้านยากจน",
+       "ต่อรองได้ แต่ขายของให้ได้เพียงราคา ×0.7 ของตลาด"
+      ],
+      [
+       "ผู้ค้าตลาดมืด",
+       "DC +3 ราคาเป็นของเถื่อน ถ้าเอาเปรียบเกินไปถูกหักหลัง (`c_betrayal` 15%)"
+      ],
+      [
+       "นักสะสม",
+       "จ่ายเกินราคา 30% ถ้าของมีเรื่อง (ประวัติอาวุธ เครื่องรางโบราณ) ต่อรองไม่ได้"
+      ],
+      [
+       "NPC ที่ติดบุญคุณ",
+       "ไม่ต่อรอง ขายให้ในราคาที่ได้เปรียบตามที่เขียนใน NPC"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:43"
+    },
+    {
+     "headings": [
+      "3. ค้าขายเอง"
+     ],
+     "header": [
+      "พาหนะ",
+      "หน่วยการค้า",
+      "หมายเหตุ"
+     ],
+     "rows": [
+      [
+       "เดินเท้า",
+       "3",
+       ""
+      ],
+      [
+       "ล่อหรือม้า",
+       "8",
+       "ต้องซื้อ 30 ถึง 120"
+      ],
+      [
+       "เกวียน",
+       "20",
+       "ต้องมีถนนหรือทางเรียบ"
+      ],
+      [
+       "ขบวนคาราวาน",
+       "40 ขึ้นไป",
+       "ต้องมีผู้นำขบวน (`caravan_master`) และผู้คุ้มกัน"
+      ],
+      [
+       "เรือ",
+       "100 ขึ้นไป",
+       "ต้องมีเรือ (`shipowner`)"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:58"
+    },
+    {
+     "headings": [
+      "3. ค้าขายเอง"
+     ],
+     "header": [
+      "ความเสี่ยงเส้นทาง",
+      "โอกาสเหตุการณ์",
+      "ศัตรูหรือภัยที่เจอ"
+     ],
+     "rows": [
+      [
+       "ต่ำ",
+       "10%",
+       "`wolf` `npc_bandit` เล็ก"
+      ],
+      [
+       "กลาง",
+       "25%",
+       "`npc_bandit` ฝูง `npc_smuggler` `goblin`"
+      ],
+      [
+       "สูง",
+       "40%",
+       "`npc_pirate` `ghost_crew` `sand_raiders` `storm_harpy`"
+      ],
+      [
+       "สูงมาก",
+       "60%",
+       "`fog_tentacle` `fog_moth_swarm` `shadow_pack` `mirage_phantom`"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:74"
+    },
+    {
+     "headings": [
+      "3. ค้าขายเอง"
+     ],
+     "header": [
+      "เส้นทาง",
+      "ซื้อที่",
+      "ขายที่",
+      "กำไรต่อหน่วยก่อนหัก",
+      "หมายเหตุ"
+     ],
+     "rows": [
+      [
+       "ข้าวจาก AL-17 ไป MH-05",
+       "7.2 (ส่งออก W 5)",
+       "12.0 (ขาด W 3)",
+       "4.8",
+       "หักขนส่งบก 10% (0.8) เหลือ 4.0 ขบวน 20 หน่วย ได้ 80"
+      ],
+      [
+       "ข้าวจาก AL-17 ไป MH-03 ช่วง WR-03",
+       "7.2",
+       "16.8 (ขาด W 1 ×2 สงคราม)",
+       "9.6",
+       "หักขนส่ง 0.8 เหลือ 8.8 ขบวน 20 หน่วย ได้ 176 ก่อนหักโจรและค่าคุ้มกัน"
+      ],
+      [
+       "ไม้และขนจาก KD-12 ไป AL-04",
+       "4.6 (ส่งออก W 2)",
+       "13.5 (ผลิตพอใช้ W 5)",
+       "8.9",
+       "ส่วนต่างใหญ่เพราะส่งออกจากประเทศจนไปประเทศรวย หักขนส่ง 0.9 ขบวน 20 หน่วย ได้ 160"
+      ],
+      [
+       "น้ำเลี้ยงจาก SV-15 ไป MK-01",
+       "36 (ส่งออก W 3)",
+       "90 (ปกติ W 5) · 270 (ช่วง WR-04 ×3)",
+       "54 ถึง 234",
+       "ผิดกฎปันส่วน PO-04 ลักลอบ (`c_wanted`)"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:83"
+    },
+    {
+     "headings": [
+      "4. รับจ้างส่งของ"
+     ],
+     "header": [
+      "ชนิดงาน",
+      "ของที่ส่ง",
+      "ค่าจ้าง"
+     ],
+     "rows": [
+      [
+       "พัสดุเล็ก",
+       "จดหมาย ของมีค่าเล็ก",
+       "ฐาน"
+      ],
+      [
+       "สินค้าเปราะบางหรือเสี่ยง",
+       "ยา ของวิเศษ อัญมณี ไข่",
+       "×1.5"
+      ],
+      [
+       "ส่งคน",
+       "ผู้ลี้ภัย ตัวประกัน ผู้แสวงบุญ",
+       "×1.5 และผูกกับความเป็นอยู่ของคนนั้น"
+      ],
+      [
+       "ของลับ",
+       "จดหมายลับ ของต้องห้าม",
+       "×2 และเสี่ยง `c_wanted`"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:94"
+    },
+    {
+     "headings": [
+      "4. รับจ้างส่งของ"
+     ],
+     "header": [
+      "ระยะ",
+      "ค่าจ้างฐาน (ทอง)"
+     ],
+     "rows": [
+      [
+       "ในประเทศ",
+       "15"
+      ],
+      [
+       "ข้ามประเทศในทวีป",
+       "40"
+      ],
+      [
+       "ข้ามทวีปทางบก",
+       "90"
+      ],
+      [
+       "ข้ามทะเล",
+       "140"
+      ],
+      [
+       "ผ่านทะเลทรายหรือหมอก",
+       "220"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:103"
+    },
+    {
+     "headings": [
+      "4. รับจ้างส่งของ"
+     ],
+     "header": [
+      "ผลของงาน",
+      "ผล"
+     ],
+     "rows": [
+      [
+       "ส่งถึงตรงเวลา",
+       "ค่าจ้างเต็ม ไว้ใจผู้ว่า +1 (ถึงสามครั้งได้ลูกค้าประจำ)"
+      ],
+      [
+       "ล่าช้าไม่เกิน 10 วัน",
+       "ค่าจ้าง −20%"
+      ],
+      [
+       "ของหายหรือถูกยึด",
+       "เสียมัดจำ ผู้ว่าแค้น +1"
+      ],
+      [
+       "ส่งสำเร็จด้วยการทำศึก",
+       "โบนัสศึก (ชื่อเสียง + ส่วนแบ่ง 10% ของมูลค่า)"
+      ],
+      [
+       "เปิดดูของ (ของลับ)",
+       "ความไว้ใจ −3 แต่ได้ความลับ (เส้นเรื่อง NPC)"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:113"
+    },
+    {
+     "headings": [
+      "5. คุ้มกัน"
+     ],
+     "header": [
+      "ฝ่าย",
+      "รายได้"
+     ],
+     "rows": [
+      [
+       "ผู้คุ้มกันขบวนเล็ก (เกวียน 2 ถึง 4 คัน)",
+       "วันละ 3 ถึง 5 + ส่วนแบ่ง 3% ของกำไร"
+      ],
+      [
+       "ผู้คุ้มกันขบวนใหญ่ (คาราวาน 40 หน่วยขึ้นไป)",
+       "วันละ 6 ถึง 10 + ส่วนแบ่ง 5%"
+      ],
+      [
+       "หัวหน้าผู้คุ้มกัน (`caravan_guard` ที่มีชื่อเสียง ≥ 15)",
+       "วันละ 12 + ส่วนแบ่ง 10%"
+      ],
+      [
+       "คุ้มกันเรือ",
+       "เที่ยวละ 40 ถึง 120 ตามระยะ"
+      ],
+      [
+       "คุ้มกันบุคคลสำคัญ (ผู้แทนสภา ตัวประกัน)",
+       "เหมาตามงาน 100 ถึง 400"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:125"
+    },
+    {
+     "headings": [
+      "6. ล่าวัสดุไปขาย"
+     ],
+     "header": [
+      "วัสดุ",
+      "ผู้ซื้อราคาสูง (×1.5)",
+      "ผู้ซื้อทั่วไป"
+     ],
+     "rows": [
+      [
+       "`mt_wyrm_scale` `mt_dragon_fang`",
+       "KD-01 KD-09 ช่างตีเกราะ AZ-02",
+       "×1.0 ที่ KD ทั่วไป"
+      ],
+      [
+       "`mt_soul_crystal`",
+       "NB-09 ตลาดมืด AL-02 ศาสนจักร",
+       "×1.0"
+      ],
+      [
+       "`mt_fae_dust`",
+       "AL-05 ลาโรเซล (น้ำหอม)",
+       "×1.0"
+      ],
+      [
+       "`mt_fog_ink`",
+       "NB-11 ช่างหน้ากาก",
+       "×0.6 นอกเนบูเลีย"
+      ],
+      [
+       "`mt_pearl` `mt_sea_tentacle`",
+       "AL-05 AL-04 (เครื่องประดับ) AL-26 (ยา)",
+       "×1.0 ที่ NR"
+      ],
+      [
+       "`mt_demon_horn` `mt_demon_blood`",
+       "MH-09 MH-02",
+       "×0.8 นอกมอร์เฮเวน และเสี่ยงศาสนาแสง"
+      ],
+      [
+       "`mt_sap` `mt_herb_bundle` `mt_spore`",
+       "AL-26 AL-14 SV-02 NB-06",
+       "×1.0"
+      ],
+      [
+       "`mt_giant_bone`",
+       "SH-07 (ช่างยักษ์) KD-01",
+       "×1.0"
+      ],
+      [
+       "`mt_rune_core`",
+       "KD-04 MK-13",
+       "×1.0"
+      ],
+      [
+       "`mt_element_core`",
+       "MK-03 AL-11",
+       "×1.0"
+      ],
+      [
+       "`mt_world_seed`",
+       "ไม่ขาย (ส่งต่อให้ผู้ดูแลต้นกล้า)",
+       "—"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:141"
+    },
+    {
+     "headings": [
+      "7. ลักลอบ"
+     ],
+     "header": [
+      "กรณี",
+      "กติกา"
+     ],
+     "rows": [
+      [
+       "ของต้องห้าม",
+       "ปิดทวีป (PO-06) ของผิดกฎศาสนา ของจากตลาดเลือด ทองสาป ทาส (ตามกติกาทาส)"
+      ],
+      [
+       "ค่าลักลอบ",
+       "ผู้ลักลอบได้ ×2 ของค่าส่ง แต่ถ้าถูกจับเสียของและ `c_wanted`"
+      ],
+      [
+       "ด่านและผู้ตรวจ",
+       "ประเทศ W 4 ถึง 5 ตรวจเข้ม DC 14 ถึง 17 · W 1 ถึง 2 DC 8 ถึง 10 (ติดสินบนได้ 5 ถึง 15 ทอง)"
+      ],
+      [
+       "กิลด์",
+       "NB-09 MK-05 AL-27 กิลด์ลักลอบรับสมาชิก ได้เส้นทางลับ"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:159"
+    },
+    {
+     "headings": [
+      "8. อาชีพการค้าใหม่"
+     ],
+     "header": [
+      "ID",
+      "ชื่อ",
+      "บทบาท"
+     ],
+     "rows": [
+      [
+       "`peddler`",
+       "พ่อค้าเร่",
+       "พาของไปขายตามหมู่บ้านที่ไม่มีร้าน กำไรจากส่วนต่างราคา ชนบทและประเทศ W 1 ถึง 2"
+      ],
+      [
+       "`guide`",
+       "ผู้นำทาง",
+       "นำพ่อค้า ผู้แสวงบุญ ผู้ลี้ภัย ผ่านทะเลทราย หมอก ภูเขา"
+      ],
+      [
+       "`caravan_master`",
+       "ผู้นำขบวนคาราวาน",
+       "จัดขบวน จ้างผู้คุ้มกัน รับความเสี่ยงและกำไรของขบวน"
+      ],
+      [
+       "`broker`",
+       "นายหน้า",
+       "เชื่อมผู้ซื้อผู้ขาย ได้ค่านายหน้า 3 ถึง 5% ของมูลค่า รู้ราคาตลาดทั่วโลก"
+      ],
+      [
+       "`appraiser`",
+       "ผู้ประเมินราคา",
+       "ประเมินของ (ของโบราณ อาวุธ เครื่องราง) บอกประวัติและมูลค่า"
+      ],
+      [
+       "`moneylender`",
+       "ผู้ปล่อยกู้",
+       "ให้กู้นอกธนาคาร ดอกสูง ทวงหนี้"
+      ],
+      [
+       "`investor`",
+       "นักลงทุน",
+       "ลงทุนตาม [06-investment.md](06-investment.md)"
+      ],
+      [
+       "`shipowner`",
+       "เจ้าของเรือสินค้า",
+       "ถือเรือหนึ่งลำขึ้นไป ค้าและให้เช่า"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:170"
+    },
+    {
+     "headings": [
+      "10. หน้าต่างพระเจ้า"
+     ],
+     "header": [
+      "จุด",
+      "การแทรกแซง",
+      "ผล"
+     ],
+     "rows": [
+      [
+       "ต่อรอง",
+       "`b_silvertongue`",
+       "โบนัสต่อรอง +3 ตลอดปี"
+      ],
+      [
+       "เที่ยวค้า",
+       "คำใบ้ \"ระวัง\"",
+       "รู้ล่วงหน้าว่าเที่ยวนี้มีซุ่ม ลดความเสี่ยงหนึ่งระดับ"
+      ],
+      [
+       "เที่ยวค้า",
+       "`b_clover` หรือ `b_luckystar`",
+       "ทอยเหตุการณ์ระหว่างทางใหม่หนึ่งครั้ง"
+      ],
+      [
+       "ส่งของ",
+       "คำใบ้ \"คนนั้นโกหก\"",
+       "รู้ว่าผู้ว่าซ่อนอะไร"
+      ],
+      [
+       "ผู้ค้า",
+       "พร `gold_luck` ต่อกำไร",
+       "เพิ่มกำไร 50% ตามโค้ดเดิม"
+      ]
+     ],
+     "src": "docs/systems/economy/05-trade.md:189"
+    }
+   ]
+  },
+  "investment": {
+   "channels": [
+    {
+     "name": "ฝากธนาคาร",
+     "minCapital": 20,
+     "mean": [
+      0.01,
+      0.01
+     ],
+     "sigma": 0,
+     "risk": "ธนาคารล่ม (WR-14 WR-21 PO-08) ฝากหาย 50%",
+     "cond": "ประเทศมีธนาคาร ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 6)"
+    },
+    {
+     "name": "ที่ดินและบ้านให้เช่า",
+     "minCapital": 100,
+     "mean": [
+      0.04,
+      0.04
+     ],
+     "sigma": 0.1,
+     "risk": "สงคราม ภัยพิบัติ ค่าที่ดินลง 50%",
+     "cond": "ชั้น 3 ขึ้นไป · ผู้ไร้สิทธิ์ถือไม่ได้"
+    },
+    {
+     "name": "ไร่และฟาร์ม",
+     "minCapital": 120,
+     "mean": [
+      0.05,
+      0.05
+     ],
+     "sigma": 0.25,
+     "risk": "ตั๊กแตน (CT-08) ฤดูหนาวเถ้า (DR-04) ภัยแล้ง (CT-04)",
+     "cond": "ที่ดินมีเกษตร · ผู้ทำชีวิตช้าใช้ได้"
+    },
+    {
+     "name": "ร้านและกิจการ",
+     "minCapital": 150,
+     "mean": [
+      0.08,
+      0.08
+     ],
+     "sigma": 0.25,
+     "risk": "ตลาดมืดครอง (PO-07) สงครามบริษัท (WR-21) ภาษี",
+     "cond": "ซื้อหรือตั้งใหม่ ต้องมีผู้จัดการหรือเจ้าของทำเอง"
+    },
+    {
+     "name": "หุ้นเรือและขบวนคาราวาน",
+     "minCapital": 100,
+     "mean": [
+      0.1,
+      0.1
+     ],
+     "sigma": 0.35,
+     "risk": "โจรสลัด พายุ WR-06 WR-10 ภาษีกระแสน้ำ PO-03",
+     "cond": "ผ่านเจ้าของเรือหรือผู้นำขบวน (`shipowner` `caravan_master`)"
+    },
+    {
+     "name": "ปล่อยกู้",
+     "minCapital": 100,
+     "mean": [
+      0.12,
+      0.2
+     ],
+     "sigma": 0.3,
+     "risk": "ผิดนัดมากเมื่อสงครามหรืออดอยาก (ดอกตามหัวข้อ 6 ของไฟล์รายได้)",
+     "cond": "ชั้น 3 ขึ้นไป · หรือเป็น `moneylender` ผ่านธนาคาร"
+    },
+    {
+     "name": "หุ้นบริษัท",
+     "minCapital": 200,
+     "mean": [
+      0.09,
+      0.09
+     ],
+     "sigma": 0.4,
+     "risk": "WR-21 สงครามบริษัท PO-08 MK ปฏิวัติโรงงาน",
+     "cond": "สมาพันธ์เมคาเรีย (MK-01 MK-06 MK-16) สันนิบาตการค้า (AL-10)"
+    },
+    {
+     "name": "เหมือง",
+     "minCapital": 300,
+     "mean": [
+      0.12,
+      0.12
+     ],
+     "sigma": 0.55,
+     "risk": "เหมืองถล่ม ขุดลึกเกิน (PL-03 คัลดราตื่น) ปีศาจ (DM-07)",
+     "cond": "สิทธิ์เหมือง KD-10 AL-27 SH-08 AZ-08"
+    },
+    {
+     "name": "ของสะสม (อาวุธ เครื่องราง ศิลปะ ของโบราณ)",
+     "minCapital": 150,
+     "mean": [
+      0,
+      0.5
+     ],
+     "sigma": 0.7,
+     "risk": "ตลาดตกเมื่อ WR สัญญาณ ของปลอม",
+     "cond": "ต้องมีผู้ประเมิน (`appraiser` หรือ `ns_appraise` ≥ 2)"
+    }
+   ],
+   "region": [
+    {
+     "w": 5,
+     "mul": 1,
+     "sigmaMul": 0.8
+    },
+    {
+     "w": 3,
+     "mul": 1,
+     "sigmaMul": 1
+    },
+    {
+     "w": 4,
+     "mul": 1,
+     "sigmaMul": 1
+    },
+    {
+     "w": 2,
+     "mul": 1.2,
+     "sigmaMul": 1.5
+    },
+    {
+     "w": 1,
+     "mul": 1.5,
+     "sigmaMul": 2
+    }
+   ],
+   "skillMul": [
+    {
+     "who": "investor",
+     "mul": 1.2
+    },
+    {
+     "who": "broker",
+     "mul": 1.1
+    },
+    {
+     "who": "cunning",
+     "mul": 1.05
+    },
+    {
+     "who": "gullible",
+     "mul": 0.9
+    },
+    {
+     "who": "manager",
+     "mul": 0.9
+    }
+   ],
+   "decisions": [
+    {
+     "traits": [
+      "greedy",
+      "ambitious",
+      "reckless"
+     ],
+     "allocation": "60% เหมือง หุ้น หุ้นเรือ · 40% ที่เหลือ"
+    },
+    {
+     "traits": [
+      "coward",
+      "paranoid",
+      "homebody"
+     ],
+     "allocation": "80% ฝากธนาคารและที่ดิน · 20% ไร่"
+    },
+    {
+     "traits": [
+      "calm",
+      "pragmatic"
+     ],
+     "allocation": "กระจาย: ธนาคาร 20 ที่ดิน 25 ร้าน 25 ไร่ 15 หุ้นเรือ 15"
+    },
+    {
+     "traits": [
+      "generous",
+      "kind"
+     ],
+     "allocation": "30% ลงทุนในคน (อุปถัมภ์) ที่เหลือแบบ `calm`"
+    },
+    {
+     "traits": [
+      "dreamer",
+      "curious"
+     ],
+     "allocation": "40% ของสะสม"
+    },
+    {
+     "traits": [
+      "family",
+      "loyal_love"
+     ],
+     "allocation": "ที่ดินและบ้านเป็นหลัก (เป็นที่มั่นของตระกูล)"
+    },
+    {
+     "traits": [],
+     "allocation": "ไร่ ร้านของตัวเอง เครื่องมือชีวิต (ลงทุนในอาชีพที่ทำ)"
+    }
+   ],
+   "bankruptcy": [
+    {
+     "situation": "ทุนลงเป็น 0",
+     "result": "เสียทั้งก้อน ไม่เป็นหนี้ (ยกเว้นกู้มาลงทุน)"
+    },
+    {
+     "situation": "กู้มาลงทุนแล้วขาดทุน",
+     "result": "หนี้ต้องจ่ายต่อ ตามกติกาหนี้ ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 6)"
+    },
+    {
+     "situation": "สินทรัพย์น้อยกว่าหนี้",
+     "result": "ล้มละลาย ตกหนึ่งชั้น ยึดของ ได้ `c_debt` และอาจ `c_infamous`"
+    },
+    {
+     "situation": "ล้มละลายซ้ำภายในสิบปี",
+     "result": "ตกสองชั้น เส้นทางทาสหนี้เปิด (กติกาใน [10-bondage.md](10-bondage.md))"
+    }
+   ],
+   "overflow": [
+    {
+     "over": 2000,
+     "mul": 0.5
+    },
+    {
+     "over": 6000,
+     "mul": 0.25
+    }
+   ],
+   "propertyTax": 0.03,
+   "managerFee": 0.1,
+   "nobleBuy": 2500,
+   "portfolios": [
+    [
+     "พ่อค้าชั้น 3 ใน AL-10 นิสัย `calm` ทอง 300",
+     "ธนาคาร 60 ที่ดิน 75 ร้าน 75 ไร่ 45 หุ้นเรือ 45",
+     "ผลตอบแทนเฉลี่ยราว 5.5% ปีละราว 16 ทอง ยี่สิบปีมีฟองสบู่ (HP-02 แล้ว WR-21) เสียราว 90 ในปีหนึ่ง ทุนรวมกำไรสุดท้ายราว 540"
+    ],
+    [
+     "เจ้าของเหมืองชั้น 4 ใน KD-10 นิสัย `greedy` ทอง 600",
+     "เหมือง 360 หุ้น 240",
+     "ผลตอบแทนสูงมาก (12% ของเหมือง) แต่ PL-03 เหมืองถล่ม เสียเหมืองไป 70% ในปี 42 ทุนที่เหลือ 380 ต้องหาทางใหม่ (เปิดเรื่องผจญภัยกู้เหมือง)"
+    ],
+    [
+     "ผู้ทำชีวิตช้าชั้น 3 ใน AL-16 นิสัย `homebody` ทอง 200",
+     "ที่ดิน 100 ไร่ 80 ธนาคาร 20",
+     "ผลตอบแทนราว 4% ปีละราว 8 ผ่าน CT-08 ตั๊กแตน ไร่เสีย 60% หนึ่งปี ต้องกู้ชั่วคราว แต่ที่ดินไม่หายไปไหน"
+    ]
+   ]
+  },
+  "history": {
+   "powers": [
+    [
+     "**สภาและสันนิบาตการค้า**",
+     "AL-01 AL-10",
+     "ตราคำสัตย์ การหล่อทองกลาง",
+     "เป็นกลาง ให้ทุกฝ่ายกู้",
+     "เป็นกลางเกินไป ถูกฝ่ายใดฝ่ายหนึ่งซื้อ",
+     "AL01-1 เซรีน วาลดอร์ฟ · AL10-1 จูเซปเป้ มาร์เชลโล · AL10-3 ฟรานเชสก้า"
+    ],
+    [
+     "**ธนาคารช่างหิน**",
+     "AL-21",
+     "เงินกู้ของขุนนางครึ่งทวีป",
+     "ให้กู้จนยึดที่ดิน ไม่ให้ฟอร์เทียยึดบัญชี",
+     "สงคราม ผู้ลูกหนี้ล้มพร้อมกัน",
+     "AL21-3 ฟาร์ลิน · AL21-1 บาลาร์"
+    ],
+    [
+     "**สมาพันธ์บริษัท**",
+     "MK-01 MK-06 MK-16",
+     "อาวุธ รถไฟ ไฟฟ้า ทหารรับจ้าง",
+     "ขายทุกอย่างให้ผู้ที่จ่ายมากกว่า",
+     "แย่งกันเอง (WR-21) แรงงานและหุ่นลุกฮือ (MC-03)",
+     "MK01-1 ออกัสตัส เวนท์ · MK16-1 ซิลเวอร์สไตน์"
+    ],
+    [
+     "**สันนิบาตท่า**",
+     "NR-01 NR-12 NR-10",
+     "ทางทะเล ภาษีกระแสน้ำ ธนาคารสินเชื่อเรือ",
+     "ยึดเส้นทาง เก็บภาษี ยึดเรือที่ฝ่าไม่ได้",
+     "น้ำขึ้น (DR-05) พายุหยุด (DR-06)",
+     "NR01-1 มาร์เซโล ทาลานี · NR01-2 อิซาเบลลา วอสส์"
+    ],
+    [
+     "**ผู้ปรนนิบัติและศาสนจักร**",
+     "AZ-01 AL-02 KD-07",
+     "บรรณาการและศรัทธา",
+     "เก็บส่วย เก็บภาษีศรัทธา",
+     "มังกรล้ม (DR-01) ศรัทธาตก",
+     "AZ01-1 ไอรัสวาร์ · AL02-1 บอนิฟาซิอุสที่ 9"
+    ],
+    [
+     "**ตลาดมืด**",
+     "NB-09 MH-09 AL-27 NR-05",
+     "ความลับ ของเถื่อน ตัวตนใหม่ ทาส",
+     "ขายสิ่งที่ไม่มีใครขายได้",
+     "หมอกสลาย (BIO-05) CL-03 ตลาดย้ายที่",
+     "NB09-1 \"ศูนย์\" · MH09-1 โมธเซน · AL27-3 มาดามโรส"
+    ],
+    [
+     "**สหภาพแรงงาน**",
+     "AL-07 MK-10 KD-10 AL-28",
+     "แรงงานและการหยุดงาน",
+     "หยุดงานใหญ่ ต่อรองทั้งเมือง",
+     "ถูกสอดแนมโดยตำรวจลับ ไทรอส (AL07-3) โรงงานย้าย",
+     "AL07-1 เวรา โรมานอฟนา · MK10-1 ไรลีย์ สแตน · KD10-1 คาซมาโรด"
+    ],
+    [
+     "**ผู้คุมของจำเป็น**",
+     "AL-17 SH-05 SH-01 SV-15",
+     "ข้าว น้ำ ธุลีทิพย์ น้ำเลี้ยง",
+     "คุมราคาของที่ขาดไม่ได้",
+     "ภัยธรรมชาติ ผู้ซื้อรวมตัว",
+     "AL17-1 ลอร์ดวีทฟิลด์ · SH05-2 คามาล · SV15-1 อัลมารอน"
+    ]
+   ],
+   "lifelines": [
+    [
+     "ข้าว",
+     "AL-17 ยุ้งฉางโลก",
+     "MH ทั้งทวีป KD AZ",
+     "ความหิวมอร์เฮเวนเกิน 70 ทัพออก DM-01",
+     "WR-03 CT-08 HP-07"
+    ],
+    [
+     "น้ำเลี้ยง",
+     "SV-15 ตลาดน้ำเลี้ยง",
+     "MK (โรงไฟฟ้า) AL-14 (ยา)",
+     "ไฟโครงข่ายดับ ผู้ป่วยตาย",
+     "WR-04 PO-04 WT-03"
+    ],
+    [
+     "ธุลีทิพย์",
+     "SH-01",
+     "SH-02 มัมมี่ (ให้ตื่น)",
+     "มัมมี่หลับ ฟาโรห์ล้ม",
+     "WR-24 GI-06"
+    ],
+    [
+     "เหล็กและไฟ",
+     "KD-01 KD-06",
+     "ทุกทวีป (อาวุธ เครื่องกล)",
+     "อาวุธขาด สงครามเปลี่ยน",
+     "DR-04 AS-02 GI-04"
+    ]
+   ],
+   "tensions": [
+    [
+     "รวยกับจนในประเทศเดียวกัน",
+     "ยอดผลึกกับท่อลึก ผู้ถือที่ดินกับชาวนา",
+     "AL12-1 ออร์แลนโด · AL12-2 เกร็ก · AL17-1 ลอร์ดวีทฟิลด์ · AL17-2 ทอมมี่"
+    ],
+    [
+     "ผู้ผลิตกับผู้ขนส่ง",
+     "ภาษีกระแสน้ำ ค่าผ่านทาง ราคาผ่านด่าน",
+     "PO-03 WR-06 WR-10"
+    ],
+    [
+     "บริษัทกับคนงานและหุ่น",
+     "ค่าแรง สิทธิ์ ที่ทำงาน",
+     "MK10-1 ไรลีย์ สแตน · MK10-2 ลูซี่ · WR-21 MC-03"
+    ],
+    [
+     "ศรัทธากับทอง",
+     "บรรณาการกับตลาด ส่วยกับสิทธิ์",
+     "AZ01-1 ไอรัสวาร์ · AL02-1 บอนิฟาซิอุสที่ 9 · DR-11"
+    ],
+    [
+     "ตลาดมืดกับรัฐ",
+     "ของเถื่อน ภาษีรั่ว",
+     "PO-07 CL-03 NB09-3 เทรซ"
+    ]
+   ],
+   "winners": [
+    [
+     "DR-01 ฟ้าถล่ม",
+     "ผู้ปรนนิบัติที่ย้ายทรัพย์ลงพื้นก่อน SH-09 พ่อค้าตั๋ว ผู้เก็บซาก (SF-05)",
+     "ชาวพื้นที่เป็นหนี้ผู้ปรนนิบัติ ทุกคนบนเกาะ"
+    ],
+    [
+     "DR-04 ฤดูหนาวเถ้า",
+     "AL-17 (ขายข้าว) SH-05 (น้ำ) ผู้ค้าถ่าน",
+     "KD ทั้งทวีป ผู้ใช้เตาและช่างตี"
+    ],
+    [
+     "DR-05 มหาน้ำขึ้น",
+     "สันนิบาตท่าที่มีเรือ DW-04 (เส้นเดินเรือใหม่)",
+     "ชายฝั่ง NR-09 ที่ราบลุ่ม ผู้ถือที่ดินริมน้ำ"
+    ],
+    [
+     "WR-03 สงครามอาหาร",
+     "AL-17 AL-03 ผู้กักตุนข้าว (AL17-3 มาร์ติน)",
+     "MH ทั้งทวีป AL-06 ชั้นล่าง"
+    ],
+    [
+     "WR-14 สงครามเก้าทวีป",
+     "KD-01 MK-06 AL-08 (อาวุธ) MH-09 (ทหาร)",
+     "ธนาคารที่ให้กู้ทั้งสองฝ่าย เช่น จูเซปเป้ มาร์เชลโล (AL10-1) ผู้ลี้ภัย"
+    ],
+    [
+     "WR-21 สงครามบริษัท",
+     "MK-06 (ผู้ชนะ) ผู้ถือหุ้นที่ขายก่อน",
+     "พนักงานและเมืองที่บริษัทแพ้ (MK-14)"
+    ],
+    [
+     "HP-02 ยุคทองการค้า",
+     "พ่อค้า ผู้ค้าตลาดมืดที่ข้ามไปเป็นพ่อค้า",
+     "ผู้ถือที่ดินที่ราคาข้าวตก"
+    ],
+    [
+     "PO-07 ตลาดมืดครองเศรษฐกิจ",
+     "NB-09 MH-09 AL-27",
+     "รัฐทุกรัฐ ธนาคารที่รัฐถือ"
+    ]
+   ]
+  },
+  "implementation": {
+   "steps": [
+    {
+     "id": "P0",
+     "name": "ข้อมูล",
+     "text": "สร้าง `gen-economy.ts` และ `src/data/economy.ts` จากเอกสาร ใช้ฝั่งภาพก่อน (เปลี่ยนแค่ที่มาของค่า เห็นผลเร็ว ไม่แตะกติกา)"
+    },
+    {
+     "id": "P1",
+     "name": "ชนชั้นและของเริ่มต้น",
+     "text": "ทองเริ่มต้นและระดับของที่ได้ตั้งแต่เกิด ยังไม่มีรายได้"
+    },
+    {
+     "id": "P2",
+     "name": "รายได้ ค่าครองชีพ ภาษี",
+     "text": "ใส่ตารางรายได้ตามอาชีพ รัน `sim-gold` ปรับให้มัธยฐานที่อายุ 30 อยู่ราว 250 ถึง 350"
+    },
+    {
+     "id": "P3",
+     "name": "ราคาและร้านค้า",
+     "text": "ตลาด ตัวคูณขาดแคลน ต่อรอง"
+    },
+    {
+     "id": "P4",
+     "name": "งานรับจ้างส่งของและคุ้มกัน",
+     "text": "เป็นเหตุการณ์ (storylet) ที่ผูกเส้นทางและเที่ยวค้า"
+    },
+    {
+     "id": "P5",
+     "name": "การลงทุนและธนาคาร",
+     "text": ""
+    },
+    {
+     "id": "P6",
+     "name": "NPC",
+     "text": "ให้ NPC ใช้สูตรเดียวกัน"
+    },
+    {
+     "id": "P7",
+     "name": "ปรับสมดุล",
+     "text": "ตามหัวข้อ 6 ก่อนปล่อยใช้"
+    }
+   ],
+   "loop": [
+    "1. อัปเดตความเชื่อมั่น C ตามเหตุการณ์ของปี ฟื้น +2 ถ้าไม่มีสงคราม",
+    "2. สำหรับแต่ละประเทศ: W_eff = clamp(1..5, W_base + wMod(เหตุการณ์ ธง))",
+    "3. สำหรับแต่ละหมวดสินค้า (8) ในแต่ละประเทศ: คำนวณผลผลิตและความต้องการ → ราคา",
+    "4. ขบวนค้า NPC ลดส่วนต่างราคา 30% ตามเส้นทางที่เปิด (ส่วนต่างมาก = โอกาสของผู้เล่นและตัวละคร)",
+    "5. ตัวละครหลัก: รายได้ − ค่าครองชีพ − ภาษี ± ผลลงทุน ± ดอกเบี้ย → ทอง",
+    "6. NPC (ปรากฏอยู่): ทำสูตรเดียวกันแบบย่อ",
+    "7. ตรวจความจน (ทอง ต่ำกว่าเกณฑ์) → สร้างเหตุการณ์ตึงมือหรือขัดสน"
+   ],
+   "code": [
+    {
+     "part": "ทองของตัวละคร",
+     "where": "`Character.gold` ใน `src/sim/types.ts`",
+     "state": "ตัวเลขเดียว ค่าเริ่มต้น 0 ถึง 15 (`createCharacter`)"
+    },
+    {
+     "part": "ที่มาของทอง",
+     "where": "ผลของเหตุการณ์ (`gold±N` ใน `applyOutcome`) · ยุคทองของประเทศ +20 · พร `gold_luck` ×1.5 ของทองที่ได้",
+     "state": "ไม่พบรายได้อาชีพรายปี ร้านค้า ราคา ค่าครองชีพ หรือภาษี"
+    },
+    {
+     "part": "ประเทศ",
+     "where": "`Country` มี `flags` (`war` `plague` `famine` `golden` `fallen`) ระดับอันตราย การปกครอง เผ่า และเมือง",
+     "state": "ไม่มีค่าความรวย การใช้เงิน หรือสินค้า"
+    },
+    {
+     "part": "ความรวยฝั่งภาพ",
+     "where": "`wealthOf` และ `flavorOf` ใน `src/city/flavor.ts`",
+     "state": "คำนวณจากคำสำคัญในเอกสาร ค่าตั้งต้นต่อทวีป แล้วบวกลบตามจำนวนคำ ใช้วาดเมืองเท่านั้น"
+    },
+    {
+     "part": "อาชีพของ NPC",
+     "where": "`NPC_JOBS` (`src/data/npclife.ts`) ทำงานและทักษะ `spec` ต่อเมือง",
+     "state": "ไม่มีรายได้ ใช้ในฉากเมืองและการจำลองประจำปี"
+    },
+    {
+     "part": "อาชีพของตัวละคร",
+     "where": "`JOBS` (`src/data/lore.ts`) ความถนัด สถานะหลัก ระดับ",
+     "state": "ไม่มีช่องรายได้"
+    },
+    {
+     "part": "ทายาท",
+     "where": "`continueAsHeir` ใน `src/sim/game.ts`",
+     "state": "ส่งต่อทอง 70% ชื่อเสียง 1 ใน 3 ศรัทธา 60%"
+    },
+    {
+     "part": "ราคาของพระเจ้า",
+     "where": "`COSTS` ใน `src/sim/game.ts`",
+     "state": "เป็นของระบบพระเจ้า ไม่ใช่ของเศรษฐกิจ"
+    }
+   ],
+   "patches": [
+    {
+     "spot": "`createCharacter`",
+     "task": "สุ่มชนชั้นตาม W G ของประเทศเกิด ตั้งทองเริ่มต้นที่อายุ 17 และระดับอาวุธเกราะตามตารางในไฟล์ชนชั้น"
+    },
+    {
+     "spot": "`addChild`",
+     "task": "ใช้ตารางลูกของลูกครึ่ง ([../character/01-origin.md](../character/01-origin.md) หัวข้อ 4) และสืบชนชั้น"
+    },
+    {
+     "spot": "`continueAsHeir`",
+     "task": "ภาษีมรดก ส่งต่อชนชั้นและหนี้ ตัดทองตามเพดานของประเทศ"
+    },
+    {
+     "spot": "`JOBS`",
+     "task": "เพิ่มช่องระดับรายได้ หรือใช้ระดับ (`r`) อยู่แล้วคำนวณจากสูตร"
+    },
+    {
+     "spot": "สร้างอาวุธ",
+     "task": "อ่านชนชั้นกับ W ตามตาราง (ปัจจุบันอาวุธสุ่มตามระดับ `RARITY` ล้วน)"
+    },
+    {
+     "spot": "ตลาดและร้าน",
+     "task": "ยังไม่มี ต้องเพิ่มจุดซื้อขาย (หน้าเมือง หรือเหตุการณ์ร้านค้า)"
+    },
+    {
+     "spot": "เหตุการณ์",
+     "task": "เพิ่มตัวปรับ W และราคาตามไฟล์เศรษฐกิจโลก หัวข้อ 6"
+    },
+    {
+     "spot": "การจำลอง",
+     "task": "เพิ่ม `scripts/sim-economy.ts` วัดตัวชี้วัดในหัวข้อ 6"
+    },
+    {
+     "spot": "`src/city/flavor.ts`",
+     "task": "อ่านค่า W จาก `economy.ts` แทน `wealthOf`"
+    }
+   ],
+   "targets": [
+    {
+     "metric": "ทองมัธยฐานที่อายุ 30 แยก W",
+     "target": "W 1 ราว 220 · W 3 ราว 300 · W 5 ราว 470 (ตัวเลขในไฟล์รายได้ หัวข้อ 8)",
+     "how": "`sim-gold` ขยายให้แยกตามประเทศเกิดและชนชั้น"
+    },
+    {
+     "metric": "อัตราทองเข้า ต่อ ออก ต่อชีวิต",
+     "target": "0.8 ถึง 1.2 (ตามแนวเกมทั่วไป ใช้เป็นแนวทาง ไม่ใช่กฎ)",
+     "how": "รวมทุกทางเข้าและทางออก แยกชนชั้น"
+    },
+    {
+     "metric": "สัดส่วนที่ล้มละลาย",
+     "target": "5 ถึง 10% ของชีวิต",
+     "how": "นับ `c_debt` และตกชั้น"
+    },
+    {
+     "metric": "สัดส่วนที่ขึ้นชั้นได้",
+     "target": "จากชั้น 1 ถึง 2 → 2 ถึง 3 ใน 15% ของชีวิต",
+     "how": "นับการเปลี่ยนชั้น"
+    },
+    {
+     "metric": "กำไรจากการค้า",
+     "target": "มัธยฐานต่อเที่ยวเป็นบวก แต่ไม่เกิน 40% ของรายได้ประจำปีของอาชีพ",
+     "how": "จำลองเที่ยวค้าต่อปี"
+    },
+    {
+     "metric": "ความเสถียรของราคา",
+     "target": "ราคาในประเทศเดียวกันไม่เปลี่ยนเกิน ×2 ต่อปีนอกเหตุการณ์ใหญ่",
+     "how": "บันทึกราคาต่อประเทศต่อปี"
+    },
+    {
+     "metric": "ความต่างระหว่างประเทศ",
+     "target": "ส่วนต่างราคาข้ามชายแดนมัธยฐาน 20 ถึง 40%",
+     "how": "เทียบหลังขบวนค้า NPC"
+    },
+    {
+     "metric": "การเข้าถึงของ",
+     "target": "ตัวละครเกิดชั้น 5 ใน W 5 ได้ E 23%, ชั้น 2 ใน W 1 ได้ R < 1%",
+     "how": "นับของเริ่มต้น"
+    }
+   ],
+   "risks": [
+    {
+     "risk": "ระบบซับซ้อนเกินจนผู้เล่นอ่านไม่ออก (มีเกมที่เคยทำเศรษฐกิจแบบมีเงินแล้วต้องเลิก)",
+     "mitigation": "ผู้เล่นเห็นแค่ 3 อย่าง: ทองของตัวละคร ชนชั้น และ \"ประเทศนี้รวยหรือจน\" ส่วนที่เหลือเป็นตัวแปรหลังบ้าน ไม่มีหน้าจอตลาดเต็มรูป"
+    },
+    {
+     "risk": "ขบวนค้า NPC ทำให้ส่วนต่างหายหมด ไม่มีกำไรค้า",
+     "mitigation": "ลดส่วนต่าง 30% ต่อปี ไม่ใช่ 100% และเส้นทางที่ปิดไม่ลด ตั้งค่าได้"
+    },
+    {
+     "risk": "ล้นตลาด (ผู้เล่นขายของมากจนราคาตก)",
+     "mitigation": "ตัวละครเดียวไม่ส่งผลต่อราคาตลาดโลก เฉพาะราคาท้องถิ่นของเมืองนั้นลด 5% ต่อ 10 หน่วยที่ขายซ้ำในปีเดียวกัน"
+    },
+    {
+     "risk": "เงินล้น",
+     "mitigation": "ทางออกของชั้นสูง (ค่าครองชีพ ภาษี ซื้อยศ) และเพดานผลตอบแทน ตามไฟล์ลงทุน"
+    },
+    {
+     "risk": "ประเทศจนแล้วจน ไม่มีทางออก",
+     "mitigation": "ทางออกมีเสมอ: ผจญภัยล่าวัสดุ ส่งของ คุ้มกัน ย้ายถิ่น พึ่งผู้ช่วย ความจนไม่ทำให้ตายโดยอัตโนมัติ"
+    },
+    {
+     "risk": "ตัวเลขชนกับเนื้อเรื่องเดิม (ทอง +300 ในประเทศ W 1)",
+     "mitigation": "รางวัลจากเหตุการณ์เป็นทองกลาง คงเดิม ตัวเลขขนาดนี้เป็นรางวัลการผจญภัยไม่ใช่รายได้ปกติ"
+    },
+    {
+     "risk": "ทาสและการค้ามนุษย์เป็นเนื้อหาที่ละเอียดอ่อน",
+     "mitigation": "ทำเป็นไฟล์แยกแล้ว ([10-bondage.md](10-bondage.md)) มีจุดต่อชัดเจน (ชั้น 1 ผู้ลี้ภัย ทาสหนี้) ไม่ปนในไฟล์เศรษฐกิจ"
+    }
+   ],
+   "sim": {
+    "goldAt30": {
+     "1": 220,
+     "3": 300,
+     "5": 470
+    },
+    "medianBand": [
+     250,
+     350
+    ],
+    "bankruptcy": [
+     0.05,
+     0.1
+    ],
+    "classClimb": 0.15,
+    "tradeProfitCap": 0.4,
+    "priceYearMax": 2,
+    "borderGap": [
+     0.2,
+     0.4
+    ],
+    "inOutRatio": [
+     0.8,
+     1.2
+    ]
+   }
+  },
+  "raw": [
+   {
+    "headings": [
+     "1. เงินและความเชื่อมั่น"
+    ],
+    "header": [
+     "ตัวแปร",
+     "ช่วง",
+     "ค่าตั้งต้น"
+    ],
+    "rows": [
+     [
+      "ความเชื่อมั่นทองกลาง C",
+      "0 ถึง 100",
+      "60 ก่อน PO-01 · 80 หลัง PO-01 สภาเก้าทวีปก่อตั้ง"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:13"
+   },
+   {
+    "headings": [
+     "1. เงินและความเชื่อมั่น"
+    ],
+    "header": [
+     "C",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "70 ขึ้นไป",
+      "ปกติ ประเทศ M ผสมยอมรับทองในตลาดเมือง"
+     ],
+     [
+      "40 ถึง 69",
+      "ราคาในทองสูงขึ้น 10% ประเทศ W 1 ถึง 2 ที่ M ผสม ลดเป็น M น้อย"
+     ],
+     [
+      "ต่ำกว่า 40",
+      "ประเทศ W 3 ลงไปทุกประเทศ M ลดหนึ่งระดับ (เต็ม → ผสม → น้อย) ราคาในทองสูงขึ้น 25% การแลกของและบัญชีสัญญากลับมา"
+     ],
+     [
+      "ต่ำกว่า 15",
+      "ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:17"
+   },
+   {
+    "headings": [
+     "1. เงินและความเชื่อมั่น"
+    ],
+    "header": [
+     "รูปแบบ",
+     "ประเทศ",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "ส่วยและบรรณาการ",
+      "AZ-01 AZ-05 KD-07 SH-02",
+      "รายได้เป็นของและอาหารที่ผู้ปรนนิบัติหรือราชวงศ์ส่งต่อ ทองใช้ซื้อของนอกถิ่นเท่านั้น"
+     ],
+     [
+      "น้ำเป็นเงิน",
+      "SH-05",
+      "นายธนาคารน้ำ (SH05-2 คามาล) ให้กู้เป็นน้ำและทวงหนี้ด้วยการปิดท่อ หนี้น้ำคิดเป็นทองได้ตามราคาน้ำ"
+     ],
+     [
+      "น้ำมันโคมเป็นเงิน",
+      "NB-03 NB-14",
+      "โคมน้ำมันเป็นหน่วยแลก หลัง FG-13 (น้ำมันโคมหมด) ราคา ×5"
+     ],
+     [
+      "บัญชีสัญญา",
+      "MH-02",
+      "หนี้เลือดคือเงิน ขุนนางถือสัญญาแทนทองเสมอ (ชุด ct ใน [../../lore/storylines/22-halfblood.md](../../lore/storylines/22-halfblood.md))"
+     ],
+     [
+      "ข้าวเป็นมาตรฐาน",
+      "AL-17 NR-09 MH-06",
+      "ราคาข้าว (ข้าวสาลี ข้าวเถ้า) เป็นตัวชี้ราคาอื่นในถิ่น"
+     ],
+     [
+      "ของแลกของ",
+      "SH-12 SH-10 MH-12 SV-13",
+      "ทองมีค่าเมื่อพบพ่อค้าต่างถิ่นเท่านั้น"
+     ],
+     [
+      "สหกรณ์แบ่งปัน",
+      "AL-16 AL-19 MH-06 MK-12",
+      "ทุกคนในชุมชนได้ส่วนแบ่งตามความต้องการ ไม่มีค่าจ้างตายตัว"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:28"
+   },
+   {
+    "headings": [
+     "2. สินค้า 9 หมวด"
+    ],
+    "header": [
+     "รหัส",
+     "หมวด",
+     "ราคากลาง",
+     "ตัวอย่าง",
+     "ผลิตมากที่"
+    ],
+    "rows": [
+     [
+      "F",
+      "อาหาร",
+      "8",
+      "ข้าว ข้าวสาลี ผัก นม ปลาแห้ง `cn_trail_bread`",
+      "AL-17 AL-03 AL-16 NR-09 AZ-07 MH-06"
+     ],
+     [
+      "M",
+      "แร่และโลหะ",
+      "14",
+      "เหล็ก ทองแดง เหล็กไหล อัญมณี ถ่าน",
+      "KD ทั้งทวีป AL-27 SH-08 AZ-08"
+     ],
+     [
+      "T",
+      "ผ้าและเส้นใย",
+      "12",
+      "ฝ้าย ไหม ลินิน ขนแกะ สีย้อม (`mt_cotton` `mt_silk` `mt_wool`)",
+      "AL-05 AL-14 AL-24 SH-04 NB-11"
+     ],
+     [
+      "W",
+      "ไม้และของป่า",
+      "9",
+      "ไม้ หนัง ขน เห็ด ยางไม้ (`mt_hide` `mt_sap`)",
+      "SV ทั้งทวีป KD-12 AL-23"
+     ],
+     [
+      "S",
+      "ของทะเล",
+      "10",
+      "ปลา มุก ปะการัง สาหร่าย (`mt_pearl`)",
+      "NR ทั้งทวีป MH-11"
+     ],
+     [
+      "H",
+      "ยาและสมุนไพร",
+      "16",
+      "สมุนไพร ยาสำเร็จ (`cn_healing_draught`)",
+      "AL-26 AL-14 SV-02 SV-12 NR-13 NB-06"
+     ],
+     [
+      "X",
+      "ของวิเศษ",
+      "60",
+      "ธุลีทิพย์ น้ำเลี้ยง ผลึก ไข่มุกน้ำตา ศิลาลอย (`mt_soul_crystal` `mt_world_seed`)",
+      "SH-01 SV-15 AL-12 AZ NR-11"
+     ],
+     [
+      "E",
+      "จักรกลและอาวุธ",
+      "30",
+      "อาวุธ เกราะ เครื่องกล ชิ้นส่วน ปืน",
+      "KD-01 MK-06 MK-09 AL-08 AL-09"
+     ],
+     [
+      "V",
+      "บริการ",
+      "—",
+      "ทหารรับจ้าง นำทาง ขนส่ง ค่าตัดสิน ค่าบริจาค",
+      "ไม่ซื้อขายเป็นหน่วย เป็นรายได้ของอาชีพ"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:42"
+   },
+   {
+    "headings": [
+     "2. สินค้า 9 หมวด"
+    ],
+    "header": [
+     "สถานะในหมวดหนึ่ง",
+     "ผลิต ÷ ต้องการ"
+    ],
+    "rows": [
+     [
+      "ส่งออกหลัก",
+      "1.6"
+     ],
+     [
+      "ผลิตพอใช้",
+      "1.0"
+     ],
+     [
+      "ขาด (นำเข้า)",
+      "0.4"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:58"
+   },
+   {
+    "headings": [
+     "3. ราคา"
+    ],
+    "header": [
+     "ตัวคูณ",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "ดัชนีราคาของ W",
+      "0.7 · 0.85 · 1.0 · 1.2 · 1.5 ([02-countries.md](02-countries.md) หัวข้อ 3)"
+     ],
+     [
+      "ขาดแคลน",
+      "ส่งออกหลัก ×0.6 · พอใช้ ×1.0 · ขาด ×1.5 ปรับตามดุลของปีนั้น (ผลิต ÷ ต้องการ ลดหรือเพิ่มได้ ±25%)"
+     ],
+     [
+      "เหตุการณ์",
+      "ตามหัวข้อ 6"
+     ],
+     [
+      "ความเชื่อมั่นทอง",
+      "×1.1 เมื่อ C 40 ถึง 69 · ×1.25 เมื่อ C ต่ำกว่า 40"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:72"
+   },
+   {
+    "headings": [
+     "3. ราคา"
+    ],
+    "header": [
+     "ที่",
+     "W",
+     "สถานะ",
+     "ราคา"
+    ],
+    "rows": [
+     [
+      "AL-17 เซเรเลีย",
+      "5",
+      "ส่งออก",
+      "8 × 1.5 × 0.6 = **7.2**"
+     ],
+     [
+      "MH-05 นอคดรีน",
+      "3",
+      "ขาด",
+      "8 × 1.0 × 1.5 = **12.0**"
+     ],
+     [
+      "MH-03 อุลโมธ",
+      "1",
+      "ขาด",
+      "8 × 0.7 × 1.5 = **8.4** (ปกติ) · ช่วง WR-03 สงครามอาหาร ×2 = 16.8"
+     ],
+     [
+      "NB-14 เนบลิน",
+      "1",
+      "ขาด",
+      "8 × 0.7 × 1.5 × ตัวคูณหมอก = 8.4 ถึง 17"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:83"
+   },
+   {
+    "headings": [
+     "4. เส้นทางและต้นทุนขนส่ง"
+    ],
+    "header": [
+     "เส้นทาง",
+     "ต้นทุน (ต่อหน่วยการค้า เป็น % ของราคากลาง)",
+     "ความเสี่ยงโจรหรือภัย",
+     "ที่ใช้"
+    ],
+    "rows": [
+     [
+      "ในประเทศเดียวกัน",
+      "3%",
+      "ต่ำ",
+      "ทั่วไป"
+     ],
+     [
+      "ข้ามประเทศในทวีปเดียวกัน (ทางบก)",
+      "10%",
+      "กลาง",
+      "เกวียน คาราวาน"
+     ],
+     [
+      "ทางแม่น้ำและชายฝั่ง",
+      "7%",
+      "กลาง",
+      "NR SV-17 NR-09"
+     ],
+     [
+      "ทางทะเล",
+      "12%",
+      "สูง (โจรสลัด พายุ)",
+      "NR-01 AL-04 NR-12 เรือ"
+     ],
+     [
+      "ทางรถไฟ",
+      "4%",
+      "ต่ำ",
+      "AL-28 MK-05 หลัง MC-07"
+     ],
+     [
+      "ทางเรือเหาะ",
+      "18%",
+      "ต่ำ",
+      "MK-09 AZ (หลัง PO-02 ห้าม)"
+     ],
+     [
+      "ข้ามทะเลทราย",
+      "15%",
+      "สูง",
+      "SH-04 SH-15 กองคาราวาน"
+     ],
+     [
+      "ผ่านหมอก",
+      "25%",
+      "สูงมาก",
+      "NB ใช้ `cn_fog_filter` `ns_fog_guide`"
+     ],
+     [
+      "ผ่านบันได หมื่นขั้น",
+      "20%",
+      "กลาง",
+      "SH-03 ↔ AZ"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:94"
+   },
+   {
+    "headings": [
+     "5. สัญญาณเศรษฐกิจของโลกต่อยุค"
+    ],
+    "header": [
+     "ยุค",
+     "ลักษณะทางเศรษฐกิจ",
+     "ผลต่อค่ากลาง"
+    ],
+    "rows": [
+     [
+      "1 ยุคผนึก (0–2)",
+      "ส่วยมังกรมั่นคง ตลาดโต เส้นทางเปิด ทองกลางเชื่อมั่นสูง",
+      "ใช้ตาราง 02 ตรง ๆ · C ฟื้นเร็ว"
+     ],
+     [
+      "2 ยุคร้าว (3–5)",
+      "ภัยเริ่มรั่ว ห้ามเรือเหาะ ภาษีกระแสน้ำ บริษัทเริ่มแย่งตลาด",
+      "ต้นทุนขนส่ง +10% · ความผันผวนราคา ±15%"
+     ],
+     [
+      "3 ยุคสั่น (6–9)",
+      "แผนที่เปลี่ยน เมืองซากเกิด เหตุการณ์ DR ใหญ่ทำให้ W ของทวีปหนึ่งตก",
+      "W ที่ปรับตามเหตุการณ์ใช้เต็ม · C ผันผวน"
+     ],
+     [
+      "4 ยุคปลาย (10–14)",
+      "ทุกฝ่ายแย่งกุญแจ ตลาดมืดครอง ทองกลางเสี่ยง",
+      "ต้นทุนขนส่ง +25% · C มีแนวโน้มต่ำกว่า 50"
+     ],
+     [
+      "5 ยุคไร้มังกร (15)",
+      "ขึ้นกับตอนจบของโลก",
+      "ตามฉากจบ"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:112"
+   },
+   {
+    "headings": [
+     "6. เหตุการณ์ของโลกกับเศรษฐกิจ"
+    ],
+    "header": [
+     "เหตุการณ์",
+     "ขอบเขต",
+     "ผลต่อ W",
+     "ผลต่อราคา",
+     "ผลต่อ C"
+    ],
+    "rows": [
+     [
+      "DR-01 ฟ้าถล่ม",
+      "AZ ทั้งทวีป",
+      "−2 ถาวร (ส่วยหาย) · SH-09 SH-16 +0 แต่มีผู้ลี้ภัยหลายหมื่น",
+      "อาหารใน SH ×1.3 สามปี · ศิลาลอยดิบ (X) ×0.6 จากซากถูกเก็บ",
+      "−10"
+     ],
+     [
+      "DR-04 ฤดูหนาวเถ้า",
+      "KD ทั้งทวีป",
+      "−1 · KD-12 KD-10 −2",
+      "อาหาร KD ×2 สองปี · ถ่านและความร้อน (M) ×2",
+      "−5"
+     ],
+     [
+      "DR-05 มหาน้ำขึ้น",
+      "NR ชายฝั่ง NR-09",
+      "−1",
+      "ของทะเล (S) ×0.8 (ล้น) · อาหารจากไร่ท่วม ×1.4",
+      "−5"
+     ],
+     [
+      "DR-06 ลมหยุดหายใจ",
+      "ทุกเส้นเรือใบ",
+      "0",
+      "ต้นทุนขนส่งทะเล +30% 20 ปี แล้ว +10% ถาวร (ยุคลมสุ่ม)",
+      "0"
+     ],
+     [
+      "DR-07 แผ่นดินแยก",
+      "AL ทุ่งราบ",
+      "−1 ใน AL-08 AL-15 AL-17",
+      "ต้นทุนขนส่งบกในทุ่งราบ +40%",
+      "−10"
+     ],
+     [
+      "WR-03 สงครามอาหาร",
+      "MH × AL",
+      "AL-17 +1 (ผู้ขาย) · MH −1",
+      "อาหารใน MH ×2 · AL ×1.3",
+      "−5"
+     ],
+     [
+      "WR-04 สงครามน้ำเลี้ยง",
+      "MK × SV",
+      "SV-15 +1 · SV-01 −1",
+      "น้ำเลี้ยง (X) ×3",
+      "−5"
+     ],
+     [
+      "WR-06 สงครามกระแสน้ำ",
+      "NR × AL",
+      "NR-01 −1",
+      "ต้นทุนขนส่งทะเลของ AL ×2",
+      "−5"
+     ],
+     [
+      "WR-10 สงครามคาราวาน",
+      "SH × AL",
+      "SH-04 SH-15 +1 (ค่าผ่าน) · AL-10 −0",
+      "ต้นทุนข้ามทะเลทราย ×2 · ผ้าและอัญมณีใน AL ×1.4",
+      "−5"
+     ],
+     [
+      "WR-14 สงครามเก้าทวีป",
+      "ทุกทวีป",
+      "−1 ทุกประเทศที่ทำสงคราม · E-hub (KD-01 MK-06 AL-08) +1",
+      "จักรกลและอาวุธ (E) ×1.5 · ยา (H) ×1.4 · อาหาร ×1.3",
+      "−40"
+     ],
+     [
+      "WR-21 สงครามบริษัท",
+      "MK",
+      "−1 ใน MK-01 MK-05 · MK-06 +1",
+      "E ผันผวน ±30% · ธนาคารและบัญชีในเมคาเรียหยุดจ่าย",
+      "−10"
+     ],
+     [
+      "CT-03 กาฬโรคเก้าทวีป",
+      "ทุกทวีป",
+      "−1 NB MK · −0 ที่เหลือ",
+      "ยา (H) ×3 · ผู้ค้าที่ผ่านเมืองถูกกักตัว",
+      "−10"
+     ],
+     [
+      "CT-04 ภัยแล้งร้อยปี",
+      "หลัง DR-06 AL SH",
+      "−1",
+      "อาหารและน้ำ ×2 · SH-05 +1 (ผู้คุมน้ำ)",
+      "−5"
+     ],
+     [
+      "CT-05 น้ำท่วมโลก",
+      "หลัง DR-05",
+      "−1 NR AL ชายฝั่ง",
+      "อาหาร ×1.5",
+      "−5"
+     ],
+     [
+      "CT-08 ตั๊กแตนมหาภัย",
+      "ทวีปที่เกิด",
+      "−1 (ผู้ปลูก) · ผู้ขายอาหารต่างทวีป +1",
+      "อาหารในทวีปนั้น ×3",
+      "0"
+     ],
+     [
+      "HP-01 สนธิสัญญาเก้าทวีป",
+      "ทุกทวีป",
+      "+0",
+      "ต้นทุนขนส่ง −10% · ศุลกากรลด",
+      "+10"
+     ],
+     [
+      "HP-02 ยุคทองการค้า",
+      "ทุกทวีป",
+      "+1 ในประเทศ M ผสมหรือเต็ม (ไม่เกิน 4 ยกเว้น W 5 เดิม)",
+      "ต้นทุนขนส่ง −20% · ราคาส่วนต่างลดเร็ว (ปีละ 45%)",
+      "+5"
+     ],
+     [
+      "HP-07 ปีศาจปลูกข้าว",
+      "MH",
+      "+1 MH ทุกประเทศ (ไม่รวม MH-02)",
+      "อาหารใน MH ×0.6",
+      "0"
+     ],
+     [
+      "HP-05 มหาวิทยาลัยข้ามทวีป",
+      "AL",
+      "+0",
+      "ยา (H) ×0.9 · ความรู้ราคาลด",
+      "0"
+     ],
+     [
+      "PO-01 สภาเก้าทวีปก่อตั้ง",
+      "ทุกทวีป",
+      "0",
+      "ต้นทุนขนส่ง −5%",
+      "+20"
+     ],
+     [
+      "PO-02 ห้ามเรือเหาะ",
+      "MK AZ",
+      "MK-09 −2 · NR-12 +1",
+      "ต้นทุนขนส่งอากาศ ×3 หายไป ต้นทุนทะเล −10%",
+      "0"
+     ],
+     [
+      "PO-03 ภาษีกระแสน้ำ",
+      "NR ผ่าน",
+      "NR-01 +1",
+      "ต้นทุนขนส่งทะเลของทุกทวีปอื่น +20%",
+      "−5"
+     ],
+     [
+      "PO-06 ปิดทวีป",
+      "ทวีปที่ปิด",
+      "−1",
+      "สินค้านำเข้าในทวีปนั้น ×2 · ส่งออกหยุด · ตลาดมืดโต",
+      "−10"
+     ],
+     [
+      "PO-07 ตลาดมืดครองเศรษฐกิจ",
+      "NB MH-09 AL-27",
+      "NB-09 +0 (เต็มอยู่แล้ว) · ที่อื่นที่ติดต่อ −1",
+      "ภาษีรั่ว 20% · ของเถื่อนถูกลง ×0.7",
+      "−15"
+     ],
+     [
+      "PO-08 ลอบสังหารผู้แทนสภา",
+      "AL-01",
+      "0",
+      "ธนาคารสันนิบาตหยุดจ่าย 1 ปี",
+      "−10"
+     ],
+     [
+      "MC-07 ปฏิวัติอุตสาหกรรมสอง",
+      "AL MK",
+      "+1 AL-28 MK-05 AL-07",
+      "ต้นทุนขนส่งทางรถไฟ 4% · ผู้ขนส่งทางบกตกงาน",
+      "0"
+     ],
+     [
+      "FG-02 หมอกทึบกลืนเมือง",
+      "NB",
+      "−1 ในเมืองที่ถูกกลืน",
+      "อาหาร ×2 · โคมน้ำมัน ×3",
+      "−5"
+     ],
+     [
+      "FG-04 ตลาดโคมใหญ่ประกาศเอกราช",
+      "NB-03",
+      "+1",
+      "โคมเป็นเงินตรา (M น้อย)",
+      "−5"
+     ],
+     [
+      "FG-13 น้ำมันโคมหมด",
+      "NB",
+      "−1",
+      "น้ำมันโคม ×5 · โคม (E) ×3",
+      "0"
+     ],
+     [
+      "SF-05 เรือเหาะเก็บซาก",
+      "SH AZ",
+      "AZ-08 +1",
+      "ศิลาลอย (X) ×0.7",
+      "0"
+     ],
+     [
+      "SF-08 เมืองซากแรก",
+      "AZ SH",
+      "SH-16 +1",
+      "ที่ดินและบ้าน ×0.8",
+      "0"
+     ],
+     [
+      "AS-02 สงครามแย่งไฟสุดท้าย",
+      "KD",
+      "−1",
+      "ถ่านและความร้อน ×3",
+      "−5"
+     ],
+     [
+      "AS-03 เผ่าลาวาเย็นตัว",
+      "KD-06",
+      "−2 ถาวร",
+      "เหล็กไหล (M) ×1.5",
+      "0"
+     ],
+     [
+      "DW-04 เส้นเดินเรือใหม่",
+      "NR",
+      "NR-12 +1",
+      "ต้นทุนขนส่งทะเล −30%",
+      "+5"
+     ],
+     [
+      "WT-03 น้ำเลี้ยงสุดท้าย",
+      "SV",
+      "−1",
+      "น้ำเลี้ยง (X) ×4 · SV-15 +1",
+      "−5"
+     ],
+     [
+      "RL-02 นักเก็บสนิม",
+      "MK",
+      "MK-10 +0",
+      "ชิ้นส่วนกลไก ×0.6 (เก็บจากซาก) · ผู้เก็บได้รายได้ +20%",
+      "0"
+     ],
+     [
+      "CL-03 ตลาดมืดย้ายที่",
+      "NB",
+      "NB-09 −1",
+      "ของเถื่อนหายากขึ้น ×1.2",
+      "0"
+     ],
+     [
+      "DR-02 โอรัน-ซัลโคม่า",
+      "AZ",
+      "AZ-01 −1 (ส่วยลดตามเกาะที่จม)",
+      "ศิลาลอย (X) ×1.3",
+      "−5"
+     ],
+     [
+      "DR-08 วันคืนปั่นป่วน",
+      "ทุกทวีป",
+      "0",
+      "อาหาร ×1.3 (ฤดูเพาะปลูกเพี้ยน)",
+      "−5"
+     ],
+     [
+      "DR-09 สงครามธาตุ",
+      "ทวีปของผู้อาวุโสสองตัว",
+      "−1 สองทวีปนั้นตลอดศึก",
+      "สินค้าหลักของสองทวีป (คอลัมน์ ผลิตมากที่ หัวข้อ 2) ×1.5",
+      "−10"
+     ],
+     [
+      "DR-11 พิธีสังเวยมหาศักดิ์สิทธิ์",
+      "ทุกทวีป",
+      "−1 ประเทศ W 1 ถึง 2 ที่ส่งบรรณาการ หนึ่งทศวรรษ",
+      "ของวิเศษ (X) ×1.5 (ถูกส่งให้มังกร)",
+      "−5"
+     ],
+     [
+      "CT-01 ดาวหางทลายฟ้า",
+      "ทวีปที่ตก",
+      "−1 ประเทศที่ตก 20 ปี",
+      "ของวิเศษ (X) ×0.7 (เศษดาวหาง) · อาหารในทวีปนั้น ×1.5",
+      "−5"
+     ],
+     [
+      "CT-02 ปีแห่งฤดูหนาว",
+      "ทุกทวีป",
+      "ธง `famine` ประเทศ W 1 ถึง 2 สามปี",
+      "อาหาร ×2 · ไม้และถ่าน ×1.5",
+      "−5"
+     ],
+     [
+      "CT-07 สุริยคราสร้อยปี",
+      "ทุกทวีป",
+      "−1 ประเทศผลิตอาหารหลัก (AL-17 AL-03 NR-09 MH-06) ตลอดคราส",
+      "อาหาร ×2 · ไม้และน้ำมันโคม ×1.5",
+      "−10"
+     ],
+     [
+      "CT-09 พายุมานาทั่วโลก",
+      "ทุกทวีป",
+      "0",
+      "ของวิเศษ (X) ×0.8 (ผลึกตกตามพายุ)",
+      "0"
+     ],
+     [
+      "DM-01 จอมมารรวมเผ่า",
+      "MH",
+      "ธง `war` ทุกประเทศ MH",
+      "ทหารรับจ้างจาก MH หายจากตลาด (V) ×2 · อาหารใน MH ×1.5",
+      "−5"
+     ],
+     [
+      "DM-07 ประตูนรกเปิดทั่วโลก",
+      "ทุกทวีป",
+      "ธง `war` ประเทศที่มีประตู",
+      "อาวุธ (E) ×1.5 · ทหารรับจ้าง (V) ×2",
+      "−15"
+     ],
+     [
+      "MC-03 การปฏิวัติหุ่นยนต์",
+      "MK",
+      "−1 ทุกประเทศ MK ระหว่างลุกฮือ · MK-03 +1 หลังจบ",
+      "จักรกล (E) ×2",
+      "−10"
+     ],
+     [
+      "MC-04 เตาปฏิกรณ์มานาระเบิด",
+      "ประเทศที่ระเบิด",
+      "−2",
+      "ของวิเศษ (X) ×1.5 · จักรกล (E) ×1.3",
+      "−5"
+     ],
+     [
+      "MC-10 เมืองแขวนเทียม",
+      "MK AZ",
+      "เมืองใหม่เริ่ม W 4",
+      "ศิลาลอย (X) ×1.5",
+      "0"
+     ],
+     [
+      "MC-11 ท่อน้ำมันมังกรถูกเปิดเผย",
+      "MK",
+      "MK-06 −1 (ถูกคว่ำบาตร)",
+      "จักรกล (E) ×1.2",
+      "−10"
+     ],
+     [
+      "MC-12 เครื่องปฐมเลือกทาง",
+      "ทุกทวีป",
+      "0",
+      "จักรกล (E) ผันผวน ±30% จนโลกเลือก",
+      "−10"
+     ],
+     [
+      "BIO-01 ต้นไม้โลกป่วย",
+      "SV",
+      "0",
+      "น้ำเลี้ยง (X) ×1.5 · ยา (H) จากป่า ×1.3",
+      "0"
+     ],
+     [
+      "BIO-02 ต้นไม้โลกตาย",
+      "SV",
+      "SV-01 −2 ถาวร · SV ที่เหลือ −1",
+      "น้ำเลี้ยง (X) ×5 · ไม้และของป่า (W) ×1.5 · ยา (H) ×1.5",
+      "−10"
+     ],
+     [
+      "BIO-04 หมอกรุก",
+      "NB และชายแดน",
+      "−1 ประเทศชายแดนที่หมอกถึง",
+      "อาหาร ×1.5 · น้ำมันโคม ×2",
+      "−5"
+     ],
+     [
+      "BIO-05 หมอกสลายถาวร",
+      "NB",
+      "+1 ทุกประเทศ NB (ไม่เกิน 4)",
+      "น้ำมันโคม ×0.3 (หมดค่าเป็นเงิน) · อาหารใน NB ×0.7",
+      "+5"
+     ],
+     [
+      "BIO-07 ปะการังตาย",
+      "NR",
+      "−1 NR-09 NR-13",
+      "ของทะเล (S) ×1.5 · มุก ×2",
+      "−5"
+     ],
+     [
+      "GD-04 ปาฏิหาริย์แห่งพระเจ้า",
+      "ทุกทวีป",
+      "0",
+      "ของบูชาและค่าบริจาค (V) ×2",
+      "+10"
+     ],
+     [
+      "HP-08 เกาะลอยฟ้าใหม่",
+      "AZ",
+      "เกาะใหม่เริ่ม W 2",
+      "ศิลาลอย (X) ×0.8",
+      "+5"
+     ],
+     [
+      "PO-05 จักรวรรดิทุ่งราบ",
+      "AL ทุ่งราบ",
+      "ประเทศเมืองหลวงจักรวรรดิ +1 · ประเทศที่ถูกยึด −1",
+      "ต้นทุนขนส่งบกในทุ่งราบ −20% (ไม่มีด่าน)",
+      "+5"
+     ],
+     [
+      "GI-02 ไททันตื่น",
+      "SH และ AL ทุ่งราบ",
+      "−1 ประเทศบนเส้นทางเดินของไททัน",
+      "ต้นทุนข้ามทะเลทราย ×2",
+      "−5"
+     ],
+     [
+      "GI-07 ทะเลทรายรุก",
+      "AL ทุ่งราบ SH",
+      "−1 AL-15 AL-17",
+      "อาหาร ×1.3",
+      "0"
+     ],
+     [
+      "GI-08 ปากเหวถูกผนึก",
+      "KD MH",
+      "KD-08 +1",
+      "ถ่านและความร้อน ×1.5 (ความร้อนจากปากเหวหาย)",
+      "+5"
+     ],
+     [
+      "PL-03 คัลดราตื่น",
+      "KD",
+      "−1 KD-10 KD-11",
+      "แร่และโลหะ (M) ×1.5 · ถ่านและความร้อน ×0.7",
+      "−5"
+     ],
+     [
+      "PL-04 ธาลาสซาตื่น",
+      "NR",
+      "0",
+      "ต้นทุนขนส่งทะเล +30% สิบปี",
+      "−5"
+     ],
+     [
+      "PL-06 เซเรเนตื่น",
+      "MK",
+      "MK-01 −1",
+      "จักรกล (E) ×1.5",
+      "−10"
+     ],
+     [
+      "PL-08 ซิลเวราตื่น",
+      "SV",
+      "0",
+      "ไม้และของป่า (W) ×0.6 · ต้นทุนขนส่งบกเข้า SV ×2 (ด่านถูกกลืน)",
+      "0"
+     ],
+     [
+      "PL-09 นิเวรีตื่น",
+      "NB และทวีปข้างเคียง",
+      "−1 หนึ่งฤดูในประเทศที่หมอกไหลถึง",
+      "น้ำมันโคม ×1.5",
+      "0"
+     ],
+     [
+      "FG-03 ชั่วโมงหนวดระดับทวีป",
+      "NB ชายแดน",
+      "−1 หนึ่งฤดู",
+      "การค้าเข้าออก NB หยุดหนึ่งฤดู · น้ำมันโคม ×2",
+      "−5"
+     ],
+     [
+      "FG-07 ขบวนหนีหมอก",
+      "ชายแดน NB กับ AL",
+      "0",
+      "อาหารใน AL-15 AL-20 ×1.3 (ผู้ลี้ภัย)",
+      "0"
+     ],
+     [
+      "FG-10 ปิดรอยแยก",
+      "NB",
+      "+1 ประเทศชายแดน NB",
+      "น้ำมันโคม ×0.6",
+      "+5"
+     ],
+     [
+      "FG-11 หมอกกินทวีป",
+      "NB และชายแดน",
+      "−2 ทุกประเทศ NB · −1 ประเทศชายแดน",
+      "สินค้าทุกหมวดจาก NB หยุด · น้ำมันโคม ×5 · อาหารในชายแดน ×1.5",
+      "−15"
+     ],
+     [
+      "WR-15 สงครามชิงกุญแจ",
+      "ทุกทวีป",
+      "ธง `war` ประเทศที่ถือกุญแจ",
+      "ของวิเศษ (X) ×2 · อาวุธ (E) ×1.5",
+      "−10"
+     ],
+     [
+      "WR-23 สงครามไร้ธง",
+      "ทุกทวีป",
+      "−1 ทุกประเทศ W 3 ขึ้นไป",
+      "อาวุธ (E) ×2 · อาหาร ×1.5",
+      "−20"
+     ],
+     [
+      "END-01 ถึง END-09 แกนเปิด",
+      "ทวีปของแกน",
+      "−1 ถาวรทุกประเทศในทวีป",
+      "สินค้าหลักของทวีป (หัวข้อ 2) ×2",
+      "−15"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:124"
+   },
+   {
+    "headings": [
+     "7. ทองเข้าและทองออก"
+    ],
+    "header": [
+     "ทางเข้า (faucet)",
+     "ขนาดโดยประมาณต่อชีวิต"
+    ],
+    "rows": [
+     [
+      "รางวัลและผลของเหตุการณ์ (เดิมของโค้ด)",
+      "มัธยฐาน 219 ที่อายุ 30 ([../../../RAW_PLAN.md](../../../RAW_PLAN.md) หัวข้อ 3.2)"
+     ],
+     [
+      "รายได้อาชีพ ([04-income-and-living.md](04-income-and-living.md))",
+      "ตามชนชั้นและ W"
+     ],
+     [
+      "ขายวัสดุ ของล่าจากศัตรู",
+      "5 ถึง 60 ต่อศึกที่ชนะ ตามระดับ"
+     ],
+     [
+      "ค่าจ้างส่งของและคุ้มกัน ([05-trade.md](05-trade.md))",
+      "20 ถึง 400 ต่องาน"
+     ],
+     [
+      "ผลตอบแทนลงทุน ([06-investment.md](06-investment.md))",
+      "4 ถึง 8% ต่อปีของเงินลง"
+     ],
+     [
+      "ของขวัญ มรดก บุญคุณ คืนทอง",
+      "ตามเส้นเรื่อง"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:208"
+   },
+   {
+    "headings": [
+     "7. ทองเข้าและทองออก"
+    ],
+    "header": [
+     "ทางออก (sink)",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "ค่าครองชีพ",
+      "หัวข้อ 3 ของไฟล์รายได้ ชั้นสูงจ่ายมาก"
+     ],
+     [
+      "ซื้อไอเทม อาวุธ เกราะ ของใช้",
+      "ราคาตามระดับ"
+     ],
+     [
+      "ซ่อมและบำรุง",
+      "เกราะ 20% ของราคา ที่ดินและบ้านปีละ 3%"
+     ],
+     [
+      "ภาษีและค่าผ่านทาง",
+      "ตามระบอบการปกครอง"
+     ],
+     [
+      "ดอกเบี้ยและค่าธรรมเนียมธนาคาร",
+      "ผู้กู้"
+     ],
+     [
+      "สินบนและค่าไถ่",
+      "ตลาดมืด การถูกจับ"
+     ],
+     [
+      "ค่าพิธีและการบริจาค",
+      "แต่งงาน งานศพ วัด"
+     ],
+     [
+      "ที่ดินและตำแหน่ง (ทองที่คนรวยอยากใช้เอง)",
+      "ซื้อบ้าน ซื้อยศ ตำแหน่ง ผู้ใหญ่ในสภา"
+     ],
+     [
+      "ทองสาปและหาย",
+      "ปล้น ทองสาป (`c_cursedgold`) ล้มละลาย"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:217"
+   },
+   {
+    "headings": [
+     "8. ตลาดมืดและเศรษฐกิจเงา"
+    ],
+    "header": [
+     "ที่",
+     "บทบาท"
+    ],
+    "rows": [
+     [
+      "NB-09 ซอร์วาน",
+      "ตลาดมืดข้ามทวีป นายหน้า ข้อมูล ตัวตนใหม่ เป็นศูนย์กลางระดับ W 5"
+     ],
+     [
+      "MH-09 โมธมาร์ต",
+      "ตลาดเลือด ทหารรับจ้างและทาส ผูกหนี้เลือด"
+     ],
+     [
+      "AL-27 โกลด์ครีก",
+      "เมืองเถื่อน ทองดิบ ปืน พนัน"
+     ],
+     [
+      "NR-05 ทอร์ตูโมอา",
+      "สินค้าปล้น ทองสาป"
+     ],
+     [
+      "MK-16 รีเวนพอร์ต",
+      "กองทัพเอกชน ขายอาวุธ"
+     ]
+    ],
+    "src": "docs/systems/economy/01-world-economy.md:233"
+   },
+   {
+    "headings": [
+     "1. ห้าชั้น"
+    ],
+    "header": [
+     "ชั้น",
+     "ชื่อ",
+     "ใครบ้าง",
+     "สิทธิ์"
+    ],
+    "rows": [
+     [
+      "1",
+      "ผู้ไร้สิทธิ์",
+      "ทาสและลูกหนี้ผูกตัว (กติกาใน [10-bondage.md](10-bondage.md)) ผู้ลี้ภัยที่ไม่มีที่ ผู้ไร้เงา (NB-13) ผู้ถูกเนรเทศ หุ่นวิญญาณที่ยังไม่มีสิทธิ์ (MK-03 ก่อนมีสภา)",
+      "ถือที่ดินและอาวุธไม่ได้ ถูกบังคับทำงาน ไม่มีสิทธิ์ในศาล ยกเว้นประเทศที่สหกรณ์รับ (AL-19 MK-12)"
+     ],
+     [
+      "2",
+      "ชนชั้นล่าง",
+      "กรรมกร ชาวนาไร้ที่ดิน ลูกจ้างโรงงาน คนงานเหมือง ลูกเรือ",
+      "เช่าที่ได้ ถืออาวุธเครื่องมือได้ ไม่มีสิทธิ์เข้าสภา"
+     ],
+     [
+      "3",
+      "สามัญชน",
+      "ชาวนาที่มีที่เล็ก ช่างฝีมือ พ่อค้ารายย่อย ทหาร เจ้าของร้านเล็ก",
+      "ถือที่ดินเล็ก เข้าศาลได้ เข้าพิธีของถิ่นได้"
+     ],
+     [
+      "4",
+      "ผู้มั่งคั่ง",
+      "พ่อค้าใหญ่ ช่างที่มีชื่อ เจ้าที่ดินกลาง ผู้ถือหุ้น นายธนาคาร นักบวชระดับสูง",
+      "ถือที่ดินใหญ่ จ้างคนได้ เข้าสภาเมืองในระบอบที่เปิด ซื้อยศไม่ได้ในระบอบศักดินา"
+     ],
+     [
+      "5",
+      "ขุนนางและผู้ปกครอง",
+      "ราชวงศ์ ผู้ถือที่ดินใหญ่ ประมุขบริษัท สังฆราช หัวหน้าตระกูล ผู้นำเผ่า",
+      "ตั้งกฎ เก็บภาษี ตัดสินคดี ตั้งผู้อื่นเข้าชั้นต่ำกว่า"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:9"
+   },
+   {
+    "headings": [
+     "2. ชนชั้นที่เกิดตาม W และ G"
+    ],
+    "header": [
+     "W",
+     "G",
+     "ไร้สิทธิ์",
+     "ล่าง",
+     "สามัญ",
+     "มั่งคั่ง",
+     "ขุนนาง"
+    ],
+    "rows": [
+     [
+      "1",
+      "ต่ำ",
+      "5",
+      "45",
+      "44",
+      "5",
+      "1"
+     ],
+     [
+      "1",
+      "กลาง",
+      "10",
+      "50",
+      "34",
+      "5",
+      "1"
+     ],
+     [
+      "1",
+      "สูง",
+      "16",
+      "54",
+      "24",
+      "5",
+      "1"
+     ],
+     [
+      "1",
+      "สูงมาก",
+      "23",
+      "53",
+      "18",
+      "4",
+      "2"
+     ],
+     [
+      "2",
+      "ต่ำ",
+      "3",
+      "34",
+      "54",
+      "9",
+      "0"
+     ],
+     [
+      "2",
+      "กลาง",
+      "6",
+      "40",
+      "44",
+      "9",
+      "1"
+     ],
+     [
+      "2",
+      "สูง",
+      "10",
+      "46",
+      "33",
+      "9",
+      "2"
+     ],
+     [
+      "2",
+      "สูงมาก",
+      "15",
+      "48",
+      "26",
+      "9",
+      "2"
+     ],
+     [
+      "3",
+      "ต่ำ",
+      "1",
+      "22",
+      "62",
+      "14",
+      "1"
+     ],
+     [
+      "3",
+      "กลาง",
+      "3",
+      "27",
+      "53",
+      "15",
+      "2"
+     ],
+     [
+      "3",
+      "สูง",
+      "5",
+      "32",
+      "43",
+      "17",
+      "3"
+     ],
+     [
+      "3",
+      "สูงมาก",
+      "8",
+      "36",
+      "35",
+      "17",
+      "4"
+     ],
+     [
+      "4",
+      "ต่ำ",
+      "1",
+      "15",
+      "59",
+      "23",
+      "2"
+     ],
+     [
+      "4",
+      "กลาง",
+      "2",
+      "18",
+      "50",
+      "25",
+      "5"
+     ],
+     [
+      "4",
+      "สูง",
+      "4",
+      "21",
+      "40",
+      "27",
+      "8"
+     ],
+     [
+      "4",
+      "สูงมาก",
+      "6",
+      "23",
+      "33",
+      "28",
+      "10"
+     ],
+     [
+      "5",
+      "ต่ำ",
+      "1",
+      "10",
+      "51",
+      "33",
+      "5"
+     ],
+     [
+      "5",
+      "กลาง",
+      "1",
+      "12",
+      "42",
+      "35",
+      "10"
+     ],
+     [
+      "5",
+      "สูง",
+      "2",
+      "14",
+      "32",
+      "37",
+      "15"
+     ],
+     [
+      "5",
+      "สูงมาก",
+      "3",
+      "15",
+      "26",
+      "37",
+      "19"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:23"
+   },
+   {
+    "headings": [
+     "3. ของที่ได้ตอนเกิด"
+    ],
+    "header": [
+     "ชั้น",
+     "ทองเริ่มต้น (ที่ W 3)"
+    ],
+    "rows": [
+     [
+      "ผู้ไร้สิทธิ์",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "2 ถึง 8"
+     ],
+     [
+      "สามัญชน",
+      "5 ถึง 25"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "40 ถึง 120"
+     ],
+     [
+      "ขุนนาง",
+      "150 ถึง 400"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:54"
+   },
+   {
+    "headings": [
+     "3. ของที่ได้ตอนเกิด"
+    ],
+    "header": [
+     "ชั้น",
+     "W",
+     "ของใช้",
+     "C",
+     "U",
+     "R",
+     "E"
+    ],
+    "rows": [
+     [
+      "ผู้ไร้สิทธิ์",
+      "1",
+      "78",
+      "21",
+      "1",
+      "0",
+      "0"
+     ],
+     [
+      "ผู้ไร้สิทธิ์",
+      "2",
+      "74",
+      "24",
+      "2",
+      "0",
+      "0"
+     ],
+     [
+      "ผู้ไร้สิทธิ์",
+      "3",
+      "70",
+      "28",
+      "2",
+      "0",
+      "0"
+     ],
+     [
+      "ผู้ไร้สิทธิ์",
+      "4",
+      "60",
+      "34",
+      "6",
+      "0",
+      "0"
+     ],
+     [
+      "ผู้ไร้สิทธิ์",
+      "5",
+      "51",
+      "38",
+      "10",
+      "1",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "1",
+      "43",
+      "50",
+      "7",
+      "0",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "2",
+      "35",
+      "57",
+      "8",
+      "0",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "3",
+      "25",
+      "65",
+      "10",
+      "0",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "4",
+      "21",
+      "59",
+      "18",
+      "2",
+      "0"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "5",
+      "18",
+      "53",
+      "25",
+      "4",
+      "0"
+     ],
+     [
+      "สามัญชน",
+      "1",
+      "19",
+      "54",
+      "22",
+      "5",
+      "0"
+     ],
+     [
+      "สามัญชน",
+      "2",
+      "10",
+      "59",
+      "25",
+      "6",
+      "0"
+     ],
+     [
+      "สามัญชน",
+      "3",
+      "0",
+      "65",
+      "28",
+      "7",
+      "0"
+     ],
+     [
+      "สามัญชน",
+      "4",
+      "0",
+      "55",
+      "34",
+      "10",
+      "1"
+     ],
+     [
+      "สามัญชน",
+      "5",
+      "0",
+      "47",
+      "37",
+      "14",
+      "2"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "1",
+      "7",
+      "28",
+      "43",
+      "20",
+      "2"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "2",
+      "3",
+      "24",
+      "47",
+      "23",
+      "3"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "3",
+      "0",
+      "20",
+      "50",
+      "27",
+      "3"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "4",
+      "0",
+      "17",
+      "46",
+      "30",
+      "7"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "5",
+      "0",
+      "14",
+      "41",
+      "33",
+      "12"
+     ],
+     [
+      "ขุนนางและผู้ปกครอง",
+      "1",
+      "2",
+      "15",
+      "41",
+      "35",
+      "7"
+     ],
+     [
+      "ขุนนางและผู้ปกครอง",
+      "2",
+      "1",
+      "10",
+      "41",
+      "40",
+      "8"
+     ],
+     [
+      "ขุนนางและผู้ปกครอง",
+      "3",
+      "0",
+      "5",
+      "40",
+      "45",
+      "10"
+     ],
+     [
+      "ขุนนางและผู้ปกครอง",
+      "4",
+      "0",
+      "4",
+      "35",
+      "44",
+      "17"
+     ],
+     [
+      "ขุนนางและผู้ปกครอง",
+      "5",
+      "0",
+      "4",
+      "30",
+      "43",
+      "23"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:70"
+   },
+   {
+    "headings": [
+     "4. ชนชั้นกับอาชีพ"
+    ],
+    "header": [
+     "ชั้น",
+     "อาชีพที่เสนอเพิ่ม (×3)",
+     "ปิด (×0)"
+    ],
+    "rows": [
+     [
+      "1",
+      "`miner` `servant` `courier` `woodcutter` (งานที่ไม่ต้องมีสิทธิ์)",
+      "ขุนนาง อาชีพที่ต้องมีที่ดินหรือทุน (`farm_owner` `banker` `shipowner`)"
+     ],
+     [
+      "2",
+      "`farmer` `sailor` `miner` `mercenary` `servant` `courier` `city_guard`",
+      "`noble` `banker`"
+     ],
+     [
+      "3",
+      "อาชีพทั่วไปตามความถนัด",
+      "`noble` ก่อนได้รับแต่งตั้ง"
+     ],
+     [
+      "4",
+      "`merchant` `banker` `broker` `investor` `shipowner` `lawyer` `physician`",
+      "งานกรรมกร"
+     ],
+     [
+      "5",
+      "`noble` `knight` `royal_guard` `mayor` `diplomat` ฯลฯ",
+      "งานกรรมกรและงานต่ำชั้น"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:108"
+   },
+   {
+    "headings": [
+     "5. ขึ้นและตกชั้น"
+    ],
+    "header": [
+     "การเปลี่ยน",
+     "เงื่อนไข"
+    ],
+    "rows": [
+     [
+      "1 → 2",
+      "ไถ่ตัวหรือหนี้หมด · สหกรณ์รับ (AL-19 MK-12) · ผู้ช่วยชีวิตเสนอสิทธิ์ · เหตุการณ์ปลดปล่อย"
+     ],
+     [
+      "2 → 3",
+      "ทอง ≥ 150 และมีอาชีพมั่นคงห้าปี หรือได้ที่ดิน"
+     ],
+     [
+      "3 → 4",
+      "ทอง ≥ 600 หรือมีกิจการ ลงทุนสำเร็จ ชื่อเสียง ≥ 30 และรับในกิลด์พ่อค้าหรือช่าง"
+     ],
+     [
+      "4 → 5",
+      "ได้แต่งตั้ง (ระบอบศักดินา) ซื้อยศ (ระบอบพ่อค้า ทอง ≥ 2,500) เลือกตั้ง (สาธารณรัฐ) แต่งงานเข้าตระกูล ผู้ถืออาชีพพิเศษระดับประเทศ (เช่น `nine_delegate` ให้ชั้น 4 ถึง 5 ชั่วคราว)"
+     ],
+     [
+      "ตกหนึ่งชั้น",
+      "หนี้เกินทรัพย์ 2 เท่า · ถูกเนรเทศหรือถูกลดยศ · เหตุการณ์ล้างทรัพย์ (ฟ้าถล่ม DR-01 กับตระกูลผู้ปรนนิบัติ)"
+     ],
+     [
+      "ตก 2 ชั้นขึ้นไป",
+      "ล้มละลายพร้อมถูกจับ · ถูกบังคับขายตัวเป็นทาสหนี้ (กติกาใน [10-bondage.md](10-bondage.md))"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:118"
+   },
+   {
+    "headings": [
+     "6. ระบอบการปกครองกับชนชั้น"
+    ],
+    "header": [
+     "ระบอบ",
+     "ตัวอย่างประเทศ",
+     "ขุนนาง",
+     "มั่งคั่ง",
+     "ผู้ไร้สิทธิ์",
+     "ขึ้นชั้นยาก"
+    ],
+    "rows": [
+     [
+      "ราชาธิปไตยและศักดินา",
+      "AL-03 AL-05 AL-04 KD-07 AZ-02",
+      "×1.6",
+      "×0.9",
+      "×1.2",
+      "ยากมาก (ต้องได้แต่งตั้ง)"
+     ],
+     [
+      "เทวาธิปไตยและรัฐนักบวช",
+      "AL-02 AZ-01 KD-11 NR-11",
+      "×1.4 (นักบวชชั้นสูง)",
+      "×1.0",
+      "×1.3",
+      "ยาก (ต้องผ่านพิธีและศรัทธา)"
+     ],
+     [
+      "สาธารณรัฐพ่อค้า",
+      "NR-01 AL-10 KD-09 AL-21",
+      "×0.7",
+      "×1.6",
+      "×1.0",
+      "ง่าย (ซื้อยศได้)"
+     ],
+     [
+      "สาธารณรัฐและสหภาพแรงงาน",
+      "AL-06 AL-07 KD-10 MK-10",
+      "×0.3",
+      "×0.8",
+      "×0.5",
+      "กลาง (เลือกตั้ง)"
+     ],
+     [
+      "จักรวรรดิทหาร",
+      "AL-08 MK-02 MH-01",
+      "×1.4 (นายทัพ)",
+      "×0.8",
+      "×1.5",
+      "กลาง (ผ่านยศทหาร)"
+     ],
+     [
+      "บริษัทและสมาพันธ์",
+      "MK-01 MK-06 MK-16",
+      "×1.0 (ประมุขบริษัท)",
+      "×1.5 (ผู้ถือหุ้น)",
+      "×1.2",
+      "กลาง (ผ่านหุ้น)"
+     ],
+     [
+      "สหพันธ์เผ่าและชุมชน",
+      "AL-16 MH-06 AL-23 SV-16",
+      "×0.4",
+      "×0.5",
+      "×0.3",
+      "กลาง (ผ่านฝีมือหรือความกล้า)"
+     ],
+     [
+      "ไม่มีรัฐ",
+      "MH-12 SH-14",
+      "×0.0",
+      "×0.3",
+      "×1.5",
+      "—"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:133"
+   },
+   {
+    "headings": [
+     "7. เผ่าและชนชั้น"
+    ],
+    "header": [
+     "กรณี",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "เผ่ามังกรสายปฐม (KD-07 AZ-02)",
+      "เกิดชั้น 4 ถึง 5 มากกว่าเผ่าอื่น ×2 (ตามข้อมูลจริงใน [../../lore/races/09-dragonkin.md](../../lore/races/09-dragonkin.md))"
+     ],
+     [
+      "ปีกสั้นและมนุษย์ชาวพื้นในอัซการ์",
+      "ชั้น 2 ถึง 3 เป็นหลัก ผู้ปรนนิบัติผิวขาว (อาเวียนขาว) อยู่ชั้น 4 ถึง 5"
+     ],
+     [
+      "ผู้ไร้เงา (NB-13)",
+      "ชั้น 1 โดยกำเนิด ไม่มีสิทธิ์ถือทรัพย์"
+     ],
+     [
+      "ผู้ลี้ภัยทุกเผ่า",
+      "ชั้น 1 ถึง 2 ในประเทศใหม่ ขึ้นได้หลังอยู่ครบสิบปีหรือสหกรณ์รับ"
+     ],
+     [
+      "หุ่นวิญญาณ ลูกผสมจักรกล",
+      "ชั้น 1 ถึง 2 ใน MK ก่อน MC-03 สภาหุ่น (MK-03) และ RL-03 ขึ้นชั้น 2 ถึง 3"
+     ],
+     [
+      "ยักษ์และเผ่าสัตว์ในทุ่งราบ",
+      "ชั้น 2 เป็นหลัก ยกเว้นผู้นำเผ่าที่ชั้น 4 ถึง 5"
+     ],
+     [
+      "ลูกครึ่ง",
+      "ตามถิ่นเกิด และอาจลดชั้นตามหัวข้อ 2"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:146"
+   },
+   {
+    "headings": [
+     "8. NPC"
+    ],
+    "header": [
+     "ลำดับ",
+     "เงื่อนไข",
+     "ชั้น"
+    ],
+    "rows": [
+     [
+      "1",
+      "รายการยกเว้นข้างล่าง",
+      "ตามรายการ"
+     ],
+     [
+      "2",
+      "ตัวที่ 1 ของประเทศ (รหัสลงท้าย -1)",
+      "5"
+     ],
+     [
+      "3",
+      "ราชา ราชินี จักรพรรดิ กษัตริย์ ราชวงศ์ ฟาโรห์ ดยุก เคานต์ บารอน เจ้าชาย เจ้าหญิง เจ้าผู้ครอง ประมุข ประธานสาธารณรัฐ สังฆราช หัวหน้าตระกูล ผู้นำเผ่า ผู้ถือกุญแจ ขุนนาง จอมมาร มหาเสนาบดี",
+      "5"
+     ],
+     [
+      "4",
+      "ทาส ลูกหนี้ ผู้ลี้ภัย ผู้ถูกเนรเทศ ผู้ไร้เงา กำพร้า ขอทาน นักโทษ ผู้หลบหนี ผู้ถูกผูก",
+      "1"
+     ],
+     [
+      "5",
+      "นายธนาคาร กิลด์ บริษัท ผู้ถือหุ้น พ่อค้าใหญ่ แม่ทัพ นายพล ผู้บัญชาการ หัวหน้ากอง มหาปุโรหิต หัวหน้านักบวช นักบวชใหญ่ ระดับสูง เจ้าของเหมือง เจ้าของเรือ เจ้าที่ดิน เจ้าสำนัก",
+      "4"
+     ],
+     [
+      "6",
+      "คนงาน กรรมกร ลูกเรือ ชาวนา ชาวประมง คนรับใช้ เด็กงาน ทหารเกณฑ์ คนล้าง เด็กส่ง เด็กเก็บ คนเก็บ คนเลี้ยง คนขน คนแบก คนตัด ลูกจ้าง ผู้ช่วย",
+      "2"
+     ],
+     [
+      "7",
+      "ที่เหลือ",
+      "3"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:162"
+   },
+   {
+    "headings": [
+     "8. NPC"
+    ],
+    "header": [
+     "NPC",
+     "ชั้น",
+     "เหตุ"
+    ],
+    "rows": [
+     [
+      "AL12-2 เกร็ก",
+      "2",
+      "ผู้ลี้ภัยที่เป็นหัวหน้าท่อลึก ได้อำนาจในถิ่นแต่สิทธิ์ยังเป็นชั้นล่าง"
+     ],
+     [
+      "MK10-4 ซูซาน",
+      "2",
+      "แม่ค้าใต้เมือง ได้ความไว้ใจชั้น 3 แต่ฐานะเป็นชั้นล่าง"
+     ],
+     [
+      "AL23-2 ราชา",
+      "3",
+      "\"ราชา\" เป็นชื่อ ไม่ใช่ยศ"
+     ],
+     [
+      "MK03-6 ไรเวอร์-9",
+      "3",
+      "หุ่นที่มีความทรงจำของแม่ทัพ ไม่ได้ถือยศ"
+     ],
+     [
+      "MK11-3 ธอริน",
+      "3",
+      "วิศวกรของบริษัท ไม่ใช่เจ้าของ"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:174"
+   },
+   {
+    "headings": [
+     "8. NPC"
+    ],
+    "header": [
+     "ชั้น",
+     "ค่ากลางที่ W 3",
+     "ที่มา"
+    ],
+    "rows": [
+     [
+      "1",
+      "0",
+      "ถือทรัพย์ไม่ได้"
+     ],
+     [
+      "2",
+      "30",
+      "ต่ำกว่าเกณฑ์ขึ้นชั้น 3 (150) ราว p25 ของทองสะสม ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 8)"
+     ],
+     [
+      "3",
+      "90",
+      "p50 ของทองสะสมที่อายุเทียบ 30"
+     ],
+     [
+      "4",
+      "1,200",
+      "สองเท่าของเกณฑ์ขึ้นชั้น 4 (600)"
+     ],
+     [
+      "5",
+      "5,000",
+      "สองเท่าของเกณฑ์ซื้อยศ (2,500) ไม่รวมที่ดินและงบประเทศ ผู้ปกครองใช้งบประเทศส่วนตัวได้ไม่เกิน 400 ต่อปีตาม [04-income-and-living.md](04-income-and-living.md) หัวข้อ 2"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:184"
+   },
+   {
+    "headings": [
+     "9. เรื่องราวของชนชั้น"
+    ],
+    "header": [
+     "ชั้น",
+     "แกนเรื่อง"
+    ],
+    "rows": [
+     [
+      "1",
+      "หนีหรือไถ่ตัว ผู้ช่วยเหลือ ประเทศที่รับ"
+     ],
+     [
+      "2",
+      "ค่าแรงและการหยุดงาน หนี้ แรงงานย้ายถิ่น ผจญภัยเพื่อทุน"
+     ],
+     [
+      "3",
+      "ร้านและที่ดินเล็ก ลงทุนครั้งแรก ภาษี ตระกูลที่ค่อย ๆ ขึ้น"
+     ],
+     [
+      "4",
+      "การค้าใหญ่ ธนาคาร การเมืองสภาเมือง ความขัดแย้งกับขุนนางและสหภาพ"
+     ],
+     [
+      "5",
+      "อำนาจและภาระ ส่วย การแต่งงานการเมือง ความลับของตระกูล ตระกูลที่ล้ม"
+     ]
+    ],
+    "src": "docs/systems/economy/03-classes.md:198"
+   },
+   {
+    "headings": [
+     "1. รายได้ของอาชีพ"
+    ],
+    "header": [
+     "ส่วน",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "ฐานของอาชีพ",
+      "ตามระดับ: C 14 · U 22 · R 36 · E 70 ทองต่อปี"
+     ],
+     [
+      "ดัชนีรายได้ของ W",
+      "0.5 · 0.75 · 1.0 · 1.4 · 1.9 ([02-countries.md](02-countries.md) หัวข้อ 3)"
+     ],
+     [
+      "การใช้เงิน M",
+      "เต็ม ×1.0 · ผสม ×0.75 · น้อย ×0.5 (ส่วนที่เหลือเป็นของและอาหาร ลดค่าครองชีพในหัวข้อ 3)"
+     ],
+     [
+      "ชนชั้น",
+      "ผู้ไร้สิทธิ์ ×0.2 (ได้แค่ปากท้อง) · ล่าง ×0.8 (รับค่าแรง) · สามัญ ×1.0 · มั่งคั่ง ×1.5 (เจ้าของกิจการ) · ขุนนางไม่ใช้สูตรนี้ (ใช้รายได้จากที่ดินหัวข้อ 2)"
+     ],
+     [
+      "ผันผวนต่อปี",
+      "สุ่ม ×0.7 ถึง ×1.3 (ปีแล้ง ปีสงคราม ดูหัวข้อ 4 ของไฟล์เศรษฐกิจโลก)"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:13"
+   },
+   {
+    "headings": [
+     "1. รายได้ของอาชีพ"
+    ],
+    "header": [
+     "หมวด (ตาม [../character/09-jobs-common.md](../character/09-jobs-common.md))",
+     "ตัวคูณ",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "ช่างฝีมือ",
+      "×1.0",
+      ""
+     ],
+     [
+      "บริการและพลเรือน",
+      "×1.0",
+      "`banker` ×1.5 · `tax_collector` ×1.2 พร้อมค่านายหน้า"
+     ],
+     [
+      "เทคนิคและวิชาการ",
+      "×1.2",
+      ""
+     ],
+     [
+      "ต่อสู้และเสี่ยงอันตราย",
+      "×1.1",
+      "บวกรางวัลศึกตาม [../combat/05-rewards.md](../combat/05-rewards.md) ปีที่ไม่มีงานรายได้ลด ×0.5"
+     ],
+     [
+      "ศาสนา",
+      "×0.8",
+      "บวกเครื่องบูชาและบริจาค (ของกินและของใช้)"
+     ],
+     [
+      "ศิลปะ",
+      "×0.7",
+      "บวกของขวัญและค่าตอบแทนเฉพาะกิจ"
+     ],
+     [
+      "ชีวิตช้า",
+      "×0.5",
+      "ตามกติกาเดิม ([../character/08-jobs-overview.md](../character/08-jobs-overview.md) หัวข้อ 3) บวกโบนัสเครื่องมือชีวิต ([../items/11-item-system.md](../items/11-item-system.md) หัวข้อ 6) ปีละไม่เกิน +50%"
+     ],
+     [
+      "อาชีพที่ย้ายจากลับ และใหม่ (ไฟล์ [05-trade.md](05-trade.md))",
+      "ตามระดับและตารางเฉพาะ",
+      ""
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:23"
+   },
+   {
+    "headings": [
+     "1. รายได้ของอาชีพ"
+    ],
+    "header": [
+     "อาชีพ",
+     "รายได้"
+    ],
+    "rows": [
+     [
+      "`merchant`",
+      "ฐาน U 22 + กำไรจากการซื้อขายจริง ([05-trade.md](05-trade.md)) ต่อรองด้วย `trade`"
+     ],
+     [
+      "`adventurer` `bounty_hunter` `explorer`",
+      "ไม่มีเงินเดือน ได้ตามงานและรางวัล ปีที่ไม่มีงานรายได้ศูนย์ แต่ค่าครองชีพชั้นสามัญลดเหลือครึ่งเมื่ออยู่นอกเมือง"
+     ],
+     [
+      "`pirate` `smuggler` `thief`",
+      "ผันผวนมาก (0 ถึง ×3) ถูกจับ ยึดทรัพย์ ได้ `c_wanted`"
+     ],
+     [
+      "`mercenary` `soldier`",
+      "เงินเดือนประจำ + ส่วนแบ่งศึก MK-16 MH-09 จ่ายดีที่สุด"
+     ],
+     [
+      "`noble`",
+      "ไม่ได้ค่าจ้าง ใช้รายได้ที่ดิน"
+     ],
+     [
+      "`pilgrim` `temple_servant`",
+      "ได้ที่พักและอาหารเป็นหลัก ทองไม่เกินครึ่งของสูตร"
+     ],
+     [
+      "อาชีพลับและพิเศษ",
+      "ไม่มีรายได้จากสูตร ใช้ผลตามเส้นเรื่อง (ตำแหน่งที่ได้ผูกเงินเดือน เช่น `nine_delegate` ได้เงินเดือนจากสภา 60 ต่อปี)"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:36"
+   },
+   {
+    "headings": [
+     "2. ขุนนางและผู้ถือที่ดิน"
+    ],
+    "header": [
+     "ฐานะ",
+     "รายได้ต่อปี",
+     "ค่าบำรุง"
+    ],
+    "rows": [
+     [
+      "ขุนนางเล็ก",
+      "60 ถึง 100",
+      "3% ของมูลค่าที่ดินและบ้าน"
+     ],
+     [
+      "ขุนนางใหญ่ (ตระกูลปกครองเมือง)",
+      "100 ถึง 200",
+      "3% ของมูลค่าที่ดินและบ้าน"
+     ],
+     [
+      "ผู้ปกครองประเทศ",
+      "ไม่ใช้สูตร เป็นรายได้ของรัฐ (งบประเทศ) ตัวละครหรือ NPC ใช้ส่วนตัวได้ไม่เกิน 400 ต่อปี",
+      ""
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:50"
+   },
+   {
+    "headings": [
+     "3. ค่าครองชีพ"
+    ],
+    "header": [
+     "ชั้น",
+     "ค่าครองชีพ (ที่ W 3)"
+    ],
+    "rows": [
+     [
+      "ผู้ไร้สิทธิ์",
+      "0 ถึง 1 (นายจ้างหรือเจ้าของให้ปากท้อง)"
+     ],
+     [
+      "ชนชั้นล่าง",
+      "4 ถึง 8"
+     ],
+     [
+      "สามัญชน",
+      "9 ถึง 15"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "22 ถึง 45"
+     ],
+     [
+      "ขุนนาง",
+      "60 ถึง 120"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:62"
+   },
+   {
+    "headings": [
+     "4. ภาษีและค่าธรรมเนียม"
+    ],
+    "header": [
+     "ระบอบ",
+     "ภาษี",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "ราชาธิปไตยและศักดินา",
+      "20% (ชั้น 1 ถึง 3) · 10% (ชั้น 4) · 0% (ชั้น 5)",
+      "บวกค่าเกณฑ์แรงงานสองเดือนต่อปีสำหรับชั้น 2"
+     ],
+     [
+      "เทวาธิปไตย",
+      "12% + บริจาค 5%",
+      "บริจาคเป็นความศรัทธา ไม่ใช่ทองที่รัฐได้"
+     ],
+     [
+      "สาธารณรัฐพ่อค้า",
+      "8%",
+      "ค่าธรรมเนียมตลาดและท่า 3% ของยอดซื้อขาย"
+     ],
+     [
+      "สาธารณรัฐและสหภาพ",
+      "15%",
+      "เป็นบริการสหภาพ (ประกัน ที่พัก) กลับมา 50%"
+     ],
+     [
+      "จักรวรรดิทหาร",
+      "18%",
+      "ถูกเกณฑ์ทหารชั้น 2 ถึง 3 ตามหมายเกณฑ์ (hu.t2)"
+     ],
+     [
+      "บริษัทและสมาพันธ์",
+      "10% (ค่าสมาชิก)",
+      ""
+     ],
+     [
+      "สหพันธ์เผ่าและชุมชน",
+      "5% (ส่วนแบ่ง)",
+      ""
+     ],
+     [
+      "ไม่มีรัฐ",
+      "0%",
+      "ถูกรีดโดยกลุ่มติดอาวุธ (ค่าคุ้มครอง 10 ถึง 25%)"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:78"
+   },
+   {
+    "headings": [
+     "5. ความจน"
+    ],
+    "header": [
+     "ทาง",
+     "น้ำหนัก",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ก) ขอความช่วยเหลือ (ญาติ เพื่อน วัด)",
+      "30 (`humble` `family` ×1.5)",
+      "ใช้บุญคุณ ไว้ใจ −1 หรือ `nc_favor_unpaid` · อยู่รอด"
+     ],
+     [
+      "ข) ยืมหรือกู้",
+      "25 (`optimist` ×1.3)",
+      "หนี้ ([หัวข้อ 6](#6-ธนาคารและหนี้))"
+     ],
+     [
+      "ค) ออกหางานอันตราย (ล่า ส่งของ คุ้มกัน)",
+      "25 (`reckless` `adventurer` ×1.5)",
+      "ได้เงินเร็วแต่เสี่ยงศึก ([05-trade.md](05-trade.md))"
+     ],
+     [
+      "ง) ขายของที่ถืออยู่",
+      "15 (`greedy` ×1.3)",
+      "ขายของตามราคารับซื้อ 40%"
+     ],
+     [
+      "จ) ขายตัวหรือยอมเป็นลูกหนี้ผูกตัว",
+      "5 (`coward` ×1.5 เมื่อครอบครัวหิว)",
+      "ตกเป็นผู้ไร้สิทธิ์ เข้าทางระบบการผูกตัว ([10-bondage.md](10-bondage.md))"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:95"
+   },
+   {
+    "headings": [
+     "6. ธนาคารและหนี้"
+    ],
+    "header": [
+     "บริการ",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "ฝากทอง",
+      "ปลอดภัยจากปล้น ดอกเบี้ย 1% ต่อปี ถอนข้ามประเทศมีค่าธรรมเนียม 3%"
+     ],
+     [
+      "กู้",
+      "วงเงินไม่เกิน 3 เท่าของรายได้ต่อปี ต้องมีหลักประกัน (ที่ดิน ร้าน ของระดับ R ขึ้นไป หรือผู้ค้ำที่ชั้นสูงกว่า)"
+     ],
+     [
+      "ดอกเบี้ยกู้",
+      "ชั้น 4 ถึง 5 ปีละ 6% · ชั้น 3 ปีละ 12% · ชั้น 1 ถึง 2 ปีละ 20%"
+     ],
+     [
+      "ผู้ปล่อยกู้นอกระบบ (`moneylender`)",
+      "30 ถึง 60% ต่อปี ไม่ต้องมีหลักประกัน ทวงด้วยกำลัง (`npc_slaver` `npc_bandit`)"
+     ],
+     [
+      "ผิดนัดหนึ่งปี",
+      "ยึดหลักประกัน ตกหนึ่งชั้น ถ้าไม่มีหลักประกันเป็นทาสหนี้"
+     ],
+     [
+      "ธนาคารล่ม",
+      "เมื่อ WR-14 WR-21 PO-08 เกิด ฝากหาย 50% และกู้ถูกเรียกคืนทันที"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:109"
+   },
+   {
+    "headings": [
+     "7. ราคาของ"
+    ],
+    "header": [
+     "หมวด",
+     "C",
+     "U",
+     "R",
+     "E",
+     "L"
+    ],
+    "rows": [
+     [
+      "อาวุธ (ตามราคาตีสั่งใน [../items/10-forging.md](../items/10-forging.md))",
+      "15",
+      "50",
+      "250",
+      "800",
+      "ไม่ขาย"
+     ],
+     [
+      "เกราะและโล่",
+      "18",
+      "60",
+      "300",
+      "960",
+      "ไม่ขาย"
+     ],
+     [
+      "เครื่องประดับ",
+      "12",
+      "40",
+      "200",
+      "640",
+      "ไม่ขาย"
+     ],
+     [
+      "ของขลังพื้นบ้าน",
+      "8",
+      "30",
+      "150",
+      "—",
+      "—"
+     ],
+     [
+      "เครื่องรางโบราณ (ผู้สะสมรับซื้อ ไม่มีร้านขาย)",
+      "—",
+      "120",
+      "600",
+      "1,800",
+      "ไม่ขาย"
+     ],
+     [
+      "ของใช้ในศึก (ต่อชิ้น)",
+      "3",
+      "12",
+      "55",
+      "300",
+      "ไม่ขาย"
+     ],
+     [
+      "เครื่องมือชีวิต",
+      "6",
+      "24",
+      "80",
+      "ตีสั่ง 600",
+      "—"
+     ],
+     [
+      "วัสดุจากสิ่งมีชีวิต (ต่อหน่วย)",
+      "2 ถึง 5",
+      "8 ถึง 20",
+      "40 ถึง 90",
+      "200 ขึ้นไป",
+      "600"
+     ],
+     [
+      "ของสำคัญ",
+      "ไม่ขาย (ยกเว้นของปลอมในตลาดมืด 20% ของมูลค่าจริง)",
+      "",
+      "",
+      "",
+      ""
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:124"
+   },
+   {
+    "headings": [
+     "7. ราคาของ"
+    ],
+    "header": [
+     "ขนาดเมือง",
+     "ระดับสูงสุด",
+     "ชนิดของที่ขาย"
+    ],
+    "rows": [
+     [
+      "หมู่บ้าน",
+      "C",
+      "ของใช้ ยาและอาหารพื้นฐาน เครื่องมือชีวิต C"
+     ],
+     [
+      "เมืองเล็ก",
+      "U",
+      "อาวุธและเกราะมาตรฐาน ของใช้ในศึก U"
+     ],
+     [
+      "เมือง",
+      "R",
+      "ร้านช่างตี ร้านนักเล่นแร่ ของจากประเทศใกล้เคียง"
+     ],
+     [
+      "เมืองใหญ่",
+      "R (E ถ้า W 4 ขึ้นไป)",
+      "ตลาดเต็ม ผู้ค้ารายใหญ่"
+     ],
+     [
+      "เมืองหลวงและเมืองช่าง",
+      "E (L ไม่ขาย)",
+      "ช่างที่มีชื่อรับสั่งตี"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:142"
+   },
+   {
+    "headings": [
+     "8. ทองที่คาดว่าตัวละครสะสมได้"
+    ],
+    "header": [
+     "W",
+     "p25",
+     "p50",
+     "p90"
+    ],
+    "rows": [
+     [
+      "1",
+      "1",
+      "3",
+      "35"
+     ],
+     [
+      "2",
+      "11",
+      "42",
+      "238"
+     ],
+     [
+      "3",
+      "31",
+      "89",
+      "414"
+     ],
+     [
+      "4",
+      "131",
+      "161",
+      "701"
+     ],
+     [
+      "5",
+      "210",
+      "255",
+      "1,115"
+     ]
+    ],
+    "src": "docs/systems/economy/04-income-and-living.md:154"
+   },
+   {
+    "headings": [
+     "1. ห้าทางหาทอง"
+    ],
+    "header": [
+     "ทาง",
+     "ใช้อะไร",
+     "ความเสี่ยง",
+     "เรื่องที่เปิด"
+    ],
+    "rows": [
+     [
+      "ค้าขายเอง",
+      "ทุนซื้อสินค้า พาหนะ ความรู้เส้นทาง",
+      "โจร ภาษีผ่านทาง ราคาเปลี่ยน",
+      "ขบวนคาราวาน พ่อค้าคู่แข่ง สงครามเส้นทาง"
+     ],
+     [
+      "รับจ้างส่งของ",
+      "ความไว้ใจ ความเร็ว",
+      "ของหาย ล่าช้า ถูกดัก",
+      "ผู้ว่า NPC ของลับ เครื่องรางโบราณระหว่างทาง"
+     ],
+     [
+      "คุ้มกัน",
+      "ฝีมือสู้ ชื่อเสียง",
+      "ศึกจริง",
+      "ขบวนใหญ่ ผู้จ้างที่ซ่อนความลับ"
+     ],
+     [
+      "ล่าวัสดุไปขาย",
+      "ฝีมือสู้ ความรู้ว่าใครซื้อ",
+      "ศึก ศัตรูแรง",
+      "ล่ามังกรป่า ลงซาก ตลาดมืด"
+     ],
+     [
+      "ลักลอบ",
+      "ความลับ เส้นทางที่ไม่มีใครรู้",
+      "ถูกจับ `c_wanted`",
+      "ตลาดมืด ปิดทวีป (PO-06)"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:9"
+   },
+   {
+    "headings": [
+     "2. การต่อรอง"
+    ],
+    "header": [
+     "ส่วนของ DC",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "นิสัยฝ่ายตรงข้าม",
+      "`greedy` +3 · `cunning` +2 · พ่อค้าอาชีพ +2 · `generous` −2 · `kind` −1 · `gullible` −3"
+     ],
+     [
+      "สภาพตลาด",
+      "สินค้าขาดแคลนในถิ่น (ผู้ขายได้เปรียบเมื่อตัวละครซื้อ) +2 · ล้นตลาด −2"
+     ],
+     [
+      "ความสัมพันธ์",
+      "ไว้ใจ +3 ขึ้นไป −2 · แค้น +1 ขึ้นไป +3"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:27"
+   },
+   {
+    "headings": [
+     "2. การต่อรอง"
+    ],
+    "header": [
+     "ผลเทียบ DC",
+     "ราคาที่ได้"
+    ],
+    "rows": [
+     [
+      "ทอย 20 หรือเกิน DC อย่างน้อย +10",
+      "ดีกว่าปกติ 25% (ซื้อถูกลง ขายแพงขึ้น)"
+     ],
+     [
+      "เกิน DC +5 ถึง +9",
+      "ดีกว่าปกติ 15%"
+     ],
+     [
+      "ผ่าน DC ถึง +4",
+      "ดีกว่าปกติ 7%"
+     ],
+     [
+      "พลาดไม่เกิน −4",
+      "ราคาปกติ ต่อรองไม่ได้อีกในฤดูนี้"
+     ],
+     [
+      "พลาดเกิน −5 หรือทอย 1",
+      "แย่กว่าปกติ 10% และความไว้ใจ −1 (ผู้ขายรู้สึกถูกดูหมิ่น)"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:33"
+   },
+   {
+    "headings": [
+     "2. การต่อรอง"
+    ],
+    "header": [
+     "ชนิด",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "พ่อค้าประจำร้าน",
+      "ราคาเดียวทุกคน DC +2 ตัวละครที่ขายสม่ำเสมอได้ลูกค้าประจำ (ราคา −5% หลังซื้อห้าครั้ง)"
+     ],
+     [
+      "ขุนนางและผู้มั่งคั่ง",
+      "ไม่ต่อรอง จ่ายเกินราคา 10% ถ้าไม่ต่อรอง และต่อรองถือเป็นการเสียหน้า (ไว้ใจ −1)"
+     ],
+     [
+      "ชาวบ้านยากจน",
+      "ต่อรองได้ แต่ขายของให้ได้เพียงราคา ×0.7 ของตลาด"
+     ],
+     [
+      "ผู้ค้าตลาดมืด",
+      "DC +3 ราคาเป็นของเถื่อน ถ้าเอาเปรียบเกินไปถูกหักหลัง (`c_betrayal` 15%)"
+     ],
+     [
+      "นักสะสม",
+      "จ่ายเกินราคา 30% ถ้าของมีเรื่อง (ประวัติอาวุธ เครื่องรางโบราณ) ต่อรองไม่ได้"
+     ],
+     [
+      "NPC ที่ติดบุญคุณ",
+      "ไม่ต่อรอง ขายให้ในราคาที่ได้เปรียบตามที่เขียนใน NPC"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:43"
+   },
+   {
+    "headings": [
+     "3. ค้าขายเอง"
+    ],
+    "header": [
+     "พาหนะ",
+     "หน่วยการค้า",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "เดินเท้า",
+      "3",
+      ""
+     ],
+     [
+      "ล่อหรือม้า",
+      "8",
+      "ต้องซื้อ 30 ถึง 120"
+     ],
+     [
+      "เกวียน",
+      "20",
+      "ต้องมีถนนหรือทางเรียบ"
+     ],
+     [
+      "ขบวนคาราวาน",
+      "40 ขึ้นไป",
+      "ต้องมีผู้นำขบวน (`caravan_master`) และผู้คุ้มกัน"
+     ],
+     [
+      "เรือ",
+      "100 ขึ้นไป",
+      "ต้องมีเรือ (`shipowner`)"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:58"
+   },
+   {
+    "headings": [
+     "3. ค้าขายเอง"
+    ],
+    "header": [
+     "ความเสี่ยงเส้นทาง",
+     "โอกาสเหตุการณ์",
+     "ศัตรูหรือภัยที่เจอ"
+    ],
+    "rows": [
+     [
+      "ต่ำ",
+      "10%",
+      "`wolf` `npc_bandit` เล็ก"
+     ],
+     [
+      "กลาง",
+      "25%",
+      "`npc_bandit` ฝูง `npc_smuggler` `goblin`"
+     ],
+     [
+      "สูง",
+      "40%",
+      "`npc_pirate` `ghost_crew` `sand_raiders` `storm_harpy`"
+     ],
+     [
+      "สูงมาก",
+      "60%",
+      "`fog_tentacle` `fog_moth_swarm` `shadow_pack` `mirage_phantom`"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:74"
+   },
+   {
+    "headings": [
+     "3. ค้าขายเอง"
+    ],
+    "header": [
+     "เส้นทาง",
+     "ซื้อที่",
+     "ขายที่",
+     "กำไรต่อหน่วยก่อนหัก",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "ข้าวจาก AL-17 ไป MH-05",
+      "7.2 (ส่งออก W 5)",
+      "12.0 (ขาด W 3)",
+      "4.8",
+      "หักขนส่งบก 10% (0.8) เหลือ 4.0 ขบวน 20 หน่วย ได้ 80"
+     ],
+     [
+      "ข้าวจาก AL-17 ไป MH-03 ช่วง WR-03",
+      "7.2",
+      "16.8 (ขาด W 1 ×2 สงคราม)",
+      "9.6",
+      "หักขนส่ง 0.8 เหลือ 8.8 ขบวน 20 หน่วย ได้ 176 ก่อนหักโจรและค่าคุ้มกัน"
+     ],
+     [
+      "ไม้และขนจาก KD-12 ไป AL-04",
+      "4.6 (ส่งออก W 2)",
+      "13.5 (ผลิตพอใช้ W 5)",
+      "8.9",
+      "ส่วนต่างใหญ่เพราะส่งออกจากประเทศจนไปประเทศรวย หักขนส่ง 0.9 ขบวน 20 หน่วย ได้ 160"
+     ],
+     [
+      "น้ำเลี้ยงจาก SV-15 ไป MK-01",
+      "36 (ส่งออก W 3)",
+      "90 (ปกติ W 5) · 270 (ช่วง WR-04 ×3)",
+      "54 ถึง 234",
+      "ผิดกฎปันส่วน PO-04 ลักลอบ (`c_wanted`)"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:83"
+   },
+   {
+    "headings": [
+     "4. รับจ้างส่งของ"
+    ],
+    "header": [
+     "ชนิดงาน",
+     "ของที่ส่ง",
+     "ค่าจ้าง"
+    ],
+    "rows": [
+     [
+      "พัสดุเล็ก",
+      "จดหมาย ของมีค่าเล็ก",
+      "ฐาน"
+     ],
+     [
+      "สินค้าเปราะบางหรือเสี่ยง",
+      "ยา ของวิเศษ อัญมณี ไข่",
+      "×1.5"
+     ],
+     [
+      "ส่งคน",
+      "ผู้ลี้ภัย ตัวประกัน ผู้แสวงบุญ",
+      "×1.5 และผูกกับความเป็นอยู่ของคนนั้น"
+     ],
+     [
+      "ของลับ",
+      "จดหมายลับ ของต้องห้าม",
+      "×2 และเสี่ยง `c_wanted`"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:94"
+   },
+   {
+    "headings": [
+     "4. รับจ้างส่งของ"
+    ],
+    "header": [
+     "ระยะ",
+     "ค่าจ้างฐาน (ทอง)"
+    ],
+    "rows": [
+     [
+      "ในประเทศ",
+      "15"
+     ],
+     [
+      "ข้ามประเทศในทวีป",
+      "40"
+     ],
+     [
+      "ข้ามทวีปทางบก",
+      "90"
+     ],
+     [
+      "ข้ามทะเล",
+      "140"
+     ],
+     [
+      "ผ่านทะเลทรายหรือหมอก",
+      "220"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:103"
+   },
+   {
+    "headings": [
+     "4. รับจ้างส่งของ"
+    ],
+    "header": [
+     "ผลของงาน",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ส่งถึงตรงเวลา",
+      "ค่าจ้างเต็ม ไว้ใจผู้ว่า +1 (ถึงสามครั้งได้ลูกค้าประจำ)"
+     ],
+     [
+      "ล่าช้าไม่เกิน 10 วัน",
+      "ค่าจ้าง −20%"
+     ],
+     [
+      "ของหายหรือถูกยึด",
+      "เสียมัดจำ ผู้ว่าแค้น +1"
+     ],
+     [
+      "ส่งสำเร็จด้วยการทำศึก",
+      "โบนัสศึก (ชื่อเสียง + ส่วนแบ่ง 10% ของมูลค่า)"
+     ],
+     [
+      "เปิดดูของ (ของลับ)",
+      "ความไว้ใจ −3 แต่ได้ความลับ (เส้นเรื่อง NPC)"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:113"
+   },
+   {
+    "headings": [
+     "5. คุ้มกัน"
+    ],
+    "header": [
+     "ฝ่าย",
+     "รายได้"
+    ],
+    "rows": [
+     [
+      "ผู้คุ้มกันขบวนเล็ก (เกวียน 2 ถึง 4 คัน)",
+      "วันละ 3 ถึง 5 + ส่วนแบ่ง 3% ของกำไร"
+     ],
+     [
+      "ผู้คุ้มกันขบวนใหญ่ (คาราวาน 40 หน่วยขึ้นไป)",
+      "วันละ 6 ถึง 10 + ส่วนแบ่ง 5%"
+     ],
+     [
+      "หัวหน้าผู้คุ้มกัน (`caravan_guard` ที่มีชื่อเสียง ≥ 15)",
+      "วันละ 12 + ส่วนแบ่ง 10%"
+     ],
+     [
+      "คุ้มกันเรือ",
+      "เที่ยวละ 40 ถึง 120 ตามระยะ"
+     ],
+     [
+      "คุ้มกันบุคคลสำคัญ (ผู้แทนสภา ตัวประกัน)",
+      "เหมาตามงาน 100 ถึง 400"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:125"
+   },
+   {
+    "headings": [
+     "6. ล่าวัสดุไปขาย"
+    ],
+    "header": [
+     "วัสดุ",
+     "ผู้ซื้อราคาสูง (×1.5)",
+     "ผู้ซื้อทั่วไป"
+    ],
+    "rows": [
+     [
+      "`mt_wyrm_scale` `mt_dragon_fang`",
+      "KD-01 KD-09 ช่างตีเกราะ AZ-02",
+      "×1.0 ที่ KD ทั่วไป"
+     ],
+     [
+      "`mt_soul_crystal`",
+      "NB-09 ตลาดมืด AL-02 ศาสนจักร",
+      "×1.0"
+     ],
+     [
+      "`mt_fae_dust`",
+      "AL-05 ลาโรเซล (น้ำหอม)",
+      "×1.0"
+     ],
+     [
+      "`mt_fog_ink`",
+      "NB-11 ช่างหน้ากาก",
+      "×0.6 นอกเนบูเลีย"
+     ],
+     [
+      "`mt_pearl` `mt_sea_tentacle`",
+      "AL-05 AL-04 (เครื่องประดับ) AL-26 (ยา)",
+      "×1.0 ที่ NR"
+     ],
+     [
+      "`mt_demon_horn` `mt_demon_blood`",
+      "MH-09 MH-02",
+      "×0.8 นอกมอร์เฮเวน และเสี่ยงศาสนาแสง"
+     ],
+     [
+      "`mt_sap` `mt_herb_bundle` `mt_spore`",
+      "AL-26 AL-14 SV-02 NB-06",
+      "×1.0"
+     ],
+     [
+      "`mt_giant_bone`",
+      "SH-07 (ช่างยักษ์) KD-01",
+      "×1.0"
+     ],
+     [
+      "`mt_rune_core`",
+      "KD-04 MK-13",
+      "×1.0"
+     ],
+     [
+      "`mt_element_core`",
+      "MK-03 AL-11",
+      "×1.0"
+     ],
+     [
+      "`mt_world_seed`",
+      "ไม่ขาย (ส่งต่อให้ผู้ดูแลต้นกล้า)",
+      "—"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:141"
+   },
+   {
+    "headings": [
+     "7. ลักลอบ"
+    ],
+    "header": [
+     "กรณี",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "ของต้องห้าม",
+      "ปิดทวีป (PO-06) ของผิดกฎศาสนา ของจากตลาดเลือด ทองสาป ทาส (ตามกติกาทาส)"
+     ],
+     [
+      "ค่าลักลอบ",
+      "ผู้ลักลอบได้ ×2 ของค่าส่ง แต่ถ้าถูกจับเสียของและ `c_wanted`"
+     ],
+     [
+      "ด่านและผู้ตรวจ",
+      "ประเทศ W 4 ถึง 5 ตรวจเข้ม DC 14 ถึง 17 · W 1 ถึง 2 DC 8 ถึง 10 (ติดสินบนได้ 5 ถึง 15 ทอง)"
+     ],
+     [
+      "กิลด์",
+      "NB-09 MK-05 AL-27 กิลด์ลักลอบรับสมาชิก ได้เส้นทางลับ"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:159"
+   },
+   {
+    "headings": [
+     "8. อาชีพการค้าใหม่"
+    ],
+    "header": [
+     "ID",
+     "ชื่อ",
+     "บทบาท"
+    ],
+    "rows": [
+     [
+      "`peddler`",
+      "พ่อค้าเร่",
+      "พาของไปขายตามหมู่บ้านที่ไม่มีร้าน กำไรจากส่วนต่างราคา ชนบทและประเทศ W 1 ถึง 2"
+     ],
+     [
+      "`guide`",
+      "ผู้นำทาง",
+      "นำพ่อค้า ผู้แสวงบุญ ผู้ลี้ภัย ผ่านทะเลทราย หมอก ภูเขา"
+     ],
+     [
+      "`caravan_master`",
+      "ผู้นำขบวนคาราวาน",
+      "จัดขบวน จ้างผู้คุ้มกัน รับความเสี่ยงและกำไรของขบวน"
+     ],
+     [
+      "`broker`",
+      "นายหน้า",
+      "เชื่อมผู้ซื้อผู้ขาย ได้ค่านายหน้า 3 ถึง 5% ของมูลค่า รู้ราคาตลาดทั่วโลก"
+     ],
+     [
+      "`appraiser`",
+      "ผู้ประเมินราคา",
+      "ประเมินของ (ของโบราณ อาวุธ เครื่องราง) บอกประวัติและมูลค่า"
+     ],
+     [
+      "`moneylender`",
+      "ผู้ปล่อยกู้",
+      "ให้กู้นอกธนาคาร ดอกสูง ทวงหนี้"
+     ],
+     [
+      "`investor`",
+      "นักลงทุน",
+      "ลงทุนตาม [06-investment.md](06-investment.md)"
+     ],
+     [
+      "`shipowner`",
+      "เจ้าของเรือสินค้า",
+      "ถือเรือหนึ่งลำขึ้นไป ค้าและให้เช่า"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:170"
+   },
+   {
+    "headings": [
+     "10. หน้าต่างพระเจ้า"
+    ],
+    "header": [
+     "จุด",
+     "การแทรกแซง",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ต่อรอง",
+      "`b_silvertongue`",
+      "โบนัสต่อรอง +3 ตลอดปี"
+     ],
+     [
+      "เที่ยวค้า",
+      "คำใบ้ \"ระวัง\"",
+      "รู้ล่วงหน้าว่าเที่ยวนี้มีซุ่ม ลดความเสี่ยงหนึ่งระดับ"
+     ],
+     [
+      "เที่ยวค้า",
+      "`b_clover` หรือ `b_luckystar`",
+      "ทอยเหตุการณ์ระหว่างทางใหม่หนึ่งครั้ง"
+     ],
+     [
+      "ส่งของ",
+      "คำใบ้ \"คนนั้นโกหก\"",
+      "รู้ว่าผู้ว่าซ่อนอะไร"
+     ],
+     [
+      "ผู้ค้า",
+      "พร `gold_luck` ต่อกำไร",
+      "เพิ่มกำไร 50% ตามโค้ดเดิม"
+     ]
+    ],
+    "src": "docs/systems/economy/05-trade.md:189"
+   },
+   {
+    "headings": [
+     "1. เก้าช่องทาง"
+    ],
+    "header": [
+     "ช่องทาง",
+     "ทุนขั้นต่ำ",
+     "ผลตอบแทนเฉลี่ยต่อปี",
+     "ผันผวน (σ)",
+     "เสี่ยงจากเหตุการณ์",
+     "เงื่อนไข"
+    ],
+    "rows": [
+     [
+      "ฝากธนาคาร",
+      "20",
+      "1%",
+      "0%",
+      "ธนาคารล่ม (WR-14 WR-21 PO-08) ฝากหาย 50%",
+      "ประเทศมีธนาคาร ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 6)"
+     ],
+     [
+      "ที่ดินและบ้านให้เช่า",
+      "100",
+      "4%",
+      "10%",
+      "สงคราม ภัยพิบัติ ค่าที่ดินลง 50%",
+      "ชั้น 3 ขึ้นไป · ผู้ไร้สิทธิ์ถือไม่ได้"
+     ],
+     [
+      "ไร่และฟาร์ม",
+      "120",
+      "5%",
+      "25%",
+      "ตั๊กแตน (CT-08) ฤดูหนาวเถ้า (DR-04) ภัยแล้ง (CT-04)",
+      "ที่ดินมีเกษตร · ผู้ทำชีวิตช้าใช้ได้"
+     ],
+     [
+      "ร้านและกิจการ",
+      "150",
+      "8%",
+      "25%",
+      "ตลาดมืดครอง (PO-07) สงครามบริษัท (WR-21) ภาษี",
+      "ซื้อหรือตั้งใหม่ ต้องมีผู้จัดการหรือเจ้าของทำเอง"
+     ],
+     [
+      "หุ้นเรือและขบวนคาราวาน",
+      "100",
+      "10%",
+      "35%",
+      "โจรสลัด พายุ WR-06 WR-10 ภาษีกระแสน้ำ PO-03",
+      "ผ่านเจ้าของเรือหรือผู้นำขบวน (`shipowner` `caravan_master`)"
+     ],
+     [
+      "ปล่อยกู้",
+      "100",
+      "12% ถึง 20%",
+      "30%",
+      "ผิดนัดมากเมื่อสงครามหรืออดอยาก (ดอกตามหัวข้อ 6 ของไฟล์รายได้)",
+      "ชั้น 3 ขึ้นไป · หรือเป็น `moneylender` ผ่านธนาคาร"
+     ],
+     [
+      "หุ้นบริษัท",
+      "200",
+      "9%",
+      "40%",
+      "WR-21 สงครามบริษัท PO-08 MK ปฏิวัติโรงงาน",
+      "สมาพันธ์เมคาเรีย (MK-01 MK-06 MK-16) สันนิบาตการค้า (AL-10)"
+     ],
+     [
+      "เหมือง",
+      "300",
+      "12%",
+      "55%",
+      "เหมืองถล่ม ขุดลึกเกิน (PL-03 คัลดราตื่น) ปีศาจ (DM-07)",
+      "สิทธิ์เหมือง KD-10 AL-27 SH-08 AZ-08"
+     ],
+     [
+      "ของสะสม (อาวุธ เครื่องราง ศิลปะ ของโบราณ)",
+      "150",
+      "0% ถึง 50%",
+      "70%",
+      "ตลาดตกเมื่อ WR สัญญาณ ของปลอม",
+      "ต้องมีผู้ประเมิน (`appraiser` หรือ `ns_appraise` ≥ 2)"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:9"
+   },
+   {
+    "headings": [
+     "2. ผลตอบแทนต่อปี"
+    ],
+    "header": [
+     "ส่วน",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "r_base",
+      "ตามตารางหัวข้อ 1"
+     ],
+     [
+      "ดัชนีภูมิภาค",
+      "ลงในประเทศ W 5 ×1.0 และ σ ×0.8 · W 3 ถึง 4 ×1.0 · W 2 ×1.2 และ σ ×1.5 · W 1 ×1.5 และ σ ×2 (ชายขอบให้ผลสูงแต่ล้มบ่อย)"
+     ],
+     [
+      "ตัวคูณเหตุการณ์",
+      "ตามหัวข้อ 6 ของ [01-world-economy.md](01-world-economy.md) (สงคราม ภัย ยุคทอง)"
+     ],
+     [
+      "ตัวคูณฝีมือ",
+      "`investor` ×1.2 · `broker` ×1.1 · ผู้ที่มี `ns_appraise` ระดับ 2 ×1.1 · นิสัย `cunning` ×1.05 · นิสัย `gullible` ×0.9 · ผู้ที่ใช้ผู้จัดการ NPC (ไม่ได้ทำเอง) ×0.9"
+     ],
+     [
+      "สุ่ม",
+      "แจกแจงปกติ σ ตามตาราง ต่ำสุด −100% (หมดทุน)"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:29"
+   },
+   {
+    "headings": [
+     "3. การตัดสินใจของตัวละคร"
+    ],
+    "header": [
+     "นิสัย",
+     "จัดสรร"
+    ],
+    "rows": [
+     [
+      "`greedy` `ambitious` `reckless`",
+      "60% เหมือง หุ้น หุ้นเรือ · 40% ที่เหลือ"
+     ],
+     [
+      "`coward` `paranoid` `homebody`",
+      "80% ฝากธนาคารและที่ดิน · 20% ไร่"
+     ],
+     [
+      "`calm` `pragmatic`",
+      "กระจาย: ธนาคาร 20 ที่ดิน 25 ร้าน 25 ไร่ 15 หุ้นเรือ 15"
+     ],
+     [
+      "`generous` `kind`",
+      "30% ลงทุนในคน (อุปถัมภ์) ที่เหลือแบบ `calm`"
+     ],
+     [
+      "`dreamer` `curious`",
+      "40% ของสะสม"
+     ],
+     [
+      "`family` `loyal_love`",
+      "ที่ดินและบ้านเป็นหลัก (เป็นที่มั่นของตระกูล)"
+     ],
+     [
+      "ผู้ทำชีวิตช้า",
+      "ไร่ ร้านของตัวเอง เครื่องมือชีวิต (ลงทุนในอาชีพที่ทำ)"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:43"
+   },
+   {
+    "headings": [
+     "4. ล้มละลายและหนี้"
+    ],
+    "header": [
+     "สถานการณ์",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ทุนลงเป็น 0",
+      "เสียทั้งก้อน ไม่เป็นหนี้ (ยกเว้นกู้มาลงทุน)"
+     ],
+     [
+      "กู้มาลงทุนแล้วขาดทุน",
+      "หนี้ต้องจ่ายต่อ ตามกติกาหนี้ ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 6)"
+     ],
+     [
+      "สินทรัพย์น้อยกว่าหนี้",
+      "ล้มละลาย ตกหนึ่งชั้น ยึดของ ได้ `c_debt` และอาจ `c_infamous`"
+     ],
+     [
+      "ล้มละลายซ้ำภายในสิบปี",
+      "ตกสองชั้น เส้นทางทาสหนี้เปิด (กติกาใน [10-bondage.md](10-bondage.md))"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:55"
+   },
+   {
+    "headings": [
+     "5. กันเงินล้น"
+    ],
+    "header": [
+     "กติกา",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ผลตอบแทนลดเมื่อทุนมาก",
+      "ทุนส่วนที่เกิน 2,000 ให้ผลตอบแทน ×0.5 และเกิน 6,000 ×0.25 (ตลาดไม่มีที่ลงพอ)"
+     ],
+     [
+      "ภาษีทรัพย์สิน",
+      "ที่ดินและบ้าน 3% ต่อปี หุ้นและเหมืองใน W 4 ถึง 5 เสียค่าธรรมเนียม 2%"
+     ],
+     [
+      "ซื้อยศและตำแหน่ง",
+      "ทองส่วนเกินของชั้น 4 ซื้อยศขุนนางได้ในระบอบพ่อค้า (ทอง ≥ 2,500) ใช้เป็นทางออกเงินก้อนใหญ่"
+     ],
+     [
+      "ค่าบริหาร",
+      "ผู้ที่ไม่ใช้ผู้ประเมินหรือไม่ทำเอง เสีย 10% ของผลตอบแทนให้ผู้จัดการ"
+     ],
+     [
+      "ภาษีมรดก",
+      "ตามระบอบ ([04-income-and-living.md](04-income-and-living.md) หัวข้อ 4)"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:66"
+   },
+   {
+    "headings": [
+     "8. ตัวอย่างพอร์ตสามชีวิต"
+    ],
+    "header": [
+     "ตัวละคร",
+     "ทุน",
+     "จัดสรร",
+     "อายุ 30 ถึง 50"
+    ],
+    "rows": [
+     [
+      "พ่อค้าชั้น 3 ใน AL-10 นิสัย `calm` ทอง 300",
+      "ธนาคาร 60 ที่ดิน 75 ร้าน 75 ไร่ 45 หุ้นเรือ 45",
+      "ผลตอบแทนเฉลี่ยราว 5.5% ปีละราว 16 ทอง ยี่สิบปีมีฟองสบู่ (HP-02 แล้ว WR-21) เสียราว 90 ในปีหนึ่ง ทุนรวมกำไรสุดท้ายราว 540"
+     ],
+     [
+      "เจ้าของเหมืองชั้น 4 ใน KD-10 นิสัย `greedy` ทอง 600",
+      "เหมือง 360 หุ้น 240",
+      "ผลตอบแทนสูงมาก (12% ของเหมือง) แต่ PL-03 เหมืองถล่ม เสียเหมืองไป 70% ในปี 42 ทุนที่เหลือ 380 ต้องหาทางใหม่ (เปิดเรื่องผจญภัยกู้เหมือง)"
+     ],
+     [
+      "ผู้ทำชีวิตช้าชั้น 3 ใน AL-16 นิสัย `homebody` ทอง 200",
+      "ที่ดิน 100 ไร่ 80 ธนาคาร 20",
+      "ผลตอบแทนราว 4% ปีละราว 8 ผ่าน CT-08 ตั๊กแตน ไร่เสีย 60% หนึ่งปี ต้องกู้ชั่วคราว แต่ที่ดินไม่หายไปไหน"
+     ]
+    ],
+    "src": "docs/systems/economy/06-investment.md:84"
+   },
+   {
+    "headings": [
+     "2. แปดอำนาจ"
+    ],
+    "header": [
+     "อำนาจ",
+     "ที่ตั้ง",
+     "ถืออะไร",
+     "วิธี",
+     "จุดอ่อน",
+     "ตัวแทน"
+    ],
+    "rows": [
+     [
+      "**สภาและสันนิบาตการค้า**",
+      "AL-01 AL-10",
+      "ตราคำสัตย์ การหล่อทองกลาง",
+      "เป็นกลาง ให้ทุกฝ่ายกู้",
+      "เป็นกลางเกินไป ถูกฝ่ายใดฝ่ายหนึ่งซื้อ",
+      "AL01-1 เซรีน วาลดอร์ฟ · AL10-1 จูเซปเป้ มาร์เชลโล · AL10-3 ฟรานเชสก้า"
+     ],
+     [
+      "**ธนาคารช่างหิน**",
+      "AL-21",
+      "เงินกู้ของขุนนางครึ่งทวีป",
+      "ให้กู้จนยึดที่ดิน ไม่ให้ฟอร์เทียยึดบัญชี",
+      "สงคราม ผู้ลูกหนี้ล้มพร้อมกัน",
+      "AL21-3 ฟาร์ลิน · AL21-1 บาลาร์"
+     ],
+     [
+      "**สมาพันธ์บริษัท**",
+      "MK-01 MK-06 MK-16",
+      "อาวุธ รถไฟ ไฟฟ้า ทหารรับจ้าง",
+      "ขายทุกอย่างให้ผู้ที่จ่ายมากกว่า",
+      "แย่งกันเอง (WR-21) แรงงานและหุ่นลุกฮือ (MC-03)",
+      "MK01-1 ออกัสตัส เวนท์ · MK16-1 ซิลเวอร์สไตน์"
+     ],
+     [
+      "**สันนิบาตท่า**",
+      "NR-01 NR-12 NR-10",
+      "ทางทะเล ภาษีกระแสน้ำ ธนาคารสินเชื่อเรือ",
+      "ยึดเส้นทาง เก็บภาษี ยึดเรือที่ฝ่าไม่ได้",
+      "น้ำขึ้น (DR-05) พายุหยุด (DR-06)",
+      "NR01-1 มาร์เซโล ทาลานี · NR01-2 อิซาเบลลา วอสส์"
+     ],
+     [
+      "**ผู้ปรนนิบัติและศาสนจักร**",
+      "AZ-01 AL-02 KD-07",
+      "บรรณาการและศรัทธา",
+      "เก็บส่วย เก็บภาษีศรัทธา",
+      "มังกรล้ม (DR-01) ศรัทธาตก",
+      "AZ01-1 ไอรัสวาร์ · AL02-1 บอนิฟาซิอุสที่ 9"
+     ],
+     [
+      "**ตลาดมืด**",
+      "NB-09 MH-09 AL-27 NR-05",
+      "ความลับ ของเถื่อน ตัวตนใหม่ ทาส",
+      "ขายสิ่งที่ไม่มีใครขายได้",
+      "หมอกสลาย (BIO-05) CL-03 ตลาดย้ายที่",
+      "NB09-1 \"ศูนย์\" · MH09-1 โมธเซน · AL27-3 มาดามโรส"
+     ],
+     [
+      "**สหภาพแรงงาน**",
+      "AL-07 MK-10 KD-10 AL-28",
+      "แรงงานและการหยุดงาน",
+      "หยุดงานใหญ่ ต่อรองทั้งเมือง",
+      "ถูกสอดแนมโดยตำรวจลับ ไทรอส (AL07-3) โรงงานย้าย",
+      "AL07-1 เวรา โรมานอฟนา · MK10-1 ไรลีย์ สแตน · KD10-1 คาซมาโรด"
+     ],
+     [
+      "**ผู้คุมของจำเป็น**",
+      "AL-17 SH-05 SH-01 SV-15",
+      "ข้าว น้ำ ธุลีทิพย์ น้ำเลี้ยง",
+      "คุมราคาของที่ขาดไม่ได้",
+      "ภัยธรรมชาติ ผู้ซื้อรวมตัว",
+      "AL17-1 ลอร์ดวีทฟิลด์ · SH05-2 คามาล · SV15-1 อัลมารอน"
+     ]
+    ],
+    "src": "docs/systems/economy/07-economic-history.md:17"
+   },
+   {
+    "headings": [
+     "3. สี่เส้นเลือดที่โลกขาดไม่ได้"
+    ],
+    "header": [
+     "สาย",
+     "ผู้ขาย",
+     "ผู้พึ่ง",
+     "ผลเมื่อขาด",
+     "เหตุการณ์"
+    ],
+    "rows": [
+     [
+      "ข้าว",
+      "AL-17 ยุ้งฉางโลก",
+      "MH ทั้งทวีป KD AZ",
+      "ความหิวมอร์เฮเวนเกิน 70 ทัพออก DM-01",
+      "WR-03 CT-08 HP-07"
+     ],
+     [
+      "น้ำเลี้ยง",
+      "SV-15 ตลาดน้ำเลี้ยง",
+      "MK (โรงไฟฟ้า) AL-14 (ยา)",
+      "ไฟโครงข่ายดับ ผู้ป่วยตาย",
+      "WR-04 PO-04 WT-03"
+     ],
+     [
+      "ธุลีทิพย์",
+      "SH-01",
+      "SH-02 มัมมี่ (ให้ตื่น)",
+      "มัมมี่หลับ ฟาโรห์ล้ม",
+      "WR-24 GI-06"
+     ],
+     [
+      "เหล็กและไฟ",
+      "KD-01 KD-06",
+      "ทุกทวีป (อาวุธ เครื่องกล)",
+      "อาวุธขาด สงครามเปลี่ยน",
+      "DR-04 AS-02 GI-04"
+     ]
+    ],
+    "src": "docs/systems/economy/07-economic-history.md:30"
+   },
+   {
+    "headings": [
+     "5. ห้าแรงตึงเครียด"
+    ],
+    "header": [
+     "แรงตึง",
+     "ใครขัดกับใคร",
+     "ตัวอย่างในโลก"
+    ],
+    "rows": [
+     [
+      "รวยกับจนในประเทศเดียวกัน",
+      "ยอดผลึกกับท่อลึก ผู้ถือที่ดินกับชาวนา",
+      "AL12-1 ออร์แลนโด · AL12-2 เกร็ก · AL17-1 ลอร์ดวีทฟิลด์ · AL17-2 ทอมมี่"
+     ],
+     [
+      "ผู้ผลิตกับผู้ขนส่ง",
+      "ภาษีกระแสน้ำ ค่าผ่านทาง ราคาผ่านด่าน",
+      "PO-03 WR-06 WR-10"
+     ],
+     [
+      "บริษัทกับคนงานและหุ่น",
+      "ค่าแรง สิทธิ์ ที่ทำงาน",
+      "MK10-1 ไรลีย์ สแตน · MK10-2 ลูซี่ · WR-21 MC-03"
+     ],
+     [
+      "ศรัทธากับทอง",
+      "บรรณาการกับตลาด ส่วยกับสิทธิ์",
+      "AZ01-1 ไอรัสวาร์ · AL02-1 บอนิฟาซิอุสที่ 9 · DR-11"
+     ],
+     [
+      "ตลาดมืดกับรัฐ",
+      "ของเถื่อน ภาษีรั่ว",
+      "PO-07 CL-03 NB09-3 เทรซ"
+     ]
+    ],
+    "src": "docs/systems/economy/07-economic-history.md:61"
+   },
+   {
+    "headings": [
+     "6. ใครได้ใครเสียเมื่อโลกเปลี่ยน"
+    ],
+    "header": [
+     "เหตุการณ์",
+     "ผู้ได้ประโยชน์",
+     "ผู้เสียประโยชน์"
+    ],
+    "rows": [
+     [
+      "DR-01 ฟ้าถล่ม",
+      "ผู้ปรนนิบัติที่ย้ายทรัพย์ลงพื้นก่อน SH-09 พ่อค้าตั๋ว ผู้เก็บซาก (SF-05)",
+      "ชาวพื้นที่เป็นหนี้ผู้ปรนนิบัติ ทุกคนบนเกาะ"
+     ],
+     [
+      "DR-04 ฤดูหนาวเถ้า",
+      "AL-17 (ขายข้าว) SH-05 (น้ำ) ผู้ค้าถ่าน",
+      "KD ทั้งทวีป ผู้ใช้เตาและช่างตี"
+     ],
+     [
+      "DR-05 มหาน้ำขึ้น",
+      "สันนิบาตท่าที่มีเรือ DW-04 (เส้นเดินเรือใหม่)",
+      "ชายฝั่ง NR-09 ที่ราบลุ่ม ผู้ถือที่ดินริมน้ำ"
+     ],
+     [
+      "WR-03 สงครามอาหาร",
+      "AL-17 AL-03 ผู้กักตุนข้าว (AL17-3 มาร์ติน)",
+      "MH ทั้งทวีป AL-06 ชั้นล่าง"
+     ],
+     [
+      "WR-14 สงครามเก้าทวีป",
+      "KD-01 MK-06 AL-08 (อาวุธ) MH-09 (ทหาร)",
+      "ธนาคารที่ให้กู้ทั้งสองฝ่าย เช่น จูเซปเป้ มาร์เชลโล (AL10-1) ผู้ลี้ภัย"
+     ],
+     [
+      "WR-21 สงครามบริษัท",
+      "MK-06 (ผู้ชนะ) ผู้ถือหุ้นที่ขายก่อน",
+      "พนักงานและเมืองที่บริษัทแพ้ (MK-14)"
+     ],
+     [
+      "HP-02 ยุคทองการค้า",
+      "พ่อค้า ผู้ค้าตลาดมืดที่ข้ามไปเป็นพ่อค้า",
+      "ผู้ถือที่ดินที่ราคาข้าวตก"
+     ],
+     [
+      "PO-07 ตลาดมืดครองเศรษฐกิจ",
+      "NB-09 MH-09 AL-27",
+      "รัฐทุกรัฐ ธนาคารที่รัฐถือ"
+     ]
+    ],
+    "src": "docs/systems/economy/07-economic-history.md:71"
+   },
+   {
+    "headings": [
+     "1. โค้ดมีอะไรอยู่แล้ว"
+    ],
+    "header": [
+     "ส่วน",
+     "ที่อยู่",
+     "สภาพ"
+    ],
+    "rows": [
+     [
+      "ทองของตัวละคร",
+      "`Character.gold` ใน `src/sim/types.ts`",
+      "ตัวเลขเดียว ค่าเริ่มต้น 0 ถึง 15 (`createCharacter`)"
+     ],
+     [
+      "ที่มาของทอง",
+      "ผลของเหตุการณ์ (`gold±N` ใน `applyOutcome`) · ยุคทองของประเทศ +20 · พร `gold_luck` ×1.5 ของทองที่ได้",
+      "ไม่พบรายได้อาชีพรายปี ร้านค้า ราคา ค่าครองชีพ หรือภาษี"
+     ],
+     [
+      "ประเทศ",
+      "`Country` มี `flags` (`war` `plague` `famine` `golden` `fallen`) ระดับอันตราย การปกครอง เผ่า และเมือง",
+      "ไม่มีค่าความรวย การใช้เงิน หรือสินค้า"
+     ],
+     [
+      "ความรวยฝั่งภาพ",
+      "`wealthOf` และ `flavorOf` ใน `src/city/flavor.ts`",
+      "คำนวณจากคำสำคัญในเอกสาร ค่าตั้งต้นต่อทวีป แล้วบวกลบตามจำนวนคำ ใช้วาดเมืองเท่านั้น"
+     ],
+     [
+      "อาชีพของ NPC",
+      "`NPC_JOBS` (`src/data/npclife.ts`) ทำงานและทักษะ `spec` ต่อเมือง",
+      "ไม่มีรายได้ ใช้ในฉากเมืองและการจำลองประจำปี"
+     ],
+     [
+      "อาชีพของตัวละคร",
+      "`JOBS` (`src/data/lore.ts`) ความถนัด สถานะหลัก ระดับ",
+      "ไม่มีช่องรายได้"
+     ],
+     [
+      "ทายาท",
+      "`continueAsHeir` ใน `src/sim/game.ts`",
+      "ส่งต่อทอง 70% ชื่อเสียง 1 ใน 3 ศรัทธา 60%"
+     ],
+     [
+      "ราคาของพระเจ้า",
+      "`COSTS` ใน `src/sim/game.ts`",
+      "เป็นของระบบพระเจ้า ไม่ใช่ของเศรษฐกิจ"
+     ]
+    ],
+    "src": "docs/systems/economy/08-implementation.md:9"
+   },
+   {
+    "headings": [
+     "3. ลูปประจำปี"
+    ],
+    "header": [
+     "ภาระต่อปี",
+     "จำนวน"
+    ],
+    "rows": [
+     [
+      "ประเทศ × หมวดสินค้า",
+      "143 × 8 = 1,144 ค่า"
+     ],
+     [
+      "NPC ที่ปรากฏ",
+      "ประมาณ 400 ถึง 450 (ผลรวมโอกาสปรากฏ 407 ตามแผนที่ NPC)"
+     ],
+     [
+      "ตัวละครหลัก",
+      "1"
+     ],
+     [
+      "ผลรวมต่อปี",
+      "คำนวณหลักร้อยถึงพันครั้ง เป็นงานเบามาก (เกมทำหลายพันเหตุการณ์ต่อปีอยู่แล้ว)"
+     ]
+    ],
+    "src": "docs/systems/economy/08-implementation.md:62"
+   },
+   {
+    "headings": [
+     "4. จุดที่ต้องแก้ในโค้ด"
+    ],
+    "header": [
+     "จุด",
+     "งาน"
+    ],
+    "rows": [
+     [
+      "`createCharacter`",
+      "สุ่มชนชั้นตาม W G ของประเทศเกิด ตั้งทองเริ่มต้นที่อายุ 17 และระดับอาวุธเกราะตามตารางในไฟล์ชนชั้น"
+     ],
+     [
+      "`addChild`",
+      "ใช้ตารางลูกของลูกครึ่ง ([../character/01-origin.md](../character/01-origin.md) หัวข้อ 4) และสืบชนชั้น"
+     ],
+     [
+      "`continueAsHeir`",
+      "ภาษีมรดก ส่งต่อชนชั้นและหนี้ ตัดทองตามเพดานของประเทศ"
+     ],
+     [
+      "`JOBS`",
+      "เพิ่มช่องระดับรายได้ หรือใช้ระดับ (`r`) อยู่แล้วคำนวณจากสูตร"
+     ],
+     [
+      "สร้างอาวุธ",
+      "อ่านชนชั้นกับ W ตามตาราง (ปัจจุบันอาวุธสุ่มตามระดับ `RARITY` ล้วน)"
+     ],
+     [
+      "ตลาดและร้าน",
+      "ยังไม่มี ต้องเพิ่มจุดซื้อขาย (หน้าเมือง หรือเหตุการณ์ร้านค้า)"
+     ],
+     [
+      "เหตุการณ์",
+      "เพิ่มตัวปรับ W และราคาตามไฟล์เศรษฐกิจโลก หัวข้อ 6"
+     ],
+     [
+      "การจำลอง",
+      "เพิ่ม `scripts/sim-economy.ts` วัดตัวชี้วัดในหัวข้อ 6"
+     ],
+     [
+      "`src/city/flavor.ts`",
+      "อ่านค่า W จาก `economy.ts` แทน `wealthOf`"
+     ]
+    ],
+    "src": "docs/systems/economy/08-implementation.md:73"
+   },
+   {
+    "headings": [
+     "6. การทดสอบ"
+    ],
+    "header": [
+     "ตัวชี้วัด",
+     "เป้าหมายเริ่มต้น",
+     "วัดอย่างไร"
+    ],
+    "rows": [
+     [
+      "ทองมัธยฐานที่อายุ 30 แยก W",
+      "W 1 ราว 220 · W 3 ราว 300 · W 5 ราว 470 (ตัวเลขในไฟล์รายได้ หัวข้อ 8)",
+      "`sim-gold` ขยายให้แยกตามประเทศเกิดและชนชั้น"
+     ],
+     [
+      "อัตราทองเข้า ต่อ ออก ต่อชีวิต",
+      "0.8 ถึง 1.2 (ตามแนวเกมทั่วไป ใช้เป็นแนวทาง ไม่ใช่กฎ)",
+      "รวมทุกทางเข้าและทางออก แยกชนชั้น"
+     ],
+     [
+      "สัดส่วนที่ล้มละลาย",
+      "5 ถึง 10% ของชีวิต",
+      "นับ `c_debt` และตกชั้น"
+     ],
+     [
+      "สัดส่วนที่ขึ้นชั้นได้",
+      "จากชั้น 1 ถึง 2 → 2 ถึง 3 ใน 15% ของชีวิต",
+      "นับการเปลี่ยนชั้น"
+     ],
+     [
+      "กำไรจากการค้า",
+      "มัธยฐานต่อเที่ยวเป็นบวก แต่ไม่เกิน 40% ของรายได้ประจำปีของอาชีพ",
+      "จำลองเที่ยวค้าต่อปี"
+     ],
+     [
+      "ความเสถียรของราคา",
+      "ราคาในประเทศเดียวกันไม่เปลี่ยนเกิน ×2 ต่อปีนอกเหตุการณ์ใหญ่",
+      "บันทึกราคาต่อประเทศต่อปี"
+     ],
+     [
+      "ความต่างระหว่างประเทศ",
+      "ส่วนต่างราคาข้ามชายแดนมัธยฐาน 20 ถึง 40%",
+      "เทียบหลังขบวนค้า NPC"
+     ],
+     [
+      "การเข้าถึงของ",
+      "ตัวละครเกิดชั้น 5 ใน W 5 ได้ E 23%, ชั้น 2 ใน W 1 ได้ R < 1%",
+      "นับของเริ่มต้น"
+     ]
+    ],
+    "src": "docs/systems/economy/08-implementation.md:100"
+   },
+   {
+    "headings": [
+     "7. ความเสี่ยงและวิธีลด"
+    ],
+    "header": [
+     "เสี่ยง",
+     "ลดอย่างไร"
+    ],
+    "rows": [
+     [
+      "ระบบซับซ้อนเกินจนผู้เล่นอ่านไม่ออก (มีเกมที่เคยทำเศรษฐกิจแบบมีเงินแล้วต้องเลิก)",
+      "ผู้เล่นเห็นแค่ 3 อย่าง: ทองของตัวละคร ชนชั้น และ \"ประเทศนี้รวยหรือจน\" ส่วนที่เหลือเป็นตัวแปรหลังบ้าน ไม่มีหน้าจอตลาดเต็มรูป"
+     ],
+     [
+      "ขบวนค้า NPC ทำให้ส่วนต่างหายหมด ไม่มีกำไรค้า",
+      "ลดส่วนต่าง 30% ต่อปี ไม่ใช่ 100% และเส้นทางที่ปิดไม่ลด ตั้งค่าได้"
+     ],
+     [
+      "ล้นตลาด (ผู้เล่นขายของมากจนราคาตก)",
+      "ตัวละครเดียวไม่ส่งผลต่อราคาตลาดโลก เฉพาะราคาท้องถิ่นของเมืองนั้นลด 5% ต่อ 10 หน่วยที่ขายซ้ำในปีเดียวกัน"
+     ],
+     [
+      "เงินล้น",
+      "ทางออกของชั้นสูง (ค่าครองชีพ ภาษี ซื้อยศ) และเพดานผลตอบแทน ตามไฟล์ลงทุน"
+     ],
+     [
+      "ประเทศจนแล้วจน ไม่มีทางออก",
+      "ทางออกมีเสมอ: ผจญภัยล่าวัสดุ ส่งของ คุ้มกัน ย้ายถิ่น พึ่งผู้ช่วย ความจนไม่ทำให้ตายโดยอัตโนมัติ"
+     ],
+     [
+      "ตัวเลขชนกับเนื้อเรื่องเดิม (ทอง +300 ในประเทศ W 1)",
+      "รางวัลจากเหตุการณ์เป็นทองกลาง คงเดิม ตัวเลขขนาดนี้เป็นรางวัลการผจญภัยไม่ใช่รายได้ปกติ"
+     ],
+     [
+      "ทาสและการค้ามนุษย์เป็นเนื้อหาที่ละเอียดอ่อน",
+      "ทำเป็นไฟล์แยกแล้ว ([10-bondage.md](10-bondage.md)) มีจุดต่อชัดเจน (ชั้น 1 ผู้ลี้ภัย ทาสหนี้) ไม่ปนในไฟล์เศรษฐกิจ"
+     ]
+    ],
+    "src": "docs/systems/economy/08-implementation.md:113"
+   },
+   {
+    "headings": [],
+    "header": [
+     "ไฟล์",
+     "เนื้อหา"
+    ],
+    "rows": [
+     [
+      "[01-world-economy.md](01-world-economy.md)",
+      "ทองกลางและความเชื่อมั่น เงินแบบอื่น สินค้า 9 หมวด ราคา เส้นทาง เหตุการณ์ที่เปลี่ยนเศรษฐกิจ ทองเข้าและออก ตลาดมืด"
+     ],
+     [
+      "[02-countries.md](02-countries.md)",
+      "ความมั่งคั่ง (W) ความเหลื่อมล้ำ (G) การใช้เงิน (M) ของ 143 ประเทศ สินค้าส่งออกและขาด ความอลังการของเมือง"
+     ],
+     [
+      "[03-classes.md](03-classes.md)",
+      "ห้าชนชั้น สัดส่วนที่เกิดตาม W G ทองและของตอนเกิด การข้ามชั้น ระบอบ เผ่า"
+     ],
+     [
+      "[04-income-and-living.md](04-income-and-living.md)",
+      "รายได้อาชีพ ขุนนาง ค่าครองชีพ ภาษี ความจน ธนาคารและหนี้ ราคาของ ร้านค้าตามเมือง"
+     ],
+     [
+      "[05-trade.md](05-trade.md)",
+      "การต่อรอง ค้าขายเอง รับจ้างส่งของ คุ้มกัน ล่าวัสดุขาย ลักลอบ อาชีพการค้า 8 อย่าง"
+     ],
+     [
+      "[06-investment.md](06-investment.md)",
+      "ช่องทางลงทุน 9 แบบ ผลตอบแทน ฟองสบู่ ล้มละลาย กันเงินล้น ทายาท"
+     ],
+     [
+      "[07-economic-history.md](07-economic-history.md)",
+      "เงินเกิดจากคำสัตย์ แปดอำนาจ สี่เส้นเลือดสินค้า ทวีปต่อทวีป ห้าแรงตึงเครียด ข่าวลือ"
+     ],
+     [
+      "[08-implementation.md](08-implementation.md)",
+      "โค้ดมีอะไร ต้องเพิ่มอะไร ลูปรายปี ลำดับทำ การทดสอบ ความเสี่ยง ข้อมูลอ้างอิงจากเกมอื่น"
+     ],
+     [
+      "[09-audit.md](09-audit.md)",
+      "รายงานตรวจความสอดคล้องกับระบบและเรื่องราวเดิม สิ่งที่แก้แล้ว สิ่งที่ต้องทำต่อ"
+     ],
+     [
+      "[10-bondage.md](10-bondage.md)",
+      "การผูกตัว ระดับ B0–B3 ท่าทีของประเทศ ทางออก ราคาไถ่ ผู้ถูกผูกตัวที่เป็นพวกพ้อง การแทรกแซงรอระบบพระเจ้า"
+     ],
+     [
+      "[../../lore/storylines/24-economy.md](../../lore/storylines/24-economy.md)",
+      "เส้นเรื่องของชนชั้นและอาชีพเศรษฐกิจ 39 โหนด (ec pv tr iv nl wk)"
+     ]
+    ],
+    "src": "docs/systems/economy/README.md:7"
+   },
+   {
+    "headings": [
+     "ตัวเลขสรุป"
+    ],
+    "header": [
+     "เรื่อง",
+     "จำนวน"
+    ],
+    "rows": [
+     [
+      "ประเทศ",
+      "143 (W1 9 · W2 29 · W3 54 · W4 35 · W5 16)"
+     ],
+     [
+      "สินค้า",
+      "9 หมวด"
+     ],
+     [
+      "ชนชั้น",
+      "5"
+     ],
+     [
+      "อาชีพการค้าใหม่",
+      "8 (เพิ่ม skill 5 อาวุธ 24)"
+     ],
+     [
+      "ช่องทางลงทุน",
+      "9"
+     ],
+     [
+      "โหนดเส้นเรื่องเศรษฐกิจ",
+      "39 (บวกการผูกตัว 12 ใน [27-bondage.md](../../lore/storylines/27-bondage.md))"
+     ],
+     [
+      "เหตุการณ์ที่มีตัวปรับเศรษฐกิจ",
+      "37 (ตารางใน [01-world-economy.md](01-world-economy.md) หัวข้อ 6)"
+     ]
+    ],
+    "src": "docs/systems/economy/README.md:31"
+   },
+   {
+    "headings": [
+     "1. ตัวชี้วัด"
+    ],
+    "header": [
+     "ตัวชี้วัด",
+     "ช่วง",
+     "ความหมาย"
+    ],
+    "rows": [
+     [
+      "**W ความมั่งคั่ง**",
+      "1 ถึง 5",
+      "1 จนมาก · 2 จน · 3 พอเพียง · 4 มั่งคั่ง · 5 มั่งคั่งยิ่ง ผลรวมของผลผลิตอาหาร ทรัพยากร ทำเลการค้า ฝีมือช่าง อำนาจและศาสนา หักความเสียหายและภาระ"
+     ],
+     [
+      "**G ความเหลื่อมล้ำ**",
+      "ต่ำ กลาง สูง สูงมาก",
+      "ช่องว่างระหว่างคนรวยกับคนจนในประเทศเดียวกัน ใช้ปรับสัดส่วนชนชั้นที่เกิด ([03-classes.md](03-classes.md))"
+     ],
+     [
+      "**M การใช้เงิน**",
+      "เต็ม ผสม น้อย",
+      "เต็ม: ใช้ทองทุกที่ · ผสม: เมืองใช้ทอง ชนบทแลกของ · น้อย: ส่วย บรรณาการ แลกของ หรือสัญญา ทองมีค่าน้อยในถิ่น แต่ใช้ได้ที่ตลาดชายแดน"
+     ]
+    ],
+    "src": "docs/systems/economy/02-countries.md:9"
+   },
+   {
+    "headings": [
+     "3. ผลของระดับ W"
+    ],
+    "header": [
+     "W",
+     "ชื่อ",
+     "ดัชนีราคา",
+     "ดัชนีรายได้",
+     "ของที่ร้านขาย (สูงสุด)",
+     "ความอลังการของเมือง"
+    ],
+    "rows": [
+     [
+      "1",
+      "จนมาก",
+      "×0.7",
+      "×0.5",
+      "ของใช้ C เท่านั้น ตลาดไม่ประจำ",
+      "กระท่อม เต็นท์ ค่าย ไม่มีกำแพงหิน"
+     ],
+     [
+      "2",
+      "จน",
+      "×0.85",
+      "×0.75",
+      "C และ U บางชนิด",
+      "บ้านไม้ ตลาดวันเดียว ถนนดิน"
+     ],
+     [
+      "3",
+      "พอเพียง",
+      "×1.0",
+      "×1.0",
+      "C U และ R เฉพาะเมืองใหญ่",
+      "บ้านหิน ตลาดประจำ วัดกลาง"
+     ],
+     [
+      "4",
+      "มั่งคั่ง",
+      "×1.2",
+      "×1.4",
+      "C U R และ E เฉพาะเมืองหลวงหรือเมืองช่าง",
+      "ถนนปู หอคอย ย่านพ่อค้า คฤหาสน์"
+     ],
+     [
+      "5",
+      "มั่งคั่งยิ่ง",
+      "×1.5",
+      "×1.9",
+      "ทุกระดับถึง E ช่างที่มีชื่อรับงานได้",
+      "พระราชวัง ท่าเรือใหญ่ หอสูง ย่านทอง"
+     ]
+    ],
+    "src": "docs/systems/economy/02-countries.md:30"
+   }
+  ]
+ }
+}

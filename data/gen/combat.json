@@ -1,0 +1,2910 @@
+{
+ "version": "c14f0f2597aa",
+ "sources": [
+  "docs/systems/combat/01-core.md",
+  "docs/systems/combat/02-type-matrix.md",
+  "docs/systems/combat/04-encounters.md",
+  "docs/systems/combat/05-rewards.md",
+  "docs/systems/combat/06-dragon-encounters.md",
+  "docs/systems/combat/README.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/combat.ts",
+ "items": {
+  "counts": {
+   "stances": 9,
+   "kinds": 17,
+   "attackTags": 22,
+   "sanityRules": 10
+  },
+  "base": [
+   {
+    "row": "การทอย",
+    "code": "d20 + โบนัส ≥ DC สำเร็จ · ทอย 20 สำเร็จเสมอ · ทอย 1 ล้มเหลวเสมอ · ล้มเหลวแล้วมีโอกาสทอยใหม่ตามโชค (`rerollChance`)"
+   },
+   {
+    "row": "โบนัส (`checkBonus`)",
+    "code": "(ค่าสถานะ − 10) ÷ 2 · มีแท็กที่ศัตรูแพ้ +4 · มีแท็กที่ทำให้ตัวเองเสียเปรียบ −4 · `hero_luck` +1 · พลังอาวุธ (ถ้าเป็นทางเลือกต่อสู้) · `dull` −2 · hp ต่ำกว่า 30% −2"
+   },
+   {
+    "row": "ผล",
+    "code": "ชนะ: ของรางวัล + `kill` + ชื่อเสียง · แพ้: hp ลด DC × 2.4"
+   },
+   {
+    "row": "ทางเลือก",
+    "code": "ชักอาวุธ (กำลัง) · ร่ายเวท (เวท ถ้ามีความถนัดเวท) · สื่อสารและสงบ (โชค ถ้ามีแท็กสัตว์) · หนี (เร็ว)"
+   },
+   {
+    "row": "การเลือกของตัวละคร",
+    "code": "สุ่มตามน้ำหนักนิสัยและเส้นเรื่อง (`choiceProbs`)"
+   },
+   {
+    "row": "ความถี่",
+    "code": "ต่อฤดู 1.2% × ความอันตรายของประเทศ × (1 − โชค × 1.5%)"
+   }
+  ],
+  "order": [
+   {
+    "n": 0,
+    "name": "รับรู้",
+    "what": "ตัวละครทอยรับรู้ (ปัญญาหรือเร็ว) เทียบความลอบเร้นของศัตรู สำเร็จ: ได้เปรียบจังหวะแรก (+2) ล้มเหลว: ถูกซุ่ม (−2 จังหวะแรก) สัตว์คู่หูที่มี `pa_danger_sense` หรือ `pa_night_watch` ทำให้ไม่ถูกซุ่ม"
+   },
+   {
+    "n": 1,
+    "name": "ตัดสินใจ",
+    "what": "ตัวละครเลือกท่าทีจากรายการในหัวข้อ 3 ตามน้ำหนักนิสัย (ของเดิม) และกติกาหัวข้อ 6"
+   },
+   {
+    "n": 2,
+    "name": "ปะทะ",
+    "what": "ทอยจังหวะละหนึ่งครั้ง สำเร็จ: ศัตรูเสีย **แผล** หนึ่งแผล (หรือสองแผลถ้าทอยได้ 20 หรือโจมตีจุดอ่อนรุนแรง) ล้มเหลว: ตัวละครเสีย hp"
+   },
+   {
+    "n": 3,
+    "name": "จบ",
+    "what": "ศัตรูแผลหมด: ชนะ · ตัวละคร hp หมดหรือถอย: แพ้หรือหนี · ครบจำนวนจังหวะสูงสุด: เสมอหรือแยกย้าย"
+   }
+  ],
+  "tiers": [
+   {
+    "tier": "ลูกกระจ๊อก",
+    "id": "grunt",
+    "wounds": [
+     1,
+     1
+    ],
+    "maxBeats": 2,
+    "examples": "สไลม์ป่า ก๊อบลินตัวเดียว"
+   },
+   {
+    "tier": "ปกติ",
+    "id": "normal",
+    "wounds": [
+     2,
+     2
+    ],
+    "maxBeats": 3,
+    "examples": "หมาป่าเงา โจรภูเขา"
+   },
+   {
+    "tier": "หัวหน้า",
+    "id": "chief",
+    "wounds": [
+     3,
+     3
+    ],
+    "maxBeats": 4,
+    "examples": "โทรลล์ภูเขา แม่ทัพโจร"
+   },
+   {
+    "tier": "บอส",
+    "id": "boss",
+    "wounds": [
+     4,
+     6
+    ],
+    "maxBeats": 6,
+    "examples": "ลิชโบราณ คราเคน แม่ทัพปีศาจ"
+   },
+   {
+    "tier": "ตำนาน",
+    "id": "legend",
+    "wounds": [
+     8,
+     8
+    ],
+    "maxBeats": 8,
+    "examples": "มังกร ไททัน (ดู [06-dragon-encounters.md](06-dragon-encounters.md))"
+   }
+  ],
+  "stances": [
+   {
+    "id": "melee",
+    "name": "ปะทะประชิด",
+    "stat": "กำลัง (`pow`) หรือ เร็ว (`spd`) ถ้าใช้มีดสั้น แส้",
+    "tags": [
+     "fight"
+    ],
+    "needs": "เสมอ",
+    "src": "docs/systems/combat/01-core.md:45"
+   },
+   {
+    "id": "ranged",
+    "name": "ยิงระยะไกล",
+    "stat": "เร็ว (`spd`) หรือ โชค (`luk`) ถ้าหนังสติ๊ก",
+    "tags": [
+     "fight",
+     "ranged"
+    ],
+    "needs": "มีความถนัดธนู หนังสติ๊ก หรืออาวุธยิง",
+    "src": "docs/systems/combat/01-core.md:46"
+   },
+   {
+    "id": "magic",
+    "name": "ร่ายเวท",
+    "stat": "เวท (`mag`) หรือปัญญา (`int`) สำหรับรูน มายา มิติ",
+    "tags": [
+     "fight",
+     "learn"
+    ],
+    "needs": "มีความถนัดเวทอย่างน้อยหนึ่ง",
+    "src": "docs/systems/combat/01-core.md:47"
+   },
+   {
+    "id": "guard",
+    "name": "ตั้งรับ",
+    "stat": "ทน (`vit`)",
+    "tags": [
+     "fight",
+     "safe"
+    ],
+    "needs": "มีโล่ หรือ `#guard` หรือพวกพ้องที่ต้องปกป้อง ลดความเสียหายครึ่งหนึ่ง แต่ทำแผลได้เฉพาะเมื่อทอยได้ 18 ขึ้นไป",
+    "src": "docs/systems/combat/01-core.md:48"
+   },
+   {
+    "id": "negotiate",
+    "name": "เจรจา ข่มขู่ ต่อรอง",
+    "stat": "โชคหรือปัญญา",
+    "tags": [
+     "help",
+     "trust"
+    ],
+    "needs": "ศัตรูมีความคิด (มนุษย์ เผ่าต่าง ๆ ปีศาจ มังกร)",
+    "src": "docs/systems/combat/01-core.md:49"
+   },
+   {
+    "id": "calm_beast",
+    "name": "สงบสัตว์ ฝึกให้เชื่อง",
+    "stat": "โชค",
+    "tags": [
+     "help",
+     "trust"
+    ],
+    "needs": "ศัตรูเป็นสัตว์และตัวละครมี `#beast_friend` `#beast` `taming` หรือ `#polyglot` · สำเร็จแล้วอาจได้สัตว์คู่หู ([../character/13-companions-overview.md](../character/13-companions-overview.md))",
+    "src": "docs/systems/combat/01-core.md:50"
+   },
+   {
+    "id": "evade",
+    "name": "หลอกล่อ ลอบหลบ",
+    "stat": "เร็ว",
+    "tags": [
+     "flee",
+     "stealth"
+    ],
+    "needs": "มี `stealth` หรือ `#stealth` หรือสัตว์คู่หูที่ `pa_distract`",
+    "src": "docs/systems/combat/01-core.md:51"
+   },
+   {
+    "id": "pray",
+    "name": "สวดภาวนา",
+    "stat": "ศรัทธาเทพ (`belief`) ÷ 10 แทนโบนัสค่าสถานะ",
+    "tags": [
+     "pray"
+    ],
+    "needs": "ตัวละครมีศรัทธาเทพ ≥ 20 สำเร็จ: เปิดหน้าต่างให้พระเจ้าแทรกแซง (หัวข้อ 8)",
+    "src": "docs/systems/combat/01-core.md:52"
+   },
+   {
+    "id": "flee",
+    "name": "หนี",
+    "stat": "เร็ว",
+    "tags": [
+     "flee",
+     "safe"
+    ],
+    "needs": "เสมอ",
+    "src": "docs/systems/combat/01-core.md:53"
+   }
+  ],
+  "roll": {
+   "statDiv": 2,
+   "d20": {
+    "critSuccess": 20,
+    "critFail": 1
+   },
+   "aptBonus": {
+    "1": 1,
+    "2": 2,
+    "3": 4
+   },
+   "weak": 4,
+   "veryWeak": 6,
+   "resist": -4,
+   "selfHandicap": -4,
+   "allyPerPerson": 2,
+   "allyCap": 4,
+   "lowHp": {
+    "below": 0.3,
+    "bonus": -2
+   },
+   "firstBeat": {
+    "advantage": 2,
+    "ambush": -2
+   },
+   "elementMatch": 2,
+   "heroLuck": 1,
+   "dull": -2,
+   "rows": [
+    {
+     "part": "ค่าสถานะ",
+     "value": "(ค่า − 10) ÷ 2 ปัดลง",
+     "note": "ของเดิม",
+     "src": "docs/systems/combat/01-core.md:61"
+    },
+    {
+     "part": "skill ของความถนัดที่ตรงท่าที",
+     "value": "ระดับ 1: +1 · ระดับ 2: +2 · ระดับ 3: +4",
+     "note": "ใช้ระดับสูงสุดที่ตรง เช่น ปะทะด้วยดาบ ใช้ `sword_*`",
+     "src": "docs/systems/combat/01-core.md:62"
+    },
+    {
+     "part": "พลังอาวุธ",
+     "value": "ตามอาวุธ",
+     "note": "ของเดิม ใช้เมื่อท่าทีเป็น fight",
+     "src": "docs/systems/combat/01-core.md:63"
+    },
+    {
+     "part": "ธาตุของอาวุธตรงจุดอ่อน",
+     "value": "+2",
+     "note": "ตาม [02-type-matrix.md](02-type-matrix.md)",
+     "src": "docs/systems/combat/01-core.md:64"
+    },
+    {
+     "part": "แท็กที่ศัตรูแพ้",
+     "value": "+4 แพ้ · +6 แพ้รุนแรง",
+     "note": "ของเดิม +4 · แพ้รุนแรงเพิ่มใหม่",
+     "src": "docs/systems/combat/01-core.md:65"
+    },
+    {
+     "part": "แท็กที่ศัตรูทน",
+     "value": "−4 · ภูมิคุ้มกัน: ท่าทีนั้นใช้ไม่ได้",
+     "note": "ของเดิมคือ DC +2 เปลี่ยนเป็นโบนัส −4 เพื่อให้เห็นชัด",
+     "src": "docs/systems/combat/01-core.md:66"
+    },
+    {
+     "part": "แท็กที่ทำให้ตัวเองเสียเปรียบ",
+     "value": "−4",
+     "note": "ของเดิม เช่น ภูตพรายถูกอาวุธเหล็ก",
+     "src": "docs/systems/combat/01-core.md:67"
+    },
+    {
+     "part": "สัตว์คู่หู",
+     "value": "`pa_bite_assist` `pa_flank` `pa_claw_dive` ฯลฯ ระดับ 1: +1 · 2: +2 · 3: +3",
+     "note": "ใช้สูงสุดหนึ่งความสามารถต่อจังหวะ",
+     "src": "docs/systems/combat/01-core.md:68"
+    },
+    {
+     "part": "พวกพ้อง NPC ที่สู้ด้วย",
+     "value": "+2 ต่อคน สูงสุด +4",
+     "note": "ผู้ติดตาม (`[ร่วม]` ในระบบ NPC)",
+     "src": "docs/systems/combat/01-core.md:69"
+    },
+    {
+     "part": "สภาพแวดล้อม",
+     "value": "−2 ถึง +2",
+     "note": "กลางคืนสำหรับผู้ไม่มี `darkvision` −2 · หมอกสำหรับผู้มี `#fog_sight` +2 · ถิ่นที่ชอบของเผ่า +1 · ในน้ำสำหรับ `water_breath` +2",
+     "src": "docs/systems/combat/01-core.md:70"
+    },
+    {
+     "part": "สภาพร่างกาย",
+     "value": "hp ต่ำกว่า 30% −2 · `#berserk` เปลี่ยนเป็น +2",
+     "note": "ของเดิม + ใหม่",
+     "src": "docs/systems/combat/01-core.md:71"
+    },
+    {
+     "part": "ได้เปรียบหรือถูกซุ่ม",
+     "value": "+2 หรือ −2",
+     "note": "จังหวะแรกเท่านั้น",
+     "src": "docs/systems/combat/01-core.md:72"
+    },
+    {
+     "part": "`hero_luck` `dull`",
+     "value": "+1 · −2",
+     "note": "ของเดิม",
+     "src": "docs/systems/combat/01-core.md:73"
+    }
+   ]
+  },
+  "damage": {
+   "multipliers": [
+    {
+     "what": "ตั้งรับ",
+     "value": "×0.5",
+     "nums": [
+      0.5
+     ],
+     "src": "docs/systems/combat/01-core.md:83"
+    },
+    {
+     "what": "`#guard` (`b_aegis` `b_ironskin` ฯลฯ)",
+     "value": "×0.8",
+     "nums": [
+      0.8
+     ],
+     "src": "docs/systems/combat/01-core.md:84"
+    },
+    {
+     "what": "`iron_body` `stone_blood` `#stone_skin`",
+     "value": "×0.85 ถึง ×0.9",
+     "nums": [
+      0.85,
+      0.9
+     ],
+     "src": "docs/systems/combat/01-core.md:85"
+    },
+    {
+     "what": "สัตว์คู่หู `pa_thick_hide` (ของตัวละคร)",
+     "value": "×0.95 ถึง ×0.85",
+     "nums": [
+      0.95,
+      0.85
+     ],
+     "src": "docs/systems/combat/01-core.md:86"
+    },
+    {
+     "what": "`pa_life_share`",
+     "value": "รับแทนครั้งหนึ่ง (ตามระดับ)",
+     "nums": [],
+     "src": "docs/systems/combat/01-core.md:87"
+    },
+    {
+     "what": "ธาตุของศัตรูที่ตัวละครทน (เช่น ไฟกับ `fire_res`)",
+     "value": "×0.5",
+     "nums": [
+      0.5
+     ],
+     "src": "docs/systems/combat/01-core.md:88"
+    },
+    {
+     "what": "ธาตุที่ตัวละครแพ้ (เช่น แสงกับ `weak_light`)",
+     "value": "×1.5",
+     "nums": [
+      1.5
+     ],
+     "src": "docs/systems/combat/01-core.md:89"
+    }
+   ],
+   "wounds": [
+    {
+     "from": 1,
+     "to": 60,
+     "result": "ไม่มี แค่ฟื้นตามปกติ"
+    },
+    {
+     "from": 61,
+     "to": 80,
+     "result": "แผลเป็นที่มีเรื่องเล่า (`fame+2` ได้ประโยคเรื่องเล่า)"
+    },
+    {
+     "from": 81,
+     "to": 90,
+     "result": "บาดเจ็บนาน (hp สูงสุด −10 หนึ่งปี)"
+    },
+    {
+     "from": 91,
+     "to": 96,
+     "result": "คำสาปจากการบาดเจ็บ: `c_limp` เดินกะเผลก · `c_oneeye` ตาบอดข้างหนึ่ง · `c_glassjaw` คางแก้ว · `nc_bad_back` หลังเสื่อม (สุ่มตามชนิดการโจมตี)"
+    },
+    {
+     "from": 97,
+     "to": 100,
+     "result": "คำสาปจากศัตรู (ตามตาราง [05-rewards.md](05-rewards.md) ช่อง คำสาปเมื่อแพ้)"
+    }
+   ],
+   "dcDamage": 2.4
+  },
+  "choice": [
+   {
+    "cond": "hp ต่ำกว่า 30%",
+    "effect": "น้ำหนักหนี ×2 ยกเว้นนิสัย `reckless` `bloodlust` หรือ `#berserk`",
+    "src": "docs/systems/combat/01-core.md:109"
+   },
+   {
+    "cond": "นิสัย `coward` หรือคำสาป `c_rabbitheart`",
+    "effect": "หนี ×3 ในจังหวะแรก",
+    "src": "docs/systems/combat/01-core.md:110"
+   },
+   {
+    "cond": "นิสัย `kind` หรือ `#peace` กับศัตรูที่คิดได้",
+    "effect": "เจรจา ×2",
+    "src": "docs/systems/combat/01-core.md:111"
+   },
+   {
+    "cond": "ตัวละครรู้จุดอ่อนของศัตรู (เคยเจอ หรือมี `#seer` `u_appraisal` `#truth`)",
+    "effect": "เลือกท่าทีที่ตรงจุดอ่อน ×3",
+    "src": "docs/systems/combat/01-core.md:112"
+   },
+   {
+    "cond": "ปกป้องผู้อื่น (หมู่บ้าน ครอบครัว ผู้ติดตาม)",
+    "effect": "หนี ×0.3 ตั้งรับ ×2",
+    "src": "docs/systems/combat/01-core.md:113"
+   },
+   {
+    "cond": "อาชีพนักบวช ผู้ขับไล่ผี กับศัตรูผู้ตาย",
+    "effect": "สวดภาวนาและเวทแสง ×2",
+    "src": "docs/systems/combat/01-core.md:114"
+   },
+   {
+    "cond": "อาชีพนักฝึกสัตว์ เดรุยด์ กับศัตรูสัตว์",
+    "effect": "สงบสัตว์ ×3",
+    "src": "docs/systems/combat/01-core.md:115"
+   },
+   {
+    "cond": "ความฝันจากพระเจ้า (ระบบความฝันเดิม) ที่ตรงท่าที",
+    "effect": "×3 (ของเดิม \"ทำตามความฝัน\")",
+    "src": "docs/systems/combat/01-core.md:116"
+   }
+  ],
+  "results": [
+   {
+    "result": "ชนะเด็ดขาด",
+    "cond": "ศัตรูแผลหมดโดยตัวละครไม่เสีย hp",
+    "effect": "รางวัลเต็ม · `fame` +50% · เส้นเรื่อง `thread:warrior` +2"
+   },
+   {
+    "result": "ชนะ",
+    "cond": "ศัตรูแผลหมด",
+    "effect": "รางวัลตาม [05-rewards.md](05-rewards.md)"
+   },
+   {
+    "result": "สงบศึก หรือ ฝึกให้เชื่องได้",
+    "cond": "เจรจาหรือสงบสัตว์สำเร็จ",
+    "effect": "ไม่ได้ของรางวัลจากการฆ่า แต่ได้ `karma` ชื่อเสียงคนละแบบ อาจได้พันธมิตรหรือสัตว์คู่หู"
+   },
+   {
+    "result": "หนีรอด",
+    "cond": "หนีสำเร็จ",
+    "effect": "ไม่ได้ ไม่เสีย (ยกเว้นความเสียหายที่ได้มาก่อนหน้า)"
+   },
+   {
+    "result": "เสมอ",
+    "cond": "ครบจังหวะสูงสุด",
+    "effect": "ศัตรูถอย อาจกลับมาเป็นศัตรูประจำ (`rel:+nemesis` ถ้าเป็น NPC)"
+   },
+   {
+    "result": "แพ้",
+    "cond": "hp เหลือน้อยหรือถอยหนีไม่สำเร็จ",
+    "effect": "ทอยบาดแผลถาวร อาจถูกจับ ถูกปล้น หรือได้คำสาปจากศัตรู"
+   },
+   {
+    "result": "ตาย",
+    "cond": "hp ≤ 0",
+    "effect": "กติกาความตายเดิม (`b_laststand` `#rewind` `#guardian_angel`) และหน้าต่างพระเจ้าครั้งสุดท้าย"
+   }
+  ],
+  "godInterventions": [
+   {
+    "when": "ก่อนสู้",
+    "act": "ส่งความฝัน (ของเดิม) หรือคำใบ้",
+    "effect": "ตัวละครรู้จุดอ่อนของศัตรู · ท่าทีที่ตรงความฝัน ×3"
+   },
+   {
+    "when": "ก่อนสู้",
+    "act": "ให้พร skill หรืออาวุธ (ของเดิม)",
+    "effect": "โบนัสในการต่อสู้ทันที"
+   },
+   {
+    "when": "ระหว่างสู้ (ตัวละครสวดภาวนาสำเร็จ หรือ hp ต่ำกว่า 30%)",
+    "act": "ตอบคำอธิษฐาน (ของเดิม `heal` `courage`)",
+    "effect": "ฟื้น hp หรือได้โบนัส +2 จังหวะที่เหลือ"
+   },
+   {
+    "when": "ระหว่างสู้",
+    "act": "สาปศัตรู (ใช้กลุ่มความกลัว dread)",
+    "effect": "ศัตรู DC −2"
+   },
+   {
+    "when": "หลังสู้",
+    "act": "ชุบชีวิต (ของเดิม)",
+    "effect": "ตามต้นทุนเดิม"
+   },
+   {
+    "when": "MVP2",
+    "act": "เสกของ เสกเหตุการณ์ เช่น ฟ้าผ่า อุกกาบาต ลงกลางสนามรบ",
+    "effect": "ใช้ปาฏิหาริย์เดิมในระดับประเทศ แต่ผูกกับการต่อสู้หนึ่งครั้ง"
+   }
+  ],
+  "matrix": {
+   "symbols": [
+    {
+     "mark": "★",
+     "meaning": "แพ้รุนแรง",
+     "bonus": "+6 และทอยสำเร็จทำ 2 แผล"
+    },
+    {
+     "mark": "▲",
+     "meaning": "แพ้",
+     "bonus": "+4"
+    },
+    {
+     "mark": "·",
+     "meaning": "ปกติ",
+     "bonus": "0"
+    },
+    {
+     "mark": "▼",
+     "meaning": "ทน",
+     "bonus": "−4"
+    },
+    {
+     "mark": "✕",
+     "meaning": "ภูมิคุ้มกัน",
+     "bonus": "ท่าทีนั้นใช้ไม่ได้"
+    }
+   ],
+   "attackSources": [
+    {
+     "from": "ความถนัดและ skill",
+     "tags": "แท็กของความถนัด เช่น `fire` `light` `holy` `blade` `blunt` `pierce` `ranged` `necro` `rune` `poison` (จาก [../../_generated/character-catalog/aptitudes-skills.md](../../_generated/character-catalog/aptitudes-skills.md))"
+    },
+    {
+     "from": "อาวุธ",
+     "tags": "ธาตุของอาวุธ (`light` สำหรับอาวุธศักดิ์สิทธิ์ `dark` สำหรับอาวุธต้องสาป และธาตุอื่นที่สุ่มได้) และชนิดอาวุธ (ดาบ = `blade` ค้อน = `blunt` หอก ธนู = `pierce`)"
+    },
+    {
+     "from": "พร",
+     "tags": "`#light` `#holy` `#fire` `#ice` `#lightning` `#water` `#earth` `#undead_bane` `#demon_bane` `#dragon_bane` ฯลฯ"
+    },
+    {
+     "from": "สัตว์คู่หู",
+     "tags": "ธาตุของสัตว์ (`pa_breath_fire` = `fire` · `pa_breath_frost` = `ice` · `pa_shock_touch` = `lightning` · `pa_venom_bite` = `poison`)"
+    },
+    {
+     "from": "วัตถุ",
+     "tags": "อาวุธเงิน (`silver`) อาวุธเหล็กกล้า (`iron`) โคมสีขาว (`light` สำหรับศัตรูหมอก)"
+    }
+   ],
+   "physical": {
+    "beast": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "▲"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "humanoid": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "▲"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "undead": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "▲",
+      "note": "โครงกระดูก"
+     },
+     "pierce": {
+      "mark": "▼"
+     },
+     "ranged": {
+      "mark": "▼"
+     },
+     "poison": {
+      "mark": "✕"
+     },
+     "silver": {
+      "mark": "▲"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "spirit": {
+     "blade": {
+      "mark": "✕"
+     },
+     "blunt": {
+      "mark": "✕"
+     },
+     "pierce": {
+      "mark": "✕"
+     },
+     "ranged": {
+      "mark": "✕"
+     },
+     "poison": {
+      "mark": "✕"
+     },
+     "silver": {
+      "mark": "▲"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "demon": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "▼"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "dragon": {
+     "blade": {
+      "mark": "▼"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "▲",
+      "note": "เมื่อบิน"
+     },
+     "poison": {
+      "mark": "▼"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "giant": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "▼"
+     },
+     "pierce": {
+      "mark": "▲",
+      "note": "เอ็นข้อเท้า"
+     },
+     "ranged": {
+      "mark": "▲"
+     },
+     "poison": {
+      "mark": "·"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "construct": {
+     "blade": {
+      "mark": "▼"
+     },
+     "blunt": {
+      "mark": "▲"
+     },
+     "pierce": {
+      "mark": "▼"
+     },
+     "ranged": {
+      "mark": "▼"
+     },
+     "poison": {
+      "mark": "✕"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "fey": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "·"
+     },
+     "silver": {
+      "mark": "▲"
+     },
+     "iron": {
+      "mark": "★"
+     }
+    },
+    "plant": {
+     "blade": {
+      "mark": "▲"
+     },
+     "blunt": {
+      "mark": "▼"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "▲"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "amorphous": {
+     "blade": {
+      "mark": "▼"
+     },
+     "blunt": {
+      "mark": "▼"
+     },
+     "pierce": {
+      "mark": "▼"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "✕"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "fog": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "·"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "▼"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "elemental": {
+     "blade": {
+      "mark": "▼"
+     },
+     "blunt": {
+      "mark": "▼"
+     },
+     "pierce": {
+      "mark": "▼"
+     },
+     "ranged": {
+      "mark": "▼"
+     },
+     "poison": {
+      "mark": "✕"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    },
+    "sea": {
+     "blade": {
+      "mark": "·"
+     },
+     "blunt": {
+      "mark": "·"
+     },
+     "pierce": {
+      "mark": "▲"
+     },
+     "ranged": {
+      "mark": "·"
+     },
+     "poison": {
+      "mark": "·"
+     },
+     "silver": {
+      "mark": "·"
+     },
+     "iron": {
+      "mark": "·"
+     }
+    }
+   },
+   "element": {
+    "beast": {
+     "fire": {
+      "mark": "▲"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "humanoid": {
+     "fire": {
+      "mark": "·"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "undead": {
+     "fire": {
+      "mark": "▲"
+     },
+     "ice": {
+      "mark": "▼"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "spirit": {
+     "fire": {
+      "mark": "·"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "▼"
+     }
+    },
+    "demon": {
+     "fire": {
+      "mark": "✕"
+     },
+     "ice": {
+      "mark": "▲"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "▲"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "dragon": {
+     "fire": {
+      "mark": "var",
+      "note": "ตามสาย (มังกรเพลิง ✕ · มังกรน้ำแข็ง ▲)"
+     },
+     "ice": {
+      "mark": "var",
+      "note": "ตามสาย"
+     },
+     "lightning": {
+      "mark": "▲",
+      "note": "เมื่อบิน"
+     },
+     "water": {
+      "mark": "var",
+      "note": "ตามสาย"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "giant": {
+     "fire": {
+      "mark": "▲",
+      "note": "โทรลล์ ★"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "▼"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "construct": {
+     "fire": {
+      "mark": "·"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "★"
+     },
+     "water": {
+      "mark": "▲",
+      "note": "สนิม"
+     },
+     "earth": {
+      "mark": "▼"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "fey": {
+     "fire": {
+      "mark": "·"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "▲"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "▼"
+     }
+    },
+    "plant": {
+     "fire": {
+      "mark": "★"
+     },
+     "ice": {
+      "mark": "▲"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "▼"
+     },
+     "earth": {
+      "mark": "▼"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "amorphous": {
+     "fire": {
+      "mark": "▲"
+     },
+     "ice": {
+      "mark": "▲"
+     },
+     "lightning": {
+      "mark": "▲"
+     },
+     "water": {
+      "mark": "✕"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "fog": {
+     "fire": {
+      "mark": "▲"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "▲",
+      "note": "ลมพัดหมอกออก"
+     }
+    },
+    "elemental_fire": {
+     "fire": {
+      "mark": "✕"
+     },
+     "ice": {
+      "mark": "▲"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "★"
+     },
+     "earth": {
+      "mark": "▲"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "elemental_ice": {
+     "fire": {
+      "mark": "★"
+     },
+     "ice": {
+      "mark": "✕"
+     },
+     "lightning": {
+      "mark": "·"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    },
+    "elemental_storm": {
+     "fire": {
+      "mark": "·"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "✕"
+     },
+     "water": {
+      "mark": "·"
+     },
+     "earth": {
+      "mark": "▲"
+     },
+     "wind": {
+      "mark": "✕"
+     }
+    },
+    "sea": {
+     "fire": {
+      "mark": "▼",
+      "note": "ใต้น้ำ"
+     },
+     "ice": {
+      "mark": "·"
+     },
+     "lightning": {
+      "mark": "▲"
+     },
+     "water": {
+      "mark": "✕"
+     },
+     "earth": {
+      "mark": "·"
+     },
+     "wind": {
+      "mark": "·"
+     }
+    }
+   },
+   "special": {
+    "beast": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "▲"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▲",
+      "note": "สงบได้"
+     },
+     "illusion": {
+      "mark": "▲"
+     },
+     "music": {
+      "mark": "▲"
+     }
+    },
+    "humanoid": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "▲"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▲"
+     },
+     "illusion": {
+      "mark": "▲"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "undead": {
+     "light": {
+      "mark": "★"
+     },
+     "holy": {
+      "mark": "★"
+     },
+     "dark": {
+      "mark": "▼"
+     },
+     "necro": {
+      "mark": "✕",
+      "note": "กลายเป็นควบคุม"
+     },
+     "blood": {
+      "mark": "▼"
+     },
+     "rune": {
+      "mark": "▲"
+     },
+     "charm": {
+      "mark": "✕",
+      "note": "ยกเว้นแวมไพร์ ▲"
+     },
+     "illusion": {
+      "mark": "·"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "spirit": {
+     "light": {
+      "mark": "★"
+     },
+     "holy": {
+      "mark": "★"
+     },
+     "dark": {
+      "mark": "▼"
+     },
+     "necro": {
+      "mark": "▲",
+      "note": "ผูกได้"
+     },
+     "blood": {
+      "mark": "✕"
+     },
+     "rune": {
+      "mark": "▲"
+     },
+     "charm": {
+      "mark": "·"
+     },
+     "illusion": {
+      "mark": "▼"
+     },
+     "music": {
+      "mark": "▲",
+      "note": "กล่อมให้สงบ"
+     }
+    },
+    "demon": {
+     "light": {
+      "mark": "▲"
+     },
+     "holy": {
+      "mark": "★"
+     },
+     "dark": {
+      "mark": "▼"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "▼"
+     },
+     "rune": {
+      "mark": "▲",
+      "note": "ผูกสัญญา"
+     },
+     "charm": {
+      "mark": "▼"
+     },
+     "illusion": {
+      "mark": "·"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "dragon": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "✕"
+     },
+     "blood": {
+      "mark": "▼"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▼",
+      "note": "เจรจาด้วย `#polyglot` `u_language` ได้"
+     },
+     "illusion": {
+      "mark": "▼"
+     },
+     "music": {
+      "mark": "▲",
+      "note": "บทเพลงยุคปฐม NR-08"
+     }
+    },
+    "giant": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "·"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▲"
+     },
+     "illusion": {
+      "mark": "▲"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "construct": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "✕"
+     },
+     "blood": {
+      "mark": "✕"
+     },
+     "rune": {
+      "mark": "★"
+     },
+     "charm": {
+      "mark": "✕"
+     },
+     "illusion": {
+      "mark": "✕"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "fey": {
+     "light": {
+      "mark": "▼"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "·"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▼"
+     },
+     "illusion": {
+      "mark": "▼"
+     },
+     "music": {
+      "mark": "▼"
+     }
+    },
+    "plant": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "·"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "·"
+     },
+     "illusion": {
+      "mark": "·"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "amorphous": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "✕"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "✕"
+     },
+     "illusion": {
+      "mark": "✕"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "fog": {
+     "light": {
+      "mark": "★",
+      "note": "โคมสีขาว"
+     },
+     "holy": {
+      "mark": "·",
+      "note": "ไม่ได้มาจากโลกนี้"
+     },
+     "dark": {
+      "mark": "▼"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "·"
+     },
+     "rune": {
+      "mark": "▲",
+      "note": "ผนึก"
+     },
+     "charm": {
+      "mark": "✕"
+     },
+     "illusion": {
+      "mark": "·"
+     },
+     "music": {
+      "mark": "▼",
+      "note": "เสียงดึงดูด"
+     }
+    },
+    "elemental": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "✕"
+     },
+     "blood": {
+      "mark": "✕"
+     },
+     "rune": {
+      "mark": "▲"
+     },
+     "charm": {
+      "mark": "✕"
+     },
+     "illusion": {
+      "mark": "✕"
+     },
+     "music": {
+      "mark": "·"
+     }
+    },
+    "sea": {
+     "light": {
+      "mark": "·"
+     },
+     "holy": {
+      "mark": "·"
+     },
+     "dark": {
+      "mark": "·"
+     },
+     "necro": {
+      "mark": "·"
+     },
+     "blood": {
+      "mark": "·"
+     },
+     "rune": {
+      "mark": "·"
+     },
+     "charm": {
+      "mark": "▲",
+      "note": "ไซเรน"
+     },
+     "illusion": {
+      "mark": "·"
+     },
+     "music": {
+      "mark": "▲"
+     }
+    }
+   },
+   "kinds": [
+    {
+     "id": "beast",
+     "name": "สัตว์"
+    },
+    {
+     "id": "humanoid",
+     "name": "คนและเผ่าต่าง ๆ"
+    },
+    {
+     "id": "undead",
+     "name": "ผู้ตาย"
+    },
+    {
+     "id": "spirit",
+     "name": "วิญญาณ"
+    },
+    {
+     "id": "demon",
+     "name": "ปีศาจ"
+    },
+    {
+     "id": "dragon",
+     "name": "มังกร"
+    },
+    {
+     "id": "giant",
+     "name": "ยักษ์"
+    },
+    {
+     "id": "construct",
+     "name": "สิ่งประดิษฐ์"
+    },
+    {
+     "id": "fey",
+     "name": "ภูต"
+    },
+    {
+     "id": "plant",
+     "name": "พืช"
+    },
+    {
+     "id": "amorphous",
+     "name": "ไร้รูป"
+    },
+    {
+     "id": "fog",
+     "name": "สิ่งจากรอยแยก"
+    },
+    {
+     "id": "elemental",
+     "name": "ธาตุ"
+    },
+    {
+     "id": "sea",
+     "name": "สัตว์ทะเล"
+    },
+    {
+     "id": "elemental_fire",
+     "name": "ธาตุไฟ"
+    },
+    {
+     "id": "elemental_ice",
+     "name": "ธาตุน้ำแข็ง"
+    },
+    {
+     "id": "elemental_storm",
+     "name": "ธาตุพายุ"
+    }
+   ],
+   "traits": [
+    {
+     "trait": "บิน `flying`",
+     "effect": "ปะทะประชิด −2 · ยิงระยะไกล +2"
+    },
+    {
+     "trait": "ฝูง `swarm`",
+     "effect": "เวทพื้นที่ (ไฟ ลม ดิน ระดับ 2 ขึ้นไป) +4 · ปะทะประชิดทำได้ทีละแผล"
+    },
+    {
+     "trait": "ตัวใหญ่ `huge`",
+     "effect": "แทง +2 · ศัตรูเหยียบ ความเสียหาย ×1.3"
+    },
+    {
+     "trait": "ฟื้นตัว `regen`",
+     "effect": "หลังจังหวะที่ไม่เสียแผล ฟื้นหนึ่งแผล ยกเว้นถูกไฟ"
+    },
+    {
+     "trait": "ไร้ความคิด",
+     "effect": "เจรจาและเสน่ห์ ✕"
+    },
+    {
+     "trait": "ซ่อนตัว",
+     "effect": "ผู้ไม่มี `#truth` `#seer` `u_appraisal` ทอยรับรู้ −2"
+    },
+    {
+     "trait": "ในน้ำ",
+     "effect": "ผู้ไม่มี `water_breath` −2 ทุกท่าที"
+    }
+   ],
+   "playableAsEnemy": [
+    {
+     "race": "แวมไพร์",
+     "kind": "ผู้ตาย + คน",
+     "weak": "แสง ★ ศักดิ์สิทธิ์ ★ ไฟ ▲ เงิน ▲ (แสงแดดถ้าสู้กลางวัน ★)",
+     "resist": "มืด ▼ ฟัน ▼"
+    },
+    {
+     "race": "มัมมี่",
+     "kind": "ผู้ตาย",
+     "weak": "ไฟ ★ (ร่างแห้ง) แสง ▲ ศักดิ์สิทธิ์ ▲ น้ำ ▲",
+     "resist": "พิษ ✕ ฟัน ▼ (ผ้าพัน)"
+    },
+    {
+     "race": "กูล",
+     "kind": "ผู้ตาย",
+     "weak": "แสง ▲ ศักดิ์สิทธิ์ ▲",
+     "resist": "พิษ ✕"
+    },
+    {
+     "race": "เผ่าปีศาจ",
+     "kind": "ปีศาจ + คน",
+     "weak": "ศักดิ์สิทธิ์ ★ แสง ▲",
+     "resist": "ไฟ ✕"
+    },
+    {
+     "race": "ดาร์กเอลฟ์",
+     "kind": "คน",
+     "weak": "แสง ▲ ศักดิ์สิทธิ์ ▲ (ตาแพ้แสงจ้า)",
+     "resist": "—"
+    },
+    {
+     "race": "เผ่าลาวา",
+     "kind": "คน",
+     "weak": "น้ำ ▲ น้ำแข็ง ▲",
+     "resist": "ไฟ ✕"
+    },
+    {
+     "race": "เผ่ามังกร",
+     "kind": "คน",
+     "weak": "น้ำแข็ง ▲ `#dragon_bane` ▲",
+     "resist": "ไฟ ▼ ฟัน ▼ (เกล็ด)"
+    },
+    {
+     "race": "ภูตพราย",
+     "kind": "ภูต",
+     "weak": "เหล็ก ★",
+     "resist": "เสน่ห์และมายา ▼"
+    },
+    {
+     "race": "สไลม์",
+     "kind": "ไร้รูป",
+     "weak": "ไฟ ▲ น้ำแข็ง ▲",
+     "resist": "ฟัน ทุบ แทง ▼"
+    },
+    {
+     "race": "ลูกผสมจักรกล หุ่นวิญญาณ",
+     "kind": "สิ่งประดิษฐ์ + คน",
+     "weak": "สายฟ้า ★ รูน ▲ (หุ่นวิญญาณ)",
+     "resist": "พิษ ✕"
+    },
+    {
+     "race": "ยักษ์",
+     "kind": "ยักษ์",
+     "weak": "แทง ▲ ยิง ▲",
+     "resist": "ทุบ ▼"
+    },
+    {
+     "race": "เงือก นาคา",
+     "kind": "คน (ในน้ำได้เปรียบ)",
+     "weak": "สายฟ้า ▲ (เงือก) น้ำแข็ง ▲ (นาคา)",
+     "resist": "น้ำ ▼"
+    },
+    {
+     "race": "คนแคระ",
+     "kind": "คน",
+     "weak": "—",
+     "resist": "ไฟ ▼ พิษ ▼"
+    },
+    {
+     "race": "เผ่าอื่น",
+     "kind": "คน",
+     "weak": "ตามคำสาปที่ตัวนั้นมี",
+     "resist": "ตามพรที่ตัวนั้นมี"
+    }
+   ],
+   "sanity": [
+    {
+     "id": "CR-01",
+     "cond": "ตัวละครเป็นเผ่าที่แพ้แสง แต่มีพรแสง (SR-20)",
+     "effect": "ใช้เวทแสงโจมตีผู้ตายได้ ★ ตามปกติ และแสงของศัตรูไม่ทำร้ายตัวเองเพิ่ม"
+    },
+    {
+     "id": "CR-02",
+     "cond": "ตัวละครเป็นผู้ตาย ใช้เนโครแมนซีกับผู้ตาย",
+     "effect": "ไม่ทำแผล แต่ทอยควบคุม (เวท) ถ้าสำเร็จศัตรูกลายเป็นพวก"
+    },
+    {
+     "id": "CR-03",
+     "cond": "ตัวละครเป็นภูตพราย ใช้อาวุธเหล็ก",
+     "effect": "ใช้ไม่ได้ (แพ้เหล็กเอง)"
+    },
+    {
+     "id": "CR-04",
+     "cond": "ตัวละครมี `#fire_res` สู้กับมังกรเพลิง",
+     "effect": "ลมหายใจไฟของมังกรเสียหาย ×0.5"
+    },
+    {
+     "id": "CR-05",
+     "cond": "ศัตรูหมอก ตัวละครส่งเสียง (ดนตรี ระฆัง ตะโกน)",
+     "effect": "ศัตรูเพิ่มอีกหนึ่งตัวต่อจังหวะ"
+    },
+    {
+     "id": "CR-06",
+     "cond": "ศัตรูหมอก ตัวละครถือโคมสีขาวหรือมี `ns_lantern_light`",
+     "effect": "★ แสง และศัตรูไม่เข้าใกล้หนึ่งจังหวะ"
+    },
+    {
+     "id": "CR-07",
+     "cond": "ตัวละครเป็นเผ่ามังกร สู้กับมังกร",
+     "effect": "★ เจรจา (เลือดเดียวกัน) แต่ ▼ ทุกการโจมตีถ้ามังกรเป็นพี่น้องตัวที่ตัวละครถือตรา"
+    },
+    {
+     "id": "CR-08",
+     "cond": "สู้ในถิ่นศักดิ์สิทธิ์ของศาสนาแสง",
+     "effect": "ผู้ตายและปีศาจ DC −2 · ผู้ใช้เนโครแมนซี −2"
+    },
+    {
+     "id": "CR-09",
+     "cond": "สู้ในหมอกทึบ",
+     "effect": "ผู้ไม่มี `#fog_sight` `#darkvision` −2 ทุกท่าที"
+    },
+    {
+     "id": "CR-10",
+     "cond": "สู้ในฤดูหนาวเถ้า (หลัง DR-04)",
+     "effect": "ไฟของตัวละคร +2 (ความร้อนหายาก) · ศัตรูธาตุไฟ DC −2"
+    }
+   ]
+  },
+  "encounters": {
+   "base": 0.012,
+   "luckFactor": 0.015,
+   "capPerYear": 4,
+   "capPerYearSoldier": 8,
+   "bossPerYear": 1,
+   "tagMults": {
+    "monsterWard": 0.35,
+    "monsterLure": 2.2,
+    "child": 0.4
+   },
+   "types": [
+    {
+     "type": "เจอระหว่างทาง",
+     "when": "สุ่มตามความถี่ เดินทาง ทำงานนอกเมือง",
+     "feature": "สัตว์ มอนสเตอร์ โจร 1 ครั้ง"
+    },
+    {
+     "type": "บุกหมู่บ้าน",
+     "when": "สุ่ม หรือธงโลก (หัวข้อ 3) ในเมืองที่ตัวละครอยู่",
+     "feature": "ฝูงหรือกองโจร 3 ช่วง (หัวข้อ 5) ผลกระทบต่อเมืองและ NPC"
+    },
+    {
+     "type": "ปะทะ NPC",
+     "when": "ความสัมพันธ์กับ NPC (หัวข้อ 6)",
+     "feature": "NPC ทั่วไปหรือ NPC ที่มีชื่อ"
+    },
+    {
+     "type": "ดวล",
+     "when": "ท้าดวลจากคู่แข่งหรือตัวละครท้าเอง",
+     "feature": "กติกาดวล ยอมแพ้ได้ ไม่ถึงตาย (ยกเว้นดวลชีวิต)"
+    },
+    {
+     "type": "ล่า",
+     "when": "อาชีพนายพราน นักล่าอสูร นักล่าค่าหัว",
+     "feature": "ตัวละครเป็นฝ่ายตามล่า ได้เปรียบจังหวะแรก"
+    },
+    {
+     "type": "สังเวียน",
+     "when": "อาชีพนักสู้สังเวียน หรือถูกจับไปสังเวียน",
+     "feature": "ศัตรูต่อเนื่อง 3 รอบ"
+    },
+    {
+     "type": "ศึกใหญ่",
+     "when": "สงครามในประเทศ ตัวละครเป็นทหาร อัศวิน ทหารรับจ้าง",
+     "feature": "ต่อสู้แบบมวลชน (หัวข้อ 7)"
+    },
+    {
+     "type": "ภัยของโลก",
+     "when": "เหตุการณ์ใหญ่ (PL DM FG GI) ในทวีปที่ตัวละครอยู่",
+     "feature": "บอสระดับโลกหรือฝูงใหญ่"
+    },
+    {
+     "type": "มังกร",
+     "when": "ตามไฟล์ [06-dragon-encounters.md](06-dragon-encounters.md)",
+     "feature": "ไม่ใช่การต่อสู้ปกติ"
+    }
+   ],
+   "worldFlags": [
+    {
+     "flag": "`war` สงคราม",
+     "mult": 1.8,
+     "enemies": [
+      "npc_deserter",
+      "npc_mercenary",
+      "bandits",
+      "trench_deserters",
+      "gas_ghoul"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:38"
+    },
+    {
+     "flag": "`famine` ความอดอยาก",
+     "mult": 1.4,
+     "enemies": [
+      "bandits",
+      "ghoul_horde",
+      "npc_bandit"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:39"
+    },
+    {
+     "flag": "`plague` โรคระบาด · `undead_rising`",
+     "mult": 1.5,
+     "enemies": [
+      "skeleton",
+      "wraith",
+      "krasue",
+      "ghoul_horde",
+      "drowned_dead"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:40"
+    },
+    {
+     "flag": "`holy_war` · `inquisition`",
+     "mult": 1.3,
+     "enemies": [
+      "npc_inquisitor",
+      "npc_knight"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:41"
+    },
+    {
+     "flag": "`demon_gate` · DM-07",
+     "mult": 2,
+     "enemies": [
+      "hellmouth_imps",
+      "firedemon",
+      "demongeneral"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:42"
+    },
+    {
+     "flag": "`dragon_awake` · `dragon_raid`",
+     "mult": 1.5,
+     "enemies": [
+      "wyvern",
+      "scale_wyrmling",
+      "firedragon"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:43"
+    },
+    {
+     "flag": "`pirate_raid`",
+     "mult": 1.5,
+     "enemies": [
+      "npc_pirate",
+      "ghost_crew"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:44"
+    },
+    {
+     "flag": "`sandstorm` · GI-07",
+     "mult": 1.3,
+     "enemies": [
+      "dust_djinn",
+      "sand_raiders"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:45"
+    },
+    {
+     "flag": "`long_night` · `bloodmoon`",
+     "mult": 1.4,
+     "enemies": [
+      "werewolf",
+      "vampire",
+      "vampire_spawn"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:46"
+    },
+    {
+     "flag": "`horde` ทัพออร์คกวาดล้าง",
+     "mult": 2,
+     "enemies": [
+      "sand_raiders",
+      "ogre",
+      "ash_wolf_pack"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:47"
+    },
+    {
+     "flag": "`locust` · CT-08",
+     "mult": 1.5,
+     "enemies": [
+      "locust_swarm"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:48"
+    },
+    {
+     "flag": "`eruption` · PL-03",
+     "mult": 1.5,
+     "enemies": [
+      "lava_slime",
+      "magma_salamander"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:49"
+    },
+    {
+     "flag": "`kraken`",
+     "mult": 1.5,
+     "enemies": [
+      "kraken",
+      "reef_serpent"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:50"
+    },
+    {
+     "flag": "`titan` · GI-02",
+     "mult": 1.3,
+     "enemies": [
+      "titan_shard",
+      "awakened_titan"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:51"
+    },
+    {
+     "flag": "DR-01 ฟ้าถล่ม",
+     "mult": 1.4,
+     "enemies": [
+      "sky_debris_golem",
+      "storm_harpy"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:52"
+    },
+    {
+     "flag": "DR-04 ฤดูหนาวเถ้า",
+     "mult": 1.3,
+     "enemies": [
+      "ash_drake",
+      "ghoul_horde"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:53"
+    },
+    {
+     "flag": "DR-05 มหาน้ำขึ้น",
+     "mult": 1.3,
+     "enemies": [
+      "drowned_dead",
+      "abyss_lurker"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:54"
+    },
+    {
+     "flag": "BIO-01 ต้นไม้โลกป่วย",
+     "mult": 1.3,
+     "enemies": [
+      "blighted_ent"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:55"
+    },
+    {
+     "flag": "BIO-10 ราชาเห็ดพิษ",
+     "mult": 1.5,
+     "enemies": [
+      "spore_thrall"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:56"
+    },
+    {
+     "flag": "FG-01 หมอกทึบ",
+     "mult": 2,
+     "enemies": [
+      "fog_tentacle",
+      "fog_moth_swarm",
+      "fog_weaver",
+      "flesh_flyer"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:57"
+    },
+    {
+     "flag": "MC-02 ตุ๊กตารั่ว · MC-08",
+     "mult": 1.4,
+     "enemies": [
+      "rogue_doll",
+      "war_automaton"
+     ],
+     "src": "docs/systems/combat/04-encounters.md:58"
+    },
+    {
+     "flag": "`golden` · `festival` ยุคทอง",
+     "mult": 0.6,
+     "enemies": [],
+     "src": "docs/systems/combat/04-encounters.md:59"
+    }
+   ],
+   "jobs": [
+    {
+     "jobs": [
+      "soldier",
+      "knight",
+      "mercenary",
+      "city_guard",
+      "royal_guard",
+      "gladiator"
+     ],
+     "mult": 1.6,
+     "effect": "ศัตรู NPC บ่อยขึ้น"
+    },
+    {
+     "jobs": [
+      "adventurer",
+      "beast_hunter",
+      "bounty_hunter",
+      "explorer",
+      "hunter"
+     ],
+     "mult": 1.8,
+     "effect": "ศัตรูมอนสเตอร์บ่อยขึ้น ได้เปรียบจังหวะแรกเมื่อล่า"
+    },
+    {
+     "jobs": [
+      "caravan_guard",
+      "courier",
+      "merchant",
+      "smuggler"
+     ],
+     "mult": 1.3,
+     "effect": "โจรปล้นทางบ่อยขึ้น"
+    },
+    {
+     "jobs": [
+      "exorcist",
+      "priest",
+      "inquisitor",
+      "gravekeeper"
+     ],
+     "mult": 1.2,
+     "effect": "ผู้ตายและวิญญาณบ่อยขึ้น"
+    },
+    {
+     "jobs": [],
+     "mult": 0.4,
+     "effect": "บุกหมู่บ้านยังเกิดได้ (ผลกระทบต่อฟาร์มหนักกว่า)"
+    },
+    {
+     "jobs": [
+      "librarian",
+      "accountant"
+     ],
+     "mult": 0.6,
+     "effect": "ส่วนใหญ่เป็นโจรหรือปะทะ NPC"
+    }
+   ],
+   "raid": {
+    "phases": [
+     {
+      "phase": "เตือนภัย",
+      "what": "ทอยรับรู้ (สัตว์คู่หูที่รับรู้ภัยช่วย) สำเร็จ: เมืองได้เตรียม (ศัตรู DC −2)",
+      "choices": "ปลุกคนทั้งเมือง (`help`) · เตรียมกับดัก (`int` หรือ `craft`) · ซ่อนครอบครัว (`safe`)"
+     },
+     {
+      "phase": "ป้องกัน",
+      "what": "การต่อสู้ปกติกับฝูง (แผลรวมฝูง)",
+      "choices": "นำชาวบ้านสู้ (`leadership` ทำให้พวกพ้อง +2 ต่อคน) · ยืนที่ประตู (`shield`) · อพยพเด็ก (`help`) · หนีคนเดียว"
+     },
+     {
+      "phase": "หลังศึก",
+      "what": "ผลต่อเมืองตามตารางด้านล่าง",
+      "choices": "ช่วยรักษาผู้บาดเจ็บ ช่วยสร้างใหม่ หรือออกตามล่าตัวหัวหน้า"
+     }
+    ],
+    "results": [
+     {
+      "result": "ปกป้องได้หมด",
+      "town": "ไม่เสียหาย",
+      "npcs": "ไว้ใจ +2 กับ NPC ทุกคนในเมือง",
+      "hero": "ชื่อเสียง +8 · `thread:hero` +2"
+     },
+     {
+      "result": "ชนะแต่สูญเสีย",
+      "town": "บ้านเสียหาย ผลผลิตปีนั้นลด",
+      "npcs": "NPC 1 ถึง 2 คนบาดเจ็บหรือตาย (สุ่มจาก NPC ที่ปรากฏในเมือง)",
+      "hero": "ชื่อเสียง +4"
+     },
+     {
+      "result": "แพ้",
+      "town": "เมืองถูกปล้นหรือเผา ธง `famine` ในเมือง 1 ปี",
+      "npcs": "NPC หลายคนตายหรือย้ายถิ่น",
+      "hero": "ทอยบาดแผลถาวร · ได้ `nc_war_orphan` ถ้าเป็นเด็ก"
+     },
+     {
+      "result": "หนีคนเดียว",
+      "town": "ตามผลการต่อสู้ของเมืองโดยไม่มีตัวละคร",
+      "npcs": "NPC ที่รอดจำได้ ไว้ใจ −3",
+      "hero": "`c_infamous` 30%"
+     }
+    ]
+   },
+   "npcClashChance": [
+    {
+     "cond": "แค้น ≥ 3",
+     "event": "NPC ซุ่มโจมตี (NPC ได้เปรียบจังหวะแรก)",
+     "chance": "15%",
+     "perYear": 0.15
+    },
+    {
+     "cond": "แค้น 5",
+     "event": "NPC ส่งนักฆ่าหรือกองโจรมา",
+     "chance": "25%",
+     "perYear": 0.25
+    },
+    {
+     "cond": "ตัวละครเลือก `[ขัดขวาง]` เส้นเรื่องของ NPC ที่มีชื่อ",
+     "event": "ปะทะตัวต่อตัวกับ NPC นั้น (ตาราง ง ใน [03-enemies.md](03-enemies.md))",
+     "chance": "ทันทีที่ขัดขวาง",
+     "perYear": null
+    },
+    {
+     "cond": "ตัวละครมีคำสาป `c_wanted`",
+     "event": "นักล่าค่าหัว (npc_mercenary) ตามล่า",
+     "chance": "20%",
+     "perYear": 0.2
+    },
+    {
+     "cond": "ตัวละครฆ่า NPC ที่มีคนใกล้ชิด",
+     "event": "ญาติหรือศิษย์ของ NPC ตามแก้แค้น (เป็นเส้นสืบทอด)",
+     "chance": "10%",
+     "perYear": 0.1
+    },
+    {
+     "cond": "ตัวละครมีศรัทธาต่ำในถิ่นศาสนาแสงและเป็นผู้ตายหรือนอกรีต",
+     "event": "ศาลศาสนาตามล่า",
+     "chance": "15%",
+     "perYear": 0.15
+    },
+    {
+     "cond": "ผู้ติดตาม NPC ที่ไว้ใจต่ำกว่า 0",
+     "event": "ทรยศระหว่างการต่อสู้ (พวกพ้องกลายเป็นศัตรู)",
+     "chance": "5% ต่อการต่อสู้",
+     "perYear": 0.05
+    }
+   ],
+   "mass": [
+    {
+     "role": "ทหารแนวหน้า",
+     "stat": "กำลัง หรือทน",
+     "dc": 13,
+     "result": "รอด ชื่อเสียง +3 · ฝ่ายตัวเองได้เปรียบ +2%"
+    },
+    {
+     "role": "พลธนู พลปืน",
+     "stat": "เร็ว",
+     "dc": 13,
+     "result": "ชื่อเสียง +2 · +1%"
+    },
+    {
+     "role": "นักเวท",
+     "stat": "เวท",
+     "dc": 15,
+     "result": "ชื่อเสียง +4 · +3%"
+    },
+    {
+     "role": "แม่ทัพ ผู้บัญชาการ",
+     "stat": "ปัญญา + `leadership`",
+     "dc": 16,
+     "result": "ชื่อเสียง +8 · +6% · เปิดเส้นเรื่องแม่ทัพ"
+    },
+    {
+     "role": "หมอสนาม",
+     "stat": "ปัญญา + `medicine` หรือ `healing`",
+     "dc": 13,
+     "result": "ชีวิตทหาร ความไว้ใจ +2 กับ NPC ทหาร"
+    },
+    {
+     "role": "สายลับ",
+     "stat": "เร็ว + `stealth`",
+     "dc": 15,
+     "result": "ข้อมูลทัพศัตรู +5%"
+    }
+   ]
+  },
+  "rewards": {
+   "byTier": [
+    {
+     "tier": "ลูกกระจ๊อก",
+     "material": 0.4,
+     "weapon": 0.01,
+     "blessing": 0.005,
+     "curse": 0.01,
+     "skill": 0.005
+    },
+    {
+     "tier": "ปกติ",
+     "material": 0.6,
+     "weapon": 0.04,
+     "blessing": 0.02,
+     "curse": 0.03,
+     "skill": 0.02
+    },
+    {
+     "tier": "หัวหน้า",
+     "material": 0.8,
+     "weapon": 0.1,
+     "blessing": 0.06,
+     "curse": 0.06,
+     "skill": 0.05
+    },
+    {
+     "tier": "บอส",
+     "material": 1,
+     "weapon": 0.25,
+     "blessing": 0.15,
+     "curse": 0.12,
+     "skill": 0.12
+    },
+    {
+     "tier": "ตำนาน",
+     "material": 1,
+     "weapon": 0.5,
+     "blessing": 0.35,
+     "curse": 0.3,
+     "skill": 0.25
+    }
+   ],
+   "material": [
+    {
+     "kind": "สัตว์",
+     "materials": "หนัง เขี้ยว ขน",
+     "use": "ช่างฟอกหนัง ช่างตัดเสื้อ ค้าขาย"
+    },
+    {
+     "kind": "ผู้ตาย",
+     "materials": "กระดูกต้องสาป ผงศพ",
+     "use": "เนโครแมนซี ไสยศาสตร์"
+    },
+    {
+     "kind": "วิญญาณ",
+     "materials": "ผลึกวิญญาณ",
+     "use": "อาวุธต่อวิญญาณ (ได้แท็ก `spirit_bane` ชั่วคราว) พิธีกรรม"
+    },
+    {
+     "kind": "ปีศาจ",
+     "materials": "เขาปีศาจ เลือดอสูร",
+     "use": "สัญญาปีศาจ อาวุธต้องสาป"
+    },
+    {
+     "kind": "มังกรป่า ไวเวิร์น",
+     "materials": "เกล็ด เขี้ยวมังกร",
+     "use": "เกราะทนไฟ อาวุธ `#dragon_bane` (เมื่อตีด้วย `smithing_3`)"
+    },
+    {
+     "kind": "ยักษ์",
+     "materials": "กระดูกยักษ์",
+     "use": "อาวุธหนัก"
+    },
+    {
+     "kind": "สิ่งประดิษฐ์",
+     "materials": "แกนรูน ชิ้นส่วนกลไก",
+     "use": "ช่างกล ช่างสลักรูน สัตว์คู่หูจักรกล"
+    },
+    {
+     "kind": "ภูต",
+     "materials": "ฝุ่นภูต",
+     "use": "เวทมายา น้ำหอม เครื่องสำอาง"
+    },
+    {
+     "kind": "พืช",
+     "materials": "ยางไม้ สปอร์",
+     "use": "หมอยา เภสัชกร"
+    },
+    {
+     "kind": "ไร้รูป",
+     "materials": "เจลสไลม์",
+     "use": "ยารักษาแผล"
+    },
+    {
+     "kind": "สิ่งจากรอยแยก",
+     "materials": "หมึกหมอก",
+     "use": "หน้ากากกรองหมอก โคมพิเศษ (หายาก ราคาสูงในตลาดมืด NB-09)"
+    },
+    {
+     "kind": "ธาตุ",
+     "materials": "แก่นธาตุ",
+     "use": "อาวุธธาตุ ตามธาตุของศัตรู"
+    },
+    {
+     "kind": "สัตว์ทะเล",
+     "materials": "มุก หนวดทะเล",
+     "use": "เครื่องประดับ ยา"
+    }
+   ],
+   "weapon": [
+    {
+     "enemy": "ผู้ตาย วิญญาณ",
+     "kind": "ต้องสาป 70%",
+     "element": "มืด"
+    },
+    {
+     "enemy": "ปีศาจ",
+     "kind": "ต้องสาป 80%",
+     "element": "ไฟหรือมืด"
+    },
+    {
+     "enemy": "คน NPC ทหาร อัศวิน",
+     "kind": "ตามอาวุธของ NPC (ศักดิ์สิทธิ์ถ้าเป็นอัศวินศาสนาแสง)",
+     "element": "ตาม NPC"
+    },
+    {
+     "enemy": "ธาตุ",
+     "kind": "ศักดิ์สิทธิ์ 50%",
+     "element": "ตามธาตุศัตรู"
+    },
+    {
+     "enemy": "มังกรป่า",
+     "kind": "ศักดิ์สิทธิ์ 60%",
+     "element": "ไฟหรือน้ำแข็งตามสายมังกร"
+    },
+    {
+     "enemy": "อื่น ๆ",
+     "kind": "ศักดิ์สิทธิ์ 50%",
+     "element": "สุ่ม"
+    }
+   ],
+   "gifts": [
+    {
+     "kind": "ผู้ตาย",
+     "blessings": [
+      "b_undeadslayer",
+      "b_lightward",
+      "b_curseward"
+     ],
+     "curses": [
+      "c_undeadtouch",
+      "c_ghost",
+      "c_lichseed"
+     ]
+    },
+    {
+     "kind": "วิญญาณ",
+     "blessings": [
+      "b_mindward",
+      "b_insight",
+      "nb_sv_fog"
+     ],
+     "curses": [
+      "c_shadow",
+      "c_whisper",
+      "c_nightmare"
+     ]
+    },
+    {
+     "kind": "แวมไพร์",
+     "blessings": [
+      "b_nighteye",
+      "b_regen"
+     ],
+     "curses": [
+      "c_vampbite",
+      "c_bloodthirst"
+     ]
+    },
+    {
+     "kind": "ปีศาจ",
+     "blessings": [
+      "b_demonslayer",
+      "b_flameward"
+     ],
+     "curses": [
+      "c_demonmark",
+      "c_cursedblood"
+     ]
+    },
+    {
+     "kind": "มังกรป่า ไวเวิร์น",
+     "blessings": [
+      "b_dragonscale",
+      "b_dragonslayer",
+      "b_flameward"
+     ],
+     "curses": [
+      "c_greed"
+     ]
+    },
+    {
+     "kind": "ยักษ์",
+     "blessings": [
+      "b_giant",
+      "b_mountain"
+     ],
+     "curses": [
+      "c_stoneskin"
+     ]
+    },
+    {
+     "kind": "สัตว์",
+     "blessings": [
+      "b_beastlord",
+      "b_hare",
+      "b_nighteye"
+     ],
+     "curses": [
+      "c_moonfrenzy"
+     ]
+    },
+    {
+     "kind": "สิ่งประดิษฐ์",
+     "blessings": [
+      "b_ironskin",
+      "nb_gear_sense"
+     ],
+     "curses": [
+      "c_insomnia"
+     ]
+    },
+    {
+     "kind": "ภูต",
+     "blessings": [
+      "b_lucid",
+      "b_inspire"
+     ],
+     "curses": [
+      "c_rhyme",
+      "c_dance",
+      "c_chicken"
+     ]
+    },
+    {
+     "kind": "พืช",
+     "blessings": [
+      "b_harvest",
+      "nb_root_sense"
+     ],
+     "curses": [
+      "c_allergy"
+     ]
+    },
+    {
+     "kind": "สิ่งจากรอยแยก",
+     "blessings": [
+      "nb_sv_fog",
+      "nb_fog_walker"
+     ],
+     "curses": [
+      "nc_fog_shadow",
+      "nc_sv_fog"
+     ]
+    },
+    {
+     "kind": "ธาตุ",
+     "blessings": [
+      "b_firetouch",
+      "b_frosttouch",
+      "b_thundertouch",
+      "b_tidetouch",
+      "b_earthtouch"
+     ],
+     "curses": [
+      "c_fireweak",
+      "c_coldweak"
+     ]
+    },
+    {
+     "kind": "NPC",
+     "blessings": [
+      "b_warcry",
+      "b_swordgod",
+      "b_silvertongue"
+     ],
+     "curses": [
+      "c_wanted",
+      "c_feud"
+     ]
+    }
+   ],
+   "nonKill": [
+    {
+     "how": "เจรจาให้ถอย",
+     "reward": "ชื่อเสียง +3 · `karma` +2 · ศัตรู NPC ไว้ใจ +1 (อาจเป็นพันธมิตรในอนาคต)"
+    },
+    {
+     "how": "สงบสัตว์",
+     "reward": "`karma` +2 · โอกาสได้สัตว์คู่หู ตามระดับความหายากของสัตว์นั้น ([../character/13-companions-overview.md](../character/13-companions-overview.md))"
+    },
+    {
+     "how": "ปล่อยศัตรูที่แพ้",
+     "reward": "`kind` +5 · NPC ที่ถูกปล่อยมีโอกาส \"คืนบุญ\" ในอนาคต (ระบบ NPC เดิม)"
+    },
+    {
+     "how": "ไล่วิญญาณให้สงบ",
+     "reward": "`b_mindward` หรือ `nb_mourning_ear` ในโอกาสเล็ก · ผลึกวิญญาณ"
+    }
+   ],
+   "titles": [
+    {
+     "cond": "ชนะผู้ตายหรือวิญญาณ 10 ครั้ง",
+     "title": "ผู้ส่งวิญญาณ"
+    },
+    {
+     "cond": "ชนะปีศาจ 10 ครั้ง",
+     "title": "ผู้ปราบมาร (เพิ่มน้ำหนักเป้าหมาย `demonbane` ในโค้ดเดิม)"
+    },
+    {
+     "cond": "ชนะมังกรป่า 3 ครั้ง",
+     "title": "นักล่ามังกร (เพิ่มน้ำหนัก DR-13 และ DM-10)"
+    },
+    {
+     "cond": "ปกป้องหมู่บ้าน 3 ครั้ง",
+     "title": "ผู้พิทักษ์แห่ง<ชื่อเมือง>"
+    },
+    {
+     "cond": "ชนะดวล 5 ครั้ง",
+     "title": "นักดาบไร้พ่าย"
+    },
+    {
+     "cond": "สงบสัตว์ 5 ครั้ง",
+     "title": "เพื่อนแห่งพงไพร"
+    },
+    {
+     "cond": "สังหาร NPC ที่มีชื่อ 3 คน",
+     "title": "ฆาตกรที่ทุกคนรู้จัก (`c_infamous`)"
+    }
+   ],
+   "twoForms": [
+    {
+     "form": "`PL-04` ธาลาสซาตื่น (ตัวละครอยู่บนเรือที่วังวนกลืน หรือบนเกาะเกิดใหม่)",
+     "win": "เลวีอาธานไม่ตาย ถอยลงวังวน ไม่มีฟันให้ถอน · `mt_pearl` 3 · `mt_sea_tentacle` 3 · ช่องอาวุธ 50% ได้ระดับ E ธาตุ `water` เสมอ · `b_tidetouch` หรือ `b_seacalm` 35% · `c_hydrophobia` 30% (เงือกและนาคาเปลี่ยนตาม SR-26) · ชื่อเสียงสูงสุด",
+     "winNoKill": "ผู้มี `nb_mark_thalassa` หรือถือ `wl_thalassa` ตอบปริศนาให้มันกลับลงวังวนโดยไม่สู้ · `karma` +2 · `mt_pearl` 1 · ไม่ทอยคำสาป",
+     "lose": "ทอยบาดแผลถาวรตาม [01-core.md](01-core.md) หัวข้อ 5 · ถ้ารอด `c_hydrophobia` 50%"
+    },
+    {
+     "form": "`END-04` แกนน้ำเปิด",
+     "win": "เลวีอาธานตาย ได้ `wl_leviathan` ตาม [../items/08-legendary.md](../items/08-legendary.md) แทนช่องอาวุธ · วัสดุของรูป `PL-04` ×2",
+     "winNoKill": "ไม่มี การเจรจาของ `END-04` ทำกับทะเลเอง ไม่ใช่กับเลวีอาธาน",
+     "lose": "เหมือนรูป `PL-04`"
+    }
+   ]
+  },
+  "dragons": {
+   "rows": [
+    {
+     "kind": "**มังกรป่า** (ไม่ใช่หนึ่งในสิบห้า)",
+     "example": "มังกรเพลิง มังกรน้ำแข็ง ไวเวิร์น ไดรค์เถ้า ลูกมังกรป่า",
+     "killable": "ได้ เป็นบอสปกติ",
+     "world": "ไม่มีเหตุการณ์ DR แต่สะสมไปสู่ DR-12 มังกรป่ากบฏ และ DM-10 ฤดูล่ามังกร"
+    },
+    {
+     "kind": "**มังกรสิบห้า** (ปฐม ผู้อาวุโส เสา)",
+     "example": "โอรัน-ซัล เพลิงนิรันดร์ สมุทรอาลัย ฯลฯ",
+     "killable": "แทบเป็นไปไม่ได้ ต้องครบเงื่อนไขหัวข้อ 3",
+     "world": "มังกรล้ม เกิดเหตุการณ์ล้มของตัวนั้น + DR-15 คลื่นไว้อาลัยทุกทวีป + DFC +1"
+    }
+   ],
+   "wild": [
+    {
+     "result": "ชนะ",
+     "loot": "ทองสะสมของมังกร (ตามโค้ดเดิม gold+250 ถึง 300) · เกล็ดและเขี้ยว 100% · `b_dragonscale` 15% · `b_dragonslayer` 10% · อาวุธธาตุของมังกร 25% · คำสาป `c_greed` 15% · ไม่ได้อะไรพิเศษเกินจากทอง 35%"
+    },
+    {
+     "result": "สงบได้ (เผ่ามังกร หรือ `#polyglot` `u_language`)",
+     "loot": "ไม่ได้ทอง · มังกรป่าอาจกลายเป็นพันธมิตรครั้งหนึ่ง · โอกาสได้ไข่หรือลูกมังกรป่า (สัตว์คู่หู R ถึง L) 5%"
+    },
+    {
+     "result": "แพ้",
+     "loot": "ทอยบาดแผลถาวร (ไฟหรือน้ำแข็ง) · `c_fireweak` หรือ `c_coldweak` 20%"
+    }
+   ],
+   "meet": [
+    {
+     "type": "การทดสอบ",
+     "when": "ตัวละครเข้าถิ่นของมังกรพร้อมตรามังกรหรือคำเชิญ",
+     "feature": "มังกรทดสอบตามสิ่งที่ต้องการจริง ([../../lore/dragons/README.md](../../lore/dragons/README.md) ตารางรวม)",
+     "stance": "ตามตัว ดูหัวข้อ 4"
+    },
+    {
+     "type": "อาละวาด",
+     "when": "อารมณ์ของมังกรต่ำกว่า 30 (เหตุการณ์ PL ของตัวนั้นเปิด)",
+     "feature": "มังกรทำลายพื้นที่ ตัวละครอยู่ในพื้นที่",
+     "stance": "ปลอบ (เจรจา ดนตรี ให้สิ่งที่มังกรต้องการ) ไม่ใช่ฆ่า"
+    },
+    {
+     "type": "ปกป้องผนึก",
+     "when": "ผู้ปลดผนึก (GD-07) หรือผู้บุกรุกเข้าใกล้ผนึก",
+     "feature": "มังกรปกป้อง ถ้าตัวละครอยู่ฝ่ายผู้บุกรุก มังกรเป็นศัตรู",
+     "stance": "ถอย หรืออยู่ฝ่ายมังกร"
+    },
+    {
+     "type": "ไว้อาลัย",
+     "when": "หลัง DR-15 ในทวีปที่มังกรพี่น้องอยู่",
+     "feature": "มังกรเศร้า อารมณ์แปรปรวน",
+     "stance": "อยู่เป็นเพื่อน ฟังเสียงพี่น้อง (`#dragon_mourning`)"
+    },
+    {
+     "type": "ถูกล่า",
+     "when": "DR-13 หรือ DM-10 เกิด และตัวละครอยู่ฝ่ายผู้ล่าหรือฝ่ายปกป้อง",
+     "feature": "การต่อสู้จริง (หัวข้อ 3)",
+     "stance": "ตามฝ่าย"
+    }
+   ],
+   "wound": [
+    {
+     "cond": "อารมณ์ของมังกรต่ำกว่า 10 (เสี่ยงล้ม)",
+     "from": "ผลของเหตุการณ์โลก"
+    },
+    {
+     "cond": "ตัวละครถืออาวุธปราบมังกรระดับ L (`#dragon_bane` ระดับ L)",
+     "from": "DR-13"
+    },
+    {
+     "cond": "ตัวละครมีพรระดับ L และพวกพ้องอย่างน้อย 3 คน",
+     "from": "ศึกระดับตำนาน"
+    },
+    {
+     "cond": "พระเจ้าลงมือ (MVP2)",
+     "from": "การแทรกแซงขั้นสูงสุด"
+    }
+   ],
+   "result": [
+    {
+     "result": "ต่อโลก",
+     "detail": "เหตุการณ์ล้มของมังกรตัวนั้น (เช่น โอรัน-ซัล DR-01 · เพลิงนิรันดร์ DR-04 · สมุทรอาลัย DR-05 · พายุไร้ทิศ DR-06 · ศิลาสะท้าน DR-07 · ราหู DR-08 · เสาทั้งเก้า END-01 ถึง END-09) + DR-15 + DFC +1 ตาม [../events/branches/01-dragon-falls.md](../events/branches/01-dragon-falls.md)"
+    },
+    {
+     "result": "รางวัล",
+     "detail": "`b_dragonslayer` 60% · พรระดับ L ของธาตุมังกร 25% · ของที่มังกรเก็บไว้ (กุญแจของทวีป ถ้ามังกรถืออยู่) 40% · ชื่อเสียงสูงสุด"
+    },
+    {
+     "result": "คำสาป",
+     "detail": "`nc_dragon_grief` 100% · `nc_mourning` 100% · `c_disaster` 20% (ดึงดูดภัยพิบัติ) · `c_godhate` 10% ถ้าเป็นผู้ศรัทธาลัทธิมังกร"
+    },
+    {
+     "result": "สังคม",
+     "detail": "ลัทธิบูชามังกรทุกประเทศเป็นศัตรู · เผ่าปีกและเผ่ามังกรไว้ใจ −5 · ลัทธิผู้ปลดผนึก (GD-07) ยกย่อง"
+    },
+    {
+     "result": "ตัวละครเผ่ามังกรหรือผู้ถือตรามังกร",
+     "detail": "ได้คำสาปเพิ่ม `c_cursedblood` และได้ยินเสียงพี่น้องร้องไห้ทุกคืน (ผลของ `#dragon_mourning` แบบกลับด้าน)"
+    }
+   ],
+   "tests": [
+    {
+     "dragon": "โอรัน-ซัล",
+     "place": "AZ-01",
+     "test": "ให้คำสาบานว่าจะดูแลกัน",
+     "stat": "ซื่อสัตย์ + เมตตา",
+     "badge": "`nb_mark_oran`"
+    },
+    {
+     "dragon": "เพลิงนิรันดร์",
+     "place": "AZ-02",
+     "test": "ใช้ไฟอย่างซื่อตรงต่อหน้า",
+     "stat": "ซื่อสัตย์ + `fire` หรือ `smithing`",
+     "badge": "`nb_mark_flame`"
+    },
+    {
+     "dragon": "สมุทรอาลัย",
+     "place": "AZ-06 NR-04",
+     "test": "บอกชื่อผู้ตายในทะเล",
+     "stat": "ปัญญา + `writing` หรือ `scholar`",
+     "badge": "`nb_mark_sea`"
+    },
+    {
+     "dragon": "พายุไร้ทิศ",
+     "place": "AZ-03",
+     "test": "เล่นอย่างอิสระโดยไม่มีจุดประสงค์",
+     "stat": "โชค + นิสัย `freedom` `humor`",
+     "badge": "`nb_mark_storm`"
+    },
+    {
+     "dragon": "ศิลาสะท้าน",
+     "place": "AZ-04",
+     "test": "อยู่นิ่งตลอดวันหินหลับ",
+     "stat": "ทน + นิสัย `patient`",
+     "badge": "`nb_mark_stone`"
+    },
+    {
+     "dragon": "ราหู",
+     "place": "AZ-05",
+     "test": "จัดพิธีที่สองหัวได้ยินกัน",
+     "stat": "ปัญญา + `divination` หรือ `music`",
+     "badge": "`nb_mark_eclipse`"
+    },
+    {
+     "dragon": "อีริดาน",
+     "place": "AZ-07",
+     "test": "เล่าเรื่องให้ฟัง",
+     "stat": "โชค + `writing` `music` หรือ `scholar`",
+     "badge": "`nb_mark_eridan`"
+    },
+    {
+     "dragon": "ฮรอด-กาธ",
+     "place": "MH-10",
+     "test": "นำอาหารที่ทำให้เลิกหิว (ข้าวเถ้า HP-07)",
+     "stat": "ปัญญา + `farming` หรือ `ns_ash_rice`",
+     "badge": "`nb_mark_hrod`"
+    },
+    {
+     "dragon": "คัลดรา",
+     "place": "KD-10",
+     "test": "ประกาศเขตหยุดขุด",
+     "stat": "ปัญญา + `leadership` หรือ `law`",
+     "badge": "`nb_mark_kaldra`"
+    },
+    {
+     "dragon": "ธาลาสซา",
+     "place": "NR-04",
+     "test": "ตอบปริศนา",
+     "stat": "ปัญญา + `scholar` หรือ `divination`",
+     "badge": "`nb_mark_thalassa`"
+    },
+    {
+     "dragon": "อันดาร์",
+     "place": "AL-14",
+     "test": "ฝันโดยไม่มีความกลัว",
+     "stat": "ศรัทธา + `#lucid` หรือ `ns_dream_read`",
+     "badge": "`nb_mark_andar`"
+    },
+    {
+     "dragon": "เซเรเน",
+     "place": "MK-01",
+     "test": "หยุดการเจาะและขอโทษ",
+     "stat": "ปัญญา + `engineering` หรือ `mechanics`",
+     "badge": "`nb_mark_serene`"
+    },
+    {
+     "dragon": "กรอม-ธาร",
+     "place": "SH-03 SH-17",
+     "test": "นำคำขอบคุณจากเกาะ",
+     "stat": "โชค + ผูกพันกับผู้คนจากอัซการ์",
+     "badge": "`nb_mark_gromdhar`"
+    },
+    {
+     "dragon": "ซิลเวรา",
+     "place": "SV-01 SV-13",
+     "test": "ช่วยให้แยกจากต้นไม้ได้",
+     "stat": "เวท + `nature`",
+     "badge": "`nb_mark_silvera`"
+    },
+    {
+     "dragon": "นิเวรี",
+     "place": "NB-08",
+     "test": "ยอมรับว่ามันปกป้อง",
+     "stat": "ศรัทธา + เมตตา",
+     "badge": "`nb_mark_niveri`"
+    }
+   ]
+  }
+ }
+}
