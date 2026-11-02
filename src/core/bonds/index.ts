@@ -14,7 +14,7 @@ registerBondsRules();
 export { registerBondsRules, focusTie } from './rules';
 export { inviteChance, invite, partyEffects, loverEligible, joinParty, type InviteKind } from './invites';
 export { showMood, moodsOf, fitMood } from './moods';
-export { addChild, birthKin, closeKin } from './family';
+export { addChild, birthKin, closeKin, stageOfAge, adultAgeOf } from './family';
 export { meet, addNpcTie, hasRoom } from './sources';
 export { grantPair, fullPair, statusOf } from './items';
 export { startArc, pickTemplate, crisisAnswer, endingKind, decideCrises } from './arcs';

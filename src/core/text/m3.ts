@@ -12,7 +12,7 @@ import { items, labels } from './labels';
 import { hashText, plainName, scrub, sentence } from './plain';
 import { CAUSE_TH, TIER_TH } from './tuning';
 import {
-  BOND_CAUSE_TH, BOND_LEVEL_TH, BOND_WHY_TH, CLASH_RESULT_TH, CRISIS_ANSWER_TH, CRISIS_BY_TH, END_CHILD_TH, END_PARTNER_TH, FORGE_OUTCOME_TH, FORGE_PAY_TH, FREED_BY_TH, GROW_TH, INVITE_TH, LEGEND_GONE_TH,
+  BOND_CAUSE_TH, BOND_LEVEL_TH, BOND_WHY_TH, MOOD_BREAK_TH, NODE_BREAK_TH, NO_GO_TH, CLASH_RESULT_TH, CRISIS_ANSWER_TH, CRISIS_BY_TH, END_CHILD_TH, END_PARTNER_TH, FORGE_OUTCOME_TH, FORGE_PAY_TH, FREED_BY_TH, GROW_TH, INVITE_TH, LEGEND_GONE_TH,
   MOOD_TH, RAID_TH, RANK_TH, REFUSAL_TH, RESCUE_TH, ROAD_TH, SICK_TH, TALISMAN_TH, TIE_FROM_TH, TIGHT_TH, TRAVEL_CAUSE_TH, TRAVEL_LEVEL_TH, TRIP_WHY_TH, WAR_DEAD_TH, WAR_FIRST_RESULT_TH, WAR_FIRST_TH,
   WAR_HELD_TH, WAR_LOST_TH, WAR_RANK_TH, WAR_ROLE_TH, WAR_WON_TH, WOUND_TH,
 } from './words';
@@ -72,11 +72,16 @@ function tagOf(d: D, who: string): string {
   if (d.partner || d.spouse) return `${d.spouse ? (d.gender === 'f' ? 'ภรรยา' : d.gender === 'm' ? 'สามี' : 'คู่ชีวิต') : 'คนรัก'}ของ${who}`;
   return '';
 }
+/** The line of a person as the player reads it: the line of a child (`ญาติรุ่นเยาว์`) says nothing, so it is the child, the taken-in child or the young kin by `kin`. */
+export function lineWord(line: string, kin?: unknown): string {
+  if (line !== 'ญาติรุ่นเยาว์') return line;
+  return kin === 'adopted' ? 'ลูกบุญธรรม' : kin === 'child' ? 'ลูก' : kin ? 'หลาน' : 'ลูกหลาน';
+}
 /** `ไลลินา (สหาย)`: the person with his line; a child is `ไลลินา (ลูก)` and a partner `ไลลินา (คนรัก)` (the line of a child, `ญาติรุ่นเยาว์`, says nothing to the reader). */
 function nameTag(d: D, who: string, ln?: string): string {
   const name = s(d.name);
   const tag = tagOf(d, who).replace(`ของ${who}`, '');
-  return tag ? `${name} (${tag})` : `${name}${ln ?? paren(s(d.line))}`;
+  return tag ? `${name} (${tag})` : `${name}${ln ?? paren(lineWord(s(d.line), d.kin))}`;
 }
 const isNear = (d: D): boolean => d.kin === 'child' || d.kin === 'adopted' || !!d.partner || !!d.spouse;
 
@@ -160,6 +165,29 @@ function deathCause(cause: unknown): string {
 
 const paren = (t: string): string => (t ? ` (${t})` : '');
 
+/**
+ * Why a tie broke, in words (` เพราะ...`, or nothing): the node that broke it, the feeling held toward him, the distance, the silence, or the years. A story ending that
+ * broke it is told by its own words.
+ */
+function becauseWords(cx: M3Cx, d: D): string {
+  const node = NODE_BREAK_TH[s(d.why)];
+  if (node) return ` เพราะ${node}`;
+  // the words of the story ending, when they read as a sentence (the table cells are often a few jargon words: `ตัดขาด B ตก`)
+  const story = s(d.btext) ? docSentence(cx.data, s(d.btext), cx.who) : '';
+  if ((story.match(/[฀-๿]/g) ?? []).length >= 16) return ` เพราะเรื่องที่เกิดขึ้น: ${story}`;
+  switch (s(d.because)) {
+    case 'mood':
+      return MOOD_BREAK_TH[s(d.bmood)] ? ` เพราะ${MOOD_BREAK_TH[s(d.bmood)]}` : '';
+    case 'far':
+      return ' เพราะอยู่ห่างกันคนละแดน';
+    case 'silent':
+      return ' เพราะไม่ได้พบหน้ากันมานาน';
+    case 'drift':
+      return ' เพราะใจห่างกันไปทีละน้อย';
+  }
+  return '';
+}
+
 /** A sentence of a document, with a remark in brackets that was left hanging by a link cut out of it (`(ตามท่าทีของประเทศใน)`) taken away. */
 function docSentence(data: GameData, text: string, who = 'ตัวละคร'): string {
   return named(sentence(data, text.replace(/\([^()]*ใน\)/g, ' ').replace(/\s+ใน\s*$/, '')), who);
@@ -193,7 +221,7 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
   const d = e.data;
   const who = cx.who;
   const name = s(d.name);
-  const line = s(d.line);
+  const line = lineWord(s(d.line), d.kin);
   const ln = paren(line);
   switch (e.kind) {
     case 'tie': {
@@ -210,7 +238,8 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'line': {
       if (!name) return undefined;
-      return `${name} จากที่เป็น${s(d.from)} กลายเป็น${s(d.to)}ของ${who}${paren(whyWords(cx, d.why))}`;
+      const nodeWhy = NODE_BREAK_TH[s(d.why)];
+      return `${name} จากที่เป็น${s(d.from)} กลายเป็น${s(d.to)}ของ${who}${paren(nodeWhy ? `เพราะ${nodeWhy}` : whyWords(cx, d.why))}`;
     }
     case 'mood': {
       const verb = MOOD_TH[s(d.mood)];
@@ -266,7 +295,8 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
         return `วิกฤตของ ${nameTag(d, who, ln)}: ${who}${answer || 'ตัดสินใจแล้ว'}${by ? (matched ? by.with : by.against) : ''}`;
       }
       const text = docSentence(cx.data, s(d.text), who);
-      return `${nameTag(d, who, ln)} ประสบเรื่องหนัก${text ? `: ${text}` : ''}${answer ? ` — ${who}${answer}` : ''}`;
+      // a trouble that was not announced is over before the god could do anything: it is told as done, not as a call that waited for the answer
+      return `${nameTag(d, who, ln)} ประสบเรื่องหนัก${text ? `: ${text}` : ''}${answer ? ` — เรื่องจบในพริบตา ไม่มีเวลาให้ท่านแทรก ${who}${answer}` : ''}`;
     }
     case 'ending': {
       if (!name) return undefined;
@@ -280,7 +310,7 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       if (isNear(d)) {
         const table = d.kin === 'child' || d.kin === 'adopted' ? END_CHILD_TH : END_PARTNER_TH;
         const text = table[s(d.reason)];
-        if (text) return fillSlots(text, { name, tag: tagOf(d, who), who, role: d.spouse ? 'ชีวิตคู่' : 'คนรัก' });
+        if (text) return fillSlots(text, { name, tag: tagOf(d, who), who, role: d.spouse ? 'ชีวิตคู่' : 'คนรัก', because: becauseWords(cx, d) });
       }
       if (!isNear(d) && cx.endedTold(s(e.id))) return null;
       switch (s(d.way)) {
@@ -291,12 +321,22 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
         case 'fade':
           return `ห่างกับ ${name}${ln} จนสายจางหายไป`;
         case 'split':
-          return `สายกับ ${name}${ln} แตกหักและแยกทางกัน`;
+          return `สายกับ ${name}${ln} แตกหักและแยกทางกัน${becauseWords(cx, d)}`;
         case 'betray':
           return `${name}${ln} หักหลัง${who} สายเดิมจึงขาดลง`;
         default:
           return `เรื่องกับ ${name}${ln} จบลงด้วยดี`;
       }
+    }
+    case 'grief': {
+      // the parent's grief after a child died: told whatever the limits of the feelings hold back
+      if (!name) return undefined;
+      const kid = d.kin === 'adopted' ? 'ลูกบุญธรรม' : 'ลูก';
+      return cx.pick([
+        `${who}เศร้าโศกที่ต้องสูญเสีย ${name} ${kid}ของตนไป`,
+        `การจากไปของ ${name} ${kid}ของ${who} ทิ้งความว่างเปล่าไว้ในบ้านและในใจ`,
+        `${who}ต้องเป็นฝ่ายอยู่ข้างหลัง ${name} ${kid}ที่จากไปก่อน`,
+      ]);
     }
     case 'funeral': {
       if (!name) return undefined;
@@ -306,7 +346,12 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'letter': {
       if (!name) return undefined;
       const place = pl(cx, d.from);
-      return `จดหมายจาก ${name}${ln} ถึงมือ${who}${place ? ` ส่งมาจาก${place}` : ''}`;
+      const from = nameTag(d, who, ln);
+      return cx.pick([
+        `จดหมายจาก ${from} ถึงมือ${who}${place ? ` ส่งมาจาก${place}` : ''}`,
+        `${who}ได้จดหมายจาก ${from}${place ? ` ที่ฝากมาจาก${place}` : ''}`,
+        `${from}${place ? ` เขียนจาก${place}` : ' เขียน'}มาหา${who}`,
+      ]);
     }
     case 'invite': {
       const kind = INVITE_TH[s(d.ask)];
@@ -354,7 +399,7 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'thread': {
       if (!name) return undefined;
-      return `เรื่องของ ${name}${ln} ยังค้างอยู่ที่ขั้นที่ ${num(d.stage)} จะตกไปถึงผู้สืบทอด`;
+      return `เรื่องของ ${name}${ln} ยังค้างอยู่ไม่ทันได้จบ จะตกไปถึงผู้สืบทอด`;
     }
     case 'freed': {
       if (!name) return undefined;
@@ -365,6 +410,14 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
 };
 
 // ---------- bondage ----------
+
+/** What the exit cost: a ransom paid from the purse, or a debt the wages cleared (no ransom was paid for it). */
+function payWords(d: D): string {
+  const paid = num(d.paid);
+  if (paid <= 0) return '';
+  if (s(d.payBy) === 'wage') return ` ใช้งานใช้หนี้ครบ ${paid} ทอง`;
+  return ` จ่ายค่าไถ่ ${paid} ทอง เหลือในมือ ${num(d.gold)} ทอง`;
+}
 
 const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
   const d = e.data;
@@ -379,7 +432,7 @@ const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     }
     case 'exit':
       if (s(e.id) === 'fled') return null; // the escape tells where he crossed
-      return `${who}พ้นจากพันธะ${s(d.owner) ? `ของ ${s(d.owner)}` : ''}${paren(s(d.way))}${num(d.years) > 0 ? ` หลังถูกผูกตัวมา ${num(d.years)} ปี` : ''}${num(d.paid) > 0 ? ` จ่ายค่าไถ่ ${num(d.paid)} ทอง เหลือในมือ ${num(d.gold)} ทอง` : ''}${d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
+      return `${who}พ้นจากพันธะ${s(d.owner) ? `ของ ${s(d.owner)}` : ''}${paren(s(d.way))}${num(d.years) > 0 ? ` หลังถูกผูกตัวมา ${num(d.years)} ปี` : ''}${payWords(d)}${num(d.classSteps) > 1 ? ` ฐานะกลับสูงขึ้น ${num(d.classSteps)} ชั้น` : d.classUp ? ' ฐานะสูงขึ้นหนึ่งชั้น' : ''}`;
     case 'escape': {
       if (d.who === 'held') return name ? `${name} ผู้ที่${who}ถือสัญญาไว้ หนีไปได้` : undefined;
       if (d.ok) return `${who}หนีข้ามแดนได้สำเร็จ${d.to ? ` ถึง${pl(cx, d.to)}` : ''} และเป็นอิสระ`;
@@ -393,7 +446,8 @@ const bondage = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       if (!name) return undefined;
       if (d.how === 'freed') return `${name} ได้รับอิสระจาก${who}`;
       const how = FREED_BY_TH[s(d.how)] ?? FREED_BY_TH.freed;
-      return `${name} เป็นอิสระแล้ว — ${who}${how}${num(d.price) ? ` ${num(d.price)} ทอง` : ''}`;
+      const price = num(d.price) ? (s(d.how) === 'ransom' ? `ในราคา ${num(d.price)} ทอง` : `ด้วยเงิน ${num(d.price)} ทอง`) : '';
+      return `${name} เป็นอิสระแล้ว — ${who}${how}${price}`;
     }
     case 'sell':
       return name ? `${who}ขายสัญญาของ ${name} ต่อ ได้ ${num(d.gain)} ทอง` : undefined;
@@ -443,10 +497,12 @@ const travel = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       return `${why ? `${why}: ` : 'เดินทาง'}${route} ${num(d.legs)} ช่วงทาง ราว ${num(d.days)} วัน${cost}${d.smuggle ? ' โดยลักลอบข้ามด่าน' : ''}`;
     }
     case 'stay': {
-      // a way of the story named a place and the character did not go: the node is told, so is the place he stayed at
-      const to = pl(cx, d.to);
+      // a way of the story named a place and the character did not go: the node is told, so are the place he stayed at and why
+      const places = [d.to, ...(s(d.more) ? s(d.more).split(',') : [])].map((x) => pl(cx, x)).filter(Boolean);
+      const to = places.length > 1 ? `${places.slice(0, -1).join(' ')} และ${places[places.length - 1]}` : places[0];
       const node = nm(cx, d.node);
-      return `${who}ไม่ได้ไป${to ? `ที่${to}` : 'ที่นั่น'}ตามเรื่อง${node ? ` “${node}”` : 'ที่เล่นมา'} ยังอยู่${pl(cx, d.here) ? `ที่${pl(cx, d.here)}` : 'ที่เดิม'}`;
+      const why = NO_GO_TH[s(d.why)];
+      return `${who}ไม่ได้ไป${to ? `ที่${to}` : 'ที่นั่น'}ตามเรื่อง${node ? ` “${node}”` : 'ที่เล่นมา'} ยังอยู่${pl(cx, d.here) ? `ที่${pl(cx, d.here)}` : 'ที่เดิม'}${why ? ` เพราะ${why}` : ''}`;
     }
     case 'road': {
       const n = s(d.note);
@@ -466,7 +522,7 @@ const travel = (cx: M3Cx, e: LogEntry): string | null | undefined => {
     case 'blocked': {
       if (s(d.why) === 'bound') return null; // held by an owner: the bondage tells it
       const to = pl(cx, e.id);
-      const why = s(d.why) === 'wanted' ? 'เพราะที่นั่นตามจับตัวอยู่' : s(d.why) === 'route closed' ? 'เพราะเส้นทางถูกปิด' : s(d.why) === 'purse' ? 'เพราะเงินไม่พอค่าเดินทาง' : '';
+      const why = NO_GO_TH[s(d.why)] ? `เพราะ${NO_GO_TH[s(d.why)]}` : '';
       const cause = s(d.cause).startsWith('story:') ? nm(cx, s(d.cause).slice(6)) : '';
       return `${who}${cause ? `ตามเรื่อง “${cause}” ไป${to || 'ที่นั่น'}` : `เข้า${to || 'ที่นั่น'}`}ไม่ได้${why ? ` ${why}` : ''}`;
     }
@@ -573,7 +629,7 @@ const INCOME_TH: Record<string, string> = { wage: 'เงินเดือน',
 function yearMoney(d: D): string {
   const list = (parts: [string, number][]): [string, number][] => parts.filter(([, n]) => n > 0);
   const ins = list([[INCOME_TH[s(d.kind)] ?? 'รายได้', num(d.income)], ['ส่วนแบ่งศึก', num(d.share)], ['การซื้อขายและของที่ได้มา', num(d.gain)]]);
-  const outs = list([['ภาษี', num(d.tax)], ['ค่าครองชีพ', num(d.living)], ['ค่าเดินทาง', num(d.fare)], ['การซื้อและค่าใช้จ่ายอื่น', num(d.loss)]]);
+  const outs = list([['ภาษี', num(d.tax)], ['ค่าครองชีพ', num(d.living)], ['ค่าเดินทาง', num(d.fare)], ['ใช้หนี้', num(d.debtPaid)], ['การซื้อและค่าใช้จ่ายอื่น', num(d.loss)]]);
   const sum = (parts: [string, number][]): number => parts.reduce((n, [, x]) => n + x, 0);
   const say = (verb: string, parts: [string, number][]): string =>
     parts.length === 1 ? `${verb}${parts[0][0]} ${parts[0][1]} ทอง` : `${verb} ${sum(parts)} ทอง (${parts.map(([l, n]) => `${l} ${n}`).join(' · ')})`;

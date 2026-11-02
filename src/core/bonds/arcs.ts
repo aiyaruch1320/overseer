@@ -316,7 +316,7 @@ function ending(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState): 
   });
   if (kind === 'dies') endTie(ctx, t, 'death', `${arc.code} ${pick.key}`, { cause: 'เรื่องของเขาจบ' });
   else if (kind === 'betrays') endTie(ctx, t, 'betray', `${arc.code} ${pick.key}`);
-  else if (kind === 'split') endTie(ctx, t, 'split', `${arc.code} ${pick.key}`);
+  else if (kind === 'split') endTie(ctx, t, 'split', `${arc.code} ${pick.key}`, { because: label });
   else if (kind === 'leaves') {
     t.note = 'ไปจากตัวละคร';
     endTie(ctx, t, 'fade', `${arc.code} ${pick.key}`);

@@ -493,6 +493,26 @@ describe('the story names a place (the `place` effect)', () => {
     expect(ctx.state.log.some((e) => e.sys === 'travel' && e.kind === 'move' && String(e.data.why).startsWith('story:'))).toBe(true);
     Object.assign(FOLLOW_STORY, was);
   });
+  it('a way not followed says why (R7): bound, short of gold, far, or only the chance, with no draw added', () => {
+    const was = { ...FOLLOW_STORY };
+    FOLLOW_STORY.same = 0;
+    FOLLOW_STORY.cross = 0;
+    const why = (patch: Partial<LifeState>, to: string, bond?: number) => {
+      const { ctx, life } = born(45, { race: 'human', country: 'AL-01' }, { hAge: 25, gold: 100, ...patch });
+      if (bond) life.ext.bondage = { level: bond };
+      const before = JSON.stringify(ctx.state.log.length);
+      followStory(ctx, node([to]), 'a');
+      const stay = ctx.state.log.filter((e) => e.sys === 'travel' && e.kind === 'stay');
+      expect(stay, before).toHaveLength(1);
+      expect(stay[0].data).toMatchObject({ to, here: 'AL-01' });
+      return String(stay[0].data.why);
+    };
+    expect(why({}, 'AL-02')).toBe('chance');
+    expect(why({}, 'AL-02', 2)).toBe('bound');
+    expect(why({ gold: 0 }, 'SV-01')).toMatch(/purse|closed|route closed|far|no route/);
+    expect(why({}, 'SV-05')).not.toBe('chance');
+    Object.assign(FOLLOW_STORY, was);
+  });
   it('a share of the ways is followed, by the tuning, in the same continent and across continents', () => {
     expect(FOLLOW_STORY.same).toBeGreaterThan(FOLLOW_STORY.cross);
     expect(FOLLOW_STORY.same).toBeLessThanOrEqual(1);

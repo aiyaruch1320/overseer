@@ -43,7 +43,7 @@ export const INVITE_TH: Record<string, { ask: string; ok: string }> = {
 
 /** How a held person is freed. */
 export const FREED_BY_TH: Record<string, string> = {
-  ransom: 'ไถ่เขาออกมาด้วยทอง', crossed: 'พาเขาข้ามแดนไปสู่อิสระ', bribe: 'ติดสินบนให้ปล่อยเขา', freed: 'ปล่อยเขาเป็นอิสระ', helped: 'ช่วยเขาหนี',
+  ransom: 'ไถ่เขาออกมา', crossed: 'พาเขาข้ามแดนไปสู่อิสระ', bribe: 'ติดสินบนให้ปล่อยเขา', freed: 'ปล่อยเขาเป็นอิสระ', helped: 'ช่วยเขาหนี',
   owner: 'เจ้าของเขาปล่อยตัวให้',
 };
 
@@ -159,14 +159,14 @@ export const WAR_RANK_TH: string[] = [
 /** How a partner or a child went from the character (`reason` of `bonds/end`). Slots: `{name}` `{tag}` (what he was to the character) `{who}`. */
 export const END_PARTNER_TH: Record<string, string> = {
   ตาย: '{name} {tag} จากไปแล้ว',
-  แยกทาง: '{who}กับ {name} แยกทางกัน ความสัมพันธ์ที่เคยเป็น{role}จบลงแล้ว',
+  แยกทาง: '{who}กับ {name} แยกทางกัน ความสัมพันธ์ที่เคยเป็น{role}จบลงแล้ว{because}',
   ห่างหาย: '{name} {tag} ห่างหายไปจนไม่มีข่าวคราวถึง{who}อีก',
   หายไป: '{name} {tag} หายไปโดยไม่มีใครรู้ว่าไปไหน',
   หักหลัง: '{name} {tag} หักหลัง{who} ความสัมพันธ์จบลงด้วยความเจ็บปวด',
 };
 export const END_CHILD_TH: Record<string, string> = {
   ตาย: '{name} {tag} จากไปแล้ว',
-  แยกทาง: '{name} {tag} แยกตัวออกไปและตัดขาดจาก{who}',
+  แยกทาง: '{name} {tag} แยกตัวออกไปและตัดขาดจาก{who}{because}',
   ห่างหาย: '{name} {tag} ห่างหายไปจนไม่มีข่าวคราวถึง{who}อีก',
   หายไป: '{name} {tag} หายไปโดยไม่มีใครรู้ว่าไปไหน',
   หักหลัง: '{name} {tag} หันมาทำร้าย{who} สายเลือดจึงขาดลง',
@@ -187,4 +187,37 @@ export const CRISIS_BY_TH: Record<string, { with: string; against: string }> = {
   whisper: { with: ' ตามที่ท่านกระซิบ', against: ' แม้ท่านกระซิบให้ช่วย' },
   dream: { with: ' หลังความฝันที่ท่านส่งถึงเขา', against: ' แม้ท่านส่งฝันถึงเขา' },
   liar: { with: ' เพราะท่านกระซิบว่าเขาโกหก', against: ' แม้ท่านกระซิบว่าเขาโกหก' },
+};
+
+/** Why a partner or a friend parted, by the feeling held toward him when the tie broke (`bmood` of `bonds/end`). */
+export const MOOD_BREAK_TH: Record<string, string> = {
+  แค้น: 'ความแค้นที่สะสมมานาน', โกรธ: 'ความโกรธที่ค้างคาใจ', หึง: 'ความหึงหวง', ระแวง: 'ความระแวงที่ไม่เคยหาย', น้อยใจ: 'ความน้อยใจที่สะสมมา', ผิดหวัง: 'ความผิดหวังที่สะสมมา', ละอาย: 'ความละอายใจ',
+};
+
+/** The story nodes that break a tie, said as the reason (a node's title says nothing about why: "ความรัก"). */
+export const NODE_BREAK_TH: Record<string, string> = {
+  'bn.a3': 'ความรักไปต่อไม่ได้',
+  'bn.a4': 'เขาผิดคำพูดหรือหักหลังกัน',
+};
+
+/** Why the character did not reach a place, or was kept from it (`why` of `travel/stay` and `travel/blocked`). */
+export const NO_GO_TH: Record<string, string> = {
+  bound: 'ถูกผูกตัวอยู่ จึงไปไหนเองไม่ได้',
+  purse: 'เงินไม่พอค่าเดินทาง',
+  war: 'สงครามปิดเส้นทางไปที่นั่น',
+  'route closed': 'เส้นทางไปที่นั่นถูกปิด',
+  'no route': 'ไม่มีเส้นทางไปถึงที่นั่น',
+  closed: 'ที่นั่นปิดไม่รับคนนอก',
+  wanted: 'ที่นั่นตามจับตัวอยู่',
+  extradition: 'ที่นั่นจะส่งตัวผู้ต้องหาให้เมืองที่ตามจับ',
+  fallen: 'ที่นั่นล่มสลายไปแล้ว',
+  'deep water': 'ที่นั่นอยู่ใต้น้ำลึก',
+  cold: 'ร่างกายทนความหนาวที่นั่นไม่ได้',
+  dry: 'ร่างกายทนความแห้งแล้งที่นั่นไม่ได้',
+  'no dust': 'ไม่มีฝุ่นศักดิ์สิทธิ์ติดตัวไว้ประคองร่าง',
+  necro: 'ที่นั่นไม่รับผู้ใช้ศาสตร์ของผู้ตาย',
+  'tree burner': 'ที่นั่นล่าตัวผู้เผาต้นไม้โลก',
+  'god thief': 'ที่นั่นรู้ว่าเขาขโมยของเทพ',
+  far: 'ข้ามทวีปไกลเกินไป จึงเลือกอยู่ที่เดิม',
+  chance: 'ยังเลือกอยู่ที่เดิม',
 };

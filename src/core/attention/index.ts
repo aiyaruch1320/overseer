@@ -84,7 +84,7 @@ function emit(ctx: Ctx, out: Out[]): void {
     } else if (o.t === 'glow') {
       write(st, { sys: 'attention', kind: 'glow', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { why: o.why, n: o.n } });
     } else {
-      write(st, { sys: 'attention', kind: 'missed', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { kind: o.kind, n: o.n, waited: o.waited } });
+      write(st, { sys: 'attention', kind: 'missed', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { kind: o.kind, n: o.n, waited: o.waited, ...(o.death ? { death: true } : {}) } });
     }
   }
 }

@@ -12,7 +12,7 @@ import { addNpcTie } from './sources';
 import { peopleCode, personName, registerName } from '../text';
 import { startArc } from './arcs';
 import { extOf, isLive, levelOf, tiesOf, type BondsExt, type Tie } from './state';
-import { CHILD_AGE, CHILD_CHANCE, CHILD_FEELS, GROW_TEXT, CHILD_STAGES, CHILD_START_B, CHILD_WED, MAX_CHILDREN, PARENT_AGE, PARTNER_FEELS } from './tuning';
+import { ADULT_LIFE_AGE, CHILD_AGE, CHILD_CHANCE, CHILD_FEELS, GROW_TEXT, CHILD_STAGES, CHILD_START_B, CHILD_WED, MAX_CHILDREN, PARENT_AGE, PARTNER_FEELS } from './tuning';
 
 /** A number drawn from a table "0 ตัว 20% · 1 ตัว 35% ..." of the data. */
 function drawCount(rng: Rng, row: KinRow | undefined, extraPct = 0): number {
@@ -114,8 +114,14 @@ export function closeKin(ctx: Ctx, life: LifeState): void {
 }
 
 /** The life stage of a child by his own age (05 §3 table: 0–5, 6–14, 15–25, grown). */
-export function stageOfAge(age: number): NonNullable<Tie['stage']> {
-  return age <= CHILD_STAGES.infant ? 'infant' : age <= CHILD_STAGES.child ? 'child' : age <= CHILD_STAGES.youth ? 'youth' : 'adult';
+export function stageOfAge(age: number, adult = ADULT_LIFE_AGE): NonNullable<Tie['stage']> {
+  return age <= Math.round(adult * CHILD_STAGES.infant) ? 'infant' : age <= Math.round(adult * CHILD_STAGES.child) ? 'child' : age < adult ? 'youth' : 'adult';
+}
+
+/** The age (life years) a person becomes an adult at, by his race (races `adultAge` is in world years: a life year is `perYear` of them). */
+export function adultAgeOf(ctx: Ctx, t: Pick<Tie, 'race' | 'perYear'>): number {
+  const a = raceRow(ctx, t.race)?.adultAge;
+  return a ? Math.max(8, Math.round(a / Math.max(0.01, t.perYear))) : ADULT_LIFE_AGE;
 }
 
 /**
@@ -136,7 +142,7 @@ export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; ag
   const partner = e.partner ? e.ties[e.partner] : undefined;
   const other = opt.other ?? (!opt.adopted && partner && isLive(partner) ? partner : undefined);
   t.born = life.hAge;
-  t.stage = stageOfAge(age);
+  t.stage = stageOfAge(age, adultAgeOf(ctx, t));
   t.kidMood = life.hAge;
   if (other) {
     t.other = other.id;
@@ -189,7 +195,7 @@ function childrenYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
     const c = e.ties[id];
     if (!c || !isLive(c) || !isChild(c)) continue;
     const age = Math.floor(hAgeOf(ctx, c));
-    const stage = stageOfAge(age);
+    const stage = stageOfAge(age, adultAgeOf(ctx, c));
     if (c.stage !== stage) {
       c.stage = stage;
       write(ctx.state, { sys: 'bonds', kind: 'news', id: c.id, data: { name: c.name, line: c.line, kind: 'grow', text: GROW_TEXT[stage], kin: c.kin ?? null, stage, age, gender: c.gender, other: c.otherName ?? null }, level: 1 });
@@ -199,7 +205,13 @@ function childrenYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
       c.kidMood = life.hAge;
       const far = c.country !== life.country;
       const pool = [...CHILD_FEELS.byStage[stage].filter((m) => far || !CHILD_FEELS.farOnly.includes(m)), ...(far ? CHILD_FEELS.far[stage] : [])];
-      if (pool.length) showMood(ctx, life, c, pool[rng.int(0, pool.length - 1)], `child:${stage}`);
+      if (pool.length) {
+        const mood = pool[rng.int(0, pool.length - 1)];
+        // the same feeling toward the same child in the same stage is told once, then again only after several years (a feeling that changes is told at once)
+        const f = c.kidFeel?.[mood];
+        const again = !f || f.stage !== stage || life.hAge - f.age >= CHILD_FEELS.repeatYears;
+        if (again && showMood(ctx, life, c, mood, `child:${stage}`)) (c.kidFeel ??= {})[mood] = { stage, age: life.hAge };
+      }
     }
     if (!c.married && age >= CHILD_WED.ages[0] && age <= CHILD_WED.ages[1] && c.gender !== 'n' && rng.chance(CHILD_WED.chance)) {
       const people = peopleCode(ctx, c.race);

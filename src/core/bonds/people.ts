@@ -209,8 +209,29 @@ function reasonOf(t: Tie, way: EndWay): string {
   return 'จบสาย';
 }
 
-/** A tie ends (bonds/01 §5). Death keeps the name in the book; the other ways keep it too, but nobody appears from it again. */
-export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?: string } = {}): void {
+/** The moods that, held toward a person when the tie breaks, are the reason it broke (in the order they are taken). */
+const SPLIT_MOODS = ['แค้น', 'โกรธ', 'หึง', 'ระแวง', 'น้อยใจ', 'ผิดหวัง', 'ละอาย'];
+
+/**
+ * Why a tie broke, from what the book knows (M3 round-two review R8): a feeling the
+ * character held toward the person (`mood`), the distance between them (`far`), a long silence (`silent`), or only the years (`drift`).
+ */
+export function becauseOf(ctx: Ctx, t: Tie, life: LifeState | null, story?: string): { how: string; mood?: string; story?: string } {
+  const now = life?.hAge ?? 0;
+  const mood = SPLIT_MOODS.find((m) => t.moods.some((x) => x.mood === m && x.until > now));
+  // the words of the story ending ride along: the text tells them when they read as a sentence, and the reason found here when they do not
+  if (mood) return { how: 'mood', mood, story };
+  if (t.grudge >= 2) return { how: 'mood', mood: 'โกรธ', story };
+  if (life && t.country !== life.country) return { how: 'far', story };
+  if (life && now - t.last >= 3) return { how: 'silent', story };
+  return { how: 'drift', story };
+}
+
+/** The reason of a split as plain log data: `because` (the kind), `bmood` (the feeling) and `btext` (the words of the story ending). */
+const flat = (b: { how: string; mood?: string; story?: string }) => ({ because: b.how, bmood: b.mood ?? null, btext: b.story ?? null });
+
+/** A tie ends (bonds/01 §5). Death keeps the name in the book; the other ways keep it too, but nobody appears from it again. `because`: the words of the story ending that broke it. */
+export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?: string; because?: string } = {}): void {
   if (!isLive(t)) return;
   const life = ctx.state.life;
   const e = life ? extOf(life) : undefined;
@@ -240,9 +261,13 @@ export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?
   const near = isPartner(t) || isChild(t);
   write(ctx.state, {
     sys: 'bonds', kind: 'end', id: t.id,
-    data: { name: t.name, line: t.line, way, why, level: lv, cause: opt.cause ?? null, reason, kin: t.kin ?? null, partner: isPartner(t), spouse: !!t.spouse, age: life?.hAge ?? null, gender: t.gender },
+    data: {
+      name: t.name, line: t.line, way, why, level: lv, cause: opt.cause ?? null, reason, kin: t.kin ?? null, partner: isPartner(t), spouse: !!t.spouse, age: life?.hAge ?? null, gender: t.gender,
+      ...(way === 'split' ? flat(becauseOf(ctx, t, life ?? null, opt.because)) : {}),
+    },
     // a companion who dies, betrays or leaves is news (M3 review T3): from the level of a familiar person on, unless it is only a fading
-    level: near || lv >= 3 || (lv >= 2 && way !== 'fade') ? 1 : 0,
+    // the death of a lover, a life partner or a child is a mark of the life (level 2)
+    level: near && way === 'death' ? 2 : near || lv >= 3 || (lv >= 2 && way !== 'fade') ? 1 : 0,
   });
   if (t.npc) sync(ctx, t);
 }

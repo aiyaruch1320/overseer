@@ -143,6 +143,21 @@ export class Reader {
     };
   }
 
+  /**
+   * The name of the character, taken from the log before it is read: a line written before the birth lines (the bondage of a child born in it) is
+   * read after them, and says his name and not "ตัวละคร" (round-two review N9).
+   */
+  prime(log: readonly LogEntry[]): void {
+    const named = log.find((e) => e.sys === 'text' && e.kind === 'named');
+    if (named && !this.name) this.name = s(named.data.name);
+  }
+
+  /** The line of an entry again, without remembering it (a line rewritten when another entry joins it). */
+  reread(e: LogEntry): string | null {
+    const line = this.say(e);
+    return line === null ? null : spaceDigits(tidy(line, false));
+  }
+
   /** True when the last entry read was left out on purpose (an NPC the character does not know), not because it has no phrasing. */
   filtered = false;
 
@@ -498,6 +513,7 @@ export interface Line {
 export function lines(data: GameData, log: LogEntry[], minLevel: LogEntry['level'] = 1, fromN = -Infinity, opts: ReadOpts = {}): Line[] {
   const out: Line[] = [];
   const reader = new Reader(data, opts);
+  reader.prime(log);
   let prev: { line: Line; e: LogEntry } | undefined;
   for (const e of log) {
     const text = reader.read(e);
@@ -508,6 +524,14 @@ export function lines(data: GameData, log: LogEntry[], minLevel: LogEntry['level
       const who = scrub(data, s(e.data.holder));
       const twist = new Reader(data).npcText(s(e.data.twist), false);
       prev.line.text = `${prev.line.text} · ${who} รับตำแหน่งสืบต่อ${twist ? ` (${twist})` : ''}`;
+      continue;
+    }
+    // the ways of one node that named several places and the character stayed from all of them for one reason: one line, not one for each place
+    if (prev && e.sys === 'travel' && e.kind === 'stay' && prev.e.sys === 'travel' && prev.e.kind === 'stay' && prev.e.age === e.age && prev.e.data.node === e.data.node && prev.e.data.why === e.data.why) {
+      const more = [...(s(prev.e.data.more) ? s(prev.e.data.more).split(',') : []), s(e.data.to)].join(',');
+      prev.e = { ...prev.e, data: { ...prev.e.data, more } };
+      const joined = reader.reread(prev.e);
+      if (joined !== null) prev.line.text = joined;
       continue;
     }
     out.push(line);
@@ -542,6 +566,8 @@ export function unphrased(data: GameData, log: LogEntry[]): Record<string, numbe
   const out: Record<string, number> = {};
   const reader = new Reader(data);
   const raw = new Reader(data, { raw: true });
+  reader.prime(log);
+  raw.prime(log);
   for (const e of log) {
     const a = reader.read(e);
     const b = raw.read(e);

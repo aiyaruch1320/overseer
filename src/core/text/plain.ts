@@ -65,7 +65,9 @@ export function tidy(text: string, edges = true): string {
   for (let i = 0; i < 4; i++) {
     const before = x;
     x = x
-      .replace(/\(\s*(?:[·,\s]|หรือ|และ|ถ้าเป็น|ถ้า|ใน|ที่|ต้องมี|ระดับ)*\)/g, ' ')
+      // a link cut out of a bracket leaves its lead-in (`(กติกาตาม)`, `(... ค้าคนตามท่าทีของประเทศใน)`): the bracket is for the writer
+      .replace(/(?:ตาม)?ท่าที(?:ของ)?ประเทศใน(?=\s*\))/g, '')
+      .replace(/\(\s*(?:[·,\s]|หรือ|และ|ถ้าเป็น|ถ้า|ใน|ที่|ต้องมี|ระดับ|กติกา|ตาม)*\)/g, ' ')
       .replace(/（\s*）/g, ' ')
       .replace(/\(\s+/g, '(')
       .replace(/\s+\)/g, ')')
@@ -128,6 +130,8 @@ export interface ScrubOpts {
 export function scrub(data: GameData, text: string, opts: ScrubOpts = {}): string {
   const L = labels(data);
   let x = text.replace(/\*\*|`/g, '').replace(MOOD, ' ');
+  // a country of the stance the document names only by a letter (`ประเทศท่าที A`): the free lands of the bondage rules
+  x = x.replace(/ประเทศท่าที\s*A(?![A-Za-z])/g, 'ประเทศเสรี');
   x = x.replace(/\[(?:ช่วย|ร่วม|ขัดขวาง|ปล่อย)\]/g, ' ');
   // a pointer to a section of a document (`( หัวข้อ 6)`) is for the writer, not the player
   x = x.replace(/\(\s*[^()]*หัวข้อ\s*[\d.]+[^()]*\)/g, ' ').replace(/หัวข้อ\s*[\d.]+/g, ' ');
@@ -157,6 +161,8 @@ export function scrub(data: GameData, text: string, opts: ScrubOpts = {}): strin
   // a bracket with a stray latin mark inside (`(พิธี t1 ของเผ่าหลัก)`) is a remark for the writer
   x = x.replace(/\([^()]*(?<![A-Za-z฀-๿])[A-Za-z]{1,2}(?![A-Za-z])[^()]*\)/g, ' ');
   x = x.replace(LATIN_TOKEN, ' ');
+  // a name that already ends in a number (`บอนิฟาซิอุสที่ 9`) followed by the number of the holder (`ที่ 22`): the two are told apart
+  x = x.replace(/(ที่ \d+)\s*ที่ (\d+)/g, '$1 (รุ่นที่ $2)');
   return tidy(balance(x));
 }
 

@@ -5,7 +5,7 @@ import { createSession, startLife, runToDeath } from '../../scripts/tools/sessio
 import { loadAll } from '../../scripts/tools/node-data';
 import { command } from '../../src/core/command';
 import { sortSystems, type Ctx, type GameData, type System } from '../../src/core/game';
-import { addChild, addTie, bondsSystem, crisesWaiting, crisisAnswer, endTie, endingKind, extOf, findAlly, nudgeCrisis, tiesOf, type Tie } from '../../src/core/bonds';
+import { addChild, addTie, bondsSystem, crisesWaiting, crisisAnswer, endTie, endingKind, extOf, findAlly, nudgeCrisis, stageOfAge, tiesOf, type Tie } from '../../src/core/bonds';
 import { arcsYear, decideCrises } from '../../src/core/bonds/arcs';
 import { answered } from '../../src/core/attention';
 import { godActsSystem } from '../../src/core/god/acts';
@@ -262,14 +262,14 @@ describe('the children are persons (H6)', () => {
 });
 
 describe('the partner goes with a reason (H7)', () => {
-  it('writes bonds/end at level 1 for the lover however he goes, with the way in words', () => {
+  it('writes bonds/end for the lover however he goes (level 2 for a death, 1 for the rest), with the way in words', () => {
     for (const [way, reason] of [['death', 'ตาย'], ['split', 'แยกทาง'], ['fade', 'ห่างหาย'], ['betray', 'หักหลัง']] as const) {
       const { g, ctx, life, e } = mk(8);
       const t = ally(ctx, life, 'คนรัก', 1);
       e.partner = t.id;
       endTie(ctx, t, way, 'test', way === 'death' ? { cause: 'illness' } : {});
       const x = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'end').at(-1)!;
-      expect(x.level, way).toBe(1);
+      expect(x.level, way).toBe(way === 'death' ? 2 : 1);
       expect(x.data).toMatchObject({ way, reason, partner: true, name: t.name });
       expect(t.gone).toMatchObject({ way, reason });
     }
@@ -279,7 +279,7 @@ describe('the partner goes with a reason (H7)', () => {
     const { g, ctx, life } = mk(9);
     const c = addChild(ctx, life);
     endTie(ctx, c, 'death', 'test', { cause: 'illness' });
-    expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(1);
+    expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(2);
     const f = ally(ctx, life, 'สหาย', 1);
     endTie(ctx, f, 'fade', 'test');
     expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(0);
@@ -307,7 +307,7 @@ describe('the partner goes with a reason (H7)', () => {
           // the last ending of the tie: a friend who betrayed and came back as a lover has an earlier ending of its own, at level 0
           const end = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'end' && l.id === t.id).at(-1);
           expect(end, `${t.name} ${t.state}`).toBeTruthy();
-          expect(end!.level).toBe(1);
+          expect(end!.level).toBe(end!.data.way === 'death' ? 2 : 1);
         }
         partnerMoods += g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'mood' && l.id === t.id && l.data.why === 'partner').length;
       }
@@ -343,5 +343,106 @@ describe('the node of a journey says where and why (T2)', () => {
     expect(journey).toBeGreaterThan(5);
     expect(named).toBeGreaterThan(5);
     expect(why).toBeGreaterThan(0);
+  });
+});
+
+describe('round two of the review (R5 R8 R9)', () => {
+  it('R5: the same feeling toward the same child in the same stage is not told twice within ten years', () => {
+    let kids = 0;
+    for (let seed = 60; seed < 80; seed++) {
+      const { g, life } = mk(seed);
+      life.hAge = 0;
+      runToDeath(g);
+      const moods = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'mood' && String(l.data.why).startsWith('child:'));
+      const last = new Map<string, { age: number; why: string }>();
+      for (const m of moods) {
+        const key = `${m.id}|${m.data.mood}`;
+        const prev = last.get(key);
+        if (prev && prev.why === m.data.why) expect((m.age ?? 0) - prev.age, `${key} ${m.age}`).toBeGreaterThanOrEqual(10);
+        last.set(key, { age: m.age ?? 0, why: String(m.data.why) });
+        kids++;
+      }
+    }
+    expect(kids).toBeGreaterThan(10);
+  });
+
+  it('R5: a child who dies leaves a line of grief for the parent, after the funeral or the news; a friend does not', () => {
+    const { g, ctx, life } = mk(11);
+    const c = addChild(ctx, life);
+    const f = ally(ctx, life, 'สหาย', 1);
+    endTie(ctx, f, 'death', 'test', { cause: 'illness' });
+    expect(g.state.log.filter((l) => l.kind === 'grief')).toHaveLength(0);
+    // the yearly death of the book: a child past his death age
+    c.dieAge = 0;
+    life.hAge += 3;
+    (g.systems as System[]).filter((s) => s.name === 'bonds').forEach((s) => s.lifeYear?.(ctx));
+    const grief = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'grief');
+    expect(grief).toHaveLength(1);
+    expect(grief[0]).toMatchObject({ id: c.id, level: 2 });
+    expect(grief[0].data).toMatchObject({ name: c.name, kin: 'child' });
+    const after = g.state.log.filter((l) => l.id === c.id && ['funeral', 'news'].includes(l.kind)).at(-1);
+    if (after) expect(after.n).toBeLessThan(grief[0].n);
+  });
+
+  it('R5: the news of the death of a partner is level 2, of a friend level 1', () => {
+    for (const kind of ['partner', 'friend'] as const) {
+      const { g, ctx, life, e } = mk(12);
+      life.hAge = 40;
+      e.funeralAt = life.hAge; // a funeral was just held: the next death is news
+      const t = kind === 'partner' ? ally(ctx, life, 'คนรัก', 4) : ally(ctx, life, 'สหาย', 4);
+      if (kind === 'partner') e.partner = t.id;
+      t.dieAge = 1;
+      (g.systems as System[]).filter((s) => s.name === 'bonds').forEach((s) => s.lifeYear?.(ctx));
+      const news = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'news' && l.id === t.id && l.data.kind === 'death');
+      expect(news, kind).toHaveLength(1);
+      expect(news[0].level, kind).toBe(kind === 'partner' ? 2 : 1);
+    }
+  });
+
+  it('R8: a split carries a reason from what the book knew: a feeling, the distance, the silence, or the years', () => {
+    const split = (patch: (t: Tie, life: LifeState) => void, because?: string) => {
+      const { g, ctx, life } = mk(13);
+      const t = ally(ctx, life, 'คนรัก', 3);
+      patch(t, life);
+      endTie(ctx, t, 'split', 'x', because ? { because } : {});
+      return g.state.log.filter((l) => l.kind === 'end').at(-1)!.data;
+    };
+    expect(split((t, l) => t.moods.push({ mood: 'หึง', until: l.hAge + 2 }))).toMatchObject({ because: 'mood', bmood: 'หึง' });
+    expect(split((t) => { t.country = 'SV-01'; })).toMatchObject({ because: 'far' });
+    expect(split((t, l) => { t.last = l.hAge - 5; })).toMatchObject({ because: 'silent' });
+    expect(split(() => {})).toMatchObject({ because: 'drift' });
+    expect(split(() => {}, 'สายจางหาย')).toMatchObject({ btext: 'สายจางหาย' });
+    // a death carries no reason of a split
+    const { g, ctx, life } = mk(14);
+    const t = ally(ctx, life, 'สหาย', 3);
+    endTie(ctx, t, 'death', 'x', { cause: 'old' });
+    expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.data.because).toBeUndefined();
+  });
+
+  it('R9: the stage of a child follows the age his race grows up at: a baby is not four, a young person is not twenty-two', () => {
+    expect(stageOfAge(2)).toBe('infant');
+    expect(stageOfAge(4)).toBe('child');
+    expect(stageOfAge(14)).toBe('child');
+    expect(stageOfAge(15)).toBe('youth');
+    expect(stageOfAge(19)).toBe('youth');
+    expect(stageOfAge(22)).toBe('adult');
+    expect(stageOfAge(22, 40)).toBe('child');
+    expect(stageOfAge(32, 40)).toBe('youth');
+  });
+
+  it('R9: the letters of one person are told once in five years', () => {
+    const { g, ctx, life, e } = mk(15);
+    const t = ally(ctx, life, 'สหาย', 3);
+    t.country = 'SV-01';
+    const sys = (g.systems as System[]).find((s) => s.name === 'bonds')!;
+    for (let i = 0; i < 6; i++) {
+      e.mail.push({ tie: t.id, due: life.hAge, text: '' });
+      t.last = life.hAge;
+      sys.lifeYear?.(ctx);
+      life.hAge += 1;
+    }
+    const told = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'letter' && l.id === t.id);
+    expect(told.length).toBeGreaterThan(0);
+    expect(told.length).toBeLessThanOrEqual(2);
   });
 });
