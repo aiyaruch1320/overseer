@@ -48,9 +48,9 @@ export const JOB_GROWTH_FROM = 5;
 /** Quarters a forging takes, by the tier ordered (10-forging.md §6: a week, a month, a season, a year; a week and a month still take a beat). */
 export const FORGE_BEATS: Record<string, number> = { C: 1, U: 1, R: 1, E: 4 };
 /** Chance per life year that a fighter feels the need for a new weapon; the others feel it less often. */
-/** Lowered from 0.05 / 0.012 when the fights began to dull the weapons (combat calls `afterBattle`), which is a cause of the table of its own: 56% of the lives began a forging against the fifth the first runs showed (M3 wiring). */
-export const FORGE_NEED_FIGHTER = 0.03;
-export const FORGE_NEED_OTHER = 0.008;
+/** Lowered from 0.05 / 0.012 (56% of the lives began a forging) and again from 0.03 / 0.008 (51%, M3 balance) once the cause "lost a fight because the weapon did not work" asked for a lost fight (forge.ts `setbacks`) as the table says: about a quarter of the lives now begin one, the fifth the first runs showed. */
+export const FORGE_NEED_FIGHTER = 0.02;
+export const FORGE_NEED_OTHER = 0.006;
 /** Years before the same need may come again (10-forging.md §2: one in three years). */
 export const FORGE_EVERY = 3;
 export const FORGE_SAVE_YEARS = 5;
