@@ -1006,6 +1006,9 @@ function pickSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): s
   // "`art` หรือ `music` +1": a number written once after the last alternative counts for the bare codes before it
   const tail = texts[texts.length - 1].match(/^`[^`]+`\s*([+\-−]\d+)$/);
   if (tail) for (let i = 0; i < texts.length - 1; i++) if (/^`[^`]+`$/.test(texts[i])) texts[i] = `${texts[i]} ${tail[1]}`;
+  // "`soldier` (60) หรือ `mercenary` (40)": a bare number in brackets after an alternative is its weight
+  const weights = texts.map((t) => t.match(/\(\s*(\d+(?:\.\d+)?)\s*\)\s*$/)?.[1]);
+  for (let i = 0; i < texts.length; i++) if (weights[i]) texts[i] = texts[i].replace(/\(\s*\d+(?:\.\d+)?\s*\)\s*$/, '').trim();
   const subs = texts.map((t) => {
     const sub = fresh();
     const rest = segmentFull(t, ids, sub, opts);
@@ -1019,7 +1022,8 @@ function pickSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): s
   const bare = (e: Effect) => (e.k === 'event' && !e.open) || e.k === 'npc' || e.k === 'place';
   if (withEffects.every((x) => x.sub.effects.every(bare))) return null;
   if (withEffects.length < 2 && !(withEffects.length === 1 && adjacent && !battle)) return null;
-  const of = subs.map((x) => ({
+  const of = subs.map((x, i) => ({
+    ...(weights[i] ? { weight: Number(weights[i]) } : {}),
     label: x.t.replace(/^→\s*/, '').replace(/`/g, '').replace(/\s+/g, ' ').trim(),
     effects: x.sub.effects,
   }));

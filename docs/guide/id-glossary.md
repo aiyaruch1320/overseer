@@ -26,3 +26,7 @@
 | `#blade` `#fire` ฯลฯ | แท็กของอาวุธ ศัตรู สกิล | [../_generated/character-catalog/tags.md](../_generated/character-catalog/tags.md) |
 | `W` `G` `M` | ความมั่งคั่ง ความเหลื่อมล้ำ การใช้เงินของประเทศ | [../systems/economy/02-countries.md](../systems/economy/02-countries.md) |
 | `ศ.ม.` | ปีโลก (ศักราชหลังมหาล่มสลาย) | [../lore/world/world-time.md](../lore/world/world-time.md) |
+| `faith.01` ถึง `faith.23` | ศาสนา ตามลำดับในตาราง | [../lore/religions/README.md](../lore/religions/README.md) |
+| `sign_comet` `sign_night` ฯลฯ | ดวงวันเกิดและเวลาเกิด (comet eclipse fullmoon storm none · dawn day dusk night) | [../systems/character/01-origin.md](../systems/character/01-origin.md) หัวข้อ 8 |
+| `hu` `el` `gi` ฯลฯ | เผ่า (รหัสสองตัวของเส้นเรื่อง) | [../lore/storylines/README.md](../lore/storylines/README.md) หัวข้อ 3 |
+| `cv.0` | ตารางสำรองของจุดบรรจบ (ใช้เมื่อจุดบรรจบปิด) | [../lore/storylines/00-convergence.md](../lore/storylines/00-convergence.md) |

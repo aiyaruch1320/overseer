@@ -88,6 +88,7 @@ function checkRefs(file) {
       if (t === '#แท็ก') continue;
       if (t.startsWith('#')) { if (!tags.has(t) && !t.endsWith('_*')) err(file, n, 'tag', t); continue; }
       if (t.length < 2 || t === '#แท็ก' || STAT.test(t) || ATTACK.has(t) || NOT_IDS.has(t) || /^chain_/.test(t) || /^[a-z]{2}_(f_)?$/.test(t) || /^ws_[a-z_]+_[a-z_]+$/.test(t)) continue;
+      if (/^sign_(comet|eclipse|fullmoon|storm|dawn|day|dusk|night|none)$/.test(t)) continue; // birth signs (character/01-origin.md §8)
       if (/^[a-z_0-9]+$/.test(t) && !known.has(t) && !aptLevel(t)) err(file, n, 'id', t);
     }
     for (const m of line.matchAll(/\b([A-Z]{2,3})-(\d+)\b/g)) {

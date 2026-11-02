@@ -245,3 +245,16 @@ describe('condition forms for place, faith, sign, bond and counts (M0-c2)', () =
     expect(parseConditionX('เดินทางครบ 7 ทวีป', ids)).toEqual({ k: 'count', what: 'travel.continents', min: 7 });
   });
 });
+
+describe('weighted pick (M0-c2)', () => {
+  it('reads a weight in brackets after each alternative', () => {
+    const p = parseCell('ได้ `soldier` (60) หรือ `mercenary` (40)', ids);
+    expect(p.effects).toEqual([
+      { k: 'pick', of: [
+        { weight: 60, label: 'ได้ soldier', effects: [{ k: 'grant', kind: 'job', id: 'soldier' }] },
+        { weight: 40, label: 'mercenary', effects: [{ k: 'grant', kind: 'job', id: 'mercenary' }] },
+      ] },
+    ]);
+    expect(p.unparsed).toEqual([]);
+  });
+});
