@@ -10,7 +10,7 @@ import type { LifeState } from '../types';
 import { eco, REGIME_ORDER, CLASS_KEY, classNumber, type CountryEco, type EcoIndex, type MoneyUse, type RegimeId } from './data';
 import type { EconomyExt } from './state';
 import {
-  COMBAT_IDLE, FIELD_LIVING_MUL, FOOD_SHARE, GROUP_ROWS, HALF_PAY_JOBS, IDLE_INCOME_MUL, INCOME_SCALE, JOB_MUL, MERC_BEST, MERC_JOBS, OUTLAW, OUTLAW_JOBS, SPECIAL_SALARY, WORK_JOBS,
+  COMBAT_IDLE, FIELD_LIVING_MUL, FOOD_SHARE, GROUP_ROWS, HALF_PAY_JOBS, IDLE_INCOME_MUL, INCOME_SCALE, JOB_MUL, MERC_BEST, MERC_JOBS, OUTLAW, OUTLAW_JOBS, RANK_JOBS, RANK_PAY, SPECIAL_SALARY, WORK_JOBS,
 } from './tuning';
 import { foodShock, trust, wOf } from './world';
 
@@ -110,6 +110,8 @@ export function grossIncome(ctx: Ctx, E: EcoIndex, life: LifeState, ext: Economy
       }
       if (OUTLAW_JOBS.has(job.id)) swing = rng ? OUTLAW.swing[0] + (OUTLAW.swing[1] - OUTLAW.swing[0]) * rng.next() : (OUTLAW.swing[0] + OUTLAW.swing[1]) / 2;
       if (MERC_JOBS.has(job.id) && MERC_BEST.countries.includes(life.country)) base *= MERC_BEST.mul;
+      // a soldier is paid by his rank (the combat system keeps it; read as plain data so that the two systems need not import each other)
+      if (RANK_JOBS.has(job.id)) base *= RANK_PAY[Math.max(0, Math.min(RANK_PAY.length - 1, (life.ext.combat as { rank?: number } | undefined)?.rank ?? 0))];
     }
     // a man in debt bondage (B1) earns by the lower class, ×0.8, and what he is bound to pay is taken by the bondage system; B2 and B3 are of the
     // lowest class already (×0.2) (10-bondage.md §6)

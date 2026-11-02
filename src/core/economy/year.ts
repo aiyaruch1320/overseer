@@ -1,6 +1,6 @@
 // One life year of money (code: docs/systems/economy/08-implementation.md §3 steps 5 and 7): income − living − tax goes into gold,
 // debts run, a bad year becomes the poverty of 04 §5, the class moves (03 §5), and the lines of the 24-economy storylines open.
-import { setClass } from '../character';
+import { boundBan, setClass } from '../character';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply } from '../rules';
@@ -10,7 +10,7 @@ import { eco, classNumber, type EcoIndex } from './data';
 import { grossIncome, livingCost, placeOf, taxRate, type Place } from './income';
 import { extOf, type EconomyExt } from './state';
 import {
-  CLIMB, DEBT, ECONOMY_FROM_AGE, NOBLE_MAJOR, OPEN_EC, OUTLAW, OUTLAW_JOBS, POOL_DECAY, POVERTY, PV_MAX_W, TRADE_JOBS, WORK_LINE_JOBS,
+  CLIMB, DEBT, ECONOMY_FROM_AGE, NOBLE_MAJOR, OPEN_EC, OUTLAW, OUTLAW_JOBS, POOL_DECAY, POVERTY, PV_MAX_W, TRADE_JOBS, WAGE_GROUPS, WORK_JOBS, WORK_LINE_JOBS, YEAR_NOTE,
 } from './tuning';
 import { syncEvents, writeCountry } from './world';
 
@@ -22,6 +22,23 @@ export function addGold(life: LifeState, delta: number): number {
   const done = next - life.gold;
   life.gold = next;
   return done;
+}
+
+/**
+ * A share of a battle or a war paid to the character (docs/systems/economy/04-income-and-living.md §1 "เงินเดือนประจำ + ส่วนแบ่งศึก"): the combat
+ * system names the sum, the economy puts it in the purse, counts it for the year (`economy/year` says how much came as a share) and writes `economy/pay`
+ * (level 0). Returns the gold paid (whole).
+ */
+export function payShare(ctx: Ctx, amount: number, why: string, data: Record<string, string | number | boolean | null> = {}): number {
+  const life = live(ctx);
+  if (!life || amount <= 0) return 0;
+  const ext = extOf(life);
+  const paid = addGold(life, amount);
+  if (paid <= 0) return 0;
+  ext.yr.share += paid;
+  ext.yr.shares += 1;
+  write(ctx.state, { sys: 'economy', kind: 'pay', id: why, data: { ...data, amount: paid, why }, level: 0 });
+  return paid;
 }
 
 // ---------- birth ----------
@@ -37,6 +54,7 @@ export function startLife(ctx: Ctx): void {
   ext.rank = rng.chance(NOBLE_MAJOR) ? 'major' : 'minor';
   ext.landFrac = rng.next();
   ext.mark = life.gold;
+  ext.yr = { share: 0, shares: 0, debt0: 0 };
   syncEvents(ctx);
   openLines(ctx, life, ext);
 }
@@ -80,6 +98,8 @@ export function economyYear(ctx: Ctx): void {
   if (!place) return;
 
   // gold that other systems (story rewards, battles, gifts) put in or took out since the last year
+  let fareYear = 0;
+  let otherYear = 0;
   if (ext.mark !== undefined) {
     // the fares of the travel system left the purse by its own hand (it keeps the sum in `ext.spent`): they are counted under fares, not as a loss to be reckoned again
     const spent = (life.ext.travel as { spent?: number } | undefined)?.spent ?? 0;
@@ -87,6 +107,8 @@ export function economyYear(ctx: Ctx): void {
     ext.fareSeen = spent;
     ext.flows.fare = (ext.flows.fare ?? 0) + fare;
     const other = life.gold - ext.mark + fare;
+    fareYear = fare;
+    otherYear = other;
     if (other > 0) ext.flows.gain += other;
     else ext.flows.loss -= other;
   } else {
@@ -123,7 +145,68 @@ export function economyYear(ctx: Ctx): void {
   poverty(ctx, E, life, ext, living);
   moveClass(ctx, E, life, ext, place);
   openLines(ctx, life, ext);
+  yearLine(ctx, E, life, ext, { income, tax, living, net }, fareYear, otherYear);
   ext.mark = life.gold;
+}
+
+// ---------- the year in one line (M3 review T1) ----------
+
+/** The kind of income a life has this year, for the line: a wage, the land, work with the hands, trade, an outlaw's takings, or none. */
+function incomeKind(E: EcoIndex, life: LifeState): 'wage' | 'land' | 'work' | 'trade' | 'outlaw' | 'none' {
+  if (classNumber(life.cls) === 5) return 'land';
+  const job = life.job ? E.jobs.get(life.job) : undefined;
+  if (!job) return 'none';
+  if (OUTLAW_JOBS.has(job.id)) return 'outlaw';
+  if (job.id === 'merchant' || job.origin === 'trade') return 'trade';
+  if (job.kind === 'common' && WAGE_GROUPS.has(E.groupOf(job)) && !WORK_JOBS.has(job.id)) return 'wage';
+  return 'work';
+}
+
+/**
+ * Writes `economy/year` (level 1) for a year in which the money moved enough to tell (tuning YEAR_NOTE). The numbers are what the text system tells:
+ * `income` (before tax) with its `kind` and, for a wage, the `salary`; `share` paid for battles; `gain` and `loss` beside the formula (the trade, gifts,
+ * what was bought); `fare` of the road; `tax` and `living`; `net` of the year by the formula; the purse `gold` at the end and the `debt` with its change.
+ * `why` lists what made the year worth a line (`debt` `gain` `loss` `share` `ledger`).
+ */
+function yearLine(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, y: { income: number; tax: number; living: number; net: number }, fare: number, other: number): void {
+  const debtChange = Math.round(ext.debt - ext.yr.debt0);
+  const rest = other - ext.yr.share;
+  const gain = Math.max(0, Math.round(rest));
+  const loss = Math.max(0, Math.round(-rest));
+  const why: string[] = [];
+  if (debtChange !== 0 || (ext.debt > 0 && ext.yr.debt0 === 0)) why.push('debt');
+  if (gain >= YEAR_NOTE.gain) why.push('gain');
+  if (loss >= YEAR_NOTE.loss) why.push('loss');
+  if (ext.yr.share >= YEAR_NOTE.share) why.push('share');
+  if (life.hAge % YEAR_NOTE.ledger === 0) why.push('ledger');
+  if (why.length) {
+    const kind = incomeKind(E, life);
+    write(ctx.state, {
+      sys: 'economy',
+      kind: 'year',
+      id: String(life.hAge),
+      data: {
+        kind,
+        job: life.job ?? null,
+        class: life.cls,
+        income: Math.round(y.income),
+        salary: kind === 'wage' ? Math.round(y.income) : 0,
+        share: ext.yr.share,
+        gain,
+        loss,
+        fare: Math.round(fare),
+        tax: Math.round(y.tax),
+        living: Math.round(y.living),
+        net: Math.round(y.net),
+        gold: life.gold,
+        debt: Math.round(ext.debt),
+        debtChange,
+        why: why.join(','),
+      },
+      level: 1,
+    });
+  }
+  ext.yr = { share: 0, shares: 0, debt0: ext.debt };
 }
 
 // ---------- debt (04 §6, the simple form until P5) ----------
@@ -260,6 +343,8 @@ function fallOfHouse(ctx: Ctx, life: LifeState, ext: EconomyExt): void {
 }
 
 function moveClass(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, place: Place): void {
+  // B1 to B3 are the class 1 together and do not rise while bound (10-bondage.md §2; the way out of bondage lifts the class itself)
+  if (boundBan(life, 'class')) return;
   const n = classNumber(life.cls);
   const rng = ctx.rng('economy.class');
   // years in the same job (the character system keeps the age the job began)

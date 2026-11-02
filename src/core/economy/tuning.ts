@@ -146,3 +146,25 @@ export const WORK_LINE_JOBS = new Set(['miner', 'woodcutter', 'stonemason', 'tan
 export const BASE_SPREAD = 30;
 /** How fast the pools of one-off changes (spread, food shock) fall back each life year. */
 export const POOL_DECAY = 0.5;
+
+// ---------- the year in one line (M3 review T1) ----------
+
+/**
+ * The log line of the year, `economy/year` (level 1): written when something in the money moved enough to tell (assumption; the docs set no rule for
+ * the line, review/m3 T1 asks for the income, the pay, the profit or loss, the tax and the debt in a line the player reads):
+ *  - `gain` / `loss`: gold that came in or went out beside the formula (the story's trade, a gift, a purchase) at least this much;
+ *  - `share`: a soldier was paid a share of a battle at least this much in the year;
+ *  - every `ledger`th life year the line is written whatever happened, so the reader sees the whole picture (income, tax, living) now and then.
+ * A year with none of these writes nothing, and a debt that opened, grew, shrank or was paid always writes.
+ */
+export const YEAR_NOTE = { gain: 40, loss: 40, share: 25, ledger: 10 };
+
+/** Jobs whose income is a wage from an employer (a pay line, `salary` in `economy/year`); the rest earn from work, trade or the land (assumption). */
+export const WAGE_GROUPS = new Set(['combat', 'service', 'tech', 'religion', 'art']);
+
+/**
+ * Rank pay of a soldier (M3 review C2): the wage of a soldier job is multiplied by the factor of his rank in the army of the combat system
+ * (`life.ext.combat.rank`, 0 to 4); the share of a battle is in combat/tuning (WAR_PAY). Assumption: the docs say "เงินเดือนประจำ + ส่วนแบ่งศึก" and name no rank.
+ */
+export const RANK_PAY = [1, 1.1, 1.25, 1.5, 2];
+export const RANK_JOBS = new Set(['soldier', 'mercenary', 'knight', 'royal_guard', 'city_guard']);
