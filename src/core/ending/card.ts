@@ -340,7 +340,7 @@ export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, life
     const base = baseOfMoment(f.kind);
     if (base === undefined || NOT_MOMENT.includes(f.kind)) continue;
     // a lover who was a friend first: the card says when they became lovers, not "met" (the short line of the lover says "met")
-    if (f.kind === 'คนรัก' && f.flags.includes('late')) continue;
+    if (f.kind === 'คนรัก' && (f.flags.includes('late') || f.flags.includes('carried'))) continue;
     const s = f.kind === 'คำตอบของคำถามชีวิต' ? MOMENT.question : base + (f.bonus ?? 0) + (MOMENT.heardKinds.includes(f.kind) ? MOMENT.heard : 0) + (inSummary.has(`${f.kind}|${f.age ?? ''}`) ? MOMENT.inSummary : 0);
     const dup = f.tags.length ? pool.findIndex((q) => q.f.tags.some((t) => f.tags.includes(t))) : -1;
     if (dup >= 0) {

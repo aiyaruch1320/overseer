@@ -14,6 +14,9 @@ import type { LifeState, LogEntry } from '../types';
 import { CAUSE_WORD, DEATH_ROLE_BONUS, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
 import type { CauseGroup, HandSummary, QuestionGrade } from './types';
 
+/** Ties the family web puts into the book of an heir at the takeover (lineage/family.ts). */
+const CARRIED_FROM = ['parent', 'family', 'inherited'];
+
 type Slots = Record<string, string | number>;
 
 export interface RawFact {
@@ -203,7 +206,11 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     const became = [...log].reverse().find((e) => e.sys === 'bonds' && e.kind === 'line' && e.id === partner.id && e.data.to === 'คนรัก');
     const since = became ? Math.max(partner.opened, hAgeOf(became)) : partner.opened;
     const late = since > partner.opened;
-    add('คนรัก', { lover: partner.name, tie_level: levelOf(ctx, partner), years_together: Math.max(1, until - since), age: apart ? until : partner.opened }, { age: since, flags: [live ? 'together' : apart ? 'apart' : 'gone', ...(late ? ['late'] : [])], strict: apart, tags: [`npc:${partner.id}`] });
+    // a partner the family web gave the heir at the takeover (the dead life, the spouse of the years before) was not met on the day he took over: when the book does not
+    // know the start the fact tells no age of meeting, and the card has no "met" moment for it (R1)
+    const startAge = lx(st).recs.find((r) => r.id === life.id)?.startAge ?? 0;
+    const carried = CARRIED_FROM.includes(partner.from) && partner.opened >= startAge && startAge > 0;
+    add('คนรัก', { lover: partner.name, tie_level: levelOf(ctx, partner), years_together: Math.max(1, until - since), ...(carried && !apart ? {} : { age: apart ? until : partner.opened }) }, { age: since, flags: [live ? 'together' : apart ? 'apart' : 'gone', ...(late ? ['late'] : []), ...(carried ? ['carried'] : [])], strict: apart, tags: [`npc:${partner.id}`] });
     if (late) add('คนรักเริ่ม', { lover: partner.name, age: since }, { age: since, tags: [`love:${partner.id}`], moment: true });
   }
   // the people who ended in the life: a lover or a child lost counts for more, a betrayal is a turning point of its own
