@@ -288,11 +288,12 @@ registerMiracle('MR-16', {
     const items = (ctx.data.items?.items as { items?: { id: string; tier: string; cat: string }[] } | undefined)?.items ?? [];
     const pool = items.filter((i) => i.tier === tier && i.cat !== 'consumable').map((i) => i.id).sort();
     const item = pool.length ? r.pick(pool) : `${tier}-item`;
+    const itemName = (items as { id: string; name?: string }[]).find((i) => i.id === item)?.name ?? 'ของลับ';
     const place = r.pick(['ซาก', 'ถ้ำ', 'ศาล']);
     actsOf(ctx.state).deeds.push({ kind: 'hidden', id: item, country: c, year: yearOf(ctx), data: { tier, place } });
     const life = livingOf(ctx);
     if (life && !life.flags.includes('rumor_hidden')) life.flags.push('rumor_hidden'); // the rumour reaches the character
-    return { target: c, result: `ซ่อน ${item} (${tier}) ใน${place}`, country: c };
+    return { target: c, result: `ซ่อน${itemName}ไว้ใน${place}`, country: c };
   },
 });
 

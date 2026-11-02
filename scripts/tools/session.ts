@@ -12,7 +12,7 @@ import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
 import type { GameState, LifeState, LogEntry } from '../../src/core/types';
-import { runPolicySteps, policyStepNames } from './god-hooks';
+import { policyName, policyStep } from '../../src/core/god';
 import type { ToolNote } from './report';
 import { bearToy, resolveRace, toyDeath, type BirthRequest } from './toy-character';
 
@@ -50,18 +50,15 @@ export function policyOf(s: Session): string | undefined {
 }
 
 /**
- * Lets the god system act under the policy of the session (one call per beat, after the beat). Without a policy it does nothing,
- * so a life without `--policy` is exactly the life of the systems alone. Returns how many policy functions were called.
+ * Lets the god system act under the policy of the session (a call after every beat). `policyStep` of the god system plays each life year once,
+ * with the parts the acts registered (prayers, whispers); without a policy this does nothing, so a life without `--policy` is exactly the life of the
+ * systems alone. Returns 1 when the policy was asked, else 0.
  */
 export function afterBeat(s: Session): number {
   const policy = policyOf(s);
-  if (!policy || !s.game.state.life || s.game.state.life.dead) return 0;
-  return runPolicySteps(s.game.ctx, policy);
-}
-
-/** True when some policy function is registered (god-hooks.ts); a policy has no effect otherwise. */
-export function policyHasEffect(): boolean {
-  return policyStepNames().length > 0;
+  if (!policy || !policyName(policy) || !s.game.state.life || s.game.state.life.dead) return 0;
+  policyStep(s.game.ctx, policy);
+  return 1;
 }
 
 function withSystem(list: System[], s: System): System[] {

@@ -8,14 +8,17 @@ import { canPay, dreadOf, lightOf } from './power';
 import { gx, inWindow, lifeOf } from './state';
 import { CHEST_MIN_LIGHT, POLICY_ALIAS, RESERVE, SHAPER_AGAINST, tierIndex } from './tuning';
 
-export type PolicyName = 'silent' | 'merciful' | 'punish' | 'shaper' | 'giver' | 'saver' | 'random';
+export type PolicyName = 'silent' | 'merciful' | 'punish' | 'shaper' | 'giver' | 'saver' | 'random' | 'hasten';
 
-/** A part of a policy owned by another file (prayers, whispers, miracles): called after the parts of this file, once a life year. */
+/**
+ * A part of a policy owned by another file (prayers, whispers, miracles), played once a life year inside `policyStep`: `first` before the
+ * chests and dreams of this file (the prayers come first in the sim, the light kept for them), `last` after (the default).
+ */
 export type PolicyPart = (ctx: Ctx, policy: PolicyName) => void;
-const parts: PolicyPart[] = [];
+const parts: { fn: PolicyPart; when: 'first' | 'last' }[] = [];
 
-export function registerPolicyPart(fn: PolicyPart): void {
-  if (!parts.includes(fn)) parts.push(fn);
+export function registerPolicyPart(fn: PolicyPart, when: 'first' | 'last' = 'last'): void {
+  if (!parts.some((p) => p.fn === fn)) parts.push({ fn, when });
 }
 export function clearPolicyParts(): void {
   parts.length = 0;
@@ -91,6 +94,8 @@ export function policyStep(ctx: Ctx, policy: string): void {
   if (e.policyAt === life.hAge) return;
   e.policyAt = life.hAge;
   const rng = ctx.rng('god.policy');
+  for (const p of parts) if (p.when === 'first') p.fn(ctx, name);
+  if (!lifeOf(ctx)) return;
   switch (name) {
     case 'merciful':
     case 'shaper': {
@@ -124,8 +129,9 @@ export function policyStep(ctx: Ctx, policy: string): void {
     }
     case 'silent':
     case 'saver':
+    case 'hasten':
       break;
   }
   if (currentChest(ctx)) skipChest(ctx);
-  for (const p of parts) p(ctx, name);
+  for (const p of parts) if (p.when === 'last') p.fn(ctx, name);
 }

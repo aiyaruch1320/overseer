@@ -13,6 +13,7 @@ export const POLICY_ALIAS: Record<string, string> = {
   ให้ของ: 'giver', giver: 'giver',
   เก็บพลัง: 'saver', saver: 'saver',
   สุ่ม: 'random', random: 'random',
+  เร่งจบ: 'hasten', hasten: 'hasten',
 };
 
 /** Ages that stop the game for the god (experience/07-attention.md §2; the same constants sim-god.mjs uses). */

@@ -117,3 +117,54 @@ export const DEATH_TH: Record<string, string> = {
   accident: '{who}สิ้นชีวิตจากอุบัติเหตุ{where} เมื่ออายุ {age}',
   violence: '{who}ถูกทำร้ายจนสิ้นชีวิต{where} เมื่ออายุ {age}',
 };
+
+// ---------- the god's hand (god.ts) ----------
+
+/** The names of the rarity tiers of a chest (the documents name only the letters C U R E L; these are the words the cards show). Assumption. */
+export const TIER_TH: Record<string, string> = { C: 'ธรรมดา', U: 'ไม่ธรรมดา', R: 'หายาก', E: 'หายากยิ่ง', L: 'ตำนาน' };
+
+/** What a slot of the chest is called when it was picked. */
+export const CHEST_KIND_TH: Record<string, string> = { bless: 'พร', curse: 'คำสาป', skill: 'ฝีมือ', item: 'ของ', weapon: 'อาวุธ' };
+
+/** The reasons a thing comes up in the chest (the data's `why` codes), as the card says them (02-bestow.md §3, llm/06-god-templates.md `chest_reason`). */
+export const WHY_TH: Record<string, string> = {
+  story: 'ตรงกับเรื่องที่กำลังจะถึง',
+  job: 'ตรงกับอาชีพหรือความถนัดของเขา',
+  home: 'ตรงกับถิ่นที่เขาอยู่',
+  event: 'ตรงกับเหตุการณ์ของโลกที่เพิ่งเกิด',
+};
+
+/** What a dream did at the crossroads: the key of the `decision_result` templates and a plain sentence. */
+export const OUTCOME_TH: Record<string, { key: string; plain: string }> = {
+  obey: { key: 'ทำตาม', plain: 'ทำตามความฝันของท่าน' },
+  misread: { key: 'ตีความผิด', plain: 'ตีความความฝันของท่านผิดไป' },
+  refuse: { key: 'ปฏิเสธ', plain: 'ปฏิเสธความฝันของท่าน' },
+  defy: { key: 'ขัดขืน', plain: 'ขัดขืนความฝันของท่านอย่างเปิดเผย' },
+};
+
+/** The flags of a country that a prayer clears or brings (world/tuning flags). */
+export const FLAG_TH: Record<string, string> = {
+  famine: 'ข้าวยากหมากแพง',
+  sandstorm: 'พายุทราย',
+  plague: 'โรคระบาด',
+  undead_rising: 'ผีที่ลุกขึ้น',
+  war: 'สงคราม',
+  demon_raid: 'อสูรที่บุก',
+  horde: 'ฝูงอสูร',
+  ghoul_plague: 'กูลที่ระบาด',
+  golden: 'ยุคทอง',
+};
+
+/** The numbers a prayer moves, in words. */
+export const STAT_TH: Record<string, string> = { int: 'ปัญญา', vit: 'ความทนทาน', brave: 'ความกล้า', kind: 'ความใจดี', fame: 'ชื่อเสียง', pow: 'พละกำลัง', mag: 'เวทมนตร์', spd: 'ความเร็ว', luk: 'โชค' };
+
+/** Prayer effect words with a fixed meaning (the rest are read by `fxPhrases`). */
+export const EFFECT_WORD_TH: Record<string, string> = {
+  'rel:+lover': 'ได้พบคนรัก',
+  child: 'ได้ลูก',
+  'npc:heal': 'คนสำคัญหายป่วย',
+  'npc:die': 'คนสำคัญสิ้นชีวิต',
+};
+
+/** The cards a stop of the game carries with it, by the kind of card. */
+export const FOLDED_TH: Record<string, string> = { prayer: 'คำอธิษฐาน', omen: 'ลาง', majorOmen: 'ลางใหญ่', battle: 'ศึก', crisis: 'วิกฤต' };

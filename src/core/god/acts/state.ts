@@ -90,13 +90,9 @@ export interface ActsExt {
   /** World year of the last prayer the god answered (given, refused or punished) and the world years prayers lapsed. */
   lastAnswer: number;
   lapsed: number[];
-  /** hAge at which the god last punished someone (clarity, 03-dreams.md §3). */
-  punishedAt?: number;
   /** Counters of the life the cap is counted for; a new life starts them again. */
-  life: { key: string; mid: number; big: number; ruin: number; grand: number; switchLoss: number };
-  /** The line paid last and the life year number (hAge) it was paid in (switching lines costs belief, 01-power.md §2). */
-  lastLine?: { line: 'faith' | 'dread'; age: number };
-  whisper: { age: number; used: string[]; sent: Record<string, number>; active: ActiveWhisper[]; free?: number };
+  life: { key: string; mid: number; big: number; ruin: number; grand: number };
+  whisper: { age: number; used: string[]; sent: Record<string, number>; active: ActiveWhisper[] };
   pending: Pending[];
   fates: Record<string, Fate>;
   mods: Mod[];
@@ -118,7 +114,7 @@ export function fresh(): ActsExt {
     recent: {},
     lastAnswer: NEVER,
     lapsed: [],
-    life: { key: '', mid: 0, big: 0, ruin: 0, grand: 0, switchLoss: 0 },
+    life: { key: '', mid: 0, big: 0, ruin: 0, grand: 0 },
     whisper: { age: -1, used: [], sent: {}, active: [] },
     pending: [],
     fates: {},
@@ -153,7 +149,7 @@ export const lifeKey = (l: LifeState) => `${l.id}/${l.birthYear}`;
 export function peekCounters(ctx: Ctx): ActsExt['life'] {
   const l = ctx.state.life;
   const e = viewActs(ctx.state).life;
-  return l && e.key === lifeKey(l) ? e : { key: '', mid: 0, big: 0, ruin: 0, grand: 0, switchLoss: 0 };
+  return l && e.key === lifeKey(l) ? e : { key: '', mid: 0, big: 0, ruin: 0, grand: 0 };
 }
 
 /** The counters of this life; they start again when the key of the life changes (a new life, an heir). */
@@ -161,7 +157,7 @@ export function lifeCounters(ctx: Ctx): ActsExt['life'] {
   const e = actsOf(ctx.state);
   const l = ctx.state.life;
   const key = l ? lifeKey(l) : '';
-  if (e.life.key !== key) e.life = { key, mid: 0, big: 0, ruin: 0, grand: 0, switchLoss: 0 };
+  if (e.life.key !== key) e.life = { key, mid: 0, big: 0, ruin: 0, grand: 0 };
   return e.life;
 }
 

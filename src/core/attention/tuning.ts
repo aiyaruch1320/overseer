@@ -38,7 +38,8 @@ export const NAMED_TIERS: ReadonlySet<string> = new Set(['บอส', 'ยอด
 
 /**
  * Log entries other systems write that call for a card or a stop, by `sys/kind` (the contract with those systems; code-plan §6.3).
- * The story, world and battle entries exist already; the god and bond entries are the names proposed in the attention report.
+ * The story, world and battle entries exist already. `god/prayer` is what src/core/god/acts/prayers.ts writes when a prayer is raised (level 2;
+ * the god system asks `prayersWaiting` first and raises no third one); the bond entries are the names proposed in the attention report.
  */
 export const EXTERNAL: Record<string, CardKind> = {
   'god/prayer': 'prayer',

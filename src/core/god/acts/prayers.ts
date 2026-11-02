@@ -2,6 +2,8 @@
 // conditions' words, prices and effects are in data/gen/god.json `prayers`; the conditions themselves are written here, one per kind.
 import { extOf as characterExt, idx, tagsOf } from '../../character';
 import type { Ctx } from '../../game';
+import { prayersWaiting } from '../../attention';
+import { MAX_WAITING_PRAYERS } from '../../attention/tuning';
 import { detached } from '../../rng';
 import { apply, readStat } from '../../rules';
 import type { LifeState } from '../../types';
@@ -9,7 +11,9 @@ import { applyFx } from './fx';
 import { chronicle, say } from './record';
 import { dangerous, godOf, hasFlag, stageOf } from './geo';
 import { nameOf, nemeses, sickInCircle } from './npcs';
-import { belief, canPay, gain, pay, scaled, whyNot } from './pay';
+import { addBelief } from '../belief';
+import { canPay, earn, noteAnswered, notePunished, pay, scaleCost, whyNot } from '../power';
+import { touch } from '../state';
 import { actsOf, livingOf, tickOf, viewActs, yearOf, type PrayerCard } from './state';
 
 type Kind = ReturnType<typeof godOf>['prayers']['kinds'][number];
@@ -96,14 +100,15 @@ export function prayerBeat(ctx: Ctx): void {
   for (const card of [...cards]) {
     if (card.exp > tick) continue;
     cards.splice(cards.indexOf(card), 1);
-    belief(ctx, g.belief.prayer.ignore);
+    addBelief(ctx, g.belief.prayer.ignore, 'prayer.lapse');
     a.lapsed.push(yearOf(ctx));
     if (a.lapsed.length > 24) a.lapsed.shift();
-    say(ctx, { kind: 'prayer.lapse', id: card.kind, data: { n: card.n, kind: card.kind }, level: 1 });
+    say(ctx, { kind: 'prayer.lapse', id: card.kind, data: { n: card.n, kind: card.kind, name: nameOfKind(ctx, card.kind) }, level: 1 });
     chronicle(ctx, { kind: 'prayer.lapse', id: card.kind, result: 'silent' });
   }
   const t = g.prayers.tick;
-  if (cards.length >= t.maxPending || life.godFaith < t.silentBelow) return;
+  // the attention system holds two prayers at most (07-attention.md §3): the third is not raised, it would be dropped unseen
+  if (cards.length >= t.maxPending || prayersWaiting(ctx.state) >= MAX_WAITING_PRAYERS || life.godFaith < t.silentBelow) return;
   const pool = raisable(ctx);
   const rng = ctx.rng('god.prayer');
   if (!pool.length || !rng.chance(raiseChance(ctx, pool))) return;
@@ -118,7 +123,7 @@ export function prayerBeat(ctx: Ctx): void {
     kind: 'prayer',
     id: kind.id,
     data: { n: card.n, kind: kind.id, name: nameOfKind(ctx, kind.id), cost: grantPrice(ctx, kind), expires: t.expiryTicks, ...(npc ? { npc, npcName: nameOf(ctx, npc) } : {}) },
-    level: 3,
+    level: 2,
   });
 }
 
@@ -134,7 +139,7 @@ const WORDS: Record<string, Answer> = {
 };
 export const answerOf = (v: unknown): Answer | undefined => WORDS[String(v)];
 
-export const grantPrice = (ctx: Ctx, kind: Kind): number => scaled(ctx, kind.grantCost, 'faith');
+export const grantPrice = (ctx: Ctx, kind: Kind): number => scaleCost(ctx, { faith: kind.grantCost }).faith ?? 0;
 
 const cardOf = (ctx: Ctx, args: Record<string, unknown>): PrayerCard | undefined => cardsOf(ctx).find((c) => c.n === Number(args.id));
 
@@ -206,6 +211,7 @@ export function previewAnswer(ctx: Ctx, args: Record<string, unknown>): Record<s
 }
 
 function settle(ctx: Ctx, card: PrayerCard): void {
+  touch(ctx); // an answer is a deed of the god: the feelings of the character do not fade this year
   const cards = cardsOf(ctx);
   cards.splice(cards.indexOf(card), 1);
   actsOf(ctx.state).lastAnswer = yearOf(ctx);
@@ -223,41 +229,42 @@ export function runAnswer(ctx: Ctx, args: Record<string, unknown>): void {
   const name = nameOfKind(ctx, card.kind);
   if (ans === 'silent') {
     card.silent = true;
-    say(ctx, { kind: 'prayer.silent', id: card.kind, data: { n: card.n }, level: 1 });
+    say(ctx, { kind: 'prayer.silent', id: card.kind, data: { n: card.n, name }, level: 1 });
     return;
   }
   if (ans === 'give' || ans === 'strange') {
     const price = grantPrice(ctx, kind);
-    pay(ctx, { faith: price });
+    pay(ctx, { faith: price }, `prayer:${card.kind}`);
     let notes: string[] = [];
     let gift: string | undefined;
     if (ans === 'give') {
       notes = applyFx(ctx, kind.grantFx, who);
-      belief(ctx, Math.round(g.belief.prayer.grant * (devout ? g.belief.prayer.devoutMul : 1)));
+      addBelief(ctx, Math.round(g.belief.prayer.grant * (devout ? g.belief.prayer.devoutMul : 1)), 'prayer.give');
     } else {
       gift = strangeOptions(ctx, card)[Number(args.option)].id;
       apply(ctx, [{ k: 'grant', kind: 'blessing', id: gift }], { sys: 'god', id: 'prayer', stream: 'god.acts' });
-      belief(ctx, 5);
+      addBelief(ctx, 5, 'prayer.strange');
       if (!life.flags.includes('god_gift_event')) life.flags.push('god_gift_event'); // the small event that follows (03-dreams.md §7)
     }
-    gain(ctx, 'faith', g.income.prayerGrant);
+    earn(ctx, { faith: g.income.prayerGrant }, 'prayer.give');
+    noteAnswered(ctx); // counts toward the end of GD-05 (01-power.md §1)
     settle(ctx, card);
     say(ctx, { kind: 'prayer.give', id: card.kind, data: { n: card.n, name, price, fx: notes.join(' '), ...(gift ? { gift } : {}), ...(card.npc ? { npc: card.npc } : {}) }, level: 2 });
     chronicle(ctx, { kind: ans === 'give' ? 'prayer.give' : 'prayer.strange', id: card.kind, target: card.npc, result: gift ?? notes.join(' ') });
     return;
   }
   if (ans === 'deny') {
-    belief(ctx, devout ? -1 : g.belief.prayer.deny);
+    addBelief(ctx, devout ? -1 : g.belief.prayer.deny, 'prayer.deny');
     settle(ctx, card);
     say(ctx, { kind: 'prayer.deny', id: card.kind, data: { n: card.n, name }, level: 1 });
     chronicle(ctx, { kind: 'prayer.deny', id: card.kind, target: card.npc });
     return;
   }
   // punish
-  gain(ctx, 'dread', kind.punishGain);
+  earn(ctx, { dread: kind.punishGain }, 'prayer.punish');
   const notes = applyFx(ctx, kind.punishFx, who);
-  belief(ctx, g.belief.prayer.punish);
-  actsOf(ctx.state).punishedAt = life.hAge;
+  addBelief(ctx, g.belief.prayer.punish, 'prayer.punish');
+  notePunished(ctx); // dreams and whispers are heard less for five years
   if (!life.flags.includes('god_wronged')) life.flags.push('god_wronged'); // counted as one the god wronged (the path of the god-slayer)
   settle(ctx, card);
   say(ctx, { kind: 'prayer.punish', id: card.kind, data: { n: card.n, name, dread: kind.punishGain, fx: notes.join(' ') }, level: 2 });

@@ -1,8 +1,13 @@
-// Balance of the acts of the god (god/06-implementation.md §4): the targets the acts can show alone, measured on the core and set beside
-// `node scripts/sim/sim-god.mjs` (the document-level simulator, same policies). Slow: `npm run test:balance`.
+// Balance of the acts of the god (god/06-implementation.md §4) on the real core, set beside `node scripts/sim/sim-god.mjs` (the document-level simulator,
+// same policies). Slow: `npm run test:balance`.
+//
+// The life part plays whole lives with the whole god system (income, chests, dreams, prayers, whispers) under a policy named in `state.god.ext.policy`:
+// `godSystem` plays it once a life year through `policyStep` and the parts the acts registered. Nothing stands in for the prayers or the whispers.
+// The world part runs the real world for 1,800 years with the acts of the god and a living stand-in for the character; the income of the god is the
+// sim's measured leftover after the prayers (the sim does the same: "พระเจ้าใช้พลังที่เหลือจากการตอบคำอธิษฐานกับโลกทั้งหมด"), the policy is the same
+// `ext.policy`, played by the acts at every world step.
 //
 // What the acts cannot show alone is skipped, with the reason:
-//   · dreams obeyed, decisions a life, burden events, chest counts: dreams and chests are the other half of the god system (god/power, chest, dream)
 //   · ruins a world, seal strikes, the eras the seal quickens: the large miracles and the seal are the step M4
 //   · the vows GV-11 GV-19: the goals are the step G6b
 import { execFileSync } from 'node:child_process';
@@ -11,10 +16,10 @@ import { pathToFileURL } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { createSession, startLife } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
-import { Game, sortSystems, type Ctx, type GameData } from '../../src/core/game';
-import { actsPolicyStep, godActsSystem, type PolicyName } from '../../src/core/god/acts';
+import { Game, type GameData, type System } from '../../src/core/game';
+import { godActsSystem } from '../../src/core/god/acts';
 import { newGame } from '../../src/core/state';
-import { onWorldPhase, worldSystem } from '../../src/core/world';
+import { worldSystem } from '../../src/core/world';
 import type { LifeState } from '../../src/core/types';
 
 const root = path.resolve(__dirname, '../..');
@@ -48,7 +53,7 @@ function runSim(lives: number, worlds: number): void {
 
 // ---------- the life part: real lives (world, character, story, NPCs) with the acts of the god in the loop ----------
 
-const POLICY_OF: Record<string, PolicyName> = { เงียบ: 'เงียบ', เมตตา: 'เมตตา', ลงโทษ: 'ลงโทษ', สุ่ม: 'สุ่ม' };
+const POLICY_OF: Record<string, string> = { เงียบ: 'เงียบ', เมตตา: 'เมตตา', ลงโทษ: 'ลงโทษ', สุ่ม: 'สุ่ม' };
 
 interface LifeResult {
   prayers: number;
@@ -58,37 +63,21 @@ interface LifeResult {
   age: number;
 }
 
-/** One life under a policy. The income of the god is the rule of 01-power.md §1 (the parts the acts do not own: base, channel B, belief). */
-function lifeRun(data: GameData, seed: number, policy: PolicyName): LifeResult {
-  const s = createSession(data, { seed, startYear: 450 });
-  const systems = (s.game as unknown as { systems: unknown[] }).systems;
-  systems.push(godActsSystem);
-  systems.splice(0, systems.length, ...sortSystems(systems as never));
+/** One whole life under a policy, on the real systems. The first life of a lineage: 30 light, 10 dread, belief 0 (the start of 01-power.md §1). */
+function lifeRun(data: GameData, seed: number, policy: string): LifeResult {
+  const s = createSession(data, { seed, startYear: 450, policy: policy as never });
+  startLife(s);
   const g = s.game;
   const st = g.state;
-  st.god.light = 30;
-  st.god.dread = 10;
-  startLife(s);
   const life = st.life!;
-  let age = life.hAge;
-  for (let beats = 0; beats < 4 * 400 && !life.dead; beats++) {
-    g.beat();
-    if (life.dead) break;
-    actsPolicyStep(g.ctx, policy, 'beat');
-    if (life.hAge !== age) {
-      age = life.hAge;
-      const b = st.world.countryFaith[life.country] ?? 40;
-      st.god.light = Math.min(200, st.god.light + 1 + b / 25 + Math.max(0, life.godFaith) / 30);
-      st.god.dread = Math.min(200, st.god.dread + 0.3 + Math.max(0, -life.godFaith) / 75);
-    }
-  }
+  for (let beats = 0; beats < 4 * 400 && !life.dead; beats++) g.beat();
   const log = st.log.filter((e) => e.sys === 'god');
   return {
     prayers: log.filter((e) => e.kind === 'prayer').length,
-    answered: log.filter((e) => e.kind === 'prayer.give' || e.kind === 'prayer.punish' || e.kind === 'prayer.deny').length,
-    whispers: log.filter((e) => e.kind === 'whisper').length,
+    answered: st.god.chronicle.filter((e) => e.kind === 'prayer.give' || e.kind === 'prayer.strange' || e.kind === 'prayer.deny' || e.kind === 'prayer.punish').length,
+    whispers: st.god.chronicle.filter((e) => e.kind === 'whisper').length,
     belief: life.godFaith,
-    age: life.hAge,
+    age: life.dead ? life.dead.hAge : life.hAge,
   };
 }
 
@@ -160,8 +149,9 @@ function worldRun(data: GameData, n: number, policy: string): WorldResult {
     }
   };
   newLife(0);
-  const g = new Game(st, data, [worldSystem, godActsSystem]);
-  hookCtx = { policy, newLife, st, wpl: () => wpl, lifeEnd: () => lifeEnd };
+  if (policy !== 'base') st.god.ext.policy = policy; // the acts play it at every world step
+  const g = new Game(st, data, [worldSystem, godActsSystem, worldIncome]);
+  hookCtx = { newLife, st, wpl: () => wpl, lifeEnd: () => lifeEnd };
   g.init();
   g.worldSteps(HORIZON);
   const w = st.world;
@@ -174,11 +164,12 @@ function worldRun(data: GameData, n: number, policy: string): WorldResult {
   };
 }
 
-let hookCtx: { policy: string; newLife: (y: number) => void; st: ReturnType<typeof newGame>; wpl: () => number; lifeEnd: () => number } | undefined;
+let hookCtx: { newLife: (y: number) => void; st: ReturnType<typeof newGame>; wpl: () => number; lifeEnd: () => number } | undefined;
 
-function installWorldHook(): void {
-  // the acts' own gate for GD-04 and GD-05 registered when the module loaded; this hook is the god's income and hand, and works only for the game that set `hookCtx`
-  onWorldPhase('afterDrift', (ctx: Ctx) => {
+/** The god's income in the world part and the succession of the stand-in lives: a system of the test, run after the world of each step. */
+const worldIncome: System = {
+  name: 'tools',
+  worldStep(ctx) {
     const h = hookCtx;
     if (!h || h.st !== ctx.state) return;
     const year = ctx.state.clock.worldYear;
@@ -186,9 +177,8 @@ function installWorldHook(): void {
     const ly = 10 / h.wpl();
     ctx.state.god.light = Math.min(200, ctx.state.god.light + WORLD_INCOME.faith * ly);
     ctx.state.god.dread = Math.min(200, ctx.state.god.dread + WORLD_INCOME.dread * ly);
-    if (h.policy !== 'base') actsPolicyStep(ctx, h.policy, 'world');
-  });
-}
+  },
+};
 
 const worlds: Record<string, WorldResult[]> = {};
 
@@ -200,7 +190,6 @@ beforeAll(async () => {
     lives[name] = [];
     for (let i = 0; i < LIVES; i++) lives[name].push(lifeRun(data, 1000 + i * 31, policy));
   }
-  installWorldHook();
   for (const [name, policy, count] of [['ไม่จำลองพระเจ้า', 'base', RATIO_WORLDS], ['เมตตา', 'เมตตา', WORLDS], ['เร่งจบ', 'เร่งจบ', RATIO_WORLDS], ['สุ่ม', 'สุ่ม', WORLDS]] as const) {
     const t0 = Date.now();
     worlds[name] = [];

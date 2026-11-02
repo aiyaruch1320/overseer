@@ -17,6 +17,8 @@ import {
   fateCost,
   fateTargets,
   godActsSystem,
+  grantPrice,
+  kindOf,
   holdsKind,
   implementedMiracles,
   modAdd,
@@ -26,11 +28,14 @@ import {
 } from '../../src/core/god/acts';
 import { OMEN } from '../../src/core/god/acts/tuning';
 import { prayerBeat } from '../../src/core/god/acts/prayers';
+import { count, gx } from '../../src/core/god';
 import { lifeCounters } from '../../src/core/god/acts/state';
 import { silent } from '../../src/core/god/acts';
 import { npcIndex } from '../../src/core/npc/data';
 import { slotsOf } from '../../src/core/npc/types';
 import { weightOf } from '../../src/core/world';
+import { classify, prayersWaiting } from '../../src/core/attention';
+import { EXTERNAL } from '../../src/core/attention/tuning';
 import type { Choice, CommandResult, GameState } from '../../src/core/types';
 
 let data: GameData;
@@ -45,7 +50,7 @@ beforeAll(() => {
 function mk(seed = 1, power = { light: 200, dread: 200 }): { s: Session; g: Game; st: GameState; ctx: Game['ctx'] } {
   const s = createSession(data, { seed, race: 'hu', startYear: 120 });
   const systems = (s.game as unknown as { systems: unknown[] }).systems;
-  systems.push(godActsSystem);
+  if (!(systems as { name: string }[]).some((x) => x.name === 'god.acts')) systems.push(godActsSystem); // the tools' list holds it already
   systems.splice(0, systems.length, ...sortSystems(systems as never));
   s.game.state.god.light = power.light;
   s.game.state.god.dread = power.dread;
@@ -169,6 +174,25 @@ function applyFxWords(fx: string): boolean[] {
 }
 
 describe('the maker of prayers', () => {
+  it('the prayer it writes is the entry the attention system waits for: a card is queued, and a third prayer is not raised', () => {
+    const { g, ctx, st } = mk(2);
+    const life = st.life!;
+    st.world.countryFlags[life.country] = ['famine', 'plague', 'war'];
+    let seen = 0;
+    for (let i = 0; i < 4 * 30 && seen < 2; i++) {
+      g.beat();
+      seen = st.log.filter((e) => e.sys === 'god' && e.kind === 'prayer').length;
+    }
+    const first = st.log.find((e) => e.sys === 'god' && e.kind === 'prayer')!;
+    expect(first).toBeDefined();
+    expect(EXTERNAL[`${first.sys}/${first.kind}`]).toBe('prayer');
+    expect(classify(ctx, first)?.kind).toBe('prayer');
+    expect(first.level).toBe(2);
+    expect(prayersWaiting(st)).toBeGreaterThan(0);
+    expect(prayersWaiting(st)).toBeLessThanOrEqual(2);
+    expect(st.log.filter((e) => e.sys === 'attention' && e.kind === 'call' && e.data.why === 'prayer').length).toBeGreaterThan(0);
+  });
+
   it('raises at most two at once, lets one lapse after 14 ticks for belief −2, never the same kind within 24 ticks', () => {
     const { ctx, st } = mk(2);
     const life = st.life!;
@@ -202,7 +226,7 @@ describe('the maker of prayers', () => {
           const tj = (spawns[j].age ?? 0) * 4 + (spawns[j].quarter ?? 0);
           expect(tj - ti, `${spawns[i].id}`).toBeGreaterThanOrEqual(24);
         }
-    for (const sp of spawns) expect(sp.level).toBe(3); // a prayer calls the player
+    for (const sp of spawns) expect(sp.level).toBe(2); // a prayer calls the player
     for (const c of before) expect(c.exp - c.tick).toBe(14);
   });
 
@@ -276,7 +300,8 @@ describe('answering a prayer', () => {
     expect(st.life!.gold).toBe(90);
     expect(st.life!.curses).toContain('c_poverty');
     expect(st.life!.flags).toContain('god_wronged');
-    expect(actsOf(st).punishedAt).toBe(30);
+    expect(gx(ctx).punishedAge).toBe(30);
+    expect(gx(ctx).answered).toBe(0); // a punishment is no grant
   });
 
   it('deny: free, belief −3 (−1 for the devout)', () => {
@@ -374,10 +399,10 @@ describe('whispers', () => {
 
   it('a window or an age stop takes ×0.7 off, a turned-away heart ×1.5 on', () => {
     const { ctx, st } = mk(6);
-    st.god.ext.window = true;
+    gx(ctx).window = { age: st.life!.hAge, nodes: [], stop: true, played: 0 }; // the god system sets it each life year
     expect(whisperPrice(ctx, 'ระวัง')).toBe(4); // 5 × 0.7 = 3.5, up
     expect(whisperPrice(ctx, 'ช่วย')).toBe(6); // 8 × 0.7 = 5.6, up
-    st.god.ext.window = false;
+    gx(ctx).window = null;
     st.life!.godFaith = -40;
     expect(whisperPrice(ctx, 'ระวัง')).toBe(8); // 7.5 up
   });
@@ -886,6 +911,62 @@ describe('the commands', () => {
     expect(st.god.chronicle.at(-1)).toMatchObject({ kind: 'miracle', id: 'MR-01', target: st.life!.country });
     expect(st.god.chronicle.at(-1)!.worldYear).toBe(st.clock.worldYear);
     expect(st.god.chronicle.at(-1)!.hAge).toBe(30);
+  });
+});
+
+describe('one payer: the acts pay through god/power.ts', () => {
+  it('using the other power line in the same life year costs belief once, −4, however many files pay (a whisper in light, a miracle in dread)', () => {
+    const { ctx, st } = mk(31, { light: 100, dread: 100 });
+    const life = st.life!;
+    life.hAge = 30;
+    st.god.counters = {};
+    const country = life.country;
+    expect(run(ctx, 'whisper', { hint: 'จงอยู่' }).ok).toBe(true);
+    expect(count(ctx, 'l.switch')).toBe(0);
+    expect(run(ctx, 'miracle', { id: 'MR-07', country }).ok).toBe(true);
+    expect(count(ctx, 'l.switch')).toBe(4);
+    expect(st.log.filter((e) => e.sys === 'god' && e.kind === 'belief' && e.id === 'switch-line').map((e) => e.data.delta)).toEqual([-4]);
+    // light again in the same year: a second switch, −4 more
+    expect(run(ctx, 'whisper', { hint: 'ระวัง' }).ok).toBe(true);
+    expect(count(ctx, 'l.switch')).toBe(8);
+    expect(st.log.filter((e) => e.sys === 'god' && e.kind === 'belief' && e.id === 'switch-line')).toHaveLength(2);
+  });
+
+  it('the price of a prayer, a whisper and a miracle carries the window, the turned-away heart and the heart that fears (one table)', () => {
+    const { ctx, st } = mk(32, { light: 100, dread: 100 });
+    st.life!.godFaith = -40;
+    expect(grantPrice(ctx, kindOf(ctx, 'wealth')!)).toBe(Math.ceil(kindOf(ctx, 'wealth')!.grantCost * 1.5 - 1e-9));
+    st.life!.godFaith = 70;
+    const m = run(ctx, 'miracle', { id: 'MR-07', country: st.life!.country }, false);
+    expect(prev(m).cost.dread).toBe(Math.ceil(20 * 1.2 - 1e-9));
+    // the window is the god system's flag, set each life year
+    st.life!.godFaith = 0;
+    gx(ctx).window = { age: st.life!.hAge, nodes: [], stop: true, played: 0 };
+    expect(whisperPrice(ctx, 'ช่วย')).toBe(6);
+    const q = run(ctx, 'miracle', { id: 'MR-07', country: st.life!.country }, false);
+    expect(prev(q).cost.dread).toBe(20); // a miracle gets no window price
+  });
+
+  it('a prayer is not raised while the attention system holds two waiting', () => {
+    const { ctx, st } = mk(33);
+    const life = st.life!;
+    life.hAge = 30;
+    st.world.countryFlags[life.country] = ['famine', 'plague'];
+    const mem = life.ext.attention as { queue: { kind: string }[] };
+    mem.queue.push({ kind: 'prayer' }, { kind: 'prayer' });
+    for (let i = 0; i < 200; i++) {
+      st.clock.quarter = (st.clock.quarter + 1) % 4;
+      if (st.clock.quarter === 0) life.hAge++;
+      prayerBeat(ctx);
+    }
+    expect(cardsOf(ctx)).toHaveLength(0);
+    mem.queue.length = 0;
+    for (let i = 0; i < 200 && cardsOf(ctx).length === 0; i++) {
+      st.clock.quarter = (st.clock.quarter + 1) % 4;
+      if (st.clock.quarter === 0) life.hAge++;
+      prayerBeat(ctx);
+    }
+    expect(cardsOf(ctx).length).toBeGreaterThan(0);
   });
 });
 

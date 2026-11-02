@@ -64,6 +64,7 @@ export const textSystem: System = {
   },
 };
 
+export * from './god';
 export * from './names';
 export * from './pick';
 export * from './plain';

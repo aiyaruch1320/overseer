@@ -5,7 +5,7 @@ import { extOf as characterExt, idx } from '../../character';
 import type { Ctx } from '../../game';
 import { apply, type EffectSource } from '../../rules';
 import type { Effect } from '../../types';
-import { belief } from './pay';
+import { addBelief } from '../belief';
 import { godOf } from './geo';
 import { favourNpc, healNpc, killNpc, nemeses } from './npcs';
 import { livingOf } from './state';
@@ -86,7 +86,7 @@ export function applyFx(ctx: Ctx, fx: string, who: FxWho = {}): string[] {
       countryFlag(ctx, m[1], m[2]);
       out.push(word);
     } else if ((m = /^belief([+-]\d+)$/.exec(word))) {
-      belief(ctx, Number(m[1]));
+      addBelief(ctx, Number(m[1]), 'prayer.fx');
       out.push(word);
     } else if ((m = /^([a-z]+)([+-]\d+)$/.exec(word)) && STATS.has(m[1])) {
       apply(ctx, [{ k: 'stat', stat: m[1], delta: Number(m[2]) } as Effect], SRC);

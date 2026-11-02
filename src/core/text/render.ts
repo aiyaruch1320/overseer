@@ -8,9 +8,10 @@
 import type { GameData } from '../game';
 import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
+import { attentionText, godTemplate, godText } from './god';
 import { items, labels, type Labels } from './labels';
 import { plainName, riteSentence, scrub, sentence, tidy } from './plain';
-import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SPECIAL_TH } from './tuning';
+import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
 
 type D = LogEntry['data'];
 
@@ -214,6 +215,15 @@ export class Reader {
 
     if (e.sys === 'text') return this.text(e);
 
+    if (e.sys === 'god') {
+      const t = godText(this.godCx(e), e, variantOf(e));
+      if (t !== undefined) return t;
+    }
+    if (e.sys === 'attention') {
+      const t = attentionText(data, e);
+      if (t !== undefined) return t;
+    }
+
     if (e.sys === 'game' && e.kind === 'death') return this.death(e);
 
     if (e.sys === 'tools' && e.kind === 'class') {
@@ -291,6 +301,20 @@ export class Reader {
     // an entry of a system that has no phrasing yet: shown plainly only for the developer
     const tail = Object.entries(d).map(([k, v]) => `${k}=${s(v)}`).join(' ');
     return `[${e.sys}/${e.kind}${e.id ? ` ${e.id}` : ''}${tail ? ` ${tail}` : ''}]`;
+  }
+
+  /** What the lines of the god need to know: the character, the place, the season, and the way to pick a story. */
+  private godCx(e: LogEntry) {
+    const place = this.nm(this.country);
+    const season = SEASONS[e.quarter ?? -1] ?? '';
+    const continent = this.country ? this.nm(this.country.slice(0, 2)) : '';
+    return {
+      data: this.data,
+      who: this.name,
+      country: this.country,
+      tpl: (family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string) =>
+        godTemplate(this.data, family, keys, { ชื่อของที่นี่: place || undefined, ฤดู: season || undefined, ทวีป: continent || undefined, ...vars }, variant, hash),
+    };
   }
 
   /**

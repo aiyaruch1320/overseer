@@ -17,8 +17,7 @@ import { npcsAt } from '../../src/core/npc';
 import { load, save } from '../../src/core/save';
 import { placeName } from '../../src/core/text';
 import { timeline, statusLines, worldLines } from './report';
-import { GodConsole, callLines, godHelp, isGodWord, type PendingGod } from './god-commands';
-import { loadGodHooks } from './god-hooks-node';
+import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
 import { intArg, parseArgs } from './args';
 import { loadAll } from './node-data';
 import { POLICIES, afterBeat, createSession, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
@@ -34,7 +33,6 @@ if (policy && !POLICIES.includes(policy)) {
   process.exit(2);
 }
 
-await loadGodHooks();
 const data = loadAll();
 const opts = { seed, race: args.race, country: args.country, persona: args.persona, policy, startYear: args.year === undefined ? undefined : intArg(args.year, 'year') };
 
@@ -117,6 +115,8 @@ function run(cmdText: string): boolean {
       say(`-- ${why} --`, ...seen(mark));
       if (call) {
         say(...callLines(data, call, !!args.dev));
+        const waiting = waitingLines(g, data);
+        if (waiting.length) say('-- รอท่านอยู่ --', ...waiting);
         const doable = god.doableNow();
         say(doable.length ? `ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)` : 'ยังไม่มีพลังใดให้ใช้ตอนนี้ (พิมพ์ advance เพื่อไปต่อ)');
       }
