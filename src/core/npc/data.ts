@@ -178,7 +178,8 @@ function newcomerRow(ctx: Ctx, id: string, slot: NpcSlotX): NpcRow | undefined {
     halfPeopleId: null,
     ageText: '',
     age: null,
-    role: t.name,
+    // the name of a newcomer is the title of its template (no name set yet, succession.md §7): the role would only say it twice
+    role: '',
     unique: t.secret,
     appearPct: 100,
     paths,

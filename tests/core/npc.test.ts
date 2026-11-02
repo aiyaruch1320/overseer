@@ -507,7 +507,7 @@ describe('npc: newcomers NT-01 to NT-54 (succession.md §5)', () => {
       expect(id).toBe(`${s.home.replace('-', '')}-${s.nt!.seq}`);
       expect(t.continents.length === 0 || t.continents.includes(idx.countries.get(s.home)!.continent)).toBe(true);
       expect(s.name).toBe(t.name);
-      expect(rowOf(g.ctx, id)!.role).toBe(t.name);
+      expect(rowOf(g.ctx, id)!.name).toBe(t.name);
     }
   });
 

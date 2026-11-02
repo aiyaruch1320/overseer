@@ -303,4 +303,3 @@ export function stepNewcomers(ctx: Ctx): void {
   }
 }
 
-export type { NpcRow };

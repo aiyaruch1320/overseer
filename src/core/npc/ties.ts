@@ -12,7 +12,7 @@ import type { NpcPath, NpcRow } from '../data/types-npcs';
 import { npcIndex, rowOf } from './data';
 import { anyPathLeft, bumpRel, note, visible } from './engine';
 import { clashFor } from './clash';
-import { FOLLOW_WEIGHTS, NEEDS_PARTNER_RE, PARTNER_GOES_ON_RE, TIE_BOOST } from './tuning';
+import { FOLLOW_WEIGHTS, NEEDS_PARTNER_RE, PARTNER_GOES_ON_RE } from './tuning';
 import { slotsOf, type NpcSlotX, type PathKey, type Story } from './types';
 
 export type DoerKind = 'mc' | 'npc' | 'event' | 'god';

@@ -79,7 +79,7 @@ describe('npc balance: newcomers (succession.md §5)', () => {
       const cands = new Map<string, ReturnType<typeof candidatesFor>>();
       for (const c of idx.countries.values()) cands.set(c.id, candidatesFor(ctx, c, tag));
       const made = rollNewcomers(ctx, tag);
-      for (const [id, list] of cands) {
+      for (const list of cands.values()) {
         if (!list.length) continue;
         offered++;
         const total = list.reduce((a, c) => a + c.w, 0);
