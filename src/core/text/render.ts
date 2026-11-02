@@ -284,6 +284,7 @@ export class Reader {
       }
     }
 
+    if (e.sys === 'combat' && e.kind === 'battle') return this.battle(e);
     if (e.sys === 'story' || e.kind === 'node' || e.kind === 'choice') {
       if (e.kind === 'node' || e.kind === 'choice' || e.kind === 'pass') return this.node_(e);
       if (e.kind === 'converge') return `เส้นเรื่องบรรจบที่ ${this.nodeTitle(e)}`;
@@ -369,7 +370,8 @@ export class Reader {
       const found = this.L.enemies.find((x) => text.includes(x.name));
       if (found) names = [found.name];
     }
-    const res = d.result === 'win' ? 'ชนะ' : d.result === 'lose' ? 'แพ้' : d.result === 'flee' ? 'หนี' : scrub(data, s(d.result));
+    const RES: Record<string, string> = { win: 'ชนะ', lose: 'แพ้', flee: 'หนี', draw: 'เสมอ', dead: 'ตายในศึก' };
+    const res = RES[s(d.result)] ?? scrub(data, s(d.result));
     return names.length ? `ศึก: ${names.join(' · ')} · ${res}` : `ศึก · ${res}`;
   }
 

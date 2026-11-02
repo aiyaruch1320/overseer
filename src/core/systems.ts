@@ -2,6 +2,7 @@
 // branch is merged (docs/guide/code-plan.md §12.7). Importing a system also registers its rules (rules/).
 import { attentionSystem } from './attention';
 import { characterSystem } from './character';
+import { combatSystem } from './combat';
 import { economySystem } from './economy';
 import type { System } from './game';
 import { godSystem } from './god';
@@ -11,7 +12,7 @@ import { storySystem } from './story';
 import { textSystem } from './text';
 import { worldSystem } from './world';
 
-const list: System[] = [worldSystem, characterSystem, economySystem, npcSystem, storySystem, textSystem, godSystem, godActsSystem, attentionSystem];
+const list: System[] = [worldSystem, characterSystem, economySystem, npcSystem, storySystem, combatSystem, textSystem, godSystem, godActsSystem, attentionSystem];
 
 export function allSystems(): System[] {
   return [...list];
