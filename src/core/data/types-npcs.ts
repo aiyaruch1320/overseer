@@ -3,6 +3,7 @@
 // docs/appearance/{01-continents,countries,npcs} and docs/systems/economy/{02-countries,03-classes}.
 // Owner: the npcs data generator (code-plan §12.2). Shared contract types stay in ../types.ts.
 import type { Condition, ContinentId, CountryId, Effect, GenFile, NpcId } from '../types';
+import type { WorldCond } from './types-events';
 
 // ---------- ids ----------
 
@@ -200,9 +201,17 @@ export interface NpcPath {
   axes: AxisDelta[];
   /** Weight changes on a later choice, event or convergence (`น้ำหนัก +5 ข)`, `DM-01 น้ำหนัก +10`). */
   weights: { target: string; delta: number }[];
-  /** Condition read from a leading "ถ้า ..." clause, when it could be read. */
-  cond: Condition | null;
-  /** Results read by effects.ts parseCell: events, NPC references, deaths, grants. Event ids after `→` are results, never opening points. */
+  /**
+   * When the path happens, read from a "ถ้า …" or "เมื่อ …" clause of its label: the events the clause names (`เมื่อ PO-02`) or, when the clause
+   * names none, the event the arrow ends in (`ตายเมื่อคัลดราตื่น → PL-03`). `ถ้า X ตัดก)` is not a condition of this path: it is in `NpcRow.cuts`.
+   * An `event` atom may carry `phase: 'near'` (`เมื่อ DR-01 ใกล้`).
+   */
+  cond: WorldCond | null;
+  /**
+   * Results read by effects.ts parseCell: events, NPC references, deaths, grants. Event ids after `→` are results, never opening points,
+   * except in a path whose label holds `ถ้า` or `เมื่อ`: those events are its `cond` (or its cuts) and are not in `effects`
+   * (data review M7: 45 paths; the 51 of the review counted the 6 that hold `เถ้า`, ash).
+   */
   effects: Effect[];
   /** World events this path points at (after `→` or in the text). */
   events: string[];

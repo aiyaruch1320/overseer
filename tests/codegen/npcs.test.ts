@@ -271,3 +271,54 @@ describe('determinism', () => {
     expect(readFileSync(path.join(root, 'data/gen/_unparsed/npcs.md'), 'utf8')).toContain('ส่วนที่แปลไม่ได้: npcs');
   });
 });
+
+// ---------- M0-c: a label with ถ้า or เมื่อ says when, so its events are the condition (data review M7) ----------
+
+describe('paths that wait for an event', () => {
+  /** `เถ้า` (ash) holds the letters of `ถ้า` and is not the word. */
+  const TRIGGER = /(?<!เ)ถ้า|เมื่อ/;
+  const idsIn = (c: unknown) => [...JSON.stringify(c ?? null).matchAll(/"id":"([A-Z]{2,3}-\d{2})"/g)].map((m) => m[1]);
+  const paths = () => npcs.items.npcs.flatMap((n) => n.paths.map((p) => ({ n, p })));
+  const eventEffects = (p: NpcRow['paths'][number]) => p.effects.filter((e) => e.k === 'event').map((e) => (e as { id: string }).id);
+
+  it('has no event result in a path whose label says ถ้า or เมื่อ and names an event, and the event is in its cond or its cuts', () => {
+    const waiting = paths().filter(({ p }) => TRIGGER.test(p.text) && p.events.length);
+    // 51 labels hold the letters ถ้า/เมื่อ and an event; 6 of them are "เถ้า" (ash), which is no condition
+    expect(waiting).toHaveLength(45);
+    expect(paths().filter(({ p }) => /ถ้า|เมื่อ/.test(p.text) && p.events.length)).toHaveLength(51);
+    for (const { n, p } of waiting) {
+      const cutIds = n.cuts.filter((c) => c.from === p.key).flatMap((c) => idsIn(c.when));
+      const inCond = idsIn(p.cond);
+      // every event the path names is in cond or cuts, or stays as a plain reference next to a cond (a form named in brackets)
+      for (const id of p.events) expect(inCond.includes(id) || cutIds.includes(id) || p.cond !== null, `${n.id} ${p.key} ${id}`).toBe(true);
+      for (const id of eventEffects(p)) {
+        expect(inCond, `${n.id} ${p.key}: ${id} is a condition, not a result`).not.toContain(id);
+        expect(cutIds, `${n.id} ${p.key}: ${id} is a cut, not a result`).not.toContain(id);
+      }
+    }
+  });
+  it('keeps "ถ้า DR-01 ตัดก)" as a cut of AZ01-1 and not as a result of its path ค', () => {
+    const az = npcs.items.npcs.find((x) => x.id === 'AZ01-1')!;
+    const c = az.paths.find((p) => p.key === 'c')!;
+    expect(eventEffects(c)).toEqual([]);
+    expect(c.cond).toBeNull();
+    expect(az.cuts).toEqual([expect.objectContaining({ from: 'c', cut: 'a', when: { k: 'event', id: 'DR-01', happened: true } })]);
+  });
+  it('reads "เมื่อ X → EVENT" as the event the path waits for', () => {
+    const find = (id: string, key: string) => npcs.items.npcs.find((x) => x.id === id)!.paths.find((p) => p.key === key)!;
+    expect(find('KD10-2', 'a').cond).toEqual({ k: 'event', id: 'PL-03', happened: true });
+    expect(eventEffects(find('KD10-2', 'a'))).toEqual([]);
+    expect(find('NR12-1', 'a').cond).toEqual({ k: 'event', id: 'PO-02', happened: true });
+    expect(find('SH13-1', 'a').cond).toEqual({ k: 'event', id: 'DR-01', happened: true, phase: 'near' });
+    // a form named in brackets after the clause stays a plain reference; the event of the clause is the cond, once
+    const az09 = find('AZ09-1', 'a');
+    expect(az09.cond).toEqual({ k: 'event', id: 'DR-01', happened: true });
+    expect(eventEffects(az09)).toEqual(['SF-09']);
+    // "เถ้า" is ash: the result of MH01-1 ข stays a result
+    expect(eventEffects(find('MH01-1', 'b'))).toEqual(['HP-07']);
+    expect(find('MH01-1', 'b').cond).toBeNull();
+  });
+  it('keeps every event of a path in its events list', () => {
+    for (const { n, p } of paths()) for (const id of idsIn(p.cond)) expect(p.events, `${n.id} ${p.key}`).toContain(id);
+  });
+});
