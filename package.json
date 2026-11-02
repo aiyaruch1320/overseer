@@ -27,7 +27,9 @@
     "test:golden": "vitest run --dir tests/golden",
     "test:balance": "echo \"no balance tests yet\"",
     "gen": "tsx scripts/codegen/run-all.ts",
-    "gen:data:legacy": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts"
+    "gen:data:legacy": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts",
+    "life": "tsx scripts/tools/life.ts",
+    "play": "tsx scripts/tools/play.ts"
   },
   "dependencies": {
     "@preact/signals": "^1.3.4",
