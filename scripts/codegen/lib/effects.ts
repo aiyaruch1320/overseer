@@ -707,6 +707,11 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     (m) => {
       const nodes = m[2].match(new RegExp(NODE_OR_CV, 'g')) ?? [];
       const ch = m[3] ?? m[4];
+      // "เข้า cv.4" · "เปิดเส้นไป cv.2" lead into a convergence
+      if (m[1] && /^(เข้า|เปิดเส้นไป|เปิดเส้น|เปิด)$/.test(m[1]) && nodes.every((n) => n.startsWith('cv.')) && !ch) {
+        for (const n of nodes) push({ k: 'converge', to: n });
+        return;
+      }
       push({ k: 'ref', nodes, rel: m[1] ?? '', ...(ch ? { choice: THAI_KEYS[ch] } : {}) });
     },
   );
