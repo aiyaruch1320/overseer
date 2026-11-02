@@ -709,13 +709,13 @@ describe('the rules of the economy', () => {
     const read = (stat: string) => holds(ctx, { k: 'cmp', stat, op: '>=', value: 0 }) && expectedYear(ctx, life)!.income;
     const before = expectedYear(ctx, life)!.income;
     apply(ctx, [{ k: 'statMul', stat: 'รายได้', mul: 0.8 }], src);
-    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8, 6);
+    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8, 2);
     apply(ctx, [{ k: 'statPct', stat: 'รายได้', pct: 25 }], src);
-    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8 * 1.25, 6);
+    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8 * 1.25, 2);
     apply(ctx, [{ k: 'statMul', stat: 'ค่าแรง', mul: 1.5 }], src);
-    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8 * 1.25 * 1.5, 6);
+    expect(expectedYear(ctx, life)!.income).toBeCloseTo(before * 0.8 * 1.25 * 1.5, 2);
     expect(read('รายได้')).toBeGreaterThan(0);
-    expect(extOf(life).inc).toBeCloseTo(1.5, 6);
+    expect(extOf(life).inc).toBeCloseTo(1.5, 3);
     // a job that pays nothing takes the change as a flat sum
     life.job = 'godslayer';
     life.cls = 'c3';

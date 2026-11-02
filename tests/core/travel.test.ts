@@ -467,7 +467,7 @@ describe('the causes of a journey (§2)', () => {
   it('a city job takes a post abroad now and then (assumption of the code, the table has no cause for it)', () => {
     const { ctx, life } = born(39, { race: 'human', country: 'AL-01' }, { hAge: 30, job: 'teacher', gold: 100 });
     let trips = 0;
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 2000; i++) {
       travelExt(life).away = undefined;
       life.country = 'AL-01';
       cityYear(ctx, life, travelExt(life));

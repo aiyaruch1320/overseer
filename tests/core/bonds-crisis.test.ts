@@ -304,7 +304,8 @@ describe('the partner goes with a reason (H7)', () => {
         if (t.line !== 'คนรัก' || t.light) continue;
         lives++;
         if (t.state !== 'alive') {
-          const end = g.state.log.find((l) => l.sys === 'bonds' && l.kind === 'end' && l.id === t.id);
+          // the last ending of the tie: a friend who betrayed and came back as a lover has an earlier ending of its own, at level 0
+          const end = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'end' && l.id === t.id).at(-1);
           expect(end, `${t.name} ${t.state}`).toBeTruthy();
           expect(end!.level).toBe(1);
         }
