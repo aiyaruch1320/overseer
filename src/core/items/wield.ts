@@ -46,6 +46,8 @@ export interface Wielded {
   stances: Record<string, number>;
   /** Enemy codes and enemy-kind words the weapon drives off (`ไล่ X`: DC −2). */
   repel: { codes: string[]; words: string[] };
+  /** Situational bonuses (`ในน้ำ +4`, `บนหลังสัตว์ +2`): the subject as written, the number, and whether it is a percentage as a fraction. */
+  bonus: { subject: string; n: number; pct: boolean }[];
   /** Aptitudes the weapon serves as a tool for (+1 on the job roll). */
   tool: string[];
   /** Abilities the data keeps as prose (the director and the screens show them; combat may ignore them). */
@@ -120,6 +122,7 @@ export function describe(ctx: Ctx, life: LifeState, w: Weapon, ex: ItemsExt = ex
     dull,
     stances,
     repel,
+    bonus: ab.filter((a) => a.k === 'bonus' && a.subject).map((a) => ({ subject: a.subject as string, n: a.n ?? 0, pct: !!a.pct })),
     tool: ab.filter((a) => a.k === 'tool' && a.apt).map((a) => a.apt as string),
     text: ab.filter((a) => a.k === 'text' || a.k === 'bonus').map((a) => a.text),
   };
