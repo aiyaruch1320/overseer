@@ -313,6 +313,27 @@ describe('effects', () => {
     expect(extOf(life).wounds).toBe(1);
   });
 
+  it('a change of class writes the log entry `class` with the old class, the new one and what moved it; no change writes nothing', () => {
+    const { g, ctx, life } = born(15, { race: 'human', second: null });
+    life.cls = 'c2';
+    const classes = () => g.state.log.filter((e) => e.sys === 'character' && e.kind === 'class');
+    apply(ctx, [{ k: 'class', value: 2 }], { sys: 'story', id: 'hu.a3' });
+    expect(classes()).toEqual([]);
+    apply(ctx, [{ k: 'class', value: 4 }], { sys: 'story', id: 'hu.a3' });
+    expect(life.cls).toBe('c4');
+    expect(classes().map((e) => e.data)).toEqual([{ from: 'c2', to: 'c4', cause: 'hu.a3' }]);
+    expect(classes()[0].level).toBe(1);
+    // through the number (`ชั้น −1`), the cause is the node the story is applying
+    (life.ext.story as unknown) = { cur: { id: 'pv.a2', choice: 'b' } };
+    apply(ctx, [{ k: 'stat', stat: 'ชั้น', delta: -1 }], src);
+    expect(life.cls).toBe('c3');
+    expect(classes().map((e) => e.data).at(-1)).toEqual({ from: 'c4', to: 'c3', cause: 'pv.a2' });
+    // the class stays between 1 and 5: a rise past it writes nothing
+    life.cls = 'c5';
+    apply(ctx, [{ k: 'stat', stat: 'class', delta: 2 }], src);
+    expect(classes().length).toBe(2);
+  });
+
   it('a sign changes the draw weights stored for later: comet favours the fate tags ×3', () => {
     const { life } = born(14, { race: 'human', second: null, sign: 'comet' });
     expect(extOf(life).sign).toBe('comet');

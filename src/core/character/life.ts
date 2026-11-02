@@ -1,6 +1,7 @@
 // Operations on a living character: the numbers it carries, what it has, tags, and giving or taking away traits,
 // aptitudes, skills, blessings, curses and flags. Everything here is plain functions over the state (code-plan §2).
 import type { Ctx } from '../game';
+import { write } from '../log';
 import type { Axis, Skill, StatKey } from '../data/types-character';
 import type { Effect, IdKind, LifeState } from '../types';
 import { AXES, clamp, classId, classNum, extOf, idx, STAT_KEYS, type GiftLike } from './data';
@@ -48,8 +49,25 @@ export function readCanon(ctx: Ctx, life: LifeState, key: string): number {
   return 0;
 }
 
-/** Changes a canonical number by a delta (rounded to a whole number); returns the change that happened. */
-export function addCanon(ctx: Ctx, life: LifeState, key: string, delta: number): void {
+/** What moved the life when a number changes without a source in hand: the story node being applied (`life.ext.story.cur`), else the year. */
+function causeOf(life: LifeState): string {
+  return (life.ext.story as { cur?: { id?: string } } | undefined)?.cur?.id ?? 'year';
+}
+
+/**
+ * Sets the social class (economy/03-classes.md) and writes the log entry `class` with the old class, the new one and the cause
+ * (M1 review T9: a change of class has a line of its own). Does nothing, and writes nothing, when the class stays.
+ */
+export function setClass(ctx: Ctx, life: LifeState, to: number, cause: string): void {
+  const from = life.cls;
+  const next = classId(to);
+  if (next === from) return;
+  life.cls = next;
+  write(ctx.state, { sys: 'character', kind: 'class', data: { from, to: next, cause }, level: 1 });
+}
+
+/** Changes a canonical number by a delta (rounded to a whole number); `cause` names what moved a class (a node id, `year`). */
+export function addCanon(ctx: Ctx, life: LifeState, key: string, delta: number, cause?: string): void {
   const e = extOf(life);
   const d = Math.round(delta);
   if (isStatKey(key)) life.stats[key] = Math.max(1, life.stats[key] + d);
@@ -60,7 +78,7 @@ export function addCanon(ctx: Ctx, life: LifeState, key: string, delta: number):
       case 'fame': e.fame += d; break;
       case 'godFaith': life.godFaith = clamp(life.godFaith + d, -100, 100); break;
       case 'heart': life.heart = Math.max(0, life.heart + d); break;
-      case 'class': life.cls = classId(classNum(life) + d); break;
+      case 'class': setClass(ctx, life, classNum(life) + d, cause ?? causeOf(life)); break;
       case 'hp': e.hpBonus += d; break;
       case 'allyLevel': e.allyLevel = Math.max(0, e.allyLevel + d); break;
       case 'jobApt': if (d > 0) raiseJobAptitude(ctx, life, d); break;
