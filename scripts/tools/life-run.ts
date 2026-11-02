@@ -27,7 +27,7 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   out.push(`== ชีวิตหนึ่ง · เมล็ด ${opts.seed}${opts.policy ? ` · นโยบายพระเจ้า ${opts.policy}` : ''} ==`);
   out.push(`ระบบที่ทำงาน: ${toolSystems().systems.map((x) => x.name).join(' ')}`);
   for (const n of s.notes) out.push(`หมายเหตุ: ${n}`);
-  out.push(`โลกเดินมาถึง ศ.ม. ${calendarYear(life.birthYear).toLocaleString('en-US')} (${worldMark} รายการบันทึกก่อนเกิด) แล้วตัวละครเกิด`);
+  out.push(`โลกเดินมาถึง ศ.ม. ${calendarYear(life.birthYear).toLocaleString('en-US')} แล้วตัวละครเกิด`);
   out.push('');
   out.push('-- บันทึก --');
   const born = st.log.filter((e) => e.n >= worldMark);

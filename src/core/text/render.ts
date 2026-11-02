@@ -64,18 +64,26 @@ export function nameOfId(data: GameData, id: string | undefined): string {
 
 // ---------- pure choice among variants ----------
 
-function hash(n: number, salt: number): number {
-  let h = (n ^ (salt * 0x9e3779b1)) >>> 0;
+function hash(text: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
   h = Math.imul(h ^ (h >>> 15), 0x85ebca6b);
-  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
-  return (h ^ (h >>> 16)) >>> 0;
+  return (h ^ (h >>> 13)) >>> 0;
 }
 
-function templateOf(data: GameData, file: string, family: string, keys: Record<string, string>, n: number): string | undefined {
+/** What picks the variant of a line: the content of the entry, never its running number (that shifts when an entry before it is not written). */
+function variantOf(e: LogEntry): string {
+  return `${e.sys}|${e.kind}|${e.id ?? ''}|${e.worldYear}|${JSON.stringify(e.data)}`;
+}
+
+function templateOf(data: GameData, file: string, family: string, keys: Record<string, string>, variant: string): string | undefined {
   const t = items<TemplatesData>(data, file);
   if (!t) return undefined;
   const list = t.templates.filter((x) => x.family === family && Object.entries(keys).every(([k, v]) => x.keys[k] === v));
-  return list.length ? list[hash(n, 7) % list.length].text : undefined;
+  return list.length ? list[hash(variant) % list.length].text : undefined;
 }
 
 function sub(text: string, v: Record<string, string | number | undefined>): string | undefined {
@@ -133,7 +141,7 @@ export function describe(data: GameData, e: LogEntry): string | null {
   }
 
   if (e.kind === 'named' && e.sys === 'text') {
-    const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, e.n);
+    const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e));
     const line = t && sub(t, { name: s(d.name), race: s(d.race), home: s(d.home), class_birth: s(d.cls), year: s(d.year) });
     if (line) return line;
     return `${s(d.name)} เกิดเป็น${s(d.race)}ที่${s(d.home)}`;
