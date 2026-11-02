@@ -147,7 +147,8 @@ describe('travel balance', () => {
     }
     console.log(JSON.stringify({ opened, walked }));
     for (const l of ['sc', 'ml', 'ex', 'xc']) expect(opened[l], l).toBeGreaterThan(10);
-    for (const l of Object.keys(opened)) expect(JOURNEY, l).toContain(l);
+    // the cause "หนี้หรือสัญญา" opens "tr.a1 หรือ ml.a1" (01-travel-rules.md): tr is a line travel may open too
+    for (const l of Object.keys(opened)) expect([...JOURNEY, 'tr'], l).toContain(l);
     for (const l of ['sc', 'ml', 'ex', 'xc']) expect(pct(walked[l] ?? 0, opened[l]), `${l} walked`).toBeGreaterThan(0.5);
   });
 
