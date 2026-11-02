@@ -4,10 +4,12 @@
 
 ## สถานะ
 ขั้นปัจจุบัน: M3 ระบบลึก
-งานที่กำลังทำ: สี่ agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+งานที่กำลังทำ: ห้า agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
   - economy P0–P2 · a7eed4f9f12e4b8f4
   - combat (แทน story/battle-stub) · aaabae7c4e7ff368f
-  - npc ครบ (NT ผลส่งต่อ อัตราการพบ ป่วย อาฆาต จุดศึก) · a348d38caed4f71cb
+  - npc ครบ · a348d38caed4f71cb
+  - bonds + bondage (แทน story/stubs) · abab3198795a4781f
+  - travel + items · ac64c35f01e427c3b
 งานถัดไป:
   1. รวมทีละสาขา เติม systems.ts (economy combat) ต่อ combat กับ npc onClash · หลังตัวสร้างรวม ส่ง bonds+bondage และ travel+items
   2. วัดโหนดต่อชีวิตรวมทุกระบบ (ฐาน M2 27.7) · ชีวิตทองคำ · รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก)
