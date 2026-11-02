@@ -27,6 +27,11 @@ export interface ClashOpts extends Partial<FightOpts> {
   talkKey?: boolean;
   /** A duel to the death was accepted (a duel with a yield rule is otherwise not lethal for the hero). */
   toDeath?: boolean;
+  /**
+   * false: the effects of the outcome row are not applied here. The NPC system asks for this: it writes the result back into the lines of the NPC
+   * itself (npc `applyClashOutcome`, which applies the row). Default true.
+   */
+  apply?: boolean;
 }
 
 export interface ClashResult {
@@ -37,6 +42,8 @@ export interface ClashResult {
   /** The kind of outcome row applied (`win_kill` `win_spare` `talk` `draw` `lose`), if any. */
   kind?: string;
   outcome?: ClashOutcome;
+  /** The place of that outcome in the clash row (`outcomes[index]`), for a caller that writes the result back itself. */
+  index?: number;
   /** The NPC was slain: the NPC system marks him dead. */
   killed: boolean;
   spared: boolean;
@@ -97,8 +104,8 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
   const spareIntent = special && o.toDeath ? false : hasSpare && (!hasKill || rng.chance(Math.max(0, Math.min(1, SPARE.base + (kindAxis / 100) * SPARE.perKind))));
   const duel = DUEL_STYLE.test(c.style) && !o.toDeath;
   const ambush: FightOpts['ambush'] = o.ambush ?? (o.knows ? 'hero' : opener === 'X' || opener === 'S' ? 'foe' : undefined);
-  const { opener: _opener, knows: _knows, talkKey: _key, toDeath: _death, ...rest } = o;
-  void [_opener, _knows, _key, _death];
+  const { opener: _opener, knows: _knows, talkKey: _key, toDeath: _death, apply: _apply, ...rest } = o;
+  void [_opener, _knows, _key, _death, _apply];
   const opts: FightOpts = {
     ...rest,
     kind: duel ? 'duel' : 'clash',
@@ -136,7 +143,7 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
   }
   const row = kind ? (outcomeOf(c, kind) ?? (kind === 'win_kill' ? killRow(c) : undefined)) : undefined;
   let applied = 0;
-  if (row) {
+  if (row && o.apply !== false) {
     for (const e of row.effects) {
       apply(ctx, [e], { sys: 'combat', id: c.id, stream: STREAM.clash });
       applied++;
@@ -151,5 +158,5 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
     data: { npc: c.npc, opener, result: f.word, end: f.result, outcome: row?.outcome ?? null, kind: kind ?? null, text: row?.text ?? null, killed: kind === 'win_kill', beats: f.beats },
     level: 2,
   });
-  return { clash: c.id, npc: c.npc, result: f.result, kind, outcome: row, killed: kind === 'win_kill', spared, fight: f, applied };
+  return { clash: c.id, npc: c.npc, result: f.result, kind, outcome: row, index: row ? c.outcomes.indexOf(row) : undefined, killed: kind === 'win_kill', spared, fight: f, applied };
 }

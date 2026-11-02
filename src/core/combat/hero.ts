@@ -1,8 +1,10 @@
 // The main character as a fighter: hit points, the stances open to him, what each rolls with (01-core.md §3 and §4).
+import { partyEffects } from '../bonds';
 import { extOf as charExt, idx, tagsOf } from '../character';
 import type { Ctx } from '../game';
-import type { LifeState } from '../types';
-import { indexOf, type WeaponLite } from './data';
+import { armorOf, gearStats, wielded, type Armor, type Wielded } from '../items';
+import type { LifeState, StatBlock } from '../types';
+import { indexOf } from './data';
 import { ATTACK_TAGS } from './matrix';
 import { extOf } from './state';
 import {
@@ -24,6 +26,15 @@ export interface Companion {
   heal: boolean;
 }
 
+/** The weapon in the hand as the stances read it: the first aptitude it trains, its attack tags, and the weapon of the items system behind it. */
+export interface Held {
+  id: string;
+  apt: string;
+  tags: string[];
+  power: number;
+  w: Wielded;
+}
+
 export interface Hero {
   life: LifeState;
   tags: Set<string>;
@@ -31,12 +42,24 @@ export interface Hero {
   gift: string[];
   maxHp: number;
   hp: number;
-  /** Item weapon for melee and for ranged, or the implied one. */
-  melee?: WeaponLite;
-  ranged?: WeaponLite;
+  /** The weapon in the hand (items `wielded`): in the melee stance or, when it shoots, in the ranged one. */
+  melee?: Held;
+  ranged?: Held;
+  /** The staff, wand or book in the hand: it adds its power to the magic stance only. */
+  focus?: Held;
+  /** The weapon of the items system whatever its kind (an article near at hand when the bag holds none). */
+  weapon?: Wielded;
+  /** The armour worn (items `armorOf`): the damage factor and whether it is a shield. */
+  armor: Armor;
   shield: boolean;
-  /** Power added to the roll of the fight stances: the best weapon's, or 1 for a hero whose job is the sword (assumption until the items system gives weapons). */
+  /** What the gear adds to the six stats while worn (items `gearStats`). */
+  gear: Partial<StatBlock>;
+  /** What the party of the character gives to a fight (bonds `partyEffects`): the roll as a share, the damage cut, the people. */
+  party: { rollPct: number; cutPct: number; members: number };
+  /** Power added to the roll of the fight stances: the weapon in the hand, or 1 for a hero whose job is the sword (the stand-in of a bag with no weapon). */
   power: number;
+  /** The power of the focus for the magic stance. */
+  magicPower: number;
   companion: Companion;
   seer: boolean;
   /** Level of an aptitude, 0 when none. */
@@ -90,24 +113,21 @@ export const thickMul = (c: Companion): number => THICK_HIDE[Math.min(3, c.thick
 export const shareOf = (c: Companion): number => LIFE_SHARE[Math.min(3, c.lifeShare)] ?? 0;
 
 export function buildHero(ctx: Ctx, life: LifeState): Hero {
-  const ix = indexOf(ctx);
   const tags = tagsOf(ctx, life);
-  let melee: WeaponLite | undefined;
-  let ranged: WeaponLite | undefined;
-  let shield = false;
-  for (const id of life.items) {
-    const w = ix.weapons.get(id);
-    if (!w) continue;
-    if (w.apt === 'shield') shield = true;
-    else if (RANGED_APTS.includes(w.apt) || w.tags.includes('ranged')) {
-      if (!ranged || w.power > ranged.power) ranged = w;
-    } else if (MELEE_APTS.includes(w.apt) || w.tags.some((t) => ['blade', 'blunt', 'pierce'].includes(t))) {
-      if (!melee || w.power > melee.power) melee = w;
-    }
-  }
-  const heldPower = Math.max(melee?.power ?? 0, ranged?.power ?? 0);
-  const power = heldPower || (life.job && SOLDIER_JOBS.has(life.job) ? 1 : 0);
+  // one weapon is in the hand (items `wielded`); a bow or a sling shoots, every other weapon strikes
+  const w = wielded(ctx);
+  const apts = w.apt.split(/\s+/);
+  const first = apts.find((a) => (life.aptitudes[a] ?? 0) > 0) ?? apts[0];
+  const held: Held = { id: w.id, apt: first, tags: w.tags.map((t) => t.replace(/^#/, '')), power: w.power, w };
+  // a staff, a wand or a book (the aptitude `magic`) is the focus of the magic stance, not a blade: it strikes as a fist does
+  const focus = first === 'magic' ? held : undefined;
+  const shoots = !focus && (RANGED_APTS.includes(first) || held.tags.includes('ranged'));
+  const melee = shoots || focus ? undefined : held;
+  const ranged = shoots ? held : undefined;
+  const armor = armorOf(ctx);
+  const power = melee || ranged ? w.power || (life.job && SOLDIER_JOBS.has(life.job) ? 1 : 0) : life.job && SOLDIER_JOBS.has(life.job) ? 1 : 0;
   const gift = [...tags].filter((t) => ATTACK_TAGS.has(t) && t !== 'ranged');
+  const party = partyEffects(ctx);
   return {
     life,
     tags,
@@ -116,13 +136,22 @@ export function buildHero(ctx: Ctx, life: LifeState): Hero {
     hp: hpOf(ctx, life),
     melee,
     ranged,
-    shield,
+    focus,
+    weapon: w,
+    armor,
+    shield: armor.shield || first === 'shield',
+    gear: gearStats(ctx),
+    party: { rollPct: party.rollPct, cutPct: party.cutPct, members: party.members.length },
     power,
+    magicPower: focus ? focus.power : 0,
     companion: companionOf(ctx, life),
     seer: SEER_TAGS.some((t) => tags.has(t)) || SEER_SKILLS.some((s) => life.skills.includes(s)),
     apt: (id) => life.aptitudes[id] ?? 0,
   };
 }
+
+/** A stat of the hero with the gear on (the six stats of `StatBlock`). */
+export const statOf = (hero: Hero, key: keyof StatBlock): number => hero.life.stats[key] + (hero.gear[key] ?? 0);
 
 /** Aptitudes of the magic group the hero has, best first (the order of the data breaks ties). */
 export function magicApts(ctx: Ctx, hero: Hero): { id: string; level: number; stat: string; tags: string[] }[] {

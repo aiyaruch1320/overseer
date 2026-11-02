@@ -3,14 +3,20 @@ import { idx } from '../character';
 import type { Ctx } from '../game';
 import type { Rng } from '../rng';
 import { weakStanceMul } from '../god/acts';
+import { engravedBonus } from '../items';
 import { bestHit, ELEMENT_TAGS, hurts, markOf, SPECIAL_TAGS, type Hit } from './matrix';
 import { indexOf } from './data';
-import { bestApt, calmable, magicApts, MELEE, RANGED, type Hero } from './hero';
+import { bestApt, calmable, magicApts, MELEE, RANGED, statOf, type Hero } from './hero';
 import {
   AXIS_TILT, CHOICE_SLOPE, DRAGON_TONGUE, FLEE_EASE, LOW_HP, MUL, PRAY, REASON, STANCE_WEIGHT, TALK_EASE, WEAK_TAG,
 } from './tuning';
 import { extOf } from './state';
 import type { FightOpts, Foe } from './types';
+
+/** The words of `ไล่ X` that name a kind of foe (items README §3). */
+const REPEL_WORD: Record<string, string> = { ผู้ตาย: 'undead', วิญญาณ: 'spirit', สิ่งจากหมอก: 'fog', ปีศาจ: 'demon', สัตว์ป่า: 'beast' };
+/** The name of a stance in `ท่าที X +N` of a weapon (items README §3). */
+const STANCE_NAME: Record<string, string> = { melee: 'ปะทะประชิด', ranged: 'ยิงระยะไกล', magic: 'เวท', guard: 'ตั้งรับ', negotiate: 'เจรจา', calm_beast: 'สงบสัตว์', evade: 'หลอกล่อ', pray: 'สวดภาวนา', flee: 'หนี' };
 
 export const FIGHT_STANCES = ['melee', 'ranged', 'magic', 'guard'] as const;
 /** Stances that wear down the foe's wounds. */
@@ -57,6 +63,9 @@ export function dcOf(scene: Scene): number {
   const env = opts.env ?? [];
   if (env.includes('holy_ground') && foe.kinds.some((k) => k === 'undead' || k === 'demon')) dc -= 2;
   if (env.includes('ash_winter') && foe.attack.includes('fire')) dc -= 2;
+  // a weapon that drives off a kind (`ไล่ X`, items README §3): the foe is easier to come near, whatever stance the hero takes
+  const rep = scene.hero.weapon?.repel;
+  if (rep && (rep.codes.some((c) => foe.ids.includes(c)) || rep.words.some((w) => foe.kinds.includes(REPEL_WORD[w] ?? w)))) dc -= 2;
   void ctx;
   return Math.max(2, dc);
 }
@@ -83,13 +92,15 @@ interface Draft {
   weapon: boolean;
   dcMod: number;
   swarmArea?: boolean;
+  /** The weapon in use trains an aptitude the hero does not have (−1, items README §2). */
+  unskilled?: boolean;
 }
 
 function drafts(s: Scene): Draft[] {
   const { ctx, hero, foe, opts } = s;
   const life = hero.life;
   const out: Draft[] = [];
-  const stats = life.stats;
+  const stats: Record<string, number> = { pow: statOf(hero, 'pow'), mag: statOf(hero, 'mag'), spd: statOf(hero, 'spd'), luk: statOf(hero, 'luk'), int: statOf(hero, 'int'), vit: statOf(hero, 'vit') };
 
   // ---- melee: always (a bare fist at worst) ----
   {
@@ -99,7 +110,7 @@ function drafts(s: Scene): Draft[] {
     const tags = [...(w?.tags ?? []), ...(aptId ? aptTags(ctx, aptId) : []), ...hero.gift, ...hero.companion.tags];
     if (!tags.some((t) => ['blade', 'blunt', 'pierce'].includes(t))) tags.push('blunt');
     const stat = aptId ? aptStat(ctx, aptId, 'pow') : 'pow';
-    out.push({ id: 'melee', usable: true, stat: mod(stats[stat === 'pow' || stat === 'spd' ? stat : 'pow']), skill: skillBonus(ctx, apt?.level ?? 0), tags, kind: 'wound', fight: true, weapon: true, dcMod: 0 });
+    out.push({ id: 'melee', usable: true, stat: mod(stats[stat === 'pow' || stat === 'spd' ? stat : 'pow']), skill: skillBonus(ctx, apt?.level ?? 0), tags, kind: 'wound', fight: true, weapon: true, dcMod: 0, unskilled: !!w?.w.unskilled });
   }
   // ---- ranged ----
   {
@@ -111,7 +122,7 @@ function drafts(s: Scene): Draft[] {
       if (aptId === 'bow') tags.push('pierce');
       if (aptId === 'sling') tags.push('blunt');
       const stat = aptStat(ctx, aptId, 'spd');
-      out.push({ id: 'ranged', usable: true, stat: mod(stats[stat === 'luk' ? 'luk' : 'spd']), skill: skillBonus(ctx, apt?.level ?? 0), tags, kind: 'wound', fight: true, weapon: true, dcMod: 0 });
+      out.push({ id: 'ranged', usable: true, stat: mod(stats[stat === 'luk' ? 'luk' : 'spd']), skill: skillBonus(ctx, apt?.level ?? 0), tags, kind: 'wound', fight: true, weapon: true, dcMod: 0, unskilled: !!w?.w.unskilled });
     }
   }
   // ---- magic: the aptitude that suits the foe when the hero knows it, the strongest otherwise ----
@@ -201,13 +212,19 @@ export function options(s: Scene): Option[] {
       if (hero.tags.has('diplomat') || hero.tags.has('silver_tongue')) put('diplomat', 2);
     }
     if (d.fight) {
-      if (d.weapon) put('weapon', hero.power);
+      if (d.weapon) put('weapon', d.id === 'magic' ? hero.magicPower : hero.power);
+      if (d.unskilled) put('unskilled', -1);
+      if (d.kind === 'wound') for (const id of foe.ids) { const n = engravedBonus(ctx, id); if (n) { put('engraved', n); break; } }
       if (hero.companion.assist) put('companion', hero.companion.assist);
       const allies = Math.min(roll.allyCap, (opts.allies ?? 0) * roll.allyPerPerson);
       put('allies', allies);
       if (hero.tags.has('dull')) put('dull', roll.dull);
       if (hpShare < roll.lowHp.below) put('hurt', hero.tags.has('berserk') ? 2 : roll.lowHp.bonus);
     }
+    // the stance bonuses and the fear the weapon in the hand carries (`ท่าที X +N`, `ข่ม`)
+    const named = hero.weapon?.stances[STANCE_NAME[d.id]];
+    if (named) put('weapon-stance', named);
+    if (d.id === 'negotiate' && hero.weapon?.intimidate && (foe.tier === 'ลูกกระจ๊อก' || foe.tier === 'ปกติ')) put('intimidate', 2);
     if (hero.tags.has('hero_luck')) put('luck', roll.heroLuck);
     put('first', s.first);
     put('blessed', s.blessed);
