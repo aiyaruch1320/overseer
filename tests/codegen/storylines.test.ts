@@ -404,7 +404,7 @@ describe('H1: a condition stays with its result', () => {
     expect(ifs(choiceOf('gi.a7', 'c').effects)[0]).toMatchObject({ then: [{ k: 'grant', id: 'nb_mark_gromdhar' }] });
     expect(choiceOf('gi.a7', 'c').effects.some((e) => e.k === 'grant')).toBe(false);
     // 09-dragonkin.md:49 dk.e2 ค: the x3 only with the dragon mark
-    expect(choiceOf('dk.e2', 'c').effects).toContainEqual({ k: 'entryMod', choice: 'a', cond: { k: 'text', text: 'มีตรามังกร' }, mul: 3 });
+    expect(choiceOf('dk.e2', 'c').effects).toContainEqual({ k: 'entryMod', choice: 'a', cond: { k: 'has', kind: 'blessing', id: 'nb_mark_*' }, mul: 3 });
     // 28-allies.md:41 kn.t1 ค
     expect(ifs(choiceOf('kn.t1', 'c').effects)[0]).toMatchObject({ then: [{ k: 'ref', nodes: ['bd.b1'] }] });
     // 22-halfblood.md:59 hb.t2 ข: the infamy only with the hidden-blood flag

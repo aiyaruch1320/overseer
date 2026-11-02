@@ -1,5 +1,5 @@
 {
- "version": "482d7504344f",
+ "version": "f503a94f33f0",
  "sources": [
   "docs/lore/storylines/00-convergence.md"
  ],
@@ -125,18 +125,12 @@
         "id": "SF-04"
        },
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "ขับไล่"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "WR-22",
-          "open": true
-         }
-        ]
+        "k": "event",
+        "id": "SF-04"
+       },
+       {
+        "k": "event",
+        "id": "WR-22"
        }
       ],
       "mods": [
@@ -641,22 +635,13 @@
       "id": "MK16-4"
      },
      {
-      "k": "if",
-      "cond": {
-       "k": "text",
-       "text": "ชนะศึกระดับหัวหน้าขึ้นไป"
-      },
-      "then": [
-       {
-        "k": "stat",
-        "stat": "ฝั่งที่ตัวละครอยู่",
-        "delta": 5
-       }
-      ]
+      "k": "stat",
+      "stat": "ความได้เปรียบของฝั่งที่ตัวละครอยู่",
+      "delta": 5
      }
     ],
     "titleEvents": [],
-    "notesText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะศึกระดับหัวหน้าขึ้นไป",
+    "notesText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ความได้เปรียบของฝั่งที่ตัวละครอยู่ +5 ต่อการชนะการรบระดับหัวหน้าขึ้นไป",
     "src": "docs/lore/storylines/00-convergence.md:68",
     "name": "สงครามเก้าทวีป",
     "openRaw": "WR-14",
@@ -684,7 +669,7 @@
     ],
     "intro": "สงครามที่ทุกทวีปเข้าร่วม ตัวละครเข้าศึกใหญ่แบบมวลชน ([../../systems/combat/04-encounters.md](../../systems/combat/04-encounters.md)) บทบาทเลือกจากอาชีพ",
     "byRace": "",
-    "battleText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะศึกระดับหัวหน้าขึ้นไป",
+    "battleText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ความได้เปรียบของฝั่งที่ตัวละครอยู่ +5 ต่อการชนะการรบระดับหัวหน้าขึ้นไป",
     "npcs": [
      "AL08-2",
      "MK16-4"
@@ -731,8 +716,9 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "หมอกกินทวีปแล้ว"
+         "k": "event",
+         "id": "FG-11",
+         "happened": true
         },
         "then": [
          {
@@ -766,18 +752,9 @@
        "k": "or",
        "of": [
         {
-         "k": "and",
-         "of": [
-          {
-           "k": "country",
-           "ids": [
-            "AL-11"
-           ]
-          },
-          {
-           "k": "text",
-           "text": "ความรู้จาก"
-          }
+         "k": "country",
+         "ids": [
+          "AL-11"
          ]
         },
         {
@@ -846,18 +823,12 @@
       ]
      },
      {
-      "k": "if",
-      "cond": {
-       "k": "text",
-       "text": "เลือก ก ในรอบที่รอยแยกขยาย"
-      },
-      "then": [
-       {
-        "k": "battle",
-        "enemies": [
-         "rift_speaker"
-        ]
-       }
+      "k": "battleFor",
+      "choices": [
+       "a"
+      ],
+      "enemies": [
+       "rift_speaker"
       ]
      },
      {
@@ -888,7 +859,7 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` เมื่อเลือก ก ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
+    "notesText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` (ทาง ก) ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
     "src": "docs/lore/storylines/00-convergence.md:82",
     "name": "ประตูเมืองปฐม",
     "openRaw": "FG-01 (เกิดแล้วตั้งแต่ต้นเรื่อง ศ.ม. 10,388) · FG-10 FG-12 FG-14",
@@ -923,7 +894,7 @@
     ],
     "intro": "ภารกิจเมฆา (FG-01) เปิดรอยแยกไว้ตั้งแต่ก่อนต้นเรื่อง (ศ.ม. 10,388) ผู้เฝ้าประตูที่ NB-08 ยังพยายามปิด ตัวละครที่มาถึงประตูต้องเลือกว่าจะช่วยปิด ฟังสิ่งที่อยู่ข้างใน หรือขโมยกุญแจ",
     "byRace": "",
-    "battleText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` เมื่อเลือก ก ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
+    "battleText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` (ทาง ก) ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
     "npcs": [
      "NB08-1"
     ],
@@ -1085,18 +1056,9 @@
        {
         "k": "if",
         "cond": {
-         "k": "and",
-         "of": [
-          {
-           "k": "event",
-           "id": "WR-13",
-           "happened": true
-          },
-          {
-           "k": "text",
-           "text": "ค) แพ้"
-          }
-         ]
+         "k": "event",
+         "id": "WR-13",
+         "happened": true
         },
         "then": [
          {
@@ -1116,7 +1078,7 @@
       "mods": [
        {
         "cond": {
-         "k": "and",
+         "k": "or",
          "of": [
           {
            "k": "has",
@@ -1124,8 +1086,10 @@
            "id": "devout"
           },
           {
-           "k": "text",
-           "text": "ศาสนาแสง"
+           "k": "faith",
+           "ids": [
+            "faith.02"
+           ]
           }
          ]
         },
@@ -1389,10 +1353,6 @@
            "k": "npc",
            "id": "AL16-1",
            "alive": true
-          },
-          {
-           "k": "text",
-           "text": "มอบต้นกล้า"
           }
          ]
         },
@@ -1403,6 +1363,10 @@
           "id": "sapling_guardian"
          }
         ]
+       },
+       {
+        "k": "npc",
+        "id": "AL16-1"
        }
       ],
       "mods": [
@@ -1451,27 +1415,12 @@
       ]
      },
      {
-      "k": "if",
-      "cond": {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "BIO-02",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "ตัวละครพยายามหยุด"
-        }
-       ]
-      },
-      "then": [
-       {
-        "k": "npc",
-        "id": "SV14-1"
-       }
-      ]
+      "k": "npc",
+      "id": "SV14-1"
+     },
+     {
+      "k": "event",
+      "id": "BIO-02"
      },
      {
       "k": "npc",
@@ -1487,7 +1436,7 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก ถ้าตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
+    "notesText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก หากตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
     "src": "docs/lore/storylines/00-convergence.md:110",
     "name": "น้ำเลี้ยงสุดท้าย",
     "openRaw": "BIO-01 · WR-04 · PO-04 หรือ WT-03",
@@ -1511,7 +1460,7 @@
     "extraEntries": [],
     "intro": "ต้นไม้โลกป่วย (BIO-01) น้ำเลี้ยงเหลือน้อย สภาปันส่วน (SV-15) ต้องแบ่งให้ใคร (PO-04) หรือหลังต้นไม้ตาย (WT-03)",
     "byRace": "",
-    "battleText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก ถ้าตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
+    "battleText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก หากตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
     "npcs": [
      "SV14-1",
      "SV15-1",
@@ -1594,18 +1543,9 @@
        {
         "k": "if",
         "cond": {
-         "k": "and",
-         "of": [
-          {
-           "k": "npc",
-           "id": "NR07-1",
-           "alive": true
-          },
-          {
-           "k": "text",
-           "text": "รับอาสา"
-          }
-         ]
+         "k": "npc",
+         "id": "NR07-1",
+         "alive": true
         },
         "then": [
          {
@@ -1614,6 +1554,10 @@
           "id": "naga_egg_warden"
          }
         ]
+       },
+       {
+        "k": "npc",
+        "id": "NR07-1"
        },
        {
         "k": "battle",
@@ -1714,7 +1658,7 @@
       "mods": [
        {
         "cond": {
-         "k": "and",
+         "k": "or",
          "of": [
           {
            "k": "has",
@@ -1722,8 +1666,9 @@
            "id": "greedy"
           },
           {
-           "k": "text",
-           "text": "โจรสลัด"
+           "k": "has",
+           "kind": "job",
+           "id": "pirate"
           }
          ]
         },
@@ -2225,8 +2170,9 @@
      {
       "k": "if",
       "cond": {
-       "k": "text",
-       "text": "เขาคลั่ง"
+       "k": "event",
+       "id": "MC-02",
+       "happened": true
       },
       "then": [
        {
@@ -2258,7 +2204,7 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้าเขาคลั่ง · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
+    "notesText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้า MC-02 เกิด · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
     "src": "docs/lore/storylines/00-convergence.md:146",
     "name": "คืนที่เครื่องลุก",
     "openRaw": "MC-03 หรือ MC-04 (RL-01 ถึง RL-03)",
@@ -2299,7 +2245,7 @@
     ],
     "intro": "หุ่นวิญญาณมากพอจนลุกฮือ (MC-03) หรือเตาปฏิกรณ์ระเบิด (MC-04) และหุ่นรับช่วงงานในซาก (RL-03)",
     "byRace": "",
-    "battleText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้าเขาคลั่ง · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
+    "battleText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้า MC-02 เกิด · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
     "npcs": [
      "MK02-1",
      "MK03-1",
@@ -2451,8 +2397,9 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ผู้กล้าและจอมมารยอมคุย"
+         "k": "event",
+         "id": "DM-06",
+         "happened": true
         },
         "then": [
          {
@@ -2489,8 +2436,9 @@
      {
       "k": "if",
       "cond": {
-       "k": "text",
-       "text": "มงกุฎกระดูกยังไร้ผู้สวม"
+       "k": "event",
+       "id": "DM-01",
+       "happened": false
       },
       "then": [
        {
@@ -2523,7 +2471,7 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้ามงกุฎกระดูกยังไร้ผู้สวม · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
+    "notesText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้า DM-01 ไม่เกิด · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
     "src": "docs/lore/storylines/00-convergence.md:160",
     "name": "นาข้าวเถ้า",
     "openRaw": "DM-06 หรือ DM-11 → HP-07",
@@ -2551,7 +2499,7 @@
     ],
     "intro": "ออร์คสันติที่วีซาเฮเวน (MH-06) ปลูกข้าวในดินเถ้า ถ้าสำเร็จ ความหิวของมอร์เฮเวนลด และเกิดสนธิสัญญาอาหาร (HP-07)",
     "byRace": "",
-    "battleText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้ามงกุฎกระดูกยังไร้ผู้สวม · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
+    "battleText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้า DM-01 ไม่เกิด · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
     "npcs": [
      "MH06-1",
      "MH06-2",
@@ -2616,18 +2564,9 @@
       "label": "หาทางชดเชยความแค้นหิน",
       "effects": [
        {
-        "k": "if",
-        "cond": {
-         "k": "text",
-         "text": "เผ่าปีกส่งศิลาลอย"
-        },
-        "then": [
-         {
-          "k": "event",
-          "id": "HP-03",
-          "open": true
-         }
-        ]
+        "k": "event",
+        "id": "HP-03",
+        "open": true
        },
        {
         "k": "ref",
@@ -2869,7 +2808,7 @@
       "mods": [
        {
         "cond": {
-         "k": "and",
+         "k": "or",
          "of": [
           {
            "k": "has",
@@ -2877,8 +2816,10 @@
            "id": "greedy"
           },
           {
-           "k": "text",
-           "text": "ออร์คทราย"
+           "k": "country",
+           "ids": [
+            "SH-11"
+           ]
           }
          ]
         },
@@ -2940,17 +2881,8 @@
       ]
      },
      {
-      "k": "if",
-      "cond": {
-       "k": "text",
-       "text": "ตัวละครปล้นหลุมพระศพ"
-      },
-      "then": [
-       {
-        "k": "npc",
-        "id": "SH02-1"
-       }
-      ]
+      "k": "npc",
+      "id": "SH02-1"
      },
      {
       "k": "npc",
@@ -2966,7 +2898,7 @@
      }
     ],
     "titleEvents": [],
-    "notesText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ ถ้าตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
+    "notesText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ หากตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
     "src": "docs/lore/storylines/00-convergence.md:186",
     "name": "ธุลีทิพย์",
     "openRaw": "WR-24 หรือ GI-06 หรือ GI-10",
@@ -3000,7 +2932,7 @@
     ],
     "intro": "ธุลีทิพย์ที่ทำให้มัมมี่ตื่นอยู่ขาดแคลน ซาร์ฮาดีน (SH-01) กับอัมเมนรา (SH-02) เข้าสงคราม (WR-24) เมืองมายา (SH-14) ปรากฏหนึ่งฤดู (GI-06)",
     "byRace": "",
-    "battleText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ ถ้าตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
+    "battleText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ หากตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
     "npcs": [
      "SH02-1",
      "SH01-1",
@@ -3280,8 +3212,9 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "คุยได้"
+         "k": "event",
+         "id": "DM-06",
+         "happened": true
         },
         "then": [
          {
@@ -3688,8 +3621,9 @@
       "mods": [
        {
         "cond": {
-         "k": "text",
-         "text": "ผู้มีตรามังกร"
+         "k": "has",
+         "kind": "blessing",
+         "id": "nb_mark_*"
         },
         "mul": 3
        }
@@ -3732,12 +3666,9 @@
            "label": "DFC"
           },
           {
-           "k": "text",
-           "text": "เหลือมังกรตัวสุดท้าย"
-          },
-          {
-           "k": "text",
-           "text": "กุญแจถูกกระจาย"
+           "k": "event",
+           "id": "LE-11",
+           "happened": true
           }
          ]
         },

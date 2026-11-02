@@ -38,7 +38,8 @@ export type IdKind =
 export type Condition =
   /** `outcome`: the event ended with that choice (`WR-04 ก)`). `phase`: `near` = about to fire, `running` = in progress. */
   | { k: 'event'; id: EventId; happened: boolean; outcome?: 'a' | 'b' | 'c'; phase?: 'near' | 'running' }
-  | { k: 'has'; kind: IdKind; id: string; level?: number } // trait, job, blessing, curse, skill, item... · `rune ระดับ 3`
+  /** trait, job, blessing, curse, skill, item... · `rune ระดับ 3` · an id ending in `*` matches any id with that prefix (`nb_mark_*`). */
+  | { k: 'has'; kind: IdKind; id: string; level?: number }
   | { k: 'npc'; id: NpcId; alive: boolean }
   | { k: 'country'; ids: CountryId[] } // born in or living in one of these
   | { k: 'continent'; ids: ContinentId[] }
