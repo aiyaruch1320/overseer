@@ -93,7 +93,7 @@ function stances(): { stances: Stance[]; groups: StanceGroup[]; byCountry: Recor
       defaultStance = stance;
       continue;
     }
-    const named = [...cell.matchAll(/\b([A-Z]{2}-\d\d)\s+([฀-๿]+)/g)].map((m) => ({ id: m[1], name: m[2] }));
+    const named = [...cell.matchAll(/\b([A-Z]{2}-\d\d)\s+([฀-๿]+)/g)].map((m) => ({ id: m[1], name: m[2] })).filter((n) => n.name !== 'ถึง');
     const range = cell.match(/\(([A-Z]{2}-\d\d)\s*ถึง\s*([A-Z]{2}-\d\d)\)/);
     let countries = named.map((n) => n.id);
     if (range) {
