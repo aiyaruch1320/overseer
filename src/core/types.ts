@@ -53,6 +53,14 @@ export type Condition =
   /** A world variable threshold from an event condition cell: `H > 70` `M6 < 40` (events §0). */
   | { k: 'var'; name: string; op: '<' | '>'; n: number }
   | { k: 'node'; id: NodeId; choice?: 'a' | 'b' | 'c' } // passed that node (and took that choice)
+  | { k: 'faith'; ids: string[] } // religion `faith.01`..`faith.23` (docs/lore/religions/README.md)
+  | { k: 'sign'; ids: string[] } // birth sign (character/01-origin.md)
+  /** Where the character lives: `coast` `river` `city` (large city) · or a country flag `war` `famine` `plague` `golden` `fallen` `god_ruin`. */
+  | { k: 'place'; kinds: string[] }
+  /** A bond line at a level: `สายสหายระดับ 3` (bonds/README.md). */
+  | { k: 'bond'; line: string; level: number }
+  /** A life count: continents visited, battles won ... `travel.continents` ≥ 7. */
+  | { k: 'count'; what: string; min: number }
   | { k: 'and'; of: Condition[] }
   | { k: 'or'; of: Condition[] }
   | { k: 'not'; of: Condition }
@@ -66,7 +74,8 @@ export type Effect =
   | { k: 'converge'; to: NodeId } // `→ cv.6`
   | { k: 'jump'; to: NodeId; years?: number } // `ข้ามไป hu.a1 เร็วขึ้นสองปี`
   | { k: 'npc'; id: NpcId } // ties the beat to an NPC slot (code-plan §6.1, storylines README §6.8)
-  | { k: 'event'; id: EventId; open?: boolean } // opens or references a world/local event
+  /** No `open` and no `op` = a reference only. `op` cuts, delays (n world years) or otherwise changes an event that has not fired. */
+  | { k: 'event'; id: EventId; open?: boolean; op?: 'cut' | 'delay'; n?: number }
   | { k: 'death'; chance?: number; cause?: string }
   | { k: 'if'; cond: Condition; then: Effect[] }
   | { k: 'label'; text: string } // human words kept for display
@@ -75,7 +84,8 @@ export type Effect =
   /** "แทน A ด้วย B": event B takes the place of A from now on (branches README). */
   | { k: 'replace'; from: EventId; to: EventId | string }
   /** NPC clash results on an NPC line: `เส้น ก) บังคับเกิด` `ถูกตัด` `ช้าลง` `น้ำหนัก +10` (combat/07). */
-  | { k: 'npcPath'; npc: NpcId; path: 'a' | 'b' | 'c'; op: 'force' | 'cut' | 'delay' | 'weight'; n?: number }
+  /** `unit`: weight `add` (+10) or `mul` (×2); delay in `year`s. `how: 'default'` = "โดยปริยาย". */
+  | { k: 'npcPath'; npc: NpcId; path: 'a' | 'b' | 'c'; op: 'force' | 'cut' | 'delay' | 'weight'; n?: number; unit?: 'add' | 'mul' | 'year'; how?: 'default' }
   /** "ได้ง่ายขึ้น": raises the chance of a later grant instead of granting it. */
   | { k: 'favour'; kind: IdKind; id: string; mul?: number }
   | ExtraEffect;
@@ -113,7 +123,7 @@ export type ExtraEffect =
   /** Opens a job path: `ทางสู่อาชีพลับ swordsaint (ต้องมี sword_3)`. */
   | { k: 'jobpath'; job: string; secret: boolean; need?: Condition; text?: string }
   /** `WR-17 −30`: moves an event's weight by percentage points. */
-  | { k: 'eventWeight'; id: string; delta: number }
+  | { k: 'eventWeight'; id: string; delta?: number; mul?: number }
   /** A pointer to another node: `เปิด ml.a1` `ตรงกับ be.b2` `ใช้ใน hb.t2`. rel is the Thai verb. */
   | { k: 'ref'; nodes: NodeId[]; rel: string; choice?: 'a' | 'b' | 'c' }
   /** `ทอย d20 DC 12` `DC 18`. */
