@@ -35,9 +35,20 @@ export function onStat(name: string, h: StatHandler): void {
   stats.set(name, h);
 }
 
-function statOf(name: string): StatHandler | undefined {
+/** Systems that own an open set of names (every aptitude id, say) answer for names nobody registered. */
+const statFallbacks: ((name: string, ctx: Ctx) => StatHandler | undefined)[] = [];
+
+export function onStatFallback(fn: (name: string, ctx: Ctx) => StatHandler | undefined): void {
+  statFallbacks.push(fn);
+}
+
+function statOf(name: string, ctx: Ctx): StatHandler | undefined {
   const exact = stats.get(name);
   if (exact) return exact;
+  for (const f of statFallbacks) {
+    const h = f(name, ctx);
+    if (h) return h;
+  }
   // prefixes end in `.` (`axis.`) or `:` (`trust:` as the generators write it)
   for (let i = name.length - 1; i > 0; i--) {
     if (name[i] !== '.' && name[i] !== ':') continue;
@@ -48,7 +59,7 @@ function statOf(name: string): StatHandler | undefined {
 }
 
 export function readStat(ctx: Ctx, name: string, cond?: Extract<Condition, { k: 'cmp' }>): number | undefined {
-  const h = statOf(name);
+  const h = statOf(name, ctx);
   if (!h) {
     report(ctx, 'cond', `stat:${name}`);
     return undefined;
@@ -58,7 +69,8 @@ export function readStat(ctx: Ctx, name: string, cond?: Extract<Condition, { k: 
 
 const conds = new Map<string, (ctx: Ctx, c: Condition) => boolean>();
 const effects = new Map<string, (ctx: Ctx, e: Effect, src: EffectSource) => void>();
-const missing = new Set<string>();
+/** Kinds already reported, per game state, so the same seed always writes the same log. */
+const missing = new WeakMap<object, Set<string>>();
 
 export function onCond<K extends Condition['k']>(kind: K, fn: CondFn<K>): void {
   if (conds.has(kind)) throw new Error(`condition kind ${kind} registered twice`);
@@ -72,8 +84,10 @@ export function onEffect<K extends Effect['k']>(kind: K, fn: EffectFn<K>): void 
 
 function report(ctx: Ctx, what: 'cond' | 'effect', kind: string) {
   const key = `${what}:${kind}`;
-  if (missing.has(key)) return;
-  missing.add(key);
+  let seen = missing.get(ctx.state);
+  if (!seen) missing.set(ctx.state, (seen = new Set(ctx.state.log.filter((e) => e.sys === 'rules' && e.kind === 'unhandled').map((e) => e.id!))));
+  if (seen.has(key)) return;
+  seen.add(key);
   write(ctx.state, { sys: 'rules', kind: 'unhandled', id: key, level: 0 });
 }
 
@@ -157,7 +171,7 @@ function applyOne(ctx: Ctx, e: Effect, src: EffectSource): void {
     }
   }
   if (e.k === 'stat') {
-    const h = statOf(e.stat);
+    const h = statOf(e.stat, ctx);
     if (h?.add) h.add(ctx, e.stat, e.delta);
     else report(ctx, 'effect', `stat:${e.stat}`);
     return;
@@ -180,7 +194,7 @@ export function registered(): { conds: string[]; effects: string[] } {
 /** Test helper: forget every handler (systems register again when their module is imported fresh). */
 export function resetRules(): void {
   stats.clear();
+  statFallbacks.length = 0;
   conds.clear();
   effects.clear();
-  missing.clear();
 }

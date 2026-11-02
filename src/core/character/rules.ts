@@ -4,7 +4,7 @@
 // Numbers: gold fame the six stats, the eight axes, trust, belief, heart, class and their Thai names.
 import type { Ctx } from '../game';
 import { write } from '../log';
-import { apply, onCond, onEffect, onStat, readStat } from '../rules';
+import { apply, onCond, onEffect, onStat, onStatFallback, readStat } from '../rules';
 import type { LifeState } from '../types';
 import { classNum, extOf, idx } from './data';
 import { die } from './death';
@@ -110,6 +110,18 @@ export function registerCharacterRules(force = false): void {
   onStat('trust.', oneTrust);
   // the generator wrote these two with a colon (`trust:เอลฟ์`), which the registry does not read as a prefix
   for (const who of ['เอลฟ์', 'ทั้งสองเผ่า']) onStat(`trust:${who}`, oneTrust);
+  // `writing +1` `bow +1`: any aptitude id is a level the character can raise (docs write them bare)
+  onStatFallback((name, ctx) => {
+    if (!idx(ctx).aptitudes.has(name)) return undefined;
+    return {
+      read: (ctx) => ctx.state.life?.aptitudes[name] ?? 0,
+      add: (ctx, _n, delta) => {
+        const life = ctx.state.life;
+        if (!life) return;
+        life.aptitudes[name] = Math.max(0, Math.min(3, (life.aptitudes[name] ?? 0) + delta));
+      },
+    };
+  });
 
   // ---------- effects ----------
   onEffect('grant', (ctx, e, src) => {
