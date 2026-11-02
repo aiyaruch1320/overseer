@@ -526,7 +526,7 @@ const combat = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       const place = at(cx, e.id);
       switch (s(d.how)) {
         case 'held':
-          return `${who}ร่วมศึกใหญ่${place}ในฐานะ${role} และยืนหยัดได้`;
+          return `${who}ร่วมศึกใหญ่${place} ในฐานะ${role} และยืนหยัดได้`;
         case 'lost': {
           const wounds = woundWords(cx, s(d.wounds));
           return `ศึกใหญ่${place}: ฝ่ายของ${who}ถูกตีแตก${wounds ? ` ${who}ได้รับ${wounds}` : ''}`;

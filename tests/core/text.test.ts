@@ -4,6 +4,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { Game, makeCtx, versions, type Ctx, type GameData } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
 import { MAX_NAME, PENDING_FX_TH, VOICES } from '../../src/core/text/tuning';
+import { clashStory } from '../../src/core/text/m3';
 import { chronicleText, describe as say, displayLevel, fill, fxLine, fxSplit, godTemplate, hasPendingFx, isIndirect, isPendingFx, labels, leaks, lines, nameCharacter, nameTaken, pickText, questionOf, reasonText, registerName, scrub, sentence, slotsOf, spaceDigits, textSystem, unphrased, type LibLine } from '../../src/core/text';
 import type { Country, NpcsFile } from '../../src/core/data/types-npcs';
 import type { TemplatesData } from '../../src/core/data/types-text';
@@ -564,5 +565,201 @@ describe('text: the words of a reason and the space after a number', () => {
   it('names the blessing of a people, so that a gift of the god does not go unnamed', () => {
     expect(labels(data).name.get('rb_orc_r')).toBe('ธงของผู้นำ');
     expect(say(data, e({ sys: 'god', kind: 'chest', id: 'pick', level: 2, data: { slot: 1, thing: 'rb_orc_r', kind: 'bless', tier: 'R', paid: 19, warded: false } }))).toMatch(/ประทานพร ธงของผู้นำ ระดับหายาก/);
+  });
+});
+
+describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, items, economy, npc, combat)', () => {
+  const at = (n: number, over: Partial<LogEntry>): LogEntry => ({ n, worldYear: 450, sys: 'npc', kind: 'npc', data: {}, level: 1, age: 20, ...over });
+  const birth = at(1, { sys: 'character', kind: 'birth', id: 'human', level: 3, age: 0, data: { race: 'human', country: 'AL-01', gender: 'f', born: 'main', cls: 'c3' } });
+  const named = at(2, { sys: 'text', kind: 'named', id: 'L1', age: 0, data: { name: 'มิรา', race: 'มนุษย์', home: 'โอรันธาร์', cls: 'สามัญชน', year: '10,450', country: 'AL-01' } });
+  let n = 10;
+  const b = (kind: string, data: LogEntry['data'], id = 'T1', level: 0 | 1 | 2 | 3 = 1): LogEntry => at(n++, { sys: 'bonds', kind, id, data: { name: 'ไลลินา', line: 'สหาย', ...data }, level });
+  const sys = (s: string, kind: string, data: LogEntry['data'], id?: string, level: 0 | 1 | 2 | 3 = 1): LogEntry => at(n++, { sys: s, kind, id, data, level });
+
+  /** Every shape of entry the seven systems write, with the data they write (read from real lives). The kinds left to the log are told with `null`. */
+  const table = (): [LogEntry, RegExp | null][] => [
+    [b('tie', { from: 'school', level: 2, b: 20, race: 'human', npc: null }), /^ได้รู้จัก ไลลินา \(สหาย\) ที่โรงเรียน ระดับคุ้นเคย$/],
+    [b('tie', { from: 'closeKin', level: 0, b: 0, line: 'พี่น้อง' }), /^ไลลินา เป็นพี่น้องของมิรา$/],
+    [b('level', { from: 2, to: 3, why: 'story', b: 40 }), /แน่นแฟ้นขึ้นจากคุ้นเคยเป็นสนิท.*จากเรื่องที่ผ่านมาด้วยกัน/],
+    [b('line', { from: 'สหาย', to: 'คนรัก', why: 'ขอเป็นคนรัก', level: 3 }), /กลายเป็นคนรักของมิรา \(ขอเป็นคนรัก\)/],
+    [b('mood', { mood: 'เสียใจ', asked: 'เสียใจ', level: 4, why: 'x' }), /^มิรา เสียใจเรื่อง ไลลินา \(สหาย\)$/],
+    [b('mood-held', { mood: 'ภูมิใจ', reason: 'level' }, 'T1', 0), null],
+    [b('arc', { code: 'FT-12', stage: 1, title: 'ความลับที่เพื่อนเก็บ', text: '' }, 'T1', 0), /^เรื่องของ ไลลินา.*เริ่มขึ้น: ความลับที่เพื่อนเก็บ$/],
+    [b('arc', { code: 'FT-12', stage: 2, title: 'ความลับที่เพื่อนเก็บ', text: 'เขาหายไปบางเวลาและไม่บอกที่', involved: true }), /ความลับที่เพื่อนเก็บ: เขาหายไปบางเวลา/],
+    [b('news', { code: 'FT-12', stage: 3, text: 'ตัวละครรับ ปิดให้ หรือรังเกียจ' }, 'T1', 0), /^ข่าวถึงมิรา: เรื่องของ ไลลินา/],
+    [b('news', { text: 'ไลลินา จากไป (illness)', kind: 'death' }), /^ข่าวถึงมิรา: ไลลินา \(สหาย\) จากไป \(โรคภัย\)$/],
+    [b('crisis', { code: 'KN-05', level: 5, text: 'พี่กลับมาเปลี่ยนไปหรือส่งแต่เงินมา', answer: 'refuse' }, 'T1', 2), /ประสบเรื่องหนัก: พี่กลับมา.* — มิราไม่ได้ช่วยเขา$/],
+    [b('trouble', { code: 'FT-01', level: 3, text: 'ผู้ให้กู้ขู่จะผูกตัวเขา (ตามท่าทีของประเทศใน)', answer: 'full' }), /ผู้ให้กู้ขู่จะผูกตัวเขา — มิราช่วยเขาเต็มกำลัง$/],
+    [b('ending', { code: 'FT-12', key: 'c', text: 'ความลับร้ายแรงจนสายแตก', kind: 'split', involved: true }), /^เรื่อง “ความลับที่เพื่อนเก็บ”ของ ไลลินา \(สหาย\) จบลง: ความลับร้ายแรงจนสายแตก$/],
+    [b('end', { way: 'death', why: 'ตาย', level: 5, cause: 'old' }, 'T2', 0), /จากไป \(ชราภาพ\)/],
+    [b('end', { way: 'fade', why: 'ห่างจนไม่มีข่าว', level: 1 }, 'T3', 0), /จนสายจางหายไป/],
+    [b('end', { way: 'split', why: 'FT-12 c', level: 4 }, 'T4'), /แตกหักและแยกทางกัน/],
+    [b('end', { way: 'betray', why: 'bn.a4', level: 4 }, 'T5'), /หักหลังมิรา/],
+    [b('funeral', { cause: 'old', level: 5 }, 'T6', 2), /^งานศพของ ไลลินา \(สหาย\) · ชราภาพ: มิราไปส่งเขาเป็นครั้งสุดท้าย$/],
+    [b('letter', { from: 'SV-05' }), /^จดหมายจาก ไลลินา \(สหาย\) ถึงมือมิรา ส่งมาจาก\S+$/],
+    [b('invite', { ask: 'travel', ok: true, chance: 70 }), /^มิราชวน ไลลินา ออกเดินทางด้วยกัน — เขาตกลง$/],
+    [b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'hurt' }), /ขอให้ ไลลินา เป็นคนรัก — เขาปฏิเสธและเสียน้ำใจ$/],
+    [b('child', { adopted: false, from: 'couple', b: 40 }, 'T7', 2), /^มิรามีลูกชื่อ ไลลินา$/],
+    [b('child', { adopted: true, from: 'child', b: 40 }, 'T8', 2), /รับ ไลลินา เป็นลูกบุญธรรม/],
+    [b('pair', { item: 'pr_ring_halves_a', other: 'pr_ring_halves_b', status: 'full' }, 'PR-05'), /มี .+ ครบทั้งคู่/],
+    [b('pair', { item: 'pr_ring_halves_a', status: 'memorial', from: 'full' }, 'PR-05', 0), /กลายเป็นของระลึกถึง ไลลินา/],
+    [at(n++, { sys: 'bonds', kind: 'among', id: 'T1+T2', level: 0, data: { a: 'ไลลินา', b: 'อาริน', line: 'สหาย' } }), /^ไลลินา กับ อาริน รู้จักกัน/],
+    [at(n++, { sys: 'bonds', kind: 'pair-story', id: 'T1+T2', level: 0, data: { a: 'ไลลินา', b: 'อาริน', line: 'สหาย', key: 'a', text: 'ตั้งงานร่วมกัน (ร้าน ทีม ขบวน)' } }), /^ไลลินา กับ อาริน: ตั้งงานร่วมกัน/],
+    [b('successor', { npc: 'SV05-5', origin: 'เรียนก้าวเงาคู่', text: 'ศิษย์ใต้จันทรา' }, 'T9'), /ผู้สืบทอดต่อจาก.*เรียนก้าวเงาคู่/],
+    [b('ally', { npc: 'AL18-2', origin: 'เป็นครูพิเศษ' }, 'T9'), /ได้มาเป็นพวกพ้องของมิรา — เป็นครูพิเศษ/],
+    [b('thread', { code: 'FT-07', stage: 4 }), /ยังค้างอยู่ที่ขั้นที่ 4/],
+    [b('freed', { how: 'owner' }, 'T10'), /เป็นอิสระแล้ว/],
+
+    [sys('bondage', 'enter', { route: 'ถูกขาย', level: 2, country: 'NB-13', owner: 'นอคโรลิธ', price: 101, moved: false, stance: 'H' }, 'B2', 2), /ตกอยู่ในพันธะ: ผู้รับใช้ตามสัญญา \(ถูกขาย\) ที่\S+ ภายใต้ นอคโรลิธ · ค่าไถ่ราว 101 ทอง/],
+    [sys('bondage', 'exit', { way: 'ไถ่ตัวเอง', from: 2, classUp: true }, 'ransom', 2), /พ้นจากพันธะ \(ไถ่ตัวเอง\) ฐานะสูงขึ้นหนึ่งชั้น/],
+    [sys('bondage', 'exit', { way: 'หนีข้ามแดน', from: 2, classUp: false }, 'fled', 2), null],
+    [sys('bondage', 'escape', { ok: true, to: 'AL-01' }, 'AL-01', 2), /หนีข้ามแดนได้สำเร็จ ถึง\S+ และเป็นอิสระ/],
+    [sys('bondage', 'escape', { ok: false, to: null }, '', 2), /ถูกจับกลับมา/],
+    [sys('bondage', 'escape', { ok: true, name: 'ฟีทิส', who: 'held' }, 'H1', 2), /^ฟีทิส ผู้ที่มิราถือสัญญาไว้ หนีไปได้$/],
+    [sys('bondage', 'buy', { name: 'ฟีทิส', level: 'B2', price: 91, country: 'AL-01', npc: null }, 'H1'), /^มิราซื้อสัญญาของ ฟีทิส \(ผู้รับใช้ตามสัญญา\) ราคา 91 ทอง ที่\S+$/],
+    [sys('bondage', 'free', { name: 'ฟีทิส', how: 'ransom', price: 229 }, 'ฟีทิส'), /ฟีทิส เป็นอิสระแล้ว — มิราไถ่เขาออกมาด้วยทอง 229 ทอง/],
+    [sys('bondage', 'free', { name: 'โบธัน', how: 'bribe' }, 'โบธัน'), /ติดสินบนให้ปล่อยเขา/],
+    [sys('bondage', 'sell', { name: 'ฟีทิส', gain: 120 }, 'H1'), /ขายสัญญาของ ฟีทิส ต่อ ได้ 120 ทอง/],
+    [sys('bondage', 'sued', { name: 'ฟีทิส' }, 'H1'), /ฟีทิส ฟ้องร้อง/],
+
+    [sys('travel', 'cause', { chance: 0.2, age: 40 }, 'exile'), /ตัดสินใจออกเดินทาง: ถูกเนรเทศหรือหนีโทษ/],
+    [sys('travel', 'open', { why: 'ml' }, 'ml'), /เรื่องของ “ทหารรับจ้างข้ามแดน” เปิดขึ้น/],
+    [sys('travel', 'move', { from: 'SV-09', to: 'SV-06', why: 'sc', legs: 1, level: 1 }, 'SV-06'), null],
+    [sys('travel', 'trip', { from: 'SV-09', to: 'SV-06', why: 'sc', legs: 1, days: 10, fare: 3, smuggle: false }, 'SV-06'), /^ไปเรียนต่างแดน: จาก\S+ ไป\S+ 1 ช่วงทาง ราว 10 วัน ค่าเดินทาง 3 ทอง$/],
+    [sys('travel', 'trip', { from: 'SV-09', to: 'NB-04', why: 'job:merchant', legs: 2, days: 30, fare: 5, smuggle: true }, 'NB-04'), /เดินทางตามงาน.*โดยลักลอบข้ามด่าน/],
+    [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'bandits', name: 'x', why: 'sc' }, 'd2'), /^ระหว่างทาง: ถูกโจรหรือสัตว์ร้ายดักทาง$/],
+    [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'pay 21', name: 'x', why: 'sc' }, 'd1', 0), /เสียไป 21 ทอง/],
+    [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'news WR-06', name: 'x', why: 'sc' }, 'd10'), /ได้ข่าวเหตุการณ์โลก/],
+    [sys('travel', 'settle', { why: 'peddler' }, 'KD-07'), /ตั้งหลักแหล่งใหม่ที่\S+/],
+    [sys('travel', 'blocked', { from: 'KD-03', why: 'wanted', cause: 'return' }, 'KD-01', 0), /เข้า\S+ไม่ได้ เพราะที่นั่นตามจับตัวอยู่/],
+    [sys('travel', 'stair', { days: 283 }, 'fail'), /ปีนบันไดหมื่นขั้นไม่ผ่านการทดสอบ.*283 วัน/],
+
+    [sys('items', 'get', { name: 'กระดูกต้องสาป', tier: 'U', cat: 'material' }, 'mt_cursed_bone', 0), /^มิราได้ กระดูกต้องสาป \(ระดับไม่ธรรมดา\) มาไว้ติดตัว$/],
+    [sys('items', 'buy', { price: 374, why: 'armor', country: 'AL-27' }, 'ar_scale_hauberk', 0), /^ซื้อ .+ ราคา 374 ทอง ที่\S+$/],
+    [sys('items', 'gear', { wield: 'ws_rapier', armor: 'ar_hard_leather', charm: null, acc: 'ac_bead_string' }, undefined, 0), /^มิราจัดของติดตัวใหม่: ถือ .+ · สวม .+ · ประดับ .+$/],
+    [sys('items', 'dull', { name: 'ดาบ' }, 'ws_rapier'), /ทื่อลง/],
+    [sys('items', 'wear', { name: 'เสื้อเกราะ', defense: 2 }, 'ar_hard_leather'), /สึกหรอ/],
+    [sys('items', 'repair', { cost: 12 }, 'ws_rapier', 0), /^ซ่อม .+ ให้ใช้ได้อีก เสีย 12 ทอง$/],
+    [sys('items', 'wornout', { name: 'จอบ', tier: 'C' }, 'lt_hoe'), /^จอบ ใช้จนพังและทิ้งไป$/],
+    [sys('items', 'legend', { name: 'ดาบแห่งตำนาน' }, 'ws_rapier', 2), /ได้อาวุธในตำนาน ดาบแห่งตำนาน มาครอง/],
+    [sys('items', 'vanish', { name: 'ดาบแห่งตำนาน', why: 'broken' }, 'ws_rapier'), /ไม่ปรากฏต่อมิรา: แตกสลายไปแล้ว/],
+    [sys('items', 'return', { name: 'ดาบแห่งตำนาน', to: 'broken' }, 'ws_rapier', 2), /แตกสลายไปตลอดกาล/],
+    [sys('items', 'unknown', {}, 'zz', 0), null],
+    [sys('items', 'talisman', { what: 'found', buyer: 'priest' }, 'tm_river_pebble', 0), /ถูกขุดพบจากซาก/],
+    [sys('items', 'forge', { step: 'need', cause: 'แพ้ศึกเพราะอาวุธไม่ได้ผล (ศัตรูทนแท็กของอาวุธ)', tier: 'U', smith: 'ช่างหมู่บ้าน', place: 'SV-12' }, 'ws_rapier'), /ตั้งใจสั่งตีอาวุธใหม่.*เพราะแพ้ศึก.*กับ ช่างหมู่บ้าน/],
+    [sys('items', 'forge', { step: 'wait', tier: 'U', price: 40, how: 'ข+', beats: 2 }, 'ws_rapier'), /สั่งตี .+ ราคา 40 ทอง \(ต่อรองจนได้ลดราคา\) รออีก 2 ฤดู/],
+    [sys('items', 'forge', { step: 'save', price: 90 }, 'ws_rapier'), /เก็บเงินไว้ก่อน/],
+    [sys('items', 'forge', { step: 'trial', trial: 't', way: 'a', pass: false, smith: 'นอร์ธรา' }, 'ws_rapier'), /ช่าง นอร์ธราทดสอบน้ำใจมิรา: ไม่ผ่าน/],
+    [sys('items', 'forge', { step: 'abort', why: 'saved too long', smith: 'นอร์ธรา' }, 'ws_rapier'), /เลิกสั่งตี.*เก็บเงินไม่ทัน/],
+    [sys('items', 'forge', { step: 'result', outcome: 'masterpiece', sum: 14, diff: 9, smith: 'ช่างเมือง', name: 'ดาบของช่างเมือง' }, 'ws_rapier', 2), /ดาบของช่างเมือง ออกมาเป็นผลงานชิ้นเอก ฝีมือ ช่างเมือง/],
+
+    [sys('economy', 'tight', { way: 'loan', gold: 219, living: 172, tight: 4 }, 'loan'), /^ปีนี้เงินฝืดเคือง มิรากู้ยืมมาใช้จนติดหนี้$/],
+    [sys('economy', 'default', { class: 'c3' }, undefined, 2), /^หนี้ท่วมเกินกว่าจะใช้ไหว.*ฐานะของมิราตกลงเหลือ\S+/],
+
+    [sys('npc', 'npc', { what: 'sick', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', why: 'old' }, 'AL01-1'), /^ไนลา ล้มป่วย ด้วยวัย$/],
+    [sys('npc', 'npc', { what: 'heal', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01' }, 'AL01-1'), /ไนลา หายป่วยเพราะได้รับการช่วยเหลือ/],
+    [sys('npc', 'npc', { what: 'follow', holder: 'ไนลา', gen: 2, role: 'ช่าง', place: 'AL-01', of: 'AL01-1', kind: 'a', doer: 'mc' }, 'AL01-2', 2), /ไนลา \(ช่าง\) เก็บความแค้นที่ .+ ล้มลง และมุ่งมาหามิรา/],
+    [sys('npc', 'npc', { what: 'follow', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', of: 'AL01-1', kind: 'c' }, 'AL01-2', 0), /ปล่อยวางเรื่องที่/],
+    [sys('npc', 'npc', { what: 'tie', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', of: 'AL01-1', path: 'a', why: 'gone' }, 'AL01-2', 0), /เกี่ยวพันกับเรื่องของ/],
+    [sys('npc', 'npc', { what: 'newcomer', holder: 'ช่างผู้ตีของจากซาก', gen: 1, role: '', place: 'AZ-01', tpl: 'NT-04', year: 1400, age: 41 }, 'AZ01-10', 0), /^ช่างผู้ตีของจากซาก มาถึง ที่\S+$/],
+    [sys('npc', 'npc', { what: 'clash-open', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', clash: 'NF-AL01-1', code: 'T', why: 'year' }, 'AL01-1', 0), /กำลังจะปะทะกับมิรา/],
+    [sys('npc', 'npc', { what: 'clash', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', clash: 'NF-AL01-1', outcome: 'lose', text: 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ' }, 'AL01-1', 2), /^ไนลา ปะทะกับมิรา: ตัวละครเป็นฝ่ายแพ้ — เขาโยนตัวละครลงบันไดสองร้อยขั้น$/],
+
+    [sys('combat', 'prelude', { enemies: 'wolf', foe: 'หมาป่าเงา', tier: 'หัวหน้า', node: 'hu.b2', kind: 'story', text: null }, 'wolf', 2), /^หมาป่าเงา \(หัวหน้า\) ขวางหน้ามิรา ใน “.+” ศึกกำลังจะเริ่ม$/],
+    [sys('combat', 'raid', { how: 'saved', warned: true, result: 'win', country: 'SV-05' }, 'bandits', 2), /บุกเข้า ที่\S+ มิรารู้ตัวก่อน · ปกป้องบ้านเมืองไว้ได้/],
+    [sys('combat', 'raid', { how: 'lost', warned: false, result: 'lose', country: 'SV-05' }, 'goblin', 2), /ถูกบุกโดยไม่ทันตั้งตัว · พ่ายแพ้/],
+    [sys('combat', 'war', { how: 'held', role: 'front', roll: 6 }, 'MH-07', 1), /ร่วมศึกใหญ่ ที่\S+ ในฐานะแนวหน้า และยืนหยัดได้/],
+    [sys('combat', 'war', { how: 'lost', wounds: 'scar', roll: 2, max: 120 }, 'MH-07', 2), /ถูกตีแตก มิราได้รับแผลเป็นถาวร/],
+    [sys('combat', 'war', { how: 'dead', roll: 1 }, 'MH-07', 2), /สิ้นชีวิตในศึกใหญ่/],
+    [sys('combat', 'captured', {}, 'MH-04', 2), /ถูกจับเป็นเชลย/],
+    [sys('combat', 'wound', { wounds: 'scar,c_oneeye', roll: 78, node: null }, 'ghoul_horde', 2), /^มิราได้รับแผลเป็นถาวร และ.+ติดตัวจาก .+$/],
+    [sys('combat', 'title', { key: 'raid', n: 3 }, 'ผู้พิทักษ์', 2), /^มิราได้รับฉายา “ผู้พิทักษ์”$/],
+    [sys('combat', 'pray', { beat: 2, faith: 30 }, 'wolf', 1), /อธิษฐานกลางศึก/],
+    [sys('combat', 'rescue', {}, 'guardian_angel', 2), /ผู้พิทักษ์ที่มองไม่เห็นยื่นมือช่วย/],
+    [sys('combat', 'clash', { npc: 'AL01-1', result: 'win' }, 'NF-AL01-1', 2), null],
+    [sys('combat', 'skip', { why: 'unknown enemy' }, 'pv.a2', 0), null],
+  ];
+
+  it('says every kind with a Thai line that holds no code, or leaves it to the log on purpose', () => {
+    for (const [entry, want] of table()) {
+      // the NPC of the lines is a roster position: tell the reader the character met him, and put the character's name first
+      const log = [birth, named, at(5, { id: entry.id, data: { what: 'meet', holder: 'ไนลา', role: '', place: 'AL-01', age: 30 } }), entry];
+      const text = lines(data, log, 0).filter((l) => l.entry === entry)[0]?.text ?? null;
+      const label = `${entry.sys}/${entry.kind}${entry.data.what ? `/${String(entry.data.what)}` : ''} ${entry.data.step ?? entry.data.way ?? ''}`;
+      if (want === null) {
+        expect(text, label).toBeNull();
+        continue;
+      }
+      expect(text, label).not.toBeNull();
+      expect(text!, label).toMatch(want);
+      expect(leaks(text!), `${label}: ${text}`).toEqual([]);
+    }
+  });
+
+  it('leaves nothing without a phrasing: the developer list of unphrased kinds is empty for all of them', () => {
+    const log = [birth, named, ...table().map(([x]) => x)];
+    expect(unphrased(data, log)).toEqual({});
+  });
+
+  it('shows the small lines of a long life at level 0 only: a worn blade, a mended one, a trade trip, a small feeling', () => {
+    const quiet = [
+      sys('items', 'dull', { name: 'ดาบ' }, 'ws_rapier'),
+      sys('items', 'wear', { name: 'เสื้อเกราะ', defense: 2 }, 'ar_hard_leather'),
+      sys('items', 'repair', { cost: 12 }, 'ws_rapier'),
+      sys('items', 'wornout', { name: 'จอบ', tier: 'C' }, 'lt_hoe'),
+      sys('travel', 'trip', { from: 'SV-09', to: 'SV-06', why: 'job:merchant', legs: 1, days: 10, fare: 3, smuggle: false }, 'SV-06'),
+      sys('travel', 'trip', { from: 'SV-09', to: 'SV-06', why: 'return', legs: 1, days: 10, fare: 3, smuggle: false }, 'SV-06'),
+      b('mood', { mood: 'ภูมิใจ', asked: 'ภูมิใจ', level: 3, why: 'x' }),
+      b('level', { from: 2, to: 3, why: 'meet', b: 40 }),
+      b('tie', { from: 'journey', level: 1, b: 0 }),
+      b('invite', { ask: 'travel', ok: true, chance: 70 }),
+      sys('combat', 'battle', { result: 'win', end: 'win', enemies: 'wolf', foe: 'หมาป่าเงา', kind: 'travel' }, 'wolf', 1),
+    ];
+    for (const x of quiet) expect(displayLevel(x), `${x.sys}/${x.kind}`).toBe(0);
+    // while the turns of a bond are told: a crossing of the sea, a grief, a bond that rose by a story
+    for (const x of [
+      sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'sc', legs: 3, days: 40, fare: 9, smuggle: false }, 'AL-06'),
+      b('mood', { mood: 'เสียใจ', asked: 'เสียใจ', level: 4, why: 'x' }),
+      b('level', { from: 2, to: 3, why: 'story', b: 40 }),
+      b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'plain' }),
+    ]) expect(displayLevel(x), `${x.sys}/${x.kind}`).toBeGreaterThan(0);
+  });
+
+  it('tells the mood of a story line once the bonds hold someone on that line, and not before (T4)', () => {
+    const mood = at(30, { sys: 'story', kind: 'mood', id: 'สหาย', data: { mood: 'ยินดี', level: 1, node: 'bn.b1' } });
+    const bond = at(31, { sys: 'story', kind: 'bond', id: 'สหาย', data: { level: 2 } });
+    const tpl = at(32, { sys: 'story', kind: 'template', id: 'PR-01', data: { type: 'PR' } });
+    const tie = at(20, { sys: 'bonds', kind: 'tie', id: 'T1', level: 1, data: { name: 'ไลลินา', line: 'สหาย', from: 'bn.b1', level: 2, b: 20 } });
+    const before = lines(data, [birth, named, mood, bond, tpl], 1).map((l) => l.text);
+    expect(before).toHaveLength(1); // the birth line only
+    const after = lines(data, [birth, named, tie, mood, bond, tpl], 1).map((l) => l.text);
+    expect(after.some((t) => /ใจของมิราที่มีต่อสายสหาย: ยินดี/.test(t))).toBe(true);
+    expect(after.some((t) => /สายสหายของมิราขึ้นเป็นระดับคุ้นเคย/.test(t))).toBe(true);
+    for (const t of after) expect(leaks(t), t).toEqual([]);
+    expect(after.some((t) => t.includes('PR'))).toBe(false);
+  });
+
+  it('tells the illness of a person the character knows, and not of every stranger in the country', () => {
+    const sick = sys('npc', 'npc', { what: 'sick', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', why: 'old' }, 'AL01-1');
+    const meet = at(5, { id: 'AL01-1', data: { what: 'meet', holder: 'ไนลา', role: '', place: 'AL-01', age: 30 }, level: 2 });
+    expect(lines(data, [birth, named, sick], 1).some((l) => l.text.includes('ล้มป่วย'))).toBe(false);
+    expect(lines(data, [birth, named, meet, sick], 1).some((l) => l.text.includes('ล้มป่วย'))).toBe(true);
+    // left out on purpose: the developer's list does not ask for a phrasing of it
+    expect(unphrased(data, [birth, named, sick])).toEqual({});
+  });
+
+  it('does not tell the end of a bond twice: the ending of its story is the line, the plain end after it is left out', () => {
+    const ending = b('ending', { code: 'FT-12', key: 'c', text: 'ความลับร้ายแรงจนสายแตก', kind: 'split', involved: true }, 'T4');
+    const end = b('end', { way: 'split', why: 'FT-12 c', level: 4 }, 'T4');
+    const out = lines(data, [birth, named, ending, end], 1).filter((l) => l.sys === 'bonds');
+    expect(out).toHaveLength(1);
+    expect(out[0].text).toContain('จบลง');
+  });
+
+  it('the clash of the NPC drops the sums of the document and keeps the story', () => {
+    expect(clashStory(data, 'เขาถอนทัพจากเส้น ก) เส้น ค) น้ำหนัก ×2 บุญคุณ +2')).toBe('เขาถอนทัพจาก');
+    expect(clashStory(data, 'ตาย เส้น ก) ถูกตัด นายเก่าของเธอแค้นตัวละคร +1')).toBe('นายเก่าของเธอ');
+    expect(clashStory(data, 'เส้น ข) บังคับเกิด เขายกเลิกดวล ไว้ใจ +2')).toBe('เขายกเลิกดวล');
+    expect(clashStory(data, 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ')).toBe('เขาโยนตัวละครลงบันไดสองร้อยขั้น');
   });
 });

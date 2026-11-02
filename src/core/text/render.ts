@@ -349,7 +349,8 @@ export class Reader {
       if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
       if (e.kind === 'template' || e.kind === 'skip') return null;
       // the window the story opens for the god and the job a node gave are for the log: the call of the game and the job line tell them
-      if (e.kind === 'window' || e.kind === 'jobpath') return null;
+      // and a request the story makes of the LLM system (a role to write) is read by that system, not by the player
+      if (e.kind === 'window' || e.kind === 'jobpath' || e.kind === 'llm') return null;
     }
 
     if (e.kind === 'unhandled') return null;
