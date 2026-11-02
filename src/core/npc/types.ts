@@ -25,6 +25,34 @@ export interface Story {
   force?: PathKey;
   /** The path it ended with, `-` when nothing happened (rest, or every path cut). */
   result?: PathKey | '-';
+  /** README §2.2 item 2(ค): paths that got +10 because a tied story ended on the same event (the others shrink so the total stays). */
+  boost?: PathKey[];
+  /** The main character has been looked at for this story once (the meeting rate per life year, tuning MEET_FULL_RATE). */
+  seen?: boolean;
+  /** Life years the main character spent in the zone while the story was open (a clash of kind X rolls its yearly chance that many times). */
+  mcYears?: number;
+}
+
+/** README §2.2 item 3: the story that follows when a tied NPC's end took the holder of another story. */
+export interface Follow {
+  /** The position whose end started it, and who did it: the main character, a world event, another NPC (`doerId`) or the god. */
+  of: string;
+  doer: 'mc' | 'npc' | 'event' | 'god';
+  doerId?: string;
+  state: 'wait' | 'open' | 'done';
+  openAt: number;
+  endAt: number | null;
+  /** The path drawn when it opened: a revenge · b takes over the goal · c lets go. */
+  kind?: PathKey;
+}
+
+/** A newcomer: the template, the people of the holder and the number in the id (succession.md §5). */
+export interface NewcomerInfo {
+  tpl: string;
+  people: string | null;
+  seq: number;
+  /** World year the template was drawn. */
+  year: number;
 }
 
 export type SlotStatus = 'absent' | 'alive' | 'dead' | 'gone';
@@ -52,6 +80,18 @@ export interface NpcSlotX extends NpcSlotState {
   twist?: string;
   /** Home place of the row, to tell a moved holder. */
   home: string;
+  /** Gravely ill since this world year (old age, a path of the story, a plague). It ends with death, a recovery or `healNpc`. */
+  sick?: number;
+  /** An illness (not old age) ends at this world year: the holder dies or recovers. */
+  sickEnd?: number;
+  /** No new illness of old age before this world year (after a recovery). */
+  immune?: number;
+  /** Set when the slot is a newcomer (NT-xx, succession.md §5). */
+  nt?: NewcomerInfo;
+  /** The story that follows (README §2.2 item 3). */
+  follow?: Follow;
+  /** Clashes of this NPC with the main character in this life: how many and how the last ended (combat/07 §2 common rules). */
+  clash?: { n: number; last?: string; at?: number };
 }
 
 export interface NpcStateX extends NpcState {
@@ -63,6 +103,12 @@ export interface NpcStateX extends NpcState {
   rollAt?: number;
   /** Write trace entries (level 0) too, also while no main character lives. Off by default: a world run would write thousands. */
   trace?: boolean;
+  /** Newcomers (succession.md §5): the 100-year block, the era tag and the era-4 roll already handled, the templates used per country, the last number per country. */
+  ntBlock?: number;
+  ntEra?: string;
+  ntRollAt?: number;
+  ntUsed?: Record<string, string[]>;
+  ntSeq?: Record<string, number>;
 }
 
 export function slotsOf(state: { npcs: NpcState }): Record<string, NpcSlotX> {
