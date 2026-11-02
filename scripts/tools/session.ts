@@ -135,21 +135,9 @@ export function toolNotes(state: GameState): ToolNote[] {
   return (state.god.ext.toolNotes as ToolNote[] | undefined) ?? [];
 }
 
-/**
- * One beat of the game. The tools also note a change of the social class between the start and the end of the beat: the character
- * system writes no log entry for it, and the player should read it (review M1 T9).
- */
+/** One beat of the game (the character system logs a change of class itself since the M1 review fixes). */
 export function stepBeat(g: Game): LogEntry[] {
-  const st = g.state;
-  const before = st.life?.cls;
-  const out = g.beat();
-  const after = st.life?.cls;
-  if (before && after && before !== after) {
-    const list = (st.god.ext.toolNotes as ToolNote[] | undefined) ?? [];
-    list.push({ n: st.logN, worldYear: st.clock.worldYear, age: st.life?.hAge, quarter: st.clock.quarter, from: before, to: after });
-    st.god.ext.toolNotes = list;
-  }
-  return out;
+  return g.beat();
 }
 
 /** Beats until the character dies or `max` pass; returns the number of beats run. */

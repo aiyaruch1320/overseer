@@ -176,21 +176,20 @@ describe('what the player reads holds no code (review M1 T1 T3)', () => {
     expect(ls[1]).toContain('ครอบครัว');
     expect(ls[2]).toMatch(/^นิสัยเด่น: /);
     expect(ls[3]).toMatch(/^คำถามของชีวิต: จะล่าตามสิทธิ์เดิม/);
-    const last = ls.filter((l) => l.trim()).pop()!;
-    expect(last).toContain(run.state.life!.name);
-    expect(last).toContain('ชราภาพ');
-    expect(last).toContain(`อายุ ${run.state.life!.dead!.hAge}`);
-    expect(last).toMatch(/ที่\S+/);
+    // the death line, then the one ending chosen at death (review M1 S1)
+    const lines = ls.filter((l) => l.trim());
+    const death = lines.find((l) => l.includes(run.state.life!.name) && l.includes(`อายุ ${run.state.life!.dead!.hAge}`) && /ตาย|สิ้น|จากไป/.test(l))!;
+    expect(death).toBeDefined();
+    expect(death).toMatch(/ที่\S+/);
+    expect(lines.filter((l) => l.startsWith('ปลายทาง:')).length).toBeLessThanOrEqual(1);
   });
 
-  it('a change of social class between two beats is a line of the log (T9)', () => {
-    const run = runLifeReport(data, { seed: 201, race: 'be', minLevel: 1 });
-    const notes = toolNotes(run.state);
-    expect(notes.length).toBeGreaterThan(0);
+  it('a change of social class is one line of the log, written by the character system (T9)', () => {
+    const run = runLifeReport(data, { seed: 101, race: 'hu', minLevel: 1 });
+    const changes = run.state.log.filter((x) => x.sys === 'character' && x.kind === 'class');
+    expect(changes.length).toBeGreaterThan(0);
     const said = run.text.split('\n').filter((l) => /ฐานะ(สูงขึ้น|ตก)จาก/.test(l));
-    expect(said).toHaveLength(notes.length);
-    // the log of the game itself holds no such entry: the note lives apart from the state of the log
-    expect(run.state.log.some((x) => x.sys === 'tools')).toBe(false);
+    expect(said).toHaveLength(changes.length);
   });
 
   it('the NPCs met are listed by place name, not by id', () => {

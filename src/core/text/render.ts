@@ -208,6 +208,13 @@ export class Reader {
       switch (e.kind) {
         case 'birth':
           return null; // the text system says the birth in words
+        case 'class': {
+          // written by the character system when the class changes (review M1 T9)
+          const n = (x: unknown) => Number(/\d/.exec(s(x))?.[0] ?? 0);
+          const from = classWord(data, d.from);
+          const to = classWord(data, d.to);
+          return n(d.to) > n(d.from) ? `ฐานะสูงขึ้นจาก${from} เป็น${to}` : `ฐานะตกจาก${from} เหลือ${to}`;
+        }
         case 'grant':
         case 'remove': {
           const k = s(d.kind);
