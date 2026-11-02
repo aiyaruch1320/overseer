@@ -193,7 +193,15 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
         const way = sentence(cx.data, choices?.get(s(d.choice)));
         const other = sentence(cx.data, choices?.get(s(d.alt)));
         const story = cx.tpl('decision_result', { ผล: verb.key }, { ชื่อตัวละคร: who, สัญลักษณ์: s(d.symbol), ชื่อทาง: way, ชื่อทางอื่น: other }, variant);
-        return `${who}${verb.plain}${story ? ` — ${story}` : way ? ` (${way})` : ''}`;
+        // the dream's verdict and the way the node really took can differ (review M2 รอบสอง ข้อ 2): say so instead of leaving a contradiction
+        const took = s(d.took);
+        const tail =
+          (out === 'refuse' || out === 'defy') && took && took === s(d.choice)
+            ? ' · แม้ไม่ยอมให้ความฝันตัดสิน สุดท้ายก็เดินทางนั้นด้วยใจตัวเอง'
+            : out === 'obey' && d.kept === false
+              ? ' · แต่เรื่องพาไปอีกทาง'
+              : '';
+        return `${who}${verb.plain}${story ? ` — ${story}` : way ? ` (${way})` : ''}${tail}`;
       }
       return `ส่งฝันถึง${who}: เขาเห็นภาพ${s(d.symbol)} ใจของเขา${s(d.level) ? `ดู${s(d.level)}` : ''}`;
     }
@@ -320,7 +328,9 @@ export function callReason(data: GameData, e: LogEntry): string {
     .map((k) => FOLDED_TH[k])
     .filter(Boolean);
   const uniq = [...new Set(folded)];
-  return `${why}${d.call === 'stop' && uniq.length ? ` · มีเรื่องรออยู่ด้วย: ${uniq.join(' · ')}` : ''}`;
+  // an age stop folded into another call is still named, so the player sees every stop of 07-attention (review M2 รอบสอง ข้อ 3)
+  const age = d.call === 'stop' && s(d.why) !== 'age' && d.age !== undefined && d.age !== null && s(d.age) ? ` · ถึงจุดหยุดตามอายุ ${s(d.age)} ด้วย` : '';
+  return `${why}${age}${d.call === 'stop' && uniq.length ? ` · มีเรื่องรออยู่ด้วย: ${uniq.join(' · ')}` : ''}`;
 }
 
 /** The line of an `attention` entry: a stop (the game waits for the player) or a card (time goes on); the glow and the missed card are not told. */
