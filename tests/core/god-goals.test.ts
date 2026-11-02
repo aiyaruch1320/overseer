@@ -29,6 +29,8 @@ import {
   type Facts,
 } from '../../src/core/god/goals';
 import { TEST, THRESH } from '../../src/core/god/goals/titles';
+import { armNode, settleNode } from '../../src/core/god/goals/rhythm';
+import { extOf as storyExt } from '../../src/core/story/state';
 import { factsOf } from '../../src/core/god/goals';
 import type { GameState, LifeState } from '../../src/core/types';
 
@@ -298,6 +300,20 @@ describe('the rhythm of fate and the price of too much help', () => {
     expect(checkRhythm(b.ctx, 'nope')).not.toBeNull();
   });
 
+  it('is chosen with `vow.pick { rhythm }` when the world begins, once the chronicle has opened it', () => {
+    const a = mk(1, 0);
+    const ask = (c: Game['ctx'], rhythm: string, confirm = true) => command(c, { type: 'god', action: 'vow.pick', args: { rhythm }, confirm });
+    expect(ask(a.ctx, 'gentle', false).ok).toBe(false);
+    const b = mk(1, 20);
+    const pv = ask(b.ctx, 'gentle', false) as unknown as { ok: true; preview: { rhythm: string; from: string } };
+    expect(pv.ok).toBe(true);
+    expect(pv.preview).toMatchObject({ rhythm: 'gentle', from: 'natural' });
+    expect(ask(b.ctx, 'gentle').ok).toBe(true);
+    expect(rhythmMul(b.ctx, 'badFate')).toBe(0.7);
+    b.life.hAge = 10;
+    expect(ask(b.ctx, 'sorrow', false).ok).toBe(false);
+  });
+
   it('changes the weight of the ways of the story by the words of the way, and nothing of the world', () => {
     const { ctx } = mk(1, 20);
     expect(rhythmMul(ctx, 'closeDeath')).toBe(1);
@@ -313,6 +329,18 @@ describe('the rhythm of fate and the price of too much help', () => {
     chooseRhythm(ctx, 'irony');
     expect(rhythmMul(ctx, 'ironic')).toBe(2);
     expect(rhythmMul(ctx, 'misread')).toBe(1.5);
+  });
+
+  it('puts its pulls on the ways of a node the story is about to decide, and takes them off after', () => {
+    const { ctx, life } = mk(1, 20);
+    const node = { id: 'zz.t1', choices: [{ key: 'a', label: 'พี่ชายตาย' }, { key: 'b', label: 'ไปทำนา' }, { key: 'c', label: 'ฝึกวิชา' }] } as never;
+    armNode(ctx, node);
+    expect(storyExt(life).entryMods).toEqual([]);
+    chooseRhythm(ctx, 'gentle');
+    armNode(ctx, node);
+    expect(storyExt(life).entryMods.map((m) => [m.to, m.choice, m.mul])).toEqual([['zz.t1', 'a', 0.6]]);
+    settleNode(ctx);
+    expect(storyExt(life).entryMods).toEqual([]);
   });
 
   it('counts the gifts: ×0.9 at 10, ×0.8 at 15, and back to 1 after ten years without one', () => {

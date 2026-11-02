@@ -14,7 +14,7 @@ import { tablesOf } from '../../world';
 import { lifeChronicle } from '../stats';
 import { record } from './chronicle';
 import { bondageOf, classOf, factsOf, healJob, rivalsNow } from './facts';
-import { armNode, settleNode, yearStep } from './rhythm';
+import { armNode, checkRhythm, chooseRhythm, rhythmOf, rhythms, settleNode, yearStep } from './rhythm';
 import { goalsOf, lifeGoals, living } from './state';
 import { titlesOf } from './titles';
 import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
@@ -41,7 +41,26 @@ let installed = false;
 export function registerGoalsActions(force = false): void {
   if (installed && !force) return;
   installed = true;
-  if (!hasAction('vow.pick')) onAction('vow.pick', { check: checkPick, preview: previewPick, run: (ctx, a) => runPick(ctx, a, (k, id, d) => void say(ctx, k, id, d, 1)) });
+  // `vow.pick { rhythm }` chooses the rhythm of fate of the world (08-goals.md §5: "เลือกตอนเริ่มโลก"), the one command of the goals that is not about a vow: the contract has no action of its own for it
+  if (!hasAction('vow.pick'))
+    onAction('vow.pick', {
+      check: (ctx, a) => (a.rhythm !== undefined ? checkWorldRhythm(ctx, String(a.rhythm)) : checkPick(ctx, a)),
+      preview: (ctx, a) => (a.rhythm !== undefined ? previewRhythm(ctx, String(a.rhythm)) : previewPick(ctx, a)),
+      run: (ctx, a) => (a.rhythm !== undefined ? chooseRhythm(ctx, String(a.rhythm)) : runPick(ctx, a, (k, id, d) => void say(ctx, k, id, d, 1))),
+    });
+}
+
+/** The rhythm may be chosen when the world begins: before the first life, or while the first one is newborn. */
+function checkWorldRhythm(ctx: Ctx, id: string): string | null {
+  const life = ctx.state.life;
+  if (life && !life.dead && life.hAge >= 1) return 'จังหวะชะตาเลือกได้ตอนเริ่มโลกเท่านั้น';
+  if (goalsOf(ctx.state).lives > 0) return 'จังหวะชะตาเลือกได้ตอนเริ่มโลกเท่านั้น';
+  return checkRhythm(ctx, id);
+}
+
+function previewRhythm(ctx: Ctx, id: string): Record<string, unknown> {
+  const r = rhythms(ctx).find((x) => x.id === id)!;
+  return { rhythm: r.id, name: r.name, effect: r.effect, from: rhythmOf(ctx) };
 }
 registerGoalsActions();
 

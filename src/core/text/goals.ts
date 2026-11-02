@@ -29,7 +29,7 @@ export function goalsText(cx: GodCx, e: LogEntry): string | undefined {
     case 'vow.offer':
       return `เมื่อ${who}เกิด เกมเสนอคำปฏิญาณแก่ท่าน ${num(d.n)} ข้อ: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
     case 'vow.reoffer':
-      return `${who}ถึงอายุ 15 ท่านเปลี่ยนคำปฏิญาณได้ครั้งเดียว${d.current ? ` (ตอนนี้ ${quote(s(d.current))})` : ''}: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
+      return `${who}ถึงอายุ 15 ${d.current ? `ท่านเปลี่ยนคำปฏิญาณ ${quote(s(d.current))} ได้ครั้งเดียว` : 'ท่านเลือกคำปฏิญาณได้อีกครั้งเดียว'}: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
     case 'vow.take':
       return e.id === 'GV-20' ? `ท่านไม่ปฏิญาณในชีวิตของ${who}` : `ท่านปฏิญาณ ${quote(s(d.name))}`;
     case 'vow.change':

@@ -4,7 +4,6 @@
 // the shadow is thrown, the name is written in the registry of the world, the chronicle and the log get their line.
 import type { Ctx } from '../../game';
 import { apply } from '../../rules';
-import type { Cost } from '../power';
 import { healNpc, killNpc, favourNpc } from '../../npc';
 import { addMood } from '../../world';
 import { registerName } from '../../text/names';
@@ -12,8 +11,8 @@ import { applyFx } from '../acts/fx';
 import { handlerOf, miracleOf, checkMiracle, previewMiracle, runMiracle } from '../acts/miracles';
 import { chronicle, say } from '../acts/record';
 import { faithAt } from '../acts/mods';
-import { continentOf, countriesOf, godOf, neighboursOf } from '../acts/geo';
-import { actsOf, lifeCounters, livingOf, peekCounters, ready, startCooldown, viewActs, yearOf } from '../acts/state';
+import { continentOf, godOf, neighboursOf } from '../acts/geo';
+import { actsOf, lifeCounters, livingOf, peekCounters, ready, startCooldown, yearOf } from '../acts/state';
 import { BELIEF_SEEN, DESTROY_RETURN_DIV, MC_HURT, REACTION } from '../acts/tuning';
 import { addBelief } from '../belief';
 import { earn, pay as payPower, whyNot } from '../power';
@@ -23,7 +22,6 @@ import { runOps, type Op } from './ops';
 import { dayDetail, detail, effectLines, plan, scopeOf, shadowPlaces, coreName, scaleName, verbName, type Plan } from './plan';
 import { conjOf, lifeCount, peekLife, viewConj, type PendingConjure } from './state';
 import { REFUND, SEAL_GAP, SEAL_HOME, SEAL_LIFE_MOOD, SEAL_MOOD } from './tuning';
-import { REACTIONS } from './reactions';
 
 const MR06 = 'MR-06';
 
@@ -357,6 +355,3 @@ export function conjureFlush(ctx: Ctx): void {
   for (const p of e.pending) p.left = 1;
   conjureBeat(ctx);
 }
-
-export { REACTIONS, effectLines };
-export type { Cost };
