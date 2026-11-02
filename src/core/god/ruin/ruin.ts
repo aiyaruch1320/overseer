@@ -9,7 +9,7 @@ import type { LocalEventsData } from '../../data/types-events';
 import { dataOf } from '../../game';
 import { activeMods, addMod, setFlag } from '../acts/mods';
 import { continentOf, countryName, flagsOf, godOf, neighboursOf } from '../acts/geo';
-import { chronicle, say } from '../acts/record';
+import { say } from '../acts/record';
 import { yearOf } from '../acts/state';
 import { geoOf } from '../../world/place';
 import { later } from '../acts/miracles';
@@ -148,7 +148,6 @@ export function makeRuin(ctx: Ctx, country: string, kind: RuinKind): RuinRec {
   e.ruins.push(rec);
   w.ruins.push({ id: kind, country, year: y });
   later(() => {
-    chronicle(ctx, { kind: 'ruin', id: kind, target: country, result: `pop:${Math.round(pop * 100)} died:${fates.died.length} fled:${fates.fled.length} closed:${closed.length}` });
     say(ctx, {
       kind: 'ruin',
       id: 'made',

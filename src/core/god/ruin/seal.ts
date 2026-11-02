@@ -9,7 +9,7 @@ import { addMood, holdEvent, moodOf, strikeCap, tablesOf } from '../../world';
 import { addMod, faithAt, setFlag } from '../acts/mods';
 import { addIntercept, countryArg, type Handler, type Intercept, type Outcome } from '../acts/miracles';
 import { continentOf, countriesOf, countryName, godOf, lifeCountry } from '../acts/geo';
-import { chronicle, say } from '../acts/record';
+import { say } from '../acts/record';
 import { ready, startCooldown, yearOf } from '../acts/state';
 import { crackStep, type CrackStrike } from './crack';
 import { ruinExt, viewRuin, type SealReply } from './state';
@@ -276,6 +276,5 @@ export function sealStep(ctx: Ctx): void {
       if (near !== null && near !== undefined) addMood(ctx, near, -5);
     } else if (dragon.awakeEvent) holdEvent(ctx, dragon.awakeEvent, 3, y + 10);
     say(ctx, { kind: 'seal', id: 'reply', data: { dragon: dragon.name, country: r.country, reply: r.kind, text: REPLY_TH[r.kind] }, level: 1 });
-    chronicle(ctx, { kind: 'seal.reply', id: dragon.name, target: r.country, result: r.kind });
   }
 }

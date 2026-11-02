@@ -5,7 +5,7 @@
 import type { Ctx } from '../../game';
 import { weighEvent } from '../../world';
 import { addMod, clearFlag, dropMods } from '../acts/mods';
-import { chronicle, say } from '../acts/record';
+import { say } from '../acts/record';
 import { continentOf, countriesOf, countryName, godOf, hasFlag, neighboursOf } from '../acts/geo';
 import { aliveNpc } from '../acts/npcs';
 import { actsOf, yearOf } from '../acts/state';
@@ -19,11 +19,10 @@ const rowOf = (ctx: Ctx, id: string) => godOf(ctx).miracles.ruin.events.find((e)
 const deed = (ctx: Ctx, kind: string, id: string, country: string, data?: Record<string, string | number | boolean | null>) =>
   actsOf(ctx.state).deeds.push({ kind, id, country, year: yearOf(ctx), ...(data ? { data } : {}) });
 
-/** Writes the event down: a line the player may read and a line of the chronicle. */
+/** Writes the event down: a line the player may read. (It is not a line of the chronicle of the hand: the hand did the miracle; this is what the world did after it, kept in `god.ext.ruin`.) */
 function told(ctx: Ctx, id: string, country: string, extra: Record<string, string | number | boolean | null> = {}): void {
   const row = rowOf(ctx, id);
   say(ctx, { kind: 'ruin', id, data: { name: row.name, country, what: row.what, ...extra }, level: 1 });
-  chronicle(ctx, { kind: 'ruin.event', id, target: country });
 }
 
 /** The refugees walk to the countries that take them, the others on the border feel it (RU-02, for a ruin and for a cracked city). */
@@ -130,7 +129,6 @@ export function ruinStep(ctx: Ctx): void {
     l.founded = y;
     addMod(ctx, { subject: 'W.set', country: l.id, add: godOf(ctx).miracles.list.find((m) => m.id === 'MR-20')?.newCountryW ?? 2, src: `land:${l.id}` });
     say(ctx, { kind: 'land', id: 'found', data: { name: l.name, beside: l.beside, country: countryName(ctx, l.beside) }, level: 1 });
-    chronicle(ctx, { kind: 'land.found', id: l.id, target: l.beside, result: l.name });
   }
   sealStep(ctx);
   peace(ctx);

@@ -121,7 +121,9 @@ describe('G5: the ruin (MR-17 · MR-18)', () => {
     // the neighbours lose 10 of their faith
     expect(neighboursOf(ctx, c).length).toBeGreaterThan(0);
     expect(st.log.some((e) => e.sys === 'god' && e.kind === 'ruin' && e.id === 'made')).toBe(true);
-    expect(st.god.chronicle.some((e) => e.kind === 'ruin')).toBe(true);
+    // the hand wrote the miracle with its result; what the world did after is the log's and `god.ext.ruin`'s, not a line of the chronicle
+    expect(st.god.chronicle.some((e) => e.kind === 'miracle' && e.id === 'MR-17' && /ซาก/.test(e.result ?? ''))).toBe(true);
+    expect(st.god.chronicle.every((e) => !/^(ruin|seal|land|wrath)/.test(e.kind))).toBe(true);
   });
 
   it('the omen can be taken back for half of the dread, and the right and the wait stay spent', () => {

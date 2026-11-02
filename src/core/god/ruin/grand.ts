@@ -5,7 +5,6 @@ import type { Ctx } from '../../game';
 import { weighEvent } from '../../world';
 import { clearFlag, addMod, faithAt, setFlag } from '../acts/mods';
 import { registerMiracle, countryArg, type Handler, type Outcome } from '../acts/miracles';
-import { chronicle } from '../acts/record';
 import { continentOf, countriesOf, countryName, godOf, hasCountry, hasFlag, lifeCountry } from '../acts/geo';
 import { lifeKey, livingOf, yearOf } from '../acts/state';
 import { addIncomeAdjust } from '../power';
@@ -202,8 +201,7 @@ registerMiracle('MR-22', {
     if (life) e.wrath = lifeKey(life);
     weighEvent(ctx, 'GD-08', { mul: w.gd08Mul });
     if (!e.followers.includes(k)) e.followers.push(k);
-    const seals = wrathOnSeals(ctx, k);
-    chronicle(ctx, { kind: 'wrath', id: 'MR-22', target: k, result: `seals:${seals.length}` });
+    wrathOnSeals(ctx, k);
     return { target: k, result: 'ฟ้ามืดเจ็ดวัน สงครามทั้งทวีปหยุดด้วยความกลัว', continent: k };
   },
 });

@@ -419,18 +419,6 @@ export function chronicleText(data: GameData, c: { kind: string; id: string; tar
       return `ลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}${target(c.target) ? ` ที่${target(c.target)}` : ''}`;
     case 'miracle.cancel':
       return `ยกเลิกลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}`;
-    case 'ruin':
-      return `ผู้คนของ${target(c.target)}ล้มตาย หนี หรืออยู่เป็นผู้นำซาก`;
-    case 'ruin.event':
-      return `เหตุการณ์ของซาก${target(c.target)}: ${items<{ miracles?: { ruin: { events: { id: string; name: string }[] } } }>(data, 'god')?.miracles?.ruin.events.find((x) => x.id === c.id)?.name ?? ''}`;
-    case 'seal.reply':
-      return `${c.id}ตอบแรงที่ตกบน${target(c.target)}`;
-    case 'seal.crack':
-      return `หมุดผนึกที่${target(c.target)}ร้าว`;
-    case 'land.found':
-      return `ผู้ตั้งรกรากมาถึง${s(c.result)}`;
-    case 'wrath':
-      return `พระพิโรธเหนือ${target(c.target)}`;
     case 'miracle': {
       const t = target(c.target) || (/^dragon:/.test(s(c.target)) ? 'มังกร' : '');
       const r = scrub(data, s(c.result)).trim();

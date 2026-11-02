@@ -5,7 +5,7 @@ import type { Ctx } from '../../game';
 import { addMod, setFlag } from '../acts/mods';
 import { godOf } from '../acts/geo';
 import { later } from '../acts/miracles';
-import { chronicle, say } from '../acts/record';
+import { say } from '../acts/record';
 import { yearOf } from '../acts/state';
 import { noteBig } from './gd08';
 import { rollPeople } from './people';
@@ -39,7 +39,6 @@ export function crackStep(ctx: Ctx, s: SealInfo, strike: CrackStrike, dragons: n
   e.cracks.push(rec);
   noteBig(ctx, 2, c);
   later(() => {
-    chronicle(ctx, { kind: 'seal.crack', id: strike.id, target: c, result: `die:${fates.died.length} flee:${fates.fled.length}` });
     say(ctx, { kind: 'seal', id: 'crack', data: { country: c, dragons: dragons.length, died: fates.died.length, fled: fates.fled.length, stayed: fates.stayed.length, left: d.pop, built: d.buildings }, level: 1 });
   });
   return `เมืองร้าว อาคารพังราว ${d.buildings}% คนเหลือ ${d.pop}%`;
