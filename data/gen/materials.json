@@ -1,0 +1,1025 @@
+{
+ "version": "d35e1bd207a3",
+ "sources": [
+  "docs/appearance/05-weapons-rules.md",
+  "docs/systems/economy/04-income-and-living.md",
+  "docs/systems/items/02-materials.md",
+  "docs/systems/items/18-materials-and-keys.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/items.ts",
+ "items": {
+  "mergeRules": [
+   {
+    "field": "ระดับ",
+    "rule": "ระดับของวัสดุ"
+   },
+   {
+    "field": "พลัง",
+    "rule": "C 1 · U 2 · R 3"
+   },
+   {
+    "field": "ค่าสถานะ",
+    "rule": "ค่าของประเภท + ค่าของวัสดุ (ค่าเดียวกันบวกกัน)"
+   },
+   {
+    "field": "แท็ก",
+    "rule": "แท็กของประเภท + แท็กของวัสดุ"
+   },
+   {
+    "field": "ความสามารถ",
+    "rule": "ความสามารถของประเภท + ความสามารถของวัสดุ"
+   },
+   {
+    "field": "หาได้",
+    "rule": "ประเทศที่มีวัสดุนั้น ซื้อได้เฉพาะระดับ C และ U ระดับ R ต้องให้ช่างตี"
+   }
+  ],
+  "variantPower": {
+   "C": 1,
+   "U": 2,
+   "R": 3
+  },
+  "materials": [
+   {
+    "id": "bronze",
+    "name": "สำริด",
+    "rarity": "C",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {},
+    "tags": [],
+    "abilities": [
+     {
+      "k": "text",
+      "text": "ไม่ขึ้นสนิม ใช้ในทะเลได้ไม่ทื่อ"
+     }
+    ],
+    "excludes": [],
+    "found": "NR ทุกประเทศ · SH-04 SH-05",
+    "look": {
+     "main": "#a8763a",
+     "second": "#6a8a6a",
+     "surface": "เหลืองส้มด้านมีสนิมเขียวที่ร่อง ไม่สะท้อนจัด",
+     "mark": "สนิมเขียวกลมที่ขอบ"
+    },
+    "src": "docs/systems/items/02-materials.md:24"
+   },
+   {
+    "id": "bone",
+    "name": "กระดูกสัตว์ใหญ่",
+    "rarity": "C",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "pow": 1,
+     "luk": -1
+    },
+    "tags": [],
+    "abilities": [
+     {
+      "k": "intimidate",
+      "text": "ข่ม"
+     }
+    ],
+    "excludes": [
+     "ปืน",
+     "เวท"
+    ],
+    "found": "MH ทุกประเทศ",
+    "look": {
+     "main": "#d8d0b0",
+     "second": "#8a7a5a",
+     "surface": "ขาวงาช้างขุ่น เป็นรูพรุนเล็ก ๆ ไม่มีประกาย",
+     "mark": "รอยร้าวเส้นผมตามเสี้ยนกระดูก"
+    },
+    "src": "docs/systems/items/02-materials.md:25"
+   },
+   {
+    "id": "rust_iron",
+    "name": "เหล็กสนิม",
+    "rarity": "C",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {},
+    "tags": [],
+    "abilities": [
+     {
+      "k": "poison",
+      "text": "พิษ (แผลติดเชื้อ)"
+     },
+     {
+      "k": "dull",
+      "text": "ทอยทื่อ 50%",
+      "n": 0.5
+     }
+    ],
+    "excludes": [
+     "เวท"
+    ],
+    "found": "MK-10 MK-14 · หลัง RL-02 ทั่วเมคาเรีย",
+    "look": {
+     "main": "#7a4a2a",
+     "second": "#4a3a30",
+     "surface": "น้ำตาลส้มขุยเกาะเป็นแผ่น ผิวหยาบเหมือนไม้ผุ",
+     "mark": "คราบสนิมไหลลงมาจากรอยต่อ"
+    },
+    "src": "docs/systems/items/02-materials.md:26"
+   },
+   {
+    "id": "steel",
+    "name": "เหล็กกล้า",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "pow": 1
+    },
+    "tags": [
+     "iron"
+    ],
+    "abilities": [
+     {
+      "k": "dull",
+      "text": "ทอยทื่อเหลือ 15%",
+      "n": 0.15
+     }
+    ],
+    "excludes": [],
+    "found": "KD ทุกประเทศ · AL-18 AL-21 · MK ทุกประเทศ",
+    "look": {
+     "main": "#8a94a4",
+     "second": "#5a6270",
+     "surface": "เทาเงินเย็น ขัดเป็นเส้นตามแนวยาว สะท้อนแสงสั้น ๆ",
+     "mark": "เส้นขัดตามยาวและรอยลับ"
+    },
+    "src": "docs/systems/items/02-materials.md:27"
+   },
+   {
+    "id": "silver",
+    "name": "เงิน",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "mag": 1
+    },
+    "tags": [
+     "silver"
+    ],
+    "abilities": [],
+    "excludes": [
+     "ปืน"
+    ],
+    "found": "AL-02 · NB-02 (ตลาดมืด) · KD-09",
+    "look": {
+     "main": "#d0d4dc",
+     "second": "#8a8e98",
+     "surface": "ขาวเงินสว่างมีแสงอมฟ้า มัวตามขอบเมื่อใช้",
+     "mark": "ผิวหมองดำตามร่องสลัก"
+    },
+    "src": "docs/systems/items/02-materials.md:28"
+   },
+   {
+    "id": "ash_steel",
+    "name": "เหล็กเถ้า",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "vit": 1
+    },
+    "tags": [],
+    "abilities": [
+     {
+      "k": "bonus",
+      "text": "ความเสียหายจากไฟ −20%",
+      "subject": "ความเสียหายจากไฟ",
+      "n": -0.2,
+      "pct": true
+     }
+    ],
+    "excludes": [],
+    "found": "KD-12 · หลัง DR-04 ทุกประเทศในทวีปเถ้า",
+    "look": {
+     "main": "#5a5a5e",
+     "second": "#8a8a86",
+     "surface": "เทาถ่านด้านมีฝุ่นเถ้าขาวเกาะตามสัน ไม่เงา",
+     "mark": "ผงเถ้าร่วงเบา ๆ ตามจังหวะ"
+    },
+    "src": "docs/systems/items/02-materials.md:29"
+   },
+   {
+    "id": "obsidian",
+    "name": "ออบซิเดียน",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "pow": 1,
+     "vit": -1
+    },
+    "tags": [],
+    "abilities": [
+     {
+      "k": "text",
+      "text": "ทอย 19 นับเป็น 20"
+     },
+     {
+      "k": "dull",
+      "text": "ทอยทื่อ 50%",
+      "n": 0.5
+     }
+    ],
+    "excludes": [
+     "โล่",
+     "ปืน",
+     "แส้"
+    ],
+    "found": "KD-09 · KD-06",
+    "look": {
+     "main": "#1a1a22",
+     "second": "#5a3a6a",
+     "surface": "ดำมันวาวเหมือนแก้ว ขอบแตกเป็นเกล็ดบางใส",
+     "mark": "ขอบใบบางเกือบโปร่งแสง"
+    },
+    "src": "docs/systems/items/02-materials.md:30"
+   },
+   {
+    "id": "coral",
+    "name": "ปะการังแข็ง",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "spd": 1
+    },
+    "tags": [
+     "water"
+    ],
+    "abilities": [
+     {
+      "k": "bonus",
+      "text": "ในน้ำหรือบนเรือ +2",
+      "subject": "ในน้ำหรือบนเรือ",
+      "n": 2,
+      "pct": false
+     }
+    ],
+    "excludes": [
+     "ปืน",
+     "เวท"
+    ],
+    "found": "NR-13 NR-06 · หลัง BIO-07 หายาก",
+    "look": {
+     "main": "#e07a5a",
+     "second": "#f0d0c0",
+     "surface": "ส้มชมพูหยาบเป็นกิ่ง มีรูเล็ก ๆ ผิวเค็มขาวเกาะ",
+     "mark": "คราบเกลือขาวตามซอก"
+    },
+    "src": "docs/systems/items/02-materials.md:31"
+   },
+   {
+    "id": "sand_glass",
+    "name": "แก้วทราย",
+    "rarity": "U",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "luk": 1
+    },
+    "tags": [
+     "light"
+    ],
+    "abilities": [
+     {
+      "k": "bonus",
+      "text": "กลางวันกลางแจ้ง +1",
+      "subject": "กลางวันกลางแจ้ง",
+      "n": 1,
+      "pct": false
+     }
+    ],
+    "excludes": [
+     "ปืน",
+     "โล่",
+     "แส้"
+    ],
+    "found": "SH-08",
+    "look": {
+     "main": "#d8c890",
+     "second": "#f0e8c0",
+     "surface": "เหลืองใสมีฟองอากาศเล็ก ๆ สะท้อนแสงอุ่น",
+     "mark": "ฟองลอยตามเส้นหลอม"
+    },
+    "src": "docs/systems/items/02-materials.md:32"
+   },
+   {
+    "id": "frost_steel",
+    "name": "เหล็กน้ำแข็ง",
+    "rarity": "R",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "pow": 1,
+     "vit": 1
+    },
+    "tags": [
+     "ice"
+    ],
+    "abilities": [
+     {
+      "k": "unbreakable",
+      "text": "ไม่ทื่อ"
+     }
+    ],
+    "excludes": [
+     "ปืน"
+    ],
+    "found": "KD-12 (ช่างอย่าง KD12-3 ฮิมาร์)",
+    "look": {
+     "main": "#a8c8e0",
+     "second": "#e8f0f8",
+     "surface": "ฟ้าขาวเย็นเกาะเป็นผลึกบาง ๆ ไม่ละลายในมือ",
+     "mark": "ไอเย็นลอยเป็นเส้นบางที่สัน"
+    },
+    "src": "docs/systems/items/02-materials.md:33"
+   },
+   {
+    "id": "rune_steel",
+    "name": "เหล็กรูน",
+    "rarity": "R",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "mag": 1,
+     "int": 1
+    },
+    "tags": [
+     "rune"
+    ],
+    "abilities": [
+     {
+      "k": "stance",
+      "text": "ท่าทีเวท +1",
+      "stance": "เวท",
+      "n": 1
+     }
+    ],
+    "excludes": [],
+    "found": "KD-04 · KD-03 ไม่ขายให้คนนอก",
+    "look": {
+     "main": "#4a5a6a",
+     "second": "#5ac0f0",
+     "surface": "เทาน้ำเงินเข้มมีรูนเรืองฟ้าเป็นเส้นวิ่งตามร่อง",
+     "mark": "รูนสว่างวาบเมื่อใช้เวท"
+    },
+    "src": "docs/systems/items/02-materials.md:34"
+   },
+   {
+    "id": "skystone",
+    "name": "ศิลาลอย",
+    "rarity": "R",
+    "groups": [
+     "โลหะ"
+    ],
+    "stats": {
+     "spd": 2
+    },
+    "tags": [],
+    "abilities": [
+     {
+      "k": "text",
+      "text": "เบา หักล้างค่า `spd` ติดลบของประเภท"
+     }
+    ],
+    "excludes": [
+     "ปืน"
+    ],
+    "found": "AZ-08 · หลัง DR-01 เศษทั่วโลก (SF-06)",
+    "look": {
+     "main": "#8a94a0",
+     "second": "#d8dce8",
+     "surface": "เทาอ่อนปนเงินเหมือนหินพรุน ลอยตัวเล็กน้อยเมื่อปล่อย",
+     "mark": "เศษหินเล็กลอยอยู่ใกล้ผิว"
+    },
+    "src": "docs/systems/items/02-materials.md:35"
+   },
+   {
+    "id": "dragon_bone",
+    "name": "กระดูกมังกรป่า",
+    "rarity": "R",
+    "groups": [
+     "โลหะ",
+     "ไม้"
+    ],
+    "stats": {
+     "pow": 1,
+     "vit": 1
+    },
+    "tags": [
+     "fire"
+    ],
+    "abilities": [
+     {
+      "k": "intimidate",
+      "text": "ข่ม (สัตว์ทุกชนิด)"
+     }
+    ],
+    "excludes": [
+     "ปืน"
+    ],
+    "found": "ดรอปจากมังกรป่า ([../combat/06-dragon-encounters.md](../combat/06-dragon-encounters.md) หัวข้อ 1)",
+    "look": {
+     "main": "#c8b898",
+     "second": "#8a2a1a",
+     "surface": "งาช้างเหลืองเข้มมีเส้นแดงเลือดหมูในเนื้อ หนาแน่นเหมือนหิน",
+     "mark": "ร้อนอุ่นเมื่อสัมผัสนาน"
+    },
+    "src": "docs/systems/items/02-materials.md:36"
+   },
+   {
+    "id": "hardwood",
+    "name": "ไม้เนื้อแข็ง",
+    "rarity": "C",
+    "groups": [
+     "ไม้"
+    ],
+    "stats": {},
+    "tags": [],
+    "abilities": [
+     {
+      "k": "text",
+      "text": "ไม่แตกเมื่อปัด"
+     },
+     {
+      "k": "dull",
+      "text": "ทอยทื่อ 15%",
+      "n": 0.15
+     }
+    ],
+    "excludes": [],
+    "found": "ทุกทวีปยกเว้น SH",
+    "look": {
+     "main": "#7a5a3a",
+     "second": "#5a3a2a",
+     "surface": "น้ำตาลเข้มลายเสี้ยวชัด ผิวขัดด้านด้วยมือ",
+     "mark": "รอยมือเว้าที่ด้าม"
+    },
+    "src": "docs/systems/items/02-materials.md:42"
+   },
+   {
+    "id": "living_wood",
+    "name": "ไม้มีชีวิต",
+    "rarity": "U",
+    "groups": [
+     "ไม้"
+    ],
+    "stats": {
+     "mag": 1
+    },
+    "tags": [
+     "#nature"
+    ],
+    "abilities": [
+     {
+      "k": "unbreakable",
+      "text": "ไม่ทื่อ (งอกซ่อมตัวเอง)"
+     }
+    ],
+    "excludes": [],
+    "found": "SV ได้จากกิ่งที่ร่วงเองเท่านั้น (กฎลำต้นห้ามตัด)",
+    "look": {
+     "main": "#5a7a3a",
+     "second": "#a8c870",
+     "surface": "เขียวมอสสดมียอดอ่อนงอกเล็ก ๆ ตามข้อ",
+     "mark": "ยอดอ่อนที่แตกใหม่ทุกฤดู"
+    },
+    "src": "docs/systems/items/02-materials.md:43"
+   },
+   {
+    "id": "lantern_wood",
+    "name": "ไม้โคม",
+    "rarity": "U",
+    "groups": [
+     "ไม้"
+    ],
+    "stats": {
+     "luk": 1
+    },
+    "tags": [
+     "light"
+    ],
+    "abilities": [
+     {
+      "k": "repel",
+      "text": "ไล่ สิ่งจากหมอก",
+      "codes": [],
+      "words": [
+       "fog"
+      ]
+     }
+    ],
+    "excludes": [],
+    "found": "NB-03",
+    "look": {
+     "main": "#c8a860",
+     "second": "#fff0b0",
+     "surface": "เหลืองอำพันโปร่งเหมือนกระดาษน้ำมัน ในเนื้อมีแสงสลัว",
+     "mark": "แสงอุ่นสั่นในเนื้อไม้"
+    },
+    "src": "docs/systems/items/02-materials.md:44"
+   },
+   {
+    "id": "withered_wood",
+    "name": "ไม้ป่าเหี่ยว",
+    "rarity": "U",
+    "groups": [
+     "ไม้"
+    ],
+    "stats": {
+     "mag": 2,
+     "luk": -1
+    },
+    "tags": [
+     "poison"
+    ],
+    "abilities": [
+     {
+      "k": "poison",
+      "text": "พิษ"
+     }
+    ],
+    "excludes": [],
+    "found": "SV-14 · หลัง BIO-02 ทั่วซิลวาเนล",
+    "look": {
+     "main": "#4a4a38",
+     "second": "#8a8a70",
+     "surface": "เทาน้ำตาลแห้งแตกระแหง ลายดำเหมือนไหม้",
+     "mark": "ผงสีเทาร่วงตามร่อง"
+    },
+    "src": "docs/systems/items/02-materials.md:45"
+   }
+  ],
+  "bio": [
+   {
+    "id": "mt_hide",
+    "name": "หนังสัตว์",
+    "rarity": "C",
+    "from": "สัตว์ป่า ฝูง (`wolf` `ash_wolf_pack`)",
+    "enemies": [
+     "wolf",
+     "ash_wolf_pack"
+    ],
+    "usedFor": "เกราะหนัง ผ้าคลุม เครื่องมือ",
+    "found": "ล่าสัตว์ทั่วโลก",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:11"
+   },
+   {
+    "id": "mt_fang",
+    "name": "เขี้ยวสัตว์",
+    "rarity": "C",
+    "from": "สัตว์ป่า",
+    "enemies": [],
+    "usedFor": "เครื่องประดับ ชิ้นส่วนอาวุธมาตรฐาน",
+    "found": "ล่าสัตว์ทั่วโลก",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:12"
+   },
+   {
+    "id": "mt_fur",
+    "name": "ขนสัตว์",
+    "rarity": "C",
+    "from": "สัตว์ป่า",
+    "enemies": [],
+    "usedFor": "ผ้าคลุมกันหนาว",
+    "found": "ล่าสัตว์ KD-12 ถิ่นหนาว",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:13"
+   },
+   {
+    "id": "mt_cursed_bone",
+    "name": "กระดูกต้องสาป",
+    "rarity": "U",
+    "from": "ผู้ตาย (`skeleton` `ghoul_horde`)",
+    "enemies": [
+     "skeleton",
+     "ghoul_horde"
+    ],
+    "usedFor": "เนโครแมนซี ไสยศาสตร์",
+    "found": "ซากเมืองเก่า สุสาน",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:14"
+   },
+   {
+    "id": "mt_corpse_dust",
+    "name": "ผงศพ",
+    "rarity": "C",
+    "from": "ผู้ตาย",
+    "enemies": [],
+    "usedFor": "ไสยศาสตร์ ยาพิษ",
+    "found": "สุสาน ทุ่งรบเก่า",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:15"
+   },
+   {
+    "id": "mt_soul_crystal",
+    "name": "ผลึกวิญญาณ",
+    "rarity": "R",
+    "from": "วิญญาณ (`wraith` `ghost_legion`)",
+    "enemies": [
+     "wraith",
+     "ghost_legion"
+    ],
+    "usedFor": "อาวุธต่อวิญญาณ พิธีกรรม เครื่องรางโบราณ (แก่นของ tm_)",
+    "found": "ซากเรือ ซากเมือง สุสาน",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:16"
+   },
+   {
+    "id": "mt_demon_horn",
+    "name": "เขาปีศาจ",
+    "rarity": "U",
+    "from": "ปีศาจ (`hellmouth_imps`)",
+    "enemies": [
+     "hellmouth_imps"
+    ],
+    "usedFor": "สัญญาปีศาจ อาวุธต้องสาป",
+    "found": "MH-09 MH-11 KD-08",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:17"
+   },
+   {
+    "id": "mt_demon_blood",
+    "name": "เลือดอสูร",
+    "rarity": "R",
+    "from": "ปีศาจ (`firedemon` `hellgate_lord`)",
+    "enemies": [
+     "firedemon",
+     "hellgate_lord"
+    ],
+    "usedFor": "สัญญาปีศาจ ยาต้องสาป",
+    "found": "KD-08 ตลาดเลือด MH-09",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:18"
+   },
+   {
+    "id": "mt_wyrm_scale",
+    "name": "เกล็ดไวเวิร์นและมังกรป่า",
+    "rarity": "R",
+    "from": "มังกรป่า (`wyvern` `firedragon` `icedragon`)",
+    "enemies": [
+     "wyvern",
+     "firedragon",
+     "icedragon"
+    ],
+    "usedFor": "เกราะทนไฟ ([12-armor.md](12-armor.md) `ar_wyrm_scale`)",
+    "found": "AZ KD-07",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:19"
+   },
+   {
+    "id": "mt_dragon_fang",
+    "name": "เขี้ยวมังกร",
+    "rarity": "E",
+    "from": "มังกรป่าที่ล้ม",
+    "enemies": [],
+    "usedFor": "อาวุธ `#dragon_bane` (ต้อง `smithing_3`) ยา `cn_dragon_blood_vial`",
+    "found": "AZ KD-07",
+    "price": 200,
+    "src": "docs/systems/items/18-materials-and-keys.md:20"
+   },
+   {
+    "id": "mt_giant_bone",
+    "name": "กระดูกยักษ์",
+    "rarity": "R",
+    "from": "ยักษ์และเศษไททัน (`titan_shard` `golem`)",
+    "enemies": [
+     "titan_shard",
+     "golem"
+    ],
+    "usedFor": "อาวุธหนัก เกราะหนังไททัน",
+    "found": "SH-03 SH-06",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:21"
+   },
+   {
+    "id": "mt_rune_core",
+    "name": "แกนรูน",
+    "rarity": "U",
+    "from": "สิ่งประดิษฐ์ (`rune_guardian` `rogue_doll`)",
+    "enemies": [
+     "rune_guardian",
+     "rogue_doll"
+    ],
+    "usedFor": "ช่างสลักรูน สัตว์คู่หูจักรกล",
+    "found": "KD-03 KD-04 MK",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:22"
+   },
+   {
+    "id": "mt_gear_part",
+    "name": "ชิ้นส่วนกลไก",
+    "rarity": "C",
+    "from": "สิ่งประดิษฐ์ (`war_automaton` `rust_swarm`)",
+    "enemies": [
+     "war_automaton",
+     "rust_swarm"
+    ],
+    "usedFor": "ช่างกล ซ่อมเครื่องมือ",
+    "found": "MK ทุกประเทศ",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:23"
+   },
+   {
+    "id": "mt_fae_dust",
+    "name": "ฝุ่นภูต",
+    "rarity": "U",
+    "from": "ภูต",
+    "enemies": [],
+    "usedFor": "เวทมายา น้ำหอม เครื่องสำอาง",
+    "found": "SV-04 SV-11",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:24"
+   },
+   {
+    "id": "mt_sap",
+    "name": "ยางไม้",
+    "rarity": "C",
+    "from": "พืช (`blighted_ent`)",
+    "enemies": [
+     "blighted_ent"
+    ],
+    "usedFor": "หมอยา เภสัชกร ครัว",
+    "found": "SV ทุกประเทศ",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:25"
+   },
+   {
+    "id": "mt_spore",
+    "name": "สปอร์",
+    "rarity": "U",
+    "from": "พืชป่วย (`spore_thrall`)",
+    "enemies": [
+     "spore_thrall"
+    ],
+    "usedFor": "ยา ยาพิษ",
+    "found": "SV-18 ถิ่นที่ BIO-10 แล้ว",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:26"
+   },
+   {
+    "id": "mt_slime_gel",
+    "name": "เจลสไลม์",
+    "rarity": "C",
+    "from": "ไร้รูป (`slime` `lava_slime`)",
+    "enemies": [
+     "slime",
+     "lava_slime"
+    ],
+    "usedFor": "ยารักษาแผล",
+    "found": "SV-12 SV-18",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:27"
+   },
+   {
+    "id": "mt_fog_ink",
+    "name": "หมึกหมอก",
+    "rarity": "R",
+    "from": "สิ่งจากรอยแยก (`fog_tentacle` `fog_weaver`)",
+    "enemies": [
+     "fog_tentacle",
+     "fog_weaver"
+    ],
+    "usedFor": "หน้ากากกรองหมอก โคมพิเศษ `cn_fog_filter`",
+    "found": "NB-09 ตลาดมืด",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:28"
+   },
+   {
+    "id": "mt_element_core",
+    "name": "แก่นธาตุ",
+    "rarity": "U",
+    "from": "ธาตุ (`dust_djinn` `magma_salamander`)",
+    "enemies": [
+     "dust_djinn",
+     "magma_salamander"
+    ],
+    "usedFor": "อาวุธธาตุ ม้วนเวท",
+    "found": "ถ้ำร้อน KD-06 SH ทะเลทราย",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:29"
+   },
+   {
+    "id": "mt_star_iron",
+    "name": "เหล็กดาว",
+    "rarity": "R",
+    "from": "หลุมดาวตกจากปาฏิหาริย์ MR-17 (RU-03)",
+    "enemies": [],
+    "usedFor": "อาวุธและเกราะที่ช่างเอกตี เครื่องรางของลัทธิหลุมดาว",
+    "found": "ซากพระเจ้า ([../god/04-miracles.md](../god/04-miracles.md) หัวข้อ 5)",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:30"
+   },
+   {
+    "id": "mt_pearl",
+    "name": "มุก",
+    "rarity": "U",
+    "from": "สัตว์ทะเล (`siren` `kraken`)",
+    "enemies": [
+     "siren",
+     "kraken"
+    ],
+    "usedFor": "เครื่องประดับ ยา ต่างหู `ac_tide_pearl`",
+    "found": "NR-04 NR-13",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:31"
+   },
+   {
+    "id": "mt_sea_tentacle",
+    "name": "หนวดทะเล",
+    "rarity": "U",
+    "from": "สัตว์ทะเล (`kraken` `hydra`)",
+    "enemies": [
+     "kraken",
+     "hydra"
+    ],
+    "usedFor": "ยา เชือกพิเศษ",
+    "found": "NR ทุกประเทศ",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:32"
+   },
+   {
+    "id": "mt_flax",
+    "name": "ป่านดิบ",
+    "rarity": "C",
+    "from": "ไร่",
+    "enemies": [],
+    "usedFor": "ผ้าลินิน เชือก",
+    "found": "AL-17 NR-09",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:33"
+   },
+   {
+    "id": "mt_wool",
+    "name": "ขนแกะ",
+    "rarity": "C",
+    "from": "ฟาร์มเลี้ยงสัตว์",
+    "enemies": [],
+    "usedFor": "ผ้าขนสัตว์ ผ้าห่ม",
+    "found": "AL-16 AL-24 ภูเขา",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:34"
+   },
+   {
+    "id": "mt_cotton",
+    "name": "ฝ้ายดิบ",
+    "rarity": "C",
+    "from": "ไร่",
+    "enemies": [],
+    "usedFor": "ผ้าฝ้าย เสื้อผ้าทั่วไป",
+    "found": "AL-05 SH-04 NR-09",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:35"
+   },
+   {
+    "id": "mt_silk",
+    "name": "ไหมดิบ",
+    "rarity": "U",
+    "from": "ฟาร์มหนอนไหม",
+    "enemies": [],
+    "usedFor": "ผ้าไหม ชุดนักบวชพิธี",
+    "found": "AL-14 NR-09",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:36"
+   },
+   {
+    "id": "mt_madder",
+    "name": "รากย้อมแดง",
+    "rarity": "C",
+    "from": "ไร่",
+    "enemies": [],
+    "usedFor": "ย้อมผ้าสีแดง",
+    "found": "AL-05 AL-14",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:37"
+   },
+   {
+    "id": "mt_indigo",
+    "name": "ครามดิบ",
+    "rarity": "C",
+    "from": "ไร่",
+    "enemies": [],
+    "usedFor": "ย้อมผ้าสีน้ำเงิน",
+    "found": "AL-05 NR-09",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:38"
+   },
+   {
+    "id": "mt_honey",
+    "name": "น้ำผึ้ง",
+    "rarity": "C",
+    "from": "รังผึ้ง",
+    "enemies": [],
+    "usedFor": "อาหาร ยาแก้ไอ ขนม",
+    "found": "AL-05 SV AL-16",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:39"
+   },
+   {
+    "id": "mt_wax",
+    "name": "ขี้ผึ้ง",
+    "rarity": "C",
+    "from": "รังผึ้ง",
+    "enemies": [],
+    "usedFor": "เทียน เครื่องรางผึ้ง `tm_f_bee_amulet`",
+    "found": "AL-05 SV",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:40"
+   },
+   {
+    "id": "mt_tea_leaf",
+    "name": "ใบชา",
+    "rarity": "U",
+    "from": "ไร่ชา",
+    "enemies": [],
+    "usedFor": "ชา เครื่องดื่มร้านน้ำชา",
+    "found": "ภูเขาอบอุ่น AL-16",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:41"
+   },
+   {
+    "id": "mt_herb_bundle",
+    "name": "สมุนไพรรวม",
+    "rarity": "C",
+    "from": "ป่าและสวน",
+    "enemies": [],
+    "usedFor": "ยาพื้นฐาน `cn_herb_poultice` `cn_antidote`",
+    "found": "ร้านสมุนไพรทุกเมือง",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:42"
+   },
+   {
+    "id": "mt_good_clay",
+    "name": "ดินเหนียวชั้นดี",
+    "rarity": "C",
+    "from": "ริมแม่น้ำ",
+    "enemies": [],
+    "usedFor": "งานปั้น ถ้วยพิธี",
+    "found": "AL-17 NR-09",
+    "price": 4,
+    "src": "docs/systems/items/18-materials-and-keys.md:43"
+   },
+   {
+    "id": "mt_moon_dew",
+    "name": "น้ำค้างจันทรา",
+    "rarity": "U",
+    "from": "คืนจันทร์เต็มดวงที่ SV-05",
+    "enemies": [],
+    "usedFor": "ยา `cn_mind_tonic` ผ้าไหมจันทรา",
+    "found": "SV-05 ลูไอลิส",
+    "price": 14,
+    "src": "docs/systems/items/18-materials-and-keys.md:44"
+   },
+   {
+    "id": "mt_ash_seed",
+    "name": "เมล็ดข้าวเถ้า",
+    "rarity": "R",
+    "from": "ไร่ข้าวเถ้า",
+    "enemies": [],
+    "usedFor": "ปลูกใน `ns_ash_rice` · ส่งต่อให้ผู้หิวโหย (cv.10)",
+    "found": "MH-06 วีซาเฮเวน",
+    "price": 65,
+    "src": "docs/systems/items/18-materials-and-keys.md:45"
+   },
+   {
+    "id": "mt_world_seed",
+    "name": "เมล็ดต้นไม้โลก",
+    "rarity": "L",
+    "from": "ต้นไม้โลก",
+    "enemies": [],
+    "usedFor": "ปลูกต้นกล้าใหม่ (BIO-03) ผู้ดูแลต้นกล้า",
+    "found": "SV-01 AL-16 AL16-1 ไบรอัน แบ็กกินส์",
+    "price": 600,
+    "src": "docs/systems/items/18-materials-and-keys.md:46"
+   }
+  ],
+  "worldLinks": [
+   "วัสดุที่ผูกกับเหตุการณ์มีหรือหายตามสถานะโลก: เหล็กเถ้าแพร่หลายหลัง DR-04 · ศิลาลอยกระจายหลัง DR-01 · ปะการังหายากหลัง BIO-07 · ไม้ป่าเหี่ยวมีมากหลัง BIO-02 · ไม้โคมกับตะเกียงขาดตลาดหลัง FG-13",
+   "ภูตพรายถืออาวุธเหล็กกล้าไม่ได้ (CR-03 ใน [../combat/02-type-matrix.md](../combat/02-type-matrix.md)) ใช้สำริด ไม้ หรือแก้วแทน",
+   "แวมไพร์ถืออาวุธเงินแล้วบาดตัวเอง (`silver` ▲ กับแวมไพร์) ทุกจังหวะที่แพ้เสีย hp เพิ่ม",
+   "เอลฟ์ที่ใช้ไม้ที่ตัดจากต้นไม้ที่ยังมีชีวิตผิดกฎลำต้น ไม้มีชีวิตจึงมาจากกิ่งร่วงเท่านั้น"
+  ]
+ }
+}
