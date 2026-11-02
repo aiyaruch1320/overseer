@@ -384,8 +384,23 @@ export interface BirthSign {
   clashesText: string;
   fx: Effect[];
 }
+/** 01-origin §1 steps 1ข 1ค 1ง: births that skip or change the ordinary draw. */
+export interface SpecialBirth {
+  id: 'summoned' | 'reincarnated' | 'doll' | 'woken';
+  race?: RaceId;
+  races?: RaceId[];
+  chance?: number; // share of the race (summoned: of humans; reincarnated: of humans born in `country`)
+  ofHumans?: number; // reincarnated: the same as a share of all humans
+  country?: CountryId;
+  age?: number; // human-equivalent age at the start
+  node?: string; // first story node
+  fromYear?: number; // world year the doll programme starts
+  skipSteps?: number[];
+  text: string;
+}
 export interface OriginFile {
   steps: { n: string; what: string; rule: string }[];
+  specialBirths: SpecialBirth[];
   raceShare: Pick<RaceId>[];
   birthplaces: Birthplace[];
   halfPairs: HalfPair[];

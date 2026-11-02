@@ -40,6 +40,7 @@ import type {
   Subline,
   SynField,
   SynonymsFile,
+  SpecialBirth,
   SynergyRule,
   SynValue,
   TagMeaning,
@@ -1401,7 +1402,46 @@ function buildOrigin(races: Race[]): OriginFile {
     weakTagAlways: /อ่อนแอ \(`#weak_\*`\) ที่ได้ 100%|#weak_\*[^ ]* ที่ได้ 100%/.test(hb) || hb.includes('100% เสมอ'),
     secondTagChance: mustNum(hb, /เผ่าที่สองได้แต่ละแท็ก (\d+)%/, 'second tag') / 100,
   };
-  return { steps, raceShare, birthplaces, halfPairs, noHalf, meetingRules, meetingPlaces, meetCauses, halfOfHalf, halfBlood, outsideRules, outsideStories, continentGifts, gender, institutions, birthSigns, birthSignWeights, halfStat };
+  // 1ข 1ค 1ง: births that skip the ordinary draw
+  const rule = (n: string) => steps.find((x) => x.n === n)!.rule;
+  const r1b = rule('1ข');
+  const r1c = rule('1ค');
+  const r1d = steps.find((x) => x.n === '1ง')!;
+  const specialBirths: SpecialBirth[] = [
+    {
+      id: 'summoned',
+      race: 'human',
+      chance: mustNum(r1b, /ผู้ถูกอัญเชิญ ([\d.]+)% ของมนุษย์/, 'summoned chance') / 100,
+      country: (r1b.match(/ปรากฏที่ (\w+-\d\d) อายุ (\d+)/) ?? [])[1] ?? '',
+      age: mustNum(r1b, /ปรากฏที่ \w+-\d\d อายุ (\d+)/, 'summoned age'),
+      node: (r1b.match(/เข้า (hu\.[bt]\d)/) ?? [])[1] ?? '',
+      skipSteps: [2, 3, 4, 5, 6],
+      text: clean(r1b.split('· ผู้กลับชาติ:')[0]),
+    },
+    {
+      id: 'reincarnated',
+      race: 'human',
+      chance: mustNum(r1b, /เป็นผู้กลับชาติ (\d+)%/, 'reincarnated chance') / 100,
+      country: (r1b.match(/ประเทศเกิด (\w+-\d\d)/) ?? [])[1] ?? '',
+      node: (r1b.match(/เข้า (hu\.b1)/) ?? [])[1] ?? '',
+      ofHumans: mustNum(r1b, /ราว ([\d.]+)% ของมนุษย์/, 'reincarnated share of humans') / 100,
+      text: clean(r1b.split('· ผู้กลับชาติ:')[1] ?? ''),
+    },
+    {
+      id: 'doll',
+      race: 'construct',
+      fromYear: mustNum(r1c.replace(/,/g, ''), /ตั้งแต่ ศ\.ม\. (\d+)/, 'doll year'),
+      node: (r1c.match(/(co\.b1)/) ?? [])[1] ?? '',
+      text: clean(r1c),
+    },
+    {
+      id: 'woken',
+      races: racesIn(r1d.what),
+      age: mustNum(r1d.rule, /อายุเทียบมนุษย์ (\d+)/, 'woken age'),
+      text: clean(r1d.rule),
+    },
+  ];
+  return { steps, specialBirths, raceShare, birthplaces, halfPairs, noHalf, meetingRules, meetingPlaces, meetCauses, halfOfHalf, halfBlood, outsideRules, outsideStories, continentGifts, gender, institutions, birthSigns, birthSignWeights, halfStat };
 }
 
 /** "`b_falcon` · `nb_sky_born` (18%)" and "`c_fireweak` (เผ่าไม่ทนไฟ 8%) · `nc_ash_cough` (10%)" → groups sharing one chance. */

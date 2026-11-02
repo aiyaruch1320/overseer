@@ -266,7 +266,7 @@ describe('character generator: references across files', () => {
     // aptitudes written in the job tables; `navigator` is not defined anywhere (reported)
     missing('job aptitudes', js.flatMap((j) => j.apts), aptIds, ['navigator', 'cunning']);
     missing('job race bonus', js.flatMap((j) => j.raceBonus), raceIds);
-    missing('job nodes', nodes.filter((n) => !/^cv\.\d+$/.test(n)), ids.nodes, ['hb.a3', 'ow.a2', 'ow.t1', 'ct.a1', 'ct.t1', 'lf.a1', 'fh.a1']);
+    missing('job nodes', nodes.filter((n) => !/^cv\.\d+$/.test(n)), ids.nodes);
     missing('job nodes cv', nodes.filter((n) => /^cv\.\d+$/.test(n)), new Set(Array.from({ length: 16 }, (_, i) => `cv.${i + 1}`)));
     const has = js.flatMap((j) => [...j.req, ...j.ban].flatMap(inJob));
     missing('required blessings', has.filter((x) => x.startsWith('blessing:')).map((x) => x.slice(9)), blessIds, ['nb_mark_*']);
