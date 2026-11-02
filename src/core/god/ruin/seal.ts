@@ -230,7 +230,7 @@ const layer: Intercept = {
       sealed: true,
       seal: { country: c, level: hit, dragons, key: s.key },
       notes,
-      ...(hit === 'big' ? { back: Math.round((m.cost.dread ?? 0) / 3) } : {}),
+      ...(hit === 'big' ? { sealBack: true } : {}),
     };
   },
 

@@ -14,6 +14,7 @@ import { crackAt, replyFor, ruinAt, ruinExt, ruinStep, sealAt, sealCountries, wO
 import { geoOf } from '../../src/core/world/place';
 import { weightOf, tablesOf } from '../../src/core/world';
 import { slotsOf } from '../../src/core/npc/types';
+import { addTie } from '../../src/core/bonds';
 import { incomeOf } from '../../src/core/god/power';
 import { test } from '../../src/core/rules';
 import { save, load } from '../../src/core/save';
@@ -78,6 +79,7 @@ describe('G5: the table', () => {
       expect(prev(r).cost, id).toEqual(m.cost.faith ? { faith: m.cost.faith } : { dread: m.cost.dread });
       expect(prev(r).tier, id).toBe(m.tier);
       expect(prev(r).wait, id).toBe(m.wait);
+      if (id === 'MR-17' || id === 'MR-18' || id === 'MR-19') expect(prev(r).back, id).toEqual({ dread: 20 }); // the survivors tell: 20, not a third
     }
   });
 
@@ -148,6 +150,30 @@ describe('G5: the ruin (MR-17 · MR-18)', () => {
     expect(rec.died.length + rec.fled.length + rec.stayed.length).toBe(here.length || rec.died.length + rec.fled.length + rec.stayed.length);
     for (const id of rec.fled) expect(slotsOf(st)[id].status).toBe('alive');
     if (rec.leader) expect(rec.stayed).toContain(rec.leader);
+  });
+
+  it('the allies of the character in the country roll the die of 25 (the others come to him); the dead are told as dead', () => {
+    let died = 0;
+    let came = 0;
+    for (let i = 0; i < 12; i++) {
+      const { g, ctx, st } = mk(70 + i);
+      const c = victim(ctx);
+      const life = st.life!;
+      const ties = [1, 2, 3, 4].map(() => addTie(ctx, life, { line: 'สหาย', level: 3, from: 'test', quiet: true, country: c, gap: 0, race: 'same' }));
+      run(ctx, { id: 'MR-17', country: c });
+      omen(g);
+      for (const t of ties) {
+        if (t.state === 'dead') died++;
+        else {
+          came++;
+          expect(t.country, 'a living ally comes to the character').toBe(life.country);
+        }
+      }
+    }
+    // 25 in a hundred die: 48 allies, about 12 dead
+    expect(died).toBeGreaterThan(3);
+    expect(died).toBeLessThan(24);
+    expect(died + came).toBe(48);
   });
 
   it('MR-18 is the lake: RU-08 takes the place of the diggers; the ruin is the same', () => {
@@ -305,6 +331,7 @@ describe('G5: the seals', () => {
     const pre = run(ctx, { id: 'MR-17', country: c }, false);
     expect(pre.ok).toBe(true);
     expect(prev(pre).sealed).toBe(true);
+    expect(prev(pre).back).toEqual({ dread: 20 }); // a third of 60 on a seal
     expect(prev(pre).seal.dragons[0].after).toBe(50);
     expect(prev(pre).seal.dragons[0].reply).toBe('protect');
     const dread = st.god.dread;

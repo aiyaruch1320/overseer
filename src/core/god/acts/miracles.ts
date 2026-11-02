@@ -205,7 +205,7 @@ export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<
   const cost = priceNow(ctx, m, h, args);
   // the blood and the dragon's provoking give back a third of the dread when they happen (01-power.md §1): the price shown is what is paid, `back` what returns
   const sealed = intercepts.map((x) => x.preview?.(ctx, m, h, args)).filter((x): x is Record<string, unknown> => !!x);
-  const sealedBack = sealed.find((x) => typeof x.back === 'number')?.back as number | undefined;
+  const sealedBack = sealed.some((x) => x.sealBack === true) ? Math.round((cost.dread ?? 0) / DESTROY_RETURN_DIV) : undefined;
   const back = sealedBack ?? (h.back ? h.back(ctx, m, args, cost) : h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread) ? Math.round((cost.dread ?? 0) / DESTROY_RETURN_DIV) : 0);
   return {
     id,
