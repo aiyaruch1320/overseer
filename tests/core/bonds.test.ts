@@ -251,6 +251,9 @@ describe('bonds: invitations (03-formation.md §3)', () => {
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10);
     t.arc = { code: 'FT-03', stage: 2, next: 99 };
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15);
+    t.arc = { code: 'FT-03', stage: 1, next: 99 };
+    expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15);
+    t.arc = { code: 'FT-03', stage: 2, next: 99 };
     t.family = true;
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15 - 15);
     t.arc = { code: 'FT-03', stage: 3, next: 99 };

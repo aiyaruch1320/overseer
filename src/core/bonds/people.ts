@@ -9,7 +9,7 @@ import { personName, peopleCode, registerName } from '../text';
 import { bondsIndex, ceilB, floorB } from './data';
 import { mirrorAxes, rowOf, slotOf } from './npcs';
 import { extOf, isLive, levelOf, reindex, tiesOf, type BondsExt, type Tie } from './state';
-import { AGE_GAP, DEATH_AGE, SAME_RACE } from './tuning';
+import { AGE_GAP, DEATH_AGE, RAPPORT, SAME_RACE } from './tuning';
 import type { LifeState } from '../types';
 
 // ---------- races ----------
@@ -98,7 +98,7 @@ export function addTie(ctx: Ctx, life: LifeState, spec: Spec): Tie {
   const tie: Tie = {
     id, name, line: spec.line, past: [], b: capB({ bound: spec.bound }, b), gratitude: spec.gratitude ?? 0, grudge: 0, known: spec.known ?? 0, trust: spec.trust ?? 0, acc: 0,
     from: spec.from, light: !!spec.light, kin: spec.kin, race: raceId, gender, country, age0, t0: ctx.state.clock.worldYear, perYear, dieAge,
-    opened: life.hAge, last: life.hAge, state: 'alive', moods: [], bound: spec.bound, peak: 0, family: age0 >= 25 && rng.chance(0.3), rapport: rng.chance(0.4),
+    opened: life.hAge, last: life.hAge, state: 'alive', moods: [], bound: spec.bound, peak: 0, family: age0 >= 25 && rng.chance(0.3), rapport: rng.chance(RAPPORT),
   };
   tie.peak = tie.b;
   e.ties[id] = tie;

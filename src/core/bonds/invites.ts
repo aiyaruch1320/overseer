@@ -27,7 +27,8 @@ export function inviteChance(ctx: Ctx, life: LifeState, t: Tie, opt: { feared?: 
   const rule = bondsIndex(ctx).data.formation.inviteChance;
   let fit = 0;
   const arc = t.arc;
-  if (arc && !arc.end && arc.stage >= 2 && arc.stage !== 3) fit += rule.compat[0].delta;
+  // his own goal helps the invitation while his story is open and not at its crisis (the fit of 03 §3 is read from the story the tie is on)
+  if (arc && !arc.end && arc.stage !== 3) fit += rule.compat[0].delta;
   if (t.rapport) fit += rule.compat[1].delta;
   if (t.gratitude >= bondsIndex(ctx).data.ties.npcAxes.gratitudeMin) fit += rule.compat[2].delta;
   let burden = 0;

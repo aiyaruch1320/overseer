@@ -26,6 +26,9 @@ export const HELP = { bGain: 8, bSmall: 2, bRefuse: -3, refusedKnowsPct: 0.5, go
 
 // ---------- who the persons are (assumptions) ----------
 
+/** Share of persons whose nature suits the character's (03 §3 "นิสัยเข้ากัน" +10 on an invite; assumption, tuned so that a level-3 friend asked to a big fight says yes 45 to 65%). */
+export const RAPPORT = 0.5;
+
 /** Share of the persons of the character's own people when the docs say "เผ่าเดียวกัน 70%" (03 §1 row 1). */
 export const SAME_RACE = 0.7;
 /** A person of the same age group: hAge gap range by line (03 §2 limits: friends ≤ 25, lovers ≤ 20, students ≥ 10 younger). */
