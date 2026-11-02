@@ -7,7 +7,7 @@
 ## 1. สรุป
 
 - ประเทศ 143 แห่ง เกิดได้โดยกำหนด (ถิ่นหลักหรือพลัดถิ่นในตารางถิ่นเกิด หรือช่อง เผ่า ของประเทศระบุเผ่านั้น) 143 แห่ง ไม่มีเผ่าใดเกิดที่นั่นเลย 0 แห่ง
-- มีโหนดเส้นเรื่องระบุรหัสประเทศ 95 แห่ง ไม่มีโหนดใดระบุ 48 แห่ง
+- มีโหนดเส้นเรื่องระบุรหัสประเทศ 90 แห่ง ไม่มีโหนดใดระบุ 53 แห่ง
 - ตัวละครหลักไปถึงได้ด้วยทางใดทางหนึ่งข้างต้นไม่ได้เลย (ไม่เกิด ไม่มีโหนด ไม่มีเส้นเดินทาง) 0 แห่ง ซึ่งถึงได้เพียงโดยเหตุการณ์หรือการเดินทางสุ่มตามกติกา [../systems/travel/01-travel-rules.md](../systems/travel/01-travel-rules.md)
 - ความสัมพันธ์ที่สองไฟล์ขัดกัน 0 คู่ · NPC ที่เผ่าไม่อยู่ในช่อง เผ่า ของประเทศ 0 ตัว · NPC ข้ามทวีปในเหตุการณ์ท้องถิ่นเขียนมือที่ไม่มีความสัมพันธ์รองรับ 0 รายการ
 
@@ -42,14 +42,14 @@
 | AZ-09 วีร์เนกา | dk wi hu | dk | - | 1 | LC-52 | 4 |
 | AZ-10 นอคโมรา | dk wi | - | - | - | LC-110 | 4 |
 | MH-01 กาธเรธ | or | be | - | - | LC-53 | 4 |
-| MH-02 ดราซาร์ | dm hu | dm kn | - | - | LC-14 | 4 |
+| MH-02 ดราซาร์ | dm hu | dm | - | - | LC-14 | 4 |
 | MH-03 อุลโมธ | gh | or gh | - | - | LC-06 | 5 |
 | MH-04 เซวาร์ธ | or be hu | be | - | - | LC-114 | 5 |
 | MH-05 นอคดรีน | dw or dm | - | - | - | LC-54 | 4 |
 | MH-06 วีซาเฮเวน | hu or dm be | hu be ho wk xc bd | 1 | - | LC-15 | 5 |
 | MH-07 เทนเซอริส | hu dm | - | - | - | LC-16 | 5 |
 | MH-08 อุลซาร์เวลล์ | dm hu | - | 1 | - | LC-118 | 4 |
-| MH-09 โมธมาร์ต | ha dm hu | dm ec ml kn | 2 | - | LC-17 LC-71 | 5 |
+| MH-09 โมธมาร์ต | ha dm hu | dm ec ml | 2 | - | LC-17 LC-71 | 5 |
 | MH-10 ทรอนกาธ | gh dm or | - | - | - | LC-120 | 4 |
 | MH-11 ซาร์ดรีน | or dm | - | - | - | LC-121 | 4 |
 | MH-12 เซร์วอร์ | gh dm | - | - | - | LC-55 | 4 |
@@ -69,7 +69,7 @@
 | NR-02 นูวาปาเล | na wi me hu | na xc | 1 | - | LC-58 | 4 |
 | NR-03 คอโมอา | sl me hu | xc | 2 | - | LC-03 | 5 |
 | NR-04 ไอทอล | me | - | - | - | LC-138 | 4 |
-| NR-05 ทอร์ตูโมอา | or me hu | sf xc kn | 3 | - | LC-23 LC-72 | 5 |
+| NR-05 ทอร์ตูโมอา | or me hu | sf xc | 3 | - | LC-23 LC-72 | 5 |
 | NR-06 เมอร์เรีย | me | wc | - | - | LC-07 LC-24 | 4 |
 | NR-07 นาคาไอล์ | na | hu nh xc | 1 | - | LC-07 | 5 |
 | NR-08 ลาโอทอล | me hu | - | - | - | LC-142 | 4 |
@@ -84,13 +84,13 @@
 | AL-01 คองคอร์เดีย | hu ha el de dw or be na dk va fa sl dm me wi gi la co so mu gh | xc | 2 | 1 | LC-26 | 4 |
 | AL-02 ลูเมียร์ | hu | hu va xc | 2 | - | LC-02 LC-27 | 4 |
 | AL-03 อัลเดอร์ฮาร์ต | hu el | - | - | - | LC-153 | 4 |
-| AL-04 เวนทาเรีย | hu | sf kn | 2 | - | LC-60 | 4 |
+| AL-04 เวนทาเรีย | hu | sf | 2 | - | LC-60 | 4 |
 | AL-05 ลาโรเซล | hu el ha | - | - | - | LC-155 | 4 |
 | AL-06 คาร์แลนด์ | hu el de dw or ha be na dk va fa sl dm me wi gi la co so mu gh | bd | - | - | LC-156 | 4 |
 | AL-07 รอสกราด | hu el de dw or ha be na dk va fa sl dm me wi gi la co so mu gh | wk | - | - | LC-61 | 4 |
-| AL-08 ฟอร์เทีย | hu | kn | 1 | - | LC-28 | 4 |
+| AL-08 ฟอร์เทีย | hu | - | 1 | - | LC-28 | 4 |
 | AL-09 เฮเธอร์วิก | hu dw ha | - | - | - | LC-159 | 4 |
-| AL-10 มาร์เชลโล | hu ha | kn | 1 | - | LC-160 | 4 |
+| AL-10 มาร์เชลโล | hu ha | - | 1 | - | LC-160 | 4 |
 | AL-11 ซาเปียนเซีย | hu el de dw or ha be na dk va fa sl dm me wi gi la co so mu gh | or sl sc xc md | 3 | 1 | LC-29 | 4 |
 | AL-12 คริสตาเลีย | hu ha be | co xc | 2 | - | LC-62 | 4 |
 | AL-13 เนออนเวย์ | hu co el de dw or ha be na dk va fa sl dm me wi gi la so mu gh | xc | 1 | - | LC-30 | 4 |
@@ -100,7 +100,7 @@
 | AL-17 เซเรเลีย | hu ha | - | - | - | LC-167 | 4 |
 | AL-18 ไรน์วอลด์ | hu gi el | - | - | - | LC-168 | 4 |
 | AL-19 นิวเฮเวน | hu gh el de dw or ha be na dk va fa sl dm me wi gi la co so mu | hu wk xc md bd ab | 2 | 1 | LC-32 LC-75 | 5 |
-| AL-20 มิสต์วอตช์ | hu dw | hu co so gh | 1 | 1 | - | 4 |
+| AL-20 มิสต์วอตช์ | hu dw | hu be wi co so gh | 1 | 1 | - | 4 |
 | AL-21 ดวาร์ฟสตาด | hu dw ha | dw | - | - | LC-171 | 5 |
 | AL-22 เซเลสเทีย | hu el ha | el be | - | 1 | - | 5 |
 | AL-23 ไวลด์มาร์ก | hu be wi | ha be xc | 2 | - | LC-33 | 5 |
@@ -114,7 +114,7 @@
 | MK-03 โนวามินด์ | so co | ha co | - | 2 | LC-08 | 5 |
 | MK-04 อาร์เคียพอร์ต | hu dw | - | - | - | LC-35 | 4 |
 | MK-05 แวร์ดาล | hu dw ha | - | - | - | LC-183 | 4 |
-| MK-06 เซฟฟอร์จ | dw ha so hu | kn | 1 | - | LC-08 LC-36 | 4 |
+| MK-06 เซฟฟอร์จ | dw ha so hu | - | 1 | - | LC-08 LC-36 | 4 |
 | MK-07 ดอร์ไซต์ | dw hu | dw | - | - | LC-185 | 4 |
 | MK-08 เฮเลนโนวา | co hu | - | - | - | LC-65 | 4 |
 | MK-09 สกายพอร์ต | ha hu | sf xc | 4 | - | LC-05 | 4 |
@@ -124,9 +124,9 @@
 | MK-13 ไซเฟอร์ | el dw hu | so | 1 | 3 | - | 4 |
 | MK-14 ครอมเฟลด์ | co hu | el | - | - | LC-192 | 4 |
 | MK-15 แอสเทรีย | co hu | so | - | - | LC-193 | 4 |
-| MK-16 รีเวนพอร์ต | or dm co hu | ha dm co ml xc kn | 4 | - | LC-08 LC-38 LC-74 | 6 |
-| SH-01 ซาร์ฮาดีน | hu | kn | 1 | 1 | LC-01 LC-39 LC-73 | 5 |
-| SH-02 อัมเมนรา | mu hu | xc kn | 1 | 1 | LC-01 | 5 |
+| MK-16 รีเวนพอร์ต | or dm co hu | ha dm co ml xc | 4 | - | LC-08 LC-38 LC-74 | 6 |
+| SH-01 ซาร์ฮาดีน | hu | - | 1 | 1 | LC-01 LC-39 LC-73 | 5 |
+| SH-02 อัมเมนรา | mu hu | xc | 1 | 1 | LC-01 | 5 |
 | SH-03 กัชมีร์ | gi hu | hu cy xc | 1 | - | LC-66 | 5 |
 | SH-04 ซุฮาบัด | hu be | be | - | - | LC-198 | 4 |
 | SH-05 ฮาซีมา | hu be | be | - | - | LC-199 | 4 |
@@ -135,7 +135,7 @@
 | SH-08 คาซิบา | hu dw | - | - | - | LC-202 | 4 |
 | SH-09 รามาดีน | hu wi | gi xc | 4 | - | LC-40 | 5 |
 | SH-10 อัลมา | be | be | - | - | LC-204 | 4 |
-| SH-11 ซาร์กัช | or | kn | - | - | LC-41 | 4 |
+| SH-11 ซาร์กัช | or | - | - | - | LC-41 | 4 |
 | SH-12 บาดาซี | hu | be | 1 | - | LC-206 | 4 |
 | SH-13 ซีมาร์ | gi hu | - | - | - | LC-207 | 4 |
 | SH-14 มาราซาร์ | mu hu | - | - | - | LC-67 | 5 |
@@ -148,7 +148,7 @@
 | SV-04 วาริเดล | el fa hu | fy | - | - | LC-68 | 6 |
 | SV-05 ลูไอลิส | el de | hu de eb xc | 1 | - | LC-216 | 5 |
 | SV-06 ธาเนล | el hu | - | - | - | LC-217 | 4 |
-| SV-07 เอนิลอร์ | el hu | md | - | - | LC-218 | 4 |
+| SV-07 เอนิลอร์ | el hu | md | - | 1 | - | 4 |
 | SV-08 ไอเลวิน | el | - | - | - | LC-219 | 4 |
 | SV-09 ลาเฟธิล | el be | hb eb lf | - | - | LC-220 | 4 |
 | SV-10 ซิลเฟลิส | el | el | - | - | LC-221 | 4 |
@@ -168,7 +168,7 @@
 | NB-06 เลซิล | de el sl hu | co | - | - | LC-235 | 4 |
 | NB-07 เมอลิน | hu | - | 1 | 1 | LC-48 | 4 |
 | NB-08 เนวานธาล | hu | hu | 1 | 1 | - | 4 |
-| NB-09 ซอร์วาน | hu el de dw or ha be na dk va fa sl dm me wi gi la co so mu gh | ec xc kn | 1 | 4 | - | 4 |
+| NB-09 ซอร์วาน | hu el de dw or ha be na dk va fa sl dm me wi gi la co so mu gh | ec xc | 1 | 4 | - | 4 |
 | NB-10 ไอซิลโนวา | co so | co so xc | 1 | 1 | - | 4 |
 | NB-11 ลูเวลิน | hu | - | 1 | - | LC-240 | 4 |
 | NB-12 เมอเนบ | hu | - | 1 | 2 | LC-49 | 4 |

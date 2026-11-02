@@ -74,18 +74,27 @@ function report(ctx: Ctx, what: 'cond' | 'effect', kind: string) {
   write(ctx.state, { sys: 'rules', kind: 'unhandled', id: key, level: 0 });
 }
 
-export function test(ctx: Ctx, c: Condition | undefined): boolean {
+export interface TestOpts {
+  /**
+   * What a `text` leaf (prose the grammar could not read, listed in scripts/codegen/accepted/) counts as.
+   * false (default): a choice or node gated by prose stays closed. true: the prose does not gate, which is how the
+   * document-level simulators treat world events whose gate is still prose (they fire at their base rate).
+   */
+  unknown?: boolean;
+}
+
+export function test(ctx: Ctx, c: Condition | undefined, opts: TestOpts = {}): boolean {
   if (!c) return true;
   switch (c.k) {
     case 'and':
-      return c.of.every((x) => test(ctx, x));
+      return c.of.every((x) => test(ctx, x, opts));
     case 'or':
-      return c.of.some((x) => test(ctx, x));
+      return c.of.some((x) => test(ctx, x, opts));
     case 'not':
-      return !test(ctx, c.of);
+      // prose under a negation stays unknown: "not unknown" must not flip into a gate
+      return c.of.k === 'text' ? (opts.unknown ?? false) : !test(ctx, c.of, opts);
     case 'text':
-      // prose the docs could not express; the generators report every one, so treat it as not met
-      return false;
+      return opts.unknown ?? false;
     case 'cmp': {
       const v = readStat(ctx, c.stat);
       if (v === undefined) return false;

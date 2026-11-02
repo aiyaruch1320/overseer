@@ -208,12 +208,12 @@ function atomsOf(s0: string, pillar: number | undefined, dragons: readonly strin
     });
   }
   take(new RegExp(`(${EV})\\s*จบด้วยการ(เปิด|ผนึก|กระจาย)(?:กุญแจ)?`, 'g'), (m) => ({ k: 'event', id: m[1], happened: true, outcome: OUTCOME_WORD[m[2]] }));
-  take(new RegExp(`(?:หลัง\\s*)?(${EV}(?:\\s*/\\s*${EV})*)(?:\\s*(?:ทาง\\s*)?([กขค])\\))?(?:\\s*(เกิดแล้ว|แล้ว|ใกล้เกิด|ใกล้|กำลังเดิน|สำเร็จ))?`, 'g'), (m) => {
+  take(new RegExp(`(?:หลัง\\s*)?(${EV}(?:\\s*/\\s*${EV})*)(?:\\s*(?:ทาง\\s*)?([กขค])\\))?(?:\\s*(เกิดแล้ว|ยังไม่เกิด|แล้ว|ใกล้เกิด|ใกล้|กำลังเดิน|สำเร็จ))?`, 'g'), (m) => {
     const list = m[1].split(/\s*\/\s*/);
     const mk = (id: string): WorldCond => ({
       k: 'event',
       id,
-      happened: true,
+      happened: m[3] !== 'ยังไม่เกิด',
       ...(m[2] ? { outcome: PATH_KEY[m[2]] } : {}),
       ...(m[3] && /ใกล้/.test(m[3]) ? { phase: 'near' as const } : m[3] === 'กำลังเดิน' ? { phase: 'running' as const } : {}),
     });
