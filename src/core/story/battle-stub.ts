@@ -1,5 +1,6 @@
-// A stand-in for the combat system (M3): a battle named by a story row is one roll, win or lose or flee, and a log entry of kind
-// `battle`. Combat takes over by registering the `battle` effect itself and removing this file's registration.
+// The seam between the story and the combat system (M3). The story registers the `battle` and `battleFor` effects and hands them to
+// `battleStub`, which calls the handler that is set. Without the combat system (src/core/combat) the handler is the stand-in below: a battle
+// named by a story row is one roll, win or lose or flee, and a log entry of kind `battle`. Importing the combat system sets its own handler.
 // A life year holds BATTLES_PER_YEAR battles at most, and an enemy is fought once a year: the battle of a node's notes and the battle of
 // the way it chose often name the same enemy (M1 review S2).
 import type { Ctx } from '../game';
@@ -28,7 +29,7 @@ function enemiesOfNotes(list: readonly Effect[], key: string, out: Set<string> =
  * data holds nothing to fight (the random enemy by place is the encounter table of the combat system, M3), so the battle does not happen
  * and the log says why (M1 review S2).
  */
-function enemiesFor(ctx: Ctx, src: EffectSource): string[] {
+export function enemiesFor(ctx: Ctx, src: EffectSource): string[] {
   const life = lifeOf(ctx);
   const node = src.id ? indexOf(ctx).nodes.get(src.id) : undefined;
   const cur = life && extOf(life).cur;
@@ -36,7 +37,19 @@ function enemiesFor(ctx: Ctx, src: EffectSource): string[] {
   return [...enemiesOfNotes(node.notes, cur.choice)];
 }
 
-export function battleStub(ctx: Ctx, enemiesIn: readonly string[], src: EffectSource, text?: string): BattleResult {
+export type BattleHandler = (ctx: Ctx, enemies: readonly string[], src: EffectSource, text?: string) => BattleResult;
+
+/** The combat system takes the battles of the story over by setting its handler. */
+export function setBattleHandler(fn: BattleHandler | null): void {
+  handler = fn ?? stubImpl;
+}
+
+/** What the story calls for a `battle` or `battleFor` effect. */
+export function battleStub(ctx: Ctx, enemies: readonly string[], src: EffectSource, text?: string): BattleResult {
+  return handler(ctx, enemies, src, text);
+}
+
+function stubImpl(ctx: Ctx, enemiesIn: readonly string[], src: EffectSource, text?: string): BattleResult {
   const life = lifeOf(ctx);
   if (!life) return 'skip';
   const ex = extOf(life);
@@ -68,3 +81,5 @@ export function battleStub(ctx: Ctx, enemiesIn: readonly string[], src: EffectSo
   });
   return result;
 }
+
+let handler: BattleHandler = stubImpl;
