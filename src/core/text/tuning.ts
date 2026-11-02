@@ -116,6 +116,8 @@ export const DEATH_TH: Record<string, string> = {
   illness: '{who}สิ้นชีวิตด้วยโรคภัย{where} เมื่ออายุ {age}',
   accident: '{who}สิ้นชีวิตจากอุบัติเหตุ{where} เมื่ออายุ {age}',
   violence: '{who}ถูกทำร้ายจนสิ้นชีวิต{where} เมื่ออายุ {age}',
+  // a death in battle is told as one, whatever story node happened to be the last of that year (M3 fix: "จากเหตุ ความรักและครอบครัว")
+  ตายในศึก: '{who}ตายในศึก{where} เมื่ออายุ {age}',
 };
 
 // ---------- the god's hand (god.ts) ----------

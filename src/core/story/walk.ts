@@ -9,8 +9,9 @@ import { apply, test, type EffectSource } from '../rules';
 import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
 import { entryWeight, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
+import { lastStand } from './laststand';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
+import { CAUSE, DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -695,7 +696,9 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
   for (const h of nodeHooks) h.after?.(ctx, n, id, key);
 
   // a way that says the character dies, dies (the data has no `death` effect for it)
-  const cause = deathOf(ctx, ix, n, key, label);
+  let cause = deathOf(ctx, ix, n, key, label);
+  // a way that dies in battle is a last fight: the hero dies in it, or lives on if he wins it (combat/story-battle.ts)
+  if (cause === CAUSE.battle && lastStand(ctx, n.id, key)) cause = undefined;
   if (cause) apply(ctx, [{ k: 'death', cause }], src);
 
   if (n.kind !== 'convergence' && n.kind !== 'fallback') followLinks(ctx, ex, ix, n);

@@ -130,7 +130,7 @@ export function forgeYear(ctx: Ctx, life: LifeState): void {
   const cur = tierOfWielded(ctx, life);
   const w = ex.wield ? catalog(ctx).weapons.get(ex.wield) : undefined;
   const mats = materialsOf(ctx, life).filter((id) => RANK[catalog(ctx).materials.get(id)?.rarity ?? 'C'] >= RANK.U);
-  const eligible = [ex.dull.length > 0, cur > 0 || fights, mats.length > 0, !!w && w.group !== 'everyday' ? !!w && !w.apt.split(/\s+/).some((a) => (life.aptitudes[a] ?? 0) > 0) : fights, false];
+  const eligible = [ex.dull.length > 0, (cur > 0 || fights) && (ex.setbacks ?? 0) > 0, mats.length > 0, !!w && w.group !== 'everyday' ? !!w && !w.apt.split(/\s+/).some((a) => (life.aptitudes[a] ?? 0) > 0) : fights, false];
   const k = rng.weighted(need.map((n, i) => (eligible[i] ? n.weight : 0)));
   if (k < 0) return;
   const material = k === 2 ? mats[0] : undefined;
@@ -157,6 +157,7 @@ export function start(ctx: Ctx, life: LifeState, cause: string, rank: number, ma
       step: 'road', weapon: w.id, smith: s.id, smithName: s.name, place: s.place, tier, kind: s.kind, cause, until: beatOf(ctx, life), price, paid: 0, trust: 0, material, since: life.hAge, slow: 0,
       trial: s.smith?.trial,
     };
+    ex.setbacks = 0;
     note(ctx, 'forge', w.id, { step: 'need', cause, tier, smith: s.name, place: s.place }, 1);
     if (self) {
       ex.forge.step = 'wait';

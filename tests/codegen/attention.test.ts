@@ -46,8 +46,8 @@ describe('attention generator: the values sim-attention.mjs uses agree with the 
     expect(sim).toContain('majorOmen: 0.06');
     expect(sim).toContain('battle: 3,');
     expect(sim).toContain('crisis: 1.5,');
-    expect(sim).toContain('const DEADLINE = { prayer: 14 / 4, omen: 2, battle: 1, crisis: 1, majorOmen: 1 }');
-    expect(A.deadlines).toEqual({ prayer: 14 / 4, omen: 2, battle: 1, crisis: 1, majorOmen: 1 });
+    expect(sim).toContain('const DEADLINE = { prayer: 14 / 4, omen: 2, battle: 2, crisis: 1, majorOmen: 1 }');
+    expect(A.deadlines).toEqual({ prayer: 14 / 4, omen: 2, battle: 2, crisis: 1, majorOmen: 1 });
   });
   it('life length and early death', () => {
     expect(sim).toContain('const LIFE_MIN = 35');

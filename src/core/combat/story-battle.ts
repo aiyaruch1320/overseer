@@ -5,11 +5,14 @@ import type { Ctx } from '../game';
 import { write } from '../log';
 import { onEffect, type EffectSource } from '../rules';
 import { indexOf } from '../story/data';
-import { extOf as storyExt } from '../story/state';
+import { extOf as storyExt, yearOf } from '../story/state';
 import type { Effect } from '../types';
+import { onLastStand } from '../story/laststand';
 import { chooseEnemies, foeOf } from './foe';
 import { admit, launch } from './launch';
 import { lifeOf } from './state';
+import { LAST_STAND, STREAM } from './tuning';
+import { warEventOf, warFoes } from './war';
 
 export type BattleResult = 'win' | 'lose' | 'flee' | 'skip';
 
@@ -56,7 +59,24 @@ export function storyBattle(ctx: Ctx, enemiesIn: readonly string[], src: EffectS
   return r.fought.word === 'win' ? 'win' : r.fought.word === 'lose' ? 'lose' : r.fought.word === 'flee' || r.fought.word === 'draw' ? 'flee' : 'skip';
 }
 
+/**
+ * The last fight of a way that dies in battle: the call `combat/prelude` goes out and the fight comes PRELUDE_BEATS beats later with no flight and no talk,
+ * a beaten hero dying in it (`lastStand`). A place in the year is taken but the cap does not stop it. Returns false when there is no foe to fight.
+ */
+export function lastStand(ctx: Ctx, node: string, choice: string): boolean {
+  const life = lifeOf(ctx);
+  if (!life) return false;
+  const ids = LAST_STAND.foes[`${node}.${choice}`] ?? [ctx.rng(STREAM.fight).pick(warFoes(warEventOf(ctx, life), life.country))];
+  const foe = foeOf(ctx, ids);
+  if (!foe) return false;
+  const y = yearOf(storyExt(life), life);
+  y.battles++;
+  y.fought.push(...foe.ids);
+  return launch(ctx, foe.ids, { kind: 'story', node, lastStand: true, talk: false, dcMod: LAST_STAND.dcMod }, true).how === 'queued';
+}
+
 export function registerStoryBattles(): void {
+  onLastStand(lastStand);
   onEffect('battle', (ctx, e, src) => void storyBattle(ctx, e.enemies, src, e.text));
   onEffect('battleFor', (ctx, e, src) => {
     const l = ctx.state.life;

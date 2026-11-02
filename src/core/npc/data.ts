@@ -80,11 +80,9 @@ export function npcIndex(ctx: Ctx): NpcIndex {
 /** The people entry of a row; a half-blood row (two people) takes the mean of the two spans as sim-npc-timeline does. */
 export function lifeOfRow(idx: NpcIndex, row: NpcRow): { lo: number; hi: number; adult: number; elder: number; rate: number; idx: number } {
   const lives = idx.file.rules.lives;
-  let i = idx.lifeOf.get(row.id);
-  if (i === undefined) {
-    i = lifeIdxOf(row, lives, idx.lifeById);
-    idx.lifeOf.set(row.id, i);
-  }
+  // only the rows of the file are kept in the index: a newcomer's id (`MH10-5`) is made by one world and means another person in the next, and the
+  // index is shared by every game made from the same data (a cache by id let the first world of a process set the lifespans of the later ones)
+  const i = idx.rows.get(row.id) === row ? (idx.lifeOf.get(row.id) ?? lifeIdxOf(row, lives, idx.lifeById)) : lifeIdxOf(row, lives, idx.lifeById);
   const a = lives[i];
   if (row.halfPeopleId && idx.lifeById.has(row.halfPeopleId)) {
     const b = lives[idx.lifeById.get(row.halfPeopleId)!];
