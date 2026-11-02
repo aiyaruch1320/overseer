@@ -2,7 +2,7 @@
 // Pure TypeScript, shared by `npm run life`, `npm run play` and the debug page.
 import { makeCtx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
-import { calendarYear, causeWord, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, scrub, unphrased } from '../../src/core/text';
+import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, scrub, unphrased } from '../../src/core/text';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
 
 /** The short tag in front of a line: which part of the game said it. */
@@ -184,24 +184,20 @@ export function summaryLines(data: GameData, state: GameState, beats: number): s
   return out;
 }
 
+/** The kinds of the chronicle in the count of the power used: what the player calls them. */
 const CHRONICLE_KIND: Record<string, string> = {
-  chest: 'หีบ',
-  'chest.open': 'เปิดหีบ',
-  'chest.pick': 'เลือกจากหีบ',
-  'chest.reroll': 'ทอยหีบใหม่',
+  'chest.pick': 'ประทาน',
   'chest.skip': 'ข้ามหีบ',
-  gift: 'ประทาน',
-  bestow: 'ประทาน',
   dream: 'ฝัน',
-  'dream.send': 'ส่งฝัน',
+  burden: 'ภาระใจ',
   whisper: 'กระซิบ',
-  prayer: 'ตอบคำอธิษฐาน',
-  'prayer.answer': 'ตอบคำอธิษฐาน',
+  'prayer.give': 'ให้ตามคำอธิษฐาน',
+  'prayer.strange': 'ให้แบบแปลก',
+  'prayer.deny': 'ปฏิเสธคำอธิษฐาน',
+  'prayer.punish': 'ลงโทษผู้ขอ',
   miracle: 'ปาฏิหาริย์',
-  decree: 'ลิขิต',
-  conjure: 'เสกตามใจ',
-  vow: 'คำปฏิญาณ',
-  'vow.pick': 'คำปฏิญาณ',
+  'miracle.omen': 'ลางปาฏิหาริย์',
+  'miracle.cancel': 'ยกเลิกลาง',
 };
 
 /**
@@ -227,9 +223,7 @@ export function godLines(data: GameData, state: GameState, policy?: string): str
   if (acts.length) {
     out.push('พงศาวดารพระหัตถ์:');
     for (const c of acts) {
-      const what = CHRONICLE_KIND[c.kind] ?? c.kind;
-      const tail = [c.target ? `ที่ ${scrub(data, c.target)}` : '', c.result ? `→ ${scrub(data, c.result)}` : ''].filter(Boolean).join(' ');
-      out.push(`  ${c.hAge !== undefined ? `อายุ ${c.hAge} · ` : ''}ศ.ม. ${calendarYear(c.worldYear).toLocaleString('en-US')} │ ${what} ${c.id}${tail ? ` ${tail}` : ''}`);
+      out.push(`  ${c.hAge !== undefined ? `อายุ ${c.hAge} · ` : ''}ศ.ม. ${calendarYear(c.worldYear).toLocaleString('en-US')} │ ${chronicleText(data, c) || CHRONICLE_KIND[c.kind] || 'พระหัตถ์'}`);
     }
   }
   return out;

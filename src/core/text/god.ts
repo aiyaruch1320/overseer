@@ -285,3 +285,63 @@ export function attentionText(data: GameData, e: LogEntry): string | null | unde
   const until = typeof d.until === 'number' ? ` · ตอบได้จนอายุ ${Math.floor(d.until)}` : '';
   return `${reason}${until}`;
 }
+
+// ---------- the chronicle of the hand ----------
+
+/** The Thai name of a miracle from its table (04-miracles.md §3). */
+export function miracleName(data: GameData, id: string): string {
+  return items<{ miracles?: { list: { id: string; name: string }[] } }>(data, 'god')?.miracles?.list.find((m) => m.id === id)?.name ?? '';
+}
+
+/** One line of `state.god.chronicle` (the hand of the god over a life) as the player reads it: what the hand did, to whom, with what result. */
+export function chronicleText(data: GameData, c: { kind: string; id: string; target?: string; result?: string }): string {
+  const name = (id: unknown) => plainName(data, id);
+  const target = (t: string | undefined) => {
+    const parts = s(t).split(/\s+/).filter(Boolean).map((x) => name(x.replace(/^[a-z]+:/, ''))).filter(Boolean);
+    return parts.join(' และ');
+  };
+  switch (c.kind) {
+    case 'chest.pick':
+      return `ประทาน ${name(c.id) || 'ของจากหีบ'}${c.result === 'warded' ? ' (พรป้องกันคำสาปไว้)' : ''}`;
+    case 'chest.skip':
+      return 'ข้ามหีบประทาน';
+    case 'dream': {
+      const r = s(c.result);
+      if (r.startsWith('sent:')) return `ส่งฝัน (ใจของเขา${r.slice(5)})`;
+      if (r === 'faded') return 'ความฝันเลือนหายก่อนถึงทางแยก';
+      const [level, outcome] = r.split(':');
+      return `ความฝันถึงทางแยก (ใจของเขา${level}): ${(OUTCOME_TH[outcome]?.plain ?? outcome).replace('ของท่าน', '')}`;
+    }
+    case 'burden':
+      return 'ภาระใจ: ท่านตอบคำถามที่เขาถามฟ้า';
+    case 'miracle.omen':
+      return `ลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}${target(c.target) ? ` ที่${target(c.target)}` : ''}`;
+    case 'miracle.cancel':
+      return `ยกเลิกลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}`;
+    case 'miracle': {
+      const t = target(c.target) || (/^dragon:/.test(s(c.target)) ? 'มังกร' : '');
+      const r = scrub(data, s(c.result)).trim();
+      return `${miracleName(data, c.id) || 'ปาฏิหาริย์'}${t ? ` ที่${t}` : ''}${r ? ` → ${r}` : ''}`;
+    }
+    case 'prayer.give':
+    case 'prayer.strange': {
+      const fx = fxPhrases(data, c.result).join(' · ');
+      const gift = c.kind === 'prayer.strange' ? name(c.result) : '';
+      return `ให้ตามคำอธิษฐาน: ${prayerName(data, c.id)}${gift ? ` (ของแปลก ${gift})` : ''}${fx ? ` → ${fx}` : ''}`;
+    }
+    case 'prayer.deny':
+      return `ปฏิเสธคำอธิษฐาน: ${prayerName(data, c.id)}`;
+    case 'prayer.punish': {
+      const fx = fxPhrases(data, c.result).join(' · ');
+      return `ลงโทษผู้ขอ: ${prayerName(data, c.id)}${fx ? ` → ${fx}` : ''}`;
+    }
+    case 'prayer.lapse':
+      return `คำอธิษฐานหมดเวลา: ${prayerName(data, c.id)}`;
+    case 'whisper': {
+      const t = target(c.target);
+      const r = s(c.result);
+      return `กระซิบ “${c.id}”${t ? ` ถึง${t}` : ''}${r ? ` (${r})` : ''}`;
+    }
+  }
+  return '';
+}

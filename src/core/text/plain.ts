@@ -162,7 +162,8 @@ export function plainName(data: GameData, id: unknown): string {
   const hit = m.get(id);
   if (hit !== undefined) return hit;
   const raw = labels(data).name.get(id);
-  const out = raw === undefined ? '' : scrub(data, raw) || raw.replace(/[A-Za-z\d.\-_]+/g, '').trim();
+  // a name the document glosses in Latin (`ราชันย์ (Ruler)`) is read without the gloss
+  const out = raw === undefined ? '' : scrub(data, raw.replace(/\s*\([A-Za-z][A-Za-z\s'-]*\)/g, '')) || raw.replace(/[A-Za-z\d.\-_]+/g, '').trim();
   m.set(id, out);
   return out;
 }
