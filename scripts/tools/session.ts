@@ -12,10 +12,12 @@ import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
 import type { GameState, LifeState, LogEntry } from '../../src/core/types';
+import { runPolicySteps, policyStepNames } from './god-hooks';
 import type { ToolNote } from './report';
 import { bearToy, resolveRace, toyDeath, type BirthRequest } from './toy-character';
 
-export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'สุ่ม'] as const;
+/** The eight policies of docs/systems/god/06-implementation.md §4 (the same names as scripts/sim/sim-god.mjs). */
+export const POLICIES = ['เงียบ', 'เมตตา', 'ลงโทษ', 'ปั้นนิสัย', 'ให้ของ', 'เก็บพลัง', 'สุ่ม', 'เร่งจบ'] as const;
 export type Policy = (typeof POLICIES)[number];
 
 /** World year the world is run to before the first life is born (ศ.ม. 10,400 + this). The middle of the first era's end. */
@@ -40,6 +42,26 @@ export interface Session {
   /** Notes for the reader of a report: which parts are stand-ins or have no effect yet. */
   notes: string[];
   opts: SessionOpts;
+}
+
+/** The policy of a session: the option, or the one a saved state kept. */
+export function policyOf(s: Session): string | undefined {
+  return s.opts.policy ?? (s.game.state.god.ext.policy as string | undefined);
+}
+
+/**
+ * Lets the god system act under the policy of the session (one call per beat, after the beat). Without a policy it does nothing,
+ * so a life without `--policy` is exactly the life of the systems alone. Returns how many policy functions were called.
+ */
+export function afterBeat(s: Session): number {
+  const policy = policyOf(s);
+  if (!policy || !s.game.state.life || s.game.state.life.dead) return 0;
+  return runPolicySteps(s.game.ctx, policy);
+}
+
+/** True when some policy function is registered (god-hooks.ts); a policy has no effect otherwise. */
+export function policyHasEffect(): boolean {
+  return policyStepNames().length > 0;
 }
 
 function withSystem(list: System[], s: System): System[] {
@@ -140,25 +162,36 @@ export function stepBeat(g: Game): LogEntry[] {
   return g.beat();
 }
 
-/** Beats until the character dies or `max` pass; returns the number of beats run. */
-export function runToDeath(g: Game, max = 4 * 400): number {
+/** Beats until the character dies or `max` pass; returns the number of beats run. `after` runs after each beat (the policy of the god). */
+export function runToDeath(g: Game, max = 4 * 400, after?: () => void): number {
   let n = 0;
   while (g.state.life && !g.state.life.dead && n < max) {
     stepBeat(g);
+    after?.();
     n++;
   }
   return n;
 }
 
-/** Beats until an entry of level 3 (the game calls the player) appears, the life ends, or `max` beats pass. */
-export function runToCall(g: Game, max = 4 * 400): { beats: number; stoppedBy: 'call' | 'death' | 'limit' } {
+/** Does this entry stop `play`? With the attention system, its `call` entries; without it, any entry of level 3 (the old rule). */
+export function isCall(g: Game, e: LogEntry): boolean {
+  return g.systems.some((s) => s.name === 'attention') ? e.sys === 'attention' && e.kind === 'call' : e.level >= 3;
+}
+
+/**
+ * Beats until the game calls the player (see `isCall`), the life ends, or `max` beats pass; returns the number of beats run
+ * and the entry that called.
+ */
+export function runToCall(g: Game, max = 4 * 400, after?: () => void): { beats: number; stoppedBy: 'call' | 'death' | 'limit'; call?: LogEntry } {
   let beats = 0;
   while (beats < max) {
     if (!g.state.life || g.state.life.dead) return { beats, stoppedBy: 'death' };
     const mark = g.state.logN;
     stepBeat(g);
+    after?.();
     beats++;
-    if (g.state.log.some((e) => e.n >= mark && e.level >= 3)) return { beats, stoppedBy: g.state.life?.dead ? 'death' : 'call' };
+    const call = g.state.log.find((e) => e.n >= mark && isCall(g, e));
+    if (call) return { beats, stoppedBy: g.state.life?.dead ? 'death' : 'call', call };
   }
   return { beats, stoppedBy: 'limit' };
 }
