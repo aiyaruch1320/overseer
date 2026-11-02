@@ -3,8 +3,8 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { loadAll } from '../../scripts/tools/node-data';
 import { Game, makeCtx, versions, type Ctx, type GameData } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
-import { MAX_NAME, VOICES } from '../../src/core/text/tuning';
-import { chronicleText, describe as say, displayLevel, fill, fxLine, fxPhrases, fxSplit, godTemplate, isIndirect, labels, leaks, lines, nameCharacter, nameTaken, pickText, questionOf, reasonText, registerName, scrub, sentence, slotsOf, spaceDigits, textSystem, unphrased, type LibLine } from '../../src/core/text';
+import { MAX_NAME, PENDING_FX_TH, VOICES } from '../../src/core/text/tuning';
+import { chronicleText, describe as say, displayLevel, fill, fxLine, fxSplit, godTemplate, hasPendingFx, isIndirect, isPendingFx, labels, leaks, lines, nameCharacter, nameTaken, pickText, questionOf, reasonText, registerName, scrub, sentence, slotsOf, spaceDigits, textSystem, unphrased, type LibLine } from '../../src/core/text';
 import type { Country, NpcsFile } from '../../src/core/data/types-npcs';
 import type { TemplatesData } from '../../src/core/data/types-text';
 import type { LifeState, LogEntry } from '../../src/core/types';
@@ -232,10 +232,10 @@ describe('text: the log in Thai', () => {
 
   it('leaves out trace entries, and an entry with no phrasing is shown plainly only to the developer', () => {
     expect(say(data, e({ level: 0, sys: 'x', kind: 'y' }))).toBeNull();
-    const tie = e({ level: 1, sys: 'bonds', kind: 'tie', id: 'FT-01' });
+    const tie = e({ level: 1, sys: 'bonds', kind: 'not-written-yet', id: 'FT-01' });
     expect(say(data, tie)).toBeNull();
-    expect(say(data, tie, { raw: true })).toContain('bonds/tie');
-    expect(unphrased(data, [tie, tie, e({ n: 3, level: 0, sys: 'x', kind: 'y' })])).toEqual({ 'bonds/tie': 2 });
+    expect(say(data, tie, { raw: true })).toContain('bonds/not-written-yet');
+    expect(unphrased(data, [tie, tie, e({ n: 3, level: 0, sys: 'x', kind: 'y' })])).toEqual({ 'bonds/not-written-yet': 2 });
     const ls = lines(data, [e({ n: 1, level: 0, sys: 'x', kind: 'y' }), e({ n: 2, level: 2, data: { what: 'meet', holder: 'มิรา', role: '', place: 'AZ-01' } })], 1);
     expect(ls).toHaveLength(1);
     expect(ls[0].year).toBe(10850);
@@ -474,39 +474,36 @@ describe('text: the hand of the god and the calls of the game', () => {
   });
 });
 
-describe('text: a prayer that needs a system not built yet is told as a promise (review M2 G6)', () => {
+describe('text: a prayer for a lover or a child is told as it happened, now that the bonds keep them (M3, was review M2 G6)', () => {
   const g = (kind: string, over: Partial<LogEntry> = {}): LogEntry => e({ sys: 'god', kind, level: 2, age: 20, ...over });
   const give = (id: string, fx: string, over: Partial<LogEntry['data']> = {}) => say(data, g('prayer.give', { id, data: { n: 5, name: 'ขอพร', price: 12, fx, npcName: 'ไอรัสวาร์', ...over } }))!;
 
-  it('never says that a lover or a child came: the words are a blessing that waits', () => {
-    const words = fxSplit(data, 'rel:+lover');
-    expect(words.done).toEqual([]);
-    expect(words.promised.join('')).toMatch(/รอโอกาส/);
-    expect(fxSplit(data, 'child').promised.join('')).toMatch(/รอโอกาส/);
-    for (const fx of ['rel:+lover', 'child', 'child hp+10']) {
-      for (const t of fxPhrases(data, fx)) expect(t).not.toMatch(/^ได้พบคนรัก$|^ได้ลูก$/);
-    }
-    // the effects that did come are told as done, the promise apart
-    expect(fxLine(data, 'hp+45 rel:+lover')).toMatch(/^ร่างกายฟื้นขึ้น \(คำมั่นที่ยังไม่เป็นจริง: .*รอโอกาส/);
+  it('says that a lover or a child came: nothing waits for a system any more', () => {
+    expect(fxSplit(data, 'rel:+lover')).toEqual({ done: ['ได้พบคนรัก'], promised: [] });
+    expect(fxSplit(data, 'child')).toEqual({ done: ['ได้ลูก'], promised: [] });
+    expect(isPendingFx('rel:+lover')).toBe(false);
+    expect(hasPendingFx('rel:+lover child')).toBe(false);
+    expect(PENDING_FX_TH).toEqual({});
+    expect(fxLine(data, 'hp+45 rel:+lover')).toBe('ร่างกายฟื้นขึ้น · ได้พบคนรัก');
+    expect(fxLine(data, 'child')).toBe('ได้ลูก');
     expect(fxLine(data, 'gold+50')).toBe('ได้ทอง 50');
   });
 
-  it('the line of the game and the chronicle both carry the promise, whichever scene is picked', () => {
+  it('the line of the game and the chronicle tell the scene of the prayer that came true, whichever scene is picked', () => {
     // a variant is picked by the content of the entry: many entries, every scene of the kind comes up
     const seen = new Set<string>();
     for (let n = 1; n < 40; n++) {
       for (const [id, fx] of [['love', 'rel:+lover'], ['heir', 'child']] as const) {
         const t = give(id, fx, { n });
         seen.add(t);
-        expect(t, t).toMatch(/คำมั่นที่ยังไม่เป็นจริง: .*รอโอกาสอยู่/);
-        expect(t, t).not.toMatch(/ได้พบคนรัก|ได้ลูก|ทารกก็ดังขึ้น|มือสองมือแตะกัน/);
+        expect(t, t).not.toMatch(/คำมั่นที่ยังไม่เป็นจริง|รอโอกาส/);
+        expect(t, t).not.toMatch(/(?:ไม่|ยัง)[^—]*\sแต่/);
         expect(leaks(t), t).toEqual([]);
       }
     }
     expect(seen.size).toBeGreaterThan(1);
     const c = chronicleText(data, { kind: 'prayer.give', id: 'love', result: 'rel:+lover' });
-    expect(c).toMatch(/คำมั่นที่ยังไม่เป็นจริง/);
-    expect(c).not.toMatch(/ได้พบคนรัก/);
+    expect(c).toBe('ให้ตามคำอธิษฐาน: ขอพบคนที่ใช่ → ได้พบคนรัก');
   });
 
   it('a granted prayer is never told with the scene of "what was asked did not come, but ..."', () => {

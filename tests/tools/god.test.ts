@@ -343,20 +343,22 @@ describe('the console: the review of M2 (words, previews, errors)', () => {
     return card;
   }
 
-  it('G6: the preview of a prayer for a lover or a child is a promise, and the scene and the chronicle say the same', () => {
+  it('G6 (M3): the preview of a prayer for a lover or a child says it will come, and the scene and the chronicle say the same', () => {
     const { g, god } = atFirstCall();
     const love = pray2(g, 'love');
     const p = said(god.handle(`answer ${love.n} ให้`));
-    expect(p).toContain('ผลที่คาด: ยังไม่เกิดผลทันที');
-    expect(p).toMatch(/คำมั่นที่ยังไม่เป็นจริง: พรให้พบคนรักรอโอกาสอยู่/);
-    expect(p).not.toContain('ได้พบคนรัก');
+    expect(p).toContain('ผลที่คาด: ได้พบคนรัก');
+    expect(p).not.toMatch(/คำมั่นที่ยังไม่เป็นจริง|ยังไม่เกิดผลทันที/);
     const done = said(god.handle('yes'));
-    expect(done).toMatch(/คำมั่นที่ยังไม่เป็นจริง/);
-    expect(done).not.toMatch(/ได้พบคนรัก|ได้ลูก/);
+    expect(done).not.toMatch(/คำมั่นที่ยังไม่เป็นจริง/);
+    // the lover is a real tie of the life now
+    expect(g.state.life!.flags).toContain('god_lover');
     const chronicle = g.state.god.chronicle.filter((c) => c.kind === 'prayer.give').map((c) => c.result);
     expect(chronicle.join()).toContain('rel:+lover');
     // the strange answer says what it is: the blessing comes, what was asked does not
     const heir = pray2(g, 'heir');
+    expect(said(god.handle(`answer ${heir.n} ให้`))).toContain('ผลที่คาด: ได้ลูก');
+    god.handle('no');
     const q = said(god.handle(`answer ${heir.n} แปลก 1`));
     expect(q).toMatch(/ของแปลกที่ให้เลือก: 1 .+ \(ระดับ.+\)/);
     expect(q).toContain('สิ่งที่ขอตรง ๆ ไม่เกิด');
