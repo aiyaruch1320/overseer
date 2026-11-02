@@ -241,7 +241,8 @@ export function endTie(ctx: Ctx, t: Tie, way: EndWay, why: string, opt: { cause?
   write(ctx.state, {
     sys: 'bonds', kind: 'end', id: t.id,
     data: { name: t.name, line: t.line, way, why, level: lv, cause: opt.cause ?? null, reason, kin: t.kin ?? null, partner: isPartner(t), spouse: !!t.spouse, age: life?.hAge ?? null, gender: t.gender },
-    level: near || (lv >= 3 && way !== 'fade') ? 1 : 0,
+    // a companion who dies, betrays or leaves is news (M3 review T3): from the level of a familiar person on, unless it is only a fading
+    level: near || lv >= 3 || (lv >= 2 && way !== 'fade') ? 1 : 0,
   });
   if (t.npc) sync(ctx, t);
 }
