@@ -101,6 +101,8 @@ export interface ChoiceX extends Omit<Choice, 'mods' | 'when' | 'effects'> {
   mods: WeightModX[];
   /** "ต้อง…": the choice cannot be taken unless this holds. */
   when?: ConditionX;
+  /** Convergence weight cells name who is favoured without a number (`ยักษ์ ×2` is a mod; `ศรัทธาโลก > 70` stays here). */
+  favours?: string;
 }
 
 // ---------- node ----------
@@ -240,6 +242,8 @@ export interface ConvergencePoint extends StoryNodeX {
   name: string;
   openRaw: string;
   open?: ConditionX;
+  /** Events named in brackets or after an arrow in the open column: what the point leads to or triggers. */
+  openFollows?: string[];
   places: string[]; // `SH-09` ...
   placesRaw: string;
   entries: NodeId[]; // from the overview table

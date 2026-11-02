@@ -181,21 +181,34 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
 const STOP = /ต้อง|มี|ผ่าน|ผู้|อาชีพ|และ|หรือ|ที่|ถ้า|ใน|เมื่อ|ทุก|ทาง|ขึ้นไป|เกิด|แล้ว|ได้|เป็น|ของ|ไม่|ยัง|จาก|เผ่า|ระดับ|ใช้|เข้า|ตรา/g;
 
 /**
- * A condition from a phrase. `และ` joins groups, `หรือ` and plain lists join alternatives. With `allowText`
- * the words that are not ids stay as a `text` condition so nothing is lost; without it only ids count.
+ * A condition from a phrase. `หรือ` joins alternatives. `mode` says what a plain list of ids means:
+ * 'and' for requirements and plain conditions ("ต้องมี A B"; `และ` is AND), 'or' for weight changes
+ * ("(A B ×2)": each one raises the weight; `และ` reads as OR). With `allowText` the words that are not
+ * ids stay as a `text` condition so nothing is lost; without it only ids count.
  */
-export function parseConditionX(text: string, ids: IdIndex, allowText = false): ConditionX | null {
-  const groups = text.split(/\s+และ\s*/).filter((g) => g.trim());
+export function parseConditionX(text: string, ids: IdIndex, allowText = false, mode: 'and' | 'or' = 'and'): ConditionX | null {
+  const groups = mode === 'and' ? text.split(/\s+และ\s*/) : [text.replace(/\s+และ\s*/g, ' ')];
   const parts: ConditionX[] = [];
-  for (const g of groups) {
-    const atoms = atomsOf(g, ids);
-    let rest = g;
-    for (const a of [...atoms].reverse()) rest = rest.slice(0, a.at) + ' ' + rest.slice(a.end);
-    const alts: ConditionX[] = atoms.map((a) => a.cond);
-    const words = rest.replace(STOP, ' ').replace(/[^฀-๿]+/g, ' ').trim();
-    if (allowText && words.length >= 3) alts.push({ k: 'text', text: rest.replace(/\s+/g, ' ').trim() });
-    if (!alts.length) continue;
-    parts.push(alts.length === 1 ? alts[0] : { k: 'or', of: alts as Condition[] });
+  for (const g of groups.filter((x) => x.trim())) {
+    const altConds: ConditionX[] = [];
+    for (const alt of g.split(/\s*หรือ\s*/).filter((x) => x.trim())) {
+      const atoms = atomsOf(alt, ids);
+      let rest = alt;
+      for (const a of [...atoms].reverse()) rest = rest.slice(0, a.at) + ' ' + rest.slice(a.end);
+      const items: ConditionX[] = atoms.map((a) => a.cond);
+      const words = rest.replace(STOP, ' ').replace(/[^฀-๿]+/g, ' ').trim();
+      const text1: ConditionX | null = allowText && words.length >= 3 ? { k: 'text', text: rest.replace(/\s+/g, ' ').trim() } : null;
+      if (!items.length && !text1) continue;
+      if (mode === 'or') {
+        const all = text1 ? [...items, text1] : items;
+        altConds.push(all.length === 1 ? all[0] : { k: 'or', of: all as Condition[] });
+      } else {
+        const all = text1 ? [...items, text1] : items;
+        altConds.push(all.length === 1 ? all[0] : { k: 'and', of: all as Condition[] });
+      }
+    }
+    if (!altConds.length) continue;
+    parts.push(altConds.length === 1 ? altConds[0] : { k: 'or', of: altConds as Condition[] });
   }
   if (!parts.length) return null;
   return parts.length === 1 ? parts[0] : { k: 'and', of: parts as Condition[] };
@@ -244,14 +257,14 @@ export function parseWeightCell(cell: string, ids: IdIndex): WeightCell {
     }
     const add = part.match(/^([+\-−]\d+)\s*(?:ถ้า\s*)?(.*)$/);
     if (add) {
-      const cond = parseConditionX(add[2], ids, true);
+      const cond = parseConditionX(add[2], ids, true, 'or');
       if (cond) out.mods.push({ cond: cond as Condition, mul: 1, add: toNum(add[1]) });
       else out.unparsed.push(part);
       continue;
     }
     const mul = part.match(/^(.*?)\s*×\s*(\d+(?:\.\d+)?)\s*(?:ถ้า\s*(.*))?$/);
     if (mul) {
-      const cond = parseConditionX([mul[1], mul[3]].filter(Boolean).join(' '), ids, true);
+      const cond = parseConditionX([mul[1], mul[3]].filter(Boolean).join(' '), ids, true, 'or');
       if (cond) out.mods.push({ cond: cond as Condition, mul: Number(mul[2]) });
       else out.unparsed.push(part);
       continue;
@@ -286,6 +299,12 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   let lead: number | undefined;
   take(/^\s*(\d+(?:\.\d+)?)%\s*(?=[ก-๿])/, (m) => {
     lead = Number(m[1]) / 100;
+  });
+
+  // "มอร์เฮเวนใช้ `ash_wolf_pack`": a variant for one continent
+  let scope: ConditionX | null = null;
+  take(new RegExp(`^(${CONTINENT_WORDS.map(([w]) => w).join('|')})ใช้\\s*`), (m) => {
+    scope = { k: 'continent', ids: [CONTINENT_WORDS.find(([w]) => w === m[1])![1] as 'AZ'] };
   });
 
   // ---- structure of the row ----
@@ -388,7 +407,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   // weight multipliers: (`freedom` ×3) · (BIO-01 แล้ว ×3)
   for (const m of seg.matchAll(/\(([^()]*?)\s*×\s*(\d+(?:\.\d+)?)\)/g)) {
     if (!rest.includes(m[0])) continue;
-    const cond = parseConditionX(m[1], ids, false);
+    const cond = parseConditionX(m[1], ids, true, 'or');
     if (cond) {
       out.mods.push({ cond: cond as Condition, mul: Number(m[2]) });
       eat(m[0]);
@@ -430,10 +449,11 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   });
 
   // jump: ข้ามไป hu.a1 เร็วขึ้นสองปี
-  const jump = rest.match(/ข้ามไป\s*([a-z]{2}\.[btaelx]\d+)(?:\s*เร็วขึ้น\s*(\S+?)\s*ปี)?/);
+  const jump = rest.match(/ข้ามไป\s*([a-z]{2}\.[btaelx]\d+)(?:\s*ทาง\s*([กขค]))?(?:\s*เร็วขึ้น\s*(\S+?)\s*ปี)?/);
   if (jump) {
-    const y = jump[2] ? (THAI_YEARS[jump[2]] ?? (Number(jump[2]) || undefined)) : undefined;
-    push(y ? { k: 'jump', to: jump[1], years: y } : { k: 'jump', to: jump[1] });
+    const y = jump[3] ? (THAI_YEARS[jump[3]] ?? (Number(jump[3]) || undefined)) : undefined;
+    // `choice` is not in the shared Effect type: "ข้ามไป el.a1 ทาง ก" also takes that choice there
+    push({ k: 'jump', to: jump[1], ...(y ? { years: y } : {}), ...(jump[2] ? { choice: THAI_KEYS[jump[2]] } : {}) } as Effect);
     eat(jump[0]);
   }
 
@@ -447,7 +467,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   // ---- bond system markers ----
   take(new RegExp(`\`?\\{([${TH}]+):([${TH}]+)@(\\d)\\}\`?`, 'g'), (m) => push({ k: 'mood', line: m[1], mood: m[2], level: Number(m[3]) }));
   take(/`(?:LC-|\{[^}]*\})?`/g, () => undefined); // template placeholders: `LC-` and empty ticks
-  take(/`([A-Z]{2,4}-\d{2,3})`/g, (m) => push({ k: 'event', id: m[1] })); // an event id written in ticks
+  take(/`((?!FT-|KN-|PR-|NF-)[A-Z]{2,4}-\d{2,3})`/g, (m) => push({ k: 'event', id: m[1] })); // an event id written in ticks
   take(/`(FT|KN|PR)-(\d{2})`(?:\s*ถึง\s*`\1-(\d{2})`)?/g, (m) => {
     const t: ExtraEffect = { k: 'template', kind: m[1] as 'FT' | 'KN' | 'PR', code: `${m[1]}-${m[2]}` };
     if (m[3]) t.to = `${m[1]}-${m[3]}`;
@@ -482,7 +502,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   take(/(?:เป็น|ครบแล้วเป็น)\s*B(\d)\b/g, (m) => push({ k: 'level', scale: 'B', values: [Number(m[1])] }));
   take(/ปีที่\s*(\d+)/g, (m) => push({ k: 'qty', n: Number(m[1]), unit: 'ปีที่' }));
   take(/(?<![ก-๿])(?:ขึ้น)?ชั้น\s*(\d)(?!\d|\s*ถึง|\s*ขึ้นไป|\s*(?:-|–)\s*\d)/g, (m) => push({ k: 'class', value: Number(m[1]) }));
-  take(/(?:น้ำหนัก\s*)?((?!NF-|FT-|KN-|PR-)[A-Z]{2,4}-\d{2})\s*([+\-−]\d+)(?![\d%])/g, (m) =>
+  take(/(?:น้ำหนัก\s*)?((?!NF-|FT-|KN-|PR-)[A-Z]{2,4}-\d{2})\s*(?:น้ำหนัก\s*)?([+\-−]\d+)(?![\d%])/g, (m) =>
     push({ k: 'eventWeight', id: m[1], delta: toNum(m[2]) }),
   );
   take(/(?:ทอย\s*)?(d\d+)?\s*DC\s*(\d+)/g, (m) => push({ k: 'check', dc: Number(m[2]), ...(m[1] ? { die: m[1] } : {}) }));
@@ -540,9 +560,14 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     eat(m[0]);
   }
   if (isBattle && (battleEnemies.length || /ศึก/.test(rest))) {
-    push({ k: 'battle', enemies: battleEnemies });
+    const words = seg.replace(/`[^`]+`/g, ' ').replace(/ศึก\s*:?/g, ' ').replace(/\s+/g, ' ').trim();
+    push({ k: 'battle', enemies: battleEnemies, ...(!battleEnemies.length && words ? { text: words } : {}) });
     rest = rest.replace(/ศึก/, ' ');
   }
+
+  take(/เปิด\s*((?!NF-|FT-|KN-|PR-|(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-)[A-Z]{2,4}-\d{2,3})/g, (m) => {
+    if (ids.events.has(m[1])) push({ k: 'event', id: m[1], open: true });
+  });
 
   // NPC ids and event ids that are still in the text are references
   for (const m of rest.matchAll(NPC)) {
@@ -563,6 +588,10 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   if (trail) {
     const then = mine.splice(0);
     mine.push({ k: 'if', cond: trail as Condition, then });
+  }
+  if (scope) {
+    const then = mine.splice(0);
+    mine.push(ext({ k: 'only', cond: scope, then: then as EffectX[] }));
   }
 
   // death with a chance: ตาย 10%
@@ -611,7 +640,8 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     if (opts.choice) {
       out.when = out.when ? ({ k: 'and', of: [out.when as Condition, reqCond as Condition] } as Condition) : reqCond;
       out.effects.push(...mine);
-    } else out.effects.push(ext({ k: 'only', cond: reqCond, then: mine as EffectX[] }));
+    } else if (!mine.length) (out.nodeWhen ??= []).push(reqCond);
+    else out.effects.push(ext({ k: 'only', cond: reqCond, then: mine as EffectX[] }));
   } else out.effects.push(...mine);
   return rest;
 }

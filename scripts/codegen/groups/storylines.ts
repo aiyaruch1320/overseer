@@ -274,7 +274,15 @@ function endingFrom(file: string, line: string, r: Row, ids: IdIndex): Ending {
 
 function linkFrom(file: string, r: Row, ids: IdIndex): Link {
   const [from, toRaw, condRaw] = r.cells;
-  const cond = parseConditionX(condRaw ?? '', ids, true) ?? undefined;
+  // "ทาง ก" or "ทาง ก หรือ ข": a choice of the node the link starts from
+  const own = (condRaw ?? '').match(/^ทาง\s*([กขค](?:\s*(?:หรือ|และ|,)\s*[กขค])*)$/);
+  const ownCond: ConditionX | undefined = own
+    ? (() => {
+        const of = (own[1].match(/[กขค]/g) ?? []).map((x) => ({ k: 'node', id: from, choice: KEY[x] }) as Condition);
+        return of.length === 1 ? of[0] : { k: 'or', of };
+      })()
+    : undefined;
+  const cond = ownCond ?? parseConditionX(condRaw ?? '', ids, true) ?? undefined;
   const l: Link = {
     from,
     to: uniq(toRaw.match(/cv\.\d+|[a-z]{2}\.[btaelx]\d+/g) ?? []),
@@ -349,9 +357,10 @@ function allyArcs(file: string, group: AllyArc['group'], ids: IdIndex): AllyArc[
       });
     }
     const intro2 = intro;
-    const evs = uniq([...intro2.matchAll(/เหตุ\s+((?:`[A-Z]{2}-\d+`\s*)+)/g)].flatMap((m) => [...m[1].matchAll(/`([^`]+)`/g)].map((x) => x[1])));
-    const wev = uniq([...intro2.matchAll(/โลก\s+((?:`[A-Z]{2,4}-\d+`\s*)+)/g)].flatMap((m) => [...m[1].matchAll(/`([^`]+)`/g)].map((x) => x[1])));
-    const rel2 = intro2.match(/NPC ที่เกี่ยว\s+(.+)$/);
+    const plain = intro2.replace(/\[[^\]]*\]\([^)]*\)/g, ' ');
+    const evs = uniq([...plain.matchAll(/เหตุ\s+((?:`[A-Z]{2}-\d+`\s*)+)/g)].flatMap((m) => [...m[1].matchAll(/`([^`]+)`/g)].map((x) => x[1])));
+    const wev = uniq([...plain.matchAll(/โลก\s+((?:`[A-Z]{2,4}-\d+`\s*)+)/g)].flatMap((m) => [...m[1].matchAll(/`([^`]+)`/g)].map((x) => x[1])));
+    const rel2 = plain.match(/NPC ที่เกี่ยว\s+(.+)$/);
     const related = rel2 ? uniq(rel2[1].match(/[A-Z]{2}\d{2}-\d/g) ?? []) : [];
     for (const s of steps) for (const m of s.text.matchAll(/\{[^}]*\}/g)) if (!moodsOf(m[0]).length) unparsed.add(file, i + 1, m[0], 'mood marker not in {สาย:อารมณ์@ระดับ} form');
     arcs.push({
@@ -375,6 +384,21 @@ function allyArcs(file: string, group: AllyArc['group'], ids: IdIndex): AllyArc[
 }
 
 // ---------- convergence ----------
+
+/**
+ * "เปิดเมื่อ" of the overview table. The ids named before an arrow or outside the brackets open the point
+ * (any of them); ids in brackets or after → are the events it leads to. `ยุค N` is an era gate.
+ */
+function openFrom(raw: string, ids: IdIndex): { open?: ConditionX; follows: string[] } {
+  const follows = uniq([...raw.matchAll(/\(([^)]*)\)|→\s*([^·]*)/g)].flatMap((m) => (m[1] ?? m[2] ?? '').match(/\b[A-Z]{2,4}-\d{2}\b/g) ?? []));
+  const head = raw.replace(/\([^)]*\)/g, ' ').replace(/→[^·]*/g, ' ');
+  const evs = uniq(head.match(/\b[A-Z]{2,4}-\d{2}\b/g) ?? []).filter((e) => ids.events.has(e));
+  const era = head.match(/ยุค\s*(\d)/);
+  const of: Condition[] = evs.map((e) => ({ k: 'event', id: e, happened: true }));
+  if (era) of.push({ k: 'era', min: Number(era[1]) });
+  const open: ConditionX | undefined = of.length === 0 ? undefined : of.length === 1 ? of[0] : { k: 'or', of };
+  return { ...(open ? { open } : {}), follows: follows.filter((e) => ids.events.has(e)) };
+}
 
 function convergence(ids: IdIndex): ConvergenceData {
   const file = `${DIR}/00-convergence.md`;
@@ -405,7 +429,7 @@ function convergence(ids: IdIndex): ConvergenceData {
       const ch: ChoiceX = { key: KEY[km[1]], weight: w.weight ?? 0, label: km[2], effects: p.effects as EffectX[], mods: w.mods };
       const when = [w.when, p.when].filter(Boolean) as ConditionX[];
       if (when.length) ch.when = when.length === 1 ? when[0] : { k: 'and', of: when as Condition[] };
-      if (w.note) (ch as ChoiceX & { favours?: string }).favours = w.note;
+      if (w.note) ch.favours = w.note;
       choices.push(ch);
     }
     // prose around the table: intro above, then ศึก: / ผลตามเผ่า: / ทางเข้าเพิ่ม below
@@ -425,7 +449,7 @@ function convergence(ids: IdIndex): ConvergenceData {
     }
     const bp = parseCell(battleText, ids, { battle: true, notes: true });
     reportUnparsed({ file }, start + 1, `${id} ศึก`, bp.unparsed);
-    const open = parseConditionX(m[2] ?? '', ids, true) ?? undefined;
+    const { open, follows } = openFrom(m[2] ?? '', ids);
     const point: ConvergencePoint = {
       id,
       line: 'cv',
@@ -456,6 +480,7 @@ function convergence(ids: IdIndex): ConvergenceData {
       point.open = open;
       point.when = open;
     }
+    if (follows.length) point.openFollows = follows;
     points.push(point);
   }
   // section 3: the generic stand-in when a convergence is closed

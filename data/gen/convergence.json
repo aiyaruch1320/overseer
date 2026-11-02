@@ -120,7 +120,8 @@
        },
        {
         "k": "event",
-        "id": "WR-22"
+        "id": "WR-22",
+        "open": true
        }
       ],
       "mods": [
@@ -230,53 +231,19 @@
      "npc_bandit"
     ],
     "open": {
-     "k": "or",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "SF-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "SF-04",
-       "happened": true
-      },
-      {
-       "k": "text",
-       "text": "แล้ว ( ถึง )"
-      }
-     ]
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
     },
     "when": {
-     "k": "or",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "SF-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "SF-04",
-       "happened": true
-      },
-      {
-       "k": "text",
-       "text": "แล้ว ( ถึง )"
-      }
-     ]
-    }
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
+    "openFollows": [
+     "SF-01",
+     "SF-04"
+    ]
    },
    {
     "id": "cv.2",
@@ -352,7 +319,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ป้องกันการลอบสังหาร ชนะ → PO-08 ไม่เกิดในทศวรรษนี้ น้ำหนัก WR-14 −30"
        }
       ],
       "mods": []
@@ -414,7 +382,8 @@
      },
      {
       "k": "battle",
-      "enemies": []
+      "enemies": [],
+      "text": "หลัง DR-07 สภาอยู่ริมเหว (RF-04) และ เกิดบนสะพาน"
      },
      {
       "k": "event",
@@ -553,11 +522,13 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "หลายจังหวะ"
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ฉายาจาก"
        },
        {
         "k": "wound",
@@ -656,7 +627,8 @@
      },
      {
       "k": "battle",
-      "enemies": []
+      "enemies": [],
+      "text": "ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะ ระดับหัวหน้าขึ้นไป"
      },
      {
       "k": "stat",
@@ -766,9 +738,18 @@
        "k": "or",
        "of": [
         {
-         "k": "country",
-         "ids": [
-          "AL-11"
+         "k": "and",
+         "of": [
+          {
+           "k": "country",
+           "ids": [
+            "AL-11"
+           ]
+          },
+          {
+           "k": "text",
+           "text": "ความรู้จาก"
+          }
          ]
         },
         {
@@ -776,10 +757,6 @@
          "ids": [
           "SV-07"
          ]
-        },
-        {
-         "k": "text",
-         "text": "ความรู้จาก หรือ"
         }
        ]
       }
@@ -940,10 +917,6 @@
        "k": "event",
        "id": "FG-14",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "(เกิดแล้วตั้งแต่ต้นเรื่อง ศ.ม. 10,388) ·"
       }
      ]
     },
@@ -969,10 +942,6 @@
        "k": "event",
        "id": "FG-14",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "(เกิดแล้วตั้งแต่ต้นเรื่อง ศ.ม. 10,388) ·"
       }
      ]
     }
@@ -1067,12 +1036,13 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ใหญ่"
        },
        {
         "k": "if",
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "event",
@@ -1258,7 +1228,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "กับผู้ลักลอบและหุ่นบริษัท"
        },
        {
         "k": "trust",
@@ -1536,7 +1507,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "กับผู้ขโมย"
        },
        {
         "k": "grant",
@@ -1682,7 +1654,8 @@
      },
      {
       "k": "battle",
-      "enemies": []
+      "enemies": [],
+      "text": "หลัง DR-05 จุดนี้เปลี่ยนเป็น DW-03 (เงือกขึ้นบก นาคาลงทะเล) และ เปลี่ยนเป็นแย่งชายฝั่ง"
      },
      {
       "k": "event",
@@ -1736,17 +1709,9 @@
        "happened": true
       },
       {
-       "k": "era",
-       "min": 1
-      },
-      {
        "k": "event",
        "id": "WR-20",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "ใกล้เกิด ( –2) ·"
       }
      ]
     },
@@ -1759,17 +1724,9 @@
        "happened": true
       },
       {
-       "k": "era",
-       "min": 1
-      },
-      {
        "k": "event",
        "id": "WR-20",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "ใกล้เกิด ( –2) ·"
       }
      ]
     }
@@ -1816,7 +1773,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ใหญ่"
        },
        {
         "k": "event",
@@ -1894,7 +1852,8 @@
      },
      {
       "k": "battle",
-      "enemies": []
+      "enemies": [],
+      "text": "ถ้า AS-05 เกิด เพิ่มลูกมังกรลาวาแบบมังกรป่า ( )"
      },
      {
       "k": "event",
@@ -1951,21 +1910,6 @@
        "k": "event",
        "id": "DR-04",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-02",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-03",
-       "happened": true
       }
      ]
     },
@@ -1981,24 +1925,14 @@
        "k": "event",
        "id": "DR-04",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-02",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "AS-03",
-       "happened": true
       }
      ]
-    }
+    },
+    "openFollows": [
+     "AS-01",
+     "AS-02",
+     "AS-03"
+    ]
    },
    {
     "id": "cv.9",
@@ -2019,7 +1953,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "กับหุ่นรบบริษัท"
        },
        {
         "k": "place",
@@ -2244,20 +2179,6 @@
        "k": "event",
        "id": "MC-04",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "RL-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "RL-03",
-       "happened": true
-      },
-      {
-       "k": "text",
-       "text": "หรือ ( ถึง )"
       }
      ]
     },
@@ -2273,23 +2194,13 @@
        "k": "event",
        "id": "MC-04",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "RL-01",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "RL-03",
-       "happened": true
-      },
-      {
-       "k": "text",
-       "text": "หรือ ( ถึง )"
       }
      ]
-    }
+    },
+    "openFollows": [
+     "RL-01",
+     "RL-03"
+    ]
    },
    {
     "id": "cv.10",
@@ -2356,12 +2267,8 @@
         "delta": 5
        },
        {
-        "k": "event",
-        "id": "WR-03"
-       },
-       {
-        "k": "stat",
-        "stat": "น้ำหนัก",
+        "k": "eventWeight",
+        "id": "WR-03",
         "delta": 20
        },
        {
@@ -2514,11 +2421,6 @@
        "k": "event",
        "id": "DM-11",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "HP-07",
-       "happened": true
       }
      ]
     },
@@ -2534,14 +2436,12 @@
        "k": "event",
        "id": "DM-11",
        "happened": true
-      },
-      {
-       "k": "event",
-       "id": "HP-07",
-       "happened": true
       }
      ]
-    }
+    },
+    "openFollows": [
+     "HP-07"
+    ]
    },
    {
     "id": "cv.11",
@@ -2563,7 +2463,7 @@
        {
         "k": "if",
         "cond": {
-         "k": "or",
+         "k": "and",
          "of": [
           {
            "k": "race",
@@ -2640,7 +2540,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ขวาง → กับเศษไททันเพื่อปกป้องมนุษย์"
        }
       ],
       "mods": []
@@ -2854,7 +2755,8 @@
       "effects": [
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "กับภาพลวง"
        },
        {
         "k": "npc",
@@ -3147,7 +3049,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "ระดับบอสกับแม่ทัพปีศาจ"
        }
       ],
       "mods": [
@@ -3183,7 +3086,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "กับผู้กล้า"
        }
       ],
       "mods": [
@@ -3351,11 +3255,6 @@
       },
       {
        "k": "event",
-       "id": "DM-04",
-       "happened": true
-      },
-      {
-       "k": "event",
        "id": "DM-05",
        "happened": true
       },
@@ -3376,11 +3275,6 @@
       },
       {
        "k": "event",
-       "id": "DM-04",
-       "happened": true
-      },
-      {
-       "k": "event",
        "id": "DM-05",
        "happened": true
       },
@@ -3390,7 +3284,10 @@
        "happened": true
       }
      ]
-    }
+    },
+    "openFollows": [
+     "DM-04"
+    ]
    },
    {
     "id": "cv.15",
@@ -3416,7 +3313,8 @@
        },
        {
         "k": "battle",
-        "enemies": []
+        "enemies": [],
+        "text": "หลายครั้งตามทาง"
        }
       ],
       "mods": [
@@ -3596,17 +3494,7 @@
       },
       {
        "k": "event",
-       "id": "FG-07",
-       "happened": true
-      },
-      {
-       "k": "event",
        "id": "FG-11",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "DV-02",
        "happened": true
       }
      ]
@@ -3626,21 +3514,15 @@
       },
       {
        "k": "event",
-       "id": "FG-07",
-       "happened": true
-      },
-      {
-       "k": "event",
        "id": "FG-11",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "DV-02",
        "happened": true
       }
      ]
-    }
+    },
+    "openFollows": [
+     "FG-07",
+     "DV-02"
+    ]
    },
    {
     "id": "cv.16",
@@ -3705,7 +3587,7 @@
          "k": "and",
          "of": [
           {
-           "k": "or",
+           "k": "and",
            "of": [
             {
              "k": "cmp",
@@ -3785,91 +3667,20 @@
      "leviathan"
     ],
     "open": {
-     "k": "and",
-     "of": [
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "era",
-         "min": 4
-        },
-        {
-         "k": "event",
-         "id": "END-10",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "END-11",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "END-12",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "LE-11",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "(ผลสู่ ผ่าน"
-        }
-       ]
-      },
-      {
-       "k": "event",
-       "id": "WR-15",
-       "happened": true
-      }
-     ]
+     "k": "era",
+     "min": 4
     },
     "when": {
-     "k": "and",
-     "of": [
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "era",
-         "min": 4
-        },
-        {
-         "k": "event",
-         "id": "END-10",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "END-11",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "END-12",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "LE-11",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "(ผลสู่ ผ่าน"
-        }
-       ]
-      },
-      {
-       "k": "event",
-       "id": "WR-15",
-       "happened": true
-      }
-     ]
-    }
+     "k": "era",
+     "min": 4
+    },
+    "openFollows": [
+     "END-10",
+     "END-11",
+     "END-12",
+     "LE-11",
+     "WR-15"
+    ]
    }
   ],
   "fallback": {
@@ -3891,7 +3702,8 @@
      "effects": [
       {
        "k": "battle",
-       "enemies": []
+       "enemies": [],
+       "text": "บุกหมู่บ้านตาม"
       },
       {
        "k": "trust",
