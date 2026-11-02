@@ -250,7 +250,8 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
     if (result === 'lose') {
       const floor = Math.round(hero.maxHp * AFTER_LOSS_HP);
       if (hp < floor) hp = floor;
-      wounds.push(...rollWound(ctx, hero, foe, opts.node, opts.kind === 'war'));
+      // a duel with a yield rule leaves no permanent wound (04 §2 "ดวล", 07 §3 the rows of duels)
+      if (opts.kind !== 'duel') wounds.push(...rollWound(ctx, hero, foe, opts.node, opts.kind === 'war'));
     }
     if (killed && opts.loot !== false) loot.push(...lootFor(ctx, hero, foe, flawless, opts.node));
     if (result === 'talk') loot.push(...quietReward(ctx, hero, foe, 'talk', opts.node));

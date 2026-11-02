@@ -57,6 +57,12 @@ export function openChance(c: Clash): number | null {
 
 const outcomeOf = (c: Clash, kind: string): ClashOutcome | undefined => c.outcomes.find((o) => o.kind === kind);
 
+/**
+ * Four clashes write the killing blow as a row with no standard kind (`ล้ม (ฆ่า)`): the NPC yields as a rule and the kill is a deed the hero
+ * must insist on (a duel to the death accepted), with its own effects (`c_infamous` ...). Not a row the hero lands in by winning.
+ */
+const killRow = (c: Clash): ClashOutcome | undefined => c.outcomes.find((o) => !o.kind && /^ล้ม/.test(o.outcome));
+
 /** A talk outcome with a key in brackets (`เจรจา (รับปากปกป้อง)`) cannot be chosen without the key (07 §3.1). */
 const needsKey = (o: ClashOutcome | undefined): boolean => !!o && /\(.+\)/.test(o.outcome);
 
@@ -86,8 +92,9 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
   const key = o.talkKey ?? (needsKey(talkOutcome) ? rng.chance(TALK_KEY_CHANCE) : true);
   const hasKill = !!outcomeOf(c, 'win_kill');
   const hasSpare = !!outcomeOf(c, 'win_spare');
+  const special = !hasKill && !!killRow(c);
   const kindAxis = (life.ext.character as { axes?: { kind?: number } } | undefined)?.axes?.kind ?? 0;
-  const spareIntent = hasSpare && (!hasKill || rng.chance(Math.max(0, Math.min(1, SPARE.base + (kindAxis / 100) * SPARE.perKind))));
+  const spareIntent = special && o.toDeath ? false : hasSpare && (!hasKill || rng.chance(Math.max(0, Math.min(1, SPARE.base + (kindAxis / 100) * SPARE.perKind))));
   const duel = DUEL_STYLE.test(c.style) && !o.toDeath;
   const ambush: FightOpts['ambush'] = o.ambush ?? (o.knows ? 'hero' : opener === 'X' || opener === 'S' ? 'foe' : undefined);
   const { opener: _opener, knows: _knows, talkKey: _key, toDeath: _death, ...rest } = o;
@@ -103,6 +110,8 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
     spare: spareIntent,
     ambush,
   };
+  // the call of a fight with a name (07-attention.md §2): a clash is announced the beat it is fought
+  write(ctx.state, { sys: 'combat', kind: 'prelude', id: c.npc, data: { enemies: c.npc, foe: foe.name, tier: foe.tier, node: c.id, kind: opts.kind ?? 'clash', text: null }, level: 2 });
   const f = resolve(ctx, foe, opts);
   ext.clashes[c.npc] = { n: (seen?.n ?? 0) + 1, last: ext.tick, result: f.result === 'lose' || f.result === 'flee' ? 'lose' : f.result === 'draw' ? 'draw' : f.result };
 
@@ -111,7 +120,7 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
   switch (f.result) {
     case 'win':
     case 'flawless':
-      kind = spareIntent ? 'win_spare' : hasKill ? 'win_kill' : 'win_spare';
+      kind = spareIntent ? 'win_spare' : hasKill || special ? 'win_kill' : 'win_spare';
       break;
     case 'talk':
     case 'tame':
@@ -125,7 +134,7 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
       kind = 'lose';
       break;
   }
-  const row = kind ? outcomeOf(c, kind) : undefined;
+  const row = kind ? (outcomeOf(c, kind) ?? (kind === 'win_kill' ? killRow(c) : undefined)) : undefined;
   let applied = 0;
   if (row) {
     for (const e of row.effects) {

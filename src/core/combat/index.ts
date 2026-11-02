@@ -57,6 +57,17 @@ export function dreamStance(ctx: Ctx, stance: string, years = 1): boolean {
   return true;
 }
 
+/** Fights whose call went out and that wait for their day (for the god's card and the screens): the foe, the tier and the beats left. */
+export function pendingFights(ctx: Ctx): { enemies: string[]; foe: string; tier: string; in: number }[] {
+  const life = lifeOf(ctx);
+  if (!life) return [];
+  const ext = extOf(life);
+  return ext.pending.flatMap((p) => {
+    const foe = foeOf(ctx, p.enemies);
+    return foe ? [{ enemies: p.enemies, foe: foe.name, tier: foe.tier, in: Math.max(0, p.due - ext.tick) }] : [];
+  });
+}
+
 // ---------- the story's battles ----------
 
 setBattleHandler((ctx, enemiesIn, src, text) => {

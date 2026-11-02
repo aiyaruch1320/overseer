@@ -66,8 +66,7 @@ export function chanceOf(ctx: Ctx, life: LifeState): number {
   }
   let world = 1;
   for (const r of activeRows(ctx, life)) world *= r.mult;
-  const flags = ctx.state.world.countryFlags[life.country] ?? [];
-  if (flags.includes('golden') || flags.includes('festival')) world *= 0.6;
+  // the golden age and the festival (×0.6) are rows of the same table (04 §3)
   return Math.max(0, p * Math.min(WORLD_MUL_CAP, world));
 }
 
