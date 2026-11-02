@@ -1,4 +1,9 @@
 // The `--llm` flag of the test tools (scripts/tools/llm.ts): no flag, no LLM; `fake` is the offline provider; `deepseek` and `anthropic` are built only on request and never call here.
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, rmSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { runLifeReport, runLifeReportLlm } from '../../scripts/tools/life-run';
 import { llmFromArgs, sayLines, summarizeDeath, summaryInputOf, summaryReport } from '../../scripts/tools/llm';
@@ -8,6 +13,7 @@ import { cardOf } from '../../src/core/ending';
 import type { GameData } from '../../src/core/game';
 import { fakeLlm } from '../../src/core/llm';
 
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let data: GameData;
 beforeAll(() => {
   data = loadAll();
@@ -74,6 +80,20 @@ describe('tool flag --llm', () => {
     expect(llmFromArgs({ llm: 'deepseek', 'llm-cache': '/nonexistent/none.json' }, { DEEPSEEK_API_KEY: 'k' })!.llm.client.provider.name).toBe('deepseek');
     expect(llmFromArgs({ llm: 'true', 'llm-cache': '/nonexistent/none.json' }, { DEEPSEEK_API_KEY: 'k' })!.mode).toBe('deepseek');
     expect(llmFromArgs({ llm: 'anthropic', 'llm-cache': '/nonexistent/none.json' }, { ANTHROPIC_API_KEY: 'k' })!.llm.client.provider.name).toBe('anthropic');
+  });
+
+  it('play --llm=fake: the card at the death shows the LLM summary, and the saved game shows it again with no flag', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-llm-'));
+    const cli = (args: string[]) => execFileSync('npx', ['tsx', 'scripts/tools/play.ts', ...args], { cwd: root, encoding: 'utf8', env: { ...process.env, OVERSEER_PLAY_DIR: dir }, timeout: 50000 });
+    try {
+      const first = cli(['--seed=5', '--new', '--llm=fake', '--cmd=advance 1000']);
+      expect(first).toContain('-- การ์ดตอนจบ --');
+      expect(first).toContain('บทสรุปทดสอบ');
+      expect(first).toContain('llm fake โทเคน');
+      expect(cli(['--seed=5', '--cmd=card'])).toContain('บทสรุปทดสอบ');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it('say: tier 0 reads a hint without the flag; free words need the translator', async () => {

@@ -5,7 +5,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { runLineageReport } from '../../scripts/tools/lineage-run';
+import { runLineageReport, runLineageReportLlm } from '../../scripts/tools/lineage-run';
+import { llmFromArgs, summarizeDeath, type ToolLlm } from '../../scripts/tools/llm';
+import { fakeLlm } from '../../src/core/llm';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, resumeSession, runToDeath, startLife, type Session } from '../../scripts/tools/session';
 import { applyEndingText, cardOf, collectionView, endingInput } from '../../src/core/ending';
@@ -287,6 +289,103 @@ describe('lineage: save and replay', () => {
     expect(a.lineage.lives.length).toBe(3);
     expect(JSON.parse(JSON.stringify(view(b)))).toEqual(JSON.parse(JSON.stringify(view(a))));
   });
+});
+
+describe('lineage with the end summary of the LLM layer', () => {
+  /** Three lives, the end summary asked for at every death (the tools' way: the answer enters the state, the core waits for nothing). */
+  async function llmLineage(seed: number, tl: ToolLlm, stopInLife2?: number): Promise<Session> {
+    const s = createSession(data, { seed });
+    startLife(s);
+    for (let i = 0; i < 3; i++) {
+      if (i > 0) expect(nextLife(s.game, { newcomer: true }).ok).toBe(true);
+      if (i === 1 && stopInLife2 !== undefined) {
+        for (let b = 0; b < stopInLife2; b++) s.game.beat();
+        return s;
+      }
+      runToDeath(s.game);
+      await summarizeDeath(tl, data, s.game.state);
+    }
+    return s;
+  }
+
+  it('every card of the three lives holds the LLM text, kept in the save; a save replays them with a provider that has nothing to say', async () => {
+    const tl = llmFromArgs({ llm: 'fake' })!;
+    const s = await llmLineage(5, tl);
+    const st = s.game.state;
+    const cards = Object.values(lx(st).cards);
+    expect(cards).toHaveLength(3);
+    for (const c of cards) {
+      expect(c.summary.source).toBe('llm');
+      expect(c.summary.text).toContain('บทสรุปทดสอบ');
+      expect(st.llmAnswers['ending:' + c.life]).toBe(c.summary.text);
+      expect(c.facts[0].sentence).not.toBe('');
+    }
+    // one request per life, and nothing else
+    expect(tl.llm.ledger.map((e) => e.point + ':' + e.result + ':' + e.life)).toEqual(['ending:ok:L1', 'ending:ok:L2', 'ending:ok:L3']);
+    // the facts of a card are the template tier's, unchanged by the LLM text
+    const plain = lineage(5, 3);
+    const plainCards = Object.values(lx(plain.game.state).cards);
+    expect(cards.map((c) => JSON.stringify(c.facts))).toEqual(plainCards.map((c) => JSON.stringify(c.facts)));
+    // load the save: the answers are there; an LLM with no fixtures is asked again for each life and is never called
+    const { state, stale } = load(save(st), versions(data));
+    expect(stale).toEqual([]);
+    expect(clone(state)).toEqual(st);
+    const mute = fakeLlm({ responses: [] });
+    const t2: ToolLlm = { llm: mute.llm, mode: 'fake', flush() {} };
+    for (const c of cards) {
+      const again = await summarizeDeath(t2, data, state, c.life);
+      expect(again).toEqual({ text: c.summary.text, source: 'llm' });
+    }
+    expect(mute.provider.calls).toHaveLength(0);
+    // and even with the card put back to the template, the kept answer is read, not asked
+    const lost = clone(state);
+    for (const c of Object.values(lx(lost).cards)) c.summary = { text: 'x', source: 'template' };
+    for (const c of cards) await summarizeDeath(t2, data, lost, c.life);
+    expect(mute.provider.calls).toHaveLength(0);
+    expect(Object.values(lx(lost).cards).map((c) => c.summary.text)).toEqual(cards.map((c) => c.summary.text));
+  }, 120_000);
+
+  it('three lives replay exactly from a save made in the middle of life 2, with the LLM summary on', async () => {
+    const view = (st: GameState) => ({
+      lineage: st.lineage,
+      life: st.life,
+      clock: st.clock,
+      rng: st.rng,
+      llmAnswers: st.llmAnswers,
+      god: st.god,
+      log: st.log.filter((e) => e.sys !== 'rules').map((e) => ({ ...e, n: 0 })),
+    });
+    // the whole run, never stopped
+    const whole = await llmLineage(5, llmFromArgs({ llm: 'fake' })!);
+    // the same run saved 40 beats into life 2 (life 1 already summarised), loaded, and played on with a new LLM
+    const part = await llmLineage(5, llmFromArgs({ llm: 'fake' })!, 40);
+    expect(part.game.state.life!.id).toBe('L2');
+    expect(part.game.state.llmAnswers['ending:L1']).toBeTruthy();
+    const { state } = load(save(part.game.state), versions(data));
+    const rest = resumeSession(data, state, { seed: 5 });
+    const tl = llmFromArgs({ llm: 'fake' })!;
+    runToDeath(rest.game);
+    await summarizeDeath(tl, data, rest.game.state);
+    expect(nextLife(rest.game, { newcomer: true }).ok).toBe(true);
+    runToDeath(rest.game);
+    await summarizeDeath(tl, data, rest.game.state);
+    // life 1 was not asked again
+    expect(tl.llm.ledger.map((e) => e.life)).toEqual(['L2', 'L3']);
+    expect(JSON.parse(JSON.stringify(view(rest.game.state)))).toEqual(JSON.parse(JSON.stringify(view(whole.game.state))));
+    expect(Object.values(lx(rest.game.state).cards).map((c) => c.summary.source)).toEqual(['llm', 'llm', 'llm']);
+  }, 120_000);
+
+  it('npm run life --lives=3 --llm=fake: the three cards show the LLM text, the same text twice', async () => {
+    const a = await runLineageReportLlm(data, { seed: 5, lives: 3 }, llmFromArgs({ llm: 'fake' }));
+    const b = await runLineageReportLlm(data, { seed: 5, lives: 3 }, llmFromArgs({ llm: 'fake' }));
+    expect(a.text.match(/บทสรุปทดสอบ/g)?.length).toBe(3);
+    const comparable = (t: string) => t.split('\n').filter((l) => !l.startsWith('กติกาที่ยังไม่มีใครรับ')).join('\n');
+    expect(comparable(a.text)).toBe(comparable(b.text));
+    // the same lives as the run without the layer
+    const plain = runLineageReport(data, { seed: 5, lives: 3 });
+    expect(a.lives).toBe(plain.lives);
+    expect(a.state.lineage.lives).toEqual(plain.state.lineage.lives);
+  }, 120_000);
 });
 
 describe('npm run life --lives', () => {
