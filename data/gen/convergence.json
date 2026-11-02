@@ -1,0 +1,3740 @@
+{
+ "version": "482d7504344f",
+ "sources": [
+  "docs/lore/storylines/00-convergence.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/storylines.ts",
+ "items": {
+  "points": [
+   {
+    "id": "cv.1",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ค่ายผู้ลี้ภัยฟ้า",
+    "kind": "convergence",
+    "section": "cv.1 ค่ายผู้ลี้ภัยฟ้า",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "แบ่งน้ำและสร้างค่าย",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "ns_refugee_lead"
+       },
+       {
+        "k": "trust",
+        "toward": "เผ่าปีก",
+        "delta": 3
+       },
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "ruin_city_lord"
+       },
+       {
+        "k": "event",
+        "id": "SF-08"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "kind"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "generous"
+          }
+         ]
+        },
+        "mul": 1,
+        "add": 20
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 25,
+      "label": "ขายตั๋วเรือปลอมกับโอมาร์ (SH09-4)",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "ทอง",
+        "delta": 120
+       },
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_infamous",
+        "chance": 0.3
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_blood_feud"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "greedy"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "cunning"
+          }
+         ]
+        },
+        "mul": 1,
+        "add": 20
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "ไปเป็นเสียงในสภายักษ์ (SF-04)",
+      "effects": [
+       {
+        "k": "event",
+        "id": "SF-04"
+       },
+       {
+        "k": "event",
+        "id": "WR-22",
+        "open": true
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "gi"
+           ]
+          },
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "leadership"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "storm_harpy"
+      ]
+     },
+     {
+      "k": "battleFor",
+      "choices": [
+       "a"
+      ],
+      "enemies": [
+       "sky_debris_golem"
+      ]
+     },
+     {
+      "k": "battleFor",
+      "choices": [
+       "b"
+      ],
+      "enemies": [
+       "npc_bandit"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "SH09-1"
+     },
+     {
+      "k": "npc",
+      "id": "SH09-2"
+     },
+     {
+      "k": "npc",
+      "id": "SH09-3"
+     },
+     {
+      "k": "npc",
+      "id": "SH16-1"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "ฝูง `storm_harpy` ล่าค่ายตอนกลางคืน (ทุกทางเลือก) · `sky_debris_golem` จากซากที่ยังเคลื่อนไหว (ทาง ก) · `npc_bandit` ปล้นน้ำ (ทาง ข เป็นฝ่ายปล้น) · NPC: SH09-1 บาซิล นายกนคร, SH09-2 ฮานา เจ้าของโรงเตี๊ยม, SH09-3 ไอรีน ผู้แสวงบุญปีกพลัดถิ่น, SH16-1 อาวีนา",
+    "src": "docs/lore/storylines/00-convergence.md:38",
+    "name": "ค่ายผู้ลี้ภัยฟ้า",
+    "openRaw": "DR-01 แล้ว (SF-01 ถึง SF-04)",
+    "placesRaw": "SH-09 SH-16",
+    "places": [
+     "SH-09",
+     "SH-16"
+    ],
+    "entriesRaw": "wi.a1 hu.a3 dk.a3 gi.a2 be.a3 sw.a1 na.t3",
+    "entries": [
+     "wi.a1",
+     "hu.a3",
+     "dk.a3",
+     "gi.a2",
+     "be.a3",
+     "sw.a1",
+     "na.t3"
+    ],
+    "extraEntries": [
+     {
+      "from": "na.t3",
+      "choice": "a",
+      "text": "คนข้ามฟากนาคาพาผู้ลี้ภัยฟ้าข้ามแม่น้ำไปค่าย (ทางเลือก ก)"
+     }
+    ],
+    "intro": "ฟ้าถล่มแล้ว ผู้ลี้ภัยปีกหลายหมื่นมาที่รามาดีน (SH-09) และซุมบา (SH-16) น้ำไม่พอ ยักษ์ต้องตัดสินว่าจะรับหรือไม่ (SF-04)",
+    "byRace": "เผ่าปีกได้ `nb_wing_memory` หรือ `nc_sv_sky` · เผ่ามังกรถูกถามว่าบรรณาการไปไหน (dk.a3) · ยักษ์ตัดสิน SF-04 (gi.a2) · มนุษย์ชาวพื้นรู้สึกว่าเป็นครั้งแรกที่ \"ผู้กดขี่\" ขอความช่วยเหลือ",
+    "battleText": "ฝูง `storm_harpy` ล่าค่ายตอนกลางคืน (ทุกทางเลือก) · `sky_debris_golem` จากซากที่ยังเคลื่อนไหว (ทาง ก) · `npc_bandit` ปล้นน้ำ (ทาง ข เป็นฝ่ายปล้น) · NPC: SH09-1 บาซิล นายกนคร, SH09-2 ฮานา เจ้าของโรงเตี๊ยม, SH09-3 ไอรีน ผู้แสวงบุญปีกพลัดถิ่น, SH16-1 อาวีนา",
+    "npcs": [
+     "SH09-1",
+     "SH09-2",
+     "SH09-3",
+     "SH16-1"
+    ],
+    "enemies": [
+     "storm_harpy",
+     "sky_debris_golem",
+     "npc_bandit"
+    ],
+    "open": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
+    "when": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
+    "openFollows": [
+     "SF-01",
+     "SF-04"
+    ]
+   },
+   {
+    "id": "cv.2",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "สภาเก้าทวีป",
+    "kind": "convergence",
+    "section": "cv.2 สภาเก้าทวีป",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "ยืนเป็นผู้แทน",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "nine_delegate"
+       },
+       {
+        "k": "event",
+        "id": "PO-02"
+       },
+       {
+        "k": "event",
+        "id": "PO-04"
+       },
+       {
+        "k": "event",
+        "id": "PO-06"
+       }
+      ],
+      "mods": [],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "has",
+         "kind": "aptitude",
+         "id": "leadership"
+        },
+        {
+         "k": "has",
+         "kind": "aptitude",
+         "id": "law"
+        },
+        {
+         "k": "has",
+         "kind": "job",
+         "id": "diplomat"
+        }
+       ]
+      }
+     },
+     {
+      "key": "b",
+      "weight": 40,
+      "label": "คุ้มกันผู้แทน",
+      "effects": [
+       {
+        "k": "event",
+        "id": "PO-08",
+        "open": true
+       },
+       {
+        "k": "eventWeight",
+        "id": "WR-14",
+        "delta": -30
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ป้องกันการลอบสังหาร ชนะ → PO-08 ไม่เกิดในทศวรรษนี้ น้ำหนัก WR-14 −30"
+       }
+      ],
+      "mods": []
+     },
+     {
+      "key": "c",
+      "weight": 25,
+      "label": "รับจ้างลอบสังหาร",
+      "effects": [
+       {
+        "k": "event",
+        "id": "PO-08",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "WR-14",
+        "open": true
+       },
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_wanted",
+        "chance": 1
+       },
+       {
+        "k": "stat",
+        "stat": "ทอง",
+        "delta": 400
+       }
+      ],
+      "mods": [],
+      "favours": "`cold` `greedy` หรืออาชีพ `assassin`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "npc_assassin",
+       "npc_city_guard"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "AL01-1"
+     },
+     {
+      "k": "npc",
+      "id": "AL01-2"
+     },
+     {
+      "k": "npc",
+      "id": "AL01-3"
+     },
+     {
+      "k": "npc",
+      "id": "AL01-4"
+     },
+     {
+      "k": "battle",
+      "enemies": [],
+      "text": "หลัง DR-07 สภาอยู่ริมเหว (RF-04) และ เกิดบนสะพาน"
+     },
+     {
+      "k": "event",
+      "id": "DR-07"
+     },
+     {
+      "k": "event",
+      "id": "RF-04"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`npc_assassin` ระดับหัวหน้า + `npc_city_guard` ฝ่ายตรงข้ามตามทางที่เลือก · NPC: AL01-1 เซรีน วาลดอร์ฟ, AL01-2 ไอรัสเมอร์ ผู้แทนมังกร, AL01-3 โรแลนด์ ทรูส, AL01-4 ลิลลี่ ฮอปเปอร์ · หลัง DR-07 สภาอยู่ริมเหว (RF-04) และศึกเกิดบนสะพาน",
+    "src": "docs/lore/storylines/00-convergence.md:54",
+    "name": "สภาเก้าทวีป",
+    "openRaw": "PO-01 หรือ HP-01 · PO-08",
+    "placesRaw": "AL-01",
+    "places": [
+     "AL-01"
+    ],
+    "entriesRaw": "hu.a5 el.a4 dk.a5 ha.a5 so.a5 me.a5 dw.a5 mu.a2 hl.a2 xc.a4 xc.b3 be.a1 wi.a6 gh.a6 sl.a1 la.a6",
+    "entries": [
+     "hu.a5",
+     "el.a4",
+     "dk.a5",
+     "ha.a5",
+     "so.a5",
+     "me.a5",
+     "dw.a5",
+     "mu.a2",
+     "hl.a2",
+     "xc.a4",
+     "xc.b3",
+     "be.a1",
+     "wi.a6",
+     "gh.a6",
+     "sl.a1",
+     "la.a6"
+    ],
+    "extraEntries": [
+     {
+      "from": "be.a1",
+      "choice": "b",
+      "text": "เผ่าสัตว์ถือเรื่องล่าใหญ่มาขอฟังในสภา"
+     },
+     {
+      "from": "wi.a6",
+      "choice": "a",
+      "text": "เมืองฟ้าใหม่ส่งผู้แทนเข้าสภาเก้าทวีป"
+     },
+     {
+      "from": "gh.a6",
+      "choice": "a",
+      "text": "นิวเฮเวนส่งกูลที่ปฏิเสธความหิวไปขอสถานะ"
+     },
+     {
+      "from": "sl.a1",
+      "choice": "c",
+      "text": "สไลม์นำความทรงจำมหาล่มสลายมาเสนอ"
+     },
+     {
+      "from": "la.a6",
+      "choice": "c",
+      "text": "ทูตเผ่าลาวาแวะสภาก่อนไปคนแคระ ทั้งหมดเข้าทางเลือก ก) ข) ค) ตามปกติของ cv.2"
+     }
+    ],
+    "intro": "ผู้แทนทุกทวีปประชุมที่คองคอร์เดีย (AL-01) ตัวละครมาในฐานะผู้แทน ผู้คุ้มกัน หรือคนนอก ถ้าความตึงเครียดคู่ทวีปเกิน 60 จะมีแผนลอบสังหาร (PO-08)",
+    "byRace": "",
+    "battleText": "`npc_assassin` ระดับหัวหน้า + `npc_city_guard` ฝ่ายตรงข้ามตามทางที่เลือก · NPC: AL01-1 เซรีน วาลดอร์ฟ, AL01-2 ไอรัสเมอร์ ผู้แทนมังกร, AL01-3 โรแลนด์ ทรูส, AL01-4 ลิลลี่ ฮอปเปอร์ · หลัง DR-07 สภาอยู่ริมเหว (RF-04) และศึกเกิดบนสะพาน",
+    "npcs": [
+     "AL01-1",
+     "AL01-2",
+     "AL01-3",
+     "AL01-4"
+    ],
+    "enemies": [
+     "npc_assassin",
+     "npc_city_guard"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PO-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "HP-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PO-08",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PO-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "HP-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PO-08",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.3",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "สงครามเก้าทวีป",
+    "kind": "convergence",
+    "section": "cv.3 สงครามเก้าทวีป",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "แนวหน้า",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "หลายจังหวะ"
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ฉายาจาก"
+       },
+       {
+        "k": "wound",
+        "chance": 0.25
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "job",
+           "id": "soldier"
+          },
+          {
+           "k": "has",
+           "kind": "job",
+           "id": "knight"
+          },
+          {
+           "k": "has",
+           "kind": "job",
+           "id": "mercenary"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 35,
+      "label": "แนวหลัง (หมอ ช่าง พ่อครัว)",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_war_orphan"
+       }
+      ],
+      "mods": []
+     },
+     {
+      "key": "c",
+      "weight": 25,
+      "label": "หนีทัพหรือหนีออกนอกเขต",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_outcast"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "coward"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "freedom"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "npc_knight",
+       "npc_mercenary",
+       "war_automaton",
+       "trench_deserters"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "AL08-2"
+     },
+     {
+      "k": "npc",
+      "id": "MK16-4"
+     },
+     {
+      "k": "battle",
+      "enemies": [],
+      "text": "ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะ ระดับหัวหน้าขึ้นไป"
+     },
+     {
+      "k": "stat",
+      "stat": "ฝั่งที่ตัวละครอยู่",
+      "delta": 5
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะศึกระดับหัวหน้าขึ้นไป",
+    "src": "docs/lore/storylines/00-convergence.md:68",
+    "name": "สงครามเก้าทวีป",
+    "openRaw": "WR-14",
+    "placesRaw": "ทุ่งราบ AL-08 และแนวรบทุกทวีป",
+    "places": [
+     "AL-08"
+    ],
+    "entriesRaw": "hu.a4 or.a3 dm.a4 co.a4 be.a5 gi.a4 bw.a2 dk.t3",
+    "entries": [
+     "hu.a4",
+     "or.a3",
+     "dm.a4",
+     "co.a4",
+     "be.a5",
+     "gi.a4",
+     "bw.a2",
+     "dk.t3"
+    ],
+    "extraEntries": [
+     {
+      "from": "dk.t3",
+      "choice": "a",
+      "text": "ทหารเผ่ามังกรเข้าแนวหน้าเมื่อ WR-14 เกิด (ทางเลือก ก)"
+     }
+    ],
+    "intro": "สงครามที่ทุกทวีปเข้าร่วม ตัวละครเข้าศึกใหญ่แบบมวลชน ([../../systems/combat/04-encounters.md](../../systems/combat/04-encounters.md)) บทบาทเลือกจากอาชีพ",
+    "byRace": "",
+    "battleText": "`npc_knight` `npc_mercenary` `war_automaton` `trench_deserters` · ศัตรูที่มีชื่อตามแนว: AL08-2 จอมพลคาร์ล บอส (ทุ่งราบ) · MK16-4 ริวะ หัวหน้า (เมคาเรีย) · ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะศึกระดับหัวหน้าขึ้นไป",
+    "npcs": [
+     "AL08-2",
+     "MK16-4"
+    ],
+    "enemies": [
+     "npc_knight",
+     "npc_mercenary",
+     "war_automaton",
+     "trench_deserters"
+    ],
+    "open": {
+     "k": "event",
+     "id": "WR-14",
+     "happened": true
+    },
+    "when": {
+     "k": "event",
+     "id": "WR-14",
+     "happened": true
+    }
+   },
+   {
+    "id": "cv.4",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ประตูเมืองปฐม",
+    "kind": "convergence",
+    "section": "cv.4 ประตูเมืองปฐม",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "ช่วยพิธีปิดรอยแยก",
+      "effects": [
+       {
+        "k": "event",
+        "id": "FG-10",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "DV-04"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "devout"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "kind"
+          }
+         ]
+        },
+        "mul": 1.5
+       }
+      ],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "and",
+         "of": [
+          {
+           "k": "country",
+           "ids": [
+            "AL-11"
+           ]
+          },
+          {
+           "k": "text",
+           "text": "ความรู้จาก"
+          }
+         ]
+        },
+        {
+         "k": "country",
+         "ids": [
+          "SV-07"
+         ]
+        }
+       ]
+      }
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "ฟังสิ่งที่พูดได้",
+      "effects": [
+       {
+        "k": "event",
+        "id": "FG-12",
+        "open": true
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_fog_whisper",
+        "chance": 0.4
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "has",
+         "kind": "trait",
+         "id": "curious"
+        },
+        "mul": 2
+       }
+      ],
+      "favours": "ผู้ไร้เงาหรือผู้ฟัง NB-04"
+     },
+     {
+      "key": "c",
+      "weight": 30,
+      "label": "ขโมยกุญแจจากผู้เก็บกุญแจความทรงจำเมฆา (NB08-4)",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "กุญแจที่รวมได้",
+        "delta": 1
+       },
+       {
+        "k": "event",
+        "id": "GD-07"
+       }
+      ],
+      "mods": [],
+      "favours": "`ambitious` `greedy`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "fog_tentacle",
+       "fog_weaver"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "rift_speaker"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "NB08-1"
+     },
+     {
+      "k": "ref",
+      "nodes": [
+       "va.a4"
+      ],
+      "rel": ""
+     },
+     {
+      "k": "stat",
+      "stat": "โบนัสหลบ",
+      "delta": 4
+     },
+     {
+      "k": "grant",
+      "kind": "job",
+      "id": "gate_warden"
+     },
+     {
+      "k": "grant",
+      "kind": "job",
+      "id": "chronicler"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` เมื่อเลือก ก ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
+    "src": "docs/lore/storylines/00-convergence.md:82",
+    "name": "ประตูเมืองปฐม",
+    "openRaw": "FG-01 (เกิดแล้วตั้งแต่ต้นเรื่อง ศ.ม. 10,388) · FG-10 FG-12 FG-14",
+    "placesRaw": "NB-08",
+    "places": [
+     "NB-08"
+    ],
+    "entriesRaw": "va.a4 de.a4 co.a5 so.a4 fa.a4 hu.a6 vb.a2 sh.a2 gh.a2 me.a6",
+    "entries": [
+     "va.a4",
+     "de.a4",
+     "co.a5",
+     "so.a4",
+     "fa.a4",
+     "hu.a6",
+     "vb.a2",
+     "sh.a2",
+     "gh.a2",
+     "me.a6"
+    ],
+    "extraEntries": [
+     {
+      "from": "gh.a2",
+      "choice": "b",
+      "text": "กูลที่คุยกับวิญญาณทหารได้ถูกพาไปฟังเสียงที่ประตู (ต้อง FG-10 ยังไม่เกิด) ใช้ทางเลือก ข) เป็นหลัก ผู้ไร้เงาไม่ถือกูลเป็นศัตรูเพราะกูลไม่ใช่สิ่งมีชีวิตเต็มตัว"
+     },
+     {
+      "from": "me.a6",
+      "choice": "a",
+      "text": "เงือกที่ร้องบทเพลงยุคปฐมไปร้องที่ประตู (ทางเลือก ข)"
+     }
+    ],
+    "intro": "ภารกิจเมฆา (FG-01) เปิดรอยแยกไว้ตั้งแต่ก่อนต้นเรื่อง (ศ.ม. 10,388) ผู้เฝ้าประตูที่ NB-08 ยังพยายามปิด ตัวละครที่มาถึงประตูต้องเลือกว่าจะช่วยปิด ฟังสิ่งที่อยู่ข้างใน หรือขโมยกุญแจ",
+    "byRace": "",
+    "battleText": "`fog_tentacle` (ฝูง) `fog_weaver` (หัวหน้า) · บอส `rift_speaker` เมื่อเลือก ก ในรอบที่รอยแยกขยาย · ทาง ค เจอ NB08-1 เนวัน · ผลตามเผ่า: แวมไพร์มีโอกาสแก้คำค้านของเคานต์ (va.a4) · ลูกผสมจักรกลและหุ่นถูกสิ่งมีชีวิตเมิน (โบนัสหลบ +4) · ข้อจำกัด: อาชีพ `gate_warden` ได้เฉพาะชาวหมอกหรือผีเมืองปฐม เผ่าอื่นเป็นผู้ช่วย (รูปสืบทาง ก ให้เผ่าอื่นได้ `chronicler` แทน ตาม [../heirs/02-no-repeat.md](../heirs/02-no-repeat.md) หัวข้อ 5)",
+    "npcs": [
+     "NB08-1"
+    ],
+    "enemies": [
+     "fog_tentacle",
+     "fog_weaver",
+     "rift_speaker"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-10",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-12",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-14",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-10",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-12",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-14",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.5",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ปากเหวนรก",
+    "kind": "convergence",
+    "section": "cv.5 ปากเหวนรก",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "ร่วมผนึกปากเหว",
+      "effects": [
+       {
+        "k": "event",
+        "id": "GI-08",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "WR-13"
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_seal_scar",
+        "chance": 0.3
+       },
+       {
+        "k": "trust",
+        "toward": "คนแคระและดาร์กเอลฟ์",
+        "delta": 2
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "rune"
+          },
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "light"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 25,
+      "label": "ปล่อยไลซ่า (KD08-3) ปีศาจที่ถูกกักขัง (ถ้ายังถูกขังอยู่ ถ้าเธอหลุดหรือตายแล้ว ใช้ปีศาจที่ถูกกักขังตนอื่น ผลเดียวกัน)",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_wanted"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "race",
+         "ids": [
+          "dm"
+         ]
+        },
+        "mul": 2
+       }
+      ],
+      "favours": "`kind` `forgiving`"
+     },
+     {
+      "key": "c",
+      "weight": 40,
+      "label": "เข้าทัพครูเสด",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ใหญ่"
+       },
+       {
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "event",
+           "id": "WR-13",
+           "happened": true
+          },
+          {
+           "k": "text",
+           "text": "ค) แพ้"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "GD-02",
+          "open": true
+         }
+        ]
+       },
+       {
+        "k": "grant",
+        "kind": "blessing",
+        "id": "b_demonslayer",
+        "chance": 0.08
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "devout"
+          },
+          {
+           "k": "text",
+           "text": "ศาสนาแสง"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "hellmouth_imps",
+       "firedemon"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "hellgate_lord"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "KD08-1"
+     },
+     {
+      "k": "npc",
+      "id": "KD08-2"
+     },
+     {
+      "k": "npc",
+      "id": "KD08-4"
+     },
+     {
+      "k": "npc",
+      "id": "KD05-1"
+     },
+     {
+      "k": "trust",
+      "toward": "",
+      "delta": -2
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`hellmouth_imps` (ฝูง) `firedemon` (หัวหน้า) · บอส `hellgate_lord` · NPC: KD08-1 มอร์ดินเกียร์, KD08-2 ซันเรธ, KD08-4 ฮอล์มซาร์, KD05-1 อิรมอร์ไลรา · ข้อควรระวัง: เผ่าปีศาจที่เข้าทัพครูเสดถูกสงสัยตลอด (ไว้ใจ −2 ในทัพ)",
+    "src": "docs/lore/storylines/00-convergence.md:96",
+    "name": "ปากเหวนรก",
+    "openRaw": "DM-07 หรือ WR-13 หรือ PL-03",
+    "placesRaw": "KD-08 KD-05",
+    "places": [
+     "KD-08",
+     "KD-05"
+    ],
+    "entriesRaw": "de.a3 dm.a3 dw.a4 la.a4 hu.a4 ct.a2 or.e1",
+    "entries": [
+     "de.a3",
+     "dm.a3",
+     "dw.a4",
+     "la.a4",
+     "hu.a4",
+     "ct.a2",
+     "or.e1"
+    ],
+    "extraEntries": [
+     {
+      "from": "or.e1",
+      "choice": "c",
+      "text": "นักรบออร์คชราที่ออกศึกครั้งสุดท้ายเลือกปากเหวแทนสนามรบเก่า ได้ทางเลือก ค) หรือ ก) ตามเดิม ออร์คที่เข้าทัพครูเสดถูกสงสัยเหมือนเผ่าปีศาจ (ไว้ใจ −2 ในทัพ)"
+     }
+    ],
+    "intro": "ปีศาจใต้พิภพไหลขึ้น (DM-07) หรือศาสนจักรแห่งแสงยกทัพสู่ปากเหว (WR-13) ปากเหวอยู่ใต้ KD-08 และอิรมอร์ (KD-05) ปะทะก่อนใคร",
+    "byRace": "",
+    "battleText": "`hellmouth_imps` (ฝูง) `firedemon` (หัวหน้า) · บอส `hellgate_lord` · NPC: KD08-1 มอร์ดินเกียร์, KD08-2 ซันเรธ, KD08-4 ฮอล์มซาร์, KD05-1 อิรมอร์ไลรา · ข้อควรระวัง: เผ่าปีศาจที่เข้าทัพครูเสดถูกสงสัยตลอด (ไว้ใจ −2 ในทัพ)",
+    "npcs": [
+     "KD08-1",
+     "KD08-2",
+     "KD08-4",
+     "KD05-1"
+    ],
+    "enemies": [
+     "hellmouth_imps",
+     "firedemon",
+     "hellgate_lord"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-07",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-07",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.6",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "น้ำเลี้ยงสุดท้าย",
+    "kind": "convergence",
+    "section": "cv.6 น้ำเลี้ยงสุดท้าย",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "ปกป้องต้นไม้และกฎปันส่วน",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "กับผู้ลักลอบและหุ่นบริษัท"
+       },
+       {
+        "k": "trust",
+        "toward": "เอลฟ์",
+        "delta": 3
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_faith_tree",
+        "chance": 0.15
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "devout"
+          },
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "nature"
+          }
+         ]
+        },
+        "mul": 1.5
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 25,
+      "label": "ลักลอบน้ำเลี้ยงไปขาย (SV15-2 บาร์โธโลมิว)",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "ทอง",
+        "delta": 200
+       },
+       {
+        "k": "stat",
+        "stat": "สุขภาพต้นไม้",
+        "delta": -3
+       },
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_wanted"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "has",
+         "kind": "trait",
+         "id": "greedy"
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "พากล้าไปปลูกที่อื่น",
+      "effects": [
+       {
+        "k": "event",
+        "id": "BIO-03",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "WT-02",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AL-16"
+        ]
+       },
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "sapling_guardian"
+       },
+       {
+        "k": "npc",
+        "id": "AL16-1"
+       },
+       {
+        "k": "event",
+        "id": "BIO-03"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "gardening"
+          },
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "farming"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "blighted_ent",
+       "spore_thrall",
+       "war_automaton"
+      ]
+     },
+     {
+      "k": "event",
+      "id": "BIO-10"
+     },
+     {
+      "k": "event",
+      "id": "WR-04"
+     },
+     {
+      "k": "npc",
+      "id": "SV14-1"
+     },
+     {
+      "k": "event",
+      "id": "BIO-02"
+     },
+     {
+      "k": "npc",
+      "id": "SV15-1"
+     },
+     {
+      "k": "npc",
+      "id": "SV01-3"
+     },
+     {
+      "k": "npc",
+      "id": "AL16-4"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก ถ้าตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
+    "src": "docs/lore/storylines/00-convergence.md:110",
+    "name": "น้ำเลี้ยงสุดท้าย",
+    "openRaw": "BIO-01 · WR-04 · PO-04 หรือ WT-03",
+    "placesRaw": "SV-01 SV-15 AL-16",
+    "places": [
+     "SV-01",
+     "SV-15",
+     "AL-16"
+    ],
+    "entriesRaw": "el.a3 fa.a3 be.a4 ha.a3 sl.a3 na.t2 eb.a2 fy.a2",
+    "entries": [
+     "el.a3",
+     "fa.a3",
+     "be.a4",
+     "ha.a3",
+     "sl.a3",
+     "na.t2",
+     "eb.a2",
+     "fy.a2"
+    ],
+    "extraEntries": [],
+    "intro": "ต้นไม้โลกป่วย (BIO-01) น้ำเลี้ยงเหลือน้อย สภาปันส่วน (SV-15) ต้องแบ่งให้ใคร (PO-04) หรือหลังต้นไม้ตาย (WT-03)",
+    "byRace": "",
+    "battleText": "`blighted_ent` (หัวหน้า) `spore_thrall` (ฝูง ถ้า BIO-10 แล้ว) `war_automaton` (ฝั่งบริษัท WR-04) · หัวหน้า SV14-1 ผู้ถือขวานโค่นโลก ถ้าตัวละครพยายามหยุด BIO-02 · NPC: SV15-1 อัลมารอน, SV01-3 ไลรา, AL16-4 ไลลา ผู้ดูต้นกล้า",
+    "npcs": [
+     "SV14-1",
+     "SV15-1",
+     "SV01-3",
+     "AL16-4"
+    ],
+    "enemies": [
+     "blighted_ent",
+     "spore_thrall",
+     "war_automaton"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PO-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WT-03",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PO-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WT-03",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.7",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ไข่พญานาคราช",
+    "kind": "convergence",
+    "section": "cv.7 ไข่พญานาคราช",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "ร่วมเฝ้าไข่",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "naga_egg_warden"
+       },
+       {
+        "k": "npc",
+        "id": "NR07-1"
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "กับผู้ขโมย"
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_egg_warmth",
+        "chance": 0.2
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "race",
+         "ids": [
+          "na"
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "พาทูตเงือกมาดูการฟัก",
+      "effects": [
+       {
+        "k": "event",
+        "id": "WR-20",
+        "open": true
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_both_banks",
+        "chance": 0.2
+       },
+       {
+        "k": "jobpath",
+        "job": "old_water_singer",
+        "secret": true
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "ow.a2"
+        ],
+        "rel": ""
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "kind"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "charismatic"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 30,
+      "label": "ขโมยไข่ขายตลาดมืด",
+      "effects": [
+       {
+        "k": "event",
+        "id": "WR-20",
+        "open": true
+       },
+       {
+        "k": "place",
+        "ids": [
+         "NB-09"
+        ]
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_hunted_for_beast"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "greedy"
+          },
+          {
+           "k": "text",
+           "text": "โจรสลัด"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "reef_serpent",
+       "abyss_lurker"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "npc_pirate"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "NR07-1"
+     },
+     {
+      "k": "npc",
+      "id": "NR07-4"
+     },
+     {
+      "k": "npc",
+      "id": "NR06-3"
+     },
+     {
+      "k": "npc",
+      "id": "SV17-2"
+     },
+     {
+      "k": "battle",
+      "enemies": [],
+      "text": "หลัง DR-05 จุดนี้เปลี่ยนเป็น DW-03 (เงือกขึ้นบก นาคาลงทะเล) และ เปลี่ยนเป็นแย่งชายฝั่ง"
+     },
+     {
+      "k": "event",
+      "id": "DR-05"
+     },
+     {
+      "k": "event",
+      "id": "DW-03"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`reef_serpent` `abyss_lurker` · `npc_pirate` ฝูง (ผู้ขโมย) · NPC: NR07-1 สุวรรณนาคี, NR07-4 ปิติ ทูตนาคาสู่เงือก, NR06-3 เจ้าหญิงนายา, SV17-2 ธารา นาคาลูกครึ่ง · หลัง DR-05 จุดนี้เปลี่ยนเป็น DW-03 (เงือกขึ้นบก นาคาลงทะเล) และศึกเปลี่ยนเป็นแย่งชายฝั่ง",
+    "src": "docs/lore/storylines/00-convergence.md:122",
+    "name": "ไข่พญานาคราช",
+    "openRaw": "BIO-08 ใกล้เกิด (ยุค 1–2) · WR-20",
+    "placesRaw": "NR-07 NR-06",
+    "places": [
+     "NR-07",
+     "NR-06"
+    ],
+    "entriesRaw": "na.a3 me.a3 hu.a3 (นาคาลูกครึ่ง) ow.a2 nh.a2 xc.b2",
+    "entries": [
+     "na.a3",
+     "me.a3",
+     "hu.a3",
+     "ow.a2",
+     "nh.a2",
+     "xc.b2"
+    ],
+    "extraEntries": [],
+    "intro": "ไข่ที่สุวรรณนาคี (NR07-1) เฝ้าใกล้ฟัก (BIO-08) ผลการฟักกำหนดว่าความแค้นนาคา-เงือก (WR-20) จะจบหรือไม่",
+    "byRace": "",
+    "battleText": "`reef_serpent` `abyss_lurker` · `npc_pirate` ฝูง (ผู้ขโมย) · NPC: NR07-1 สุวรรณนาคี, NR07-4 ปิติ ทูตนาคาสู่เงือก, NR06-3 เจ้าหญิงนายา, SV17-2 ธารา นาคาลูกครึ่ง · หลัง DR-05 จุดนี้เปลี่ยนเป็น DW-03 (เงือกขึ้นบก นาคาลงทะเล) และศึกเปลี่ยนเป็นแย่งชายฝั่ง",
+    "npcs": [
+     "NR07-1",
+     "NR07-4",
+     "NR06-3",
+     "SV17-2"
+    ],
+    "enemies": [
+     "reef_serpent",
+     "abyss_lurker",
+     "npc_pirate"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "BIO-08",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-20",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "BIO-08",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-20",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.8",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ไฟสุดท้าย",
+    "kind": "convergence",
+    "section": "cv.8 ไฟสุดท้าย",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "แบ่งไฟ",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "cooled_hearth_keeper"
+       },
+       {
+        "k": "event",
+        "id": "AS-03"
+       },
+       {
+        "k": "trust",
+        "toward": "หลายเผ่า",
+        "delta": 2
+       }
+      ],
+      "mods": [],
+      "favours": "`generous` `kind`"
+     },
+     {
+      "key": "b",
+      "weight": 35,
+      "label": "ยึดไฟด้วยกำลัง",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ใหญ่"
+       },
+       {
+        "k": "event",
+        "id": "DR-04"
+       },
+       {
+        "k": "event",
+        "id": "GI-04"
+       },
+       {
+        "k": "event",
+        "id": "DR-04"
+       },
+       {
+        "k": "event",
+        "id": "AS-02"
+       }
+      ],
+      "mods": [],
+      "favours": "`ambitious` `hot`"
+     },
+     {
+      "key": "c",
+      "weight": 30,
+      "label": "พาผู้คนลงใต้ดินหรือไปธรอ-ดู (KD-12)",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_sv_ash"
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_sv_ash"
+       }
+      ],
+      "mods": [],
+      "favours": "`pragmatic` `family`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "ash_wolf_pack",
+       "ash_drake",
+       "lava_slime",
+       "magma_salamander"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "KD06-2"
+     },
+     {
+      "k": "event",
+      "id": "DR-04"
+     },
+     {
+      "k": "npc",
+      "id": "KD06-1"
+     },
+     {
+      "k": "npc",
+      "id": "KD06-3"
+     },
+     {
+      "k": "npc",
+      "id": "KD11-2"
+     },
+     {
+      "k": "npc",
+      "id": "KD12-1"
+     },
+     {
+      "k": "battle",
+      "enemies": [],
+      "text": "ถ้า AS-05 เกิด เพิ่มลูกมังกรลาวาแบบมังกรป่า ( )"
+     },
+     {
+      "k": "event",
+      "id": "AS-05"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`ash_wolf_pack` (ฝูง) `ash_drake` (หัวหน้า) `lava_slime` `magma_salamander` · ทาง ข ก่อน DR-04 เจอ KD06-2 ราดาร์ แม่ทัพลาวา (ฝ่ายเดียวกันหรือศัตรูตามเผ่า) · NPC: KD06-1 จักรพรรดิฮัลดัลมอร์, KD06-3 เมลดา, KD11-2 ซาริน, KD12-1 ธรอดูไกล · ถ้า AS-05 เกิด ศึกเพิ่มลูกมังกรลาวาแบบมังกรป่า ([../../systems/combat/06-dragon-encounters.md](../../systems/combat/06-dragon-encounters.md))",
+    "src": "docs/lore/storylines/00-convergence.md:134",
+    "name": "ไฟสุดท้าย",
+    "openRaw": "GI-04 หรือ DR-04 (AS-01 AS-02 AS-03)",
+    "placesRaw": "KD-06 KD-11 KD-12",
+    "places": [
+     "KD-06",
+     "KD-11",
+     "KD-12"
+    ],
+    "entriesRaw": "dw.a3 la.a3 dk.a4 de.a5 dm.a5 fh.a2 xc.b7",
+    "entries": [
+     "dw.a3",
+     "la.a3",
+     "dk.a4",
+     "de.a5",
+     "dm.a5",
+     "fh.a2",
+     "xc.b7"
+    ],
+    "extraEntries": [],
+    "intro": "ก่อนเพลิงนิรันดร์ล้ม: จักรพรรดิเผ่าลาวาประกาศรวมคาซ-ดูรัม (GI-04) หลังเพลิงนิรันดร์ล้ม (DR-04): ทุกประเทศแย่งความร้อนที่เหลือ (AS-02) และเผ่าลาวาเย็นตัว (AS-03)",
+    "byRace": "",
+    "battleText": "`ash_wolf_pack` (ฝูง) `ash_drake` (หัวหน้า) `lava_slime` `magma_salamander` · ทาง ข ก่อน DR-04 เจอ KD06-2 ราดาร์ แม่ทัพลาวา (ฝ่ายเดียวกันหรือศัตรูตามเผ่า) · NPC: KD06-1 จักรพรรดิฮัลดัลมอร์, KD06-3 เมลดา, KD11-2 ซาริน, KD12-1 ธรอดูไกล · ถ้า AS-05 เกิด ศึกเพิ่มลูกมังกรลาวาแบบมังกรป่า ([../../systems/combat/06-dragon-encounters.md](../../systems/combat/06-dragon-encounters.md))",
+    "npcs": [
+     "KD06-2",
+     "KD06-1",
+     "KD06-3",
+     "KD11-2",
+     "KD12-1"
+    ],
+    "enemies": [
+     "ash_wolf_pack",
+     "ash_drake",
+     "lava_slime",
+     "magma_salamander"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "GI-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "GI-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      }
+     ]
+    },
+    "openFollows": [
+     "AS-01",
+     "AS-02",
+     "AS-03"
+    ]
+   },
+   {
+    "id": "cv.9",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "คืนที่เครื่องลุก",
+    "kind": "convergence",
+    "section": "cv.9 คืนที่เครื่องลุก",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "ร่วมการปฏิวัติ",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "กับหุ่นรบบริษัท"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "MK-03"
+        ]
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "so"
+           ]
+          },
+          {
+           "k": "race",
+           "ids": [
+            "co"
+           ]
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ],
+      "favours": "`justice`"
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "ปกป้องโรงงานหรือบริษัท",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "ทอง",
+        "delta": 250
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_sv_blackout"
+       },
+       {
+        "k": "event",
+        "id": "MC-04"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "ambitious"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "greedy"
+          }
+         ]
+        },
+        "mul": 1.5
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "อพยพและซ่อมผู้บาดเจ็บ",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_sv_blackout",
+        "chance": 0.3
+       },
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "rust_collector"
+       },
+       {
+        "k": "event",
+        "id": "RL-02"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "medicine"
+          },
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "mechanics"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "war_automaton",
+       "rogue_doll",
+       "rust_swarm",
+       "reactor_wraith"
+      ]
+     },
+     {
+      "k": "event",
+      "id": "MC-04"
+     },
+     {
+      "k": "npc",
+      "id": "MK02-1"
+     },
+     {
+      "k": "npc",
+      "id": "MK03-1"
+     },
+     {
+      "k": "npc",
+      "id": "MK06-4"
+     },
+     {
+      "k": "npc",
+      "id": "MK12-1"
+     },
+     {
+      "k": "npc",
+      "id": "MK12-2"
+     },
+     {
+      "k": "stat",
+      "stat": "ไวรอน",
+      "delta": -1
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้าเขาคลั่ง · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
+    "src": "docs/lore/storylines/00-convergence.md:146",
+    "name": "คืนที่เครื่องลุก",
+    "openRaw": "MC-03 หรือ MC-04 (RL-01 ถึง RL-03)",
+    "placesRaw": "MK-03 MK-02 MK-12",
+    "places": [
+     "MK-03",
+     "MK-02",
+     "MK-12"
+    ],
+    "entriesRaw": "co.a3 so.a3 sl.a4 ha.a4 dw.a6 xc.b5 or.t2 la.a1 me.a4",
+    "entries": [
+     "co.a3",
+     "so.a3",
+     "sl.a4",
+     "ha.a4",
+     "dw.a6",
+     "xc.b5",
+     "or.t2",
+     "la.a1",
+     "me.a4"
+    ],
+    "extraEntries": [
+     {
+      "from": "or.t2",
+      "choice": "b",
+      "text": "ทหารรับจ้างออร์คในเมคาเรียถูกจ้างคุมโรงงาน (ทางเลือก ข)"
+     },
+     {
+      "from": "la.a1",
+      "choice": "b",
+      "text": "ช่างหลอมเผ่าลาวาที่ขายเทคโนโลยีให้เมคาเรียถูกเรียกมาป้องกันเตาปฏิกรณ์ (ทางเลือก ข) ทั้งสองเป็นฝ่ายเดียวกับบริษัท หุ่นวิญญาณจึงเป็นศัตรู"
+     },
+     {
+      "from": "me.a4",
+      "choice": "c",
+      "text": "เงือกที่ไปฟ้องเมคาเรียตามไปถึงโรงงานเอง (ทางเลือก ค)"
+     }
+    ],
+    "intro": "หุ่นวิญญาณมากพอจนลุกฮือ (MC-03) หรือเตาปฏิกรณ์ระเบิด (MC-04) และหุ่นรับช่วงงานในซาก (RL-03)",
+    "byRace": "",
+    "battleText": "`war_automaton` (หัวหน้า) `rogue_doll` `rust_swarm` (ฝูง) `reactor_wraith` (หลัง MC-04) · บอส MK02-1 ครอนซ์ที่สอง ถ้าเขาคลั่ง · NPC: MK03-1 ไวรอน-1, MK06-4 ซีโร่, MK12-1 แพทช์ บิดเดิลฟุต, MK12-2 ซินเดอร์",
+    "npcs": [
+     "MK02-1",
+     "MK03-1",
+     "MK06-4",
+     "MK12-1",
+     "MK12-2"
+    ],
+    "enemies": [
+     "war_automaton",
+     "rogue_doll",
+     "rust_swarm",
+     "reactor_wraith"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "MC-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "MC-04",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "MC-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "MC-04",
+       "happened": true
+      }
+     ]
+    },
+    "openFollows": [
+     "RL-01",
+     "RL-03"
+    ]
+   },
+   {
+    "id": "cv.10",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "นาข้าวเถ้า",
+    "kind": "convergence",
+    "section": "cv.10 นาข้าวเถ้า",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "ปลูกข้าว",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "ns_ash_rice"
+       },
+       {
+        "k": "stat",
+        "stat": "ความหิวมอร์เฮเวน",
+        "delta": -5
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_mark_hrod"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "farming"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "diligent"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 25,
+      "label": "เผานาตามคำสั่งฝ่ายสงคราม",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "ความหิว",
+        "delta": 5
+       },
+       {
+        "k": "eventWeight",
+        "id": "WR-03",
+        "delta": 20
+       },
+       {
+        "k": "npc",
+        "id": "MH06-2"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "bloodlust"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "hot"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "เป็นคนกลางเจรจา (DM-06)",
+      "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ผู้กล้าและจอมมารยอมคุย"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-07",
+          "open": true
+         }
+        ]
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_peace_seed",
+        "chance": 0.2
+       }
+      ],
+      "mods": [],
+      "favours": "`charismatic` `ns_mediate`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "ghoul_horde"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "npc_demon_champion"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "crown_wraith"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "MH06-1"
+     },
+     {
+      "k": "npc",
+      "id": "MH06-2"
+     },
+     {
+      "k": "npc",
+      "id": "MH06-4"
+     },
+     {
+      "k": "npc",
+      "id": "MH01-3"
+     },
+     {
+      "k": "npc",
+      "id": "MH03-4"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้ามงกุฎกระดูกยังไร้ผู้สวม · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
+    "src": "docs/lore/storylines/00-convergence.md:160",
+    "name": "นาข้าวเถ้า",
+    "openRaw": "DM-06 หรือ DM-11 → HP-07",
+    "placesRaw": "MH-06",
+    "places": [
+     "MH-06"
+    ],
+    "entriesRaw": "or.a4 gh.a3 dm.a5 hu.a5 ha.a6 ho.a2 xc.t2 sl.a5",
+    "entries": [
+     "or.a4",
+     "gh.a3",
+     "dm.a5",
+     "hu.a5",
+     "ha.a6",
+     "ho.a2",
+     "xc.t2",
+     "sl.a5"
+    ],
+    "extraEntries": [
+     {
+      "from": "sl.a5",
+      "choice": "a",
+      "text": "ชุมชนสไลม์ที่ตั้งแล้วส่งปุ๋ยให้นาข้าวเถ้า ใช้ทางเลือก ก) ในฐานะผู้ส่งปุ๋ย (`ns_ash_rice` ต้องมี `farming` ของคนอื่นร่วมนา)"
+     }
+    ],
+    "intro": "ออร์คสันติที่วีซาเฮเวน (MH-06) ปลูกข้าวในดินเถ้า ถ้าสำเร็จ ความหิวของมอร์เฮเวนลด และเกิดสนธิสัญญาอาหาร (HP-07)",
+    "byRace": "",
+    "battleText": "ฝูง `ghoul_horde` ที่หิวลงมากินนา · `npc_demon_champion` จากฝ่ายสงคราม · `crown_wraith` ถ้ามงกุฎกระดูกยังไร้ผู้สวม · NPC: MH06-1 เวธาร์, MH06-2 ซาวี, MH06-4 ลิลิธ, MH01-3 เรธวี, MH03-4 อุลเรธ",
+    "npcs": [
+     "MH06-1",
+     "MH06-2",
+     "MH06-4",
+     "MH01-3",
+     "MH03-4"
+    ],
+    "enemies": [
+     "ghoul_horde",
+     "npc_demon_champion",
+     "crown_wraith"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-11",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-11",
+       "happened": true
+      }
+     ]
+    },
+    "openFollows": [
+     "HP-07"
+    ]
+   },
+   {
+    "id": "cv.11",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "บันไดหมื่นขั้น",
+    "kind": "convergence",
+    "section": "cv.11 บันไดหมื่นขั้น",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "หาทางชดเชยความแค้นหิน",
+      "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "wi"
+           ]
+          },
+          {
+           "k": "text",
+           "text": "ส่งศิลาลอย"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-03",
+          "open": true
+         }
+        ]
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "gi.a3"
+        ],
+        "rel": ""
+       }
+      ],
+      "mods": [],
+      "favours": "`honest` `ns_mediate`"
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "ตัดบันได",
+      "effects": [
+       {
+        "k": "event",
+        "id": "WR-02",
+        "open": true
+       },
+       {
+        "k": "event",
+        "id": "GI-03"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "gi"
+           ]
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "vengeful"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "ตามหรือขวางไททัน",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ขวาง → กับเศษไททันเพื่อปกป้องมนุษย์"
+       }
+      ],
+      "mods": []
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "titan_shard",
+       "storm_harpy"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "awakened_titan"
+      ]
+     },
+     {
+      "k": "event",
+      "id": "GI-02"
+     },
+     {
+      "k": "npc",
+      "id": "SH03-1"
+     },
+     {
+      "k": "npc",
+      "id": "SH03-2"
+     },
+     {
+      "k": "npc",
+      "id": "AZ04-1"
+     },
+     {
+      "k": "npc",
+      "id": "AZ04-2"
+     },
+     {
+      "k": "event",
+      "id": "DR-01"
+     },
+     {
+      "k": "event",
+      "id": "SF-04"
+     },
+     {
+      "k": "ref",
+      "nodes": [
+       "cv.1"
+      ],
+      "rel": ""
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`titan_shard` (หัวหน้า) `storm_harpy` (ฝั่งปีก) · บอส `awakened_titan` (GI-02) · NPC: SH03-1 โกรม-ทอร์, SH03-2 บรูมา ผู้ทดสอบ, AZ04-1 ธีวาสกรอม, AZ04-2 ซาโรมา · หลัง DR-01 จุดนี้แทนด้วย SF-04 ใน cv.1",
+    "src": "docs/lore/storylines/00-convergence.md:174",
+    "name": "บันไดหมื่นขั้น",
+    "openRaw": "WR-02 หรือ HP-03 หรือ GI-02",
+    "placesRaw": "SH-03 AZ-04",
+    "places": [
+     "SH-03",
+     "AZ-04"
+    ],
+    "entriesRaw": "gi.a3 wi.a3 dw.a6 hu.a6 cy.a2",
+    "entries": [
+     "gi.a3",
+     "wi.a3",
+     "dw.a6",
+     "hu.a6",
+     "cy.a2"
+    ],
+    "extraEntries": [],
+    "intro": "ความแค้นหินระหว่างยักษ์กับเผ่าปีก ยักษ์จะตัดบันได (WR-02) หรือคืนดี (HP-03) หรือไททันจะตื่น (GI-02)",
+    "byRace": "",
+    "battleText": "`titan_shard` (หัวหน้า) `storm_harpy` (ฝั่งปีก) · บอส `awakened_titan` (GI-02) · NPC: SH03-1 โกรม-ทอร์, SH03-2 บรูมา ผู้ทดสอบ, AZ04-1 ธีวาสกรอม, AZ04-2 ซาโรมา · หลัง DR-01 จุดนี้แทนด้วย SF-04 ใน cv.1",
+    "npcs": [
+     "SH03-1",
+     "SH03-2",
+     "AZ04-1",
+     "AZ04-2"
+    ],
+    "enemies": [
+     "titan_shard",
+     "storm_harpy",
+     "awakened_titan"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "HP-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-02",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "HP-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-02",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.12",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ธุลีทิพย์",
+    "kind": "convergence",
+    "section": "cv.12 ธุลีทิพย์",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "เป็นคนกลางทำสัญญาแบ่งธุลี",
+      "effects": [
+       {
+        "k": "event",
+        "id": "WR-24"
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_dry_vow",
+        "chance": 0.15
+       }
+      ],
+      "mods": [],
+      "favours": "`law` `ns_pact_reading`"
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "ปล้นกองคาราวานธุลี",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "ทอง",
+        "delta": 300
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_blood_feud"
+       },
+       {
+        "k": "npc",
+        "id": "SH02-2"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "or",
+           "of": [
+            {
+             "k": "has",
+             "kind": "trait",
+             "id": "greedy"
+            },
+            {
+             "k": "race",
+             "ids": [
+              "or"
+             ]
+            }
+           ]
+          },
+          {
+           "k": "text",
+           "text": "ทราย"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "เข้าเมืองมายาหาแหล่งธุลีใหม่",
+      "effects": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "กับภาพลวง"
+       },
+       {
+        "k": "npc",
+        "id": "SH14-1"
+       },
+       {
+        "k": "pct",
+        "text": "พบของยุคปฐม",
+        "pct": 20
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "curious"
+          },
+          {
+           "k": "has",
+           "kind": "job",
+           "id": "archaeologist"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "mummy",
+       "sandworm",
+       "dust_djinn",
+       "sand_raiders",
+       "mirage_phantom"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "SH02-1"
+     },
+     {
+      "k": "npc",
+      "id": "SH01-1"
+     },
+     {
+      "k": "npc",
+      "id": "SH02-3"
+     },
+     {
+      "k": "npc",
+      "id": "SH12-3"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ ถ้าตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
+    "src": "docs/lore/storylines/00-convergence.md:186",
+    "name": "ธุลีทิพย์",
+    "openRaw": "WR-24 หรือ GI-06 หรือ GI-10",
+    "placesRaw": "SH-01 SH-02 SH-14",
+    "places": [
+     "SH-01",
+     "SH-02",
+     "SH-14"
+    ],
+    "entriesRaw": "mu.a3 va.a5 hu.a4 be.a4 gi.a5 or.a1 wi.t3",
+    "entries": [
+     "mu.a3",
+     "va.a5",
+     "hu.a4",
+     "be.a4",
+     "gi.a5",
+     "or.a1",
+     "wi.t3"
+    ],
+    "extraEntries": [
+     {
+      "from": "or.a1",
+      "choice": "c",
+      "text": "ออร์คไม่เข้าฝ่ายเดินทางใต้กับกองคาราวานออร์คทราย ใช้ทางเลือก ข) ได้น้ำหนัก ×2"
+     },
+     {
+      "from": "wi.t3",
+      "choice": "c",
+      "text": "นักบินเรือเหาะหนุ่มนำทางคาราวานธุลี ใช้ทางเลือก ก) หรือ ค) เพราะเห็นเส้นทางจากข้างบน"
+     }
+    ],
+    "intro": "ธุลีทิพย์ที่ทำให้มัมมี่ตื่นอยู่ขาดแคลน ซาร์ฮาดีน (SH-01) กับอัมเมนรา (SH-02) เข้าสงคราม (WR-24) เมืองมายา (SH-14) ปรากฏหนึ่งฤดู (GI-06)",
+    "byRace": "",
+    "battleText": "`mummy` `sandworm` `dust_djinn` `sand_raiders` `mirage_phantom` · บอสฝั่งอัมเมนรา SH02-1 ฟาโรห์ ถ้าตัวละครปล้นหลุมพระศพ · NPC: SH01-1 คาลิด, SH02-3 นีเฟอร์, SH12-3 ฮัสซัน ผู้นำทางธุลีลึก",
+    "npcs": [
+     "SH02-1",
+     "SH01-1",
+     "SH02-3",
+     "SH12-3"
+    ],
+    "enemies": [
+     "mummy",
+     "sandworm",
+     "dust_djinn",
+     "sand_raiders",
+     "mirage_phantom"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-24",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-10",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-24",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "GI-10",
+       "happened": true
+      }
+     ]
+    }
+   },
+   {
+    "id": "cv.13",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "คลื่นไว้อาลัย",
+    "kind": "convergence",
+    "section": "cv.13 คลื่นไว้อาลัย",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 30,
+      "label": "ออกตามหามังกรที่เหลือ",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_mourning_ear",
+        "chance": 0.25
+       },
+       {
+        "k": "jobpath",
+        "job": "dragon_whisperer",
+        "secret": true
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "dk"
+           ]
+          },
+          {
+           "k": "race",
+           "ids": [
+            "wi"
+           ]
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ],
+      "favours": "`devout`"
+     },
+     {
+      "key": "b",
+      "weight": 50,
+      "label": "ใช้ชีวิตต่อ",
+      "effects": [
+       {
+        "k": "stat",
+        "stat": "รอยไว้อาลัย",
+        "delta": 1
+       }
+      ],
+      "mods": []
+     },
+     {
+      "key": "c",
+      "weight": 20,
+      "label": "เข้าลัทธิผู้ปลดผนึก",
+      "effects": [
+       {
+        "k": "event",
+        "id": "GD-07"
+       },
+       {
+        "k": "jobpath",
+        "job": "seal_breaker",
+        "secret": true
+       },
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nc_mourning"
+       }
+      ],
+      "mods": [],
+      "favours": "ยุค ≥ 3 · `skeptic` `ambitious`"
+     }
+    ],
+    "notes": [],
+    "titleEvents": [],
+    "notesText": "",
+    "src": "docs/lore/storylines/00-convergence.md:200",
+    "name": "คลื่นไว้อาลัย",
+    "openRaw": "DR-15",
+    "placesRaw": "ทุกทวีป (ในความฝัน)",
+    "places": [],
+    "entriesRaw": "ทุกเผ่า ทุกช่วงอายุ",
+    "entries": [],
+    "extraEntries": [],
+    "intro": "มังกรหนึ่งในสิบห้าล้ม ทุกคนได้ยินเสียงร้องไห้ในความฝัน ([../../systems/events/branches/03-character-and-quests.md](../../systems/events/branches/03-character-and-quests.md) หัวข้อ 5) ไม่ใช่ศึก แต่เปลี่ยนเส้นทางที่เหลือ",
+    "byRace": "",
+    "battleText": "",
+    "npcs": [],
+    "enemies": [],
+    "open": {
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
+    },
+    "when": {
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
+    }
+   },
+   {
+    "id": "cv.14",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ผู้กล้าเจ็ดคน",
+    "kind": "convergence",
+    "section": "cv.14 ผู้กล้าเจ็ดคน",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 40,
+      "label": "เป็นผู้ติดตามผู้กล้า",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "hero_companion"
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ระดับบอสกับแม่ทัพปีศาจ"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "justice"
+          },
+          {
+           "k": "has",
+           "kind": "trait",
+           "id": "adventurer"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 25,
+      "label": "เป็นสมุนจอมมาร",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "demon_servant"
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "กับผู้กล้า"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "dm"
+           ]
+          },
+          {
+           "k": "race",
+           "ids": [
+            "or"
+           ]
+          },
+          {
+           "k": "race",
+           "ids": [
+            "gh"
+           ]
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ],
+      "favours": "`ambitious`"
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "พาสองฝ่ายมาคุย",
+      "effects": [
+       {
+        "k": "event",
+        "id": "DM-06",
+        "open": true
+       },
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "คุยได้"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-07",
+          "open": true
+         }
+        ]
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "cv.10"
+        ],
+        "rel": ""
+       }
+      ],
+      "mods": [],
+      "favours": "`ns_mediate` `charismatic`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "demongeneral",
+       "npc_demon_champion"
+      ]
+     },
+     {
+      "k": "battleFor",
+      "choices": [
+       "b"
+      ],
+      "enemies": [
+       "npc_summoned_hero"
+      ]
+     },
+     {
+      "k": "npc",
+      "id": "AL02-3"
+     },
+     {
+      "k": "npc",
+      "id": "MH02-1"
+     },
+     {
+      "k": "npc",
+      "id": "AL02-1"
+     },
+     {
+      "k": "npc",
+      "id": "MH07-2"
+     },
+     {
+      "k": "event",
+      "id": "DM-05"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`demongeneral` (บอส) `npc_demon_champion` · ทาง ข เจอ `npc_summoned_hero` และ AL02-3 ฮารุโตะ · ทาง ก สุดท้ายเจอ MH02-1 ดราซาร์โมธ (เจรจาได้) · NPC: AL02-1 สังฆราชบอนิฟาซิอุสที่ 9, MH07-2 อาริสะ ผู้หนีจากผู้กล้า · ถ้าผู้กล้าชนะแล้วทรยศ (DM-05) ผู้ติดตามต้องเลือกอีกครั้งว่าจะอยู่ข้างใคร",
+    "src": "docs/lore/storylines/00-convergence.md:210",
+    "name": "ผู้กล้าเจ็ดคน",
+    "openRaw": "DM-01 → DM-04 · DM-05 · DM-06",
+    "placesRaw": "AL-02 MH-02",
+    "places": [
+     "AL-02",
+     "MH-02"
+    ],
+    "entriesRaw": "hu.t2 (ผู้ถูกอัญเชิญ) hu.a4 ha.a5 or.a5 dm.a6 gh.a5 el.a6 dk.a6",
+    "entries": [
+     "hu.t2",
+     "hu.a4",
+     "ha.a5",
+     "or.a5",
+     "dm.a6",
+     "gh.a5",
+     "el.a6",
+     "dk.a6"
+    ],
+    "extraEntries": [
+     {
+      "from": "dk.a6",
+      "choice": "a",
+      "text": "เผ่ามังกรที่ปกป้องมังกรเจอผู้กล้าถึงถิ่นตัวเอง (ทางเลือก ค หรือ ข ตามฝ่าย)"
+     }
+    ],
+    "intro": "จอมมารรวมเผ่า (DM-01) ศาสนจักรแห่งแสงอัญเชิญผู้กล้าเจ็ดคน (DM-04) ผู้กล้าบางคนทรยศ (DM-05) หรือยอมเจรจา (DM-06)",
+    "byRace": "",
+    "battleText": "`demongeneral` (บอส) `npc_demon_champion` · ทาง ข เจอ `npc_summoned_hero` และ AL02-3 ฮารุโตะ · ทาง ก สุดท้ายเจอ MH02-1 ดราซาร์โมธ (เจรจาได้) · NPC: AL02-1 สังฆราชบอนิฟาซิอุสที่ 9, MH07-2 อาริสะ ผู้หนีจากผู้กล้า · ถ้าผู้กล้าชนะแล้วทรยศ (DM-05) ผู้ติดตามต้องเลือกอีกครั้งว่าจะอยู่ข้างใคร",
+    "npcs": [
+     "AL02-3",
+     "MH02-1",
+     "AL02-1",
+     "MH07-2"
+    ],
+    "enemies": [
+     "demongeneral",
+     "npc_demon_champion",
+     "npc_summoned_hero"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-05",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-06",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-05",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-06",
+       "happened": true
+      }
+     ]
+    },
+    "openFollows": [
+     "DM-04"
+    ]
+   },
+   {
+    "id": "cv.15",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ขบวนหนีหมอก",
+    "kind": "convergence",
+    "section": "cv.15 ขบวนหนีหมอก",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "นำขบวน",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "refugee_leader"
+       },
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "หลายครั้งตามทาง"
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "leadership"
+          },
+          {
+           "k": "has",
+           "kind": "skill",
+           "id": "ns_fog_guide"
+          }
+         ]
+        },
+        "mul": 2
+       }
+      ]
+     },
+     {
+      "key": "b",
+      "weight": 35,
+      "label": "ดูแลเชือกท้ายขบวน",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "skill",
+        "id": "nb_sv_fog",
+        "chance": 0.3
+       }
+      ],
+      "mods": [],
+      "favours": "`kind` `diligent`"
+     },
+     {
+      "key": "c",
+      "weight": 30,
+      "label": "ทิ้งขบวนไปทางลัดคนเดียว",
+      "effects": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_ghost",
+        "chance": 0.2
+       }
+      ],
+      "mods": [],
+      "favours": "`loner` `coward` `cold`"
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "fog_tentacle",
+       "fog_moth_swarm",
+       "flesh_flyer",
+       "shadow_pack"
+      ]
+     },
+     {
+      "k": "grant",
+      "kind": "job",
+      "id": "fog_guide"
+     },
+     {
+      "k": "event",
+      "id": "FG-09"
+     },
+     {
+      "k": "event",
+      "id": "DV-03"
+     },
+     {
+      "k": "npc",
+      "id": "NB14-1"
+     },
+     {
+      "k": "npc",
+      "id": "NB14-2"
+     },
+     {
+      "k": "npc",
+      "id": "NB14-3"
+     },
+     {
+      "k": "npc",
+      "id": "NB10-2"
+     },
+     {
+      "k": "npc",
+      "id": "AL20-1"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "`fog_tentacle` `fog_moth_swarm` `flesh_flyer` `shadow_pack` · ลูกผสมจักรกลและหุ่นเป็นผู้นำทางที่สิ่งมีชีวิตเมิน (FG-09 DV-03 อาชีพ `fog_guide`) · NPC: NB14-1 แม่ซิลล่า, NB14-2 แฮงค์, NB14-3 มินา, NB10-2 เซโร่, AL20-1 จัสติน เวสเตอร์ ที่ป้อมชายแดน",
+    "src": "docs/lore/storylines/00-convergence.md:224",
+    "name": "ขบวนหนีหมอก",
+    "openRaw": "FG-02 หรือ FG-03 → FG-07 · FG-11 → DV-02",
+    "placesRaw": "NB-14 AL-20",
+    "places": [
+     "NB-14",
+     "AL-20"
+    ],
+    "entriesRaw": "va.a6 co.a5 so.a4 hu.a6 de.a6 fa.a5 vb.a1 be.a2 wi.a2 gh.a1 na.a4",
+    "entries": [
+     "va.a6",
+     "co.a5",
+     "so.a4",
+     "hu.a6",
+     "de.a6",
+     "fa.a5",
+     "vb.a1",
+     "be.a2",
+     "wi.a2",
+     "gh.a1",
+     "na.a4"
+    ],
+    "extraEntries": [
+     {
+      "from": "be.a2",
+      "choice": "a",
+      "text": "ฝูงเผ่าสัตว์ที่อพยพผ่านชายแดนหมอกใช้จมูกนำขบวน (ทางเลือก ก)"
+     },
+     {
+      "from": "wi.a2",
+      "choice": "c",
+      "text": "ผู้ลี้ภัยที่พาไปที่ใหม่ถูกหมอกกลืนเส้นทาง เผ่าปีกบินเหนือหมอกสำรวจ (ทางเลือก ก)"
+     },
+     {
+      "from": "gh.a1",
+      "choice": "b",
+      "text": "กูลที่นำฝูงหนีจากหมู่บ้านไปเจอขบวนหนีหมอกและต้องกันฝูงไว้ท้ายขบวน (ทางเลือก ข)"
+     },
+     {
+      "from": "",
+      "text": "ทุกทางต้องมีเงื่อนไขหมอก FG-02 หรือ FG-03 เกิดแล้ว"
+     },
+     {
+      "from": "na.a4",
+      "choice": "b",
+      "text": "นาคาที่พาผู้คนย้ายที่อยู่นำขบวนด้วยเรือแม่น้ำ (ทางเลือก ก)"
+     }
+    ],
+    "intro": "หมอกทึบกลืนเมือง (FG-02) หรือคลุมทั้งชายแดน (FG-03) ผู้รอดหลายหมื่นเดินข้ามหมอกด้วยเชือกนำทางที่ขาดครึ่งทาง (FG-07) ถ้าหมอกกินทวีป (FG-11) นี่คือขบวนสุดท้าย (DV-02)",
+    "byRace": "",
+    "battleText": "`fog_tentacle` `fog_moth_swarm` `flesh_flyer` `shadow_pack` · ลูกผสมจักรกลและหุ่นเป็นผู้นำทางที่สิ่งมีชีวิตเมิน (FG-09 DV-03 อาชีพ `fog_guide`) · NPC: NB14-1 แม่ซิลล่า, NB14-2 แฮงค์, NB14-3 มินา, NB10-2 เซโร่, AL20-1 จัสติน เวสเตอร์ ที่ป้อมชายแดน",
+    "npcs": [
+     "NB14-1",
+     "NB14-2",
+     "NB14-3",
+     "NB10-2",
+     "AL20-1"
+    ],
+    "enemies": [
+     "fog_tentacle",
+     "fog_moth_swarm",
+     "flesh_flyer",
+     "shadow_pack"
+    ],
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-11",
+       "happened": true
+      }
+     ]
+    },
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-11",
+       "happened": true
+      }
+     ]
+    },
+    "openFollows": [
+     "FG-07",
+     "DV-02"
+    ]
+   },
+   {
+    "id": "cv.16",
+    "line": "cv",
+    "stage": "x",
+    "age": [
+     0,
+     999
+    ],
+    "title": "ปลายโลก",
+    "kind": "convergence",
+    "section": "cv.16 ปลายโลก",
+    "choices": [
+     {
+      "key": "a",
+      "weight": 35,
+      "label": "ช่วยมังกรที่เหลือผนึกแกน",
+      "effects": [
+       {
+        "k": "event",
+        "id": "END-12",
+        "open": true
+       }
+      ],
+      "mods": [
+       {
+        "cond": {
+         "k": "text",
+         "text": "ผู้มีตรามังกร"
+        },
+        "mul": 3
+       }
+      ],
+      "favours": "ศรัทธาโลก > 70"
+     },
+     {
+      "key": "b",
+      "weight": 30,
+      "label": "รวมกุญแจเพื่อฝ่ายตัวเอง",
+      "effects": [
+       {
+        "k": "event",
+        "id": "END-11",
+        "open": true
+       },
+       {
+        "k": "ending",
+        "title": "ผู้เปิดยุคที่สอง"
+       }
+      ],
+      "mods": [],
+      "favours": "`ambitious` อาชีพ `seal_breaker`"
+     },
+     {
+      "key": "c",
+      "weight": 35,
+      "label": "ปกป้องคนรอบตัวจนวันสุดท้าย",
+      "effects": [
+       {
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "and",
+           "of": [
+            {
+             "k": "cmp",
+             "stat": "dfc",
+             "op": "==",
+             "value": 14,
+             "label": "DFC"
+            },
+            {
+             "k": "text",
+             "text": "เหลือมังกรตัวสุดท้าย ( )"
+            }
+           ]
+          },
+          {
+           "k": "text",
+           "text": "กุญแจถูกกระจาย"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "END-10",
+          "open": true
+         }
+        ]
+       }
+      ],
+      "mods": []
+     }
+    ],
+    "notes": [
+     {
+      "k": "battle",
+      "enemies": [
+       "npc_knight",
+       "npc_cultist",
+       "war_automaton"
+      ]
+     },
+     {
+      "k": "battle",
+      "enemies": [
+       "primordial_engine",
+       "leviathan"
+      ]
+     },
+     {
+      "k": "event",
+      "id": "END-11"
+     },
+     {
+      "k": "event",
+      "id": "END-04"
+     }
+    ],
+    "titleEvents": [],
+    "notesText": "กองทัพผู้ชิงกุญแจ (`npc_knight` `npc_cultist` `war_automaton`) · บอส `primordial_engine` (END-11) หรือ `leviathan` (END-04 ถ้าธาลาสซาสิ้น)",
+    "src": "docs/lore/storylines/00-convergence.md:238",
+    "name": "ปลายโลก",
+    "openRaw": "ยุค 4 (ผลสู่ END-10 END-11 END-12 ผ่าน LE-11 และ WR-15)",
+    "placesRaw": "ที่ตั้งของกุญแจ",
+    "places": [],
+    "entriesRaw": "ทุกเผ่า ช่วงผู้เฒ่า (e2)",
+    "entries": [],
+    "extraEntries": [],
+    "intro": "ยุค 4 กุญแจเก้าชิ้นถูกรวม ทุกฝ่ายชิงกุญแจ (WR-15) ผลสุดท้ายคือหนึ่งในสามปลายโลก เปิดตั้งแต่ยุค 4 จากโหนด e2 ของทุกเผ่า ผลที่ชี้ไป END ใช้ได้เมื่อ LE-11 การตัดสินกุญแจเกิดแล้วและเงื่อนไขของ END นั้นใน [../../systems/events/world-events.md](../../systems/events/world-events.md) หัวข้อ 13 ครบ ก่อนนั้นทางเลือกเพิ่มน้ำหนักให้ทางของ LE-11 ที่ตรงกัน (ผนึก รวม กระจาย) ([../../systems/events/branches/04-last-era.md](../../systems/events/branches/04-last-era.md))",
+    "byRace": "",
+    "battleText": "กองทัพผู้ชิงกุญแจ (`npc_knight` `npc_cultist` `war_automaton`) · บอส `primordial_engine` (END-11) หรือ `leviathan` (END-04 ถ้าธาลาสซาสิ้น)",
+    "npcs": [],
+    "enemies": [
+     "npc_knight",
+     "npc_cultist",
+     "war_automaton",
+     "primordial_engine",
+     "leviathan"
+    ],
+    "open": {
+     "k": "era",
+     "min": 4
+    },
+    "when": {
+     "k": "era",
+     "min": 4
+    },
+    "openFollows": [
+     "END-10",
+     "END-11",
+     "END-12",
+     "LE-11",
+     "WR-15"
+    ]
+   }
+  ],
+  "fallback": {
+   "id": "cv.0",
+   "line": "cv",
+   "stage": "x",
+   "age": [
+    0,
+    999
+   ],
+   "title": "เมื่อจุดบรรจบยังไม่เปิด",
+   "kind": "fallback",
+   "section": "3. เมื่อจุดบรรจบยังไม่เปิด",
+   "choices": [
+    {
+     "key": "a",
+     "weight": 40,
+     "label": "ปกป้องถิ่นจากการบุกตามธงโลก",
+     "effects": [
+      {
+       "k": "battle",
+       "enemies": [],
+       "text": "บุกหมู่บ้านตาม"
+      },
+      {
+       "k": "trust",
+       "toward": "ถิ่น",
+       "delta": 1
+      }
+     ],
+     "mods": []
+    },
+    {
+     "key": "b",
+     "weight": 30,
+     "label": "เดินทางไปดูเหตุการณ์ที่ได้ยินเป็นข่าวลือ",
+     "effects": [],
+     "mods": []
+    },
+    {
+     "key": "c",
+     "weight": 30,
+     "label": "ใช้ชีวิตตามอาชีพ",
+     "effects": [
+      {
+       "k": "stat",
+       "stat": "ความถนัดของอาชีพ",
+       "delta": 1
+      }
+     ],
+     "mods": []
+    }
+   ],
+   "notes": [],
+   "titleEvents": [],
+   "notesText": "",
+   "src": "docs/lore/storylines/00-convergence.md:250"
+  },
+  "intro": "โครงสร้าง: [README.md](README.md) · เหตุการณ์โลก: [../../systems/events/world-events.md](../../systems/events/world-events.md) · การต่อสู้: [../../systems/combat/README.md](../../systems/combat/README.md) · NPC: [../npcs/README.md](../npcs/README.md)\nจุดบรรจบคือเหตุการณ์ที่ตัวละครหลายเผ่าเดินมาพบกันได้ แต่ละเผ่าเข้ามาจากโหนดของตัวเอง (คอลัมน์ \"เข้าจาก\") และออกไปด้วยผลที่ต่างกันตามเผ่า จุดบรรจบเปิดได้เฉพาะเมื่อเหตุการณ์โลกในคอลัมน์ \"เปิดเมื่อ\" เกิดแล้วหรือกำลังเกิด และตัวละครอยู่ในทวีปนั้น ตัวละครที่อยู่ทวีปอื่นได้ยินเป็นข่าวลือเท่านั้น ([../../systems/character/01-origin.md](../../systems/character/01-origin.md) หัวข้อ 5)\n**ช่วงเปิด** จุดบรรจบเปิดอยู่ 100 ปีโลกหลังตัวเปิดเกิด (เกิดซ้ำได้ต่อรอบ) ยกเว้น cv.13 ที่เปิดคืนเดียวต่อมังกรที่ล้ม และ cv.16 ที่เปิดจากยุค 4 จนจบ cv.4 เปิดอยู่แล้วตั้งแต่ ศ.ม. 10,388 จนกว่า FG-10 จะปิด ตัวละครที่อยู่ในช่วงชีวิตของโหนดเข้า (คอลัมน์ \"เข้าจาก\") ระหว่างที่จุดบรรจบเปิดจึงเข้าได้"
+ }
+}
