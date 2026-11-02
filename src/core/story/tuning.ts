@@ -77,3 +77,97 @@ export const MEMORY_LINES = 8;
 
 /** Battle stand-in until the combat system (M3): win, lose, flee. */
 export const BATTLE_ODDS = { win: 0.6, lose: 0.25, flee: 0.15 } as const;
+
+// ---------- how a life ends (M1 review S1) ----------
+
+/**
+ * Causes of death the story writes besides the character system's own (`old` `illness` `accident` `violence`). Thai words, because the
+ * text system prints a cause it does not know as written (text/tuning.ts CAUSE_TH).
+ */
+export const CAUSE = { battle: 'ตายในศึก', light: 'ออกไปรับแสง', stone: 'กลายเป็นหิน' } as const;
+
+/** A cause, or weighted causes when the way says "A หรือ B" (hu.e2 ทาง ข "โรคหรืออุบัติเหตุ"). */
+export type Way = string | readonly { id: string; w: number }[];
+
+/**
+ * How the character dies on a way that says it dies (storylines/README.md §6 rule 9: the closing node e2 of a race line, and the
+ * overlay nodes whose label says "ตาย…"). The data has no `death` effect for them, so the way is read from the label and written
+ * here by hand: key = `<node>.<choice key>`. A way of e2 that is not listed dies a plain death of `old` age (peaceful, a transformation,
+ * a return to the earth: the label says how, the cause stays `old`; the node id is kept in `life.dead.node`).
+ */
+export const DEATH_WAYS: Record<string, Way> = {
+  'hu.e2.b': [{ id: 'illness', w: 5 }, { id: 'accident', w: 3 }], // โรคหรืออุบัติเหตุ (character/tuning.ts UNTIMELY.causes weights)
+  'or.e2.a': CAUSE.battle, // ตายในศึกตามที่หวัง
+  'gi.e2.b': CAUSE.battle, // ตายในศึกกับไททัน
+  'de.e2.b': 'violence', // ถูกลอบสังหารโดยศิษย์หรือตระกูล
+  'gh.e2.b': 'violence', // ถูกล่าโดยผู้ล่าแวมไพร์
+  'sl.e2.b': 'violence', // ถูกกลืนโดยสไลม์ตัวอื่น
+  'so.e2.b': 'violence', // ถูกถอดชิ้นส่วนขาย
+  'dw.e2.b': 'accident', // ตายใต้ดิน (เหมืองถล่ม ลาวา)
+  'dk.e2.b': 'accident', // ตายในเปลวไฟของตัวเอง
+  'me.e2.b': 'accident', // ตายบนบก
+  'wi.e2.b': 'accident', // ตายบนดิน
+  'va.e2.b': CAUSE.light, // เดินออกไปรับแสงอาทิตย์
+  // the elders of the overlay lines whose way says the character dies (age 50 to 75, before the closing node)
+  'ml.e1.c': CAUSE.battle, // ตายในสนามสุดท้าย
+  'sf.e1.c': 'accident', // ตายบนเรือในทะเล
+  'wd.e1.b': 'accident', // ตายบนทาง
+  'ps.e1.b': 'illness', // ตายระหว่างเดินทางกลับ
+  'sc.e1.c': 'illness', // ตายระหว่างวิจัย
+  'bd.e1.c': 'illness', // ยังไม่พ้นพันธะ ตายในสัญญา
+};
+
+/** A rite outcome that kills: node → the start of the outcome label (na.t1 "ไม่ผ่าน กลายเป็นหิน": "ปลายทางทันที"). */
+export const DEADLY_OUTCOMES: Record<string, { label: string; cause: Way }> = {
+  'na.t1': { label: 'ไม่ผ่าน', cause: CAUSE.stone },
+};
+
+/**
+ * Endings that are a death in battle (01-human.md §6 "ผู้ตายในสงคราม"): a life earns one only when it ends in battle, never of old age.
+ * The data condition of it is only "passed hu.a4".
+ */
+export const WAR_ENDINGS: ReadonlySet<string> = new Set(['ผู้ตายในสงคราม']);
+
+/** Endings the table writes with no condition ("—") and the words below it: a plain life earns it when nothing more specific was earned. */
+export const PLAIN_ENDINGS: Record<string, { noConvergence: boolean; cause: readonly string[] }> = {
+  // "ไม่ได้ผ่าน cv เลย ตายเมื่อแก่"
+  คนธรรมดาที่รอด: { noConvergence: true, cause: ['old'] },
+};
+
+/** Ending groups of the data whose `line` is not a line id: they count when the life opened one of these lines. */
+export const ENDING_GROUPS: Record<string, readonly string[]> = {
+  halfblood: ['hb'],
+  heir: ['hr'],
+  economy: ['ec', 'pv', 'tr', 'iv', 'nl', 'wk'],
+};
+
+/**
+ * Which ending a life gets when it earned several (assumption; the docs say a life has one ending): drawn by weight, a condition adds
+ * to the weight (a harder one to earn is more telling), and one of the life's own race line weighs more than one of an overlay line.
+ */
+export const ENDING_WEIGHT = { base: 1, perClause: 1, mainLine: 3 };
+
+// ---------- pace (M1 review S2) ----------
+
+/**
+ * Nodes played in one life year (assumption; the docs set no number, 31 to 33 nodes over 75 years is about 0.4 a year, so two is a busy
+ * year). A node the year has no room for waits for the next year; a closing node of the race line (stage e) is never delayed.
+ */
+export const NODES_PER_YEAR = 2;
+
+/** A node that waits for a free year may slip this many years past the end of its table age (assumption; the age window of the table is a target). */
+export const SLIP_YEARS = 5;
+
+/** Battles fought in one life year (storylines/README.md §8: "นับในเพดานศึก 4 ครั้งต่อปี"). A battle over the number does not happen. */
+export const BATTLES_PER_YEAR = 4;
+
+/** The journey lines: a life walks one at a time, the next opens when the first is done (25-journeys.md §2 rule 3). */
+export const JOURNEY_LINES: ReadonlySet<string> = new Set(['sf', 'ps', 'ml', 'sc', 'ex', 'wd', 'xc']);
+export const JOURNEY_AT_ONCE = 1;
+
+/**
+ * Overlay lines opened by chance (OPEN_RATE) that are walked at the same time (assumption; no document sets a number). A line that is
+ * drawn open while the places are full waits and opens when one line is done. Lines whose cause is a state (a condition, a half-blood,
+ * an heir, the last era) or another system (`openLine`) are not counted.
+ */
+export const OVERLAY_AT_ONCE = 3;

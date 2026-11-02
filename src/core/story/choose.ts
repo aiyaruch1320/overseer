@@ -9,10 +9,12 @@ import type { Key, StoryExt } from './state';
 export interface Refs {
   npcs: Set<string>;
   events: Set<string>;
+  /** Turning points a way names: `job:<id>` (a job path opened or a job taken), `bond:<line>`, `ref:<node>` and `ref:<node>.<way>`. */
+  pivots: Set<string>;
 }
 
-/** Every NPC and event a list of effects names, looking inside the wrappers. */
-export function refsOf(list: readonly Effect[] | undefined, out: Refs = { npcs: new Set(), events: new Set() }): Refs {
+/** Every NPC, event and turning point a list of effects names, looking inside the wrappers. */
+export function refsOf(list: readonly Effect[] | undefined, out: Refs = { npcs: new Set(), events: new Set(), pivots: new Set() }): Refs {
   for (const e of list ?? []) {
     switch (e.k) {
       case 'npc':
@@ -20,6 +22,18 @@ export function refsOf(list: readonly Effect[] | undefined, out: Refs = { npcs: 
         break;
       case 'event':
         out.events.add(e.id);
+        break;
+      case 'jobpath':
+        out.pivots.add(`job:${e.job}`);
+        break;
+      case 'grant':
+        if (e.kind === 'job') out.pivots.add(`job:${e.id}`);
+        break;
+      case 'bond':
+        out.pivots.add(`bond:${e.line}`);
+        break;
+      case 'ref':
+        for (const id of e.nodes) out.pivots.add(e.choice ? `ref:${id}.${e.choice}` : `ref:${id}`);
         break;
       case 'if':
       case 'only':
@@ -37,11 +51,21 @@ export function refsOf(list: readonly Effect[] | undefined, out: Refs = { npcs: 
   return out;
 }
 
-/** Ids of people and events this life has met: what the nodes named, and the world events that fired during the life. */
+/**
+ * The director's memory (llm/04-story.md §3.1 rule 2): ids of people and events this life has met (what the nodes named, and the world
+ * events that fired during the life) and the turning points it chose (a job path, a bond line, the ways it took at earlier nodes).
+ */
 export function metBy(ctx: Ctx, ex: StoryExt): Set<string> {
-  const met = new Set<string>([...ex.seen.npcs, ...ex.seen.events]);
+  const met = new Set<string>([...ex.seen.npcs, ...ex.seen.events, ...ex.seen.pivots]);
   const life = ctx.state.life;
-  if (life) for (const [id, year] of Object.entries(ctx.state.world.happened)) if (year >= life.birthYear) met.add(id);
+  if (life) {
+    for (const [id, year] of Object.entries(ctx.state.world.happened)) if (year >= life.birthYear) met.add(id);
+    // a way that points at a node the life already walked (`ref`) ties back to it, to the way taken when the row names one
+    for (const [id, key] of Object.entries(life.passed)) {
+      met.add(`ref:${id}`);
+      if (key !== '-') met.add(`ref:${id}.${key}`);
+    }
+  }
   return met;
 }
 
@@ -51,6 +75,7 @@ export function ties(c: Choice, met: ReadonlySet<string>): boolean {
   const r = refsOf(c.effects);
   for (const id of r.npcs) if (met.has(id)) return true;
   for (const id of r.events) if (met.has(id)) return true;
+  for (const id of r.pivots) if (met.has(id)) return true;
   return false;
 }
 
