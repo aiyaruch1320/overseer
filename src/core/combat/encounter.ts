@@ -14,7 +14,7 @@ import { extOf, lifeOf } from './state';
 import { rollWound } from './reward';
 import {
   ADULT_FIGHT_AGE, CAPTURE, CHILD_MAX_DC, DANGER_BY_CONTINENT, EVENT_ACTIVE_YEARS, FIGHT_AGE, HUNTER_JOBS, NIGHT_SHARE, PICK, RAID, RAID_SHARE, RAIDERS,
-  SLOW_MUL, SOLDIER_JOBS, STREAM, URBAN_JOBS, URBAN_MUL, WAR_DAMAGE, WEALTH_SAFE, WORLD_MUL_CAP,
+  SLOW_MUL, SOLDIER_JOBS, STREAM, URBAN_JOBS, URBAN_MUL, WANTED, WAR_DAMAGE, WEALTH_SAFE, WORLD_MUL_CAP,
 } from './tuning';
 import type { FightOpts } from './types';
 import type { Enemy } from '../data/types-combat';
@@ -131,6 +131,14 @@ export function rollEncounter(ctx: Ctx): boolean {
   const life = lifeOf(ctx);
   if (!life) return false;
   const rng = ctx.rng(STREAM.encounter);
+  // a price on the head brings a hunter (04 §6): 20% a year, a season is a quarter of it
+  if (life.curses.includes(WANTED.curse) && life.hAge >= FIGHT_AGE && rng.chance(1 - Math.pow(1 - WANTED.perYear, 1 / 4))) {
+    const fresh = admit(ctx, [WANTED.enemy]);
+    if (fresh.length) {
+      launch(ctx, fresh, { kind: 'travel', ambush: 'foe', env: envOf(ctx, life, true) }, false);
+      return true;
+    }
+  }
   const p = chanceOf(ctx, life);
   if (!p || !rng.chance(p)) return false;
   const enemy = pickEnemy(ctx, life);

@@ -235,3 +235,6 @@ export const RAID = { allies: 2, warned: -2, fameAll: 8, fameLoss: 4, orphanAge:
 export const RAID_CLEAN = 0.25;
 /** The mass battle of a war (04 §7): the damage of a lost roll is DC × this share of the whole fight's damage (assumption). */
 export const WAR_DAMAGE = 0.25;
+
+/** A hero with the curse `c_wanted` is hunted by a bounty hunter (04-encounters.md §6: 20% a year, `npc_mercenary`); the hunter lies in wait. */
+export const WANTED = { curse: 'c_wanted', perYear: 0.2, enemy: 'npc_mercenary' };

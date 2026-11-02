@@ -841,6 +841,25 @@ describe('the fights that come on their own (04-encounters.md)', () => {
     }
   });
 
+  it('a price on the head brings a hunter: about 20% a year, a bounty hunter who lies in wait', async () => {
+    const { rollEncounter } = await import('../../src/core/combat');
+    const count = (curses: string[]) => {
+      const m = mk(87, { curses, hAge: 30, stats: { luk: 20 } });
+      m.s.game.state.world.countryFlags[m.life.country] = ['golden', 'golden'];
+      let n = 0;
+      for (let i = 0; i < 800; i++) {
+        m.life.hAge = 20 + (i % 40);
+        combatOf(m.life).hp = maxHpOf(m.ctx, m.life);
+        const mark = m.s.game.state.logN;
+        rollEncounter(m.ctx);
+        n += m.s.game.state.log.filter((e) => e.n >= mark && e.sys === 'combat' && e.kind === 'battle' && e.id === 'npc_mercenary' && e.data.first === 'foe').length;
+        if (m.life.dead) break;
+      }
+      return n;
+    };
+    expect(count(['c_wanted'])).toBeGreaterThan(count([]) + 25);
+  });
+
   it('a raid on the village: three phases, the town fights beside the hero, and a clean save is fame +8', () => {
     const m = mk(84, { aptitudes: { sword: 3 }, stats: { pow: 18, vit: 18 } });
     const mark = m.s.game.state.logN;
