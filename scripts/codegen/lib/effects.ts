@@ -389,6 +389,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
       rest = '';
     }
   }
+  take(/ไม่เข้า\s*(?:`[^`]+`\s*(?:หรือ|และ)?\s*)+/g, () => undefined); // "ไม่เข้า `fisher` หรือ `ferryman`": jobs left out, nothing is granted
   take(/ผ่านเพิ่ม\s*(\d+)/g, (m) => push({ k: 'stat', stat: 'โอกาสผ่าน', delta: Number(m[1]) }));
   take(/ปลายทาง\s*["“]([^"”]+)["”]\s*(?:ถ้า\s*([^·]+))?/g, (m) => {
     const cond = m[2] ? parseConditionX(m[2], ids, true) : null;
@@ -949,6 +950,19 @@ function pickSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): s
   const alts = splitOr(seg);
   if (!alts || alts.length < 2 || alts.some((a) => !a)) return null;
   if (/×|คูณ/.test(seg)) return null;
+  // story prose that offers the player a choice ("ตัวละครเลือก: A หรือ B") is not a list of codes
+  if (/ตัวละครเลือก|ไม่เข้า|\*\*/.test(seg) || alts.some((a) => a.length > 90)) return null;
+  // "เกิด NR-06 หรือ NR-07 → `c_outcast` 40%": the "หรือ" before the arrow is the condition of what follows it
+  if (!/→/.test(alts[0]) && /→/.test(alts[alts.length - 1]) && !/(?<!เ)ถ้า|เมื่อ|ต้อง/.test(seg.slice(0, seg.indexOf('→')))) {
+    const at = seg.indexOf('→');
+    const sub = fresh();
+    const rest = segmentFull(seg.slice(at + 1), ids, sub, opts);
+    const made = condOf(seg.slice(0, at), ids, sub.effects);
+    if (!sub.effects.length || hasMeta(sub) || !made) return null;
+    out.effects.push({ k: 'if', cond: made.cond as Condition, then: made.then });
+    out.unparsed.push(...sub.unparsed);
+    return rest;
+  }
   // "ถ้า A หรือ B เกิด", "ต้องผ่าน A หรือ B": the alternatives are a condition, read by the condition parser
   const head = alts[0].replace(/^.*→/, '');
   if (/(?:^|\s)(?:ถ้า|ต้อง|เมื่อ|ใช้ได้|หาก|ข้ามถ้า|ใช้เมื่อ|เกิดเมื่อ|หลัง)|ต้องผ่าน/.test(head)) return null;
@@ -1076,8 +1090,7 @@ export function parseCell(cell: string, ids: IdIndex, opts: ParseOpts = {}): Par
   for (const seg of text.split(/\s+·\s+/)) {
     if (variantSegment(seg, ids, out, labels)) continue;
     if (placeSegment(seg, ids, out, opts, labels)) continue;
-    const label = seg
-      .replace(/`[^`]+`(?:\s*\d+(?:\.\d+)?%)?/g, '')
+    const label = (/ไม่เข้า/.test(seg) ? seg.replace(/`/g, '') : seg.replace(/`[^`]+`(?:\s*\d+(?:\.\d+)?%)?/g, ''))
       .replace(/\{[^}]*\}/g, '')
       .replace(/\(\s*(?:ต้องมี|ให้)?\s*\)/g, '')
       .replace(/ทาง(?:สู่|ไป|เปิด)\s*(?:อาชีพลับ|อาชีพ)?\s*$/, '')
