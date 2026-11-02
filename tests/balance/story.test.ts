@@ -12,7 +12,7 @@ import { Game, type GameData, type System } from '../../src/core/game';
 import { onCond, onEffect, onStat, resetRules } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { registerStoryRules, setRuleDirector, storySystem } from '../../src/core/story';
-import { EXTERNAL_LINES, OPEN_RATE } from '../../src/core/story/tuning';
+import { EXTERNAL_LINES, OPEN_RATE, OPEN_SHARE } from '../../src/core/story/tuning';
 import type { LifeState } from '../../src/core/types';
 
 const RACES = ['human', 'elf', 'darkelf', 'dwarf', 'orc', 'halfling', 'beast', 'naga', 'dragonkin', 'vampire', 'fae', 'slime', 'demonkin', 'merfolk', 'winged', 'giant', 'lavakin', 'construct', 'soulmachine', 'mummy', 'ghoul'];
@@ -136,6 +136,11 @@ describe('story balance', () => {
   });
 
   it('a life meets about 31 to 33 nodes, for every race', () => {
+    // the story alone against sim-life.mjs: the shares of OPEN_SHARE correct the lines the other systems open on the whole core
+    // (tests/balance/story-core.test.ts), the sim has no such systems, so they are left out here
+    const shares = { ...OPEN_SHARE };
+    for (const k of Object.keys(OPEN_SHARE)) OPEN_SHARE[k] = 1;
+    try {
     const rows: string[] = [];
     const bad: string[] = [];
     const sim = simTable();
@@ -164,6 +169,9 @@ describe('story balance', () => {
     expect(played / RACES.length).toBeGreaterThanOrEqual(31);
     expect(played / RACES.length).toBeLessThanOrEqual(33);
     expect(all / RACES.length).toBeGreaterThanOrEqual(30);
+    } finally {
+      Object.assign(OPEN_SHARE, shares);
+    }
   });
 
   it('the director raises callbacks by at least 30%', () => {
