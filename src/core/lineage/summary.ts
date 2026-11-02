@@ -7,7 +7,7 @@ import { lx } from './state';
 import { knownName } from '../text/labels';
 import { calendarYear, placeName, raceName } from '../text/pick';
 import { family, pickFrom } from '../ending/words';
-import { HAND_WORD, LIMIT } from '../ending/tuning';
+import { HAND_WORD, LIMIT, dragonName } from '../ending/tuning';
 import type { SlotValues } from '../text/pick';
 import type { GameState } from '../types';
 
@@ -45,7 +45,7 @@ export function worldSummary(state: GameState, data: GameData): WorldSummary {
   const seen = (year: number) => lives.filter((l) => year >= l.from && year <= l.to).map((l) => l.id);
 
   const fallen = (we?.dragons ?? [])
-    .map((d) => ({ name: `${d.name}${d.title ? ` ผู้${d.title}` : ''}`, year: state.world.happened[d.fallEvent] }))
+    .map((d) => ({ name: dragonName(d), year: state.world.happened[d.fallEvent] }))
     .filter((d): d is { name: string; year: number } => d.year !== undefined)
     .sort((a, b) => a.year - b.year)
     .map((d) => ({ name: d.name, year: calendarYear(d.year), seenBy: seen(d.year) }));
@@ -66,7 +66,8 @@ export function worldSummary(state: GameState, data: GameData): WorldSummary {
   const byLife: Record<string, number> = {};
   for (const c of mine.filter((q) => handKinds.includes(q.kind))) {
     byKind[c.kind] = (byKind[c.kind] ?? 0) + 1;
-    const owner = lives.find((l) => c.worldYear >= l.from && c.worldYear <= l.to);
+    // the hand counts from the takeover of a life (an heir was in the world before the player had it)
+    const owner = lives.find((l) => c.worldYear >= (x.recs.find((r) => r.id === l.id)?.startYear ?? l.from) && c.worldYear <= l.to);
     if (owner) byLife[owner.id] = (byLife[owner.id] ?? 0) + 1;
   }
   const handTotal = Object.values(byKind).reduce((a, b) => a + b, 0);
@@ -138,9 +139,11 @@ function legendText(ctx: ReturnType<typeof makeCtx>, state: GameState, fallen: {
   const frame = ended ? undefined : 'ไม่มีฉากจบ';
   if (frame) put('ending_frame', { ฉากจบ: frame, ส่วน: 'เปิด' }, { year: yearNow, era_last: state.world.era, span_years: Math.round(state.clock.worldYear - (state.lineage.lives[0]?.born ?? 0)) }, 'open');
   if (fallen.length) put('world_fact', { ชนิด: 'มังกรที่ล้ม' }, { dragon_n: fallen.length, dragon_first: fallen[0].name, year_first: fallen[0].year, dragon_last: fallen[fallen.length - 1].name, dragon_left_list: standing.slice(0, 4).join(' ') }, 'dragons');
-  if (top.length) put('world_fact', { ชนิด: 'เหตุการณ์ใหญ่' }, { event_n: eventN, events_list: top.map((e) => e.name).join(' · '), event_1: top[0].name, year_1: calendarYear(top[0].year), seen_1: top[0].seenBy.length ? 'อยู่ในเวลานั้น' : 'ไม่ได้อยู่ในเวลานั้น', seen_n: top.filter((e) => e.seenBy.length).length }, 'events');
+  const lead = top.find((e) => e.seenBy.length) ?? top[0];
+  if (lead) put('world_fact', { ชนิด: 'เหตุการณ์ใหญ่' }, { event_n: eventN, events_list: top.map((e) => e.name).join(' · '), event_1: lead.name, year_1: calendarYear(lead.year), seen_1: lead.seenBy.length ? 'อยู่ในเวลานั้น' : 'ไม่ได้อยู่ในเวลานั้น', seen_n: top.filter((e) => e.seenBy.length).length }, 'events');
   if (state.world.ruins.length) put('world_fact', { ชนิด: 'ประเทศ' }, { ruin_n: state.world.ruins.length, new_n: 0, swap_n: 0, country_first: placeName(ctx, state.world.ruins[0].country) ?? '', country_last: placeName(ctx, state.world.ruins[state.world.ruins.length - 1].country) ?? '' }, 'countries');
-  put('world_fact', { ชนิด: 'ยุค' }, { era_n: state.world.era, era_last: state.world.era, span_years: Math.round(state.clock.worldYear - (state.lineage.lives[0]?.born ?? 0)), era_years: Math.round(state.clock.worldYear) }, 'era');
+  // the frame already tells the years that passed: the era sentence that tells them again (variant 2) is left out
+  put('world_fact', { ชนิด: 'ยุค', แบบ: frame ? '1' : '2' }, { era_n: state.world.era, era_last: state.world.era, span_years: Math.round(state.clock.worldYear - (state.lineage.lives[0]?.born ?? 0)), era_years: Math.round(state.clock.worldYear) }, 'era');
   // the hand of the god: with no hand, the line that says so; else the sentences that name the most used kind (07 §9.2)
   const topKind = Object.entries(byKind).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0];
   if (handTotal === 0) put('world_fact', { ชนิด: 'พระหัตถ์ของโลก', แบบ: '3' }, {}, 'hand');

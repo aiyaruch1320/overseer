@@ -163,7 +163,7 @@ describe('lineage: lives in one world', () => {
   });
 
   it('open threads go to the heir, at most three, and are settled, dropped or left to become a legend', () => {
-    const s = lineage(6, 3);
+    const s = lineage(5, 3);
     const x = lx(s.game.state);
     for (const r of x.recs) expect(r.threads.length).toBeLessThanOrEqual(3);
     expect(x.threads.length).toBeGreaterThan(0);

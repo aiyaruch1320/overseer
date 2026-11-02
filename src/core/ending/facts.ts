@@ -4,12 +4,13 @@ import { worldYearsPerLifeYear } from '../clock';
 import type { Ctx } from '../game';
 import { extOf as bondsExt, isLive, levelOf, tiesOf } from '../bonds';
 import { pickHeir } from '../lineage/heir';
+import { lx } from '../lineage/state';
 import { currentThreads } from '../lineage/threads';
 import { calendarYear, classLabel, continentName, placeName, raceName } from '../text/pick';
 import { knownName } from '../text/labels';
 import { questionOf } from '../text/render';
 import type { LifeState, LogEntry } from '../types';
-import { CAUSE_WORD, ELDER_AGE, FACT_KINDS, HAND_KINDS, HAND_WORD, SILENT_KINDS, groupOf } from './tuning';
+import { CAUSE_WORD, ELDER_AGE, dragonName, FACT_KINDS, HAND_KINDS, HAND_WORD, SILENT_KINDS, groupOf } from './tuning';
 import type { CauseGroup, HandSummary, QuestionGrade } from './types';
 
 type Slots = Record<string, string | number>;
@@ -33,6 +34,9 @@ export function lifeLog(ctx: Ctx): LogEntry[] {
   for (; i >= 0; i--) if (log[i].sys === 'character' && log[i].kind === 'birth') break;
   return log.slice(Math.max(0, i));
 }
+
+/** A year of the calendar as the player reads it: `ศ.ม. 11,479`. */
+export const yr = (worldYear: number): string => calendarYear(worldYear).toLocaleString('en-US');
 
 export const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);
 export const str = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
@@ -59,7 +63,9 @@ export function gradeOf(life: LifeState, ending: string | null): QuestionGrade {
 
 export function handOf(ctx: Ctx, life: LifeState): HandSummary {
   const dead = life.dead?.year ?? ctx.state.clock.worldYear;
-  const mine = ctx.state.god.chronicle.filter((c) => c.worldYear >= life.birthYear && c.worldYear <= dead);
+  // an heir lived in the world before the player took it over: the hand counts from the takeover
+  const from = lx(ctx.state).recs.find((r) => r.id === life.id)?.startYear ?? life.birthYear;
+  const mine = ctx.state.god.chronicle.filter((c) => c.worldYear >= from && c.worldYear <= dead);
   const hand = mine.filter((c) => HAND_KINDS.includes(c.kind));
   const byKind: Record<string, number> = {};
   for (const c of hand) byKind[c.kind] = (byKind[c.kind] ?? 0) + 1;
@@ -109,13 +115,13 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     race: raceName(ctx, life.race),
     home: placeName(ctx, life.home) ?? '',
     class_birth: classLabel(ctx, str(born?.data.cls ?? life.cls)),
-    year: calendarYear(life.birthYear),
+    year: yr(life.birthYear),
   }, { age: 0, flags: [...(life.race === 'soulmachine' || life.race === 'mummy' ? ['wake'] : []), ...(life.race === 'ghoul' ? ['ghoul'] : [])] });
 
   // --- death
   const lastFight = [...log].reverse().find((e) => e.sys === 'combat' && e.kind === 'battle' && (e.data.result === 'lose' || e.data.end === 'lose'));
   const enemy = group === 'ศึก' && lastFight ? str(lastFight.data.foe) || undefined : undefined;
-  add('ความตาย', { name: life.name, age: deadAge, place: where, year: calendarYear(deadYear), enemy: enemy ?? '' }, { age: deadAge, flags: [group] });
+  add('ความตาย', { name: life.name, age: deadAge, place: where, year: yr(deadYear), enemy: enemy ?? '' }, { age: deadAge, flags: [group] });
 
   // --- the question of the life
   const grade = gradeOf(life, ending);
@@ -127,13 +133,13 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   // --- convergence points
   for (const e of log) {
     if (e.sys !== 'story' || e.kind !== 'node' || !str(e.id).startsWith('cv.')) continue;
-    add('จุดบรรจบ', { convergence: str(e.data.title), place: placeName(ctx, str(e.data.at)) ?? placeAt(e.worldYear) ?? '', age: e.age ?? 0, year: calendarYear(e.worldYear) }, { age: e.age, tags: [`node:${e.id}`] });
+    add('จุดบรรจบ', { convergence: str(e.data.title), place: placeName(ctx, str(e.data.at)) ?? placeAt(e.worldYear) ?? '', age: e.age ?? 0, year: yr(e.worldYear) }, { age: e.age, tags: [`node:${e.id}`] });
   }
 
   // --- secret job, jobs
   for (const e of log) {
     if (e.sys !== 'character' || e.kind !== 'job' || e.data.type !== 'secret') continue;
-    add('อาชีพลับ', { job: knownName(data, str(e.id)) ?? '', age: e.age ?? 0, place: placeAt(e.worldYear) ?? '', year: calendarYear(e.worldYear) }, { age: e.age, tags: [`job:${e.id}`] });
+    add('อาชีพลับ', { job: knownName(data, str(e.id)) ?? '', age: e.age ?? 0, place: placeAt(e.worldYear) ?? '', year: yr(e.worldYear) }, { age: e.age, tags: [`job:${e.id}`] });
   }
   if (life.job) {
     const since = num((life.ext.character as { jobSince?: number } | undefined)?.jobSince);
@@ -155,13 +161,13 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     const y = st.world.happened[d.fallEvent];
     if (y === undefined || y < life.birthYear || y > deadYear) continue;
     fellIds.add(d.fallEvent);
-    add('มังกร', { dragon: `${d.name}${d.title ? ` ผู้${d.title}` : ''}`, year: calendarYear(y), age: ageAtYear(life, y), place: placeAt(y) ?? '' }, { age: ageAtYear(life, y), flags: ['fell'], tags: [`event:${d.fallEvent}`], bonus: 2 });
+    add('มังกร', { dragon: dragonName(d), year: yr(y), age: ageAtYear(life, y), place: placeAt(y) ?? '' }, { age: ageAtYear(life, y), flags: ['fell'], tags: [`event:${d.fallEvent}`], bonus: 2 });
   }
   for (const r of st.world.ruins) {
     if (r.year < life.birthYear || r.year > deadYear) continue;
     const name = placeName(ctx, r.country);
     if (!name) continue;
-    add('ซากและประเทศล่ม', { ruin: name, home: placeName(ctx, life.home) ?? '', age: ageAtYear(life, r.year), year: calendarYear(r.year), place: placeAt(r.year) ?? '' }, { age: ageAtYear(life, r.year), flags: r.country === life.home ? ['ruinHome'] : [], tags: [`ruin:${r.id}`] });
+    add('ซากและประเทศล่ม', { ruin: name, home: placeName(ctx, life.home) ?? '', age: ageAtYear(life, r.year), year: yr(r.year), place: placeAt(r.year) ?? '' }, { age: ageAtYear(life, r.year), flags: r.country === life.home ? ['ruinHome'] : [], tags: [`ruin:${r.id}`] });
   }
 
   // --- the people
@@ -204,7 +210,7 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     if (!/[⭐●]/.test(mark)) continue;
     seenEvents.add(id);
     const age = ageAtYear(life, e.worldYear);
-    add('เหตุการณ์โลก', { event: str(e.data.name), event_role: 'ได้ยินข่าวนั้น', place: placeAt(e.worldYear) ?? '', year: calendarYear(e.worldYear), age }, { age, tags: [`event:${id}`], bonus: mark.includes('⭐') ? 2 : 0 });
+    add('เหตุการณ์โลก', { event: str(e.data.name), event_role: 'ได้ยินข่าวนั้น', place: placeAt(e.worldYear) ?? '', year: yr(e.worldYear), age }, { age, tags: [`event:${id}`], bonus: mark.includes('⭐') ? 2 : 0 });
   }
   // events the log has with an age (the life was there)
   for (const e of log) {
@@ -213,12 +219,13 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     const mark = str(e.data.mark);
     if (fellIds.has(id) || seenEvents.has(id) || !/[⭐●]/.test(mark)) continue;
     seenEvents.add(id);
-    add('เหตุการณ์โลก', { event: str(e.data.name), event_role: 'ได้ยินข่าวนั้น', place: placeAt(e.worldYear) ?? '', year: calendarYear(e.worldYear), age: e.age }, { age: e.age, tags: [`event:${id}`], bonus: mark.includes('⭐') ? 2 : 0 });
+    add('เหตุการณ์โลก', { event: str(e.data.name), event_role: 'ได้ยินข่าวนั้น', place: placeAt(e.worldYear) ?? '', year: yr(e.worldYear), age: e.age }, { age: e.age, tags: [`event:${id}`], bonus: mark.includes('⭐') ? 2 : 0 });
   }
 
   // --- the hand of the god
   const hand = handOf(ctx, life);
-  const mineHand = st.god.chronicle.filter((c) => c.worldYear >= life.birthYear && c.worldYear <= deadYear && HAND_KINDS.includes(c.kind));
+  const takeover = lx(st).recs.find((r) => r.id === life.id)?.startYear ?? life.birthYear;
+  const mineHand = st.god.chronicle.filter((c) => c.worldYear >= takeover && c.worldYear <= deadYear && HAND_KINDS.includes(c.kind));
   if (hand.total === 0) {
     add('พระหัตถ์', { god_total: 0 }, { flags: ['zero'] });
   } else if (hand.top) {

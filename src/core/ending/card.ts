@@ -284,7 +284,8 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     mark,
     lines,
     ...(heir ? { heir: { name: heir.name, how: heir.how, age: heir.age } } : {}),
-    threads: threads.map((t) => t.text),
+    // a thread goes to an heir; a family with none leaves it to fade (heirs/03 §3)
+    threads: heir ? threads.map((t) => t.text) : [],
   };
   const names = [...new Set([life.name, ...facts.flatMap((f) => ['name', 'lover', 'child', 'heir', 'npc', 'enemy'].map((k) => (f.slots[k] === undefined ? '' : String(f.slots[k]))))].filter(Boolean))];
   const input: EndingInput = {
@@ -297,7 +298,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     facts: facts.map(({ sentence: _s, template: _t, ...rest }) => rest),
     moments,
     hand,
-    lineage: { dynasty: x.dynasty || life.name, generation, ...(x.recs.find((r) => r.id === life.id)?.parent ? { parent: x.recs.find((r) => r.id === life.id)!.parent } : {}), ...(heir ? { heir: heir.name } : {}), threads: threads.map((t) => t.text) },
+    lineage: { dynasty: x.dynasty || life.name, generation, ...(x.recs.find((r) => r.id === life.id)?.parent ? { parent: x.recs.find((r) => r.id === life.id)!.parent } : {}), ...(heir ? { heir: heir.name } : {}), threads: heir ? threads.map((t) => t.text) : [] },
     names,
     earned,
   };

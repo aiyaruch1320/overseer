@@ -78,8 +78,9 @@ export interface LifeRec {
   origin: Origin;
   /** The id of the life it follows. */
   parent?: string;
-  /** hAge the life began at (an heir does not begin at 0). */
+  /** hAge the life began at (an heir does not begin at 0), and the world year the player took it over. */
   startAge: number;
+  startYear: number;
   age: number;
   cause: string;
   ending?: string;

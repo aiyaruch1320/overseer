@@ -95,6 +95,8 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
     bindParent(ctx, parent, life, spec);
     carried.threads = lx(st).threads.filter((t) => t.state === 'open').length;
   }
+  // a newcomer is nobody's heir: the threads the dead life left fade with the family (03 §3 "จางหาย")
+  if (!spec) for (const t of x.threads) if (t.state === 'open') t.state = 'faded';
   handOver(ctx, life, life.hAge);
   const rec = x.recs.find((r) => r.id === life.id);
   if (rec && carried) rec.carried = { gold: carried.gold, items: carried.items, ...(carried.blessing ? { blessing: carried.blessing } : {}), fame: carried.fame, faith: carried.faith, threads: carried.threads };

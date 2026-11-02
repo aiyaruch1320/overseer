@@ -135,3 +135,6 @@ export const MARK = { eraConverge: 2, eraEvents: 1, localConverge: 1, localFame:
 
 /** The moments of the card come from these kinds first (07 §5.4 lists the kinds that have a short line). */
 export const NOT_MOMENT = ['เกิด', 'ความตาย', 'ทายาท', 'เรื่องค้าง', 'ฉายาชีวิต'];
+
+/** `โอรัน-ซัล ผู้ปฐม`: the name and the title of a dragon in the data, with ผู้ in front of the title unless it has one already (`ผู้อาวุโสศิลา`). */
+export const dragonName = (d: { name: string; title?: string }): string => (d.title ? `${d.name} ${d.title.startsWith('ผู้') ? d.title : `ผู้${d.title}`}` : d.name);

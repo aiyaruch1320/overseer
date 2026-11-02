@@ -42,7 +42,7 @@ export const lineageSystem: System = {
     const begin = x.begin;
     delete x.begin;
     const generation = st.lineage.lives.length + 1;
-    x.recs.push({ id: life.id, generation, origin: begin?.origin ?? 'first', ...(begin?.parent ? { parent: begin.parent } : {}), startAge: life.hAge, age: life.hAge, cause: '', startN, endN: startN, threads: [] });
+    x.recs.push({ id: life.id, generation, origin: begin?.origin ?? 'first', ...(begin?.parent ? { parent: begin.parent } : {}), startAge: life.hAge, startYear: st.clock.worldYear, age: life.hAge, cause: '', startN, endN: startN, threads: [] });
     // the family is named after the first life; its name is given by the text system, which runs after this hook, so the name is taken at the first death
     if (!begin) emitLifeChange(ctx, { phase: 'begin', life, origin: 'first', generation, heir: null });
   },
