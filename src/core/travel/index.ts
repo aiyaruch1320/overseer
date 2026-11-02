@@ -58,6 +58,22 @@ function placesOf(effects: readonly Effect[]): string[] {
   return out;
 }
 
+/**
+ * Why the character stays when a way of the story names a place, from what the travel system knows at that point (no draw is made): held by an owner
+ * (`bound`), the purse is short (`purse`), the road is shut by a war (`war`) or otherwise (`route closed`, `closed`, `wanted` ... the reason of the plan),
+ * the place is on another continent (`far`), or the character only keeps to his own place (`chance`).
+ */
+function stayWhy(ctx: Ctx, life: LifeState, to: string): string {
+  if (boundBan(life, 'move')) return 'bound';
+  const pl = plan(ctx, life, life.country, to, { smuggle: false, free: false });
+  if (!pl.ok) {
+    const flags = ctx.state.world.countryFlags;
+    if (pl.why === 'route closed' && (flags[to]?.includes('war') && flags[life.country]?.includes('war'))) return 'war';
+    return pl.why ?? 'closed';
+  }
+  return to.slice(0, 2) === life.country.slice(0, 2) ? 'chance' : 'far';
+}
+
 /** The way of a node was taken: if it names a place (`place` effect), the character moves there when the filters and the tuning (FOLLOW_STORY) allow. */
 export function followStory(ctx: Ctx, node: { id: string; choices: { key: string; effects: readonly Effect[] }[] }, key: string): boolean {
   if (key === '-') return false;
@@ -68,8 +84,8 @@ export function followStory(ctx: Ctx, node: { id: string; choices: { key: string
     if (to === life.country || !/^[A-Z]{2}-\d{2}$/.test(to)) continue;
     const p = to.slice(0, 2) === life.country.slice(0, 2) ? FOLLOW_STORY.same : FOLLOW_STORY.cross;
     if (p < 1 && !ctx.rng('life.travel.story').chance(p)) {
-      // the way named a place and the character did not go (M3 review T2): the player is told the place was not reached
-      write(ctx.state, { sys: 'travel', kind: 'stay', id: to, data: { node: node.id, to, here: life.country, why: 'chance' }, level: 1 });
+      // the way named a place and the character did not go (M3 review T2): the player is told the place was not reached, and why (round-two R7)
+      write(ctx.state, { sys: 'travel', kind: 'stay', id: to, data: { node: node.id, to, here: life.country, why: stayWhy(ctx, life, to) }, level: 1 });
       continue;
     }
     if (relocate(ctx, to, `story:${node.id}`)) return true;
