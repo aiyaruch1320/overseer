@@ -10,10 +10,25 @@ export interface RawTable {
 
 type Range = [number, number];
 
+/**
+ * One row of the C table. `min` is inclusive, `lt` is exclusive ("ต่ำกว่า 40" = C < 40, so 40 is in the band above), `max` is the inclusive end the doc
+ * writes for a range ("40 ถึง 69"). `stack`: the band lies inside another "ต่ำกว่า" band and applies on top of it, so C < 15 gets both
+ * rows and the price multipliers multiply (×1.25 from "ต่ำกว่า 40" × 1 from its own row).
+ */
+export interface TrustBand {
+  min: number | null;
+  lt: number | null;
+  max: number | null;
+  stack: boolean;
+  effect: string;
+  priceMul: number;
+  src: string;
+}
+
 export interface EconomyData {
   counts: Record<string, number>;
   /** 01 §1: central gold trust C. */
-  trust: { start: { before: number; after: number }; recoverPerYear: number; bands: { min: number | null; max: number | null; effect: string; priceMul: number; src: string }[]; moneyForms: { form: string; countries: string[]; rule: string }[] };
+  trust: { start: { before: number; after: number }; recoverPerYear: number; bands: TrustBand[]; moneyForms: { form: string; countries: string[]; rule: string }[] };
   goods: { code: string; name: string; base: number | null; examples: string; producers: string[]; src: string }[];
   balance: { exporter: number; enough: number; short: number };
   priceMods: { wIndex: number[]; scarcity: { exporter: number; enough: number; short: number; swing: number }; trustMid: number; trustLow: number };

@@ -34,28 +34,36 @@
    "bands": [
     {
      "min": 70,
+     "lt": null,
      "max": null,
+     "stack": false,
      "effect": "ปกติ ประเทศ M ผสมยอมรับทองในตลาดเมือง",
      "priceMul": 1,
      "src": "docs/systems/economy/01-world-economy.md:19"
     },
     {
      "min": 40,
+     "lt": 70,
      "max": 69,
+     "stack": false,
      "effect": "ราคาในทองสูงขึ้น 10% ประเทศ W 1 ถึง 2 ที่ M ผสม ลดเป็น M น้อย",
      "priceMul": 1.1,
      "src": "docs/systems/economy/01-world-economy.md:20"
     },
     {
      "min": null,
-     "max": 40,
+     "lt": 40,
+     "max": null,
+     "stack": false,
      "effect": "ประเทศ W 3 ลงไปทุกประเทศ M ลดหนึ่งระดับ (เต็ม → ผสม → น้อย) ราคาในทองสูงขึ้น 25% การแลกของและบัญชีสัญญากลับมา",
      "priceMul": 1.25,
      "src": "docs/systems/economy/01-world-economy.md:21"
     },
     {
      "min": null,
-     "max": 15,
+     "lt": 15,
+     "max": null,
+     "stack": true,
      "effect": "ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก",
      "priceMul": 1,
      "src": "docs/systems/economy/01-world-economy.md:22"
