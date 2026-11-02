@@ -5243,8 +5243,8 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
-      "kind": "unknown",
+      "k": "remove",
+      "kind": "tag",
       "id": "weak_light"
      }
     ],
@@ -5311,9 +5311,9 @@
       "mul": 1.3
      },
      {
-      "k": "grant",
+      "k": "remove",
       "kind": "tag",
-      "id": "#infernal"
+      "id": "infernal"
      }
     ],
     "refs": {
@@ -5442,7 +5442,7 @@
      {
       "k": "pct",
       "text": "ร่างพองน้ำ ลดความสามารถทั้งหมด",
-      "pct": 20
+      "pct": -20
      }
     ],
     "refs": {
@@ -5643,12 +5643,8 @@
      {
       "k": "grant",
       "kind": "curse",
-      "id": "c_outcast"
-     },
-     {
-      "k": "pct",
-      "text": "ในโอกาส",
-      "pct": 30
+      "id": "c_outcast",
+      "chance": 0.3
      }
     ],
     "refs": {
@@ -5712,14 +5708,16 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#holy"
+      "id": "holy",
+      "mul": 2
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#oracle"
+      "id": "oracle",
+      "mul": 2
      }
     ],
     "refs": {
@@ -5741,7 +5739,20 @@
     "cond": "นิสัย skeptic กับเผ่าที่ศาสนาเป็นศูนย์กลาง (นาคา มัมมี่ เผ่ามังกร)",
     "effect": "พรสายศรัทธาหายาก 0.5 เท่า แต่เส้นเรื่องกบฏต่อศาสนาเปิดง่ายขึ้น",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "holy",
+      "mul": 0.5
+     },
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "oracle",
+      "mul": 0.5
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5759,13 +5770,7 @@
     "cond": "นิสัย glutton กับกูล",
     "effect": "หิวมากขึ้น คำสาป c_hunger ผลเป็น 2 เท่า",
     "why": "",
-    "effects": [
-     {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_hunger"
-     }
-    ],
+    "effects": [],
     "refs": {
      "events": [],
      "countries": [],
@@ -5786,14 +5791,14 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#polyglot"
+      "id": "polyglot"
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#copycat"
+      "id": "copycat"
      }
     ],
     "refs": {
@@ -5851,14 +5856,8 @@
     "why": "",
     "effects": [
      {
-      "k": "range",
-      "stat": "ระดับ",
-      "min": 1,
-      "max": 3
-     },
-     {
       "k": "stat",
-      "stat": "เพิ่ม",
+      "stat": "aptMain",
       "delta": 1
      }
     ],
@@ -5881,7 +5880,7 @@
     "effects": [
      {
       "k": "stat",
-      "stat": "เช่นเดียวกัน",
+      "stat": "aptMain",
       "delta": 1
      }
     ],
@@ -5901,7 +5900,13 @@
     "cond": "ความถนัด ตีเหล็ก (smithing) กับคนแคระ เผ่าลาวา ยักษ์",
     "effect": "+1 และสร้างอาวุธระดับ R ขึ้นไปได้เร็วกว่า 1 ระดับความสำเร็จ",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5918,7 +5923,13 @@
     "cond": "ความถนัดเดินเรือ (sailing) กับเงือก นาคา มนุษย์เรือ",
     "effect": "+1 และเดินเรือในน้ำลึกได้",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5935,7 +5946,13 @@
     "cond": "ความถนัดฝึกสัตว์ (taming) กับเผ่าสัตว์ ออร์ค",
     "effect": "+1 สัตว์ที่ฝึกไม่หนีเมื่อเจ้านายตาย",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5952,7 +5969,13 @@
     "cond": "ความถนัดอักษรรูน (rune) กับคนแคระ ลูกผสมจักรกล มัมมี่",
     "effect": "+1 และอ่านรูนปฐมที่ถอดรหัสแล้วได้",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5969,7 +5992,13 @@
     "cond": "ความถนัดค้าขาย (trade) กับฮาล์ฟลิง แวมไพร์",
     "effect": "+1 และธนาคารเลือดหรือเรือสินค้าเป็นช่องทางเสริมของ skill",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -6085,14 +6114,16 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "blessing",
-      "id": "b_plagueward"
+      "id": "b_plagueward",
+      "mul": 2
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "curse",
-      "id": "c_sickly"
+      "id": "c_sickly",
+      "mul": 2
      }
     ],
     "refs": {
@@ -6114,7 +6145,20 @@
     "cond": "เกิดในประเทศที่ศาสนานั้นอยู่ในช่อง A (ผนึก)",
     "effect": "พรสายศรัทธาของศาสนานั้นง่ายขึ้น 1.5 เท่า",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "holy",
+      "mul": 1.5
+     },
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "oracle",
+      "mul": 1.5
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -6132,9 +6176,22 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
+      "k": "favour",
+      "kind": "tag",
+      "id": "holy",
+      "mul": 0.5
+     },
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "oracle",
+      "mul": 0.5
+     },
+     {
+      "k": "favour",
       "kind": "curse",
-      "id": "c_godhate"
+      "id": "c_godhate",
+      "mul": 1.5
      }
     ],
     "refs": {
@@ -6158,18 +6215,14 @@
      {
       "k": "grant",
       "kind": "curse",
-      "id": "nc_homeland_ghost"
+      "id": "nc_homeland_ghost",
+      "chance": 0.35
      },
      {
       "k": "grant",
       "kind": "blessing",
       "id": "nb_homeland_call",
       "chance": 0.2
-     },
-     {
-      "k": "pct",
-      "text": "คำสาปความคิดถึงบ้านที่หายไป",
-      "pct": 35
      }
     ],
     "refs": {

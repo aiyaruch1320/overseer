@@ -1,6 +1,7 @@
 {
- "version": "f8bc7bdaa945",
+ "version": "17a881cd47ff",
  "sources": [
+  "docs/lore/religions/README.md",
   "docs/systems/character/08-jobs-overview.md",
   "docs/systems/character/09-jobs-common.md",
   "docs/systems/character/10-jobs-secret.md",
@@ -25,16 +26,23 @@
     "reqText": "ไม่ใช่ยักษ์ (ตัวใหญ่เกินกว่านาข้าวทั่วไป) · ทุกทวีปที่มีที่ดินปลูก",
     "req": [
      {
-      "k": "text",
-      "text": "ไม่ใช่ยักษ์ (ตัวใหญ่เกินกว่านาข้าวทั่วไป)"
+      "k": "not",
+      "of": {
+       "k": "race",
+       "ids": [
+        "giant"
+       ]
+      }
      },
      {
       "k": "text",
       "text": "ทุกทวีปที่มีที่ดินปลูก"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_harvest_spirit",
     "raceBonus": [
      "human"
@@ -65,8 +73,10 @@
       "text": "เผ่าที่มี huge ล่าได้เฉพาะสัตว์ใหญ่"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_light_sword",
     "raceBonus": [
      "elf",
@@ -95,14 +105,14 @@
      {
       "k": "text",
       "text": "ประเทศที่มีกองทัพประจำ"
-     },
-     {
-      "k": "text",
-      "text": "ถ้าอยู่ถิ่นสงคราม (war) น้ำหนัก ×2"
      }
+    ],
+    "reqNotes": [
+     "ถ้าอยู่ถิ่นสงคราม (war) น้ำหนัก ×2"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_light_sword",
     "raceBonus": [
      "human",
@@ -136,8 +146,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_light_sword",
     "raceBonus": [
      "slime"
@@ -158,14 +170,13 @@
     ],
     "slow": false,
     "reqText": "ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56"
-     }
+    "req": [],
+    "reqNotes": [
+     "ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_caravan_fortune",
     "raceBonus": [
      "human",
@@ -199,14 +210,14 @@
       "stat": "mag",
       "op": ">=",
       "value": 10
-     },
-     {
-      "k": "text",
-      "text": "หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59)"
      }
+    ],
+    "reqNotes": [
+     "หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59)"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_arcane_tome",
     "raceBonus": [
      "elf"
@@ -234,19 +245,21 @@
      },
      {
       "k": "text",
-      "text": "เทพีแห่งจันทรา: หญิงเท่านั้น"
+      "text": "เทพีแห่งจันทรา: หญิง"
      },
      {
       "k": "text",
-      "text": "ลัทธิมังกร: เผ่าปีกเท่านั้น (เผ่าอื่นเป็นผู้ช่วย)"
+      "text": "ลัทธิมังกร: เผ่าปีก (เผ่าอื่นเป็นผู้ช่วย)"
      },
      {
       "k": "text",
       "text": "พญานาคราช: ต้องผ่านการทดสอบ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_holy_vision",
     "raceBonus": [
      "naga"
@@ -269,10 +282,6 @@
     "reqText": "ไม่จำกัด · ในประเทศที่มีกฎหมายเข้ม (AL-06 AL-08) น้ำหนักลดและเสี่ยงถูกจับ",
     "req": [
      {
-      "k": "text",
-      "text": "ไม่จำกัด"
-     },
-     {
       "k": "country",
       "ids": [
        "AL-06",
@@ -280,8 +289,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_guild_invite",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:22"
@@ -302,18 +313,18 @@
     "reqText": "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52) · ต้องค่ากำลัง 8 ขึ้นไป",
     "req": [
      {
-      "k": "text",
-      "text": "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52)"
-     },
-     {
       "k": "cmp",
       "stat": "pow",
       "op": ">=",
       "value": 8
      }
     ],
+    "reqNotes": [
+     "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52)"
+    ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_master_forge",
     "raceBonus": [
      "dwarf",
@@ -353,8 +364,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_arcane_tome",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:24"
@@ -372,18 +385,14 @@
     ],
     "slow": false,
     "reqText": "ทุกเผ่า ไซเรนและเงือกได้ง่ายขึ้น · ประเทศที่ศาสนาห้ามดนตรีน้ำหนักลด",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกเผ่า ไซเรนและเงือกได้ง่ายขึ้น"
-     },
-     {
-      "k": "text",
-      "text": "ประเทศที่ศาสนาห้ามดนตรีน้ำหนักลด"
-     }
+    "req": [],
+    "reqNotes": [
+     "ทุกเผ่า ไซเรนและเงือกได้ง่ายขึ้น",
+     "ประเทศที่ศาสนาห้ามดนตรีน้ำหนักลด"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_royal_song",
     "raceBonus": [
      "fae",
@@ -409,14 +418,14 @@
      {
       "k": "text",
       "text": "ถิ่นติดน้ำ"
-     },
-     {
-      "k": "text",
-      "text": "เงือกนาคาเป็นชาวประมงโดยธรรมชาติ"
      }
+    ],
+    "reqNotes": [
+     "เงือกนาคาเป็นชาวประมงโดยธรรมชาติ"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_sea_treasure",
     "raceBonus": [
      "naga",
@@ -438,18 +447,13 @@
     ],
     "slow": false,
     "reqText": "ทุกเผ่า · มัมมี่และกูลรักษาผู้อื่นได้ครึ่งเดียว",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกเผ่า"
-     },
-     {
-      "k": "text",
-      "text": "มัมมี่และกูลรักษาผู้อื่นได้ครึ่งเดียว"
-     }
+    "req": [],
+    "reqNotes": [
+     "มัมมี่และกูลรักษาผู้อื่นได้ครึ่งเดียว"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_plague_cure",
     "raceBonus": [
      "naga",
@@ -488,14 +492,12 @@
         ]
        }
       ]
-     },
-     {
-      "k": "text",
-      "text": "ไม่จำกัดเพศ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_light_sword",
     "raceBonus": [
      "dragonkin"
@@ -522,14 +524,14 @@
       "ids": [
        "NB-05"
       ]
-     },
-     {
-      "k": "text",
-      "text": "ดาร์กเอลฟ์และแวมไพร์ได้ง่าย"
      }
+    ],
+    "reqNotes": [
+     "ดาร์กเอลฟ์และแวมไพร์ได้ง่าย"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_guild_invite",
     "raceBonus": [
      "darkelf",
@@ -561,8 +563,10 @@
       "text": "ไม่ได้ในประเทศที่ห้ามผู้นอกร่มไม้"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_beast_companion",
     "raceBonus": [
      "elf",
@@ -596,8 +600,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_sea_treasure",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:31"
@@ -615,14 +621,13 @@
     ],
     "slow": false,
     "reqText": "ทุกเผ่า (สไลม์ ฮาล์ฟลิงเด่น)",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกเผ่า (สไลม์ ฮาล์ฟลิงเด่น)"
-     }
+    "req": [],
+    "reqNotes": [
+     "สไลม์ ฮาล์ฟลิงเด่น"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_royal_banquet",
     "raceBonus": [
      "halfling",
@@ -649,14 +654,14 @@
      {
       "k": "text",
       "text": "ความถนัดสัญญาปีศาจหรือไสยศาสตร์"
-     },
-     {
-      "k": "text",
-      "text": "เผ่าปีศาจ ดาร์กเอลฟ์เด่น"
      }
+    ],
+    "reqNotes": [
+     "เผ่าปีศาจ ดาร์กเอลฟ์เด่น"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_dark_patron",
     "raceBonus": [
      "vampire",
@@ -681,15 +686,15 @@
     "req": [
      {
       "k": "text",
-      "text": "เผ่าสัตว์ ออร์ค เด่น"
-     },
-     {
-      "k": "text",
       "text": "ซิลวาเนล มอร์เฮเวน"
      }
     ],
+    "reqNotes": [
+     "เผ่าสัตว์ ออร์ค เด่น"
+    ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_beast_companion",
     "raceBonus": [
      "orc",
@@ -713,12 +718,15 @@
     "reqText": "ต้องมี noble เท่านั้น (เกิดในตระกูลขุนนางหรือได้ตำแหน่ง)",
     "req": [
      {
-      "k": "text",
-      "text": "noble เท่านั้น (เกิดในตระกูลขุนนางหรือได้ตำแหน่ง)"
+      "k": "has",
+      "kind": "job",
+      "id": "noble"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_court_intrigue",
     "raceBonus": [
      "vampire"
@@ -754,8 +762,10 @@
       "text": "ยักษ์ผู้สละโลก"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "chain_enlightenment",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:36"
@@ -783,8 +793,10 @@
       "text": "ทุกประเทศที่มีสำนักงาน"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "soulmachine",
@@ -813,8 +825,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "beast"
@@ -838,15 +852,13 @@
     "req": [
      {
       "k": "text",
-      "text": "ทุกเผ่า"
-     },
-     {
-      "k": "text",
       "text": "ยักษ์ทำงานไม้ขนาดใหญ่"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:39"
@@ -875,8 +887,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:40"
@@ -905,8 +919,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:41"
@@ -938,8 +954,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:42"
@@ -970,8 +988,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "human",
@@ -994,22 +1014,24 @@
     "reqText": "เทพีแห่งจันทรา · ศรัทธาความฝัน (AL-14) · เผ่าฟาโรห์",
     "req": [
      {
-      "k": "text",
-      "text": "เทพีแห่งจันทรา"
+      "k": "has",
+      "kind": "flag",
+      "id": "faith.06"
      },
      {
-      "k": "country",
-      "ids": [
-       "AL-14"
-      ]
+      "k": "has",
+      "kind": "flag",
+      "id": "faith.17"
      },
      {
       "k": "text",
       "text": "เผ่าฟาโรห์"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "mummy"
@@ -1045,8 +1067,10 @@
       "text": "การอ่านออกและทนทาน"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "mummy"
@@ -1069,10 +1093,6 @@
     "reqText": "ทุกประเทศ · NB-09 MH-08 AL-05 เด่น",
     "req": [
      {
-      "k": "text",
-      "text": "ทุกประเทศ"
-     },
-     {
       "k": "country",
       "ids": [
        "NB-09",
@@ -1081,8 +1101,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "darkelf"
@@ -1116,8 +1138,10 @@
       "text": "ชื่อเสียงขั้นต่ำ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:47"
@@ -1146,12 +1170,20 @@
       ]
      },
      {
-      "k": "text",
-      "text": "กูลและมัมมี่ไม่ทำ (ทำให้ผู้ตายไม่สบายใจ)"
+      "k": "not",
+      "of": {
+       "k": "race",
+       "ids": [
+        "ghoul",
+        "mummy"
+       ]
+      }
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "mummy",
@@ -1175,18 +1207,16 @@
     "reqText": "ทุกเมือง · ต้องมีเงินเริ่มต้น 50",
     "req": [
      {
-      "k": "text",
-      "text": "ทุกเมือง"
-     },
-     {
       "k": "cmp",
       "stat": "gold",
       "op": ">=",
       "value": 50
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "halfling"
@@ -1220,8 +1250,10 @@
       "text": "ยักษ์ใหญ่เกินเหมืองเล็ก"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "dwarf",
@@ -1251,8 +1283,10 @@
       "text": "ถิ่นติดน้ำ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "merfolk"
@@ -1282,8 +1316,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "darkelf"
@@ -1306,12 +1342,26 @@
     "reqText": "ต้องเป็นขุนนางหรือชื่อเสียงขั้นต่ำ 15",
     "req": [
      {
-      "k": "text",
-      "text": "เป็นขุนนางหรือชื่อเสียงขั้นต่ำ 15"
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "noble"
+       },
+       {
+        "k": "cmp",
+        "stat": "fame",
+        "op": ">=",
+        "value": 15
+       }
+      ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [
      "dragonkin"
@@ -1341,8 +1391,10 @@
       "text": "ที่อื่นปกติ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wild",
     "raceBonus": [
      "giant"
@@ -1365,15 +1417,13 @@
     "req": [
      {
       "k": "text",
-      "text": "ทุกเมือง"
-     },
-     {
-      "k": "text",
       "text": "ชนิดขนมตามถิ่น"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "อนุญาตให้ร้านเป็นศูนย์ข่าวลือ",
     "raceBonus": [
      "halfling"
@@ -1405,8 +1455,10 @@
       "text": "เปิดขายชุดซ่อนอาวุธได้ แบบของลูเซียน (AL05-2)"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:outlaw ได้ถ้าซ่อนอาวุธ",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:63"
@@ -1427,15 +1479,13 @@
     "req": [
      {
       "k": "text",
-      "text": "ทุกเมือง"
-     },
-     {
-      "k": "text",
       "text": "ช่างปั้นถ้วยพิธีให้วัด"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "—",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:64"
@@ -1466,8 +1516,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พรเดิม b_ironstomach ได้ง่าย",
     "raceBonus": [
      "dwarf",
@@ -1498,8 +1550,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "แก้วเห็นอดีตของซามีร์ (SH08-2)",
     "raceBonus": [
      "lavakin"
@@ -1534,8 +1588,10 @@
       "value": 80
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พรสาย #treasure",
     "raceBonus": [
      "darkelf"
@@ -1562,8 +1618,10 @@
       "text": "ไม่ใช่เมืองที่ศาสนาห้าม (ศรัทธาวิญญาณสัตว์ห้าม)"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "c_smell ได้ง่าย",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:68"
@@ -1588,14 +1646,14 @@
        "AL-21",
        "SH-17"
       ]
-     },
-     {
-      "k": "text",
-      "text": "ยักษ์เด่น"
      }
+    ],
+    "reqNotes": [
+     "ยักษ์เด่น"
     ],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:warrior",
     "raceBonus": [
      "dwarf",
@@ -1630,8 +1688,10 @@
       "text": "ถิ่นติดน้ำ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก PO-02",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:70"
@@ -1658,8 +1718,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก NB-01 ระฆังกลาง",
     "raceBonus": [
      "construct",
@@ -1691,8 +1753,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก GI-05",
     "raceBonus": [
      "dwarf"
@@ -1721,8 +1785,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พรสาย #seer ได้ถ้าวาดภาพจากฝัน",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:73"
@@ -1750,8 +1816,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกศรัทธาศิลา",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:74"
@@ -1772,18 +1840,16 @@
     "reqText": "ทุกประเทศ · ผู้ส่งสารเผ่านก SV-11 เด่น",
     "req": [
      {
-      "k": "text",
-      "text": "ทุกประเทศ"
-     },
-     {
       "k": "country",
       "ids": [
        "SV-11"
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wanderer",
     "raceBonus": [
      "winged"
@@ -1817,8 +1883,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "เห็นผู้ลี้ภัยทางน้ำ (DR-05)",
     "raceBonus": [
      "merfolk"
@@ -1850,8 +1918,10 @@
       "text": "ทั่วโลกในเมืองใหญ่"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก FG-13",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:82"
@@ -1883,8 +1953,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ชีวิตช้า ผูก DR-05 DR-06",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:83"
@@ -1912,8 +1984,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ชีวิตช้า เข้าถึงบันทึกต้องห้ามช้ากว่านักปราชญ์",
     "raceBonus": [
      "elf",
@@ -1937,18 +2011,16 @@
     "reqText": "ทุกเผ่า · AL-01 (นักบันทึกสภา)",
     "req": [
      {
-      "k": "text",
-      "text": "ทุกเผ่า"
-     },
-     {
       "k": "country",
       "ids": [
        "AL-01"
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกเหตุการณ์ใหญ่ ทำให้ความทรงจำของเหตุการณ์ยั่งยืน",
     "raceBonus": [
      "mummy"
@@ -1979,8 +2051,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wanderer",
     "raceBonus": [
      "winged"
@@ -2010,8 +2084,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พบความลับทางการเงินของ NPC (ผูก AL10-3)",
     "raceBonus": [
      "vampire"
@@ -2042,8 +2118,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:greed",
     "raceBonus": [
      "vampire",
@@ -2075,8 +2153,10 @@
       "text": "เกลียดง่าย"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ได้ c_envyaura ง่าย",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:89"
@@ -2104,8 +2184,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:rebel ถ้ารับคดีผู้ถูกกดขี่",
     "raceBonus": [
      "human",
@@ -2129,16 +2211,23 @@
     "reqText": "ทุกเมืองเล็ก · ต้องอายุ 30 ขึ้นไปและความไว้ใจในเมือง",
     "req": [
      {
-      "k": "text",
-      "text": "ทุกเมืองเล็ก"
-     },
-     {
-      "k": "text",
-      "text": "อายุ 30 ขึ้นไปและความไว้ใจในเมือง"
+      "k": "and",
+      "of": [
+       {
+        "k": "age",
+        "min": 30
+       },
+       {
+        "k": "text",
+        "text": "ความไว้ใจในเมือง"
+       }
+      ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกเหตุการณ์ท้องถิ่น",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:91"
@@ -2163,8 +2252,10 @@
       "text": "หญิงเป็นหลัก ชายเป็นได้แต่ต้องได้รับความเชื่อใจจากชุมชน"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พรสาย #fertile",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:92"
@@ -2193,8 +2284,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "เห็นกาฬโรค (CT-03) ก่อนใคร",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:93"
@@ -2221,8 +2314,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wild",
     "raceBonus": [
      "beast"
@@ -2256,8 +2351,10 @@
       "text": "ผ่านสำนัก"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก CT-03 HP-06",
     "raceBonus": [
      "naga",
@@ -2288,8 +2385,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก MC-07",
     "raceBonus": [
      "construct"
@@ -2319,8 +2418,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ซ่อมหุ่น (ผูก MC-03)",
     "raceBonus": [
      "construct"
@@ -2350,8 +2451,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก MC-07 WR-16",
     "raceBonus": [
      "construct"
@@ -2381,8 +2484,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก PO-02 WR-01",
     "raceBonus": [
      "winged"
@@ -2415,8 +2520,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก DR-06",
     "raceBonus": [
      "merfolk"
@@ -2438,14 +2545,11 @@
     "mainStat": "pow",
     "slow": false,
     "reqText": "ทุกเมือง",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกเมือง"
-     }
-    ],
+    "req": [],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พบอาชญากรรมระดับเมือง",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:111"
@@ -2475,8 +2579,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก MC-08 WR-16",
     "raceBonus": [
      "orc",
@@ -2514,8 +2620,10 @@
       "text": "ถิ่นการค้า"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก WR-10",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:113"
@@ -2544,8 +2652,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พบ c_wanted ของ NPC",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:114"
@@ -2575,8 +2685,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:warrior",
     "raceBonus": [
      "orc"
@@ -2608,8 +2720,10 @@
       "text": "ซิลวาเนล เนบูเลีย"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ล่าอสูรในหมอก (FG-01)",
     "raceBonus": [
      "ghoul"
@@ -2631,14 +2745,11 @@
     "mainStat": "spd",
     "slow": false,
     "reqText": "ทุกทวีป",
-    "req": [
-     {
-      "k": "text",
-      "text": "ทุกทวีป"
-     }
-    ],
+    "req": [],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wanderer",
     "raceBonus": [
      "beast",
@@ -2671,8 +2782,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:outlaw",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:118"
@@ -2698,8 +2811,10 @@
       "text": "ศาสนจักรแห่งแสง หญิงและชาย (หญิงเป็น temple_servant ได้ แต่บวชเป็นพระไม่ได้)"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกผู้พิพากษาศาล (AL02-2)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:124"
@@ -2729,8 +2844,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก DM-09",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:125"
@@ -2762,8 +2879,10 @@
       "text": "พระหรือผู้รับใช้"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก GD-02",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:126"
@@ -2792,8 +2911,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:faithful",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:127"
@@ -2822,8 +2943,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:romance",
     "raceBonus": [
      "fae"
@@ -2853,8 +2976,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "เห็นการเมืองใกล้ตัว",
     "raceBonus": [
      "fae"
@@ -2901,8 +3026,10 @@
       "text": "ไม่อยู่ในถิ่นสงคราม"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก HP-07 DM-11 (ปีศาจปลูกข้าว)",
     "raceBonus": [
      "halfling"
@@ -2936,8 +3063,10 @@
       }
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกพร nb_green_thumb",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:143"
@@ -2964,8 +3093,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก BIO-03 ถ้าได้ต้นกล้า",
     "raceBonus": [
      "elf"
@@ -2992,8 +3123,10 @@
       "text": "ถิ่นอบอุ่น ซิลวาเนล"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผึ้งไวต่อ BIO-01 เตือนก่อนคน",
     "raceBonus": [
      "elf"
@@ -3021,8 +3154,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ร้านน้ำชาเป็นที่ประชุมข่าวลือ",
     "raceBonus": [
      "elf"
@@ -3052,8 +3187,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก NB-11 ถ้าส่งดอกไม้ให้ช่างหน้ากาก",
     "raceBonus": [
      "fae"
@@ -3083,8 +3220,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "thread:wild",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:148"
@@ -3112,8 +3251,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก CT-08 DR-04 (ข้าวขาด)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:149"
@@ -3137,8 +3278,10 @@
       "text": "ทุกเมืองยกเว้นเขตหมอกทึบ"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก CT-03",
     "raceBonus": [
      "slime"
@@ -3172,8 +3315,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกข่าวและ NPC ประจำร้าน",
     "raceBonus": [
      "halfling"
@@ -3203,8 +3348,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกบันทึกต้องห้าม ราคาสูง",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:152"
@@ -3237,8 +3384,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกพิธีและพรเล็กของวัด",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:153"
@@ -3286,8 +3435,10 @@
       "choice": "c"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก HP-04 เทศกาลโลก",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:161"
@@ -3340,8 +3491,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก PO-07 CL-03",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:162"
@@ -3400,8 +3553,10 @@
       "id": "co.a7"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูกเหตุการณ์สร้างความมั่งคั่งหรือยารักษา HP-06",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:163"
@@ -3444,8 +3599,12 @@
       "value": 20
      },
      {
-      "k": "text",
-      "text": "ห้ามแท็ก huge"
+      "k": "not",
+      "of": {
+       "k": "has",
+       "kind": "tag",
+       "id": "huge"
+      }
      },
      {
       "k": "node",
@@ -3453,8 +3612,10 @@
       "choice": "c"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก PO-07 และเรื่องคลังหลวง",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:164"
@@ -3493,8 +3654,12 @@
       "text": "ไว้ใจทั้งสองเผ่า ≥ 5"
      },
      {
-      "k": "text",
-      "text": "ไม่มี c_outcast ที่ยังอยู่"
+      "k": "not",
+      "of": {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_outcast"
+      }
      },
      {
       "k": "node",
@@ -3502,8 +3667,10 @@
       "choice": "a"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก cv.2 ในฐานะผู้แทนที่ทั้งสองเผ่าเรียกชื่อ",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:165"
@@ -3560,8 +3727,10 @@
       "choice": "c"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก cv.8 และงานตีวัสดุสองไฟ ([../items/10-forging.md](../items/10-forging.md) หัวข้อ 9)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:166"
@@ -3601,8 +3770,10 @@
       "choice": "a"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ผูก WR-17 BIO-09",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:167"
@@ -3635,8 +3806,10 @@
       }
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "พ่อค้าเร่ ผู้ลักลอบ ลูกค้าประจำตามหมู่บ้าน",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:175"
@@ -3675,8 +3848,10 @@
       "id": "ns_route_read_1"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "นำผู้แสวงบุญ ขบวนผู้ลี้ภัย (cv.1 cv.15)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:176"
@@ -3711,8 +3886,10 @@
       "min": 3
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ตลาดมืด สันนิบาตการค้า",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:177"
@@ -3746,8 +3923,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "นักสะสม ของโบราณ เครื่องราง",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:178"
@@ -3792,8 +3971,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "สงครามคาราวาน (WR-10) ขบวนใหญ่",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:179"
@@ -3824,12 +4005,18 @@
       "value": 200
      },
      {
-      "k": "text",
-      "text": "ห้ามผู้มี #bloodlust"
+      "k": "not",
+      "of": {
+       "k": "has",
+       "kind": "tag",
+       "id": "bloodlust"
+      }
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ลูกหนี้ ตระกูลล้ม (ต่อทาสหนี้)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:180"
@@ -3866,8 +4053,10 @@
       "value": 3
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "ลงทุน ล้มละลาย ([../economy/06-investment.md](../economy/06-investment.md))",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:181"
@@ -3911,8 +4100,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "เรือผี โจรสลัด ภาษีกระแสน้ำ (PO-03)",
     "raceBonus": [],
     "src": "docs/systems/character/09-jobs-common.md:182"
@@ -3976,12 +4167,28 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "หุ่นวิญญาณ ลูกผสมจักรกล (ไม่มีวิญญาณให้ผูก) เผ่าสไลม์ที่ไม่มีแกนกลาง",
     "ban": [
      {
-      "k": "text",
-      "text": "หุ่นวิญญาณ ลูกผสมจักรกล (ไม่มีวิญญาณให้ผูก) เผ่าสไลม์ที่ไม่มีแกนกลาง"
+      "k": "or",
+      "of": [
+       {
+        "k": "race",
+        "ids": [
+         "soulmachine",
+         "construct"
+        ]
+       },
+       {
+        "k": "text",
+        "text": "เผ่าสไลม์ที่ไม่มีแกนกลาง"
+       }
+      ]
      }
+    ],
+    "banNotes": [
+     "ไม่มีวิญญาณให้ผูก"
     ],
     "opens": "เปิด DM-09 ลิชตื่น ในทวีปที่ตัวละครอยู่",
     "raceBonus": [],
@@ -4059,6 +4266,7 @@
       "value": 13
      }
     ],
+    "reqNotes": [],
     "banText": "ต้องไม่มี b_saintmark",
     "ban": [
      {
@@ -4067,6 +4275,7 @@
       "id": "b_saintmark"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก DM-01 DM-02 และเส้นมอร์เฮเวน",
     "raceBonus": [],
     "direct": [
@@ -4133,6 +4342,7 @@
       "value": 40
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามเผ่า undead (แวมไพร์ มัมมี่ กูล) และ infernal (เผ่าปีศาจ) ยกเว้นเข้า SR-20",
     "ban": [
      {
@@ -4143,16 +4353,21 @@
         "ids": [
          "vampire",
          "mummy",
-         "ghoul"
+         "ghoul",
+         "demonkin"
         ]
        },
        {
-        "k": "text",
-        "text": "infernal (เผ่าปีศาจ) ยกเว้นเข้า SR-20"
+        "k": "not",
+        "of": {
+         "k": "text",
+         "text": "ผ่าน SR-20"
+        }
        }
       ]
      }
     ],
+    "banNotes": [],
     "opens": "ผูก GD-04 GD-06",
     "raceBonus": [],
     "direct": [],
@@ -4221,12 +4436,11 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "ถ้าเป็นผู้กล้าที่ถูกอัญเชิญ (นักเดินทางต่างภพ) น้ำหนัก ×3",
-    "ban": [
-     {
-      "k": "text",
-      "text": "ถ้าเป็นผู้กล้าที่ถูกอัญเชิญ (นักเดินทางต่างภพ) น้ำหนัก ×3"
-     }
+    "ban": [],
+    "banNotes": [
+     "ถ้าเป็นผู้กล้าที่ถูกอัญเชิญ (นักเดินทางต่างภพ) น้ำหนัก ×3"
     ],
     "opens": "ผูก DM-04 DM-05",
     "raceBonus": [],
@@ -4276,12 +4490,11 @@
       "value": 12
      }
     ],
+    "reqNotes": [],
     "banText": "ไม่จำกัดเผ่า (ยักษ์ใช้ดาบไม่ได้ในขนาดปกติ ต้องมีดาบขนาดยักษ์ ns_giant_forge และใช้เร็ว 6 แทน 12 เพราะช่วงเร็วของยักษ์คือ 3–7)",
-    "ban": [
-     {
-      "k": "text",
-      "text": "ไม่จำกัดเผ่า (ยักษ์ใช้ดาบไม่ได้ในขนาดปกติ ต้องมีดาบขนาดยักษ์ ns_giant_forge และใช้เร็ว 6 แทน 12 เพราะช่วงเร็วของยักษ์คือ 3–7)"
-     }
+    "ban": [],
+    "banNotes": [
+     "ยักษ์ใช้ดาบไม่ได้ในขนาดปกติ ต้องมีดาบขนาดยักษ์ ns_giant_forge และใช้เร็ว 6 แทน 12 เพราะช่วงเร็วของยักษ์คือ 3–7"
     ],
     "opens": "ผูก GI-03 ถ้าเป็นยักษ์",
     "raceBonus": [],
@@ -4361,14 +4574,46 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "ถ้าทวีปมังกรหายไปแล้ว (DR-01) ต้องมี nb_mark_* ตัวใดตัวหนึ่ง",
     "ban": [
      {
-      "k": "event",
-      "id": "DR-01",
-      "happened": true
+      "k": "and",
+      "of": [
+       {
+        "k": "event",
+        "id": "DR-01",
+        "happened": true
+       },
+       {
+        "k": "not",
+        "of": {
+         "k": "anyOf",
+         "kind": "blessing",
+         "ids": [
+          "nb_mark_oran",
+          "nb_mark_flame",
+          "nb_mark_sea",
+          "nb_mark_storm",
+          "nb_mark_stone",
+          "nb_mark_eclipse",
+          "nb_mark_eridan",
+          "nb_mark_hrod",
+          "nb_mark_kaldra",
+          "nb_mark_thalassa",
+          "nb_mark_andar",
+          "nb_mark_serene",
+          "nb_mark_gromdhar",
+          "nb_mark_silvera",
+          "nb_mark_niveri"
+         ],
+         "min": 1
+        }
+       }
+      ]
      }
     ],
+    "banNotes": [],
     "opens": "ผูก SF-03 SF-09 ถ้า DR-01 เกิดแล้ว",
     "raceBonus": [],
     "direct": [
@@ -4422,12 +4667,11 @@
       "text": "skill ธาตุ (ไฟ น้ำ ลม ดิน น้ำแข็ง สายฟ้า แสง มืด) อย่างน้อย 3"
      }
     ],
+    "reqNotes": [],
     "banText": "หุ่นวิญญาณ ลูกผสมจักรกล เรียนได้แต่ผลลด (SR-59)",
-    "ban": [
-     {
-      "k": "text",
-      "text": "หุ่นวิญญาณ ลูกผสมจักรกล เรียนได้แต่ผลลด (SR-59)"
-     }
+    "ban": [],
+    "banNotes": [
+     "หุ่นวิญญาณ ลูกผสมจักรกล เรียนได้แต่ผลลด (SR-59)"
     ],
     "opens": "ผูก CT-09 พายุมานา",
     "raceBonus": [],
@@ -4495,12 +4739,16 @@
       "value": 13
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามเผ่าที่ศัตรูกับสัตว์ (ออร์คสายเถ้าที่ล่าสัตว์)",
     "ban": [
      {
       "k": "text",
-      "text": "เผ่าที่ศัตรูกับสัตว์ (ออร์คสายเถ้าที่ล่าสัตว์)"
+      "text": "เผ่าที่ศัตรูกับสัตว์"
      }
+    ],
+    "banNotes": [
+     "ออร์คสายเถ้าที่ล่าสัตว์"
     ],
     "opens": "ผูก BIO-09 SV-16",
     "raceBonus": [],
@@ -4556,15 +4804,20 @@
       "value": 150
      }
     ],
+    "reqNotes": [],
     "banText": "ต้องเกี่ยวกับ NR-05",
     "ban": [
      {
-      "k": "country",
-      "ids": [
-       "NR-05"
-      ]
+      "k": "not",
+      "of": {
+       "k": "country",
+       "ids": [
+        "NR-05"
+       ]
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูก WR-06 และเรือผี",
     "raceBonus": [],
     "direct": [],
@@ -4620,13 +4873,20 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "เฉพาะสไลม์",
     "ban": [
      {
-      "k": "text",
-      "text": "เฉพาะสไลม์"
+      "k": "not",
+      "of": {
+       "k": "race",
+       "ids": [
+        "slime"
+       ]
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูก BIO-10 ถ้าเกี่ยวกับ SV-18",
     "raceBonus": [],
     "direct": [
@@ -4692,8 +4952,10 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "—",
     "ban": [],
+    "banNotes": [],
     "opens": "เข้าถึงห้องใต้ดิน AL-11 (HP-05)",
     "raceBonus": [],
     "direct": [
@@ -4771,13 +5033,44 @@
       "value": 15
      }
     ],
+    "reqNotes": [],
     "banText": "ถ้าไม่ใช่แวมไพร์แท้ ต้องมี ns_blood_ledger ระดับ 1 ขึ้นไป",
     "ban": [
      {
-      "k": "text",
-      "text": "ถ้าไม่ใช่แวมไพร์แท้ ต้องมี ns_blood_ledger ระดับ 1 ขึ้นไป"
+      "k": "and",
+      "of": [
+       {
+        "k": "not",
+        "of": {
+         "k": "and",
+         "of": [
+          {
+           "k": "race",
+           "ids": [
+            "vampire"
+           ]
+          },
+          {
+           "k": "not",
+           "of": {
+            "k": "half"
+           }
+          }
+         ]
+        }
+       },
+       {
+        "k": "not",
+        "of": {
+         "k": "has",
+         "kind": "skill",
+         "id": "ns_blood_ledger_1"
+        }
+       }
+      ]
      }
     ],
+    "banNotes": [],
     "opens": "ผูก NB-02 BIO-05",
     "raceBonus": [],
     "direct": [
@@ -4832,6 +5125,7 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้ที่มี #fear_dark",
     "ban": [
      {
@@ -4840,6 +5134,7 @@
       "id": "fear_dark"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก NB-05 PO-08",
     "raceBonus": [],
     "direct": [
@@ -4890,23 +5185,29 @@
       "value": 30
      }
     ],
+    "reqNotes": [],
     "banText": "เกิดเฉพาะเหตุการณ์ GD-08 หรือขบวนการผู้ล่าเทพ",
     "ban": [
      {
-      "k": "or",
-      "of": [
-       {
-        "k": "event",
-        "id": "GD-08",
-        "happened": true
-       },
-       {
-        "k": "text",
-        "text": "ขบวนการผู้ล่าเทพ"
-       }
-      ]
+      "k": "not",
+      "of": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "GD-08",
+         "happened": true
+        },
+        {
+         "k": "has",
+         "kind": "flag",
+         "id": "faith.23"
+        }
+       ]
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูก GD-05 GD-08",
     "raceBonus": [],
     "direct": [
@@ -4960,13 +5261,11 @@
       "value": 40
      }
     ],
+    "reqNotes": [],
     "banText": "ผูก GD-01 ผู้รวมศาสนา",
-    "ban": [
-     {
-      "k": "event",
-      "id": "GD-01",
-      "happened": true
-     }
+    "ban": [],
+    "banNotes": [
+     "ผูก GD-01 ผู้รวมศาสนา"
     ],
     "opens": "ผูก GD-01",
     "raceBonus": [],
@@ -5034,9 +5333,26 @@
         ]
        },
        {
-        "k": "has",
+        "k": "anyOf",
         "kind": "blessing",
-        "id": "nb_mark_*"
+        "ids": [
+         "nb_mark_oran",
+         "nb_mark_flame",
+         "nb_mark_sea",
+         "nb_mark_storm",
+         "nb_mark_stone",
+         "nb_mark_eclipse",
+         "nb_mark_eridan",
+         "nb_mark_hrod",
+         "nb_mark_kaldra",
+         "nb_mark_thalassa",
+         "nb_mark_andar",
+         "nb_mark_serene",
+         "nb_mark_gromdhar",
+         "nb_mark_silvera",
+         "nb_mark_niveri"
+        ],
+        "min": 1
        }
       ]
      },
@@ -5053,6 +5369,7 @@
       "value": 10
      }
     ],
+    "reqNotes": [],
     "banText": "ต้องไม่มี nc_dragon_grief ที่ยังอยู่",
     "ban": [
      {
@@ -5061,6 +5378,7 @@
       "id": "nc_dragon_grief"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก DR-14 DR-15 รับรู้การล้มของมังกรก่อนคนอื่น",
     "raceBonus": [],
     "direct": [
@@ -5125,18 +5443,38 @@
       "value": 20
      },
      {
-      "k": "has",
+      "k": "anyOf",
       "kind": "blessing",
-      "id": "nb_mark_*"
+      "ids": [
+       "nb_mark_oran",
+       "nb_mark_flame",
+       "nb_mark_sea",
+       "nb_mark_storm",
+       "nb_mark_stone",
+       "nb_mark_eclipse",
+       "nb_mark_eridan",
+       "nb_mark_hrod",
+       "nb_mark_kaldra",
+       "nb_mark_thalassa",
+       "nb_mark_andar",
+       "nb_mark_serene",
+       "nb_mark_gromdhar",
+       "nb_mark_silvera",
+       "nb_mark_niveri"
+      ],
+      "min": 1
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้มี nc_seal_scar",
     "ban": [
      {
-      "k": "text",
-      "text": "ผู้มี nc_seal_scar"
+      "k": "has",
+      "kind": "curse",
+      "id": "nc_seal_scar"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก PL-* ชะลอการตื่นของมังกรหนึ่งตัว",
     "raceBonus": [],
     "direct": [
@@ -5202,13 +5540,16 @@
       "value": 0
      }
     ],
+    "reqNotes": [],
     "banText": "ผู้มี nb_seal_hand เลือกอาชีพนี้ไม่ได้ (ขัดกัน)",
     "ban": [
      {
-      "k": "text",
-      "text": "ผู้มี nb_seal_hand เลือกอาชีพนี้ไม่ได้ (ขัดกัน)"
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_seal_hand"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก GD-07 PL-* END-*",
     "raceBonus": [],
     "direct": [
@@ -5261,13 +5602,16 @@
       "value": 30
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้มี #bloodlust",
     "ban": [
      {
-      "k": "text",
-      "text": "ผู้มี #bloodlust"
+      "k": "has",
+      "kind": "tag",
+      "id": "bloodlust"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก WR-* HP-01",
     "raceBonus": [],
     "direct": [
@@ -5329,13 +5673,18 @@
       "value": 20
      }
     ],
+    "reqNotes": [],
     "banText": "ต้องเกิดหรืออาศัยในซิลวาเนลหรือผู้ลี้ภัยป่า",
     "ban": [
      {
-      "k": "text",
-      "text": "เกิดหรืออาศัยในซิลวาเนลหรือผู้ลี้ภัยป่า"
+      "k": "not",
+      "of": {
+       "k": "text",
+       "text": "เกิดหรืออาศัยในซิลวาเนลหรือผู้ลี้ภัยป่า"
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูก BIO-01 BIO-03 WT-02",
     "raceBonus": [],
     "direct": [
@@ -5384,13 +5733,18 @@
       "text": "ธงสายเลือดฟาโรห์"
      }
     ],
+    "reqNotes": [],
     "banText": "เฉพาะเผ่ามัมมี่ในอัมเมนราหรือมาราซาร์",
     "ban": [
      {
-      "k": "text",
-      "text": "เฉพาะเผ่ามัมมี่ในอัมเมนราหรือมาราซาร์"
+      "k": "not",
+      "of": {
+       "k": "text",
+       "text": "เผ่ามัมมี่ในอัมเมนราหรือมาราซาร์"
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูก WR-24 SH-02",
     "raceBonus": [],
     "direct": [
@@ -5441,13 +5795,28 @@
       "value": 30
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามเผ่า undead ยกเว้นผ่าน SR-20",
     "ban": [
      {
-      "k": "text",
-      "text": "เผ่า undead ยกเว้นผ่าน SR-20"
+      "k": "and",
+      "of": [
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "undead"
+       },
+       {
+        "k": "not",
+        "of": {
+         "k": "text",
+         "text": "ผ่าน SR-20"
+        }
+       }
+      ]
      }
     ],
+    "banNotes": [],
     "opens": "ผูก GD-04 ราคาชีวิตผู้ชุบหนึ่งปีต่อครั้ง",
     "raceBonus": [],
     "direct": [
@@ -5509,13 +5878,16 @@
       ]
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้มี b_curseward ที่ไม่ยอมรับคำเรียก",
     "ban": [
      {
-      "k": "text",
-      "text": "ผู้มี b_curseward ที่ไม่ยอมรับคำเรียก"
+      "k": "has",
+      "kind": "blessing",
+      "id": "b_curseward"
      }
     ],
+    "banNotes": [],
     "opens": "เปิด PL-03 คัลดราตื่น",
     "raceBonus": [],
     "direct": [
@@ -5568,27 +5940,32 @@
       "value": 200
      }
     ],
+    "reqNotes": [],
     "banText": "ต้องมีที่ตั้งใน SV-09 SV-17 หรือ AL-16",
     "ban": [
      {
-      "k": "or",
-      "of": [
-       {
-        "k": "country",
-        "ids": [
-         "SV-09",
-         "SV-17"
-        ]
-       },
-       {
-        "k": "country",
-        "ids": [
-         "AL-16"
-        ]
-       }
-      ]
+      "k": "not",
+      "of": {
+       "k": "or",
+       "of": [
+        {
+         "k": "country",
+         "ids": [
+          "SV-09",
+          "SV-17"
+         ]
+        },
+        {
+         "k": "country",
+         "ids": [
+          "AL-16"
+         ]
+        }
+       ]
+      }
      }
     ],
+    "banNotes": [],
     "opens": "ผูกชุมชนลูกครึ่งหนึ่งแห่ง ถ้าชุมชนล่มจากเหตุการณ์โลก อาชีพนี้ปิด",
     "raceBonus": [],
     "direct": [
@@ -5647,13 +6024,15 @@
       "text": "ผ่านการทดสอบนาคาหรือพิธีสายเงือก"
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้มี nc_blood_feud กับนาคาหรือเงือก",
     "ban": [
      {
       "k": "text",
-      "text": "ผู้มี nc_blood_feud กับนาคาหรือเงือก"
+      "text": "nc_blood_feud กับนาคาหรือเงือก"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก cv.7 BIO-08",
     "raceBonus": [],
     "direct": [
@@ -5719,13 +6098,16 @@
       "choice": "a"
      }
     ],
+    "reqNotes": [],
     "banText": "ห้ามผู้มี c_oathbreaker",
     "ban": [
      {
-      "k": "text",
-      "text": "ผู้มี c_oathbreaker"
+      "k": "has",
+      "kind": "curse",
+      "id": "c_oathbreaker"
      }
     ],
+    "banNotes": [],
     "opens": "ผูก cv.5 DM-07",
     "raceBonus": [],
     "direct": [
@@ -5774,8 +6156,10 @@
       "id": "follower_hero"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "follower_hero",
@@ -5807,14 +6191,19 @@
     "reqText": "จอมมารผ่านเข้ามา (DM-01 DM-02)",
     "req": [
      {
-      "k": "event",
-      "id": "DM-01",
-      "happened": true
-     },
-     {
-      "k": "event",
-      "id": "DM-02",
-      "happened": true
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "DM-01",
+        "happened": true
+       },
+       {
+        "k": "event",
+        "id": "DM-02",
+        "happened": true
+       }
+      ]
      },
      {
       "k": "has",
@@ -5822,8 +6211,10 @@
       "id": "follower_demon"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "follower_demon",
@@ -5854,14 +6245,19 @@
     "reqText": "หลัง DR-01 สำหรับผู้ที่เคยถวายตัว (ผูก SF-07)",
     "req": [
      {
-      "k": "event",
-      "id": "DR-01",
-      "happened": true
-     },
-     {
-      "k": "event",
-      "id": "SF-07",
-      "happened": true
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "DR-01",
+        "happened": true
+       },
+       {
+        "k": "event",
+        "id": "SF-07",
+        "happened": true
+       }
+      ]
      },
      {
       "k": "has",
@@ -5869,8 +6265,10 @@
       "id": "dragonless_priest"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "dragonless_priest",
@@ -5900,8 +6298,17 @@
     "reqText": "NR02-1 เลือกผู้สืบทอด หรือผู้ถือคนที่เจ็ด NR02-3 ตาย",
     "req": [
      {
-      "k": "text",
-      "text": "NR02-1 เลือกผู้สืบทอด หรือผู้ถือคนที่เจ็ด NR02-3 ตาย"
+      "k": "or",
+      "of": [
+       {
+        "k": "text",
+        "text": "NR02-1 เลือกผู้สืบทอด"
+       },
+       {
+        "k": "text",
+        "text": "ถือคนที่เจ็ด NR02-3 ตาย"
+       }
+      ]
      },
      {
       "k": "has",
@@ -5909,8 +6316,10 @@
       "id": "waterfall_key"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "waterfall_key",
@@ -5949,8 +6358,10 @@
       "id": "gate_warden"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "gate_warden",
@@ -5990,8 +6401,10 @@
       "id": "council_delegate"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "council_delegate",
@@ -6030,8 +6443,10 @@
       "id": "bell_heir"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "bell_heir",
@@ -6070,8 +6485,10 @@
       "id": "fog_caravan_leader"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "fog_caravan_leader",
@@ -6100,14 +6517,19 @@
     "reqText": "หลัง RL-01 คืนที่ไฟดับ เมคาเรียตกต่ำ (RL-02)",
     "req": [
      {
-      "k": "event",
-      "id": "RL-01",
-      "happened": true
-     },
-     {
-      "k": "event",
-      "id": "RL-02",
-      "happened": true
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "RL-01",
+        "happened": true
+       },
+       {
+        "k": "event",
+        "id": "RL-02",
+        "happened": true
+       }
+      ]
      },
      {
       "k": "has",
@@ -6115,8 +6537,10 @@
       "id": "rust_collector"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "rust_collector",
@@ -6156,8 +6580,10 @@
       "id": "sapling_guardian"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "sapling_guardian",
@@ -6196,8 +6622,10 @@
       "id": "naga_egg"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "naga_egg",
@@ -6236,8 +6664,10 @@
       "id": "cooled_hearth"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "cooled_hearth",
@@ -6276,8 +6706,10 @@
       "id": "fogless_guide"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "fogless_guide",
@@ -6307,14 +6739,19 @@
     "reqText": "หลัง DR-05 ผูก DW-02",
     "req": [
      {
-      "k": "event",
-      "id": "DR-05",
-      "happened": true
-     },
-     {
-      "k": "event",
-      "id": "DW-02",
-      "happened": true
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "DR-05",
+        "happened": true
+       },
+       {
+        "k": "event",
+        "id": "DW-02",
+        "happened": true
+       }
+      ]
      },
      {
       "k": "has",
@@ -6322,8 +6759,10 @@
       "id": "water_city_mayor"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "water_city_mayor",
@@ -6363,8 +6802,10 @@
       "id": "treaty_arbiter"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "treaty_arbiter",
@@ -6393,14 +6834,19 @@
     "reqText": "หลัง DR-01 ผูก SF-08 (เมืองซากแรก)",
     "req": [
      {
-      "k": "event",
-      "id": "DR-01",
-      "happened": true
-     },
-     {
-      "k": "event",
-      "id": "SF-08",
-      "happened": true
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "DR-01",
+        "happened": true
+       },
+       {
+        "k": "event",
+        "id": "SF-08",
+        "happened": true
+       }
+      ]
      },
      {
       "k": "has",
@@ -6408,8 +6854,10 @@
       "id": "ruin_city_lord"
      }
     ],
+    "reqNotes": [],
     "banText": "",
     "ban": [],
+    "banNotes": [],
     "opens": "",
     "raceBonus": [],
     "flag": "ruin_city_lord",

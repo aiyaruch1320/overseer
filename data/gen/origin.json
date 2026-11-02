@@ -2960,14 +2960,16 @@
     "clashesText": "มัมมี่ กูล",
     "fx": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#hero_luck"
+      "id": "hero_luck",
+      "mul": 3
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
-      "id": "#fate_shift"
+      "id": "fate_shift",
+      "mul": 3
      }
     ]
    },
@@ -2990,17 +2992,13 @@
      {
       "k": "grant",
       "kind": "blessing",
-      "id": "nb_eclipse_born"
+      "id": "nb_eclipse_born",
+      "chance": 0.25
      },
      {
       "k": "grant",
       "kind": "curse",
       "id": "c_shadow"
-     },
-     {
-      "k": "pct",
-      "text": "โอกาส",
-      "pct": 25
      }
     ]
    },
@@ -3022,9 +3020,21 @@
     "clashesText": "ออร์ค",
     "fx": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_moonfrenzy"
+      "k": "if",
+      "cond": {
+       "k": "race",
+       "ids": [
+        "beast"
+       ]
+      },
+      "then": [
+       {
+        "k": "favour",
+        "kind": "curse",
+        "id": "c_moonfrenzy",
+        "mul": 3
+       }
+      ]
      }
     ]
    },
@@ -3043,7 +3053,20 @@
     "effect": "พรสายฟ้าและลมได้ง่ายขึ้น 3 เท่า",
     "likesText": "เผ่าปีก ภูตพราย เงือก",
     "clashesText": "เผ่าลาวา",
-    "fx": []
+    "fx": [
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "lightning",
+      "mul": 3
+     },
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "wind",
+      "mul": 3
+     }
+    ]
    },
    {
     "id": "night",
@@ -3062,12 +3085,12 @@
     "clashesText": "เผ่าลาวา",
     "fx": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "blessing",
       "id": "b_nighteye"
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "blessing",
       "id": "b_nightowl"
      }
@@ -3090,9 +3113,20 @@
     "clashesText": "แวมไพร์",
     "fx": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_sunburn"
+      "k": "if",
+      "cond": {
+       "k": "race",
+       "ids": [
+        "vampire"
+       ]
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_sunburn"
+       }
+      ]
      }
     ]
    },
@@ -3110,7 +3144,13 @@
     "effect": "โอกาสได้พรแสงเพิ่ม",
     "likesText": "เอลฟ์ ภูตพราย",
     "clashesText": "กูล",
-    "fx": []
+    "fx": [
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "light"
+     }
+    ]
    },
    {
     "id": "dusk",
@@ -3125,7 +3165,13 @@
     "effect": "พรและคำสาปสายความตายได้ง่ายขึ้น",
     "likesText": "ออร์ค ดาร์กเอลฟ์ มัมมี่",
     "clashesText": "",
-    "fx": []
+    "fx": [
+     {
+      "k": "favour",
+      "kind": "tag",
+      "id": "necro"
+     }
+    ]
    }
   ],
   "birthSignWeights": {

@@ -1,7 +1,8 @@
 {
- "version": "d3c843270110",
+ "version": "dd68c353e36e",
  "sources": [
   "docs/_generated/character-catalog/curses.md",
+  "docs/lore/religions/README.md",
   "docs/systems/character/06-new-curses.md",
   "docs/systems/character/12-job-support.md",
   "docs/systems/character/17-companion-support.md"
@@ -24,6 +25,7 @@
    "desc": "ยกดาบแล้วมือสั่น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -59,6 +61,7 @@
    "desc": "ล้มทีกระดูกร้าว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -94,6 +97,7 @@
    "desc": "ขาข้างหนึ่งใช้การไม่ได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -124,6 +128,7 @@
    "desc": "เวทรั่วไหลตลอด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -154,6 +159,7 @@
    "desc": "โซ่ล่องหนพันวงจรมานา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -184,6 +190,7 @@
    "desc": "เวทมนตร์ไม่ตอบสนองอีกเลย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -214,6 +221,7 @@
    "desc": "เดินช้าลง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -244,6 +252,7 @@
    "desc": "ทุกก้าวหนักอึ้ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -274,6 +283,7 @@
    "desc": "โลกหมุนเร็วกว่าเราเสมอ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -304,6 +314,7 @@
    "desc": "เหยียบขี้หมาบ่อย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -339,6 +350,7 @@
    "desc": "คนรอบข้างพลอยซวย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -379,6 +391,7 @@
    "desc": "ชะตาเล่นตลกร้ายเสมอ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -409,6 +422,7 @@
    "desc": "คิดอะไรไม่ค่อยออก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -439,6 +453,7 @@
    "desc": "ลืมแม้แต่ชื่อตัวเอง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -474,6 +489,7 @@
    "desc": "เสียงในหัวดังขึ้นทุกปี",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -504,6 +520,7 @@
    "desc": "ป่วยง่าย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -539,6 +556,7 @@
    "desc": "ไอไม่หยุด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -574,6 +592,7 @@
    "desc": "ชีวิตถูกดูดออกไปทีละนิด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -604,6 +623,7 @@
    "desc": "โดนแดดแล้วผิวไหม้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -634,6 +654,7 @@
    "desc": "แตะเหรียญเงินแล้วแสบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -664,6 +685,7 @@
    "desc": "อาวุธเหล็กแผลไม่หาย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -694,6 +716,7 @@
    "desc": "เห็นแม่น้ำแล้วขาสั่น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -724,6 +747,7 @@
    "desc": "เสื้อผ้าติดไฟง่ายผิดปกติ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -754,6 +778,7 @@
    "desc": "หนาวนิดเดียวก็ป่วย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -784,6 +809,7 @@
    "desc": "วิหารทำให้ปวดหัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -814,6 +840,7 @@
    "desc": "ผึ้งต่อยทีเกือบตาย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -849,6 +876,7 @@
    "desc": "โดนหมัดเดียวน็อก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -879,6 +907,7 @@
    "desc": "พลบค่ำแล้วมองไม่เห็น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -909,6 +938,7 @@
    "desc": "จามทุกฤดูใบไม้ผลิ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -939,6 +969,7 @@
    "desc": "ขึ้นบันไดสามขั้นก็เวียนหัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -969,6 +1000,7 @@
    "desc": "เข้าดันเจี้ยนไม่ได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1004,6 +1036,7 @@
    "desc": "เป็นลมกลางสนามรบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1034,6 +1067,7 @@
    "desc": "ขึ้นเรือแล้วอ้วก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1074,6 +1108,7 @@
    "desc": "คืนจันทร์เต็มดวงจะคลั่ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1109,6 +1144,7 @@
    "desc": "เลือดดำคล้ำ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1149,6 +1185,7 @@
    "desc": "ราชาปีศาจจับจ้อง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1184,6 +1221,7 @@
    "desc": "พืชเหี่ยวเมื่อแตะ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1214,6 +1252,7 @@
    "desc": "วิญญาณถูกจำนองไว้กับใครบางคน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1249,6 +1288,7 @@
    "desc": "เงาขยับเองได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1279,6 +1319,7 @@
    "desc": "ได้ยินเสียงเคาะทุกคืน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1314,6 +1355,7 @@
    "desc": "อยากลิ้มรสเลือด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1344,6 +1386,7 @@
    "desc": "คำสาปของคนอื่นเด้งมาหา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1384,6 +1427,7 @@
    "desc": "ความตายอาจไม่ใช่จุดจบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1424,6 +1468,7 @@
    "desc": "จ้องใครคนนั้นซวย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1464,6 +1509,7 @@
    "desc": "กำลังกลายเป็นอะไรบางอย่าง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1494,6 +1540,7 @@
    "desc": "มีคนหน้าเหมือนเราเดินอยู่ที่ไหนสักแห่ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1529,6 +1576,7 @@
    "desc": "รู้สึกอะไรได้น้อยลง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1564,6 +1612,7 @@
    "desc": "มีเสียงชักชวนสู่ความชั่ว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1599,6 +1648,7 @@
    "desc": "ไม่มีบ้านให้กลับ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1629,6 +1679,7 @@
    "desc": "เด็กเห็นแล้วร้องไห้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1659,6 +1710,7 @@
    "desc": "ความรักคือคำสาป",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1689,6 +1741,7 @@
    "desc": "มิตรภาพไม่ยืนยาว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1719,6 +1772,7 @@
    "desc": "เตือนภัยแล้วถูกหัวเราะใส่",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1749,6 +1803,7 @@
    "desc": "เพื่อนสนิทมักแทงข้างหลัง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1779,6 +1834,7 @@
    "desc": "ข่าวลือเสีย ๆ หาย ๆ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1809,6 +1865,7 @@
    "desc": "สายเลือดอาจจบที่รุ่นนี้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1839,6 +1896,7 @@
    "desc": "ญาติพี่น้องหมายหัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1874,6 +1932,7 @@
    "desc": "คำพูดไร้ค่า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1909,6 +1968,7 @@
    "desc": "เจ้าหนี้มาเคาะประตู",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1939,6 +1999,7 @@
    "desc": "เงินไม่เคยอยู่กับตัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1969,6 +2030,7 @@
    "desc": "นักล่าค่าหัวตามล่า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -1999,6 +2061,7 @@
    "desc": "ใครเห็นก็หมั่นไส้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2029,6 +2092,7 @@
    "desc": "นาฬิกาชีวิตเดินเร็ว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2064,6 +2128,7 @@
    "desc": "ตาค้างทุกคืน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2094,6 +2159,7 @@
    "desc": "ข้อความจากเทพบิดเบี้ยว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2124,6 +2190,7 @@
    "desc": "พูดไม่ได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2159,6 +2226,7 @@
    "desc": "กะระยะพลาด",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2189,6 +2257,7 @@
    "desc": "ขาข้างหนึ่งสั้นกว่า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2219,6 +2288,7 @@
    "desc": "ไปที่ไหนโรคตามไปที่นั่น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2254,6 +2324,7 @@
    "desc": "ตัวร้อนเป็นระยะ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2294,6 +2365,7 @@
    "desc": "ผิวแข็งขึ้นทุกปี",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2324,6 +2396,7 @@
    "desc": "อายุยี่สิบหน้าเหมือนห้าสิบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2354,6 +2427,7 @@
    "desc": "ความจริงมีกลิ่น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2384,6 +2458,7 @@
    "desc": "นกทั้งโลกเล็งหัวเรา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2414,6 +2489,7 @@
    "desc": "คุยธุระก็ต้องสัมผัส",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2444,6 +2520,7 @@
    "desc": "สะท้อนแสงอาทิตย์ได้",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2474,6 +2551,7 @@
    "desc": "แมวขู่ฟ่อทุกตัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2504,6 +2582,7 @@
    "desc": "สารภาพรักแล้วสะอึก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2539,6 +2618,7 @@
    "desc": "บ้านไหม้มาสามหลังแล้ว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2569,6 +2649,7 @@
    "desc": "งานศพก็ไม่เว้น",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2599,6 +2680,7 @@
    "desc": "ไปตลาดแต่ถึงชายแดน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2629,6 +2711,7 @@
    "desc": "ตะโกนแล้วไม่มีใครได้ยิน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2659,6 +2742,7 @@
    "desc": "ทุกวันอาทิตย์ต้องขัน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2694,6 +2778,7 @@
    "desc": "ปากพูดความจริงเอง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2724,6 +2809,7 @@
    "desc": "สไลม์ทั้งป่าหลงรัก",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2754,6 +2840,7 @@
    "desc": "มอนสเตอร์ยังถอย แต่คนก็ถอย",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2784,6 +2871,7 @@
    "desc": "กาบินวนหัว",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2814,6 +2902,7 @@
    "desc": "ฝืนชะตาแพงขึ้นสองเท่า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2844,6 +2933,7 @@
    "desc": "มอนสเตอร์ตามกลิ่นมา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2874,6 +2964,7 @@
    "desc": "ไปที่ไหนภัยพิบัติตามไป",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2909,6 +3000,7 @@
    "desc": "รวยแต่ไม่มีความสุข",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2939,6 +3031,7 @@
    "desc": "ลูกหลานจะรับกรรมต่อ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -2974,6 +3067,7 @@
    "desc": "คำอธิษฐานไม่ถึงสวรรค์",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3004,6 +3098,7 @@
    "desc": "ราชาปีศาจหมายตา",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3034,6 +3129,7 @@
    "desc": "กินเท่าไรก็ไม่อิ่ม",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3069,6 +3165,7 @@
    "desc": "อยากได้ทุกสิ่ง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3104,6 +3201,7 @@
    "desc": "ความโกรธเผาไหม้ใจ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3134,6 +3232,7 @@
    "desc": "ตกใจทุกเสียง",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3164,6 +3263,7 @@
    "desc": "จับดาบเล่มไหนก็ทื่อ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3199,6 +3299,7 @@
    "desc": "จำเรื่องชาติก่อนจนเศร้า",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3229,6 +3330,7 @@
    "desc": "คนในเมืองซุบซิบ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3259,6 +3361,7 @@
    "desc": "ฝนตกเฉพาะตรงที่ยืน",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3294,6 +3397,7 @@
    "desc": "ร่ำรวยไม่ได้จริง ๆ",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3340,6 +3444,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-04"
@@ -3381,6 +3486,7 @@
      "text": "เกิดในประเทศที่มีสงคราม"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3428,6 +3534,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -3468,6 +3575,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3516,6 +3624,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "BIO-01",
@@ -3565,6 +3674,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "FG-01"
@@ -3602,6 +3712,7 @@
      "id": "c_hydrophobia"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3643,6 +3754,7 @@
      "text": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย (SR-65)"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -3678,6 +3790,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-01"
@@ -3715,6 +3828,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-04"
@@ -3752,6 +3866,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-05"
@@ -3789,6 +3904,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-07"
@@ -3831,6 +3947,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "BIO-02"
@@ -3868,6 +3985,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "MC-04"
@@ -3910,6 +4028,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "FG-01",
@@ -3948,6 +4067,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "BIO-05"
@@ -3995,6 +4115,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "DR-15"
@@ -4038,6 +4159,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4076,6 +4198,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4117,6 +4240,7 @@
      "text": "ได้ยินเสียงกระซิบเนบูเลีย"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4154,10 +4278,21 @@
    "from": "ศรัทธาศาสนาช่อง D หรือ E",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ศรัทธาศาสนาช่อง D หรือ E"
+     "k": "anyOf",
+     "kind": "flag",
+     "ids": [
+      "faith.10",
+      "faith.12",
+      "faith.14",
+      "faith.20",
+      "faith.21",
+      "faith.22",
+      "faith.23"
+     ],
+     "min": 1
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4194,9 +4329,10 @@
    "fromCond": [
     {
      "k": "text",
-     "text": "ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่"
+     "text": "คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4234,6 +4370,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4271,6 +4408,7 @@
      "text": "เห็นมังกรตาย ต่อหน้า"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4306,6 +4444,7 @@
      "happened": true
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "GD-07"
@@ -4342,6 +4481,7 @@
      "text": "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4373,9 +4513,10 @@
    "fromCond": [
     {
      "k": "text",
-     "text": "ตัวละครทำร้าย NPC สำคัญ ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) แกน แค้น ระดับ +4"
+     "text": "ตัวละครทำร้าย NPC สำคัญ ตาม แกน แค้น ระดับ +4"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4415,6 +4556,7 @@
      "text": "NPC ที่ไว้ใจสูงสุดหักหลัง"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4456,6 +4598,7 @@
      ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [
      "GD-02"
@@ -4499,6 +4642,7 @@
      "text": "อยู่ในหมอกทึบนานเกินหนึ่งปี"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4533,6 +4677,7 @@
      "text": "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4572,6 +4717,7 @@
      "text": "เกิดนอกถิ่นหลักและถูกรังเกียจ"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4603,9 +4749,10 @@
    "fromCond": [
     {
      "k": "text",
-     "text": "ลูกครึ่งที่ถิ่นไม่รับ (ดู [01-origin.md](01-origin.md) หัวข้อ 4)"
+     "text": "ลูกครึ่งที่ถิ่นไม่รับ"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4635,6 +4782,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4673,6 +4821,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4710,6 +4859,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4739,6 +4889,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4768,6 +4919,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4799,6 +4951,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4830,6 +4983,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4861,6 +5015,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4893,6 +5048,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4924,6 +5080,7 @@
    "desc": "",
    "from": "",
    "fromCond": [],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4960,9 +5117,10 @@
    "fromCond": [
     {
      "k": "text",
-     "text": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ [13](13-companions-overview.md))"
+     "text": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ 13)"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4997,6 +5155,7 @@
      "text": "พิธีล้มเหลวหรือเคยทำร้ายสัตว์"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5027,16 +5186,22 @@
    "from": "ผู้ที่มี c_jinx หรือ c_doomed",
    "fromCond": [
     {
-     "k": "has",
-     "kind": "curse",
-     "id": "c_jinx"
-    },
-    {
-     "k": "has",
-     "kind": "curse",
-     "id": "c_doomed"
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_jinx"
+      },
+      {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_doomed"
+      }
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5074,6 +5239,7 @@
      "text": "เกิดตามธรรมชาติ"
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5104,16 +5270,22 @@
    "from": "ผู้ที่มีนิสัย stubborn หรือ hot",
    "fromCond": [
     {
-     "k": "has",
-     "kind": "trait",
-     "id": "stubborn"
-    },
-    {
-     "k": "has",
-     "kind": "trait",
-     "id": "hot"
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "trait",
+       "id": "stubborn"
+      },
+      {
+       "k": "has",
+       "kind": "trait",
+       "id": "hot"
+      }
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5148,10 +5320,29 @@
    "from": "เลี้ยงสัตว์ ระดับ E หรือ L และข่าวรั่ว",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เลี้ยงสัตว์ ระดับ E หรือ L และข่าวรั่ว"
+     "k": "and",
+     "of": [
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "text",
+         "text": "เลี้ยงสัตว์ ระดับ E"
+        },
+        {
+         "k": "text",
+         "text": "L"
+        }
+       ]
+      },
+      {
+       "k": "text",
+       "text": "ข่าวรั่ว"
+      }
+     ]
     }
    ],
+   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],

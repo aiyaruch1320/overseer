@@ -89,6 +89,13 @@ const uniq = <T>(a: T[]) => [...new Set(a)];
 const idOf = (s: string) => clean(s).split(/\s+/)[0];
 /** Markdown links: a link to a .md file is dropped, any other keeps its label. */
 const unlink = (s: string) => s.replace(/\[([^\]]+)\]\([^)]*\)/g, (_, l: string) => (/\.md$/.test(l) ? '' : l));
+/** Link-free cell text with "ช่อง A หรือ B" folded into one word (`ช่อง AB`), so the หรือ between letters is not read as an alternative of conditions. */
+const prep = (s: string) =>
+  unlink(s)
+    .replace(/\(\s*(?:ขั้น\s*\S+|หัวข้อ\s*\d+)?\s*\)/g, ' ') // what is left of a link to another doc
+    .replace(/ช่อง\s*([A-E])(?:\s*หรือ\s*([A-E]))+/g, (m) => 'ช่อง ' + [...m.matchAll(/\b[A-E]\b/g)].map((x) => x[0]).join(''))
+    .replace(/\s+/g, ' ')
+    .trim();
 /** Weight multipliers in prose (`×1.5` `2 เท่า`); returns them and the text without them. */
 function mulOf(s: string): { mul: number | null; rest: string } {
   const m = s.match(/×\s*(\d+(?:\.\d+)?)/) ?? s.match(/(\d+(?:\.\d+)?)\s*เท่า/);
@@ -256,7 +263,12 @@ function splitTop(s: string, sep: RegExp): string[] {
   return out.map((x) => x.trim()).filter(Boolean);
 }
 const and = (of: CharCond[]): CharCond => (of.length === 1 ? of[0] : { k: 'and', of });
-const or = (of: CharCond[]): CharCond => (of.length === 1 ? of[0] : { k: 'or', of });
+/** `or` of conditions; an or of races only is one race condition (same meaning, fewer nodes). */
+const or = (of: CharCond[]): CharCond => {
+  if (of.length === 1) return of[0];
+  if (of.every((c) => c.k === 'race')) return { k: 'race', ids: uniq(of.flatMap((c) => (c as { ids: string[] }).ids)) };
+  return { k: 'or', of };
+};
 
 /** ids.kind reads `nb_`/`nc_` as skills (the glossary groups them); in the character docs they are the new blessings and curses. */
 function kindOf(id: string): IdKind {
@@ -264,22 +276,156 @@ function kindOf(id: string): IdKind {
   if (id.startsWith('nc_')) return 'curse';
   return ids.kind(id);
 }
+/** Tag ids are stored without the leading `#` (the docs write `#fire` in prose, the data says `fire`). */
+const noHash = (id: string) => id.replace(/^#/, '');
 function fixKinds<T extends Effect>(effects: T[]): T[] {
-  return effects.map((e) => (e.k === 'grant' && e.kind !== 'tag' ? { ...e, kind: kindOf(e.id) } : e)) as T[];
+  return effects.map((e) => {
+    if ((e.k === 'grant' || e.k === 'remove' || e.k === 'favour') && e.kind === 'tag') return { ...e, id: noHash(e.id) };
+    if (e.k === 'grant' && e.kind !== 'tag') return { ...e, kind: kindOf(e.id) };
+    return e;
+  }) as T[];
 }
+
+// ---------- grants, chances, "ได้ง่ายขึ้น" and "ลบ" read clause by clause (H8 M5) ----------
+
+const ID_IN_TEXT = /`?(#[a-z][a-z0-9_]*|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)`?/g;
+const FAVOUR_WORDS = /ง่ายขึ้น|หายาก|เพิ่ม\s*[\d.]+\s*เท่า|ได้ง่าย|ได้พร\S*เพิ่ม/;
+/** "พรสายฟ้า" "พรแสง" ... : the tag of the line a clause without a code talks about. */
+const LINE_TAGS: [RegExp, string[]][] = [
+  [/สายฟ้า/, ['lightning']],
+  [/(?:และ|สาย)ลม/, ['wind']],
+  [/พรแสง|สายแสง/, ['light']],
+  [/สายความตาย/, ['necro']],
+  [/สายศรัทธา/, ['holy', 'oracle']],
+];
+
+/**
+ * Rebuilds the grant side of an effect cell from the words, because the shared parser (lib/effects.ts) binds a percent
+ * to the nearest code only when they touch. A clause is the text between `และ` / `แต่` / `·`; inside it:
+ *   `ลบ X` `เสีย X`        → remove X                   (SR-20 SR-23)
+ *   `X ... ง่ายขึ้น n เท่า` → favour X × n (a raised draw weight, not a grant)  (M5, SR-42 SR-62 SR-64)
+ *   `X ผลเป็น n เท่า`      → no grant: the multiplier is the rule's `mul`
+ *   `ได้ X ... n%`         → grant X with that chance, and the percent leaves the loose list (SR-39 SR-65)
+ * Percents left over are signed by the word before them: `ลด ... 20%` is −20 (SR-29).
+ * `races`: a clause naming a race ("ในเผ่าสัตว์" "แวมไพร์ที่เกิดกลางวัน") makes its effects `if race`.
+ */
+function fixGrants(text: string, parsed: Effect[], at: { file: string; line: number }, races = false): Effect[] {
+  type Pct = { k: 'pct'; text: string; pct: number };
+  const isPct = (e: Effect): boolean => (e as { k: string }).k === 'pct';
+  const keep = parsed.filter((e) => e.k !== 'grant' && e.k !== 'remove');
+  const pcts = keep.filter(isPct) as unknown as Pct[];
+  // remarks in brackets that name no code are not part of the effect ("(หายาก แต่เป็นที่รู้จัก...)")
+  const body = text.replace(/\[([^\]]*)\]\([^)]*\)/g, '').replace(/\(([^)]*)\)/g, (m, inner: string) => (/(?:#|[a-z]_)[a-z]/.test(inner) ? m : ' '));
+  const clauses = body.split(/\s+(?:และ|แต่(?!ละ))\s*|\s+·\s+|\s+(?=คำสาป\s)/);
+  const made: Effect[] = [];
+  const used = new Set<Pct>();
+  for (const cl of clauses) {
+    const idm = [...cl.matchAll(ID_IN_TEXT)].filter((m) => !/^(?:SR|FT|KN|PR|NF)/i.test(m[1]));
+    if (!idm.length) {
+      // "พรสายฟ้าและลมได้ง่ายขึ้น 3 เท่า": a line of blessings named by words, not by code
+      if (FAVOUR_WORDS.test(cl)) {
+        const mm = cl.match(/([\d.]+)\s*เท่า/);
+        const tags = LINE_TAGS.filter(([re]) => re.test(cl)).flatMap(([, t]) => t);
+        made.push(...tags.map((t): Effect => ({ k: 'favour', kind: 'tag', id: t, ...(mm ? { mul: Number(mm[1]) } : {}) })));
+      }
+      continue;
+    }
+    const here: Effect[] = [];
+    const pctIn = [...cl.matchAll(/(\d+(?:\.\d+)?)\s*%/g)];
+    for (const m of idm) {
+      const id = m[1];
+      const tag = id.startsWith('#') || RACE_TAGS.has(id) || /^weak_|^fear_|^undead|^infernal$/.test(id);
+      const kind: IdKind = tag ? 'tag' : kindOf(id);
+      const cid = tag ? noHash(id) : id;
+      const before = cl.slice(0, m.index);
+      const after = cl.slice((m.index ?? 0) + m[0].length);
+      if (/(?:ลบ|เสีย)\s*$/.test(before)) here.push({ k: 'remove', kind, id: cid });
+      else if (/^\s*[^\d%`#]{0,24}ผลเป็น/.test(after)) continue;
+      else if (FAVOUR_WORDS.test(cl) || (!pctIn.length && /เร็วขึ้น/.test(cl))) {
+        const mm = after.match(/([\d.]+)\s*เท่า/) ?? cl.match(/([\d.]+)\s*เท่า/);
+        here.push({ k: 'favour', kind, id: cid, ...(mm ? { mul: Number(mm[1]) } : {}) });
+      } else {
+        const g: Extract<Effect, { k: 'grant' }> = { k: 'grant', kind, id: cid };
+        if (idm.length === 1 && pctIn.length === 1) {
+          g.chance = Number(pctIn[0][1]) / 100;
+          const hit = pcts.find((p) => p.pct === Number(pctIn[0][1]) && !used.has(p));
+          if (hit) used.add(hit);
+        } else if (/โอกาส/.test(cl) && !pctIn.length) unp.add(at.file, at.line, cl.trim(), 'grant with a chance the cell does not give');
+        here.push(g);
+      }
+    }
+    const rs = races ? racesNamed(cl) : [];
+    made.push(...(rs.length && here.length ? [{ k: 'if', cond: { k: 'race', ids: rs }, then: here } as Effect] : here));
+  }
+  // a percent that stays loose takes its sign from the word before it
+  const rest = keep.filter((e) => !(isPct(e) && used.has(e as unknown as Pct)));
+  for (const e of rest) {
+    if (!isPct(e)) continue;
+    const pe = e as unknown as Pct;
+    const m = [...text.matchAll(new RegExp(`(.{0,40}?)${Math.abs(pe.pct)}\\s*%`, 'g'))].find((x) => x[1]);
+    if (m && /ลด/.test(m[1]) && !/เพิ่ม/.test(m[1].split('ลด').pop() ?? '')) pe.pct = -Math.abs(pe.pct);
+  }
+  return [...rest, ...made];
+}
+
+/** Races named in a clause, also when a relative `ที่` follows ("แวมไพร์ที่เกิดกลางวัน"). */
+function racesNamed(clause: string): RaceId[] {
+  const t = clause.replace(/\([^)]*\)/g, ' ');
+  const found = new Set(racesIn(t));
+  for (const n of Object.keys(RACE_NAME).sort((a, b) => b.length - a.length)) {
+    if (new RegExp(`(?<![ก-๙])(?:ใน)?${n}(?=ที่)`).test(t)) found.add(RACE_NAME[n]);
+  }
+  return [...found];
+}
+
+/** Ids of the blessings, curses, skills and traits the files define; filled in run() before the conditions are read. */
+const KNOWN: Partial<Record<IdKind, string[]>> = {};
 
 function hasOf(id: string): CharCond {
   if (id.startsWith('#')) return { k: 'has', kind: 'tag', id: id.slice(1) };
   if (RACE_TAGS.has(id)) return { k: 'has', kind: 'tag', id };
-  if (/\*$/.test(id)) return { k: 'has', kind: id.startsWith('nb_') ? 'blessing' : 'unknown', id };
+  if (/\*$/.test(id)) {
+    // `nb_mark_*` = any of the ids that start so: one anyOf over the ids that exist (min 1)
+    const kind = id.startsWith('nb_') || id.startsWith('b_') ? 'blessing' : id.startsWith('nc_') || id.startsWith('c_') ? 'curse' : 'unknown';
+    const prefix = id.slice(0, -1);
+    const list = (KNOWN[kind] ?? []).filter((x) => x.startsWith(prefix));
+    return list.length ? { k: 'anyOf', kind, ids: list, min: 1 } : { k: 'has', kind, id };
+  }
   const lvl = ids.aptLevel(id);
   if (lvl) return { k: 'has', kind: 'skill', id };
   return { k: 'has', kind: kindOf(id), id };
 }
 
+// ---------- religions: `faith.NN` flags and the channels A..E (docs/lore/religions/README.md) ----------
+
+interface Faith {
+  id: string;
+  name: string;
+  channel: string;
+}
+let FAITHS: Faith[] = [];
+const FAITH_ALIAS: Record<string, string> = { ศาสนาแสง: 'ศาสนจักรแห่งแสง', ศาสนาปีศาจ: 'ลัทธิปีศาจ', ขบวนการผู้ล่าเทพ: 'ผู้ล่าเทพ' };
+function loadFaiths(): Faith[] {
+  const t = tbls('docs/lore/religions/README.md').find((x) => clean(x.header[1]) === 'ศาสนา');
+  if (!t) throw new Error('religions README: faith table not found');
+  return t.rows.filter((r) => /^\d+$/.test(r.cells[0])).map((r) => ({ id: `faith.${r.cells[0].padStart(2, '0')}`, name: clean(r.cells[1]), channel: clean(r.cells[2]) }));
+}
+const faithFlag = (f: Faith): CharCond => ({ k: 'has', kind: 'flag', id: f.id });
+const faithOf = (name: string): Faith | undefined => {
+  const n = FAITH_ALIAS[name] ?? name;
+  return FAITHS.find((f) => f.name === n);
+};
+/** Every faith whose channel is one of `letters`, as one anyOf (a single faith is a plain `has`). */
+function faithsInChannels(letters: string): CharCond {
+  const list = FAITHS.filter((f) => letters.includes(f.channel));
+  return { k: 'anyOf', kind: 'flag', ids: list.map((f) => f.id), min: 1 };
+}
+
 function atom(raw: string, file: string, line: number): CharCond {
-  let s = raw.trim().replace(/^ต้อง(?:มี)?\s*/, '').replace(/^(?:ผู้ที่)?มี\s*/, '').replace(/^ผู้ที่\s*/, '');
+  let s = raw.trim().replace(/^ต้อง(?:มี|เป็น)?\s*/, '').replace(/^(?:ผู้ที่|ผู้)?มี\s*/, '').replace(/^ผู้(?:ที่)?\s*/, '');
   if (!s) return { k: 'text', text: raw.trim() };
+  // "X เท่านั้น (why)": the word only is emphasis
+  s = s.replace(/\s*เท่านั้น(?=\s*(?:\(|$))/, '');
   // grouping
   if (s.startsWith('(') && s.endsWith(')')) {
     const inner = s.slice(1, -1);
@@ -303,8 +449,38 @@ function atom(raw: string, file: string, line: number): CharCond {
     const base = atom(m[1], file, line);
     if (base.k !== 'text') return base;
     const inner = atom(m[2], file, line);
+    // the label before an exclusion in brackets is a condition of its own and stays ("มีคู่ชีวิตและเผ่าที่มีลูกได้ (ไม่ใช่ …)")
+    if (inner.k === 'not') return { k: 'and', of: [base, inner] };
     if (inner.k !== 'text') return /ไม่มี|ไม่ถูก|ไม่ได้|ไม่อยู่|ไม่ใช่/.test(m[1]) ? { k: 'not', of: inner } : inner;
   }
+  // "กูลและมัมมี่ไม่ทำ": the races that do not take the job
+  if ((m = s.match(/^(.+?)ไม่ทำ$/)) && m[1].split(/และ|หรือ|\s+/).filter(Boolean).every((w) => raceId(w))) return { k: 'not', of: { k: 'race', ids: m[1].split(/และ|หรือ|\s+/).filter(Boolean).map((w) => raceId(w)!) } };
+  if ((m = s.match(/^นิสัย\s+([a-z_]+)$/))) return { k: 'has', kind: 'trait', id: m[1] };
+  // negations: `ไม่ใช่ยักษ์` `ไม่มี c_outcast ที่ยังอยู่` `ห้ามแท็ก huge` `ห้ามผู้มี #bloodlust`
+  if ((m = s.match(/^(?:ที่)?ไม่(?:ใช่|มี)\s*(.+)$/)) || (m = s.match(/^ห้าม\s*(?:แท็ก|ผู้(?:ที่)?มี)?\s*(.+)$/))) {
+    const inner = atom(m[1].replace(/\s*ที่ยังอยู่$/, ''), file, line);
+    if (inner.k !== 'text') return { k: 'not', of: inner };
+  }
+  // a bare id: `nc_seal_scar` `#bloodlust` `ns_blood_ledger ระดับ 1 ขึ้นไป` `nb_mark_* ตัวใดตัวหนึ่ง`
+  if (RACE_TAGS.has(s)) return { k: 'has', kind: 'tag', id: s };
+  if ((m = s.match(/^(#[a-z][a-z0-9_]*|[a-z][a-z0-9]*(?:_[a-z0-9]+)+_?\*?)(?:\s*ตัวใดตัวหนึ่ง|\s*อย่างน้อยหนึ่งตัว|\s*ที่ยังอยู่|\s*ที่ไม่ยอมรับคำเรียก)?(?:\s*ระดับ\s*(\d)(?:\s*ขึ้นไป)?)?$/))) {
+    const base = hasOf(m[1]);
+    return m[2] && base.k === 'has' ? { ...base, kind: 'skill', id: `${m[1]}_${m[2]}` } : base;
+  }
+  if ((m = s.match(/^(?:เป็น)?ขุนนาง$/)) || (m = s.match(/^([a-z]+)$/)) && ids.kind(s) !== 'unknown') return hasOf(m[1] ?? 'noble');
+  // pure-blood: "แวมไพร์แท้" = that race and not a half-blood
+  if ((m = s.match(/^(\S+?)แท้$/)) && raceId(m[1])) return { k: 'and', of: [{ k: 'race', ids: [raceId(m[1])!] }, { k: 'not', of: { k: 'half' } }] };
+  // where the character was born or lives, how, and under which sign (flags the character creation sets, origin.json)
+  if ((m = s.match(/^(?:อยู่|เกิดใน|เกิดหรืออาศัยใน)\s*(\S+)$/)) && CONTINENT_NAME[m[1]]) return { k: 'continent', ids: [CONTINENT_NAME[m[1]]] };
+  if (/^เกิดนอกถิ่น(?:หลัก)?(?:ของเผ่า)?$/.test(s)) return { k: 'has', kind: 'flag', id: 'born_outside' };
+  if ((m = s.match(/^เกิดใต้ดวง(\S+)$/)) && SIGN_ID[m[1]]) return { k: 'has', kind: 'flag', id: `sign_${SIGN_ID[m[1]]}` };
+  if (/^(?:กลับชาติ|ผู้กลับชาติ)$/.test(s)) return { k: 'has', kind: 'flag', id: 'reincarnated' };
+  if (/^ชนชั้นขุนนาง(?:ขึ้นไป)?$/.test(s)) return { k: 'class', min: 5 };
+  if ((m = s.match(/^ช่อง\s*([A-E]+)$/))) return faithsInChannels(m[1]);
+  // religion by name, with the channel letter the lists put after it: `ลัทธิบูชามังกร (A)`
+  if ((m = s.match(/^(.+?)(?:\s*\(([A-E])\))?$/)) && (faithOf(clean(m[1])) || faithOf(clean(m[1]).replace(/รับ$/, '')))) return faithFlag((faithOf(clean(m[1])) ?? faithOf(clean(m[1]).replace(/รับ$/, '')))!);
+  // religion by channel: `ศาสนาช่อง D หรือ E` `ศาสนาที่มีพิธีทดสอบ (ช่อง AB)`
+  if ((m = s.match(/^(?:ศรัทธา|นับถือ)?ศาสนา[^()]*?\s*\(?ช่อง\s*([A-E]+)\)?$/))) return faithsInChannels(m[1]);
   // stat comparisons
   if ((m = s.match(new RegExp(`^(?:ค่า)?(${STAT_RE})(?:เริ่มต้น|ขั้นต่ำ|ในหมู่โจร)?\\s*(≥|≤|>|<)?\\s*([+\\-−]?\\d+)\\s*(?:ขึ้นไป)?$`)))) {
     const op = m[2] === '≥' || !m[2] ? '>=' : m[2] === '≤' ? '<=' : m[2];
@@ -343,51 +519,172 @@ function atom(raw: string, file: string, line: number): CharCond {
   const cs = countriesIn(s);
   if (cs.length) return { k: 'country', ids: cs };
   const evs = refsOf(s).events;
-  if (evs.length) {
+  if (evs.length && !/ใกล้เกิด/.test(s)) {
     const neg = /ไม่|ยังไม่/.test(s);
     const of = evs.map((id): CharCond => ({ k: 'event', id, happened: !neg }));
     return neg && of.length > 1 ? { k: 'and', of } : or(of);
   }
-  const text = clean(s);
-  const mm = mulOf(text);
-  if (/\d|%|≥|≤/.test(mm.rest.replace(/\b[a-z]{2}\.[btaelx]\d+\b/g, '').replace(/\b[A-Z]{2}\d{2}-\d\b/g, '').replace(/\b[A-Z]{2,4}-\d{1,2}\b/g, ''))) unp.add(file, line, text, 'condition with a number not read');
-  return { k: 'text', text };
+  // what is left is reported by settle(), once, with the place it came from
+  return { k: 'text', text: clean(s) };
 }
 
 function expr(raw: string, file: string, line: number): CharCond {
-  const ands = splitTop(raw, /\s+·\s+|\s+และ\s*|(?<=[`)])\s*และ\s*/).map((a) => {
-    const ors = splitTop(a, /\s+หรือ\s*/);
-    return or(ors.map((o) => atom(o, file, line)));
+  const ands = splitTop(raw, /\s+·\s+|\s+และ\s*|(?<=[`)])\s*และ\s*|(?<=ขึ้นไป)และ\s*/).map((a) => {
+    const ors = splitTop(a, /\s+หรือ\s*/).map((o) => {
+      // "ขุนนางหรือชื่อเสียงขั้นต่ำ 15": a หรือ without spaces splits only when every side is read; "ผู้มี X กับนาคาหรือเงือก" stays one phrase
+      const bare = splitTop(o, /หรือ/);
+      if (bare.length > 1 && !/\sกับ/.test(o)) {
+        const parts = bare.map((x) => atom(x, file, line));
+        if (parts.every((x) => x.k !== 'text')) return or(parts);
+      }
+      return atom(o, file, line);
+    });
+    return or(ors);
   });
   return and(ands);
 }
 
-/** A list of conditions (all must hold) from a ` · `-separated cell. `—` and empty give []. */
-function condList(text: string, file: string, line: number): CharCond[] {
-  const t = text.trim();
+// ---------- what is not a condition, and what is left over ----------
+
+/** "ทุกเผ่า" "ไม่จำกัดเพศ" "ทุกคน": no restriction at all (the cell text stays in `reqText`). */
+const UNRESTRICTED = /^(?:ทุก(?:เผ่า|เมือง|เมืองเล็ก|ประเทศ|ทวีป|คน)|ไม่จำกัด(?:เพศ|เผ่า)?)$/;
+/** Weights and remarks the cell carries next to the condition: kept as notes, never evaluated. */
+const REMARK = /ได้ง่าย|ได้ยาก|เด่น|น้ำหนัก|ผลลด|ตาม SR-|ครึ่งเดียว|โดยธรรมชาติ|เรียนได้แต่|เรียนได้ยาก/;
+
+type Settled = { conds: CharCond[]; notes: string[] };
+
+/**
+ * Settles the conditions read from one cell: the explaining words are moved to `notes`, "no restriction" is dropped, and every
+ * `text` condition that is left is added to the unparsed report (code-plan §5.2: a `text` condition cannot be evaluated).
+ */
+function settle(list: CharCond[], file: string, line: number, why: string): Settled {
+  const notes: string[] = [];
+  const fix = (c: CharCond, inOr: boolean): CharCond | null => {
+    switch (c.k) {
+      case 'text': {
+        const m = c.text.match(/^(.*?)\s*\(([^()]*)\)\s*$/);
+        const base = (m ? m[1] : c.text).trim();
+        if (UNRESTRICTED.test(base)) {
+          if (m) notes.push(clean(m[2]));
+          return null;
+        }
+        if (!inOr && REMARK.test(c.text)) {
+          notes.push(c.text);
+          return null;
+        }
+        const t = c.text;
+        unp.add(file, line, t, /\d|%|≥|≤/.test(t.replace(/\b[a-z]{2}\.[btaelx]\d+\b/g, '').replace(/\b[A-Z]{2,4}-?\d{1,3}(?:-\d)?\b/g, '')) ? `${why}: condition with a number not read` : `${why}: condition written in words, no grammar form`);
+        return c;
+      }
+      case 'and': {
+        const of = c.of.map((x) => fix(x, false)).filter((x): x is CharCond => !!x);
+        return of.length ? and(of) : null;
+      }
+      case 'or': {
+        const of = c.of.map((x) => fix(x, true));
+        return of.some((x) => !x) ? null : or(of as CharCond[]); // "A หรือ ไม่จำกัด" = everyone
+      }
+      case 'not': {
+        const x = fix(c.of, false);
+        return x ? { k: 'not', of: x } : null;
+      }
+      default:
+        return c;
+    }
+  };
+  const conds = list.map((c) => fix(c, false)).filter((c): c is CharCond => !!c);
+  return { conds, notes };
+}
+
+/** The conditions of a ` · `-separated cell, before settle(). `—` and empty give []. */
+function rawList(text: string, file: string, line: number): CharCond[] {
+  const t = prep(text);
   if (!t || t === '—' || t === '-') return [];
   return splitTop(t, /\s+·\s+/).map((p) => expr(p, file, line));
 }
+/** A list of conditions (all must hold) from a ` · `-separated cell. */
+function condList(text: string, file: string, line: number, why = 'condition'): Settled {
+  return settle(rawList(text, file, line), file, line, why);
+}
 
-/** Conditions from a "where it comes from" cell: born on a continent, an event happened, a backticked id. */
-function condFrom(text: string, file: string, line: number): CharCond[] {
+/**
+ * The "ข้อห้ามเพิ่มจากโลก" cell. The cell mixes three ways of writing a ban, so the polarity is read from the words:
+ *   `ห้าม X` `ต้องไม่มี X` `ผู้มี X` (bare list) → ban while X holds
+ *   `ต้อง X` `เฉพาะ X` `เกิดเฉพาะ X`           → ban while X does not hold: not X
+ *   `ถ้า C ต้องมี X`                            → ban while C holds and X does not: and[C, not X]
+ * (a `ถ้า ... ต้อง` cell is the only way to keep the dragonknight rule from banning those who hold a dragon mark.)
+ */
+function banList(text: string, file: string, line: number): Settled {
+  let t = clean(prep(text));
+  if (!t || t === '—') return { conds: [], notes: [] };
+  const must = (x: string) => {
+    const y = x.replace(/^เผ่า\s+(?=[ก-๙a-z])/, '');
+    // a leading run of races is the ban list itself ("หุ่นวิญญาณ ลูกผสมจักรกล เผ่าสไลม์ที่ไม่มีแกนกลาง" = those two, or that one)
+    const toks = y.split(' ');
+    let k = 0;
+    while (k < toks.length && raceId(toks[k])) k++;
+    if (k > 0 && k < toks.length && !/^(?:และ|หรือ|·)/.test(toks[k])) return [or([{ k: 'race', ids: toks.slice(0, k).map((x2) => raceId(x2)!) }, ...rawList(toks.slice(k).join(' '), file, line)])];
+    return rawList(y, file, line);
+  };
+  let except: CharCond | null = null;
+  const ex = t.match(/\s*ยกเว้น(?:เข้า|ผ่าน)\s*(SR-\d+)\s*$/);
+  if (ex) {
+    t = t.slice(0, ex.index).trim();
+    except = { k: 'not', of: { k: 'text', text: `ผ่าน ${ex[1]}` } };
+    unp.add(file, line, `ผ่าน ${ex[1]}`, 'ban: exception by a synergy rule (ยกเว้น...) has no grammar form');
+  }
+  t = t.replace(/\s*เลือกอาชีพนี้ไม่ได้/, '').replace(/\s*\(ขัดกัน\)/, '').replace(/\s*ที่ยังอยู่$/, '');
+  if (/^ผูก/.test(t) || REMARK.test(t)) return { conds: [], notes: [t] }; // "ผูก GD-01" is a link, "… น้ำหนัก ×3" "… เรียนได้แต่ผลลด" a weight: not bans
+  // `undead (แวมไพร์ มัมมี่ กูล)` → the races inside; a remark that names no race is kept as a note
+  const notes: string[] = [];
+  t = t
+    .replace(/([A-Za-z]+)\s*\(([^()]+)\)/g, (all, _w: string, inner: string) => (words(inner).every((w) => raceId(w) || raceId(w.replace(/^เผ่า/, ''))) ? inner : all))
+    .replace(/\(([^()]*)\)/g, (all, inner: string) => {
+      if (/(?:#|[a-z]_)[a-z]|[A-Z]{2}-\d/.test(inner)) return all;
+      notes.push(clean(inner));
+      return ' ';
+    })
+    .replace(/\s+/g, ' ')
+    .trim();
+  let m: RegExpMatchArray | null;
+  let out: CharCond[];
+  if ((m = t.match(/^ถ้า(.+?)\s+ต้อง(?:มี)?\s*(.+)$/))) {
+    const cond = must(m[1]);
+    const need = must(m[2]);
+    out = [and([...cond, ...(need.length ? [{ k: 'not', of: and(need) } as CharCond] : [])])];
+  } else if ((m = t.match(/^(?:ห้าม|ต้องไม่มี)\s*(.+)$/))) out = must(m[1]);
+  else if ((m = t.match(/^(?:เกิดเฉพาะ|เฉพาะ)\s*(.+)$/)) || (m = t.match(/^ต้อง(?!ไม่)\s*(.+)$/))) {
+    const need = must(m[1]);
+    out = need.length ? [{ k: 'not', of: and(need) }] : [];
+  } else out = must(t);
+  // a ban list ("A และ B") bans either
+  if (!/^ถ้า/.test(t)) out = out.map((c) => (c.k === 'and' ? or(c.of) : c));
+  const settled = settle(out, file, line, 'ban');
+  return { conds: except && settled.conds.length ? [and([...settled.conds, except])] : settled.conds, notes: [...notes, ...settled.notes] };
+}
+
+/** Conditions from a "where it comes from" cell: born on a continent, an event happened, a backticked id, a faith, a race. */
+function condFrom(text: string, file: string, line: number, why = 'condition'): Settled {
+  const t0 = prep(text).replace(/\s*(?:ตาม|ดู)\s*(?:หัวข้อ\s*\d+)?\s*(?:ของ)?\s*$/, '').replace(/\(\s*(?:ดู|ตาม)[^)]*\)/g, '');
+  const t = clean(t0);
+  if (!t || t === '—') return { conds: [], notes: [] };
   const out: CharCond[] = [];
   const cont: ContinentId[] = [];
-  for (const [n, id] of Object.entries(CONTINENT_NAME)) if (text.includes('เกิดใน' + n) || text.includes('ใน' + n)) cont.push(id);
+  for (const [n, id] of Object.entries(CONTINENT_NAME)) if (t.includes('เกิดใน' + n) || t.includes('ใน' + n)) cont.push(id);
   if (cont.length) out.push({ k: 'continent', ids: cont });
-  const ageM = text.match(/อายุ\s*(\d+)\s*ถึง\s*(\d+)/);
+  const ageM = t.match(/อายุ\s*(\d+)\s*ถึง\s*(\d+)/);
   if (ageM) out.push({ k: 'age', min: Number(ageM[1]), max: Number(ageM[2]) });
-  const jobM = text.match(/อาชีพ\s+((?:[a-z_]+\s*)+)/);
+  const jobM = t.match(/อาชีพ\s+((?:[a-z_]+\s*)+)/);
   if (jobM) out.push(or(words(jobM[1]).map((j): CharCond => ({ k: 'has', kind: 'job', id: j }))));
-  const r = refsOf(text);
-  for (const e of r.events) out.push({ k: 'event', id: e, happened: true });
+  const r = refsOf(t);
+  // several events, nodes or ids in one cell are alternatives ("DR-01 DR-02" = either), never all at once
+  if (r.events.length) out.push(or(r.events.map((e): CharCond => ({ k: 'event', id: e, happened: true }))));
   if (r.countries.length) out.push({ k: 'country', ids: r.countries });
-  for (const n of r.nodes) out.push({ k: 'node', id: n });
-  for (const i of r.ids) if (!i.endsWith('*')) out.push(hasOf(i));
-  if (!out.length && clean(text) && clean(text) !== '—') out.push({ k: 'text', text: clean(text) });
-  void file;
-  void line;
-  return out;
+  if (r.nodes.length) out.push(or(r.nodes.map((n): CharCond => ({ k: 'node', id: n }))));
+  const idc = r.ids.filter((i) => !i.endsWith('*')).map(hasOf);
+  if (idc.length) out.push(or(idc));
+  if (!out.length) out.push(...splitTop(t, /\s+·\s+/).map((p) => expr(p, file, line)));
+  return settle(out, file, line, why);
 }
 
 // ---------- paragraph reader for the races/ files ----------
@@ -645,7 +942,7 @@ function buildRaces(): RacesFile {
         cond: clean(cond),
         effect: clean(eff),
         why: clean(cell(r, cW)),
-        effects: fixKinds(p.effects),
+        effects: fixKinds(synergyJunk(unlink(eff), fixGrants(unlink(eff), p.effects, { file: syn, line }))),
         refs: refsOf(cond + ' ' + eff),
         src: src(syn, line),
       };
@@ -660,6 +957,15 @@ function buildRaces(): RacesFile {
     }
   }
   return { races, tagMeanings, overrides, synergy, affinityRules };
+}
+
+/** The shared parser reads Thai words before a number as a stat (`ระดับ 1 ถึง 3` `เพิ่ม +1`); only ASCII stat keys are stats. */
+function synergyJunk(text: string, effects: Effect[]): Effect[] {
+  const out = effects.filter((e) => !((e.k === 'stat' || e.k === 'range') && !/^[A-Za-z][A-Za-z.]*$/.test(e.stat)));
+  // the aptitude rules (SR-50..56) open with the +1 on the main stat of the aptitude: "เพิ่ม +1 ของสถานะหลัก" "เช่นเดียวกัน +1" "+1 และ ..."
+  const m = text.match(/เพิ่ม\s*\+(\d+)\s*ของสถานะหลัก/) ?? text.match(/^(?:เช่นเดียวกัน\s*)?\+(\d+)(?:\s|$)/);
+  if (m) out.push({ k: 'stat', stat: 'aptMain', delta: Number(m[1]) });
+  return out;
 }
 
 function cellsOf(line: string) {
@@ -901,6 +1207,7 @@ function giftFrom(t: Table, file: string, kind: 'b' | 'c', srcKind: 'code' | 'do
   return t.rows.map((r) => {
     const at = src(file, r.line);
     const from = clean(cell(r, cFrom));
+    const fc = from ? condFrom(cell(r, cFrom), file, r.line, 'grant source') : { conds: [], notes: [] };
     return {
       id: clean(cell(r, cId)),
       name: clean(cell(r, cName)),
@@ -910,7 +1217,8 @@ function giftFrom(t: Table, file: string, kind: 'b' | 'c', srcKind: 'code' | 'do
       fxRaw: clean(cell(r, cFx)),
       desc: clean(cell(r, cDesc)),
       from,
-      fromCond: from ? condFrom(cell(r, cFrom), file, r.line) : [],
+      fromCond: fc.conds,
+      fromNotes: fc.notes,
       refs: refsOf(cell(r, cFrom) + ' ' + cell(r, cCure) + ' ' + cell(r, cWorld)),
       world: clean(cell(r, cWorld)),
       cure: clean(cell(r, cCure)),
@@ -997,6 +1305,7 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
       const id = clean(r.cells[0]);
       const js = jobStat(cell(r, cApt));
       const name = clean(r.cells[1]);
+      const req = condList(cell(r, cReq), f09, r.line, 'job requirement');
       jobs.push({
         id,
         name,
@@ -1007,9 +1316,11 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
         ...js,
         slow: group.startsWith('ชีวิตช้า') || slowNames.includes(name),
         reqText: clean(cell(r, cReq)),
-        req: condList(cell(r, cReq), f09, r.line),
+        req: req.conds,
+        reqNotes: req.notes,
         banText: '',
         ban: [],
+        banNotes: [],
         opens: clean(cell(r, cOpen)),
         raceBonus: raceJobBonus.get(id) ?? [],
         src: src(f09, r.line),
@@ -1034,7 +1345,8 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
       const id = clean(r.cells[0]);
       const d = dirRow.get(id);
       if (!d) throw new Error(`secret job ${id} has no row in the chance table`);
-      const ban = cell(r, cBan).replace(/^ห้าม\s*/, '').replace(/^ต้องไม่มี\s*/, '');
+      const req = condList(cell(r, cReq), f10, r.line, 'job requirement');
+      const ban = banList(cell(r, cBan), f10, r.line);
       jobs.push({
         id,
         name: clean(r.cells[1]),
@@ -1044,9 +1356,11 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
         apts: [],
         slow: false,
         reqText: clean(cell(r, cReq)),
-        req: condList(cell(r, cReq), f10, r.line),
+        req: req.conds,
+        reqNotes: req.notes,
         banText: clean(cell(r, cBan)),
-        ban: ban.trim() === '—' ? [] : condList(ban, f10, r.line),
+        ban: ban.conds,
+        banNotes: ban.notes,
         opens: clean(cell(r, cAfter)),
         raceBonus: raceJobBonus.get(id) ?? [],
         direct: nodeRefs(d.cells[2]),
@@ -1063,6 +1377,7 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
     const flag = (r.cells[3].match(/`([^`]+)`/) ?? [])[1] ?? '';
     const anchor = clean(r.cells[4]);
     const arrow = anchor.split('→');
+    const from = condFrom(r.cells[2], f11, r.line, 'special job source');
     jobs.push({
       id: clean(r.cells[0]),
       name: clean(r.cells[1]),
@@ -1072,9 +1387,11 @@ function buildJobs(raceJobBonus: Map<string, RaceId[]>): JobsFile {
       apts: [],
       slow: false,
       reqText: clean(r.cells[2]),
-      req: [...condFrom(r.cells[2], f11, r.line), ...(flag ? [{ k: 'has', kind: 'flag', id: flag } as CharCond] : [])],
+      req: [...from.conds, ...(flag ? [{ k: 'has', kind: 'flag', id: flag } as CharCond] : [])],
+      reqNotes: from.notes,
       banText: '',
       ban: [],
+      banNotes: [],
       opens: '',
       raceBonus: [],
       flag,
@@ -1173,11 +1490,47 @@ const proseLines = (b: { text: string }[]) => b.filter((l) => !l.text.startsWith
 // fates.json
 // =====================================================================================================================
 
+/**
+ * The "ผู้มีสิทธิ์" cell of a fate: a condition, then fallbacks and weights ("ถ้าไม่มี ... ใช้ ...", "น้ำหนัก ×2") that are notes.
+ * "ทุกคน" is no restriction; "ทุกคน ยกเว้นผู้มี X" is `not X`.
+ */
+const FATE_NOTE_AT = /\s+(?:ถ้าไม่(?:มี|เคย|เกิด)|ได้รูป|ได้ข้อนี้|ขณะ|ผู้ถูกอัญเชิญจากต่างภพ)/;
+function eligibility(text: string, file: string, line: number): Settled {
+  let t = prep(text);
+  const notes: string[] = [];
+  const inner = t.match(/\s+·\s+([^()]*)\)\s*$/); // "(ไม่ใช่ A B · C ใช้ D)": what follows · inside the brackets is a remark
+  if (inner) {
+    notes.push(inner[1].trim());
+    t = t.slice(0, inner.index) + ')';
+  }
+  let m: RegExpMatchArray | null;
+  let conds: CharCond[] = [];
+  if ((m = t.match(/^ทุกคน(?:\s+(.*))?$/))) {
+    const rest = m[1] ?? '';
+    const ex = rest.match(/^ยกเว้น\s*(.+?)(?:\s+·\s+(.*))?$/);
+    if (ex) {
+      const inn = rawList(ex[1], file, line);
+      conds = inn.length ? [{ k: 'not', of: and(inn) }] : [];
+      if (ex[2]) notes.push(ex[2]);
+    } else if (rest) notes.push(rest);
+  } else {
+    const cut = t.search(FATE_NOTE_AT);
+    if (cut >= 0) {
+      notes.push(t.slice(cut).trim());
+      t = t.slice(0, cut);
+    }
+    conds = rawList(t, file, line);
+  }
+  const s = settle(conds, file, line, 'fate eligibility');
+  return { conds: s.conds, notes: [...notes.map((n) => clean(n)).filter(Boolean), ...s.notes] };
+}
+
 function buildFates(): FatesFile {
   const f = D + '18-fates.md';
   const t = byHeading(f, '2. ชะตา 22 อย่าง');
   const fates: Fate[] = t.rows.map((r) => {
     const age = rng(r.cells[4]);
+    const elig = eligibility(r.cells[5], f, r.line);
     return {
       id: clean(r.cells[0]),
       name: clean(r.cells[1]),
@@ -1185,7 +1538,8 @@ function buildFates(): FatesFile {
       tier: clean(r.cells[3]) as Rarity,
       age,
       eligible: clean(r.cells[5]),
-      eligibleCond: condFrom(r.cells[5], f, r.line),
+      eligibleCond: elig.conds,
+      eligibleNotes: elig.notes,
       omen: clean(r.cells[6]),
       question: clean(r.cells[7]),
       outcomes: dot(r.cells[8]).map(clean),
@@ -1384,7 +1738,7 @@ function buildOrigin(races: Race[]): OriginFile {
       effect: clean(r.cells[3]),
       likesText: clean(r.cells[1]),
       clashesText: clean(r.cells[2]),
-      fx: fixKinds(p.effects),
+      fx: fixKinds(fixGrants(unlink(r.cells[3]), p.effects, { file: f, line: r.line }, true)),
     };
   });
   const step6 = steps.find((s) => s.n === '6')!.rule;
@@ -1714,12 +2068,14 @@ function buildCompanions(gifts: { blessings: Gift[]; curses: Gift[] }, skills: S
         return m ? { key: ({ ก: 'a', ข: 'b', ค: 'c', ง: 'd' } as const)[m[1] as 'ก'], text: m[2].trim() } : null;
       });
       if (choices.some((c) => !c)) unp.add(f16, r.line, choiceText, 'story choices not split into ก) ข) ค)');
+      const storyCond = condFrom(r.cells[2], f16, r.line, 'companion story condition');
       stories.push({
         id: clean(r.cells[0]),
         name: clean(r.cells[1]),
         group: g,
         cond: clean(r.cells[2]),
-        condCond: condFrom(r.cells[2], f16, r.line),
+        condCond: storyCond.conds,
+        condNotes: storyCond.notes,
         weight: Number(clean(r.cells[3])),
         species: uniq([...r.cells[4].matchAll(/\b(sp_[a-z0-9_]+)\b/g)].map((m) => m[1])),
         speciesText: clean(r.cells[4]),
@@ -1818,6 +2174,7 @@ const ALL_CHAR_DOCS = [
 export default function run(): GenReport {
   unp = new Unparsed('character'); // a fresh report each run, so two runs in one process write the same bytes
   // races first: it fills the race name table used by every condition parser
+  FAITHS = loadFaiths();
   const racesFile = buildRaces();
   const raceJobBonus = new Map<string, RaceId[]>();
   for (const r of racesFile.races) for (const j of r.jobBonus) raceJobBonus.set(j, [...(raceJobBonus.get(j) ?? []), r.id]);
@@ -1826,9 +2183,18 @@ export default function run(): GenReport {
   const { apts, skills: aptSkills } = buildAptitudes();
   const skills = [...aptSkills, ...buildUniqueSkills(), ...buildNewSkills()];
   const gifts = buildGifts();
+  KNOWN.blessing = gifts.blessings.map((g) => g.id);
+  KNOWN.curse = gifts.curses.map((g) => g.id);
+  KNOWN.skill = skills.map((x) => x.id);
+  KNOWN.trait = traits.map((x) => x.id);
   const jobs = buildJobs(raceJobBonus);
   const jobByName = new Map(jobs.jobs.map((j) => [j.name, j.id]));
-  for (const g of [...gifts.blessings, ...gifts.curses]) g.jobs = uniq(g.jobsText.split(/\s+/).map((w) => jobByName.get(w) ?? '').filter(Boolean));
+  for (const g of [...gifts.blessings, ...gifts.curses]) {
+    g.jobs = uniq(g.jobsText.split(/\s+/).map((w) => jobByName.get(w) ?? '').filter(Boolean));
+    // a word in the job column that is no job name: an alias or a whole group ("ผู้ทำสวน" "ช่างทุกสาย" "นักดนตรี"), reported, not guessed
+    const at = g.at.match(/^(.*):(\d+)$/)!;
+    for (const w of g.jobsText.split(/\s+/)) if (w && w !== '—' && w !== 'ไม่มี' && !jobByName.has(w)) unp.add(at[1], Number(at[2]), `${g.id}: ${w}`, 'job column: word is no job name');
+  }
   const fates = buildFates();
   const origin = buildOrigin(racesFile.races);
   const wish = buildWish();
@@ -1842,14 +2208,15 @@ export default function run(): GenReport {
   write('traits', { traits, tags }, [CAT + 'traits.md', CAT + 'tags.md', D + '05-new-blessings.md', D + '06-new-curses.md', D + '12-job-support.md']);
   write('aptitudes', apts, [CAT + 'aptitudes-skills.md', D + '04-skill-effects.md', D + '12-job-support.md']);
   write('skills', skills, [CAT + 'aptitudes-skills.md', D + '04-skill-effects.md', D + '07-new-skills.md', D + '12-job-support.md', D + '17-companion-support.md']);
-  write('blessings', gifts.blessings, [CAT + 'blessings.md', D + '05-new-blessings.md', D + '12-job-support.md', D + '17-companion-support.md']);
-  write('curses', gifts.curses, [CAT + 'curses.md', D + '06-new-curses.md', D + '12-job-support.md', D + '17-companion-support.md']);
-  write('jobs', jobs, [D + '08-jobs-overview.md', D + '09-jobs-common.md', D + '10-jobs-secret.md', D + '11-jobs-special.md', D + '12-job-support.md']);
-  write('fates', fates, [D + '18-fates.md']);
+  const FAITH_DOC = 'docs/lore/religions/README.md';
+  write('blessings', gifts.blessings, [CAT + 'blessings.md', D + '05-new-blessings.md', D + '12-job-support.md', D + '17-companion-support.md', FAITH_DOC]);
+  write('curses', gifts.curses, [CAT + 'curses.md', D + '06-new-curses.md', D + '12-job-support.md', D + '17-companion-support.md', FAITH_DOC]);
+  write('jobs', jobs, [D + '08-jobs-overview.md', D + '09-jobs-common.md', D + '10-jobs-secret.md', D + '11-jobs-special.md', D + '12-job-support.md', FAITH_DOC]);
+  write('fates', fates, [D + '18-fates.md', FAITH_DOC]);
   write('origin', origin, [D + '01-origin.md']);
   write('wish', wish, [D + '19-wish.md']);
   write('synonyms', synonyms, [D + '20-wish-synonyms.md']);
-  write('companions', companions, [D + '13-companions-overview.md', D + '14-companion-abilities.md', D + '15-companion-species.md', D + '16-companion-stories.md', D + '17-companion-support.md']);
+  write('companions', companions, [D + '13-companions-overview.md', D + '14-companion-abilities.md', D + '15-companion-species.md', D + '16-companion-stories.md', D + '17-companion-support.md', FAITH_DOC]);
   void all;
   void ALL_CHAR_DOCS;
   unp.write();

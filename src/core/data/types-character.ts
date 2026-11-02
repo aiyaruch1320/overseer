@@ -188,7 +188,10 @@ export interface Gift {
   desc: string;
   /** Where it comes from / when the draw weight rises (`ได้จาก`, `เหตุการณ์`, `ผูกกับ`, `ศาสนา`). */
   from: string;
+  /** All of these. A `text` condition is one the parser could not read; each is listed in data/gen/_unparsed/character.md. */
   fromCond: CharCond[];
+  /** Words of the `from` cell that explain and do not gate (kept so nothing is dropped silently). */
+  fromNotes: string[];
   refs: Refs;
   world: string; // `ในโลก` (blessings)
   cure: string; // `ทางพ้น` (curses)
@@ -225,8 +228,12 @@ export interface Job {
   slow: boolean; // slow life
   reqText: string;
   req: CharCond[]; // all of these
+  /** Parts of the requirement cell that explain or weigh (`ได้ง่าย` `เด่น` `น้ำหนัก ×2`) and are not a condition. */
+  reqNotes: string[];
   banText: string; // secret: extra bans from the world
+  /** The job is banned while this holds (`and[...]` is one ban). A "ถ้า A ต้อง B" cell is `and[A, not B]`. */
   ban: CharCond[];
+  banNotes: string[];
   opens: string; // story lines opened / what it unlocks
   raceBonus: RaceId[]; // 08 §5: +2 weight
   /** Secret jobs. */
@@ -280,7 +287,9 @@ export interface Fate {
   tier: Rarity;
   age: [number, number];
   eligible: string;
-  eligibleCond: CharCond[];
+  eligibleCond: CharCond[]; // all of these; empty = everyone
+  /** Fallback rules and weights written in the eligibility cell (`ถ้าไม่มี ... ใช้ ...` `น้ำหนัก ×2`). */
+  eligibleNotes: string[];
   omen: string;
   question: string;
   outcomes: string[];
@@ -500,6 +509,7 @@ export interface CompanionStory {
   group: string; // all · A · S · world
   cond: string;
   condCond: CharCond[];
+  condNotes: string[];
   weight: number; // the `โอกาส` column: a relative weight among the stories of the same job group
   species: string[];
   speciesText: string;
