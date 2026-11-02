@@ -8,8 +8,12 @@ import type { Template } from '../data/types-text';
 import { currentThreads } from '../lineage/threads';
 import { lx } from '../lineage/state';
 import { keep, lifeEntries } from './collection';
-import { gatherFacts, handOf, lifeLog, num, type RawFact } from './facts';
-import { CULTURE, FACT_KINDS, LIMIT, MARK, NOT_MOMENT, SCORE, TARGET, stageOf } from './tuning';
+import { gatherFacts, handOf, lifeLog, num, str, type RawFact } from './facts';
+import { folkOf } from './people';
+import { vowPage } from './vow';
+import { lifeGoals } from '../god/goals';
+import { knownName } from '../text/labels';
+import { CAUSE_WORD, CULTURE, EXTRA_MOMENT, FACT_KINDS, LIFE_EPITAPH, LIMIT, MARK, MOMENT, NOT_MOMENT, SCORE, TARGET, TIME_WORD, stageOf } from './tuning';
 import type { CauseGroup, EndingCard, EndingInput, Moment, QuestionGrade, SummaryFact, WorldMark } from './types';
 import { family, flagWords, pickFrom, timeGroup, whenHolds } from './words';
 import type { SlotValues } from '../text/pick';
@@ -20,8 +24,13 @@ const GRADE_WORD: Record<QuestionGrade, string> = { good: 'ตอบได้ด
 
 /** Does any template of the kind fit this fact (slots filled, "ใช้เมื่อ" holds, short enough)? Reads only. */
 function usable(ctx: Ctx, f: RawFact): boolean {
+  return templatesFor(ctx, f).some((t) => fill(t.text, f.slots) !== null && [...(fill(t.text, f.slots) ?? '')].length <= LIMIT.sentence);
+}
+
+/** The sentences of the kind that hold for the fact: the ones whose "ใช้เมื่อ" holds, and for a strict fact only the ones that ask for a condition. */
+export function templatesFor(ctx: Ctx, f: RawFact): Template[] {
   const words = flagWords(f.flags);
-  return family(ctx, 'life_fact').some((t) => t.keys['ชนิด'] === f.kind && whenHolds(t, words) && fill(t.text, f.slots) !== null && [...(fill(t.text, f.slots) ?? '')].length <= LIMIT.sentence);
+  return family(ctx, 'life_fact').filter((t) => t.keys['ชนิด'] === f.kind && whenHolds(t, words) && (!f.strict || !!t.when));
 }
 
 const hashOf = (ctx: Ctx, life: string, kind: string, age: number | undefined) => hashText(`${ctx.state.seed}|${life}|${kind}|${age ?? ''}`);
@@ -92,8 +101,16 @@ function connector(ctx: Ctx, prev: RawFact, next: RawFact, lifeId: string, local
   if (prev.tags.some((t) => next.tags.includes(t)) && prev.tags.length) tries.push({ fam: 'connect_because' });
   if ((dir(prev) === 'gain' && dir(next) === 'loss') || (dir(prev) === 'loss' && dir(next) === 'gain')) tries.push({ fam: 'connect_but' });
   tries.push({ fam: 'connect_time', keys: { กลุ่ม: timeGroup(next.age) } });
+  // a connector of time that names a span ("a few years later") is true only for that span (M5)
+  const gap = (next.age ?? 0) - (prev.age ?? 0);
+  const timeOk = (c: Template): boolean => {
+    const rule = TIME_WORD[c.text.trim()];
+    // a fact with no age (the hand of the god, the roads) has no gap to name
+    if (rule && (rule.minGap !== undefined || rule.maxGap !== undefined) && (next.age === undefined || prev.age === undefined)) return false;
+    return !rule || ((rule.maxGap === undefined || gap <= rule.maxGap) && (rule.minGap === undefined || gap >= rule.minGap) && (rule.minAge === undefined || (next.age ?? 0) >= rule.minAge));
+  };
   for (const t of tries) {
-    const cands = family(ctx, t.fam).filter((c) => !t.keys || Object.entries(t.keys).every(([k, v]) => c.keys[k] === v));
+    const cands = family(ctx, t.fam).filter((c) => (!t.keys || Object.entries(t.keys).every(([k, v]) => c.keys[k] === v)) && (t.fam !== 'connect_time' || timeOk(c)));
     const got = pickFrom(ctx, cands, {}, { key: `${lifeId}|conn|${next.kind}|${t.fam}`, local, skip: new Set([last.id]) });
     if (got) {
       last.id = got.id;
@@ -105,8 +122,7 @@ function connector(ctx: Ctx, prev: RawFact, next: RawFact, lifeId: string, local
 
 /** The sentence of a fact, and the id of the template. */
 function sentenceOf(ctx: Ctx, f: RawFact, lifeId: string, local: Set<string>): { text: string; id: string } | null {
-  const cands = family(ctx, 'life_fact').filter((t) => t.keys['ชนิด'] === f.kind);
-  return pickFrom(ctx, cands, f.slots, { key: `${lifeId}|fact|${f.kind}|${f.age ?? ''}`, local, max: LIMIT.sentence, words: flagWords(f.flags) });
+  return pickFrom(ctx, templatesFor(ctx, f), f.slots, { key: `${lifeId}|fact|${f.kind}|${f.age ?? ''}`, local, max: LIMIT.sentence, words: flagWords(f.flags) });
 }
 
 function lineOf(ctx: Ctx, fam: string, keys: Record<string, string>, slots: SlotValues, key: string, max: number, local: Set<string>, onlyFresh = false): { text: string; id: string } | null {
@@ -120,38 +136,20 @@ function lineOf(ctx: Ctx, fam: string, keys: Record<string, string>, slots: Slot
   return pickFrom(ctx, onlyFresh ? fit.filter((t) => !x.used.includes(t.id)) : cands, slots, { key, local, max });
 }
 
-/** The epitaph: the slot of the group and the cause first, then the lines of the group, then the lines of the cause (07 §10.3 rule 3). */
+/**
+ * The epitaph (07 §6, §10.3 rule 3): the cell of the culture and the cause, the two lines of the culture, and the lines that tell the life itself, one pool; the template
+ * not yet used in this save comes first. The plain lines of the cause are the last resort for a race with no culture group.
+ */
 function epitaphOf(ctx: Ctx, slots: SlotValues, race: string, group: CauseGroup, lifeId: string): { text: string; id: string } {
   const g = CULTURE[race];
-  const local = new Set<string>();
   const key = `${lifeId}|epitaph`;
-  const tiers: (() => { text: string; id: string } | null)[] = [];
-  if (g) {
-    tiers.push(() => {
-      const cands = family(ctx, 'epitaph_cause').filter((t) => t.keys['กลุ่ม'] === g && t.col === group);
-      return freshPick(ctx, cands, slots, key);
-    });
-    tiers.push(() => freshPick(ctx, family(ctx, 'epitaph_group').filter((t) => t.keys['กลุ่ม'] === g), slots, key));
-  }
-  tiers.push(() => freshPick(ctx, family(ctx, 'epitaph_cause_general').filter((t) => t.keys['สาเหตุ'] === group), slots, key));
-  for (const t of tiers) {
-    const r = t();
-    if (r) return r;
-  }
-  // all used: start the circle again, the oldest first
-  const any = [
+  const own: Template[] = LIFE_EPITAPH.map((e) => ({ id: e.id, family: 'epitaph_life', keys: {}, col: '', text: e.text, slots: [], src: 'tuning' }));
+  const pool = [
     ...(g ? family(ctx, 'epitaph_cause').filter((t) => t.keys['กลุ่ม'] === g && t.col === group) : []),
     ...(g ? family(ctx, 'epitaph_group').filter((t) => t.keys['กลุ่ม'] === g) : []),
-    ...family(ctx, 'epitaph_cause_general').filter((t) => t.keys['สาเหตุ'] === group),
+    ...own,
   ];
-  return pickFrom(ctx, any, slots, { key, local, max: LIMIT.epitaph }) ?? { text: `${String(slots.name)} อายุ ${String(slots.age)}`, id: 'epitaph.plain' };
-}
-
-function freshPick(ctx: Ctx, cands: Template[], slots: SlotValues, key: string): { text: string; id: string } | null {
-  const x = lx(ctx.state);
-  const fresh = cands.filter((t) => !x.used.includes(t.id));
-  if (!fresh.length) return null;
-  return pickFrom(ctx, fresh, slots, { key, max: LIMIT.epitaph });
+  return pickFrom(ctx, pool, slots, { key, max: LIMIT.epitaph }) ?? pickFrom(ctx, family(ctx, 'epitaph_cause_general').filter((t) => t.keys['สาเหตุ'] === group), slots, { key, max: LIMIT.epitaph }) ?? { text: `${String(slots.name)} อายุ ${String(slots.age)}`, id: 'epitaph.plain' };
 }
 
 /** The mark of the life on the world (03 §2; assumption: the doc names three levels and no rule). */
@@ -212,42 +210,45 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     ? lineOf(ctx, 'card_question', { จบแบบ: GRADE_WORD[g.grade] }, { question, answer: qf?.slots.answer, age: deadAge }, `${life.id}|question`, LIMIT.questionLine, new Set())
     : null;
 
-  // the three moments (07 §5.4): the best of the facts that have a short line, those of the summary first
+  // the three moments (07 §5.4, 03 §1): the turning points of the life, chosen by the scores of 07 §2.3 from all the facts (children, a lover lost, a curse, a betrayal, the
+  // hand of the god, a war, a ruin lived through). The question is on the card already, so its fact is a moment only when nothing better exists.
   const inSummary = new Set(facts.map((f) => `${f.kind}|${f.age ?? ''}`));
-  const cand = [...chosen, ...g.facts.filter((f) => !chosen.some((c) => c === f || (c.kind === f.kind && c.age === f.age)))]
-    .filter((f) => !NOT_MOMENT.includes(f.kind))
-    .map((f) => ({ f, s: (FACT_KINDS[f.kind]?.base ?? 0) + (f.bonus ?? 0) + (inSummary.has(`${f.kind}|${f.age ?? ''}`) ? 20 : 0) }))
-    .sort((a, b) => b.s - a.s || hashOf(ctx, life.id, a.f.kind, a.f.age) - hashOf(ctx, life.id, b.f.kind, b.f.age));
-  const moments: Moment[] = [];
-  const seenKind = new Set<string>();
-  for (const { f } of cand) {
-    if (moments.length >= 3) break;
-    if (seenKind.has(f.kind)) continue;
-    const line = lineOf(ctx, 'card_short', { ชนิด: f.kind }, f.slots, `${life.id}|short|${f.kind}`, LIMIT.momentLine, new Set());
-    if (!line) continue;
-    seenKind.add(f.kind);
-    moments.push({ kind: f.kind, ...(f.age !== undefined ? { age: f.age } : {}), line: line.text });
-  }
-  moments.sort((a, b) => (a.age ?? 999) - (b.age ?? 999));
+  const moments = momentsOf(ctx, g.facts, inSummary, life.id);
 
-  // the title line (07 §5.2): the title the story gave, in one of the forms that use one title
-  const base: SlotValues = { name: life.name, race: raceName(ctx, life.race), home: placeName(ctx, life.home) ?? '', title_1: ending ?? '' };
-  // a title too long for the line falls back to the forms with no title (7 and 8; 9 says "no title", which would be false); the name alone is the last resort
+  // the title line (07 §5.2): the titles of the life that the goals gave at the death (08-goals §3), one to three; a life with none gets the lines with no title
+  const titles = lifeGoals(life).result?.titles ?? [];
+  const base: SlotValues = { name: life.name, race: raceName(ctx, life.race), home: placeName(ctx, life.home) ?? '', ...(titles[0] ? { title_1: titles[0] } : {}), ...(titles[1] ? { title_2: titles[1] } : {}), ...(titles[2] ? { title_3: titles[2] } : {}) };
+  // a title line too long falls back to the forms with one title, then to the forms with no title (7 and 8; 9 says "no title", which would be false); the name alone is the last resort
   const cands = (forms: string[]) => family(ctx, 'card_title').filter((t) => forms.includes(t.keys['แบบ']));
+  const byCount = titles.length >= 3 ? ['3'] : titles.length === 2 ? ['2'] : ['1', '4', '5', '6'];
   const title =
-    (ending ? pickFrom(ctx, cands(['1', '4', '5', '6']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) : null) ??
-    pickFrom(ctx, cands(ending ? ['7', '8'] : ['7', '8', '9']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) ?? { text: trimTo(life.name, LIMIT.titleLine), id: 'card_title.name' };
+    (titles.length ? pickFrom(ctx, cands(byCount), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) ?? pickFrom(ctx, cands(['1', '4', '5', '6']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) : null) ??
+    pickFrom(ctx, cands(titles.length ? ['7', '8'] : ['7', '8', '9']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) ?? { text: trimTo(life.name, LIMIT.titleLine), id: 'card_title.name' };
 
   // the epitaph (07 §6)
-  const ep = epitaphOf(ctx, { name: life.name, age: deadAge, place: g.place, home: placeName(ctx, life.home) ?? '', ...(g.enemy ? { enemy: g.enemy } : {}) }, life.race, g.group, life.id);
+  const loveFact = g.facts.find((f) => f.kind === 'คนรัก');
+  const kidsN = num(g.facts.find((f) => f.kind === 'ทายาท')?.slots.child_count);
+  const far = !!g.place && g.place !== (placeName(ctx, life.home) ?? '');
+  const ep = epitaphOf(
+    ctx,
+    {
+      name: life.name,
+      age: deadAge,
+      place: g.place,
+      home: placeName(ctx, life.home) ?? '',
+      ...(g.enemy ? { enemy: g.enemy } : {}),
+      ...(far ? { place_far: g.place } : { home_death: placeName(ctx, life.home) ?? '' }),
+      ...(life.job ? { job: knownName(ctx.data, life.job) ?? '' } : {}),
+      ...(kidsN > 0 ? { child_count: kidsN } : {}),
+      ...(loveFact?.flags.includes('together') ? { lover: str(loveFact.slots.lover) } : {}),
+    },
+    life.race,
+    g.group,
+    life.id,
+  );
 
-  // the card (07 §5.1)
-  const head = [life.name, raceName(ctx, life.race), placeName(ctx, life.home) ?? '', `อายุ ${deadAge}`].filter(Boolean);
-  let headLine = head.join(' · ');
-  if ([...headLine].length > LIMIT.headLine) headLine = trimTo([head[0], head[1], head[3]].join(' · '), LIMIT.headLine);
-  const lines = [headLine, title?.text ?? '', qLine?.text ?? '', ...moments.map((m) => m.line), ep.text].filter((l) => l !== '');
 
-  // what the life opened
+  // what the life opened, and the mark it left on the world
   const earned = keep(st, lifeEntries(ctx, life, log));
   const hand = handOf(ctx, life);
   const heir = pickHeir(ctx);
@@ -257,7 +258,19 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const fame = num((life.ext.character as { fame?: number } | undefined)?.fame);
   const classUp = log.some((e) => e.sys === 'character' && e.kind === 'class' && num(/\d/.exec(String(e.data.to))?.[0]) > num(/\d/.exec(String(e.data.from))?.[0]));
   const mark = markOf(passedCv, bigEvents, fame, classUp);
-  const generation = st.lineage.lives.length + 1;
+  // a newcomer in the old world is not a generation of the family (0 = none; 05 §4)
+  const generation = x.recs.find((r) => r.id === life.id)?.origin === 'newcomer' ? 0 : st.lineage.lives.length + 1;
+  const passed = threads.map((t) => t.text);
+
+  // the vow and its page (07 §7), the people and the traces (03 §1)
+  const vow = vowPage(ctx, life, log, CAUSE_WORD[g.group], mark.label);
+  const folk = folkOf(ctx, life, { deadAge, titles, conjured: hand.conjured ?? [], mark });
+
+  // the card (07 §5.1): head, title, question, three moments, the vow, the ending of the story, the epitaph
+  const head = [life.name, raceName(ctx, life.race), placeName(ctx, life.home) ?? '', `อายุ ${deadAge}`].filter(Boolean);
+  let headLine = head.join(' · ');
+  if ([...headLine].length > LIMIT.headLine) headLine = trimTo([head[0], head[1], head[3]].join(' · '), LIMIT.headLine);
+  const lines = [headLine, title?.text ?? '', qLine?.text ?? '', ...moments.map((m) => m.line), vow?.line ?? '', ending ? `ปลายทาง: ${ending}` : '', ep.text].filter((l) => l !== '');
 
   const card: EndingCard = {
     v: 1,
@@ -284,9 +297,13 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     lines,
     ...(heir ? { heir: { name: heir.name, how: heir.how, age: heir.age } } : {}),
     // a thread goes to an heir; a family with none leaves it to fade (heirs/03 §3)
-    threads: heir ? threads.map((t) => t.text) : [],
+    threads: heir ? passed : [],
+    titles,
+    ...(vow ? { vow } : {}),
+    people: folk.people,
+    traces: folk.traces,
   };
-  const names = [...new Set([life.name, ...facts.flatMap((f) => ['name', 'lover', 'child', 'heir', 'npc', 'enemy'].map((k) => (f.slots[k] === undefined ? '' : String(f.slots[k]))))].filter(Boolean))];
+  const names = [...new Set([life.name, ...facts.flatMap((f) => ['name', 'lover', 'child', 'heir', 'npc', 'enemy'].map((k) => (f.slots[k] === undefined ? '' : String(f.slots[k])))), ...folk.names].filter(Boolean))];
   const input: EndingInput = {
     v: 1,
     seed: st.seed,
@@ -297,9 +314,66 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     facts: facts.map(({ sentence: _s, template: _t, ...rest }) => rest),
     moments,
     hand,
-    lineage: { dynasty: x.dynasty || life.name, generation, ...(x.recs.find((r) => r.id === life.id)?.parent ? { parent: x.recs.find((r) => r.id === life.id)!.parent } : {}), ...(heir ? { heir: heir.name } : {}), threads: heir ? threads.map((t) => t.text) : [] },
+    lineage: { dynasty: x.dynasty || life.name, generation, ...(x.recs.find((r) => r.id === life.id)?.parent ? { parent: x.recs.find((r) => r.id === life.id)!.parent } : {}), ...(heir ? { heir: heir.name } : {}), threads: heir ? passed : [] },
+    titles,
+    ...(vow ? { vow: { name: vow.name, result: vow.result, lines: vow.lines } } : {}),
+    people: folk.people,
+    traces: folk.traces,
     names,
+    others: [...new Set([...st.lineage.lives.map((l) => l.name), ...folk.others])].filter((n) => !names.includes(n)),
     earned,
   };
   return { card, input };
+}
+
+/** The base of a kind as a moment: the score of 07 §2.2, or the one of a turning point that has no sentence (`EXTRA_MOMENT`). */
+const baseOfMoment = (kind: string): number | undefined => FACT_KINDS[kind]?.base ?? EXTRA_MOMENT[kind]?.base;
+
+/**
+ * The three moments of the card (07 §2.3 "สามช่วงเวลาของการ์ด", 03 §1): the facts with a short line, the highest scores first, one for each kind (a loss of any kind counts as one
+ * family), the same stage of life twice costs 3 (the age of a fact with no age is unknown, so it has no stage). Two facts about one person or one event are one thing. The fact
+ * of the question comes last: the card holds the question line already. Ordered by age at the end.
+ */
+export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, lifeId: string): Moment[] {
+  const pool: { f: RawFact; s: number }[] = [];
+  for (const f of all) {
+    const base = baseOfMoment(f.kind);
+    if (base === undefined || NOT_MOMENT.includes(f.kind)) continue;
+    // a lover who was a friend first: the card says when they became lovers, not "met" (the short line of the lover says "met")
+    if (f.kind === 'คนรัก' && f.flags.includes('late')) continue;
+    const s = f.kind === 'คำตอบของคำถามชีวิต' ? MOMENT.question : base + (f.bonus ?? 0) + (MOMENT.heardKinds.includes(f.kind) ? MOMENT.heard : 0) + (inSummary.has(`${f.kind}|${f.age ?? ''}`) ? MOMENT.inSummary : 0);
+    const dup = f.tags.length ? pool.findIndex((q) => q.f.tags.some((t) => f.tags.includes(t))) : -1;
+    if (dup >= 0) {
+      if (s > pool[dup].s) pool[dup] = { f, s };
+      continue;
+    }
+    pool.push({ f, s });
+  }
+  const out: { f: RawFact; line: string }[] = [];
+  const familyOf = (kind: string) => (MOMENT.lossFamily.includes(kind) ? 'loss' : kind);
+  while (out.length < 3 && pool.length) {
+    let best = -1;
+    let bestScore = -Infinity;
+    let bestHash = 0;
+    pool.forEach(({ f, s }, i) => {
+      if (out.some((o) => familyOf(o.f.kind) === familyOf(f.kind))) return;
+      let score = s;
+      const st = f.age !== undefined ? stageOf(f.age) : undefined;
+      if (st && out.filter((o) => o.f.age !== undefined && stageOf(o.f.age) === st).length >= 2) score += SCORE.sameStage;
+      const h = hashOf(ctx, lifeId, f.kind, f.age);
+      if (score > bestScore || (score === bestScore && h > bestHash)) {
+        best = i;
+        bestScore = score;
+        bestHash = h;
+      }
+    });
+    if (best < 0) break;
+    const { f } = pool.splice(best, 1)[0];
+    const extra = EXTRA_MOMENT[f.kind];
+    const line = extra ? fill(extra.line, f.slots) : lineOf(ctx, 'card_short', { ชนิด: f.kind }, f.slots, `${lifeId}|short|${f.kind}`, LIMIT.momentLine, new Set())?.text ?? null;
+    if (line && [...line].length <= LIMIT.momentLine) out.push({ f, line });
+  }
+  return out
+    .map(({ f, line }): Moment => ({ kind: f.kind, ...(f.age !== undefined ? { age: f.age } : {}), line }))
+    .sort((a, b) => (a.age ?? 999) - (b.age ?? 999));
 }

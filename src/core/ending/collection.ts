@@ -6,6 +6,7 @@ import { extOf as characterExt } from '../character';
 import { knownName } from '../text/labels';
 import type { GameState, LifeState, LogEntry } from '../types';
 import { lx } from '../lineage/state';
+import { NO_VOW, peekGoals } from '../god/goals';
 import { lifeLog } from './facts';
 
 export interface Category {
@@ -26,6 +27,40 @@ export const CATEGORIES: Category[] = [
   { id: 'ending', name: 'ปลายทางของเส้นเรื่อง', src: 'lore/storylines/README.md' },
   { id: 'mode', name: 'แบบเริ่มต้น', src: 'systems/experience/04-start-modes.md' },
 ];
+
+/**
+ * The categories the goals added (god/08-goals.md §7). The goals keep what was found in `meta` of the lineage (it goes from world to world with the carry), so the entries
+ * are read from there and the totals from the data of the god, not stored a second time in `lineage.collection`.
+ */
+export const GOALS_CATEGORIES: Category[] = [
+  { id: 'vow', name: 'คำปฏิญาณที่สำเร็จ', src: 'systems/god/08-goals.md' },
+  { id: 'title', name: 'ฉายาชีวิต', src: 'systems/god/08-goals.md' },
+  { id: 'godtitle', name: 'ฉายาของพระเจ้า', src: 'systems/god/01-power.md' },
+  { id: 'miracle', name: 'ปาฏิหาริย์ในรายการที่เคยใช้', src: 'systems/god/04-miracles.md' },
+  { id: 'conjure', name: 'ปาฏิหาริย์ที่เสกตามใจ (ชื่อที่โลกจำ)', src: 'systems/god/07-conjure.md' },
+  { id: 'reaction', name: 'ปฏิกิริยาของการเสกตามใจที่เคยพบ', src: 'systems/god/07-conjure.md' },
+];
+
+interface GodDataShape {
+  goals?: { vows?: { id: string; name: string }[]; titles?: { title: string }[] };
+  epithets?: { title: string }[];
+  miracles?: { list?: { id: string; name: string }[] };
+  conjure?: { reactions?: unknown[] };
+}
+
+/** The total and the names of the categories of the goals, from the data of the god. A category with no end (the names the god conjured) has total 0. */
+function goalsCatalog(data: GameData): Record<string, { total: number; names: Map<string, string> }> {
+  const g = data.god?.items as GodDataShape | undefined;
+  const vows = (g?.goals?.vows ?? []).filter((v) => v.id !== NO_VOW);
+  return {
+    vow: { total: vows.length, names: new Map(vows.map((v) => [v.id, v.name])) },
+    title: { total: g?.goals?.titles?.length ?? 0, names: new Map((g?.goals?.titles ?? []).map((t) => [t.title, t.title])) },
+    godtitle: { total: g?.epithets?.length ?? 0, names: new Map((g?.epithets ?? []).map((t) => [t.title, t.title])) },
+    miracle: { total: g?.miracles?.list?.length ?? 0, names: new Map((g?.miracles?.list ?? []).map((m) => [m.id, m.name])) },
+    conjure: { total: 0, names: new Map() },
+    reaction: { total: g?.conjure?.reactions?.length ?? 0, names: new Map() },
+  };
+}
 
 /** The twelve start modes (04-start-modes.md) with the rule that opens them: assumption, the doc says only "บางแบบเปิดตั้งแต่ครั้งแรก บางแบบปลดล็อก". */
 export const MODES: { id: string; name: string; open: 'start' | 'afterFirstLife' | 'lineage' }[] = [
@@ -139,6 +174,8 @@ export interface CategoryView {
   total: number;
   /** The entries found, with names; the ones not found are not listed (they are shadows). */
   found: { id: string; name: string }[];
+  /** A category with no end: the names the god conjured (the ratio has no total). */
+  unlimited?: boolean;
 }
 
 export interface CollectionView {
@@ -168,6 +205,14 @@ export function collectionView(state: GameState, data: GameData): CollectionView
     const found = [...have].filter((e) => e.startsWith(`${c.id}:`));
     return { id: c.id, name: c.name, have: found.length, total: cat[c.id].length, found: found.map((e) => ({ id: e.slice(c.id.length + 1), name: entryName(data, e) })) };
   });
+  // the categories of the goals: what the goals kept, with the totals of the data of the god
+  const meta = peekGoals(state).meta;
+  const gc = goalsCatalog(data);
+  const foundOf: Record<string, string[]> = { vow: meta.vowsKept, title: meta.titlesSeen, godtitle: [], miracle: meta.miraclesUsed, conjure: meta.conjured.map((c) => c.name), reaction: meta.reactionsSeen };
+  for (const c of GOALS_CATEGORIES) {
+    const ids = [...new Set(foundOf[c.id])];
+    categories.push({ id: c.id, name: c.name, have: ids.length, total: gc[c.id].total, found: ids.map((id) => ({ id, name: gc[c.id].names.get(id) ?? id })), ...(c.id === 'conjure' ? { unlimited: true } : {}) });
+  }
   const lives = state.lineage.lives.length;
   const modes = MODES.map((m) => ({
     id: m.id,
@@ -175,5 +220,6 @@ export function collectionView(state: GameState, data: GameData): CollectionView
     open: m.open === 'start' || (m.open === 'afterFirstLife' && lives > 0) || (m.open === 'lineage' && lives > 0) || have.has(key('mode', m.id)),
     used: have.has(key('mode', m.id)),
   }));
-  return { categories, have: categories.reduce((n, c) => n + c.have, 0), total: categories.reduce((n, c) => n + c.total, 0), modes };
+  const counted = categories.filter((c) => !c.unlimited);
+  return { categories, have: counted.reduce((n, c) => n + c.have, 0), total: counted.reduce((n, c) => n + c.total, 0), modes };
 }

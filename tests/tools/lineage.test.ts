@@ -115,7 +115,9 @@ describe('collection', () => {
       if (i === 0) expect(card.earned.length).toBeGreaterThan(10);
     });
     const view = collectionView(s.game.state, data);
-    expect(view.have).toBe(s.game.state.lineage.collection.length);
+    // the categories of the goals are read from the goals' book, not from the list of entries
+    const base = view.categories.filter((c) => !['vow', 'title', 'godtitle', 'miracle', 'conjure', 'reaction'].includes(c.id));
+    expect(base.reduce((n, c) => n + c.have, 0)).toBe(s.game.state.lineage.collection.length);
     expect(view.total).toBeGreaterThan(900);
     const nodes = view.categories.find((c) => c.id === 'node')!;
     expect(nodes.have).toBeGreaterThan(20);
@@ -227,7 +229,7 @@ describe('lineage: lives in one world', () => {
     expect(w.dragons.total).toBe(15);
     expect(w.dragons.fallen.length + w.dragons.standing.length).toBe(15);
     expect(w.events.top.length).toBeLessThanOrEqual(5);
-    expect(w.collection.have).toBe(s.game.state.lineage.collection.length);
+    expect(w.collection.have).toBeGreaterThanOrEqual(s.game.state.lineage.collection.length);
     expect(w.legend.source).toBe('template');
     expect(w.legend.text).not.toMatch(/[{}]|undefined|NaN/);
     expect(JSON.parse(JSON.stringify(w))).toEqual(w);
@@ -541,7 +543,8 @@ describe('npm run play: the next life after the death stop', () => {
       expect(refused).toContain('== สรุปโลก');
       const third = cli(['--seed=11', '--cmd=next newcomer; advance 1000'], dir);
       expect(third).toContain('-- รุ่นต่อไป · คนใหม่ในโลกเดิม --');
-      expect(third).toContain('การ์ดตอนจบ · รุ่นที่ 3');
+      // a newcomer is not a generation of the family (05 §4)
+      expect(third).toContain('การ์ดตอนจบ · คนใหม่ในโลกเดิม');
       // a life that is still alive is not left for the next
       const alive = cli(['--seed=11', '--cmd=next; next'], dir);
       expect(alive).toContain('ชีวิตนี้ยังไม่จบ');

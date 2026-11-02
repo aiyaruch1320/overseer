@@ -51,7 +51,9 @@ export interface HandSummary {
   total: number;
   byKind: Record<string, number>;
   /** The intervention that changed the life most, by the fixed order of kinds (assumption: the doc leaves "most" to the god system). */
-  top?: { kind: string; age?: number; id: string };
+  top?: { kind: string; age?: number; id: string; /** The name the god gave a miracle he conjured. */ name?: string };
+  /** The names of the miracles the god conjured in this life (the world remembers them: 07 §6). */
+  conjured?: string[];
   /** Prayers that were not answered. */
   silent: number;
 }
@@ -71,8 +73,16 @@ export interface EndingInput {
   hand: HandSummary;
   /** The family: generation, parent, heir, threads handed on. */
   lineage: { dynasty: string; generation: number; parent?: string; heir?: string; threads: string[] };
+  /** The titles of the life (08-goals §3) and the vow with its result: the retelling may use them and may not add a title or a vow. */
+  titles: string[];
+  vow?: { name: string; result: 'kept' | 'broken'; lines: string[] };
+  /** The people of the life and the traces it left (the lines of the card). */
+  people: string[];
+  traces: string[];
   /** Names in the registry of the world that the text may use (no other name is allowed). */
   names: string[];
+  /** Names of other people in this world that the text may not use for this life (the neighbours, the kin of the earlier lives): a retelling that takes one is wrong. */
+  others: string[];
   /** Entries of the collection this life opened for the first time. */
   earned: string[];
 }
@@ -109,4 +119,12 @@ export interface EndingCard {
   /** Heir and threads, filled by the lineage system after the death. */
   heir?: { name: string; how: string; age: number };
   threads: string[];
+  /** The titles of the life that the goals gave at the death (08-goals §3), one to three; empty when none holds. */
+  titles: string[];
+  /** The vow of the life and what came of it: its page (07 §7) and its line on the card. Absent when the player took no vow. */
+  vow?: { id: string; name: string; result: 'kept' | 'broken'; head: string; lines: string[]; line: string };
+  /** "ผู้คน" of 03 §1: the people of the life and how they stood when the character left. */
+  people: string[];
+  /** "ร่องรอยที่ทิ้งไว้" of 03 §1: the children, the things left, the threads, what the world keeps. */
+  traces: string[];
 }

@@ -23,7 +23,28 @@ export const FACT_KINDS: Record<string, { base: number; dir: FactDir; pos: FactP
   ฉายาชีวิต: { base: 2, dir: 'mid', pos: 'after' },
   อาชีพ: { base: 2, dir: 'mid', pos: 'mid' },
   ถิ่นที่อยู่นานที่สุด: { base: 1, dir: 'mid', pos: 'mid' },
+  // 07 §2.2: the vow page tells last, after the death (base 8)
+  ผลคำปฏิญาณ: { base: 8, dir: 'mid', pos: 'after' },
 };
+
+/**
+ * Turning points that have a short line on the card but no sentence in the summary (assumption: 07 §5.4 lists the kinds of the summary; the doc names no short line
+ * for a child, a betrayal or a curse, which 03 §1 asks the moments to show). The base is the score of 07 §2.3 for the kind; the line is the short line of the kind.
+ */
+export const EXTRA_MOMENT: Record<string, { base: number; line: string }> = {
+  ลูกเกิด: { base: 6, line: 'อายุ {age}: ลูกคนแรกเกิด ({child})' },
+  หักหลัง: { base: 8, line: 'อายุ {age}: {npc} หักหลัง' },
+  คำสาป: { base: 7, line: 'อายุ {age}: ได้รับคำสาป{curse}' },
+  คนรักเริ่ม: { base: 6, line: 'อายุ {age}: รักกับ{lover}' },
+  คนรักตาย: { base: 8, line: 'อายุ {age}: สูญเสีย{npc} (คนรัก)' },
+  ลูกตาย: { base: 8, line: 'อายุ {age}: สูญเสีย{npc} (ลูก)' },
+};
+
+/** What a person of the family or the heart weighs when he dies (07 §2.3 gives no score for who died: assumption, a lover or a child counts as the kinds above). */
+export const DEATH_ROLE_BONUS = 2;
+
+/** The word of the kind of a tie that was lost, for the line of the people (the line of the tie in the bond system). */
+export const LOVER_LINE = 'คนรัก';
 
 /** Bonuses and penalties of 07 §2.3. */
 export const SCORE = { question: 4, bigEvent: 2, godChanged: 2, sameKind: -4, sameStage: -3, lineageFirst: -2 };
@@ -121,11 +142,35 @@ export function groupOf(cause: string): CauseGroup {
 export const CAUSE_WORD: Record<CauseGroup, string> = { ชราภาพ: 'ชราภาพ', ศึก: 'ศึก', ป่วย: 'โรค', อุบัติเหตุ: 'อุบัติเหตุ', เสียสละ: 'เสียสละ' };
 
 /** Kinds of the god's chronicle that are a hand laid on the life (07 §2.2 "พระหัตถ์"); the rest of the chronicle is silence or a refusal. */
-export const HAND_KINDS = ['chest', 'dream', 'whisper', 'miracle', 'prayer.give', 'prayer.strange', 'prayer.punish'];
-export const SILENT_KINDS = ['prayer.lapse', 'prayer.silent', 'prayer.deny'];
+export const HAND_KINDS = ['chest.pick', 'dream', 'whisper', 'miracle', 'conjure', 'prayer.give', 'prayer.strange', 'prayer.punish'];
+export const SILENT_KINDS = ['prayer.lapse', 'prayer.silent'];
+
+/**
+ * An act of the god in the count of power used (the block `ใช้พลัง` of the tools): every line of the chronicle except a prayer that ran out and the outcome of a dream
+ * (the chronicle holds a dream twice, when it was sent and when the character reached the crossroads; only the sending is a use of power). One reader for the card, the
+ * summary of the world and the block, so the three agree.
+ */
+export const isHandAct = (c: { kind: string; result?: string }): boolean => !SILENT_KINDS.includes(c.kind) && !(c.kind === 'dream' && !String(c.result ?? '').startsWith('sent:'));
 /** Which hand changes a life most: later in the list is more (assumption: a miracle > a dream > a whisper > a gift). */
-export const HAND_WEIGHT: Record<string, number> = { chest: 1, whisper: 2, 'prayer.give': 2, 'prayer.strange': 2, 'prayer.punish': 3, dream: 3, miracle: 5 };
-export const HAND_WORD: Record<string, string> = { chest: 'ของประทาน', dream: 'ความฝัน', whisper: 'คำกระซิบ', miracle: 'ปาฏิหาริย์', 'prayer.give': 'คำอธิษฐานที่ตอบ', 'prayer.strange': 'คำอธิษฐานที่ตอบแปลก', 'prayer.punish': 'โทษที่ลง' };
+export const HAND_WEIGHT: Record<string, number> = { 'chest.pick': 1, whisper: 2, 'prayer.give': 2, 'prayer.strange': 2, 'prayer.punish': 3, dream: 3, conjure: 5, miracle: 5 };
+export const HAND_WORD: Record<string, string> = {
+  'chest.pick': 'ของประทาน',
+  'chest.skip': 'ข้ามหีบ',
+  dream: 'ความฝัน',
+  burden: 'ภาระใจ',
+  whisper: 'คำกระซิบ',
+  miracle: 'ปาฏิหาริย์',
+  'miracle.omen': 'ลางปาฏิหาริย์',
+  'miracle.cancel': 'ยกเลิกลาง',
+  conjure: 'การเสกตามใจ',
+  'conjure.omen': 'ลางการเสก',
+  'conjure.cancel': 'ยกเลิกการเสก',
+  'conjure.shadow': 'เงาของการเสก',
+  'prayer.give': 'คำอธิษฐานที่ตอบ',
+  'prayer.strange': 'คำอธิษฐานที่ตอบแปลก',
+  'prayer.punish': 'โทษที่ลง',
+  'prayer.deny': 'คำอธิษฐานที่ปฏิเสธ',
+};
 
 /** The question grade: a life that reached its closing ending after the elder age answered it; one that died before 55 did not (assumption: the story keeps no answer). */
 export const ELDER_AGE = 55;
@@ -135,6 +180,31 @@ export const MARK = { eraConverge: 2, eraEvents: 1, localConverge: 1, localFame:
 
 /** The moments of the card come from these kinds first (07 §5.4 lists the kinds that have a short line). */
 export const NOT_MOMENT = ['เกิด', 'ความตาย', 'ทายาท', 'เรื่องค้าง', 'ฉายาชีวิต'];
+
+/**
+ * The connectors of time that say how long it was (07 §4.1 lists them by the age group of the next fact; the doc does not say they tell a gap). "ไม่กี่ปีให้หลัง" says a few
+ * years and is kept for a gap of five or less; "หลายปีผ่านไป" says many and needs eight or more (assumption: the words are only true then).
+ */
+export const TIME_WORD: Record<string, { minGap?: number; maxGap?: number; minAge?: number }> = {
+  ไม่กี่ปีให้หลัง: { maxGap: 5 },
+  หลายปีผ่านไป: { minGap: 8 },
+  ในวัยกลางคน: { minAge: 30 },
+};
+
+/** Moments of the card (03 §1 "สามถึงห้าเหตุการณ์"; 07 §5.4): the question line is on the card already, so its fact comes last, and a fact the summary tells is a little ahead. */
+export const MOMENT = { question: -100, inSummary: 1, heard: -2, heardKinds: ['เหตุการณ์โลก'], lossFamily: ['คนใกล้ตัวตาย', 'คนรักตาย', 'ลูกตาย'] };
+
+/**
+ * Lines of an epitaph that tell the life itself (03 §1 "จารึก" is written from the real data of the life; 07 §6 gives only the voice of the culture and the cause). Used beside
+ * the cells of the doc so that two dwarves who died of old age do not read the same stone. Assumption: the doc has no such lines; they claim nothing the log does not hold.
+ */
+export const LIFE_EPITAPH: { id: string; text: string }[] = [
+  { id: 'epitaph.life.job', text: '{name} ผู้เป็น{job} อายุ {age}' },
+  { id: 'epitaph.life.kids', text: '{name} ทิ้งลูก {child_count} คนไว้เบื้องหลัง' },
+  { id: 'epitaph.life.love', text: '{name} อยู่กับ{lover}จนวันสุดท้าย' },
+  { id: 'epitaph.life.far', text: '{name} ตายไกลจาก{home} ที่{place_far}' },
+  { id: 'epitaph.life.home', text: '{name} ตายที่{home_death}บ้านของตน' },
+];
 
 /** `โอรัน-ซัล ผู้ปฐม`: the name and the title of a dragon in the data, with ผู้ in front of the title unless it has one already (`ผู้อาวุโสศิลา`). */
 export const dragonName = (d: { name: string; title?: string }): string => (d.title ? `${d.name} ${d.title.startsWith('ผู้') ? d.title : `ผู้${d.title}`}` : d.name);

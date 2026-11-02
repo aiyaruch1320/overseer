@@ -7,7 +7,7 @@ import { ENDING_SYSTEM } from './prompts';
 import { answerOf, keep, keys, logAnswer } from './record';
 import { pointOn } from './switches';
 import { MAX_TOKENS, SUMMARY } from './tuning';
-import { checkThai } from './validate';
+import { checkFacts, checkThai } from './validate';
 
 /** What the summary is made from. All text is Thai, in the words the game shows. */
 export interface EndingSummaryInput {
@@ -29,6 +29,10 @@ export interface EndingSummaryInput {
   names?: string[];
   /** The vow of the player and what came of it, when there is one (the character does not know it). */
   vow?: string;
+  /** The titles the life earned (one to three), when it has any: the retelling may name them and may not add one. */
+  titles?: string[];
+  /** Names of other people of this world that the text may not use for this life (neighbours, the kin of earlier lives). A retelling that takes one is wrong. */
+  others?: string[];
 }
 
 export interface EndingSummary {
@@ -36,11 +40,25 @@ export interface EndingSummary {
   source: 'llm' | 'template';
 }
 
-const digitsOf = (i: EndingSummaryInput): string => [i.name, i.race, i.ending, i.vow ?? '', ...i.facts].join('').replace(/[^0-9๐-๙]/g, '');
+const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.vow ?? '', ...(i.titles ?? []), ...i.facts];
+const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(/[^0-9๐-๙]/g, '') + String(i.age);
 
-/** The check of the retelling against the facts it was given: Thai, within the length, no id, no number the facts did not carry, no banned word. */
+/**
+ * The check of the retelling against the facts it was given: Thai, within the length, no id, no banned word, and (review M4 G5) no number the facts did not carry (a year, an
+ * age or a count that is not in the facts, with digits or in Thai words), no name that is not the life's, no vow or title the game did not give.
+ */
 export function checkSummary(text: string, input: EndingSummaryInput) {
-  return checkThai(text, { min: SUMMARY.min, max: SUMMARY.max, paragraphs: SUMMARY.paragraphs, allowDigits: digitsOf(input) });
+  const thai = checkThai(text, { min: SUMMARY.min, max: SUMMARY.max, paragraphs: SUMMARY.paragraphs, allowDigits: digitsOf(input) });
+  if (!thai.ok) return thai;
+  const facts = checkFacts(thai.value, {
+    given: givenOf(input),
+    numbers: [input.age],
+    names: [input.name, ...(input.names ?? [])],
+    others: input.others,
+    hasVow: !!input.vow,
+    hasTitle: !!input.ending || !!input.titles?.length,
+  });
+  return facts.ok ? thai : facts;
 }
 
 const templateOf = (i: EndingSummaryInput): EndingSummary => ({ text: i.template, source: 'template' });
@@ -59,7 +77,7 @@ export async function summarizeEnding(input: EndingSummaryInput, llm: LlmClient 
     }
     if (!pointOn(state, llm, 'ending')) return templateOf(input);
   } else if (!llm || !llm.available('ending')) return templateOf(input);
-  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}) };
+  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}), ...(input.titles?.length ? { titles: input.titles } : {}) };
   const r = await llm!.run({
     point: 'ending',
     input: data,
