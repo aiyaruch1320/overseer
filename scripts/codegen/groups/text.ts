@@ -51,7 +51,8 @@ function names(): NamesData {
     if (expect != null && expect !== w.words.length) un.add(f, Number(at.split(':')[1]), `${id}: expected ${expect}, found ${w.words.length}`, 'word count differs');
     banks.push(b);
   };
-  const GROUP = (t: Table) => tail(t).replace(/^\d+(\.\d+)?\s*/, '');
+  // "3. ปาฏิหาริย์ใหญ่" → "ปาฏิหาริย์ใหญ่" (the number may end in a dot: review L4)
+  const GROUP = (t: Table) => tail(t).replace(/^\d+(?:\.\d+)*\.?\s*/, '');
   const tbs = tables(f);
   for (const t of tbs) {
     const head = t.headings.slice(1).join(' > ');
@@ -143,10 +144,11 @@ function build(cfgs: Cfg[], slotTables: { head: RegExp; first: string; slotCol: 
   for (const c of cfgs) {
     const t = findTable(c.file, c.head, c.first, c.nth ?? 0);
     let count = 0;
-    for (const r of t.rows) {
+    for (const [ri, r] of t.rows.entries()) {
       const keys: Record<string, string> = {};
       c.keys.forEach((k) => (keys[t.header[k]] = r.cells[k]));
-      const rowKey = c.keys.map((k) => r.cells[k]).join('|');
+      // a family without key columns (the connectives) is numbered by row: `connect_then.3.คำเชื่อม`, never an empty part (review L6)
+      const rowKey = c.keys.length ? c.keys.map((k) => r.cells[k]).join('|') : String(ri + 1);
       if (c.multiLine) {
         const lines = c.tpl.map((k) => r.cells[k]).filter((x) => x && x !== '—');
         templates.push({ id: `${c.family}.${rowKey}`, family: c.family, keys, col: c.tpl.map((k) => t.header[k]).join(' + '), text: lines.join('\n'), lines, slots: slotsOf(lines.join(' ')), ...(c.when != null ? { when: r.cells[c.when] } : {}), src: src(t, r.line) });
