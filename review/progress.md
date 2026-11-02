@@ -3,14 +3,16 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M2 รอบตรวจซ้ำ · เตรียม M3
-งานที่กำลังทำ:
-  - ผู้มาใหม่รอบสอง (ab98f276165dc1221) ใน checkout ของผู้นำ เขียน review/m2/ผู้มาใหม่-รอบสอง.md
-  - ตัวสร้าง bonds bondage travel (a722a533c235d5582) ใน `.claude/worktrees/agent-a722a533c235d5582` สาขา `worktree-agent-a722a533c235d5582`
+ขั้นปัจจุบัน: M3 ระบบลึก
+งานที่กำลังทำ: สี่ agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+  - ตัวสร้าง bonds bondage travel · a722a533c235d5582
+  - economy P0–P2 · a7eed4f9f12e4b8f4
+  - combat (แทน story/battle-stub) · aaabae7c4e7ff368f
+  - npc ครบ (NT ผลส่งต่อ อัตราการพบ ป่วย อาฆาต จุดศึก) · a348d38caed4f71cb
 งานถัดไป:
-  1. ปิด M2 ตามผลรอบสอง · รวมตัวสร้าง bonds bondage travel
-  2. M3 ห้า agent: economy · bonds+bondage · combat · travel+items · npc ครบ (ศึก NPC ผู้สืบ NT อัตราการพบต่อปีชีวิต) · วัดโหนดต่อชีวิตรวมทุกระบบใหม่ (ฐาน M1 28.1 หลัง M2 27.7) · ตัวละคร 74 วลี ไอเทม 209
-  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world เขียนลางล่วงหน้าและตั้งธง famine plague · combat เขียน prelude · กระซิบเข้าน้ำหนักเรื่อง (choiceWhisperMul) · คำของค่าพระเจ้าใน effects.ts แทนธงใน 31-divine · บันทึกปาฏิหาริย์ MR-01/02 เมื่อไม่มีภัย
+  1. รวมทีละสาขา เติม systems.ts (economy combat) ต่อ combat กับ npc onClash · หลังตัวสร้างรวม ส่ง bonds+bondage และ travel+items
+  2. วัดโหนดต่อชีวิตรวมทุกระบบ (ฐาน M2 27.7) · ชีวิตทองคำ · รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก)
+  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world เขียนลางล่วงหน้าและตั้งธง famine plague · กระซิบเข้าน้ำหนักเรื่อง · คำของค่าพระเจ้าใน effects.ts · คลังถ้อยคำคำอธิษฐาน · บันทึกปาฏิหาริย์ MR-01/02 เมื่อไม่มีภัย
 ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 672/672 · golden 20/20 · balance 44 ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
