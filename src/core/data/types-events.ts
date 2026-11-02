@@ -325,6 +325,8 @@ export interface WorldEventsData {
   faiths: FaithInfo[];
   /** main faith numbers of every country, from the ศาสนา field of the country files (world-events §0.2.1) */
   mainFaiths: Record<CountryId, number[]>;
+  /** stance of every country toward bondage `A` `H` `D` `L` `M` (economy/10-bondage.md §3.1), read by the `stance` condition */
+  stances: Record<CountryId, 'A' | 'H' | 'D' | 'L' | 'M'>;
   events: WorldEvent[];
   branch: BranchEvent[];
   lastEra: LastEraEvent[];

@@ -295,6 +295,21 @@ export default function run(): GenReport {
     }
     for (const c of Object.keys(sets).sort()) mainFaiths[c] = [...sets[c]].sort((a, b) => a - b);
   }
+  // stance of every country toward bondage (economy/10-bondage.md §3.1): A H D L M; a country the table does not name is H, Silvanel is A
+  const stances: Record<string, 'A' | 'H' | 'D' | 'L' | 'M'> = {};
+  {
+    const BOND = 'docs/systems/economy/10-bondage.md';
+    const t = tables(BOND).find((x) => x.header[0] === 'ท่าที' && x.header[1] === 'ประเทศ');
+    for (const c of Object.keys(mainFaiths)) stances[c] = 'H';
+    for (const r of t?.rows ?? []) {
+      const st = r.cells[0].replace(/\*/g, '').trim() as 'A' | 'H' | 'D' | 'L' | 'M';
+      if (!'AHDLM'.includes(st) || st === 'H') continue;
+      const range = r.cells[1].match(/\b([A-Z]{2})-(\d{2}) ถึง \1-(\d{2})\b/);
+      if (range) for (let n = +range[2]; n <= +range[3]; n++) stances[`${range[1]}-${String(n).padStart(2, '0')}`] = st;
+      for (const c of r.cells[1].replace(/\b[A-Z]{2}-\d{2} ถึง [A-Z]{2}-\d{2}\b/g, ' ').match(/\b[A-Z]{2}-\d{2}\b/g) || []) stances[c] = st;
+    }
+    sources.push(BOND);
+  }
   const homeTable = new Map<string, string>();
   for (const l of readDoc(F.world).split('### 0.2.1')[1].split('### 0.3')[0].split('\n')) {
     const m = l.match(/^\| ([A-Z]{2,3}-\d{2}) \| ([^|]+) \|/);
@@ -653,6 +668,7 @@ export default function run(): GenReport {
     closures,
     faiths,
     mainFaiths,
+    stances,
     events,
     branch,
     lastEra,
