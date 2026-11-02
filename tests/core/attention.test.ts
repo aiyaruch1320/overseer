@@ -3,13 +3,15 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { loadAll } from '../../scripts/tools/node-data';
+import { createSession, runToDeath, startLife } from '../../scripts/tools/session';
 import {
   DEFAULT_AGE_STOPS, DEFAULT_DEADLINES, DEFAULT_RULES, SEC_PER_YEAR, agesOf, attentionSystem, callsOf, isStop, liveCards, newMem, nextCall, sourcesOf, tick,
   type Mem, type Out, type Plan, type Trig,
 } from '../../src/core/attention';
 import type { AttentionData, AttentionRule } from '../../src/core/data/types-attention';
-import { Game, type System } from '../../src/core/game';
+import { Game, sortSystems, type GameData, type System } from '../../src/core/game';
 import { write } from '../../src/core/log';
 import { newGame } from '../../src/core/state';
 import type { GameState, LifeState, LogEntry, Settings } from '../../src/core/types';
@@ -193,7 +195,7 @@ const blank = (): LifeState => ({
 });
 
 /** A life with a made-up log: the character dies at `deathAge`; `mocks` are written by a system named `story` at their age and quarter. */
-function mockGame(mocks: Mock[], opts: { seed?: number; deathAge?: number; announce?: boolean; attention?: Settings['attention'] } = {}): Game {
+function mockGame(mocks: Mock[], opts: { seed?: number; deathAge?: number; announce?: boolean; attention?: Settings['attention']; data?: GameData } = {}): Game {
   const deathAge = opts.deathAge ?? 75;
   const character: System = {
     name: 'character',
@@ -209,7 +211,7 @@ function mockGame(mocks: Mock[], opts: { seed?: number; deathAge?: number; annou
       for (const m of mocks) if (m.age === l.hAge && (m.q ?? 0) === ctx.state.clock.quarter) write(ctx.state, { sys: m.sys, kind: m.kind, id: m.id, data: m.data ?? {}, level: m.level });
     },
   };
-  const g = new Game(newGame(opts.seed ?? 1), ENEMIES, [character, source, attentionSystem]);
+  const g = new Game(newGame(opts.seed ?? 1), opts.data ?? ENEMIES, [character, source, attentionSystem]);
   if (opts.attention) g.state.settings.attention = opts.attention;
   g.state.life = blank();
   if (opts.announce) g.state.life.ext.character = { deathAge };
@@ -277,6 +279,16 @@ describe('attention: the system on a made-up log', () => {
     const run = () => callLog(all(mockGame(busy(), { seed: 7 }))).map((e) => JSON.stringify([e.n, e.age, e.quarter, e.data]));
     expect(run()).toEqual(run());
     expect(run().length).toBeGreaterThan(10);
+  });
+
+  it('with data/gen/attention.json loaded it calls exactly as with the built-in numbers', () => {
+    const file = JSON.parse(readFileSync(path.join(root, 'data/gen/attention.json'), 'utf8')) as { version: string; items: unknown };
+    const key = (g: Game) => callLog(g).map((e) => JSON.stringify([e.age, e.quarter, e.data]));
+    for (const setting of ['low', 'normal', 'high'] as const) {
+      const a = key(all(mockGame(busy(), { attention: setting })));
+      const b = key(all(mockGame(busy(), { attention: setting, data: { ...ENEMIES, attention: file } })));
+      expect(b).toEqual(a);
+    }
   });
 
   it('the three settings call less and more in the right direction', () => {
@@ -400,5 +412,46 @@ describe('attention: reads the log of the real systems', () => {
     const ids = callLog(g).flatMap((e) => String(e.data.ids).split(','));
     expect(ids).toContain('y');
     expect(ids).not.toContain('x');
+  });
+});
+
+describe('attention: on a real life of the core', () => {
+  let loaded: GameData;
+  beforeAll(() => {
+    loaded = loadAll();
+  });
+  const real = (seed: number, setting: Settings['attention'] = 'normal') => {
+    const s = createSession(loaded, { seed });
+    const g = s.game;
+    g.systems.splice(0, g.systems.length, ...sortSystems([...g.systems.filter((x) => x.name !== 'attention'), attentionSystem]));
+    g.state.settings.attention = setting;
+    startLife(s);
+    runToDeath(g);
+    return g;
+  };
+
+  it('the same seed calls the same way, another seed another way', () => {
+    const key = (g: Game) => callLog(g).map((e) => JSON.stringify([e.age, e.quarter, e.id, e.data]));
+    expect(key(real(3))).toEqual(key(real(3)));
+    expect(key(real(3))).not.toEqual(key(real(4)));
+  });
+
+  it('every call points at entries that exist, the age stops come in order and the death ends the calls', () => {
+    const g = real(5);
+    const c = callLog(g);
+    const ns = new Set(g.state.log.map((e) => e.n));
+    for (const e of c) for (const n of sourcesOf(e)) expect(ns.has(n)).toBe(true);
+    const ages = c.filter((e) => e.data.age !== null).map((e) => e.data.age as number);
+    expect([...ages].sort((a, b) => a - b)).toEqual(ages);
+    expect(ages.every((a) => DEFAULT_AGE_STOPS.includes(a))).toBe(true);
+    const last = c.at(-1)!;
+    expect(['death', 'nearDeath']).toContain(last.data.why);
+    expect(c.filter((e) => e.data.why === 'death' || e.data.why === 'nearDeath')).toHaveLength(1);
+  });
+
+  it('the three settings call least, more, most on the same life (the lives do not change with the calls)', () => {
+    const n = (s: Settings['attention']) => callLog(real(8, s)).length;
+    expect(n('low')).toBeLessThan(n('normal'));
+    expect(n('normal')).toBeLessThanOrEqual(n('high'));
   });
 });
