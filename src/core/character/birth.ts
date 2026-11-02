@@ -17,6 +17,7 @@ import {
   BIG_CITY,
   BIRTH_GIFT,
   BIRTH_TIME_WEIGHT,
+  FAVOUR_DEFAULT,
   FAITH_FROM_PIETY,
   PRIMARY_FAITH_WEIGHT,
   RARITY_WEIGHT,
@@ -162,7 +163,7 @@ function startGold(ctx: Ctx, rng: Rng, cls: number): number {
 
 function scaleFx(fx: Effect[], mul: number): Effect[] {
   return fx.map((f): Effect => {
-    if (f.k === 'favour') return { ...f, mul: (f.mul ?? 2) * mul };
+    if (f.k === 'favour') return { ...f, mul: (f.mul ?? FAVOUR_DEFAULT) * mul };
     if (f.k === 'grant' && f.chance !== undefined) return { ...f, chance: Math.min(1, f.chance * mul) };
     if (f.k === 'if') return { ...f, then: scaleFx(f.then, mul) };
     return f;

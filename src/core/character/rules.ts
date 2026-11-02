@@ -21,9 +21,12 @@ export function raceId(ctx: Ctx, code: string): string {
 
 let installed = false;
 
+/** Keys whose names only this system registers (throws when a name is taken twice). */
+const SURE = new Set(['pow', 'mag', 'spd', 'luk', 'int', 'vit', 'gold', 'fame', 'brave', 'kind', 'ambition', 'piety', 'curious', 'honest', 'temper', 'social']);
+
 /** Registers the rules. Called once when the module is imported; a test that resets the registry can call it again. */
-export function registerCharacterRules(): void {
-  if (installed) return;
+export function registerCharacterRules(force = false): void {
+  if (installed && !force) return;
   installed = true;
 
   // ---------- conditions ----------
@@ -83,7 +86,15 @@ export function registerCharacterRules(): void {
       if (ctx.state.life) addCanon(ctx, ctx.state.life, key, delta);
     },
   });
-  for (const [name, key] of Object.entries(STAT_ALIASES)) onStat(name, stat(key));
+  for (const [name, key] of Object.entries(STAT_ALIASES)) {
+    // the six stats, gold, fame, the axes and their Thai names are ours; the rest are numbers of the character that
+    // another system may also want to name (belief, heart, class ...): the first to register keeps the name
+    try {
+      onStat(name, stat(key));
+    } catch (err) {
+      if (SURE.has(key)) throw err;
+    }
+  }
   onStat('axis.', {
     read: (ctx, name) => (ctx.state.life ? readCanon(ctx, ctx.state.life, name.slice(5)) : 0),
     add: (ctx, name, delta) => {

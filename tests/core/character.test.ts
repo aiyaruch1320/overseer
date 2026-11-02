@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
-import { birth, chooseJob, classNum, characterSystem, extOf, grantJob, idx, offerJobs, recomputeDeathAge, rollSecretJobs, secretChance } from '../../src/core/character';
+import { birth, chooseJob, classNum, characterSystem, evalCond, extOf, grantJob, idx, offerJobs, recomputeDeathAge, rollSecretJobs, secretChance } from '../../src/core/character';
 import { yearlyDeath } from '../../src/core/character/death';
 import { Game, type Ctx } from '../../src/core/game';
 import { apply, test as holds } from '../../src/core/rules';
@@ -479,6 +479,21 @@ describe('jobs', () => {
     }
     expect(taken).toBeGreaterThan(20);
     expect(refused).toBeGreaterThan(0);
+  });
+
+  it('prose in a job condition leans the way the caller says, and flips under not; anyOf counts what the character holds', () => {
+    const { ctx, life } = born(24, { race: 'human', second: null });
+    life.blessings = ['nb_mark_oran', 'nb_mark_sea'];
+    const text: Condition = { k: 'text', text: 'ธงสายเลือดฟาโรห์' };
+    expect(evalCond(ctx, text, true)).toBe(true);
+    expect(evalCond(ctx, text, false)).toBe(false);
+    // leaning true means "the prose is met" in a requirement and "the ban does not apply" when it sits under a not
+    expect(evalCond(ctx, { k: 'not', of: text }, true)).toBe(true);
+    expect(evalCond(ctx, { k: 'not', of: text }, false)).toBe(false);
+    expect(evalCond(ctx, { k: 'and', of: [text, { k: 'not', of: text }] }, true)).toBe(true);
+    const any = (min: number): Condition => ({ k: 'anyOf', kind: 'blessing', ids: ['nb_mark_oran', 'nb_mark_sea', 'nb_mark_stone'], min });
+    expect(evalCond(ctx, any(2), true)).toBe(true);
+    expect(evalCond(ctx, any(3), true)).toBe(false);
   });
 
   it('godslayer stays shut without GD-08 or the godslayer faith, however the numbers look', () => {

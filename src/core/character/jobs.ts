@@ -6,7 +6,7 @@ import { test, type EffectSource } from '../rules';
 import type { Job } from '../data/types-character';
 import type { Condition, IdKind, LifeState } from '../types';
 import { extOf, idx } from './data';
-import { holds, jobAptitude, raiseAptitude, tagsOf } from './life';
+import { holds, jobAptitude, raiseAptitude } from './life';
 import { ADULT_AGE, JOBS, SECRET } from './tuning';
 
 /**
@@ -171,4 +171,3 @@ export function rollSecretJobs(ctx: Ctx, life: LifeState): string | null {
   return null;
 }
 
-export { tagsOf };
