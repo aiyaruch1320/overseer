@@ -313,6 +313,17 @@ export function parseLocalEffect(cell: string, ids: IdIndex): LocalParsed {
       if (!m[1].startsWith('cv.') && !out.chain.includes(m[1])) out.chain.push(m[1]);
       eat(m[0]);
     }
+    // weight written before the id: น้ำหนัก `WR-04` ของคู่ประเทศ +5
+    for (const m of [...seg.matchAll(/น้ำหนัก\s*`?([A-Z]{2,3}-\d{2})`?[^\d+\-−`]{0,24}([+\-−]\d+)/g)]) {
+      out.effects.push({ k: 'stat', stat: `weight:${m[1]}`, delta: num(m[2]) });
+      if (!out.chain.includes(m[1])) out.chain.push(m[1]);
+      eat(m[0]);
+    }
+    // the trust line of a verdict: ตัดสินตามอำนาจ −1 (the sibling path names what it moves)
+    for (const m of [...seg.matchAll(/ตัดสินตามอำนาจ\s*([+\-−]\d+)/g)]) {
+      out.effects.push({ k: 'stat', stat: 'ไว้ใจของประเทศต่อสถาบันตัดสิน', delta: num(m[1]) });
+      eat(m[0]);
+    }
     for (const m of [...seg.matchAll(/`?((?:[A-Z]{2,3}-\d{2}))`?\s*(?:ช้าลง|เร็วขึ้น|เกิดเร็ว|เกิดช้า)[^ \n]*(?:\s*(?:หนึ่ง|สอง|สาม|ห้า|\d+)\s*(?:ทศวรรษ|ปี))?/g)]) {
       out.effects.push({ k: 'label', text: m[0].replace(/`/g, '') });
       eat(m[0]);

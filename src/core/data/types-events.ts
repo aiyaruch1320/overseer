@@ -85,6 +85,14 @@ export interface WorldEvent {
   /** at least one of these events must have happened (ids in the condition cell, not the event itself) */
   needs: EventId[];
   thr: VarCond[];
+  /** DFC window from `DFC ≥ n` / `DFC = n` in the condition cell */
+  dfc?: [number, number];
+  /** keys one side must hold (`กุญแจ 5+ ชิ้น`) */
+  keysMin?: number;
+  /** peace events that must have happened (END-12) */
+  hpMin?: number;
+  /** endings: events that must all have happened (the `+` clauses of the condition) */
+  needsAll?: EventId[];
   home: Home;
   /** what the sim and the core treat in code: a dragon falling, the mourning wave, the hero, an ending, the start state */
   role?: 'fall' | 'mourn' | 'hero' | 'ending' | 'start';
@@ -261,6 +269,10 @@ export interface WorldRules {
   /** DFC window of each era (story-continents §3.5) */
   eras: { era: number; dfc: [number, number] }[];
   lean: { key: 'a' | 'b' | 'c'; chance: number; ending: EventId }[];
+  /** WR-15 chance is multiplied by 1 + (K − from) × per (04-last-era §3.1) */
+  keyWeight: { from: number; per: number };
+  /** a war of the same pair may open again after this many years (§0.4 rule 3) */
+  warRepeatYears: number;
   /** ending conditions in §13, as numbers the engine reads */
   endings: { id: EventId; chance: number | null; text: string }[];
   /** number of world events per mark in the summary table */

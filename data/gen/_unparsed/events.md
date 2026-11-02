@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: events
 
-70 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+53 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -53,23 +53,6 @@
 | docs/systems/events/local-events.md:39 | ปิด อีริดานตื่นช้าลงและไว้ใจนักบวชลด `PL-01` เกิดเมื่ออารมณ์ต่ำกว่า 40 | LC-13 ผลถาวร |
 | docs/systems/events/local-events.md:45 | เรียกคืน `MC-06` ช้าลง และไว้ใจ MK-13 −2 | LC-19 ผลถาวร |
 | docs/systems/events/local-events.md:62 | ซีโร่เจอไวรอน-1 หุ่นรบเลิกใช้ในสมาพันธ์ `MC-03` เร็ว | LC-36 ผลถาวร |
-| docs/_generated/local-events-by-country.md:10 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-105 ผลถาวร |
-| docs/_generated/local-events-by-country.md:14 | ตัดสินตามอำนาจ −1 และ `WR-23` น้ำหนัก +5 | LC-120 ผลถาวร |
-| docs/_generated/local-events-by-country.md:17 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-125 ผลถาวร |
-| docs/_generated/local-events-by-country.md:23 | ตัดสินตามอำนาจ −1 และ `GD-02` น้ำหนัก +5 | LC-145 ผลถาวร |
-| docs/_generated/local-events-by-country.md:31 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-159 ผลถาวร |
-| docs/_generated/local-events-by-country.md:37 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-171 ผลถาวร |
-| docs/_generated/local-events-by-country.md:39 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-176 ผลถาวร |
-| docs/_generated/local-events-by-country.md:41 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-178 ผลถาวร |
-| docs/_generated/local-events-by-country.md:43 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-185 ผลถาวร |
-| docs/_generated/local-events-by-country.md:45 | ตัดสินตามอำนาจ −1 และ `PO-07` น้ำหนัก +5 | LC-192 ผลถาวร |
-| docs/_generated/local-events-by-country.md:54 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-209 ผลถาวร |
-| docs/_generated/local-events-by-country.md:57 | ตัดสินตามอำนาจ −1 และ `WR-23` น้ำหนัก +5 | LC-214 ผลถาวร |
-| docs/_generated/local-events-by-country.md:58 | ตัดสินตามอำนาจ −1 และ `GD-02` น้ำหนัก +5 | LC-216 ผลถาวร |
-| docs/_generated/local-events-by-country.md:61 | รบ น้ำหนัก `WR-04` ของคู่ประเทศ +5 และไว้ใจต่อผู้ปกครองลดหนึ่งขั้น | LC-219 ผลถาวร |
-| docs/_generated/local-events-by-country.md:67 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-228 ผลถาวร |
-| docs/_generated/local-events-by-country.md:68 | ตัดสินตามอำนาจ −1 และ `PO-01` น้ำหนัก +5 | LC-235 ผลถาวร |
-| docs/_generated/local-events-by-country.md:69 | ตัดสินตามอำนาจ −1 และ `PO-07` น้ำหนัก +5 | LC-240 ผลถาวร |
 | docs/systems/events/local-events.md:112 | น้ำหนัก WR-* ของคู่ประเทศ +5 | LT-1 ผล |
 | docs/systems/events/local-events.md:113 | ไว้ใจของประเทศต่อสถาบันเปลี่ยน ±1 | LT-2 ผล |
 | docs/systems/events/local-events.md:114 | ราคาอาหาร ×1.5 หนึ่งปี | LT-3 ผล |

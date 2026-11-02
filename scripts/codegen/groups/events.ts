@@ -443,6 +443,19 @@ export default function run(): GenReport {
       src: `${F.world}:${e.line}`,
     };
     if (docEra[0] !== sim[0] || docEra[1] !== sim[1]) ev.eraSim = sim;
+    // numbers the prose cell gives beyond thresholds: fallen dragons, keys held, peace events, and which events an ending needs together
+    const dfcMin = e.cond.match(/DFC ≥ (\d+)/)?.[1];
+    const dfcEq = e.cond.match(/DFC = (\d+)/)?.[1];
+    if (dfcMin) ev.dfc = [+dfcMin, 15];
+    else if (dfcEq) ev.dfc = [+dfcEq, +dfcEq];
+    const keys = e.cond.match(/กุญแจ (\d+)\+ ชิ้น/)?.[1];
+    if (keys) ev.keysMin = +keys;
+    const hp = e.cond.match(/เหตุการณ์ HP เกิดแล้วอย่างน้อย (\d+) รายการ/)?.[1];
+    if (hp) ev.hpMin = +hp;
+    if (role === 'ending') {
+      const all = plain(e.cond).split(/\s+\+\s+/).filter((part) => !/หรือ/.test(part)).flatMap((part) => idsIn(part)).filter((x) => x !== e.id);
+      if (all.length) ev.needsAll = [...new Set(all)];
+    }
     if (role) ev.role = role;
     if (dragon !== undefined) ev.dragon = dragon;
     if (flag) ev.flag = flag;
@@ -456,13 +469,15 @@ export default function run(): GenReport {
     const sectionOf: Record<string, string> = {};
     for (const t of tables(F.b2)) {
       if (!/^ID · ชื่อ/.test(t.header[0])) continue;
-      const cont = t.headings.find((h) => /^\d+\. /.test(h))?.replace(/^\d+\.\s*/, '').replace(/\s*[—(].*$/, '') ?? '';
+      const head = t.headings.find((h) => /^\d+\. /.test(h)) ?? '';
+      const cont = head.replace(/^\d+\.\s*/, '').replace(/\s*[—(].*$/, '');
+      const headTrigger = head.match(/หลัง ([A-Z]{2,3}-\d{2})/)?.[1] ?? null;
       for (const r of t.rows) {
         const m = r.cells[0].match(/^\*\*([A-Z]{2}-\d{2}) ([⭐●○])? ?([^*]*)\*\*/);
         if (!m) continue;
         sectionOf[m[1]] = cont;
         const cond = r.cells[1];
-        const trigger = cond.match(/(?:หลัง|วัน|แทน)\s*([A-Z]{2,3}-\d{2})/)?.[1] ?? null;
+        const trigger = headTrigger;
         const replaces = cond.startsWith('แทน') ? idsIn(cond.replace(/;.*$/, '')) : [];
         const years = cond.match(/(?:ภายใน|หลัง [A-Z]{2}-\d{2})\s*(\d+)\s*ปี/);
         const p = parseWorldEffect(r.cells[3], m[1], ids);
@@ -637,6 +652,8 @@ function buildRules(raw: { id: string; mark: Mark | null; cond: string; eff: str
     const c = e.cond.match(/(\d+)% ต่อทศวรรษ/);
     return { id, chance: c ? +c[1] / 100 : null, text: plain(e.cond) };
   });
+  const keyW = readDoc(F.b4).match(/โอกาสเกิดคูณ \(1 \+ \(K − (\d+)\) × ([\d.]+)\)/);
+  const warRepeat = text.match(/คู่เดิมเปิดซ้ำได้หลังผ่านไป ≥ (\d+) ปี/);
   const counts = text.match(/น้ำหนัก: ⭐ (\d+) · ● (\d+) · ○ (\d+)/);
   return {
     rate,
@@ -649,6 +666,8 @@ function buildRules(raw: { id: string; mark: Mark | null; cond: string; eff: str
     eras,
     lean,
     endings,
+    keyWeight: keyW ? { from: +keyW[1], per: Number(keyW[2]) } : { from: 4, per: 0.5 },
+    warRepeatYears: warRepeat ? +warRepeat[1] : 100,
     markCounts: counts ? { '⭐': +counts[1], '●': +counts[2], '○': +counts[3] } : { '⭐': 0, '●': 0, '○': 0 },
   };
 }
