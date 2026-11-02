@@ -7,6 +7,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, runToDeath, startLife } from '../../scripts/tools/session';
 
 const LIVES = Number(process.env.STORY_CORE_LIVES ?? 300);
+const FROM = Number(process.env.STORY_CORE_FROM ?? 1);
 
 describe('nodes per life on the whole core', () => {
   it(
@@ -17,7 +18,7 @@ describe('nodes per life on the whole core', () => {
       let elder = 0;
       let elders = 0;
       const lines: Record<string, number> = {};
-      for (let seed = 1; seed <= LIVES; seed++) {
+      for (let seed = FROM; seed < FROM + LIVES; seed++) {
         const s = createSession(data, { seed });
         startLife(s);
         runToDeath(s.game);

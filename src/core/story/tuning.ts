@@ -39,7 +39,7 @@ export const OPEN_RATE: Record<string, number> = {
  * Measured on 300 lives of the whole core (seeds 1 to 300): the median gold at 60 was 141 with pv 0.4 wk 0.45 iv 0.45 nl 0.5 and is 204 with the shares below (with INCOME_SCALE 1.46).
  * The bn rate cannot fall either (the story-only test would drop under 31).
  */
-export const OPEN_SHARE: Record<string, number> = { pv: 0.9, wk: 0.8, iv: 0.1, nl: 0.25 };
+export const OPEN_SHARE: Record<string, number> = { pv: 0.9, wk: 0.7, iv: 0.1, nl: 0.25, tr: 0.4 };
 
 /** Overlay lines whose opening rule is a plain condition, not a share of lives (no rate). Conditions come from the documents. */
 export const OPEN_COND: Record<string, Condition> = {
@@ -87,9 +87,9 @@ export const ROLLING_LINES: ReadonlySet<string> = new Set(['dp', 'mr']);
 
 /**
  * The most nodes of a line one life may walk (31-divine.md §2 rule 4: "ชีวิตหนึ่งเดินโหนด mr ได้ไม่เกินสามโหนด"). Read as all the nodes of the line, the closing
- * node included. (The same rule gives `dp` three; the line is not capped here because the lead did not ask for it: see the report.)
+ * node included. The same rule gives `dp` three.
  */
-export const LINE_CAP: Record<string, number> = { mr: 3 };
+export const LINE_CAP: Record<string, number> = { mr: 3, dp: 3 };
 
 /** The pair sets cover half-bloods (22-halfblood.md §3): they open with the half-blood line. */
 export const PAIR_RATE = 1;
