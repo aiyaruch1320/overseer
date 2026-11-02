@@ -42,14 +42,39 @@ function trust() {
   const before = Number(must(startCell.match(/(\d+)\s*ก่อน/), 'trust before')[1]);
   const after = Number(must(startCell.match(/(\d+)\s*หลัง/), 'trust after')[1]);
   const recover = Number(must(readDoc(E + '08-implementation.md').match(/ฟื้น \+(\d+) ถ้าไม่มีสงคราม/), 'trust recovery')[1]);
-  const mulOf = (i: number) => [1, 1.1, 1.25, 1][i] ?? 1;
+  // The price multiplier is the "ราคาในทองสูงขึ้น N%" of the row (×1 when the row says nothing about prices).
+  const mulOf = (effect: string) => {
+    const m = effect.match(/ราคาในทองสูงขึ้น\s*(\d+)%/);
+    return m ? 1 + Number(m[1]) / 100 : 1;
+  };
+  // Edges: `min` is inclusive, `lt` is exclusive ("ต่ำกว่า 40" = below 40, not 40). A range "40 ถึง 69" ends where the next band starts (lt 70),
+  // so no value of C falls in two bands unless the later band is a deeper stage of the earlier one (`stack`).
+  const raw = bands.rows.map((r) => {
+    const n = nums(r.cells[0]);
+    const below = /ต่ำกว่า/.test(r.cells[0]);
+    return { below, n, r };
+  });
+  const out = raw.map(({ below, n, r }, i) => {
+    const range = !below && n.length === 2; // "40 ถึง 69"
+    const next = raw[i - 1] ? (raw[i - 1].below ? null : raw[i - 1].n[0]) : null; // the band above starts here
+    return {
+      min: below ? null : n[0],
+      lt: below ? n[0] : range ? (next ?? n[1] + 1) : null,
+      max: range ? n[1] : null,
+      stack: false,
+      effect: r.cells[1],
+      priceMul: mulOf(r.cells[1]),
+      src: `${bands.file}:${r.line}`,
+    };
+  });
+  // "ต่ำกว่า 15" lies inside "ต่ำกว่า 40" and the doc names no exception, so both rows apply (the price multipliers multiply).
+  out.forEach((b, i) => {
+    b.stack = out.slice(0, i).some((p) => p.min === null && b.min === null && b.lt !== null && p.lt !== null && b.lt < p.lt);
+  });
   return {
     start: { before, after },
     recoverPerYear: recover,
-    bands: bands.rows.map((r, i) => {
-      const n = nums(r.cells[0]);
-      return { min: /ต่ำกว่า/.test(r.cells[0]) ? null : n[0], max: /ต่ำกว่า/.test(r.cells[0]) ? n[0] : n[1] ?? null, effect: r.cells[1], priceMul: mulOf(i), src: `${bands.file}:${r.line}` };
-    }),
+    bands: out,
     moneyForms: forms.rows.map((r) => ({ form: r.cells[0], countries: countries(r.cells[1]), rule: r.cells[2] })),
   };
 }

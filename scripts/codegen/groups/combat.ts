@@ -1,6 +1,6 @@
 // Combat generator (code-plan §5.1, row "ต่อสู้"): stances, the roll, the weakness matrix, encounters, rewards, dragons,
 // the 200 enemies and the 102 NPC clashes. Writes data/gen/combat.json enemies.json clashes.json.
-import type { Clash, ClashOutcome, ClashesData, CombatData, Enemy, EnemiesData, Mark, MatrixCell, Reaction } from '../../../src/core/data/types-combat';
+import type { Clash, ClashEffect, ClashOutcome, ClashesData, CombatData, Enemy, EnemiesData, Mark, MatrixCell, Negotiate, Reaction, WeakText } from '../../../src/core/data/types-combat';
 import { finish, findTable, nums, num, parts, pct, recs, src, ticks, Unparsed, mult } from '../helpers-m0b';
 import { idIndex } from '../lib/ids';
 import { parseCell } from '../lib/effects';
@@ -29,14 +29,70 @@ const CONT: Record<string, string> = { อัซการ์: 'AZ', มอร์
 const TRAIT: Record<string, string> = { ฝูง: 'swarm', บิน: 'flying', ตัวใหญ่: 'huge', ฟื้นตัว: 'regen', ซ่อนตัว: 'hidden' };
 const KINDS = ['beast', 'humanoid', 'undead', 'spirit', 'demon', 'dragon', 'giant', 'construct', 'fey', 'plant', 'amorphous', 'fog', 'elemental', 'sea'];
 
-function reactions(text: string): Reaction[] {
-  const out: Reaction[] = [];
-  for (const m of text.matchAll(/([฀-๿A-Za-z_`#]+)\s*([★▲▼✕])/g)) {
-    const name = m[1].replace(/`/g, '');
-    out.push({ tag: THAI_TAG[name] ?? name, name, mark: m[2] as Mark });
+/** Names of attack tags in the enemy tables that the weakness matrix does not list as a column (`กายภาพ` is all physical tags together). */
+const EXTRA_TAG: Record<string, string> = { ความมืด: 'dark', กายภาพ: 'physical' };
+const TAG_OF = (name: string): string | null => {
+  const n = name.replace(/`/g, '');
+  if (THAI_TAG[n] && n !== 'เจรจา') return THAI_TAG[n];
+  if (EXTRA_TAG[n]) return EXTRA_TAG[n];
+  if (n.startsWith('#')) return n;
+  return null;
+};
+const WEAK_MARKS = '★▲';
+const PAIR = /([฀-๿A-Za-z_`#]+?)\s*([★▲▼✕])/g;
+
+interface Split {
+  weak: Reaction[];
+  resist: Reaction[];
+  weakText: WeakText[];
+  negotiate: Negotiate[];
+}
+
+/**
+ * One cell of weak/resist symbols (03-enemies.md): parts are separated by ` · `. A part made only of attack tags with a mark
+ * (`แสง ★ แดด ★`) is a reaction: ★ ▲ go to weak, ▼ ✕ to resist (`ไฟ ✕` is a resist even in the weak column). A part about
+ * talking (`เจรจา ▲` `เจรจาเรื่องบ้าน ★`) is negotiate. Any other sentence (`ทองสาปทำให้เขาลังเล ▲`) is weakText, kept when `narrative`
+ * is set (the weak column); in the notes column it stays only in the note.
+ */
+function splitReactions(cell: string, narrative: boolean): Split {
+  const out: Split = { weak: [], resist: [], weakText: [], negotiate: [] };
+  for (const raw of cell.split(/\s+·\s+/)) {
+    const part = raw.trim();
+    if (!part || /^[—–-]$/.test(part)) continue;
+    const paren = part.match(/\(([^)]*)\)\s*$/);
+    const body = paren ? part.slice(0, paren.index).trim() : part;
+    const pairs = [...body.matchAll(PAIR)];
+    const rest = body.replace(PAIR, '').trim();
+    const talk = body.indexOf('เจรจา');
+    if (talk >= 0) {
+      const m = body.slice(talk).match(/^(.*?)\s*([★▲])/);
+      if (m) out.negotiate.push({ text: m[1].trim(), mark: m[2] as Mark });
+      else if (narrative) out.weakText.push({ text: body });
+      continue;
+    }
+    const tags = pairs.map((m) => {
+      const name = m[1].replace(/`/g, '');
+      const tag = TAG_OF(name) ?? (name.startsWith('ทน') ? TAG_OF(name.slice(2)) : null);
+      return { m, name, tag };
+    });
+    if (pairs.length && !rest && tags.every((t) => t.tag)) {
+      for (const t of tags) {
+        const r: Reaction = { tag: t.tag!, name: t.name.replace(/^ทน/, ''), mark: t.m[2] as Mark, ...(paren && tags.length === 1 ? { note: paren[1] } : {}) };
+        (WEAK_MARKS.includes(t.m[2]) ? out.weak : out.resist).push(r);
+      }
+    } else if (narrative) {
+      const m = body.match(/^(.*?)\s*([★▲▼✕])$/);
+      out.weakText.push(m ? { text: m[1].trim(), mark: m[2] as Mark } : { text: body });
+    }
   }
   return out;
 }
+
+const reactionFields = (weakCell: string, resistCell: string, narrative: boolean) => {
+  const w = splitReactions(weakCell, narrative);
+  const r = splitReactions(resistCell, false);
+  return { weak: w.weak.concat(r.weak), resist: w.resist.concat(r.resist), weakText: w.weakText, negotiate: w.negotiate.concat(r.negotiate) };
+};
 
 function kindsAndTraits(cell: string): { kinds: string[]; traits: string[] } {
   const kinds: string[] = [];
@@ -73,24 +129,24 @@ function enemies(): EnemiesData {
   for (const r of recs(t1, ['id', 'name', 'kind', 'tier', 'dc', 'where', 'note'])) {
     const k = kindsAndTraits(r.kind);
     const tr = tierOf(r.tier);
-    out.push({ id: r.id, name: r.name, group: 'code', ...k, ...tr, dc: Number(r.dc), where: r.where, ...whereOf(r.where), weak: reactions(r.note.replace(/ไฟ ★/, 'ไฟ ★')), resist: [], note: r.note, src: src(t1, r._line) });
+    out.push({ id: r.id, name: r.name, group: 'code', ...k, ...tr, dc: Number(r.dc), where: r.where, ...whereOf(r.where), ...reactionFields(r.note, '', false), note: r.note, src: src(t1, r._line) });
   }
   const t2 = findTable(f, /ข\. มอนสเตอร์ใหม่/, 'ID');
   for (const r of recs(t2, ['id', 'name', 'kind', 'tier', 'dc', 'where', 'weak', 'resist', 'attack'])) {
     const k = kindsAndTraits(r.kind);
-    out.push({ id: r.id, name: r.name, group: 'world', ...k, ...tierOf(r.tier), dc: Number(r.dc), where: r.where, ...whereOf(r.where), weak: reactions(r.weak), resist: reactions(r.resist), attack: r.attack, note: '', src: src(t2, r._line) });
+    out.push({ id: r.id, name: r.name, group: 'world', ...k, ...tierOf(r.tier), dc: Number(r.dc), where: r.where, ...whereOf(r.where), ...reactionFields(r.weak, r.resist, true), attack: r.attack, note: '', src: src(t2, r._line) });
   }
   const t3 = findTable(f, /ค\. NPC แบบทั่วไป/, 'ID');
   for (const r of recs(t3, ['id', 'name', 'tier', 'dc', 'stances', 'where', 'talk'])) {
-    out.push({ id: r.id, name: r.name, group: 'npc_generic', kinds: ['humanoid'], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.where, ...whereOf(r.where), weak: [], resist: [], stances: r.stances.split(/\s+/), negotiable: r.talk, note: '', src: src(t3, r._line) });
+    out.push({ id: r.id, name: r.name, group: 'npc_generic', kinds: ['humanoid'], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.where, ...whereOf(r.where), weak: [], resist: [], weakText: [], negotiate: [], stances: r.stances.split(/\s+/), negotiable: r.talk, note: '', src: src(t3, r._line) });
   }
   const t4 = findTable(f, /ง\. NPC ที่มีชื่อ/, 'NPC');
   for (const r of recs(t4, ['id', 'name', 'tier', 'dc', 'weak', 'special', 'opens'])) {
-    out.push({ id: r.id, name: r.name, group: 'npc_named', kinds: ['humanoid'], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.id.slice(0, 2) + '-' + r.id.slice(2, 4), ...whereOf(r.id.slice(0, 2) + '-' + r.id.slice(2, 4)), weak: reactions(r.weak), resist: [], note: r.special, opens: r.opens, src: src(t4, r._line) });
+    out.push({ id: r.id, name: r.name, group: 'npc_named', kinds: ['humanoid'], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.id.slice(0, 2) + '-' + r.id.slice(2, 4), ...whereOf(r.id.slice(0, 2) + '-' + r.id.slice(2, 4)), ...reactionFields(r.weak, r.special, true), note: r.special, opens: r.opens, src: src(t4, r._line) });
   }
   const t5 = findTable(f, /จ\. บอสระดับโลก/, 'ID');
   for (const r of recs(t5, ['id', 'name', 'tier', 'dc', 'event', 'weak', 'note'])) {
-    out.push({ id: r.id, name: r.name, group: 'boss', kinds: [], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.event, continents: [], countries: [], weak: reactions(r.weak), resist: [], event: r.event, note: r.note, src: src(t5, r._line) });
+    out.push({ id: r.id, name: r.name, group: 'boss', kinds: [], traits: [], ...tierOf(r.tier), dc: Number(r.dc), where: r.event, continents: [], countries: [], ...reactionFields(r.weak, r.note, true), event: r.event, note: r.note, src: src(t5, r._line) });
   }
   const seen = new Set<string>();
   for (const e of out) {
@@ -110,6 +166,85 @@ const KIND_OF_OUTCOME: [RegExp, string][] = [
   [/^แพ้/, 'lose'],
   [/^หนี/, 'flee'],
 ];
+
+// ---------- NPC path results in a clash outcome (07-npc-clashes §3 §4) ----------
+const PATH_OF: Record<string, 'a' | 'b' | 'c'> = { ก: 'a', ข: 'b', ค: 'c' };
+const TH_NUM: Record<string, number> = { หนึ่ง: 1, สอง: 2, สาม: 3, สี่: 4, ห้า: 5, สิบ: 10 };
+const THAI = '[฀-๿]';
+/** `เส้น ก)` · `เส้น ก) และ ค)` · `เส้น ก) ข)`: the path letters a phrase names. */
+const PATH_REF = `เส้น\\s*[กขค]\\)(?:\\s*(?:และ|หรือ)\\s*(?:เส้น\\s*)?[กขค]\\)|\\s+[กขค]\\))*`;
+const AMOUNT = `(?:\\s*(หนึ่ง|สอง|สาม|สี่|ห้า|สิบ|\\d+)\\s*(ปี|ฤดู|ทศวรรษ))?`;
+const PATH_OP = new RegExp(
+  `^(?:\\s*(บังคับเกิด|เกิดทันที|เกิดโดย${THAI}*|สำเร็จ(?:โดย${THAI}*)?|เกิด(?!${THAI}))|\\s*(ถูกตัด)(?:ตัวเอง)?|\\s*(?:เดินต่อ|ดำเนินตามเดิม)?\\s*(ช้าลง|ชะลอ)${AMOUNT}|\\s*(?:${THAI}{1,14}\\s+)?น้ำหนัก\\s*(?:×\\s*(\\d+(?:\\.\\d+)?)|([+\\-−])\\s*(\\d+(?:\\.\\d+)?)|เพิ่ม(?:ตามหัวข้อ\\s*3)?|เดิม))`,
+);
+
+/**
+ * Splits the path results ("เส้น ก) บังคับเกิด" "ถูกตัด" "ช้าลงหนึ่งปี" "น้ำหนัก ×2") out of an outcome cell into `npcPath` effects of the clash's own NPC
+ * (no clash row names another NPC's path). Returns the text without those phrases, for the generic effect parser.
+ */
+function pathEffects(text: string, npc: string): { effects: ClashEffect[]; rest: string } {
+  const effects: ClashEffect[] = [];
+  let rest = '';
+  let at = 0;
+  const switchTo = /เส้นเปลี่ยนเป็น\s*([กขค])\)/g;
+  for (const m of text.matchAll(switchTo)) effects.push({ k: 'npcPath', npc, path: PATH_OF[m[1]], op: 'force' });
+  const allCut = /เส้นทุกทางถูกตัด/g;
+  for (const _ of text.matchAll(allCut)) for (const path of ['a', 'b', 'c'] as const) effects.push({ k: 'npcPath', npc, path, op: 'cut' });
+  const body = text.replace(switchTo, ' ').replace(allCut, ' ');
+  const refs = [...body.matchAll(new RegExp(PATH_REF, 'g'))];
+  for (const r of refs) {
+    const start = r.index!;
+    const end = start + r[0].length;
+    if (start < at) continue;
+    const letters = [...r[0].matchAll(/([กขค])\)/g)].map((x) => PATH_OF[x[1]]);
+    const op = body.slice(end).match(PATH_OP);
+    let used = end;
+    if (op) {
+      used = end + op[0].length;
+      for (const path of letters) {
+        if (op[1]) effects.push({ k: 'npcPath', npc, path, op: 'force', ...(/โดย/.test(op[1]) ? { how: 'default' as const } : {}) });
+        else if (op[2]) effects.push({ k: 'npcPath', npc, path, op: 'cut' });
+        else if (op[3]) {
+          const n = op[4] ? (TH_NUM[op[4]] ?? Number(op[4])) * ({ ปี: 1, ฤดู: 0.25, ทศวรรษ: 10 }[op[5]] ?? 1) : undefined;
+          effects.push({ k: 'npcPath', npc, path, op: 'delay', ...(n !== undefined ? { n, unit: 'year' as const } : {}) });
+        } else if (op[6] !== undefined) effects.push({ k: 'npcPath', npc, path, op: 'weight', n: Number(op[6]), unit: 'mul' });
+        else if (op[8] !== undefined) effects.push({ k: 'npcPath', npc, path, op: 'weight', n: (op[7] === '+' ? 1 : -1) * Number(op[8]), unit: 'add' });
+        else if (/เพิ่ม/.test(op[0])) effects.push({ k: 'npcPath', npc, path, op: 'weight' });
+      }
+    }
+    rest += body.slice(at, start) + ' ';
+    at = used;
+  }
+  rest += body.slice(at);
+  return { effects, rest };
+}
+
+/** "`WR-01` น้ำหนัก −10" · "น้ำหนัก `BIO-05` เพิ่ม ×2": a weight change on a world event. */
+function eventWeights(text: string): { effects: ClashEffect[]; rest: string } {
+  const effects: ClashEffect[] = [];
+  const CODE = '`?([A-Z]{2,4}-\\d{2,3})`?';
+  const NUMBER = '(\\d+(?:\\.\\d+)?)';
+  const forms: [RegExp, (m: RegExpMatchArray) => ClashEffect | null][] = [
+    [new RegExp(`${CODE}\\s*น้ำหนัก\\s*×\\s*${NUMBER}`, 'g'), (m) => ({ k: 'eventWeight', id: m[1], delta: 0, mul: Number(m[2]) })],
+    [new RegExp(`น้ำหนัก\\s*${CODE}[^×+\\-−\\d\\n]{0,16}?×\\s*${NUMBER}`, 'g'), (m) => ({ k: 'eventWeight', id: m[1], delta: 0, mul: Number(m[2]) })],
+    [new RegExp(`${CODE}\\s*น้ำหนัก\\s*([+\\-−])\\s*${NUMBER}`, 'g'), (m) => ({ k: 'eventWeight', id: m[1], delta: (m[2] === '+' ? 1 : -1) * Number(m[3]) })],
+    [new RegExp(`น้ำหนัก\\s*${CODE}[^×+\\-−\\d\\n]{0,16}?([+\\-−])\\s*${NUMBER}`, 'g'), (m) => ({ k: 'eventWeight', id: m[1], delta: (m[2] === '+' ? 1 : -1) * Number(m[3]) })],
+  ];
+  let rest = text;
+  for (const [re, make] of forms) {
+    rest = rest.replace(re, (...a) => {
+      const m = a.slice(0, -2) as unknown as RegExpMatchArray;
+      if (!ids.events.has(m[1])) return a[0];
+      const e = make(m);
+      if (e) effects.push(e);
+      return ' ';
+    });
+  }
+  return { effects, rest };
+}
+
+/** Phrases that deny an effect word ("ไม่ทอยบาดแผลถาวร" "ไม่มีบาดแผลถาวร") give no effect. */
+const NEGATED = /ไม่(?:ทอย|มี|เสีย)?\s*บาดแผลถาวร/g;
 
 function clashes(): ClashesData {
   const f = C + '07-npc-clashes.md';
@@ -141,11 +276,15 @@ function clashes(): ClashesData {
       const c = l.split('|').slice(1, -1).map((x) => x.trim());
       const outcome = c[0].replace(/\*/g, '');
       const kind = KIND_OF_OUTCOME.find(([re]) => re.test(outcome))?.[1] ?? '';
-      const p = parseCell(c[1], ids);
+      const pe = pathEffects(c[1], cur.npc);
+      const ew = eventWeights(pe.rest);
+      const p = parseCell(ew.rest.replace(NEGATED, ' '), ids);
       for (const u of p.unparsed) un.add(f, i + 1, u, 'clash outcome');
-      const effects = p.effects
-        .filter((e) => e.k !== 'event' || ids.events.has(e.id))
-        .map((e) => (e.k === 'stat' ? { ...e, stat: e.stat.split(/\s+/).pop()! } : e));
+      const effects: ClashEffect[] = [
+        ...pe.effects,
+        ...ew.effects,
+        ...p.effects.filter((e) => e.k !== 'event' || ids.events.has(e.id)).map((e) => (e.k === 'stat' ? { ...e, stat: e.stat.split(/\s+/).pop()! } : e)),
+      ];
       cur.outcomes.push({ outcome, kind, text: c[1], effects, src: `${rel(f)}:${i + 1}` } as ClashOutcome);
     } else if (inTable && !l.startsWith('|')) inTable = false;
   }

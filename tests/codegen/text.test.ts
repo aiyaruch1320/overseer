@@ -65,3 +65,30 @@ describe('text generator: two rows against the docs', () => {
     expect(readDoc('docs/systems/llm/05-name-bank.md')).toContain('| MR-17 ดาวตก | หนัก | คืน ยาม ค่ำ เที่ยงคืน ดึก ก่อนรุ่ง หัวค่ำ ปลายคืน |');
   });
 });
+
+// ---------- review M0-b fixes: L4 L6 ----------
+describe('ids are clean (L4 L6)', () => {
+  it('no word-bank id has "..." or a group that starts with a dot or a digit', () => {
+    for (const b of N.banks) {
+      expect(b.id, b.id).not.toMatch(/\.\./);
+      expect(b.group, b.id).not.toMatch(/^[.\s\d]/);
+      expect(b.id, b.id).not.toMatch(/^\d+\.\./);
+    }
+  });
+  it('the four banks the review named keep their section number and their group name', () => {
+    const id = (re: RegExp) => N.banks.filter((b) => re.test(b.id));
+    expect(id(/^3\./).map((b) => b.group)).toEqual(Array(12).fill('ปาฏิหาริย์ใหญ่'));
+    expect(id(/^3\./).map((b) => b.key)).toContain('MR-17 ดาวตก / เวลา');
+    expect(id(/^4\./).map((b) => b.id)).toContain('4.ลัทธิจากซาก.เฝ้ารอ.คำ');
+    expect(id(/^6\./).map((b) => b.id)).toContain('6.แผ่นดินใหม่.มอร์เฮเวน.ลักษณะ');
+    expect(N.banks.find((b) => b.id === '6.แผ่นดินใหม่.มอร์เฮเวน.ลักษณะ')!.group).toBe('แผ่นดินใหม่ (MR-20)');
+    expect(new Set(N.banks.map((b) => b.id)).size).toBe(83);
+  });
+  it('no template id has an empty part ("..") and the connectives are numbered by row', () => {
+    for (const t of [...G.templates, ...E.templates]) expect(t.id, t.id).not.toMatch(/\.\./);
+    expect(E.templates.filter((t) => t.family === 'connect_then').map((t) => t.id)).toEqual(Array.from({ length: 12 }, (_, i) => `connect_then.${i + 1}.คำเชื่อม`));
+    expect(E.templates.filter((t) => t.family === 'connect_but').length).toBe(10);
+    expect(E.templates.filter((t) => t.family === 'connect_because').length).toBe(11);
+    expect(E.templates.length).toBe(437);
+  });
+});

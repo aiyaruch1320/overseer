@@ -69,3 +69,39 @@ describe('economy generator: a row against the docs', () => {
     expect(E.wLevels[2]).toMatchObject({ w: 3, name: 'พอเพียง', priceIndex: 1, incomeIndex: 1 });
   });
 });
+
+// ---------- review M0-b fixes: M4 ----------
+describe('trust bands of C do not overlap (M4)', () => {
+  const B = E.trust.bands;
+  const hit = (b: (typeof B)[number], c: number) => (b.min === null || c >= b.min) && (b.lt === null || c < b.lt);
+  const mul = (c: number) => B.filter((b) => hit(b, c)).reduce((m, b) => m * b.priceMul, 1);
+  it('every C from 0 to 100 (halves too) is in exactly one band that does not stack, and in no other unless it stacks', () => {
+    for (let c = 0; c <= 100; c += 0.5) {
+      expect(B.filter((b) => hit(b, c) && !b.stack).length, `C=${c}`).toBe(1);
+      for (const b of B.filter((x) => x.stack)) if (hit(b, c)) expect(c, `C=${c}`).toBeLessThan(15);
+    }
+  });
+  it('"ต่ำกว่า 40" does not take 40, and "40 ถึง 69" ends where "70 ขึ้นไป" starts', () => {
+    expect(B.map((b) => [b.min, b.lt, b.max])).toEqual([
+      [70, null, null],
+      [40, 70, 69],
+      [null, 40, null],
+      [null, 15, null],
+    ]);
+    expect(hit(B[2], 40)).toBe(false);
+    expect(hit(B[2], 39.9)).toBe(true);
+    expect(hit(B[1], 69.5)).toBe(true);
+  });
+  it('"ต่ำกว่า 15" stacks with "ต่ำกว่า 40": both rows apply and the price multiplier is the one of <40', () => {
+    expect(B.map((b) => b.stack)).toEqual([false, false, false, true]);
+    expect(mul(14)).toBe(1.25);
+    expect(mul(39)).toBe(1.25);
+    expect(mul(40)).toBe(1.1);
+    expect(mul(70)).toBe(1);
+    expect(B[3].effect).toContain('ตลาดมืดกลายเป็นตลาดหลัก');
+  });
+  it('the price multipliers are the ones the price rule states', () => {
+    expect([B[1].priceMul, B[2].priceMul]).toEqual([E.priceMods.trustMid, E.priceMods.trustLow]);
+    expect(readDoc('docs/systems/economy/01-world-economy.md')).toContain('×1.1 เมื่อ C 40 ถึง 69 · ×1.25 เมื่อ C ต่ำกว่า 40');
+  });
+});

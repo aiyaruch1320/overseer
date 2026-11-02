@@ -236,6 +236,47 @@ export interface Smith {
   src: string;
 }
 
+/** One way (ก ข ค) through a smith's trial (10-forging.md §5): the cell split into the numbers the director and the roll need. */
+export interface TrialPath {
+  key: 'a' | 'b' | 'c';
+  /** The cell as the doc writes it. */
+  text: string;
+  /** The leading number (the weight of this way among the three) · null for "—" (no such way). */
+  weight: number | null;
+  /** The cell without the weight. */
+  label: string;
+  /** `ทอย pow 13`: the stat and the DC · `what` when the cell names a roll without a DC (`ทอยงานช่าง`). */
+  roll?: { stat?: string; dc?: number; what?: string; bonus: { id: string; delta: number }[]; autoPass: string[] };
+  /** `ไว้ใจ +2` earned. */
+  trust?: number;
+  /** `ไว้ใจทูมิ ≥ 2` needed. */
+  trustReq?: { toward: string; min: number };
+  /** `ทอง +80`. */
+  gold?: number;
+  /** `smithing +1` gained. */
+  skills: { id: string; delta: number }[];
+  /** `(greedy proud ×2)`: this way is ×k as likely for a character with any of these. */
+  weightMods: { ids: string[]; mul: number }[];
+  /** Ids a parenthesis names without a multiplier or a roll: `(knight หรือ loyal_love)` `(liar)`. */
+  traits: string[];
+  /** `ศึก rune_guardian`. */
+  battle: string[];
+  /** `ศึกตามธงโลก`: the enemy comes from the world flags. */
+  battleWorld?: boolean;
+  /** `nb_faith_forge 10%` · `c_oathbreaker ถ้าถูกจับได้`. */
+  grants: { id: string; chance?: number; when?: string }[];
+  /** The way "ถอย": the story ends without a weapon. */
+  retreat?: boolean;
+}
+
+export interface ForgingTrial {
+  id: string;
+  ask: string;
+  a: TrialPath;
+  b: TrialPath;
+  c: TrialPath;
+}
+
 export interface ForgingData {
   steps: { step: string; chain: string; what: string }[];
   need: { cause: string; weight: number; result: string }[];
@@ -245,7 +286,7 @@ export interface ForgingData {
   forgeRules: { key: string; text: string }[];
   smiths: Smith[];
   rumorSources: { source: string; smiths: string }[];
-  trials: { id: string; ask: string; a: string; b: string; c: string }[];
+  trials: ForgingTrial[];
   order: {
     prices: { tier: string; price: number; time: string; who: string }[];
     choices: { key: string; weight: number; text: string }[];

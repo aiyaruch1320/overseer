@@ -4,7 +4,7 @@
 import type { GenReport } from '../run-all';
 import { finish, findTable, nums, num, parts, pct, recs, ruleRows, section, src, statsOf, tagsOf, ticks, dash, mult, rel, tables, Unparsed } from '../helpers-m0b';
 import { versionOf, writeGen, listDocs, readDoc } from '../lib/table';
-import type { Ability, BioMaterial, ForgingData, Item, ItemCat, ItemsData, Material, MaterialsData, Rarity, Weapon, WeaponGroup, WeaponJobSet, WeaponsData, WeaponUi } from '../../../src/core/data/types-items';
+import type { Ability, BioMaterial, ForgingData, ForgingTrial, TrialPath, Item, ItemCat, ItemsData, Material, MaterialsData, Rarity, Weapon, WeaponGroup, WeaponJobSet, WeaponsData, WeaponUi } from '../../../src/core/data/types-items';
 
 const D = 'docs/systems/items/';
 const A = 'docs/appearance/';
@@ -180,6 +180,12 @@ function readMaterials(): Material[] {
   return out;
 }
 
+/** "ตะบองไม้" + "ไม้ป่าเหี่ยว" → "ตะบองไม้ป่าเหี่ยว": the word the weapon already ends with is not said twice (review L3). */
+export function variantName(weapon: string, material: string): string {
+  for (let k = Math.min(weapon.length, material.length); k >= 2; k--) if (weapon.endsWith(material.slice(0, k))) return weapon + material.slice(k);
+  return weapon + material;
+}
+
 function variants(weapons: Weapon[], mats: Material[]): Weapon[] {
   const out: Weapon[] = [];
   for (const w of weapons.filter((x) => x.group === 'standard' && x.materialGroup)) {
@@ -187,7 +193,7 @@ function variants(weapons: Weapon[], mats: Material[]): Weapon[] {
       if (!m.groups.includes(w.materialGroup as 'โลหะ' | 'ไม้') || m.excludes.includes(w.type)) continue;
       out.push({
         id: `${w.id}_${m.id}`,
-        name: `${w.name}${m.name}`,
+        name: variantName(w.name, m.name),
         rarity: m.rarity,
         power: POWER[m.rarity],
         type: w.type,
@@ -524,6 +530,51 @@ function itemsData(items: Item[]): ItemsData {
   return data;
 }
 
+// ---------- forging trial ways ----------
+const sgn = (s: string) => Number(s.replace('−', '-'));
+
+/** `45 เคาะ ทอย `pow` 13 (`smithing` +2 · `ns_anvil_voice` ผ่านเลย) · ผ่าน ไว้ใจ +2` → weight, roll, bonus, trust (10-forging.md §5). */
+function trialPath(key: 'a' | 'b' | 'c', cell: string): TrialPath {
+  const text = cell.trim();
+  const w = text.match(/^(\d+)\s+(.*)$/s);
+  const label = w ? w[2] : text;
+  const out: TrialPath = { key, text, weight: w ? Number(w[1]) : null, label, skills: [], weightMods: [], traits: [], battle: [], grants: [] };
+  let rest = label;
+  const roll = rest.match(/ทอย\s*`([a-z]+)`\s*(\d+)(?:\s*\(([^()]*)\))?/);
+  if (roll) {
+    const bonus: { id: string; delta: number }[] = [];
+    const autoPass: string[] = [];
+    for (const part of (roll[3] ?? '').split(/\s+·\s+/).filter(Boolean)) {
+      const b = part.match(/`([a-z_]+)`\s*([+\-−]\d+)/);
+      const a = part.match(/^(?:`([a-z_]+)`|([฀-๿]+?))\s*ผ่านเลย/);
+      if (b) bonus.push({ id: b[1], delta: sgn(b[2]) });
+      else if (a) autoPass.push(a[1] ?? a[2]);
+    }
+    out.roll = { stat: roll[1], dc: Number(roll[2]), bonus, autoPass };
+    rest = rest.replace(roll[0], ' ');
+  } else {
+    const named = rest.match(/ทอย([฀-๿]+)/);
+    if (named) out.roll = { what: named[1], bonus: [], autoPass: [] };
+  }
+  for (const m of rest.matchAll(/\(([^()]*?)\s*×\s*(\d+(?:\.\d+)?)\)/g)) out.weightMods.push({ ids: ticks(m[1]), mul: Number(m[2]) });
+  for (const m of rest.matchAll(/\(([^()]*)\)/g)) if (!/×/.test(m[1])) out.traits.push(...ticks(m[1]));
+  rest = rest.replace(/\([^()]*\)/g, ' ');
+  const trust = rest.match(/ไว้ใจ\s*\+\s*(\d+)/);
+  if (trust) out.trust = Number(trust[1]);
+  const req = rest.match(/ไว้ใจ([฀-๿]+)\s*≥\s*(\d+)/);
+  if (req) out.trustReq = { toward: req[1], min: Number(req[2]) };
+  const gold = rest.match(/ทอง\s*([+\-−]\d+)/);
+  if (gold) out.gold = sgn(gold[1]);
+  for (const m of rest.matchAll(/`([a-z_]+)`\s*([+\-−]\d+)/g)) out.skills.push({ id: m[1], delta: sgn(m[2]) });
+  for (const m of rest.matchAll(/`((?:nb|ns|nc|c|b|u)_[a-z_]+)`(?:\s*(\d+)%|\s*(ถ้า[^·]*?))?\s*(?:·|$)/g)) {
+    out.grants.push({ id: m[1], ...(m[2] ? { chance: Number(m[2]) / 100 } : {}), ...(m[3] ? { when: m[3].trim() } : {}) });
+  }
+  for (const m of rest.matchAll(/ศึก[^`·]*`([a-z_]+)`/g)) out.battle.push(m[1]);
+  if (/ศึกตามธงโลก/.test(rest)) out.battleWorld = true;
+  if (/^ถอย/.test(label)) out.retreat = true;
+  return out;
+}
+
 // ---------- forging.json ----------
 function forgingData(): ForgingData {
   const f = D + '10-forging.md';
@@ -544,7 +595,7 @@ function forgingData(): ForgingData {
     const trust = r.trial.match(/ไว้ใจ\s*(\d+)/);
     return { npc: npc[1], name: npc[2], place: r.place, makes, material: makes.find((x) => !/^w[a-z]_/.test(x)), trial: r.trial.replace(/\s*\+\s*ไว้ใจ.*/, ''), trust: trust ? Number(trust[1]) : undefined, note: r.makes, src: src(smithT, r._line) };
   });
-  const trials = recs(t(/การทดสอบ/, 'การทดสอบ'), ['id', 'ask', 'a', 'b', 'c']).map((r) => ({ id: r.id, ask: r.ask, a: r.a, b: r.b, c: r.c }));
+  const trials: ForgingTrial[] = recs(t(/การทดสอบ/, 'การทดสอบ'), ['id', 'ask', 'a', 'b', 'c']).map((r) => ({ id: r.id, ask: r.ask, a: trialPath('a', r.a), b: trialPath('b', r.b), c: trialPath('c', r.c) }));
   const roll = t(/การทอย/, 'ส่วน');
   const diff = t(/การทอย/, 'ระดับ');
   const outc = t(/ผลการตี/, 'ผล');

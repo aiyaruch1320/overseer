@@ -66,3 +66,22 @@ describe('attention generator: a row against the doc', () => {
     expect(readDoc('docs/systems/experience/07-attention.md')).toContain('| งบการเรียก | 7 · 8 | 14 · 18 | 0.63 |');
   });
 });
+
+// ---------- review M0-b fixes: L5 ----------
+describe('attention rates say what they count (L5)', () => {
+  it('every rate has a unit; only the prayer tick is per life year', () => {
+    expect(Object.keys(A.ratePer).sort()).toEqual(Object.keys(A.rates).sort());
+    expect(A.ratePer).toEqual({ window: 'life', prayer: 'lifeYear', omen: 'life', majorOmen: 'life', battle: 'life', crisis: 'life' });
+  });
+  it('per life year × life years is the doc count per life ("ราว 16")', () => {
+    expect(A.rates.prayer * A.lifeYears).toBeGreaterThan(14);
+    expect(A.rates.prayer * A.lifeYears).toBeLessThan(17);
+    expect(sim).toContain('RATE.prayer * 75');
+    expect(sim).toContain('4 * (0.8 * 0.035 + 0.2 * 0.105), // per life-year');
+  });
+  it('the per-life rates are the counts the trigger table states', () => {
+    expect(Math.round(A.rates.window)).toBe(5);
+    expect([A.rates.omen, A.rates.battle, A.rates.crisis, A.rates.majorOmen]).toEqual([3.2, 3, 1.5, 0.06]);
+    expect(readDoc('docs/systems/experience/07-attention.md')).toContain('| คำอธิษฐาน | การ์ด | ราว 16 |');
+  });
+});
