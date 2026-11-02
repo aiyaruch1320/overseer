@@ -69,9 +69,18 @@
       "cond": null,
       "effects": [
        {
-        "k": "trust",
-        "toward": "",
-        "delta": 3
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ตัวละครหลักนำหลักฐานจากอีริดานมา"
+        },
+        "then": [
+         {
+          "k": "trust",
+          "toward": "",
+          "delta": 3
+         }
+        ]
        }
       ],
       "events": [],
@@ -68824,14 +68833,29 @@
       "label": "ถูกจับเป็นสายลับ เผ่าบุกตามวันที่กำหนด → WR-03 หรือ WR-07 ตามทวีปปลายทาง",
       "effects": [
        {
-        "k": "event",
-        "id": "WR-03",
-        "open": true
-       },
-       {
-        "k": "event",
-        "id": "WR-07",
-        "open": true
+        "k": "pick",
+        "of": [
+         {
+          "label": "ถูกจับเป็นสายลับ เผ่าบุกตามวันที่กำหนด → WR-03",
+          "effects": [
+           {
+            "k": "event",
+            "id": "WR-03",
+            "open": true
+           }
+          ]
+         },
+         {
+          "label": "WR-07 ตามทวีปปลายทาง",
+          "effects": [
+           {
+            "k": "event",
+            "id": "WR-07",
+            "open": true
+           }
+          ]
+         }
+        ]
        }
       ]
      },

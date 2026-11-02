@@ -1071,17 +1071,32 @@
         "op": "force"
        },
        {
-        "k": "event",
-        "id": "DM-02"
-       },
-       {
-        "k": "event",
-        "id": "DM-06"
-       },
-       {
-        "k": "stat",
-        "stat": "ขุนนางที่บีบเขาแค้นตัวละคร",
-        "delta": 1
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "has",
+           "kind": "unknown",
+           "id": "DM-06"
+          },
+          {
+           "k": "text",
+           "text": "มีผู้กล้าในโลก เปิดโอกาส"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DM-02"
+         },
+         {
+          "k": "stat",
+          "stat": "ไม่เกิดในรอบนี้ ขุนนางที่บีบเขาแค้นตัวละคร",
+          "delta": 1
+         }
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:238"
@@ -4752,8 +4767,17 @@
       "text": "ทหารป้อมจับตัวละครกักหนึ่งฤดู `CT-03` ตรวจพบถ้ามีโรค",
       "effects": [
        {
-        "k": "event",
-        "id": "CT-03"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "มีโรค"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "CT-03"
+         }
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:876"
@@ -4858,9 +4882,18 @@
         "op": "force"
        },
        {
-        "k": "trust",
-        "toward": "",
-        "delta": 2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เรือหลวงล่ม"
+        },
+        "then": [
+         {
+          "k": "trust",
+          "toward": "",
+          "delta": 2
+         }
+        ]
        }
       ],
       "src": "docs/systems/combat/07-npc-clashes.md:902"
