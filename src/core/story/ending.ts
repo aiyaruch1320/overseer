@@ -2,6 +2,7 @@
 // conditions grant, none is announced while it lives, and one is chosen when the character dies. The way it died matters: an ending that
 // is a death in battle needs a death in battle.
 import type { Ctx } from '../game';
+import { hasX, lx } from '../lineage/state';
 import { write } from '../log';
 import { test } from '../rules';
 import type { Condition } from '../types';
@@ -97,7 +98,11 @@ export function chooseEnding(ctx: Ctx): string | undefined {
   if (!life || !life.dead) return undefined;
   const ex = extOf(life);
   if (ex.ended !== undefined) return ex.ended;
-  const list = candidates(ctx);
+  const all = candidates(ctx);
+  // an ending the family earned in an earlier life is not taken again while another is open (heirs/02-no-repeat.md §6; the book of the lineage lists them)
+  const taken = hasX(ctx.state) ? lx(ctx.state).book.endings : [];
+  const fresh = all.filter((c) => !taken.includes(c.title));
+  const list = fresh.length ? fresh : all;
   const pool = list.length ? list : [plainEnding(ctx)].filter((x): x is Candidate => !!x);
   if (!pool.length) return undefined;
   const pick = pool.length === 1 ? pool[0] : pool[Math.max(0, ctx.rng('life.story.ending').weighted(pool.map((c) => c.weight)))];

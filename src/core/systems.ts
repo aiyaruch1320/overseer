@@ -4,6 +4,8 @@ import { attentionSystem } from './attention';
 import { characterSystem } from './character';
 import { combatSystem } from './combat';
 import { economySystem } from './economy';
+import { endingSystem } from './ending';
+import { lineageSystem } from './lineage';
 import { bondageSystem } from './bondage';
 import { bondsSystem } from './bonds';
 import type { System } from './game';
@@ -16,7 +18,7 @@ import { storySystem } from './story';
 import { textSystem } from './text';
 import { worldSystem } from './world';
 
-const list: System[] = [worldSystem, characterSystem, economySystem, bondsSystem, travelSystem, bondageSystem, npcSystem, storySystem, combatSystem, itemsSystem, textSystem, godSystem, godActsSystem, attentionSystem];
+const list: System[] = [worldSystem, characterSystem, economySystem, bondsSystem, travelSystem, bondageSystem, npcSystem, storySystem, combatSystem, itemsSystem, textSystem, godSystem, godActsSystem, attentionSystem, endingSystem, lineageSystem];
 
 export function allSystems(): System[] {
   return [...list];

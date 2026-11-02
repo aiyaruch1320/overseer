@@ -1,7 +1,9 @@
 // One whole life from birth to death, as readable text (docs/guide/code-plan.md §8.0 "สรุปทั้งชีวิต").
 // Same seed and options give the same text. `npm run life` prints it; tests/tools/life.test.ts runs it twice.
 import type { GameData } from '../../src/core/game';
+import { cardOf } from '../../src/core/ending';
 import { calendarYear } from '../../src/core/text';
+import { cardLines } from '../../src/core/text/ending';
 import type { GameState } from '../../src/core/types';
 import { godLines, metNpcs, summaryLines, timeline } from './report';
 import { afterBeat, createSession, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
@@ -40,6 +42,9 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   out.push('');
   out.push('-- สรุป --');
   out.push(...summaryLines(s.data, st, beats));
+  // the card of the ending (docs/systems/experience/03-ending-and-collection.md §1), made by the ending system from the log at the death
+  const card = cardOf(st);
+  if (card) out.push('', '-- การ์ดตอนจบ --', ...cardLines(card));
   const hand = godLines(s.data, st, opts.policy);
   if (hand.length) out.push('', '-- พระหัตถ์ --', ...hand);
   return { text: out.join('\n') + '\n', state: st, beats, notes: s.notes };

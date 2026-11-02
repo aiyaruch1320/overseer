@@ -11,6 +11,7 @@ import type { TemplatesData } from '../data/types-text';
 import { attentionText, godTemplate, godText, type TemplateStyle } from './god';
 import { items, labels, type Labels } from './labels';
 import { endingTail, isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
+import { endingSay, isEnding } from './ending';
 import { hashText as hash, plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
 import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
 import { BOND_LEVEL_TH, MOOD_TH } from './words';
@@ -275,6 +276,10 @@ export class Reader {
 
     if (isM3(e)) {
       const t = m3Say(this.cx(), e);
+      if (t !== undefined) return t;
+    }
+    if (isEnding(e)) {
+      const t = endingSay(e);
       if (t !== undefined) return t;
     }
 

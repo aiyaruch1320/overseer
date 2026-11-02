@@ -17,6 +17,10 @@ import { versions } from '../../src/core/game';
 import type { LogEntry } from '../../src/core/types';
 import { npcsAt } from '../../src/core/npc';
 import { load, save } from '../../src/core/save';
+import { extOf as bondsOf, hAgeOf, isLive, tiesOf } from '../../src/core/bonds';
+import { cardOf, collectionView } from '../../src/core/ending';
+import { nextLife, pickHeir, pickHeirTie, worldSummary } from '../../src/core/lineage';
+import { cardLines, collectionLines, howWord, originWord, worldSummaryLines } from '../../src/core/text/ending';
 import { placeName } from '../../src/core/text';
 import { godLines, timeline, statusLines, worldLines } from './report';
 import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
@@ -101,7 +105,7 @@ function run(cmdText: string): boolean {
   switch (cmd) {
     case 'advance': {
       if (!st.life || st.life.dead) {
-        say('ชีวิตนี้จบแล้ว (ใช้ --new เพื่อเริ่มโลกใหม่ด้วยเมล็ดเดิม)');
+        say('ชีวิตนี้จบแล้ว (ใช้ next เพื่อไปรุ่นต่อไปในโลกเดิม หรือ --new เพื่อเริ่มโลกใหม่ด้วยเมล็ดเดิม)');
         return true;
       }
       say(...god.drop());
@@ -133,15 +137,57 @@ function run(cmdText: string): boolean {
         const waiting = waitingLines(g, data);
         if (waiting.length) say('-- รอท่านอยู่ --', ...waiting);
         const doable = god.doableNow();
-        say(st.life?.dead ? 'ชีวิตนี้จบแล้ว (ใช้ --new เพื่อเริ่มโลกใหม่ด้วยเมล็ดเดิม)' : doable.length ? `ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)` : 'ยังไม่มีพลังใดให้ใช้ตอนนี้ (พิมพ์ advance เพื่อไปต่อ)');
+        say(st.life?.dead ? 'ชีวิตนี้จบแล้ว (ใช้ next เพื่อไปรุ่นต่อไปในโลกเดิม หรือ --new เพื่อเริ่มโลกใหม่ด้วยเมล็ดเดิม)' : doable.length ? `ทำได้ตอนนี้: ${doable.join(' ')} (options เพื่อดูละเอียด)` : 'ยังไม่มีพลังใดให้ใช้ตอนนี้ (พิมพ์ advance เพื่อไปต่อ)');
       }
       if (st.life?.dead) {
         say('-- ชีวิตจบ --', ...statusLines(g.ctx.data, st));
         const hand = godLines(data, st, policyOf(s));
         if (hand.length) say('-- พระหัตถ์ของท่านในชีวิตนี้ --', ...hand);
+        const card = cardOf(st);
+        if (card) say('-- การ์ดตอนจบ --', ...cardLines(card), 'พิมพ์ next เพื่อไปรุ่นต่อไปในโลกเดิม (heirs ดูผู้สืบ · summary สรุปโลก · collection ของสะสม)');
       }
       return true;
     }
+    case 'next': {
+      if (!st.life) return say('ยังไม่มีชีวิต'), true;
+      if (!st.life.dead) return say('ชีวิตนี้ยังไม่จบ (advance เพื่อเดินต่อ)'), true;
+      say(...god.drop());
+      const mark = st.logN;
+      const r = nextLife(g, { newcomer: rest[0] === 'newcomer' || rest[0] === 'คนใหม่' });
+      if (!r.ok) {
+        say(r.reason === 'extinct' ? 'ตระกูลสิ้นสาย: ไม่มีทายาทหรือผู้สืบเรื่อง (เอกสารให้เริ่มโลกใหม่ด้วย --new; พิมพ์ next newcomer เพื่อให้คนใหม่เกิดในโลกเดิมต่อ)' : r.reason === 'world-ended' ? 'โลกจบแล้ว' : `ไปต่อไม่ได้: ${r.reason}`);
+        return true;
+      }
+      say(`-- รุ่นต่อไป · ${originWord(r.origin)} --`, ...seen(mark), '-- สถานะ --', ...statusLines(g.ctx.data, st));
+      const first = st.log.find((e) => e.n >= mark && e.sys === 'attention' && e.kind === 'call' && e.data.call === 'stop');
+      if (first) say(...callLines(data, first, !!args.dev, g));
+      return true;
+    }
+    case 'heirs': {
+      if (!st.life) return say('ยังไม่มีชีวิต'), true;
+      const heir = pickHeir(g.ctx);
+      const kids = tiesOf(bondsOf(st.life)).filter((t) => isLive(t) && (t.kin === 'child' || t.kin === 'adopted'));
+      say('-- ผู้สืบ --', heir ? `ผู้สืบตอนนี้: ${heir.name} (${howWord(heir.how)} อายุ ${heir.age}) รหัส ${heir.tie ?? '-'}` : 'ตอนนี้ไม่มีผู้สืบ (next newcomer ให้คนใหม่เกิดในโลกเดิม)');
+      for (const k of kids) say(`  ${k.id} ${k.name} (${k.kin === 'adopted' ? 'ลูกบุญธรรม' : 'ลูก'} อายุ ${Math.floor(hAgeOf(g.ctx, k))})`);
+      say('เลือกผู้สืบด้วย heir <รหัส> ก่อน next (ไม่เลือก = คนโต)');
+      return true;
+    }
+    case 'heir': {
+      if (!st.life) return say('ยังไม่มีชีวิต'), true;
+      say(pickHeirTie(g.ctx, rest[0]) ? (rest[0] ? `เลือก ${rest[0]} เป็นผู้สืบแล้ว` : 'ยกเลิกการเลือก ใช้คนโต') : `${rest[0]} ไม่ใช่ลูกที่ยังมีชีวิต (heirs ดูรายการ)`);
+      return true;
+    }
+    case 'card': {
+      const card = cardOf(st);
+      say(...(card ? ['-- การ์ดตอนจบของชีวิตล่าสุด --', ...cardLines(card)] : ['ยังไม่มีชีวิตที่จบ']));
+      return true;
+    }
+    case 'summary':
+      say(...worldSummaryLines(worldSummary(st, data)));
+      return true;
+    case 'collection':
+      say(...collectionLines(collectionView(st, data)));
+      return true;
     case 'status':
       say('-- สถานะ --', ...statusLines(g.ctx.data, st));
       return true;
@@ -164,6 +210,7 @@ function run(cmdText: string): boolean {
     case 'help':
       say(
         'คำสั่ง: advance [N] (N จังหวะ; ไม่ใส่ = จนเกมเรียก) · status · log [N] · npcs · world (ตัวเลขของโลก สำหรับดีบัก) · help · quit',
+        'หลังชีวิตจบ: next [newcomer] (รุ่นต่อไปในโลกเดิม; newcomer = ถ้าตระกูลสิ้นให้คนใหม่เกิดต่อ) · heirs / heir <รหัส> (ดู/เลือกผู้สืบ) · card (การ์ดตอนจบ) · summary (สรุปโลก) · collection (ของสะสม)',
         ...godHelp(),
         'ตัวเลือก: --yes ทำคำสั่งพระเจ้าทันทีหลังตัวอย่างผล · --dev แสดงช่องที่เครื่องมือยังไม่มีคำพูด · --policy=<นโยบาย> ให้ระบบพระเจ้าเล่นแทนทุกจังหวะ (ติดอยู่ในเซฟ ใช้ --policy=ไม่มี เพื่อปิด)',
         'คำที่เกมใช้: จังหวะ = หนึ่งในสี่ของปีชีวิต (หนึ่งฤดู) · ปีชีวิต = อายุของตัวละคร · ศ.ม. = ศักราชมังกร นับจากวันที่พระเจ้าตื่น (ปีของโลก) · แสงศรัทธา = พลังสายสร้าง · ความหวาดกลัว = พลังสายทำลาย · ศรัทธาเทพ = ความเชื่อของตัวละครที่มีต่อท่าน · ภาระใจ = ความตึงของใจเมื่อถูกฝันให้ทำขัดนิสัย · หน้าต่างพระเจ้า = ช่วงที่ราคาลด ×0.7',
