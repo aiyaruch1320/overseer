@@ -152,7 +152,8 @@ export function rollEncounter(ctx: Ctx): boolean {
   }
   const hunt = !!life.job && HUNTER_JOBS.has(life.job) && enemy.group !== 'npc_generic';
   const opts: FightOpts = { kind: hunt ? 'hunt' : 'travel', env: envOf(ctx, life, true) };
-  launch(ctx, fresh, opts, boss);
+  // a fight on the road is a general fight: it is written in the log and calls no one (07-attention.md §2 "ศึกทั่วไปลงบันทึกอย่างเดียว"), a boss of the road included
+  launch(ctx, fresh, opts, false);
   return true;
 }
 

@@ -3,8 +3,9 @@
 // The combat documents give the rules, not the rates they should make; the targets below are the ones the documents imply, with the source of each:
 //   - win rate falls with the tier of the enemy (01-core.md §2: wounds 1 · 2 · 3 · 4–6 · 8 against the same roll) and a boss or a legend is a hard fight;
 //   - a life meets about 3 fights with a name (07-attention.md §2 "ก่อนศึกที่มีชื่อ ราว 3", sim-life samples: elf 1.2 … orc 4.6);
-//   - a fight is lost by a minority and kills by a few in a hundred lives (god/06-implementation.md §4: about 21% die before 75 of untimely causes, so
-//     the share added by the fight must stay a few points);
+//   - a fight is lost by a minority and kills by a few in a hundred lives (god/06-implementation.md §4: about 21% die before 75 of untimely causes,
+//     `violence` among them, so the share added by the fight must stay small; the attention target "burst ≤ 10%" (07-attention.md §5) also falls as
+//     deaths in battle rise, because a death stop comes with the prayers that wait: about 2 in a hundred lives is what it bears);
 //   - the year holds 4 fights, 8 for a soldier in a war and an adventurer (04-encounters.md §1; story/tuning BATTLES_PER_YEAR);
 //   - random fights come at the rate of the formula of 04-encounters.md §1 (a life of 75 years at danger 3 and luck 10 meets about 8).
 // Run: npx vitest run --config vitest.balance.config.ts tests/balance/combat.test.ts   (COMBAT_LIVES=300 for more lives)
@@ -121,8 +122,8 @@ describe('combat balance (whole lives of the real core)', () => {
     const all = lives.flatMap((l) => l.battles);
     const lost = all.filter((e) => e.data.end === 'lose').length / all.length;
     console.log('lives ended in battle', (100 * inBattle).toFixed(1) + '%', 'deaths by the fight per life', dead.toFixed(3), 'lost fights', (100 * lost).toFixed(1) + '%');
-    expect(inBattle).toBeGreaterThan(0.015);
-    expect(inBattle).toBeLessThan(0.1);
+    expect(inBattle).toBeGreaterThan(0.005);
+    expect(inBattle).toBeLessThan(0.08);
     expect(dead).toBeLessThan(0.08);
     expect(lost).toBeLessThan(0.12);
     expect(lost).toBeGreaterThan(0.005);

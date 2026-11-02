@@ -514,7 +514,7 @@ describe('wounds and death (01-core.md §5, §7)', () => {
     let lost = 0;
     for (let i = 0; i < 80; i++) {
       fresh(m.ctx, m.life);
-      combatOf(m.life).hp = 20; // one blow of a troll (9) leaves 11; the next leaves him yielding, never dead
+      combatOf(m.life).hp = 20; // one blow of a troll (9) leaves 11, below the share at which he yields: lost, never dead
       const r = fight(m.ctx, ['troll'], { log: false })!;
       expect(r.result).not.toBe('dead');
       if (r.result === 'lose') {

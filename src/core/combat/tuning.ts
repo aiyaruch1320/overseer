@@ -11,7 +11,7 @@ export const STREAM = { fight: 'life.combat', encounter: 'life.combat.enc', loot
 /** Maximum hit points: 40 + vit × 4 (the base code), plus `hp+n` of gifts (character ext hpBonus). */
 export const HP = { base: 40, perVit: 4, regenPerBeat: 3, regenTag: 6, floor: 10 };
 /** A hero at or below this share of maximum hit points yields: the fight is lost (01-core.md §7 "แพ้: hp เหลือน้อย"; assumption for the share). */
-export const YIELD_AT = 0.12;
+export const YIELD_AT = 0.2;
 /** hp below this share: −2 to the roll, flee ×2 (01-core.md §4 and §6; the data rows say 30%). */
 export const LOW_HP = 0.3;
 /** Hit points a last-stand rescue leaves (legacy: `b_laststand` hp 10), `rewind` (half), `guardian_angel` (15, 50%). */
