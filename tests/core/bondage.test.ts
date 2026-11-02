@@ -415,12 +415,14 @@ describe('bondage: the held person of year five (§8 "ถ้าถือต่�
       if (!h) continue;
       h.since = 20;
       life.hAge = 24;
+      let taken = false;
       for (let i = 0; i < 12; i++) {
         life.hAge++;
         lifeYear(ctx, life);
+        if (e.level > 0) taken = true;
       }
-      // a life that was taken itself (a raid in a land at war) stops counting the years of the held
-      if (e.level > 0) continue;
+      // a life that was taken itself at any time (a raid in a land at war) stops counting the years of the held while it is held
+      if (taken) continue;
       if (h.gone === 'fled') fled++;
       if (e.counts.sued > 0) sued++;
       expect(h.trust).toBeGreaterThanOrEqual(-5);
