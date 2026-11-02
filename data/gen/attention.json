@@ -198,6 +198,14 @@
    "battle": 3,
    "crisis": 1.5
   },
+  "ratePer": {
+   "window": "life",
+   "prayer": "lifeYear",
+   "omen": "life",
+   "majorOmen": "life",
+   "battle": "life",
+   "crisis": "life"
+  },
   "ageStops": [
    5,
    15,

@@ -73,6 +73,9 @@ export default function run() {
     crisis: per('วิกฤตขั้น 3'),
   };
 
+  // The unit of each rate: the prayer tick is per life year (sim-attention multiplies it by 75); the rest are counts per whole life.
+  const ratePer = { window: 'life', prayer: 'lifeYear', omen: 'life', majorOmen: 'life', battle: 'life', crisis: 'life' } as const;
+
   const targets = goal.rows.map((r) => {
     const n = nums(r.cells[1]);
     return { what: r.cells[0], value: r.cells[1], min: /ถึง/.test(r.cells[1]) ? n[0] : null, max: /ไม่เกิน/.test(r.cells[1]) ? n[0] : /ถึง/.test(r.cells[1]) ? n[1] : null };
@@ -86,6 +89,7 @@ export default function run() {
     settings,
     deadlines,
     rates,
+    ratePer,
     ageStops: nums(t('จุดหยุดตามอายุ').cells[0]),
     lifeMinutes: { min: 25, max: 45, sim: 35 },
     lifeYears: 75,

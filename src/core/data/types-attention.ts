@@ -24,6 +24,8 @@ export interface AttentionData {
   deadlines: Record<string, number>;
   /** Trigger rates the sim builds one life from. */
   rates: { window: number; prayer: number; omen: number; majorOmen: number; battle: number; crisis: number };
+  /** What `rates` counts: `life` = per whole life (75 life years) · `lifeYear` = per life year (the prayer tick; ×75 for a life, doc §2 "ราว 16"). */
+  ratePer: Record<'window' | 'prayer' | 'omen' | 'majorOmen' | 'battle' | 'crisis', 'life' | 'lifeYear'>;
   ageStops: number[];
   lifeMinutes: { min: number; max: number; sim: number };
   lifeYears: number;
