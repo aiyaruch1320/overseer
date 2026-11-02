@@ -358,12 +358,12 @@ describe('text: what the player is told and not told', () => {
     expect(mood.level).toBe(1);
   });
 
-  it('shows NPC lines only for NPCs the character met or that live in the character’s country (T5)', () => {
+  it('shows the death, heir or end of a holder the character met, and meetings in the character’s country (T5, round 2)', () => {
     const npc = (n: number, id: string, place: string, what: string) => at(n, { id, data: { what, holder: 'ไอรัสวาร์', role: 'ผู้นำ', place, age: 70, cause: 'ชราภาพ', from: 'x' } });
     const npcLines = (log: LogEntry[]) => lines(data, log).filter((l) => l.sys === 'npc');
-    // another country, never met: nothing; in the country of the character: shown
+    // a stranger's death is not news, in another country or in the character's own
     expect(npcLines([birth, named, npc(3, 'MH04-1', 'MH-04', 'die')])).toHaveLength(0);
-    expect(npcLines([birth, named, npc(3, 'AL01-2', 'AL-01', 'die')])).toHaveLength(1);
+    expect(npcLines([birth, named, npc(3, 'AL01-2', 'AL-01', 'die')])).toHaveLength(0);
     // met earlier: shown wherever he is
     const met = at(4, { id: 'MH04-1', level: 2, data: { what: 'meet', holder: 'ไอรัสวาร์', role: 'ผู้นำ', place: 'MH-04' } });
     expect(npcLines([birth, named, met, npc(5, 'MH04-1', 'MH-04', 'die')])).toHaveLength(2);
@@ -374,7 +374,8 @@ describe('text: what the player is told and not told', () => {
   it('joins a holder’s death and the succession of the same year in one line', () => {
     const die = at(3, { id: 'AL01-2', data: { what: 'die', holder: 'ไอรัสวาร์ที่ 1', role: 'ผู้นำ', place: 'AL-01', age: 70, cause: 'ชราภาพ' } });
     const next = at(4, { id: 'AL01-2', data: { what: 'succeed', holder: 'ไอรัสวาร์ที่ 2', role: 'ผู้นำ', place: 'AL-01', from: 'ไอรัสวาร์ที่ 1' } });
-    const ls = lines(data, [birth, named, die, next]).filter((l) => l.sys === 'npc');
+    const met = at(2, { id: 'AL01-2', level: 2, data: { what: 'meet', holder: 'ไอรัสวาร์ที่ 1', role: 'ผู้นำ', place: 'AL-01' } });
+    const ls = lines(data, [birth, named, met, die, next]).filter((l) => l.sys === 'npc' && !l.text.includes('ได้พบ'));
     expect(ls).toHaveLength(1);
     expect(ls[0].text).toContain('ไอรัสวาร์ที่ 1');
     expect(ls[0].text).toContain('ไอรัสวาร์ที่ 2');

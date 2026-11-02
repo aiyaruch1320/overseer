@@ -103,6 +103,10 @@ export class Reader {
   name = '';
   country = '';
   readonly met = new Set<string>();
+  /** Holders the character met by name: a slot passes to heirs, and a stranger's death or heir is not news (review M1 round 2). */
+  readonly metHolders = new Set<string>();
+  /** Life years that already told a meeting: one meeting line a year, the rest wait in the list of people met. */
+  private readonly meetYears = new Set<number>();
   /** The last story node played, for a death caused by a node. */
   private node: { id: string; title: string; year: number } | undefined;
   private readonly L: Labels;
@@ -136,14 +140,28 @@ export class Reader {
       if (s(d.country)) this.country = s(d.country);
     }
     if (e.sys === 'character' && e.kind === 'birth' && s(d.country)) this.country = s(d.country);
-    if (e.sys === 'npc' && d.what === 'meet' && e.id) this.met.add(e.id);
+    if (e.sys === 'npc' && d.what === 'meet' && e.id) {
+      // the first holder of a slot the character meets is the person known; the heirs that follow are the slot going on
+      if (!this.met.has(e.id) && s(d.holder)) this.metHolders.add(s(d.holder));
+      this.met.add(e.id);
+    }
     if (e.sys === 'story' && e.kind === 'node') this.node = { id: s(e.id), title: s(d.title) || this.nm(e.id), year: e.worldYear };
   }
 
-  /** NPC lines are for NPCs the character met or that live in the character's country (T5). */
+  /**
+   * NPC lines are for people the character knows (T5): a meeting in the character's country, and the death, heir or end of
+   * the story of a holder the character met in person. Successions of a slot whose holders were never met stay out.
+   */
   private knows(e: LogEntry): boolean {
     if (this.opts.raw || !this.country) return true;
-    return (e.id !== undefined && this.met.has(e.id)) || s(e.data.place) === this.country;
+    const what = s(e.data.what);
+    if (what === 'die' || what === 'succeed' || what === 'end') return this.metHolders.has(s(e.data.holder)) || this.metHolders.has(s(e.data.from));
+    if (what !== 'meet') return (e.id !== undefined && this.met.has(e.id)) || s(e.data.place) === this.country;
+    // a meeting is always news (the character was there), one a life year
+    if (e.age === undefined) return true;
+    if (this.meetYears.has(e.age)) return false;
+    this.meetYears.add(e.age);
+    return true;
   }
 
   private say(e: LogEntry): string | null {
@@ -153,7 +171,7 @@ export class Reader {
     const data = this.data;
 
     if (e.sys === 'npc' && e.kind === 'npc') {
-      if (d.what !== 'meet' && !this.knows(e)) return null;
+      if (!this.knows(e)) return null;
       const who = scrub(data, s(d.holder));
       const role = d.role ? ` (${scrub(data, s(d.role))})` : '';
       const where = at(d.place);
