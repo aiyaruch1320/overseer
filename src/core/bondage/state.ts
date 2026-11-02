@@ -43,6 +43,10 @@ export interface BondageExt {
   /** He decided to buy his freedom (bd.a2 way a). */
   ransoming?: boolean;
   born?: boolean;
+  /** The class number he had when he fell into bondage: the class he gets back whichever way he leaves (10-bondage.md §6, M3 review R1). */
+  classBefore?: number;
+  /** The debt he started with at B1, which the wages clear (what `bondage/exit` of a paid-off debt tells as `paid`). */
+  debt0?: number;
   held: Held[];
   /** The bound person who asked the character for help (the `ab` line): his name, the roster position that stands for him, and where his story is. */
   helpee?: { name: string; npc?: string; level: 'B2' | 'B3'; skill: number; freed?: boolean; allied?: boolean; hidden?: boolean };

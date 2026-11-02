@@ -626,7 +626,7 @@ describe('a life in bondage (10-bondage.md §2, M3 review B1)', () => {
     expect(life.cls).toBe('c1');
   });
 
-  it('does not change its own work at B2 and B3; B1 keeps a say; the first work an owner gives, and the owner\'s own hand, are allowed', () => {
+  it('does not change its own work at B2 and B3; B1 keeps a say; the work an owner gives, and the owner\'s own hand, are allowed', () => {
     const { ctx, life } = born(32, { race: 'human' });
     life.job = 'farmer';
     for (const level of [2, 3]) {
@@ -645,9 +645,15 @@ describe('a life in bondage (10-bondage.md §2, M3 review B1)', () => {
     expect(grantJob(ctx, 'farmer', { sys: 'story', id: 'x' }, { force: true })).toBe(true);
     bound(life, 0);
     expect(grantJob(ctx, 'smith', { sys: 'story', id: 'x' }, { force: true })).toBe(true);
-    // a life with no work yet is given some, bound or not
+    // a life with no work yet takes none of his own at B2 or B3 (M3 review R3): the work is the contract's, and only the bondage system gives it
     life.job = undefined;
     bound(life, 2);
+    expect(grantJob(ctx, 'farmer', { sys: 'character', id: 'offer' }, { force: true })).toBe(false);
+    expect(life.job).toBeUndefined();
+    expect(grantJob(ctx, 'woodcutter', { sys: 'bondage', id: 'work' }, { force: true })).toBe(true);
+    // B1 and the free are offered work at twenty
+    life.job = undefined;
+    bound(life, 1);
     expect(grantJob(ctx, 'farmer', { sys: 'character', id: 'offer' }, { force: true })).toBe(true);
   });
 

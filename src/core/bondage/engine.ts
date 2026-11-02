@@ -8,11 +8,14 @@ import type { LifeState } from '../types';
 import type { StanceId } from '../data/types-bondage';
 import { idx as characterIdx } from '../character/data';
 import { setClass } from '../character/life';
+import { classNum } from '../character/data';
+import { contractWork } from '../character/jobs';
 import { addNpcTie, addTie, extOf as bondsExt, startArc } from '../bonds';
 import { personName, peopleCode } from '../text';
 import { holderPlace, rowOf, slotOf } from '../bonds/npcs';
 import { syncLine } from './line';
 import { bondageIndex, extOf, stanceOf, type BondageExt, type Held, type Level } from './state';
+import { ADULT_AGE } from '../character/tuning';
 import { CONTRACT_YEARS, ENTRY, FLEE, HOLD_INCOME, OPEN, OWNER_DIES, RANSOM_AFTER_YEARS, RELEASED, SALE_MARGIN, SKILL, WAGE_B1 } from './tuning';
 
 const levelN = (id: string): Level => Number(id.slice(1)) as Level;
@@ -98,13 +101,19 @@ export function enter(ctx: Ctx, life: LifeState, route: string, level: 1 | 2 | 3
   e.fund = 0;
   e.ransoming = false;
   e.owner = personName(ctx.rng('bondage.names'), { people: peopleCode(ctx, life.race), gender: rng.chance(0.5) ? 'm' : 'f', continent: country.slice(0, 2) });
-  if (lv === 1) e.debt = rng.int(20, 150);
+  e.classBefore = classNum(life);
+  if (lv === 1) {
+    e.debt = rng.int(20, 150);
+    e.debt0 = e.debt;
+  }
   if (lv === 2) e.years = rng.int(CONTRACT_YEARS[0], CONTRACT_YEARS[1]);
   e.price = ransomPrice(ctx, lv, country, { skill: e.skill, debt: e.debt, years: e.years });
   e.counts.entered++;
   e.history.push({ age: life.hAge, from: 0, to: lv, how: route });
   if (country !== from) life.country = country;
   setClass(ctx, life, 1, 'bondage');
+  // B2 and B3 do the work of the contract (§6), from twenty, the age of the first work; before that the child has none to change
+  if (lv >= 2 && life.hAge >= ADULT_AGE) contractWork(ctx, life);
   if (!e.opened.includes('bd')) {
     e.opened.push('bd');
     openLine(ctx, 'bd');
@@ -120,24 +129,38 @@ export type ExitWay = 'ransom' | 'freed' | 'released' | 'fled' | 'term' | 'debt'
 
 const EXIT_NAME: Record<ExitWay, string> = { ransom: 'ไถ่ตัวเอง', freed: 'ถูกไถ่', released: 'ถูกปล่อย', fled: 'หนีข้ามแดน', term: 'ครบกำหนด', debt: 'ชำระหนี้ครบ', owner: 'ตายพันธะ' };
 
+/** The lowest class of a free person: B1 to B3 are the class 1 together (§2) and every way out of them is the step 1 to 2 of economy/03-classes.md §5. */
+const FREE_CLASS_MIN = 2;
+
 /**
- * The character is free (B0). Buying one's own freedom lifts the class by one step when he has work (§6 row 1). `paid` is the gold the ransom took from the
- * purse (M3 review B3), which the log tells with the purse left.
+ * The character is free (B0) by any way out of §6, and gets back the class he would have: the one he had before bondage, and not under the step out of
+ * class 1 (M3 review R1; the rows of §6 all say "เป็น B0", and the class 1 of bondage is not a class a free man keeps). `paid` is the gold that left the purse
+ * for the ransom (M3 review B3), which the log tells with the purse left; a paid-off B1 debt carries the debt that the wages cleared (`paid`, `payBy: 'wage'`).
  */
 export function leave(ctx: Ctx, life: LifeState, how: ExitWay, paid = 0): boolean {
   const e = extOf(life);
   if (e.level === 0) return false;
   const from = e.level;
+  const debt0 = e.debt0;
   e.level = 0;
   e.history.push({ age: life.hAge, from, to: 0, how });
   e.counts.exits++;
   e.debt = undefined;
+  e.debt0 = undefined;
   e.years = undefined;
   e.ransoming = false;
-  const up = how === 'ransom' && !!life.job;
-  if (up) apply(ctx, [{ k: 'stat', stat: 'class', delta: 1 }], { sys: 'bondage', id: 'exit' });
+  const wage = how === 'debt' && paid === 0 && !!debt0;
+  const now = classNum(life);
+  const to = Math.max(e.classBefore ?? 1, FREE_CLASS_MIN);
+  if (to > now) setClass(ctx, life, to, 'bondage.exit');
+  const steps = Math.max(0, classNum(life) - now);
+  e.classBefore = undefined;
   syncLine(ctx, life);
-  write(ctx.state, { sys: 'bondage', kind: 'exit', id: how, data: { way: EXIT_NAME[how], from, classUp: up, paid, gold: life.gold, owner: e.owner ?? null, years: life.hAge - (e.since ?? life.hAge) }, level: 2 });
+  write(ctx.state, {
+    sys: 'bondage', kind: 'exit', id: how,
+    data: { way: EXIT_NAME[how], from, classUp: steps === 1, classSteps: steps, paid: wage ? debt0! : paid, payBy: wage ? 'wage' : paid > 0 ? 'purse' : 'none', gold: life.gold, owner: e.owner ?? null, years: life.hAge - (e.since ?? life.hAge) },
+    level: 2,
+  });
   return true;
 }
 
@@ -268,13 +291,13 @@ export function heldIncomeBonus(ctx: Ctx): number {
 // ---------- a life year ----------
 
 /**
- * Can the bound character pay his ransom out of the purse now? He sets out to when he decided to (bd.a2 way a); otherwise he thinks of it when he is grown (26)
- * and has been bound some years (tuning RANSOM_AFTER_YEARS: "ใช้เวลาหลายปี", bd.a2); B1 pays the debt that is left only when he decided.
+ * Can the bound character pay his ransom out of the purse now? He sets out to when he decided to (bd.a2 way a); otherwise he does when he has been bound
+ * RANSOM_AFTER_YEARS and the gold is enough (10-bondage.md §7 "ไถ่เองเมื่อถูกผูกครบ 4 ปีและทองพอ"), whatever his age and level: the doc has no other rule.
  */
 export function canRansom(life: LifeState, e: BondageExt): boolean {
   if (e.level === 0 || e.price <= 0 || life.gold < e.price) return false;
   if (e.ransoming) return true;
-  return e.level >= 2 && life.hAge >= 26 && life.hAge - (e.since ?? life.hAge) >= RANSOM_AFTER_YEARS;
+  return life.hAge - (e.since ?? life.hAge) >= RANSOM_AFTER_YEARS;
 }
 
 /** Once a year: the bound person pays down, the contract runs, the owner may die or let go; the free one may fall into bondage or open a line. */

@@ -537,6 +537,22 @@ describe('the year in one line and the shares of a battle (M3 review T1, C2)', (
     expect(d.debtChange).not.toBe(0);
   });
 
+  it('tells the gold paid on a debt in its own field `debtPaid`, and the catch-all `loss` does not hold it (M3 review R4)', () => {
+    const rich = quiet(31, 8);
+    rich.life.gold = 200;
+    extOf(rich.life).debt = 30;
+    economyYear(rich.ctx);
+    let d = yearLines(rich.g)[0].data;
+    expect(Number(d.debtPaid)).toBeGreaterThanOrEqual(30);
+    expect(Number(d.debt)).toBe(0);
+    expect(Number(d.loss)).toBe(0);
+    expect(String(d.why)).toContain('debt');
+    const free = quiet(32, 8);
+    economyYear(free.ctx);
+    d = yearLines(free.g)[0]?.data ?? { debtPaid: 0 };
+    expect(Number(d.debtPaid)).toBe(0);
+  });
+
   it('writes a ledger line every tenth year whatever happened, with the numbers the text tells: income, wage, tax, living, net, purse, debt', () => {
     const { g, ctx, life } = quiet(40);
     economyYear(ctx);

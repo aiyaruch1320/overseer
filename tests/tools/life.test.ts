@@ -165,7 +165,7 @@ describe('status after the systems of M3', () => {
 
 describe('status tells the partner and the children (M3 text)', () => {
   it('lists the partner, and each child with age, stage and the other parent', () => {
-    const s = createSession(data, { seed: 90 });
+    const s = createSession(data, { seed: 92 });
     startLife(s);
     for (let i = 0; i < 4 * 55; i++) s.game.beat();
     const text = statusLines(data, s.game.state).join('\n');
