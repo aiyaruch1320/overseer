@@ -14,6 +14,8 @@ export interface StoryExt {
   open: Record<string, boolean>;
   /** Node → hAge it fires at, drawn when the node first becomes due. */
   fire: Record<NodeId, number>;
+  /** Node → the first hAge it could have played (its turn came), so a node that waits for a free year is counted from there. */
+  due: Record<NodeId, number>;
   /** Nodes that never played (their condition failed, a jump went over them, another node stood in). */
   skipped: NodeId[];
   /** Jump: years earlier than its table age a node may fire. */
@@ -56,7 +58,7 @@ export interface StoryExt {
 
 export function fresh(): StoryExt {
   return {
-    line: '', start: 0, open: {}, fire: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
+    line: '', start: 0, open: {}, fire: {}, due: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
     seen: { npcs: [], events: [], pivots: [] }, jobpaths: [], places: [], endings: [], endingLines: {}, levels: {}, battles: { win: 0, lose: 0, flee: 0 }, checks: [], external: [],
     queue: [], year: { age: -1, nodes: 0, battles: 0, fought: [] },
   };
@@ -79,6 +81,7 @@ export function extOf(life: LifeState): StoryExt {
   e.seen.pivots ??= f.seen.pivots;
   e.endingLines ??= f.endingLines;
   e.queue ??= f.queue;
+  e.due ??= f.due;
   e.year ??= f.year;
   return e;
 }

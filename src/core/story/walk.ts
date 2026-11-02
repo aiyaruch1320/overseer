@@ -108,10 +108,15 @@ function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boole
     if (!decideOpen(ctx, ex, ix, line)) return;
     const when = (ex.fire[n.id] ??= ctx.rng('life.story').int(Math.min(Math.max(span.lo, life.hAge), span.hi), span.hi));
     if (life.hAge < when) return;
-    // the year is full: the node waits for the next one, a few years past its table age at most; the closing nodes of the race line never wait
-    if (!room(ex, life) && life.hAge < span.hi + SLIP_YEARS && life.hAge < lastYearOf(life) && !(line === ex.line && n.stage === 'e')) {
-      ex.fire[n.id] = life.hAge + 1;
-      return;
+    // the year is full: the node waits for the next one, a few years past its table age (or past the year it first came due) at most;
+    // the closing nodes of the race line never wait, and a node that would wait past the last year of the life is lost with it
+    if (!room(ex, life) && !(line === ex.line && n.stage === 'e')) {
+      const due = (ex.due[n.id] ??= life.hAge);
+      if (life.hAge >= lastYearOf(life)) return skip(ctx, ex, n.id, 'year');
+      if (life.hAge < Math.max(span.hi, due) + SLIP_YEARS) {
+        ex.fire[n.id] = life.hAge + 1;
+        return;
+      }
     }
     fireNode(ctx, ex, ix, n);
   }
