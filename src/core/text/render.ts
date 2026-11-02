@@ -10,8 +10,10 @@ import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
 import { attentionText, godTemplate, godText, type TemplateStyle } from './god';
 import { items, labels, type Labels } from './labels';
+import { isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
 import { plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
 import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
+import { BOND_LEVEL_TH, MOOD_TH } from './words';
 
 type D = LogEntry['data'];
 
@@ -79,12 +81,13 @@ export function questionOf(data: GameData, race: string | undefined): string {
 // ---------- what the player sees at which level ----------
 
 /**
- * The level a line is shown at. Mood lines per bond line and the bond templates are written to the log (the bond system of M3
- * will read them) but mean nothing to the player until there is someone behind them (review M1 T4), so they are trace here.
+ * The level a line is shown at. The mood lines of the story and its bond templates mean nothing to the player until the bond system has a
+ * person behind them (review M1 T4): they are trace, unless `bondLines` (the lines the reader has seen a bond on) holds the line. The small lines
+ * of the systems of M3 are trace too (`m3Level`).
  */
-export function displayLevel(e: LogEntry): LogLevel {
-  if (e.sys === 'story' && (e.kind === 'mood' || e.kind === 'bond' || e.kind === 'template')) return 0;
-  return e.level;
+export function displayLevel(e: LogEntry, bondLines?: ReadonlySet<string>): LogLevel {
+  if (e.sys === 'story' && (e.kind === 'mood' || e.kind === 'bond' || e.kind === 'template')) return e.kind !== 'template' && bondLines?.has(s(e.id)) ? e.level : 0;
+  return isM3(e) ? m3Level(e) : e.level;
 }
 
 export interface ReadOpts {
@@ -108,6 +111,10 @@ export class Reader {
   readonly metHolders = new Set<string>();
   /** Life years that already told a meeting: one meeting line a year, the rest wait in the list of people met. */
   private readonly meetYears = new Set<number>();
+  /** The lines (`สหาย`) the character has a bond on, as the bond system told them: the mood of a story line is for the player only then (T4). */
+  readonly bondLines = new Set<string>();
+  /** Bonds whose end a line already told (the ending of their story): the plain `end` of the same tie is not told again. */
+  private readonly endedTies = new Set<string>();
   /** The last story node played, for a death caused by a node. */
   private node: { id: string; title: string; year: number } | undefined;
   private readonly L: Labels;
@@ -127,8 +134,29 @@ export class Reader {
     return n ? `ที่${n}` : '';
   }
 
+  /** The level an entry is shown at, after the reader has read it. */
+  levelOf(e: LogEntry): LogLevel {
+    return displayLevel(e, this.bondLines);
+  }
+
+  private cx(): M3Cx {
+    return {
+      data: this.data,
+      who: this.name || 'ตัวละคร',
+      endedTold: (tie) => this.endedTies.has(tie),
+      met: (id) => !!id && this.met.has(id),
+      npcText: (text, withMc) => this.npcText(text, withMc),
+      npcName: (id) => scrub(this.data, this.L.npc.get(id) ?? ''),
+      pick: (list) => list[0],
+    };
+  }
+
+  /** True when the last entry read was left out on purpose (an NPC the character does not know), not because it has no phrasing. */
+  filtered = false;
+
   /** The line for this entry (or null), then the entry is remembered. */
   read(e: LogEntry): string | null {
+    this.filtered = false;
     const line = this.say(e);
     this.remember(e);
     return line === null ? null : spaceDigits(tidy(line, false));
@@ -147,6 +175,12 @@ export class Reader {
       this.met.add(e.id);
     }
     if (e.sys === 'story' && e.kind === 'node') this.node = { id: s(e.id), title: s(d.title) || this.nm(e.id), year: e.worldYear };
+    if (e.sys === 'bonds') {
+      if (e.kind === 'tie' || e.kind === 'mood' || e.kind === 'level') {
+        if (s(d.line)) this.bondLines.add(s(d.line));
+      } else if (e.kind === 'line' && s(d.to)) this.bondLines.add(s(d.to));
+      else if (e.kind === 'ending' && d.involved === true && e.id) this.endedTies.add(e.id);
+    }
   }
 
   /**
@@ -156,6 +190,8 @@ export class Reader {
   private knows(e: LogEntry): boolean {
     if (this.opts.raw || !this.country) return true;
     const what = s(e.data.what);
+    // a fight the character is in, and a healing he brought about, are always news
+    if (what === 'clash' || what === 'clash-open' || what === 'heal') return true;
     if (what === 'die' || what === 'succeed' || what === 'end') return this.metHolders.has(s(e.data.holder)) || this.metHolders.has(s(e.data.from));
     if (what !== 'meet') return (e.id !== undefined && this.met.has(e.id)) || s(e.data.place) === this.country;
     // a meeting is always news (the character was there), one a life year
@@ -172,7 +208,10 @@ export class Reader {
     const data = this.data;
 
     if (e.sys === 'npc' && e.kind === 'npc') {
-      if (!this.knows(e)) return null;
+      if (!this.knows(e)) {
+        this.filtered = true;
+        return null;
+      }
       const who = scrub(data, s(d.holder));
       const role = d.role ? ` (${scrub(data, s(d.role))})` : '';
       const where = at(d.place);
@@ -210,6 +249,8 @@ export class Reader {
         case 'ally':
           return `${who} ยินดีเป็นพวกพ้อง`;
       }
+      const more = npcMore(this.cx(), e);
+      if (more !== undefined) return more;
       return this.opts.raw ? `${who}: ${s(d.what)}` : null;
     }
 
@@ -221,6 +262,11 @@ export class Reader {
     }
     if (e.sys === 'attention') {
       const t = attentionText(data, e);
+      if (t !== undefined) return t;
+    }
+
+    if (isM3(e)) {
+      const t = m3Say(this.cx(), e);
       if (t !== undefined) return t;
     }
 
@@ -290,10 +336,21 @@ export class Reader {
       if (e.kind === 'converge') return `เส้นเรื่องบรรจบที่ ${this.nodeTitle(e)}`;
       if (e.kind === 'jump') return `เรื่องข้ามไป ${this.nodeTitle(e)}`;
       if (e.kind === 'battle') return this.battle(e);
-      if (e.kind === 'mood') return this.opts.raw ? `สาย${s(e.id)} รู้สึก${s(d.mood)}` : null;
+      // the mood and the bond of a story line: told only when the bond system has a person on that line (T4); the templates belong to the bond system
+      if (e.kind === 'mood') {
+        if (this.bondLines.has(s(e.id))) return `ใจของ${this.name || 'ตัวละคร'}ที่มีต่อสาย${s(e.id)}: ${MOOD_TH[s(d.mood)] ? s(d.mood) : 'รู้สึกบางอย่าง'}`;
+        return this.opts.raw ? `สาย${s(e.id)} รู้สึก${s(d.mood)}` : null;
+      }
+      if (e.kind === 'bond') {
+        if (!this.bondLines.has(s(e.id))) return null;
+        const lv = Number(d.level);
+        return `สาย${s(e.id)}ของ${this.name || 'ตัวละคร'}${lv ? `ขึ้นเป็นระดับ${BOND_LEVEL_TH[lv] ?? ''}` : 'เปลี่ยนไป'}`;
+      }
       if (e.kind === 'ending') return `ปลายทาง: ${s(e.id)}`;
-      // bond templates and openings belong to the bond system (M3): nothing to read yet
-      if (e.kind === 'template' || e.kind === 'bond' || e.kind === 'skip') return null;
+      if (e.kind === 'template' || e.kind === 'skip') return null;
+      // the window the story opens for the god and the job a node gave are for the log: the call of the game and the job line tell them
+      // and a request the story makes of the LLM system (a role to write) is read by that system, not by the player
+      if (e.kind === 'window' || e.kind === 'jobpath' || e.kind === 'llm') return null;
     }
 
     if (e.kind === 'unhandled') return null;
@@ -451,8 +508,8 @@ export function lines(data: GameData, log: LogEntry[], minLevel: LogEntry['level
   let prev: { line: Line; e: LogEntry } | undefined;
   for (const e of log) {
     const text = reader.read(e);
-    if (text === null || displayLevel(e) < minLevel || e.n < fromN) continue;
-    const line: Line = { n: e.n, age: e.age, year: CALENDAR_BASE + e.worldYear, level: displayLevel(e), sys: e.sys, text, entry: e };
+    if (text === null || reader.levelOf(e) < minLevel || e.n < fromN) continue;
+    const line: Line = { n: e.n, age: e.age, year: CALENDAR_BASE + e.worldYear, level: reader.levelOf(e), sys: e.sys, text, entry: e };
     // a holder who dies and the successor who takes the post in the same year: one line instead of two
     if (prev && e.sys === 'npc' && e.data.what === 'succeed' && prev.e.sys === 'npc' && DEAD_NPC.has(s(prev.e.data.what)) && prev.e.id === e.id && prev.e.worldYear === e.worldYear) {
       const who = scrub(data, s(e.data.holder));
@@ -495,7 +552,7 @@ export function unphrased(data: GameData, log: LogEntry[]): Record<string, numbe
   for (const e of log) {
     const a = reader.read(e);
     const b = raw.read(e);
-    if (a === null && b !== null && displayLevel(e) >= 1 && e.kind !== 'unhandled') out[`${e.sys}/${e.kind}`] = (out[`${e.sys}/${e.kind}`] ?? 0) + 1;
+    if (a === null && b !== null && !reader.filtered && reader.levelOf(e) >= 1 && e.kind !== 'unhandled') out[`${e.sys}/${e.kind}`] = (out[`${e.sys}/${e.kind}`] ?? 0) + 1;
   }
   return out;
 }

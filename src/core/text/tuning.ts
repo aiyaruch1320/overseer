@@ -162,17 +162,15 @@ export const STAT_TH: Record<string, string> = { int: 'ปัญญา', vit: '�
 export const EFFECT_WORD_TH: Record<string, string> = {
   'npc:heal': 'คนสำคัญหายป่วย',
   'npc:die': 'คนสำคัญสิ้นชีวิต',
+  'rel:+lover': 'ได้พบคนรัก',
+  child: 'ได้ลูก',
 };
 
 /**
- * Prayer effect words whose result needs a system that does not exist yet (the bond system of M3: a lover, a child). The god system
- * writes them down as a promise (a flag and a bond line nobody reads), so no line may tell the player that they came true (review M2 G6).
- * The phrase is what the player is told instead: the blessing waits for its chance.
+ * Prayer effect words whose result needs a system that does not exist yet. The bond system now keeps a lover and a child (M3), so nothing waits any
+ * more; the table stays so that a future effect word can be told as a promise the same way (review M2 G6).
  */
-export const PENDING_FX_TH: Record<string, string> = {
-  'rel:+lover': 'พรให้พบคนรักรอโอกาสอยู่',
-  child: 'พรให้มีลูกรอโอกาสอยู่',
-};
+export const PENDING_FX_TH: Record<string, string> = {};
 
 /** How the line of a promise is told after the real effects (`ยังไม่เป็นจริง: …`). */
 export const PENDING_NOTE = 'คำมั่นที่ยังไม่เป็นจริง';

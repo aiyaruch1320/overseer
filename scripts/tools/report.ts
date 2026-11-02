@@ -1,9 +1,12 @@
 // Readable text of a game for the test tools: the log as a timeline, the NPCs met, the status of the life, the summary of a life.
 // Pure TypeScript, shared by `npm run life`, `npm run play` and the debug page.
-import { makeCtx, type GameData } from '../../src/core/game';
+import { extOf as bondageOf } from '../../src/core/bondage';
+import { extOf as bondsOf, isLive, levelOf as bondLevelOf, tiesOf, type Tie } from '../../src/core/bonds';
+import { makeCtx, type Ctx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
-import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, scrub, unphrased } from '../../src/core/text';
+import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
 import { OUTCOME_TH } from '../../src/core/text/tuning';
+import { BOND_LEVEL_TH, TRAVEL_LEVEL_TH } from '../../src/core/text/words';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
 
 /** The short tag in front of a line: which part of the game said it. */
@@ -27,6 +30,18 @@ export function tagOf(e: LogEntry): string {
       return 'ตัวละคร';
     case 'tools':
       return 'ชีวิต';
+    case 'bonds':
+      return 'พวกพ้อง';
+    case 'bondage':
+      return 'พันธะ';
+    case 'travel':
+      return 'เดินทาง';
+    case 'items':
+      return 'ของ';
+    case 'economy':
+      return 'เงินทอง';
+    case 'combat':
+      return 'ศึก';
     default:
       return e.sys;
   }
@@ -104,6 +119,57 @@ export function metNpcs(data: GameData, log: LogEntry[]): Met[] {
   return out;
 }
 
+const KIN_LINES = new Set(['ญาติผู้ใหญ่', 'ญาติรุ่นเยาว์', 'พี่น้อง']);
+
+/** `ชื่อ (สาย ระดับ)`: a person of the bonds as the status reads him. */
+function tieWord(ctx: Ctx, data: GameData, t: Tie): string {
+  const lv = bondLevelOf(ctx, t);
+  const names = (data.bonds?.items as { ties?: { levels?: { n: number; name: string }[] } } | undefined)?.ties?.levels;
+  return `${t.name} (${t.line} ${names?.find((l) => l.n === lv)?.name ?? BOND_LEVEL_TH[lv] ?? ''})`.replace(' )', ')');
+}
+
+/** The allies and the family of the life, the travel, the arm in hand, the debt and the bondage: what the systems of M3 keep that the player may ask about. */
+export function systemStatus(data: GameData, state: GameState): string[] {
+  const life = state.life;
+  if (!life) return [];
+  const ctx = makeCtx(state, data);
+  const L = labels(data);
+  const out: string[] = [];
+  // ties: the family and the allies, the closest first; a name only, with the line and the level
+  const ties = data.bonds ? tiesOf(bondsOf(life)).filter(isLive) : [];
+  const byCloseness = (a: Tie, b: Tie) => b.b - a.b;
+  const family = ties.filter((t) => KIN_LINES.has(t.line) && !t.light).sort(byCloseness);
+  const kinFar = ties.filter((t) => KIN_LINES.has(t.line) && t.light).length;
+  const allies = ties.filter((t) => !KIN_LINES.has(t.line)).sort(byCloseness);
+  if (allies.length) out.push(`พวกพ้อง ${allies.slice(0, 8).map((t) => tieWord(ctx, data, t)).join(' · ')}${allies.length > 8 ? ` · และอีก ${allies.length - 8} คน` : ''}`);
+  if (family.length || kinFar) out.push(`ครอบครัว ${[...family.slice(0, 8).map((t) => tieWord(ctx, data, t)), ...(kinFar ? [`ญาติห่าง ๆ อีก ${kinFar} คน`] : [])].join(' · ')}`);
+  // travel: the level of the life and where he stands
+  const tr = life.ext.travel as { level?: number; visited?: string[]; away?: { to: string; settle: boolean } } | undefined;
+  if (tr && tr.level !== undefined) {
+    const away = tr.away ? ` · กำลังเดินทางไป${placeName(ctx, tr.away.to) ?? ''}` : '';
+    out.push(`การเดินทาง ${TRAVEL_LEVEL_TH[tr.level] ?? ''}${tr.visited?.length ? ` · เคยไป ${tr.visited.length} ประเทศ` : ''}${away}`);
+  }
+  // the arm in hand
+  const it = life.ext.items as { wield?: string; armor?: string } | undefined;
+  const wield = it?.wield ? L.name.get(it.wield) : undefined;
+  const armor = it?.armor ? L.name.get(it.armor) : undefined;
+  if (wield || armor) out.push(`อาวุธที่ถือ ${wield ?? 'ไม่มี'}${armor ? ` · สวม ${armor}` : ''}`);
+  // debt and bondage
+  const eco = life.ext.economy as { debt?: number } | undefined;
+  if (eco?.debt && eco.debt > 0) out.push(`หนี้ ${Math.round(eco.debt)} ทอง`);
+  if (life.ext.bondage) {
+    const b = bondageOf(life);
+    const lvName = (data.bondage?.items as { levels?: { n: number; name: string }[] } | undefined)?.levels?.find((l) => l.n === b.level)?.name;
+    if (b.level > 0) {
+      const where = b.country ? placeName(ctx, b.country) : undefined;
+      out.push(`การผูกตัว ${lvName ?? 'ถูกผูกตัว'}${where ? ` ที่${where}` : ''}${b.owner ? ` · เจ้าของ ${b.owner}` : ''}${b.price ? ` · ค่าไถ่ ${b.price} ทอง` : ''}${b.debt ? ` · หนี้ผูกตัวเหลือ ${Math.round(b.debt)} ทอง` : ''}${b.years ? ` · สัญญาเหลือ ${b.years} ปี` : ''}`);
+    }
+    const held = b.held.filter((h) => !h.gone);
+    if (held.length) out.push(`ผู้ที่ถือสัญญาไว้ ${held.map((h) => h.name).join(' · ')}`);
+  }
+  return out;
+}
+
 const SEX = { m: 'ชาย', f: 'หญิง', n: '' } as const;
 
 /** What the player knows of the life now (review M1 T7): who, where, the class and the gold, the work, the traits, the gifts, the last person met, the question. */
@@ -142,6 +208,7 @@ export function statusLines(data: GameData, state: GameState): string[] {
   // what the god gave that is carried: a weapon or a thing shows here, so that "ประทาน" can be seen in the status (review M2 P5)
   const carried = named(life.items, L.name);
   if (carried.length) out.push(`ของติดตัว ${carried.join(' · ')}`);
+  out.push(...systemStatus(data, state));
   const last = [...state.log].reverse().find((e) => e.sys === 'npc' && e.data.what === 'meet');
   if (last) {
     const role = last.data.role ? ` (${scrub(data, String(last.data.role))})` : '';
@@ -176,7 +243,12 @@ export function summaryLines(data: GameData, state: GameState, beats: number): s
   const life = state.life;
   const out: string[] = [];
   const bySys: Record<string, number> = {};
-  for (const e of state.log) if (e.level >= 1) bySys[e.sys] = (bySys[e.sys] ?? 0) + 1;
+  // the level the player reads each entry at (the small lines of the systems of M3 are trace), not the level the system wrote
+  const reader = new Reader(data);
+  for (const e of state.log) {
+    reader.read(e);
+    if (reader.levelOf(e) >= 1) bySys[e.sys] = (bySys[e.sys] ?? 0) + 1;
+  }
   if (life) {
     out.push(`${life.name} ${life.dead ? `ตายเมื่ออายุ ${life.dead.hAge} (${causeWord(life.dead.cause) || 'ไม่ทราบเหตุ'}) ศ.ม. ${calendarYear(life.dead.year).toLocaleString('en-US')}` : `ยังมีชีวิต อายุ ${life.hAge}`} · ${beats} จังหวะ`);
   }

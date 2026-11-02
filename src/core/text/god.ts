@@ -253,6 +253,8 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
     }
     case 'prayer.silent':
       return `ท่านนิ่งเฉยต่อคำอธิษฐานใบที่ ${num(d.n)} (${s(d.name) || prayerName(cx.data, s(e.id))}) มันยังรออยู่จนกว่าจะหมดเวลา`;
+    case 'prayer.moot':
+      return `คำอธิษฐานใบที่ ${num(d.n)} (${s(d.name) || prayerName(cx.data, s(d.kind))}) ถูกถอนกลับ${scrub(cx.data, s(d.why)) ? ` เพราะ${scrub(cx.data, s(d.why))}` : ''}`;
     case 'prayer.lapse':
       return `คำอธิษฐานใบที่ ${num(d.n)} (${s(d.name) || prayerName(cx.data, s(e.id))}) หมดเวลา ไม่มีใครตอบ ศรัทธาของเขาลดลง`;
     case 'whisper': {

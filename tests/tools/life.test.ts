@@ -10,7 +10,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { statusLines } from '../../scripts/tools/report';
 import { createSession, resumeSession, runToCall, runToDeath, startLife, toolNotes, toolSystems } from '../../scripts/tools/session';
 import { versions, type GameData } from '../../src/core/game';
-import { leaks } from '../../src/core/text';
+import { leaks, lines, unphrased } from '../../src/core/text';
 import { load, save } from '../../src/core/save';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -128,13 +128,38 @@ describe('the commands', () => {
     try {
       const out = cli('play', ['--seed=201', '--new', '--race=be', '--cmd=advance 60; status; world'], { OVERSEER_PLAY_DIR: dir });
       const status = out.slice(out.indexOf('-- สถานะ --', out.indexOf('-- เดิน')), out.indexOf('-- โลก (ดีบัก) --'));
-      for (const word of ['อายุ', 'เผ่าสัตว์', 'ชนชั้น', 'ทอง', 'อาชีพ', 'นิสัย', 'คำถามของชีวิต']) expect(status, word).toContain(word);
+      for (const word of ['อายุ', 'เผ่าสัตว์', 'ชนชั้น', 'ทอง', 'อาชีพ', 'นิสัย', 'คำถามของชีวิต', 'พวกพ้อง', 'ครอบครัว', 'การเดินทาง']) expect(status, word).toContain(word);
       expect(status).not.toMatch(/NPC: มีชีวิต|โลก: ยุค|มังกรล้ม/);
       expect(out.slice(out.indexOf('-- โลก (ดีบัก) --'))).toMatch(/NPC: มีชีวิต[\s\S]*โลก: ยุค/);
       expect(out).toContain('คำถามของชีวิต: จะล่าตามสิทธิ์เดิม');
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('status after the systems of M3', () => {
+  it('tells the allies and the family with their line and level, the travel, the arm in hand, the debt and the bondage', () => {
+    const s = createSession(data, { seed: 201, race: 'be' });
+    startLife(s);
+    for (let i = 0; i < 80; i++) s.game.beat();
+    const life = s.game.state.life!;
+    const plain = statusLines(data, s.game.state).join('\n');
+    expect(plain).toMatch(/พวกพ้อง [^\n]+\((?:สหาย|คู่หู|คนรัก|ครู|ศิษย์|คู่แข่ง) (?:รู้จัก|คุ้นเคย|สนิท|ไว้ใจ|ชั่วชีวิต)\)/);
+    expect(plain).toMatch(/ครอบครัว [^\n]+\((?:ญาติผู้ใหญ่|ญาติรุ่นเยาว์|พี่น้อง) /);
+    expect(plain).toMatch(/การเดินทาง (?:อยู่ถิ่น|ในทวีป|ข้ามทวีป)/);
+    expect(plain).not.toMatch(/หนี้ \d|การผูกตัว/);
+    // what the other systems keep on the life is read: the arm, the debt, a bondage and a person the character holds
+    (life.ext.items as { wield?: string }).wield = 'ws_rapier';
+    (life.ext.economy as { debt: number }).debt = 120;
+    life.ext.bondage = { level: 2, owner: 'อัลโกร', price: 101, country: 'AL-01', years: 3, held: [{ id: 'H1', name: 'ฟีทิส', level: 'B2' }] };
+    const more = statusLines(data, s.game.state);
+    const text = more.join('\n');
+    expect(text).toMatch(/อาวุธที่ถือ \S+/);
+    expect(text).toContain('หนี้ 120 ทอง');
+    expect(text).toMatch(/การผูกตัว ผู้รับใช้ตามสัญญา ที่\S+ · เจ้าของ อัลโกร · ค่าไถ่ 101 ทอง · สัญญาเหลือ 3 ปี/);
+    expect(text).toContain('ผู้ที่ถือสัญญาไว้ ฟีทิส');
+    for (const l of more) expect(leaks(l), l).toEqual([]);
   });
 });
 
@@ -150,6 +175,7 @@ describe('what the player reads holds no code (review M1 T1 T3)', () => {
 
   it('twenty-one peoples and a few free seeds give lines with no id, no stray mark and no badly cut sentence', () => {
     const bad: string[] = [];
+    const seen = new Set<string>();
     let n = 0;
     const lives = [...PEOPLES.map((r, i) => ({ seed: 40 + i, race: r })), { seed: 201, race: 'be' }, { seed: 101, race: 'hu' }, { seed: 7, race: undefined }, { seed: 8, race: undefined }];
     for (const l of lives) {
@@ -164,9 +190,19 @@ describe('what the player reads holds no code (review M1 T1 T3)', () => {
         const found = leaks(line);
         if (found.length) bad.push(`status ${l.seed}${l.race ?? ''} ${found.join(',')}: ${line}`);
       }
+      // M3: nothing is left without a phrasing, and the small lines kept for level 0 hold no code either
+      const left = unphrased(data, run.state.log);
+      if (Object.keys(left).length) bad.push(`unphrased ${l.seed}${l.race ?? ''} ${JSON.stringify(left)}`);
+      for (const x of lines(data, run.state.log, 0)) {
+        const found = leaks(x.text);
+        if (found.length) bad.push(`level0 ${l.seed}${l.race ?? ''} ${found.join(',')}: ${x.text}`);
+        seen.add(`${x.sys}/${x.entry.kind}`);
+      }
     }
     expect(n).toBeGreaterThan(1500);
     expect(bad).toEqual([]);
+    // the lives walk through the systems of M3: their lines are in the text
+    for (const kind of ['bonds/tie', 'bonds/arc', 'bonds/mood', 'bonds/funeral', 'travel/trip', 'items/get', 'combat/prelude', 'economy/tight']) expect(seen.has(kind), kind).toBe(true);
   });
 
   it('the birth tells who, family, traits and the question of the life; the death tells cause, place and age', () => {
