@@ -55,8 +55,8 @@ export const MEET_FULL_RATE = 1.3;
 
 // ---------- illness (README §2: nothing is written, the assumptions are here) ----------
 
-/** The last stretch of the natural lifespan an old holder is gravely ill (the prayer `kin_sick` asks for these). */
-export const SICK_ONSET = 0.9;
+/** The last stretch of the natural lifespan (here the last 6%: 4 years of a human) an old holder is gravely ill (the prayer `kin_sick` asks for these). */
+export const SICK_ONSET = 0.94;
 /** A path whose text says the holder falls ill (the story of AL20-2, NR04-4 ...). A death in the same text is handled by the `death` effect, not here. */
 export const SICK_PATH_RE = /ล้มป่วย|ป่วยจาก|แล้วป่วย|ติดโรคเสียเอง|ตกลงมาบาดเจ็บ|ป่วยหนักแล้ว|เป็นพาหะ/;
 /** An illness (not old age) lasts this many world years, then the holder dies with the chance below or recovers. */

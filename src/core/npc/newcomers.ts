@@ -38,6 +38,13 @@ interface Env {
 const wordsOf = (c: Country): string =>
   [c.name, c.title, c.gov, c.races, c.religionRaw, c.story, c.relationsRaw, c.hook, c.bloc, c.ui.mark.join(' '), c.ui.sacred ?? '', c.ui.seat ?? '', Object.keys(c.ui.extra ?? {}).join(' ')].join(' ');
 
+/** The peoples of a country: those of its roster rows and those its file names in the cell "เผ่า". */
+function peoplesOf(idx: NpcIndex, c: Country, rows: NpcRow[]): string[] {
+  const out = new Set(rows.map((r) => r.peopleId).filter((x): x is string => !!x));
+  for (const l of idx.file.rules.lives) if (l.id && c.races.includes(l.people.replace(/ \(.*\)$/, ''))) out.add(l.id);
+  return [...out];
+}
+
 function envOf(ctx: Ctx, idx: NpcIndex, c: Country): Env {
   const st = ctx.state;
   const text = wordsOf(c);
@@ -50,7 +57,7 @@ function envOf(ctx: Ctx, idx: NpcIndex, c: Country): Env {
     c,
     text,
     marks,
-    peoples: [...new Set(rows.map((r) => r.peopleId).filter((x): x is string => !!x))],
+    peoples: peoplesOf(idx, c, rows),
     ev: (id) => st.world.happened[id] !== undefined,
     since: (id) => (st.world.happened[id] === undefined ? Infinity : st.clock.worldYear - st.world.happened[id]),
     v: (n) => st.world.vars[n] ?? 0,

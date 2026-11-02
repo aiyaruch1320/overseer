@@ -682,7 +682,7 @@ describe('npc: ties between stories (README §2.2)', () => {
 });
 
 describe('npc: illness and grudge (prayers kin_sick and vengeance)', () => {
-  it('an old holder is gravely ill for the last tenth of his life; healing ends it, lengthens the life and owes a favour', () => {
+  it('an old holder is gravely ill for the last stretch of his life; healing ends it, lengthens the life and owes a favour', () => {
     const g = world(1);
     const ctx = g.ctx;
     const s = slotsOf(g.state)['AZ01-1'];
