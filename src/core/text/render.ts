@@ -152,7 +152,20 @@ export class Reader {
   prime(log: readonly LogEntry[]): void {
     const named = log.find((e) => e.sys === 'text' && e.kind === 'named');
     if (named && !this.name) this.name = s(named.data.name);
+    // a later life too: the hooks of the goals of the god write before the text system names the life, so the line of the offer of the vows says the
+    // name of the life that began and not the one before it (M4 review M1)
+    let birth: number | undefined;
+    for (const e of log) {
+      if (e.sys === 'character' && e.kind === 'birth') birth = e.n;
+      else if (e.sys === 'text' && e.kind === 'named' && birth !== undefined) {
+        this.bornAs.set(birth, s(e.data.name));
+        birth = undefined;
+      }
+    }
   }
+
+  /** The name each birth entry (by its number) is given by the `named` entry after it. */
+  private bornAs = new Map<number, string>();
 
   /** The line of an entry again, without remembering it (a line rewritten when another entry joins it). */
   reread(e: LogEntry): string | null {
@@ -178,6 +191,7 @@ export class Reader {
       if (s(d.country)) this.country = s(d.country);
     }
     if (e.sys === 'character' && e.kind === 'birth' && s(d.country)) this.country = s(d.country);
+    if (e.sys === 'character' && e.kind === 'birth' && this.bornAs.has(e.n)) this.name = this.bornAs.get(e.n)!;
     if (e.sys === 'npc' && d.what === 'meet' && e.id) {
       // the first holder of a slot the character meets is the person known; the heirs that follow are the slot going on
       if (!this.met.has(e.id) && s(d.holder)) this.metHolders.add(s(d.holder));

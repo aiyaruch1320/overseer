@@ -1,4 +1,4 @@
-// npm run life -- --seed=N [--lives=3 [--strict]] [--policy=เงียบ|เมตตา|ลงโทษ|ปั้นนิสัย|ให้ของ|เก็บพลัง|สุ่ม|เร่งจบ] [--race=hu] [--country=AL-01] [--year=450] [--level=1]
+// npm run life -- --seed=N [--lives=3 [--newcomer]] [--policy=เงียบ|เมตตา|ลงโทษ|ปั้นนิสัย|ให้ของ|เก็บพลัง|สุ่ม|เร่งจบ] [--race=hu] [--country=AL-01] [--year=450] [--level=1]
 // Runs a world to the start year, bears a main character and walks the whole life, then prints the readable log
 // (docs/guide/code-plan.md §8.0). With a policy, the god system's `policyStep` plays every life year;
 // the report ends with the power used and the chronicle of the hand.
@@ -28,8 +28,8 @@ const base = {
   startYear: args.year === undefined ? undefined : intArg(args.year, 'year'),
   minLevel: Math.max(0, Math.min(3, level)) as 0 | 1 | 2 | 3,
 };
-// several lives in a row in one world (the lineage); --strict follows the docs when the family ends (no newcomer in the old world)
-const lineage = { ...base, lives, strict: args.strict === 'true' };
+// several lives in a row in one world (the lineage); when the family ends the lineage ends and the world is left (docs 05 §4); --newcomer bears a stranger in the old world instead
+const lineage = { ...base, lives, newcomer: args.newcomer === 'true' };
 const run = tl
   ? lives > 1
     ? await runLineageReportLlm(data, lineage, tl)

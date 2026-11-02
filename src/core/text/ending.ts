@@ -25,7 +25,7 @@ export function endingSay(e: LogEntry): string | undefined {
   if (e.sys === 'lineage' && e.kind === 'end') return d.heir ? `สายตระกูลไปต่อที่ ${s(d.heir)} (${howWord(s(d.how))})${Number(d.threads) ? ` พร้อมเรื่องค้าง ${s(d.threads)} ข้อ` : ''}` : 'ไม่มีผู้สืบ';
   if (e.sys === 'lineage' && e.kind === 'begin')
     return `${s(d.name)} ${d.origin === 'newcomer' ? `เกิดในโลกเดิมหลัง ${s(d.gap)} ปีโลก` : `รับช่วงต่อจาก ${s(d.parent)} เมื่ออายุ ${s(d.age)}`}${Number(d.gold) ? ` · ได้ทอง ${s(d.gold)}` : ''}${Number(d.items) ? ` ของ ${s(d.items)} ชิ้น` : ''}${Number(d.threads) ? ` · เรื่องค้าง ${s(d.threads)} ข้อ` : ''}`;
-  if (e.sys === 'lineage' && e.kind === 'thread') return `เรื่องค้างของตระกูล “${s(d.text)}” (${s(d.kind)}): ${WAY_WORD[s(d.way)] ?? s(d.way)}`;
+  if (e.sys === 'lineage' && e.kind === 'thread') return `เรื่องค้างของตระกูล “${s(d.text)}” (${s(d.kind)}): ${WAY_WORD[s(d.way)] ?? s(d.way)}${s(d.outcome) ? ` — ${s(d.outcome)}` : ''}`;
   return undefined;
 }
 

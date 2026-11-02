@@ -3,12 +3,14 @@
 // adopted child or a student, the partner, a person the character helped, nobody. It reads only.
 // `inherit` writes the gifts of §2 into the heir that `character.birth` made: gold, class, the best weapon and the armour and tools, half the
 // materials, one blessing of the blood, the best skill one level lower, faith, +1 to the best stat, the grudges and the thanks.
+import { birth as characterBirth, extOf as characterExt } from '../character';
 import { raiseAptitude, grantGift } from '../character/life';
-import { addTie, extOf as bondsExt, hAgeOf, isLive, tiesOf, type Tie } from '../bonds';
-import { reindex } from '../bonds/state';
-import type { Ctx } from '../game';
+import { worldYearsPerLifeYear } from '../clock';
+import { extOf as bondsExt, hAgeOf, isLive, tiesOf, type Tie } from '../bonds';
+import { makeCtx, type Ctx } from '../game';
 import { items as dataItems } from '../text/labels';
 import type { LifeState, StatBlock } from '../types';
+import { bindFamily } from './family';
 import { lx, type HeirHow, type HeirSpec } from './state';
 
 
@@ -24,8 +26,8 @@ export const BLOOD_BLESSING = [{ from: 6, p: 0 }, { from: 4, p: 0.1 }, { from: 2
 export const FAITH_SHARE = 0.6;
 /** Fame that passes: one third, at most 40; one fourth from the sixth generation. */
 export const FAME = { share: 1 / 3, cap: 40, late: { from: 6, share: 1 / 4 } };
-/** Years of life a person must have left to take over (assumption: the docs do not say; a spouse of 72 in a life of 74 is not a life to play). */
-export const MIN_LEFT = { child: 2, other: 8 };
+/** Years of life a person must have left to take over (assumption: the docs do not say). A partner who lives takes over whatever the years left (heirs/01 §6 rung 2: \"คู่ที่ยังมีชีวิต\"; M4 review F1). */
+export const MIN_LEFT = { child: 2, other: 8, partner: 1 };
 /** Item groups by id prefix (items.json): weapons `ws_`, armour `ar_`, tools `lt_`, materials and consumables are halved. */
 const HALVED = ['mt_', 'cn_'];
 
@@ -35,8 +37,25 @@ function tieAge(ctx: Ctx, t: Tie): number {
   return Math.max(0, Math.floor(hAgeOf(ctx, t)));
 }
 
-function spec(ctx: Ctx, t: Tie, how: HeirHow, rung: HeirSpec['rung'], life: LifeState): HeirSpec {
-  return { how, rung, tie: t.id, name: t.name, race: t.race, gender: t.gender, country: t.country || life.country, age: tieAge(ctx, t), blood: t.kin === 'child' };
+function spec(ctx: Ctx, t: Tie, how: HeirHow, rung: HeirSpec['rung'], life: LifeState, rank = 0): HeirSpec {
+  return {
+    how, rung, tie: t.id, name: t.name, race: t.race, gender: t.gender, country: t.country || life.country, age: tieAge(ctx, t), blood: t.kin === 'child', rank,
+    ...(t.married ? { married: t.married.name } : {}), ...(t.otherName ? { other: t.otherName } : {}),
+  };
+}
+
+/** The candidates of rung 0 in the order of the ladder: the eldest first (heirs/01 §1). */
+function kidsOf(ctx: Ctx, ties: Tie[]): Tie[] {
+  return ties.filter((t) => t.kin === 'child' || t.kin === 'adopted').sort((a, b) => hAgeOf(ctx, b) - hAgeOf(ctx, a) || a.id.localeCompare(b.id));
+}
+
+/** The children who could take over, each as the heir it would be: the player reads them (`heirs`) and picks one (`pickHeirTie`). Empty when the ladder goes down to another rung. */
+export function candidates(ctx: Ctx): HeirSpec[] {
+  const life = ctx.state.life;
+  if (!life || !life.ext.bonds) return [];
+  const e = bondsExt(life);
+  const ties = tiesOf(e).filter((t) => isLive(t) && t.dieAge - tieAge(ctx, t) >= MIN_LEFT.child);
+  return kidsOf(ctx, ties).map((t, i) => spec(ctx, t, t.kin === 'child' ? 'child' : 'adopted', 0, life, i));
 }
 
 /**
@@ -52,15 +71,15 @@ export function pickHeir(ctx: Ctx): HeirSpec | null {
   const ties = tiesOf(e).filter((t) => isLive(t) && left(t) >= MIN_LEFT.child);
   const pick = lx(ctx.state).pick;
   // rung 0: a child of the blood or taken in
-  const kids = ties.filter((t) => t.kin === 'child' || t.kin === 'adopted').sort((a, b) => hAgeOf(ctx, b) - hAgeOf(ctx, a) || a.id.localeCompare(b.id));
+  const kids = kidsOf(ctx, ties);
   const chosen = kids.find((t) => t.id === pick) ?? kids[0];
-  if (chosen) return spec(ctx, chosen, chosen.kin === 'child' ? 'child' : 'adopted', 0, life);
+  if (chosen) return spec(ctx, chosen, chosen.kin === 'child' ? 'child' : 'adopted', 0, life, kids.indexOf(chosen));
   // rung 1: a student the character taught and trusted (the mentor line, trust 3 or more)
   const student = ties.filter((t) => t.line === 'ศิษย์' && t.trust >= 3 && left(t) >= MIN_LEFT.other).sort((a, b) => b.b - a.b || a.id.localeCompare(b.id))[0];
   if (student) return spec(ctx, student, 'student', 1, life);
   // rung 2: the partner who lives
   const partner = e.partner ? e.ties[e.partner] : undefined;
-  if (partner && isLive(partner) && left(partner) >= MIN_LEFT.other) return spec(ctx, partner, 'partner', 2, life);
+  if (partner && isLive(partner) && left(partner) >= MIN_LEFT.partner) return spec(ctx, partner, 'partner', 2, life);
   // rung 3: someone the character helped, owed more than 2 (an adult; the one most in debt)
   const helped = ties.filter((t) => t.gratitude >= 2 && tieAge(ctx, t) >= 13 && left(t) >= MIN_LEFT.other).sort((a, b) => b.gratitude - a.gratitude || a.id.localeCompare(b.id))[0];
   if (helped) return spec(ctx, helped, 'helped', 3, life);
@@ -171,27 +190,46 @@ export function inherit(ctx: Ctx, parent: LifeState, heir: LifeState, how: HeirS
 }
 
 /**
- * Puts the dead character into the bond book of the heir as the parent who has gone, and takes the random parents `birthKin` drew away (the
- * parent of the heir is the character who died, trust 80, heirs/01 §2 last row).
+ * Binds the heir to the family and the friends of the dead life (lineage/family.ts) and keeps the thanks and the grudges of the people for the
+ * family (heirs/01 §2): a person who thanked or hated the parent keeps it, at most +3.
  */
 export function bindParent(ctx: Ctx, parent: LifeState, heir: LifeState, how: HeirSpec): void {
   if (!heir.ext.bonds) return;
-  const e = bondsExt(heir);
-  for (const t of tiesOf(e)) if (t.kin === 'father' || t.kin === 'mother') delete e.ties[t.id];
-  const t = addTie(ctx, heir, {
-    line: 'ญาติผู้ใหญ่', level: 3, from: 'parent', kin: how.how === 'partner' ? 'spouse' : 'parent', light: true, quiet: true, name: parent.name, race: 'same', gender: parent.gender, gap: 30,
-  });
-  t.b = 80;
-  t.peak = 80;
-  t.state = 'dead';
-  t.died = { age: parent.dead?.hAge ?? parent.hAge, year: parent.dead?.year ?? ctx.state.clock.worldYear, cause: parent.dead?.cause ?? 'old' };
-  reindex(e);
-  // a person who thanked or hated the parent keeps it for the family, at most +3 (01 §2); the people are not copied into the bond book of the heir
-  // (a tie to a roster NPC needs the NPC system to agree: left for the wave that reads the book)
+  bindFamily(ctx, parent, heir, how);
   const book = lx(ctx.state).book.npcs;
   for (const o of parent.ext.bonds ? tiesOf(bondsExt(parent)) : []) {
     if (!o.npc || (o.gratitude < 1 && o.grudge < 1)) continue;
     const had = book[o.name] ?? { gratitude: 0, grudge: 0 };
     book[o.name] = { gratitude: Math.min(3, Math.max(had.gratitude, o.gratitude)), grudge: Math.min(3, Math.max(had.grudge, o.grudge)) };
   }
+}
+
+
+/**
+ * Makes the life of the heir: the person of the bond book, with the race, gender, country and name of the tie and the age the book gives. The birth
+ * draws of a brother or sister move on by the place in the line, so each child is a person of its own (traits, aptitudes, sign) and not the same one
+ * under another name (M4 review M2). `st.life` must be empty. Used by the next life and by the preview of the candidates.
+ */
+export function bearHeir(ctx: Ctx, spec: HeirSpec): LifeState {
+  const st = ctx.state;
+  for (const name of ['life.birth', 'life.character']) {
+    const r = ctx.rng(name);
+    for (let i = 0; i < (spec.rank ?? 0) * 11; i++) r.next();
+  }
+  const life = characterBirth(ctx, { race: spec.race, country: spec.country, ...(spec.gender === 'n' ? {} : { gender: spec.gender }), second: null, special: false });
+  st.world.names[`char:${life.id}`] = spec.name;
+  life.name = spec.name;
+  life.hAge = spec.age;
+  life.birthYear = Math.round(st.clock.worldYear - spec.age * worldYearsPerLifeYear(life.lifespan, life.race));
+  const cx = characterExt(life);
+  if (cx.deathAge <= spec.age + 2) cx.deathAge = spec.age + 3;
+  return life;
+}
+
+/** What the candidate would be, read without touching the game: the traits and the best aptitude it is born with (a copy of the state bears it). */
+export function previewHeir(ctx: Ctx, spec: HeirSpec): { traits: string[]; aptitudes: string[] } {
+  const copy = makeCtx(structuredClone(ctx.state), ctx.data);
+  copy.state.life = null;
+  const life = bearHeir(copy, spec);
+  return { traits: [...life.traits], aptitudes: Object.entries(life.aptitudes).sort((a, b) => b[1] - a[1]).map(([k]) => k) };
 }

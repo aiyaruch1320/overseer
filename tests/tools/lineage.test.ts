@@ -10,11 +10,12 @@ import { llmFromArgs, summarizeDeath, type ToolLlm } from '../../scripts/tools/l
 import { fakeLlm } from '../../src/core/llm';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, resumeSession, runToDeath, startLife, type Session } from '../../scripts/tools/session';
+import { statusLines } from '../../scripts/tools/report';
 import { applyEndingText, cardOf, collectionView, endingInput } from '../../src/core/ending';
 import { LIMIT } from '../../src/core/ending/tuning';
 import { versions, type GameData } from '../../src/core/game';
-import { extOf as bondsOf, isLive, tiesOf } from '../../src/core/bonds';
-import { lx, nextLife, onLifeChange, pickHeir, pickHeirTie, worldSummary, type LifeChange } from '../../src/core/lineage';
+import { addTie, endTie, extOf as bondsOf, hAgeOf, invite, isLive, tiesOf } from '../../src/core/bonds';
+import { candidates, familyLives, lx, nextLife, onLifeChange, pickHeir, pickHeirTie, previewHeir, worldSummary, type LifeChange } from '../../src/core/lineage';
 import { clone, load, save } from '../../src/core/save';
 import type { GameState } from '../../src/core/types';
 
@@ -128,7 +129,7 @@ describe('collection', () => {
 describe('lineage: lives in one world', () => {
   it('three lives follow each other in one world: the world does not restart, the heir comes from the bond book and takes the inheritance', () => {
     const years: number[] = [];
-    const s = lineage(5, 3, (sess) => years.push(sess.game.state.clock.worldYear));
+    const s = lineage(11, 3, (sess) => years.push(sess.game.state.clock.worldYear));
     const st = s.game.state;
     expect(st.lineage.lives.map((l) => l.id)).toEqual(['L1', 'L2', 'L3']);
     // one clock: each life died later than the one before, and the lives overlap the way a family does
@@ -136,7 +137,7 @@ describe('lineage: lives in one world', () => {
     expect(years[1]).toBeLessThan(years[2]);
     const x = lx(st);
     expect(x.recs.map((r) => r.generation)).toEqual([1, 2, 3]);
-    // the partner of life 2 has too few years left to take over (heir.ts MIN_LEFT), so the family goes on with a newcomer after a gap of a generation
+    // life 2 leaves no heir (no living child, no partner), so the third life is a newcomer after a gap of a generation
     expect(x.recs.map((r) => r.origin)).toEqual(['first', 'heir', 'newcomer']);
     expect(x.gaps.map((g) => g.years)[0]).toBe(0);
     expect(x.gaps.map((g) => g.years)[1]).toBeGreaterThan(0);
@@ -170,7 +171,7 @@ describe('lineage: lives in one world', () => {
   });
 
   it('open threads go to the heir, at most three, and are settled, dropped or left to become a legend', () => {
-    const s = lineage(5, 3);
+    const s = lineage(11, 3);
     const x = lx(s.game.state);
     for (const r of x.recs) expect(r.threads.length).toBeLessThanOrEqual(3);
     expect(x.threads.length).toBeGreaterThan(0);
@@ -194,7 +195,9 @@ describe('lineage: lives in one world', () => {
       expect(r.gapYears).toBeGreaterThan(0);
       expect(s.game.state.life!.hAge).toBeLessThan(18);
     }
-    expect(lx(s.game.state).extinct).toBeUndefined();
+    // the family stays ended when a newcomer comes: the newcomer is not a generation of it (05 §4)
+    expect(lx(s.game.state).extinct).toMatchObject({ generation: 1 });
+    expect(familyLives(s.game.state)).toBe(1);
     expect(nextLife(s.game)).toEqual({ ok: false, reason: 'alive' });
   });
 
@@ -245,6 +248,97 @@ describe('lineage: lives in one world', () => {
     } finally {
       off();
     }
+  });
+});
+
+describe('lineage: the family the heir wakes with (M4 review F1 F2 N1 M2)', () => {
+  it('the heir has the dead parent as a dead tie, the other parent, the brothers and sisters and the spouse of the book of the dead life', () => {
+    const s = createSession(data, { seed: 5 });
+    startLife(s);
+    runToDeath(s.game);
+    const parent = s.game.state.life!;
+    const pe = bondsOf(parent);
+    const spec = pickHeir(s.game.ctx)!;
+    const mine = pe.ties[spec.tie!];
+    const others = tiesOf(pe).filter((t) => (t.kin === 'child' || t.kin === 'adopted') && t.id !== mine.id);
+    expect(others.length).toBeGreaterThan(0);
+    expect(nextLife(s.game).ok).toBe(true);
+    const heir = s.game.state.life!;
+    const e = bondsOf(heir);
+    const ties = tiesOf(e);
+    // the parent who died
+    const dead = ties.find((t) => t.name === parent.name)!;
+    expect(dead.state).toBe('dead');
+    expect(['father', 'mother']).toContain(dead.kin);
+    // the other parent is the one the child tie names
+    expect(ties.some((t) => t.name === mine.otherName && (t.kin === 'father' || t.kin === 'mother'))).toBe(true);
+    // the brothers and sisters are the other children of the dead life, with their own ages and ends
+    for (const o of others) {
+      const sib = ties.find((t) => t.name === o.name && (t.kin === 'elder_sibling' || t.kin === 'younger_sibling'));
+      expect(sib, o.name).toBeTruthy();
+      expect(sib!.state).toBe(o.state);
+      expect(Math.abs(hAgeOf(s.game.ctx, sib!) - hAgeOf(s.game.ctx, o))).toBeLessThan(0.01);
+    }
+    // the spouse the child married before the takeover, and the children of that marriage
+    if (mine.married) {
+      const spouse = ties.find((t) => t.name === mine.married!.name)!;
+      expect(spouse.spouse).toBe(true);
+      expect(e.partner).toBe(spouse.id);
+      expect(statusLines(data, s.game.state).join('\n')).toContain('คู่ชีวิต');
+    }
+    // no relative of the age of a newborn is left from the birth draw
+    for (const t of ties) if (t.from === 'kin') expect(hAgeOf(s.game.ctx, t)).toBeGreaterThan(heir.hAge - 12);
+  });
+
+  it('a partner who lives is the heir after the children, whatever the years she has left (heirs/01 §6 rung 2)', () => {
+    const s = lineage(2, 3);
+    expect(lx(s.game.state).recs.map((r) => r.origin)).toEqual(['first', 'successor', 'successor']);
+  });
+
+  it('a feud that was forgiven is not handed down; the line of a settled thread tells the outcome', () => {
+    const s = createSession(data, { seed: 3 });
+    startLife(s);
+    for (let i = 0; i < 80; i++) s.game.beat();
+    const life = s.game.state.life!;
+    const e = bondsOf(life);
+    const t = addTie(s.game.ctx, life, { line: 'สหาย', level: 3, from: 'test', quiet: true });
+    t.peak = 40;
+    e.feuds.push(t.name);
+    endTie(s.game.ctx, t, 'split', 'test');
+    let ok = false;
+    for (let i = 0; i < 400 && !ok; i++) ok = invite(s.game.ctx, life, t, 'reconcile').ok;
+    expect(ok).toBe(true);
+    expect(e.feuds).not.toContain(t.name);
+    const g = lineage(11, 3);
+    const lines = g.game.state.log.filter((l) => l.sys === 'lineage' && l.kind === 'thread');
+    expect(lines.length).toBeGreaterThan(0);
+    for (const l of lines) expect(String(l.data.outcome)).not.toBe('');
+  });
+
+  it('brothers and sisters are persons of their own: the traits differ, `previewHeir` says what the heir will be', () => {
+    const s = createSession(data, { seed: 5 });
+    startLife(s);
+    runToDeath(s.game);
+    const cand = candidates(s.game.ctx);
+    expect(cand.length).toBeGreaterThan(2);
+    const looks = cand.map((c) => previewHeir(s.game.ctx, c).traits.join(','));
+    expect(new Set(looks).size).toBeGreaterThan(1);
+    // the preview does not move the game: the same state gives the same preview again
+    expect(previewHeir(s.game.ctx, cand[2]).traits.join(',')).toBe(looks[2]);
+    expect(pickHeirTie(s.game.ctx, cand[2].tie)).toBe(true);
+    expect(nextLife(s.game).ok).toBe(true);
+    expect(s.game.state.life!.traits.join(',')).toBe(looks[2]);
+  });
+
+  it('a newcomer does not carry the last person met by the life before, and the family does not count it', () => {
+    const s = createSession(data, { seed: 1 });
+    startLife(s);
+    runToDeath(s.game);
+    expect(statusLines(data, s.game.state).join('\n')).toContain('พบล่าสุด');
+    expect(nextLife(s.game, { newcomer: true }).ok).toBe(true);
+    expect(statusLines(data, s.game.state).join('\n')).not.toContain('พบล่าสุด');
+    expect(familyLives(s.game.state)).toBe(1);
+    expect(worldSummary(s.game.state, data).family.extinct).toBe(true);
   });
 });
 
@@ -412,10 +506,14 @@ describe('npm run life --lives', () => {
     expect(first).not.toContain('[รับช่วง]');
   });
 
-  it('--strict stops when the family has no heir', () => {
-    const r = runLineageReport(data, { seed: 1, lives: 3, strict: true });
+  it('by default the lineage ends when the family has no heir (05 §4: the world is left); --newcomer bears a stranger instead', () => {
+    const r = runLineageReport(data, { seed: 1, lives: 3 });
     expect(r.lives).toBe(1);
     expect(r.stopped).toMatch(/สิ้นสาย/);
+    expect(r.text).toContain('สายตระกูล');
+    expect(r.text).toContain('สายจบและโลกเดิมถูกทิ้ง');
+    const n = runLineageReport(data, { seed: 1, lives: 3, newcomer: true });
+    expect(n.lives).toBeGreaterThan(1);
   });
 });
 
@@ -426,25 +524,26 @@ describe('npm run play: the next life after the death stop', () => {
   it('shows the card at the death, `next` bears the heir, the state is kept for the next command, and the third life follows', () => {
     const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-lineage-'));
     try {
-      const first = cli(['--seed=5', '--new', '--cmd=advance 1000'], dir);
+      const first = cli(['--seed=11', '--new', '--cmd=advance 1000'], dir);
       expect(first).toContain('-- การ์ดตอนจบ --');
       expect(first).toContain('พิมพ์ next');
-      const heirs = cli(['--seed=5', '--cmd=heirs; card; summary; collection'], dir);
+      const heirs = cli(['--seed=11', '--cmd=heirs; card; summary; collection'], dir);
       expect(heirs).toContain('ผู้สืบตอนนี้:');
       expect(heirs).toContain('== สรุปโลก');
       expect(heirs).toContain('== ของสะสม');
-      const second = cli(['--seed=5', '--cmd=next; advance 1000'], dir);
+      const second = cli(['--seed=11', '--cmd=next; advance 1000'], dir);
       expect(second).toContain('-- รุ่นต่อไป · ทายาท --');
       expect(second).toContain('รับช่วงต่อจาก');
       expect(second).toContain('การ์ดตอนจบ · รุ่นที่ 2');
       // the third life: the family has no heir that can take over (see the lineage test), so a newcomer is asked for
-      const refused = cli(['--seed=5', '--cmd=next'], dir);
+      const refused = cli(['--seed=11', '--cmd=next'], dir);
       expect(refused).toContain('ตระกูลสิ้นสาย');
-      const third = cli(['--seed=5', '--cmd=next newcomer; advance 1000'], dir);
+      expect(refused).toContain('== สรุปโลก');
+      const third = cli(['--seed=11', '--cmd=next newcomer; advance 1000'], dir);
       expect(third).toContain('-- รุ่นต่อไป · คนใหม่ในโลกเดิม --');
       expect(third).toContain('การ์ดตอนจบ · รุ่นที่ 3');
       // a life that is still alive is not left for the next
-      const alive = cli(['--seed=5', '--cmd=next; next'], dir);
+      const alive = cli(['--seed=11', '--cmd=next; next'], dir);
       expect(alive).toContain('ชีวิตนี้ยังไม่จบ');
     } finally {
       rmSync(dir, { recursive: true, force: true });

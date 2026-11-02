@@ -2,6 +2,7 @@
 // Pure TypeScript, shared by `npm run life`, `npm run play` and the debug page.
 import { extOf as bondageOf } from '../../src/core/bondage';
 import { adultAgeOf, crisesWaiting, extOf as bondsOf, hAgeOf, isChild, isLive, isPartner, levelOf as bondLevelOf, stageOfAge, tiesOf, type Tie } from '../../src/core/bonds';
+import { HOUSE_KIN } from '../../src/core/bonds/tuning';
 import { makeCtx, type Ctx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
 import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lineWord, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
@@ -144,8 +145,12 @@ export function systemStatus(data: GameData, state: GameState): string[] {
   const ties = data.bonds ? tiesOf(bondsOf(life)).filter(isLive) : [];
   const byCloseness = (a: Tie, b: Tie) => b.b - a.b;
   const children = ties.filter(isChild).sort((a, b) => hAgeOf(ctx, b) - hAgeOf(ctx, a));
-  const family = ties.filter((t) => KIN_LINES.has(t.line) && !t.light && !isChild(t)).sort(byCloseness);
-  const kinFar = ties.filter((t) => KIN_LINES.has(t.line) && t.light).length;
+  // the household is named even when it has no story of its own: parents, brothers and sisters; the far kin are counted
+  const house = (t: Tie) => !!t.kin && HOUSE_KIN.has(t.kin) && !isChild(t);
+  const family = ties.filter((t) => KIN_LINES.has(t.line) && (!t.light || house(t)) && !isChild(t)).sort(byCloseness);
+  const kinFar = ties.filter((t) => KIN_LINES.has(t.line) && t.light && !house(t)).length;
+  // the close kin who are gone (an heir wakes after the death of a parent): named once, with how long ago
+  const lost = data.bonds ? tiesOf(bondsOf(life)).filter((t) => t.state === 'dead' && !t.npc && (house(t) || isChild(t) || isPartner(t) || t.from === 'parent')) : [];
   // the partner, the children (their age, stage and the other parent) and the crises that wait for the character's answer
   const partnerId = data.bonds ? bondsOf(life).partner : null;
   const partner = ties.find((t) => t.id === partnerId) ?? ties.find(isPartner);
@@ -155,6 +160,7 @@ export function systemStatus(data: GameData, state: GameState): string[] {
   const waiting = data.bonds ? crisesWaiting(ctx) : [];
   if (waiting.length) out.push(`วิกฤตที่รอคำตอบ ${waiting.map((w) => `${w.tie.name} (${w.tie.line}): ${scrub(data, w.crisis.text)}`).join(' · ')}`);
   if (allies.length) out.push(`พวกพ้อง ${allies.slice(0, 8).map((t) => tieWord(ctx, data, t)).join(' · ')}${allies.length > 8 ? ` · และอีก ${allies.length - 8} คน` : ''}`);
+  if (lost.length) out.push(`จากไปแล้ว ${lost.slice(0, 6).map((t) => `${t.name} (${lineWord(t.line, t.kin)}${t.died ? ` ตายเมื่ออายุ ${t.died.age}` : ''})`).join(' · ')}`);
   if (family.length || kinFar) out.push(`ครอบครัว ${[...family.slice(0, 8).map((t) => tieWord(ctx, data, t)), ...(kinFar ? [`ญาติห่าง ๆ อีก ${kinFar} คน`] : [])].join(' · ')}`);
   // travel: the level of the life and where he stands
   const tr = life.ext.travel as { level?: number; visited?: string[]; away?: { to: string; settle: boolean } } | undefined;
@@ -222,7 +228,9 @@ export function statusLines(data: GameData, state: GameState): string[] {
   const carried = named(life.items, L.name);
   if (carried.length) out.push(`ของติดตัว ${carried.join(' · ')}`);
   out.push(...systemStatus(data, state));
-  const last = [...state.log].reverse().find((e) => e.sys === 'npc' && e.data.what === 'meet');
+  // the person met last is one of this life: a newcomer or an heir does not carry the acquaintances of the life before (N1 of the M4 review)
+  const birthN = [...state.log].reverse().find((e) => (e.sys === 'character' && e.kind === 'birth') || (e.sys === 'lineage' && e.kind === 'begin'))?.n ?? -1;
+  const last = [...state.log].reverse().find((e) => e.n >= birthN && e.sys === 'npc' && e.data.what === 'meet');
   if (last) {
     const role = last.data.role ? ` (${scrub(data, String(last.data.role))})` : '';
     const place = L.name.get(String(last.data.place ?? ''));

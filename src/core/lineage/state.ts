@@ -25,6 +25,11 @@ export interface HeirSpec {
   age: number;
   /** Gratitude and trust toward the dead character (a child of the blood has them from the start). */
   blood: boolean;
+  /** Place among the candidates of rung 0 (0 = the eldest): the draws of the birth move on by it, so brothers and sisters are not the same person (M4 review M2). */
+  rank?: number;
+  /** The spouse the candidate had married by the death, and the other parent, by name (the player picks with these in view). */
+  married?: string;
+  other?: string;
 }
 
 export type ThreadState = 'open' | 'closed' | 'dropped' | 'legend' | 'faded';
@@ -156,3 +161,13 @@ export const generationOf = (state: GameState, life: LifeState | null = state.li
   const r = life ? x.recs.find((q) => q.id === life.id) : undefined;
   return r?.generation ?? state.lineage.lives.length + (life && !life.dead ? 1 : 0);
 };
+
+/**
+ * The lives of the family that the player followed: the lives up to the first newcomer, and the lives that came by the family only (05 §4: when the
+ * family ends the old world is left; a newcomer asked for is a stranger in it and not a generation of the family). While the family goes on, every life counts.
+ */
+export function familyLives(state: GameState): number {
+  const x = lx(state);
+  const i = x.recs.findIndex((r) => r.origin === 'newcomer');
+  return i < 0 ? x.recs.length : i;
+}
