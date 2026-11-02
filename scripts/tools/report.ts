@@ -42,6 +42,10 @@ export function tagOf(e: LogEntry): string {
       return 'เงินทอง';
     case 'combat':
       return 'ศึก';
+    case 'ending':
+      return 'ตอนจบ';
+    case 'lineage':
+      return 'สายตระกูล';
     default:
       return e.sys;
   }
