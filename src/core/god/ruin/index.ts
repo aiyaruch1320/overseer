@@ -31,7 +31,7 @@ export function ruinBirth(ctx: Ctx): void {
 
 export { sealAt, sealCountries, homesOf, replyFor, sealedMid, wrathOnSeals } from './seal';
 export { makeRuin, isRuin, isRainy, wOverride, ruinFacts, eventsOf, localEventsOf, pointsIn } from './ruin';
-export { ruinStep, ruinsNow, cultsNow } from './events';
+export { ruinStep, ruinsNow, cultsNow, bringDue } from './events';
 export { acceptors, npcsIn, leadersOf } from './people';
 export { noteBig, gd08Step } from './gd08';
 export { syncReach } from './reach';

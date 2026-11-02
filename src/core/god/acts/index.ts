@@ -6,7 +6,7 @@ import { hasAction, onAction } from '../../command';
 import type { Ctx, System } from '../../game';
 import { onWorldPhase, openByGod } from '../../world';
 import { policyName, registerPolicyPart } from '../policy';
-import { checkMiracle, miracleBeat, previewMiracle, runMiracle } from './miracles';
+import { checkMiracle, miracleBeat, overdueOmens, previewMiracle, runMiracle } from './miracles';
 import { actsPolicyStep } from './policy';
 import { checkAnswer, previewAnswer, prayerBeat, runAnswer } from './prayers';
 import { checkWhisper, previewWhisper, runWhisper } from './whisper';
@@ -66,6 +66,7 @@ export const godActsSystem: System = {
   },
   worldStep(ctx) {
     expire(ctx);
+    overdueOmens(ctx);
     ruinWorldStep(ctx);
   },
   death(ctx) {

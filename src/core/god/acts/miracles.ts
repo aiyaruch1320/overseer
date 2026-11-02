@@ -276,6 +276,21 @@ function happen(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>,
   for (const fn of told) fn();
 }
 
+/**
+ * A world step: an omen from an earlier year has come due (the omen is a season; a world step is ten years, and runs of the world without a living
+ * character have no beats to count it down). The ones of this year wait for their beat.
+ */
+export function overdueOmens(ctx: Ctx): void {
+  const a = actsOf(ctx.state);
+  for (const p of [...a.pending]) {
+    if (p.year >= yearOf(ctx)) continue;
+    a.pending = a.pending.filter((x) => x !== p);
+    const m = miracleOf(ctx, p.id);
+    const h = handlers.get(p.id);
+    if (m && h) happen(ctx, m, h, p.args, p.paid);
+  }
+}
+
 /** Each beat: the omens come due. */
 export function miracleBeat(ctx: Ctx): void {
   const a = actsOf(ctx.state);

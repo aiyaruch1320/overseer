@@ -427,6 +427,20 @@ describe('G5: the seals', () => {
     expect(run(ctx, { id: 'MR-13', country: 'AZ-03' }, false).ok).toBe(true);
   });
 
+  it('a mid or large blow off the seals, in a continent with living legend dragons, hurts them by 2 each (§6)', () => {
+    const { ctx, st } = mk(21);
+    for (const d of st.world.dragons) d.alive = true;
+    const plain = allCountries(ctx).find((c) => continentOf(c) === 'AZ' && !sealAt(ctx, c))!;
+    const before = st.world.dragons.map((d) => d.mood);
+    expect(run(ctx, { id: 'MR-13', country: plain }).ok).toBe(true);
+    for (const i of [0, 1, 3, 4, 5, 6]) expect(st.world.dragons[i].mood, `dragon ${i}`).toBeCloseTo(before[i] - 2);
+    expect(st.world.dragons[7].mood).toBe(before[7]); // another continent
+    // the storm at sea is a mid blow on a continent
+    st.god.cooldowns['world.mid'] = 0;
+    expect(run(ctx, { id: 'MR-09', continent: 'MH' }).ok).toBe(true);
+    expect(st.world.dragons[7].mood).toBeCloseTo(before[7] - 2);
+  });
+
   it('the key of the oath takes the blow for AL-01: confidence of gold C −20, and the council breaks or a delegate dies for ten years', () => {
     const { ctx, st } = mk(22);
     const r = run(ctx, { id: 'MR-13', country: 'AL-01' });

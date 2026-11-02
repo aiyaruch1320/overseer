@@ -149,6 +149,17 @@ function peace(ctx: Ctx): void {
   }
 }
 
+/**
+ * Makes an event of the ruin of a country due now (the conjuring of "reveal · death" opens RU-06 at once, 07-conjure.md): it happens at the next step if the
+ * ruin stands and the event has not happened. Returns false when there is no such ruin or the event has happened.
+ */
+export function bringDue(ctx: Ctx, country: string, id: string): boolean {
+  const r = ruinExt(ctx.state).ruins.find((x) => x.country === country && x.ended === undefined);
+  if (!r || r.done[id] !== undefined || !godOf(ctx).miracles.ruin.events.some((e) => e.id === id)) return false;
+  r.due[id] = Math.min(r.due[id] ?? Infinity, yearOf(ctx));
+  return true;
+}
+
 /** The ruins that stand: the countries and their events, for the map and the tests. */
 export function ruinsNow(ctx: Ctx): RuinRec[] {
   const e = ctx.state.god.ext.ruin as ReturnType<typeof ruinExt> | undefined;

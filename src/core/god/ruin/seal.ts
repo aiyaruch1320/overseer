@@ -239,13 +239,14 @@ const layer: Intercept = {
     for (const c of targetsOf(ctx, m, args)) if (sealAt(ctx, c)) startSealClocks(ctx, c);
   },
 
-  after(ctx, m, h, args, out) {
-    // a mid blow or above in a continent with a living legend dragon hurts it a little (§6 last paragraph); the dragon of a struck seal already took the blow
-    if (!hitOf(m, h) || !out.country) return;
-    if (sealAt(ctx, out.country)) return;
-    const k = continentOf(out.country);
+  after(ctx, m, h, _args, out) {
+    // a mid blow or above in a continent with a living legend dragon hurts it a little (§6 last paragraph); the dragon of a struck seal already took the blow.
+    // The doc says "the dragon of that continent" and a continent holds several: every living one whose place is on it feels it (assumption)
+    if (!hitOf(m, h)) return;
+    if (out.country && sealAt(ctx, out.country)) return;
+    const k = out.country ? continentOf(out.country) : out.continent;
+    if (!k) return;
     for (const home of sealData(ctx).homes) if (home.countries.some((c) => continentOf(c) === k) && ctx.state.world.dragons[home.dragon]?.alive) addMood(ctx, home.dragon, -2);
-    void args;
   },
 };
 
