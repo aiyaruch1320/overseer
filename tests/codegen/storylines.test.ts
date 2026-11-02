@@ -470,6 +470,18 @@ describe('M8 L1 L6', () => {
     expect(choiceOf('dw.t3', 'c').label).toBe('engineer หรือ rune_carver');
     expect(choiceOf('or.t3', 'b').label).toBe('smith หรือช่างล้อมเมือง');
   });
+  it('keeps "หรือ" before an arrow as the condition, and "ไม่เข้า" as nothing granted', () => {
+    // 08-naga.md:18 "เกิด NR-06 หรือ NR-07 → `c_outcast` 40%"
+    const o = story.origins.find((x) => x.line === 'na' && x.kind === 'ลูกครึ่ง')!;
+    expect(o.effects[0]).toEqual({
+      k: 'if',
+      cond: { k: 'or', of: [{ k: 'country', ids: ['NR-06'] }, { k: 'country', ids: ['NR-07'] }] },
+      then: [{ k: 'grant', kind: 'curse', id: 'c_outcast', chance: 0.4 }],
+    });
+    // 22-halfblood.md:87 "เติบโตแบบมนุษย์ ไม่เข้า `fisher` หรือ `ferryman`"
+    expect(choiceOf('nh.t1', 'b').effects).toEqual([]);
+    expect(choiceOf('nh.t1', 'b').label).toContain('fisher หรือ ferryman');
+  });
   it('lists both places of the dwarf who left home (L6)', () => {
     const o = story.origins.find((x) => x.line === 'dw' && x.kind === 'พลัดถิ่น')!;
     expect(o.places).toEqual(['MK-07', 'AL-21', 'MH-05', 'SH-07', 'SH-15']);
