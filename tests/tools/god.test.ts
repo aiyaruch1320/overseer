@@ -330,6 +330,12 @@ describe('the console on the real god', () => {
 
 describe('the console: the review of M2 (words, previews, errors)', () => {
   function pray2(g: Game, kind: string) {
+    // the matter of the prayer is made true first, as pray() does above (a card whose matter is not true is taken back)
+    const life = g.state.life!;
+    life.hAge = Math.max(life.hAge, 30);
+    if (kind === 'love') delete (life.ext as Record<string, unknown>).bonds;
+    if (kind === 'heir') life.ext.bonds = { partner: true, children: [] };
+    expect(holdsKind(g.ctx, kind)).toBe(true);
     const a = actsOf(g.state);
     const tick = g.state.life!.hAge * 4 + g.state.clock.quarter;
     const card = { n: ++a.prayerN, kind, tick, exp: tick + 14, year: g.state.clock.worldYear };
