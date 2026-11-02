@@ -133,7 +133,7 @@ export function pathsNow(ctx: Ctx): DreamPath[] {
     const n = u.node;
     if (taken.has(n.id)) continue;
     if (n.when && !test(ctx, n.when)) continue;
-    const choices = choicesOf(n);
+    const choices = choicesOf(ctx, n);
     if (choices.length < 2) continue;
     const cut = (c: Choice) => c.effects.some((e) => e.k === 'converge' && !canEnter(ctx, e.to));
     const w = weigh(ctx, choices, NO_PULL, ex, cut).weights;
@@ -384,7 +384,8 @@ export function resolveDream(ctx: Ctx, d: Dream, retro: boolean): NonNullable<Dr
   const r: NonNullable<Dream['resolved']> = { outcome, level: ob.level, p: Math.round(ob.p * 1000) / 1000, retro };
   if (outcome === 'misread') {
     const ix = indexOf(ctx);
-    const others = (ix.nodes.get(d.node)?.choices ?? []).filter((c) => c.key !== d.choice);
+    const node = ix.nodes.get(d.node);
+    const others = (node ? choicesOf(ctx, node) : []).filter((c) => c.key !== d.choice);
     if (others.length) r.alt = others[Math.max(0, rng.weighted(others.map((c) => Math.max(0.01, c.weight))))].key;
   }
   d.resolved = r;

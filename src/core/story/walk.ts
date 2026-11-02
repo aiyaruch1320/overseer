@@ -531,6 +531,14 @@ interface Content {
   meta: Map<Choice, Meta>;
 }
 
+/** The ways of a rite written as outcomes with weights (`gh.t1` "มื้อแรก"), as the walk plays them; none for a node with ways of its own or another kind of rite. */
+export function outcomeChoices(ix: Index, n: StoryNodeX): { choices: Choice[]; labels: string[] } | undefined {
+  const rite = n.rite ? ix.rites.get(n.rite) : undefined;
+  if (rite?.form !== 'outcomes' || n.choices.length) return undefined;
+  const list = rite.outcomes.filter((o) => o.weight !== null);
+  return { choices: list.map((o, i): Choice => ({ key: keyOf(i), weight: o.weight ?? 0, label: o.label, effects: o.effects, mods: o.mods, when: o.when })), labels: list.map((o) => o.label) };
+}
+
 function contentOf(ctx: Ctx, ix: Index, n: StoryNodeX, pre: readonly Effect[]): Content {
   let choices = n.choices;
   let after: Content['after'];

@@ -11,6 +11,7 @@ import {
   priceOf, resolveDream, rerollChest, settleDreams, settleNode, armNode, obeyChance, tierChances, sourceOf, policyName, policyStep, registerPolicyPart, type Chest, type ChestSlot,
 } from '../../src/core/god';
 import { OPPOSITES, TIERS } from '../../src/core/god/tuning';
+import { choicesOf } from '../../src/core/god/story-view';
 import { bump, count, gx } from '../../src/core/god/state';
 import { newGame } from '../../src/core/state';
 import type { Condition, LifeState } from '../../src/core/types';
@@ -1035,6 +1036,17 @@ describe('god G2: dreams (03-dreams.md)', () => {
       checked++;
     }
     expect(checked).toBeGreaterThanOrEqual(2);
+  });
+
+  it('a rite written as a table of weights (the first meal of a ghoul) offers its outcomes as the ways of a dream, so the list the player sees is the crossroads that was announced', () => {
+    const w = world(60, { race: 'ghoul' });
+    const node = (data.storylines.items as { nodes: { id: string; rite?: string; choices: unknown[] }[] }).nodes.find((n) => n.id === 'gh.t1')!;
+    expect(node.choices.length).toBe(0);
+    const ways = choicesOf(w.ctx, node as never);
+    expect(ways.length).toBeGreaterThanOrEqual(2);
+    expect(ways.length).toBeLessThanOrEqual(3);
+    expect(new Set(ways.map((c) => c.key)).size).toBe(ways.length);
+    expect(ways.map((c) => c.label)).toContain('กินตามเผ่า');
   });
 
   it('a dream sent for a node that never comes is never rolled: no belief, no result, only a line that it faded', () => {
