@@ -10,7 +10,7 @@ import { chronicle, say } from './record';
 import { dangerous, godOf, hasFlag, stageOf } from './geo';
 import { nameOf, nemeses, sickInCircle } from './npcs';
 import { belief, canPay, gain, pay, scaled, whyNot } from './pay';
-import { actsOf, livingOf, tickOf, yearOf, type PrayerCard } from './state';
+import { actsOf, livingOf, tickOf, viewActs, yearOf, type PrayerCard } from './state';
 
 type Kind = ReturnType<typeof godOf>['prayers']['kinds'][number];
 
@@ -66,7 +66,7 @@ export function holdsKind(ctx: Ctx, id: string): boolean {
 
 /** Kinds that may be raised now: the condition holds and the kind has not come in the last 24 ticks. */
 export function raisable(ctx: Ctx): Kind[] {
-  const a = actsOf(ctx.state);
+  const a = viewActs(ctx.state);
   const t = godOf(ctx).prayers.tick;
   const tick = tickOf(ctx);
   return godOf(ctx).prayers.kinds.filter((k) => (a.recent[k.id] ?? -99) + t.repeatCooldownTicks <= tick && holdsKind(ctx, k.id));

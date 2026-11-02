@@ -9,7 +9,7 @@ import { chronicle, say } from './record';
 import { clamp, continentOf, countryName, godOf, hasCountry } from './geo';
 import { aliveNpc, nameOf, slotOf } from './npcs';
 import { belief, pay, priceOf, whyNot, windowOn } from './pay';
-import { actsOf, livingOf, type ActiveWhisper } from './state';
+import { actsOf, livingOf, viewActs, type ActiveWhisper } from './state';
 import { WHISPER } from './tuning';
 
 export type Hint = 'ระวัง' | 'กล้าเถิด' | 'จงไป' | 'จงอยู่' | 'จุดอ่อนของศัตรู' | 'คนนั้นโกหก' | 'ช่วย' | 'สางเรื่อง' | 'ชี้ทายาท';
@@ -19,6 +19,13 @@ export const hintsOf = (ctx: Ctx): string[] => godOf(ctx).dreams.whispers.map((w
 const CONTINENTS = ['AZ', 'MH', 'KD', 'NR', 'AL', 'MK', 'SH', 'SV', 'NB'];
 /** Hints that name something: `target` is a place, an NPC or an heir. */
 const NEEDS_TARGET: Record<string, 'place' | 'npc' | 'heir'> = { จงไป: 'place', คนนั้นโกหก: 'npc', ช่วย: 'npc', ชี้ทายาท: 'heir' };
+
+/** The hints sent in this life year, for a check (changes nothing). */
+function usedNow(ctx: Ctx): string[] {
+  const l = livingOf(ctx);
+  const w = viewActs(ctx.state).whisper;
+  return l && w.age === l.hAge ? w.used : [];
+}
 
 /** What the whisper count of this life year is (a new life year starts it again). */
 function yearOf(ctx: Ctx) {
@@ -39,7 +46,7 @@ const basePrice = (ctx: Ctx, hint: string): number => {
 /** The price now: the table price with the multipliers, nothing the first time a year when the character holds a wise weapon (`wj_sage_e` `wc_al14`). */
 export function whisperPrice(ctx: Ctx, hint: string): number {
   const l = livingOf(ctx);
-  const w = actsOf(ctx.state).whisper;
+  const w = viewActs(ctx.state).whisper;
   if (l && w.free !== l.hAge && l.items.some((i) => i === 'wj_sage_e' || i === 'wc_al14')) return 0;
   return priceOf(ctx, { faith: basePrice(ctx, hint) }, { window: true }).faith ?? 0;
 }
@@ -48,7 +55,7 @@ export function whisperPrice(ctx: Ctx, hint: string): number {
 export function obeyChance(ctx: Ctx, hint: string): { p: number; level: 'เต็มใจ' | 'ลังเล' | 'ขัดขืน' } {
   const l = livingOf(ctx);
   if (!l) return { p: 0, level: 'ขัดขืน' };
-  const a = actsOf(ctx.state);
+  const a = viewActs(ctx.state);
   let p = WHISPER.obeyBase + l.godFaith / WHISPER.beliefDiv + (l.stats.int - 10) * WHISPER.intUnit;
   if (l.skills.includes('u_oracle')) p += WHISPER.oracle;
   if (l.blessings.includes('nb_god_whisper')) p += WHISPER.godWhisper;
@@ -64,9 +71,9 @@ export function checkWhisper(ctx: Ctx, args: Record<string, unknown>): string | 
   if (!l) return 'ไม่มีตัวละครที่มีชีวิต';
   const hint = String(args.hint ?? '');
   if (!hintsOf(ctx).includes(hint)) return `ไม่มีคำใบ้ "${hint}"`;
-  const y = yearOf(ctx);
-  if (y.used.length >= godOf(ctx).caps.whisperPerYear) return 'กระซิบครบสามครั้งในปีชีวิตนี้แล้ว';
-  if (y.used.includes(hint)) return 'คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว';
+  const used = usedNow(ctx);
+  if (used.length >= godOf(ctx).caps.whisperPerYear) return 'กระซิบครบสามครั้งในปีชีวิตนี้แล้ว';
+  if (used.includes(hint)) return 'คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว';
   const need = NEEDS_TARGET[hint];
   const target = args.target === undefined ? undefined : String(args.target);
   if (need && !target) return `คำใบ้ "${hint}" ต้องชี้เป้า (target)`;
@@ -81,7 +88,7 @@ export function previewWhisper(ctx: Ctx, args: Record<string, unknown>): Record<
   const hint = String(args.hint);
   const w = godOf(ctx).dreams.whispers.find((x) => x.hint === hint)!;
   const o = obeyChance(ctx, hint);
-  return { hint, cost: { faith: whisperPrice(ctx, hint) }, effect: w.effect, level: o.level, window: windowOn(ctx), left: godOf(ctx).caps.whisperPerYear - yearOf(ctx).used.length - 1 };
+  return { hint, cost: { faith: whisperPrice(ctx, hint) }, effect: w.effect, level: o.level, window: windowOn(ctx), left: godOf(ctx).caps.whisperPerYear - usedNow(ctx).length - 1 };
 }
 
 export function runWhisper(ctx: Ctx, args: Record<string, unknown>): void {
@@ -142,7 +149,7 @@ function take(ctx: Ctx, hint: string, target: string | undefined): void {
 
 export const activeWhispers = (ctx: Ctx): ActiveWhisper[] => {
   const l = livingOf(ctx);
-  const list = actsOf(ctx.state).whisper.active;
+  const list = viewActs(ctx.state).whisper.active;
   return l ? list.filter((w) => (w.left === undefined || w.left > 0) && (w.until === undefined || w.until >= l.hAge)) : [];
 };
 

@@ -8,7 +8,7 @@ import { TUNING, holdEvent, tablesOf, weightOf } from '../../world';
 import { candidateId, chanceOf } from '../../world/events';
 import { registerMiracle, type Handler } from './miracles';
 import { continentOf, godOf, lifeCountry } from './geo';
-import { actsOf, yearOf } from './state';
+import { actsOf, viewActs, yearOf } from './state';
 
 export interface FateTarget {
   id: EventId;
@@ -82,7 +82,7 @@ const handler: Handler = {
     if (!t) return 'เหตุการณ์นั้นไม่มีลาง หรือเป็นฉากจบ ลิขิตไม่ได้';
     const bad = rangeReason(ctx, t, mulOf(args));
     if (bad) return bad;
-    const f = actsOf(ctx.state).fates[t.id];
+    const f = viewActs(ctx.state).fates[t.id];
     if (f && f.until > yearOf(ctx)) return 'เหตุการณ์นั้นมีลิขิตอยู่แล้ว ซ้อนกันไม่ได้';
     return null;
   },

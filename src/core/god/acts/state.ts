@@ -135,12 +135,24 @@ export function actsOf(state: GameState): ActsExt {
   return e;
 }
 
+/** The extension for a check or a preview, which must not change the state: the real one, or a blank one that is not kept. */
+export function viewActs(state: GameState): ActsExt {
+  return (state.god.ext.acts as ActsExt | undefined) ?? fresh();
+}
+
 export const livingOf = (ctx: Ctx): LifeState | null => {
   const l = ctx.state.life;
   return l && !l.dead ? l : null;
 };
 
 export const lifeKey = (l: LifeState) => `${l.id}/${l.birthYear}`;
+
+/** The counters of this life for a check or a preview (a blank set when the life has none yet; nothing is stored). */
+export function peekCounters(ctx: Ctx): ActsExt['life'] {
+  const l = ctx.state.life;
+  const e = viewActs(ctx.state).life;
+  return l && e.key === lifeKey(l) ? e : { key: '', mid: 0, big: 0, ruin: 0, grand: 0, switchLoss: 0 };
+}
 
 /** The counters of this life; they start again when the key of the life changes (a new life, an heir). */
 export function lifeCounters(ctx: Ctx): ActsExt['life'] {

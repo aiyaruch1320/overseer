@@ -266,7 +266,7 @@ registerMiracle(
     setFlag(ctx, c, 'war', DURATIONS.war);
     addMod(ctx, { subject: 'mercenary', country: c, mul: 2, years: DURATIONS.war, src: 'MR-15' });
     const k = continentOf(c);
-    const bosses = (ctx.data.enemies?.items as { id: string; tier: string; continents: string[] }[] | undefined)?.filter((e) => e.tier === 'บอส') ?? [];
+    const bosses = (ctx.data.enemies?.items as { items?: { id: string; tier: string; continents: string[] }[] } | undefined)?.items?.filter((e) => e.tier === 'บอส') ?? [];
     const here = bosses.filter((e) => e.continents.includes(k));
     const pick = (here.length ? here : bosses).map((e) => e.id).sort();
     const boss = pick.length ? rng(ctx).pick(pick) : 'boss';

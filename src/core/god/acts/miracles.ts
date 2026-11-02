@@ -10,7 +10,7 @@ import { chronicle, say } from './record';
 import { continentOf, godOf, lifeCountry, neighboursOf } from './geo';
 import { faithAt } from './mods';
 import { belief, gain, pay, priceOf, whyNot, type Cost } from './pay';
-import { actsOf, lifeCounters, livingOf, ready, startCooldown, yearOf, type Pending } from './state';
+import { actsOf, lifeCounters, livingOf, peekCounters, ready, startCooldown, viewActs, yearOf, type Pending } from './state';
 import { BELIEF_SEEN, DESTROY_RETURN_DIV, MC_HURT, OMEN, REACTION } from './tuning';
 
 export type Line = 'create' | 'destroy' | 'dragon' | 'fate';
@@ -77,7 +77,7 @@ export const priceNow = (ctx: Ctx, m: Miracle, h: Handler, args: Record<string, 
 function capReason(ctx: Ctx, m: Miracle): string | null {
   const caps = godOf(ctx).caps.miraclePerLife;
   const lim = godOf(ctx).miracles.limits;
-  const c = lifeCounters(ctx);
+  const c = peekCounters(ctx);
   switch (tierKey(m)) {
     case 'mid':
       if (c.mid >= caps.mid) return `ปาฏิหาริย์ระดับกลางครบ ${caps.mid} ครั้งในชีวิตนี้แล้ว`;
@@ -122,7 +122,7 @@ function spendCaps(ctx: Ctx, m: Miracle): void {
 /** Why the command cannot be taken now, or null. Never rolls, never changes the state. */
 export function checkMiracle(ctx: Ctx, args: Record<string, unknown>): string | null {
   if (!livingOf(ctx)) return 'ไม่มีตัวละครที่มีชีวิต';
-  if (args.cancel !== undefined) return actsOf(ctx.state).pending.some((p) => p.n === Number(args.cancel)) ? null : 'ไม่มีลางนั้น';
+  if (args.cancel !== undefined) return viewActs(ctx.state).pending.some((p) => p.n === Number(args.cancel)) ? null : 'ไม่มีลางนั้น';
   const id = idOf(args);
   const m = miracleOf(ctx, id);
   if (!m) return `ไม่มีปาฏิหาริย์ ${id || '(ไม่ระบุ)'}`;
@@ -140,14 +140,14 @@ export function checkMiracle(ctx: Ctx, args: Record<string, unknown>): string | 
 /** What the confirm screen shows: the price, the day, what falls and what it changes. */
 export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<string, unknown> {
   if (args.cancel !== undefined) {
-    const p = actsOf(ctx.state).pending.find((x) => x.n === Number(args.cancel))!;
+    const p = viewActs(ctx.state).pending.find((x) => x.n === Number(args.cancel))!;
     return { cancel: p.n, id: p.id, refund: { faith: Math.floor(p.paid.faith * OMEN.refund), dread: Math.floor(p.paid.dread * OMEN.refund) } };
   }
   const id = idOf(args);
   const m = miracleOf(ctx, id)!;
   const h = handlers.get(id)!;
   const caps = godOf(ctx).caps.miraclePerLife;
-  const c = lifeCounters(ctx);
+  const c = peekCounters(ctx);
   return {
     id,
     name: m.name,
