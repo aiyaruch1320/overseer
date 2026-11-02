@@ -8,7 +8,7 @@ import path from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
 import { Game, type GameData, type System } from '../../src/core/game';
-import { onCond, onStat, resetRules } from '../../src/core/rules';
+import { onCond, onEffect, onStat, resetRules } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { registerStoryRules, storySystem } from '../../src/core/story';
 import type { LifeState } from '../../src/core/types';
@@ -33,6 +33,9 @@ function mockRules() {
   const life = (c: { state: { life: LifeState | null } }) => c.state.life!;
   // the sim opens the journey, craft and trade lines by chance, so every job counts, except the labour jobs of the economy line `wk` that the sim does not walk
   onCond('has', (c, x) => (x.kind === 'job' && !['miner', 'laborer', 'factory_worker'].includes(x.id)) || [...life(c).traits, ...life(c).blessings, ...life(c).curses, ...life(c).skills].includes(x.id));
+  // the sim's life lives to 75 whatever a way says (a way that says the character dies is the end, which the toy comes to anyway);
+  // the deaths of the ways are measured with the real character system below
+  onEffect('death', () => undefined);
   onCond('event', () => true);
   onCond('country', (c, x) => x.ids.includes(life(c).country));
   onCond('continent', (c, x) => x.ids.includes(life(c).country.slice(0, 2) as never));

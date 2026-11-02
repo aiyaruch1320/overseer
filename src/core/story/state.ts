@@ -14,6 +14,8 @@ export interface StoryExt {
   open: Record<string, boolean>;
   /** Node → hAge it fires at, drawn when the node first becomes due. */
   fire: Record<NodeId, number>;
+  /** Node → the first hAge it could have played (its turn came), so a node that waits for a free year is counted from there. */
+  due: Record<NodeId, number>;
   /** Nodes that never played (their condition failed, a jump went over them, another node stood in). */
   skipped: NodeId[];
   /** Jump: years earlier than its table age a node may fire. */
@@ -28,11 +30,19 @@ export interface StoryExt {
   nodeMods: { node: NodeId; label?: string; mul: number }[];
   /** `entryMod`: a choice of a convergence that a row set up. */
   entryMods: { to: NodeId; choice: Key; mul: number; cond?: import('../types').Condition }[];
-  /** NPCs and events this life met, by id (the director's memory of who and what came back). */
-  seen: { npcs: string[]; events: string[] };
+  /**
+   * The director's memory of who and what came back (llm/04-story.md §3.1 rule 2): NPCs and events this life met, and the turning
+   * points it chose (a job path opened, a bond line, a convergence entered: "ติดตามผู้กล้า", "ชิงตำแหน่ง").
+   */
+  seen: { npcs: string[]; events: string[]; pivots: string[] };
   jobpaths: { job: string; secret: boolean }[];
   places: string[];
+  /** Endings the life earned, by title, as nodes and conditions grant them. One is chosen at death (`ended`); none is announced before. */
   endings: string[];
+  /** Title → the line of the node that granted it (an ending of the life's own race line weighs more at death). */
+  endingLines: Record<string, string>;
+  /** The one ending chosen at death. */
+  ended?: string;
   levels: Record<string, number[]>;
   battles: { win: number; lose: number; flee: number };
   checks: { dc: number; roll: number; ok: boolean }[];
@@ -40,12 +50,17 @@ export interface StoryExt {
   cur?: { id: NodeId; choice: Key | '-' };
   /** Lines opened from outside (`openLine`). */
   external: string[];
+  /** Overlay lines whose opening was drawn and passed but wait for a free place (tuning OVERLAY_AT_ONCE, JOURNEY_AT_ONCE). */
+  queue: string[];
+  /** What this life year already holds: nodes played, battles fought and the enemies fought (tuning NODES_PER_YEAR, BATTLES_PER_YEAR). */
+  year: { age: number; nodes: number; battles: number; fought: string[] };
 }
 
 export function fresh(): StoryExt {
   return {
-    line: '', start: 0, open: {}, fire: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
-    seen: { npcs: [], events: [] }, jobpaths: [], places: [], endings: [], levels: {}, battles: { win: 0, lose: 0, flee: 0 }, checks: [], external: [],
+    line: '', start: 0, open: {}, fire: {}, due: {}, skipped: [], earlier: {}, force: {}, fallbackUsed: [], waiting: [], nodeMods: [], entryMods: [],
+    seen: { npcs: [], events: [], pivots: [] }, jobpaths: [], places: [], endings: [], endingLines: {}, levels: {}, battles: { win: 0, lose: 0, flee: 0 }, checks: [], external: [],
+    queue: [], year: { age: -1, nodes: 0, battles: 0, fought: [] },
   };
 }
 
@@ -61,6 +76,13 @@ export function extOf(life: LifeState): StoryExt {
     e = fresh();
     life.ext.story = e;
   }
+  // a life saved before these fields existed
+  const f = fresh();
+  e.seen.pivots ??= f.seen.pivots;
+  e.endingLines ??= f.endingLines;
+  e.queue ??= f.queue;
+  e.due ??= f.due;
+  e.year ??= f.year;
   return e;
 }
 
@@ -68,4 +90,10 @@ export function addOnce(list: string[], id: string): boolean {
   if (list.includes(id)) return false;
   list.push(id);
   return true;
+}
+
+/** This life year's count of nodes and battles; it starts again when the age goes up. */
+export function yearOf(ex: StoryExt, life: LifeState): StoryExt['year'] {
+  if (ex.year.age !== life.hAge) ex.year = { age: life.hAge, nodes: 0, battles: 0, fought: [] };
+  return ex.year;
 }

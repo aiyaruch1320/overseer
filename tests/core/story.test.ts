@@ -1,11 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
 import { Game, makeCtx, type GameData, type System } from '../../src/core/game';
-import type { StoryNodeX, StorylinesData, ConvergenceData } from '../../src/core/data/types-storylines';
-import { onCond, onStat, resetRules, test } from '../../src/core/rules';
+import type { ConvergenceData, Ending, StoryNodeX, StorylinesData } from '../../src/core/data/types-storylines';
+import { onCond, onEffect, onStat, resetRules, test } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
-import { registerStoryRules, storySystem } from '../../src/core/story';
+import { openLine, registerStoryRules, storySystem } from '../../src/core/story';
 import { fresh } from '../../src/core/story/state';
+import { BATTLES_PER_YEAR, CAUSE, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS } from '../../src/core/story/tuning';
 import type { Choice, Condition, Effect, LifeState } from '../../src/core/types';
 
 // ---------- a toy character system and the conditions other systems would answer ----------
@@ -495,13 +496,353 @@ describe('overlay lines', () => {
     expect(bn).toBeGreaterThan(18);
   });
 
-  it('openLine opens a line the story would not open itself', async () => {
-    const { openLine } = await import('../../src/core/story');
+  it('openLine opens a line the story would not open itself', () => {
     const g = new Game(newGame(2), real, [toy, storySystem]);
     g.state.life = person('human');
     g.born();
     openLine(makeCtx(g.state, real), 'ec');
     g.runLife();
     expect(g.state.life!.passed['ec.b1'] ?? g.state.life!.passed['ec.b2']).toBeDefined();
+  });
+});
+
+// ---------- M1 review: the ending, the way a life ends, the pace of a year ----------
+
+/** The kills of the character system, as the story asks for them: a `death` effect ends the life at once with its cause and the node. */
+function mockDeath() {
+  onEffect('death', (c, e, src) => {
+    const l = c.state.life!;
+    if (!l.dead) l.dead = { year: c.state.clock.worldYear, hAge: l.hAge, cause: e.cause ?? 'story', ...(src.sys === 'story' && src.id ? { node: src.id } : {}) };
+  });
+}
+
+const ending = (title: string, cond?: Condition): Ending => ({ line: 'hu', title, condRaw: '', ...(cond ? { cond } : {}), nodes: [], events: [], legend: '', src: '' });
+const endingLog = (g: Game) => g.state.log.filter((e) => e.sys === 'story' && e.kind === 'ending');
+const battleLog = (g: Game) => g.state.log.filter((e) => e.sys === 'story' && e.kind === 'battle');
+
+/** A set of nodes for the line `hu` with the rites the closing node needs to be known as a race line's. */
+function closing(nodes: StoryNodeX[], endings: Ending[] = []): GameData {
+  const data = mini(nodes);
+  const sl = data.storylines.items as StorylinesData;
+  sl.endings = endings;
+  sl.rites = [{ id: 'hu.t1', line: 'hu', title: '', intro: '', header: [], form: 'outcomes', outcomes: [], src: '' }];
+  return data;
+}
+
+describe('the ending of a life', () => {
+  beforeEach(mockDeath);
+
+  it('a life earns several endings and is told one at its death, never before', () => {
+    const data = closing([
+      node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'ending', title: 'first' }] })]),
+      node('hu.a2', [30, 30], [choice('a', 100, { effects: [{ k: 'ending', title: 'second' }] })]),
+      node('hu.a3', [40, 40], [choice('a', 100, { effects: [{ k: 'ending', title: 'never', cond: { k: 'event', id: 'WR-99', happened: true } }] })]),
+    ]);
+    for (let seed = 1; seed <= 12; seed++) {
+      mocks();
+      mockDeath();
+      const g = play(seed, data, person());
+      const ex = g.state.life!.ext.story as { endings: string[]; ended: string };
+      expect(ex.endings).toEqual(['first', 'second']);
+      const log = endingLog(g);
+      expect(log.length).toBe(1);
+      expect(['first', 'second']).toContain(log[0].id);
+      expect(log[0].id).toBe(ex.ended);
+      // after the death entry of the game, none before
+      const death = g.state.log.findIndex((e) => e.kind === 'death');
+      expect(g.state.log.indexOf(log[0])).toBeGreaterThan(death);
+    }
+    // both can win, by weight (assumption: a draw between the two)
+    const seen = new Set<string>();
+    for (let seed = 1; seed <= 40; seed++) {
+      mocks();
+      mockDeath();
+      seen.add(String(endingLog(play(seed, data, person()))[0].id));
+    }
+    expect(seen.size).toBe(2);
+  });
+
+  it('the condition of the table gives an ending too, and the one of the life\'s own race line weighs more than a harder one of another line', () => {
+    const data = closing([node('hu.a1', [20, 20], [choice('a', 100)])], [ending('from the table', { k: 'node', id: 'hu.a1' })]);
+    const g = play(1, data, person());
+    expect(endingLog(g).map((e) => e.id)).toEqual(['from the table']);
+  });
+
+  it('an ending that is a death in battle needs a death in battle', () => {
+    const data = closing([node('hu.a1', [20, 20], [choice('a', 100)])], [ending('ผู้ตายในสงคราม', { k: 'node', id: 'hu.a1' }), ending('คนธรรมดาที่รอด')]);
+    // a long life: the war ending is not told, and the plain one is (no convergence, died of age)
+    const old = play(1, data, person());
+    expect(old.state.life!.dead!.cause).toBe('old');
+    expect(endingLog(old).map((e) => e.id)).toEqual(['คนธรรมดาที่รอด']);
+    // the same life ends in battle: the war ending is the one
+    mocks();
+    mockDeath();
+    const war = closing([node('hu.a1', [20, 20], [choice('a', 100)]), node('hu.a2', [40, 40], [choice('a', 100, { effects: [{ k: 'death', cause: CAUSE.battle }] })])], [ending('ผู้ตายในสงคราม', { k: 'node', id: 'hu.a1' })]);
+    const g = play(1, war, person());
+    expect(g.state.life!.dead!.cause).toBe(CAUSE.battle);
+    expect(endingLog(g).map((e) => e.id)).toEqual(['ผู้ตายในสงคราม']);
+  });
+
+  it('the plain ending is for a life that never met a convergence', () => {
+    const data = closing([node('hu.a1', [20, 20], [choice('a', 100)])], [ending('คนธรรมดาที่รอด')]);
+    const g = play(1, data, person('human', { passed: { 'cv.3': 'a' } }));
+    expect(endingLog(g)).toEqual([]);
+  });
+
+  it('on the real data no life is told more than one ending, and a war ending only after a death in battle', () => {
+    for (const race of RACES) {
+      for (const seed of [1, 2, 3, 4]) {
+        mocks();
+        mockDeath();
+        const g = play(seed, real, person(race, { country: homeOf(real, CODE[race]) }));
+        const log = endingLog(g);
+        expect(log.length, `${race} ${seed}`).toBeLessThanOrEqual(1);
+        if (log[0] && WAR_ENDINGS.has(String(log[0].id))) expect(g.state.life!.dead!.cause).toBe(CAUSE.battle);
+      }
+    }
+  });
+});
+
+describe('a way that says the character dies', () => {
+  beforeEach(mockDeath);
+
+  it('the closing node comes in the last life year and a way of it ends the life with its cause', () => {
+    const nodes = (key: 'a' | 'b'): StoryNodeX[] => [
+      node('hu.e1', [55, 65], [choice('a', 100)]),
+      node('hu.e2', [65, 999], [choice('a', key === 'a' ? 100 : 0), choice('b', key === 'b' ? 100 : 0), choice('c', 0)]),
+    ];
+    const peace = play(1, closing(nodes('a')), person());
+    expect(peace.state.life!.dead).toMatchObject({ cause: 'old', node: 'hu.e2', hAge: 74 });
+    expect(nodeLog(peace).at(-1)!.id).toBe('hu.e2');
+    // hu.e2 ทาง ข "โรคหรืออุบัติเหตุ": illness or accident, never old age
+    const sick = new Set<string>();
+    for (let seed = 1; seed <= 30; seed++) {
+      mocks();
+      mockDeath();
+      sick.add(play(seed, closing(nodes('b')), person()).state.life!.dead!.cause);
+    }
+    expect([...sick].sort()).toEqual(['accident', 'illness']);
+  });
+
+  it('the way that goes on to the last era (c) does not kill: the natural death comes after', () => {
+    const data = closing([node('hu.e2', [65, 999], [choice('a', 0), choice('b', 0), choice('c', 100)])]);
+    const g = play(1, data, person());
+    expect(g.state.life!.passed['hu.e2']).toBe('c');
+    expect(g.state.life!.dead).toMatchObject({ cause: 'old', hAge: 75 });
+    expect(g.state.life!.dead!.node).toBeUndefined();
+  });
+
+  it('the hidden death age moves the last year: a short life closes before it', () => {
+    const g = play(1, closing([node('hu.e1', [55, 65], [choice('a', 100)]), node('hu.e2', [65, 999], [choice('a', 100)])]), person('human', { ext: { character: { deathAge: 60 } } }));
+    expect(g.state.life!.dead).toMatchObject({ node: 'hu.e2', hAge: 59 });
+    expect(nodeLog(g).map((e) => e.id)).toEqual(['hu.e1', 'hu.e2']);
+  });
+
+  it('the listed ways: dying in battle, in the light, of violence', () => {
+    const cases: [string, 'a' | 'b', string][] = [
+      ['or', 'a', CAUSE.battle],
+      ['gi', 'b', CAUSE.battle],
+      ['va', 'b', CAUSE.light],
+      ['de', 'b', 'violence'],
+      ['dw', 'b', 'accident'],
+      ['mu', 'a', 'old'],
+    ];
+    for (const [line, key, cause] of cases) {
+      mocks();
+      mockDeath();
+      const id = `${line}.e2`;
+      const data = closing([node(id, [65, 999], [choice('a', key === 'a' ? 100 : 0), choice('b', key === 'b' ? 100 : 0), choice('c', 0)])]);
+      (data.storylines.items as StorylinesData).rites = [{ id: `${line}.t1`, line, title: '', intro: '', header: [], form: 'outcomes', outcomes: [], src: '' }];
+      (data.storylines.items as StorylinesData).lines.push({ id: line, name: line, file: '', nodeIds: [id] });
+      const race = Object.entries(CODE).find(([, c]) => c === line)![0];
+      const g = play(1, data, person(race));
+      expect(g.state.life!.dead, id).toMatchObject({ cause, node: id });
+    }
+  });
+
+  it('a rite outcome that turns the character to stone ends the life at once, and the log names the outcome', () => {
+    const data = mini([node('na.t1', [15, 15], [], { rite: 'na.t1' })]);
+    (data.storylines.items as StorylinesData).rites = [{
+      id: 'na.t1', line: 'na', title: '', intro: '', header: [], form: 'outcomes', src: '',
+      outcomes: [
+        { label: 'ผ่าน', weight: 0, mods: [], effects: [], text: 'สิทธิ์เข้าวังใต้น้ำ' },
+        { label: 'ไม่ผ่าน กลายเป็นหิน', weight: 100, mods: [], effects: [], text: 'ปลายทางทันที' },
+      ],
+    }];
+    (data.storylines.items as StorylinesData).lines.push({ id: 'na', name: 'นาคา', file: '', nodeIds: ['na.t1'] });
+    const g = play(1, data, person('naga'));
+    expect(g.state.life!.dead).toMatchObject({ cause: CAUSE.stone, hAge: 15, node: 'na.t1' });
+    const e = nodeLog(g)[0];
+    expect(e.data).toMatchObject({ rite: 'na.t1', variant: 'ไม่ผ่าน กลายเป็นหิน', text: 'ปลายทางทันที', label: 'ไม่ผ่าน กลายเป็นหิน' });
+  });
+
+  it('a rite of sub-lines keeps the sub-line and how it went; a convergence keeps the way it took', () => {
+    const data = mini([node('hu.t1', [15, 15], [], { rite: 'hu.t1' })], { cv: [cvPoint('cv.1', undefined, [choice('a', 100, { label: 'sit with them' })])], links: [{ from: 'hu.t1', to: ['cv.1'], toRaw: '', condRaw: '', src: '' }] });
+    (data.storylines.items as StorylinesData).rites = [{
+      id: 'hu.t1', line: 'hu', title: '', intro: '', header: [], form: 'variants', src: '',
+      outcomes: [{ label: 'ทุ่งราบ', weight: null, mods: [], effects: [], text: '', pass: { text: 'ผ่านด้วยดาบ', effects: [] }, fail: { text: 'แพ้', effects: [] } }],
+    }];
+    const g = play(1, data, person());
+    const rite = nodeLog(g).find((e) => e.id === 'hu.t1')!;
+    expect(rite.data).toMatchObject({ rite: 'hu.t1', variant: 'ทุ่งราบ' });
+    expect(['pass', 'fail']).toContain(rite.data.result);
+    const cv = nodeLog(g).find((e) => e.id === 'cv.1')!;
+    expect(cv.data).toMatchObject({ choice: 'a', label: 'sit with them' });
+  });
+});
+
+describe('the pace of a year', () => {
+  beforeEach(mockDeath);
+
+  it('a year holds NODES_PER_YEAR nodes; the rest wait for the next year', () => {
+    const data = mini(['a1', 'a2', 'a3', 'a4', 'a5', 'a6'].map((n) => node(`hu.${n}`, [20, 22], [choice('a', 100)])));
+    for (const seed of [1, 2, 3, 4, 5]) {
+      mocks();
+      mockDeath();
+      const g = play(seed, data, person());
+      const per = new Map<number, number>();
+      for (const e of nodeLog(g)) per.set(e.age!, (per.get(e.age!) ?? 0) + 1);
+      expect(nodeLog(g).length, `seed ${seed}`).toBe(6);
+      expect(Math.max(...per.values()), `seed ${seed}`).toBeLessThanOrEqual(NODES_PER_YEAR);
+    }
+  });
+
+  it('a closing node is not delayed by a full year', () => {
+    const data = closing([...['a1', 'a2', 'a3'].map((n) => node(`hu.${n}`, [74, 74], [choice('a', 100)])), node('hu.e2', [65, 999], [choice('a', 100)])]);
+    const g = play(1, data, person());
+    expect(nodeLog(g).at(-1)!.id).toBe('hu.e2');
+    expect(g.state.life!.dead!.node).toBe('hu.e2');
+  });
+
+  it('an enemy is fought once a year, the notes of the node and the way it chose together', () => {
+    const data = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'battle', enemies: ['wolf', 'goblin'] }] })], { notes: [{ k: 'battle', enemies: ['wolf'] }, { k: 'battle', enemies: ['wolf', 'bandits'] }] })]);
+    const g = play(1, data, person());
+    expect(battleLog(g).map((e) => e.data.enemies)).toEqual(['wolf,goblin', 'bandits']);
+    expect((g.state.life!.ext.story as { battles: Record<string, number> }).battles).toBeDefined();
+  });
+
+  it('a battle with no enemy is the battle the notes name for that way (one battle, not two); with none named it does not happen', () => {
+    const pv = mini([node('hu.a1', [20, 20], [choice('a', 0), choice('b', 0), choice('c', 100, { effects: [{ k: 'battle', enemies: [], text: 'ศึกสุ่มหนึ่งครั้งต่อปี' }] })], { notes: [{ k: 'battleFor', choices: ['c'], enemies: ['wolf'], role: 'x' }] })]);
+    const g = play(1, pv, person());
+    expect(battleLog(g).map((e) => e.data.enemies)).toEqual(['wolf']);
+    const bare = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'battle', enemies: [], text: 'ศึกสุ่ม' }] })])]);
+    const h = play(1, bare, person());
+    expect(battleLog(h)).toEqual([]);
+    expect(h.state.log.filter((e) => e.kind === 'battleSkip').length).toBe(1);
+  });
+
+  it('a year holds BATTLES_PER_YEAR battles at most', () => {
+    const enemies = ['wolf', 'goblin', 'bandits', 'troll', 'ogre', 'bat'];
+    const data = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: enemies.map((e): Effect => ({ k: 'battle', enemies: [e] })) })])]);
+    const g = play(1, data, person());
+    expect(battleLog(g).length).toBe(BATTLES_PER_YEAR);
+    // the next year the count starts again
+    const two = mini([node('hu.a1', [20, 20], [choice('a', 100, { effects: enemies.slice(0, 4).map((e): Effect => ({ k: 'battle', enemies: [e] })) })]), node('hu.a2', [21, 21], [choice('a', 100, { effects: [{ k: 'battle', enemies: ['ogre'] }] })])]);
+    expect(battleLog(play(1, two, person())).length).toBe(5);
+  });
+
+  it('one journey line at a time: the second opens when the first is done', () => {
+    const data = mini([]);
+    const sl = data.storylines.items as StorylinesData;
+    const mk = (line: string, ages: number[]) => ages.map((a, i) => node(`${line}.a${i + 1}`, [a, a], [choice('a', 100)], { line, kind: 'overlay' }));
+    sl.nodes = [...mk('sf', [20, 24, 28]), ...mk('ps', [20, 22, 26])];
+    sl.lines.push({ id: 'sf', name: 'sf', file: '', nodeIds: [] }, { id: 'ps', name: 'ps', file: '', nodeIds: [] });
+    const g = play(1, data, person(), (game) => {
+      openLine(makeCtx(game.state, data), 'sf');
+      openLine(makeCtx(game.state, data), 'ps');
+    });
+    const at = (line: string) => nodeLog(g).filter((e) => String(e.id).startsWith(`${line}.`)).map((e) => e.age!);
+    expect(at('sf').length).toBe(3);
+    expect(at('ps').length).toBe(3);
+    // the second line opens in the year the first is done, after its last node was played
+    expect(Math.min(...at('ps'))).toBeGreaterThanOrEqual(Math.max(...at('sf')));
+    expect(at('ps')).not.toEqual(at('sf'));
+  });
+
+  it('on the real data lines opened by chance are walked OVERLAY_AT_ONCE at a time at most, and the journey lines one at a time', () => {
+    // every job counts, so the lines of jobs open as in the sim (tests/balance/story.test.ts)
+    const OPEN = Object.keys(OPEN_RATE);
+    let widest = 0;
+    let journeys = 0;
+    for (let seed = 1; seed <= 120; seed++) {
+      resetRules();
+      registerStoryRules();
+      mockDeath();
+      const life = (c: { state: { life: LifeState | null } }) => c.state.life!;
+      onCond('has', (c, x) => x.kind === 'job' || [...life(c).traits, ...life(c).blessings, ...life(c).curses, ...life(c).skills].includes(x.id));
+      onCond('event', () => true);
+      onCond('country', (c, x) => x.ids.includes(life(c).country));
+      onCond('continent', (c, x) => x.ids.includes(life(c).country.slice(0, 2) as never));
+      onCond('race', (c, x) => x.ids.includes(CODE[life(c).race] ?? life(c).race));
+      onCond('era', (c, x) => c.state.world.era >= x.min);
+      onCond('half', () => false);
+      onCond('class', () => true);
+      onCond('bond', () => true);
+      onCond('age', (c, x) => life(c).hAge >= (x.min ?? 0) && life(c).hAge <= (x.max ?? 999));
+      onCond('place', () => false);
+      onStat('gold', { read: (c) => life(c).gold });
+      onStat('int', { read: (c) => life(c).stats.int });
+      onStat('travel.countries', { read: () => 1 });
+      const race = RACES[seed % RACES.length];
+      const g = play(seed, real, person(race, { country: homeOf(real, CODE[race]) }));
+      const span = new Map<string, [number, number]>();
+      for (const e of nodeLog(g)) {
+        const line = String(e.data.line);
+        if (!OPEN.includes(line)) continue;
+        const s = span.get(line);
+        span.set(line, s ? [Math.min(s[0], e.age!), Math.max(s[1], e.age!)] : [e.age!, e.age!]);
+      }
+      for (let age = 0; age <= 80; age++) {
+        // a line is walked from its first node to the year of its last (the year its last node plays it is done)
+        const now = [...span].filter(([, [a, b]]) => a <= age && age < b);
+        widest = Math.max(widest, now.length);
+        // the year a journey ends is the year the next one may open
+        const j = now.filter(([l]) => JOURNEY_LINES.has(l));
+        if (j.length > JOURNEY_AT_ONCE) journeys++;
+      }
+    }
+    expect(widest).toBeLessThanOrEqual(OVERLAY_AT_ONCE);
+    expect(journeys).toBe(0);
+    expect(widest).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe('the memory of the director', () => {
+  it('keeps the turning points the life chose, and a way that follows one ties back to it', () => {
+    const data = mini([
+      node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'jobpath', job: 'kingmaker', secret: false }, { k: 'bond', line: 'คู่หู' }] })]),
+      node('hu.a2', [30, 30], [choice('a', 50, { effects: [{ k: 'jobpath', job: 'kingmaker', secret: false }] }), choice('b', 50, { effects: [{ k: 'grant', kind: 'trait', id: 'brave' }] })]),
+      node('hu.a3', [40, 40], [choice('a', 50, { effects: [{ k: 'ref', nodes: ['hu.a1'], rel: 'ตรงกับ' }] }), choice('b', 50)]),
+    ]);
+    const g = play(1, data, person(), (game) => void (game.state.settings.llm.director = true));
+    const ex = g.state.life!.ext.story as { seen: { pivots: string[] } };
+    expect(ex.seen.pivots).toEqual(expect.arrayContaining(['job:kingmaker', 'bond:คู่หู']));
+    const a2 = nodeLog(g).find((e) => e.id === 'hu.a2')!;
+    expect(a2.data.ties).toBe(1);
+    const a3 = nodeLog(g).find((e) => e.id === 'hu.a3')!;
+    expect(a3.data.ties).toBe(1);
+  });
+
+  it('the pivots lift the odds of a way that ties back when the director is on, by the same factor as for a person met again', () => {
+    const data = mini([
+      node('hu.a1', [20, 20], [choice('a', 100, { effects: [{ k: 'jobpath', job: 'kingmaker', secret: false }] })]),
+      node('hu.a2', [30, 30], [choice('a', 50, { effects: [{ k: 'jobpath', job: 'kingmaker', secret: false }] }), choice('b', 50)]),
+    ]);
+    const count = (on: boolean) => {
+      let a = 0;
+      for (let seed = 1; seed <= 400; seed++) {
+        mocks();
+        const g = play(seed, data, person(), (game) => void (game.state.settings.llm.director = on));
+        if (g.state.life!.passed['hu.a2'] === 'a') a++;
+      }
+      return a / 400;
+    };
+    const off = count(false);
+    const on = count(true);
+    expect(off).toBeGreaterThan(0.43);
+    expect(off).toBeLessThan(0.57);
+    // 1.75 / (1.75 + 1) = 0.636
+    expect(on).toBeGreaterThan(0.58);
+    expect(on).toBeLessThan(0.69);
   });
 });

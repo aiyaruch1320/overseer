@@ -153,9 +153,9 @@ export function registerCharacterRules(force = false): void {
     write(ctx.state, { sys: 'character', kind: 'wound', data: { from: src.id ?? src.sys }, level: 2 });
   });
   onEffect('trust', (ctx, e) => addTrust(ctx, e.toward, e.delta));
-  onEffect('class', (ctx, e) => {
+  onEffect('class', (ctx, e, src) => {
     const life = alive(ctx);
-    if (life) addCanon(ctx, life, 'class', e.value - classNum(life));
+    if (life) addCanon(ctx, life, 'class', e.value - classNum(life), src.id ?? src.sys);
   });
   onEffect('favour', (ctx, e) => {
     const life = alive(ctx);

@@ -13,7 +13,7 @@ export { birth, type BirthOpts } from './birth';
 export { chooseJob, grantJob, offerJobs, rollSecretJobs, secretChance, ineligible, evalCond, jobWeight } from './jobs';
 export { die, yearlyDeath } from './death';
 export { extOf, idx, classNum, classId, type CharacterExt } from './data';
-export { holds, tagsOf, giveId, takeId, trustOf, recomputeDeathAge } from './life';
+export { holds, tagsOf, giveId, takeId, trustOf, recomputeDeathAge, setClass } from './life';
 export { registerCharacterRules } from './rules';
 
 export const characterSystem: System = {

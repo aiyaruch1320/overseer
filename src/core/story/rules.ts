@@ -61,9 +61,12 @@ export function registerStoryRules(): void {
   onEffect('outcome', (ctx, e, src) => apply(ctx, normalize(e.effects), src));
 
   // ---------- facts the story keeps for later systems ----------
-  onEffect('ending', (ctx, e) => {
+  // an ending is earned here, not announced: one of those earned is chosen when the character dies (ending.ts)
+  onEffect('ending', (ctx, e, src) => {
     const life = lifeOf(ctx);
-    if (life && test(ctx, e.cond) && addOnce(extOf(life).endings, e.title)) trace(ctx, 'ending', e.title, {}, 1);
+    if (!life || (e.cond && !test(ctx, e.cond))) return;
+    const ex = extOf(life);
+    if (addOnce(ex.endings, e.title) && src.id) ex.endingLines[e.title] = indexOf(ctx).nodes.get(src.id)?.line ?? ex.line;
   });
   onEffect('replaces', (ctx, e) => {
     const life = lifeOf(ctx);
