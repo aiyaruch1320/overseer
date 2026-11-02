@@ -2,6 +2,7 @@
 // The contract has no hit points, so they live here: `hp`, the long injury, the fights fought, the enemies met, the titles earned.
 import type { Ctx } from '../game';
 import type { LifeState } from '../types';
+import type { ClashOpts } from './clash';
 import type { FightOpts } from './types';
 
 export interface PendingFight {
@@ -12,6 +13,8 @@ export interface PendingFight {
   due: number;
   /** The log number of the `combat/prelude` entry that announced it. */
   prelude?: number;
+  /** An NPC clash waiting for its day: the clash row and the plain options of the call; fought by `flushClashes`, not by `flush`. */
+  clash?: { id: string; o: ClashOpts };
 }
 
 export interface CombatExt {
@@ -62,8 +65,8 @@ export interface WarExt {
   pay: number;
   /** Points toward the next rank. */
   points: number;
-  /** What the last summary already told: the age and the counts then. */
-  told: { age: number; battles: number; held: number; won: number; lost: number; pay: number };
+  /** What the last summary already told: the age and the counts then, and its numbers as one string (a window that repeats them is not told again). */
+  told: { age: number; battles: number; held: number; won: number; lost: number; pay: number; sig?: string };
 }
 
 export function fresh(): CombatExt {

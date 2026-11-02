@@ -12,7 +12,7 @@ import { admit } from './launch';
 import { quietReward } from './reward';
 import { buildHero } from './hero';
 import { extOf, lifeOf } from './state';
-import { CLASH_MAX_PER_LIFE, DUEL_STYLE, SPARE, STREAM, TALK_KEY_CHANCE } from './tuning';
+import { CLASH_MAX_PER_LIFE, DUEL_STYLE, PRELUDE_BEATS, SPARE, STREAM, TALK_KEY_CHANCE } from './tuning';
 import type { FightOpts } from './types';
 
 /** The opening code of a clash: B ขัดขวาง · X ข้ามทาง · S ถูกส่งมา · T ท้า · P ปกป้อง (07 §2). */
@@ -32,13 +32,19 @@ export interface ClashOpts extends Partial<FightOpts> {
    * itself (npc `applyClashOutcome`, which applies the row). Default true.
    */
   apply?: boolean;
+  /**
+   * true: the call `combat/prelude` is written now and the fight waits PRELUDE_BEATS beats in the pending queue (result `waiting`); `flushClashes`
+   * fights it on its day and tells the NPC system through `linkClashes`. The NPC system asks for this so that the god can whisper first.
+   * Default false: the call and the fight are of the same beat.
+   */
+  announce?: boolean;
 }
 
 export interface ClashResult {
   clash: string;
   npc: string;
   /** What happened: the end of the fight, or why none was fought. */
-  result: Fought['result'] | 'deferred' | 'closed' | 'unknown';
+  result: Fought['result'] | 'deferred' | 'closed' | 'unknown' | 'waiting';
   /** The kind of outcome row applied (`win_kill` `win_spare` `talk` `draw` `lose`), if any. */
   kind?: string;
   outcome?: ClashOutcome;
@@ -91,8 +97,60 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
     // the second time only after a draw, a flight or a defeat
     if (!['draw', 'lose'].includes(seen.result)) return none('closed');
   }
+  // one at a time: a clash of this NPC already waits for its day
+  if (ext.pending.some((p) => p.clash && p.enemies[0] === c.npc)) return none('waiting');
   if (!admit(ctx, [c.npc]).length) return none('deferred');
+  if (o.announce) {
+    // the call of a fight with a name (07-attention.md §2): it goes out now and the blades meet PRELUDE_BEATS beats later
+    const e = write(ctx.state, {
+      sys: 'combat',
+      kind: 'prelude',
+      id: c.npc,
+      data: { enemies: c.npc, foe: foe.name, tier: foe.tier, node: c.id, kind: DUEL_STYLE.test(c.style) && !o.toDeath ? 'duel' : 'clash', text: null },
+      level: 2,
+    });
+    const { announce: _announce, ...plain } = o;
+    void _announce;
+    ext.pending.push({ enemies: [c.npc], opts: {}, due: ext.tick + PRELUDE_BEATS, prelude: e.n, clash: { id: c.id, o: plain } });
+    return none('waiting');
+  }
+  return play(ctx, c, o, foe, seen, false);
+}
 
+/** What the NPC system tells the combat system about the clashes it queued (set by `linkClashes`; none when the NPC system is not loaded). */
+export interface ClashLink {
+  /** False when the NPC cannot fight any more on the day (dead, left the country): the clash is dropped. */
+  ready?(ctx: Ctx, npc: string): boolean;
+  /** A clash fought on its day: the result to write back into the lines of the NPC. */
+  played(ctx: Ctx, r: ClashResult): void;
+}
+let link: ClashLink | undefined;
+export function linkClashes(l: ClashLink | undefined): void {
+  link = l;
+}
+
+/** Fights the clashes whose call went out PRELUDE_BEATS beats ago and hands each result to the NPC system. */
+export function flushClashes(ctx: Ctx): void {
+  const life = lifeOf(ctx);
+  if (!life) return;
+  const ext = extOf(life);
+  const due = ext.pending.filter((p) => p.clash && p.due <= ext.tick);
+  if (!due.length) return;
+  ext.pending = ext.pending.filter((p) => !(p.clash && p.due <= ext.tick));
+  for (const p of due) {
+    if (!lifeOf(ctx) || !p.clash) return;
+    const c = clashOf(ctx, p.clash.id);
+    const foe = c && foeOf(ctx, [c.npc]);
+    if (!c || !foe || (link?.ready && !link.ready(ctx, c.npc))) continue;
+    const r = play(ctx, c, p.clash.o, foe, ext.clashes[c.npc], true);
+    link?.played(ctx, r);
+  }
+}
+
+function play(ctx: Ctx, c: Clash, o: ClashOpts, foe: NonNullable<ReturnType<typeof foeOf>>, seen: { n: number; last: number; result: string } | undefined, announced: boolean): ClashResult {
+  const life = lifeOf(ctx);
+  if (!life) return { clash: c.id, npc: c.npc, result: 'closed', killed: false, spared: false, applied: 0 };
+  const ext = extOf(life);
   const rng = ctx.rng(STREAM.clash);
   const opener: Opener = o.opener ?? (c.open.code as Opener);
   const talkOutcome = outcomeOf(c, 'talk');
@@ -104,8 +162,8 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
   const spareIntent = special && o.toDeath ? false : hasSpare && (!hasKill || rng.chance(Math.max(0, Math.min(1, SPARE.base + (kindAxis / 100) * SPARE.perKind))));
   const duel = DUEL_STYLE.test(c.style) && !o.toDeath;
   const ambush: FightOpts['ambush'] = o.ambush ?? (o.knows ? 'hero' : opener === 'X' || opener === 'S' ? 'foe' : undefined);
-  const { opener: _opener, knows: _knows, talkKey: _key, toDeath: _death, apply: _apply, ...rest } = o;
-  void [_opener, _knows, _key, _death, _apply];
+  const { opener: _opener, knows: _knows, talkKey: _key, toDeath: _death, apply: _apply, announce: _announce, ...rest } = o;
+  void [_opener, _knows, _key, _death, _apply, _announce];
   const opts: FightOpts = {
     ...rest,
     kind: duel ? 'duel' : 'clash',
@@ -117,8 +175,8 @@ export function clash(ctx: Ctx, idOrNpc: string, o: ClashOpts = {}): ClashResult
     spare: spareIntent,
     ambush,
   };
-  // the call of a fight with a name (07-attention.md §2): a clash is announced the beat it is fought
-  write(ctx.state, { sys: 'combat', kind: 'prelude', id: c.npc, data: { enemies: c.npc, foe: foe.name, tier: foe.tier, node: c.id, kind: opts.kind ?? 'clash', text: null }, level: 2 });
+  // announced ahead (`announce`) the call went out already; otherwise it goes out the beat it is fought
+  if (!announced) write(ctx.state, { sys: 'combat', kind: 'prelude', id: c.npc, data: { enemies: c.npc, foe: foe.name, tier: foe.tier, node: c.id, kind: opts.kind ?? 'clash', text: null }, level: 2 });
   const f = resolve(ctx, foe, opts);
   ext.clashes[c.npc] = { n: (seen?.n ?? 0) + 1, last: ext.tick, result: f.result === 'lose' || f.result === 'flee' ? 'lose' : f.result === 'draw' ? 'draw' : f.result };
 

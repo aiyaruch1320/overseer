@@ -101,6 +101,16 @@ function campaign(ctx: Ctx, life: LifeState, w: WarExt, end: boolean): void {
   const t = w.told;
   const battles = w.battles - t.battles;
   if (battles > 0) {
+    let from = t;
+    // The player reads one line a campaign: a window whose numbers are those of the last line is not a new line. In the middle of a war it is folded
+    // into the next window (nothing is told, the counts stay); at the end the closing line is the whole war from the day the soldier joined.
+    const same = (f: typeof t): string => JSON.stringify([w.battles - f.battles, w.held - f.held, w.won - f.won, w.lost - f.lost, w.pay - f.pay, ext.rank, w.foes.join(',')]);
+    let total = false;
+    if (t.sig !== undefined && same(t) === t.sig) {
+      if (!end) return;
+      from = { age: w.since, battles: 0, held: 0, won: 0, lost: 0, pay: 0 };
+      total = true;
+    }
     write(ctx.state, {
       sys: 'combat',
       kind: 'campaign',
@@ -109,22 +119,25 @@ function campaign(ctx: Ctx, life: LifeState, w: WarExt, end: boolean): void {
         war: w.id || null,
         country: life.country,
         end,
-        years: life.hAge - t.age,
+        years: life.hAge - from.age,
         since: w.since,
-        battles,
-        held: w.held - t.held,
-        won: w.won - t.won,
-        lost: w.lost - t.lost,
-        pay: w.pay - t.pay,
+        battles: w.battles - from.battles,
+        held: w.held - from.held,
+        won: w.won - from.won,
+        lost: w.lost - from.lost,
+        pay: w.pay - from.pay,
         foes: w.foes.join(','),
         rank: RANKS[ext.rank] ?? RANKS[0],
         rankN: ext.rank,
         totalBattles: w.battles,
+        total,
       },
       level: 1,
     });
+    w.told = { age: life.hAge, battles: w.battles, held: w.held, won: w.won, lost: w.lost, pay: w.pay, sig: same(from) };
+    return;
   }
-  w.told = { age: life.hAge, battles: w.battles, held: w.held, won: w.won, lost: w.lost, pay: w.pay };
+  w.told = { age: life.hAge, battles: w.battles, held: w.held, won: w.won, lost: w.lost, pay: w.pay, sig: t.sig };
 }
 
 /** Called each life year by the combat system: the summary when enough years of war passed, and the closing one when the soldier's war is over. */

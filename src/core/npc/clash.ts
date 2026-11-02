@@ -44,10 +44,10 @@ export interface ClashReq {
 
 /**
  * What a handler answers. `{ outcome }`: the clash was played and ended as this standard kind (`win_kill` `win_spare` `talk` `draw` `lose` `flee`),
- * `index` picks the row's outcome when several have that kind; the NPC system then writes the result back. `'veto'`: the clash does not open (the
+ * `index` picks the row's outcome when several have that kind; the NPC system then writes the result back. `'wait'`: the clash was announced and is fought some beats later (the handler then writes the result back itself through `applyClashOutcome`); nothing is written now. `'veto'`: the clash does not open (the
  * conditions the cell names beyond what the NPC system reads were not met, e.g. a skill). `undefined`: not handled, the next handler or the default decides.
  */
-export type ClashDecision = { outcome: string; index?: number } | 'veto' | undefined | void;
+export type ClashDecision = { outcome: string; index?: number } | 'veto' | 'wait' | undefined | void;
 export type ClashHandler = (ctx: Ctx, req: ClashReq) => ClashDecision;
 
 const handlers: ClashHandler[] = [];
@@ -216,7 +216,7 @@ function run(ctx: Ctx, slot: NpcSlotX, clash: Clash, trigger: ClashTrigger, why:
     decision = h(ctx, req);
     if (decision) break;
   }
-  if (decision === 'veto') return null;
+  if (decision === 'veto' || decision === 'wait') return null;
   let kind: string;
   let index: number | undefined;
   if (decision) {
