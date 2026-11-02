@@ -8,7 +8,7 @@ import { write } from '../log';
 import type { Ctx, System } from '../game';
 import { onStat } from '../rules';
 import { registerGodActions } from './actions';
-import { fade } from './belief';
+import { fade, syncTags } from './belief';
 import { currentChest } from './chest';
 import { settleDreams } from './dream';
 import { earn, incomeOf, startPower } from './power';
@@ -83,6 +83,7 @@ export const godSystem: System = {
     if (!life || life.dead || !ctx.data.god) return;
     clearCounters(ctx, 'y.');
     scanWindow(ctx);
+    syncTags(ctx);
     const e = gx(ctx);
     const inc = incomeOf(ctx);
     earn(ctx, { faith: inc.faith, dread: inc.dread }, 'income');

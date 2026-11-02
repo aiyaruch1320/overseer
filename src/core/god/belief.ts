@@ -22,7 +22,8 @@ export function bandOf(belief: number): BeliefBand {
 const TAGS: Record<BeliefBand, string[]> = { devoted: ['devoted'], believer: [], wavering: [], heretic: ['heretic'], hater: ['heretic', 'godslayer'] };
 const ALL_TAGS = ['devoted', 'heretic', 'godslayer'];
 
-function syncTags(ctx: Ctx): void {
+/** Gives and takes the band tags to match the belief now (the character system may have moved the belief by itself). */
+export function syncTags(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
   const want = new Set(TAGS[bandOf(life.godFaith)]);

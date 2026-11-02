@@ -148,10 +148,14 @@ const mean = (a: number[]) => a.reduce((x, y) => x + y, 0) / a.length;
 const share = (a: Row[], f: (r: Row) => boolean) => a.filter(f).length / a.length;
 
 const rows: Partial<Record<PolicyName, Row[]>> = {};
-function lives(policy: PolicyName): Row[] {
+/** The lives of a policy, played once. Yields to the event loop now and then so the test runner can talk to its worker during a long run. */
+async function lives(policy: PolicyName): Promise<Row[]> {
   if (!rows[policy]) {
     const out: Row[] = [];
-    for (let i = 0; i < LIVES; i++) out.push(playLife(1000 + i, policy));
+    for (let i = 0; i < LIVES; i++) {
+      out.push(playLife(1000 + i, policy));
+      if (i % 10 === 9) await new Promise((r) => setTimeout(r, 0));
+    }
     rows[policy] = out;
   }
   return rows[policy]!;
@@ -162,8 +166,8 @@ const T = 900_000;
 describe('god balance G0 to G2 (06-implementation.md §4)', () => {
   it.each(POLICIES)(
     'plays %s: the table of the sim, measured',
-    (policy) => {
-      const r = lives(policy);
+    async (policy) => {
+      const r = await lives(policy);
       const f = (x: number) => x.toFixed(1);
       // eslint-disable-next-line no-console
       console.log(
@@ -176,9 +180,9 @@ describe('god balance G0 to G2 (06-implementation.md §4)', () => {
 
   it(
     'silent and merciful: belief −70 or lower at death in no more than 0.4% of lives (the sim: 0.0% · 0.0%)',
-    () => {
+    async () => {
       for (const p of ['silent', 'merciful'] as const) {
-        const r = lives(p);
+        const r = await lives(p);
         expect(share(r, (x) => x.belief <= -70), p).toBeLessThanOrEqual(0.004);
       }
     },
@@ -187,8 +191,8 @@ describe('god balance G0 to G2 (06-implementation.md §4)', () => {
 
   it(
     'merciful: dreams obeyed in a life, 3 to 8 (the sim: 4.4)',
-    () => {
-      const m = mean(lives('merciful').map((x) => x.obeyed));
+    async () => {
+      const m = mean((await lives('merciful')).map((x) => x.obeyed));
       expect(m).toBeGreaterThanOrEqual(3);
       expect(m).toBeLessThanOrEqual(8);
     },
@@ -197,18 +201,19 @@ describe('god balance G0 to G2 (06-implementation.md §4)', () => {
 
   it(
     'burden events in a life: the shaper 0.3 to 1, the merciful no more than 0.1 (the sim: 0.48 · 0.00)',
-    () => {
-      expect(mean(lives('shaper').map((x) => x.burden))).toBeGreaterThanOrEqual(0.3);
-      expect(mean(lives('shaper').map((x) => x.burden))).toBeLessThanOrEqual(1);
-      expect(mean(lives('merciful').map((x) => x.burden))).toBeLessThanOrEqual(0.1);
+    async () => {
+      const shaper = mean((await lives('shaper')).map((x) => x.burden));
+      expect(shaper).toBeGreaterThanOrEqual(0.3);
+      expect(shaper).toBeLessThanOrEqual(1);
+      expect(mean((await lives('merciful')).map((x) => x.burden))).toBeLessThanOrEqual(0.1);
     },
     T,
   );
 
   it(
     'merciful: decisions in a life, median 25 to 40 (the sim: 26), counting chests, dreams, whispers and prayers answered',
-    () => {
-      const d = q(lives('merciful').map((x) => x.decisions), 0.5);
+    async () => {
+      const d = q((await lives('merciful')).map((x) => x.decisions), 0.5);
       expect(d).toBeGreaterThanOrEqual(25);
       expect(d).toBeLessThanOrEqual(40);
     },
@@ -217,28 +222,28 @@ describe('god balance G0 to G2 (06-implementation.md §4)', () => {
 
   it(
     'level L in the chest is rare enough without a cap per life: the merciful see it in under 6% of lives, the giver in under 15% (the sim: 1.4% · 5.3%)',
-    () => {
-      expect(share(lives('merciful'), (x) => x.lSeen > 0)).toBeLessThan(0.06);
-      expect(share(lives('giver'), (x) => x.lSeen > 0)).toBeLessThan(0.15);
+    async () => {
+      expect(share(await lives('merciful'), (x) => x.lSeen > 0)).toBeLessThan(0.06);
+      expect(share(await lives('giver'), (x) => x.lSeen > 0)).toBeLessThan(0.15);
     },
     T,
   );
 
   it(
     'the giver opens many more chests than the merciful, the merciful send dreams and the giver none (the sim: picks 7.5 · 2.1, dreams 0 for the giver)',
-    () => {
-      expect(mean(lives('giver').map((x) => x.picks))).toBeGreaterThan(mean(lives('merciful').map((x) => x.picks)));
-      expect(mean(lives('giver').map((x) => x.dreams))).toBe(0);
-      expect(mean(lives('merciful').map((x) => x.dreams))).toBeGreaterThan(2);
+    async () => {
+      expect(mean((await lives('giver')).map((x) => x.picks))).toBeGreaterThan(mean((await lives('merciful')).map((x) => x.picks)));
+      expect(mean((await lives('giver')).map((x) => x.dreams))).toBe(0);
+      expect(mean((await lives('merciful')).map((x) => x.dreams))).toBeGreaterThan(2);
     },
     T,
   );
 
   it(
     'the punisher ends in hatred and the merciful in devotion (the sim: belief p50 −100 and 100; the real prayers are the acts files)',
-    () => {
-      expect(q(lives('punish').map((x) => x.belief), 0.5)).toBeLessThan(-30);
-      expect(q(lives('merciful').map((x) => x.belief), 0.5)).toBeGreaterThan(40);
+    async () => {
+      expect(q((await lives('punish')).map((x) => x.belief), 0.5)).toBeLessThan(-30);
+      expect(q((await lives('merciful')).map((x) => x.belief), 0.5)).toBeGreaterThan(40);
     },
     T,
   );

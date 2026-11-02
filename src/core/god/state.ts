@@ -129,7 +129,7 @@ export function birthMark(ctx: Ctx): number {
   return n;
 }
 
-/** Reads the story's log for window nodes played since the last scan and sets this year's window. */
+/** Reads the story's log for god-window nodes played since the last scan and sets the window of this year. */
 export function scanWindow(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
@@ -145,7 +145,8 @@ export function scanWindow(ctx: Ctx): void {
   }
   e.scan = ctx.state.logN;
   const stop = ageStops(ctx).includes(life.hAge);
-  const same = e.window && e.window.age === life.hAge ? e.window : null;
+  const prev = e.window;
+  const same = prev && prev.age === life.hAge ? prev : null;
   e.window = { age: life.hAge, nodes: [...(same?.nodes ?? []), ...nodes], stop, played: (same?.played ?? 0) + played };
 }
 

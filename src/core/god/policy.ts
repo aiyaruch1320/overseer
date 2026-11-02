@@ -54,8 +54,8 @@ function chestRounds(ctx: Ctx, line: 'faith' | 'dread', enough: () => boolean, m
 
 // ---------- dreams ----------
 
-function dreamRounds(ctx: Ctx, rng: ReturnType<Ctx['rng']>, against: boolean): void {
-  for (let guard = 0; guard < 4; guard++) {
+function dreamRounds(ctx: Ctx, rng: ReturnType<Ctx['rng']>, against: boolean, max: number): void {
+  for (let guard = 0; guard < max; guard++) {
     const offers = offersNow(ctx);
     if (!offers.length) return;
     // the shaper sends the way against his nature half of the time; the merciful one always the way that fits him
@@ -70,6 +70,14 @@ function dreamRounds(ctx: Ctx, rng: ReturnType<Ctx['rng']>, against: boolean): v
 
 // ---------- the year ----------
 
+/** Moments of this life year the game stops for the god: each node played and each age stop. */
+export function momentsOf(ctx: Ctx): number {
+  const life = lifeOf(ctx);
+  const w = gx(ctx).window;
+  return life && w && w.age === life.hAge ? w.played + (w.stop ? 1 : 0) : 0;
+}
+
+
 /**
  * One life year of a god who plays by a rule (call it once a life year, after the income, which `godSystem` does when
  * `state.god.ext.policy` names a policy). `policy` is the Thai name the tools pass (`เมตตา`) or the English one (`merciful`).
@@ -83,7 +91,8 @@ export function policyStep(ctx: Ctx, policy: string): void {
     case 'merciful':
     case 'shaper': {
       while (questionsOpen(ctx) > 0 && answerQuestion(ctx)) void 0;
-      dreamRounds(ctx, rng, name === 'shaper');
+      // the god acts at the moments the game stops for it: a node played this year, an age stop (sim-god.mjs `moments`)
+      dreamRounds(ctx, rng, name === 'shaper', momentsOf(ctx));
       chestRounds(ctx, 'faith', () => lightOf(ctx) >= CHEST_MIN_LIGHT, 2);
       break;
     }
@@ -95,12 +104,11 @@ export function policyStep(ctx: Ctx, policy: string): void {
       break;
     case 'random': {
       // a moment for every node played this year and every age stop; at half of them the god does one thing at random
-      const w = gx(ctx).window;
-      const moments = (w && w.age === life.hAge ? w.played : 0) + (w?.stop && w.age === life.hAge ? 1 : 0);
+      const moments = momentsOf(ctx);
       for (let m = 0; m < moments && lifeOf(ctx); m++) {
         if (!rng.chance(0.5)) continue;
         const x = rng.int(0, 2);
-        if (x === 0) dreamRounds(ctx, rng, false);
+        if (x === 0) dreamRounds(ctx, rng, false, 1);
         else if (x === 2 && chestsLeft(ctx) > 0 && !checkOpen(ctx)) {
           const ch = openChest(ctx);
           const ok = ch.slots.filter((s): s is ChestSlot => !!s && !checkPick(ctx, s.slot));

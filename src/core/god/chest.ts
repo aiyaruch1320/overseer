@@ -37,7 +37,7 @@ export interface ChestSlot {
 }
 
 export interface Chest {
-  /** hAge the chest was opened at and whether it was a window. */
+  /** hAge the chest was opened at, and whether a god window was open then */
   age: number;
   window: boolean;
   slots: (ChestSlot | null)[];

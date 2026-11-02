@@ -258,6 +258,7 @@ export function notePunished(ctx: Ctx): void {
 
 /** The start power, given once when the world is made (01-power.md §1 "ค่าเริ่มต้น"). */
 export function startPower(ctx: Ctx): void {
+  if (!ctx.data.god) return;
   const e = gx(ctx);
   if (e.started) return;
   e.started = true;
