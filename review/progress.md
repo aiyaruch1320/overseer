@@ -3,17 +3,17 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M1 รวมครบสี่ระบบแล้ว (world character npc story text + life play debug) · เหลือปิดขั้น M1
-งานที่กำลังทำ: (ไม่มี agent ค้าง)
+ขั้นปัจจุบัน: M1 รอบตรวจ (ผู้เล่นจำลองสองบุคลิกอ่านชีวิต)
+งานที่กำลังทำ: ผู้เล่นจำลอง ผู้อ่านเรื่อง (ae917392f4e5a77fc) และ ผู้มาใหม่ (ab3951e00bc58a290) ทำใน checkout ของผู้นำ เขียน review/m1/ ไม่มีสาขา
 งานถัดไป:
-  1. รัน `npm run life` หลายเมล็ดกับทุกระบบ ดูชนิดที่ยังไม่มีเจ้าของ (rules unhandled) และโหนดต่อชีวิต (ก่อนมี world ได้ 24.5) · รัน `npm run test:balance` (world character story)
-  2. ชีวิตทองคำ 20 เมล็ด (tests/golden) · `npm run test:golden`
-  3. รอบตรวจ M1: ผู้เล่นจำลอง 2 อ่านชีวิต 10 ชีวิตหลายเผ่า (บุคลิก ผู้อ่านเรื่อง และผู้มาใหม่) → review/m1/
-  4. ข้อเสนอสัญญาที่ยังไม่ทำ: WorldState successors outcomes (world เก็บใน chains) · NpcSlotState ช่องเพิ่ม (src/core/npc/types.ts) · LifeState fame · countries.json coast river · character ตั้งชื่อก่อนบันทึกเกิด
-  5. ค้างไว้: ตัวละคร 74 วลี ไอเทม 209 (M3) · god.ts อ่านคำอธิษฐานจาก god/03-dreams หัวข้อ 7 (M2) · ตัวสร้าง bonds bondage travel (ก่อน M3) รูปลักษณ์ (ก่อน M6)
-ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 413/413 · run-all --check ผ่าน · balance world: ฉากจบ 9.2% ยุค 570/990/1,370 (เป้า ±10% ผ่าน) character story ผ่าน
+  1. triage review/m1/ เป็น review/m1/triage.md แก้บล็อกและหนัก ปิด M1 ในตารางหัวข้อ 11
+  2. M2: god G0 ถึง G2 · god G3 G4 · attention · คำสั่งพระเจ้าใน play (ตัวสร้าง god.ts อ่านคำอธิษฐานจาก god/03-dreams หัวข้อ 7)
+  3. ข้อเสนอสัญญาที่ยังไม่ทำ: WorldState successors outcomes · NpcSlotState ช่องเพิ่ม · LifeState fame · countries.json coast river · ตั้งชื่อก่อนบันทึกเกิด · ตัวคูณ NPC ที่ยังมีชีวิตในกติกาจุดเกิด (start/)
+  4. ค้างไว้: ตัวละคร 74 วลี ไอเทม 209 (M3) · ตัวสร้าง bonds bondage travel (ก่อน M3) รูปลักษณ์ (ก่อน M6)
+ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 414/414 · golden 20/20 · balance world character story ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
+2026-11-02 · M1 รวมครบ: จุดบรรจบพาตัวละครไปที่เกิดแทนการกั้น (0.3 → 0.9 ต่อชีวิต) โหนดรวมทุกระบบ 28.1 ต่อชีวิตเต็ม (ฐานก่อน M3) · จุดเกิดตาม world-time 8.1 (src/core/start) · ชีวิตทองคำ 20 เมล็ด `npm run test:golden` · cccbc4d d2febfe
 2026-11-02 · M1 รวม world: ฉากจบ 9.2% (sim 9.3%) ยุค 2 3 4 มัธยฐาน 570 990 1,370 · GD-04 เปิดโดยพระเจ้าเท่านั้น · FG-10 ทางนิเวรีหลับถาวรปิด DFC (tuning) · tension ค่ารวมเริ่ม 20 +2 ต่อทศวรรษ · M1 รวม npc text tools: ทาง NPC ตรงข้อมูล `npm run life` `npm run play` debug.html ทำงาน · ทุกระบบอยู่ใน systems.ts
 2026-11-02 · M1 รวม story: โหนดต่อชีวิต 30.2–33.8 (sim 31.1–33.1) ผู้กำกับ +37% · ลองรวม character + story 200 ชีวิต: ทำงาน โหนด 24.5 ต่อชีวิตเพราะยังไม่มี world · ชนิดที่ยังไม่มีเจ้าของ: เศรษฐกิจ พวกพ้อง (M3)
 2026-11-02 · M1 รวม character: เกิดครบขั้น 1–8 ของ 01-origin (ยกเว้นเมืองเกิด) ตายตามธรรมชาติและก่อนวัย อาชีพและอาชีพลับ · balance: อาชีพลับ 1.7% godslayer 0% ตายก่อนวัย 21.5% · ยังไม่ทำ: ชะตา สัตว์คู่หู ใบคำขอ พลังเผ่า เมืองเกิด
