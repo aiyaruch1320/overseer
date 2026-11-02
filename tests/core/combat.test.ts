@@ -6,13 +6,13 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { classify } from '../../src/core/attention';
 import { extOf as charExt } from '../../src/core/character';
 import {
-  admit, atWar, bestHit, buildHero, capOf, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, foeOf,
+  admit, atWar, bestHit, buildHero, capOf, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, flush, flushClashes, foeOf, lastStand,
   hpOf, lootFor, markOf, maxHpOf, pendingFights, rollWound, stanceBonuses, stanceOptions, stanceWeights, addHp, warBattle, warEventOf, warFoes, warOn,
 } from '../../src/core/combat';
 import { warYear } from '../../src/core/combat/war';
 import { eco, extOf as economyExt, grossIncome, placeOf } from '../../src/core/economy';
 import type { Scene } from '../../src/core/combat/stance';
-import { DAMAGE_SCALE, DEATH_ON_LOSS, RANKS, RESCUE, WAR_FOES, WAR_FOES_BY_CONTINENT } from '../../src/core/combat/tuning';
+import { DAMAGE_SCALE, DEATH_ON_LOSS, PRELUDE_BEATS, RANKS, RESCUE, WAR_FOES, WAR_FOES_BY_CONTINENT } from '../../src/core/combat/tuning';
 import { sortSystems, type Ctx, type GameData } from '../../src/core/game';
 import { actsOf } from '../../src/core/god/acts';
 import { addTie as addBondTie, extOf as bondsExtOf, joinParty } from '../../src/core/bonds';
@@ -1031,6 +1031,54 @@ describe('the war of a soldier (M3 review C2)', () => {
     expect(camp.reduce((n, c) => n + Number(c.data.battles), 0)).toBeLessThanOrEqual(log.length);
   });
 
+  it('a window of the war whose numbers repeat the last summary is not told again: folded in the middle of a war, the whole war at its end', () => {
+    const m = soldier(208);
+    const ext = combatOf(m.life);
+    ext.war = { id: 'WR-19', foes: ['npc_mercenary'], since: 20, battles: 2, held: 0, won: 0, lost: 2, pay: 0, points: 0, told: { age: 20, battles: 0, held: 0, won: 0, lost: 0, pay: 0 } };
+    const camp = () => m.s.game.state.log.filter((e) => e.sys === 'combat' && e.kind === 'campaign');
+    m.life.hAge = 23;
+    warYear(m.ctx, true);
+    expect(camp().length).toBe(1);
+    // the same two lost battles again: nothing new is told, the counts wait for the next window
+    ext.war.battles = 4;
+    ext.war.lost = 4;
+    m.life.hAge = 26;
+    warYear(m.ctx, true);
+    expect(camp().length).toBe(1);
+    // the window after it carries what was folded
+    ext.war.battles = 5;
+    ext.war.lost = 5;
+    m.life.hAge = 27;
+    warYear(m.ctx, true);
+    expect(camp().length).toBe(2);
+    expect(camp()[1].data).toMatchObject({ battles: 3, lost: 3, years: 4 });
+    // the war ends with a window like the last one: the closing line tells the whole war
+    ext.war.battles = 8;
+    ext.war.lost = 8;
+    m.life.hAge = 30;
+    warYear(m.ctx, false);
+    expect(camp().length).toBe(3);
+    expect(camp()[2].data).toMatchObject({ battles: 8, lost: 8, end: true, total: true, years: 10 });
+  });
+
+  it('a way of the story that dies in battle is a last fight: the call goes out, the blades meet PRELUDE_BEATS beats later, no flight, and a beaten hero dies in it', () => {
+    const m = mk(209, { stats: { pow: 12, vit: 12 } });
+    const mark = m.s.game.state.logN;
+    expect(lastStand(m.ctx, 'gi.e2', 'b')).toBe(true);
+    const log = () => m.s.game.state.log.filter((e) => e.n >= mark && e.sys === 'combat');
+    expect(log().filter((e) => e.kind === 'prelude').length).toBe(1);
+    expect(log().filter((e) => e.kind === 'battle').length).toBe(0);
+    expect(m.life.dead).toBeUndefined();
+    const ext = combatOf(m.life);
+    ext.tick += PRELUDE_BEATS;
+    flush(m.ctx);
+    const fought = log().filter((e) => e.kind === 'battle');
+    expect(fought.length).toBe(1);
+    expect(fought[0].data.stances).not.toContain('flee');
+    // the titan of the myth is not beaten by this hero: the death is the fight's own, with the cause the endings read
+    expect(m.life.dead?.cause).toBe(CAUSE.battle);
+  });
+
   it('is at war while the war lasts: a flag whose timer has run out is not a war (the world never takes it off), a flag with no timer (the hand of the god) stands', () => {
     const m = soldier(205, 10, 20);
     expect(warOn(m.ctx, 'MH-01')).toBe(true);
@@ -1282,10 +1330,24 @@ describe('what the other systems give a fight (items, bonds, npc)', () => {
       if (!canClash(m.ctx, slots[id])) continue;
       const mark = state.logN;
       const kind = openClash(m.ctx, id, 'B');
-      const log = state.log.filter((e) => e.n >= mark);
-      if (kind === null) continue;
+      // the call goes out now and the blades meet PRELUDE_BEATS beats later; nothing is written back yet
+      let log = state.log.filter((e) => e.n >= mark);
+      if (!log.some((e) => e.sys === 'combat' && e.kind === 'prelude')) continue;
+      expect(kind).toBeNull();
+      expect(log.filter((e) => e.sys === 'combat' && e.kind === 'clash').length).toBe(0);
+      expect(log.filter((e) => e.sys === 'npc' && (e.data as { what?: string }).what === 'clash').length).toBe(0);
+      expect(openClash(m.ctx, id, 'B')).toBeNull(); // one at a time: no second call
+      expect(state.log.filter((e) => e.n >= mark && e.kind === 'prelude').length).toBe(1);
+      const ext = combatOf(m.life);
+      ext.tick += PRELUDE_BEATS - 1;
+      flushClashes(m.ctx);
+      expect(state.log.filter((e) => e.n >= mark && e.sys === 'combat' && e.kind === 'clash').length).toBe(0);
+      ext.tick += 1;
+      flushClashes(m.ctx);
+      log = state.log.filter((e) => e.n >= mark);
       expect(log.filter((e) => e.sys === 'combat' && e.kind === 'clash').length).toBe(1);
       expect(log.filter((e) => e.sys === 'npc' && (e.data as { what?: string }).what === 'clash').length).toBe(1);
+      expect(ext.pending.length).toBe(0);
       played++;
     }
     expect(played).toBeGreaterThan(0);

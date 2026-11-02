@@ -244,6 +244,15 @@ export const WAR_BATTLE_PER_YEAR = 0.5;
 /** A fight with a name (story row, NPC, boss) waits this many beats after the `combat/prelude` entry so the god can whisper or dream first (07-attention.md §3: the card waits up to a life year = 4 beats). */
 export const PRELUDE_BEATS = 2;
 
+// ---------- the last stand (a way of the story that dies in battle) ----------
+
+/**
+ * The way of a story node that says the character dies in battle is fought, not just written (storylines: or.e2 ทาง ก "ตายในศึกตามที่หวัง", gi.e2 ทาง ข
+ * "ตายในศึกกับไททัน", ml.e1 ทาง ค "ตายในสนามสุดท้าย"). The foe is the one named, or one of the war of the country; the DC is raised by `dcMod` (assumption:
+ * he goes looking for the fight he will not walk away from, so he wins only now and then); no flight, no talk; a beaten hero dies.
+ */
+export const LAST_STAND = { dcMod: 4, wounds: 3, beats: 2, foes: { 'gi.e2.b': ['awakened_titan'] } as Record<string, string[]> };
+
 // ---------- a duel that does not kill (04 §2 "ดวล") ----------
 export const DUEL_STYLE = /ยอมแพ้/;
 

@@ -210,6 +210,7 @@ export function afterBattle(ctx: Ctx, result: { won: boolean; kills?: string[] }
   if (!life || life.dead) return;
   const ex = extOf(life);
   const c = catalog(ctx);
+  if (!result.won) ex.setbacks = (ex.setbacks ?? 0) + 1;
   const wid = ex.wield;
   const w = wid ? c.weapons.get(wid) : undefined;
   if (w && life.items.includes(w.id)) {

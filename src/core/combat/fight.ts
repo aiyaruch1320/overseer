@@ -13,7 +13,7 @@ import { choose, options, type Option, type Scene } from './stance';
 import { countWin, keysOf, lootFor, quietReward, rollWound } from './reward';
 import { extOf } from './state';
 import {
-  AFTER_LOSS_HP, DAMAGE_MUL, DAMAGE_SCALE, DEATH_AT_ZERO_MUL, DEATH_LOW_START_MUL, DEATH_ON_LOSS, OVERTIME, EVADE, GUARD, PARRY, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
+  AFTER_LOSS_HP, DAMAGE_MUL, DAMAGE_SCALE, DEATH_AT_ZERO_MUL, DEATH_LOW_START_MUL, DEATH_ON_LOSS, LAST_STAND, OVERTIME, EVADE, GUARD, PARRY, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
 } from './tuning';
 import type { FightOpts, FightResult, Foe, Outcome } from './types';
 
@@ -137,7 +137,8 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   }
 
   let hp = startHp;
-  let left = foe.wounds;
+  // a last stand is a host, not one foe: more wounds to deal and more beats to deal them in (tuning LAST_STAND)
+  let left = opts.lastStand ? foe.wounds * LAST_STAND.wounds : foe.wounds;
   let result: FightResult = 'draw';
   let blessed = 0;
   let dodge = 0;
@@ -146,7 +147,7 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   const lethal = opts.lethal !== false;
   const reroll = rerollChance(hero);
 
-  let limit = foe.maxBeats;
+  let limit = opts.lastStand ? foe.maxBeats * LAST_STAND.beats : foe.maxBeats;
   let extended = false;
   for (; beat < limit; beat++) {
     hero.hp = hp;
@@ -229,7 +230,7 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
         // the hero is beaten; whether the blow also kills him is a roll (tuning DEATH_ON_LOSS)
         const down = hp <= 0;
         result = 'lose';
-        const mortal = (DEATH_ON_LOSS[foe.tierId] ?? 0) * (down ? DEATH_AT_ZERO_MUL : 1) * (startHp <= hero.maxHp * YIELD_AT ? DEATH_LOW_START_MUL : 1);
+        const mortal = opts.lastStand ? 1 : (DEATH_ON_LOSS[foe.tierId] ?? 0) * (down ? DEATH_AT_ZERO_MUL : 1) * (startHp <= hero.maxHp * YIELD_AT ? DEATH_LOW_START_MUL : 1);
         if (lethal && rng.chance(mortal)) {
           const kept = rescueOf(ctx, hero);
           if (kept > 0) hp = kept;
@@ -250,6 +251,17 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   }
   if (killedBy) result = killedBy;
   else if (result === 'draw' && left <= 0) result = 'win';
+  // a last stand does not end in a stand-off: the foe still stands when the beats run out, and the hero falls (a rescue may still hold)
+  if (opts.lastStand && result === 'draw') {
+    const kept = rescueOf(ctx, hero);
+    if (kept > 0) {
+      hp = kept;
+      result = 'lose';
+    } else {
+      hp = 0;
+      result = 'dead';
+    }
+  }
 
   // ---- after the fight ----
   const lost = Math.max(0, startHp - hp);

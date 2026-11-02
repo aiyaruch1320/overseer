@@ -71,9 +71,9 @@ export function flush(ctx: Ctx): void {
   const life = lifeOf(ctx);
   if (!life) return;
   const ext = extOf(life);
-  const due = ext.pending.filter((p) => p.due <= ext.tick);
+  const due = ext.pending.filter((p) => p.due <= ext.tick && !p.clash);
   if (!due.length) return;
-  ext.pending = ext.pending.filter((p) => p.due > ext.tick);
+  ext.pending = ext.pending.filter((p) => p.due > ext.tick || p.clash);
   for (const p of due) {
     if (!lifeOf(ctx)) return;
     const foe = foeOf(ctx, p.enemies);

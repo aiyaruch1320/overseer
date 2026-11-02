@@ -173,8 +173,8 @@ function drafts(s: Scene): Draft[] {
   if (life.godFaith >= PRAY.minFaith) {
     out.push({ id: 'pray', usable: true, stat: Math.floor(life.godFaith / 10), skill: 0, tags: [], kind: 'pray', fight: false, weapon: false, dcMod: 0 });
   }
-  // ---- flee: always ----
-  out.push({ id: 'flee', usable: true, stat: mod(stats.spd), skill: 0, tags: [], kind: 'flee', fight: false, weapon: false, dcMod: -FLEE_EASE });
+  // ---- flee: always, but not from a last stand ----
+  if (!opts.lastStand) out.push({ id: 'flee', usable: true, stat: mod(stats.spd), skill: 0, tags: [], kind: 'flee', fight: false, weapon: false, dcMod: -FLEE_EASE });
   return out;
 }
 

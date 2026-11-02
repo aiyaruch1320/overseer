@@ -68,6 +68,8 @@ export interface ItemsExt {
   given: string[];
   forge?: ForgeState;
   forgeLast: number;
+  /** Fights lost since the last forging need began: the cause "lost a fight because the weapon did not work" (10-forging.md §2) needs one. */
+  setbacks?: number;
   stats: { bought: number; spent: number; sold: number; forged: number; repaired: number; lost: number };
   /** A weapon of the legend list the character carried when it died, for the heir. */
   heirloom?: string;

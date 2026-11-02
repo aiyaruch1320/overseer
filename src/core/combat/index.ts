@@ -18,12 +18,14 @@ import { addHp, hpOf, maxHpOf } from './hero';
 import { extOf, lifeOf } from './state';
 import { HP, WAR_BATTLE_PER_YEAR, STREAM } from './tuning';
 import { buildHero } from './hero';
+import { flushClashes } from './clash';
 import { registerStoryBattles } from './story-battle';
 
-export { clash, clashOf, openChance, type ClashOpts, type ClashResult, type Opener } from './clash';
+export { clash, clashOf, flushClashes, linkClashes, openChance, type ClashLink, type ClashOpts, type ClashResult, type Opener } from './clash';
 export { resolve as fightFoe, rerollChance, hpNow, damageOf, type Fought } from './fight';
 export { foeOf, dragonFoe, isNamedEnemy } from './foe';
 export { admit, capOf, hasRoom, launch, flush } from './launch';
+export { lastStand } from './story-battle';
 export { chanceOf, dangerOf, pickEnemy, poolAt, rollEncounter, raidAt, atWar } from './encounter';
 export { warBattle, warEventOf, warFoes, warOn } from './war';
 export { buildHero, addHp, hpOf, maxHpOf } from './hero';
@@ -105,6 +107,7 @@ export const combatSystem: System = {
     ext.tick++;
     // a fight whose call went out some beats ago
     flush(ctx);
+    flushClashes(ctx);
     if (!lifeOf(ctx)) return;
     // the body mends a little each season (legacy: +3, +6 with `regen`); a long injury ends with its year
     const hero = buildHero(ctx, life);
