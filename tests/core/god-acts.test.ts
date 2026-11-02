@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { createSession, startLife, type Session } from '../../scripts/tools/session';
 import { loadAll } from '../../scripts/tools/node-data';
 import { command } from '../../src/core/command';
-import { extOf } from '../../src/core/character';
+import { extOf, idx } from '../../src/core/character';
 import { Game, sortSystems, type GameData } from '../../src/core/game';
 import type { GodData } from '../../src/core/data/types-god';
 import {
@@ -20,6 +20,7 @@ import {
   grantPrice,
   kindOf,
   holdsKind,
+  strangeOptions,
   implementedMiracles,
   modAdd,
   modMul,
@@ -28,7 +29,7 @@ import {
 } from '../../src/core/god/acts';
 import { OMEN } from '../../src/core/god/acts/tuning';
 import { prayerBeat } from '../../src/core/god/acts/prayers';
-import { count, gx } from '../../src/core/god';
+import { blessingPool, compOf, count, gx, openChest, rerollChest } from '../../src/core/god';
 import { lifeCounters } from '../../src/core/god/acts/state';
 import { silent } from '../../src/core/god/acts';
 import { npcIndex } from '../../src/core/npc/data';
@@ -240,7 +241,28 @@ describe('the maker of prayers', () => {
 });
 
 describe('answering a prayer', () => {
+  /** Makes the matter of the kind true for the character: a prayer whose matter is not true (or whose asker is dead) cannot be answered. */
+  function matter(ctx: Game['ctx'], kind: string, npc?: string) {
+    const st = ctx.state;
+    const life = st.life!;
+    if (npc && (kind === 'kin_sick' || kind === 'vengeance')) {
+      const slot = slotsOf(st)[npc];
+      slot.rel['mc.known'] = 9;
+      if (kind === 'kin_sick') slot.born = st.clock.worldYear - slot.span; // old enough to be gravely ill
+      else slot.rel['mc.grudge'] = 9;
+      return;
+    }
+    if (holdsKind(ctx, kind)) return;
+    if (kind === 'heal') life.flags.push('wounded');
+    else if (kind === 'rain' || kind === 'plague' || kind === 'peace') st.world.countryFlags[life.country] = [{ rain: 'famine', plague: 'plague', peace: 'war' }[kind]!];
+    else if (kind === 'wealth') life.gold = Math.min(life.gold, 10);
+    else if (kind === 'fame') extOf(life).axes.ambition = 40;
+    else if (kind === 'uncurse') life.curses = ['c_weakarm'];
+    else if (kind === 'mother') life.hAge = 6;
+  }
+
   function card(ctx: Game['ctx'], kind: string, npc?: string) {
+    matter(ctx, kind, npc);
     const a = actsOf(ctx.state);
     const tick = ctx.state.life!.hAge * 4 + ctx.state.clock.quarter;
     const c = { n: ++a.prayerN, kind, tick, exp: tick + 14, year: ctx.state.clock.worldYear, ...(npc ? { npc } : {}) };
@@ -292,12 +314,12 @@ describe('answering a prayer', () => {
   it('punish: dread +6 to +10 by the kind, belief −12, the effect of the punishment', () => {
     const { ctx, st } = mk(4, { light: 50, dread: 20 });
     st.life!.godFaith = 5;
-    st.life!.gold = 100;
+    st.life!.gold = 20;
     const c = card(ctx, 'wealth');
     run(ctx, 'prayer.answer', { id: c.n, answer: 'punish' });
     expect(st.god.dread).toBe(26);
     expect(st.life!.godFaith).toBe(5 - 12);
-    expect(st.life!.gold).toBe(90);
+    expect(st.life!.gold).toBe(10);
     expect(st.life!.curses).toContain('c_poverty');
     expect(st.life!.flags).toContain('god_wronged');
     expect(gx(ctx).punishedAge).toBe(30);
@@ -973,6 +995,10 @@ describe('one payer: the acts pay through god/power.ts', () => {
 describe('the policies', () => {
   function withCards(ctx: Game['ctx'], kinds: string[]) {
     const a = actsOf(ctx.state);
+    // the matters are true for him (a card whose matter is not true is taken back): poor, and wanting a name
+    ctx.state.life!.gold = 5;
+    ctx.state.life!.cls = 'c2';
+    extOf(ctx.state.life!).axes.ambition = 40;
     const tick = 30 * 4;
     for (const k of kinds) cardsOf(ctx).push({ n: ++a.prayerN, kind: k, tick, exp: tick + 14, year: ctx.state.clock.worldYear });
   }
@@ -980,7 +1006,7 @@ describe('the policies', () => {
   it('เงียบ answers nothing; เมตตา and เก็บพลัง give; ลงโทษ punishes; สุ่ม does a bit of everything', () => {
     for (const [policy, expect_] of [['เงียบ', 'none'], ['เมตตา', 'give'], ['เก็บพลัง', 'give'], ['ให้ของ', 'give'], ['ลงโทษ', 'punish']] as const) {
       const { ctx, st } = mk(21);
-      withCards(ctx, ['mother', 'fame']);
+      withCards(ctx, ['wealth', 'fame']);
       actsPolicyStep(ctx, policy, 'beat');
       const kinds = st.god.chronicle.map((c) => c.kind);
       if (expect_ === 'none') expect(kinds).toEqual([]);
@@ -990,7 +1016,7 @@ describe('the policies', () => {
     const seen = new Set<string>();
     for (let i = 0; i < 60; i++) {
       const { ctx, st } = mk(400 + i);
-      withCards(ctx, ['mother']);
+      withCards(ctx, ['wealth']);
       actsPolicyStep(ctx, 'สุ่ม', 'beat');
       seen.add(st.god.chronicle.at(-1)?.kind ?? 'left');
     }
@@ -1032,5 +1058,217 @@ describe('the policies', () => {
       return JSON.stringify([st.god.chronicle, st.god.light, st.life?.godFaith]);
     };
     expect(play()).toBe(play());
+  });
+});
+
+// ---------- M2 review G5 M1 M3 L1 L4 L5 ----------
+
+describe('prayers follow the state of the character (M2 review G5 L5)', () => {
+  const put = (ctx: Game['ctx'], kind: string, npc?: string) => {
+    const a = actsOf(ctx.state);
+    const tick = ctx.state.life!.hAge * 4 + ctx.state.clock.quarter;
+    const c = { n: ++a.prayerN, kind, tick, exp: tick + 14, year: ctx.state.clock.worldYear, ...(npc ? { npc } : {}) };
+    cardsOf(ctx).push(c);
+    return c;
+  };
+
+  it('the ruling class does not pray to be rid of poverty, however empty the purse', () => {
+    const { ctx, st } = mk(31);
+    st.life!.gold = 3;
+    st.life!.cls = 'c3';
+    expect(holdsKind(ctx, 'wealth')).toBe(true);
+    st.life!.cls = 'c4';
+    expect(holdsKind(ctx, 'wealth')).toBe(true);
+    st.life!.cls = 'c5';
+    expect(holdsKind(ctx, 'wealth')).toBe(false);
+  });
+
+  it('a prayer whose matter is gone is taken back at the next beat without a word against the god, and cannot be answered before', () => {
+    const { ctx, st } = mk(32);
+    st.life!.curses = ['c_weakarm'];
+    const c = put(ctx, 'uncurse');
+    st.life!.curses = []; // the curse was lifted by other means
+    const belief = st.life!.godFaith;
+    expect(run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }, false)).toMatchObject({ ok: false });
+    expect((run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }, false) as { reason?: string }).reason ?? '').toContain('ไม่ต้องตอบแล้ว');
+    prayerBeat(ctx);
+    expect(cardsOf(ctx).some((x) => x.n === c.n)).toBe(false);
+    expect(st.life!.godFaith).toBe(belief); // he was not ignored
+    expect(st.log.some((e) => e.sys === 'god' && e.kind === 'prayer.moot' && e.data.n === c.n)).toBe(true);
+    expect(st.log.some((e) => e.sys === 'god' && e.kind === 'prayer.lapse' && e.data.n === c.n)).toBe(false);
+    expect(st.god.chronicle.some((x) => x.kind === 'prayer.moot')).toBe(false); // taking a prayer back is no deed of the hand
+    // the number says what became of it
+    expect(JSON.stringify(run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }, false))).toContain('เลิกมีความหมาย');
+  });
+
+  it('the one who asked is dead: the prayer cannot be answered (no light paid, no word that he was healed) and goes away', () => {
+    const { ctx, st } = mk(33, { light: 100, dread: 0 });
+    const ids = Object.keys(slotsOf(st)).filter((id) => slotsOf(st)[id].status === 'alive');
+    const id = ids[0];
+    const slot = slotsOf(st)[id];
+    slot.rel['mc.known'] = 9;
+    slot.born = st.clock.worldYear - slot.span;
+    const c = put(ctx, 'kin_sick', id);
+    expect(run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }, false).ok).toBe(true);
+    slot.status = 'dead';
+    const light = st.god.light;
+    const belief = st.life!.godFaith;
+    expect(run(ctx, 'prayer.answer', { id: c.n, answer: 'give' }).ok).toBe(false);
+    expect(st.god.light).toBe(light);
+    expect(st.life!.godFaith).toBe(belief);
+    prayerBeat(ctx);
+    expect(cardsOf(ctx).some((x) => x.n === c.n)).toBe(false);
+    expect(st.log.find((e) => e.kind === 'prayer.moot' && e.data.n === c.n)!.data.why).toBe('ผู้ขอตายไปแล้ว');
+  });
+
+  it('a prayer is not answerable at the tick it runs out, and the answer to a lapsed card says it lapsed (not that there never was one)', () => {
+    const { ctx, st } = mk(34);
+    st.life!.gold = 3;
+    const c = put(ctx, 'wealth');
+    st.clock.quarter = c.exp % 4;
+    st.life!.hAge = Math.floor(c.exp / 4);
+    const at = JSON.stringify(run(ctx, 'prayer.answer', { id: c.n, answer: 'deny' }, false));
+    expect(at).toContain('หมดเวลาแล้ว');
+    prayerBeat(ctx);
+    expect(cardsOf(ctx).some((x) => x.n === c.n)).toBe(false);
+    expect(JSON.stringify(run(ctx, 'prayer.answer', { id: c.n, answer: 'deny' }, false))).toContain('หมดเวลาไปแล้ว');
+    expect(JSON.stringify(run(ctx, 'prayer.answer', { id: 9999, answer: 'deny' }, false))).toContain('ไม่มีคำอธิษฐานใบนั้น');
+    const d = put(ctx, 'wealth');
+    run(ctx, 'prayer.answer', { id: d.n, answer: 'deny' });
+    expect(JSON.stringify(run(ctx, 'prayer.answer', { id: d.n, answer: 'deny' }, false))).toContain('ตอบคำอธิษฐานใบนั้นไปแล้ว');
+  });
+
+  it('the log of a prayer carries how many of its kind this life had and what came just before, so the words can differ from the last one', () => {
+    let again = 0;
+    let seen = 0;
+    for (let seed = 1; seed <= 8; seed++) {
+      const { g, st } = mk(seed);
+      for (let i = 0; i < 4 * 30 && st.life && !st.life.dead; i++) g.beat();
+      const prayers = st.log.filter((e) => e.sys === 'god' && e.kind === 'prayer');
+      prayers.forEach((e, i) => {
+        expect(e.data.seen).toBe(prayers.slice(0, i).filter((x) => x.id === e.id).length);
+        if (i === 0) expect(e.data.prev).toBeUndefined();
+        else expect(e.data.prev).toBe(prayers[i - 1].id);
+        if (e.data.again) again++;
+        seen++;
+      });
+    }
+    expect(seen).toBeGreaterThan(10);
+    expect(again).toBeLessThan(seen);
+  });
+
+  it('no prayer is raised once the scene before the end has begun', () => {
+    for (let seed = 1; seed <= 12; seed++) {
+      const { g, st } = mk(seed);
+      st.life!.hAge = 0;
+      for (let i = 0; i < 4 * 80 && st.life && !st.life.dead; i++) g.beat();
+      const near = st.log.find((e) => e.sys === 'attention' && e.kind === 'call' && (e.data.why === 'nearDeath' || e.data.why === 'death'));
+      if (!near) continue;
+      expect(st.log.some((e) => e.n > near.n && e.sys === 'god' && e.kind === 'prayer')).toBe(false);
+    }
+  });
+});
+
+describe('the strange answer draws from the pool of the chest (M2 review M1)', () => {
+  it('every gift offered passes the filter of the chest, and the tiers follow the odds of the chest: a small prayer does not buy a rare blessing at its price', () => {
+    const tiers: Record<string, number> = {};
+    let n = 0;
+    for (let seed = 1; seed <= 60; seed++) {
+      const { ctx, st } = mk(seed, { light: 100, dread: 0 });
+      const pool = new Set(blessingPool(ctx).map((b: { id: string }) => b.id));
+      st.life!.gold = 3;
+      const a = actsOf(st);
+      const tick = st.life!.hAge * 4;
+      const c = { n: ++a.prayerN, kind: 'wealth', tick, exp: tick + 14, year: st.clock.worldYear };
+      for (const o of strangeOptions(ctx, c)) {
+        expect(pool.has(o.id), `${o.id} not in the pool of the chest`).toBe(true);
+        tiers[o.tier] = (tiers[o.tier] ?? 0) + 1;
+        n++;
+      }
+      expect(new Set(strangeOptions(ctx, c).map((o) => o.id)).size).toBe(strangeOptions(ctx, c).length);
+      expect(JSON.stringify(strangeOptions(ctx, c))).toBe(JSON.stringify(strangeOptions(ctx, c)));
+    }
+    expect(n).toBeGreaterThan(100);
+    // before: 30% of the gifts were R; the chest gives R to about one gift in ten
+    expect((tiers.R ?? 0) / n).toBeLessThan(0.15);
+    expect((tiers.C ?? 0) + (tiers.U ?? 0)).toBeGreaterThan(n * 0.8);
+  });
+
+  it('nothing the race of the character forbids, nothing of another people, nothing that is already his', () => {
+    for (let seed = 1; seed <= 40; seed++) {
+      const { ctx, st } = mk(seed, { light: 100, dread: 0 });
+      const life = st.life!;
+      const a = actsOf(st);
+      const tick = life.hAge * 4;
+      const c = { n: ++a.prayerN, kind: 'mother', tick, exp: tick + 14, year: st.clock.worldYear };
+      const race = idx(ctx).races.get(life.race);
+      for (const o of strangeOptions(ctx, c)) {
+        expect(race?.blessClash ?? []).not.toContain(o.id);
+        expect(life.blessings).not.toContain(o.id);
+        expect(idx(ctx).gifts.get(o.id)?.race ?? life.race).toBe(life.race);
+      }
+    }
+  });
+});
+
+describe('previews tell the truth about the price and the right (M2 review M3 L4)', () => {
+  it('cancelling the omen of MR-21 warns that the right of a great miracle is spent and stays spent', () => {
+    const { ctx, st } = mk(35, { light: 150, dread: 0 });
+    expect(run(ctx, 'miracle', { id: 'MR-21' }).ok).toBe(true);
+    const n = actsOf(st).pending[0].n;
+    const p = prev(run(ctx, 'miracle', { cancel: n }, false)) as { refund: { faith: number }; warn: string[]; spent: boolean };
+    expect(p.spent).toBe(true);
+    expect(p.warn.join(' ')).toContain('มหา');
+    expect(p.refund.faith).toBeGreaterThan(0);
+    run(ctx, 'miracle', { cancel: n });
+    expect(run(ctx, 'miracle', { id: 'MR-21' }, false).ok).toBe(false); // what the warning said
+  });
+
+  it('the preview of a miracle that gives back a third of the dread shows what returns and the price after it', () => {
+    const { ctx, st } = mk(36, { light: 100, dread: 100 });
+    const p = prev(run(ctx, 'miracle', { id: 'MR-07' }, false)) as { cost: { dread: number }; back: { dread: number }; net: { dread: number } };
+    expect(p.back.dread).toBe(Math.round(p.cost.dread / 3));
+    expect(p.net.dread).toBe(p.cost.dread - p.back.dread);
+    const before = st.god.dread;
+    run(ctx, 'miracle', { id: 'MR-07' });
+    expect(before - st.god.dread).toBe(p.net.dread); // the net is what the god really pays
+    const q = prev(run(ctx, 'miracle', { id: 'MR-01' }, false)) as Record<string, unknown>;
+    expect(q.back).toBeUndefined(); // a gift of light gives nothing back
+  });
+});
+
+describe('a truce on a fated event keeps one weight with the floor of the fate (M2 review L1)', () => {
+  it('MR-05 on top of a slowing ×0.2 does not go below 0.2, and the fate does not end sooner', () => {
+    const { ctx, st } = mk(37, { light: 200, dread: 200 });
+    const country = st.life!.country;
+    st.world.countryFlags[country] = ['war'];
+    const war = fateTargets(ctx).find((t) => t.id.startsWith('WR'));
+    if (!war) return; // no war shows an omen in this world: nothing to bend
+    expect(run(ctx, 'decree', { event: war.id, mul: 0.2 }).ok).toBe(true);
+    const until = actsOf(st).fates[war.id].until;
+    run(ctx, 'miracle', { id: 'MR-05', country });
+    expect(weightOf(ctx, war.id)).toBeGreaterThanOrEqual(0.2 - 1e-9);
+    expect(actsOf(st).fates[war.id].until).toBe(until);
+  });
+});
+
+describe('the chest compensator counts chests, not rolls (M2 review L6)', () => {
+  it('a reroll that shows no R does not push the compensator up again', () => {
+    for (let seed = 1; seed <= 12; seed++) {
+      const { ctx, st } = mk(seed, { light: 300, dread: 0 });
+      st.god.counters.comp = -5;
+      openChest(ctx);
+      const afterOpen = compOf(ctx);
+      let hit = false;
+      for (let k = 0; k < 3 && !hit; k++) {
+        const before = compOf(ctx);
+        const ch = rerollChest(ctx);
+        hit = ch.slots.some((x) => x && x.kind !== 'curse' && ['R', 'E', 'L'].includes(x.tier));
+        if (!hit) expect(compOf(ctx)).toBe(before);
+        else expect(compOf(ctx)).toBe(-5);
+      }
+      expect(afterOpen).toBeGreaterThanOrEqual(-5);
+      st.god.chest = null;
+    }
   });
 });

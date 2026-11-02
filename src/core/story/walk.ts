@@ -99,7 +99,9 @@ export function drain(ctx: Ctx): void {
 
 /** Does this life year have room for another node (tuning NODES_PER_YEAR; the last year of the life holds one more, for its closing nodes)? */
 function room(ex: StoryExt, life: LifeState): boolean {
-  return yearOf(ex, life).nodes < NODES_PER_YEAR + (life.hAge >= lastYearOf(life) ? LAST_YEAR_EXTRA : 0);
+  // a node announced and waiting for its beat holds its place in the year
+  const waiting = Object.keys(ex.announced).length;
+  return yearOf(ex, life).nodes + waiting < NODES_PER_YEAR + (life.hAge >= lastYearOf(life) ? LAST_YEAR_EXTRA : 0);
 }
 
 /** The last life year before the natural death: the hidden death age the character system drew (storylines/README.md §6 rule 9). */

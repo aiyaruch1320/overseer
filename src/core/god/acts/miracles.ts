@@ -143,19 +143,33 @@ export function checkMiracle(ctx: Ctx, args: Record<string, unknown>): string | 
 export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<string, unknown> {
   if (args.cancel !== undefined) {
     const p = viewActs(ctx.state).pending.find((x) => x.n === Number(args.cancel))!;
-    return { cancel: p.n, id: p.id, refund: { faith: Math.floor(p.paid.faith * OMEN.refund), dread: Math.floor(p.paid.dread * OMEN.refund) } };
+    const m = miracleOf(ctx, p.id);
+    // cancelling gives back half of the power only: the right the miracle used (a cap of the life) and its wait stay spent (M2 review M3)
+    const warn: string[] = [];
+    if (m) {
+      const tier = tierKey(m);
+      if (tier === 'grand') warn.push('ใช้สิทธิ์ปาฏิหาริย์ระดับมหาของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน จะใช้อีกไม่ได้');
+      else if (tier === 'big') warn.push('นับเป็นปาฏิหาริย์ระดับใหญ่ครั้งหนึ่งของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน');
+      else if (tier === 'mid') warn.push('นับเป็นปาฏิหาริย์ระดับกลางครั้งหนึ่งของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน');
+      if (m.wait) warn.push(`ระยะรอ ${m.wait} ปีโลกยังเดินต่อ`);
+    }
+    return { cancel: p.n, id: p.id, refund: { faith: Math.floor(p.paid.faith * OMEN.refund), dread: Math.floor(p.paid.dread * OMEN.refund) }, ...(warn.length ? { warn, spent: true } : {}) };
   }
   const id = idOf(args);
   const m = miracleOf(ctx, id)!;
   const h = handlers.get(id)!;
   const caps = godOf(ctx).caps.miraclePerLife;
   const c = peekCounters(ctx);
+  const cost = priceNow(ctx, m, h, args);
+  // the blood and the dragon's provoking give back a third of the dread when they happen (01-power.md §1): the price shown is what is paid, `back` what returns
+  const back = h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread) ? Math.round((cost.dread ?? 0) / DESTROY_RETURN_DIV) : 0;
   return {
     id,
     name: m.name,
     tier: m.tier,
     line: h.line,
-    cost: priceNow(ctx, m, h, args),
+    cost,
+    ...(back > 0 ? { back: { dread: back }, net: { ...cost, dread: (cost.dread ?? 0) - back } } : {}),
     omen: omenQuarters(m),
     wait: m.wait,
     immediate: m.immediate,

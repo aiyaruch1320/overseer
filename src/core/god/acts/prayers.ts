@@ -1,6 +1,6 @@
 // Prayers (god/03-dreams.md §7): the maker that raises one at some beats, the five answers, the lapse. The 17 kinds, their weights,
 // conditions' words, prices and effects are in data/gen/god.json `prayers`; the conditions themselves are written here, one per kind.
-import { extOf as characterExt, idx, tagsOf } from '../../character';
+import { classNum, extOf as characterExt, idx, tagsOf } from '../../character';
 import type { Ctx } from '../../game';
 import { inDeathScene, prayersWaiting } from '../../attention';
 import { MAX_WAITING_PRAYERS } from '../../attention/tuning';
@@ -10,11 +10,14 @@ import type { LifeState } from '../../types';
 import { applyFx } from './fx';
 import { chronicle, say } from './record';
 import { dangerous, godOf, hasFlag, stageOf } from './geo';
-import { nameOf, nemeses, sickInCircle } from './npcs';
+import { aliveNpc, nameOf, nemeses, sickInCircle } from './npcs';
 import { addBelief } from '../belief';
+import { blessingPool, drawBlessing } from '../chest';
+import { syncFlags } from '../stats';
 import { canPay, earn, noteAnswered, notePunished, pay, scaleCost, whyNot } from '../power';
 import { touch } from '../state';
 import { actsOf, livingOf, tickOf, viewActs, yearOf, type PrayerCard } from './state';
+import { WEALTH_MAX_CLASS } from './tuning';
 
 type Kind = ReturnType<typeof godOf>['prayers']['kinds'][number];
 
@@ -53,7 +56,7 @@ export function holdsKind(ctx: Ctx, id: string): boolean {
     case 'peace': return hasFlag(ctx, c, 'war', 'demon_raid', 'horde');
     case 'love': return stage === 'adult' && !fam.partner;
     case 'heir': return fam.partner && fam.children === 0 && life.hAge < 50;
-    case 'wealth': return stage === 'adult' && life.gold < 25;
+    case 'wealth': return stage === 'adult' && life.gold < 25 && classNum(life) <= WEALTH_MAX_CLASS;
     case 'wisdom': return stage === 'teen';
     case 'courage': return stage !== 'infant' && stage !== 'child' && dangerous(ctx, c);
     case 'vengeance': return nemeses(ctx).length > 0;
@@ -66,6 +69,19 @@ export function holdsKind(ctx: Ctx, id: string): boolean {
     case 'mother': return stage === 'infant' || stage === 'child';
   }
   return false;
+}
+
+/**
+ * Why a waiting card does not matter any more, or null: the one who asked is dead, or the matter he asked about is not true now (the noble does not ask to
+ * be rid of poverty, the curse that was lifted is not asked about again). Checked when a prayer is raised (`holdsKind`), every beat, and when it is answered.
+ */
+export function mootReason(ctx: Ctx, card: PrayerCard): string | null {
+  if (!livingOf(ctx)) return 'ไม่มีตัวละครที่มีชีวิต';
+  if (card.npc && !aliveNpc(ctx, card.npc)) return 'ผู้ขอตายไปแล้ว';
+  if (!holdsKind(ctx, card.kind)) return 'เรื่องที่ขอไม่เป็นจริงแล้ว';
+  if (card.kind === 'kin_sick' && card.npc && !sickInCircle(ctx).includes(card.npc)) return 'คนที่ขอไม่ได้ป่วยหนักแล้ว';
+  if (card.kind === 'vengeance' && card.npc && !nemeses(ctx).includes(card.npc)) return 'ความแค้นหมดไปแล้ว';
+  return null;
 }
 
 /** Kinds that may be raised now: the condition holds and the kind has not come in the last 24 ticks. */
@@ -98,13 +114,24 @@ export function prayerBeat(ctx: Ctx): void {
   const tick = tickOf(ctx);
   const cards = cardsOf(ctx);
   for (const card of [...cards]) {
+    // a prayer that does not matter any more is taken back without a word against the god: the matter passed, he was not ignored
+    const moot = mootReason(ctx, card);
+    if (moot) {
+      cards.splice(cards.indexOf(card), 1);
+      forget(a, card.n, 'moot');
+      // told in the log only: taking a prayer back is no deed of the hand (the chronicle keeps what the god did and what he left unanswered)
+      say(ctx, { kind: 'prayer.moot', id: card.kind, data: { n: card.n, kind: card.kind, name: nameOfKind(ctx, card.kind), why: moot }, level: 1 });
+      continue;
+    }
     if (card.exp > tick) continue;
     cards.splice(cards.indexOf(card), 1);
+    forget(a, card.n, 'lapsed');
     addBelief(ctx, g.belief.prayer.ignore, 'prayer.lapse');
     a.lapsed.push(yearOf(ctx));
     if (a.lapsed.length > 24) a.lapsed.shift();
     say(ctx, { kind: 'prayer.lapse', id: card.kind, data: { n: card.n, kind: card.kind, name: nameOfKind(ctx, card.kind) }, level: 1 });
     chronicle(ctx, { kind: 'prayer.lapse', id: card.kind, result: 'silent' });
+    syncFlags(ctx);
   }
   const t = g.prayers.tick;
   // the attention system holds two prayers at most (07-attention.md §3): the third is not raised, it would be dropped unseen
@@ -118,14 +145,25 @@ export function prayerBeat(ctx: Ctx): void {
   if (kind.id === 'kin_sick') npc = rng.pick(sickInCircle(ctx));
   else if (kind.id === 'vengeance') npc = rng.pick(nemeses(ctx));
   a.recent[kind.id] = tick;
-  const card: PrayerCard = { n: ++a.prayerN, kind: kind.id, tick, exp: tick + t.expiryTicks, ...(npc ? { npc } : {}), year: yearOf(ctx) };
+  // the words of a prayer differ from the one that came just before it: the log tells how many of this kind there were and what the last one was
+  const seen = a.seen.filter((k) => k === kind.id).length;
+  const prev = a.seen.at(-1);
+  a.seen.push(kind.id);
+  const card: PrayerCard = { n: ++a.prayerN, kind: kind.id, tick, exp: tick + t.expiryTicks, ...(npc ? { npc } : {}), year: yearOf(ctx), seen, ...(prev ? { prev } : {}) };
   cards.push(card);
   say(ctx, {
     kind: 'prayer',
     id: kind.id,
-    data: { n: card.n, kind: kind.id, name: nameOfKind(ctx, kind.id), cost: grantPrice(ctx, kind), expires: t.expiryTicks, ...(npc ? { npc, npcName: nameOf(ctx, npc) } : {}) },
+    data: { n: card.n, kind: kind.id, name: nameOfKind(ctx, kind.id), cost: grantPrice(ctx, kind), expires: t.expiryTicks, seen, ...(prev ? { prev, again: prev === kind.id } : {}), ...(npc ? { npc, npcName: nameOf(ctx, npc) } : {}) },
     level: 2,
   });
+}
+
+/** Remembers what became of a prayer that is not waiting any more (the last 40), so an answer to it can say why it is gone. */
+function forget(a: ReturnType<typeof actsOf>, n: number, how: 'lapsed' | 'moot' | 'answered'): void {
+  a.gone[String(n)] = how;
+  const keys = Object.keys(a.gone);
+  for (const k of keys.slice(0, Math.max(0, keys.length - 40))) delete a.gone[k];
 }
 
 // ---------- answering ----------
@@ -151,27 +189,44 @@ const THEME: Record<string, string[]> = {
   grandchild: ['vit'], challenge: ['luk'], kin_sick: ['kind'], mother: ['vit'],
 };
 
-/** The three gifts offered for a strange answer; the same three every time the same card is looked at. */
+/**
+ * The three gifts offered for a strange answer; the same three every time the same card is looked at. They come from the pool of the chest
+ * (`blessingPool`: the same filter) and are drawn by the odds of its tiers, so a small prayer does not buy a rare blessing at its small price. The
+ * ones that help the same matter (the stats of the kind) come first.
+ */
 export function strangeOptions(ctx: Ctx, card: PrayerCard): { id: string; name: string; tier: string }[] {
   const life = livingOf(ctx);
   if (!life) return [];
   const theme = THEME[card.kind] ?? [];
-  const all = idx(ctx).blessings.filter((b) => ['C', 'U', 'R'].includes(b.tier) && !life.blessings.includes(b.id) && !b.race);
-  const fits = all.filter((b) => b.fx.some((e) => e.k === 'stat' && theme.includes(e.stat)));
+  const all = blessingPool(ctx);
+  const ix = idx(ctx);
+  const fits = all.filter((b) => (ix.gifts.get(b.id)?.fx ?? []).some((e) => e.k === 'stat' && theme.includes(e.stat)));
   const rng = detached(ctx.state.seed ^ Math.imul(card.n + 1, 2654435761));
-  const out: typeof all = [];
+  const out: { id: string; name: string; tier: string }[] = [];
   for (const pool of [fits, all]) {
-    const left = pool.filter((b) => !out.includes(b));
-    while (out.length < 3 && left.length) out.push(left.splice(Math.floor(rng.next() * left.length), 1)[0]);
+    let left = pool.filter((b) => !out.some((o) => o.id === b.id));
+    while (out.length < 3 && left.length) {
+      const g = drawBlessing(ctx, rng, left);
+      if (!g) break;
+      out.push({ id: g.id, name: g.name, tier: g.tier });
+      left = left.filter((b) => b.id !== g.id);
+    }
   }
-  return out.map((b) => ({ id: b.id, name: b.name, tier: b.tier }));
+  return out;
 }
 
 export function checkAnswer(ctx: Ctx, args: Record<string, unknown>): string | null {
   const life = livingOf(ctx);
   if (!life) return 'ไม่มีตัวละครที่มีชีวิต';
   const card = cardOf(ctx, args);
-  if (!card) return 'ไม่มีคำอธิษฐานใบนั้น';
+  if (!card) {
+    const how = viewActs(ctx.state).gone[String(Number(args.id))];
+    return how === 'lapsed' ? 'คำอธิษฐานใบนั้นหมดเวลาไปแล้ว' : how === 'moot' ? 'คำอธิษฐานใบนั้นเลิกมีความหมายไปแล้ว' : how === 'answered' ? 'ตอบคำอธิษฐานใบนั้นไปแล้ว' : 'ไม่มีคำอธิษฐานใบนั้น';
+  }
+  // the beat takes the card away at the tick it runs out; until the next beat runs it must not be answerable
+  if (card.exp <= tickOf(ctx)) return 'คำอธิษฐานใบนั้นหมดเวลาแล้ว';
+  const moot = mootReason(ctx, card);
+  if (moot) return `คำอธิษฐานใบนั้นไม่ต้องตอบแล้ว: ${moot}`;
   const ans = answerOf(args.answer);
   if (!ans) return 'คำตอบต้องเป็น ให้ ให้แบบแปลก ปฏิเสธ ลงโทษ หรือนิ่ง';
   const kind = kindOf(ctx, card.kind)!;
@@ -215,7 +270,10 @@ function settle(ctx: Ctx, card: PrayerCard): void {
   touch(ctx); // an answer is a deed of the god: the feelings of the character do not fade this year
   const cards = cardsOf(ctx);
   cards.splice(cards.indexOf(card), 1);
-  actsOf(ctx.state).lastAnswer = yearOf(ctx);
+  const a = actsOf(ctx.state);
+  a.lastAnswer = yearOf(ctx);
+  forget(a, card.n, 'answered');
+  syncFlags(ctx);
 }
 
 /** Answers a prayer. */

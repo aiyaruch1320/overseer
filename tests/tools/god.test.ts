@@ -8,7 +8,9 @@ import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { hasAction } from '../../src/core/command';
 import type { Game, GameData } from '../../src/core/game';
-import { actsOf, cardsOf, fateCost, fateTargets, grantPrice, kindOf, whisperPrice } from '../../src/core/god/acts';
+import { extOf } from '../../src/core/character';
+import { actsOf, cardsOf, fateCost, fateTargets, grantPrice, holdsKind, kindOf, whisperPrice } from '../../src/core/god/acts';
+import { slotsOf } from '../../src/core/npc/types';
 import { currentChest, dreamsOf, offerCards } from '../../src/core/god';
 import { write } from '../../src/core/log';
 import { leaks } from '../../src/core/text';
@@ -191,6 +193,21 @@ describe('the console on the real god', () => {
 
   /** A prayer card as the maker of prayers writes it. */
   function pray(g: Game, kind: string) {
+    // the matter of the prayer is made true first: a card whose matter is not true is taken back and cannot be answered (M2 review G5)
+    const life = g.state.life!;
+    if (!holdsKind(g.ctx, kind)) {
+      if (kind === 'heal') life.flags.push('wounded');
+      else if (kind === 'harvest') life.job = 'farmer';
+      else if (kind === 'vengeance') {
+        const slot = Object.values(slotsOf(g.state)).find((x) => x.status === 'alive')!;
+        slot.rel['mc.grudge'] = 9;
+      } else {
+        life.hAge = Math.max(life.hAge, 30);
+        life.gold = 5;
+        life.cls = 'c2';
+        extOf(life).axes.ambition = 40;
+      }
+    }
     const a = actsOf(g.state);
     const tick = g.state.life!.hAge * 4 + g.state.clock.quarter;
     const card = { n: ++a.prayerN, kind, tick, exp: tick + 14, year: g.state.clock.worldYear };

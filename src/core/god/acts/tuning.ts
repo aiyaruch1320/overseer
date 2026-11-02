@@ -130,3 +130,6 @@ export const POLICY = {
   /** Chance the random policy sends a whisper at a moment of the year (sim: half the moments act, a third of those whisper). */
   randomWhisper: 1 / 6,
 };
+
+/** Prayer `wealth` (ขอพ้นความจน) is not prayed by one of the ruling class (class 5: nobles and rulers) whatever his purse holds (M2 review G5). */
+export const WEALTH_MAX_CLASS = 4;
