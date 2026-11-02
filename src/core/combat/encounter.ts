@@ -6,15 +6,15 @@ import { write } from '../log';
 import { apply } from '../rules';
 import type { LifeState } from '../types';
 import { indexOf } from './data';
-import { dieInBattle, rescueOf, resolve } from './fight';
+import { resolve } from './fight';
 import { admit, capOf, launch } from './launch';
-import { buildHero, hpOf, maxHpOf } from './hero';
+import { buildHero, maxHpOf } from './hero';
 import { foeOf } from './foe';
 import { extOf, lifeOf } from './state';
-import { rollWound } from './reward';
+import { warOn } from './warflag';
 import {
-  ADULT_FIGHT_AGE, CAPTURE, CHILD_MAX_DC, DANGER_BY_CONTINENT, EVENT_ACTIVE_YEARS, FIGHT_AGE, HUNTER_JOBS, NIGHT_SHARE, PICK, RAID, RAID_SHARE, RAIDERS,
-  SLOW_MUL, SOLDIER_JOBS, STREAM, URBAN_JOBS, URBAN_MUL, WANTED, WAR_DAMAGE, WEALTH_SAFE, WORLD_MUL_CAP,
+  ADULT_FIGHT_AGE, CHILD_MAX_DC, DANGER_BY_CONTINENT, EVENT_ACTIVE_YEARS, FIGHT_AGE, HUNTER_JOBS, NIGHT_SHARE, PICK, RAID, RAID_SHARE, RAIDERS,
+  SLOW_MUL, SOLDIER_JOBS, STREAM, URBAN_JOBS, URBAN_MUL, WANTED, WEALTH_SAFE, WORLD_MUL_CAP,
 } from './tuning';
 import type { FightOpts } from './types';
 import type { Enemy } from '../data/types-combat';
@@ -194,87 +194,12 @@ export function raidAt(ctx: Ctx, enemyId: string): 'saved' | 'cost' | 'lost' | '
 }
 
 // ---------- the mass battle of a war (04 §7) ----------
-
-interface Role {
-  job: readonly string[];
-  apt?: string;
-  dc: number;
-  stat: 'pow' | 'spd' | 'mag' | 'int' | 'vit';
-  alt?: 'vit';
-  fame: number;
-  name: string;
-}
-const ROLES: Role[] = [
-  { name: 'front', job: ['soldier', 'knight', 'mercenary', 'city_guard', 'royal_guard', 'gladiator'], dc: 13, stat: 'pow', alt: 'vit', fame: 3 },
-  { name: 'archer', job: [], apt: 'bow', dc: 13, stat: 'spd', fame: 2 },
-  { name: 'mage', job: [], apt: 'fire', dc: 15, stat: 'mag', fame: 4 },
-  { name: 'commander', job: ['general', 'commander', 'captain'], apt: 'leadership', dc: 16, stat: 'int', fame: 8 },
-  { name: 'medic', job: ['medic', 'field_medic', 'physician', 'healer'], dc: 13, stat: 'int', fame: 2 },
-  { name: 'spy', job: [], apt: 'stealth', dc: 15, stat: 'spd', fame: 3 },
-];
-
-/** The role a soldier plays: by his job, then by his best aptitude. */
-function roleOf(life: LifeState): Role {
-  const job = life.job ?? '';
-  const byJob = ROLES.find((r) => r.job.includes(job));
-  if (byJob && byJob.name !== 'front') return byJob;
-  if ((life.aptitudes.leadership ?? 0) >= 2) return ROLES[3];
-  if ((life.aptitudes.bow ?? 0) >= 1) return ROLES[1];
-  if (['fire', 'lightning', 'ice', 'wind', 'earth', 'light', 'water'].some((a) => (life.aptitudes[a] ?? 0) >= 1)) return ROLES[2];
-  if ((life.aptitudes.stealth ?? 0) >= 1 && !byJob) return ROLES[5];
-  return byJob ?? ROLES[0];
-}
-
-/** A soldier in a war stands in a big battle (04 §7): one roll by his role; a lost one costs hit points, a wound roll at double curse chance, and a 5% chance of prison. */
-export function warBattle(ctx: Ctx): 'held' | 'lost' | 'dead' | 'skip' {
-  const life = lifeOf(ctx);
-  if (!life) return 'skip';
-  const fresh = admit(ctx, [`war.${life.hAge}`]);
-  if (!fresh.length) return 'skip';
-  const rng = ctx.rng(STREAM.fight);
-  const role = roleOf(life);
-  const hero = buildHero(ctx, life);
-  const s = role.alt && life.stats[role.alt] > life.stats[role.stat] ? life.stats[role.alt] : life.stats[role.stat];
-  const lead = role.apt ? Math.min(3, life.aptitudes[role.apt] ?? 0) : 0;
-  const b = mod(s) + lead + hero.power;
-  const r = rng.int(1, 20);
-  const ok = r === 20 || (r !== 1 && r + b >= role.dc);
-  if (ok) {
-    apply(ctx, [{ k: 'stat', stat: 'fame', delta: role.fame }], { sys: 'combat', id: 'war', stream: STREAM.loot });
-    write(ctx.state, { sys: 'combat', kind: 'war', id: life.country, data: { how: 'held', role: role.name, roll: r }, level: 1 });
-    return 'held';
-  }
-  const ext = extOf(life);
-  const max = maxHpOf(ctx, life);
-  let hp = hpOf(ctx, life) - Math.round(role.dc * 2.4 * WAR_DAMAGE);
-  let how: 'lost' | 'dead' = 'lost';
-  const foe = foeOf(ctx, ['npc_mercenary']);
-  if (hp <= 0) {
-    const kept = rescueOf(ctx, hero);
-    if (kept > 0) hp = kept;
-    else {
-      hp = 0;
-      how = 'dead';
-    }
-  }
-  ext.hp = hp;
-  if (how === 'lost' && foe) {
-    const w = rollWound(ctx, hero, foe, undefined, true);
-    if (rng.chance(CAPTURE.mass)) {
-      if (!life.flags.includes('captured')) life.flags.push('captured');
-      write(ctx.state, { sys: 'combat', kind: 'captured', id: life.country, data: {}, level: 2 });
-    }
-    write(ctx.state, { sys: 'combat', kind: 'war', id: life.country, data: { how, wounds: w.join(','), roll: r, max }, level: 2 });
-  } else {
-    write(ctx.state, { sys: 'combat', kind: 'war', id: life.country, data: { how, roll: r }, level: 2 });
-    dieInBattle(ctx);
-  }
-  return how;
-}
+// The battle itself is in war.ts (the war, its foes, the rank and the pay); this file keeps the test of who is a soldier at war.
+export { warBattle } from './war';
 
 /** True when the hero is a soldier of a country at war. */
 export function atWar(ctx: Ctx, life: LifeState): boolean {
-  return !!life.job && SOLDIER_JOBS.has(life.job) && (ctx.state.world.countryFlags[life.country] ?? []).includes('war') && life.job !== 'adventurer';
+  return !!life.job && SOLDIER_JOBS.has(life.job) && warOn(ctx, life.country) && life.job !== 'adventurer';
 }
 
 export { capOf };

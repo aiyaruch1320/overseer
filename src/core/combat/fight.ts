@@ -13,7 +13,7 @@ import { choose, options, type Option, type Scene } from './stance';
 import { countWin, keysOf, lootFor, quietReward, rollWound } from './reward';
 import { extOf } from './state';
 import {
-  AFTER_LOSS_HP, DAMAGE_MUL, EVADE, GUARD, PARRY, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
+  AFTER_LOSS_HP, DAMAGE_MUL, DAMAGE_SCALE, DEATH_AT_ZERO_MUL, DEATH_LOW_START_MUL, DEATH_ON_LOSS, OVERTIME, EVADE, GUARD, PARRY, PERCEIVE_DC, PRAY, RESCUE, RESIST_TAG, STREAM, WEAK_TAG, YIELD_AT,
 } from './tuning';
 import type { FightOpts, FightResult, Foe, Outcome } from './types';
 
@@ -47,7 +47,7 @@ export function damageOf(ctx: Ctx, hero: Hero, foe: Foe, stance: string, spent: 
     for (const [tag, el] of Object.entries(RESIST_TAG)) if (el === a && hero.tags.has(tag)) mul *= DAMAGE_MUL.resistTag;
     for (const [tag, el] of Object.entries(WEAK_TAG)) if (el === a && hero.tags.has(tag)) mul *= DAMAGE_MUL.weakTag;
   }
-  let d = base * Math.max(damageFloor(), mul);
+  let d = base * DAMAGE_SCALE * Math.max(damageFloor(), mul);
   if (hero.companion.guard && !spent.guard) {
     spent.guard = true;
     return 0;
@@ -146,7 +146,9 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   const lethal = opts.lethal !== false;
   const reroll = rerollChance(hero);
 
-  for (; beat < foe.maxBeats; beat++) {
+  let limit = foe.maxBeats;
+  let extended = false;
+  for (; beat < limit; beat++) {
     hero.hp = hp;
     const scene: Scene = { ctx, hero, foe, opts, beat, first: beat === 0 ? first : 0, blessed, dodge, known: knows };
     const list: Option[] = options(scene);
@@ -223,29 +225,28 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
     if (!ok) {
       const dmg = damageOf(ctx, hero, foe, pick.id, spent);
       hp -= dmg;
-      if (hp <= 0) {
-        if (!lethal) {
-          hp = Math.max(1, Math.round(hero.maxHp * YIELD_AT));
-          result = 'lose';
-          break;
-        }
-        const kept = rescueOf(ctx, hero);
-        if (kept > 0) {
-          hp = kept;
-          result = 'lose';
-        } else {
-          hp = 0;
-          result = 'dead';
-        }
-        break;
-      }
       if (hp <= hero.maxHp * YIELD_AT) {
+        // the hero is beaten; whether the blow also kills him is a roll (tuning DEATH_ON_LOSS)
+        const down = hp <= 0;
         result = 'lose';
+        const mortal = (DEATH_ON_LOSS[foe.tierId] ?? 0) * (down ? DEATH_AT_ZERO_MUL : 1) * (startHp <= hero.maxHp * YIELD_AT ? DEATH_LOW_START_MUL : 1);
+        if (lethal && rng.chance(mortal)) {
+          const kept = rescueOf(ctx, hero);
+          if (kept > 0) hp = kept;
+          else {
+            hp = 0;
+            result = 'dead';
+          }
+        } else if (down) hp = Math.max(1, Math.round(hero.maxHp * YIELD_AT));
         break;
       }
     }
     // a foe that mends: one wound back after a beat that took none, unless fire burned it (02-type-matrix.md §5)
     if (!hit && foe.traits.includes('regen') && left < foe.wounds && !pick.tags.includes('fire')) left += 1;
+    if (beat + 1 === limit && !extended && left > 0 && left <= OVERTIME.maxLeft) {
+      limit += OVERTIME.beats;
+      extended = true;
+    }
   }
   if (killedBy) result = killedBy;
   else if (result === 'draw' && left <= 0) result = 'win';

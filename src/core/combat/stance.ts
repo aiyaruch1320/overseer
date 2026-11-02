@@ -8,7 +8,7 @@ import { bestHit, ELEMENT_TAGS, hurts, markOf, SPECIAL_TAGS, type Hit } from './
 import { indexOf } from './data';
 import { bestApt, calmable, magicApts, MELEE, RANGED, statOf, type Hero } from './hero';
 import {
-  AXIS_TILT, CHOICE_SLOPE, DRAGON_TONGUE, FLEE_EASE, LOW_HP, MUL, PRAY, REASON, STANCE_WEIGHT, TALK_EASE, WEAK_TAG,
+  AXIS_TILT, CHOICE_SLOPE, DRAGON_TONGUE, FLEE_EASE, LOW_HP, MUL, PRAY, REASON, STANCE_WEIGHT, TALK_EASE, TIER_DC_SHIFT, WEAK_TAG,
 } from './tuning';
 import { extOf } from './state';
 import type { FightOpts, Foe } from './types';
@@ -59,7 +59,7 @@ export interface Option {
 
 export function dcOf(scene: Scene): number {
   const { foe, opts, ctx } = scene;
-  let dc = foe.dc + (opts.dcMod ?? 0) + (opts.rematch ? 1 : 0);
+  let dc = foe.dc + (opts.dcMod ?? 0) + (opts.rematch ? 1 : 0) + (TIER_DC_SHIFT[foe.tierId] ?? 0);
   const env = opts.env ?? [];
   if (env.includes('holy_ground') && foe.kinds.some((k) => k === 'undead' || k === 'demon')) dc -= 2;
   if (env.includes('ash_winter') && foe.attack.includes('fire')) dc -= 2;
