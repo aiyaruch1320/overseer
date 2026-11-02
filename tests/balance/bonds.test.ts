@@ -39,6 +39,7 @@ interface Row {
   cards: number;
   moodsHeld: number;
   moodsShown: number;
+  from: string[];
 }
 
 let data: GameData;
@@ -108,6 +109,7 @@ beforeAll(() => {
       cards: log.filter((x) => (x.sys === 'bonds' && x.kind === 'crisis') || (x.sys === 'bondage' && x.kind === 'escape')).length,
       moodsHeld: e.counts.blocked,
       moodsShown: e.counts.moods,
+      from: tiesOf(e).map((t) => t.from),
     });
   }
 }, 600000);
@@ -203,6 +205,11 @@ describe('bonds balance (the stories and the written allies)', () => {
     expect(flag.filter((id) => known.has(id)).length).toBeGreaterThan(0);
     const bad = new Set(rows.flatMap((r) => r.unhandled).filter((id) => /^(effect:(mood|template|bond)|cond:bond|effect:stat:(B|บุญคุณ|พวกพ้อง|ความรู้จักผู้ร่วมทาง))$/.test(id)));
     expect([...bad]).toEqual([]);
+  });
+
+  it('ties come from the sources of 03 §1: the childhood node, the school, the road, work, the roster, a lover, a student', () => {
+    const from = new Set(rows.flatMap((r) => r.from));
+    for (const f of ['kin', 'bn.b1', 'school', 'journey', 'work', 'roster', 'bn.a3', 'bn.a5']) expect(from.has(f), f).toBe(true);
   });
 
   it('shows more moods than it holds back: the table lets most of what the documents write through', () => {

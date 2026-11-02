@@ -31,7 +31,7 @@ import {
   tiesOf,
 } from '../../src/core/bonds';
 import { arcsYear, plain } from '../../src/core/bonds/arcs';
-import { birthKin } from '../../src/core/bonds/family';
+import { birthKin, closeKin } from '../../src/core/bonds/family';
 import { rosterYear } from '../../src/core/bonds/sources';
 import { caps, contact, lifeYear } from '../../src/core/bonds/year';
 import { bondageSystem } from '../../src/core/bondage';
@@ -484,6 +484,56 @@ describe('bonds: the rules the story calls (mood template bond, stats B บุ�
     apply(ctx, [{ k: 'template', kind: 'PR', code: 'PR-01', chance: 1 }], { sys: 'story', id: 'bn.b1' });
     expect(life.items).toContain('pr_twin_whistle_a');
     expect(e.pairs[0].tie).toBe(f.id);
+  });
+});
+
+describe('bonds: close kin and news from far (05 §1, 03 §4)', () => {
+  it('a close relative of the roster (Tommy of AL-17 for a human there) is the close kin with 10%; the others are a relative of the frame', () => {
+    const { ctx, life, g, e } = mk(26);
+    life.country = 'AL-17';
+    life.race = 'human';
+    life.cls = 'c2';
+    const slot = slotsOf(g.state)['AL17-2'];
+    slot.status = 'alive';
+    slot.alive = true;
+    slot.gen = 1;
+    slot.place = 'AL-17';
+    slot.born = ctx.state.clock.worldYear - (slot.span * 55) / 75;
+    let flag = 0;
+    const N = 600;
+    for (let i = 0; i < N; i++) {
+      for (const id of Object.keys(e.ties)) delete e.ties[id];
+      e.done = [];
+      // two relatives of the frame to choose from
+      for (let k = 0; k < 2; k++) addTie(ctx, life, { line: 'ญาติผู้ใหญ่', level: 2, from: 'kin', kin: 'uncle', light: true, quiet: true, gap: 25 });
+      closeKin(ctx, life);
+      if (tiesOf(e).some((t) => t.npc === 'AL17-2')) flag++;
+    }
+    expect(bd.family.closeKin.flagChance).toBe(0.1);
+    expect(flag / N).toBeGreaterThan(0.05);
+    expect(flag / N).toBeLessThan(0.16);
+  });
+
+  it('news from another continent comes one to three years late and at most one letter is told in a year', () => {
+    const { ctx, life, g, e } = mk(27);
+    life.hAge = 30;
+    const far = friend(ctx, life, 'สหาย', 3);
+    far.country = life.country.startsWith('KD') ? 'AL-01' : 'KD-01';
+    const mark = g.state.logN;
+    const dueGap: number[] = [];
+    for (let y = 0; y < 60; y++) {
+      life.hAge++;
+      const before = e.mail.length;
+      contact(ctx, life, e);
+      if (e.mail.length > before) dueGap.push(e.mail[e.mail.length - 1].due - life.hAge);
+    }
+    expect(dueGap.length).toBeGreaterThan(5);
+    for (const d of dueGap) {
+      expect(d).toBeGreaterThanOrEqual(1);
+      expect(d).toBeLessThanOrEqual(3);
+    }
+    const years = g.state.log.filter((x) => x.n >= mark && x.sys === 'bonds' && x.kind === 'letter').map((x) => x.age);
+    expect(new Set(years).size).toBe(years.length);
   });
 });
 
