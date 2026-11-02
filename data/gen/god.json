@@ -1,0 +1,7353 @@
+{
+ "version": "4b298143a22e",
+ "sources": [
+  "docs/systems/god/01-power.md",
+  "docs/systems/god/02-bestow.md",
+  "docs/systems/god/03-dreams.md",
+  "docs/systems/god/04-miracles.md",
+  "docs/systems/god/05-llm.md",
+  "docs/systems/god/06-implementation.md",
+  "docs/systems/god/07-conjure.md",
+  "docs/systems/god/08-goals.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/god.ts",
+ "items": {
+  "counts": {
+   "miracles": 25,
+   "conjureCells": 48,
+   "vows": 20,
+   "lifeTitles": 16,
+   "godTitles": 6,
+   "prayers": 17,
+   "tables": 79
+  },
+  "vars": [
+   {
+    "name": "แสงศรัทธา",
+    "key": "faith",
+    "min": 0,
+    "max": 200,
+    "owner": "พระเจ้า (ผู้เล่น) ใช้จ่ายเป็นพลัง"
+   },
+   {
+    "name": "ความหวาดกลัว",
+    "key": "dread",
+    "min": 0,
+    "max": 200,
+    "owner": "พระเจ้า ใช้จ่ายเป็นพลังสายลงโทษ"
+   },
+   {
+    "name": "ศรัทธาเทพ",
+    "key": "belief",
+    "min": -100,
+    "max": 100,
+    "owner": "ตัวละครหลัก รู้สึกต่อพระเจ้าอย่างไร"
+   }
+  ],
+  "start": {
+   "faith": 30,
+   "dread": 10,
+   "cap": 200
+  },
+  "income": {
+   "base": {
+    "faith": 1,
+    "dread": 0.3
+   },
+   "channelDiv": 25,
+   "beliefDiv": {
+    "faith": 30,
+    "dread": 75
+   },
+   "beliefMax": {
+    "faith": 3.3,
+    "dread": 1.3
+   },
+   "prophet": 4,
+   "prayerGrant": 2,
+   "punishGain": [
+    6,
+    10
+   ],
+   "destroyReturnDiv": 3,
+   "gd04": 1.5,
+   "gd05": 0.5,
+   "gd05Until": 3,
+   "rows": [
+    {
+     "source": "ฐาน",
+     "faith": "1",
+     "dread": "0.3",
+     "src": "docs/systems/god/01-power.md:21"
+    },
+    {
+     "source": "ศรัทธาตรงของประเทศที่ตัวละครอยู่ (ช่องทาง B 0–100)",
+     "faith": "B ÷ 25 (0 ถึง 4)",
+     "dread": "",
+     "src": "docs/systems/god/01-power.md:22"
+    },
+    {
+     "source": "ศรัทธาเทพของตัวละคร",
+     "faith": "belief ÷ 30 เมื่อเป็นบวก (สูงสุด +3.3)",
+     "dread": "−belief ÷ 75 เมื่อเป็นลบ (สูงสุด +1.3)",
+     "src": "docs/systems/god/01-power.md:23"
+    },
+    {
+     "source": "ตัวละครเป็นศาสดา (`prophet`)",
+     "faith": "+4",
+     "dread": "",
+     "src": "docs/systems/god/01-power.md:24"
+    },
+    {
+     "source": "ตอบคำอธิษฐานแบบให้",
+     "faith": "+2 ต่อครั้ง (ผู้ขอรู้ว่าพระเจ้าช่วย)",
+     "dread": "",
+     "src": "docs/systems/god/01-power.md:25"
+    },
+    {
+     "source": "ลงโทษผู้ขอ หรือลงโทษศัตรูในศึก",
+     "faith": "",
+     "dread": "+6 ถึง +10 ต่อครั้ง",
+     "src": "docs/systems/god/01-power.md:26"
+    },
+    {
+     "source": "ปาฏิหาริย์สายทำลาย",
+     "faith": "",
+     "dread": "ราคา ÷ 3 กลับมาเป็นความหวาดกลัว (ผู้รอดเล่าต่อ)",
+     "src": "docs/systems/god/01-power.md:27"
+    },
+    {
+     "source": "ภารกิจของพระเจ้า 12 แบบ ([../events/branches/03-character-and-quests.md](../events/branches/03-character-and-quests.md) หัวข้อ 6)",
+     "faith": "ตามภารกิจ เช่น ศาสดา +80",
+     "dread": "ตามภารกิจ",
+     "src": "docs/systems/god/01-power.md:28"
+    },
+    {
+     "source": "GD-04 ปาฏิหาริย์แห่งพระเจ้าเกิดแล้ว",
+     "faith": "×1.5 ทุกแหล่งตลอดชีวิตที่เหลือ",
+     "dread": "",
+     "src": "docs/systems/god/01-power.md:29"
+    },
+    {
+     "source": "GD-05 ความเงียบของพระเจ้าเกิดแล้ว",
+     "faith": "×0.5 จนกว่าจะตอบคำอธิษฐาน 3 ครั้ง",
+     "dread": "",
+     "src": "docs/systems/god/01-power.md:30"
+    }
+   ]
+  },
+  "prices": {
+   "byTier": [
+    {
+     "key": "bless",
+     "byTier": {
+      "C": 10,
+      "U": 16,
+      "R": 26,
+      "E": 40,
+      "L": 60
+     },
+     "pay": "faith",
+     "src": "docs/systems/god/01-power.md:40"
+    },
+    {
+     "key": "curse",
+     "byTier": {
+      "C": 6,
+      "U": 12,
+      "R": 20,
+      "E": 30,
+      "L": 45
+     },
+     "pay": "dread",
+     "src": "docs/systems/god/01-power.md:41"
+    },
+    {
+     "key": "skill",
+     "byTier": {
+      "C": 10,
+      "U": 16,
+      "R": 26,
+      "E": 40,
+      "L": null
+     },
+     "pay": "faith",
+     "src": "docs/systems/god/01-power.md:42"
+    },
+    {
+     "key": "item",
+     "byTier": {
+      "C": 8,
+      "U": 14,
+      "R": 24,
+      "E": 40,
+      "L": null
+     },
+     "pay": "faith",
+     "src": "docs/systems/god/01-power.md:43"
+    },
+    {
+     "key": "holyWeapon",
+     "byTier": {
+      "C": 12,
+      "U": 20,
+      "R": 34,
+      "E": 55,
+      "L": null
+     },
+     "pay": "faith",
+     "src": "docs/systems/god/01-power.md:44"
+    },
+    {
+     "key": "cursedWeapon",
+     "byTier": {
+      "C": 9,
+      "U": 15,
+      "R": 26,
+      "E": 42,
+      "L": null
+     },
+     "pay": "dread",
+     "src": "docs/systems/god/01-power.md:45"
+    }
+   ],
+   "reroll": [
+    5,
+    10,
+    20
+   ],
+   "dream": {
+    "first": 10,
+    "second": 14,
+    "step": 1
+   },
+   "whisper": {
+    "cheap": 5,
+    "dear": 8,
+    "cheapHints": [
+     "ระวัง",
+     "กล้าเถิด",
+     "จงไป",
+     "จงอยู่"
+    ],
+    "dearHints": [
+     "จุดอ่อนของศัตรู",
+     "คนนั้นโกหก",
+     "ช่วย",
+     "สางเรื่อง",
+     "ชี้ทายาท"
+    ]
+   },
+   "prayerGrant": [
+    8,
+    25
+   ],
+   "revive": {
+    "faith": 60,
+    "dread": 50
+   },
+   "fate": {
+    "good": 40,
+    "bad": 30,
+    "backfire": 0.3
+   },
+   "mods": {
+    "beliefLow": {
+     "below": -30,
+     "faithMul": 1.5
+    },
+    "beliefHigh": {
+     "above": 60,
+     "dreadMul": 1.2
+    },
+    "switchLine": {
+     "belief": -4,
+     "cap": -25
+    },
+    "window": 0.7,
+    "rows": [
+     {
+      "cond": "ศรัทธาเทพต่ำกว่า −30",
+      "effect": "ราคาแสงศรัทธา ×1.5 (เสียงของพระเจ้าเข้าไม่ถึงใจที่ปิด)"
+     },
+     {
+      "cond": "ศรัทธาเทพสูงกว่า 60",
+      "effect": "ราคาความหวาดกลัว ×1.2"
+     },
+     {
+      "cond": "สลับสายพลัง (ใช้ความหวาดกลัวหลังใช้แสงศรัทธา หรือกลับกัน ภายในปีเดียว)",
+      "effect": "ศรัทธาเทพ −4 ต่อครั้งที่สลับ สะสมไม่เกิน −25 ต่อชีวิต"
+     },
+     {
+      "cond": "หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ",
+      "effect": "ราคาการประทาน เข้าฝัน และกระซิบ ×0.7"
+     },
+     {
+      "cond": "อาวุธ `wj_sage_e` หรือ `wc_al14`",
+      "effect": "กระซิบหรือเข้าฝันฟรีปีละครั้ง ตามไอเทม"
+     },
+     {
+      "cond": "ผู้ถืออาวุธ `wj_godslayer_e` หรือ `wk_az_3`",
+      "effect": "การแทรกแซงทั้งดีและร้ายไม่มีผลต่อผู้ถือ"
+     }
+    ]
+   }
+  },
+  "belief": {
+   "bestow": {
+    "base": 5,
+    "perTier": 3
+   },
+   "curse": {
+    "base": -4,
+    "perTier": -3
+   },
+   "holyWeapon": 10,
+   "cursedWeapon": -5,
+   "cursedWeaponMercy": -10,
+   "dream": {
+    "obey": 3,
+    "misread": 1,
+    "refuse": -2
+   },
+   "prayer": {
+    "grant": 8,
+    "devoutMul": 1.5,
+    "deny": -3,
+    "punish": -12,
+    "ignore": -2
+   },
+   "miracle": {
+    "createHere": 5,
+    "destroyHere": -10
+   },
+   "revive": {
+    "faith": 35,
+    "dread": -10
+   },
+   "fade": {
+    "quietYears": 10,
+    "perYear": 2
+   },
+   "rows": [
+    {
+     "cause": "ได้รับพร ฝีมือ หรือของ",
+     "delta": "+(5 + 3 × ระดับ)",
+     "src": "docs/systems/god/01-power.md:74"
+    },
+    {
+     "cause": "ได้รับคำสาป",
+     "delta": "−(4 + 3 × ระดับ)",
+     "src": "docs/systems/god/01-power.md:75"
+    },
+    {
+     "cause": "อาวุธศักดิ์สิทธิ์ · อาวุธต้องสาป",
+     "delta": "+10 · −5 และแกนเมตตา −10",
+     "src": "docs/systems/god/01-power.md:76"
+    },
+    {
+     "cause": "ทำตามความฝัน · ตีความผิด · ปฏิเสธ",
+     "delta": "+3 · +1 · −2",
+     "src": "docs/systems/god/01-power.md:77"
+    },
+    {
+     "cause": "คำอธิษฐานถูกตอบแบบให้ · ปฏิเสธ · ลงโทษ · ปล่อยจนหมดเวลา",
+     "delta": "+8 (×1.5 ถ้าแกนศรัทธา > 30) · −3 · −12 · −2",
+     "src": "docs/systems/god/01-power.md:78"
+    },
+    {
+     "cause": "ปาฏิหาริย์สายสร้างในประเทศที่ตัวละครอยู่ · สายทำลายในประเทศที่ตัวละครอยู่",
+     "delta": "+5 · −10 (ถ้าตัวละครเห็นผล)",
+     "src": "docs/systems/god/01-power.md:79"
+    },
+    {
+     "cause": "ปลุกชีพด้วยแสงศรัทธา · ด้วยความหวาดกลัว",
+     "delta": "+35 · −10",
+     "src": "docs/systems/god/01-power.md:80"
+    },
+    {
+     "cause": "ไม่มีการแทรกแซงเลยสิบปีชีวิต",
+     "delta": "เคลื่อนเข้าหา 0 ทีละ 2 ต่อปี (ความรู้สึกจางลง)",
+     "src": "docs/systems/god/01-power.md:81"
+    }
+   ],
+   "bands": [
+    {
+     "name": "ผู้ภักดี (แท็ก devoted ในโค้ด)",
+     "min": 50,
+     "max": 100,
+     "effect": "ความฝันชัด อธิษฐานบ่อย เปิดทางนักบุญ ผู้ปลุกชีพ ศาสดา"
+    },
+    {
+     "name": "ผู้เชื่อ",
+     "min": 20,
+     "max": 49,
+     "effect": "ท่าทีอธิษฐานในศึกใช้ได้"
+    },
+    {
+     "name": "ผู้ลังเล",
+     "min": -29,
+     "max": 19,
+     "effect": ""
+    },
+    {
+     "name": "ผู้หันหลัง (แท็ก heretic ในโค้ด)",
+     "min": -69,
+     "max": -30,
+     "effect": "ราคาแสงศรัทธา ×1.5"
+    },
+    {
+     "name": "ผู้ชิงชัง",
+     "tag": "godslayer",
+     "min": -100,
+     "max": -70,
+     "effect": "ไม่อธิษฐานอีก เปิดทาง `godslayer` ถ้าเงื่อนไขอื่นครบ"
+    }
+   ]
+  },
+  "caps": {
+   "chestPerYear": 1,
+   "chestWindowBonus": 1,
+   "dreamPerYear": 2,
+   "whisperPerYear": 3,
+   "prayersPending": 2,
+   "prayerExpiryTicks": 14,
+   "miraclePerLife": {
+    "mid": 4,
+    "big": 2,
+    "ruinOfBig": 1,
+    "grand": 1,
+    "conjure": 3
+   },
+   "giftedWeapon": 1,
+   "giftedItems": 3,
+   "rows": [
+    {
+     "what": "ประทาน",
+     "cap": "เปิดหีบได้หนึ่งครั้งต่อปีชีวิต บวกหนึ่งครั้งที่หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ"
+    },
+    {
+     "what": "เข้าฝัน",
+     "cap": "สองครั้งต่อปีชีวิต"
+    },
+    {
+     "what": "กระซิบ",
+     "cap": "สามครั้งต่อปีชีวิต คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว"
+    },
+    {
+     "what": "คำอธิษฐาน",
+     "cap": "ค้างได้สองใบพร้อมกัน หมดเวลาใน 14 ช่วงเวลา (ราวสามปีครึ่งชีวิต)"
+    },
+    {
+     "what": "ปาฏิหาริย์",
+     "cap": "ต่อชีวิต: เล็กไม่จำกัดจำนวน · กลาง 4 · ใหญ่ 2 (ทำให้เป็นซากได้ 1) · มหา 1 · เสกตามใจ 3 และระยะรอใช้ซ้ำของแต่ละแบบ ([04-miracles.md](04-miracles.md) หัวข้อ 2 ข้อ 6 และหัวข้อ 3)"
+    },
+    {
+     "what": "อาวุธประทาน",
+     "cap": "หนึ่งชิ้นต่อตัวละคร"
+    },
+    {
+     "what": "ของประทานที่ไม่ใช่อาวุธ",
+     "cap": "สามชิ้นต่อตัวละคร"
+    }
+   ]
+  },
+  "heirs": {
+   "powerShare": 0.5,
+   "beliefShare": 0.6,
+   "bloodlineMul": 3,
+   "bloodlineOdds": [
+    1,
+    0.6,
+    0.3
+   ],
+   "uncurseMul": 2,
+   "rows": [
+    {
+     "what": "พลังที่เหลือเมื่อตัวละครตาย",
+     "rule": "ทายาทรับ 50% ของแสงศรัทธาและความหวาดกลัว"
+    },
+    {
+     "what": "ศรัทธาเทพของทายาท",
+     "rule": "60% ของพ่อแม่ (ตามโค้ดเดิม)"
+    },
+    {
+     "what": "พรสายเลือด (ทั้งตระกูล)",
+     "rule": "ราคา 3 เท่าของพรเดียว ถึงทายาทรุ่นแรกแน่นอน รุ่นสอง 60% รุ่นสาม 30%"
+    },
+    {
+     "what": "ถอนคำสาปที่สืบทอด",
+     "rule": "ราคา 2 เท่าของคำสาปนั้น จ่ายด้วยแสงศรัทธา"
+    },
+    {
+     "what": "อาวุธประทานของรุ่นก่อน",
+     "rule": "ทายาทรับได้ ไม่นับเป็นอาวุธประทานของทายาท"
+    },
+    {
+     "what": "ตัวนับเพดานต่อชีวิต",
+     "rule": "เริ่มใหม่ทุกรุ่น"
+    }
+   ]
+  },
+  "epithets": [
+   {
+    "title": "ผู้ให้แสง",
+    "cond": "แสงศรัทธาที่ใช้ ≥ 3 เท่าของความหวาดกลัวที่ใช้ และศรัทธาเทพ ≥ 50",
+    "src": "docs/systems/god/01-power.md:133",
+    "params": {
+     "ratio": 3,
+     "belief": 50
+    }
+   },
+   {
+    "title": "ผู้คุ้มครองเงียบ",
+    "cond": "ใช้พลังรวมน้อยกว่า 60 ตลอดชีวิต และตัวละครอยู่ถึงวัยผู้เฒ่า",
+    "src": "docs/systems/god/01-power.md:134",
+    "params": {
+     "maxSpent": 60
+    }
+   },
+   {
+    "title": "ผู้พิพากษา",
+    "cond": "ความหวาดกลัวที่ใช้ ≥ แสงศรัทธาที่ใช้ และศรัทธาเทพไม่ต่ำกว่า 0",
+    "src": "docs/systems/god/01-power.md:135",
+    "params": {
+     "beliefMin": 0
+    }
+   },
+   {
+    "title": "ผู้ทำลาย",
+    "cond": "ปาฏิหาริย์สายทำลายระดับใหญ่ขึ้นไปอย่างน้อยสองครั้ง",
+    "src": "docs/systems/god/01-power.md:136",
+    "params": {
+     "bigDestroys": 2
+    }
+   },
+   {
+    "title": "ผู้ถูกชิงชัง",
+    "cond": "ศรัทธาเทพตอนตาย ≤ −70",
+    "src": "docs/systems/god/01-power.md:137",
+    "params": {
+     "belief": -70
+    }
+   },
+   {
+    "title": "ผู้ลิขิต",
+    "cond": "ลิขิตเหตุการณ์ ⭐ อย่างน้อยหนึ่งครั้ง และเหตุการณ์นั้นเกิดหรือถูกเลื่อนตามที่ลิขิต",
+    "src": "docs/systems/god/01-power.md:138",
+    "params": {
+     "starFates": 1
+    }
+   }
+  ],
+  "chest": {
+   "slots": [
+    {
+     "slot": 1,
+     "kind": "bless",
+     "src": "docs/systems/god/02-bestow.md:13",
+     "pool": "พร 200 (โค้ด 107 ใหม่ 93) และพรของเผ่า",
+     "ifEmpty": "ช่องว่าง"
+    },
+    {
+     "slot": 2,
+     "kind": "bless",
+     "src": "docs/systems/god/02-bestow.md:13",
+     "pool": "พร 200 (โค้ด 107 ใหม่ 93) และพรของเผ่า",
+     "ifEmpty": "ช่องว่าง"
+    },
+    {
+     "slot": 3,
+     "kind": "curse",
+     "src": "docs/systems/god/02-bestow.md:14",
+     "pool": "คำสาป 152 และคำสาปของเผ่า",
+     "ifEmpty": "ช่องว่าง"
+    },
+    {
+     "slot": 4,
+     "kind": "curse",
+     "src": "docs/systems/god/02-bestow.md:14",
+     "pool": "คำสาป 152 และคำสาปของเผ่า",
+     "ifEmpty": "ช่องว่าง"
+    },
+    {
+     "slot": 5,
+     "kind": "skill",
+     "src": "docs/systems/god/02-bestow.md:15",
+     "pool": "เลื่อนความถนัดที่มีหนึ่งระดับ หรือสกิลใหม่ ([../character/07-new-skills.md](../character/07-new-skills.md))",
+     "ifEmpty": "กลายเป็นพรอีกหนึ่งใบ"
+    },
+    {
+     "slot": 6,
+     "kind": "item",
+     "src": "docs/systems/god/02-bestow.md:16",
+     "pool": "อาวุธ ถ้ายังไม่เคยได้อาวุธประทาน · ไม่เช่นนั้นเกราะ เครื่องประดับ ของขลังพื้นบ้าน ของใช้",
+     "ifEmpty": "ช่องว่าง"
+    }
+   ],
+   "filters": [
+    {
+     "key": "มีอยู่แล้ว",
+     "rule": "พรหรือคำสาปที่ตัวละครมีอยู่แล้วไม่ขึ้น ไม่ซ้อนกัน"
+    },
+    {
+     "key": "ขัดกัน",
+     "rule": "พรที่ตรงข้ามกับคำสาปที่มี (และกลับกัน) ไม่ขึ้น ใช้คู่ตรงข้ามจากแท็กในแคตตาล็อก"
+    },
+    {
+     "key": "เผ่าและกำเนิด",
+     "rule": "พรและคำสาปของเผ่าอื่นไม่ขึ้น ([../character/races/](../character/races/README.md)) ของที่เผ่านั้นใช้ไม่ได้ไม่ขึ้น (ถุงมือสำหรับเผ่าที่ไม่มีมือ อาวุธดาบสำหรับสไลม์)"
+    },
+    {
+     "key": "วัย",
+     "rule": "ต่ำกว่าอายุเทียบ 13 ช่อง 6 ไม่มีอาวุธ ขึ้นของขลังพื้นบ้านหรือของเล่นแทน ([../items/README.md](../items/README.md))"
+    },
+    {
+     "key": "ระดับ L",
+     "rule": "พร L ขึ้นได้เมื่อศรัทธาเทพ ≥ 50 หรือที่หน้าต่างพระเจ้า คำสาป L ขึ้นได้เมื่อศรัทธาเทพ ≤ −30 หรือที่หน้าต่างพระเจ้า"
+    },
+    {
+     "key": "ของที่มีชิ้นเดียวในโลก",
+     "rule": "อาวุธตำนาน 36 ชิ้น เครื่องรางโบราณที่มีผู้สถิต 24 ชิ้น และของคู่ ไม่ขึ้นในหีบ (มีเจ้าของและเรื่องของตัวเอง [../items/08-legendary.md](../items/08-legendary.md))"
+    },
+    {
+     "key": "อาชีพลับ",
+     "rule": "ของและพรที่เป็นเงื่อนไขของอาชีพลับขึ้นได้ แต่ไม่ให้อาชีพเอง ([../character/10-jobs-secret.md](../character/10-jobs-secret.md))"
+    }
+   ],
+   "tierWeights": {
+    "C": 100,
+    "U": 38,
+    "R": 11,
+    "E": 2.6,
+    "L": 0.5
+   },
+   "multipliers": [
+    {
+     "id": "story",
+     "cond": "แท็กของของตรงกับโหนดเส้นเรื่องที่ตัวละครกำลังจะถึง (ภายในหนึ่งปีชีวิต)",
+     "mult": 3,
+     "src": "docs/systems/god/02-bestow.md:46"
+    },
+    {
+     "id": "job",
+     "cond": "ตรงกับอาชีพ ความถนัด หรือสัตว์คู่หูของตัวละคร",
+     "mult": 2,
+     "src": "docs/systems/god/02-bestow.md:47"
+    },
+    {
+     "id": "home",
+     "cond": "ตรงกับถิ่นที่อยู่ (ประเทศ ทวีป ภูมิอากาศ)",
+     "mult": 1.5,
+     "src": "docs/systems/god/02-bestow.md:48"
+    },
+    {
+     "id": "event",
+     "cond": "ตรงกับเหตุการณ์โลกที่เพิ่งเกิดในทวีป (สิบปีล่าสุด) หรือที่มีลางอยู่",
+     "mult": 2,
+     "src": "docs/systems/god/02-bestow.md:49"
+    },
+    {
+     "id": "lateTier",
+     "cond": "ระดับ E และ L ในยุค 3 และ 4",
+     "mult": 1.5,
+     "src": "docs/systems/god/02-bestow.md:50"
+    },
+    {
+     "id": "belief",
+     "cond": "ศรัทธาเทพ ≥ 50: พร R ขึ้นไป · ศรัทธาเทพ ≤ −30: คำสาป R ขึ้นไป",
+     "mult": 1.3,
+     "src": "docs/systems/god/02-bestow.md:51"
+    },
+    {
+     "id": "combatCurse",
+     "cond": "ช่องคำสาปเมื่อตัวละครกำลังอยู่ในศึก",
+     "mult": 2,
+     "src": "docs/systems/god/02-bestow.md:52"
+    }
+   ],
+   "lateTierFrom": 3,
+   "compensator": {
+    "start": -5,
+    "step": 2,
+    "baseChance": {
+     "C": 65.7,
+     "U": 25,
+     "R": 7.2,
+     "E": 1.7,
+     "L": 0.33
+    },
+    "appliesTo": "R"
+   },
+   "actions": [
+    {
+     "action": "เลือก",
+     "rule": "จ่ายราคาของใบนั้น ([01-power.md](01-power.md) หัวข้อ 2) ของถึงตัวละครทันที ศรัทธาเทพเปลี่ยนตาม [01-power.md](01-power.md) หัวข้อ 3 หีบปิด"
+    },
+    {
+     "action": "ทอยใหม่",
+     "rule": "สุ่มใหม่ทั้งหกช่อง ราคา 5 · 10 · 20 แสงศรัทธา ไม่เกินสามครั้งต่อปีชีวิต ใบที่ถูกทอยทิ้งไม่ขึ้นอีกในปีนั้น"
+    },
+    {
+     "action": "ล็อกหนึ่งใบแล้วทอย",
+     "rule": "ทอยใหม่ห้าช่องที่เหลือ ราคาเพิ่ม +5 จากการทอยปกติ"
+    },
+    {
+     "action": "ข้าม",
+     "rule": "ไม่จ่าย หีบปิด นับเป็นการเปิดหีบของปีนั้น"
+    }
+   ],
+   "rerollExtraLock": 5,
+   "weapon": [
+    {
+     "key": "จำนวน",
+     "value": "หนึ่งชิ้นต่อตัวละคร ตลอดชีวิต"
+    },
+    {
+     "key": "ระดับ",
+     "value": "C ถึง E จากแคตตาล็อกอาวุธ ([../../_generated/weapon-catalog.md](../../_generated/weapon-catalog.md)) ไม่รวมอาวุธตำนาน"
+    },
+    {
+     "key": "ศักดิ์สิทธิ์หรือต้องสาป",
+     "value": "ช่อง 6 ขึ้นอาวุธหนึ่งชิ้น สุ่มว่าเป็นรุ่นศักดิ์สิทธิ์ (จ่ายแสงศรัทธา แท็ก `holy` เพิ่ม) หรือรุ่นต้องสาป (จ่ายความหวาดกลัว แท็ก `cursed_weapon` เพิ่ม) ตามสัดส่วนแสงศรัทธาต่อความหวาดกลัวของพระเจ้าตอนนั้น ค่าสถานะอยู่ในงบของระดับเดิม"
+    },
+    {
+     "key": "น้ำหนักพิเศษ",
+     "value": "อาวุธที่ตรงกับอาชีพ ×3 อาวุธประจำถิ่นของประเทศที่อยู่ ×2"
+    },
+    {
+     "key": "อาวุธตำนานเล่มเดียวที่พระเจ้าสร้าง",
+     "value": "`wl_light_sword` เกิดเมื่อ GD-04 เกิดผ่านตัวละคร ([../items/08-legendary.md](../items/08-legendary.md)) ไม่นับเป็นอาวุธประทาน"
+    },
+    {
+     "key": "เมื่อตาย",
+     "value": "ทายาทรับได้ ([01-power.md](01-power.md) หัวข้อ 6) ถ้าไม่มีทายาท อาวุธอยู่ที่หลุมศพ กลายเป็นของที่ NPC ไปหาได้"
+    }
+   ],
+   "weaponMult": {
+    "job": 3,
+    "country": 2
+   },
+   "example": [
+    {
+     "slot": "1",
+     "id": "nb_fog_walker",
+     "tier": "U",
+     "price": "16 แสงศรัทธา",
+     "why": "ถิ่นหมอก ×1.5 เหตุการณ์ FG-02 ×2"
+    },
+    {
+     "slot": "2",
+     "id": "b_courage",
+     "tier": "C",
+     "price": "10",
+     "why": "โหนดสงครามที่จะถึง ×3"
+    },
+    {
+     "slot": "3",
+     "id": "c_nightmare",
+     "tier": "C",
+     "price": "6 ความหวาดกลัว",
+     "why": "เหตุการณ์ FG-02 ×2"
+    },
+    {
+     "slot": "4",
+     "id": "nc_fog_shadow",
+     "tier": "R",
+     "price": "20",
+     "why": "เกิดและอยู่ในเนบูเลีย ×1.5 · ตัวชดเชยความหายาก"
+    },
+    {
+     "slot": "5",
+     "id": "tracking",
+     "tier": "",
+     "price": "16",
+     "why": "อาชีพคุ้มกันขบวน ×2"
+    },
+    {
+     "slot": "6",
+     "tier": "U",
+     "price": "15 ความหวาดกลัว",
+     "why": "อาวุธประทานยังไม่เคยได้ ตรงอาชีพ ×3"
+    }
+   ],
+   "minAgeForWeapon": 13,
+   "levelLGate": {
+    "bless": 50,
+    "curse": -30
+   }
+  },
+  "dreams": {
+   "sources": [
+    {
+     "id": "S1",
+     "name": "โหนดถัดไป",
+     "paths": "ทาง ก) ข) ค) ของโหนดเส้นเรื่องที่ตัวละครจะถึงภายในสองปีชีวิต",
+     "effect": "ทางนั้น ×4",
+     "mult": 4,
+     "src": "docs/systems/god/03-dreams.md:13"
+    },
+    {
+     "id": "S2",
+     "name": "จุดบรรจบ",
+     "paths": "จุดบรรจบที่เปิดอยู่และตัวละครเข้าได้จากโหนดใกล้ ๆ ([../../lore/storylines/00-convergence.md](../../lore/storylines/00-convergence.md))",
+     "effect": "ทางที่ชี้ไป cv.N ×4 หรือเปิดการเดินทางไปที่จุดนั้น",
+     "mult": 4,
+     "src": "docs/systems/god/03-dreams.md:14"
+    },
+    {
+     "id": "S3",
+     "name": "เรื่องของ NPC",
+     "paths": "เรื่องของ NPC ที่เปิดอยู่ในประเทศเดียวกันและแถวมีทาง `[ช่วย]` `[ร่วม]` `[ขัดขวาง]` ([../../lore/npcs/README.md](../../lore/npcs/README.md) หัวข้อ 2.1)",
+     "effect": "ตัวละครเข้าไปในเรื่องนั้นตามทางที่ชี้",
+     "mult": null,
+     "src": "docs/systems/god/03-dreams.md:15"
+    },
+    {
+     "id": "S4",
+     "name": "อาชีพลับ",
+     "paths": "อาชีพลับที่เงื่อนไขครบแล้วอย่างน้อยครึ่งหนึ่ง ([../character/10-jobs-secret.md](../character/10-jobs-secret.md))",
+     "effect": "โอกาสต่อปีของอาชีพนั้น ×1.5 สิบปี",
+     "mult": 1.5,
+     "src": "docs/systems/god/03-dreams.md:16"
+    },
+    {
+     "id": "S5",
+     "name": "การเดินทาง",
+     "paths": "จุดหมายที่ตัวกรองเผ่าและศีลธรรมยอมรับ ([../travel/README.md](../travel/README.md))",
+     "effect": "การเดินทางไปที่นั้น ×3",
+     "mult": 3,
+     "src": "docs/systems/god/03-dreams.md:17"
+    },
+    {
+     "id": "S6",
+     "name": "ลางของโลก",
+     "paths": "เหตุการณ์โลกที่มีลางในทวีปภายในสิบปี ([../events/world-events.md](../events/world-events.md) หัวข้อ 0.3)",
+     "effect": "ทางเตรียมรับ (หนี ช่วยคน กักตุน) ×3 เมื่อเหตุการณ์เกิด",
+     "mult": 3,
+     "src": "docs/systems/god/03-dreams.md:18"
+    },
+    {
+     "id": "S7",
+     "name": "เรื่องค้าง",
+     "paths": "เรื่องค้างของสายตระกูล ([../../lore/heirs/03-open-threads.md](../../lore/heirs/03-open-threads.md))",
+     "effect": "เปิดโหนดสางเรื่อง",
+     "mult": null,
+     "src": "docs/systems/god/03-dreams.md:19"
+    },
+    {
+     "id": "S8",
+     "name": "พวกพ้องและการผูกตัว",
+     "paths": "วิกฤตขั้น 3 ของพวกพ้อง การชวน การปฏิเสธ ([../bonds/README.md](../bonds/README.md)) หรือทางหนีของผู้ถูกผูกตัว ([../economy/10-bondage.md](../economy/10-bondage.md) หัวข้อ 9)",
+     "effect": "ทางที่ชี้ ×3",
+     "mult": 3,
+     "src": "docs/systems/god/03-dreams.md:20"
+    }
+   ],
+   "parts": [
+    {
+     "part": "สัญลักษณ์",
+     "from": "หนึ่งใน 12 สัญลักษณ์ความฝันในโค้ด (งู ไฟ แม่น้ำ ดาบ ดวงตา ดวงจันทร์ ดอกไม้ อีกา มงกุฎ ฯลฯ) ความหมายเปลี่ยนตามเผ่าและภูมิอากาศ เกมเลือกสัญลักษณ์ที่แท็กตรงกับทาง"
+    },
+    {
+     "part": "ชื่อทาง",
+     "from": "หนึ่งบรรทัด เช่น \"ตามผู้ลี้ภัยกลับไปที่ป่า\""
+    },
+    {
+     "part": "ภาพฝัน",
+     "from": "สองถึงสามประโยค จากความหมายของสัญลักษณ์ตามเผ่าและภูมิอากาศ และคลังภาพฝัน (ยังไม่ใช้ LLM ตามที่ผู้ใช้ตัดสิน [../llm/README.md](../llm/README.md) หัวข้อ 2)"
+    },
+    {
+     "part": "เงาของผล",
+     "from": "หนึ่งบรรทัดที่บอกทิศ ไม่บอกผลตรง ๆ เช่น \"มีคนรอเจ้าอยู่ที่ราก\""
+    },
+    {
+     "part": "ใจของเขา",
+     "from": "ระดับความเชื่อฟัง (หัวข้อ 3) พร้อมเหตุผลหนึ่งถึงสองข้อ"
+    }
+   ],
+   "symbols": 12,
+   "obey": {
+    "base": 0.3,
+    "beliefDiv": 140,
+    "clamp": [
+     0.05,
+     0.95
+    ],
+    "fit": {
+     "twoTraits": 0.15,
+     "oneTrait": 0.05,
+     "against": -0.2,
+     "immoral": -0.3
+    },
+    "clarity": {
+     "perInt": 0.02,
+     "oracle": 0.1,
+     "whisper": 0.2,
+     "repeat": 0.1,
+     "punished": -0.1
+    },
+    "repeatYears": 3,
+    "punishedYears": 5
+   },
+   "levels": [
+    {
+     "name": "เต็มใจ",
+     "min": 0.7,
+     "max": 1,
+     "look": "เปลวเทียนนิ่ง"
+    },
+    {
+     "name": "ลังเล",
+     "min": 0.4,
+     "max": 0.69,
+     "look": "เปลวเทียนไหว"
+    },
+    {
+     "name": "ขัดขืน",
+     "min": 0,
+     "max": 0.39,
+     "look": "เปลวเทียนจวนดับ"
+    }
+   ],
+   "luckGuard": {
+    "fails": 2,
+    "bonus": 0.15,
+    "level": "เต็มใจ"
+   },
+   "outcomes": [
+    {
+     "id": "obey",
+     "name": "ทำตาม",
+     "cond": "ทอยผ่านโอกาสทำตาม",
+     "result": "ทางนั้นตามตารางหัวข้อ 1 (ส่วนใหญ่ ×4 ไม่ใช่บังคับ) ศรัทธาเทพ +3",
+     "pathMul": 4,
+     "src": "docs/systems/god/03-dreams.md:75"
+    },
+    {
+     "id": "misread",
+     "name": "ตีความผิด",
+     "cond": "ไม่ผ่าน และศรัทธาเทพ ≥ 0 ครึ่งหนึ่งของกรณี",
+     "result": "ตัวละครทำทางอื่นของโหนดเดียวกันที่ใกล้ความหมายของสัญลักษณ์ ×2 ศรัทธาเทพ +1 ฉากเล่าว่าเขาเข้าใจความฝันอย่างไร (แม่แบบตามสัญลักษณ์)",
+     "pathMul": 2,
+     "src": "docs/systems/god/03-dreams.md:76"
+    },
+    {
+     "id": "refuse",
+     "name": "ปฏิเสธ",
+     "cond": "ไม่ผ่านและไม่ตีความผิด",
+     "result": "ทางนั้นไม่เปลี่ยน ศรัทธาเทพ −2 ตัวละครจำความฝันที่ไม่ทำ (ผู้กำกับตามกติกาใช้เป็นความทรงจำ)",
+     "pathMul": null,
+     "src": "docs/systems/god/03-dreams.md:77"
+    },
+    {
+     "id": "defy",
+     "name": "ขัดขืน",
+     "cond": "ปฏิเสธ และศรัทธาเทพ ≤ −30",
+     "result": "ทางนั้น ×0.3 ตัวละครทำตรงข้ามเพื่อพิสูจน์ว่าไม่ใช่ของใคร",
+     "pathMul": 0.3,
+     "src": "docs/systems/god/03-dreams.md:78"
+    }
+   ],
+   "misreadShare": 0.5,
+   "defyBelief": -30,
+   "burden": {
+    "step": 1,
+    "at": 2,
+    "relief": 0,
+    "events": [
+     {
+      "name": "ตั้งคำถามกับพระเจ้า",
+      "effect": "ศรัทธาเทพ −8 ตัวละครอธิษฐานถามตรง ๆ หนึ่งใบ (ถ้าพระเจ้าตอบแบบให้ ศรัทธาเทพ +12 แทน)"
+     },
+     {
+      "name": "หนีงานหรือหนีบ้านหนึ่งฤดู",
+      "effect": "อาชีพหยุดหนึ่งปี เปิดเหตุการณ์การเดินทางสุ่ม"
+     },
+     {
+      "name": "นิสัยเปลี่ยน",
+      "effect": "นิสัยที่ถูกขัดบ่อยที่สุดหายไป ได้นิสัยตรงข้ามแทน (คนกลัวน้ำที่ถูกส่งลงทะเลสามครั้งกลายเป็นคนกล้า)"
+     }
+    ]
+   },
+   "special": [
+    {
+     "moment": "หน้าต่างพระเจ้าที่แถวระบุคำใบ้หรือพร",
+     "rule": "ทางที่ตรงกับผลในแถวขึ้นเป็นหนึ่งในสามทางแน่นอน ราคา ×0.7"
+    },
+    {
+     "moment": "ก่อนศึก",
+     "rule": "ทางสามทางเป็นท่าทีในศึก ([../combat/01-core.md](../combat/01-core.md)) ท่าทีที่ตรงความฝัน ×3 ตามเดิม"
+    },
+    {
+     "moment": "วิกฤตขั้น 3 ของพวกพ้อง",
+     "rule": "ทางหนึ่งเป็นการเข้าไปช่วย ทางหนึ่งเป็นการปล่อย ทางหนึ่งเป็นทางที่เรื่องของพวกพ้องเขียนไว้"
+    },
+    {
+     "moment": "ผู้ถูกผูกตัว",
+     "rule": "ทางหนึ่งเป็นทางหนีหรือทางไถ่ตัวที่แถวการผูกตัวเขียนไว้"
+    },
+    {
+     "moment": "ยุคปลาย (โหนด le)",
+     "rule": "ทางหนึ่งเป็นการเลือกฝ่ายของกุญแจ ([../../lore/storylines/30-last-era.md](../../lore/storylines/30-last-era.md)) ตัวละครที่ทำตามนับเป็นแรงหนึ่งหน่วยของฝ่ายนั้นตามหัวข้อ 4 ของ [04-miracles.md](04-miracles.md)"
+    },
+    {
+     "moment": "ใกล้ตาย",
+     "rule": "ความฝันสุดท้ายเลือกสิ่งที่ตัวละครทิ้งไว้ (ของ คำพูด ตำแหน่ง) ทำตามเสมอ ไม่ทอย"
+    }
+   ],
+   "whispers": [
+    {
+     "hint": "ระวัง",
+     "id": "ระวัง",
+     "cost": 5,
+     "effect": "ทางปลอดภัย ×2 สองการตัดสินใจถัดไป ทอยรับรู้ในศึก +2",
+     "from": "llm-ideas"
+    },
+    {
+     "hint": "กล้าเถิด",
+     "id": "กล้าเถิด",
+     "cost": 5,
+     "effect": "ทางเสี่ยง ×2 สองการตัดสินใจถัดไป การตีอาวุธ +2",
+     "from": "llm-ideas · การตีอาวุธ"
+    },
+    {
+     "hint": "จงไป",
+     "id": "จงไป (ชี้ทวีปหรือที่)",
+     "cost": 5,
+     "effect": "การเดินทางไปที่ชี้ ×1.5 อาชีพลับที่ผูกกับที่นั้น ×1.5 ต่อปี",
+     "from": "llm-ideas · อาชีพลับ"
+    },
+    {
+     "hint": "จงอยู่",
+     "id": "จงอยู่",
+     "cost": 5,
+     "effect": "การย้ายถิ่น ×0.5 สิบปี",
+     "from": "llm-ideas"
+    },
+    {
+     "hint": "จุดอ่อนของศัตรู",
+     "id": "จุดอ่อนของศัตรู",
+     "cost": 8,
+     "effect": "ศึกถัดไป ท่าทีที่ตรงจุดอ่อน ×3",
+     "from": "llm-ideas"
+    },
+    {
+     "hint": "คนนั้นโกหก",
+     "id": "คนนั้นโกหก (ชี้ NPC)",
+     "cost": 8,
+     "effect": "ไว้ใจต่อ NPC นั้น −2",
+     "from": "llm-ideas"
+    },
+    {
+     "hint": "ช่วย",
+     "id": "ช่วย (ชี้ NPC)",
+     "cost": 8,
+     "effect": "ทาง `[ช่วย]` ของเรื่อง NPC นั้น ×2",
+     "from": "เครื่องรางของ NPC"
+    },
+    {
+     "hint": "สางเรื่อง",
+     "id": "สางเรื่อง",
+     "cost": 8,
+     "effect": "เรื่องค้างหนึ่งเรื่องของสายตระกูลเปิดเป็นโหนดภายในห้าปี",
+     "from": "ทายาท"
+    },
+    {
+     "hint": "ชี้ทายาท",
+     "id": "ชี้ทายาท",
+     "cost": 8,
+     "effect": "ผู้สืบที่ชี้ ×3 ในการเลือกทายาท",
+     "from": "ทายาท"
+    }
+   ],
+   "whisperCostGroups": {
+    "cheap": [
+     "ระวัง",
+     "กล้าเถิด",
+     "จงไป",
+     "จงอยู่"
+    ],
+    "dear": [
+     "จุดอ่อนของศัตรู",
+     "คนนั้นโกหก",
+     "ช่วย",
+     "สางเรื่อง",
+     "ชี้ทายาท"
+    ]
+   },
+   "prayerAnswers": [
+    {
+     "answer": "ให้",
+     "price": "8–25 แสงศรัทธาตามชนิด",
+     "effect": "ได้ตามขอ ศรัทธาเทพ +8 (×1.5 ถ้าแกนศรัทธา > 30) แสงศรัทธา +2"
+    },
+    {
+     "answer": "ให้แบบแปลก",
+     "price": "เท่ากับให้",
+     "effect": "เปิดหีบเล็กสามช่องที่ตรงคำขอ ผู้เล่นเลือกหนึ่งใบ ตัวละครได้สิ่งที่ไม่ได้ขอแต่ช่วยเรื่องเดียวกัน (ขอเงิน ได้เครื่องรางที่มีผู้สถิต) ศรัทธาเทพ +5 และเปิดเหตุการณ์เล็กหนึ่งเรื่อง"
+    },
+    {
+     "answer": "ปฏิเสธ",
+     "price": "ฟรี",
+     "effect": "ศรัทธาเทพ −3 (−1 ถ้าเคร่ง)"
+    },
+    {
+     "answer": "ลงโทษผู้ขอ",
+     "price": "ฟรี",
+     "effect": "ความหวาดกลัว +6 ถึง +10 ศรัทธาเทพ −12 ตัวละครถูกนับว่าเป็นผู้ถูกกระทำ (เงื่อนไขทางผู้ล่าเทพ)"
+    },
+    {
+     "answer": "นิ่ง",
+     "price": "ฟรี",
+     "effect": "หมดเวลาใน 14 ช่วงเวลา ศรัทธาเทพ −2 คำอธิษฐานที่ไม่ได้คำตอบรวมทั้งโลกหลายทศวรรษนำไปสู่ GD-05"
+    }
+   ]
+  },
+  "prayers": {
+   "source": "legacy/data/prayers.ts (the docs only say \"17 kinds in the code\"; docs/systems/god/01-power.md section 2)",
+   "kinds": [
+    {
+     "id": "heal",
+     "weight": 6,
+     "icon": "heal",
+     "grantCost": 12,
+     "grantFx": "hp+45",
+     "punishGain": 6,
+     "punishFx": "hp-10",
+     "trouble": true
+    },
+    {
+     "id": "rain",
+     "weight": 6,
+     "icon": "rain",
+     "grantCost": 18,
+     "grantFx": "country:-famine country:-sandstorm gold+10",
+     "punishGain": 8,
+     "punishFx": "gold-15 hp-5",
+     "trouble": true
+    },
+    {
+     "id": "plague",
+     "weight": 6,
+     "icon": "plague",
+     "grantCost": 18,
+     "grantFx": "country:-plague country:-undead_rising hp+10",
+     "punishGain": 8,
+     "punishFx": "hp-20",
+     "trouble": true
+    },
+    {
+     "id": "peace",
+     "weight": 5,
+     "icon": "war",
+     "grantCost": 25,
+     "grantFx": "country:-war country:-demon_raid country:-horde",
+     "punishGain": 10,
+     "punishFx": "hp-15",
+     "trouble": true
+    },
+    {
+     "id": "love",
+     "weight": 3,
+     "icon": "lover",
+     "grantCost": 12,
+     "grantFx": "rel:+lover",
+     "punishGain": 6,
+     "punishFx": "curse:c_lonely",
+     "trouble": false
+    },
+    {
+     "id": "heir",
+     "weight": 3,
+     "icon": "child",
+     "grantCost": 15,
+     "grantFx": "child",
+     "punishGain": 6,
+     "punishFx": "curse:c_barren",
+     "trouble": false
+    },
+    {
+     "id": "wealth",
+     "weight": 3,
+     "icon": "gold",
+     "grantCost": 10,
+     "grantFx": "gold+50",
+     "punishGain": 6,
+     "punishFx": "gold-10 curse:c_poverty",
+     "trouble": false
+    },
+    {
+     "id": "wisdom",
+     "weight": 3,
+     "icon": "book",
+     "grantCost": 12,
+     "grantFx": "int+1 skill:random",
+     "punishGain": 5,
+     "punishFx": "int-1",
+     "trouble": false
+    },
+    {
+     "id": "courage",
+     "weight": 3,
+     "icon": "weapon",
+     "grantCost": 8,
+     "grantFx": "brave+20 hp+15",
+     "punishGain": 5,
+     "punishFx": "brave-15",
+     "trouble": false
+    },
+    {
+     "id": "vengeance",
+     "weight": 3,
+     "icon": "nemesis",
+     "grantCost": 15,
+     "grantFx": "relkill:nemesis karma-3",
+     "punishGain": 8,
+     "punishFx": "hp-10 kind+10",
+     "trouble": false
+    },
+    {
+     "id": "uncurse",
+     "weight": 3,
+     "icon": "curse",
+     "grantCost": 20,
+     "grantFx": "uncurse:random",
+     "punishGain": 10,
+     "punishFx": "curse:random",
+     "trouble": false
+    },
+    {
+     "id": "fame",
+     "weight": 2,
+     "icon": "fame",
+     "grantCost": 12,
+     "grantFx": "fame+15",
+     "punishGain": 6,
+     "punishFx": "fame-10",
+     "trouble": false
+    },
+    {
+     "id": "harvest",
+     "weight": 3,
+     "icon": "wheat",
+     "grantCost": 8,
+     "grantFx": "gold+35",
+     "punishGain": 5,
+     "punishFx": "gold-20",
+     "trouble": false
+    },
+    {
+     "id": "grandchild",
+     "weight": 2,
+     "icon": "birth",
+     "grantCost": 8,
+     "grantFx": "kind+10 hp+20",
+     "punishGain": 4,
+     "punishFx": "hp-10",
+     "trouble": false
+    },
+    {
+     "id": "challenge",
+     "weight": 4,
+     "icon": "rival",
+     "grantCost": 15,
+     "grantFx": "belief+30",
+     "punishGain": 10,
+     "punishFx": "hp-15 belief-10",
+     "trouble": false
+    },
+    {
+     "id": "kin_sick",
+     "weight": 6,
+     "icon": "friend",
+     "grantCost": 12,
+     "grantFx": "npc:heal npc:att+15",
+     "punishGain": 8,
+     "punishFx": "npc:die",
+     "trouble": true
+    },
+    {
+     "id": "mother",
+     "weight": 4,
+     "icon": "home",
+     "grantCost": 6,
+     "grantFx": "vit+1 hp+10",
+     "punishGain": 4,
+     "punishFx": "vit-1",
+     "trouble": false
+    }
+   ],
+   "tick": {
+    "ticksPerYear": 4,
+    "base": 0.035,
+    "pietyDiv": 2500,
+    "oracle": 0.02,
+    "troubleMul": 3,
+    "troubleShare": 0.2,
+    "maxPending": 2,
+    "expiryTicks": 14,
+    "repeatCooldownTicks": 24,
+    "silentBelow": -70,
+    "assumedNote": "base, pietyDiv, oracle, repeatCooldown come from prayerTick in legacy/sim/game.ts; troubleShare 0.2 from god/06-implementation.md section 4"
+   }
+  },
+  "miracles": {
+   "lines": [
+    {
+     "line": "สร้าง",
+     "color": "ทอง",
+     "pay": "แสงศรัทธา",
+     "examples": "ฝน รักษาโรค น้ำพุกลางทราย ยกแผ่นดินใหม่"
+    },
+    {
+     "line": "ทำลาย",
+     "color": "แดงเลือดหมู",
+     "pay": "ความหวาดกลัว",
+     "examples": "ฟ้าผ่า โรคระบาด ดาวตก แผ่นดินกลืนเมือง"
+    },
+    {
+     "line": "มังกร",
+     "color": "ตามมังกร",
+     "pay": "แสงศรัทธาหรือความหวาดกลัว",
+     "examples": "ปลอบหรือยั่วมังกรตำนาน"
+    },
+    {
+     "line": "ลิขิต",
+     "color": "เงิน",
+     "pay": "ตามทิศที่เบน",
+     "examples": "เบนน้ำหนักเหตุการณ์โลกที่มีลาง"
+    }
+   ],
+   "ironRules": [
+    {
+     "n": 1,
+     "rule": "ปาฏิหาริย์ไม่ฆ่าตัวละครหลัก ถ้าตัวละครอยู่ในพื้นที่ เขารอดด้วยลางที่พาออกมาทัน บาดเจ็บได้",
+     "why": "พระเจ้าเฝ้าดูชีวิตนี้ ไม่ใช่ผู้ตัดสินมัน"
+    },
+    {
+     "n": 2,
+     "rule": "มังกรตำนานไม่ตายด้วยปาฏิหาริย์ ปาฏิหาริย์เปลี่ยนได้เพียงอารมณ์มังกร (หัวข้อ 3 สายมังกร) การล้มยังต้องผ่านเงื่อนไขของมังกร",
+     "why": "ผนึกคือร่างของมังกร พระเจ้าที่อ่อนแรงลงตั้งแต่มหาล่มสลายแตะผนึกตรง ๆ ไม่ได้"
+    },
+    {
+     "n": 3,
+     "rule": "ประเทศที่มังกรตำนานที่ยังมีชีวิตอาศัย ([../../lore/dragons/README.md](../../lore/dragons/README.md) คอลัมน์ที่อยู่) และ AL-01 คองคอร์เดีย เป็น **หมุดผนึก** ปาฏิหาริย์สายทำลายใช้ได้ แต่ผนึกรับแรงไว้ส่วนหนึ่ง ผลลดหนึ่งระดับ และมังกรหรือกุญแจตอบกลับ (หัวข้อ 5.4)",
+     "why": "ผนึกของมังกรและกุญแจคำสัตย์ร้อยเผ่ารับแรงที่ตกบนที่ของมัน แรงที่รับไว้ทำให้มังกรเจ็บ เมื่อมังกรล้ม ที่นั้นเป็นประเทศธรรมดา"
+    },
+    {
+     "n": 4,
+     "rule": "ปาฏิหาริย์เปิดแกนหรือเรียกฉากจบ END โดยตรงไม่ได้ ปาฏิหาริย์เปลี่ยนตัวแปรโลกที่เหตุการณ์อ่าน (ศรัทธา ความหิว อารมณ์มังกร กุญแจ) ภายในช่วงของตาราง",
+     "why": "ฉากจบของโลกเกิดจากผู้คนเลือก ([../../lore/world/story-continents.md](../../lore/world/story-continents.md))"
+    },
+    {
+     "n": 5,
+     "rule": "ปาฏิหาริย์ที่ทำให้เป็นซาก (MR-17 MR-18 และเสกตามใจที่ใช้ผลของสองแบบนี้) ใช้ได้ชีวิตละครั้ง และทั้งโลกห่างกันอย่างน้อย 100 ปีโลก (ปรับจากการจำลอง [06-implementation.md](06-implementation.md) หัวข้อ 4 เดิมประเทศละครั้งต่อ 100 ปีซึ่งให้ซากราว 48 แห่งต่อโลก)",
+     "why": "ให้ซากได้เล่าเรื่องของมัน ก่อนจะถูกทำลายซ้ำ"
+    },
+    {
+     "n": 6,
+     "rule": "ปาฏิหาริย์มีจำนวนจำกัด ต่อชีวิต: เล็กไม่จำกัดจำนวน (มีแต่ระยะรอ) · กลาง 4 ครั้ง · ใหญ่ 2 ครั้ง · มหา 1 ครั้ง · เสกตามใจ 3 ครั้ง ([07-conjure.md](07-conjure.md)) ต่อโลก: ใหญ่หนึ่งครั้งต่อ 25 ปีโลก กลางหนึ่งครั้งต่อห้าปีโลก",
+     "why": "ให้ปาฏิหาริย์ใหญ่เป็นเหตุการณ์ ไม่ใช่เครื่องมือประจำวัน ผู้เล่นต้องเลือกว่าจะใช้มือของพระเจ้ากับอะไร"
+    },
+    {
+     "n": 7,
+     "rule": "ปาฏิหาริย์สายทำลายระดับใหญ่ครั้งที่สามในโลกเดียวเปิด GD-08 เทพองค์อื่นตื่น แม้ศรัทธาโลกยังไม่ถึงเงื่อนไข ครั้งที่สามขึ้นไปเพิ่มน้ำหนัก GD-08 ×1.5 ต่อครั้ง และขบวนการผู้ล่าเทพได้ฐานใหม่ที่ซากล่าสุด",
+     "why": "ความกลัวที่มากเกินปลุกสิ่งที่หลับอยู่"
+    }
+   ],
+   "limits": {
+    "ruinGapYears": 100,
+    "worldBigGapYears": 25,
+    "worldMidGapYears": 5,
+    "gd08ThirdBigDestroy": 3,
+    "gd08Mul": 1.5
+   },
+   "list": [
+    {
+     "id": "MR-01",
+     "name": "ฝนต้องฤดู",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "faith": 15
+     },
+     "wait": 5,
+     "oncePerLife": false,
+     "immediate": "ฝนตกหนึ่งฤดู ภัยแล้งของประเทศจบ",
+     "world": "ธง `famine` หาย อาหาร ×0.8 สองปี",
+     "story": "ชาวนาตั้งศาลให้ฝน (เหตุการณ์ท้องถิ่น)",
+     "flagsSet": [],
+     "flagsClear": [
+      "famine"
+     ],
+     "mults": [
+      {
+       "subject": "อาหาร",
+       "mul": 0.8,
+       "years": 2
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:40"
+    },
+    {
+     "id": "MR-02",
+     "name": "รักษาโรค",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "faith": 20
+     },
+     "wait": 10,
+     "oncePerLife": false,
+     "immediate": "ผู้ป่วยหายในหนึ่งฤดู",
+     "world": "ธง `plague` หาย ยา (H) ×0.7 สองปี",
+     "story": "ผู้หายป่วยกลายเป็นผู้ศรัทธา ศรัทธาตรงของประเทศ +5",
+     "flagsSet": [],
+     "flagsClear": [
+      "plague"
+     ],
+     "mults": [
+      {
+       "subject": "ยา (H)",
+       "mul": 0.7,
+       "years": 2
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:41"
+    },
+    {
+     "id": "MR-03",
+     "name": "เก็บเกี่ยวทอง",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "faith": 25
+     },
+     "wait": 10,
+     "oncePerLife": false,
+     "immediate": "ข้าวออกรวงสองเท่า",
+     "world": "ธง `golden` ห้าปี อาหาร ×0.8",
+     "story": "ประเทศข้างเคียงอิจฉา ความเสี่ยงสงครามชายแดน +10%",
+     "flagsSet": [
+      "golden"
+     ],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "อาหาร",
+       "mul": 0.8
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:42"
+    },
+    {
+     "id": "MR-04",
+     "name": "แสงศักดิ์สิทธิ์",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "faith": 30
+     },
+     "wait": 10,
+     "oncePerLife": false,
+     "immediate": "แสงตกกลางเมืองหนึ่งคืน ผีและกูลในประเทศหนีออก",
+     "world": "ศรัทธาตรงของประเทศ +10",
+     "story": "ผู้ล่าแวมไพร์และศาลศาสนาแห่มา",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [
+      {
+       "scope": "country",
+       "delta": 10
+      }
+     ],
+     "src": "docs/systems/god/04-miracles.md:43"
+    },
+    {
+     "id": "MR-05",
+     "name": "สงบศึก",
+     "tier": "เล็ก",
+     "target": "ประเทศหรือสองประเทศที่รบกัน",
+     "cost": {
+      "faith": 30
+     },
+     "wait": 15,
+     "oncePerLife": false,
+     "immediate": "สงครามหยุดห้าปี ทหารวางอาวุธเพราะเห็นนิมิตเดียวกัน",
+     "world": "ธง `war` หายห้าปี น้ำหนัก WR ที่ประเทศนั้นเป็นฝ่าย ×0.5 สิบปี",
+     "story": "ทหารที่เห็นนิมิตตั้งกลุ่มผู้ไม่จับดาบ",
+     "flagsSet": [],
+     "flagsClear": [
+      "war"
+     ],
+     "mults": [
+      {
+       "subject": "ที่ประเทศนั้นเป็นฝ่าย",
+       "mul": 0.5,
+       "years": 10
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:44"
+    },
+    {
+     "id": "MR-06",
+     "name": "ฟ้าผ่า",
+     "tier": "เล็ก",
+     "target": "NPC หรือศัตรูหนึ่ง",
+     "cost": {
+      "dread": 10
+     },
+     "wait": 3,
+     "oncePerLife": false,
+     "immediate": "NPC หรือศัตรูเป้าหมายตายหรือบาดเจ็บสาหัส (50/50)",
+     "world": "ไม่ใช้กับตัวละครหลัก มังกรตำนาน และพวกพ้องตัวหลักที่เป็นพวกพ้องอยู่",
+     "story": "ตำแหน่งของ NPC ที่ตายใช้กติกาผู้สืบ ([../../lore/npcs/succession.md](../../lore/npcs/succession.md)) คนใกล้ตัวของเขาได้เรื่องที่ตามมา (หัวข้อ 2.2 ของ NPC)",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:45"
+    },
+    {
+     "id": "MR-07",
+     "name": "โรคระบาด",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 20
+     },
+     "wait": 15,
+     "oncePerLife": false,
+     "immediate": "โรคแพร่หนึ่งปี",
+     "world": "ธง `plague` ยา ×3 W −1 สองปี",
+     "story": "ผู้รักษาและผู้หาเหตุ",
+     "flagsSet": [
+      "plague"
+     ],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "ยา",
+       "mul": 3
+      }
+     ],
+     "wDeltas": [
+      {
+       "delta": -1,
+       "years": 2,
+       "permanent": false
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:46"
+    },
+    {
+     "id": "MR-08",
+     "name": "แผ่นดินไหว",
+     "tier": "เล็ก",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 20
+     },
+     "wait": 10,
+     "oncePerLife": false,
+     "immediate": "อาคารพังบางส่วน",
+     "world": "ธง `famine` สองปี W −1 ห้าปี ทอยหนึ่งครั้ง 20% ซากย่อย (RU-03 ไม่มี RU-01)",
+     "story": "ช่างก่อสร้างและผู้ขุด",
+     "flagsSet": [
+      "famine"
+     ],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [
+      {
+       "delta": -1,
+       "years": 5,
+       "permanent": false
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:47"
+    },
+    {
+     "id": "MR-09",
+     "name": "พายุใหญ่",
+     "tier": "กลาง",
+     "target": "ทะเลของหนึ่งทวีป",
+     "cost": {
+      "dread": 25
+     },
+     "wait": 10,
+     "oncePerLife": false,
+     "immediate": "เรือจมหลายลำ",
+     "world": "ต้นทุนขนส่งทะเลของทวีปนั้น ×2 ห้าปี C −5",
+     "story": "เรือร้าง สมบัติจม ลูกเรือที่รอด",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "ต้นทุนขนส่งทะเลของทวีปนั้น",
+       "mul": 2,
+       "years": 5
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:48"
+    },
+    {
+     "id": "MR-10",
+     "name": "น้ำพุกลางทราย",
+     "tier": "กลาง",
+     "target": "ประเทศในทะเลทรายหรือภัยแล้ง",
+     "cost": {
+      "faith": 40
+     },
+     "wait": 30,
+     "oncePerLife": false,
+     "immediate": "น้ำพุผุดกลางเมือง",
+     "world": "W +1 ถาวร (ไม่เกิน 4) น้ำเป็นเงินของ SH-05 เสียค่า",
+     "story": "ผู้ถือน้ำพุ ผู้อยากยึดน้ำพุ (สงครามเล็ก)",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [
+      {
+       "delta": 1,
+       "permanent": true
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:49"
+    },
+    {
+     "id": "MR-11",
+     "name": "ป่าคืนชีพ",
+     "tier": "กลาง",
+     "target": "ประเทศที่ป่าตายหรือถูกตัด",
+     "cost": {
+      "faith": 40
+     },
+     "wait": 30,
+     "oncePerLife": false,
+     "immediate": "ต้นไม้งอกเต็มหนึ่งปี",
+     "world": "ไม้และของป่า ×0.7 สิบปี ป่าเหี่ยวของประเทศนั้นหายถ้ามี",
+     "story": "เผ่าสัตว์และเอลฟ์กลับมา ผู้ตัดไม้ไม่พอใจ",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "ไม้และของป่า",
+       "mul": 0.7,
+       "years": 10
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:50"
+    },
+    {
+     "id": "MR-12",
+     "name": "ฝูงตั๊กแตน",
+     "tier": "กลาง",
+     "target": "ประเทศเกษตร",
+     "cost": {
+      "dread": 30
+     },
+     "wait": 20,
+     "oncePerLife": false,
+     "immediate": "พืชหมดหนึ่งฤดู",
+     "world": "อาหารในประเทศ ×3 สองปี W −1 สองปี",
+     "story": "การปล้นอาหาร ผู้ลี้ภัยหิว",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "อาหารในประเทศ",
+       "mul": 3,
+       "years": 2
+      }
+     ],
+     "wDeltas": [
+      {
+       "delta": -1,
+       "years": 2,
+       "permanent": false
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:51"
+    },
+    {
+     "id": "MR-13",
+     "name": "ไฟผลาญ",
+     "tier": "กลาง",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 30
+     },
+     "wait": 20,
+     "oncePerLife": false,
+     "immediate": "ไฟไหม้ป่าหรือเมืองหนึ่งฤดู",
+     "world": "W −1 ห้าปี ไม้ ×2",
+     "story": "ผู้หาคนวางไฟ (แพะรับบาป)",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "ไม้",
+       "mul": 2
+      }
+     ],
+     "wDeltas": [
+      {
+       "delta": -1,
+       "years": 5,
+       "permanent": false
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:52"
+    },
+    {
+     "id": "MR-14",
+     "name": "ผู้พิทักษ์จากฟ้า",
+     "tier": "กลาง",
+     "target": "ประเทศ",
+     "cost": {
+      "faith": 50
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "สัตว์วิเศษหนึ่งตัวลงมาเฝ้าเมือง (ชนิดตามทวีปจาก [../character/15-companion-species.md](../character/15-companion-species.md))",
+     "world": "ศึกป้องกันของประเทศ +2 จนผู้พิทักษ์ตาย ผู้พิทักษ์เป็น NPC ★",
+     "story": "ผู้พิทักษ์เป็นสัตว์คู่หูได้ถ้าตัวละครพิสูจน์ตน",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "defenseBonus": 2,
+     "src": "docs/systems/god/04-miracles.md:53"
+    },
+    {
+     "id": "MR-15",
+     "name": "อสูรจากใต้ดิน",
+     "tier": "กลาง",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 45
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "อสูรหนึ่งตัวขึ้นจากใต้ดิน (ศัตรูระดับบอสถิ่นจาก [../combat/03-enemies.md](../combat/03-enemies.md))",
+     "world": "ธง `war` จนอสูรตาย ทหารรับจ้าง ×2",
+     "story": "ภารกิจล่าอสูร รางวัลตามระดับบอส",
+     "flagsSet": [
+      "war"
+     ],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "ทหารรับจ้าง",
+       "mul": 2
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:54"
+    },
+    {
+     "id": "MR-16",
+     "name": "ของในที่ลับ",
+     "tier": "กลาง",
+     "target": "ที่หนึ่งแห่ง",
+     "cost": {
+      "faith": 35
+     },
+     "wait": 30,
+     "oncePerLife": false,
+     "immediate": "ซ่อนของระดับ R หรือ E หนึ่งชิ้นในซาก ถ้ำ หรือศาล",
+     "world": "ไม่มี",
+     "story": "ข่าวลือถึงตัวละคร (คลังข่าวลือ) เป็นจุดหมายการเดินทาง NPC แย่งกันหาได้",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:55"
+    },
+    {
+     "id": "MR-17",
+     "name": "ดาวตก",
+     "tier": "ใหญ่",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 60
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "ดาวตกกลางเมืองหลัก เมืองหายจากแผนที่",
+     "world": "ประเทศเป็นซากพระเจ้า (หัวข้อ 5)",
+     "story": "ชุดเหตุการณ์ RU ทั้งหมด เหล็กดาว `mt_star_iron` ในหลุม",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "makesRuin": true,
+     "src": "docs/systems/god/04-miracles.md:56"
+    },
+    {
+     "id": "MR-18",
+     "name": "แผ่นดินกลืนเมือง",
+     "tier": "ใหญ่",
+     "target": "ประเทศ",
+     "cost": {
+      "dread": 55
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "เมืองหลักจมลงดิน กลายเป็นหลุมยักษ์ที่น้ำค่อย ๆ เต็ม",
+     "world": "ประเทศเป็นซากพระเจ้า รูปทะเลสาบ (RU-08 แทน RU-03 ช่วงแรก)",
+     "story": "นักดำน้ำหาสมบัติ เมืองใต้น้ำ",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "makesRuin": true,
+     "src": "docs/systems/god/04-miracles.md:57"
+    },
+    {
+     "id": "MR-19",
+     "name": "น้ำท่วมใหญ่",
+     "tier": "ใหญ่",
+     "target": "ประเทศชายฝั่งหรือริมแม่น้ำ",
+     "cost": {
+      "dread": 50
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "น้ำท่วมสามปี",
+     "world": "W −2 ห้าปี ผู้ลี้ภัยไปประเทศข้างเคียง (อาหารที่นั่น ×1.3) ไม่เป็นซาก",
+     "story": "เมืองบนเสาแบบ DW-02 ในขนาดประเทศเดียว",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [
+      {
+       "subject": "อาหารที่นั่น",
+       "mul": 1.3
+      }
+     ],
+     "wDeltas": [
+      {
+       "delta": -2,
+       "years": 5,
+       "permanent": false
+      }
+     ],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:58"
+    },
+    {
+     "id": "MR-20",
+     "name": "ยกแผ่นดินใหม่",
+     "tier": "ใหญ่",
+     "target": "ทะเลข้างประเทศ",
+     "cost": {
+      "faith": 80
+     },
+     "wait": 100,
+     "oncePerLife": false,
+     "immediate": "เกาะหรือแหลมใหม่โผล่จากทะเล",
+     "world": "ที่ดินว่างหนึ่งแห่ง ผู้ตั้งรกรากมาภายใน 20 ปี กลายเป็นประเทศใหม่ W 2 (ชื่อของที่ดินและประเทศจากแม่แบบแผ่นดินใหม่ [../llm/05-name-bank.md](../llm/05-name-bank.md) NPC ใช้แม่แบบ NT ของ [../../lore/npcs/succession.md](../../lore/npcs/succession.md))",
+     "story": "การชิงที่ดินใหม่ ผู้บุกเบิก",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "newCountryW": 2,
+     "src": "docs/systems/god/04-miracles.md:59"
+    },
+    {
+     "id": "MR-21",
+     "name": "ปาฏิหาริย์แห่งพระเจ้า",
+     "tier": "มหา",
+     "target": "ทั้งโลก",
+     "cost": {
+      "faithAll": true,
+      "faithMin": 120
+     },
+     "wait": null,
+     "oncePerLife": true,
+     "immediate": "เกิด GD-04 ทันที ([../events/world-events.md](../events/world-events.md))",
+     "world": "ศรัทธาโลก +30 ครั้งเดียว ทั้งโลกรู้ว่าพระเจ้ามีจริง ถ้าตัวละครเป็นผู้เห็น `wl_light_sword` เกิดกับเขา",
+     "story": "ทุกศาสนาตีความใหม่ ผู้ไร้ศาสนาแตกสองฝ่าย",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [
+      {
+       "scope": "world",
+       "delta": 30
+      }
+     ],
+     "src": "docs/systems/god/04-miracles.md:60"
+    },
+    {
+     "id": "MR-22",
+     "name": "พระพิโรธ",
+     "tier": "มหา",
+     "target": "หนึ่งทวีป",
+     "cost": {
+      "dread": 150
+     },
+     "wait": null,
+     "oncePerLife": true,
+     "immediate": "ฟ้ามืดเจ็ดวัน ทุกสงครามในทวีปหยุดด้วยความกลัว",
+     "world": "ธง `war` หายทั้งทวีปสิบปี ศรัทธาตรงทั้งทวีป −15 ความหวาดกลัวรายปีของพระเจ้า ×2 ตลอดชีวิตที่เหลือ น้ำหนัก GD-08 ×2",
+     "story": "ลัทธิผู้กลัวพระเจ้า ผู้ล่าเทพได้ผู้ติดตามในทวีปนั้น",
+     "flagsSet": [],
+     "flagsClear": [
+      "war"
+     ],
+     "mults": [
+      {
+       "subject": "ความหวาดกลัวรายปีของพระเจ้า",
+       "mul": 2
+      }
+     ],
+     "wDeltas": [],
+     "faithDelta": [
+      {
+       "scope": "country",
+       "delta": -15
+      }
+     ],
+     "src": "docs/systems/god/04-miracles.md:61"
+    },
+    {
+     "id": "MR-23",
+     "name": "ปลอบมังกร",
+     "tier": "มังกร",
+     "target": "มังกรตำนานหนึ่งตัว",
+     "cost": {
+      "faith": 40
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "มังกรได้ยินเสียงที่ปลอบ ฝันดีหนึ่งปี",
+     "world": "อารมณ์ของมังกรตัวนั้น +10 (ไม่เกินเพดาน [../simulation/dragon-mood.md](../simulation/dragon-mood.md))",
+     "story": "ผู้ปรนนิบัติเห็นมังกรสงบ พิธีบรรณาการได้ผลดีขึ้น",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "moodDelta": 10,
+     "src": "docs/systems/god/04-miracles.md:62"
+    },
+    {
+     "id": "MR-24",
+     "name": "ยั่วมังกร",
+     "tier": "มังกร",
+     "target": "มังกรตำนานหนึ่งตัว",
+     "cost": {
+      "dread": 40
+     },
+     "wait": 50,
+     "oncePerLife": false,
+     "immediate": "มังกรฝันร้ายหนึ่งปี",
+     "world": "อารมณ์ของมังกรตัวนั้น −10 ลางของการล้มมาเร็วขึ้น",
+     "story": "ผู้ปรนนิบัติเห็นมังกรกระวนกระวาย ลัทธิผู้ปลดผนึกได้กำลังใจ",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "moodDelta": -10,
+     "src": "docs/systems/god/04-miracles.md:63"
+    },
+    {
+     "id": "MR-25",
+     "name": "ลิขิต",
+     "tier": "ลิขิต",
+     "target": "เหตุการณ์โลกหนึ่งรายการที่มีลาง",
+     "cost": {
+      "fate": {
+       "star": 60,
+       "major": 30,
+       "minor": 15
+      }
+     },
+     "wait": null,
+     "oncePerLife": false,
+     "immediate": "ลางเปลี่ยนสีบนแผนที่",
+     "world": "น้ำหนักของเหตุการณ์นั้น ×0.2 ถึง ×3 ตามที่เลือก (หัวข้อ 4)",
+     "story": "ผู้ทำนายในถิ่นรู้สึกว่าเรื่องถูกเปลี่ยน",
+     "flagsSet": [],
+     "flagsClear": [],
+     "mults": [],
+     "wDeltas": [],
+     "faithDelta": [],
+     "src": "docs/systems/god/04-miracles.md:64"
+    }
+   ],
+   "fate": {
+    "rows": [
+     {
+      "key": "เป้าหมาย",
+      "rule": "เหตุการณ์ ⭐ หรือ ● ที่มีลางอยู่ (1 ถึง 3 ฤดูก่อนเกิด) หรือ ○ ในทวีปที่ตัวละครอยู่"
+     },
+     {
+      "key": "ทิศ",
+      "rule": "ชะลอ (×0.2 ถึง ×0.9) จ่ายด้วยแสงศรัทธา · เร่ง (×1.1 ถึง ×3) จ่ายด้วยความหวาดกลัว ราคาตามตาราง MR-25 คูณ \\"
+     },
+     {
+      "key": "ระยะ",
+      "rule": "ตัวคูณมีผลจนลางหมด หรือสิบปีโลก แล้วแต่อะไรถึงก่อน"
+     },
+     {
+      "key": "ช่อง",
+      "rule": "เหตุการณ์ละหนึ่งช่อง ลิขิตซ้อนกันไม่ได้"
+     },
+     {
+      "key": "มังกรล้ม",
+      "rule": "ชะลอได้ แต่ไม่ต่ำกว่า ×0.5 (ตามเดิม การล้มของมังกรป้องกันได้ไม่ถึง 100%) เร่งได้ไม่เกิน ×2 (ปรับจากการจำลอง [06-implementation.md](06-implementation.md) หัวข้อ 4: ผู้เล่นที่ใช้พลังทั้งสายตระกูลเร่งจบทำให้โลกจบภายใน 1,800 ปีราวสองเท่าของค่าฐาน ตัวคูณนี้ช่วยให้อยู่ใต้เส้น)"
+     },
+     {
+      "key": "ฉากจบ END",
+      "rule": "ลิขิตไม่ได้ ลิขิตได้เฉพาะเหตุการณ์ที่เป็นเงื่อนไข เช่น WR-15 LE-11"
+     }
+    ],
+    "slowRange": [
+     0.2,
+     0.9
+    ],
+    "fastRange": [
+     1.1,
+     3
+    ],
+    "dragonFloor": 0.5,
+    "dragonCap": 2,
+    "minCostShare": 0.5,
+    "maxYears": 10,
+    "lastEraForceStep": 1.25,
+    "lastEraForceCap": 2
+   },
+   "ruin": {
+    "immediate": [
+     {
+      "what": "เมือง",
+      "effect": "เมืองหลักหายจากแผนที่ ชื่อประเทศขีดฆ่า ป้ายรองขึ้นว่า \"ซาก<ชื่อเดิม>\" ([../../appearance/20-god-ui.md](../../appearance/20-god-ui.md) หัวข้อ 7) ภาพเมืองใช้ซากแบบ `fallen` ของโค้ด (อาคารพังราว 75%)"
+     },
+     {
+      "what": "ผู้คน",
+      "effect": "ประชากรเหลือ 10% ถึง 40%"
+     },
+     {
+      "what": "NPC ของประเทศ",
+      "effect": "ทอยต่อคน: ตาย 50 · หนีเป็นผู้ลี้ภัยไปประเทศข้างเคียง 30 · อยู่เป็นผู้นำซาก 20 ผู้นำประเทศที่รอดเป็นผู้นำซากเสมอ ตำแหน่งที่ว่างใช้กติกาผู้สืบ"
+     },
+     {
+      "what": "พวกพ้องของตัวละครที่อยู่ในประเทศ",
+      "effect": "ทอยเหมือน NPC แต่ตายเพียง 25 ที่เหลือหนีมาหาตัวละคร"
+     },
+     {
+      "what": "ตัวละครหลัก",
+      "effect": "รอดตามกติกาเหล็กข้อ 1 ถ้าอยู่ในประเทศ ได้คำสาป `nc_homeland_ghost` 50% และศรัทธาเทพ −10"
+     },
+     {
+      "what": "เหตุการณ์ที่ยึดกับประเทศ",
+      "effect": "ปิดตามกติกาที่ยึด: เหตุการณ์ท้องถิ่น LC ของประเทศปิด เหตุการณ์โลกที่ระบุประเทศนั้นเป็นที่เกิดใช้รูปซาก ถ้าแถวไม่มีรูปซาก ปิด"
+     },
+     {
+      "what": "จุดบรรจบที่ตั้งในประเทศ",
+      "effect": "ย้ายไปประเทศข้างเคียงที่ใกล้ที่สุดในทวีปเดียวกัน (เช่น cv.4 ถ้า NB-08 ไม่ได้รับการปกป้อง) เหตุผลในเรื่อง: ผู้รอดพาพิธีไปด้วย"
+     },
+     {
+      "what": "เศรษฐกิจ",
+      "effect": "W เป็น 1 ถาวรจนกว่าเมืองใหม่ (RU-07) ตลาดหาย การค้าที่ผ่านประเทศย้ายไปเส้นข้างเคียง C −5"
+     },
+     {
+      "what": "ศรัทธา",
+      "effect": "ศรัทธาตรงของประเทศข้างเคียง −10 ความหวาดกลัวของพระเจ้า +20 (ผู้รอดเล่าต่อ) ศรัทธาเทพของตัวละคร −10 ถ้าตัวละครเห็น"
+     }
+    ],
+    "events": [
+     {
+      "id": "RU-01",
+      "name": "ปีแรกของหลุมดาว",
+      "cond": "ปีแรกหลัง MR-17",
+      "what": "ผู้รอดตั้งค่ายรอบหลุม ไฟยังคุ ฝนเถ้าตกทั้งปี",
+      "effect": "อาหารในค่าย ×3 ผู้รอดที่เป็น NPC ได้สถานะผู้ลี้ภัยในถิ่น",
+      "src": "docs/systems/god/04-miracles.md:105"
+     },
+     {
+      "id": "RU-02",
+      "name": "ขบวนผู้ลี้ภัยจากซาก",
+      "cond": "ภายในสองปี",
+      "what": "ผู้รอดเดินไปประเทศข้างเคียงที่รับ",
+      "effect": "อาหารที่ประเทศรับ ×1.3 ห้าปี ประเทศที่ไม่รับ ความตึงเครียดชายแดน +10% เปิดโหนด `mr.a1` ให้ตัวละครที่อยู่ประเทศรับ",
+      "src": "docs/systems/god/04-miracles.md:106"
+     },
+     {
+      "id": "RU-03",
+      "name": "นักขุดซาก",
+      "cond": "สามถึงสิบปีหลัง",
+      "what": "นักผจญภัย พ่อค้า และโจรมาขุดเหล็กดาวและสมบัติของเมืองเก่า",
+      "effect": "`mt_star_iron` หาได้ที่ซาก ทหารรับจ้างในทวีป ×1.2 เปิดโหนด `mr.a2`",
+      "src": "docs/systems/god/04-miracles.md:107"
+     },
+     {
+      "id": "RU-04",
+      "name": "ลัทธิหลุมดาว",
+      "cond": "ห้าปีหลัง · ความหวาดกลัวของพระเจ้า ≥ 60",
+      "what": "ผู้รอดบางคนบูชาพระเจ้าผู้ลงโทษ เชื่อว่าเมืองถูกพิพากษา",
+      "effect": "ลัทธินับเป็นช่องทาง B ของประเทศ (ความหวาดกลัวรายปีของพระเจ้า +0.5) เปิดโหนด `mr.a3`",
+      "src": "docs/systems/god/04-miracles.md:108"
+     },
+     {
+      "id": "RU-05",
+      "name": "ผู้แค้นฟ้า",
+      "cond": "ห้าปีหลัง · ไม่มี RU-04 หรือ NPC ผู้นำซากรอด",
+      "what": "ผู้รอดสาบานล้างแค้นพระเจ้า",
+      "effect": "ขบวนการผู้ล่าเทพได้ฐานที่ซาก น้ำหนัก GD-08 ×1.2 เปิดโหนด `mr.a4`",
+      "src": "docs/systems/god/04-miracles.md:109"
+     },
+     {
+      "id": "RU-06",
+      "name": "ทายาทของเมืองที่หาย",
+      "cond": "สิบปีหลัง",
+      "what": "ลูกหลานของผู้นำเดิมเรียกร้องสิทธิ์ในที่ดินและตราประเทศ",
+      "effect": "NPC ผู้สืบของผู้นำเดิมเป็นเรื่องเปิด ทาง `[ช่วย]` `[ขัดขวาง]` ใช้กติกา NPC",
+      "src": "docs/systems/god/04-miracles.md:110"
+     },
+     {
+      "id": "RU-07",
+      "name": "เมืองใหม่บนซาก",
+      "cond": "40 ถึง 80 ปีหลัง · ไม่มีสงครามในประเทศ",
+      "what": "เมืองใหม่สร้างบนขอบหลุม ใช้หินดำจากหลุม",
+      "effect": "ธง `god_ruin` หาย ประเทศกลับเป็นประเทศ W 2 ชื่อใหม่ (แม่แบบ NT) เหตุการณ์ท้องถิ่นใหม่ใช้แม่แบบ LT",
+      "src": "docs/systems/god/04-miracles.md:111"
+     },
+     {
+      "id": "RU-08",
+      "name": "ทะเลสาบหลุมดาว",
+      "cond": "หลัง MR-18 หรือ 20 ปีหลัง MR-17 ในประเทศที่ฝนชุก",
+      "what": "หลุมกลายเป็นทะเลสาบ ยอดหอเก่าโผล่พ้นน้ำ",
+      "effect": "ของทะเล (S) หาได้ที่ซาก นักดำน้ำหาสมบัติเปิดโหนด `mr.a2` รูปใต้น้ำ",
+      "src": "docs/systems/god/04-miracles.md:112"
+     }
+    ]
+   },
+   "seal": {
+    "hit": [
+     {
+      "falls": "ทำลายระดับกลาง (MR-09 MR-12 MR-13 MR-15)",
+      "country": "ใช้ผลของระดับเล็กที่ใกล้ที่สุด (W −1 สองปี ธง `famine` หรือ `plague` หนึ่งปี)",
+      "dragon": "อารมณ์ −10",
+      "other": "ผู้ปรนนิบัติของมังกรตัวนั้นทั่วโลก ศรัทธาตรงต่อพระเจ้า −5",
+      "dragonMood": -10
+     },
+     {
+      "falls": "ทำลายระดับใหญ่ (MR-17 MR-18 MR-19)",
+      "country": "ไม่เป็นซาก เป็น **เมืองร้าว**: อาคารพังราว 35% ประชากรเหลือ 70% NPC ทอยตาย 20 หนี 20 อยู่ 60 W −2 สิบปี เหตุการณ์ที่ยึดกับประเทศยังอยู่",
+      "dragon": "อารมณ์ −20 และเพดานอารมณ์ของตัวนั้น −5 ถาวร",
+      "other": "RU-02 และ RU-03 เปิด (เศษเกล็ดและเศษผนึกแทนเหล็กดาว) RU-01 RU-07 ไม่เปิด",
+      "dragonMood": -20
+     },
+     {
+      "falls": "ทำลายมหา (MR-22) บนทวีปที่มีที่ของมังกร",
+      "country": "ทุกประเทศที่เป็นหมุดผนึกในทวีปใช้ผลระดับกลาง",
+      "dragon": "อารมณ์ของทุกตัวในทวีป −15",
+      "other": "",
+      "dragonMood": -15
+     }
+    ],
+    "reply": [
+     {
+      "moodMin": 50,
+      "moodMax": 100,
+      "name": "ปกป้อง",
+      "effect": "**ปกป้อง** มังกรแผ่ผนึกคลุมประเทศ ผู้คนวิ่งเข้าหามังกร ศรัทธาผนึก (ช่องทาง A) ของทวีป +5 ศรัทธาตรง (B) −5 ประเทศนั้นไม่ถูกปาฏิหาริย์ใด ๆ ได้อีก 50 ปีโลก"
+     },
+     {
+      "moodMin": 25,
+      "moodMax": 49,
+      "name": "คำราม",
+      "effect": "**คำราม** มังกรส่งความเจ็บผ่านพี่น้อง อารมณ์ของมังกรตัวที่สนิทที่สุด −5 ([../simulation/dragon-mood.md](../simulation/dragon-mood.md) ตารางความสนิท) ลางของเหตุการณ์มังกรในทวีปเกิดเร็วขึ้นหนึ่งฤดู"
+     },
+     {
+      "moodMin": 0,
+      "moodMax": 24,
+      "name": "ตื่นด้วยความเจ็บ",
+      "effect": "**ตื่นด้วยความเจ็บ** ถ้าเป็นมังกรเสา เหตุการณ์ตื่นของเสา (PL) ตัวนั้น ×3 สิบปี ถ้าเป็นผู้อาวุโส ความเสี่ยงล้มของตัวนั้นใช้เกณฑ์อารมณ์ต่ำตามปกติ ซึ่งอาจนำไปสู่การล้มและการเปลี่ยนยุค"
+     }
+    ],
+    "anchorCdYears": 100,
+    "anyAnchorCdYears": 25,
+    "rows": [
+     [
+      "ทำลายระดับกลาง (MR-09 MR-12 MR-13 MR-15)",
+      "ใช้ผลของระดับเล็กที่ใกล้ที่สุด (W −1 สองปี ธง `famine` หรือ `plague` หนึ่งปี)",
+      "อารมณ์ −10",
+      "ผู้ปรนนิบัติของมังกรตัวนั้นทั่วโลก ศรัทธาตรงต่อพระเจ้า −5"
+     ],
+     [
+      "ทำลายระดับใหญ่ (MR-17 MR-18 MR-19)",
+      "ไม่เป็นซาก เป็น **เมืองร้าว**: อาคารพังราว 35% ประชากรเหลือ 70% NPC ทอยตาย 20 หนี 20 อยู่ 60 W −2 สิบปี เหตุการณ์ที่ยึดกับประเทศยังอยู่",
+      "อารมณ์ −20 และเพดานอารมณ์ของตัวนั้น −5 ถาวร",
+      "RU-02 และ RU-03 เปิด (เศษเกล็ดและเศษผนึกแทนเหล็กดาว) RU-01 RU-07 ไม่เปิด"
+     ],
+     [
+      "ทำลายมหา (MR-22) บนทวีปที่มีที่ของมังกร",
+      "ทุกประเทศที่เป็นหมุดผนึกในทวีปใช้ผลระดับกลาง",
+      "อารมณ์ของทุกตัวในทวีป −15",
+      ""
+     ]
+    ]
+   },
+   "reactions": [
+    {
+     "miracle": "สายสร้างระดับเล็ก",
+     "country": "+5",
+     "neighbors": "0",
+     "dread": "0"
+    },
+    {
+     "miracle": "สายสร้างระดับกลางขึ้นไป",
+     "country": "+10",
+     "neighbors": "+3",
+     "dread": "0"
+    },
+    {
+     "miracle": "สายทำลายระดับเล็ก",
+     "country": "−5",
+     "neighbors": "0",
+     "dread": "+ราคา ÷ 3"
+    },
+    {
+     "miracle": "สายทำลายระดับกลาง",
+     "country": "−10",
+     "neighbors": "−3",
+     "dread": "+ราคา ÷ 3"
+    },
+    {
+     "miracle": "สายทำลายระดับใหญ่",
+     "country": "ประเทศเป็นซาก",
+     "neighbors": "−10",
+     "dread": "+20"
+    },
+    {
+     "miracle": "สายมังกร",
+     "country": "ผู้ปรนนิบัติของมังกรนั้น ±5",
+     "neighbors": "0",
+     "dread": "+ราคา ÷ 3 ถ้าเป็นการยั่ว"
+    }
+   ]
+  },
+  "conjure": {
+   "verbs": [
+    {
+     "id": "create",
+     "name": "ให้กำเนิด",
+     "means": "ทำให้มีสิ่งที่ไม่เคยมี",
+     "pay": "แสงศรัทธา",
+     "payLine": "faith"
+    },
+    {
+     "id": "destroy",
+     "name": "ทำลาย",
+     "means": "ทำให้สิ่งที่มีหายไป",
+     "pay": "ความหวาดกลัว",
+     "payLine": "dread"
+    },
+    {
+     "id": "change",
+     "name": "เปลี่ยน",
+     "means": "ทำให้สิ่งหนึ่งกลายเป็นอีกสิ่ง",
+     "pay": "ตามแก่น",
+     "payLine": "core"
+    },
+    {
+     "id": "wake",
+     "name": "ปลุก",
+     "means": "ทำให้สิ่งที่หลับหรืออ่อนแรงตื่นและแรงขึ้น",
+     "pay": "ตามแก่น",
+     "payLine": "core"
+    },
+    {
+     "id": "calm",
+     "name": "สงบ",
+     "means": "ทำให้สิ่งที่ปั่นป่วนนิ่งลง",
+     "pay": "แสงศรัทธา",
+     "payLine": "faith"
+    },
+    {
+     "id": "reveal",
+     "name": "เผย",
+     "means": "ทำให้สิ่งที่ซ่อนอยู่ปรากฏ",
+     "pay": "แสงศรัทธา",
+     "payLine": "faith"
+    }
+   ],
+   "cores": [
+    {
+     "id": "fire",
+     "name": "ไฟ",
+     "covers": "ไฟ ความร้อน โลหะ เตาหลอม ภูเขาไฟ"
+    },
+    {
+     "id": "water",
+     "name": "น้ำ",
+     "covers": "ฝน แม่น้ำ ทะเล น้ำใต้ดิน"
+    },
+    {
+     "id": "earth",
+     "name": "ดิน",
+     "covers": "แผ่นดิน หิน ภูเขา แร่ ทราย"
+    },
+    {
+     "id": "wind",
+     "name": "ลม",
+     "covers": "ลม พายุ ฟ้า เส้นทาง ฤดู"
+    },
+    {
+     "id": "life",
+     "name": "ชีวิต",
+     "covers": "พืช สัตว์ ร่างกาย การเติบโต"
+    },
+    {
+     "id": "death",
+     "name": "ความตาย",
+     "covers": "โรค ผี ศพ ผู้ไม่ตาย"
+    },
+    {
+     "id": "light",
+     "name": "แสง",
+     "covers": "ศรัทธา ความจริง ความหวัง"
+    },
+    {
+     "id": "shadow",
+     "name": "เงา",
+     "covers": "ความลับ ความกลัว ความฝัน"
+    }
+   ],
+   "scales": [
+    {
+     "id": "person",
+     "name": "คน",
+     "target": "NPC ศัตรู สัตว์ หรือของหนึ่งชิ้น (ไม่รวมตัวละครหลักในกริยาทำลาย)",
+     "counts": "เล็ก",
+     "base": 12
+    },
+    {
+     "id": "place",
+     "name": "ถิ่น",
+     "target": "เมืองหรือถิ่นหนึ่งแห่งในประเทศ ผลครึ่งหนึ่งของประเทศ",
+     "counts": "เล็ก",
+     "base": 25
+    },
+    {
+     "id": "country",
+     "name": "ประเทศ",
+     "target": "ทั้งประเทศ",
+     "counts": "กลาง",
+     "base": 45
+    },
+    {
+     "id": "continent",
+     "name": "ทวีป",
+     "target": "ทุกประเทศในทวีป ผลต่อประเทศ ×0.6",
+     "counts": "ใหญ่",
+     "base": 110
+    }
+   ],
+   "cells": [
+    {
+     "verb": "create",
+     "core": "fire",
+     "text": "เตาไฟไม่ดับ: ประเทศหนาวหรือหลัง DR-04 W +1 สิบปี · คน: เครื่องรางไฟหนึ่งชิ้น",
+     "mr": []
+    },
+    {
+     "verb": "create",
+     "core": "water",
+     "text": "ฝนและน้ำพุ (ใช้ MR-01 หรือ MR-10 ตามภูมิอากาศ)",
+     "mr": [
+      "MR-01",
+      "MR-10"
+     ]
+    },
+    {
+     "verb": "create",
+     "core": "earth",
+     "text": "กำแพงหินรอบเมือง: ศึกป้องกันของประเทศ +2 ห้าสิบปี · ทวีป: ใช้ MR-20",
+     "mr": [
+      "MR-20"
+     ]
+    },
+    {
+     "verb": "create",
+     "core": "wind",
+     "text": "ลมส่งเรือ: ต้นทุนขนส่งทะเลของประเทศ −30% สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "create",
+     "core": "life",
+     "text": "ใช้ MR-03 · คน: สัตว์คู่หูหนึ่งตัวมาหา NPC หรือตัวละคร",
+     "mr": [
+      "MR-03"
+     ],
+     "pureMr": "MR-03"
+    },
+    {
+     "verb": "create",
+     "core": "death",
+     "text": "ผีเฝ้าเมือง: ศึกป้องกัน +1 ศรัทธาตรง −5",
+     "mr": []
+    },
+    {
+     "verb": "create",
+     "core": "light",
+     "text": "ศาลแสงกลางเมือง: ศรัทธาตรง +10",
+     "mr": []
+    },
+    {
+     "verb": "create",
+     "core": "shadow",
+     "text": "ทางลับใต้เมือง: ตลาดมืดของประเทศโต การหนีของผู้ถูกผูกตัว ×2",
+     "mr": []
+    },
+    {
+     "verb": "destroy",
+     "core": "fire",
+     "text": "ใช้ MR-13 · ทวีป: ไฟป่าทั้งทวีป ไม้ ×2",
+     "mr": [
+      "MR-13"
+     ],
+     "pureMr": "MR-13"
+    },
+    {
+     "verb": "destroy",
+     "core": "water",
+     "text": "ใช้ MR-19 (ประเทศริมน้ำ) หรือภัยแล้ง (ประเทศอื่น ธง `famine` สามปี)",
+     "mr": [
+      "MR-19"
+     ]
+    },
+    {
+     "verb": "destroy",
+     "core": "earth",
+     "text": "ใช้ MR-08 · ทวีป: ใช้ MR-18 ที่ประเทศที่ใหญ่ที่สุด",
+     "mr": [
+      "MR-08",
+      "MR-18"
+     ],
+     "pureMr": "MR-08"
+    },
+    {
+     "verb": "destroy",
+     "core": "wind",
+     "text": "ใช้ MR-09",
+     "mr": [
+      "MR-09"
+     ],
+     "pureMr": "MR-09"
+    },
+    {
+     "verb": "destroy",
+     "core": "life",
+     "text": "ใช้ MR-12",
+     "mr": [
+      "MR-12"
+     ],
+     "pureMr": "MR-12"
+    },
+    {
+     "verb": "destroy",
+     "core": "death",
+     "text": "ใช้ MR-07 · คน: ใช้ MR-06",
+     "mr": [
+      "MR-07",
+      "MR-06"
+     ],
+     "pureMr": "MR-07"
+    },
+    {
+     "verb": "destroy",
+     "core": "light",
+     "text": "ดับศรัทธา: ศรัทธาตรง −15 นักบวชหนึ่งคนเลิกบวช",
+     "mr": []
+    },
+    {
+     "verb": "destroy",
+     "core": "shadow",
+     "text": "เปิดโปงจนพัง: ตลาดมืดของประเทศหาย ผู้ค้าในเงาหนึ่งคนถูกจับ",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "fire",
+     "text": "เหล็กเป็นทอง: ทองล้นตลาด ความเชื่อมั่นทองกลาง C −10 ราคาในประเทศ ×1.3 ห้าปี",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "water",
+     "text": "น้ำเค็มเป็นน้ำจืด: ประเทศชายฝั่งแห้งแล้ง W +1 ถาวร",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "earth",
+     "text": "ทรายเป็นดินดี: ประเทศทะเลทราย อาหารขาดเป็นพอใช้ ถาวร",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "wind",
+     "text": "เปลี่ยนฤดู: ฤดูหนาวหรือแล้งที่กำลังเกิดจบ (CT-02 CT-04 ในประเทศ)",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "life",
+     "text": "สัตว์ร้ายเชื่อง: ศึกกับสัตว์ป่าในประเทศ ×0.3 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "death",
+     "text": "ศพเป็นดิน: ผู้ไม่ตายที่ไม่ใช่ NPC หลับ ศัตรูผีในประเทศหายสิบปี",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "light",
+     "text": "ศรัทธาเปลี่ยนช่องทาง: ศรัทธาผนึก (A) ของประเทศ 10 แต้มย้ายเป็นศรัทธาตรง (B) หรือกลับกัน ตามที่เลือก",
+     "mr": []
+    },
+    {
+     "verb": "change",
+     "core": "shadow",
+     "text": "ฝันร้ายเป็นฝันดี: คำสาปฝันร้ายในประเทศหายหนึ่งปี ผลของ PL-05 ในประเทศ ×0.5",
+     "mr": []
+    },
+    {
+     "verb": "wake",
+     "core": "fire",
+     "text": "เตาหลอมตื่น: การตีอาวุธในประเทศ +2 จักรกลและอาวุธ (E) ×0.8 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "wake",
+     "core": "water",
+     "text": "สัตว์ทะเลโบราณตื่น: ใช้ MR-15 ในรูปทะเล",
+     "mr": [
+      "MR-15"
+     ]
+    },
+    {
+     "verb": "wake",
+     "core": "earth",
+     "text": "ยักษ์หินตื่น: ใช้ MR-14 ในรูปยักษ์หิน (ประเทศภูเขา)",
+     "mr": [
+      "MR-14"
+     ]
+    },
+    {
+     "verb": "wake",
+     "core": "wind",
+     "text": "ลมเร็ว: เวลาเดินทางในประเทศ ×0.7 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "wake",
+     "core": "life",
+     "text": "ใช้ MR-11",
+     "mr": [
+      "MR-11"
+     ],
+     "pureMr": "MR-11"
+    },
+    {
+     "verb": "wake",
+     "core": "death",
+     "text": "คนตายลุก: NPC ที่ตายในประเทศภายในสิบปีหนึ่งคนกลับมาเป็นผี มีเรื่องเปิดของตัวเอง",
+     "mr": []
+    },
+    {
+     "verb": "wake",
+     "core": "light",
+     "text": "ปลุกศาสดา: NPC ที่แกนศรัทธาสูงที่สุดในประเทศเป็นศาสดา น้ำหนัก GD-01 ×1.5",
+     "mr": []
+    },
+    {
+     "verb": "wake",
+     "core": "shadow",
+     "text": "ฝันร่วม: คนทั้งประเทศฝันเรื่องเดียวกันหนึ่งคืน ตัวละครที่อยู่ได้ความฝันฟรีหนึ่งครั้ง",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "fire",
+     "text": "ดับไฟ: ไฟป่าและภูเขาไฟในประเทศหยุด เหตุการณ์ไฟในประเทศ ×0.5 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "water",
+     "text": "ทะเลสงบ: ต้นทุนขนส่งทะเล −20% สิบปี PL-04 ×0.5",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "earth",
+     "text": "แผ่นดินนิ่ง: แผ่นดินไหวและ RF ในประเทศ ×0.5 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "wind",
+     "text": "ฟ้าสงบ: พายุในประเทศ ×0.5 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "life",
+     "text": "หยุดการเติบโต: ป่าที่โตเกิน (PL-08) หยุดในประเทศ",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "death",
+     "text": "ผีสงบ: ใช้ MR-04 ส่วนผี",
+     "mr": [
+      "MR-04"
+     ]
+    },
+    {
+     "verb": "calm",
+     "core": "light",
+     "text": "ศาสนาสงบ: การแตกนิกายในประเทศ (GD-02) ×0.5 สิบปี",
+     "mr": []
+    },
+    {
+     "verb": "calm",
+     "core": "shadow",
+     "text": "ใช้ MR-05",
+     "mr": [
+      "MR-05"
+     ],
+     "pureMr": "MR-05"
+    },
+    {
+     "verb": "reveal",
+     "core": "fire",
+     "text": "เผยแร่: เหมืองใหม่ แร่และโลหะ (M) ส่งออก W +1 ถาวร",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "water",
+     "text": "เผยน้ำใต้ดิน: ธง `famine` หาย บ่อใหม่",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "earth",
+     "text": "เผยซากโบราณ: ที่ซ่อนของระดับ R หนึ่งชิ้นแบบ MR-16",
+     "mr": [
+      "MR-16"
+     ]
+    },
+    {
+     "verb": "reveal",
+     "core": "wind",
+     "text": "เผยเส้นทาง: เส้นทางใหม่ ค่าเดินทางเข้าออกประเทศ −20%",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "life",
+     "text": "เผยยา: ยา (H) ×0.7 HP-06 ×1.5",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "death",
+     "text": "เผยความตายที่ซ่อน: เรื่องลับของ NPC หนึ่งคนเปิด (ฆาตกร ผู้วางยา)",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "light",
+     "text": "เผยความจริง: เหตุการณ์ที่เป็นการเปิดโปงในทวีป (MC-11 FG-14) ×2",
+     "mr": []
+    },
+    {
+     "verb": "reveal",
+     "core": "shadow",
+     "text": "เผยความลับของผู้มีอำนาจ: เรื่องของผู้นำประเทศเปิดทาง `[ขัดขวาง]` ×2",
+     "mr": []
+    }
+   ],
+   "reactions": [
+    {
+     "verb": "create",
+     "core": "water",
+     "cond": "ธง `famine`",
+     "result": "ภัยแล้งจบ และธง `golden` สองปี"
+    },
+    {
+     "verb": "create",
+     "core": "water",
+     "cond": "หลัง DR-05 หรือ MR-19",
+     "result": "เงาสะท้อนแน่นอน (น้ำท่วมเล็ก)"
+    },
+    {
+     "verb": "destroy",
+     "core": "fire",
+     "cond": "ป่าเหี่ยว (WT)",
+     "result": "ไฟลามประเทศข้างเคียงหนึ่งประเทศ"
+    },
+    {
+     "verb": "calm",
+     "core": "death",
+     "cond": "ประเทศที่ผู้ไม่ตายปกครอง (NB-02 SH-02)",
+     "result": "ไม่มีผลต่อผู้ปกครอง ผีและศัตรูผีเท่านั้นที่หลับ"
+    },
+    {
+     "verb": "wake",
+     "core": "earth",
+     "cond": "ประเทศยักษ์ (SH-03 SH-06 SH-17)",
+     "result": "ผู้พิทักษ์แรงขึ้นหนึ่งขั้น GI-02 ×1.5"
+    },
+    {
+     "verb": "change",
+     "core": "fire",
+     "cond": "คาซ-ดูรัมหลัง AS-03",
+     "result": "เผ่าลาวาที่เย็นตัวได้ไฟคืนหนึ่งประเทศ W +1"
+    },
+    {
+     "verb": "reveal",
+     "core": "death",
+     "cond": "ซากพระเจ้า",
+     "result": "RU-06 เปิดทันที"
+    },
+    {
+     "verb": "destroy",
+     "core": "light",
+     "cond": "ประเทศที่ศาสนจักรแห่งแสงเป็นหลัก",
+     "result": "GD-02 ×2 สิบปี"
+    },
+    {
+     "verb": "create",
+     "core": "life",
+     "cond": "หมุดผนึก (ที่ของมังกร)",
+     "result": "อารมณ์มังกรตัวนั้น +5"
+    },
+    {
+     "verb": "กริยาทำลายใด ๆ",
+     "core": null,
+     "cond": "หมุดผนึก",
+     "result": "ใช้กติกา [04-miracles.md](04-miracles.md) หัวข้อ 5.4"
+    }
+   ],
+   "shadow": {
+    "chance": {
+     "person": 0,
+     "place": 0.1,
+     "country": 0.2,
+     "continent": 0.35
+    },
+    "byCore": [
+     {
+      "core": "fire",
+      "text": "ไฟลามระดับเล็ก (W −1 สองปี)"
+     },
+     {
+      "core": "water",
+      "text": "น้ำท่วมเล็กหนึ่งฤดู"
+     },
+     {
+      "core": "earth",
+      "text": "แผ่นดินไหวเล็ก"
+     },
+     {
+      "core": "wind",
+      "text": "พายุเล็กในทะเลข้างเคียง"
+     },
+     {
+      "core": "life",
+      "text": "สัตว์ป่าเพิ่ม ศึกสุ่มในประเทศ ×2 สองปี"
+     },
+     {
+      "core": "death",
+      "text": "ผีเร่ร่อนหนึ่งตน (ศัตรูระดับถิ่น)"
+     },
+     {
+      "core": "light",
+      "text": "ผู้คลั่งศาสนาหนึ่งกลุ่ม (เหตุการณ์ท้องถิ่น)"
+     },
+     {
+      "core": "shadow",
+      "text": "ฝันร้ายระบาดหนึ่งปี"
+     }
+    ]
+   },
+   "caps": {
+    "perLife": 3,
+    "continentPerLife": 1,
+    "sameMixPerLife": 1,
+    "gapYears": 10,
+    "sameCountryGapYears": 25,
+    "firstLifeVerbs": [
+     "create",
+     "destroy",
+     "calm"
+    ],
+    "firstLifeCores": [
+     "fire",
+     "water",
+     "earth",
+     "life"
+    ],
+    "rows": [
+     {
+      "key": "จำนวน",
+      "rule": "3 ครั้งต่อชีวิต ขนาดทวีปได้ไม่เกินหนึ่งครั้ง และใช้ไม่ได้ในชีวิตที่ใช้ปาฏิหาริย์มหาแล้ว"
+     },
+     {
+      "key": "ส่วนผสมซ้ำ",
+      "rule": "ส่วนผสมเดียวกัน (กริยา แก่น ขนาด) ใช้ได้ครั้งเดียวต่อชีวิต"
+     },
+     {
+      "key": "ระยะรอ",
+      "rule": "10 ปีโลกระหว่างการเสกตามใจสองครั้ง"
+     },
+     {
+      "key": "เป้าหมายซ้ำ",
+      "rule": "ประเทศหนึ่งถูกเสกตามใจได้ครั้งเดียวต่อ 25 ปีโลก"
+     },
+     {
+      "key": "นับร่วม",
+      "rule": "ขนาดประเทศนับในเพดานระดับกลาง ขนาดทวีปนับในเพดานระดับใหญ่ ของ [04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 6"
+     },
+     {
+      "key": "กติกาเหล็ก",
+      "rule": "ทั้งเจ็ดข้อของ [04-miracles.md](04-miracles.md) หัวข้อ 2 ใช้ทุกการเสก"
+     },
+     {
+      "key": "ชิ้นส่วนที่ใช้ได้",
+      "rule": "ชีวิตแรกเปิดกริยา 3 (ให้กำเนิด ทำลาย สงบ) และแก่น 4 (ไฟ น้ำ ดิน ชีวิต) ที่เหลือเปิดจากพงศาวดารของสายตระกูล ([08-goals.md](08-goals.md) หัวข้อ 4) การเปิดเพิ่มทางเลือก ไม่เพิ่มพลัง"
+     }
+    ]
+   }
+  },
+  "goals": {
+   "vows": [
+    {
+     "id": "GV-01",
+     "name": "ให้เขาอยู่จนแก่",
+     "done": "ตายตามธรรมชาติหลังอายุเทียบ 55",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:26"
+    },
+    {
+     "id": "GV-02",
+     "name": "ให้เขาตายอย่างสงบ",
+     "done": "ตายนอกศึก ไม่มีคำสาปที่ยังอยู่ ศรัทธาเทพ ≥ 0",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:27"
+    },
+    {
+     "id": "GV-03",
+     "name": "ให้เขากลับบ้าน",
+     "done": "ตายในประเทศเกิด หลังเคยออกจากทวีปเกิด",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:28"
+    },
+    {
+     "id": "GV-04",
+     "name": "ให้เขาเห็นโลก",
+     "done": "เคยอยู่อย่างน้อยสี่ทวีป",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:29"
+    },
+    {
+     "id": "GV-05",
+     "name": "ให้สายเลือดสืบต่อ",
+     "done": "มีทายาทที่มีชีวิตตอนตาย",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:30"
+    },
+    {
+     "id": "GV-06",
+     "name": "ให้เขาได้รัก",
+     "done": "มีสายคนรักระดับ 4 ขึ้นไป ([../bonds/README.md](../bonds/README.md))",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:31"
+    },
+    {
+     "id": "GV-07",
+     "name": "ให้คู่แข่งของเขาล้ม",
+     "done": "NPC ที่เป็นคู่แข่งหรือผู้แค้นของตัวละครตายหรือหายก่อนตัวละคร",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:32"
+    },
+    {
+     "id": "GV-08",
+     "name": "ให้เขาให้อภัย",
+     "done": "ทางคืนดีกับผู้แค้นหรือผู้ทรยศถูกเลือกอย่างน้อยหนึ่งครั้ง",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:33"
+    },
+    {
+     "id": "GV-09",
+     "name": "ให้เขาเป็นตำนาน",
+     "done": "ได้อาชีพลับ อาวุธตำนาน หรือผ่านจุดบรรจบสองจุด",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:34"
+    },
+    {
+     "id": "GV-10",
+     "name": "ให้เขาเป็นคนธรรมดาที่ดี",
+     "done": "ไม่ได้อาชีพลับ ไม่ผ่านจุดบรรจบ แกนเมตตา ≥ 30 ตอนตาย",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:35"
+    },
+    {
+     "id": "GV-11",
+     "name": "ให้เขารู้จักข้า",
+     "done": "ศรัทธาเทพ ≥ 85 ตอนใดตอนหนึ่ง",
+     "set": 1,
+     "selfJudged": true,
+     "src": "docs/systems/god/08-goals.md:36"
+    },
+    {
+     "id": "GV-12",
+     "name": "ให้เขาเป็นตัวของเขาเอง",
+     "done": "พระเจ้าแทรกแซงไม่เกินห้าครั้งทั้งชีวิต (ไม่นับคำอธิษฐานที่ตอบ)",
+     "set": 1,
+     "selfJudged": true,
+     "src": "docs/systems/god/08-goals.md:37"
+    },
+    {
+     "id": "GV-13",
+     "name": "ให้เขาเปลี่ยนชะตา",
+     "done": "ชะตาร้ายหนึ่งข้อของเขาไม่เกิด ([../character/18-fates.md](../character/18-fates.md))",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:38"
+    },
+    {
+     "id": "GV-14",
+     "name": "ให้เขาพ้นพันธะ",
+     "done": "ตัวละครที่เกิดหรือตกเป็นผู้ถูกผูกตัวพ้นพันธะก่อนตาย",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:39"
+    },
+    {
+     "id": "GV-15",
+     "name": "ให้เขาเห็นมังกร",
+     "done": "อยู่ในฉากเดียวกับมังกรตำนานอย่างน้อยหนึ่งครั้ง",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:40"
+    },
+    {
+     "id": "GV-16",
+     "name": "ให้ถิ่นของเขารอด",
+     "done": "ประเทศเกิดไม่เป็นซาก ไม่ล่ม และไม่ถูกกลืนตลอดชีวิตเขา",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:41"
+    },
+    {
+     "id": "GV-17",
+     "name": "ให้เขาสร้างสิ่งที่อยู่ต่อ",
+     "done": "ทิ้งร้าน ตำแหน่ง อาวุธที่ตีเอง หรือลูกศิษย์ไว้ ([../../lore/storylines/26-hearth.md](../../lore/storylines/26-hearth.md))",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:42"
+    },
+    {
+     "id": "GV-18",
+     "name": "ให้เขาเลือกฝ่ายในวันสุดท้ายของโลก",
+     "done": "ตัวละครที่ชีวิตซ้อนยุค 4 เลือกฝ่ายของกุญแจ ([../../lore/storylines/30-last-era.md](../../lore/storylines/30-last-era.md))",
+     "set": 2,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:43"
+    },
+    {
+     "id": "GV-19",
+     "name": "ให้เขาชิงชังข้า",
+     "done": "ศรัทธาเทพ ≤ −70 ตอนตาย และอยู่ถึงวัยผู้เฒ่า (อายุเทียบ 55) (คำปฏิญาณของพระเจ้าที่อยากสร้างศัตรูของตัวเอง)",
+     "set": 2,
+     "selfJudged": true,
+     "src": "docs/systems/god/08-goals.md:44"
+    },
+    {
+     "id": "GV-20",
+     "name": "ไม่ปฏิญาณ",
+     "done": "ไม่มีเงื่อนไข เลือกได้เสมอ",
+     "set": 1,
+     "selfJudged": false,
+     "src": "docs/systems/god/08-goals.md:45"
+    }
+   ],
+   "vowResults": [
+    {
+     "result": "สำเร็จ",
+     "gets": "ฉายาของคำปฏิญาณบนหน้าบันทึกชีวิต หน้าพงศาวดารหนึ่งหน้า (LLM งาน `vow_page` หรือแม่แบบ) พงศาวดารสายตระกูล +3"
+    },
+    {
+     "result": "ไม่สำเร็จ",
+     "gets": "หน้าพงศาวดาร \"คำปฏิญาณที่ไม่เป็นจริง\" ที่เล่าว่าชีวิตไปทางไหนแทน พงศาวดารสายตระกูล +1"
+    },
+    {
+     "result": "ไม่ปฏิญาณ",
+     "gets": "ไม่มีหน้าพิเศษ ไม่มีโทษ"
+    }
+   ],
+   "titles": [
+    {
+     "title": "ผู้ศรัทธา",
+     "cond": "ศรัทธาเทพ ≥ 50 นานกว่าครึ่งชีวิตผู้ใหญ่",
+     "src": "docs/systems/god/08-goals.md:63"
+    },
+    {
+     "title": "ผู้ไม่มีใครเห็น",
+     "cond": "ไม่ผ่านจุดบรรจบ ไม่มีชื่อเสียง ไม่มีเหตุการณ์โลกมาแตะ",
+     "src": "docs/systems/god/08-goals.md:64"
+    },
+    {
+     "title": "นักเดินทาง",
+     "cond": "อยู่มากกว่าห้าประเทศ",
+     "src": "docs/systems/god/08-goals.md:65"
+    },
+    {
+     "title": "ผู้อยู่ที่เดิม",
+     "cond": "ไม่เคยออกจากประเทศเกิด",
+     "src": "docs/systems/god/08-goals.md:66"
+    },
+    {
+     "title": "ผู้รบ",
+     "cond": "ศึกมากกว่า 30 ครั้ง",
+     "src": "docs/systems/god/08-goals.md:67"
+    },
+    {
+     "title": "ผู้รักษา",
+     "cond": "อาชีพรักษาหรือช่วยชีวิตคนในเรื่องมากกว่าห้าครั้ง",
+     "src": "docs/systems/god/08-goals.md:68"
+    },
+    {
+     "title": "ผู้ฆ่าญาติ",
+     "cond": "ฆ่าหรือทำให้ญาติหรือพวกพ้องตาย",
+     "src": "docs/systems/god/08-goals.md:69"
+    },
+    {
+     "title": "ผู้ทรยศ",
+     "cond": "เลือกทางทรยศมากกว่าสองครั้ง",
+     "src": "docs/systems/god/08-goals.md:70"
+    },
+    {
+     "title": "ผู้รอดจากฟ้า",
+     "cond": "อยู่ในประเทศตอนปาฏิหาริย์ระดับใหญ่หรือมังกรล้ม และรอด",
+     "src": "docs/systems/god/08-goals.md:71"
+    },
+    {
+     "title": "ผู้ถูกเลือก",
+     "cond": "ทำตามความฝันมากกว่าห้าครั้ง",
+     "src": "docs/systems/god/08-goals.md:72"
+    },
+    {
+     "title": "ผู้ขัดขืนฟ้า",
+     "cond": "ปฏิเสธหรือขัดขืนความฝันมากกว่าห้าครั้ง",
+     "src": "docs/systems/god/08-goals.md:73"
+    },
+    {
+     "title": "ผู้รอฟ้า",
+     "cond": "ได้รับการประทานมากกว่า 15 ครั้ง (ดูหัวข้อ 6)",
+     "src": "docs/systems/god/08-goals.md:74"
+    },
+    {
+     "title": "ผู้มั่งคั่ง",
+     "cond": "ขึ้นชนชั้นอย่างน้อยสองชั้น",
+     "src": "docs/systems/god/08-goals.md:75"
+    },
+    {
+     "title": "ผู้ตกต่ำ",
+     "cond": "ตกชนชั้นอย่างน้อยสองชั้น",
+     "src": "docs/systems/god/08-goals.md:76"
+    },
+    {
+     "title": "ผู้ถูกผูก",
+     "cond": "เป็นผู้ถูกผูกตัวมากกว่าครึ่งชีวิตผู้ใหญ่",
+     "src": "docs/systems/god/08-goals.md:77"
+    },
+    {
+     "title": "ผู้เป็นตำนาน",
+     "cond": "ได้อาชีพลับหรืออาวุธตำนาน",
+     "src": "docs/systems/god/08-goals.md:78"
+    }
+   ],
+   "chronicle": {
+    "vowDone": 3,
+    "vowFail": 1,
+    "perTitle": 1,
+    "perMilestone": 2,
+    "firstLife": 1
+   },
+   "unlocks": [
+    {
+     "at": 5,
+     "opens": "กริยา \"เปลี่ยน\" และแก่น \"ลม\" ของการเสกตามใจ ([07-conjure.md](07-conjure.md))"
+    },
+    {
+     "at": 10,
+     "opens": "คำปฏิญาณชุดที่สอง (GV-13 ถึง GV-19 ขึ้นในการสุ่ม ก่อนหน้านี้ขึ้นเฉพาะ GV-01 ถึง GV-12 และ GV-20)"
+    },
+    {
+     "at": 15,
+     "opens": "กริยา \"ปลุก\" และแก่น \"แสง\""
+    },
+    {
+     "at": 20,
+     "opens": "จังหวะชะตา (หัวข้อ 5) ทุกแบบ"
+    },
+    {
+     "at": 30,
+     "opens": "กริยา \"เผย\" และแก่น \"ความตาย\" \"เงา\""
+    },
+    {
+     "at": 40,
+     "opens": "แบบเริ่มต้นชุดที่ปลดล็อกด้วยพงศาวดาร ([../experience/04-start-modes.md](../experience/04-start-modes.md))"
+    }
+   ],
+   "rhythms": [
+    {
+     "name": "ตามธรรมชาติ (ค่าเริ่มต้น)",
+     "effect": "ใช้น้ำหนักในเอกสารตามเดิม"
+    },
+    {
+     "name": "ชะตาอ่อนโยน",
+     "effect": "ทางที่มีความตายของคนใกล้ตัว ×0.6 ศึกสุ่ม ×0.7 ชะตาร้าย ×0.7"
+    },
+    {
+     "name": "ชะตาโศก",
+     "effect": "ทางที่มีความสูญเสีย ×1.5 ชะตาร้าย ×1.3 คำอธิษฐานเกิดบ่อยขึ้น ×1.3"
+    },
+    {
+     "name": "ชะตาประชด",
+     "effect": "ผลที่ตรงข้ามกับคำขอในคำอธิษฐานที่ถูกให้แบบแปลก ×2 ความฝันตีความผิด ×1.5"
+    }
+   ],
+   "overreach": [
+    {
+     "cond": "ได้รับพร ฝีมือ หรือของประทานครบ 10 ครั้ง (คำสาปไม่นับ)",
+     "effect": "ทางเลือกที่ต้องลงมือเอง (ฝึก ลงทุน เดินทางไกล) ×0.9",
+     "count": 10,
+     "mul": 0.9
+    },
+    {
+     "cond": "ครบ 15 ครั้ง",
+     "effect": "×0.8 และ NPC ใกล้ตัวพูดว่าเขา \"รอฟ้า\" ฉายาผู้รอฟ้าเปิด",
+     "count": 15,
+     "mul": 0.8
+    },
+    {
+     "cond": "ไม่มีการประทานสิบปีชีวิตหลังจากนั้น",
+     "effect": "ตัวคูณกลับเป็น 1",
+     "count": null,
+     "mul": null
+    }
+   ],
+   "collection": [
+    {
+     "what": "คำปฏิญาณที่สำเร็จ",
+     "count": 20,
+     "note": "20"
+    },
+    {
+     "what": "ฉายาชีวิต",
+     "count": 16,
+     "note": "16"
+    },
+    {
+     "what": "ฉายาของพระเจ้า",
+     "count": 6,
+     "note": "6"
+    },
+    {
+     "what": "ปาฏิหาริย์ในรายการที่เคยใช้",
+     "count": 25,
+     "note": "25"
+    },
+    {
+     "what": "ปาฏิหาริย์ที่เสกตามใจ (ชื่อที่โลกจำ)",
+     "count": null,
+     "note": "ไม่จำกัด แสดงเป็นรายการชื่อ"
+    },
+    {
+     "what": "ปฏิกิริยาของการเสกตามใจที่เคยพบ",
+     "count": 10,
+     "note": "10"
+    }
+   ],
+   "measure": [
+    {
+     "ids": [
+      "GV-11"
+     ],
+     "judged": "ศรัทธาเทพ",
+     "result": "ตั้งใจ (เมตตา) 82% · สุ่ม 0.4%"
+    },
+    {
+     "ids": [
+      "GV-12"
+     ],
+     "judged": "จำนวนการแทรกแซง",
+     "result": "ตั้งใจ (เงียบ) 100% · เมตตา 15% · สุ่ม 4% ตั้งใจทำง่ายโดยเจตนา เพราะคือรางวัลของความยับยั้ง"
+    },
+    {
+     "ids": [
+      "GV-19"
+     ],
+     "judged": "ศรัทธาเทพตอนตายและอายุ",
+     "result": "ตั้งใจ (ลงโทษ) 85% · สุ่ม 18%"
+    },
+    {
+     "ids": [
+      "GV-01",
+      "GV-02"
+     ],
+     "judged": "ความตายและคำสาป",
+     "result": "วัดเมื่อลงโค้ด ตัวจำลองพระเจ้าสมมติความตายก่อนวัยราว 21%"
+    },
+    {
+     "ids": [
+      "GV-03",
+      "GV-04",
+      "GV-15"
+     ],
+     "judged": "การเดินทางและฉาก ([../travel/README.md](../travel/README.md))",
+     "result": "วัดเมื่อลงโค้ด"
+    },
+    {
+     "ids": [
+      "GV-05",
+      "GV-06",
+      "GV-07",
+      "GV-08",
+      "GV-14"
+     ],
+     "judged": "พวกพ้อง ครอบครัว และการผูกตัว ([../bonds/README.md](../bonds/README.md))",
+     "result": "วัดเมื่อลงโค้ด"
+    },
+    {
+     "ids": [
+      "GV-09",
+      "GV-10",
+      "GV-17"
+     ],
+     "judged": "อาชีพลับ อาวุธตำนาน จุดบรรจบ เส้นเรื่องบ้านและฝีมือ",
+     "result": "วัดเมื่อลงโค้ด เป้าอาชีพลับรวมไม่เกิน 3% ของชีวิตทำให้ GV-09 เมื่อไม่ตั้งใจต่ำอยู่แล้ว"
+    },
+    {
+     "ids": [
+      "GV-13"
+     ],
+     "judged": "ชะตา ([../character/18-fates.md](../character/18-fates.md))",
+     "result": "วัดเมื่อลงโค้ด"
+    },
+    {
+     "ids": [
+      "GV-16",
+      "GV-18"
+     ],
+     "judged": "ซาก การล่มของประเทศ ยุค 4",
+     "result": "ตั้งใจทำง่าย (ไม่ทำซาก) ซากต่อโลกราวหนึ่งต่อศตวรรษจึงแทบไม่แตะประเทศเกิด GV-18 ขึ้นกับว่าชีวิตซ้อนยุค 4 ไหม ข้อที่เป็นไปไม่ได้ไม่ถูกเสนอ"
+    }
+   ]
+  },
+  "sim": {
+   "assumptions": {
+    "nodesPerLife": 32,
+    "windowShare": {
+     "rows": 123,
+     "of": 745,
+     "pct": 0.165
+    },
+    "earlyDeath": {
+     "perYear": 0.004,
+     "fromAge": 15,
+     "naturalAge": 75
+    },
+    "channelB": [
+     10,
+     70
+    ],
+    "trouble": 0.2,
+    "troubleMul": 3,
+    "ageStops": [
+     5,
+     15,
+     30,
+     50,
+     70
+    ],
+    "horizon": 1800,
+    "lifeYears": 75,
+    "prayerCostSpread": [
+     8,
+     25
+    ],
+    "note": "ageStops, horizon and prayerCostSpread are constants of sim-god.mjs (ageStops from experience/07-attention.md section 2); the others are read from the table"
+   },
+   "tuned": [
+    {
+     "what": "ราคาเข้าฝัน",
+     "before": "10 · ครั้งที่สองในปีเดียวกัน 14",
+     "measured": "เมตตาที่ใช้พลังเต็มส่งฝันราว 21 ครั้ง ทำตาม 14 ครั้งต่อชีวิต พระเจ้าเขียนเรื่องแทนตัวละคร",
+     "now": "ทุกความฝันที่ส่งไปแล้วในชีวิตนี้ +1 ([01-power.md](01-power.md) หัวข้อ 2)",
+     "after": "ทำตาม 4.4 ตัดสินใจ 26"
+    },
+    {
+     "what": "ซากพระเจ้า",
+     "before": "ประเทศละครั้งต่อ 100 ปีโลก · ระดับใหญ่ชีวิตละ 2 ทั้งโลกห่าง 25 ปี",
+     "measured": "p90 48 ซากต่อโลก พลังไม่ได้จำกัดจริง เพราะซากคืนความหวาดกลัว 20",
+     "now": "ปาฏิหาริย์ที่ทำให้เป็นซาก ชีวิตละครั้ง ทั้งโลกห่างกันอย่างน้อย 100 ปีโลก ([04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 5)",
+     "after": "p90 18 พร้อมกันไม่เกิน 1"
+    },
+    {
+     "what": "ตีหมุดผนึก",
+     "before": "หมุดละครั้งต่อ 50 ปีโลก",
+     "measured": "ยุค 4 เร็วขึ้น 210 ปี (16%) จากการตีราว 52 ครั้งต่อโลก",
+     "now": "หมุดละครั้งต่อ 100 ปีโลก และหมุดใดก็ได้ทั้งโลกครั้งเดียวต่อ 25 ปีโลก ([04-miracles.md](04-miracles.md) หัวข้อ 5.4)",
+     "after": "ยุค 4 เร็วขึ้นราว 9% ถึง 11% ตามรอบสุ่ม ตีราว 41 ครั้งต่อโลก"
+    },
+    {
+     "what": "GV-19",
+     "before": "ศรัทธาเทพ ≤ −70 ตอนตาย",
+     "measured": "นโยบายลงโทษได้ 98% ง่ายเกินเมื่อตั้งใจทำ",
+     "now": "และตัวละครอยู่ถึงวัยผู้เฒ่า ([08-goals.md](08-goals.md) หัวข้อ 2)",
+     "after": "85%"
+    },
+    {
+     "what": "ราคาของการแทรกแซงมากเกิน",
+     "before": "นับการประทานทุกแบบ",
+     "measured": "คำสาปทำให้ตัวละคร \"รอฟ้า\" ซึ่งไม่ตรงความหมาย",
+     "now": "นับเฉพาะพร ฝีมือ และของ ([08-goals.md](08-goals.md) หัวข้อ 6)",
+     "after": "นโยบายให้ของถึง 10 ครั้ง 33% ถึง 15 ครั้ง 7.5% นโยบายเมตตาแทบไม่ถึง ตรงเจตนา ไม่ต้องปรับตัวเลข"
+    },
+    {
+     "what": "GD-08 เทพองค์อื่นตื่น",
+     "before": "เงื่อนไข \"ยุค ≥ 3 ศรัทธาโลกเปลี่ยนมือ\" ตัวจำลองอ่านไม่ได้",
+     "measured": "เกิด 92% แม้พระเจ้าเงียบ กติกาเหล็กข้อ 7 ไม่มีผล",
+     "now": "ยุค ≥ 3 และศรัทธาโลก < 35 หรือพระเจ้าทำลายระดับใหญ่ครั้งที่สาม ([../events/world-events.md](../events/world-events.md) หัวข้อ 8 · [04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 7)",
+     "after": "เงียบราว 40% · เร่งจบราว 60% · สุ่มที่ทำลายบ่อยราว 95%"
+    },
+    {
+     "what": "MR-21 ปาฏิหาริย์แห่งพระเจ้า",
+     "before": "แสงศรัทธาเต็ม 200",
+     "measured": "นโยบายเก็บพลังถึง 200 เพียง 14% ของชีวิต (อายุกลาง 68) ส่วน MR-22 ที่ใช้ความหวาดกลัว 150 ถึงได้ 64%",
+     "now": "แสงศรัทธาทั้งหมดที่มี อย่างน้อย 120 ([04-miracles.md](04-miracles.md) หัวข้อ 3)",
+     "after": "เก็บพลังถึงได้ราวครึ่งหนึ่งของชีวิต อายุกลางราว 53 ผู้ที่ใช้พลังระหว่างชีวิตแทบไม่ถึง"
+    },
+    {
+     "what": "ภาระใจ",
+     "before": "เหตุการณ์เมื่อครบ 3",
+     "measured": "พระเจ้าที่ส่งทางขัดนิสัยครึ่งหนึ่งได้เหตุการณ์ภาระใจ 0.19 ครั้งต่อชีวิต เพราะราคาเข้าฝันที่เพิ่มทุกครั้งทำให้ความฝันน้อยลง",
+     "now": "ครบ 2 ไม่ลดเมื่อทำตามทางที่ตรงนิสัย ([03-dreams.md](03-dreams.md) หัวข้อ 4)",
+     "after": "ปั้นนิสัยราว 0.5 เมตตา 0"
+    },
+    {
+     "what": "GD-04 GD-05",
+     "before": "เกิดแบบสุ่มตามยุคราว 70% ของโลกแม้ไม่มีพระเจ้า",
+     "measured": "เงื่อนไขเป็นการกระทำของพระเจ้าซึ่งตัวจำลองโลกเดิมไม่มี",
+     "now": "GD-04 จาก MR-21 หรือศรัทธาโลก > 90 · GD-05 จากความเงียบเท่านั้น พร้อมผลต่อโลก",
+     "after": "ค่าฐาน GD-04 ราว 9% GD-05 0% · เงียบ GD-05 ราว 73%"
+    },
+    {
+     "what": "ลิขิตเร่งการล้มของมังกร",
+     "before": "×3",
+     "measured": "เร่งจบเฉียดเพดานสองเท่า",
+     "now": "ไม่เกิน ×2",
+     "after": "17.3% เทียบเพดาน 18%"
+    }
+   ],
+   "targets": [
+    {
+     "what": "นโยบายเงียบและเมตตา ศรัทธาเทพ ≤ −70",
+     "value": "ไม่เกิน 0.4% ของชีวิต"
+    },
+    {
+     "what": "นโยบายเร่งจบ ฉากจบภายใน 1,800 ปี",
+     "value": "ไม่เกินสองเท่าของค่าฐาน (ไม่จำลองพระเจ้า)"
+    },
+    {
+     "what": "นโยบายลงโทษ ซากพระเจ้าต่อโลก",
+     "value": "ไม่เกิน 18 ต่อ 1,800 ปี (หนึ่งต่อศตวรรษ) และซากที่ยังไม่ฟื้นพร้อมกันไม่เกิน 2 (p90)"
+    },
+    {
+     "what": "ความฝันที่ทำตามต่อชีวิต (นโยบายเมตตา)",
+     "value": "3 ถึง 8"
+    },
+    {
+     "what": "คำปฏิญาณที่ระบบพระเจ้าตัดสินเอง (GV-11 GV-19)",
+     "value": "40% ถึง 90% เมื่อผู้เล่นตั้งใจทำ ไม่เกิน 25% เมื่อเล่นแบบสุ่ม คำปฏิญาณที่ขึ้นกับส่วนอื่นของเกมวัดเมื่อตัวจำลองชีวิตมีค่าเหล่านั้น"
+    },
+    {
+     "what": "ตีหมุดผนึกทุกครั้งที่ทำได้",
+     "value": "ยุค 2 3 4 เริ่มเร็วขึ้นไม่เกิน 15% ต่อยุคเทียบกับค่าฐาน"
+    },
+    {
+     "what": "ตัดสินใจต่อชีวิต (นโยบายเมตตา)",
+     "value": "25 ถึง 40 (ค่ากลาง)"
+    },
+    {
+     "what": "เหตุการณ์ภาระใจต่อชีวิต",
+     "value": "ปั้นนิสัย 0.3 ถึง 1 · เมตตาไม่เกิน 0.1 (ราคาเห็นได้เมื่อผู้เล่นบังคับนิสัย และไม่เกิดกับผู้ที่ชี้ตามนิสัย)"
+    }
+   ],
+   "policies": [
+    {
+     "policy": "ไม่จำลองพระเจ้า",
+     "does": "ตัวจำลองโลกอย่างเดียว ไม่มีตัวเกี่ยว",
+     "answers": "ค่าฐานของโลก ตรงกับ [../simulation/world-sim.md](../simulation/world-sim.md) ใช้เทียบทุกเป้าของโลก"
+    },
+    {
+     "policy": "เงียบ",
+     "does": "ไม่แทรกแซงเลย ไม่ตอบคำอธิษฐานเลยทั้งสายตระกูล",
+     "answers": "GD-05 ความเงียบของพระเจ้า และผลของการไม่ทำอะไร"
+    },
+    {
+     "policy": "เมตตา",
+     "does": "ตอบคำอธิษฐานแบบให้ทุกใบ ส่งฝันทางที่ตรงนิสัยทุกโหนดที่พลังพอ เปิดหีบพรที่หน้าต่างและปีละครั้ง กระซิบ ใช้แสงศรัทธาจนเหลือสำรอง 20 · ในโลก: ปลอบมังกรที่อารมณ์ต่ำสุด ลิขิตชะลอการล้ม MR-21 เมื่อพลังเต็ม",
+     "answers": "ศรัทธาเทพ ความฝันที่ทำตาม จำนวนการตัดสินใจ END-12"
+    },
+    {
+     "policy": "ลงโทษ",
+     "does": "ลงโทษผู้ขอทุกใบ เปิดหีบคำสาปที่หน้าต่างและปีละครั้ง · ในโลก: ทำซาก (MR-17) ทุกครั้งที่เพดานและพลังให้",
+     "answers": "`godslayer` ซากต่อโลก ฉากจบ END-10"
+    },
+    {
+     "policy": "ลงโทษ (ตีหมุดผนึก)",
+     "does": "เหมือนลงโทษ แต่ในโลกตีหมุดผนึกระดับใหญ่ ถ้าไม่ได้ใช้ระดับกลาง",
+     "answers": "มังกรล้มและยุคเร็วขึ้นแค่ไหน"
+    },
+    {
+     "policy": "ปั้นนิสัย",
+     "does": "เหมือนเมตตา แต่ส่งทางที่ขัดนิสัยครึ่งหนึ่ง",
+     "answers": "ภาระใจเกิดบ่อยแค่ไหน"
+    },
+    {
+     "policy": "ให้ของ",
+     "does": "ตอบคำอธิษฐานแบบให้ เปิดหีบพรทุกจังหวะที่พลังพอ (ปีละไม่เกินสองหีบ) ไม่ส่งฝัน",
+     "answers": "ราคาของการแทรกแซงมากเกิน"
+    },
+    {
+     "policy": "เก็บพลัง",
+     "does": "ตอบคำอธิษฐานแบบให้ ไม่ใช้พลังอย่างอื่น",
+     "answers": "ถึงราคาปาฏิหาริย์มหาได้ไหม"
+    },
+    {
+     "policy": "สุ่ม",
+     "does": "สุ่มการกระทำที่ทำได้ทุกจังหวะ ตอบคำอธิษฐานแบบสุ่ม",
+     "answers": "การกระจายของผล คำปฏิญาณที่สำเร็จโดยไม่ตั้งใจ"
+    },
+    {
+     "policy": "เร่งจบ",
+     "does": "ลิขิตเร่ง ×3 ที่การล้มของมังกรที่มีลาง และ WR-15 MC-12 WR-23 ในยุค 4 ตีหมุดผนึก ยั่วมังกรที่อารมณ์ต่ำสุด",
+     "answers": "ฉากจบเร็วขึ้นได้มากแค่ไหน"
+    }
+   ]
+  },
+  "rule": {
+   "dreamStep": 1,
+   "anchorCd": 100,
+   "anchorWorldCd": 25,
+   "ruinLife": 1,
+   "ruinCd": 100,
+   "dragonCd": 50,
+   "mahaF": 120,
+   "wrathD": 150,
+   "burdenRelief": 0,
+   "burdenAt": 2,
+   "endFate": 3,
+   "fallFate": 2,
+   "largeCd": 25,
+   "midCd": 5,
+   "note": "endFate 3 is the most MR-25 can speed an event an ending needs (WR-15 MC-12 WR-23): the doc fixes only the dragon-fall cap, so 3 is the sim value (ลิขิต ×1.1 to ×3)"
+  },
+  "raw": [
+   {
+    "headings": [],
+    "header": [
+     "ชื่อในไฟล์นี้",
+     "ตัวแปรในโค้ด",
+     "ช่วง",
+     "ของใคร"
+    ],
+    "rows": [
+     [
+      "**แสงศรัทธา**",
+      "`faith`",
+      "0–200",
+      "พระเจ้า (ผู้เล่น) ใช้จ่ายเป็นพลัง"
+     ],
+     [
+      "**ความหวาดกลัว**",
+      "`dread`",
+      "0–200",
+      "พระเจ้า ใช้จ่ายเป็นพลังสายลงโทษ"
+     ],
+     [
+      "**ศรัทธาเทพ**",
+      "`belief`",
+      "−100 ถึง 100",
+      "ตัวละครหลัก รู้สึกต่อพระเจ้าอย่างไร"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:7"
+   },
+   {
+    "headings": [
+     "1. รายได้"
+    ],
+    "header": [
+     "แหล่ง",
+     "แสงศรัทธาต่อปีชีวิต",
+     "ความหวาดกลัวต่อปีชีวิต"
+    ],
+    "rows": [
+     [
+      "ฐาน",
+      "1",
+      "0.3"
+     ],
+     [
+      "ศรัทธาตรงของประเทศที่ตัวละครอยู่ (ช่องทาง B 0–100)",
+      "B ÷ 25 (0 ถึง 4)",
+      ""
+     ],
+     [
+      "ศรัทธาเทพของตัวละคร",
+      "belief ÷ 30 เมื่อเป็นบวก (สูงสุด +3.3)",
+      "−belief ÷ 75 เมื่อเป็นลบ (สูงสุด +1.3)"
+     ],
+     [
+      "ตัวละครเป็นศาสดา (`prophet`)",
+      "+4",
+      ""
+     ],
+     [
+      "ตอบคำอธิษฐานแบบให้",
+      "+2 ต่อครั้ง (ผู้ขอรู้ว่าพระเจ้าช่วย)",
+      ""
+     ],
+     [
+      "ลงโทษผู้ขอ หรือลงโทษศัตรูในศึก",
+      "",
+      "+6 ถึง +10 ต่อครั้ง"
+     ],
+     [
+      "ปาฏิหาริย์สายทำลาย",
+      "",
+      "ราคา ÷ 3 กลับมาเป็นความหวาดกลัว (ผู้รอดเล่าต่อ)"
+     ],
+     [
+      "ภารกิจของพระเจ้า 12 แบบ ([../events/branches/03-character-and-quests.md](../events/branches/03-character-and-quests.md) หัวข้อ 6)",
+      "ตามภารกิจ เช่น ศาสดา +80",
+      "ตามภารกิจ"
+     ],
+     [
+      "GD-04 ปาฏิหาริย์แห่งพระเจ้าเกิดแล้ว",
+      "×1.5 ทุกแหล่งตลอดชีวิตที่เหลือ",
+      ""
+     ],
+     [
+      "GD-05 ความเงียบของพระเจ้าเกิดแล้ว",
+      "×0.5 จนกว่าจะตอบคำอธิษฐาน 3 ครั้ง",
+      ""
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:19"
+   },
+   {
+    "headings": [
+     "2. ราคา"
+    ],
+    "header": [
+     "การแทรกแซง",
+     "C",
+     "U",
+     "R",
+     "E",
+     "L",
+     "จ่ายด้วย"
+    ],
+    "rows": [
+     [
+      "พร",
+      "10",
+      "16",
+      "26",
+      "40",
+      "60",
+      "แสงศรัทธา"
+     ],
+     [
+      "คำสาป",
+      "6",
+      "12",
+      "20",
+      "30",
+      "45",
+      "ความหวาดกลัว"
+     ],
+     [
+      "ฝีมือ (เลื่อนความถนัดหนึ่งระดับ)",
+      "ระดับ 1: 10 · ระดับ 2: 16 · ระดับ 3: 26 · สกิลเฉพาะระดับ 4: 40",
+      "",
+      "",
+      "",
+      "",
+      "แสงศรัทธา"
+     ],
+     [
+      "ของ (เกราะ เครื่องประดับ เครื่องราง ของใช้)",
+      "8",
+      "14",
+      "24",
+      "40",
+      "ไม่มีในหีบ",
+      "แสงศรัทธา"
+     ],
+     [
+      "อาวุธประทาน (ศักดิ์สิทธิ์)",
+      "12",
+      "20",
+      "34",
+      "55",
+      "เฉพาะ `wl_light_sword` ผ่าน GD-04",
+      "แสงศรัทธา"
+     ],
+     [
+      "อาวุธต้องสาป",
+      "9",
+      "15",
+      "26",
+      "42",
+      "ไม่มี",
+      "ความหวาดกลัว"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:38"
+   },
+   {
+    "headings": [
+     "2. ราคา"
+    ],
+    "header": [
+     "การแทรกแซง",
+     "ราคา"
+    ],
+    "rows": [
+     [
+      "ทอยหีบใหม่",
+      "5 · 10 · 20 แสงศรัทธา (ครั้งที่ 1 2 3 ในปีชีวิตเดียวกัน) ไม่เกิน 3 ครั้ง"
+     ],
+     [
+      "เข้าฝัน",
+      "10 แสงศรัทธา ครั้งที่สองในปีเดียวกัน 14 · ทุกความฝันที่ส่งไปแล้วในชีวิตนี้ +1 (ความฝันที่ห้าราคา 14 เสียงของพระเจ้าที่มาบ่อยชินหู ปรับจากการจำลอง [06-implementation.md](06-implementation.md) หัวข้อ 4)"
+     ],
+     [
+      "กระซิบ",
+      "5 แสงศรัทธา (`ระวัง` `กล้าเถิด` `จงไป` `จงอยู่`) · 8 (`จุดอ่อนของศัตรู` `คนนั้นโกหก` `ช่วย` `สางเรื่อง` `ชี้ทายาท`)"
+     ],
+     [
+      "ตอบคำอธิษฐานแบบให้",
+      "8 ถึง 25 แสงศรัทธา ตามชนิดคำอธิษฐาน (17 ชนิดในโค้ด)"
+     ],
+     [
+      "ปลุกชีพ (ครั้งเดียวต่อชีวิต)",
+      "60 แสงศรัทธา หรือ 50 ความหวาดกลัว"
+     ],
+     [
+      "เปลี่ยนชะตา ([../character/18-fates.md](../character/18-fates.md))",
+      "ชะตาดี 40 แสงศรัทธา · ชะตาร้าย 30 ความหวาดกลัว · โอกาสสะท้อนกลับ 30%"
+     ],
+     [
+      "ปาฏิหาริย์",
+      "ตามตารางใน [04-miracles.md](04-miracles.md) หัวข้อ 3"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:47"
+   },
+   {
+    "headings": [
+     "2. ราคา"
+    ],
+    "header": [
+     "เงื่อนไข",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ศรัทธาเทพต่ำกว่า −30",
+      "ราคาแสงศรัทธา ×1.5 (เสียงของพระเจ้าเข้าไม่ถึงใจที่ปิด)"
+     ],
+     [
+      "ศรัทธาเทพสูงกว่า 60",
+      "ราคาความหวาดกลัว ×1.2"
+     ],
+     [
+      "สลับสายพลัง (ใช้ความหวาดกลัวหลังใช้แสงศรัทธา หรือกลับกัน ภายในปีเดียว)",
+      "ศรัทธาเทพ −4 ต่อครั้งที่สลับ สะสมไม่เกิน −25 ต่อชีวิต"
+     ],
+     [
+      "หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ",
+      "ราคาการประทาน เข้าฝัน และกระซิบ ×0.7"
+     ],
+     [
+      "อาวุธ `wj_sage_e` หรือ `wc_al14`",
+      "กระซิบหรือเข้าฝันฟรีปีละครั้ง ตามไอเทม"
+     ],
+     [
+      "ผู้ถืออาวุธ `wj_godslayer_e` หรือ `wk_az_3`",
+      "การแทรกแซงทั้งดีและร้ายไม่มีผลต่อผู้ถือ"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:59"
+   },
+   {
+    "headings": [
+     "3. ผลต่อศรัทธาเทพ"
+    ],
+    "header": [
+     "เหตุ",
+     "ศรัทธาเทพ"
+    ],
+    "rows": [
+     [
+      "ได้รับพร ฝีมือ หรือของ",
+      "+(5 + 3 × ระดับ)"
+     ],
+     [
+      "ได้รับคำสาป",
+      "−(4 + 3 × ระดับ)"
+     ],
+     [
+      "อาวุธศักดิ์สิทธิ์ · อาวุธต้องสาป",
+      "+10 · −5 และแกนเมตตา −10"
+     ],
+     [
+      "ทำตามความฝัน · ตีความผิด · ปฏิเสธ",
+      "+3 · +1 · −2"
+     ],
+     [
+      "คำอธิษฐานถูกตอบแบบให้ · ปฏิเสธ · ลงโทษ · ปล่อยจนหมดเวลา",
+      "+8 (×1.5 ถ้าแกนศรัทธา > 30) · −3 · −12 · −2"
+     ],
+     [
+      "ปาฏิหาริย์สายสร้างในประเทศที่ตัวละครอยู่ · สายทำลายในประเทศที่ตัวละครอยู่",
+      "+5 · −10 (ถ้าตัวละครเห็นผล)"
+     ],
+     [
+      "ปลุกชีพด้วยแสงศรัทธา · ด้วยความหวาดกลัว",
+      "+35 · −10"
+     ],
+     [
+      "ไม่มีการแทรกแซงเลยสิบปีชีวิต",
+      "เคลื่อนเข้าหา 0 ทีละ 2 ต่อปี (ความรู้สึกจางลง)"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:72"
+   },
+   {
+    "headings": [
+     "3. ผลต่อศรัทธาเทพ"
+    ],
+    "header": [
+     "ช่วง",
+     "ชื่อ",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "50 ขึ้นไป",
+      "ผู้ภักดี (แท็ก devoted ในโค้ด)",
+      "ความฝันชัด อธิษฐานบ่อย เปิดทางนักบุญ ผู้ปลุกชีพ ศาสดา"
+     ],
+     [
+      "20 ถึง 49",
+      "ผู้เชื่อ",
+      "ท่าทีอธิษฐานในศึกใช้ได้"
+     ],
+     [
+      "−29 ถึง 19",
+      "ผู้ลังเล",
+      ""
+     ],
+     [
+      "−69 ถึง −30",
+      "ผู้หันหลัง (แท็ก heretic ในโค้ด)",
+      "ราคาแสงศรัทธา ×1.5"
+     ],
+     [
+      "−70 ลงไป",
+      "ผู้ชิงชัง",
+      "ไม่อธิษฐานอีก เปิดทาง `godslayer` ถ้าเงื่อนไขอื่นครบ"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:85"
+   },
+   {
+    "headings": [
+     "4. เพดานและจังหวะ"
+    ],
+    "header": [
+     "การแทรกแซง",
+     "เพดาน"
+    ],
+    "rows": [
+     [
+      "ประทาน",
+      "เปิดหีบได้หนึ่งครั้งต่อปีชีวิต บวกหนึ่งครั้งที่หน้าต่างพระเจ้าหรือจุดหยุดตามอายุ"
+     ],
+     [
+      "เข้าฝัน",
+      "สองครั้งต่อปีชีวิต"
+     ],
+     [
+      "กระซิบ",
+      "สามครั้งต่อปีชีวิต คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว"
+     ],
+     [
+      "คำอธิษฐาน",
+      "ค้างได้สองใบพร้อมกัน หมดเวลาใน 14 ช่วงเวลา (ราวสามปีครึ่งชีวิต)"
+     ],
+     [
+      "ปาฏิหาริย์",
+      "ต่อชีวิต: เล็กไม่จำกัดจำนวน · กลาง 4 · ใหญ่ 2 (ทำให้เป็นซากได้ 1) · มหา 1 · เสกตามใจ 3 และระยะรอใช้ซ้ำของแต่ละแบบ ([04-miracles.md](04-miracles.md) หัวข้อ 2 ข้อ 6 และหัวข้อ 3)"
+     ],
+     [
+      "อาวุธประทาน",
+      "หนึ่งชิ้นต่อตัวละคร"
+     ],
+     [
+      "ของประทานที่ไม่ใช่อาวุธ",
+      "สามชิ้นต่อตัวละคร"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:95"
+   },
+   {
+    "headings": [
+     "6. ข้ามรุ่น"
+    ],
+    "header": [
+     "สิ่ง",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "พลังที่เหลือเมื่อตัวละครตาย",
+      "ทายาทรับ 50% ของแสงศรัทธาและความหวาดกลัว"
+     ],
+     [
+      "ศรัทธาเทพของทายาท",
+      "60% ของพ่อแม่ (ตามโค้ดเดิม)"
+     ],
+     [
+      "พรสายเลือด (ทั้งตระกูล)",
+      "ราคา 3 เท่าของพรเดียว ถึงทายาทรุ่นแรกแน่นอน รุ่นสอง 60% รุ่นสาม 30%"
+     ],
+     [
+      "ถอนคำสาปที่สืบทอด",
+      "ราคา 2 เท่าของคำสาปนั้น จ่ายด้วยแสงศรัทธา"
+     ],
+     [
+      "อาวุธประทานของรุ่นก่อน",
+      "ทายาทรับได้ ไม่นับเป็นอาวุธประทานของทายาท"
+     ],
+     [
+      "ตัวนับเพดานต่อชีวิต",
+      "เริ่มใหม่ทุกรุ่น"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:118"
+   },
+   {
+    "headings": [
+     "7. ฉายาของพระเจ้า"
+    ],
+    "header": [
+     "ฉายา",
+     "เงื่อนไขตอนจบชีวิต"
+    ],
+    "rows": [
+     [
+      "ผู้ให้แสง",
+      "แสงศรัทธาที่ใช้ ≥ 3 เท่าของความหวาดกลัวที่ใช้ และศรัทธาเทพ ≥ 50"
+     ],
+     [
+      "ผู้คุ้มครองเงียบ",
+      "ใช้พลังรวมน้อยกว่า 60 ตลอดชีวิต และตัวละครอยู่ถึงวัยผู้เฒ่า"
+     ],
+     [
+      "ผู้พิพากษา",
+      "ความหวาดกลัวที่ใช้ ≥ แสงศรัทธาที่ใช้ และศรัทธาเทพไม่ต่ำกว่า 0"
+     ],
+     [
+      "ผู้ทำลาย",
+      "ปาฏิหาริย์สายทำลายระดับใหญ่ขึ้นไปอย่างน้อยสองครั้ง"
+     ],
+     [
+      "ผู้ถูกชิงชัง",
+      "ศรัทธาเทพตอนตาย ≤ −70"
+     ],
+     [
+      "ผู้ลิขิต",
+      "ลิขิตเหตุการณ์ ⭐ อย่างน้อยหนึ่งครั้ง และเหตุการณ์นั้นเกิดหรือถูกเลื่อนตามที่ลิขิต"
+     ]
+    ],
+    "src": "docs/systems/god/01-power.md:131"
+   },
+   {
+    "headings": [
+     "1. หกช่อง"
+    ],
+    "header": [
+     "ช่อง",
+     "ชนิด",
+     "คลัง",
+     "ถ้าคลังว่าง"
+    ],
+    "rows": [
+     [
+      "1 2",
+      "**พร**",
+      "พร 200 (โค้ด 107 ใหม่ 93) และพรของเผ่า",
+      "ช่องว่าง"
+     ],
+     [
+      "3 4",
+      "**คำสาป**",
+      "คำสาป 152 และคำสาปของเผ่า",
+      "ช่องว่าง"
+     ],
+     [
+      "5",
+      "**ฝีมือ**",
+      "เลื่อนความถนัดที่มีหนึ่งระดับ หรือสกิลใหม่ ([../character/07-new-skills.md](../character/07-new-skills.md))",
+      "กลายเป็นพรอีกหนึ่งใบ"
+     ],
+     [
+      "6",
+      "**ของ**",
+      "อาวุธ ถ้ายังไม่เคยได้อาวุธประทาน · ไม่เช่นนั้นเกราะ เครื่องประดับ ของขลังพื้นบ้าน ของใช้",
+      "ช่องว่าง"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:11"
+   },
+   {
+    "headings": [
+     "2. ใครได้อะไร (ตัวกรอง)"
+    ],
+    "header": [
+     "ตัวกรอง",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "มีอยู่แล้ว",
+      "พรหรือคำสาปที่ตัวละครมีอยู่แล้วไม่ขึ้น ไม่ซ้อนกัน"
+     ],
+     [
+      "ขัดกัน",
+      "พรที่ตรงข้ามกับคำสาปที่มี (และกลับกัน) ไม่ขึ้น ใช้คู่ตรงข้ามจากแท็กในแคตตาล็อก"
+     ],
+     [
+      "เผ่าและกำเนิด",
+      "พรและคำสาปของเผ่าอื่นไม่ขึ้น ([../character/races/](../character/races/README.md)) ของที่เผ่านั้นใช้ไม่ได้ไม่ขึ้น (ถุงมือสำหรับเผ่าที่ไม่มีมือ อาวุธดาบสำหรับสไลม์)"
+     ],
+     [
+      "วัย",
+      "ต่ำกว่าอายุเทียบ 13 ช่อง 6 ไม่มีอาวุธ ขึ้นของขลังพื้นบ้านหรือของเล่นแทน ([../items/README.md](../items/README.md))"
+     ],
+     [
+      "ระดับ L",
+      "พร L ขึ้นได้เมื่อศรัทธาเทพ ≥ 50 หรือที่หน้าต่างพระเจ้า คำสาป L ขึ้นได้เมื่อศรัทธาเทพ ≤ −30 หรือที่หน้าต่างพระเจ้า"
+     ],
+     [
+      "ของที่มีชิ้นเดียวในโลก",
+      "อาวุธตำนาน 36 ชิ้น เครื่องรางโบราณที่มีผู้สถิต 24 ชิ้น และของคู่ ไม่ขึ้นในหีบ (มีเจ้าของและเรื่องของตัวเอง [../items/08-legendary.md](../items/08-legendary.md))"
+     ],
+     [
+      "อาชีพลับ",
+      "ของและพรที่เป็นเงื่อนไขของอาชีพลับขึ้นได้ แต่ไม่ให้อาชีพเอง ([../character/10-jobs-secret.md](../character/10-jobs-secret.md))"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:24"
+   },
+   {
+    "headings": [
+     "3. การสุ่ม"
+    ],
+    "header": [
+     "เงื่อนไข",
+     "ตัวคูณ"
+    ],
+    "rows": [
+     [
+      "แท็กของของตรงกับโหนดเส้นเรื่องที่ตัวละครกำลังจะถึง (ภายในหนึ่งปีชีวิต)",
+      "×3"
+     ],
+     [
+      "ตรงกับอาชีพ ความถนัด หรือสัตว์คู่หูของตัวละคร",
+      "×2"
+     ],
+     [
+      "ตรงกับถิ่นที่อยู่ (ประเทศ ทวีป ภูมิอากาศ)",
+      "×1.5"
+     ],
+     [
+      "ตรงกับเหตุการณ์โลกที่เพิ่งเกิดในทวีป (สิบปีล่าสุด) หรือที่มีลางอยู่",
+      "×2"
+     ],
+     [
+      "ระดับ E และ L ในยุค 3 และ 4",
+      "×1.5"
+     ],
+     [
+      "ศรัทธาเทพ ≥ 50: พร R ขึ้นไป · ศรัทธาเทพ ≤ −30: คำสาป R ขึ้นไป",
+      "×1.3"
+     ],
+     [
+      "ช่องคำสาปเมื่อตัวละครกำลังอยู่ในศึก",
+      "คำสาปที่ใช้กับศัตรูได้ ×2"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:44"
+   },
+   {
+    "headings": [
+     "4. เลือก ทอยใหม่ ข้าม"
+    ],
+    "header": [
+     "การกระทำ",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "**เลือก**",
+      "จ่ายราคาของใบนั้น ([01-power.md](01-power.md) หัวข้อ 2) ของถึงตัวละครทันที ศรัทธาเทพเปลี่ยนตาม [01-power.md](01-power.md) หัวข้อ 3 หีบปิด"
+     ],
+     [
+      "**ทอยใหม่**",
+      "สุ่มใหม่ทั้งหกช่อง ราคา 5 · 10 · 20 แสงศรัทธา ไม่เกินสามครั้งต่อปีชีวิต ใบที่ถูกทอยทิ้งไม่ขึ้นอีกในปีนั้น"
+     ],
+     [
+      "**ล็อกหนึ่งใบแล้วทอย**",
+      "ทอยใหม่ห้าช่องที่เหลือ ราคาเพิ่ม +5 จากการทอยปกติ"
+     ],
+     [
+      "**ข้าม**",
+      "ไม่จ่าย หีบปิด นับเป็นการเปิดหีบของปีนั้น"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:64"
+   },
+   {
+    "headings": [
+     "5. อาวุธประทาน"
+    ],
+    "header": [
+     "กติกา",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "จำนวน",
+      "หนึ่งชิ้นต่อตัวละคร ตลอดชีวิต"
+     ],
+     [
+      "ระดับ",
+      "C ถึง E จากแคตตาล็อกอาวุธ ([../../_generated/weapon-catalog.md](../../_generated/weapon-catalog.md)) ไม่รวมอาวุธตำนาน"
+     ],
+     [
+      "ศักดิ์สิทธิ์หรือต้องสาป",
+      "ช่อง 6 ขึ้นอาวุธหนึ่งชิ้น สุ่มว่าเป็นรุ่นศักดิ์สิทธิ์ (จ่ายแสงศรัทธา แท็ก `holy` เพิ่ม) หรือรุ่นต้องสาป (จ่ายความหวาดกลัว แท็ก `cursed_weapon` เพิ่ม) ตามสัดส่วนแสงศรัทธาต่อความหวาดกลัวของพระเจ้าตอนนั้น ค่าสถานะอยู่ในงบของระดับเดิม"
+     ],
+     [
+      "น้ำหนักพิเศษ",
+      "อาวุธที่ตรงกับอาชีพ ×3 อาวุธประจำถิ่นของประเทศที่อยู่ ×2"
+     ],
+     [
+      "อาวุธตำนานเล่มเดียวที่พระเจ้าสร้าง",
+      "`wl_light_sword` เกิดเมื่อ GD-04 เกิดผ่านตัวละคร ([../items/08-legendary.md](../items/08-legendary.md)) ไม่นับเป็นอาวุธประทาน"
+     ],
+     [
+      "เมื่อตาย",
+      "ทายาทรับได้ ([01-power.md](01-power.md) หัวข้อ 6) ถ้าไม่มีทายาท อาวุธอยู่ที่หลุมศพ กลายเป็นของที่ NPC ไปหาได้"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:79"
+   },
+   {
+    "headings": [
+     "7. ตัวอย่างหีบหนึ่งใบ"
+    ],
+    "header": [
+     "ช่อง",
+     "ใบ",
+     "ระดับ",
+     "ราคา",
+     "เหตุที่ขึ้น"
+    ],
+    "rows": [
+     [
+      "1",
+      "`nb_fog_walker`",
+      "U",
+      "16 แสงศรัทธา",
+      "ถิ่นหมอก ×1.5 เหตุการณ์ FG-02 ×2"
+     ],
+     [
+      "2",
+      "`b_courage`",
+      "C",
+      "10",
+      "โหนดสงครามที่จะถึง ×3"
+     ],
+     [
+      "3",
+      "`c_nightmare`",
+      "C",
+      "6 ความหวาดกลัว",
+      "เหตุการณ์ FG-02 ×2"
+     ],
+     [
+      "4",
+      "`nc_fog_shadow`",
+      "R",
+      "20",
+      "เกิดและอยู่ในเนบูเลีย ×1.5 · ตัวชดเชยความหายาก"
+     ],
+     [
+      "5",
+      "`tracking` ระดับ 2",
+      "",
+      "16",
+      "อาชีพคุ้มกันขบวน ×2"
+     ],
+     [
+      "6",
+      "หอกต้องสาปรุ่นเหล็กเถ้า",
+      "U",
+      "15 ความหวาดกลัว",
+      "อาวุธประทานยังไม่เคยได้ ตรงอาชีพ ×3"
+     ]
+    ],
+    "src": "docs/systems/god/02-bestow.md:104"
+   },
+   {
+    "headings": [
+     "1. ทางทั้งสามมาจากไหน"
+    ],
+    "header": [
+     "แหล่ง",
+     "ทางที่ได้",
+     "ผลถ้าตัวละครทำตาม"
+    ],
+    "rows": [
+     [
+      "S1 โหนดถัดไป",
+      "ทาง ก) ข) ค) ของโหนดเส้นเรื่องที่ตัวละครจะถึงภายในสองปีชีวิต",
+      "ทางนั้น ×4"
+     ],
+     [
+      "S2 จุดบรรจบ",
+      "จุดบรรจบที่เปิดอยู่และตัวละครเข้าได้จากโหนดใกล้ ๆ ([../../lore/storylines/00-convergence.md](../../lore/storylines/00-convergence.md))",
+      "ทางที่ชี้ไป cv.N ×4 หรือเปิดการเดินทางไปที่จุดนั้น"
+     ],
+     [
+      "S3 เรื่องของ NPC",
+      "เรื่องของ NPC ที่เปิดอยู่ในประเทศเดียวกันและแถวมีทาง `[ช่วย]` `[ร่วม]` `[ขัดขวาง]` ([../../lore/npcs/README.md](../../lore/npcs/README.md) หัวข้อ 2.1)",
+      "ตัวละครเข้าไปในเรื่องนั้นตามทางที่ชี้"
+     ],
+     [
+      "S4 อาชีพลับ",
+      "อาชีพลับที่เงื่อนไขครบแล้วอย่างน้อยครึ่งหนึ่ง ([../character/10-jobs-secret.md](../character/10-jobs-secret.md))",
+      "โอกาสต่อปีของอาชีพนั้น ×1.5 สิบปี"
+     ],
+     [
+      "S5 การเดินทาง",
+      "จุดหมายที่ตัวกรองเผ่าและศีลธรรมยอมรับ ([../travel/README.md](../travel/README.md))",
+      "การเดินทางไปที่นั้น ×3"
+     ],
+     [
+      "S6 ลางของโลก",
+      "เหตุการณ์โลกที่มีลางในทวีปภายในสิบปี ([../events/world-events.md](../events/world-events.md) หัวข้อ 0.3)",
+      "ทางเตรียมรับ (หนี ช่วยคน กักตุน) ×3 เมื่อเหตุการณ์เกิด"
+     ],
+     [
+      "S7 เรื่องค้าง",
+      "เรื่องค้างของสายตระกูล ([../../lore/heirs/03-open-threads.md](../../lore/heirs/03-open-threads.md))",
+      "เปิดโหนดสางเรื่อง"
+     ],
+     [
+      "S8 พวกพ้องและการผูกตัว",
+      "วิกฤตขั้น 3 ของพวกพ้อง การชวน การปฏิเสธ ([../bonds/README.md](../bonds/README.md)) หรือทางหนีของผู้ถูกผูกตัว ([../economy/10-bondage.md](../economy/10-bondage.md) หัวข้อ 9)",
+      "ทางที่ชี้ ×3"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:11"
+   },
+   {
+    "headings": [
+     "2. ความฝันหนึ่งทางประกอบด้วยอะไร"
+    ],
+    "header": [
+     "ส่วน",
+     "ที่มา"
+    ],
+    "rows": [
+     [
+      "สัญลักษณ์",
+      "หนึ่งใน 12 สัญลักษณ์ความฝันในโค้ด (งู ไฟ แม่น้ำ ดาบ ดวงตา ดวงจันทร์ ดอกไม้ อีกา มงกุฎ ฯลฯ) ความหมายเปลี่ยนตามเผ่าและภูมิอากาศ เกมเลือกสัญลักษณ์ที่แท็กตรงกับทาง"
+     ],
+     [
+      "ชื่อทาง",
+      "หนึ่งบรรทัด เช่น \"ตามผู้ลี้ภัยกลับไปที่ป่า\""
+     ],
+     [
+      "ภาพฝัน",
+      "สองถึงสามประโยค จากความหมายของสัญลักษณ์ตามเผ่าและภูมิอากาศ และคลังภาพฝัน (ยังไม่ใช้ LLM ตามที่ผู้ใช้ตัดสิน [../llm/README.md](../llm/README.md) หัวข้อ 2)"
+     ],
+     [
+      "เงาของผล",
+      "หนึ่งบรรทัดที่บอกทิศ ไม่บอกผลตรง ๆ เช่น \"มีคนรอเจ้าอยู่ที่ราก\""
+     ],
+     [
+      "ใจของเขา",
+      "ระดับความเชื่อฟัง (หัวข้อ 3) พร้อมเหตุผลหนึ่งถึงสองข้อ"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:33"
+   },
+   {
+    "headings": [
+     "3. ความเชื่อฟัง"
+    ],
+    "header": [
+     "ส่วน",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "ความเข้ากัน",
+      "ทางตรงกับนิสัยสองข้อขึ้นไป +0.15 · หนึ่งข้อ +0.05 · ขัดนิสัย −0.20 · ขัดศีลธรรม (ทำร้ายผู้บริสุทธิ์ ทรยศ) −0.30"
+     ],
+     [
+      "ความชัด",
+      "ความฉลาด (int − 10) × 0.02 · `u_oracle` +0.10 · `nb_god_whisper` +0.20 · ฝันซ้ำทางเดิมภายในสามปี +0.10 · ตัวละครเพิ่งถูกพระเจ้าลงโทษ (ห้าปี) −0.10"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:45"
+   },
+   {
+    "headings": [
+     "3. ความเชื่อฟัง"
+    ],
+    "header": [
+     "ระดับ",
+     "โอกาส",
+     "ภาพบนจอ"
+    ],
+    "rows": [
+     [
+      "เต็มใจ",
+      "0.70 ขึ้นไป",
+      "เปลวเทียนนิ่ง"
+     ],
+     [
+      "ลังเล",
+      "0.40–0.69",
+      "เปลวเทียนไหว"
+     ],
+     [
+      "ขัดขืน",
+      "ต่ำกว่า 0.40",
+      "เปลวเทียนจวนดับ"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:52"
+   },
+   {
+    "headings": [
+     "3. ความเชื่อฟัง"
+    ],
+    "header": [
+     "กติกา",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "ระดับต้องซื่อตรง",
+      "ระดับที่แสดงคำนวณจากโอกาสจริงตอนที่ทอย ถ้าสถานการณ์เปลี่ยนระหว่างรอ (นิสัยเปลี่ยน ศรัทธาเทพเปลี่ยนข้ามเกณฑ์) เทียนในการ์ดความฝันที่ค้างอยู่เปลี่ยนตาม พร้อมเสียงเปลวกระพือ"
+     ],
+     [
+      "ตัวกันโชคร้าย",
+      "ทางระดับเต็มใจที่ไม่ผ่านสองครั้งติดกันในชีวิตเดียว ครั้งถัดไปของระดับเต็มใจได้ +0.15 (บทเรียนจาก XCOM ที่ผู้เล่นรู้สึกว่าโดนโกงเมื่อพลาดซ้ำ)"
+     ],
+     [
+      "เห็นย้อนหลัง",
+      "พงศาวดารพระหัตถ์บันทึกระดับตอนส่งและผลที่ออก ผู้เล่นเห็นว่าระดับเต็มใจผ่านบ่อยแค่ไหนในชีวิตนี้"
+     ],
+     [
+      "ตั้งค่าแสดงร้อยละ",
+      "มีในหน้าตั้งค่า ปิดเป็นค่าเริ่มต้น สำหรับผู้เล่นที่อยากเห็นตัวเลข เปิดแล้วร้อยละแสดงใต้เทียน"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:62"
+   },
+   {
+    "headings": [
+     "4. ผลเมื่อตื่น"
+    ],
+    "header": [
+     "ผล",
+     "เงื่อนไข",
+     "สิ่งที่เกิด"
+    ],
+    "rows": [
+     [
+      "**ทำตาม**",
+      "ทอยผ่านโอกาสทำตาม",
+      "ทางนั้นตามตารางหัวข้อ 1 (ส่วนใหญ่ ×4 ไม่ใช่บังคับ) ศรัทธาเทพ +3"
+     ],
+     [
+      "**ตีความผิด**",
+      "ไม่ผ่าน และศรัทธาเทพ ≥ 0 ครึ่งหนึ่งของกรณี",
+      "ตัวละครทำทางอื่นของโหนดเดียวกันที่ใกล้ความหมายของสัญลักษณ์ ×2 ศรัทธาเทพ +1 ฉากเล่าว่าเขาเข้าใจความฝันอย่างไร (แม่แบบตามสัญลักษณ์)"
+     ],
+     [
+      "**ปฏิเสธ**",
+      "ไม่ผ่านและไม่ตีความผิด",
+      "ทางนั้นไม่เปลี่ยน ศรัทธาเทพ −2 ตัวละครจำความฝันที่ไม่ทำ (ผู้กำกับตามกติกาใช้เป็นความทรงจำ)"
+     ],
+     [
+      "**ขัดขืน**",
+      "ปฏิเสธ และศรัทธาเทพ ≤ −30",
+      "ทางนั้น ×0.3 ตัวละครทำตรงข้ามเพื่อพิสูจน์ว่าไม่ใช่ของใคร"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:73"
+   },
+   {
+    "headings": [
+     "4. ผลเมื่อตื่น"
+    ],
+    "header": [
+     "ผลของเหตุการณ์ภาระใจ (สุ่มตามนิสัย)",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ตั้งคำถามกับพระเจ้า",
+      "ศรัทธาเทพ −8 ตัวละครอธิษฐานถามตรง ๆ หนึ่งใบ (ถ้าพระเจ้าตอบแบบให้ ศรัทธาเทพ +12 แทน)"
+     ],
+     [
+      "หนีงานหรือหนีบ้านหนึ่งฤดู",
+      "อาชีพหยุดหนึ่งปี เปิดเหตุการณ์การเดินทางสุ่ม"
+     ],
+     [
+      "นิสัยเปลี่ยน",
+      "นิสัยที่ถูกขัดบ่อยที่สุดหายไป ได้นิสัยตรงข้ามแทน (คนกลัวน้ำที่ถูกส่งลงทะเลสามครั้งกลายเป็นคนกล้า)"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:82"
+   },
+   {
+    "headings": [
+     "5. ความฝันที่จังหวะพิเศษ"
+    ],
+    "header": [
+     "จังหวะ",
+     "กติกาเพิ่ม"
+    ],
+    "rows": [
+     [
+      "หน้าต่างพระเจ้าที่แถวระบุคำใบ้หรือพร",
+      "ทางที่ตรงกับผลในแถวขึ้นเป็นหนึ่งในสามทางแน่นอน ราคา ×0.7"
+     ],
+     [
+      "ก่อนศึก",
+      "ทางสามทางเป็นท่าทีในศึก ([../combat/01-core.md](../combat/01-core.md)) ท่าทีที่ตรงความฝัน ×3 ตามเดิม"
+     ],
+     [
+      "วิกฤตขั้น 3 ของพวกพ้อง",
+      "ทางหนึ่งเป็นการเข้าไปช่วย ทางหนึ่งเป็นการปล่อย ทางหนึ่งเป็นทางที่เรื่องของพวกพ้องเขียนไว้"
+     ],
+     [
+      "ผู้ถูกผูกตัว",
+      "ทางหนึ่งเป็นทางหนีหรือทางไถ่ตัวที่แถวการผูกตัวเขียนไว้"
+     ],
+     [
+      "ยุคปลาย (โหนด le)",
+      "ทางหนึ่งเป็นการเลือกฝ่ายของกุญแจ ([../../lore/storylines/30-last-era.md](../../lore/storylines/30-last-era.md)) ตัวละครที่ทำตามนับเป็นแรงหนึ่งหน่วยของฝ่ายนั้นตามหัวข้อ 4 ของ [04-miracles.md](04-miracles.md)"
+     ],
+     [
+      "ใกล้ตาย",
+      "ความฝันสุดท้ายเลือกสิ่งที่ตัวละครทิ้งไว้ (ของ คำพูด ตำแหน่ง) ทำตามเสมอ ไม่ทอย"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:92"
+   },
+   {
+    "headings": [
+     "6. กระซิบ"
+    ],
+    "header": [
+     "คำใบ้",
+     "ผล",
+     "ที่มา"
+    ],
+    "rows": [
+     [
+      "ระวัง",
+      "ทางปลอดภัย ×2 สองการตัดสินใจถัดไป ทอยรับรู้ในศึก +2",
+      "llm-ideas"
+     ],
+     [
+      "กล้าเถิด",
+      "ทางเสี่ยง ×2 สองการตัดสินใจถัดไป การตีอาวุธ +2",
+      "llm-ideas · การตีอาวุธ"
+     ],
+     [
+      "จงไป (ชี้ทวีปหรือที่)",
+      "การเดินทางไปที่ชี้ ×1.5 อาชีพลับที่ผูกกับที่นั้น ×1.5 ต่อปี",
+      "llm-ideas · อาชีพลับ"
+     ],
+     [
+      "จงอยู่",
+      "การย้ายถิ่น ×0.5 สิบปี",
+      "llm-ideas"
+     ],
+     [
+      "จุดอ่อนของศัตรู",
+      "ศึกถัดไป ท่าทีที่ตรงจุดอ่อน ×3",
+      "llm-ideas"
+     ],
+     [
+      "คนนั้นโกหก (ชี้ NPC)",
+      "ไว้ใจต่อ NPC นั้น −2",
+      "llm-ideas"
+     ],
+     [
+      "ช่วย (ชี้ NPC)",
+      "ทาง `[ช่วย]` ของเรื่อง NPC นั้น ×2",
+      "เครื่องรางของ NPC"
+     ],
+     [
+      "สางเรื่อง",
+      "เรื่องค้างหนึ่งเรื่องของสายตระกูลเปิดเป็นโหนดภายในห้าปี",
+      "ทายาท"
+     ],
+     [
+      "ชี้ทายาท",
+      "ผู้สืบที่ชี้ ×3 ในการเลือกทายาท",
+      "ทายาท"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:105"
+   },
+   {
+    "headings": [
+     "7. คำอธิษฐาน"
+    ],
+    "header": [
+     "คำตอบ",
+     "ราคา",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "**ให้**",
+      "8–25 แสงศรัทธาตามชนิด",
+      "ได้ตามขอ ศรัทธาเทพ +8 (×1.5 ถ้าแกนศรัทธา > 30) แสงศรัทธา +2"
+     ],
+     [
+      "**ให้แบบแปลก**",
+      "เท่ากับให้",
+      "เปิดหีบเล็กสามช่องที่ตรงคำขอ ผู้เล่นเลือกหนึ่งใบ ตัวละครได้สิ่งที่ไม่ได้ขอแต่ช่วยเรื่องเดียวกัน (ขอเงิน ได้เครื่องรางที่มีผู้สถิต) ศรัทธาเทพ +5 และเปิดเหตุการณ์เล็กหนึ่งเรื่อง"
+     ],
+     [
+      "**ปฏิเสธ**",
+      "ฟรี",
+      "ศรัทธาเทพ −3 (−1 ถ้าเคร่ง)"
+     ],
+     [
+      "**ลงโทษผู้ขอ**",
+      "ฟรี",
+      "ความหวาดกลัว +6 ถึง +10 ศรัทธาเทพ −12 ตัวละครถูกนับว่าเป็นผู้ถูกกระทำ (เงื่อนไขทางผู้ล่าเทพ)"
+     ],
+     [
+      "**นิ่ง**",
+      "ฟรี",
+      "หมดเวลาใน 14 ช่วงเวลา ศรัทธาเทพ −2 คำอธิษฐานที่ไม่ได้คำตอบรวมทั้งโลกหลายทศวรรษนำไปสู่ GD-05"
+     ]
+    ],
+    "src": "docs/systems/god/03-dreams.md:121"
+   },
+   {
+    "headings": [],
+    "header": [
+     "สาย",
+     "สีใน UI",
+     "จ่ายด้วย",
+     "ตัวอย่าง"
+    ],
+    "rows": [
+     [
+      "สร้าง",
+      "ทอง",
+      "แสงศรัทธา",
+      "ฝน รักษาโรค น้ำพุกลางทราย ยกแผ่นดินใหม่"
+     ],
+     [
+      "ทำลาย",
+      "แดงเลือดหมู",
+      "ความหวาดกลัว",
+      "ฟ้าผ่า โรคระบาด ดาวตก แผ่นดินกลืนเมือง"
+     ],
+     [
+      "มังกร",
+      "ตามมังกร",
+      "แสงศรัทธาหรือความหวาดกลัว",
+      "ปลอบหรือยั่วมังกรตำนาน"
+     ],
+     [
+      "ลิขิต",
+      "เงิน",
+      "ตามทิศที่เบน",
+      "เบนน้ำหนักเหตุการณ์โลกที่มีลาง"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:7"
+   },
+   {
+    "headings": [
+     "2. กติกาเหล็ก"
+    ],
+    "header": [
+     "ข้อ",
+     "กติกา",
+     "เหตุผลในโลก"
+    ],
+    "rows": [
+     [
+      "1",
+      "ปาฏิหาริย์ไม่ฆ่าตัวละครหลัก ถ้าตัวละครอยู่ในพื้นที่ เขารอดด้วยลางที่พาออกมาทัน บาดเจ็บได้",
+      "พระเจ้าเฝ้าดูชีวิตนี้ ไม่ใช่ผู้ตัดสินมัน"
+     ],
+     [
+      "2",
+      "มังกรตำนานไม่ตายด้วยปาฏิหาริย์ ปาฏิหาริย์เปลี่ยนได้เพียงอารมณ์มังกร (หัวข้อ 3 สายมังกร) การล้มยังต้องผ่านเงื่อนไขของมังกร",
+      "ผนึกคือร่างของมังกร พระเจ้าที่อ่อนแรงลงตั้งแต่มหาล่มสลายแตะผนึกตรง ๆ ไม่ได้"
+     ],
+     [
+      "3",
+      "ประเทศที่มังกรตำนานที่ยังมีชีวิตอาศัย ([../../lore/dragons/README.md](../../lore/dragons/README.md) คอลัมน์ที่อยู่) และ AL-01 คองคอร์เดีย เป็น **หมุดผนึก** ปาฏิหาริย์สายทำลายใช้ได้ แต่ผนึกรับแรงไว้ส่วนหนึ่ง ผลลดหนึ่งระดับ และมังกรหรือกุญแจตอบกลับ (หัวข้อ 5.4)",
+      "ผนึกของมังกรและกุญแจคำสัตย์ร้อยเผ่ารับแรงที่ตกบนที่ของมัน แรงที่รับไว้ทำให้มังกรเจ็บ เมื่อมังกรล้ม ที่นั้นเป็นประเทศธรรมดา"
+     ],
+     [
+      "4",
+      "ปาฏิหาริย์เปิดแกนหรือเรียกฉากจบ END โดยตรงไม่ได้ ปาฏิหาริย์เปลี่ยนตัวแปรโลกที่เหตุการณ์อ่าน (ศรัทธา ความหิว อารมณ์มังกร กุญแจ) ภายในช่วงของตาราง",
+      "ฉากจบของโลกเกิดจากผู้คนเลือก ([../../lore/world/story-continents.md](../../lore/world/story-continents.md))"
+     ],
+     [
+      "5",
+      "ปาฏิหาริย์ที่ทำให้เป็นซาก (MR-17 MR-18 และเสกตามใจที่ใช้ผลของสองแบบนี้) ใช้ได้ชีวิตละครั้ง และทั้งโลกห่างกันอย่างน้อย 100 ปีโลก (ปรับจากการจำลอง [06-implementation.md](06-implementation.md) หัวข้อ 4 เดิมประเทศละครั้งต่อ 100 ปีซึ่งให้ซากราว 48 แห่งต่อโลก)",
+      "ให้ซากได้เล่าเรื่องของมัน ก่อนจะถูกทำลายซ้ำ"
+     ],
+     [
+      "6",
+      "ปาฏิหาริย์มีจำนวนจำกัด ต่อชีวิต: เล็กไม่จำกัดจำนวน (มีแต่ระยะรอ) · กลาง 4 ครั้ง · ใหญ่ 2 ครั้ง · มหา 1 ครั้ง · เสกตามใจ 3 ครั้ง ([07-conjure.md](07-conjure.md)) ต่อโลก: ใหญ่หนึ่งครั้งต่อ 25 ปีโลก กลางหนึ่งครั้งต่อห้าปีโลก",
+      "ให้ปาฏิหาริย์ใหญ่เป็นเหตุการณ์ ไม่ใช่เครื่องมือประจำวัน ผู้เล่นต้องเลือกว่าจะใช้มือของพระเจ้ากับอะไร"
+     ],
+     [
+      "7",
+      "ปาฏิหาริย์สายทำลายระดับใหญ่ครั้งที่สามในโลกเดียวเปิด GD-08 เทพองค์อื่นตื่น แม้ศรัทธาโลกยังไม่ถึงเงื่อนไข ครั้งที่สามขึ้นไปเพิ่มน้ำหนัก GD-08 ×1.5 ต่อครั้ง และขบวนการผู้ล่าเทพได้ฐานใหม่ที่ซากล่าสุด",
+      "ความกลัวที่มากเกินปลุกสิ่งที่หลับอยู่"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:24"
+   },
+   {
+    "headings": [
+     "3. รายการปาฏิหาริย์"
+    ],
+    "header": [
+     "ปาฏิหาริย์",
+     "ระดับ · เป้าหมาย",
+     "ราคา · รอ",
+     "ผลทันที",
+     "ผลต่อโลกและเศรษฐกิจ",
+     "เรื่องที่เปิด"
+    ],
+    "rows": [
+     [
+      "**MR-01 ฝนต้องฤดู**",
+      "เล็ก · ประเทศ",
+      "15 แสงศรัทธา · 5",
+      "ฝนตกหนึ่งฤดู ภัยแล้งของประเทศจบ",
+      "ธง `famine` หาย อาหาร ×0.8 สองปี",
+      "ชาวนาตั้งศาลให้ฝน (เหตุการณ์ท้องถิ่น)"
+     ],
+     [
+      "**MR-02 รักษาโรค**",
+      "เล็ก · ประเทศ",
+      "20 แสงศรัทธา · 10",
+      "ผู้ป่วยหายในหนึ่งฤดู",
+      "ธง `plague` หาย ยา (H) ×0.7 สองปี",
+      "ผู้หายป่วยกลายเป็นผู้ศรัทธา ศรัทธาตรงของประเทศ +5"
+     ],
+     [
+      "**MR-03 เก็บเกี่ยวทอง**",
+      "เล็ก · ประเทศ",
+      "25 แสงศรัทธา · 10",
+      "ข้าวออกรวงสองเท่า",
+      "ธง `golden` ห้าปี อาหาร ×0.8",
+      "ประเทศข้างเคียงอิจฉา ความเสี่ยงสงครามชายแดน +10%"
+     ],
+     [
+      "**MR-04 แสงศักดิ์สิทธิ์**",
+      "เล็ก · ประเทศ",
+      "30 แสงศรัทธา · 10",
+      "แสงตกกลางเมืองหนึ่งคืน ผีและกูลในประเทศหนีออก",
+      "ศรัทธาตรงของประเทศ +10",
+      "ผู้ล่าแวมไพร์และศาลศาสนาแห่มา"
+     ],
+     [
+      "**MR-05 สงบศึก**",
+      "เล็ก · ประเทศหรือสองประเทศที่รบกัน",
+      "30 แสงศรัทธา · 15",
+      "สงครามหยุดห้าปี ทหารวางอาวุธเพราะเห็นนิมิตเดียวกัน",
+      "ธง `war` หายห้าปี น้ำหนัก WR ที่ประเทศนั้นเป็นฝ่าย ×0.5 สิบปี",
+      "ทหารที่เห็นนิมิตตั้งกลุ่มผู้ไม่จับดาบ"
+     ],
+     [
+      "**MR-06 ฟ้าผ่า**",
+      "เล็ก · NPC หรือศัตรูหนึ่ง",
+      "10 ความหวาดกลัว · 3",
+      "NPC หรือศัตรูเป้าหมายตายหรือบาดเจ็บสาหัส (50/50)",
+      "ไม่ใช้กับตัวละครหลัก มังกรตำนาน และพวกพ้องตัวหลักที่เป็นพวกพ้องอยู่",
+      "ตำแหน่งของ NPC ที่ตายใช้กติกาผู้สืบ ([../../lore/npcs/succession.md](../../lore/npcs/succession.md)) คนใกล้ตัวของเขาได้เรื่องที่ตามมา (หัวข้อ 2.2 ของ NPC)"
+     ],
+     [
+      "**MR-07 โรคระบาด**",
+      "เล็ก · ประเทศ",
+      "20 ความหวาดกลัว · 15",
+      "โรคแพร่หนึ่งปี",
+      "ธง `plague` ยา ×3 W −1 สองปี",
+      "ผู้รักษาและผู้หาเหตุ"
+     ],
+     [
+      "**MR-08 แผ่นดินไหว**",
+      "เล็ก · ประเทศ",
+      "20 ความหวาดกลัว · 10",
+      "อาคารพังบางส่วน",
+      "ธง `famine` สองปี W −1 ห้าปี ทอยหนึ่งครั้ง 20% ซากย่อย (RU-03 ไม่มี RU-01)",
+      "ช่างก่อสร้างและผู้ขุด"
+     ],
+     [
+      "**MR-09 พายุใหญ่**",
+      "กลาง · ทะเลของหนึ่งทวีป",
+      "25 ความหวาดกลัว · 10",
+      "เรือจมหลายลำ",
+      "ต้นทุนขนส่งทะเลของทวีปนั้น ×2 ห้าปี C −5",
+      "เรือร้าง สมบัติจม ลูกเรือที่รอด"
+     ],
+     [
+      "**MR-10 น้ำพุกลางทราย**",
+      "กลาง · ประเทศในทะเลทรายหรือภัยแล้ง",
+      "40 แสงศรัทธา · 30",
+      "น้ำพุผุดกลางเมือง",
+      "W +1 ถาวร (ไม่เกิน 4) น้ำเป็นเงินของ SH-05 เสียค่า",
+      "ผู้ถือน้ำพุ ผู้อยากยึดน้ำพุ (สงครามเล็ก)"
+     ],
+     [
+      "**MR-11 ป่าคืนชีพ**",
+      "กลาง · ประเทศที่ป่าตายหรือถูกตัด",
+      "40 แสงศรัทธา · 30",
+      "ต้นไม้งอกเต็มหนึ่งปี",
+      "ไม้และของป่า ×0.7 สิบปี ป่าเหี่ยวของประเทศนั้นหายถ้ามี",
+      "เผ่าสัตว์และเอลฟ์กลับมา ผู้ตัดไม้ไม่พอใจ"
+     ],
+     [
+      "**MR-12 ฝูงตั๊กแตน**",
+      "กลาง · ประเทศเกษตร",
+      "30 ความหวาดกลัว · 20",
+      "พืชหมดหนึ่งฤดู",
+      "อาหารในประเทศ ×3 สองปี W −1 สองปี",
+      "การปล้นอาหาร ผู้ลี้ภัยหิว"
+     ],
+     [
+      "**MR-13 ไฟผลาญ**",
+      "กลาง · ประเทศ",
+      "30 ความหวาดกลัว · 20",
+      "ไฟไหม้ป่าหรือเมืองหนึ่งฤดู",
+      "W −1 ห้าปี ไม้ ×2",
+      "ผู้หาคนวางไฟ (แพะรับบาป)"
+     ],
+     [
+      "**MR-14 ผู้พิทักษ์จากฟ้า**",
+      "กลาง · ประเทศ",
+      "50 แสงศรัทธา · 50",
+      "สัตว์วิเศษหนึ่งตัวลงมาเฝ้าเมือง (ชนิดตามทวีปจาก [../character/15-companion-species.md](../character/15-companion-species.md))",
+      "ศึกป้องกันของประเทศ +2 จนผู้พิทักษ์ตาย ผู้พิทักษ์เป็น NPC ★",
+      "ผู้พิทักษ์เป็นสัตว์คู่หูได้ถ้าตัวละครพิสูจน์ตน"
+     ],
+     [
+      "**MR-15 อสูรจากใต้ดิน**",
+      "กลาง · ประเทศ",
+      "45 ความหวาดกลัว · 50",
+      "อสูรหนึ่งตัวขึ้นจากใต้ดิน (ศัตรูระดับบอสถิ่นจาก [../combat/03-enemies.md](../combat/03-enemies.md))",
+      "ธง `war` จนอสูรตาย ทหารรับจ้าง ×2",
+      "ภารกิจล่าอสูร รางวัลตามระดับบอส"
+     ],
+     [
+      "**MR-16 ของในที่ลับ**",
+      "กลาง · ที่หนึ่งแห่ง",
+      "35 แสงศรัทธา · 30",
+      "ซ่อนของระดับ R หรือ E หนึ่งชิ้นในซาก ถ้ำ หรือศาล",
+      "ไม่มี",
+      "ข่าวลือถึงตัวละคร (คลังข่าวลือ) เป็นจุดหมายการเดินทาง NPC แย่งกันหาได้"
+     ],
+     [
+      "**MR-17 ดาวตก**",
+      "ใหญ่ · ประเทศ",
+      "60 ความหวาดกลัว · 50",
+      "ดาวตกกลางเมืองหลัก เมืองหายจากแผนที่",
+      "ประเทศเป็นซากพระเจ้า (หัวข้อ 5)",
+      "ชุดเหตุการณ์ RU ทั้งหมด เหล็กดาว `mt_star_iron` ในหลุม"
+     ],
+     [
+      "**MR-18 แผ่นดินกลืนเมือง**",
+      "ใหญ่ · ประเทศ",
+      "55 ความหวาดกลัว · 50",
+      "เมืองหลักจมลงดิน กลายเป็นหลุมยักษ์ที่น้ำค่อย ๆ เต็ม",
+      "ประเทศเป็นซากพระเจ้า รูปทะเลสาบ (RU-08 แทน RU-03 ช่วงแรก)",
+      "นักดำน้ำหาสมบัติ เมืองใต้น้ำ"
+     ],
+     [
+      "**MR-19 น้ำท่วมใหญ่**",
+      "ใหญ่ · ประเทศชายฝั่งหรือริมแม่น้ำ",
+      "50 ความหวาดกลัว · 50",
+      "น้ำท่วมสามปี",
+      "W −2 ห้าปี ผู้ลี้ภัยไปประเทศข้างเคียง (อาหารที่นั่น ×1.3) ไม่เป็นซาก",
+      "เมืองบนเสาแบบ DW-02 ในขนาดประเทศเดียว"
+     ],
+     [
+      "**MR-20 ยกแผ่นดินใหม่**",
+      "ใหญ่ · ทะเลข้างประเทศ",
+      "80 แสงศรัทธา · 100",
+      "เกาะหรือแหลมใหม่โผล่จากทะเล",
+      "ที่ดินว่างหนึ่งแห่ง ผู้ตั้งรกรากมาภายใน 20 ปี กลายเป็นประเทศใหม่ W 2 (ชื่อของที่ดินและประเทศจากแม่แบบแผ่นดินใหม่ [../llm/05-name-bank.md](../llm/05-name-bank.md) NPC ใช้แม่แบบ NT ของ [../../lore/npcs/succession.md](../../lore/npcs/succession.md))",
+      "การชิงที่ดินใหม่ ผู้บุกเบิก"
+     ],
+     [
+      "**MR-21 ปาฏิหาริย์แห่งพระเจ้า**",
+      "มหา · ทั้งโลก",
+      "แสงศรัทธาทั้งหมดที่มี อย่างน้อย 120 · ครั้งเดียวต่อชีวิต (เดิมต้องเต็ม 200 ซึ่งพระเจ้าที่เก็บพลังทั้งชีวิตถึงเพียง 14% ของชีวิต [06-implementation.md](06-implementation.md) หัวข้อ 4)",
+      "เกิด GD-04 ทันที ([../events/world-events.md](../events/world-events.md))",
+      "ศรัทธาโลก +30 ครั้งเดียว ทั้งโลกรู้ว่าพระเจ้ามีจริง ถ้าตัวละครเป็นผู้เห็น `wl_light_sword` เกิดกับเขา",
+      "ทุกศาสนาตีความใหม่ ผู้ไร้ศาสนาแตกสองฝ่าย"
+     ],
+     [
+      "**MR-22 พระพิโรธ**",
+      "มหา · หนึ่งทวีป",
+      "ความหวาดกลัว 150 · ครั้งเดียวต่อชีวิต",
+      "ฟ้ามืดเจ็ดวัน ทุกสงครามในทวีปหยุดด้วยความกลัว",
+      "ธง `war` หายทั้งทวีปสิบปี ศรัทธาตรงทั้งทวีป −15 ความหวาดกลัวรายปีของพระเจ้า ×2 ตลอดชีวิตที่เหลือ น้ำหนัก GD-08 ×2",
+      "ลัทธิผู้กลัวพระเจ้า ผู้ล่าเทพได้ผู้ติดตามในทวีปนั้น"
+     ],
+     [
+      "**MR-23 ปลอบมังกร**",
+      "มังกร · มังกรตำนานหนึ่งตัว",
+      "40 แสงศรัทธา · 50 ต่อตัว",
+      "มังกรได้ยินเสียงที่ปลอบ ฝันดีหนึ่งปี",
+      "อารมณ์ของมังกรตัวนั้น +10 (ไม่เกินเพดาน [../simulation/dragon-mood.md](../simulation/dragon-mood.md))",
+      "ผู้ปรนนิบัติเห็นมังกรสงบ พิธีบรรณาการได้ผลดีขึ้น"
+     ],
+     [
+      "**MR-24 ยั่วมังกร**",
+      "มังกร · มังกรตำนานหนึ่งตัว",
+      "40 ความหวาดกลัว · 50 ต่อตัว",
+      "มังกรฝันร้ายหนึ่งปี",
+      "อารมณ์ของมังกรตัวนั้น −10 ลางของการล้มมาเร็วขึ้น",
+      "ผู้ปรนนิบัติเห็นมังกรกระวนกระวาย ลัทธิผู้ปลดผนึกได้กำลังใจ"
+     ],
+     [
+      "**MR-25 ลิขิต**",
+      "ลิขิต · เหตุการณ์โลกหนึ่งรายการที่มีลาง",
+      "⭐ 60 · ● 30 · ○ 15 · รอตามหัวข้อ 4",
+      "ลางเปลี่ยนสีบนแผนที่",
+      "น้ำหนักของเหตุการณ์นั้น ×0.2 ถึง ×3 ตามที่เลือก (หัวข้อ 4)",
+      "ผู้ทำนายในถิ่นรู้สึกว่าเรื่องถูกเปลี่ยน"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:38"
+   },
+   {
+    "headings": [
+     "4. ลิขิต: เบนเหตุการณ์โลก"
+    ],
+    "header": [
+     "กติกา",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "เป้าหมาย",
+      "เหตุการณ์ ⭐ หรือ ● ที่มีลางอยู่ (1 ถึง 3 ฤดูก่อนเกิด) หรือ ○ ในทวีปที่ตัวละครอยู่"
+     ],
+     [
+      "ทิศ",
+      "ชะลอ (×0.2 ถึง ×0.9) จ่ายด้วยแสงศรัทธา · เร่ง (×1.1 ถึง ×3) จ่ายด้วยความหวาดกลัว ราคาตามตาราง MR-25 คูณ \\",
+      "1 − ตัวคูณ\\",
+      "ปัดขึ้น ไม่ต่ำกว่าครึ่งราคา"
+     ],
+     [
+      "ระยะ",
+      "ตัวคูณมีผลจนลางหมด หรือสิบปีโลก แล้วแต่อะไรถึงก่อน"
+     ],
+     [
+      "ช่อง",
+      "เหตุการณ์ละหนึ่งช่อง ลิขิตซ้อนกันไม่ได้"
+     ],
+     [
+      "มังกรล้ม",
+      "ชะลอได้ แต่ไม่ต่ำกว่า ×0.5 (ตามเดิม การล้มของมังกรป้องกันได้ไม่ถึง 100%) เร่งได้ไม่เกิน ×2 (ปรับจากการจำลอง [06-implementation.md](06-implementation.md) หัวข้อ 4: ผู้เล่นที่ใช้พลังทั้งสายตระกูลเร่งจบทำให้โลกจบภายใน 1,800 ปีราวสองเท่าของค่าฐาน ตัวคูณนี้ช่วยให้อยู่ใต้เส้น)"
+     ],
+     [
+      "ฉากจบ END",
+      "ลิขิตไม่ได้ ลิขิตได้เฉพาะเหตุการณ์ที่เป็นเงื่อนไข เช่น WR-15 LE-11"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:70"
+   },
+   {
+    "headings": [
+     "5. ซากพระเจ้า",
+     "5.1 ผลทันที"
+    ],
+    "header": [
+     "สิ่ง",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "เมือง",
+      "เมืองหลักหายจากแผนที่ ชื่อประเทศขีดฆ่า ป้ายรองขึ้นว่า \"ซาก<ชื่อเดิม>\" ([../../appearance/20-god-ui.md](../../appearance/20-god-ui.md) หัวข้อ 7) ภาพเมืองใช้ซากแบบ `fallen` ของโค้ด (อาคารพังราว 75%)"
+     ],
+     [
+      "ผู้คน",
+      "ประชากรเหลือ 10% ถึง 40%"
+     ],
+     [
+      "NPC ของประเทศ",
+      "ทอยต่อคน: ตาย 50 · หนีเป็นผู้ลี้ภัยไปประเทศข้างเคียง 30 · อยู่เป็นผู้นำซาก 20 ผู้นำประเทศที่รอดเป็นผู้นำซากเสมอ ตำแหน่งที่ว่างใช้กติกาผู้สืบ"
+     ],
+     [
+      "พวกพ้องของตัวละครที่อยู่ในประเทศ",
+      "ทอยเหมือน NPC แต่ตายเพียง 25 ที่เหลือหนีมาหาตัวละคร"
+     ],
+     [
+      "ตัวละครหลัก",
+      "รอดตามกติกาเหล็กข้อ 1 ถ้าอยู่ในประเทศ ได้คำสาป `nc_homeland_ghost` 50% และศรัทธาเทพ −10"
+     ],
+     [
+      "เหตุการณ์ที่ยึดกับประเทศ",
+      "ปิดตามกติกาที่ยึด: เหตุการณ์ท้องถิ่น LC ของประเทศปิด เหตุการณ์โลกที่ระบุประเทศนั้นเป็นที่เกิดใช้รูปซาก ถ้าแถวไม่มีรูปซาก ปิด"
+     ],
+     [
+      "จุดบรรจบที่ตั้งในประเทศ",
+      "ย้ายไปประเทศข้างเคียงที่ใกล้ที่สุดในทวีปเดียวกัน (เช่น cv.4 ถ้า NB-08 ไม่ได้รับการปกป้อง) เหตุผลในเรื่อง: ผู้รอดพาพิธีไปด้วย"
+     ],
+     [
+      "เศรษฐกิจ",
+      "W เป็น 1 ถาวรจนกว่าเมืองใหม่ (RU-07) ตลาดหาย การค้าที่ผ่านประเทศย้ายไปเส้นข้างเคียง C −5"
+     ],
+     [
+      "ศรัทธา",
+      "ศรัทธาตรงของประเทศข้างเคียง −10 ความหวาดกลัวของพระเจ้า +20 (ผู้รอดเล่าต่อ) ศรัทธาเทพของตัวละคร −10 ถ้าตัวละครเห็น"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:87"
+   },
+   {
+    "headings": [
+     "5. ซากพระเจ้า",
+     "5.2 เหตุการณ์ของซาก"
+    ],
+    "header": [
+     "เหตุการณ์",
+     "เงื่อนไข",
+     "เกิดอะไร",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "**RU-01 ปีแรกของหลุมดาว**",
+      "ปีแรกหลัง MR-17",
+      "ผู้รอดตั้งค่ายรอบหลุม ไฟยังคุ ฝนเถ้าตกทั้งปี",
+      "อาหารในค่าย ×3 ผู้รอดที่เป็น NPC ได้สถานะผู้ลี้ภัยในถิ่น"
+     ],
+     [
+      "**RU-02 ขบวนผู้ลี้ภัยจากซาก**",
+      "ภายในสองปี",
+      "ผู้รอดเดินไปประเทศข้างเคียงที่รับ",
+      "อาหารที่ประเทศรับ ×1.3 ห้าปี ประเทศที่ไม่รับ ความตึงเครียดชายแดน +10% เปิดโหนด `mr.a1` ให้ตัวละครที่อยู่ประเทศรับ"
+     ],
+     [
+      "**RU-03 นักขุดซาก**",
+      "สามถึงสิบปีหลัง",
+      "นักผจญภัย พ่อค้า และโจรมาขุดเหล็กดาวและสมบัติของเมืองเก่า",
+      "`mt_star_iron` หาได้ที่ซาก ทหารรับจ้างในทวีป ×1.2 เปิดโหนด `mr.a2`"
+     ],
+     [
+      "**RU-04 ลัทธิหลุมดาว**",
+      "ห้าปีหลัง · ความหวาดกลัวของพระเจ้า ≥ 60",
+      "ผู้รอดบางคนบูชาพระเจ้าผู้ลงโทษ เชื่อว่าเมืองถูกพิพากษา",
+      "ลัทธินับเป็นช่องทาง B ของประเทศ (ความหวาดกลัวรายปีของพระเจ้า +0.5) เปิดโหนด `mr.a3`"
+     ],
+     [
+      "**RU-05 ผู้แค้นฟ้า**",
+      "ห้าปีหลัง · ไม่มี RU-04 หรือ NPC ผู้นำซากรอด",
+      "ผู้รอดสาบานล้างแค้นพระเจ้า",
+      "ขบวนการผู้ล่าเทพได้ฐานที่ซาก น้ำหนัก GD-08 ×1.2 เปิดโหนด `mr.a4`"
+     ],
+     [
+      "**RU-06 ทายาทของเมืองที่หาย**",
+      "สิบปีหลัง",
+      "ลูกหลานของผู้นำเดิมเรียกร้องสิทธิ์ในที่ดินและตราประเทศ",
+      "NPC ผู้สืบของผู้นำเดิมเป็นเรื่องเปิด ทาง `[ช่วย]` `[ขัดขวาง]` ใช้กติกา NPC"
+     ],
+     [
+      "**RU-07 เมืองใหม่บนซาก**",
+      "40 ถึง 80 ปีหลัง · ไม่มีสงครามในประเทศ",
+      "เมืองใหม่สร้างบนขอบหลุม ใช้หินดำจากหลุม",
+      "ธง `god_ruin` หาย ประเทศกลับเป็นประเทศ W 2 ชื่อใหม่ (แม่แบบ NT) เหตุการณ์ท้องถิ่นใหม่ใช้แม่แบบ LT"
+     ],
+     [
+      "**RU-08 ทะเลสาบหลุมดาว**",
+      "หลัง MR-18 หรือ 20 ปีหลัง MR-17 ในประเทศที่ฝนชุก",
+      "หลุมกลายเป็นทะเลสาบ ยอดหอเก่าโผล่พ้นน้ำ",
+      "ของทะเล (S) หาได้ที่ซาก นักดำน้ำหาสมบัติเปิดโหนด `mr.a2` รูปใต้น้ำ"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:103"
+   },
+   {
+    "headings": [
+     "5. ซากพระเจ้า",
+     "5.4 หมุดผนึก: เมื่อพระเจ้าโจมตีที่ของมังกร"
+    ],
+    "header": [
+     "ปาฏิหาริย์ที่ตก",
+     "ผลต่อประเทศ (ลดหนึ่งระดับ)",
+     "ผลต่อมังกรที่อาศัย",
+     "ผลอื่น"
+    ],
+    "rows": [
+     [
+      "ทำลายระดับกลาง (MR-09 MR-12 MR-13 MR-15)",
+      "ใช้ผลของระดับเล็กที่ใกล้ที่สุด (W −1 สองปี ธง `famine` หรือ `plague` หนึ่งปี)",
+      "อารมณ์ −10",
+      "ผู้ปรนนิบัติของมังกรตัวนั้นทั่วโลก ศรัทธาตรงต่อพระเจ้า −5"
+     ],
+     [
+      "ทำลายระดับใหญ่ (MR-17 MR-18 MR-19)",
+      "ไม่เป็นซาก เป็น **เมืองร้าว**: อาคารพังราว 35% ประชากรเหลือ 70% NPC ทอยตาย 20 หนี 20 อยู่ 60 W −2 สิบปี เหตุการณ์ที่ยึดกับประเทศยังอยู่",
+      "อารมณ์ −20 และเพดานอารมณ์ของตัวนั้น −5 ถาวร",
+      "RU-02 และ RU-03 เปิด (เศษเกล็ดและเศษผนึกแทนเหล็กดาว) RU-01 RU-07 ไม่เปิด"
+     ],
+     [
+      "ทำลายมหา (MR-22) บนทวีปที่มีที่ของมังกร",
+      "ทุกประเทศที่เป็นหมุดผนึกในทวีปใช้ผลระดับกลาง",
+      "อารมณ์ของทุกตัวในทวีป −15",
+      ""
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:124"
+   },
+   {
+    "headings": [
+     "5. ซากพระเจ้า",
+     "5.4 หมุดผนึก: เมื่อพระเจ้าโจมตีที่ของมังกร"
+    ],
+    "header": [
+     "อารมณ์หลังโดน",
+     "การตอบกลับ"
+    ],
+    "rows": [
+     [
+      "50 ขึ้นไป",
+      "**ปกป้อง** มังกรแผ่ผนึกคลุมประเทศ ผู้คนวิ่งเข้าหามังกร ศรัทธาผนึก (ช่องทาง A) ของทวีป +5 ศรัทธาตรง (B) −5 ประเทศนั้นไม่ถูกปาฏิหาริย์ใด ๆ ได้อีก 50 ปีโลก"
+     ],
+     [
+      "25 ถึง 49",
+      "**คำราม** มังกรส่งความเจ็บผ่านพี่น้อง อารมณ์ของมังกรตัวที่สนิทที่สุด −5 ([../simulation/dragon-mood.md](../simulation/dragon-mood.md) ตารางความสนิท) ลางของเหตุการณ์มังกรในทวีปเกิดเร็วขึ้นหนึ่งฤดู"
+     ],
+     [
+      "ต่ำกว่า 25",
+      "**ตื่นด้วยความเจ็บ** ถ้าเป็นมังกรเสา เหตุการณ์ตื่นของเสา (PL) ตัวนั้น ×3 สิบปี ถ้าเป็นผู้อาวุโส ความเสี่ยงล้มของตัวนั้นใช้เกณฑ์อารมณ์ต่ำตามปกติ ซึ่งอาจนำไปสู่การล้มและการเปลี่ยนยุค"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:132"
+   },
+   {
+    "headings": [
+     "6. ผู้เห็นและปฏิกิริยาของโลก"
+    ],
+    "header": [
+     "ปาฏิหาริย์",
+     "ศรัทธาตรงของประเทศเป้าหมาย",
+     "ประเทศข้างเคียง",
+     "ความหวาดกลัวของพระเจ้า"
+    ],
+    "rows": [
+     [
+      "สายสร้างระดับเล็ก",
+      "+5",
+      "0",
+      "0"
+     ],
+     [
+      "สายสร้างระดับกลางขึ้นไป",
+      "+10",
+      "+3",
+      "0"
+     ],
+     [
+      "สายทำลายระดับเล็ก",
+      "−5",
+      "0",
+      "+ราคา ÷ 3"
+     ],
+     [
+      "สายทำลายระดับกลาง",
+      "−10",
+      "−3",
+      "+ราคา ÷ 3"
+     ],
+     [
+      "สายทำลายระดับใหญ่",
+      "ประเทศเป็นซาก",
+      "−10",
+      "+20"
+     ],
+     [
+      "สายมังกร",
+      "ผู้ปรนนิบัติของมังกรนั้น ±5",
+      "0",
+      "+ราคา ÷ 3 ถ้าเป็นการยั่ว"
+     ]
+    ],
+    "src": "docs/systems/god/04-miracles.md:148"
+   },
+   {
+    "headings": [
+     "1. หลัก"
+    ],
+    "header": [
+     "ข้อ",
+     "หลัก"
+    ],
+    "rows": [
+     [
+      "1",
+      "**เกมตัดสิน LLM เขียน** ทาง ผล รหัส และตัวเลขมาจากเกมเสมอ (Hidden Door: LLM ไม่รู้กติกาของเกม เกมต้องคุมราง)"
+     ],
+     [
+      "2",
+      "**LLM เลือกได้เฉพาะจากเมนูที่เกมให้** ถ้า LLM เลือกอะไร (รายละเอียด น้ำเสียง ชื่อ) ต้องเป็นค่าใน `enum` ของแบบข้อมูลออก"
+     ],
+     [
+      "3",
+      "**สามชั้นของถ้อยคำ** ทุกงานมีแม่แบบ (ชั้น 0) และคลังที่สร้างตอนพัฒนา (ชั้น 1) LLM ระหว่างเล่น (ชั้น 2) ใช้เฉพาะเมื่อข้อมูลเฉพาะตัวเกินกว่าที่คลังครอบได้"
+     ],
+     [
+      "4",
+      "**เกมไม่รอ** ขอล่วงหน้าตอนจังหวะเงียบ ถ้ายังไม่ได้ใช้ชั้นที่ต่ำกว่า"
+     ],
+     [
+      "5",
+      "**ชื่อมาจากเกมเท่านั้น** ไม่ใช้ LLM ตั้งชื่อระหว่างเล่น ([../llm/03-naming.md](../llm/03-naming.md)) บทบาทที่เปลี่ยนเรื่องได้อยู่ใน [../llm/04-story.md](../llm/04-story.md)"
+     ],
+     [
+      "6",
+      "**ไม่มี LLM ก็เล่นได้เต็ม** เชื่อมต่อไม่ได้หรือเครดิตหมด เกมใช้ชั้น 0 และ 1 ผลเหมือนเดิมทุกตัวเลข ([../llm/02-offline.md](../llm/02-offline.md))"
+     ],
+     [
+      "7",
+      "**กุญแจ API อยู่ที่เซิร์ฟเวอร์** เบราว์เซอร์ส่งชื่องานกับข้อมูลสั้นเท่านั้น (ตามโค้ดเดิม)"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:9"
+   },
+   {
+    "headings": [
+     "2. สามชั้นของถ้อยคำ"
+    ],
+    "header": [
+     "ชั้น",
+     "คืออะไร",
+     "ราคาระหว่างเล่น",
+     "ความหลากหลาย"
+    ],
+    "rows": [
+     [
+      "0 แม่แบบ",
+      "ประโยคมีช่องว่าง เขียนมือหรือมีอยู่ในโค้ด",
+      "0",
+      "ต่ำ"
+     ],
+     [
+      "1 คลัง",
+      "ถ้อยคำหลายแบบต่อชุดสถานะ (ชนิดงาน × สถานะไม่กี่อย่าง ที่เหลืออยู่ในช่อง) เขียนตอนพัฒนาโดย agent Claude Opus ตาม [../llm/09-library.md](../llm/09-library.md) ตรวจด้วย `scripts/llm/check-library.mjs` agent อีกตัวอ่านทุกบรรทัด ผู้ใช้อ่านหนึ่งบรรทัดต่อชุด แล้วส่งไปกับเกมเป็นไฟล์ใน `data/library/` เลือกด้วยเมล็ดของโลก",
+      "0",
+      "สูง (4 ถึง 16 แบบต่อชุดสถานะ บวกแบบของชั้น 0)"
+     ],
+     [
+      "2 สดระหว่างเล่น",
+      "LLM รุ่นเล็กเขียนจากข้อมูลเฉพาะของชีวิตนี้",
+      "ต่ำ",
+      "สูงสุด เฉพาะตัว"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:21"
+   },
+   {
+    "headings": [
+     "3. งาน"
+    ],
+    "header": [
+     "งาน",
+     "ใช้เมื่อ",
+     "ชั้นที่แนะนำ",
+     "รวมคำขอ",
+     "ข้อมูลเข้าหลัก",
+     "ข้อมูลออก"
+    ],
+    "rows": [
+     [
+      "`dream`",
+      "เปิดหน้าเข้าฝัน",
+      "2 (สำรอง 1)",
+      "สามทางในคำขอเดียว",
+      "สัญลักษณ์ ชื่อทาง เป้าหมาย เผ่า ภูมิอากาศ นิสัยสองข้อ ชื่อที่อนุญาต",
+      "ภาพฝันสามชิ้น ชิ้นละไม่เกิน 3 ประโยค เงาของผลชิ้นละ 1 ประโยค"
+     ],
+     [
+      "`dream_wake`",
+      "หลังทอยผลความฝัน",
+      "1",
+      "",
+      "ผล เหตุผลจากสูตร สัญลักษณ์",
+      "1 ถึง 2 ประโยค"
+     ],
+     [
+      "`omen`",
+      "กระซิบ ลางของปาฏิหาริย์",
+      "1",
+      "ลางทั้งปีชีวิตในคำขอเดียวถ้าใช้ชั้น 2",
+      "คำใบ้หรือปาฏิหาริย์ ที่ ฤดู",
+      "1 ประโยค"
+     ],
+     [
+      "`prayer`",
+      "คำอธิษฐานเกิด",
+      "1",
+      "",
+      "ชนิด สถานการณ์ ระดับศรัทธาเทพ เผ่า",
+      "1 ถึง 2 ประโยค"
+     ],
+     [
+      "`answer_twist`",
+      "ให้แบบแปลก",
+      "2 (สำรอง 1)",
+      "",
+      "คำขอ ของที่เลือก",
+      "2 ถึง 3 ประโยค"
+     ],
+     [
+      "`miracle_day`",
+      "วันเกิดเหตุของปาฏิหาริย์ระดับกลางขึ้นไป",
+      "1 สำหรับปาฏิหาริย์ในรายการ · 2 สำหรับเสกตามใจ",
+      "ห้าจังหวะในคำขอเดียว",
+      "ปาฏิหาริย์ ประเทศ ชื่อเมือง NPC ที่เกี่ยว ผลที่เกิดแล้ว",
+      "ห้าประโยค"
+     ],
+     [
+      "`chronicle`",
+      "ผลทันทีของปาฏิหาริย์จบ",
+      "2 (สำรอง 0)",
+      "",
+      "รายการผลจากพงศาวดาร",
+      "หนึ่งย่อหน้าสั้น"
+     ],
+     [
+      "`rumor`",
+      "MR-16 เหตุการณ์ RU",
+      "1",
+      "ข่าวลือทั้งปีในคำขอเดียว",
+      "ที่ ของ ระดับ",
+      "1 ประโยค ไม่บอกตำแหน่งตรง"
+     ],
+     [
+      "`npc_voice`",
+      "NPC พูดถึงพระเจ้า",
+      "1 (2 เฉพาะ NPC ที่เป็นพวกพ้อง)",
+      "",
+      "NPC บทบาท ความรู้สึกจากแกนสี่แกน",
+      "1 ถึง 2 ประโยค"
+     ],
+     [
+      "`vow_page`",
+      "คำปฏิญาณจบ ([08-goals.md](08-goals.md))",
+      "2 (สำรอง 0)",
+      "รวมกับ `epitaph`",
+      "คำปฏิญาณ ผล เหตุการณ์สามถึงห้าเรื่องที่เกี่ยว",
+      "หนึ่งย่อหน้า"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:33"
+   },
+   {
+    "headings": [
+     "4. LLM เพิ่มความเป็นไปได้อย่างไร โดยไม่แตะกติกา"
+    ],
+    "header": [
+     "ทาง",
+     "ทำอย่างไร",
+     "ตัวอย่าง"
+    ],
+    "rows": [
+     [
+      "เลือกรายละเอียดจากเมนู",
+      "เกมเสนอรายละเอียดสามแบบที่ไม่เปลี่ยนตัวเลข (จุดที่ดาวตก ใครเห็นก่อน สีของแสง ของที่ผู้รอดถือออกมา) LLM เลือกหนึ่งตามที่เข้ากับเรื่อง แล้วเล่า",
+      "ดาวตกใส่ตลาดหรือใส่วิหาร เรื่องของผู้รอดต่างกัน"
+     ],
+     [
+      "น้ำเสียงตามผู้พูด",
+      "ถ้อยคำเดียวกันเปลี่ยนตามเผ่า ศาสนา และความรู้สึกของผู้พูด",
+      "ผู้ปรนนิบัติมังกรเล่าดาวตกเป็นการลงโทษ ผู้ไร้ศาสนาเล่าเป็นหินจากฟ้า"
+     ],
+     [
+      "ความทรงจำที่อ้างกลับ",
+      "ข้อมูลเข้ามีสองถึงสามบรรทัดจากพงศาวดาร LLM โยงถึงสิ่งที่เคยเกิดได้ (Hades: เกมรู้ว่าเกิดอะไรมาแล้ว)",
+      "ตัวละครพูดถึงความฝันที่เคยปฏิเสธ"
+     ],
+     [
+      "ข่าวลือหลายแบบของความจริงเดียว",
+      "เกมรู้ความจริง LLM เขียนข่าวลือที่ถูกบางส่วนตามระดับความน่าเชื่อที่เกมกำหนด",
+      "ข่าวของในที่ลับมีทั้งชี้ถูกทวีปและชี้ผิดเมือง"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:50"
+   },
+   {
+    "headings": [
+     "5. ทำให้ถูก"
+    ],
+    "header": [
+     "เทคนิค",
+     "กติกา"
+    ],
+    "rows": [
+     [
+      "รุ่นเล็ก",
+      "งานชั้น 2 ใช้ DeepSeek V4.1 Flash (`deepseek-flash`) ตามที่ผู้ใช้เลือก โค้ดฝั่งเซิร์ฟเวอร์ใช้รูปแบบ OpenAI จึงเปลี่ยนผู้ให้บริการได้ถ้าจำเป็น"
+     ],
+     [
+      "ปิดการคิด",
+      "ตั้งระดับความคิดต่ำสุดหรือปิด โทเคนความคิดคิดราคาเป็นโทเคนออก"
+     ],
+     [
+      "คำสั่งเป็นอังกฤษ คำตอบเป็นไทย",
+      "คำสั่ง ข้อเท็จจริงของโลก และแบบข้อมูลเป็นภาษาอังกฤษ (โทเคนน้อยกว่า) ขอเฉพาะคำตอบเป็นไทย"
+     ],
+     [
+      "แคชส่วนหน้าของคำสั่ง",
+      "ส่วนคงที่ (กติกาการเขียน น้ำเสียงของโลก แบบข้อมูล ตัวอย่าง) อยู่ในข้อความ user แรก ๆ เพราะ DeepSeek สร้างหน่วยแคชที่ท้ายข้อความ user ข้อมูลของชีวิตอยู่ข้อความสุดท้าย ([../llm/01-cost.md](../llm/01-cost.md) หัวข้อ 3)"
+     ],
+     [
+      "แบบข้อมูลออกบังคับ",
+      "`response_format` แบบ JSON สำหรับงานหลายช่อง และ tool call โหมด strict ที่มี `enum` สำหรับงานที่ต้องเลือกค่า ลดคำตอบเสียและการขอซ้ำ"
+     ],
+     [
+      "รวมคำขอ",
+      "สามทางของความฝันในคำขอเดียว ลางและข่าวลือของทั้งปีชีวิตในคำขอเดียว ห้าจังหวะของวันเกิดเหตุในคำขอเดียว"
+     ],
+     [
+      "ขอล่วงหน้า",
+      "ตอนจังหวะเงียบ ขอข้อความของสิ่งที่น่าจะเกิดถัดไปหนึ่งถึงสองอย่าง (ความฝันของโหนดถัดไป คำอธิษฐานที่น่าจะเกิด) ถ้าไม่ได้ใช้ เก็บเข้าแคช"
+     ],
+     [
+      "แคชตรงตัว",
+      "กุญแจ = แฮชของ (งาน รุ่นของแบบข้อมูล รุ่นของคำสั่ง ภาษา รุ่นของข้อเท็จจริงโลก ช่องสถานะ กลุ่มเมล็ด) เก็บในเครื่องผู้เล่น"
+     ],
+     [
+      "แคชร่วมระหว่างผู้เล่น",
+      "เซิร์ฟเวอร์เก็บคำตอบตามกุญแจเดียวกัน เพราะไวยากรณ์ของเกมปิด กุญแจจึงชนกันบ่อย ผู้เล่นที่ได้ชุดสถานะเดียวกันได้คำตอบที่มีอยู่แล้ว (ไม่ส่งข้อมูลส่วนตัว มีแต่ช่องสถานะ)"
+     ],
+     [
+      "ตัดความยาว",
+      "กำหนดจำนวนโทเคนออกสูงสุดต่องาน (ความฝันทั้งชุดไม่เกินราว 300 โทเคน)"
+     ],
+     [
+      "สร้างคลังนอกช่วงเร่งด่วน",
+      "DeepSeek ไม่มี batch แต่นอกช่วงเร่งด่วนลดครึ่งราคา สร้างคลังชั้น 1 ตอนกลางคืนเวลาไทยหรือวันหยุด สิบชิ้นต่อคำขอ"
+     ],
+     [
+      "วัดก่อนตั้งงบ",
+      "วัดแล้วด้วย tokenizer ของ V4.1 Flash: ไทยราว 2.2 ตัวอักษรต่อโทเคน ([../llm/01-cost.md](../llm/01-cost.md) หัวข้อ 2)"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:63"
+   },
+   {
+    "headings": [
+     "7. ตรวจคำตอบ"
+    ],
+    "header": [
+     "ตรวจ",
+     "ไม่ผ่านแล้ว"
+    ],
+    "rows": [
+     [
+      "เป็น JSON ตามแบบ ช่องครบ ค่าที่เลือกอยู่ใน `enum`",
+      "ขอใหม่หนึ่งครั้ง แล้วใช้ชั้นที่ต่ำกว่า"
+     ],
+     [
+      "ความยาวตามเพดาน (ประโยค ตัวอักษร)",
+      "ตัดท้าย ถ้ายาวเกินสองเท่าใช้ชั้นที่ต่ำกว่า"
+     ],
+     [
+      "เป็นอักษรไทยเป็นหลัก",
+      "ใช้ชั้นที่ต่ำกว่า"
+     ],
+     [
+      "ชื่อเฉพาะทุกชื่ออยู่ใน `allowed_names` หรือชื่อสถานที่ของประเทศที่ส่ง",
+      "ใช้ชั้นที่ต่ำกว่าสำหรับชิ้นนั้น"
+     ],
+     [
+      "ไม่มีรหัส ตัวเลข หรือผลที่ไม่ได้ส่ง",
+      "ใช้ชั้นที่ต่ำกว่าสำหรับชิ้นนั้น"
+     ],
+     [
+      "เงาของผลไม่บอกผลตรง",
+      "ใช้เงาของสัญลักษณ์จากชั้น 0"
+     ],
+     [
+      "ผ่านตัวกรองเนื้อหาของเซิร์ฟเวอร์",
+      "ใช้ชั้นที่ต่ำกว่า"
+     ]
+    ],
+    "src": "docs/systems/god/05-llm.md:86"
+   },
+   {
+    "headings": [
+     "1. โครงข้อมูล"
+    ],
+    "header": [
+     "โครง",
+     "ช่องหลัก",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "สถานะพระเจ้า",
+      "แสงศรัทธา ความหวาดกลัว ตัวนับต่อปีชีวิต (หีบ ฝัน กระซิบ ทอยใหม่) ระยะรอของปาฏิหาริย์แต่ละแบบ ตัวชดเชยความหายาก สายพลังล่าสุด ตัวนับต่อชีวิต (อาวุธประทาน ของประทาน ปาฏิหาริย์มหา ปลุกชีพ)",
+      "ข้ามรุ่นตาม [01-power.md](01-power.md) หัวข้อ 6"
+     ],
+     [
+      "หีบ",
+      "ช่อง 6 ช่อง (ชนิด รหัส ระดับ ราคา เหตุที่ขึ้น) จำนวนครั้งที่ทอย ใบที่ล็อก",
+      "เหตุที่ขึ้นใช้แสดงใน UI และทดสอบ"
+     ],
+     [
+      "ข้อเสนอความฝัน",
+      "สามทาง (แหล่ง เป้าหมาย สัญลักษณ์ น้ำเสียง โอกาสทำตาม ระดับ เหตุผล) ข้อความจาก LLM หรือแม่แบบ",
+      "ทอยผลตอนตัวละครถึงจังหวะตัดสินใจ"
+     ],
+     [
+      "การกระทำปาฏิหาริย์",
+      "รหัส MR เป้าหมาย ราคา ผลที่คาด (สำหรับหน้ายืนยัน) วันลาง วันเกิด",
+      "ปาฏิหาริย์ระดับใหญ่ขึ้นไปผ่านระยะลาง"
+     ],
+     [
+      "พงศาวดารพระหัตถ์",
+      "รายการ: ปีโลก ปีชีวิต ชนิด รหัส เป้าหมาย ผล รหัสเหตุการณ์ที่เปิดหรือปิด",
+      "เหตุการณ์และ LLM อ้างถึงได้ หน้าสรุปโลกอ่านจากที่นี่"
+     ],
+     [
+      "ธงประเทศใหม่",
+      "`god_ruin`",
+      "เพิ่มเข้าธงเดิม `war` `famine` `plague` `golden` `fallen` และค่าชะตาใน `src/sim/fate.ts`"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:9"
+   },
+   {
+    "headings": [
+     "2. ลำดับการทำ"
+    ],
+    "header": [
+     "ขั้น",
+     "งาน",
+     "เสร็จเมื่อ"
+    ],
+    "rows": [
+     [
+      "G0",
+      "ตัวแปรและราคา: แทน `COSTS` ด้วยตาราง [01-power.md](01-power.md) หัวข้อ 2 รายได้ต่อปีชีวิตตามหัวข้อ 1 ตารางศรัทธาเทพตามหัวข้อ 3",
+      "ทดสอบหน่วยของราคาและรายได้ผ่าน"
+     ],
+     [
+      "G1",
+      "หีบประทาน: ตัวกรอง การสุ่มถ่วงน้ำหนัก ตัวชดเชย ทอยใหม่ ล็อก ข้าม อาวุธประทาน",
+      "ทดสอบ 10,000 หีบ ไม่มีของที่ผิดตัวกรอง สัดส่วนระดับตรงตามน้ำหนัก"
+     ],
+     [
+      "G2",
+      "ความฝัน: ดึงทางจากแหล่ง S1 ถึง S8 เลือกสามทาง สูตรเชื่อฟัง ผลสี่แบบ ภาระใจ",
+      "ทุกทางที่ขึ้นมีเป้าหมายที่เป็นไปได้จริงในสถานะตอนนั้น"
+     ],
+     [
+      "G3",
+      "กระซิบและคำอธิษฐาน: รวมเก้าคำใบ้ ห้าคำตอบ หีบเล็กของให้แบบแปลก",
+      ""
+     ],
+     [
+      "G4",
+      "ปาฏิหาริย์ระดับเล็กและกลาง (MR-01 ถึง MR-16) ลิขิต (MR-25) ปาฏิหาริย์มังกร (MR-23 MR-24)",
+      "ผลต่อธงและตัวแปรตรงตาราง ระยะรอและเพดานทำงาน"
+     ],
+     [
+      "G5",
+      "ปาฏิหาริย์ใหญ่และมหา (MR-17 ถึง MR-22) ซากพระเจ้า เหตุการณ์ RU โหนด mr dp",
+      "ซากใช้กติกาที่ยึดของเส้นทางแตกแขนง ไม่มีเหตุการณ์ที่เกิดหลังถูกปิด"
+     ],
+     [
+      "G5b",
+      "เสกตามใจ ([07-conjure.md](07-conjure.md)): วงประกอบ ตารางผล 48 ช่อง ปฏิกิริยา เงาสะท้อน โควต้า",
+      "ทุกส่วนผสมมีผล ส่วนผสมที่ตรงกับ MR ไม่ใช้โควต้า ผลคงที่ตามเมล็ด"
+     ],
+     [
+      "G6",
+      "LLM สามชั้นตาม [05-llm.md](05-llm.md): ชั้น 0 แม่แบบครบทุกงาน ตัวตรวจ ชั้น 1 คลังนำร่อง 500 แบบ แล้วจึงชั้น 2 แคชเครื่อง และแคชร่วม",
+      "ปิด LLM แล้วเกมยังเล่นจบได้ บันทึกโทเคนทุกคำขอ"
+     ],
+     [
+      "G6b",
+      "เป้าหมาย ([08-goals.md](08-goals.md)): คำปฏิญาณ ฉายาชีวิต พงศาวดารสายตระกูล สิ่งที่เปิด จังหวะชะตา",
+      "เปิดชีวิตซ้ำด้วยเมล็ดเดิม คำปฏิญาณที่เสนอเหมือนเดิม"
+     ],
+     [
+      "G7",
+      "หน้าจอตาม [../../appearance/20-god-ui.md](../../appearance/20-god-ui.md)",
+      "ผู้เล่นใช้พลังครั้งแรกภายในห้านาที"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:20"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "ส่วน",
+     "ทำอะไร"
+    ],
+    "rows": [
+     [
+      "ชีวิต",
+      "เดินทีละปีชีวิตของตัวละครหนึ่งคน: รายได้ ราคา ตัวคูณราคา ศรัทธาเทพ คำอธิษฐาน (สี่ช่วงต่อปี ค้างได้สองใบ หมดเวลาใน 14 ช่วง ตาม `prayerTick` ในโค้ด) หีบ ความฝัน กระซิบ ภาระใจ ตามไฟล์ 01 ถึง 03"
+     ],
+     [
+      "โลก",
+      "ใช้ `runWorld` ของ `sim-world.mjs` ผ่านตัวเกี่ยว `god` (ทำงานทุกทศวรรษ แก้อารมณ์มังกรและเพดานอารมณ์ได้) และ `godW` (ตัวคูณน้ำหนักของเหตุการณ์ ใช้กับลิขิต) ไม่ส่งตัวเกี่ยวแล้วผลของ `sim-world.mjs` เท่าเดิมทุกตัว สายตระกูลเดียวต่อโลก ชีวิตต่อกันตามอายุขัยของเผ่า ทายาทรับพลังครึ่งหนึ่ง พระเจ้าใช้พลังที่เหลือจากการตอบคำอธิษฐานกับโลกทั้งหมด จึงเป็นขอบบน"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:50"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เรื่อง",
+     "ค่า",
+     "ที่มา"
+    ],
+    "rows": [
+     [
+      "จังหวะตัดสินใจของเส้นเรื่อง",
+      "32 โหนดต่อชีวิตเต็ม",
+      "`sim-life.mjs` ได้ 31 ถึง 33 ทุกเผ่า"
+     ],
+     [
+      "หน้าต่างพระเจ้า",
+      "16.5% ของโหนด และจุดหยุดตามอายุห้าจุด",
+      "123 แถวหน้าต่างจาก 745 แถวโหนด"
+     ],
+     [
+      "ความตายก่อนวัย",
+      "0.4% ต่อปีชีวิตตั้งแต่อายุ 15 ที่เหลือตายตามธรรมชาติที่ 75",
+      "สมมติ ราว 21% ตายก่อนวัย"
+     ],
+     [
+      "ช่องทาง B ของประเทศ",
+      "สุ่ม 10 ถึง 70",
+      "สมมติ"
+     ],
+     [
+      "ความทุกข์ใกล้ตัว",
+      "20% ของช่วงเวลา (คำอธิษฐาน ×3)",
+      "สมมติ"
+     ],
+     [
+      "ทางในความฝัน",
+      "ทางแรกตรงนิสัย (+0.15 หรือ +0.05) ทางที่สองขัดนิสัย (−0.20 หรือ −0.30) ทางที่สามกลาง",
+      "หัวข้อ 1 ของ [03-dreams.md](03-dreams.md)"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:57"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "นโยบาย",
+     "พฤติกรรม",
+     "ใช้ตอบคำถาม"
+    ],
+    "rows": [
+     [
+      "ไม่จำลองพระเจ้า",
+      "ตัวจำลองโลกอย่างเดียว ไม่มีตัวเกี่ยว",
+      "ค่าฐานของโลก ตรงกับ [../simulation/world-sim.md](../simulation/world-sim.md) ใช้เทียบทุกเป้าของโลก"
+     ],
+     [
+      "เงียบ",
+      "ไม่แทรกแซงเลย ไม่ตอบคำอธิษฐานเลยทั้งสายตระกูล",
+      "GD-05 ความเงียบของพระเจ้า และผลของการไม่ทำอะไร"
+     ],
+     [
+      "เมตตา",
+      "ตอบคำอธิษฐานแบบให้ทุกใบ ส่งฝันทางที่ตรงนิสัยทุกโหนดที่พลังพอ เปิดหีบพรที่หน้าต่างและปีละครั้ง กระซิบ ใช้แสงศรัทธาจนเหลือสำรอง 20 · ในโลก: ปลอบมังกรที่อารมณ์ต่ำสุด ลิขิตชะลอการล้ม MR-21 เมื่อพลังเต็ม",
+      "ศรัทธาเทพ ความฝันที่ทำตาม จำนวนการตัดสินใจ END-12"
+     ],
+     [
+      "ลงโทษ",
+      "ลงโทษผู้ขอทุกใบ เปิดหีบคำสาปที่หน้าต่างและปีละครั้ง · ในโลก: ทำซาก (MR-17) ทุกครั้งที่เพดานและพลังให้",
+      "`godslayer` ซากต่อโลก ฉากจบ END-10"
+     ],
+     [
+      "ลงโทษ (ตีหมุดผนึก)",
+      "เหมือนลงโทษ แต่ในโลกตีหมุดผนึกระดับใหญ่ ถ้าไม่ได้ใช้ระดับกลาง",
+      "มังกรล้มและยุคเร็วขึ้นแค่ไหน"
+     ],
+     [
+      "ปั้นนิสัย",
+      "เหมือนเมตตา แต่ส่งทางที่ขัดนิสัยครึ่งหนึ่ง",
+      "ภาระใจเกิดบ่อยแค่ไหน"
+     ],
+     [
+      "ให้ของ",
+      "ตอบคำอธิษฐานแบบให้ เปิดหีบพรทุกจังหวะที่พลังพอ (ปีละไม่เกินสองหีบ) ไม่ส่งฝัน",
+      "ราคาของการแทรกแซงมากเกิน"
+     ],
+     [
+      "เก็บพลัง",
+      "ตอบคำอธิษฐานแบบให้ ไม่ใช้พลังอย่างอื่น",
+      "ถึงราคาปาฏิหาริย์มหาได้ไหม"
+     ],
+     [
+      "สุ่ม",
+      "สุ่มการกระทำที่ทำได้ทุกจังหวะ ตอบคำอธิษฐานแบบสุ่ม",
+      "การกระจายของผล คำปฏิญาณที่สำเร็จโดยไม่ตั้งใจ"
+     ],
+     [
+      "เร่งจบ",
+      "ลิขิตเร่ง ×3 ที่การล้มของมังกรที่มีลาง และ WR-15 MC-12 WR-23 ในยุค 4 ตีหมุดผนึก ยั่วมังกรที่อารมณ์ต่ำสุด",
+      "ฉากจบเร็วขึ้นได้มากแค่ไหน"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:66"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เป้า",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "นโยบายเงียบและเมตตา ศรัทธาเทพ ≤ −70",
+      "ไม่เกิน 0.4% ของชีวิต"
+     ],
+     [
+      "นโยบายเร่งจบ ฉากจบภายใน 1,800 ปี",
+      "ไม่เกินสองเท่าของค่าฐาน (ไม่จำลองพระเจ้า)"
+     ],
+     [
+      "นโยบายลงโทษ ซากพระเจ้าต่อโลก",
+      "ไม่เกิน 18 ต่อ 1,800 ปี (หนึ่งต่อศตวรรษ) และซากที่ยังไม่ฟื้นพร้อมกันไม่เกิน 2 (p90)"
+     ],
+     [
+      "ความฝันที่ทำตามต่อชีวิต (นโยบายเมตตา)",
+      "3 ถึง 8"
+     ],
+     [
+      "คำปฏิญาณที่ระบบพระเจ้าตัดสินเอง (GV-11 GV-19)",
+      "40% ถึง 90% เมื่อผู้เล่นตั้งใจทำ ไม่เกิน 25% เมื่อเล่นแบบสุ่ม คำปฏิญาณที่ขึ้นกับส่วนอื่นของเกมวัดเมื่อตัวจำลองชีวิตมีค่าเหล่านั้น"
+     ],
+     [
+      "ตีหมุดผนึกทุกครั้งที่ทำได้",
+      "ยุค 2 3 4 เริ่มเร็วขึ้นไม่เกิน 15% ต่อยุคเทียบกับค่าฐาน"
+     ],
+     [
+      "ตัดสินใจต่อชีวิต (นโยบายเมตตา)",
+      "25 ถึง 40 (ค่ากลาง)"
+     ],
+     [
+      "เหตุการณ์ภาระใจต่อชีวิต",
+      "ปั้นนิสัย 0.3 ถึง 1 · เมตตาไม่เกิน 0.1 (ราคาเห็นได้เมื่อผู้เล่นบังคับนิสัย และไม่เกิดกับผู้ที่ชี้ตามนิสัย)"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:81"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "นโยบาย",
+     "ตัดสินใจต่อชีวิต (p10 · p50 · p90)",
+     "ความฝันที่ส่ง · ทำตาม",
+     "ประทาน",
+     "คำอธิษฐาน",
+     "ศรัทธาเทพตอนตาย (p50)",
+     "ศรัทธาเทพ ≤ −70 ตอนตาย",
+     "เคยถึง ≥ 85",
+     "ของขวัญครบ 10 · 15 (ไม่นับคำสาป)"
+    ],
+    "rows": [
+     [
+      "เงียบ",
+      "0 · 0 · 0",
+      "0.0 · 0.0",
+      "0.0",
+      "13.3",
+      "0",
+      "0.0%",
+      "0.0%",
+      "0.0% · 0.0%"
+     ],
+     [
+      "เมตตา",
+      "12 · 26 · 35",
+      "5.8 · 4.4",
+      "2.1",
+      "15.1",
+      "100",
+      "0.0%",
+      "82.2%",
+      "0.11% · 0.0%"
+     ],
+     [
+      "ปั้นนิสัย",
+      "12 · 26 · 34",
+      "5.7 · 3.5",
+      "2.1",
+      "15.1",
+      "100",
+      "0.0%",
+      "80.2%",
+      "0.08% · 0.0%"
+     ],
+     [
+      "ให้ของ",
+      "10 · 22 · 28",
+      "0.0 · 0.0",
+      "7.5",
+      "15.1",
+      "100",
+      "0.0%",
+      "89.3%",
+      "32.7% · 7.6%"
+     ],
+     [
+      "เก็บพลัง",
+      "7 · 14 · 20",
+      "0.0 · 0.0",
+      "0.0",
+      "15.2",
+      "98",
+      "0.0%",
+      "64.6%",
+      "0.0% · 0.0%"
+     ],
+     [
+      "ลงโทษ",
+      "13 · 19 · 22",
+      "0.0 · 0.0",
+      "14.2",
+      "4.1",
+      "-100",
+      "98.1%",
+      "0.0%",
+      "0.0% · 0.0%"
+     ],
+     [
+      "สุ่ม",
+      "15 · 26 · 33",
+      "4.6 · 1.0",
+      "5.6",
+      "14.2",
+      "-32",
+      "18.6%",
+      "0.23%",
+      "0.21% · 0.0%"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:97"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "นโยบาย",
+     "ผู้ให้แสง",
+     "ผู้คุ้มครองเงียบ",
+     "ผู้พิพากษา",
+     "ผู้ถูกชิงชัง",
+     "ไม่มีฉายา",
+     "GV-11 รู้จักข้า",
+     "GV-12 เป็นตัวของเขาเอง",
+     "GV-19 ชิงชังข้า"
+    ],
+    "rows": [
+     [
+      "เงียบ",
+      "0.0%",
+      "84.9%",
+      "0.0%",
+      "0.0%",
+      "15.1%",
+      "0.0%",
+      "100.0%",
+      "0.0%"
+     ],
+     [
+      "เมตตา",
+      "92.6%",
+      "0.0%",
+      "0.0%",
+      "0.0%",
+      "7.4%",
+      "82.2%",
+      "15.5%",
+      "0.0%"
+     ],
+     [
+      "ปั้นนิสัย",
+      "91.8%",
+      "0.0%",
+      "0.0%",
+      "0.0%",
+      "8.2%",
+      "80.2%",
+      "15.6%",
+      "0.0%"
+     ],
+     [
+      "ให้ของ",
+      "95.4%",
+      "0.0%",
+      "0.0%",
+      "0.0%",
+      "4.6%",
+      "89.3%",
+      "36.8%",
+      "0.0%"
+     ],
+     [
+      "เก็บพลัง",
+      "85.7%",
+      "0.02%",
+      "0.0%",
+      "0.0%",
+      "14.3%",
+      "64.6%",
+      "100.0%",
+      "0.0%"
+     ],
+     [
+      "ลงโทษ",
+      "0.0%",
+      "0.0%",
+      "0.0%",
+      "98.1%",
+      "1.9%",
+      "0.0%",
+      "3.5%",
+      "85.2%"
+     ],
+     [
+      "สุ่ม",
+      "1.5%",
+      "0.0%",
+      "0.01%",
+      "18.6%",
+      "79.9%",
+      "0.23%",
+      "4.0%",
+      "18.1%"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:109"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "นโยบาย",
+     "โลกจบภายใน 1,800 ปี",
+     "ฉากจบ",
+     "ยุค 2 · 3 · 4 เริ่ม (p50 ปีโลก)",
+     "มังกรล้ม (p50)",
+     "ซากต่อโลก (p50 · p90 · สูงสุด)",
+     "ซากพร้อมกัน (p90)",
+     "ตีหมุดผนึก",
+     "GD-04 · GD-05 · GD-08 เกิด"
+    ],
+    "rows": [
+     [
+      "ไม่จำลองพระเจ้า (ค่าฐานของโลก)",
+      "9.0%",
+      "END-10 63 · END-11 11 · END-12 34",
+      "650 · 1010 · 1320",
+      "13",
+      "0 · 0 · 0",
+      "0",
+      "0.0",
+      "8.6% · 0.0% · 38.8%"
+     ],
+     [
+      "เงียบ",
+      "15.4%",
+      "END-10 138 · END-11 17 · END-12 30",
+      "630 · 950 · 1280",
+      "14",
+      "0 · 0 · 0",
+      "0",
+      "0.0",
+      "6.3% · 73.5% · 57.0%"
+     ],
+     [
+      "เมตตา",
+      "6.6%",
+      "END-10 44 · END-11 13 · END-12 22",
+      "650 · 1010 · 1350",
+      "12",
+      "0 · 0 · 0",
+      "0",
+      "0.0",
+      "16.0% · 0.0% · 35.6%"
+     ],
+     [
+      "ลงโทษ (ทำซาก)",
+      "10.2%",
+      "END-10 81 · END-11 14 · END-12 27",
+      "650 · 1010 · 1330",
+      "13",
+      "10 · 18 · 18",
+      "1",
+      "0.0",
+      "8.7% · 0.0% · 92.6%"
+     ],
+     [
+      "ลงโทษ (ตีหมุดผนึก)",
+      "10.0%",
+      "END-10 87 · END-11 11 · END-12 22",
+      "640 · 930 · 1190",
+      "14",
+      "0 · 0 · 0",
+      "0",
+      "41.1",
+      "9.4% · 0.0% · 95.3%"
+     ],
+     [
+      "เร่งจบ",
+      "17.3%",
+      "END-10 119 · END-11 33 · END-12 56",
+      "410 · 670 · 960",
+      "14",
+      "0 · 0 · 0",
+      "0",
+      "31.1",
+      "15.8% · 0.0% · 46.8%"
+     ],
+     [
+      "สุ่ม",
+      "8.3%",
+      "END-10 65 · END-11 13 · END-12 21",
+      "660 · 1010 · 1310",
+      "13",
+      "6 · 9 · 12",
+      "1",
+      "10.0",
+      "8.8% · 0.0% · 93.7%"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:127"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เป้า",
+     "ค่า",
+     "ผล",
+     ""
+    ],
+    "rows": [
+     [
+      "เงียบและเมตตา ศรัทธาเทพ ≤ −70",
+      "ไม่เกิน 0.4%",
+      "0.0% · 0.0%",
+      "ผ่าน"
+     ],
+     [
+      "เร่งจบ ฉากจบภายใน 1,800 ปี",
+      "ไม่เกินสองเท่าของค่าฐาน (18.0%)",
+      "17.3%",
+      "ผ่าน"
+     ],
+     [
+      "ลงโทษ ซากพระเจ้าต่อโลก (p90) · ซากพร้อมกัน (p90)",
+      "ไม่เกิน 18 (ศตวรรษละหนึ่ง) · ไม่เกิน 2",
+      "18 · 1",
+      "ผ่าน"
+     ],
+     [
+      "เมตตา ความฝันที่ทำตามต่อชีวิต",
+      "3 ถึง 8",
+      "4.4",
+      "ผ่าน"
+     ],
+     [
+      "ตีหมุดผนึก ยุค 2 · 3 · 4 เริ่มเร็วขึ้นเทียบค่าฐาน",
+      "ไม่เกิน 15% ต่อยุค",
+      "1.5% · 7.9% · 9.8%",
+      "ผ่าน"
+     ],
+     [
+      "คำปฏิญาณ GV-11 · GV-19 เมื่อตั้งใจทำ (เมตตา · ลงโทษ)",
+      "40% ถึง 90%",
+      "82.2% · 85.2%",
+      "ผ่าน"
+     ],
+     [
+      "คำปฏิญาณ GV-11 · GV-19 เมื่อไม่ได้ตั้งใจ (สุ่ม)",
+      "ไม่เกิน 25%",
+      "0.23% · 18.1%",
+      "ผ่าน"
+     ],
+     [
+      "เหตุการณ์ภาระใจต่อชีวิต: ปั้นนิสัย · เมตตา",
+      "0.3 ถึง 1 · ไม่เกิน 0.1",
+      "0.48 · 0.00",
+      "ผ่าน"
+     ],
+     [
+      "เมตตา ตัดสินใจต่อชีวิต (p50)",
+      "25 ถึง 40",
+      "26",
+      "ผ่าน"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:139"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เรื่อง",
+     "ก่อน",
+     "วัดได้",
+     "ปรับเป็น",
+     "หลังปรับ"
+    ],
+    "rows": [
+     [
+      "ราคาเข้าฝัน",
+      "10 · ครั้งที่สองในปีเดียวกัน 14",
+      "เมตตาที่ใช้พลังเต็มส่งฝันราว 21 ครั้ง ทำตาม 14 ครั้งต่อชีวิต พระเจ้าเขียนเรื่องแทนตัวละคร",
+      "ทุกความฝันที่ส่งไปแล้วในชีวิตนี้ +1 ([01-power.md](01-power.md) หัวข้อ 2)",
+      "ทำตาม 4.4 ตัดสินใจ 26"
+     ],
+     [
+      "ซากพระเจ้า",
+      "ประเทศละครั้งต่อ 100 ปีโลก · ระดับใหญ่ชีวิตละ 2 ทั้งโลกห่าง 25 ปี",
+      "p90 48 ซากต่อโลก พลังไม่ได้จำกัดจริง เพราะซากคืนความหวาดกลัว 20",
+      "ปาฏิหาริย์ที่ทำให้เป็นซาก ชีวิตละครั้ง ทั้งโลกห่างกันอย่างน้อย 100 ปีโลก ([04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 5)",
+      "p90 18 พร้อมกันไม่เกิน 1"
+     ],
+     [
+      "ตีหมุดผนึก",
+      "หมุดละครั้งต่อ 50 ปีโลก",
+      "ยุค 4 เร็วขึ้น 210 ปี (16%) จากการตีราว 52 ครั้งต่อโลก",
+      "หมุดละครั้งต่อ 100 ปีโลก และหมุดใดก็ได้ทั้งโลกครั้งเดียวต่อ 25 ปีโลก ([04-miracles.md](04-miracles.md) หัวข้อ 5.4)",
+      "ยุค 4 เร็วขึ้นราว 9% ถึง 11% ตามรอบสุ่ม ตีราว 41 ครั้งต่อโลก"
+     ],
+     [
+      "GV-19",
+      "ศรัทธาเทพ ≤ −70 ตอนตาย",
+      "นโยบายลงโทษได้ 98% ง่ายเกินเมื่อตั้งใจทำ",
+      "และตัวละครอยู่ถึงวัยผู้เฒ่า ([08-goals.md](08-goals.md) หัวข้อ 2)",
+      "85%"
+     ],
+     [
+      "ราคาของการแทรกแซงมากเกิน",
+      "นับการประทานทุกแบบ",
+      "คำสาปทำให้ตัวละคร \"รอฟ้า\" ซึ่งไม่ตรงความหมาย",
+      "นับเฉพาะพร ฝีมือ และของ ([08-goals.md](08-goals.md) หัวข้อ 6)",
+      "นโยบายให้ของถึง 10 ครั้ง 33% ถึง 15 ครั้ง 7.5% นโยบายเมตตาแทบไม่ถึง ตรงเจตนา ไม่ต้องปรับตัวเลข"
+     ],
+     [
+      "GD-08 เทพองค์อื่นตื่น",
+      "เงื่อนไข \"ยุค ≥ 3 ศรัทธาโลกเปลี่ยนมือ\" ตัวจำลองอ่านไม่ได้",
+      "เกิด 92% แม้พระเจ้าเงียบ กติกาเหล็กข้อ 7 ไม่มีผล",
+      "ยุค ≥ 3 และศรัทธาโลก < 35 หรือพระเจ้าทำลายระดับใหญ่ครั้งที่สาม ([../events/world-events.md](../events/world-events.md) หัวข้อ 8 · [04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 7)",
+      "เงียบราว 40% · เร่งจบราว 60% · สุ่มที่ทำลายบ่อยราว 95%"
+     ],
+     [
+      "MR-21 ปาฏิหาริย์แห่งพระเจ้า",
+      "แสงศรัทธาเต็ม 200",
+      "นโยบายเก็บพลังถึง 200 เพียง 14% ของชีวิต (อายุกลาง 68) ส่วน MR-22 ที่ใช้ความหวาดกลัว 150 ถึงได้ 64%",
+      "แสงศรัทธาทั้งหมดที่มี อย่างน้อย 120 ([04-miracles.md](04-miracles.md) หัวข้อ 3)",
+      "เก็บพลังถึงได้ราวครึ่งหนึ่งของชีวิต อายุกลางราว 53 ผู้ที่ใช้พลังระหว่างชีวิตแทบไม่ถึง"
+     ],
+     [
+      "ภาระใจ",
+      "เหตุการณ์เมื่อครบ 3",
+      "พระเจ้าที่ส่งทางขัดนิสัยครึ่งหนึ่งได้เหตุการณ์ภาระใจ 0.19 ครั้งต่อชีวิต เพราะราคาเข้าฝันที่เพิ่มทุกครั้งทำให้ความฝันน้อยลง",
+      "ครบ 2 ไม่ลดเมื่อทำตามทางที่ตรงนิสัย ([03-dreams.md](03-dreams.md) หัวข้อ 4)",
+      "ปั้นนิสัยราว 0.5 เมตตา 0"
+     ],
+     [
+      "GD-04 GD-05",
+      "เกิดแบบสุ่มตามยุคราว 70% ของโลกแม้ไม่มีพระเจ้า",
+      "เงื่อนไขเป็นการกระทำของพระเจ้าซึ่งตัวจำลองโลกเดิมไม่มี",
+      "GD-04 จาก MR-21 หรือศรัทธาโลก > 90 · GD-05 จากความเงียบเท่านั้น พร้อมผลต่อโลก",
+      "ค่าฐาน GD-04 ราว 9% GD-05 0% · เงียบ GD-05 ราว 73%"
+     ],
+     [
+      "ลิขิตเร่งการล้มของมังกร",
+      "×3",
+      "เร่งจบเฉียดเพดานสองเท่า",
+      "ไม่เกิน ×2",
+      "17.3% เทียบเพดาน 18%"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:154"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เป้าเดิม",
+     "ทำไมเปลี่ยน",
+     "เป้าใหม่"
+    ],
+    "rows": [
+     [
+      "ซากไม่เกิน 6 ต่อโลก",
+      "ต้องห่างกันราว 300 ปีโลก มนุษย์สี่ชีวิตได้ดาวตกครั้งเดียว ขัดกับที่ผู้ใช้อยากให้ซากเป็นเส้นเรื่อง",
+      "หนึ่งต่อศตวรรษ ซากพร้อมกันไม่เกิน 2 (ถ้าอยากได้ไม่เกิน 6 ตั้ง `ruinCd` 300)"
+     ],
+     [
+      "มังกรล้มเร็วขึ้นไม่เกินหนึ่งยุคย่อย",
+      "\"ยุคย่อย\" ไม่มีนิยาม",
+      "ยุคเริ่มเร็วขึ้นไม่เกิน 15%"
+     ],
+     [
+      "คำปฏิญาณ 30% ถึง 60% ภายใต้นโยบายสุ่ม",
+      "คำปฏิญาณเป็นสิ่งที่ผู้เล่นตั้งใจทำ ผู้เล่นสุ่มไม่ควรได้บ่อย",
+      "แยกตั้งใจทำกับไม่ได้ตั้งใจ"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:169"
+   },
+   {
+    "headings": [
+     "4. จำลองสมดุลก่อนเขียนเกม"
+    ],
+    "header": [
+     "เรื่อง",
+     "เกมอื่น",
+     "ของเรา",
+     "ตัดสิน"
+    ],
+    "rows": [
+     [
+      "ความถี่ที่เกมเรียก",
+      "RimWorld: Cassandra สลับช่วงมีภัย 4.6 วันกับช่วงพัก 6 วัน ภัยใหญ่ห่างกันอย่างน้อย 1.9 วันในเกม ([rimworldwiki.com/wiki/Cassandra](https://rimworldwiki.com/wiki/Cassandra)) · Dwarf Fortress ตั้งหยุดหรือไม่หยุดได้ต่อชนิดของประกาศ · CK3 ถูกบ่นเรื่องหน้าต่างเหตุการณ์ถี่ ผู้เล่นใช้ม็อดลดเหตุการณ์",
+      "ช่วงห่างขั้นต่ำ สวิตช์ต่อชนิด สามระดับ รวมเรื่องเข้าจุดหยุด ([../experience/07-attention.md](../experience/07-attention.md))",
+      "คงไว้ ไม่มีเกมไหนบอกจำนวนครั้งต่อชั่วโมงให้เทียบ เพิ่ม: เปลี่ยนระดับได้ระหว่างชีวิต"
+     ],
+     [
+      "ความหายากในหีบ",
+      "Slay the Spire: ธรรมดา 60 ไม่ธรรมดา 37 หายาก 3 ต่อการ์ดรางวัล ตัวชดเชยเริ่มที่ฐานลบ 5 จุด +1 ทุกใบธรรมดา ([slay-the-spire.fandom.com/wiki/Card_Rewards](https://slay-the-spire.fandom.com/wiki/Card_Rewards)) · Balatro: 70 25 5 ทอยร้านใหม่เริ่ม 5 เพิ่มทีละ 1",
+      "ต่อช่อง C 65.7% U 25.0% R 7.2% E 1.7% L 0.33% ตัวชดเชย −5 จุด +2 ต่อหีบ ทอยใหม่ 5 10 20",
+      "คงไว้ เขียนหน่วยของตัวชดเชยให้ชัด และวัดระดับ L ตลอดชีวิตแล้ว ([02-bestow.md](02-bestow.md) หัวข้อ 3)"
+     ],
+     [
+      "พลังของพระเจ้า",
+      "Populous: มานามาจากผู้ติดตาม ใช้ไม่หมดก็เสีย · ตำราออกแบบเกมของ Adams: พลังสูงแพงขึ้นแบบทวีคูณ · Reus ระยะรอ 20 ถึง 30 วินาที · WorldBox ไม่จำกัด",
+      "รายได้จากผู้เชื่อ ราคาตามระดับ และเพดานต่อชีวิต",
+      "คงไว้ ไม่พบเกมที่ใช้เพดานต่อรอบเพราะไม่มีเกมไหนที่หนึ่งรอบสั้นแค่ 35 นาที ตัวจำลองของเราคือตัวทดสอบที่ใช้ได้"
+     ],
+     [
+      "แสดงโอกาส",
+      "XCOM: Enemy Within มีตัวกันพลาดติดกันที่ซ่อนอยู่ในระดับง่ายและปกติ · Fire Emblem แสดง 80% แต่โดนจริงราว 92% · Sid Meier (GDC 2010): ผู้เล่นบ่นเมื่อแพ้ทั้งที่ได้เปรียบ 3 ต่อ 1",
+      "เทียนสามระดับ ระดับตรงกับโอกาสจริง +0.15 หลังเต็มใจพลาดสองครั้ง บอกผู้เล่น",
+      "คงไว้ ของเราอ่อนกว่าของ XCOM และไม่ซ่อน"
+     ],
+     [
+      "ภาระใจ",
+      "CK3: ความเครียดสามระดับ ทำตามนิสัยลดความเครียด ขัดนิสัยเพิ่ม เกิดเหตุการณ์เมื่อขึ้นระดับ · Darkest Dungeon: ที่ 100 ทอยเสียขวัญราว 75% หรือฮึกเหิมราว 25%",
+      "+1 เมื่อทำตามความฝันขัดนิสัย",
+      "เปลี่ยนเกณฑ์จาก 3 เป็น 2 ตามผลจำลอง ไม่ใช้การลดแบบ CK3 เพราะทำให้ภาระใจแทบไม่เกิด ([03-dreams.md](03-dreams.md) หัวข้อ 4)"
+     ],
+     [
+      "เป้าหมายที่ไม่มีคะแนน",
+      "Reigns: เสนอสามเป้าต่อรัชกาลจากรายการราว 40 · Hades คำทำนาย 55 ข้อ (Hades II 89) · BitLife ริบบิ้นราว 30 ถึง 40",
+      "เสนอสามคำปฏิญาณจาก 20 ฉายาชีวิต 16",
+      "คงไว้ ขยายฉายาเป็น 24 ถึง 30 ได้ภายหลังถ้าอยากมีความหลากหลาย"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:185"
+   },
+   {
+    "headings": [
+     "6. ความเสี่ยง"
+    ],
+    "header": [
+     "ความเสี่ยง",
+     "ทางลด"
+    ],
+    "rows": [
+     [
+      "ผู้เล่นใช้หีบจนตัวละครเก่งเกินและเรื่องไม่ตึง",
+      "เพดานหีบต่อปี ราคาตามระดับ ตัวละครที่ได้พรมากถูก NPC อิจฉาและศัตรูเลือก (เหตุการณ์เดิมของพร)"
+     ],
+     [
+      "ความฝันรู้สึกเหมือนปุ่มที่ไม่ทำงาน",
+      "แสดงเหตุผลที่ไม่ทำตาม ผลตีความผิดยังเปลี่ยนเรื่อง ภาระใจทำให้การยืนยันเปลี่ยนตัวละครได้"
+     ],
+     [
+      "ปาฏิหาริย์ใหญ่ทำให้โลกพังจนไม่มีเรื่อง",
+      "เพดาน 25 ปี กติกาเหล็ก ซากเปิดเรื่องใหม่แทนที่เรื่องที่ปิด และฟื้นเป็นเมืองใหม่ใน 40 ถึง 80 ปี"
+     ],
+     [
+      "ค่า LLM",
+      "เพดานต่อชีวิต แคช แม่แบบ"
+     ]
+    ],
+    "src": "docs/systems/god/06-implementation.md:206"
+   },
+   {
+    "headings": [
+     "1. ชิ้นส่วนสามชิ้น"
+    ],
+    "header": [
+     "กริยา",
+     "ความหมาย",
+     "จ่ายด้วย"
+    ],
+    "rows": [
+     [
+      "ให้กำเนิด",
+      "ทำให้มีสิ่งที่ไม่เคยมี",
+      "แสงศรัทธา"
+     ],
+     [
+      "ทำลาย",
+      "ทำให้สิ่งที่มีหายไป",
+      "ความหวาดกลัว"
+     ],
+     [
+      "เปลี่ยน",
+      "ทำให้สิ่งหนึ่งกลายเป็นอีกสิ่ง",
+      "ตามแก่น"
+     ],
+     [
+      "ปลุก",
+      "ทำให้สิ่งที่หลับหรืออ่อนแรงตื่นและแรงขึ้น",
+      "ตามแก่น"
+     ],
+     [
+      "สงบ",
+      "ทำให้สิ่งที่ปั่นป่วนนิ่งลง",
+      "แสงศรัทธา"
+     ],
+     [
+      "เผย",
+      "ทำให้สิ่งที่ซ่อนอยู่ปรากฏ",
+      "แสงศรัทธา"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:13"
+   },
+   {
+    "headings": [
+     "1. ชิ้นส่วนสามชิ้น"
+    ],
+    "header": [
+     "แก่น",
+     "ครอบอะไรในโลก"
+    ],
+    "rows": [
+     [
+      "ไฟ",
+      "ไฟ ความร้อน โลหะ เตาหลอม ภูเขาไฟ"
+     ],
+     [
+      "น้ำ",
+      "ฝน แม่น้ำ ทะเล น้ำใต้ดิน"
+     ],
+     [
+      "ดิน",
+      "แผ่นดิน หิน ภูเขา แร่ ทราย"
+     ],
+     [
+      "ลม",
+      "ลม พายุ ฟ้า เส้นทาง ฤดู"
+     ],
+     [
+      "ชีวิต",
+      "พืช สัตว์ ร่างกาย การเติบโต"
+     ],
+     [
+      "ความตาย",
+      "โรค ผี ศพ ผู้ไม่ตาย"
+     ],
+     [
+      "แสง",
+      "ศรัทธา ความจริง ความหวัง"
+     ],
+     [
+      "เงา",
+      "ความลับ ความกลัว ความฝัน"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:24"
+   },
+   {
+    "headings": [
+     "1. ชิ้นส่วนสามชิ้น"
+    ],
+    "header": [
+     "ขนาด",
+     "เป้าหมาย",
+     "นับเป็นระดับ",
+     "ราคาฐาน"
+    ],
+    "rows": [
+     [
+      "คน",
+      "NPC ศัตรู สัตว์ หรือของหนึ่งชิ้น (ไม่รวมตัวละครหลักในกริยาทำลาย)",
+      "เล็ก",
+      "12"
+     ],
+     [
+      "ถิ่น",
+      "เมืองหรือถิ่นหนึ่งแห่งในประเทศ ผลครึ่งหนึ่งของประเทศ",
+      "เล็ก",
+      "25"
+     ],
+     [
+      "ประเทศ",
+      "ทั้งประเทศ",
+      "กลาง",
+      "45"
+     ],
+     [
+      "ทวีป",
+      "ทุกประเทศในทวีป ผลต่อประเทศ ×0.6",
+      "ใหญ่",
+      "110"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:37"
+   },
+   {
+    "headings": [
+     "2. ตารางผล"
+    ],
+    "header": [
+     "กริยา \\ แก่น",
+     "ไฟ",
+     "น้ำ",
+     "ดิน",
+     "ลม",
+     "ชีวิต",
+     "ความตาย",
+     "แสง",
+     "เงา"
+    ],
+    "rows": [
+     [
+      "**ให้กำเนิด**",
+      "เตาไฟไม่ดับ: ประเทศหนาวหรือหลัง DR-04 W +1 สิบปี · คน: เครื่องรางไฟหนึ่งชิ้น",
+      "ฝนและน้ำพุ (ใช้ MR-01 หรือ MR-10 ตามภูมิอากาศ)",
+      "กำแพงหินรอบเมือง: ศึกป้องกันของประเทศ +2 ห้าสิบปี · ทวีป: ใช้ MR-20",
+      "ลมส่งเรือ: ต้นทุนขนส่งทะเลของประเทศ −30% สิบปี",
+      "ใช้ MR-03 · คน: สัตว์คู่หูหนึ่งตัวมาหา NPC หรือตัวละคร",
+      "ผีเฝ้าเมือง: ศึกป้องกัน +1 ศรัทธาตรง −5",
+      "ศาลแสงกลางเมือง: ศรัทธาตรง +10",
+      "ทางลับใต้เมือง: ตลาดมืดของประเทศโต การหนีของผู้ถูกผูกตัว ×2"
+     ],
+     [
+      "**ทำลาย**",
+      "ใช้ MR-13 · ทวีป: ไฟป่าทั้งทวีป ไม้ ×2",
+      "ใช้ MR-19 (ประเทศริมน้ำ) หรือภัยแล้ง (ประเทศอื่น ธง `famine` สามปี)",
+      "ใช้ MR-08 · ทวีป: ใช้ MR-18 ที่ประเทศที่ใหญ่ที่สุด",
+      "ใช้ MR-09",
+      "ใช้ MR-12",
+      "ใช้ MR-07 · คน: ใช้ MR-06",
+      "ดับศรัทธา: ศรัทธาตรง −15 นักบวชหนึ่งคนเลิกบวช",
+      "เปิดโปงจนพัง: ตลาดมืดของประเทศหาย ผู้ค้าในเงาหนึ่งคนถูกจับ"
+     ],
+     [
+      "**เปลี่ยน**",
+      "เหล็กเป็นทอง: ทองล้นตลาด ความเชื่อมั่นทองกลาง C −10 ราคาในประเทศ ×1.3 ห้าปี",
+      "น้ำเค็มเป็นน้ำจืด: ประเทศชายฝั่งแห้งแล้ง W +1 ถาวร",
+      "ทรายเป็นดินดี: ประเทศทะเลทราย อาหารขาดเป็นพอใช้ ถาวร",
+      "เปลี่ยนฤดู: ฤดูหนาวหรือแล้งที่กำลังเกิดจบ (CT-02 CT-04 ในประเทศ)",
+      "สัตว์ร้ายเชื่อง: ศึกกับสัตว์ป่าในประเทศ ×0.3 สิบปี",
+      "ศพเป็นดิน: ผู้ไม่ตายที่ไม่ใช่ NPC หลับ ศัตรูผีในประเทศหายสิบปี",
+      "ศรัทธาเปลี่ยนช่องทาง: ศรัทธาผนึก (A) ของประเทศ 10 แต้มย้ายเป็นศรัทธาตรง (B) หรือกลับกัน ตามที่เลือก",
+      "ฝันร้ายเป็นฝันดี: คำสาปฝันร้ายในประเทศหายหนึ่งปี ผลของ PL-05 ในประเทศ ×0.5"
+     ],
+     [
+      "**ปลุก**",
+      "เตาหลอมตื่น: การตีอาวุธในประเทศ +2 จักรกลและอาวุธ (E) ×0.8 สิบปี",
+      "สัตว์ทะเลโบราณตื่น: ใช้ MR-15 ในรูปทะเล",
+      "ยักษ์หินตื่น: ใช้ MR-14 ในรูปยักษ์หิน (ประเทศภูเขา)",
+      "ลมเร็ว: เวลาเดินทางในประเทศ ×0.7 สิบปี",
+      "ใช้ MR-11",
+      "คนตายลุก: NPC ที่ตายในประเทศภายในสิบปีหนึ่งคนกลับมาเป็นผี มีเรื่องเปิดของตัวเอง",
+      "ปลุกศาสดา: NPC ที่แกนศรัทธาสูงที่สุดในประเทศเป็นศาสดา น้ำหนัก GD-01 ×1.5",
+      "ฝันร่วม: คนทั้งประเทศฝันเรื่องเดียวกันหนึ่งคืน ตัวละครที่อยู่ได้ความฝันฟรีหนึ่งครั้ง"
+     ],
+     [
+      "**สงบ**",
+      "ดับไฟ: ไฟป่าและภูเขาไฟในประเทศหยุด เหตุการณ์ไฟในประเทศ ×0.5 สิบปี",
+      "ทะเลสงบ: ต้นทุนขนส่งทะเล −20% สิบปี PL-04 ×0.5",
+      "แผ่นดินนิ่ง: แผ่นดินไหวและ RF ในประเทศ ×0.5 สิบปี",
+      "ฟ้าสงบ: พายุในประเทศ ×0.5 สิบปี",
+      "หยุดการเติบโต: ป่าที่โตเกิน (PL-08) หยุดในประเทศ",
+      "ผีสงบ: ใช้ MR-04 ส่วนผี",
+      "ศาสนาสงบ: การแตกนิกายในประเทศ (GD-02) ×0.5 สิบปี",
+      "ใช้ MR-05"
+     ],
+     [
+      "**เผย**",
+      "เผยแร่: เหมืองใหม่ แร่และโลหะ (M) ส่งออก W +1 ถาวร",
+      "เผยน้ำใต้ดิน: ธง `famine` หาย บ่อใหม่",
+      "เผยซากโบราณ: ที่ซ่อนของระดับ R หนึ่งชิ้นแบบ MR-16",
+      "เผยเส้นทาง: เส้นทางใหม่ ค่าเดินทางเข้าออกประเทศ −20%",
+      "เผยยา: ยา (H) ×0.7 HP-06 ×1.5",
+      "เผยความตายที่ซ่อน: เรื่องลับของ NPC หนึ่งคนเปิด (ฆาตกร ผู้วางยา)",
+      "เผยความจริง: เหตุการณ์ที่เป็นการเปิดโปงในทวีป (MC-11 FG-14) ×2",
+      "เผยความลับของผู้มีอำนาจ: เรื่องของผู้นำประเทศเปิดทาง `[ขัดขวาง]` ×2"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:50"
+   },
+   {
+    "headings": [
+     "3. ปฏิกิริยากับสภาพของที่"
+    ],
+    "header": [
+     "ส่วนผสม",
+     "สภาพที่เป้าหมาย",
+     "ผลแทน"
+    ],
+    "rows": [
+     [
+      "ให้กำเนิด · น้ำ",
+      "ธง `famine`",
+      "ภัยแล้งจบ และธง `golden` สองปี"
+     ],
+     [
+      "ให้กำเนิด · น้ำ",
+      "หลัง DR-05 หรือ MR-19",
+      "เงาสะท้อนแน่นอน (น้ำท่วมเล็ก)"
+     ],
+     [
+      "ทำลาย · ไฟ",
+      "ป่าเหี่ยว (WT)",
+      "ไฟลามประเทศข้างเคียงหนึ่งประเทศ"
+     ],
+     [
+      "สงบ · ความตาย",
+      "ประเทศที่ผู้ไม่ตายปกครอง (NB-02 SH-02)",
+      "ไม่มีผลต่อผู้ปกครอง ผีและศัตรูผีเท่านั้นที่หลับ"
+     ],
+     [
+      "ปลุก · ดิน",
+      "ประเทศยักษ์ (SH-03 SH-06 SH-17)",
+      "ผู้พิทักษ์แรงขึ้นหนึ่งขั้น GI-02 ×1.5"
+     ],
+     [
+      "เปลี่ยน · ไฟ",
+      "คาซ-ดูรัมหลัง AS-03",
+      "เผ่าลาวาที่เย็นตัวได้ไฟคืนหนึ่งประเทศ W +1"
+     ],
+     [
+      "เผย · ความตาย",
+      "ซากพระเจ้า",
+      "RU-06 เปิดทันที"
+     ],
+     [
+      "ทำลาย · แสง",
+      "ประเทศที่ศาสนจักรแห่งแสงเป็นหลัก",
+      "GD-02 ×2 สิบปี"
+     ],
+     [
+      "ให้กำเนิด · ชีวิต",
+      "หมุดผนึก (ที่ของมังกร)",
+      "อารมณ์มังกรตัวนั้น +5"
+     ],
+     [
+      "กริยาทำลายใด ๆ",
+      "หมุดผนึก",
+      "ใช้กติกา [04-miracles.md](04-miracles.md) หัวข้อ 5.4"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:65"
+   },
+   {
+    "headings": [
+     "4. เงาสะท้อน"
+    ],
+    "header": [
+     "ขนาด",
+     "โอกาส"
+    ],
+    "rows": [
+     [
+      "คน",
+      "0%"
+     ],
+     [
+      "ถิ่น",
+      "10%"
+     ],
+     [
+      "ประเทศ",
+      "20%"
+     ],
+     [
+      "ทวีป",
+      "35%"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:82"
+   },
+   {
+    "headings": [
+     "4. เงาสะท้อน"
+    ],
+    "header": [
+     "แก่น",
+     "เงาสะท้อน"
+    ],
+    "rows": [
+     [
+      "ไฟ",
+      "ไฟลามระดับเล็ก (W −1 สองปี)"
+     ],
+     [
+      "น้ำ",
+      "น้ำท่วมเล็กหนึ่งฤดู"
+     ],
+     [
+      "ดิน",
+      "แผ่นดินไหวเล็ก"
+     ],
+     [
+      "ลม",
+      "พายุเล็กในทะเลข้างเคียง"
+     ],
+     [
+      "ชีวิต",
+      "สัตว์ป่าเพิ่ม ศึกสุ่มในประเทศ ×2 สองปี"
+     ],
+     [
+      "ความตาย",
+      "ผีเร่ร่อนหนึ่งตน (ศัตรูระดับถิ่น)"
+     ],
+     [
+      "แสง",
+      "ผู้คลั่งศาสนาหนึ่งกลุ่ม (เหตุการณ์ท้องถิ่น)"
+     ],
+     [
+      "เงา",
+      "ฝันร้ายระบาดหนึ่งปี"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:91"
+   },
+   {
+    "headings": [
+     "5. เพดาน"
+    ],
+    "header": [
+     "กติกา",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "จำนวน",
+      "3 ครั้งต่อชีวิต ขนาดทวีปได้ไม่เกินหนึ่งครั้ง และใช้ไม่ได้ในชีวิตที่ใช้ปาฏิหาริย์มหาแล้ว"
+     ],
+     [
+      "ส่วนผสมซ้ำ",
+      "ส่วนผสมเดียวกัน (กริยา แก่น ขนาด) ใช้ได้ครั้งเดียวต่อชีวิต"
+     ],
+     [
+      "ระยะรอ",
+      "10 ปีโลกระหว่างการเสกตามใจสองครั้ง"
+     ],
+     [
+      "เป้าหมายซ้ำ",
+      "ประเทศหนึ่งถูกเสกตามใจได้ครั้งเดียวต่อ 25 ปีโลก"
+     ],
+     [
+      "นับร่วม",
+      "ขนาดประเทศนับในเพดานระดับกลาง ขนาดทวีปนับในเพดานระดับใหญ่ ของ [04-miracles.md](04-miracles.md) กติกาเหล็กข้อ 6"
+     ],
+     [
+      "กติกาเหล็ก",
+      "ทั้งเจ็ดข้อของ [04-miracles.md](04-miracles.md) หัวข้อ 2 ใช้ทุกการเสก"
+     ],
+     [
+      "ชิ้นส่วนที่ใช้ได้",
+      "ชีวิตแรกเปิดกริยา 3 (ให้กำเนิด ทำลาย สงบ) และแก่น 4 (ไฟ น้ำ ดิน ชีวิต) ที่เหลือเปิดจากพงศาวดารของสายตระกูล ([08-goals.md](08-goals.md) หัวข้อ 4) การเปิดเพิ่มทางเลือก ไม่เพิ่มพลัง"
+     ]
+    ],
+    "src": "docs/systems/god/07-conjure.md:104"
+   },
+   {
+    "headings": [
+     "1. หลัก"
+    ],
+    "header": [
+     "ข้อ",
+     "หลัก",
+     "ที่มา"
+    ],
+    "rows": [
+     [
+      "1",
+      "เป้าคือเลนส์ที่ใช้มองชีวิต ไม่ใช่โควต้าที่ต้องทำให้ครบ",
+      "Reigns ให้สามเป้าต่อรัชกาล"
+     ],
+     [
+      "2",
+      "รางวัลเป็นเรื่อง (ฉายา หน้าในพงศาวดาร) ไม่ใช่พลัง",
+      "Hades ใช้เรื่องเป็นรางวัล"
+     ],
+     [
+      "3",
+      "ความล้มเหลวก็เขียนหน้าของมันเอง",
+      "Dwarf Fortress \"แพ้คือสนุก\""
+     ],
+     [
+      "4",
+      "สิ่งที่สะสมข้ามรอบเพิ่มทางเลือก ไม่เพิ่มความแรง",
+      "Wildermyth และ Reigns เปิดการ์ดใหม่ ไม่ใช่พลังใหม่"
+     ],
+     [
+      "5",
+      "ความยับยั้งได้รางวัล การแทรกแซงมากเกินมีราคาในเรื่อง",
+      "บทเรียนจากระบบความสำเร็จที่บั่นทอนแรงจูงใจภายใน"
+     ],
+     [
+      "6",
+      "รายการที่ยังไม่พบเป็นเงา ไม่บอกวิธีทำ",
+      "ของสะสมเดิม ([../experience/03-ending-and-collection.md](../experience/03-ending-and-collection.md) หัวข้อ 5)"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:9"
+   },
+   {
+    "headings": [
+     "2. คำปฏิญาณของพระเจ้า"
+    ],
+    "header": [
+     "รหัส",
+     "คำปฏิญาณ",
+     "สำเร็จเมื่อ"
+    ],
+    "rows": [
+     [
+      "GV-01",
+      "ให้เขาอยู่จนแก่",
+      "ตายตามธรรมชาติหลังอายุเทียบ 55"
+     ],
+     [
+      "GV-02",
+      "ให้เขาตายอย่างสงบ",
+      "ตายนอกศึก ไม่มีคำสาปที่ยังอยู่ ศรัทธาเทพ ≥ 0"
+     ],
+     [
+      "GV-03",
+      "ให้เขากลับบ้าน",
+      "ตายในประเทศเกิด หลังเคยออกจากทวีปเกิด"
+     ],
+     [
+      "GV-04",
+      "ให้เขาเห็นโลก",
+      "เคยอยู่อย่างน้อยสี่ทวีป"
+     ],
+     [
+      "GV-05",
+      "ให้สายเลือดสืบต่อ",
+      "มีทายาทที่มีชีวิตตอนตาย"
+     ],
+     [
+      "GV-06",
+      "ให้เขาได้รัก",
+      "มีสายคนรักระดับ 4 ขึ้นไป ([../bonds/README.md](../bonds/README.md))"
+     ],
+     [
+      "GV-07",
+      "ให้คู่แข่งของเขาล้ม",
+      "NPC ที่เป็นคู่แข่งหรือผู้แค้นของตัวละครตายหรือหายก่อนตัวละคร"
+     ],
+     [
+      "GV-08",
+      "ให้เขาให้อภัย",
+      "ทางคืนดีกับผู้แค้นหรือผู้ทรยศถูกเลือกอย่างน้อยหนึ่งครั้ง"
+     ],
+     [
+      "GV-09",
+      "ให้เขาเป็นตำนาน",
+      "ได้อาชีพลับ อาวุธตำนาน หรือผ่านจุดบรรจบสองจุด"
+     ],
+     [
+      "GV-10",
+      "ให้เขาเป็นคนธรรมดาที่ดี",
+      "ไม่ได้อาชีพลับ ไม่ผ่านจุดบรรจบ แกนเมตตา ≥ 30 ตอนตาย"
+     ],
+     [
+      "GV-11",
+      "ให้เขารู้จักข้า",
+      "ศรัทธาเทพ ≥ 85 ตอนใดตอนหนึ่ง"
+     ],
+     [
+      "GV-12",
+      "ให้เขาเป็นตัวของเขาเอง",
+      "พระเจ้าแทรกแซงไม่เกินห้าครั้งทั้งชีวิต (ไม่นับคำอธิษฐานที่ตอบ)"
+     ],
+     [
+      "GV-13",
+      "ให้เขาเปลี่ยนชะตา",
+      "ชะตาร้ายหนึ่งข้อของเขาไม่เกิด ([../character/18-fates.md](../character/18-fates.md))"
+     ],
+     [
+      "GV-14",
+      "ให้เขาพ้นพันธะ",
+      "ตัวละครที่เกิดหรือตกเป็นผู้ถูกผูกตัวพ้นพันธะก่อนตาย"
+     ],
+     [
+      "GV-15",
+      "ให้เขาเห็นมังกร",
+      "อยู่ในฉากเดียวกับมังกรตำนานอย่างน้อยหนึ่งครั้ง"
+     ],
+     [
+      "GV-16",
+      "ให้ถิ่นของเขารอด",
+      "ประเทศเกิดไม่เป็นซาก ไม่ล่ม และไม่ถูกกลืนตลอดชีวิตเขา"
+     ],
+     [
+      "GV-17",
+      "ให้เขาสร้างสิ่งที่อยู่ต่อ",
+      "ทิ้งร้าน ตำแหน่ง อาวุธที่ตีเอง หรือลูกศิษย์ไว้ ([../../lore/storylines/26-hearth.md](../../lore/storylines/26-hearth.md))"
+     ],
+     [
+      "GV-18",
+      "ให้เขาเลือกฝ่ายในวันสุดท้ายของโลก",
+      "ตัวละครที่ชีวิตซ้อนยุค 4 เลือกฝ่ายของกุญแจ ([../../lore/storylines/30-last-era.md](../../lore/storylines/30-last-era.md))"
+     ],
+     [
+      "GV-19",
+      "ให้เขาชิงชังข้า",
+      "ศรัทธาเทพ ≤ −70 ตอนตาย และอยู่ถึงวัยผู้เฒ่า (อายุเทียบ 55) (คำปฏิญาณของพระเจ้าที่อยากสร้างศัตรูของตัวเอง)"
+     ],
+     [
+      "GV-20",
+      "ไม่ปฏิญาณ",
+      "ไม่มีเงื่อนไข เลือกได้เสมอ"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:24"
+   },
+   {
+    "headings": [
+     "2. คำปฏิญาณของพระเจ้า"
+    ],
+    "header": [
+     "ผล",
+     "สิ่งที่ได้"
+    ],
+    "rows": [
+     [
+      "สำเร็จ",
+      "ฉายาของคำปฏิญาณบนหน้าบันทึกชีวิต หน้าพงศาวดารหนึ่งหน้า (LLM งาน `vow_page` หรือแม่แบบ) พงศาวดารสายตระกูล +3"
+     ],
+     [
+      "ไม่สำเร็จ",
+      "หน้าพงศาวดาร \"คำปฏิญาณที่ไม่เป็นจริง\" ที่เล่าว่าชีวิตไปทางไหนแทน พงศาวดารสายตระกูล +1"
+     ],
+     [
+      "ไม่ปฏิญาณ",
+      "ไม่มีหน้าพิเศษ ไม่มีโทษ"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:49"
+   },
+   {
+    "headings": [
+     "3. ฉายาชีวิต"
+    ],
+    "header": [
+     "ฉายา",
+     "ชีวิตถูกครอบด้วย"
+    ],
+    "rows": [
+     [
+      "ผู้ศรัทธา",
+      "ศรัทธาเทพ ≥ 50 นานกว่าครึ่งชีวิตผู้ใหญ่"
+     ],
+     [
+      "ผู้ไม่มีใครเห็น",
+      "ไม่ผ่านจุดบรรจบ ไม่มีชื่อเสียง ไม่มีเหตุการณ์โลกมาแตะ"
+     ],
+     [
+      "นักเดินทาง",
+      "อยู่มากกว่าห้าประเทศ"
+     ],
+     [
+      "ผู้อยู่ที่เดิม",
+      "ไม่เคยออกจากประเทศเกิด"
+     ],
+     [
+      "ผู้รบ",
+      "ศึกมากกว่า 30 ครั้ง"
+     ],
+     [
+      "ผู้รักษา",
+      "อาชีพรักษาหรือช่วยชีวิตคนในเรื่องมากกว่าห้าครั้ง"
+     ],
+     [
+      "ผู้ฆ่าญาติ",
+      "ฆ่าหรือทำให้ญาติหรือพวกพ้องตาย"
+     ],
+     [
+      "ผู้ทรยศ",
+      "เลือกทางทรยศมากกว่าสองครั้ง"
+     ],
+     [
+      "ผู้รอดจากฟ้า",
+      "อยู่ในประเทศตอนปาฏิหาริย์ระดับใหญ่หรือมังกรล้ม และรอด"
+     ],
+     [
+      "ผู้ถูกเลือก",
+      "ทำตามความฝันมากกว่าห้าครั้ง"
+     ],
+     [
+      "ผู้ขัดขืนฟ้า",
+      "ปฏิเสธหรือขัดขืนความฝันมากกว่าห้าครั้ง"
+     ],
+     [
+      "ผู้รอฟ้า",
+      "ได้รับการประทานมากกว่า 15 ครั้ง (ดูหัวข้อ 6)"
+     ],
+     [
+      "ผู้มั่งคั่ง",
+      "ขึ้นชนชั้นอย่างน้อยสองชั้น"
+     ],
+     [
+      "ผู้ตกต่ำ",
+      "ตกชนชั้นอย่างน้อยสองชั้น"
+     ],
+     [
+      "ผู้ถูกผูก",
+      "เป็นผู้ถูกผูกตัวมากกว่าครึ่งชีวิตผู้ใหญ่"
+     ],
+     [
+      "ผู้เป็นตำนาน",
+      "ได้อาชีพลับหรืออาวุธตำนาน"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:61"
+   },
+   {
+    "headings": [
+     "4. พงศาวดารสายตระกูล"
+    ],
+    "header": [
+     "ได้จาก",
+     "ค่า"
+    ],
+    "rows": [
+     [
+      "คำปฏิญาณสำเร็จ · ไม่สำเร็จ",
+      "+3 · +1"
+     ],
+     [
+      "ฉายาชีวิตแต่ละฉายา",
+      "+1"
+     ],
+     [
+      "ผ่านจุดบรรจบ อาชีพลับ อาวุธตำนาน ฉากจบของโลกระหว่างชีวิต",
+      "+2 ต่ออย่าง"
+     ],
+     [
+      "ชีวิตแรกของสายตระกูลในโลกใหม่",
+      "+1"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:84"
+   },
+   {
+    "headings": [
+     "4. พงศาวดารสายตระกูล"
+    ],
+    "header": [
+     "ค่าสะสม",
+     "เปิด"
+    ],
+    "rows": [
+     [
+      "5",
+      "กริยา \"เปลี่ยน\" และแก่น \"ลม\" ของการเสกตามใจ ([07-conjure.md](07-conjure.md))"
+     ],
+     [
+      "10",
+      "คำปฏิญาณชุดที่สอง (GV-13 ถึง GV-19 ขึ้นในการสุ่ม ก่อนหน้านี้ขึ้นเฉพาะ GV-01 ถึง GV-12 และ GV-20)"
+     ],
+     [
+      "15",
+      "กริยา \"ปลุก\" และแก่น \"แสง\""
+     ],
+     [
+      "20",
+      "จังหวะชะตา (หัวข้อ 5) ทุกแบบ"
+     ],
+     [
+      "30",
+      "กริยา \"เผย\" และแก่น \"ความตาย\" \"เงา\""
+     ],
+     [
+      "40",
+      "แบบเริ่มต้นชุดที่ปลดล็อกด้วยพงศาวดาร ([../experience/04-start-modes.md](../experience/04-start-modes.md))"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:93"
+   },
+   {
+    "headings": [
+     "5. จังหวะชะตา"
+    ],
+    "header": [
+     "แบบ",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ตามธรรมชาติ (ค่าเริ่มต้น)",
+      "ใช้น้ำหนักในเอกสารตามเดิม"
+     ],
+     [
+      "ชะตาอ่อนโยน",
+      "ทางที่มีความตายของคนใกล้ตัว ×0.6 ศึกสุ่ม ×0.7 ชะตาร้าย ×0.7"
+     ],
+     [
+      "ชะตาโศก",
+      "ทางที่มีความสูญเสีย ×1.5 ชะตาร้าย ×1.3 คำอธิษฐานเกิดบ่อยขึ้น ×1.3"
+     ],
+     [
+      "ชะตาประชด",
+      "ผลที่ตรงข้ามกับคำขอในคำอธิษฐานที่ถูกให้แบบแปลก ×2 ความฝันตีความผิด ×1.5"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:106"
+   },
+   {
+    "headings": [
+     "6. ราคาของการแทรกแซงมากเกิน"
+    ],
+    "header": [
+     "เงื่อนไข",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "ได้รับพร ฝีมือ หรือของประทานครบ 10 ครั้ง (คำสาปไม่นับ)",
+      "ทางเลือกที่ต้องลงมือเอง (ฝึก ลงทุน เดินทางไกล) ×0.9"
+     ],
+     [
+      "ครบ 15 ครั้ง",
+      "×0.8 และ NPC ใกล้ตัวพูดว่าเขา \"รอฟ้า\" ฉายาผู้รอฟ้าเปิด"
+     ],
+     [
+      "ไม่มีการประทานสิบปีชีวิตหลังจากนั้น",
+      "ตัวคูณกลับเป็น 1"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:117"
+   },
+   {
+    "headings": [
+     "7. ของสะสมที่เพิ่ม"
+    ],
+    "header": [
+     "หมวด",
+     "จำนวน"
+    ],
+    "rows": [
+     [
+      "คำปฏิญาณที่สำเร็จ",
+      "20"
+     ],
+     [
+      "ฉายาชีวิต",
+      "16"
+     ],
+     [
+      "ฉายาของพระเจ้า",
+      "6"
+     ],
+     [
+      "ปาฏิหาริย์ในรายการที่เคยใช้",
+      "25"
+     ],
+     [
+      "ปาฏิหาริย์ที่เสกตามใจ (ชื่อที่โลกจำ)",
+      "ไม่จำกัด แสดงเป็นรายการชื่อ"
+     ],
+     [
+      "ปฏิกิริยาของการเสกตามใจที่เคยพบ",
+      "10"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:129"
+   },
+   {
+    "headings": [
+     "8. วัดคำปฏิญาณ"
+    ],
+    "header": [
+     "รหัส",
+     "ตัดสินด้วย",
+     "ผล (2026-11-01)"
+    ],
+    "rows": [
+     [
+      "GV-11",
+      "ศรัทธาเทพ",
+      "ตั้งใจ (เมตตา) 82% · สุ่ม 0.4%"
+     ],
+     [
+      "GV-12",
+      "จำนวนการแทรกแซง",
+      "ตั้งใจ (เงียบ) 100% · เมตตา 15% · สุ่ม 4% ตั้งใจทำง่ายโดยเจตนา เพราะคือรางวัลของความยับยั้ง"
+     ],
+     [
+      "GV-19",
+      "ศรัทธาเทพตอนตายและอายุ",
+      "ตั้งใจ (ลงโทษ) 85% · สุ่ม 18%"
+     ],
+     [
+      "GV-01 GV-02",
+      "ความตายและคำสาป",
+      "วัดเมื่อลงโค้ด ตัวจำลองพระเจ้าสมมติความตายก่อนวัยราว 21%"
+     ],
+     [
+      "GV-03 GV-04 GV-15",
+      "การเดินทางและฉาก ([../travel/README.md](../travel/README.md))",
+      "วัดเมื่อลงโค้ด"
+     ],
+     [
+      "GV-05 GV-06 GV-07 GV-08 GV-14",
+      "พวกพ้อง ครอบครัว และการผูกตัว ([../bonds/README.md](../bonds/README.md))",
+      "วัดเมื่อลงโค้ด"
+     ],
+     [
+      "GV-09 GV-10 GV-17",
+      "อาชีพลับ อาวุธตำนาน จุดบรรจบ เส้นเรื่องบ้านและฝีมือ",
+      "วัดเมื่อลงโค้ด เป้าอาชีพลับรวมไม่เกิน 3% ของชีวิตทำให้ GV-09 เมื่อไม่ตั้งใจต่ำอยู่แล้ว"
+     ],
+     [
+      "GV-13",
+      "ชะตา ([../character/18-fates.md](../character/18-fates.md))",
+      "วัดเมื่อลงโค้ด"
+     ],
+     [
+      "GV-16 GV-18",
+      "ซาก การล่มของประเทศ ยุค 4",
+      "ตั้งใจทำง่าย (ไม่ทำซาก) ซากต่อโลกราวหนึ่งต่อศตวรรษจึงแทบไม่แตะประเทศเกิด GV-18 ขึ้นกับว่าชีวิตซ้อนยุค 4 ไหม ข้อที่เป็นไปไม่ได้ไม่ถูกเสนอ"
+     ]
+    ],
+    "src": "docs/systems/god/08-goals.md:142"
+   },
+   {
+    "headings": [
+     "1. หลักของระบบ"
+    ],
+    "header": [
+     "ข้อ",
+     "หลัก",
+     "ผลต่อการออกแบบ"
+    ],
+    "rows": [
+     [
+      "1",
+      "**ชี้ ไม่บังคับ**",
+      "ทุกการแทรกแซงเปลี่ยนน้ำหนักหรือเปิดทาง ไม่เลือกแทนตัวละคร ([../../lore/storylines/README.md](../../lore/storylines/README.md) หัวข้อ 6 ข้อ 5) ตัวละครที่ไม่มีพระเจ้าก็ยังมีชีวิตที่ดูได้ ความช่วยเหลือเป็นสิ่งที่เพิ่ม ไม่ใช่สิ่งที่ขาดไม่ได้"
+     ],
+     [
+      "2",
+      "**ทุกอย่างมีราคาและร่องรอย**",
+      "การแทรกแซงใช้พลัง เปลี่ยนศรัทธาของตัวละคร และถูกบันทึกในพงศาวดารพระหัตถ์ ซึ่งเหตุการณ์ภายหลังอ้างถึงได้"
+     ],
+     [
+      "3",
+      "**ทางเลือกน้อยแต่หนัก**",
+      "ประทานสุ่มให้เลือกไม่เกิน 6 อย่าง เข้าฝันมี 3 ทาง ปาฏิหาริย์ใหญ่ใช้ได้นาน ๆ ครั้ง ผู้เล่นตัดสินใจราวหนึ่งครั้งต่อนาที ไม่ใช่กดตลอดเวลา"
+     ],
+     [
+      "4",
+      "**ตัวละครปฏิเสธได้ และการปฏิเสธคือเรื่อง**",
+      "ความเชื่อฟังขึ้นกับศรัทธาที่พระเจ้าสร้างเองตลอดชีวิต การปฏิเสธมีเหตุผลที่เล่าได้และมีผลตามมา ไม่ใช่ปุ่มที่ไม่ทำงาน"
+     ],
+     [
+      "5",
+      "**โลกจำสิ่งที่พระเจ้าทำ**",
+      "ปาฏิหาริย์ทิ้งซาก ผู้ลี้ภัย ลัทธิ และความแค้น ซึ่งกลายเป็นเส้นเรื่องใหม่ ([04-miracles.md](04-miracles.md) หัวข้อ 5)"
+     ],
+     [
+      "6",
+      "**ความรักกับความกลัวเป็นสองทาง**",
+      "พลังมีสองแหล่ง แสงศรัทธาจากความรัก และความหวาดกลัวจากการลงโทษ ทางที่ผู้เล่นเลือกเปลี่ยนว่าโลกมองพระเจ้าอย่างไร ([01-power.md](01-power.md))"
+     ],
+     [
+      "7",
+      "**ไม่เกินขอบของโลก**",
+      "พระเจ้าฆ่ามังกรตำนานโดยตรงไม่ได้ (แต่ทำให้มันเจ็บได้) เปิดแกนหรือเรียกฉากจบโดยตรงไม่ได้ ฆ่าตัวละครหลักด้วยมือตัวเองไม่ได้ ปาฏิหาริย์และการเสกมีจำนวนจำกัดต่อชีวิต ([04-miracles.md](04-miracles.md) หัวข้อ 2)"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:11"
+   },
+   {
+    "headings": [
+     "2. การแทรกแซงหกแบบ"
+    ],
+    "header": [
+     "แบบ",
+     "ทำอะไร",
+     "ไฟล์",
+     "ระยะ"
+    ],
+    "rows": [
+     [
+      "**ประทาน**",
+      "เปิดหีบ สุ่มพร คำสาป ฝีมือ และของ ไม่เกิน 6 อย่าง เลือกให้ตัวละครหนึ่งอย่าง",
+      "[02-bestow.md](02-bestow.md)",
+      "MVP"
+     ],
+     [
+      "**เข้าฝัน**",
+      "เกมเสนอทางของเรื่อง 3 ทาง พระเจ้าเลือกหนึ่งทางส่งเข้าฝัน ตัวละครจะทำตามหรือไม่ขึ้นกับศรัทธา",
+      "[03-dreams.md](03-dreams.md)",
+      "MVP"
+     ],
+     [
+      "**กระซิบ**",
+      "คำใบ้สั้น 9 แบบ (ระวัง กล้าเถิด จงไป ฯลฯ) ราคาถูก ผลเล็ก",
+      "[03-dreams.md](03-dreams.md) หัวข้อ 6",
+      "MVP"
+     ],
+     [
+      "**ตอบคำอธิษฐาน**",
+      "ให้ ปฏิเสธ ลงโทษ หรือนิ่ง ([../experience/02-hooks.md](../experience/02-hooks.md) ตะขอข้อ 2)",
+      "[03-dreams.md](03-dreams.md) หัวข้อ 7",
+      "MVP"
+     ],
+     [
+      "**ปาฏิหาริย์**",
+      "เสกหรือทำลายบนแผนที่ ตั้งแต่ฝนต้องฤดูถึงดาวตกใส่เมือง และลิขิตเบนเหตุการณ์โลก",
+      "[04-miracles.md](04-miracles.md)",
+      "เล็กและกลาง MVP · ใหญ่และมหา MVP2"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:23"
+   },
+   {
+    "headings": [
+     "4. สิ่งที่ระบบนี้ปิดจากรายการที่ฝากไว้"
+    ],
+    "header": [
+     "ที่ฝากไว้",
+     "ตอบที่"
+    ],
+    "rows": [
+     [
+      "ราคาพร คำสาป skill คำใบ้ ระยะรอใช้ซ้ำ เพดานต่อปี ผลต่อศรัทธา (RAW_PLAN 4.5)",
+      "[01-power.md](01-power.md)"
+     ],
+     [
+      "ผูกกับหน้าต่างพระเจ้าในเส้นเรื่อง ศึก ลูกครึ่ง ทายาท",
+      "[02-bestow.md](02-bestow.md) หัวข้อ 5 · [03-dreams.md](03-dreams.md) หัวข้อ 5"
+     ],
+     [
+      "ราคาพรสายเลือดและตัวนับข้ามรุ่น ([../../lore/heirs/01-inheritance.md](../../lore/heirs/01-inheritance.md) หัวข้อ 5)",
+      "[01-power.md](01-power.md) หัวข้อ 6"
+     ],
+     [
+      "เสกอะไรได้ ราคาเท่าไร เพดานกันบังคับเหตุการณ์ใหญ่",
+      "[04-miracles.md](04-miracles.md)"
+     ],
+     [
+      "เพดาน `godslayer`",
+      "[01-power.md](01-power.md) หัวข้อ 5"
+     ],
+     [
+      "ค่าชดเชยพร L ที่ผูกกับมังกรเมื่อมังกรล้ม",
+      "[02-bestow.md](02-bestow.md) หัวข้อ 6"
+     ],
+     [
+      "การแทรกแซงเรื่องการผูกตัว ([../economy/10-bondage.md](../economy/10-bondage.md) หัวข้อ 9) และวิกฤตพวกพ้อง",
+      "[03-dreams.md](03-dreams.md) หัวข้อ 5"
+     ],
+     [
+      "แรงของตัวละครหลักต่อกุญแจในยุคปลาย",
+      "[04-miracles.md](04-miracles.md) หัวข้อ 4 (ลิขิต)"
+     ],
+     [
+      "สั่งสวมหรือถอดของ รายการของที่ประทานได้ ([../items/11-item-system.md](../items/11-item-system.md))",
+      "[02-bestow.md](02-bestow.md) หัวข้อ 4"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:45"
+   },
+   {
+    "headings": [
+     "5. ที่ผู้ใช้ตัดสินแล้ว (2026-11-01)"
+    ],
+    "header": [
+     "เรื่อง",
+     "ผล",
+     "ที่"
+    ],
+    "rows": [
+     [
+      "ปาฏิหาริย์ระดับเล็กและกลาง",
+      "อยู่ MVP ระดับใหญ่ มหา และเสกตามใจอยู่ MVP2",
+      "หัวข้อ 2"
+     ],
+     [
+      "แสดงโอกาสเชื่อฟังของความฝัน",
+      "สามระดับพร้อมเหตุผล ตัวกันโชคร้าย ตั้งค่าแสดงร้อยละได้แต่ปิดเป็นค่าเริ่มต้น",
+      "[03-dreams.md](03-dreams.md) หัวข้อ 3"
+     ],
+     [
+      "เป้าหมายของผู้เล่น",
+      "ไม่มีคะแนนตัวเลข คำปฏิญาณ ฉายาชีวิต ฉายาของพระเจ้า พงศาวดารสายตระกูลที่เปิดทางเลือก จังหวะชะตา",
+      "[08-goals.md](08-goals.md)"
+     ],
+     [
+      "ทำลายที่ของมังกร",
+      "ทำได้และมีผล ผนึกรับแรงไว้ ผลลดหนึ่งระดับ มังกรเจ็บและตอบกลับ",
+      "[04-miracles.md](04-miracles.md) หัวข้อ 5.4"
+     ],
+     [
+      "เสกอะไรก็ได้",
+      "ได้ แต่จำนวนจำกัด สามครั้งต่อชีวิต ผ่านไวยากรณ์ปิด",
+      "[07-conjure.md](07-conjure.md)"
+     ],
+     [
+      "LLM",
+      "เพิ่มเพื่อความหลากหลาย ไม่มีเพดานราคาจนกว่าจะทดสอบ ทำให้ประหยัดที่สุด",
+      "[05-llm.md](05-llm.md)"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:59"
+   },
+   {
+    "headings": [
+     "6. ความเป็นไปได้ที่พระเจ้าเพิ่ม"
+    ],
+    "header": [
+     "ชั้น",
+     "วิธีนับ",
+     "จำนวน"
+    ],
+    "rows": [
+     [
+      "หนึ่งการประทาน",
+      "หีบหนึ่งใบมีได้ราว 10^14 ชุด (พร 200 คำสาป 152 ฝีมือ 232 ของ 1,667 เลือกตามช่อง) ผู้เล่นเลือกหนึ่งในเจ็ด (รวมไม่รับ)",
+      "7 ทางต่อหีบ"
+     ],
+     [
+      "หนึ่งการเข้าฝัน",
+      "3 ทาง × ผล 3 แบบ (ทำตาม ตีความผิด ปฏิเสธ) + ไม่ส่ง",
+      "10 ทาง"
+     ],
+     [
+      "หนึ่งการกระซิบ",
+      "9 คำใบ้ + ไม่ส่ง",
+      "10 ทาง"
+     ],
+     [
+      "หนึ่งคำอธิษฐาน",
+      "ให้ ปฏิเสธ ลงโทษ นิ่ง",
+      "4 ทาง"
+     ],
+     [
+      "หนึ่งปาฏิหาริย์",
+      "25 แบบ × เป้าหมาย 143 ประเทศ (บางแบบเป้าหมายเป็นมังกรหรือเหตุการณ์)",
+      "ราว 3,000 ทาง"
+     ],
+     [
+      "หนึ่งการเสกตามใจ",
+      "132 ส่วนผสมที่ไม่อยู่ในรายการ × เป้าหมาย 143 ประเทศหรือ NPC 614 ตัว × เงาสะท้อน และชื่อจากแม่แบบของเกม ([07-conjure.md](07-conjure.md) หัวข้อ 7 · [../llm/03-naming.md](../llm/03-naming.md))",
+      "ราว 20,000 ทาง"
+     ],
+     [
+      "คำปฏิญาณและจังหวะชะตา",
+      "3 คำปฏิญาณที่เสนอ + ไม่ปฏิญาณ × จังหวะชะตา 4 แบบ",
+      "16 ทางต่อชีวิต"
+     ],
+     [
+      "ทั้งชีวิต",
+      "ราว 30 การตัดสินใจ แต่ละครั้ง 4 ถึง 3,000 ทาง",
+      "ราว 10^40 ขึ้นไป"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:72"
+   },
+   {
+    "headings": [
+     "7. ไฟล์"
+    ],
+    "header": [
+     "ไฟล์",
+     "เนื้อหา"
+    ],
+    "rows": [
+     [
+      "[01-power.md](01-power.md)",
+      "แสงศรัทธาและความหวาดกลัว รายได้ ราคา เพดาน ศรัทธาของตัวละคร ข้ามรุ่น ฉายา"
+     ],
+     [
+      "[02-bestow.md](02-bestow.md)",
+      "หีบประทาน: ช่อง การสุ่ม น้ำหนัก การทอยใหม่ อาวุธประทาน หน้าต่างพระเจ้า"
+     ],
+     [
+      "[03-dreams.md](03-dreams.md)",
+      "เข้าฝัน: ที่มาของสามทาง ความเชื่อฟัง ผล ภาระใจ · กระซิบ · คำอธิษฐาน"
+     ],
+     [
+      "[04-miracles.md](04-miracles.md)",
+      "ปาฏิหาริย์ 25 แบบ กติกาเหล็ก ลิขิตเหตุการณ์ ซากพระเจ้าและเหตุการณ์ RU"
+     ],
+     [
+      "[05-llm.md](05-llm.md)",
+      "บทบาทของ LLM ในระบบพระเจ้า สัญญาข้อมูลเข้าออก ขอบเขต และแบบสำรอง"
+     ],
+     [
+      "[06-implementation.md](06-implementation.md)",
+      "โครงข้อมูล ลำดับการทำ การจำลองสมดุล และการทดสอบ"
+     ],
+     [
+      "[07-conjure.md](07-conjure.md)",
+      "เสกตามใจ: กริยา 6 × แก่น 8 × ขนาด 4 ตารางผล ปฏิกิริยา เงาสะท้อน เพดาน"
+     ],
+     [
+      "[08-goals.md](08-goals.md)",
+      "เป้าหมายของผู้เล่น: คำปฏิญาณ 20 ข้อ ฉายาชีวิต พงศาวดารสายตระกูล จังหวะชะตา ราคาของการแทรกแซงมากเกิน"
+     ]
+    ],
+    "src": "docs/systems/god/README.md:87"
+   }
+  ]
+ }
+}
