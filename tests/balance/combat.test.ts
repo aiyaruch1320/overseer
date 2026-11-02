@@ -33,6 +33,10 @@ let tierOf: Map<string, string>;
 interface Life {
   seed: number;
   cause: string;
+  deathAge: number;
+  ending: string;
+  /** Ages of the entries that show a fight (a battle, a war battle or a clash) in the log. */
+  fightAges: number[];
   battles: LogEntry[];
   preludes: LogEntry[];
   wounds: number;
@@ -61,6 +65,9 @@ function play(seed: number): Life {
   return {
     seed,
     cause: g.state.life!.dead?.cause ?? 'alive',
+    deathAge: g.state.life!.dead?.hAge ?? -1,
+    ending: String(log.find((e) => e.sys === 'story' && e.kind === 'ending')?.id ?? ''),
+    fightAges: log.filter((e) => e.sys === 'combat' && (e.kind === 'battle' || e.kind === 'war')).map((e) => e.age ?? -1),
     battles: log.filter((e) => e.sys === 'combat' && e.kind === 'battle'),
     preludes: log.filter((e) => e.sys === 'combat' && e.kind === 'prelude'),
     wounds: log.filter((e) => e.sys === 'combat' && e.kind === 'wound').length,
@@ -126,7 +133,9 @@ describe('combat balance (whole lives of the real core)', () => {
 
   it('a few lives in a hundred end in battle, and a lost fight is a minority', () => {
     const inBattle = lives.filter((l) => l.cause === CAUSE.battle).length / lives.length;
-    const dead = lives.reduce((s, l) => s + l.battles.filter((e) => e.data.end === 'dead').length, 0) / lives.length;
+    // the last stands of the story (or.e2, gi.e2, ml.e1) are the ways that die in battle, fought now; the rest are the fights that kill
+    const stands = new Set(['or.e2', 'gi.e2', 'ml.e1']);
+    const dead = lives.reduce((s, l) => s + l.battles.filter((e) => e.data.end === 'dead' && !stands.has(String(e.data.node))).length, 0) / lives.length;
     const all = lives.flatMap((l) => l.battles);
     const lost = all.filter((e) => e.data.end === 'lose').length / all.length;
     console.log('lives ended in battle', (100 * inBattle).toFixed(1) + '%', 'deaths by the fight per life', dead.toFixed(3), 'lost fights', (100 * lost).toFixed(1) + '%');
@@ -183,6 +192,18 @@ describe('combat balance (whole lives of the real core)', () => {
       for (const b of l.battles.filter((e) => e.data.kind === 'story' && NAMED.has(tierOf.get(String(e.id).split(',')[0]) ?? ''))) expect(called.has(b.id), `seed ${l.seed} age ${b.age} ${b.id}`).toBe(true);
     }
     expect(named).toBeGreaterThan(100);
+  });
+
+  it('a death in battle is a death in a fight: every life whose cause or ending says battle has a fight in its last life year (a way of the story that dies in battle is a last stand)', () => {
+    let dead = 0;
+    for (const l of lives) {
+      if (l.cause !== CAUSE.battle && l.ending !== 'ผู้ตายในสงคราม') continue;
+      dead++;
+      expect(l.cause, `seed ${l.seed}: an ending of the war without a death in battle`).toBe(CAUSE.battle);
+      expect(l.fightAges.some((a) => a >= l.deathAge), `seed ${l.seed} died in battle at ${l.deathAge} with no fight that year`).toBe(true);
+    }
+    console.log('lives that end in battle', dead, 'of', lives.length);
+    expect(dead).toBeGreaterThan(0);
   });
 
   it('C2: the war of a soldier is told in a few lines: no line twice, the plain battles are for the developer, and the summaries are not the same', () => {

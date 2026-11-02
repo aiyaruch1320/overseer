@@ -25,6 +25,7 @@ export { clash, clashOf, flushClashes, linkClashes, openChance, type ClashLink, 
 export { resolve as fightFoe, rerollChance, hpNow, damageOf, type Fought } from './fight';
 export { foeOf, dragonFoe, isNamedEnemy } from './foe';
 export { admit, capOf, hasRoom, launch, flush } from './launch';
+export { lastStand } from './story-battle';
 export { chanceOf, dangerOf, pickEnemy, poolAt, rollEncounter, raidAt, atWar } from './encounter';
 export { warBattle, warEventOf, warFoes, warOn } from './war';
 export { buildHero, addHp, hpOf, maxHpOf } from './hero';

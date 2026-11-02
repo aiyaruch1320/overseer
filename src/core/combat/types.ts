@@ -38,6 +38,8 @@ export interface FightOpts {
   dream?: string;
   /** The hero wins but spares the foe (a clash row `win_spare`): no kill, no loot of the kill. */
   spare?: boolean;
+  /** A last stand (a way of the story that dies in battle): there is no fleeing, and a hero who is beaten dies (unless a rescue holds). */
+  lastStand?: boolean;
   /** A title key to count the win under (`duel` `raid`), 05 §7. */
   tally?: string;
 }

@@ -6,7 +6,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { classify } from '../../src/core/attention';
 import { extOf as charExt } from '../../src/core/character';
 import {
-  admit, atWar, bestHit, buildHero, capOf, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, flushClashes, foeOf,
+  admit, atWar, bestHit, buildHero, capOf, chanceOf, clash, clashOf, combatIndex, combatOf, combatSystem, damageOf, dragonFoe, dreamStance, fight, fightFoe, flush, flushClashes, foeOf, lastStand,
   hpOf, lootFor, markOf, maxHpOf, pendingFights, rollWound, stanceBonuses, stanceOptions, stanceWeights, addHp, warBattle, warEventOf, warFoes, warOn,
 } from '../../src/core/combat';
 import { warYear } from '../../src/core/combat/war';
@@ -1059,6 +1059,24 @@ describe('the war of a soldier (M3 review C2)', () => {
     warYear(m.ctx, false);
     expect(camp().length).toBe(3);
     expect(camp()[2].data).toMatchObject({ battles: 8, lost: 8, end: true, total: true, years: 10 });
+  });
+
+  it('a way of the story that dies in battle is a last fight: the call goes out, the blades meet PRELUDE_BEATS beats later, no flight, and a beaten hero dies in it', () => {
+    const m = mk(209, { stats: { pow: 12, vit: 12 } });
+    const mark = m.s.game.state.logN;
+    expect(lastStand(m.ctx, 'gi.e2', 'b')).toBe(true);
+    const log = () => m.s.game.state.log.filter((e) => e.n >= mark && e.sys === 'combat');
+    expect(log().filter((e) => e.kind === 'prelude').length).toBe(1);
+    expect(log().filter((e) => e.kind === 'battle').length).toBe(0);
+    expect(m.life.dead).toBeUndefined();
+    const ext = combatOf(m.life);
+    ext.tick += PRELUDE_BEATS;
+    flush(m.ctx);
+    const fought = log().filter((e) => e.kind === 'battle');
+    expect(fought.length).toBe(1);
+    expect(fought[0].data.stances).not.toContain('flee');
+    // the titan of the myth is not beaten by this hero: the death is the fight's own, with the cause the endings read
+    expect(m.life.dead?.cause).toBe(CAUSE.battle);
   });
 
   it('is at war while the war lasts: a flag whose timer has run out is not a war (the world never takes it off), a flag with no timer (the hand of the god) stands', () => {
