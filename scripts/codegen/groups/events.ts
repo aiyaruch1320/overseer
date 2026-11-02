@@ -3,7 +3,7 @@
 //   npx tsx scripts/codegen/run-all.ts events
 // The structure the doc-level sim reads (era gate, prerequisites, thresholds, closures, successors, religion weights, dragons)
 // is read with the same rules as scripts/sim/sim-world.mjs, so the core gets the same data from JSON (tests/codegen/events.test.ts).
-import type { ContinentId, CountryId, Effect, EventId } from '../../../src/core/types';
+import type { ContinentId, Effect } from '../../../src/core/types';
 import type {
   BranchEvent,
   Closure,
@@ -30,8 +30,6 @@ import type {
 } from '../../../src/core/data/types-events';
 import type { GenReport } from '../run-all';
 import {
-  BRANCH_PREFIXES,
-  WORLD_PREFIXES,
   anyIdsIn,
   eraColumn,
   eraGate,
@@ -47,8 +45,7 @@ import {
   thresholds,
 } from '../lib/events-grammar';
 import { idIndex } from '../lib/ids';
-import { Unparsed, readDoc, rel, tables, writeGen } from '../lib/table';
-import type { Table } from '../lib/table';
+import { Unparsed, readDoc, tables, writeGen } from '../lib/table';
 
 const F = {
   world: 'docs/systems/events/world-events.md',
@@ -676,7 +673,7 @@ function buildRules(raw: { id: string; mark: Mark | null; cond: string; eff: str
 
 const COUNTRY_CODE = /\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d{2}\b/g;
 
-function localNpcs(cell: string, ids: ReturnType<typeof idIndex>, at: string, unp: Unparsed, line: number): LocalNpc[] {
+function localNpcs(cell: string, at: string, unp: Unparsed, line: number): LocalNpc[] {
   const out: LocalNpc[] = [];
   for (const part of cell.split(/\s+·\s+/)) {
     const m = part.trim().match(/^([A-Z]{2}\d{2}-\d)\s+(.*?)(?:\s*([★☆]))?$/);
@@ -686,7 +683,6 @@ function localNpcs(cell: string, ids: ReturnType<typeof idIndex>, at: string, un
     }
     out.push({ id: m[1], name: m[2].trim(), star: (m[3] as '★' | '☆') || '' });
   }
-  void ids;
   return out;
 }
 
@@ -731,7 +727,7 @@ function buildLocal(ids: ReturnType<typeof idIndex>, unp: Unparsed, eventIds: Se
       countries: [...new Set(cells[1].match(COUNTRY_CODE) || [])],
       dependsText: plain(cells[2]),
       reads: readsOf(cells[2]),
-      npcs: localNpcs(cells[3], ids, file, unp, line),
+      npcs: localNpcs(cells[3], file, unp, line),
       whatText: plain(cells[4]),
       resultText: plain(cells[5]),
       paths: pathOut.map(({ when, text, effects, chain: c }) => ({ when, text, effects, chain: c })),
@@ -786,10 +782,5 @@ function buildLocal(ids: ReturnType<typeof idIndex>, unp: Unparsed, eventIds: Se
     for (const rd of e.reads) if (!allEvents.has(rd.id)) unp.add(e.src.split(':')[0], Number(e.src.split(':')[1]), rd.id, `${e.id} อ้างเหตุการณ์ที่ไม่มี`);
     for (const n of e.npcs) if (!ids.npcs.has(n.id)) unp.add(e.src.split(':')[0], Number(e.src.split(':')[1]), n.id, `${e.id} อ้าง NPC ที่ไม่มี`);
   }
-  void ({} as Table);
-  void BRANCH_PREFIXES;
-  void WORLD_PREFIXES;
-  void (null as unknown as [CountryId, EventId]);
-  void rel;
   return { rules: { once: true, minNpcs: 3, chance: 0.08 }, templates, events, generated };
 }

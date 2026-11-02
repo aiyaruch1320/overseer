@@ -25,7 +25,13 @@
      ],
      "text": "`war=frequent` หรือ `war=total`"
     },
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "weight:WR-*",
+      "delta": 5
+     }
+    ],
     "src": "docs/systems/events/local-events.md:112"
    },
    {

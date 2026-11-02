@@ -314,7 +314,7 @@ export function parseLocalEffect(cell: string, ids: IdIndex): LocalParsed {
       eat(m[0]);
     }
     // weight written before the id: น้ำหนัก `WR-04` ของคู่ประเทศ +5
-    for (const m of [...seg.matchAll(/น้ำหนัก\s*`?([A-Z]{2,3}-\d{2})`?[^\d+\-−`]{0,24}([+\-−]\d+)/g)]) {
+    for (const m of [...seg.matchAll(/น้ำหนัก\s*`?([A-Z]{2,3}-(?:\d{2}|\*))`?[^\d+\-−`]{0,24}([+\-−]\d+)/g)]) {
       out.effects.push({ k: 'stat', stat: `weight:${m[1]}`, delta: num(m[2]) });
       if (!out.chain.includes(m[1])) out.chain.push(m[1]);
       eat(m[0]);

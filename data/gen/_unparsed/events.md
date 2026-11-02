@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: events
 
-53 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+52 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -53,7 +53,6 @@
 | docs/systems/events/local-events.md:39 | ปิด อีริดานตื่นช้าลงและไว้ใจนักบวชลด `PL-01` เกิดเมื่ออารมณ์ต่ำกว่า 40 | LC-13 ผลถาวร |
 | docs/systems/events/local-events.md:45 | เรียกคืน `MC-06` ช้าลง และไว้ใจ MK-13 −2 | LC-19 ผลถาวร |
 | docs/systems/events/local-events.md:62 | ซีโร่เจอไวรอน-1 หุ่นรบเลิกใช้ในสมาพันธ์ `MC-03` เร็ว | LC-36 ผลถาวร |
-| docs/systems/events/local-events.md:112 | น้ำหนัก WR-* ของคู่ประเทศ +5 | LT-1 ผล |
 | docs/systems/events/local-events.md:113 | ไว้ใจของประเทศต่อสถาบันเปลี่ยน ±1 | LT-2 ผล |
 | docs/systems/events/local-events.md:114 | ราคาอาหาร ×1.5 หนึ่งปี | LT-3 ผล |
 | docs/systems/events/local-events.md:116 | เปิดโหนด xc ([../../lore/storylines/25-journeys.md](../../lore/storylines/25-journeys.md)) | LT-5 ผล |
