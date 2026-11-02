@@ -17,6 +17,7 @@ import { addGratitude, addTie, changeB, endTie, hAgeOf, setLine } from './people
 import { hasRoom, meet } from './sources';
 import { extOf, isLive, levelOf, reindex, tiesOf, closeTies, type BondsExt, type Tie } from './state';
 import { JOURNEY_LINES, WORK_LINES } from './tuning';
+import { caps } from './year';
 import { stubHooks } from '../story/stubs';
 
 const life = (ctx: Ctx): LifeState | null => {
@@ -107,6 +108,8 @@ const hooks = {
     const t = focusOf(e);
     after(ctx, l, e, n, id, key, t);
     e.focus = null;
+    // a node can lift a tie to level 3 in the middle of a year: the caps of 01 §2 hold at every moment, not only at the year's end
+    caps(ctx, l, e);
   },
 };
 
@@ -253,6 +256,7 @@ export function registerBondsRules(): void {
     const t = addTie(ctx, l, { line, level: lv ?? 1, from: prayer ? 'prayer' : src.id ?? 'node', race: prayer ? 'any' : 'same' });
     b.focus = t.id;
     startArc(ctx, l, t);
+    caps(ctx, l, b);
   };
 
   // ---------- stats ----------

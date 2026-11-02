@@ -5,7 +5,7 @@ import { write } from '../log';
 import type { LifeState } from '../types';
 import { idx as characterIdx } from '../character/data';
 import { bondsIndex, floorB } from './data';
-import { startArc } from './arcs';
+import { plain, startArc } from './arcs';
 import { addTie, hAgeOf, raceRow, tieLog } from './people';
 import { holderPlace, rowOf, slotHAge, slotOf, allRows } from './npcs';
 import { closeTies, extOf, isLive, levelOf, looseTies, tiesOf, type BondsExt, type Tie } from './state';
@@ -128,6 +128,12 @@ export function rosterYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
     if (!t) continue;
     t.arc = { code: npc, stage: 1, next: life.hAge + rng.int(2, 4), flag: true };
     if (marked) slot.rel['mc.ally'] = 2;
+    // who he is: the written introduction, and for a successor how he stands to the original and what ties him (07 §2)
+    write(ctx.state, {
+      sys: 'bonds', kind: succ ? 'successor' : 'ally', id: t.id,
+      data: { name: t.name, npc, line: t.line, origin: arc.origin, text: plain(succ ? `${succ.relation} · ${succ.hook}` : arc.intro).slice(0, 240), proto: succ ? succ.protoName : null },
+      level: 1,
+    });
   }
   // a position of the roster that is no written ally but whose story made the character his ally (the ally chance of a path)
   for (const row of allRows(ctx)) {

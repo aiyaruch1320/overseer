@@ -220,10 +220,8 @@ export function buy(ctx: Ctx, life: LifeState, release: boolean): Held | undefin
   };
   e.held.push(h);
   e.counts.bought++;
-  const roles = bondageIndex(ctx).data.roleRules.buyer;
   // exposure: the free lands trust him less (§8: 30% in the node)
   if (rng.chance(0.3)) apply(ctx, [{ k: 'trust', toward: 'ประเทศท่าที A', delta: -2 }], { sys: 'bondage', id: 'buy' });
-  void roles;
   write(ctx.state, { sys: 'bondage', kind: 'buy', id: h.id, data: { name: h.name, level: h.level, price, country, npc: h.npc ?? null }, level: 1 });
   if (release) free(ctx, life, h, 'freed', 'freed');
   return h;

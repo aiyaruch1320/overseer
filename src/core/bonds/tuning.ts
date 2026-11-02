@@ -1,6 +1,5 @@
 // Numbers the bond system needs that docs/systems/bonds/ does not state exactly (code-plan §2 rule 3: one tuning file per system).
 // Every value says where it comes from. "assumption" = the docs are silent; the lead can move it into the documents later.
-import type { Condition } from '../types';
 
 /** The words of the legacy `Relation` kinds and of the prayer effects (`bond lover` `bond child`) → the Thai line names (bonds/01 §1). */
 export const LINE_ALIASES: Record<string, string> = {
@@ -39,7 +38,7 @@ export const AGE_GAP: Record<string, [number, number]> = {
 export const DEATH_AGE = { mean: 75, sd: 5, min: 52, max: 92 };
 export const UNTIMELY = { fromAge: 15, perYear: 0.004 };
 /** Chance that a letter or a visit reaches the character in a year: same country 1, same continent, other continent (03 §4: letters at most once a year, far news late). */
-export const CONTACT = { sameCountry: 0.55, sameContinent: 0.5, otherContinent: 0.3, house: 1, houseAdult: 0.6, distantKin: 0.15, lover: 0.9, partner: 0.7 };
+export const CONTACT = { sameCountry: 0.65, sameContinent: 0.5, otherContinent: 0.3, house: 1, houseAdult: 0.6, distantKin: 0.15, lover: 0.9, partner: 0.7 };
 /** Kin who share the house while the character is a child (and still see him often after). */
 export const HOUSE_KIN: ReadonlySet<string> = new Set(['father', 'mother', 'elder_sibling', 'younger_sibling', 'child', 'adopted']);
 export const HOUSE_UNTIL = 18;
@@ -63,18 +62,12 @@ export const SCHOOL_AGE: [number, number] = [10, 24];
 export const FLAG_MEET = 0.1;
 /** The character must be at least this old to meet a flagship person on his own (the teen friends come from the nodes). */
 export const FLAG_MEET_AGE = 14;
-/** A person of the NPC roster who stands in a tie when `mc.ally` was set by his story. */
-export const FLAG_START_LEVEL = 1;
-
-/** Class-1 candidates of the bondage routes are handled by the bondage system; this is the chance per year that a debtor friend is bound (FT-01 end b opens `ab`). */
-export const FRIEND_BOUND = 0.0;
-
 // ---------- invites (03 §3) ----------
 
 /** The character's own taste for inviting: chance per year that he asks an eligible friend to be his lover (assumption; the docs say "ตามนิสัย"). */
 export const ASK_LOVER = 0.05;
 export const ASK_SPOUSE = 0.25;
-export const ASK_BUSINESS = 0.12;
+export const ASK_BUSINESS = 0.04;
 /** hAge a character can have a lover from (adult). */
 export const LOVER_FROM = 18;
 /** Years a travel party membership lasts after the invite (assumption). */
@@ -94,13 +87,8 @@ export const CHILD_AGE: [number, number] = [18, 46];
 export const MAX_CHILDREN = 4;
 /** Parents' hAge at the birth of the character (05 §1 "ตามโค้ดเดิม"; assumption). */
 export const PARENT_AGE: [number, number] = [22, 38];
-/** Chance that a prayer's lover is of a race that can marry the character: the same race (assumption). */
-export const PRAYER_LOVER_B = 5;
 /** A child of a prayer or a couple starts at level 3 (05 §3). */
 export const CHILD_START_B = 40;
-/** Loss of income for a child under 6 raised by the character, per year (05 §3). */
-export const CHILD_INCOME_PCT = -5;
-
 // ---------- crisis rates (07-attention.md §2: about 1.5 a life, together with the bondage escape) ----------
 
 /** Chance that a tie of the story keeps its stage-3 crisis for the character (a card) rather than passing it quietly. */
@@ -114,9 +102,6 @@ export const PAIR_ITEM_SOURCES = { childhood: 0.3, partner: 0.25, spouse: 0.4, m
 
 /** Years of silence before a loose tie (levels 1 and 2) can fade when the cap is full (assumption). */
 export const FADE_AFTER = 4;
-
-/** Conditions that the bond system adds to its own templates beyond the data (FT-11 offers only where there is a war; the data holds it as `fitCond`). */
-export const FIT_COND_OVERRIDE: Record<string, Condition> = {};
 
 /** Template codes grouped by role of a relative, for the close kin at 5 to 12 (05 §2; assumption which template fits which relative). */
 export const KIN_TEMPLATES: Record<string, string[]> = {

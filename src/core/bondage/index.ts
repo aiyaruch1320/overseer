@@ -18,7 +18,7 @@ export const bondageSystem: System = {
     const life = ctx.state.life;
     if (!life) return;
     life.ext.bondage = undefined;
-    const e = extOf(life);
+    extOf(life);
     // born bound or left (10-bondage.md §5 rows 1 and 2): a life of class 1 in a country where the level is allowed, by the share of the class
     if (life.cls !== 'c1' || !ctx.data.bondage) return;
     const rng = ctx.rng('bondage.birth');
@@ -27,7 +27,6 @@ export const bondageSystem: System = {
     // a child is not in debt (B1 needs a debt of his own): that share goes to the free born
     const i = rng.weighted([0, share.b2, share.b3, share.b1 + share.rest]);
     if (i === 1 || i === 2) enter(ctx, life, rng.chance(0.65) ? 'เกิดในพันธะ' : 'ถูกทิ้ง', (i + 1) as 2 | 3, { born: true });
-    void e;
   },
   lifeYear(ctx) {
     const life = ctx.state.life;
