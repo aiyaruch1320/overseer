@@ -55,5 +55,5 @@ export function chronicleLines(ctx: Ctx, card: EndingCard, heir: HeirSpec | null
 
 /** Writes the head and the lines of a life to the chronicle of the lineage. */
 export function writeChronicle(ctx: Ctx, card: EndingCard, lines: string[]): void {
-  ctx.state.lineage.chronicle.push(`รุ่นที่ ${card.generation} · ${card.name} · ศ.ม. ${calendarYear(card.bornYear).toLocaleString('en-US')} ถึง ${calendarYear(card.diedYear).toLocaleString('en-US')}`, ...lines);
+  ctx.state.lineage.chronicle.push(`${card.generation > 0 ? `รุ่นที่ ${card.generation}` : 'คนใหม่ในโลกเดิม'} · ${card.name} · ศ.ม. ${calendarYear(card.bornYear).toLocaleString('en-US')} ถึง ${calendarYear(card.diedYear).toLocaleString('en-US')}`, ...lines);
 }
