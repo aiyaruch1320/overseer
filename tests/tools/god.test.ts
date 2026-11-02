@@ -89,10 +89,9 @@ describe('the words of the god', () => {
 });
 
 describe('the console on the real god', () => {
-  it('has every power but the conjuring and the vows, and a look changes nothing', () => {
+  it('has every power, the conjuring and the vows included, and a look changes nothing', () => {
     const { g, god } = atFirstCall();
-    for (const a of ['chest.open', 'chest.pick', 'chest.reroll', 'chest.skip', 'dream.send', 'whisper', 'prayer.answer', 'miracle', 'decree'] as const) expect(hasAction(a), a).toBe(true);
-    expect(hasAction('conjure')).toBe(false);
+    for (const a of ['chest.open', 'chest.pick', 'chest.reroll', 'chest.skip', 'dream.send', 'whisper', 'prayer.answer', 'miracle', 'decree', 'conjure', 'vow.pick'] as const) expect(hasAction(a), a).toBe(true);
     const before = JSON.stringify(g.state);
     const o = said(god.options());
     god.power();
@@ -100,14 +99,15 @@ describe('the console on the real god', () => {
     waitingLines(g, data);
     expect(JSON.stringify(g.state)).toBe(before);
     expect(o).toContain('chest (เปิดหีบประทาน) — ทำได้');
-    expect(o).toContain('conjure <ถ้อยคำ> (เสกตามใจ) — ยังไม่มีพลังนี้');
+    expect(o).toContain('conjure <กริยา> <แก่น> <ขนาด> [เป้าหมาย] (เสกตามใจ) — ทำได้ตามวงที่เปิด');
+    expect(o).toContain('vow [N] (เลือกคำปฏิญาณ)');
     expect(o).toContain('ทางที่ 1:');
     expect(o).not.toMatch(/undefined|\[object|NaN/);
     // the lines that tell about the game (the ways of a dream, the cards) hold no code; the lines that teach a command hold its letters
     for (const l of o.split('\n').filter((x) => x.startsWith('  ทางที่'))) expect(leaks(l), l).toEqual([]);
   });
 
-  it('a preview changes nothing, `no` drops it, a command with nothing behind it is told so', () => {
+  it('a preview changes nothing, `no` drops it, a command typed short is told how to type it', () => {
     const { g, god } = atFirstCall();
     const before = JSON.stringify(g.state);
     const p = said(god.handle('chest'));
@@ -118,7 +118,7 @@ describe('the console on the real god', () => {
     expect(said(god.handle('no'))).toContain('ยกเลิก');
     expect(god.pending).toBeNull();
     expect(said(god.handle('yes'))).toContain('ไม่มีคำสั่งที่รอยืนยัน');
-    expect(said(god.handle('conjure ไฟ'))).toContain('ยังไม่มีพลังนี้');
+    expect(said(god.handle('conjure ไฟ'))).toContain('ใช้: conjure');
     expect(said(god.handle('pick 1'))).toContain('ทำไม่ได้ — ไม่มีหีบที่เปิดอยู่');
     expect(god.handle('status')).toBeUndefined();
   });
