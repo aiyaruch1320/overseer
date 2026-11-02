@@ -5,13 +5,14 @@ import type { Rng } from '../rng';
 import type { LifeState } from '../types';
 import type { KinRow } from '../data/types-bonds';
 import { bondsIndex, ceilB, floorB } from './data';
-import { addTie, hAgeOf, raceRow, setLine } from './people';
+import { addTie, hAgeOf, isChild, raceRow, setLine } from './people';
+import { showMood } from './moods';
 import { holderPlace, rowOf, slotOf } from './npcs';
 import { addNpcTie } from './sources';
-import { peopleCode } from '../text';
+import { peopleCode, personName, registerName } from '../text';
 import { startArc } from './arcs';
 import { extOf, isLive, levelOf, tiesOf, type BondsExt, type Tie } from './state';
-import { CHILD_AGE, CHILD_CHANCE, CHILD_START_B, MAX_CHILDREN, PARENT_AGE } from './tuning';
+import { CHILD_AGE, CHILD_CHANCE, CHILD_FEELS, GROW_TEXT, CHILD_STAGES, CHILD_START_B, CHILD_WED, MAX_CHILDREN, PARENT_AGE, PARTNER_FEELS } from './tuning';
 
 /** A number drawn from a table "0 ตัว 20% · 1 ตัว 35% ..." of the data. */
 function drawCount(rng: Rng, row: KinRow | undefined, extraPct = 0): number {
@@ -112,8 +113,17 @@ export function closeKin(ctx: Ctx, life: LifeState): void {
   }
 }
 
-/** A child: of the character's own blood or taken in (the prayer, the couple, a freed child). */
-export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; age?: number; from?: string } = {}): Tie {
+/** The life stage of a child by his own age (05 §3 table: 0–5, 6–14, 15–25, grown). */
+export function stageOfAge(age: number): NonNullable<Tie['stage']> {
+  return age <= CHILD_STAGES.infant ? 'infant' : age <= CHILD_STAGES.child ? 'child' : age <= CHILD_STAGES.youth ? 'youth' : 'adult';
+}
+
+/**
+ * A child: of the character's own blood or taken in (the prayer, the couple, a freed child). The child keeps who the other parent is
+ * (the partner of the day, as a tie when he is one), the hAge the character was when he came, a stage by his age and the feelings the
+ * character shows over the years (05 §3); all of it lives on the tie in `life.ext.bonds` and in the log (`bonds/child`).
+ */
+export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; age?: number; from?: string; other?: Tie } = {}): Tie {
   const e = extOf(life);
   const rng = ctx.rng('bonds.people');
   const fam = bondsIndex(ctx).data.family.children;
@@ -122,7 +132,21 @@ export function addChild(ctx: Ctx, life: LifeState, opt: { adopted?: boolean; ag
     line: 'ญาติรุ่นเยาว์', b: opt.adopted ? floorB(ctx, fam.adopted.startLevel) : CHILD_START_B, from: opt.from ?? (opt.adopted ? 'adopted' : 'child'), kin: opt.adopted ? 'adopted' : 'child', light: true,
     gap: age - life.hAge, race: 'same', gender: rng.chance(0.5) ? 'm' : 'f', quiet: true,
   });
-  write(ctx.state, { sys: 'bonds', kind: 'child', id: t.id, data: { name: t.name, adopted: !!opt.adopted, from: opt.from ?? 'child', b: t.b }, level: 2 });
+  // the other parent: the one asked for, else the partner of the day for a child of the couple or of a prayer (a taken-in child has none known)
+  const partner = e.partner ? e.ties[e.partner] : undefined;
+  const other = opt.other ?? (!opt.adopted && partner && isLive(partner) ? partner : undefined);
+  t.born = life.hAge;
+  t.stage = stageOfAge(age);
+  t.kidMood = life.hAge;
+  if (other) {
+    t.other = other.id;
+    t.otherName = other.name;
+  }
+  write(ctx.state, {
+    sys: 'bonds', kind: 'child', id: t.id,
+    data: { name: t.name, adopted: !!opt.adopted, from: opt.from ?? 'child', b: t.b, kin: t.kin ?? null, gender: t.gender, age, other: other?.name ?? null, otherId: other?.id ?? null },
+    level: 2,
+  });
   e.children = tiesOf(e).filter((x) => (x.kin === 'child' || x.kin === 'adopted') && isLive(x)).map((x) => x.id);
   return t;
 }
@@ -141,7 +165,7 @@ export function familyYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
     const mine = life.hAge;
     const his = hAgeOf(ctx, partner);
     const kids = e.children.length;
-    if (mine >= CHILD_AGE[0] && mine <= CHILD_AGE[1] && his >= CHILD_AGE[0] && his <= CHILD_AGE[1] + 4 && kids < MAX_CHILDREN && rng.chance(CHILD_CHANCE)) addChild(ctx, life, { from: 'couple' });
+    if (mine >= CHILD_AGE[0] && mine <= CHILD_AGE[1] && his >= CHILD_AGE[0] && his <= CHILD_AGE[1] + 4 && kids < MAX_CHILDREN && rng.chance(CHILD_CHANCE)) addChild(ctx, life, { from: 'couple', other: partner });
   }
   for (const id of e.children) {
     const c = e.ties[id];
@@ -151,6 +175,55 @@ export function familyYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
       c.b = Math.min(ceilB(ctx, 5), c.b + hold);
     }
   }
+  childrenYear(ctx, life, e);
+  partnerYear(ctx, life, e);
+}
+
+/**
+ * The children over the years (H6 of the M3 review): each grows through the stages of 05 §3, the character shows the feeling of the stage now and
+ * then, and the child marries in the years a person marries. His death is the book's (year.ts), written with the kin.
+ */
+function childrenYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
+  const rng = ctx.rng('bonds.kids');
+  for (const id of [...e.children]) {
+    const c = e.ties[id];
+    if (!c || !isLive(c) || !isChild(c)) continue;
+    const age = Math.floor(hAgeOf(ctx, c));
+    const stage = stageOfAge(age);
+    if (c.stage !== stage) {
+      c.stage = stage;
+      write(ctx.state, { sys: 'bonds', kind: 'news', id: c.id, data: { name: c.name, line: c.line, kind: 'grow', text: GROW_TEXT[stage], kin: c.kin ?? null, stage, age, gender: c.gender, other: c.otherName ?? null }, level: 1 });
+    }
+    // the feeling of the stage: one in `gapYears` years at the most toward a child
+    if (life.hAge - (c.kidMood ?? -99) >= CHILD_FEELS.gapYears && rng.chance(CHILD_FEELS.chance)) {
+      c.kidMood = life.hAge;
+      const far = c.country !== life.country;
+      const pool = [...CHILD_FEELS.byStage[stage].filter((m) => far || !CHILD_FEELS.farOnly.includes(m)), ...(far ? CHILD_FEELS.far[stage] : [])];
+      if (pool.length) showMood(ctx, life, c, pool[rng.int(0, pool.length - 1)], `child:${stage}`);
+    }
+    if (!c.married && age >= CHILD_WED.ages[0] && age <= CHILD_WED.ages[1] && c.gender !== 'n' && rng.chance(CHILD_WED.chance)) {
+      const people = peopleCode(ctx, c.race);
+      const gender = c.gender === 'm' ? 'f' : 'm';
+      const make = () => personName(ctx.rng('bonds.names'), { people, gender, continent: c.country.slice(0, 2) });
+      const name = registerName(ctx, `bond:${life.id}:${c.id}:spouse`, make(), make);
+      c.married = { age, name };
+      write(ctx.state, { sys: 'bonds', kind: 'news', id: c.id, data: { name: c.name, line: c.line, kind: 'wed', text: `แต่งงานกับ ${name}`, kin: c.kin ?? null, spouse: name, age, gender: c.gender }, level: 1 });
+    }
+  }
+}
+
+/**
+ * The life partner is told again every few years (H7 of the M3 review): a feeling toward him, not only the lines of his coming and going. A partner
+ * who lives far away is missed. A partner who is gone has his end as a line of its own (people.ts `endTie`).
+ */
+function partnerYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
+  const p = e.partner ? e.ties[e.partner] : undefined;
+  if (!p || !isLive(p) || life.hAge - (p.partnerMood ?? p.opened) < PARTNER_FEELS.gapYears) return;
+  const rng = ctx.rng('bonds.kids');
+  if (!rng.chance(PARTNER_FEELS.chance)) return;
+  p.partnerMood = life.hAge;
+  const pool = p.country !== life.country ? PARTNER_FEELS.far : levelOf(ctx, p) >= 4 ? PARTNER_FEELS.close : PARTNER_FEELS.near;
+  showMood(ctx, life, p, pool[rng.int(0, pool.length - 1)], 'partner');
 }
 
 export { setLine };

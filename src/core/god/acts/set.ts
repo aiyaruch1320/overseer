@@ -15,6 +15,7 @@ import { addMod, activeMods, clearFlag, faithAt, setFlag } from './mods';
 import { actsOf, livingOf, yearOf } from './state';
 import { DURATIONS, MR06_DEATH, MR08_RUIN } from './tuning';
 import { npcIndex } from '../../npc/data';
+import { findAlly } from '../../bonds';
 
 const rng = (ctx: Ctx) => ctx.rng('god.miracle');
 
@@ -131,7 +132,7 @@ registerMiracle('MR-06', {
   line: 'destroy',
   check: (ctx, _m, args) => {
     const id = String(args.npc ?? '');
-    if (!id || !npcIndex(ctx).rows.has(id)) return 'ไม่ระบุ NPC เป้าหมาย';
+    if (!id || !npcIndex(ctx).rows.has(id)) return id && findAlly(ctx, id) ? 'พวกพ้องของตัวละครหลักถูกฟ้าผ่าไม่ได้' : 'ไม่ระบุ NPC เป้าหมาย';
     if (!aliveNpc(ctx, id)) return 'NPC นั้นไม่มีชีวิตอยู่';
     if (slotOf(ctx, id)?.rel['mc.ally'] === 1) return 'พวกพ้องของตัวละครหลักถูกฟ้าผ่าไม่ได้';
     return null;

@@ -9,7 +9,7 @@ import { pairsYear } from './items';
 import { moodYear, showMood } from './moods';
 import { amongYear, rosterYear, schoolYear } from './sources';
 import { bondsIndex } from './data';
-import { changeB, endTie, hAgeOf, personAlive } from './people';
+import { changeB, endTie, hAgeOf, isPartner, personAlive } from './people';
 import { holderPlace, rowOf, slotOf } from './npcs';
 import { closeTies, extOf, isLive, levelOf, looseTies, reindex, tiesOf, type BondsExt, type Tie } from './state';
 import { ADVENTURING, CONTACT, FADE_AFTER, HOUSE_KIN, HOUSE_UNTIL, NO_FADE_LINES, UNTIMELY } from './tuning';
@@ -26,10 +26,10 @@ function die(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, cause: string): voi
     if (life.hAge - e.funeralAt >= 15) {
       e.funeralAt = life.hAge;
       e.funerals++;
-      write(ctx.state, { sys: 'bonds', kind: 'funeral', id: t.id, data: { name: t.name, line: t.line, cause, level: lv }, level: 2 });
+      write(ctx.state, { sys: 'bonds', kind: 'funeral', id: t.id, data: { name: t.name, line: t.line, cause, level: lv, kin: t.kin ?? null, age: Math.round(hAgeOf(ctx, t)), partner: isPartner(t) }, level: 2 });
     } else {
       e.counts.news++;
-      write(ctx.state, { sys: 'bonds', kind: 'news', id: t.id, data: { name: t.name, line: t.line, text: `${t.name} จากไป (${cause})`, kind: 'death' }, level: 1 });
+      write(ctx.state, { sys: 'bonds', kind: 'news', id: t.id, data: { name: t.name, line: t.line, text: `${t.name} จากไป (${cause})`, kind: 'death', kin: t.kin ?? null, age: Math.round(hAgeOf(ctx, t)), partner: isPartner(t) }, level: 1 });
     }
     if (lv >= 4) showMood(ctx, life, t, 'เหงา', `${t.name} ตาย`);
   }
@@ -138,7 +138,8 @@ export function caps(ctx: Ctx, life: LifeState, e: BondsExt): void {
     endTie(ctx, t, 'fade', 'เกินเพดานสายห่าง');
   }
   // a loose tie nobody has written to or seen for years drops out of the book as news stops (assumption of tuning FADE_AFTER)
-  for (const t of looseTies(ctx, e)) if (life.hAge - t.last > FADE_AFTER + 6 && t.b < 10) endTie(ctx, t, 'fade', 'ห่างจนไม่มีข่าว');
+  // (a life partner does not drop out of the book for silence: he leaves by a split or a death, each told as a line of its own)
+  for (const t of looseTies(ctx, e)) if (!t.spouse && life.hAge - t.last > FADE_AFTER + 6 && t.b < 10) endTie(ctx, t, 'fade', 'ห่างจนไม่มีข่าว');
 }
 
 /** The party of travellers is asked for while the character goes to war or on the road: by his job or by a journey line he walks. */

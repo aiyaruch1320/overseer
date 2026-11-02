@@ -3,7 +3,7 @@
 import { hasAction, onAction } from '../command';
 import type { Ctx } from '../game';
 import { checkOpen, checkPick, checkReroll, chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, slotPrice } from './chest';
-import { checkDream, offerCards, previewDream, sendDream } from './dream';
+import { checkAllyDream, checkDream, offerCards, previewAllyDream, previewDream, sendAllyDream, sendDream } from './dream';
 import { lightOf } from './power';
 import { inWindow } from './state';
 import { priceOf } from './power';
@@ -53,10 +53,11 @@ export function registerGodActions(force = false): void {
     run: (ctx) => skipChest(ctx),
   });
 
+  // `{ ally }` is a dream of an ally in trouble (his crisis waits for the character's answer); `{ path }` or `{ node, choice }` is a way of a node
   add('dream.send', {
-    check: (ctx, a) => checkDream(ctx, a),
-    preview: (ctx, a) => previewDream(ctx, a),
-    run: (ctx, a) => void sendDream(ctx, a),
+    check: (ctx, a) => (a.ally !== undefined ? checkAllyDream(ctx, a) : checkDream(ctx, a)),
+    preview: (ctx, a) => (a.ally !== undefined ? previewAllyDream(ctx, a) : previewDream(ctx, a)),
+    run: (ctx, a) => void (a.ally !== undefined ? sendAllyDream(ctx, a) : sendDream(ctx, a)),
   });
 }
 

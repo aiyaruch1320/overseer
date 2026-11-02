@@ -3,6 +3,7 @@
 // Importing this module registers its rules (src/core/rules). The state is `life.ext.bonds` (state.ts); screens read the log (`sys: 'bonds'`).
 import type { System } from '../game';
 import { write } from '../log';
+import { decideCrises, expireNudges } from './arcs';
 import { birthKin } from './family';
 import { registerBondsRules } from './rules';
 import { extOf, isLive, levelOf, reindex, tiesOf } from './state';
@@ -16,10 +17,11 @@ export { showMood, moodsOf, fitMood } from './moods';
 export { addChild, birthKin, closeKin } from './family';
 export { meet, addNpcTie, hasRoom } from './sources';
 export { grantPair, fullPair, statusOf } from './items';
-export { startArc, pickTemplate, crisisAnswer, endingKind } from './arcs';
-export { addTie, changeB, setB, setLine, endTie, hAgeOf, addGratitude } from './people';
+export { startArc, pickTemplate, crisisAnswer, endingKind, decideCrises } from './arcs';
+export { alliesOf, findAlly, crisesWaiting, crisisOf, nudgeCrisis, type NudgeKind, type Waiting } from './allies';
+export { addTie, changeB, setB, setLine, endTie, hAgeOf, addGratitude, isPartner, isChild } from './people';
 export { freeTie } from './year';
-export { extOf, tiesOf, levelOf, closeTies, looseTies, isLive, type BondsExt, type Tie, type ArcState } from './state';
+export { extOf, tiesOf, levelOf, closeTies, looseTies, isLive, type BondsExt, type Tie, type ArcState, type PendingCrisis } from './state';
 export { bondsIndex, lineName } from './data';
 
 export const bondsSystem: System = {
@@ -32,9 +34,16 @@ export const bondsSystem: System = {
     birthKin(ctx, life);
     reindex(extOf(life));
   },
+  beat(ctx) {
+    const life = ctx.state.life;
+    if (!life || life.dead) return;
+    // the crisis the player was called for is answered the beat after the call (arcs.ts)
+    decideCrises(ctx, life);
+  },
   lifeYear(ctx) {
     const life = ctx.state.life;
     if (!life || life.dead) return;
+    expireNudges(extOf(life), life);
     lifeYear(ctx, life);
   },
   death(ctx) {
@@ -49,5 +58,8 @@ export const bondsSystem: System = {
       .slice(0, cap);
     for (const t of open) write(ctx.state, { sys: 'bonds', kind: 'thread', id: t.id, data: { name: t.name, line: t.line, code: t.arc!.code, stage: t.arc!.stage }, level: 1 });
     e.threads = open.map((t) => t.id);
+    // a crisis not answered when the character dies is not answered
+    e.crises = [];
+    e.nudges = {};
   },
 };

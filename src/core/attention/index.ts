@@ -149,6 +149,22 @@ export const sourcesOf = (e: LogEntry): number[] =>
     .filter(Boolean)
     .map(Number);
 
+/**
+ * Has the attention system answered the log entry `n` (a call that stands for it, a glow, or a card that came too late)? A system that announces
+ * something before it decides it (the story's god windows, the crisis of a tie) waits for this; without the system on the life the answer is yes.
+ */
+export function answered(state: GameState, n: number): boolean {
+  if (!state.life?.ext.attention) return true;
+  const log = state.log;
+  for (let i = log.length - 1; i >= 0 && log[i].n > n; i--) {
+    const e = log[i];
+    if (e.sys !== 'attention') continue;
+    if (e.kind === 'call' && sourcesOf(e).includes(n)) return true;
+    if ((e.kind === 'glow' || e.kind === 'missed') && e.data.n === n) return true;
+  }
+  return false;
+}
+
 /** The cards the screen may still show: calls of kind card whose time has not run out, the most urgent first, at most `max` (07-attention.md §2: two). */
 export function liveCards(state: GameState, max = 2): LogEntry[] {
   const life = state.life;

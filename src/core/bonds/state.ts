@@ -90,6 +90,36 @@ export interface Tie {
   tpl?: string;
   /** Last hAge a mood was shown toward this person. */
   moodCount?: number;
+  /** A child (05 §3): the character's hAge when the child came, the other parent (a tie id when he is one of the ties, else only a name), the life stage reached, the last hAge a feeling was shown and the child's own marriage. */
+  born?: number;
+  other?: string;
+  otherName?: string;
+  stage?: 'infant' | 'child' | 'youth' | 'adult';
+  kidMood?: number;
+  married?: { age: number; name: string };
+  /** How and when the tie ended (any way): the character's hAge, the world year, the way and the reason in words (`ตาย` `แยกทาง` `ห่างหาย` `หายไป` `หักหลัง`). */
+  gone?: { age: number; year: number; way: string; why: string; reason: string };
+  /** hAge of the last partner feeling shown (the partner is told again every few years, not only when he comes or goes). */
+  partnerMood?: number;
+}
+
+/** A crisis of a tie (stage 3 of its story) the player was called for and the character has not answered yet. */
+export interface PendingCrisis {
+  tie: string;
+  /** Number of the `bonds/crisis` entry that announced it, and the beats since. */
+  n: number;
+  beats: number;
+  /** hAge of the character at the announcement. */
+  age: number;
+  code: string;
+  text: string;
+}
+
+/** The god's hand on a crisis to come: added to (or taken from) the chance the character helps, until the hAge `until`. */
+export interface Nudge {
+  bonus: number;
+  by: string;
+  until: number;
 }
 
 export interface PairState {
@@ -141,12 +171,16 @@ export interface BondsExt {
   funerals: number;
   /** Ids of the ties whose stories were open when the character died (at most 3; the heir takes them as open threads). */
   threads: string[];
+  /** Crises announced to the player and waiting for the beat that decides them (arcs.ts `decideCrises`). */
+  crises: PendingCrisis[];
+  /** What the god did toward a tie before or at its crisis (whisper, dream), by tie id. */
+  nudges: Record<string, Nudge>;
 }
 
 export function fresh(): BondsExt {
   return {
     ties: {}, lines: {}, partner: null, children: [], focus: null, next: 1, used: [], favor: 0, mind: 0, feuds: [], pairs: [], party: [],
-    counts: { ties: 0, crises: 0, cards: 0, ends: 0, deaths: 0, invites: 0, accepted: 0, moods: 0, blocked: 0, news: 0 }, moodYear: { age: -1, perLine: {} }, among: [], done: [], mail: [], spent: [], schoolAt: 0, funeralAt: -99, funerals: 0, threads: [],
+    counts: { ties: 0, crises: 0, cards: 0, ends: 0, deaths: 0, invites: 0, accepted: 0, moods: 0, blocked: 0, news: 0 }, moodYear: { age: -1, perLine: {} }, among: [], done: [], mail: [], spent: [], schoolAt: 0, funeralAt: -99, funerals: 0, threads: [], crises: [], nudges: {},
   };
 }
 

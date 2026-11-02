@@ -115,3 +115,47 @@ export const KIN_TEMPLATES: Record<string, string[]> = {
 
 /** Jobs of people who go to war or on the road: the party of travellers is asked for while the character holds one (01 §3; assumption which jobs). */
 export const ADVENTURING: ReadonlySet<string> = new Set(['hero', 'adventurer', 'knight', 'mercenary', 'bounty_hunter', 'soldier', 'beast_hunter', 'explorer', 'caravan_guard', 'gladiator', 'hero_companion', 'royal_guard', 'dragonknight', 'swordsaint']);
+
+// ---------- the children and the partner over the years (M3 review H6 H7; 05 §3) ----------
+
+type Stage = 'infant' | 'child' | 'youth' | 'adult';
+/** Stages of a child by his own age, the highest age of each (05 §3 table: 0–5 · 6–14 · 15–25 · grown). */
+export const CHILD_STAGES = { infant: 5, child: 14, youth: 25 };
+/**
+ * The feeling the character shows toward a child by the stage (05 §3 column "ตัวละครหลักแสดงได้"); `far` are added for a child who lives
+ * away, `farOnly` are shown only then (น้อยใจ is the doc's own for the 6–14 "ถ้าลูกห่างตัวละคร"). The chance and the gap are assumptions
+ * (the doc gives none): a child is told about once in a few years, not every year.
+ */
+export const CHILD_FEELS = {
+  gapYears: 3,
+  chance: 0.4,
+  byStage: {
+    infant: ['เอ็นดู', 'ห่วง', 'หวงแหน'],
+    child: ['เอ็นดู', 'ห่วง', 'ภูมิใจ', 'น้อยใจ'],
+    youth: ['ภูมิใจ', 'ผิดหวัง', 'ละอาย', 'กลัวเสีย'],
+    adult: ['ภูมิใจ', 'ห่วง', 'คิดถึง', 'เหงา'],
+  } as Record<Stage, string[]>,
+  far: { infant: [], child: ['น้อยใจ'], youth: ['คิดถึง'], adult: ['คิดถึง', 'เหงา'] } as Record<Stage, string[]>,
+  farOnly: ['น้อยใจ'],
+};
+/** The words of a child reaching a stage, for the line of the log (the stage itself is in the data: the text system may tell it in its own words). */
+export const GROW_TEXT: Record<Stage, string> = { infant: 'ยังเป็นทารก', child: 'โตเป็นเด็กวัยเรียน', youth: 'โตเป็นหนุ่มสาว', adult: 'เป็นผู้ใหญ่เต็มตัวแล้ว' };
+/** A child's own marriage: the ages he may marry at and the chance per year (assumption: the docs only say "ลูกเลือกทางเอง"). */
+export const CHILD_WED = { ages: [20, 34] as [number, number], chance: 0.1 };
+/** The partner is told again: years since the last feeling toward him, the chance per year after that, and the feelings (02 §3 the lover line; assumption). */
+export const PARTNER_FEELS = {
+  gapYears: 6,
+  chance: 0.35,
+  near: ['ไว้ใจ', 'ห่วง', 'รัก'],
+  close: ['รัก', 'ไว้ใจ', 'ขอบคุณ'],
+  far: ['คิดถึง', 'ห่วง', 'เหงา'],
+};
+
+// ---------- the crisis of a tie, announced before it is decided (M3 review H5) ----------
+
+/** Beats the character waits for the player before he answers a crisis the player was called for: the card runs a life year (attention DEFAULT_DEADLINES.crisis), a beat is a quarter. */
+export const CRISIS_MAX_BEATS = 4;
+/** What the god's hand adds to (or takes from) the chance the character helps: a whisper `ช่วย` · a dream of the one in trouble · a whisper that he lies (assumption; the chance is held between 0.1 and 0.95). */
+export const NUDGE = { whisper: 0.2, dream: 0.3, liar: -0.25 };
+/** Life years a nudge waits for the crisis it was meant for. */
+export const NUDGE_YEARS = 2;

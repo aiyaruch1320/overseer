@@ -40,6 +40,8 @@ export const WHISPER = {
   weakMul: 3,
   helpMul: 2,
   liarTrust: -2,
+  /** B an ally loses when the god whispers that he lies and the character believes it (assumption). */
+  liarB: -3,
   heirMul: 3,
   resolveYears: 5,
   /** obey roll: base 0.50 and the dream formula without the fit of a path (03-dreams.md §3, §6) */
