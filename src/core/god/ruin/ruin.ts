@@ -12,6 +12,7 @@ import { continentOf, countryName, flagsOf, godOf, neighboursOf } from '../acts/
 import { chronicle, say } from '../acts/record';
 import { yearOf } from '../acts/state';
 import { geoOf } from '../../world/place';
+import { later } from '../acts/miracles';
 import { ruinLabel } from './names';
 import { acceptors, hauntMain, leadersOf, npcsIn, rollPeople } from './people';
 import { ruinExt, ruinAt, type RuinKind, type RuinRec } from './state';
@@ -146,12 +147,14 @@ export function makeRuin(ctx: Ctx, country: string, kind: RuinKind): RuinRec {
   };
   e.ruins.push(rec);
   w.ruins.push({ id: kind, country, year: y });
-  chronicle(ctx, { kind: 'ruin', id: kind, target: country, result: `pop:${Math.round(pop * 100)} died:${fates.died.length} fled:${fates.fled.length} closed:${closed.length}` });
-  say(ctx, {
-    kind: 'ruin',
-    id: 'made',
-    data: { country, label: rec.label, pop: Math.round(pop * 100), died: fates.died.length, fled: fates.fled.length, stayed: fates.stayed.length, closed: closed.length, allies: fates.alliesDied.length, came: fates.alliesCame.length, kind },
-    level: 2,
+  later(() => {
+    chronicle(ctx, { kind: 'ruin', id: kind, target: country, result: `pop:${Math.round(pop * 100)} died:${fates.died.length} fled:${fates.fled.length} closed:${closed.length}` });
+    say(ctx, {
+      kind: 'ruin',
+      id: 'made',
+      data: { country, label: rec.label, pop: Math.round(pop * 100), died: fates.died.length, fled: fates.fled.length, stayed: fates.stayed.length, closed: closed.length, allies: fates.alliesDied.length, came: fates.alliesCame.length, kind },
+      level: 1,
+    });
   });
   return rec;
 }

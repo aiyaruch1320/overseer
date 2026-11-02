@@ -14,7 +14,7 @@ import { count } from '../../src/core/god/state';
 
 const LIVES = Number(process.env.GOD_LIVES ?? 300);
 const POLICIES: PolicyName[] = ['silent', 'merciful', 'shaper', 'giver', 'saver', 'punish', 'random'];
-const TH: Record<PolicyName, string> = { silent: 'เงียบ', merciful: 'เมตตา', shaper: 'ปั้นนิสัย', giver: 'ให้ของ', saver: 'เก็บพลัง', punish: 'ลงโทษ', random: 'สุ่ม', hasten: 'เร่งจบ' };
+const TH: Record<PolicyName, string> = { silent: 'เงียบ', merciful: 'เมตตา', shaper: 'ปั้นนิสัย', giver: 'ให้ของ', saver: 'เก็บพลัง', punish: 'ลงโทษ', random: 'สุ่ม', hasten: 'เร่งจบ', seal: 'ตีหมุด' };
 
 interface Row {
   age: number;

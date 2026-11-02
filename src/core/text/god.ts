@@ -271,6 +271,24 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       const target = nm(cx, d.target);
       return `ท่านกระซิบ “${s(d.hint)}”${target ? ` ถึง${target}` : ''} — ${heard}`;
     }
+    case 'ruin': {
+      const place = nm(cx, d.country);
+      if (e.id === 'made') {
+        const shut = num(d.closed);
+        return `ในซาก${place} ผู้คนล้มตาย ${num(d.died)} คน หนีไป ${num(d.fled)} คน อยู่เป็นผู้นำซาก ${num(d.stayed)} คน${num(d.allies) || num(d.came) ? ` · พวกพ้องของ${who}ตาย ${num(d.allies)} มาหา ${num(d.came)}` : ''}${shut ? ` · เหตุการณ์ที่ผูกกับที่นั่นปิดไป ${shut} เรื่อง` : ''}`;
+      }
+      const what = scrub(cx.data, s(d.what)).trim();
+      const cult = s(d.cult);
+      const city = s(d.city);
+      return `${s(d.name)}ที่${place}${what ? `: ${what}` : ''}${cult ? ` ลัทธินั้นเรียกตัวเองว่า ${cult}` : ''}${city ? ` เมืองใหม่ชื่อ ${city}` : ''}`;
+    }
+    case 'seal': {
+      const place = nm(cx, d.country);
+      if (e.id === 'crack') return `หมุดผนึกที่${place}ร้าว: ผู้คนล้มตาย ${num(d.died)} คน หนีไป ${num(d.fled)} คน ที่เหลืออยู่ในเมืองที่ยังไม่ล้ม`;
+      return `${s(d.dragon)}ตอบแรงที่ตกบน${place}: ${s(d.text)}`;
+    }
+    case 'land':
+      return `ผู้ตั้งรกรากมาถึง${s(d.name)}ข้าง${scrub(cx.data, s(d.country)) || nm(cx, d.beside)} ที่นั่นเป็นประเทศใหม่`;
     case 'miracle.omen': {
       const name = s(d.name);
       return `ลางของ${name}ปรากฏขึ้น อีก ${num(d.quarters)} ฤดูจะเกิดเหตุ (ลางใบที่ ${num(d.n)} ยกเลิกได้ ได้คืนครึ่งหนึ่ง)`;
@@ -279,7 +297,8 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       return `ท่านยกเลิกลางใบที่ ${num(d.n)} ได้พลังคืนครึ่งหนึ่ง`;
     case 'miracle': {
       const where = placeOf(cx, d);
-      const result = scrub(cx.data, s(d.result)).trim();
+      // what the large miracles did to the people is told with its numbers (the share left, the share of buildings): the player was shown them before he chose
+      const result = scrub(cx.data, s(d.result), { keepNumbers: /^MR-(17|18|19)$/.test(s(e.id)) }).trim();
       return `ปาฏิหาริย์ ${s(d.name)}${where ? ` ที่${where}` : ''}${result ? `: ${result}` : ''}`;
     }
   }
@@ -400,6 +419,18 @@ export function chronicleText(data: GameData, c: { kind: string; id: string; tar
       return `ลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}${target(c.target) ? ` ที่${target(c.target)}` : ''}`;
     case 'miracle.cancel':
       return `ยกเลิกลางของ${miracleName(data, c.id) || 'ปาฏิหาริย์'}`;
+    case 'ruin':
+      return `ผู้คนของ${target(c.target)}ล้มตาย หนี หรืออยู่เป็นผู้นำซาก`;
+    case 'ruin.event':
+      return `เหตุการณ์ของซาก${target(c.target)}: ${items<{ miracles?: { ruin: { events: { id: string; name: string }[] } } }>(data, 'god')?.miracles?.ruin.events.find((x) => x.id === c.id)?.name ?? ''}`;
+    case 'seal.reply':
+      return `${c.id}ตอบแรงที่ตกบน${target(c.target)}`;
+    case 'seal.crack':
+      return `หมุดผนึกที่${target(c.target)}ร้าว`;
+    case 'land.found':
+      return `ผู้ตั้งรกรากมาถึง${s(c.result)}`;
+    case 'wrath':
+      return `พระพิโรธเหนือ${target(c.target)}`;
     case 'miracle': {
       const t = target(c.target) || (/^dragon:/.test(s(c.target)) ? 'มังกร' : '');
       const r = scrub(data, s(c.result)).trim();

@@ -14,6 +14,8 @@ export const POLICY_ALIAS: Record<string, string> = {
   เก็บพลัง: 'saver', saver: 'saver',
   สุ่ม: 'random', random: 'random',
   เร่งจบ: 'hasten', hasten: 'hasten',
+  // the simulator's ninth: the punishing god who strikes the seals whenever he can (06-implementation.md §4 "ลงโทษ (ตีหมุดผนึก)"); not in the list of the tools
+  ตีหมุด: 'seal', seal: 'seal',
 };
 
 /** Ages that stop the game for the god (experience/07-attention.md §2; the same constants sim-god.mjs uses). */

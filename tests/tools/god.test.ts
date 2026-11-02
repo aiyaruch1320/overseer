@@ -280,8 +280,9 @@ describe('the console on the real god', () => {
     expect(g.state.god.cooldowns['MR-04']).toBeGreaterThan(g.state.clock.worldYear);
     expect(said(god.handle('miracle MR-04'))).toContain('ต้องรออีก');
     expect(g.state.god.chronicle.some((c) => c.kind === 'miracle' && c.id === 'MR-04')).toBe(true);
-    // a miracle that is not here yet says so in words
-    expect(said(god.handle('miracle MR-17'))).toContain('ยังไม่เปิดใช้');
+    // a miracle that does not exist says so in words; the large ones (G5) are here and wait for the dread they cost
+    expect(said(god.handle('miracle MR-99'))).toContain('ไม่มีปาฏิหาริย์');
+    expect(said(god.handle('miracle MR-17'))).toContain('ความหวาดกลัวไม่พอ');
   });
 
   it('miracle · cancel: the grand miracle shows an omen; cancelling gives half the price back', () => {

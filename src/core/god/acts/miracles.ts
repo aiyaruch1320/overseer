@@ -68,6 +68,12 @@ export interface Intercept {
 }
 
 const intercepts: Intercept[] = [];
+
+/** Lines a deed wants told after the line of the miracle itself (the fate of the people of a ruin comes after "ดาวตก ที่ซอร์เนบ"), not before it. */
+let deferred: (() => void)[] = [];
+export function later(fn: () => void): void {
+  deferred.push(fn);
+}
 export function addIntercept(x: Intercept): void {
   if (!intercepts.includes(x)) intercepts.push(x);
 }
@@ -251,6 +257,7 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
 
 /** The day of the miracle: the world changes, the reactions follow, the hand is written down. */
 function happen(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>, paid: { faith: number; dread: number }): void {
+  deferred = [];
   let out: Outcome | null = null;
   for (const x of intercepts) {
     out = x.run?.(ctx, m, h, args) ?? null;
@@ -264,6 +271,9 @@ function happen(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>,
   const where = dragon ? tablesOf(ctx).dragons[Number(dragon[1])]?.name ?? '' : '';
   say(ctx, { kind: 'miracle', id: m.id, data: { name: m.name, target: out.target, result: out.result, tier: m.tier, ...(where ? { where } : {}) }, level: tierKey(m) === 'small' ? 1 : 2 });
   chronicle(ctx, { kind: 'miracle', id: m.id, target: out.target, result: out.result });
+  const told = deferred;
+  deferred = [];
+  for (const fn of told) fn();
 }
 
 /** Each beat: the omens come due. */
