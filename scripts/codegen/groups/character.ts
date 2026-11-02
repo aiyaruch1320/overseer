@@ -312,7 +312,11 @@ const LINE_TAGS: [RegExp, string[]][] = [
 function fixGrants(text: string, parsed: Effect[], at: { file: string; line: number }, races = false): Effect[] {
   type Pct = { k: 'pct'; text: string; pct: number };
   const isPct = (e: Effect): boolean => (e as { k: string }).k === 'pct';
-  const keep = parsed.filter((e) => e.k !== 'grant' && e.k !== 'remove');
+  // "A หรือ B" arrives as a pick of grants: in a favour cell both are favoured (rebuilt below); elsewhere the pick stays
+  const grantPick = (e: Effect) => e.k === 'pick' && e.of.every((b) => b.effects.every((x) => x.k === 'grant' || x.k === 'remove'));
+  const favourCell = FAVOUR_WORDS.test(text);
+  const keep = parsed.filter((e) => e.k !== 'grant' && e.k !== 'remove' && !(favourCell && grantPick(e)));
+  const inPick = new Set(keep.filter(grantPick).flatMap((e) => (e.k === 'pick' ? e.of.flatMap((b) => b.effects.map((x) => (x as { id: string }).id)) : [])));
   const pcts = keep.filter(isPct) as unknown as Pct[];
   // remarks in brackets that name no code are not part of the effect ("(หายาก แต่เป็นที่รู้จัก...)")
   const body = text.replace(/\[([^\]]*)\]\([^)]*\)/g, '').replace(/\(([^)]*)\)/g, (m, inner: string) => (/(?:#|[a-z]_)[a-z]/.test(inner) ? m : ' '));
@@ -345,6 +349,7 @@ function fixGrants(text: string, parsed: Effect[], at: { file: string; line: num
         const mm = after.match(/([\d.]+)\s*เท่า/) ?? cl.match(/([\d.]+)\s*เท่า/);
         here.push({ k: 'favour', kind, id: cid, ...(mm ? { mul: Number(mm[1]) } : {}) });
       } else {
+        if (inPick.has(cid) || inPick.has(id)) continue; // already granted through the pick
         const g: Extract<Effect, { k: 'grant' }> = { k: 'grant', kind, id: cid };
         if (idm.length === 1 && pctIn.length === 1) {
           g.chance = Number(pctIn[0][1]) / 100;
