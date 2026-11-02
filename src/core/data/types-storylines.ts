@@ -55,6 +55,8 @@ export type ExtraEffect =
   | { k: 'class'; value: number }
   /** A quantity with a unit the docs name: `5 ปี` `4 คน` `3 หน่วย`. */
   | { k: 'qty'; n: number; unit: string }
+  /** `น้ำหนัก cv.10 ×2` `น้ำหนักฝ่ายปิดใน dw.t2 ×2`: a weight change on another node (a side of it when `label` is set). */
+  | { k: 'nodeWeight'; node?: NodeId; label?: string; mul: number }
   /** `ความหิว > 70 → ทาง ข ×2`: weight change on a choice of this very node. */
   | { k: 'choiceMod'; choice: 'a' | 'b' | 'c'; cond?: ConditionX; mul: number }
   /** `บาดแผลถาวร 10%`. */
@@ -229,6 +231,63 @@ export interface AllyArc {
 
 // ---------- files ----------
 
+/** Section 2 of a race file: where a life of this race starts and what that changes. */
+export interface Origin {
+  line: string;
+  /** Which table: `จุดกำเนิด` or `จุดกำเนิด (การตื่น)` for the races that wake. */
+  table: string;
+  kind: string; // `ถิ่นหลัก ชาวทุ่ง`
+  placesRaw: string;
+  places: string[]; // country ids, ranges expanded
+  firstNodeRaw: string; // `hu.b1` · `hu.b1 ทางพิเศษ` · `ข้ามไป hu.t2`
+  firstNode?: NodeId;
+  /** The start jumps over earlier nodes (`ข้ามไป hu.t2`). */
+  skipsTo?: NodeId;
+  effects: EffectX[];
+  text: string;
+  src: string;
+}
+
+/** `23-heir.md` table: which node of the race line an heir node stands in for. */
+export interface HeirRule {
+  node: NodeId;
+  nodesRaw: string;
+  replaces: NodeId[];
+  condRaw: string;
+  cond?: ConditionX;
+  src: string;
+}
+
+/** `22-halfblood.md` section 3: the 16 pair sets, the races they cover (both directions) and where the parents meet. */
+export interface PairSet {
+  set: string; // `ow`
+  name: string;
+  pairsRaw: string;
+  /** [main race code, second race code] for each direction listed. */
+  pairs: [string, string][];
+  placesRaw: string;
+  places: string[];
+  src: string;
+}
+
+/** `22-halfblood.md` 5.17 and 6.1. */
+export interface HalfbloodNpc {
+  npc: string;
+  name: string;
+  set: string;
+  role: string;
+  src: string;
+}
+
+export interface JobOpener {
+  job: string;
+  type: string;
+  pathRaw: string;
+  nodes: { id: NodeId; choice?: 'a' | 'b' | 'c' }[];
+  skills: string[];
+  src: string;
+}
+
 export interface StorylinesData {
   nodes: StoryNodeX[];
   rites: Rite[];
@@ -236,6 +295,11 @@ export interface StorylinesData {
   links: Link[];
   lines: LineMeta[];
   allyArcs: AllyArc[];
+  origins: Origin[];
+  heirRules: HeirRule[];
+  pairSets: PairSet[];
+  halfbloodNpcs: HalfbloodNpc[];
+  jobOpeners: JobOpener[];
 }
 
 export interface ConvergencePoint extends StoryNodeX {

@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: storylines
 
-17 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+12 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -10,14 +10,9 @@
 | docs/lore/storylines/13-demonkin.md:58 | dm.l1 c): `friend` | unknown id |
 | docs/lore/storylines/15-winged.md:60 | wi.l2 c): `friend` | unknown id |
 | docs/lore/storylines/15-winged.md:61 | wi.l1 c): `friend` | unknown id |
-| docs/lore/storylines/22-halfblood.md:58 | hb.t1 a): ทำพิธีของเผ่าหลักอย่างเดียว (พิธี t1 ของเผ่าหลัก) |  |
-| docs/lore/storylines/22-halfblood.md:58 | hb.t1 b): ถ้าถิ่นของเผ่าที่สองรังเกียจ น้ำหนักผ่านคูณ 0.3 |  |
-| docs/lore/storylines/22-halfblood.md:60 | hb.a1 b): ข่าวจากบ้านเก่าใน 5 ปีหน้าเร็วขึ้น |  |
 | docs/lore/storylines/22-halfblood.md:98 | eb.t1 c): ผู้อาวุโสปฏิเสธเสมอ (BIO-01 เกิดแล้ว รับ 40) |  |
-| docs/lore/storylines/22-halfblood.md:165 | fh.a1 a): KD-03 ไม่รับ (dw.t2 ทางฝ่ายปิดคูณ 0.3) |  |
 | docs/lore/storylines/24-economy.md:35 | ec.a2 a): ได้ทองจากเหตุการณ์ (มรดก รางวัล ขายของ) ≥ 100 |  |
 | docs/lore/storylines/24-economy.md:35 | ec.a2 b): ได้ทองไม่ถึง 100 |  |
 | docs/lore/storylines/24-economy.md:65 | tr.a6 c): ค้าสิ่งที่ทำร้ายเผ่าหนึ่ง (ล่าสัตว์เพื่อหนัง จับภูต ค้าคนตามท่าทีของประเทศใน 10-bondage.md) |  |
 | docs/lore/storylines/24-economy.md:102 | wk.a3 a): ไม่ถือที่ดินได้ถ้าเป็นชั้น 2 |  |
 | docs/lore/storylines/27-bondage.md:49 | ab.a1 a): ความเสี่ยง `c_wanted` ในประเทศท่าที D L M 20% |  |
-| docs/lore/storylines/31-divine.md:24 | mr.a2 a): `mt_star_iron` 1–3 ชิ้น |  |

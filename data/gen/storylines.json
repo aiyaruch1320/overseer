@@ -22395,7 +22395,15 @@
       "key": "a",
       "weight": 45,
       "label": "ทำพิธีของเผ่าหลักอย่างเดียว (พิธี t1 ของเผ่าหลัก)",
-      "effects": [],
+      "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "t1"
+        ],
+        "rel": "พิธี"
+       }
+      ],
       "mods": []
      },
      {
@@ -22425,6 +22433,20 @@
           "kind": "curse",
           "id": "c_outcast",
           "chance": 0.2
+         }
+        ]
+       },
+       {
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถิ่นของเผ่าที่สองรังเกียจ"
+        },
+        "then": [
+         {
+          "k": "nodeWeight",
+          "label": "ผ่าน",
+          "mul": 0.3
          }
         ]
        }
@@ -22591,7 +22613,13 @@
       "key": "b",
       "weight": 35,
       "label": "ให้ญาติเขียนหรือมาหา · ข่าวจากบ้านเก่าใน 5 ปีหน้าเร็วขึ้น",
-      "effects": [],
+      "effects": [
+       {
+        "k": "qty",
+        "n": 5,
+        "unit": "ปีหน้า"
+       }
+      ],
       "mods": []
      },
      {
@@ -25493,17 +25521,16 @@
         "id": "ns_rune_open"
        },
        {
+        "k": "nodeWeight",
+        "node": "dw.t2",
+        "label": "ฝ่ายปิด",
+        "mul": 0.3
+       },
+       {
         "k": "place",
         "ids": [
          "KD-03"
         ]
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "dw.t2"
-        ],
-        "rel": ""
        },
        {
         "k": "grant",
@@ -38183,14 +38210,16 @@
         "enemies": []
        },
        {
-        "k": "qty",
-        "n": 3,
-        "unit": "ชิ้น"
-       },
-       {
         "k": "grant",
         "kind": "gear",
         "id": "mt_star_iron"
+       },
+       {
+        "k": "range",
+        "stat": "mt_star_iron",
+        "min": 1,
+        "max": 3,
+        "unit": "ชิ้น"
        }
       ],
       "mods": []
@@ -45722,7 +45751,7 @@
    },
    {
     "id": "hb",
-    "name": "เส้นเรื่อง: ลูกครึ่ง",
+    "name": "ลูกครึ่ง",
     "file": "docs/lore/storylines/22-halfblood.md",
     "nodeIds": [
      "hb.b1",
@@ -45913,7 +45942,7 @@
    },
    {
     "id": "hr",
-    "name": "เส้นเรื่อง: ทายาท",
+    "name": "ทายาท",
     "file": "docs/lore/storylines/23-heir.md",
     "nodeIds": [
      "hr.b1",
@@ -45929,7 +45958,7 @@
    },
    {
     "id": "ec",
-    "name": "เส้นเรื่อง: เศรษฐกิจและชนชั้น",
+    "name": "เศรษฐกิจและชนชั้น",
     "file": "docs/lore/storylines/24-economy.md",
     "nodeIds": [
      "ec.b1",
@@ -46316,7 +46345,7 @@
    },
    {
     "id": "xc",
-    "name": "เจอต่างเผ่า (รหัส a1–a9 b1–b9 t1–t2 เรียงตามเผ่า)",
+    "name": "เจอต่างเผ่า",
     "file": "docs/lore/storylines/25-journeys.md",
     "nodeIds": [
      "xc.a1",
@@ -46558,7 +46587,7 @@
    },
    {
     "id": "bd",
-    "name": "เส้นเรื่อง: การผูกตัว",
+    "name": "การผูกตัว",
     "file": "docs/lore/storylines/27-bondage.md",
     "nodeIds": [
      "bd.b1",
@@ -46591,7 +46620,7 @@
    },
    {
     "id": "bn",
-    "name": "เส้นเรื่อง: พวกพ้อง",
+    "name": "พวกพ้อง",
     "file": "docs/lore/storylines/28-allies.md",
     "nodeIds": [
      "bn.b1",
@@ -46618,7 +46647,7 @@
    },
    {
     "id": "le",
-    "name": "เส้นเรื่อง: ยุคปลาย",
+    "name": "ยุคปลาย",
     "file": "docs/lore/storylines/30-last-era.md",
     "nodeIds": [
      "le.a1",
@@ -46635,7 +46664,7 @@
    },
    {
     "id": "mr",
-    "name": "เส้นเรื่อง: พระหัตถ์ในชีวิต",
+    "name": "พระหัตถ์ในชีวิต",
     "file": "docs/lore/storylines/31-divine.md",
     "nodeIds": [
      "mr.a1",
@@ -54136,6 +54165,3223 @@
     ],
     "group": "flagship",
     "src": "docs/lore/storylines/29-allies-flagship.md:741"
+   }
+  ],
+  "origins": [
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ชาวทุ่ง",
+    "placesRaw": "AL-01 ถึง AL-28",
+    "places": [
+     "AL-01",
+     "AL-02",
+     "AL-03",
+     "AL-04",
+     "AL-05",
+     "AL-06",
+     "AL-07",
+     "AL-08",
+     "AL-09",
+     "AL-10",
+     "AL-11",
+     "AL-12",
+     "AL-13",
+     "AL-14",
+     "AL-15",
+     "AL-16",
+     "AL-17",
+     "AL-18",
+     "AL-19",
+     "AL-20",
+     "AL-21",
+     "AL-22",
+     "AL-23",
+     "AL-24",
+     "AL-25",
+     "AL-26",
+     "AL-27",
+     "AL-28"
+    ],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "event",
+      "id": "WR-16"
+     }
+    ],
+    "text": "น้ำหนักสงครามทุ่งราบ (WR-16) และการเกณฑ์ทหารสูง",
+    "src": "docs/lore/storylines/01-human.md:15",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ชนผืนทราย",
+    "placesRaw": "SH-01 SH-04 SH-05 SH-08 SH-09",
+    "places": [
+     "SH-01",
+     "SH-04",
+     "SH-05",
+     "SH-08",
+     "SH-09"
+    ],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "ref",
+      "nodes": [
+       "cv.12"
+      ],
+      "rel": ""
+     }
+    ],
+    "text": "พิธีของถิ่นใช้แบบทราย · น้ำหนัก cv.12",
+    "src": "docs/lore/storylines/01-human.md:16",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก มนุษย์เรือ",
+    "placesRaw": "NR-01 NR-10",
+    "places": [
+     "NR-01",
+     "NR-10"
+    ],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_tide_born",
+      "chance": 0.2
+     }
+    ],
+    "text": "พิธีแบบเรือ",
+    "src": "docs/lore/storylines/01-human.md:17",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เมคาเรีย",
+    "placesRaw": "MK-01 MK-04 MK-05",
+    "places": [
+     "MK-01",
+     "MK-04",
+     "MK-05"
+    ],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nc_smoke_lung",
+      "chance": 0.1
+     },
+     {
+      "k": "ref",
+      "nodes": [
+       "cv.9"
+      ],
+      "rel": ""
+     }
+    ],
+    "text": "น้ำหนัก cv.9",
+    "src": "docs/lore/storylines/01-human.md:18",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "MH-06 MH-07 · KD-08 · SV-17 · NB-01 NB-14",
+    "places": [
+     "MH-06",
+     "MH-07",
+     "KD-08",
+     "SV-17",
+     "NB-01",
+     "NB-14"
+    ],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SV-17"
+      ]
+     }
+    ],
+    "text": "ชาวหมอก (NB) ต้านพิษตั้งแต่เกิด · SV-17 อยู่ริมน้ำกับนาคา",
+    "src": "docs/lore/storylines/01-human.md:19",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "สายพิเศษ ชาวพื้น",
+    "placesRaw": "อัซการ์ (เมื่อเกิดนอกถิ่นในทวีปนั้น)",
+    "places": [],
+    "firstNodeRaw": "hu.b1",
+    "effects": [],
+    "text": "จ่ายบรรณาการ ศรัทธาของคนกลุ่มนี้สำคัญต่อผนึกที่สุด",
+    "src": "docs/lore/storylines/01-human.md:20",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "สายพิเศษ ผู้กลับชาติ",
+    "placesRaw": "MH-07 เทนเซอริส",
+    "places": [
+     "MH-07"
+    ],
+    "firstNodeRaw": "hu.b1 ทางพิเศษ",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_echo",
+      "chance": 0.4
+     },
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_memory",
+      "chance": 0.3
+     }
+    ],
+    "text": "หรือ · จำชาติก่อนได้บางส่วน",
+    "src": "docs/lore/storylines/01-human.md:21",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "สายพิเศษ ผู้ถูกอัญเชิญ",
+    "placesRaw": "AL-02 ลูเมียร์",
+    "places": [
+     "AL-02"
+    ],
+    "firstNodeRaw": "**ข้ามไป hu.t2**",
+    "effects": [
+     {
+      "k": "qty",
+      "n": 16,
+      "unit": "อายุ"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "u_language"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "u_heroluck"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "u_appraisal"
+     },
+     {
+      "k": "pct",
+      "text": "ความถนัดพิเศษหนึ่งอย่าง",
+      "pct": 35
+     }
+    ],
+    "text": "ปรากฏตัวที่อายุ 16 จากต่างโลก · ความถนัดพิเศษหนึ่งอย่าง 35% (เช่น ) · ไม่มีครอบครัวในโลกนี้",
+    "src": "docs/lore/storylines/01-human.md:22",
+    "firstNode": "hu.t2",
+    "skipsTo": "hu.t2"
+   },
+   {
+    "line": "hu",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "ตาม [../../systems/character/01-origin.md](../../systems/character/01-origin.md) หัวข้อ 4",
+    "places": [],
+    "firstNodeRaw": "hu.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast",
+      "chance": 0.4
+     }
+    ],
+    "text": "เอลฟ์เลือดผสมเกิดในซิลวาเนลได้",
+    "src": "docs/lore/storylines/01-human.md:23",
+    "firstNode": "hu.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เอลฟ์ต้นไม้",
+    "placesRaw": "SV-01 SV-02 SV-03 SV-06 SV-08",
+    "places": [
+     "SV-01",
+     "SV-02",
+     "SV-03",
+     "SV-06",
+     "SV-08"
+    ],
+    "firstNodeRaw": "el.b1",
+    "effects": [
+     {
+      "k": "statMul",
+      "stat": "ก ในพิธีผูกราก",
+      "mul": 1.5
+     }
+    ],
+    "text": "ศรัทธาต้นไม้โลกสูง · น้ำหนักทาง ก ในพิธีผูกราก ×1.5",
+    "src": "docs/lore/storylines/02-elf.md:15",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เอลฟ์จันทรา",
+    "placesRaw": "SV-05",
+    "places": [
+     "SV-05"
+    ],
+    "firstNodeRaw": "el.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_faith_moon"
+     }
+    ],
+    "text": "(หญิง) · ใกล้ชิดดาร์กเอลฟ์ผู้ลี้ภัย",
+    "src": "docs/lore/storylines/02-elf.md:16",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เอลฟ์ฟ้า",
+    "placesRaw": "SV-10",
+    "places": [
+     "SV-10"
+    ],
+    "firstNodeRaw": "el.b1",
+    "effects": [],
+    "text": "พิธีใช้การร่อนครั้งแรก · ลูกครึ่งไม่ถูกนับเป็นเอลฟ์",
+    "src": "docs/lore/storylines/02-elf.md:17",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เอลฟ์ราก",
+    "placesRaw": "SV-12",
+    "places": [
+     "SV-12"
+    ],
+    "firstNodeRaw": "el.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_root_sense",
+      "chance": 0.2
+     }
+    ],
+    "text": "ใกล้สไลม์และเห็ด",
+    "src": "docs/lore/storylines/02-elf.md:18",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น เอลฟ์สูง",
+    "placesRaw": "AL-22",
+    "places": [
+     "AL-22"
+    ],
+    "firstNodeRaw": "el.b1 ทางพลัดถิ่น",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_homeland_call",
+      "chance": 0.3
+     }
+    ],
+    "text": "ไม่ได้ผูกราก",
+    "src": "docs/lore/storylines/02-elf.md:19",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ช่างกล",
+    "placesRaw": "MK-11",
+    "places": [
+     "MK-11"
+    ],
+    "firstNodeRaw": "el.b1 ทางพลัดถิ่น",
+    "effects": [],
+    "text": "รู้เรื่องมลพิษตั้งแต่เด็ก · ไม่ได้รับอนุญาตให้กลับป่า",
+    "src": "docs/lore/storylines/02-elf.md:20",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "el",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ ภูตพราย ดาร์กเอลฟ์ เผ่าสัตว์",
+    "places": [],
+    "firstNodeRaw": "el.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast",
+      "chance": 0.4
+     },
+     {
+      "k": "place",
+      "ids": [
+       "SV-01",
+       "SV-10"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "SV-09"
+      ]
+     }
+    ],
+    "text": "เกิดใน SV-01 SV-10 → · SV-09 ยอมรับ",
+    "src": "docs/lore/storylines/02-elf.md:21",
+    "firstNode": "el.b1"
+   },
+   {
+    "line": "de",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก อิรมอร์",
+    "placesRaw": "KD-05",
+    "places": [
+     "KD-05"
+    ],
+    "firstNodeRaw": "de.b1",
+    "effects": [],
+    "text": "อยู่ใต้ตระกูลของมารดา · ใกล้ปากเหว",
+    "src": "docs/lore/storylines/03-darkelf.md:15",
+    "firstNode": "de.b1"
+   },
+   {
+    "line": "de",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก แดนไร้เงา",
+    "placesRaw": "NB-13",
+    "places": [
+     "NB-13"
+    ],
+    "firstNodeRaw": "de.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_shadow_kin",
+      "chance": 0.2
+     }
+    ],
+    "text": "เติบโตท่ามกลางผู้ไร้เงา",
+    "src": "docs/lore/storylines/03-darkelf.md:16",
+    "firstNode": "de.b1"
+   },
+   {
+    "line": "de",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "SV-05 · NB-05 · NB-06",
+    "places": [
+     "SV-05",
+     "NB-05",
+     "NB-06"
+    ],
+    "firstNodeRaw": "de.b1 ทางพลัดถิ่น",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SV-05"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "NB-05"
+      ]
+     }
+    ],
+    "text": "SV-05 ได้รู้คำพยากรณ์จันทร์ · NB-05 โตในกิลด์เงา",
+    "src": "docs/lore/storylines/03-darkelf.md:17",
+    "firstNode": "de.b1"
+   },
+   {
+    "line": "de",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "เอลฟ์ มนุษย์ แวมไพร์ เผ่าปีศาจ",
+    "places": [],
+    "firstNodeRaw": "de.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "KD-05"
+      ]
+     }
+    ],
+    "text": "เกิดใน KD-05 ถูกส่งออกจากประเทศ → เริ่มเป็นพลัดถิ่น",
+    "src": "docs/lore/storylines/03-darkelf.md:18",
+    "firstNode": "de.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ช่างตี",
+    "placesRaw": "KD-01 กรอมฮอล์ม · KD-02 · KD-09",
+    "places": [
+     "KD-01",
+     "KD-02",
+     "KD-09"
+    ],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "smithing"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_forge_born",
+      "chance": 0.2
+     }
+    ],
+    "text": "เริ่ม",
+    "src": "docs/lore/storylines/04-dwarf.md:15",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้ปิดรูน",
+    "placesRaw": "KD-03 คาซรัม",
+    "places": [
+     "KD-03"
+    ],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "nodeWeight",
+      "node": "dw.t2",
+      "label": "ฝ่ายปิด",
+      "mul": 2
+     }
+    ],
+    "text": "น้ำหนักฝ่ายปิดใน dw.t2 ×2 · ลูกครึ่งไม่ถูกรับ",
+    "src": "docs/lore/storylines/04-dwarf.md:16",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้เปิดรูน",
+    "placesRaw": "KD-04 บาร์ดิน",
+    "places": [
+     "KD-04"
+    ],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "nodeWeight",
+      "node": "dw.t2",
+      "label": "ฝ่ายเปิด",
+      "mul": 2
+     }
+    ],
+    "text": "น้ำหนักฝ่ายเปิดใน dw.t2 ×2",
+    "src": "docs/lore/storylines/04-dwarf.md:17",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก คนเหมืองลึก",
+    "placesRaw": "KD-10 คาซมา · KD-08 · KD-11",
+    "places": [
+     "KD-10",
+     "KD-08",
+     "KD-11"
+    ],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "mining"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nc_deep_pull",
+      "chance": 0.1
+     }
+    ],
+    "text": "เริ่ม",
+    "src": "docs/lore/storylines/04-dwarf.md:18",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก คนแคระเหนือ",
+    "placesRaw": "KD-12 ธรอ-ดู",
+    "places": [
+     "KD-12"
+    ],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_frostward",
+      "chance": 0.1
+     }
+    ],
+    "text": "อยู่ระหว่างน้ำแข็งกับลาวา",
+    "src": "docs/lore/storylines/04-dwarf.md:19",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "MK-07 · AL-21 · MH-05 · SH-07 SH-15",
+    "places": [
+     "MK-07",
+     "AL-21",
+     "MH-05",
+     "SH-07",
+     "SH-15"
+    ],
+    "firstNodeRaw": "dw.b1 ทางพลัดถิ่น",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "MK-07"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "AL-21"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MH-05"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "SH-07"
+      ]
+     }
+    ],
+    "text": "MK-07 วิศวกร · AL-21 พ่อค้าและกลุ่มต่อต้าน · MH-05 ช่างให้ออร์ค · SH-07 ช่างร่วมยักษ์",
+    "src": "docs/lore/storylines/04-dwarf.md:20",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "dw",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ ฮาล์ฟลิง เผ่าลาวา",
+    "places": [],
+    "firstNodeRaw": "dw.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "KD-03"
+      ]
+     }
+    ],
+    "text": "ลูกเตาไฟ (เผ่าลาวา) ทนไฟ แต่ KD-03 ไม่รับ",
+    "src": "docs/lore/storylines/04-dwarf.md:21",
+    "firstNode": "dw.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก โอเกอร์",
+    "placesRaw": "MH-01 กาธเรธ",
+    "places": [
+     "MH-01"
+    ],
+    "firstNodeRaw": "or.b1",
+    "effects": [],
+    "text": "กำลังสูง · ธงกระดูกถือว่าลูกครึ่งอ่อน",
+    "src": "docs/lore/storylines/05-orc.md:15",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ออร์คเถ้า",
+    "placesRaw": "MH-04 เซวาร์ธ",
+    "places": [
+     "MH-04"
+    ],
+    "firstNodeRaw": "or.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "companion",
+      "id": "sp_ash_wolf",
+      "chance": 0.03
+     }
+    ],
+    "text": "ขี่หมาป่า · สัตว์คู่หู",
+    "src": "docs/lore/storylines/05-orc.md:16",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ออร์คช่าง",
+    "placesRaw": "MH-05 นอคดรีน",
+    "places": [
+     "MH-05"
+    ],
+    "firstNodeRaw": "or.b1",
+    "effects": [
+     {
+      "k": "battle",
+      "enemies": [],
+      "text": "สภาช่าง"
+     },
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "engineering"
+     }
+    ],
+    "text": "สภาช่างศึก · เริ่ม",
+    "src": "docs/lore/storylines/05-orc.md:17",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ออร์คสันติ",
+    "placesRaw": "MH-06 วีซาเฮเวน",
+    "places": [
+     "MH-06"
+    ],
+    "firstNodeRaw": "or.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "farming"
+     },
+     {
+      "k": "nodeWeight",
+      "node": "cv.10",
+      "mul": 2
+     }
+    ],
+    "text": "เริ่ม · น้ำหนัก cv.10 ×2",
+    "src": "docs/lore/storylines/05-orc.md:18",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "SH-11 ออร์คทราย · MK-16 ทหารรับจ้าง · MH-11 ลูกเรือ",
+    "places": [
+     "SH-11",
+     "MK-16",
+     "MH-11"
+    ],
+    "firstNodeRaw": "or.b1 ทางพลัดถิ่น",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SH-11"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MK-16"
+      ]
+     }
+    ],
+    "text": "SH-11 ปล้นคาราวาน · MK-16 เกิดในค่ายบริษัท",
+    "src": "docs/lore/storylines/05-orc.md:19",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "or",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ (ฮาล์ฟออร์ค) เผ่าปีศาจ เผ่าสัตว์",
+    "places": [],
+    "firstNodeRaw": "or.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast",
+      "chance": 0.4
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MH-01"
+      ]
+     }
+    ],
+    "text": "เกิด MH-01 →",
+    "src": "docs/lore/storylines/05-orc.md:20",
+    "firstNode": "or.b1"
+   },
+   {
+    "line": "ha",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก",
+    "placesRaw": "AL-16 ไชร์วิก",
+    "places": [
+     "AL-16"
+    ],
+    "firstNodeRaw": "ha.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "trait",
+      "id": "homebody",
+      "chance": 0.3
+     },
+     {
+      "k": "npc",
+      "id": "AL16-4"
+     }
+    ],
+    "text": "ใกล้ต้นกล้า (AL16-4 ไลลา)",
+    "src": "docs/lore/storylines/06-halfling.md:15",
+    "firstNode": "ha.b1"
+   },
+   {
+    "line": "ha",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ช่างซ่อม",
+    "placesRaw": "MK-12 ทวิดเวิร์ค",
+    "places": [
+     "MK-12"
+    ],
+    "firstNodeRaw": "ha.b1 ทางช่าง",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "mechanics"
+     },
+     {
+      "k": "ref",
+      "nodes": [
+       "ha.a2"
+      ],
+      "rel": "เปิด",
+      "choice": "c"
+     }
+    ],
+    "text": "เริ่ม · เปิด ha.a2 ทางความลับ",
+    "src": "docs/lore/storylines/06-halfling.md:16",
+    "firstNode": "ha.b1"
+   },
+   {
+    "line": "ha",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น พ่อค้า",
+    "placesRaw": "AL-01 AL-10 · NR-01 · MH-09",
+    "places": [
+     "AL-01",
+     "AL-10",
+     "NR-01",
+     "MH-09"
+    ],
+    "firstNodeRaw": "ha.b1 ทางพ่อค้า",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "trade"
+     },
+     {
+      "k": "npc",
+      "id": "MH09-3"
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MH-09"
+      ]
+     }
+    ],
+    "text": "เริ่ม · MH-09 โตในตลาดเลือด (MH09-3 เซน่า)",
+    "src": "docs/lore/storylines/06-halfling.md:17",
+    "firstNode": "ha.b1"
+   },
+   {
+    "line": "ha",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ คนแคระ เอลฟ์",
+    "places": [],
+    "firstNodeRaw": "ha.b1",
+    "effects": [],
+    "text": "ไม่มีถิ่นที่รังเกียจ",
+    "src": "docs/lore/storylines/06-halfling.md:18",
+    "firstNode": "ha.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ธาลาวิน",
+    "placesRaw": "SV-16 (สิงโต เสือ กวาง หมี)",
+    "places": [
+     "SV-16"
+    ],
+    "firstNodeRaw": "be.b1",
+    "effects": [
+     {
+      "k": "statMul",
+      "stat": "น้ำหนักการล่าใหญ่",
+      "mul": 1.5
+     }
+    ],
+    "text": "ลูกครึ่งถือว่าไม่บริสุทธิ์ · น้ำหนักการล่าใหญ่ ×1.5",
+    "src": "docs/lore/storylines/07-beast.md:15",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ลาเฟธิล",
+    "placesRaw": "SV-09 (อยู่ร่วมเอลฟ์)",
+    "places": [
+     "SV-09"
+    ],
+    "firstNodeRaw": "be.b1",
+    "effects": [
+     {
+      "k": "trust",
+      "toward": "เอลฟ์",
+      "delta": 2
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_wolf_rider",
+      "chance": 0.1
+     }
+    ],
+    "text": "ไว้ใจเอลฟ์ +2 · (หมาป่าเงา)",
+    "src": "docs/lore/storylines/07-beast.md:16",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เซวาร์ธ",
+    "placesRaw": "MH-04 (อยู่ร่วมออร์คเถ้า)",
+    "places": [
+     "MH-04"
+    ],
+    "firstNodeRaw": "be.b1",
+    "effects": [],
+    "text": "ความหิวของทวีปกระทบตั้งแต่เด็ก",
+    "src": "docs/lore/storylines/07-beast.md:17",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ไวลด์มาร์ก",
+    "placesRaw": "AL-23",
+    "places": [
+     "AL-23"
+    ],
+    "firstNodeRaw": "be.b1 ทางผู้ลี้ภัย",
+    "effects": [
+     {
+      "k": "event",
+      "id": "BIO-09"
+     }
+    ],
+    "text": "ผู้ลี้ภัยรุ่นสองหรือสาม · จุดเริ่มของ BIO-09",
+    "src": "docs/lore/storylines/07-beast.md:18",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น อัลมา",
+    "placesRaw": "SH-10 (อูฐ จิ้งจกทราย หมาป่าทราย)",
+    "places": [
+     "SH-10"
+    ],
+    "firstNodeRaw": "be.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_dust_blood",
+      "chance": 0.2
+     }
+    ],
+    "text": "นำทางคาราวาน",
+    "src": "docs/lore/storylines/07-beast.md:19",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ทุ่งเร่ร่อน",
+    "placesRaw": "AL-24",
+    "places": [
+     "AL-24"
+    ],
+    "firstNodeRaw": "be.b1",
+    "effects": [],
+    "text": "ขี่ม้าธนูร่วมมนุษย์เร่ร่อน",
+    "src": "docs/lore/storylines/07-beast.md:20",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "be",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ เอลฟ์ ออร์ค",
+    "places": [],
+    "firstNodeRaw": "be.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SV-09"
+      ]
+     },
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast",
+      "chance": 0.4
+     },
+     {
+      "k": "place",
+      "ids": [
+       "SV-16"
+      ]
+     }
+    ],
+    "text": "เด็กลาเฟธิลได้รับที่ SV-09 · เกิด SV-16 →",
+    "src": "docs/lore/storylines/07-beast.md:21",
+    "firstNode": "be.b1"
+   },
+   {
+    "line": "na",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก นาคาไอล์",
+    "placesRaw": "NR-07",
+    "places": [
+     "NR-07"
+    ],
+    "firstNodeRaw": "na.b1",
+    "effects": [
+     {
+      "k": "nodeWeight",
+      "node": "cv.7",
+      "mul": 2
+     }
+    ],
+    "text": "ใกล้ไข่พญานาคราช · น้ำหนัก cv.7 ×2",
+    "src": "docs/lore/storylines/08-naga.md:15",
+    "firstNode": "na.b1"
+   },
+   {
+    "line": "na",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก นาคาพเนจร",
+    "placesRaw": "NR-02 นูวาปาเล",
+    "places": [
+     "NR-02"
+    ],
+    "firstNodeRaw": "na.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_waterfall_climb",
+      "chance": 0.1
+     }
+    ],
+    "text": "ที่นั่งในผู้ถือกุญแจน้ำตก",
+    "src": "docs/lore/storylines/08-naga.md:16",
+    "firstNode": "na.b1"
+   },
+   {
+    "line": "na",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NR-09 · NR-13 · SV-17",
+    "places": [
+     "NR-09",
+     "NR-13",
+     "SV-17"
+    ],
+    "firstNodeRaw": "na.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SV-17"
+      ]
+     }
+    ],
+    "text": "SV-17 อยู่กับมนุษย์ (นาคาลูกครึ่งหลายคน)",
+    "src": "docs/lore/storylines/08-naga.md:17",
+    "firstNode": "na.b1"
+   },
+   {
+    "line": "na",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ เงือก",
+    "places": [],
+    "firstNodeRaw": "na.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast",
+      "chance": 0.4
+     },
+     {
+      "k": "place",
+      "ids": [
+       "NR-06",
+       "NR-07"
+      ]
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_both_banks"
+     },
+     {
+      "k": "pct",
+      "text": "ลูกเงือก",
+      "pct": 20
+     }
+    ],
+    "text": "เกิด NR-06 หรือ NR-07 → · ลูกเงือก 20% ได้",
+    "src": "docs/lore/storylines/08-naga.md:18",
+    "firstNode": "na.b1"
+   },
+   {
+    "line": "dk",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ธรอกาด",
+    "placesRaw": "KD-07",
+    "places": [
+     "KD-07"
+    ],
+    "firstNodeRaw": "dk.b1",
+    "effects": [],
+    "text": "ใกล้เพลิงนิรันดร์ · รู้สึกถึงเพลิงนิรันดร์ตั้งแต่เกิด",
+    "src": "docs/lore/storylines/09-dragonkin.md:15",
+    "firstNode": "dk.b1"
+   },
+   {
+    "line": "dk",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ซากโรการ์",
+    "placesRaw": "AZ-02",
+    "places": [
+     "AZ-02"
+    ],
+    "firstNodeRaw": "dk.b1",
+    "effects": [],
+    "text": "ใกล้ลัทธิบูชามังกรและสนามดวล",
+    "src": "docs/lore/storylines/09-dragonkin.md:16",
+    "firstNode": "dk.b1"
+   },
+   {
+    "line": "dk",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "AZ-01 ถึง AZ-10",
+    "places": [
+     "AZ-01",
+     "AZ-02",
+     "AZ-03",
+     "AZ-04",
+     "AZ-05",
+     "AZ-06",
+     "AZ-07",
+     "AZ-08",
+     "AZ-09",
+     "AZ-10"
+    ],
+    "firstNodeRaw": "dk.b1",
+    "effects": [],
+    "text": "ปีกเกล็ด (ผสมเผ่าปีก) มาก",
+    "src": "docs/lore/storylines/09-dragonkin.md:17",
+    "firstNode": "dk.b1"
+   },
+   {
+    "line": "dk",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "เผ่าปีก มนุษย์ เผ่าปีศาจ",
+    "places": [],
+    "firstNodeRaw": "dk.b1",
+    "effects": [],
+    "text": "เลือดมังกรไม่ถึงครึ่ง → KD-07 ไม่รับ",
+    "src": "docs/lore/storylines/09-dragonkin.md:18",
+    "firstNode": "dk.b1"
+   },
+   {
+    "line": "va",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ซอร์เนบ",
+    "placesRaw": "NB-02",
+    "places": [
+     "NB-02"
+    ],
+    "firstNodeRaw": "va.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_sunburn"
+     }
+    ],
+    "text": "ใต้ตระกูลของเคานต์ · ถ้าเกิดกลางวัน",
+    "src": "docs/lore/storylines/10-vampire.md:15",
+    "firstNode": "va.b1"
+   },
+   {
+    "line": "va",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NB-13 · NB-05 · เมืองใหญ่ทั่วโลก",
+    "places": [
+     "NB-13",
+     "NB-05"
+    ],
+    "firstNodeRaw": "va.b1 ทางพลัดถิ่น",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NB-05"
+      ]
+     }
+    ],
+    "text": "NB-05 โตในกิลด์เงา · เมืองใหญ่ซ่อนตัวตน · ศาสนาแสงล่า",
+    "src": "docs/lore/storylines/10-vampire.md:16",
+    "firstNode": "va.b1"
+   },
+   {
+    "line": "va",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ ดาร์กเอลฟ์",
+    "places": [],
+    "firstNodeRaw": "va.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NB-02"
+      ]
+     },
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_sunburn",
+      "chance": 0.5
+     }
+    ],
+    "text": "ลูกแวมไพร์ · NB-02 ไม่รับยกเว้นตระกูลเก่า",
+    "src": "docs/lore/storylines/10-vampire.md:17",
+    "firstNode": "va.b1"
+   },
+   {
+    "line": "va",
+    "table": "จุดกำเนิด",
+    "kind": "หลัง BIO-05",
+    "placesRaw": "เมืองใต้ดินของแวมไพร์",
+    "places": [],
+    "firstNodeRaw": "va.b1",
+    "effects": [
+     {
+      "k": "event",
+      "id": "CL-02"
+     }
+    ],
+    "text": "CL-02 ปรับตัวต่อแสง",
+    "src": "docs/lore/storylines/10-vampire.md:18",
+    "firstNode": "va.b1"
+   },
+   {
+    "line": "fa",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ภูตป่า",
+    "placesRaw": "SV-04 วาริเดล",
+    "places": [
+     "SV-04"
+    ],
+    "firstNodeRaw": "fa.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_pact_reading",
+      "chance": 0.1
+     }
+    ],
+    "text": "ใกล้ราชินีและบันทึกสัญญา",
+    "src": "docs/lore/storylines/11-fae.md:15",
+    "firstNode": "fa.b1"
+   },
+   {
+    "line": "fa",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ภูตจิ๋ว",
+    "placesRaw": "SV-11 อาริเลนอร์",
+    "places": [
+     "SV-11"
+    ],
+    "firstNodeRaw": "fa.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "job",
+      "id": "courier"
+     }
+    ],
+    "text": "ทำงานกับไปรษณีย์เผ่านก · ง่าย",
+    "src": "docs/lore/storylines/11-fae.md:16",
+    "firstNode": "fa.b1"
+   },
+   {
+    "line": "fa",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ภูตแสง",
+    "placesRaw": "NB-03 ลูเมนธาล",
+    "places": [
+     "NB-03"
+    ],
+    "firstNodeRaw": "fa.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_lantern_light",
+      "chance": 0.15
+     }
+    ],
+    "text": "อยู่ในโคม",
+    "src": "docs/lore/storylines/11-fae.md:17",
+    "firstNode": "fa.b1"
+   },
+   {
+    "line": "fa",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น ภูตลม ภูตน้ำ",
+    "placesRaw": "NR-15 · NR-13",
+    "places": [
+     "NR-15",
+     "NR-13"
+    ],
+    "firstNodeRaw": "fa.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NR-15"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "NR-13"
+      ]
+     }
+    ],
+    "text": "NR-15 อ่านลม · NR-13 ดูแลปะการัง",
+    "src": "docs/lore/storylines/11-fae.md:18",
+    "firstNode": "fa.b1"
+   },
+   {
+    "line": "fa",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "เอลฟ์ มนุษย์",
+    "places": [],
+    "firstNodeRaw": "fa.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_debt",
+      "chance": 0.3
+     },
+     {
+      "k": "place",
+      "ids": [
+       "SV-04"
+      ]
+     }
+    ],
+    "text": "ลูกภูต · SV-04 ภูตเก็บหนี้ลูกครึ่ง",
+    "src": "docs/lore/storylines/11-fae.md:19",
+    "firstNode": "fa.b1"
+   },
+   {
+    "line": "sl",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ป่าใต้ดิน",
+    "placesRaw": "SV-12 เดลวินธ์",
+    "places": [
+     "SV-12"
+    ],
+    "firstNodeRaw": "sl.b1",
+    "effects": [
+     {
+      "k": "npc",
+      "id": "SV12-2"
+     }
+    ],
+    "text": "อยู่กับเอลฟ์รากที่ไม่รังเกียจ · ทำปุ๋ย (แบบ SV12-2 กลู)",
+    "src": "docs/lore/storylines/12-slime.md:15",
+    "firstNode": "sl.b1"
+   },
+   {
+    "line": "sl",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก สายเห็ด",
+    "placesRaw": "SV-18 ฟังกัลเดล",
+    "places": [
+     "SV-18"
+    ],
+    "firstNodeRaw": "sl.b1",
+    "effects": [
+     {
+      "k": "pct",
+      "text": "ติดสปอร์",
+      "pct": 30
+     }
+    ],
+    "text": "ใกล้ราชาเห็ด · ติดสปอร์ 30%",
+    "src": "docs/lore/storylines/12-slime.md:16",
+    "firstNode": "sl.b1"
+   },
+   {
+    "line": "sl",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NR-03 · NR-13 · เมืองใหญ่",
+    "places": [
+     "NR-03",
+     "NR-13"
+    ],
+    "firstNodeRaw": "sl.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_street_sense",
+      "chance": 0.15
+     }
+    ],
+    "text": "สไลม์ทะเลหรือสไลม์ท่อระบาย · เมืองใหญ่:",
+    "src": "docs/lore/storylines/12-slime.md:17",
+    "firstNode": "sl.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ดราซาร์",
+    "placesRaw": "MH-02",
+    "places": [
+     "MH-02"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_pact_reading",
+      "chance": 0.1
+     }
+    ],
+    "text": "ชื่ออยู่ในบัญชีตั้งแต่เกิด",
+    "src": "docs/lore/storylines/13-demonkin.md:15",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก โมธมาร์ต",
+    "placesRaw": "MH-09",
+    "places": [
+     "MH-09"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "trade"
+     }
+    ],
+    "text": "โตในตลาดเลือด · เริ่ม",
+    "src": "docs/lore/storylines/13-demonkin.md:16",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เทนเซอริส",
+    "placesRaw": "MH-07",
+    "places": [
+     "MH-07"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [],
+    "text": "อยู่ร่วมผู้กลับชาติและผู้ถูกอัญเชิญที่แปรพักตร์",
+    "src": "docs/lore/storylines/13-demonkin.md:17",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ซาร์ดรีน",
+    "placesRaw": "MH-11",
+    "places": [
+     "MH-11"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "sailing"
+     }
+    ],
+    "text": "เรือโจรสลัด · เริ่ม",
+    "src": "docs/lore/storylines/13-demonkin.md:18",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น สายเพลิง",
+    "placesRaw": "KD-06 KD-08",
+    "places": [
+     "KD-06",
+     "KD-08"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [],
+    "text": "ปีศาจเพลิง · ใกล้ปากเหว · ทนไฟ",
+    "src": "docs/lore/storylines/13-demonkin.md:19",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "MK-16 · AL-25",
+    "places": [
+     "MK-16",
+     "AL-25"
+    ],
+    "firstNodeRaw": "dm.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "MK-16"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "AL-25"
+      ]
+     }
+    ],
+    "text": "MK-16 ทหารรับจ้างบริษัท · AL-25 สุสานใหญ่",
+    "src": "docs/lore/storylines/13-demonkin.md:20",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "dm",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "ออร์ค มนุษย์ ดาร์กเอลฟ์",
+    "places": [],
+    "firstNodeRaw": "dm.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_souldebt",
+      "chance": 0.3
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MH-02"
+      ]
+     }
+    ],
+    "text": "ลูกสัญญา · เกิด MH-02 → เลือดครึ่งหนึ่งผูกกับพ่อแม่",
+    "src": "docs/lore/storylines/13-demonkin.md:21",
+    "firstNode": "dm.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เงือก",
+    "placesRaw": "NR-06 เมอร์เรีย · NR-13",
+    "places": [
+     "NR-06",
+     "NR-13"
+    ],
+    "firstNodeRaw": "me.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_tide_read",
+      "chance": 0.1
+     }
+    ],
+    "text": "นำทางและค้าขาย",
+    "src": "docs/lore/storylines/14-merfolk.md:15",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก เงือกน้ำลึก",
+    "placesRaw": "NR-04 ไอทอล",
+    "places": [
+     "NR-04"
+    ],
+    "firstNodeRaw": "me.b1",
+    "effects": [],
+    "text": "เรืองแสง · เฝ้าธาลาสซา · ไม่เคยขึ้นฝั่ง",
+    "src": "docs/lore/storylines/14-merfolk.md:16",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ไซเรน",
+    "placesRaw": "NR-08 ลาโอทอล",
+    "places": [
+     "NR-08"
+    ],
+    "firstNodeRaw": "me.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "music"
+     }
+    ],
+    "text": "เริ่ม · เสียงเป็นเวท",
+    "src": "docs/lore/storylines/14-merfolk.md:17",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก กัปปะ",
+    "placesRaw": "NR-09 คอปาเล",
+    "places": [
+     "NR-09"
+    ],
+    "firstNodeRaw": "me.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "farming"
+     }
+    ],
+    "text": "สุภาพ · เริ่ม (นาข้าวริมน้ำ)",
+    "src": "docs/lore/storylines/14-merfolk.md:18",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NR-01 NR-11 · NR-14",
+    "places": [
+     "NR-01",
+     "NR-11",
+     "NR-14"
+    ],
+    "firstNodeRaw": "me.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NR-01"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "NR-11"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "NR-14"
+      ]
+     }
+    ],
+    "text": "NR-01 สถานทูต · NR-11 ดำไข่มุก · NR-14 ซากเมืองจม",
+    "src": "docs/lore/storylines/14-merfolk.md:19",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "me",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์ นาคา",
+    "places": [],
+    "firstNodeRaw": "me.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NR-06"
+      ]
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_both_banks",
+      "chance": 0.2
+     }
+    ],
+    "text": "ลูกคลื่น · NR-06 ราชวงศ์ไม่ยอมรับ · ลูกนาคา",
+    "src": "docs/lore/storylines/14-merfolk.md:20",
+    "firstNode": "me.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก อาเวียนขาว",
+    "placesRaw": "AZ-01 AZ-05",
+    "places": [
+     "AZ-01",
+     "AZ-05"
+    ],
+    "firstNodeRaw": "wi.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nb_faith_dragon",
+      "chance": 0.1
+     }
+    ],
+    "text": "นักบวชและผู้ปกครอง",
+    "src": "docs/lore/storylines/15-winged.md:15",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ปีกราตรี",
+    "placesRaw": "AZ-10 AZ-05",
+    "places": [
+     "AZ-10",
+     "AZ-05"
+    ],
+    "firstNodeRaw": "wi.b1",
+    "effects": [],
+    "text": "สายลับ · รู้ว่าโอรัน-ซัลเหนื่อย",
+    "src": "docs/lore/storylines/15-winged.md:16",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ปีกเกล็ด",
+    "placesRaw": "AZ-02 · KD-07",
+    "places": [
+     "AZ-02",
+     "KD-07"
+    ],
+    "firstNodeRaw": "wi.b1",
+    "effects": [],
+    "text": "เลือดมังกรเจือ",
+    "src": "docs/lore/storylines/15-winged.md:17",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ปีกสั้น",
+    "placesRaw": "AZ-04",
+    "places": [
+     "AZ-04"
+    ],
+    "firstNodeRaw": "wi.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "AZ-01"
+      ]
+     }
+    ],
+    "text": "ทนทาน บินระยะสั้น · ลัทธิ AZ-01 ไม่รับ",
+    "src": "docs/lore/storylines/15-winged.md:18",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ชาวน้ำฟ้า",
+    "placesRaw": "AZ-06",
+    "places": [
+     "AZ-06"
+    ],
+    "firstNodeRaw": "wi.b1",
+    "effects": [],
+    "text": "มีเหงือก · ใกล้น้ำตกและวาฬฟ้า",
+    "src": "docs/lore/storylines/15-winged.md:19",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "SH-09 SH-16 · เมืองใหญ่",
+    "places": [
+     "SH-09",
+     "SH-16"
+    ],
+    "firstNodeRaw": "wi.b1 ทางผู้ลี้ภัย",
+    "effects": [
+     {
+      "k": "event",
+      "id": "DR-01"
+     }
+    ],
+    "text": "ผู้ลี้ภัยรุ่นสอง (หลัง DR-01) หรือผู้ขายปีก",
+    "src": "docs/lore/storylines/15-winged.md:20",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "หลัง DR-01",
+    "placesRaw": "สกายฟอลล์ · วีร์เนกา (ถ้ายังลอย)",
+    "places": [],
+    "firstNodeRaw": "wi.b1 ทางซาก",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nc_sv_sky"
+     },
+     {
+      "k": "pct",
+      "text": "ติดจากพ่อแม่",
+      "pct": 20
+     }
+    ],
+    "text": "ติดจากพ่อแม่ 20%",
+    "src": "docs/lore/storylines/15-winged.md:21",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "wi",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "เผ่ามังกร มนุษย์",
+    "places": [],
+    "firstNodeRaw": "wi.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "AZ-01"
+      ]
+     }
+    ],
+    "text": "ปีกเกล็ดหรือปีกสั้น · AZ-01 ไม่รับปีกสั้น",
+    "src": "docs/lore/storylines/15-winged.md:22",
+    "firstNode": "wi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้เฝ้า",
+    "placesRaw": "SH-03 กัชมีร์",
+    "places": [
+     "SH-03"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "nodeWeight",
+      "node": "cv.11",
+      "mul": 2
+     }
+    ],
+    "text": "ใกล้สภาและบันไดหมื่นขั้น · น้ำหนัก cv.11 ×2",
+    "src": "docs/lore/storylines/16-giant.md:15",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้บูชาไททัน",
+    "placesRaw": "SH-06 ซากกัช",
+    "places": [
+     "SH-06"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "nodeWeight",
+      "node": "gi.a7",
+      "label": "ตามไททัน",
+      "mul": 2
+     }
+    ],
+    "text": "ลูกครึ่งถูกมองว่าเป็นเสียงของไททัน · น้ำหนักตามไททันใน gi.a7 ×2",
+    "src": "docs/lore/storylines/16-giant.md:16",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ยักษ์ช่าง",
+    "placesRaw": "SH-07 รามีร์",
+    "places": [
+     "SH-07"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "aptitude",
+      "id": "smithing"
+     },
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "ns_giant_forge",
+      "chance": 0.15
+     }
+    ],
+    "text": "เริ่ม",
+    "src": "docs/lore/storylines/16-giant.md:17",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ยักษ์ผู้เงียบ",
+    "placesRaw": "SH-13 ซีมาร์",
+    "places": [
+     "SH-13"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "job",
+      "id": "monk"
+     },
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_calmmind",
+      "chance": 0.1
+     }
+    ],
+    "text": "ง่าย",
+    "src": "docs/lore/storylines/16-giant.md:18",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้ดูแลหิน",
+    "placesRaw": "SH-17 บัดมีร์",
+    "places": [
+     "SH-17"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [],
+    "text": "สนธิสัญญาเก็บศพกับมัมมี่ · ใกล้กรอม-ธาร",
+    "src": "docs/lore/storylines/16-giant.md:19",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "KD-02 · AL-18",
+    "places": [
+     "KD-02",
+     "AL-18"
+    ],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "KD-02"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "AL-18"
+      ]
+     }
+    ],
+    "text": "KD-02 ขัดแย้งกับคนแคระเรื่องแร่ · AL-18 ช่วยอัศวิน",
+    "src": "docs/lore/storylines/16-giant.md:20",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "gi",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "มนุษย์",
+    "places": [],
+    "firstNodeRaw": "gi.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "SH-06"
+      ]
+     }
+    ],
+    "text": "ไซคลอปส์ถ้าตาเดียว (มองเห็นเส้นแรงของหิน) · เกิด SH-06 ถูกมองเป็นเสียงของไททัน",
+    "src": "docs/lore/storylines/16-giant.md:21",
+    "firstNode": "gi.b1"
+   },
+   {
+    "line": "la",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ฮัลดัล",
+    "placesRaw": "KD-06",
+    "places": [
+     "KD-06"
+    ],
+    "firstNodeRaw": "la.b1",
+    "effects": [],
+    "text": "ใต้จักรพรรดิ · ลูกครึ่งถูกมองว่าเย็นตัวเร็ว",
+    "src": "docs/lore/storylines/17-lavakin.md:15",
+    "firstNode": "la.b1"
+   },
+   {
+    "line": "la",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก",
+    "placesRaw": "KD-02 · KD-11",
+    "places": [
+     "KD-02",
+     "KD-11"
+    ],
+    "firstNodeRaw": "la.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "KD-02"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "KD-11"
+      ]
+     }
+    ],
+    "text": "KD-02 คนงานแม่น้ำเหล็ก · KD-11 เตาหลอมศักดิ์สิทธิ์",
+    "src": "docs/lore/storylines/17-lavakin.md:16",
+    "firstNode": "la.b1"
+   },
+   {
+    "line": "la",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "KD-12 ธรอ-ดู",
+    "places": [
+     "KD-12"
+    ],
+    "firstNodeRaw": "la.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_coldweak",
+      "chance": 0.2
+     }
+    ],
+    "text": "อยู่ระหว่างน้ำแข็งกับลาวา",
+    "src": "docs/lore/storylines/17-lavakin.md:17",
+    "firstNode": "la.b1"
+   },
+   {
+    "line": "la",
+    "table": "จุดกำเนิด",
+    "kind": "หลัง DR-04",
+    "placesRaw": "เมืองใต้ดินของทวีปเถ้า",
+    "places": [],
+    "firstNodeRaw": "la.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_stoneskin",
+      "chance": 0.2
+     }
+    ],
+    "text": "เกิดเย็นกว่าเดิม",
+    "src": "docs/lore/storylines/17-lavakin.md:18",
+    "firstNode": "la.b1"
+   },
+   {
+    "line": "la",
+    "table": "จุดกำเนิด",
+    "kind": "ลูกครึ่ง",
+    "placesRaw": "คนแคระ",
+    "places": [],
+    "firstNodeRaw": "la.b1",
+    "effects": [],
+    "text": "ลูกเตาไฟ · ทนไฟแต่เย็นตัวเร็วกว่า",
+    "src": "docs/lore/storylines/17-lavakin.md:19",
+    "firstNode": "la.b1"
+   },
+   {
+    "line": "co",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้ติดตั้ง",
+    "placesRaw": "MK-02 ครอนไซต์",
+    "places": [
+     "MK-02"
+    ],
+    "firstNodeRaw": "co.b1",
+    "effects": [],
+    "text": "อัปเกรดง่าย · เสี่ยงคลั่ง",
+    "src": "docs/lore/storylines/18-construct.md:15",
+    "firstNode": "co.b1"
+   },
+   {
+    "line": "co",
+    "table": "จุดกำเนิด",
+    "kind": "ถิ่นหลัก ผู้รอดชีวิตตุ๊กตา",
+    "placesRaw": "MK-08 เฮเลนโนวา · MK-10",
+    "places": [
+     "MK-08",
+     "MK-10"
+    ],
+    "firstNodeRaw": "co.b1 ทางห้องทดลอง",
+    "effects": [],
+    "text": "มีหมายเลขแทนชื่อ · ร่างผสม",
+    "src": "docs/lore/storylines/18-construct.md:16",
+    "firstNode": "co.b1"
+   },
+   {
+    "line": "co",
+    "table": "จุดกำเนิด",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NB-10 ไอซิลโนวา · AL-13 เนออนเวย์ · MK-16",
+    "places": [
+     "NB-10",
+     "AL-13",
+     "MK-16"
+    ],
+    "firstNodeRaw": "co.b1",
+    "effects": [
+     {
+      "k": "place",
+      "ids": [
+       "NB-10"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "AL-13"
+      ]
+     },
+     {
+      "k": "place",
+      "ids": [
+       "MK-16"
+      ]
+     }
+    ],
+    "text": "NB-10 ชุมชนผู้รอด · AL-13 ติดตั้งราคาถูก · MK-16 ทหารบริษัท",
+    "src": "docs/lore/storylines/18-construct.md:17",
+    "firstNode": "co.b1"
+   },
+   {
+    "line": "so",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "ถิ่นหลัก โนวามินด์",
+    "placesRaw": "MK-03",
+    "places": [
+     "MK-03"
+    ],
+    "firstNodeRaw": "so.b1",
+    "effects": [],
+    "text": "ตื่นในชุมชนหุ่น · ได้ที่พักและชื่อชั่วคราว",
+    "src": "docs/lore/storylines/19-soulmachine.md:17",
+    "firstNode": "so.b1"
+   },
+   {
+    "line": "so",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "ถิ่นหลัก ที่หลบภัย",
+    "placesRaw": "MK-12 ทวิดเวิร์ค",
+    "places": [
+     "MK-12"
+    ],
+    "firstNodeRaw": "so.b1",
+    "effects": [
+     {
+      "k": "trust",
+      "toward": "ฮาล์ฟลิง",
+      "delta": 2
+     }
+    ],
+    "text": "ตื่นในร้านซ่อมของฮาล์ฟลิง · ไว้ใจฮาล์ฟลิง +2",
+    "src": "docs/lore/storylines/19-soulmachine.md:18",
+    "firstNode": "so.b1"
+   },
+   {
+    "line": "so",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "ถิ่นหลัก รัสต์ดาล",
+    "placesRaw": "MK-10",
+    "places": [
+     "MK-10"
+    ],
+    "firstNodeRaw": "so.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nc_sv_blackout"
+     },
+     {
+      "k": "event",
+      "id": "MC-04"
+     }
+    ],
+    "text": "ตื่นในซากโรงงาน · ถ้าหลัง MC-04",
+    "src": "docs/lore/storylines/19-soulmachine.md:19",
+    "firstNode": "so.b1"
+   },
+   {
+    "line": "so",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "NB-10",
+    "places": [
+     "NB-10"
+    ],
+    "firstNodeRaw": "so.b1",
+    "effects": [],
+    "text": "หุ่นหนีนาย · ใช้ชีวิตในหมอก",
+    "src": "docs/lore/storylines/19-soulmachine.md:20",
+    "firstNode": "so.b1"
+   },
+   {
+    "line": "mu",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "ถิ่นหลัก อัมเมนรา",
+    "placesRaw": "SH-02",
+    "places": [
+     "SH-02"
+    ],
+    "firstNodeRaw": "mu.b1",
+    "effects": [],
+    "text": "อยู่ใต้ฟาโรห์ · ได้ธุลีตามลำดับชั้น",
+    "src": "docs/lore/storylines/20-mummy.md:17",
+    "firstNode": "mu.b1"
+   },
+   {
+    "line": "mu",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "ถิ่นหลัก มาราซาร์",
+    "placesRaw": "SH-14 เมืองมายา",
+    "places": [
+     "SH-14"
+    ],
+    "firstNodeRaw": "mu.b1",
+    "effects": [],
+    "text": "เมืองโผล่หนึ่งฤดูในร้อยปี · ใกล้ราชินีเงา",
+    "src": "docs/lore/storylines/20-mummy.md:18",
+    "firstNode": "mu.b1"
+   },
+   {
+    "line": "mu",
+    "table": "จุดกำเนิด (การตื่น)",
+    "kind": "พลัดถิ่น",
+    "placesRaw": "SH-17 บัดมีร์",
+    "places": [
+     "SH-17"
+    ],
+    "firstNodeRaw": "mu.b1",
+    "effects": [],
+    "text": "ตื่นในสุสานที่ยักษ์ดูแลตามสนธิสัญญาเก็บศพ",
+    "src": "docs/lore/storylines/20-mummy.md:19",
+    "firstNode": "mu.b1"
+   },
+   {
+    "line": "gh",
+    "table": "จุดกำเนิด (การลุก)",
+    "kind": "ถิ่นหลัก อุลโมธ",
+    "placesRaw": "MH-03",
+    "places": [
+     "MH-03"
+    ],
+    "firstNodeRaw": "gh.b1",
+    "effects": [],
+    "text": "ใต้ราชันย์กูล · ความหิวสูง",
+    "src": "docs/lore/storylines/21-ghoul.md:17",
+    "firstNode": "gh.b1"
+   },
+   {
+    "line": "gh",
+    "table": "จุดกำเนิด (การลุก)",
+    "kind": "ถิ่นหลัก ทรอนกาธ",
+    "placesRaw": "MH-10",
+    "places": [
+     "MH-10"
+    ],
+    "firstNodeRaw": "gh.b1",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "skill",
+      "id": "nc_crown_hunger",
+      "chance": 0.1
+     }
+    ],
+    "text": "ใกล้กูลชราและฮรอด-กาธ",
+    "src": "docs/lore/storylines/21-ghoul.md:18",
+    "firstNode": "gh.b1"
+   },
+   {
+    "line": "gh",
+    "table": "จุดกำเนิด (การลุก)",
+    "kind": "ถิ่นหลัก เซร์วอร์",
+    "placesRaw": "MH-12",
+    "places": [
+     "MH-12"
+    ],
+    "firstNodeRaw": "gh.b1",
+    "effects": [],
+    "text": "สนามรบผี · ศัตรูกับวิญญาณทหาร",
+    "src": "docs/lore/storylines/21-ghoul.md:19",
+    "firstNode": "gh.b1"
+   },
+   {
+    "line": "gh",
+    "table": "จุดกำเนิด (การลุก)",
+    "kind": "พลัดถิ่น นิวเฮเวน",
+    "placesRaw": "AL-19",
+    "places": [
+     "AL-19"
+    ],
+    "firstNodeRaw": "gh.b1 ทางผู้ปฏิเสธ",
+    "effects": [
+     {
+      "k": "entryMod",
+      "to": "gh.t1",
+      "choice": "b",
+      "mul": 3
+     }
+    ],
+    "text": "กลุ่มที่ปฏิเสธความหิว · ทาง ข ของ gh.t1 ×3",
+    "src": "docs/lore/storylines/21-ghoul.md:20",
+    "firstNode": "gh.b1"
+   }
+  ],
+  "heirRules": [
+   {
+    "node": "hr.b1",
+    "nodesRaw": "b1 ของเผ่า",
+    "replaces": [
+     "b1"
+    ],
+    "condRaw": "ทายาทเกิดในตระกูลที่มีสมุดตระกูล",
+    "src": "docs/lore/storylines/23-heir.md:22",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "race",
+       "ids": [
+        "gh"
+       ]
+      },
+      {
+       "k": "race",
+       "ids": [
+        "gh"
+       ]
+      },
+      {
+       "k": "text",
+       "text": "ทายาทเกิดในตระ ที่มีสมุดตระ"
+      }
+     ]
+    }
+   },
+   {
+    "node": "hr.b2",
+    "nodesRaw": "b2 ของเผ่า",
+    "replaces": [
+     "b2"
+    ],
+    "condRaw": "โหนด b2 ของเผ่าอยู่ในสมุดตระกูลแล้ว (รุ่นก่อนผ่านมาแล้ว)",
+    "src": "docs/lore/storylines/23-heir.md:23",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "race",
+       "ids": [
+        "gh"
+       ]
+      },
+      {
+       "k": "text",
+       "text": "โหนด b2 ของเผ่าอยู่ในสมุดตระ แล้ว (รุ่นก่อนผ่านมาแล้ว)"
+      }
+     ]
+    }
+   },
+   {
+    "node": "hr.t1",
+    "nodesRaw": "แทรกหลัง t1 ของเผ่า",
+    "replaces": [
+     "t1"
+    ],
+    "condRaw": "ทุกทายาท พิธีของเผ่ายังต้องผ่าน (เป็นเรื่องส่วนตัวของแต่ละคน)",
+    "src": "docs/lore/storylines/23-heir.md:24",
+    "cond": {
+     "k": "text",
+     "text": "ทุกทายาท พิธีของเผ่ายังต้องผ่าน (เป็นเรื่องส่วนตัวของแต่ละคน)"
+    }
+   },
+   {
+    "node": "hr.t2",
+    "nodesRaw": "แทรกหลัง t2 ของเผ่า",
+    "replaces": [
+     "t2"
+    ],
+    "condRaw": "ทุกทายาท",
+    "src": "docs/lore/storylines/23-heir.md:25",
+    "cond": {
+     "k": "text",
+     "text": "ทุกทายาท"
+    }
+   },
+   {
+    "node": "hr.a1 hr.a2 hr.a3",
+    "nodesRaw": "โหนด a ที่ถูกตัด (a1 ถึง a7) ตามลำดับ หรือแทรกหลังรับช่วงตามข้อ 6",
+    "replaces": [
+     "a1",
+     "a7"
+    ],
+    "condRaw": "มีเรื่องที่ผูกตามข้อ 4",
+    "src": "docs/lore/storylines/23-heir.md:26",
+    "cond": {
+     "k": "text",
+     "text": "มีเรื่องที่ผูกตามข้อ 4"
+    }
+   },
+   {
+    "node": "hr.a4",
+    "nodesRaw": "แทรกที่อายุ 40 ถึง 50",
+    "replaces": [],
+    "condRaw": "ทายาทมีลูกที่ยังมีชีวิต หรือผู้สืบเรื่อง",
+    "src": "docs/lore/storylines/23-heir.md:27",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "text",
+       "text": "ทายาทมีลูกที่ยังมีชีวิต"
+      },
+      {
+       "k": "text",
+       "text": "ผู้สืบเรื่อง"
+      }
+     ]
+    }
+   },
+   {
+    "node": "hr.e1",
+    "nodesRaw": "e1 ของเผ่า",
+    "replaces": [
+     "e1"
+    ],
+    "condRaw": "e1 อยู่ในสมุดตระกูลแล้ว หรือทายาทอายุ 55 ขึ้นไปตอนรับช่วง",
+    "src": "docs/lore/storylines/23-heir.md:28",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "and",
+       "of": [
+        {
+         "k": "race",
+         "ids": [
+          "gh"
+         ]
+        },
+        {
+         "k": "text",
+         "text": "e1 อยู่ในสมุดตระ แล้ว"
+        }
+       ]
+      },
+      {
+       "k": "text",
+       "text": "ทายาทอายุ 55 ขึ้นไปตอนรับช่วง"
+      }
+     ]
+    }
+   }
+  ],
+  "pairSets": [
+   {
+    "set": "ow",
+    "name": "ลูกน้ำเก่า",
+    "pairsRaw": "นาคากับเงือก · เงือกกับนาคา",
+    "pairs": [
+     [
+      "na",
+      "me"
+     ],
+     [
+      "me",
+      "na"
+     ]
+    ],
+    "placesRaw": "NR-09 NR-13",
+    "places": [
+     "NR-09",
+     "NR-13"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:33"
+   },
+   {
+    "set": "nh",
+    "name": "นาคาลูกครึ่ง",
+    "pairsRaw": "มนุษย์กับนาคา · นาคากับมนุษย์",
+    "pairs": [
+     [
+      "hu",
+      "na"
+     ],
+     [
+      "na",
+      "hu"
+     ]
+    ],
+    "placesRaw": "SV-17",
+    "places": [
+     "SV-17"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:34"
+   },
+   {
+    "set": "eb",
+    "name": "เอลฟ์เลือดผสม",
+    "pairsRaw": "มนุษย์กับเอลฟ์ · เอลฟ์กับมนุษย์",
+    "pairs": [
+     [
+      "hu",
+      "el"
+     ],
+     [
+      "el",
+      "hu"
+     ]
+    ],
+    "placesRaw": "AL-22 SV-09 SV-05",
+    "places": [
+     "AL-22",
+     "SV-09",
+     "SV-05"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:35"
+   },
+   {
+    "set": "lf",
+    "name": "เด็กลาเฟธิล",
+    "pairsRaw": "เอลฟ์กับเผ่าสัตว์ · เผ่าสัตว์กับเอลฟ์",
+    "pairs": [
+     [
+      "el",
+      "be"
+     ],
+     [
+      "be",
+      "el"
+     ]
+    ],
+    "placesRaw": "SV-09",
+    "places": [
+     "SV-09"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:36"
+   },
+   {
+    "set": "ho",
+    "name": "ฮาล์ฟออร์ค",
+    "pairsRaw": "มนุษย์กับออร์ค · ออร์คกับมนุษย์",
+    "pairs": [
+     [
+      "hu",
+      "or"
+     ],
+     [
+      "or",
+      "hu"
+     ]
+    ],
+    "placesRaw": "MH-06 MH-07",
+    "places": [
+     "MH-06",
+     "MH-07"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:37"
+   },
+   {
+    "set": "sw",
+    "name": "ปีกเกล็ดและปีกสั้น",
+    "pairsRaw": "เผ่ามังกรกับเผ่าปีก · เผ่าปีกกับเผ่ามังกร · มนุษย์กับเผ่าปีก · เผ่าปีกกับมนุษย์ · มนุษย์กับเผ่ามังกร · เผ่ามังกรกับมนุษย์",
+    "pairs": [
+     [
+      "dk",
+      "wi"
+     ],
+     [
+      "wi",
+      "dk"
+     ],
+     [
+      "hu",
+      "wi"
+     ],
+     [
+      "wi",
+      "hu"
+     ],
+     [
+      "hu",
+      "dk"
+     ],
+     [
+      "dk",
+      "hu"
+     ]
+    ],
+    "placesRaw": "AZ-01 ถึง AZ-10 · SH-09",
+    "places": [
+     "AZ-01",
+     "AZ-02",
+     "AZ-03",
+     "AZ-04",
+     "AZ-05",
+     "AZ-06",
+     "AZ-07",
+     "AZ-08",
+     "AZ-09",
+     "AZ-10",
+     "SH-09"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:38"
+   },
+   {
+    "set": "vb",
+    "name": "ลูกแวมไพร์",
+    "pairsRaw": "แวมไพร์กับมนุษย์ · มนุษย์กับแวมไพร์ · แวมไพร์กับดาร์กเอลฟ์ · ดาร์กเอลฟ์กับแวมไพร์",
+    "pairs": [
+     [
+      "va",
+      "hu"
+     ],
+     [
+      "hu",
+      "va"
+     ],
+     [
+      "va",
+      "de"
+     ],
+     [
+      "de",
+      "va"
+     ]
+    ],
+    "placesRaw": "NB-02 NB-05 NB-13",
+    "places": [
+     "NB-02",
+     "NB-05",
+     "NB-13"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:39"
+   },
+   {
+    "set": "ct",
+    "name": "ลูกสัญญา",
+    "pairsRaw": "เผ่าปีศาจกับออร์ค · ออร์คกับเผ่าปีศาจ · เผ่าปีศาจกับมนุษย์ · มนุษย์กับเผ่าปีศาจ · เผ่าปีศาจกับดาร์กเอลฟ์ · ดาร์กเอลฟ์กับเผ่าปีศาจ",
+    "pairs": [
+     [
+      "dm",
+      "or"
+     ],
+     [
+      "or",
+      "dm"
+     ],
+     [
+      "dm",
+      "hu"
+     ],
+     [
+      "hu",
+      "dm"
+     ],
+     [
+      "dm",
+      "de"
+     ],
+     [
+      "de",
+      "dm"
+     ]
+    ],
+    "placesRaw": "AL-25 MH-07 KD-08 MH-11 MK-16 KD-05",
+    "places": [
+     "AL-25",
+     "MH-07",
+     "KD-08",
+     "MH-11",
+     "MK-16",
+     "KD-05"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:40"
+   },
+   {
+    "set": "fh",
+    "name": "ลูกช่างตีและลูกเตาไฟ",
+    "pairsRaw": "คนแคระกับมนุษย์ · มนุษย์กับคนแคระ · คนแคระกับเผ่าลาวา · เผ่าลาวากับคนแคระ",
+    "pairs": [
+     [
+      "dw",
+      "hu"
+     ],
+     [
+      "hu",
+      "dw"
+     ],
+     [
+      "dw",
+      "la"
+     ],
+     [
+      "la",
+      "dw"
+     ]
+    ],
+    "placesRaw": "KD-11 KD-02 KD-08 AL-21",
+    "places": [
+     "KD-11",
+     "KD-02",
+     "KD-08",
+     "AL-21"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:41"
+   },
+   {
+    "set": "cy",
+    "name": "ไซคลอปส์",
+    "pairsRaw": "ยักษ์กับมนุษย์",
+    "pairs": [
+     [
+      "gi",
+      "hu"
+     ]
+    ],
+    "placesRaw": "SH-06 AL-18",
+    "places": [
+     "SH-06",
+     "AL-18"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:42"
+   },
+   {
+    "set": "sh",
+    "name": "ลูกเงา",
+    "pairsRaw": "ดาร์กเอลฟ์กับเอลฟ์ · ดาร์กเอลฟ์กับมนุษย์ · เอลฟ์กับดาร์กเอลฟ์",
+    "pairs": [
+     [
+      "de",
+      "el"
+     ],
+     [
+      "de",
+      "hu"
+     ],
+     [
+      "el",
+      "de"
+     ]
+    ],
+    "placesRaw": "NB-05 NB-13 SV-05",
+    "places": [
+     "NB-05",
+     "NB-13",
+     "SV-05"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:43"
+   },
+   {
+    "set": "fy",
+    "name": "ลูกภูต",
+    "pairsRaw": "เอลฟ์กับภูตพราย · ภูตพรายกับเอลฟ์ · ภูตพรายกับมนุษย์",
+    "pairs": [
+     [
+      "el",
+      "fa"
+     ],
+     [
+      "fa",
+      "el"
+     ],
+     [
+      "fa",
+      "hu"
+     ]
+    ],
+    "placesRaw": "SV-04 SV-11",
+    "places": [
+     "SV-04",
+     "SV-11"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:44"
+   },
+   {
+    "set": "hl",
+    "name": "ลูกไชร์",
+    "pairsRaw": "มนุษย์กับฮาล์ฟลิง · ฮาล์ฟลิงกับมนุษย์ · คนแคระกับฮาล์ฟลิง · ฮาล์ฟลิงกับคนแคระ · ฮาล์ฟลิงกับเอลฟ์",
+    "pairs": [
+     [
+      "hu",
+      "ha"
+     ],
+     [
+      "ha",
+      "hu"
+     ],
+     [
+      "dw",
+      "ha"
+     ],
+     [
+      "ha",
+      "dw"
+     ],
+     [
+      "ha",
+      "el"
+     ]
+    ],
+    "placesRaw": "AL-16 AL-01 AL-10 AL-21 AL-22",
+    "places": [
+     "AL-16",
+     "AL-01",
+     "AL-10",
+     "AL-21",
+     "AL-22"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:45"
+   },
+   {
+    "set": "bw",
+    "name": "ลูกหมาป่าและลูกโอเกอร์",
+    "pairsRaw": "มนุษย์กับเผ่าสัตว์ · เผ่าสัตว์กับมนุษย์ · เผ่าสัตว์กับออร์ค · ออร์คกับเผ่าสัตว์",
+    "pairs": [
+     [
+      "hu",
+      "be"
+     ],
+     [
+      "be",
+      "hu"
+     ],
+     [
+      "be",
+      "or"
+     ],
+     [
+      "or",
+      "be"
+     ]
+    ],
+    "placesRaw": "AL-23 AL-24 SH-10 MH-04",
+    "places": [
+     "AL-23",
+     "AL-24",
+     "SH-10",
+     "MH-04"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:46"
+   },
+   {
+    "set": "wc",
+    "name": "ลูกคลื่น",
+    "pairsRaw": "มนุษย์กับเงือก · เงือกกับมนุษย์",
+    "pairs": [
+     [
+      "hu",
+      "me"
+     ],
+     [
+      "me",
+      "hu"
+     ]
+    ],
+    "placesRaw": "NR-01",
+    "places": [
+     "NR-01"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:47"
+   },
+   {
+    "set": "dd",
+    "name": "เลือดเพลิงและสัญญา",
+    "pairsRaw": "เผ่ามังกรกับเผ่าปีศาจ",
+    "pairs": [
+     [
+      "dk",
+      "dm"
+     ]
+    ],
+    "placesRaw": "KD-07",
+    "places": [
+     "KD-07"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:48"
+   }
+  ],
+  "halfbloodNpcs": [
+   {
+    "npc": "SV17-2",
+    "name": "ธารา",
+    "set": "nh",
+    "role": "พี่เลี้ยงใน nh.b2 · ผู้ค้ำใน nh.t1 ทาง ค",
+    "src": "docs/lore/storylines/22-halfblood.md:251"
+   },
+   {
+    "npc": "NR09-5",
+    "name": "ไวรา",
+    "set": "ow",
+    "role": "ผู้ส่งข่าวสองฝั่งใน ow.a1 · เล่าเพลงนาคาและเพลงเงือกให้ใน ow.b2",
+    "src": "docs/lore/storylines/22-halfblood.md:252"
+   },
+   {
+    "npc": "AL22-5",
+    "name": "มิรา เวลล์",
+    "set": "eb",
+    "role": "ผู้ค้ำใน hb.t1 และล่ามใน eb.a2",
+    "src": "docs/lore/storylines/22-halfblood.md:253"
+   },
+   {
+    "npc": "SV09-1",
+    "name": "ไรกัส",
+    "set": "lf",
+    "role": "ผู้นำสองเผ่าใน lf.a1 ทาง ก",
+    "src": "docs/lore/storylines/22-halfblood.md:254"
+   },
+   {
+    "npc": "MH06-5",
+    "name": "บาร์กา",
+    "set": "ho",
+    "role": "เมล็ดข้าวเถ้าใน ho.a2",
+    "src": "docs/lore/storylines/22-halfblood.md:255"
+   },
+   {
+    "npc": "SH09-5",
+    "name": "ซีมอน",
+    "set": "sw",
+    "role": "ผู้ร่อนลงบันไดพาผู้ลี้ภัยใน sw.a1",
+    "src": "docs/lore/storylines/22-halfblood.md:256"
+   },
+   {
+    "npc": "NB05-5",
+    "name": "วีวา",
+    "set": "vb",
+    "role": "สมุดเงาใน sh.a2 ทาง ค (คู่ดาร์กเอลฟ์กับแวมไพร์อยู่ชุด vb)",
+    "src": "docs/lore/storylines/22-halfblood.md:257"
+   },
+   {
+    "npc": "NB13-5",
+    "name": "คัวรา",
+    "set": "sh",
+    "role": "ผู้มีเงาครึ่งเดียวใน sh.a2 ทาง ก",
+    "src": "docs/lore/storylines/22-halfblood.md:258"
+   },
+   {
+    "npc": "SV05-5",
+    "name": "ไนลา",
+    "set": "sh",
+    "role": "ผู้สอนก้าวเงาคู่ใน sh.t1 ทาง ข",
+    "src": "docs/lore/storylines/22-halfblood.md:259"
+   },
+   {
+    "npc": "SV04-5",
+    "name": "ลีฟ",
+    "set": "fy",
+    "role": "ตัวอย่างชื่อรั่วใน fy.t1",
+    "src": "docs/lore/storylines/22-halfblood.md:260"
+   },
+   {
+    "npc": "AL16-5",
+    "name": "ทอมมี่",
+    "set": "hl",
+    "role": "โต๊ะสองสำรับใน hl.b2",
+    "src": "docs/lore/storylines/22-halfblood.md:261"
+   },
+   {
+    "npc": "AL21-5",
+    "name": "พิปปา",
+    "set": "hl",
+    "role": "ร้านซ่อมสองบ้านใน hl.a1 ทาง ก",
+    "src": "docs/lore/storylines/22-halfblood.md:262"
+   },
+   {
+    "npc": "MH04-5",
+    "name": "คาร์ธา",
+    "set": "bw",
+    "role": "ฝูงที่ไม่ยอมรับใน bw.b2",
+    "src": "docs/lore/storylines/22-halfblood.md:263"
+   },
+   {
+    "npc": "AL23-5",
+    "name": "เรวา",
+    "set": "bw",
+    "role": "ผู้ส่งสารสหพันธ์ใน bw.a1",
+    "src": "docs/lore/storylines/22-halfblood.md:264"
+   },
+   {
+    "npc": "NR01-5",
+    "name": "มารีน",
+    "set": "wc",
+    "role": "ผู้เก็บขวดใน wc.b2 ทาง ค",
+    "src": "docs/lore/storylines/22-halfblood.md:265"
+   },
+   {
+    "npc": "MH07-5",
+    "name": "เซเรน",
+    "set": "ct",
+    "role": "ผู้ช่วยผู้ทดสอบใน ct.t1",
+    "src": "docs/lore/storylines/22-halfblood.md:266"
+   },
+   {
+    "npc": "KD08-5",
+    "name": "เซริน",
+    "set": "ct",
+    "role": "ล่ามใต้ปากเหวใน ct.a2",
+    "src": "docs/lore/storylines/22-halfblood.md:267"
+   },
+   {
+    "npc": "MK16-5",
+    "name": "ฮอร์ตัน",
+    "set": "ct",
+    "role": "ผู้คุมค่ายพักใน ct.b2 ทาง ค",
+    "src": "docs/lore/storylines/22-halfblood.md:268"
+   },
+   {
+    "npc": "KD11-5",
+    "name": "ทอร์วา",
+    "set": "fh",
+    "role": "ผู้สอนสองไฟใน fh.t1 ทาง ข และ fh.a1 ทาง ค",
+    "src": "docs/lore/storylines/22-halfblood.md:269"
+   },
+   {
+    "npc": "SH06-5",
+    "name": "โอลมา",
+    "set": "cy",
+    "role": "ผู้ฟังหินใน cy.b2 และ cy.a1",
+    "src": "docs/lore/storylines/22-halfblood.md:270"
+   },
+   {
+    "npc": "KD07-5",
+    "name": "เวนทาร์",
+    "set": "dd",
+    "role": "ตัวแทนสัญญาใน dd.a1",
+    "src": "docs/lore/storylines/22-halfblood.md:271"
+   }
+  ],
+  "jobOpeners": [
+   {
+    "job": "third_home_founder",
+    "type": "ลับ",
+    "pathRaw": "ทางตรง hb.a3 ทาง ค",
+    "nodes": [
+     {
+      "id": "hb.a3",
+      "choice": "c"
+     }
+    ],
+    "skills": [
+     "ns_third_hearth"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:303"
+   },
+   {
+    "job": "old_water_singer",
+    "type": "ลับ",
+    "pathRaw": "ทางตรง ow.a2 (cv.7 ทาง ข) · ทางเอื้อ ow.t1",
+    "nodes": [
+     {
+      "id": "ow.a2"
+     },
+     {
+      "id": "cv.7",
+      "choice": "b"
+     },
+     {
+      "id": "ow.t1"
+     }
+    ],
+    "skills": [
+     "ns_song_both"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:304"
+   },
+   {
+    "job": "contract_redeemer",
+    "type": "ลับ",
+    "pathRaw": "ทางตรง ct.a1 ทาง ก · ทางเอื้อ ct.t1 ทาง ค",
+    "nodes": [
+     {
+      "id": "ct.a1",
+      "choice": "a"
+     },
+     {
+      "id": "ct.t1",
+      "choice": "c"
+     }
+    ],
+    "skills": [
+     "ns_pact_cut"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:305"
+   },
+   {
+    "job": "bridge_walker",
+    "type": "ทั่วไป R",
+    "pathRaw": "hb.a3 ทาง ก",
+    "nodes": [
+     {
+      "id": "hb.a3",
+      "choice": "a"
+     }
+    ],
+    "skills": [
+     "ns_blood_bridge",
+     "ns_two_tongues"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:306"
+   },
+   {
+    "job": "twin_fire_smith",
+    "type": "ทั่วไป R",
+    "pathRaw": "fh.a1 ทาง ค",
+    "nodes": [
+     {
+      "id": "fh.a1",
+      "choice": "c"
+     }
+    ],
+    "skills": [
+     "ns_twin_fire"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:307"
+   },
+   {
+    "job": "pack_bridge_rider",
+    "type": "ทั่วไป R",
+    "pathRaw": "lf.a1 ทาง ก",
+    "nodes": [
+     {
+      "id": "lf.a1",
+      "choice": "a"
+     }
+    ],
+    "skills": [
+     "ns_pack_voice",
+     "ns_wolf_rider"
+    ],
+    "src": "docs/lore/storylines/22-halfblood.md:308"
    }
   ]
  }

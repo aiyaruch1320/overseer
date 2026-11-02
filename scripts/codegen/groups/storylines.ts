@@ -2,7 +2,7 @@
 // → data/gen/storylines.json (nodes, rites, endings, links, lines, ally arcs) and data/gen/convergence.json.
 import type { GenReport } from '../run-all';
 import { idIndex, type IdIndex } from '../lib/ids';
-import { parseCell, parseChoice, parseConditionX, parseWeightCell, type Parsed } from '../lib/effects';
+import { RACE_WORDS, parseCell, parseChoice, parseConditionX, parseWeightCell, type Parsed } from '../lib/effects';
 import { Unparsed, listDocs, readDoc, rel, tables, writeGen, type Row, type Table } from '../lib/table';
 import type {
   AllyArc,
@@ -14,10 +14,15 @@ import type {
   ConvergencePoint,
   EffectX,
   Ending,
+  HalfbloodNpc,
+  HeirRule,
+  JobOpener,
   LineMeta,
   Link,
   MoodEffect,
   NodeKind,
+  Origin,
+  PairSet,
   Rite,
   RiteOutcome,
   StoryNodeX,
@@ -294,6 +299,56 @@ function linkFrom(file: string, r: Row, ids: IdIndex): Link {
   return l;
 }
 
+// ---------- origins and the small tables of the overlay files ----------
+
+/** `AL-01 ถึง AL-28` → AL-01 … AL-28; single ids stay. */
+export function expandPlaces(raw: string): string[] {
+  const out: string[] = [];
+  for (const m of raw.matchAll(/\b([A-Z]{2})-(\d\d)(?:\s*ถึง\s*\1-(\d\d))?/g)) {
+    if (m[3]) for (let n = Number(m[2]); n <= Number(m[3]); n++) out.push(`${m[1]}-${String(n).padStart(2, '0')}`);
+    else out.push(`${m[1]}-${m[2]}`);
+  }
+  return uniq(out);
+}
+
+function originRow(file: string, table: string, line: string, r: Row, ids: IdIndex): Origin {
+  const [kind, placesRaw, firstNodeRaw, effectCell] = r.cells;
+  const p = parseCell(effectCell ?? '', ids);
+  reportUnparsed({ file }, r.line, `${line} จุดกำเนิด ${kind}`, p.unparsed);
+  unknownIds(p.effects as EffectX[], { file }, r.line, `${line} จุดกำเนิด ${kind}`);
+  const skip = (firstNodeRaw ?? '').match(/ข้ามไป\s*([a-z]{2}\.[btaelx]\d+)/);
+  const first = (firstNodeRaw ?? '').match(/\b([a-z]{2}\.[btaelx]\d+)\b/);
+  const o: Origin = {
+    line,
+    table,
+    kind,
+    placesRaw: placesRaw ?? '',
+    places: expandPlaces(placesRaw ?? ''),
+    firstNodeRaw: firstNodeRaw ?? '',
+    effects: p.effects as EffectX[],
+    text: p.label,
+    src: `${rel(file)}:${r.line}`,
+  };
+  if (first) o.firstNode = first[1];
+  if (skip) o.skipsTo = skip[1];
+  return o;
+}
+
+const raceCode = (name: string) => RACE_WORDS.find(([w]) => w === name.trim())?.[1];
+
+function pairSetRow(file: string, r: Row): PairSet {
+  const [set, name, pairsRaw, placesRaw] = r.cells;
+  const pairs: [string, string][] = [];
+  for (const dir of pairsRaw.split(/\s+·\s+/)) {
+    const [a, b] = dir.split('กับ');
+    const x = a && raceCode(a);
+    const y = b && raceCode(b);
+    if (x && y) pairs.push([x, y]);
+    else unparsed.add(file, r.line, dir, 'pair direction not readable');
+  }
+  return { set, name, pairsRaw, pairs, placesRaw, places: expandPlaces(placesRaw), src: `${rel(file)}:${r.line}` };
+}
+
 // ---------- allies ----------
 
 const MOOD_G = /\{([฀-๿]+):([฀-๿]+)@(\d)\}/g;
@@ -523,6 +578,11 @@ export default function run(): GenReport {
   const lineMeta = new Map<string, LineMeta>();
   const godRows: { file: string; row: Row }[] = [];
   const arcs: AllyArc[] = [];
+  const origins: Origin[] = [];
+  const heirRules: HeirRule[] = [];
+  const pairSets: PairSet[] = [];
+  const halfbloodNpcs: HalfbloodNpc[] = [];
+  const jobOpeners: JobOpener[] = [];
 
   for (const file of files) {
     const tribal = tribalFile(file);
@@ -552,6 +612,43 @@ export default function run(): GenReport {
       } else if (tribal && /^3\./.test(h[1] ?? '') && !/^NPC$/.test(t.header[0])) {
         const rite = riteFrom(file, t, ids);
         if (rite) rites.push(rite);
+      } else if (tribal && t.header[0] === 'แบบ' && t.header.includes('โหนดแรก')) {
+        const line = fileLines(file).find((l) => l.startsWith('# '))?.match(/\(([a-z]{2})\)/)?.[1] ?? basenameLine(file);
+        for (const r of t.rows) origins.push(originRow(file, last.replace(/^[\d.]+\s*/, ''), line, r, ids));
+      } else if (t.header[0] === 'โหนด' && t.header[1] === 'แทนที่') {
+        for (const r of t.rows) {
+          const [node, nodesRaw, condRaw] = r.cells;
+          const cond = parseConditionX(condRaw ?? '', ids, true) ?? undefined;
+          const h: HeirRule = {
+            node,
+            nodesRaw,
+            replaces: uniq(nodesRaw.match(/\b[btae]\d\b/g) ?? []),
+            condRaw: condRaw ?? '',
+            src: `${rel(file)}:${r.line}`,
+          };
+          if (cond) h.cond = cond;
+          heirRules.push(h);
+        }
+      } else if (t.header[0] === 'ชุด' && t.header[1] === 'ชื่อ') {
+        for (const r of t.rows) pairSets.push(pairSetRow(file, r));
+      } else if (t.header[0] === 'NPC' && t.header[1] === 'ชุด') {
+        for (const r of t.rows) {
+          const m = r.cells[0].match(/^([A-Z]{2}\d{2}-\d)\s+(.+)$/);
+          if (m) halfbloodNpcs.push({ npc: m[1], name: m[2], set: r.cells[1], role: r.cells[2], src: `${rel(file)}:${r.line}` });
+          else unparsed.add(file, r.line, r.cells[0], 'npc cell not recognised');
+        }
+      } else if (t.header[0] === 'อาชีพ' && t.header[2] === 'ทางเปิด') {
+        for (const r of t.rows) {
+          const [job, type, pathRaw, skillCell] = r.cells;
+          jobOpeners.push({
+            job: job.replace(/`/g, ''),
+            type,
+            pathRaw,
+            nodes: nodeRefs(pathRaw),
+            skills: [...(skillCell ?? '').matchAll(/`([^`]+)`/g)].map((x) => x[1]),
+            src: `${rel(file)}:${r.line}`,
+          });
+        }
       } else if (t.header[0] === 'เส้น' && t.header[2] === 'เปิดเมื่อ') {
         for (const r of t.rows) {
           const [id, name, openRaw] = r.cells;
@@ -591,8 +688,13 @@ export default function run(): GenReport {
     rites,
     endings,
     links,
-    lines: [...lineMeta.values()],
+    lines: [...lineMeta.values()].map((l) => ({ ...l, name: l.name.replace(/^เส้นเรื่อง:\s*/, '').replace(/\s*\(.*$/, '').trim() })),
     allyArcs: arcs,
+    origins,
+    heirRules,
+    pairSets,
+    halfbloodNpcs,
+    jobOpeners,
   };
   const conv = convergence(ids);
   const sources = [...files, `${DIR}/00-convergence.md`];

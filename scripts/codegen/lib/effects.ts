@@ -381,8 +381,21 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   });
 
   // ---- weight changes written on the row ----
+  take(new RegExp(`น้ำหนัก\\s*(${NODE_OR_CV})\\s*×\\s*(\\d+(?:\\.\\d+)?)`), (m) => push({ k: 'nodeWeight', node: m[1], mul: Number(m[2]) }));
+  take(new RegExp(`น้ำหนัก([${TH}]*?)ใน\\s*(${NODE_OR_CV})\\s*×\\s*(\\d+(?:\\.\\d+)?)`), (m) =>
+    push({ k: 'nodeWeight', node: m[2], ...(m[1] ? { label: m[1] } : {}), mul: Number(m[3]) }),
+  );
+  take(new RegExp(`\\(?\\s*(${NODE_OR_CV})\\s*ทาง([${TH}]+?)คูณ\\s*(\\d+(?:\\.\\d+)?)\\s*\\)?`), (m) =>
+    push({ k: 'nodeWeight', node: m[1], label: m[2], mul: Number(m[3]) }),
+  );
+  take(new RegExp(`^ถ้า\\s*(.+?)\\s+น้ำหนัก([${TH}]*?)คูณ\\s*(\\d+(?:\\.\\d+)?)\\s*$`), (m) => {
+    const cond = parseConditionX(m[1], ids, true);
+    const w: ExtraEffect = { k: 'nodeWeight', ...(m[2] ? { label: m[2] } : {}), mul: Number(m[3]) };
+    push(cond ? { k: 'if', cond: cond as Condition, then: [ext(w)] } : w);
+  });
+  take(new RegExp(`พิธี\\s*([btae]\\d)\\s*ของเผ่า(?:หลัก|ที่สอง)`), (m) => push({ k: 'ref', nodes: [m[1]], rel: 'พิธี' }));
   take(
-    /(?:ถ้า\s*([^·()]*?)\s+)?ทาง\s*([กขค])\s*ของ\s*(cv\.\d+)\s*(?:ได้)?\s*(?:น้ำหนัก)?\s*×\s*(\d+(?:\.\d+)?)/,
+    new RegExp(`(?:ถ้า\\s*([^·()]*?)\\s+)?ทาง\\s*([กขค])\\s*ของ\\s*(${NODE_OR_CV})\\s*(?:ได้)?\\s*(?:น้ำหนัก)?\\s*×\\s*(\\d+(?:\\.\\d+)?)`),
     (m) => {
       const cond = m[1] ? parseConditionX(m[1], ids, true) : null;
       push({ k: 'entryMod', to: m[3], choice: THAI_KEYS[m[2]], ...(cond ? { cond } : {}), mul: Number(m[4]) });
@@ -497,6 +510,11 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
   }
 
   // ---- numbers with a meaning ----
+  // an item in a quantity range: `mt_star_iron` 1–3 ชิ้น
+  take(/`([a-z_0-9]+)`\s*(\d+)[–-](\d+)\s*(ชิ้น|ตัว|คน)/g, (m) => {
+    push({ k: 'grant', kind: kindOf(m[1], ids), id: m[1] });
+    push({ k: 'range', stat: m[1], min: Number(m[2]), max: Number(m[3]), unit: m[4] });
+  });
   take(/ระดับ\s*([BL])(\d)(?:\s*หรือ\s*\1(\d))?/g, (m) => push({ k: 'level', scale: m[1], values: [Number(m[2]), ...(m[3] ? [Number(m[3])] : [])] }));
   take(/(?<![A-Za-z])L(\d)(?![\dA-Za-z])/g, (m) => push({ k: 'level', scale: 'L', values: [Number(m[1])] }));
   take(/(?:เป็น|ครบแล้วเป็น)\s*B(\d)\b/g, (m) => push({ k: 'level', scale: 'B', values: [Number(m[1])] }));
@@ -523,7 +541,7 @@ function segment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): strin
     push({ k: 'statPct', stat: m[1], pct: toNum(m[2] + m[3]) }),
   );
   take(new RegExp(`([${TH}]+(?:\\s[${TH}]+)?)\\s*×\\s*(\\d+(?:\\.\\d+)?)`, 'g'), (m) => push({ k: 'statMul', stat: m[1], mul: Number(m[2]) }));
-  take(/(\d+(?:\.\d+)?)\s*(ปีหน้า|ปี|คน|ตัว|ชิ้น|หน่วย|ครั้ง|เดือน|วัน|ฝูง|เผ่า)(?![ก-๿])/g, (m) => push({ k: 'qty', n: Number(m[1]), unit: m[2] }));
+  take(/(\d+(?:\.\d+)?)\s*(ปีหน้า|(?:ปี|คน|ตัว|ชิ้น|หน่วย|ครั้ง|เดือน|วัน|ฝูง|เผ่า)(?![ก-๿]))/g, (m) => push({ k: 'qty', n: Number(m[1]), unit: m[2] }));
 
   // a condition that closes the phrase: "… +3 ถ้า `music` ≥ 2" · "เข้าเส้น iv ถ้าชั้น 3 ขึ้นไป"
   let trail: ConditionX | null = null;
