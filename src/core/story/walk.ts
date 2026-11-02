@@ -7,7 +7,7 @@ import type { Rite, RiteOutcome, StoryNodeX } from '../data/types-storylines';
 import { write } from '../log';
 import { apply, test, type EffectSource } from '../rules';
 import type { Choice, Condition, Effect, LifeState, NodeId } from '../types';
-import { entryWeight, refsOf, weigh, type Pull } from './choose';
+import { entryWeight, forkId, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { lastStand } from './laststand';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
@@ -640,7 +640,7 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
 
   // a way that leads to a convergence that is not open is cut (storylines/README.md §6 rule 6)
   const cut = (c: Choice) => c.effects.some((e) => e.k === 'converge' && !canEnter(ctx, e.to));
-  const w = weigh(ctx, choices, pullOf(ctx, ex, n, pre), ex, cut);
+  const w = weigh(ctx, choices, pullOf(ctx, ex, n, pre), ex, cut, forkId(ctx, n.id));
 
   const rng = ctx.rng('life.story');
   let i = -1;

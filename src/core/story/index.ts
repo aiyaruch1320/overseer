@@ -7,7 +7,7 @@ import { begin, decideWindows, drain, yearStep } from './walk';
 
 export { registerStoryRules } from './rules';
 export { openLine, lineOfRace, onNode, announcedNodes, type NodeHooks } from './walk';
-export { setPlaceGate, placesOf } from './choose';
+export { setPlaceGate, placesOf, setRuleDirector, forkId } from './choose';
 export { onLastStand } from './laststand';
 export { chooseEnding, candidates as endingCandidates } from './ending';
 export { MEMORY_LINES } from './tuning';
