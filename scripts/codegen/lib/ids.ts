@@ -92,12 +92,12 @@ export function idIndex(): IdIndex {
     const p = id.match(/^([a-z]{1,2})_/)?.[1];
     switch (p) {
       case 'b':
+      case 'nb': // 05-new-blessings.md
         return 'blessing';
       case 'c':
+      case 'nc': // 06-new-curses.md
         return 'curse';
-      case 'ns':
-      case 'nb':
-      case 'nc':
+      case 'ns': // 07-new-skills.md
       case 'u':
       case 'pa':
         return 'skill';

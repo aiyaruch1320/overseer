@@ -297,7 +297,7 @@ describe('the generator', () => {
   });
   it('reads a witness grant and a war outcome', () => {
     const e = byId<WorldEvent>(W.events);
-    expect(e.get('DR-01')!.witness).toContainEqual({ k: 'grant', kind: 'skill', id: 'nb_sv_sky' });
+    expect(e.get('DR-01')!.witness).toContainEqual({ k: 'grant', kind: 'blessing', id: 'nb_sv_sky' });
     expect(e.get('WR-01')!.outcomes.map((o) => o.key)).toEqual(['a', 'b', 'c']);
     expect(e.get('WR-01')!.outcomes[0].chain).toContain('MC-10');
   });

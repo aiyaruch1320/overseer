@@ -1143,12 +1143,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_sky"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_sky"
      }
     ],
@@ -1338,12 +1338,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_ash"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_ash"
      }
     ],
@@ -1433,12 +1433,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_tide"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_tide"
      }
     ],
@@ -1572,12 +1572,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_crack"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_crack"
      }
     ],
@@ -5210,12 +5210,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_blackout"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_blackout"
      }
     ],
@@ -5707,12 +5707,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_grove"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_grove"
      }
     ],
@@ -5872,12 +5872,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_first_light"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_first_light_burn"
      }
     ],
@@ -7585,12 +7585,12 @@
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "blessing",
       "id": "nb_sv_fog"
      },
      {
       "k": "grant",
-      "kind": "skill",
+      "kind": "curse",
       "id": "nc_sv_fog"
      }
     ],

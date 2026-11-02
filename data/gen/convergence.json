@@ -83,7 +83,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_blood_feud"
        }
       ],
@@ -568,7 +568,7 @@
       "effects": [
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_war_orphan"
        }
       ],
@@ -773,7 +773,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_fog_whisper",
         "chance": 0.4
        }
@@ -974,7 +974,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_seal_scar",
         "chance": 0.3
        },
@@ -1238,7 +1238,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_faith_tree",
         "chance": 0.15
        }
@@ -1512,7 +1512,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_egg_warmth",
         "chance": 0.2
        }
@@ -1541,7 +1541,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_both_banks",
         "chance": 0.2
        },
@@ -1597,7 +1597,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_hunted_for_beast"
        }
       ],
@@ -1803,12 +1803,12 @@
       "effects": [
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_sv_ash"
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_sv_ash"
        }
       ],
@@ -1999,7 +1999,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_sv_blackout"
        },
        {
@@ -2035,7 +2035,7 @@
       "effects": [
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_sv_blackout",
         "chance": 0.3
        },
@@ -2231,7 +2231,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_mark_hrod"
        }
       ],
@@ -2318,7 +2318,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_peace_seed",
         "chance": 0.2
        }
@@ -2694,7 +2694,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_dry_vow",
         "chance": 0.15
        }
@@ -2714,7 +2714,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_blood_feud"
        },
        {
@@ -2932,7 +2932,7 @@
       "effects": [
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_mourning_ear",
         "chance": 0.25
        },
@@ -2995,7 +2995,7 @@
        },
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "curse",
         "id": "nc_mourning"
        }
       ],
@@ -3341,7 +3341,7 @@
       "effects": [
        {
         "k": "grant",
-        "kind": "skill",
+        "kind": "blessing",
         "id": "nb_sv_fog",
         "chance": 0.3
        }
