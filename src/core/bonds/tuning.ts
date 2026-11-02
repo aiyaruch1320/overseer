@@ -39,6 +39,8 @@ export const DEATH_AGE = { mean: 75, sd: 5, min: 52, max: 92 };
 export const UNTIMELY = { fromAge: 15, perYear: 0.004 };
 /** Chance that a letter or a visit reaches the character in a year: same country 1, same continent, other continent (03 §4: letters at most once a year, far news late). */
 export const CONTACT = { sameCountry: 0.65, sameContinent: 0.5, otherContinent: 0.3, house: 1, houseAdult: 0.6, distantKin: 0.15, lover: 0.9, partner: 0.7 };
+/** A person's letters are told as a line once in this many life years (the others still count as contact). */
+export const LETTER_GAP = 5;
 /** Kin who share the house while the character is a child (and still see him often after). */
 export const HOUSE_KIN: ReadonlySet<string> = new Set(['father', 'mother', 'elder_sibling', 'younger_sibling', 'child', 'adopted']);
 export const HOUSE_UNTIL = 18;
@@ -119,8 +121,14 @@ export const ADVENTURING: ReadonlySet<string> = new Set(['hero', 'adventurer', '
 // ---------- the children and the partner over the years (M3 review H6 H7; 05 §3) ----------
 
 type Stage = 'infant' | 'child' | 'youth' | 'adult';
-/** Stages of a child by his own age, the highest age of each (05 §3 table: 0–5 · 6–14 · 15–25 · grown). */
-export const CHILD_STAGES = { infant: 5, child: 14, youth: 25 };
+/**
+ * Stages of a child by his own age, as shares of the age his race becomes an adult at (races `adultAge`, in life years; 20 for most): a baby until about
+ * the sixth of it, a child of the house until 7/10, a young person until grown. The table of 05 §3 (0–5 · 6–14 · 15–25) reads the same for a human but kept a
+ * person of 22 a "young person" and a child of 4 a baby (M3 round-two review N11).
+ */
+export const CHILD_STAGES = { infant: 0.15, child: 0.7 };
+/** The adult age in life years when the race gives none. */
+export const ADULT_LIFE_AGE = 20;
 /**
  * The feeling the character shows toward a child by the stage (05 §3 column "ตัวละครหลักแสดงได้"); `far` are added for a child who lives
  * away, `farOnly` are shown only then (น้อยใจ is the doc's own for the 6–14 "ถ้าลูกห่างตัวละคร"). The chance and the gap are assumptions
@@ -129,6 +137,8 @@ export const CHILD_STAGES = { infant: 5, child: 14, youth: 25 };
 export const CHILD_FEELS = {
   gapYears: 3,
   chance: 0.4,
+  /** The same feeling toward the same child in the same stage is not told again for this many years (582 told "ภูมิใจ" about one child six times). */
+  repeatYears: 10,
   byStage: {
     infant: ['เอ็นดู', 'ห่วง', 'หวงแหน'],
     child: ['เอ็นดู', 'ห่วง', 'ภูมิใจ', 'น้อยใจ'],

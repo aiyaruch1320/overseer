@@ -262,14 +262,14 @@ describe('the children are persons (H6)', () => {
 });
 
 describe('the partner goes with a reason (H7)', () => {
-  it('writes bonds/end at level 1 for the lover however he goes, with the way in words', () => {
+  it('writes bonds/end for the lover however he goes (level 2 for a death, 1 for the rest), with the way in words', () => {
     for (const [way, reason] of [['death', 'ตาย'], ['split', 'แยกทาง'], ['fade', 'ห่างหาย'], ['betray', 'หักหลัง']] as const) {
       const { g, ctx, life, e } = mk(8);
       const t = ally(ctx, life, 'คนรัก', 1);
       e.partner = t.id;
       endTie(ctx, t, way, 'test', way === 'death' ? { cause: 'illness' } : {});
       const x = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'end').at(-1)!;
-      expect(x.level, way).toBe(1);
+      expect(x.level, way).toBe(way === 'death' ? 2 : 1);
       expect(x.data).toMatchObject({ way, reason, partner: true, name: t.name });
       expect(t.gone).toMatchObject({ way, reason });
     }
@@ -279,7 +279,7 @@ describe('the partner goes with a reason (H7)', () => {
     const { g, ctx, life } = mk(9);
     const c = addChild(ctx, life);
     endTie(ctx, c, 'death', 'test', { cause: 'illness' });
-    expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(1);
+    expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(2);
     const f = ally(ctx, life, 'สหาย', 1);
     endTie(ctx, f, 'fade', 'test');
     expect(g.state.log.filter((l) => l.kind === 'end').at(-1)!.level).toBe(0);
@@ -307,7 +307,7 @@ describe('the partner goes with a reason (H7)', () => {
           // the last ending of the tie: a friend who betrayed and came back as a lover has an earlier ending of its own, at level 0
           const end = g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'end' && l.id === t.id).at(-1);
           expect(end, `${t.name} ${t.state}`).toBeTruthy();
-          expect(end!.level).toBe(1);
+          expect(end!.level).toBe(end!.data.way === 'death' ? 2 : 1);
         }
         partnerMoods += g.state.log.filter((l) => l.sys === 'bonds' && l.kind === 'mood' && l.id === t.id && l.data.why === 'partner').length;
       }

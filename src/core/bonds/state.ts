@@ -96,6 +96,10 @@ export interface Tie {
   otherName?: string;
   stage?: 'infant' | 'child' | 'youth' | 'adult';
   kidMood?: number;
+  /** The last feeling of a child that was told (mood, stage and hAge): the same one in the same stage waits `repeatYears` before it is told again. */
+  kidFeel?: { mood: string; stage: string; age: number };
+  /** hAge of the last letter of this person that was told (a person's letters are told once in a few years; the others only mark contact). */
+  letterAt?: number;
   married?: { age: number; name: string };
   /** How and when the tie ended (any way): the character's hAge, the world year, the way and the reason in words (`ตาย` `แยกทาง` `ห่างหาย` `หายไป` `หักหลัง`). */
   gone?: { age: number; year: number; way: string; why: string; reason: string };

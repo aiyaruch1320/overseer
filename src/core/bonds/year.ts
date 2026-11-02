@@ -9,17 +9,22 @@ import { pairsYear } from './items';
 import { moodYear, showMood } from './moods';
 import { amongYear, rosterYear, schoolYear } from './sources';
 import { bondsIndex } from './data';
-import { changeB, endTie, hAgeOf, isPartner, personAlive } from './people';
+import { changeB, endTie, hAgeOf, isChild, isPartner, personAlive } from './people';
 import { holderPlace, rowOf, slotOf } from './npcs';
 import { closeTies, extOf, isLive, levelOf, looseTies, reindex, tiesOf, type BondsExt, type Tie } from './state';
-import { ADVENTURING, CONTACT, FADE_AFTER, HOUSE_KIN, HOUSE_UNTIL, NO_FADE_LINES, UNTIMELY } from './tuning';
+import { ADVENTURING, CONTACT, FADE_AFTER, LETTER_GAP, HOUSE_KIN, HOUSE_UNTIL, NO_FADE_LINES, UNTIMELY } from './tuning';
 
 const CAUSES = [{ id: 'illness', w: 5 }, { id: 'accident', w: 3 }, { id: 'violence', w: 2 }];
 
 function die(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, cause: string): void {
   const lv = levelOf(ctx, t);
   endTie(ctx, t, 'death', 'ตาย', { cause });
-  if (lv < 2) return;
+  const near = isPartner(t) || isChild(t);
+  // a child's death is told to the parent whatever the bond was, after the funeral or the news (a feeling may be held back by the limits of 02 §4; the grief of a parent is not)
+  const grief = () => {
+    if (isChild(t)) write(ctx.state, { sys: 'bonds', kind: 'grief', id: t.id, data: { name: t.name, kin: t.kin ?? null, gender: t.gender, age: Math.round(hAgeOf(ctx, t)), cause }, level: 2 });
+  };
+  if (lv < 2) return grief();
   // the grief (02 §1 "เสียใจ") and the funeral scene: a full scene at most once in 15 life years, the rest are news (01 §6)
   showMood(ctx, life, t, 'เสียใจ', `${t.name} ตาย`);
   if (lv >= 3) {
@@ -29,10 +34,12 @@ function die(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, cause: string): voi
       write(ctx.state, { sys: 'bonds', kind: 'funeral', id: t.id, data: { name: t.name, line: t.line, cause, level: lv, kin: t.kin ?? null, age: Math.round(hAgeOf(ctx, t)), partner: isPartner(t) }, level: 2 });
     } else {
       e.counts.news++;
-      write(ctx.state, { sys: 'bonds', kind: 'news', id: t.id, data: { name: t.name, line: t.line, text: `${t.name} จากไป (${cause})`, kind: 'death', kin: t.kin ?? null, age: Math.round(hAgeOf(ctx, t)), partner: isPartner(t) }, level: 1 });
+      // the news of the death of a lover, a life partner or a child is a mark of the life (level 2); of the others, level 1
+      write(ctx.state, { sys: 'bonds', kind: 'news', id: t.id, data: { name: t.name, line: t.line, text: `${t.name} จากไป (${cause})`, kind: 'death', kin: t.kin ?? null, age: Math.round(hAgeOf(ctx, t)), partner: isPartner(t), spouse: !!t.spouse, gender: t.gender }, level: near ? 2 : 1 });
     }
     if (lv >= 4) showMood(ctx, life, t, 'เหงา', `${t.name} ตาย`);
   }
+  grief();
 }
 
 /** A person grows old and dies; a roster position whose holder died or was replaced loses its tie. */
@@ -69,10 +76,12 @@ export function contact(ctx: Ctx, life: LifeState, e: BondsExt): void {
     const t = e.ties[m.tie];
     if (t && isLive(t)) {
       t.last = life.hAge;
-      if (!told && levelOf(ctx, t) >= 2) {
+      // a letter is told once in a few years for the same person; the others only mark the contact (615 told eight identical letters)
+      if (!told && levelOf(ctx, t) >= 2 && life.hAge - (t.letterAt ?? -99) >= LETTER_GAP) {
         told = true;
+        t.letterAt = life.hAge;
         e.counts.news++;
-        write(ctx.state, { sys: 'bonds', kind: 'letter', id: t.id, data: { name: t.name, line: t.line, from: t.country }, level: 1 });
+        write(ctx.state, { sys: 'bonds', kind: 'letter', id: t.id, data: { name: t.name, line: t.line, from: t.country, kin: t.kin ?? null }, level: 1 });
       }
     }
     return false;
