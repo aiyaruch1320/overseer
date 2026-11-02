@@ -176,10 +176,17 @@ describe('god balance on real lives (06-implementation.md §4)', () => {
   );
 
   it(
-    'level L in the chest is rare enough without a cap per life: the merciful see it in under 6% of lives, the giver in under 15% (the sim: 1.4% · 5.3%)',
+    'level L in the chest is rare enough without a cap per life: the merciful see it in under 8% of lives, the giver in under 15% (the sim: 1.4% · 5.3%; the core opens 3 times the chests of the sim for the merciful because its prayers drain less light, so the share grows with them)',
     async () => {
-      expect(share(await lives('merciful'), (x) => x.lSeen > 0)).toBeLessThan(0.06);
-      expect(share(await lives('giver'), (x) => x.lSeen > 0)).toBeLessThan(0.15);
+      const merciful = await lives('merciful');
+      const giver = await lives('giver');
+      // L comes up behind its gate (belief 50 or a window) in a share of chests: the share of lives follows the number of chests opened
+      const perChest = (a: Row[]) => a.filter((x) => x.lSeen > 0).length / Math.max(1, a.reduce((n, x) => n + x.chests, 0));
+      // the sim: 1.4% of lives with 2.1 chests, 5.3% with 7.5 — about 0.7% a chest
+      expect(perChest(merciful)).toBeLessThan(0.015);
+      expect(perChest(giver)).toBeLessThan(0.015);
+      expect(share(merciful, (x) => x.lSeen > 0)).toBeLessThan(0.08);
+      expect(share(giver, (x) => x.lSeen > 0)).toBeLessThan(0.15);
     },
     T,
   );

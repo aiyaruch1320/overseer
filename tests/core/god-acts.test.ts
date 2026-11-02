@@ -34,6 +34,8 @@ import { silent } from '../../src/core/god/acts';
 import { npcIndex } from '../../src/core/npc/data';
 import { slotsOf } from '../../src/core/npc/types';
 import { weightOf } from '../../src/core/world';
+import { classify, prayersWaiting } from '../../src/core/attention';
+import { EXTERNAL } from '../../src/core/attention/tuning';
 import type { Choice, CommandResult, GameState } from '../../src/core/types';
 
 let data: GameData;
@@ -172,6 +174,25 @@ function applyFxWords(fx: string): boolean[] {
 }
 
 describe('the maker of prayers', () => {
+  it('the prayer it writes is the entry the attention system waits for: a card is queued, and a third prayer is not raised', () => {
+    const { g, ctx, st } = mk(2);
+    const life = st.life!;
+    st.world.countryFlags[life.country] = ['famine', 'plague', 'war'];
+    let seen = 0;
+    for (let i = 0; i < 4 * 30 && seen < 2; i++) {
+      g.beat();
+      seen = st.log.filter((e) => e.sys === 'god' && e.kind === 'prayer').length;
+    }
+    const first = st.log.find((e) => e.sys === 'god' && e.kind === 'prayer')!;
+    expect(first).toBeDefined();
+    expect(EXTERNAL[`${first.sys}/${first.kind}`]).toBe('prayer');
+    expect(classify(ctx, first)?.kind).toBe('prayer');
+    expect(first.level).toBe(2);
+    expect(prayersWaiting(st)).toBeGreaterThan(0);
+    expect(prayersWaiting(st)).toBeLessThanOrEqual(2);
+    expect(st.log.filter((e) => e.sys === 'attention' && e.kind === 'call' && e.data.why === 'prayer').length).toBeGreaterThan(0);
+  });
+
   it('raises at most two at once, lets one lapse after 14 ticks for belief −2, never the same kind within 24 ticks', () => {
     const { ctx, st } = mk(2);
     const life = st.life!;

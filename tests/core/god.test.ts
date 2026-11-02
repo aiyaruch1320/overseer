@@ -8,7 +8,7 @@ import { command } from '../../src/core/command';
 import { sortSystems, makeCtx, type Ctx, type GameData, type Game } from '../../src/core/game';
 import {
   scaleCost, addBelief, canPay, checkDream, checkOpen, compOf, currentChest, dreamWeight, dreamsOf, earn, godSystem, incomeOf, offersNow, openChest, pathsNow, pay, pickSlot,
-  priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, sourceOf, type Chest, type ChestSlot,
+  priceOf, resolveDream, rerollChest, settleDreams, obeyChance, tierChances, sourceOf, policyName, policyStep, registerPolicyPart, type Chest, type ChestSlot,
 } from '../../src/core/god';
 import { OPPOSITES, TIERS } from '../../src/core/god/tuning';
 import { bump, count, gx } from '../../src/core/god/state';
@@ -28,8 +28,8 @@ interface World {
 }
 
 /** A real game with the god system added, a life born, and `years` life years lived. */
-function world(seed: number, o: { race?: string; years?: number; policy?: 'เงียบ' | 'เมตตา' | 'ลงโทษ' | 'สุ่ม'; data?: GameData } = {}): World {
-  const s = createSession(o.data ?? data, { seed, race: o.race, policy: o.policy });
+function world(seed: number, o: { race?: string; years?: number; policy?: string; data?: GameData } = {}): World {
+  const s = createSession(o.data ?? data, { seed, race: o.race, policy: o.policy as never });
   if (!s.game.systems.some((x) => x.name === 'god')) s.game.systems.push(godSystem);
   s.game.systems.splice(0, s.game.systems.length, ...sortSystems(s.game.systems));
   startLife(s);
@@ -309,6 +309,47 @@ describe('god G0: the loop', () => {
     merciful.game.runLife();
     expect(merciful.ctx.state.god.chronicle.filter(mine).length).toBeGreaterThan(3);
     expect(count(merciful.ctx, 'spent.faith')).toBeGreaterThan(20);
+  });
+
+  let watching: ((part: string, c: Ctx) => void) | null = null;
+  let spiesIn = false;
+
+  it('one policy step: a part of the acts is called once in a life year, before the chests (prayers) or after the dreams (whispers), however often the tools ask', () => {
+    const calls: { part: string; age: number; chests: number }[] = [];
+    const w = world(22, { policy: 'เมตตา' });
+    // the spies stay registered for the rest of the file (there is no way to take a part out); they do nothing while `watching` is off
+    watching = (part, c) => void calls.push({ part, age: c.state.life!.hAge, chests: count(c, 'y.chest') });
+    if (!spiesIn) {
+      spiesIn = true;
+      registerPolicyPart((c, name) => watching?.(`first:${name}`, c), 'first');
+      registerPolicyPart((c, name) => watching?.(`last:${name}`, c), 'last');
+    }
+    for (let i = 0; i < 4 * 30 && w.game.state.life && !w.game.state.life.dead; i++) {
+      w.game.beat();
+      if (w.game.state.life && !w.game.state.life.dead) {
+        policyStep(w.ctx, 'เมตตา'); // the tools ask after every beat
+        policyStep(w.ctx, 'merciful');
+      }
+    }
+    watching = null;
+    const firsts = calls.filter((c) => c.part.startsWith('first:'));
+    const lasts = calls.filter((c) => c.part.startsWith('last:'));
+    expect(firsts.length).toBeGreaterThan(20);
+    expect(new Set(firsts.map((c) => c.age)).size).toBe(firsts.length); // once per life year
+    expect(lasts.length).toBe(firsts.length);
+    expect(firsts.every((c) => c.part === 'first:merciful')).toBe(true);
+    // the prayers come before the chests of the year, the whispers after them
+    expect(firsts.every((c) => c.chests === 0)).toBe(true);
+  });
+
+  it('the eight policies of the tools all have a name here, the hasty one plays no chest or dream', () => {
+    for (const t of ['เงียบ', 'เมตตา', 'ปั้นนิสัย', 'ให้ของ', 'เก็บพลัง', 'ลงโทษ', 'สุ่ม', 'เร่งจบ']) expect(policyName(t), t).toBeDefined();
+    expect(policyName('เทพบุตร')).toBeUndefined();
+    const w = world(23, { policy: 'เร่งจบ' });
+    w.game.runLife();
+    expect(count(w.ctx, 'spent.faith')).toBeLessThan(200);
+    expect(w.ctx.state.god.chronicle.filter((c) => c.kind === 'dream' || c.kind.startsWith('chest.'))).toHaveLength(0);
+    expect(w.ctx.state.god.chronicle.some((c) => c.kind === 'prayer.punish')).toBe(true);
   });
 
   it('the same seed gives the same god log', () => {
