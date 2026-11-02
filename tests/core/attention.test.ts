@@ -257,12 +257,18 @@ describe('attention: the system on a made-up log', () => {
     expect(c.filter((e) => e.data.call === 'stop')).toHaveLength(6);
   });
 
-  it('a character who dies early (untimely) still gets the death stop, with the cards that waited', () => {
+  it('a character who dies early (untimely) still gets the death stop, and it lists nothing that waited: the prayers are closed as missed (R6)', () => {
     const g = all(mockGame([pray(40, 2), pray(41, 0)], { deathAge: 41 }));
     const last = callLog(g).at(-1)!;
     expect(last.data.why).toBe('death');
     expect(last.data.call).toBe('stop');
-    expect(last.data.cards).toBe('prayer');
+    expect(last.data.cards).toBe('');
+    expect(last.data.n).toBe('');
+    // what waited is told as missed, so a system that waits for the answer (the crisis of a tie) is let go
+    const waiting = g.state.log.filter((e) => e.sys === 'god' && e.kind === 'prayer').map((e) => e.n);
+    const missed = g.state.log.filter((e) => e.sys === 'attention' && e.kind === 'missed').map((e) => e.data.n);
+    expect(waiting.length).toBeGreaterThan(0);
+    for (const n of waiting) if (!callLog(g).some((c) => sourcesOf(c).includes(n))) expect(missed).toContain(n);
   });
 
   it('writes the call with what it stands for: the entry numbers of the trigger and of the cards folded in', () => {

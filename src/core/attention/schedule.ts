@@ -207,7 +207,10 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
   m.last = now;
 }
 
-/** The character dies: the death stop is made unless the scene before it already was; it shows what waits. */
+/**
+ * The character dies: the death stop is made unless the scene before it already was. It lists nothing that waits: a crisis or a prayer left over can no
+ * longer be answered (M3 round-two review R6), so each is closed as missed and the log tells it was never answered.
+ */
 export function dying(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs: readonly Trig[], out: Out[]): void {
   tick(m, rule, plan, now, trigs, out, { dying: true });
   m.hold = null;
@@ -218,10 +221,9 @@ export function dying(m: Mem, rule: AttentionRule, plan: Plan, now: number, trig
     // an age stop that fell due in the same moment as the death is told by it (07-attention.md §2: the age stops always happen)
     const due = plan.ages.filter((a) => !m.ages[String(a)] && secOf(a) <= now);
     for (const a of due) m.ages[String(a)] = 'done';
-    out.push({ t: 'call', call: 'stop', why: 'death', age: due.length ? due[due.length - 1] : null, src: shown.map((c) => ({ n: c.n, id: c.id })), cards: shown.map((c) => c.kind), until: null, sec: Math.round(now) });
+    out.push({ t: 'call', call: 'stop', why: 'death', age: due.length ? due[due.length - 1] : null, src: [], cards: [], until: null, sec: Math.round(now) });
     m.lastStop = now;
-    return;
   }
-  // the scene before the end was made a year ago: what has come since is moot, the log tells it
+  // what waited is moot: the log tells it
   for (const c of shown) out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
 }
