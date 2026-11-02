@@ -21,6 +21,22 @@ export const SETTLE_WEIGHTS = [45, 30, 25];
 export const SETTLE_AGES = { first: [22, 32], rest: [34, 44], afterTakeover: 1, apart: 2 };
 const DEBT_BIG = 200;
 
+/**
+ * What became of a thread, by the kind of the thread and the way the heir took (M4 review F2: the line of the settling says the outcome and not only the
+ * method). The ways are `settle` (as the parent began it), `newway` (a way the parent never tried), `drop` (left). Words of the tool, not of the docs.
+ */
+export const OUTCOME: Record<string, { settle: string; newway: string; drop: string }> = {
+  ศึกสายเลือด: { settle: 'ความแค้นจบลง ไม่มีใครต้องหนีหรือล้างแค้นต่อ', newway: 'ความแค้นจบด้วยการเจรจา ไม่ต้องใช้ดาบ', drop: 'ความแค้นยังค้างอยู่ รอรุ่นหลัง' },
+  คำมั่น: { settle: 'คำมั่นที่ค้างไว้ได้รับการรักษา', newway: 'คำมั่นถูกเปลี่ยนเป็นข้อตกลงใหม่ที่ทั้งสองฝ่ายรับได้', drop: 'คำมั่นยังไม่ได้รับการรักษา' },
+  สัญญา: { settle: 'สัญญาถูกทำให้ครบทุกข้อ', newway: 'สัญญาถูกเจรจาใหม่และยุติลง', drop: 'สัญญายังคงค้างอยู่' },
+  ที่มั่น: { settle: 'ที่มั่นกลับมาอยู่ในมือตระกูล', newway: 'ที่มั่นถูกแลกกับสิ่งที่ตระกูลต้องการมากกว่า', drop: 'ที่มั่นยังตกอยู่ในมือคนอื่น' },
+  ของที่ยังไม่ส่ง: { settle: 'ของถึงที่ที่มันต้องไปแล้ว', newway: 'ของถูกส่งไปอีกทางและถึงมือคนที่ควรได้', drop: 'ของยังไม่ได้ส่ง' },
+  หนี้: { settle: 'หนี้ถูกชำระจนหมด', newway: 'หนี้ถูกยกให้หรือแลกด้วยงานแทนทอง', drop: 'หนี้ยังติดอยู่' },
+  ความลับ: { settle: 'ความลับถูกเปิดและตระกูลรับผลของมัน', newway: 'ความลับถูกฝังไว้ตลอดไป', drop: 'ความลับยังไม่มีใครแตะ' },
+  ศิษย์ของผู้อื่น: { settle: 'ศิษย์เรียนจนจบ', newway: 'ศิษย์ไปต่อบนทางของตัวเอง', drop: 'ศิษย์ถูกทิ้งไว้กลางทาง' },
+};
+const FALLBACK_OUTCOME = { settle: 'เรื่องจบลงตามที่ผู้ปกครองหวัง', newway: 'เรื่องจบลงในทางที่ผู้ปกครองไม่เคยคิด', drop: 'เรื่องยังค้างอยู่' };
+
 const feud = (life: LifeState): string[] => [...life.curses.filter((c) => c === 'c_feud' || c === 'c_wanted'), ...life.skills.filter((s) => s === 'nc_blood_feud')];
 
 /** The threads the dead life leaves by itself (no inherited ones). Reads only. */
@@ -125,7 +141,7 @@ export function settleYear(ctx: Ctx): void {
     if (t.holder !== life.id || t.state !== 'open' || t.tried || t.due === undefined || life.hAge < t.due) continue;
     const way = ctx.rng('lineage.threads').weighted(SETTLE_WEIGHTS);
     t.tried = way === 2 ? 'dropped' : 'closed';
-    write(ctx.state, { sys: 'lineage', kind: 'thread', id: t.id, data: { kind: t.kind, text: t.text, way: ['settle', 'newway', 'drop'][Math.max(0, way)], from: t.from }, level: 2 });
+    write(ctx.state, { sys: 'lineage', kind: 'thread', id: t.id, data: { kind: t.kind, text: t.text, way: ['settle', 'newway', 'drop'][Math.max(0, way)], outcome: (OUTCOME[t.kind] ?? FALLBACK_OUTCOME)[['settle', 'newway', 'drop'][Math.max(0, way)] as 'settle'], from: t.from }, level: 2 });
   }
 }
 
