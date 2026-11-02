@@ -1,4 +1,5 @@
 // Save = the whole state plus the data versions it was made with (code-plan §5.3, §6.1).
+import { badSettings } from '../command';
 import type { DataVersions, GameState } from '../types';
 
 export interface LoadResult {
@@ -14,6 +15,9 @@ export function save(state: GameState): string {
 export function load(text: string, current: DataVersions): LoadResult {
   const state = JSON.parse(text) as GameState;
   if (state.schema !== 1) throw new Error(`unknown save schema ${String((state as { schema?: unknown }).schema)}`);
+  // a save edited by hand must not carry a setting the game cannot run with (review M2 นักหาช่อง H1)
+  const bad = badSettings(state.settings ?? {});
+  if (bad) throw new Error(`save has bad settings: ${bad}`);
   const stale = Object.keys({ ...state.data, ...current }).filter((f) => state.data[f] !== current[f]);
   return { state, stale };
 }

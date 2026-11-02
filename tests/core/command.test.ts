@@ -32,3 +32,15 @@ describe('commands', () => {
     expect(ctx.state.settings.llm.setup).toBe(true);
   });
 });
+
+describe('settings are checked (review M2 นักหาช่อง H1)', () => {
+  it('refuses an unknown attention value, in a command and in a save', async () => {
+    const { load, save } = await import('../../src/core/save');
+    const ctx = makeCtx(newGame(1), {});
+    expect(command(ctx, { type: 'settings', patch: { attention: 'turbo' as never } }).ok).toBe(false);
+    expect(ctx.state.settings.attention).toBe('normal');
+    const bad = JSON.parse(save(ctx.state));
+    bad.settings.attention = 'turbo';
+    expect(() => load(JSON.stringify(bad), {})).toThrow(/settings/);
+  });
+});

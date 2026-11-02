@@ -29,6 +29,8 @@ export function hasAction(action: GodAction): boolean {
 export function command(ctx: Ctx, cmd: Exclude<Command, { type: 'advance' }>): CommandResult {
   const mark = ctx.state.logN;
   if (cmd.type === 'settings') {
+    const bad = badSettings(cmd.patch);
+    if (bad) return { ok: false, reason: bad };
     applySettings(ctx.state.settings, cmd.patch);
     write(ctx.state, { sys: 'settings', kind: 'change', data: { keys: Object.keys(cmd.patch).join(' ') }, level: 0 });
     return { ok: true, log: ctx.state.log.filter((e) => e.n >= mark) };
@@ -41,6 +43,18 @@ export function command(ctx: Ctx, cmd: Exclude<Command, { type: 'advance' }>): C
   if (!cmd.confirm) return { ok: true, preview, log: [] };
   h.run(ctx, cmd.args);
   return { ok: true, preview, log: ctx.state.log.filter((e) => e.n >= mark) };
+}
+
+const SPEEDS: readonly Settings['speed'][] = ['pause', 'normal', 'fast'];
+const ATTENTION: readonly Settings['attention'][] = ['low', 'normal', 'high'];
+
+/** Why a settings patch is refused (a value the game does not know), or null. */
+export function badSettings(patch: Partial<Settings>): string | null {
+  if (patch.speed !== undefined && !SPEEDS.includes(patch.speed)) return `ไม่รู้จักความเร็ว ${String(patch.speed)}`;
+  if (patch.attention !== undefined && !ATTENTION.includes(patch.attention)) return `ไม่รู้จักความถี่ที่เกมเรียก ${String(patch.attention)}`;
+  if (patch.lang !== undefined && patch.lang !== 'th') return `ไม่รู้จักภาษา ${String(patch.lang)}`;
+  if (patch.llm !== undefined) for (const [k, v] of Object.entries(patch.llm)) if (!['setup', 'director', 'epitaph'].includes(k) || typeof v !== 'boolean') return `สวิตช์ LLM ${k} ไม่ถูกต้อง`;
+  return null;
 }
 
 function applySettings(s: Settings, patch: Partial<Settings>): void {
