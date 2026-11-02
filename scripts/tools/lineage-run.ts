@@ -3,6 +3,8 @@
 // book; a newcomer after a gap when the family has none, unless `strict`), and so on. After each life the ending card; at the end the summary of
 // the world and the collection. Same seed and options give the same text.
 import type { GameData } from '../../src/core/game';
+import { runAsync, runSync } from './drive';
+import { summarizeDeath, type ToolLlm } from './llm';
 import { cardOf, collectionView } from '../../src/core/ending';
 import { nextLife, worldSummary } from '../../src/core/lineage';
 import { calendarYear } from '../../src/core/text';
@@ -27,7 +29,10 @@ const WHY: Record<string, string> = {
   'no-life': 'ไม่มีชีวิต',
 };
 
-export function runLineageReport(data: GameData, opts: SessionOpts & { lives: number; minLevel?: 0 | 1 | 2 | 3; strict?: boolean }): LineageRun {
+type LineageOpts = SessionOpts & { lives: number; minLevel?: 0 | 1 | 2 | 3; strict?: boolean };
+
+/** Stops after each death, where the end summary of that life may be asked for before its card is laid out. */
+function* lineageSteps(data: GameData, opts: LineageOpts): Generator<GameState, LineageRun> {
   const s = createSession(data, opts);
   const g = s.game;
   const min = opts.minLevel ?? 2;
@@ -54,6 +59,7 @@ export function runLineageReport(data: GameData, opts: SessionOpts & { lives: nu
     const beats = runToDeath(g, undefined, after);
     played++;
     const st = g.state;
+    yield st;
     out.push('', `=== ชีวิตที่ ${i + 1} ===`);
     out.push(...timeline(s.data, st.log, min, { fromN: mark, notes: toolNotes(st) }));
     out.push('', '-- สรุป --', ...summaryLines(s.data, st, beats).slice(0, 1));
@@ -66,4 +72,13 @@ export function runLineageReport(data: GameData, opts: SessionOpts & { lives: nu
   out.push('', ...worldSummaryLines(worldSummary(st, s.data)));
   out.push('', ...collectionLines(collectionView(st, s.data)));
   return { text: out.join('\n') + '\n', state: st, lives: played, ...(stopped ? { stopped } : {}) };
+}
+
+export function runLineageReport(data: GameData, opts: LineageOpts): LineageRun {
+  return runSync(lineageSteps(data, opts));
+}
+
+/** The same lineage with the end summary asked for at every death (`--llm`): each card holds the LLM text when it answers. */
+export function runLineageReportLlm(data: GameData, opts: LineageOpts, t: ToolLlm | undefined): Promise<LineageRun> {
+  return runAsync(lineageSteps(data, opts), (st) => summarizeDeath(t, data, st).then(() => undefined));
 }

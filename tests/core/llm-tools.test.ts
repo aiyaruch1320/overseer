@@ -1,10 +1,12 @@
-// The `--llm` flag of the test tools (scripts/tools/llm.ts): no flag, no LLM; `fake` is the offline provider; `anthropic` is built only on request and never here.
+// The `--llm` flag of the test tools (scripts/tools/llm.ts): no flag, no LLM; `fake` is the offline provider; `deepseek` and `anthropic` are built only on request and never call here.
 import { beforeAll, describe, expect, it } from 'vitest';
-import { runLifeReport } from '../../scripts/tools/life-run';
-import { llmFromArgs, sayLines, summaryInputOf, summaryReport } from '../../scripts/tools/llm';
+import { runLifeReport, runLifeReportLlm } from '../../scripts/tools/life-run';
+import { llmFromArgs, sayLines, summarizeDeath, summaryInputOf, summaryReport } from '../../scripts/tools/llm';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, startLife } from '../../scripts/tools/session';
+import { cardOf } from '../../src/core/ending';
 import type { GameData } from '../../src/core/game';
+import { fakeLlm } from '../../src/core/llm';
 
 let data: GameData;
 beforeAll(() => {
@@ -17,19 +19,61 @@ describe('tool flag --llm', () => {
     expect(() => llmFromArgs({ llm: 'gpt' })).toThrow(/--llm must be/);
   });
 
-  it('fake: a dead character gets the summary from the fixtures, the text of the life is unchanged', async () => {
+  it('fake: a dead character gets the summary from the fixtures on its card, the text of the life is unchanged apart from the card', async () => {
     const run = runLifeReport(data, { seed: 1 });
     const again = runLifeReport(data, { seed: 1 });
     const tl = llmFromArgs({ llm: 'fake' })!;
-    const input = summaryInputOf(data, run.state, run.beats)!;
+    const input = summaryInputOf(data, run.state)!;
     expect(input.name).toBe(run.state.life!.name);
     expect(input.facts.length).toBeGreaterThan(0);
-    const out = await summaryReport(tl, data, run.state, run.beats);
+    expect(input.names).toContain(run.state.life!.name);
+    expect(input.template).toBe(cardOf(run.state)!.summary.text);
+    const out = await summaryReport(tl, data, run.state);
     expect(out[0]).toBe('-- สรุปตอนจบ (llm fake) --');
     expect(out[1]).toContain('บทสรุปทดสอบ');
+    // the card holds it, marked as the LLM's, and the answer sits in the save and the log
+    const card = cardOf(run.state)!;
+    expect(card.summary).toEqual({ text: out[1], source: 'llm' });
+    expect(run.state.llmAnswers[`ending:${card.life}`]).toBe(out[1]);
+    expect(run.state.log.some((e) => e.sys === 'llm' && e.kind === 'ending' && e.level === 0)).toBe(true);
     // the report of the life is the same text with or without the layer
     expect(run.text.replace(/กติกาที่ยังไม่มีใครรับ[^\n]*\n/g, '')).toBe(again.text.replace(/กติกาที่ยังไม่มีใครรับ[^\n]*\n/g, ''));
     expect(tl.llm.ledger).toHaveLength(1);
+    // asked again, nothing is called
+    await summarizeDeath(tl, data, run.state);
+    expect(tl.llm.ledger).toHaveLength(1);
+  });
+
+  it('the report with --llm=fake shows the LLM summary on the card; without the flag the card is the template', async () => {
+    const tl = llmFromArgs({ llm: 'fake' })!;
+    const withLlm = await runLifeReportLlm(data, { seed: 1 }, tl);
+    expect(withLlm.text).toContain('บทสรุปทดสอบ');
+    expect(cardOf(withLlm.state)!.summary.source).toBe('llm');
+    const plain = runLifeReport(data, { seed: 1 });
+    expect(plain.text).not.toContain('บทสรุปทดสอบ');
+    expect(cardOf(plain.state)!.summary.source).toBe('template');
+    // everything but the summary paragraph is the same
+    const strip = (t: string, sum: string) => t.replace(sum, '').replace(/กติกาที่ยังไม่มีใครรับ[^\n]*\n/g, '');
+    expect(strip(withLlm.text, cardOf(withLlm.state)!.summary.text)).toBe(strip(plain.text, cardOf(plain.state)!.summary.text));
+  });
+
+  it('the epitaph switch off keeps the template; no fixture or a failing provider keeps the template too', async () => {
+    const off = runLifeReport(data, { seed: 1 });
+    off.state.settings.llm.epitaph = false;
+    const tl = llmFromArgs({ llm: 'fake' })!;
+    expect((await summarizeDeath(tl, data, off.state))!.source).toBe('template');
+    expect(tl.llm.ledger).toHaveLength(0);
+    expect(cardOf(off.state)!.summary.source).toBe('template');
+    const down = runLifeReport(data, { seed: 1 });
+    const { llm } = fakeLlm({ responses: [] });
+    expect((await summarizeDeath({ llm, mode: 'fake', flush() {} }, data, down.state))!.source).toBe('template');
+    expect(cardOf(down.state)!.summary.source).toBe('template');
+  });
+
+  it('--llm accepts deepseek (also a bare --llm) and anthropic; the real ones are built from the environment only', () => {
+    expect(llmFromArgs({ llm: 'deepseek', 'llm-cache': '/nonexistent/none.json' }, { DEEPSEEK_API_KEY: 'k' })!.llm.client.provider.name).toBe('deepseek');
+    expect(llmFromArgs({ llm: 'true', 'llm-cache': '/nonexistent/none.json' }, { DEEPSEEK_API_KEY: 'k' })!.mode).toBe('deepseek');
+    expect(llmFromArgs({ llm: 'anthropic', 'llm-cache': '/nonexistent/none.json' }, { ANTHROPIC_API_KEY: 'k' })!.llm.client.provider.name).toBe('anthropic');
   });
 
   it('say: tier 0 reads a hint without the flag; free words need the translator', async () => {

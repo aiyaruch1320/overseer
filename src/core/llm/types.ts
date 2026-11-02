@@ -17,6 +17,10 @@ export interface ProviderRequest {
   /** When set, the answer is one JSON object of this shape. */
   schema?: JsonSchema;
   maxTokens: number;
+  /** Sampling temperature of the point: 0.3 for a choice or JSON, 1.3 to 1.5 for prose (llm/README.md §1). */
+  temperature: number;
+  /** An answer of many fields in JSON mode instead of a tool (the prompt then holds the word json and an example). The three points do not use it today. */
+  jsonMode?: boolean;
   signal?: AbortSignal;
 }
 
