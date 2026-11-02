@@ -1,0 +1,3702 @@
+{
+ "version": "7e20c505cf86",
+ "sources": [
+  "docs/lore/storylines/25-journeys.md",
+  "docs/systems/travel/01-travel-rules.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/travel.ts",
+ "items": {
+  "counts": {
+   "levels": 3,
+   "jobs": 7,
+   "causes": 8,
+   "overlays": 7,
+   "stances": 4,
+   "raceRelations": 27,
+   "moral": 6,
+   "raceMoves": 12,
+   "routes": 15,
+   "skyRoutes": 4,
+   "encounters": 12,
+   "tables": 13
+  },
+  "levels": [
+   {
+    "id": "L0",
+    "n": 0,
+    "name": "อยู่ถิ่น",
+    "meaning": "ทั้งชีวิตอยู่ในประเทศเกิดหรือประเทศเดียว ออกนอกเมืองได้ แต่ไม่ข้ามเขตแดน",
+    "examples": "ชาวนา ช่างฝีมือ นักบวชประจำวัด ผู้ปกครองท้องถิ่น",
+    "src": "docs/systems/travel/01-travel-rules.md:11"
+   },
+   {
+    "id": "L1",
+    "n": 1,
+    "name": "ในทวีป",
+    "meaning": "ข้ามประเทศในทวีปเดียวกันอย่างน้อยหนึ่งครั้ง",
+    "examples": "พ่อค้าเมืองติดกัน ทหารรับจ้าง ผู้แสวงบุญ ผู้เรียนต่างเมือง",
+    "src": "docs/systems/travel/01-travel-rules.md:12"
+   },
+   {
+    "id": "L2",
+    "n": 2,
+    "name": "ข้ามทวีป",
+    "meaning": "ไปทวีปอื่นอย่างน้อยหนึ่งครั้ง (ทางคอแผ่นดิน ทะเล ทะเลทราย หรือฟ้า)",
+    "examples": "ลูกเรือ พ่อค้าข้ามทวีป ผู้ลี้ภัย ผู้ส่งสาร นักผจญภัย",
+    "src": "docs/systems/travel/01-travel-rules.md:13"
+   }
+  ],
+  "levelTargets": [
+   {
+    "group": "อาชีพประจำที่ (เกษตร ช่าง ชีวิตช้า นักบวชวัด ขุนนางท้องถิ่น)",
+    "pct": [
+     65,
+     28,
+     7
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:19"
+   },
+   {
+    "group": "อาชีพเมือง (เสมียน ครู หมอ)",
+    "pct": [
+     45,
+     40,
+     15
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:20"
+   },
+   {
+    "group": "อาชีพเดินทาง (พ่อค้า ผู้ส่งของ ผู้คุ้มกัน ลูกเรือ ผู้แสวงบุญ ทหารรับจ้าง นักเร่)",
+    "pct": [
+     0,
+     45,
+     55
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:21"
+   }
+  ],
+  "jobLegs": [
+   {
+    "label": "พ่อค้า",
+    "jobs": [
+     "merchant",
+     "peddler"
+    ],
+    "legsRaw": "2 ถึง 3",
+    "legs": [
+     2,
+     3
+    ],
+    "perLife": false,
+    "scope": "ในทวีป ข้ามทวีปปีละหนึ่งครั้งเมื่อทุนพอ",
+    "note": "เลือกเมืองที่ส่วนต่างราคาสูงสุดที่เข้าได้ ([../economy/05-trade.md](../economy/05-trade.md))",
+    "src": "docs/systems/travel/01-travel-rules.md:27"
+   },
+   {
+    "label": "ผู้ส่งของ",
+    "jobs": [
+     "courier"
+    ],
+    "legsRaw": "3 ถึง 4",
+    "legs": [
+     3,
+     4
+    ],
+    "perLife": false,
+    "scope": "ในทวีป ข้ามทวีปเมื่อรับงานทะเลหรือเหาะ",
+    "note": "ปลายทางตามใบสั่ง ไม่เลือกเอง",
+    "src": "docs/systems/travel/01-travel-rules.md:28"
+   },
+   {
+    "label": "ผู้คุ้มกันขบวน",
+    "jobs": [
+     "caravan_guard"
+    ],
+    "legsRaw": "2",
+    "legs": [
+     2,
+     2
+    ],
+    "perLife": false,
+    "scope": "ตามขบวน",
+    "note": "ขบวนต้องมีผู้คุ้มกันอย่างน้อยหนึ่งคนต่อห้าเกวียน",
+    "src": "docs/systems/travel/01-travel-rules.md:29"
+   },
+   {
+    "label": "ลูกเรือ",
+    "jobs": [
+     "sailor"
+    ],
+    "legsRaw": "2 ถึง 3 ท่า",
+    "legs": [
+     2,
+     3
+    ],
+    "perLife": false,
+    "scope": "ข้ามทวีป",
+    "note": "เส้นประจำของเรือ",
+    "src": "docs/systems/travel/01-travel-rules.md:30"
+   },
+   {
+    "label": "ผู้แสวงบุญ",
+    "jobs": [],
+    "legsRaw": "1 ทริปยาวต่อชีวิต",
+    "legs": [
+     1,
+     1
+    ],
+    "perLife": true,
+    "scope": "ข้ามประเทศถึงข้ามทวีป",
+    "note": "ปลายทางตามศาสนา",
+    "src": "docs/systems/travel/01-travel-rules.md:31"
+   },
+   {
+    "label": "ทหารรับจ้าง",
+    "jobs": [
+     "mercenary"
+    ],
+    "legsRaw": "1 ทุกหนึ่งถึงสองปี",
+    "legs": [
+     0.5,
+     1
+    ],
+    "perLife": false,
+    "scope": "ตามสัญญา",
+    "note": "ไปที่ที่มีสงครามและเงิน",
+    "src": "docs/systems/travel/01-travel-rules.md:32"
+   },
+   {
+    "label": "นักเร่ นักผจญภัย",
+    "jobs": [],
+    "legsRaw": "1 ถึง 2",
+    "legs": [
+     1,
+     2
+    ],
+    "perLife": false,
+    "scope": "ไม่จำกัด",
+    "note": "เลือกตามนิสัยอยากรู้",
+    "src": "docs/systems/travel/01-travel-rules.md:33"
+   }
+  ],
+  "legRule": {
+   "daysJob": 240,
+   "daysCause": 90,
+   "text": [
+    "เพดานของอาชีพในตารางด้านบน (นับต่อปีชีวิต จึงเท่ากันทุกเผ่า)",
+    "จำนวนขาที่เวลารวมตามข้อ 3.6 ไม่เกินวันบนทาง: อาชีพเดินทาง 240 วันต่อปีโลกที่ปีชีวิตนั้นครอบ ผู้เดินทางตามเหตุในข้อ 2 ใช้ 90 วันต่อปีโลก ขาที่ยังไม่ถึงปลายทางเมื่อสิ้นปีเดินต่อในปีถัดไปและนับเป็นขาของปีที่ถึง",
+    "จำนวนขาที่จ่ายค่าโดยสารตามข้อ 3.6 ได้ ผู้ส่งของ ผู้คุ้มกันขบวน ลูกเรือ และทหารรับจ้าง นายจ้างจ่าย ผู้ที่จ่ายไม่ได้ตัดขานั้นออก หรือเลือกทางลักลอบ (ข้อ 3.4) หรือทางที่ถูกกว่า"
+   ],
+   "src": "docs/systems/travel/01-travel-rules.md:36"
+  },
+  "causes": [
+   {
+    "overlay": "sc",
+    "cause": "ไปเรียน",
+    "whenRaw": "อายุเทียบ 15 ถึง 24 · ชนชั้น 3 ขึ้นไป หรือมีผู้ค้ำ",
+    "when": {
+     "k": "and",
+     "of": [
+      {
+       "k": "age",
+       "min": 15,
+       "max": 24
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "class",
+         "min": 3
+        },
+        {
+         "k": "text",
+         "text": "มีผู้ค้ำ"
+        }
+       ]
+      }
+     ]
+    },
+    "chance": 0.03,
+    "mods": [
+     {
+      "cond": {
+       "k": "class",
+       "min": 4
+      },
+      "mul": 2,
+      "raw": "(ชนชั้น 4 ขึ้นไป ×2)"
+     }
+    ],
+    "inEventYear": false,
+    "opens": [
+     "sc.t1"
+    ],
+    "opensRaw": "sc.t1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:46"
+   },
+   {
+    "overlay": "ps",
+    "cause": "แสวงบุญ",
+    "whenRaw": "ศรัทธา > 40 และศาสนามีที่ศักดิ์สิทธิ์นอกประเทศ",
+    "when": {
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "faith",
+       "op": ">",
+       "value": 40,
+       "label": "ศรัทธา"
+      },
+      {
+       "k": "text",
+       "text": "ศาสนามีที่ศักดิ์สิทธิ์นอกประเทศ"
+      }
+     ]
+    },
+    "chance": 0.01,
+    "mods": [
+     {
+      "cond": {
+       "k": "cmp",
+       "stat": "faith",
+       "op": ">",
+       "value": 60,
+       "label": "ศรัทธา"
+      },
+      "mul": 3,
+      "raw": "(ศรัทธา > 60 ×3)"
+     }
+    ],
+    "inEventYear": false,
+    "opens": [
+     "ps.t1"
+    ],
+    "opensRaw": "ps.t1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:47"
+   },
+   {
+    "overlay": "ml",
+    "cause": "รับจ้างรบ",
+    "whenRaw": "ธงสงคราม `war` ในประเทศ หรืออาชีพทหาร",
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "place",
+       "kinds": [
+        "war"
+       ]
+      },
+      {
+       "k": "text",
+       "text": "อาชีพทหาร"
+      }
+     ]
+    },
+    "chance": 0.04,
+    "mods": [
+     {
+      "cond": {
+       "k": "place",
+       "kinds": [
+        "war=total"
+       ]
+      },
+      "mul": 2,
+      "raw": "(`war=total` ×2)"
+     }
+    ],
+    "inEventYear": false,
+    "opens": [
+     "ml.a1"
+    ],
+    "opensRaw": "ml.a1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:48"
+   },
+   {
+    "overlay": "ex",
+    "cause": "ลี้ภัย",
+    "whenRaw": "เหตุการณ์โลกที่ทำให้ถิ่นอยู่ไม่ได้ (ภัยอดอยาก โรคระบาด สงครามในประเทศ ฟ้าถล่ม หมอก)",
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "place",
+       "kinds": [
+        "war"
+       ]
+      },
+      {
+       "k": "place",
+       "kinds": [
+        "famine"
+       ]
+      },
+      {
+       "k": "place",
+       "kinds": [
+        "plague"
+       ]
+      },
+      {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
+      }
+     ]
+    },
+    "chance": 0.15,
+    "mods": [],
+    "inEventYear": true,
+    "opens": [
+     "ex.a1"
+    ],
+    "opensRaw": "ex.a1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:49"
+   },
+   {
+    "overlay": "ex",
+    "cause": "เนรเทศหรือหนีโทษ",
+    "whenRaw": "มี `c_wanted` หรือถูกขับจากสถาบัน",
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_wanted"
+      },
+      {
+       "k": "text",
+       "text": "ถูกขับจากสถาบัน"
+      }
+     ]
+    },
+    "chance": 0.2,
+    "mods": [],
+    "inEventYear": false,
+    "opens": [
+     "ex.a2"
+    ],
+    "opensRaw": "ex.a2",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:50"
+   },
+   {
+    "overlay": "xc",
+    "cause": "คำเชิญ",
+    "whenRaw": "NPC ต่างถิ่นที่ไว้ใจ ≥ 3 ชวนไปทำงานหรืออยู่ด้วย",
+    "when": {
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "trust.foreignNpc",
+       "op": ">=",
+       "value": 3,
+       "label": "NPC ต่างถิ่นที่ไว้ใจ"
+      },
+      {
+       "k": "text",
+       "text": "ชวนไปทำงานหรืออยู่ด้วย"
+      }
+     ]
+    },
+    "chance": 0.03,
+    "mods": [],
+    "inEventYear": false,
+    "opens": [],
+    "opensRaw": "xc ตามเผ่า",
+    "byRace": true,
+    "src": "docs/systems/travel/01-travel-rules.md:51"
+   },
+   {
+    "overlay": "wd",
+    "cause": "อยากรู้",
+    "whenRaw": "แกน `curious` > 40 และไม่มีภาระครอบครัว",
+    "when": {
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "axis.curious",
+       "op": ">",
+       "value": 40,
+       "label": "แกน"
+      },
+      {
+       "k": "text",
+       "text": "ไม่มีภาระครอบครัว"
+      }
+     ]
+    },
+    "chance": 0.015,
+    "mods": [],
+    "inEventYear": false,
+    "opens": [
+     "wd.t1"
+    ],
+    "opensRaw": "wd.t1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:52"
+   },
+   {
+    "overlay": "tr",
+    "cause": "หนี้หรือสัญญา",
+    "whenRaw": "เป็นหนี้ ≥ 100 ทอง หรือมีสัญญาจ้างต่างถิ่น",
+    "when": {
+     "k": "or",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "debt",
+       "op": ">=",
+       "value": 100,
+       "label": "เป็นหนี้"
+      },
+      {
+       "k": "text",
+       "text": "มีสัญญาจ้างต่างถิ่น"
+      }
+     ]
+    },
+    "chance": 0.02,
+    "mods": [],
+    "inEventYear": false,
+    "opens": [
+     "tr.a1",
+     "ml.a1"
+    ],
+    "opensRaw": "tr.a1 หรือ ml.a1",
+    "byRace": false,
+    "src": "docs/systems/travel/01-travel-rules.md:53"
+   }
+  ],
+  "causeRules": {
+   "oncePerYears": 3,
+   "mods": [
+    {
+     "raw": "มีผู้พึ่งพา (ลูกเล็ก พ่อแม่ป่วย)",
+     "cond": {
+      "k": "text",
+      "text": "มีผู้พึ่งพา (ลูกเล็ก พ่อแม่ป่วย)"
+     },
+     "mul": 0.5
+    },
+    {
+     "raw": "ตัวละครที่มีนิสัย `settled` ×0.5",
+     "cond": {
+      "k": "has",
+      "kind": "trait",
+      "id": "settled"
+     },
+     "mul": 0.5
+    },
+    {
+     "raw": "`adventurous` ×1.5",
+     "cond": {
+      "k": "has",
+      "kind": "trait",
+      "id": "adventurous"
+     },
+     "mul": 1.5
+    }
+   ],
+   "text": "กติการ่วม: เหตุการณ์เดินทางที่ไม่ได้มาจากภัยเกิดได้ไม่เกินหนึ่งครั้งต่อสามปี ตัวละครที่มีผู้พึ่งพา (ลูกเล็ก พ่อแม่ป่วย) ทางเลือกเดินทางน้ำหนัก ×0.5 ตัวละครที่มีนิสัย `settled` ×0.5 และ `adventurous` ×1.5",
+   "src": "docs/systems/travel/01-travel-rules.md:55"
+  },
+  "overlays": [
+   {
+    "id": "sf",
+    "name": "ลูกเรือและนักเดินเรือ",
+    "openRaw": "อาชีพ `sailor` หรือ `navigator` หรือ `pirate` หรือ `shipowner` หรือ tr.a1 ทาง ข",
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "sailor"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "navigator"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "pirate"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "shipowner"
+      },
+      {
+       "k": "node",
+       "id": "tr.a1",
+       "choice": "b"
+      }
+     ]
+    },
+    "nodeCount": 5,
+    "nodes": [
+     "sf.a1",
+     "sf.a2",
+     "sf.a3",
+     "sf.e1",
+     "sf.t1"
+    ],
+    "otherRaw": "เกิดที่ท่าเรือ (NR-* AZ-03 MK-09) และผู้เล่นเลือกขึ้นเรือ",
+    "causes": [],
+    "src": "docs/lore/storylines/25-journeys.md:27"
+   },
+   {
+    "id": "ps",
+    "name": "ผู้แสวงบุญ",
+    "openRaw": "อาชีพ `pilgrim`",
+    "open": {
+     "k": "has",
+     "kind": "job",
+     "id": "pilgrim"
+    },
+    "nodeCount": 4,
+    "nodes": [
+     "ps.a1",
+     "ps.a2",
+     "ps.e1",
+     "ps.t1"
+    ],
+    "otherRaw": "แกนศรัทธา > 40 และศาสนามีที่ศักดิ์สิทธิ์นอกประเทศ (เหตุแสวงบุญในหัวข้อ 2 ของกติกาเดินทาง)",
+    "causes": [
+     0.01
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:28"
+   },
+   {
+    "id": "ml",
+    "name": "ทหารรับจ้างข้ามแดน",
+    "openRaw": "อาชีพ `mercenary` หรือ `soldier` หรือ `knight` และเดินทางครบ 1 ประเทศ",
+    "open": {
+     "k": "and",
+     "of": [
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "has",
+         "kind": "job",
+         "id": "mercenary"
+        },
+        {
+         "k": "has",
+         "kind": "job",
+         "id": "soldier"
+        },
+        {
+         "k": "has",
+         "kind": "job",
+         "id": "knight"
+        }
+       ]
+      },
+      {
+       "k": "count",
+       "what": "travel.countries",
+       "min": 1
+      }
+     ]
+    },
+    "nodeCount": 4,
+    "nodes": [
+     "ml.a1",
+     "ml.a2",
+     "ml.a3",
+     "ml.e1"
+    ],
+    "otherRaw": "รับจ้างรบตามหัวข้อ 2 ของกติกาเดินทาง (เหตุรับจ้างรบ)",
+    "causes": [
+     0.04
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:29"
+   },
+   {
+    "id": "sc",
+    "name": "ผู้เรียนต่างแดน",
+    "openRaw": "ชนชั้น 3 ขึ้นไป และปัญญา ≥ 12 หรือมีความถนัด scholar",
+    "open": {
+     "k": "and",
+     "of": [
+      {
+       "k": "class",
+       "min": 3
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "cmp",
+         "stat": "int",
+         "op": ">=",
+         "value": 12,
+         "label": "ปัญญา"
+        },
+        {
+         "k": "text",
+         "text": "มีความถนัด scholar"
+        }
+       ]
+      }
+     ]
+    },
+    "nodeCount": 4,
+    "nodes": [
+     "sc.a1",
+     "sc.a2",
+     "sc.e1",
+     "sc.t1"
+    ],
+    "otherRaw": "ไม่มี",
+    "causes": [
+     0.03
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:30"
+   },
+   {
+    "id": "ex",
+    "name": "ผู้ลี้ภัยและผู้ถูกเนรเทศ",
+    "openRaw": "ถิ่นมีสงคราม หรือถิ่นมีทุพภิกขภัย หรือถิ่นมีโรคระบาด หรือ DR-01 หรือ FG-02 หรือ FG-03 หรือ `c_wanted`",
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "place",
+       "kinds": [
+        "war"
+       ]
+      },
+      {
+       "k": "place",
+       "kinds": [
+        "famine"
+       ]
+      },
+      {
+       "k": "place",
+       "kinds": [
+        "plague"
+       ]
+      },
+      {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
+      },
+      {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_wanted"
+      }
+     ]
+    },
+    "nodeCount": 4,
+    "nodes": [
+     "ex.a1",
+     "ex.a2",
+     "ex.a3",
+     "ex.e1"
+    ],
+    "otherRaw": "เหตุการณ์โลกอื่นที่ทำให้ถิ่นอยู่ไม่ได้",
+    "causes": [
+     0.15,
+     0.2
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:31"
+   },
+   {
+    "id": "wd",
+    "name": "นักเดินทางเร่ร่อน",
+    "openRaw": "อาชีพ `bard` หรือ `explorer` หรือเป็นนักผจญภัย (อาชีพ adventurer) หรือ `performer`",
+    "open": {
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "bard"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "explorer"
+      },
+      {
+       "k": "text",
+       "text": "เป็นนักผจญภัย (อาชีพ adventurer)"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "performer"
+      }
+     ]
+    },
+    "nodeCount": 5,
+    "nodes": [
+     "wd.a1",
+     "wd.a2",
+     "wd.a3",
+     "wd.e1",
+     "wd.t1"
+    ],
+    "otherRaw": "แกน `curious` > 40 และไม่มีงานประจำ",
+    "causes": [
+     0.015
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:32"
+   },
+   {
+    "id": "xc",
+    "name": "เจอต่างเผ่า",
+    "openRaw": "ไม่ มนุษย์",
+    "open": {
+     "k": "not",
+     "of": {
+      "k": "race",
+      "ids": [
+       "hu"
+      ]
+     }
+    },
+    "nodeCount": 20,
+    "nodes": [
+     "xc.a1",
+     "xc.a2",
+     "xc.a3",
+     "xc.a4",
+     "xc.a5",
+     "xc.a6",
+     "xc.a7",
+     "xc.a8",
+     "xc.a9",
+     "xc.b1",
+     "xc.b2",
+     "xc.b3",
+     "xc.b4",
+     "xc.b5",
+     "xc.b6",
+     "xc.b7",
+     "xc.b8",
+     "xc.b9",
+     "xc.t1",
+     "xc.t2"
+    ],
+    "otherRaw": "ใช้ได้เมื่อเงื่อนไขหัวข้อ 2 ของกติกาเดินทางผ่าน หรือ 35% ที่เกิดขึ้นเองตอนอายุเทียบ 24 ถึง 36 ถ้าตัวละครอยู่ L0 (ในกรณีนี้ต่างเผ่าเป็นฝ่ายมาหา)",
+    "causes": [
+     0.03
+    ],
+    "src": "docs/lore/storylines/25-journeys.md:33",
+    "spontaneous": {
+     "chance": 0.35,
+     "ageMin": 24,
+     "ageMax": 36,
+     "level": "L0"
+    }
+   }
+  ],
+  "routeRules": [
+   {
+    "text": "ในทวีปเดียวกันไปได้ทางบกหรือทางน้ำตามผังแผนที่ ()",
+    "events": [],
+    "src": "docs/systems/travel/01-travel-rules.md:63"
+   },
+   {
+    "text": "ข้ามทวีปใช้ได้เฉพาะเส้นใน หัวข้อ 12: คอแผ่นดินทางบกตาม หัวข้อ 1 หรือเรือระหว่างประเทศท่าเรือทั้งสองฝั่ง เส้นทางต้องไม่ถูกปิดด้วยเหตุการณ์โลก (`WR-06` `WR-10` สงครามเส้นทาง โดย `WR-06` หลัง `DR-05` แทนด้วย `DW-04` · `PO-06` ปิดทวีป · `FG-02` ประเทศที่ถูกหมอกกลืนเป็นปิดตาย · `FG-03` ด่านชายแดนติดเนบูเลียปิดถาวร) เส้นที่ปิดยังไปได้โดยลักลอบ (ข้อ 3.4)",
+    "events": [
+     "WR-06",
+     "WR-10",
+     "DR-05",
+     "DW-04",
+     "PO-06",
+     "FG-02",
+     "FG-03"
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:64"
+   },
+   {
+    "text": "**ทางฟ้าไปอัซการ์** (ก่อน `DR-01`) มีสี่ทางเท่านั้น: บันไดหมื่นขั้นจากซาฮารันผ่านด่านยักษ์ (ปิดถาวรเมื่อ `WR-02` ทาง ก) · เรือเหาะจากเมคาเรีย (เมื่อ `PO-02` เหลือเรือเหาะเถื่อน ใช้กติกาลักลอบ) · วาฬฟ้าจากเนเรีย ต้องมีคำเชิญ · น้ำตกย้อนฟ้าจาก NR-02 ต้องผ่านพิธีของผู้ถือกุญแจน้ำตก () เวลาและค่าของแต่ละทางอยู่ในข้อ 3.6 เผ่าปีกบินข้ามเองได้ ยกเว้นปีกสั้นที่บินได้ระยะสั้น () ผู้ขี่สัตว์คู่หูที่มี `pa_fly_mount` ระดับ 3 บินข้ามได้เช่นกัน () เผ่าอื่นใช้สี่ทางนี้เท่านั้น (ใครบินได้แค่ไหน: ตาราง 3.5)",
+    "events": [
+     "DR-01",
+     "WR-02",
+     "PO-02"
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:65"
+   },
+   {
+    "text": "ปลายทางที่เปลี่ยนรูปใช้รูปหลังเปลี่ยนตาม : หลัง `DR-01` อัซการ์เป็นซากบนพื้น (สกายฟอลล์) ไปทางบกจากซาฮารันตะวันออกหรือทางเรือ ทางฟ้าทั้งสี่ปิด ยกเว้น AZ-09 ที่ยังลอย (`SF-09`) ไปได้ด้วยการบินหรือเรือเหาะ · หลัง `DR-05` เมืองท่าชายฝั่งที่จมตัดออก · หลัง `DR-06` เรือใบออกทะเลเปิดไม่ได้และเรือเหาะจอด 20 ปีโลก เหลือเรือพายและทางบก แล้วเข้ายุคลมสุ่ม (ตารางลมหยุดในข้อ 3.6)",
+    "events": [
+     "DR-01",
+     "SF-09",
+     "DR-05",
+     "DR-06"
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:66"
+   },
+   {
+    "text": "เหตุการณ์โลกเปลี่ยนตารางที่เข้าได้: `FG-02` `FG-03` หมอกกลืนเมืองและปิดด่านชายแดนเนบูเลีย · `DR-01` ฟ้าถล่ม (ทางฟ้าปิด อัซการ์เป็นซากบนพื้น ผู้ลี้ภัยออก) · `WR-*` สงครามปิดด่านสองประเทศ · `PO-*` ปิดทวีป · `DR-05` ทุ่งจม (ท่าเรือชายฝั่งบางแห่งหาย) · `DR-06` ลมหยุด (เรือใบหยุดและเรือเหาะจอด 20 ปีโลก) ตามข้อ 3.1 และ 3.6",
+    "events": [
+     "FG-02",
+     "FG-03",
+     "DR-01",
+     "DR-05",
+     "DR-06"
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:106"
+   },
+   {
+    "text": "เส้นทางที่ปิดยังข้ามได้ด้วยลักลอบ: ตัวละครต้องมีผู้นำทาง (NPC ผู้ลักลอบ `NB12-*` `NB09-*` `MK05-4`) หรือ skill `stealth` ระดับ 2 ผลคือเหตุการณ์ด่านที่ผ่านหรือถูกจับ ราคาค่าลักลอบ 30 ถึง 100 ทอง และ `c_wanted` 25% ถ้าถูกจับ",
+    "events": [],
+    "src": "docs/systems/travel/01-travel-rules.md:107"
+   }
+  ],
+  "stances": [
+   {
+    "value": 1,
+    "name": "ยินดี",
+    "effectRaw": "เข้าได้ ค่าผ่านทางปกติ เหตุการณ์ผู้ช่วยเพิ่ม",
+    "enterable": true,
+    "tollMul": 1,
+    "extraChecks": 0,
+    "helpers": "more",
+    "entry": null,
+    "src": "docs/systems/travel/01-travel-rules.md:74"
+   },
+   {
+    "value": 0,
+    "name": "กลาง",
+    "effectRaw": "เข้าได้ปกติ",
+    "enterable": true,
+    "tollMul": 1,
+    "extraChecks": 0,
+    "helpers": "normal",
+    "entry": null,
+    "src": "docs/systems/travel/01-travel-rules.md:75"
+   },
+   {
+    "value": -1,
+    "name": "ระแวง",
+    "effectRaw": "เข้าได้ ค่าผ่านทาง ×1.5 มีด่านตรวจเพิ่มหนึ่งครั้งต่อขา ไม่มีผู้ช่วยเมื่อมีปัญหา",
+    "enterable": true,
+    "tollMul": 1.5,
+    "extraChecks": 1,
+    "helpers": "none",
+    "entry": null,
+    "src": "docs/systems/travel/01-travel-rules.md:76"
+   },
+   {
+    "value": -2,
+    "name": "ปิดกั้น",
+    "effectRaw": "เข้าไม่ได้ตามปกติ ต้องมีใบผ่านจากผู้ไว้ใจ ≥ 3 ในถิ่น หรือเป็นทูต/ผู้ถูกเชิญ หรือลักลอบ (ข้อ 3.4)",
+    "enterable": false,
+    "tollMul": 1,
+    "extraChecks": 0,
+    "helpers": "normal",
+    "entry": {
+     "k": "or",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "trust.local",
+       "op": ">=",
+       "value": 3,
+       "label": "ผู้ไว้ใจในถิ่น"
+      },
+      {
+       "k": "text",
+       "text": "เป็นทูต/ผู้ถูกเชิญ"
+      },
+      {
+       "k": "text",
+       "text": "ลักลอบ"
+      }
+     ]
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:77"
+   }
+  ],
+  "allRacesStance": [
+   0,
+   1
+  ],
+  "raceRelations": [
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "เอลฟ์",
+      "race": "el"
+     }
+    ],
+    "to": [
+     {
+      "name": "ภูต",
+      "race": "fa"
+     }
+    ],
+    "mutual": true,
+    "raw": "เอลฟ์ ↔ ภูต ↔ ฮาล์ฟลิง",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ภูต",
+      "race": "fa"
+     }
+    ],
+    "to": [
+     {
+      "name": "ฮาล์ฟลิง",
+      "race": "ha"
+     }
+    ],
+    "mutual": true,
+    "raw": "เอลฟ์ ↔ ภูต ↔ ฮาล์ฟลิง",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ฮาล์ฟลิง",
+      "race": "ha"
+     }
+    ],
+    "to": [
+     {
+      "name": "มนุษย์",
+      "race": "hu"
+     },
+     {
+      "name": "เผ่าสัตว์",
+      "race": "be"
+     }
+    ],
+    "mutual": true,
+    "raw": "ฮาล์ฟลิง ↔ มนุษย์ เผ่าสัตว์",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ดาร์กเอลฟ์",
+      "race": "de"
+     }
+    ],
+    "to": [
+     {
+      "name": "แวมไพร์",
+      "race": "va"
+     },
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     }
+    ],
+    "mutual": true,
+    "raw": "ดาร์กเอลฟ์ ↔ แวมไพร์ เผ่าปีศาจ",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "แวมไพร์",
+      "race": "va"
+     }
+    ],
+    "to": [
+     {
+      "name": "มัมมี่",
+      "race": "mu"
+     }
+    ],
+    "mutual": true,
+    "raw": "แวมไพร์ ↔ มัมมี่",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     }
+    ],
+    "to": [
+     {
+      "name": "มนุษย์ช่าง",
+      "race": "hu",
+      "sub": "ช่าง"
+     },
+     {
+      "name": "เผ่ามังกร",
+      "race": "dk"
+     }
+    ],
+    "mutual": true,
+    "raw": "คนแคระ ↔ มนุษย์ช่าง เผ่ามังกร",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ยักษ์",
+      "race": "gi"
+     }
+    ],
+    "to": [
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     }
+    ],
+    "mutual": false,
+    "raw": "ยักษ์ → คนแคระ",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ออร์ค",
+      "race": "or"
+     }
+    ],
+    "to": [
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     },
+     {
+      "name": "กูล",
+      "race": "gh"
+     }
+    ],
+    "mutual": true,
+    "raw": "ออร์ค ↔ เผ่าปีศาจ กูล",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     }
+    ],
+    "to": [
+     {
+      "name": "กูล",
+      "race": "gh"
+     }
+    ],
+    "mutual": true,
+    "raw": "เผ่าปีศาจ ↔ กูล",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "เผ่ามังกร",
+      "race": "dk"
+     }
+    ],
+    "to": [
+     {
+      "name": "เผ่าปีก",
+      "race": "wi"
+     },
+     {
+      "name": "เผ่าลาวา",
+      "race": "la"
+     }
+    ],
+    "mutual": true,
+    "raw": "เผ่ามังกร ↔ เผ่าปีก เผ่าลาวา",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "เผ่าปีก",
+      "race": "wi"
+     }
+    ],
+    "to": [
+     {
+      "name": "เงือก",
+      "race": "me"
+     }
+    ],
+    "mutual": true,
+    "raw": "เผ่าปีก ↔ เงือก",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "เงือก",
+      "race": "me"
+     }
+    ],
+    "to": [
+     {
+      "name": "มนุษย์เรือ",
+      "race": "hu",
+      "sub": "เรือ"
+     }
+    ],
+    "mutual": true,
+    "raw": "เงือก ↔ มนุษย์เรือ",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "นาคา",
+      "race": "na"
+     }
+    ],
+    "to": [
+     {
+      "name": "กัปปะ",
+      "race": null
+     },
+     {
+      "name": "มนุษย์ริมน้ำ",
+      "race": "hu",
+      "sub": "ริมน้ำ"
+     }
+    ],
+    "mutual": true,
+    "raw": "นาคา ↔ กัปปะ มนุษย์ริมน้ำ",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": 1,
+    "from": [
+     {
+      "name": "ลูกผสมจักรกล",
+      "race": "co"
+     }
+    ],
+    "to": [
+     {
+      "name": "หุ่นวิญญาณ",
+      "race": "so"
+     }
+    ],
+    "mutual": true,
+    "raw": "ลูกผสมจักรกล ↔ หุ่นวิญญาณ",
+    "src": "docs/systems/travel/01-travel-rules.md:83"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "เอลฟ์",
+      "race": "el"
+     }
+    ],
+    "to": [
+     {
+      "name": "มนุษย์",
+      "race": "hu"
+     },
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     },
+     {
+      "name": "เผ่าสัตว์",
+      "race": "be"
+     }
+    ],
+    "mutual": false,
+    "raw": "เอลฟ์ → มนุษย์ คนแคระ เผ่าสัตว์",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     }
+    ],
+    "to": [
+     {
+      "name": "ยักษ์",
+      "race": "gi"
+     },
+     {
+      "name": "เผ่าลาวา",
+      "race": "la"
+     }
+    ],
+    "mutual": false,
+    "raw": "คนแคระ → ยักษ์ เผ่าลาวา",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "ออร์ค",
+      "race": "or"
+     }
+    ],
+    "to": [
+     {
+      "name": "เอลฟ์",
+      "race": "el"
+     },
+     {
+      "name": "เผ่าสัตว์",
+      "race": "be"
+     },
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     }
+    ],
+    "mutual": false,
+    "raw": "ออร์ค → เอลฟ์ เผ่าสัตว์ คนแคระ",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "ดาร์กเอลฟ์",
+      "race": "de"
+     }
+    ],
+    "to": [
+     {
+      "name": "เผ่าลาวา",
+      "race": "la"
+     }
+    ],
+    "mutual": true,
+    "raw": "ดาร์กเอลฟ์ ↔ เผ่าลาวา",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "ภูต",
+      "race": "fa"
+     }
+    ],
+    "to": [
+     {
+      "name": "คนแคระ",
+      "race": "dw"
+     },
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     }
+    ],
+    "mutual": false,
+    "raw": "ภูต → คนแคระ เผ่าปีศาจ",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "แวมไพร์",
+      "race": "va"
+     }
+    ],
+    "to": [
+     {
+      "name": "ชาวหมอก",
+      "race": "hu",
+      "sub": "หมอก"
+     }
+    ],
+    "mutual": false,
+    "raw": "แวมไพร์ → ชาวหมอก",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "มนุษย์ทั่วไป",
+      "race": "hu",
+      "sub": "ทั่วไป"
+     }
+    ],
+    "to": [
+     {
+      "name": "ลูกผสมจักรกล",
+      "race": "co"
+     }
+    ],
+    "mutual": false,
+    "raw": "มนุษย์ทั่วไป → ลูกผสมจักรกล",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "ทุกเผ่า",
+      "race": null
+     }
+    ],
+    "to": [
+     {
+      "name": "กูล",
+      "race": "gh"
+     }
+    ],
+    "mutual": false,
+    "except": [
+     {
+      "name": "ออร์ค",
+      "race": "or"
+     },
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     }
+    ],
+    "raw": "ทุกเผ่า → กูล (ยกเว้นออร์ค เผ่าปีศาจ)",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -1,
+    "from": [
+     {
+      "name": "เผ่าสัตว์",
+      "race": "be"
+     }
+    ],
+    "to": [
+     {
+      "name": "ออร์ค",
+      "race": "or"
+     }
+    ],
+    "mutual": false,
+    "raw": "เผ่าสัตว์ → ออร์ค",
+    "src": "docs/systems/travel/01-travel-rules.md:84"
+   },
+   {
+    "value": -2,
+    "from": [
+     {
+      "name": "เงือก",
+      "race": "me"
+     }
+    ],
+    "to": [
+     {
+      "name": "นาคา",
+      "race": "na"
+     }
+    ],
+    "mutual": true,
+    "raw": "เงือก ↔ นาคา",
+    "src": "docs/systems/travel/01-travel-rules.md:85"
+   },
+   {
+    "value": -2,
+    "from": [
+     {
+      "name": "เผ่าปีก",
+      "race": "wi"
+     }
+    ],
+    "to": [
+     {
+      "name": "ยักษ์",
+      "race": "gi"
+     }
+    ],
+    "mutual": true,
+    "raw": "เผ่าปีก ↔ ยักษ์",
+    "src": "docs/systems/travel/01-travel-rules.md:85"
+   },
+   {
+    "value": -2,
+    "from": [
+     {
+      "name": "เผ่าปีศาจ",
+      "race": "dm"
+     },
+     {
+      "name": "แวมไพร์",
+      "race": "va"
+     },
+     {
+      "name": "กูล",
+      "race": "gh"
+     },
+     {
+      "name": "มัมมี่",
+      "race": "mu"
+     }
+    ],
+    "to": [],
+    "mutual": false,
+    "place": {
+     "text": "ในถิ่นศาสนาแสง",
+     "countries": [
+      "AL-02"
+     ]
+    },
+    "raw": "เผ่าปีศาจ แวมไพร์ กูล มัมมี่ ในถิ่นศาสนาแสง (เช่น AL-02)",
+    "src": "docs/systems/travel/01-travel-rules.md:85"
+   },
+   {
+    "value": -2,
+    "from": [
+     {
+      "name": "มัมมี่",
+      "race": "mu"
+     }
+    ],
+    "to": [
+     {
+      "name": "SH-01",
+      "race": null,
+      "country": "SH-01"
+     }
+    ],
+    "mutual": false,
+    "raw": "มัมมี่ → ซาร์ฮาดีน (SH-01)",
+    "src": "docs/systems/travel/01-travel-rules.md:85"
+   }
+  ],
+  "stanceModifiers": [
+   {
+    "delta": 1,
+    "raw": "มีผู้ไว้ใจ ≥ 3 ในถิ่น",
+    "cond": {
+     "k": "cmp",
+     "stat": "trust.local",
+     "op": ">=",
+     "value": 3,
+     "label": "ผู้ไว้ใจในถิ่น"
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:87"
+   },
+   {
+    "delta": 1,
+    "raw": "ทั้งสองประเทศมีสนธิสัญญาการค้า",
+    "cond": {
+     "k": "text",
+     "text": "ทั้งสองประเทศมีสนธิสัญญาการค้า"
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:87"
+   },
+   {
+    "delta": 1,
+    "raw": "ถือใบเชิญหรือเป็นทูต",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "text",
+       "text": "ถือใบเชิญ"
+      },
+      {
+       "k": "text",
+       "text": "เป็นทูต"
+      }
+     ]
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:87"
+   },
+   {
+    "delta": -1,
+    "raw": "`c_infamous` ในทวีปนั้น",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_infamous"
+      },
+      {
+       "k": "text",
+       "text": "ในทวีปนั้น"
+      }
+     ]
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:87"
+   },
+   {
+    "delta": -1,
+    "raw": "เผ่าเดียวกันของถิ่นกำลังสงครามกับเผ่าของตัวละคร",
+    "cond": {
+     "k": "text",
+     "text": "เผ่าเดียวกันของถิ่นกำลังสงครามกับเผ่าของตัวละคร"
+    },
+    "src": "docs/systems/travel/01-travel-rules.md:87"
+   }
+  ],
+  "moral": [
+   {
+    "condRaw": "ค้าหรือล่าเผ่า X เพื่อขาย (ค้ามนุษย์ ล่าสัตว์เพื่อหนัง จับภูต ขายคนเลือด) รวมเส้นผู้ค้าคนตามท่าทีของประเทศใน [../economy/10-bondage.md](../economy/10-bondage.md)",
+    "cond": null,
+    "forbiddenRaw": "ประเทศที่ X เป็นเผ่าแรก และประเทศพันธมิตรของมัน",
+    "forbiddenCountries": [],
+    "forbiddenContinents": [],
+    "onEnterRaw": "`c_wanted` ทันที ถูกจับหรือถูกล่าตาม [../combat/04-encounters.md](../combat/04-encounters.md) หัวข้อ 6",
+    "onEnter": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_wanted"
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:95"
+   },
+   {
+    "condRaw": "ขายอาวุธให้ศัตรูของถิ่น (`SH11-3` บูรัก ขายอาวุธให้สองฝ่าย)",
+    "cond": {
+     "k": "has",
+     "kind": "unknown",
+     "id": "SH11-3"
+    },
+    "forbiddenRaw": "ประเทศที่เสียหายจากอาวุธนั้น",
+    "forbiddenCountries": [],
+    "forbiddenContinents": [],
+    "onEnterRaw": "ถูกยึดสินค้า ค่าปรับ ×3",
+    "onEnter": [
+     {
+      "k": "statMul",
+      "stat": "ค่าปรับ",
+      "mul": 3
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:96"
+   },
+   {
+    "condRaw": "ผู้ตายหรือผู้ร่ายวิชาตาย (`#necro` `undead`)",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "has",
+       "kind": "tag",
+       "id": "#necro"
+      },
+      {
+       "k": "has",
+       "kind": "unknown",
+       "id": "undead"
+      }
+     ]
+    },
+    "forbiddenRaw": "ถิ่นศาสนาแสง (AL-02 และพันธมิตร)",
+    "forbiddenCountries": [
+     "AL-02"
+    ],
+    "forbiddenContinents": [],
+    "onEnterRaw": "ถูกขับ หรือศาลศาสนา 15% ต่อปี",
+    "onEnter": [
+     {
+      "k": "pct",
+      "text": "ถูกขับ หรือศาลศาสนา",
+      "pct": 15
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:97"
+   },
+   {
+    "condRaw": "`c_wanted` ในประเทศ Y",
+    "cond": {
+     "k": "has",
+     "kind": "curse",
+     "id": "c_wanted"
+    },
+    "forbiddenRaw": "Y และประเทศในทวีปเดียวกันที่ตกลงส่งตัวผู้ร้ายข้ามแดน (ช่อง `justice=` เป็น `court` `martial` `ledger`)",
+    "forbiddenCountries": [],
+    "forbiddenContinents": [],
+    "onEnterRaw": "ถูกจับเมื่อผ่านด่าน",
+    "onEnter": [],
+    "src": "docs/systems/travel/01-travel-rules.md:98"
+   },
+   {
+    "condRaw": "ผู้ที่ทำลายต้นไม้โลก หรือเผาป่า",
+    "cond": null,
+    "forbiddenRaw": "SV ทุกประเทศ",
+    "forbiddenCountries": [],
+    "forbiddenContinents": [
+     "SV"
+    ],
+    "onEnterRaw": "ถูกล่า (ดู [../combat/03-enemies.md](../combat/03-enemies.md) SV14-1)",
+    "onEnter": [
+     {
+      "k": "npc",
+      "id": "SV14-1"
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:99"
+   },
+   {
+    "condRaw": "ผู้ที่ขโมยของของเทพหรือมังกร",
+    "cond": null,
+    "forbiddenRaw": "ถิ่นที่บูชาเทพหรือมังกรนั้น",
+    "forbiddenCountries": [],
+    "forbiddenContinents": [],
+    "onEnterRaw": "ศาสนาตามล่า ศรัทธาเทพ −20",
+    "onEnter": [
+     {
+      "k": "stat",
+      "stat": "ศาสนาตามล่า ศรัทธาเทพ",
+      "delta": -20
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:100"
+   }
+  ],
+  "bodyLimits": [
+   {
+    "text": "เงือกและนาคาทะเลออกจากน้ำได้ไม่เกินครึ่งปีต่อครั้ง",
+    "races": [
+     "na",
+     "me"
+    ]
+   },
+   {
+    "text": "เผ่าลาวาหยุดทำงานเมื่ออุณหภูมิต่ำ (ฤดูหนาวเถ้า ทวีป SV-NB เย็น)",
+    "races": [
+     "la"
+    ]
+   },
+   {
+    "text": "สไลม์ต้องความชื้น",
+    "races": [
+     "sl"
+    ]
+   },
+   {
+    "text": "แวมไพร์ไม่เดินกลางแดดจัด (ขบวนกลางคืน)",
+    "races": [
+     "va"
+    ]
+   },
+   {
+    "text": "มัมมี่ต้องธุลีทิพย์ (ไปได้เฉพาะที่มีธุลีหรือมีขวด)",
+    "races": [
+     "mu"
+    ]
+   },
+   {
+    "text": "ผีและวิญญาณผูกกับที่ตาย ไม่เดินทางไกล",
+    "races": []
+   },
+   {
+    "text": "ผู้เข้าเนบูเลียที่ไม่ได้เกิดในหมอกต้องมีหน้ากากกรองหมอกหรือ skill ต้านพิษ ไม่เช่นนั้นเสียสุขภาพทุกฤดูและเสี่ยงหลงทาง ( หัวข้อ 10)",
+    "races": []
+   },
+   {
+    "text": "สรุปต่อเผ่าและกติกาน้ำลึกอยู่ในข้อ 3.5",
+    "races": []
+   }
+  ],
+  "raceMoves": [
+   {
+    "raceRaw": "เผ่าปีก",
+    "races": [
+     "wi"
+    ],
+    "sky": "บินเองได้ระยะไกล ปีกสั้นบินได้ระยะสั้น",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": true,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:115"
+   },
+   {
+    "raceRaw": "ภูตพราย",
+    "races": [
+     "fa"
+    ],
+    "sky": "บินได้ด้วยร่างจิ๋ว ไม่นับเป็นทางฟ้าไปอัซการ์ (3.1)",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:116"
+   },
+   {
+    "raceRaw": "เงือก",
+    "races": [
+     "me"
+    ],
+    "sky": "",
+    "sea": "อยู่ในน้ำได้ตลอด ออกจากน้ำไม่เกินครึ่งปีต่อครั้ง",
+    "deep": "ลงได้ (หายใจใต้น้ำ)",
+    "desert": "ไม่ชอบ",
+    "fog": "นำทางในหมอกทะเลด้วยแสง (ไม่กันหมอกเนบูเลีย)",
+    "sun": "",
+    "canFly": false,
+    "deepWater": true,
+    "src": "docs/systems/travel/01-travel-rules.md:117"
+   },
+   {
+    "raceRaw": "นาคา",
+    "races": [
+     "na"
+    ],
+    "sky": "",
+    "sea": "หายใจใต้น้ำ นาคาทะเลออกจากน้ำไม่เกินครึ่งปีต่อครั้ง",
+    "deep": "ลงได้ (หายใจใต้น้ำ)",
+    "desert": "ไม่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": true,
+    "src": "docs/systems/travel/01-travel-rules.md:118"
+   },
+   {
+    "raceRaw": "แวมไพร์",
+    "races": [
+     "va"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ",
+    "fog": "ไม่แพ้แดดในหมอก",
+    "sun": "แพ้แสงแดด เดินขบวนกลางคืน",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:119"
+   },
+   {
+    "raceRaw": "ดาร์กเอลฟ์",
+    "races": [
+     "de",
+     "el"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ",
+    "fog": "",
+    "sun": "แพ้แสงจ้า (`weak_light`)",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:120"
+   },
+   {
+    "raceRaw": "มัมมี่",
+    "races": [
+     "mu"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ถิ่นที่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:121"
+   },
+   {
+    "raceRaw": "สไลม์",
+    "races": [
+     "sl"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ ต้องความชื้น",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:122"
+   },
+   {
+    "raceRaw": "ออร์ค ยักษ์ เผ่าลาวา เผ่าปีศาจ กูล",
+    "races": [
+     "dm",
+     "la",
+     "or",
+     "gi",
+     "gh"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ถิ่นที่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:123"
+   },
+   {
+    "raceRaw": "เอลฟ์",
+    "races": [
+     "el"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "ไม่ชอบ",
+    "fog": "",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:124"
+   },
+   {
+    "raceRaw": "ชาวหมอก (มนุษย์)",
+    "races": [
+     "hu"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "",
+    "fog": "ต้านพิษตั้งแต่เกิด ไม่ต้องหน้ากาก",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:125"
+   },
+   {
+    "raceRaw": "ลูกผสมจักรกล หุ่นวิญญาณ",
+    "races": [
+     "co",
+     "so"
+    ],
+    "sky": "",
+    "sea": "",
+    "deep": "",
+    "desert": "",
+    "fog": "สิ่งมีชีวิตในหมอกเมิน (FG-09)",
+    "sun": "",
+    "canFly": false,
+    "deepWater": false,
+    "src": "docs/systems/travel/01-travel-rules.md:126"
+   }
+  ],
+  "deepWater": {
+   "countries": [
+    "NR-04",
+    "NR-03",
+    "NR-11",
+    "NR-07"
+   ],
+   "needTag": "#water_breath",
+   "notEnoughTag": "#water_breath_short",
+   "text": "ฉากน้ำลึก ฉากที่ติดป้ายน้ำลึก ได้แก่ ร่องธาลาสซา (NR-04 และทางลัดจาก NR-03) น่านน้ำคราเคนของ NR-11 และห้องไข่นาคาของ NR-07 เข้าได้เฉพาะผู้ที่มี `#water_breath` (จากพร ชุดเกราะ เครื่องประดับ หรือยา ใช้ได้ตามเวลาของของนั้น) หรือเป็นเงือกหรือนาคา หรือเดินทางกับผู้นำทางเงือกหรือนาคา `#water_breath_short` ไม่พอ ผู้ที่ไม่ผ่านตัดปลายทางนั้นออกตามชั้น 3.1",
+   "src": "docs/systems/travel/01-travel-rules.md:128"
+  },
+  "smuggle": {
+   "cost": [
+    30,
+    100
+   ],
+   "wantedChance": 0.25,
+   "skill": {
+    "id": "stealth",
+    "level": 2
+   },
+   "guides": [
+    "NB12-*",
+    "NB09-*",
+    "MK05-4"
+   ],
+   "text": "เส้นทางที่ปิดยังข้ามได้ด้วยลักลอบ: ตัวละครต้องมีผู้นำทาง (NPC ผู้ลักลอบ `NB12-*` `NB09-*` `MK05-4`) หรือ skill `stealth` ระดับ 2 ผลคือเหตุการณ์ด่านที่ผ่านหรือถูกจับ ราคาค่าลักลอบ 30 ถึง 100 ทอง และ `c_wanted` 25% ถ้าถูกจับ",
+   "src": "docs/systems/travel/01-travel-rules.md:107"
+  },
+  "routes": [
+   {
+    "id": "land",
+    "kind": "บกในทวีป",
+    "linesRaw": "ประเทศติดกันในทวีปเดียว รวมสะพานโซ่ระหว่าง AZ-01 กับเกาะบริวาร (เกาะของอัซการ์ที่ไม่มีสะพานถึงกัน ผู้บินไม่ได้ใช้เรือเหาะเล็กหรือกระเช้าของเกาะ เวลาเท่าแถวนี้ ค่า ×3)",
+    "daysRaw": "10–20",
+    "days": [
+     10,
+     20
+    ],
+    "fareRaw": "1–3",
+    "fare": [
+     1,
+     3
+    ],
+    "whoRaw": "ทุกคน",
+    "eventsRaw": "`WR-*` ปิดด่านสองประเทศ · `DR-07` ขาที่ข้ามหุบเหวในอัลเดรีย เวลา ×1.5 ค่า ×1.4",
+    "eventMods": [
+     {
+      "events": [],
+      "wildcard": [
+       "WR-*"
+      ],
+      "closes": true,
+      "text": "`WR-*` ปิดด่านสองประเทศ"
+     },
+     {
+      "events": [
+       "DR-07"
+      ],
+      "wildcard": [],
+      "timeMul": 1.5,
+      "fareMul": 1.4,
+      "closes": false,
+      "text": "`DR-07` ขาที่ข้ามหุบเหวในอัลเดรีย เวลา ×1.5 ค่า ×1.4"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:140"
+   },
+   {
+    "id": "coast",
+    "kind": "แม่น้ำและชายฝั่ง",
+    "linesRaw": "ในทวีป ท่าทั้งสองฝั่ง",
+    "daysRaw": "7–15",
+    "days": [
+     7,
+     15
+    ],
+    "fareRaw": "2–4",
+    "fare": [
+     2,
+     4
+    ],
+    "whoRaw": "ทุกคน เงือกและนาคาว่ายเองได้ ค่า 0",
+    "eventsRaw": "`DR-05` `DR-06` ตามแถวทะเล",
+    "eventMods": [
+     {
+      "events": [
+       "DR-05",
+       "DR-06"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-05` `DR-06` ตามแถวทะเล"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:141"
+   },
+   {
+    "id": "isthmus",
+    "kind": "คอแผ่นดิน",
+    "linesRaw": "อัลเดรีย–ซิลวาเนล อัลเดรีย–คาซ-ดูรัม อัลเดรีย–เมคาเรีย (ทางบกข้างราง) ซิลวาเนล–มอร์เฮเวน มอร์เฮเวน–คาซ-ดูรัม และอัลเดรีย–เนบูเลีย (ใช้แถวทางหมอกด้วย)",
+    "daysRaw": "20–35",
+    "days": [
+     20,
+     35
+    ],
+    "fareRaw": "3–6",
+    "fare": [
+     3,
+     6
+    ],
+    "whoRaw": "ทุกคน",
+    "eventsRaw": "`WR-*` ปิดด่าน · `FG-03` ปิดด่านอัลเดรีย–เนบูเลียถาวร",
+    "eventMods": [
+     {
+      "events": [],
+      "wildcard": [
+       "WR-*"
+      ],
+      "closes": true,
+      "text": "`WR-*` ปิดด่าน"
+     },
+     {
+      "events": [
+       "FG-03"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`FG-03` ปิดด่านอัลเดรีย–เนบูเลียถาวร"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:142"
+   },
+   {
+    "id": "rail",
+    "kind": "รถไฟ",
+    "linesRaw": "อัลเดรีย–เมคาเรีย (AL-28 ↔ MK-05) · หลัง `MC-07` ขาบกในอัลเดรียทุกขา",
+    "daysRaw": "4–7",
+    "days": [
+     4,
+     7
+    ],
+    "fareRaw": "6–10",
+    "fare": [
+     6,
+     10
+    ],
+    "whoRaw": "ผู้ซื้อตั๋วได้ ทางบกเดิม (แถวคอแผ่นดิน) ยังใช้ได้",
+    "eventsRaw": "`MC-07` ขยายราง",
+    "eventMods": [
+     {
+      "events": [
+       "MC-07"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`MC-07` ขยายราง"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:143"
+   },
+   {
+    "id": "caravan",
+    "kind": "กองคาราวานทะเลทราย",
+    "linesRaw": "อัลเดรีย–ซาฮารัน และขาในซาฮารันที่ผ่านทะเลทราย",
+    "daysRaw": "30–45",
+    "days": [
+     30,
+     45
+    ],
+    "fareRaw": "6–10 บวกค่าผ่านด่าน SH-04 SH-15",
+    "fare": [
+     6,
+     10
+    ],
+    "whoRaw": "เดินกับขบวนเท่านั้น ผู้เดินเดี่ยว d12 ข้อ 2 และข้อ 8 ×2",
+    "eventsRaw": "`WR-10` ทาง ก ค่าผ่านด่าน ×2 ถาวร · `GI-07` ทะเลทรายรุก เวลา +10 วัน",
+    "eventMods": [
+     {
+      "events": [
+       "WR-10"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`WR-10` ทาง ก ค่าผ่านด่าน ×2 ถาวร"
+     },
+     {
+      "events": [
+       "GI-07"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`GI-07` ทะเลทรายรุก เวลา +10 วัน"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:144"
+   },
+   {
+    "id": "sea",
+    "kind": "ทะเลข้ามทวีป",
+    "linesRaw": "อัลเดรีย–เนเรีย มอร์เฮเวน–เนเรีย และเส้นเรือระหว่างประเทศท่าเรือสองทวีป",
+    "daysRaw": "25–45",
+    "days": [
+     25,
+     45
+    ],
+    "fareRaw": "ดาดฟ้า 8–12 · ห้องพัก ×3",
+    "fare": [
+     8,
+     12
+    ],
+    "whoRaw": "มีท่าทั้งสองฝั่ง เงือกและนาคาว่ายเองได้ ค่า 0 เวลาเท่ากัน",
+    "eventsRaw": "`PO-03` ค่า ×1.2 นอกเนเรีย · `WR-06` ขาของอัลเดรีย ค่า ×2 · `DR-05` ท่าของเมืองที่จม (AL-04 ท่าหลวง NR-09) ตัดออกตั้งแต่ `DW-01` และขาทะเลเวลา ×1.2 จน `DW-04` · `DW-04` ค่า ×0.7 · `DR-06` ตารางลมหยุดด้านล่าง",
+    "eventMods": [
+     {
+      "events": [
+       "PO-03"
+      ],
+      "wildcard": [],
+      "fareMul": 1.2,
+      "closes": false,
+      "text": "`PO-03` ค่า ×1.2 นอกเนเรีย"
+     },
+     {
+      "events": [
+       "WR-06"
+      ],
+      "wildcard": [],
+      "fareMul": 2,
+      "closes": false,
+      "text": "`WR-06` ขาของอัลเดรีย ค่า ×2"
+     },
+     {
+      "events": [
+       "DR-05",
+       "DW-01",
+       "DW-04"
+      ],
+      "wildcard": [],
+      "timeMul": 1.2,
+      "closes": true,
+      "text": "`DR-05` ท่าของเมืองที่จม (AL-04 ท่าหลวง NR-09) ตัดออกตั้งแต่ `DW-01` และขาทะเลเวลา ×1.2 จน `DW-04`"
+     },
+     {
+      "events": [
+       "DW-04"
+      ],
+      "wildcard": [],
+      "fareMul": 0.7,
+      "closes": false,
+      "text": "`DW-04` ค่า ×0.7"
+     },
+     {
+      "events": [
+       "DR-06"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-06` ตารางลมหยุดด้านล่าง"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:145"
+   },
+   {
+    "id": "chasm",
+    "kind": "ปากเหวใต้ดิน",
+    "linesRaw": "คาซ-ดูรัม–มอร์เฮเวน ผ่าน KD-08",
+    "daysRaw": "10–20",
+    "days": [
+     10,
+     20
+    ],
+    "fareRaw": "4–8 รวมผู้นำทาง",
+    "fare": [
+     4,
+     8
+    ],
+    "whoRaw": "ผู้มีผู้นำทางจากถิ่น d12 ข้อ 2 ×2",
+    "eventsRaw": "`DR-04` ปากเหวเย็น ข้อ 2 ×3 (ปีศาจใต้ดิน `DM-07`) · `WR-13` ทาง ก ผนึกปากเหว ปิด เหลือคอแผ่นดิน",
+    "eventMods": [
+     {
+      "events": [
+       "DR-04",
+       "DM-07"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-04` ปากเหวเย็น ข้อ 2 ×3 (ปีศาจใต้ดิน `DM-07`)"
+     },
+     {
+      "events": [
+       "WR-13"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`WR-13` ทาง ก ผนึกปากเหว ปิด เหลือคอแผ่นดิน"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:146"
+   },
+   {
+    "id": "roots",
+    "kind": "รากไม้ใต้ดิน",
+    "linesRaw": "ซิลวาเนล–เนบูเลีย (ใต้ช่องแคบ)",
+    "daysRaw": "15–25",
+    "days": [
+     15,
+     25
+    ],
+    "fareRaw": "20–40 ค่าผู้นำทาง",
+    "fare": [
+     20,
+     40
+    ],
+    "whoRaw": "ผู้มีผู้นำทาง (`guide` หรือนักผจญภัยที่รู้ทาง) หรือ `ns_fog_guide` หรืออาชีพ `adventurer` `explorer`",
+    "eventsRaw": "`BIO-02` รากตาย ปิด",
+    "eventMods": [
+     {
+      "events": [
+       "BIO-02"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`BIO-02` รากตาย ปิด"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:147"
+   },
+   {
+    "id": "fog",
+    "kind": "ทางหมอก",
+    "linesRaw": "ขาที่ปลายทางหรือทางผ่านอยู่ในเนบูเลีย หรือในประเทศเขตหมอก",
+    "daysRaw": "เวลาของขาที่ใช้ ×1.5",
+    "days": null,
+    "fareRaw": "ค่าของขาที่ใช้ บวกหน้ากากกรองหมอกหนึ่งชิ้น (ราคาเครื่องประดับ U ซื้อที่ NB-11 หรือเมืองชายแดน)",
+    "fare": null,
+    "whoRaw": "ชาวหมอก ลูกผสมจักรกล หุ่นวิญญาณ ไม่ต้องหน้ากาก (ตาราง 3.5) ผู้ไม่มีหน้ากากใช้ข้อจำกัดทางกายของชั้น 3.3",
+    "eventsRaw": "`FG-02` ประเทศปิดตาย เข้าได้เฉพาะลักลอบ และใช้ `cn_fog_filter` หนึ่งชิ้นต่อวันในหมอกทึบ · `FG-11` ทั้งเนบูเลียเป็นหมอกทึบ · `BIO-04` ประเทศเขตหมอกใช้แถวนี้ · `MC-09` เมืองเปิดไม่ต้องหน้ากาก · `BIO-05` แถวนี้เลิกใช้ · `END-09` ทุกทวีปที่หมอกถึงใช้แถวนี้",
+    "eventMods": [
+     {
+      "events": [
+       "FG-02"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`FG-02` ประเทศปิดตาย เข้าได้เฉพาะลักลอบ และใช้ `cn_fog_filter` หนึ่งชิ้นต่อวันในหมอกทึบ"
+     },
+     {
+      "events": [
+       "FG-11"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`FG-11` ทั้งเนบูเลียเป็นหมอกทึบ"
+     },
+     {
+      "events": [
+       "BIO-04"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`BIO-04` ประเทศเขตหมอกใช้แถวนี้"
+     },
+     {
+      "events": [
+       "MC-09"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`MC-09` เมืองเปิดไม่ต้องหน้ากาก"
+     },
+     {
+      "events": [
+       "BIO-05"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`BIO-05` แถวนี้เลิกใช้"
+     },
+     {
+      "events": [
+       "END-09"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`END-09` ทุกทวีปที่หมอกถึงใช้แถวนี้"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:148"
+   },
+   {
+    "id": "stair",
+    "kind": "บันไดหมื่นขั้น",
+    "linesRaw": "SH-03 ขึ้น AZ-04",
+    "daysRaw": "รอคิวทดสอบ 1–4 ฤดู แล้วปีน 10–15 · ขาลงไม่ต้องทดสอบ ปีน 7–10",
+    "days": null,
+    "fareRaw": "ตั๋ว `ky_stair_ticket` จาก SH-09 3 · ค่าผ่านยักษ์ 10",
+    "fare": null,
+    "whoRaw": "ผู้ผ่านการทดสอบของยักษ์ (SH03-2) ตามท่าทีต่อ SH-03 ในชั้น 3.2: ยินดี 70% กลาง 50% ระแวง 30% ปิดกั้นทดสอบไม่ได้ ไม่ผ่านตั๋วหมด ตั๋วปลอมของ SH09-4 ใช้ไม่ได้",
+    "eventsRaw": "`WR-02` ทาง ก ปิดถาวร · `HP-03` เปิดอีกครั้ง · `DR-01` ยอดบันไดหาย ปิด แทนด้วยแถวสู่ซาก",
+    "eventMods": [
+     {
+      "events": [
+       "WR-02"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`WR-02` ทาง ก ปิดถาวร"
+     },
+     {
+      "events": [
+       "HP-03"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`HP-03` เปิดอีกครั้ง"
+     },
+     {
+      "events": [
+       "DR-01"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`DR-01` ยอดบันไดหาย ปิด แทนด้วยแถวสู่ซาก"
+     }
+    ],
+    "needs": [
+     "ky_stair_ticket"
+    ],
+    "sky": true,
+    "src": "docs/systems/travel/01-travel-rules.md:149"
+   },
+   {
+    "id": "airship",
+    "kind": "เรือเหาะ",
+    "linesRaw": "MK-09 ↔ อัซการ์ (ท่าที่ค้ากับ MK-09: AZ-08 AZ-03 AZ-09)",
+    "daysRaw": "4–7",
+    "days": [
+     4,
+     7
+    ],
+    "fareRaw": "40–60",
+    "fare": [
+     40,
+     60
+    ],
+    "whoRaw": "ผู้จ่ายได้ หรือผู้ส่งของและทูตที่นายจ้างจ่าย",
+    "eventsRaw": "`PO-02` เหลือเรือเหาะเถื่อน ค่า ×3 แทนค่าลักลอบ ความเสี่ยงถูกจับใช้ข้อ 3.4 · `DR-06` จอด 20 ปี · `DR-01` ไปได้เฉพาะ AZ-09 (`SF-09`) และซาก (`SF-05`)",
+    "eventMods": [
+     {
+      "events": [
+       "PO-02"
+      ],
+      "wildcard": [],
+      "fareMul": 3,
+      "closes": false,
+      "text": "`PO-02` เหลือเรือเหาะเถื่อน ค่า ×3 แทนค่าลักลอบ ความเสี่ยงถูกจับใช้ข้อ 3.4"
+     },
+     {
+      "events": [
+       "DR-06"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-06` จอด 20 ปี"
+     },
+     {
+      "events": [
+       "DR-01",
+       "SF-09",
+       "SF-05"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-01` ไปได้เฉพาะ AZ-09 (`SF-09`) และซาก (`SF-05`)"
+     }
+    ],
+    "needs": [],
+    "sky": true,
+    "src": "docs/systems/travel/01-travel-rules.md:150"
+   },
+   {
+    "id": "whale",
+    "kind": "วาฬฟ้า",
+    "linesRaw": "NR-16 ↔ AZ-06",
+    "daysRaw": "10–15",
+    "days": [
+     10,
+     15
+    ],
+    "fareRaw": "0 (ของขวัญแก่ผู้เลี้ยงวาฬ)",
+    "fare": [
+     0,
+     0
+    ],
+    "whoRaw": "ผู้มีคำเชิญ (ตัวปรับ \"ถือใบเชิญ\" ชั้น 3.2 จาก NR-16 หรือ AZ-06) หรือผู้ไว้ใจ ≥ 3 ในสองประเทศนั้น",
+    "eventsRaw": "`CT-10` เปิดแก่คนสามัญหนึ่งฤดูโดยไม่ต้องเชิญ · `DR-01` ปิด ยกเว้นฤดูของ `CT-10` ที่เปิดเนเรีย↔สกายฟอลล์",
+    "eventMods": [
+     {
+      "events": [
+       "CT-10"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`CT-10` เปิดแก่คนสามัญหนึ่งฤดูโดยไม่ต้องเชิญ"
+     },
+     {
+      "events": [
+       "DR-01",
+       "CT-10"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`DR-01` ปิด ยกเว้นฤดูของ `CT-10` ที่เปิดเนเรีย↔สกายฟอลล์"
+     }
+    ],
+    "needs": [],
+    "sky": true,
+    "src": "docs/systems/travel/01-travel-rules.md:151"
+   },
+   {
+    "id": "waterfall",
+    "kind": "น้ำตกย้อนฟ้า",
+    "linesRaw": "NR-02 ขึ้น AZ-06",
+    "daysRaw": "รอคืนจันทร์เต็มดวง 1–30 แล้วไต่ 2–3",
+    "days": null,
+    "fareRaw": "0",
+    "fare": [
+     0,
+     0
+    ],
+    "whoRaw": "ผู้ถือ `ky_waterfall_key` (`waterfall_keyholder`) และผู้ที่เขาพาไป ผู้ไม่ได้รับเชิญตกตาย",
+    "eventsRaw": "`DR-01` ปิด",
+    "eventMods": [
+     {
+      "events": [
+       "DR-01"
+      ],
+      "wildcard": [],
+      "closes": true,
+      "text": "`DR-01` ปิด"
+     }
+    ],
+    "needs": [
+     "ky_waterfall_key"
+    ],
+    "sky": true,
+    "src": "docs/systems/travel/01-travel-rules.md:152"
+   },
+   {
+    "id": "fly",
+    "kind": "บินเอง",
+    "linesRaw": "ทุกขาที่ข้ามช่องแคบหรือขึ้นอัซการ์",
+    "daysRaw": "เวลาของขาบกที่เทียบ ×0.5 ขึ้นอัซการ์จากซาฮารันหรือเนเรีย 5–10",
+    "days": null,
+    "fareRaw": "0",
+    "fare": [
+     0,
+     0
+    ],
+    "whoRaw": "เผ่าปีก ผู้ขี่ `pa_fly_mount` ระดับ 3 · ปีกสั้นบินได้เฉพาะขาบกในทวีป",
+    "eventsRaw": "`DR-01` ขึ้นได้แค่ AZ-09 ที่ยังลอย",
+    "eventMods": [
+     {
+      "events": [
+       "DR-01"
+      ],
+      "wildcard": [],
+      "closes": false,
+      "text": "`DR-01` ขึ้นได้แค่ AZ-09 ที่ยังลอย"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:153"
+   },
+   {
+    "id": "ruin",
+    "kind": "สู่ซาก (หลัง `DR-01`)",
+    "linesRaw": "ซาฮารันตะวันออก ↔ สกายฟอลล์",
+    "daysRaw": "15–25",
+    "days": [
+     15,
+     25
+    ],
+    "fareRaw": "2–4",
+    "fare": [
+     2,
+     4
+    ],
+    "whoRaw": "ทุกคน ทางทะเลใช้แถวทะเล",
+    "eventsRaw": "ตามเหตุการณ์ `SF-*`",
+    "eventMods": [
+     {
+      "events": [],
+      "wildcard": [
+       "SF-*"
+      ],
+      "closes": false,
+      "text": "ตามเหตุการณ์ `SF-*`"
+     }
+    ],
+    "needs": [],
+    "sky": false,
+    "src": "docs/systems/travel/01-travel-rules.md:154"
+   }
+  ],
+  "noSmuggleText": "เส้นที่ปิดยังไปได้ด้วยลักลอบ (ข้อ 3.4) ใช้เวลาของเส้นนั้น ค่าลักลอบแทนค่าโดยสาร ยกเว้นเส้นที่เขียนว่าปิดเพราะที่หายหรือเพราะกายภาพ (ยอดบันไดหายหลัง `DR-01` รากตาย ปากเหวถูกผนึก เรือเหาะจอดช่วงลมหยุด) ซึ่งลักลอบไม่ได้",
+  "windStill": {
+   "years": 20,
+   "rows": [
+    {
+     "period": "ปีที่ 0–20 ลมหยุด",
+     "from": 0,
+     "to": 20,
+     "seaTimeMul": 2,
+     "seaFareMul": 1.3,
+     "coastTimeMul": 1.5,
+     "airship": "จอดทั้งหมด เส้นปิด ลักลอบไม่ได้",
+     "d12": {
+      "item": 8,
+      "mul": 2
+     },
+     "textRaw": [
+      "เรือใบออกไม่ได้ เหลือเรือพาย เวลา ×2 ค่า ×1.3 · d12 ข้อ 8 ×2",
+      "เวลา ×1.5",
+      "จอดทั้งหมด เส้นปิด ลักลอบไม่ได้",
+      "ไม่เปลี่ยน (วาฬฟ้า น้ำตก บันได ทางบก บินเอง)"
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:162"
+    },
+    {
+     "period": "หลังปีที่ 20 ยุคลมสุ่ม",
+     "from": 20,
+     "to": null,
+     "seaTimeMul": 1.25,
+     "seaFareMul": 1.1,
+     "coastTimeMul": null,
+     "airship": "กลับมาบินตามกติกาเดิม (`PO-02` ยังมีผล)",
+     "d12": {
+      "item": 8,
+      "mul": 2
+     },
+     "textRaw": [
+      "เรือใบกลับมา เวลา ×1.25 ค่า ×1.1 · d12 ข้อ 8 ×2 ถาวร · เรือที่มีลูกเรือ `ns_wind_read` หรือ `navigator` ไม่โดนเวลา ×1.25",
+      "ไม่เปลี่ยน",
+      "กลับมาบินตามกติกาเดิม (`PO-02` ยังมีผล)",
+      "ไม่เปลี่ยน"
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:163"
+    }
+   ],
+   "src": "docs/systems/travel/01-travel-rules.md:158"
+  },
+  "encounters": [
+   {
+    "d": 1,
+    "name": "ด่านเรียกภาษีหรือสินบน",
+    "effectRaw": "ทอง −5% ถึง −15% ของสินค้า หรือ `c_wanted` 15% ถ้าขัดขืน (ท่าที −1 ทอยสองครั้ง)",
+    "effects": [
+     {
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ขัดขืน (ท่าที −1 ทอยสองครั้ง)"
+      },
+      "then": [
+       {
+        "k": "pick",
+        "of": [
+         {
+          "label": "ทอง −5% ถึง −15% ของสินค้า",
+          "effects": []
+         },
+         {
+          "label": "c_wanted 15%",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "c_wanted",
+            "chance": 0.15
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "nums": [
+     -5,
+     -15,
+     15,
+     -1
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:171"
+   },
+   {
+    "d": 2,
+    "name": "โจรหรือสัตว์ดักทาง",
+    "effectRaw": "ศึกตาม [../combat/04-encounters.md](../combat/04-encounters.md) หัวข้อ 2 ผู้คุ้มกัน +2 ต่อคน",
+    "effects": [],
+    "nums": [
+     2
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:172"
+   },
+   {
+    "d": 3,
+    "name": "ผู้ร่วมทางต่างเผ่า",
+    "effectRaw": "NPC ทั่วไปเผ่าตามเส้นทาง (สุ่มจากเผ่าของประเทศต้นทางและปลายทาง) ขอติดทาง ฟังข่าว ขายของ หรือขอความช่วยเหลือ ความรู้จัก +1",
+    "effects": [],
+    "nums": [
+     1
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:173"
+   },
+   {
+    "d": 4,
+    "name": "เทศกาลหรือตลาดนัด",
+    "effectRaw": "พักหนึ่งฤดู ขายของพิเศษ ราคา ×1.2 ถึง ×1.5 ได้ข่าวของเมืองใกล้เคียง",
+    "effects": [],
+    "nums": [
+     1.2,
+     1.5
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:174"
+   },
+   {
+    "d": 5,
+    "name": "ผู้ลี้ภัยหรือผู้หนีภัยตามเส้น",
+    "effectRaw": "ถ้ามีเหตุการณ์ภัยในทวีป: ขอทางหรือน้ำ ช่วยได้ `karma` + ไม่ช่วยไม่เสีย",
+    "effects": [
+     {
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "มีเหตุการณ์ภัยในทวีป"
+      },
+      "then": []
+     }
+    ],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:175"
+   },
+   {
+    "d": 6,
+    "name": "ขบวนทหารหรือด่านตรวจสงคราม",
+    "effectRaw": "ถูกเกณฑ์ขนของ (ไม่จ่ายหรือจ่ายต่ำ) หรือเปิดเส้นทหารรับจ้าง ml.a1",
+    "effects": [
+     {
+      "k": "pick",
+      "of": [
+       {
+        "label": "ถูกเกณฑ์ขนของ (ไม่จ่ายหรือจ่ายต่ำ)",
+        "effects": []
+       },
+       {
+        "label": "เปิดเส้นทหารรับจ้าง ml.a1",
+        "effects": [
+         {
+          "k": "ref",
+          "nodes": [
+           "ml.a1"
+          ],
+          "rel": ""
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "nums": [
+     1
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:176"
+   },
+   {
+    "d": 7,
+    "name": "ผู้ป่วยหรือสิ่งกักกัน",
+    "effectRaw": "โรคระบาด `plague`: ถูกกักหนึ่งฤดู หรือพาโรคไป `c_fever` 15%",
+    "effects": [
+     {
+      "k": "pick",
+      "of": [
+       {
+        "label": "โรคระบาด plague: ถูกกักหนึ่งฤดู",
+        "effects": []
+       },
+       {
+        "label": "พาโรคไป c_fever 15%",
+        "effects": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_fever",
+          "chance": 0.15
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "nums": [
+     15
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:177"
+   },
+   {
+    "d": 8,
+    "name": "อุบัติเหตุของพาหนะ",
+    "effectRaw": "เกวียนหัก เรือรั่ว สัตว์ลากบาดเจ็บ ทอง −มูลค่าซ่อม หรือล่าช้าหนึ่งฤดู",
+    "effects": [],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:178"
+   },
+   {
+    "d": 9,
+    "name": "ที่พักปลอดภัยและเรื่องเล่า",
+    "effectRaw": "พักฟรี ฟื้น hp ได้ข่าวหรือเงื่อนงำของเส้นเรื่อง (ความรู้ใหม่)",
+    "effects": [],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:179"
+   },
+   {
+    "d": 10,
+    "name": "ข่าวเหตุการณ์โลก",
+    "effectRaw": "ตัวละครได้ยินเหตุการณ์ใหญ่ที่เพิ่งเกิดในทวีปอื่น (ข่าว ไม่ใช่การอยู่ที่นั่น) เปลี่ยนน้ำหนักการตัดสินใจครั้งต่อไป",
+    "effects": [],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:180"
+   },
+   {
+    "d": 11,
+    "name": "ผู้เดินทางพบกันอีกครั้ง",
+    "effectRaw": "NPC ที่เคยรู้จักผ่านมาพอดี (บุญคุณ/แค้นทำงาน)",
+    "effects": [],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:181"
+   },
+   {
+    "d": 12,
+    "name": "ไม่มีอะไร",
+    "effectRaw": "ขาเงียบ",
+    "effects": [],
+    "nums": [],
+    "src": "docs/systems/travel/01-travel-rules.md:182"
+   }
+  ],
+  "encounterRolls": {
+   "perLeg": 1,
+   "crossContinent": 2,
+   "caravanWithPassengers": 1,
+   "src": "docs/systems/travel/01-travel-rules.md:167"
+  },
+  "encounterMods": [
+   {
+    "when": "สงคราม",
+    "cond": {
+     "k": "place",
+     "kinds": [
+      "war"
+     ]
+    },
+    "items": [
+     {
+      "d": 6,
+      "mul": 3
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:184"
+   },
+   {
+    "when": "โรคระบาด",
+    "cond": {
+     "k": "place",
+     "kinds": [
+      "plague"
+     ]
+    },
+    "items": [
+     {
+      "d": 7,
+      "mul": 3
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:184"
+   },
+   {
+    "when": "ภัยอดอยาก",
+    "cond": {
+     "k": "place",
+     "kinds": [
+      "famine"
+     ]
+    },
+    "items": [
+     {
+      "d": 5,
+      "mul": 2
+     },
+     {
+      "d": 2,
+      "mul": 2
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:184"
+   },
+   {
+    "when": "หลัง DR-06 ขาทางเรือหรือเรือเหาะ",
+    "cond": {
+     "k": "event",
+     "id": "DR-06",
+     "happened": true
+    },
+    "items": [
+     {
+      "d": 8,
+      "mul": 2
+     }
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:184",
+    "routes": [
+     "sea",
+     "airship"
+    ]
+   }
+  ],
+  "targets": {
+   "goals": [
+    {
+     "metric": "NPC ต่างเผ่าที่มีชื่อซึ่งตัวละครมีปฏิสัมพันธ์ (ไม่นับเพียงรู้จักชื่อ)",
+     "target": "3",
+     "min": "2",
+     "nums": [
+      3,
+      2
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:192"
+    },
+    {
+     "metric": "ประเทศที่เคยเหยียบนอกประเทศเกิด (L0 นับเป็น 0)",
+     "target": "2.0",
+     "min": "ไม่กำหนด",
+     "nums": [
+      2
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:193"
+    },
+    {
+     "metric": "จุดบรรจบที่เจอ",
+     "target": "1.0",
+     "min": "0.7",
+     "nums": [
+      1,
+      0.7
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:194"
+    },
+    {
+     "metric": "ชีวิตที่ไม่เจอต่างเผ่าเลยตลอดชีวิต",
+     "target": "ไม่เกิน 25%",
+     "min": "35%",
+     "nums": [
+      25,
+      35
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:195"
+    }
+   ],
+   "measured": [
+    {
+     "metric": "NPC ต่างเผ่าที่เจอ เฉลี่ยของเผ่าที่ไม่ใช่มนุษย์",
+     "target": "3",
+     "min": "1.2 → 2.9",
+     "nums": [
+      1.2,
+      2.9,
+      3
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:203"
+    },
+    {
+     "metric": "NPC ต่างเผ่าที่เจอ มนุษย์",
+     "target": "3",
+     "min": "0.5 → 1.4",
+     "nums": [
+      0.5,
+      1.4,
+      3
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:204"
+    },
+    {
+     "metric": "ชีวิตที่ไม่เจอต่างเผ่าเลย เฉลี่ยของเผ่าที่ไม่ใช่มนุษย์",
+     "target": "ไม่เกิน 25%",
+     "min": "36% → 18%",
+     "nums": [
+      36,
+      18,
+      25
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:205"
+    },
+    {
+     "metric": "เผ่าที่ได้ต่ำกว่า 2 NPC",
+     "target": "0",
+     "min": "15 จาก 20 → 2 จาก 20",
+     "nums": [
+      15,
+      20,
+      2,
+      20,
+      0
+     ],
+     "src": "docs/systems/travel/01-travel-rules.md:206"
+    }
+   ]
+  },
+  "raw": [
+   {
+    "headings": [
+     "1. ระดับการเดินทางของชีวิต"
+    ],
+    "header": [
+     "ระดับ",
+     "ความหมาย",
+     "ตัวอย่าง"
+    ],
+    "rows": [
+     [
+      "L0 อยู่ถิ่น",
+      "ทั้งชีวิตอยู่ในประเทศเกิดหรือประเทศเดียว ออกนอกเมืองได้ แต่ไม่ข้ามเขตแดน",
+      "ชาวนา ช่างฝีมือ นักบวชประจำวัด ผู้ปกครองท้องถิ่น"
+     ],
+     [
+      "L1 ในทวีป",
+      "ข้ามประเทศในทวีปเดียวกันอย่างน้อยหนึ่งครั้ง",
+      "พ่อค้าเมืองติดกัน ทหารรับจ้าง ผู้แสวงบุญ ผู้เรียนต่างเมือง"
+     ],
+     [
+      "L2 ข้ามทวีป",
+      "ไปทวีปอื่นอย่างน้อยหนึ่งครั้ง (ทางคอแผ่นดิน ทะเล ทะเลทราย หรือฟ้า)",
+      "ลูกเรือ พ่อค้าข้ามทวีป ผู้ลี้ภัย ผู้ส่งสาร นักผจญภัย"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:9"
+   },
+   {
+    "headings": [
+     "1. ระดับการเดินทางของชีวิต"
+    ],
+    "header": [
+     "กลุ่มอาชีพ",
+     "L0",
+     "L1",
+     "L2"
+    ],
+    "rows": [
+     [
+      "อาชีพประจำที่ (เกษตร ช่าง ชีวิตช้า นักบวชวัด ขุนนางท้องถิ่น)",
+      "65%",
+      "28%",
+      "7%"
+     ],
+     [
+      "อาชีพเมือง (เสมียน ครู หมอ)",
+      "45%",
+      "40%",
+      "15%"
+     ],
+     [
+      "อาชีพเดินทาง (พ่อค้า ผู้ส่งของ ผู้คุ้มกัน ลูกเรือ ผู้แสวงบุญ ทหารรับจ้าง นักเร่)",
+      "0%",
+      "45%",
+      "55%"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:17"
+   },
+   {
+    "headings": [
+     "1. ระดับการเดินทางของชีวิต"
+    ],
+    "header": [
+     "อาชีพ",
+     "ขาเดินต่อปี",
+     "ขอบเขตปกติ",
+     "หมายเหตุ"
+    ],
+    "rows": [
+     [
+      "พ่อค้า `merchant` `peddler`",
+      "2 ถึง 3",
+      "ในทวีป ข้ามทวีปปีละหนึ่งครั้งเมื่อทุนพอ",
+      "เลือกเมืองที่ส่วนต่างราคาสูงสุดที่เข้าได้ ([../economy/05-trade.md](../economy/05-trade.md))"
+     ],
+     [
+      "ผู้ส่งของ `courier`",
+      "3 ถึง 4",
+      "ในทวีป ข้ามทวีปเมื่อรับงานทะเลหรือเหาะ",
+      "ปลายทางตามใบสั่ง ไม่เลือกเอง"
+     ],
+     [
+      "ผู้คุ้มกันขบวน `caravan_guard`",
+      "2",
+      "ตามขบวน",
+      "ขบวนต้องมีผู้คุ้มกันอย่างน้อยหนึ่งคนต่อห้าเกวียน"
+     ],
+     [
+      "ลูกเรือ `sailor`",
+      "2 ถึง 3 ท่า",
+      "ข้ามทวีป",
+      "เส้นประจำของเรือ"
+     ],
+     [
+      "ผู้แสวงบุญ",
+      "1 ทริปยาวต่อชีวิต",
+      "ข้ามประเทศถึงข้ามทวีป",
+      "ปลายทางตามศาสนา"
+     ],
+     [
+      "ทหารรับจ้าง `mercenary`",
+      "1 ทุกหนึ่งถึงสองปี",
+      "ตามสัญญา",
+      "ไปที่ที่มีสงครามและเงิน"
+     ],
+     [
+      "นักเร่ นักผจญภัย",
+      "1 ถึง 2",
+      "ไม่จำกัด",
+      "เลือกตามนิสัยอยากรู้"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:25"
+   },
+   {
+    "headings": [
+     "2. เหตุที่ทำให้ได้เดินทาง"
+    ],
+    "header": [
+     "สาเหตุ",
+     "เกิดเมื่อ",
+     "โอกาสต่อปี",
+     "เปิดโหนด"
+    ],
+    "rows": [
+     [
+      "ไปเรียน",
+      "อายุเทียบ 15 ถึง 24 · ชนชั้น 3 ขึ้นไป หรือมีผู้ค้ำ",
+      "3% (ชนชั้น 4 ขึ้นไป ×2)",
+      "sc.t1"
+     ],
+     [
+      "แสวงบุญ",
+      "ศรัทธา > 40 และศาสนามีที่ศักดิ์สิทธิ์นอกประเทศ",
+      "1% (ศรัทธา > 60 ×3)",
+      "ps.t1"
+     ],
+     [
+      "รับจ้างรบ",
+      "ธงสงคราม `war` ในประเทศ หรืออาชีพทหาร",
+      "4% (`war=total` ×2)",
+      "ml.a1"
+     ],
+     [
+      "ลี้ภัย",
+      "เหตุการณ์โลกที่ทำให้ถิ่นอยู่ไม่ได้ (ภัยอดอยาก โรคระบาด สงครามในประเทศ ฟ้าถล่ม หมอก)",
+      "15% ในปีที่เหตุการณ์เกิด",
+      "ex.a1"
+     ],
+     [
+      "เนรเทศหรือหนีโทษ",
+      "มี `c_wanted` หรือถูกขับจากสถาบัน",
+      "20%",
+      "ex.a2"
+     ],
+     [
+      "คำเชิญ",
+      "NPC ต่างถิ่นที่ไว้ใจ ≥ 3 ชวนไปทำงานหรืออยู่ด้วย",
+      "3%",
+      "xc ตามเผ่า"
+     ],
+     [
+      "อยากรู้",
+      "แกน `curious` > 40 และไม่มีภาระครอบครัว",
+      "1.5%",
+      "wd.t1"
+     ],
+     [
+      "หนี้หรือสัญญา",
+      "เป็นหนี้ ≥ 100 ทอง หรือมีสัญญาจ้างต่างถิ่น",
+      "2%",
+      "tr.a1 หรือ ml.a1"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:44"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.2 ท่าทีของถิ่นต่อเผ่า"
+    ],
+    "header": [
+     "ค่า",
+     "ชื่อ",
+     "ผล"
+    ],
+    "rows": [
+     [
+      "+1",
+      "ยินดี",
+      "เข้าได้ ค่าผ่านทางปกติ เหตุการณ์ผู้ช่วยเพิ่ม"
+     ],
+     [
+      "0",
+      "กลาง",
+      "เข้าได้ปกติ"
+     ],
+     [
+      "−1",
+      "ระแวง",
+      "เข้าได้ ค่าผ่านทาง ×1.5 มีด่านตรวจเพิ่มหนึ่งครั้งต่อขา ไม่มีผู้ช่วยเมื่อมีปัญหา"
+     ],
+     [
+      "−2",
+      "ปิดกั้น",
+      "เข้าไม่ได้ตามปกติ ต้องมีใบผ่านจากผู้ไว้ใจ ≥ 3 ในถิ่น หรือเป็นทูต/ผู้ถูกเชิญ หรือลักลอบ (ข้อ 3.4)"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:72"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.2 ท่าทีของถิ่นต่อเผ่า"
+    ],
+    "header": [
+     "ค่า",
+     "คู่เผ่า"
+    ],
+    "rows": [
+     [
+      "+1",
+      "เอลฟ์ ↔ ภูต ↔ ฮาล์ฟลิง · ฮาล์ฟลิง ↔ มนุษย์ เผ่าสัตว์ · ดาร์กเอลฟ์ ↔ แวมไพร์ เผ่าปีศาจ · แวมไพร์ ↔ มัมมี่ · คนแคระ ↔ มนุษย์ช่าง เผ่ามังกร · ยักษ์ → คนแคระ · ออร์ค ↔ เผ่าปีศาจ กูล · เผ่าปีศาจ ↔ กูล · เผ่ามังกร ↔ เผ่าปีก เผ่าลาวา · เผ่าปีก ↔ เงือก · เงือก ↔ มนุษย์เรือ · นาคา ↔ กัปปะ มนุษย์ริมน้ำ · ลูกผสมจักรกล ↔ หุ่นวิญญาณ"
+     ],
+     [
+      "−1",
+      "เอลฟ์ → มนุษย์ คนแคระ เผ่าสัตว์ · คนแคระ → ยักษ์ เผ่าลาวา · ออร์ค → เอลฟ์ เผ่าสัตว์ คนแคระ · ดาร์กเอลฟ์ ↔ เผ่าลาวา · ภูต → คนแคระ เผ่าปีศาจ · แวมไพร์ → ชาวหมอก · มนุษย์ทั่วไป → ลูกผสมจักรกล · ทุกเผ่า → กูล (ยกเว้นออร์ค เผ่าปีศาจ) · เผ่าสัตว์ → ออร์ค"
+     ],
+     [
+      "−2",
+      "เงือก ↔ นาคา · เผ่าปีก ↔ ยักษ์ · เผ่าปีศาจ แวมไพร์ กูล มัมมี่ ในถิ่นศาสนาแสง (เช่น AL-02) · มัมมี่ → ซาร์ฮาดีน (SH-01)"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:81"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.3 ศีลธรรมและอาชีพ"
+    ],
+    "header": [
+     "เงื่อนไข",
+     "ห้ามเข้า",
+     "ถ้าเข้า"
+    ],
+    "rows": [
+     [
+      "ค้าหรือล่าเผ่า X เพื่อขาย (ค้ามนุษย์ ล่าสัตว์เพื่อหนัง จับภูต ขายคนเลือด) รวมเส้นผู้ค้าคนตามท่าทีของประเทศใน [../economy/10-bondage.md](../economy/10-bondage.md)",
+      "ประเทศที่ X เป็นเผ่าแรก และประเทศพันธมิตรของมัน",
+      "`c_wanted` ทันที ถูกจับหรือถูกล่าตาม [../combat/04-encounters.md](../combat/04-encounters.md) หัวข้อ 6"
+     ],
+     [
+      "ขายอาวุธให้ศัตรูของถิ่น (`SH11-3` บูรัก ขายอาวุธให้สองฝ่าย)",
+      "ประเทศที่เสียหายจากอาวุธนั้น",
+      "ถูกยึดสินค้า ค่าปรับ ×3"
+     ],
+     [
+      "ผู้ตายหรือผู้ร่ายวิชาตาย (`#necro` `undead`)",
+      "ถิ่นศาสนาแสง (AL-02 และพันธมิตร)",
+      "ถูกขับ หรือศาลศาสนา 15% ต่อปี"
+     ],
+     [
+      "`c_wanted` ในประเทศ Y",
+      "Y และประเทศในทวีปเดียวกันที่ตกลงส่งตัวผู้ร้ายข้ามแดน (ช่อง `justice=` เป็น `court` `martial` `ledger`)",
+      "ถูกจับเมื่อผ่านด่าน"
+     ],
+     [
+      "ผู้ที่ทำลายต้นไม้โลก หรือเผาป่า",
+      "SV ทุกประเทศ",
+      "ถูกล่า (ดู [../combat/03-enemies.md](../combat/03-enemies.md) SV14-1)"
+     ],
+     [
+      "ผู้ที่ขโมยของของเทพหรือมังกร",
+      "ถิ่นที่บูชาเทพหรือมังกรนั้น",
+      "ศาสนาตามล่า ศรัทธาเทพ −20"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:93"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.5 การเคลื่อนที่ตามเผ่าและฉากน้ำลึก"
+    ],
+    "header": [
+     "เผ่า",
+     "ฟ้า",
+     "ทะเล",
+     "น้ำลึก",
+     "ทะเลทราย",
+     "หมอก",
+     "แดด"
+    ],
+    "rows": [
+     [
+      "เผ่าปีก",
+      "บินเองได้ระยะไกล ปีกสั้นบินได้ระยะสั้น",
+      "—",
+      "—",
+      "ไม่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "ภูตพราย",
+      "บินได้ด้วยร่างจิ๋ว ไม่นับเป็นทางฟ้าไปอัซการ์ (3.1)",
+      "—",
+      "—",
+      "ไม่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "เงือก",
+      "—",
+      "อยู่ในน้ำได้ตลอด ออกจากน้ำไม่เกินครึ่งปีต่อครั้ง",
+      "ลงได้ (หายใจใต้น้ำ)",
+      "ไม่ชอบ",
+      "นำทางในหมอกทะเลด้วยแสง (ไม่กันหมอกเนบูเลีย)",
+      "—"
+     ],
+     [
+      "นาคา",
+      "—",
+      "หายใจใต้น้ำ นาคาทะเลออกจากน้ำไม่เกินครึ่งปีต่อครั้ง",
+      "ลงได้ (หายใจใต้น้ำ)",
+      "ไม่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "แวมไพร์",
+      "—",
+      "—",
+      "—",
+      "ไม่ชอบ",
+      "ไม่แพ้แดดในหมอก",
+      "แพ้แสงแดด เดินขบวนกลางคืน"
+     ],
+     [
+      "ดาร์กเอลฟ์",
+      "—",
+      "—",
+      "—",
+      "ไม่ชอบ",
+      "—",
+      "แพ้แสงจ้า (`weak_light`)"
+     ],
+     [
+      "มัมมี่",
+      "—",
+      "—",
+      "—",
+      "ถิ่นที่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "สไลม์",
+      "—",
+      "—",
+      "—",
+      "ไม่ชอบ ต้องความชื้น",
+      "—",
+      "—"
+     ],
+     [
+      "ออร์ค ยักษ์ เผ่าลาวา เผ่าปีศาจ กูล",
+      "—",
+      "—",
+      "—",
+      "ถิ่นที่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "เอลฟ์",
+      "—",
+      "—",
+      "—",
+      "ไม่ชอบ",
+      "—",
+      "—"
+     ],
+     [
+      "ชาวหมอก (มนุษย์)",
+      "—",
+      "—",
+      "—",
+      "—",
+      "ต้านพิษตั้งแต่เกิด ไม่ต้องหน้ากาก",
+      "—"
+     ],
+     [
+      "ลูกผสมจักรกล หุ่นวิญญาณ",
+      "—",
+      "—",
+      "—",
+      "—",
+      "สิ่งมีชีวิตในหมอกเมิน (FG-09)",
+      "—"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:113"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.6 เวลาและค่าเดินทางตามชนิดเส้นทาง"
+    ],
+    "header": [
+     "ชนิดเส้นทาง",
+     "เส้นที่ใช้",
+     "เวลาต่อขา (วันโลก)",
+     "ค่าโดยสาร (ทอง)",
+     "ใครใช้ได้",
+     "เหตุการณ์ที่เปลี่ยน"
+    ],
+    "rows": [
+     [
+      "บกในทวีป",
+      "ประเทศติดกันในทวีปเดียว รวมสะพานโซ่ระหว่าง AZ-01 กับเกาะบริวาร (เกาะของอัซการ์ที่ไม่มีสะพานถึงกัน ผู้บินไม่ได้ใช้เรือเหาะเล็กหรือกระเช้าของเกาะ เวลาเท่าแถวนี้ ค่า ×3)",
+      "10–20",
+      "1–3",
+      "ทุกคน",
+      "`WR-*` ปิดด่านสองประเทศ · `DR-07` ขาที่ข้ามหุบเหวในอัลเดรีย เวลา ×1.5 ค่า ×1.4"
+     ],
+     [
+      "แม่น้ำและชายฝั่ง",
+      "ในทวีป ท่าทั้งสองฝั่ง",
+      "7–15",
+      "2–4",
+      "ทุกคน เงือกและนาคาว่ายเองได้ ค่า 0",
+      "`DR-05` `DR-06` ตามแถวทะเล"
+     ],
+     [
+      "คอแผ่นดิน",
+      "อัลเดรีย–ซิลวาเนล อัลเดรีย–คาซ-ดูรัม อัลเดรีย–เมคาเรีย (ทางบกข้างราง) ซิลวาเนล–มอร์เฮเวน มอร์เฮเวน–คาซ-ดูรัม และอัลเดรีย–เนบูเลีย (ใช้แถวทางหมอกด้วย)",
+      "20–35",
+      "3–6",
+      "ทุกคน",
+      "`WR-*` ปิดด่าน · `FG-03` ปิดด่านอัลเดรีย–เนบูเลียถาวร"
+     ],
+     [
+      "รถไฟ",
+      "อัลเดรีย–เมคาเรีย (AL-28 ↔ MK-05) · หลัง `MC-07` ขาบกในอัลเดรียทุกขา",
+      "4–7",
+      "6–10",
+      "ผู้ซื้อตั๋วได้ ทางบกเดิม (แถวคอแผ่นดิน) ยังใช้ได้",
+      "`MC-07` ขยายราง"
+     ],
+     [
+      "กองคาราวานทะเลทราย",
+      "อัลเดรีย–ซาฮารัน และขาในซาฮารันที่ผ่านทะเลทราย",
+      "30–45",
+      "6–10 บวกค่าผ่านด่าน SH-04 SH-15",
+      "เดินกับขบวนเท่านั้น ผู้เดินเดี่ยว d12 ข้อ 2 และข้อ 8 ×2",
+      "`WR-10` ทาง ก ค่าผ่านด่าน ×2 ถาวร · `GI-07` ทะเลทรายรุก เวลา +10 วัน"
+     ],
+     [
+      "ทะเลข้ามทวีป",
+      "อัลเดรีย–เนเรีย มอร์เฮเวน–เนเรีย และเส้นเรือระหว่างประเทศท่าเรือสองทวีป",
+      "25–45",
+      "ดาดฟ้า 8–12 · ห้องพัก ×3",
+      "มีท่าทั้งสองฝั่ง เงือกและนาคาว่ายเองได้ ค่า 0 เวลาเท่ากัน",
+      "`PO-03` ค่า ×1.2 นอกเนเรีย · `WR-06` ขาของอัลเดรีย ค่า ×2 · `DR-05` ท่าของเมืองที่จม (AL-04 ท่าหลวง NR-09) ตัดออกตั้งแต่ `DW-01` และขาทะเลเวลา ×1.2 จน `DW-04` · `DW-04` ค่า ×0.7 · `DR-06` ตารางลมหยุดด้านล่าง"
+     ],
+     [
+      "ปากเหวใต้ดิน",
+      "คาซ-ดูรัม–มอร์เฮเวน ผ่าน KD-08",
+      "10–20",
+      "4–8 รวมผู้นำทาง",
+      "ผู้มีผู้นำทางจากถิ่น d12 ข้อ 2 ×2",
+      "`DR-04` ปากเหวเย็น ข้อ 2 ×3 (ปีศาจใต้ดิน `DM-07`) · `WR-13` ทาง ก ผนึกปากเหว ปิด เหลือคอแผ่นดิน"
+     ],
+     [
+      "รากไม้ใต้ดิน",
+      "ซิลวาเนล–เนบูเลีย (ใต้ช่องแคบ)",
+      "15–25",
+      "20–40 ค่าผู้นำทาง",
+      "ผู้มีผู้นำทาง (`guide` หรือนักผจญภัยที่รู้ทาง) หรือ `ns_fog_guide` หรืออาชีพ `adventurer` `explorer`",
+      "`BIO-02` รากตาย ปิด"
+     ],
+     [
+      "ทางหมอก",
+      "ขาที่ปลายทางหรือทางผ่านอยู่ในเนบูเลีย หรือในประเทศเขตหมอก",
+      "เวลาของขาที่ใช้ ×1.5",
+      "ค่าของขาที่ใช้ บวกหน้ากากกรองหมอกหนึ่งชิ้น (ราคาเครื่องประดับ U ซื้อที่ NB-11 หรือเมืองชายแดน)",
+      "ชาวหมอก ลูกผสมจักรกล หุ่นวิญญาณ ไม่ต้องหน้ากาก (ตาราง 3.5) ผู้ไม่มีหน้ากากใช้ข้อจำกัดทางกายของชั้น 3.3",
+      "`FG-02` ประเทศปิดตาย เข้าได้เฉพาะลักลอบ และใช้ `cn_fog_filter` หนึ่งชิ้นต่อวันในหมอกทึบ · `FG-11` ทั้งเนบูเลียเป็นหมอกทึบ · `BIO-04` ประเทศเขตหมอกใช้แถวนี้ · `MC-09` เมืองเปิดไม่ต้องหน้ากาก · `BIO-05` แถวนี้เลิกใช้ · `END-09` ทุกทวีปที่หมอกถึงใช้แถวนี้"
+     ],
+     [
+      "บันไดหมื่นขั้น",
+      "SH-03 ขึ้น AZ-04",
+      "รอคิวทดสอบ 1–4 ฤดู แล้วปีน 10–15 · ขาลงไม่ต้องทดสอบ ปีน 7–10",
+      "ตั๋ว `ky_stair_ticket` จาก SH-09 3 · ค่าผ่านยักษ์ 10",
+      "ผู้ผ่านการทดสอบของยักษ์ (SH03-2) ตามท่าทีต่อ SH-03 ในชั้น 3.2: ยินดี 70% กลาง 50% ระแวง 30% ปิดกั้นทดสอบไม่ได้ ไม่ผ่านตั๋วหมด ตั๋วปลอมของ SH09-4 ใช้ไม่ได้",
+      "`WR-02` ทาง ก ปิดถาวร · `HP-03` เปิดอีกครั้ง · `DR-01` ยอดบันไดหาย ปิด แทนด้วยแถวสู่ซาก"
+     ],
+     [
+      "เรือเหาะ",
+      "MK-09 ↔ อัซการ์ (ท่าที่ค้ากับ MK-09: AZ-08 AZ-03 AZ-09)",
+      "4–7",
+      "40–60",
+      "ผู้จ่ายได้ หรือผู้ส่งของและทูตที่นายจ้างจ่าย",
+      "`PO-02` เหลือเรือเหาะเถื่อน ค่า ×3 แทนค่าลักลอบ ความเสี่ยงถูกจับใช้ข้อ 3.4 · `DR-06` จอด 20 ปี · `DR-01` ไปได้เฉพาะ AZ-09 (`SF-09`) และซาก (`SF-05`)"
+     ],
+     [
+      "วาฬฟ้า",
+      "NR-16 ↔ AZ-06",
+      "10–15",
+      "0 (ของขวัญแก่ผู้เลี้ยงวาฬ)",
+      "ผู้มีคำเชิญ (ตัวปรับ \"ถือใบเชิญ\" ชั้น 3.2 จาก NR-16 หรือ AZ-06) หรือผู้ไว้ใจ ≥ 3 ในสองประเทศนั้น",
+      "`CT-10` เปิดแก่คนสามัญหนึ่งฤดูโดยไม่ต้องเชิญ · `DR-01` ปิด ยกเว้นฤดูของ `CT-10` ที่เปิดเนเรีย↔สกายฟอลล์"
+     ],
+     [
+      "น้ำตกย้อนฟ้า",
+      "NR-02 ขึ้น AZ-06",
+      "รอคืนจันทร์เต็มดวง 1–30 แล้วไต่ 2–3",
+      "0",
+      "ผู้ถือ `ky_waterfall_key` (`waterfall_keyholder`) และผู้ที่เขาพาไป ผู้ไม่ได้รับเชิญตกตาย",
+      "`DR-01` ปิด"
+     ],
+     [
+      "บินเอง",
+      "ทุกขาที่ข้ามช่องแคบหรือขึ้นอัซการ์",
+      "เวลาของขาบกที่เทียบ ×0.5 ขึ้นอัซการ์จากซาฮารันหรือเนเรีย 5–10",
+      "0",
+      "เผ่าปีก ผู้ขี่ `pa_fly_mount` ระดับ 3 · ปีกสั้นบินได้เฉพาะขาบกในทวีป",
+      "`DR-01` ขึ้นได้แค่ AZ-09 ที่ยังลอย"
+     ],
+     [
+      "สู่ซาก (หลัง `DR-01`)",
+      "ซาฮารันตะวันออก ↔ สกายฟอลล์",
+      "15–25",
+      "2–4",
+      "ทุกคน ทางทะเลใช้แถวทะเล",
+      "ตามเหตุการณ์ `SF-*`"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:138"
+   },
+   {
+    "headings": [
+     "3. ตัวกรองจุดหมาย",
+     "3.6 เวลาและค่าเดินทางตามชนิดเส้นทาง"
+    ],
+    "header": [
+     "ช่วง",
+     "ทะเลข้ามทวีป",
+     "แม่น้ำและชายฝั่ง",
+     "เรือเหาะ",
+     "ทางอื่น"
+    ],
+    "rows": [
+     [
+      "ปีที่ 0–20 ลมหยุด",
+      "เรือใบออกไม่ได้ เหลือเรือพาย เวลา ×2 ค่า ×1.3 · d12 ข้อ 8 ×2",
+      "เวลา ×1.5",
+      "จอดทั้งหมด เส้นปิด ลักลอบไม่ได้",
+      "ไม่เปลี่ยน (วาฬฟ้า น้ำตก บันได ทางบก บินเอง)"
+     ],
+     [
+      "หลังปีที่ 20 ยุคลมสุ่ม",
+      "เรือใบกลับมา เวลา ×1.25 ค่า ×1.1 · d12 ข้อ 8 ×2 ถาวร · เรือที่มีลูกเรือ `ns_wind_read` หรือ `navigator` ไม่โดนเวลา ×1.25",
+      "ไม่เปลี่ยน",
+      "กลับมาบินตามกติกาเดิม (`PO-02` ยังมีผล)",
+      "ไม่เปลี่ยน"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:160"
+   },
+   {
+    "headings": [
+     "4. ระหว่างทาง"
+    ],
+    "header": [
+     "d12",
+     "เหตุการณ์",
+     "ผลหลัก"
+    ],
+    "rows": [
+     [
+      "1",
+      "ด่านเรียกภาษีหรือสินบน",
+      "ทอง −5% ถึง −15% ของสินค้า หรือ `c_wanted` 15% ถ้าขัดขืน (ท่าที −1 ทอยสองครั้ง)"
+     ],
+     [
+      "2",
+      "โจรหรือสัตว์ดักทาง",
+      "ศึกตาม [../combat/04-encounters.md](../combat/04-encounters.md) หัวข้อ 2 ผู้คุ้มกัน +2 ต่อคน"
+     ],
+     [
+      "3",
+      "ผู้ร่วมทางต่างเผ่า",
+      "NPC ทั่วไปเผ่าตามเส้นทาง (สุ่มจากเผ่าของประเทศต้นทางและปลายทาง) ขอติดทาง ฟังข่าว ขายของ หรือขอความช่วยเหลือ ความรู้จัก +1"
+     ],
+     [
+      "4",
+      "เทศกาลหรือตลาดนัด",
+      "พักหนึ่งฤดู ขายของพิเศษ ราคา ×1.2 ถึง ×1.5 ได้ข่าวของเมืองใกล้เคียง"
+     ],
+     [
+      "5",
+      "ผู้ลี้ภัยหรือผู้หนีภัยตามเส้น",
+      "ถ้ามีเหตุการณ์ภัยในทวีป: ขอทางหรือน้ำ ช่วยได้ `karma` + ไม่ช่วยไม่เสีย"
+     ],
+     [
+      "6",
+      "ขบวนทหารหรือด่านตรวจสงคราม",
+      "ถูกเกณฑ์ขนของ (ไม่จ่ายหรือจ่ายต่ำ) หรือเปิดเส้นทหารรับจ้าง ml.a1"
+     ],
+     [
+      "7",
+      "ผู้ป่วยหรือสิ่งกักกัน",
+      "โรคระบาด `plague`: ถูกกักหนึ่งฤดู หรือพาโรคไป `c_fever` 15%"
+     ],
+     [
+      "8",
+      "อุบัติเหตุของพาหนะ",
+      "เกวียนหัก เรือรั่ว สัตว์ลากบาดเจ็บ ทอง −มูลค่าซ่อม หรือล่าช้าหนึ่งฤดู"
+     ],
+     [
+      "9",
+      "ที่พักปลอดภัยและเรื่องเล่า",
+      "พักฟรี ฟื้น hp ได้ข่าวหรือเงื่อนงำของเส้นเรื่อง (ความรู้ใหม่)"
+     ],
+     [
+      "10",
+      "ข่าวเหตุการณ์โลก",
+      "ตัวละครได้ยินเหตุการณ์ใหญ่ที่เพิ่งเกิดในทวีปอื่น (ข่าว ไม่ใช่การอยู่ที่นั่น) เปลี่ยนน้ำหนักการตัดสินใจครั้งต่อไป"
+     ],
+     [
+      "11",
+      "ผู้เดินทางพบกันอีกครั้ง",
+      "NPC ที่เคยรู้จักผ่านมาพอดี (บุญคุณ/แค้นทำงาน)"
+     ],
+     [
+      "12",
+      "ไม่มีอะไร",
+      "ขาเงียบ"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:169"
+   },
+   {
+    "headings": [
+     "5. เป้าการเจอต่างเผ่า"
+    ],
+    "header": [
+     "ตัวชี้วัด",
+     "เป้า (ต่อชีวิต เฉลี่ยทุกเผ่า)",
+     "ต่ำสุดของเผ่าใด ๆ"
+    ],
+    "rows": [
+     [
+      "NPC ต่างเผ่าที่มีชื่อซึ่งตัวละครมีปฏิสัมพันธ์ (ไม่นับเพียงรู้จักชื่อ)",
+      "3",
+      "2"
+     ],
+     [
+      "ประเทศที่เคยเหยียบนอกประเทศเกิด (L0 นับเป็น 0)",
+      "2.0",
+      "ไม่กำหนด"
+     ],
+     [
+      "จุดบรรจบที่เจอ",
+      "1.0",
+      "0.7"
+     ],
+     [
+      "ชีวิตที่ไม่เจอต่างเผ่าเลยตลอดชีวิต",
+      "ไม่เกิน 25%",
+      "35%"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:190"
+   },
+   {
+    "headings": [
+     "5. เป้าการเจอต่างเผ่า"
+    ],
+    "header": [
+     "ตัวชี้วัด",
+     "ก่อนเพิ่ม 25-journeys",
+     "หลังเพิ่ม",
+     "เป้า"
+    ],
+    "rows": [
+     [
+      "NPC ต่างเผ่าที่เจอ เฉลี่ยของเผ่าที่ไม่ใช่มนุษย์",
+      "1.2",
+      "2.9",
+      "3"
+     ],
+     [
+      "NPC ต่างเผ่าที่เจอ มนุษย์",
+      "0.5",
+      "1.4",
+      "3"
+     ],
+     [
+      "ชีวิตที่ไม่เจอต่างเผ่าเลย เฉลี่ยของเผ่าที่ไม่ใช่มนุษย์",
+      "36%",
+      "18%",
+      "ไม่เกิน 25%"
+     ],
+     [
+      "เผ่าที่ได้ต่ำกว่า 2 NPC",
+      "15 จาก 20",
+      "2 จาก 20",
+      "0"
+     ]
+    ],
+    "src": "docs/systems/travel/01-travel-rules.md:201"
+   }
+  ]
+ }
+}
