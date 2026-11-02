@@ -1,12 +1,13 @@
 // The condition and stat kinds the bondage system owns, and its hooks on the nodes of bd bo ab (lore/storylines/27-bondage.md).
 //   condition: stance
-//   stat:      bondage.level
+//   stat:      bondage.level bondage.exits bondage.years
 // The lines bd bo ab are opened here (`openLine` of the story) and no longer by the story's own chance (story/tuning.ts OPEN_RATE).
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply, onStat } from '../rules';
 import { onNode, openLine } from '../story';
 import { grantHeldHelp } from './help';
+import { setWays } from './line';
 import { enter, flee, leave, free, sell, buy, ransomPrice } from './engine';
 import { bondageIndex, extOf, lifeOf, stanceOf, type BondageExt } from './state';
 import type { LifeState, StoryNode } from '../types';
@@ -97,6 +98,10 @@ export function afterNode(ctx: Ctx, id: string, key: 'a' | 'b' | 'c' | '-'): voi
 }
 
 const hooks = {
+  before(ctx: Ctx, n: StoryNode, id: string) {
+    const life = lifeOf(ctx);
+    if (life && id.startsWith('bd.')) setWays(ctx, life, n, id);
+  },
   after(ctx: Ctx, _n: StoryNode, id: string, key: 'a' | 'b' | 'c' | '-') {
     afterNode(ctx, id, key);
   },
@@ -107,6 +112,18 @@ let remove: (() => void) | undefined;
 export function registerBondageRules(): void {
   // the condition `stance` (`ประเทศท่าที D L M`) is read by the world system from its own table (world/conds.ts); the same table as bondage.json byCountry
   onStat('bondage.level', { read: (ctx) => (lifeOf(ctx) ? extOf(lifeOf(ctx)!).level : 0) });
+  // how many times he left bondage, and for how many years he has been bound (a node or a condition may ask: "หลังพ้นพันธะ" means bondage.exits ≥ 1 and bondage.level = 0)
+  onStat('bondage.exits', { read: (ctx) => (lifeOf(ctx) ? extOf(lifeOf(ctx)!).counts.exits : 0) });
+  onStat('bondage.years', {
+    read: (ctx) => {
+      const l = lifeOf(ctx);
+      if (!l) return 0;
+      const h = extOf(l).history;
+      let years = 0;
+      for (let i = 0; i < h.length; i++) if (h[i].to > 0) years += (h.slice(i + 1).find((x) => x.to === 0)?.age ?? l.hAge) - h[i].age;
+      return years;
+    },
+  });
   remove?.();
   remove = onNode(hooks);
 }

@@ -5,6 +5,7 @@ import type { System } from '../game';
 import { write } from '../log';
 import { onNode, setPlaceGate } from '../story';
 import type { Effect, LifeState } from '../types';
+import { boundBan } from '../character';
 import { rollCauses, disasters } from './causes';
 import { cityYear, openJobLines, jobYear } from './jobs';
 import './rules';
@@ -94,6 +95,12 @@ export const travelSystem: System = {
     const a = life && extOf(life).away;
     if (!life || !a) return;
     const ex = extOf(life);
+    // taken into bondage on a trip: the trip is over, the owner holds him where he is
+    if (boundBan(life, 'move')) {
+      ex.away = undefined;
+      ex.base = life.country;
+      return;
+    }
     if (ex.delay > 0) {
       a.until += ex.delay;
       ex.delay = 0;
@@ -122,6 +129,8 @@ export const travelSystem: System = {
     for (const k of Object.keys(ex.yearLegs)) if (Number(k) < life.hAge - 3) delete ex.yearLegs[Number(k)];
     for (const k of Object.keys(ex.yearDays)) if (Number(k) < life.hAge - 3) delete ex.yearDays[Number(k)];
     if (life.hAge < MIN_AGE) return;
+    // a life in bondage makes no journey and takes no cause of one (10-bondage.md §2); the lines of travel wait for his freedom
+    if (boundBan(life, 'move')) return;
     openJobLines(ctx, life, ex);
     rollCauses(ctx, life, ex, new Set(begins));
     if (!lifeOf(ctx)) return;

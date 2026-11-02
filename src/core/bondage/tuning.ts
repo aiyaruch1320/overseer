@@ -41,3 +41,30 @@ export const HOLD_INCOME = { good: 10, strained: 5, cap: 15 };
 
 /** Sale of a held person to another buyer: the margin over the price (assumption; the node says "ทอง +ส่วนต่าง"). */
 export const SALE_MARGIN: [number, number] = [0.15, 0.5];
+
+/**
+ * The ways of the nodes of bd that suit one state of the life and not the other (M3 review B2; 27-bondage.md §3): the `label` is a part of the label of the way, the
+ * factor is by the state (`bound` now, `free` now, `born` bound, `left` as a child). The weights of the table are kept; a factor of 0 shuts a way.
+ */
+export interface WayState {
+  bound: boolean;
+  free: boolean;
+  born: boolean;
+  left: boolean;
+}
+export const BD_WAYS: Record<string, { label: string; mul: (s: WayState) => number }[]> = {
+  // a life bound from the start is not taken in by a kind stranger without a contract (that is the way of the one who is B0); the way says which of the two he is
+  'bd.b1': [
+    { label: 'ไม่ผูกสัญญา', mul: (s) => (s.bound ? 0 : 1) },
+    { label: 'ครอบครัวผู้รับใช้', mul: (s) => (s.left ? 0.1 : 1) },
+    { label: 'ถูกทิ้งหน้าวัด', mul: (s) => (s.left ? 1 : 0.1) },
+  ],
+  // the elders: "ยังไม่พ้นพันธะ ตายในสัญญา" is the way of one who is still bound, "ไถ่ผู้อื่นด้วยทรัพย์ที่เหลือ" of one who has the means and his freedom
+  'bd.e1': [
+    { label: 'ยังไม่พ้นพันธะ', mul: (s) => (s.bound ? 6 : 0) },
+    { label: 'ไถ่ผู้อื่น', mul: (s) => (s.bound ? 0 : 1) },
+  ],
+};
+
+/** Years a bound person has been held before he buys his freedom without having decided to at bd.a2 (assumption; bd.a2 way a says "ใช้เวลาหลายปี"). */
+export const RANSOM_AFTER_YEARS = 4;

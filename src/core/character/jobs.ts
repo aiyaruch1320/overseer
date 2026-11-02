@@ -7,7 +7,7 @@ import type { Job } from '../data/types-character';
 import type { Condition, IdKind, LifeState } from '../types';
 import type { EconomyData } from '../data/types-economy';
 import { classNum, extOf, idx } from './data';
-import { holds, jobAptitude, raiseAptitude } from './life';
+import { boundBan, holds, jobAptitude, raiseAptitude } from './life';
 import { ADULT_AGE, JOBS, SECRET } from './tuning';
 
 /**
@@ -57,6 +57,11 @@ export function grantJob(ctx: Ctx, id: string, src: Pick<EffectSource, 'sys' | '
   };
   if (!job) return fail('unknown');
   if (life.job === id) return false;
+  // a life in contract or in chains does not change the work it does by itself (10-bondage.md §2); the first work the owner gives is allowed
+  if (life.job && boundBan(life, 'job') && src.sys !== 'bondage') {
+    write(ctx.state, { sys: 'character', kind: 'jobFail', id, data: { job: id, reason: 'bound', from: src.id ?? src.sys }, level: 0 });
+    return false;
+  }
   if (!opts.force) {
     const why = ineligible(ctx, job, 'lenient');
     if (why) return fail(why);

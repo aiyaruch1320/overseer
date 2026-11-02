@@ -11,8 +11,9 @@ import { setClass } from '../character/life';
 import { addNpcTie, addTie, extOf as bondsExt, startArc } from '../bonds';
 import { personName, peopleCode } from '../text';
 import { holderPlace, rowOf, slotOf } from '../bonds/npcs';
+import { syncLine } from './line';
 import { bondageIndex, extOf, stanceOf, type BondageExt, type Held, type Level } from './state';
-import { CONTRACT_YEARS, ENTRY, FLEE, HOLD_INCOME, OPEN, OWNER_DIES, RELEASED, SALE_MARGIN, SKILL, WAGE_B1 } from './tuning';
+import { CONTRACT_YEARS, ENTRY, FLEE, HOLD_INCOME, OPEN, OWNER_DIES, RANSOM_AFTER_YEARS, RELEASED, SALE_MARGIN, SKILL, WAGE_B1 } from './tuning';
 
 const levelN = (id: string): Level => Number(id.slice(1)) as Level;
 
@@ -108,22 +109,9 @@ export function enter(ctx: Ctx, life: LifeState, route: string, level: 1 | 2 | 3
     e.opened.push('bd');
     openLine(ctx, 'bd');
   }
-  skipEarlier(ctx, life, route);
+  syncLine(ctx, life);
   write(ctx.state, { sys: 'bondage', kind: 'enter', id: `B${lv}`, data: { route, level: lv, country, owner: e.owner ?? null, price: e.price, moved: country !== from, stance: stanceOf(ctx, country) }, level: 2 });
   return true;
-}
-
-/**
- * The line bd starts at the node of the route (10-bondage.md §5 "ผลต่อเส้นเรื่อง": born or left → bd.b1, sold → bd.t1, debt, court, self-sale → bd.a1):
- * the nodes of an earlier age than the route's own are not played (a man in debt at 25 is not "born in bondage" at the same time).
- */
-function skipEarlier(ctx: Ctx, life: LifeState, route: string): void {
-  const first = bondageIndex(ctx).data.routes.find((r) => r.way === route)?.nodes[0];
-  const order = ['bd.b1', 'bd.t1', 'bd.a1'];
-  const upTo = first ? order.indexOf(first) : -1;
-  const ex = life.ext.story as StoryExt | undefined;
-  if (!ex || upTo <= 0) return;
-  for (const id of order.slice(0, upTo)) if (life.passed[id] === undefined && !ex.skipped.includes(id)) ex.skipped.push(id);
 }
 
 // ---------- leaving ----------
@@ -132,8 +120,11 @@ export type ExitWay = 'ransom' | 'freed' | 'released' | 'fled' | 'term' | 'debt'
 
 const EXIT_NAME: Record<ExitWay, string> = { ransom: 'ไถ่ตัวเอง', freed: 'ถูกไถ่', released: 'ถูกปล่อย', fled: 'หนีข้ามแดน', term: 'ครบกำหนด', debt: 'ชำระหนี้ครบ', owner: 'ตายพันธะ' };
 
-/** The character is free (B0). Buying one's own freedom lifts the class by one step when he has work (§6 row 1). */
-export function leave(ctx: Ctx, life: LifeState, how: ExitWay): boolean {
+/**
+ * The character is free (B0). Buying one's own freedom lifts the class by one step when he has work (§6 row 1). `paid` is the gold the ransom took from the
+ * purse (M3 review B3), which the log tells with the purse left.
+ */
+export function leave(ctx: Ctx, life: LifeState, how: ExitWay, paid = 0): boolean {
   const e = extOf(life);
   if (e.level === 0) return false;
   const from = e.level;
@@ -145,7 +136,8 @@ export function leave(ctx: Ctx, life: LifeState, how: ExitWay): boolean {
   e.ransoming = false;
   const up = how === 'ransom' && !!life.job;
   if (up) apply(ctx, [{ k: 'stat', stat: 'class', delta: 1 }], { sys: 'bondage', id: 'exit' });
-  write(ctx.state, { sys: 'bondage', kind: 'exit', id: how, data: { way: EXIT_NAME[how], from, classUp: up }, level: 2 });
+  syncLine(ctx, life);
+  write(ctx.state, { sys: 'bondage', kind: 'exit', id: how, data: { way: EXIT_NAME[how], from, classUp: up, paid, gold: life.gold, owner: e.owner ?? null, years: life.hAge - (e.since ?? life.hAge) }, level: 2 });
   return true;
 }
 
@@ -275,15 +267,21 @@ export function heldIncomeBonus(ctx: Ctx): number {
 
 // ---------- a life year ----------
 
-function saving(ctx: Ctx, country: string): number {
-  const [lo, hi] = bondageIndex(ctx).data.income.savingPerYear;
-  return Math.round(ctx.rng('bondage.year').int(lo, hi) * bondageIndex(ctx).incomeIndex(wOf(ctx, country)));
+/**
+ * Can the bound character pay his ransom out of the purse now? He sets out to when he decided to (bd.a2 way a); otherwise he thinks of it when he is grown (26)
+ * and has been bound some years (tuning RANSOM_AFTER_YEARS: "ใช้เวลาหลายปี", bd.a2); B1 pays the debt that is left only when he decided.
+ */
+export function canRansom(life: LifeState, e: BondageExt): boolean {
+  if (e.level === 0 || e.price <= 0 || life.gold < e.price) return false;
+  if (e.ransoming) return true;
+  return e.level >= 2 && life.hAge >= 26 && life.hAge - (e.since ?? life.hAge) >= RANSOM_AFTER_YEARS;
 }
 
 /** Once a year: the bound person pays down, the contract runs, the owner may die or let go; the free one may fall into bondage or open a line. */
 export function lifeYear(ctx: Ctx, life: LifeState): void {
   const e = extOf(life);
   const rng = ctx.rng('bondage.year');
+  syncLine(ctx, life);
   if (e.level > 0) {
     const country = e.country ?? life.country;
     if (e.level === 1) {
@@ -293,7 +291,7 @@ export function lifeYear(ctx: Ctx, life: LifeState): void {
       e.price = ransomPrice(ctx, 1, country, { debt: e.debt });
       if ((e.debt ?? 0) <= 0) return void leave(ctx, life, 'debt');
     } else {
-      e.fund += saving(ctx, country);
+      // what a bound person keeps back in a year is the net of the economy system (income × 0.2, living 0 to 1: 10-bondage.md §7 "2 ถึง 14 ทอง"), it lands in the purse
       if (e.level === 2) {
         e.years = (e.years ?? 1) - 1;
         e.price = ransomPrice(ctx, 2, country, { skill: e.skill, years: e.years });
@@ -302,10 +300,11 @@ export function lifeYear(ctx: Ctx, life: LifeState): void {
       if (e.level === 3 && rng.chance(OWNER_DIES)) return void leave(ctx, life, 'owner');
     }
     if (rng.chance(RELEASED)) return void leave(ctx, life, 'released');
-    if (e.level >= 2 && e.fund + (e.ransoming ? life.gold : 0) >= e.price && (e.ransoming || life.hAge >= 26)) {
-      life.gold = Math.max(0, life.gold + e.fund - e.price);
-      e.fund = 0;
-      return void leave(ctx, life, 'ransom');
+    // he buys his freedom with the gold he holds, the whole price, or not at all (10-bondage.md §6 "ไถ่ตัวเอง: เก็บเงินได้ตามราคาไถ่")
+    if (canRansom(life, e)) {
+      const price = e.price;
+      life.gold -= price;
+      return void leave(ctx, life, 'ransom', price);
     }
     return;
   }

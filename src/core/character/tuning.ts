@@ -108,3 +108,10 @@ export const JOBS = {
   /** A job the class favours weighs ×3 in the offer (economy/03-classes.md §4). */
   classBoost: 3,
 };
+
+/**
+ * What a life in bondage cannot do (docs/systems/economy/10-bondage.md §2 "สิทธิ์ที่เหลือ", M3 review B1), by level: `move` (change country by himself: the owner
+ * carries him, he does not go), `job` (change the work he does: B2 lives by the contract and B3 is property), `class` (rise: B1 to B3 are the class 1 together, §2).
+ * B1 keeps a say over the work he does for the creditor (assumption: the doc forbids him only to leave).
+ */
+export const BOUND_BANS: Record<number, readonly ('move' | 'job' | 'class')[]> = { 1: ['move', 'class'], 2: ['move', 'job', 'class'], 3: ['move', 'job', 'class'] };

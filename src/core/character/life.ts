@@ -5,7 +5,7 @@ import { write } from '../log';
 import type { Axis, Skill, StatKey } from '../data/types-character';
 import type { Effect, IdKind, LifeState } from '../types';
 import { AXES, clamp, classId, classNum, extOf, idx, STAT_KEYS, type GiftLike } from './data';
-import { LONGEVITY, NATURAL_DEATH_AGE, SHORT_LIFE, TRUST_COUNTS_AT } from './tuning';
+import { BOUND_BANS, LONGEVITY, NATURAL_DEATH_AGE, SHORT_LIFE, TRUST_COUNTS_AT } from './tuning';
 
 // ---------- the numbers (stat names the docs use) ----------
 
@@ -54,14 +54,25 @@ function causeOf(life: LifeState): string {
   return (life.ext.story as { cur?: { id?: string } } | undefined)?.cur?.id ?? 'year';
 }
 
+/** The level of bondage of the life now (0 free, 1 to 3), read from what the bondage system keeps (`life.ext.bondage`, plain data, so that the systems need not import each other). */
+export const boundLevel = (life: LifeState): number => (life.ext.bondage as { level?: number } | undefined)?.level ?? 0;
+
+/** Is a life in bondage shut out of this (BOUND_BANS)? The bondage system itself moves the life (it carries it over the border, buys it free) and is not asked. */
+export const boundBan = (life: LifeState, what: 'move' | 'job' | 'class'): boolean => BOUND_BANS[boundLevel(life)]?.includes(what) ?? false;
+
 /**
  * Sets the social class (economy/03-classes.md) and writes the log entry `class` with the old class, the new one and the cause
  * (M1 review T9: a change of class has a line of its own). Does nothing, and writes nothing, when the class stays.
+ * A life in bondage does not rise (10-bondage.md §2: B1 to B3 are the class 1 together): the step is refused and noted at level 0.
  */
 export function setClass(ctx: Ctx, life: LifeState, to: number, cause: string): void {
   const from = life.cls;
   const next = classId(to);
   if (next === from) return;
+  if (to > classNum(life) && boundBan(life, 'class')) {
+    write(ctx.state, { sys: 'character', kind: 'classBlocked', data: { from, to: next, cause, bound: boundLevel(life) }, level: 0 });
+    return;
+  }
   life.cls = next;
   write(ctx.state, { sys: 'character', kind: 'class', data: { from, to: next, cause }, level: 1 });
 }
