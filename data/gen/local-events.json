@@ -86,7 +86,15 @@
     "open": {
      "text": "ประเทศอยู่ติดเส้นทางการค้าสำคัญ"
     },
-    "effects": [],
+    "effects": [
+     {
+      "k": "ref",
+      "nodes": [
+       "xc"
+      ],
+      "rel": "เปิดโหนด"
+     }
+    ],
     "src": "docs/systems/events/local-events.md:116"
    },
    {
@@ -119,6 +127,21 @@
       "phase": "near"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-24",
+       "happened": true,
+       "phase": "near"
+      },
+      {
+       "k": "text",
+       "text": "ธุลีทิพย์ใกล้ขาด"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "SH02-6",
@@ -212,6 +235,20 @@
       "phase": "after"
      }
     ],
+    "depends": {
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-01",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "AL-02 มีศาลศาสนา"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "NB02-6",
@@ -290,6 +327,21 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "HP-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PO-03",
+       "happened": true
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "NR03-6",
@@ -358,6 +410,12 @@
       "phase": "near"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-10",
+     "happened": true,
+     "phase": "near"
+    },
     "npcs": [
      {
       "id": "SV18-6",
@@ -434,6 +492,20 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-02",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "อารมณ์เพลิงนิรันดร์ < 40"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "KD07-6",
@@ -514,6 +586,20 @@
       "phase": "after"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "HP-07",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "MH03-4 ทาง ก) เกิดแล้ว"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "MH03-6",
@@ -595,13 +681,30 @@
     "reads": [
      {
       "id": "WR-20",
-      "phase": "near"
+      "phase": "window"
      },
      {
       "id": "BIO-08",
       "phase": "near"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-20",
+       "happened": true,
+       "phase": "running"
+      },
+      {
+       "k": "event",
+       "id": "BIO-08",
+       "happened": true,
+       "phase": "near"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "NR07-6",
@@ -701,6 +804,21 @@
       "phase": "near"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "MC-05",
+       "happened": true,
+       "phase": "near"
+      },
+      {
+       "k": "text",
+       "text": "ภายใน 30 ปีหลังไรเวอร์-9 ตื่น"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "MK03-6",
@@ -787,6 +905,20 @@
       "phase": "after"
      }
     ],
+    "depends": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "GI-10",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ธุลีทิพย์ขาด"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "SH17-6",
@@ -855,6 +987,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ01-1",
@@ -946,6 +1083,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ03-1",
@@ -1019,6 +1161,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ06-1",
@@ -1103,6 +1250,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PL-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ07-1",
@@ -1181,6 +1333,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DM-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH02-1",
@@ -1282,6 +1439,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH06-1",
@@ -1385,6 +1547,11 @@
       "phase": "after"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DM-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH07-1",
@@ -1457,6 +1624,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH09-1",
@@ -1547,6 +1719,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-12",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD01-1",
@@ -1592,7 +1769,15 @@
      {
       "when": "ไม่ตี",
       "text": "ไม่ตี เรนเนสออกเดินทางตามหาวัตถุดิบ (เปิด tr.a5) และชื่อเสียงช่างของกรอมฮอล์มลด",
-      "effects": [],
+      "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "tr.a5"
+        ],
+        "rel": "เปิด"
+       }
+      ],
       "chain": []
      }
     ],
@@ -1620,6 +1805,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD04-1",
@@ -1700,6 +1890,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD05-1",
@@ -1787,6 +1982,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PL-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD10-1",
@@ -1817,8 +2017,8 @@
       "text": "ลงต่อ รายได้ท้องถิ่นเพิ่มและ `PL-03` เสี่ยง",
       "effects": [
        {
-        "k": "event",
-        "id": "PL-03"
+        "k": "label",
+        "text": "PL-03 เสี่ยง"
        }
       ],
       "chain": []
@@ -1826,7 +2026,15 @@
      {
       "when": "หยุด",
       "text": "หยุด หนี้ถึงกำหนดและสหภาพถูกฟ้อง (เปิด ex.a1 ของคนงาน)",
-      "effects": [],
+      "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "ex.a1"
+        ],
+        "rel": "เปิด"
+       }
+      ],
       "chain": []
      },
      {
@@ -1860,6 +2068,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR01-1",
@@ -1947,6 +2160,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR05-1",
@@ -2039,6 +2257,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-20",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR06-1",
@@ -2125,6 +2348,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR10-1",
@@ -2208,6 +2436,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL01-1",
@@ -2309,6 +2542,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GD-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL02-1",
@@ -2344,8 +2582,8 @@
       "text": "ซ่อมวงต่อ ผู้กล้าคนใหม่ถูกเรียกและ `DM-05` เสี่ยงอีกรอบ",
       "effects": [
        {
-        "k": "event",
-        "id": "DM-05"
+        "k": "label",
+        "text": "DM-05 เสี่ยง"
        }
       ],
       "chain": []
@@ -2396,6 +2634,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-16",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL08-1",
@@ -2478,6 +2721,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL11-1",
@@ -2522,7 +2770,15 @@
      {
       "when": "ปิด",
       "text": "ปิด ทอเรนหนีไปที่อื่นพร้อมสำเนา เปิด sc.a1",
-      "effects": [],
+      "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "sc.a1"
+        ],
+        "rel": "เปิด"
+       }
+      ],
       "chain": []
      }
     ],
@@ -2548,6 +2804,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL13-1",
@@ -2643,6 +2904,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL16-1",
@@ -2728,6 +2994,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL19-1",
@@ -2814,6 +3085,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-09",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL23-1",
@@ -2849,8 +3125,8 @@
       "text": "ตอบรับ ผู้ลี้ภัยเผ่าสัตว์กลับ SV-16 และ `WR-17` เสี่ยง → LC-46 ×1.5",
       "effects": [
        {
-        "k": "event",
-        "id": "WR-17"
+        "k": "label",
+        "text": "WR-17 เสี่ยง"
        }
       ],
       "chain": [
@@ -2904,6 +3180,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-11",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK01-1",
@@ -2994,6 +3275,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK04-1",
@@ -3040,8 +3326,8 @@
       "text": "ปิด ซากตื่นเองและ `END-06` เสี่ยง",
       "effects": [
        {
-        "k": "event",
-        "id": "END-06"
+        "k": "label",
+        "text": "END-06 เสี่ยง"
        }
       ],
       "chain": []
@@ -3077,6 +3363,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK06-1",
@@ -3151,6 +3442,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-21",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK10-1",
@@ -3225,6 +3521,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK16-1",
@@ -3311,6 +3612,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-24",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH01-1",
@@ -3397,6 +3703,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH09-1",
@@ -3469,6 +3780,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-24",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH11-1",
@@ -3542,6 +3858,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH06-1",
@@ -3624,6 +3945,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV01-1",
@@ -3676,8 +4002,15 @@
       "text": "ปิดเรื่อง `BIO-02` เสี่ยง → LC-44 ×1.5และอิลเมียร์รู้ความจริงที่ไชร์วิก (เปิด xc.a1)",
       "effects": [
        {
-        "k": "event",
-        "id": "BIO-02"
+        "k": "label",
+        "text": "BIO-02 เสี่ยง"
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc.a1"
+        ],
+        "rel": "เปิด"
        }
       ],
       "chain": [
@@ -3725,6 +4058,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV14-1",
@@ -3811,6 +4149,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV15-1",
@@ -3883,6 +4226,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-17",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV16-1",
@@ -3963,6 +4311,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "FG-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB01-1",
@@ -4053,6 +4406,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "FG-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB07-1",
@@ -4130,6 +4488,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "CT-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB12-1",
@@ -4214,6 +4577,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "FG-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB14-1",
@@ -4298,6 +4666,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-09",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ02-1",
@@ -4382,6 +4755,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-18",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ09-1",
@@ -4461,6 +4839,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH01-1",
@@ -4547,6 +4930,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH05-1",
@@ -4623,6 +5011,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DM-05",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH12-1",
@@ -4695,6 +5088,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD06-1",
@@ -4778,6 +5176,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD08-1",
@@ -4862,6 +5265,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR02-1",
@@ -4954,6 +5362,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PL-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR14-1",
@@ -5032,6 +5445,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL04-1",
@@ -5144,6 +5562,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GD-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL07-1",
@@ -5231,6 +5654,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "CT-09",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL12-1",
@@ -5312,6 +5740,12 @@
       "phase": "near"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DM-05",
+     "happened": true,
+     "phase": "near"
+    },
     "npcs": [
      {
       "id": "AL25-1",
@@ -5396,6 +5830,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK02-1",
@@ -5480,6 +5919,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK08-1",
@@ -5560,6 +6004,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH03-1",
@@ -5606,8 +6055,8 @@
       "text": "ผู้เก็บปฏิเสธ ออร์ฟาขึ้นเองและตกบาดเจ็บ `WR-02` เสี่ยง",
       "effects": [
        {
-        "k": "event",
-        "id": "WR-02"
+        "k": "label",
+        "text": "WR-02 เสี่ยง"
        }
       ],
       "chain": []
@@ -5650,6 +6099,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH14-1",
@@ -5721,6 +6175,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-14",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV04-1",
@@ -5799,6 +6258,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB05-1",
@@ -5884,6 +6348,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "FG-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB13-1",
@@ -5967,6 +6436,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH09-1",
@@ -6043,6 +6517,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-06",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR05-1",
@@ -6123,6 +6602,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-24",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH01-1",
@@ -6204,6 +6688,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-08",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK16-1",
@@ -6284,6 +6773,20 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ถ้า LC-32 เกิดแล้ว เรื่องทะเบียนใช้ผลเดิมของ LC-32"
+      }
+     ]
+    },
     "npcs": [
      {
       "id": "AL19-1",
@@ -6358,6 +6861,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-09",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV16-1",
@@ -6456,6 +6964,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ04-1",
@@ -6516,6 +7029,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ05-1",
@@ -6605,6 +7123,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AZ10-1",
@@ -6643,6 +7166,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -6685,6 +7215,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH04-1",
@@ -6724,6 +7259,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -6772,6 +7314,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DM-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH08-1",
@@ -6832,6 +7379,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-23",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH10-1",
@@ -6916,6 +7468,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MH11-1",
@@ -6950,6 +7507,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -6998,6 +7562,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD02-1",
@@ -7036,6 +7605,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7078,6 +7654,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD03-1",
@@ -7167,6 +7748,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "DR-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD11-1",
@@ -7232,6 +7818,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "KD12-1",
@@ -7270,6 +7861,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7312,6 +7910,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR04-1",
@@ -7346,6 +7949,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -7394,6 +8004,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR08-1",
@@ -7428,6 +8043,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -7476,6 +8098,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR09-1",
@@ -7519,6 +8146,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7561,6 +8195,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GD-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR11-1",
@@ -7650,6 +8289,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR12-1",
@@ -7688,6 +8332,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7730,6 +8381,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR13-1",
@@ -7768,6 +8424,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7810,6 +8473,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR15-1",
@@ -7844,6 +8512,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -7892,6 +8567,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NR16-1",
@@ -7930,6 +8610,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -7972,6 +8659,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL03-1",
@@ -8006,6 +8698,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -8054,6 +8753,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL05-1",
@@ -8092,6 +8796,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -8134,6 +8845,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-14",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL06-1",
@@ -8194,6 +8910,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL09-1",
@@ -8283,6 +9004,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL10-1",
@@ -8321,6 +9047,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -8363,6 +9096,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL14-1",
@@ -8397,6 +9135,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -8445,6 +9190,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-14",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL15-1",
@@ -8505,6 +9255,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL17-1",
@@ -8539,6 +9294,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -8587,6 +9349,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL18-1",
@@ -8625,6 +9392,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -8667,6 +9441,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL21-1",
@@ -8761,6 +9540,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL24-1",
@@ -8799,6 +9583,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -8841,6 +9632,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL26-1",
@@ -8930,6 +9726,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL27-1",
@@ -8964,6 +9765,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -9012,6 +9820,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "AL28-1",
@@ -9101,6 +9914,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK05-1",
@@ -9135,6 +9953,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -9183,6 +10008,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK07-1",
@@ -9272,6 +10102,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK11-1",
@@ -9332,6 +10167,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK14-1",
@@ -9421,6 +10261,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "MC-03",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "MK15-1",
@@ -9481,6 +10326,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH04-1",
@@ -9515,6 +10365,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -9563,6 +10420,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH05-1",
@@ -9623,6 +10485,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH07-1",
@@ -9661,6 +10528,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -9703,6 +10577,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH08-1",
@@ -9741,6 +10620,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -9783,6 +10669,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH10-1",
@@ -9843,6 +10734,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH12-1",
@@ -9903,6 +10799,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH13-1",
@@ -9963,6 +10864,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH15-1",
@@ -10052,6 +10958,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GI-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SH16-1",
@@ -10112,6 +11023,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV02-1",
@@ -10172,6 +11088,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-23",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV03-1",
@@ -10261,6 +11182,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "GD-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV05-1",
@@ -10355,6 +11281,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV06-1",
@@ -10415,6 +11346,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV07-1",
@@ -10449,6 +11385,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -10497,6 +11440,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "WR-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV08-1",
@@ -10571,6 +11519,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "BIO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV09-1",
@@ -10631,6 +11584,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV10-1",
@@ -10660,6 +11618,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -10708,6 +11673,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV11-1",
@@ -10737,6 +11707,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -10785,6 +11762,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-02",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV12-1",
@@ -10828,6 +11810,13 @@
         "k": "stat",
         "stat": "weight:HP-02",
         "delta": 3
+       },
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิดโหนด"
        }
       ],
       "chain": []
@@ -10870,6 +11859,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "HP-04",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV13-1",
@@ -10904,6 +11898,13 @@
       "when": "สำเร็จ",
       "text": "สำเร็จ ชื่อเสียงประเทศ +1 และแขกต่างถิ่นเข้า (เปิด xc ตามเผ่าของแขก)",
       "effects": [
+       {
+        "k": "ref",
+        "nodes": [
+         "xc"
+        ],
+        "rel": "เปิด"
+       },
        {
         "k": "stat",
         "stat": "ชื่อเสียงประเทศ",
@@ -10952,6 +11953,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "SV17-1",
@@ -11041,6 +12047,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-01",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB06-1",
@@ -11130,6 +12141,11 @@
       "phase": "window"
      }
     ],
+    "depends": {
+     "k": "event",
+     "id": "PO-07",
+     "happened": true
+    },
     "npcs": [
      {
       "id": "NB11-1",

@@ -23,6 +23,7 @@ import type {
   LocalTemplate,
   Mark,
   Outcome,
+  WorldCond,
   WorldEvent,
   WorldEventsData,
   WorldRules,
@@ -37,6 +38,7 @@ import {
   num,
   parseFeedback,
   parseLean,
+  parseCond,
   parseLocalEffect,
   parseWorldEffect,
   plain,
@@ -158,10 +160,25 @@ export default function run(): GenReport {
     if (m) flags.push({ name: m[1], trigger: m[2] });
   }
   const FLAG: Record<string, string> = Object.fromEntries(flags.map((f) => [f.name, f.trigger]));
-  const closureMap = new Map<string, { close: Set<string>; replace: Map<string, string>; keep: string[] }>();
+  const closureMap = new Map<string, { close: Set<string>; replace: Map<string, string>; keep: string[]; swaps: Closure['swaps'] }>();
   const ensure = (t: string) => {
-    if (!closureMap.has(t)) closureMap.set(t, { close: new Set(), replace: new Map(), keep: [] });
+    if (!closureMap.has(t)) closureMap.set(t, { close: new Set(), replace: new Map(), keep: [], swaps: [] });
     return closureMap.get(t)!;
+  };
+  /** Every `X → Y` of a แทนที่ item that the sim-level `replace` (closed event → branch event) does not hold: world-event and named successors. */
+  const swapsOf = (item: string): Closure['swaps'] => {
+    const [from, to] = item.split('→').map((x) => x.trim());
+    const fromIds = idsIn(from);
+    const a = fromIds.length ? fromIds : [from.replace(/\s*\(.*$/, '').trim()];
+    const toIds = to.match(/\b[A-Z]{2,3}-\d{2}\b/g) || [];
+    const named = to.replace(/\s*\(.*$/, '').trim();
+    const out: Closure['swaps'] = [];
+    a.forEach((x, i) => {
+      const y: string = (toIds.length === a.length ? toIds[i] : toIds[0]) ?? named;
+      if (fromIds.length && toIds.length && !byId.has(y)) return; // a branch successor: `replace` holds it
+      out.push({ from: x, to: y, text: item });
+    });
+    return out;
   };
   const close = (t: string, xs: string[]) => {
     const c = ensure(t);
@@ -199,6 +216,9 @@ export default function run(): GenReport {
                 return idsIn(from);
               });
       for (const t of trig) close(t, xs);
+      if (row[1] === 'แทนที่')
+        for (const item of row[2].split(' · ').filter((x) => x.includes('→')))
+          for (const t of trig) ensure(t).swaps.push(...swapsOf(item));
     }
     const sec = readDoc(F.b2).split(/^## /m).find((x) => x.startsWith('9.'))!;
     for (const l of sec.split('\n')) {
@@ -218,6 +238,7 @@ export default function run(): GenReport {
     trigger,
     close: [...c.close],
     replace: [...c.replace].map(([from, to]) => ({ from, to })),
+    swaps: c.swaps,
     keep: c.keep,
   }));
 
@@ -440,6 +461,9 @@ export default function run(): GenReport {
       src: `${F.world}:${e.line}`,
     };
     if (docEra[0] !== sim[0] || docEra[1] !== sim[1]) ev.eraSim = sim;
+    const { cond, note } = condOf(e, pillarIndex.get(e.id), (t) => unp.add(F.world, e.line, t, `${e.id} เงื่อนไขเป็นข้อความ`));
+    if (cond) ev.cond = cond;
+    if (note) ev.condNote = note;
     // numbers the prose cell gives beyond thresholds: fallen dragons, keys held, peace events, and which events an ending needs together
     const dfcMin = e.cond.match(/DFC ≥ (\d+)/)?.[1];
     const dfcEq = e.cond.match(/DFC = (\d+)/)?.[1];
@@ -589,6 +613,36 @@ export default function run(): GenReport {
 
 const MINUS_RE = /[−–]/g;
 
+/**
+ * The condition cell of a world event as a tree. A war row writes `pair · fuse`: the pair (`จักรกล × มังกร`, `ภายใน…`) and a fuse that
+ * holds no readable atom are the story of the war, kept in `condNote`; what can be tested stays in `cond`.
+ */
+function condOf(e: { id: string; cond: string }, pillar: number | undefined, text: (t: string) => void): { cond?: WorldCond; note?: string } {
+  const report = (r: ReturnType<typeof parseCond>) => r.texts.forEach(text);
+  if (!e.id.startsWith('WR-')) {
+    const r = parseCond(e.cond, { pillar });
+    report(r);
+    return r.cond ? { cond: r.cond } : {};
+  }
+  const notes: string[] = [];
+  const conds: WorldCond[] = [];
+  for (const part of plain(e.cond).split(/\s+·\s+/)) {
+    const r = parseCond(part, { pillar });
+    if (!r.cond) {
+      if (/[฀-๿A-Za-z]/.test(part.replace(/ยุค\s*[≥\d–-]+/g, '').replace(/ทุกยุค/g, ''))) notes.push(part);
+      continue;
+    }
+    if (r.cond.k === 'text') {
+      notes.push(part);
+      continue;
+    }
+    report(r);
+    conds.push(r.cond);
+  }
+  const cond = conds.length === 0 ? undefined : conds.length === 1 ? conds[0] : ({ k: 'and', of: conds.flatMap((c) => (c.k === 'and' ? c.of : [c])) } as WorldCond);
+  return { ...(cond ? { cond } : {}), ...(notes.length ? { note: notes.join(' · ') } : {}) };
+}
+
 // ---------- rules block ----------
 
 function buildRules(raw: { id: string; mark: Mark | null; cond: string; eff: string }[], unp: Unparsed): WorldRules {
@@ -689,7 +743,7 @@ function localNpcs(cell: string, at: string, unp: Unparsed, line: number): Local
 function readsOf(depends: string): LocalRead[] {
   const out: LocalRead[] = [];
   const text = plain(depends).replace(/`/g, '');
-  const parts = text.split(/\s+หรือ\s+|\s+และ\s+|\s*·\s*/);
+  const parts = text.split(/\s*หรือ\s*|\s*และ\s*|\s*·\s*/);
   for (const seg of parts) {
     for (const id of anyIdsIn(seg)) {
       if (out.some((x) => x.id === id)) continue;
@@ -716,6 +770,8 @@ function buildLocal(ids: ReturnType<typeof idIndex>, unp: Unparsed, eventIds: Se
     });
     const chain = [...parsedCommon.localChain, ...pathOut.flatMap((p) => p.chain)];
     const receives = [...new Set([...parsedCommon.receives, ...pathOut.flatMap((p) => p.receives)])];
+    const depends = parseCond(cells[2]);
+    depends.texts.forEach((t) => unp.add(file, line, t, `${m[1]} ขึ้นกับ: เงื่อนไขเป็นข้อความ`));
     const chanceM = cells[6].match(/(\d+(?:\.\d+)?)%/);
     if (!chanceM) unp.add(file, line, cells[6], `${m[1]} โอกาสต่อทศวรรษอ่านไม่ได้`);
     const ev: LocalEvent = {
@@ -727,6 +783,7 @@ function buildLocal(ids: ReturnType<typeof idIndex>, unp: Unparsed, eventIds: Se
       countries: [...new Set(cells[1].match(COUNTRY_CODE) || [])],
       dependsText: plain(cells[2]),
       reads: readsOf(cells[2]),
+      depends: depends.cond ?? { k: 'text', text: plain(cells[2]) },
       npcs: localNpcs(cells[3], file, unp, line),
       whatText: plain(cells[4]),
       resultText: plain(cells[5]),

@@ -109,10 +109,6 @@
        {
         "k": "npc",
         "id": "AZ01-3"
-       },
-       {
-        "k": "event",
-        "id": "DR-01"
        }
       ],
       "events": [
@@ -268,10 +264,6 @@
        {
         "k": "death",
         "cause": "พลีชีพกันเรือเหาะ"
-       },
-       {
-        "k": "event",
-        "id": "DR-01"
        }
       ],
       "events": [
@@ -349,13 +341,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-15"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-15",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-15"
       ],
@@ -1866,13 +1857,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "WR-02"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "WR-02"
       ],
@@ -1945,13 +1935,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "WR-02"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "WR-02"
       ],
@@ -3956,10 +3945,6 @@
        "happened": true
       },
       "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       },
        {
         "k": "event",
         "id": "SF-09"
@@ -11401,7 +11386,11 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
+      "cond": {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      },
       "effects": [
        {
         "k": "if",
@@ -11416,10 +11405,6 @@
           "open": true
          }
         ]
-       },
-       {
-        "k": "event",
-        "id": "DR-04"
        }
       ],
       "events": [
@@ -13025,13 +13010,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-04"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-04"
       ],
@@ -13807,16 +13791,15 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
       "effects": [
        {
         "k": "death",
         "cause": "ตายเมื่อเกาะร่วง"
-       },
-       {
-        "k": "event",
-        "id": "DR-01",
-        "open": true
        }
       ],
       "events": [
@@ -14588,14 +14571,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DM-07",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DM-07",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DM-07"
       ],
@@ -15459,16 +15440,15 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
+      "cond": {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      },
       "effects": [
        {
         "k": "death",
         "cause": "ตายเมื่อคัลดราตื่น"
-       },
-       {
-        "k": "event",
-        "id": "PL-03",
-        "open": true
        }
       ],
       "events": [
@@ -16844,14 +16824,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "WR-06",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "WR-06",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "WR-06"
       ],
@@ -18496,16 +18474,15 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
+      "cond": {
+       "k": "event",
+       "id": "PL-04",
+       "happened": true
+      },
       "effects": [
        {
         "k": "death",
         "cause": "ตายเมื่อธาลาสซาตื่น"
-       },
-       {
-        "k": "event",
-        "id": "PL-04",
-        "open": true
        }
       ],
       "events": [
@@ -19318,13 +19295,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-05"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-05"
       ],
@@ -19416,14 +19392,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-05",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-05"
       ],
@@ -20913,14 +20887,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "CT-05",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "CT-05",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "CT-05"
       ],
@@ -21357,13 +21329,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-05"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-05"
       ],
@@ -22198,13 +22169,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PO-02"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PO-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PO-02"
       ],
@@ -22503,13 +22473,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PO-02"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PO-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PO-02"
       ],
@@ -23048,13 +23017,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PL-04"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PL-04",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PL-04"
       ],
@@ -23442,13 +23410,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-06"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-06",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-06"
       ],
@@ -24772,14 +24739,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "GD-02",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "GD-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "GD-02"
       ],
@@ -29897,16 +29862,15 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
+      "cond": {
+       "k": "event",
+       "id": "END-05",
+       "happened": true
+      },
       "effects": [
        {
         "k": "death",
         "cause": "ตายเมื่ออันดาร์ล้ม"
-       },
-       {
-        "k": "event",
-        "id": "END-05",
-        "open": true
        }
       ],
       "events": [
@@ -30734,13 +30698,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-03"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-03",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-03"
       ],
@@ -31090,13 +31053,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-01"
       ],
@@ -32195,13 +32157,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -32784,14 +32745,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-04",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-04",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-04"
       ],
@@ -33855,13 +33814,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-01"
       ],
@@ -36567,13 +36525,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "MC-07"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "MC-07",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "MC-07"
       ],
@@ -40103,13 +40060,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -40887,13 +40843,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PO-02"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PO-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PO-02"
       ],
@@ -41104,13 +41059,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "WR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "WR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "WR-01"
       ],
@@ -45930,14 +45884,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "GI-01",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "GI-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "GI-01"
       ],
@@ -46889,14 +46841,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "GI-10",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "GI-10",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "GI-10"
       ],
@@ -48886,13 +48836,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -50426,13 +50375,13 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true,
+       "phase": "near"
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -51743,14 +51692,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "GI-07",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "GI-07",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "GI-07"
       ],
@@ -51960,13 +51907,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -52069,13 +52015,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "WR-22"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "WR-22",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "WR-22"
       ],
@@ -53280,14 +53225,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-02",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-02",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-02"
       ],
@@ -53633,13 +53576,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-01"
       ],
@@ -57143,13 +57085,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "DR-01"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "DR-01"
       ],
@@ -63635,13 +63576,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PO-08"
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PO-08",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PO-08"
       ],
@@ -64766,14 +64706,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "PL-09",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "PL-09",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "PL-09"
       ],
@@ -64909,14 +64847,12 @@
       "repays": false,
       "axes": [],
       "weights": [],
-      "cond": null,
-      "effects": [
-       {
-        "k": "event",
-        "id": "BIO-06",
-        "open": true
-       }
-      ],
+      "cond": {
+       "k": "event",
+       "id": "BIO-06",
+       "happened": true
+      },
+      "effects": [],
       "events": [
        "BIO-06"
       ],

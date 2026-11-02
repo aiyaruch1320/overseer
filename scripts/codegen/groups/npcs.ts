@@ -37,6 +37,7 @@ import type {
 } from '../../../src/core/data/types-npcs';
 import type { GenReport } from '../run-all';
 import { parseCell, parseCondition } from '../lib/effects';
+import type { WorldCond } from '../../../src/core/data/types-events';
 import { idIndex } from '../lib/ids';
 import { Unparsed, cells, listDocs, readDoc, tables, writeGen } from '../lib/table';
 
@@ -64,6 +65,10 @@ const START_YEAR_RE = /ศ\.ม\. ([\d,]+) เมื่อ/;
 const num = (s: string) => Number(s.replace(/,/g, '').replace('−', '-'));
 const uniq = <T,>(a: T[]) => [...new Set(a)];
 const PATH_KEYS: Record<string, PathKey> = { ก: 'a', ข: 'b', ค: 'c' };
+/** `ถ้า` and `เมื่อ` as words: `เถ้า` (ash) holds the letters of `ถ้า` and is not one. */
+const TRIGGER_WORD = /(?<!เ)ถ้า|เมื่อ/;
+/** A clause that joins its events with `หรือ` waits for any of them. */
+const waitAny = /หรือ|\//;
 
 // ---------- people ----------
 
@@ -644,6 +649,36 @@ function parsePath(
   const npcsHere = uniq([...text.matchAll(NPC_ID)].map((m) => m[0])).filter((x) => x !== raw.id);
   for (const e of eventsHere) if (!effects.some((x) => x.k === 'event' && x.id === e)) effects.push({ k: 'event', id: e });
   for (const n of npcsHere) if (!effects.some((x) => x.k === 'npc' && x.id === n)) effects.push({ k: 'npc', id: n });
+
+  // M0-c (data review M7): a label with `ถ้า` or `เมื่อ` says when the path happens, so the events it names are the condition (or a cut), not results
+  const cutIds = uniq([...text.matchAll(/ถ้า\s*(.+?)\s*ตัด[กขค]\)/g)].flatMap((m) => [...m[1].matchAll(EVENT_ID)].map((x) => x[0])));
+  if (TRIGGER_WORD.test(noCut)) {
+    // events in the clause that follows the word, up to the arrow (a bracket only names a form: `(SF-09)`); with none there, the events the arrow names are what the path waits for
+    const clauses = [...noCut.matchAll(/(?:(?<!เ)ถ้า|เมื่อ)([^→·]*)/g)].map((m) => m[1]);
+    const idsOf = (t: string) => [...t.matchAll(EVENT_ID)].map((x) => x[0]);
+    const inClause = uniq(clauses.flatMap((c) => {
+      const outside = idsOf(c.replace(/\([^)]*\)/g, ' '));
+      return outside.length ? outside : idsOf(c);
+    }));
+    const waits = inClause.length ? inClause : uniq(idsOf(noCut));
+    const near = (id: string) => new RegExp(`${id}\\s*ใกล้`).test(noCut);
+    const ev = (id: string): WorldCond => ({ k: 'event', id, happened: true, ...(near(id) ? { phase: 'near' as const } : {}) });
+    const have = (c: Condition | null, id: string): boolean => !!c && JSON.stringify(c).includes(`"id":"${id}"`);
+    const fresh = waits.filter((id) => !have(cond, id));
+    if (fresh.length) {
+      const wait: WorldCond = fresh.length === 1 ? ev(fresh[0]) : { k: waitAny.test(clauses.join(' ')) ? 'or' : 'and', of: fresh.map(ev) };
+      cond = cond ? { k: 'and', of: [cond, wait] } : wait;
+    }
+    for (let i = effects.length - 1; i >= 0; i--) {
+      const x = effects[i];
+      if (x.k === 'event' && (waits.includes(x.id) || cutIds.includes(x.id))) effects.splice(i, 1);
+    }
+  } else if (cutIds.length) {
+    for (let i = effects.length - 1; i >= 0; i--) {
+      const x = effects[i];
+      if (x.k === 'event' && cutIds.includes(x.id)) effects.splice(i, 1);
+    }
+  }
 
   // anything that still looks like a number-bearing effect
   work = work.replace(/\[(?:ช่วย|ร่วม|ขัดขวาง|ปล่อย)\]/g, ' ');

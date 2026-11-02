@@ -3,9 +3,10 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
-import type { GenFile } from '../../src/core/types';
-import type { LocalEventsData, Mark, WorldEvent, WorldEventsData } from '../../src/core/data/types-events';
+import type { Condition, Effect, GenFile } from '../../src/core/types';
+import type { LocalEventsData, Mark, WorldCond, WorldEvent, WorldEventsData } from '../../src/core/data/types-events';
 import run from '../../scripts/codegen/groups/events';
+import { STRUCTURE_WORDS, parseCond, parseWorldEffect, segmentsOf } from '../../scripts/codegen/lib/events-grammar';
 import { idIndex } from '../../scripts/codegen/lib/ids';
 import { genDir, root } from '../../scripts/codegen/lib/table';
 
@@ -300,5 +301,227 @@ describe('the generator', () => {
     expect(e.get('DR-01')!.witness).toContainEqual({ k: 'grant', kind: 'blessing', id: 'nb_sv_sky' });
     expect(e.get('WR-01')!.outcomes.map((o) => o.key)).toEqual(['a', 'b', 'c']);
     expect(e.get('WR-01')!.outcomes[0].chain).toContain('MC-10');
+  });
+});
+
+// ---------- M0-c: choices, conditions and swaps keep their structure ----------
+
+const effectsOf = (e: WorldEvent): Effect[] => [...e.effects, ...e.outcomes.flatMap((o) => o.effects)];
+/** Every effect with the ones inside pick / if / chance branches. */
+const walk = (fx: Effect[]): Effect[] =>
+  fx.flatMap((x) => [x, ...(x.k === 'pick' ? walk(x.of.flatMap((o) => o.effects)) : x.k === 'if' || x.k === 'chance' ? walk(x.then) : [])]);
+const condWalk = (c: WorldCond | undefined): WorldCond[] => (!c ? [] : c.k === 'and' || c.k === 'or' ? [c, ...c.of.flatMap(condWalk)] : c.k === 'not' ? [c, ...condWalk(c.of)] : [c]);
+const topLevel = (fx: Effect[], k: Effect['k']) => fx.filter((x) => x.k === k);
+const event = (id: string) => byId(W.events).get(id)!;
+type Pick = Extract<Effect, { k: 'pick' }>;
+
+describe('choices, conditions and swaps (data review B3 H3 H4 H9)', () => {
+  it('reads "A หรือ B" and "A / B" as one pick (B3: CT-03 PL-06 DM-01 FG-14)', () => {
+    // none of the choices is an effect of the whole event
+    expect(event('CT-03').effects.filter((x) => x.k === 'event')).toEqual([]);
+    expect(event('PL-06').effects.filter((x) => x.k === 'event')).toEqual([]);
+    const pick = (id: string) => topLevel(event(id).effects, 'pick')[0] as Pick;
+    expect(pick('CT-03').of.map((o) => o.effects)).toEqual([[{ k: 'event', id: 'HP-06' }], [{ k: 'event', id: 'PO-06' }]]);
+    expect(pick('CT-03').of.map((o) => o.label)).toEqual(['ยารักษา', 'กักกัน']);
+    // "→ WR-04 / WR-01" opens one of them
+    expect(pick('PL-06').of.map((o) => o.effects)).toEqual([[{ k: 'event', id: 'WR-04', open: true }], [{ k: 'event', id: 'WR-01', open: true }]]);
+    expect(pick('DM-01').of.map((o) => o.effects)).toEqual([[{ k: 'event', id: 'WR-03' }], [{ k: 'event', id: 'WR-07' }]]);
+    expect(pick('FG-14').of).toHaveLength(2);
+  });
+  it('gives MC-12 a pick of the three endings, each with its name and opened (B3)', () => {
+    const fx = event('MC-12').effects;
+    expect(fx.filter((x) => x.k === 'event')).toEqual([]);
+    const p = topLevel(fx, 'pick')[0] as Pick;
+    expect(p.of.map((o) => o.label)).toEqual(['ร่วมมือ', 'ต่อต้าน', 'ปลอบ']);
+    expect(p.of.map((o) => o.effects)).toEqual([[{ k: 'event', id: 'END-11', open: true }], [{ k: 'event', id: 'END-10', open: true }], [{ k: 'event', id: 'END-12', open: true }]]);
+  });
+  it('reads "ถ้า DR-01 แล้ว: …" as if (END-01 PL-01) and does not call DR-01 again', () => {
+    for (const id of ['END-01', 'PL-01']) {
+      const fx = event(id).effects;
+      expect(fx.filter((x) => x.k === 'event'), id).toEqual([]);
+      expect(fx).toContainEqual(expect.objectContaining({ k: 'if', cond: { k: 'event', id: 'DR-01', happened: true } }));
+    }
+    // "เมื่อถึงยุค 4" waits for the era (WR-14 ข)
+    expect(event('WR-14').outcomes[1].effects).toEqual([{ k: 'if', cond: { k: 'era', min: 4 }, then: [{ k: 'event', id: 'WR-23' }] }]);
+  });
+  it('reads "แทน WR-01 ด้วย WR-22" as replace (DR-01)', () => {
+    const fx = event('DR-01').effects;
+    expect(fx).toContainEqual({ k: 'replace', from: 'WR-01', to: 'WR-22' });
+    expect(fx.filter((x) => x.k === 'event' && (x.id === 'WR-01' || x.id === 'WR-22'))).toEqual([]);
+    expect(event('DR-01').chain).toEqual(expect.arrayContaining(['WR-01', 'WR-22']));
+  });
+  it('opens an event only where the row opens it; a risk, a closeness or a refusal is a label', () => {
+    for (const id of ['GI-08', 'DM-02', 'WR-23', 'FG-03', 'CT-08']) expect(walk(effectsOf(event(id))).filter((x) => x.k === 'event' && x.open), id).toEqual([]);
+    expect(event('GI-08').effects).toEqual([{ k: 'label', text: 'PL-03 เสี่ยง' }]);
+    expect(W.branch.find((b) => b.id === 'DW-05')!.effects).toEqual([{ k: 'label', text: 'ป้องกัน END-04' }]);
+    // the three options of FG-10: only the second counts DFC and calls DR-15, and END-09 is named as not opened
+    const fg10 = topLevel(event('FG-10').effects, 'pick')[0] as Pick;
+    expect(fg10.of).toHaveLength(3);
+    expect(fg10.of[1].effects).toEqual([{ k: 'stat', stat: 'DFC', delta: 1 }, { k: 'event', id: 'DR-15', open: true }, { k: 'label', text: 'END-09 ไม่เปิด' }]);
+    expect(event('FG-10').effects.filter((x) => x.k === 'stat' || x.k === 'event')).toEqual([{ k: 'event', id: 'BIO-04' }]);
+  });
+  it('binds a value after ":" or "→" to its own case (H4: DR-02 DR-03)', () => {
+    const p2 = topLevel(event('DR-02').effects, 'pick')[0] as Pick;
+    expect(p2.of.map((o) => o.label)).toEqual(['ปลุกสำเร็จ', 'ไม่สำเร็จใน 5 ทศวรรษ']);
+    expect(p2.of[0].effects).toEqual([{ k: 'stat', stat: 'F', delta: 15 }, { k: 'event', id: 'DR-14', open: true }]);
+    expect(p2.of[1].effects).toEqual([{ k: 'event', id: 'DR-01', open: true }]);
+    expect(topLevel(event('DR-02').effects, 'stat')).toEqual([]);
+    const p3 = topLevel(event('DR-03').effects, 'pick')[0] as Pick;
+    expect(p3.of.map((o) => o.label)).toEqual(['ฟักสำเร็จ', 'ไข่ถูกขโมย', 'ไข่แตกเสีย']);
+    expect(p3.of[2].effects).toEqual([{ k: 'stat', stat: 'F', delta: -10 }]);
+    // the DFC −1 of the egg belongs to HP-08 ("เมื่อโตเต็มวัยใน HP-08")
+    expect(walk(event('DR-03').effects).filter((x) => x.k === 'stat' && x.stat === 'DFC')).toEqual([]);
+    expect(topLevel(event('DR-03').effects, 'stat')).toEqual([]);
+    // "ผู้แพ้มีโอกาส 40% ล้ม (DFC+1)": the chance holds the DFC
+    expect(event('DR-09').effects).toEqual([{ k: 'chance', p: 0.4, text: 'ล้ม', then: [{ k: 'stat', stat: 'DFC', delta: 1 }] }]);
+  });
+  it('does not read a number glued to an event code as a number (H4: DM-03 → DM-08)', () => {
+    expect(event('DM-03').effects).toEqual([{ k: 'event', id: 'DM-08', open: true }]);
+    // the grammar itself: the number must not touch a letter
+    const stats = (cell: string) => parseWorldEffect(cell, 'XX-00', ids).effects.filter((x) => x.k === 'stat');
+    expect(stats('ความหิวสะสม → DM-08')).toEqual([]);
+    expect(stats('ความหิว −8 → DM-08')).toEqual([{ k: 'stat', stat: 'H', delta: -8 }]);
+  });
+  it('never leaves an effect of a segment with หรือ / ถ้า / แทน outside pick, if, replace or chance (regression of the review)', () => {
+    const cells: [string, string][] = [];
+    for (const e of W.events) {
+      cells.push([e.id, e.effectText]);
+      for (const o of e.outcomes) cells.push([`${e.id}${o.key}`, o.text]);
+    }
+    for (const e of W.branch) cells.push([e.id, e.effectText]);
+    for (const e of W.lastEra) cells.push([e.id, e.effectText]);
+    let seen = 0;
+    for (const [id, t] of cells)
+      for (const seg of segmentsOf(t)) {
+        if (!STRUCTURE_WORDS.test(seg)) continue;
+        seen++;
+        const bare = parseWorldEffect(seg, id, ids).effects.filter((x) => !['label', 'pick', 'if', 'replace', 'chance'].includes(x.k));
+        expect(bare, `${id}: ${seg}`).toEqual([]);
+      }
+    expect(seen).toBeGreaterThan(15);
+    // the stored data has no pick with fewer than two branches and no replace without both ends
+    for (const e of [...W.events, ...W.branch])
+      for (const x of walk(e.effects.concat('outcomes' in e ? effectsOf(e as WorldEvent) : [])))
+        if (x.k === 'pick') expect(x.of.length, e.id).toBeGreaterThanOrEqual(2);
+        else if (x.k === 'replace') expect(Boolean(x.from && x.to), e.id).toBe(true);
+  });
+  it('reads "ถ้า … → …" cases and arrows of a branch event as a pick (SF-03 SF-04 DV-04)', () => {
+    const pick = (id: string) => topLevel(W.branch.find((b) => b.id === id)!.effects, 'pick')[0] as Pick;
+    expect(pick('SF-03').of.map((o) => o.label)).toEqual(['ฟักสำเร็จ', 'ถูกขโมย']);
+    expect(pick('SF-04').of.map((o) => o.label)).toEqual(['รับ', 'ขับไล่']);
+    expect(pick('DV-04').of.map((o) => o.label)).toEqual(['สำเร็จ', 'ล้ม']);
+    expect(W.branch.find((b) => b.id === 'SF-10')!.effects).toContainEqual({ k: 'if', cond: { k: 'event', id: 'SF-03', happened: true }, then: [{ k: 'event', id: 'HP-08' }] });
+  });
+
+  it('gives every event with an "A หรือ B" condition a cond tree (H3: MC-04 BIO-01 BIO-07 DM-01 DR-01)', () => {
+    const v = (name: string, op: '<' | '>', n: number): WorldCond => ({ k: 'var', name, op, n });
+    const ev = (id: string, outcome?: 'a' | 'b' | 'c'): WorldCond => ({ k: 'event', id, happened: true, ...(outcome ? { outcome } : {}) });
+    expect(event('MC-04').cond).toEqual({ k: 'or', of: [v('P', '>', 60), ev('PL-06')] });
+    expect(event('BIO-01').cond).toEqual({ k: 'or', of: [v('P', '>', 50), ev('WR-04', 'a'), ev('WR-08', 'b'), ev('WR-17', 'b')] });
+    expect(event('BIO-07').cond).toEqual({ k: 'or', of: [v('P', '>', 40), ev('DR-05')] });
+    expect(event('DM-01').cond).toEqual({ k: 'or', of: [{ k: 'and', of: [v('H', '>', 70), ev('WR-19', 'a')] }, ev('PL-02')] });
+    // DR-01 has three ways and only one of them is the faith drop
+    const dr01 = event('DR-01').cond as Extract<WorldCond, { k: 'and' }>;
+    expect(dr01.of[0]).toEqual({ k: 'era', min: 2 });
+    const way = dr01.of[1] as Extract<WorldCond, { k: 'or' }>;
+    expect(way.k).toBe('or');
+    expect(way.of).toHaveLength(3);
+    expect(way.of[1]).toEqual(v('F', '<', 20));
+  });
+  it('keeps thr and needs as the flat view and makes cond hold every threshold and every need', () => {
+    for (const e of W.events) {
+      const vars = condWalk(e.cond).filter((c) => c.k === 'var') as { name: string; op: string; n: number }[];
+      for (const t of e.thr) expect(vars.some((c) => c.name === t.v && c.op === t.op && c.n === t.n), `${e.id} ${t.v}${t.op}${t.n}`).toBe(true);
+      const evs = condWalk(e.cond).filter((c) => c.k === 'event').map((c) => (c as { id: string }).id);
+      for (const n of e.needs) expect(evs, `${e.id} needs ${n}`).toContain(n);
+    }
+  });
+  it('is a Condition of the contract (compile-time) and every event atom names an event', () => {
+    const known = new Set([...W.events, ...W.branch, ...W.lastEra].map((e) => e.id));
+    for (const e of W.events) {
+      const c: Condition | undefined = e.cond;
+      void c;
+      for (const a of condWalk(e.cond)) if (a.k === 'event') expect(known.has(a.id), `${e.id} ${a.id}`).toBe(true);
+    }
+    for (const e of [...L.events, ...L.generated]) {
+      const c: Condition = e.depends;
+      void c;
+    }
+  });
+  it('reports every prose leaf of a condition in the unparsed list', () => {
+    const md = readFileSync(path.join(genDir, '_unparsed/events.md'), 'utf8');
+    const prose = (c: WorldCond | undefined) => condWalk(c).filter((x) => x.k === 'text').map((x) => (x as { text: string }).text);
+    let n = 0;
+    for (const e of W.events)
+      for (const t of prose(e.cond)) {
+        n++;
+        expect(md, `${e.id}: ${t}`).toContain(t);
+      }
+    for (const e of [...L.events, ...L.generated])
+      for (const t of prose(e.depends)) {
+        n++;
+        expect(md, `${e.id}: ${t}`).toContain(t);
+      }
+    expect(n).toBeGreaterThan(40);
+    // the parser itself: a phrase with no atom stays text, an or of prose stays one phrase
+    expect(parseCond('พงไพรหรือหมอก').cond).toEqual({ k: 'text', text: 'พงไพรหรือหมอก' });
+    expect(parseCond('มลพิษ > 60 หรือ PL-06').cond).toEqual({ k: 'or', of: [{ k: 'var', name: 'P', op: '>', n: 60 }, { k: 'event', id: 'PL-06', happened: true }] });
+  });
+  it('keeps the pair and the fuse of a war out of the condition and in condNote', () => {
+    expect(event('WR-01').cond).toBeUndefined();
+    expect(event('WR-01').condNote).toContain('จักรกล × มังกร');
+    expect(event('WR-03').cond).toEqual({ k: 'var', name: 'H', op: '>', n: 80 });
+    expect(event('WR-15').cond).toEqual({ k: 'and', of: [{ k: 'era', min: 4 }, { k: 'cmp', stat: 'dfc', op: '>=', value: 11 }, { k: 'cmp', stat: 'keys', op: '>=', value: 5 }] });
+  });
+
+  it('keeps every swap of the แทนที่ rows: the ones the sim holds in replace, the others in swaps (H9)', () => {
+    const doc = readFileSync(path.join(root, 'docs/systems/events/branches/01-dragon-falls.md'), 'utf8').split('\n');
+    const dr01 = W.closures.find((c) => c.trigger === 'DR-01')!;
+    expect(dr01.swaps).toContainEqual(expect.objectContaining({ from: 'WR-01', to: 'WR-22' }));
+    expect(dr01.swaps).toContainEqual(expect.objectContaining({ from: 'DR-11', to: 'พิธีไว้อาลัยมหาศักดิ์สิทธิ์' }));
+    // every event id on the left of an arrow in the doc is in replace or swaps of its trigger (no first or last item lost)
+    let section = '';
+    let checked = 0;
+    for (const l of doc) {
+      const h = l.match(/^## \d+\. (\S+) → /);
+      if (h) section = h[1];
+      const row = l.match(/^\| \*\*แทนที่\*\* \| (.*) \|$/);
+      if (!row) continue;
+      const d = W.dragons.find((x) => x.name === section)!;
+      const triggers = W.closures.filter((c) => c.trigger === d.fallEvent || (section === 'นิเวรี' && c.trigger === 'FG-11'));
+      expect(triggers.length, section).toBeGreaterThan(0);
+      for (const item of row[1].split(' · ').filter((x) => x.includes('→'))) {
+        for (const from of item.split('→')[0].match(/\b[A-Z]{2,3}-\d{2}\b/g) ?? []) {
+          const have = triggers.some((c) => c.replace.some((r) => r.from === from) || c.swaps.some((s) => s.from === from));
+          expect(have, `${section}: ${from}`).toBe(true);
+          checked++;
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(12);
+    // the sim holds exactly the branch pairs, so none of the swaps is also in replace
+    for (const c of W.closures) for (const s of c.swaps) expect(c.replace.some((r) => r.from === s.from && r.to === s.to), `${c.trigger} ${s.from}`).toBe(false);
+  });
+});
+
+describe('local events keep their dependency and their opened nodes (data review M6)', () => {
+  const lc = (id: string) => L.events.find((e) => e.id === id)!;
+  it('keeps the second dependency of LC-01 as a prose leaf next to the event', () => {
+    expect(lc('LC-01').depends).toEqual({ k: 'or', of: [{ k: 'event', id: 'WR-24', happened: true, phase: 'near' }, { k: 'text', text: 'ธุลีทิพย์ใกล้ขาด' }] });
+    expect(lc('LC-01').reads).toEqual([{ id: 'WR-24', phase: 'near' }]);
+    expect(lc('LC-07').depends).toEqual({
+      k: 'or',
+      of: [{ k: 'event', id: 'WR-20', happened: true, phase: 'running' }, { k: 'event', id: 'BIO-08', happened: true, phase: 'near' }],
+    });
+  });
+  it('does not make a risk an event (LC-21 ลงต่อ) and opens ex.a1 on หยุด', () => {
+    const e = lc('LC-21');
+    expect(e.paths[0].effects).toEqual([{ k: 'label', text: 'PL-03 เสี่ยง' }]);
+    expect(e.paths[1].effects).toEqual([{ k: 'ref', nodes: ['ex.a1'], rel: 'เปิด' }]);
+    expect(e.touches).toContain('PL-03');
+    // no path turns a "เสี่ยง ID" of its text into an event effect
+    for (const x of [...L.events, ...L.generated])
+      for (const p of x.paths)
+        for (const f of p.effects) if (f.k === 'event') expect(p.text, `${x.id} ${p.when}`).not.toMatch(new RegExp(`${f.id}\`?\\s*เสี่ยง|เสี่ยง\\s*\`?${f.id}`));
   });
 });
