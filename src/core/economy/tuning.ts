@@ -12,7 +12,9 @@ export const ECONOMY_FROM_AGE = 17;
  * does not pay). Income is multiplied by this until the faucets 01 §7 lists (battle rewards, deliveries, investments: combat and P3 to P5) are in
  * the core: it gives about 150 at 30, 450 at 45 and 700 at 60 (tests/balance/economy.test.ts). It is the one number to lower when they arrive.
  */
-export const INCOME_SCALE = 1.35;
+export const INCOME_SCALE = 1.46;
+// 1.35 until the M3 balance after the fix branches: the story lines pv/iv/wk/nl closed for a share of lives (story OPEN_SHARE, to keep the nodes at 31 to 33) took the
+// median at 60 from 203 to 141 together with the soldiers' wars; the shares were opened again where the nodes pay and this number was raised to 1.46 (median 204).
 
 /** World years of a temporary W change per level it falls back (01-world-economy.md §6: "กลับสู่ค่าเดิม 1 ระดับต่อ 5 ปี"). */
 export const W_DECAY_YEARS = 5;
