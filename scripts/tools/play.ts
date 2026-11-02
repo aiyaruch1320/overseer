@@ -7,6 +7,8 @@
 // (god-commands.ts): chest · pick N · reroll · skip · dream N · whisper <hint> · answer <card> <mode> · miracle MR-xx [target] ·
 // decree <event> <mult> · conjure <words> · vow N · power · options · yes · no. A command of the god shows its preview first and
 // waits for `yes` (it may be in the next --cmd; the waiting command is kept in <seed>.pending.json). `--yes` does it at once.
+// `say <words>` turns free words into a whisper through the LLM layer (src/core/llm): tier 0 names the hint, `--llm=fake|anthropic` lets the translator try the rest; with no
+// match the answer says so and the menu (`options`) is the way. With `--llm`, a dead character also gets the summary of the ending.
 // `advance` without a number stops at the next call of the game: the `attention` system's call if it exists, else a level 3 entry.
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
@@ -19,6 +21,7 @@ import { placeName } from '../../src/core/text';
 import { godLines, timeline, statusLines, worldLines } from './report';
 import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
 import { intArg, parseArgs } from './args';
+import { llmFromArgs, sayLines, summaryReport } from './llm';
 import { loadAll } from './node-data';
 import { POLICIES, afterBeat, createSession, policyOf, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
 
@@ -37,6 +40,7 @@ if (policy && !POLICIES.includes(policy)) {
 }
 
 const data = loadAll();
+const tl = llmFromArgs(args);
 const opts = { seed, race: args.race, country: args.country, persona: args.persona, policy, startYear: args.year === undefined ? undefined : intArg(args.year, 'year') };
 
 function open(): { s: Session; fresh: boolean } {
@@ -188,7 +192,17 @@ if (fresh) {
   }
 }
 const cmds = (args.cmd ?? 'advance').split(';').map((x) => x.trim()).filter(Boolean);
-for (const c of cmds) if (!run(c)) break;
+for (const c of cmds) {
+  if (/^say(\s|$)/.test(c)) {
+    const r = await sayLines(tl, g.ctx, c.slice(3).trim());
+    say(...r.lines);
+    if (r.cmd && !run(r.cmd)) break;
+    continue;
+  }
+  if (!run(c)) break;
+}
+if (tl && g.state.life?.dead) say('', ...(await summaryReport(tl, data, g.state)));
+tl?.flush();
 
 mkdirSync(dir, { recursive: true });
 writeFileSync(file, save(g.state));
