@@ -13,7 +13,7 @@ describe('how lives end and pace', () => {
   it(
     `${LIVES} lives`,
     () => {
-      const data = loadAll(['storylines', 'convergence', 'races', 'origin', 'countries', 'continents', 'traits', 'aptitudes', 'skills', 'blessings', 'curses', 'jobs', 'fates', 'clashes', 'economy', 'npcs', 'world-events', 'local-events', 'enemies', 'names', 'synonyms', 'templates-ending', 'weapons', 'items', 'materials', 'companions', 'god', 'combat', 'attention', 'forging', 'wish', 'templates-god']);
+      const data = loadAll();
       let endings = 0;
       let nodes = 0;
       let nodeYears = 0;

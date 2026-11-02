@@ -10,7 +10,7 @@ import { entryOf, flagsOf } from './access';
 import { continentPaths, routeState, type Edge, type Link, type RouteId, type RouteState } from './routes';
 import { geo, inRange, type CountryInfo } from './data';
 import { addOnce, extOf, lifeOf } from './state';
-import { DAYS_PER_QUARTER, FOG_MASK, GOODS_SHARE, MASK_PRICE, STAIR_PASS, TOLL_SHARE } from './tuning';
+import { DAYS_PER_QUARTER, FOG_MASK, GOODS_SHARE, MASK_PRICE, MERC_ROAD, STAIR_PASS, TOLL_SHARE } from './tuning';
 import { openLine } from '../story';
 
 export interface Leg {
@@ -305,7 +305,9 @@ function road(ctx: Ctx, life: LifeState, leg: Leg, why: string): number {
       note = 'refugees';
       break;
     case 6:
-      if (rng.chance(0.5)) {
+      // the table says "ถูกเกณฑ์ขนของ หรือเปิดเส้นทหารรับจ้าง" and gives no split (assumption): the mercenary road opens in one road event of four, as the
+      // war and soldier causes of the table already open ml in about a third of the lives
+      if (rng.chance(1 - MERC_ROAD)) {
         // the draft: the soldiers use the character's cart for a season. Or the road to a hired sword: the mercenary line
         delay = 1;
         note = 'draft';
@@ -364,7 +366,8 @@ export function queueLine(ctx: Ctx, line: string, why: string): void {
   // a line opens once; asking again would only make the story draw its decision again
   if (ex.opened.includes(line)) return;
   ex.opened.push(line);
-  openLine(ctx, line);
+  // the story refuses a line whose only nodes left are the elders (the veteran of a road never walked): then nothing opened
+  if (!openLine(ctx, line)) return void write(ctx.state, { sys: 'travel', kind: 'open-late', id: line, data: { why }, level: 0 });
   write(ctx.state, { sys: 'travel', kind: 'open', id: line, data: { why }, level: 1 });
 }
 

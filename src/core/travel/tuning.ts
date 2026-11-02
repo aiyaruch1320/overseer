@@ -75,6 +75,15 @@ export const TRIP: Record<string, TripShape> = {
   city: { go: 1, more: 0.35, stay: [1, 6], settle: 0.1, near: 0.75 },
 };
 
+/** The ages at which the flag of war alone draws a recruit into the mercenary cause (assumption: the table gives none; ml.a1 is at 18 to 28, a2 at 24 to 36). */
+export const ML_WAR_AGE: readonly [number, number] = [16, 35];
+
+/** The aptitudes of a fighter: the flag of war draws only those who hold one into the mercenary cause (assumption, with ML_WAR_AGE). */
+export const WEAPON_APTS: readonly string[] = ['sword', 'axe', 'spear', 'bow', 'dagger', 'unarmed', 'hammer', 'whip', 'sling', 'mounted'];
+
+/** Road event 6 of the table (a column of soldiers or a war check): the share of them that opens the mercenary line instead of drafting the cart (assumption; the table gives no split). */
+export const MERC_ROAD = 0.25;
+
 /** Chance per life year that a city job (clerk, teacher, doctor) takes a post or a course in another country. */
 export const CITY_TRIP = 0.011;
 
@@ -82,7 +91,7 @@ export const CITY_TRIP = 0.011;
 export const HOLY_PLACES: readonly string[] = ['SH-09', 'AZ-01', 'AL-02', 'SV-01', 'NB-07', 'SH-06'];
 
 /** A job that counts as "ทหาร" for the mercenary cause (§2: "ธงสงคราม war ในประเทศ หรืออาชีพทหาร"). */
-export const SOLDIER_JOBS: ReadonlySet<string> = new Set(['soldier', 'mercenary', 'knight', 'royal_guard', 'city_guard']);
+export const SOLDIER_JOBS: ReadonlySet<string> = new Set(['soldier', 'mercenary', 'knight']); // the three jobs 25-journeys.md §3 names for ml; the guards of a city or a palace stay at their gates
 
 /** Jobs that open the journey lines by themselves (25-journeys.md §3 column "เปิดเมื่อ"). */
 export const LINE_JOBS: Record<string, readonly string[]> = {

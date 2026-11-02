@@ -79,7 +79,9 @@ function gain(ctx: Ctx, life: LifeState, id: string): boolean {
 
 // ---------- the weapon a job gives ----------
 
-const tierPick = (list: Weapon[], want: Rarity[]): Weapon | undefined => want.map((r) => list.find((w) => w.rarity === r)).find((w) => !!w);
+/** The first weapon of the first tier wanted that the list holds; of the weapons of that tier, one of a kind the character is trained in comes first. */
+const tierPick = (list: Weapon[], want: Rarity[], trained?: (w: Weapon) => boolean): Weapon | undefined =>
+  want.map((r) => list.find((w) => w.rarity === r && (!trained || trained(w))) ?? list.find((w) => w.rarity === r)).find((w) => !!w);
 
 /** Gives the first weapon of the job when the job begins (C for a common job, U for a secret or a special one), and the next one now and then. */
 export function jobWeapons(ctx: Ctx, life: LifeState): void {
@@ -92,7 +94,7 @@ export function jobWeapons(ctx: Ctx, life: LifeState): void {
     if (!set.length) continue;
     if (!ex.given.includes(job)) {
       ex.given.push(job);
-      const w = tierPick(set, ['C', 'U', 'R', 'E']);
+      const w = tierPick(set, ['C', 'U', 'R', 'E'], (x) => x.apt.split(/\s+/).some((a) => (life.aptitudes[a] ?? 0) > 0));
       if (w) apply(ctx, [{ k: 'grant', kind: 'weapon', id: w.id }], src);
       continue;
     }

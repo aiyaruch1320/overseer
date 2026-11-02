@@ -29,7 +29,8 @@ onEffect('npcPath', (ctx, e, src) => {
  */
 export function combatClashHandler(ctx: Parameters<typeof playClash>[0], req: ClashReq): ClashDecision {
   const life = ctx.state.life;
-  if (!life || life.dead) return undefined;
+  // a world that loaded no combat data has no fights: the default result is drawn
+  if (!life || life.dead || !ctx.data.combat || !ctx.data.enemies) return undefined;
   const r = playClash(ctx, req.clash.id, { opener: req.code, apply: false });
   if (r.result === 'deferred' || r.result === 'closed') return 'veto';
   if (r.result === 'unknown' || !r.kind) return undefined;

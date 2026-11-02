@@ -11,7 +11,7 @@ import { flagsOf } from './access';
 import { geo, raceCode, type CountryInfo } from './data';
 import { beatOf, statOf, type TravelExt } from './state';
 import { go, queueLine } from './trip';
-import { ADVENTUROUS_TRAITS, HOLY_PLACES, MIN_AGE, SETTLED_TRAITS, SOLDIER_JOBS, TRIP } from './tuning';
+import { ADVENTUROUS_TRAITS, HOLY_PLACES, MIN_AGE, ML_WAR_AGE, SETTLED_TRAITS, SOLDIER_JOBS, TRIP, WEAPON_APTS } from './tuning';
 import { pickDestination } from './dest';
 
 type Row = ReturnType<typeof rows>[number];
@@ -78,7 +78,10 @@ export const CAUSES: CauseDef[] = [
       const war = flagsOf(ctx, life.country).includes('war');
       const soldier = !!life.job && SOLDIER_JOBS.has(life.job);
       const total = geo(ctx).countries.get(life.country)?.war === 'total';
-      return { ok: war || soldier, mul: modOf(row, 0, total) };
+      // the war takes the young who can fight (ml.a1 is at 18 to 28): the flag of war draws a recruit between these ages who is trained in a weapon,
+      // a soldier by trade is a mercenary at any age
+      const recruit = war && life.hAge >= ML_WAR_AGE[0] && life.hAge <= ML_WAR_AGE[1] && WEAPON_APTS.some((a) => (life.aptitudes[a] ?? 0) > 0);
+      return { ok: recruit || soldier, mul: modOf(row, 0, total) };
     },
   },
   {

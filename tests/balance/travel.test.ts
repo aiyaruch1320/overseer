@@ -171,9 +171,10 @@ describe('travel balance', () => {
     expect(per(merchants)).toBeGreaterThan(lo[0] * 0.6);
     expect(per(merchants)).toBeLessThanOrEqual(lo[1] * 1.15);
     expect(per(travelling)).toBeLessThanOrEqual(4.5);
-    const days = (data.travel.items as TravelData).legRule.daysJob;
-    // an outing is planned to fit the year at the middle of its ranges; the days drawn may run a fifth over
-    expect(Math.max(...travelling.map((r) => r.maxDays))).toBeLessThanOrEqual(days * 1.4);
+    const rule = (data.travel.items as TravelData).legRule;
+    // an outing is planned to fit the year at the middle of its ranges; the days drawn may run a fifth over, and the trips of the causes of §2 (90 days
+    // a world year, rule 2) are a budget of their own on top of the 240 of the job
+    expect(Math.max(...travelling.map((r) => r.maxDays))).toBeLessThanOrEqual((rule.daysJob + rule.daysCause) * 1.2);
   });
 
   it('a life that travels sees about 2 countries beyond the birth country on average (L0 counts 0), and lives at L0 are the larger half or near it', () => {

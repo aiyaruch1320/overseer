@@ -65,7 +65,7 @@ export const FLAG_MEET_AGE = 14;
 // ---------- invites (03 §3) ----------
 
 /** The character's own taste for inviting: chance per year that he asks an eligible friend to be his lover (assumption; the docs say "ตามนิสัย"). */
-export const ASK_LOVER = 0.05;
+export const ASK_LOVER = 0.08; // 0.05 before the lives travelled by the causes of the travel table: a lover must live in the same country (M3 wiring)
 export const ASK_SPOUSE = 0.25;
 export const ASK_BUSINESS = 0.04;
 /** hAge a character can have a lover from (adult). */

@@ -202,7 +202,8 @@ describe('items balance: lives', () => {
     expect((by.L ?? 0) / n).toBeLessThan(0.03);
     // a character holds a weapon of a kind it is trained in, in most lives
     const fighters = lives.filter((l) => !l.everyday);
-    expect(fighters.filter((l) => l.unskilled).length / Math.max(1, fighters.length)).toBeLessThan(0.35);
+    // every adult has a job now and takes its first weapon, of a kind he may not be trained in: still more than half hold one they are trained in
+    expect(fighters.filter((l) => l.unskilled).length / Math.max(1, fighters.length)).toBeLessThan(0.45);
   });
 
   it('forging is a story that some lives live: a fifth of the lives start it, and the results follow the odds of §8', () => {

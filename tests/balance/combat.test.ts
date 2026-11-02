@@ -123,8 +123,10 @@ describe('combat balance (whole lives of the real core)', () => {
     const lost = all.filter((e) => e.data.end === 'lose').length / all.length;
     console.log('lives ended in battle', (100 * inBattle).toFixed(1) + '%', 'deaths by the fight per life', dead.toFixed(3), 'lost fights', (100 * lost).toFixed(1) + '%');
     expect(inBattle).toBeGreaterThan(0.005);
-    expect(inBattle).toBeLessThan(0.08);
-    expect(dead).toBeLessThan(0.08);
+    // the fights themselves kill a few in a hundred lives (the 2.5% of the first merge); the lives that end with the cause "ตายในศึก" also hold the ways of the
+    // story that say so (ml.e1.c "ตายในสนามสุดท้าย", or.e2.a, gi.e2.b), whose lines open by the causes of the travel table: a tenth of the lives at most
+    expect(dead).toBeLessThan(0.04);
+    expect(inBattle).toBeLessThan(0.12);
     expect(lost).toBeLessThan(0.12);
     expect(lost).toBeGreaterThan(0.005);
   });
@@ -136,7 +138,8 @@ describe('combat balance (whole lives of the real core)', () => {
     expect(road).toBeGreaterThan(4);
     expect(road).toBeLessThan(15);
     expect(story).toBeGreaterThan(2);
-    expect(story).toBeLessThan(10);
+    // the story's own: the journey lines open by their causes now (ml in a fifth of the lives), each with its battles
+    expect(story).toBeLessThan(12);
   });
 
   it('permanent wounds are the exception: under one a life, and the losers of a fight are the ones who carry them', () => {
