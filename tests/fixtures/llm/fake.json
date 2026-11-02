@@ -1,0 +1,154 @@
+{
+  "responses": [
+    {
+      "point": "command",
+      "match": "อย่าประมาท",
+      "answers": [
+        "{\"hint\":\"ระวัง\",\"target\":\"none\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "ไปทางเหนือ",
+      "answers": [
+        "{\"hint\":\"จงไป\",\"target\":\"NB\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "ขอให้รวยล้นฟ้า",
+      "answers": [
+        "{\"hint\":\"none\",\"target\":\"none\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "ตอบผิดก่อน",
+      "answers": [
+        "{\"hint\":\"บินได้\",\"target\":\"none\"}",
+        "{\"hint\":\"กล้าเถิด\",\"target\":\"none\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "ตอบผิดเสมอ",
+      "answers": [
+        "{\"hint\":\"บินได้\",\"target\":\"none\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "จงไปไม่บอกที่",
+      "answers": [
+        "{\"hint\":\"จงไป\",\"target\":\"ที่ไหนสักแห่ง\"}"
+      ]
+    },
+    {
+      "point": "command",
+      "match": "ตอบว่าง",
+      "answers": [
+        ""
+      ],
+      "mode": "empty"
+    },
+    {
+      "point": "command",
+      "match": "ตอบช้า",
+      "answers": [
+        "{\"hint\":\"ระวัง\",\"target\":\"none\"}"
+      ],
+      "mode": "slow",
+      "delayMs": 200
+    },
+    {
+      "point": "director",
+      "match": "npc_death",
+      "answers": [
+        "{\"pick\":\"b\",\"reason\":\"old_face\"}"
+      ]
+    },
+    {
+      "point": "director",
+      "match": "heart",
+      "answers": [
+        "{\"pick\":\"zzz\",\"reason\":\"old_face\"}"
+      ]
+    },
+    {
+      "point": "director",
+      "match": "quiet",
+      "answers": [
+        "{\"pick\":\"a\",\"reason\":\"because\"}",
+        "{\"pick\":\"a\",\"reason\":\"rest\"}"
+      ]
+    },
+    {
+      "point": "director",
+      "match": "repeat_meet",
+      "answers": [
+        "{\"pick\":\"a\",\"reason\":\"tension\"}"
+      ],
+      "mode": "slow",
+      "delayMs": 60
+    },
+    {
+      "point": "ending",
+      "match": "ปล่อยว่าง",
+      "answers": [
+        ""
+      ],
+      "mode": "empty"
+    },
+    {
+      "point": "ending",
+      "match": "ล่มเครือข่าย",
+      "answers": [
+        ""
+      ],
+      "mode": "throw"
+    },
+    {
+      "point": "ending",
+      "match": "เครดิตหมด",
+      "answers": [
+        ""
+      ],
+      "mode": "credit"
+    },
+    {
+      "point": "ending",
+      "match": "ทอร์เวน",
+      "answers": [
+        "ทอร์เวนเกิดในครอบครัวชาวนาแห่งโซลาริส และเติบโตมากับคำถามว่าตนจะได้กลับบ้านเกิดหรือไม่\n\nเมื่ออายุสิบสี่ น้ำท่วมหมู่บ้านจนครอบครัวต้องย้ายไปเมืองท่า ที่นั่นเขาได้เป็นศิษย์ของครูดาบเคเรน\n\nเขาจากโลกไปในวัยชรา ท่ามกลางคนที่เคยร่วมทุกข์ร่วมสุขกันมา"
+      ]
+    },
+    {
+      "point": "ending",
+      "match": "เอลิเนีย",
+      "answers": [
+        "Elinea was born under the world tree and died of old age after a long and quiet life of healing the sick."
+      ]
+    },
+    {
+      "point": "ending",
+      "match": "โบรก",
+      "answers": [
+        "โบรกพูดว่า ข้าจะไม่ยอมแพ้ใครอีก แล้วเขาก็ตายในศึกเคียงข้างคู่แข่งเก่าของเขา ซึ่งเป็นสิ่งที่ไม่มีใครคาดคิดมาก่อน"
+      ]
+    },
+    {
+      "point": "ending",
+      "match": "กรุก",
+      "answers": [
+        "กรุกเกิดในเผ่าของทัพหมาป่าเหล็ก ตอนอายุ 25 เขาปฏิเสธความฝัน แล้วตายในศึกอย่างที่ควรจะเป็นมาตลอด"
+      ]
+    },
+    {
+      "point": "ending",
+      "match": "ไอลีน",
+      "answers": [
+        "สั้นไป"
+      ]
+    }
+  ]
+}
