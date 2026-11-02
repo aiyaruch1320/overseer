@@ -51,6 +51,8 @@ export const JOB = { cross: 0.03, settle: 0.03, abroad: 0.8 };
 export interface TripShape {
   /** Chance that a success of the cause sends the character abroad at all (the line it opens may do without a trip). */
   go: number;
+  /** Chance of one more stop in the same continent before the stay (a journey seldom has one place only). */
+  more: number;
   /** Quarters spent at the destination. */
   stay: [number, number];
   /** Chance of staying for good (the destination becomes the base). */
@@ -61,16 +63,16 @@ export interface TripShape {
 
 /** How long each cause keeps the character away. The documents name the cause and the line it opens, not the stay. */
 export const TRIP: Record<string, TripShape> = {
-  sc: { go: 0.4, stay: [8, 16], settle: 0.15, near: 0.9 },
-  ps: { go: 1, stay: [2, 6], settle: 0.05, near: 0.6 },
-  ml: { go: 0.15, stay: [4, 12], settle: 0.15, near: 0.9 },
-  ex: { go: 0.7, stay: [4, 20], settle: 0.6, near: 0.9 },
-  exile: { go: 0.2, stay: [8, 24], settle: 0.5, near: 0.9 },
-  xc: { go: 0.4, stay: [4, 20], settle: 0.25, near: 0.9 },
-  wd: { go: 0.6, stay: [4, 12], settle: 0.1, near: 0.6 },
-  tr: { go: 0.3, stay: [2, 8], settle: 0.1, near: 0.9 },
+  sc: { go: 0.4, more: 0.35, stay: [8, 16], settle: 0.15, near: 0.9 },
+  ps: { go: 1, more: 0.35, stay: [2, 6], settle: 0.05, near: 0.6 },
+  ml: { go: 0.15, more: 0.35, stay: [4, 12], settle: 0.15, near: 0.9 },
+  ex: { go: 0.7, more: 0.35, stay: [4, 20], settle: 0.6, near: 0.9 },
+  exile: { go: 0.2, more: 0.35, stay: [8, 24], settle: 0.5, near: 0.9 },
+  xc: { go: 0.4, more: 0.35, stay: [4, 20], settle: 0.25, near: 0.9 },
+  wd: { go: 0.6, more: 0.35, stay: [4, 12], settle: 0.1, near: 0.6 },
+  tr: { go: 0.3, more: 0.35, stay: [2, 8], settle: 0.1, near: 0.9 },
   // the clerk, the teacher, the doctor who goes to a congress, a post in another city (assumption: the table gives no cause for the city jobs)
-  city: { go: 1, stay: [1, 6], settle: 0.1, near: 0.75 },
+  city: { go: 1, more: 0.35, stay: [1, 6], settle: 0.1, near: 0.75 },
 };
 
 /** Chance per life year that a city job (clerk, teacher, doctor) takes a post or a course in another country. */

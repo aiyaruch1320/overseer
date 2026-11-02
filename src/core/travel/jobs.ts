@@ -9,7 +9,7 @@ import type { LifeState } from '../types';
 import { geo } from './data';
 import { pickDestination } from './dest';
 import { addOnce, extOf, type TravelExt } from './state';
-import { go, queueLine } from './trip';
+import { go, plan, queueLine } from './trip';
 import { leave } from './causes';
 import { CITY_TRIP, EMPLOYER_PAYS, JOB, LINE_JOBS, MIN_AGE, TRAVEL_JOBS, jobGroup } from './tuning';
 import { moveMul } from '../god/acts';
@@ -77,17 +77,17 @@ function jobYearInner(ctx: Ctx, life: LifeState, ex: TravelExt): void {
   const base = ex.base;
   let legs = 0;
   // an outing is out and back: two legs inside a continent, more across
-  for (let guard = 0; legs < want && guard < 4; guard++) {
+  for (let guard = 0; legs < want && guard < 6; guard++) {
     if (!rng.chance(moveMul(ctx))) break;
     const abroad = rng.chance(JOB.abroad);
-    if (!abroad) {
-      legs += 2; // a round inside the home country: no border crossed, no leg of the table
-      continue;
-    }
+    // a round inside the home country crosses no border: it is no leg of the table
+    if (!abroad) continue;
     const cross = rng.chance(JOB.cross);
     const dest = pickDestination(ctx, life, job, !cross);
     if (!dest) continue;
-    if ((ex.yearDays[life.hAge] ?? 0) >= cap) break;
+    // §1 rule 2: the legs must fit in the days on the road (out and back, at the middle of the ranges)
+    const pl = plan(ctx, life, life.country, dest, { free: true });
+    if (!pl.ok || (ex.yearDays[life.hAge] ?? 0) + pl.days * 2 > cap) continue;
     const out = go(ctx, dest, `job:${job}`, { free, walk: true });
     if (!out.legs) continue;
     legs += out.legs;

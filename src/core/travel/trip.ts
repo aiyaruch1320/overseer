@@ -311,10 +311,7 @@ function road(ctx: Ctx, life: LifeState, leg: Leg, why: string): number {
         note = 'draft';
       } else {
         note = 'mercenary road';
-        if (!ex.opened.includes('ml')) {
-          ex.opened.push('ml');
-          queueLine(ctx, 'ml', 'd6');
-        }
+        queueLine(ctx, 'ml', 'd6');
       }
       break;
     case 7:
@@ -364,7 +361,9 @@ export function queueLine(ctx: Ctx, line: string, why: string): void {
   const life = lifeOf(ctx);
   if (!life) return;
   const ex = extOf(life);
-  if (!ex.opened.includes(line)) ex.opened.push(line);
+  // a line opens once; asking again would only make the story draw its decision again
+  if (ex.opened.includes(line)) return;
+  ex.opened.push(line);
   openLine(ctx, line);
   write(ctx.state, { sys: 'travel', kind: 'open', id: line, data: { why }, level: 1 });
 }
@@ -379,6 +378,15 @@ export interface GoResult {
 }
 
 const NOT_GONE: GoResult = { ok: false, legs: 0, days: 0, fare: 0, delay: 0 };
+
+/** The character stood in this country on the way: it counts for the level and for the countries seen (a gateway is a place stood in). */
+function stood(life: LifeState, ex: ReturnType<typeof extOf>, to: CountryId): void {
+  if (to !== ex.born) addOnce(ex.visited, to);
+  addOnce(ex.continents, to.slice(0, 2) as ContinentId);
+  const lv = ex.continents.length > 1 ? 2 : ex.visited.length > 0 ? 1 : 0;
+  if (lv > ex.level) ex.level = lv as 0 | 1 | 2;
+  void life;
+}
 
 /** Changes `life.country`, keeps the counts of what the character has seen, and writes the move (the one place the country changes). */
 export function move(ctx: Ctx, life: LifeState, to: CountryId, why: string, legs = 1): void {
@@ -439,6 +447,7 @@ export function go(ctx: Ctx, to: CountryId, why: string, opts: PlanOpts & { stay
       days += d;
     }
     legs++;
+    stood(life, ex, leg.to);
     // §4: a leg rolls the road once, a leg across continents twice, and a border with a wary stance one check more
     const rolls = (leg.cross ? 2 : 1) + leg.checks;
     for (let i = 0; i < rolls; i++) delay += road(ctx, life, leg, why);

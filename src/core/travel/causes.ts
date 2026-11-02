@@ -180,11 +180,19 @@ export function leave(ctx: Ctx, life: LifeState, ex: TravelExt, cause: string, f
   const free = cause === 'ml' || cause === 'ex' || cause === 'exile';
   const r = go(ctx, dest, cause, { free, smuggle, walk: true });
   if (!r.legs) return false;
+  let delay = r.delay;
+  if (rng.chance(shape.more)) {
+    const next = pickDestination(ctx, life, cause, true);
+    if (next) {
+      const r2 = go(ctx, next, cause, { free, smuggle, walk: true });
+      delay += r2.delay;
+    }
+  }
   let stay = rng.int(shape.stay[0], shape.stay[1]);
   const here = geo(ctx).countries.get(life.country) as CountryInfo;
   // water folk stay out of the water no longer than half a year (§3.3)
   if ((life.race === 'merfolk' || life.race === 'naga') && here && !here.coast) stay = Math.min(stay, 2);
-  ex.away = { cause, to: life.country, until: beatOf(ctx, life) + stay + r.delay, settle: rng.chance(shape.settle) };
+  ex.away = { cause, to: life.country, until: beatOf(ctx, life) + stay + delay, settle: rng.chance(shape.settle) };
   ex.delay = 0;
   return true;
 }
