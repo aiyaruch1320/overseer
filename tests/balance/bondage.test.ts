@@ -21,7 +21,11 @@ interface Bound {
   /** Things that happened while he stayed bound across a beat, and should not have. */
   moved: string[];
   jobChanged: string[];
+  /** A job a B2 or B3 life took or lost across a beat: the work of the contract is the only one he may get, and only at twenty (M3 review R3). */
+  jobGained: string[];
   rose: string[];
+  /** Free after bondage, still class 1, and nothing but the bondage put him there (M3 review R1). */
+  freeC1?: string;
   endedBound: boolean;
   ending?: string;
 }
@@ -32,7 +36,7 @@ function play(seed: number): Bound | undefined {
   const s = createSession(data, { seed });
   const g = s.game;
   startLife(s);
-  const out: Bound = { seed, log: [], moved: [], jobChanged: [], rose: [], endedBound: false };
+  const out: Bound = { seed, log: [], moved: [], jobChanged: [], jobGained: [], rose: [], endedBound: false };
   let ever = false;
   let n = 0;
   while (g.state.life && !g.state.life.dead && n++ < 4 * 400) {
@@ -45,6 +49,7 @@ function play(seed: number): Bound | undefined {
     if (before.level > 0 && level > 0 && !now.dead) {
       if (now.country !== before.country) out.moved.push(`${now.hAge} ${before.country}>${now.country}`);
       if (before.level >= 2 && now.job !== before.job && before.job) out.jobChanged.push(`${now.hAge} ${before.job}>${now.job}`);
+      if (before.level >= 2 && now.job !== before.job && !before.job) out.jobGained.push(`${now.hAge} ${now.job}`);
       if (Number(now.cls.slice(1)) > before.cls) out.rose.push(`${now.hAge} ${before.cls}>${now.cls}`);
     }
   }
@@ -53,6 +58,11 @@ function play(seed: number): Bound | undefined {
   out.log = g.state.log;
   const b = g.state.life!.ext.bondage as { level?: number } | undefined;
   out.endedBound = (b?.level ?? 0) > 0;
+  const lastExit = [...out.log].reverse().find((e) => e.sys === 'bondage' && e.kind === 'exit');
+  if (lastExit && !out.endedBound && g.state.life!.cls === 'c1') {
+    const other = out.log.filter((e) => e.sys === 'character' && e.kind === 'class' && e.n > lastExit.n && e.data.to === 'c1' && !String(e.data.cause).startsWith('bondage'));
+    if (!other.length) out.freeC1 = `exit at ${lastExit.age} by ${lastExit.id}`;
+  }
   out.ending = g.state.log.find((e) => e.sys === 'story' && e.kind === 'ending')?.id as string | undefined;
   return out;
 }
@@ -79,7 +89,18 @@ describe('bondage over whole lives', () => {
       expect(l.moved, `seed ${l.seed} moved`).toEqual([]);
       expect(l.jobChanged, `seed ${l.seed} job`).toEqual([]);
       expect(l.rose, `seed ${l.seed} class`).toEqual([]);
+      // the first work a B2 or B3 life gets is the contract's, at twenty or after (class 1 work: economy/03-classes.md §4)
+      for (const g of l.jobGained) {
+        expect(Number(g.split(' ')[0]), `seed ${l.seed} first work ${g}`).toBeGreaterThanOrEqual(20);
+        expect(['servant', 'miner', 'courier', 'woodcutter'], `seed ${l.seed} first work ${g}`).toContain(g.split(' ')[1]);
+      }
     }
+  });
+
+  it('a life freed by any way out does not stay class 1 unless something else put it there (M3 review R1; 10-bondage.md §6)', () => {
+    const freed = lives.filter((l) => l.log.some((e) => e.sys === 'bondage' && e.kind === 'exit'));
+    console.log('freed', freed.length, 'of', lives.length, 'still class 1 from bondage', freed.filter((l) => l.freeC1).length);
+    for (const l of freed) expect(l.freeC1, `seed ${l.seed}`).toBeUndefined();
   });
 
   it('the nodes of bd play in the state they are about', () => {
@@ -125,7 +146,9 @@ describe('bondage over whole lives', () => {
         expect(Number(e.data.paid), `seed ${l.seed}`).toBeGreaterThan(0);
         expect(Number(e.data.gold), `seed ${l.seed}`).toBeGreaterThanOrEqual(0);
       }
-      for (const e of l.log.filter((x) => x.sys === 'bondage' && x.kind === 'exit' && x.id !== 'ransom')) expect(Number(e.data.paid)).toBe(0);
+      // a debt cleared by the wages tells the debt it was (M3 review R4); the other ways out cost nothing
+      for (const e of l.log.filter((x) => x.sys === 'bondage' && x.kind === 'exit' && x.id === 'debt')) expect(Number(e.data.paid)).toBeGreaterThan(0);
+      for (const e of l.log.filter((x) => x.sys === 'bondage' && x.kind === 'exit' && x.id !== 'ransom' && x.id !== 'debt')) expect(Number(e.data.paid)).toBe(0);
     }
     console.log('ransoms', ransoms);
     expect(ransoms).toBeGreaterThan(0);
