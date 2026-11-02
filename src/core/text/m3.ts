@@ -72,11 +72,11 @@ function tagOf(d: D, who: string): string {
   if (d.partner || d.spouse) return `${d.spouse ? (d.gender === 'f' ? 'ภรรยา' : d.gender === 'm' ? 'สามี' : 'คู่ชีวิต') : 'คนรัก'}ของ${who}`;
   return '';
 }
-/** `ไลลินา (สหาย)`: the person with his line; a child is `ไลลินา ลูกของมิรา` and a partner `ไลลินา คนรักของมิรา` (the line of a child, `ญาติรุ่นเยาว์`, says nothing to the reader). */
+/** `ไลลินา (สหาย)`: the person with his line; a child is `ไลลินา (ลูก)` and a partner `ไลลินา (คนรัก)` (the line of a child, `ญาติรุ่นเยาว์`, says nothing to the reader). */
 function nameTag(d: D, who: string, ln?: string): string {
   const name = s(d.name);
-  const tag = tagOf(d, who);
-  return tag ? `${name} ${tag}` : `${name}${ln ?? paren(s(d.line))}`;
+  const tag = tagOf(d, who).replace(`ของ${who}`, '');
+  return tag ? `${name} (${tag})` : `${name}${ln ?? paren(s(d.line))}`;
 }
 const isNear = (d: D): boolean => d.kin === 'child' || d.kin === 'adopted' || !!d.partner || !!d.spouse;
 
