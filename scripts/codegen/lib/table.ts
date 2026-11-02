@@ -1,6 +1,6 @@
 // Shared reader for the markdown tables in docs/ and writer for data/gen/ (code-plan §5.1, §5.3).
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, renameSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -72,6 +72,13 @@ export function tables(file: string): Table[] {
   return out;
 }
 
+/** Writes through a temporary file and a rename, so a test that reads data/gen while a generator runs never sees half a file. */
+export function writeAtomic(file: string, text: string): void {
+  const tmp = `${file}.${process.pid}.tmp`;
+  writeFileSync(tmp, text);
+  renameSync(tmp, file);
+}
+
 /** Short hash of the source files, stored as `version` in every generated file. */
 export function versionOf(files: string[]): string {
   const h = createHash('sha1');
@@ -86,7 +93,7 @@ export function versionOf(files: string[]): string {
 export function writeGen(name: string, items: unknown, sources: string[], generatedBy: string): void {
   mkdirSync(genDir, { recursive: true });
   const body = { version: versionOf(sources), sources: sources.map(rel).sort(), generatedBy, items };
-  writeFileSync(path.join(genDir, `${name}.json`), JSON.stringify(body, null, 1) + '\n');
+  writeAtomic(path.join(genDir, `${name}.json`), JSON.stringify(body, null, 1) + '\n');
 }
 
 /** Collects phrases that look like effects but did not parse; written to data/gen/_unparsed/<group>.md. */
@@ -107,6 +114,6 @@ export class Unparsed {
       lines.push('| ที่ | วลี | เหตุ |', '| --- | --- | --- |');
       for (const it of this.items) lines.push(`| ${it.at} | ${it.phrase.replace(/\|/g, '\\|')} | ${it.why} |`);
     }
-    writeFileSync(path.join(dir, `${this.group}.md`), lines.join('\n') + '\n');
+    writeAtomic(path.join(dir, `${this.group}.md`), lines.join('\n') + '\n');
   }
 }
