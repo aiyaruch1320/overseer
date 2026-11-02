@@ -67,9 +67,18 @@
       "label": "ครอบครัวยากจน · ถ้าถิ่นมีสงครามได้",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_war_orphan"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถิ่นมีสงคราม"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_war_orphan"
+         }
+        ]
        }
       ],
       "mods": []
@@ -408,7 +417,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "เข้าศาสนจักร · ชาย · หญิง หรือออกไปขบวนการผู้ไม่ก้มหัว (ถ้า GD-03 เกิดแล้ว) หรือเทพีแห่งจันทรา",
+      "label": "เข้าศาสนจักร · ชาย · หญิง temple_servant หรือออกไปขบวนการผู้ไม่ก้มหัว (ถ้า GD-03 เกิดแล้ว) หรือเทพีแห่งจันทรา",
       "effects": [
        {
         "k": "grant",
@@ -416,13 +425,32 @@
         "id": "priest"
        },
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "temple_servant"
-       },
-       {
-        "k": "event",
-        "id": "GD-03"
+        "k": "pick",
+        "of": [
+         {
+          "label": "หญิง temple_servant",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "temple_servant"
+           }
+          ]
+         },
+         {
+          "label": "ออกไปขบวนการผู้ไม่ก้มหัว (ถ้า GD-03 เกิดแล้ว)",
+          "effects": [
+           {
+            "k": "event",
+            "id": "GD-03"
+           }
+          ]
+         },
+         {
+          "label": "เทพีแห่งจันทรา",
+          "effects": []
+         }
+        ]
        }
       ],
       "mods": []
@@ -567,9 +595,16 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_duelist"
+      "k": "chance",
+      "p": 0.2,
+      "text": "ศึก",
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "npc_duelist"
+        ]
+       }
       ]
      }
     ],
@@ -627,18 +662,9 @@
      {
       "k": "if",
       "cond": {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "DR-01",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "ชาวพื้นหลัง"
-        }
-       ]
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
       },
       "then": [
        {
@@ -734,15 +760,24 @@
       "label": "ปกป้องหมู่บ้านตัวเอง · บุกหมู่บ้านระดับหัวหน้า · ถ้าชนะหัวหน้าด้วยดาบ",
       "effects": [
        {
-        "k": "jobpath",
-        "job": "swordsaint",
-        "secret": true,
-        "need": {
-         "k": "has",
-         "kind": "aptitude",
-         "id": "sword",
-         "level": 3
-        }
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ชนะหัวหน้าด้วยดาบ"
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "swordsaint",
+          "secret": true,
+          "need": {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "sword",
+           "level": 3
+          }
+         }
+        ]
        }
       ],
       "mods": []
@@ -750,17 +785,32 @@
      {
       "key": "c",
       "weight": 20,
-      "label": "หากำไรจากสงคราม",
+      "label": "หากำไรจากสงคราม · merchant หรือ smuggler",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "merchant"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "smuggler"
+        "k": "pick",
+        "of": [
+         {
+          "label": "merchant",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "merchant"
+           }
+          ]
+         },
+         {
+          "label": "smuggler",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "smuggler"
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "grant",
@@ -933,7 +983,10 @@
       ]
      },
      {
-      "k": "battle",
+      "k": "battleFor",
+      "choices": [
+       "a"
+      ],
       "enemies": [
        "npc_assassin"
       ]
@@ -1143,27 +1196,22 @@
        "k": "and",
        "of": [
         {
-         "k": "and",
-         "of": [
-          {
-           "k": "has",
-           "kind": "blessing",
-           "id": "nb_peace_seed"
-          },
-          {
-           "k": "has",
-           "kind": "skill",
-           "id": "ns_mediate",
-           "level": 3
-          },
-          {
-           "k": "cmp",
-           "stat": "fame",
-           "op": ">=",
-           "value": 30,
-           "label": "ชื่อเสียง"
-          }
-         ]
+         "k": "has",
+         "kind": "blessing",
+         "id": "nb_peace_seed"
+        },
+        {
+         "k": "has",
+         "kind": "skill",
+         "id": "ns_mediate",
+         "level": 3
+        },
+        {
+         "k": "cmp",
+         "stat": "fame",
+         "op": ">=",
+         "value": 30,
+         "label": "ชื่อเสียง"
         },
         {
          "k": "not",
@@ -1247,14 +1295,19 @@
     ],
     "notes": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "nc_blood_feud"
-     },
-     {
-      "k": "battle",
-      "enemies": [],
-      "text": "ผู้แก้แค้นจากอดีต ( ) ถ้ามี"
+      "k": "if",
+      "cond": {
+       "k": "has",
+       "kind": "curse",
+       "id": "nc_blood_feud"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ผู้แก้แค้นจากอดีต ( )"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -2118,17 +2171,22 @@
       "text": "ตาม cv"
      },
      {
-      "k": "battle",
-      "enemies": [
-       "shadow_pack"
+      "k": "if",
+      "cond": {
+       "k": "not",
+       "of": {
+        "k": "node",
+        "id": "cv.14"
+       }
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "shadow_pack"
+        ]
+       }
       ]
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "cv.14"
-      ],
-      "rel": ""
      }
     ],
     "titleEvents": [],
@@ -2243,13 +2301,19 @@
       "label": "ปลูกกล้าต้นไม้โลกในทวีปอื่น · (เมื่อ BIO-03 เกิด)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "sapling_guardian"
-       },
-       {
-        "k": "event",
-        "id": "BIO-03"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "BIO-03",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "job",
+          "id": "sapling_guardian"
+         }
+        ]
        },
        {
         "k": "jobpath",
@@ -2851,25 +2915,57 @@
       "mods": []
      }
     ],
-    "notes": [
-     {
-      "k": "event",
-      "id": "DR-08"
-     },
-     {
-      "k": "event",
-      "id": "CT-07"
-     }
-    ],
+    "notes": [],
     "titleEvents": [
      "CT-07"
     ],
     "notesText": "ใช้ได้เมื่อ DR-08 เกิดแล้วหรือกำลังจะเกิด · ถ้า CT-07 ไม่มีวันเกิด ข้ามโหนด",
     "src": "docs/lore/storylines/03-darkelf.md:40",
     "when": {
-     "k": "event",
-     "id": "CT-07",
-     "happened": true
+     "k": "and",
+     "of": [
+      {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "CT-07",
+         "happened": true
+        },
+        {
+         "k": "or",
+         "of": [
+          {
+           "k": "event",
+           "id": "DR-08",
+           "happened": true
+          },
+          {
+           "k": "text",
+           "text": "กำลังจะเกิด"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "CT-07",
+         "happened": true
+        },
+        {
+         "k": "not",
+         "of": {
+          "k": "text",
+          "text": "ไม่มีวันเกิด"
+         }
+        }
+       ]
+      }
+     ]
     }
    },
    {
@@ -3265,10 +3361,19 @@
       "label": "เก็บเงียบ ให้เงาตามไปทุกที่ · ถ้ามีคนเห็นสองเงา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_infamous",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "มีคนเห็นสองเงา"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_infamous",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -3455,12 +3560,18 @@
         "text": "หรือสงบ ตามผล"
        },
        {
-        "k": "event",
-        "id": "GI-04"
-       },
-       {
-        "k": "converge",
-        "to": "cv.8"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "GI-04",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "converge",
+          "to": "cv.8"
+         }
+        ]
        }
       ],
       "mods": []
@@ -3544,19 +3655,34 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ติดอยู่ในความมืดสามวัน ได้ยินเสียงหิน",
+      "label": "ติดอยู่ในความมืดสามวัน ได้ยินเสียงหิน · nc_deep_pull 20% หรือ ns_stone_heart 10%",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_deep_pull",
-        "chance": 0.2
-       },
-       {
-        "k": "grant",
-        "kind": "skill",
-        "id": "ns_stone_heart",
-        "chance": 0.1
+        "k": "pick",
+        "of": [
+         {
+          "label": "nc_deep_pull 20%",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "nc_deep_pull",
+            "chance": 0.2
+           }
+          ]
+         },
+         {
+          "label": "ns_stone_heart 10%",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "skill",
+            "id": "ns_stone_heart",
+            "chance": 0.1
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -3724,7 +3850,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "",
+      "label": "smith",
       "effects": [
        {
         "k": "grant",
@@ -3737,7 +3863,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "",
+      "label": "miner",
       "effects": [
        {
         "k": "grant",
@@ -3750,17 +3876,32 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "",
+      "label": "engineer หรือ rune_carver",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "engineer"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "rune_carver"
+        "k": "pick",
+        "of": [
+         {
+          "label": "engineer",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "engineer"
+           }
+          ]
+         },
+         {
+          "label": "rune_carver",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "rune_carver"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -3911,37 +4052,27 @@
          "k": "and",
          "of": [
           {
-           "k": "and",
-           "of": [
-            {
-             "k": "has",
-             "kind": "aptitude",
-             "id": "scholar",
-             "level": 3
-            },
-            {
-             "k": "has",
-             "kind": "tag",
-             "id": "#sage"
-            }
-           ]
+           "k": "has",
+           "kind": "aptitude",
+           "id": "scholar",
+           "level": 3
           },
           {
-           "k": "and",
-           "of": [
-            {
-             "k": "cmp",
-             "stat": "int",
-             "op": ">=",
-             "value": 14,
-             "label": "ปัญญา"
-            },
-            {
-             "k": "event",
-             "id": "HP-05",
-             "happened": true
-            }
-           ]
+           "k": "has",
+           "kind": "tag",
+           "id": "#sage"
+          },
+          {
+           "k": "cmp",
+           "stat": "int",
+           "op": ">=",
+           "value": 14,
+           "label": "ปัญญา"
+          },
+          {
+           "k": "event",
+           "id": "HP-05",
+           "happened": true
           }
          ]
         }
@@ -4542,15 +4673,21 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "MC-03"
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "cv.9"
-      ],
-      "rel": "ผูก"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "MC-03",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "ref",
+        "nodes": [
+         "cv.9"
+        ],
+        "rel": "ผูก"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -4826,17 +4963,32 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "",
+      "label": "soldier หรือ mercenary",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "soldier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "mercenary"
+        "k": "pick",
+        "of": [
+         {
+          "label": "soldier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "soldier"
+           }
+          ]
+         },
+         {
+          "label": "mercenary",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "mercenary"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -4844,12 +4996,26 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "หรือช่างล้อมเมือง",
+      "label": "smith หรือช่างล้อมเมือง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "smith"
+        "k": "pick",
+        "of": [
+         {
+          "label": "smith",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "smith"
+           }
+          ]
+         },
+         {
+          "label": "ช่างล้อมเมือง",
+          "effects": []
+         }
+        ]
        },
        {
         "k": "grant",
@@ -4862,7 +5028,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "",
+      "label": "farmer",
       "effects": [
        {
         "k": "grant",
@@ -4961,9 +5127,18 @@
       "text": "ออร์คฝ่ายตรงข้าม หัวหน้า"
      },
      {
-      "k": "battle",
-      "enemies": [
-       "crown_wraith"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "มงกุฎยังไร้ผู้สวม"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "crown_wraith"
+        ]
+       }
       ]
      }
     ],
@@ -5200,15 +5375,29 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "ghoul_horde"
-      ]
-     },
-     {
-      "k": "place",
-      "ids": [
-       "MH-03"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "country",
+         "ids": [
+          "MH-03"
+         ]
+        },
+        {
+         "k": "text",
+         "text": "ใกล้"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "ghoul_horde"
+        ]
+       }
       ]
      }
     ],
@@ -5608,9 +5797,18 @@
         ]
        },
        {
-        "k": "grant",
-        "kind": "unknown",
-        "id": "friend"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ไม่ถูกจับ เด็กโตเป็นผู้ส่งข่าวในเมืองมนุษย์"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "unknown",
+          "id": "friend"
+         }
+        ]
        }
       ],
       "mods": []
@@ -5868,22 +6066,37 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "",
+      "label": "baker cook หรือ innkeeper",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "baker"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "cook"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "innkeeper"
+        "k": "pick",
+        "of": [
+         {
+          "label": "baker cook",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "baker"
+           },
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "cook"
+           }
+          ]
+         },
+         {
+          "label": "innkeeper",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "innkeeper"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -5904,7 +6117,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "",
+      "label": "merchant",
       "effects": [
        {
         "k": "grant",
@@ -6232,9 +6445,29 @@
       "to": "cv.10"
      },
      {
-      "k": "battle",
-      "enemies": [
-       "npc_bandit"
+      "k": "if",
+      "cond": {
+       "k": "or",
+       "of": [
+        {
+         "k": "text",
+         "text": "ไม่ได้อยู่ทุ่งราบ"
+        },
+        {
+         "k": "continent",
+         "ids": [
+          "MH"
+         ]
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "npc_bandit"
+        ]
+       }
       ]
      }
     ],
@@ -6306,10 +6539,30 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_mercenary",
-       "npc_bandit"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: npc_mercenary หัวหน้า",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_mercenary"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก npc_bandit ฝูง",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_bandit"
+          ]
+         }
+        ]
+       }
       ]
      }
     ],
@@ -6528,8 +6781,18 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "CT-04"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "CT-04",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "CT-04"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -6715,9 +6978,18 @@
       "label": "กำพร้า · ถ้ามีสงคราม",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_war_orphan"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "มีสงคราม"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_war_orphan"
+         }
+        ]
        }
       ],
       "mods": []
@@ -6806,19 +7078,24 @@
       "id": "sp_wolf_pup"
      },
      {
-      "k": "battleFor",
-      "choices": [
-       "c"
-      ],
-      "enemies": []
-     },
-     {
-      "k": "place",
-      "ids": [
-       "SH-10",
-       "MH-04",
-       "AL-23",
-       "AL-24"
+      "k": "only",
+      "cond": {
+       "k": "country",
+       "ids": [
+        "SH-10",
+        "MH-04",
+        "AL-23",
+        "AL-24"
+       ]
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "c"
+        ],
+        "enemies": []
+       }
       ]
      }
     ],
@@ -7136,17 +7413,32 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "",
+      "label": "hunter หรือ beast_hunter",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "hunter"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "beast_hunter"
+        "k": "pick",
+        "of": [
+         {
+          "label": "hunter",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "hunter"
+           }
+          ]
+         },
+         {
+          "label": "beast_hunter",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "beast_hunter"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -7154,17 +7446,32 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "หรือ (นก)",
+      "label": "tamer หรือ courier (นก)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "tamer"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "courier"
+        "k": "pick",
+        "of": [
+         {
+          "label": "tamer",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "tamer"
+           }
+          ]
+         },
+         {
+          "label": "courier (นก)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "courier"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -7172,17 +7479,32 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "(อูฐ)",
+      "label": "caravan_guard (อูฐ) หรือ shepherd",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "caravan_guard"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "shepherd"
+        "k": "pick",
+        "of": [
+         {
+          "label": "caravan_guard (อูฐ)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "caravan_guard"
+           }
+          ]
+         },
+         {
+          "label": "shepherd",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "shepherd"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -7272,24 +7594,42 @@
      {
       "k": "battle",
       "enemies": [],
-      "text": "ถ้า WR-17 เกิด: เอลฟ์ระดับหัวหน้า (SV08-1 ไลกอลัส เป็นบอส ถ้าตัวละครบุกถึงหอธนู)"
-     },
-     {
-      "k": "npc",
-      "id": "SV08-1"
+      "text": "ถ้า WR-17 เกิด: เอลฟ์ระดับหัวหน้า"
      },
      {
       "k": "event",
       "id": "WR-17"
      },
      {
-      "k": "trust",
-      "toward": "ของฝูง",
-      "delta": 1
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ตัวละครบุกถึงหอธนู"
+      },
+      "then": [
+       {
+        "k": "npc",
+        "id": "SV08-1"
+       }
+      ]
      },
      {
-      "k": "npc",
-      "id": "SV16-1"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "นอกซิลวาเนล"
+      },
+      "then": [
+       {
+        "k": "trust",
+        "toward": "ของฝูง",
+        "delta": 1
+       },
+       {
+        "k": "npc",
+        "id": "SV16-1"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -7813,7 +8153,7 @@
         },
         {
          "k": "text",
-         "text": "อยู่ หลัง"
+         "text": "หลัง"
         }
        ]
       },
@@ -7849,12 +8189,27 @@
     "choices": [],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.6"
-     },
-     {
-      "k": "converge",
-      "to": "cv.12"
+      "k": "pick",
+      "of": [
+       {
+        "label": "cv.6 (ซิลวาเนล)",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.6"
+         }
+        ]
+       },
+       {
+        "label": "cv.12 (อัลมา SH-10 นำคาราวานธุลี)",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.12"
+         }
+        ]
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -8025,22 +8380,27 @@
       ]
      },
      {
-      "k": "grant",
-      "kind": "companion",
-      "id": "sp_wolf_pup",
-      "chance": 0.1
-     },
-     {
-      "k": "battle",
-      "enemies": [
-       "wolf"
-      ]
-     },
-     {
-      "k": "place",
-      "ids": [
-       "AL-23",
-       "AL-24"
+      "k": "only",
+      "cond": {
+       "k": "country",
+       "ids": [
+        "AL-23",
+        "AL-24"
+       ]
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "companion",
+        "id": "sp_wolf_pup",
+        "chance": 0.1
+       },
+       {
+        "k": "battle",
+        "enemies": [
+         "wolf"
+        ]
+       }
       ]
      }
     ],
@@ -8116,9 +8476,29 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "npc_tamer"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึกท้าชิงจาก npc_tamer",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_tamer"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก ผู้นำฝูงอื่น",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [],
+          "text": "ผู้นำฝูงอื่น"
+         }
+        ]
+       }
       ]
      }
     ],
@@ -8654,7 +9034,7 @@
             },
             {
              "k": "text",
-             "text": "เกิดแล้ว ตามผู้ลี้ภัยกลับไป"
+             "text": "ตามผู้ลี้ภัยกลับไป"
             }
            ]
           }
@@ -8732,17 +9112,32 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ถ้า DR-01 เกิด → cv.1 (พาผู้ลี้ภัยฟ้าข้ามแม่น้ำไปค่าย)",
+      "label": "ferryman หรือ fisher · ถ้า DR-01 เกิด → cv.1 (พาผู้ลี้ภัยฟ้าข้ามแม่น้ำไปค่าย)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "ferryman"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "fisher"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ferryman",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "ferryman"
+           }
+          ]
+         },
+         {
+          "label": "fisher",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "fisher"
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "if",
@@ -8919,9 +9314,18 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "ghost_crew"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เรือทองสาป"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "ghost_crew"
+        ]
+       }
       ]
      },
      {
@@ -9490,8 +9894,26 @@
       "label": "ซ่อนเงือกไว้และพาไปฟังว่าใครยิงธนูลูกแรก จากทหารเฒ่า โลเรน (NR06-4) ถ้ายังมีชีวิต หรือจากผู้ที่เขาเล่าไว้ให้ · เปิดเรื่อง WR-20 ให้เจรจา",
       "effects": [
        {
-        "k": "npc",
-        "id": "NR06-4"
+        "k": "if",
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "text",
+           "text": "ยังมีชีวิต"
+          },
+          {
+           "k": "text",
+           "text": "จากผู้ที่เขาเล่าไว้"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "npc",
+          "id": "NR06-4"
+         }
+        ]
        },
        {
         "k": "event",
@@ -9786,17 +10208,32 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ถ้า WR-14 เกิด → cv.3 (ทหารเผ่ามังกรแนวหน้า)",
+      "label": "soldier หรือ knight · ถ้า WR-14 เกิด → cv.3 (ทหารเผ่ามังกรแนวหน้า)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "soldier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "knight"
+        "k": "pick",
+        "of": [
+         {
+          "label": "soldier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "soldier"
+           }
+          ]
+         },
+         {
+          "label": "knight",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "knight"
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "if",
@@ -9825,7 +10262,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "(ไฟของตัวเอง)",
+      "label": "smith (ไฟของตัวเอง)",
       "effects": [
        {
         "k": "grant",
@@ -10038,10 +10475,30 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "firedragon",
-       "icedragon"
+      "k": "pick",
+      "of": [
+       {
+        "label": "firedragon",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "firedragon"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "icedragon บอส",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "icedragon"
+          ]
+         }
+        ]
+       }
       ]
      },
      {
@@ -10080,12 +10537,18 @@
       "to": "cv.1"
      },
      {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "event",
-      "id": "DR-02"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": false
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "DR-02"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -10461,6 +10924,10 @@
        {
         "k": "entryMod",
         "choice": "a",
+        "cond": {
+         "k": "text",
+         "text": "มีตรามังกร"
+        },
         "mul": 3
        },
        {
@@ -10574,7 +11041,7 @@
       },
       {
        "k": "text",
-       "text": "ไม่เปิดและรูปลางของ ในแถว ใช้ไม่ได้ ( เกิดแล้ว)"
+       "text": "ไม่เปิดและรูปลางของ ในแถว ใช้ไม่ได้"
       }
      ]
     }
@@ -10645,29 +11112,40 @@
       "id": "LC-05"
      },
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_infamous",
-      "chance": 0.1
-     },
-     {
-      "k": "npc",
-      "id": "AZ02-6"
-     },
-     {
-      "k": "npc",
-      "id": "AZ08-1"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "AZ-02"
+      "k": "if",
+      "cond": {
+       "k": "continent",
+       "ids": [
+        "AZ"
+       ]
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_infamous",
+        "chance": 0.1
+       },
+       {
+        "k": "npc",
+        "id": "AZ02-6"
+       },
+       {
+        "k": "npc",
+        "id": "AZ08-1"
+       },
+       {
+        "k": "place",
+        "ids": [
+         "AZ-02"
+        ]
+       },
+       {
+        "k": "stat",
+        "stat": "ก่อนราคาศิลาลอยขึ้น ทอง",
+        "delta": 100
+       }
       ]
-     },
-     {
-      "k": "stat",
-      "stat": "ก่อนราคาศิลาลอยขึ้น ทอง",
-      "delta": 100
      }
     ],
     "titleEvents": [],
@@ -11805,17 +12283,32 @@
      {
       "key": "c",
       "weight": 35,
-      "label": "",
+      "label": "druid หรือ performer",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "druid"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "performer"
+        "k": "pick",
+        "of": [
+         {
+          "label": "druid",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "druid"
+           }
+          ]
+         },
+         {
+          "label": "performer",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "performer"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -11890,16 +12383,27 @@
       "id": "SV04-3"
      },
      {
-      "k": "battle",
-      "enemies": [],
-      "text": "ถ้าถูกจับใน fa.t2: โหนดนี้เป็นการหนีจากเจ้าของสัญญา ( )"
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "fa.t2"
-      ],
-      "rel": ""
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "node",
+         "id": "fa.t2"
+        },
+        {
+         "k": "text",
+         "text": "ถูกจับใน"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "โหนดนี้เป็นการหนีจากเจ้าของสัญญา ( )"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -11984,15 +12488,35 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_warlock",
-       "npc_cultist"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: npc_warlock (เผ่าปีศาจคู่แข่งสัญญา)",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_warlock"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก npc_cultist (GD-07) หัวหน้า",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_cultist"
+          ]
+         },
+         {
+          "k": "event",
+          "id": "GD-07"
+         }
+        ]
+       }
       ]
-     },
-     {
-      "k": "event",
-      "id": "GD-07"
      }
     ],
     "titleEvents": [],
@@ -12177,8 +12701,11 @@
          "k": "and",
          "of": [
           {
-           "k": "text",
-           "text": "เวท 17"
+           "k": "cmp",
+           "stat": "magic",
+           "op": ">=",
+           "value": 17,
+           "label": "เวท"
           },
           {
            "k": "text",
@@ -12412,9 +12939,18 @@
       "label": "หนีเข้าป่าพร้อมสหาย · ศึก ถ้าถูกตามทัน",
       "effects": [
        {
-        "k": "battle",
-        "enemies": [
-         "npc_slaver"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกตามทัน"
+        },
+        "then": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_slaver"
+          ]
+         }
         ]
        }
       ],
@@ -13595,7 +14131,7 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "",
+      "label": "warlock",
       "effects": [
        {
         "k": "grant",
@@ -13608,17 +14144,32 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "",
+      "label": "soldier หรือ mercenary",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "soldier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "mercenary"
+        "k": "pick",
+        "of": [
+         {
+          "label": "soldier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "soldier"
+           }
+          ]
+         },
+         {
+          "label": "mercenary",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "mercenary"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -13626,17 +14177,32 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "",
+      "label": "merchant หรือ accountant",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "merchant"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "accountant"
+        "k": "pick",
+        "of": [
+         {
+          "label": "merchant",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "merchant"
+           }
+          ]
+         },
+         {
+          "label": "accountant",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "accountant"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -13874,12 +14440,27 @@
     "choices": [],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.8"
-     },
-     {
-      "k": "converge",
-      "to": "cv.10"
+      "k": "pick",
+      "of": [
+       {
+        "label": "cv.8 (ปีศาจเพลิง)",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.8"
+         }
+        ]
+       },
+       {
+        "label": "cv.10 (คนอื่น)",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.10"
+         }
+        ]
+       }
+      ]
      },
      {
       "k": "npc",
@@ -14453,9 +15034,18 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "ghost_crew"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เรือทองสาป"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "ghost_crew"
+        ]
+       }
       ]
      }
     ],
@@ -14552,17 +15142,32 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "",
+      "label": "navigator หรือ sailor",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "navigator"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "sailor"
+        "k": "pick",
+        "of": [
+         {
+          "label": "navigator",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "navigator"
+           }
+          ]
+         },
+         {
+          "label": "sailor",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "sailor"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -14570,17 +15175,32 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "(ไซเรน) หรือ (กัปปะ)",
+      "label": "performer (ไซเรน) หรือ farmer (กัปปะ)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "performer"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "farmer"
+        "k": "pick",
+        "of": [
+         {
+          "label": "performer (ไซเรน)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "performer"
+           }
+          ]
+         },
+         {
+          "label": "farmer (กัปปะ)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "farmer"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -14588,7 +15208,7 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "",
+      "label": "lighthouse_keeper",
       "effects": [
        {
         "k": "grant",
@@ -14629,12 +15249,13 @@
          "id": "music",
          "level": 2
         },
-        "then": []
-       },
-       {
-        "k": "stat",
-        "stat": "อารมณ์สมุทรอาลัย",
-        "delta": 3
+        "then": [
+         {
+          "k": "stat",
+          "stat": "อารมณ์สมุทรอาลัย",
+          "delta": 3
+         }
+        ]
        }
       ],
       "mods": []
@@ -14770,19 +15391,8 @@
      {
       "k": "only",
       "cond": {
-       "k": "and",
-       "of": [
-        {
-         "k": "race",
-         "ids": [
-          "me"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "เป็นทูต"
-        }
-       ]
+       "k": "text",
+       "text": "เงือกเป็นทูต"
       },
       "then": [
        {
@@ -15581,17 +16191,32 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "หรือ (ปีกราตรี)",
+      "label": "soldier หรือ spy (ปีกราตรี)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "soldier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "spy"
+        "k": "pick",
+        "of": [
+         {
+          "label": "soldier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "soldier"
+           }
+          ]
+         },
+         {
+          "label": "spy (ปีกราตรี)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "spy"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -15599,17 +16224,32 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "หรือ (เรือเหาะ ลม) · ถ้า WR-24 หรือ GI-06 เกิด → cv.12 (นำคาราวานธุลีกลางทะเลทราย)",
+      "label": "courier หรือ navigator (เรือเหาะ ลม) · ถ้า WR-24 หรือ GI-06 เกิด → cv.12 (นำคาราวานธุลีกลางทะเลทราย)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "courier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "navigator"
+        "k": "pick",
+        "of": [
+         {
+          "label": "courier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "courier"
+           }
+          ]
+         },
+         {
+          "label": "navigator (เรือเหาะ ลม)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "navigator"
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "if",
@@ -15848,13 +16488,6 @@
      {
       "k": "event",
       "id": "SF-04"
-     },
-     {
-      "k": "ref",
-      "nodes": [
-       "cv.1"
-      ],
-      "rel": ""
      },
      {
       "k": "ref",
@@ -16184,16 +16817,25 @@
         "id": "nb_mark_eridan"
        },
        {
-        "k": "jobpath",
-        "job": "prophet",
-        "secret": true,
-        "need": {
-         "k": "cmp",
-         "stat": "godFaith",
-         "op": ">=",
-         "value": 85,
-         "label": "ศรัทธาเทพ"
-        }
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "มีผู้ศรัทธาตาม"
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "prophet",
+          "secret": true,
+          "need": {
+           "k": "cmp",
+           "stat": "godFaith",
+           "op": ">=",
+           "value": 85,
+           "label": "ศรัทธาเทพ"
+          }
+         }
+        ]
        }
       ],
       "mods": []
@@ -16275,13 +16917,19 @@
         ]
        },
        {
-        "k": "jobpath",
-        "job": "prophet",
-        "secret": true
-       },
-       {
-        "k": "event",
-        "id": "GD-01"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "GD-01",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "prophet",
+          "secret": true
+         }
+        ]
        }
       ],
       "mods": []
@@ -16344,8 +16992,17 @@
         ]
        },
        {
-        "k": "event",
-        "id": "HP-08"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "มีทายาทฟ้า"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "HP-08"
+         }
+        ]
        }
       ],
       "mods": []
@@ -16715,7 +17372,7 @@
      {
       "key": "a",
       "weight": 35,
-      "label": "",
+      "label": "stonemason",
       "effects": [
        {
         "k": "grant",
@@ -16728,7 +17385,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "(ยักษ์ช่าง)",
+      "label": "smith (ยักษ์ช่าง)",
       "effects": [
        {
         "k": "grant",
@@ -16741,21 +17398,36 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "หรือ (ผู้เก็บศพ แบบ SH17-3 ฮูเลีย)",
+      "label": "monk หรือ gravekeeper (ผู้เก็บศพ แบบ SH17-3 ฮูเลีย)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "monk"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "gravekeeper"
-       },
-       {
-        "k": "npc",
-        "id": "SH17-3"
+        "k": "pick",
+        "of": [
+         {
+          "label": "monk",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "monk"
+           }
+          ]
+         },
+         {
+          "label": "gravekeeper (ผู้เก็บศพ แบบ SH17-3 ฮูเลีย)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "gravekeeper"
+           },
+           {
+            "k": "npc",
+            "id": "SH17-3"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -16846,16 +17518,28 @@
       "to": "cv.1"
      },
      {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "event",
-      "id": "PL-07"
-     },
-     {
-      "k": "event",
-      "id": "GI-01"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "DR-01",
+         "happened": false
+        },
+        {
+         "k": "event",
+         "id": "PL-07",
+         "happened": true
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "GI-01"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -16864,9 +17548,21 @@
     "notesText": "ถ้า DR-01 ไม่เกิดและ PL-07 เกิดแล้ว: ยักษ์เลิกเฝ้าบันได (GI-01) · ถ้าไม่มีทั้งสอง ข้ามโหนด ก) อยู่เฝ้าต่อ ข) ทิ้งหน้าที่ ค) เรียกประชุมสภา",
     "src": "docs/lore/storylines/16-giant.md:43",
     "when": {
-     "k": "event",
-     "id": "SF-04",
-     "happened": true
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "SF-04",
+       "happened": true
+      },
+      {
+       "k": "not",
+       "of": {
+        "k": "text",
+        "text": "ไม่มีทั้งสอง"
+       }
+      }
+     ]
     },
     "converge": [
      "cv.1"
@@ -17043,29 +17739,38 @@
         "chance": 0.15
        },
        {
-        "k": "jobpath",
-        "job": "godslayer",
-        "secret": true,
-        "need": {
-         "k": "and",
-         "of": [
-          {
-           "k": "text",
-           "text": "ศรัทธาเทพ ≤ −70"
-          },
-          {
-           "k": "cmp",
-           "stat": "courage",
-           "op": ">",
-           "value": 30,
-           "label": "กล้าหาญ"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "GD-08",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "godslayer",
+          "secret": true,
+          "need": {
+           "k": "and",
+           "of": [
+            {
+             "k": "cmp",
+             "stat": "godFaith",
+             "op": "<=",
+             "value": -70,
+             "label": "ศรัทธาเทพ"
+            },
+            {
+             "k": "cmp",
+             "stat": "courage",
+             "op": ">",
+             "value": 30,
+             "label": "กล้าหาญ"
+            }
+           ]
           }
-         ]
-        }
-       },
-       {
-        "k": "event",
-        "id": "GD-08"
+         }
+        ]
        }
       ],
       "mods": []
@@ -17080,18 +17785,27 @@
         "enemies": []
        },
        {
-        "k": "jobpath",
-        "job": "swordsaint",
-        "secret": true
-       },
-       {
-        "k": "grant",
-        "kind": "skill",
-        "id": "ns_giant_forge"
-       },
-       {
-        "k": "event",
-        "id": "GI-03"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ใช้ดาบขนาดยักษ์"
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "swordsaint",
+          "secret": true
+         },
+         {
+          "k": "grant",
+          "kind": "skill",
+          "id": "ns_giant_forge"
+         },
+         {
+          "k": "event",
+          "id": "GI-03"
+         }
+        ]
        }
       ],
       "mods": []
@@ -17102,9 +17816,18 @@
       "label": "ไปหากรอม-ธารเพื่อการทดสอบ ( ต้องนำคำขอบคุณจากเกาะ)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "blessing",
-        "id": "nb_mark_gromdhar"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "นำคำขอบคุณจากเกาะ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "blessing",
+          "id": "nb_mark_gromdhar"
+         }
+        ]
        }
       ],
       "mods": []
@@ -17701,7 +18424,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "",
+      "label": "smith",
       "effects": [
        {
         "k": "grant",
@@ -17899,10 +18622,30 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_city_guard",
-       "npc_mercenary"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: npc_city_guard",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_city_guard"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก npc_mercenary",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_mercenary"
+          ]
+         }
+        ]
+       }
       ]
      }
     ],
@@ -18669,7 +19412,7 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "",
+      "label": "mechanic",
       "effects": [
        {
         "k": "grant",
@@ -18682,17 +19425,32 @@
      {
       "key": "c",
       "weight": 30,
-      "label": "หรือ ในเนออนเวย์",
+      "label": "courier หรือ smuggler ในเนออนเวย์",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "courier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "smuggler"
+        "k": "pick",
+        "of": [
+         {
+          "label": "courier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "courier"
+           }
+          ]
+         },
+         {
+          "label": "smuggler ในเนออนเวย์",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "smuggler"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -18917,25 +19675,64 @@
     "choices": [],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.4"
-     },
-     {
-      "k": "converge",
-      "to": "cv.15"
+      "k": "pick",
+      "of": [
+       {
+        "label": "cv.4",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.4"
+         }
+        ]
+       },
+       {
+        "label": "cv.15",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.15"
+         }
+        ]
+       }
+      ]
      },
      {
       "k": "event",
       "id": "FG-09"
      },
      {
-      "k": "grant",
-      "kind": "job",
-      "id": "fog_guide"
-     },
-     {
-      "k": "npc",
-      "id": "NB10-2"
+      "k": "if",
+      "cond": {
+       "k": "or",
+       "of": [
+        {
+         "k": "and",
+         "of": [
+          {
+           "k": "npc",
+           "id": "NB10-2",
+           "alive": false
+          },
+          {
+           "k": "text",
+           "text": "เซโร่ตาย"
+          }
+         ]
+        },
+        {
+         "k": "text",
+         "text": "เลือกผู้แทน"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "job",
+        "id": "fog_guide"
+       }
+      ]
      },
      {
       "k": "npc",
@@ -19101,14 +19898,8 @@
          "id": "ns_soul_bind"
         },
         {
-         "k": "race",
-         "ids": [
-          "so"
-         ]
-        },
-        {
          "k": "text",
-         "text": "จากช่าง"
+         "text": "จากช่างหุ่นวิญญาณ"
         }
        ]
       }
@@ -19684,17 +20475,32 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "",
+      "label": "mechanic หรือ engineer",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "mechanic"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "engineer"
+        "k": "pick",
+        "of": [
+         {
+          "label": "mechanic",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "mechanic"
+           }
+          ]
+         },
+         {
+          "label": "engineer",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "engineer"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -19702,17 +20508,32 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "หรือ (ความจำดี)",
+      "label": "scribe หรือ librarian (ความจำดี)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "scribe"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "librarian"
+        "k": "pick",
+        "of": [
+         {
+          "label": "scribe",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "scribe"
+           }
+          ]
+         },
+         {
+          "label": "librarian (ความจำดี)",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "librarian"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -19750,21 +20571,36 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "เขียนกลอน วาดรูป แต่งเพลง (แบบ MK03-3 ซิล) · หรือ +1",
+      "label": "เขียนกลอน วาดรูป แต่งเพลง (แบบ MK03-3 ซิล) · art หรือ music +1",
       "effects": [
        {
         "k": "npc",
         "id": "MK03-3"
        },
        {
-        "k": "stat",
-        "stat": "music",
-        "delta": 1
-       },
-       {
-        "k": "grant",
-        "kind": "aptitude",
-        "id": "art"
+        "k": "pick",
+        "of": [
+         {
+          "label": "art +1",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "art",
+            "delta": 1
+           }
+          ]
+         },
+         {
+          "label": "music +1",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "music",
+            "delta": 1
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "grant",
@@ -19912,12 +20748,27 @@
     "choices": [],
     "notes": [
      {
-      "k": "converge",
-      "to": "cv.4"
-     },
-     {
-      "k": "converge",
-      "to": "cv.15"
+      "k": "pick",
+      "of": [
+       {
+        "label": "cv.4",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.4"
+         }
+        ]
+       },
+       {
+        "label": "cv.15",
+        "effects": [
+         {
+          "k": "converge",
+          "to": "cv.15"
+         }
+        ]
+       }
+      ]
      },
      {
       "k": "event",
@@ -19954,7 +20805,22 @@
         "to": "cv.2"
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "PO-01",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "HP-01",
+         "happened": true
+        }
+       ]
+      }
      },
      {
       "key": "b",
@@ -20094,35 +20960,16 @@
     "notesText": "ศึก: หุ่นพิทักษ์ปฐม `war_automaton` ระดับบอส · `golem` · ต้องผ่าน so.t1 คำถามแรก หรือ MC-05 เกิด",
     "src": "docs/lore/storylines/19-soulmachine.md:48",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
+      {
+       "k": "node",
+       "id": "so.t1"
+      },
       {
        "k": "event",
        "id": "MC-05",
        "happened": true
-      },
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "and",
-         "of": [
-          {
-           "k": "node",
-           "id": "so.t1"
-          },
-          {
-           "k": "text",
-           "text": "คำถามแรก"
-          }
-         ]
-        },
-        {
-         "k": "event",
-         "id": "MC-05",
-         "happened": true
-        }
-       ]
       }
      ]
     },
@@ -20436,9 +21283,18 @@
         ]
        },
        {
-        "k": "battle",
-        "enemies": [
-         "war_automaton"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกตามทัน"
+        },
+        "then": [
+         {
+          "k": "battle",
+          "enemies": [
+           "war_automaton"
+          ]
+         }
         ]
        }
       ],
@@ -20824,15 +21680,28 @@
       "label": "พบชื่อของตัวเองในชีวิตแรก · ผูกวิญญาณกับสิ่งของแทนธุลีทิพย์ · ถ้ายังไม่มี · ทางสู่อาชีพลับ (ต้องมี และเงื่อนไขครบ)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_undeadtouch",
-        "chance": 1
-       },
-       {
-        "k": "grant",
-        "kind": "tag",
-        "id": "#necro"
+        "k": "if",
+        "cond": {
+         "k": "not",
+         "of": {
+          "k": "has",
+          "kind": "curse",
+          "id": "c_undeadtouch"
+         }
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_undeadtouch",
+          "chance": 1
+         },
+         {
+          "k": "grant",
+          "kind": "tag",
+          "id": "#necro"
+         }
+        ]
        },
        {
         "k": "jobpath",
@@ -20866,7 +21735,22 @@
         "to": "cv.2"
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "PO-01",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "HP-01",
+         "happened": true
+        }
+       ]
+      }
      }
     ],
     "notes": [
@@ -20955,9 +21839,18 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "vampire_spawn"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "แวมไพร์ผิดสัญญา"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "vampire_spawn"
+        ]
+       }
       ]
      }
     ],
@@ -21021,7 +21914,7 @@
     "notesText": "`mirage_phantom` ฝูง · NPC SH14-1 ราชินีเงา เซนา · SH14-4 ผู้เฝ้าประตูเมือง · ข้ามถ้า GI-06 ไม่เกิดในช่วงนี้",
     "src": "docs/lore/storylines/20-mummy.md:46",
     "when": {
-     "k": "and",
+     "k": "or",
      "of": [
       {
        "k": "event",
@@ -21029,21 +21922,11 @@
        "happened": true
       },
       {
-       "k": "or",
-       "of": [
-        {
-         "k": "event",
-         "id": "GI-06",
-         "happened": true
-        },
-        {
-         "k": "not",
-         "of": {
-          "k": "text",
-          "text": "ไม่เกิดในช่วงนี้"
-         }
-        }
-       ]
+       "k": "not",
+       "of": {
+        "k": "text",
+        "text": "ไม่เกิดในช่วงนี้"
+       }
       }
      ]
     }
@@ -21091,9 +21974,18 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_inquisitor"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "พบแล้วกลัว"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "npc_inquisitor"
+        ]
+       }
       ]
      }
     ],
@@ -21156,8 +22048,17 @@
     ],
     "notes": [
      {
-      "k": "npc",
-      "id": "SH02-1"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ตัวละครชิงบัลลังก์"
+      },
+      "then": [
+       {
+        "k": "npc",
+        "id": "SH02-1"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -21550,7 +22451,7 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "(คนเฝ้าสุสาน)",
+      "label": "gravekeeper (คนเฝ้าสุสาน)",
       "effects": [
        {
         "k": "grant",
@@ -22014,17 +22915,17 @@
      {
       "k": "entryMod",
       "choice": "a",
+      "cond": {
+       "k": "country",
+       "ids": [
+        "MH-03"
+       ]
+      },
       "mul": 2
      },
      {
       "k": "event",
       "id": "END-02"
-     },
-     {
-      "k": "place",
-      "ids": [
-       "MH-03"
-      ]
      },
      {
       "k": "event",
@@ -22545,18 +23446,33 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "บอกคนใกล้ชิด · ไว้ใจเพื่อน +1",
+      "label": "บอกคนใกล้ชิด · ไว้ใจเพื่อน +1 หรือ nc_betrayed_trust 15%",
       "effects": [
        {
-        "k": "trust",
-        "toward": "เพื่อน",
-        "delta": 1
-       },
-       {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_betrayed_trust",
-        "chance": 0.15
+        "k": "pick",
+        "of": [
+         {
+          "label": "ไว้ใจเพื่อน +1",
+          "effects": [
+           {
+            "k": "trust",
+            "toward": "เพื่อน",
+            "delta": 1
+           }
+          ]
+         },
+         {
+          "label": "nc_betrayed_trust 15%",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "nc_betrayed_trust",
+            "chance": 0.15
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -22567,17 +23483,46 @@
       "label": "ซ่อนต่อไป · ถ้ามีธงซ่อนสายเลือด และถูกเปิดโปงใน hb.a1 หรือเหตุการณ์ที่ถิ่นรังเกียจ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_infamous",
-        "chance": 0.2
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "hb.a1"
-        ],
-        "rel": ""
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "text",
+           "text": "มีธงซ่อนสายเลือด"
+          },
+          {
+           "k": "or",
+           "of": [
+            {
+             "k": "and",
+             "of": [
+              {
+               "k": "node",
+               "id": "hb.a1"
+              },
+              {
+               "k": "text",
+               "text": "ถูกเปิดโปงใน"
+              }
+             ]
+            },
+            {
+             "k": "text",
+             "text": "เหตุการณ์ที่ถิ่นรังเกียจ"
+            }
+           ]
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_infamous",
+          "chance": 0.2
+         }
+        ]
        }
       ],
       "mods": []
@@ -22657,10 +23602,19 @@
       "label": "ไม่ไปเลย · ถ้าเคยซ่อนสายเลือด",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_exile_scar",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เคยซ่อนสายเลือด"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_exile_scar",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -22785,10 +23739,19 @@
       "label": "กลับไปอยู่กับเผ่าใดเผ่าหนึ่ง · ถ้าถิ่นนั้นรังเกียจ",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_outcast",
-        "chance": 0.15
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถิ่นนั้นรังเกียจ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_outcast",
+          "chance": 0.15
+         }
+        ]
        }
       ],
       "mods": []
@@ -23290,17 +24253,32 @@
      {
       "key": "b",
       "weight": 30,
-      "label": "เติบโตแบบมนุษย์ ไม่เข้า",
+      "label": "เติบโตแบบมนุษย์ ไม่เข้า fisher หรือ ferryman",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "fisher"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "ferryman"
+        "k": "pick",
+        "of": [
+         {
+          "label": "เติบโตแบบมนุษย์ ไม่เข้า fisher",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "fisher"
+           }
+          ]
+         },
+         {
+          "label": "ferryman",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "ferryman"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -23696,15 +24674,20 @@
         "chance": 0.08
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_hollow",
-        "chance": 0.2
-       },
-       {
-        "k": "grant",
-        "kind": "trait",
-        "id": "loyal_love"
+        "k": "if",
+        "cond": {
+         "k": "has",
+         "kind": "trait",
+         "id": "loyal_love"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_hollow",
+          "chance": 0.2
+         }
+        ]
        }
       ],
       "mods": []
@@ -24573,18 +25556,37 @@
       "label": "ทำพิธีเปลวแรกของ dk.t1 (ถ้าเลือดมังกรไม่ถึงครึ่ง ที่ KD-07 ไม่รับ ทำที่ AZ-02 แทน)",
       "effects": [
        {
-        "k": "place",
-        "ids": [
-         "KD-07",
-         "AZ-02"
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "country",
+           "ids": [
+            "KD-07"
+           ]
+          },
+          {
+           "k": "country",
+           "ids": [
+            "AZ-02"
+           ]
+          },
+          {
+           "k": "text",
+           "text": "เลือดมังกรไม่ถึงครึ่ง ที่ ไม่รับ ทำที่ แทน"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "ref",
+          "nodes": [
+           "dk.t1"
+          ],
+          "rel": ""
+         }
         ]
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "dk.t1"
-        ],
-        "rel": ""
        }
       ],
       "mods": []
@@ -25378,10 +26380,19 @@
       "label": "เตาเผาไหม้มือ · ถ้าเป็นลูกช่างตี",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_fireweak",
-        "chance": 0.08
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ลูกช่างตี"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_fireweak",
+          "chance": 0.08
+         }
+        ]
        }
       ],
       "mods": []
@@ -25398,10 +26409,19 @@
         ]
        },
        {
-        "k": "grant",
-        "kind": "blessing",
-        "id": "nb_lava_pulse",
-        "chance": 0.08
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ลูกเตาไฟ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "blessing",
+          "id": "nb_lava_pulse",
+          "chance": 0.08
+         }
+        ]
        }
       ],
       "mods": []
@@ -25435,18 +26455,38 @@
       "label": "ทำพิธีของ dw.t1 ที่ KD-01 หรือ KD-09 ที่ไม่ปิดประตู",
       "effects": [
        {
-        "k": "place",
-        "ids": [
-         "KD-01",
-         "KD-09"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ทำพิธีของ dw.t1 ที่ KD-01",
+          "effects": [
+           {
+            "k": "place",
+            "ids": [
+             "KD-01"
+            ]
+           },
+           {
+            "k": "ref",
+            "nodes": [
+             "dw.t1"
+            ],
+            "rel": ""
+           }
+          ]
+         },
+         {
+          "label": "KD-09 ที่ไม่ปิดประตู",
+          "effects": [
+           {
+            "k": "place",
+            "ids": [
+             "KD-09"
+            ]
+           }
+          ]
+         }
         ]
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "dw.t1"
-        ],
-        "rel": ""
        }
       ],
       "mods": []
@@ -27987,15 +29027,19 @@
       "label": "ทิ้งเรื่องค้าง · เรื่องค้างเปลี่ยนรูปตามชนิด (หัวข้อ 3 ของเรื่องค้าง) · ถ้าเป็นศึกสายเลือด",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_blood_feud",
-        "chance": 0.3
-       },
-       {
-        "k": "battle",
-        "enemies": [],
-        "text": "30% ถ้าเป็น สายเลือด"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ศึกสายเลือด"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_blood_feud",
+          "chance": 0.3
+         }
+        ]
        }
       ],
       "mods": []
@@ -28074,13 +29118,36 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "b"
-      ],
-      "enemies": [
-       "npc_assassin",
-       "npc_duelist"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: npc_assassin (ทาง ข)",
+        "effects": [
+         {
+          "k": "battleFor",
+          "choices": [
+           "b"
+          ],
+          "enemies": [
+           "npc_assassin"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก npc_duelist (ทาง ข)",
+        "effects": [
+         {
+          "k": "battleFor",
+          "choices": [
+           "b"
+          ],
+          "enemies": [
+           "npc_duelist"
+          ]
+         }
+        ]
+       }
       ]
      }
     ],
@@ -28511,25 +29578,32 @@
       "label": "ปีสงครามหรืออดอยาก (WR-03 CT-08 หรือธงประเทศ ) · ของหมวดอาหารราคา ×2 · ค่าครองชีพเกินรายได้",
       "effects": [
        {
-        "k": "grant",
-        "kind": "flag",
-        "id": "famine"
-       },
-       {
-        "k": "event",
-        "id": "WR-03"
-       },
-       {
-        "k": "event",
-        "id": "CT-08"
-       },
-       {
         "k": "statMul",
         "stat": "ของหมวดอาหารราคา",
         "mul": 2
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "WR-03",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "CT-08",
+         "happened": true
+        },
+        {
+         "k": "has",
+         "kind": "flag",
+         "id": "famine"
+        }
+       ]
+      }
      },
      {
       "key": "b",
@@ -28544,15 +29618,6 @@
       "label": "ปีที่ประเทศเข้าสู่ยุคทอง (HP-02 หรือธง ) · รายได้ +20%",
       "effects": [
        {
-        "k": "grant",
-        "kind": "flag",
-        "id": "golden"
-       },
-       {
-        "k": "event",
-        "id": "HP-02"
-       },
-       {
         "k": "statPct",
         "stat": "รายได้",
         "pct": 20
@@ -28564,12 +29629,30 @@
         "chance": 0.1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "HP-02",
+         "happened": true
+        },
+        {
+         "k": "has",
+         "kind": "flag",
+         "id": "golden"
+        }
+       ]
+      }
      }
     ],
     "notes": [
      {
-      "k": "battle",
+      "k": "battleFor",
+      "choices": [
+       "a"
+      ],
       "enemies": [
        "npc_bandit"
       ]
@@ -28599,10 +29682,18 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ชั้น 3 ขึ้นไป"
+         "k": "class",
+         "min": 3
         },
-        "then": []
+        "then": [
+         {
+          "k": "ref",
+          "nodes": [
+           "iv"
+          ],
+          "rel": "เข้าเส้น"
+         }
+        ]
        }
       ],
       "mods": []
@@ -28617,7 +29708,7 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "ถูกยืมเงินหรือถูกหลอก · ทอง −60",
+      "label": "ถูกยืมเงินหรือถูกหลอก · ทอง −60 · nc_betrayed_trust 15% หรือ c_debt",
       "effects": [
        {
         "k": "stat",
@@ -28625,15 +29716,30 @@
         "delta": -60
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_betrayed_trust",
-        "chance": 0.15
-       },
-       {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_debt"
+        "k": "pick",
+        "of": [
+         {
+          "label": "nc_betrayed_trust 15%",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "nc_betrayed_trust",
+            "chance": 0.15
+           }
+          ]
+         },
+         {
+          "label": "c_debt",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "c_debt"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -28755,10 +29861,19 @@
         "max": -40
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.15
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกจับ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted",
+          "chance": 0.15
+         }
+        ]
        }
       ],
       "mods": []
@@ -28781,12 +29896,21 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "b"
-      ],
-      "enemies": [
-       "npc_city_guard"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ถูกจับ"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "b"
+        ],
+        "enemies": [
+         "npc_city_guard"
+        ]
+       }
       ]
      },
      {
@@ -28967,13 +30091,36 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "c"
-      ],
-      "enemies": [
-       "wolf",
-       "ash_wolf_pack"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: wolf (ทาง ค)",
+        "effects": [
+         {
+          "k": "battleFor",
+          "choices": [
+           "c"
+          ],
+          "enemies": [
+           "wolf"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก ash_wolf_pack (ทาง ค)",
+        "effects": [
+         {
+          "k": "battleFor",
+          "choices": [
+           "c"
+          ],
+          "enemies": [
+           "ash_wolf_pack"
+          ]
+         }
+        ]
+       }
       ]
      },
      {
@@ -29008,9 +30155,18 @@
         "pct": 20
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_debt"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ผิดนัด"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_debt"
+         }
+        ]
        }
       ],
       "mods": []
@@ -29028,9 +30184,18 @@
         "unit": "%"
        },
        {
-        "k": "grant",
-        "kind": "enemy",
-        "id": "npc_slaver"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ผิดนัด"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "enemy",
+          "id": "npc_slaver"
+         }
+        ]
        }
       ],
       "mods": []
@@ -29052,12 +30217,21 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "b"
-      ],
-      "enemies": [
-       "npc_slaver"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ผิดนัด"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "b"
+        ],
+        "enemies": [
+         "npc_slaver"
+        ]
+       }
       ]
      },
      {
@@ -29301,8 +30475,8 @@
          "label": "ทอง"
         },
         {
-         "k": "text",
-         "text": "ก่อนอายุ 50"
+         "k": "age",
+         "max": 49
         }
        ]
       }
@@ -29365,17 +30539,32 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "เข้ากิลด์ผู้ส่งของหรือผู้นำทาง · อาชีพ",
+      "label": "เข้ากิลด์ผู้ส่งของหรือผู้นำทาง · อาชีพ courier หรือ guide",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "courier"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "guide"
+        "k": "pick",
+        "of": [
+         {
+          "label": "อาชีพ courier",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "courier"
+           }
+          ]
+         },
+         {
+          "label": "guide",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "guide"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -29446,15 +30635,39 @@
       "label": "ถูกด่านเรียกสินบน · ทอง −20 หรือ ถ้าขัดขืน",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.15
-       },
-       {
-        "k": "stat",
-        "stat": "ทอง",
-        "delta": -20
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ขัดขืน"
+        },
+        "then": [
+         {
+          "k": "pick",
+          "of": [
+           {
+            "label": "ทอง −20",
+            "effects": [
+             {
+              "k": "stat",
+              "stat": "ทอง",
+              "delta": -20
+             }
+            ]
+           },
+           {
+            "label": "c_wanted 15%",
+            "effects": [
+             {
+              "k": "grant",
+              "kind": "curse",
+              "id": "c_wanted",
+              "chance": 0.15
+             }
+            ]
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -29496,7 +30709,7 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "ผู้นำขบวนหรือผู้คุ้มกัน สู้ทำให้สินค้ารอด · ชื่อเสียง +5 · ระดับ 1",
+      "label": "ผู้นำขบวนหรือผู้คุ้มกัน สู้ทำให้สินค้ารอด · ชื่อเสียง +5 · ns_caravan_lead ระดับ 1 หรือ ns_guard_post",
       "effects": [
        {
         "k": "stat",
@@ -29504,15 +30717,30 @@
         "delta": 5
        },
        {
-        "k": "grant",
-        "kind": "skill",
-        "id": "ns_caravan_lead",
-        "level": 1
-       },
-       {
-        "k": "grant",
-        "kind": "skill",
-        "id": "ns_guard_post"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ns_caravan_lead ระดับ 1",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "skill",
+            "id": "ns_caravan_lead",
+            "level": 1
+           }
+          ]
+         },
+         {
+          "label": "ns_guard_post",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "skill",
+            "id": "ns_guard_post"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -29547,9 +30775,18 @@
         "chance": 0.25
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_betrayed_trust"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ผู้ร่วมขบวนมีชีวิตรอด"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_betrayed_trust"
+         }
+        ]
        }
       ],
       "mods": []
@@ -29563,10 +30800,30 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "storm_harpy",
-       "sand_raiders"
+      "k": "pick",
+      "of": [
+       {
+        "label": "storm_harpy",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "storm_harpy"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "sand_raiders ตามเส้นทาง",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "sand_raiders"
+          ]
+         }
+        ]
+       }
       ]
      }
     ],
@@ -29636,10 +30893,19 @@
       "label": "หยุดค้า เก็บทุน รอ · ทอง ไม่เพิ่ม · ถ้าช่วยไกล่เกลี่ย",
       "effects": [
        {
-        "k": "grant",
-        "kind": "blessing",
-        "id": "nb_peace_seed",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ช่วยไกล่เกลี่ย"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "blessing",
+          "id": "nb_peace_seed",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -29786,14 +31052,29 @@
       "label": "ถูกกีดกันเพราะเผ่า · ท่าทีถิ่น −1 หรือ −2 · ต้องเปลี่ยนเส้นหรือใช้ผู้ค้ำ · ทอง −40",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ท่าทีถิ่น",
-        "delta": -1
-       },
-       {
-        "k": "stat",
-        "stat": "หรือ",
-        "delta": -2
+        "k": "pick",
+        "of": [
+         {
+          "label": "ท่าทีถิ่น −1",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "ท่าทีถิ่น",
+            "delta": -1
+           }
+          ]
+         },
+         {
+          "label": "ท่าทีถิ่น −2",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "ท่าทีถิ่น",
+            "delta": -2
+           }
+          ]
+         }
+        ]
        },
        {
         "k": "stat",
@@ -30059,8 +31340,11 @@
          "label": "ทุน"
         },
         {
-         "k": "text",
-         "text": "(เหมือง ≥ 300)"
+         "k": "cmp",
+         "stat": "mine",
+         "op": ">=",
+         "value": 300,
+         "label": "เหมือง"
         }
        ]
       }
@@ -30136,10 +31420,39 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "npc_rogue_mage",
-       "npc_duelist"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ศึก: npc_rogue_mage",
+        "effects": [
+         {
+          "k": "battle",
+          "enemies": [
+           "npc_rogue_mage"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "ศึก npc_duelist (ถ้าเพื่อนเป็นนักต้ม)",
+        "effects": [
+         {
+          "k": "if",
+          "cond": {
+           "k": "text",
+           "text": "เพื่อนเป็นนักต้ม"
+          },
+          "then": [
+           {
+            "k": "battle",
+            "enemies": [
+             "npc_duelist"
+            ]
+           }
+          ]
+         }
+        ]
+       }
       ]
      },
      {
@@ -30391,14 +31704,29 @@
       "label": "เด็กโตในที่ดินที่มีชาวนา รู้ว่ากินดีกว่าคนรอบ · ไว้ใจชาวนา −1 หรือ +1 ตามนิสัยผู้ปกครอง",
       "effects": [
        {
-        "k": "trust",
-        "toward": "ชาวนา",
-        "delta": -1
-       },
-       {
-        "k": "stat",
-        "stat": "หรือ",
-        "delta": 1
+        "k": "pick",
+        "of": [
+         {
+          "label": "ไว้ใจชาวนา −1",
+          "effects": [
+           {
+            "k": "trust",
+            "toward": "ชาวนา",
+            "delta": -1
+           }
+          ]
+         },
+         {
+          "label": "ไว้ใจชาวนา +1 ตามนิสัยผู้ปกครอง",
+          "effects": [
+           {
+            "k": "trust",
+            "toward": "ชาวนา",
+            "delta": 1
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -30406,18 +31734,33 @@
      {
       "key": "b",
       "weight": 35,
-      "label": "ถูกสอนวิชาของตระกูล (บัญชี ดาบ มารยาท) · หรือ ระดับ 1",
+      "label": "ถูกสอนวิชาของตระกูล (บัญชี ดาบ มารยาท) · scholar หรือ law ระดับ 1",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "scholar"
-       },
-       {
-        "k": "grant",
-        "kind": "aptitude",
-        "id": "law",
-        "level": 1
+        "k": "pick",
+        "of": [
+         {
+          "label": "scholar",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "scholar"
+           }
+          ]
+         },
+         {
+          "label": "law ระดับ 1",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "aptitude",
+            "id": "law",
+            "level": 1
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -30428,10 +31771,19 @@
       "label": "รู้ความลับของตระกูลตั้งแต่เล็ก (หนี้ ผู้ถูกกดขี่) · ถ้าเด็กเอาไปบอก",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_betrayed_trust",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เด็กเอาไปบอก"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_betrayed_trust",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -30648,11 +32000,25 @@
       "label": "แต่งงานเข้าตระกูลรวย (ถ้าผ่านบรรลุ nl.t1 แล้ว) หรือปล่อยให้ล้ม",
       "effects": [
        {
-        "k": "ref",
-        "nodes": [
-         "nl.t1"
-        ],
-        "rel": ""
+        "k": "pick",
+        "of": [
+         {
+          "label": "แต่งงานเข้าตระกูลรวย (ถ้าผ่านบรรลุ nl.t1 แล้ว)",
+          "effects": [
+           {
+            "k": "ref",
+            "nodes": [
+             "nl.t1"
+            ],
+            "rel": ""
+           }
+          ]
+         },
+         {
+          "label": "ปล่อยให้ล้ม",
+          "effects": []
+         }
+        ]
        }
       ],
       "mods": []
@@ -30686,9 +32052,23 @@
       "label": "ซื้อยศในระบอบพ่อค้า (ทอง −2,500) หรือรับแต่งตั้ง · ขึ้นชั้น 5",
       "effects": [
        {
-        "k": "stat",
-        "stat": "ทอง",
-        "delta": -2500
+        "k": "pick",
+        "of": [
+         {
+          "label": "ซื้อยศในระบอบพ่อค้า (ทอง −2,500)",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "ทอง",
+            "delta": -2500
+           }
+          ]
+         },
+         {
+          "label": "รับแต่งตั้ง",
+          "effects": []
+         }
+        ]
        },
        {
         "k": "class",
@@ -30830,15 +32210,24 @@
       "label": "โรงงานใหญ่ (MK AL-07) ค่าแรงสูงกว่า แต่อันตรายสูง hp −10% ถ้าไม่ระวัง",
       "effects": [
        {
-        "k": "place",
-        "ids": [
-         "AL-07"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ไม่ระวัง"
+        },
+        "then": [
+         {
+          "k": "statPct",
+          "stat": "hp",
+          "pct": -10
+         },
+         {
+          "k": "place",
+          "ids": [
+           "AL-07"
+          ]
+         }
         ]
-       },
-       {
-        "k": "pct",
-        "text": "ถ้าไม่ระวัง",
-        "pct": 10
        }
       ],
       "mods": []
@@ -30932,20 +32321,35 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "c"
-      ],
-      "enemies": [
-       "npc_city_guard",
-       "war_automaton"
-      ]
-     },
-     {
-      "k": "place",
-      "ids": [
-       "MK-10",
-       "MK-01"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "country",
+         "ids": [
+          "MK-10"
+         ]
+        },
+        {
+         "k": "country",
+         "ids": [
+          "MK-01"
+         ]
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "c"
+        ],
+        "enemies": [
+         "npc_city_guard",
+         "war_automaton"
+        ]
+       }
       ]
      },
      {
@@ -31029,15 +32433,32 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "rust_swarm",
-       "reactor_wraith"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "continent",
+         "ids": [
+          "MK"
+         ]
+        },
+        {
+         "k": "event",
+         "id": "MC-04",
+         "happened": true
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "rust_swarm",
+         "reactor_wraith"
+        ]
+       }
       ]
-     },
-     {
-      "k": "event",
-      "id": "MC-04"
      },
      {
       "k": "npc",
@@ -31229,10 +32650,19 @@
       "label": "หนีงานเดิมไปกับเรือแรกที่จอด · ถ้าเป็นลูกจ้างผูกสัญญา",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ลูกจ้างผูกสัญญา"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -31304,14 +32734,29 @@
         "id": "airship_pilot"
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.2
-       },
-       {
-        "k": "event",
-        "id": "PO-02"
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "event",
+           "id": "PO-02",
+           "happened": true
+          },
+          {
+           "k": "text",
+           "text": "เป็นเรือเหาะเถื่อน"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted",
+          "chance": 0.2
+         }
+        ]
        },
        {
         "k": "event",
@@ -31402,10 +32847,19 @@
         "delta": 80
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกจับ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted",
+          "chance": 0.2
+         }
+        ]
        }
       ],
       "mods": []
@@ -31420,12 +32874,21 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "a"
-      ],
-      "enemies": [
-       "reef_serpent"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "นาคาอยู่บนเรือ"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "a"
+        ],
+        "enemies": [
+         "reef_serpent"
+        ]
+       }
       ]
      },
      {
@@ -31485,17 +32948,32 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "ขึ้นฝั่งตั้งหลัก · เป็นผู้ซ่อมเรือหรือครูนำร่อง · อาชีพ",
+      "label": "ขึ้นฝั่งตั้งหลัก · เป็นผู้ซ่อมเรือหรือครูนำร่อง · อาชีพ ferryman หรือ shipwright",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "ferryman"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "shipwright"
+        "k": "pick",
+        "of": [
+         {
+          "label": "อาชีพ ferryman",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "ferryman"
+           }
+          ]
+         },
+         {
+          "label": "shipwright",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "shipwright"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -31503,17 +32981,23 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "a"
-      ],
-      "enemies": [
-       "kraken"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "a"
+        ],
+        "enemies": [
+         "kraken"
+        ]
+       }
       ]
-     },
-     {
-      "k": "event",
-      "id": "DR-05"
      },
      {
       "k": "npc",
@@ -31663,10 +33147,19 @@
         "unit": "คน"
        },
        {
-        "k": "grant",
-        "kind": "skill",
-        "id": "ns_refugee_lead",
-        "chance": 0.1
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ขบวนมีผู้ลี้ภัย"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "skill",
+          "id": "ns_refugee_lead",
+          "chance": 0.1
+         }
+        ]
        }
       ],
       "mods": []
@@ -31940,10 +33433,19 @@
         "delta": 150
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted",
-        "chance": 0.3
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกจับ"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted",
+          "chance": 0.3
+         }
+        ]
        }
       ],
       "mods": []
@@ -32267,22 +33769,37 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "กลับถิ่นเดิมพร้อมความรู้ · อาชีพ",
+      "label": "กลับถิ่นเดิมพร้อมความรู้ · อาชีพ teacher scribe หรือ physician",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "teacher"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "scribe"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "physician"
+        "k": "pick",
+        "of": [
+         {
+          "label": "อาชีพ teacher scribe",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "teacher"
+           },
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "scribe"
+           }
+          ]
+         },
+         {
+          "label": "physician",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "physician"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -32663,17 +34180,32 @@
      {
       "key": "a",
       "weight": 40,
-      "label": "เป็นนักดนตรีหรือนักเล่าเรื่อง · อาชีพ · ได้ข่าวจากหลายเมือง",
+      "label": "เป็นนักดนตรีหรือนักเล่าเรื่อง · อาชีพ bard หรือ performer · ได้ข่าวจากหลายเมือง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "bard"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "performer"
+        "k": "pick",
+        "of": [
+         {
+          "label": "อาชีพ bard",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "bard"
+           }
+          ]
+         },
+         {
+          "label": "performer",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "performer"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -32813,12 +34345,21 @@
     ],
     "notes": [
      {
-      "k": "battleFor",
-      "choices": [
-       "a"
-      ],
-      "enemies": [
-       "npc_assassin"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "กลุ่มปิดปาก"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "a"
+        ],
+        "enemies": [
+         "npc_assassin"
+        ]
+       }
       ]
      }
     ],
@@ -32841,17 +34382,32 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "เล่าเรื่องการเดินทางในโรงเตี๊ยม · อาชีพ",
+      "label": "เล่าเรื่องการเดินทางในโรงเตี๊ยม · อาชีพ innkeeper หรือ chronicler",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "innkeeper"
-       },
-       {
-        "k": "grant",
-        "kind": "job",
-        "id": "chronicler"
+        "k": "pick",
+        "of": [
+         {
+          "label": "อาชีพ innkeeper",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "innkeeper"
+           }
+          ]
+         },
+         {
+          "label": "chronicler",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "job",
+            "id": "chronicler"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -33169,7 +34725,7 @@
             },
             {
              "k": "text",
-             "text": "เกิดแล้ว ถูกส่งเป็นผู้คุ้มกันผู้แทนมอร์เฮเวน"
+             "text": "ถูกส่งเป็นผู้คุ้มกันผู้แทนมอร์เฮเวน"
             }
            ]
           }
@@ -33344,12 +34900,21 @@
       "id": "AL23-2"
      },
      {
-      "k": "battleFor",
-      "choices": [
-       "a"
-      ],
-      "enemies": [
-       "npc_bandit"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ถูกล่าเป็นสัตว์"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "a"
+        ],
+        "enemies": [
+         "npc_bandit"
+        ]
+       }
       ]
      }
     ],
@@ -33668,14 +35233,8 @@
            "happened": true
           },
           {
-           "k": "race",
-           "ids": [
-            "na"
-           ]
-          },
-          {
            "k": "text",
-           "text": "ใกล้เกิด เรือเข้าน่านน้ำ ไอล์"
+           "text": "ใกล้เกิด เรือเข้าน่านน้ำนาคาไอล์"
           }
          ]
         },
@@ -33767,13 +35326,33 @@
       "label": "ไปคองคอร์เดีย (AL-01) ในฐานะผู้ติดตามผู้แทนมอร์เฮเวน → cv.2 (ถ้า PO-01 หรือ HP-01 เกิดแล้ว)",
       "effects": [
        {
-        "k": "converge",
-        "to": "cv.2"
-       },
-       {
-        "k": "place",
-        "ids": [
-         "AL-01"
+        "k": "if",
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "event",
+           "id": "PO-01",
+           "happened": true
+          },
+          {
+           "k": "event",
+           "id": "HP-01",
+           "happened": true
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "converge",
+          "to": "cv.2"
+         },
+         {
+          "k": "place",
+          "ids": [
+           "AL-01"
+          ]
+         }
         ]
        }
       ],
@@ -33800,9 +35379,18 @@
       "id": "MK16-2"
      },
      {
-      "k": "battle",
-      "enemies": [],
-      "text": "ศาลศาสนา (ถ้าเข้าถิ่นแสง)"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เข้าถิ่นแสง"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "ศาลศาสนา"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -33931,13 +35519,42 @@
       "label": "ไปสกายพอร์ต (MK-09) รับจ้างเรือเหาะ → cv.9 (ถ้า MC-03 หรือ MC-04 เกิดแล้ว เรือเหาะถูกเกณฑ์ขนผู้หนีไฟ)",
       "effects": [
        {
-        "k": "converge",
-        "to": "cv.9"
-       },
-       {
-        "k": "place",
-        "ids": [
-         "MK-09"
+        "k": "if",
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "event",
+           "id": "MC-03",
+           "happened": true
+          },
+          {
+           "k": "and",
+           "of": [
+            {
+             "k": "event",
+             "id": "MC-04",
+             "happened": true
+            },
+            {
+             "k": "text",
+             "text": "เรือเหาะถูกเกณฑ์ขนผู้หนีไฟ"
+            }
+           ]
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "converge",
+          "to": "cv.9"
+         },
+         {
+          "k": "place",
+          "ids": [
+           "MK-09"
+          ]
+         }
         ]
        }
       ],
@@ -34097,7 +35714,7 @@
             },
             {
              "k": "text",
-             "text": "เกิดแล้ว ถูกเรียกไปรวมไฟสุดท้าย"
+             "text": "ถูกเรียกไปรวมไฟสุดท้าย"
             }
            ]
           }
@@ -34370,13 +35987,33 @@
       "label": "ไปวีซาเฮเวน (MH-06) ร่วมนาข้าวเถ้า → cv.10 (ถ้า DM-06 หรือ DM-11 เกิดแล้ว)",
       "effects": [
        {
-        "k": "converge",
-        "to": "cv.10"
-       },
-       {
-        "k": "place",
-        "ids": [
-         "MH-06"
+        "k": "if",
+        "cond": {
+         "k": "or",
+         "of": [
+          {
+           "k": "event",
+           "id": "DM-06",
+           "happened": true
+          },
+          {
+           "k": "event",
+           "id": "DM-11",
+           "happened": true
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "converge",
+          "to": "cv.10"
+         },
+         {
+          "k": "place",
+          "ids": [
+           "MH-06"
+          ]
+         }
         ]
        }
       ],
@@ -34758,8 +36395,17 @@
       "label": "รายงานโรคทันที ถ้าเกิดในทวีป · ถิ่นถูกกักแต่คนรอด · ไว้ใจหมอ +2",
       "effects": [
        {
-        "k": "event",
-        "id": "CT-03"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เกิดในทวีป"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "CT-03"
+         }
+        ]
        },
        {
         "k": "trust",
@@ -34775,10 +36421,19 @@
       "label": "ปิดข่าวเพื่อไม่ให้ตื่นตระหนก · ผู้ป่วยแพร่ไปหมู่บ้านอื่น · ถ้าถูกเปิดโปง",
       "effects": [
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_infamous",
-        "chance": 0.2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ถูกเปิดโปง"
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_infamous",
+          "chance": 0.2
+         }
+        ]
        }
       ],
       "mods": []
@@ -34789,17 +36444,32 @@
       "label": "ย้ายไปรักษาที่ชายแดนผู้ลี้ภัย · เปิด ex.a3 หรือนิวเฮเวน AL-19",
       "effects": [
        {
-        "k": "place",
-        "ids": [
-         "AL-19"
+        "k": "pick",
+        "of": [
+         {
+          "label": "เปิด ex.a3",
+          "effects": [
+           {
+            "k": "ref",
+            "nodes": [
+             "ex.a3"
+            ],
+            "rel": "เปิด"
+           }
+          ]
+         },
+         {
+          "label": "นิวเฮเวน AL-19",
+          "effects": [
+           {
+            "k": "place",
+            "ids": [
+             "AL-19"
+            ]
+           }
+          ]
+         }
         ]
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "ex.a3"
-        ],
-        "rel": "เปิด"
        }
       ],
       "mods": []
@@ -35017,8 +36687,17 @@
       "id": "ns_mediate"
      },
      {
-      "k": "event",
-      "id": "PO-01"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ถิ่นขนาดใหญ่"
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "PO-01"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -35113,18 +36792,33 @@
       "label": "หนีไปเมือง · เปิด tr.t1 หรือ wd.t1",
       "effects": [
        {
-        "k": "ref",
-        "nodes": [
-         "tr.t1"
-        ],
-        "rel": "เปิด"
-       },
-       {
-        "k": "ref",
-        "nodes": [
-         "wd.t1"
-        ],
-        "rel": ""
+        "k": "pick",
+        "of": [
+         {
+          "label": "เปิด tr.t1",
+          "effects": [
+           {
+            "k": "ref",
+            "nodes": [
+             "tr.t1"
+            ],
+            "rel": "เปิด"
+           }
+          ]
+         },
+         {
+          "label": "wd.t1",
+          "effects": [
+           {
+            "k": "ref",
+            "nodes": [
+             "wd.t1"
+            ],
+            "rel": ""
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -35712,9 +37406,18 @@
       "label": "ซื้อสัญญาช่างหรือผู้ทำงานที่ต้องการ · ทอง −ราคา · ผู้ถูกผูกตัวเป็น NPC ที่มีชื่อ · ไว้ใจประเทศ A ต่อตัวละคร −2 ถ้าเปิดเผย",
       "effects": [
        {
-        "k": "stat",
-        "stat": "A ต่อตัวละคร",
-        "delta": -2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เปิดเผย"
+        },
+        "then": [
+         {
+          "k": "stat",
+          "stat": "A ต่อตัวละคร",
+          "delta": -2
+         }
+        ]
        }
       ],
       "mods": []
@@ -35755,9 +37458,18 @@
       "id": "MH09-1"
      },
      {
-      "k": "battle",
-      "enemies": [
-       "npc_slaver"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ผู้ซื้อตัดราคา"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "npc_slaver"
+        ]
+       }
       ]
      }
     ],
@@ -35965,12 +37677,21 @@
       "id": "MK16-7"
      },
      {
-      "k": "battleFor",
-      "choices": [
-       "a"
-      ],
-      "enemies": [
-       "npc_slaver"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ถูกตามทัน"
+      },
+      "then": [
+       {
+        "k": "battleFor",
+        "choices": [
+         "a"
+        ],
+        "enemies": [
+         "npc_slaver"
+        ]
+       }
       ]
      }
     ],
@@ -36123,7 +37844,7 @@
      {
       "key": "a",
       "weight": 45,
-      "label": "เพื่อนวัยเด็กเผ่าเดียวกันที่เล่นด้วยกันทุกวัน · สายสหายระดับ 2 · 30% ได้ไอเทมคู่",
+      "label": "เพื่อนวัยเด็กเผ่าเดียวกันที่เล่นด้วยกันทุกวัน · สายสหายระดับ 2 · 30% ได้ไอเทมคู่ PR-01 PR-02 หรือ PR-03",
       "effects": [
        {
         "k": "bond",
@@ -36137,22 +37858,36 @@
         "level": 1
        },
        {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-01",
-        "chance": 0.3
-       },
-       {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-02",
-        "chance": 0.3
-       },
-       {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-03",
-        "chance": 0.3
+        "k": "pick",
+        "of": [
+         {
+          "label": "30% ได้ไอเทมคู่ PR-01 PR-02",
+          "effects": [
+           {
+            "k": "template",
+            "kind": "PR",
+            "code": "PR-01",
+            "chance": 0.3
+           },
+           {
+            "k": "template",
+            "kind": "PR",
+            "code": "PR-02",
+            "chance": 0.3
+           }
+          ]
+         },
+         {
+          "label": "PR-03",
+          "effects": [
+           {
+            "k": "template",
+            "kind": "PR",
+            "code": "PR-03"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": []
@@ -36223,10 +37958,19 @@
         "line": "คู่หู"
        },
        {
-        "k": "mood",
-        "line": "สหาย",
-        "mood": "คิดถึง",
-        "level": 2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "แยกกันภายหลัง"
+        },
+        "then": [
+         {
+          "k": "mood",
+          "line": "สหาย",
+          "mood": "คิดถึง",
+          "level": 2
+         }
+        ]
        }
       ],
       "mods": []
@@ -36293,10 +38037,24 @@
       "label": "ช่วยเต็มที่ ทอง −30 ถึง −150 หรือเวลาหนึ่งปี · B +8 · เพื่อนจำไว้ตลอด",
       "effects": [
        {
-        "k": "range",
-        "stat": "ทอง",
-        "min": -30,
-        "max": -150
+        "k": "pick",
+        "of": [
+         {
+          "label": "ช่วยเต็มที่ ทอง −30 ถึง −150",
+          "effects": [
+           {
+            "k": "range",
+            "stat": "ทอง",
+            "min": -30,
+            "max": -150
+           }
+          ]
+         },
+         {
+          "label": "เวลาหนึ่งปี",
+          "effects": []
+         }
+        ]
        },
        {
         "k": "stat",
@@ -36325,9 +38083,18 @@
       "label": "ไม่ช่วย (กลัว ไม่มีทอง ไม่เห็นด้วย) · เรื่องของเพื่อนเดินต่อเอง · B −3 ถ้าเพื่อนรู้",
       "effects": [
        {
-        "k": "stat",
-        "stat": "B",
-        "delta": -3
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เพื่อนรู้"
+        },
+        "then": [
+         {
+          "k": "stat",
+          "stat": "B",
+          "delta": -3
+         }
+        ]
        }
       ],
       "mods": []
@@ -36335,10 +38102,19 @@
     ],
     "notes": [
      {
-      "k": "template",
-      "kind": "FT",
-      "code": "FT-01",
-      "to": "FT-05"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "NPC ธงในหัวข้อ 5 ใช้เรื่องของเขา"
+      },
+      "then": [
+       {
+        "k": "template",
+        "kind": "FT",
+        "code": "FT-01",
+        "to": "FT-05"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -36513,14 +38289,23 @@
       "max": 5
      },
      {
-      "k": "template",
-      "kind": "PR",
-      "code": "PR-04"
-     },
-     {
-      "k": "template",
-      "kind": "PR",
-      "code": "PR-05"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "สมหวัง"
+      },
+      "then": [
+       {
+        "k": "template",
+        "kind": "PR",
+        "code": "PR-04"
+       },
+       {
+        "k": "template",
+        "kind": "PR",
+        "code": "PR-05"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -36551,9 +38336,18 @@
         "level": 2
        },
        {
-        "k": "stat",
-        "stat": "B",
-        "delta": -2
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ห่างข้ามทวีป"
+        },
+        "then": [
+         {
+          "k": "stat",
+          "stat": "B",
+          "delta": -2
+         }
+        ]
        }
       ],
       "mods": []
@@ -36654,9 +38448,18 @@
         "level": 2
        },
        {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-06"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ช่าง"
+        },
+        "then": [
+         {
+          "k": "template",
+          "kind": "PR",
+          "code": "PR-06"
+         }
+        ]
        }
       ],
       "mods": []
@@ -36932,11 +38735,20 @@
       "label": "ไม่มีญาติรับ ถูกฝากที่อื่น · ตกชนชั้นหนึ่งชั้น · เปิดเส้น bd.b1 ถ้าเกิดในประเทศท่าที D L M",
       "effects": [
        {
-        "k": "ref",
-        "nodes": [
-         "bd.b1"
-        ],
-        "rel": "เปิดเส้น"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เกิดในประเทศท่าที D L M"
+        },
+        "then": [
+         {
+          "k": "ref",
+          "nodes": [
+           "bd.b1"
+          ],
+          "rel": "เปิดเส้น"
+         }
+        ]
        }
       ],
       "mods": []
@@ -37302,14 +39114,29 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "npc_cultist"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "GD-07",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "ผู้จ้างเป็นลัทธิ"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "npc_cultist"
+        ]
+       }
       ]
-     },
-     {
-      "k": "event",
-      "id": "GD-07"
      }
     ],
     "titleEvents": [
@@ -37584,9 +39411,18 @@
       "label": "ไปกับพวกพ้อง · ระดับ B +5 ถ้าฝ่ายเดียวกัน",
       "effects": [
        {
-        "k": "stat",
-        "stat": "B",
-        "delta": 5
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ฝ่ายเดียวกัน"
+        },
+        "then": [
+         {
+          "k": "stat",
+          "stat": "B",
+          "delta": 5
+         }
+        ]
        }
       ],
       "mods": []
@@ -37615,9 +39451,21 @@
       "label": "แยกทางอย่างเปิดเผย · ระดับ B −10 ถ้าระดับ ≥ 3 · พวกพ้องไม่ตกเป็นศัตรู",
       "effects": [
        {
-        "k": "stat",
-        "stat": "B",
-        "delta": -10
+        "k": "if",
+        "cond": {
+         "k": "cmp",
+         "stat": "level",
+         "op": ">=",
+         "value": 3,
+         "label": "ระดับ"
+        },
+        "then": [
+         {
+          "k": "stat",
+          "stat": "B",
+          "delta": -10
+         }
+        ]
        }
       ],
       "mods": []
@@ -37638,8 +39486,11 @@
        "happened": true
       },
       {
-       "k": "text",
-       "text": "มีพวกพ้องระดับ 3 ขึ้นไป"
+       "k": "cmp",
+       "stat": "allyLevel",
+       "op": ">=",
+       "value": 3,
+       "label": "พวกพ้องระดับ"
       }
      ]
     }
@@ -38140,13 +39991,18 @@
         "delta": -15
        },
        {
-        "k": "jobpath",
-        "job": "godslayer",
-        "secret": false,
-        "need": {
+        "k": "if",
+        "cond": {
          "k": "text",
          "text": "เงื่อนไขอื่นครบ"
-        }
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "godslayer",
+          "secret": false
+         }
+        ]
        }
       ],
       "mods": []
@@ -38262,8 +40118,17 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "MR-14"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ตัวละครมีความถนัดเลี้ยงสัตว์"
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "MR-14"
+       }
+      ]
      }
     ],
     "titleEvents": [
@@ -38326,15 +40191,19 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ต่ำกว่า 3"
+         "k": "cmp",
+         "stat": "ชนชั้น",
+         "op": "<",
+         "value": 3,
+         "label": "ชนชั้น"
         },
-        "then": []
-       },
-       {
-        "k": "stat",
-        "stat": "ชนชั้น",
-        "delta": 1
+        "then": [
+         {
+          "k": "stat",
+          "stat": "ชนชั้น",
+          "delta": 1
+         }
+        ]
        },
        {
         "k": "battle",
@@ -38434,7 +40303,11 @@
     "notes": [],
     "titleEvents": [],
     "notesText": "ใช้ได้เมื่อตัวละครเคยเดินโหนด mr อย่างน้อยหนึ่งโหนด",
-    "src": "docs/lore/storylines/31-divine.md:29"
+    "src": "docs/lore/storylines/31-divine.md:29",
+    "when": {
+     "k": "text",
+     "text": "ตัวละครเคยเดินโหนด mr อย่างน้อยหนึ่งโหนด"
+    }
    },
    {
     "id": "dp.t1",
@@ -38511,16 +40384,21 @@
       "label": "ประกาศว่าพระเจ้าเลือก · คนในถิ่นแตกเป็นสองฝ่าย · ทางสู่ ถ้าศรัทธาเทพ ≥ 85",
       "effects": [
        {
-        "k": "jobpath",
-        "job": "prophet",
-        "secret": false,
-        "need": {
+        "k": "if",
+        "cond": {
          "k": "cmp",
          "stat": "godFaith",
          "op": ">=",
          "value": 85,
          "label": "ศรัทธาเทพ"
-        }
+        },
+        "then": [
+         {
+          "k": "jobpath",
+          "job": "prophet",
+          "secret": false
+         }
+        ]
        }
       ],
       "mods": []
@@ -38654,8 +40532,17 @@
     ],
     "notes": [
      {
-      "k": "event",
-      "id": "GD-08"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ไม่มีทั้งสอง ตัด"
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "GD-08"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -38754,7 +40641,7 @@
       "effects": [],
       "text": "เดินตามเชือกนำทางคนเดียวหนึ่งคืน",
       "pass": {
-       "text": "",
+       "text": "nb_fog_walker 25%",
        "effects": [
         {
          "k": "grant",
@@ -38765,7 +40652,7 @@
        ]
       },
       "fail": {
-       "text": "",
+       "text": "c_nightmare 20%",
        "effects": [
         {
          "k": "grant",
@@ -38783,7 +40670,7 @@
       "effects": [],
       "text": "หาโอเอซิสด้วยตัวเองภายในสามวัน",
       "pass": {
-       "text": "",
+       "text": "nb_dust_blood 20%",
        "effects": [
         {
          "k": "grant",
@@ -38794,7 +40681,7 @@
        ]
       },
       "fail": {
-       "text": "",
+       "text": "nc_thirst_mark 30%",
        "effects": [
         {
          "k": "grant",
@@ -38812,7 +40699,7 @@
       "effects": [],
       "text": "ดำลงเก็บเปลือกหอยจากก้นอ่าว",
       "pass": {
-       "text": "",
+       "text": "b_waterwalk 10%",
        "effects": [
         {
          "k": "grant",
@@ -38823,7 +40710,7 @@
        ]
       },
       "fail": {
-       "text": "",
+       "text": "nc_fear_deep 20%",
        "effects": [
         {
          "k": "grant",
@@ -38841,7 +40728,7 @@
       "effects": [],
       "text": "แบกบรรณาการขึ้นบันไดครั้งแรก",
       "pass": {
-       "text": "",
+       "text": "ns_mountain_pace",
        "effects": [
         {
          "k": "grant",
@@ -39067,9 +40954,21 @@
       "mods": [
        {
         "cond": {
-         "k": "has",
-         "kind": "aptitude",
-         "id": "smithing"
+         "k": "or",
+         "of": [
+          {
+           "k": "has",
+           "kind": "aptitude",
+           "id": "smithing"
+          },
+          {
+           "k": "cmp",
+           "stat": "level",
+           "op": ">=",
+           "value": 1,
+           "label": "ระดับ"
+          }
+         ]
         },
         "mul": 1.5
        }
@@ -39088,7 +40987,7 @@
         "chance": 0.15
        }
       ],
-      "text": ""
+      "text": "ns_anvil_voice 30% · nb_faith_forge 15%"
      },
      {
       "label": "ของแตก",
@@ -39181,19 +41080,8 @@
       "mods": [
        {
         "cond": {
-         "k": "and",
-         "of": [
-          {
-           "k": "race",
-           "ids": [
-            "or"
-           ]
-          },
-          {
-           "k": "text",
-           "text": "สันติ"
-          }
-         ]
+         "k": "text",
+         "text": "ออร์คสันติ"
         },
         "mul": 3
        }
@@ -39263,7 +41151,7 @@
         "chance": 0.15
        }
       ],
-      "text": ""
+      "text": "nb_quick_hands 15%"
      },
      {
       "label": "นิทานที่แต่งเอง",
@@ -39307,7 +41195,7 @@
       "effects": [],
       "text": "ล่ากับฝูงภายใต้คำสั่ง",
       "pass": {
-       "text": "",
+       "text": "ns_pack_lead 15%",
        "effects": [
         {
          "k": "grant",
@@ -39345,7 +41233,7 @@
        ]
       },
       "fail": {
-       "text": "(สัตว์จำกลิ่นความล้มเหลว)",
+       "text": "nc_beast_fear 10% (สัตว์จำกลิ่นความล้มเหลว)",
        "effects": [
         {
          "k": "grant",
@@ -39363,7 +41251,7 @@
       "effects": [],
       "text": "ยืนขวางผู้ล่าเพื่อป้องกันฝูง",
       "pass": {
-       "text": "",
+       "text": "b_strongheart 5%",
        "effects": [
         {
          "k": "grant",
@@ -39390,7 +41278,7 @@
       "effects": [],
       "text": "ส่งสารข้ามป่าหรือทุ่งภายในหนึ่งวัน",
       "pass": {
-       "text": "",
+       "text": "courier · b_falcon 5%",
        "effects": [
         {
          "k": "grant",
@@ -39424,7 +41312,7 @@
       "effects": [],
       "text": "นำคาราวานไปโอเอซิส",
       "pass": {
-       "text": "",
+       "text": "ns_beast_sign 15%",
        "effects": [
         {
          "k": "grant",
@@ -39435,7 +41323,7 @@
        ]
       },
       "fail": {
-       "text": "",
+       "text": "nc_thirst_mark 20%",
        "effects": [
         {
          "k": "grant",
@@ -39511,7 +41399,7 @@
         "id": "nc_favor_unpaid"
        }
       ],
-      "text": "(ผิวกลายเป็นหินบางส่วน) · หนี้ต่อผู้ช่วย"
+      "text": "c_stoneskin 30% (ผิวกลายเป็นหินบางส่วน) · หนี้ต่อผู้ช่วย (nc_favor_unpaid)"
      },
      {
       "label": "ไม่ผ่าน กลายเป็นหิน",
@@ -39576,7 +41464,7 @@
         "chance": 0.15
        }
       ],
-      "text": ""
+      "text": "b_firetouch 15% · nb_scale_echo 15%"
      },
      {
       "label": "ได้ยินมังกรตอบแทนเปลว",
@@ -39604,7 +41492,7 @@
         "secret": false
        }
       ],
-      "text": ""
+      "text": "nb_mourning_ear 10% · ทางสู่ dragon_whisperer"
      },
      {
       "label": "เปลวไม่ตอบ",
@@ -39872,7 +41760,7 @@
         "chance": 0.1
        }
       ],
-      "text": ""
+      "text": "nb_pact_blood 15% · b_familybond 10%"
      },
      {
       "label": "ขุนนางหรือจอมมาร",
@@ -39949,7 +41837,7 @@
       "effects": [],
       "text": "นำเรือมนุษย์ผ่านแนวหินในคืนพายุ",
       "pass": {
-       "text": "",
+       "text": "b_seacalm 10%",
        "effects": [
         {
          "k": "grant",
@@ -39977,7 +41865,7 @@
       "effects": [],
       "text": "จุดแสงของตัวเองครั้งแรกในร่องลึก",
       "pass": {
-       "text": "",
+       "text": "b_nighteye 15%",
        "effects": [
         {
          "k": "grant",
@@ -39988,7 +41876,7 @@
        ]
       },
       "fail": {
-       "text": "(แม้เป็นเงือกน้ำลึก)",
+       "text": "nc_fear_deep 15% (แม้เป็นเงือกน้ำลึก)",
        "effects": [
         {
          "k": "grant",
@@ -40022,7 +41910,7 @@
        ]
       },
       "fail": {
-       "text": "",
+       "text": "nc_tone_deaf 10%",
        "effects": [
         {
          "k": "grant",
@@ -40040,7 +41928,7 @@
       "effects": [],
       "text": "คำนับร้อยครั้งโดยน้ำบนจานหัวไม่หก",
       "pass": {
-       "text": "",
+       "text": "nb_law_memory 10%",
        "effects": [
         {
          "k": "grant",
@@ -40188,7 +42076,7 @@
         "chance": 0.15
        }
       ],
-      "text": ""
+      "text": "nb_stone_kin 25% · nb_faith_stone 15%"
      },
      {
       "label": "หินเงียบ",
@@ -40269,7 +42157,7 @@
         "chance": 0.1
        }
       ],
-      "text": ""
+      "text": "nb_lava_pulse 25% · b_firetouch 10%"
      },
      {
       "label": "ร่างอุ่นพอดี",
@@ -40283,7 +42171,7 @@
         "chance": 0.1
        }
       ],
-      "text": ""
+      "text": "b_calmmind 10%"
      },
      {
       "label": "ร่างดำเป็นหินบางส่วน",
@@ -40351,7 +42239,7 @@
         "chance": 0.1
        }
       ],
-      "text": ""
+      "text": "b_ironskin 10% · c_madness 10%"
      },
      {
       "label": "ชิ้นส่วนช่าง",
@@ -40675,17 +42563,8 @@
     "legend": "ชื่อถูกสลักในสภาเก้าทวีป",
     "src": "docs/lore/storylines/01-human.md:73",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "node",
-       "id": "hu.a7"
-      },
-      {
-       "k": "text",
-       "text": "สำเร็จ"
-      }
-     ]
+     "k": "node",
+     "id": "hu.a7"
     }
    },
    {
@@ -40702,13 +42581,14 @@
      "k": "and",
      "of": [
       {
+       "k": "has",
+       "kind": "flag",
+       "id": "summoned"
+      },
+      {
        "k": "event",
        "id": "DM-05",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "ผู้ถูกอัญเชิญ +"
       }
      ]
     }
@@ -40806,18 +42686,13 @@
        "choice": "b"
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "WR-17",
-         "happened": false
-        },
-        {
-         "k": "text",
-         "text": "ไม่เกิดตลอดชีวิต"
-        }
-       ]
+       "k": "event",
+       "id": "WR-17",
+       "happened": false
+      },
+      {
+       "k": "text",
+       "text": "ไม่เกิดตลอดชีวิต"
       }
      ]
     }
@@ -40900,18 +42775,9 @@
     "legend": "ชื่อที่ไม่มีใครกล้าเรียก",
     "src": "docs/lore/storylines/03-darkelf.md:72",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "shadowmaster"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "shadowmaster"
     }
    },
    {
@@ -40928,18 +42794,9 @@
     "legend": "ผู้ไร้เงาหลายคนเดินตามไปขอเงาคืน",
     "src": "docs/lore/storylines/03-darkelf.md:73",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "node",
-       "id": "de.a7",
-       "choice": "c"
-      },
-      {
-       "k": "text",
-       "text": "สำเร็จ"
-      }
-     ]
+     "k": "node",
+     "id": "de.a7",
+     "choice": "c"
     }
    },
    {
@@ -40985,10 +42842,6 @@
       {
        "k": "gender",
        "value": "f"
-      },
-      {
-       "k": "text",
-       "text": "สำเร็จ ( )"
       }
      ]
     }
@@ -41071,7 +42924,7 @@
       },
       {
        "k": "text",
-       "text": "+ เกิดด้วยอาวุธนั้น"
+       "text": "เกิดด้วยอาวุธนั้น"
       }
      ]
     }
@@ -41085,18 +42938,9 @@
     "legend": "ภูเขาจำชื่อ",
     "src": "docs/lore/storylines/04-dwarf.md:77",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "mountain_heart_waker"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "mountain_heart_waker"
     }
    },
    {
@@ -41132,10 +42976,6 @@
        "k": "event",
        "id": "HP-07",
        "happened": true
-      },
-      {
-       "k": "text",
-       "text": "+ สำเร็จ +"
       }
      ]
     }
@@ -41171,19 +43011,13 @@
        "id": "demonlord"
       },
       {
-       "k": "race",
-       "ids": [
-        "or"
-       ]
-      },
-      {
        "k": "has",
        "kind": "curse",
        "id": "c_demonmark"
       },
       {
        "k": "text",
-       "text": "อาชีพลับ ( ต้องมีตราปีศาจ ตามเงื่อนไขอาชีพ)"
+       "text": "(ออร์คต้องมีตราปีศาจ ตามเงื่อนไขอาชีพ)"
       }
      ]
     }
@@ -41253,18 +43087,9 @@
     "legend": "ต้นไม้ที่ไชร์วิกมีชื่อของตัวละคร",
     "src": "docs/lore/storylines/06-halfling.md:73",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "node",
-       "id": "cv.6",
-       "choice": "c"
-      },
-      {
-       "k": "text",
-       "text": "สำเร็จ"
-      }
-     ]
+     "k": "node",
+     "id": "cv.6",
+     "choice": "c"
     }
    },
    {
@@ -41326,18 +43151,9 @@
     "legend": "ทุกฝูงหยุดวิ่งเมื่อได้ยินชื่อ",
     "src": "docs/lore/storylines/07-beast.md:77",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "beastking"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "beastking"
     }
    },
    {
@@ -41362,19 +43178,8 @@
        "choice": "b"
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "race",
-         "ids": [
-          "el"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "NPC ฝั่งแก้กฎ"
-        }
-       ]
+       "k": "text",
+       "text": "NPC เอลฟ์ฝั่งแก้กฎ"
       }
      ]
     }
@@ -41461,7 +43266,7 @@
       },
       {
        "k": "text",
-       "text": "+ ไม่เกิดตลอดชีวิต"
+       "text": "ไม่เกิดตลอดชีวิต"
       }
      ]
     }
@@ -41488,18 +43293,9 @@
        "choice": "c"
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "has",
-         "kind": "job",
-         "id": "resurrector"
-        },
-        {
-         "k": "text",
-         "text": "อาชีพลับ"
-        }
-       ]
+       "k": "has",
+       "kind": "job",
+       "id": "resurrector"
       }
      ]
     }
@@ -41549,18 +43345,9 @@
     "legend": "ผู้ขี่ตามตำนานที่อัซเมโรส",
     "src": "docs/lore/storylines/09-dragonkin.md:73",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "dragonknight"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "dragonknight"
     }
    },
    {
@@ -41603,18 +43390,9 @@
     "legend": "ผู้ถูกเลือกของมังกรที่เหลือ",
     "src": "docs/lore/storylines/09-dragonkin.md:75",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "dragon_whisperer"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "dragon_whisperer"
     }
    },
    {
@@ -41687,18 +43465,9 @@
     "legend": "ตระกูลใหม่ที่เกิดจากตัวละคร",
     "src": "docs/lore/storylines/10-vampire.md:71",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "vampirelord"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "vampirelord"
     }
    },
    {
@@ -41850,10 +43619,6 @@
        "k": "node",
        "id": "sl.a6",
        "choice": "a"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ +"
       }
      ]
     }
@@ -41921,17 +43686,12 @@
      "k": "and",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "node",
-         "id": "dm.t1"
-        },
-        {
-         "k": "text",
-         "text": "สัญญากับตัวเอง"
-        }
-       ]
+       "k": "node",
+       "id": "dm.t1"
+      },
+      {
+       "k": "text",
+       "text": "สัญญากับตัวเอง"
       },
       {
        "k": "text",
@@ -41949,18 +43709,9 @@
     "legend": "การบุกหรือสนธิสัญญาที่ทุกทวีปจำได้",
     "src": "docs/lore/storylines/13-demonkin.md:76",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "demonlord"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "demonlord"
     }
    },
    {
@@ -42042,32 +43793,22 @@
      "k": "and",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "node",
-         "id": "me.a6",
-         "choice": "a"
-        },
-        {
-         "k": "text",
-         "text": "ร้องถูก"
-        }
-       ]
+       "k": "node",
+       "id": "me.a6",
+       "choice": "a"
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "PL-04",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "เกิดในชีวิตนั้น"
-        }
-       ]
+       "k": "text",
+       "text": "ร้องถูก"
+      },
+      {
+       "k": "event",
+       "id": "PL-04",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "เกิดในชีวิตนั้น"
       }
      ]
     }
@@ -42178,7 +43919,7 @@
       },
       {
        "k": "text",
-       "text": "(ก่อน )"
+       "text": "(ก่อน"
       }
      ]
     }
@@ -42393,18 +44134,9 @@
      "k": "and",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "has",
-         "kind": "job",
-         "id": "fog_guide"
-        },
-        {
-         "k": "text",
-         "text": "อาชีพพิเศษ"
-        }
-       ]
+       "k": "has",
+       "kind": "job",
+       "id": "fog_guide"
       },
       {
        "k": "text",
@@ -42523,7 +44255,7 @@
       },
       {
        "k": "text",
-       "text": "ชนะ +"
+       "text": "ชนะ"
       }
      ]
     }
@@ -42585,18 +44317,9 @@
     "legend": "ราชวงศ์ที่เปลี่ยนกฎธุลี",
     "src": "docs/lore/storylines/20-mummy.md:71",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "has",
-       "kind": "job",
-       "id": "awakened_pharaoh"
-      },
-      {
-       "k": "text",
-       "text": "อาชีพลับ"
-      }
-     ]
+     "k": "has",
+     "kind": "job",
+     "id": "awakened_pharaoh"
     }
    },
    {
@@ -42769,7 +44492,7 @@
       },
       {
        "k": "text",
-       "text": "+ ผ่านทั้งสองพิธี ( )"
+       "text": "ผ่านทั้งสองพิธี"
       }
      ]
     }
@@ -42837,7 +44560,7 @@
       },
       {
        "k": "text",
-       "text": "+ จบดี"
+       "text": "จบดี"
       }
      ]
     }
@@ -42938,7 +44661,7 @@
       },
       {
        "k": "text",
-       "text": "ทำสองพิธี +"
+       "text": "ทำสองพิธี"
       }
      ]
     }
@@ -43098,7 +44821,7 @@
       },
       {
        "k": "text",
-       "text": "+ ชุมชนอยู่รอดสิบปี"
+       "text": "ชุมชนอยู่รอดสิบปี"
       }
      ]
     }
@@ -43309,19 +45032,8 @@
     "legend": "ชื่อสกุลที่อยู่ในสองยุค",
     "src": "docs/lore/storylines/23-heir.md:49",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "race",
-       "ids": [
-        "gh"
-       ]
-      },
-      {
-       "k": "text",
-       "text": "ตระ อยู่รอดเหตุการณ์ใหญ่สองยุค"
-      }
-     ]
+     "k": "text",
+     "text": "ตระกูลอยู่รอดเหตุการณ์ใหญ่สองยุค"
     }
    },
    {
@@ -43359,14 +45071,8 @@
        "choice": "c"
       },
       {
-       "k": "race",
-       "ids": [
-        "gh"
-       ]
-      },
-      {
        "k": "text",
-       "text": "+ ย้ายออกจากถิ่นตระ"
+       "text": "ย้ายออกจากถิ่นตระกูล"
       }
      ]
     }
@@ -43400,8 +45106,8 @@
        "label": "ทอง"
       },
       {
-       "k": "text",
-       "text": "+ ก่อนอายุ 50"
+       "k": "age",
+       "max": 49
       }
      ]
     }
@@ -43568,18 +45274,9 @@
     "condRaw": "ชาวพื้นหลัง DR-01",
     "src": "docs/lore/storylines/01-human.md:62",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-01",
-       "happened": true
-      },
-      {
-       "k": "text",
-       "text": "ชาวพื้นหลัง"
-      }
-     ]
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
     }
    },
    {
@@ -43594,18 +45291,9 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "country",
-         "ids": [
-          "SV-17"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "อยู่ที่"
-        }
+       "k": "country",
+       "ids": [
+        "SV-17"
        ]
       },
       {
@@ -43761,19 +45449,14 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "DM-07",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "WR-13",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "DM-07",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true
       },
       {
        "k": "event",
@@ -43795,8 +45478,10 @@
      "k": "or",
      "of": [
       {
-       "k": "text",
-       "text": "อยู่ในเนบูเลีย"
+       "k": "continent",
+       "ids": [
+        "NB"
+       ]
       },
       {
        "k": "text",
@@ -43841,19 +45526,14 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "FG-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "FG-03",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
       },
       {
        "k": "event",
@@ -43899,19 +45579,14 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "DM-07",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "WR-13",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "DM-07",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true
       },
       {
        "k": "event",
@@ -44034,8 +45709,10 @@
     "condRaw": "อยู่เมคาเรีย",
     "src": "docs/lore/storylines/06-halfling.md:64",
     "cond": {
-     "k": "text",
-     "text": "อยู่เมคาเรีย"
+     "k": "continent",
+     "ids": [
+      "MK"
+     ]
     }
    },
    {
@@ -44088,18 +45765,9 @@
      "k": "and",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "country",
-         "ids": [
-          "SH-10"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "อยู่"
-        }
+       "k": "country",
+       "ids": [
+        "SH-10"
        ]
       },
       {
@@ -44150,33 +45818,19 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "WR-04",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "BIO-01",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "WR-04",
+       "happened": true
       },
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "BIO-02",
-         "happened": true
-        },
-        {
-         "k": "text",
-         "text": "· ตามผู้ลี้ภัยจากพงไพร"
-        }
-       ]
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "BIO-02",
+       "happened": true
       }
      ]
     }
@@ -44265,20 +45919,9 @@
     "condRaw": "DR-15 · เผ่ามังกรทาง ก ×2",
     "src": "docs/lore/storylines/09-dragonkin.md:67",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-15",
-       "happened": true
-      },
-      {
-       "k": "race",
-       "ids": [
-        "dk"
-       ]
-      }
-     ]
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
     }
    },
    {
@@ -44290,8 +45933,10 @@
     "condRaw": "อยู่ในเนบูเลีย",
     "src": "docs/lore/storylines/10-vampire.md:62",
     "cond": {
-     "k": "text",
-     "text": "อยู่ในเนบูเลีย"
+     "k": "continent",
+     "ids": [
+      "NB"
+     ]
     }
    },
    {
@@ -44335,19 +45980,14 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "FG-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "FG-03",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
       },
       {
        "k": "event",
@@ -44387,8 +46027,10 @@
        "text": "ภูตแสง"
       },
       {
-       "k": "text",
-       "text": "อยู่ในเนบูเลีย"
+       "k": "continent",
+       "ids": [
+        "NB"
+       ]
       }
      ]
     }
@@ -44405,19 +46047,14 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "event",
-         "id": "FG-02",
-         "happened": true
-        },
-        {
-         "k": "event",
-         "id": "FG-03",
-         "happened": true
-        }
-       ]
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
       },
       {
        "k": "event",
@@ -44586,26 +46223,31 @@
     "condRaw": "WR-02 หรือ HP-03 หรือ GI-02 · ก่อน DR-01",
     "src": "docs/lore/storylines/15-winged.md:68",
     "cond": {
-     "k": "or",
+     "k": "and",
      "of": [
       {
-       "k": "event",
-       "id": "WR-02",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "HP-03",
-       "happened": true
-      },
-      {
-       "k": "and",
+       "k": "or",
        "of": [
+        {
+         "k": "event",
+         "id": "WR-02",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "HP-03",
+         "happened": true
+        },
         {
          "k": "event",
          "id": "GI-02",
          "happened": true
-        },
+        }
+       ]
+      },
+      {
+       "k": "and",
+       "of": [
         {
          "k": "event",
          "id": "DR-01",
@@ -44613,7 +46255,7 @@
         },
         {
          "k": "text",
-         "text": "· ก่อน"
+         "text": "ก่อน"
         }
        ]
       }
@@ -44629,20 +46271,9 @@
     "condRaw": "DR-15 · เผ่าปีกทาง ก ×2",
     "src": "docs/lore/storylines/15-winged.md:69",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "event",
-       "id": "DR-15",
-       "happened": true
-      },
-      {
-       "k": "race",
-       "ids": [
-        "wi"
-       ]
-      }
-     ]
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
     }
    },
    {
@@ -44668,26 +46299,31 @@
     "condRaw": "WR-02 หรือ HP-03 หรือ GI-02 · ก่อน DR-01",
     "src": "docs/lore/storylines/16-giant.md:69",
     "cond": {
-     "k": "or",
+     "k": "and",
      "of": [
       {
-       "k": "event",
-       "id": "WR-02",
-       "happened": true
-      },
-      {
-       "k": "event",
-       "id": "HP-03",
-       "happened": true
-      },
-      {
-       "k": "and",
+       "k": "or",
        "of": [
+        {
+         "k": "event",
+         "id": "WR-02",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "HP-03",
+         "happened": true
+        },
         {
          "k": "event",
          "id": "GI-02",
          "happened": true
-        },
+        }
+       ]
+      },
+      {
+       "k": "and",
+       "of": [
         {
          "k": "event",
          "id": "DR-01",
@@ -44695,7 +46331,7 @@
         },
         {
          "k": "text",
-         "text": "· ก่อน"
+         "text": "ก่อน"
         }
        ]
       }
@@ -44849,8 +46485,10 @@
      "k": "or",
      "of": [
       {
-       "k": "text",
-       "text": "อยู่ในเนบูเลีย"
+       "k": "continent",
+       "ids": [
+        "NB"
+       ]
       },
       {
        "k": "text",
@@ -44896,8 +46534,10 @@
      "k": "or",
      "of": [
       {
-       "k": "text",
-       "text": "อยู่ในเนบูเลีย"
+       "k": "continent",
+       "ids": [
+        "NB"
+       ]
       },
       {
        "k": "text",
@@ -45845,7 +47485,7 @@
           },
           {
            "k": "text",
-           "text": "เกิดที่ท่าเรือ (NR-* )"
+           "text": "เกิดที่ท่าเรือ (NR-*"
           }
          ]
         }
@@ -45963,11 +47603,8 @@
      "k": "and",
      "of": [
       {
-       "k": "cmp",
-       "stat": "class",
-       "op": ">=",
-       "value": 3,
-       "label": "ชนชั้น"
+       "k": "class",
+       "min": 3
       },
       {
        "k": "or",
@@ -46122,19 +47759,8 @@
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "race",
-         "ids": [
-          "hu"
-         ]
-        },
-        {
-         "k": "text",
-         "text": "ทุกเผ่ายกเว้น ใช้ได้เมื่อเงื่อนไขหัวข้อ 2 ของกติกาเดินทางผ่าน"
-        }
-       ]
+       "k": "text",
+       "text": "ทุกเผ่ายกเว้นมนุษย์ ใช้ได้เมื่อเงื่อนไขหัวข้อ 2 ของกติกาเดินทางผ่าน"
       },
       {
        "k": "text",
@@ -47645,9 +49271,29 @@
       ],
       "effects": [
        {
-        "k": "battle",
-        "enemies": [],
-        "text": "ทัพมีคำสั่งให้ไปรบอีกรอบ ตัวละครเลือก: ชวนติดตามหนีทัพ ขอให้ร่วม สุดท้าย หรือไม่ยุ่ง **ขอบเขตของเธอ:** เธอไม่ร่วม อีก เธอยอมเป็นผู้พาข้ามเขตทัพแต่ไม่จับอาวุธ"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ทัพมีคำสั่งให้ไปรบอีกรอบ ตัวละครเลือก: ชวนติดตามหนีทัพ ขอให้ร่วมศึกสุดท้าย",
+          "effects": [
+           {
+            "k": "battle",
+            "enemies": [],
+            "text": "ทัพมีคำสั่งให้ไปรบอีกรอบ ตัวละครเลือก: ชวนติดตามหนีทัพ ขอให้ร่วม สุดท้าย"
+           }
+          ]
+         },
+         {
+          "label": "ไม่ยุ่ง **ขอบเขตของเธอ:** เธอไม่ร่วมศึกอีก เธอยอมเป็นผู้พาข้ามเขตทัพแต่ไม่จับอาวุธ",
+          "effects": [
+           {
+            "k": "battle",
+            "enemies": [],
+            "text": "ไม่ยุ่ง **ขอบเขตของเธอ:** เธอไม่ร่วม อีก เธอยอมเป็นผู้พาข้ามเขตทัพแต่ไม่จับอาวุธ"
+           }
+          ]
+         }
+        ]
        }
       ]
      },
@@ -47834,14 +49480,29 @@
         "id": "KD01-1"
        },
        {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-06"
-       },
-       {
-        "k": "template",
-        "kind": "PR",
-        "code": "PR-09"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ไอเทมคู่ PR-06",
+          "effects": [
+           {
+            "k": "template",
+            "kind": "PR",
+            "code": "PR-06"
+           }
+          ]
+         },
+         {
+          "label": "PR-09",
+          "effects": [
+           {
+            "k": "template",
+            "kind": "PR",
+            "code": "PR-09"
+           }
+          ]
+         }
+        ]
        }
       ]
      },
@@ -48772,8 +50433,17 @@
       ],
       "effects": [
        {
-        "k": "event",
-        "id": "DM-11"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "เดินทางผ่าน"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DM-11"
+         }
+        ]
        }
       ]
      },
@@ -48918,13 +50588,22 @@
       ],
       "effects": [
        {
-        "k": "event",
-        "id": "GD-02"
-       },
-       {
-        "k": "grant",
-        "kind": "curse",
-        "id": "c_wanted"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ซ่อนไว้"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "GD-02"
+         },
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_wanted"
+         }
+        ]
        }
       ]
      },
@@ -49179,13 +50858,28 @@
       ],
       "effects": [
        {
-        "k": "bond",
-        "line": "คนรัก"
-       },
-       {
-        "k": "place",
-        "ids": [
-         "KD-12"
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "has",
+           "kind": "unknown",
+           "id": " "
+          },
+          {
+           "k": "text",
+           "text": "ความผูกพันถึงระดับรักจึงเกิดสายคนรัก"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "place",
+          "ids": [
+           "KD-12"
+          ]
+         }
         ]
        }
       ]
@@ -51011,14 +52705,34 @@
       ],
       "effects": [
        {
-        "k": "event",
-        "id": "MC-05"
-       },
-       {
-        "k": "place",
-        "ids": [
-         "MK-06",
-         "MK-12"
+        "k": "pick",
+        "of": [
+         {
+          "label": "สมาพันธ์อาวุธ MK-06 ยึดตัวไปแกะวิญญาณ MC-05 ร้อนขึ้น ตัวละครเลือก: ซ่อนที่ทวิดเวิร์ค MK-12 พาไปหาริวะ",
+          "effects": [
+           {
+            "k": "event",
+            "id": "MC-05"
+           },
+           {
+            "k": "place",
+            "ids": [
+             "MK-06",
+             "MK-12"
+            ]
+           }
+          ]
+         },
+         {
+          "label": "ส่งให้ไวรอน-1 **ขอบเขตของไรเวอร์:** หุ่นไม่ยอมให้ใครเล่าชื่อแม่ทัพหญิงผู้ตายแทน ยกเว้นริวะที่เป็นคนเรียก",
+          "effects": [
+           {
+            "k": "stat",
+            "stat": "ส่งให้ไวรอน",
+            "delta": -1
+           }
+          ]
+         }
         ]
        }
       ]
@@ -52408,9 +54122,29 @@
       ],
       "effects": [
        {
-        "k": "battle",
-        "enemies": [],
-        "text": "เข้าใกล้และอาร์กัสบาดเจ็บ ตัวละครเลือก: ให้อาร์กัสพัก ขี่ร่วม หรือส่งฟางไปคนเดียว **ขอบเขตของเขา:** เขาไม่ยอมให้ใครขี่อาร์กัสแม้ตัวละครขอในวิกฤต"
+        "k": "pick",
+        "of": [
+         {
+          "label": "ศึกเข้าใกล้และอาร์กัสบาดเจ็บ ตัวละครเลือก: ให้อาร์กัสพัก ขี่ร่วม",
+          "effects": [
+           {
+            "k": "battle",
+            "enemies": [],
+            "text": "เข้าใกล้และอาร์กัสบาดเจ็บ ตัวละครเลือก: ให้อาร์กัสพัก ขี่ร่วม"
+           }
+          ]
+         },
+         {
+          "label": "ศึก ส่งฟางไปคนเดียว **ขอบเขตของเขา:** เขาไม่ยอมให้ใครขี่อาร์กัสแม้ตัวละครขอในวิกฤต",
+          "effects": [
+           {
+            "k": "battle",
+            "enemies": [],
+            "text": "ส่งฟางไปคนเดียว **ขอบเขตของเขา:** เขาไม่ยอมให้ใครขี่อาร์กัสแม้ตัวละครขอในวิกฤต"
+           }
+          ]
+         }
+        ]
        }
       ]
      },
@@ -54141,7 +55875,9 @@
      {
       "k": "place",
       "ids": [
-       "SV-17"
+       "SV-17",
+       "NB-01",
+       "NB-14"
       ]
      }
     ],
@@ -54172,19 +55908,34 @@
     "firstNodeRaw": "hu.b1 ทางพิเศษ",
     "effects": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_echo",
-      "chance": 0.4
-     },
-     {
-      "k": "grant",
-      "kind": "blessing",
-      "id": "b_memory",
-      "chance": 0.3
+      "k": "pick",
+      "of": [
+       {
+        "label": "c_echo 40%",
+        "effects": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_echo",
+          "chance": 0.4
+         }
+        ]
+       },
+       {
+        "label": "b_memory 30%",
+        "effects": [
+         {
+          "k": "grant",
+          "kind": "blessing",
+          "id": "b_memory",
+          "chance": 0.3
+         }
+        ]
+       }
+      ]
      }
     ],
-    "text": "จำชาติก่อนได้บางส่วน",
+    "text": "c_echo 40% หรือ b_memory 30% · จำชาติก่อนได้บางส่วน",
     "src": "docs/lore/storylines/01-human.md:21",
     "firstNode": "hu.b1"
    },
@@ -54288,7 +56039,7 @@
       "id": "nb_faith_moon"
      }
     ],
-    "text": "(หญิง) · ใกล้ชิดดาร์กเอลฟ์ผู้ลี้ภัย",
+    "text": "nb_faith_moon (หญิง) · ใกล้ชิดดาร์กเอลฟ์ผู้ลี้ภัย",
     "src": "docs/lore/storylines/02-elf.md:16",
     "firstNode": "el.b1"
    },
@@ -54450,7 +56201,8 @@
      {
       "k": "place",
       "ids": [
-       "NB-05"
+       "NB-05",
+       "NB-06"
       ]
      }
     ],
@@ -54631,7 +56383,8 @@
      {
       "k": "place",
       "ids": [
-       "SH-07"
+       "SH-07",
+       "SH-15"
       ]
      }
     ],
@@ -54764,7 +56517,8 @@
      {
       "k": "place",
       "ids": [
-       "MK-16"
+       "MK-16",
+       "MH-11"
       ]
      }
     ],
@@ -55113,16 +56867,36 @@
     "firstNodeRaw": "na.b1",
     "effects": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_outcast",
-      "chance": 0.4
-     },
-     {
-      "k": "place",
-      "ids": [
-       "NR-06",
-       "NR-07"
+      "k": "pick",
+      "of": [
+       {
+        "label": "เกิด NR-06",
+        "effects": [
+         {
+          "k": "place",
+          "ids": [
+           "NR-06"
+          ]
+         }
+        ]
+       },
+       {
+        "label": "NR-07 → c_outcast 40%",
+        "effects": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "c_outcast",
+          "chance": 0.4
+         },
+         {
+          "k": "place",
+          "ids": [
+           "NR-07"
+          ]
+         }
+        ]
+       }
       ]
      },
      {
@@ -55136,7 +56910,7 @@
       "pct": 20
      }
     ],
-    "text": "เกิด NR-06 หรือ NR-07 → · ลูกเงือก 20% ได้",
+    "text": "เกิด NR-06 หรือ NR-07 → c_outcast 40% · ลูกเงือก 20% ได้",
     "src": "docs/lore/storylines/08-naga.md:18",
     "firstNode": "na.b1"
    },
@@ -55214,9 +56988,18 @@
     "firstNodeRaw": "va.b1",
     "effects": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_sunburn"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เกิดกลางวัน"
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "c_sunburn"
+       }
+      ]
      }
     ],
     "text": "ใต้ตระกูลของเคานต์ · ถ้าเกิดกลางวัน",
@@ -56248,13 +58031,28 @@
     "firstNodeRaw": "so.b1",
     "effects": [
      {
-      "k": "grant",
-      "kind": "curse",
-      "id": "nc_sv_blackout"
-     },
-     {
-      "k": "event",
-      "id": "MC-04"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "MC-04",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "หลัง"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "grant",
+        "kind": "curse",
+        "id": "nc_sv_blackout"
+       }
+      ]
      }
     ],
     "text": "ตื่นในซากโรงงาน · ถ้าหลัง MC-04",
@@ -56398,25 +58196,8 @@
     "condRaw": "ทายาทเกิดในตระกูลที่มีสมุดตระกูล",
     "src": "docs/lore/storylines/23-heir.md:22",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "race",
-       "ids": [
-        "gh"
-       ]
-      },
-      {
-       "k": "race",
-       "ids": [
-        "gh"
-       ]
-      },
-      {
-       "k": "text",
-       "text": "ทายาทเกิดในตระ ที่มีสมุดตระ"
-      }
-     ]
+     "k": "text",
+     "text": "ทายาทเกิดในตระกูลที่มีสมุดตระกูล"
     }
    },
    {
@@ -56428,19 +58209,8 @@
     "condRaw": "โหนด b2 ของเผ่าอยู่ในสมุดตระกูลแล้ว (รุ่นก่อนผ่านมาแล้ว)",
     "src": "docs/lore/storylines/23-heir.md:23",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "race",
-       "ids": [
-        "gh"
-       ]
-      },
-      {
-       "k": "text",
-       "text": "โหนด b2 ของเผ่าอยู่ในสมุดตระ แล้ว (รุ่นก่อนผ่านมาแล้ว)"
-      }
-     ]
+     "k": "text",
+     "text": "โหนด b2 ของเผ่าอยู่ในสมุดตระกูลแล้ว (รุ่นก่อนผ่านมาแล้ว)"
     }
    },
    {
@@ -56450,11 +58220,7 @@
      "t1"
     ],
     "condRaw": "ทุกทายาท พิธีของเผ่ายังต้องผ่าน (เป็นเรื่องส่วนตัวของแต่ละคน)",
-    "src": "docs/lore/storylines/23-heir.md:24",
-    "cond": {
-     "k": "text",
-     "text": "ทุกทายาท พิธีของเผ่ายังต้องผ่าน (เป็นเรื่องส่วนตัวของแต่ละคน)"
-    }
+    "src": "docs/lore/storylines/23-heir.md:24"
    },
    {
     "node": "hr.t2",
@@ -56463,11 +58229,7 @@
      "t2"
     ],
     "condRaw": "ทุกทายาท",
-    "src": "docs/lore/storylines/23-heir.md:25",
-    "cond": {
-     "k": "text",
-     "text": "ทุกทายาท"
-    }
+    "src": "docs/lore/storylines/23-heir.md:25"
    },
    {
     "node": "hr.a1 hr.a2 hr.a3",
@@ -56515,23 +58277,21 @@
      "k": "or",
      "of": [
       {
+       "k": "text",
+       "text": "e1 อยู่ในสมุดตระกูลแล้ว"
+      },
+      {
        "k": "and",
        "of": [
         {
-         "k": "race",
-         "ids": [
-          "gh"
-         ]
+         "k": "age",
+         "min": 55
         },
         {
          "k": "text",
-         "text": "e1 อยู่ในสมุดตระ แล้ว"
+         "text": "ทายาท ตอนรับช่วง"
         }
        ]
-      },
-      {
-       "k": "text",
-       "text": "ทายาทอายุ 55 ขึ้นไปตอนรับช่วง"
       }
      ]
     }

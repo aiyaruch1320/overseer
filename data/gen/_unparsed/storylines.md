@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: storylines
 
-12 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+226 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -16,3 +16,217 @@
 | docs/lore/storylines/24-economy.md:65 | tr.a6 c): ค้าสิ่งที่ทำร้ายเผ่าหนึ่ง (ล่าสัตว์เพื่อหนัง จับภูต ค้าคนตามท่าทีของประเทศใน 10-bondage.md) |  |
 | docs/lore/storylines/24-economy.md:102 | wk.a3 a): ไม่ถือที่ดินได้ถ้าเป็นชั้น 2 |  |
 | docs/lore/storylines/27-bondage.md:49 | ab.a1 a): ความเสี่ยง `c_wanted` ในประเทศท่าที D L M 20% |  |
+| docs/lore/storylines/01-human.md:43 | hu.b1: ถิ่นมีสงคราม | text in condition |
+| docs/lore/storylines/01-human.md:50 | hu.a3: ริมน้ำ | text in condition |
+| docs/lore/storylines/01-human.md:50 | hu.a3: ทุ่งราบหลัง | text in condition |
+| docs/lore/storylines/01-human.md:50 | hu.a3: เหตุการณ์ ⭐ | text in condition |
+| docs/lore/storylines/01-human.md:51 | hu.a4: ชนะหัวหน้าด้วยดาบ | text in condition |
+| docs/lore/storylines/01-human.md:53 | hu.a6: เงื่อนไขครบ | text in condition |
+| docs/lore/storylines/01-human.md:54 | hu.a7: cv อย่างน้อยสองจุด | text in condition |
+| docs/lore/storylines/03-darkelf.md:40 | de.a2: กำลังจะเกิด | text in condition |
+| docs/lore/storylines/03-darkelf.md:40 | de.a2: ไม่มีวันเกิด | text in condition |
+| docs/lore/storylines/03-darkelf.md:55 | de.l1: มีคนเห็นสองเงา | text in condition |
+| docs/lore/storylines/05-orc.md:41 | or.a1: มงกุฎยังไร้ผู้สวม | text in condition |
+| docs/lore/storylines/05-orc.md:46 | or.a6: ใกล้ | text in condition |
+| docs/lore/storylines/05-orc.md:58 | or.l2: ไม่ถูกจับ เด็กโตเป็นผู้ส่งข่าวในเมืองมนุษย์ | text in condition |
+| docs/lore/storylines/06-halfling.md:44 | ha.a6: ไม่ได้อยู่ทุ่งราบ | text in condition |
+| docs/lore/storylines/06-halfling.md:45 | ha.a7: หมู่บ้านถูกสงคราม | text in condition |
+| docs/lore/storylines/06-halfling.md:45 | ha.a7: ผู้ใหญ่บ้านโลภ | text in condition |
+| docs/lore/storylines/07-beast.md:41 | be.b1: มีสงคราม | text in condition |
+| docs/lore/storylines/07-beast.md:42 | be.b2: เกิดใต้จันทร์เต็มดวง | text in condition |
+| docs/lore/storylines/07-beast.md:46 | be.a1: ตัวละครบุกถึงหอธนู | text in condition |
+| docs/lore/storylines/07-beast.md:46 | be.a1: นอกซิลวาเนล | text in condition |
+| docs/lore/storylines/07-beast.md:47 | be.a2: เกิดและเส้นอพยพผ่านหมอก | text in condition |
+| docs/lore/storylines/07-beast.md:47 | be.a2: เหตุการณ์ของถิ่น | text in condition |
+| docs/lore/storylines/07-beast.md:47 | be.a2: คนของฟอร์เทียมาปักหมุดสำรวจทุ่ง | text in condition |
+| docs/lore/storylines/07-beast.md:48 | be.a3: หลัง | text in condition |
+| docs/lore/storylines/08-naga.md:38 | na.t2: ตามผู้ลี้ภัยกลับไป | text in condition |
+| docs/lore/storylines/08-naga.md:41 | na.a2: เรือทองสาป | text in condition |
+| docs/lore/storylines/08-naga.md:57 | na.l2: ยังมีชีวิต | text in condition |
+| docs/lore/storylines/08-naga.md:57 | na.l2: จากผู้ที่เขาเล่าไว้ | text in condition |
+| docs/lore/storylines/09-dragonkin.md:48 | dk.e1: ตรามังกรอย่างน้อยหนึ่งตัว | text in condition |
+| docs/lore/storylines/09-dragonkin.md:49 | dk.e2: มีตรามังกร | text in condition |
+| docs/lore/storylines/09-dragonkin.md:57 | dk.l1: ไม่เปิดและรูปลางของ ในแถว ใช้ไม่ได้ | text in condition |
+| docs/lore/storylines/10-vampire.md:42 | va.a4: รู้ความลับใน | text in condition |
+| docs/lore/storylines/11-fae.md:40 | fa.t2: ชื่อรั่ว | text in condition |
+| docs/lore/storylines/11-fae.md:42 | fa.a1: ถูกจับใน | text in condition |
+| docs/lore/storylines/11-fae.md:43 | fa.a2: ตรามังกร | text in condition |
+| docs/lore/storylines/11-fae.md:48 | fa.a7: skill ธาตุสามอย่าง | text in condition |
+| docs/lore/storylines/11-fae.md:59 | fa.l2: ถูกตามทัน | text in condition |
+| docs/lore/storylines/12-slime.md:41 | sl.a1: กลืนซากใน | text in condition |
+| docs/lore/storylines/13-demonkin.md:48 | dm.a7: ตรามังกร | text in condition |
+| docs/lore/storylines/14-merfolk.md:36 | me.b2: เรือทองสาป | text in condition |
+| docs/lore/storylines/14-merfolk.md:42 | me.a3: เงือกเป็นทูต | text in condition |
+| docs/lore/storylines/15-winged.md:45 | wi.a2: เกิดและเส้นทางผ่านหมอก | text in condition |
+| docs/lore/storylines/15-winged.md:50 | wi.a7: มีผู้ศรัทธาตาม | text in condition |
+| docs/lore/storylines/15-winged.md:52 | wi.e2: มีทายาทฟ้า | text in condition |
+| docs/lore/storylines/16-giant.md:43 | gi.a2: ไม่มีทั้งสอง | text in condition |
+| docs/lore/storylines/16-giant.md:48 | gi.a7: ใช้ดาบขนาดยักษ์ | text in condition |
+| docs/lore/storylines/16-giant.md:48 | gi.a7: นำคำขอบคุณจากเกาะ | text in condition |
+| docs/lore/storylines/18-construct.md:44 | co.a5: เซโร่ตาย | text in condition |
+| docs/lore/storylines/18-construct.md:44 | co.a5: เลือกผู้แทน | text in condition |
+| docs/lore/storylines/18-construct.md:46 | co.a7: ห้องทดลองที่ | text in condition |
+| docs/lore/storylines/18-construct.md:46 | co.a7: จากช่างหุ่นวิญญาณ | text in condition |
+| docs/lore/storylines/19-soulmachine.md:60 | so.l2: ถูกตามทัน | text in condition |
+| docs/lore/storylines/20-mummy.md:43 | mu.a2: เงื่อนไขครบ | text in condition |
+| docs/lore/storylines/20-mummy.md:45 | mu.a4: แวมไพร์ผิดสัญญา | text in condition |
+| docs/lore/storylines/20-mummy.md:46 | mu.a5: ไม่เกิดในช่วงนี้ | text in condition |
+| docs/lore/storylines/20-mummy.md:47 | mu.a6: พบแล้วกลัว | text in condition |
+| docs/lore/storylines/20-mummy.md:48 | mu.a7: สายเลือดฟาโรห์จากชีวิตแรก | text in condition |
+| docs/lore/storylines/20-mummy.md:48 | mu.a7: ตัวละครชิงบัลลังก์ | text in condition |
+| docs/lore/storylines/21-ghoul.md:43 | gh.a1: เกิดและฝูงอยู่ใกล้ชายแดนหมอก | text in condition |
+| docs/lore/storylines/22-halfblood.md:58 | hb.t1: ถิ่นของเผ่าที่สองรังเกียจ | text in condition |
+| docs/lore/storylines/22-halfblood.md:59 | hb.t2: มีธงซ่อนสายเลือด | text in condition |
+| docs/lore/storylines/22-halfblood.md:59 | hb.t2: ถูกเปิดโปงใน | text in condition |
+| docs/lore/storylines/22-halfblood.md:59 | hb.t2: เหตุการณ์ที่ถิ่นรังเกียจ | text in condition |
+| docs/lore/storylines/22-halfblood.md:60 | hb.a1: เคยซ่อนสายเลือด | text in condition |
+| docs/lore/storylines/22-halfblood.md:62 | hb.a3: ถิ่นนั้นรังเกียจ | text in condition |
+| docs/lore/storylines/22-halfblood.md:122 | ho.a2: ให้ทั้งสองฝั่ง | text in condition |
+| docs/lore/storylines/22-halfblood.md:131 | sw.t1: เลือดมังกรไม่ถึงครึ่ง ที่ ไม่รับ ทำที่ แทน | text in condition |
+| docs/lore/storylines/22-halfblood.md:163 | fh.b2: ลูกช่างตี | text in condition |
+| docs/lore/storylines/22-halfblood.md:163 | fh.b2: ลูกเตาไฟ | text in condition |
+| docs/lore/storylines/23-heir.md:37 | hr.t2: ทำตามเงื่อนไข | text in condition |
+| docs/lore/storylines/23-heir.md:38 | hr.a1: ศึกสายเลือด | text in condition |
+| docs/lore/storylines/24-economy.md:37 | ec.a4: ถูกจับ | text in condition |
+| docs/lore/storylines/24-economy.md:48 | pv.a1: ผิดนัด | text in condition |
+| docs/lore/storylines/24-economy.md:60 | tr.a1: ขัดขืน | text in condition |
+| docs/lore/storylines/24-economy.md:61 | tr.a2: ผู้ร่วมขบวนมีชีวิตรอด | text in condition |
+| docs/lore/storylines/24-economy.md:62 | tr.a3: ช่วยไกล่เกลี่ย | text in condition |
+| docs/lore/storylines/24-economy.md:66 | tr.e1: ทำ ถึง ครบโดยไม่หนี | text in condition |
+| docs/lore/storylines/24-economy.md:75 | iv.a2: เพื่อนเป็นนักต้ม | text in condition |
+| docs/lore/storylines/24-economy.md:76 | iv.a3: ผ่านมาแล้ว 8 ปี | text in condition |
+| docs/lore/storylines/24-economy.md:86 | nl.b1: เด็กเอาไปบอก | text in condition |
+| docs/lore/storylines/24-economy.md:99 | wk.t1: ไม่ระวัง | text in condition |
+| docs/lore/storylines/25-journeys.md:43 | sf.t1: ลูกจ้างผูกสัญญา | text in condition |
+| docs/lore/storylines/25-journeys.md:44 | sf.a1: เป็นเรือเหาะเถื่อน | text in condition |
+| docs/lore/storylines/25-journeys.md:45 | sf.a2: ถูกจับ | text in condition |
+| docs/lore/storylines/25-journeys.md:45 | sf.a2: นาคาอยู่บนเรือ | text in condition |
+| docs/lore/storylines/25-journeys.md:56 | ps.a1: ขบวนมีผู้ลี้ภัย | text in condition |
+| docs/lore/storylines/25-journeys.md:67 | ml.a2: ถูกจับ | text in condition |
+| docs/lore/storylines/25-journeys.md:102 | wd.a3: กลุ่มปิดปาก | text in condition |
+| docs/lore/storylines/25-journeys.md:114 | xc.a4: ถูกส่งเป็นผู้คุ้มกันผู้แทนมอร์เฮเวน | text in condition |
+| docs/lore/storylines/25-journeys.md:116 | xc.a6: ถูกล่าเป็นสัตว์ | text in condition |
+| docs/lore/storylines/25-journeys.md:121 | xc.b2: ใกล้เกิด เรือเข้าน่านน้ำนาคาไอล์ | text in condition |
+| docs/lore/storylines/25-journeys.md:122 | xc.b3: เข้าถิ่นแสง | text in condition |
+| docs/lore/storylines/25-journeys.md:123 | xc.b4: คำเชิญขึ้นวาฬฟ้า | text in condition |
+| docs/lore/storylines/25-journeys.md:124 | xc.b5: เรือเหาะถูกเกณฑ์ขนผู้หนีไฟ | text in condition |
+| docs/lore/storylines/25-journeys.md:126 | xc.b7: ถูกเรียกไปรวมไฟสุดท้าย | text in condition |
+| docs/lore/storylines/26-hearth.md:49 | md.a2: เกิดในทวีป | text in condition |
+| docs/lore/storylines/26-hearth.md:49 | md.a2: ถูกเปิดโปง | text in condition |
+| docs/lore/storylines/26-hearth.md:60 | ld.a2: ถิ่นขนาดใหญ่ | text in condition |
+| docs/lore/storylines/27-bondage.md:41 | bo.a1: เปิดเผย | text in condition |
+| docs/lore/storylines/27-bondage.md:41 | bo.a1: ผู้ซื้อตัดราคา | text in condition |
+| docs/lore/storylines/27-bondage.md:49 | ab.a1: ถูกตามทัน | text in condition |
+| docs/lore/storylines/28-allies.md:28 | bn.t1: แยกกันภายหลัง | text in condition |
+| docs/lore/storylines/28-allies.md:29 | bn.a1: เพื่อนรู้ | text in condition |
+| docs/lore/storylines/28-allies.md:29 | bn.a1: NPC ธงในหัวข้อ 5 ใช้เรื่องของเขา | text in condition |
+| docs/lore/storylines/28-allies.md:31 | bn.a3: สมหวัง | text in condition |
+| docs/lore/storylines/28-allies.md:32 | bn.a4: ห่างข้ามทวีป | text in condition |
+| docs/lore/storylines/28-allies.md:33 | bn.a5: ช่าง | text in condition |
+| docs/lore/storylines/28-allies.md:41 | kn.t1: เกิดในประเทศท่าที D L M | text in condition |
+| docs/lore/storylines/28-allies.md:43 | kn.a2: ลูก | text in condition |
+| docs/lore/storylines/30-last-era.md:30 | le.a2: ผู้จ้างเป็นลัทธิ | text in condition |
+| docs/lore/storylines/30-last-era.md:39 | le.a6: ฝ่ายเดียวกัน | text in condition |
+| docs/lore/storylines/30-last-era.md:47 | le.a9: ไม่มี ฉากนี้เป็นของ NPC ที่ผูกไว้ต่ำกว่า | text in condition |
+| docs/lore/storylines/31-divine.md:26 | mr.a4: เงื่อนไขอื่นครบ | text in condition |
+| docs/lore/storylines/31-divine.md:27 | mr.a5: ตัวละครมีความถนัดเลี้ยงสัตว์ | text in condition |
+| docs/lore/storylines/31-divine.md:29 | mr.e1: ตัวละครเคยเดินโหนด mr อย่างน้อยหนึ่งโหนด | text in condition |
+| docs/lore/storylines/31-divine.md:38 | dp.a3: ไม่มีทั้งสอง ตัด | text in condition |
+| docs/lore/storylines/00-convergence.md:38 | cv.1: ขับไล่ | text in condition |
+| docs/lore/storylines/00-convergence.md:68 | cv.3: ชนะศึกระดับหัวหน้าขึ้นไป | text in condition |
+| docs/lore/storylines/00-convergence.md:82 | cv.4: หมอกกินทวีปแล้ว | text in condition |
+| docs/lore/storylines/00-convergence.md:82 | cv.4: ความรู้จาก | text in condition |
+| docs/lore/storylines/00-convergence.md:82 | cv.4: เลือก ก ในรอบที่รอยแยกขยาย | text in condition |
+| docs/lore/storylines/00-convergence.md:96 | cv.5: ค) แพ้ | text in condition |
+| docs/lore/storylines/00-convergence.md:96 | cv.5: ศาสนาแสง | text in condition |
+| docs/lore/storylines/00-convergence.md:110 | cv.6: มอบต้นกล้า | text in condition |
+| docs/lore/storylines/00-convergence.md:110 | cv.6: ตัวละครพยายามหยุด | text in condition |
+| docs/lore/storylines/00-convergence.md:122 | cv.7: รับอาสา | text in condition |
+| docs/lore/storylines/00-convergence.md:122 | cv.7: โจรสลัด | text in condition |
+| docs/lore/storylines/00-convergence.md:146 | cv.9: เขาคลั่ง | text in condition |
+| docs/lore/storylines/00-convergence.md:160 | cv.10: ผู้กล้าและจอมมารยอมคุย | text in condition |
+| docs/lore/storylines/00-convergence.md:160 | cv.10: มงกุฎกระดูกยังไร้ผู้สวม | text in condition |
+| docs/lore/storylines/00-convergence.md:174 | cv.11: เผ่าปีกส่งศิลาลอย | text in condition |
+| docs/lore/storylines/00-convergence.md:186 | cv.12: ออร์คทราย | text in condition |
+| docs/lore/storylines/00-convergence.md:186 | cv.12: ตัวละครปล้นหลุมพระศพ | text in condition |
+| docs/lore/storylines/00-convergence.md:210 | cv.14: คุยได้ | text in condition |
+| docs/lore/storylines/00-convergence.md:238 | cv.16: ผู้มีตรามังกร | text in condition |
+| docs/lore/storylines/00-convergence.md:238 | cv.16: เหลือมังกรตัวสุดท้าย | text in condition |
+| docs/lore/storylines/00-convergence.md:238 | cv.16: กุญแจถูกกระจาย | text in condition |
+| docs/lore/storylines/05-orc.md:26 | or.t1 พิธี: ออร์คสันติ | text in condition |
+| docs/lore/storylines/15-winged.md:28 | wi.t1 พิธี: ปีกสั้น | text in condition |
+| docs/lore/storylines/17-lavakin.md:25 | la.t1 พิธี: หลัง | text in condition |
+| docs/lore/storylines/21-ghoul.md:28 | gh.t1 พิธี: นิวเฮเวน | text in condition |
+| docs/lore/storylines/01-human.md:75 | hu ปลายทาง คนธรรมดาที่รอด: ไม่ได้ผ่าน cv เลย ตายเมื่อแก่ | text in condition |
+| docs/lore/storylines/01-human.md:76 | hu ปลายทาง ผู้ตายในสงคราม: ตายใน | text in condition |
+| docs/lore/storylines/02-elf.md:73 | el ปลายทาง ผู้แก้กฎลำต้น: ไม่เกิดตลอดชีวิต | text in condition |
+| docs/lore/storylines/04-dwarf.md:76 | dw ปลายทาง ช่างผู้ฆ่ามังกรทางอ้อม: เกิดด้วยอาวุธนั้น | text in condition |
+| docs/lore/storylines/05-orc.md:74 | or ปลายทาง ราชาปีศาจ: (ออร์คต้องมีตราปีศาจ ตามเงื่อนไขอาชีพ) | text in condition |
+| docs/lore/storylines/05-orc.md:75 | or ปลายทาง นักรบที่นับทุกชีวิต: ฆ่าในศึกมากแต่ได้ | text in condition |
+| docs/lore/storylines/06-halfling.md:72 | ha ปลายทาง ผู้ผจญภัยโดยไม่เต็มใจ: ผ่าน cv อย่างน้อยสองจุดทั้งที่ | text in condition |
+| docs/lore/storylines/07-beast.md:78 | be ปลายทาง ผู้ยุติสงครามป่า: NPC เอลฟ์ฝั่งแก้กฎ | text in condition |
+| docs/lore/storylines/07-beast.md:79 | be ปลายทาง ผู้นำการอพยพ: เหตุการณ์ของรูปถิ่นใน | text in condition |
+| docs/lore/storylines/08-naga.md:70 | na ปลายทาง ผู้ปิดความแค้นน้ำเก่า: ไม่เกิดตลอดชีวิต | text in condition |
+| docs/lore/storylines/09-dragonkin.md:76 | dk ปลายทาง ผู้ทรยศสายเลือด: มังกรตาย | text in condition |
+| docs/lore/storylines/12-slime.md:72 | sl ปลายทาง พยานที่ไม่มีใครเชื่อ: ไม่มีใครเชื่อจนตาย | text in condition |
+| docs/lore/storylines/13-demonkin.md:75 | dm ปลายทาง ปีศาจผู้ซื่อสัตย์: สัญญากับตัวเอง | text in condition |
+| docs/lore/storylines/13-demonkin.md:75 | dm ปลายทาง ปีศาจผู้ซื่อสัตย์: ไม่เคยผิดคำ | text in condition |
+| docs/lore/storylines/14-merfolk.md:71 | me ปลายทาง ผู้ปลุกธาลาสซา: ร้องถูก | text in condition |
+| docs/lore/storylines/14-merfolk.md:71 | me ปลายทาง ผู้ปลุกธาลาสซา: เกิดในชีวิตนั้น | text in condition |
+| docs/lore/storylines/15-winged.md:77 | wi ปลายทาง ผู้เปิดโปงนักบวช: (ก่อน | text in condition |
+| docs/lore/storylines/15-winged.md:78 | wi ปลายทาง ผู้ลี้ภัยคนสุดท้าย: ตายในค่ายก่อนได้บ้าน | text in condition |
+| docs/lore/storylines/16-giant.md:79 | gi ปลายทาง ผู้ยืนขวางไททัน: ชนะ | text in condition |
+| docs/lore/storylines/18-construct.md:72 | co ปลายทาง ผู้นำทางไร้เนื้อ: พาขบวนรอด | text in condition |
+| docs/lore/storylines/18-construct.md:75 | co ปลายทาง ร่างล้ำคนที่สอง: คลั่งในโหนด | text in condition |
+| docs/lore/storylines/19-soulmachine.md:74 | so ปลายทาง หุ่นที่ได้สิทธิ์: ชนะ | text in condition |
+| docs/lore/storylines/21-ghoul.md:73 | gh ปลายทาง ผู้ไม่กิน: ไม่เคยกินคนตลอดชีวิต | text in condition |
+| docs/lore/storylines/22-halfblood.md:279 | halfblood ปลายทาง ผู้ร้องเพลงฟัก: ผ่านทั้งสองพิธี | text in condition |
+| docs/lore/storylines/22-halfblood.md:281 | halfblood ปลายทาง สะพานน้ำเลี้ยง: จบดี | text in condition |
+| docs/lore/storylines/22-halfblood.md:284 | halfblood ปลายทาง ปีกที่ไม่ต้องเลือก: ทำสองพิธี | text in condition |
+| docs/lore/storylines/22-halfblood.md:289 | halfblood ปลายทาง ผู้ก่อบ้านหลังที่สาม: ชุมชนอยู่รอดสิบปี | text in condition |
+| docs/lore/storylines/23-heir.md:48 | heir ปลายทาง ผู้ปิดสมุดตระกูล: ปิดเรื่องค้างครบทุกข้อ | text in condition |
+| docs/lore/storylines/23-heir.md:49 | heir ปลายทาง ผู้พาตระกูลข้ามยุค: ตระกูลอยู่รอดเหตุการณ์ใหญ่สองยุค | text in condition |
+| docs/lore/storylines/23-heir.md:50 | heir ปลายทาง ผู้ถูกเทียบกับบรรพบุรุษ: ชื่อเสียงสูงกว่ารุ่นก่อนสูงสุด | text in condition |
+| docs/lore/storylines/23-heir.md:51 | heir ปลายทาง ผู้เริ่มสายใหม่: ย้ายออกจากถิ่นตระกูล | text in condition |
+| docs/lore/storylines/24-economy.md:110 | economy ปลายทาง พ่อค้าที่ข้ามทะเลทรายสามร้อยครั้ง: ถึง ครบ ไม่หนีขบวน | text in condition |
+| docs/lore/storylines/01-human.md:64 | hu.a4 → cv.3 cv.5 cv.12 cv.14: ตามเหตุการณ์ของทวีป | text in condition |
+| docs/lore/storylines/01-human.md:65 | hu.a5 → cv.2 cv.10: ผู้แทน | text in condition |
+| docs/lore/storylines/01-human.md:65 | hu.a5 → cv.2 cv.10: ชาวนาข้าวเถ้า | text in condition |
+| docs/lore/storylines/01-human.md:66 | hu.a6 → cv.4 cv.11 cv.15: ตามทวีป | text in condition |
+| docs/lore/storylines/03-darkelf.md:64 | de.a4 → cv.4: ผู้ไร้เงา | text in condition |
+| docs/lore/storylines/04-dwarf.md:68 | dw.a6 → cv.9 cv.11: ตามทาง | text in condition |
+| docs/lore/storylines/06-halfling.md:65 | ha.a5 → cv.2 cv.14: ตามทาง | text in condition |
+| docs/lore/storylines/07-beast.md:70 | be.a4 → cv.6 cv.12: ตามทวีป | text in condition |
+| docs/lore/storylines/11-fae.md:66 | fa.a4 → cv.4: ภูตแสง | text in condition |
+| docs/lore/storylines/13-demonkin.md:68 | dm.a5 → cv.8 cv.10: สายเพลิง | text in condition |
+| docs/lore/storylines/15-winged.md:68 | wi.a3 → cv.11: ก่อน | text in condition |
+| docs/lore/storylines/16-giant.md:69 | gi.a3 → cv.11: ก่อน | text in condition |
+| docs/lore/storylines/18-construct.md:66 | co.a5 → cv.4 cv.15: ชายแดน | text in condition |
+| docs/lore/storylines/19-soulmachine.md:67 | so.a4 → cv.4 cv.15: ชายแดน | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | sf เปิดเมื่อ: เกิดที่ท่าเรือ (NR-* | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | sf เปิดเมื่อ: เลือกขึ้นเรือ | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | ps เปิดเมื่อ: ศรัทธา > 40 | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | ps เปิดเมื่อ: ศาสนามีที่ศักดิ์สิทธิ์นอกประเทศ | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | ml เปิดเมื่อ: อาชีพ ที่ออกนอกประเทศ | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | ml เปิดเมื่อ: รับจ้างรบตามหัวข้อ 2 ของกติกาเดินทาง | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | sc เปิดเมื่อ: มีความถนัด | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | ex เปิดเมื่อ: มีเหตุการณ์โลกทำให้ถิ่นอยู่ไม่ได้ | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | wd เปิดเมื่อ: แกน | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | wd เปิดเมื่อ: ไม่มีงานประจำ | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | xc เปิดเมื่อ: ทุกเผ่ายกเว้นมนุษย์ ใช้ได้เมื่อเงื่อนไขหัวข้อ 2 ของกติกาเดินทางผ่าน | text in condition |
+| docs/lore/storylines/25-journeys.md:0 | xc เปิดเมื่อ: 35% ที่เกิดขึ้นเองตอนอายุเทียบ 24 ถึง 36 ถ้าตัวละครอยู่ L0 (ในกรณีนี้ต่างเผ่าเป็นฝ่ายมาหา) | text in condition |
+| docs/lore/storylines/26-hearth.md:0 | cr เปิดเมื่อ: สืบร้านของครอบครัว | text in condition |
+| docs/lore/storylines/26-hearth.md:0 | md เปิดเมื่อ: ความถนัดรักษา | text in condition |
+| docs/lore/storylines/26-hearth.md:0 | ld เปิดเมื่อ: เป็นผู้ที่คนในถิ่นเลือก ผู้สืบตำแหน่ง | text in condition |
+| docs/lore/storylines/10-vampire.md:15 | va จุดกำเนิด ถิ่นหลัก ซอร์เนบ: เกิดกลางวัน | text in condition |
+| docs/lore/storylines/19-soulmachine.md:19 | so จุดกำเนิด ถิ่นหลัก รัสต์ดาล: หลัง | text in condition |
+| docs/lore/storylines/23-heir.md:22 | hr.b1: ทายาทเกิดในตระกูลที่มีสมุดตระกูล | text in condition |
+| docs/lore/storylines/23-heir.md:23 | hr.b2: โหนด b2 ของเผ่าอยู่ในสมุดตระกูลแล้ว (รุ่นก่อนผ่านมาแล้ว) | text in condition |
+| docs/lore/storylines/23-heir.md:26 | hr.a1 hr.a2 hr.a3: มีเรื่องที่ผูกตามข้อ 4 | text in condition |
+| docs/lore/storylines/23-heir.md:27 | hr.a4: ทายาทมีลูกที่ยังมีชีวิต | text in condition |
+| docs/lore/storylines/23-heir.md:27 | hr.a4: ผู้สืบเรื่อง | text in condition |
+| docs/lore/storylines/23-heir.md:28 | hr.e1: e1 อยู่ในสมุดตระกูลแล้ว | text in condition |
+| docs/lore/storylines/23-heir.md:28 | hr.e1: ทายาท ตอนรับช่วง | text in condition |
+| docs/lore/storylines/29-allies-flagship.md:153 | MH06-4: เดินทางผ่าน | text in condition |
+| docs/lore/storylines/29-allies-flagship.md:168 | MH07-2: ซ่อนไว้ | text in condition |
+| docs/lore/storylines/29-allies-flagship.md:200 | KD06-3: ความผูกพันถึงระดับรักจึงเกิดสายคนรัก | text in condition |

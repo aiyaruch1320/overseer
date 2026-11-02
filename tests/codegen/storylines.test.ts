@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import run from '../../scripts/codegen/groups/storylines';
-import { parseCell, parseChoice, parseConditionX, parseWeightCell } from '../../scripts/codegen/lib/effects';
+import { RACE_WORDS, parseCell, parseChoice, parseConditionX, parseWeightCell, textConditions } from '../../scripts/codegen/lib/effects';
 import { idIndex } from '../../scripts/codegen/lib/ids';
 import { genDir, listDocs, tables } from '../../scripts/codegen/lib/table';
 import type { ConvergenceData, EffectX, StoryNodeX, StorylinesData } from '../../src/core/data/types-storylines';
@@ -33,7 +33,10 @@ describe('storyline generator (code-plan §5.1 row 1)', () => {
     expect(report.group).toBe('storylines');
     expect(report.files).toEqual(['storylines.json', 'convergence.json']);
     expect(report.strict).toBe(false); // the lead turns this on after M0-ค
-    expect(report.unparsed).toBeLessThanOrEqual(30);
+    // phrases the grammar did not read (the text conditions that are left are counted apart, see the H2 M1 tests)
+    const md = readFileSync(path.join(genDir, '_unparsed/storylines.md'), 'utf8');
+    const textCount = md.split('\n').filter((l) => l.endsWith('| text in condition |')).length;
+    expect(report.unparsed - textCount).toBeLessThanOrEqual(30);
   });
 
   it('gives the same bytes on every run', () => {
@@ -275,7 +278,15 @@ describe('effect grammar of the storylines', () => {
 
   it('reads a secret job path with its requirement', () => {
     const p = parseCell('ถ้าชนะหัวหน้าด้วยดาบ ทางสู่อาชีพลับ `swordsaint` (ต้องมี `sword_3`)', ids);
-    expect(p.effects).toContainEqual({ k: 'jobpath', job: 'swordsaint', secret: true, need: { k: 'has', kind: 'aptitude', id: 'sword', level: 3 } });
+    // the words before the path are a condition the grammar cannot read (kept as text and reported), the path stays inside it
+    expect(p.effects).toEqual([
+      {
+        k: 'if',
+        cond: { k: 'text', text: 'ชนะหัวหน้าด้วยดาบ' },
+        then: [{ k: 'jobpath', job: 'swordsaint', secret: true, need: { k: 'has', kind: 'aptitude', id: 'sword', level: 3 } }],
+      },
+    ]);
+    expect(textConditions(p.effects)).toEqual(['ชนะหัวหน้าด้วยดาบ']);
   });
 
   it('keeps and and or apart in a condition', () => {
@@ -305,5 +316,239 @@ describe('nodes keep their position in the file', () => {
       byFile.set(f, [...(byFile.get(f) ?? []), order(n)]);
     }
     for (const [f, lines] of byFile) expect(lines, f).toEqual([...lines].sort((a, b) => a - b));
+  });
+});
+
+// ---------- M0-ค: the fixes the data review asked for (review/m0/data-review.md) ----------
+
+const docsStoryFiles = listDocs('docs/lore/storylines', /^\d\d-.*\.md$/);
+const deep = (x: unknown, f: (o: Record<string, unknown>) => void) => {
+  if (Array.isArray(x)) x.forEach((y) => deep(y, f));
+  else if (x && typeof x === 'object') {
+    f(x as Record<string, unknown>);
+    Object.values(x).forEach((y) => deep(y, f));
+  }
+};
+const nodeOf = (id: string) => [...story.nodes, ...conv.points].find((n) => n.id === id)!;
+const choiceOf = (id: string, key: 'a' | 'b' | 'c') => nodeOf(id).choices.find((c) => c.key === key)!;
+const pickIds = (effects: EffectX[]) => {
+  const p = effects.find((e) => e.k === 'pick');
+  return p && p.k === 'pick' ? p.of.map((b) => (b.effects[0].k === 'grant' || b.effects[0].k === 'event' ? b.effects[0].id : b.effects[0].k)) : null;
+};
+
+describe('B1: no ghoul in a family', () => {
+  it('has no race condition in the heir rules or the heir endings', () => {
+    const races: string[] = [];
+    deep([story.heirRules, story.endings.filter((e) => e.line === 'hr')], (o) => {
+      if (o.k === 'race') races.push(JSON.stringify(o));
+    });
+    expect(races).toEqual([]);
+    expect(story.heirRules.map((h) => h.node)).toEqual(['hr.b1', 'hr.b2', 'hr.t1', 'hr.t2', 'hr.a1 hr.a2 hr.a3', 'hr.a4', 'hr.e1']);
+    expect(story.heirRules[0].cond).toEqual({ k: 'text', text: 'ทายาทเกิดในตระกูลที่มีสมุดตระกูล' });
+    // "ทุกทายาท" holds for everybody
+    expect(story.heirRules[3].cond).toBeUndefined();
+  });
+  it('finds a race only where the docs write a race word', () => {
+    // every race condition in the data stands on a race word that is a whole word in the source row
+    const rows = new Map<string, string>();
+    for (const f of docsStoryFiles) for (const t of tables(f)) for (const r of t.rows) rows.set(`docs/lore/storylines/${f.split('/').pop()}:${r.line}`, r.cells.join(' | '));
+    const bad: string[] = [];
+    for (const [name, list] of [['node', story.nodes], ['ending', story.endings], ['link', story.links], ['heir', story.heirRules]] as const) {
+      for (const x of list as { src: string }[]) {
+        const row = rows.get(x.src) ?? '';
+        deep(x, (o) => {
+          if (o.k !== 'race') return;
+          for (const code of o.ids as string[]) {
+            const word = RACE_WORDS.find(([, c]) => c === code)![0];
+            const whole = new RegExp(`(?<![฀-๿])${word}(?![฀-๿])|(?<=ชาว|และ|หรือ|กับ)${word}|${word}(?=และ|หรือ|กับ)`);
+            if (!whole.test(row)) bad.push(`${name} ${x.src} ${word}`);
+          }
+        });
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+});
+
+describe('B2: "A หรือ B" of codes is a pick', () => {
+  it('reads the five examples of the review', () => {
+    expect(pickIds(choiceOf('or.t3', 'a').effects)).toEqual(['soldier', 'mercenary']); // 05-orc.md:40
+    expect(pickIds(choiceOf('be.t3', 'b').effects)).toEqual(['tamer', 'courier']); // 07-beast.md:45
+    expect(pickIds(choiceOf('be.t3', 'c').effects)).toEqual(['caravan_guard', 'shepherd']);
+    expect(pickIds(choiceOf('sf.a3', 'c').effects)).toEqual(['ferryman', 'shipwright']); // 25-journeys.md:46
+    expect(pickIds(choiceOf('cv.6', 'c').effects)).toEqual(['BIO-03', 'WT-02']); // 00-convergence.md:114
+    expect(pickIds(choiceOf('hb.t2', 'a').effects)).toEqual(['trust', 'nc_betrayed_trust']); // 22-halfblood.md:59
+  });
+  it('has the convergence hand-off of dm.a5 as a pick between cv.8 and cv.10', () => {
+    const n = nodeOf('dm.a5');
+    const p = n.notes.find((e) => e.k === 'pick');
+    expect(p && p.k === 'pick' && p.of.map((b) => b.effects)).toEqual([[{ k: 'converge', to: 'cv.8' }], [{ k: 'converge', to: 'cv.10' }]]);
+    expect(n.converge).toEqual(['cv.8', 'cv.10']);
+  });
+});
+
+describe('H1: a condition stays with its result', () => {
+  const ifs = (effects: EffectX[]) => effects.filter((e) => e.k === 'if');
+  it('wraps the examples of the review', () => {
+    // 01-human.md:43 hu.b1 ข: the war orphan only where there is a war
+    expect(ifs(choiceOf('hu.b1', 'b').effects)).toEqual([{ k: 'if', cond: { k: 'text', text: 'ถิ่นมีสงคราม' }, then: [{ k: 'grant', kind: 'curse', id: 'nc_war_orphan' }] }]);
+    expect(choiceOf('hu.b1', 'b').effects.some((e) => e.k === 'grant')).toBe(false);
+    // 00-convergence.md:40 cv.1 ก
+    expect(ifs(choiceOf('cv.1', 'a').effects)).toEqual([{ k: 'if', cond: { k: 'event', id: 'SF-08', happened: true }, then: [{ k: 'grant', kind: 'job', id: 'ruin_city_lord' }] }]);
+    // 00-convergence.md:114 cv.6 ค
+    const c6 = ifs(choiceOf('cv.6', 'c').effects);
+    expect(c6).toHaveLength(1);
+    expect(c6[0]).toMatchObject({ cond: { k: 'and' }, then: [{ k: 'grant', kind: 'job', id: 'sapling_guardian' }] });
+    // 16-giant.md:48 gi.a7: both the job path and the mark are behind a condition
+    expect(ifs(choiceOf('gi.a7', 'a').effects)[0]).toMatchObject({ cond: { k: 'event', id: 'GD-08', happened: true }, then: [{ k: 'jobpath', job: 'godslayer' }] });
+    expect(ifs(choiceOf('gi.a7', 'c').effects)[0]).toMatchObject({ then: [{ k: 'grant', id: 'nb_mark_gromdhar' }] });
+    expect(choiceOf('gi.a7', 'c').effects.some((e) => e.k === 'grant')).toBe(false);
+    // 09-dragonkin.md:49 dk.e2 ค: the x3 only with the dragon mark
+    expect(choiceOf('dk.e2', 'c').effects).toContainEqual({ k: 'entryMod', choice: 'a', cond: { k: 'text', text: 'มีตรามังกร' }, mul: 3 });
+    // 28-allies.md:41 kn.t1 ค
+    expect(ifs(choiceOf('kn.t1', 'c').effects)[0]).toMatchObject({ then: [{ k: 'ref', nodes: ['bd.b1'] }] });
+    // 22-halfblood.md:59 hb.t2 ข: the infamy only with the hidden-blood flag
+    expect(ifs(choiceOf('hb.t2', 'b').effects)[0]).toMatchObject({ then: [{ k: 'grant', id: 'c_infamous', chance: 0.2 }] });
+    // 25-journeys.md:46 sf.a3: the kraken fight only if DR-05 happened
+    expect(nodeOf('sf.a3').notes).toContainEqual({ k: 'if', cond: { k: 'event', id: 'DR-05', happened: true }, then: [{ k: 'battleFor', choices: ['a'], enemies: ['kraken'] }] });
+  });
+});
+
+describe('H2 M1: a text condition is never kept silently', () => {
+  const everything = () => [story.nodes, story.rites, story.endings, story.links, story.lines, story.origins, story.heirRules, story.allyArcs, conv.points, conv.fallback];
+  const md = readFileSync(path.join(genDir, '_unparsed/storylines.md'), 'utf8');
+  it('lists every text condition of the data in the unparsed report', () => {
+    const texts = new Set(textConditions(everything()));
+    expect(texts.size).toBeGreaterThan(0);
+    const missing = [...texts].filter((t) => !md.includes(t.replace(/\|/g, '\\|')));
+    expect(missing).toEqual([]);
+    expect(md).toContain('text in condition');
+    // the report counts them: not only the phrases that were not read
+    expect(report.unparsed).toBeGreaterThanOrEqual(texts.size);
+  });
+  it('has no explaining word of a code left as a condition', () => {
+    const texts = textConditions(everything());
+    expect(texts.filter((t) => /^(?:สำเร็จ|อาชีพลับ|ชาวพื้นหลัง|ชาวพื้น|ชาว|เกิดแล้ว|แล้ว)$/.test(t.trim()))).toEqual([]);
+    // 01-human.md:62 "ชาวพื้นหลัง DR-01"
+    expect(story.links.find((l) => l.from === 'hu.a3' && l.to.includes('cv.1'))!.cond).toEqual({ k: 'event', id: 'DR-01', happened: true });
+    // the endings of hu and be keep only the code
+    expect(story.endings.find((e) => e.line === 'hu' && /รวมเผ่า/.test(e.title))?.cond).toEqual({ k: 'node', id: 'hu.a7' });
+    expect(story.endings.find((e) => e.line === 'be' && /ราชันย์อสูร/.test(e.title))?.cond).toEqual({ k: 'has', kind: 'job', id: 'beastking' });
+  });
+  it('reads the numbers of the review as comparisons', () => {
+    const hasCond = (list: unknown, want: Record<string, unknown>) => {
+      let found = false;
+      deep(list, (o) => {
+        if (Object.entries(want).every(([k, v]) => JSON.stringify(o[k]) === JSON.stringify(v))) found = true;
+      });
+      return found;
+    };
+    expect(hasCond(nodeOf('gi.a7').choices, { k: 'cmp', stat: 'godFaith', op: '<=', value: -70 })).toBe(true);
+    expect(hasCond(nodeOf('fa.a7').choices, { k: 'cmp', stat: 'magic', op: '>=', value: 17 })).toBe(true);
+    expect(hasCond(nodeOf('ec.a2').choices, { k: 'class', min: 3 })).toBe(true);
+    expect(hasCond(story.endings.filter((e) => /ไม่เคยกลับมา/.test(e.title)), { k: 'age', max: 49 })).toBe(true);
+    expect(hasCond(nodeOf('iv.a1').choices, { k: 'cmp', stat: 'mine', op: '>=', value: 300 })).toBe(true);
+    expect(hasCond(nodeOf('le.a6'), { k: 'cmp', stat: 'allyLevel', op: '>=', value: 3 })).toBe(true);
+  });
+});
+
+describe('M8 L1 L6', () => {
+  it('lets so.a6 open for the first question OR for MC-05 (M8)', () => {
+    expect(nodeOf('so.a6').when).toEqual({ k: 'or', of: [{ k: 'node', id: 'so.t1' }, { k: 'event', id: 'MC-05', happened: true }] });
+  });
+  it('reads "DM-07 WR-13 หรือ PL-03" of dw.a4 as any of the three (M8)', () => {
+    const l = story.links.find((x) => x.from === 'dw.a4')!;
+    expect(l.cond).toEqual({
+      k: 'or',
+      of: ['DM-07', 'WR-13', 'PL-03'].map((id) => ({ k: 'event', id, happened: true })),
+    });
+  });
+  it('has no empty label and none opening with "หรือ" (L1)', () => {
+    const bad: string[] = [];
+    for (const n of [...story.nodes, ...conv.points, conv.fallback]) for (const c of n.choices) if (!c.label.trim() || /^(?:หรือ|\()/.test(c.label.trim())) bad.push(`${n.id}${c.key}`);
+    expect(bad).toEqual([]);
+    expect(choiceOf('dw.t3', 'c').label).toBe('engineer หรือ rune_carver');
+    expect(choiceOf('or.t3', 'b').label).toBe('smith หรือช่างล้อมเมือง');
+  });
+  it('lists both places of the dwarf who left home (L6)', () => {
+    const o = story.origins.find((x) => x.line === 'dw' && x.kind === 'พลัดถิ่น')!;
+    expect(o.places).toEqual(['MK-07', 'AL-21', 'MH-05', 'SH-07', 'SH-15']);
+    const named = o.effects.flatMap((e) => (e.k === 'place' ? e.ids : []));
+    expect(named).toEqual(o.places);
+  });
+});
+
+describe('no choice or condition without a pick or an if (regression)', () => {
+  // Segments of the node and convergence tables that say "หรือ", "ถ้า" or "เมื่อ" next to a code, a number or an arrow.
+  // Each one must come out of the grammar with a pick, an if, a requirement, a weight change or a job-path condition,
+  // unless it gives no result at all (nothing but references to events, NPCs and places).
+  // Segments the grammar cannot structure yet are listed with the reason; the next wave fixes the docs.
+  const EXPLAINED: Record<string, string> = {
+    '12-slime.md:46 sl.a6#6': 'the condition of a secret job is prose around a stat change of the same cell',
+    '28-allies.md:40 kn.b1#6': 'the condition names a template (KN-08) and the result is a link to another doc',
+  };
+  const COND = /(?<!เ)ถ้า|เมื่อ/;
+  const TOKEN = /`[^`]+`|\b[A-Z]{2,4}-\d{2,3}\b|→|[฀-๿]\s*[+\-−]\s*\d|\b[a-z]{2}\.[btaelx]\d+\b/;
+  const OR = /(?:^|\s)หรือ(?=\s|`|[฀-๿A-Za-z])/;
+  const KINDS = new Set(['if', 'pick', 'only', 'chance', 'variant', 'entryMod', 'choiceMod', 'nodeWeight', 'stanceMul', 'ending', 'battleFor', 'eventWeight']);
+  const structured = (x: unknown): boolean => {
+    let ok = false;
+    deep(x, (o) => {
+      if (typeof o.k === 'string' && KINDS.has(o.k)) ok = true;
+      if (o.k === 'jobpath' && o.need) ok = true;
+    });
+    return ok;
+  };
+  const scan = () => {
+    let checked = 0;
+    const bad: string[] = [];
+    for (const f of docsStoryFiles) {
+      for (const t of tables(f)) {
+        const isNode = t.header[0] === 'โหนด' && t.header.length === 7;
+        if (!isNode && t.header[0] !== 'ทางเลือก') continue;
+        for (const r of t.rows) {
+          for (const i of isNode ? [3, 4, 5, 6] : [2]) {
+            for (const raw of (r.cells[i] ?? '').split(/\s+·\s+/)) {
+              const seg = raw.replace(/^\d+(?:\.\d+)?\s+/, '');
+              if (!(COND.test(seg) || OR.test(seg)) || !TOKEN.test(seg)) continue;
+              checked++;
+              const p = parseCell(seg, ids, { choice: i < 6, notes: isNode && i === 6, battle: isNode && i === 6 });
+              const meta = p.nodeWhen?.length || p.when || p.mods.length || p.replaces?.length || p.choiceWhen || p.altForm;
+              const refsOnly = p.effects.every((e) => (e.k === 'event' && !e.open) || e.k === 'npc' || e.k === 'place' || e.k === 'ref');
+              if (structured(p.effects) || meta || refsOnly) continue;
+              bad.push(`${f.split('/').pop()}:${r.line} ${r.cells[0]}#${i}`);
+            }
+          }
+        }
+      }
+    }
+    return { checked, bad };
+  };
+  it('has none outside the explained list', () => {
+    const { checked, bad } = scan();
+    expect(checked).toBeGreaterThan(250);
+    expect(bad.filter((b) => !EXPLAINED[b])).toEqual([]);
+    // an exception that stops being true must leave the list
+    expect(Object.keys(EXPLAINED).filter((k) => !bad.includes(k))).toEqual([]);
+  });
+  it('keeps every percentage of a code in the node rows', () => {
+    // "`c_frail` 30%" must come out as a grant (or a branch of a pick) with chance 0.3 on the same node
+    const miss: string[] = [];
+    for (const n of story.nodes) {
+      const [file, line] = n.src.split(':');
+      const row = tables(file).flatMap((t) => t.rows).find((r) => r.line === Number(line));
+      if (!row) continue;
+      const text = row.cells.slice(3, 7).join(' ');
+      for (const m of text.matchAll(/`([a-z_#][a-z_0-9]*)`\s*(\d+(?:\.\d+)?)%/g)) {
+        let found = false;
+        deep([n.choices, n.notes], (o) => {
+          if (o.k === 'grant' && o.id === m[1] && o.chance === Number(m[2]) / 100) found = true;
+          // an enemy with a percentage is a fight that happens with that chance
+          if (o.k === 'chance' && o.p === Number(m[2]) / 100 && JSON.stringify(o.then).includes(`"${m[1]}"`)) found = true;
+        });
+        if (!found) miss.push(`${n.id} ${m[1]} ${m[2]}%`);
+      }
+    }
+    expect(miss).toEqual([]);
   });
 });

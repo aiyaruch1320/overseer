@@ -34,13 +34,19 @@
         "delta": 3
        },
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "ruin_city_lord"
-       },
-       {
-        "k": "event",
-        "id": "SF-08"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "SF-08",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "job",
+          "id": "ruin_city_lord"
+         }
+        ]
        }
       ],
       "mods": [
@@ -119,9 +125,18 @@
         "id": "SF-04"
        },
        {
-        "k": "event",
-        "id": "WR-22",
-        "open": true
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ขับไล่"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "WR-22",
+          "open": true
+         }
+        ]
        }
       ],
       "mods": [
@@ -626,14 +641,18 @@
       "id": "MK16-4"
      },
      {
-      "k": "battle",
-      "enemies": [],
-      "text": "ผลต่อโลก: ฝั่งที่ตัวละครอยู่ +5 ต่อความได้เปรียบเมื่อชนะ ระดับหัวหน้าขึ้นไป"
-     },
-     {
-      "k": "stat",
-      "stat": "ฝั่งที่ตัวละครอยู่",
-      "delta": 5
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ชนะศึกระดับหัวหน้าขึ้นไป"
+      },
+      "then": [
+       {
+        "k": "stat",
+        "stat": "ฝั่งที่ตัวละครอยู่",
+        "delta": 5
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -710,8 +729,17 @@
         "open": true
        },
        {
-        "k": "event",
-        "id": "DV-04"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "หมอกกินทวีปแล้ว"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "DV-04"
+         }
+        ]
        }
       ],
       "mods": [
@@ -818,9 +846,18 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "rift_speaker"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เลือก ก ในรอบที่รอยแยกขยาย"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "rift_speaker"
+        ]
+       }
       ]
      },
      {
@@ -964,13 +1001,19 @@
       "label": "ร่วมผนึกปากเหว",
       "effects": [
        {
-        "k": "event",
-        "id": "GI-08",
-        "open": true
-       },
-       {
-        "k": "event",
-        "id": "WR-13"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "WR-13",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "GI-08",
+          "open": true
+         }
+        ]
        },
        {
         "k": "grant",
@@ -1302,33 +1345,64 @@
       "label": "พากล้าไปปลูกที่อื่น",
       "effects": [
        {
-        "k": "event",
-        "id": "BIO-03",
-        "open": true
-       },
-       {
-        "k": "event",
-        "id": "WT-02",
-        "open": true
-       },
-       {
-        "k": "place",
-        "ids": [
-         "AL-16"
+        "k": "pick",
+        "of": [
+         {
+          "label": "BIO-03",
+          "effects": [
+           {
+            "k": "event",
+            "id": "BIO-03",
+            "open": true
+           }
+          ]
+         },
+         {
+          "label": "WT-02 ที่ไชร์วิก (AL-16)",
+          "effects": [
+           {
+            "k": "event",
+            "id": "WT-02",
+            "open": true
+           },
+           {
+            "k": "place",
+            "ids": [
+             "AL-16"
+            ]
+           }
+          ]
+         }
         ]
        },
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "sapling_guardian"
-       },
-       {
-        "k": "npc",
-        "id": "AL16-1"
-       },
-       {
-        "k": "event",
-        "id": "BIO-03"
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "event",
+           "id": "BIO-03",
+           "happened": true
+          },
+          {
+           "k": "npc",
+           "id": "AL16-1",
+           "alive": true
+          },
+          {
+           "k": "text",
+           "text": "มอบต้นกล้า"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "job",
+          "id": "sapling_guardian"
+         }
+        ]
        }
       ],
       "mods": [
@@ -1355,28 +1429,49 @@
     ],
     "notes": [
      {
-      "k": "battle",
-      "enemies": [
-       "blighted_ent",
-       "spore_thrall",
-       "war_automaton"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "BIO-10",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "blighted_ent",
+         "spore_thrall",
+         "war_automaton"
+        ]
+       },
+       {
+        "k": "event",
+        "id": "WR-04"
+       }
       ]
      },
      {
-      "k": "event",
-      "id": "BIO-10"
-     },
-     {
-      "k": "event",
-      "id": "WR-04"
-     },
-     {
-      "k": "npc",
-      "id": "SV14-1"
-     },
-     {
-      "k": "event",
-      "id": "BIO-02"
+      "k": "if",
+      "cond": {
+       "k": "and",
+       "of": [
+        {
+         "k": "event",
+         "id": "BIO-02",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "ตัวละครพยายามหยุด"
+        }
+       ]
+      },
+      "then": [
+       {
+        "k": "npc",
+        "id": "SV14-1"
+       }
+      ]
      },
      {
       "k": "npc",
@@ -1497,13 +1592,28 @@
       "label": "ร่วมเฝ้าไข่",
       "effects": [
        {
-        "k": "grant",
-        "kind": "job",
-        "id": "naga_egg_warden"
-       },
-       {
-        "k": "npc",
-        "id": "NR07-1"
+        "k": "if",
+        "cond": {
+         "k": "and",
+         "of": [
+          {
+           "k": "npc",
+           "id": "NR07-1",
+           "alive": true
+          },
+          {
+           "k": "text",
+           "text": "รับอาสา"
+          }
+         ]
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "job",
+          "id": "naga_egg_warden"
+         }
+        ]
        },
        {
         "k": "battle",
@@ -1802,14 +1912,29 @@
       "label": "พาผู้คนลงใต้ดินหรือไปธรอ-ดู (KD-12)",
       "effects": [
        {
-        "k": "grant",
-        "kind": "blessing",
-        "id": "nb_sv_ash"
-       },
-       {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_sv_ash"
+        "k": "pick",
+        "of": [
+         {
+          "label": "nb_sv_ash",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "blessing",
+            "id": "nb_sv_ash"
+           }
+          ]
+         },
+         {
+          "label": "nc_sv_ash",
+          "effects": [
+           {
+            "k": "grant",
+            "kind": "curse",
+            "id": "nc_sv_ash"
+           }
+          ]
+         }
+        ]
        }
       ],
       "mods": [],
@@ -1851,13 +1976,19 @@
       "id": "KD12-1"
      },
      {
-      "k": "battle",
-      "enemies": [],
-      "text": "ถ้า AS-05 เกิด เพิ่มลูกมังกรลาวาแบบมังกรป่า ( )"
-     },
-     {
-      "k": "event",
-      "id": "AS-05"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "AS-05",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [],
+        "text": "เพิ่มลูกมังกรลาวาแบบมังกรป่า ( )"
+       }
+      ]
      }
     ],
     "titleEvents": [],
@@ -1998,13 +2129,19 @@
         "delta": 250
        },
        {
-        "k": "grant",
-        "kind": "curse",
-        "id": "nc_sv_blackout"
-       },
-       {
-        "k": "event",
-        "id": "MC-04"
+        "k": "if",
+        "cond": {
+         "k": "event",
+         "id": "MC-04",
+         "happened": true
+        },
+        "then": [
+         {
+          "k": "grant",
+          "kind": "curse",
+          "id": "nc_sv_blackout"
+         }
+        ]
        }
       ],
       "mods": [
@@ -2086,8 +2223,17 @@
       "id": "MC-04"
      },
      {
-      "k": "npc",
-      "id": "MK02-1"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "เขาคลั่ง"
+      },
+      "then": [
+       {
+        "k": "npc",
+        "id": "MK02-1"
+       }
+      ]
      },
      {
       "k": "npc",
@@ -2341,9 +2487,18 @@
       ]
      },
      {
-      "k": "battle",
-      "enemies": [
-       "crown_wraith"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "มงกุฎกระดูกยังไร้ผู้สวม"
+      },
+      "then": [
+       {
+        "k": "battle",
+        "enemies": [
+         "crown_wraith"
+        ]
+       }
       ]
      },
      {
@@ -2463,19 +2618,8 @@
        {
         "k": "if",
         "cond": {
-         "k": "and",
-         "of": [
-          {
-           "k": "race",
-           "ids": [
-            "wi"
-           ]
-          },
-          {
-           "k": "text",
-           "text": "ส่งศิลาลอย"
-          }
-         ]
+         "k": "text",
+         "text": "เผ่าปีกส่งศิลาลอย"
         },
         "then": [
          {
@@ -2728,24 +2872,13 @@
          "k": "and",
          "of": [
           {
-           "k": "or",
-           "of": [
-            {
-             "k": "has",
-             "kind": "trait",
-             "id": "greedy"
-            },
-            {
-             "k": "race",
-             "ids": [
-              "or"
-             ]
-            }
-           ]
+           "k": "has",
+           "kind": "trait",
+           "id": "greedy"
           },
           {
            "k": "text",
-           "text": "ทราย"
+           "text": "ออร์คทราย"
           }
          ]
         },
@@ -2807,8 +2940,17 @@
       ]
      },
      {
-      "k": "npc",
-      "id": "SH02-1"
+      "k": "if",
+      "cond": {
+       "k": "text",
+       "text": "ตัวละครปล้นหลุมพระศพ"
+      },
+      "then": [
+       {
+        "k": "npc",
+        "id": "SH02-1"
+       }
+      ]
      },
      {
       "k": "npc",
@@ -3583,20 +3725,15 @@
          "k": "and",
          "of": [
           {
-           "k": "and",
-           "of": [
-            {
-             "k": "cmp",
-             "stat": "dfc",
-             "op": "==",
-             "value": 14,
-             "label": "DFC"
-            },
-            {
-             "k": "text",
-             "text": "เหลือมังกรตัวสุดท้าย ( )"
-            }
-           ]
+           "k": "cmp",
+           "stat": "dfc",
+           "op": "==",
+           "value": 14,
+           "label": "DFC"
+          },
+          {
+           "k": "text",
+           "text": "เหลือมังกรตัวสุดท้าย"
           },
           {
            "k": "text",

@@ -2,7 +2,7 @@
 // → data/gen/storylines.json (nodes, rites, endings, links, lines, ally arcs) and data/gen/convergence.json.
 import type { GenReport } from '../run-all';
 import { idIndex, type IdIndex } from '../lib/ids';
-import { RACE_WORDS, parseCell, parseChoice, parseConditionX, parseWeightCell, type Parsed } from '../lib/effects';
+import { RACE_WORDS, parseCell, parseChoice, parseConditionX, parseWeightCell, textConditions, type Parsed } from '../lib/effects';
 import { Unparsed, listDocs, readDoc, rel, tables, writeGen, type Row, type Table } from '../lib/table';
 import type {
   AllyArc,
@@ -110,7 +110,8 @@ function convergeTargets(effects: EffectX[]): string[] {
   const out: string[] = [];
   for (const e of effects) {
     if (e.k === 'converge') out.push(e.to);
-    else if (e.k === 'if') out.push(...convergeTargets(e.then as EffectX[]));
+    else if (e.k === 'if' || e.k === 'only') out.push(...convergeTargets(e.then as EffectX[]));
+    else if (e.k === 'pick') for (const b of e.of) out.push(...convergeTargets(b.effects as EffectX[]));
   }
   return out;
 }
@@ -119,6 +120,7 @@ function unknownIds(effects: EffectX[], ctx: { file: string }, line: number, who
   for (const e of effects) {
     if (e.k === 'grant' && e.kind === 'unknown') unparsed.add(ctx.file, line, `${who}: \`${e.id}\``, 'unknown id');
     else if (e.k === 'if' || e.k === 'only') unknownIds(e.then as EffectX[], ctx, line, who);
+    else if (e.k === 'pick') for (const b of e.of) unknownIds(b.effects as EffectX[], ctx, line, who);
   }
 }
 
@@ -192,6 +194,11 @@ function nodeFromRow(row: Row, ctx: NodeCtx): StoryNodeX | null {
     const text = w.k === 'text' && /เหตุการณ์/.test(w.text);
     if (text && titleEvents.length) continue; // the title events already say it
     if (node.when && JSON.stringify(node.when) === JSON.stringify(w)) continue;
+    // "ต้องผ่าน so.t1 หรือ MC-05 เกิด" where MC-05 is also the title event: the wider "or" is the whole rule, not an extra requirement
+    if (node.when && w.k === 'or' && w.of.some((x) => JSON.stringify(x) === JSON.stringify(node.when))) {
+      node.when = w;
+      continue;
+    }
     node.when = and(node.when, w);
   }
   if (rite) node.rite = id;
@@ -293,7 +300,13 @@ function linkFrom(file: string, r: Row, ids: IdIndex): Link {
         return of.length === 1 ? of[0] : { k: 'or', of };
       })()
     : undefined;
-  const cond = ownCond ?? parseConditionX(condRaw ?? '', ids, true) ?? undefined;
+  // "DM-07 WR-13 หรือ PL-03" is any of them (00-convergence.md "DM-07 หรือ WR-13 หรือ PL-03"); only an explicit และ makes it all of them
+  const pieces = (condRaw ?? '').split(/\s+·\s+/).filter(Boolean);
+  // a piece after the first that is only words ("· ตามผู้ลี้ภัยจากพงไพร") is a remark about the link, not a second condition
+  const parsedPieces = pieces
+    .map((x) => parseConditionX(x, ids, true, /และ/.test(x) ? 'and' : 'or'))
+    .filter((x, i): x is ConditionX => !!x && (i === 0 || x.k !== 'text'));
+  const cond = ownCond ?? (parsedPieces.length === 0 ? undefined : parsedPieces.length === 1 ? parsedPieces[0] : ({ k: 'and', of: parsedPieces as Condition[] } as ConditionX));
   const l: Link = {
     from,
     to: uniq(toRaw.match(/cv\.\d+|[a-z]{2}\.[btaelx]\d+/g) ?? []),
@@ -337,6 +350,16 @@ function originRow(file: string, table: string, line: string, r: Row, ids: IdInd
   };
   if (first) o.firstNode = first[1];
   if (skip) o.skipsTo = skip[1];
+  // `SH-07 SH-15` lists two places and the effect cell only names the first: the other one goes with the place written before it (review L6)
+  const placed = o.effects.filter((e) => e.k === 'place') as { k: 'place'; ids: string[] }[];
+  if (placed.length) {
+    for (const id of o.places) {
+      if (placed.some((e) => e.ids.includes(id))) continue;
+      const prev = o.places[o.places.indexOf(id) - 1];
+      const host = placed.find((e) => prev && e.ids.includes(prev));
+      if (host) host.ids.push(id);
+    }
+  }
   return o;
 }
 
@@ -358,7 +381,7 @@ function pairSetRow(file: string, r: Row): PairSet {
 // ---------- allies ----------
 
 const MOOD_G = /\{([฀-๿]+):([฀-๿]+)@(\d)\}/g;
-const ALLY_KEEP = new Set(['mood', 'template', 'npc', 'event', 'place', 'bond', 'grant', 'ref', 'battle', 'death', 'converge', 'jump']);
+const ALLY_KEEP = new Set(['mood', 'template', 'npc', 'event', 'place', 'bond', 'grant', 'ref', 'battle', 'death', 'converge', 'jump', 'if', 'pick']);
 
 function moodsOf(text: string): MoodEffect[] {
   return [...text.matchAll(MOOD_G)].map((m) => ({ k: 'mood', line: m[1], mood: m[2], level: Number(m[3]) }));
@@ -625,7 +648,8 @@ export default function run(): GenReport {
       } else if (t.header[0] === 'โหนด' && t.header[1] === 'แทนที่') {
         for (const r of t.rows) {
           const [node, nodesRaw, condRaw] = r.cells;
-          const cond = parseConditionX(condRaw ?? '', ids, true) ?? undefined;
+          // "ทุกทายาท …" holds for every heir: no condition, the rest of the cell is a remark
+          const cond = /^ทุกทายาท/.test(condRaw ?? '') ? undefined : (parseConditionX(condRaw ?? '', ids, true) ?? undefined);
           const h: HeirRule = {
             node,
             nodesRaw,
@@ -704,12 +728,53 @@ export default function run(): GenReport {
     jobOpeners,
   };
   const conv = convergence(ids);
+  // words after a node id that only repeat the node's title ("so.t1 คำถามแรก") are its name, not a condition
+  const titles = new Map<string, string>([...nodes.map((n) => [n.id, n.title] as [string, string]), ...conv.points.map((n) => [n.id, n.title] as [string, string])]);
+  const tidy = (c: ConditionX | undefined): ConditionX | undefined => (c ? dropNodeNames(c, titles) : c);
+  for (const n of [...nodes, ...conv.points, conv.fallback]) {
+    n.when = tidy(n.when);
+    if (!n.when) delete n.when;
+    for (const ch of n.choices) {
+      ch.when = tidy(ch.when as ConditionX | undefined) as Condition | undefined;
+      if (!ch.when) delete ch.when;
+    }
+  }
+  for (const e of endings) if (e.cond) e.cond = tidy(e.cond);
+  for (const l of links) if (l.cond) l.cond = tidy(l.cond);
+  // a `text` condition cannot be evaluated: every one that is left goes to the report (review H2 M1)
+  const reportText = (who: string, src: string | undefined, x: unknown) => {
+    const at = (src ?? '').match(/^(.*):(\d+)$/);
+    if (!at) return;
+    for (const t of new Set(textConditions(x))) unparsed.add(at[1], Number(at[2]), `${who}: ${t}`, 'text in condition');
+  };
+  for (const n of [...nodes, ...conv.points, conv.fallback]) reportText(n.id, n.src, n);
+  for (const r of rites) reportText(`${r.id} พิธี`, r.src, r.outcomes);
+  for (const e of endings) reportText(`${e.line} ปลายทาง ${e.title}`, e.src, e);
+  for (const l of links) reportText(`${l.from} → ${l.to.join(' ')}`, l.src, l);
+  for (const l of lineMeta.values()) reportText(`${l.id} เปิดเมื่อ`, `${l.file}:0`, l.open);
+  for (const o of origins) reportText(`${o.line} จุดกำเนิด ${o.kind}`, o.src, o.effects);
+  for (const h of heirRules) reportText(h.node, h.src, h.cond);
+  for (const a of arcs) reportText(a.npc, a.src, [a.steps, a.endings]);
   const sources = [...files, `${DIR}/00-convergence.md`];
   writeGen('storylines', data, files, BY);
   writeGen('convergence', conv, [`${DIR}/00-convergence.md`], BY);
   void sources;
   unparsed.write();
   return { group: GROUP, files: ['storylines.json', 'convergence.json'], unparsed: unparsed.count, strict: false };
+}
+
+/** `and[node so.t1, text "คำถามแรก"]` where "คำถามแรก" is the title of so.t1: drop the text. */
+function dropNodeNames(c: ConditionX, titles: Map<string, string>): ConditionX {
+  if (c.k === 'and' || c.k === 'or') {
+    let of = c.of.map((x) => dropNodeNames(x as ConditionX, titles)) as ConditionX[];
+    if (c.k === 'and') {
+      const names = of.filter((x) => x.k === 'node').map((x) => titles.get((x as { id: string }).id) ?? '');
+      of = of.filter((x) => !(x.k === 'text' && names.some((t) => t.includes(x.text.trim()) && x.text.trim().length >= 3)));
+    }
+    return of.length === 1 ? of[0] : ({ k: c.k, of } as ConditionX);
+  }
+  if (c.k === 'not') return { k: 'not', of: dropNodeNames(c.of as ConditionX, titles) as Condition };
+  return c;
 }
 
 function basenameLine(file: string): string {
