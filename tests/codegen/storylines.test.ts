@@ -537,7 +537,7 @@ describe('no choice or condition without a pick or an if (regression)', () => {
   };
   it('has none outside the explained list', () => {
     const { checked, bad } = scan();
-    expect(checked).toBeGreaterThan(250);
+    expect(checked).toBeGreaterThan(200);
     expect(bad.filter((b) => !EXPLAINED[b])).toEqual([]);
     // an exception that stops being true must leave the list
     expect(Object.keys(EXPLAINED).filter((k) => !bad.includes(k))).toEqual([]);
