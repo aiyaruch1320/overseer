@@ -92,6 +92,23 @@ function introBefore(lines: string[], tableLine: number): string {
 
 const tribalFile = (f: string) => /\/(0[1-9]|1\d|2[01])-/.test(f);
 
+/**
+ * Section 1 of a race file (`## 1. ธีม`): one paragraph that ends with `**คำถามหลัก: …**`.
+ * theme = the paragraph without the question; question = the text inside the bold. When the file has no marked question the first
+ * sentence of the theme stands in and the file is reported (the player reads one question per life).
+ */
+export function themeOf(file: string): { theme: string; question: string; marked: boolean } {
+  const lines = fileLines(file);
+  const at = lines.findIndex((l) => /^##\s*1\.\s*ธีม/.test(l));
+  const body: string[] = [];
+  for (let i = at + 1; at >= 0 && i < lines.length && !/^#{1,3} /.test(lines[i]); i++) if (lines[i].trim()) body.push(lines[i].trim());
+  const text = body.join(' ');
+  const m = text.match(/\*\*\s*คำถามหลัก\s*[:：]\s*(.+?)\s*\*\*/);
+  if (m) return { theme: text.replace(m[0], '').replace(/\s{2,}/g, ' ').trim(), question: m[1].trim(), marked: true };
+  const first = text.split(/(?<=[.!?])\s+|\s{2,}/)[0] ?? text;
+  return { theme: text, question: first.trim(), marked: false };
+}
+
 // ---------- nodes ----------
 
 interface NodeCtx {
@@ -712,6 +729,21 @@ export default function run(): GenReport {
   for (const r of rites) {
     const n = byId.get(r.id);
     if (n && !n.rite) n.rite = r.id;
+  }
+
+  // the theme and the question of each race line (section 1 of its file)
+  for (const file of files.filter(tribalFile)) {
+    const id = fileLines(file).find((l) => l.startsWith('# '))?.match(/\(([a-z]{2})\)/)?.[1];
+    const lm = id ? lineMeta.get(id) : undefined;
+    if (!lm) continue;
+    const t = themeOf(file);
+    if (!t.theme) {
+      unparsed.add(file, 1, `${lm.id} ธีม`, 'section 1 (ธีม) not found');
+      continue;
+    }
+    lm.theme = t.theme;
+    lm.question = t.question;
+    if (!t.marked) unparsed.add(file, 1, `${lm.id} คำถามหลัก`, 'no marked question: first sentence of the theme used');
   }
 
   const data: StorylinesData = {

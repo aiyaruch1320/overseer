@@ -98,6 +98,10 @@ export interface LineMeta {
   openRaw?: string;
   open?: ConditionX;
   nodeIds: NodeId[];
+  /** Tribal lines: the paragraph of section 1 (ธีม) without the main question. */
+  theme?: string;
+  /** Tribal lines: the question of the life, the sentence after `คำถามหลัก:` in section 1 (the whole question, no markup). */
+  question?: string;
 }
 
 export type MoodEffect = Extract<ExtraEffect, { k: 'mood' }>;
