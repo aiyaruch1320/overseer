@@ -1,10 +1,11 @@
 // The effect words of a prayer (`grantFx` `punishFx` of data/gen/god.json, 03-dreams.md §7.1): `hp+45` `gold+10` `curse:c_lonely`
-// `country:-famine` `rel:+lover` `npc:heal` ... Each word becomes a change of the state through the shared rules (rules/) or the
+// `country:-famine` `rel:+lover` `npc:heal` ... (`hp` is the hit points of the combat system, `rel:+lover` and `child` go to the bond system as `bond` effects.) Each word becomes a change of the state through the shared rules (rules/) or the
 // world and NPC functions. A word nobody can read is returned with a `?` so a test and the log show it.
 import { extOf as characterExt, idx } from '../../character';
 import type { Ctx } from '../../game';
 import { apply, type EffectSource } from '../../rules';
 import type { Effect } from '../../types';
+import { addHp, hpOf } from '../../combat/hero';
 import { addBelief } from '../belief';
 import { godOf } from './geo';
 import { favourNpc, healNpc, killNpc, nemeses } from './npcs';
@@ -24,6 +25,8 @@ export interface FxWho {
 function hp(ctx: Ctx, n: number): string {
   const life = livingOf(ctx);
   if (!life) return 'hp';
+  // the hit points are the combat system's (a prayer never kills: a blow of the god leaves one)
+  addHp(ctx, life, n < 0 ? Math.max(n, 1 - hpOf(ctx, life)) : n);
   const ext = characterExt(life);
   if (n >= HP_HEAL_AT) {
     if (ext.wounds > 0) ext.wounds -= 1;

@@ -19,14 +19,8 @@ export const HP_HEAL_AT = 20;
 /** A country counts as dangerous (prayer `courage`: danger ≥ 3) when its border posture is one of these or it has the flag `war` (assumption: countries.json has no danger number). */
 export const DANGEROUS_WAR = ['frequent', 'total'];
 
-/** An NPC counts as gravely ill (prayer `kin_sick`) when alive, in the character's circle and past this share of the natural lifespan (assumption: no illness state before M3). */
-export const SICK_AGE_SHARE = 0.8;
 /** The acquaintance (`mc.known`) from which an NPC is "in the character's circle" (assumption). */
 export const CIRCLE_KNOWN = 2;
-/** A nemesis (`vengeance`) is an NPC who holds a grudge (`mc.grudge`) of at least this much against the character (assumption). */
-export const NEMESIS_GRUDGE = 2;
-/** `npc:heal` lets the NPC live this share longer (assumption). */
-export const NPC_HEAL_SPAN = 0.1;
 
 /** Silence of the god (GD-05, world-events.md): no prayer answered for this many world years and at least this many lapsed in that time (assumption: the doc says "หลายทศวรรษ"). */
 export const SILENCE = { years: 30, lapsed: 4 };

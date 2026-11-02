@@ -1113,7 +1113,7 @@ describe('what the other systems give a fight (items, bonds, npc)', () => {
         return sl.status === 'alive' && clashesOf(m.ctx, k).some((c) => triggersOf(c).some((t) => t.code === 'B'));
       });
       if (!id) continue;
-      m.life.country = slots[id].place;
+      m.life.country = slots[id].place!;
       if (!canClash(m.ctx, slots[id])) continue;
       const mark = state.logN;
       const kind = openClash(m.ctx, id, 'B');
