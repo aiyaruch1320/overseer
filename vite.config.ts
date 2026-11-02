@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [gameApi(env)],
     server: { port: 5173, open: false },
-    build: { chunkSizeWarningLimit: 2500 },
+    build: { chunkSizeWarningLimit: 2500, rollupOptions: { input: { main: 'index.html', debug: 'debug.html' } } },
     worker: { format: 'es' },
   };
 });
