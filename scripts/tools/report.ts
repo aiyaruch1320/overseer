@@ -4,7 +4,7 @@ import { extOf as bondageOf } from '../../src/core/bondage';
 import { extOf as bondsOf, isLive, levelOf as bondLevelOf, tiesOf, type Tie } from '../../src/core/bonds';
 import { makeCtx, type Ctx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
-import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, scrub, unphrased } from '../../src/core/text';
+import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
 import { OUTCOME_TH } from '../../src/core/text/tuning';
 import { BOND_LEVEL_TH, TRAVEL_LEVEL_TH } from '../../src/core/text/words';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
@@ -243,7 +243,12 @@ export function summaryLines(data: GameData, state: GameState, beats: number): s
   const life = state.life;
   const out: string[] = [];
   const bySys: Record<string, number> = {};
-  for (const e of state.log) if (e.level >= 1) bySys[e.sys] = (bySys[e.sys] ?? 0) + 1;
+  // the level the player reads each entry at (the small lines of the systems of M3 are trace), not the level the system wrote
+  const reader = new Reader(data);
+  for (const e of state.log) {
+    reader.read(e);
+    if (reader.levelOf(e) >= 1) bySys[e.sys] = (bySys[e.sys] ?? 0) + 1;
+  }
   if (life) {
     out.push(`${life.name} ${life.dead ? `ตายเมื่ออายุ ${life.dead.hAge} (${causeWord(life.dead.cause) || 'ไม่ทราบเหตุ'}) ศ.ม. ${calendarYear(life.dead.year).toLocaleString('en-US')}` : `ยังมีชีวิต อายุ ${life.hAge}`} · ${beats} จังหวะ`);
   }

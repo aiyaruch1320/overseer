@@ -146,7 +146,7 @@ export class Reader {
       endedTold: (tie) => this.endedTies.has(tie),
       met: (id) => !!id && this.met.has(id),
       npcText: (text, withMc) => this.npcText(text, withMc),
-      npcName: (id) => this.L.npc.get(id) ?? '',
+      npcName: (id) => scrub(this.data, this.L.npc.get(id) ?? ''),
       pick: (list) => list[0],
     };
   }

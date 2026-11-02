@@ -136,15 +136,20 @@ function deathCause(cause: unknown): string {
 const paren = (t: string): string => (t ? ` (${t})` : '');
 
 /** A sentence of a document, with a remark in brackets that was left hanging by a link cut out of it (`(ตามท่าทีของประเทศใน)`) taken away. */
-function docSentence(data: GameData, text: string): string {
-  return sentence(data, text.replace(/\([^()]*ใน\)/g, ' ').replace(/\s+ใน\s*$/, ''));
+function docSentence(data: GameData, text: string, who = 'ตัวละคร'): string {
+  return named(sentence(data, text.replace(/\([^()]*ใน\)/g, ' ').replace(/\s+ใน\s*$/, '')), who);
+}
+
+/** The documents say `ตัวละคร` for the one who lives the life: the player reads his name. */
+function named(text: string, who: string): string {
+  return who === 'ตัวละคร' ? text : text.replace(/ตัวละครหลัก|ตัวละคร/g, ` ${who} `).replace(/\s{2,}/g, ' ').trim();
 }
 
 /**
  * What happened in a clash, from the cell of the document: the cell holds the story (`เขาโยนตัวละครลงบันไดสองร้อยขั้น`) and then what it does to the
  * paths of the NPC, the weights and the favours (`เส้น ข) เดินต่อ` `ไว้ใจ +2`). The player reads the story and not the sums.
  */
-export function clashStory(data: GameData, text: string): string {
+export function clashStory(data: GameData, text: string, who = 'ตัวละคร'): string {
   const x = text
     .replace(/\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/`[^`]*`/g, ' ')
@@ -154,7 +159,7 @@ export function clashStory(data: GameData, text: string): string {
     .replace(/น้ำหนัก\s*[×+−-]?\s*\d+(?:\.\d+)?/g, ' ')
     .replace(/(?:ไว้ใจ|บุญคุณ|ความแค้น|แค้นตัวละคร|แค้น|ชื่อเสียง)\s*[+−-]\s*\d+/g, ' ')
     .replace(/^\s*ตาย\s+/, '');
-  return sentence(data, x);
+  return named(sentence(data, x), who);
 }
 
 // ---------- bonds ----------
@@ -191,7 +196,7 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
       return null; // a feeling that could not show: for the balance counts
     case 'arc': {
       const title = s(d.title);
-      const text = docSentence(cx.data, s(d.text));
+      const text = docSentence(cx.data, s(d.text), who);
       if (num(d.stage) <= 1) return name ? `เรื่องของ ${name}${ln} เริ่มขึ้น${title ? `: ${title}` : ''}` : undefined;
       if (!name) return undefined;
       const head = num(d.stage) === 2 && title ? `${name}${ln} — ${title}` : `${name}${ln}`;
@@ -204,20 +209,20 @@ const bonds = (cx: M3Cx, e: LogEntry): string | null | undefined => {
         const c = m ? deathCause(m[1]) : '';
         return `ข่าวถึง${who}: ${name}${ln} จากไป${paren(c)}`;
       }
-      const text = docSentence(cx.data, s(d.text));
+      const text = docSentence(cx.data, s(d.text), who);
       return text ? `ข่าวถึง${who}: เรื่องของ ${name}${ln} — ${text}` : `ข่าวถึง${who}: เรื่องของ ${name}${ln} ก้าวต่อไป`;
     }
     case 'crisis':
     case 'trouble': {
       if (!name) return undefined;
-      const text = docSentence(cx.data, s(d.text));
+      const text = docSentence(cx.data, s(d.text), who);
       const answer = CRISIS_ANSWER_TH[s(d.answer)] ?? '';
       return `${name}${ln} ประสบเรื่องหนัก${text ? `: ${text}` : ''}${answer ? ` — ${who}${answer}` : ''}`;
     }
     case 'ending': {
       if (!name) return undefined;
       const title = arcTitle(cx.data, s(d.code));
-      const text = docSentence(cx.data, s(d.text));
+      const text = docSentence(cx.data, s(d.text), who);
       return `เรื่อง${title ? ` “${title}”` : ''}ของ ${name}${ln} จบลง${text ? `: ${text}` : ''}`;
     }
     case 'end': {
@@ -611,8 +616,8 @@ export function npcMore(cx: M3Cx, e: LogEntry): string | null | undefined {
     case 'clash-open':
       return `${who}${role} กำลังจะปะทะกับ${cx.who}`;
     case 'clash': {
-      const res = CLASH_RESULT_TH[s(d.outcome)] ?? '';
-      const text = clashStory(cx.data, s(d.text));
+      const res = (CLASH_RESULT_TH[s(d.outcome)] ?? '').replace('{who}', cx.who);
+      const text = clashStory(cx.data, s(d.text), cx.who);
       return `${who}${role} ปะทะกับ${cx.who}${res ? `: ${res}` : ''}${text ? ` — ${text}` : ''}`;
     }
   }

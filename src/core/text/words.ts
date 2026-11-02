@@ -85,7 +85,7 @@ export const WOUND_TH: Record<string, string> = { scar: 'แผลเป็น�
 
 /** The result of a clash with a named NPC, seen from the character (the standard kinds of combat/07 §3). */
 export const CLASH_RESULT_TH: Record<string, string> = {
-  win_kill: 'ตัวละครชนะและอีกฝ่ายล้มลง', win_spare: 'ตัวละครชนะและไว้ชีวิตอีกฝ่าย', talk: 'จบลงด้วยการเจรจา', draw: 'ไม่มีใครเหนือกว่า', lose: 'ตัวละครเป็นฝ่ายแพ้', flee: 'ตัวละครหนีไป',
+  win_kill: '{who}ชนะและอีกฝ่ายล้มลง', win_spare: '{who}ชนะและไว้ชีวิตอีกฝ่าย', talk: 'จบลงด้วยการเจรจา', draw: 'ไม่มีใครเหนือกว่า', lose: '{who}เป็นฝ่ายแพ้', flee: '{who}หนีไป',
 };
 
 /** The rescues in the last breath of a fight. */

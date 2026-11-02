@@ -663,7 +663,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('npc', 'npc', { what: 'tie', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', of: 'AL01-1', path: 'a', why: 'gone' }, 'AL01-2', 0), /เกี่ยวพันกับเรื่องของ/],
     [sys('npc', 'npc', { what: 'newcomer', holder: 'ช่างผู้ตีของจากซาก', gen: 1, role: '', place: 'AZ-01', tpl: 'NT-04', year: 1400, age: 41 }, 'AZ01-10', 0), /^ช่างผู้ตีของจากซาก มาถึง ที่\S+$/],
     [sys('npc', 'npc', { what: 'clash-open', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', clash: 'NF-AL01-1', code: 'T', why: 'year' }, 'AL01-1', 0), /กำลังจะปะทะกับมิรา/],
-    [sys('npc', 'npc', { what: 'clash', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', clash: 'NF-AL01-1', outcome: 'lose', text: 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ' }, 'AL01-1', 2), /^ไนลา ปะทะกับมิรา: ตัวละครเป็นฝ่ายแพ้ — เขาโยนตัวละครลงบันไดสองร้อยขั้น$/],
+    [sys('npc', 'npc', { what: 'clash', holder: 'ไนลา', gen: 2, role: '', place: 'AL-01', clash: 'NF-AL01-1', outcome: 'lose', text: 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ' }, 'AL01-1', 2), /^ไนลา ปะทะกับมิรา: มิราเป็นฝ่ายแพ้ — เขาโยน มิรา ลงบันไดสองร้อยขั้น$/],
 
     [sys('combat', 'prelude', { enemies: 'wolf', foe: 'หมาป่าเงา', tier: 'หัวหน้า', node: 'hu.b2', kind: 'story', text: null }, 'wolf', 2), /^หมาป่าเงา \(หัวหน้า\) ขวางหน้ามิรา ใน “.+” ศึกกำลังจะเริ่ม$/],
     [sys('combat', 'raid', { how: 'saved', warned: true, result: 'win', country: 'SV-05' }, 'bandits', 2), /บุกเข้า ที่\S+ มิรารู้ตัวก่อน · ปกป้องบ้านเมืองไว้ได้/],
@@ -761,5 +761,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     expect(clashStory(data, 'ตาย เส้น ก) ถูกตัด นายเก่าของเธอแค้นตัวละคร +1')).toBe('นายเก่าของเธอ');
     expect(clashStory(data, 'เส้น ข) บังคับเกิด เขายกเลิกดวล ไว้ใจ +2')).toBe('เขายกเลิกดวล');
     expect(clashStory(data, 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ')).toBe('เขาโยนตัวละครลงบันไดสองร้อยขั้น');
+    // the name of the one who lives the life stands where the document says `ตัวละคร`
+    expect(clashStory(data, 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ', 'มิรา')).toBe('เขาโยน มิรา ลงบันไดสองร้อยขั้น');
   });
 });
