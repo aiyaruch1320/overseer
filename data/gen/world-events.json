@@ -648,6 +648,18 @@
       "to": "SF-02"
      }
     ],
+    "swaps": [
+     {
+      "from": "WR-01",
+      "to": "WR-22",
+      "text": "WR-01 → WR-22"
+     },
+     {
+      "from": "DR-11",
+      "to": "พิธีไว้อาลัยมหาศักดิ์สิทธิ์",
+      "text": "DR-11 → พิธีไว้อาลัยมหาศักดิ์สิทธิ์ (ทุกมังกรที่เหลือ)"
+     }
+    ],
     "keep": [
      "HP-08",
      "GI-03",
@@ -674,6 +686,13 @@
      {
       "from": "GI-05",
       "to": "AS-04"
+     }
+    ],
+    "swaps": [
+     {
+      "from": "ตะวันหลอมเหล็ก",
+      "to": "AS-01",
+      "text": "ตะวันหลอมเหล็ก → พิธีเถ้าไฟสุดท้าย (AS-01)"
      }
     ],
     "keep": [
@@ -703,6 +722,13 @@
       "to": "DW-03"
      }
     ],
+    "swaps": [
+     {
+      "from": "การค้าเรือ",
+      "to": "เส้นทางใหม่",
+      "text": "การค้าเรือ → เส้นทางใหม่"
+     }
+    ],
     "keep": [
      "WR-07"
     ]
@@ -711,6 +737,13 @@
     "trigger": "DR-06",
     "close": [],
     "replace": [],
+    "swaps": [
+     {
+      "from": "การเดินเรือปกติ",
+      "to": "การเดินเรือกับลมสุ่ม",
+      "text": "การเดินเรือปกติ → การเดินเรือกับลมสุ่ม (เหตุการณ์เรือหลงลมเกิดบ่อย)"
+     }
+    ],
     "keep": []
    },
    {
@@ -730,6 +763,7 @@
       "to": "RF-04"
      }
     ],
+    "swaps": [],
     "keep": [
      "WR-03",
      "HP-01"
@@ -739,12 +773,14 @@
     "trigger": "DR-08",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": []
    },
    {
     "trigger": "END-01",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": []
    },
    {
@@ -753,24 +789,45 @@
      "HP-07"
     ],
     "replace": [],
+    "swaps": [
+     {
+      "from": "ศึกชิงมงกุฎ",
+      "to": "END-02",
+      "text": "ศึกชิงมงกุฎ → สงครามไร้ขีดจำกัด (END-02)"
+     },
+     {
+      "from": "HP-07",
+      "to": "DM-08",
+      "text": "HP-07 → สนธิสัญญาอาหารกับจอมมารทีละตน (DM-08) ความหิวลดเฉพาะอาณาจักรนั้น"
+     }
+    ],
     "keep": []
    },
    {
     "trigger": "END-03",
     "close": [],
     "replace": [],
+    "swaps": [
+     {
+      "from": "คาซมา",
+      "to": "ทวีปไฟปะทุ",
+      "text": "คาซมา → ทวีปไฟปะทุ"
+     }
+    ],
     "keep": []
    },
    {
     "trigger": "END-04",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": []
    },
    {
     "trigger": "END-05",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": []
    },
    {
@@ -779,12 +836,20 @@
      "MC-11"
     ],
     "replace": [],
+    "swaps": [
+     {
+      "from": "โครงข่าย",
+      "to": "เครื่องปฐมตื่น",
+      "text": "โครงข่าย → เครื่องปฐมตื่น"
+     }
+    ],
     "keep": []
    },
    {
     "trigger": "END-07",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": []
    },
    {
@@ -803,6 +868,7 @@
       "to": "WT-02"
      }
     ],
+    "swaps": [],
     "keep": []
    },
    {
@@ -827,6 +893,7 @@
       "to": "WT-03"
      }
     ],
+    "swaps": [],
     "keep": [
      "PL-08",
      "WR-08",
@@ -840,6 +907,13 @@
      "FG-10"
     ],
     "replace": [],
+    "swaps": [
+     {
+      "from": "FG-10",
+      "to": "ไม่มีผู้สืบทอด",
+      "text": "FG-10 → ไม่มีผู้สืบทอด (ไม่มีผู้เฝ้าปิดได้)"
+     }
+    ],
     "keep": []
    },
    {
@@ -875,6 +949,13 @@
       "to": "DV-04"
      }
     ],
+    "swaps": [
+     {
+      "from": "FG-10",
+      "to": "ไม่มีผู้สืบทอด",
+      "text": "FG-10 → ไม่มีผู้สืบทอด (ไม่มีผู้เฝ้าปิดได้)"
+     }
+    ],
     "keep": [
      "PL-09",
      "BIO-04",
@@ -891,6 +972,7 @@
     "trigger": "MC-04",
     "close": [],
     "replace": [],
+    "swaps": [],
     "keep": [
      "PL-06",
      "WR-09",
@@ -919,6 +1001,7 @@
       "to": "CL-03"
      }
     ],
+    "swaps": [],
     "keep": [
      "WR-09"
     ]
@@ -944,6 +1027,7 @@
      "PO-08"
     ],
     "replace": [],
+    "swaps": [],
     "keep": []
    }
   ],
@@ -1119,12 +1203,9 @@
       "id": "SF-02"
      },
      {
-      "k": "event",
-      "id": "WR-01"
-     },
-     {
-      "k": "event",
-      "id": "WR-22"
+      "k": "replace",
+      "from": "WR-01",
+      "to": "WR-22"
      }
     ],
     "chain": [
@@ -1153,6 +1234,34 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:161",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "text",
+         "text": "โอรัน-ซัลถูกฆ่า"
+        },
+        {
+         "k": "var",
+         "name": "F",
+         "op": "<",
+         "n": 20
+        },
+        {
+         "k": "text",
+         "text": "สละชีวิต"
+        }
+       ]
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 0,
     "flag": "ฟ้าร่วง",
@@ -1198,19 +1307,34 @@
     },
     "effects": [
      {
-      "k": "stat",
-      "stat": "F",
-      "delta": 15
-     },
-     {
-      "k": "event",
-      "id": "DR-14",
-      "open": true
-     },
-     {
-      "k": "event",
-      "id": "DR-01",
-      "open": true
+      "k": "pick",
+      "of": [
+       {
+        "label": "ปลุกสำเร็จ",
+        "effects": [
+         {
+          "k": "stat",
+          "stat": "F",
+          "delta": 15
+         },
+         {
+          "k": "event",
+          "id": "DR-14",
+          "open": true
+         }
+        ]
+       },
+       {
+        "label": "ไม่สำเร็จใน 5 ทศวรรษ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "DR-01",
+          "open": true
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -1228,6 +1352,30 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:162",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "var",
+         "name": "F",
+         "op": "<",
+         "n": 35
+        },
+        {
+         "k": "text",
+         "text": "ถูกโจมตีด้วยอาวุธจักรกล"
+        }
+       ]
+      }
+     ]
+    },
     "econ": {
      "scope": "AZ",
      "wealth": "AZ-01 −1 (ส่วยลดตามเกาะที่จม)",
@@ -1260,18 +1408,37 @@
     },
     "effects": [
      {
-      "k": "stat",
-      "stat": "DFC",
-      "delta": -1
-     },
-     {
-      "k": "event",
-      "id": "HP-08"
-     },
-     {
-      "k": "stat",
-      "stat": "F",
-      "delta": -10
+      "k": "pick",
+      "of": [
+       {
+        "label": "ฟักสำเร็จ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "HP-08"
+         }
+        ]
+       },
+       {
+        "label": "ไข่ถูกขโมย",
+        "effects": [
+         {
+          "k": "label",
+          "text": "DM/WR ชิงตัวทายาท"
+         }
+        ]
+       },
+       {
+        "label": "ไข่แตกเสีย",
+        "effects": [
+         {
+          "k": "stat",
+          "stat": "F",
+          "delta": -10
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -1280,7 +1447,21 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:163"
+    "src": "docs/systems/events/world-events.md:163",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "k": "text",
+       "text": "โอรัน-ซัลยังมีชีวิต"
+      }
+     ]
+    }
    },
    {
     "id": "DR-04",
@@ -1348,6 +1529,19 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:164",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "ถูกฆ่าด้วยอาวุธน้ำ/น้ำแข็ง หรือสิ้นแรง"
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 1,
     "flag": "เถ้าตก",
@@ -1410,7 +1604,8 @@
      },
      {
       "k": "event",
-      "id": "WR-06"
+      "id": "WR-06",
+      "open": true
      }
     ],
     "chain": [
@@ -1443,6 +1638,19 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:165",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "สิ้นแรง / ถูกฆ่า"
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 2,
     "flag": "น้ำกลืน",
@@ -1499,6 +1707,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:166",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "var",
+       "name": "F",
+       "op": "<",
+       "n": 40
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 3,
     "econ": {
@@ -1582,6 +1805,30 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:167",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 3
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "text",
+         "text": "ถูกฆ่า"
+        },
+        {
+         "k": "var",
+         "name": "Z:ศิลาสะท้าน",
+         "op": ">",
+         "n": 80
+        }
+       ]
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 4,
     "flag": "แผ่นดินแยก",
@@ -1638,6 +1885,19 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:168",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "หัวสุริยันกับหัวจันทราต่อสู้กันเอง"
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 5,
     "econ": {
@@ -1672,9 +1932,16 @@
     },
     "effects": [
      {
-      "k": "stat",
-      "stat": "DFC",
-      "delta": 1
+      "k": "chance",
+      "p": 0.4,
+      "text": "ล้ม",
+      "then": [
+       {
+        "k": "stat",
+        "stat": "DFC",
+        "delta": 1
+       }
+      ]
      }
     ],
     "chain": [],
@@ -1682,6 +1949,41 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:169",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "and",
+         "of": [
+          {
+           "k": "text",
+           "text": "ผู้อาวุโสสองตัว"
+          },
+          {
+           "k": "text",
+           "text": "เป็นธาตุตรงข้าม (เพลิง–สมุทร, พายุ–ศิลา)"
+          }
+         ]
+        },
+        {
+         "k": "text",
+         "text": "สองหัวของราหูเอง (สุริยัน–จันทรา)"
+        },
+        {
+         "k": "text",
+         "text": "เมื่อคู่สนิทของตัวหนึ่งตายจนเสียสติ (พี่น้องที่รักกันทำร้ายกันเพราะความเสียใจ ไม่ใช่เพราะเกลียด)"
+        }
+       ]
+      }
+     ]
+    },
     "econ": {
      "scope": "ทวีปของผู้อาวุโสสองตัว",
      "wealth": "−1 สองทวีปนั้นตลอดศึก",
@@ -1723,7 +2025,20 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:170"
+    "src": "docs/systems/events/world-events.md:170",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "ผู้อาวุโสหรือมังกรเสาตัวใดตัวหนึ่ง"
+      }
+     ]
+    }
    },
    {
     "id": "DR-11",
@@ -1791,6 +2106,20 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:171",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2,
+       "max": 3
+      },
+      {
+       "k": "text",
+       "text": "พระเจ้าหรือศาสดาประกาศ"
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "−1 ประเทศ W 1 ถึง 2 ที่ส่งบรรณาการ หนึ่งทศวรรษ",
@@ -1833,7 +2162,11 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:172"
+    "src": "docs/systems/events/world-events.md:172",
+    "cond": {
+     "k": "era",
+     "min": 2
+    }
    },
    {
     "id": "DR-13",
@@ -1874,6 +2207,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:173",
+    "cond": {
+     "k": "text",
+     "text": "ผู้กล้าที่ถืออาวุธปราบมังกรระดับ L เข้าเขตมังกร"
+    },
     "role": "hero"
    },
    {
@@ -1916,7 +2253,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:174"
+    "src": "docs/systems/events/world-events.md:174",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2,
+       "max": 2
+      },
+      {
+       "k": "text",
+       "text": "ครั้งแรก, ซ้ำเมื่อเปลี่ยนยุค"
+      }
+     ]
+    }
    },
    {
     "id": "DR-15",
@@ -1966,6 +2317,10 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:175",
+    "cond": {
+     "k": "text",
+     "text": "ทุกครั้งที่ DFC+1 (ทุกวิธีที่ล้ม รวมแปลงกายและหลับลึกถาวร)"
+    },
     "role": "mourn"
    },
    {
@@ -1998,22 +2353,43 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "DR-01"
-     },
-     {
-      "k": "event",
-      "id": "SF-02"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "SF-02"
+       }
+      ]
      }
     ],
     "chain": [
-     "DR-01",
-     "SF-02"
+     "SF-02",
+     "DR-01"
     ],
     "outcomes": [],
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:185",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "var",
+       "name": "M6",
+       "op": "<",
+       "n": 40
+      },
+      {
+       "k": "text",
+       "text": "เกาะร่วงต่อเนื่อง"
+      }
+     ]
+    },
     "dragon": 6
    },
    {
@@ -2058,6 +2434,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:186",
+    "cond": {
+     "k": "var",
+     "name": "H",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 7
    },
    {
@@ -2105,6 +2487,12 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:187",
+    "cond": {
+     "k": "var",
+     "name": "Z:คัลดรา",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 8,
     "econ": {
      "scope": "KD",
@@ -2159,6 +2547,12 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:188",
+    "cond": {
+     "k": "var",
+     "name": "Z:ธาลาสซา",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 9,
     "econ": {
      "scope": "NR",
@@ -2213,6 +2607,21 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:189",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "var",
+       "name": "M10",
+       "op": "<",
+       "n": 40
+      },
+      {
+       "k": "text",
+       "text": "สงครามใหญ่ในทุ่งราบ"
+      }
+     ]
+    },
     "dragon": 10
    },
    {
@@ -2250,13 +2659,27 @@
       "delta": 30
      },
      {
-      "k": "event",
-      "id": "WR-04",
-      "open": true
-     },
-     {
-      "k": "event",
-      "id": "WR-01"
+      "k": "pick",
+      "of": [
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-04",
+          "open": true
+         }
+        ]
+       },
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-01",
+          "open": true
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -2267,6 +2690,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:190",
+    "cond": {
+     "k": "var",
+     "name": "Z:เซเรเน",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 11,
     "econ": {
      "scope": "MK",
@@ -2329,6 +2758,12 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:191",
+    "cond": {
+     "k": "var",
+     "name": "Z:กรอม-ธาร",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 12
    },
    {
@@ -2376,6 +2811,12 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:192",
+    "cond": {
+     "k": "var",
+     "name": "T",
+     "op": "<",
+     "n": 50
+    },
     "dragon": 13,
     "econ": {
      "scope": "SV",
@@ -2430,6 +2871,12 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:193",
+    "cond": {
+     "k": "var",
+     "name": "D",
+     "op": ">",
+     "n": 70
+    },
     "dragon": 14,
     "econ": {
      "scope": "NB และทวีปข้างเคียง",
@@ -2510,7 +2957,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:203"
+    "src": "docs/systems/events/world-events.md:203",
+    "condNote": "จักรกล × มังกร · เรือเหาะเก็บศิลาลอย"
    },
    {
     "id": "WR-02",
@@ -2595,7 +3043,8 @@
     "eraSim": [
      1,
      4
-    ]
+    ],
+    "condNote": "ยักษ์ × ปีก · ยักษ์ตัดบันได"
    },
    {
     "id": "WR-03",
@@ -2684,6 +3133,13 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:205",
+    "cond": {
+     "k": "var",
+     "name": "H",
+     "op": ">",
+     "n": 80
+    },
+    "condNote": "ปีศาจ × ทุ่งราบ",
     "econ": {
      "scope": "MH × AL",
      "wealth": "AL-17 +1 (ผู้ขาย) · MH −1",
@@ -2766,6 +3222,7 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:206",
+    "condNote": "จักรกล × พงไพร · ขโมยน้ำเลี้ยง",
     "econ": {
      "scope": "MK × SV",
      "wealth": "SV-15 +1 · SV-01 −1",
@@ -2832,7 +3289,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:207"
+    "src": "docs/systems/events/world-events.md:207",
+    "condNote": "ปีศาจ × ไฟ · แย่งน้ำ"
    },
    {
     "id": "WR-06",
@@ -2901,6 +3359,7 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:208",
+    "condNote": "สายน้ำ × ทุ่งราบ · ปิดเส้นทาง",
     "econ": {
      "scope": "NR × AL",
      "wealth": "NR-01 −1",
@@ -2975,7 +3434,8 @@
     "eraSim": [
      1,
      4
-    ]
+    ],
+    "condNote": "ปีศาจ × สายน้ำ · ทัพข้ามทะเลหาอาหาร"
    },
    {
     "id": "WR-08",
@@ -3039,7 +3499,8 @@
     "eraSim": [
      1,
      4
-    ]
+    ],
+    "condNote": "พงไพร × หมอก · หมอกรุกป่า"
    },
    {
     "id": "WR-09",
@@ -3100,7 +3561,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:211"
+    "src": "docs/systems/events/world-events.md:211",
+    "condNote": "หมอก × จักรกล · สายลับ ข้อมูลทดลอง"
    },
    {
     "id": "WR-10",
@@ -3172,6 +3634,7 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:212",
+    "condNote": "ภูเขา/ทราย × ทุ่งราบ · ค่าผ่านทาง",
     "econ": {
      "scope": "SH × AL",
      "wealth": "SH-04 SH-15 +1 (ค่าผ่าน) · AL-10 −0",
@@ -3247,7 +3710,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:213"
+    "src": "docs/systems/events/world-events.md:213",
+    "condNote": "ไฟ × ภูเขา/ทราย · แย่งสายแร่"
    },
    {
     "id": "WR-12",
@@ -3302,7 +3766,8 @@
     "eraSim": [
      1,
      4
-    ]
+    ],
+    "condNote": "จักรกล × ไฟ · ซื้อขายเทคโนโลยีหลอม"
    },
    {
     "id": "WR-13",
@@ -3392,7 +3857,8 @@
     "eraSim": [
      1,
      4
-    ]
+    ],
+    "condNote": "ทุ่งราบ (ศาสนาแสง) × ปีศาจ/ไฟ · Crusade"
    },
    {
     "id": "WR-14",
@@ -3436,8 +3902,17 @@
       "text": "รัฐแตกเป็นกองไร้ธง เปิดทาง WR-23 เมื่อถึงยุค 4",
       "effects": [
        {
-        "k": "event",
-        "id": "WR-23"
+        "k": "if",
+        "cond": {
+         "k": "era",
+         "min": 4
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "WR-23"
+         }
+        ]
        }
       ],
       "chain": [
@@ -3459,6 +3934,12 @@
      1,
      4
     ],
+    "cond": {
+     "k": "event",
+     "id": "PO-08",
+     "happened": true
+    },
+    "condNote": "ทุกทวีป",
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "−1 ทุกประเทศที่ทำสงคราม · E-hub (KD-01 MK-06 AL-08) +1",
@@ -3530,8 +4011,8 @@
       "text": "END-10 เสี่ยง",
       "effects": [
        {
-        "k": "event",
-        "id": "END-10"
+        "k": "label",
+        "text": "END-10 เสี่ยง"
        }
       ],
       "chain": [
@@ -3542,6 +4023,28 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:217",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 4
+      },
+      {
+       "k": "cmp",
+       "stat": "dfc",
+       "op": ">=",
+       "value": 11
+      },
+      {
+       "k": "cmp",
+       "stat": "keys",
+       "op": ">=",
+       "value": 5
+      }
+     ]
+    },
+    "condNote": "ถือมากเท่าไรยิ่งเกิดง่าย",
     "dfc": [
      11,
      15
@@ -3621,7 +4124,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:218"
+    "src": "docs/systems/events/world-events.md:218",
+    "condNote": "ภายในทุ่งราบ · สงครามชิงบัลลังก์ลุกลาม"
    },
    {
     "id": "WR-17",
@@ -3692,7 +4196,8 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:219"
+    "src": "docs/systems/events/world-events.md:219",
+    "condNote": "ภายในพงไพร · เอลฟ์ × เผ่าสัตว์"
    },
    {
     "id": "WR-18",
@@ -3760,7 +4265,8 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:220"
+    "src": "docs/systems/events/world-events.md:220",
+    "condNote": "ภายในทวีปมังกร · ปฏิเสธสังเวย"
    },
    {
     "id": "WR-19",
@@ -3847,7 +4353,8 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:221"
+    "src": "docs/systems/events/world-events.md:221",
+    "condNote": "ภายในปีศาจ · ศึกมงกุฎกระดูกลุกลาม"
    },
    {
     "id": "WR-20",
@@ -3910,7 +4417,8 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:222"
+    "src": "docs/systems/events/world-events.md:222",
+    "condNote": "ภายในสายน้ำ · เงือก × นาคา"
    },
    {
     "id": "WR-21",
@@ -3971,6 +4479,7 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:223",
+    "condNote": "ภายในจักรกล · บริษัทแย่งตลาด",
     "econ": {
      "scope": "MK",
      "wealth": "−1 ใน MK-01 MK-05 · MK-06 +1",
@@ -4030,7 +4539,12 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:224"
+    "src": "docs/systems/events/world-events.md:224",
+    "cond": {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    }
    },
    {
     "id": "WR-23",
@@ -4062,9 +4576,8 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "END-10",
-      "open": true
+      "k": "label",
+      "text": "END-10 ใกล้"
      }
     ],
     "chain": [
@@ -4074,6 +4587,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:225",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 4
+      },
+      {
+       "k": "var",
+       "name": "F",
+       "op": "<",
+       "n": 38
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "−1 ทุกประเทศ W 3 ขึ้นไป",
@@ -4148,7 +4676,8 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:226"
+    "src": "docs/systems/events/world-events.md:226",
+    "condNote": "ซาร์ฮาดีน × อัมเมนรา · ธุลีทิพย์ขาดแคลน"
    },
    {
     "id": "CT-01",
@@ -4178,6 +4707,19 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:234",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "สุ่มจาก meteor"
+      }
+     ]
+    },
     "econ": {
      "scope": "ทวีปที่ตก",
      "wealth": "−1 ประเทศที่ตก 20 ปี",
@@ -4225,6 +4767,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:235",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "ธง `famine` ประเทศ W 1 ถึง 2 สามปี",
@@ -4262,12 +4819,27 @@
       "delta": -20
      },
      {
-      "k": "event",
-      "id": "HP-06"
-     },
-     {
-      "k": "event",
-      "id": "PO-06"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ยารักษา",
+        "effects": [
+         {
+          "k": "event",
+          "id": "HP-06"
+         }
+        ]
+       },
+       {
+        "label": "กักกัน",
+        "effects": [
+         {
+          "k": "event",
+          "id": "PO-06"
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -4278,6 +4850,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:236",
+    "cond": {
+     "k": "text",
+     "text": "โรคจากเนบูเลีย/เมคาเรียผ่านการค้า"
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "−1 NB MK · −0 ที่เหลือ",
@@ -4323,6 +4899,11 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:237",
+    "cond": {
+     "k": "event",
+     "id": "DR-06",
+     "happened": true
+    },
     "econ": {
      "scope": "หลัง DR-06 AL SH",
      "wealth": "−1",
@@ -4362,6 +4943,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:238",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PL-04",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "หลัง DR-05",
      "wealth": "−1 NR AL ชายฝั่ง",
@@ -4399,7 +4995,30 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:239"
+    "src": "docs/systems/events/world-events.md:239",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "MC-05",
+         "happened": true
+        },
+        {
+         "k": "text",
+         "text": "เวทมนตร์ใหญ่"
+        }
+       ]
+      }
+     ]
+    }
    },
    {
     "id": "CT-07",
@@ -4438,6 +5057,11 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:240",
+    "cond": {
+     "k": "event",
+     "id": "DR-08",
+     "happened": true
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "−1 ประเทศผลิตอาหารหลัก (AL-17 AL-03 NR-09 MH-06) ตลอดคราส",
@@ -4470,8 +5094,8 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "WR-03"
+      "k": "label",
+      "text": "WR-03 ใกล้"
      }
     ],
     "chain": [
@@ -4519,6 +5143,20 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:242",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PL-06",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "การใช้เวทใหญ่"
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "0",
@@ -4560,8 +5198,18 @@
       "delta": 5
      },
      {
-      "k": "event",
-      "id": "DR-01"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "↔สกายฟอลล์"
+       }
+      ]
      }
     ],
     "chain": [
@@ -4583,7 +5231,12 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:243"
+    "src": "docs/systems/events/world-events.md:243",
+    "cond": {
+     "k": "era",
+     "min": 1,
+     "max": 2
+    }
    },
    {
     "id": "DM-01",
@@ -4622,8 +5275,25 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "WR-03"
+      "k": "pick",
+      "of": [
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-03"
+         }
+        ]
+       },
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-07"
+         }
+        ]
+       }
+      ]
      },
      {
       "k": "event",
@@ -4632,6 +5302,7 @@
     ],
     "chain": [
      "WR-03",
+     "WR-07",
      "DM-04"
     ],
     "outcomes": [],
@@ -4645,6 +5316,33 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:251",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "and",
+       "of": [
+        {
+         "k": "var",
+         "name": "H",
+         "op": ">",
+         "n": 70
+        },
+        {
+         "k": "event",
+         "id": "WR-19",
+         "happened": true,
+         "outcome": "a"
+        }
+       ]
+      },
+      {
+       "k": "event",
+       "id": "PL-02",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "MH",
      "wealth": "ธง `war` ทุกประเทศ MH",
@@ -4681,9 +5379,8 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "WR-15",
-      "open": true
+      "k": "label",
+      "text": "WR-15 ใกล้"
      }
     ],
     "chain": [
@@ -4699,7 +5396,11 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:252"
+    "src": "docs/systems/events/world-events.md:252",
+    "cond": {
+     "k": "era",
+     "min": 3
+    }
    },
    {
     "id": "DM-03",
@@ -4725,16 +5426,22 @@
     },
     "effects": [
      {
-      "k": "stat",
-      "stat": "H",
-      "delta": -8
+      "k": "event",
+      "id": "DM-08",
+      "open": true
      }
     ],
-    "chain": [],
+    "chain": [
+     "DM-08"
+    ],
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:253"
+    "src": "docs/systems/events/world-events.md:253",
+    "cond": {
+     "k": "text",
+     "text": "จอมมารตายในศึกใหญ่ ไม่มีผู้ชนะศึกชิงมงกุฎ"
+    }
    },
    {
     "id": "DM-04",
@@ -4776,7 +5483,12 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:254"
+    "src": "docs/systems/events/world-events.md:254",
+    "cond": {
+     "k": "event",
+     "id": "DM-01",
+     "happened": true
+    }
    },
    {
     "id": "DM-05",
@@ -4805,7 +5517,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:255"
+    "src": "docs/systems/events/world-events.md:255",
+    "cond": {
+     "k": "text",
+     "text": "ผู้กล้าชนะจอมมาร"
+    }
    },
    {
     "id": "DM-06",
@@ -4841,7 +5557,20 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:256"
+    "src": "docs/systems/events/world-events.md:256",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "ความหิวสูง"
+      },
+      {
+       "k": "text",
+       "text": "ผู้กล้าอยู่ในชัยชนะที่ไม่สมบูรณ์"
+      }
+     ]
+    }
    },
    {
     "id": "DM-07",
@@ -4881,6 +5610,21 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:257",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "ธง `war` ประเทศที่มีประตู",
@@ -4920,7 +5664,28 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:258"
+    "src": "docs/systems/events/world-events.md:258",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-19",
+       "happened": true,
+       "outcome": "b"
+      },
+      {
+       "k": "event",
+       "id": "END-02",
+       "happened": true
+      }
+     ]
+    }
    },
    {
     "id": "DM-09",
@@ -4977,7 +5742,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:259"
+    "src": "docs/systems/events/world-events.md:259",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "ซากเมืองปฐม"
+      }
+     ]
+    }
    },
    {
     "id": "DM-10",
@@ -5018,7 +5796,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:260"
+    "src": "docs/systems/events/world-events.md:260",
+    "cond": {
+     "k": "text",
+     "text": "ผู้กล้าเก่งเกินศึกจอมมาร"
+    }
    },
    {
     "id": "DM-11",
@@ -5054,7 +5836,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:261"
+    "src": "docs/systems/events/world-events.md:261",
+    "cond": {
+     "k": "text",
+     "text": "ผู้แพ้ศึกมงกุฎคนหนึ่งรวมเผ่าเล็ก ๆ"
+    }
    },
    {
     "id": "MC-01",
@@ -5094,7 +5880,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:269"
+    "src": "docs/systems/events/world-events.md:269",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 1,
+       "max": 1
+      },
+      {
+       "k": "text",
+       "text": "เรือเหาะพบเห็นแล้วตั้งแต่ ศ.ม. 9,880 และการซื้อขายศิลาลอยลับมีแล้วที่ AZ-08"
+      }
+     ]
+    }
    },
    {
     "id": "MC-02",
@@ -5125,7 +5925,22 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:270"
+    "src": "docs/systems/events/world-events.md:270",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-09",
+       "happened": true,
+       "outcome": "a"
+      },
+      {
+       "k": "text",
+       "text": "สุ่ม"
+      }
+     ]
+    }
    },
    {
     "id": "MC-03",
@@ -5155,6 +5970,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:271",
+    "cond": {
+     "k": "text",
+     "text": "หุ่นที่มีวิญญาณมากพอ"
+    },
     "econ": {
      "scope": "MK",
      "wealth": "−1 ทุกประเทศ MK ระหว่างลุกฮือ · MK-03 +1 หลังจบ",
@@ -5220,6 +6039,22 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:272",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "var",
+       "name": "P",
+       "op": ">",
+       "n": 60
+      },
+      {
+       "k": "event",
+       "id": "PL-06",
+       "happened": true
+      }
+     ]
+    },
     "flag": "สนิมกลืน",
     "econ": {
      "scope": "ประเทศที่ระเบิด",
@@ -5278,7 +6113,32 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:273"
+    "src": "docs/systems/events/world-events.md:273",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "cmp",
+         "stat": "keys",
+         "op": ">=",
+         "value": 1
+        },
+        {
+         "k": "event",
+         "id": "PL-06",
+         "happened": true
+        }
+       ]
+      }
+     ]
+    }
    },
    {
     "id": "MC-06",
@@ -5324,7 +6184,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:274"
+    "src": "docs/systems/events/world-events.md:274",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 3
+      },
+      {
+       "k": "text",
+       "text": "คนแคระ+จักรกลร่วมมือ"
+      }
+     ]
+    }
    },
    {
     "id": "MC-07",
@@ -5372,6 +6245,11 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:275",
+    "cond": {
+     "k": "era",
+     "min": 1,
+     "max": 2
+    },
     "econ": {
      "scope": "AL MK",
      "wealth": "+1 AL-28 MK-05 AL-07",
@@ -5413,7 +6291,22 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:276"
+    "src": "docs/systems/events/world-events.md:276",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "var",
+       "name": "P",
+       "op": ">",
+       "n": 40
+      },
+      {
+       "k": "text",
+       "text": "ศาสนาจักรกลอ่อน"
+      }
+     ]
+    }
    },
    {
     "id": "MC-09",
@@ -5448,7 +6341,12 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:277"
+    "src": "docs/systems/events/world-events.md:277",
+    "cond": {
+     "k": "era",
+     "min": 1,
+     "max": 3
+    }
    },
    {
     "id": "MC-10",
@@ -5480,6 +6378,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:278",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-01",
+       "happened": true,
+       "outcome": "a"
+      },
+      {
+       "k": "text",
+       "text": "ศิลาลอยพอ"
+      }
+     ]
+    },
     "econ": {
      "scope": "MK AZ",
      "wealth": "เมืองใหม่เริ่ม W 4",
@@ -5524,6 +6437,20 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:279",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PL-06",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "สืบสวน"
+      }
+     ]
+    },
     "econ": {
      "scope": "MK",
      "wealth": "MK-06 −1 (ถูกคว่ำบาตร)",
@@ -5558,16 +6485,43 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "END-11"
+      "k": "label",
+      "text": "ผลตามสัดส่วนทวีปที่เลือก"
      },
      {
-      "k": "event",
-      "id": "END-10"
-     },
-     {
-      "k": "event",
-      "id": "END-12"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ร่วมมือ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "END-11",
+          "open": true
+         }
+        ]
+       },
+       {
+        "label": "ต่อต้าน",
+        "effects": [
+         {
+          "k": "event",
+          "id": "END-10",
+          "open": true
+         }
+        ]
+       },
+       {
+        "label": "ปลอบ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "END-12",
+          "open": true
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -5579,6 +6533,11 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:280",
+    "cond": {
+     "k": "event",
+     "id": "END-06",
+     "happened": true
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "0",
@@ -5636,6 +6595,35 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:288",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "var",
+       "name": "P",
+       "op": ">",
+       "n": 50
+      },
+      {
+       "k": "event",
+       "id": "WR-04",
+       "happened": true,
+       "outcome": "a"
+      },
+      {
+       "k": "event",
+       "id": "WR-08",
+       "happened": true,
+       "outcome": "b"
+      },
+      {
+       "k": "event",
+       "id": "WR-17",
+       "happened": true,
+       "outcome": "b"
+      }
+     ]
+    },
     "econ": {
      "scope": "SV",
      "wealth": "0",
@@ -5717,6 +6705,41 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:289",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "and",
+       "of": [
+        {
+         "k": "var",
+         "name": "T",
+         "op": "<",
+         "n": 50
+        },
+        {
+         "k": "text",
+         "text": "ผู้ถือขวานโค่นโลก ลงมือได้เมื่อ"
+        }
+       ]
+      },
+      {
+       "k": "and",
+       "of": [
+        {
+         "k": "var",
+         "name": "T",
+         "op": "<",
+         "n": 10
+        },
+        {
+         "k": "text",
+         "text": "ต้นไม้ตายเองเมื่อ"
+        }
+       ]
+      }
+     ]
+    },
     "flag": "ป่าเหี่ยว",
     "econ": {
      "scope": "SV",
@@ -5766,7 +6789,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:290"
+    "src": "docs/systems/events/world-events.md:290",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "BIO-01",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ผู้พิทักษ์ปลูก"
+      }
+     ]
+    }
    },
    {
     "id": "BIO-04",
@@ -5802,6 +6839,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:291",
+    "cond": {
+     "k": "var",
+     "name": "D",
+     "op": ">",
+     "n": 80
+    },
     "econ": {
      "scope": "NB และชายแดน",
      "wealth": "−1 ประเทศชายแดนที่หมอกถึง",
@@ -5882,6 +6925,32 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:292",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "var",
+       "name": "T",
+       "op": ">",
+       "n": 90
+      },
+      {
+       "k": "event",
+       "id": "MC-09",
+       "happened": true
+      },
+      {
+       "k": "var",
+       "name": "D",
+       "op": "<",
+       "n": 20
+      },
+      {
+       "k": "text",
+       "text": "รอยแยกเมฆาปิด"
+      }
+     ]
+    },
     "flag": "แสงใหม่",
     "econ": {
      "scope": "NB",
@@ -5937,7 +7006,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:293"
+    "src": "docs/systems/events/world-events.md:293",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "PL-09",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ผู้สำรวจ"
+      }
+     ]
+    }
    },
    {
     "id": "BIO-07",
@@ -5975,6 +7058,22 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:294",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "var",
+       "name": "P",
+       "op": ">",
+       "n": 40
+      },
+      {
+       "k": "event",
+       "id": "DR-05",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "NR",
      "wealth": "−1 NR-09 NR-13",
@@ -6028,7 +7127,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:295"
+    "src": "docs/systems/events/world-events.md:295",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "k": "text",
+       "text": "พญานาคราชไข่"
+      }
+     ]
+    }
    },
    {
     "id": "BIO-09",
@@ -6070,7 +7183,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:296"
+    "src": "docs/systems/events/world-events.md:296",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-17",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ป่าถูกตัด"
+      }
+     ]
+    }
    },
    {
     "id": "BIO-10",
@@ -6099,7 +7226,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:297"
+    "src": "docs/systems/events/world-events.md:297",
+    "cond": {
+     "k": "text",
+     "text": "ป่าชื้นและต้นไม้ป่วย"
+    }
    },
    {
     "id": "GD-01",
@@ -6147,7 +7278,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:305"
+    "src": "docs/systems/events/world-events.md:305",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "ศรัทธาสูง"
+      },
+      {
+       "k": "text",
+       "text": "ศาสดาเกิด"
+      }
+     ]
+    }
    },
    {
     "id": "GD-02",
@@ -6192,7 +7336,23 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:306"
+    "src": "docs/systems/events/world-events.md:306",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "WR-13",
+       "happened": true,
+       "outcome": "c"
+      },
+      {
+       "k": "event",
+       "id": "DM-05",
+       "happened": true
+      }
+     ]
+    }
    },
    {
     "id": "GD-03",
@@ -6242,7 +7402,12 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:307"
+    "src": "docs/systems/events/world-events.md:307",
+    "cond": {
+     "k": "event",
+     "id": "DR-11",
+     "happened": true
+    }
    },
    {
     "id": "GD-04",
@@ -6298,6 +7463,21 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:308",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "text",
+       "text": "พระเจ้าใช้พลังสูงสุด"
+      },
+      {
+       "k": "var",
+       "name": "F",
+       "op": ">",
+       "n": 90
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "0",
@@ -6339,7 +7519,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:309"
+    "src": "docs/systems/events/world-events.md:309",
+    "cond": {
+     "k": "text",
+     "text": "พระเจ้าไม่ตอบคำอธิษฐานต่อเนื่องหลายทศวรรษ"
+    }
    },
    {
     "id": "GD-06",
@@ -6392,7 +7576,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:310"
+    "src": "docs/systems/events/world-events.md:310",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "กรรมดีสูง"
+      },
+      {
+       "k": "text",
+       "text": "ศาสดา"
+      }
+     ]
+    }
    },
    {
     "id": "GD-07",
@@ -6433,7 +7630,11 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:311"
+    "src": "docs/systems/events/world-events.md:311",
+    "cond": {
+     "k": "era",
+     "min": 3
+    }
    },
    {
     "id": "GD-08",
@@ -6468,7 +7669,31 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:312"
+    "src": "docs/systems/events/world-events.md:312",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 3
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "var",
+         "name": "F",
+         "op": "<",
+         "n": 35
+        },
+        {
+         "k": "text",
+         "text": "พระเจ้าทำลายระดับใหญ่ครั้งที่สามในโลก (กติกาเหล็กข้อ 7 ของระบบพระเจ้า)"
+        }
+       ]
+      }
+     ]
+    }
    },
    {
     "id": "HP-01",
@@ -6504,6 +7729,19 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:320",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "ผ่านสงครามใหญ่"
+      },
+      {
+       "k": "text",
+       "text": "สภาแข็งแรง"
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "+0",
@@ -6540,6 +7778,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:321",
+    "cond": {
+     "k": "text",
+     "text": "ไม่มี WR 30 ปี"
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "+1 ในประเทศ M ผสมหรือเต็ม (ไม่เกิน 4 ยกเว้น W 5 เดิม)",
@@ -6584,7 +7826,13 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:322"
+    "src": "docs/systems/events/world-events.md:322",
+    "cond": {
+     "k": "event",
+     "id": "WR-02",
+     "happened": true,
+     "outcome": "c"
+    }
    },
    {
     "id": "HP-04",
@@ -6630,7 +7878,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:323"
+    "src": "docs/systems/events/world-events.md:323",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "k": "text",
+       "text": "ไม่มีสงคราม"
+      }
+     ]
+    }
    },
    {
     "id": "HP-05",
@@ -6663,6 +7925,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:324",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "HP-01",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "HP-02",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "AL",
      "wealth": "+0",
@@ -6717,7 +7994,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:325"
+    "src": "docs/systems/events/world-events.md:325",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "CT-03",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ต้นไม้โลกฟื้น"
+      }
+     ]
+    }
    },
    {
     "id": "HP-07",
@@ -6768,6 +8059,27 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:326",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DM-06",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DM-11",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-03",
+       "happened": true,
+       "outcome": "c"
+      }
+     ]
+    },
     "econ": {
      "scope": "MH",
      "wealth": "+1 MH ทุกประเทศ (ไม่รวม MH-02)",
@@ -6812,6 +8124,24 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:327",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-03",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "ทายาทฟ้าโตเต็มวัย"
+      },
+      {
+       "k": "text",
+       "text": "ศิลาลอยพอ"
+      }
+     ]
+    },
     "econ": {
      "scope": "AZ",
      "wealth": "เกาะใหม่เริ่ม W 2",
@@ -6860,6 +8190,20 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:335",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 1,
+       "max": 2
+      },
+      {
+       "k": "text",
+       "text": "ทุ่งราบรวมตัว"
+      }
+     ]
+    },
     "econ": {
      "scope": "ทุกทวีป",
      "wealth": "0",
@@ -6898,6 +8242,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:336",
+    "cond": {
+     "k": "event",
+     "id": "WR-01",
+     "happened": true,
+     "outcome": "b"
+    },
     "econ": {
      "scope": "MK AZ",
      "wealth": "MK-09 −2 · NR-12 +1",
@@ -6943,6 +8293,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:337",
+    "cond": {
+     "k": "event",
+     "id": "WR-06",
+     "happened": true,
+     "outcome": "a"
+    },
     "econ": {
      "scope": "NR ผ่าน",
      "wealth": "NR-01 +1",
@@ -6984,7 +8340,13 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:338"
+    "src": "docs/systems/events/world-events.md:338",
+    "cond": {
+     "k": "var",
+     "name": "T",
+     "op": "<",
+     "n": 60
+    }
    },
    {
     "id": "PO-05",
@@ -7016,6 +8378,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:339",
+    "cond": {
+     "k": "event",
+     "id": "WR-16",
+     "happened": true,
+     "outcome": "a"
+    },
     "econ": {
      "scope": "AL ทุ่งราบ",
      "wealth": "ประเทศเมืองหลวงจักรวรรดิ +1 · ประเทศที่ถูกยึด −1",
@@ -7055,6 +8423,30 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:340",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "พงไพรหรือหมอก"
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "WR-04",
+         "happened": true
+        },
+        {
+         "k": "event",
+         "id": "CT-03",
+         "happened": true
+        }
+       ]
+      }
+     ]
+    },
     "econ": {
      "scope": "ทวีปที่ปิด",
      "wealth": "−1",
@@ -7091,6 +8483,19 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:341",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "หมอกร่ำรวย"
+      },
+      {
+       "k": "text",
+       "text": "สงครามเศรษฐกิจ"
+      }
+     ]
+    },
     "econ": {
      "scope": "NB MH-09 AL-27",
      "wealth": "NB-09 +0 (เต็มอยู่แล้ว) · ที่อื่นที่ติดต่อ −1",
@@ -7134,6 +8539,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:342",
+    "cond": {
+     "k": "var",
+     "name": "tension",
+     "op": ">",
+     "n": 60
+    },
     "econ": {
      "scope": "AL-01",
      "wealth": "0",
@@ -7184,7 +8595,21 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:350"
+    "src": "docs/systems/events/world-events.md:350",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "event",
+       "id": "PL-07",
+       "happened": true
+      }
+     ]
+    }
    },
    {
     "id": "GI-02",
@@ -7229,6 +8654,27 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:351",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "DR-07",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true,
+       "outcome": "b"
+      },
+      {
+       "k": "event",
+       "id": "END-07",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "SH และ AL ทุ่งราบ",
      "wealth": "−1 ประเทศบนเส้นทางเดินของไททัน",
@@ -7266,7 +8712,25 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:352"
+    "src": "docs/systems/events/world-events.md:352",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "ยักษ์ช่างตี"
+      },
+      {
+       "k": "event",
+       "id": "WR-02",
+       "happened": true
+      }
+     ]
+    }
    },
    {
     "id": "GI-04",
@@ -7306,7 +8770,12 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:353"
+    "src": "docs/systems/events/world-events.md:353",
+    "cond": {
+     "k": "era",
+     "min": 1,
+     "max": 2
+    }
    },
    {
     "id": "GI-05",
@@ -7341,7 +8810,20 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:354"
+    "src": "docs/systems/events/world-events.md:354",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 2
+      },
+      {
+       "k": "text",
+       "text": "ขุดลึก"
+      }
+     ]
+    }
    },
    {
     "id": "GI-06",
@@ -7403,6 +8885,22 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:356",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "CT-04",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "WR-10",
+       "happened": true,
+       "outcome": "c"
+      }
+     ]
+    },
     "econ": {
      "scope": "AL ทุ่งราบ SH",
      "wealth": "−1 AL-15 AL-17",
@@ -7437,9 +8935,8 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "PL-03",
-      "open": true
+      "k": "label",
+      "text": "PL-03 เสี่ยง"
      }
     ],
     "chain": [
@@ -7449,6 +8946,12 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:357",
+    "cond": {
+     "k": "event",
+     "id": "WR-13",
+     "happened": true,
+     "outcome": "a"
+    },
     "econ": {
      "scope": "KD MH",
      "wealth": "KD-08 +1",
@@ -7487,7 +8990,22 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:358"
+    "src": "docs/systems/events/world-events.md:358",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "PL-03",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      }
+     ]
+    }
    },
    {
     "id": "GI-10",
@@ -7518,7 +9036,12 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:359"
+    "src": "docs/systems/events/world-events.md:359",
+    "cond": {
+     "k": "event",
+     "id": "CT-04",
+     "happened": true
+    }
    },
    {
     "id": "FG-01",
@@ -7564,11 +9087,13 @@
      },
      {
       "k": "event",
-      "id": "FG-02"
+      "id": "FG-02",
+      "open": true
      },
      {
       "k": "event",
-      "id": "FG-14"
+      "id": "FG-14",
+      "open": true
      }
     ],
     "chain": [
@@ -7595,6 +9120,19 @@
      }
     ],
     "src": "docs/systems/events/world-events.md:369",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "สถานะเริ่มต้น เกิดแล้วใน ศ.ม. 10,388"
+      },
+      {
+       "k": "text",
+       "text": "ผู้ร่วม: AL-20, MK-13, NB-12, ทุนจาก NB-09"
+      }
+     ]
+    },
     "role": "start"
    },
    {
@@ -7637,6 +9175,19 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:370",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "ทุกทศวรรษ ประเทศในเนบูเลียหรือชายแดนติดกันหนึ่งแห่ง"
+      }
+     ]
+    },
     "econ": {
      "scope": "NB",
      "wealth": "−1 ในเมืองที่ถูกกลืน",
@@ -7683,8 +9234,8 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "CT-03"
+      "k": "label",
+      "text": "CT-03 เสี่ยง"
      }
     ],
     "chain": [
@@ -7694,6 +9245,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:371",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "var",
+       "name": "D",
+       "op": ">",
+       "n": 65
+      }
+     ]
+    },
     "econ": {
      "scope": "NB ชายแดน",
      "wealth": "−1 หนึ่งฤดู",
@@ -7743,6 +9309,20 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:372",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "text",
+       "text": "เมืองโคมใน NB-03 ถูกปิดตายเกิน 10 วันอีกครั้งหลังต้นเรื่อง (การปิดสิบเอ็ดวันใน ศ.ม. 10,396 ทำให้ตลาดปกครองตนเองโดยพฤตินัยแต่ยังไม่ประกาศ)"
+      }
+     ]
+    },
     "econ": {
      "scope": "NB-03",
      "wealth": "+1",
@@ -7814,7 +9394,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:373"
+    "src": "docs/systems/events/world-events.md:373",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "ความกลัวสูง (ประเทศปิดตาย ≥ 1)"
+      },
+      {
+       "k": "text",
+       "text": "NB-07 แตกนิกาย"
+      }
+     ]
+    }
    },
    {
     "id": "FG-06",
@@ -7875,7 +9468,20 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:374"
+    "src": "docs/systems/events/world-events.md:374",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "เสียงระฆังเรียกสิ่งมีชีวิตสำเร็จ"
+      }
+     ]
+    }
    },
    {
     "id": "FG-07",
@@ -7934,6 +9540,21 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:375",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "event",
+       "id": "FG-02",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "FG-03",
+       "happened": true
+      }
+     ]
+    },
     "econ": {
      "scope": "ชายแดน NB กับ AL",
      "wealth": "0",
@@ -7982,7 +9603,12 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:376"
+    "src": "docs/systems/events/world-events.md:376",
+    "cond": {
+     "k": "event",
+     "id": "FG-02",
+     "happened": true
+    }
    },
    {
     "id": "FG-09",
@@ -8024,7 +9650,20 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:377"
+    "src": "docs/systems/events/world-events.md:377",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "NB-10 มีบทบาท"
+      },
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      }
+     ]
+    }
    },
    {
     "id": "FG-10",
@@ -8064,18 +9703,50 @@
       "id": "rift_open"
      },
      {
-      "k": "stat",
-      "stat": "DFC",
-      "delta": 1
+      "k": "label",
+      "text": "ราคา"
      },
      {
-      "k": "event",
-      "id": "DR-15",
-      "open": true
-     },
-     {
-      "k": "event",
-      "id": "END-09"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ผู้เฝ้าทั้งอารามสิ้น",
+        "effects": [
+         {
+          "k": "label",
+          "text": "ผู้เฝ้าทั้งอารามสิ้น"
+         }
+        ]
+       },
+       {
+        "label": "นิเวรีหลับลึกถาวรเฝ้าประตู",
+        "effects": [
+         {
+          "k": "stat",
+          "stat": "DFC",
+          "delta": 1
+         },
+         {
+          "k": "event",
+          "id": "DR-15",
+          "open": true
+         },
+         {
+          "k": "label",
+          "text": "END-09 ไม่เปิด"
+         }
+        ]
+       },
+       {
+        "label": "กุญแจ \"ความทรงจำเมฆา\" ถูกทำลาย",
+        "effects": [
+         {
+          "k": "label",
+          "text": "กุญแจ \"ความทรงจำเมฆา\" ถูกทำลาย"
+         }
+        ]
+       }
+      ]
      },
      {
       "k": "event",
@@ -8098,6 +9769,27 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:378",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "ผู้เฝ้า NB-08 ยังอยู่"
+      },
+      {
+       "k": "text",
+       "text": "ความรู้จาก AL-11 / MK-13"
+      },
+      {
+       "k": "text",
+       "text": "ราคาที่ต้องจ่าย"
+      }
+     ]
+    },
     "flag": "รอยแยกปิด",
     "econ": {
      "scope": "NB",
@@ -8158,6 +9850,21 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:379",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิดเกิน 5 ทศวรรษ"
+      },
+      {
+       "k": "var",
+       "name": "T",
+       "op": "<",
+       "n": 40
+      }
+     ]
+    },
     "flag": "หมอกกลืน",
     "econ": {
      "scope": "NB และชายแดน",
@@ -8236,7 +9943,20 @@
      }
     ],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:380"
+    "src": "docs/systems/events/world-events.md:380",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "NB-04 หรือ NB-13 ฟังเสียงพวกมันนานพอ"
+      }
+     ]
+    }
    },
    {
     "id": "FG-13",
@@ -8274,6 +9994,19 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:381",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "มีเมืองปิดตาย ≥ 2"
+      }
+     ]
+    },
     "econ": {
      "scope": "NB",
      "wealth": "−1",
@@ -8317,12 +10050,25 @@
       "delta": 30
      },
      {
-      "k": "event",
-      "id": "PO-08"
-     },
-     {
-      "k": "event",
-      "id": "WR-09"
+      "k": "pick",
+      "of": [
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "PO-08"
+         }
+        ]
+       },
+       {
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-09"
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -8332,7 +10078,20 @@
     "outcomes": [],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:382"
+    "src": "docs/systems/events/world-events.md:382",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "text",
+       "text": "ผ่านไป ≥ 1 ทศวรรษ"
+      }
+     ]
+    }
    },
    {
     "id": "FG-15",
@@ -8392,7 +10151,22 @@
     ],
     "faith": [],
     "witness": [],
-    "src": "docs/systems/events/world-events.md:383"
+    "src": "docs/systems/events/world-events.md:383",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "text",
+       "text": "รอยแยกเปิด"
+      },
+      {
+       "k": "var",
+       "name": "M14",
+       "op": "<",
+       "n": 50
+      }
+     ]
+    }
    },
    {
     "id": "END-01",
@@ -8418,8 +10192,18 @@
     },
     "effects": [
      {
-      "k": "event",
-      "id": "DR-01"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "DR-01",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "label",
+        "text": "สกายฟอลล์ลอยบางส่วนกลับขึ้นฟ้า"
+       }
+      ]
      }
     ],
     "chain": [
@@ -8429,6 +10213,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:393",
+    "cond": {
+     "k": "text",
+     "text": "อีริดานสิ้น"
+    },
     "role": "fall",
     "dragon": 6,
     "econ": {
@@ -8467,6 +10255,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:394",
+    "cond": {
+     "k": "text",
+     "text": "ฮรอด-กาธสิ้น"
+    },
     "role": "fall",
     "dragon": 7
    },
@@ -8498,6 +10290,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:395",
+    "cond": {
+     "k": "text",
+     "text": "คัลดราสิ้น"
+    },
     "role": "fall",
     "dragon": 8
    },
@@ -8529,6 +10325,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:396",
+    "cond": {
+     "k": "text",
+     "text": "ธาลาสซาสิ้น"
+    },
     "role": "fall",
     "dragon": 9
    },
@@ -8568,6 +10368,10 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:397",
+    "cond": {
+     "k": "text",
+     "text": "อันดาร์สิ้น"
+    },
     "role": "fall",
     "dragon": 10
    },
@@ -8620,6 +10424,10 @@
     ],
     "witness": [],
     "src": "docs/systems/events/world-events.md:398",
+    "cond": {
+     "k": "text",
+     "text": "เซเรเนสิ้น"
+    },
     "role": "fall",
     "dragon": 11,
     "flag": "เครื่องปฐมตื่น"
@@ -8652,6 +10460,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:399",
+    "cond": {
+     "k": "text",
+     "text": "กรอม-ธารสิ้น"
+    },
     "role": "fall",
     "dragon": 12
    },
@@ -8683,6 +10495,10 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:400",
+    "cond": {
+     "k": "text",
+     "text": "ซิลเวราสิ้น"
+    },
     "role": "fall",
     "dragon": 13
    },
@@ -8716,6 +10532,20 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:401",
+    "cond": {
+     "k": "or",
+     "of": [
+      {
+       "k": "text",
+       "text": "นิเวรีสิ้น"
+      },
+      {
+       "k": "event",
+       "id": "FG-11",
+       "happened": true
+      }
+     ]
+    },
     "role": "fall",
     "dragon": 14
    },
@@ -8756,6 +10586,48 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:402",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "cmp",
+       "stat": "dfc",
+       "op": "==",
+       "value": 14
+      },
+      {
+       "k": "or",
+       "of": [
+        {
+         "k": "event",
+         "id": "WR-23",
+         "happened": true
+        },
+        {
+         "k": "and",
+         "of": [
+          {
+           "k": "event",
+           "id": "WR-15",
+           "happened": true,
+           "outcome": "c"
+          },
+          {
+           "k": "var",
+           "name": "F",
+           "op": "<",
+           "n": 30
+          },
+          {
+           "k": "text",
+           "text": "ตัวสุดท้ายล้มพร้อมฉากจบ"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
     "dfc": [
      14,
      14
@@ -8793,6 +10665,31 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:403",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 4
+      },
+      {
+       "k": "event",
+       "id": "WR-15",
+       "happened": true
+      },
+      {
+       "k": "event",
+       "id": "MC-12",
+       "happened": true
+      },
+      {
+       "k": "cmp",
+       "stat": "keys",
+       "op": ">=",
+       "value": 9
+      }
+     ]
+    },
     "needsAll": [
      "WR-15",
      "MC-12"
@@ -8835,6 +10732,32 @@
     "faith": [],
     "witness": [],
     "src": "docs/systems/events/world-events.md:404",
+    "cond": {
+     "k": "and",
+     "of": [
+      {
+       "k": "era",
+       "min": 4
+      },
+      {
+       "k": "event",
+       "id": "WR-15",
+       "happened": true
+      },
+      {
+       "k": "var",
+       "name": "F",
+       "op": ">",
+       "n": 70
+      },
+      {
+       "k": "cmp",
+       "stat": "happened.HP",
+       "op": ">=",
+       "value": 2
+      }
+     ]
+    },
     "hpMin": 2,
     "needsAll": [
      "WR-15"
@@ -8897,13 +10820,28 @@
     ],
     "effects": [
      {
-      "k": "event",
-      "id": "HP-08",
-      "open": true
-     },
-     {
-      "k": "event",
-      "id": "WR-22"
+      "k": "pick",
+      "of": [
+       {
+        "label": "ฟักสำเร็จ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "HP-08",
+          "open": true
+         }
+        ]
+       },
+       {
+        "label": "ถูกขโมย",
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-22"
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -8929,16 +10867,31 @@
     "needs": [],
     "effects": [
      {
-      "k": "event",
-      "id": "HP-03"
-     },
-     {
-      "k": "event",
-      "id": "SF-10"
-     },
-     {
-      "k": "event",
-      "id": "WR-22"
+      "k": "pick",
+      "of": [
+       {
+        "label": "รับ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "HP-03"
+         },
+         {
+          "k": "event",
+          "id": "SF-10"
+         }
+        ]
+       },
+       {
+        "label": "ขับไล่",
+        "effects": [
+         {
+          "k": "event",
+          "id": "WR-22"
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [
@@ -9082,12 +11035,18 @@
       "id": "HP-03"
      },
      {
-      "k": "event",
-      "id": "HP-08"
-     },
-     {
-      "k": "event",
-      "id": "SF-03"
+      "k": "if",
+      "cond": {
+       "k": "event",
+       "id": "SF-03",
+       "happened": true
+      },
+      "then": [
+       {
+        "k": "event",
+        "id": "HP-08"
+       }
+      ]
      }
     ],
     "chain": [
@@ -9134,8 +11093,8 @@
     ],
     "effects": [
      {
-      "k": "event",
-      "id": "PL-03"
+      "k": "label",
+      "text": "PL-03 เสี่ยง"
      }
     ],
     "chain": [
@@ -9171,7 +11130,8 @@
      },
      {
       "k": "event",
-      "id": "AS-05"
+      "id": "AS-05",
+      "open": true
      }
     ],
     "chain": [
@@ -9326,8 +11286,8 @@
     ],
     "effects": [
      {
-      "k": "event",
-      "id": "END-04"
+      "k": "label",
+      "text": "ป้องกัน END-04"
      }
     ],
     "chain": [
@@ -9780,8 +11740,27 @@
     ],
     "effects": [
      {
-      "k": "event",
-      "id": "FG-10"
+      "k": "pick",
+      "of": [
+       {
+        "label": "สำเร็จ",
+        "effects": [
+         {
+          "k": "event",
+          "id": "FG-10"
+         }
+        ]
+       },
+       {
+        "label": "ล้ม",
+        "effects": [
+         {
+          "k": "label",
+          "text": "หมอกขยายสู่ทุกทวีป"
+         }
+        ]
+       }
+      ]
      }
     ],
     "chain": [

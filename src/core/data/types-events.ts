@@ -3,7 +3,30 @@
 // Effects and conditions use the grammar of src/core/types.ts. World numbers are `stat` effects with the
 // codes below; weight changes of other events are `stat` effects named `weight:<id>` (proposal: a real
 // `weight` effect, see the M0-b events report).
-import type { ContinentId, CountryId, Effect, EventId } from '../types';
+import type { Condition, ContinentId, CountryId, Effect, EventId } from '../types';
+
+/**
+ * How the effects of an event row read (code-plan §5.2), in the event files:
+ * - `{k:'event', id, open:true}` the row opens the event (verb `เรียก` `บังคับ` `เปิด` `ลูกโซ่` `→` in front)
+ * - `{k:'event', id}` with no `open` only refers to it (it is named, made likelier or sooner, or used as a form), it is not opened here
+ * - `{k:'pick', of}` "A หรือ B" or "A / B": exactly one branch happens (`label` names the case, `weight` is only set when the docs give one)
+ * - `{k:'if', cond, then}` "ถ้า … เกิดแล้ว: …", "… เมื่อถึงยุค 4", "(… หลัง DR-01)": the effects only apply when the condition holds
+ * - `{k:'replace', from, to}` "แทน WR-01 ด้วย WR-22"
+ * A risk or a closeness (`PL-03 เสี่ยง` `WR-03 ใกล้`) and a refusal (`END-09 ไม่เปิด` `ป้องกัน END-04`) are kept as `label`, never as an event effect.
+ */
+
+/**
+ * A condition of the event files. It is a `Condition` of src/core/types.ts whose `event` atom may also say which
+ * sub-path of the event counts (`WR-04 ก)` → `outcome:'a'`) and how close it is (`ใกล้เกิด` → `phase:'near'`, `กำลังเดิน` → `'running'`).
+ * Every WorldCond is a Condition: a reader that ignores the two extra fields still compiles. Proposal for the contract: add both
+ * optional fields to `{k:'event'}` in types.ts and drop this type.
+ */
+export type WorldCond =
+  | { k: 'event'; id: EventId; happened: boolean; outcome?: 'a' | 'b' | 'c'; phase?: 'near' | 'running' }
+  | { k: 'and'; of: WorldCond[] }
+  | { k: 'or'; of: WorldCond[] }
+  | { k: 'not'; of: WorldCond }
+  | Exclude<Condition, { k: 'event' } | { k: 'and' } | { k: 'or' } | { k: 'not' }>;
 
 /** Importance mark of a world event: ⭐ changes the map · ● big · ○ small. Sets chance per decade and the cap. */
 export type Mark = '⭐' | '●' | '○';
@@ -85,6 +108,14 @@ export interface WorldEvent {
   /** at least one of these events must have happened (ids in the condition cell, not the event itself) */
   needs: EventId[];
   thr: VarCond[];
+  /**
+   * The whole condition cell as a tree (era, DFC, keys, variable thresholds and events joined with and / or), the one the core reads.
+   * `needs` and `thr` stay as the flat view the doc-level sim reads: an `or` of a threshold and an event shows up there as both,
+   * which the sim reads as "and". A leaf `{k:'text'}` is prose the parser could not read (it is in _unparsed/events.md). Absent when the cell holds only the era.
+   */
+  cond?: WorldCond;
+  /** Prose of the condition cell kept on purpose out of `cond`: the pair and the fuse of a war (`จักรกล × มังกร · เรือเหาะเก็บศิลาลอย`). */
+  condNote?: string;
   /** DFC window from `DFC ≥ n` / `DFC = n` in the condition cell */
   dfc?: [number, number];
   /** keys one side must hold (`กุญแจ 5+ ชิ้น`) */
@@ -240,7 +271,10 @@ export interface FlagDef {
 export interface Closure {
   trigger: EventId;
   close: EventId[];
+  /** closed event → the branch event that takes its place (the pairs the doc-level sim holds) */
   replace: { from: EventId; to: EventId }[];
+  /** every other `X → Y` of the แทนที่ row: the successor is a world event (`WR-01 → WR-22`), a named thing (`DR-11 → พิธีไว้อาลัยมหาศักดิ์สิทธิ์`) or nobody (`ไม่มีผู้สืบทอด`) */
+  swaps: { from: EventId | string; to: EventId | string; text: string }[];
   /** ids the docs list as staying open, to find clashes with `close` */
   keep: EventId[];
 }
@@ -334,6 +368,8 @@ export interface LocalEvent {
   countries: CountryId[];
   dependsText: string;
   reads: LocalRead[];
+  /** the dependency cell as a tree: `WR-24 ใกล้เกิด หรือธุลีทิพย์ใกล้ขาด` → or[event WR-24 near, text]. A leaf `text` is in _unparsed/events.md. */
+  depends: WorldCond;
   npcs: LocalNpc[];
   whatText: string;
   resultText: string;
