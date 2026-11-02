@@ -53,7 +53,7 @@ export function badSettings(patch: Partial<Settings>): string | null {
   if (patch.speed !== undefined && !SPEEDS.includes(patch.speed)) return `ไม่รู้จักความเร็ว ${String(patch.speed)}`;
   if (patch.attention !== undefined && !ATTENTION.includes(patch.attention)) return `ไม่รู้จักความถี่ที่เกมเรียก ${String(patch.attention)}`;
   if (patch.lang !== undefined && patch.lang !== 'th') return `ไม่รู้จักภาษา ${String(patch.lang)}`;
-  if (patch.llm !== undefined) for (const [k, v] of Object.entries(patch.llm)) if (!['setup', 'director', 'epitaph'].includes(k) || typeof v !== 'boolean') return `สวิตช์ LLM ${k} ไม่ถูกต้อง`;
+  if (patch.llm !== undefined) for (const [k, v] of Object.entries(patch.llm)) if (!['master', 'setup', 'director', 'epitaph'].includes(k) || typeof v !== 'boolean') return `สวิตช์ LLM ${k} ไม่ถูกต้อง`;
   return null;
 }
 
