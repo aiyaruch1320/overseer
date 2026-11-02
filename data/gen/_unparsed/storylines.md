@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: storylines
 
-226 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+225 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -16,7 +16,6 @@
 | docs/lore/storylines/24-economy.md:65 | tr.a6 c): ค้าสิ่งที่ทำร้ายเผ่าหนึ่ง (ล่าสัตว์เพื่อหนัง จับภูต ค้าคนตามท่าทีของประเทศใน 10-bondage.md) |  |
 | docs/lore/storylines/24-economy.md:102 | wk.a3 a): ไม่ถือที่ดินได้ถ้าเป็นชั้น 2 |  |
 | docs/lore/storylines/27-bondage.md:49 | ab.a1 a): ความเสี่ยง `c_wanted` ในประเทศท่าที D L M 20% |  |
-| docs/lore/storylines/01-human.md:43 | hu.b1: ถิ่นมีสงคราม | text in condition |
 | docs/lore/storylines/01-human.md:50 | hu.a3: ริมน้ำ | text in condition |
 | docs/lore/storylines/01-human.md:50 | hu.a3: ทุ่งราบหลัง | text in condition |
 | docs/lore/storylines/01-human.md:50 | hu.a3: เหตุการณ์ ⭐ | text in condition |

@@ -391,7 +391,7 @@ describe('H1: a condition stays with its result', () => {
   const ifs = (effects: EffectX[]) => effects.filter((e) => e.k === 'if');
   it('wraps the examples of the review', () => {
     // 01-human.md:43 hu.b1 ข: the war orphan only where there is a war
-    expect(ifs(choiceOf('hu.b1', 'b').effects)).toEqual([{ k: 'if', cond: { k: 'text', text: 'ถิ่นมีสงคราม' }, then: [{ k: 'grant', kind: 'curse', id: 'nc_war_orphan' }] }]);
+    expect(ifs(choiceOf('hu.b1', 'b').effects)).toEqual([{ k: 'if', cond: { k: 'place', kinds: ['war'] }, then: [{ k: 'grant', kind: 'curse', id: 'nc_war_orphan' }] }]);
     expect(choiceOf('hu.b1', 'b').effects.some((e) => e.k === 'grant')).toBe(false);
     // 00-convergence.md:40 cv.1 ก
     expect(ifs(choiceOf('cv.1', 'a').effects)).toEqual([{ k: 'if', cond: { k: 'event', id: 'SF-08', happened: true }, then: [{ k: 'grant', kind: 'job', id: 'ruin_city_lord' }] }]);

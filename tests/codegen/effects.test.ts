@@ -167,7 +167,7 @@ describe('a condition stays with the result it belongs to (review H1)', () => {
   it('wraps "ถ้า … <code>" and "<code> เมื่อ …" in an if', () => {
     // 01-human.md:43 hu.b1 ข
     expect(parseCell('ครอบครัวยากจน · ถ้าถิ่นมีสงครามได้ `nc_war_orphan`', ids).effects).toEqual([
-      { k: 'if', cond: { k: 'text', text: 'ถิ่นมีสงคราม' }, then: [{ k: 'grant', kind: 'curse', id: 'nc_war_orphan' }] },
+      { k: 'if', cond: { k: 'place', kinds: ['war'] }, then: [{ k: 'grant', kind: 'curse', id: 'nc_war_orphan' }] },
     ]);
     // 00-convergence.md:40 cv.1 ก
     expect(parseCell('`ns_refugee_lead` · เปิดอาชีพ `ruin_city_lord` เมื่อ SF-08 เกิด', ids).effects).toEqual([
@@ -230,5 +230,18 @@ describe('a label is never empty or opening with "หรือ" (review L1)', ()
     expect(parseChoice('a', '45 `soldier` หรือ `mercenary`', ids).choice.label).toBe('soldier หรือ mercenary');
     expect(parseChoice('b', '30 `smith` หรือช่างล้อมเมือง · `ns_siege_craft`', ids).choice.label).toBe('smith หรือช่างล้อมเมือง');
     expect(parseChoice('b', '30 `tamer` หรือ `courier` (นก)', ids).choice.label).toBe('tamer หรือ courier (นก)');
+  });
+});
+
+describe('condition forms for place, faith, sign, bond and counts (M0-c2)', () => {
+  it('reads each form', async () => {
+    const { parseConditionX } = await import('../../scripts/codegen/lib/effects');
+    expect(parseConditionX('ถิ่นติดทะเล', ids)).toEqual({ k: 'place', kinds: ['coast'] });
+    expect(parseConditionX('อยู่เมืองใหญ่', ids)).toEqual({ k: 'place', kinds: ['city'] });
+    expect(parseConditionX('ถิ่นมี `war`', ids)).toEqual({ k: 'place', kinds: ['war'] });
+    expect(parseConditionX('ศาสนา `faith.07`', ids)).toEqual({ k: 'faith', ids: ['faith.07'] });
+    expect(parseConditionX('ดวง `sign_night`', ids)).toEqual({ k: 'sign', ids: ['night'] });
+    expect(parseConditionX('สายสหายระดับ 3 ขึ้นไป', ids)).toEqual({ k: 'bond', line: 'สหาย', level: 3 });
+    expect(parseConditionX('เดินทางครบ 7 ทวีป', ids)).toEqual({ k: 'count', what: 'travel.continents', min: 7 });
   });
 });

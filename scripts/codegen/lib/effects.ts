@@ -162,6 +162,9 @@ const TOKEN = new RegExp(
     `พวกพ้องระดับ\\s*(\\d)\\s*ขึ้นไป`, // 25 ally level
     `(?<![${TH}])(ผู้ถูกอัญเชิญ|ผู้กลับชาติ)(?![${TH}])`, // 26 summoned / reincarnated
     `(?<![${TH}])(?:อยู่)?(?:ใน)?(?:ทวีป)?(${CONTINENT_WORDS.map(([w]) => w).join('|')})(?![${TH}])`, // 27 continent by name
+    `(?:ถิ่น|อยู่)(?:ที่)?(?:ติด|มี|เป็น|ริม|ใน)?\\s*(ชายฝั่ง|ทะเล|แม่น้ำ|เมืองใหญ่|สงคราม|ทุพภิกขภัย|โรคระบาด)`, // 28 place kind
+    `สาย([${TH}]+?)ระดับ\\s*(\\d)(?:\\s*ขึ้นไป)?`, // 29 bond line · 30 level
+    `(เดินทาง|ไปเยือน|ชนะศึก|ชนะ)ครบ\\s*(\\d+)\\s*(ทวีป|ประเทศ|ครั้ง)`, // 31 verb · 32 n · 33 unit
   ].join('|'),
   'g',
 );
@@ -181,6 +184,9 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
         const level = Number(m[3]) + (m[2] === '>' ? 1 : 0);
         out.push({ at, end, cond: wrap({ k: 'has', kind: kindOf(id, ids), id, level }) });
       } else if (m[4]) out.push({ at, end, cond: wrap({ k: 'has', kind: kindOf(id, ids), id, level: Number(m[4]) }) });
+      else if (/^faith\.\d\d$/.test(id)) out.push({ at, end, cond: wrap({ k: 'faith', ids: [id] }) });
+      else if (/^sign_/.test(id)) out.push({ at, end, cond: wrap({ k: 'sign', ids: [id.slice(5)] }) });
+      else if (FLAG_WORDS.has(id) && /ถิ่น(?:มี|เป็น)?\s*$/.test(before)) out.push({ at, end, cond: wrap({ k: 'place', kinds: [id] }) });
       else {
         const lvl = ids.aptLevel(id);
         out.push({ at, end, cond: wrap(lvl ? { k: 'has', kind: 'aptitude', id: lvl.apt, level: lvl.level } : { k: 'has', kind: kindOf(id, ids), id }) });
@@ -214,6 +220,9 @@ function atomsOf(text: string, ids: IdIndex): Atom[] {
     else if (m[21] || m[22]) out.push({ at, end, cond: { k: 'age', min: Number(m[21] ?? m[22]) } });
     else if (m[23]) out.push({ at, end, cond: { k: 'cmp', stat: 'magic', op: '>=', value: Number(m[24]), label: 'เวท' } });
     else if (m[25]) out.push({ at, end, cond: { k: 'cmp', stat: 'allyLevel', op: '>=', value: Number(m[25]), label: 'พวกพ้องระดับ' } });
+    else if (m[28]) out.push({ at, end, cond: wrap({ k: 'place', kinds: [PLACE_WORDS[m[28]]] }) });
+    else if (m[29]) out.push({ at, end, cond: wrap({ k: 'bond', line: m[29], level: Number(m[30]) }) });
+    else if (m[31]) out.push({ at, end, cond: { k: 'count', what: COUNT_WHAT[`${m[31]}.${m[33]}`] ?? `${m[31]}.${m[33]}`, min: Number(m[32]) } });
   }
   return out;
 }
@@ -276,6 +285,10 @@ export function parseCondition(text: string, ids: IdIndex): Condition | null {
 
 /** Country flags of the world state (code-plan §6.1) that the docs write in ticks. */
 const FLAG_WORDS = new Set(['war', 'famine', 'plague', 'golden', 'fallen', 'god_ruin']);
+/** `ถิ่นติดทะเล` `อยู่เมืองใหญ่` `ถิ่นมีสงคราม` → place kinds (Condition `place`). */
+const PLACE_WORDS: Record<string, string> = { ชายฝั่ง: 'coast', ทะเล: 'coast', แม่น้ำ: 'river', เมืองใหญ่: 'city', สงคราม: 'war', ทุพภิกขภัย: 'famine', โรคระบาด: 'plague' };
+/** `เดินทางครบ 7 ทวีป` → count `travel.continents`. */
+const COUNT_WHAT: Record<string, string> = { 'เดินทาง.ทวีป': 'travel.continents', 'ไปเยือน.ทวีป': 'travel.continents', 'เดินทาง.ประเทศ': 'travel.countries', 'ไปเยือน.ประเทศ': 'travel.countries', 'ชนะศึก.ครั้ง': 'battles.won', 'ชนะ.ครั้ง': 'battles.won' };
 
 function kindOf(id: string, ids: IdIndex): IdKind {
   const k = ids.kind(id);

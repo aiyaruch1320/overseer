@@ -69,8 +69,10 @@
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ถิ่นมีสงคราม"
+         "k": "place",
+         "kinds": [
+          "war"
+         ]
         },
         "then": [
          {
