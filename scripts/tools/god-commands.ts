@@ -15,7 +15,7 @@ import type { Ctx, Game, GameData } from '../../src/core/game';
 import { actsOf, cardsOf, fateTargets, grantPrice, implementedMiracles, kindOf, nameOfKind, strangeOptions } from '../../src/core/god/acts';
 import { chestLimit, currentChest, inWindow, offerCards } from '../../src/core/god';
 import { crisesWaiting, findAlly } from '../../src/core/bonds';
-import { circleLines, conjureArgText, conjureLines, conjureOption, parseConjure, vowArgText, vowLines, vowOption, vowTable } from './god-conjure';
+import { circleLines, conjureArgText, unlink, conjureLines, conjureOption, parseConjure, vowArgText, vowLines, vowOption, vowTable } from './god-conjure';
 import { npcsAt } from '../../src/core/npc';
 import { callReason, fxSplit, labels, plainName, reasonText, scrub, sentence } from '../../src/core/text';
 import { CHEST_KIND_TH, FLAG_TH, PENDING_NOTE, TIER_TH, WHY_TH } from '../../src/core/text/tuning';
@@ -184,6 +184,7 @@ function costWords(c: unknown): string | undefined {
 }
 
 const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);
+
 /** A number of the income table of the god (what a granted prayer gives back). */
 const incomeOf = (data: GameData, key: string): number => ((data.god?.items as { income?: Record<string, number> } | undefined)?.income?.[key]) ?? 0;
 const str = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
@@ -200,7 +201,7 @@ export interface PreviewEnv {
 }
 
 const MIRACLES = (data: GameData) =>
-  ((data.god?.items as { miracles?: { list: { id: string; immediate?: string; flagsClear?: string[]; cost: { dread?: number } }[] } } | undefined)?.miracles?.list ?? []);
+  ((data.god?.items as { miracles?: { list: { id: string; tier?: string; world?: string; story?: string; immediate?: string; flagsClear?: string[]; cost: { dread?: number } }[] } } | undefined)?.miracles?.list ?? []);
 
 /** The text of a whisper effect as the player reads it: the numbers stay (×2, +2), a branch word in brackets stays as a word. */
 function whisperEffect(data: GameData, text: string): string {
@@ -302,7 +303,10 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
         out.push(`เมื่อเหตุเกิดขึ้น ท่านได้ความหวาดกลัวคืน ${back} (ราคาสุทธิ ความหวาดกลัว ${dread - back})`);
       }
       const row = typeof p.id === 'string' ? MIRACLES(data).find((m) => m.id === p.id) : undefined;
-      if (row?.immediate && typeof p.left !== 'string' && !p.sealed) out.push(`ผลที่คาด: ${scrub(data, row.immediate)}`);
+      if (row?.immediate && typeof p.left !== 'string' && !p.sealed) out.push(`ผลที่คาด: ${scrub(data, unlink(row.immediate))}`);
+      // the grand miracle tells what it does to the world and to the ones who see it (M4 review M2): the price is all the light, so the player should know what it buys
+      if (row?.tier === 'มหา' && row.world) out.push(`ผลต่อโลก: ${scrub(data, unlink(row.world), { keepNumbers: true })}`);
+      if (row?.tier === 'มหา' && row.story) out.push(`ผลต่อเรื่อง: ${scrub(data, unlink(row.story))}`);
       if (row?.flagsClear?.length && env.flags) {
         const have = Object.values(env.flags).flat();
         const gone = row.flagsClear.filter((f) => !have.includes(f));
@@ -483,6 +487,10 @@ export function refOf(game: Game, data: GameData): TargetRef {
   };
   const byName = (m: Map<string, string>, t: string) => m.get(t) ?? [...m].find(([, n]) => n.includes(t))?.[0];
   const countries = inverse(L.kind.country);
+  // the log calls a country by its title (`สาธารณรัฐวิศวกร`) and the map by its name (`ดอร์ไซต์`): either is a target (M4 review M5)
+  for (const c of (data.countries?.items as { id: string; name?: string; title?: string }[] | undefined) ?? []) {
+    for (const n of [c.name, c.title]) if (n && !countries.has(n)) countries.set(n, c.id);
+  }
   const npcs = inverse(L.npc);
   const continents = new Map<string, string>(((data.continents?.items as { continents?: { id: string; name: string }[] } | undefined)?.continents ?? []).map((c) => [c.name, c.id]));
   const ctx = game.ctx;
