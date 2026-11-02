@@ -83,7 +83,8 @@ function playLife(data: GameData, seed: number, setting: Settings['attention'], 
   }
   const edges = [born, ...secs, death];
   const quiet = Math.max(...edges.slice(1).map((x, i) => x - edges[i]));
-  const missed = log.filter((e) => e.sys === 'attention' && e.kind === 'missed');
+  // a card the death closed is not a card that did not make it: the character could no longer answer it (R6)
+  const missed = log.filter((e) => e.sys === 'attention' && e.kind === 'missed' && !e.data.death);
   return {
     stops: calls.filter((c) => c.data.call === 'stop').length,
     cards: calls.filter((c) => c.data.call === 'card').length,
