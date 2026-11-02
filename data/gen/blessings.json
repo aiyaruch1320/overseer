@@ -1,0 +1,7124 @@
+{
+ "version": "32f9f8344ccc",
+ "sources": [
+  "docs/_generated/character-catalog/blessings.md",
+  "docs/systems/character/05-new-blessings.md",
+  "docs/systems/character/12-job-support.md",
+  "docs/systems/character/17-companion-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": [
+  {
+   "id": "b_bull",
+   "name": "พรแห่งกระทิง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "pow+1",
+   "desc": "กำลังวังชาเพิ่มขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:9"
+  },
+  {
+   "id": "b_giant",
+   "name": "พรแห่งยักษ์",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "fxRaw": "pow+2",
+   "desc": "ยกเกวียนได้ด้วยมือเดียว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:10"
+  },
+  {
+   "id": "b_titan",
+   "name": "พรแห่งไททัน",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    },
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "pow+3 vit+1",
+   "desc": "พลังของเผ่าก่อนยุคเทพ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:11"
+  },
+  {
+   "id": "b_spark",
+   "name": "ประกายเวท",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "mag+1",
+   "desc": "นิ้วมีประกายไฟเล็ก ๆ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:12"
+  },
+  {
+   "id": "b_arcane",
+   "name": "พรแห่งอาคม",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "fxRaw": "mag+2",
+   "desc": "มานาไหลเวียนดั่งแม่น้ำ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:13"
+  },
+  {
+   "id": "b_starmage",
+   "name": "พรแห่งดวงดาว",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    },
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "mag+3 int+1",
+   "desc": "ดาวทั้งฟ้ากระซิบสูตรเวท",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:14"
+  },
+  {
+   "id": "b_hare",
+   "name": "พรแห่งกระต่าย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "spd+1",
+   "desc": "ขาไวขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:15"
+  },
+  {
+   "id": "b_falcon",
+   "name": "พรแห่งเหยี่ยว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "fxRaw": "spd+2",
+   "desc": "เร็วดั่งเหยี่ยวโฉบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:16"
+  },
+  {
+   "id": "b_windgod",
+   "name": "พรแห่งเทพวายุ",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    },
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "spd+3 luk+1",
+   "desc": "ลมพัดหนุนทุกก้าว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:17"
+  },
+  {
+   "id": "b_clover",
+   "name": "ใบโคลเวอร์สี่แฉก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "luk+1",
+   "desc": "โชคเล็ก ๆ ตามติด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:18"
+  },
+  {
+   "id": "b_fortune",
+   "name": "พรแห่งโชคลาภ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "fxRaw": "luk+2",
+   "desc": "เหรียญหล่นใส่หัวบ่อย ๆ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:19"
+  },
+  {
+   "id": "b_destiny",
+   "name": "พรแห่งดวงชะตา",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hero_luck"
+    }
+   ],
+   "fxRaw": "luk+3 #hero_luck",
+   "desc": "ชะตาเอียงเข้าหาเสมอ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:20"
+  },
+  {
+   "id": "b_owl",
+   "name": "พรแห่งนกฮูก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "int+1",
+   "desc": "คิดรอบคอบขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:21"
+  },
+  {
+   "id": "b_wisdom",
+   "name": "พรแห่งเทพแห่งปัญญา",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "fxRaw": "int+2",
+   "desc": "ความรู้ซึมเข้าสมอง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:22"
+  },
+  {
+   "id": "b_omniscient",
+   "name": "พรแห่งผู้รู้แจ้ง",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seer"
+    }
+   ],
+   "fxRaw": "int+3 #seer",
+   "desc": "มองเห็นสิ่งที่คนอื่นมองไม่เห็น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:23"
+  },
+  {
+   "id": "b_oak",
+   "name": "พรแห่งต้นโอ๊ก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "vit+1",
+   "desc": "ร่างกายแข็งแรงขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:24"
+  },
+  {
+   "id": "b_mountain",
+   "name": "พรแห่งขุนเขา",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "hp",
+     "delta": 20
+    }
+   ],
+   "fxRaw": "vit+2 hp+20",
+   "desc": "มั่นคงดั่งภูผา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:25"
+  },
+  {
+   "id": "b_immortalbody",
+   "name": "พรแห่งร่างอมตะ",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "regen"
+    }
+   ],
+   "fxRaw": "vit+3 #regen",
+   "desc": "แผลหายในชั่วข้ามคืน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:26"
+  },
+  {
+   "id": "b_lightward",
+   "name": "แสงคุ้มภัย",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "light"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "undead_bane"
+    }
+   ],
+   "fxRaw": "#light #undead_bane",
+   "desc": "แสงอ่อน ๆ ไล่สิ่งชั่วร้าย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:27"
+  },
+  {
+   "id": "b_flameward",
+   "name": "ไฟไม่ระคาย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire_res"
+    }
+   ],
+   "fxRaw": "#fire_res",
+   "desc": "เดินผ่านกองไฟได้สบาย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:28"
+  },
+  {
+   "id": "b_frostward",
+   "name": "ความอบอุ่นนิรันดร์",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cold_res"
+    }
+   ],
+   "fxRaw": "#cold_res",
+   "desc": "ไม่หนาวแม้ในพายุหิมะ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:29"
+  },
+  {
+   "id": "b_sunward",
+   "name": "ร่มเงาแห่งเทพ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "heat_res"
+    }
+   ],
+   "fxRaw": "#heat_res",
+   "desc": "แดดไม่แผดเผา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:30"
+  },
+  {
+   "id": "b_poisonward",
+   "name": "เลือดต้านพิษ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "poison_res"
+    }
+   ],
+   "fxRaw": "#poison_res",
+   "desc": "พิษงูก็แค่น้ำหวาน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:31"
+  },
+  {
+   "id": "b_curseward",
+   "name": "เกราะกันคำสาป",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "curse_ward"
+    }
+   ],
+   "fxRaw": "#curse_ward",
+   "desc": "คำสาปเด้งกลับ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:32"
+  },
+  {
+   "id": "b_beastward",
+   "name": "กลิ่นที่สัตว์ร้ายเกรงกลัว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "monster_ward"
+    }
+   ],
+   "fxRaw": "#monster_ward",
+   "desc": "มอนสเตอร์เลี่ยงทาง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:33"
+  },
+  {
+   "id": "b_plagueward",
+   "name": "ร่างกายไร้โรค",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "plague_res"
+    }
+   ],
+   "fxRaw": "#plague_res",
+   "desc": "โรคระบาดไม่กล้าแตะ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:34"
+  },
+  {
+   "id": "b_waterwalk",
+   "name": "ลมหายใจใต้น้ำ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water_breath"
+    }
+   ],
+   "fxRaw": "#water_breath",
+   "desc": "หายใจในน้ำได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:35"
+  },
+  {
+   "id": "b_laststand",
+   "name": "รอดตายหนึ่งครา",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "last_stand"
+    }
+   ],
+   "fxRaw": "#last_stand",
+   "desc": "เมื่อใกล้ตาย จะรอดหวุดหวิดหนึ่งครั้ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:36"
+  },
+  {
+   "id": "b_aegis",
+   "name": "โล่ศักดิ์สิทธิ์",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guard"
+    }
+   ],
+   "fxRaw": "vit+1 #guard",
+   "desc": "โล่ใสโปร่งปกป้องร่าง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:37"
+  },
+  {
+   "id": "b_angel",
+   "name": "ทูตสวรรค์พิทักษ์",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guardian_angel"
+    }
+   ],
+   "fxRaw": "luk+1 #guardian_angel",
+   "desc": "มีใครบางคนคอยปัดคมดาบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:38"
+  },
+  {
+   "id": "b_nighteye",
+   "name": "ตาแมวในความมืด",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "darkvision"
+    }
+   ],
+   "fxRaw": "#darkvision",
+   "desc": "มองเห็นในที่มืด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:39"
+  },
+  {
+   "id": "b_ironskin",
+   "name": "ผิวเหล็ก",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guard"
+    }
+   ],
+   "fxRaw": "vit+2 #guard",
+   "desc": "มีดทื่อเมื่อแทง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:40"
+  },
+  {
+   "id": "b_dragonscale",
+   "name": "เกล็ดมังกร",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire_res"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "scales"
+    }
+   ],
+   "fxRaw": "vit+2 #fire_res #scales",
+   "desc": "ผิวงอกเกล็ดแข็ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:41"
+  },
+  {
+   "id": "b_mindward",
+   "name": "จิตไม่หวั่นไหว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "mind_ward"
+    }
+   ],
+   "fxRaw": "#mind_ward",
+   "desc": "มายาและเสน่ห์ใช้ไม่ได้ผล",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:42"
+  },
+  {
+   "id": "b_lightningrod",
+   "name": "ผู้ไม่กลัวอัสนี",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lightning"
+    }
+   ],
+   "fxRaw": "#lightning",
+   "desc": "ฟ้าผ่าแล้วแค่ผมชี้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:43"
+  },
+  {
+   "id": "b_seacalm",
+   "name": "ทะเลสงบเมื่อออกเรือ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sea"
+    }
+   ],
+   "fxRaw": "#sea",
+   "desc": "คลื่นลมเป็นใจ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:44"
+  },
+  {
+   "id": "b_hidden",
+   "name": "ซ่อนจากสายตาศัตรู",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stealth"
+    }
+   ],
+   "fxRaw": "#stealth",
+   "desc": "ศัตรูมองข้ามไป",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:45"
+  },
+  {
+   "id": "b_holyblood",
+   "name": "เลือดศักดิ์สิทธิ์",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "holy"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "light"
+    },
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 10
+    }
+   ],
+   "fxRaw": "#holy #light belief+10",
+   "desc": "เลือดเรืองแสงจาง ๆ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:46"
+  },
+  {
+   "id": "b_guidingstar",
+   "name": "ดาวนำทาง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "navigator"
+    }
+   ],
+   "fxRaw": "luk+1 #navigator",
+   "desc": "ไม่เคยหลงทาง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:47"
+  },
+  {
+   "id": "b_treasurenose",
+   "name": "จมูกล่าสมบัติ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "treasure"
+    }
+   ],
+   "fxRaw": "#treasure",
+   "desc": "ได้กลิ่นทองใต้ดิน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:48"
+  },
+  {
+   "id": "b_goldhand",
+   "name": "มือแตะทอง",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 50
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "gold_luck"
+    }
+   ],
+   "fxRaw": "gold+50 #gold_luck",
+   "desc": "จับอะไรก็เป็นเงิน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:49"
+  },
+  {
+   "id": "b_secondchance",
+   "name": "โอกาสครั้งที่สอง",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "second_chance"
+    }
+   ],
+   "fxRaw": "#second_chance",
+   "desc": "ทอยใหม่เมื่อพลาดครั้งสำคัญ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:50"
+  },
+  {
+   "id": "b_fateweaver",
+   "name": "ผู้ถักทอชะตา",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fate_shift"
+    }
+   ],
+   "fxRaw": "luk+1 #fate_shift",
+   "desc": "ฝืนชะตาใช้พลังน้อยลง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:51"
+  },
+  {
+   "id": "b_luckystar",
+   "name": "เกิดใต้ดาวมงคล",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "luk+1",
+   "desc": "ดาวมงคลส่องตอนเกิด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:52"
+  },
+  {
+   "id": "b_fourwinds",
+   "name": "โชคสี่ทิศ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "luk+1 spd+1",
+   "desc": "ทุกทิศเป็นทิศมงคล",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:53"
+  },
+  {
+   "id": "b_coinflip",
+   "name": "เหรียญออกหัวเสมอ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "coin"
+    }
+   ],
+   "fxRaw": "#coin",
+   "desc": "การพนันมักชนะ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:54"
+  },
+  {
+   "id": "b_ancestor",
+   "name": "มรดกบรรพบุรุษ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 100
+    }
+   ],
+   "fxRaw": "gold+100",
+   "desc": "พบหีบสมบัติของตระกูล",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:55"
+  },
+  {
+   "id": "b_rainbow",
+   "name": "ปลายรุ้ง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 30
+    },
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "gold+30 luk+1",
+   "desc": "เจอหม้อทองปลายรุ้ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:56"
+  },
+  {
+   "id": "b_harvest",
+   "name": "พืชผลอุดม",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "farm"
+    }
+   ],
+   "fxRaw": "gold+20 #farm",
+   "desc": "ปลูกอะไรก็งอกงาม",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:57"
+  },
+  {
+   "id": "b_merchantgod",
+   "name": "พรแห่งเทพพาณิชย์",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "trade"
+    }
+   ],
+   "fxRaw": "int+1 #trade",
+   "desc": "ค้าขายไม่เคยขาดทุน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:58"
+  },
+  {
+   "id": "b_charm",
+   "name": "เสน่ห์ดึงดูด",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    }
+   ],
+   "fxRaw": "#charm",
+   "desc": "คนเหลียวมอง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:59"
+  },
+  {
+   "id": "b_silvertongue",
+   "name": "ลิ้นเงิน",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    }
+   ],
+   "fxRaw": "int+1 #charm",
+   "desc": "พูดโน้มน้าวใครก็ได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:60"
+  },
+  {
+   "id": "b_beloved",
+   "name": "ผู้เป็นที่รัก",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 15
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    }
+   ],
+   "fxRaw": "fame+15 #charm",
+   "desc": "ทุกคนอยากช่วยเหลือ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:61"
+  },
+  {
+   "id": "b_truelove",
+   "name": "พรแห่งรักแท้",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "true_love"
+    }
+   ],
+   "fxRaw": "#true_love",
+   "desc": "จะได้พบรักแท้แน่นอน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:62"
+  },
+  {
+   "id": "b_fertile",
+   "name": "พรแห่งทายาท",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fertile"
+    }
+   ],
+   "fxRaw": "#fertile",
+   "desc": "ลูกหลานเต็มบ้าน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:63"
+  },
+  {
+   "id": "b_familybond",
+   "name": "สายใยครอบครัว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "family_bond"
+    }
+   ],
+   "fxRaw": "#family_bond",
+   "desc": "ครอบครัวไม่มีวันแตกแยก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:64"
+  },
+  {
+   "id": "b_leaderaura",
+   "name": "รัศมีผู้นำ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "leader"
+    }
+   ],
+   "fxRaw": "fame+10 #leader",
+   "desc": "ผู้คนอยากเดินตาม",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:65"
+  },
+  {
+   "id": "b_legendvoice",
+   "name": "เสียงเล่าขาน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 10
+    }
+   ],
+   "fxRaw": "fame+10",
+   "desc": "เรื่องราวถูกเล่าต่อ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:66"
+  },
+  {
+   "id": "b_friendmaker",
+   "name": "มิตรภาพไร้พรมแดน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "polyglot"
+    }
+   ],
+   "fxRaw": "#polyglot",
+   "desc": "คุยกับทุกเผ่ารู้เรื่อง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:67"
+  },
+  {
+   "id": "b_nobleblood",
+   "name": "สายเลือดขุนนาง",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 50
+    },
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "flag",
+     "id": "noble"
+    }
+   ],
+   "fxRaw": "gold+50 fame+10 +flag:noble",
+   "desc": "ราชสำนักรับรองตระกูล",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:68"
+  },
+  {
+   "id": "b_peacemaker",
+   "name": "ผู้ไกล่เกลี่ย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "peace"
+    }
+   ],
+   "fxRaw": "#peace",
+   "desc": "ทะเลาะกับใครก็คืนดีได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:69"
+  },
+  {
+   "id": "b_heroname",
+   "name": "นามแห่งวีรชน",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hero_luck"
+    }
+   ],
+   "fxRaw": "fame+30 #hero_luck",
+   "desc": "ชื่อนี้จะถูกจดจำ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:70"
+  },
+  {
+   "id": "b_lucid",
+   "name": "ฝันชัดแจ่ม",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lucid"
+    }
+   ],
+   "fxRaw": "#lucid",
+   "desc": "ข้อความในฝันชัดเจนขึ้นมาก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:71"
+  },
+  {
+   "id": "b_memory",
+   "name": "ความจำเลิศ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "scholar"
+    }
+   ],
+   "fxRaw": "int+1 #scholar",
+   "desc": "อ่านครั้งเดียวจำได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:72"
+  },
+  {
+   "id": "b_insight",
+   "name": "ตาทิพย์",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seer"
+    }
+   ],
+   "fxRaw": "#seer",
+   "desc": "เห็นลางล่วงหน้า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:73"
+  },
+  {
+   "id": "b_oracleear",
+   "name": "หูสวรรค์",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oracle"
+    }
+   ],
+   "fxRaw": "belief+20 #oracle",
+   "desc": "ได้ยินเสียงเทพชัดเจน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:74"
+  },
+  {
+   "id": "b_calmmind",
+   "name": "จิตสงบ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "temper",
+     "delta": -20
+    }
+   ],
+   "fxRaw": "temper-20",
+   "desc": "ความโกรธมลายหาย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:75"
+  },
+  {
+   "id": "b_courage",
+   "name": "หัวใจสิงห์",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": 30
+    }
+   ],
+   "fxRaw": "brave+30",
+   "desc": "ความกลัวหายไป",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:76"
+  },
+  {
+   "id": "b_mercy",
+   "name": "หัวใจเมตตา",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": 30
+    }
+   ],
+   "fxRaw": "kind+30",
+   "desc": "เห็นใจผู้อื่นมากขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:77"
+  },
+  {
+   "id": "b_focus",
+   "name": "สมาธิแน่วแน่",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "int+1 mag+1",
+   "desc": "จดจ่อได้ยาวนาน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:78"
+  },
+  {
+   "id": "b_polymath",
+   "name": "อัจฉริยะรอบด้าน",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "copycat"
+    }
+   ],
+   "fxRaw": "int+2 #copycat",
+   "desc": "เรียนอะไรก็เก่ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:79"
+  },
+  {
+   "id": "b_quicklearn",
+   "name": "เรียนรู้ไว",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fast_learner"
+    }
+   ],
+   "fxRaw": "#fast_learner",
+   "desc": "ได้ทักษะใหม่บ่อยขึ้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:80"
+  },
+  {
+   "id": "b_trutheye",
+   "name": "ดวงตาเห็นความจริง",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "truth"
+    }
+   ],
+   "fxRaw": "#truth",
+   "desc": "มองทะลุคำโกหก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:81"
+  },
+  {
+   "id": "b_inspire",
+   "name": "แรงบันดาลใจ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "curious",
+     "delta": 20
+    },
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "curious+20 luk+1",
+   "desc": "ไอเดียผุดไม่หยุด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:82"
+  },
+  {
+   "id": "b_longevity",
+   "name": "อายุยืน",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "longevity"
+    }
+   ],
+   "fxRaw": "#longevity",
+   "desc": "อายุยืนกว่าปกติ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:83"
+  },
+  {
+   "id": "b_regen",
+   "name": "ฟื้นตัวไว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "hp",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "regen"
+    }
+   ],
+   "fxRaw": "hp+20 #regen",
+   "desc": "บาดแผลหายเร็ว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:84"
+  },
+  {
+   "id": "b_youth",
+   "name": "ความเยาว์วัยนิรันดร์",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "longevity"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "youth"
+    }
+   ],
+   "fxRaw": "#longevity #youth",
+   "desc": "หน้าไม่แก่ไปตามวัย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:85"
+  },
+  {
+   "id": "b_strongheart",
+   "name": "หัวใจแกร่ง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "stat",
+     "stat": "hp",
+     "delta": 10
+    }
+   ],
+   "fxRaw": "vit+1 hp+10",
+   "desc": "หัวใจเต้นแรง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:86"
+  },
+  {
+   "id": "b_beauty",
+   "name": "รูปงาม",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beauty"
+    }
+   ],
+   "fxRaw": "#charm #beauty",
+   "desc": "งดงามจนเป็นที่เลื่องลือ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:87"
+  },
+  {
+   "id": "b_tireless",
+   "name": "ไม่รู้จักเหนื่อย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "fxRaw": "spd+1 vit+1",
+   "desc": "เดินทางทั้งวันได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:88"
+  },
+  {
+   "id": "b_nightowl",
+   "name": "ตื่นในยามราตรี",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "darkvision"
+    }
+   ],
+   "fxRaw": "spd+1 #darkvision",
+   "desc": "กลางคืนคือเวลาของเรา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:89"
+  },
+  {
+   "id": "b_ironstomach",
+   "name": "กระเพาะเหล็ก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "poison_res"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "glutton"
+    }
+   ],
+   "fxRaw": "#poison_res #glutton",
+   "desc": "กินอะไรก็ไม่ท้องเสีย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:90"
+  },
+  {
+   "id": "b_wings",
+   "name": "ปีกแห่งเทพ",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "flight"
+    }
+   ],
+   "fxRaw": "spd+2 #flight",
+   "desc": "งอกปีกขนนกสีขาว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:91"
+  },
+  {
+   "id": "b_lungs",
+   "name": "ปอดยักษ์",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water_breath"
+    }
+   ],
+   "fxRaw": "vit+1 #water_breath",
+   "desc": "กลั้นหายใจได้ครึ่งวัน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:92"
+  },
+  {
+   "id": "b_swordgod",
+   "name": "พรแห่งเทพดาบ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "blade"
+    }
+   ],
+   "fxRaw": "pow+1 #blade",
+   "desc": "ดาบเชื่อฟังดั่งแขนขา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:93"
+  },
+  {
+   "id": "b_archergod",
+   "name": "พรแห่งเทพศร",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ranged"
+    }
+   ],
+   "fxRaw": "spd+1 #ranged",
+   "desc": "ศรไม่เคยพลาดเป้า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:94"
+  },
+  {
+   "id": "b_fury",
+   "name": "โทสะศักดิ์สิทธิ์",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "berserk"
+    }
+   ],
+   "fxRaw": "pow+2 #berserk",
+   "desc": "ยิ่งเจ็บยิ่งแกร่ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:95"
+  },
+  {
+   "id": "b_warcry",
+   "name": "เสียงคำรามแห่งสงคราม",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "leader"
+    }
+   ],
+   "fxRaw": "brave+20 #leader",
+   "desc": "ปลุกใจพวกพ้อง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:96"
+  },
+  {
+   "id": "b_dragonslayer",
+   "name": "ผู้ฆ่ามังกร",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dragon_bane"
+    }
+   ],
+   "fxRaw": "pow+1 #dragon_bane",
+   "desc": "มังกรรู้สึกหนาวสันหลัง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:97"
+  },
+  {
+   "id": "b_demonslayer",
+   "name": "ผู้ปราบมาร",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "demon_bane"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "holy"
+    }
+   ],
+   "fxRaw": "#demon_bane #holy",
+   "desc": "ปีศาจเกรงกลัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:98"
+  },
+  {
+   "id": "b_undeadslayer",
+   "name": "ผู้ส่งวิญญาณ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "undead_bane"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "light"
+    }
+   ],
+   "fxRaw": "#undead_bane #light",
+   "desc": "อันเดดสลายเมื่อสัมผัส",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:99"
+  },
+  {
+   "id": "b_beastlord",
+   "name": "ราชาแห่งพงไพร",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast_friend"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast"
+    }
+   ],
+   "fxRaw": "#beast_friend #beast",
+   "desc": "สัตว์ป่ายอมสยบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:100"
+  },
+  {
+   "id": "b_firetouch",
+   "name": "สัมผัสเพลิง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire"
+    }
+   ],
+   "fxRaw": "mag+1 #fire",
+   "desc": "ปลายนิ้วร้อนระอุ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:101"
+  },
+  {
+   "id": "b_frosttouch",
+   "name": "สัมผัสหิมะ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ice"
+    }
+   ],
+   "fxRaw": "mag+1 #ice",
+   "desc": "ลมหายใจเป็นไอเย็น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:102"
+  },
+  {
+   "id": "b_thundertouch",
+   "name": "สัมผัสอัสนี",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lightning"
+    }
+   ],
+   "fxRaw": "mag+1 #lightning",
+   "desc": "ผมชี้ตลอดเวลา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:103"
+  },
+  {
+   "id": "b_tidetouch",
+   "name": "สัมผัสกระแสน้ำ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water"
+    }
+   ],
+   "fxRaw": "mag+1 #water",
+   "desc": "น้ำไหลตามใจ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:104"
+  },
+  {
+   "id": "b_earthtouch",
+   "name": "สัมผัสพสุธา",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "earth"
+    }
+   ],
+   "fxRaw": "vit+1 #earth",
+   "desc": "ผืนดินตอบรับ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:105"
+  },
+  {
+   "id": "b_shadowstep",
+   "name": "ก้าวเงา",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stealth"
+    }
+   ],
+   "fxRaw": "spd+1 #stealth",
+   "desc": "หายตัวในเงาได้ชั่วครู่",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:106"
+  },
+  {
+   "id": "b_saintmark",
+   "name": "ตรานักบุญ",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "piety",
+     "delta": 30
+    },
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "holy"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "light"
+    }
+   ],
+   "fxRaw": "piety+30 belief+20 #holy #light",
+   "desc": "ตราเรืองแสงกลางหน้าผาก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:107"
+  },
+  {
+   "id": "b_prophetseed",
+   "name": "เมล็ดพันธุ์ศาสดา",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oracle"
+    }
+   ],
+   "fxRaw": "belief+30 #oracle",
+   "desc": "วันหนึ่งอาจเผยแผ่ศรัทธา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:108"
+  },
+  {
+   "id": "b_healerhands",
+   "name": "มือรักษา",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "heal"
+    }
+   ],
+   "fxRaw": "mag+1 #heal",
+   "desc": "สัมผัสแล้วแผลสมาน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:109"
+  },
+  {
+   "id": "b_raincaller",
+   "name": "ผู้เรียกฝน",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "farm"
+    }
+   ],
+   "fxRaw": "#water #farm",
+   "desc": "ฝนตกตามคำขอ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:110"
+  },
+  {
+   "id": "b_animaltongue",
+   "name": "ภาษาสัตว์",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast_friend"
+    }
+   ],
+   "fxRaw": "#beast_friend",
+   "desc": "คุยกับนกได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:111"
+  },
+  {
+   "id": "b_spiritfriend",
+   "name": "เพื่อนภูต",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "summon"
+    }
+   ],
+   "fxRaw": "#summon",
+   "desc": "มีภูตน้อยติดตาม",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:112"
+  },
+  {
+   "id": "b_worldtree",
+   "name": "พรแห่งต้นไม้โลก",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nature"
+    }
+   ],
+   "fxRaw": "mag+2 vit+1 #nature",
+   "desc": "รากของโลกโอบอุ้ม",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:113"
+  },
+  {
+   "id": "b_phoenix",
+   "name": "ขนนกฟีนิกซ์",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "rewind"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire_res"
+    }
+   ],
+   "fxRaw": "#rewind #fire_res",
+   "desc": "ฟื้นจากเถ้าถ่านได้หนึ่งครั้ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:114"
+  },
+  {
+   "id": "b_sacredflame",
+   "name": "เปลวไฟศักดิ์สิทธิ์",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "holy"
+    }
+   ],
+   "fxRaw": "#fire #holy",
+   "desc": "ไฟที่เผาเฉพาะความชั่ว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/blessings.md:115"
+  },
+  {
+   "id": "nb_sky_born",
+   "name": "เกิดใต้ท้องฟ้ามังกร",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fall_save"
+    }
+   ],
+   "fxRaw": "spd+1 #fall_save",
+   "desc": "",
+   "from": "เกิดในอัซการ์",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "AZ"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เด็กอัซการ์ถูกสอนให้ตกอย่างมีศิลปะ เมื่อตกจากที่สูงจะไม่ตายครั้งแรก",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:11"
+  },
+  {
+   "id": "nb_cloud_nap",
+   "name": "หลับบนเมฆ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_height_res"
+    }
+   ],
+   "fxRaw": "#fear_height_res",
+   "desc": "",
+   "from": "เกิดในอัซการ์ ไม่ใช่เผ่าปีก",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "AZ"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เด็กที่โตบนเกาะลอยฟ้าไม่กลัวที่สูง",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:12"
+  },
+  {
+   "id": "nb_ash_lung",
+   "name": "ปอดทนเถ้า",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ash_res"
+    }
+   ],
+   "fxRaw": "vit+1 #ash_res",
+   "desc": "",
+   "from": "เกิดในมอร์เฮเวน",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "MH"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ทะเลทรายเถ้าสอนให้ปอดทน",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:13"
+  },
+  {
+   "id": "nb_forge_born",
+   "name": "ลูกเตาหลอม",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire_res"
+    }
+   ],
+   "fxRaw": "pow+1 #fire_res",
+   "desc": "",
+   "from": "เกิดในคาซ-ดูรัม",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "KD"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "นอนข้างเตาตั้งแต่เกิด",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:14"
+  },
+  {
+   "id": "nb_tide_born",
+   "name": "ลูกกระแสน้ำ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water_breath_short"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sea"
+    }
+   ],
+   "fxRaw": "#water_breath_short #sea",
+   "desc": "",
+   "from": "เกิดในเนเรีย",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "NR"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ดำน้ำได้นานสองเท่าของคนปกติ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:15"
+  },
+  {
+   "id": "nb_open_road",
+   "name": "เกิดบนถนนทุ่งราบ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "wanderer"
+    }
+   ],
+   "fxRaw": "luk+1 #wanderer",
+   "desc": "",
+   "from": "เกิดในอัลเดรีย ระหว่างสงครามฟอร์เทีย",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "AL"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "บ้านย้ายตามศึก",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:16"
+  },
+  {
+   "id": "nb_gear_sense",
+   "name": "หูจับเฟือง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "mech_sense"
+    }
+   ],
+   "fxRaw": "int+1 #mech_sense",
+   "desc": "",
+   "from": "เกิดในเมคาเรีย",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "MK"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ได้ยินเครื่องจักรผิดปกติก่อนใคร",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:17"
+  },
+  {
+   "id": "nb_dust_blood",
+   "name": "เลือดทราย",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "heat_res"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "thirst_res"
+    }
+   ],
+   "fxRaw": "vit+1 #heat_res #thirst_res",
+   "desc": "",
+   "from": "เกิดในซาฮารัน",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "SH"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ทนกระหายได้นานเป็นสองเท่า",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:18"
+  },
+  {
+   "id": "nb_root_sense",
+   "name": "รู้สึกถึงราก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nature_sense"
+    }
+   ],
+   "fxRaw": "#nature_sense",
+   "desc": "",
+   "from": "เกิดในซิลวาเนล",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "SV"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "รับรู้สุขภาพของป่าในระยะไกล",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:19"
+  },
+  {
+   "id": "nb_fog_walker",
+   "name": "ผู้เดินในหมอก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fog_sight"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "darkvision"
+    }
+   ],
+   "fxRaw": "#fog_sight #darkvision",
+   "desc": "",
+   "from": "เกิดในเนบูเลีย",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "NB"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "มองทะลุหมอกเบา ไม่หลงทางในหมอกหนา",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:20"
+  },
+  {
+   "id": "nb_homeland_call",
+   "name": "เสียงเรียกจากบ้านเก่า",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "homeland_sense"
+    }
+   ],
+   "fxRaw": "#homeland_sense",
+   "desc": "",
+   "from": "เกิดนอกถิ่นหลักของเผ่า",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดนอกถิ่นหลักของเผ่า"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "รับรู้ข่าวและวิกฤตของถิ่นกำเนิดเผ่า แม้ไม่เคยไปที่นั่น",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. พรถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:21"
+  },
+  {
+   "id": "nb_shadow_kin",
+   "name": "ญาติเงา",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "shadow_meld"
+    }
+   ],
+   "fxRaw": "spd+1 #shadow_meld",
+   "desc": "",
+   "from": "ดาร์กเอลฟ์ ผู้ไร้เงา",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ดาร์กเอลฟ์ ผู้ไร้เงา"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ตัวผสมกับเงาตัวเองได้ในที่มืด",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:27"
+  },
+  {
+   "id": "nb_gel_memory",
+   "name": "ความจำเจล",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "absorb_memory"
+    }
+   ],
+   "fxRaw": "int+1 #absorb_memory",
+   "desc": "",
+   "from": "สไลม์",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "สไลม์"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "จดจำสิ่งที่กลืน รู้ภาพจากสิ่งที่เคยกลืน",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:28"
+  },
+  {
+   "id": "nb_pact_blood",
+   "name": "เลือดสัญญา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "contract_bonus"
+    }
+   ],
+   "fxRaw": "#contract_bonus",
+   "desc": "",
+   "from": "เผ่าปีศาจ",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เผ่าปีศาจ"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "สัญญาที่เซ็นด้วยเลือดตัวเองผลหนักกว่าปกติ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:29"
+  },
+  {
+   "id": "nb_lava_pulse",
+   "name": "ชีพจรลาวา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lava_burst"
+    }
+   ],
+   "fxRaw": "pow+1 #lava_burst",
+   "desc": "",
+   "from": "เผ่าลาวา",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เผ่าลาวา"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ร่างร้อนจัดเมื่อโกรธ ทำลายสิ่งที่แตะ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:30"
+  },
+  {
+   "id": "nb_both_banks",
+   "name": "ผู้ข้ามสองฝั่ง",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "diplomat"
+    }
+   ],
+   "fxRaw": "#diplomat",
+   "desc": "",
+   "from": "ลูกครึ่งของสายเลือดที่เป็นศัตรูกัน",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ลูกครึ่งของสายเลือดที่เป็นศัตรูกัน"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ผู้เดียวที่เดินข้ามเขตสงครามได้ ทั้งสองฝ่ายรับฟัง",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:31"
+  },
+  {
+   "id": "nb_eclipse_born",
+   "name": "เกิดใต้เงาสุริยะ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "shadow"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fate_shift"
+    }
+   ],
+   "fxRaw": "#shadow #fate_shift",
+   "desc": "",
+   "from": "เกิดใต้ดวงสุริยคราส",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดใต้ดวงสุริยคราส"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ดวงชะตาเอียงสู่ความมืด โอกาสได้พร/คำสาปสายมืดสูง",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:32"
+  },
+  {
+   "id": "nb_stone_kin",
+   "name": "ญาติศิลา",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stone_skin"
+    }
+   ],
+   "fxRaw": "vit+1 #stone_skin",
+   "desc": "",
+   "from": "ยักษ์",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ยักษ์"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เรียกกำแพงหินได้เมื่อเอามือแตะพื้น",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:33"
+  },
+  {
+   "id": "nb_wing_memory",
+   "name": "ความทรงจำปีก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "glide"
+    }
+   ],
+   "fxRaw": "spd+1 #glide",
+   "desc": "",
+   "from": "เผ่าปีก",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เผ่าปีก"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "แม้ปีกหักก็ร่อนได้",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:34"
+  },
+  {
+   "id": "nb_dry_vow",
+   "name": "คำสาบานแห้ง",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oath_keeper"
+    }
+   ],
+   "fxRaw": "#oath_keeper",
+   "desc": "",
+   "from": "มัมมี่",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "มัมมี่"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "คำสาบานที่ให้แล้วไม่มีวันถูกบังคับให้ผิด",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:35"
+  },
+  {
+   "id": "nb_soul_spark",
+   "name": "ประกายวิญญาณ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "soul_resist"
+    }
+   ],
+   "fxRaw": "int+1 #soul_resist",
+   "desc": "",
+   "from": "หุ่นวิญญาณ",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "หุ่นวิญญาณ"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เวทที่กระทบจิตไม่ได้ผลเต็มที่",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:36"
+  },
+  {
+   "id": "nb_gear_heart",
+   "name": "หัวใจเฟือง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "mech_repair"
+    }
+   ],
+   "fxRaw": "vit+1 #mech_repair",
+   "desc": "",
+   "from": "ลูกผสมจักรกล",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ลูกผสมจักรกล"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ซ่อมส่วนตัวเองได้ในเวลาพัก",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:37"
+  },
+  {
+   "id": "nb_scale_echo",
+   "name": "เสียงสะท้อนเกล็ด",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dragon_voice"
+    }
+   ],
+   "fxRaw": "#dragon_voice",
+   "desc": "",
+   "from": "เผ่ามังกร",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เผ่ามังกร"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ได้ยินเสียงสะท้อนของมังกรที่อยู่ใกล้ที่สุด",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรสายเลือดและกำเนิดพิเศษ",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:38"
+  },
+  {
+   "id": "nb_sv_sky",
+   "name": "ผู้รอดฟ้าถล่ม",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fall_save"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "height_calm"
+    }
+   ],
+   "fxRaw": "#fall_save #height_calm",
+   "desc": "",
+   "from": "DR-01",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-01"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เห็นทวีปมังกรร่วงแล้วไม่กลัวอะไรเกี่ยวกับความสูงอีก",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:46"
+  },
+  {
+   "id": "nb_sv_ash",
+   "name": "ผู้รอดเถ้า",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cold_res"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "famine_res"
+    }
+   ],
+   "fxRaw": "vit+1 #cold_res #famine_res",
+   "desc": "",
+   "from": "DR-04",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-04",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-04"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "อดทนต่อความหิวและหนาว",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:47"
+  },
+  {
+   "id": "nb_sv_tide",
+   "name": "ผู้รอดน้ำท่วม",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water_breath_short"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "swim"
+    }
+   ],
+   "fxRaw": "#water_breath_short #swim",
+   "desc": "",
+   "from": "DR-05",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-05",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-05"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ว่ายเก่งและอ่านกระแสน้ำ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:48"
+  },
+  {
+   "id": "nb_sv_crack",
+   "name": "ผู้รอดรอยร้าว",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "quake_sense"
+    }
+   ],
+   "fxRaw": "#quake_sense",
+   "desc": "",
+   "from": "DR-07",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-07",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-07"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "รู้สึกการสั่นไหวของแผ่นดินล่วงหน้าหนึ่งวัน",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:49"
+  },
+  {
+   "id": "nb_sv_grove",
+   "name": "ผู้รอดป่าเหี่ยว",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "herbalist"
+    }
+   ],
+   "fxRaw": "#herbalist",
+   "desc": "",
+   "from": "BIO-02",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "BIO-02",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "BIO-02"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "รู้จักสมุนไพรสำรองเมื่อป่าตาย",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:50"
+  },
+  {
+   "id": "nb_sv_blackout",
+   "name": "ผู้รอดคืนไฟดับ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "pollution_res"
+    }
+   ],
+   "fxRaw": "#pollution_res",
+   "desc": "",
+   "from": "MC-04",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "MC-04",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "MC-04"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ทนมลพิษบางส่วน ไม่เชื่อเครื่องจักรง่าย ๆ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:51"
+  },
+  {
+   "id": "nb_sv_fog",
+   "name": "ผู้รอดหมอกทึบ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fog_calm"
+    }
+   ],
+   "fxRaw": "brave+10 #fog_calm",
+   "desc": "",
+   "from": "FG-01",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "FG-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "FG-01"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ใจนิ่งในความมืดและเสียงหนวด",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:52"
+  },
+  {
+   "id": "nb_first_light",
+   "name": "ผู้เห็นแสงแรก",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sun_blessed"
+    }
+   ],
+   "fxRaw": "#sun_blessed",
+   "desc": "",
+   "from": "BIO-05",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "BIO-05",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "BIO-05"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ได้พรหรือคำสาปจากการเห็นแสงอาทิตย์ครั้งแรก (ตามเผ่า)",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:53"
+  },
+  {
+   "id": "nb_mourning_ear",
+   "name": "หูฟังเสียงร้องไห้",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dragon_mourning"
+    }
+   ],
+   "fxRaw": "#dragon_mourning",
+   "desc": "",
+   "from": "DR-15",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-15"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ได้ยินเสียงอาลัยของมังกร ได้ข้อมูลเกี่ยวกับมังกรที่ล้ม",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. พรจากการรอดจากเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:54"
+  },
+  {
+   "id": "nb_mark_oran",
+   "name": "ตราโอรัน-ซัล",
+   "tier": "L",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sky_call"
+    }
+   ],
+   "fxRaw": "luk+2 belief+20 #sky_call",
+   "desc": "",
+   "from": "มังกรปฐม DR-01 DR-02",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    },
+    {
+     "k": "event",
+     "id": "DR-02",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-01",
+     "DR-02"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:62"
+  },
+  {
+   "id": "nb_mark_flame",
+   "name": "ตราเพลิงนิรันดร์",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire_res"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hearth_flame"
+    }
+   ],
+   "fxRaw": "pow+2 #fire_res #hearth_flame",
+   "desc": "",
+   "from": "AZ-02",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-02"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-02"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:63"
+  },
+  {
+   "id": "nb_mark_sea",
+   "name": "ตราสมุทรอาลัย",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "water_breath"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sea_mourn"
+    }
+   ],
+   "fxRaw": "vit+1 #water_breath #sea_mourn",
+   "desc": "",
+   "from": "AZ-06 NR-04",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-06",
+      "NR-04"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-06",
+     "NR-04"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:64"
+  },
+  {
+   "id": "nb_mark_storm",
+   "name": "ตราพายุไร้ทิศ",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "wind_free"
+    }
+   ],
+   "fxRaw": "spd+2 #wind_free",
+   "desc": "",
+   "from": "AZ-03",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-03"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-03"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:65"
+  },
+  {
+   "id": "nb_mark_stone",
+   "name": "ตราศิลาสะท้าน",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stone_sleep"
+    }
+   ],
+   "fxRaw": "vit+2 #stone_sleep",
+   "desc": "",
+   "from": "AZ-04",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-04"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-04"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:66"
+  },
+  {
+   "id": "nb_mark_eclipse",
+   "name": "ตราราหูแห่งสุริยคราส",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "shadow"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "eclipse_ear"
+    }
+   ],
+   "fxRaw": "mag+1 #shadow #eclipse_ear",
+   "desc": "",
+   "from": "AZ-05",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-05"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-05"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:67"
+  },
+  {
+   "id": "nb_mark_eridan",
+   "name": "ตราอีริดาน",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "shelter_voice"
+    }
+   ],
+   "fxRaw": "#shelter_voice",
+   "desc": "",
+   "from": "AZ-07 (เสาทวีปมังกร)",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AZ-07"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AZ-07"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:68"
+  },
+  {
+   "id": "nb_mark_hrod",
+   "name": "ตราฮรอด-กาธ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hunger_bind"
+    }
+   ],
+   "fxRaw": "#hunger_bind",
+   "desc": "",
+   "from": "MH-10",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "MH-10"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "MH-10"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:69"
+  },
+  {
+   "id": "nb_mark_kaldra",
+   "name": "ตราคัลดรา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "deep_heat"
+    }
+   ],
+   "fxRaw": "pow+1 #deep_heat",
+   "desc": "",
+   "from": "KD-10",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "KD-10"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "KD-10"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:70"
+  },
+  {
+   "id": "nb_mark_thalassa",
+   "name": "ตราธาลาสซา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "deep_riddle"
+    }
+   ],
+   "fxRaw": "mag+1 #deep_riddle",
+   "desc": "",
+   "from": "NR-04",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "NR-04"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "NR-04"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:71"
+  },
+  {
+   "id": "nb_mark_andar",
+   "name": "ตราอันดาร์",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dream_ward"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lucid"
+    }
+   ],
+   "fxRaw": "#dream_ward #lucid",
+   "desc": "",
+   "from": "AL-14",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "AL-14"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "AL-14"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:72"
+  },
+  {
+   "id": "nb_mark_serene",
+   "name": "ตราเซเรเน",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "machine_voice"
+    }
+   ],
+   "fxRaw": "int+1 #machine_voice",
+   "desc": "",
+   "from": "MK-01",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "MK-01"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "MK-01"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:73"
+  },
+  {
+   "id": "nb_mark_gromdhar",
+   "name": "ตรากรอม-ธาร",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "giant_pact"
+    }
+   ],
+   "fxRaw": "vit+1 #giant_pact",
+   "desc": "",
+   "from": "SH-03 SH-17",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "SH-03",
+      "SH-17"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "SH-03",
+     "SH-17"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:74"
+  },
+  {
+   "id": "nb_mark_silvera",
+   "name": "ตราซิลเวรา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "tree_bond"
+    }
+   ],
+   "fxRaw": "mag+1 #tree_bond",
+   "desc": "",
+   "from": "SV-01 SV-13",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "SV-01",
+      "SV-13"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "SV-01",
+     "SV-13"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:75"
+  },
+  {
+   "id": "nb_mark_niveri",
+   "name": "ตรานิเวรี",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fog_ward"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "moon_veil"
+    }
+   ],
+   "fxRaw": "#fog_ward #moon_veil",
+   "desc": "",
+   "from": "NB-08",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "NB-08"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "NB-08"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. ตรามังกร",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:76"
+  },
+  {
+   "id": "nb_faith_dragon",
+   "name": "ผู้ถวายตัวมังกร",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 15
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dragon_voice"
+    }
+   ],
+   "fxRaw": "belief+15 #dragon_voice",
+   "desc": "",
+   "from": "ลัทธิบูชามังกร (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ลัทธิบูชามังกร (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:84"
+  },
+  {
+   "id": "nb_faith_light",
+   "name": "พรสังฆราช",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "holy"
+    }
+   ],
+   "fxRaw": "belief+20 #holy",
+   "desc": "",
+   "from": "ศาสนจักรแห่งแสง (B)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศาสนจักรแห่งแสง (B)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:85"
+  },
+  {
+   "id": "nb_faith_tree",
+   "name": "ผู้ดูแลต้นไม้โลก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nature_sense"
+    }
+   ],
+   "fxRaw": "#nature_sense",
+   "desc": "",
+   "from": "ศรัทธาต้นไม้โลก (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาต้นไม้โลก (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:86"
+  },
+  {
+   "id": "nb_faith_sea",
+   "name": "ผู้รับลมทะเล",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sea"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "navigator"
+    }
+   ],
+   "fxRaw": "#sea #navigator",
+   "desc": "",
+   "from": "เทพแห่งสมุทร (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เทพแห่งสมุทร (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:87"
+  },
+  {
+   "id": "nb_faith_naga",
+   "name": "ผู้ผ่านการทดสอบนาคา",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "naga_gift"
+    }
+   ],
+   "fxRaw": "#naga_gift",
+   "desc": "",
+   "from": "พญานาคราช (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "พญานาคราช (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:88"
+  },
+  {
+   "id": "nb_faith_moon",
+   "name": "แสงจันทราคุ้มกาย",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "moon_veil"
+    }
+   ],
+   "fxRaw": "#moon_veil",
+   "desc": "",
+   "from": "เทพีแห่งจันทรา (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เทพีแห่งจันทรา (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:89"
+  },
+  {
+   "id": "nb_faith_war",
+   "name": "ผู้ประกาศศึก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": 15
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "warcry_god"
+    }
+   ],
+   "fxRaw": "brave+15 #warcry_god",
+   "desc": "",
+   "from": "เทพแห่งสงคราม (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เทพแห่งสงคราม (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:90"
+  },
+  {
+   "id": "nb_faith_ancestor",
+   "name": "เสียงบรรพบุรุษ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ancestor_voice"
+    }
+   ],
+   "fxRaw": "#ancestor_voice",
+   "desc": "",
+   "from": "การบูชาบรรพบุรุษ (C)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "การบูชาบรรพบุรุษ (C)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:91"
+  },
+  {
+   "id": "nb_faith_forge",
+   "name": "มือเตา",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "forge_blessed"
+    }
+   ],
+   "fxRaw": "pow+1 #forge_blessed",
+   "desc": "",
+   "from": "ศรัทธาเตาหลอม (C)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาเตาหลอม (C)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:92"
+  },
+  {
+   "id": "nb_faith_stone",
+   "name": "หินจำชื่อ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stone_sleep"
+    }
+   ],
+   "fxRaw": "vit+1 #stone_sleep",
+   "desc": "",
+   "from": "ศรัทธาศิลา (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาศิลา (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:93"
+  },
+  {
+   "id": "nb_faith_dream",
+   "name": "ผู้ฝันร่วม",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lucid"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dream_share"
+    }
+   ],
+   "fxRaw": "#lucid #dream_share",
+   "desc": "",
+   "from": "ศรัทธาความฝัน (A)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาความฝัน (A)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:94"
+  },
+  {
+   "id": "nb_faith_spirit",
+   "name": "เพื่อนวิญญาณสัตว์",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast_friend"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "spirit_beast"
+    }
+   ],
+   "fxRaw": "#beast_friend #spirit_beast",
+   "desc": "",
+   "from": "ศรัทธาวิญญาณสัตว์ (C)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาวิญญาณสัตว์ (C)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:95"
+  },
+  {
+   "id": "nb_faith_pointer",
+   "name": "ผู้ติดตามผู้ชี้ทาง",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "pathfinder"
+    }
+   ],
+   "fxRaw": "#pathfinder",
+   "desc": "",
+   "from": "ลัทธิผู้ชี้ทาง (B)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ลัทธิผู้ชี้ทาง (B)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:96"
+  },
+  {
+   "id": "nb_unbowed",
+   "name": "ไม่ก้มหัว",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "unbowed"
+    }
+   ],
+   "fxRaw": "brave+20 #unbowed",
+   "desc": "",
+   "from": "ผู้ไม่ก้มหัว (GD-03)",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "GD-03",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "GD-03"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "จ. พรศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:97"
+  },
+  {
+   "id": "nb_favor_returned",
+   "name": "บุญคุณที่ถูกตอบแทน",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "favor_return"
+    }
+   ],
+   "fxRaw": "luk+1 #favor_return",
+   "desc": "",
+   "from": "NPC ที่เคยถูกช่วยกลับมาตอบแทนตัวละครหลัก ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) หัวข้อ 4",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "NPC ที่เคยถูกช่วยกลับมาตอบแทนตัวละครหลัก ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) หัวข้อ 4"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:103"
+  },
+  {
+   "id": "nb_oath_ally",
+   "name": "พันธมิตรผู้ซื่อสัตย์",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "loyal_ally"
+    }
+   ],
+   "fxRaw": "#loyal_ally",
+   "desc": "",
+   "from": "NPC หนึ่งคนที่ไว้ใจถึงระดับสูงสุด (+5)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "NPC หนึ่งคนที่ไว้ใจถึงระดับสูงสุด (+5)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:104"
+  },
+  {
+   "id": "nb_name_sung",
+   "name": "ชื่อที่ถูกขับขาน",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bard_song"
+    }
+   ],
+   "fxRaw": "fame+20 #bard_song",
+   "desc": "",
+   "from": "นักกวีเขียนเพลงถึงตัวละคร",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "นักกวีเขียนเพลงถึงตัวละคร"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:105"
+  },
+  {
+   "id": "nb_leader_spark",
+   "name": "ประกายผู้นำ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "leader"
+    }
+   ],
+   "fxRaw": "fame+10 #leader",
+   "desc": "",
+   "from": "ได้รับเลือกเป็นหัวหน้ากลุ่มครั้งแรก",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ได้รับเลือกเป็นหัวหน้ากลุ่มครั้งแรก"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:106"
+  },
+  {
+   "id": "nb_peace_seed",
+   "name": "เมล็ดสันติ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "peace"
+    }
+   ],
+   "fxRaw": "kind+10 #peace",
+   "desc": "",
+   "from": "ตัวละครหยุดสงครามหนึ่งครั้ง (เช่น WR-06 WR-13)",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "WR-06",
+     "happened": true
+    },
+    {
+     "k": "event",
+     "id": "WR-13",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "WR-06",
+     "WR-13"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:107"
+  },
+  {
+   "id": "nb_world_walker",
+   "name": "ผู้เดินสู่ทุกทวีป",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "polyglot"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "wanderer"
+    }
+   ],
+   "fxRaw": "#polyglot #wanderer",
+   "desc": "",
+   "from": "เดินทางไปครบสี่ทวีปขึ้นไป",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เดินทางไปครบสี่ทวีปขึ้นไป"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:108"
+  },
+  {
+   "id": "nb_seal_hand",
+   "name": "มือผนึก",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seal_touch"
+    }
+   ],
+   "fxRaw": "#seal_touch",
+   "desc": "",
+   "from": "ผู้ปลดผนึก (GD-07) ที่เลือกหยุดแทนที่จะปลด หรือผู้ที่ปิดผนึกด้วยตัวเอง",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "GD-07",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "GD-07"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:109"
+  },
+  {
+   "id": "nb_god_whisper",
+   "name": "เสียงกระซิบจากพระเจ้า",
+   "tier": "L",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "god_whisper"
+    }
+   ],
+   "fxRaw": "belief+30 #god_whisper",
+   "desc": "",
+   "from": "พระเจ้าส่งสัญญาณตรงถึงตัวละคร (ต้นทุนศรัทธาสูง)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "พระเจ้าส่งสัญญาณตรงถึงตัวละคร (ต้นทุนศรัทธาสูง)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ฉ. พรจากความสัมพันธ์และเส้นเรื่อง",
+   "src": "doc",
+   "at": "docs/systems/character/05-new-blessings.md:110"
+  },
+  {
+   "id": "nb_green_thumb",
+   "name": "มือเขียว",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "green_thumb"
+    }
+   ],
+   "fxRaw": "vit+1 #green_thumb",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "พืชโตดีเมื่อผู้นี้ปลูก",
+   "cure": "",
+   "jobsText": "ผู้ทำสวน เจ้าของฟาร์ม",
+   "jobs": [
+    "farm_owner"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:55"
+  },
+  {
+   "id": "nb_craft_eye",
+   "name": "ตาช่าง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "craft_eye"
+    }
+   ],
+   "fxRaw": "#craft_eye",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เห็นข้อบกพร่องของงานก่อนใคร",
+   "cure": "",
+   "jobsText": "ช่างทุกสาย",
+   "jobs": [],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:56"
+  },
+  {
+   "id": "nb_steady_hand",
+   "name": "มือนิ่ง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "steady_hand"
+    }
+   ],
+   "fxRaw": "#steady_hand",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "มือไม่สั่นในงานละเอียด",
+   "cure": "",
+   "jobsText": "แพทย์ ช่างเครื่องประดับ ช่างกล",
+   "jobs": [
+    "physician",
+    "jeweler",
+    "mechanic"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:57"
+  },
+  {
+   "id": "nb_healers_nose",
+   "name": "จมูกหมอ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "diagnose"
+    }
+   ],
+   "fxRaw": "int+1 #diagnose",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ดมกลิ่นรู้โรค",
+   "cure": "",
+   "jobsText": "แพทย์ เภสัชกร หมอยา",
+   "jobs": [
+    "physician",
+    "apothecary",
+    "healer"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:58"
+  },
+  {
+   "id": "nb_sound_sleep",
+   "name": "หลับสนิท",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sound_sleep"
+    },
+    {
+     "k": "stat",
+     "stat": "hp",
+     "delta": 10
+    }
+   ],
+   "fxRaw": "#sound_sleep hp+10",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "c_nightmare"
+    ]
+   },
+   "world": "หลับดี ฟื้นเร็ว ไม่ฝันร้าย (ตรงข้าม c_nightmare)",
+   "cure": "",
+   "jobsText": "ชีวิตช้า",
+   "jobs": [],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:59"
+  },
+  {
+   "id": "nb_weather_bones",
+   "name": "กระดูกรู้ฝน",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weather_sense"
+    }
+   ],
+   "fxRaw": "#weather_sense",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "รู้ฝนก่อนหนึ่งวัน",
+   "cure": "",
+   "jobsText": "ชาวนา ชาวประมง ผู้ทำสวน",
+   "jobs": [
+    "farmer",
+    "fisher"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:60"
+  },
+  {
+   "id": "nb_gentle_beasts",
+   "name": "สัตว์ไว้ใจ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "gentle_beasts"
+    }
+   ],
+   "fxRaw": "#gentle_beasts",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "สัตว์เชื่องกับผู้นี้",
+   "cure": "",
+   "jobsText": "คนเลี้ยงสัตว์ หมอสัตว์ คนเลี้ยงผึ้ง",
+   "jobs": [
+    "veterinarian",
+    "beekeeper"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:61"
+  },
+  {
+   "id": "nb_honest_scale",
+   "name": "ตาชั่งซื่อ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "trusted_trader"
+    }
+   ],
+   "fxRaw": "#trusted_trader",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ผู้คนไว้ใจน้ำหนักและตัวเลขของผู้นี้",
+   "cure": "",
+   "jobsText": "พ่อค้า นักบัญชี นายธนาคาร",
+   "jobs": [
+    "merchant",
+    "accountant",
+    "banker"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:62"
+  },
+  {
+   "id": "nb_quick_hands",
+   "name": "มือไว",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "quick_hands"
+    }
+   ],
+   "fxRaw": "spd+1 #quick_hands",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ทำงานมือเร็ว",
+   "cure": "",
+   "jobsText": "โจร ช่างเย็บ พ่อครัว",
+   "jobs": [
+    "thief",
+    "cook"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:63"
+  },
+  {
+   "id": "nb_law_memory",
+   "name": "จำกฎหมาย",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "law_memory"
+    }
+   ],
+   "fxRaw": "int+1 #law_memory",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "จำทุกข้อและมาตรา",
+   "cure": "",
+   "jobsText": "ทนายความ ผู้พิพากษา นักบัญชี",
+   "jobs": [
+    "lawyer",
+    "accountant"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:64"
+  },
+  {
+   "id": "nb_calm_oar",
+   "name": "พายนิ่ง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "calm_oar"
+    }
+   ],
+   "fxRaw": "#calm_oar",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "เรือไม่เสียหลักในน้ำเชี่ยว",
+   "cure": "",
+   "jobsText": "คนพายเรือรับจ้าง ชาวประมง",
+   "jobs": [
+    "ferryman",
+    "fisher"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:65"
+  },
+  {
+   "id": "nb_clean_cut",
+   "name": "ผ่าตัดสะอาด",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "clean_cut"
+    }
+   ],
+   "fxRaw": "#clean_cut",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "แผลผ่าตัดไม่ติดเชื้อ",
+   "cure": "",
+   "jobsText": "แพทย์ หมอตำแย",
+   "jobs": [
+    "physician",
+    "midwife"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:66"
+  },
+  {
+   "id": "nb_street_sense",
+   "name": "รู้ทางเมือง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "street_sense"
+    }
+   ],
+   "fxRaw": "#street_sense",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ไม่หลงในเมืองใด",
+   "cure": "",
+   "jobsText": "คนส่งสาร นักสืบ ผู้คุ้มกัน",
+   "jobs": [
+    "courier"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:67"
+  },
+  {
+   "id": "nb_warm_hearth",
+   "name": "เตาอุ่น",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "warm_hearth"
+    }
+   ],
+   "fxRaw": "kind+10 #warm_hearth",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "คนแปลกหน้ารู้สึกเหมือนอยู่บ้านเมื่ออยู่ใกล้",
+   "cure": "",
+   "jobsText": "เจ้าของร้านน้ำชา ผู้ดูแลโรงเตี๊ยม",
+   "jobs": [
+    "tea_house"
+   ],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:68"
+  },
+  {
+   "id": "nb_late_bloom",
+   "name": "ผลิบานช้า",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "late_bloom"
+    }
+   ],
+   "fxRaw": "#late_bloom",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "skill เรียนช้าตอนหนุ่มสาวแต่เติบโตเร็วหลังอายุ 40",
+   "cure": "",
+   "jobsText": "อาชีพชีวิตช้า",
+   "jobs": [],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:69"
+  },
+  {
+   "id": "nb_hard_worker",
+   "name": "ฝีมือจากความเพียร",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hard_worker"
+    }
+   ],
+   "fxRaw": "#hard_worker",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ฝึกซ้ำทุกวันได้ผลมากกว่าพรสวรรค์",
+   "cure": "",
+   "jobsText": "ช่างทุกสาย",
+   "jobs": [],
+   "group": "ค. พรใหม่ 16 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:70"
+  },
+  {
+   "id": "nb_beast_whisper",
+   "name": "กระซิบกับสัตว์",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast_whisper"
+    }
+   ],
+   "fxRaw": "#beast_whisper",
+   "desc": "",
+   "from": "เผ่าสัตว์ เอลฟ์ ภูตพราย · เส้น thread:wild",
+   "fromCond": [
+    {
+     "k": "has",
+     "kind": "unknown",
+     "id": "thread:wild"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "thread:wild"
+    ]
+   },
+   "world": "สัตว์ไว้ใจตั้งแต่แรกเห็น ผูกพันเร็ว 2 เท่า เพดานผูกพันสูงขึ้น 1 ระดับ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:30"
+  },
+  {
+   "id": "nb_pet_luck",
+   "name": "สัตว์นำโชค",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "pet_luck"
+    }
+   ],
+   "fxRaw": "luk+1 #pet_luck",
+   "desc": "",
+   "from": "ผูกพันสัตว์ระดับ 3",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ผูกพันสัตว์ระดับ 3"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ความสามารถนำโชคของสัตว์เพิ่ม +1 ระดับ",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:31"
+  },
+  {
+   "id": "nb_loyal_eyes",
+   "name": "ตาที่สัตว์ไว้ใจ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "loyal_eyes"
+    }
+   ],
+   "fxRaw": "#loyal_eyes",
+   "desc": "",
+   "from": "เกิดในครอบครัวเลี้ยงสัตว์",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดในครอบครัวเลี้ยงสัตว์"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "สัตว์ไม่หนีผู้ใหญ่ในเหตุการณ์น่ากลัว",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:32"
+  },
+  {
+   "id": "nb_feral_scent",
+   "name": "กลิ่นป่า",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "feral_scent"
+    }
+   ],
+   "fxRaw": "#feral_scent",
+   "desc": "",
+   "from": "อยู่ในป่าหรือภูเขาตั้งแต่เด็ก",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "อยู่ในป่าหรือภูเขาตั้งแต่เด็ก"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "สัตว์ป่าไม่ระแวง แต่สัตว์เลี้ยงบ้านไม่สนิท",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:33"
+  },
+  {
+   "id": "nb_bond_flame",
+   "name": "เปลวผูกพัน",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bond_flame"
+    }
+   ],
+   "fxRaw": "#bond_flame",
+   "desc": "",
+   "from": "ผูกพันสัตว์ระดับ 5 ต่อเนื่องหนึ่งทศวรรษ",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ผูกพันสัตว์ระดับ 5 ต่อเนื่องหนึ่งทศวรรษ"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ผูกพันกับสัตว์ตายแล้ว ยังได้ยินเสียงวิญญาณของสัตว์",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:34"
+  },
+  {
+   "id": "nb_nest_keeper",
+   "name": "ผู้เฝ้ารัง",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nest_keeper"
+    }
+   ],
+   "fxRaw": "#nest_keeper",
+   "desc": "",
+   "from": "อาชีพ naga_egg_warden farm_owner",
+   "fromCond": [
+    {
+     "k": "or",
+     "of": [
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "naga_egg_warden"
+      },
+      {
+       "k": "has",
+       "kind": "job",
+       "id": "farm_owner"
+      }
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ไข่ที่ฟักใกล้ตัวละครสำเร็จมากขึ้น 2 เท่า",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:35"
+  },
+  {
+   "id": "nb_egg_warmth",
+   "name": "ไออุ่นไข่",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "egg_warmth"
+    }
+   ],
+   "fxRaw": "#egg_warmth",
+   "desc": "",
+   "from": "ฟักไข่สำเร็จหนึ่งครั้ง",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ฟักไข่สำเร็จหนึ่งครั้ง"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "ไข่ฟักเร็วขึ้น 30%",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:36"
+  },
+  {
+   "id": "nb_guardian_beast",
+   "name": "สัตว์พิทักษ์",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guardian_beast"
+    }
+   ],
+   "fxRaw": "#guardian_beast",
+   "desc": "",
+   "from": "สัตว์ช่วยชีวิตตัวละครหนึ่งครั้ง",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "สัตว์ช่วยชีวิตตัวละครหนึ่งครั้ง"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "สัตว์ปกป้องตัวละครจากภัยที่ไม่คาดคิด 1 ครั้งต่อปี",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. พรใหม่ 8 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:37"
+  }
+ ]
+}

@@ -1,0 +1,5856 @@
+{
+ "version": "3e82d9f65a94",
+ "sources": [
+  "docs/_generated/character-catalog/aptitudes-skills.md",
+  "docs/systems/character/04-skill-effects.md",
+  "docs/systems/character/07-new-skills.md",
+  "docs/systems/character/12-job-support.md",
+  "docs/systems/character/17-companion-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": [
+  {
+   "id": "sword_1",
+   "name": "ฟันพื้นฐาน",
+   "kind": "apt",
+   "apt": "sword",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "ความเสียหายดาบ +10%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:11"
+  },
+  {
+   "id": "sword_2",
+   "name": "ดาบสายลมผ่าใบไม้",
+   "kind": "apt",
+   "apt": "sword",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "โจมตีซ้ำอีกครั้งในรอบเดียว 25%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:11"
+  },
+  {
+   "id": "sword_3",
+   "name": "ดาบตัดเหล็กกล้า",
+   "kind": "apt",
+   "apt": "sword",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "ตัดเกราะ เพิกเฉยเกราะ 50%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:11"
+  },
+  {
+   "id": "axe_1",
+   "name": "จามขวาน",
+   "kind": "apt",
+   "apt": "axe",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "ทำลายโล่ได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:12"
+  },
+  {
+   "id": "axe_2",
+   "name": "ขวานพายุหมุน",
+   "kind": "apt",
+   "apt": "axe",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "โจมตีศัตรูทุกตัวรอบตัว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:12"
+  },
+  {
+   "id": "axe_3",
+   "name": "ขวานผ่าภูผา",
+   "kind": "apt",
+   "apt": "axe",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "ทำลายสิ่งกีดขวางที่เป็นไม้หรือหิน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:12"
+  },
+  {
+   "id": "spear_1",
+   "name": "แทงตรง",
+   "kind": "apt",
+   "apt": "spear",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "ระยะโจมตีเพิ่ม โจมตีก่อนศัตรูระยะประชิด",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:13"
+  },
+  {
+   "id": "spear_2",
+   "name": "หอกมังกรทะยาน",
+   "kind": "apt",
+   "apt": "spear",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "แทงทะลุศัตรูสองตัวเรียงกัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:13"
+  },
+  {
+   "id": "spear_3",
+   "name": "หอกเจาะสวรรค์",
+   "kind": "apt",
+   "apt": "spear",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "สังหารศัตรูตัวใหญ่ (เผ่ายักษ์ มังกร) ×1.5",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:13"
+  },
+  {
+   "id": "bow_1",
+   "name": "ยิงแม่น",
+   "kind": "apt",
+   "apt": "bow",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "ยิงแม่น +10%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:14"
+  },
+  {
+   "id": "bow_2",
+   "name": "ศรสามดอก",
+   "kind": "apt",
+   "apt": "bow",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "ยิงสามดอกในรอบเดียว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:14"
+  },
+  {
+   "id": "bow_3",
+   "name": "ศรล่าดวงดาว",
+   "kind": "apt",
+   "apt": "bow",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "ยิงจุดตายโอกาส 30% ได้ความเสียหาย ×2",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:14"
+  },
+  {
+   "id": "dagger_1",
+   "name": "แทงข้างหลัง",
+   "kind": "apt",
+   "apt": "dagger",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "โจมตีข้างหลัง ×2",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:15"
+  },
+  {
+   "id": "dagger_2",
+   "name": "มีดเงาคู่",
+   "kind": "apt",
+   "apt": "dagger",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "โจมตีสองครั้งต่อรอบ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:15"
+  },
+  {
+   "id": "dagger_3",
+   "name": "ร้อยรอยเชือดในพริบตา",
+   "kind": "apt",
+   "apt": "dagger",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "สังหารทันที 20% ต่อศัตรูที่ไม่ทันระวัง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:15"
+  },
+  {
+   "id": "unarmed_1",
+   "name": "หมัดตรง",
+   "kind": "apt",
+   "apt": "unarmed",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "หมัดไม่ต้องใช้อาวุธ ความเสียหายเท่าอาวุธเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:16"
+  },
+  {
+   "id": "unarmed_2",
+   "name": "หมัดพยัคฆ์",
+   "kind": "apt",
+   "apt": "unarmed",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "ทำให้ศัตรูมึน 1 ตา 20%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:16"
+  },
+  {
+   "id": "unarmed_3",
+   "name": "หมัดทลายภูเขา",
+   "kind": "apt",
+   "apt": "unarmed",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "ทลายเกราะหินและไม้ได้ด้วยมือเปล่า",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:16"
+  },
+  {
+   "id": "shield_1",
+   "name": "ตั้งโล่",
+   "kind": "apt",
+   "apt": "shield",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "ลดความเสียหายที่รับ 10%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:17"
+  },
+  {
+   "id": "shield_2",
+   "name": "กำแพงเหล็ก",
+   "kind": "apt",
+   "apt": "shield",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "บล็อกโจมตีระยะไกลได้ 30%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:17"
+  },
+  {
+   "id": "shield_3",
+   "name": "ป้อมปราการมนุษย์",
+   "kind": "apt",
+   "apt": "shield",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "ปกป้องผู้อื่นข้างตัว รับความเสียหายแทน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:17"
+  },
+  {
+   "id": "hammer_1",
+   "name": "ทุบหนัก",
+   "kind": "apt",
+   "apt": "hammer",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "ความเสียหายต่อเกราะ ×1.3",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:18"
+  },
+  {
+   "id": "hammer_2",
+   "name": "ค้อนสะเทือนพื้น",
+   "kind": "apt",
+   "apt": "hammer",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "สั่นพื้น ทำให้ศัตรูหน้าล้ม 20%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:18"
+  },
+  {
+   "id": "hammer_3",
+   "name": "ค้อนฟ้าผ่า",
+   "kind": "apt",
+   "apt": "hammer",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "ทุบเปลี่ยนรูปอาวุธและโล่ศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:18"
+  },
+  {
+   "id": "whip_1",
+   "name": "สะบัดแส้",
+   "kind": "apt",
+   "apt": "whip",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "ดึงอาวุธ หรือกระชากศัตรูเข้ามา",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:19"
+  },
+  {
+   "id": "whip_2",
+   "name": "แส้พันธนาการ",
+   "kind": "apt",
+   "apt": "whip",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "มัดศัตรูหนึ่งตัวไว้ 2 ตา",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:19"
+  },
+  {
+   "id": "whip_3",
+   "name": "แส้อสรพิษพันตัว",
+   "kind": "apt",
+   "apt": "whip",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "พันธนาการหลายตัว ทำให้ชะงัก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:19"
+  },
+  {
+   "id": "sling_1",
+   "name": "ยิงก้อนหิน",
+   "kind": "apt",
+   "apt": "sling",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "effect": "ยิงไกลและเงียบ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:20"
+  },
+  {
+   "id": "sling_2",
+   "name": "กระสุนเด้งสามทอด",
+   "kind": "apt",
+   "apt": "sling",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "effect": "กระสุนเด้ง โจมตีสองเป้าหมาย",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:20"
+  },
+  {
+   "id": "sling_3",
+   "name": "หินพิฆาตยักษ์",
+   "kind": "apt",
+   "apt": "sling",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "effect": "ยิงทะลุเกราะไม้ ฆ่าตัวใหญ่ด้วยหินเดียว (ผ่าน luk)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:20"
+  },
+  {
+   "id": "mounted_1",
+   "name": "ขี่ม้าเป็น",
+   "kind": "apt",
+   "apt": "mounted",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "ขี่ม้าและสัตว์ใหญ่ได้ ความเร็วเดินทาง +30%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:21"
+  },
+  {
+   "id": "mounted_2",
+   "name": "ทะยานกลางสนามรบ",
+   "kind": "apt",
+   "apt": "mounted",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "พุ่งชนศัตรู ความเสียหาย ×1.5 ในรอบแรก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:21"
+  },
+  {
+   "id": "mounted_3",
+   "name": "ผู้ควบคุมอาชาสวรรค์",
+   "kind": "apt",
+   "apt": "mounted",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "combat",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "ขี่สัตว์วิเศษ (ไวเวิร์น หมาป่าเงา) เดินทางข้ามภูมิประเทศได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:21"
+  },
+  {
+   "id": "fire_1",
+   "name": "ลูกไฟ",
+   "kind": "apt",
+   "apt": "fire",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ลูกไฟ จุดไฟได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:22"
+  },
+  {
+   "id": "fire_2",
+   "name": "กำแพงเพลิง",
+   "kind": "apt",
+   "apt": "fire",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "กำแพงเพลิง กั้นทางศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:22"
+  },
+  {
+   "id": "fire_3",
+   "name": "อัคคีล้างโลก",
+   "kind": "apt",
+   "apt": "fire",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ไฟลามพื้นที่กว้าง ความเสียหาย ×2 ต่อพื้นที่",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:22"
+  },
+  {
+   "id": "water_1",
+   "name": "ลูกศรน้ำ",
+   "kind": "apt",
+   "apt": "water",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ทำให้น้ำสะอาด ดับไฟเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:23"
+  },
+  {
+   "id": "water_2",
+   "name": "คลื่นซัด",
+   "kind": "apt",
+   "apt": "water",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "คลื่นซัดศัตรูถอยหลัง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:23"
+  },
+  {
+   "id": "water_3",
+   "name": "มหาสมุทรคลั่ง",
+   "kind": "apt",
+   "apt": "water",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ควบคุมน้ำทั้งบ่อหรือลำธาร",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:23"
+  },
+  {
+   "id": "wind_1",
+   "name": "ใบมีดลม",
+   "kind": "apt",
+   "apt": "wind",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ผลักลมเบา ๆ ชะลอลูกธนูศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:24"
+  },
+  {
+   "id": "wind_2",
+   "name": "พายุหมุน",
+   "kind": "apt",
+   "apt": "wind",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "พายุหมุน ลอยตัวได้สั้น ๆ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:24"
+  },
+  {
+   "id": "wind_3",
+   "name": "ไต้ฝุ่นแห่งเทพ",
+   "kind": "apt",
+   "apt": "wind",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ไต้ฝุ่น ขับไล่เรือและค่ายศัตรูในรัศมีไกล",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:24"
+  },
+  {
+   "id": "earth_1",
+   "name": "ก้อนหินพุ่ง",
+   "kind": "apt",
+   "apt": "earth",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ก้อนหินพุ่งใส่ศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:25"
+  },
+  {
+   "id": "earth_2",
+   "name": "หนามดิน",
+   "kind": "apt",
+   "apt": "earth",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "หนามดิน สร้างกำแพงหินกั้นทาง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:25"
+  },
+  {
+   "id": "earth_3",
+   "name": "แผ่นดินแยก",
+   "kind": "apt",
+   "apt": "earth",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "แผ่นดินแยก ทำให้ศัตรูล้มพื้นที่กว้าง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:25"
+  },
+  {
+   "id": "ice_1",
+   "name": "หอกน้ำแข็ง",
+   "kind": "apt",
+   "apt": "ice",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "หอกน้ำแข็ง ชะลอศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:26"
+  },
+  {
+   "id": "ice_2",
+   "name": "ทุ่งเยือกแข็ง",
+   "kind": "apt",
+   "apt": "ice",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "แช่แข็งพื้นที่ ศัตรูไถล",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:26"
+  },
+  {
+   "id": "ice_3",
+   "name": "ยุคน้ำแข็งนิรันดร์",
+   "kind": "apt",
+   "apt": "ice",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ยุคน้ำแข็งชั่วคราว ลดอุณหภูมิในเมือง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:26"
+  },
+  {
+   "id": "lightning_1",
+   "name": "ประกายไฟฟ้า",
+   "kind": "apt",
+   "apt": "lightning",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ประกายไฟฟ้า ช็อตศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:27"
+  },
+  {
+   "id": "lightning_2",
+   "name": "โซ่สายฟ้า",
+   "kind": "apt",
+   "apt": "lightning",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "โซ่สายฟ้าข้ามศัตรูสามตัว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:27"
+  },
+  {
+   "id": "lightning_3",
+   "name": "ทัณฑ์อัสนีบาต",
+   "kind": "apt",
+   "apt": "lightning",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "อัสนีบาตลงจากฟ้า ความเสียหาย ×3 ต่อเป้าหมายเดียว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:27"
+  },
+  {
+   "id": "light_1",
+   "name": "แสงส่องทาง",
+   "kind": "apt",
+   "apt": "light",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ส่องที่มืด ไล่ผีเบา ๆ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:28"
+  },
+  {
+   "id": "light_2",
+   "name": "ศรแสงศักดิ์สิทธิ์",
+   "kind": "apt",
+   "apt": "light",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "ศรแสง ความเสียหาย ×1.5 ต่อผู้ตาย",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:28"
+  },
+  {
+   "id": "light_3",
+   "name": "ตะวันพิพากษา",
+   "kind": "apt",
+   "apt": "light",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ตะวันพิพากษา ทำลายผีและปีศาจในรัศมี",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:28"
+  },
+  {
+   "id": "dark_1",
+   "name": "ลูกบอลเงา",
+   "kind": "apt",
+   "apt": "dark",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ลูกบอลเงา มองเห็นในที่มืด",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:29"
+  },
+  {
+   "id": "dark_2",
+   "name": "ม่านราตรี",
+   "kind": "apt",
+   "apt": "dark",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "ม่านราตรี ซ่อนกลุ่มจากสายตา",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:29"
+  },
+  {
+   "id": "dark_3",
+   "name": "สุริยคราสนิรันดร์",
+   "kind": "apt",
+   "apt": "dark",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "สุริยคราส ดับแสงทั้งเมืองชั่วคราว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:29"
+  },
+  {
+   "id": "necro_1",
+   "name": "ปลุกโครงกระดูก",
+   "kind": "apt",
+   "apt": "necro",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ปลุกโครงกระดูกหนึ่งตัวสู้ให้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:30"
+  },
+  {
+   "id": "necro_2",
+   "name": "กองทัพผีดิบ",
+   "kind": "apt",
+   "apt": "necro",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "กองทัพผีดิบ ควบคุมได้หกตัว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:30"
+  },
+  {
+   "id": "necro_3",
+   "name": "ราชันย์แห่งความตาย",
+   "kind": "apt",
+   "apt": "necro",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ราชันย์แห่งความตาย ควบคุมผู้ตายที่ไม่ใช่เผ่าเดียวกัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:30"
+  },
+  {
+   "id": "blood_1",
+   "name": "ดูดเลือด",
+   "kind": "apt",
+   "apt": "blood",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ดูดเลือดศัตรูฟื้นพลัง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:31"
+  },
+  {
+   "id": "blood_2",
+   "name": "หอกโลหิต",
+   "kind": "apt",
+   "apt": "blood",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "หอกโลหิต แลกพลังชีวิตเป็นความเสียหาย",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:31"
+  },
+  {
+   "id": "blood_3",
+   "name": "ทะเลเลือด",
+   "kind": "apt",
+   "apt": "blood",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ทะเลเลือด ศัตรูทุกตัวในพื้นที่เสียเลือดทุกตา",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:31"
+  },
+  {
+   "id": "illusion_1",
+   "name": "ภาพลวงตา",
+   "kind": "apt",
+   "apt": "illusion",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "ภาพลวงตา ล่อให้ศัตรูหลงทิศ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:32"
+  },
+  {
+   "id": "illusion_2",
+   "name": "ร่างแยกมายา",
+   "kind": "apt",
+   "apt": "illusion",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "ร่างแยกมายา ศัตรูโจมตีผิดตัว 40%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:32"
+  },
+  {
+   "id": "illusion_3",
+   "name": "โลกมายาไร้ทางออก",
+   "kind": "apt",
+   "apt": "illusion",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "โลกมายา ศัตรูติดในภาพลวงจนกว่าจะแก้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:32"
+  },
+  {
+   "id": "summon_1",
+   "name": "เรียกภูตน้อย",
+   "kind": "apt",
+   "apt": "summon",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "เรียกภูตเล็กหนึ่งตัว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:33"
+  },
+  {
+   "id": "summon_2",
+   "name": "สัญญาภูตธาตุ",
+   "kind": "apt",
+   "apt": "summon",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "สัญญากับภูตธาตุ เรียกเมื่อต้องการ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:33"
+  },
+  {
+   "id": "summon_3",
+   "name": "อัญเชิญเทพอสูร",
+   "kind": "apt",
+   "apt": "summon",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "อัญเชิญเทพอสูร ทำศึกครั้งเดียวต่อปี",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:33"
+  },
+  {
+   "id": "healing_1",
+   "name": "รักษาแผล",
+   "kind": "apt",
+   "apt": "healing",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "รักษาแผลเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:34"
+  },
+  {
+   "id": "healing_2",
+   "name": "ฟื้นฟูหมู่",
+   "kind": "apt",
+   "apt": "healing",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "ฟื้นฟูหมู่ รักษาทั้งกลุ่ม",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:34"
+  },
+  {
+   "id": "healing_3",
+   "name": "ชุบชีวิต",
+   "kind": "apt",
+   "apt": "healing",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ชุบชีวิต (ผู้ที่เพิ่งตายภายในวัน) ใช้ได้ครั้งเดียวต่อปี",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:34"
+  },
+  {
+   "id": "rune_1",
+   "name": "สลักรูนพื้นฐาน",
+   "kind": "apt",
+   "apt": "rune",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "สลักรูนป้องกันบนของ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:35"
+  },
+  {
+   "id": "rune_2",
+   "name": "รูนป้องกัน",
+   "kind": "apt",
+   "apt": "rune",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "รูนป้องกันเมือง กันของที่จุดไฟหรือยิงเข้ามา",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:35"
+  },
+  {
+   "id": "rune_3",
+   "name": "รูนบรรพกาล",
+   "kind": "apt",
+   "apt": "rune",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "รูนบรรพกาล เปิดและปิดผนึกโบราณได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:35"
+  },
+  {
+   "id": "nature_1",
+   "name": "คุยกับต้นไม้",
+   "kind": "apt",
+   "apt": "nature",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "พูดกับพืช สัตว์ได้ระดับต้น",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:36"
+  },
+  {
+   "id": "nature_2",
+   "name": "เถาวัลย์พันธนาการ",
+   "kind": "apt",
+   "apt": "nature",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "เถาวัลย์พันธนาการศัตรู",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:36"
+  },
+  {
+   "id": "nature_3",
+   "name": "ผืนป่าตื่น",
+   "kind": "apt",
+   "apt": "nature",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "ผืนป่าตื่น เรียกต้นไม้ช่วยรบ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:36"
+  },
+  {
+   "id": "space_1",
+   "name": "กล่องเก็บของมิติ",
+   "kind": "apt",
+   "apt": "space",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "กล่องเก็บของมิติขนาดเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:37"
+  },
+  {
+   "id": "space_2",
+   "name": "วาร์ประยะสั้น",
+   "kind": "apt",
+   "apt": "space",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "วาร์ประยะสั้น",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:37"
+  },
+  {
+   "id": "space_3",
+   "name": "ประตูข้ามทวีป",
+   "kind": "apt",
+   "apt": "space",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "เปิดประตูข้ามทวีปได้ (ใช้ครั้งเดียวต่อเดือน)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:37"
+  },
+  {
+   "id": "divination_1",
+   "name": "ดูดวง",
+   "kind": "apt",
+   "apt": "divination",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "ดูดวงรายวัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:38"
+  },
+  {
+   "id": "divination_2",
+   "name": "นิมิตอนาคต",
+   "kind": "apt",
+   "apt": "divination",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "นิมิตอนาคตระดับเหตุการณ์ใหญ่",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:38"
+  },
+  {
+   "id": "divination_3",
+   "name": "อ่านเส้นชะตา",
+   "kind": "apt",
+   "apt": "divination",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "อ่านเส้นชะตา เห็นว่าเหตุการณ์ใดกำลังจะเกิดในทวีปตัวเอง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:38"
+  },
+  {
+   "id": "alchemy_1",
+   "name": "ปรุงยา",
+   "kind": "apt",
+   "apt": "alchemy",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "ปรุงยารักษาและยาพิษขั้นต้น",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:39"
+  },
+  {
+   "id": "alchemy_2",
+   "name": "ยาพิษไร้สี",
+   "kind": "apt",
+   "apt": "alchemy",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "ยาพิษไร้สี ยาถอนพิษเฉพาะทาง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:39"
+  },
+  {
+   "id": "alchemy_3",
+   "name": "ศิลาอาถรรพ์",
+   "kind": "apt",
+   "apt": "alchemy",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "ศิลาอาถรรพ์ เปลี่ยนโลหะ ทำยาชุบชีวิตระดับเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:39"
+  },
+  {
+   "id": "contract_1",
+   "name": "ลงนามเลือด",
+   "kind": "apt",
+   "apt": "contract",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ลงนามเลือด ทำสัญญาเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:40"
+  },
+  {
+   "id": "contract_2",
+   "name": "ทาสปีศาจ",
+   "kind": "apt",
+   "apt": "contract",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "เรียกทาสปีศาจ ทำงานสามวัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:40"
+  },
+  {
+   "id": "contract_3",
+   "name": "สัญญากับอสูรใหญ่",
+   "kind": "apt",
+   "apt": "contract",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "สัญญากับอสูรใหญ่ แลกพลังกับราคาที่แพง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:40"
+  },
+  {
+   "id": "curse_1",
+   "name": "ตุ๊กตาสาป",
+   "kind": "apt",
+   "apt": "curse",
+   "level": 1,
+   "stat": "mag",
+   "bonus": 1,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    }
+   ],
+   "effect": "ตุ๊กตาสาป ทำเรื่องซวยเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:41"
+  },
+  {
+   "id": "curse_2",
+   "name": "คุณไสยเข้าตัว",
+   "kind": "apt",
+   "apt": "curse",
+   "level": 2,
+   "stat": "mag",
+   "bonus": 2,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    }
+   ],
+   "effect": "คุณไสยเข้าตัว ศัตรูได้คำสาปจำพวกระดับ C",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:41"
+  },
+  {
+   "id": "curse_3",
+   "name": "มหาคำสาปเจ็ดชั่วโคตร",
+   "kind": "apt",
+   "apt": "curse",
+   "level": 3,
+   "stat": "mag",
+   "bonus": 3,
+   "group": "magic",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 3
+    }
+   ],
+   "effect": "มหาคำสาปเจ็ดชั่วโคตร สาปสายเลือดศัตรู (ผูกกับ c_heircurse)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:41"
+  },
+  {
+   "id": "smithing_1",
+   "name": "ตีมีด",
+   "kind": "apt",
+   "apt": "smithing",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "effect": "ตีมีดและเครื่องมือ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:42"
+  },
+  {
+   "id": "smithing_2",
+   "name": "ดาบชั้นดี",
+   "kind": "apt",
+   "apt": "smithing",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "effect": "ตีดาบชั้นดี ราคาขาย +50%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:42"
+  },
+  {
+   "id": "smithing_3",
+   "name": "อาวุธในตำนาน",
+   "kind": "apt",
+   "apt": "smithing",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "effect": "ตีอาวุธในตำนาน (ระดับ R ขึ้นไป)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:42"
+  },
+  {
+   "id": "cooking_1",
+   "name": "ต้มซุป",
+   "kind": "apt",
+   "apt": "cooking",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "effect": "อาหารเลี้ยงชีพ ได้ฟื้นเล็กน้อย",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:43"
+  },
+  {
+   "id": "cooking_2",
+   "name": "อาหารชาววัง",
+   "kind": "apt",
+   "apt": "cooking",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "effect": "อาหารชาววัง ได้พรชั่วคราวจากอาหาร",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:43"
+  },
+  {
+   "id": "cooking_3",
+   "name": "อาหารที่ทำให้มังกรร้องไห้",
+   "kind": "apt",
+   "apt": "cooking",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "effect": "อาหารที่ทำให้มังกรร้องไห้ ได้ความไว้ใจจาก NPC ผู้ทรงอำนาจ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:43"
+  },
+  {
+   "id": "farming_1",
+   "name": "ปลูกผัก",
+   "kind": "apt",
+   "apt": "farming",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "ปลูกผัก ผลผลิต +10%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:44"
+  },
+  {
+   "id": "farming_2",
+   "name": "นาข้าวทองคำ",
+   "kind": "apt",
+   "apt": "farming",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "นาข้าวทองคำ ผลผลิต +50%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:44"
+  },
+  {
+   "id": "farming_3",
+   "name": "ผืนดินอุดมไม่สิ้นสุด",
+   "kind": "apt",
+   "apt": "farming",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "ผืนดินอุดมไม่สิ้นสุด ผลผลิตไม่ลดแม้ในปีฤดูหนาวเถ้า",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:44"
+  },
+  {
+   "id": "music_1",
+   "name": "ร้องเพลง",
+   "kind": "apt",
+   "apt": "music",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "effect": "ร้องเพลง ได้เงินทิป",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:45"
+  },
+  {
+   "id": "music_2",
+   "name": "ขลุ่ยสะกดใจ",
+   "kind": "apt",
+   "apt": "music",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "effect": "ขลุ่ยสะกดใจ ทำให้คนสงบ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:45"
+  },
+  {
+   "id": "music_3",
+   "name": "บทเพลงปลุกวีรชน",
+   "kind": "apt",
+   "apt": "music",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "effect": "บทเพลงปลุกวีรชน ให้กำลังใจกลุ่ม (+20% ทุกค่า 1 ตา)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:45"
+  },
+  {
+   "id": "trade_1",
+   "name": "ต่อราคา",
+   "kind": "apt",
+   "apt": "trade",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "ต่อราคา ประหยัด 10%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:46"
+  },
+  {
+   "id": "trade_2",
+   "name": "กองคาราวาน",
+   "kind": "apt",
+   "apt": "trade",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "กองคาราวาน กำไรจากการค้า +50%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:46"
+  },
+  {
+   "id": "trade_3",
+   "name": "เจ้าพ่อการค้าข้ามทวีป",
+   "kind": "apt",
+   "apt": "trade",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "เจ้าพ่อการค้าข้ามทวีป เปิดตลาดสินค้าหายากได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:46"
+  },
+  {
+   "id": "stealth_1",
+   "name": "ย่องเบา",
+   "kind": "apt",
+   "apt": "stealth",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "ย่องเบา ไม่ถูกจับเสียงฝีเท้า",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:47"
+  },
+  {
+   "id": "stealth_2",
+   "name": "หายตัวในเงา",
+   "kind": "apt",
+   "apt": "stealth",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "หายตัวในเงา ซ่อนกลุ่มเล็ก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:47"
+  },
+  {
+   "id": "stealth_3",
+   "name": "ไร้ตัวตน",
+   "kind": "apt",
+   "apt": "stealth",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "ไร้ตัวตน ไม่ถูกเห็นนอกจากผู้ที่มองหาเฉพาะ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:47"
+  },
+  {
+   "id": "tracking_1",
+   "name": "ดูรอยเท้า",
+   "kind": "apt",
+   "apt": "tracking",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "effect": "อ่านรอยเท้า ตามสัตว์ได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:48"
+  },
+  {
+   "id": "tracking_2",
+   "name": "นายพรานป่าลึก",
+   "kind": "apt",
+   "apt": "tracking",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "effect": "ล่าสัตว์ใหญ่ ตามผู้คนได้ข้ามเมือง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:48"
+  },
+  {
+   "id": "tracking_3",
+   "name": "ผู้ล่าสัตว์ในตำนาน",
+   "kind": "apt",
+   "apt": "tracking",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "effect": "ตามผู้ที่ซ่อนอย่างดีที่สุดได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:48"
+  },
+  {
+   "id": "taming_1",
+   "name": "เลี้ยงหมาป่า",
+   "kind": "apt",
+   "apt": "taming",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "effect": "เลี้ยงสัตว์เล็กได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:49"
+  },
+  {
+   "id": "taming_2",
+   "name": "ขี่ไวเวิร์น",
+   "kind": "apt",
+   "apt": "taming",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "effect": "ขี่ไวเวิร์น ฝึกสัตว์ปีก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:49"
+  },
+  {
+   "id": "taming_3",
+   "name": "สัญญากับสัตว์เทพ",
+   "kind": "apt",
+   "apt": "taming",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "effect": "สัญญากับสัตว์เทพ (หมาป่าเงา วาฬฟ้า)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:49"
+  },
+  {
+   "id": "sailing_1",
+   "name": "พายเรือ",
+   "kind": "apt",
+   "apt": "sailing",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "พายเรือ เดินเรือใกล้ฝั่ง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:50"
+  },
+  {
+   "id": "sailing_2",
+   "name": "กัปตันเรือ",
+   "kind": "apt",
+   "apt": "sailing",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "กัปตันเรือ ออกทะเลลึก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:50"
+  },
+  {
+   "id": "sailing_3",
+   "name": "ผู้พิชิตเจ็ดคาบสมุทร",
+   "kind": "apt",
+   "apt": "sailing",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "ผู้พิชิตเจ็ดคาบสมุทร ผ่านวังวนและพายุได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:50"
+  },
+  {
+   "id": "leadership_1",
+   "name": "หัวหน้ากลุ่ม",
+   "kind": "apt",
+   "apt": "leadership",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "หัวหน้ากลุ่ม ผู้ติดตามภักดีขึ้น",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:51"
+  },
+  {
+   "id": "leadership_2",
+   "name": "แม่ทัพ",
+   "kind": "apt",
+   "apt": "leadership",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "แม่ทัพ กองทหารได้โบนัส +15%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:51"
+  },
+  {
+   "id": "leadership_3",
+   "name": "ผู้นำแห่งยุค",
+   "kind": "apt",
+   "apt": "leadership",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "ผู้นำแห่งยุค กลุ่มใหญ่ทำตามโดยไม่ต้องบังคับ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:51"
+  },
+  {
+   "id": "charm_1",
+   "name": "ยิ้มหวาน",
+   "kind": "apt",
+   "apt": "charm",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "effect": "ยิ้มหวาน ราคาที่ NPC ตั้งลดลง 5%",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:52"
+  },
+  {
+   "id": "charm_2",
+   "name": "ปากหวานละลายใจ",
+   "kind": "apt",
+   "apt": "charm",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "effect": "ปากหวานละลายใจ ได้ข้อมูลจาก NPC ง่ายขึ้น",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:52"
+  },
+  {
+   "id": "charm_3",
+   "name": "เสน่ห์ล่มเมือง",
+   "kind": "apt",
+   "apt": "charm",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "effect": "เสน่ห์ล่มเมือง NPC สำคัญหลงรักหรือยอมเป็นพันธมิตร",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:52"
+  },
+  {
+   "id": "scholar_1",
+   "name": "อ่านออกเขียนได้",
+   "kind": "apt",
+   "apt": "scholar",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "effect": "อ่านออกเขียนได้ เข้าห้องสมุด",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:53"
+  },
+  {
+   "id": "scholar_2",
+   "name": "นักปราชญ์",
+   "kind": "apt",
+   "apt": "scholar",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "effect": "นักปราชญ์ เข้าถึงตำราเก่า",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:53"
+  },
+  {
+   "id": "scholar_3",
+   "name": "ผู้รู้แจ้งทุกศาสตร์",
+   "kind": "apt",
+   "apt": "scholar",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "effect": "ผู้รู้แจ้งทุกศาสตร์ ปลดล็อกบันทึกต้องห้าม",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:53"
+  },
+  {
+   "id": "mining_1",
+   "name": "ขุดถ่านหิน",
+   "kind": "apt",
+   "apt": "mining",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "ขุดถ่านหิน ได้เงินเล็กน้อย",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:54"
+  },
+  {
+   "id": "mining_2",
+   "name": "หาแร่มิธริล",
+   "kind": "apt",
+   "apt": "mining",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "หาแร่มิธริล พบแร่หายาก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:54"
+  },
+  {
+   "id": "mining_3",
+   "name": "ผู้ปลุกหัวใจขุนเขา",
+   "kind": "apt",
+   "apt": "mining",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "ผู้ปลุกหัวใจขุนเขา (อันตราย ผูกกับ PL-03)",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:54"
+  },
+  {
+   "id": "absorb_1",
+   "name": "กลืนก้อนหิน",
+   "kind": "apt",
+   "apt": "absorb",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "กลืนก้อนหิน ได้ความทนทานชั่วคราว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:55"
+  },
+  {
+   "id": "absorb_2",
+   "name": "เลียนแบบร่าง",
+   "kind": "apt",
+   "apt": "absorb",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "เลียนแบบร่างของศัตรูที่เพิ่งกลืน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:55"
+  },
+  {
+   "id": "absorb_3",
+   "name": "ผู้ล่า (Predator)",
+   "kind": "apt",
+   "apt": "absorb",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "life",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "ผู้ล่า (Predator) กลืนศัตรูแล้วได้ skill หนึ่งอย่างของมัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:55"
+  },
+  {
+   "id": "fishing_1",
+   "name": "ตกปลาเล็ก",
+   "kind": "apt",
+   "apt": "fishing",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "effect": "ได้อาหารเลี้ยงตัว",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:13"
+  },
+  {
+   "id": "fishing_2",
+   "name": "อวนใหญ่",
+   "kind": "apt",
+   "apt": "fishing",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "effect": "หาปลาได้เป็นอาชีพ +30%",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:13"
+  },
+  {
+   "id": "fishing_3",
+   "name": "อ่านฝูงปลา",
+   "kind": "apt",
+   "apt": "fishing",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "effect": "รู้ที่ปลาชุกชุมล่วงหน้า",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:13"
+  },
+  {
+   "id": "carpentry_1",
+   "name": "ต่อโต๊ะและเกวียน",
+   "kind": "apt",
+   "apt": "carpentry",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:14"
+  },
+  {
+   "id": "carpentry_2",
+   "name": "สร้างบ้านและเรือเล็ก",
+   "kind": "apt",
+   "apt": "carpentry",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:14"
+  },
+  {
+   "id": "carpentry_3",
+   "name": "สร้างเรือใหญ่หรือโครงบ้านทนพายุ",
+   "kind": "apt",
+   "apt": "carpentry",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:14"
+  },
+  {
+   "id": "tailoring_1",
+   "name": "เย็บซ่อมเสื้อผ้า",
+   "kind": "apt",
+   "apt": "tailoring",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:15"
+  },
+  {
+   "id": "tailoring_2",
+   "name": "ตัดชุดตามฐานะ ได้ใจลูกค้า",
+   "kind": "apt",
+   "apt": "tailoring",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:15"
+  },
+  {
+   "id": "tailoring_3",
+   "name": "ตัดชุดซ่อนอาวุธ หรือชุดป้องกันตามธาตุ",
+   "kind": "apt",
+   "apt": "tailoring",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:15"
+  },
+  {
+   "id": "pottery_1",
+   "name": "ปั้นหม้อ ถ้วย",
+   "kind": "apt",
+   "apt": "pottery",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:16"
+  },
+  {
+   "id": "pottery_2",
+   "name": "เผาเคลือบ ขายได้ราคา",
+   "kind": "apt",
+   "apt": "pottery",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:16"
+  },
+  {
+   "id": "pottery_3",
+   "name": "ปั้นถ้วยพิธีให้วัดและขุนนาง",
+   "kind": "apt",
+   "apt": "pottery",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:16"
+  },
+  {
+   "id": "brewing_1",
+   "name": "ทำเหล้าและเบียร์พื้นบ้าน",
+   "kind": "apt",
+   "apt": "brewing",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:17"
+  },
+  {
+   "id": "brewing_2",
+   "name": "หมักบ่มรสชาติเฉพาะถิ่น",
+   "kind": "apt",
+   "apt": "brewing",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:17"
+  },
+  {
+   "id": "brewing_3",
+   "name": "เหล้าที่ใช้เป็นเครื่องบรรณาการได้",
+   "kind": "apt",
+   "apt": "brewing",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:17"
+  },
+  {
+   "id": "art_1",
+   "name": "วาดภาพเหมือน",
+   "kind": "apt",
+   "apt": "art",
+   "level": 1,
+   "stat": "luk",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:18"
+  },
+  {
+   "id": "art_2",
+   "name": "จิตรกรรมที่คนจดจำ",
+   "kind": "apt",
+   "apt": "art",
+   "level": 2,
+   "stat": "luk",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:18"
+  },
+  {
+   "id": "art_3",
+   "name": "งานที่ถูกเก็บเป็นสมบัติเมือง",
+   "kind": "apt",
+   "apt": "art",
+   "level": 3,
+   "stat": "luk",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:18"
+  },
+  {
+   "id": "jewelry_1",
+   "name": "ประดิษฐ์เครื่องประดับโลหะเล็ก",
+   "kind": "apt",
+   "apt": "jewelry",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:19"
+  },
+  {
+   "id": "jewelry_2",
+   "name": "ฝังอัญมณี",
+   "kind": "apt",
+   "apt": "jewelry",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:19"
+  },
+  {
+   "id": "jewelry_3",
+   "name": "เครื่องประดับที่ใส่เวทหรือรูนได้",
+   "kind": "apt",
+   "apt": "jewelry",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:19"
+  },
+  {
+   "id": "masonry_1",
+   "name": "ก่อกำแพงหิน",
+   "kind": "apt",
+   "apt": "masonry",
+   "level": 1,
+   "stat": "pow",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:20"
+  },
+  {
+   "id": "masonry_2",
+   "name": "ก่อสร้างอาคารหิน",
+   "kind": "apt",
+   "apt": "masonry",
+   "level": 2,
+   "stat": "pow",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:20"
+  },
+  {
+   "id": "masonry_3",
+   "name": "งานแกะสลักขนาดใหญ่ โครงสร้างศาสนสถาน",
+   "kind": "apt",
+   "apt": "masonry",
+   "level": 3,
+   "stat": "pow",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:20"
+  },
+  {
+   "id": "engineering_1",
+   "name": "คำนวณโครงสร้างง่าย",
+   "kind": "apt",
+   "apt": "engineering",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:21"
+  },
+  {
+   "id": "engineering_2",
+   "name": "ออกแบบสะพานและท่อน้ำ",
+   "kind": "apt",
+   "apt": "engineering",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:21"
+  },
+  {
+   "id": "engineering_3",
+   "name": "ออกแบบเมืองและโครงข่ายพลังงาน",
+   "kind": "apt",
+   "apt": "engineering",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:21"
+  },
+  {
+   "id": "mechanics_1",
+   "name": "ซ่อมนาฬิกาและเครื่องกลเล็ก",
+   "kind": "apt",
+   "apt": "mechanics",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:22"
+  },
+  {
+   "id": "mechanics_2",
+   "name": "ซ่อมเครื่องยนต์ รถจักร",
+   "kind": "apt",
+   "apt": "mechanics",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:22"
+  },
+  {
+   "id": "mechanics_3",
+   "name": "ซ่อมหุ่นวิญญาณและเครื่องปฐมที่ถอดรหัสแล้ว",
+   "kind": "apt",
+   "apt": "mechanics",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:22"
+  },
+  {
+   "id": "writing_1",
+   "name": "เขียนจดหมายและบันทึกสั้น",
+   "kind": "apt",
+   "apt": "writing",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:23"
+  },
+  {
+   "id": "writing_2",
+   "name": "แต่งบทกวีหรือรายงาน",
+   "kind": "apt",
+   "apt": "writing",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:23"
+  },
+  {
+   "id": "writing_3",
+   "name": "เขียนพงศาวดารที่ถูกอ้างอิง",
+   "kind": "apt",
+   "apt": "writing",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:23"
+  },
+  {
+   "id": "accounting_1",
+   "name": "ทำบัญชีรายรับรายจ่าย",
+   "kind": "apt",
+   "apt": "accounting",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:24"
+  },
+  {
+   "id": "accounting_2",
+   "name": "ตรวจจับข้อผิดพลาดและการโกง",
+   "kind": "apt",
+   "apt": "accounting",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:24"
+  },
+  {
+   "id": "accounting_3",
+   "name": "ทำบัญชีของรัฐหรือธนาคารใหญ่",
+   "kind": "apt",
+   "apt": "accounting",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:24"
+  },
+  {
+   "id": "law_1",
+   "name": "อ่านสัญญาและกฎ",
+   "kind": "apt",
+   "apt": "law",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:25"
+  },
+  {
+   "id": "law_2",
+   "name": "ว่าความในศาลเล็ก",
+   "kind": "apt",
+   "apt": "law",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:25"
+  },
+  {
+   "id": "law_3",
+   "name": "ตีความสนธิสัญญาข้ามประเทศ",
+   "kind": "apt",
+   "apt": "law",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:25"
+  },
+  {
+   "id": "herbalism_1",
+   "name": "แยกสมุนไพรทั่วไป",
+   "kind": "apt",
+   "apt": "herbalism",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:26"
+  },
+  {
+   "id": "herbalism_2",
+   "name": "ปรุงยาสามัญประจำบ้าน",
+   "kind": "apt",
+   "apt": "herbalism",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:26"
+  },
+  {
+   "id": "herbalism_3",
+   "name": "ปรุงยาเฉพาะโรค ต้านกาฬโรคระดับท้องถิ่น",
+   "kind": "apt",
+   "apt": "herbalism",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:26"
+  },
+  {
+   "id": "medicine_1",
+   "name": "ทำแผล เข้าเฝือก",
+   "kind": "apt",
+   "apt": "medicine",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:27"
+  },
+  {
+   "id": "medicine_2",
+   "name": "ผ่าตัดเล็ก ทำคลอด",
+   "kind": "apt",
+   "apt": "medicine",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:27"
+  },
+  {
+   "id": "medicine_3",
+   "name": "ผ่าตัดใหญ่ ชุบชีวิตผู้ที่เพิ่งหยุดหายใจ (ต่ำกว่าเวทชุบชีวิต)",
+   "kind": "apt",
+   "apt": "medicine",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:27"
+  },
+  {
+   "id": "husbandry_1",
+   "name": "เลี้ยงสัตว์ปีกและแพะ",
+   "kind": "apt",
+   "apt": "husbandry",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:28"
+  },
+  {
+   "id": "husbandry_2",
+   "name": "ผสมพันธุ์ สัตว์ใหญ่",
+   "kind": "apt",
+   "apt": "husbandry",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:28"
+  },
+  {
+   "id": "husbandry_3",
+   "name": "เลี้ยงสัตว์วิเศษ (วัวนิรันดร์ ม้าเถ้า)",
+   "kind": "apt",
+   "apt": "husbandry",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:28"
+  },
+  {
+   "id": "gardening_1",
+   "name": "ปลูกผักสวนครัว",
+   "kind": "apt",
+   "apt": "gardening",
+   "level": 1,
+   "stat": "vit",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:29"
+  },
+  {
+   "id": "gardening_2",
+   "name": "ปลูกผลไม้ ดอกไม้ ชา",
+   "kind": "apt",
+   "apt": "gardening",
+   "level": 2,
+   "stat": "vit",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:29"
+  },
+  {
+   "id": "gardening_3",
+   "name": "สวนที่ให้ผลทุกฤดู แม้ในฤดูหนาว",
+   "kind": "apt",
+   "apt": "gardening",
+   "level": 3,
+   "stat": "vit",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:29"
+  },
+  {
+   "id": "piloting_1",
+   "name": "ขับเกวียนและเรือเล็ก",
+   "kind": "apt",
+   "apt": "piloting",
+   "level": 1,
+   "stat": "spd",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:30"
+  },
+  {
+   "id": "piloting_2",
+   "name": "ขับรถจักร เรือใหญ่",
+   "kind": "apt",
+   "apt": "piloting",
+   "level": 2,
+   "stat": "spd",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:30"
+  },
+  {
+   "id": "piloting_3",
+   "name": "ขับเรือเหาะผ่านพายุ",
+   "kind": "apt",
+   "apt": "piloting",
+   "level": 3,
+   "stat": "spd",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:30"
+  },
+  {
+   "id": "investigation_1",
+   "name": "สังเกตรอยผิดปกติ",
+   "kind": "apt",
+   "apt": "investigation",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:31"
+  },
+  {
+   "id": "investigation_2",
+   "name": "ตามรอยคนหายไปข้ามเมือง",
+   "kind": "apt",
+   "apt": "investigation",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:31"
+  },
+  {
+   "id": "investigation_3",
+   "name": "ไขคดีซับซ้อนที่เกี่ยวกับสถาบันใหญ่",
+   "kind": "apt",
+   "apt": "investigation",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:31"
+  },
+  {
+   "id": "teaching_1",
+   "name": "สอนเด็กอ่านเขียน",
+   "kind": "apt",
+   "apt": "teaching",
+   "level": 1,
+   "stat": "int",
+   "bonus": 1,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:32"
+  },
+  {
+   "id": "teaching_2",
+   "name": "สอนผู้ใหญ่และศิษย์",
+   "kind": "apt",
+   "apt": "teaching",
+   "level": 2,
+   "stat": "int",
+   "bonus": 2,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:32"
+  },
+  {
+   "id": "teaching_3",
+   "name": "ผู้สอนที่ลูกศิษย์ไปเป็นผู้นำ",
+   "kind": "apt",
+   "apt": "teaching",
+   "level": 3,
+   "stat": "int",
+   "bonus": 3,
+   "group": "job-support",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:32"
+  },
+  {
+   "id": "u_sage",
+   "name": "มหาปราชญ์",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sage"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seer"
+    }
+   ],
+   "fxRaw": "int+5 #sage #seer",
+   "effect": "ถามคำถามกับเสียงในหัวได้เดือนละครั้ง ตอบถูกต้องเสมอแต่ผูกกับสิ่งที่เสียงรู้",
+   "desc": "เสียงในหัวที่ตอบได้ทุกคำถาม",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:61"
+  },
+  {
+   "id": "u_predator",
+   "name": "ผู้ล่ากลืนกิน",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 3
+    },
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "absorb"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "predator"
+    }
+   ],
+   "fxRaw": "vit+3 mag+2 #absorb #predator",
+   "effect": "กลืนศพศัตรูแล้วเลียนความสามารถหนึ่งอย่าง ผูกกับ absorb",
+   "desc": "กลืนศัตรูแล้วได้พลังของมัน",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:62"
+  },
+  {
+   "id": "u_appraisal",
+   "name": "ประเมินค่า",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "appraise"
+    }
+   ],
+   "fxRaw": "int+2 luk+1 #appraise",
+   "effect": "เห็นค่าสถานะ ความหายาก และคำสาปของคน ของ สถานที่ ที่มองเห็น",
+   "desc": "มองเห็นค่าสถานะของทุกสิ่ง",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:63"
+  },
+  {
+   "id": "u_itembox",
+   "name": "กล่องเก็บของไร้ขีดจำกัด",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "itembox"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "trade"
+    }
+   ],
+   "fxRaw": "luk+2 #itembox #trade",
+   "effect": "แบกของไม่จำกัดน้ำหนัก ค้าขายคราวละมาก ๆ ได้",
+   "desc": "แบกทั้งโกดังไว้ในอากาศ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:64"
+  },
+  {
+   "id": "u_rewind",
+   "name": "ย้อนคืนเมื่อสิ้นใจ",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "rewind"
+    }
+   ],
+   "fxRaw": "luk+1 #rewind",
+   "effect": "ตายครั้งแรกแล้วย้อนกลับ 7 วัน ใช้ได้ครั้งเดียวต่อชีวิต",
+   "desc": "เมื่อตาย จะตื่นขึ้นอีกครั้ง… ครั้งเดียว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:65"
+  },
+  {
+   "id": "u_language",
+   "name": "ภาษาสากล",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "polyglot"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    }
+   ],
+   "fxRaw": "int+2 #polyglot #charm",
+   "effect": "คุยได้กับทุกเผ่า ฟังเสียงมังกรได้ (ผูกกับ DR-14)",
+   "desc": "คุยได้กับทุกเผ่าพันธุ์ รวมถึงมังกร",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:66"
+  },
+  {
+   "id": "u_swordsaint",
+   "name": "ขอบเขตดาบ",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 3
+    },
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "blade"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "combat"
+    }
+   ],
+   "fxRaw": "pow+3 spd+2 #blade #combat",
+   "effect": "ศัตรูที่เข้าใกล้ในระยะหนึ่งก้าวถูกฟัน ทำงานโดยไม่ต้องสั่ง",
+   "desc": "ทุกสิ่งในรัศมีดาบถูกตัดขาด",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:67"
+  },
+  {
+   "id": "u_ironbody",
+   "name": "ร่างเหล็กไหล",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guard"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "poison_res"
+    }
+   ],
+   "fxRaw": "vit+5 #guard #poison_res",
+   "effect": "ลดความเสียหายกายภาพ 40% ไม่ติดพิษทั่วไป",
+   "desc": "ฟันไม่เข้า ยิงไม่ออก",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:68"
+  },
+  {
+   "id": "u_heroluck",
+   "name": "โชคแห่งผู้กล้า",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": 5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hero_luck"
+    }
+   ],
+   "fxRaw": "luk+5 #hero_luck",
+   "effect": "เหตุการณ์ที่แพ้แต้มน้อยกลับเป็นชนะ 1 ครั้งต่อเดือน",
+   "desc": "ชะตาเข้าข้างอย่างไร้เหตุผล",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:69"
+  },
+  {
+   "id": "u_gravity",
+   "name": "ผู้ควบคุมแรงโน้มถ่วง",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 4
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "space"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "earth"
+    }
+   ],
+   "fxRaw": "mag+4 #space #earth",
+   "effect": "ยกของหนักได้ ทำให้ศัตรูตัวใหญ่ล้ม ผูกกับ #space",
+   "desc": "ทำให้ภูเขาลอยได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:70"
+  },
+  {
+   "id": "u_oracle",
+   "name": "เสียงแห่งสวรรค์",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oracle"
+    }
+   ],
+   "fxRaw": "belief+30 #oracle",
+   "effect": "ได้ยินเทพชัด คำภาวนาของตัวละครถึงพระเจ้าก่อนคนอื่น",
+   "desc": "ได้ยินเสียงเทพชัดเจนกว่าใคร",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:71"
+  },
+  {
+   "id": "u_ruler",
+   "name": "ราชันย์ (Ruler)",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "leader"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "charm"
+    }
+   ],
+   "fxRaw": "int+2 fame+20 #leader #charm",
+   "effect": "ผู้คนในรัศมีสั้นก้มหัวโดยไม่รู้ตัว ใช้ไม่ได้กับผู้มี #mind_ward",
+   "desc": "ผู้คนก้มหัวโดยไม่รู้ตัว",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:72"
+  },
+  {
+   "id": "u_copy",
+   "name": "คัดลอกทักษะ",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "copycat"
+    }
+   ],
+   "fxRaw": "int+3 #copycat",
+   "effect": "เห็น skill ของผู้อื่นครั้งเดียว คัดลอกได้หนึ่งต่อปี",
+   "desc": "เห็นครั้งเดียวก็ทำได้",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:73"
+  },
+  {
+   "id": "u_mana",
+   "name": "แหล่งมานาไร้ก้นบึ้ง",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "magic"
+    }
+   ],
+   "fxRaw": "mag+5 #magic",
+   "effect": "ใช้เวทต่อเนื่องไม่ต้องรอฟื้น",
+   "desc": "เวทไม่มีวันหมด",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:74"
+  },
+  {
+   "id": "u_timestop",
+   "name": "หยุดเวลา 3 วินาที",
+   "kind": "unique",
+   "group": "unique",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "timestop"
+    }
+   ],
+   "fxRaw": "spd+5 #timestop",
+   "effect": "หยุดเวลาได้ครั้งเดียวต่อวัน ใช้เพื่อหนีหรือโจมตีก่อน",
+   "desc": "สามวินาทีที่โลกเป็นของคุณ",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:75"
+  },
+  {
+   "id": "ns_wind_read",
+   "name": "อ่านลม",
+   "kind": "new",
+   "apt": "sailing",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "รู้ทิศลมและฤดูพายุล่วงหน้าหนึ่งวัน",
+    "วางเส้นทางเรือที่เร็วขึ้น 20%",
+    "ผ่านพายุไร้ทิศได้ ถ้าพายุไร้ทิศอ่อนแรง (DR-06)"
+   ],
+   "learnFrom": [
+    "NR-15"
+   ],
+   "learnText": "NR-15 สมาคมผู้อ่านลม",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:11"
+  },
+  {
+   "id": "ns_tide_read",
+   "name": "อ่านกระแสน้ำ",
+   "kind": "new",
+   "apt": "sailing",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "เห็นกระแสน้ำเด่น หลีกวังวนเล็ก",
+    "เดินเรือผ่านวังวนระดับกลาง",
+    "ผ่านวังวนคอโมอา และหาทางลงสู่ร่องลึกได้"
+   ],
+   "learnFrom": [
+    "NR-03",
+    "NR-10"
+   ],
+   "learnText": "NR-03 NR-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:12"
+  },
+  {
+   "id": "ns_waterfall_climb",
+   "name": "ไต่น้ำตกย้อนฟ้า",
+   "kind": "new",
+   "apt": "unarmed",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "ไต่หน้าผาน้ำตกเล็กได้",
+    "ไต่น้ำตกที่ไหลย้อนได้ในคืนจันทร์เต็มดวง",
+    "ไต่ถึงเกาะทะเลลอยฟ้า (ต้องมีคำเชิญ)"
+   ],
+   "learnFrom": [
+    "NR-02"
+   ],
+   "learnText": "NR-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:13"
+  },
+  {
+   "id": "ns_whale_ride",
+   "name": "ขี่วาฬฟ้า",
+   "kind": "new",
+   "apt": "taming",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "ขึ้นหลังวาฬที่สงบ",
+    "บังคับทิศเมื่อวาฬอยู่ในฝูงอพยพ",
+    "ขึ้นสู่ทวีปมังกรผ่านทางอากาศ (ถ้าทวีปยังอยู่)"
+   ],
+   "learnFrom": [
+    "NR-16"
+   ],
+   "learnText": "NR-16",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:14"
+  },
+  {
+   "id": "ns_sand_worm_ride",
+   "name": "ขี่หนอนทราย",
+   "kind": "new",
+   "apt": "taming",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "อยู่บนหนอนทรายเล็กได้",
+    "ขี่หนอนทรายใหญ่ข้ามทะเลทราย",
+    "เรียกหนอนทรายมาช่วยในการหลบหนี"
+   ],
+   "learnFrom": [
+    "SH-01",
+    "SH-12"
+   ],
+   "learnText": "SH-01 SH-12",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:15"
+  },
+  {
+   "id": "ns_fog_guide",
+   "name": "นำทางในหมอก",
+   "kind": "new",
+   "apt": "tracking",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "เดินด้วยเชือกนำทางไม่หลง",
+    "ผ่านหมอกหนาโดยไม่ใช้เชือก",
+    "ผ่านหมอกทึบและเดินหนีหนวดได้"
+   ],
+   "learnFrom": [
+    "NB-14",
+    "NB-10"
+   ],
+   "learnText": "NB-14 NB-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:16"
+  },
+  {
+   "id": "ns_mountain_pace",
+   "name": "ก้าวบันไดหมื่นขั้น",
+   "kind": "new",
+   "apt": "unarmed",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "ขึ้นบันไดร้อยขั้นแรกโดยไม่หมดแรง",
+    "ขึ้นได้หนึ่งพันขั้น",
+    "ผ่านการทดสอบของยักษ์ที่ครึ่งทาง"
+   ],
+   "learnFrom": [
+    "SH-03",
+    "SH-09"
+   ],
+   "learnText": "SH-03 SH-09",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:17"
+  },
+  {
+   "id": "ns_rail_driver",
+   "name": "ขับรถจักร",
+   "kind": "new",
+   "apt": "mounted",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "ขับรถไฟสายสั้น",
+    "ขับขบวนยาว ตรวจรางได้",
+    "ขับผ่านเขตสงคราม (MC-07 WR-16)"
+   ],
+   "learnFrom": [
+    "AL-28",
+    "MK-05"
+   ],
+   "learnText": "AL-28 MK-05",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:18"
+  },
+  {
+   "id": "ns_sky_pilot",
+   "name": "ขับเรือเหาะ",
+   "kind": "new",
+   "apt": "mounted",
+   "group": "ก. การเดินทางและนำทาง",
+   "fx": [],
+   "levels": [
+    "บินเรือเหาะเล็กระยะใกล้",
+    "บินเรือใหญ่ ผ่านกฎ PO-02 ได้",
+    "วางแผนบินข้ามทะเลโดยไม่ต้องจอด"
+   ],
+   "learnFrom": [
+    "MK-09",
+    "NR-12"
+   ],
+   "learnText": "MK-09 NR-12",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:19"
+  },
+  {
+   "id": "ns_rune_close",
+   "name": "ปิดรูน",
+   "kind": "new",
+   "apt": "rune",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "ปิดรูนระดับต่ำเพื่อป้องกันของ",
+    "ปิดรูนของประตูเหมือง",
+    "ปิดรูนของห้องใต้ดินทั้งห้อง"
+   ],
+   "learnFrom": [
+    "KD-03"
+   ],
+   "learnText": "KD-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:25"
+  },
+  {
+   "id": "ns_rune_open",
+   "name": "เปิดรูน",
+   "kind": "new",
+   "apt": "rune",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "เปิดรูนระดับต่ำ",
+    "เปิดรูนห้องเก็บของ",
+    "เปิดรูนปฐมที่ถอดรหัสแล้ว (GI-05)"
+   ],
+   "learnFrom": [
+    "KD-04"
+   ],
+   "learnText": "KD-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:26"
+  },
+  {
+   "id": "ns_anvil_voice",
+   "name": "ฟังเสียงทั่ง",
+   "kind": "new",
+   "apt": "smithing",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "จับเสียงโลหะรู้ว่าเหล็กมีรอยร้าว",
+    "ตีอาวุธที่ไม่หักง่าย",
+    "ตีอาวุธที่ผนึกชื่อของผู้ถือ"
+   ],
+   "learnFrom": [
+    "KD-01"
+   ],
+   "learnText": "KD-01",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:27"
+  },
+  {
+   "id": "ns_giant_forge",
+   "name": "ตีขนาดยักษ์",
+   "kind": "new",
+   "apt": "smithing",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "ตีเครื่องมือขนาดใหญ่",
+    "ตีอาวุธขนาดมหึมา",
+    "ตีค้อนทุบฟ้า (GI-03)"
+   ],
+   "learnFrom": [
+    "SH-07"
+   ],
+   "learnText": "SH-07",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:28"
+  },
+  {
+   "id": "ns_gear_tune",
+   "name": "จูนเฟือง",
+   "kind": "new",
+   "apt": "smithing",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "ซ่อมนาฬิกาและเครื่องกลเล็ก",
+    "ซ่อมเครื่องยนต์",
+    "ซ่อมหุ่นวิญญาณโดยไม่ทำลายแกน"
+   ],
+   "learnFrom": [
+    "MK-12"
+   ],
+   "learnText": "MK-12",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:29"
+  },
+  {
+   "id": "ns_code_read",
+   "name": "ถอดรหัสปฐม",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "อ่านรหัสง่ายได้",
+    "อ่านบางส่วนของจารึกปฐม",
+    "ถอดรหัสปฐมสำเร็จ (MC-06)"
+   ],
+   "learnFrom": [
+    "MK-13"
+   ],
+   "learnText": "MK-13",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:30"
+  },
+  {
+   "id": "ns_airship_design",
+   "name": "ออกแบบเรือเหาะ",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "วาดแบบเรือเหาะ",
+    "สร้างเรือเหาะต้นแบบ",
+    "ออกแบบเมืองแขวนเทียม (MC-10)"
+   ],
+   "learnFrom": [
+    "NR-12",
+    "MK-09"
+   ],
+   "learnText": "NR-12 MK-09",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:31"
+  },
+  {
+   "id": "ns_mask_make",
+   "name": "ทำหน้ากากกรองหมอก",
+   "kind": "new",
+   "apt": "alchemy",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "ทำหน้ากากผ้าธรรมดา",
+    "ทำหน้ากากกรองหมอกเบา",
+    "ทำเครื่องกรองหมอกเครื่องแรก (MC-09)"
+   ],
+   "learnFrom": [
+    "NB-11"
+   ],
+   "learnText": "NB-11",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:32"
+  },
+  {
+   "id": "ns_lantern_light",
+   "name": "จุดโคมศักดิ์สิทธิ์",
+   "kind": "new",
+   "apt": "light",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "จุดโคมที่ไล่หมอกเบา",
+    "โคมที่ไล่สิ่งมีชีวิตในหมอกทึบได้ 1 ชั่วโมง",
+    "โคมที่ไล่หนวดทั้งเมือง (FG-13 ถ้าน้ำมันยังมี)"
+   ],
+   "learnFrom": [
+    "NB-03"
+   ],
+   "learnText": "NB-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:33"
+  },
+  {
+   "id": "ns_ash_rice",
+   "name": "ปลูกข้าวเถ้า",
+   "kind": "new",
+   "apt": "farming",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "หว่านเมล็ดในเถ้า",
+    "เก็บผลหลังเจ็ดปี",
+    "ขยายพันธุ์ข้ามทวีป (HP-07)"
+   ],
+   "learnFrom": [
+    "MH-06"
+   ],
+   "learnText": "MH-06",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:34"
+  },
+  {
+   "id": "ns_coral_grow",
+   "name": "เพาะปะการัง",
+   "kind": "new",
+   "apt": "farming",
+   "group": "ข. งานช่างและประดิษฐ์",
+   "fx": [],
+   "levels": [
+    "ปลูกปะการังเล็ก",
+    "ฟื้นแนวปะการังป่วย",
+    "ฟื้นปะการังหลัง BIO-07"
+   ],
+   "learnFrom": [
+    "NR-13"
+   ],
+   "learnText": "NR-13",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:35"
+  },
+  {
+   "id": "ns_council_speech",
+   "name": "วาทะสภา",
+   "kind": "new",
+   "apt": "leadership",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "พูดต่อกลุ่มได้ไม่ตื่น",
+    "เรียกความเห็นของผู้แทนหนึ่งฝ่าย",
+    "ปิดข้อขัดแย้งในสภา (PO-01 PO-08)"
+   ],
+   "learnFrom": [
+    "AL-01"
+   ],
+   "learnText": "AL-01",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:41"
+  },
+  {
+   "id": "ns_debt_bind",
+   "name": "ผูกหนี้",
+   "kind": "new",
+   "apt": "trade",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "ปล่อยกู้เล็ก",
+    "ผูกพันลูกหนี้ด้วยสัญญา",
+    "เจ้าหนี้ของทั้งสองฝ่ายในสงคราม"
+   ],
+   "learnFrom": [
+    "AL-10",
+    "NB-02"
+   ],
+   "learnText": "AL-10 NB-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:42"
+  },
+  {
+   "id": "ns_blood_ledger",
+   "name": "บัญชีเลือด",
+   "kind": "new",
+   "apt": "contract",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "จดหนี้เลือดได้",
+    "โอนหนี้เลือดให้ผู้อื่น",
+    "ใช้หนี้เลือดเป็นเงินตรา (เสริมสกิลแวมไพร์)"
+   ],
+   "learnFrom": [
+    "NB-02"
+   ],
+   "learnText": "NB-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:43"
+  },
+  {
+   "id": "ns_market_dark",
+   "name": "ค้าตลาดมืด",
+   "kind": "new",
+   "apt": "trade",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "หาของเถื่อนได้",
+    "ขายข้อมูล",
+    "ซื้อขายตัวตนใหม่ (NB-09)"
+   ],
+   "learnFrom": [
+    "NB-09"
+   ],
+   "learnText": "NB-09",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:44"
+  },
+  {
+   "id": "ns_mercenary_deal",
+   "name": "ต่อรองทหารรับจ้าง",
+   "kind": "new",
+   "apt": "leadership",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "จ้างทหารกลุ่มเล็ก",
+    "จ้างกองร้อย",
+    "จ้างกองทัพ ผูกกับ MC-08"
+   ],
+   "learnFrom": [
+    "MH-09",
+    "MK-16"
+   ],
+   "learnText": "MH-09 MK-16",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:45"
+  },
+  {
+   "id": "ns_mediate",
+   "name": "ไกล่เกลี่ยข้ามเผ่า",
+   "kind": "new",
+   "apt": "charm",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "คุยกับสองฝ่ายอย่างเป็นกลาง",
+    "ยุติข้อพิพาทเล็ก",
+    "ยุติสงครามน้ำเก่า (WR-20) หรือสงครามอื่น"
+   ],
+   "learnFrom": [
+    "NR-06",
+    "NR-07",
+    "KD-11"
+   ],
+   "learnText": "NR-06 NR-07 KD-11",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:46"
+  },
+  {
+   "id": "ns_refugee_lead",
+   "name": "นำผู้ลี้ภัย",
+   "kind": "new",
+   "apt": "leadership",
+   "group": "ค. สังคมและการเมือง",
+   "fx": [],
+   "levels": [
+    "นำกลุ่มเล็กข้ามชายแดน",
+    "จัดค่ายผู้ลี้ภัย",
+    "นำผู้คนนับพัน (AL-19 NR-10)"
+   ],
+   "learnFrom": [
+    "AL-19",
+    "NR-10"
+   ],
+   "learnText": "AL-19 NR-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:47"
+  },
+  {
+   "id": "ns_ghost_calm",
+   "name": "สงบศึกผี",
+   "kind": "new",
+   "apt": "necro",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "พูดกับวิญญาณทหารได้",
+    "ทำให้วิญญาณสงบ",
+    "ส่งวิญญาณทั้งกองทัพของเซร์ไกลวันไปพัก (MH12-1)"
+   ],
+   "learnFrom": [
+    "MH-12"
+   ],
+   "learnText": "MH-12",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:53"
+  },
+  {
+   "id": "ns_ghoul_speak",
+   "name": "กล่อมกูล",
+   "kind": "new",
+   "apt": "taming",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "กูลเดียวไม่โจมตีเมื่อได้ยิน",
+    "กลุ่มกูลเลื่อนศึก",
+    "ทำสนธิสัญญากับกูล (MH-03)"
+   ],
+   "learnFrom": [
+    "MH-03"
+   ],
+   "learnText": "MH-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:54"
+  },
+  {
+   "id": "ns_soul_ledger",
+   "name": "อ่านบัญชีวิญญาณ",
+   "kind": "new",
+   "apt": "divination",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "อ่านชื่อในบัญชีเก่า",
+    "รู้ว่าใครถูกลบ",
+    "ลบหรือเพิ่มชื่อ (ราคาสูง)"
+   ],
+   "learnFrom": [
+    "SH-02"
+   ],
+   "learnText": "SH-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:55"
+  },
+  {
+   "id": "ns_dream_read",
+   "name": "ตีความฝัน",
+   "kind": "new",
+   "apt": "divination",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "จำฝันของตัวเองได้",
+    "ตีความฝันของผู้อื่น",
+    "เข้าฝันผู้อื่นที่มีสายสัมพันธ์"
+   ],
+   "learnFrom": [
+    "AL-14"
+   ],
+   "learnText": "AL-14",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:56"
+  },
+  {
+   "id": "ns_ring_read",
+   "name": "อ่านวงปี",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "อ่านวงปีต้นไม้ตัวเดียว",
+    "อ่านบันทึกของป่า",
+    "อ่านวันมหาล่มสลายจากต้นไม้โลก"
+   ],
+   "learnFrom": [
+    "SV-07"
+   ],
+   "learnText": "SV-07",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:57"
+  },
+  {
+   "id": "ns_root_listen",
+   "name": "ฟังเสียงราก",
+   "kind": "new",
+   "apt": "nature",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "ได้ยินรากต้นไม้ที่อยู่ใกล้",
+    "ฟังสุขภาพของป่าทั้งผืน",
+    "ฟังหายใจของซิลเวรา (PL-08)"
+   ],
+   "learnFrom": [
+    "SV-12",
+    "SV-13"
+   ],
+   "learnText": "SV-12 SV-13",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:58"
+  },
+  {
+   "id": "ns_stone_heart",
+   "name": "ฟังหัวใจหิน",
+   "kind": "new",
+   "apt": "earth",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "รู้ว่าหินมีจังหวะ",
+    "ฟังหัวใจภูเขา",
+    "ฟังหัวใจไททัน (GI-02)"
+   ],
+   "learnFrom": [
+    "SH-06"
+   ],
+   "learnText": "SH-06",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:59"
+  },
+  {
+   "id": "ns_moon_veil",
+   "name": "ม่านจันทรา",
+   "kind": "new",
+   "apt": "illusion",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "บังตาจากสายตาเดียว",
+    "บังตาจากสายตากลุ่มเล็ก",
+    "ซ่อนเมืองทั้งเมืองในคืนเดียว"
+   ],
+   "learnFrom": [
+    "SV-05",
+    "NB-03"
+   ],
+   "learnText": "SV-05 NB-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:60"
+  },
+  {
+   "id": "ns_soul_bind",
+   "name": "ผูกวิญญาณหุ่น",
+   "kind": "new",
+   "apt": "summon",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "เรียกหุ่นเล็กตัวเดียว",
+    "หุ่นที่ตื่นแล้วยอมฟัง",
+    "หุ่นผู้ตื่นรับช่วง (RL-03)"
+   ],
+   "learnFrom": [
+    "MK-03"
+   ],
+   "learnText": "MK-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:61"
+  },
+  {
+   "id": "ns_pact_reading",
+   "name": "อ่านสัญญา",
+   "kind": "new",
+   "apt": "contract",
+   "group": "ง. เวท ความตาย และผู้ตาย",
+   "fx": [],
+   "levels": [
+    "อ่านข้อซ่อนในสัญญา",
+    "หาช่องโหว่ในสัญญาปีศาจ",
+    "ถอนตัวจากสัญญาโดยไม่เสียราคา (หนึ่งครั้งต่อชีวิต)"
+   ],
+   "learnFrom": [
+    "MH-02",
+    "SV-04"
+   ],
+   "learnText": "MH-02 SV-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:62"
+  },
+  {
+   "id": "ns_trench_war",
+   "name": "รบสนามเพลาะ",
+   "kind": "new",
+   "apt": "shield",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "ขุดหลุมกำบังเร็ว",
+    "รบในพื้นที่แคบ ลดความเสียหายกระสุน 20%",
+    "ฝ่าก๊าซพิษ ปิดจมูกและเดินตามผู้นำ"
+   ],
+   "learnFrom": [
+    "AL-15"
+   ],
+   "learnText": "AL-15",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:68"
+  },
+  {
+   "id": "ns_siege_craft",
+   "name": "ล้อมเมือง",
+   "kind": "new",
+   "apt": "hammer",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "ใช้หน้าไม้ใหญ่",
+    "สร้างหอล้อมง่าย",
+    "ล้มกำแพงด้วยหน้าไม้ยักษ์ (MH-05)"
+   ],
+   "learnFrom": [
+    "MH-05"
+   ],
+   "learnText": "MH-05",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:69"
+  },
+  {
+   "id": "ns_wolf_rider",
+   "name": "ขี่หมาป่าเงา",
+   "kind": "new",
+   "apt": "mounted",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "ขี่หมาป่าธรรมดา",
+    "ขี่หมาป่าเงา วิ่งในป่าได้ไว",
+    "รบบนหลังหมาป่าเงาโดยไม่ตกหลัง"
+   ],
+   "learnFrom": [
+    "SV-09"
+   ],
+   "learnText": "SV-09",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:70"
+  },
+  {
+   "id": "ns_ash_run",
+   "name": "วิ่งทะเลเถ้า",
+   "kind": "new",
+   "apt": "mounted",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "เดินในเถ้าไม่จม",
+    "วิ่งข้ามทะเลเถ้า",
+    "นำฝูงขี่หมาป่าเถ้าผ่านพายุเถ้า"
+   ],
+   "learnFrom": [
+    "MH-04"
+   ],
+   "learnText": "MH-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:71"
+  },
+  {
+   "id": "ns_fog_hunt",
+   "name": "ล่าในหมอก",
+   "kind": "new",
+   "apt": "tracking",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "ตามเสียงหนวดได้",
+    "ตามเสียงเนื้อบินได้",
+    "ล่าสิ่งมีชีวิตในหมอกทึบโดยไม่ถูกเห็น"
+   ],
+   "learnFrom": [
+    "NB-04",
+    "NB-10"
+   ],
+   "learnText": "NB-04 NB-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:72"
+  },
+  {
+   "id": "ns_wrath_ember",
+   "name": "ประกายโกรธ",
+   "kind": "new",
+   "apt": "fire",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "โกรธแล้วตัวร้อน",
+    "ปล่อยความร้อนใส่ศัตรู",
+    "ไฟระเบิดจากอารมณ์ (กับ nb_lava_pulse)"
+   ],
+   "learnFrom": [
+    "KD-06"
+   ],
+   "learnText": "KD-06",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:73"
+  },
+  {
+   "id": "ns_deep_dive",
+   "name": "ดำลึกซากเมือง",
+   "kind": "new",
+   "apt": "water",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "ดำน้ำลึกโดยมีเชือก",
+    "สำรวจซากเมืองใต้น้ำ",
+    "ดำถึงร่องธาลาสซาโดยไม่ปลุกมัน"
+   ],
+   "learnFrom": [
+    "NR-14",
+    "NR-04"
+   ],
+   "learnText": "NR-14 NR-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:74"
+  },
+  {
+   "id": "ns_sun_shield",
+   "name": "โล่รับแสงอาทิตย์",
+   "kind": "new",
+   "apt": "shield",
+   "group": "จ. การรบและเอาตัวรอด",
+   "fx": [],
+   "levels": [
+    "กางผ้ากันแสงเมื่อจำเป็น",
+    "ปกป้องผู้อื่นจากแสง",
+    "ใช้ได้ในวันที่ DR-04 ทำให้ท้องฟ้าหม่น"
+   ],
+   "learnFrom": [
+    "NB-02"
+   ],
+   "learnText": "NB-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:75"
+  },
+  {
+   "id": "ns_two_tongues",
+   "name": "สองภาษาเลือด",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "พูดภาษาถิ่นของเผ่าที่สองได้โดยไม่ต้องมีล่าม",
+    "แปลสัญญาและเพลงข้ามเผ่า",
+    "เป็นล่ามของสภาเก้าทวีป (cv.2)"
+   ],
+   "learnFrom": [],
+   "learnText": "ญาติของเผ่าที่สอง (hb.a1)",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:83"
+  },
+  {
+   "id": "ns_blood_bridge",
+   "name": "สะพานเลือด",
+   "kind": "new",
+   "apt": "trade",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ไว้ใจของสองเผ่าเพิ่มเร็วขึ้น 20%",
+    "เจรจาแทนสองฝ่ายพร้อมกัน ท่าทีเจรจาข้ามเผ่า +1",
+    "ให้คู่แค้นเก่านั่งคุยกันได้หนึ่งครั้งต่อชีวิต"
+   ],
+   "learnFrom": [
+    "SV-09",
+    "SV-17"
+   ],
+   "learnText": "ชุมชนลูกครึ่ง (hb.a3) SV-09 SV-17",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:84"
+  },
+  {
+   "id": "ns_double_rite",
+   "name": "สองพิธี",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "รู้ขั้นตอนพิธีของเผ่าที่สอง ผ่านง่ายขึ้น 5",
+    "ทำสองพิธีในปีเดียวกันได้ (ไม่ต้องเว้นสองปีตาม hb.t1)",
+    "ผู้เฒ่าของสองเผ่าให้พรพิธีเดียว"
+   ],
+   "learnFrom": [],
+   "learnText": "ผู้ค้ำใน hb.t1",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:85"
+  },
+  {
+   "id": "ns_third_hearth",
+   "name": "บ้านหลังที่สาม",
+   "kind": "new",
+   "apt": "farming",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "จัดที่พักให้ผู้ไร้ถิ่นได้",
+    "ดึงลูกครึ่งและผู้พลัดถิ่นเข้ามาอยู่",
+    "ชุมชนรอดจากเหตุการณ์โลกที่ล้มเมืองได้หนึ่งครั้ง"
+   ],
+   "learnFrom": [],
+   "learnText": "ผู้ก่อชุมชนก่อนหน้า (hb.a3 ทาง ค)",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:86"
+  },
+  {
+   "id": "ns_song_both",
+   "name": "เพลงสองฝั่ง",
+   "kind": "new",
+   "apt": "music",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ร้องเพลงกล่อมนาคาและเงือกได้ทั้งสองบท",
+    "เพลงปลอบสงบศัตรูที่เป็นนาคาหรือเงือกได้",
+    "ร้องสองเพลงพร้อมกันให้ไข่ตอบ"
+   ],
+   "learnFrom": [
+    "NR-06",
+    "NR-07"
+   ],
+   "learnText": "NR-06 NR-07",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:87"
+  },
+  {
+   "id": "ns_bridge_swim",
+   "name": "ว่ายข้ามสองฝั่ง",
+   "kind": "new",
+   "apt": "water",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ว่ายแม่น้ำเชี่ยวได้ไม่หมดแรง",
+    "พาคนหนึ่งคนว่ายตามได้",
+    "พาผู้ลี้ภัยข้ามแม่น้ำใหญ่ทั้งขบวนด้วยเชือก"
+   ],
+   "learnFrom": [
+    "SV-17",
+    "NR-07"
+   ],
+   "learnText": "SV-17 NR-07",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:88"
+  },
+  {
+   "id": "ns_sap_carry",
+   "name": "แบกน้ำเลี้ยง",
+   "kind": "new",
+   "apt": "healing",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ถือน้ำเลี้ยงไม่ให้เสียคุณภาพ",
+    "แบ่งน้ำเลี้ยงให้ผู้ป่วยได้โดยไม่ให้เอลฟ์เห็น",
+    "รักษามนุษย์ด้วยน้ำเลี้ยงโดยไม่ทำให้ต้นไม้ป่วยเพิ่ม"
+   ],
+   "learnFrom": [
+    "SV-09",
+    "SV-05"
+   ],
+   "learnText": "SV-09 SV-05",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:89"
+  },
+  {
+   "id": "ns_pack_voice",
+   "name": "เสียงสองฝูง",
+   "kind": "new",
+   "apt": "taming",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ฝูงหมาป่าเงาไม่ตื่นเมื่อเข้าใกล้",
+    "สั่งฝูงขนาดเล็กได้",
+    "สงบฝูงคลั่งและสั่งเอลฟ์ให้หยุดยิงพร้อมกัน"
+   ],
+   "learnFrom": [
+    "SV-09",
+    "SV-16"
+   ],
+   "learnText": "SV-09 SV-16",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:90"
+  },
+  {
+   "id": "ns_bone_tongue",
+   "name": "ภาษากระดูก",
+   "kind": "new",
+   "apt": "divination",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "อ่านกระดูกพิธีของออร์คได้",
+    "พูดกับหมอผีออร์คโดยไม่ถูกมองว่าเป็นคนนอก",
+    "ตีความกระดูกของมงกุฎให้ทั้งออร์คและมนุษย์เชื่อ"
+   ],
+   "learnFrom": [
+    "MH-01",
+    "MH-06"
+   ],
+   "learnText": "MH-01 MH-06",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:91"
+  },
+  {
+   "id": "ns_short_glide",
+   "name": "ร่อนปีกสั้น",
+   "kind": "new",
+   "apt": "wind",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ร่อนจากที่สูงเล็กน้อย",
+    "ร่อนข้ามหน้าผาโดยไม่ตก",
+    "ร่อนลงจากเกาะที่ร่วงทั้งเกาะ"
+   ],
+   "learnFrom": [
+    "AZ-02",
+    "AZ-01"
+   ],
+   "learnText": "AZ-02 AZ-01",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:92"
+  },
+  {
+   "id": "ns_day_walk",
+   "name": "เดินกลางแดด",
+   "kind": "new",
+   "apt": "alchemy",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ทาน้ำมันกันแสงออกเดินตอนเช้าได้",
+    "เดินกลางวันทั้งวันโดยไม่ได้ c_sunburn",
+    "ใช้ชีวิตกลางวันเท่ากลางคืน"
+   ],
+   "learnFrom": [
+    "NB-02",
+    "NB-06"
+   ],
+   "learnText": "NB-02 NB-06",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:93"
+  },
+  {
+   "id": "ns_pact_cut",
+   "name": "ตัดสัญญา",
+   "kind": "new",
+   "apt": "contract",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "หาข้อที่ตัดได้ของสัญญา",
+    "ตัดสัญญาที่ผูกเลือดครึ่งหนึ่งโดยจ่ายราคา",
+    "ตัดสัญญาที่ผูกมังกร (ต้องมี nb_mark_*)"
+   ],
+   "learnFrom": [
+    "MH-02"
+   ],
+   "learnText": "MH-02",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:94"
+  },
+  {
+   "id": "ns_twin_fire",
+   "name": "สองไฟ",
+   "kind": "new",
+   "apt": "smithing",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ใช้ทั่งและเตาเพลิงในงานเดียว",
+    "ตีอาวุธจากเหล็กคนแคระและเหล็กไหลลาวาร่วมกัน",
+    "ตีอาวุธ E ที่ใส่ทั้งสองไฟได้"
+   ],
+   "learnFrom": [
+    "KD-11",
+    "KD-01"
+   ],
+   "learnText": "KD-11 KD-01",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:95"
+  },
+  {
+   "id": "ns_stone_eye",
+   "name": "ตาหิน",
+   "kind": "new",
+   "apt": "earth",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "เห็นรอยร้าวในหิน",
+    "เห็นเส้นแรงของภูเขา",
+    "เห็นว่าไททันจะขยับก่อนหนึ่งวัน"
+   ],
+   "learnFrom": [
+    "SH-06",
+    "SH-03"
+   ],
+   "learnText": "SH-06 SH-03",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:96"
+  },
+  {
+   "id": "ns_shade_step",
+   "name": "ก้าวเงาคู่",
+   "kind": "new",
+   "apt": "stealth",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "เงามาช้ากว่าตัว ใช้หลอกผู้ติดตามได้",
+    "หายไปในเงาเมื่อมีเงา",
+    "เดินในคืนไม่มีเงาได้ครึ่งทาง"
+   ],
+   "learnFrom": [
+    "KD-05",
+    "NB-05"
+   ],
+   "learnText": "KD-05 NB-05",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:97"
+  },
+  {
+   "id": "ns_fae_name",
+   "name": "ชื่อครึ่งดอกไม้",
+   "kind": "new",
+   "apt": "nature",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ซ่อนชื่อจริงจากภูตได้ครึ่งหนึ่ง",
+    "ภูตเก็บหนี้ต้องต่อรองทุกครั้ง",
+    "ชื่อไม่ถูกเอามาใช้ในสัญญาโดยไม่ได้ตกลง"
+   ],
+   "learnFrom": [
+    "SV-04"
+   ],
+   "learnText": "SV-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:98"
+  },
+  {
+   "id": "ns_shire_table",
+   "name": "โต๊ะกลางไชร์",
+   "kind": "new",
+   "apt": "cooking",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "อาหารจานเดียวทำให้สองฝ่ายนั่งร่วมโต๊ะ",
+    "จัดโต๊ะเจรจาเล็ก ๆ ไม่มีใครปฏิเสธ",
+    "โต๊ะสนธิสัญญาเก้าทวีปมีอาหารของไชร์"
+   ],
+   "learnFrom": [
+    "AL-16"
+   ],
+   "learnText": "AL-16",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:99"
+  },
+  {
+   "id": "ns_two_scent",
+   "name": "กลิ่นสองถิ่น",
+   "kind": "new",
+   "apt": "tracking",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ตามกลิ่นสัตว์และคนได้พร้อมกัน",
+    "ตามกลิ่นผู้ลี้ภัยทั้งขบวน",
+    "หาคนที่ถูกสัตว์ป่าพาไปจากกลิ่นเดียว"
+   ],
+   "learnFrom": [
+    "SV-16",
+    "MH-04"
+   ],
+   "learnText": "SV-16 MH-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:100"
+  },
+  {
+   "id": "ns_wave_letter",
+   "name": "จดหมายในขวด",
+   "kind": "new",
+   "apt": "writing",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "ส่งจดหมายข้ามฝั่งน้ำผ่านขวดได้",
+    "จดหมายถึงปลายทางตามกระแสน้ำ",
+    "จดหมายถึงผู้รับแม้ผู้รับอยู่ใต้ทะเล"
+   ],
+   "learnFrom": [
+    "NR-06",
+    "NR-01"
+   ],
+   "learnText": "NR-06 NR-01",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:101"
+  },
+  {
+   "id": "ns_ember_oath",
+   "name": "คำสาบานเพลิง",
+   "kind": "new",
+   "apt": "fire",
+   "group": "ฉ. ลูกครึ่งและสองบ้าน",
+   "fx": [],
+   "levels": [
+    "เปลวที่ออกมามีลายเซ็น ใช้ยืนยันตัวตน",
+    "เซ็นสัญญาด้วยเปลวที่ปลอมไม่ได้",
+    "ผูกคำสาบานกับมังกรโดยสัญญาไม่เอียงข้างใด"
+   ],
+   "learnFrom": [
+    "MH-02",
+    "KD-07"
+   ],
+   "learnText": "MH-02 KD-07",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:102"
+  },
+  {
+   "id": "ns_haggle",
+   "name": "ต่อรอง",
+   "kind": "new",
+   "apt": "trade",
+   "group": "ช. การค้าและเส้นทาง",
+   "fx": [],
+   "levels": [
+    "โบนัสต่อรอง +2 (ระดับ ×2 ในสูตร) ดูท่าทีคู่ค้า",
+    "อ่านนิสัยคู่ค้าได้ (รู้ DC ล่วงหน้า)",
+    "ต่อรองซ้ำได้อีกหนึ่งครั้งต่อฤดู ผู้ขายไม่เสียหน้า"
+   ],
+   "learnFrom": [
+    "AL-10",
+    "NR-01",
+    "SH-04"
+   ],
+   "learnText": "AL-10 NR-01 SH-04",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:110"
+  },
+  {
+   "id": "ns_appraise",
+   "name": "ประเมินราคา",
+   "kind": "new",
+   "apt": "scholar",
+   "group": "ช. การค้าและเส้นทาง",
+   "fx": [],
+   "levels": [
+    "บอกมูลค่าของระดับ C U ได้",
+    "บอกประวัติและมูลค่าจริงของ R E ได้ ไม่ถูกหลอกราคา",
+    "บอกผู้สถิตของเครื่องรางโบราณและที่มาของของตำนาน"
+   ],
+   "learnFrom": [
+    "KD-09",
+    "AL-11",
+    "AL-10"
+   ],
+   "learnText": "KD-09 AL-11 AL-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:111"
+  },
+  {
+   "id": "ns_route_read",
+   "name": "อ่านเส้นทางค้า",
+   "kind": "new",
+   "apt": "tracking",
+   "group": "ช. การค้าและเส้นทาง",
+   "fx": [],
+   "levels": [
+    "รู้ราคาของประเทศที่เคยไปและประเทศติดกัน",
+    "รู้เส้นทางที่ปลอดภัยที่สุด ลดความเสี่ยงเส้นทางหนึ่งระดับ",
+    "รู้เส้นลับที่ผ่านด่านโดยไม่ถูกตรวจ"
+   ],
+   "learnFrom": [
+    "SH-04",
+    "SH-15",
+    "NR-15"
+   ],
+   "learnText": "SH-04 SH-15 NR-15",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:112"
+  },
+  {
+   "id": "ns_caravan_lead",
+   "name": "นำขบวน",
+   "kind": "new",
+   "apt": "leadership",
+   "group": "ช. การค้าและเส้นทาง",
+   "fx": [],
+   "levels": [
+    "ขบวนเล็ก (เกวียน 4 คัน) ไม่แตกแถว",
+    "ขบวนใหญ่ได้ความจุ +25% ผู้คุ้มกันขวัญดี",
+    "ขบวนข้ามทวีปได้ ทำสัญญากับผู้ว่าหลายประเทศพร้อมกัน"
+   ],
+   "learnFrom": [
+    "SH-04",
+    "AL-10",
+    "AL-28"
+   ],
+   "learnText": "SH-04 AL-10 AL-28",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:113"
+  },
+  {
+   "id": "ns_guard_post",
+   "name": "ประจำจุดคุ้มกัน",
+   "kind": "new",
+   "apt": "shield",
+   "group": "ช. การค้าและเส้นทาง",
+   "fx": [],
+   "levels": [
+    "ลดโอกาสถูกซุ่ม 10%",
+    "ลด 25% และนำพวกพ้องป้องกันเมื่อถูกซุ่ม",
+    "ขบวนไม่เสียสินค้าเมื่อชนะศึกซุ่ม"
+   ],
+   "learnFrom": [
+    "MK-16",
+    "AL-18",
+    "AL-10"
+   ],
+   "learnText": "MK-16 AL-18 AL-10",
+   "src": "doc",
+   "at": "docs/systems/character/07-new-skills.md:114"
+  },
+  {
+   "id": "ns_beast_speech",
+   "name": "พูดกับสัตว์",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "เข้าใจอารมณ์สัตว์ทั่วไป",
+    "สื่อสารความต้องการได้",
+    "สนทนากับสัตว์วิญญาณและสัตว์วิเศษ"
+   ],
+   "learnFrom": [
+    "SV-16",
+    "SV-09"
+   ],
+   "learnText": "SV-16 SV-09",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:13"
+  },
+  {
+   "id": "ns_pet_train",
+   "name": "ฝึกคำสั่ง",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "สัตว์ทำตามคำสั่งพื้นฐาน",
+    "ทำตามคำสั่งซับซ้อน",
+    "ทำงานเองเมื่อผู้เลี้ยงไม่อยู่"
+   ],
+   "learnFrom": [],
+   "learnText": "ทุกถิ่น",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:14"
+  },
+  {
+   "id": "ns_pack_lead",
+   "name": "นำฝูง",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "นำสัตว์ 2 ตัวได้",
+    "นำฝูงเล็ก",
+    "นำฝูงใหญ่ในสนามรบ (เสริมราชันย์อสูร)"
+   ],
+   "learnFrom": [
+    "SV-09",
+    "AL-24"
+   ],
+   "learnText": "SV-09 AL-24",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:15"
+  },
+  {
+   "id": "ns_vet_firstaid",
+   "name": "ปฐมพยาบาลสัตว์",
+   "kind": "companion",
+   "apt": "medicine",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ทำแผลสัตว์",
+    "รักษากระดูกหักและพิษ",
+    "ผ่าตัดสัตว์ใหญ่"
+   ],
+   "learnFrom": [
+    "AL-26",
+    "AL-16"
+   ],
+   "learnText": "AL-26 AL-16",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:16"
+  },
+  {
+   "id": "ns_bond_ritual",
+   "name": "พิธีผูกพัน",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "พิธีง่ายเพิ่ม XP ผูกพัน 25%",
+    "เพิ่ม 50% และข้ามเพดานผูกพันได้ 1 ระดับกับสัตว์ที่ยินยอม",
+    "พิธีผูกพันกับสัตว์วิญญาณและมังกรเล็ก"
+   ],
+   "learnFrom": [
+    "SV-01",
+    "KD-07"
+   ],
+   "learnText": "SV-01 KD-07",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:17"
+  },
+  {
+   "id": "ns_hawking",
+   "name": "ล่าด้วยเหยี่ยว",
+   "kind": "companion",
+   "apt": "bow",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ใช้เหยี่ยวล่านกเล็ก",
+    "ล่ากระต่ายและจิ้งจอก",
+    "ล่าสัตว์ใหญ่ร่วมกับเหยี่ยวพายุ"
+   ],
+   "learnFrom": [
+    "SH-04",
+    "AL-24"
+   ],
+   "learnText": "SH-04 AL-24",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:18"
+  },
+  {
+   "id": "ns_herd_whistle",
+   "name": "ผิวปากต้อนฝูง",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ต้อนแกะและวัว",
+    "ต้อนฝูงขนาดร้อย",
+    "ต้อนฝูงข้ามพายุ"
+   ],
+   "learnFrom": [
+    "AL-16",
+    "AL-24"
+   ],
+   "learnText": "AL-16 AL-24",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:19"
+  },
+  {
+   "id": "ns_egg_hatch",
+   "name": "ฟักไข่",
+   "kind": "companion",
+   "apt": "farming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ฟักไข่สัตว์ธรรมดา",
+    "ฟักไข่สัตว์วิเศษเล็ก",
+    "ฟักไข่มังกรและสัตว์วิญญาณ"
+   ],
+   "learnFrom": [
+    "NR-07",
+    "KD-07"
+   ],
+   "learnText": "NR-07 KD-07",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:20"
+  },
+  {
+   "id": "ns_beast_sign",
+   "name": "อ่านสัญญาณสัตว์",
+   "kind": "companion",
+   "apt": "tracking",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "รู้ว่าสัตว์ป่าใกล้",
+    "อ่านความหมายท่าทางเตือนภัย",
+    "รู้ว่าสัตว์ในรัศมีรู้สึกอย่างไรต่อตัวละคร"
+   ],
+   "learnFrom": [
+    "KD-12"
+   ],
+   "learnText": "SV KD-12",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:21"
+  },
+  {
+   "id": "ns_pet_cook",
+   "name": "ทำอาหารสัตว์",
+   "kind": "companion",
+   "apt": "cooking",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ทำอาหารสัตว์ลดค่าเลี้ยง 20%",
+    "40% และเพิ่มสุขภาพ",
+    "ทำอาหารที่เพิ่มอายุขัยสัตว์ 5%"
+   ],
+   "learnFrom": [],
+   "learnText": "ทุกถิ่น",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:22"
+  },
+  {
+   "id": "ns_mount_craft",
+   "name": "เลี้ยงและดูแลพาหนะ",
+   "kind": "companion",
+   "apt": "mounted",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ดูแลม้าและอูฐ",
+    "ดูแลสัตว์บิน",
+    "ดูแลสัตว์วิเศษขนาดใหญ่"
+   ],
+   "learnFrom": [
+    "AL-18",
+    "SH-04"
+   ],
+   "learnText": "AL-18 SH-04",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:23"
+  },
+  {
+   "id": "ns_companion_swap",
+   "name": "ฝากสัตว์",
+   "kind": "companion",
+   "apt": "taming",
+   "group": "ก. skill ใหม่ 12 อย่าง",
+   "fx": [],
+   "levels": [
+    "ฝากสัตว์กับผู้ไว้ใจเมื่อเดินทาง",
+    "สัตว์ผูกพันกับสองคนพร้อมกัน",
+    "สัตว์ตามเมื่อเรียกจากระยะไกลในทวีปเดียวกัน"
+   ],
+   "learnFrom": [],
+   "learnText": "ทุกถิ่น",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:24"
+  }
+ ]
+}

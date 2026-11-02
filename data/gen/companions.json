@@ -1,0 +1,6839 @@
+{
+ "version": "43f2edcd95cd",
+ "sources": [
+  "docs/systems/character/13-companions-overview.md",
+  "docs/systems/character/14-companion-abilities.md",
+  "docs/systems/character/15-companion-species.md",
+  "docs/systems/character/16-companion-stories.md",
+  "docs/systems/character/17-companion-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": {
+  "rules": {
+   "parts": [
+    {
+     "thing": "ความสามารถ",
+     "count": 60,
+     "file": "14-companion-abilities.md"
+    },
+    {
+     "thing": "ชนิดสัตว์",
+     "count": 102,
+     "file": "15-companion-species.md"
+    },
+    {
+     "thing": "เรื่องราวการได้สัตว์",
+     "count": 32,
+     "file": "16-companion-stories.md"
+    },
+    {
+     "thing": "ของเสริม (skill พร คำสาป)",
+     "count": null,
+     "file": ""
+    }
+   ],
+   "fields": [
+    {
+     "name": "ชนิด",
+     "meaning": "จาก [15-companion-species.md](15-companion-species.md) ซึ่งกำหนดระดับความหายาก ความสามารถเริ่มต้น และอายุขัย"
+    },
+    {
+     "name": "ชื่อ",
+     "meaning": "ตัวละครตั้งหรือสัตว์มีชื่อเดิม"
+    },
+    {
+     "name": "ความผูกพัน",
+     "meaning": "1 ถึง 5 (หัวข้อ 4)"
+    },
+    {
+     "name": "วัย",
+     "meaning": "ลูก โตเต็มวัย เฒ่า"
+    },
+    {
+     "name": "บุคลิก",
+     "meaning": "สุ่ม 1 อย่างตอนได้ (หัวข้อ 6) ผลเล็กน้อยต่อเรื่องราวและความสามารถ"
+    },
+    {
+     "name": "ความสามารถ",
+     "meaning": "รหัส pa_* พร้อมระดับ 1 ถึง 3"
+    },
+    {
+     "name": "สุขภาพ",
+     "meaning": "ดี บาดเจ็บ ป่วย เฒ่า ตาย"
+    }
+   ],
+   "limits": {
+    "normal": 1,
+    "specialist": 3,
+    "beastking": 5
+   },
+   "yearly": [
+    {
+     "group": "S",
+     "chance": 0.05,
+     "earlyChance": 0.35,
+     "cumulative": "เกือบแน่นอน (มากกว่า 85%) และมีได้หลายตัว",
+     "jobs": [
+      "tamer",
+      "druid",
+      "veterinarian",
+      "beast_hunter",
+      "beastking",
+      "dragonknight",
+      "naga_egg_warden"
+     ],
+     "jobsText": "tamer druid veterinarian beast_hunter beastking dragonknight naga_egg_warden"
+    },
+    {
+     "group": "A",
+     "chance": 0.01,
+     "cumulative": "ประมาณ 33%",
+     "jobs": [
+      "hunter",
+      "shepherd",
+      "farmer",
+      "farm_owner",
+      "cheesemaker",
+      "beekeeper",
+      "fisher",
+      "courier",
+      "caravan_guard",
+      "explorer",
+      "adventurer",
+      "knight",
+      "mercenary",
+      "bounty_hunter",
+      "gravekeeper",
+      "tea_house",
+      "temple_gardener",
+      "lighthouse_keeper"
+     ],
+     "jobsText": "hunter shepherd farmer farm_owner cheesemaker beekeeper fisher courier caravan_guard explorer adventurer knight mercenary bounty_hunter gravekeeper tea_house temple_gardener lighthouse_keeper"
+    },
+    {
+     "group": "B",
+     "chance": 0.001,
+     "cumulative": "ประมาณ 4%",
+     "jobs": [],
+     "jobsText": "อาชีพที่เหลือทั้งหมด รวมอาชีพลับและอาชีพพิเศษ (ยกเว้นที่ระบุไว้ในกลุ่ม S)"
+    }
+   ],
+   "childEventChance": 0.02,
+   "raceMultiplier": [
+    {
+     "races": [
+      "beast"
+     ],
+     "mul": 2,
+     "why": "สื่อสารกับสัตว์ได้ธรรมชาติ"
+    },
+    {
+     "races": [
+      "elf",
+      "fae",
+      "halfling"
+     ],
+     "mul": 1.5,
+     "why": "ใกล้ชิดธรรมชาติ รักสัตว์"
+    },
+    {
+     "races": [
+      "human",
+      "naga",
+      "merfolk",
+      "winged",
+      "dragonkin",
+      "orc",
+      "dwarf",
+      "lavakin",
+      "slime"
+     ],
+     "mul": 1,
+     "why": "ปกติ"
+    },
+    {
+     "races": [
+      "vampire",
+      "mummy",
+      "ghoul"
+     ],
+     "mul": 0.5,
+     "why": "สัตว์ธรรมดาหลีกหนีผู้ตาย (แต่ชนิดผู้ตายและวิญญาณได้ ×1.5)"
+    },
+    {
+     "races": [
+      "construct",
+      "soulmachine"
+     ],
+     "mul": 0.7,
+     "why": "สัตว์ไม่ไว้ใจ แต่ชนิดจักรกลได้ ×2"
+    },
+    {
+     "races": [
+      "giant"
+     ],
+     "mul": 0.7,
+     "why": "ตัวใหญ่ สัตว์เล็กหลบ แต่ชนิดใหญ่ได้ ×1.5"
+    }
+   ],
+   "rarityWeights": [
+    {
+     "tier": "C",
+     "base": 100,
+     "S": 1,
+     "A": 1,
+     "B": 1
+    },
+    {
+     "tier": "U",
+     "base": 38,
+     "S": 1.5,
+     "A": 1,
+     "B": 0.8
+    },
+    {
+     "tier": "R",
+     "base": 11,
+     "S": 2,
+     "A": 1,
+     "B": 0.4
+    },
+    {
+     "tier": "E",
+     "base": 2.6,
+     "S": 2,
+     "A": 0.7,
+     "B": 0.1
+    },
+    {
+     "tier": "L",
+     "base": 0.5,
+     "S": 1.5,
+     "A": 0.3,
+     "B": 0
+    }
+   ],
+   "storyBoost": "ความเข้ากับเรื่องราวที่เพิ่มน้ำหนัก ×2 ถึง ×3 ของชนิดที่ตรง: ถิ่นที่ชนิดนั้นอยู่ (คอลัมน์ ที่มาและถิ่น ใน [15](15-companion-species.md)) · เผ่าที่ได้ง่ายขึ้น (หมายเหตุ) · เส้นเรื่อง thread:wild · ศาสนาธรรมชาติ ศรัทธาวิญญาณสัตว์ · พรเช่น b_animaltongue b_beastlord nb_gentle_beasts nb_beast_whisper",
+   "methods": [
+    {
+     "how": "เหตุการณ์",
+     "detail": "เรื่องราว 32 เรื่องใน [16-companion-stories.md](16-companion-stories.md)"
+    },
+    {
+     "how": "ซื้อ",
+     "detail": "จากตลาด (สัตว์ C และ U) ราคาตามระดับ"
+    },
+    {
+     "how": "รับมอบ",
+     "detail": "NPC ที่ไว้ใจสูงสุดมอบสัตว์หรือไข่ให้ (ตามระบบ [../../lore/npcs/README.md](../../lore/npcs/README.md) \"คืนบุญ\")"
+    },
+    {
+     "how": "มรดก",
+     "detail": "พ่อแม่ ครู หรือผู้ที่ตายมอบสัตว์ให้"
+    },
+    {
+     "how": "ผูกพันจากไข่",
+     "detail": "ไข่ที่ฟักเมื่อตัวละครอยู่ใกล้ (สัตว์วิเศษ สัตว์วิญญาณ มังกรเล็ก)"
+    },
+    {
+     "how": "ผูกพันโดยสัตว์เอง",
+     "detail": "สัตว์เลือกผู้เลี้ยงเอง (ยูนิคอร์น กิเลน แมวบางชนิด) ผู้เลี้ยงต้องมีพรหรือนิสัยตามที่ชนิดนั้นกำหนด"
+    }
+   ],
+   "bond": [
+    {
+     "level": 1,
+     "effect": "ความสามารถทั้งหมดที่ระบุไว้ในชนิด ใช้ที่ระดับเริ่มต้น"
+    },
+    {
+     "level": 2,
+     "effect": "ความสามารถหลัก (ตัวแรกในรายการ) ใช้ได้เต็มที่ ไม่หนีเมื่อเจอศัตรู"
+    },
+    {
+     "level": 3,
+     "effect": "ความสามารถหลักเพิ่ม +1 ระดับ (สูงสุด 3) · สัตว์ที่ลูกเติบโตเป็นวัยโต (ถ้ามีการเติบโต)"
+    },
+    {
+     "level": 4,
+     "effect": "ความสามารถรองเพิ่ม +1 ระดับ · สัตว์ช่วยในเหตุการณ์ใหญ่ (ช่วยป้องกัน นำทางหนี)"
+    },
+    {
+     "level": 5,
+     "effect": "ความสามารถทุกตัวเพิ่ม +1 ระดับ (สูงสุด 3) · สัตว์ที่มีการเติบโตแบบพิเศษเติบโตเป็นชนิดถัดไป · เปิดความสามารถเฉพาะของชนิด (ถ้ามี)"
+    }
+   ],
+   "bondYears": 2,
+   "bondCaps": [
+    {
+     "taming": "ไม่มี taming",
+     "cd": 3,
+     "R": 2,
+     "E": 2,
+     "L": 1
+    },
+    {
+     "taming": "taming_1",
+     "cd": 4,
+     "R": 3,
+     "E": 2,
+     "L": 2
+    },
+    {
+     "taming": "taming_2",
+     "cd": 5,
+     "R": 5,
+     "E": 3,
+     "L": 3
+    },
+    {
+     "taming": "taming_3 หรือพร nb_beast_whisper ระดับสูง",
+     "cd": 5,
+     "R": 5,
+     "E": 5,
+     "L": 4
+    },
+    {
+     "taming": "สัตว์เลือกเอง หรือเรื่องราวพิเศษ",
+     "cd": null,
+     "R": null,
+     "E": null,
+     "L": null
+    }
+   ],
+   "lifeRules": [
+    "วัย ลูก (จนถึง 1 ใน 10 ของอายุขัยต่ำสุด) · โตเต็มวัย · เฒ่า (หลังอายุขัยต่ำสุด) สัตว์ลูกให้ความสามารถระดับ −1 (ขั้นต่ำ 1)",
+    "การเติบโตเป็นชนิดถัดไป บางชนิดเติบโตเมื่อวัยโตหรือความผูกพันถึงระดับที่กำหนด เช่น sp_wolf_pup → sp_wolf → (ผูกพัน 5) sp_silver_wolf หรือ sp_shadow_wolf · sp_griffon_chick → sp_griffon_adult · sp_nine_fox_cub → (ผูกพัน 5 และเรื่อง cs_ninth_tail) sp_nine_tailed_fox สัตว์ที่โตเป็นระดับ L ต้องผ่านเรื่องใน [16-companion-stories.md](16-companion-stories.md) เสมอ ความผูกพันอย่างเดียวไม่พอ",
+    "อายุขัย เป็นจุดที่ร่างเริ่มทรุด ไม่ใช่เวลาตายตัว (เหมือนกติกาอายุขัยของเผ่า) สัตว์เก่าแก่ที่ผูกพันระดับ 5 ได้ทรุดช้าลงครึ่งหนึ่ง",
+    "ความตาย เกิดจากแก่ เจ็บป่วย การต่อสู้ หรือเหตุการณ์ใหญ่ ผลต่อตัวละคร: สถานะไว้อาลัยสัตว์ (nc_pet_grief ใน [17-companion-support.md](17-companion-support.md)) ขึ้นกับความผูกพัน ระดับ 1 ถึง 2 เกิด 20% ระดับ 3 ถึง 4 เกิด 60% ระดับ 5 เกิด 100%",
+    "สืบทอด สัตว์ที่ผูกพัน 5 และมีเพศผสมพันธุ์ได้ ทิ้งลูกหรือไข่หนึ่งใบ ซึ่งตัวละครมอบต่อให้ผู้ใกล้ชิดหรือเก็บเอง (สัตว์ C ถึง R เท่านั้น)"
+   ],
+   "personalities": [
+    {
+     "id": "cuddly",
+     "name": "ขี้อ้อน",
+     "effect": "ความผูกพันเพิ่ม 20% เร็วขึ้น · ไม่ชอบอยู่คนเดียว"
+    },
+    {
+     "id": "brave",
+     "name": "กล้าหาญ",
+     "effect": "ความสามารถต่อสู้ +0 ระดับ แต่ไม่ถอยในศึก"
+    },
+    {
+     "id": "timid",
+     "name": "ขี้ขลาด",
+     "effect": "หนีเมื่อเจอศัตรูใหญ่ · ความสามารถรับรู้ภัย +1"
+    },
+    {
+     "id": "sly",
+     "name": "เจ้าเล่ห์",
+     "effect": "ความสามารถหยิบของและล่อเป้า +1 · ขโมยอาหารได้"
+    },
+    {
+     "id": "loyal",
+     "name": "ซื่อสัตย์",
+     "effect": "ไม่ทิ้งผู้เลี้ยงแม้ถูกทำร้าย · ความสามารถปกป้อง +1"
+    },
+    {
+     "id": "lazy",
+     "name": "ขี้เกียจ",
+     "effect": "ความสามารถงานและฟาร์ม −1 · อยู่ได้นานกว่าปกติ 10%"
+    },
+    {
+     "id": "diligent",
+     "name": "ขยัน",
+     "effect": "ความสามารถงานและฟาร์ม +1"
+    },
+    {
+     "id": "proud",
+     "name": "หยิ่งผยอง",
+     "effect": "ผูกพันช้า (ระดับ 4–5 ใช้เวลา 1.5 เท่า) แต่ความสามารถหลัก +1"
+    },
+    {
+     "id": "playful",
+     "name": "ซุกซน",
+     "effect": "ก่อเรื่องวุ่นวายเล็กน้อย เปิดเหตุการณ์ตลกขบขันเพิ่ม"
+    },
+    {
+     "id": "curious",
+     "name": "ขี้สงสัย",
+     "effect": "พบของใหม่เพิ่ม ความสามารถนำทางและสืบหา +1"
+    }
+   ],
+   "upkeep": [
+    {
+     "size": "เล็ก (หนู นก แมลง)",
+     "costPerYear": 2,
+     "note": "เข้าเมืองได้ทุกเมือง"
+    },
+    {
+     "size": "กลาง (สุนัข แมว หมาป่า)",
+     "costPerYear": 8,
+     "note": "บางเมืองห้ามสัตว์ป่า (AL-06 AL-08 ห้ามสัตว์เลี้ยงใหญ่ในโรงแรม)"
+    },
+    {
+     "size": "ใหญ่ (ม้า หมี เสือ)",
+     "costPerYear": 20,
+     "note": "ต้องมีที่ฟาร์มหรือคอก"
+    },
+    {
+     "size": "ใหญ่มาก (กริฟฟอน ไวเวิร์น วาฬ)",
+     "costPerYear": 60,
+     "note": "ต้องมีที่อยู่เฉพาะ (หน้าผา ทะเล) และเมืองที่ไม่ห้ามสัตว์วิเศษ"
+    }
+   ],
+   "placeLimits": [
+    {
+     "cond": "ชนิดน้ำ ชนิดทะเล",
+     "effect": "ต้องอยู่ติดน้ำหรือขนส่งทางเรือ ห้ามพาข้ามทะเลทราย"
+    },
+    {
+     "cond": "ชนิดธาตุไฟ (ซาลาแมนเดอร์ไฟ หมาลาวา แมวไฟ)",
+     "effect": "ตายเร็วในดินแดนหนาว (KD-12 ทวีปเถ้า) ใช้ได้ดีในคาซ-ดูรัม"
+    },
+    {
+     "cond": "ชนิดธาตุน้ำแข็ง (กระต่ายหิมะ หมาป่าน้ำแข็ง)",
+     "effect": "ตายเร็วในดินแดนร้อน ทะเลทราย ภูเขาไฟ"
+    },
+    {
+     "cond": "ชนิดหมอก",
+     "effect": "ไม่รอดนอกเนบูเลียนานเกินหนึ่งปี ยกเว้นผูกพัน 5"
+    },
+    {
+     "cond": "ชนิดเกาะลอยฟ้า (sp_cloud_sheep sp_pegasus_foal)",
+     "effect": "ถ้า DR-01 เกิดแล้ว หาตัวใหม่ไม่ได้ ตัวที่เลี้ยงไว้ยังอยู่ได้"
+    },
+    {
+     "cond": "ชนิดจักรกล",
+     "effect": "ไม่ต้องกิน แต่ต้องซ่อมปีละหนึ่งครั้ง (ช่างกล)"
+    },
+    {
+     "cond": "ชนิดผู้ตาย",
+     "effect": "ไม่ต้องกิน ไม่มีอายุขัย ผู้ที่ไม่ใช่ผู้ตายเลี้ยงแล้วถูกกล่าวหาว่าใช้เนโครแมนซี (ในศาสนาแสง)"
+    },
+    {
+     "cond": "ชนิดวิญญาณ",
+     "effect": "ต้องผ่านพิธีหรือผู้ตัดสินในถิ่นนั้นจึงผูกพันได้"
+    }
+   ],
+   "interactions": [
+    {
+     "id": "PR-01",
+     "cond": "เผ่าภูตพรายหรือผู้มี weak_iron เลี้ยงสัตว์จักรกลหรือสัตว์ที่ผูกด้วยเหล็ก (sp_rust_dog sp_clockwork_dragonling)",
+     "effect": "ห้าม (แพ้เหล็ก) ยกเว้นมีพร b_ironskin ที่ตกลงกันได้",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "weak_iron",
+       "b_ironskin",
+       "sp_rust_dog",
+       "sp_clockwork_dragonling"
+      ]
+     }
+    },
+    {
+     "id": "PR-02",
+     "cond": "แวมไพร์ มัมมี่ กูล เลี้ยงสัตว์ธรรมดาที่ไม่ใช่ชนิดผู้ตายหรือวิญญาณ",
+     "effect": "สัตว์ไม่ไว้ใจ ความผูกพันสูงสุด 3 ยกเว้นมีพร b_beastlord",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "b_beastlord"
+      ]
+     }
+    },
+    {
+     "id": "PR-03",
+     "cond": "แวมไพร์เลี้ยงค้างคาว (sp_cave_bat) อีกา (sp_raven) แมววิญญาณ (sp_spirit_cat)",
+     "effect": "ได้ผลเป็นสองเท่า (เผ่านี้เข้ากับสัตว์ราตรี)",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "sp_cave_bat",
+       "sp_raven",
+       "sp_spirit_cat"
+      ]
+     }
+    },
+    {
+     "id": "PR-04",
+     "cond": "เผ่ามังกร เผ่าปีก เลี้ยงสัตว์ปีก หรือไวเวิร์น",
+     "effect": "ผูกพันระดับ 3 ได้ง่ายขึ้น ×2",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-05",
+     "cond": "เงือก นาคา เลี้ยงชนิดน้ำ",
+     "effect": "ผูกพันง่ายขึ้น ×2 และไม่ต้องขนส่งพิเศษ",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-06",
+     "cond": "เผ่าสัตว์เลี้ยงสัตว์ชนิดเดียวกับตัวเอง (เผ่าหมาป่า × sp_wolf)",
+     "effect": "ห้ามเพราะผิดธรรมเนียม (เป็นการทำให้เผ่าเดียวกันเป็นสัตว์เลี้ยง) เผ่าสัตว์ชนิดอื่นได้",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "sp_wolf"
+      ]
+     }
+    },
+    {
+     "id": "PR-07",
+     "cond": "สไลม์",
+     "effect": "สัตว์ธรรมดากลัวสไลม์ ผูกพันสูงสุด 3 ยกเว้นเลี้ยงตั้งแต่ลูก (ลูกไม่กลัว)",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-08",
+     "cond": "ยักษ์",
+     "effect": "สัตว์เล็กเลี้ยงได้แต่เสี่ยงถูกเหยียบ (ความถี่เหตุการณ์สัตว์บาดเจ็บ ×2) แนะนำชนิดใหญ่",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-09",
+     "cond": "ลูกผสมจักรกล หุ่นวิญญาณ เลี้ยงสัตว์จักรกล",
+     "effect": "ผูกพัน ×2 ซ่อมสัตว์ได้เองถ้ามี ns_gear_tune",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "ns_gear_tune"
+      ]
+     }
+    },
+    {
+     "id": "PR-10",
+     "cond": "ผู้มี c_cathate",
+     "effect": "เลี้ยงแมวไม่ได้",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "c_cathate"
+      ]
+     }
+    },
+    {
+     "id": "PR-11",
+     "cond": "ผู้มี c_hydrophobia",
+     "effect": "เลี้ยงชนิดน้ำไม่ได้",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "c_hydrophobia"
+      ]
+     }
+    },
+    {
+     "id": "PR-12",
+     "cond": "ผู้มี c_slimelove",
+     "effect": "สไลม์ที่ตามจีบเป็นสัตว์คู่หูพิเศษ (ความผูกพันเริ่มต้นที่ 3 แต่ความสามารถเป็นของ sp_slime_lover ในไฟล์ 17)",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "c_slimelove",
+       "sp_slime_lover"
+      ]
+     }
+    },
+    {
+     "id": "PR-13",
+     "cond": "ผู้มี b_animaltongue b_beastlord",
+     "effect": "ผูกพันเร็วขึ้น 1.5 เท่า",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "b_animaltongue",
+       "b_beastlord"
+      ]
+     }
+    },
+    {
+     "id": "PR-14",
+     "cond": "ผู้มีความถนัด husbandry",
+     "effect": "สัตว์ฟาร์มไม่ป่วยง่าย ความสามารถฟาร์มได้ +1 ระดับ",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "husbandry"
+      ]
+     }
+    },
+    {
+     "id": "PR-15",
+     "cond": "ผู้มีความถนัด medicine หรืออาชีพ veterinarian",
+     "effect": "สัตว์ฟื้นเร็ว 2 เท่า อายุขัยเลื่อนขึ้น 5%",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "medicine",
+       "veterinarian"
+      ]
+     }
+    },
+    {
+     "id": "PR-16",
+     "cond": "ผู้มีความถนัด taming",
+     "effect": "ผลตามหัวข้อ 4",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "taming"
+      ]
+     }
+    },
+    {
+     "id": "PR-17",
+     "cond": "อาชีพชีวิตช้า",
+     "effect": "สัตว์ฟาร์มและบ้านผูกพันง่ายขึ้น ×1.3 (อยู่ร่วมกันนาน)",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-18",
+     "cond": "อาชีพที่เดินทางตลอด (explorer courier adventurer)",
+     "effect": "สัตว์เล็กและนกผูกพันง่าย สัตว์ใหญ่ผูกพันยาก (ขนส่งลำบาก)",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "id": "PR-19",
+     "cond": "ผู้ที่ได้สถานะ \"ผู้รอดหมอกทึบ\" (nb_sv_fog)",
+     "effect": "สัตว์ชนิดหมอกผูกพันง่ายขึ้น ×1.5",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "nb_sv_fog"
+      ]
+     }
+    },
+    {
+     "id": "PR-20",
+     "cond": "ผู้ที่ถือตรามังกร (nb_mark_*)",
+     "effect": "สัตว์ในหมวดมังกรและวิเศษผูกพันง่าย ×2 และมังกรเล็กอาจเลือกผู้นี้เอง",
+     "refs": {
+      "events": [],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "nb_mark_*",
+       "nb_mark_"
+      ]
+     }
+    }
+   ],
+   "worldEffects": [
+    {
+     "event": "DR-01 ฟ้าถล่ม",
+     "effect": "สัตว์ชนิดเกาะลอยฟ้า ไม่เกิดใหม่ ตัวที่มีอยู่ร้อง ผู้เลี้ยงได้ nc_sv_sky แกะเมฆและม้าบิน ต้องหายากขึ้น",
+     "refs": {
+      "events": [
+       "DR-01"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "nc_sv_sky"
+      ]
+     }
+    },
+    {
+     "event": "DR-04 ฤดูหนาวเถ้า",
+     "effect": "สัตว์ชนิดไฟตายง่าย สัตว์ชนิดน้ำแข็งเกิดมากขึ้นในคาซ-ดูรัม",
+     "refs": {
+      "events": [
+       "DR-04"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "event": "DR-05 มหาน้ำขึ้น",
+     "effect": "สัตว์ชนิดน้ำมีโอกาสได้มากขึ้น ผู้เลี้ยงสัตว์บนบกต้องย้ายถิ่น",
+     "refs": {
+      "events": [
+       "DR-05"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "event": "DR-15 คลื่นไว้อาลัย",
+     "effect": "สัตว์ผูกพัน 4 ขึ้นไปร้องไห้ ผู้เลี้ยงได้ข้อมูลเกี่ยวกับมังกรที่ล้ม ตัวละครที่มีสัตว์ชนิดมังกรได้ nc_mourning เหมือนผู้ถือตรามังกร",
+     "refs": {
+      "events": [
+       "DR-15"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "nc_mourning"
+      ]
+     }
+    },
+    {
+     "event": "BIO-02 ต้นไม้โลกตาย",
+     "effect": "ลูกกวางต้นไม้โลก (sp_world_tree_fawn) กลายเป็นวิญญาณหรือตาย ผู้เลี้ยงได้เส้นเรื่อง WT",
+     "refs": {
+      "events": [
+       "BIO-02"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "sp_world_tree_fawn"
+      ]
+     }
+    },
+    {
+     "event": "BIO-07 ปะการังตาย",
+     "effect": "ม้าน้ำปะการัง (sp_reef_seahorse) สูญพันธุ์ในปาเลนูก่อน",
+     "refs": {
+      "events": [
+       "BIO-07"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "sp_reef_seahorse"
+      ]
+     }
+    },
+    {
+     "event": "FG-01 หมอกทึบ",
+     "effect": "สัตว์ชนิดหมอกเกิดมากขึ้น สัตว์ธรรมดาในเนบูเลียถูกหนวดล่า (อายุสั้น)",
+     "refs": {
+      "events": [
+       "FG-01"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "event": "FG-10 ปิดรอยแยก",
+     "effect": "สัตว์ชนิดหมอกที่ผูกกับรอยแยกหายไปเอง ผู้เลี้ยงได้รับเลือกให้ไปกับหมอกหรืออยู่",
+     "refs": {
+      "events": [
+       "FG-10"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": []
+     }
+    },
+    {
+     "event": "DR-03 ไข่ใบที่สิบหก",
+     "effect": "เปิดทางสู่ลูกมังกร (sp_sixteenth_hatchling) สำหรับตัวละครที่อยู่ใกล้ที่ไข่",
+     "refs": {
+      "events": [
+       "DR-03"
+      ],
+      "countries": [],
+      "nodes": [],
+      "ids": [
+       "sp_sixteenth_hatchling"
+      ]
+     }
+    }
+   ],
+   "growth": "การเติบโตเป็นชนิดถัดไป บางชนิดเติบโตเมื่อวัยโตหรือความผูกพันถึงระดับที่กำหนด เช่น sp_wolf_pup → sp_wolf → (ผูกพัน 5) sp_silver_wolf หรือ sp_shadow_wolf · sp_griffon_chick → sp_griffon_adult · sp_nine_fox_cub → (ผูกพัน 5 และเรื่อง cs_ninth_tail) sp_nine_tailed_fox สัตว์ที่โตเป็นระดับ L ต้องผ่านเรื่องใน [16-companion-stories.md](16-companion-stories.md) เสมอ ความผูกพันอย่างเดียวไม่พอ"
+  },
+  "abilities": [
+   {
+    "id": "pa_lick_heal",
+    "name": "เลียแผล",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "ฟื้น hp เร็วขึ้น 10%",
+     "25% และแผลไม่ติดเชื้อ",
+     "40% และหายจากแผลเก่าหนึ่งแผลต่อปี"
+    ],
+    "jobsText": "healer physician",
+    "jobs": [
+     "healer",
+     "physician"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:13"
+   },
+   {
+    "id": "pa_purr_calm",
+    "name": "เสียงครางสงบ",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "ลดความเครียดเล็กน้อย",
+     "หายจากฝันร้ายได้ปีละครั้ง (ถ้ามี c_nightmare)",
+     "ลบผล nc_sv_fog ฝันร้ายหนวด"
+    ],
+    "jobsText": "monk midwife",
+    "jobs": [
+     "monk",
+     "midwife"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:14"
+   },
+   {
+    "id": "pa_antidote_nose",
+    "name": "จมูกถอนพิษ",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "รู้ว่าอาหารมีพิษ",
+     "ลดผลพิษ 30%",
+     "ต้านพิษและโรคระบาดระดับท้องถิ่น"
+    ],
+    "jobsText": "apothecary herb_shop",
+    "jobs": [
+     "apothecary",
+     "herb_shop"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:15"
+   },
+   {
+    "id": "pa_life_share",
+    "name": "แบ่งชีวิต",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "รับความเสียหายแทนได้ 1 ครั้งต่อเดือน",
+     "2 ครั้งต่อเดือน",
+     "รอดตายแทนตัวละครได้ 1 ครั้งต่อชีวิต (สัตว์ตายหรือหมดแรงหนึ่งปี)"
+    ],
+    "jobsText": "knight royal_guard",
+    "jobs": [
+     "knight",
+     "royal_guard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:16"
+   },
+   {
+    "id": "pa_thick_hide",
+    "name": "หนังหนา",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "ลดความเสียหายกายภาพ 5%",
+     "10%",
+     "15%"
+    ],
+    "jobsText": "soldier gladiator",
+    "jobs": [
+     "soldier",
+     "gladiator"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:17"
+   },
+   {
+    "id": "pa_guard_stance",
+    "name": "ยืนขวาง",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "ป้องกันตัวละครจากโจมตีแรกของศัตรู",
+     "ทุกต้นรอบการต่อสู้",
+     "ป้องกันกลุ่มเล็ก"
+    ],
+    "jobsText": "city_guard",
+    "jobs": [
+     "city_guard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:18"
+   },
+   {
+    "id": "pa_curse_eater",
+    "name": "กลืนคำสาป",
+    "group": "ก. รักษาและปกป้อง",
+    "levels": [
+     "ลดผลคำสาประดับ C 25%",
+     "ลบคำสาประดับ C ได้ปีละหนึ่งอย่าง",
+     "ลดผลคำสาประดับ U ถึง R"
+    ],
+    "jobsText": "exorcist druid",
+    "jobs": [
+     "exorcist",
+     "druid"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:19"
+   },
+   {
+    "id": "pa_lucky_charm",
+    "name": "นำโชค",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "luk+1",
+     "luk+2",
+     "luk+3 และการทอยแย่ที่สุดหนึ่งครั้งต่อปีถูกทอยใหม่"
+    ],
+    "jobsText": "merchant adventurer",
+    "jobs": [
+     "merchant",
+     "adventurer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:25"
+   },
+   {
+    "id": "pa_pack_courage",
+    "name": "ฝูงเป็นใจ",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "brave+10",
+     "brave+20",
+     "brave+30 และไม่ถูกข่มด้วยคำรามหรือเสียงน่ากลัว"
+    ],
+    "jobsText": "soldier hunter",
+    "jobs": [
+     "soldier",
+     "hunter"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:26"
+   },
+   {
+    "id": "pa_keen_eyes",
+    "name": "ตาเหยี่ยว",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "spd+1 ในการยิงและมองไกล",
+     "spd+2",
+     "เห็นศัตรูที่ซ่อนในระยะไกล"
+    ],
+    "jobsText": "hunter bow users",
+    "jobs": [
+     "hunter"
+    ],
+    "apts": [
+     "bow"
+    ],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:27"
+   },
+   {
+    "id": "pa_wisdom_gaze",
+    "name": "สายตาปราชญ์",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "int+1",
+     "int+2",
+     "int+3"
+    ],
+    "jobsText": "scholar teacher",
+    "jobs": [
+     "scholar",
+     "teacher"
+    ],
+    "apts": [
+     "scholar"
+    ],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:28"
+   },
+   {
+    "id": "pa_mana_well",
+    "name": "บ่อมานา",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "mag+1",
+     "mag+2",
+     "mag+3 และฟื้นมานาเร็วขึ้น"
+    ],
+    "jobsText": "mage archmage",
+    "jobs": [
+     "mage",
+     "archmage"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:29"
+   },
+   {
+    "id": "pa_stout_heart",
+    "name": "ใจแกร่ง",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "vit+1",
+     "vit+2",
+     "vit+3"
+    ],
+    "jobsText": "farmer miner",
+    "jobs": [
+     "farmer",
+     "miner"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:30"
+   },
+   {
+    "id": "pa_bright_mood",
+    "name": "อารมณ์ดี",
+    "group": "ข. สถานะและโชค",
+    "levels": [
+     "ลดผลคำสาปแท็ก #moody และ #lonely เล็กน้อย",
+     "ได้นิสัยร่าเริงเพิ่มหนึ่งอย่างชั่วคราว",
+     "ลบ c_lonely ได้ถ้ามี"
+    ],
+    "jobsText": "tea_house innkeeper",
+    "jobs": [
+     "tea_house",
+     "innkeeper"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:31"
+   },
+   {
+    "id": "pa_bite_assist",
+    "name": "กัดช่วย",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ความเสียหายตัวละคร +5%",
+     "+10% และกัดเป้าหมายให้ชะงัก",
+     "+15% และกัดเกราะ"
+    ],
+    "jobsText": "hunter gladiator",
+    "jobs": [
+     "hunter",
+     "gladiator"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:37"
+   },
+   {
+    "id": "pa_flank",
+    "name": "โอบล้อม",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ได้โจมตีข้างหลัง ×1.2",
+     "×1.5",
+     "×2 และศัตรูหนึ่งตัวติดอยู่"
+    ],
+    "jobsText": "adventurer mercenary",
+    "jobs": [
+     "adventurer",
+     "mercenary"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:38"
+   },
+   {
+    "id": "pa_intimidate",
+    "name": "คำรามข่ม",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ศัตรูระดับต่ำลังเลหนึ่งตา",
+     "ศัตรูระดับกลางหนีได้",
+     "ศัตรูใหญ่ถอยหนึ่งก้าว"
+    ],
+    "jobsText": "tamer beast_hunter",
+    "jobs": [
+     "tamer",
+     "beast_hunter"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:39"
+   },
+   {
+    "id": "pa_claw_dive",
+    "name": "โฉบ",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "โจมตีจากเหนือหัวศัตรู",
+     "ทำให้ศัตรูเสียสมาธิ",
+     "ฉกอาวุธหรือสิ่งของจากมือ"
+    ],
+    "jobsText": "hunter bard",
+    "jobs": [
+     "hunter",
+     "bard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:40"
+   },
+   {
+    "id": "pa_breath_fire",
+    "name": "พ่นไฟ",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ไฟเล็ก ล่าแมลงและเปิดทาง",
+     "ไฟกำแพง ความเสียหาย ×1.5",
+     "ไฟลามพื้นที่ ความเสียหาย ×2"
+    ],
+    "jobsText": "smith mage",
+    "jobs": [
+     "smith",
+     "mage"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:41"
+   },
+   {
+    "id": "pa_breath_frost",
+    "name": "พ่นน้ำแข็ง",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "เย็นศัตรู ลดความเร็ว 10%",
+     "แช่แข็งจุด",
+     "แช่แข็งพื้นที่"
+    ],
+    "jobsText": "mage",
+    "jobs": [
+     "mage"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:42"
+   },
+   {
+    "id": "pa_venom_bite",
+    "name": "พิษกัด",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ใส่พิษอ่อน",
+     "พิษรุนแรง ลดค่ากำลัง",
+     "พิษต่อเนื่อง ไม่มีทางถอนในสนามรบ"
+    ],
+    "jobsText": "assassin",
+    "jobs": [
+     "assassin"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:43"
+   },
+   {
+    "id": "pa_shock_touch",
+    "name": "สัมผัสไฟฟ้า",
+    "group": "ค. ช่วยต่อสู้",
+    "levels": [
+     "ช็อตเล็ก",
+     "ช็อตทำให้ล้ม",
+     "ช็อตลูกโซ่ ×2 ต่อศัตรูใกล้"
+    ],
+    "jobsText": "mage engineer",
+    "jobs": [
+     "mage",
+     "engineer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:44"
+   },
+   {
+    "id": "pa_haggle",
+    "name": "ช่วยต่อรอง",
+    "group": "ง. ค้าขายและเศรษฐกิจ",
+    "levels": [
+     "ราคาที่ต่อได้ดีขึ้น 5%",
+     "15%",
+     "25% และพ่อค้าใจอ่อน"
+    ],
+    "jobsText": "merchant innkeeper",
+    "jobs": [
+     "merchant",
+     "innkeeper"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:50"
+   },
+   {
+    "id": "pa_treasure_nose",
+    "name": "จมูกสมบัติ",
+    "group": "ง. ค้าขายและเศรษฐกิจ",
+    "levels": [
+     "พบของมีค่าเล็กน้อยระหว่างเดินทาง",
+     "พบแร่หรือสมุนไพรหายาก",
+     "พบสมบัติฝังที่มีเรื่องราว (เปิดเส้นเรื่อง)"
+    ],
+    "jobsText": "miner archaeologist",
+    "jobs": [
+     "miner",
+     "archaeologist"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:51"
+   },
+   {
+    "id": "pa_caravan_pull",
+    "name": "ลากเกวียน",
+    "group": "ง. ค้าขายและเศรษฐกิจ",
+    "levels": [
+     "ขนของเพิ่ม 30%",
+     "60%",
+     "100% และไม่เหนื่อยง่าย"
+    ],
+    "jobsText": "merchant caravan_guard",
+    "jobs": [
+     "merchant",
+     "caravan_guard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:52"
+   },
+   {
+    "id": "pa_market_charm",
+    "name": "เสน่ห์ตลาด",
+    "group": "ง. ค้าขายและเศรษฐกิจ",
+    "levels": [
+     "ลูกค้าแวะดูของมากขึ้น",
+     "ยอดขาย +20%",
+     "+40% และลูกค้าประจำเพิ่ม"
+    ],
+    "jobsText": "baker tea_house bookshop",
+    "jobs": [
+     "baker",
+     "tea_house",
+     "bookshop"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:53"
+   },
+   {
+    "id": "pa_pickpocket",
+    "name": "หยิบของ",
+    "group": "ง. ค้าขายและเศรษฐกิจ",
+    "levels": [
+     "หยิบของเล็กในตลาด",
+     "หยิบกุญแจหรือจดหมาย",
+     "หยิบของจากกระเป๋าคนเฝ้า (เสี่ยงมาก)"
+    ],
+    "jobsText": "thief spy",
+    "jobs": [
+     "thief",
+     "spy"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:54"
+   },
+   {
+    "id": "pa_herd",
+    "name": "ต้อนฝูง",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ต้อนฝูงสัตว์ได้ง่ายขึ้น",
+     "ฝูงโตเร็ว 15%",
+     "ฝูงไม่หลงและไม่ถูกขโมย"
+    ],
+    "jobsText": "shepherd farm_owner",
+    "jobs": [
+     "shepherd",
+     "farm_owner"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:60"
+   },
+   {
+    "id": "pa_plow",
+    "name": "ไถนา",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ผลผลิต +10%",
+     "+25%",
+     "+40% และไถในดินแข็ง"
+    ],
+    "jobsText": "farmer farm_owner",
+    "jobs": [
+     "farmer",
+     "farm_owner"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:61"
+   },
+   {
+    "id": "pa_pest_hunt",
+    "name": "จับศัตรูพืช",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ลดความเสียหายจากหนูและแมลง 20%",
+     "50%",
+     "80% และต้านตั๊กแตนระดับท้องถิ่น (CT-08)"
+    ],
+    "jobsText": "farmer vegetable_gardener miller",
+    "jobs": [
+     "farmer",
+     "vegetable_gardener",
+     "miller"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:62"
+   },
+   {
+    "id": "pa_produce",
+    "name": "ให้ผลผลิต",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ไข่ นม ขน หรือน้ำผึ้งเลี้ยงตัวเอง",
+     "เหลือขาย +15%",
+     "+30% และคุณภาพดีพอขายตลาดชั้นสูง"
+    ],
+    "jobsText": "cheesemaker beekeeper farm_owner",
+    "jobs": [
+     "cheesemaker",
+     "beekeeper",
+     "farm_owner"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:63"
+   },
+   {
+    "id": "pa_fish_help",
+    "name": "ช่วยจับปลา",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ได้ปลาเพิ่ม 10%",
+     "25%",
+     "ต้อนฝูงปลาเข้าอวน"
+    ],
+    "jobsText": "fisher ferryman",
+    "jobs": [
+     "fisher",
+     "ferryman"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:64"
+   },
+   {
+    "id": "pa_dig",
+    "name": "ขุด",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ขุดดินและหินอ่อน",
+     "ขุดเหมืองตื้น +15%",
+     "พบสายแร่ใหม่"
+    ],
+    "jobsText": "miner stonemason",
+    "jobs": [
+     "miner",
+     "stonemason"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:65"
+   },
+   {
+    "id": "pa_weave",
+    "name": "ถักใย",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ถักด้ายและเชือก",
+     "ผ้าละเอียด ราคา +20%",
+     "ใยที่แข็งกว่าเหล็ก"
+    ],
+    "jobsText": "weaver tailor",
+    "jobs": [
+     "weaver",
+     "tailor"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:66"
+   },
+   {
+    "id": "pa_garden_help",
+    "name": "ช่วยดูแลสวน",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "คลายดินและรดน้ำ",
+     "พืชโตเร็ว 10%",
+     "พืชทนโรคและเถ้า"
+    ],
+    "jobsText": "vegetable_gardener tea_grower",
+    "jobs": [
+     "vegetable_gardener",
+     "tea_grower"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:67"
+   },
+   {
+    "id": "pa_craft_help",
+    "name": "ช่วยงานช่าง",
+    "group": "จ. งานและฟาร์ม",
+    "levels": [
+     "ส่งเครื่องมือ",
+     "ลดเวลาทำงาน 15%",
+     "ช่วยงานละเอียด"
+    ],
+    "jobsText": "smith carpenter",
+    "jobs": [
+     "smith",
+     "carpenter"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:68"
+   },
+   {
+    "id": "pa_danger_sense",
+    "name": "รับรู้ภัย",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "เตือนก่อนถูกซุ่มโจมตี",
+     "ลดความเสียหายจากกับดักและซุ่ม 50%",
+     "เตือนภัยพิบัติท้องถิ่นหนึ่งวันล่วงหน้า"
+    ],
+    "jobsText": "adventurer spy",
+    "jobs": [
+     "adventurer",
+     "spy"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:74"
+   },
+   {
+    "id": "pa_track_scent",
+    "name": "ตามกลิ่น",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "ตามคนหรือสัตว์ได้",
+     "ตามได้ข้ามเมือง",
+     "ตามผู้ที่ซ่อนดีที่สุดได้"
+    ],
+    "jobsText": "hunter bounty_hunter",
+    "jobs": [
+     "hunter",
+     "bounty_hunter"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:75"
+   },
+   {
+    "id": "pa_lie_sense",
+    "name": "รู้โกหก",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "รู้สึกไม่สบายใจเมื่อมีคนโกหกใกล้ตัว",
+     "รู้ว่าใครโกหก",
+     "รู้ว่าโกหกเรื่องอะไรโดยประมาณ"
+    ],
+    "jobsText": "lawyer diplomat inquisitor",
+    "jobs": [
+     "lawyer",
+     "diplomat",
+     "inquisitor"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:76"
+   },
+   {
+    "id": "pa_weather_sense",
+    "name": "รู้อากาศ",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "ฝนก่อนหนึ่งวัน",
+     "พายุก่อนสามวัน",
+     "ฤดูเปลี่ยนและภัยธรรมชาติใหญ่"
+    ],
+    "jobsText": "farmer sailor",
+    "jobs": [
+     "farmer",
+     "sailor"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:77"
+   },
+   {
+    "id": "pa_night_watch",
+    "name": "ยามกลางคืน",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "ตื่นเมื่อมีผู้บุกรุก",
+     "เฝ้าค่ายทั้งคืน",
+     "เห็นในที่มืดสนิท"
+    ],
+    "jobsText": "guard caravan_guard",
+    "jobs": [
+     "caravan_guard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:78"
+   },
+   {
+    "id": "pa_ghost_sense",
+    "name": "เห็นผี",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "รู้สึกถึงวิญญาณใกล้เคียง",
+     "เห็นวิญญาณและบอกชนิด",
+     "พูดกับวิญญาณผ่านสัตว์"
+    ],
+    "jobsText": "gravekeeper exorcist",
+    "jobs": [
+     "gravekeeper",
+     "exorcist"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:79"
+   },
+   {
+    "id": "pa_path_find",
+    "name": "หาทางกลับ",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "ไม่หลงในป่าและเมือง",
+     "หาทางสั้นที่สุด",
+     "หาทางผ่านหมอกและพายุ"
+    ],
+    "jobsText": "explorer courier navigator",
+    "jobs": [
+     "explorer",
+     "courier",
+     "navigator"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:80"
+   },
+   {
+    "id": "pa_fog_sense",
+    "name": "รู้หมอก",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "รู้ว่าหมอกใกล้เข้ามา",
+     "ไม่ถูกหมอกบังทิศ",
+     "เห็นหนวดและเนื้อบินก่อนใคร"
+    ],
+    "jobsText": "fog_guide beast_hunter",
+    "jobs": [
+     "fog_guide",
+     "beast_hunter"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:81"
+   },
+   {
+    "id": "pa_hide_scent",
+    "name": "ซ่อนกลิ่น",
+    "group": "ฉ. รับรู้และนำทาง",
+    "levels": [
+     "กลิ่นตัวละครจางลง",
+     "สัตว์ป่าไม่สนใจ",
+     "ปิดกลิ่นจากผู้ล่าและผู้ตาย"
+    ],
+    "jobsText": "hunter spy",
+    "jobs": [
+     "hunter",
+     "spy"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:82"
+   },
+   {
+    "id": "pa_mount",
+    "name": "พาหนะ",
+    "group": "ช. พาหนะและเคลื่อนที่",
+    "levels": [
+     "เดินทางเร็ว +30%",
+     "+60% และข้ามภูมิประเทศหนัก",
+     "+100% และเข้าสู่ศึกได้"
+    ],
+    "jobsText": "knight mercenary",
+    "jobs": [
+     "knight",
+     "mercenary"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:88"
+   },
+   {
+    "id": "pa_fly_mount",
+    "name": "พาหนะบิน",
+    "group": "ช. พาหนะและเคลื่อนที่",
+    "levels": [
+     "ร่อนข้ามหุบเขา",
+     "บินระยะสั้นทุกวัน",
+     "บินข้ามทวีปและทะเลได้"
+    ],
+    "jobsText": "airship_pilot courier",
+    "jobs": [
+     "airship_pilot",
+     "courier"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:89"
+   },
+   {
+    "id": "pa_swim_mount",
+    "name": "พาหนะว่ายน้ำ",
+    "group": "ช. พาหนะและเคลื่อนที่",
+    "levels": [
+     "ข้ามแม่น้ำ",
+     "ข้ามทะเลสาบและอ่าว",
+     "ข้ามทะเลลึก"
+    ],
+    "jobsText": "sailor ferryman",
+    "jobs": [
+     "sailor",
+     "ferryman"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:90"
+   },
+   {
+    "id": "pa_burrow",
+    "name": "ขุดรู",
+    "group": "ช. พาหนะและเคลื่อนที่",
+    "levels": [
+     "ซ่อนในรู",
+     "เดินใต้ดินระยะสั้น",
+     "ขุดทางหนีใต้ดิน"
+    ],
+    "jobsText": "thief miner",
+    "jobs": [
+     "thief",
+     "miner"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:91"
+   },
+   {
+    "id": "pa_climb",
+    "name": "ปีนป่าย",
+    "group": "ช. พาหนะและเคลื่อนที่",
+    "levels": [
+     "ปีนกำแพงและต้นไม้",
+     "ปีนหน้าผา",
+     "ปีนที่ที่ไม่มีใครขึ้นได้"
+    ],
+    "jobsText": "adventurer explorer",
+    "jobs": [
+     "adventurer",
+     "explorer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:92"
+   },
+   {
+    "id": "pa_charm_pet",
+    "name": "น่ารักละลายใจ",
+    "group": "ซ. สังคมและการสื่อสาร",
+    "levels": [
+     "NPC ไว้ใจง่ายขึ้นเล็กน้อย",
+     "NPC เด็กและผู้สูงอายุไว้ใจทันที",
+     "ไว้ใจของ NPC ระดับ −5 ถึง 0 ได้ถึง +1"
+    ],
+    "jobsText": "teacher midwife",
+    "jobs": [
+     "teacher",
+     "midwife"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:98"
+   },
+   {
+    "id": "pa_icebreaker",
+    "name": "ทำลายความแตกต่าง",
+    "group": "ซ. สังคมและการสื่อสาร",
+    "levels": [
+     "คนต่างเผ่าไม่ระแวง",
+     "ผ่านเขตของเผ่าอื่นได้ง่ายขึ้น",
+     "ทำให้เผ่าที่เป็นศัตรูกันนั่งพูดคุยได้"
+    ],
+    "jobsText": "diplomat explorer",
+    "jobs": [
+     "diplomat",
+     "explorer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:99"
+   },
+   {
+    "id": "pa_messenger",
+    "name": "ส่งสาร",
+    "group": "ซ. สังคมและการสื่อสาร",
+    "levels": [
+     "ส่งจดหมายในเมืองเดียวกัน",
+     "ข้ามเมือง",
+     "ข้ามทวีป"
+    ],
+    "jobsText": "courier chronicler",
+    "jobs": [
+     "courier",
+     "chronicler"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:100"
+   },
+   {
+    "id": "pa_distract",
+    "name": "ล่อเป้า",
+    "group": "ซ. สังคมและการสื่อสาร",
+    "levels": [
+     "ศัตรูหันไปหาสัตว์หนึ่งตา",
+     "สองตา",
+     "ศัตรูไล่ตามสัตว์ไปทั้งศึก"
+    ],
+    "jobsText": "thief bard",
+    "jobs": [
+     "thief",
+     "bard"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:101"
+   },
+   {
+    "id": "pa_spirit_bridge",
+    "name": "สะพานวิญญาณ",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "รู้ว่ามีวิญญาณหรือเทพอยู่ใกล้",
+     "พูดกับวิญญาณท้องถิ่นได้",
+     "ส่งคำอธิษฐานตรงถึงพระเจ้า (เพิ่ม belief)"
+    ],
+    "jobsText": "priest seer monk",
+    "jobs": [
+     "priest",
+     "seer",
+     "monk"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:107"
+   },
+   {
+    "id": "pa_omen",
+    "name": "ลางบอกเหตุ",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "รู้ว่าวันนี้ดีหรือร้าย",
+     "เห็นเหตุการณ์ใหญ่ล่วงหน้าหนึ่งเดือน",
+     "เห็นการเปลี่ยนของมังกรในภูมิภาค"
+    ],
+    "jobsText": "seer",
+    "jobs": [
+     "seer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:108"
+   },
+   {
+    "id": "pa_elemental_core",
+    "name": "แกนธาตุ",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "เสริม skill ธาตุหนึ่งอย่างของสัตว์ +1",
+     "+2",
+     "+3 และปลดล็อก skill ธาตุระดับ 3 ได้เร็วขึ้น"
+    ],
+    "jobsText": "mage",
+    "jobs": [
+     "mage"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:109"
+   },
+   {
+    "id": "pa_soul_anchor",
+    "name": "ยึดวิญญาณ",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "วิญญาณเกาะอยู่เมื่อตัวละครเกือบตาย",
+     "รอดตายด้วยการสละสัตว์ครั้งเดียว",
+     "ชุบชีวิตตัวละครครั้งเดียวต่อชีวิต (สัตว์ตายถาวร)"
+    ],
+    "jobsText": "priest healer",
+    "jobs": [
+     "priest",
+     "healer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:110"
+   },
+   {
+    "id": "pa_dragon_voice",
+    "name": "เสียงมังกร",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "ได้ยินเสียงพี่น้องบางครั้ง",
+     "ได้ยินเสียงอาลัยเมื่อมังกรล้ม",
+     "รู้ว่ามังกรตัวไหนล้มก่อนเหตุการณ์จริง"
+    ],
+    "jobsText": "dragon_whisperer",
+    "jobs": [
+     "dragon_whisperer"
+    ],
+    "apts": [],
+    "races": [],
+    "src": "docs/systems/character/14-companion-abilities.md:111"
+   },
+   {
+    "id": "pa_lava_core",
+    "name": "แกนลาวา",
+    "group": "ฌ. ศรัทธาและเวท",
+    "levels": [
+     "ตัวร้อนเมื่อโกรธ",
+     "ละลายหิมะรอบตัว",
+     "ปล่อยคลื่นความร้อนเป็นอาวุธ"
+    ],
+    "jobsText": "smith lavakin",
+    "jobs": [
+     "smith"
+    ],
+    "apts": [],
+    "races": [
+     "lavakin"
+    ],
+    "src": "docs/systems/character/14-companion-abilities.md:112"
+   }
+  ],
+  "species": [
+   {
+    "id": "sp_dog",
+    "name": "สุนัข",
+    "tier": "C",
+    "category": "บ้าน",
+    "home": "ทุกทวีป",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_track_scent",
+      "level": 1
+     },
+     {
+      "id": "pa_guard_stance",
+      "level": 1
+     },
+     {
+      "id": "pa_night_watch",
+      "level": 1
+     }
+    ],
+    "note": "คู่หูแรกของเด็กที่เลี้ยงสัตว์",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:19"
+   },
+   {
+    "id": "sp_cat",
+    "name": "แมวบ้าน",
+    "tier": "C",
+    "category": "บ้าน",
+    "home": "ทุกทวีป",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     16
+    ],
+    "abilities": [
+     {
+      "id": "pa_pest_hunt",
+      "level": 1
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 1
+     }
+    ],
+    "note": "คนที่มี c_cathate เลี้ยงไม่ได้",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:20"
+   },
+   {
+    "id": "sp_horse",
+    "name": "ม้า",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "อัลเดรีย AL-24",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-24"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     25,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_mount",
+      "level": 1
+     },
+     {
+      "id": "pa_caravan_pull",
+      "level": 1
+     }
+    ],
+    "note": "เผ่าสัตว์ที่เป็นม้าเลี้ยงไม่ได้ (ผิดธรรมเนียม)",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:21"
+   },
+   {
+    "id": "sp_donkey",
+    "name": "ลา",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "อัลเดรีย ซาฮารัน",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     28,
+     32
+    ],
+    "abilities": [
+     {
+      "id": "pa_caravan_pull",
+      "level": 1
+     },
+     {
+      "id": "pa_stout_heart",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:22"
+   },
+   {
+    "id": "sp_ox",
+    "name": "วัวไถนา",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "อัลเดรีย เนเรีย NR-09",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-09"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     22
+    ],
+    "abilities": [
+     {
+      "id": "pa_plow",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:23"
+   },
+   {
+    "id": "sp_sheep",
+    "name": "แกะ",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "อัลเดรีย AL-16",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 1
+     }
+    ],
+    "note": "ขนและนม",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:24"
+   },
+   {
+    "id": "sp_goat",
+    "name": "แพะภูเขา",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "KD ซาฮารัน",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     13,
+     17
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 1
+     },
+     {
+      "id": "pa_climb",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:25"
+   },
+   {
+    "id": "sp_chicken",
+    "name": "ไก่",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "ทุกทวีป",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     6,
+     10
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 1
+     },
+     {
+      "id": "pa_pest_hunt",
+      "level": 1
+     }
+    ],
+    "note": "คนที่มี c_chicken ได้ผลตลก",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:26"
+   },
+   {
+    "id": "sp_duck",
+    "name": "เป็ด",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "NR-09 AL-16",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-09",
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     8,
+     12
+    ],
+    "abilities": [
+     {
+      "id": "pa_pest_hunt",
+      "level": 1
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:27"
+   },
+   {
+    "id": "sp_pigeon",
+    "name": "นกพิราบสาร",
+    "tier": "C",
+    "category": "นก",
+    "home": "AL-28 AL-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-28",
+      "AL-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_messenger",
+      "level": 1
+     },
+     {
+      "id": "pa_path_find",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:28"
+   },
+   {
+    "id": "sp_crow",
+    "name": "กา",
+    "tier": "C",
+    "category": "นก",
+    "home": "ทุกทวีป",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     15,
+     25
+    ],
+    "abilities": [
+     {
+      "id": "pa_treasure_nose",
+      "level": 1
+     },
+     {
+      "id": "pa_messenger",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:29"
+   },
+   {
+    "id": "sp_rat",
+    "name": "หนูท่อ",
+    "tier": "C",
+    "category": "บ้าน",
+    "home": "AL-13 MK-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-13",
+      "MK-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     3,
+     5
+    ],
+    "abilities": [
+     {
+      "id": "pa_burrow",
+      "level": 1
+     },
+     {
+      "id": "pa_danger_sense",
+      "level": 1
+     }
+    ],
+    "note": "อายุสั้น เป็นคู่หูของคนจนและโจร",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:30"
+   },
+   {
+    "id": "sp_ferret",
+    "name": "เฟอร์เร็ต",
+    "tier": "C",
+    "category": "บ้าน",
+    "home": "AL-05 AL-13",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-05",
+      "AL-13"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     6,
+     10
+    ],
+    "abilities": [
+     {
+      "id": "pa_pest_hunt",
+      "level": 1
+     },
+     {
+      "id": "pa_pickpocket",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:31"
+   },
+   {
+    "id": "sp_rabbit",
+    "name": "กระต่าย",
+    "tier": "C",
+    "category": "บ้าน",
+    "home": "AL-16 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     8,
+     10
+    ],
+    "abilities": [
+     {
+      "id": "pa_lucky_charm",
+      "level": 1
+     },
+     {
+      "id": "pa_burrow",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:32"
+   },
+   {
+    "id": "sp_field_fox",
+    "name": "จิ้งจอกทุ่ง",
+    "tier": "C",
+    "category": "ป่า",
+    "home": "AL-24 AL-23",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-24",
+      "AL-23"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_track_scent",
+      "level": 1
+     },
+     {
+      "id": "pa_distract",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:33"
+   },
+   {
+    "id": "sp_hawk",
+    "name": "เหยี่ยว",
+    "tier": "C",
+    "category": "นก",
+    "home": "ทุกทวีป",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     15,
+     22
+    ],
+    "abilities": [
+     {
+      "id": "pa_keen_eyes",
+      "level": 1
+     },
+     {
+      "id": "pa_claw_dive",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:34"
+   },
+   {
+    "id": "sp_owl",
+    "name": "นกฮูก",
+    "tier": "C",
+    "category": "นก",
+    "home": "SV AL-11",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-11"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     20,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_night_watch",
+      "level": 1
+     },
+     {
+      "id": "pa_wisdom_gaze",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:35"
+   },
+   {
+    "id": "sp_wolf_pup",
+    "name": "ลูกหมาป่า",
+    "tier": "C",
+    "category": "ป่า",
+    "home": "SV-16 MH-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-16",
+      "MH-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     16
+    ],
+    "abilities": [
+     {
+      "id": "pa_pack_courage",
+      "level": 1
+     },
+     {
+      "id": "pa_bite_assist",
+      "level": 1
+     }
+    ],
+    "note": "เติบโตเป็น sp_wolf เมื่อความผูกพันถึงระดับ 3",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:36"
+   },
+   {
+    "id": "sp_bear_cub",
+    "name": "ลูกหมี",
+    "tier": "C",
+    "category": "ป่า",
+    "home": "KD-12 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     20,
+     28
+    ],
+    "abilities": [
+     {
+      "id": "pa_thick_hide",
+      "level": 1
+     },
+     {
+      "id": "pa_guard_stance",
+      "level": 1
+     }
+    ],
+    "note": "เติบโตเป็น sp_honey_bear หรือหมีใหญ่",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:37"
+   },
+   {
+    "id": "sp_rain_frog",
+    "name": "กบฝน",
+    "tier": "C",
+    "category": "น้ำ",
+    "home": "NR-09 SV-17",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-09",
+      "SV-17"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     5,
+     8
+    ],
+    "abilities": [
+     {
+      "id": "pa_weather_sense",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:38"
+   },
+   {
+    "id": "sp_turtle",
+    "name": "เต่า",
+    "tier": "C",
+    "category": "น้ำ",
+    "home": "NR SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     80,
+     150
+    ],
+    "abilities": [
+     {
+      "id": "pa_thick_hide",
+      "level": 1
+     },
+     {
+      "id": "pa_life_share",
+      "level": 1
+     }
+    ],
+    "note": "อยู่ได้หลายชีวิตของผู้เลี้ยง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:39"
+   },
+   {
+    "id": "sp_bee_hive",
+    "name": "รังผึ้ง",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "AL-16 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     8,
+     12
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 1
+     },
+     {
+      "id": "pa_garden_help",
+      "level": 1
+     }
+    ],
+    "note": "ถือเป็นหนึ่งคู่หู",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:40"
+   },
+   {
+    "id": "sp_silk_moth",
+    "name": "ผีเสื้อไหม",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "SH-04 AL-05",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-04",
+      "AL-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     5,
+     8
+    ],
+    "abilities": [
+     {
+      "id": "pa_weave",
+      "level": 1
+     }
+    ],
+    "note": "ฝูงสืบทอดรุ่นต่อรุ่น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:41"
+   },
+   {
+    "id": "sp_camel",
+    "name": "อูฐ",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "SH-04 SH-05",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-04",
+      "SH-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     30,
+     40
+    ],
+    "abilities": [
+     {
+      "id": "pa_caravan_pull",
+      "level": 1
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:42"
+   },
+   {
+    "id": "sp_pig",
+    "name": "หมูขุดเห็ด",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "AL-16 SV-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16",
+      "SV-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     16
+    ],
+    "abilities": [
+     {
+      "id": "pa_treasure_nose",
+      "level": 1
+     },
+     {
+      "id": "pa_produce",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:43"
+   },
+   {
+    "id": "sp_parrot",
+    "name": "นกแก้ว",
+    "tier": "C",
+    "category": "นก",
+    "home": "SV-17 NR",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-17"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     40,
+     60
+    ],
+    "abilities": [
+     {
+      "id": "pa_icebreaker",
+      "level": 1
+     },
+     {
+      "id": "pa_messenger",
+      "level": 1
+     }
+    ],
+    "note": "จำภาษาของผู้เลี้ยงได้หลายภาษา",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:44"
+   },
+   {
+    "id": "sp_gull",
+    "name": "นกนางนวล",
+    "tier": "C",
+    "category": "นก",
+    "home": "NR",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_fish_help",
+      "level": 1
+     },
+     {
+      "id": "pa_path_find",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:45"
+   },
+   {
+    "id": "sp_otter",
+    "name": "นากแม่น้ำ",
+    "tier": "C",
+    "category": "น้ำ",
+    "home": "NR-09 SV-17",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-09",
+      "SV-17"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_fish_help",
+      "level": 1
+     },
+     {
+      "id": "pa_charm_pet",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:46"
+   },
+   {
+    "id": "sp_monkey",
+    "name": "ลิงหางยาว",
+    "tier": "C",
+    "category": "ป่า",
+    "home": "SV-17",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-17"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     22,
+     28
+    ],
+    "abilities": [
+     {
+      "id": "pa_pickpocket",
+      "level": 1
+     },
+     {
+      "id": "pa_climb",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:47"
+   },
+   {
+    "id": "sp_yak",
+    "name": "จามรี",
+    "tier": "C",
+    "category": "ฟาร์ม",
+    "home": "KD-12 SH",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     20,
+     24
+    ],
+    "abilities": [
+     {
+      "id": "pa_caravan_pull",
+      "level": 1
+     },
+     {
+      "id": "pa_stout_heart",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:48"
+   },
+   {
+    "id": "sp_war_dog",
+    "name": "สุนัขศึก",
+    "tier": "U",
+    "category": "บ้าน",
+    "home": "AL-08 AL-15 MH-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-08",
+      "AL-15",
+      "MH-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_bite_assist",
+      "level": 2
+     },
+     {
+      "id": "pa_guard_stance",
+      "level": 1
+     }
+    ],
+    "note": "เป็นสุนัขทหาร ถ้าผู้เลี้ยงไม่ใช่ทหารต้องเรียนตามสัญญา",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:54"
+   },
+   {
+    "id": "sp_sheepdog",
+    "name": "สุนัขต้อนแกะ",
+    "tier": "U",
+    "category": "ฟาร์ม",
+    "home": "AL-16 AL-24",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16",
+      "AL-24"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     11,
+     15
+    ],
+    "abilities": [
+     {
+      "id": "pa_herd",
+      "level": 2
+     },
+     {
+      "id": "pa_danger_sense",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:55"
+   },
+   {
+    "id": "sp_war_horse",
+    "name": "ม้าศึก",
+    "tier": "U",
+    "category": "ฟาร์ม",
+    "home": "AL-18 AL-24",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-18",
+      "AL-24"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     25,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_pack_courage",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:56"
+   },
+   {
+    "id": "sp_falcon",
+    "name": "เหยี่ยวล่า",
+    "tier": "U",
+    "category": "นก",
+    "home": "SH AL-24",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-24"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     25
+    ],
+    "abilities": [
+     {
+      "id": "pa_keen_eyes",
+      "level": 2
+     },
+     {
+      "id": "pa_claw_dive",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:57"
+   },
+   {
+    "id": "sp_raven",
+    "name": "อีกาพูดได้",
+    "tier": "U",
+    "category": "นก",
+    "home": "NB SV-11",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-11"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     35,
+     45
+    ],
+    "abilities": [
+     {
+      "id": "pa_lie_sense",
+      "level": 1
+     },
+     {
+      "id": "pa_messenger",
+      "level": 2
+     }
+    ],
+    "note": "พูดภาษามนุษย์ได้ไม่กี่ประโยค",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:58"
+   },
+   {
+    "id": "sp_snow_fox",
+    "name": "จิ้งจอกหิมะ",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "KD-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     16
+    ],
+    "abilities": [
+     {
+      "id": "pa_track_scent",
+      "level": 2
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:59"
+   },
+   {
+    "id": "sp_wolf",
+    "name": "หมาป่า",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SV-16 MH-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-16",
+      "MH-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     14,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_pack_courage",
+      "level": 2
+     },
+     {
+      "id": "pa_bite_assist",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:60"
+   },
+   {
+    "id": "sp_panther",
+    "name": "เสือดำ",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SV-17 SH",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-17"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     16,
+     20
+    ],
+    "abilities": [
+     {
+      "id": "pa_flank",
+      "level": 2
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:61"
+   },
+   {
+    "id": "sp_lynx",
+    "name": "แมวป่าลิงซ์",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "KD-12 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     13,
+     17
+    ],
+    "abilities": [
+     {
+      "id": "pa_danger_sense",
+      "level": 2
+     },
+     {
+      "id": "pa_night_watch",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:62"
+   },
+   {
+    "id": "sp_boar",
+    "name": "หมูป่า",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SV MH",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_thick_hide",
+      "level": 2
+     },
+     {
+      "id": "pa_treasure_nose",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:63"
+   },
+   {
+    "id": "sp_stag",
+    "name": "กวางผู้นำฝูง",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SV AL-23",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-23"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     24
+    ],
+    "abilities": [
+     {
+      "id": "pa_path_find",
+      "level": 2
+     },
+     {
+      "id": "pa_mount",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:64"
+   },
+   {
+    "id": "sp_cave_bat",
+    "name": "ค้างคาวถ้ำ",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "KD-05 NB",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     20,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_night_watch",
+      "level": 2
+     },
+     {
+      "id": "pa_danger_sense",
+      "level": 1
+     }
+    ],
+    "note": "ดาร์กเอลฟ์และแวมไพร์ได้ง่ายขึ้น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:65"
+   },
+   {
+    "id": "sp_garden_snake",
+    "name": "งูสวน",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "AL-16 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_pest_hunt",
+      "level": 2
+     },
+     {
+      "id": "pa_antidote_nose",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:66"
+   },
+   {
+    "id": "sp_loom_spider",
+    "name": "แมงมุมถักใย",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SV-12 AL-05",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-12",
+      "AL-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     5,
+     7
+    ],
+    "abilities": [
+     {
+      "id": "pa_weave",
+      "level": 2
+     },
+     {
+      "id": "pa_venom_bite",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:67"
+   },
+   {
+    "id": "sp_sea_lion",
+    "name": "สิงโตทะเล",
+    "tier": "U",
+    "category": "น้ำ",
+    "home": "NR-01 NR-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-01",
+      "NR-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     22,
+     28
+    ],
+    "abilities": [
+     {
+      "id": "pa_swim_mount",
+      "level": 1
+     },
+     {
+      "id": "pa_fish_help",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:68"
+   },
+   {
+    "id": "sp_dolphin",
+    "name": "โลมา",
+    "tier": "U",
+    "category": "น้ำ",
+    "home": "NR",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     35,
+     45
+    ],
+    "abilities": [
+     {
+      "id": "pa_swim_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_path_find",
+      "level": 2
+     }
+    ],
+    "note": "เงือกไซเรนได้ผลพิเศษ",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:69"
+   },
+   {
+    "id": "sp_fire_newt",
+    "name": "ซาลาแมนเดอร์ไฟ",
+    "tier": "U",
+    "category": "ธาตุ",
+    "home": "KD",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     25,
+     35
+    ],
+    "abilities": [
+     {
+      "id": "pa_elemental_core",
+      "level": 1
+     },
+     {
+      "id": "pa_breath_fire",
+      "level": 1
+     }
+    ],
+    "note": "เผ่าลาวาได้ผลเป็นสองเท่า",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:70"
+   },
+   {
+    "id": "sp_ice_hare",
+    "name": "กระต่ายหิมะ",
+    "tier": "U",
+    "category": "ธาตุ",
+    "home": "KD-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     10,
+     14
+    ],
+    "abilities": [
+     {
+      "id": "pa_lucky_charm",
+      "level": 2
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 1
+     }
+    ],
+    "note": "ตายเร็วถ้าอยู่ใกล้เผ่าลาวา",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:71"
+   },
+   {
+    "id": "sp_dust_lizard",
+    "name": "จิ้งจกทราย",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "SH SH-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     13,
+     17
+    ],
+    "abilities": [
+     {
+      "id": "pa_dig",
+      "level": 2
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:72"
+   },
+   {
+    "id": "sp_cloud_sheep",
+    "name": "แกะเมฆ",
+    "tier": "U",
+    "category": "วิเศษ",
+    "home": "AZ (ก่อน DR-01)",
+    "homeRefs": {
+     "events": [
+      "DR-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     22
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 2
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 2
+     }
+    ],
+    "note": "ถ้า DR-01 เกิด เหลือที่ซากหรือสกายฟอลล์ มีน้อยลง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:73"
+   },
+   {
+    "id": "sp_ash_wolf",
+    "name": "หมาป่าเถ้า",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "MH-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "MH-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     14,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_pack_courage",
+      "level": 2
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:74"
+   },
+   {
+    "id": "sp_lava_toad",
+    "name": "คางคกลาวา",
+    "tier": "U",
+    "category": "ธาตุ",
+    "home": "KD-02 KD-06",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-02",
+      "KD-06"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     25,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_lava_core",
+      "level": 1
+     },
+     {
+      "id": "pa_thick_hide",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:75"
+   },
+   {
+    "id": "sp_reef_seahorse",
+    "name": "ม้าน้ำปะการัง",
+    "tier": "U",
+    "category": "น้ำ",
+    "home": "NR-13",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-13"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     6,
+     10
+    ],
+    "abilities": [
+     {
+      "id": "pa_lucky_charm",
+      "level": 2
+     },
+     {
+      "id": "pa_bright_mood",
+      "level": 1
+     }
+    ],
+    "note": "ตายเมื่อ BIO-07 ถ้าอยู่ที่ปาเลนู",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:76"
+   },
+   {
+    "id": "sp_mist_hound",
+    "name": "สุนัขนำทางหมอก",
+    "tier": "U",
+    "category": "หมอก",
+    "home": "NB-14 NB-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NB-14",
+      "NB-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     16
+    ],
+    "abilities": [
+     {
+      "id": "pa_fog_sense",
+      "level": 2
+     },
+     {
+      "id": "pa_path_find",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:77"
+   },
+   {
+    "id": "sp_lantern_moth",
+    "name": "ผีเสื้อโคม",
+    "tier": "U",
+    "category": "หมอก",
+    "home": "NB-03",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NB-03"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     4,
+     6
+    ],
+    "abilities": [
+     {
+      "id": "pa_fog_sense",
+      "level": 1
+     },
+     {
+      "id": "pa_bright_mood",
+      "level": 1
+     }
+    ],
+    "note": "ฝูงสืบทอด",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:78"
+   },
+   {
+    "id": "sp_honey_bear",
+    "name": "หมีน้ำผึ้ง",
+    "tier": "U",
+    "category": "ป่า",
+    "home": "AL-16 SV",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     24,
+     30
+    ],
+    "abilities": [
+     {
+      "id": "pa_produce",
+      "level": 2
+     },
+     {
+      "id": "pa_stout_heart",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:79"
+   },
+   {
+    "id": "sp_mule_strong",
+    "name": "ล่อบรรทุก",
+    "tier": "U",
+    "category": "ฟาร์ม",
+    "home": "AL-28 AL-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-28",
+      "AL-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     30,
+     36
+    ],
+    "abilities": [
+     {
+      "id": "pa_caravan_pull",
+      "level": 2
+     },
+     {
+      "id": "pa_stout_heart",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:80"
+   },
+   {
+    "id": "sp_tea_cat",
+    "name": "แมวร้านน้ำชา",
+    "tier": "U",
+    "category": "บ้าน",
+    "home": "AL-16 NR-09",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-16",
+      "NR-09"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     13,
+     17
+    ],
+    "abilities": [
+     {
+      "id": "pa_market_charm",
+      "level": 2
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 1
+     }
+    ],
+    "note": "เหมาะกับอาชีพชีวิตช้า",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:81"
+   },
+   {
+    "id": "sp_bone_hound",
+    "name": "สุนัขโครงกระดูก",
+    "tier": "U",
+    "category": "ผู้ตาย",
+    "home": "MH-12 AL-25 SH-02",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "MH-12",
+      "AL-25",
+      "SH-02"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": null,
+    "abilities": [
+     {
+      "id": "pa_track_scent",
+      "level": 2
+     },
+     {
+      "id": "pa_ghost_sense",
+      "level": 1
+     },
+     {
+      "id": "pa_guard_stance",
+      "level": 1
+     }
+    ],
+    "note": "คู่หูของเผ่าผู้ตาย (แวมไพร์ มัมมี่ กูล) และผู้ใช้เนโครแมนซี",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:82"
+   },
+   {
+    "id": "sp_silver_wolf",
+    "name": "หมาป่าเงิน",
+    "tier": "R",
+    "category": "ป่า",
+    "home": "SV-09 SV-16",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-09",
+      "SV-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     24
+    ],
+    "abilities": [
+     {
+      "id": "pa_pack_courage",
+      "level": 3
+     },
+     {
+      "id": "pa_bite_assist",
+      "level": 2
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:88"
+   },
+   {
+    "id": "sp_shadow_wolf",
+    "name": "หมาป่าเงา",
+    "tier": "R",
+    "category": "ป่า",
+    "home": "SV-09",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-09"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     20,
+     26
+    ],
+    "abilities": [
+     {
+      "id": "pa_flank",
+      "level": 3
+     },
+     {
+      "id": "pa_night_watch",
+      "level": 2
+     }
+    ],
+    "note": "ผูก skill ns_wolf_rider",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:89"
+   },
+   {
+    "id": "sp_snow_leopard",
+    "name": "เสือดาวหิมะ",
+    "tier": "R",
+    "category": "ป่า",
+    "home": "KD-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     16,
+     22
+    ],
+    "abilities": [
+     {
+      "id": "pa_flank",
+      "level": 3
+     },
+     {
+      "id": "pa_climb",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:90"
+   },
+   {
+    "id": "sp_wyvern_young",
+    "name": "ไวเวิร์นน้อย",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "KD-07 AZ",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-07"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     35,
+     50
+    ],
+    "abilities": [
+     {
+      "id": "pa_fly_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_bite_assist",
+      "level": 2
+     }
+    ],
+    "note": "เป็นพาหนะบินเมื่อโต",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:91"
+   },
+   {
+    "id": "sp_griffon_chick",
+    "name": "ลูกกริฟฟอน",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "AZ (ก่อน DR-01) ซาก",
+    "homeRefs": {
+     "events": [
+      "DR-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     50,
+     70
+    ],
+    "abilities": [
+     {
+      "id": "pa_fly_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_keen_eyes",
+      "level": 2
+     },
+     {
+      "id": "pa_pack_courage",
+      "level": 1
+     }
+    ],
+    "note": "เติบโตเป็น sp_griffon_adult",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:92"
+   },
+   {
+    "id": "sp_moon_deer",
+    "name": "กวางจันทรา",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "SV-05",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     70,
+     90
+    ],
+    "abilities": [
+     {
+      "id": "pa_lick_heal",
+      "level": 2
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 2
+     }
+    ],
+    "note": "เผ่าเอลฟ์จันทราได้ง่ายขึ้น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:93"
+   },
+   {
+    "id": "sp_kelpie",
+    "name": "เคลปี้",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "NR-03 NR-09",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-03",
+      "NR-09"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     60,
+     80
+    ],
+    "abilities": [
+     {
+      "id": "pa_swim_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_charm_pet",
+      "level": 2
+     }
+    ],
+    "note": "อันตรายต่อผู้เลี้ยงที่ไม่ซื่อสัตย์",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:94"
+   },
+   {
+    "id": "sp_sand_worm_pup",
+    "name": "หนอนทรายเล็ก",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "SH-12 SH-01",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-12",
+      "SH-01"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     90,
+     120
+    ],
+    "abilities": [
+     {
+      "id": "pa_dig",
+      "level": 3
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 2
+     }
+    ],
+    "note": "ผูก skill ns_sand_worm_ride โตเป็นพาหนะข้ามทะเลทราย",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:95"
+   },
+   {
+    "id": "sp_storm_hawk",
+    "name": "เหยี่ยวพายุ",
+    "tier": "R",
+    "category": "นก",
+    "home": "AZ-03",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AZ-03"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     28,
+     35
+    ],
+    "abilities": [
+     {
+      "id": "pa_keen_eyes",
+      "level": 3
+     },
+     {
+      "id": "pa_shock_touch",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:96"
+   },
+   {
+    "id": "sp_thunder_ram",
+    "name": "แกะสายฟ้า",
+    "tier": "R",
+    "category": "ธาตุ",
+    "home": "AZ",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     22,
+     28
+    ],
+    "abilities": [
+     {
+      "id": "pa_shock_touch",
+      "level": 2
+     },
+     {
+      "id": "pa_thick_hide",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:97"
+   },
+   {
+    "id": "sp_fairy_moth",
+    "name": "ผีเสื้อภูต",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "SV-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     3,
+     5
+    ],
+    "abilities": [
+     {
+      "id": "pa_bright_mood",
+      "level": 2
+     },
+     {
+      "id": "pa_spirit_bridge",
+      "level": 1
+     }
+    ],
+    "note": "ภูตพรายได้ง่ายขึ้น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:98"
+   },
+   {
+    "id": "sp_nine_fox_cub",
+    "name": "จิ้งจอกเก้าหางน้อย",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "SV AL-23",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-23"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     100,
+     140
+    ],
+    "abilities": [
+     {
+      "id": "pa_lie_sense",
+      "level": 2
+     },
+     {
+      "id": "pa_distract",
+      "level": 2
+     }
+    ],
+    "note": "เติบโตเป็น sp_nine_tailed_fox ผ่านเรื่อง cs_ninth_tail เท่านั้น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:99"
+   },
+   {
+    "id": "sp_spirit_cat",
+    "name": "แมววิญญาณ",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "SH-14 NB",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-14"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     35,
+     45
+    ],
+    "abilities": [
+     {
+      "id": "pa_ghost_sense",
+      "level": 2
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 2
+     }
+    ],
+    "note": "เผ่าผู้ตายและผู้ไร้เงาได้ง่ายขึ้น",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:100"
+   },
+   {
+    "id": "sp_ember_cat",
+    "name": "แมวไฟ",
+    "tier": "R",
+    "category": "ธาตุ",
+    "home": "KD-06",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-06"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     18,
+     22
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 2
+     },
+     {
+      "id": "pa_lava_core",
+      "level": 1
+     }
+    ],
+    "note": "แมวทั่วไปเกลียดสัตว์ตัวนี้",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:101"
+   },
+   {
+    "id": "sp_crystal_rabbit",
+    "name": "กระต่ายผลึกมานา",
+    "tier": "R",
+    "category": "ธาตุ",
+    "home": "AL-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     15,
+     20
+    ],
+    "abilities": [
+     {
+      "id": "pa_mana_well",
+      "level": 2
+     },
+     {
+      "id": "pa_lucky_charm",
+      "level": 2
+     }
+    ],
+    "note": "ถูกล่าโดย MK-14",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:102"
+   },
+   {
+    "id": "sp_stone_owl",
+    "name": "นกฮูกหิน",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "SH-17 SH-03",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-17",
+      "SH-03"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     120,
+     180
+    ],
+    "abilities": [
+     {
+      "id": "pa_wisdom_gaze",
+      "level": 2
+     },
+     {
+      "id": "pa_night_watch",
+      "level": 2
+     }
+    ],
+    "note": "ศรัทธาศิลา",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:103"
+   },
+   {
+    "id": "sp_naga_hatchling",
+    "name": "นาคาน้อย",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "NR-07 (หลัง BIO-08)",
+    "homeRefs": {
+     "events": [
+      "BIO-08"
+     ],
+     "countries": [
+      "NR-07"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     250,
+     350
+    ],
+    "abilities": [
+     {
+      "id": "pa_antidote_nose",
+      "level": 3
+     },
+     {
+      "id": "pa_spirit_bridge",
+      "level": 1
+     }
+    ],
+    "note": "ต้องมีคำอนุญาตจากพญานาคราช",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:104"
+   },
+   {
+    "id": "sp_whale_calf",
+    "name": "ลูกวาฬฟ้า",
+    "tier": "R",
+    "category": "วิเศษ",
+    "home": "NR-16",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     70,
+     90
+    ],
+    "abilities": [
+     {
+      "id": "pa_swim_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 3
+     }
+    ],
+    "note": "ต้องเลี้ยงที่น้ำ ลูกวาฬโตเกินผู้เลี้ยงในสิบปี",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:105"
+   },
+   {
+    "id": "sp_dream_moth",
+    "name": "แมลงฝัน",
+    "tier": "R",
+    "category": "วิญญาณ",
+    "home": "AL-14",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-14"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     4,
+     6
+    ],
+    "abilities": [
+     {
+      "id": "pa_omen",
+      "level": 1
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:106"
+   },
+   {
+    "id": "sp_ink_octopus",
+    "name": "หมึกสมุทร",
+    "tier": "R",
+    "category": "น้ำ",
+    "home": "NR",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     12,
+     18
+    ],
+    "abilities": [
+     {
+      "id": "pa_distract",
+      "level": 2
+     },
+     {
+      "id": "pa_swim_mount",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:107"
+   },
+   {
+    "id": "sp_rust_dog",
+    "name": "สุนัขกลเก่า",
+    "tier": "R",
+    "category": "จักรกล",
+    "home": "MK-12 MK-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "MK-12",
+      "MK-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     150,
+     250
+    ],
+    "abilities": [
+     {
+      "id": "pa_track_scent",
+      "level": 2
+     },
+     {
+      "id": "pa_danger_sense",
+      "level": 2
+     }
+    ],
+    "note": "ไม่รักษา ไม่ป่วย ซ่อมด้วยช่างกล ภูตพรายเลี้ยงไม่ได้ (แพ้เหล็ก)",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:108"
+   },
+   {
+    "id": "sp_flame_ibis",
+    "name": "ไอบิสเพลิง",
+    "tier": "R",
+    "category": "ธาตุ",
+    "home": "KD SH-15",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-15"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     50,
+     70
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 2
+     },
+     {
+      "id": "pa_omen",
+      "level": 1
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:109"
+   },
+   {
+    "id": "sp_griffon_adult",
+    "name": "กริฟฟอน",
+    "tier": "E",
+    "category": "วิเศษ",
+    "home": "AZ ซาก SF",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     100,
+     140
+    ],
+    "abilities": [
+     {
+      "id": "pa_fly_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_keen_eyes",
+      "level": 3
+     },
+     {
+      "id": "pa_claw_dive",
+      "level": 2
+     }
+    ],
+    "note": "ได้เมื่อลูกกริฟฟอนโตเต็มวัยหรือได้ตรง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:115"
+   },
+   {
+    "id": "sp_pegasus_foal",
+    "name": "ลูกเพกาซัส",
+    "tier": "E",
+    "category": "วิเศษ",
+    "home": "AZ (ก่อน DR-01)",
+    "homeRefs": {
+     "events": [
+      "DR-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     130,
+     170
+    ],
+    "abilities": [
+     {
+      "id": "pa_fly_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_lucky_charm",
+      "level": 2
+     }
+    ],
+    "note": "ถ้า DR-01 เกิดแล้ว เหลือเฉพาะที่เคยเกิดก่อน",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:116"
+   },
+   {
+    "id": "sp_unicorn",
+    "name": "ยูนิคอร์น",
+    "tier": "E",
+    "category": "วิเศษ",
+    "home": "SV-04 SV-05",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-04",
+      "SV-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     250,
+     350
+    ],
+    "abilities": [
+     {
+      "id": "pa_lick_heal",
+      "level": 3
+     },
+     {
+      "id": "pa_curse_eater",
+      "level": 2
+     },
+     {
+      "id": "pa_purr_calm",
+      "level": 2
+     }
+    ],
+    "note": "เลือกผู้เลี้ยงที่ใจบริสุทธิ์ (kind ≥ 30)",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:117"
+   },
+   {
+    "id": "sp_fenrir_pup",
+    "name": "ลูกหมาป่าตำนาน",
+    "tier": "E",
+    "category": "วิเศษ",
+    "home": "MH-10 MH-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "MH-10",
+      "MH-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     180,
+     220
+    ],
+    "abilities": [
+     {
+      "id": "pa_pack_courage",
+      "level": 3
+     },
+     {
+      "id": "pa_intimidate",
+      "level": 3
+     },
+     {
+      "id": "pa_bite_assist",
+      "level": 3
+     }
+    ],
+    "note": "ผูก PL-02 ฮรอด-กาธ",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:118"
+   },
+   {
+    "id": "sp_phoenix_chick",
+    "name": "ลูกฟีนิกซ์",
+    "tier": "E",
+    "category": "ธาตุ",
+    "home": "KD-06 KD-10",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-06",
+      "KD-10"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     450,
+     550
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 3
+     },
+     {
+      "id": "pa_soul_anchor",
+      "level": 2
+     },
+     {
+      "id": "pa_lick_heal",
+      "level": 2
+     }
+    ],
+    "note": "คืนชีพจากเถ้าได้หนึ่งครั้ง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:119"
+   },
+   {
+    "id": "sp_kirin",
+    "name": "กิเลน",
+    "tier": "E",
+    "category": "วิญญาณ",
+    "home": "SH-09 SH-13",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-09",
+      "SH-13"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     350,
+     450
+    ],
+    "abilities": [
+     {
+      "id": "pa_omen",
+      "level": 3
+     },
+     {
+      "id": "pa_lucky_charm",
+      "level": 3
+     }
+    ],
+    "note": "ปรากฏเมื่อผู้เลี้ยงมีเมตตาและชื่อเสียง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:120"
+   },
+   {
+    "id": "sp_frost_wolf",
+    "name": "หมาป่าน้ำแข็ง",
+    "tier": "E",
+    "category": "ธาตุ",
+    "home": "KD-12",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     110,
+     140
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_frost",
+      "level": 3
+     },
+     {
+      "id": "pa_pack_courage",
+      "level": 2
+     }
+    ],
+    "note": "ตายเมื่อเข้าใกล้ไฟใหญ่",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:121"
+   },
+   {
+    "id": "sp_lava_hound",
+    "name": "หมาลาวา",
+    "tier": "E",
+    "category": "ธาตุ",
+    "home": "KD-06 KD-02",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-06",
+      "KD-02"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     90,
+     120
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 3
+     },
+     {
+      "id": "pa_lava_core",
+      "level": 2
+     }
+    ],
+    "note": "เผ่าลาวาได้ผลเป็นสองเท่า",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:122"
+   },
+   {
+    "id": "sp_thunderbird",
+    "name": "นกอัสนี",
+    "tier": "E",
+    "category": "ธาตุ",
+    "home": "AZ-03 AZ-04",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AZ-03",
+      "AZ-04"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     180,
+     220
+    ],
+    "abilities": [
+     {
+      "id": "pa_shock_touch",
+      "level": 3
+     },
+     {
+      "id": "pa_fly_mount",
+      "level": 2
+     },
+     {
+      "id": "pa_keen_eyes",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:123"
+   },
+   {
+    "id": "sp_silver_stag",
+    "name": "กวางเงินศักดิ์สิทธิ์",
+    "tier": "E",
+    "category": "วิญญาณ",
+    "home": "SV-01 SV-13",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-01",
+      "SV-13"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     220,
+     280
+    ],
+    "abilities": [
+     {
+      "id": "pa_lick_heal",
+      "level": 3
+     },
+     {
+      "id": "pa_spirit_bridge",
+      "level": 2
+     },
+     {
+      "id": "pa_path_find",
+      "level": 3
+     }
+    ],
+    "note": "ต้องผ่านพิธีกับผู้ฟังวิญญาณ",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:124"
+   },
+   {
+    "id": "sp_world_tree_fawn",
+    "name": "ลูกกวางต้นไม้โลก",
+    "tier": "E",
+    "category": "วิญญาณ",
+    "home": "SV-01",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-01"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     280,
+     320
+    ],
+    "abilities": [
+     {
+      "id": "pa_garden_help",
+      "level": 3
+     },
+     {
+      "id": "pa_antidote_nose",
+      "level": 3
+     },
+     {
+      "id": "pa_lick_heal",
+      "level": 2
+     }
+    ],
+    "note": "ผูก BIO-01 BIO-03 ถ้าต้นไม้ตาย (BIO-02) ลูกกวางตายหรือกลายเป็นวิญญาณ",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:125"
+   },
+   {
+    "id": "sp_fog_wisp_cat",
+    "name": "แมวหมอก",
+    "tier": "E",
+    "category": "หมอก",
+    "home": "NB-13 NB-08",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NB-13",
+      "NB-08"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     70,
+     90
+    ],
+    "abilities": [
+     {
+      "id": "pa_fog_sense",
+      "level": 3
+     },
+     {
+      "id": "pa_hide_scent",
+      "level": 3
+     },
+     {
+      "id": "pa_ghost_sense",
+      "level": 2
+     }
+    ],
+    "note": "ผูกผู้ไร้เงา เห็นหนวดก่อน",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:126"
+   },
+   {
+    "id": "sp_clockwork_dragonling",
+    "name": "มังกรกลน้อย",
+    "tier": "E",
+    "category": "จักรกล",
+    "home": "MK-12 MK-07",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "MK-12",
+      "MK-07"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     250,
+     350
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 2
+     },
+     {
+      "id": "pa_craft_help",
+      "level": 3
+     },
+     {
+      "id": "pa_fly_mount",
+      "level": 1
+     }
+    ],
+    "note": "ไม่ใช่มังกรจริง สร้างโดยช่างกลผู้ไม่ทราบที่มา",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:127"
+   },
+   {
+    "id": "sp_soul_fox",
+    "name": "จิ้งจอกวิญญาณ",
+    "tier": "E",
+    "category": "วิญญาณ",
+    "home": "SH-14 SV-13",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-14",
+      "SV-13"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     180,
+     220
+    ],
+    "abilities": [
+     {
+      "id": "pa_spirit_bridge",
+      "level": 3
+     },
+     {
+      "id": "pa_ghost_sense",
+      "level": 3
+     },
+     {
+      "id": "pa_lie_sense",
+      "level": 2
+     }
+    ],
+    "note": "",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:128"
+   },
+   {
+    "id": "sp_sixteenth_hatchling",
+    "name": "ลูกมังกรไข่ใบที่สิบหก",
+    "tier": "L",
+    "category": "มังกร",
+    "home": "DR-03 เท่านั้น",
+    "homeRefs": {
+     "events": [
+      "DR-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": null,
+    "abilities": [
+     {
+      "id": "pa_dragon_voice",
+      "level": 3
+     },
+     {
+      "id": "pa_intimidate",
+      "level": 3
+     },
+     {
+      "id": "pa_life_share",
+      "level": 3
+     }
+    ],
+    "note": "ผูกเส้นเรื่องพี่น้องมังกร มังกรทั้งสิบห้าทราบการมีอยู่ ถ้า DR-03 ไม่เกิด ไข่ไม่มี",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:134"
+   },
+   {
+    "id": "sp_lost_dragonling",
+    "name": "ลูกมังกรหลงทาง",
+    "tier": "L",
+    "category": "มังกร",
+    "home": "AZ ซากสกายฟอลล์ KD-07",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "KD-07"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     600,
+     900
+    ],
+    "abilities": [
+     {
+      "id": "pa_breath_fire",
+      "level": 3
+     },
+     {
+      "id": "pa_fly_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_intimidate",
+      "level": 2
+     }
+    ],
+    "note": "ไม่ใช่เสาและไม่ใช่ผู้อาวุโส เป็นลูกหลานเผ่ามังกร",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:135"
+   },
+   {
+    "id": "sp_nine_tailed_fox",
+    "name": "จิ้งจอกเก้าหาง",
+    "tier": "L",
+    "category": "วิญญาณ",
+    "home": "SV AL-23",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AL-23"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     800,
+     1100
+    ],
+    "abilities": [
+     {
+      "id": "pa_lie_sense",
+      "level": 3
+     },
+     {
+      "id": "pa_distract",
+      "level": 3
+     },
+     {
+      "id": "pa_omen",
+      "level": 2
+     }
+    ],
+    "note": "โตจาก sp_nine_fox_cub ผูกพัน 5 ผ่านเรื่อง cs_ninth_tail ([16-companion-stories.md](16-companion-stories.md))",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:136"
+   },
+   {
+    "id": "sp_leviathan_calf",
+    "name": "ลูกเลวีอาธาน",
+    "tier": "L",
+    "category": "วิเศษ",
+    "home": "NR-04 NR-11",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "NR-04",
+      "NR-11"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     500,
+     700
+    ],
+    "abilities": [
+     {
+      "id": "pa_swim_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_intimidate",
+      "level": 3
+     },
+     {
+      "id": "pa_weather_sense",
+      "level": 3
+     }
+    ],
+    "note": "ผูกธาลาสซา (PL-04)",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:137"
+   },
+   {
+    "id": "sp_sage_tortoise",
+    "name": "เต่าปราชญ์พันปี",
+    "tier": "L",
+    "category": "วิญญาณ",
+    "home": "SH-13 SV-07",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SH-13",
+      "SV-07"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     900,
+     1200
+    ],
+    "abilities": [
+     {
+      "id": "pa_wisdom_gaze",
+      "level": 3
+     },
+     {
+      "id": "pa_life_share",
+      "level": 3
+     },
+     {
+      "id": "pa_omen",
+      "level": 2
+     }
+    ],
+    "note": "เก็บบันทึกเหตุการณ์ตั้งแต่มหาล่มสลาย",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:138"
+   },
+   {
+    "id": "sp_primordial_slime",
+    "name": "สไลม์ปฐม",
+    "tier": "L",
+    "category": "วิเศษ",
+    "home": "SV-12 SV-18",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "SV-12",
+      "SV-18"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": null,
+    "abilities": [
+     {
+      "id": "pa_curse_eater",
+      "level": 3
+     },
+     {
+      "id": "pa_life_share",
+      "level": 3
+     },
+     {
+      "id": "pa_elemental_core",
+      "level": 3
+     }
+    ],
+    "note": "ชิ้นส่วนของมหาล่มสลาย",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:139"
+   },
+   {
+    "id": "sp_storm_roc",
+    "name": "รอกพายุ",
+    "tier": "L",
+    "category": "นก",
+    "home": "AZ-03",
+    "homeRefs": {
+     "events": [],
+     "countries": [
+      "AZ-03"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "lifespan": [
+     300,
+     400
+    ],
+    "abilities": [
+     {
+      "id": "pa_fly_mount",
+      "level": 3
+     },
+     {
+      "id": "pa_shock_touch",
+      "level": 3
+     },
+     {
+      "id": "pa_keen_eyes",
+      "level": 3
+     }
+    ],
+    "note": "ผูกพายุไร้ทิศ ถ้าเจ้าของล้ม (DR-06) รอกคลั่ง",
+    "std": true,
+    "src": "docs/systems/character/15-companion-species.md:140"
+   },
+   {
+    "id": "sp_slime_lover",
+    "name": "สไลม์ผู้ตามจีบ",
+    "tier": "U",
+    "category": "คำสาป",
+    "home": "ผู้ที่มี c_slimelove",
+    "homeRefs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "c_slimelove"
+     ]
+    },
+    "lifespan": null,
+    "abilities": [
+     {
+      "id": "pa_bright_mood",
+      "level": 2
+     },
+     {
+      "id": "pa_lick_heal",
+      "level": 1
+     },
+     {
+      "id": "pa_curse_eater",
+      "level": 1
+     }
+    ],
+    "note": "ผูกพันเริ่มต้นที่ 3 และไม่สามารถปล่อยได้จนกว่าคำสาปจะหายไป (ไม่ใช่ชนิดมาตรฐานในตาราง 15)",
+    "std": false,
+    "src": "docs/systems/character/17-companion-support.md:58"
+   }
+  ],
+  "stories": [
+   {
+    "id": "cs_child_rescue",
+    "name": "สัตว์บาดเจ็บข้างทาง",
+    "group": "all",
+    "cond": "อายุ 5 ถึง 14",
+    "condCond": [
+     {
+      "k": "age",
+      "min": 5,
+      "max": 14
+     }
+    ],
+    "weight": 10,
+    "species": [
+     "sp_dog",
+     "sp_cat",
+     "sp_field_fox",
+     "sp_owl",
+     "sp_hawk",
+     "sp_wolf_pup"
+    ],
+    "speciesText": "สุ่ม C หรือ U เบา ๆ (sp_dog sp_cat sp_field_fox sp_owl sp_hawk sp_wolf_pup)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "แบ่งอาหารและรักษา: ได้คู่หู ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "เก็บไว้ให้ผู้ใหญ่ดูแล: ผู้ใหญ่รับไป ได้ความเมตตา +5"
+     },
+     {
+      "key": "c",
+      "text": "เดินผ่านไป: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มี",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_child_rescue",
+      "sp_dog",
+      "sp_cat",
+      "sp_field_fox",
+      "sp_owl",
+      "sp_hawk",
+      "sp_wolf_pup"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:11"
+   },
+   {
+    "id": "cs_orphan_of_war",
+    "name": "ผู้รอดจากสนามรบ",
+    "group": "all",
+    "cond": "ถิ่นมีธงสงคราม (war)",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "unknown",
+      "id": "war"
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_war_dog",
+     "sp_sheepdog"
+    ],
+    "speciesText": "sp_war_dog หรือ sp_sheepdog ลูกสุนัข",
+    "choices": [
+     {
+      "key": "a",
+      "text": "พากลับบ้าน: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "มอบให้กองทหาร: ได้ชื่อเสียงเล็กน้อย"
+     }
+    ],
+    "cutWhen": "สงครามจบ",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "war",
+      "cs_orphan_of_war",
+      "sp_war_dog",
+      "sp_sheepdog"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:12"
+   },
+   {
+    "id": "cs_gift_from_ally",
+    "name": "ของขวัญจากผู้ไว้ใจ",
+    "group": "all",
+    "cond": "NPC ที่ไว้ใจ +4 ขึ้นไปและมีสัตว์",
+    "condCond": [
+     {
+      "k": "text",
+      "text": "NPC ที่ไว้ใจ +4 ขึ้นไปและมีสัตว์"
+     }
+    ],
+    "weight": 5,
+    "species": [],
+    "speciesText": "ตามที่ NPC มี (C ถึง R)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับ: ผูกพันเริ่มต้น 3 และเกิดบุญคุณ"
+     },
+     {
+      "key": "b",
+      "text": "ปฏิเสธ: ไม่ได้ แต่ไว้ใจ +1"
+     }
+    ],
+    "cutWhen": "NPC ตาย (เรื่องสืบทอด cs_inheritance)",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_gift_from_ally",
+      "cs_inheritance"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:13"
+   },
+   {
+    "id": "cs_inheritance",
+    "name": "มรดกสัตว์",
+    "group": "all",
+    "cond": "พ่อแม่ ครู หรือคู่หูของ NPC ตาย",
+    "condCond": [
+     {
+      "k": "text",
+      "text": "พ่อแม่ ครู หรือคู่หูของ NPC ตาย"
+     }
+    ],
+    "weight": 5,
+    "species": [],
+    "speciesText": "สัตว์ของผู้ตาย (C ถึง R)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับเลี้ยง: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ยกให้ผู้อื่น: ได้เงินเล็กน้อย"
+     }
+    ],
+    "cutWhen": "ผู้ตายไม่มีสัตว์",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_inheritance"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:14"
+   },
+   {
+    "id": "cs_market_cage",
+    "name": "กรงในตลาด",
+    "group": "all",
+    "cond": "พบพ่อค้าสัตว์ในเมืองใหญ่",
+    "condCond": [
+     {
+      "k": "text",
+      "text": "พบพ่อค้าสัตว์ในเมืองใหญ่"
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_parrot",
+     "sp_monkey",
+     "sp_ferret",
+     "sp_raven",
+     "sp_mule_strong"
+    ],
+    "speciesText": "สัตว์ C หรือ U (sp_parrot sp_monkey sp_ferret sp_raven sp_mule_strong)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ซื้อด้วยเงิน 20 ถึง 80: ผูกพัน 1"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อยสัตว์ออกจากกรง: ผูกพัน 3 และเกิดความแค้นกับพ่อค้า"
+     },
+     {
+      "key": "c",
+      "text": "เมินเฉย: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มีตลาดสัตว์ในประเทศ (AL-06 AL-08 ห้ามขายสัตว์ป่า)",
+    "refs": {
+     "events": [],
+     "countries": [
+      "AL-06",
+      "AL-08"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_market_cage",
+      "sp_parrot",
+      "sp_monkey",
+      "sp_ferret",
+      "sp_raven",
+      "sp_mule_strong"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:15"
+   },
+   {
+    "id": "cs_stray_in_storm",
+    "name": "เพื่อนในพายุ",
+    "group": "all",
+    "cond": "เหตุการณ์ภัยพิบัติท้องถิ่น",
+    "condCond": [
+     {
+      "k": "text",
+      "text": "เหตุการณ์ภัยพิบัติท้องถิ่น"
+     }
+    ],
+    "weight": 4,
+    "species": [
+     "sp_dog",
+     "sp_cat",
+     "sp_pigeon"
+    ],
+    "speciesText": "sp_dog sp_cat sp_pigeon",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ช่วยสัตว์ระหว่างภัย: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อยไป: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ภัยไม่เกิด",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_stray_in_storm",
+      "sp_dog",
+      "sp_cat",
+      "sp_pigeon"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:16"
+   },
+   {
+    "id": "cs_shepherd_dog",
+    "name": "ลูกสุนัขต้อนแกะ",
+    "group": "A",
+    "cond": "อาชีพ shepherd farm_owner",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "shepherd"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "farm_owner"
+       }
+      ]
+     }
+    ],
+    "weight": 8,
+    "species": [
+     "sp_sheepdog"
+    ],
+    "speciesText": "sp_sheepdog",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ฝึกตั้งแต่ลูก: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ซื้อตัวโต: ผูกพัน 1 แต่ความสามารถสูงกว่า"
+     }
+    ],
+    "cutWhen": "ไม่มีฝูงสัตว์",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_shepherd_dog",
+      "sp_sheepdog"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:22"
+   },
+   {
+    "id": "cs_hunter_cub",
+    "name": "ลูกสัตว์ของเหยื่อ",
+    "group": "A",
+    "cond": "อาชีพ hunter",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "hunter"
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_wolf_pup",
+     "sp_bear_cub",
+     "sp_field_fox",
+     "sp_snow_fox"
+    ],
+    "speciesText": "sp_wolf_pup sp_bear_cub sp_field_fox sp_snow_fox",
+    "choices": [
+     {
+      "key": "a",
+      "text": "เลี้ยงลูกที่แม่ตาย: ผูกพัน 2 แต่ได้ความรู้สึกผิด"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อยกลับป่า: ได้ความเมตตา +5 พรเล็ก"
+     },
+     {
+      "key": "c",
+      "text": "ขายให้พ่อค้าสัตว์: ได้เงิน 30"
+     }
+    ],
+    "cutWhen": "ไม่มีป่า",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_hunter_cub",
+      "sp_wolf_pup",
+      "sp_bear_cub",
+      "sp_field_fox",
+      "sp_snow_fox"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:23"
+   },
+   {
+    "id": "cs_farm_helper",
+    "name": "ผู้ช่วยในฟาร์ม",
+    "group": "A",
+    "cond": "อาชีพ farmer farm_owner vegetable_gardener",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "farmer"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "farm_owner"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "vegetable_gardener"
+       }
+      ]
+     }
+    ],
+    "weight": 7,
+    "species": [
+     "sp_ox",
+     "sp_pig",
+     "sp_chicken",
+     "sp_bee_hive",
+     "sp_cat"
+    ],
+    "speciesText": "sp_ox sp_pig sp_chicken sp_bee_hive sp_cat",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับมาเป็นคู่หูประจำฟาร์ม: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ใช้เป็นสัตว์ทำงานเฉย ๆ: ไม่เป็นคู่หู"
+     }
+    ],
+    "cutWhen": "ฟาร์มถูกทำลาย (CT-08 DR-04)",
+    "refs": {
+     "events": [
+      "CT-08",
+      "DR-04"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_farm_helper",
+      "sp_ox",
+      "sp_pig",
+      "sp_chicken",
+      "sp_bee_hive",
+      "sp_cat"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:24"
+   },
+   {
+    "id": "cs_tea_house_cat",
+    "name": "แมวนั่งหน้าร้าน",
+    "group": "A",
+    "cond": "อาชีพ tea_house innkeeper bookshop",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "tea_house"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "innkeeper"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "bookshop"
+       }
+      ]
+     }
+    ],
+    "weight": 7,
+    "species": [
+     "sp_tea_cat",
+     "sp_cat"
+    ],
+    "speciesText": "sp_tea_cat sp_cat",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ให้ที่อยู่: ผูกพัน 3 (ชีวิตช้า)"
+     },
+     {
+      "key": "b",
+      "text": "ไล่ไป: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มีร้าน",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_tea_house_cat",
+      "sp_tea_cat",
+      "sp_cat"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:25"
+   },
+   {
+    "id": "cs_caravan_camel",
+    "name": "อูฐของกองคาราวาน",
+    "group": "A",
+    "cond": "อาชีพ caravan_guard courier explorer",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "caravan_guard"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "courier"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "explorer"
+       }
+      ]
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_camel",
+     "sp_mule_strong",
+     "sp_donkey"
+    ],
+    "speciesText": "sp_camel sp_mule_strong sp_donkey",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ผูกพันกับสัตว์ตัวที่ทนที่สุด: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ขายที่ปลายทาง: ได้เงิน 40"
+     }
+    ],
+    "cutWhen": "ไม่มีการเดินทาง",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_caravan_camel",
+      "sp_camel",
+      "sp_mule_strong",
+      "sp_donkey"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:26"
+   },
+   {
+    "id": "cs_harbor_gull",
+    "name": "นกที่ท่าเรือ",
+    "group": "A",
+    "cond": "อาชีพ fisher ferryman lighthouse_keeper sailor",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "fisher"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "ferryman"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "lighthouse_keeper"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "sailor"
+       }
+      ]
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_gull",
+     "sp_otter",
+     "sp_parrot"
+    ],
+    "speciesText": "sp_gull sp_otter sp_parrot",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ให้อาหาร: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ไล่ไป: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มีแหล่งน้ำ",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_harbor_gull",
+      "sp_gull",
+      "sp_otter",
+      "sp_parrot"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:27"
+   },
+   {
+    "id": "cs_graveyard_hound",
+    "name": "สุนัขในสุสาน",
+    "group": "A",
+    "cond": "อาชีพ gravekeeper",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "gravekeeper"
+     }
+    ],
+    "weight": 7,
+    "species": [
+     "sp_bone_hound",
+     "sp_cat",
+     "sp_crow"
+    ],
+    "speciesText": "sp_bone_hound sp_cat sp_crow",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับเข้าบ้าน: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ส่งกลับสุสาน: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มีสุสาน",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_graveyard_hound",
+      "sp_bone_hound",
+      "sp_cat",
+      "sp_crow"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:28"
+   },
+   {
+    "id": "cs_cavalry_horse",
+    "name": "ม้าศึกของผู้ล่วงลับ",
+    "group": "A",
+    "cond": "อาชีพ knight mercenary",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "knight"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "mercenary"
+       }
+      ]
+     }
+    ],
+    "weight": 5,
+    "species": [
+     "sp_war_horse"
+    ],
+    "speciesText": "sp_war_horse",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับมาเป็นของตน: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "คืนครอบครัวผู้ตาย: ได้ความไว้ใจครอบครัว +2"
+     }
+    ],
+    "cutWhen": "ไม่มีสงคราม",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_cavalry_horse",
+      "sp_war_horse"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:29"
+   },
+   {
+    "id": "cs_bounty_scent",
+    "name": "สุนัขตามรอย",
+    "group": "A",
+    "cond": "อาชีพ bounty_hunter hunter",
+    "condCond": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "bounty_hunter"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "hunter"
+       }
+      ]
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_dog",
+     "sp_wolf",
+     "sp_ash_wolf"
+    ],
+    "speciesText": "sp_dog sp_wolf sp_ash_wolf",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ฝึกสุนัขที่ล่าได้ดี: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ซื้อสุนัขที่ผ่านงานมา: ผูกพัน 1"
+     }
+    ],
+    "cutWhen": "ไม่มีค่าหัว",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_bounty_scent",
+      "sp_dog",
+      "sp_wolf",
+      "sp_ash_wolf"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:30"
+   },
+   {
+    "id": "cs_tamer_trial",
+    "name": "การทดสอบของนักฝึก",
+    "group": "S",
+    "cond": "อาชีพ tamer",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "tamer"
+     }
+    ],
+    "weight": 10,
+    "species": [
+     "sp_wolf",
+     "sp_panther",
+     "sp_stag",
+     "sp_silver_wolf",
+     "sp_snow_leopard"
+    ],
+    "speciesText": "สัตว์ U หรือ R ตามถิ่น (sp_wolf sp_panther sp_stag sp_silver_wolf sp_snow_leopard)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ผ่านการทดสอบด้วยความอดทน: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ใช้กำลัง: ผูกพัน 1 สัตว์เปลี่ยนใจได้ง่าย"
+     },
+     {
+      "key": "c",
+      "text": "ล้มเหลว: บาดเจ็บ −20 hp"
+     }
+    ],
+    "cutWhen": "ไม่มีถิ่นที่ฝึก",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_tamer_trial",
+      "sp_wolf",
+      "sp_panther",
+      "sp_stag",
+      "sp_silver_wolf",
+      "sp_snow_leopard"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:36"
+   },
+   {
+    "id": "cs_druid_grove",
+    "name": "ป่าเลือกสัตว์",
+    "group": "S",
+    "cond": "อาชีพ druid",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "druid"
+     }
+    ],
+    "weight": 10,
+    "species": [
+     "sp_moon_deer",
+     "sp_silver_wolf",
+     "sp_stone_owl",
+     "sp_fairy_moth"
+    ],
+    "speciesText": "sp_moon_deer sp_silver_wolf sp_stone_owl sp_fairy_moth",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ผ่านพิธีในป่า: สัตว์วิญญาณเลือก ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ปฏิเสธพิธี: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ป่าถูกทำลาย (BIO-02)",
+    "refs": {
+     "events": [
+      "BIO-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_druid_grove",
+      "sp_moon_deer",
+      "sp_silver_wolf",
+      "sp_stone_owl",
+      "sp_fairy_moth"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:37"
+   },
+   {
+    "id": "cs_vet_patient",
+    "name": "ผู้ป่วยที่ไม่ยอมจากไป",
+    "group": "S",
+    "cond": "อาชีพ veterinarian",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "veterinarian"
+     }
+    ],
+    "weight": 9,
+    "species": [],
+    "speciesText": "สัตว์ที่รักษา (C ถึง R)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รักษาหาย: สัตว์ไม่ยอมไป ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ส่งกลับเจ้าของ: ได้ชื่อเสียงแพทย์สัตว์"
+     }
+    ],
+    "cutWhen": "ไม่มีคลินิก",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_vet_patient"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:38"
+   },
+   {
+    "id": "cs_beast_hunter_spare",
+    "name": "ลูกอสูรที่ถูกไว้ชีวิต",
+    "group": "S",
+    "cond": "อาชีพ beast_hunter",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "beast_hunter"
+     }
+    ],
+    "weight": 8,
+    "species": [
+     "sp_wyvern_young",
+     "sp_griffon_chick",
+     "sp_frost_wolf"
+    ],
+    "speciesText": "sp_wyvern_young sp_griffon_chick sp_frost_wolf",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ไว้ชีวิตและเลี้ยง: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ฆ่า: ได้เงินและชื่อเสียง แต่ได้ nc_dragon_grief อ่อน ๆ (ถ้าเป็นสัตว์มังกร)"
+     }
+    ],
+    "cutWhen": "ไม่มีอสูร",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "nc_dragon_grief",
+      "cs_beast_hunter_spare",
+      "sp_wyvern_young",
+      "sp_griffon_chick",
+      "sp_frost_wolf"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:39"
+   },
+   {
+    "id": "cs_dragonknight_bond",
+    "name": "ลูกมังกรเลือกผู้ขี่",
+    "group": "S",
+    "cond": "อาชีพ dragonknight และผู้ถือ nb_mark_*",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "dragonknight"
+     },
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_mark_"
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_lost_dragonling",
+     "sp_wyvern_young"
+    ],
+    "speciesText": "sp_lost_dragonling หรือ sp_wyvern_young",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ผ่านพิธีผูกพัน: สัตว์ผูกพันกับผู้ขี่ ผูกพัน 4"
+     },
+     {
+      "key": "b",
+      "text": "เลื่อนพิธี: ได้ในปีถัดไป"
+     }
+    ],
+    "cutWhen": "DR-01 ทวีปมังกรหาย (เรื่องสืบทอด cs_sixteenth_egg ถ้า DR-03)",
+    "refs": {
+     "events": [
+      "DR-01",
+      "DR-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "nb_mark_*",
+      "cs_dragonknight_bond",
+      "nb_mark_",
+      "sp_lost_dragonling",
+      "sp_wyvern_young",
+      "cs_sixteenth_egg"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:40"
+   },
+   {
+    "id": "cs_naga_egg",
+    "name": "ไข่ที่ผู้เฝ้าส่งต่อ",
+    "group": "S",
+    "cond": "อาชีพ naga_egg_warden (ธง naga_egg)",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "naga_egg_warden"
+     },
+     {
+      "k": "has",
+      "kind": "unknown",
+      "id": "naga_egg"
+     }
+    ],
+    "weight": 10,
+    "species": [
+     "sp_naga_hatchling"
+    ],
+    "speciesText": "sp_naga_hatchling",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ฟักไข่ภายใต้การดูแลของ NR07-1: ได้นาคาน้อย ผูกพัน 4"
+     },
+     {
+      "key": "b",
+      "text": "ไข่ถูกขโมย: ไม่ได้ เกิดเส้นเรื่องตามล่า"
+     }
+    ],
+    "cutWhen": "NR-07 ถูกทำลายหรือไข่ไม่เกิด (BIO-08)",
+    "refs": {
+     "events": [
+      "BIO-08"
+     ],
+     "countries": [
+      "NR-07"
+     ],
+     "nodes": [],
+     "ids": [
+      "naga_egg",
+      "cs_naga_egg",
+      "sp_naga_hatchling"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:41"
+   },
+   {
+    "id": "cs_beastking_court",
+    "name": "ฝูงเชื่อฟัง",
+    "group": "S",
+    "cond": "อาชีพ beastking",
+    "condCond": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "beastking"
+     }
+    ],
+    "weight": 10,
+    "species": [],
+    "speciesText": "สุ่ม 1 ตัวระดับ R ถึง E ต่อปี",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับสัตว์เข้าฝูง: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ปฏิเสธสัตว์ที่ไม่เหมาะ: ฝูงพอใจ"
+     }
+    ],
+    "cutWhen": "ผู้ถือสละอาชีพ",
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_beastking_court"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:42"
+   },
+   {
+    "id": "cs_sand_worm_pup",
+    "name": "ลูกหนอนทรายจากชนใต้ทราย",
+    "group": "world",
+    "cond": "ถิ่น SH-12 SH-01 และไว้ใจ NPC ในประเทศ +3",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-12",
+       "SH-01"
+      ]
+     }
+    ],
+    "weight": 5,
+    "species": [
+     "sp_sand_worm_pup"
+    ],
+    "speciesText": "sp_sand_worm_pup",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับจาก SH12-2 ไมรา: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "ปฏิเสธ: ไว้ใจ −1"
+     }
+    ],
+    "cutWhen": "SH-12 ถูกกลืน (GI-07)",
+    "refs": {
+     "events": [
+      "GI-07"
+     ],
+     "countries": [
+      "SH-12",
+      "SH-01"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_sand_worm_pup",
+      "sp_sand_worm_pup"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:48"
+   },
+   {
+    "id": "cs_whale_calf",
+    "name": "ลูกวาฬที่หลงฝูง",
+    "group": "world",
+    "cond": "ถิ่น NR-16 NR-10 และไว้ใจ NPC +3",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "NR-16",
+       "NR-10"
+      ]
+     }
+    ],
+    "weight": 4,
+    "species": [
+     "sp_whale_calf"
+    ],
+    "speciesText": "sp_whale_calf",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับเลี้ยงที่ชายฝั่ง: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ส่งกลับฝูง: ได้พรเล็กจากชาวบ้าน"
+     }
+    ],
+    "cutWhen": "CT-10 ฝูงอพยพไม่กลับ",
+    "refs": {
+     "events": [
+      "CT-10"
+     ],
+     "countries": [
+      "NR-16",
+      "NR-10"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_whale_calf",
+      "sp_whale_calf"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:49"
+   },
+   {
+    "id": "cs_lava_pup",
+    "name": "ลูกสัตว์ในหินร้อน",
+    "group": "world",
+    "cond": "ถิ่น KD-06 KD-02",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "KD-06",
+       "KD-02"
+      ]
+     }
+    ],
+    "weight": 5,
+    "species": [
+     "sp_lava_toad",
+     "sp_ember_cat",
+     "sp_lava_hound"
+    ],
+    "speciesText": "sp_lava_toad sp_ember_cat sp_lava_hound",
+    "choices": [
+     {
+      "key": "a",
+      "text": "เก็บจากกองถ่านร้อน: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อยไว้: ไม่ได้"
+     }
+    ],
+    "cutWhen": "DR-04 ฤดูหนาวเถ้า (สัตว์ตาย)",
+    "refs": {
+     "events": [
+      "DR-04"
+     ],
+     "countries": [
+      "KD-06",
+      "KD-02"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_lava_pup",
+      "sp_lava_toad",
+      "sp_ember_cat",
+      "sp_lava_hound"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:50"
+   },
+   {
+    "id": "cs_cold_den",
+    "name": "โพรงใต้หิมะ",
+    "group": "world",
+    "cond": "ถิ่น KD-12",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "KD-12"
+      ]
+     }
+    ],
+    "weight": 5,
+    "species": [
+     "sp_snow_fox",
+     "sp_ice_hare",
+     "sp_frost_wolf",
+     "sp_snow_leopard"
+    ],
+    "speciesText": "sp_snow_fox sp_ice_hare sp_frost_wolf sp_snow_leopard",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับลูกสัตว์ที่ถูกทิ้ง: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อย: ไม่ได้"
+     }
+    ],
+    "cutWhen": "ไม่มี",
+    "refs": {
+     "events": [],
+     "countries": [
+      "KD-12"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_cold_den",
+      "sp_snow_fox",
+      "sp_ice_hare",
+      "sp_frost_wolf",
+      "sp_snow_leopard"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:51"
+   },
+   {
+    "id": "cs_fog_orphan",
+    "name": "ผู้รอดจากหมอก",
+    "group": "world",
+    "cond": "ถิ่นเนบูเลียหลัง FG-01",
+    "condCond": [
+     {
+      "k": "event",
+      "id": "FG-01",
+      "happened": true
+     }
+    ],
+    "weight": 6,
+    "species": [
+     "sp_mist_hound",
+     "sp_lantern_moth",
+     "sp_fog_wisp_cat"
+    ],
+    "speciesText": "sp_mist_hound sp_lantern_moth sp_fog_wisp_cat",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับสัตว์ที่รอดจากเมืองถูกกลืน: ผูกพัน 3"
+     },
+     {
+      "key": "b",
+      "text": "พาไปส่งขบวนหนีหมอก: ได้ความไว้ใจ NB14-1"
+     }
+    ],
+    "cutWhen": "FG-10 ปิดรอยแยก (สัตว์ชนิดหมอกบางตัวหายไป)",
+    "refs": {
+     "events": [
+      "FG-01",
+      "FG-10"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "cs_fog_orphan",
+      "sp_mist_hound",
+      "sp_lantern_moth",
+      "sp_fog_wisp_cat"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:52"
+   },
+   {
+    "id": "cs_mechanic_gift",
+    "name": "สุนัขกลที่ซ่อมเสร็จ",
+    "group": "world",
+    "cond": "ถิ่น MK-12 MK-10 และไว้ใจ NPC +3",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-12",
+       "MK-10"
+      ]
+     }
+    ],
+    "weight": 4,
+    "species": [
+     "sp_rust_dog"
+    ],
+    "speciesText": "sp_rust_dog",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับจาก MK12-1: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ซ่อมเอง: ผูกพัน 3 ต้องมี ns_gear_tune"
+     }
+    ],
+    "cutWhen": "MC-04 คืนไฟดับ (สัตว์ชำรุด)",
+    "refs": {
+     "events": [
+      "MC-04"
+     ],
+     "countries": [
+      "MK-12",
+      "MK-10"
+     ],
+     "nodes": [],
+     "ids": [
+      "ns_gear_tune",
+      "cs_mechanic_gift",
+      "sp_rust_dog"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:53"
+   },
+   {
+    "id": "cs_dream_moth",
+    "name": "แมลงที่ตามฝัน",
+    "group": "world",
+    "cond": "ถิ่น AL-14 และผู้ตีความฝัน",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-14"
+      ]
+     }
+    ],
+    "weight": 5,
+    "species": [
+     "sp_dream_moth"
+    ],
+    "speciesText": "sp_dream_moth",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับเลี้ยง: ผูกพัน 2"
+     },
+     {
+      "key": "b",
+      "text": "ปล่อย: ได้ฝันดีหนึ่งคืน"
+     }
+    ],
+    "cutWhen": "PL-05 อันดาร์ตื่นแล้วแมลงหาย",
+    "refs": {
+     "events": [
+      "PL-05"
+     ],
+     "countries": [
+      "AL-14"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_dream_moth",
+      "sp_dream_moth"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:54"
+   },
+   {
+    "id": "cs_unicorn_chooses",
+    "name": "ยูนิคอร์นเลือกผู้เลี้ยง",
+    "group": "world",
+    "cond": "ถิ่น SV-04 SV-05 kind ≥ 30",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "SV-04",
+       "SV-05"
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "trait",
+      "id": "kind"
+     }
+    ],
+    "weight": 2,
+    "species": [
+     "sp_unicorn"
+    ],
+    "speciesText": "sp_unicorn",
+    "choices": [
+     {
+      "key": "a",
+      "text": "รับ: ผูกพัน 4"
+     },
+     {
+      "key": "b",
+      "text": "ปฏิเสธ: ไม่ได้ ไม่เกิดอีก"
+     }
+    ],
+    "cutWhen": "kind ลดต่ำกว่า 20 หรือต้นไม้โลกตาย (BIO-02)",
+    "refs": {
+     "events": [
+      "BIO-02"
+     ],
+     "countries": [
+      "SV-04",
+      "SV-05"
+     ],
+     "nodes": [],
+     "ids": [
+      "kind",
+      "cs_unicorn_chooses",
+      "sp_unicorn"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:55"
+   },
+   {
+    "id": "cs_ninth_tail",
+    "name": "หางที่เก้า",
+    "group": "world",
+    "cond": "มี sp_nine_fox_cub ผูกพัน 5 และพากลับถิ่นเกิด (SV หรือ AL-23)",
+    "condCond": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-23"
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "companion",
+      "id": "sp_nine_fox_cub"
+     }
+    ],
+    "weight": 2,
+    "species": [
+     "sp_nine_tailed_fox"
+    ],
+    "speciesText": "sp_nine_tailed_fox (ตัวเดิมเติบโต)",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ปล่อยให้มันเข้าป่าหนึ่งฤดูตามเสียงเรียกของจิ้งจอกเฒ่า: กลับมาเป็นจิ้งจอกเก้าหาง ผูกพัน 5"
+     },
+     {
+      "key": "b",
+      "text": "รั้งไว้: ไม่เติบโต ผูกพัน −1 เรื่องเกิดอีกได้หลัง 10 ปี"
+     }
+    ],
+    "cutWhen": "สัตว์ตาย หรือต้นไม้โลกตาย (BIO-02) สำหรับลูกจากซิลวาเนล",
+    "refs": {
+     "events": [
+      "BIO-02"
+     ],
+     "countries": [
+      "AL-23"
+     ],
+     "nodes": [],
+     "ids": [
+      "cs_ninth_tail",
+      "sp_nine_fox_cub",
+      "sp_nine_tailed_fox"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:56"
+   },
+   {
+    "id": "cs_sixteenth_egg",
+    "name": "ไข่ใบที่สิบหก",
+    "group": "world",
+    "cond": "อยู่ใกล้ที่ตกของไข่ (DR-03)",
+    "condCond": [
+     {
+      "k": "event",
+      "id": "DR-03",
+      "happened": true
+     }
+    ],
+    "weight": 1,
+    "species": [
+     "sp_sixteenth_hatchling"
+    ],
+    "speciesText": "sp_sixteenth_hatchling",
+    "choices": [
+     {
+      "key": "a",
+      "text": "ฟักและเลี้ยง: ผูกพัน 3 มังกรทั้งสิบห้ารับรู้"
+     },
+     {
+      "key": "b",
+      "text": "ส่งต่อให้ผู้เฝ้ามังกร: ได้พร nb_mark_oran ระดับต่ำ"
+     }
+    ],
+    "cutWhen": "DR-03 ไม่เกิด",
+    "refs": {
+     "events": [
+      "DR-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "nb_mark_oran",
+      "cs_sixteenth_egg",
+      "sp_sixteenth_hatchling"
+     ]
+    },
+    "src": "docs/systems/character/16-companion-stories.md:57"
+   }
+  ],
+  "support": {
+   "skills": [
+    "ns_beast_speech",
+    "ns_pet_train",
+    "ns_pack_lead",
+    "ns_vet_firstaid",
+    "ns_bond_ritual",
+    "ns_hawking",
+    "ns_herd_whistle",
+    "ns_egg_hatch",
+    "ns_beast_sign",
+    "ns_pet_cook",
+    "ns_mount_craft",
+    "ns_companion_swap"
+   ],
+   "blessings": [
+    "nb_beast_whisper",
+    "nb_pet_luck",
+    "nb_loyal_eyes",
+    "nb_feral_scent",
+    "nb_bond_flame",
+    "nb_nest_keeper",
+    "nb_egg_warmth",
+    "nb_guardian_beast"
+   ],
+   "curses": [
+    "nc_pet_grief",
+    "nc_beast_fear",
+    "nc_pet_jinx",
+    "nc_allergic_fur",
+    "nc_bad_trainer",
+    "nc_hunted_for_beast"
+   ]
+  },
+  "traitsUsed": {
+   "use": [
+    "animal_lover",
+    "kind",
+    "patient",
+    "family",
+    "hospitable"
+   ],
+   "clash": [
+    "cold",
+    "bloodlust"
+   ],
+   "text": "นิสัยเดิมที่เสริมการเลี้ยงสัตว์ ใช้ทั้งหมดตามที่มีใน [../../_generated/character-catalog/traits.md](../../_generated/character-catalog/traits.md): animal_lover (รักสัตว์ → #beast_friend ผูกพันเร็ว) · kind · patient ([12-job-support.md](12-job-support.md)) · family · hospitable ที่ขัด: cold bloodlust (สัตว์ไม่ไว้ใจ)"
+  }
+ }
+}

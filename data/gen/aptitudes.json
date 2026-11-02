@@ -1,0 +1,2089 @@
+{
+ "version": "1972faa26a21",
+ "sources": [
+  "docs/_generated/character-catalog/aptitudes-skills.md",
+  "docs/systems/character/04-skill-effects.md",
+  "docs/systems/character/12-job-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": [
+  {
+   "id": "sword",
+   "name": "ดาบ",
+   "stat": "pow",
+   "tags": [
+    "combat",
+    "blade"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "sword_1",
+     "name": "ฟันพื้นฐาน",
+     "effect": "ความเสียหายดาบ +10%"
+    },
+    {
+     "level": 2,
+     "skill": "sword_2",
+     "name": "ดาบสายลมผ่าใบไม้",
+     "effect": "โจมตีซ้ำอีกครั้งในรอบเดียว 25%"
+    },
+    {
+     "level": 3,
+     "skill": "sword_3",
+     "name": "ดาบตัดเหล็กกล้า",
+     "effect": "ตัดเกราะ เพิกเฉยเกราะ 50%"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:11"
+  },
+  {
+   "id": "axe",
+   "name": "ขวาน",
+   "stat": "pow",
+   "tags": [
+    "combat",
+    "blade"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "axe_1",
+     "name": "จามขวาน",
+     "effect": "ทำลายโล่ได้"
+    },
+    {
+     "level": 2,
+     "skill": "axe_2",
+     "name": "ขวานพายุหมุน",
+     "effect": "โจมตีศัตรูทุกตัวรอบตัว"
+    },
+    {
+     "level": 3,
+     "skill": "axe_3",
+     "name": "ขวานผ่าภูผา",
+     "effect": "ทำลายสิ่งกีดขวางที่เป็นไม้หรือหิน"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:12"
+  },
+  {
+   "id": "spear",
+   "name": "หอก",
+   "stat": "pow",
+   "tags": [
+    "combat",
+    "pierce"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "spear_1",
+     "name": "แทงตรง",
+     "effect": "ระยะโจมตีเพิ่ม โจมตีก่อนศัตรูระยะประชิด"
+    },
+    {
+     "level": 2,
+     "skill": "spear_2",
+     "name": "หอกมังกรทะยาน",
+     "effect": "แทงทะลุศัตรูสองตัวเรียงกัน"
+    },
+    {
+     "level": 3,
+     "skill": "spear_3",
+     "name": "หอกเจาะสวรรค์",
+     "effect": "สังหารศัตรูตัวใหญ่ (เผ่ายักษ์ มังกร) ×1.5"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:13"
+  },
+  {
+   "id": "bow",
+   "name": "ธนู",
+   "stat": "spd",
+   "tags": [
+    "combat",
+    "ranged"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "bow_1",
+     "name": "ยิงแม่น",
+     "effect": "ยิงแม่น +10%"
+    },
+    {
+     "level": 2,
+     "skill": "bow_2",
+     "name": "ศรสามดอก",
+     "effect": "ยิงสามดอกในรอบเดียว"
+    },
+    {
+     "level": 3,
+     "skill": "bow_3",
+     "name": "ศรล่าดวงดาว",
+     "effect": "ยิงจุดตายโอกาส 30% ได้ความเสียหาย ×2"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:14"
+  },
+  {
+   "id": "dagger",
+   "name": "มีดสั้น",
+   "stat": "spd",
+   "tags": [
+    "combat",
+    "blade",
+    "stealth"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "dagger_1",
+     "name": "แทงข้างหลัง",
+     "effect": "โจมตีข้างหลัง ×2"
+    },
+    {
+     "level": 2,
+     "skill": "dagger_2",
+     "name": "มีดเงาคู่",
+     "effect": "โจมตีสองครั้งต่อรอบ"
+    },
+    {
+     "level": 3,
+     "skill": "dagger_3",
+     "name": "ร้อยรอยเชือดในพริบตา",
+     "effect": "สังหารทันที 20% ต่อศัตรูที่ไม่ทันระวัง"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:15"
+  },
+  {
+   "id": "unarmed",
+   "name": "มวยมือเปล่า",
+   "stat": "pow",
+   "tags": [
+    "combat",
+    "blunt"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "unarmed_1",
+     "name": "หมัดตรง",
+     "effect": "หมัดไม่ต้องใช้อาวุธ ความเสียหายเท่าอาวุธเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "unarmed_2",
+     "name": "หมัดพยัคฆ์",
+     "effect": "ทำให้ศัตรูมึน 1 ตา 20%"
+    },
+    {
+     "level": 3,
+     "skill": "unarmed_3",
+     "name": "หมัดทลายภูเขา",
+     "effect": "ทลายเกราะหินและไม้ได้ด้วยมือเปล่า"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:16"
+  },
+  {
+   "id": "shield",
+   "name": "โล่",
+   "stat": "vit",
+   "tags": [
+    "combat",
+    "guard"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "shield_1",
+     "name": "ตั้งโล่",
+     "effect": "ลดความเสียหายที่รับ 10%"
+    },
+    {
+     "level": 2,
+     "skill": "shield_2",
+     "name": "กำแพงเหล็ก",
+     "effect": "บล็อกโจมตีระยะไกลได้ 30%"
+    },
+    {
+     "level": 3,
+     "skill": "shield_3",
+     "name": "ป้อมปราการมนุษย์",
+     "effect": "ปกป้องผู้อื่นข้างตัว รับความเสียหายแทน"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:17"
+  },
+  {
+   "id": "hammer",
+   "name": "ค้อน",
+   "stat": "pow",
+   "tags": [
+    "combat",
+    "blunt"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "hammer_1",
+     "name": "ทุบหนัก",
+     "effect": "ความเสียหายต่อเกราะ ×1.3"
+    },
+    {
+     "level": 2,
+     "skill": "hammer_2",
+     "name": "ค้อนสะเทือนพื้น",
+     "effect": "สั่นพื้น ทำให้ศัตรูหน้าล้ม 20%"
+    },
+    {
+     "level": 3,
+     "skill": "hammer_3",
+     "name": "ค้อนฟ้าผ่า",
+     "effect": "ทุบเปลี่ยนรูปอาวุธและโล่ศัตรู"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:18"
+  },
+  {
+   "id": "whip",
+   "name": "แส้",
+   "stat": "spd",
+   "tags": [
+    "combat"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "whip_1",
+     "name": "สะบัดแส้",
+     "effect": "ดึงอาวุธ หรือกระชากศัตรูเข้ามา"
+    },
+    {
+     "level": 2,
+     "skill": "whip_2",
+     "name": "แส้พันธนาการ",
+     "effect": "มัดศัตรูหนึ่งตัวไว้ 2 ตา"
+    },
+    {
+     "level": 3,
+     "skill": "whip_3",
+     "name": "แส้อสรพิษพันตัว",
+     "effect": "พันธนาการหลายตัว ทำให้ชะงัก"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:19"
+  },
+  {
+   "id": "sling",
+   "name": "หนังสติ๊ก",
+   "stat": "luk",
+   "tags": [
+    "combat",
+    "ranged",
+    "blunt"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "sling_1",
+     "name": "ยิงก้อนหิน",
+     "effect": "ยิงไกลและเงียบ"
+    },
+    {
+     "level": 2,
+     "skill": "sling_2",
+     "name": "กระสุนเด้งสามทอด",
+     "effect": "กระสุนเด้ง โจมตีสองเป้าหมาย"
+    },
+    {
+     "level": 3,
+     "skill": "sling_3",
+     "name": "หินพิฆาตยักษ์",
+     "effect": "ยิงทะลุเกราะไม้ ฆ่าตัวใหญ่ด้วยหินเดียว (ผ่าน luk)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:20"
+  },
+  {
+   "id": "mounted",
+   "name": "ขี่สัตว์",
+   "stat": "spd",
+   "tags": [
+    "combat",
+    "ride"
+   ],
+   "group": "combat",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "mounted_1",
+     "name": "ขี่ม้าเป็น",
+     "effect": "ขี่ม้าและสัตว์ใหญ่ได้ ความเร็วเดินทาง +30%"
+    },
+    {
+     "level": 2,
+     "skill": "mounted_2",
+     "name": "ทะยานกลางสนามรบ",
+     "effect": "พุ่งชนศัตรู ความเสียหาย ×1.5 ในรอบแรก"
+    },
+    {
+     "level": 3,
+     "skill": "mounted_3",
+     "name": "ผู้ควบคุมอาชาสวรรค์",
+     "effect": "ขี่สัตว์วิเศษ (ไวเวิร์น หมาป่าเงา) เดินทางข้ามภูมิประเทศได้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:21"
+  },
+  {
+   "id": "fire",
+   "name": "เวทไฟ",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "fire"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "fire_1",
+     "name": "ลูกไฟ",
+     "effect": "ลูกไฟ จุดไฟได้"
+    },
+    {
+     "level": 2,
+     "skill": "fire_2",
+     "name": "กำแพงเพลิง",
+     "effect": "กำแพงเพลิง กั้นทางศัตรู"
+    },
+    {
+     "level": 3,
+     "skill": "fire_3",
+     "name": "อัคคีล้างโลก",
+     "effect": "ไฟลามพื้นที่กว้าง ความเสียหาย ×2 ต่อพื้นที่"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:22"
+  },
+  {
+   "id": "water",
+   "name": "เวทน้ำ",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "water"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "water_1",
+     "name": "ลูกศรน้ำ",
+     "effect": "ทำให้น้ำสะอาด ดับไฟเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "water_2",
+     "name": "คลื่นซัด",
+     "effect": "คลื่นซัดศัตรูถอยหลัง"
+    },
+    {
+     "level": 3,
+     "skill": "water_3",
+     "name": "มหาสมุทรคลั่ง",
+     "effect": "ควบคุมน้ำทั้งบ่อหรือลำธาร"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:23"
+  },
+  {
+   "id": "wind",
+   "name": "เวทลม",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "wind"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "wind_1",
+     "name": "ใบมีดลม",
+     "effect": "ผลักลมเบา ๆ ชะลอลูกธนูศัตรู"
+    },
+    {
+     "level": 2,
+     "skill": "wind_2",
+     "name": "พายุหมุน",
+     "effect": "พายุหมุน ลอยตัวได้สั้น ๆ"
+    },
+    {
+     "level": 3,
+     "skill": "wind_3",
+     "name": "ไต้ฝุ่นแห่งเทพ",
+     "effect": "ไต้ฝุ่น ขับไล่เรือและค่ายศัตรูในรัศมีไกล"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:24"
+  },
+  {
+   "id": "earth",
+   "name": "เวทดิน",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "earth",
+    "blunt"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "earth_1",
+     "name": "ก้อนหินพุ่ง",
+     "effect": "ก้อนหินพุ่งใส่ศัตรู"
+    },
+    {
+     "level": 2,
+     "skill": "earth_2",
+     "name": "หนามดิน",
+     "effect": "หนามดิน สร้างกำแพงหินกั้นทาง"
+    },
+    {
+     "level": 3,
+     "skill": "earth_3",
+     "name": "แผ่นดินแยก",
+     "effect": "แผ่นดินแยก ทำให้ศัตรูล้มพื้นที่กว้าง"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:25"
+  },
+  {
+   "id": "ice",
+   "name": "เวทน้ำแข็ง",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "ice"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "ice_1",
+     "name": "หอกน้ำแข็ง",
+     "effect": "หอกน้ำแข็ง ชะลอศัตรู"
+    },
+    {
+     "level": 2,
+     "skill": "ice_2",
+     "name": "ทุ่งเยือกแข็ง",
+     "effect": "แช่แข็งพื้นที่ ศัตรูไถล"
+    },
+    {
+     "level": 3,
+     "skill": "ice_3",
+     "name": "ยุคน้ำแข็งนิรันดร์",
+     "effect": "ยุคน้ำแข็งชั่วคราว ลดอุณหภูมิในเมือง"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:26"
+  },
+  {
+   "id": "lightning",
+   "name": "เวทสายฟ้า",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "lightning"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "lightning_1",
+     "name": "ประกายไฟฟ้า",
+     "effect": "ประกายไฟฟ้า ช็อตศัตรู"
+    },
+    {
+     "level": 2,
+     "skill": "lightning_2",
+     "name": "โซ่สายฟ้า",
+     "effect": "โซ่สายฟ้าข้ามศัตรูสามตัว"
+    },
+    {
+     "level": 3,
+     "skill": "lightning_3",
+     "name": "ทัณฑ์อัสนีบาต",
+     "effect": "อัสนีบาตลงจากฟ้า ความเสียหาย ×3 ต่อเป้าหมายเดียว"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:27"
+  },
+  {
+   "id": "light",
+   "name": "เวทแสง",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "light",
+    "holy"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "light_1",
+     "name": "แสงส่องทาง",
+     "effect": "ส่องที่มืด ไล่ผีเบา ๆ"
+    },
+    {
+     "level": 2,
+     "skill": "light_2",
+     "name": "ศรแสงศักดิ์สิทธิ์",
+     "effect": "ศรแสง ความเสียหาย ×1.5 ต่อผู้ตาย"
+    },
+    {
+     "level": 3,
+     "skill": "light_3",
+     "name": "ตะวันพิพากษา",
+     "effect": "ตะวันพิพากษา ทำลายผีและปีศาจในรัศมี"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:28"
+  },
+  {
+   "id": "dark",
+   "name": "เวทมืด",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "dark"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "dark_1",
+     "name": "ลูกบอลเงา",
+     "effect": "ลูกบอลเงา มองเห็นในที่มืด"
+    },
+    {
+     "level": 2,
+     "skill": "dark_2",
+     "name": "ม่านราตรี",
+     "effect": "ม่านราตรี ซ่อนกลุ่มจากสายตา"
+    },
+    {
+     "level": 3,
+     "skill": "dark_3",
+     "name": "สุริยคราสนิรันดร์",
+     "effect": "สุริยคราส ดับแสงทั้งเมืองชั่วคราว"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:29"
+  },
+  {
+   "id": "necro",
+   "name": "เนโครแมนซี",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "dark",
+    "necro"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "necro_1",
+     "name": "ปลุกโครงกระดูก",
+     "effect": "ปลุกโครงกระดูกหนึ่งตัวสู้ให้"
+    },
+    {
+     "level": 2,
+     "skill": "necro_2",
+     "name": "กองทัพผีดิบ",
+     "effect": "กองทัพผีดิบ ควบคุมได้หกตัว"
+    },
+    {
+     "level": 3,
+     "skill": "necro_3",
+     "name": "ราชันย์แห่งความตาย",
+     "effect": "ราชันย์แห่งความตาย ควบคุมผู้ตายที่ไม่ใช่เผ่าเดียวกัน"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:30"
+  },
+  {
+   "id": "blood",
+   "name": "เวทโลหิต",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "blood",
+    "dark"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "blood_1",
+     "name": "ดูดเลือด",
+     "effect": "ดูดเลือดศัตรูฟื้นพลัง"
+    },
+    {
+     "level": 2,
+     "skill": "blood_2",
+     "name": "หอกโลหิต",
+     "effect": "หอกโลหิต แลกพลังชีวิตเป็นความเสียหาย"
+    },
+    {
+     "level": 3,
+     "skill": "blood_3",
+     "name": "ทะเลเลือด",
+     "effect": "ทะเลเลือด ศัตรูทุกตัวในพื้นที่เสียเลือดทุกตา"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:31"
+  },
+  {
+   "id": "illusion",
+   "name": "เวทมายา",
+   "stat": "int",
+   "tags": [
+    "magic",
+    "illusion"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "illusion_1",
+     "name": "ภาพลวงตา",
+     "effect": "ภาพลวงตา ล่อให้ศัตรูหลงทิศ"
+    },
+    {
+     "level": 2,
+     "skill": "illusion_2",
+     "name": "ร่างแยกมายา",
+     "effect": "ร่างแยกมายา ศัตรูโจมตีผิดตัว 40%"
+    },
+    {
+     "level": 3,
+     "skill": "illusion_3",
+     "name": "โลกมายาไร้ทางออก",
+     "effect": "โลกมายา ศัตรูติดในภาพลวงจนกว่าจะแก้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:32"
+  },
+  {
+   "id": "summon",
+   "name": "อัญเชิญ",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "summon"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "summon_1",
+     "name": "เรียกภูตน้อย",
+     "effect": "เรียกภูตเล็กหนึ่งตัว"
+    },
+    {
+     "level": 2,
+     "skill": "summon_2",
+     "name": "สัญญาภูตธาตุ",
+     "effect": "สัญญากับภูตธาตุ เรียกเมื่อต้องการ"
+    },
+    {
+     "level": 3,
+     "skill": "summon_3",
+     "name": "อัญเชิญเทพอสูร",
+     "effect": "อัญเชิญเทพอสูร ทำศึกครั้งเดียวต่อปี"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:33"
+  },
+  {
+   "id": "healing",
+   "name": "เวทรักษา",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "heal",
+    "holy"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "healing_1",
+     "name": "รักษาแผล",
+     "effect": "รักษาแผลเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "healing_2",
+     "name": "ฟื้นฟูหมู่",
+     "effect": "ฟื้นฟูหมู่ รักษาทั้งกลุ่ม"
+    },
+    {
+     "level": 3,
+     "skill": "healing_3",
+     "name": "ชุบชีวิต",
+     "effect": "ชุบชีวิต (ผู้ที่เพิ่งตายภายในวัน) ใช้ได้ครั้งเดียวต่อปี"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:34"
+  },
+  {
+   "id": "rune",
+   "name": "อักษรรูน",
+   "stat": "int",
+   "tags": [
+    "magic",
+    "rune"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "rune_1",
+     "name": "สลักรูนพื้นฐาน",
+     "effect": "สลักรูนป้องกันบนของ"
+    },
+    {
+     "level": 2,
+     "skill": "rune_2",
+     "name": "รูนป้องกัน",
+     "effect": "รูนป้องกันเมือง กันของที่จุดไฟหรือยิงเข้ามา"
+    },
+    {
+     "level": 3,
+     "skill": "rune_3",
+     "name": "รูนบรรพกาล",
+     "effect": "รูนบรรพกาล เปิดและปิดผนึกโบราณได้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:35"
+  },
+  {
+   "id": "nature",
+   "name": "เวทธรรมชาติ",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "nature"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "nature_1",
+     "name": "คุยกับต้นไม้",
+     "effect": "พูดกับพืช สัตว์ได้ระดับต้น"
+    },
+    {
+     "level": 2,
+     "skill": "nature_2",
+     "name": "เถาวัลย์พันธนาการ",
+     "effect": "เถาวัลย์พันธนาการศัตรู"
+    },
+    {
+     "level": 3,
+     "skill": "nature_3",
+     "name": "ผืนป่าตื่น",
+     "effect": "ผืนป่าตื่น เรียกต้นไม้ช่วยรบ"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:36"
+  },
+  {
+   "id": "space",
+   "name": "เวทมิติ",
+   "stat": "int",
+   "tags": [
+    "magic",
+    "space"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "space_1",
+     "name": "กล่องเก็บของมิติ",
+     "effect": "กล่องเก็บของมิติขนาดเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "space_2",
+     "name": "วาร์ประยะสั้น",
+     "effect": "วาร์ประยะสั้น"
+    },
+    {
+     "level": 3,
+     "skill": "space_3",
+     "name": "ประตูข้ามทวีป",
+     "effect": "เปิดประตูข้ามทวีปได้ (ใช้ครั้งเดียวต่อเดือน)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:37"
+  },
+  {
+   "id": "divination",
+   "name": "พยากรณ์",
+   "stat": "int",
+   "tags": [
+    "magic",
+    "seer"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "divination_1",
+     "name": "ดูดวง",
+     "effect": "ดูดวงรายวัน"
+    },
+    {
+     "level": 2,
+     "skill": "divination_2",
+     "name": "นิมิตอนาคต",
+     "effect": "นิมิตอนาคตระดับเหตุการณ์ใหญ่"
+    },
+    {
+     "level": 3,
+     "skill": "divination_3",
+     "name": "อ่านเส้นชะตา",
+     "effect": "อ่านเส้นชะตา เห็นว่าเหตุการณ์ใดกำลังจะเกิดในทวีปตัวเอง"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:38"
+  },
+  {
+   "id": "alchemy",
+   "name": "เล่นแร่แปรธาตุ",
+   "stat": "int",
+   "tags": [
+    "craft",
+    "poison"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "alchemy_1",
+     "name": "ปรุงยา",
+     "effect": "ปรุงยารักษาและยาพิษขั้นต้น"
+    },
+    {
+     "level": 2,
+     "skill": "alchemy_2",
+     "name": "ยาพิษไร้สี",
+     "effect": "ยาพิษไร้สี ยาถอนพิษเฉพาะทาง"
+    },
+    {
+     "level": 3,
+     "skill": "alchemy_3",
+     "name": "ศิลาอาถรรพ์",
+     "effect": "ศิลาอาถรรพ์ เปลี่ยนโลหะ ทำยาชุบชีวิตระดับเล็ก"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:39"
+  },
+  {
+   "id": "contract",
+   "name": "สัญญาปีศาจ",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "infernal",
+    "dark"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "contract_1",
+     "name": "ลงนามเลือด",
+     "effect": "ลงนามเลือด ทำสัญญาเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "contract_2",
+     "name": "ทาสปีศาจ",
+     "effect": "เรียกทาสปีศาจ ทำงานสามวัน"
+    },
+    {
+     "level": 3,
+     "skill": "contract_3",
+     "name": "สัญญากับอสูรใหญ่",
+     "effect": "สัญญากับอสูรใหญ่ แลกพลังกับราคาที่แพง"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:40"
+  },
+  {
+   "id": "curse",
+   "name": "ไสยศาสตร์",
+   "stat": "mag",
+   "tags": [
+    "magic",
+    "dark",
+    "hex"
+   ],
+   "group": "magic",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "curse_1",
+     "name": "ตุ๊กตาสาป",
+     "effect": "ตุ๊กตาสาป ทำเรื่องซวยเล็ก"
+    },
+    {
+     "level": 2,
+     "skill": "curse_2",
+     "name": "คุณไสยเข้าตัว",
+     "effect": "คุณไสยเข้าตัว ศัตรูได้คำสาปจำพวกระดับ C"
+    },
+    {
+     "level": 3,
+     "skill": "curse_3",
+     "name": "มหาคำสาปเจ็ดชั่วโคตร",
+     "effect": "มหาคำสาปเจ็ดชั่วโคตร สาปสายเลือดศัตรู (ผูกกับ c_heircurse)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:41"
+  },
+  {
+   "id": "smithing",
+   "name": "ตีเหล็ก",
+   "stat": "pow",
+   "tags": [
+    "craft",
+    "smith"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "smithing_1",
+     "name": "ตีมีด",
+     "effect": "ตีมีดและเครื่องมือ"
+    },
+    {
+     "level": 2,
+     "skill": "smithing_2",
+     "name": "ดาบชั้นดี",
+     "effect": "ตีดาบชั้นดี ราคาขาย +50%"
+    },
+    {
+     "level": 3,
+     "skill": "smithing_3",
+     "name": "อาวุธในตำนาน",
+     "effect": "ตีอาวุธในตำนาน (ระดับ R ขึ้นไป)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:42"
+  },
+  {
+   "id": "cooking",
+   "name": "ทำอาหาร",
+   "stat": "luk",
+   "tags": [
+    "craft",
+    "cook"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "cooking_1",
+     "name": "ต้มซุป",
+     "effect": "อาหารเลี้ยงชีพ ได้ฟื้นเล็กน้อย"
+    },
+    {
+     "level": 2,
+     "skill": "cooking_2",
+     "name": "อาหารชาววัง",
+     "effect": "อาหารชาววัง ได้พรชั่วคราวจากอาหาร"
+    },
+    {
+     "level": 3,
+     "skill": "cooking_3",
+     "name": "อาหารที่ทำให้มังกรร้องไห้",
+     "effect": "อาหารที่ทำให้มังกรร้องไห้ ได้ความไว้ใจจาก NPC ผู้ทรงอำนาจ"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:43"
+  },
+  {
+   "id": "farming",
+   "name": "เกษตรกรรม",
+   "stat": "vit",
+   "tags": [
+    "craft",
+    "farm"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "farming_1",
+     "name": "ปลูกผัก",
+     "effect": "ปลูกผัก ผลผลิต +10%"
+    },
+    {
+     "level": 2,
+     "skill": "farming_2",
+     "name": "นาข้าวทองคำ",
+     "effect": "นาข้าวทองคำ ผลผลิต +50%"
+    },
+    {
+     "level": 3,
+     "skill": "farming_3",
+     "name": "ผืนดินอุดมไม่สิ้นสุด",
+     "effect": "ผืนดินอุดมไม่สิ้นสุด ผลผลิตไม่ลดแม้ในปีฤดูหนาวเถ้า"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:44"
+  },
+  {
+   "id": "music",
+   "name": "ดนตรี",
+   "stat": "luk",
+   "tags": [
+    "art",
+    "charm"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "music_1",
+     "name": "ร้องเพลง",
+     "effect": "ร้องเพลง ได้เงินทิป"
+    },
+    {
+     "level": 2,
+     "skill": "music_2",
+     "name": "ขลุ่ยสะกดใจ",
+     "effect": "ขลุ่ยสะกดใจ ทำให้คนสงบ"
+    },
+    {
+     "level": 3,
+     "skill": "music_3",
+     "name": "บทเพลงปลุกวีรชน",
+     "effect": "บทเพลงปลุกวีรชน ให้กำลังใจกลุ่ม (+20% ทุกค่า 1 ตา)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:45"
+  },
+  {
+   "id": "trade",
+   "name": "ค้าขาย",
+   "stat": "int",
+   "tags": [
+    "social",
+    "trade"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "trade_1",
+     "name": "ต่อราคา",
+     "effect": "ต่อราคา ประหยัด 10%"
+    },
+    {
+     "level": 2,
+     "skill": "trade_2",
+     "name": "กองคาราวาน",
+     "effect": "กองคาราวาน กำไรจากการค้า +50%"
+    },
+    {
+     "level": 3,
+     "skill": "trade_3",
+     "name": "เจ้าพ่อการค้าข้ามทวีป",
+     "effect": "เจ้าพ่อการค้าข้ามทวีป เปิดตลาดสินค้าหายากได้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:46"
+  },
+  {
+   "id": "stealth",
+   "name": "ลอบเร้น",
+   "stat": "spd",
+   "tags": [
+    "stealth"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "stealth_1",
+     "name": "ย่องเบา",
+     "effect": "ย่องเบา ไม่ถูกจับเสียงฝีเท้า"
+    },
+    {
+     "level": 2,
+     "skill": "stealth_2",
+     "name": "หายตัวในเงา",
+     "effect": "หายตัวในเงา ซ่อนกลุ่มเล็ก"
+    },
+    {
+     "level": 3,
+     "skill": "stealth_3",
+     "name": "ไร้ตัวตน",
+     "effect": "ไร้ตัวตน ไม่ถูกเห็นนอกจากผู้ที่มองหาเฉพาะ"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:47"
+  },
+  {
+   "id": "tracking",
+   "name": "แกะรอย",
+   "stat": "spd",
+   "tags": [
+    "survival",
+    "ranged"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "tracking_1",
+     "name": "ดูรอยเท้า",
+     "effect": "อ่านรอยเท้า ตามสัตว์ได้"
+    },
+    {
+     "level": 2,
+     "skill": "tracking_2",
+     "name": "นายพรานป่าลึก",
+     "effect": "ล่าสัตว์ใหญ่ ตามผู้คนได้ข้ามเมือง"
+    },
+    {
+     "level": 3,
+     "skill": "tracking_3",
+     "name": "ผู้ล่าสัตว์ในตำนาน",
+     "effect": "ตามผู้ที่ซ่อนอย่างดีที่สุดได้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:48"
+  },
+  {
+   "id": "taming",
+   "name": "ฝึกสัตว์",
+   "stat": "luk",
+   "tags": [
+    "beast"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "taming_1",
+     "name": "เลี้ยงหมาป่า",
+     "effect": "เลี้ยงสัตว์เล็กได้"
+    },
+    {
+     "level": 2,
+     "skill": "taming_2",
+     "name": "ขี่ไวเวิร์น",
+     "effect": "ขี่ไวเวิร์น ฝึกสัตว์ปีก"
+    },
+    {
+     "level": 3,
+     "skill": "taming_3",
+     "name": "สัญญากับสัตว์เทพ",
+     "effect": "สัญญากับสัตว์เทพ (หมาป่าเงา วาฬฟ้า)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:49"
+  },
+  {
+   "id": "sailing",
+   "name": "เดินเรือ",
+   "stat": "vit",
+   "tags": [
+    "survival",
+    "sea"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "sailing_1",
+     "name": "พายเรือ",
+     "effect": "พายเรือ เดินเรือใกล้ฝั่ง"
+    },
+    {
+     "level": 2,
+     "skill": "sailing_2",
+     "name": "กัปตันเรือ",
+     "effect": "กัปตันเรือ ออกทะเลลึก"
+    },
+    {
+     "level": 3,
+     "skill": "sailing_3",
+     "name": "ผู้พิชิตเจ็ดคาบสมุทร",
+     "effect": "ผู้พิชิตเจ็ดคาบสมุทร ผ่านวังวนและพายุได้"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:50"
+  },
+  {
+   "id": "leadership",
+   "name": "ความเป็นผู้นำ",
+   "stat": "int",
+   "tags": [
+    "social",
+    "leader"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "leadership_1",
+     "name": "หัวหน้ากลุ่ม",
+     "effect": "หัวหน้ากลุ่ม ผู้ติดตามภักดีขึ้น"
+    },
+    {
+     "level": 2,
+     "skill": "leadership_2",
+     "name": "แม่ทัพ",
+     "effect": "แม่ทัพ กองทหารได้โบนัส +15%"
+    },
+    {
+     "level": 3,
+     "skill": "leadership_3",
+     "name": "ผู้นำแห่งยุค",
+     "effect": "ผู้นำแห่งยุค กลุ่มใหญ่ทำตามโดยไม่ต้องบังคับ"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:51"
+  },
+  {
+   "id": "charm",
+   "name": "เสน่ห์",
+   "stat": "luk",
+   "tags": [
+    "social",
+    "charm"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "charm_1",
+     "name": "ยิ้มหวาน",
+     "effect": "ยิ้มหวาน ราคาที่ NPC ตั้งลดลง 5%"
+    },
+    {
+     "level": 2,
+     "skill": "charm_2",
+     "name": "ปากหวานละลายใจ",
+     "effect": "ปากหวานละลายใจ ได้ข้อมูลจาก NPC ง่ายขึ้น"
+    },
+    {
+     "level": 3,
+     "skill": "charm_3",
+     "name": "เสน่ห์ล่มเมือง",
+     "effect": "เสน่ห์ล่มเมือง NPC สำคัญหลงรักหรือยอมเป็นพันธมิตร"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:52"
+  },
+  {
+   "id": "scholar",
+   "name": "วิชาการ",
+   "stat": "int",
+   "tags": [
+    "social",
+    "scholar"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "scholar_1",
+     "name": "อ่านออกเขียนได้",
+     "effect": "อ่านออกเขียนได้ เข้าห้องสมุด"
+    },
+    {
+     "level": 2,
+     "skill": "scholar_2",
+     "name": "นักปราชญ์",
+     "effect": "นักปราชญ์ เข้าถึงตำราเก่า"
+    },
+    {
+     "level": 3,
+     "skill": "scholar_3",
+     "name": "ผู้รู้แจ้งทุกศาสตร์",
+     "effect": "ผู้รู้แจ้งทุกศาสตร์ ปลดล็อกบันทึกต้องห้าม"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:53"
+  },
+  {
+   "id": "mining",
+   "name": "ขุดแร่",
+   "stat": "vit",
+   "tags": [
+    "craft",
+    "mine"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "mining_1",
+     "name": "ขุดถ่านหิน",
+     "effect": "ขุดถ่านหิน ได้เงินเล็กน้อย"
+    },
+    {
+     "level": 2,
+     "skill": "mining_2",
+     "name": "หาแร่มิธริล",
+     "effect": "หาแร่มิธริล พบแร่หายาก"
+    },
+    {
+     "level": 3,
+     "skill": "mining_3",
+     "name": "ผู้ปลุกหัวใจขุนเขา",
+     "effect": "ผู้ปลุกหัวใจขุนเขา (อันตราย ผูกกับ PL-03)"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:54"
+  },
+  {
+   "id": "absorb",
+   "name": "กลืนกิน",
+   "stat": "vit",
+   "tags": [
+    "absorb"
+   ],
+   "group": "life",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "absorb_1",
+     "name": "กลืนก้อนหิน",
+     "effect": "กลืนก้อนหิน ได้ความทนทานชั่วคราว"
+    },
+    {
+     "level": 2,
+     "skill": "absorb_2",
+     "name": "เลียนแบบร่าง",
+     "effect": "เลียนแบบร่างของศัตรูที่เพิ่งกลืน"
+    },
+    {
+     "level": 3,
+     "skill": "absorb_3",
+     "name": "ผู้ล่า (Predator)",
+     "effect": "ผู้ล่า (Predator) กลืนศัตรูแล้วได้ skill หนึ่งอย่างของมัน"
+    }
+   ],
+   "src": "code",
+   "at": "docs/_generated/character-catalog/aptitudes-skills.md:55"
+  },
+  {
+   "id": "fishing",
+   "name": "ตกปลา",
+   "stat": "vit",
+   "tags": [
+    "survival",
+    "sea"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "fishing_1",
+     "name": "ตกปลาเล็ก",
+     "effect": "ได้อาหารเลี้ยงตัว"
+    },
+    {
+     "level": 2,
+     "skill": "fishing_2",
+     "name": "อวนใหญ่",
+     "effect": "หาปลาได้เป็นอาชีพ +30%"
+    },
+    {
+     "level": 3,
+     "skill": "fishing_3",
+     "name": "อ่านฝูงปลา",
+     "effect": "รู้ที่ปลาชุกชุมล่วงหน้า"
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:13"
+  },
+  {
+   "id": "carpentry",
+   "name": "งานไม้",
+   "stat": "pow",
+   "tags": [
+    "craft"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "carpentry_1",
+     "name": "ต่อโต๊ะและเกวียน",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "carpentry_2",
+     "name": "สร้างบ้านและเรือเล็ก",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "carpentry_3",
+     "name": "สร้างเรือใหญ่หรือโครงบ้านทนพายุ",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:14"
+  },
+  {
+   "id": "tailoring",
+   "name": "ตัดเย็บ",
+   "stat": "luk",
+   "tags": [
+    "craft"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "tailoring_1",
+     "name": "เย็บซ่อมเสื้อผ้า",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "tailoring_2",
+     "name": "ตัดชุดตามฐานะ ได้ใจลูกค้า",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "tailoring_3",
+     "name": "ตัดชุดซ่อนอาวุธ หรือชุดป้องกันตามธาตุ",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:15"
+  },
+  {
+   "id": "pottery",
+   "name": "งานปั้นและเผา",
+   "stat": "luk",
+   "tags": [
+    "craft",
+    "art"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "pottery_1",
+     "name": "ปั้นหม้อ ถ้วย",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "pottery_2",
+     "name": "เผาเคลือบ ขายได้ราคา",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "pottery_3",
+     "name": "ปั้นถ้วยพิธีให้วัดและขุนนาง",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:16"
+  },
+  {
+   "id": "brewing",
+   "name": "หมักบ่ม",
+   "stat": "int",
+   "tags": [
+    "craft",
+    "cook"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "brewing_1",
+     "name": "ทำเหล้าและเบียร์พื้นบ้าน",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "brewing_2",
+     "name": "หมักบ่มรสชาติเฉพาะถิ่น",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "brewing_3",
+     "name": "เหล้าที่ใช้เป็นเครื่องบรรณาการได้",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:17"
+  },
+  {
+   "id": "art",
+   "name": "ศิลปะ",
+   "stat": "luk",
+   "tags": [
+    "art"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "art_1",
+     "name": "วาดภาพเหมือน",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "art_2",
+     "name": "จิตรกรรมที่คนจดจำ",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "art_3",
+     "name": "งานที่ถูกเก็บเป็นสมบัติเมือง",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:18"
+  },
+  {
+   "id": "jewelry",
+   "name": "เครื่องประดับ",
+   "stat": "spd",
+   "tags": [
+    "craft",
+    "art"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "jewelry_1",
+     "name": "ประดิษฐ์เครื่องประดับโลหะเล็ก",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "jewelry_2",
+     "name": "ฝังอัญมณี",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "jewelry_3",
+     "name": "เครื่องประดับที่ใส่เวทหรือรูนได้",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:19"
+  },
+  {
+   "id": "masonry",
+   "name": "งานหิน",
+   "stat": "pow",
+   "tags": [
+    "craft"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "masonry_1",
+     "name": "ก่อกำแพงหิน",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "masonry_2",
+     "name": "ก่อสร้างอาคารหิน",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "masonry_3",
+     "name": "งานแกะสลักขนาดใหญ่ โครงสร้างศาสนสถาน",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:20"
+  },
+  {
+   "id": "engineering",
+   "name": "วิศวกรรม",
+   "stat": "int",
+   "tags": [
+    "craft",
+    "science"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "engineering_1",
+     "name": "คำนวณโครงสร้างง่าย",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "engineering_2",
+     "name": "ออกแบบสะพานและท่อน้ำ",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "engineering_3",
+     "name": "ออกแบบเมืองและโครงข่ายพลังงาน",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:21"
+  },
+  {
+   "id": "mechanics",
+   "name": "ช่างกล",
+   "stat": "int",
+   "tags": [
+    "craft",
+    "science"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "mechanics_1",
+     "name": "ซ่อมนาฬิกาและเครื่องกลเล็ก",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "mechanics_2",
+     "name": "ซ่อมเครื่องยนต์ รถจักร",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "mechanics_3",
+     "name": "ซ่อมหุ่นวิญญาณและเครื่องปฐมที่ถอดรหัสแล้ว",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:22"
+  },
+  {
+   "id": "writing",
+   "name": "ประพันธ์และบันทึก",
+   "stat": "int",
+   "tags": [
+    "art",
+    "scholar"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "writing_1",
+     "name": "เขียนจดหมายและบันทึกสั้น",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "writing_2",
+     "name": "แต่งบทกวีหรือรายงาน",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "writing_3",
+     "name": "เขียนพงศาวดารที่ถูกอ้างอิง",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:23"
+  },
+  {
+   "id": "accounting",
+   "name": "บัญชี",
+   "stat": "int",
+   "tags": [
+    "social",
+    "trade"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "accounting_1",
+     "name": "ทำบัญชีรายรับรายจ่าย",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "accounting_2",
+     "name": "ตรวจจับข้อผิดพลาดและการโกง",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "accounting_3",
+     "name": "ทำบัญชีของรัฐหรือธนาคารใหญ่",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:24"
+  },
+  {
+   "id": "law",
+   "name": "กฎหมาย",
+   "stat": "int",
+   "tags": [
+    "social"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "law_1",
+     "name": "อ่านสัญญาและกฎ",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "law_2",
+     "name": "ว่าความในศาลเล็ก",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "law_3",
+     "name": "ตีความสนธิสัญญาข้ามประเทศ",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:25"
+  },
+  {
+   "id": "herbalism",
+   "name": "สมุนไพร",
+   "stat": "int",
+   "tags": [
+    "craft",
+    "nature"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "herbalism_1",
+     "name": "แยกสมุนไพรทั่วไป",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "herbalism_2",
+     "name": "ปรุงยาสามัญประจำบ้าน",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "herbalism_3",
+     "name": "ปรุงยาเฉพาะโรค ต้านกาฬโรคระดับท้องถิ่น",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:26"
+  },
+  {
+   "id": "medicine",
+   "name": "แพทย์",
+   "stat": "int",
+   "tags": [
+    "heal",
+    "science"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "medicine_1",
+     "name": "ทำแผล เข้าเฝือก",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "medicine_2",
+     "name": "ผ่าตัดเล็ก ทำคลอด",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "medicine_3",
+     "name": "ผ่าตัดใหญ่ ชุบชีวิตผู้ที่เพิ่งหยุดหายใจ (ต่ำกว่าเวทชุบชีวิต)",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:27"
+  },
+  {
+   "id": "husbandry",
+   "name": "เลี้ยงสัตว์",
+   "stat": "vit",
+   "tags": [
+    "farm",
+    "beast"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "husbandry_1",
+     "name": "เลี้ยงสัตว์ปีกและแพะ",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "husbandry_2",
+     "name": "ผสมพันธุ์ สัตว์ใหญ่",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "husbandry_3",
+     "name": "เลี้ยงสัตว์วิเศษ (วัวนิรันดร์ ม้าเถ้า)",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:28"
+  },
+  {
+   "id": "gardening",
+   "name": "ทำสวน",
+   "stat": "vit",
+   "tags": [
+    "farm",
+    "nature"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "gardening_1",
+     "name": "ปลูกผักสวนครัว",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "gardening_2",
+     "name": "ปลูกผลไม้ ดอกไม้ ชา",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "gardening_3",
+     "name": "สวนที่ให้ผลทุกฤดู แม้ในฤดูหนาว",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:29"
+  },
+  {
+   "id": "piloting",
+   "name": "ขับขี่เครื่องกลและนำร่อง",
+   "stat": "spd",
+   "tags": [
+    "craft"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "piloting_1",
+     "name": "ขับเกวียนและเรือเล็ก",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "piloting_2",
+     "name": "ขับรถจักร เรือใหญ่",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "piloting_3",
+     "name": "ขับเรือเหาะผ่านพายุ",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:30"
+  },
+  {
+   "id": "investigation",
+   "name": "สืบสวน",
+   "stat": "int",
+   "tags": [
+    "social",
+    "stealth"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "investigation_1",
+     "name": "สังเกตรอยผิดปกติ",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "investigation_2",
+     "name": "ตามรอยคนหายไปข้ามเมือง",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "investigation_3",
+     "name": "ไขคดีซับซ้อนที่เกี่ยวกับสถาบันใหญ่",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:31"
+  },
+  {
+   "id": "teaching",
+   "name": "การสอน",
+   "stat": "int",
+   "tags": [
+    "social"
+   ],
+   "group": "job-support",
+   "levels": [
+    {
+     "level": 1,
+     "skill": "teaching_1",
+     "name": "สอนเด็กอ่านเขียน",
+     "effect": ""
+    },
+    {
+     "level": 2,
+     "skill": "teaching_2",
+     "name": "สอนผู้ใหญ่และศิษย์",
+     "effect": ""
+    },
+    {
+     "level": 3,
+     "skill": "teaching_3",
+     "name": "ผู้สอนที่ลูกศิษย์ไปเป็นผู้นำ",
+     "effect": ""
+    }
+   ],
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:32"
+  }
+ ]
+}

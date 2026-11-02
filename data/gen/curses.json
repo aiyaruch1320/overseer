@@ -1,0 +1,5170 @@
+{
+ "version": "d3c843270110",
+ "sources": [
+  "docs/_generated/character-catalog/curses.md",
+  "docs/systems/character/06-new-curses.md",
+  "docs/systems/character/12-job-support.md",
+  "docs/systems/character/17-companion-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": [
+  {
+   "id": "c_weakarm",
+   "name": "แขนอ่อนแรง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "pow-1",
+   "desc": "ยกดาบแล้วมือสั่น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:9"
+  },
+  {
+   "id": "c_brittle",
+   "name": "กระดูกเปราะ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": -1
+    },
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "pow-1 vit-1",
+   "desc": "ล้มทีกระดูกร้าว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:10"
+  },
+  {
+   "id": "c_cripple",
+   "name": "ร่างพิการ",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": -2
+    },
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -2
+    }
+   ],
+   "fxRaw": "pow-2 spd-2",
+   "desc": "ขาข้างหนึ่งใช้การไม่ได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:11"
+  },
+  {
+   "id": "c_manaleak",
+   "name": "มานารั่ว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "mag-1",
+   "desc": "เวทรั่วไหลตลอด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:12"
+  },
+  {
+   "id": "c_manaseal",
+   "name": "ผนึกเวท",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": -2
+    }
+   ],
+   "fxRaw": "mag-2",
+   "desc": "โซ่ล่องหนพันวงจรมานา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:13"
+  },
+  {
+   "id": "c_magicnull",
+   "name": "ร่างไร้เวท",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": -4
+    }
+   ],
+   "fxRaw": "mag-4",
+   "desc": "เวทมนตร์ไม่ตอบสนองอีกเลย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:14"
+  },
+  {
+   "id": "c_slowfeet",
+   "name": "เท้าถ่วง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "spd-1",
+   "desc": "เดินช้าลง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:15"
+  },
+  {
+   "id": "c_leadlimbs",
+   "name": "แขนขาตะกั่ว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -2
+    }
+   ],
+   "fxRaw": "spd-2",
+   "desc": "ทุกก้าวหนักอึ้ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:16"
+  },
+  {
+   "id": "c_snail",
+   "name": "จังหวะหอยทาก",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -3
+    }
+   ],
+   "fxRaw": "spd-3",
+   "desc": "โลกหมุนเร็วกว่าเราเสมอ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:17"
+  },
+  {
+   "id": "c_badluck",
+   "name": "ดวงตก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "luk-1",
+   "desc": "เหยียบขี้หมาบ่อย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:18"
+  },
+  {
+   "id": "c_jinx",
+   "name": "ตัวซวย",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": -2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "jinx"
+    }
+   ],
+   "fxRaw": "luk-2 #jinx",
+   "desc": "คนรอบข้างพลอยซวย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:19"
+  },
+  {
+   "id": "c_doomed",
+   "name": "ผู้ต้องสาปชะตา",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": -3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "jinx"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "doom"
+    }
+   ],
+   "fxRaw": "luk-3 #jinx #doom",
+   "desc": "ชะตาเล่นตลกร้ายเสมอ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:20"
+  },
+  {
+   "id": "c_fogmind",
+   "name": "สมองเบลอ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "int-1",
+   "desc": "คิดอะไรไม่ค่อยออก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:21"
+  },
+  {
+   "id": "c_forgetful",
+   "name": "ขี้หลงขี้ลืม",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": -2
+    }
+   ],
+   "fxRaw": "int-2",
+   "desc": "ลืมแม้แต่ชื่อตัวเอง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:22"
+  },
+  {
+   "id": "c_madness",
+   "name": "เสียสติทีละน้อย",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": -2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "madness"
+    }
+   ],
+   "fxRaw": "int-2 #madness",
+   "desc": "เสียงในหัวดังขึ้นทุกปี",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:23"
+  },
+  {
+   "id": "c_frail",
+   "name": "ร่างกายอ่อนแอ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "vit-1",
+   "desc": "ป่วยง่าย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:24"
+  },
+  {
+   "id": "c_sickly",
+   "name": "โรคเรื้อรัง",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -2
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sickly"
+    }
+   ],
+   "fxRaw": "vit-2 #sickly",
+   "desc": "ไอไม่หยุด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:25"
+  },
+  {
+   "id": "c_wither",
+   "name": "ร่างเหี่ยวเฉา",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -3
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "short_life"
+    }
+   ],
+   "fxRaw": "vit-3 #short_life",
+   "desc": "ชีวิตถูกดูดออกไปทีละนิด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:26"
+  },
+  {
+   "id": "c_sunburn",
+   "name": "แพ้แสงแดด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_sun"
+    }
+   ],
+   "fxRaw": "#weak_sun",
+   "desc": "โดนแดดแล้วผิวไหม้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:27"
+  },
+  {
+   "id": "c_silverbane",
+   "name": "แพ้เงิน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_silver"
+    }
+   ],
+   "fxRaw": "#weak_silver",
+   "desc": "แตะเหรียญเงินแล้วแสบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:28"
+  },
+  {
+   "id": "c_ironbane",
+   "name": "แพ้เหล็ก",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_iron"
+    }
+   ],
+   "fxRaw": "#weak_iron",
+   "desc": "อาวุธเหล็กแผลไม่หาย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:29"
+  },
+  {
+   "id": "c_hydrophobia",
+   "name": "กลัวน้ำ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_water"
+    }
+   ],
+   "fxRaw": "#fear_water",
+   "desc": "เห็นแม่น้ำแล้วขาสั่น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:30"
+  },
+  {
+   "id": "c_fireweak",
+   "name": "ไฟเผาง่าย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_fire"
+    }
+   ],
+   "fxRaw": "#weak_fire",
+   "desc": "เสื้อผ้าติดไฟง่ายผิดปกติ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:31"
+  },
+  {
+   "id": "c_coldweak",
+   "name": "แพ้ความหนาว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_ice"
+    }
+   ],
+   "fxRaw": "#weak_ice",
+   "desc": "หนาวนิดเดียวก็ป่วย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:32"
+  },
+  {
+   "id": "c_lightweak",
+   "name": "แพ้แสงศักดิ์สิทธิ์",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_light"
+    }
+   ],
+   "fxRaw": "#weak_light",
+   "desc": "วิหารทำให้ปวดหัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:33"
+  },
+  {
+   "id": "c_poisonweak",
+   "name": "แพ้พิษง่าย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_poison"
+    }
+   ],
+   "fxRaw": "#weak_poison",
+   "desc": "ผึ้งต่อยทีเกือบตาย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:34"
+  },
+  {
+   "id": "c_glassjaw",
+   "name": "คางแก้ว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "glass"
+    }
+   ],
+   "fxRaw": "vit-1 #glass",
+   "desc": "โดนหมัดเดียวน็อก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:35"
+  },
+  {
+   "id": "c_nightblind",
+   "name": "ตาบอดกลางคืน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "night_blind"
+    }
+   ],
+   "fxRaw": "#night_blind",
+   "desc": "พลบค่ำแล้วมองไม่เห็น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:36"
+  },
+  {
+   "id": "c_allergy",
+   "name": "แพ้เกสรดอกไม้",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "allergy"
+    }
+   ],
+   "fxRaw": "#allergy",
+   "desc": "จามทุกฤดูใบไม้ผลิ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:37"
+  },
+  {
+   "id": "c_vertigo",
+   "name": "กลัวความสูง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_height"
+    }
+   ],
+   "fxRaw": "#fear_height",
+   "desc": "ขึ้นบันไดสามขั้นก็เวียนหัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:38"
+  },
+  {
+   "id": "c_claustro",
+   "name": "กลัวความมืดและที่แคบ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_dark"
+    }
+   ],
+   "fxRaw": "#fear_dark",
+   "desc": "เข้าดันเจี้ยนไม่ได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:39"
+  },
+  {
+   "id": "c_bloodfaint",
+   "name": "เห็นเลือดแล้วเป็นลม",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "blood_faint"
+    }
+   ],
+   "fxRaw": "brave-20 #blood_faint",
+   "desc": "เป็นลมกลางสนามรบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:40"
+  },
+  {
+   "id": "c_seasick",
+   "name": "เมาเรือ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seasick"
+    }
+   ],
+   "fxRaw": "#seasick",
+   "desc": "ขึ้นเรือแล้วอ้วก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:41"
+  },
+  {
+   "id": "c_moonfrenzy",
+   "name": "คำสาปมนุษย์หมาป่า",
+   "tier": "R",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": 2
+    },
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lycan"
+    }
+   ],
+   "fxRaw": "pow+2 kind-20 #lycan",
+   "desc": "คืนจันทร์เต็มดวงจะคลั่ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:42"
+  },
+  {
+   "id": "c_cursedblood",
+   "name": "เลือดต้องสาป",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cursed_blood"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dark"
+    }
+   ],
+   "fxRaw": "#cursed_blood #dark",
+   "desc": "เลือดดำคล้ำ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:43"
+  },
+  {
+   "id": "c_demonmark",
+   "name": "ตราปีศาจ",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "infernal"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "demon_mark"
+    }
+   ],
+   "fxRaw": "belief-20 #infernal #demon_mark",
+   "desc": "ราชาปีศาจจับจ้อง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:44"
+  },
+  {
+   "id": "c_undeadtouch",
+   "name": "สัมผัสแห่งความตาย",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "necro"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "undead_touch"
+    }
+   ],
+   "fxRaw": "#necro #undead_touch",
+   "desc": "พืชเหี่ยวเมื่อแตะ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:45"
+  },
+  {
+   "id": "c_souldebt",
+   "name": "หนี้วิญญาณ",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "soul_debt"
+    }
+   ],
+   "fxRaw": "#soul_debt",
+   "desc": "วิญญาณถูกจำนองไว้กับใครบางคน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:46"
+  },
+  {
+   "id": "c_shadow",
+   "name": "เงาที่ตามติด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "shadow"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "haunted"
+    }
+   ],
+   "fxRaw": "#shadow #haunted",
+   "desc": "เงาขยับเองได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:47"
+  },
+  {
+   "id": "c_ghost",
+   "name": "ผีตามหลอก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "haunted"
+    }
+   ],
+   "fxRaw": "#haunted",
+   "desc": "ได้ยินเสียงเคาะทุกคืน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:48"
+  },
+  {
+   "id": "c_bloodthirst",
+   "name": "กระหายเลือด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": -15
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "blood_drinker"
+    }
+   ],
+   "fxRaw": "kind-15 #blood_drinker",
+   "desc": "อยากลิ้มรสเลือด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:49"
+  },
+  {
+   "id": "c_hexmagnet",
+   "name": "ดึงดูดคำสาป",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hex_magnet"
+    }
+   ],
+   "fxRaw": "#hex_magnet",
+   "desc": "คำสาปของคนอื่นเด้งมาหา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:50"
+  },
+  {
+   "id": "c_lichseed",
+   "name": "เมล็ดพันธุ์แห่งลิช",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lich_seed"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "necro"
+    }
+   ],
+   "fxRaw": "mag+1 #lich_seed #necro",
+   "desc": "ความตายอาจไม่ใช่จุดจบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:51"
+  },
+  {
+   "id": "c_evileye",
+   "name": "ตาปีศาจ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "mag",
+     "delta": 1
+    },
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": -10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "evil_eye"
+    }
+   ],
+   "fxRaw": "mag+1 fame-10 #evil_eye",
+   "desc": "จ้องใครคนนั้นซวย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:52"
+  },
+  {
+   "id": "c_vampbite",
+   "name": "รอยกัดแวมไพร์",
+   "tier": "R",
+   "price": 3,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "vampire_bite"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "weak_sun"
+    }
+   ],
+   "fxRaw": "spd+1 #vampire_bite #weak_sun",
+   "desc": "กำลังกลายเป็นอะไรบางอย่าง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:53"
+  },
+  {
+   "id": "c_doppel",
+   "name": "ร่างเงาตัวปลอม",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "doppel"
+    }
+   ],
+   "fxRaw": "#doppel",
+   "desc": "มีคนหน้าเหมือนเราเดินอยู่ที่ไหนสักแห่ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:54"
+  },
+  {
+   "id": "c_hollow",
+   "name": "ใจกลวง",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": -30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hollow"
+    }
+   ],
+   "fxRaw": "kind-30 #hollow",
+   "desc": "รู้สึกอะไรได้น้อยลง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:55"
+  },
+  {
+   "id": "c_whisper",
+   "name": "เสียงกระซิบในความมืด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "piety",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "whisper"
+    }
+   ],
+   "fxRaw": "piety-20 #whisper",
+   "desc": "มีเสียงชักชวนสู่ความชั่ว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:56"
+  },
+  {
+   "id": "c_outcast",
+   "name": "ผู้ถูกเนรเทศ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "outcast"
+    }
+   ],
+   "fxRaw": "fame-20 #outcast",
+   "desc": "ไม่มีบ้านให้กลับ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:57"
+  },
+  {
+   "id": "c_ugly",
+   "name": "หน้าตาน่ากลัว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ugly"
+    }
+   ],
+   "fxRaw": "#ugly",
+   "desc": "เด็กเห็นแล้วร้องไห้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:58"
+  },
+  {
+   "id": "c_lovedoom",
+   "name": "รักใครคนนั้นตาย",
+   "tier": "R",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "love_doom"
+    }
+   ],
+   "fxRaw": "#love_doom",
+   "desc": "ความรักคือคำสาป",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:59"
+  },
+  {
+   "id": "c_lonely",
+   "name": "ไร้เพื่อนตลอดกาล",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lonely"
+    }
+   ],
+   "fxRaw": "#lonely",
+   "desc": "มิตรภาพไม่ยืนยาว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:60"
+  },
+  {
+   "id": "c_cassandra",
+   "name": "พูดจริงแต่ไม่มีใครเชื่อ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "unbelieved"
+    }
+   ],
+   "fxRaw": "#unbelieved",
+   "desc": "เตือนภัยแล้วถูกหัวเราะใส่",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:61"
+  },
+  {
+   "id": "c_betrayal",
+   "name": "ดึงดูดคนทรยศ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "betrayal_magnet"
+    }
+   ],
+   "fxRaw": "#betrayal_magnet",
+   "desc": "เพื่อนสนิทมักแทงข้างหลัง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:62"
+  },
+  {
+   "id": "c_infamous",
+   "name": "ชื่อเสียงฉาว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": -15
+    }
+   ],
+   "fxRaw": "fame-15",
+   "desc": "ข่าวลือเสีย ๆ หาย ๆ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:63"
+  },
+  {
+   "id": "c_barren",
+   "name": "ไร้ทายาท",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "barren"
+    }
+   ],
+   "fxRaw": "#barren",
+   "desc": "สายเลือดอาจจบที่รุ่นนี้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:64"
+  },
+  {
+   "id": "c_feud",
+   "name": "ศึกสายเลือด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "family_feud"
+    }
+   ],
+   "fxRaw": "#family_feud",
+   "desc": "ญาติพี่น้องหมายหัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:65"
+  },
+  {
+   "id": "c_oathbreaker",
+   "name": "ผู้ผิดคำสาบาน",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "honest",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oath_breaker"
+    }
+   ],
+   "fxRaw": "honest-20 #oath_breaker",
+   "desc": "คำพูดไร้ค่า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:66"
+  },
+  {
+   "id": "c_debt",
+   "name": "หนี้ท่วมหัว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": -50
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "debt"
+    }
+   ],
+   "fxRaw": "gold-50 #debt",
+   "desc": "เจ้าหนี้มาเคาะประตู",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:67"
+  },
+  {
+   "id": "c_poverty",
+   "name": "กระเป๋ารั่ว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "poverty"
+    }
+   ],
+   "fxRaw": "#poverty",
+   "desc": "เงินไม่เคยอยู่กับตัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:68"
+  },
+  {
+   "id": "c_wanted",
+   "name": "ค่าหัว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "wanted"
+    }
+   ],
+   "fxRaw": "#wanted",
+   "desc": "นักล่าค่าหัวตามล่า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:69"
+  },
+  {
+   "id": "c_envyaura",
+   "name": "กลิ่นอายให้คนอิจฉา",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "envy_aura"
+    }
+   ],
+   "fxRaw": "#envy_aura",
+   "desc": "ใครเห็นก็หมั่นไส้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:70"
+  },
+  {
+   "id": "c_shortlife",
+   "name": "อายุสั้น",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "short_life"
+    }
+   ],
+   "fxRaw": "#short_life",
+   "desc": "นาฬิกาชีวิตเดินเร็ว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:71"
+  },
+  {
+   "id": "c_insomnia",
+   "name": "นอนไม่หลับ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "insomnia"
+    }
+   ],
+   "fxRaw": "int-1 #insomnia",
+   "desc": "ตาค้างทุกคืน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:72"
+  },
+  {
+   "id": "c_nightmare",
+   "name": "ฝันร้ายทุกคืน",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nightmare"
+    }
+   ],
+   "fxRaw": "#nightmare",
+   "desc": "ข้อความจากเทพบิดเบี้ยว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:73"
+  },
+  {
+   "id": "c_mute",
+   "name": "เป็นใบ้",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "mute"
+    }
+   ],
+   "fxRaw": "#mute",
+   "desc": "พูดไม่ได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:74"
+  },
+  {
+   "id": "c_oneeye",
+   "name": "ตาบอดข้างหนึ่ง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "one_eye"
+    }
+   ],
+   "fxRaw": "spd-1 #one_eye",
+   "desc": "กะระยะพลาด",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:75"
+  },
+  {
+   "id": "c_limp",
+   "name": "เดินกะเผลก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "spd-1",
+   "desc": "ขาข้างหนึ่งสั้นกว่า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:76"
+  },
+  {
+   "id": "c_plaguecarrier",
+   "name": "พาหะโรคระบาด",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "plague_carrier"
+    }
+   ],
+   "fxRaw": "#plague_carrier",
+   "desc": "ไปที่ไหนโรคตามไปที่นั่น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:77"
+  },
+  {
+   "id": "c_fever",
+   "name": "ไข้เรื้อรัง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "stat",
+     "stat": "hp",
+     "delta": -10
+    }
+   ],
+   "fxRaw": "vit-1 hp-10",
+   "desc": "ตัวร้อนเป็นระยะ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:78"
+  },
+  {
+   "id": "c_stoneskin",
+   "name": "ผิวกลายเป็นหิน",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "spd",
+     "delta": -2
+    },
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "stoning"
+    }
+   ],
+   "fxRaw": "spd-2 vit+1 #stoning",
+   "desc": "ผิวแข็งขึ้นทุกปี",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:79"
+  },
+  {
+   "id": "c_fastaging",
+   "name": "แก่เร็ว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fast_aging"
+    }
+   ],
+   "fxRaw": "#fast_aging",
+   "desc": "อายุยี่สิบหน้าเหมือนห้าสิบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:80"
+  },
+  {
+   "id": "c_fartlie",
+   "name": "ผายลมทุกครั้งที่โกหก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fart_lie"
+    }
+   ],
+   "fxRaw": "#fart_lie",
+   "desc": "ความจริงมีกลิ่น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:81"
+  },
+  {
+   "id": "c_birdtarget",
+   "name": "นกอึใส่ตลอดเวลา",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bird_target"
+    }
+   ],
+   "fxRaw": "#bird_target",
+   "desc": "นกทั้งโลกเล็งหัวเรา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:82"
+  },
+  {
+   "id": "c_rhyme",
+   "name": "พูดเป็นกลอนเท่านั้น",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "rhyme"
+    }
+   ],
+   "fxRaw": "#rhyme",
+   "desc": "คุยธุระก็ต้องสัมผัส",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:83"
+  },
+  {
+   "id": "c_bald",
+   "name": "หัวล้านตั้งแต่เด็ก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bald"
+    }
+   ],
+   "fxRaw": "#bald",
+   "desc": "สะท้อนแสงอาทิตย์ได้",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:84"
+  },
+  {
+   "id": "c_cathate",
+   "name": "แมวทั้งโลกเกลียด",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cat_hate"
+    }
+   ],
+   "fxRaw": "#cat_hate",
+   "desc": "แมวขู่ฟ่อทุกตัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:85"
+  },
+  {
+   "id": "c_hiccup",
+   "name": "สะอึกตอนตื่นเต้น",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hiccup"
+    }
+   ],
+   "fxRaw": "#hiccup",
+   "desc": "สารภาพรักแล้วสะอึก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:86"
+  },
+  {
+   "id": "c_sneezefire",
+   "name": "จามเป็นไฟ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sneeze_fire"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fire"
+    }
+   ],
+   "fxRaw": "#sneeze_fire #fire",
+   "desc": "บ้านไหม้มาสามหลังแล้ว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:87"
+  },
+  {
+   "id": "c_dance",
+   "name": "ได้ยินเพลงแล้วต้องเต้น",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dance"
+    }
+   ],
+   "fxRaw": "#dance",
+   "desc": "งานศพก็ไม่เว้น",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:88"
+  },
+  {
+   "id": "c_lost",
+   "name": "หลงทางเสมอ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "lost"
+    }
+   ],
+   "fxRaw": "#lost",
+   "desc": "ไปตลาดแต่ถึงชายแดน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:89"
+  },
+  {
+   "id": "c_tinyvoice",
+   "name": "เสียงเล็กเท่ามด",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "tiny_voice"
+    }
+   ],
+   "fxRaw": "#tiny_voice",
+   "desc": "ตะโกนแล้วไม่มีใครได้ยิน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:90"
+  },
+  {
+   "id": "c_chicken",
+   "name": "กลายเป็นไก่ทุกวันอาทิตย์",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "chicken"
+    }
+   ],
+   "fxRaw": "#chicken",
+   "desc": "ทุกวันอาทิตย์ต้องขัน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:91"
+  },
+  {
+   "id": "c_truthbound",
+   "name": "โกหกไม่ได้",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "honest",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "truth_bound"
+    }
+   ],
+   "fxRaw": "honest+30 #truth_bound",
+   "desc": "ปากพูดความจริงเอง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:92"
+  },
+  {
+   "id": "c_slimelove",
+   "name": "สไลม์ตามจีบ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "slime_love"
+    }
+   ],
+   "fxRaw": "#slime_love",
+   "desc": "สไลม์ทั้งป่าหลงรัก",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:93"
+  },
+  {
+   "id": "c_smell",
+   "name": "กลิ่นตัวแรง",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "smell"
+    }
+   ],
+   "fxRaw": "#smell",
+   "desc": "มอนสเตอร์ยังถอย แต่คนก็ถอย",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:94"
+  },
+  {
+   "id": "c_illomen",
+   "name": "ลางร้ายติดตัว",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ill_omen"
+    }
+   ],
+   "fxRaw": "#ill_omen",
+   "desc": "กาบินวนหัว",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:95"
+  },
+  {
+   "id": "c_fatechain",
+   "name": "โซ่ตรวนชะตา",
+   "tier": "E",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fate_chain"
+    }
+   ],
+   "fxRaw": "#fate_chain",
+   "desc": "ฝืนชะตาแพงขึ้นสองเท่า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:96"
+  },
+  {
+   "id": "c_monsterlure",
+   "name": "กลิ่นล่อปีศาจ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "monster_lure"
+    }
+   ],
+   "fxRaw": "#monster_lure",
+   "desc": "มอนสเตอร์ตามกลิ่นมา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:97"
+  },
+  {
+   "id": "c_disaster",
+   "name": "ดึงดูดภัยพิบัติ",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "disaster"
+    }
+   ],
+   "fxRaw": "#disaster",
+   "desc": "ไปที่ไหนภัยพิบัติตามไป",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:98"
+  },
+  {
+   "id": "c_cursedgold",
+   "name": "ทองต้องสาป",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": 80
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cursed_gold"
+    }
+   ],
+   "fxRaw": "gold+80 #cursed_gold",
+   "desc": "รวยแต่ไม่มีความสุข",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:99"
+  },
+  {
+   "id": "c_heircurse",
+   "name": "คำสาปสืบสายเลือด",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "heir_curse"
+    }
+   ],
+   "fxRaw": "#heir_curse",
+   "desc": "ลูกหลานจะรับกรรมต่อ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:100"
+  },
+  {
+   "id": "c_godhate",
+   "name": "เทพรังเกียจ",
+   "tier": "U",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": -30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "faithless"
+    }
+   ],
+   "fxRaw": "belief-30 #faithless",
+   "desc": "คำอธิษฐานไม่ถึงสวรรค์",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:101"
+  },
+  {
+   "id": "c_demoneye",
+   "name": "สายตาของราชาปีศาจ",
+   "tier": "L",
+   "price": 3,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "demon_eye"
+    }
+   ],
+   "fxRaw": "#demon_eye",
+   "desc": "ราชาปีศาจหมายตา",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:102"
+  },
+  {
+   "id": "c_hunger",
+   "name": "หิวตลอดเวลา",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "glutton"
+    }
+   ],
+   "fxRaw": "#glutton",
+   "desc": "กินเท่าไรก็ไม่อิ่ม",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:103"
+  },
+  {
+   "id": "c_greed",
+   "name": "ความโลภครอบงำ",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "ambition",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "greedy"
+    }
+   ],
+   "fxRaw": "ambition+10 #greedy",
+   "desc": "อยากได้ทุกสิ่ง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:104"
+  },
+  {
+   "id": "c_rage",
+   "name": "โทสะไม่รู้จบ",
+   "tier": "R",
+   "price": 2,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "temper",
+     "delta": 30
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "berserk"
+    }
+   ],
+   "fxRaw": "temper+30 #berserk",
+   "desc": "ความโกรธเผาไหม้ใจ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:105"
+  },
+  {
+   "id": "c_rabbitheart",
+   "name": "หัวใจกระต่าย",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": -30
+    }
+   ],
+   "fxRaw": "brave-30",
+   "desc": "ตกใจทุกเสียง",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:106"
+  },
+  {
+   "id": "c_dull",
+   "name": "อาวุธทื่อทุกเล่ม",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dull"
+    }
+   ],
+   "fxRaw": "#dull",
+   "desc": "จับดาบเล่มไหนก็ทื่อ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:107"
+  },
+  {
+   "id": "c_echo",
+   "name": "เสียงสะท้อนชาติก่อน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": 1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "past_life"
+    }
+   ],
+   "fxRaw": "int+1 #past_life",
+   "desc": "จำเรื่องชาติก่อนจนเศร้า",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:108"
+  },
+  {
+   "id": "c_noreflect",
+   "name": "ไม่มีเงาในกระจก",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "no_reflection"
+    }
+   ],
+   "fxRaw": "#no_reflection",
+   "desc": "คนในเมืองซุบซิบ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:109"
+  },
+  {
+   "id": "c_raincloud",
+   "name": "เมฆฝนตามหัว",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "rain_cloud"
+    }
+   ],
+   "fxRaw": "#rain_cloud",
+   "desc": "ฝนตกเฉพาะตรงที่ยืน",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:110"
+  },
+  {
+   "id": "c_golditch",
+   "name": "แตะทองแล้วคัน",
+   "tier": "C",
+   "price": 1,
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "gold",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "gold_itch"
+    }
+   ],
+   "fxRaw": "gold-20 #gold_itch",
+   "desc": "ร่ำรวยไม่ได้จริง ๆ",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "",
+   "jobsText": "",
+   "jobs": [],
+   "group": "code",
+   "src": "code",
+   "at": "docs/_generated/character-catalog/curses.md:111"
+  },
+  {
+   "id": "nc_ash_cough",
+   "name": "ไอเถ้า",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ash_cough"
+    }
+   ],
+   "fxRaw": "vit-1 #ash_cough",
+   "desc": "",
+   "from": "เกิดในคาซ-ดูรัม หรือหลัง DR-04",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "KD"
+     ]
+    },
+    {
+     "k": "event",
+     "id": "DR-04",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-04"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ย้ายไปอยู่ทวีปที่ไม่มีเถ้า 2 ปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:11"
+  },
+  {
+   "id": "nc_war_orphan",
+   "name": "ลูกกำพร้าสงคราม",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "war_orphan"
+    },
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": -10
+    }
+   ],
+   "fxRaw": "#war_orphan brave-10",
+   "desc": "",
+   "from": "เกิดในประเทศที่มีสงคราม",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดในประเทศที่มีสงคราม"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "สงครามจบ หรือรับเลี้ยงโดย NPC ที่ไว้ใจ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:12"
+  },
+  {
+   "id": "nc_smoke_lung",
+   "name": "ปอดควันดำ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "smoke_lung"
+    }
+   ],
+   "fxRaw": "vit-1 #smoke_lung",
+   "desc": "",
+   "from": "เกิดในเมคาเรีย โดยเฉพาะ MK-14",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "MK"
+     ]
+    },
+    {
+     "k": "country",
+     "ids": [
+      "MK-14"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "MK-14"
+    ],
+    "nodes": [],
+    "ids": [
+     "b_plagueward"
+    ]
+   },
+   "world": "",
+   "cure": "ย้ายออกหรือใช้ b_plagueward",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:13"
+  },
+  {
+   "id": "nc_thirst_mark",
+   "name": "รอยกระหาย",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "thirst_mark"
+    }
+   ],
+   "fxRaw": "#thirst_mark",
+   "desc": "",
+   "from": "เกิดในซาฮารัน ไม่ได้เป็นชนเผ่าทราย",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "SH"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "nb_dust_blood"
+    ]
+   },
+   "world": "",
+   "cure": "มีแหล่งน้ำประจำ หรือได้ nb_dust_blood",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:14"
+  },
+  {
+   "id": "nc_leaf_fever",
+   "name": "ไข้ใบไม้",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "leaf_fever"
+    }
+   ],
+   "fxRaw": "vit-1 #leaf_fever",
+   "desc": "",
+   "from": "เกิดในซิลวาเนลหลัง BIO-01",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "SV"
+     ]
+    },
+    {
+     "k": "event",
+     "id": "BIO-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "BIO-01",
+     "BIO-03"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ต้นไม้โลกฟื้น (BIO-03)",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:15"
+  },
+  {
+   "id": "nc_fog_shadow",
+   "name": "เงาหมอก",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fog_shadow"
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "nightmare"
+    }
+   ],
+   "fxRaw": "#fog_shadow #nightmare",
+   "desc": "",
+   "from": "เกิดในเนบูเลียหลัง FG-01",
+   "fromCond": [
+    {
+     "k": "continent",
+     "ids": [
+      "NB"
+     ]
+    },
+    {
+     "k": "event",
+     "id": "FG-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "FG-01"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "อยู่ในแสงโคมต่อเนื่องหนึ่งปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:16"
+  },
+  {
+   "id": "nc_fear_deep",
+   "name": "กลัวน้ำลึก",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_deep"
+    }
+   ],
+   "fxRaw": "#fear_deep",
+   "desc": "",
+   "from": "เงือกหรือนาคาที่ได้ c_hydrophobia",
+   "fromCond": [
+    {
+     "k": "has",
+     "kind": "curse",
+     "id": "c_hydrophobia"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "c_hydrophobia"
+    ]
+   },
+   "world": "",
+   "cure": "ลงน้ำลึกครั้งแรกพร้อมคนที่ไว้ใจ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:17"
+  },
+  {
+   "id": "nc_homeland_ghost",
+   "name": "ผีบ้านที่หายไป",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "homeland_ghost"
+    },
+    {
+     "k": "stat",
+     "stat": "piety",
+     "delta": -5
+    }
+   ],
+   "fxRaw": "#homeland_ghost piety-5",
+   "desc": "",
+   "from": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย (SR-65)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย (SR-65)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ตั้งบ้านใหม่และมีลูก หรือเก็บของจากบ้านเก่า",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ก. คำสาปถิ่นเกิด",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:18"
+  },
+  {
+   "id": "nc_sv_sky",
+   "name": "ฝันถึงเกาะเก่า",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "sky_dream"
+    }
+   ],
+   "fxRaw": "#sky_dream",
+   "desc": "",
+   "from": "DR-01",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-01"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้อยู่บนที่สูงหนึ่งครั้งด้วยความสบายใจ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:24"
+  },
+  {
+   "id": "nc_sv_ash",
+   "name": "ไม่กล้าทิ้งอาหาร",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hoarder"
+    }
+   ],
+   "fxRaw": "#hoarder",
+   "desc": "",
+   "from": "DR-04",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-04",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-04"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "มีอาหารพอเก็บครบหนึ่งปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:25"
+  },
+  {
+   "id": "nc_sv_tide",
+   "name": "กลัวที่ราบต่ำ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fear_lowland"
+    }
+   ],
+   "fxRaw": "#fear_lowland",
+   "desc": "",
+   "from": "DR-05",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-05",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-05"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "อยู่ที่สูงติดต่อกันสามปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:26"
+  },
+  {
+   "id": "nc_sv_crack",
+   "name": "ไม่ไว้ใจพื้นดิน",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ground_distrust"
+    }
+   ],
+   "fxRaw": "#ground_distrust",
+   "desc": "",
+   "from": "DR-07",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-07",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-07"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้ช่วยคนจากแผ่นดินไหวอีกครั้ง",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:27"
+  },
+  {
+   "id": "nc_sv_grove",
+   "name": "ฟื้นตัวช้า",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "slow_heal"
+    }
+   ],
+   "fxRaw": "vit-1 #slow_heal",
+   "desc": "",
+   "from": "BIO-02",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "BIO-02",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "BIO-02"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ปลูกต้นไม้ต้นหนึ่งและดูแลจนโต",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:28"
+  },
+  {
+   "id": "nc_sv_blackout",
+   "name": "ไม่เชื่อเครื่องจักร",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "machine_distrust"
+    }
+   ],
+   "fxRaw": "#machine_distrust",
+   "desc": "",
+   "from": "MC-04",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "MC-04",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "MC-04"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้รับความช่วยเหลือจากหุ่นหรือช่างหนึ่งครั้ง",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:29"
+  },
+  {
+   "id": "nc_sv_fog",
+   "name": "ฝันร้ายหนวด",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "tentacle_dream"
+    },
+    {
+     "k": "stat",
+     "stat": "int",
+     "delta": -1
+    }
+   ],
+   "fxRaw": "#tentacle_dream int-1",
+   "desc": "",
+   "from": "FG-01",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "FG-01",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "FG-01",
+     "BIO-05"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้แสงอาทิตย์ครั้งแรก (BIO-05) หรือเผชิญหน้าหนวดอีกครั้งโดยไม่หนี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:30"
+  },
+  {
+   "id": "nc_first_light_burn",
+   "name": "ตาไหม้แสงแรก",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "light_burn"
+    }
+   ],
+   "fxRaw": "#light_burn",
+   "desc": "",
+   "from": "BIO-05 สำหรับเผ่าที่เกลียดแสง",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "BIO-05",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "BIO-05"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "สวมหน้ากากกรองแสงหนึ่งปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:31"
+  },
+  {
+   "id": "nc_mourning",
+   "name": "ไว้อาลัยพี่น้อง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": -10
+    },
+    {
+     "k": "stat",
+     "stat": "luk",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "mourning"
+    }
+   ],
+   "fxRaw": "brave-10 luk-1 #mourning",
+   "desc": "",
+   "from": "DR-15 สำหรับผู้ถือตรามังกร",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "DR-15",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "DR-15"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ครบหนึ่งปี หรือไปเยี่ยมที่ที่มังกรตัวนั้นเคยดูแล",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ข. คำสาปจากการรอดเหตุการณ์",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:32"
+  },
+  {
+   "id": "nc_crown_hunger",
+   "name": "ความหิวของมงกุฎ",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "crown_hunger"
+    },
+    {
+     "k": "stat",
+     "stat": "kind",
+     "delta": -10
+    }
+   ],
+   "fxRaw": "#crown_hunger kind-10",
+   "desc": "",
+   "from": "แตะมงกุฎกระดูก MH-10",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "MH-10"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "MH-10"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ปฏิเสธมงกุฎต่อหน้าผู้ชม",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:38"
+  },
+  {
+   "id": "nc_deep_pull",
+   "name": "เสียงเรียกใต้ดิน",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "deep_pull"
+    }
+   ],
+   "fxRaw": "#deep_pull",
+   "desc": "",
+   "from": "ได้ยินหัวใจของ KD-10",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "KD-10"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "KD-10"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ออกห่างเหมืองหนึ่งปี",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:39"
+  },
+  {
+   "id": "nc_fog_whisper",
+   "name": "เสียงเรียกชื่อ",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fog_whisper"
+    },
+    {
+     "k": "stat",
+     "stat": "piety",
+     "delta": -10
+    }
+   ],
+   "fxRaw": "#fog_whisper piety-10",
+   "desc": "",
+   "from": "ได้ยินเสียงกระซิบเนบูเลีย",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ได้ยินเสียงกระซิบเนบูเลีย"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "NB-07"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พิธีปิดเสียงที่ NB-07",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:40"
+  },
+  {
+   "id": "nc_unheard_prayer",
+   "name": "คำอธิษฐานไม่ถึง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "belief",
+     "delta": -15
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "unheard"
+    }
+   ],
+   "fxRaw": "belief-15 #unheard",
+   "desc": "",
+   "from": "ศรัทธาศาสนาช่อง D หรือ E",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ศรัทธาศาสนาช่อง D หรือ E"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "เปลี่ยนศาสนาหรือรอจนช่องเปิด",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:41"
+  },
+  {
+   "id": "nc_false_saint",
+   "name": "นักบุญปลอม",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": 10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "false_saint"
+    }
+   ],
+   "fxRaw": "fame+10 #false_saint",
+   "desc": "",
+   "from": "ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ยอมรับต่อสาธารณะ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:42"
+  },
+  {
+   "id": "nc_oath_stone",
+   "name": "คำสาบานหิน",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "oath_stone"
+    }
+   ],
+   "fxRaw": "#oath_stone",
+   "desc": "",
+   "from": "สาบานต่อศรัทธาศิลา (SH-13 SH-17)",
+   "fromCond": [
+    {
+     "k": "country",
+     "ids": [
+      "SH-13",
+      "SH-17"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [
+     "SH-13",
+     "SH-17"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ผู้รับคำสาบานปลดให้",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:43"
+  },
+  {
+   "id": "nc_dragon_grief",
+   "name": "น้ำตามังกรติดตัว",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "dragon_grief"
+    }
+   ],
+   "fxRaw": "#dragon_grief",
+   "desc": "",
+   "from": "เห็นมังกรตาย ต่อหน้า",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เห็นมังกรตาย ต่อหน้า"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ไปยังที่เกิดของมังกรตัวนั้น",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:44"
+  },
+  {
+   "id": "nc_seal_scar",
+   "name": "แผลผนึก",
+   "tier": "E",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "seal_scar"
+    }
+   ],
+   "fxRaw": "#seal_scar",
+   "desc": "",
+   "from": "ผู้ปลดผนึก (GD-07) ที่ล้มเหลว",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "GD-07",
+     "happened": true
+    }
+   ],
+   "refs": {
+    "events": [
+     "GD-07"
+    ],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ปิดผนึกซ้ำสำเร็จ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปจากตรามังกรและศาสนา",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:45"
+  },
+  {
+   "id": "nc_favor_unpaid",
+   "name": "หนี้บุญคุณ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "favor_unpaid"
+    }
+   ],
+   "fxRaw": "#favor_unpaid",
+   "desc": "",
+   "from": "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ตอบแทนหนึ่งครั้ง หรือ NPC ตาย",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:51"
+  },
+  {
+   "id": "nc_blood_feud",
+   "name": "ศึกสายเลือดกับ NPC",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "blood_feud"
+    }
+   ],
+   "fxRaw": "#blood_feud",
+   "desc": "",
+   "from": "ตัวละครทำร้าย NPC สำคัญ ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) แกน แค้น ระดับ +4",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ตัวละครทำร้าย NPC สำคัญ ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) แกน แค้น ระดับ +4"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ชดใช้หรือไถ่โทษ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:52"
+  },
+  {
+   "id": "nc_betrayed_trust",
+   "name": "ถูกหักหลัง",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "honest",
+     "delta": -5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "distrust"
+    }
+   ],
+   "fxRaw": "honest-5 #distrust",
+   "desc": "",
+   "from": "NPC ที่ไว้ใจสูงสุดหักหลัง",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "NPC ที่ไว้ใจสูงสุดหักหลัง"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พบพันธมิตรใหม่ที่ไว้ใจ +3",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:53"
+  },
+  {
+   "id": "nc_cult_mark",
+   "name": "ตราลัทธิหมายหัว",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "cult_hunted"
+    }
+   ],
+   "fxRaw": "#cult_hunted",
+   "desc": "",
+   "from": "ขัดขวางลัทธิคำพิพากษา (GD-02 ขบวนการ NB-07)",
+   "fromCond": [
+    {
+     "k": "event",
+     "id": "GD-02",
+     "happened": true
+    },
+    {
+     "k": "country",
+     "ids": [
+      "NB-07"
+     ]
+    }
+   ],
+   "refs": {
+    "events": [
+     "GD-02"
+    ],
+    "countries": [
+     "NB-07"
+    ],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ลัทธิล่มหรือตัวละครออกจากทวีป",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:54"
+  },
+  {
+   "id": "nc_name_lost",
+   "name": "ชื่อถูกลืม",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "fame",
+     "delta": -20
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "name_lost"
+    }
+   ],
+   "fxRaw": "fame-20 #name_lost",
+   "desc": "",
+   "from": "อยู่ในหมอกทึบนานเกินหนึ่งปี",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "อยู่ในหมอกทึบนานเกินหนึ่งปี"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้ชื่อใหม่จาก NPC ที่ไว้ใจ",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:55"
+  },
+  {
+   "id": "nc_guardian_debt",
+   "name": "หนี้ผู้พิทักษ์",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "guardian_debt"
+    }
+   ],
+   "fxRaw": "#guardian_debt",
+   "desc": "",
+   "from": "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ทำบุญเป็นชื่อผู้ตาย",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:56"
+  },
+  {
+   "id": "nc_exile_scar",
+   "name": "แผลผู้พลัดถิ่น",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "social",
+     "delta": -10
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "exile"
+    }
+   ],
+   "fxRaw": "social-10 #exile",
+   "desc": "",
+   "from": "เกิดนอกถิ่นหลักและถูกรังเกียจ",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดนอกถิ่นหลักและถูกรังเกียจ"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้ที่ยืนในชุมชนใหม่",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:57"
+  },
+  {
+   "id": "nc_half_blood",
+   "name": "สายเลือดสองฝั่ง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "half_blood"
+    }
+   ],
+   "fxRaw": "#half_blood",
+   "desc": "",
+   "from": "ลูกครึ่งที่ถิ่นไม่รับ (ดู [01-origin.md](01-origin.md) หัวข้อ 4)",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "ลูกครึ่งที่ถิ่นไม่รับ (ดู [01-origin.md](01-origin.md) หัวข้อ 4)"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ได้ตำแหน่งในชุมชนหนึ่ง",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ง. คำสาปจากความสัมพันธ์และเรื่องราว",
+   "src": "doc",
+   "at": "docs/systems/character/06-new-curses.md:58"
+  },
+  {
+   "id": "nc_trembling_hand",
+   "name": "มือสั่น",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "trembling_hand"
+    }
+   ],
+   "fxRaw": "#trembling_hand",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พักมือหนึ่งปี หรือพรมือนิ่ง",
+   "jobsText": "แพทย์ ช่างเครื่องประดับ ช่างกล",
+   "jobs": [
+    "physician",
+    "jeweler",
+    "mechanic"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:76"
+  },
+  {
+   "id": "nc_wood_dust",
+   "name": "ปอดฝุ่นไม้",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "vit",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "wood_dust"
+    }
+   ],
+   "fxRaw": "vit-1 #wood_dust",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "เปลี่ยนอาชีพ",
+   "jobsText": "ช่างไม้ คนตัดไม้",
+   "jobs": [
+    "carpenter",
+    "woodcutter"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:77"
+  },
+  {
+   "id": "nc_bad_back",
+   "name": "หลังเสื่อม",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "pow",
+     "delta": -1
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bad_back"
+    }
+   ],
+   "fxRaw": "pow-1 #bad_back",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "อาชีพเบาลง",
+   "jobsText": "ผู้ใช้แรงงาน",
+   "jobs": [],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:78"
+  },
+  {
+   "id": "nc_brittle_wrist",
+   "name": "ข้อมืออักเสบ",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "brittle_wrist"
+    }
+   ],
+   "fxRaw": "#brittle_wrist",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พักหนึ่งปี",
+   "jobsText": "นักเขียน ช่างเย็บ ช่างตี",
+   "jobs": [],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:79"
+  },
+  {
+   "id": "nc_tone_deaf",
+   "name": "หูไม่ฟังเสียง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "tone_deaf"
+    }
+   ],
+   "fxRaw": "#tone_deaf",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ไม่มี",
+   "jobsText": "นักดนตรี นักเต้น",
+   "jobs": [
+    "dancer"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:80"
+  },
+  {
+   "id": "nc_fish_shy",
+   "name": "ปลาหนีเมื่อเข้าใกล้",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "fish_shy"
+    }
+   ],
+   "fxRaw": "#fish_shy",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ย้ายถิ่นน้ำ",
+   "jobsText": "ชาวประมง",
+   "jobs": [
+    "fisher"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:81"
+  },
+  {
+   "id": "nc_crop_blight",
+   "name": "พืชเหี่ยวเมื่อแตะ",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "crop_blight"
+    }
+   ],
+   "fxRaw": "#crop_blight",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พรมือเขียวจากวัดหรือผู้ศรัทธา",
+   "jobsText": "ชาวนา ผู้ทำสวน",
+   "jobs": [
+    "farmer"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:82"
+  },
+  {
+   "id": "nc_ledger_error",
+   "name": "เลขเพี้ยน",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "ledger_error"
+    }
+   ],
+   "fxRaw": "#ledger_error",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ใช้ลูกคิดหรือผู้ช่วย",
+   "jobsText": "นักบัญชี นายธนาคาร",
+   "jobs": [
+    "accountant",
+    "banker"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:83"
+  },
+  {
+   "id": "nc_hound_hate",
+   "name": "หมาเห่าทุกครั้ง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hound_hate"
+    }
+   ],
+   "fxRaw": "#hound_hate",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "พรสัตว์ไว้ใจ",
+   "jobsText": "คนส่งสาร ผู้คุ้มกัน",
+   "jobs": [
+    "courier"
+   ],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:84"
+  },
+  {
+   "id": "nc_restless",
+   "name": "อยู่นิ่งไม่ได้",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "restless"
+    }
+   ],
+   "fxRaw": "#restless",
+   "desc": "",
+   "from": "",
+   "fromCond": [],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ฝึกนิสัย patient หรือ easygoing",
+   "jobsText": "อาชีพชีวิตช้า",
+   "jobs": [],
+   "group": "ง. คำสาปใหม่ 10 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/12-job-support.md:85"
+  },
+  {
+   "id": "nc_pet_grief",
+   "name": "ไว้อาลัยสัตว์",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "stat",
+     "stat": "brave",
+     "delta": -5
+    },
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "pet_grief"
+    }
+   ],
+   "fxRaw": "brave-5 #pet_grief",
+   "desc": "",
+   "from": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ [13](13-companions-overview.md))",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ [13](13-companions-overview.md))"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "หนึ่งปี หรือได้สัตว์ตัวใหม่",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:43"
+  },
+  {
+   "id": "nc_beast_fear",
+   "name": "สัตว์กลัวตัว",
+   "tier": "U",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "beast_fear"
+    }
+   ],
+   "fxRaw": "#beast_fear",
+   "desc": "",
+   "from": "พิธีล้มเหลวหรือเคยทำร้ายสัตว์",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "พิธีล้มเหลวหรือเคยทำร้ายสัตว์"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "ผ่านพิธีผูกพันครั้งหนึ่ง",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:44"
+  },
+  {
+   "id": "nc_pet_jinx",
+   "name": "สัตว์ซวยตามตัว",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "pet_jinx"
+    }
+   ],
+   "fxRaw": "#pet_jinx",
+   "desc": "",
+   "from": "ผู้ที่มี c_jinx หรือ c_doomed",
+   "fromCond": [
+    {
+     "k": "has",
+     "kind": "curse",
+     "id": "c_jinx"
+    },
+    {
+     "k": "has",
+     "kind": "curse",
+     "id": "c_doomed"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "c_jinx",
+     "c_doomed"
+    ]
+   },
+   "world": "",
+   "cure": "พรหรือพิธีล้างความซวย",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:45"
+  },
+  {
+   "id": "nc_allergic_fur",
+   "name": "แพ้ขนสัตว์",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "allergic_fur"
+    }
+   ],
+   "fxRaw": "#allergic_fur",
+   "desc": "",
+   "from": "เกิดตามธรรมชาติ",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เกิดตามธรรมชาติ"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "สัตว์ไร้ขน (สไลม์ จักรกล ผู้ตาย)",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:46"
+  },
+  {
+   "id": "nc_bad_trainer",
+   "name": "ฝึกสัตว์ไม่เชื่อฟัง",
+   "tier": "C",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "bad_trainer"
+    }
+   ],
+   "fxRaw": "#bad_trainer",
+   "desc": "",
+   "from": "ผู้ที่มีนิสัย stubborn หรือ hot",
+   "fromCond": [
+    {
+     "k": "has",
+     "kind": "trait",
+     "id": "stubborn"
+    },
+    {
+     "k": "has",
+     "kind": "trait",
+     "id": "hot"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": [
+     "stubborn",
+     "hot",
+     "ns_pet_train"
+    ]
+   },
+   "world": "",
+   "cure": "เรียน ns_pet_train",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:47"
+  },
+  {
+   "id": "nc_hunted_for_beast",
+   "name": "ถูกตามล่าเพราะสัตว์หายาก",
+   "tier": "R",
+   "fx": [
+    {
+     "k": "grant",
+     "kind": "tag",
+     "id": "hunted_for_beast"
+    }
+   ],
+   "fxRaw": "#hunted_for_beast",
+   "desc": "",
+   "from": "เลี้ยงสัตว์ ระดับ E หรือ L และข่าวรั่ว",
+   "fromCond": [
+    {
+     "k": "text",
+     "text": "เลี้ยงสัตว์ ระดับ E หรือ L และข่าวรั่ว"
+    }
+   ],
+   "refs": {
+    "events": [],
+    "countries": [],
+    "nodes": [],
+    "ids": []
+   },
+   "world": "",
+   "cure": "สัตว์ตายหรือย้ายถิ่น",
+   "jobsText": "",
+   "jobs": [],
+   "group": "ค. คำสาปใหม่ 6 อย่าง",
+   "src": "doc",
+   "at": "docs/systems/character/17-companion-support.md:48"
+  }
+ ]
+}

@@ -1,0 +1,6743 @@
+{
+ "version": "f8bc7bdaa945",
+ "sources": [
+  "docs/systems/character/08-jobs-overview.md",
+  "docs/systems/character/09-jobs-common.md",
+  "docs/systems/character/10-jobs-secret.md",
+  "docs/systems/character/11-jobs-special.md",
+  "docs/systems/character/12-job-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": {
+  "jobs": [
+   {
+    "id": "farmer",
+    "name": "ชาวนา",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "farming",
+     "cooking"
+    ],
+    "slow": false,
+    "reqText": "ไม่ใช่ยักษ์ (ตัวใหญ่เกินกว่านาข้าวทั่วไป) · ทุกทวีปที่มีที่ดินปลูก",
+    "req": [
+     {
+      "k": "text",
+      "text": "ไม่ใช่ยักษ์ (ตัวใหญ่เกินกว่านาข้าวทั่วไป)"
+     },
+     {
+      "k": "text",
+      "text": "ทุกทวีปที่มีที่ดินปลูก"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_harvest_spirit",
+    "raceBonus": [
+     "human"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:15"
+   },
+   {
+    "id": "hunter",
+    "name": "นายพราน",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "bow",
+     "tracking",
+     "taming"
+    ],
+    "slow": false,
+    "reqText": "ถิ่นมีป่าหรือภูเขา · เผ่าที่มี huge ล่าได้เฉพาะสัตว์ใหญ่",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นมีป่าหรือภูเขา"
+     },
+     {
+      "k": "text",
+      "text": "เผ่าที่มี huge ล่าได้เฉพาะสัตว์ใหญ่"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_light_sword",
+    "raceBonus": [
+     "elf",
+     "orc",
+     "beast",
+     "ghoul"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:16"
+   },
+   {
+    "id": "soldier",
+    "name": "ทหาร",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sword",
+     "spear",
+     "shield",
+     "axe"
+    ],
+    "slow": false,
+    "reqText": "ประเทศที่มีกองทัพประจำ · ถ้าอยู่ถิ่นสงคราม (war) น้ำหนัก ×2",
+    "req": [
+     {
+      "k": "text",
+      "text": "ประเทศที่มีกองทัพประจำ"
+     },
+     {
+      "k": "text",
+      "text": "ถ้าอยู่ถิ่นสงคราม (war) น้ำหนัก ×2"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_light_sword",
+    "raceBonus": [
+     "human",
+     "orc",
+     "dragonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:17"
+   },
+   {
+    "id": "adventurer",
+    "name": "นักผจญภัย",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sword",
+     "dagger",
+     "bow",
+     "tracking",
+     "stealth"
+    ],
+    "slow": false,
+    "reqText": "ประเทศที่มีกิลด์ (AL-18 AL-03 ฯลฯ) อายุ 15 ขึ้นไป",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-18",
+       "AL-03"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_light_sword",
+    "raceBonus": [
+     "slime"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:18"
+   },
+   {
+    "id": "merchant",
+    "name": "พ่อค้า",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "trade",
+     "charm",
+     "sailing"
+    ],
+    "slow": false,
+    "reqText": "ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า ฮาล์ฟลิงและแวมไพร์ได้ง่ายขึ้นตาม SR-56"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_caravan_fortune",
+    "raceBonus": [
+     "human",
+     "halfling"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:19"
+   },
+   {
+    "id": "mage",
+    "name": "นักเวท",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "fire",
+     "water",
+     "wind",
+     "earth",
+     "ice",
+     "lightning",
+     "summon",
+     "rune",
+     "space"
+    ],
+    "slow": false,
+    "reqText": "ค่าเวท 10 ขึ้นไป · หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59)",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "mag",
+      "op": ">=",
+      "value": 10
+     },
+     {
+      "k": "text",
+      "text": "หุ่นวิญญาณ ลูกผสมจักรกลเรียนได้ยาก (ผลลดตาม SR-59)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_arcane_tome",
+    "raceBonus": [
+     "elf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:20"
+   },
+   {
+    "id": "priest",
+    "name": "นักบวช",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "light",
+     "healing",
+     "divination"
+    ],
+    "slow": false,
+    "reqText": "ศาสนาแสง: พระ ชายเท่านั้น หญิงเป็น temple_servant · เทพีแห่งจันทรา: หญิงเท่านั้น · ลัทธิมังกร: เผ่าปีกเท่านั้น (เผ่าอื่นเป็นผู้ช่วย) · พญานาคราช: ต้องผ่านการทดสอบ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ศาสนาแสง: พระ ชายเท่านั้น หญิงเป็น temple_servant"
+     },
+     {
+      "k": "text",
+      "text": "เทพีแห่งจันทรา: หญิงเท่านั้น"
+     },
+     {
+      "k": "text",
+      "text": "ลัทธิมังกร: เผ่าปีกเท่านั้น (เผ่าอื่นเป็นผู้ช่วย)"
+     },
+     {
+      "k": "text",
+      "text": "พญานาคราช: ต้องผ่านการทดสอบ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_holy_vision",
+    "raceBonus": [
+     "naga"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:21"
+   },
+   {
+    "id": "thief",
+    "name": "โจร",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "dagger",
+     "stealth",
+     "whip"
+    ],
+    "slow": false,
+    "reqText": "ไม่จำกัด · ในประเทศที่มีกฎหมายเข้ม (AL-06 AL-08) น้ำหนักลดและเสี่ยงถูกจับ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ไม่จำกัด"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-06",
+       "AL-08"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_guild_invite",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:22"
+   },
+   {
+    "id": "smith",
+    "name": "ช่างตีเหล็ก",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "smithing",
+     "mining",
+     "hammer"
+    ],
+    "slow": false,
+    "reqText": "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52) · ต้องค่ากำลัง 8 ขึ้นไป",
+    "req": [
+     {
+      "k": "text",
+      "text": "คนแคระ เผ่าลาวา ยักษ์ได้ง่าย (SR-52)"
+     },
+     {
+      "k": "stat",
+      "stat": "pow",
+      "op": ">=",
+      "value": 8
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_master_forge",
+    "raceBonus": [
+     "dwarf",
+     "giant",
+     "lavakin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:23"
+   },
+   {
+    "id": "scholar",
+    "name": "นักปราชญ์",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "scholar",
+     "rune",
+     "alchemy",
+     "divination"
+    ],
+    "slow": false,
+    "reqText": "ต้องอ่านออก (ปัญญา 8 ขึ้นไป) · AL-11 SV-07 MK-13 เป็นสำนักใหญ่",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "int",
+      "op": ">=",
+      "value": 8
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "SV-07",
+       "MK-13"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_arcane_tome",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:24"
+   },
+   {
+    "id": "bard",
+    "name": "กวีพเนจร",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "music",
+     "charm"
+    ],
+    "slow": false,
+    "reqText": "ทุกเผ่า ไซเรนและเงือกได้ง่ายขึ้น · ประเทศที่ศาสนาห้ามดนตรีน้ำหนักลด",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า ไซเรนและเงือกได้ง่ายขึ้น"
+     },
+     {
+      "k": "text",
+      "text": "ประเทศที่ศาสนาห้ามดนตรีน้ำหนักลด"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_royal_song",
+    "raceBonus": [
+     "fae",
+     "merfolk"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:25"
+   },
+   {
+    "id": "fisher",
+    "name": "ชาวประมง",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sailing",
+     "water",
+     "spear"
+    ],
+    "slow": false,
+    "reqText": "ต้องมีถิ่นติดน้ำ · เงือกนาคาเป็นชาวประมงโดยธรรมชาติ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นติดน้ำ"
+     },
+     {
+      "k": "text",
+      "text": "เงือกนาคาเป็นชาวประมงโดยธรรมชาติ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_sea_treasure",
+    "raceBonus": [
+     "naga",
+     "merfolk"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:26"
+   },
+   {
+    "id": "healer",
+    "name": "หมอยา",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "healing",
+     "alchemy",
+     "nature"
+    ],
+    "slow": false,
+    "reqText": "ทุกเผ่า · มัมมี่และกูลรักษาผู้อื่นได้ครึ่งเดียว",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า"
+     },
+     {
+      "k": "text",
+      "text": "มัมมี่และกูลรักษาผู้อื่นได้ครึ่งเดียว"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_plague_cure",
+    "raceBonus": [
+     "naga",
+     "slime"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:27"
+   },
+   {
+    "id": "knight",
+    "name": "อัศวิน",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sword",
+     "mounted",
+     "shield",
+     "leadership"
+    ],
+    "slow": false,
+    "reqText": "ต้องเป็นขุนนาง (noble) หรือศิษย์ AL-18 ไรน์วอลด์ · ไม่จำกัดเพศ",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "noble"
+       },
+       {
+        "k": "country",
+        "ids": [
+         "AL-18"
+        ]
+       }
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ไม่จำกัดเพศ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_light_sword",
+    "raceBonus": [
+     "dragonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:28"
+   },
+   {
+    "id": "assassin",
+    "name": "นักฆ่า",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "dagger",
+     "stealth",
+     "alchemy"
+    ],
+    "slow": false,
+    "reqText": "เข้ากิลด์เงา (NB-05) ได้ง่ายสุด · ดาร์กเอลฟ์และแวมไพร์ได้ง่าย",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NB-05"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ดาร์กเอลฟ์และแวมไพร์ได้ง่าย"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_guild_invite",
+    "raceBonus": [
+     "darkelf",
+     "vampire"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:29"
+   },
+   {
+    "id": "druid",
+    "name": "เดรุยด์",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "nature",
+     "taming",
+     "earth"
+    ],
+    "slow": false,
+    "reqText": "ซิลวาเนลและเขตป่า · ไม่ได้ในประเทศที่ห้ามผู้นอกร่มไม้",
+    "req": [
+     {
+      "k": "text",
+      "text": "ซิลวาเนลและเขตป่า"
+     },
+     {
+      "k": "text",
+      "text": "ไม่ได้ในประเทศที่ห้ามผู้นอกร่มไม้"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_beast_companion",
+    "raceBonus": [
+     "elf",
+     "fae"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:30"
+   },
+   {
+    "id": "pirate",
+    "name": "โจรสลัด",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sailing",
+     "sword",
+     "whip"
+    ],
+    "slow": false,
+    "reqText": "ต้องมีถิ่นติดน้ำ · NR-05 เป็นศูนย์กลาง",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นติดน้ำ"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NR-05"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_sea_treasure",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:31"
+   },
+   {
+    "id": "cook",
+    "name": "พ่อครัว",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "cooking",
+     "trade"
+    ],
+    "slow": false,
+    "reqText": "ทุกเผ่า (สไลม์ ฮาล์ฟลิงเด่น)",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า (สไลม์ ฮาล์ฟลิงเด่น)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_royal_banquet",
+    "raceBonus": [
+     "halfling",
+     "slime"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:32"
+   },
+   {
+    "id": "warlock",
+    "name": "ผู้ทำสัญญา",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "contract",
+     "dark",
+     "curse",
+     "blood"
+    ],
+    "slow": false,
+    "reqText": "ต้องมีความถนัดสัญญาปีศาจหรือไสยศาสตร์ · เผ่าปีศาจ ดาร์กเอลฟ์เด่น",
+    "req": [
+     {
+      "k": "text",
+      "text": "ความถนัดสัญญาปีศาจหรือไสยศาสตร์"
+     },
+     {
+      "k": "text",
+      "text": "เผ่าปีศาจ ดาร์กเอลฟ์เด่น"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_dark_patron",
+    "raceBonus": [
+     "vampire",
+     "demonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:33"
+   },
+   {
+    "id": "tamer",
+    "name": "ผู้ฝึกอสูร",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "taming",
+     "mounted",
+     "tracking"
+    ],
+    "slow": false,
+    "reqText": "เผ่าสัตว์ ออร์ค เด่น · ซิลวาเนล มอร์เฮเวน",
+    "req": [
+     {
+      "k": "text",
+      "text": "เผ่าสัตว์ ออร์ค เด่น"
+     },
+     {
+      "k": "text",
+      "text": "ซิลวาเนล มอร์เฮเวน"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_beast_companion",
+    "raceBonus": [
+     "orc",
+     "beast"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:34"
+   },
+   {
+    "id": "noble",
+    "name": "ขุนนาง",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "leadership",
+     "charm",
+     "trade"
+    ],
+    "slow": false,
+    "reqText": "ต้องมี noble เท่านั้น (เกิดในตระกูลขุนนางหรือได้ตำแหน่ง)",
+    "req": [
+     {
+      "k": "text",
+      "text": "noble เท่านั้น (เกิดในตระกูลขุนนางหรือได้ตำแหน่ง)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_court_intrigue",
+    "raceBonus": [
+     "vampire"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:35"
+   },
+   {
+    "id": "monk",
+    "name": "นักพรต",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "unarmed",
+     "healing"
+    ],
+    "slow": false,
+    "reqText": "สำนัก SH-13 ซีมาร์ · วัดในทุกศาสนา · ยักษ์ผู้สละโลก",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-13"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "วัดในทุกศาสนา"
+     },
+     {
+      "k": "text",
+      "text": "ยักษ์ผู้สละโลก"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "chain_enlightenment",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:36"
+   },
+   {
+    "id": "scribe",
+    "name": "เสมียน",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "scholar",
+     "rune"
+    ],
+    "slow": false,
+    "reqText": "ต้องอ่านออก · ทุกประเทศที่มีสำนักงาน",
+    "req": [
+     {
+      "k": "text",
+      "text": "อ่านออก"
+     },
+     {
+      "k": "text",
+      "text": "ทุกประเทศที่มีสำนักงาน"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "soulmachine",
+     "mummy"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:37"
+   },
+   {
+    "id": "shepherd",
+    "name": "คนเลี้ยงแกะ",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "taming",
+     "farming"
+    ],
+    "slow": false,
+    "reqText": "ทุ่งหญ้า AL-24 SV ภูเขา",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-24"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "beast"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:38"
+   },
+   {
+    "id": "carpenter",
+    "name": "ช่างไม้",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "smithing",
+     "mining",
+     "earth"
+    ],
+    "slow": false,
+    "reqText": "ทุกเผ่า · ยักษ์ทำงานไม้ขนาดใหญ่",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า"
+     },
+     {
+      "k": "text",
+      "text": "ยักษ์ทำงานไม้ขนาดใหญ่"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:39"
+   },
+   {
+    "id": "weaver",
+    "name": "ช่างทอผ้า",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "trade",
+     "charm",
+     "illusion"
+    ],
+    "slow": false,
+    "reqText": "AL-05 SH-04 MK-12 เด่น",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "SH-04",
+       "MK-12"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:40"
+   },
+   {
+    "id": "servant",
+    "name": "คนรับใช้ในวัง",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "cooking",
+     "charm",
+     "stealth"
+    ],
+    "slow": false,
+    "reqText": "ประเทศที่มีราชสำนัก (AL-05 AL-03 AL-08)",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "AL-03",
+       "AL-08"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:41"
+   },
+   {
+    "id": "performer",
+    "name": "นักแสดงละคร",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "music",
+     "charm",
+     "illusion"
+    ],
+    "slow": false,
+    "reqText": "เมืองใหญ่ · AL-05 AL-13",
+    "req": [
+     {
+      "k": "text",
+      "text": "เมืองใหญ่"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "AL-13"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:42"
+   },
+   {
+    "id": "teacher",
+    "name": "ครู",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "scholar",
+     "leadership"
+    ],
+    "slow": false,
+    "reqText": "ต้องอ่านออก · AL-11 MK-07",
+    "req": [
+     {
+      "k": "text",
+      "text": "อ่านออก"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "MK-07"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "human",
+     "soulmachine"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:43"
+   },
+   {
+    "id": "seer",
+    "name": "หมอดู",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "divination",
+     "illusion"
+    ],
+    "slow": false,
+    "reqText": "เทพีแห่งจันทรา · ศรัทธาความฝัน (AL-14) · เผ่าฟาโรห์",
+    "req": [
+     {
+      "k": "text",
+      "text": "เทพีแห่งจันทรา"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-14"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "เผ่าฟาโรห์"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "mummy"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:44"
+   },
+   {
+    "id": "archaeologist",
+    "name": "นักสำรวจซากโบราณ",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "scholar",
+     "rune",
+     "mining"
+    ],
+    "slow": false,
+    "reqText": "AL-11 NR-14 MK-04 MK-13 · ต้องการอ่านออกและทนทาน",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "NR-14",
+       "MK-04",
+       "MK-13"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "การอ่านออกและทนทาน"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "mummy"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:45"
+   },
+   {
+    "id": "spy",
+    "name": "สายลับ",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "stealth",
+     "charm",
+     "illusion"
+    ],
+    "slow": false,
+    "reqText": "ทุกประเทศ · NB-09 MH-08 AL-05 เด่น",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกประเทศ"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NB-09",
+       "MH-08",
+       "AL-05"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "darkelf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:46"
+   },
+   {
+    "id": "diplomat",
+    "name": "นักการทูต",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "charm",
+     "leadership",
+     "trade"
+    ],
+    "slow": false,
+    "reqText": "AL-01 NR-01 · ต้องมีชื่อเสียงขั้นต่ำ",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-01",
+       "NR-01"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ชื่อเสียงขั้นต่ำ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:47"
+   },
+   {
+    "id": "gravekeeper",
+    "name": "คนเฝ้าสุสาน",
+    "kind": "common",
+    "tier": "U",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "necro",
+     "curse",
+     "light"
+    ],
+    "slow": false,
+    "reqText": "AL-25 SH-02 MH-12 · กูลและมัมมี่ไม่ทำ (ทำให้ผู้ตายไม่สบายใจ)",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-25",
+       "SH-02",
+       "MH-12"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "กูลและมัมมี่ไม่ทำ (ทำให้ผู้ตายไม่สบายใจ)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "mummy",
+     "ghoul"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:48"
+   },
+   {
+    "id": "innkeeper",
+    "name": "เจ้าของโรงเตี๊ยม",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "cooking",
+     "trade",
+     "charm"
+    ],
+    "slow": false,
+    "reqText": "ทุกเมือง · ต้องมีเงินเริ่มต้น 50",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมือง"
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 50
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "halfling"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:49"
+   },
+   {
+    "id": "miner",
+    "name": "คนงานเหมือง",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "mining",
+     "earth"
+    ],
+    "slow": false,
+    "reqText": "KD SH-08 SH-15 AL-12 · ยักษ์ใหญ่เกินเหมืองเล็ก",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-08",
+       "SH-15",
+       "AL-12"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ยักษ์ใหญ่เกินเหมืองเล็ก"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "dwarf",
+     "giant",
+     "lavakin",
+     "construct",
+     "ghoul"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:50"
+   },
+   {
+    "id": "sailor",
+    "name": "ลูกเรือ",
+    "kind": "common",
+    "tier": "C",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "sailing",
+     "water"
+    ],
+    "slow": false,
+    "reqText": "ต้องมีถิ่นติดน้ำ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นติดน้ำ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "merfolk"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:51"
+   },
+   {
+    "id": "alchemist",
+    "name": "นักเล่นแร่แปรธาตุ",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "alchemy",
+     "fire"
+    ],
+    "slow": false,
+    "reqText": "NB-06 AL-12 SV-12 เด่น",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NB-06",
+       "AL-12",
+       "SV-12"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "darkelf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:52"
+   },
+   {
+    "id": "royal_guard",
+    "name": "ราชองครักษ์",
+    "kind": "common",
+    "tier": "R",
+    "group": "เดิมในโค้ด",
+    "origin": "code",
+    "apts": [
+     "shield",
+     "sword",
+     "spear"
+    ],
+    "slow": false,
+    "reqText": "ต้องเป็นขุนนางหรือชื่อเสียงขั้นต่ำ 15",
+    "req": [
+     {
+      "k": "text",
+      "text": "เป็นขุนนางหรือชื่อเสียงขั้นต่ำ 15"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [
+     "dragonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:53"
+   },
+   {
+    "id": "woodcutter",
+    "name": "คนตัดไม้",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "carpentry"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "ซิลวาเนลห้ามตัดในเขตร่มไม้ (SV กฎลำต้น) · ที่อื่นปกติ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ซิลวาเนลห้ามตัดในเขตร่มไม้ (SV กฎลำต้น)"
+     },
+     {
+      "k": "text",
+      "text": "ที่อื่นปกติ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wild",
+    "raceBonus": [
+     "giant"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:61"
+   },
+   {
+    "id": "baker",
+    "name": "คนทำขนมปัง",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "cooking"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "ทุกเมือง · ชนิดขนมตามถิ่น",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมือง"
+     },
+     {
+      "k": "text",
+      "text": "ชนิดขนมตามถิ่น"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "อนุญาตให้ร้านเป็นศูนย์ข่าวลือ",
+    "raceBonus": [
+     "halfling"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:62"
+   },
+   {
+    "id": "tailor",
+    "name": "ช่างตัดเสื้อ",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "tailoring"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "AL-05 เด่นสุด · เปิดขายชุดซ่อนอาวุธได้ แบบของลูเซียน (AL05-2)",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "เปิดขายชุดซ่อนอาวุธได้ แบบของลูเซียน (AL05-2)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:outlaw ได้ถ้าซ่อนอาวุธ",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:63"
+   },
+   {
+    "id": "potter",
+    "name": "ช่างปั้นหม้อ",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "pottery"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "ทุกเมือง · ช่างปั้นถ้วยพิธีให้วัด",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมือง"
+     },
+     {
+      "k": "text",
+      "text": "ช่างปั้นถ้วยพิธีให้วัด"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "—",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:64"
+   },
+   {
+    "id": "brewer",
+    "name": "นักต้มเหล้า",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "brewing"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ประเทศที่ศาสนาไม่ห้ามสุรา · คนแคระ ออร์ค",
+    "req": [
+     {
+      "k": "text",
+      "text": "ประเทศที่ศาสนาไม่ห้ามสุรา"
+     },
+     {
+      "k": "race",
+      "ids": [
+       "dwarf",
+       "orc"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พรเดิม b_ironstomach ได้ง่าย",
+    "raceBonus": [
+     "dwarf",
+     "lavakin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:65"
+   },
+   {
+    "id": "glassblower",
+    "name": "ช่างเป่าแก้ว",
+    "kind": "common",
+    "tier": "U",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "art",
+     "pottery"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "SH-08 KD-09 เด่น",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-08",
+       "KD-09"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "แก้วเห็นอดีตของซามีร์ (SH08-2)",
+    "raceBonus": [
+     "lavakin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:66"
+   },
+   {
+    "id": "jeweler",
+    "name": "ช่างเครื่องประดับ",
+    "kind": "common",
+    "tier": "U",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "jewelry"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "AL-05 SH-08 · เงินทุนเริ่มต้น 80",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "SH-08"
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 80
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พรสาย #treasure",
+    "raceBonus": [
+     "darkelf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:67"
+   },
+   {
+    "id": "tanner",
+    "name": "ช่างฟอกหนัง",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "tailoring",
+     "husbandry"
+    ],
+    "mainStat": "vit",
+    "slow": false,
+    "reqText": "ไม่ใช่เมืองที่ศาสนาห้าม (ศรัทธาวิญญาณสัตว์ห้าม)",
+    "req": [
+     {
+      "k": "text",
+      "text": "ไม่ใช่เมืองที่ศาสนาห้าม (ศรัทธาวิญญาณสัตว์ห้าม)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "c_smell ได้ง่าย",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:68"
+   },
+   {
+    "id": "stonemason",
+    "name": "ช่างหิน",
+    "kind": "common",
+    "tier": "C",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "masonry"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "KD AL-21 SH-17 · ยักษ์เด่น",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-21",
+       "SH-17"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ยักษ์เด่น"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:warrior",
+    "raceBonus": [
+     "dwarf",
+     "giant"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:69"
+   },
+   {
+    "id": "shipwright",
+    "name": "ช่างต่อเรือ",
+    "kind": "common",
+    "tier": "U",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "carpentry",
+     "engineering"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "NR-12 AL-04 · ต้องมีถิ่นติดน้ำ",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NR-12",
+       "AL-04"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ถิ่นติดน้ำ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก PO-02",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:70"
+   },
+   {
+    "id": "clockmaker",
+    "name": "ช่างนาฬิกา",
+    "kind": "common",
+    "tier": "R",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "mechanics"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "MK-12 NB-01",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-12",
+       "NB-01"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก NB-01 ระฆังกลาง",
+    "raceBonus": [
+     "construct",
+     "soulmachine"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:71"
+   },
+   {
+    "id": "rune_carver",
+    "name": "ช่างสลักรูน",
+    "kind": "common",
+    "tier": "R",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "rune",
+     "masonry"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "KD-03 KD-04 MK-13",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "KD-03",
+       "KD-04",
+       "MK-13"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก GI-05",
+    "raceBonus": [
+     "dwarf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:72"
+   },
+   {
+    "id": "painter",
+    "name": "จิตรกร",
+    "kind": "common",
+    "tier": "U",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "art"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "AL-05 SH-14",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "SH-14"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พรสาย #seer ได้ถ้าวาดภาพจากฝัน",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:73"
+   },
+   {
+    "id": "sculptor",
+    "name": "ช่างแกะสลัก",
+    "kind": "common",
+    "tier": "U",
+    "group": "ช่างฝีมือ",
+    "origin": "new",
+    "apts": [
+     "art",
+     "masonry"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "SH-17 SH-03",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-17",
+       "SH-03"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกศรัทธาศิลา",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:74"
+   },
+   {
+    "id": "courier",
+    "name": "คนส่งสาร",
+    "kind": "common",
+    "tier": "C",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "tracking",
+     "piloting"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "ทุกประเทศ · ผู้ส่งสารเผ่านก SV-11 เด่น",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกประเทศ"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "SV-11"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wanderer",
+    "raceBonus": [
+     "winged"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:80"
+   },
+   {
+    "id": "ferryman",
+    "name": "คนพายเรือรับจ้าง",
+    "kind": "common",
+    "tier": "C",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "sailing",
+     "fishing"
+    ],
+    "mainStat": "vit",
+    "slow": false,
+    "reqText": "ต้องมีแม่น้ำ · NR-09 SV-17",
+    "req": [
+     {
+      "k": "text",
+      "text": "แม่น้ำ"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NR-09",
+       "SV-17"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "เห็นผู้ลี้ภัยทางน้ำ (DR-05)",
+    "raceBonus": [
+     "merfolk"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:81"
+   },
+   {
+    "id": "lamplighter",
+    "name": "คนจุดโคม",
+    "kind": "common",
+    "tier": "C",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "light"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "NB-03 เด่น · ทั่วโลกในเมืองใหญ่",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NB-03"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ทั่วโลกในเมืองใหญ่"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก FG-13",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:82"
+   },
+   {
+    "id": "lighthouse_keeper",
+    "name": "ผู้ดูแลประภาคาร",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "sailing",
+     "piloting"
+    ],
+    "mainStat": "int",
+    "slow": true,
+    "reqText": "ถิ่นติดทะเล · NR-06 NR-15",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นติดทะเล"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NR-06",
+       "NR-15"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ชีวิตช้า ผูก DR-05 DR-06",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:83"
+   },
+   {
+    "id": "librarian",
+    "name": "บรรณารักษ์",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "scholar",
+     "writing"
+    ],
+    "mainStat": "int",
+    "slow": true,
+    "reqText": "AL-11 SV-07",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "SV-07"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ชีวิตช้า เข้าถึงบันทึกต้องห้ามช้ากว่านักปราชญ์",
+    "raceBonus": [
+     "elf",
+     "soulmachine"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:84"
+   },
+   {
+    "id": "chronicler",
+    "name": "นักบันทึกประวัติศาสตร์",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "writing",
+     "scholar"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ทุกเผ่า · AL-01 (นักบันทึกสภา)",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเผ่า"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-01"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกเหตุการณ์ใหญ่ ทำให้ความทรงจำของเหตุการณ์ยั่งยืน",
+    "raceBonus": [
+     "mummy"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:85"
+   },
+   {
+    "id": "cartographer",
+    "name": "นักทำแผนที่",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "art",
+     "sailing",
+     "scholar"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "NR-15 AL-11",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NR-15",
+       "AL-11"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wanderer",
+    "raceBonus": [
+     "winged"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:86"
+   },
+   {
+    "id": "accountant",
+    "name": "นักบัญชี",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "accounting"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-10 AL-13 NR-01",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-10",
+       "AL-13",
+       "NR-01"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พบความลับทางการเงินของ NPC (ผูก AL10-3)",
+    "raceBonus": [
+     "vampire"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:87"
+   },
+   {
+    "id": "banker",
+    "name": "นายธนาคาร",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "accounting",
+     "trade"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-10 NB-02 (เลือด) NR-01",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-10",
+       "NB-02",
+       "NR-01"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:greed",
+    "raceBonus": [
+     "vampire",
+     "demonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:88"
+   },
+   {
+    "id": "tax_collector",
+    "name": "คนเก็บภาษี",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "accounting",
+     "law"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ทุกประเทศที่มีรัฐ · เกลียดง่าย",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกประเทศที่มีรัฐ"
+     },
+     {
+      "k": "text",
+      "text": "เกลียดง่าย"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ได้ c_envyaura ง่าย",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:89"
+   },
+   {
+    "id": "lawyer",
+    "name": "ทนายความ",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "law"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-06 AL-27 AL-08",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-06",
+       "AL-27",
+       "AL-08"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:rebel ถ้ารับคดีผู้ถูกกดขี่",
+    "raceBonus": [
+     "human",
+     "demonkin"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:90"
+   },
+   {
+    "id": "mayor",
+    "name": "ผู้ใหญ่บ้าน",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "leadership",
+     "law"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ทุกเมืองเล็ก · ต้องอายุ 30 ขึ้นไปและความไว้ใจในเมือง",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมืองเล็ก"
+     },
+     {
+      "k": "text",
+      "text": "อายุ 30 ขึ้นไปและความไว้ใจในเมือง"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกเหตุการณ์ท้องถิ่น",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:91"
+   },
+   {
+    "id": "midwife",
+    "name": "หมอตำแย",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "medicine",
+     "herbalism"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "หญิงเป็นหลัก ชายเป็นได้แต่ต้องได้รับความเชื่อใจจากชุมชน",
+    "req": [
+     {
+      "k": "text",
+      "text": "หญิงเป็นหลัก ชายเป็นได้แต่ต้องได้รับความเชื่อใจจากชุมชน"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พรสาย #fertile",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:92"
+   },
+   {
+    "id": "apothecary",
+    "name": "เภสัชกร",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "herbalism",
+     "alchemy"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-26 NB-06 SV-02",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-26",
+       "NB-06",
+       "SV-02"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "เห็นกาฬโรค (CT-03) ก่อนใคร",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:93"
+   },
+   {
+    "id": "veterinarian",
+    "name": "หมอสัตว์",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานบริการและพลเรือน",
+    "origin": "new",
+    "apts": [
+     "medicine",
+     "husbandry"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "เผ่าสัตว์ ไชร์ AL-16",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-16"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wild",
+    "raceBonus": [
+     "beast"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:94"
+   },
+   {
+    "id": "physician",
+    "name": "แพทย์",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "medicine"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-26 SV-02 MK-08 · ต้องผ่านสำนัก",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-26",
+       "SV-02",
+       "MK-08"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ผ่านสำนัก"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก CT-03 HP-06",
+    "raceBonus": [
+     "naga",
+     "soulmachine"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:100"
+   },
+   {
+    "id": "engineer",
+    "name": "วิศวกร",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "engineering"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "MK-07 NR-12 AL-09",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-07",
+       "NR-12",
+       "AL-09"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก MC-07",
+    "raceBonus": [
+     "construct"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:101"
+   },
+   {
+    "id": "mechanic",
+    "name": "ช่างกล",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "mechanics"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "MK-12 MK-05 AL-28",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-12",
+       "MK-05",
+       "AL-28"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ซ่อมหุ่น (ผูก MC-03)",
+    "raceBonus": [
+     "construct"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:102"
+   },
+   {
+    "id": "rail_driver",
+    "name": "คนขับรถจักร",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "piloting",
+     "mechanics"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "MK-05 AL-28",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-05",
+       "AL-28"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก MC-07 WR-16",
+    "raceBonus": [
+     "construct"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:103"
+   },
+   {
+    "id": "airship_pilot",
+    "name": "นักบินเรือเหาะ",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "piloting",
+     "engineering"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "MK-09 NR-12",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MK-09",
+       "NR-12"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก PO-02 WR-01",
+    "raceBonus": [
+     "winged"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:104"
+   },
+   {
+    "id": "navigator",
+    "name": "นักเดินเรือ",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานเทคนิคและวิชาการ",
+    "origin": "new",
+    "apts": [
+     "sailing",
+     "piloting"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ถิ่นติดทะเล · NR-15",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นติดทะเล"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NR-15"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก DR-06",
+    "raceBonus": [
+     "merfolk"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:105"
+   },
+   {
+    "id": "city_guard",
+    "name": "ทหารยาม",
+    "kind": "common",
+    "tier": "C",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "sword",
+     "spear",
+     "shield"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "ทุกเมือง",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมือง"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พบอาชญากรรมระดับเมือง",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:111"
+   },
+   {
+    "id": "mercenary",
+    "name": "ทหารรับจ้าง",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "sword",
+     "axe",
+     "leadership"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "AL-10 MH-09 MK-16",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-10",
+       "MH-09",
+       "MK-16"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก MC-08 WR-16",
+    "raceBonus": [
+     "orc",
+     "dragonkin",
+     "demonkin",
+     "giant"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:112"
+   },
+   {
+    "id": "caravan_guard",
+    "name": "ผู้คุ้มกันคาราวาน",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "sword",
+     "bow",
+     "tracking"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "SH-04 AL-28 · ถิ่นการค้า",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-04",
+       "AL-28"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ถิ่นการค้า"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก WR-10",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:113"
+   },
+   {
+    "id": "bounty_hunter",
+    "name": "นักล่าค่าหัว",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "tracking",
+     "dagger",
+     "investigation"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "AL-27 NR-05",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-27",
+       "NR-05"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พบ c_wanted ของ NPC",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:114"
+   },
+   {
+    "id": "gladiator",
+    "name": "นักสู้สังเวียน",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "unarmed",
+     "sword",
+     "shield"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "MH-02 MH-09 AL-18",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "MH-02",
+       "MH-09",
+       "AL-18"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:warrior",
+    "raceBonus": [
+     "orc"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:115"
+   },
+   {
+    "id": "beast_hunter",
+    "name": "นักล่าอสูร",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "sword",
+     "bow",
+     "tracking"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "ทุกทวีปที่มีอสูร · ซิลวาเนล เนบูเลีย",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกทวีปที่มีอสูร"
+     },
+     {
+      "k": "text",
+      "text": "ซิลวาเนล เนบูเลีย"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ล่าอสูรในหมอก (FG-01)",
+    "raceBonus": [
+     "ghoul"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:116"
+   },
+   {
+    "id": "explorer",
+    "name": "นักสำรวจ",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "tracking",
+     "sailing",
+     "scholar"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "ทุกทวีป",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกทวีป"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wanderer",
+    "raceBonus": [
+     "beast",
+     "winged"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:117"
+   },
+   {
+    "id": "smuggler",
+    "name": "ผู้ลักลอบ",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานต่อสู้และเสี่ยงอันตราย",
+    "origin": "new",
+    "apts": [
+     "stealth",
+     "sailing",
+     "trade"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "NR-05 NB-09 SH-15",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "NR-05",
+       "NB-09",
+       "SH-15"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:outlaw",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:118"
+   },
+   {
+    "id": "temple_servant",
+    "name": "ผู้รับใช้ศาสนจักร",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานศาสนา",
+    "origin": "new",
+    "apts": [
+     "healing",
+     "light",
+     "cooking"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ศาสนจักรแห่งแสง หญิงและชาย (หญิงเป็น temple_servant ได้ แต่บวชเป็นพระไม่ได้)",
+    "req": [
+     {
+      "k": "text",
+      "text": "ศาสนจักรแห่งแสง หญิงและชาย (หญิงเป็น temple_servant ได้ แต่บวชเป็นพระไม่ได้)"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกผู้พิพากษาศาล (AL02-2)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:124"
+   },
+   {
+    "id": "exorcist",
+    "name": "ผู้ขับไล่ผี",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานศาสนา",
+    "origin": "new",
+    "apts": [
+     "light",
+     "necro",
+     "curse"
+    ],
+    "mainStat": "mag",
+    "slow": false,
+    "reqText": "AL-02 AL-25 SH-02",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-02",
+       "AL-25",
+       "SH-02"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก DM-09",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:125"
+   },
+   {
+    "id": "inquisitor",
+    "name": "ผู้พิพากษาศาลศาสนา",
+    "kind": "common",
+    "tier": "R",
+    "group": "งานศาสนา",
+    "origin": "new",
+    "apts": [
+     "law",
+     "investigation",
+     "light"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "AL-02 · พระหรือผู้รับใช้",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-02"
+      ]
+     },
+     {
+      "k": "text",
+      "text": "พระหรือผู้รับใช้"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก GD-02",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:126"
+   },
+   {
+    "id": "pilgrim",
+    "name": "ผู้แสวงบุญ",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานศาสนา",
+    "origin": "new",
+    "apts": [
+     "unarmed",
+     "scholar"
+    ],
+    "mainStat": "vit",
+    "slow": false,
+    "reqText": "SH-09 AL-02 AZ-01",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "SH-09",
+       "AL-02",
+       "AZ-01"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:faithful",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:127"
+   },
+   {
+    "id": "dancer",
+    "name": "นักเต้น",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานศิลปะ",
+    "origin": "new",
+    "apts": [
+     "music",
+     "charm"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "AL-05 NR-08 SH-04",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "NR-08",
+       "SH-04"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:romance",
+    "raceBonus": [
+     "fae"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:133"
+   },
+   {
+    "id": "jester",
+    "name": "ตัวตลกในวัง",
+    "kind": "common",
+    "tier": "U",
+    "group": "งานศิลปะ",
+    "origin": "new",
+    "apts": [
+     "charm",
+     "illusion"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "AL-05 MH-07",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "MH-07"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "เห็นการเมืองใกล้ตัว",
+    "raceBonus": [
+     "fae"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:134"
+   },
+   {
+    "id": "farm_owner",
+    "name": "เจ้าของฟาร์ม",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "farming",
+     "husbandry",
+     "gardening"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "มีเงิน 100 ขึ้นไป หรือรับมรดก · ชั้น 3 ขึ้นไป (ผู้ไร้สิทธิ์ถือที่ดินไม่ได้) · ไม่อยู่ในถิ่นสงคราม",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "stat",
+        "stat": "gold",
+        "op": ">=",
+        "value": 100
+       },
+       {
+        "k": "text",
+        "text": "รับมรดก"
+       }
+      ]
+     },
+     {
+      "k": "class",
+      "min": 3
+     },
+     {
+      "k": "text",
+      "text": "ไม่อยู่ในถิ่นสงคราม"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก HP-07 DM-11 (ปีศาจปลูกข้าว)",
+    "raceBonus": [
+     "halfling"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:142"
+   },
+   {
+    "id": "vegetable_gardener",
+    "name": "คนทำสวนผัก",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "gardening"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "มีที่ดินเล็ก · ไม่อยู่ในเถ้า (DR-04)",
+    "req": [
+     {
+      "k": "text",
+      "text": "ที่ดินเล็ก"
+     },
+     {
+      "k": "not",
+      "of": {
+       "k": "event",
+       "id": "DR-04",
+       "happened": true
+      }
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกพร nb_green_thumb",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:143"
+   },
+   {
+    "id": "orchardist",
+    "name": "คนทำสวนผลไม้",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "gardening"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "ถิ่นอบอุ่น AL-16 AL-17",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-16",
+       "AL-17"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก BIO-03 ถ้าได้ต้นกล้า",
+    "raceBonus": [
+     "elf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:144"
+   },
+   {
+    "id": "beekeeper",
+    "name": "คนเลี้ยงผึ้ง",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "husbandry",
+     "gardening"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "ถิ่นอบอุ่น ซิลวาเนล",
+    "req": [
+     {
+      "k": "text",
+      "text": "ถิ่นอบอุ่น ซิลวาเนล"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผึ้งไวต่อ BIO-01 เตือนก่อนคน",
+    "raceBonus": [
+     "elf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:145"
+   },
+   {
+    "id": "tea_grower",
+    "name": "คนปลูกชา",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "gardening"
+    ],
+    "mainStat": "luk",
+    "slow": true,
+    "reqText": "ถิ่นภูเขาอบอุ่น (KD-12 ไม่ได้ ถิ่นหนาวเกิน)",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "KD-12"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ร้านน้ำชาเป็นที่ประชุมข่าวลือ",
+    "raceBonus": [
+     "elf"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:146"
+   },
+   {
+    "id": "flower_grower",
+    "name": "คนปลูกดอกไม้",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "gardening",
+     "art"
+    ],
+    "mainStat": "luk",
+    "slow": true,
+    "reqText": "AL-05 AL-14",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-05",
+       "AL-14"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก NB-11 ถ้าส่งดอกไม้ให้ช่างหน้ากาก",
+    "raceBonus": [
+     "fae"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:147"
+   },
+   {
+    "id": "cheesemaker",
+    "name": "คนทำเนยแข็ง",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "husbandry",
+     "brewing"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "AL-16 AL-24 ภูเขา",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-16",
+       "AL-24"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "thread:wild",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:148"
+   },
+   {
+    "id": "miller",
+    "name": "คนสีข้าว",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "mechanics",
+     "farming"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "AL-17 NR-09",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-17",
+       "NR-09"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก CT-08 DR-04 (ข้าวขาด)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:149"
+   },
+   {
+    "id": "herb_shop",
+    "name": "เจ้าของร้านสมุนไพร",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "herbalism"
+    ],
+    "mainStat": "int",
+    "slow": true,
+    "reqText": "ทุกเมืองยกเว้นเขตหมอกทึบ",
+    "req": [
+     {
+      "k": "text",
+      "text": "ทุกเมืองยกเว้นเขตหมอกทึบ"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก CT-03",
+    "raceBonus": [
+     "slime"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:150"
+   },
+   {
+    "id": "tea_house",
+    "name": "เจ้าของร้านน้ำชา",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "cooking",
+     "charm"
+    ],
+    "mainStat": "luk",
+    "slow": true,
+    "reqText": "เมืองสงบ · AL-16 NR-09",
+    "req": [
+     {
+      "k": "text",
+      "text": "เมืองสงบ"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-16",
+       "NR-09"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกข่าวและ NPC ประจำร้าน",
+    "raceBonus": [
+     "halfling"
+    ],
+    "src": "docs/systems/character/09-jobs-common.md:151"
+   },
+   {
+    "id": "bookshop",
+    "name": "เจ้าของร้านหนังสือ",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "scholar",
+     "writing"
+    ],
+    "mainStat": "int",
+    "slow": true,
+    "reqText": "AL-11 SV-07",
+    "req": [
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "SV-07"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกบันทึกต้องห้าม ราคาสูง",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:152"
+   },
+   {
+    "id": "temple_gardener",
+    "name": "ผู้ดูแลสวนวัด",
+    "kind": "common",
+    "tier": "R",
+    "group": "ชีวิตช้า",
+    "origin": "new",
+    "apts": [
+     "gardening",
+     "herbalism"
+    ],
+    "mainStat": "vit",
+    "slow": true,
+    "reqText": "วัดของศาสนาใดก็ได้ที่มีสวน · SV-02 SH-13 AL-02",
+    "req": [
+     {
+      "k": "text",
+      "text": "วัดของศาสนาใดก็ได้ที่มีสวน"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "SV-02",
+       "SH-13",
+       "AL-02"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกพิธีและพรเล็กของวัด",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:153"
+   },
+   {
+    "id": "world_walker",
+    "name": "ผู้เดินสู่ทุกทวีป",
+    "kind": "common",
+    "tier": "E",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "tracking",
+     "sailing"
+    ],
+    "mainStat": "vit",
+    "slow": false,
+    "reqText": "nb_world_walker · เดินทางครบ 7 ทวีปขึ้นไป · #polyglot · ไม่ถูกคุมตัวและไม่มีค่าหัว (c_wanted) · ทางเปิด el.a7 ทาง ค",
+    "req": [
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_world_walker"
+     },
+     {
+      "k": "text",
+      "text": "เดินทางครบ 7 ทวีปขึ้นไป"
+     },
+     {
+      "k": "has",
+      "kind": "tag",
+      "id": "polyglot"
+     },
+     {
+      "k": "not",
+      "of": {
+       "k": "has",
+       "kind": "curse",
+       "id": "c_wanted"
+      }
+     },
+     {
+      "k": "node",
+      "id": "el.a7",
+      "choice": "c"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก HP-04 เทศกาลโลก",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:161"
+   },
+   {
+    "id": "black_market_king",
+    "name": "ราชาตลาดมืด",
+    "kind": "common",
+    "tier": "E",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "trade",
+     "stealth"
+    ],
+    "mainStat": "luk",
+    "slow": false,
+    "reqText": "ns_market_dark_3 · ทอง ≥ 300 · ซื่อสัตย์ < −10 · ที่มั่นใน NB-09 หรือเมืองใหญ่",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_market_dark_3"
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 300
+     },
+     {
+      "k": "stat",
+      "stat": "honest",
+      "op": "<",
+      "value": -10
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "country",
+        "ids": [
+         "NB-09"
+        ]
+       },
+       {
+        "k": "text",
+        "text": "เมืองใหญ่"
+       }
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก PO-07 CL-03",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:162"
+   },
+   {
+    "id": "philosopher_stone_maker",
+    "name": "ผู้สร้างศิลาอาถรรพ์",
+    "kind": "common",
+    "tier": "E",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "alchemy",
+     "fire"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "alchemy_3 · ปัญญา 16 · fire_2 · ห้องปฏิบัติการใน NB-06 AL-12 หรือ SV-12 · ทางเปิด co.a7",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "alchemy_3"
+     },
+     {
+      "k": "stat",
+      "stat": "int",
+      "op": ">=",
+      "value": 16
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "fire_2"
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "country",
+        "ids": [
+         "NB-06",
+         "AL-12"
+        ]
+       },
+       {
+        "k": "country",
+        "ids": [
+         "SV-12"
+        ]
+       }
+      ]
+     },
+     {
+      "k": "node",
+      "id": "co.a7"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูกเหตุการณ์สร้างความมั่งคั่งหรือยารักษา HP-06",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:163"
+   },
+   {
+    "id": "shadowless_thief",
+    "name": "จอมโจรไร้เงา",
+    "kind": "common",
+    "tier": "R",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "stealth",
+     "dagger"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "อาชีพ thief · stealth_3 · โชค 14 · ชื่อเสียงในหมู่โจร ≥ 20 · ห้ามแท็ก huge · ทางเปิด de.t2 ทาง ค",
+    "req": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "thief"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "stealth_3"
+     },
+     {
+      "k": "stat",
+      "stat": "luk",
+      "op": ">=",
+      "value": 14
+     },
+     {
+      "k": "stat",
+      "stat": "fame",
+      "op": ">=",
+      "value": 20
+     },
+     {
+      "k": "text",
+      "text": "ห้ามแท็ก huge"
+     },
+     {
+      "k": "node",
+      "id": "de.t2",
+      "choice": "c"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก PO-07 และเรื่องคลังหลวง",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:164"
+   },
+   {
+    "id": "bridge_walker",
+    "name": "ผู้เดินสะพานสองบ้าน",
+    "kind": "common",
+    "tier": "R",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "scholar",
+     "trade"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "เป็นลูกครึ่ง · ns_blood_bridge_2 · ชื่อเสียง ≥ 15 · ไว้ใจทั้งสองเผ่า ≥ 5 · ไม่มี c_outcast ที่ยังอยู่ · ทางเปิด hb.a3 ทาง ก",
+    "req": [
+     {
+      "k": "half"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_blood_bridge_2"
+     },
+     {
+      "k": "stat",
+      "stat": "fame",
+      "op": ">=",
+      "value": 15
+     },
+     {
+      "k": "text",
+      "text": "ไว้ใจทั้งสองเผ่า ≥ 5"
+     },
+     {
+      "k": "text",
+      "text": "ไม่มี c_outcast ที่ยังอยู่"
+     },
+     {
+      "k": "node",
+      "id": "hb.a3",
+      "choice": "a"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก cv.2 ในฐานะผู้แทนที่ทั้งสองเผ่าเรียกชื่อ",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:165"
+   },
+   {
+    "id": "twin_fire_smith",
+    "name": "ช่างสองไฟ",
+    "kind": "common",
+    "tier": "R",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "smithing"
+    ],
+    "mainStat": "pow",
+    "slow": false,
+    "reqText": "ns_twin_fire_2 · smithing_3 · ลูกครึ่งที่มีเลือดคนแคระ · มีโรงตีใน KD-01 KD-09 หรือ KD-11 · ทางเปิด fh.a1 ทาง ค",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_twin_fire_2"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "smithing_3"
+     },
+     {
+      "k": "text",
+      "text": "ลูกครึ่งที่มีเลือดคนแคระ"
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "country",
+        "ids": [
+         "KD-01",
+         "KD-09"
+        ]
+       },
+       {
+        "k": "country",
+        "ids": [
+         "KD-11"
+        ]
+       }
+      ]
+     },
+     {
+      "k": "node",
+      "id": "fh.a1",
+      "choice": "c"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก cv.8 และงานตีวัสดุสองไฟ ([../items/10-forging.md](../items/10-forging.md) หัวข้อ 9)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:166"
+   },
+   {
+    "id": "pack_bridge_rider",
+    "name": "ผู้ขี่สะพานป่า",
+    "kind": "common",
+    "tier": "R",
+    "group": "ย้ายจากอาชีพลับ",
+    "origin": "from-secret",
+    "apts": [
+     "taming",
+     "mounted"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "ns_wolf_rider_2 · ns_pack_voice_1 · ไว้ใจ SV09-1 ไรกัส ≥ 5 · ทางเปิด lf.a1 ทาง ก",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_wolf_rider_2"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_pack_voice_1"
+     },
+     {
+      "k": "text",
+      "text": "ไว้ใจ SV09-1 ไรกัส ≥ 5"
+     },
+     {
+      "k": "node",
+      "id": "lf.a1",
+      "choice": "a"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ผูก WR-17 BIO-09",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:167"
+   },
+   {
+    "id": "peddler",
+    "name": "พ่อค้าเร่",
+    "kind": "common",
+    "tier": "C",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "trade"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "ชั้น 2 ถึง 3 · ไม่ใช่ประเทศที่ปิดทวีป (PO-06)",
+    "req": [
+     {
+      "k": "class",
+      "min": 2,
+      "max": 3
+     },
+     {
+      "k": "not",
+      "of": {
+       "k": "event",
+       "id": "PO-06",
+       "happened": true
+      }
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "พ่อค้าเร่ ผู้ลักลอบ ลูกค้าประจำตามหมู่บ้าน",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:175"
+   },
+   {
+    "id": "guide",
+    "name": "ผู้นำทาง",
+    "kind": "common",
+    "tier": "U",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "tracking",
+     "navigator"
+    ],
+    "mainStat": "spd",
+    "slow": false,
+    "reqText": "รู้ทะเลทราย หมอก ภูเขา หรือป่า อย่างน้อยหนึ่ง · ns_route_read ระดับ 1",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "text",
+        "text": "รู้ทะเลทราย หมอก ภูเขา"
+       },
+       {
+        "k": "text",
+        "text": "ป่า อย่างน้อยหนึ่ง"
+       }
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_route_read_1"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "นำผู้แสวงบุญ ขบวนผู้ลี้ภัย (cv.1 cv.15)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:176"
+   },
+   {
+    "id": "broker",
+    "name": "นายหน้า",
+    "kind": "common",
+    "tier": "U",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "trade",
+     "charm"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "อยู่เมือง W ≥ 3 · M ผสมหรือเต็ม · ชั้น 3 ขึ้นไป",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "country.W",
+      "op": ">=",
+      "value": 3
+     },
+     {
+      "k": "text",
+      "text": "M ผสมหรือเต็ม"
+     },
+     {
+      "k": "class",
+      "min": 3
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ตลาดมืด สันนิบาตการค้า",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:177"
+   },
+   {
+    "id": "appraiser",
+    "name": "ผู้ประเมินราคา",
+    "kind": "common",
+    "tier": "U",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "scholar",
+     "trade"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ns_appraise ระดับ 1 · AL-11 KD-09 AL-10",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_appraise_1"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "AL-11",
+       "KD-09",
+       "AL-10"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "นักสะสม ของโบราณ เครื่องราง",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:178"
+   },
+   {
+    "id": "caravan_master",
+    "name": "ผู้นำขบวนคาราวาน",
+    "kind": "common",
+    "tier": "R",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "trade",
+     "leadership"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ชั้น 3 ขึ้นไป · ทอง ≥ 120 · ns_caravan_lead ระดับ 1 · SH-04 SH-15 AL-10 AL-28",
+    "req": [
+     {
+      "k": "class",
+      "min": 3
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 120
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_caravan_lead_1"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "SH-04",
+       "SH-15",
+       "AL-10",
+       "AL-28"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "สงครามคาราวาน (WR-10) ขบวนใหญ่",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:179"
+   },
+   {
+    "id": "moneylender",
+    "name": "ผู้ปล่อยกู้",
+    "kind": "common",
+    "tier": "R",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "trade",
+     "cunning"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ชั้น 3 ขึ้นไป · ทอง ≥ 200 · ห้ามผู้มี #bloodlust",
+    "req": [
+     {
+      "k": "class",
+      "min": 3
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 200
+     },
+     {
+      "k": "text",
+      "text": "ห้ามผู้มี #bloodlust"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ลูกหนี้ ตระกูลล้ม (ต่อทาสหนี้)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:180"
+   },
+   {
+    "id": "investor",
+    "name": "นักลงทุน",
+    "kind": "common",
+    "tier": "R",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "trade",
+     "scholar"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ชั้น 3 ขึ้นไป · ทอง ≥ 300 · W ≥ 3",
+    "req": [
+     {
+      "k": "class",
+      "min": 3
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 300
+     },
+     {
+      "k": "stat",
+      "stat": "country.W",
+      "op": ">=",
+      "value": 3
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "ลงทุน ล้มละลาย ([../economy/06-investment.md](../economy/06-investment.md))",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:181"
+   },
+   {
+    "id": "shipowner",
+    "name": "เจ้าของเรือสินค้า",
+    "kind": "common",
+    "tier": "R",
+    "group": "การค้า",
+    "origin": "trade",
+    "apts": [
+     "sailing",
+     "trade"
+    ],
+    "mainStat": "int",
+    "slow": false,
+    "reqText": "ทอง ≥ 400 หรือรับมรดกเรือ · ถิ่นติดทะเล NR-01 NR-12 AL-04",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "stat",
+        "stat": "gold",
+        "op": ">=",
+        "value": 400
+       },
+       {
+        "k": "text",
+        "text": "รับมรดกเรือ"
+       }
+      ]
+     },
+     {
+      "k": "country",
+      "ids": [
+       "NR-01",
+       "NR-12",
+       "AL-04"
+      ]
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "เรือผี โจรสลัด ภาษีกระแสน้ำ (PO-03)",
+    "raceBonus": [],
+    "src": "docs/systems/character/09-jobs-common.md:182"
+   },
+   {
+    "id": "lich",
+    "name": "ลิช",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "#necro หรือ #lich_seed · ปัญญา 13 · เวท 13 · (#cursed_blood หรือ #lich_seed หรือ เมตตา < −20)",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "necro"
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "lich_seed"
+       }
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "int",
+      "op": ">=",
+      "value": 13
+     },
+     {
+      "k": "stat",
+      "stat": "mag",
+      "op": ">=",
+      "value": 13
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "cursed_blood"
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "lich_seed"
+       },
+       {
+        "k": "stat",
+        "stat": "kind",
+        "op": "<",
+        "value": -20
+       }
+      ]
+     }
+    ],
+    "banText": "หุ่นวิญญาณ ลูกผสมจักรกล (ไม่มีวิญญาณให้ผูก) เผ่าสไลม์ที่ไม่มีแกนกลาง",
+    "ban": [
+     {
+      "k": "text",
+      "text": "หุ่นวิญญาณ ลูกผสมจักรกล (ไม่มีวิญญาณให้ผูก) เผ่าสไลม์ที่ไม่มีแกนกลาง"
+     }
+    ],
+    "opens": "เปิด DM-09 ลิชตื่น ในทวีปที่ตัวละครอยู่",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "hu.a6",
+      "choice": "c"
+     },
+     {
+      "id": "mu.a2",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.4"
+     },
+     {
+      "id": "gh.a2",
+      "choice": "b"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DM-09"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:13"
+   },
+   {
+    "id": "demonlord",
+    "name": "ราชาปีศาจ",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "เมตตา < −40 · ทะเยอทะยาน > 40 · (#infernal หรือ #demon_mark) · เวท 13",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "op": "<",
+      "value": -40
+     },
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "op": ">",
+      "value": 40
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "infernal"
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "demon_mark"
+       }
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "mag",
+      "op": ">=",
+      "value": 13
+     }
+    ],
+    "banText": "ต้องไม่มี b_saintmark",
+    "ban": [
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "b_saintmark"
+     }
+    ],
+    "opens": "ผูก DM-01 DM-02 และเส้นมอร์เฮเวน",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "dm.e1",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.3"
+     },
+     {
+      "id": "cv.5"
+     },
+     {
+      "id": "or.a7",
+      "choice": "a"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DM-01",
+      "DM-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:14"
+   },
+   {
+    "id": "saint",
+    "name": "นักบุญ",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "ศรัทธา > 50 · เมตตา > 30 · #holy · ศรัทธาเทพ > 40",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "piety",
+      "op": ">",
+      "value": 50
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "op": ">",
+      "value": 30
+     },
+     {
+      "k": "has",
+      "kind": "tag",
+      "id": "holy"
+     },
+     {
+      "k": "stat",
+      "stat": "godFaith",
+      "op": ">",
+      "value": 40
+     }
+    ],
+    "banText": "ห้ามเผ่า undead (แวมไพร์ มัมมี่ กูล) และ infernal (เผ่าปีศาจ) ยกเว้นเข้า SR-20",
+    "ban": [
+     {
+      "k": "and",
+      "of": [
+       {
+        "k": "race",
+        "ids": [
+         "vampire",
+         "mummy",
+         "ghoul"
+        ]
+       },
+       {
+        "k": "text",
+        "text": "infernal (เผ่าปีศาจ) ยกเว้นเข้า SR-20"
+       }
+      ]
+     }
+    ],
+    "opens": "ผูก GD-04 GD-06",
+    "raceBonus": [],
+    "direct": [],
+    "assist": [
+     {
+      "id": "hu.t3"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GD-04",
+      "GD-06"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:15"
+   },
+   {
+    "id": "hero",
+    "name": "ผู้กล้า",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "ธง chosen หรือ (กล้าหาญ > 50 · เมตตา > 20 · อาวุธศักดิ์สิทธิ์ · ชื่อเสียง ≥ 30)",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "flag",
+        "id": "chosen"
+       },
+       {
+        "k": "and",
+        "of": [
+         {
+          "k": "stat",
+          "stat": "brave",
+          "op": ">",
+          "value": 50
+         },
+         {
+          "k": "stat",
+          "stat": "kind",
+          "op": ">",
+          "value": 20
+         },
+         {
+          "k": "text",
+          "text": "อาวุธศักดิ์สิทธิ์"
+         },
+         {
+          "k": "stat",
+          "stat": "fame",
+          "op": ">=",
+          "value": 30
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "banText": "ถ้าเป็นผู้กล้าที่ถูกอัญเชิญ (นักเดินทางต่างภพ) น้ำหนัก ×3",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ถ้าเป็นผู้กล้าที่ถูกอัญเชิญ (นักเดินทางต่างภพ) น้ำหนัก ×3"
+     }
+    ],
+    "opens": "ผูก DM-04 DM-05",
+    "raceBonus": [],
+    "direct": [],
+    "assist": [
+     {
+      "id": "cv.14"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DM-04",
+      "DM-05"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:16"
+   },
+   {
+    "id": "swordsaint",
+    "name": "เซียนดาบ",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "skill sword_3 · กำลัง 15 · เร็ว 12",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "sword_3"
+     },
+     {
+      "k": "stat",
+      "stat": "pow",
+      "op": ">=",
+      "value": 15
+     },
+     {
+      "k": "stat",
+      "stat": "spd",
+      "op": ">=",
+      "value": 12
+     }
+    ],
+    "banText": "ไม่จำกัดเผ่า (ยักษ์ใช้ดาบไม่ได้ในขนาดปกติ ต้องมีดาบขนาดยักษ์ ns_giant_forge และใช้เร็ว 6 แทน 12 เพราะช่วงเร็วของยักษ์คือ 3–7)",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ไม่จำกัดเผ่า (ยักษ์ใช้ดาบไม่ได้ในขนาดปกติ ต้องมีดาบขนาดยักษ์ ns_giant_forge และใช้เร็ว 6 แทน 12 เพราะช่วงเร็วของยักษ์คือ 3–7)"
+     }
+    ],
+    "opens": "ผูก GI-03 ถ้าเป็นยักษ์",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "hu.a4",
+      "choice": "b"
+     },
+     {
+      "id": "gi.a7",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "dk.a6",
+      "choice": "a"
+     },
+     {
+      "id": "cv.14"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GI-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:17"
+   },
+   {
+    "id": "dragonknight",
+    "name": "อัศวินมังกร",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "dk.t2 ทาง ก หรือธง dragon_bond · (ความถนัด spear หรือ mounted หรือ #ride)",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "node",
+        "id": "dk.t2",
+        "choice": "a"
+       },
+       {
+        "k": "has",
+        "kind": "flag",
+        "id": "dragon_bond"
+       }
+      ]
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "aptitude",
+        "id": "spear"
+       },
+       {
+        "k": "has",
+        "kind": "aptitude",
+        "id": "mounted"
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "ride"
+       }
+      ]
+     }
+    ],
+    "banText": "ถ้าทวีปมังกรหายไปแล้ว (DR-01) ต้องมี nb_mark_* ตัวใดตัวหนึ่ง",
+    "ban": [
+     {
+      "k": "event",
+      "id": "DR-01",
+      "happened": true
+     }
+    ],
+    "opens": "ผูก SF-03 SF-09 ถ้า DR-01 เกิดแล้ว",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "dk.t2",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "dk.a2"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DR-01",
+      "SF-03",
+      "SF-09"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:18"
+   },
+   {
+    "id": "archmage",
+    "name": "จอมปราชญ์เวท",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "เวท 17 · ปัญญา 14 · skill ธาตุ (ไฟ น้ำ ลม ดิน น้ำแข็ง สายฟ้า แสง มืด) อย่างน้อย 3",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "mag",
+      "op": ">=",
+      "value": 17
+     },
+     {
+      "k": "stat",
+      "stat": "int",
+      "op": ">=",
+      "value": 14
+     },
+     {
+      "k": "text",
+      "text": "skill ธาตุ (ไฟ น้ำ ลม ดิน น้ำแข็ง สายฟ้า แสง มืด) อย่างน้อย 3"
+     }
+    ],
+    "banText": "หุ่นวิญญาณ ลูกผสมจักรกล เรียนได้แต่ผลลด (SR-59)",
+    "ban": [
+     {
+      "k": "text",
+      "text": "หุ่นวิญญาณ ลูกผสมจักรกล เรียนได้แต่ผลลด (SR-59)"
+     }
+    ],
+    "opens": "ผูก CT-09 พายุมานา",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "fa.a7",
+      "choice": "a"
+     },
+     {
+      "id": "el.e1",
+      "choice": "c"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.6"
+     }
+    ],
+    "linked": {
+     "events": [
+      "CT-09"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:19"
+   },
+   {
+    "id": "beastking",
+    "name": "ราชันย์อสูร",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "เผ่าสัตว์ หรือ #beast_friend · taming_3 · กำลัง 13",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "race",
+        "ids": [
+         "beast"
+        ]
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "beast_friend"
+       }
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "taming_3"
+     },
+     {
+      "k": "stat",
+      "stat": "pow",
+      "op": ">=",
+      "value": 13
+     }
+    ],
+    "banText": "ห้ามเผ่าที่ศัตรูกับสัตว์ (ออร์คสายเถ้าที่ล่าสัตว์)",
+    "ban": [
+     {
+      "k": "text",
+      "text": "เผ่าที่ศัตรูกับสัตว์ (ออร์คสายเถ้าที่ล่าสัตว์)"
+     }
+    ],
+    "opens": "ผูก BIO-09 SV-16",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "be.a7",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "be.a6"
+     }
+    ],
+    "linked": {
+     "events": [
+      "BIO-09"
+     ],
+     "countries": [
+      "SV-16"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:20"
+   },
+   {
+    "id": "piratelord",
+    "name": "ราชาโจรสลัด",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "อาชีพ pirate · ชื่อเสียง ≥ 25 · เงิน ≥ 150",
+    "req": [
+     {
+      "k": "has",
+      "kind": "job",
+      "id": "pirate"
+     },
+     {
+      "k": "stat",
+      "stat": "fame",
+      "op": ">=",
+      "value": 25
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 150
+     }
+    ],
+    "banText": "ต้องเกี่ยวกับ NR-05",
+    "ban": [
+     {
+      "k": "country",
+      "ids": [
+       "NR-05"
+      ]
+     }
+    ],
+    "opens": "ผูก WR-06 และเรือผี",
+    "raceBonus": [],
+    "direct": [],
+    "assist": [
+     {
+      "id": "na.a2",
+      "choice": "b"
+     },
+     {
+      "id": "me.a2"
+     }
+    ],
+    "linked": {
+     "events": [
+      "WR-06"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:21"
+   },
+   {
+    "id": "slimeking",
+    "name": "ราชันย์สไลม์",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "เผ่าสไลม์ · (#predator หรือ absorb_3)",
+    "req": [
+     {
+      "k": "race",
+      "ids": [
+       "slime"
+      ]
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "predator"
+       },
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "absorb_3"
+       }
+      ]
+     }
+    ],
+    "banText": "เฉพาะสไลม์",
+    "ban": [
+     {
+      "k": "text",
+      "text": "เฉพาะสไลม์"
+     }
+    ],
+    "opens": "ผูก BIO-10 ถ้าเกี่ยวกับ SV-18",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "sl.a6",
+      "choice": "a"
+     }
+    ],
+    "assist": [],
+    "linked": {
+     "events": [
+      "BIO-10"
+     ],
+     "countries": [
+      "SV-18"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:22"
+   },
+   {
+    "id": "sage",
+    "name": "มหาปราชญ์",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "scholar_3 · (ปัญญา ≥ 18 หรือ (#sage และปัญญา ≥ 14))",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "scholar_3"
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "stat",
+        "stat": "int",
+        "op": ">=",
+        "value": 18
+       },
+       {
+        "k": "and",
+        "of": [
+         {
+          "k": "has",
+          "kind": "tag",
+          "id": "sage"
+         },
+         {
+          "k": "stat",
+          "stat": "int",
+          "op": ">=",
+          "value": 14
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "banText": "—",
+    "ban": [],
+    "opens": "เข้าถึงห้องใต้ดิน AL-11 (HP-05)",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "so.a6",
+      "choice": "a"
+     },
+     {
+      "id": "dw.a2",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "hu.a6",
+      "choice": "a"
+     },
+     {
+      "id": "cv.4",
+      "choice": "a"
+     },
+     {
+      "id": "co.l3",
+      "choice": "a"
+     }
+    ],
+    "linked": {
+     "events": [
+      "HP-05"
+     ],
+     "countries": [
+      "AL-11"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:23"
+   },
+   {
+    "id": "vampirelord",
+    "name": "บรรพบุรุษแวมไพร์",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "เผ่าแวมไพร์ หรือ #vampire_bite · #blood · ชื่อเสียง ≥ 15",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "race",
+        "ids": [
+         "vampire"
+        ]
+       },
+       {
+        "k": "has",
+        "kind": "tag",
+        "id": "vampire_bite"
+       }
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "tag",
+      "id": "blood"
+     },
+     {
+      "k": "stat",
+      "stat": "fame",
+      "op": ">=",
+      "value": 15
+     }
+    ],
+    "banText": "ถ้าไม่ใช่แวมไพร์แท้ ต้องมี ns_blood_ledger ระดับ 1 ขึ้นไป",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ถ้าไม่ใช่แวมไพร์แท้ ต้องมี ns_blood_ledger ระดับ 1 ขึ้นไป"
+     }
+    ],
+    "opens": "ผูก NB-02 BIO-05",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "va.e1",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "va.a3"
+     },
+     {
+      "id": "va.a4"
+     }
+    ],
+    "linked": {
+     "events": [
+      "BIO-05"
+     ],
+     "countries": [
+      "NB-02"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:24"
+   },
+   {
+    "id": "shadowmaster",
+    "name": "เจ้าแห่งเงา",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "stealth_3 หรือ (ดาร์กเอลฟ์ นักฆ่า กำจัดศัตรู ≥ 4)",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "stealth_3"
+       },
+       {
+        "k": "text",
+        "text": "ดาร์กเอลฟ์ นักฆ่า กำจัดศัตรู ≥ 4"
+       }
+      ]
+     }
+    ],
+    "banText": "ห้ามผู้ที่มี #fear_dark",
+    "ban": [
+     {
+      "k": "has",
+      "kind": "tag",
+      "id": "fear_dark"
+     }
+    ],
+    "opens": "ผูก NB-05 PO-08",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "de.e1",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "de.t2",
+      "choice": "c"
+     }
+    ],
+    "linked": {
+     "events": [
+      "PO-08"
+     ],
+     "countries": [
+      "NB-05"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:25"
+   },
+   {
+    "id": "godslayer",
+    "name": "ผู้ล่าเทพ",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "ศรัทธาเทพ ≤ −70 · กล้าหาญ > 30",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "godFaith",
+      "op": "<=",
+      "value": -70
+     },
+     {
+      "k": "stat",
+      "stat": "brave",
+      "op": ">",
+      "value": 30
+     }
+    ],
+    "banText": "เกิดเฉพาะเหตุการณ์ GD-08 หรือขบวนการผู้ล่าเทพ",
+    "ban": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "event",
+        "id": "GD-08",
+        "happened": true
+       },
+       {
+        "k": "text",
+        "text": "ขบวนการผู้ล่าเทพ"
+       }
+      ]
+     }
+    ],
+    "opens": "ผูก GD-05 GD-08",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "gi.a7",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "gi.a1",
+      "choice": "a"
+     },
+     {
+      "id": "cv.16",
+      "choice": "b"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GD-05",
+      "GD-08"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:26"
+   },
+   {
+    "id": "prophet",
+    "name": "ศาสดา",
+    "kind": "secret",
+    "group": "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
+    "origin": "code",
+    "apts": [],
+    "slow": false,
+    "reqText": "ศรัทธาเทพ ≥ 85 · ศรัทธา > 40",
+    "req": [
+     {
+      "k": "stat",
+      "stat": "godFaith",
+      "op": ">=",
+      "value": 85
+     },
+     {
+      "k": "stat",
+      "stat": "piety",
+      "op": ">",
+      "value": 40
+     }
+    ],
+    "banText": "ผูก GD-01 ผู้รวมศาสนา",
+    "ban": [
+     {
+      "k": "event",
+      "id": "GD-01",
+      "happened": true
+     }
+    ],
+    "opens": "ผูก GD-01",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "wi.a7",
+      "choice": "a"
+     },
+     {
+      "id": "wi.e1",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.1",
+      "choice": "a"
+     },
+     {
+      "id": "cv.11"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GD-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:27"
+   },
+   {
+    "id": "dragon_whisperer",
+    "name": "ผู้ฟังเสียงพี่น้อง",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "(nb_scale_echo หรือ nb_mourning_ear หรือ u_language) และ nb_mark_* อย่างน้อยหนึ่งตัว · ปัญญา 12 · เมตตา 10",
+    "req": [
+     {
+      "k": "and",
+      "of": [
+       {
+        "k": "or",
+        "of": [
+         {
+          "k": "has",
+          "kind": "blessing",
+          "id": "nb_scale_echo"
+         },
+         {
+          "k": "has",
+          "kind": "blessing",
+          "id": "nb_mourning_ear"
+         },
+         {
+          "k": "has",
+          "kind": "skill",
+          "id": "u_language"
+         }
+        ]
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_mark_*"
+       }
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "int",
+      "op": ">=",
+      "value": 12
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "op": ">=",
+      "value": 10
+     }
+    ],
+    "banText": "ต้องไม่มี nc_dragon_grief ที่ยังอยู่",
+    "ban": [
+     {
+      "k": "has",
+      "kind": "curse",
+      "id": "nc_dragon_grief"
+     }
+    ],
+    "opens": "ผูก DR-14 DR-15 รับรู้การล้มของมังกรก่อนคนอื่น",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "dk.e1",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.13",
+      "choice": "a"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DR-14",
+      "DR-15"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:35"
+   },
+   {
+    "id": "seal_keeper",
+    "name": "ผู้เฝ้าผนึก",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "rune_3 หรือ nb_seal_hand · ซื่อสัตย์ 20 · ศรัทธา 20 · nb_mark_*",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "rune_3"
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_seal_hand"
+       }
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "honest",
+      "op": ">=",
+      "value": 20
+     },
+     {
+      "k": "stat",
+      "stat": "piety",
+      "op": ">=",
+      "value": 20
+     },
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_mark_*"
+     }
+    ],
+    "banText": "ห้ามผู้มี nc_seal_scar",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี nc_seal_scar"
+     }
+    ],
+    "opens": "ผูก PL-* ชะลอการตื่นของมังกรหนึ่งตัว",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "fa.a2",
+      "choice": "c"
+     },
+     {
+      "id": "dm.a7",
+      "choice": "a"
+     }
+    ],
+    "assist": [],
+    "linked": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:36"
+   },
+   {
+    "id": "seal_breaker",
+    "name": "ผู้ปลดผนึก",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "ขบวนการผู้ปลดผนึก (GD-07) · อยากรู้ > 40 · (rune_3 หรือ scholar_3) · ศรัทธาเทพ ≤ 0",
+    "req": [
+     {
+      "k": "event",
+      "id": "GD-07",
+      "happened": true
+     },
+     {
+      "k": "stat",
+      "stat": "curious",
+      "op": ">",
+      "value": 40
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "rune_3"
+       },
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "scholar_3"
+       }
+      ]
+     },
+     {
+      "k": "stat",
+      "stat": "godFaith",
+      "op": "<=",
+      "value": 0
+     }
+    ],
+    "banText": "ผู้มี nb_seal_hand เลือกอาชีพนี้ไม่ได้ (ขัดกัน)",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี nb_seal_hand เลือกอาชีพนี้ไม่ได้ (ขัดกัน)"
+     }
+    ],
+    "opens": "ผูก GD-07 PL-* END-*",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "cv.13",
+      "choice": "c"
+     }
+    ],
+    "assist": [
+     {
+      "id": "cv.16",
+      "choice": "b"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GD-07"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:37"
+   },
+   {
+    "id": "peacemaker_legend",
+    "name": "ผู้หยุดสงคราม",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "nb_peace_seed · ns_mediate_3 · ชื่อเสียง ≥ 30",
+    "req": [
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_peace_seed"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_mediate_3"
+     },
+     {
+      "k": "stat",
+      "stat": "fame",
+      "op": ">=",
+      "value": 30
+     }
+    ],
+    "banText": "ห้ามผู้มี #bloodlust",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี #bloodlust"
+     }
+    ],
+    "opens": "ผูก WR-* HP-01",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "hu.a7"
+     }
+    ],
+    "assist": [
+     {
+      "id": "ha.a5",
+      "choice": "a"
+     }
+    ],
+    "linked": {
+     "events": [
+      "HP-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:38"
+   },
+   {
+    "id": "tree_warden",
+    "name": "ผู้พิทักษ์ต้นไม้โลก",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "(nature_3 หรือ b_worldtree) · nb_faith_tree · เมตตา 20",
+    "req": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "skill",
+        "id": "nature_3"
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "b_worldtree"
+       }
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "blessing",
+      "id": "nb_faith_tree"
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "op": ">=",
+      "value": 20
+     }
+    ],
+    "banText": "ต้องเกิดหรืออาศัยในซิลวาเนลหรือผู้ลี้ภัยป่า",
+    "ban": [
+     {
+      "k": "text",
+      "text": "เกิดหรืออาศัยในซิลวาเนลหรือผู้ลี้ภัยป่า"
+     }
+    ],
+    "opens": "ผูก BIO-01 BIO-03 WT-02",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "el.e1",
+      "choice": "b"
+     }
+    ],
+    "assist": [],
+    "linked": {
+     "events": [
+      "BIO-01",
+      "BIO-03",
+      "WT-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:39"
+   },
+   {
+    "id": "awakened_pharaoh",
+    "name": "ฟาโรห์ผู้ตื่น",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "เผ่ามัมมี่ · leadership_2 · ธงสายเลือดฟาโรห์",
+    "req": [
+     {
+      "k": "race",
+      "ids": [
+       "mummy"
+      ]
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "leadership_2"
+     },
+     {
+      "k": "text",
+      "text": "ธงสายเลือดฟาโรห์"
+     }
+    ],
+    "banText": "เฉพาะเผ่ามัมมี่ในอัมเมนราหรือมาราซาร์",
+    "ban": [
+     {
+      "k": "text",
+      "text": "เฉพาะเผ่ามัมมี่ในอัมเมนราหรือมาราซาร์"
+     }
+    ],
+    "opens": "ผูก WR-24 SH-02",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "mu.a7",
+      "choice": "a"
+     }
+    ],
+    "assist": [],
+    "linked": {
+     "events": [
+      "WR-24"
+     ],
+     "countries": [
+      "SH-02"
+     ],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:40"
+   },
+   {
+    "id": "resurrector",
+    "name": "ผู้ชุบชีวิต",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "healing_3 · ศรัทธาเทพ ≥ 50 · เมตตา > 30",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "healing_3"
+     },
+     {
+      "k": "stat",
+      "stat": "godFaith",
+      "op": ">=",
+      "value": 50
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "op": ">",
+      "value": 30
+     }
+    ],
+    "banText": "ห้ามเผ่า undead ยกเว้นผ่าน SR-20",
+    "ban": [
+     {
+      "k": "text",
+      "text": "เผ่า undead ยกเว้นผ่าน SR-20"
+     }
+    ],
+    "opens": "ผูก GD-04 ราคาชีวิตผู้ชุบหนึ่งปีต่อครั้ง",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "na.a1",
+      "choice": "c"
+     }
+    ],
+    "assist": [
+     {
+      "id": "na.a1"
+     }
+    ],
+    "linked": {
+     "events": [
+      "GD-04"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:41"
+   },
+   {
+    "id": "mountain_heart_waker",
+    "name": "ผู้ปลุกหัวใจขุนเขา",
+    "kind": "secret",
+    "group": "ข. อาชีพลับใหม่ 8 อย่าง",
+    "origin": "new",
+    "apts": [],
+    "slow": false,
+    "reqText": "mining_3 · ธงเหมืองลึก KD-10 · nc_deep_pull หรือ nb_mark_kaldra",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "mining_3"
+     },
+     {
+      "k": "country",
+      "ids": [
+       "KD-10"
+      ]
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "curse",
+        "id": "nc_deep_pull"
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_mark_kaldra"
+       }
+      ]
+     }
+    ],
+    "banText": "ห้ามผู้มี b_curseward ที่ไม่ยอมรับคำเรียก",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี b_curseward ที่ไม่ยอมรับคำเรียก"
+     }
+    ],
+    "opens": "เปิด PL-03 คัลดราตื่น",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "dw.e1",
+      "choice": "c"
+     }
+    ],
+    "assist": [
+     {
+      "id": "la.a7",
+      "choice": "c"
+     }
+    ],
+    "linked": {
+     "events": [
+      "PL-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:42"
+   },
+   {
+    "id": "third_home_founder",
+    "name": "ผู้ก่อบ้านหลังที่สาม",
+    "kind": "secret",
+    "group": "ค. อาชีพลับของลูกครึ่ง 3 อย่าง",
+    "origin": "half-blood",
+    "apts": [],
+    "slow": false,
+    "reqText": "hb.a3 ทาง ค · leadership_2 · ทอง ≥ 200",
+    "req": [
+     {
+      "k": "node",
+      "id": "hb.a3",
+      "choice": "c"
+     },
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "leadership_2"
+     },
+     {
+      "k": "stat",
+      "stat": "gold",
+      "op": ">=",
+      "value": 200
+     }
+    ],
+    "banText": "ต้องมีที่ตั้งใน SV-09 SV-17 หรือ AL-16",
+    "ban": [
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "country",
+        "ids": [
+         "SV-09",
+         "SV-17"
+        ]
+       },
+       {
+        "k": "country",
+        "ids": [
+         "AL-16"
+        ]
+       }
+      ]
+     }
+    ],
+    "opens": "ผูกชุมชนลูกครึ่งหนึ่งแห่ง ถ้าชุมชนล่มจากเหตุการณ์โลก อาชีพนี้ปิด",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "hb.a3",
+      "choice": "c"
+     }
+    ],
+    "assist": [
+     {
+      "id": "hb.a3",
+      "choice": "a"
+     }
+    ],
+    "linked": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:50"
+   },
+   {
+    "id": "old_water_singer",
+    "name": "ผู้ร้องเพลงฟัก",
+    "kind": "secret",
+    "group": "ค. อาชีพลับของลูกครึ่ง 3 อย่าง",
+    "origin": "half-blood",
+    "apts": [],
+    "slow": false,
+    "reqText": "ns_song_both_2 · (nb_name_sung หรือ nb_both_banks) · ผ่านการทดสอบนาคาหรือพิธีสายเงือก",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_song_both_2"
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_name_sung"
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_both_banks"
+       }
+      ]
+     },
+     {
+      "k": "text",
+      "text": "ผ่านการทดสอบนาคาหรือพิธีสายเงือก"
+     }
+    ],
+    "banText": "ห้ามผู้มี nc_blood_feud กับนาคาหรือเงือก",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี nc_blood_feud กับนาคาหรือเงือก"
+     }
+    ],
+    "opens": "ผูก cv.7 BIO-08",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "ow.a2"
+     },
+     {
+      "id": "cv.7",
+      "choice": "b"
+     }
+    ],
+    "assist": [
+     {
+      "id": "ow.t1"
+     }
+    ],
+    "linked": {
+     "events": [
+      "BIO-08"
+     ],
+     "countries": [],
+     "nodes": [
+      "cv.7"
+     ],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:51"
+   },
+   {
+    "id": "contract_redeemer",
+    "name": "ผู้ไถ่ถอนสัญญา",
+    "kind": "secret",
+    "group": "ค. อาชีพลับของลูกครึ่ง 3 อย่าง",
+    "origin": "half-blood",
+    "apts": [],
+    "slow": false,
+    "reqText": "ns_pact_cut_2 · (nb_honest_scale หรือ nb_pact_blood) · ct.b2 ทาง ก (มีชื่อในบัญชี)",
+    "req": [
+     {
+      "k": "has",
+      "kind": "skill",
+      "id": "ns_pact_cut_2"
+     },
+     {
+      "k": "or",
+      "of": [
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_honest_scale"
+       },
+       {
+        "k": "has",
+        "kind": "blessing",
+        "id": "nb_pact_blood"
+       }
+      ]
+     },
+     {
+      "k": "node",
+      "id": "ct.b2",
+      "choice": "a"
+     }
+    ],
+    "banText": "ห้ามผู้มี c_oathbreaker",
+    "ban": [
+     {
+      "k": "text",
+      "text": "ผู้มี c_oathbreaker"
+     }
+    ],
+    "opens": "ผูก cv.5 DM-07",
+    "raceBonus": [],
+    "direct": [
+     {
+      "id": "ct.a1",
+      "choice": "a"
+     }
+    ],
+    "assist": [
+     {
+      "id": "ct.t1",
+      "choice": "c"
+     }
+    ],
+    "linked": {
+     "events": [
+      "DM-07"
+     ],
+     "countries": [],
+     "nodes": [
+      "cv.5"
+     ],
+     "ids": []
+    },
+    "baseChance": 0.0075,
+    "src": "docs/systems/character/10-jobs-secret.md:52"
+   },
+   {
+    "id": "hero_companion",
+    "name": "ผู้ติดตามผู้กล้า",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "ผู้กล้าผ่านเข้ามาในชีวิต (AL02-3 หรือ DM-04)",
+    "req": [
+     {
+      "k": "event",
+      "id": "DM-04",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "follower_hero"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "follower_hero",
+    "fromStory": "ผู้กล้าผ่านเข้ามาในชีวิต (AL02-3 หรือ DM-04)",
+    "anchor": "ผู้กล้าตายหรือเปลี่ยนข้าง (DM-05)",
+    "onLoss": "เปลี่ยนเป็น demon_servant หรืออยู่ต่อเป็นผู้ทรยศ",
+    "does": "ร่วมทาง ได้ส่วนแบ่งชื่อเสียง",
+    "linked": {
+     "events": [
+      "DM-04",
+      "DM-05"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "demon_servant"
+     ]
+    },
+    "src": "docs/systems/character/11-jobs-special.md:9"
+   },
+   {
+    "id": "demon_servant",
+    "name": "สมุนจอมมาร",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "จอมมารผ่านเข้ามา (DM-01 DM-02)",
+    "req": [
+     {
+      "k": "event",
+      "id": "DM-01",
+      "happened": true
+     },
+     {
+      "k": "event",
+      "id": "DM-02",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "follower_demon"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "follower_demon",
+    "fromStory": "จอมมารผ่านเข้ามา (DM-01 DM-02)",
+    "anchor": "จอมมารตาย (DM-03)",
+    "onLoss": "กลายเป็นคนไร้สังกัด",
+    "does": "ผูกเส้นมอร์เฮเวน",
+    "linked": {
+     "events": [
+      "DM-01",
+      "DM-02",
+      "DM-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:10"
+   },
+   {
+    "id": "sky_priest_orphan",
+    "name": "ผู้ปรนนิบัติไร้มังกร",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "หลัง DR-01 สำหรับผู้ที่เคยถวายตัว (ผูก SF-07)",
+    "req": [
+     {
+      "k": "event",
+      "id": "DR-01",
+      "happened": true
+     },
+     {
+      "k": "event",
+      "id": "SF-07",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "dragonless_priest"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "dragonless_priest",
+    "fromStory": "หลัง DR-01 สำหรับผู้ที่เคยถวายตัว (ผูก SF-07)",
+    "anchor": "ที่ยึดคือมังกรที่ล้ม ถ้ามังกรพี่น้องยังอยู่ ธงหาย",
+    "onLoss": "",
+    "does": "ปรนนิบัติเกาะ ซากหรือผู้ลี้ภัยแทน",
+    "linked": {
+     "events": [
+      "DR-01",
+      "SF-07"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:11"
+   },
+   {
+    "id": "waterfall_keyholder",
+    "name": "ผู้ถือกุญแจน้ำตก",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NR02-1 เลือกผู้สืบทอด หรือผู้ถือคนที่เจ็ด NR02-3 ตาย",
+    "req": [
+     {
+      "k": "text",
+      "text": "NR02-1 เลือกผู้สืบทอด หรือผู้ถือคนที่เจ็ด NR02-3 ตาย"
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "waterfall_key"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "waterfall_key",
+    "fromStory": "NR02-1 เลือกผู้สืบทอด หรือผู้ถือคนที่เจ็ด NR02-3 ตาย",
+    "anchor": "น้ำตกย้อนฟ้าไม่ไหล (ถ้า DR-05 ทำลาย)",
+    "onLoss": "กุญแจกลายเป็นของที่ระลึก",
+    "does": "เปิดทางสู่เกาะทะเลลอยฟ้า (ถ้ายังมี)",
+    "linked": {
+     "events": [
+      "DR-05"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:12"
+   },
+   {
+    "id": "gate_warden",
+    "name": "ผู้เฝ้าประตูเมืองปฐม",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NB08-1 รับอาสา หรือสมัครหลังภารกิจเมฆา (FG-01)",
+    "req": [
+     {
+      "k": "event",
+      "id": "FG-01",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "gate_warden"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "gate_warden",
+    "fromStory": "NB08-1 รับอาสา หรือสมัครหลังภารกิจเมฆา (FG-01)",
+    "anchor": "ประตูถูกปิดผนึกสำเร็จ (FG-10)",
+    "onLoss": "กลายเป็นผู้ดูแลอนุสรณ์",
+    "does": "ยืนที่ประตู ตายวันละหลายคน",
+    "linked": {
+     "events": [
+      "FG-01",
+      "FG-10"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:13"
+   },
+   {
+    "id": "nine_delegate",
+    "name": "ผู้แทนสภาเก้าทวีป",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "AL01-1 แต่งตั้ง หรือแทนผู้แทนที่ถูกลอบสังหาร (PO-08)",
+    "req": [
+     {
+      "k": "event",
+      "id": "PO-08",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "council_delegate"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "council_delegate",
+    "fromStory": "AL01-1 แต่งตั้ง หรือแทนผู้แทนที่ถูกลอบสังหาร (PO-08)",
+    "anchor": "สภาล่ม (WR-14)",
+    "onLoss": "กลายเป็นผู้ลี้ภัยทางการเมือง",
+    "does": "ทูตของทวีปหนึ่ง",
+    "linked": {
+     "events": [
+      "PO-08",
+      "WR-14"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:14"
+   },
+   {
+    "id": "bell_heir",
+    "name": "ผู้สืบทอดหอระฆัง",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NB01-4 ลีเร ตายหรือถูกเลือกแทน",
+    "req": [
+     {
+      "k": "text",
+      "text": "NB01-4 ลีเร ตายหรือถูกเลือกแทน"
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "bell_heir"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "bell_heir",
+    "fromStory": "NB01-4 ลีเร ตายหรือถูกเลือกแทน",
+    "anchor": "ระฆังเงียบ (FG-06)",
+    "onLoss": "เป็นผู้ดูแลสัญญาณโคมแทน",
+    "does": "ตีระฆังหรือตัดสินให้เงียบ",
+    "linked": {
+     "events": [
+      "FG-06"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:15"
+   },
+   {
+    "id": "refugee_leader",
+    "name": "ผู้นำขบวนหนีหมอก",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NB14-1 รับช่วงขบวน หรือ FG-07 เกิดแล้ว",
+    "req": [
+     {
+      "k": "event",
+      "id": "FG-07",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "fog_caravan_leader"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "fog_caravan_leader",
+    "fromStory": "NB14-1 รับช่วงขบวน หรือ FG-07 เกิดแล้ว",
+    "anchor": "ขบวนล่ม (เสบียงหมด)",
+    "onLoss": "เหลือเพียงผู้รอด",
+    "does": "ตัดสินว่าจะรับใครเพิ่ม",
+    "linked": {
+     "events": [
+      "FG-07"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:16"
+   },
+   {
+    "id": "rust_collector",
+    "name": "นักเก็บสนิม",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "หลัง RL-01 คืนที่ไฟดับ เมคาเรียตกต่ำ (RL-02)",
+    "req": [
+     {
+      "k": "event",
+      "id": "RL-01",
+      "happened": true
+     },
+     {
+      "k": "event",
+      "id": "RL-02",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "rust_collector"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "rust_collector",
+    "fromStory": "หลัง RL-01 คืนที่ไฟดับ เมคาเรียตกต่ำ (RL-02)",
+    "anchor": "เมืองกลับมามีไฟ",
+    "onLoss": "กลายเป็นช่างซ่อมทั่วไป",
+    "does": "เก็บซากเครื่องจักร พบของปฐม",
+    "linked": {
+     "events": [
+      "RL-01",
+      "RL-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:17"
+   },
+   {
+    "id": "sapling_guardian",
+    "name": "ผู้ดูแลต้นกล้าต้นไม้โลก",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "BIO-03 และ AL16-1 มอบต้นกล้า",
+    "req": [
+     {
+      "k": "event",
+      "id": "BIO-03",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "sapling_guardian"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "sapling_guardian",
+    "fromStory": "BIO-03 และ AL16-1 มอบต้นกล้า",
+    "anchor": "ต้นกล้าตาย",
+    "onLoss": "เส้นเรื่อง WT ปิด",
+    "does": "เดินทางส่งต้นกล้าสู่ SV-01",
+    "linked": {
+     "events": [
+      "BIO-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:18"
+   },
+   {
+    "id": "naga_egg_warden",
+    "name": "ผู้เฝ้าไข่นาคา",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NR07-1 รับอาสา ระหว่างไข่รอฟัก (ก่อน BIO-08 ยุค 1–2)",
+    "req": [
+     {
+      "k": "event",
+      "id": "BIO-08",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "naga_egg"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "naga_egg",
+    "fromStory": "NR07-1 รับอาสา ระหว่างไข่รอฟัก (ก่อน BIO-08 ยุค 1–2)",
+    "anchor": "ไข่ฟัก",
+    "onLoss": "เป็นผู้เลี้ยงนาคาเยาว์ ไข่ถูกขโมย → ตามล่า",
+    "does": "เฝ้าและเลี้ยงนาคารุ่นใหม่",
+    "linked": {
+     "events": [
+      "BIO-08"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:19"
+   },
+   {
+    "id": "cooled_hearth_keeper",
+    "name": "ผู้ถือเตาเย็น",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "หลัง AS-03 (เผ่าลาวาเย็นตัว)",
+    "req": [
+     {
+      "k": "event",
+      "id": "AS-03",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "cooled_hearth"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "cooled_hearth",
+    "fromStory": "หลัง AS-03 (เผ่าลาวาเย็นตัว)",
+    "anchor": "เผ่าลาวาสูญพันธุ์",
+    "onLoss": "ปิด",
+    "does": "ดูแลเตาของผู้ที่ไม่ร้อนอีกต่อไป",
+    "linked": {
+     "events": [
+      "AS-03"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:20"
+   },
+   {
+    "id": "fog_guide",
+    "name": "ผู้นำทางไร้เนื้อ",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "NB10-2 เซโร่ ตาย หรือถูกเลือกแทน (FG-09)",
+    "req": [
+     {
+      "k": "event",
+      "id": "FG-09",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "fogless_guide"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "fogless_guide",
+    "fromStory": "NB10-2 เซโร่ ตาย หรือถูกเลือกแทน (FG-09)",
+    "anchor": "หมอกทึบหาย (FG-10)",
+    "onLoss": "กลายเป็นผู้นำทางธรรมดา",
+    "does": "ผู้นำทางในหมอกทึบ",
+    "linked": {
+     "events": [
+      "FG-09",
+      "FG-10"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:21"
+   },
+   {
+    "id": "water_city_mayor",
+    "name": "ผู้ปกครองเมืองกลางน้ำ",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "หลัง DR-05 ผูก DW-02",
+    "req": [
+     {
+      "k": "event",
+      "id": "DR-05",
+      "happened": true
+     },
+     {
+      "k": "event",
+      "id": "DW-02",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "water_city_mayor"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "water_city_mayor",
+    "fromStory": "หลัง DR-05 ผูก DW-02",
+    "anchor": "เมืองจมหรือน้ำลด",
+    "onLoss": "ปิด",
+    "does": "บริหารเมืองใหม่ของผู้ลี้ภัย",
+    "linked": {
+     "events": [
+      "DR-05",
+      "DW-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:22"
+   },
+   {
+    "id": "treaty_arbiter",
+    "name": "ผู้ตัดสินสนธิสัญญา",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "KD11-4 รับช่วง หรือหลัง HP-01",
+    "req": [
+     {
+      "k": "event",
+      "id": "HP-01",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "treaty_arbiter"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "treaty_arbiter",
+    "fromStory": "KD11-4 รับช่วง หรือหลัง HP-01",
+    "anchor": "สนธิสัญญาล่ม",
+    "onLoss": "ปิด",
+    "does": "ไกล่เกลี่ยข้ามทวีป",
+    "linked": {
+     "events": [
+      "HP-01"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:23"
+   },
+   {
+    "id": "ruin_city_lord",
+    "name": "ผู้ปกครองเมืองซาก",
+    "kind": "special",
+    "group": "พิเศษ",
+    "origin": "special",
+    "apts": [],
+    "slow": false,
+    "reqText": "หลัง DR-01 ผูก SF-08 (เมืองซากแรก)",
+    "req": [
+     {
+      "k": "event",
+      "id": "DR-01",
+      "happened": true
+     },
+     {
+      "k": "event",
+      "id": "SF-08",
+      "happened": true
+     },
+     {
+      "k": "has",
+      "kind": "flag",
+      "id": "ruin_city_lord"
+     }
+    ],
+    "banText": "",
+    "ban": [],
+    "opens": "",
+    "raceBonus": [],
+    "flag": "ruin_city_lord",
+    "fromStory": "หลัง DR-01 ผูก SF-08 (เมืองซากแรก)",
+    "anchor": "ซากหายหรือย้าย",
+    "onLoss": "ย้ายตามชุมชน",
+    "does": "ปกครองผู้ลี้ภัยจากเกาะร่วง",
+    "linked": {
+     "events": [
+      "DR-01",
+      "SF-08"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/11-jobs-special.md:24"
+   }
+  ],
+  "rules": {
+   "offerCount": 3,
+   "weightFormula": "น้ำหนัก = (1 + จำนวนความถนัดที่ตรง × 3 + ค่าสถานะหลัก ÷ 6 + โบนัสเผ่า)\n        × √(น้ำหนักความหายาก)\n        × ความเข้ากับเรื่องราว (ถิ่น ศาสนา ดวง นิสัย เส้นเรื่อง)\n        × ตัวคูณโลก",
+   "aptMatchWeight": 3,
+   "raceBonus": 2,
+   "rarityRoot": {
+    "C": 10,
+    "U": 6.2,
+    "R": 3.3,
+    "E": 1.6
+   },
+   "yearlyUpgradeChance": 0.3,
+   "jobChangeChancePerYear": 0.005,
+   "slowLifeChangeChance": 0.002,
+   "freedomChangeChance": 0.015,
+   "secretBaseChance": 0.0075,
+   "secretMaxChance": 0.6,
+   "secretRetryChance": 0.004,
+   "secretMultipliers": [
+    {
+     "id": "ฐาน",
+     "text": "0.75%",
+     "mul": null,
+     "when": "เงื่อนไขครบ ไม่มีอะไรเอื้อ ตัวละครที่ไม่มีเส้นเรื่องที่เหมาะจะรอเฉลี่ย 133 ปี ถ้าเงื่อนไขครบตั้งแต่อายุเทียบ 40 จะได้เองก่อนหมดอายุราวหนึ่งในห้า (หัวข้อ จ)"
+    },
+    {
+     "id": "ทางตรง",
+     "text": "เสนอปีถัดไปแน่นอน",
+     "mul": null,
+     "when": "ตัวละครเลือกทางที่ระบุ \"ทางสู่\" ในเส้นเรื่อง (คอลัมน์ทางตรงของตาราง) และเงื่อนไขครบ ไม่ต้องทอย"
+    },
+    {
+     "id": "ทางเอื้อ",
+     "text": "×6",
+     "mul": 6,
+     "when": "ตัวละครผ่านโหนดหรือจุดบรรจบในคอลัมน์ทางเอื้อ (4.5% ต่อปี คาดว่าได้ใน 22 ปี)"
+    },
+    {
+     "id": "เหตุการณ์ผูก",
+     "text": "×2",
+     "mul": 2,
+     "when": "เหตุการณ์ในคอลัมน์สุดท้ายของตารางเกิดแล้วในทวีปที่ตัวละครอยู่"
+    },
+    {
+     "id": "คนชักชวน",
+     "text": "×1.5",
+     "mul": 1.5,
+     "when": "มี NPC ในเส้นเรื่องของอาชีพนั้นที่ไว้ใจตัวละคร ≥ 5"
+    },
+    {
+     "id": "พระเจ้า",
+     "text": "×1.5",
+     "mul": 1.5,
+     "when": "คำใบ้ \"จงไป\" ชี้ไปยังที่ตั้งของเส้นเรื่องอาชีพนั้น หรือพรสายชะตา (b_fateweaver b_destiny) ×1.3"
+    }
+   ],
+   "retire": [
+    {
+     "cond": "เป็นนักผจญภัย ทหาร อัศวิน โจรสลัด หรือทหารรับจ้างมากกว่า 8 ปี",
+     "why": "เหนื่อยจากการต่อสู้"
+    },
+    {
+     "cond": "รอดจากเหตุการณ์ใหญ่ (สถานะผู้ผ่านเหตุการณ์)",
+     "why": "อยากมีชีวิตสงบหลังเห็นการสูญเสีย"
+    },
+    {
+     "cond": "ได้ชื่อเสียง 20 ขึ้นไป แต่สูญเสียคนสนิท",
+     "why": "ถอนตัวจากโลกกว้าง"
+    },
+    {
+     "cond": "ได้รับมรดกที่ดินหรือเงิน 150 ขึ้นไป",
+     "why": "มีทุน"
+    },
+    {
+     "cond": "นิสัย easygoing homebody patient nostalgic",
+     "why": "ธรรมชาติของตัวเอง"
+    },
+    {
+     "cond": "มีพร nb_sound_sleep หรือ nb_warm_hearth",
+     "why": "เหมาะกับชีวิตช้า"
+    }
+   ],
+   "slowLife": {
+    "retireAge": 35,
+    "weightMul": 4,
+    "hpRecover": 1.5,
+    "incomeMul": 0.5
+   },
+   "institutionAlternatives": [
+    {
+     "fail": "พระของศาสนาแสง (หญิง)",
+     "alt": "temple_servant inquisitor (ผู้รับใช้ศาสนจักร) หรือนักบวชเทพีแห่งจันทรา"
+    },
+    {
+     "fail": "นักบวชเทพีแห่งจันทรา (ชาย)",
+     "alt": "ผู้พิทักษ์ศาสนสถาน (city_guard หรือ royal_guard)"
+    },
+    {
+     "fail": "ผู้ปรนนิบัติลัทธิมังกร (ไม่ใช่เผ่าปีก)",
+     "alt": "pilgrim temple_servant"
+    },
+    {
+     "fail": "ผู้ผ่านการทดสอบพญานาคราช (เผ่าสัตว์)",
+     "alt": "pilgrim หรือ priest ของศาสนาอื่น"
+    },
+    {
+     "fail": "ขุนนาง (ไม่มีธง noble)",
+     "alt": "diplomat mayor เมื่อสร้างชื่อเสียง"
+    }
+   ],
+   "anchorLoss": [
+    {
+     "lost": "ประภาคาร (NR-06 NR-15) ถูกน้ำกลืน",
+     "becomes": "navigator หรือ ferryman"
+    },
+    {
+     "lost": "ฟาร์มถูกตั๊กแตนกลืน (CT-08)",
+     "becomes": "farmer หรือ miller ถ้าฟื้นได้"
+    },
+    {
+     "lost": "ร้านในเมืองที่ถูกหมอกกลืน (FG-02)",
+     "becomes": "refugee_leader (ถ้ามีธง) หรือ lamplighter"
+    },
+    {
+     "lost": "ทหารยามของประเทศที่ล่ม",
+     "becomes": "mercenary หรือ caravan_guard"
+    },
+    {
+     "lost": "ผู้แทนสภา (WR-14)",
+     "becomes": "diplomat ผู้ลี้ภัย"
+    }
+   ],
+   "bodyLimits": [
+    {
+     "group": "ร่างใหญ่ (huge)",
+     "cond": "งานละเอียด (ช่างเครื่องประดับ ช่างนาฬิกา แพทย์ ช่างเย็บ)",
+     "effect": "ห้าม ยกเว้นยักษ์ที่มี nb_steady_hand ได้ ×0.3",
+     "mul": 0.3
+    },
+    {
+     "group": "ร่างใหญ่ (huge)",
+     "cond": "งานในที่แคบ (คนงานเหมือง ผู้ลักลอบ)",
+     "effect": "×0.3",
+     "mul": 0.3
+    },
+    {
+     "group": "ร่างเล็ก (small)",
+     "cond": "งานที่ใช้แรง (ช่างหิน ทหาร)",
+     "effect": "×0.4",
+     "mul": 0.4
+    },
+    {
+     "group": "เผ่าไม่มีเลือด (mechanical)",
+     "cond": "แพทย์ หมอตำแย (รักษาร่างเลือด)",
+     "effect": "ทำได้แต่ผลลด 30% เพราะไม่เข้าใจร่างผู้ป่วย"
+    },
+    {
+     "group": "ผู้ตาย (undead)",
+     "cond": "งานบริการที่เกี่ยวกับอาหาร (พ่อครัว คนทำขนมปัง)",
+     "effect": "แวมไพร์ มัมมี่ กูล ทำได้ แต่ต้องมีพรหรือนิสัยรองรับ (ผู้ซื้อไม่ไว้ใจ)"
+    },
+    {
+     "group": "ผู้ตาย (undead)",
+     "cond": "อาชีพชีวิตช้า (ฟาร์ม สวน)",
+     "effect": "×0.5 เพราะพืชไม่ไว้ใจผู้ตาย ยกเว้นมี nb_green_thumb",
+     "mul": 0.5
+    },
+    {
+     "group": "เผ่าน้ำ (water_breath)",
+     "cond": "อาชีพบนบกเต็มตัว",
+     "effect": "ปกติ แต่เงือกต้องมีถิ่นติดน้ำ"
+    },
+    {
+     "group": "สไลม์",
+     "cond": "อาชีพที่ใช้เครื่องมือ",
+     "effect": "ทำได้ (กลืนเครื่องมือเข้าตัว SR-27) แต่ผลลด 20%"
+    },
+    {
+     "group": "เผ่ามี weak_sun",
+     "cond": "งานกลางแจ้ง (ชาวนา ผู้ทำสวน ชาวประมง)",
+     "effect": "ห้าม ยกเว้นมี nb_fog_walker หรือทำงานกลางคืน"
+    },
+    {
+     "group": "ผู้ไม่รู้หนังสือ (ปัญญา < 8)",
+     "cond": "งานเอกสาร (เสมียน ทนายความ บรรณารักษ์)",
+     "effect": "ห้าม"
+    },
+    {
+     "group": "ผู้ไม่มีเงินเริ่มต้น",
+     "cond": "งานที่ต้องการทุน (เจ้าของร้าน ฟาร์ม)",
+     "effect": "ห้ามจนกว่ามีเงินครบหรือรับมรดก"
+    }
+   ],
+   "secretTagSources": [
+    {
+     "tag": "necro",
+     "usedIn": "lich",
+     "from": "c_undeadtouch (คำสาป U พืชเหี่ยวเมื่อแตะ)",
+     "at": "hu.a6 ทาง ค",
+     "chance": "70%"
+    },
+    {
+     "tag": "necro",
+     "usedIn": "lich",
+     "from": "c_undeadtouch",
+     "at": "mu.a2 ทาง ข",
+     "chance": "100% ถ้ายังไม่มี"
+    },
+    {
+     "tag": "necro",
+     "usedIn": "lich",
+     "from": "c_undeadtouch โดยกำเนิดของมัมมี่และกูล ([02-race-affinity.md](02-race-affinity.md)) และจากการสู้ผู้ตาย ([../combat/05-rewards.md](../combat/05-rewards.md))",
+     "at": "นอกเส้นเรื่อง",
+     "chance": "ตามตารางนั้น"
+    },
+    {
+     "tag": "necro",
+     "usedIn": "lich",
+     "from": "เครื่องราง tm_seal_mirror",
+     "at": "นอกเส้นเรื่อง",
+     "chance": "ตามที่ได้ของ"
+    },
+    {
+     "tag": "lich_seed",
+     "usedIn": "lich",
+     "from": "c_lichseed (คำสาป L)",
+     "at": "ไม่ให้จากเส้นเรื่อง ได้จากสู้ลิชใน DM-09 และคทา wl_lich_king",
+     "chance": "ตาม [../combat/05-rewards.md](../combat/05-rewards.md)"
+    },
+    {
+     "tag": "sage",
+     "usedIn": "sage",
+     "from": "u_sage (skill เฉพาะตัว)",
+     "at": "so.a6 ทาง ก",
+     "chance": "20%"
+    },
+    {
+     "tag": "sage",
+     "usedIn": "sage",
+     "from": "u_sage",
+     "at": "dw.a2 ทาง ก",
+     "chance": "20%"
+    },
+    {
+     "tag": "sage",
+     "usedIn": "sage",
+     "from": "เครื่องประดับ ac_sage_circlet",
+     "at": "นอกเส้นเรื่อง",
+     "chance": "ตามที่ได้ของ"
+    }
+   ],
+   "directPaths": [
+    {
+     "job": "lich",
+     "nodes": "hu.a6 ทาง ค · mu.a2 ทาง ข",
+     "why": "มนุษย์ไปเห็นประตูเมืองปฐมซึ่งมีตำราของ DM-09 · มัมมี่ที่พบชื่อชีวิตแรกหาทางอยู่โดยไม่ใช้ธุลีทิพย์ ทั้งสองต้องมี #necro เงื่อนไขอื่นของอาชีพกันคนที่ไม่ใช่สายตายออก"
+    },
+    {
+     "job": "swordsaint",
+     "nodes": "hu.a4 ทาง ข · gi.a7 ทาง ข",
+     "why": "ชนะหัวหน้าด้วยดาบ · ยักษ์ปกป้องมนุษย์จากไททันด้วยดาบขนาดยักษ์ (ตรงกับข้อห้ามของอาชีพ)"
+    },
+    {
+     "job": "archmage",
+     "nodes": "fa.a7 ทาง ก · el.e1 ทาง ค",
+     "why": "ภูตเรียนเวทจากราชินี · เอลฟ์ผู้อาวุโสเข้าคลังตำราของสภา เผ่าเวทสูงสองเผ่าที่อายุยืนพอสะสม skill ธาตุสามอย่าง"
+    },
+    {
+     "job": "sage",
+     "nodes": "so.a6 ทาง ก · dw.a2 ทาง ก",
+     "why": "หุ่นวิญญาณปัญญาสูงเข้าซากอาร์เคีย · คนแคระเปิดรูนปฐมให้โลก ผูก HP-05"
+    },
+    {
+     "job": "godslayer",
+     "nodes": "gi.a7 ทาง ก",
+     "why": "ยักษ์ผู้ตามไททันตื่นหลัง GD-08 ยักษ์เป็นเผ่าเดียวที่ความแค้นต่อสิ่งที่ถูกบูชาเป็นรากวัฒนธรรม ([../../lore/races/16-giant.md](../../lore/races/16-giant.md))"
+    },
+    {
+     "job": "prophet",
+     "nodes": "wi.a7 ทาง ก · wi.e1 ทาง ข",
+     "why": "เผ่าปีกที่เห็นอีริดานลงมา · ผู้นำสหพันธ์ซากเมื่อ GD-01 เปิด เผ่านี้บูชาโดยไม่รู้ว่าบูชาอะไร ([../../lore/races/15-winged.md](../../lore/races/15-winged.md))"
+    }
+   ],
+   "kinds": [
+    {
+     "kind": "ทั่วไป",
+     "how": "เสนอ 3 อย่างให้เลือก",
+     "offered": "ใช่",
+     "godHint": "ได้ (เฉพาะอาชีพที่ไม่มีเงื่อนไขเฉพาะ)"
+    },
+    {
+     "kind": "ลับ",
+     "how": "ตรวจเงื่อนไขทุกปี ครบแล้วทอยโอกาสต่ำ (เพิ่มมากเมื่อมาตามเส้นเรื่องที่เหมาะ [10-jobs-secret.md](10-jobs-secret.md) หัวข้อ ง) ผ่านแล้วเกิดเหตุการณ์ให้ยอมรับหรือปฏิเสธ",
+     "offered": "ไม่",
+     "godHint": "ไม่ได้"
+    },
+    {
+     "kind": "พิเศษ",
+     "how": "ได้เฉพาะเมื่อเส้นเรื่องตั้งธงที่กำหนด",
+     "offered": "ไม่",
+     "godHint": "ไม่ได้"
+    },
+    {
+     "kind": "ชีวิตช้า",
+     "how": "อยู่ในอาชีพทั่วไป แต่ระดับ R และมีเส้นทางพิเศษ (หัวข้อ 4)",
+     "offered": "ได้แต่โอกาสน้อย",
+     "godHint": "ได้ถ้าผ่านเงื่อนไข"
+    }
+   ]
+  }
+ }
+}
