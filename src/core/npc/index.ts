@@ -3,8 +3,7 @@
 // Rule kinds owned here: condition `npc` · effects `npc` `npcPath` (docs/guide/code-plan.md §12.4 task split).
 import type { System } from '../game';
 import { onCond, onEffect } from '../rules';
-import { advanceSlot, adjustPath, initSlots, isAlive, meetNamed, meetZone, stepWorld } from './engine';
-import { npcIndex } from './data';
+import { adjustPath, initSlots, isAlive, meetNamed, meetZone, stepWorld } from './engine';
 import { slotsOf } from './types';
 
 onCond('npc', (ctx, c) => isAlive(ctx, c.id) === c.alive);
@@ -37,6 +36,8 @@ export const npcSystem: System = {
   },
 };
 
-export { advanceSlot, npcIndex };
+export { advanceSlot, fateClass, fateOutcome, lastEraPhase, pathChances } from './engine';
+export { npcIndex } from './data';
 export * from './query';
-export type { NpcSlotX, Story } from './types';
+export { npcState, slotsOf } from './types';
+export type { NpcSlotX, NpcStateX, Story } from './types';
