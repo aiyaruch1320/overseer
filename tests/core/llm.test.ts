@@ -678,7 +678,7 @@ describe('the DeepSeek provider (a stub fetch; no network)', () => {
   it('is the model and the temperatures the docs name', () => {
     expect(MODEL).toBe('deepseek-flash');
     expect(Object.values(MODEL_OF)).toEqual(['deepseek-flash', 'deepseek-flash', 'deepseek-flash']);
-    expect(TEMPERATURE).toEqual({ command: 0.3, director: 0.3, ending: 1.3 });
+    expect(TEMPERATURE).toEqual({ command: 0.3, director: 0.3, ending: 1.0 });
   });
 
   it('builds the request: thinking off, the fixed part first, no user_id, a key in the bearer header, the plain endpoint for prose', async () => {
@@ -753,6 +753,6 @@ describe('the DeepSeek provider (a stub fetch; no network)', () => {
     expect(alt.client.config.models?.ending).toBe(ANTHROPIC_MODEL);
     const { llm, provider } = fakeLlm(FX);
     await llm.summarizeEnding(summaryInput());
-    expect(provider.calls[0]).toMatchObject({ model: 'deepseek-flash', temperature: 1.3 });
+    expect(provider.calls[0]).toMatchObject({ model: 'deepseek-flash', temperature: 1.0 });
   });
 });
