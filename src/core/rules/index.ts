@@ -5,7 +5,7 @@
 // so a missing handler shows up in `npm run life` instead of failing silently.
 import { write } from '../log';
 import type { Ctx } from '../game';
-import type { Condition, Effect } from '../types';
+import type { Condition, Effect, IdKind } from '../types';
 
 export type CondFn<K extends Condition['k']> = (ctx: Ctx, c: Extract<Condition, { k: K }>) => boolean;
 export type EffectFn<K extends Effect['k']> = (ctx: Ctx, e: Extract<Effect, { k: K }>, src: EffectSource) => void;
@@ -24,7 +24,8 @@ export interface EffectSource {
  * and, when the number can change, a writer. Names may be Thai words the docs use (`ทอง`); register those as aliases.
  */
 export interface StatHandler {
-  read(ctx: Ctx, name: string): number;
+  /** `cond` is the comparison being made, so a counted stat ("ไว้ใจ ≥ 3 จาก 10 เผ่า") can count the things above its value. */
+  read(ctx: Ctx, name: string, cond?: Extract<Condition, { k: 'cmp' }>): number;
   add?(ctx: Ctx, name: string, delta: number): void;
 }
 const stats = new Map<string, StatHandler>();
@@ -34,28 +35,42 @@ export function onStat(name: string, h: StatHandler): void {
   stats.set(name, h);
 }
 
-function statOf(name: string): StatHandler | undefined {
+/** Systems that own an open set of names (every aptitude id, say) answer for names nobody registered. */
+const statFallbacks: ((name: string, ctx: Ctx) => StatHandler | undefined)[] = [];
+
+export function onStatFallback(fn: (name: string, ctx: Ctx) => StatHandler | undefined): void {
+  statFallbacks.push(fn);
+}
+
+function statOf(name: string, ctx: Ctx): StatHandler | undefined {
   const exact = stats.get(name);
   if (exact) return exact;
-  for (let i = name.lastIndexOf('.'); i > 0; i = name.lastIndexOf('.', i - 1)) {
+  for (const f of statFallbacks) {
+    const h = f(name, ctx);
+    if (h) return h;
+  }
+  // prefixes end in `.` (`axis.`) or `:` (`trust:` as the generators write it)
+  for (let i = name.length - 1; i > 0; i--) {
+    if (name[i] !== '.' && name[i] !== ':') continue;
     const h = stats.get(name.slice(0, i + 1));
     if (h) return h;
   }
   return undefined;
 }
 
-export function readStat(ctx: Ctx, name: string): number | undefined {
-  const h = statOf(name);
+export function readStat(ctx: Ctx, name: string, cond?: Extract<Condition, { k: 'cmp' }>): number | undefined {
+  const h = statOf(name, ctx);
   if (!h) {
     report(ctx, 'cond', `stat:${name}`);
     return undefined;
   }
-  return h.read(ctx, name);
+  return h.read(ctx, name, cond);
 }
 
 const conds = new Map<string, (ctx: Ctx, c: Condition) => boolean>();
 const effects = new Map<string, (ctx: Ctx, e: Effect, src: EffectSource) => void>();
-const missing = new Set<string>();
+/** Kinds already reported, per game state, so the same seed always writes the same log. */
+const missing = new WeakMap<object, Set<string>>();
 
 export function onCond<K extends Condition['k']>(kind: K, fn: CondFn<K>): void {
   if (conds.has(kind)) throw new Error(`condition kind ${kind} registered twice`);
@@ -69,8 +84,10 @@ export function onEffect<K extends Effect['k']>(kind: K, fn: EffectFn<K>): void 
 
 function report(ctx: Ctx, what: 'cond' | 'effect', kind: string) {
   const key = `${what}:${kind}`;
-  if (missing.has(key)) return;
-  missing.add(key);
+  let seen = missing.get(ctx.state);
+  if (!seen) missing.set(ctx.state, (seen = new Set(ctx.state.log.filter((e) => e.sys === 'rules' && e.kind === 'unhandled').map((e) => e.id!))));
+  if (seen.has(key)) return;
+  seen.add(key);
   write(ctx.state, { sys: 'rules', kind: 'unhandled', id: key, level: 0 });
 }
 
@@ -96,7 +113,7 @@ export function test(ctx: Ctx, c: Condition | undefined, opts: TestOpts = {}): b
     case 'text':
       return opts.unknown ?? false;
     case 'cmp': {
-      const v = readStat(ctx, c.stat);
+      const v = readStat(ctx, c.stat, c);
       if (v === undefined) return false;
       // "ไว้ใจ ≥ 3 จาก 10 เผ่า": the stat handler of a counted stat returns how many pass; compare that count
       if (c.count !== undefined) return v >= c.count;
@@ -112,6 +129,12 @@ export function test(ctx: Ctx, c: Condition | undefined, opts: TestOpts = {}): b
     case 'count': {
       const v = readStat(ctx, c.what);
       return v !== undefined && v >= c.min;
+    }
+    case 'anyOf': {
+      // "at least min of these ids": each one is a `has` of that kind, handled by the system that owns `has`
+      let n = 0;
+      for (const id of c.ids) if (test(ctx, { k: 'has', kind: c.kind as IdKind, id }, opts) && ++n >= c.min) return true;
+      return false;
     }
   }
   const fn = conds.get(c.k);
@@ -148,7 +171,7 @@ function applyOne(ctx: Ctx, e: Effect, src: EffectSource): void {
     }
   }
   if (e.k === 'stat') {
-    const h = statOf(e.stat);
+    const h = statOf(e.stat, ctx);
     if (h?.add) h.add(ctx, e.stat, e.delta);
     else report(ctx, 'effect', `stat:${e.stat}`);
     return;
@@ -165,13 +188,13 @@ function applyOne(ctx: Ctx, e: Effect, src: EffectSource): void {
 
 /** Kinds that have a handler, for tests that check coverage against the data. */
 export function registered(): { conds: string[]; effects: string[] } {
-  return { conds: [...conds.keys(), 'and', 'or', 'not', 'text', 'cmp', 'count'].sort(), effects: [...effects.keys(), 'label', 'if', 'only', 'chance', 'pick', 'stat'].sort() };
+  return { conds: [...conds.keys(), 'and', 'or', 'not', 'text', 'cmp', 'count', 'anyOf'].sort(), effects: [...effects.keys(), 'label', 'if', 'only', 'chance', 'pick', 'stat'].sort() };
 }
 
 /** Test helper: forget every handler (systems register again when their module is imported fresh). */
 export function resetRules(): void {
   stats.clear();
+  statFallbacks.length = 0;
   conds.clear();
   effects.clear();
-  missing.clear();
 }
