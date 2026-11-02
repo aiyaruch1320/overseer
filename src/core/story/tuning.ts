@@ -39,7 +39,7 @@ export const OPEN_RATE: Record<string, number> = {
  * Measured on 300 lives of the whole core (seeds 1 to 300): the median gold at 60 was 141 with pv 0.4 wk 0.45 iv 0.45 nl 0.5 and is 204 with the shares below (with INCOME_SCALE 1.46).
  * The bn rate cannot fall either (the story-only test would drop under 31).
  */
-export const OPEN_SHARE: Record<string, number> = { pv: 0.9, wk: 0.8, iv: 0.2, nl: 0.25 };
+export const OPEN_SHARE: Record<string, number> = { pv: 0.9, wk: 0.8, iv: 0.1, nl: 0.25 };
 
 /** Overlay lines whose opening rule is a plain condition, not a share of lives (no rate). Conditions come from the documents. */
 export const OPEN_COND: Record<string, Condition> = {

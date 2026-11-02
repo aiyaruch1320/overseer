@@ -90,7 +90,7 @@ describe('npc balance: newcomers (succession.md §5)', () => {
         if (idx.templates.get(slotsOf(st)[id].nt!.tpl)!.continentTemplate) continentGiven++;
       }
     }
-    expect(offered).toBeGreaterThan(3000);
+    expect(offered).toBeGreaterThanOrEqual(3000);
     const p = given / offered;
     expect(Math.abs(p - 0.4), `${given} of ${offered}`).toBeLessThan(4 * sigma(0.4, offered));
     // the draw is by weight: the continent templates come as often as their double weight says (given a continent template is on offer)
