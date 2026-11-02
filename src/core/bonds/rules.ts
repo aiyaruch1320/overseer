@@ -164,7 +164,8 @@ export function registerBondsRules(): void {
   /** `{สหาย:คิดถึง@2}`: the character shows the mood toward the tie the node is about, or toward the best tie of the line. */
   onEffect('mood', (ctx, e, src) => {
     const l = life(ctx);
-    if (!l) return;
+    // a world that loaded no bonds data has no ties: the effect has nothing to act on
+    if (!l || !ctx.data.bonds) return;
     const b = extOf(l);
     const line = lineName(ctx, e.line);
     let t = focusOf(b);
@@ -184,7 +185,8 @@ export function registerBondsRules(): void {
   /** `FT-03` `KN-02` `PR-01` (`FT-01 ถึง FT-05`): a story, or a pair of items, for the tie the node is about. */
   onEffect('template', (ctx, e, src) => {
     const l = life(ctx);
-    if (!l) return;
+    // a world that loaded no bonds data has no ties: the effect has nothing to act on
+    if (!l || !ctx.data.bonds) return;
     const b = extOf(l);
     const rng = ctx.rng('bonds.fx');
     if (e.chance !== undefined && !rng.chance(e.chance)) return;
@@ -228,7 +230,8 @@ export function registerBondsRules(): void {
   /** `สายสหายระดับ 2` `เปิดสายคู่หู` and the prayers `lover` `child`: a tie of the line opens, or the tie the node is about changes line or rises. */
   onEffect('bond', (ctx, e, src) => {
     const l = life(ctx);
-    if (!l) return;
+    // a world that loaded no bonds data has no ties: the effect has nothing to act on
+    if (!l || !ctx.data.bonds) return;
     const b = extOf(l);
     const word = e.line.trim().toLowerCase();
     if (word === 'child') {
