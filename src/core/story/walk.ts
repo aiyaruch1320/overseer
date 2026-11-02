@@ -11,7 +11,7 @@ import { entryWeight, forkId, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { lastStand } from './laststand';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { CAUSE, DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
+import { CAUSE, DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, LINE_CAP, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -164,6 +164,9 @@ function rolling(ctx: Ctx, ex: StoryExt, ix: Index, line: string, seq: StoryNode
   for (let guard = 0; guard < 50; guard++) {
     const life = lifeOf(ctx);
     if (!life || !decideOpen(ctx, ex, ix, line)) return;
+    // a line with a cap (mr: three nodes a life) is shut once the life has walked that many of its nodes
+    const cap = LINE_CAP[line];
+    if (cap !== undefined && seq.filter((n) => life.passed[n.id] !== undefined).length >= cap) return;
     let played = false;
     for (const n of seq) {
       if (life.passed[n.id] !== undefined || ex.skipped.includes(n.id) || ex.announced[n.id]) continue;
@@ -177,9 +180,10 @@ function rolling(ctx: Ctx, ex: StoryExt, ix: Index, line: string, seq: StoryNode
         continue;
       }
       if (life.hAge < n.age[0]) continue;
+      // a node whose condition does not hold draws nothing (the lives of a god that did nothing are the lives of a world without the line)
+      if (n.when && !test(ctx, n.when)) continue;
       // the closing node of the line is drawn an age between its own and the last life year, as the other lines do (it is not left for the death scene, which would only make it glow)
       if (closing && life.hAge < (ex.fire[n.id] ??= ctx.rng('life.story').int(Math.min(Math.max(n.age[0], life.hAge), lastYearOf(life)), Math.max(n.age[0], lastYearOf(life))))) continue;
-      if (n.when && !test(ctx, n.when)) continue;
       if (!room(ex, life)) continue;
       fireNode(ctx, ex, ix, n);
       played = true;

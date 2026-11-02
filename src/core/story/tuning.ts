@@ -79,10 +79,17 @@ export const OPEN_PRED: Record<string, (s: { lives: number; chronicle: number })
 export const RETRY_OPEN: ReadonlySet<string> = new Set(['mr', 'dp']);
 
 /**
- * Lines whose nodes wait for their own condition instead of drawing an age and being skipped when it fails (31-divine.md §2 rule 6): a node
+ * Lines whose nodes wait for their own condition instead of drawing an age and being skipped when it fails (31-divine.md §2 rule 6 for `dp`; `mr` the same,
+ * M4 review G2: an event of a ruin comes when it comes, and a node that drew its age before the refugees came was lost for good): a node
  * plays the year its condition holds, in any order, and is skipped once its age window is over. The closing node waits for the last year.
  */
-export const ROLLING_LINES: ReadonlySet<string> = new Set(['dp']);
+export const ROLLING_LINES: ReadonlySet<string> = new Set(['dp', 'mr']);
+
+/**
+ * The most nodes of a line one life may walk (31-divine.md §2 rule 4: "ชีวิตหนึ่งเดินโหนด mr ได้ไม่เกินสามโหนด"). Read as all the nodes of the line, the closing
+ * node included. (The same rule gives `dp` three; the line is not capped here because the lead did not ask for it: see the report.)
+ */
+export const LINE_CAP: Record<string, number> = { mr: 3 };
 
 /** The pair sets cover half-bloods (22-halfblood.md §3): they open with the half-blood line. */
 export const PAIR_RATE = 1;
