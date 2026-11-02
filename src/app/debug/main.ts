@@ -6,24 +6,10 @@ import { npcsAt } from '../../core/npc';
 import { placeName } from '../../core/text';
 import { statusLines, timeline, worldLines } from '../../../scripts/tools/report';
 import { GodConsole, callLines, godHelp } from '../../../scripts/tools/god-commands';
-import { registerPolicyStep, type PolicyStep } from '../../../scripts/tools/god-hooks';
 import { POLICIES, afterBeat, createSession, runToCall, runToDeath, startLife, stepBeat, toolNotes, type Policy, type Session } from '../../../scripts/tools/session';
 
 const gen = import.meta.glob('../../../data/gen/*.json', { import: 'default' }) as Record<string, () => Promise<{ version: string; items: unknown }>>;
 const lib = import.meta.glob('../../../data/library/*.jsonl', { query: '?raw', import: 'default' }) as Record<string, () => Promise<string>>;
-
-// the policy functions of the god system, when the branch has them (same as scripts/tools/god-hooks-node.ts, for the browser)
-const godMods = import.meta.glob('../../core/god/index.ts') as Record<string, () => Promise<Record<string, unknown>>>;
-const actsMods = import.meta.glob('../../core/god/acts/index.ts') as Record<string, () => Promise<Record<string, unknown>>>;
-
-async function loadGodHooks() {
-  for (const [name, fn, mods] of [['god', 'policyStep', godMods], ['god.acts', 'actsPolicyStep', actsMods]] as const) {
-    for (const load of Object.values(mods)) {
-      const mod = await load();
-      if (typeof mod[fn] === 'function') registerPolicyStep(name, mod[fn] as PolicyStep);
-    }
-  }
-}
 
 const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -122,7 +108,6 @@ function sendGod(text: string) {
 }
 
 loadData().then(async (data) => {
-  await loadGodHooks();
   godPanel();
   const sel = el<HTMLSelectElement>('policy');
   sel.replaceChildren(new Option('(ไม่ระบุ)', ''), ...POLICIES.map((p) => new Option(p, p)));

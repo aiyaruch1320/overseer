@@ -127,6 +127,6 @@ export const POLICY = {
   endEvents: ['WR-15', 'MC-12', 'WR-23'],
   /** Slowing a dragon's fall (sim `sign < 0 ? 0.5`). */
   slowFall: 0.5,
-  /** Chance the random policy sends a whisper at a beat (assumption, the sim has one half chance per moment). */
-  randomWhisper: 0.01,
+  /** Chance the random policy sends a whisper at a moment of the year (sim: half the moments act, a third of those whisper). */
+  randomWhisper: 1 / 6,
 };

@@ -6,10 +6,12 @@ import type { Ctx } from '../../game';
 import type { Miracle } from '../../data/types-god';
 import type { CountryId } from '../../types';
 import { apply } from '../../rules';
+import { tablesOf } from '../../world';
 import { chronicle, say } from './record';
 import { continentOf, godOf, lifeCountry, neighboursOf } from './geo';
 import { faithAt } from './mods';
-import { belief, gain, pay, priceOf, whyNot, type Cost } from './pay';
+import { addBelief } from '../belief';
+import { earn, pay, scaleCost, whyNot, type Cost } from '../power';
 import { actsOf, lifeCounters, livingOf, peekCounters, ready, startCooldown, viewActs, yearOf, type Pending } from './state';
 import { BELIEF_SEEN, DESTROY_RETURN_DIV, MC_HURT, OMEN, REACTION } from './tuning';
 
@@ -70,7 +72,7 @@ export function baseCost(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, 
   return { ...(m.cost.faith ? { faith: m.cost.faith } : {}), ...(m.cost.dread ? { dread: m.cost.dread } : {}) };
 }
 
-export const priceNow = (ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): Cost => (h.unscaled ? baseCost(ctx, m, h, args) : priceOf(ctx, baseCost(ctx, m, h, args)));
+export const priceNow = (ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>): Cost => (h.unscaled ? baseCost(ctx, m, h, args) : scaleCost(ctx, baseCost(ctx, m, h, args)));
 
 // ---------- the caps (04-miracles.md §2 rule 6, 01-power.md §4) ----------
 
@@ -169,8 +171,7 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
   if (args.cancel !== undefined) {
     const p = a.pending.find((x) => x.n === Number(args.cancel))!;
     a.pending = a.pending.filter((x) => x !== p);
-    gain(ctx, 'faith', Math.floor(p.paid.faith * OMEN.refund));
-    gain(ctx, 'dread', Math.floor(p.paid.dread * OMEN.refund));
+    earn(ctx, { faith: Math.floor(p.paid.faith * OMEN.refund), dread: Math.floor(p.paid.dread * OMEN.refund) }, 'miracle.cancel');
     say(ctx, { kind: 'miracle.cancel', id: p.id, data: { n: p.n }, level: 1 });
     chronicle(ctx, { kind: 'miracle.cancel', id: p.id });
     return;
@@ -179,7 +180,7 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
   const m = miracleOf(ctx, id)!;
   const h = handlers.get(id)!;
   const cost = priceNow(ctx, m, h, args);
-  pay(ctx, cost);
+  pay(ctx, cost, `miracle:${id}`);
   spendCaps(ctx, m);
   if (m.wait) startCooldown(ctx, h.waitKey ? h.waitKey(ctx, m, args) : id, m.wait);
   const paid = { faith: cost.faith ?? 0, dread: cost.dread ?? 0 };
@@ -198,7 +199,10 @@ export function runMiracle(ctx: Ctx, args: Record<string, unknown>): void {
 function happen(ctx: Ctx, m: Miracle, h: Handler, args: Record<string, unknown>, paid: { faith: number; dread: number }): void {
   const out = h.run(ctx, m, args);
   if (!h.noReaction) react(ctx, m, h, out, paid);
-  say(ctx, { kind: 'miracle', id: m.id, data: { name: m.name, target: out.target, result: out.result, tier: m.tier }, level: tierKey(m) === 'small' ? 1 : 2 });
+  // the dragon is named by its place in the table; the countries, continents, NPCs and events are named by the text layer from their codes
+  const dragon = /^dragon:(\d+)$/.exec(out.target);
+  const where = dragon ? tablesOf(ctx).dragons[Number(dragon[1])]?.name ?? '' : '';
+  say(ctx, { kind: 'miracle', id: m.id, data: { name: m.name, target: out.target, result: out.result, tier: m.tier, ...(where ? { where } : {}) }, level: tierKey(m) === 'small' ? 1 : 2 });
   chronicle(ctx, { kind: 'miracle', id: m.id, target: out.target, result: out.result });
 }
 
@@ -229,10 +233,10 @@ function react(ctx: Ctx, m: Miracle, h: Handler, out: Outcome, paid: { faith: nu
     faithAt(ctx, out.country, self);
     if (near) for (const n of neighboursOf(ctx, out.country)) faithAt(ctx, n, near);
   }
-  if (h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread)) gain(ctx, 'dread', Math.round(paid.dread / DESTROY_RETURN_DIV));
+  if (h.line === 'destroy' || (h.line === 'dragon' && m.cost.dread)) earn(ctx, { dread: Math.round(paid.dread / DESTROY_RETURN_DIV) }, 'miracle.return');
   // the character who stands where it fell sees it
   if (life && h.line !== 'dragon' && ((out.country && out.country === life.country) || (out.continent && out.continent === continentOf(life.country)))) {
-    belief(ctx, h.line === 'create' ? BELIEF_SEEN.create : BELIEF_SEEN.destroy);
+    addBelief(ctx, h.line === 'create' ? BELIEF_SEEN.create : BELIEF_SEEN.destroy, 'miracle.seen');
     // iron rule 1: he is never killed, he may be hurt
     if (h.line === 'destroy' && ctx.rng('god.miracle').chance(MC_HURT)) apply(ctx, [{ k: 'wound' }], { sys: 'god', id: m.id, stream: 'god.miracle' });
   }

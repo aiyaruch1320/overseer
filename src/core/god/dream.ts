@@ -272,7 +272,7 @@ export function dreamPrice(ctx: Ctx, window = inWindow(ctx)) {
 }
 
 /** Why the god cannot send this dream now, or null. Does not roll. */
-export function checkDream(ctx: Ctx, args: { node?: unknown; choice?: unknown }): string | null {
+export function checkDream(ctx: Ctx, args: { node?: unknown; choice?: unknown; path?: unknown }): string | null {
   if (!lifeOf(ctx)) return 'ไม่มีตัวละครที่ยังมีชีวิต';
   if (isImmune(ctx)) return 'ผู้ถืออาวุธนี้ไม่รับการแทรกแซง';
   const cap = godData(ctx).caps.dreamPerYear;
@@ -284,12 +284,15 @@ export function checkDream(ctx: Ctx, args: { node?: unknown; choice?: unknown })
   return null;
 }
 
-function pick(ctx: Ctx, args: { node?: unknown; choice?: unknown }): DreamPath | undefined {
-  return offersNow(ctx).find((p) => p.node === args.node && p.choice === args.choice);
+/** The way a command names: `node` and `choice`, or `path` = the number of one of the offered ways, counted from 1 (what a player types). */
+function pick(ctx: Ctx, args: { node?: unknown; choice?: unknown; path?: unknown }): DreamPath | undefined {
+  const offers = offersNow(ctx);
+  if (args.path !== undefined) return offers[Number(args.path) - 1];
+  return offers.find((p) => p.node === args.node && p.choice === args.choice);
 }
 
 /** What the confirm screen shows for a dream: the way, the level of his heart and why, the price. Does not roll. */
-export function previewDream(ctx: Ctx, args: { node?: unknown; choice?: unknown }): Record<string, unknown> {
+export function previewDream(ctx: Ctx, args: { node?: unknown; choice?: unknown; path?: unknown }): Record<string, unknown> {
   const p = pick(ctx, args)!;
   const ob = obeyChance(ctx, p);
   const price = dreamPrice(ctx, p.window || inWindow(ctx));
@@ -297,7 +300,7 @@ export function previewDream(ctx: Ctx, args: { node?: unknown; choice?: unknown 
 }
 
 /** Sends a dream: pays, keeps it for the node, writes the chronicle. */
-export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown }): Dream {
+export function sendDream(ctx: Ctx, args: { node?: unknown; choice?: unknown; path?: unknown }): Dream {
   const life = lifeOf(ctx)!;
   const p = pick(ctx, args)!;
   const ob = obeyChance(ctx, p);
@@ -380,7 +383,7 @@ export function resolveDream(ctx: Ctx, d: Dream, retro: boolean): NonNullable<Dr
     if (others.length) r.alt = others[Math.max(0, rng.weighted(others.map((c) => Math.max(0.01, c.weight))))].key;
   }
   d.resolved = r;
-  write(ctx.state, { sys: 'god', kind: 'dream', id: d.node, data: { outcome, level: ob.level, p: r.p, source: d.source }, level: 2 });
+  write(ctx.state, { sys: 'god', kind: 'dream', id: d.node, data: { outcome, level: ob.level, p: r.p, source: d.source, choice: d.choice, symbol: d.symbol, ...(r.alt ? { alt: r.alt } : {}) }, level: 2 });
   return r;
 }
 

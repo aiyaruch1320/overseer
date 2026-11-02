@@ -174,6 +174,13 @@ export function canPay(ctx: Ctx, cost: Cost): boolean {
   return (cost.faith ?? 0) <= ctx.state.god.light + 1e-9 && (cost.dread ?? 0) <= ctx.state.god.dread + 1e-9;
 }
 
+/** The reason a price cannot be paid in the words the player reads, or null when it can. */
+export function whyNot(ctx: Ctx, cost: Cost): string | null {
+  if (canPay(ctx, cost)) return null;
+  if ((cost.faith ?? 0) > ctx.state.god.light + 1e-9) return `แสงศรัทธาไม่พอ (ต้อง ${cost.faith} มี ${Math.floor(ctx.state.god.light)})`;
+  return `ความหวาดกลัวไม่พอ (ต้อง ${cost.dread} มี ${Math.floor(ctx.state.god.dread)})`;
+}
+
 /**
  * Takes the cost from the powers. Using the other power line inside the same life year costs the character belief
  * (−4 per switch, at most −25 in a life, 01-power.md §2 "สลับสายพลัง"). Throws when the god cannot pay: callers check `canPay` first.

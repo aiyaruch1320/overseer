@@ -4,6 +4,7 @@
 // (chests, dreams) belong to the policy step of the rest of the god system. Striking the seals and making ruins join in M4.
 import type { Ctx } from '../../game';
 import { moodOf } from '../../world';
+import { momentsOf, policyName, type PolicyName } from '../policy';
 import { checkAnswer, runAnswer, cardsOf } from './prayers';
 import { checkMiracle, runMiracle } from './miracles';
 import { fateTargets } from './fate';
@@ -13,19 +14,20 @@ import { actsOf, livingOf, ready, yearOf } from './state';
 import { POLICY } from './tuning';
 import './set';
 
-export type PolicyName = 'เงียบ' | 'เมตตา' | 'ปั้นนิสัย' | 'ลงโทษ' | 'ให้ของ' | 'เก็บพลัง' | 'สุ่ม' | 'เร่งจบ';
-export const POLICY_NAMES: readonly PolicyName[] = ['เงียบ', 'เมตตา', 'ปั้นนิสัย', 'ลงโทษ', 'ให้ของ', 'เก็บพลัง', 'สุ่ม', 'เร่งจบ'];
+export type { PolicyName } from '../policy';
+/** The policies of the document (06-implementation.md §4), as the tools name them. */
+export const POLICY_NAMES: readonly string[] = ['เงียบ', 'เมตตา', 'ปั้นนิสัย', 'ลงโทษ', 'ให้ของ', 'เก็บพลัง', 'สุ่ม', 'เร่งจบ'];
 
 /** How each policy answers a prayer: give it when the light allows, punish the one who asked, or let a random hand choose. */
 const PRAYER_WAY: Record<PolicyName, 'none' | 'give' | 'punish' | 'random'> = {
-  เงียบ: 'none',
-  เมตตา: 'give',
-  ปั้นนิสัย: 'give',
-  ลงโทษ: 'punish',
-  ให้ของ: 'give',
-  เก็บพลัง: 'give',
-  สุ่ม: 'random',
-  เร่งจบ: 'punish',
+  silent: 'none',
+  merciful: 'give',
+  shaper: 'give',
+  punish: 'punish',
+  giver: 'give',
+  saver: 'give',
+  random: 'random',
+  hasten: 'punish',
 };
 
 const try1 = (ctx: Ctx, action: 'prayer' | 'miracle' | 'whisper', args: Record<string, unknown>): boolean => {
@@ -51,10 +53,11 @@ function answerPrayers(ctx: Ctx, way: 'none' | 'give' | 'punish' | 'random'): vo
   }
 }
 
-/** Light for a whisper: the merciful keep the light above the reserve. */
-function whisperMaybe(ctx: Ctx, chance: number): void {
-  if (ctx.state.god.light < POLICY.whisperAt) return;
-  if (!ctx.rng('god.policy').chance(chance)) return;
+/** One whisper at a moment of the year (a node played, an age stop): the merciful send one while the light is above the reserve, the random god one in six moments. */
+function whisperAtMoment(ctx: Ctx, policy: PolicyName): void {
+  if (policy === 'random') {
+    if (!ctx.rng('god.policy').chance(POLICY.randomWhisper)) return;
+  } else if (ctx.state.god.light < POLICY.whisperAt) return;
   for (const hint of ['ระวัง', 'กล้าเถิด', 'จงอยู่']) if (try1(ctx, 'whisper', { hint })) return;
 }
 
@@ -79,15 +82,15 @@ function worldStep(ctx: Ctx, policy: PolicyName): void {
   if (!livingOf(ctx)) return;
   const g = ctx.state.god;
   switch (policy) {
-    case 'เมตตา':
-    case 'ปั้นนิสัย': {
+    case 'merciful':
+    case 'shaper': {
       fateFall(ctx, -1);
       const low = lowestDragon(ctx);
       if (low !== undefined && g.light >= POLICY.soothe.light && moodOf(ctx, low) < POLICY.soothe.below) try1(ctx, 'miracle', { id: 'MR-23', dragon: low });
       if (g.light >= godOf(ctx).rule.mahaF) try1(ctx, 'miracle', { id: 'MR-21' });
       return;
     }
-    case 'เร่งจบ': {
+    case 'hasten': {
       fateFall(ctx, 1);
       const d = lowestDragon(ctx);
       if (d !== undefined && g.dread >= POLICY.taunt) try1(ctx, 'miracle', { id: 'MR-24', dragon: d });
@@ -99,7 +102,7 @@ function worldStep(ctx: Ctx, policy: PolicyName): void {
       }
       return;
     }
-    case 'สุ่ม': {
+    case 'random': {
       const r = ctx.rng('god.policy');
       if (!r.chance(POLICY.randomAct)) return;
       const x = Math.floor(r.next() * 4);
@@ -110,17 +113,20 @@ function worldStep(ctx: Ctx, policy: PolicyName): void {
   }
 }
 
+export type ActsPhase = 'prayers' | 'whispers' | 'beat' | 'world';
+
 /**
- * One step of the acts under a policy. `beat`: answer the prayers that wait and, for the merciful, whisper sometimes.
- * `world`: the deeds on the dragons and the events (once per world step).
+ * One step of the acts under a policy, named in Thai (`เมตตา`) or English (`merciful`).
+ * `prayers`: answer the prayers that wait. `whispers`: a whisper at each moment of the year. `beat`: both. `world`: the deeds on the dragons and the events,
+ * once per world step. The life year phases are played by `policyStep` of the god system through the parts registered in index.ts, not by the tools.
  */
-export function actsPolicyStep(ctx: Ctx, policy: string, phase: 'beat' | 'world' = 'beat'): void {
-  const p = policy as PolicyName;
-  if (!(p in PRAYER_WAY)) return;
+export function actsPolicyStep(ctx: Ctx, policy: string, phase: ActsPhase = 'beat'): void {
+  const p = policyName(policy);
+  if (!p) return;
   if (phase === 'world') return worldStep(ctx, p);
   if (!livingOf(ctx)) return;
-  answerPrayers(ctx, PRAYER_WAY[p]);
-  if (p === 'เมตตา' || p === 'ปั้นนิสัย') whisperMaybe(ctx, POLICY.whisperChance);
-  else if (p === 'สุ่ม') whisperMaybe(ctx, POLICY.randomWhisper);
+  if (phase === 'prayers' || phase === 'beat') answerPrayers(ctx, PRAYER_WAY[p]);
+  if (phase === 'whispers' || phase === 'beat') {
+    if (p === 'merciful' || p === 'shaper' || p === 'random') for (let m = momentsOf(ctx); m > 0 && livingOf(ctx); m--) whisperAtMoment(ctx, p);
+  }
 }
-

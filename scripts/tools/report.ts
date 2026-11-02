@@ -20,6 +20,8 @@ export function tagOf(e: LogEntry): string {
       return 'เกิด';
     case 'god':
       return 'พระเจ้า';
+    case 'attention':
+      return 'เรียก';
     case 'character':
       return 'ตัวละคร';
     case 'tools':

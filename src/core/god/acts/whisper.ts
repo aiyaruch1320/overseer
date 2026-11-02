@@ -8,7 +8,9 @@ import { npcIndex } from '../../npc/data';
 import { chronicle, say } from './record';
 import { clamp, continentOf, countryName, godOf, hasCountry } from './geo';
 import { aliveNpc, nameOf, slotOf } from './npcs';
-import { belief, pay, priceOf, whyNot, windowOn } from './pay';
+import { addBelief } from '../belief';
+import { pay, priceOf, whyNot } from '../power';
+import { inWindow } from '../state';
 import { actsOf, livingOf, viewActs, type ActiveWhisper } from './state';
 import { WHISPER } from './tuning';
 
@@ -38,17 +40,9 @@ function yearOf(ctx: Ctx) {
   return w;
 }
 
-const basePrice = (ctx: Ctx, hint: string): number => {
-  const w = godOf(ctx).prices.whisper;
-  return w.cheapHints.includes(hint) ? w.cheap : w.dearHints.includes(hint) ? w.dear : w.dear;
-};
-
-/** The price now: the table price with the multipliers, nothing the first time a year when the character holds a wise weapon (`wj_sage_e` `wc_al14`). */
+/** The price now: the table price with the multipliers of 01-power.md §2, nothing the first time a year when the character holds a wise weapon (`wj_sage_e` `wc_al14`). */
 export function whisperPrice(ctx: Ctx, hint: string): number {
-  const l = livingOf(ctx);
-  const w = viewActs(ctx.state).whisper;
-  if (l && w.free !== l.hAge && l.items.some((i) => i === 'wj_sage_e' || i === 'wc_al14')) return 0;
-  return priceOf(ctx, { faith: basePrice(ctx, hint) }, { window: true }).faith ?? 0;
+  return priceOf(ctx, 'whisper', { hint })?.faith ?? 0;
 }
 
 /** The chance that the character heeds the whisper, with the parts that decide it (03-dreams.md §3 on a base of 0.50). */
@@ -88,7 +82,7 @@ export function previewWhisper(ctx: Ctx, args: Record<string, unknown>): Record<
   const hint = String(args.hint);
   const w = godOf(ctx).dreams.whispers.find((x) => x.hint === hint)!;
   const o = obeyChance(ctx, hint);
-  return { hint, cost: { faith: whisperPrice(ctx, hint) }, effect: w.effect, level: o.level, window: windowOn(ctx), left: godOf(ctx).caps.whisperPerYear - usedNow(ctx).length - 1 };
+  return { hint, cost: { faith: whisperPrice(ctx, hint) }, effect: w.effect, level: o.level, window: inWindow(ctx), left: godOf(ctx).caps.whisperPerYear - usedNow(ctx).length - 1 };
 }
 
 export function runWhisper(ctx: Ctx, args: Record<string, unknown>): void {
@@ -96,20 +90,18 @@ export function runWhisper(ctx: Ctx, args: Record<string, unknown>): void {
   const a = actsOf(ctx.state);
   const hint = String(args.hint);
   const target = args.target === undefined ? undefined : String(args.target);
-  const price = whisperPrice(ctx, hint);
-  const y = yearOf(ctx);
-  if (price === 0) y.free = l.hAge;
-  else pay(ctx, { faith: price });
-  y.used.push(hint);
+  const price = priceOf(ctx, 'whisper', { hint })!;
+  pay(ctx, price, `whisper:${hint}`);
+  yearOf(ctx).used.push(hint);
   a.whisper.sent[hint] = l.hAge;
   const o = obeyChance(ctx, hint);
   const rng = ctx.rng('god.whisper');
   const obeyed = rng.chance(o.p);
   if (obeyed) {
-    belief(ctx, WHISPER.beliefObey);
+    addBelief(ctx, WHISPER.beliefObey, 'whisper.obey');
     take(ctx, hint, target);
-  } else belief(ctx, l.godFaith >= 0 && rng.chance(0.5) ? 1 : WHISPER.beliefRefuse);
-  say(ctx, { kind: 'whisper', id: hint, data: { hint, price, level: o.level, obeyed, ...(target ? { target } : {}) }, level: 1 });
+  } else addBelief(ctx, l.godFaith >= 0 && rng.chance(0.5) ? 1 : WHISPER.beliefRefuse, 'whisper.refuse');
+  say(ctx, { kind: 'whisper', id: hint, data: { hint, price: price.faith ?? 0, level: o.level, obeyed, ...(target ? { target } : {}) }, level: 1 });
   chronicle(ctx, { kind: 'whisper', id: hint, target, result: `${o.level} ${obeyed ? 'ทำตาม' : 'ไม่ทำตาม'}` });
 }
 

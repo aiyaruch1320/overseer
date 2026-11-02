@@ -23,7 +23,7 @@ export * from './power';
 export * from './belief';
 export { chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, checkOpen, checkPick, checkReroll, slotPrice, tierChances, compOf, effectsOf, type Chest, type ChestSlot } from './chest';
 export { pathsNow, offersNow, offerCards, sourceOf, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, armDreams, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
-export { policyStep, policyName, registerPolicyPart, clearPolicyParts, type PolicyName, type PolicyPart } from './policy';
+export { policyStep, policyName, momentsOf, registerPolicyPart, clearPolicyParts, type PolicyName, type PolicyPart } from './policy';
 export { registerGodActions } from './actions';
 export { bump, count, gx, godData, inWindow, windowNodes, touch, ageStops, type Dream, type GodExt } from './state';
 export { upcomingNodes } from './story-view';

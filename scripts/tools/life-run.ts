@@ -4,7 +4,7 @@ import type { GameData } from '../../src/core/game';
 import { calendarYear } from '../../src/core/text';
 import type { GameState } from '../../src/core/types';
 import { godLines, metNpcs, summaryLines, timeline } from './report';
-import { afterBeat, createSession, policyHasEffect, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
+import { afterBeat, createSession, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
 
 export interface LifeRun {
   text: string;
@@ -17,7 +17,6 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   const s = createSession(data, opts);
   const g = s.game;
   const worldMark = g.state.logN;
-  if (opts.policy && !policyHasEffect()) s.notes.push(`ยังไม่พบฟังก์ชันนโยบายของระบบพระเจ้า (policyStep) นโยบาย "${opts.policy}" จึงยังไม่มีผล`);
   const life = startLife(s);
   // the policy of the god acts once at the birth and then after every beat (docs/systems/god/06-implementation.md §4)
   const after = () => void afterBeat(s);

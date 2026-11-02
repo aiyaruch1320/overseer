@@ -4,9 +4,10 @@
 // are registered with the command layer when this module is imported.
 import { hasAction, onAction } from '../../command';
 import type { Ctx, System } from '../../game';
-import { onWorldPhase } from '../../world';
-import { openByGod } from '../../world';
+import { onWorldPhase, openByGod } from '../../world';
+import { policyName, registerPolicyPart } from '../policy';
 import { checkMiracle, miracleBeat, previewMiracle, runMiracle } from './miracles';
+import { actsPolicyStep } from './policy';
 import { checkAnswer, previewAnswer, prayerBeat, runAnswer } from './prayers';
 import { checkWhisper, previewWhisper, runWhisper } from './whisper';
 import { expire } from './mods';
@@ -29,6 +30,15 @@ onWorldPhase('afterDrift', (ctx) => {
   if (silent(ctx)) openByGod(ctx, 'GD-05');
 });
 
+// The policies of the god (06-implementation.md §4): the prayers and whispers join the policy step of the god system, which plays a life year once;
+// the deeds on the dragons and the events are the world's and play at every world step, for the policy named in `god.ext.policy`.
+registerPolicyPart((ctx, p) => actsPolicyStep(ctx, p, 'prayers'), 'first');
+registerPolicyPart((ctx, p) => actsPolicyStep(ctx, p, 'whispers'), 'last');
+onWorldPhase('afterDrift', (ctx) => {
+  const policy = ctx.state.god.ext.policy;
+  if (typeof policy === 'string' && policyName(policy)) actsPolicyStep(ctx, policy, 'world');
+});
+
 /** The omens that are still pending happen when the character dies: the god has paid. */
 function flush(ctx: Ctx): void {
   const a = actsOf(ctx.state);
@@ -43,7 +53,6 @@ export const godActsSystem: System = {
     ctx.state.god.prayers = [];
     a.recent = {};
     a.whisper = { age: -1, used: [], sent: {}, active: [] };
-    a.lastLine = undefined;
     a.punishedAt = undefined;
   },
   beat(ctx) {
@@ -67,10 +76,10 @@ if (!hasAction('miracle')) onAction('miracle', { check: checkMiracle, preview: p
 const asFate = (args: Record<string, unknown>) => ({ ...args, id: 'MR-25' });
 if (!hasAction('decree')) onAction('decree', { check: (c, a) => checkMiracle(c, asFate(a)), preview: (c, a) => previewMiracle(c, asFate(a)), run: (c, a) => runMiracle(c, asFate(a)) });
 
-export { actsPolicyStep, POLICY_NAMES, type PolicyName } from './policy';
+export { actsPolicyStep, POLICY_NAMES, type ActsPhase, type PolicyName } from './policy';
 export { fateTargets, fateCost } from './fate';
 export { registerMiracle, implemented as implementedMiracles, handlerOf, miracleOf, omenQuarters, type Handler, type Outcome } from './miracles';
-export { cardsOf, holdsKind, raisable, raiseChance, strangeOptions, nameOfKind, answerOf, grantPrice } from './prayers';
+export { cardsOf, kindOf, holdsKind, raisable, raiseChance, strangeOptions, nameOfKind, answerOf, grantPrice } from './prayers';
 export { activeWhispers, choiceWhisperMul, decisionMade, travelMul, moveMul, weakStanceMul, battleDone, whisperBonus, pointedHeir, pointedThread, obeyChance, whisperPrice, hintsOf } from './whisper';
 export { activeMods, modMul, modAdd, setFlag, clearFlag, faithAt } from './mods';
 export { applyFx } from './fx';
