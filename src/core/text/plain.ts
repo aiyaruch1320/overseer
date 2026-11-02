@@ -114,17 +114,25 @@ function balance(x: string): string {
   return out;
 }
 
+export interface ScrubOpts {
+  /** Keep the numbers of a sentence (`×0.2 ถึง ×0.9`, `ต้อง 20 มี 11`): a rule or a reason the player needs to read, not a cell of a table. */
+  keepNumbers?: boolean;
+  /** Keep an id the data does not know instead of cutting it (what the player typed, told back to him). */
+  keepUnknown?: boolean;
+}
+
 /**
  * Words only: ids become names (or vanish when the data does not know them), template codes, numbers of effects, mood markers
  * and stray latin letters are cut, and the sentence is tidied. Never returns a code.
  */
-export function scrub(data: GameData, text: string): string {
+export function scrub(data: GameData, text: string, opts: ScrubOpts = {}): string {
   const L = labels(data);
   let x = text.replace(/\*\*|`/g, '').replace(MOOD, ' ');
   x = x.replace(/\[(?:ช่วย|ร่วม|ขัดขวาง|ปล่อย)\]/g, ' ');
   // a pointer to a section of a document (`( หัวข้อ 6)`) is for the writer, not the player
   x = x.replace(/\(\s*[^()]*หัวข้อ\s*[\d.]+[^()]*\)/g, ' ').replace(/หัวข้อ\s*[\d.]+/g, ' ');
-  x = x.replace(COND_PAREN, ' ').replace(EFFECT_PAREN, ' ');
+  x = x.replace(COND_PAREN, ' ');
+  if (!opts.keepNumbers) x = x.replace(EFFECT_PAREN, ' ');
   x = x.replace(ID_CLASH, ' ');
   // a bracket that holds only an id: the name, unless the words before it already say it
   x = x.replace(/\(\s*([A-Z]{2}\d{2}-\d|[A-Z]{2,4}-\d{1,3})\s*\)/g, (m, id: string, off: number, whole: string) => {
@@ -142,14 +150,36 @@ export function scrub(data: GameData, text: string): string {
     return nm;
   });
   x = x.replace(ID_NODE, ' ');
-  x = x.replace(ID_CODE, (m) => (TEMPLATE_CODE.test(m) ? ' ' : (L.name.get(m) ?? ' ')));
+  x = x.replace(ID_CODE, (m) => (TEMPLATE_CODE.test(m) ? ' ' : (L.name.get(m) ?? (opts.keepUnknown ? m : ' '))));
   x = x.replace(ID_WORD, (m) => L.name.get(m) ?? ' ');
   x = x.replace(ID_CONTINENT, (m) => L.name.get(m) ?? m);
-  x = x.replace(EFFECT_NUMBER, ' ');
+  if (!opts.keepNumbers) x = x.replace(EFFECT_NUMBER, ' ');
   // a bracket with a stray latin mark inside (`(พิธี t1 ของเผ่าหลัก)`) is a remark for the writer
   x = x.replace(/\([^()]*(?<![A-Za-z฀-๿])[A-Za-z]{1,2}(?![A-Za-z])[^()]*\)/g, ' ');
   x = x.replace(LATIN_TOKEN, ' ');
   return tidy(balance(x));
+}
+
+/** A number written against the Thai word after it (`กอร์ทาที่ 44หายใจแผ่วลง` `ถึงยุคที่ 4โดยไม่ลังเล`) gets its space (review M2 round 1). */
+export function spaceDigits(text: string): string {
+  return text.replace(/(\d)(?=[ก-ฮเ-ไ])/g, '$1 ');
+}
+
+/**
+ * A reason the game gives for a refusal, in words (review M2 L3): ids become names and the codes of parameters are cut, but the numbers stay
+ * (`ชะลอได้ ×0.2 ถึง ×0.9`) and so does what the player typed in quotes (`ไม่มีคำใบ้ "foo"`).
+ */
+export function reasonText(data: GameData, text: string): string {
+  const parts = text.split(/("[^"]*"|“[^”]*”)/);
+  const out: string[] = [];
+  parts.forEach((p, i) => {
+    if (i % 2) out.push(p.length > 42 ? `${p.slice(0, 40)}…${p[0] === '"' ? '"' : '”'}` : p);
+    else {
+      const t = scrub(data, p, { keepNumbers: true, keepUnknown: true });
+      if (t) out.push(t);
+    }
+  });
+  return out.join(' ').replace(/\s+([,.])/g, '$1');
 }
 
 const names = new WeakMap<GameData, Map<string, string>>();

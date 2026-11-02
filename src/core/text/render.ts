@@ -8,9 +8,9 @@
 import type { GameData } from '../game';
 import type { LogEntry, LogLevel } from '../types';
 import type { TemplatesData } from '../data/types-text';
-import { attentionText, godTemplate, godText } from './god';
+import { attentionText, godTemplate, godText, type TemplateStyle } from './god';
 import { items, labels, type Labels } from './labels';
-import { plainName, riteSentence, scrub, sentence, tidy } from './plain';
+import { plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
 import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
 
 type D = LogEntry['data'];
@@ -131,7 +131,7 @@ export class Reader {
   read(e: LogEntry): string | null {
     const line = this.say(e);
     this.remember(e);
-    return line === null ? null : tidy(line, false);
+    return line === null ? null : spaceDigits(tidy(line, false));
   }
 
   private remember(e: LogEntry): void {
@@ -312,8 +312,8 @@ export class Reader {
       data: this.data,
       who: this.name,
       country: this.country,
-      tpl: (family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string) =>
-        godTemplate(this.data, family, keys, { ชื่อของที่นี่: place || undefined, ฤดู: season || undefined, ทวีป: continent || undefined, ...vars }, variant, hash),
+      tpl: (family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, style?: TemplateStyle) =>
+        godTemplate(this.data, family, keys, { ชื่อของที่นี่: place || undefined, ฤดู: season || undefined, ทวีป: continent || undefined, ...vars }, variant, hash, style),
     };
   }
 

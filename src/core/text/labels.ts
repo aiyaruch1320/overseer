@@ -99,6 +99,11 @@ export function labels(data: GameData): Labels {
   fill(kind.enemy, items<{ items: Named[] }>(data, 'enemies')?.items);
   fill(kind.country, listOf(items(data, 'countries')));
   fill(kind.race, items<{ races: Named[] }>(data, 'races')?.races);
+  // the blessings of a people (`rb_orc_r` ธงของผู้นำ) sit inside the row of the race: without them a gift of the god had no name (review M2 P5)
+  for (const r of items<{ races: { blessings?: Named[] }[] }>(data, 'races')?.races ?? []) {
+    fill(kind.blessing, r.blessings);
+    fill(name, r.blessings);
+  }
   const origin = items<{ birthSigns?: Named[]; meetCauses?: Named[] }>(data, 'origin');
   fill(kind.sign, origin?.birthSigns);
   fill(kind.meet, origin?.meetCauses);
