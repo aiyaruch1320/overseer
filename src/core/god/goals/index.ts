@@ -7,6 +7,7 @@
 // Command: `vow.pick { pick }` (1 to 3 of the vows on the table, 4 or 0 for none).
 import { hasAction, onAction } from '../../command';
 import type { Ctx, System } from '../../game';
+import { onLifeChange } from '../../lineage/carry';
 import { write } from '../../log';
 import { onNode } from '../../story/walk';
 import type { LifeState } from '../../types';
@@ -20,6 +21,7 @@ import { titlesOf } from './titles';
 import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
 import { crossed } from './unlocks';
 import { checkPick, judge, offer, previewPick, reoffer, runPick, vowName, vowRow } from './vows';
+import { goalsCarry } from './carry';
 
 export * from './carry';
 export * from './state';
@@ -183,3 +185,10 @@ export const godGoalsSystem: System = {
     for (const u of crossed(before, line.total)) say(ctx, 'unlock', String(u.at), { at: u.at, opens: opensText(ctx, u.at) }, 2);
   },
 };
+
+// the lineage keeps the goals of the god across worlds (08-goals.md: the chronicle, the unlocks, the points): at every death the carry is
+// copied into the lineage's carry object, so a new world can take it with `applyCarry(state, carry.goals)`. Inside one world the goals live
+// in the god's state and go on by themselves.
+onLifeChange((ctx, ev) => {
+  if (ev.phase === 'end') ev.carry.goals = goalsCarry(ctx.state);
+});
