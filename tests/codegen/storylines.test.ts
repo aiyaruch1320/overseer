@@ -344,7 +344,7 @@ describe('B1: no ghoul in a family', () => {
     });
     expect(races).toEqual([]);
     expect(story.heirRules.map((h) => h.node)).toEqual(['hr.b1', 'hr.b2', 'hr.t1', 'hr.t2', 'hr.a1 hr.a2 hr.a3', 'hr.a4', 'hr.e1']);
-    expect(story.heirRules[0].cond).toEqual({ k: 'text', text: 'ทายาทเกิดในตระกูลที่มีสมุดตระกูล' });
+    expect(story.heirRules[0].cond).toBeUndefined(); // "ทุกทายาท (เกิดในตระกูลที่มีสมุดตระกูล)": the family book applies to every heir
     // "ทุกทายาท" holds for everybody
     expect(story.heirRules[3].cond).toBeUndefined();
   });
@@ -496,7 +496,6 @@ describe('no choice or condition without a pick or an if (regression)', () => {
   // unless it gives no result at all (nothing but references to events, NPCs and places).
   // Segments the grammar cannot structure yet are listed with the reason; the next wave fixes the docs.
   const EXPLAINED: Record<string, string> = {
-    '12-slime.md:46 sl.a6#6': 'the condition of a secret job is prose around a stat change of the same cell',
     '28-allies.md:40 kn.b1#6': 'the condition names a template (KN-08) and the result is a link to another doc',
   };
   const COND = /(?<!เ)ถ้า|เมื่อ/;
