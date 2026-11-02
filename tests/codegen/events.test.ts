@@ -426,7 +426,35 @@ describe('choices, conditions and swaps (data review B3 H3 H4 H9)', () => {
     const way = dr01.of[1] as Extract<WorldCond, { k: 'or' }>;
     expect(way.k).toBe('or');
     expect(way.of).toHaveLength(3);
-    expect(way.of[1]).toEqual(v('F', '<', 20));
+    expect(way.of[1]).toEqual({ ...v('F', '<', 20), decades: 3 }); // "ศรัทธาโลก < 20 นาน 3 ทศวรรษ"
+  });
+  it('reads the mood of the dragon in the fall events (สิ้นแรง) and keeps an unreadable branch of an or as text', () => {
+    const v = (name: string, n: number): WorldCond => ({ k: 'var', name, op: '<', n });
+    // the fall event carries the pillar of its own dragon: DR-04 is dragon 1, DR-05 dragon 2, END-01..END-09 dragons 6..14
+    expect(condWalk(event('DR-04').cond)).toContainEqual(v('M1', 10));
+    expect(condWalk(event('DR-05').cond)).toContainEqual(v('M2', 10));
+    for (const d of W.dragons.filter((x) => x.awakeEvent)) expect(condWalk(event(d.fallEvent).cond), d.fallEvent).toContainEqual(v('M' + d.index, 10));
+    // a bracket "(หรือ …)" is a branch of an or: the readable part stays, the unreadable one is a text leaf
+    expect(event('PL-01').cond).toEqual({ k: 'or', of: [v('M6', 40), { k: 'text', text: 'เกาะร่วงต่อเนื่อง' }] });
+    expect(event('GD-04').cond).toEqual({ k: 'or', of: [{ k: 'var', name: 'F', op: '>', n: 90 }, { k: 'text', text: 'พระเจ้าใช้พลังสูงสุด' }] });
+    // a readable bracket alternative is an or too: LC-05 reads the mood of a dragon by its name
+    const lc05 = L.events.find((e) => e.id === 'LC-05')!;
+    expect(lc05.depends).toEqual({ k: 'or', of: [{ k: 'event', id: 'DR-02', happened: true }, v('M1', 40)] });
+  });
+  it('reads "FG-10 ยังไม่เกิด" as an event that has not happened', () => {
+    expect(condWalk(event('FG-03').cond)).toContainEqual({ k: 'event', id: 'FG-10', happened: false });
+    expect(condWalk(event('FG-03').cond).some((c) => c.k === 'text')).toBe(false);
+  });
+  it('says which events end the drift of a slow variable and gives every country its main faiths', () => {
+    const halts = Object.fromEntries(W.vars.map((x) => [x.code, x.halts]));
+    expect(halts.H).toEqual([]); // HP-07 only takes 40 off once
+    expect(halts.T).toEqual(['BIO-03', 'WT-02']);
+    expect(halts.D).toEqual(['FG-10']); // FG-11 swaps the drift, FG-10 stops it
+    expect(halts.F).toEqual([]);
+    expect(halts.P).toEqual([]);
+    const main = sim.MAIN as Record<string, Set<number>>;
+    expect(Object.keys(W.mainFaiths).sort()).toEqual(Object.keys(main).sort());
+    for (const [c, f] of Object.entries(W.mainFaiths)) expect(f, c).toEqual([...main[c]].sort((a, b) => a - b));
   });
   it('keeps thr and needs as the flat view and makes cond hold every threshold and every need', () => {
     for (const e of W.events) {

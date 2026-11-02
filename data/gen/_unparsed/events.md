@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: events
 
-86 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+73 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -36,6 +36,7 @@
 | docs/systems/events/world-events.md:274 | เทคโนโลยีกระโดด 100 ปี | MC-06 ผลถาวร |
 | docs/systems/events/world-events.md:278 | ศิลาลอยพอ | MC-10 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:279 | สืบสวน | MC-11 เงื่อนไขเป็นข้อความ |
+| docs/systems/events/world-events.md:289 | ผู้ถือขวานโค่นโลก wl_world_axe SV14-1 หรือผู้สืบ ลงมือได้ | BIO-02 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:296 | ป่าถูกตัด | BIO-09 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:305 | ศาสดาเกิด | GD-01 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:308 | พระเจ้าใช้พลังสูงสุด | GD-04 เงื่อนไขเป็นข้อความ |
@@ -57,36 +58,22 @@
 | docs/systems/events/world-events.md:369 | สถานะเริ่มต้น เกิดแล้วใน ศ.ม. 10,388 | FG-01 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:369 | ผู้ร่วม: AL-20, MK-13, NB-12, ทุนจาก NB-09 | FG-01 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:370 | ทุกทศวรรษ ประเทศในเนบูเลียหรือชายแดนติดกันหนึ่งแห่ง | FG-02 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:370 | ยังไม่เกิด | FG-02 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:371 | ยังไม่เกิด | FG-03 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:372 | เมืองโคมใน NB-03 ถูกปิดตายเกิน 10 วันอีกครั้งหลังต้นเรื่อง (การปิดสิบเอ็ดวันใน ศ.ม. 10,396 ทำให้ตลาดปกครองตนเองโดยพฤตินัยแต่ยังไม่ประกาศ) | FG-04 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:372 | ยังไม่เกิด | FG-04 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:373 | NB-07 แตกนิกาย | FG-05 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:373 | ยังไม่เกิด | FG-05 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:374 | เสียงระฆังเรียกสิ่งมีชีวิตสำเร็จ | FG-06 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:374 | ยังไม่เกิด | FG-06 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:375 | ยังไม่เกิด | FG-07 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:376 | ยังไม่เกิด | FG-08 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:377 | NB-10 มีบทบาท | FG-09 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:377 | ยังไม่เกิด | FG-09 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:378 | ผู้เฝ้า NB-08 ยังอยู่ | FG-10 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:378 | ราคาที่ต้องจ่าย | FG-10 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:378 | ความรู้ของพิธีมาจาก AL-11 หรือ SV-07 หรือ MK-13 (ถิ่นที่เกิดหรืออยู่) | FG-10 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:379 | รอยแยกเปิดเกิน 5 ทศวรรษ | FG-11 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:379 | ยังไม่เกิด | FG-11 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:380 | NB-04 หรือ NB-13 ฟังเสียงพวกมันนานพอ | FG-12 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:380 | ยังไม่เกิด | FG-12 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:381 | มีเมืองปิดตาย ≥ 2 | FG-13 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:381 | ยังไม่เกิด | FG-13 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:382 | ผ่านไป ≥ 1 ทศวรรษ | FG-14 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:382 | ยังไม่เกิด | FG-14 เงื่อนไขเป็นข้อความ |
-| docs/systems/events/world-events.md:383 | ยังไม่เกิด | FG-15 เงื่อนไขเป็นข้อความ |
 | docs/systems/events/world-events.md:401 | หมอกกลืนโลก: ทุกทวีปโดนหมอกใน 20 ปี | END-09 ผลถาวร |
 | docs/systems/events/branches/04-last-era.md:33 | ผู้เฝ้าที่ถูกพรากตายหรือหาย 40% | LE-03 ผลถาวร |
 | docs/systems/events/branches/04-last-era.md:40 | ราคาตั๋วเดินทางขึ้น ×2 | LE-10 ผลถาวร |
 | docs/systems/events/branches/04-last-era.md:41 | เป็นเงื่อนไขของผล END ใน cv.16 (cv.16 เปิดตั้งแต่ยุค 4) ( ) | LE-11 ผลถาวร |
 | docs/systems/events/branches/04-last-era.md:42 | พวกพ้องระดับ 3 ขึ้นไปที่ยังมีชีวิตมาอยู่กับตัวละครหนึ่งฉาก (ดู ) | LE-12 ผลถาวร |
-| docs/systems/events/local-events.md:31 | อารมณ์เพลิงนิรันดร์ < 40 | LC-05 ขึ้นกับ: เงื่อนไขเป็นข้อความ |
 | docs/systems/events/local-events.md:32 | MH03-4 ทาง ก) เกิดแล้ว | LC-06 ขึ้นกับ: เงื่อนไขเป็นข้อความ |
 | docs/systems/events/local-events.md:34 | ภายใน 30 ปีหลังไรเวอร์-9 ตื่น | LC-08 ขึ้นกับ: เงื่อนไขเป็นข้อความ |
 | docs/systems/events/local-events.md:114 | ราคาอาหาร ×1.5 หนึ่งปี | LT-3 ผล |

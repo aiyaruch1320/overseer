@@ -6,7 +6,6 @@ docs/systems/events/branches/04-last-era.md | เป็นเงื่อนไ�
 docs/systems/events/local-events.md | MH03-4 ทาง ก) เกิดแล้ว
 docs/systems/events/local-events.md | ภายใน 30 ปีหลังไรเวอร์-9 ตื่น
 docs/systems/events/local-events.md | ราคาอาหาร ×1.5 หนึ่งปี
-docs/systems/events/local-events.md | อารมณ์เพลิงนิรันดร์ < 40
 docs/systems/events/world-events.md | 2 ทศวรรษของการฆ่าเงียบ
 docs/systems/events/world-events.md | DFC ห้ามเพิ่มได้ 20 ปี
 docs/systems/events/world-events.md | NB-04 หรือ NB-13 ฟังเสียงพวกมันนานพอ
@@ -38,7 +37,6 @@ docs/systems/events/world-events.md | พระเจ้าหรือศาส
 docs/systems/events/world-events.md | พระเจ้าใช้พลังสูงสุด
 docs/systems/events/world-events.md | พระเจ้าไม่ตอบคำอธิษฐานต่อเนื่องหลายทศวรรษ
 docs/systems/events/world-events.md | มีเมืองปิดตาย ≥ 2
-docs/systems/events/world-events.md | ยังไม่เกิด
 docs/systems/events/world-events.md | ยุคมืด 100 ปี การค้าโลกพัง
 docs/systems/events/world-events.md | รอยแยกเปิดเกิน 5 ทศวรรษ
 docs/systems/events/world-events.md | ราคาที่ต้องจ่าย
@@ -72,3 +70,4 @@ docs/systems/events/world-events.md | เสียงระฆังเรีย
 docs/systems/events/world-events.md | โรคจากเนบูเลีย/เมคาเรียผ่านการค้า
 docs/systems/events/world-events.md | โอรัน-ซัลยังมีชีวิต
 docs/systems/events/world-events.md | ไม่มี WR 30 ปี
+docs/systems/events/world-events.md | ผู้ถือขวานโค่นโลก wl_world_axe SV14-1 หรือผู้สืบ ลงมือได้

@@ -241,6 +241,8 @@ export interface WorldVar {
   max: number;
   /** events that stop or flip the drift (all events the stop cell names) */
   stopEvents: EventId[];
+  /** the ones that end the default drift: a name with no number (`BIO-03 หรือ WT-02 หยุดการลด`) or `… และหยุด`. A change that only adds (`HP-07 −40 ครั้งเดียว`, `DR-11 +10`) or swaps the drift (`แทน`) is not here. */
+  halts: EventId[];
   /** one-time changes (`once`) and replacement drifts (`drift`) the stop cell gives; `fall` = each dragon that falls */
   changes: { event: EventId | 'fall'; delta: number; kind: 'once' | 'drift' }[];
   note: string;
@@ -321,6 +323,10 @@ export interface WorldEventsData {
   flags: FlagDef[];
   closures: Closure[];
   faiths: FaithInfo[];
+  /** main faith numbers of every country, from the ศาสนา field of the country files (world-events §0.2.1) */
+  mainFaiths: Record<CountryId, number[]>;
+  /** stance of every country toward bondage `A` `H` `D` `L` `M` (economy/10-bondage.md §3.1), read by the `stance` condition */
+  stances: Record<CountryId, 'A' | 'H' | 'D' | 'L' | 'M'>;
   events: WorldEvent[];
   branch: BranchEvent[];
   lastEra: LastEraEvent[];
