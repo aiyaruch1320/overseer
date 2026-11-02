@@ -12,6 +12,7 @@ import { continentOf, countriesOf, countryName, godOf, lifeCountry } from '../ac
 import { say } from '../acts/record';
 import { ready, startCooldown, yearOf } from '../acts/state';
 import { crackStep, type CrackStrike } from './crack';
+import { kinNotes } from './kin';
 import { ruinExt, viewRuin, type SealReply } from './state';
 import { SEAL_MID } from './tuning';
 
@@ -225,6 +226,10 @@ const layer: Intercept = {
       `${countryName(ctx, c)}เป็นหมุดผนึกของ${names(ctx, s)} ผนึกรับแรงไว้ส่วนหนึ่ง ผลต่อประเทศลดลงหนึ่งระดับ${hit === 'big' ? ' (ไม่เป็นซาก เป็นเมืองร้าว)' : ''}`,
       ...dragons.map((x) => `อารมณ์ของ${x.name} ${x.mood} → ${x.after} และภายในหนึ่งปีจะ${x.reply === 'protect' ? 'ปกป้อง' : x.reply === 'growl' ? 'คำราม' : 'ตื่นด้วยความเจ็บ'}`),
     ];
+    if (hit === 'big') {
+      const g = godOf(ctx).miracles;
+      notes.push(...kinNotes(ctx, c, Math.round((g.ruin.numbers.allyDie * g.seal.crack.npc.die) / g.ruin.numbers.npc.die)));
+    }
     if (s.key) notes.push('กุญแจคำสัตย์รับแทนมังกร: ความเชื่อมั่นทองกลาง C −20 และสภาเก้าทวีปสั่น');
     return {
       sealed: true,

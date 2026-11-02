@@ -14,6 +14,7 @@ import { yearOf } from '../acts/state';
 import { geoOf } from '../../world/place';
 import { later } from '../acts/miracles';
 import { ruinLabel } from './names';
+import { tellKin } from './kin';
 import { acceptors, hauntMain, leadersOf, npcsIn, rollPeople } from './people';
 import { ruinExt, ruinAt, type RuinKind, type RuinRec } from './state';
 import { LAKE_SPREAD, RAINY, STREAM } from './tuning';
@@ -154,6 +155,7 @@ export function makeRuin(ctx: Ctx, country: string, kind: RuinKind): RuinRec {
       data: { country, label: rec.label, pop: Math.round(pop * 100), died: fates.died.length, fled: fates.fled.length, stayed: fates.stayed.length, closed: closed.length, allies: fates.alliesDied.length, came: fates.alliesCame.length, kind },
       level: 1,
     });
+    tellKin(ctx, country, fates);
   });
   return rec;
 }
