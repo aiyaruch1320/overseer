@@ -1,5 +1,5 @@
 {
- "version": "f503a94f33f0",
+ "version": "e3aac7dde2c4",
  "sources": [
   "docs/lore/storylines/00-convergence.md"
  ],
@@ -125,12 +125,18 @@
         "id": "SF-04"
        },
        {
-        "k": "event",
-        "id": "SF-04"
-       },
-       {
-        "k": "event",
-        "id": "WR-22"
+        "k": "if",
+        "cond": {
+         "k": "text",
+         "text": "ขับไล่"
+        },
+        "then": [
+         {
+          "k": "event",
+          "id": "WR-22",
+          "open": true
+         }
+        ]
        }
       ],
       "mods": [
@@ -762,6 +768,12 @@
          "ids": [
           "SV-07"
          ]
+        },
+        {
+         "k": "country",
+         "ids": [
+          "MK-13"
+         ]
         }
        ]
       }
@@ -1058,7 +1070,8 @@
         "cond": {
          "k": "event",
          "id": "WR-13",
-         "happened": true
+         "happened": true,
+         "outcome": "c"
         },
         "then": [
          {
@@ -3662,8 +3675,9 @@
           },
           {
            "k": "event",
-           "id": "LE-11",
-           "happened": true
+           "id": "WR-15",
+           "happened": true,
+           "outcome": "c"
           }
          ]
         },

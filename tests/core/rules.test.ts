@@ -50,3 +50,13 @@ describe('stats', () => {
     expect(ctx.state.log.some((e) => e.id === 'cond:stat:lineage.open')).toBe(true);
   });
 });
+
+describe('text leaves', () => {
+  it('are closed by default and open when the caller says prose does not gate', () => {
+    resetRules();
+    const ctx = makeCtx(newGame(1), {});
+    const c = { k: 'and' as const, of: [{ k: 'text' as const, text: 'ศรัทธาสูง' }, { k: 'not' as const, of: { k: 'text' as const, text: 'x' } }] };
+    expect(test(ctx, c)).toBe(false);
+    expect(test(ctx, c, { unknown: true })).toBe(true);
+  });
+});

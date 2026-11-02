@@ -217,7 +217,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 177,
-   "bytes": 14509,
+   "bytes": 14484,
    "headings": [
     "1. สรุป",
     "2. ความขัดกันที่พบ",
@@ -232,7 +232,7 @@
    "group": "_generated",
    "kind": "generated",
    "lines": 35,
-   "bytes": 5018,
+   "bytes": 5216,
    "headings": [
     "1. ต่อทวีป",
     "2. ประเทศที่ไม่มีเหตุการณ์ระบุชื่อ",
@@ -269,8 +269,8 @@
    "layer": "generated",
    "group": "_generated",
    "kind": "generated",
-   "lines": 70,
-   "bytes": 89383,
+   "lines": 69,
+   "bytes": 87901,
    "headings": [],
    "source": "scripts/docs/build-local-events.mjs"
   },
@@ -1035,8 +1035,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 612,
-   "bytes": 99296,
+   "lines": 621,
+   "bytes": 101948,
    "headings": [
     "0. วิธีใช้ไฟล์นี้",
     "1. ที่ตัดสินแล้ว",
@@ -2125,7 +2125,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 265,
-   "bytes": 43447,
+   "bytes": 43520,
    "headings": [
     "1. ภาพรวม",
     "2. รายละเอียด",
@@ -2140,7 +2140,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 97,
-   "bytes": 17743,
+   "bytes": 17777,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2179,7 +2179,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 93,
-   "bytes": 15277,
+   "bytes": 15258,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2239,7 +2239,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 93,
-   "bytes": 14387,
+   "bytes": 14330,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2259,7 +2259,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 98,
-   "bytes": 24880,
+   "bytes": 24849,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2359,7 +2359,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 88,
-   "bytes": 14006,
+   "bytes": 13905,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2379,7 +2379,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 92,
-   "bytes": 13710,
+   "bytes": 13708,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2419,7 +2419,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 93,
-   "bytes": 16604,
+   "bytes": 16524,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2479,7 +2479,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 90,
-   "bytes": 14991,
+   "bytes": 14976,
    "headings": [
     "1. ธีม",
     "2. จุดกำเนิด",
@@ -2559,7 +2559,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 360,
-   "bytes": 78599,
+   "bytes": 78977,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2579,7 +2579,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 73,
-   "bytes": 15448,
+   "bytes": 15289,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2596,7 +2596,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 135,
-   "bytes": 39837,
+   "bytes": 39830,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2613,7 +2613,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 141,
-   "bytes": 45508,
+   "bytes": 45548,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2654,7 +2654,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 61,
-   "bytes": 17586,
+   "bytes": 17583,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2671,7 +2671,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 237,
-   "bytes": 54233,
+   "bytes": 53934,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2726,7 +2726,7 @@
    "group": "lore/storylines",
    "kind": "fact",
    "lines": 55,
-   "bytes": 11513,
+   "bytes": 11725,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -3088,7 +3088,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 142,
-   "bytes": 18578,
+   "bytes": 18658,
    "headings": [
     "ก. พรถิ่นเกิด",
     "ข. พรสายเลือดและกำเนิดพิเศษ",
@@ -3106,7 +3106,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 72,
-   "bytes": 11156,
+   "bytes": 11356,
    "headings": [
     "ก. คำสาปถิ่นเกิด",
     "ข. คำสาปจากการรอดเหตุการณ์",
@@ -3159,7 +3159,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 183,
-   "bytes": 32149,
+   "bytes": 32998,
    "headings": [
     "ก. อาชีพเดิมในโค้ด 39 อย่าง",
     "ข. อาชีพใหม่ 61 อย่าง",
@@ -3174,7 +3174,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 153,
-   "bytes": 28830,
+   "bytes": 28799,
    "headings": [
     "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
     "ข. อาชีพลับใหม่ 8 อย่าง",
@@ -3288,7 +3288,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 59,
-   "bytes": 10090,
+   "bytes": 10231,
    "headings": [
     "ก. skill ใหม่ 12 อย่าง",
     "ข. พรใหม่ 8 อย่าง",
@@ -4142,7 +4142,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 164,
-   "bytes": 30800,
+   "bytes": 30735,
    "headings": [
     "1. ช่วงย่อย",
     "2. กติกาความหนาแน่น",
@@ -4172,7 +4172,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 122,
-   "bytes": 133003,
+   "bytes": 132942,
    "headings": [
     "1. หลักการ",
     "2. เหตุการณ์ท้องถิ่นที่เขียนมือ 76 รายการ",
@@ -4186,7 +4186,7 @@
    "group": "systems/events",
    "kind": "data",
    "lines": 551,
-   "bytes": 121306,
+   "bytes": 121854,
    "headings": [
     "0. กติกาของเหตุการณ์",
     "1. มังกรปฐมและห้าผู้อาวุโส (DR) — 15 เหตุการณ์",

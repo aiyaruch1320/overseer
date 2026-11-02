@@ -76,7 +76,7 @@ export type Effect =
   | { k: 'stat'; stat: string; delta: number } // ทอง −50 · ความถนัดอาชีพ +1 · ชื่อเสียง +5
   | { k: 'battle'; enemies: string[]; text?: string } // `· ศึก` and enemy ids in the row
   | { k: 'converge'; to: NodeId } // `→ cv.6`
-  | { k: 'jump'; to: NodeId; years?: number } // `ข้ามไป hu.a1 เร็วขึ้นสองปี`
+  | { k: 'jump'; to: NodeId; years?: number; choice?: 'a' | 'b' | 'c' } // `ข้ามไป hu.a1 เร็วขึ้นสองปี` · `ข้ามไป el.a1 ทาง ก`
   | { k: 'npc'; id: NpcId } // ties the beat to an NPC slot (code-plan §6.1, storylines README §6.8)
   /** No `open` and no `op` = a reference only. `op` cuts, delays (n world years) or otherwise changes an event that has not fired. */
   | { k: 'event'; id: EventId; open?: boolean; op?: 'cut' | 'delay'; n?: number }
@@ -296,7 +296,7 @@ export interface LifeState {
   name: string;
   race: RaceId;
   blood?: string; // sub-lineage or half-blood pair
-  gender: 'm' | 'f';
+  gender: 'm' | 'f' | 'n'; // n = no sex (slimes, some fae)
   birthYear: number; // world year
   lifespan: number; // natural lifespan in world years, hidden from the player
   hAge: number; // human-equivalent age (life years)
