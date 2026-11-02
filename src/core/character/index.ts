@@ -10,7 +10,7 @@ import { ADULT_AGE } from './tuning';
 registerCharacterRules();
 
 export { birth, type BirthOpts } from './birth';
-export { chooseJob, ensureJob, grantJob, offerJobs, rollSecretJobs, secretChance, ineligible, evalCond, jobWeight } from './jobs';
+export { chooseJob, contractWork, ensureJob, grantJob, offerJobs, rollSecretJobs, secretChance, ineligible, evalCond, jobWeight } from './jobs';
 export { die, yearlyDeath } from './death';
 export { extOf, idx, classNum, classId, type CharacterExt } from './data';
 export { holds, onTags, tagsOf, giveId, takeId, trustOf, recomputeDeathAge, setClass, boundLevel, boundBan } from './life';

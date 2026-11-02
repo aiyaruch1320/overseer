@@ -57,8 +57,8 @@ export function grantJob(ctx: Ctx, id: string, src: Pick<EffectSource, 'sys' | '
   };
   if (!job) return fail('unknown');
   if (life.job === id) return false;
-  // a life in contract or in chains does not change the work it does by itself (10-bondage.md §2); the first work the owner gives is allowed
-  if (life.job && boundBan(life, 'job') && src.sys !== 'bondage') {
+  // a life in contract or in chains does not take or change work by itself (10-bondage.md §6): his work is the contract's, which only the bondage system gives (`contractWork`)
+  if (boundBan(life, 'job') && src.sys !== 'bondage') {
     write(ctx.state, { sys: 'character', kind: 'jobFail', id, data: { job: id, reason: 'bound', from: src.id ?? src.sys }, level: 0 });
     return false;
   }
@@ -101,7 +101,28 @@ export function jobWeight(ctx: Ctx, job: Job): number {
  */
 export function ensureJob(ctx: Ctx, life: LifeState): string | null {
   if (life.job || life.secretJob || life.hAge < ADULT_AGE) return null;
+  // B2 and B3 do the work of the contract at twenty, they are not offered a trade (M3 review R3); B1 works like a free man (it only cannot leave)
+  if (boundBan(life, 'job')) return contractWork(ctx, life);
   return chooseJob(ctx);
+}
+
+/**
+ * The work of a person bound by contract or in chains (10-bondage.md §6: B2 B3 cannot change work; the class 1 jobs of economy/03-classes.md §4 are the
+ * work that needs no rights). He keeps the work he has when it is of that kind, else the owner gives him one that the country allows. Returns the job, or null
+ * when he holds a secret job (kept) or none can be given.
+ */
+export function contractWork(ctx: Ctx, life: LifeState): string | null {
+  if (life.secretJob) return null;
+  const ix = idx(ctx);
+  const row = (ctx.data.economy?.items as EconomyData | undefined)?.classJobs.find((r) => r.cls === 1);
+  const pool = (row?.boosted ?? ['woodcutter', 'courier']).filter((id) => {
+    const j = ix.jobs.get(id);
+    return !!j && j.kind === 'common' && !ineligible(ctx, j, 'lenient');
+  });
+  if (!pool.length) return null;
+  if (life.job && pool.includes(life.job)) return life.job;
+  const id = ctx.rng('bondage.work').pick(pool);
+  return grantJob(ctx, id, { sys: 'bondage', id: 'work' }, { force: true }) ? id : null;
 }
 
 /** Three different common jobs, drawn by weight (the player's character then chooses one). */
@@ -149,7 +170,7 @@ export function growJob(ctx: Ctx, life: LifeState): void {
 /** A change of common job: 0.5% a year, 0.2% for slow life, 1.5% with `freedom` (08-jobs-overview.md §3). */
 export function maybeChangeJob(ctx: Ctx, life: LifeState): void {
   const job = life.job ? idx(ctx).jobs.get(life.job) : undefined;
-  if (!job || job.kind !== 'common' || life.secretJob) return;
+  if (!job || job.kind !== 'common' || life.secretJob || boundBan(life, 'job')) return;
   const rules = idx(ctx).jobRules;
   const p = life.traits.includes('freedom') ? rules?.freedomChangeChance ?? JOBS.freedomChangeChance : job.slow ? rules?.slowLifeChangeChance ?? JOBS.slowChangeChance : rules?.jobChangeChancePerYear ?? JOBS.changeChance;
   if (ctx.rng('life.character').chance(p)) chooseJob(ctx, { exclude: [job.id] });
@@ -173,7 +194,7 @@ export function secretChance(ctx: Ctx, life: LifeState, job: Job): { chance: num
 
 /** Once a life year after coming of age: one roll per secret job whose conditions hold; a pass is an offer the character takes or refuses. */
 export function rollSecretJobs(ctx: Ctx, life: LifeState): string | null {
-  if (life.secretJob || life.hAge < ADULT_AGE) return null;
+  if (life.secretJob || life.hAge < ADULT_AGE || boundBan(life, 'job')) return null;
   const rng = ctx.rng('life.character');
   const e = extOf(life);
   for (const job of idx(ctx).jobList) {
