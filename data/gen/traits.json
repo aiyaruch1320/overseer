@@ -1,0 +1,3081 @@
+{
+ "version": "55112a53db2a",
+ "sources": [
+  "docs/_generated/character-catalog/tags.md",
+  "docs/_generated/character-catalog/traits.md",
+  "docs/systems/character/05-new-blessings.md",
+  "docs/systems/character/06-new-curses.md",
+  "docs/systems/character/12-job-support.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": {
+  "traits": [
+   {
+    "id": "reckless",
+    "name": "กล้าบ้าบิ่น",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": 40
+     },
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": 15
+     }
+    ],
+    "fxRaw": "brave+40 temper+15",
+    "desc": "พุ่งเข้าใส่ก่อนคิด",
+    "conflicts": [
+     "coward"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:7"
+   },
+   {
+    "id": "coward",
+    "name": "ขี้ขลาด",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": -40
+     }
+    ],
+    "fxRaw": "brave-40",
+    "desc": "หนีเก่งกว่าใคร",
+    "conflicts": [
+     "reckless"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:8"
+   },
+   {
+    "id": "kind",
+    "name": "ใจบุญ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "kind+40",
+    "desc": "เห็นใครลำบากไม่ได้",
+    "conflicts": [
+     "cold",
+     "bloodlust"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:9"
+   },
+   {
+    "id": "cold",
+    "name": "เลือดเย็น",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": -35
+     },
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": -20
+     }
+    ],
+    "fxRaw": "kind-35 temper-20",
+    "desc": "ไม่หวั่นไหวต่อน้ำตา",
+    "conflicts": [
+     "kind"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:10"
+   },
+   {
+    "id": "ambitious",
+    "name": "ทะเยอทะยาน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "ambition+40",
+    "desc": "อยากเป็นที่หนึ่ง",
+    "conflicts": [
+     "loner",
+     "lazy"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:11"
+   },
+   {
+    "id": "loner",
+    "name": "รักสันโดษ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": -25
+     },
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": -30
+     }
+    ],
+    "fxRaw": "ambition-25 social-30",
+    "desc": "ขออยู่เงียบ ๆ",
+    "conflicts": [
+     "ambitious",
+     "hospitable"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:12"
+   },
+   {
+    "id": "devout",
+    "name": "เคร่งศาสนา",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "piety",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "piety+40",
+    "desc": "สวดทุกเช้าเย็น",
+    "conflicts": [
+     "skeptic"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:13"
+   },
+   {
+    "id": "skeptic",
+    "name": "ไม่เชื่อเทพ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "piety",
+      "delta": -40
+     }
+    ],
+    "fxRaw": "piety-40",
+    "desc": "เทพที่ไหนจะมาสนใจ",
+    "conflicts": [
+     "devout"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:14"
+   },
+   {
+    "id": "curious",
+    "name": "ขี้สงสัย",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "curious+40",
+    "desc": "อยากรู้ไปทุกเรื่อง",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:15"
+   },
+   {
+    "id": "paranoid",
+    "name": "ขี้ระแวง",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": -25
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "distrustful"
+     }
+    ],
+    "fxRaw": "curious-25 #distrustful",
+    "desc": "ทุกคนอาจเป็นศัตรู",
+    "conflicts": [
+     "gullible",
+     "hospitable"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:16"
+   },
+   {
+    "id": "honest",
+    "name": "ซื่อสัตย์",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "honest",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "honest+40",
+    "desc": "โกหกไม่เป็น",
+    "conflicts": [
+     "cunning",
+     "liar"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:17"
+   },
+   {
+    "id": "cunning",
+    "name": "เจ้าเล่ห์",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "honest",
+      "delta": -40
+     }
+    ],
+    "fxRaw": "honest-40",
+    "desc": "มีแผนสำรองเสมอ",
+    "conflicts": [
+     "honest"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:18"
+   },
+   {
+    "id": "hot",
+    "name": "ใจร้อน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "temper+40",
+    "desc": "ระเบิดง่าย",
+    "conflicts": [
+     "calm",
+     "patient",
+     "easygoing"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:19"
+   },
+   {
+    "id": "calm",
+    "name": "สุขุม",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": -40
+     }
+    ],
+    "fxRaw": "temper-40",
+    "desc": "ใจเย็นดั่งน้ำนิ่ง",
+    "conflicts": [
+     "hot"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:20"
+   },
+   {
+    "id": "charismatic",
+    "name": "เข้าสังคมเก่ง",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": 40
+     }
+    ],
+    "fxRaw": "social+40",
+    "desc": "ใครก็อยากเป็นเพื่อน",
+    "conflicts": [
+     "shy"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:21"
+   },
+   {
+    "id": "shy",
+    "name": "เก็บตัว",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": -40
+     }
+    ],
+    "fxRaw": "social-40",
+    "desc": "พูดน้อย คิดมาก",
+    "conflicts": [
+     "charismatic",
+     "talkative"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:22"
+   },
+   {
+    "id": "greedy",
+    "name": "โลภ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": 15
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": -15
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "greedy"
+     }
+    ],
+    "fxRaw": "ambition+15 kind-15 #greedy",
+    "desc": "เห็นทองตาลุกวาว",
+    "conflicts": [
+     "generous",
+     "thrifty"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:23"
+   },
+   {
+    "id": "generous",
+    "name": "ใจกว้าง",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 20
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "generous"
+     }
+    ],
+    "fxRaw": "kind+20 #generous",
+    "desc": "แบ่งปันเสมอ",
+    "conflicts": [
+     "greedy",
+     "thrifty"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:24"
+   },
+   {
+    "id": "glutton",
+    "name": "ตะกละ",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "glutton"
+     }
+    ],
+    "fxRaw": "#glutton",
+    "desc": "คิดถึงมื้อต่อไปตลอดเวลา",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:25"
+   },
+   {
+    "id": "lazy",
+    "name": "ขี้เกียจ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": -30
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "lazy"
+     }
+    ],
+    "fxRaw": "ambition-30 #lazy",
+    "desc": "พรุ่งนี้ค่อยทำ",
+    "conflicts": [
+     "ambitious",
+     "diligent"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:26"
+   },
+   {
+    "id": "diligent",
+    "name": "ขยันขันแข็ง",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": 15
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "diligent"
+     }
+    ],
+    "fxRaw": "ambition+15 #diligent",
+    "desc": "ฝึกฝนไม่หยุด",
+    "conflicts": [
+     "lazy"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:27"
+   },
+   {
+    "id": "flirt",
+    "name": "เจ้าชู้",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": 25
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "flirt"
+     }
+    ],
+    "fxRaw": "social+25 #flirt",
+    "desc": "หัวใจมีหลายห้อง",
+    "conflicts": [
+     "loyal_love"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:28"
+   },
+   {
+    "id": "loyal_love",
+    "name": "รักเดียวใจเดียว",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "loyal_love"
+     }
+    ],
+    "fxRaw": "#loyal_love",
+    "desc": "รักใครรักจริง",
+    "conflicts": [
+     "flirt"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:29"
+   },
+   {
+    "id": "vengeful",
+    "name": "อาฆาตแค้น",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": 15
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "vengeful"
+     }
+    ],
+    "fxRaw": "temper+15 kind-10 #vengeful",
+    "desc": "ไม่เคยลืมความแค้น",
+    "conflicts": [
+     "forgiving",
+     "easygoing"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:30"
+   },
+   {
+    "id": "forgiving",
+    "name": "ให้อภัยง่าย",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 20
+     },
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": -15
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "forgiving"
+     }
+    ],
+    "fxRaw": "kind+20 temper-15 #forgiving",
+    "desc": "ช่างมันเถอะ",
+    "conflicts": [
+     "vengeful"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:31"
+   },
+   {
+    "id": "optimist",
+    "name": "มองโลกในแง่ดี",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "optimist"
+     }
+    ],
+    "fxRaw": "brave+10 #optimist",
+    "desc": "พรุ่งนี้ต้องดีกว่าเดิม",
+    "conflicts": [
+     "pessimist"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:32"
+   },
+   {
+    "id": "pessimist",
+    "name": "มองโลกในแง่ร้าย",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "pessimist"
+     }
+    ],
+    "fxRaw": "brave-10 #pessimist",
+    "desc": "เดี๋ยวก็ซวยอีก",
+    "conflicts": [
+     "optimist"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:33"
+   },
+   {
+    "id": "dreamer",
+    "name": "ช่างฝัน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": 15
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "dreamer"
+     }
+    ],
+    "fxRaw": "curious+15 #dreamer",
+    "desc": "ฝันชัดกว่าคนอื่น",
+    "conflicts": [
+     "pragmatic"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:34"
+   },
+   {
+    "id": "pragmatic",
+    "name": "ติดดิน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "pragmatic"
+     }
+    ],
+    "fxRaw": "curious-10 #pragmatic",
+    "desc": "ฝันก็คือฝัน",
+    "conflicts": [
+     "dreamer"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:35"
+   },
+   {
+    "id": "proud",
+    "name": "หยิ่งผยอง",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": 15
+     },
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "proud"
+     }
+    ],
+    "fxRaw": "ambition+15 social-10 #proud",
+    "desc": "ไม่ก้มหัวให้ใคร",
+    "conflicts": [
+     "humble"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:36"
+   },
+   {
+    "id": "humble",
+    "name": "ถ่อมตน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "humble"
+     }
+    ],
+    "fxRaw": "ambition-10 #humble",
+    "desc": "ข้าก็แค่คนธรรมดา",
+    "conflicts": [
+     "proud"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:37"
+   },
+   {
+    "id": "freedom",
+    "name": "รักอิสระ",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "wanderer"
+     }
+    ],
+    "fxRaw": "#wanderer",
+    "desc": "ไม่ชอบอยู่ที่เดิมนาน",
+    "conflicts": [
+     "homebody"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:38"
+   },
+   {
+    "id": "homebody",
+    "name": "รักบ้านเกิด",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "homebody"
+     }
+    ],
+    "fxRaw": "#homebody",
+    "desc": "บ้านคือที่ที่ดีที่สุด",
+    "conflicts": [
+     "freedom",
+     "adventurer"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:39"
+   },
+   {
+    "id": "adventurer",
+    "name": "ชอบผจญภัย",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": 20
+     },
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": 20
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "wanderer"
+     }
+    ],
+    "fxRaw": "curious+20 brave+20 #wanderer",
+    "desc": "ขอบฟ้ากำลังเรียก",
+    "conflicts": [
+     "homebody",
+     "nostalgic"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:40"
+   },
+   {
+    "id": "talkative",
+    "name": "ช่างพูด",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": 20
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "talkative"
+     }
+    ],
+    "fxRaw": "social+20 #talkative",
+    "desc": "พูดไม่หยุดแม้ในสนามรบ",
+    "conflicts": [
+     "shy"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:41"
+   },
+   {
+    "id": "liar",
+    "name": "ขี้โกหก",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "honest",
+      "delta": -30
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "liar"
+     }
+    ],
+    "fxRaw": "honest-30 #liar",
+    "desc": "โกหกจนเชื่อเอง",
+    "conflicts": [
+     "honest"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:42"
+   },
+   {
+    "id": "animal_lover",
+    "name": "รักสัตว์",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "beast_friend"
+     }
+    ],
+    "fxRaw": "kind+10 #beast_friend",
+    "desc": "สัตว์ทุกตัวคือเพื่อน",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:43"
+   },
+   {
+    "id": "bloodlust",
+    "name": "กระหายเลือด",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": -30
+     },
+     {
+      "k": "stat",
+      "stat": "brave",
+      "delta": 20
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "bloodlust"
+     }
+    ],
+    "fxRaw": "kind-30 brave+20 #bloodlust",
+    "desc": "การต่อสู้คือความสุข",
+    "conflicts": [
+     "kind"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:44"
+   },
+   {
+    "id": "justice",
+    "name": "รักความยุติธรรม",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "honest",
+      "delta": 20
+     },
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "justice"
+     }
+    ],
+    "fxRaw": "honest+20 kind+10 #justice",
+    "desc": "ทนเห็นความอยุติธรรมไม่ได้",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:45"
+   },
+   {
+    "id": "envious",
+    "name": "ขี้อิจฉา",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": -10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "envious"
+     }
+    ],
+    "fxRaw": "kind-10 #envious",
+    "desc": "ทำไมคนอื่นได้ดีกว่า",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:46"
+   },
+   {
+    "id": "humor",
+    "name": "มีอารมณ์ขัน",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "humor"
+     }
+    ],
+    "fxRaw": "social+10 #humor",
+    "desc": "หัวเราะได้แม้ในงานศพ",
+    "conflicts": [
+     "serious"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:47"
+   },
+   {
+    "id": "serious",
+    "name": "จริงจังเกินเหตุ",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "serious"
+     }
+    ],
+    "fxRaw": "#serious",
+    "desc": "ไม่เข้าใจมุกตลก",
+    "conflicts": [
+     "humor"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:48"
+   },
+   {
+    "id": "bookworm",
+    "name": "หนอนหนังสือ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": 20
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "bookworm"
+     }
+    ],
+    "fxRaw": "curious+20 #bookworm",
+    "desc": "ตำราคือชีวิต",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:49"
+   },
+   {
+    "id": "clumsy",
+    "name": "ซุ่มซ่าม",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "clumsy"
+     }
+    ],
+    "fxRaw": "#clumsy",
+    "desc": "สะดุดแม้บนพื้นเรียบ",
+    "conflicts": [
+     "meticulous",
+     "tidy",
+     "handy"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:50"
+   },
+   {
+    "id": "stubborn",
+    "name": "ดื้อรั้น",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "stubborn"
+     }
+    ],
+    "fxRaw": "#stubborn",
+    "desc": "ใครเตือนก็ไม่ฟัง แม้แต่เทพ",
+    "conflicts": [
+     "gullible"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:51"
+   },
+   {
+    "id": "gullible",
+    "name": "หูเบา",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "gullible"
+     }
+    ],
+    "fxRaw": "#gullible",
+    "desc": "เชื่อทุกอย่างที่ได้ยิน รวมถึงความฝัน",
+    "conflicts": [
+     "stubborn",
+     "paranoid"
+    ],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:52"
+   },
+   {
+    "id": "moody",
+    "name": "อารมณ์แปรปรวน",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "moody"
+     }
+    ],
+    "fxRaw": "#moody",
+    "desc": "เช้าดี บ่ายร้าย",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:53"
+   },
+   {
+    "id": "family",
+    "name": "ห่วงครอบครัว",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "kind",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "family"
+     }
+    ],
+    "fxRaw": "kind+10 #family",
+    "desc": "ครอบครัวมาก่อนเสมอ",
+    "conflicts": [],
+    "src": "code",
+    "at": "docs/_generated/character-catalog/traits.md:54"
+   },
+   {
+    "id": "patient",
+    "name": "อดทนรอ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "ambition",
+      "delta": -5
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "patient"
+     }
+    ],
+    "fxRaw": "ambition-5 #patient",
+    "desc": "รอผลได้เป็นฤดู",
+    "conflicts": [
+     "hot"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:40"
+   },
+   {
+    "id": "thrifty",
+    "name": "ประหยัด",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "thrifty"
+     }
+    ],
+    "fxRaw": "#thrifty",
+    "desc": "เก็บทุกเหรียญ",
+    "conflicts": [
+     "generous",
+     "greedy"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:41"
+   },
+   {
+    "id": "meticulous",
+    "name": "ละเอียดลออ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "curious",
+      "delta": 5
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "meticulous"
+     }
+    ],
+    "fxRaw": "curious+5 #meticulous",
+    "desc": "ตรวจซ้ำสามครั้ง",
+    "conflicts": [
+     "clumsy"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:42"
+   },
+   {
+    "id": "easygoing",
+    "name": "ใจเย็นสบาย ๆ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "temper",
+      "delta": -15
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "easygoing"
+     }
+    ],
+    "fxRaw": "temper-15 #easygoing",
+    "desc": "ปล่อยวางเก่ง",
+    "conflicts": [
+     "hot",
+     "vengeful"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:43"
+   },
+   {
+    "id": "tidy",
+    "name": "รักความสะอาด",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "tidy"
+     }
+    ],
+    "fxRaw": "#tidy",
+    "desc": "บ้านและมือสะอาดเสมอ",
+    "conflicts": [
+     "clumsy"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:44"
+   },
+   {
+    "id": "nostalgic",
+    "name": "คิดถึงอดีต",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "nostalgic"
+     }
+    ],
+    "fxRaw": "#nostalgic",
+    "desc": "เก็บของเก่าไว้ทุกชิ้น",
+    "conflicts": [
+     "adventurer"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:45"
+   },
+   {
+    "id": "handy",
+    "name": "มือเอนกประสงค์",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "handy"
+     }
+    ],
+    "fxRaw": "#handy",
+    "desc": "ซ่อมได้ทุกอย่างเล็กน้อย",
+    "conflicts": [
+     "clumsy"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:46"
+   },
+   {
+    "id": "hospitable",
+    "name": "ใจดีต้อนรับ",
+    "fx": [
+     {
+      "k": "stat",
+      "stat": "social",
+      "delta": 10
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "hospitable"
+     }
+    ],
+    "fxRaw": "social+10 #hospitable",
+    "desc": "เปิดบ้านต้อนรับแขก",
+    "conflicts": [
+     "paranoid",
+     "loner"
+    ],
+    "src": "doc",
+    "at": "docs/systems/character/12-job-support.md:47"
+   }
+  ],
+  "tags": [
+   {
+    "tag": "charm",
+    "text": "",
+    "count": 6,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:7"
+   },
+   {
+    "tag": "holy",
+    "text": "",
+    "count": 4,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:8"
+   },
+   {
+    "tag": "light",
+    "text": "",
+    "count": 4,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:9"
+   },
+   {
+    "tag": "beast_friend",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:10"
+   },
+   {
+    "tag": "fire",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:11"
+   },
+   {
+    "tag": "fire_res",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:12"
+   },
+   {
+    "tag": "glutton",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:13"
+   },
+   {
+    "tag": "guard",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:14"
+   },
+   {
+    "tag": "hero_luck",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:15"
+   },
+   {
+    "tag": "leader",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:16"
+   },
+   {
+    "tag": "oracle",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:17"
+   },
+   {
+    "tag": "poison_res",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:18"
+   },
+   {
+    "tag": "seer",
+    "text": "",
+    "count": 3,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:19"
+   },
+   {
+    "tag": "berserk",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:20"
+   },
+   {
+    "tag": "blade",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:21"
+   },
+   {
+    "tag": "copycat",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:22"
+   },
+   {
+    "tag": "darkvision",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:23"
+   },
+   {
+    "tag": "earth",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:24"
+   },
+   {
+    "tag": "farm",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:25"
+   },
+   {
+    "tag": "greedy",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:26"
+   },
+   {
+    "tag": "haunted",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:27"
+   },
+   {
+    "tag": "jinx",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:28"
+   },
+   {
+    "tag": "lightning",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:29"
+   },
+   {
+    "tag": "longevity",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:30"
+   },
+   {
+    "tag": "necro",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:31"
+   },
+   {
+    "tag": "polyglot",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:32"
+   },
+   {
+    "tag": "regen",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:33"
+   },
+   {
+    "tag": "rewind",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:34"
+   },
+   {
+    "tag": "short_life",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:35"
+   },
+   {
+    "tag": "stealth",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:36"
+   },
+   {
+    "tag": "trade",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:37"
+   },
+   {
+    "tag": "undead_bane",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:38"
+   },
+   {
+    "tag": "wanderer",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:39"
+   },
+   {
+    "tag": "water",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:40"
+   },
+   {
+    "tag": "water_breath",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:41"
+   },
+   {
+    "tag": "weak_sun",
+    "text": "",
+    "count": 2,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:42"
+   },
+   {
+    "tag": "absorb",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:43"
+   },
+   {
+    "tag": "allergy",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:44"
+   },
+   {
+    "tag": "appraise",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:45"
+   },
+   {
+    "tag": "bald",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:46"
+   },
+   {
+    "tag": "barren",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:47"
+   },
+   {
+    "tag": "beast",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:48"
+   },
+   {
+    "tag": "beauty",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:49"
+   },
+   {
+    "tag": "betrayal_magnet",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:50"
+   },
+   {
+    "tag": "bird_target",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:51"
+   },
+   {
+    "tag": "blood_drinker",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:52"
+   },
+   {
+    "tag": "blood_faint",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:53"
+   },
+   {
+    "tag": "bloodlust",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:54"
+   },
+   {
+    "tag": "bookworm",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:55"
+   },
+   {
+    "tag": "cat_hate",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:56"
+   },
+   {
+    "tag": "chicken",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:57"
+   },
+   {
+    "tag": "clumsy",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:58"
+   },
+   {
+    "tag": "coin",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:59"
+   },
+   {
+    "tag": "cold_res",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:60"
+   },
+   {
+    "tag": "combat",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:61"
+   },
+   {
+    "tag": "curse_ward",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:62"
+   },
+   {
+    "tag": "cursed_blood",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:63"
+   },
+   {
+    "tag": "cursed_gold",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:64"
+   },
+   {
+    "tag": "dance",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:65"
+   },
+   {
+    "tag": "dark",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:66"
+   },
+   {
+    "tag": "debt",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:67"
+   },
+   {
+    "tag": "demon_bane",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:68"
+   },
+   {
+    "tag": "demon_eye",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:69"
+   },
+   {
+    "tag": "demon_mark",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:70"
+   },
+   {
+    "tag": "diligent",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:71"
+   },
+   {
+    "tag": "disaster",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:72"
+   },
+   {
+    "tag": "distrustful",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:73"
+   },
+   {
+    "tag": "doom",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:74"
+   },
+   {
+    "tag": "doppel",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:75"
+   },
+   {
+    "tag": "dragon_bane",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:76"
+   },
+   {
+    "tag": "dreamer",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:77"
+   },
+   {
+    "tag": "dull",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:78"
+   },
+   {
+    "tag": "envious",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:79"
+   },
+   {
+    "tag": "envy_aura",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:80"
+   },
+   {
+    "tag": "evil_eye",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:81"
+   },
+   {
+    "tag": "faithless",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:82"
+   },
+   {
+    "tag": "family",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:83"
+   },
+   {
+    "tag": "family_bond",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:84"
+   },
+   {
+    "tag": "family_feud",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:85"
+   },
+   {
+    "tag": "fart_lie",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:86"
+   },
+   {
+    "tag": "fast_aging",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:87"
+   },
+   {
+    "tag": "fast_learner",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:88"
+   },
+   {
+    "tag": "fate_chain",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:89"
+   },
+   {
+    "tag": "fate_shift",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:90"
+   },
+   {
+    "tag": "fear_dark",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:91"
+   },
+   {
+    "tag": "fear_height",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:92"
+   },
+   {
+    "tag": "fear_water",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:93"
+   },
+   {
+    "tag": "fertile",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:94"
+   },
+   {
+    "tag": "flight",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:95"
+   },
+   {
+    "tag": "flirt",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:96"
+   },
+   {
+    "tag": "forgiving",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:97"
+   },
+   {
+    "tag": "generous",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:98"
+   },
+   {
+    "tag": "glass",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:99"
+   },
+   {
+    "tag": "gold_itch",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:100"
+   },
+   {
+    "tag": "gold_luck",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:101"
+   },
+   {
+    "tag": "guardian_angel",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:102"
+   },
+   {
+    "tag": "gullible",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:103"
+   },
+   {
+    "tag": "heal",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:104"
+   },
+   {
+    "tag": "heat_res",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:105"
+   },
+   {
+    "tag": "heir_curse",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:106"
+   },
+   {
+    "tag": "hex_magnet",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:107"
+   },
+   {
+    "tag": "hiccup",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:108"
+   },
+   {
+    "tag": "hollow",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:109"
+   },
+   {
+    "tag": "homebody",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:110"
+   },
+   {
+    "tag": "humble",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:111"
+   },
+   {
+    "tag": "humor",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:112"
+   },
+   {
+    "tag": "ice",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:113"
+   },
+   {
+    "tag": "ill_omen",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:114"
+   },
+   {
+    "tag": "infernal",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:115"
+   },
+   {
+    "tag": "insomnia",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:116"
+   },
+   {
+    "tag": "itembox",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:117"
+   },
+   {
+    "tag": "justice",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:118"
+   },
+   {
+    "tag": "last_stand",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:119"
+   },
+   {
+    "tag": "lazy",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:120"
+   },
+   {
+    "tag": "liar",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:121"
+   },
+   {
+    "tag": "lich_seed",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:122"
+   },
+   {
+    "tag": "lonely",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:123"
+   },
+   {
+    "tag": "lost",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:124"
+   },
+   {
+    "tag": "love_doom",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:125"
+   },
+   {
+    "tag": "loyal_love",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:126"
+   },
+   {
+    "tag": "lucid",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:127"
+   },
+   {
+    "tag": "lycan",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:128"
+   },
+   {
+    "tag": "madness",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:129"
+   },
+   {
+    "tag": "magic",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:130"
+   },
+   {
+    "tag": "mind_ward",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:131"
+   },
+   {
+    "tag": "monster_lure",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:132"
+   },
+   {
+    "tag": "monster_ward",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:133"
+   },
+   {
+    "tag": "moody",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:134"
+   },
+   {
+    "tag": "mute",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:135"
+   },
+   {
+    "tag": "nature",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:136"
+   },
+   {
+    "tag": "navigator",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:137"
+   },
+   {
+    "tag": "night_blind",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:138"
+   },
+   {
+    "tag": "nightmare",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:139"
+   },
+   {
+    "tag": "no_reflection",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:140"
+   },
+   {
+    "tag": "oath_breaker",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:141"
+   },
+   {
+    "tag": "one_eye",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:142"
+   },
+   {
+    "tag": "optimist",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:143"
+   },
+   {
+    "tag": "outcast",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:144"
+   },
+   {
+    "tag": "past_life",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:145"
+   },
+   {
+    "tag": "peace",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:146"
+   },
+   {
+    "tag": "pessimist",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:147"
+   },
+   {
+    "tag": "plague_carrier",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:148"
+   },
+   {
+    "tag": "plague_res",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:149"
+   },
+   {
+    "tag": "poverty",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:150"
+   },
+   {
+    "tag": "pragmatic",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:151"
+   },
+   {
+    "tag": "predator",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:152"
+   },
+   {
+    "tag": "proud",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:153"
+   },
+   {
+    "tag": "rain_cloud",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:154"
+   },
+   {
+    "tag": "ranged",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:155"
+   },
+   {
+    "tag": "rhyme",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:156"
+   },
+   {
+    "tag": "sage",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:157"
+   },
+   {
+    "tag": "scales",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:158"
+   },
+   {
+    "tag": "scholar",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:159"
+   },
+   {
+    "tag": "sea",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:160"
+   },
+   {
+    "tag": "seasick",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:161"
+   },
+   {
+    "tag": "second_chance",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:162"
+   },
+   {
+    "tag": "serious",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:163"
+   },
+   {
+    "tag": "shadow",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:164"
+   },
+   {
+    "tag": "sickly",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:165"
+   },
+   {
+    "tag": "slime_love",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:166"
+   },
+   {
+    "tag": "smell",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:167"
+   },
+   {
+    "tag": "sneeze_fire",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:168"
+   },
+   {
+    "tag": "soul_debt",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:169"
+   },
+   {
+    "tag": "space",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:170"
+   },
+   {
+    "tag": "stoning",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:171"
+   },
+   {
+    "tag": "stubborn",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:172"
+   },
+   {
+    "tag": "summon",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:173"
+   },
+   {
+    "tag": "talkative",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:174"
+   },
+   {
+    "tag": "timestop",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:175"
+   },
+   {
+    "tag": "tiny_voice",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:176"
+   },
+   {
+    "tag": "treasure",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:177"
+   },
+   {
+    "tag": "true_love",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:178"
+   },
+   {
+    "tag": "truth",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:179"
+   },
+   {
+    "tag": "truth_bound",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:180"
+   },
+   {
+    "tag": "ugly",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:181"
+   },
+   {
+    "tag": "unbelieved",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:182"
+   },
+   {
+    "tag": "undead_touch",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:183"
+   },
+   {
+    "tag": "vampire_bite",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:184"
+   },
+   {
+    "tag": "vengeful",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:185"
+   },
+   {
+    "tag": "wanted",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:186"
+   },
+   {
+    "tag": "weak_fire",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:187"
+   },
+   {
+    "tag": "weak_ice",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:188"
+   },
+   {
+    "tag": "weak_iron",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:189"
+   },
+   {
+    "tag": "weak_light",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:190"
+   },
+   {
+    "tag": "weak_poison",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:191"
+   },
+   {
+    "tag": "weak_silver",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:192"
+   },
+   {
+    "tag": "whisper",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:193"
+   },
+   {
+    "tag": "youth",
+    "text": "",
+    "count": 1,
+    "src": "code",
+    "at": "docs/_generated/character-catalog/tags.md:194"
+   },
+   {
+    "tag": "fall_save",
+    "text": "รอดตายจากการตกครั้งแรก",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:118"
+   },
+   {
+    "tag": "fear_height_res",
+    "text": "ไม่กลัวที่สูง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:119"
+   },
+   {
+    "tag": "ash_res",
+    "text": "ทนเถ้าและฝุ่น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:120"
+   },
+   {
+    "tag": "water_breath_short",
+    "text": "ดำน้ำได้นานกว่าปกติ แต่หายใจใต้น้ำไม่ได้",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:121"
+   },
+   {
+    "tag": "mech_sense",
+    "text": "รับรู้ความผิดปกติของเครื่องจักร",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:122"
+   },
+   {
+    "tag": "thirst_res",
+    "text": "ทนกระหายนานกว่าปกติ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:123"
+   },
+   {
+    "tag": "nature_sense",
+    "text": "รับรู้สุขภาพของธรรมชาติและต้นไม้",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:124"
+   },
+   {
+    "tag": "fog_sight",
+    "text": "มองทะลุหมอกเบา",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:125"
+   },
+   {
+    "tag": "homeland_sense",
+    "text": "รู้ข่าวถิ่นกำเนิดเผ่า",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:126"
+   },
+   {
+    "tag": "shadow_meld",
+    "text": "ผสมกับเงา",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:127"
+   },
+   {
+    "tag": "absorb_memory",
+    "text": "จำสิ่งที่กลืน",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:128"
+   },
+   {
+    "tag": "contract_bonus",
+    "text": "สัญญาเลือดผลหนักขึ้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:129"
+   },
+   {
+    "tag": "lava_burst",
+    "text": "ปล่อยความร้อนระเบิดเมื่อโกรธ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:130"
+   },
+   {
+    "tag": "diplomat",
+    "text": "ผู้ไกล่เกลี่ยข้ามฝั่ง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:131"
+   },
+   {
+    "tag": "stone_skin",
+    "text": "ผิวหินเฉพาะที่",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:132"
+   },
+   {
+    "tag": "glide",
+    "text": "ร่อนได้",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:133"
+   },
+   {
+    "tag": "oath_keeper",
+    "text": "คำสาบานไม่ถูกบังคับให้ผิด",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:134"
+   },
+   {
+    "tag": "soul_resist",
+    "text": "ต้านเวทกระทบจิต",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:135"
+   },
+   {
+    "tag": "mech_repair",
+    "text": "ซ่อมตัวเอง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:136"
+   },
+   {
+    "tag": "dragon_voice",
+    "text": "ได้ยินเสียงมังกร ได้ยินเสียงอาลัย",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:137"
+   },
+   {
+    "tag": "dragon_mourning",
+    "text": "ได้ยินเสียงมังกร ได้ยินเสียงอาลัย",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:137"
+   },
+   {
+    "tag": "height_calm",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "famine_res",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "swim",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "quake_sense",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "herbalist",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "pollution_res",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "fog_calm",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "sun_blessed",
+    "text": "ผลจากเหตุการณ์ที่รอดมา ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:138"
+   },
+   {
+    "tag": "sky_call",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "hearth_flame",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "sea_mourn",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "wind_free",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "stone_sleep",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "eclipse_ear",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "shelter_voice",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "hunger_bind",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "deep_heat",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "deep_riddle",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "dream_ward",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "machine_voice",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "giant_pact",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "tree_bond",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "fog_ward",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "moon_veil",
+    "text": "ผลของตรามังกรแต่ละตัว ใช้ผูกกับเหตุการณ์และ NPC ที่เกี่ยวข้องกับมังกรตัวนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:139"
+   },
+   {
+    "tag": "naga_gift",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "warcry_god",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "ancestor_voice",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "forge_blessed",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "dream_share",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "spirit_beast",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "pathfinder",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "unbowed",
+    "text": "ผลของศาสนาต่าง ๆ",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:140"
+   },
+   {
+    "tag": "favor_return",
+    "text": "ผลของความสัมพันธ์และเส้นเรื่อง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:141"
+   },
+   {
+    "tag": "loyal_ally",
+    "text": "ผลของความสัมพันธ์และเส้นเรื่อง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:141"
+   },
+   {
+    "tag": "bard_song",
+    "text": "ผลของความสัมพันธ์และเส้นเรื่อง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:141"
+   },
+   {
+    "tag": "seal_touch",
+    "text": "ผลของความสัมพันธ์และเส้นเรื่อง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:141"
+   },
+   {
+    "tag": "god_whisper",
+    "text": "ผลของความสัมพันธ์และเส้นเรื่อง",
+    "src": "doc",
+    "at": "docs/systems/character/05-new-blessings.md:141"
+   },
+   {
+    "tag": "ash_cough",
+    "text": "ป่วยตามถิ่น โอกาสป่วยหนักเมื่อมีเหตุการณ์ในถิ่นนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:64"
+   },
+   {
+    "tag": "smoke_lung",
+    "text": "ป่วยตามถิ่น โอกาสป่วยหนักเมื่อมีเหตุการณ์ในถิ่นนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:64"
+   },
+   {
+    "tag": "leaf_fever",
+    "text": "ป่วยตามถิ่น โอกาสป่วยหนักเมื่อมีเหตุการณ์ในถิ่นนั้น",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:64"
+   },
+   {
+    "tag": "war_orphan",
+    "text": "ไม่มีบ้านมั่นคง เหตุการณ์ในถิ่นไม่ผูกพัน แต่ความคิดถึงรบกวนสมาธิ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:65"
+   },
+   {
+    "tag": "homeland_ghost",
+    "text": "ไม่มีบ้านมั่นคง เหตุการณ์ในถิ่นไม่ผูกพัน แต่ความคิดถึงรบกวนสมาธิ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:65"
+   },
+   {
+    "tag": "exile",
+    "text": "ไม่มีบ้านมั่นคง เหตุการณ์ในถิ่นไม่ผูกพัน แต่ความคิดถึงรบกวนสมาธิ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:65"
+   },
+   {
+    "tag": "thirst_mark",
+    "text": "กระหายเร็วกว่าคนอื่นในที่แห้ง",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:66"
+   },
+   {
+    "tag": "fog_shadow",
+    "text": "ถูกหมอกจดจำ กลุ่มที่ล่าในหมอกเห็นง่ายขึ้น",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:67"
+   },
+   {
+    "tag": "fog_whisper",
+    "text": "ถูกหมอกจดจำ กลุ่มที่ล่าในหมอกเห็นง่ายขึ้น",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:67"
+   },
+   {
+    "tag": "fear_deep",
+    "text": "กลัวสถานที่เฉพาะ ลดผลการสำรวจและผจญภัย",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:68"
+   },
+   {
+    "tag": "fear_lowland",
+    "text": "กลัวสถานที่เฉพาะ ลดผลการสำรวจและผจญภัย",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:68"
+   },
+   {
+    "tag": "sky_dream",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "hoarder",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "ground_distrust",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "slow_heal",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "machine_distrust",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "tentacle_dream",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "light_burn",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "mourning",
+    "text": "ผลจากเหตุการณ์ที่เคยรอด ตามชื่อ",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:69"
+   },
+   {
+    "tag": "crown_hunger",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "deep_pull",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "unheard",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "false_saint",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "oath_stone",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "dragon_grief",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "seal_scar",
+    "text": "ผลของตรามังกรและศาสนา",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:70"
+   },
+   {
+    "tag": "favor_unpaid",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "blood_feud",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "distrust",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "cult_hunted",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "name_lost",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "guardian_debt",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   },
+   {
+    "tag": "half_blood",
+    "text": "ผลของความสัมพันธ์ ผูกกับระบบ NPC",
+    "src": "doc",
+    "at": "docs/systems/character/06-new-curses.md:71"
+   }
+  ]
+ }
+}

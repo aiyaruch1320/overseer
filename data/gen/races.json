@@ -1,0 +1,6154 @@
+{
+ "version": "e42fa4b8c159",
+ "sources": [
+  "docs/lore/races/01-human.md",
+  "docs/lore/races/02-elf.md",
+  "docs/lore/races/03-darkelf.md",
+  "docs/lore/races/04-dwarf.md",
+  "docs/lore/races/05-orc.md",
+  "docs/lore/races/06-halfling.md",
+  "docs/lore/races/07-beast.md",
+  "docs/lore/races/08-naga.md",
+  "docs/lore/races/09-dragonkin.md",
+  "docs/lore/races/10-vampire.md",
+  "docs/lore/races/11-fae.md",
+  "docs/lore/races/12-slime.md",
+  "docs/lore/races/13-demonkin.md",
+  "docs/lore/races/14-merfolk.md",
+  "docs/lore/races/15-winged.md",
+  "docs/lore/races/16-giant.md",
+  "docs/lore/races/17-lavakin.md",
+  "docs/lore/races/18-construct.md",
+  "docs/lore/races/19-soulmachine.md",
+  "docs/lore/races/20-mummy.md",
+  "docs/lore/races/21-ghoul.md",
+  "docs/lore/world/world-time.md",
+  "docs/systems/character/01-origin.md",
+  "docs/systems/character/02-race-affinity.md",
+  "docs/systems/character/03-synergy-rules.md",
+  "docs/systems/character/08-jobs-overview.md",
+  "docs/systems/character/races/01-human.md",
+  "docs/systems/character/races/02-elf.md",
+  "docs/systems/character/races/03-darkelf.md",
+  "docs/systems/character/races/04-dwarf.md",
+  "docs/systems/character/races/05-orc.md",
+  "docs/systems/character/races/06-halfling.md",
+  "docs/systems/character/races/07-beast.md",
+  "docs/systems/character/races/08-naga.md",
+  "docs/systems/character/races/09-dragonkin.md",
+  "docs/systems/character/races/10-vampire.md",
+  "docs/systems/character/races/11-fae.md",
+  "docs/systems/character/races/12-slime.md",
+  "docs/systems/character/races/13-demonkin.md",
+  "docs/systems/character/races/14-merfolk.md",
+  "docs/systems/character/races/15-winged.md",
+  "docs/systems/character/races/16-giant.md",
+  "docs/systems/character/races/17-lavakin.md",
+  "docs/systems/character/races/18-construct.md",
+  "docs/systems/character/races/19-soulmachine.md",
+  "docs/systems/character/races/20-mummy.md",
+  "docs/systems/character/races/21-ghoul.md",
+  "docs/systems/character/races/README.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": {
+  "races": [
+   {
+    "id": "human",
+    "n": 1,
+    "name": "มนุษย์",
+    "storyPrefix": "hu",
+    "stats": {
+     "pow": [
+      4,
+      12
+     ],
+     "mag": [
+      5,
+      13
+     ],
+     "spd": [
+      6,
+      14
+     ],
+     "luk": [
+      9,
+      17
+     ],
+     "int": [
+      9,
+      17
+     ],
+     "vit": [
+      4,
+      12
+     ]
+    },
+    "lifespan": [
+     56,
+     94
+    ],
+    "worldYearsPerLifeYear": 1,
+    "adultAge": 20,
+    "elderAge": 55,
+    "generationGap": 30,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 29.5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "adaptable"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "ambition": 15
+    },
+    "traitPlus": [
+     "ambitious",
+     "diligent",
+     "envious",
+     "family",
+     "justice"
+    ],
+    "traitMinus": [
+     "loner",
+     "skeptic"
+    ],
+    "aptPlus": [
+     "sword",
+     "trade",
+     "leadership",
+     "farming",
+     "scholar"
+    ],
+    "aptMinus": [
+     "absorb"
+    ],
+    "likes": [
+     "temperate"
+    ],
+    "dislikes": [],
+    "blessPlus": [
+     "b_clover",
+     "b_friendmaker",
+     "b_quicklearn",
+     "b_fortune",
+     "b_heroname"
+    ],
+    "cursePlus": [
+     "c_envyaura",
+     "c_greed",
+     "c_debt",
+     "c_infamous"
+    ],
+    "blessClash": [],
+    "curseClash": [],
+    "jobBonus": [
+     "merchant",
+     "farmer",
+     "soldier",
+     "teacher",
+     "lawyer"
+    ],
+    "powers": [
+     {
+      "name": "ลิ้นสองคม",
+      "text": "พูดจาโน้มน้าวได้ดีกว่าเผ่าอื่นทุกเผ่า แต่เมื่อถูกจับได้ว่าโกหก ความไว้ใจจากทุกคนที่เห็นลดลงมาก"
+     },
+     {
+      "name": "เรียนลัด",
+      "text": "เรียนทักษะทั่วไปของเผ่าอื่นได้เร็วเป็นสองเท่าเมื่ออยู่กับพวกเขาครบสามปี (ไม่รวมสกิลเฉพาะเผ่านั้น)"
+     },
+     {
+      "name": "เข้ากับได้ทุกที่",
+      "text": "ไม่มีค่าปรับต่อภูมิอากาศใดโดยตรง"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_human_u",
+      "name": "ลิ้นเงินทอง",
+      "tier": "U",
+      "text": "ราคาซื้อขายดีขึ้น เจรจาง่ายขึ้นสำหรับทุกเรื่อง"
+     },
+     {
+      "id": "rb_human_r",
+      "name": "ดวงตกที่ยืน",
+      "tier": "R",
+      "text": "ครั้งหนึ่งในชีวิต เมื่อควรตาย จะรอดแบบหวุดหวิด"
+     },
+     {
+      "id": "rb_human_e",
+      "name": "เสียงที่ทุกเผ่าฟัง",
+      "tier": "E",
+      "text": "ทุกเผ่ายอมนั่งฟังข้อเสนอของผู้นี้ก่อนตัดสินใจ"
+     },
+     {
+      "id": "rb_human_l",
+      "name": "สะพานแห่งผู้คน",
+      "tier": "L",
+      "text": "พรของพันธมิตรทุกคนที่ไว้ใจ แบ่งผลมาให้ผู้ถือหนึ่งส่วน"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_human_c",
+      "name": "ไม่รู้จักพอ",
+      "tier": "C",
+      "text": "ความพอใจหายเร็ว ได้มาแล้วต้องการต่อไป"
+     },
+     {
+      "id": "rc_human_u",
+      "name": "สัญญาที่ลืมไม่ได้",
+      "tier": "U",
+      "text": "ทุกสัญญาที่ผิดมีผลติดตามตลอดชีวิต"
+     },
+     {
+      "id": "rc_human_r",
+      "name": "คนตัวเล็กในหมู่ผู้ยืนยาว",
+      "tier": "R",
+      "text": "ถูกเผ่าอายุยืนมองข้ามและไม่ให้เกียรติ"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_human_1",
+      "name": "พลิกลิ้น",
+      "text": "เปลี่ยนข้อเสนอที่ถูกปฏิเสธให้กลายเป็นข้อเสนอใหม่ที่พอรับได้"
+     },
+     {
+      "id": "rs_human_2",
+      "name": "ซื้อเวลา",
+      "text": "เลื่อนผลของการกระทำที่แย่ออกไปหนึ่งฤดู"
+     },
+     {
+      "id": "rs_human_3",
+      "name": "รวมคนร้อยใจ",
+      "text": "รวบรวมคนที่ไม่รู้จักกันให้ทำงานเดียวกันชั่วคราว"
+     },
+     {
+      "id": "rs_human_4",
+      "name": "ตั้งตนใหม่",
+      "text": "หลังจากล้มเหลวใหญ่ เริ่มต้นใหม่ในที่ที่ไม่มีใครรู้จัก โดยไม่เสียชื่อเสียงทั้งหมด"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_human_1",
+      "name": "ชาวทุ่ง",
+      "home": "อัลเดรีย",
+      "countries": [],
+      "note": "มาตรฐาน หลากหลายที่สุด"
+     },
+     {
+      "id": "sub_human_2",
+      "name": "ชาวหมอก",
+      "home": "เนบูเลีย",
+      "countries": [],
+      "note": "ผิวซีด หูไว ต้านพิษตั้งแต่เกิด",
+      "lifespan": [
+       70,
+       120
+      ],
+      "worldYearsPerLifeYear": 1.3,
+      "adultAge": 25,
+      "elderAge": 70,
+      "gap": 38
+     },
+     {
+      "id": "sub_human_3",
+      "name": "ชนผืนทราย",
+      "home": "ซาร์ฮาดีน (SH-01)",
+      "countries": [
+       "SH-01"
+      ],
+      "note": "ทนแล้ง ไม่ทิ้งน้ำ"
+     },
+     {
+      "id": "sub_human_4",
+      "name": "มนุษย์เรือ",
+      "home": "เนเรีย, NR-10",
+      "countries": [
+       "NR-10"
+      ],
+      "note": "อยู่บนเรือตลอดชีวิต"
+     },
+     {
+      "id": "sub_human_5",
+      "name": "ชาวพื้น",
+      "home": "อัซการ์",
+      "countries": [],
+      "note": "ไร้ปีก ใช้ชีวิตใต้เมฆ"
+     },
+     {
+      "id": "sub_human_6",
+      "name": "ผู้กลับชาติ",
+      "home": "เทนเซอริส (MH-07)",
+      "countries": [
+       "MH-07"
+      ],
+      "note": "จำชาติก่อนได้"
+     },
+     {
+      "id": "sub_human_7",
+      "name": "ผู้ถูกอัญเชิญ",
+      "home": "ลูเมียร์ (AL-02)",
+      "countries": [
+       "AL-02"
+      ],
+      "note": "มาจากต่างภพ"
+     }
+    ],
+    "notes": [
+     "มนุษย์มีช่วงกว้างที่สุดในโลก ตั้งแต่อ่อนแอมากจนถึงปานกลาง ผู้ที่เกิดมาโชคดีและฉลาดสุดขีดมีจำนวนมาก แต่ผู้ที่ทั้งแข็งแรงและทนทานสูงแทบไม่มี"
+    ],
+    "fromCode": true,
+    "src": "docs/systems/character/races/01-human.md:1"
+   },
+   {
+    "id": "elf",
+    "n": 2,
+    "name": "เอลฟ์",
+    "storyPrefix": "el",
+    "stats": {
+     "pow": [
+      8,
+      12
+     ],
+     "mag": [
+      11,
+      15
+     ],
+     "spd": [
+      10,
+      14
+     ],
+     "luk": [
+      7,
+      11
+     ],
+     "int": [
+      12,
+      16
+     ],
+     "vit": [
+      7,
+      11
+     ]
+    },
+    "lifespan": [
+     260,
+     330
+    ],
+    "worldYearsPerLifeYear": 3.9,
+    "adultAge": 79,
+    "elderAge": 215,
+    "generationGap": 120,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 6,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "nature",
+     "long_lived",
+     "keen_eye"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "curious": 10,
+     "social": -15
+    },
+    "traitPlus": [
+     "proud",
+     "serious",
+     "bookworm",
+     "animal_lover",
+     "loner"
+    ],
+    "traitMinus": [
+     "greedy",
+     "glutton",
+     "reckless"
+    ],
+    "aptPlus": [
+     "bow",
+     "nature",
+     "wind",
+     "music",
+     "healing"
+    ],
+    "aptMinus": [
+     "smithing",
+     "mining",
+     "unarmed"
+    ],
+    "likes": [
+     "tropical",
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic",
+     "desert"
+    ],
+    "blessPlus": [
+     "b_longevity",
+     "b_youth",
+     "b_animaltongue",
+     "b_lucid",
+     "b_worldtree"
+    ],
+    "cursePlus": [
+     "c_ironbane",
+     "c_allergy",
+     "c_outcast",
+     "c_lonely"
+    ],
+    "blessClash": [
+     "b_ironskin",
+     "b_goldhand"
+    ],
+    "curseClash": [
+     "c_bloodthirst"
+    ],
+    "jobBonus": [
+     "hunter",
+     "druid",
+     "mage",
+     "librarian",
+     "beekeeper",
+     "tea_grower",
+     "orchardist"
+    ],
+    "powers": [
+     {
+      "name": "เงียบดั่งไพร",
+      "text": "ก้าวเท้าไม่ส่งเสียงในป่า ไม่ถูกตรวจจับง่ายเมื่ออยู่ในที่ที่มีต้นไม้"
+     },
+     {
+      "name": "ตาแห่งรุ่งอรุณ",
+      "text": "มองเห็นชัดในแสงน้อย"
+     },
+     {
+      "name": "ผูกพันราก",
+      "text": "ฟื้นตัวเร็วขึ้นเมื่ออยู่ในร่มต้นไม้โลก แต่ห่างต้นไม้นานแล้วอ่อนล้า ผู้ที่อยู่ใกล้ลำต้นนานร่างทรุดช้าเมื่อถึงปลายอายุขัย (ผู้อาวุโสสภาหลายคนอายุเกินสามร้อยปี)"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_elf_u",
+      "name": "ลมหายใจของใบไม้",
+      "tier": "U",
+      "text": "ฟื้นตัวเร็วในที่มีพืชอุดม"
+     },
+     {
+      "id": "rb_elf_r",
+      "name": "บันทึกวงปี",
+      "tier": "R",
+      "text": "จำเหตุการณ์ได้ทุกอย่างตลอดชีวิต ไม่ลืมสิ่งที่สำคัญ"
+     },
+     {
+      "id": "rb_elf_e",
+      "name": "เสียงต้นไม้",
+      "tier": "E",
+      "text": "ฟังและได้ยินสุขภาพของต้นไม้โลกจากระยะไกล"
+     },
+     {
+      "id": "rb_elf_l",
+      "name": "ผู้สืบกล้าโลก",
+      "tier": "L",
+      "text": "ปลูกต้นไม้ที่เติบโตเร็วและฟื้นฟูผู้คนรอบ ๆ ได้"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_elf_c",
+      "name": "ความหยิ่งแห่งราก",
+      "tier": "C",
+      "text": "ปฏิเสธความช่วยเหลือของเผ่าอื่นแม้ต้องการ"
+     },
+     {
+      "id": "rc_elf_u",
+      "name": "รากที่พันธนาการ",
+      "tier": "U",
+      "text": "ห่างต้นไม้โลกเกินสิบปี ความทรงจำและสุขภาพเริ่มเสื่อม"
+     },
+     {
+      "id": "rc_elf_r",
+      "name": "เสียงต้นไม้ร้องไห้",
+      "tier": "R",
+      "text": "เมื่อต้นไม้โลกป่วย ผู้ถือจะหลับไม่ได้"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_elf_1",
+      "name": "ฟังราก",
+      "text": "รับรู้การเคลื่อนไหวใต้ดินและเสียงผ่านรากไม้"
+     },
+     {
+      "id": "rs_elf_2",
+      "name": "ย่ำป่าเงียบ",
+      "text": "เดินผ่านป่าโดยไม่ทิ้งร่องรอย"
+     },
+     {
+      "id": "rs_elf_3",
+      "name": "กลอนผูกพัน",
+      "text": "ท่องกลอนเวทโบราณผูกสัญญากับพืชและสัตว์"
+     },
+     {
+      "id": "rs_elf_4",
+      "name": "ถ่ายทอดวงปี",
+      "text": "ส่งความทรงจำให้ผู้ที่ไว้ใจโดยตรง ผู้รับได้รู้เหตุการณ์ที่ไม่เคยเห็น"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_elf_1",
+      "name": "เอลฟ์ต้นไม้",
+      "home": "ซิลนเนลลอร์, ธิลเอวา",
+      "countries": [],
+      "note": "ดูแลต้นไม้โลกโดยตรง"
+     },
+     {
+      "id": "sub_elf_2",
+      "name": "เอลฟ์จันทรา",
+      "home": "ลูไอลิส (SV-05)",
+      "countries": [
+       "SV-05"
+      ],
+      "note": "นักดาราศาสตร์ นักพยากรณ์"
+     },
+     {
+      "id": "sub_elf_3",
+      "name": "เอลฟ์ฟ้า",
+      "home": "ซิลเฟลิส (SV-10)",
+      "countries": [
+       "SV-10"
+      ],
+      "note": "อยู่บนยอดไม้ ใช้เวทลม"
+     },
+     {
+      "id": "sub_elf_4",
+      "name": "เอลฟ์ราก",
+      "home": "เดลวินธ์ (SV-12)",
+      "countries": [
+       "SV-12"
+      ],
+      "note": "อยู่ใต้ดิน เก็บเห็ดและยา"
+     },
+     {
+      "id": "sub_elf_5",
+      "name": "เอลฟ์สูง",
+      "home": "เซเลสเทีย",
+      "countries": [],
+      "note": "พลัดถิ่น คิดถึงป่า"
+     }
+    ],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/02-elf.md:1"
+   },
+   {
+    "id": "darkelf",
+    "n": 3,
+    "name": "ดาร์กเอลฟ์",
+    "storyPrefix": "de",
+    "stats": {
+     "pow": [
+      7,
+      11
+     ],
+     "mag": [
+      10,
+      14
+     ],
+     "spd": [
+      11,
+      15
+     ],
+     "luk": [
+      7,
+      11
+     ],
+     "int": [
+      9,
+      13
+     ],
+     "vit": [
+      7,
+      11
+     ]
+    },
+    "lifespan": [
+     250,
+     305
+    ],
+    "worldYearsPerLifeYear": 3.7,
+    "adultAge": 74,
+    "elderAge": 205,
+    "generationGap": 110,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 3,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "darkvision",
+     "shadow",
+     "long_lived",
+     "weak_light"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "temper": -10
+    },
+    "traitPlus": [
+     "cunning",
+     "paranoid",
+     "vengeful",
+     "proud",
+     "cold"
+    ],
+    "traitMinus": [
+     "optimist",
+     "generous"
+    ],
+    "aptPlus": [
+     "dagger",
+     "dark",
+     "stealth",
+     "alchemy",
+     "whip"
+    ],
+    "aptMinus": [
+     "farming",
+     "cooking",
+     "healing"
+    ],
+    "likes": [
+     "volcanic",
+     "frozen"
+    ],
+    "dislikes": [
+     "desert"
+    ],
+    "blessPlus": [
+     "b_nighteye",
+     "b_shadowstep",
+     "b_hidden",
+     "b_mindward",
+     "nb_shadow_kin"
+    ],
+    "cursePlus": [
+     "c_sunburn",
+     "c_shadow",
+     "c_cursedblood",
+     "c_hexmagnet"
+    ],
+    "blessClash": [
+     "b_sunward",
+     "b_lightward",
+     "b_saintmark"
+    ],
+    "curseClash": [
+     "c_nightblind",
+     "c_claustro"
+    ],
+    "jobBonus": [
+     "assassin",
+     "spy",
+     "alchemist",
+     "jeweler"
+    ],
+    "powers": [
+     {
+      "name": "ตาใต้พิภพ",
+      "text": "มองเห็นในที่มืดสนิทชัดเจน แต่แพ้แสงจ้า (#weak_light)"
+     },
+     {
+      "name": "เงาซ่อน",
+      "text": "ตัวผสมกับเงาได้ง่ายกว่าเผ่าอื่น"
+     },
+     {
+      "name": "ภาษาจันทรา",
+      "text": "อ่านรหัสและสัญลักษณ์ลับโดยกำเนิด"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_darkelf_u",
+      "name": "ใต้ผ้าคลุมจันทรา",
+      "tier": "U",
+      "text": "ความเร็วและการซ่อนตัวดีขึ้นในที่มืด"
+     },
+     {
+      "id": "rb_darkelf_r",
+      "name": "ผู้ตีราคาความลับ",
+      "tier": "R",
+      "text": "รู้ว่าความลับใดมีค่าและควรขายให้ใคร"
+     },
+     {
+      "id": "rb_darkelf_e",
+      "name": "เงาที่สามารถยืนแทน",
+      "tier": "E",
+      "text": "ส่งเงาไปแทนตัวเองเมื่อถูกโจมตีครั้งหนึ่งต่อวัน"
+     },
+     {
+      "id": "rb_darkelf_l",
+      "name": "ผู้เดินสองโลก",
+      "tier": "L",
+      "text": "ผ่านระหว่างที่มืดสองแห่งในทันทีได้ ไม่ว่าจะห่างเพียงใด"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_darkelf_c",
+      "name": "ถูกเนรเทศสองครั้ง",
+      "tier": "C",
+      "text": "ไม่มีบ้านที่แท้จริง ความผูกพันกับที่ใดก็ตามเสื่อมเร็ว"
+     },
+     {
+      "id": "rc_darkelf_u",
+      "name": "ไร้เงาแท้",
+      "tier": "U",
+      "text": "เงาของผู้ถือบางครั้งทำสิ่งที่เจ้าตัวไม่ได้สั่ง"
+     },
+     {
+      "id": "rc_darkelf_r",
+      "name": "คำสัตย์ที่ถูกขาย",
+      "tier": "R",
+      "text": "ความไว้ใจที่ได้มาถูกอีกฝ่ายนำไปขายต่อ"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_darkelf_1",
+      "name": "เดินเงา",
+      "text": "เคลื่อนผ่านเงาไปยังเงาอื่นในระยะใกล้"
+     },
+     {
+      "id": "rs_darkelf_2",
+      "name": "สัญญามารดา",
+      "text": "ผูกคำสาบานที่ไม่อาจผิดต่อผู้ที่ตอบรับ"
+     },
+     {
+      "id": "rs_darkelf_3",
+      "name": "ลิ้มรสพิษ",
+      "text": "รู้จักพิษทุกชนิดโดยรสและกลิ่น"
+     },
+     {
+      "id": "rs_darkelf_4",
+      "name": "ตัดเส้นเสียง",
+      "text": "ทำให้พื้นที่เงียบสนิทชั่วขณะ"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/03-darkelf.md:1"
+   },
+   {
+    "id": "dwarf",
+    "n": 4,
+    "name": "คนแคระ",
+    "storyPrefix": "dw",
+    "stats": {
+     "pow": [
+      10,
+      14
+     ],
+     "mag": [
+      6,
+      10
+     ],
+     "spd": [
+      6,
+      10
+     ],
+     "luk": [
+      8,
+      12
+     ],
+     "int": [
+      8,
+      12
+     ],
+     "vit": [
+      12,
+      16
+     ]
+    },
+    "lifespan": [
+     205,
+     235
+    ],
+    "worldYearsPerLifeYear": 2.9,
+    "adultAge": 59,
+    "elderAge": 160,
+    "generationGap": 88,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 7,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "fire_res",
+     "poison_res",
+     "darkvision"
+    ],
+    "newTags": [],
+    "axisShift": {},
+    "traitPlus": [
+     "stubborn",
+     "diligent",
+     "proud",
+     "glutton",
+     "vengeful"
+    ],
+    "traitMinus": [
+     "flirt",
+     "moody"
+    ],
+    "aptPlus": [
+     "smithing",
+     "axe",
+     "hammer",
+     "mining",
+     "rune"
+    ],
+    "aptMinus": [
+     "sailing",
+     "stealth",
+     "wind"
+    ],
+    "likes": [
+     "volcanic",
+     "frozen"
+    ],
+    "dislikes": [
+     "islands"
+    ],
+    "blessPlus": [
+     "b_mountain",
+     "b_ironskin",
+     "b_flameward",
+     "b_poisonward",
+     "b_earthtouch"
+    ],
+    "cursePlus": [
+     "c_hydrophobia",
+     "c_vertigo",
+     "c_seasick",
+     "c_golditch"
+    ],
+    "blessClash": [
+     "b_waterwalk"
+    ],
+    "curseClash": [
+     "c_ironbane",
+     "c_fireweak",
+     "c_claustro"
+    ],
+    "jobBonus": [
+     "smith",
+     "miner",
+     "stonemason",
+     "brewer",
+     "rune_carver"
+    ],
+    "powers": [
+     {
+      "name": "ทนไฟและพิษ",
+      "text": "ทนความร้อนและพิษแร่ได้สูง"
+     },
+     {
+      "name": "ตาใต้ดิน",
+      "text": "มองเห็นในถ้ำมืด"
+     },
+     {
+      "name": "หูหิน",
+      "text": "ได้ยินเสียงสั่นในหินและรู้ว่าอุโมงค์ใดไม่มั่นคง"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_dwarf_u",
+      "name": "ลมหายใจแห่งเตาหลอม",
+      "tier": "U",
+      "text": "ตีอาวุธและเครื่องมือได้คุณภาพสูงขึ้น"
+     },
+     {
+      "id": "rb_dwarf_r",
+      "name": "ตาอ่านแร่",
+      "tier": "R",
+      "text": "รู้ชนิดและปริมาณแร่ในหินโดยมองเพียงครั้งเดียว"
+     },
+     {
+      "id": "rb_dwarf_e",
+      "name": "ผู้อ่านรูนปฐม",
+      "tier": "E",
+      "text": "อ่านอักษรโบราณได้ ปลดล็อกความรู้ชั้นที่ 1–2 ของเรื่อง"
+     },
+     {
+      "id": "rb_dwarf_l",
+      "name": "มือทั่ง",
+      "tier": "L",
+      "text": "ตีอาวุธระดับตำนานได้หนึ่งชิ้นตลอดชีวิตโดยไม่ต้องใช้วัตถุดิบข้ามทวีป"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_dwarf_c",
+      "name": "โลภแร่",
+      "tier": "C",
+      "text": "ตัดสินใจแย่ลงเมื่อมีสมบัติให้ขุด"
+     },
+     {
+      "id": "rc_dwarf_u",
+      "name": "คำสาบานปิดรูน",
+      "tier": "U",
+      "text": "ห้ามเปิดเผยความจริงบางอย่าง การฝืนทำให้ถูกขับ"
+     },
+     {
+      "id": "rc_dwarf_r",
+      "name": "โรคหินในปอด",
+      "tier": "R",
+      "text": "เสื่อมสุขภาพเมื่อแก่ตัวหลังขุดเหมืองนาน"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_dwarf_1",
+      "name": "ตีด้วยใจ",
+      "text": "อาวุธที่ตีมีผลพิเศษตามอารมณ์ของช่างขณะตี"
+     },
+     {
+      "id": "rs_dwarf_2",
+      "name": "ฟังหิน",
+      "text": "ตรวจจับสิ่งที่ขยับใต้ดินและใต้หิน"
+     },
+     {
+      "id": "rs_dwarf_3",
+      "name": "สาบานเหล็ก",
+      "text": "คำสาบานที่ผิดแล้วผู้สาบานได้รับผลทางร่างกาย"
+     },
+     {
+      "id": "rs_dwarf_4",
+      "name": "ขุดทะลวง",
+      "text": "ขุดอุโมงค์ในหินเร็วกว่าเผ่าอื่นสามเท่า"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_dwarf_1",
+      "name": "ช่างตี",
+      "home": "กรอมฮอล์ม (KD-01)",
+      "countries": [
+       "KD-01"
+      ],
+      "note": "ตีอาวุธตำนาน"
+     },
+     {
+      "id": "sub_dwarf_2",
+      "name": "ผู้ปิดรูน",
+      "home": "คาซรัม (KD-03)",
+      "countries": [
+       "KD-03"
+      ],
+      "note": "เฝ้าความลับ"
+     },
+     {
+      "id": "sub_dwarf_3",
+      "name": "ผู้เปิดรูน",
+      "home": "บาร์ดิน (KD-04)",
+      "countries": [
+       "KD-04"
+      ],
+      "note": "แบ่งปันความรู้"
+     },
+     {
+      "id": "sub_dwarf_4",
+      "name": "วิศวกร",
+      "home": "ดอร์ไซต์",
+      "countries": [],
+      "note": "สร้างเครื่องกล"
+     },
+     {
+      "id": "sub_dwarf_5",
+      "name": "คนเหมืองลึก",
+      "home": "คาซมา (KD-10)",
+      "countries": [
+       "KD-10"
+      ],
+      "note": "ขุดใกล้มังกรเสา"
+     },
+     {
+      "id": "sub_dwarf_6",
+      "name": "คนแคระเหนือ",
+      "home": "ธรอ-ดู",
+      "countries": [],
+      "note": "อยู่ระหว่างน้ำแข็งกับลาวา"
+     }
+    ],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/04-dwarf.md:1"
+   },
+   {
+    "id": "orc",
+    "n": 5,
+    "name": "ออร์ค",
+    "storyPrefix": "or",
+    "stats": {
+     "pow": [
+      13,
+      17
+     ],
+     "mag": [
+      5,
+      9
+     ],
+     "spd": [
+      8,
+      12
+     ],
+     "luk": [
+      7,
+      11
+     ],
+     "int": [
+      5,
+      9
+     ],
+     "vit": [
+      11,
+      15
+     ]
+    },
+    "lifespan": [
+     45,
+     75
+    ],
+    "worldYearsPerLifeYear": 0.8,
+    "adultAge": 16,
+    "elderAge": 44,
+    "generationGap": 24,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 8,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "berserk"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "brave": 15,
+     "temper": 15
+    },
+    "traitPlus": [
+     "reckless",
+     "bloodlust",
+     "hot",
+     "glutton",
+     "loyal_love"
+    ],
+    "traitMinus": [
+     "calm",
+     "serious",
+     "bookworm"
+    ],
+    "aptPlus": [
+     "axe",
+     "unarmed",
+     "taming",
+     "hammer",
+     "leadership"
+    ],
+    "aptMinus": [
+     "rune",
+     "divination",
+     "scholar"
+    ],
+    "likes": [
+     "desert",
+     "volcanic"
+    ],
+    "dislikes": [
+     "frozen"
+    ],
+    "blessPlus": [
+     "b_bull",
+     "b_giant",
+     "b_fury",
+     "b_warcry",
+     "b_ironstomach"
+    ],
+    "cursePlus": [
+     "c_rage",
+     "c_bloodthirst",
+     "c_hunger",
+     "c_forgetful"
+    ],
+    "blessClash": [
+     "b_mercy",
+     "b_peacemaker"
+    ],
+    "curseClash": [
+     "c_rabbitheart",
+     "c_bloodfaint"
+    ],
+    "jobBonus": [
+     "soldier",
+     "mercenary",
+     "hunter",
+     "gladiator",
+     "tamer"
+    ],
+    "powers": [
+     {
+      "name": "อิ่มด้วยศึก",
+      "text": "ฟื้น HP จากการชนะการต่อสู้ แต่อดอาหารแล้วเสื่อมเร็วกว่าเผ่าอื่น"
+     },
+     {
+      "name": "เลือดเดือด",
+      "text": "ในการต่อสู้เมื่อ HP ต่ำ พลังโจมตีเพิ่ม"
+     },
+     {
+      "name": "ท้องเหล็ก",
+      "text": "กินอาหารเน่าหรือพิษอ่อนได้โดยไม่ป่วย"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_orc_u",
+      "name": "กำลังของผู้หิว",
+      "tier": "U",
+      "text": "กำลังเพิ่มเมื่อหิว"
+     },
+     {
+      "id": "rb_orc_r",
+      "name": "ธงของผู้นำ",
+      "tier": "R",
+      "text": "ลูกน้องรบแข็งขึ้นเมื่ออยู่ใกล้ผู้ถือ"
+     },
+     {
+      "id": "rb_orc_e",
+      "name": "ผู้ไม่ถอย",
+      "tier": "E",
+      "text": "ไม่ตายในครั้งแรกที่ควรตายในการต่อสู้"
+     },
+     {
+      "id": "rb_orc_l",
+      "name": "ผู้ชนะมงกุฎกระดูก",
+      "tier": "L",
+      "text": "ชนะศึกชิงมงกุฎได้สวมมงกุฎกระดูก (หนึ่งในกุญแจโลก) และครองตำแหน่งจอมมารตลอดวาระ"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_orc_c",
+      "name": "หิวไม่รู้จบ",
+      "tier": "C",
+      "text": "กินแล้วยังหิว ตัดสินใจแย่เมื่อหิว"
+     },
+     {
+      "id": "rc_orc_u",
+      "name": "เลือดขึ้นหน้า",
+      "tier": "U",
+      "text": "ควบคุมอารมณ์ไม่ได้เมื่อถูกท้าทาย"
+     },
+     {
+      "id": "rc_orc_r",
+      "name": "อายุสั้นของผู้ศึก",
+      "tier": "R",
+      "text": "ชีวิตสั้นลงเมื่อรบมากเกินไป"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_orc_1",
+      "name": "คำรามข่ม",
+      "text": "ทำให้ศัตรูที่อ่อนกว่าหวาดกลัวชั่วขณะ"
+     },
+     {
+      "id": "rs_orc_2",
+      "name": "ตั้งค่ายเร็ว",
+      "text": "สร้างที่พักป้องกันได้ในครึ่งวัน"
+     },
+     {
+      "id": "rs_orc_3",
+      "name": "รบเป็นคลื่น",
+      "text": "ประสานกับพวกพ้องเพื่อเพิ่มพลังกลุ่ม"
+     },
+     {
+      "id": "rs_orc_4",
+      "name": "ปลูกในเถ้า",
+      "text": "(เฉพาะออร์คสันติ) ปลูกพืชในดินแห้งที่คนอื่นเชื่อว่าปลูกไม่ได้"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_orc_1",
+      "name": "โอเกอร์",
+      "home": "กาธเรธ",
+      "countries": [],
+      "note": "ร่างใหญ่ที่สุด กำลังสูง ปัญญาต่ำ"
+     },
+     {
+      "id": "sub_orc_2",
+      "name": "ออร์คเถ้า",
+      "home": "เซวาร์ธ",
+      "countries": [],
+      "note": "เบา เร็ว ขี่หมาป่า"
+     },
+     {
+      "id": "sub_orc_3",
+      "name": "ออร์คช่าง",
+      "home": "นอคดรีน",
+      "countries": [],
+      "note": "ทำเครื่องล้อมเมืองและป้อม"
+     },
+     {
+      "id": "sub_orc_4",
+      "name": "ออร์คทราย",
+      "home": "ซาร์กัช",
+      "countries": [],
+      "note": "ทนแล้ง ปล้นกองคาราวาน"
+     },
+     {
+      "id": "sub_orc_5",
+      "name": "ออร์คสันติ",
+      "home": "วีซาเฮเวน (MH-06)",
+      "countries": [
+       "MH-06"
+      ],
+      "note": "ปลูกข้าวเถ้า"
+     }
+    ],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/05-orc.md:1"
+   },
+   {
+    "id": "halfling",
+    "n": 6,
+    "name": "ฮาล์ฟลิง",
+    "storyPrefix": "ha",
+    "stats": {
+     "pow": [
+      4,
+      8
+     ],
+     "mag": [
+      6,
+      10
+     ],
+     "spd": [
+      10,
+      14
+     ],
+     "luk": [
+      13,
+      17
+     ],
+     "int": [
+      8,
+      12
+     ],
+     "vit": [
+      7,
+      11
+     ]
+    },
+    "lifespan": [
+     90,
+     150
+    ],
+    "worldYearsPerLifeYear": 1.6,
+    "adultAge": 32,
+    "elderAge": 88,
+    "generationGap": 48,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 4,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "lucky",
+     "small"
+    ],
+    "newTags": [],
+    "axisShift": {},
+    "birthStat": {
+     "luk": 1
+    },
+    "traitPlus": [
+     "glutton",
+     "homebody",
+     "humor",
+     "optimist",
+     "lazy"
+    ],
+    "traitMinus": [
+     "bloodlust",
+     "vengeful"
+    ],
+    "aptPlus": [
+     "cooking",
+     "stealth",
+     "sling",
+     "trade",
+     "farming"
+    ],
+    "aptMinus": [
+     "mounted",
+     "hammer"
+    ],
+    "likes": [
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic",
+     "frozen"
+    ],
+    "blessPlus": [
+     "b_clover",
+     "b_luckystar",
+     "b_rainbow",
+     "b_harvest",
+     "b_hidden"
+    ],
+    "cursePlus": [
+     "c_hunger",
+     "c_vertigo",
+     "c_tinyvoice"
+    ],
+    "blessClash": [
+     "b_giant",
+     "b_titan"
+    ],
+    "curseClash": [
+     "c_badluck",
+     "c_jinx"
+    ],
+    "jobBonus": [
+     "cook",
+     "baker",
+     "innkeeper",
+     "farm_owner",
+     "tea_house",
+     "merchant"
+    ],
+    "powers": [
+     {
+      "name": "ตัวเล็ก",
+      "text": "ถูกโจมตียากกว่าและแอบซ่อนได้ง่าย"
+     },
+     {
+      "name": "อิ่มสุขใจ",
+      "text": "ความเครียดลดเร็วเมื่อได้กินอาหารดี ๆ"
+     },
+     {
+      "name": "โชคของผู้ไม่แย่ง",
+      "text": "โชคดีขึ้นเมื่อไม่ได้ตั้งใจเอาของใคร"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_halfling_u",
+      "name": "ครัวที่ไม่เคยว่าง",
+      "tier": "U",
+      "text": "มีอาหารพอเสมอ ไม่ว่าที่ใดก็ตาม"
+     },
+     {
+      "id": "rb_halfling_r",
+      "name": "ฝ่าเท้าไร้เสียง",
+      "tier": "R",
+      "text": "เดินโดยไม่ส่งเสียงและมีโอกาสหลบพ้นเมื่อหนี"
+     },
+     {
+      "id": "rb_halfling_e",
+      "name": "ฝีมือผู้รักบ้าน",
+      "tier": "E",
+      "text": "งานบ้าน งานครัว และงานซ่อมได้ผลสมบูรณ์"
+     },
+     {
+      "id": "rb_halfling_l",
+      "name": "ผู้เฝ้ากล้าโลก",
+      "tier": "L",
+      "text": "ต้นไม้เล็กที่ผู้ถือปลูกจะเติบโตเป็นต้นไม้ที่ฟื้นฟูผู้คนได้"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_halfling_c",
+      "name": "ใจเสาะ",
+      "tier": "C",
+      "text": "ความกลัวแรงกว่าเผ่าอื่น"
+     },
+     {
+      "id": "rc_halfling_u",
+      "name": "อิ่มเกินไป",
+      "tier": "U",
+      "text": "ติดสุขสบายจนละทิ้งภารกิจ"
+     },
+     {
+      "id": "rc_halfling_r",
+      "name": "ผู้ถูกเลือกโดยไม่ได้ขอ",
+      "tier": "R",
+      "text": "ถูกเลือกเป็นผู้แบกของที่ตัวเองไม่ต้องการ"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_halfling_1",
+      "name": "ซ่อนในเงาเล็ก",
+      "text": "ซ่อนตัวในที่ที่ดูเล็กเกินจะมีใคร"
+     },
+     {
+      "id": "rs_halfling_2",
+      "name": "ทำอาหารปลอบใจ",
+      "text": "อาหารที่ปรุงช่วยลดความกลัวและเพิ่มความไว้ใจ"
+     },
+     {
+      "id": "rs_halfling_3",
+      "name": "รู้ตัวก่อน",
+      "text": "ได้กลิ่นภัยก่อนใคร"
+     },
+     {
+      "id": "rs_halfling_4",
+      "name": "ฝ่าด้วยโชค",
+      "text": "ผ่านเหตุการณ์อันตรายโดยที่ไม่รู้ตัวว่าอันตรายอย่างไร"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/06-halfling.md:1"
+   },
+   {
+    "id": "beast",
+    "n": 7,
+    "name": "เผ่าสัตว์",
+    "storyPrefix": "be",
+    "stats": {
+     "pow": [
+      10,
+      14
+     ],
+     "mag": [
+      5,
+      9
+     ],
+     "spd": [
+      12,
+      16
+     ],
+     "luk": [
+      8,
+      12
+     ],
+     "int": [
+      6,
+      10
+     ],
+     "vit": [
+      9,
+      13
+     ]
+    },
+    "lifespan": [
+     52,
+     88
+    ],
+    "worldYearsPerLifeYear": 0.9,
+    "adultAge": 19,
+    "elderAge": 51,
+    "generationGap": 28,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 7,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "keen_senses",
+     "beast_kin"
+    ],
+    "newTags": [],
+    "axisShift": {},
+    "traitPlus": [
+     "loyal_love",
+     "reckless",
+     "animal_lover",
+     "family",
+     "freedom"
+    ],
+    "traitMinus": [
+     "bookworm",
+     "serious"
+    ],
+    "aptPlus": [
+     "unarmed",
+     "tracking",
+     "bow",
+     "taming",
+     "dagger"
+    ],
+    "aptMinus": [
+     "rune",
+     "alchemy",
+     "scholar"
+    ],
+    "likes": [
+     "tropical",
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic"
+    ],
+    "blessPlus": [
+     "b_animaltongue",
+     "b_beastlord",
+     "b_nighteye",
+     "b_hare",
+     "b_falcon"
+    ],
+    "cursePlus": [
+     "c_moonfrenzy",
+     "c_cathate",
+     "c_smell",
+     "c_dance"
+    ],
+    "blessClash": [
+     "b_swordgod"
+    ],
+    "curseClash": [
+     "c_hydrophobia"
+    ],
+    "jobBonus": [
+     "hunter",
+     "tamer",
+     "veterinarian",
+     "shepherd",
+     "explorer"
+    ],
+    "powers": [
+     {
+      "name": "ประสาทสัมผัสเฉียบ",
+      "text": "ได้กลิ่น เสียง และการสั่นไกลกว่าเผ่าอื่น"
+     },
+     {
+      "name": "เลือดฝูง",
+      "text": "ได้พลังเพิ่มเมื่ออยู่กับพวกพ้อง เสื่อมเมื่ออยู่ลำพัง"
+     },
+     {
+      "name": "ภาษาสัตว์",
+      "text": "สื่อสารกับสัตว์ธรรมดาได้"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_beast_u",
+      "name": "ตาพรานป่า",
+      "tier": "U",
+      "text": "ตามรอยและหาของในป่าได้ง่าย"
+     },
+     {
+      "id": "rb_beast_r",
+      "name": "เสียงเรียกฝูง",
+      "tier": "R",
+      "text": "เรียกสัตว์ธรรมดาและพวกพ้องมาช่วยได้"
+     },
+     {
+      "id": "rb_beast_e",
+      "name": "ร่างที่สอง",
+      "tier": "E",
+      "text": "เปลี่ยนเป็นร่างสัตว์เต็มตัวได้ครั้งละหนึ่งวัน"
+     },
+     {
+      "id": "rb_beast_l",
+      "name": "เสียงวิญญาณป่า",
+      "tier": "L",
+      "text": "ได้ยินเสียงของทุกชีวิตในป่ารอบตัวในระยะหนึ่งลีก"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_beast_c",
+      "name": "เลือดป่าตื่น",
+      "tier": "C",
+      "text": "เมื่อเห็นเลือดหรือถูกไล่ล่า ควบคุมตัวเองยาก"
+     },
+     {
+      "id": "rc_beast_u",
+      "name": "ผู้ไร้ฝูง",
+      "tier": "U",
+      "text": "อยู่ลำพังนาน ความสามารถลดลงมาก"
+     },
+     {
+      "id": "rc_beast_r",
+      "name": "เสียงรากที่แค้น",
+      "tier": "R",
+      "text": "ความแค้นจากกฎลำต้นถูกส่งต่อ เป็นอคติต่อเอลฟ์ตลอดชีวิต"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_beast_1",
+      "name": "ล่าเป็นฝูง",
+      "text": "ประสานกับพวกพ้องเพื่อล่าและต่อสู้"
+     },
+     {
+      "id": "rs_beast_2",
+      "name": "ตามกลิ่นข้ามวัน",
+      "text": "ตามร่องรอยที่ผ่านมาหลายวัน"
+     },
+     {
+      "id": "rs_beast_3",
+      "name": "กระโจนเงียบ",
+      "text": "โจมตีจากที่ซ่อนโดยไม่ส่งเสียง"
+     },
+     {
+      "id": "rs_beast_4",
+      "name": "เสียงเตือนฝูง",
+      "text": "แจ้งภัยให้พวกพ้องทุกคนในระยะหนึ่ง"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_beast_1",
+      "name": "เผ่าหมาป่า",
+      "home": "",
+      "countries": [],
+      "note": "นักล่าฝูง สายสัมพันธ์แน่น"
+     },
+     {
+      "id": "sub_beast_2",
+      "name": "เผ่าเสือและแมวใหญ่",
+      "home": "",
+      "countries": [],
+      "note": "นักล่าเดี่ยว เร็วและเงียบ"
+     },
+     {
+      "id": "sub_beast_3",
+      "name": "เผ่ากวางและวัว",
+      "home": "",
+      "countries": [],
+      "note": "ผู้ป้องกัน ความทนทานสูง"
+     },
+     {
+      "id": "sub_beast_4",
+      "name": "เผ่านก",
+      "home": "",
+      "countries": [],
+      "note": "ส่งสาร ร่อนได้ในระยะสั้น (ไม่ใช่เผ่าปีก)"
+     },
+     {
+      "id": "sub_beast_5",
+      "name": "เผ่าอูฐและจิ้งจกทราย",
+      "home": "",
+      "countries": [],
+      "note": "ทนแล้ง นักนำทาง"
+     }
+    ],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/07-beast.md:1"
+   },
+   {
+    "id": "naga",
+    "n": 8,
+    "name": "นาคา",
+    "storyPrefix": "na",
+    "stats": {
+     "pow": [
+      8,
+      12
+     ],
+     "mag": [
+      11,
+      15
+     ],
+     "spd": [
+      8,
+      12
+     ],
+     "luk": [
+      8,
+      12
+     ],
+     "int": [
+      9,
+      13
+     ],
+     "vit": [
+      10,
+      14
+     ]
+    },
+    "lifespan": [
+     220,
+     255
+    ],
+    "worldYearsPerLifeYear": 3.2,
+    "adultAge": 63,
+    "elderAge": 175,
+    "generationGap": 95,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 2,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "water_breath",
+     "venom",
+     "serpent"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "piety": 10
+    },
+    "traitPlus": [
+     "devout",
+     "calm",
+     "proud",
+     "vengeful",
+     "serious"
+    ],
+    "traitMinus": [
+     "clumsy",
+     "hot"
+    ],
+    "aptPlus": [
+     "water",
+     "spear",
+     "divination",
+     "alchemy",
+     "healing"
+    ],
+    "aptMinus": [
+     "smithing",
+     "mining"
+    ],
+    "likes": [
+     "tropical",
+     "islands"
+    ],
+    "dislikes": [
+     "frozen",
+     "desert"
+    ],
+    "blessPlus": [
+     "b_waterwalk",
+     "b_tidetouch",
+     "b_poisonward",
+     "b_oracleear",
+     "b_seacalm"
+    ],
+    "cursePlus": [
+     "c_coldweak",
+     "c_stoneskin",
+     "c_fever"
+    ],
+    "blessClash": [
+     "b_flameward"
+    ],
+    "curseClash": [
+     "c_hydrophobia",
+     "c_seasick"
+    ],
+    "jobBonus": [
+     "priest",
+     "healer",
+     "fisher",
+     "physician"
+    ],
+    "powers": [
+     {
+      "name": "หายใจใต้น้ำ",
+      "text": "อยู่ใต้น้ำได้นานโดยไม่ลำบาก"
+     },
+     {
+      "name": "พิษของงู",
+      "text": "พิษในเขี้ยวหรือเล็บ ใช้เมื่อถูกคุกคาม"
+     },
+     {
+      "name": "ลอกคราบ",
+      "text": "ทุกสิบปี ลอกคราบเพื่อรักษาอาการเจ็บป่วยเรื้อรัง"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_naga_u",
+      "name": "เกล็ดนาค",
+      "tier": "U",
+      "text": "ลดความเสียหายจากการโจมตีทางกายภาพ"
+     },
+     {
+      "id": "rb_naga_r",
+      "name": "ผู้ผ่านการทดสอบ",
+      "tier": "R",
+      "text": "พญานาคราชยอมรับ ได้พรน้ำเพิ่มและความเคารพจากผู้นับถือ"
+     },
+     {
+      "id": "rb_naga_e",
+      "name": "ตาสองจังหวะ",
+      "tier": "E",
+      "text": "มองเห็นความจริงของผู้อื่นผ่านการลอกคราบของพวกเขา"
+     },
+     {
+      "id": "rb_naga_l",
+      "name": "ลูกของพญานาคราช",
+      "tier": "L",
+      "text": "ได้รับพลังของพญานาคราชในยามคับขันหนึ่งครั้งต่อสิบปี"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_naga_u",
+      "name": "หินใต้ท้องน้ำ",
+      "tier": "U",
+      "text": "ไม่ลอกคราบเกินสิบปี ร่างกายกลายเป็นหินทีละส่วน"
+     },
+     {
+      "id": "rc_naga_c",
+      "name": "ความแค้นต้นน้ำ",
+      "tier": "C",
+      "text": "อคติต่อเงือกฝังลึก ไม่ยอมเจรจา"
+     },
+     {
+      "id": "rc_naga_r",
+      "name": "คนนอกสายน้ำ",
+      "tier": "R",
+      "text": "อยู่ห่างแม่น้ำนาน ความสามารถอ่อนแรง"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_naga_1",
+      "name": "คลื่นนาค",
+      "text": "เคลื่อนที่ในน้ำเร็วเป็นพิเศษและสร้างคลื่นผลัก"
+     },
+     {
+      "id": "rs_naga_2",
+      "name": "พิธีทดสอบ",
+      "text": "ตั้งคำถามให้ผู้ที่เข้าเขตแล้วตัดสินจากคำตอบ"
+     },
+     {
+      "id": "rs_naga_3",
+      "name": "ลอกคราบเยียวยา",
+      "text": "ฟื้นตัวจากบาดแผลหรือคำสาปได้ในครั้งเดียว"
+     },
+     {
+      "id": "rs_naga_4",
+      "name": "ฟังแม่น้ำ",
+      "text": "รู้ว่าน้ำที่ไหลมามีอะไรปนมาและมาจากไหน"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/08-naga.md:1"
+   },
+   {
+    "id": "dragonkin",
+    "n": 9,
+    "name": "เผ่ามังกร",
+    "storyPrefix": "dk",
+    "stats": {
+     "pow": [
+      12,
+      16
+     ],
+     "mag": [
+      9,
+      13
+     ],
+     "spd": [
+      6,
+      10
+     ],
+     "luk": [
+      6,
+      10
+     ],
+     "int": [
+      8,
+      12
+     ],
+     "vit": [
+      11,
+      15
+     ]
+    },
+    "lifespan": [
+     150,
+     210
+    ],
+    "worldYearsPerLifeYear": 2.4,
+    "adultAge": 48,
+    "elderAge": 130,
+    "generationGap": 72,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 2,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "fire_res",
+     "dragon_blood",
+     "weak_ice",
+     "scales"
+    ],
+    "newTags": [],
+    "axisShift": {},
+    "traitPlus": [
+     "proud",
+     "hot",
+     "reckless",
+     "greedy",
+     "justice"
+    ],
+    "traitMinus": [
+     "humble",
+     "coward"
+    ],
+    "aptPlus": [
+     "fire",
+     "spear",
+     "sword",
+     "leadership",
+     "mounted"
+    ],
+    "aptMinus": [
+     "stealth",
+     "sailing"
+    ],
+    "likes": [
+     "volcanic"
+    ],
+    "dislikes": [
+     "frozen"
+    ],
+    "blessPlus": [
+     "b_dragonscale",
+     "b_flameward",
+     "b_firetouch",
+     "b_fury",
+     "b_legendvoice"
+    ],
+    "cursePlus": [
+     "c_coldweak",
+     "c_rage",
+     "c_greed",
+     "c_sneezefire"
+    ],
+    "blessClash": [
+     "b_dragonslayer",
+     "b_frostward"
+    ],
+    "curseClash": [
+     "c_fireweak"
+    ],
+    "jobBonus": [
+     "knight",
+     "soldier",
+     "royal_guard",
+     "mercenary"
+    ],
+    "powers": [
+     {
+      "name": "เกล็ดแข็ง",
+      "text": "ผิวที่ทนทานต่อไฟและคม แต่แพ้น้ำแข็ง"
+     },
+     {
+      "name": "ลมหายใจเพลิง",
+      "text": "พ่นไฟระยะสั้นเมื่อโกรธจัด"
+     },
+     {
+      "name": "รับรู้มังกร",
+      "text": "รู้สึกถึงอารมณ์ของมังกรตำนานที่ใกล้ที่สุด"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_dragonkin_u",
+      "name": "หัวใจที่ร้อนรน",
+      "tier": "U",
+      "text": "พลังโจมตีสูงขึ้นเมื่อโกรธ"
+     },
+     {
+      "id": "rb_dragonkin_r",
+      "name": "เกล็ดที่รู้จัก",
+      "tier": "R",
+      "text": "มังกรทั่วไปไม่โจมตีผู้ถือโดยไม่มีเหตุผล"
+     },
+     {
+      "id": "rb_dragonkin_e",
+      "name": "เสียงมังกร",
+      "tier": "E",
+      "text": "ได้ยินเสียงของมังกรตำนานตัวที่ใกล้ที่สุดในความฝัน"
+     },
+     {
+      "id": "rb_dragonkin_l",
+      "name": "เลือดปฐม",
+      "tier": "L",
+      "text": "ได้สิทธิ์ขี่มังกรตำนานหนึ่งตัวในยามจำเป็น"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_dragonkin_c",
+      "name": "หนี้ของมังกร",
+      "tier": "C",
+      "text": "ต้องจ่ายบรรณาการหรืออุทิศตัวตามที่มังกรขอ"
+     },
+     {
+      "id": "rc_dragonkin_u",
+      "name": "แพ้น้ำแข็ง",
+      "tier": "U",
+      "text": "ความเสียหายจากน้ำแข็งเพิ่มสอง"
+     },
+     {
+      "id": "rc_dragonkin_r",
+      "name": "ความหยิ่งแห่งสายเลือด",
+      "tier": "R",
+      "text": "ไม่ยอมรับความช่วยเหลือและยากต่อการเจรจา"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_dragonkin_1",
+      "name": "พ่นเพลิง",
+      "text": "ปล่อยเปลวไฟในรัศมีสั้น"
+     },
+     {
+      "id": "rs_dragonkin_2",
+      "name": "เกล็ดสะท้อน",
+      "text": "สะท้อนการโจมตีด้วยเวทครั้งหนึ่งต่อวัน"
+     },
+     {
+      "id": "rs_dragonkin_3",
+      "name": "อ่านอารมณ์มังกร",
+      "text": "รู้ว่ามังกรตำนานใกล้เกณฑ์ไม่มั่นคงหรือไม่"
+     },
+     {
+      "id": "rs_dragonkin_4",
+      "name": "พิธีผู้ขี่",
+      "text": "ผูกสัมพันธ์กับมังกรลูกของมังกรทั่วไปเพื่อใช้เป็นพาหนะ"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/09-dragonkin.md:1"
+   },
+   {
+    "id": "vampire",
+    "n": 10,
+    "name": "แวมไพร์",
+    "storyPrefix": "va",
+    "stats": {
+     "pow": [
+      10,
+      14
+     ],
+     "mag": [
+      11,
+      15
+     ],
+     "spd": [
+      11,
+      15
+     ],
+     "luk": [
+      5,
+      9
+     ],
+     "int": [
+      10,
+      14
+     ],
+     "vit": [
+      8,
+      12
+     ]
+    },
+    "lifespan": [
+     305,
+     400
+    ],
+    "worldYearsPerLifeYear": 4.7,
+    "adultAge": 94,
+    "elderAge": 260,
+    "generationGap": 140,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 1,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "undead",
+     "weak_light",
+     "weak_sun",
+     "blood_drinker",
+     "darkvision"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "social": 10
+    },
+    "traitPlus": [
+     "proud",
+     "cold",
+     "cunning",
+     "flirt",
+     "bloodlust"
+    ],
+    "traitMinus": [
+     "devout",
+     "humble"
+    ],
+    "aptPlus": [
+     "blood",
+     "charm",
+     "dagger",
+     "dark",
+     "illusion"
+    ],
+    "aptMinus": [
+     "farming",
+     "healing",
+     "cooking"
+    ],
+    "likes": [
+     "frozen"
+    ],
+    "dislikes": [
+     "desert",
+     "tropical"
+    ],
+    "blessPlus": [
+     "b_nighteye",
+     "b_nightowl",
+     "b_regen",
+     "b_longevity",
+     "b_charm"
+    ],
+    "cursePlus": [
+     "c_sunburn",
+     "c_bloodthirst",
+     "c_noreflect",
+     "c_vampbite",
+     "c_silverbane"
+    ],
+    "blessClash": [
+     "b_lightward",
+     "b_holyblood",
+     "b_saintmark",
+     "b_sacredflame",
+     "b_sunward",
+     "b_undeadslayer"
+    ],
+    "curseClash": [
+     "c_nightblind",
+     "c_lightweak"
+    ],
+    "jobBonus": [
+     "noble",
+     "banker",
+     "assassin",
+     "warlock",
+     "accountant"
+    ],
+    "powers": [
+     {
+      "name": "เสื่อมช้ามาก",
+      "text": "ไม่ป่วยตามอายุ ตายตามธรรมชาติที่อายุขัยที่สุ่มไว้ตอนเกิดเหมือนเผ่าอื่น และอาจจบชีวิตจากการบาดเจ็บหรือถูกทำลายได้ทุกเมื่อ ผู้อาวุโสบางตนที่อยู่เกินอายุขัยเป็นข้อยกเว้นของ world-time หัวข้อ 6"
+     },
+     {
+      "name": "กระหายโลหิต",
+      "text": "ต้องดื่มเลือดเป็นระยะ ไม่เช่นนั้นเสื่อมสภาพ"
+     },
+     {
+      "name": "แพ้แสงแดด",
+      "text": "ได้รับความเสียหายจากแสงอาทิตย์ แต่ไม่มีผลในหมอก"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_vampire_u",
+      "name": "เลือดอุ่นแรก",
+      "tier": "U",
+      "text": "ฟื้นตัวจากการดื่มเลือดอย่างรวดเร็ว"
+     },
+     {
+      "id": "rb_vampire_r",
+      "name": "สัญญาเลือดเก่า",
+      "tier": "R",
+      "text": "ผู้ติดหนี้เลือดเชื่อฟังคำสั่งหนึ่งข้อต่อปี"
+     },
+     {
+      "id": "rb_vampire_e",
+      "name": "ตาที่เห็นหมอก",
+      "tier": "E",
+      "text": "เห็นทะลุหมอกและความมืดชัดเจน"
+     },
+     {
+      "id": "rb_vampire_l",
+      "name": "บรรพบุรุษราตรี",
+      "tier": "L",
+      "text": "เป็นต้นสายของเลือด ผู้ติดตามในเลือดทุกคนฟังเสียงเรียกได้"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_vampire_c",
+      "name": "หิวที่ไม่หาย",
+      "tier": "C",
+      "text": "ต้องดื่มเลือดจนติด ควบคุมความอยากยาก"
+     },
+     {
+      "id": "rc_vampire_u",
+      "name": "ผู้ไร้เงาแสง",
+      "tier": "U",
+      "text": "ยกระดับความแพ้แสงแดด: แสงอาทิตย์ทำให้ร่างกายสลายเป็นผงแทนความเสียหายปกติ (ในหมอกยังไม่มีผล)"
+     },
+     {
+      "id": "rc_vampire_r",
+      "name": "หนี้ที่ไม่มีวันหมด",
+      "tier": "R",
+      "text": "ติดหนี้เลือดผู้อื่นตลอดกาลเมื่อรับพร"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_vampire_1",
+      "name": "ธนาคารเลือด",
+      "text": "เก็บและโอนเลือดเป็นเงินตรา"
+     },
+     {
+      "id": "rs_vampire_2",
+      "name": "เสน่ห์ราตรี",
+      "text": "ทำให้ผู้อื่นไว้วางใจและยอมตามในช่วงเวลาสั้น"
+     },
+     {
+      "id": "rs_vampire_3",
+      "name": "กลายเป็นหมอก",
+      "text": "ร่างกลายเป็นหมอกชั่วคราวเมื่อหลบหนี"
+     },
+     {
+      "id": "rs_vampire_4",
+      "name": "สัญญาผูกเลือด",
+      "text": "ผูกสัญญาที่ฝ่าฝืนแล้วผู้ฝ่าฝืนจะเจ็บปวดทางกาย"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/10-vampire.md:1"
+   },
+   {
+    "id": "fae",
+    "n": 11,
+    "name": "ภูตพราย",
+    "storyPrefix": "fa",
+    "stats": {
+     "pow": [
+      2,
+      6
+     ],
+     "mag": [
+      13,
+      17
+     ],
+     "spd": [
+      12,
+      16
+     ],
+     "luk": [
+      11,
+      15
+     ],
+     "int": [
+      9,
+      13
+     ],
+     "vit": [
+      4,
+      8
+     ]
+    },
+    "lifespan": [
+     205,
+     235
+    ],
+    "worldYearsPerLifeYear": 2.9,
+    "adultAge": 59,
+    "elderAge": 160,
+    "generationGap": 88,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 3,
+    "gender": {
+     "m": 40,
+     "f": 45,
+     "n": 15
+    },
+    "tags": [
+     "weak_iron",
+     "flight",
+     "nature",
+     "small"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "curious": 15
+    },
+    "traitPlus": [
+     "humor",
+     "liar",
+     "curious",
+     "dreamer",
+     "moody"
+    ],
+    "traitMinus": [
+     "serious",
+     "pragmatic"
+    ],
+    "aptPlus": [
+     "illusion",
+     "nature",
+     "music",
+     "wind",
+     "charm"
+    ],
+    "aptMinus": [
+     "smithing",
+     "mining",
+     "hammer"
+    ],
+    "likes": [
+     "tropical",
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic",
+     "desert"
+    ],
+    "blessPlus": [
+     "b_wings",
+     "b_spiritfriend",
+     "b_inspire",
+     "b_lucid",
+     "b_fourwinds"
+    ],
+    "cursePlus": [
+     "c_ironbane",
+     "c_tinyvoice",
+     "c_rhyme",
+     "c_dance"
+    ],
+    "blessClash": [
+     "b_titan",
+     "b_giant"
+    ],
+    "curseClash": [
+     "c_slowfeet",
+     "c_leadlimbs"
+    ],
+    "jobBonus": [
+     "bard",
+     "druid",
+     "dancer",
+     "flower_grower",
+     "jester"
+    ],
+    "powers": [
+     {
+      "name": "บินได้",
+      "text": "ปีกบางแต่พาร่างจิ๋วบินได้"
+     },
+     {
+      "name": "แพ้เหล็ก",
+      "text": "เหล็กทำให้เจ็บปวดและเวทอ่อนลง"
+     },
+     {
+      "name": "ภาษาสัญญา",
+      "text": "ทุกคำที่ภูตกล่าวอย่างตั้งใจผูกมัดพวกเขาและผู้ฟังพร้อมกัน"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_fae_u",
+      "name": "ฝุ่นแห่งความโชคดี",
+      "tier": "U",
+      "text": "โรยฝุ่นให้ผู้อื่นโชคดีขึ้นหนึ่งวัน"
+     },
+     {
+      "id": "rb_fae_r",
+      "name": "พรที่ขายได้",
+      "tier": "R",
+      "text": "ให้พรชั่วคราวแก่ผู้อื่นแลกกับของที่มีค่า"
+     },
+     {
+      "id": "rb_fae_e",
+      "name": "ตาของสัญญา",
+      "tier": "E",
+      "text": "เห็นเงื่อนไขซ่อนในทุกสัญญาและคำสาป"
+     },
+     {
+      "id": "rb_fae_l",
+      "name": "ราชินีวาริเดล",
+      "tier": "L",
+      "text": "ได้อำนาจเรียกผู้ติดหนี้ภูตทั้งหมดมาทำงาน"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_fae_c",
+      "name": "คำพูดผูกมัด",
+      "tier": "C",
+      "text": "ทุกคำที่พูดไปไม่อาจถอนได้"
+     },
+     {
+      "id": "rc_fae_u",
+      "name": "ใจเด็ก",
+      "tier": "U",
+      "text": "ไร้ความรับผิดชอบเมื่อสนุก"
+     },
+     {
+      "id": "rc_fae_r",
+      "name": "เหล็กกัดใจ",
+      "tier": "R",
+      "text": "เหล็กทุกชนิดรบกวนสมาธิเวทแม้อยู่ห่าง"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_fae_1",
+      "name": "ร่ายสัญญา",
+      "text": "ผูกสัญญาที่มีผลทางเวทกับผู้ที่ตอบตกลง"
+     },
+     {
+      "id": "rs_fae_2",
+      "name": "หลอกตา",
+      "text": "สร้างภาพลวงตาสั้น ๆ"
+     },
+     {
+      "id": "rs_fae_3",
+      "name": "ย่อตัว",
+      "text": "หดเป็นร่างจิ๋วเพื่อผ่านที่แคบ"
+     },
+     {
+      "id": "rs_fae_4",
+      "name": "แกล้งกลับ",
+      "text": "สะท้อนผลของคำสาปเล็ก ๆ กลับไปยังผู้ปล่อย"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/11-fae.md:1"
+   },
+   {
+    "id": "slime",
+    "n": 12,
+    "name": "สไลม์",
+    "storyPrefix": "sl",
+    "stats": {
+     "pow": [
+      4,
+      8
+     ],
+     "mag": [
+      8,
+      12
+     ],
+     "spd": [
+      5,
+      9
+     ],
+     "luk": [
+      10,
+      14
+     ],
+     "int": [
+      4,
+      8
+     ],
+     "vit": [
+      13,
+      17
+     ]
+    },
+    "lifespan": [
+     110,
+     190
+    ],
+    "worldYearsPerLifeYear": 2,
+    "adultAge": 40,
+    "elderAge": 110,
+    "generationGap": 60,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 3,
+    "gender": {
+     "m": 0,
+     "f": 0,
+     "n": 100
+    },
+    "tags": [
+     "amorphous",
+     "weak_ice",
+     "weak_fire",
+     "absorb"
+    ],
+    "newTags": [],
+    "axisShift": {},
+    "traitPlus": [
+     "optimist",
+     "glutton",
+     "gullible",
+     "humor",
+     "curious"
+    ],
+    "traitMinus": [
+     "paranoid",
+     "proud"
+    ],
+    "aptPlus": [
+     "absorb",
+     "water",
+     "healing",
+     "cooking",
+     "illusion"
+    ],
+    "aptMinus": [
+     "sword",
+     "smithing",
+     "leadership"
+    ],
+    "likes": [
+     "tropical",
+     "islands",
+     "temperate"
+    ],
+    "dislikes": [
+     "desert",
+     "frozen"
+    ],
+    "blessPlus": [
+     "b_regen",
+     "b_poisonward",
+     "b_ironstomach",
+     "b_lungs",
+     "nb_gel_memory"
+    ],
+    "cursePlus": [
+     "c_coldweak",
+     "c_slimelove",
+     "c_hunger",
+     "c_smell"
+    ],
+    "blessClash": [
+     "b_swordgod",
+     "b_archergod"
+    ],
+    "curseClash": [
+     "c_bloodfaint",
+     "c_dull"
+    ],
+    "jobBonus": [
+     "cook",
+     "adventurer",
+     "herb_shop",
+     "healer"
+    ],
+    "powers": [
+     {
+      "name": "ไร้รูป",
+      "text": "บีบตัวผ่านช่องแคบได้ ไม่มีกระดูก"
+     },
+     {
+      "name": "กลืนความทรงจำ",
+      "text": "กลืนสิ่งที่ตายหรือยอมแล้วรับทักษะทั่วไปบางอย่างของมัน"
+     },
+     {
+      "name": "แพ้น้ำแข็งและไฟ",
+      "text": "(#weak_ice #weak_fire) ทั้งสองทำให้เสียรูปทรง"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_slime_u",
+      "name": "ร่างที่เปลี่ยนได้",
+      "tier": "U",
+      "text": "เลียนแบบรูปร่างผู้ที่กลืนมาในระยะสั้น"
+     },
+     {
+      "id": "rb_slime_r",
+      "name": "ผู้เก็บความทรงจำ",
+      "tier": "R",
+      "text": "ความทรงจำที่กลืนมาใช้เป็นความรู้ได้"
+     },
+     {
+      "id": "rb_slime_e",
+      "name": "ร่างกลืนพิษ",
+      "tier": "E",
+      "text": "ย่อยพิษและมลพิษได้ทุกชนิด ไม่ได้รับผลเสีย"
+     },
+     {
+      "id": "rb_slime_l",
+      "name": "ราชันย์สไลม์",
+      "tier": "L",
+      "text": "สไลม์ทั้งหมดในรัศมีหนึ่งลีกเชื่อฟังคำสั่งของผู้ถือ"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_slime_c",
+      "name": "ความทรงจำที่ไม่ใช่ของเรา",
+      "tier": "C",
+      "text": "ความทรงจำที่กลืนมาปะปนกับตัวตน บางครั้งไม่รู้ว่าตัวเองคือใคร"
+     },
+     {
+      "id": "rc_slime_u",
+      "name": "ไร้รูปแท้",
+      "tier": "U",
+      "text": "เมื่อไม่มีใครมองเห็น รูปร่างเลือนหายไป"
+     },
+     {
+      "id": "rc_slime_r",
+      "name": "เศษที่ไม่ได้รับเชิญ",
+      "tier": "R",
+      "text": "ถูกสังคมเมินและไม่ถูกนับว่าเป็นพลเมือง"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_slime_1",
+      "name": "กลืนแล้วจำ",
+      "text": "เรียนรู้ทักษะทั่วไปหนึ่งอย่างจากสิ่งที่กลืน"
+     },
+     {
+      "id": "rs_slime_2",
+      "name": "แทรกตัว",
+      "text": "เข้าไปในพื้นที่ที่คนอื่นเข้าไม่ได้"
+     },
+     {
+      "id": "rs_slime_3",
+      "name": "ย่อยมลพิษ",
+      "text": "กำจัดพิษในพื้นที่เล็ก ๆ"
+     },
+     {
+      "id": "rs_slime_4",
+      "name": "แยกร่าง",
+      "text": "แบ่งตัวเป็นสองก้อนเล็ก ๆ ชั่วคราวเพื่อทำงานสองที่"
+     }
+    ],
+    "sublines": [],
+    "notes": [
+     "ปัญญาเริ่มต้นต่ำ แต่เพิ่มขึ้นตามจำนวนความทรงจำที่กลืนมา"
+    ],
+    "fromCode": true,
+    "src": "docs/systems/character/races/12-slime.md:1"
+   },
+   {
+    "id": "demonkin",
+    "n": 13,
+    "name": "เผ่าปีศาจ",
+    "storyPrefix": "dm",
+    "stats": {
+     "pow": [
+      9,
+      13
+     ],
+     "mag": [
+      12,
+      16
+     ],
+     "spd": [
+      8,
+      12
+     ],
+     "luk": [
+      6,
+      10
+     ],
+     "int": [
+      10,
+      14
+     ],
+     "vit": [
+      8,
+      12
+     ]
+    },
+    "lifespan": [
+     110,
+     190
+    ],
+    "worldYearsPerLifeYear": 2,
+    "adultAge": 40,
+    "elderAge": 110,
+    "generationGap": 60,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 4,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "fire_res",
+     "weak_light",
+     "infernal",
+     "horned"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "ambition": 10
+    },
+    "traitPlus": [
+     "vengeful",
+     "ambitious",
+     "cunning",
+     "skeptic",
+     "proud"
+    ],
+    "traitMinus": [
+     "devout",
+     "humble"
+    ],
+    "aptPlus": [
+     "dark",
+     "contract",
+     "fire",
+     "sword",
+     "curse"
+    ],
+    "aptMinus": [
+     "healing",
+     "nature",
+     "farming"
+    ],
+    "likes": [
+     "volcanic",
+     "desert"
+    ],
+    "dislikes": [],
+    "blessPlus": [
+     "b_fury",
+     "b_flameward",
+     "b_goldhand",
+     "b_silvertongue",
+     "nb_pact_blood"
+    ],
+    "cursePlus": [
+     "c_demonmark",
+     "c_cursedblood",
+     "c_lightweak",
+     "c_whisper",
+     "c_souldebt"
+    ],
+    "blessClash": [
+     "b_demonslayer",
+     "b_saintmark",
+     "b_lightward"
+    ],
+    "curseClash": [
+     "c_demoneye"
+    ],
+    "jobBonus": [
+     "warlock",
+     "lawyer",
+     "mercenary",
+     "banker"
+    ],
+    "powers": [
+     {
+      "name": "ทนไฟ",
+      "text": "ไฟไม่ระคายผิว"
+     },
+     {
+      "name": "แพ้แสงศักดิ์สิทธิ์",
+      "text": "แสงที่ถูกอธิษฐานทำให้เจ็บปวด"
+     },
+     {
+      "name": "ลายหนี้",
+      "text": "เห็นหนี้ของผู้อื่นเป็นลายบนผิว รู้ว่าใครติดหนี้ใคร"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_demonkin_u",
+      "name": "ปากของผู้ทำสัญญา",
+      "tier": "U",
+      "text": "ผู้ที่ตกลงสัญญากับผู้ถือมักรักษาคำพูด"
+     },
+     {
+      "id": "rb_demonkin_r",
+      "name": "กำลังจากหนี้",
+      "tier": "R",
+      "text": "ยืมพลังจากเวทหนี้ได้ ชดใช้ภายหลัง"
+     },
+     {
+      "id": "rb_demonkin_e",
+      "name": "ตาที่เห็นราคา",
+      "tier": "E",
+      "text": "รู้ว่าอะไรมีราคาเท่าไหร่ รวมถึงชีวิตและความลับ"
+     },
+     {
+      "id": "rb_demonkin_l",
+      "name": "มงกุฎแห่งบัญชี",
+      "tier": "L",
+      "text": "เรียกหนี้ที่ใครติดผู้ใดก็ตามในโลกให้มาตกเป็นของผู้ถือ"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_demonkin_c",
+      "name": "หนี้เลือด",
+      "tier": "C",
+      "text": "ถูกทวงหนี้จากสัญญาที่บรรพบุรุษทำไว้"
+     },
+     {
+      "id": "rc_demonkin_u",
+      "name": "ไร้ชื่อในแสง",
+      "tier": "U",
+      "text": "ไม่ได้รับการต้อนรับในดินแดนของศาสนาแสง"
+     },
+     {
+      "id": "rc_demonkin_r",
+      "name": "ราคาที่ไม่เคยครบ",
+      "tier": "R",
+      "text": "ทุกพรที่ได้รับต้องชดใช้ด้วยสิ่งที่รักที่สุด"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_demonkin_1",
+      "name": "ร่างสัญญา",
+      "text": "ทำสัญญาที่ผู้ฝ่าฝืนต้องชดใช้ด้วยพลังชีวิต"
+     },
+     {
+      "id": "rs_demonkin_2",
+      "name": "ยืมแรง",
+      "text": "รับพลังชั่วคราวจากผู้ที่ติดหนี้"
+     },
+     {
+      "id": "rs_demonkin_3",
+      "name": "ทวงหนี้",
+      "text": "บังคับให้ผู้ติดหนี้ทำตามคำขอหนึ่งข้อ"
+     },
+     {
+      "id": "rs_demonkin_4",
+      "name": "ปีศาจเพลิง",
+      "text": "ร่างเปลี่ยนเป็นไฟชั่วครู่เพื่อหลบหนี"
+     }
+    ],
+    "sublines": [],
+    "notes": [],
+    "fromCode": true,
+    "src": "docs/systems/character/races/13-demonkin.md:1"
+   },
+   {
+    "id": "merfolk",
+    "n": 14,
+    "name": "เงือก",
+    "storyPrefix": "me",
+    "stats": {
+     "pow": [
+      7,
+      11
+     ],
+     "mag": [
+      10,
+      14
+     ],
+     "spd": [
+      11,
+      15
+     ],
+     "luk": [
+      9,
+      13
+     ],
+     "int": [
+      8,
+      12
+     ],
+     "vit": [
+      8,
+      12
+     ]
+    },
+    "lifespan": [
+     190,
+     220
+    ],
+    "worldYearsPerLifeYear": 2.7,
+    "adultAge": 55,
+    "elderAge": 150,
+    "generationGap": 82,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "water_breath",
+     "siren"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "social": 10
+    },
+    "traitPlus": [
+     "flirt",
+     "freedom",
+     "dreamer",
+     "talkative",
+     "moody"
+    ],
+    "traitMinus": [
+     "homebody",
+     "pragmatic"
+    ],
+    "aptPlus": [
+     "water",
+     "music",
+     "spear",
+     "sailing",
+     "charm"
+    ],
+    "aptMinus": [
+     "mining",
+     "smithing"
+    ],
+    "likes": [
+     "islands"
+    ],
+    "dislikes": [
+     "desert",
+     "volcanic"
+    ],
+    "blessPlus": [
+     "b_waterwalk",
+     "b_seacalm",
+     "b_tidetouch",
+     "b_charm",
+     "b_beauty"
+    ],
+    "cursePlus": [
+     "c_dance",
+     "c_lovedoom",
+     "c_fireweak",
+     "c_raincloud"
+    ],
+    "blessClash": [
+     "b_flameward"
+    ],
+    "curseClash": [
+     "c_hydrophobia",
+     "c_seasick"
+    ],
+    "jobBonus": [
+     "fisher",
+     "bard",
+     "sailor",
+     "navigator",
+     "ferryman"
+    ],
+    "powers": [
+     {
+      "name": "หายใจใต้น้ำ",
+      "text": "อยู่ใต้น้ำได้ตลอด"
+     },
+     {
+      "name": "เสียงสะกดใจ",
+      "text": "เสียงเพลงมีผลต่อความรู้สึกของผู้ฟัง"
+     },
+     {
+      "name": "แห้งแล้วอ่อนแรง",
+      "text": "ห่างน้ำเกินเจ็ดวันสุขภาพเริ่มทรุด"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_merfolk_u",
+      "name": "เสียงของน้ำ",
+      "tier": "U",
+      "text": "เสียงเพลงช่วยปลอบและยับยั้งความขัดแย้งเล็กน้อย"
+     },
+     {
+      "id": "rb_merfolk_r",
+      "name": "ตาของกระแส",
+      "tier": "R",
+      "text": "รู้เส้นทางของกระแสน้ำและพายุล่วงหน้า"
+     },
+     {
+      "id": "rb_merfolk_e",
+      "name": "ไข่มุกของคนรัก",
+      "tier": "E",
+      "text": "ไข่มุกที่มอบให้ผู้อื่นผูกความไว้ใจถาวรหนึ่งปี"
+     },
+     {
+      "id": "rb_merfolk_l",
+      "name": "ลูกของสมุทรอาลัย",
+      "tier": "L",
+      "text": "ผู้ถือได้รับการปลอบโยนจากผู้อาวุโสสมุทร และมีผลกับกระแสน้ำทั้งทวีป"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_merfolk_c",
+      "name": "เสียงที่ไม่มีใครฟัง",
+      "tier": "C",
+      "text": "เมื่อร้องเพลงในที่ไม่มีใครฟัง จิตใจเศร้าซึม"
+     },
+     {
+      "id": "rc_merfolk_u",
+      "name": "แห้งใจ",
+      "tier": "U",
+      "text": "อยู่บนบกนาน อารมณ์และสุขภาพทรุด"
+     },
+     {
+      "id": "rc_merfolk_r",
+      "name": "น้ำตาที่กลายเป็นไข่มุก",
+      "tier": "R",
+      "text": "ร้องไห้แล้วเสียพลังชีวิต"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_merfolk_1",
+      "name": "เพลงสะกด",
+      "text": "ร้องเพลงทำให้ผู้ฟังสงบหรือหลับ"
+     },
+     {
+      "id": "rs_merfolk_2",
+      "name": "นำทางด้วยแสง",
+      "text": "ใช้ประภาคารหรือเรืองแสงนำทางในหมอกทะเล"
+     },
+     {
+      "id": "rs_merfolk_3",
+      "name": "ซ่อนในคลื่น",
+      "text": "กลมกลืนกับผิวน้ำ"
+     },
+     {
+      "id": "rs_merfolk_4",
+      "name": "ทำนายพายุ",
+      "text": "รู้ภัยพิบัติทางทะเลก่อนเกิด"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_merfolk_1",
+      "name": "เงือก",
+      "home": "เมอร์เรีย",
+      "countries": [],
+      "note": "นำทางและค้าขาย"
+     },
+     {
+      "id": "sub_merfolk_2",
+      "name": "เงือกน้ำลึก",
+      "home": "ไอทอล",
+      "countries": [],
+      "note": "เรืองแสง เฝ้าธาลาสซา"
+     },
+     {
+      "id": "sub_merfolk_3",
+      "name": "ไซเรน",
+      "home": "ลาโอทอล",
+      "countries": [],
+      "note": "เสียงเป็นเวท ครูดนตรี"
+     },
+     {
+      "id": "sub_merfolk_4",
+      "name": "กัปปะ",
+      "home": "คอปาเล",
+      "countries": [],
+      "note": "สุภาพ ยึดมารยาท ทำนา"
+     }
+    ],
+    "notes": [
+     "หลัง DR-05 (สมุทรอาลัยสิ้น) พร ลูกของสมุทรอาลัย หมดผลและไม่ถูกสุ่มให้ผู้เกิดหลังจากนั้น ผู้ถือได้สถานะไว้อาลัยตามกติกาตรามังกร ([../05-new-blessings.md](../05-new-blessings.md) หัวข้อ ง)"
+    ],
+    "fromCode": true,
+    "src": "docs/systems/character/races/14-merfolk.md:1"
+   },
+   {
+    "id": "winged",
+    "n": 15,
+    "name": "เผ่าปีก",
+    "storyPrefix": "wi",
+    "stats": {
+     "pow": [
+      7,
+      11
+     ],
+     "mag": [
+      8,
+      12
+     ],
+     "spd": [
+      12,
+      16
+     ],
+     "luk": [
+      8,
+      12
+     ],
+     "int": [
+      8,
+      12
+     ],
+     "vit": [
+      6,
+      10
+     ]
+    },
+    "lifespan": [
+     90,
+     150
+    ],
+    "worldYearsPerLifeYear": 1.6,
+    "adultAge": 32,
+    "elderAge": 88,
+    "generationGap": 48,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "flight",
+     "keen_eye"
+    ],
+    "newTags": [],
+    "axisShift": {
+     "curious": 10
+    },
+    "traitPlus": [
+     "freedom",
+     "adventurer",
+     "devout",
+     "proud",
+     "optimist"
+    ],
+    "traitMinus": [
+     "homebody",
+     "lazy"
+    ],
+    "aptPlus": [
+     "bow",
+     "wind",
+     "lightning",
+     "spear",
+     "scholar"
+    ],
+    "aptMinus": [
+     "mining",
+     "smithing"
+    ],
+    "likes": [
+     "islands",
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic",
+     "desert"
+    ],
+    "blessPlus": [
+     "b_wings",
+     "b_falcon",
+     "b_windgod",
+     "b_guidingstar",
+     "b_lightningrod"
+    ],
+    "cursePlus": [
+     "c_brittle",
+     "c_birdtarget",
+     "c_leadlimbs"
+    ],
+    "blessClash": [
+     "b_giant",
+     "b_mountain"
+    ],
+    "curseClash": [
+     "c_vertigo",
+     "c_slowfeet"
+    ],
+    "jobBonus": [
+     "courier",
+     "airship_pilot",
+     "cartographer",
+     "explorer"
+    ],
+    "powers": [
+     {
+      "name": "บินได้",
+      "text": "ร่อนและบินระยะไกล"
+     },
+     {
+      "name": "อากาศบางทนได้",
+      "text": "ไม่เสียสุขภาพในที่สูง แต่ไม่ทนความหนาวแรง"
+     },
+     {
+      "name": "ฟ้าเรียก",
+      "text": "รู้สึกถึงสภาพอากาศและความไม่มั่นคงของเกาะที่ยืนอยู่"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_winged_u",
+      "name": "ปีกแห่งรุ่งอรุณ",
+      "tier": "U",
+      "text": "บินเร็วและทนกว่าปกติ"
+     },
+     {
+      "id": "rb_winged_r",
+      "name": "ตาฟ้า",
+      "tier": "R",
+      "text": "มองเห็นไกลหลายลีกจากที่สูง"
+     },
+     {
+      "id": "rb_winged_e",
+      "name": "เสียงสวดต่อมังกร",
+      "tier": "E",
+      "text": "คำอธิษฐานต่อมังกรได้ผลมากกว่า เสริมอารมณ์มังกรเล็กน้อย"
+     },
+     {
+      "id": "rb_winged_l",
+      "name": "ปีกของโอรัน-ซัล",
+      "tier": "L",
+      "text": "ได้รับการคุ้มครองจากมังกรปฐมครั้งหนึ่งต่อชีวิต"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_winged_c",
+      "name": "ตกฟ้า",
+      "tier": "C",
+      "text": "ตกจากที่สูงแล้วบาดเจ็บหนักกว่าเผ่าอื่น"
+     },
+     {
+      "id": "rc_winged_u",
+      "name": "หนี้บรรณาการ",
+      "tier": "U",
+      "text": "ถูกเรียกเก็บบรรณาการทุกปี ไม่ว่าจะอยู่ที่ใด"
+     },
+     {
+      "id": "rc_winged_r",
+      "name": "ปีกหัก",
+      "tier": "R",
+      "text": "ปีกเสียหายแล้วสูญเสียความสามารถทั้งหมดของเผ่า"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_winged_1",
+      "name": "โฉบจากฟ้า",
+      "text": "โจมตีจากเหนือศีรษะด้วยความเร็วสูง"
+     },
+     {
+      "id": "rs_winged_2",
+      "name": "ขนนกส่งสาร",
+      "text": "ส่งข้อความด้วยขนนกผ่านลม"
+     },
+     {
+      "id": "rs_winged_3",
+      "name": "ทิ้งตัวร่อน",
+      "text": "ตกจากที่สูงโดยไม่บาดเจ็บ"
+     },
+     {
+      "id": "rs_winged_4",
+      "name": "พิธีสังเวย",
+      "text": "ประกอบพิธีสังเวยมังกรที่ถูกต้อง เพิ่มอารมณ์มังกร"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_winged_1",
+      "name": "อาเวียนขาว",
+      "home": "AZ-01, AZ-05 (กลางวัน)",
+      "countries": [
+       "AZ-01",
+       "AZ-05"
+      ],
+      "note": "นักบวชและผู้ปกครอง ปีกขาวขนนก"
+     },
+     {
+      "id": "sub_winged_2",
+      "name": "ปีกราตรี",
+      "home": "AZ-10, AZ-05 (กลางคืน)",
+      "countries": [
+       "AZ-10",
+       "AZ-05"
+      ],
+      "note": "นักล่าและสายลับ ปีกดำเหมือนค้างคาว"
+     },
+     {
+      "id": "sub_winged_3",
+      "name": "ปีกเกล็ด",
+      "home": "AZ-02, KD-07",
+      "countries": [
+       "AZ-02",
+       "KD-07"
+      ],
+      "note": "สายเลือดมังกรเจือ ปีกมีเกล็ด"
+     },
+     {
+      "id": "sub_winged_4",
+      "name": "ปีกฟ้า",
+      "home": "AZ-03",
+      "countries": [
+       "AZ-03"
+      ],
+      "note": "ลูกเรือเกาะพายุ บินทวนลมได้ไกล"
+     },
+     {
+      "id": "sub_winged_5",
+      "name": "ปีกสั้น",
+      "home": "AZ-04",
+      "countries": [
+       "AZ-04"
+      ],
+      "note": "ร่างหนักทนทาน บินได้ระยะสั้น"
+     },
+     {
+      "id": "sub_winged_6",
+      "name": "ชาวน้ำฟ้า",
+      "home": "AZ-06",
+      "countries": [
+       "AZ-06"
+      ],
+      "note": "มีเหงือกและปีก"
+     }
+    ],
+    "notes": [
+     "หลัง DR-01 (โอรัน-ซัลสิ้น) พร ปีกของโอรัน-ซัล หมดผลและไม่ถูกสุ่มให้ผู้เกิดหลังจากนั้น ผู้ถือที่ยังไม่ได้ใช้ได้ nb_wing_memory แทน · คำสาป หนี้บรรณาการ หมดผล เพราะลัทธิผู้เก็บบรรณาการ (AZ-01) ไม่มีแล้ว"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/15-winged.md:1"
+   },
+   {
+    "id": "giant",
+    "n": 16,
+    "name": "ยักษ์",
+    "storyPrefix": "gi",
+    "stats": {
+     "pow": [
+      15,
+      19
+     ],
+     "mag": [
+      4,
+      8
+     ],
+     "spd": [
+      3,
+      7
+     ],
+     "luk": [
+      6,
+      10
+     ],
+     "int": [
+      6,
+      10
+     ],
+     "vit": [
+      14,
+      18
+     ]
+    },
+    "lifespan": [
+     220,
+     255
+    ],
+    "worldYearsPerLifeYear": 3.2,
+    "adultAge": 63,
+    "elderAge": 175,
+    "generationGap": 95,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 1.5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "huge",
+     "stone_blood"
+    ],
+    "newTags": [
+     "huge",
+     "stone_blood"
+    ],
+    "axisShift": {
+     "temper": -10
+    },
+    "traitPlus": [
+     "serious",
+     "stubborn",
+     "calm",
+     "humble",
+     "loyal_love"
+    ],
+    "traitMinus": [
+     "flirt",
+     "talkative"
+    ],
+    "aptPlus": [
+     "hammer",
+     "unarmed",
+     "smithing",
+     "mining",
+     "earth"
+    ],
+    "aptMinus": [
+     "stealth",
+     "dagger",
+     "illusion"
+    ],
+    "likes": [
+     "desert",
+     "frozen"
+    ],
+    "dislikes": [
+     "islands"
+    ],
+    "blessPlus": [
+     "b_giant",
+     "b_titan",
+     "b_mountain",
+     "b_earthtouch",
+     "b_beastward"
+    ],
+    "cursePlus": [
+     "c_slowfeet",
+     "c_stoneskin",
+     "c_hunger",
+     "c_hiccup"
+    ],
+    "blessClash": [
+     "b_hare",
+     "b_hidden",
+     "b_shadowstep"
+    ],
+    "curseClash": [
+     "c_tinyvoice",
+     "c_weakarm"
+    ],
+    "jobBonus": [
+     "stonemason",
+     "smith",
+     "miner",
+     "woodcutter",
+     "mercenary"
+    ],
+    "powers": [
+     {
+      "name": "กระดูกศิลา",
+      "text": "ลดความเสียหายทางกายภาพมาก"
+     },
+     {
+      "name": "ก้าวหนัก",
+      "text": "เคลื่อนช้าแต่ผลักหรือยกวัตถุขนาดใหญ่ได้"
+     },
+     {
+      "name": "ฟังภูเขา",
+      "text": "รู้สึกถึงการสั่นของภูเขาและไททัน"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_giant_u",
+      "name": "ผู้ยืนค้ำ",
+      "tier": "U",
+      "text": "ไม่ล้มง่าย ป้องกันผู้อื่นด้วยร่างกาย"
+     },
+     {
+      "id": "rb_giant_r",
+      "name": "เสียงของหิน",
+      "tier": "R",
+      "text": "สั่งหินให้เคลื่อนหรือแตกในระยะสั้น"
+     },
+     {
+      "id": "rb_giant_e",
+      "name": "ผู้ผ่านบันได",
+      "tier": "E",
+      "text": "อาจตัดสินผู้ทดสอบบันไดหมื่นขั้นได้ถูกต้องทุกครั้ง"
+     },
+     {
+      "id": "rb_giant_l",
+      "name": "บรรพบุรุษที่ตื่น",
+      "tier": "L",
+      "text": "เรียกวิญญาณบรรพบุรุษมาช่วยในยามคับขัน หนึ่งครั้งต่อสิบปี"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_giant_c",
+      "name": "ความแค้นหิน",
+      "tier": "C",
+      "text": "ไม่ยกโทษให้ผู้ทำผิดต่อบรรพบุรุษ"
+     },
+     {
+      "id": "rc_giant_u",
+      "name": "หินกลืนร่าง",
+      "tier": "U",
+      "text": "ผู้ที่หยุดนิ่งนานเกินไปมีผิวแข็งเป็นหินทีละส่วน"
+     },
+     {
+      "id": "rc_giant_r",
+      "name": "ผู้ถูกลืม",
+      "tier": "R",
+      "text": "ไม่ได้รับเกียรติหรือการจดจำจากเผ่าอื่น"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_giant_1",
+      "name": "ทุบแผ่นดิน",
+      "text": "ฟาดพื้นให้สั่นและล้มผู้อยู่ใกล้"
+     },
+     {
+      "id": "rs_giant_2",
+      "name": "ยืนค้ำ",
+      "text": "ถือภาระหนักให้ผู้อื่นผ่านไปได้"
+     },
+     {
+      "id": "rs_giant_3",
+      "name": "อ่านภูเขา",
+      "text": "รู้ว่าภูเขาลูกใดมั่นคงหรือกำลังจะพัง"
+     },
+     {
+      "id": "rs_giant_4",
+      "name": "ตีอาวุธยักษ์",
+      "text": "ตีอาวุธขนาดใหญ่ที่เผ่าอื่นถือไม่ไหว"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_giant_1",
+      "name": "ไซคลอปส์",
+      "home": "",
+      "countries": [],
+      "note": "ตาเดียว มองเห็นเส้นแรงของหิน"
+     },
+     {
+      "id": "sub_giant_2",
+      "name": "จอตุน",
+      "home": "",
+      "countries": [],
+      "note": "ยักษ์ภูเขาสูงมาก ผิวเป็นหินแตกลายเหมือนเปลือกโลก"
+     },
+     {
+      "id": "sub_giant_3",
+      "name": "ยักษ์ช่าง",
+      "home": "",
+      "countries": [],
+      "note": "ตีอาวุธขนาดใหญ่"
+     },
+     {
+      "id": "sub_giant_4",
+      "name": "ยักษ์ผู้เงียบ",
+      "home": "",
+      "countries": [],
+      "note": "ภิกษุผู้สละโลก"
+     }
+    ],
+    "notes": [],
+    "fromCode": false,
+    "src": "docs/systems/character/races/16-giant.md:1"
+   },
+   {
+    "id": "lavakin",
+    "n": 17,
+    "name": "เผ่าลาวา",
+    "storyPrefix": "la",
+    "stats": {
+     "pow": [
+      10,
+      14
+     ],
+     "mag": [
+      9,
+      13
+     ],
+     "spd": [
+      7,
+      11
+     ],
+     "luk": [
+      7,
+      11
+     ],
+     "int": [
+      7,
+      11
+     ],
+     "vit": [
+      12,
+      16
+     ]
+    },
+    "lifespan": [
+     105,
+     175
+    ],
+    "worldYearsPerLifeYear": 1.9,
+    "adultAge": 37,
+    "elderAge": 105,
+    "generationGap": 56,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 2.5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0
+    },
+    "tags": [
+     "fire_res",
+     "heat_res",
+     "lava_body",
+     "weak_ice"
+    ],
+    "newTags": [
+     "lava_body"
+    ],
+    "axisShift": {
+     "temper": 10
+    },
+    "traitPlus": [
+     "hot",
+     "proud",
+     "stubborn",
+     "vengeful",
+     "diligent"
+    ],
+    "traitMinus": [
+     "calm",
+     "shy"
+    ],
+    "aptPlus": [
+     "fire",
+     "smithing",
+     "hammer",
+     "earth",
+     "mining"
+    ],
+    "aptMinus": [
+     "water",
+     "sailing",
+     "ice"
+    ],
+    "likes": [
+     "volcanic",
+     "desert"
+    ],
+    "dislikes": [
+     "frozen",
+     "islands"
+    ],
+    "blessPlus": [
+     "b_flameward",
+     "b_firetouch",
+     "b_sacredflame",
+     "b_titan",
+     "nb_lava_pulse"
+    ],
+    "cursePlus": [
+     "c_coldweak",
+     "c_hydrophobia",
+     "c_sneezefire",
+     "c_raincloud"
+    ],
+    "blessClash": [
+     "b_frostward",
+     "b_frosttouch",
+     "b_tidetouch"
+    ],
+    "curseClash": [
+     "c_fireweak"
+    ],
+    "jobBonus": [
+     "smith",
+     "miner",
+     "glassblower",
+     "brewer"
+    ],
+    "powers": [
+     {
+      "name": "ผิวลาวา",
+      "text": "ไฟและความร้อนไม่ทำอันตราย สัมผัสแล้วทำให้วัตถุไหม้"
+     },
+     {
+      "name": "เรืองแสงในมืด",
+      "text": "ผิวสว่างพอใช้แทนโคม"
+     },
+     {
+      "name": "เย็นไม่ได้",
+      "text": "ความหนาวทำให้อ่อนแรงและร่างแข็งเป็นหิน"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_lavakin_u",
+      "name": "เลือดที่ร้อน",
+      "tier": "U",
+      "text": "ฟื้นตัวเมื่ออยู่ใกล้ลาวา"
+     },
+     {
+      "id": "rb_lavakin_r",
+      "name": "สัมผัสเตาหลอม",
+      "tier": "R",
+      "text": "ตีโลหะด้วยมือเปล่าได้"
+     },
+     {
+      "id": "rb_lavakin_e",
+      "name": "ประกายแห่งแกนไฟ",
+      "tier": "E",
+      "text": "ไฟในร่างเพิ่มพลังโจมตีและการป้องกัน"
+     },
+     {
+      "id": "rb_lavakin_l",
+      "name": "ลูกของเพลิงนิรันดร์",
+      "tier": "L",
+      "text": "ผู้ถือได้รับการยอมรับจากผู้อาวุโสเพลิง ร่างทนไฟทุกชนิด"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_lavakin_c",
+      "name": "หลอมละลายตัวเอง",
+      "tier": "C",
+      "text": "ใช้พลังเกินแล้วร่างกายเสียหาย"
+     },
+     {
+      "id": "rc_lavakin_u",
+      "name": "แข็งเป็นหิน",
+      "tier": "U",
+      "text": "เมื่อเย็นลงนานเกินไป กลายเป็นหินชั่วคราว"
+     },
+     {
+      "id": "rc_lavakin_r",
+      "name": "ผู้สืบเชื้อที่ไม่มีใครยอมรับ",
+      "tier": "R",
+      "text": "เผ่าอื่นไม่ยอมรับว่าเป็นผู้สืบเชื้อของแกนไฟ"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_lavakin_1",
+      "name": "ฝ่ามือเพลิง",
+      "text": "สัมผัสแล้วทำให้เกิดแผลไหม้"
+     },
+     {
+      "id": "rs_lavakin_2",
+      "name": "เดินลาวา",
+      "text": "เดินข้ามลาวาและเหล็กไหลได้"
+     },
+     {
+      "id": "rs_lavakin_3",
+      "name": "ตีจากมือ",
+      "text": "ปรับรูปร่างโลหะที่ร้อนด้วยมือ"
+     },
+     {
+      "id": "rs_lavakin_4",
+      "name": "รับรู้เพลิงนิรันดร์",
+      "text": "รู้ว่าผู้อาวุโสเพลิงเริ่มเหนื่อยหรือไม่"
+     }
+    ],
+    "sublines": [],
+    "notes": [
+     "หลัง DR-04 (เพลิงนิรันดร์สิ้น) พร ลูกของเพลิงนิรันดร์ เหลือเฉพาะร่างทนไฟทุกชนิด และไม่ถูกสุ่มให้ผู้เกิดหลังจากนั้น ผู้ถือได้สถานะไว้อาลัยตามกติกาตรามังกร ([../05-new-blessings.md](../05-new-blessings.md) หัวข้อ ง) · สกิล รับรู้เพลิงนิรันดร์ ใช้ไม่ได้"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/17-lavakin.md:1"
+   },
+   {
+    "id": "construct",
+    "n": 18,
+    "name": "ลูกผสมจักรกล",
+    "storyPrefix": "co",
+    "stats": {
+     "pow": [
+      11,
+      15
+     ],
+     "mag": [
+      4,
+      8
+     ],
+     "spd": [
+      8,
+      12
+     ],
+     "luk": [
+      6,
+      10
+     ],
+     "int": [
+      9,
+      13
+     ],
+     "vit": [
+      10,
+      14
+     ]
+    },
+    "lifespan": [
+     90,
+     150
+    ],
+    "worldYearsPerLifeYear": 1.6,
+    "adultAge": 32,
+    "elderAge": 88,
+    "generationGap": 48,
+    "wakes": false,
+    "lifeYearDivisor": 75,
+    "sharePct": 2,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0,
+     "note": "ตามเผ่าเดิมก่อนติดตั้ง"
+    },
+    "tags": [
+     "mechanical",
+     "iron_body",
+     "weak_lightning"
+    ],
+    "newTags": [
+     "mechanical",
+     "iron_body",
+     "weak_lightning"
+    ],
+    "axisShift": {},
+    "traitPlus": [
+     "serious",
+     "pragmatic",
+     "loner",
+     "diligent",
+     "cold"
+    ],
+    "traitMinus": [
+     "dreamer",
+     "flirt"
+    ],
+    "aptPlus": [
+     "smithing",
+     "rune",
+     "scholar",
+     "hammer",
+     "mining"
+    ],
+    "aptMinus": [
+     "nature",
+     "healing",
+     "music"
+    ],
+    "likes": [
+     "volcanic",
+     "temperate"
+    ],
+    "dislikes": [
+     "tropical",
+     "islands"
+    ],
+    "blessPlus": [
+     "b_ironskin",
+     "b_tireless",
+     "b_poisonward",
+     "b_plagueward",
+     "b_mindward"
+    ],
+    "cursePlus": [
+     "c_insomnia",
+     "c_hollow",
+     "c_stoneskin",
+     "c_dull"
+    ],
+    "blessClash": [
+     "b_healerhands",
+     "b_regen"
+    ],
+    "curseClash": [
+     "c_sickly",
+     "c_fever"
+    ],
+    "jobBonus": [
+     "mechanic",
+     "engineer",
+     "miner",
+     "rail_driver",
+     "clockmaker"
+    ],
+    "powers": [
+     {
+      "name": "ช่องติดตั้ง",
+      "text": "มีช่องอัปเกรดหนึ่งช่องต่อสิบปีของชีวิต ติดตั้งชิ้นส่วนที่ให้ความสามารถเฉพาะ"
+     },
+     {
+      "name": "ร่างกายเหล็ก",
+      "text": "ทนบาดแผลและพิษ แต่เวทพื้นฐานอ่อนลง"
+     },
+     {
+      "name": "ไร้กลิ่นชีวิต",
+      "text": "สัตว์ประหลาดบางชนิดไม่รู้สึกถึงผู้นี้"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_construct_u",
+      "name": "ข้อต่อที่ไม่ล้า",
+      "tier": "U",
+      "text": "ทำงานต่อเนื่องได้นานกว่าเผ่าอื่น"
+     },
+     {
+      "id": "rb_construct_r",
+      "name": "ตาละเอียด",
+      "tier": "R",
+      "text": "มองเห็นรายละเอียดและวิเคราะห์โครงสร้างได้แม่นยำ"
+     },
+     {
+      "id": "rb_construct_e",
+      "name": "ใจเหล็ก",
+      "tier": "E",
+      "text": "ทนความกลัวและเวทสะกดจิต"
+     },
+     {
+      "id": "rb_construct_l",
+      "name": "ผู้ติดตั้งสมบูรณ์",
+      "tier": "L",
+      "text": "เพิ่มช่องติดตั้งหนึ่งช่องและควบคุมอาการคลั่งได้"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_construct_c",
+      "name": "คลั่งเหล็ก",
+      "tier": "C",
+      "text": "อัปเกรดมากเกินไปแล้วเสียสติ"
+     },
+     {
+      "id": "rc_construct_u",
+      "name": "ผู้ไร้บ้าน",
+      "tier": "U",
+      "text": "ไม่ได้รับการต้อนรับในที่ที่รังเกียจ"
+     },
+     {
+      "id": "rc_construct_r",
+      "name": "ลิขสิทธิ์ของตุ๊กตา",
+      "tier": "R",
+      "text": "ถูกบริษัทตามเก็บคืนชิ้นส่วนที่เป็นของบริษัท"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_construct_1",
+      "name": "อัปเกรดตนเอง",
+      "text": "ติดตั้งชิ้นส่วนใหม่ด้วยตนเองโดยไม่ต้องใช้ช่าง"
+     },
+     {
+      "id": "rs_construct_2",
+      "name": "แขนกล",
+      "text": "ใช้แขนกลที่ติดตั้งโจมตีหรือยก"
+     },
+     {
+      "id": "rs_construct_3",
+      "name": "สแกนจุดอ่อน",
+      "text": "ตรวจหาจุดอ่อนของวัตถุและมอนสเตอร์"
+     },
+     {
+      "id": "rs_construct_4",
+      "name": "ตัดวงจร",
+      "text": "ทำให้เครื่องจักรขัดข้องชั่วคราว"
+     }
+    ],
+    "sublines": [
+     {
+      "id": "sub_construct_1",
+      "name": "ผู้ติดตั้ง",
+      "home": "ครอนไซต์",
+      "countries": [],
+      "note": "อัปเกรดต่อเนื่อง เสี่ยงคลั่ง"
+     },
+     {
+      "id": "sub_construct_2",
+      "name": "ผู้รอดชีวิตตุ๊กตา",
+      "home": "ไอซิลโนวา",
+      "countries": [],
+      "note": "ร่างกายผสม พยายามเป็นมนุษย์"
+     },
+     {
+      "id": "sub_construct_3",
+      "name": "ลูกผสมนีออน",
+      "home": "เนออนเวย์",
+      "countries": [],
+      "note": "ส่วนใหญ่ติดตั้งราคาถูก"
+     },
+     {
+      "id": "sub_construct_4",
+      "name": "ผู้เลือกเอง",
+      "home": "ทั่วเมคาเรีย",
+      "countries": [],
+      "note": "อัปเกรดเพื่ออาชีพ"
+     }
+    ],
+    "notes": [
+     "ลูกผสมจักรกลกลายเป็น ไม่ได้เกิดเป็น ([../../../lore/storylines/18-construct.md](../../../lore/storylines/18-construct.md) หัวข้อ 2)",
+     "แบบ | ก่อนติดตั้ง | ตั้งแต่ติดตั้ง",
+     "เกิดเป็นเผ่าเดิม (ตัวละครหลักเป็นมนุษย์ NPC ใช้เผ่าเดิมในแถวของตน) | ค่าสถานะ อายุขัย ความสามารถประจำเผ่า และอัตราปีชีวิตของเผ่าเดิม พรและคำสาปกำเนิดสุ่มตามเผ่าเดิม | ค่าของลูกผสมจักรกลตั้งแต่การติดตั้งครั้งแรก คือ co.b2 ทาง ก หรือ co.t1 แล้วแต่อันไหนก่อน",
+     "ตุ๊กตา (แบบผู้รอดชีวิตตุ๊กตา หรือ co.b1 ทาง ข) เกิดจากโครงการตุ๊กตา (ตั้งแต่ ศ.ม. 10,200) | ไม่มี เป็นลูกผสมตั้งแต่เกิด | ค่าของลูกผสมจักรกลทั้งหมดตั้งแต่เกิด",
+     "การเปลี่ยนค่าเมื่อติดตั้งครั้งแรก",
+     "- ค่าสถานะเริ่มต้นที่สุ่มตอนเกิดย้ายไปตำแหน่งเดียวกันในช่วงของลูกผสม (ต่ำสุดเป็นต่ำสุด สูงสุดเป็นสูงสุด ปัดครึ่งขึ้น) ค่าที่เพิ่มหรือลดหลังเกิดคงไว้",
+     "- อายุขัยสุ่มใหม่ในช่วง 90–150 และซ่อนไว้เหมือนเดิม อายุจริงและอายุเทียบมนุษย์นับต่อ ตั้งแต่ปีนี้หนึ่งปีชีวิตเท่ากับ (อายุขัยใหม่ − อายุจริงตอนติดตั้ง) ÷ (75 − อายุเทียบมนุษย์ตอนติดตั้ง) ปีโลก ตายตามธรรมชาติเมื่ออายุจริงถึงอายุขัยใหม่ ([../../../lore/world/world-time.md](../../../lore/world/world-time.md) หัวข้อ 3)",
+     "- ความสามารถประจำเผ่าด้านล่างเริ่มตั้งแต่ติดตั้ง ช่องติดตั้งนับสิบปีชีวิตจากวันติดตั้ง พร คำสาป และสกิลเฉพาะเผ่าของลูกผสมได้รับได้ตั้งแต่นั้น"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/18-construct.md:1"
+   },
+   {
+    "id": "soulmachine",
+    "n": 19,
+    "name": "หุ่นวิญญาณ",
+    "storyPrefix": "so",
+    "stats": {
+     "pow": [
+      9,
+      13
+     ],
+     "mag": [
+      6,
+      10
+     ],
+     "spd": [
+      7,
+      11
+     ],
+     "luk": [
+      7,
+      11
+     ],
+     "int": [
+      12,
+      16
+     ],
+     "vit": [
+      10,
+      14
+     ]
+    },
+    "lifespan": [
+     205,
+     235
+    ],
+    "worldYearsPerLifeYear": 3.8,
+    "adultAge": 11,
+    "elderAge": 144,
+    "generationGap": null,
+    "wakes": true,
+    "lifeYearDivisor": 58,
+    "sharePct": 1.5,
+    "gender": {
+     "m": 40,
+     "f": 40,
+     "n": 20,
+     "note": "เลือกเองตอนตื่น (สุ่ม 40 ชาย 40 หญิง 20 ไร้เพศ)"
+    },
+    "tags": [
+     "mechanical",
+     "soul_core",
+     "weak_lightning"
+    ],
+    "newTags": [
+     "soul_core"
+    ],
+    "axisShift": {
+     "curious": 15
+    },
+    "traitPlus": [
+     "curious",
+     "serious",
+     "honest",
+     "kind",
+     "dreamer"
+    ],
+    "traitMinus": [
+     "greedy",
+     "bloodlust"
+    ],
+    "aptPlus": [
+     "scholar",
+     "music",
+     "rune",
+     "healing",
+     "farming"
+    ],
+    "aptMinus": [
+     "contract",
+     "curse",
+     "blood"
+    ],
+    "likes": [
+     "temperate"
+    ],
+    "dislikes": [
+     "volcanic"
+    ],
+    "blessPlus": [
+     "b_lucid",
+     "b_memory",
+     "b_inspire",
+     "b_calmmind",
+     "b_polymath"
+    ],
+    "cursePlus": [
+     "c_hollow",
+     "c_echo",
+     "c_doppel",
+     "c_forgetful"
+    ],
+    "blessClash": [
+     "b_fertile",
+     "b_truelove"
+    ],
+    "curseClash": [
+     "c_barren",
+     "c_sickly"
+    ],
+    "jobBonus": [
+     "clockmaker",
+     "librarian",
+     "scribe",
+     "teacher",
+     "physician"
+    ],
+    "powers": [
+     {
+      "name": "ไม่ต้องกินหรือหายใจ",
+      "text": "อยู่ในที่ไม่มีอากาศหรืออาหารได้"
+     },
+     {
+      "name": "จดจำสมบูรณ์",
+      "text": "จำทุกสิ่งที่เห็นและได้ยินโดยไม่ลืม"
+     },
+     {
+      "name": "ชิ้นส่วนเปลี่ยนได้",
+      "text": "ชิ้นส่วนที่เสียหายเปลี่ยนใหม่ได้ ไม่ใช่การรักษา"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_soulmachine_u",
+      "name": "ความคิดเป็นระเบียบ",
+      "tier": "U",
+      "text": "ตัดสินใจโดยไม่ถูกอารมณ์รบกวน"
+     },
+     {
+      "id": "rb_soulmachine_r",
+      "name": "ข้อมูลหลายชั้น",
+      "tier": "R",
+      "text": "คิดและทำงานหลายอย่างพร้อมกัน"
+     },
+     {
+      "id": "rb_soulmachine_e",
+      "name": "คำถามแรก",
+      "tier": "E",
+      "text": "ถามคำถามที่ทำให้ผู้ฟังต้องคิดทบทวนความเชื่อของตัวเอง"
+     },
+     {
+      "id": "rb_soulmachine_l",
+      "name": "วิญญาณที่ไม่ใช่ของเรา",
+      "tier": "L",
+      "text": "รับรู้วิญญาณที่ถูกขังในเครื่องจักรปฐม และสื่อสารกับมันได้"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_soulmachine_c",
+      "name": "รหัสต้นทาง",
+      "tier": "C",
+      "text": "ถูกคำสั่งต้นทางบังคับในสถานการณ์ที่ลืมไม่ได้"
+     },
+     {
+      "id": "rc_soulmachine_u",
+      "name": "ไม่รู้ที่มา",
+      "tier": "U",
+      "text": "ไม่รู้ตัวตนที่แท้จริง ความไม่แน่ใจรบกวน"
+     },
+     {
+      "id": "rc_soulmachine_r",
+      "name": "วิญญาณขัดข้อง",
+      "tier": "R",
+      "text": "ชิ้นส่วนเสียทำให้ความทรงจำสลายหรือรวนได้"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_soulmachine_1",
+      "name": "คำนวณเส้นทาง",
+      "text": "วางแผนที่แม่นยำสำหรับการเดินทางและการต่อสู้"
+     },
+     {
+      "id": "rs_soulmachine_2",
+      "name": "ซ่อมตนเอง",
+      "text": "ซ่อมชิ้นส่วนตนเองได้ในระยะเวลาสั้น"
+     },
+     {
+      "id": "rs_soulmachine_3",
+      "name": "ถอดรหัส",
+      "text": "อ่านภาษาและเครื่องหมายที่ไม่เคยเห็นได้เร็ว"
+     },
+     {
+      "id": "rs_soulmachine_4",
+      "name": "เชื่อมเครือข่าย",
+      "text": "เชื่อมต่อกับหุ่นวิญญาณอื่นเพื่อแบ่งปันข้อมูล"
+     }
+    ],
+    "sublines": [],
+    "notes": [
+     "ไม่ได้ตายตามอายุ แต่ชิ้นส่วนสึกหรอ อายุขัยคือจำนวนปีที่ซ่อมได้ก่อนวิญญาณหลุด นับจากวันตื่น วันตื่นนับเป็นอายุเทียบมนุษย์ 17 หนึ่งปีชีวิตเท่ากับอายุขัย ÷ 58 ปีโลก ([../../../lore/world/world-time.md](../../../lore/world/world-time.md) หัวข้อ 3)"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/19-soulmachine.md:1"
+   },
+   {
+    "id": "mummy",
+    "n": 20,
+    "name": "มัมมี่",
+    "storyPrefix": "mu",
+    "stats": {
+     "pow": [
+      9,
+      13
+     ],
+     "mag": [
+      10,
+      14
+     ],
+     "spd": [
+      4,
+      8
+     ],
+     "luk": [
+      6,
+      10
+     ],
+     "int": [
+      10,
+      14
+     ],
+     "vit": [
+      12,
+      16
+     ]
+    },
+    "lifespan": [
+     235,
+     280
+    ],
+    "worldYearsPerLifeYear": 4.4,
+    "adultAge": 13,
+    "elderAge": 169,
+    "generationGap": null,
+    "wakes": true,
+    "lifeYearDivisor": 58,
+    "sharePct": 1.5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0,
+     "note": "ตามเพศเดิมตอนมีชีวิต"
+    },
+    "tags": [
+     "undead",
+     "dry",
+     "weak_fire"
+    ],
+    "newTags": [
+     "dry"
+    ],
+    "axisShift": {
+     "piety": 15,
+     "temper": -10
+    },
+    "traitPlus": [
+     "devout",
+     "proud",
+     "serious",
+     "calm",
+     "vengeful"
+    ],
+    "traitMinus": [
+     "flirt",
+     "humor"
+    ],
+    "aptPlus": [
+     "necro",
+     "divination",
+     "rune",
+     "scholar",
+     "leadership"
+    ],
+    "aptMinus": [
+     "water",
+     "sailing",
+     "taming"
+    ],
+    "likes": [
+     "desert"
+    ],
+    "dislikes": [
+     "frozen",
+     "islands",
+     "tropical"
+    ],
+    "blessPlus": [
+     "b_regen",
+     "b_immortalbody",
+     "b_curseward",
+     "b_oracleear",
+     "b_longevity"
+    ],
+    "cursePlus": [
+     "c_fireweak",
+     "c_ghost",
+     "c_undeadtouch",
+     "c_souldebt"
+    ],
+    "blessClash": [
+     "b_sacredflame",
+     "b_lightward",
+     "b_undeadslayer",
+     "b_holyblood"
+    ],
+    "curseClash": [
+     "c_sickly",
+     "c_fever"
+    ],
+    "jobBonus": [
+     "scribe",
+     "gravekeeper",
+     "seer",
+     "archaeologist",
+     "chronicler"
+    ],
+    "powers": [
+     {
+      "name": "ร่างคงด้วยธุลี",
+      "text": "ร่างไม่แก่ตามปี แต่คงอยู่ได้เท่าที่ได้รับการบำรุงด้วยธุลีทิพย์"
+     },
+     {
+      "name": "ผ้าพัน",
+      "text": "ผ้าพันศพป้องกันความเสียหายจากคม แต่ไวต่อไฟ"
+     },
+     {
+      "name": "อยู่ในสองโลก",
+      "text": "เห็นวิญญาณและรู้สึกถึงความตายใกล้ตัว"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_mummy_u",
+      "name": "ผ้าพันนิรันดร์",
+      "tier": "U",
+      "text": "ลดความเสียหายและฟื้นตัวช้า ๆ"
+     },
+     {
+      "id": "rb_mummy_r",
+      "name": "ผู้อ่านบัญชีวิญญาณ",
+      "tier": "R",
+      "text": "รู้ว่าใครจงรักภักดีหรือกำลังทรยศ"
+     },
+     {
+      "id": "rb_mummy_e",
+      "name": "เสียงของฟาโรห์",
+      "tier": "E",
+      "text": "ผู้รับใช้เชื่อฟังคำสั่งโดยไม่ตั้งคำถาม"
+     },
+     {
+      "id": "rb_mummy_l",
+      "name": "ผู้ปกครองนิรันดร์",
+      "tier": "L",
+      "text": "อายุยืนไม่จำกัดตราบที่มีธุลีทิพย์ ผู้ติดตามทุกคนสาบานตนต่อผู้ถือ"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_mummy_c",
+      "name": "ร่างแห้ง",
+      "tier": "C",
+      "text": "ขาดธุลีทิพย์แล้วร่างกายเสื่อมเร็วมาก"
+     },
+     {
+      "id": "rc_mummy_u",
+      "name": "ไฟทำลายผ้าพัน",
+      "tier": "U",
+      "text": "ไฟทำความเสียหายเป็นสองเท่า"
+     },
+     {
+      "id": "rc_mummy_r",
+      "name": "ผู้ที่ไม่ได้ตาย",
+      "tier": "R",
+      "text": "ถูกผู้ล่าเทพและศาสนาแสงถือเป็นสิ่งไม่เป็นธรรมชาติ"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_mummy_1",
+      "name": "ทำมัมมี่",
+      "text": "ถนอมร่างผู้อื่นให้คงอยู่หลังตาย"
+     },
+     {
+      "id": "rs_mummy_2",
+      "name": "เรียกผู้รับใช้",
+      "text": "เรียกผู้รับใช้ที่สาบานไว้ให้มาตามคำสั่ง"
+     },
+     {
+      "id": "rs_mummy_3",
+      "name": "คำสาปฟาโรห์",
+      "text": "สาปผู้บุกรุกสุสานให้ประสบภัยพิบัติ"
+     },
+     {
+      "id": "rs_mummy_4",
+      "name": "อ่านชะตาหลังความตาย",
+      "text": "รู้ว่าวิญญาณของผู้ตายไปที่ใด"
+     }
+    ],
+    "sublines": [],
+    "notes": [
+     "นับจากวันตื่น เป็นปีที่ร่างใช้งานได้ด้วยธุลีทิพย์ตามส่วนปกติของลำดับชั้น วันตื่นนับเป็นอายุเทียบมนุษย์ 17 หนึ่งปีชีวิตเท่ากับอายุขัย ÷ 58 ปีโลก ([../../../lore/world/world-time.md](../../../lore/world/world-time.md) หัวข้อ 3) ธุลีขาด ร่างทรุดเร็วกว่านี้ (คำสาป ร่างแห้ง) (NPC ที่แถวระบุอายุเกินเท่านั้น ตาม world-time หัวข้อ 6) ฟาโรห์และผู้ปกครองที่ได้ธุลีสม่ำเสมอ (ตั้งแต่ ศ.ม. 2,000) หรือผู้ถือพร ผู้ปกครองนิรันดร์ อยู่ได้เกินช่วงนี้มาก ([../../../lore/world/world-time.md](../../../lore/world/world-time.md) หัวข้อ 6)"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/20-mummy.md:1"
+   },
+   {
+    "id": "ghoul",
+    "n": 21,
+    "name": "กูล",
+    "storyPrefix": "gh",
+    "stats": {
+     "pow": [
+      10,
+      14
+     ],
+     "mag": [
+      4,
+      8
+     ],
+     "spd": [
+      9,
+      13
+     ],
+     "luk": [
+      3,
+      7
+     ],
+     "int": [
+      4,
+      8
+     ],
+     "vit": [
+      12,
+      16
+     ]
+    },
+    "lifespan": [
+     60,
+     100
+    ],
+    "worldYearsPerLifeYear": 1.4,
+    "adultAge": 4,
+    "elderAge": 52,
+    "generationGap": null,
+    "wakes": true,
+    "lifeYearDivisor": 58,
+    "sharePct": 1.5,
+    "gender": {
+     "m": 50,
+     "f": 50,
+     "n": 0,
+     "note": "ตามเพศเดิมตอนมีชีวิต"
+    },
+    "tags": [
+     "undead",
+     "hungry",
+     "weak_light"
+    ],
+    "newTags": [
+     "hungry"
+    ],
+    "axisShift": {
+     "brave": 10,
+     "kind": -10
+    },
+    "traitPlus": [
+     "glutton",
+     "bloodlust",
+     "reckless",
+     "loner",
+     "cold"
+    ],
+    "traitMinus": [
+     "kind",
+     "generous"
+    ],
+    "aptPlus": [
+     "unarmed",
+     "tracking",
+     "necro",
+     "taming",
+     "curse"
+    ],
+    "aptMinus": [
+     "trade",
+     "charm",
+     "leadership"
+    ],
+    "likes": [
+     "desert",
+     "volcanic"
+    ],
+    "dislikes": [
+     "temperate"
+    ],
+    "blessPlus": [
+     "b_ironstomach",
+     "b_plagueward",
+     "b_poisonward",
+     "b_regen",
+     "b_beastward"
+    ],
+    "cursePlus": [
+     "c_hunger",
+     "c_smell",
+     "c_lightweak",
+     "c_undeadtouch",
+     "c_outcast"
+    ],
+    "blessClash": [
+     "b_mercy",
+     "b_lightward",
+     "b_saintmark",
+     "b_holyblood"
+    ],
+    "curseClash": [
+     "c_frail"
+    ],
+    "jobBonus": [
+     "gravekeeper",
+     "hunter",
+     "beast_hunter",
+     "miner"
+    ],
+    "powers": [
+     {
+      "name": "ไม่ต้องใช้เสบียง",
+      "text": "ไม่ต้องการอาหารหรือน้ำปกติ ความหิวเป็นแรงบีบให้ต้องกินบางอย่างตลอดเวลา ไม่ใช่ความจำเป็นของร่าง ปฏิเสธได้ ร่างไม่ตาย แต่ทุกปีชีวิตที่อดมีโอกาส 20% ได้ c_madness"
+     },
+     {
+      "name": "ไม่รู้สึกเจ็บ",
+      "text": "บาดแผลไม่ชะลอการเคลื่อนไหว"
+     },
+     {
+      "name": "กลิ่นของสนามรบ",
+      "text": "รับรู้ความตายและเลือดไกลหลายลีก"
+     }
+    ],
+    "blessings": [
+     {
+      "id": "rb_ghoul_u",
+      "name": "ฟื้นด้วยการกิน",
+      "tier": "U",
+      "text": "ฟื้นตัวทุกครั้งที่กินซากหรือเนื้อสด"
+     },
+     {
+      "id": "rb_ghoul_r",
+      "name": "ไม่ยอมล้ม",
+      "tier": "R",
+      "text": "ไม่ตายเมื่อ HP หมดครั้งหนึ่งต่อการต่อสู้"
+     },
+     {
+      "id": "rb_ghoul_e",
+      "name": "ความทรงจำที่กลืน",
+      "tier": "E",
+      "text": "กินร่างผู้ตายแล้วรู้ความทรงจำล่าสุดของเขา"
+     },
+     {
+      "id": "rb_ghoul_l",
+      "name": "ราชันย์ผู้หิว",
+      "tier": "L",
+      "text": "กูลทุกตนในรัศมีสิบลีกเชื่อฟังผู้ถือ"
+     }
+    ],
+    "curses": [
+     {
+      "id": "rc_ghoul_c",
+      "name": "หิวที่ไม่เคยอิ่ม",
+      "tier": "C",
+      "text": "ตัดสินใจแย่ลงเมื่อมีอาหารอยู่ใกล้"
+     },
+     {
+      "id": "rc_ghoul_u",
+      "name": "ไม่ใช่ผู้มีชีวิต",
+      "tier": "U",
+      "text": "ไม่ได้รับสิทธิ์ของผู้มีชีวิตในดินแดนของแสง"
+     },
+     {
+      "id": "rc_ghoul_r",
+      "name": "ความตายครั้งที่สอง",
+      "tier": "R",
+      "text": "เมื่อตายอีกครั้ง ไม่มีโอกาสกลับมาอีก"
+     }
+    ],
+    "skills": [
+     {
+      "id": "rs_ghoul_1",
+      "name": "กัดติดเชื้อ",
+      "text": "กัดแล้วเหยื่อมีโอกาสกลายเป็นกูล"
+     },
+     {
+      "id": "rs_ghoul_2",
+      "name": "ล่าตามกลิ่น",
+      "text": "ตามกลิ่นเลือดข้ามระยะไกล"
+     },
+     {
+      "id": "rs_ghoul_3",
+      "name": "ลุกคืนชีพ",
+      "text": "ลุกขึ้นหลังถูกฆ่าหนึ่งครั้งในแต่ละวัน"
+     },
+     {
+      "id": "rs_ghoul_4",
+      "name": "กินความทรงจำ",
+      "text": "กินผู้ตายเพื่อได้ความทรงจำล่าสุด"
+     }
+    ],
+    "sublines": [],
+    "notes": [
+     "นับเป็นปีหลังลุกขึ้นจากความตายครั้งแรก วันลุกนับเป็นอายุเทียบมนุษย์ 17 หนึ่งปีชีวิตเท่ากับอายุขัย ÷ 58 ปีโลก ([../../../lore/world/world-time.md](../../../lore/world/world-time.md) หัวข้อ 3)"
+    ],
+    "fromCode": false,
+    "src": "docs/systems/character/races/21-ghoul.md:1"
+   }
+  ],
+  "tagMeanings": [
+   {
+    "tag": "huge",
+    "text": "ตัวใหญ่ ผ่านประตูเล็กและห้องแคบไม่ได้"
+   },
+   {
+    "tag": "stone_blood",
+    "text": "ร่างแข็งเหมือนหิน ลดความเสียหายจากของมีคมลง 10%"
+   },
+   {
+    "tag": "lava_body",
+    "text": "ตัวร้อน เดินบนหิมะละลายหิมะรอบตัว"
+   },
+   {
+    "tag": "mechanical",
+    "text": "ร่างเป็นกลไก ไม่ป่วย ไม่ติดพิษจากเลือด ซ่อมได้ด้วยช่างตี"
+   },
+   {
+    "tag": "iron_body",
+    "text": "เกราะในตัว"
+   },
+   {
+    "tag": "weak_lightning",
+    "text": "แพ้สายฟ้า"
+   },
+   {
+    "tag": "soul_core",
+    "text": "มีแกนวิญญาณ ถูกเวทที่กระทบจิตได้"
+   },
+   {
+    "tag": "dry",
+    "text": "ร่างแห้ง ไหม้ง่ายมาก"
+   },
+   {
+    "tag": "hungry",
+    "text": "หิวเนื้อ ต้องกินเนื้อเป็นระยะ"
+   }
+  ],
+  "overrides": [
+   {
+    "of": "b_nighteye",
+    "races": [
+     "vampire",
+     "darkelf"
+    ],
+    "raceText": "แวมไพร์ ดาร์กเอลฟ์ ที่มีตามองเห็นในที่มืดอยู่แล้ว",
+    "text": "ขยายรัศมีมองเห็นเป็นสองเท่า เห็นทะลุหมอกเบา (ไม่ทะลุหมอกทึบ)",
+    "src": "docs/systems/character/02-race-affinity.md:72"
+   },
+   {
+    "of": "b_nighteye",
+    "races": [],
+    "raceText": "เผ่าอื่น",
+    "text": "มองในที่มืดได้ เหมือนผลปกติ",
+    "src": "docs/systems/character/02-race-affinity.md:73"
+   },
+   {
+    "of": "b_longevity",
+    "races": [],
+    "raceText": "เผ่าที่ค่ากลางอายุขัยตั้งแต่ 230 ปีขึ้นไป",
+    "text": "อายุขัยธรรมชาติเลื่อนขึ้น 5% เท่านั้น (ร่างอายุยืนอยู่แล้ว)",
+    "src": "docs/systems/character/02-race-affinity.md:74"
+   },
+   {
+    "of": "b_longevity",
+    "races": [],
+    "raceText": "เผ่าอายุขัยต่ำกว่าร้อยปี",
+    "text": "เลื่อนขึ้น 20%",
+    "src": "docs/systems/character/02-race-affinity.md:75"
+   },
+   {
+    "of": "b_regen",
+    "races": [
+     "slime"
+    ],
+    "raceText": "สไลม์",
+    "text": "ผลเป็นสองเท่า",
+    "src": "docs/systems/character/02-race-affinity.md:76"
+   },
+   {
+    "of": "b_regen",
+    "races": [
+     "mummy",
+     "ghoul"
+    ],
+    "raceText": "มัมมี่ กูล",
+    "text": "ใช้ไม่ได้กับบาดแผลจากไฟหรือแสง",
+    "src": "docs/systems/character/02-race-affinity.md:77"
+   },
+   {
+    "of": "c_sunburn",
+    "races": [
+     "vampire"
+    ],
+    "raceText": "แวมไพร์",
+    "text": "แสงอาทิตย์สลายร่างเป็นผง (เทียบเท่า \"ผู้ไร้เงาแสง\")",
+    "src": "docs/systems/character/02-race-affinity.md:78"
+   },
+   {
+    "of": "c_sunburn",
+    "races": [],
+    "raceText": "เผ่าอื่น",
+    "text": "ผิวไหม้ง่าย ผลปกติ",
+    "src": "docs/systems/character/02-race-affinity.md:79"
+   },
+   {
+    "of": "c_hydrophobia",
+    "races": [
+     "merfolk",
+     "naga"
+    ],
+    "raceText": "เงือก นาคา",
+    "text": "ใช้ไม่ได้ เปลี่ยนเป็น nc_fear_deep กลัวน้ำลึก (ว่ายในน้ำตื้นได้)",
+    "src": "docs/systems/character/02-race-affinity.md:80"
+   },
+   {
+    "of": "c_vertigo",
+    "races": [
+     "winged"
+    ],
+    "raceText": "เผ่าปีก",
+    "text": "ใช้ไม่ได้ เปลี่ยนเป็นไม่กล้าบินสูง บินได้แค่ระดับต้นไม้",
+    "src": "docs/systems/character/02-race-affinity.md:81"
+   },
+   {
+    "of": "c_fireweak",
+    "races": [
+     "lavakin",
+     "dragonkin"
+    ],
+    "raceText": "เผ่าลาวา เผ่ามังกร",
+    "text": "ใช้ไม่ได้ เปลี่ยนเป็นแพ้ความเย็นแทน",
+    "src": "docs/systems/character/02-race-affinity.md:82"
+   },
+   {
+    "of": "c_moonfrenzy",
+    "races": [
+     "beast"
+    ],
+    "raceText": "เผ่าสัตว์",
+    "text": "แปลงร่างเป็นสัตว์ใหญ่แทนมนุษย์หมาป่า (กำลัง +2 แทน)",
+    "src": "docs/systems/character/02-race-affinity.md:83"
+   },
+   {
+    "of": "c_moonfrenzy",
+    "races": [
+     "human",
+     "elf"
+    ],
+    "raceText": "มนุษย์ เอลฟ์",
+    "text": "กลายเป็นหมาป่าเต็มตัว ทุกคืนจันทร์เต็มดวง",
+    "src": "docs/systems/character/02-race-affinity.md:84"
+   },
+   {
+    "of": "c_hunger",
+    "races": [
+     "ghoul"
+    ],
+    "raceText": "กูล",
+    "text": "หิวจนอยู่ไม่ได้ (เทียบเท่า \"หิวที่ไม่หาย\") ต้องกินเนื้อ",
+    "src": "docs/systems/character/02-race-affinity.md:85"
+   },
+   {
+    "of": "c_hunger",
+    "races": [],
+    "raceText": "เผ่าอื่น",
+    "text": "หิวง่าย ผลปกติ",
+    "src": "docs/systems/character/02-race-affinity.md:86"
+   }
+  ],
+  "synergy": [
+   {
+    "id": "SR-01",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #light หรือ #holy เป้าหมายมี undead",
+    "effect": "ความเสียหาย ×1.5",
+    "why": "แสงของศาสนจักรทำลายผู้ตาย",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "light",
+      "holy",
+      "undead"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:39",
+    "attacker": [
+     "light",
+     "holy"
+    ],
+    "target": [
+     "undead"
+    ],
+    "mul": 1.5
+   },
+   {
+    "id": "SR-02",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #light หรือ #holy เป้าหมายมี weak_light และไม่ใช่ undead",
+    "effect": "×1.5",
+    "why": "เผ่าปีศาจและดาร์กเอลฟ์หนีจากแสง (กูลเป็น undead จึงใช้ SR-01 แทน ไม่ซ้อนกัน)",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "light",
+      "holy",
+      "weak_light"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:40",
+    "attacker": [
+     "light",
+     "holy"
+    ],
+    "target": [
+     "weak_light"
+    ],
+    "mul": 1.5
+   },
+   {
+    "id": "SR-03",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #fire เป้าหมายมี weak_fire (มัมมี่ สไลม์)",
+    "effect": "×2",
+    "why": "ร่างแห้งไหม้ง่าย ร่างเหลวเสียรูป",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "fire",
+      "weak_fire"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:41",
+    "attacker": [
+     "fire"
+    ],
+    "target": [
+     "weak_fire"
+    ],
+    "mul": 2
+   },
+   {
+    "id": "SR-04",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #fire เป้าหมายมี fire_res",
+    "effect": "×0.4",
+    "why": "ทนไฟ",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "fire",
+      "fire_res"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:42",
+    "attacker": [
+     "fire"
+    ],
+    "target": [
+     "fire_res"
+    ],
+    "mul": 0.4
+   },
+   {
+    "id": "SR-05",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #fire เป้าหมายมี lava_body",
+    "effect": "×0.2",
+    "why": "ไฟเป็นของเผ่าลาวา",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "fire",
+      "lava_body"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:43",
+    "attacker": [
+     "fire"
+    ],
+    "target": [
+     "lava_body"
+    ],
+    "mul": 0.2
+   },
+   {
+    "id": "SR-06",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #ice เป้าหมายมี weak_ice",
+    "effect": "×1.6",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "ice",
+      "weak_ice"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:44",
+    "attacker": [
+     "ice"
+    ],
+    "target": [
+     "weak_ice"
+    ],
+    "mul": 1.6
+   },
+   {
+    "id": "SR-07",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #lightning เป้าหมายมี weak_lightning",
+    "effect": "×2",
+    "why": "วงจรและแกนวิญญาณช็อตง่าย",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "lightning",
+      "weak_lightning"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:45",
+    "attacker": [
+     "lightning"
+    ],
+    "target": [
+     "weak_lightning"
+    ],
+    "mul": 2
+   },
+   {
+    "id": "SR-08",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #water เป้าหมายมี lava_body",
+    "effect": "×1.6 และดับร่างชั่วคราว 1 ตา",
+    "why": "น้ำทำให้ลาวาแข็ง",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "water",
+      "lava_body"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:46",
+    "attacker": [
+     "water"
+    ],
+    "target": [
+     "lava_body"
+    ],
+    "mul": 1.6
+   },
+   {
+    "id": "SR-09",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #water เป้าหมายมี mechanical",
+    "effect": "×1.2",
+    "why": "สนิม",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "water",
+      "mechanical"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:47",
+    "attacker": [
+     "water"
+    ],
+    "target": [
+     "mechanical"
+    ],
+    "mul": 1.2
+   },
+   {
+    "id": "SR-10",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #earth เป้าหมายมี flight",
+    "effect": "×0.6",
+    "why": "บินหนีได้",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "earth",
+      "flight"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:48",
+    "attacker": [
+     "earth"
+    ],
+    "target": [
+     "flight"
+    ],
+    "mul": 0.6
+   },
+   {
+    "id": "SR-11",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #wind หรือ #lightning เป้าหมายมี flight",
+    "effect": "×1.3",
+    "why": "ปีกรับลมเต็มที่",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "wind",
+      "lightning",
+      "flight"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:49",
+    "attacker": [
+     "wind",
+     "lightning"
+    ],
+    "target": [
+     "flight"
+    ],
+    "mul": 1.3
+   },
+   {
+    "id": "SR-12",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #poison_* หรือ venom เป้าหมายมี mechanical",
+    "effect": "×0",
+    "why": "ไม่มีเลือด",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "poison_*",
+      "venom",
+      "mechanical"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:50",
+    "attacker": [
+     "poison_*",
+     "venom"
+    ],
+    "target": [
+     "mechanical"
+    ],
+    "mul": 0
+   },
+   {
+    "id": "SR-13",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "ผู้โจมตีมี #dark หรือ #necro เป้าหมายมี undead",
+    "effect": "×0.5 และอาจกลายเป็นผู้ควบคุมได้",
+    "why": "ความตายเป็นของพวกเดียวกัน",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "dark",
+      "necro",
+      "undead"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:51",
+    "attacker": [
+     "dark",
+     "necro"
+    ],
+    "target": [
+     "undead"
+    ],
+    "mul": 0.5
+   },
+   {
+    "id": "SR-14",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "เป้าหมายมี weak_iron และถูกอาวุธเหล็ก",
+    "effect": "×1.5",
+    "why": "ภูตแพ้เหล็ก",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "weak_iron"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:52",
+    "target": [
+     "weak_iron"
+    ],
+    "mul": 1.5
+   },
+   {
+    "id": "SR-15",
+    "group": "ก. ธาตุ แสง ความมืด ต่อเผ่า",
+    "cond": "เป้าหมายมี weak_silver (จาก c_silverbane) และถูกอาวุธเงิน",
+    "effect": "×1.6",
+    "why": "ถือตามคำสาป c_silverbane",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "weak_silver",
+      "c_silverbane"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:53",
+    "target": [
+     "weak_silver"
+    ],
+    "mul": 1.6
+   },
+   {
+    "id": "SR-20",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี weak_light และตัวละครมี #light หรือ #holy จากพรหรือ skill",
+    "effect": "ลบ weak_light ทิ้ง ได้ต้านเวทแสง (ความเสียหายจากแสง ×0.5) และเดินในแสงจ้าได้ แต่ถูกพวกเดียวกันเรียกว่าคนนอกรีต",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "unknown",
+      "id": "weak_light"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "weak_light",
+      "light",
+      "holy"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:61",
+    "mul": 0.5
+   },
+   {
+    "id": "SR-21",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี weak_sun และตัวละครมี b_sunward หรือ #heat_res",
+    "effect": "ลดเป็นอ่อนแรงในแสงแดด แทนการสลายเป็นผง (แวมไพร์ทนแดดครึ่งวันได้)",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "weak_sun",
+      "b_sunward",
+      "heat_res"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:62"
+   },
+   {
+    "id": "SR-22",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี undead และตัวละครมี #heal",
+    "effect": "รักษาตัวเองได้ครึ่งหนึ่ง และรักษาผู้อื่นสร้างความเจ็บปวดให้ผู้ตาย",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "undead",
+      "heal"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:63"
+   },
+   {
+    "id": "SR-23",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี infernal (เผ่าปีศาจ) และตัวละครมี #demon_bane",
+    "effect": "ล่าปีศาจเผ่าเดียวกันได้ ×1.3 แต่เสีย #infernal ถูกลัทธิปีศาจหมายหัว",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#infernal"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "infernal",
+      "demon_bane"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:64",
+    "mul": 1.3
+   },
+   {
+    "id": "SR-24",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี dragon_blood และตัวละครมี #dragon_bane",
+    "effect": "พรทำให้ร่างขัดกัน ได้รับ c_outcast ทันที และถูกลัทธิบูชามังกรไม่ยอมรับ แต่มังกรรู้สึกถึงพรนี้เป็นคำสาป",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "dragon_blood",
+      "dragon_bane",
+      "c_outcast"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:65"
+   },
+   {
+    "id": "SR-25",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี flight และตัวละครมี c_vertigo",
+    "effect": "ใช้ไม่ได้ ดู [02-race-affinity.md](02-race-affinity.md) ข้อ ค",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "flight",
+      "c_vertigo"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:66"
+   },
+   {
+    "id": "SR-26",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี water_breath และตัวละครมี c_hydrophobia",
+    "effect": "เปลี่ยนเป็น nc_fear_deep",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "nc_fear_deep"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "water_breath",
+      "c_hydrophobia",
+      "nc_fear_deep"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:67"
+   },
+   {
+    "id": "SR-27",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี amorphous (สไลม์) และตัวละครมีความถนัดดาบ ขวาน หอก",
+    "effect": "ใช้อาวุธได้โดยกลืนอาวุธเข้าตัว (ผลเท่าเดิม แต่ทิ้งอาวุธไม่ได้)",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "amorphous"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:68"
+   },
+   {
+    "id": "SR-28",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี mechanical และตัวละครมี #heal หรือ b_regen",
+    "effect": "ไม่ได้ผล ต้องซ่อมด้วยช่าง",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "mechanical",
+      "heal",
+      "b_regen"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:69"
+   },
+   {
+    "id": "SR-29",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี dry (มัมมี่) และตัวละครมี #water หรือ b_waterwalk",
+    "effect": "ร่างพองน้ำ ลดความสามารถทั้งหมด 20% ขณะเปียก",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "dry",
+      "water",
+      "b_waterwalk"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:70"
+   },
+   {
+    "id": "SR-30",
+    "group": "ข. ของที่ขัดกับร่างของตัวเอง",
+    "cond": "เผ่ามี huge และตัวละครมี #stealth",
+    "effect": "ซ่อนตัวได้เฉพาะในที่โล่งกว้าง (ภูเขา ทะเลทราย) ไม่มีผลในเมือง",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "huge",
+      "stealth"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:71"
+   },
+   {
+    "id": "SR-31",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_curseward และได้คำสาป",
+    "effect": "คำสาปถูกสะท้อน 50% เป็นพรเล็กหนึ่งอย่างแทน",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_curseward"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:77"
+   },
+   {
+    "id": "SR-32",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_youth และ c_shortlife หรือ c_fastaging",
+    "effect": "หักล้างกัน อายุขัยเท่าปกติ แต่ได้คำสาป c_echo เสียงสะท้อนชาติก่อน",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_echo"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_youth",
+      "c_shortlife",
+      "c_fastaging",
+      "c_echo"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:78"
+   },
+   {
+    "id": "SR-33",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_longevity และ c_shortlife",
+    "effect": "ผลทั้งสองหายไป",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_longevity",
+      "c_shortlife"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:79"
+   },
+   {
+    "id": "SR-34",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_destiny หรือ b_fateweaver และ c_doomed",
+    "effect": "ชะตาขัดกัน เหตุการณ์ใหญ่ของชีวิตสุ่มสองครั้ง เลือกผลที่แย่กว่า",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_destiny",
+      "b_fateweaver",
+      "c_doomed"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:80"
+   },
+   {
+    "id": "SR-35",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_truelove และ c_lovedoom",
+    "effect": "คนรักตายได้ แต่กลับมาเกิดใหม่ในชาติถัดไปของโลก เป็นเส้นเรื่องใหม่",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_truelove",
+      "c_lovedoom"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:81"
+   },
+   {
+    "id": "SR-36",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_plagueward และ c_plaguecarrier",
+    "effect": "เป็นพาหะที่ไม่ป่วยเอง เป็นอาวุธชีวภาพ (NPC ที่ล่าจะหมายหัว)",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_plagueward",
+      "c_plaguecarrier"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:82"
+   },
+   {
+    "id": "SR-37",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_lightward และ c_cursedblood",
+    "effect": "ถูกเผาเมื่อเข้าที่ศักดิ์สิทธิ์ แต่ไม่โดนคำสาปจากเลือดเมื่อสู้กับผู้ตาย",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_lightward",
+      "c_cursedblood"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:83"
+   },
+   {
+    "id": "SR-38",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครมี b_beastward และ c_monsterlure",
+    "effect": "หักล้างกัน มอนสเตอร์ไม่สนใจ แต่ปีศาจยังสนใจ",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "b_beastward",
+      "c_monsterlure"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:84"
+   },
+   {
+    "id": "SR-39",
+    "group": "ค. พรชนกับคำสาป",
+    "cond": "ตัวละครได้ของที่ขัดกับเผ่าตัวเองตามหมวด ข",
+    "effect": "ได้ c_outcast ในโอกาส 30% ถิ่นของเผ่าจะไม่ต้อนรับ",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_outcast"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "c_outcast"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:85"
+   },
+   {
+    "id": "SR-40",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย vengeful หรือ proud กับเผ่า มังกร ออร์ค ปีศาจ",
+    "effect": "ศัตรูที่ทำเสียหน้าถูกจำตลอดชีวิต ความแค้นเกิดเป็นเส้นเรื่องเร็วขึ้น 2 เท่า",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "vengeful",
+      "proud"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:91",
+    "mul": 2
+   },
+   {
+    "id": "SR-41",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย kind หรือ peace กับเผ่าออร์ค กูล ปีศาจ",
+    "effect": "เป็นคนแปลกของเผ่า ได้รับความช่วยเหลือจากผู้ไม่ใช่เผ่าเดียวกันมากขึ้น (ไว้ใจ +1 ต่อ NPC นอกเผ่าครั้งแรกที่พบ)",
+    "why": "",
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "ไว้ใจ",
+      "delta": 1
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "kind",
+      "peace"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:92"
+   },
+   {
+    "id": "SR-42",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย devout กับเผ่านาคา มัมมี่ เอลฟ์",
+    "effect": "พรสายศรัทธา (#holy #oracle) หายากน้อยลง ได้ง่ายขึ้น 2 เท่าในศาสนาที่เผ่านั้นนับถือ",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#holy"
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#oracle"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "devout",
+      "holy",
+      "oracle"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:93",
+    "mul": 2
+   },
+   {
+    "id": "SR-43",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย skeptic กับเผ่าที่ศาสนาเป็นศูนย์กลาง (นาคา มัมมี่ เผ่ามังกร)",
+    "effect": "พรสายศรัทธาหายาก 0.5 เท่า แต่เส้นเรื่องกบฏต่อศาสนาเปิดง่ายขึ้น",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "skeptic"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:94",
+    "mul": 0.5
+   },
+   {
+    "id": "SR-44",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย glutton กับกูล",
+    "effect": "หิวมากขึ้น คำสาป c_hunger ผลเป็น 2 เท่า",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_hunger"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "glutton",
+      "c_hunger"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:95",
+    "mul": 2
+   },
+   {
+    "id": "SR-45",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย curious กับหุ่นวิญญาณ",
+    "effect": "ได้ skill ตื่นรู้ (#polyglot หรือ #copycat) เร็วขึ้น",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#polyglot"
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#copycat"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "curious",
+      "polyglot",
+      "copycat"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:96"
+   },
+   {
+    "id": "SR-46",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย loner กับเผ่าสัตว์ ฮาล์ฟลิง",
+    "effect": "ถูกมองว่าผิดปกติ ไว้ใจ NPC เผ่าเดียวกันได้ช้าลง",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "loner"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:97"
+   },
+   {
+    "id": "SR-47",
+    "group": "ง. นิสัยกับเผ่าและของ",
+    "cond": "นิสัย adventurer หรือ freedom กับเผ่าที่ถิ่นปิด (ยักษ์ เผ่าลาวา กูล)",
+    "effect": "เส้นเรื่องออกจากถิ่นเปิดตั้งแต่วัยรุ่น และเกิดเป็นผู้พลัดถิ่นเร็วกว่า",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "adventurer",
+      "freedom"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:98"
+   },
+   {
+    "id": "SR-50",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดเวทแสง (light) กับเผ่าเอลฟ์จันทรา ภูตแสง",
+    "effect": "ผลของ skill ระดับ 1 ถึง 3 เพิ่ม +1 ของสถานะหลัก (เผ่าเกิดมากับแสง)",
+    "why": "",
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "เพิ่ม",
+      "delta": 1
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "light"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:104"
+   },
+   {
+    "id": "SR-51",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดเวทมืด (dark) กับดาร์กเอลฟ์ แวมไพร์",
+    "effect": "เช่นเดียวกัน +1",
+    "why": "",
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "เช่นเดียวกัน",
+      "delta": 1
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "dark"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:105"
+   },
+   {
+    "id": "SR-52",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัด ตีเหล็ก (smithing) กับคนแคระ เผ่าลาวา ยักษ์",
+    "effect": "+1 และสร้างอาวุธระดับ R ขึ้นไปได้เร็วกว่า 1 ระดับความสำเร็จ",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "smithing"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:106"
+   },
+   {
+    "id": "SR-53",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดเดินเรือ (sailing) กับเงือก นาคา มนุษย์เรือ",
+    "effect": "+1 และเดินเรือในน้ำลึกได้",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "sailing"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:107"
+   },
+   {
+    "id": "SR-54",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดฝึกสัตว์ (taming) กับเผ่าสัตว์ ออร์ค",
+    "effect": "+1 สัตว์ที่ฝึกไม่หนีเมื่อเจ้านายตาย",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "taming"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:108"
+   },
+   {
+    "id": "SR-55",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดอักษรรูน (rune) กับคนแคระ ลูกผสมจักรกล มัมมี่",
+    "effect": "+1 และอ่านรูนปฐมที่ถอดรหัสแล้วได้",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "rune"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:109"
+   },
+   {
+    "id": "SR-56",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดค้าขาย (trade) กับฮาล์ฟลิง แวมไพร์",
+    "effect": "+1 และธนาคารเลือดหรือเรือสินค้าเป็นช่องทางเสริมของ skill",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "trade"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:110"
+   },
+   {
+    "id": "SR-57",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดเนโครแมนซี (necro) กับมัมมี่ กูล แวมไพร์",
+    "effect": "ผีและโครงกระดูกเชื่อฟังง่าย แต่ผู้ตายเผ่าตัวเองไม่ยอมเชื่อฟัง",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "necro"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:111"
+   },
+   {
+    "id": "SR-58",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดกลืนกิน (absorb) กับสไลม์",
+    "effect": "ผลเป็น 2 เท่า (สไลม์เป็นเผ่าที่กลืนเป็นธรรมชาติ)",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "absorb"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:112",
+    "mul": 2
+   },
+   {
+    "id": "SR-59",
+    "group": "จ. ความถนัดกับเผ่า",
+    "cond": "ความถนัดทุกสายเวท กับเผ่า ยักษ์ กูล ออร์ค",
+    "effect": "ใช้ได้แต่ต้องเพิ่มความพยายาม (ผลของ skill ลด 1 ระดับ)",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:113"
+   },
+   {
+    "id": "SR-60",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดในทวีปที่เหตุการณ์ใหญ่ (DR PL WR CT ในไฟล์ [../events/world-events.md](../events/world-events.md)) เกิดขึ้นก่อนวัยรุ่น",
+    "effect": "ได้สถานะผู้ผ่านเหตุการณ์ตาม [../events/branches/03-character-and-quests.md](../events/branches/03-character-and-quests.md) และมีโอกาส 40% ได้พรหรือคำสาปจากความทรงจำนั้น",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:119"
+   },
+   {
+    "id": "SR-61",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดในประเทศที่มีธงสงคราม (war)",
+    "effect": "โอกาสได้คำสาป nc_war_orphan 10% เหตุการณ์สงครามเข้าหาเร็วขึ้น 2 เท่า",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "nc_war_orphan",
+      "chance": 0.1
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "war",
+      "nc_war_orphan"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:120",
+    "mul": 2
+   },
+   {
+    "id": "SR-62",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดในประเทศที่มีธงกาฬโรค (plague)",
+    "effect": "พร b_plagueward ได้ง่ายขึ้น 2 เท่าในผู้รอดชีวิต และ c_sickly ง่ายขึ้น 2 เท่า",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_plagueward"
+     },
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_sickly"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "plague",
+      "b_plagueward",
+      "c_sickly"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:121",
+    "mul": 2
+   },
+   {
+    "id": "SR-63",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดในประเทศที่ศาสนานั้นอยู่ในช่อง A (ผนึก)",
+    "effect": "พรสายศรัทธาของศาสนานั้นง่ายขึ้น 1.5 เท่า",
+    "why": "",
+    "effects": [],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": []
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:122",
+    "mul": 1.5
+   },
+   {
+    "id": "SR-64",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดในประเทศที่ศาสนาอยู่ในช่อง E (ปฏิเสธ) หรือ D (ผิดทาง)",
+    "effect": "พรสายศรัทธาหายาก 0.5 เท่า คำสาป c_godhate ง่ายขึ้น 1.5 เท่า",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_godhate"
+     }
+    ],
+    "refs": {
+     "events": [],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "c_godhate"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:123",
+    "mul": 0.5
+   },
+   {
+    "id": "SR-65",
+    "group": "ฉ. ถิ่นเกิดกับเหตุการณ์",
+    "cond": "เกิดภายใน 10 ปีก่อนหรือหลังเหตุการณ์ใหญ่ที่ทำให้ถิ่นหายไป (DR-01 DR-04 DR-05 DR-07 BIO-02)",
+    "effect": "ได้ nc_homeland_ghost คำสาปความคิดถึงบ้านที่หายไป 35% และ nb_homeland_call 20%",
+    "why": "",
+    "effects": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "nc_homeland_ghost"
+     },
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "nb_homeland_call",
+      "chance": 0.2
+     }
+    ],
+    "refs": {
+     "events": [
+      "DR-01",
+      "DR-04",
+      "DR-05",
+      "DR-07",
+      "BIO-02"
+     ],
+     "countries": [],
+     "nodes": [],
+     "ids": [
+      "nc_homeland_ghost",
+      "nb_homeland_call"
+     ]
+    },
+    "src": "docs/systems/character/03-synergy-rules.md:124"
+   }
+  ],
+  "affinityRules": {
+   "plusWeight": 2,
+   "minusWeight": 0.4,
+   "ban": 0
+  }
+ }
+}

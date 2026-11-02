@@ -1,0 +1,3155 @@
+{
+ "version": "4e3a70072af5",
+ "sources": [
+  "docs/systems/character/01-origin.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/character.ts",
+ "items": {
+  "steps": [
+   {
+    "n": "1",
+    "what": "เผ่า",
+    "rule": "ตามสัดส่วนในหัวข้อ 2 (ผู้เล่นเลือกเผ่าเองได้ ข้ามขั้นนี้)"
+   },
+   {
+    "n": "1ข",
+    "what": "กำเนิดพิเศษ (มนุษย์เท่านั้น)",
+    "rule": "ผู้ถูกอัญเชิญ 0.5% ของมนุษย์ (เข้าร่วมรอบอัญเชิญในตารางรุ่นผู้กล้าของ AL-02 [../../lore/countries/05-aldria.md](../../lore/countries/05-aldria.md) ถ้าปีที่สุ่มได้ไม่มีรอบ จุดเริ่มของตัวละครเลื่อนไปปีที่มีรอบถัดไปในโลกนั้น โลกไม่เปลี่ยนตามตัวละคร): ไม่สุ่มขั้น 2 ถึง 6 ปรากฏที่ AL-02 อายุ 16 ไม่มีครอบครัวและไม่เป็นลูกครึ่ง เข้า hu.t2 ตรง ไม่เกิดในช่วงที่วงเวทอัญเชิญของ AL-02 หยุดหรือพัง (AL02-4 ทาง ก · LC-27 เมื่อปิดวงหรือศาลหยุดการเรียก) ส่วนนี้เป็นมนุษย์ปกติแทน · ผู้กลับชาติ: มนุษย์ที่ได้ประเทศเกิด MH-07 ในขั้น 4 เป็นผู้กลับชาติ 50% (ราว 0.75% ของมนุษย์) เข้า hu.b1 ทางพิเศษ ทั้งสองตาม [../../lore/storylines/01-human.md](../../lore/storylines/01-human.md) หัวข้อ 2 แบบเริ่มต้น \"ถูกอัญเชิญ\" และ \"ผู้จำชาติก่อน\" ([../experience/04-start-modes.md](../experience/04-start-modes.md)) บังคับผลนี้แทนการสุ่ม"
+   },
+   {
+    "n": "1ค",
+    "what": "เผ่าเดิมของลูกผสมจักรกล",
+    "rule": "ตุ๊กตา (แบบผู้รอดชีวิตตุ๊กตา หรือ co.b1 ทาง ข) เกิดจากโครงการตุ๊กตา (ตั้งแต่ ศ.ม. 10,200) เป็นลูกผสมตั้งแต่เกิด แบบอื่นเกิดเป็นมนุษย์ ขั้น 7 และ 8 ใช้ช่วงค่าสถานะ อายุขัย และน้ำหนักของมนุษย์ จนติดตั้งครั้งแรก (co.b2 ทาง ก หรือ co.t1) จึงเปลี่ยนเป็นค่าของลูกผสมตาม [races/18-construct.md](races/18-construct.md) ตุ๊กตาที่รู้ตัวจาก co.b1 ทาง ข หลังขั้น 7 และ 8 แปลงค่าและอายุขัยด้วยกติกาการติดตั้งครั้งแรกในปีเกิด"
+   },
+   {
+    "n": "1ง",
+    "what": "ผู้ที่ตื่นหรือลุก (หุ่นวิญญาณ มัมมี่ กูล)",
+    "rule": "วันตื่นคือวันเกิดของตัวละคร นับเป็นอายุเทียบมนุษย์ 17 อายุขัยนับจากวันตื่น ([../../lore/world/world-time.md](../../lore/world/world-time.md) หัวข้อ 3)"
+   },
+   {
+    "n": "2",
+    "what": "ลูกครึ่งหรือไม่",
+    "rule": "ตามโอกาสของเผ่าในหัวข้อ 3 ถ้าใช่ สุ่มเผ่าที่สองตามหัวข้อ 4"
+   },
+   {
+    "n": "3",
+    "what": "เพศ",
+    "rule": "หัวข้อ 7"
+   },
+   {
+    "n": "4",
+    "what": "ประเทศเกิด",
+    "rule": "ถิ่นหลักของเผ่า หรือถิ่นพลัดถิ่น หรือนอกถิ่น ตามหัวข้อ 3 และ 5 · ลูกครึ่งใช้ถิ่นพบกันตามหัวข้อ 4 (ถิ่นเกิดและเหตุที่พ่อแม่พบกัน)"
+   },
+   {
+    "n": "4ก",
+    "what": "ชนชั้นของครอบครัว",
+    "rule": "สุ่มตามความมั่งคั่ง (W) และความเหลื่อมล้ำ (G) ของประเทศเกิด ([../economy/03-classes.md](../economy/03-classes.md) หัวข้อ 2) กำหนดทองเริ่มต้นเมื่ออายุ 17 และระดับของอาวุธเกราะที่ได้ (ทองเริ่มต้นเดิม 0 ถึง 15 ใช้เฉพาะสามัญชนใน W 3) · ลูกครึ่งในถิ่นที่รังเกียจลดชั้นตามกติกา"
+   },
+   {
+    "n": "5",
+    "what": "เมืองเกิด",
+    "rule": "สุ่มในประเทศ น้ำหนักตามขนาดเมือง"
+   },
+   {
+    "n": "6",
+    "what": "ดวงวันเกิด",
+    "rule": "เวลา (รุ่งอรุณ กลางวัน สนธยา กลางคืน) และดวง (ไม่มี 70 · ดาวหาง 6 · สุริยคราส 6 · จันทร์เต็มดวง 10 · พายุ 8) ตามโค้ดเดิม"
+   },
+   {
+    "n": "7",
+    "what": "ค่าสถานะเริ่มต้น",
+    "rule": "ช่วงของเผ่า (ลูกครึ่งใช้หัวข้อ 4)"
+   },
+   {
+    "n": "8",
+    "what": "นิสัย 3 อย่าง ความถนัด พรกำเนิด คำสาปกำเนิด",
+    "rule": "น้ำหนักตามเผ่า ([02-race-affinity.md](02-race-affinity.md)) ถิ่นเกิด (หัวข้อ 6) และดวง"
+   }
+  ],
+  "specialBirths": [
+   {
+    "id": "summoned",
+    "race": "human",
+    "chance": 0.005,
+    "country": "AL-02",
+    "age": 16,
+    "node": "hu.t2",
+    "skipSteps": [
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "text": "ผู้ถูกอัญเชิญ 0.5% ของมนุษย์ (เข้าร่วมรอบอัญเชิญในตารางรุ่นผู้กล้าของ AL-02 [../../lore/countries/05-aldria.md](../../lore/countries/05-aldria.md) ถ้าปีที่สุ่มได้ไม่มีรอบ จุดเริ่มของตัวละครเลื่อนไปปีที่มีรอบถัดไปในโลกนั้น โลกไม่เปลี่ยนตามตัวละคร): ไม่สุ่มขั้น 2 ถึง 6 ปรากฏที่ AL-02 อายุ 16 ไม่มีครอบครัวและไม่เป็นลูกครึ่ง เข้า hu.t2 ตรง ไม่เกิดในช่วงที่วงเวทอัญเชิญของ AL-02 หยุดหรือพัง (AL02-4 ทาง ก · LC-27 เมื่อปิดวงหรือศาลหยุดการเรียก) ส่วนนี้เป็นมนุษย์ปกติแทน"
+   },
+   {
+    "id": "reincarnated",
+    "race": "human",
+    "chance": 0.5,
+    "country": "MH-07",
+    "node": "hu.b1",
+    "ofHumans": 0.0075,
+    "text": "มนุษย์ที่ได้ประเทศเกิด MH-07 ในขั้น 4 เป็นผู้กลับชาติ 50% (ราว 0.75% ของมนุษย์) เข้า hu.b1 ทางพิเศษ ทั้งสองตาม [../../lore/storylines/01-human.md](../../lore/storylines/01-human.md) หัวข้อ 2 แบบเริ่มต้น \"ถูกอัญเชิญ\" และ \"ผู้จำชาติก่อน\" ([../experience/04-start-modes.md](../experience/04-start-modes.md)) บังคับผลนี้แทนการสุ่ม"
+   },
+   {
+    "id": "doll",
+    "race": "construct",
+    "fromYear": 10200,
+    "node": "co.b1",
+    "text": "ตุ๊กตา (แบบผู้รอดชีวิตตุ๊กตา หรือ co.b1 ทาง ข) เกิดจากโครงการตุ๊กตา (ตั้งแต่ ศ.ม. 10,200) เป็นลูกผสมตั้งแต่เกิด แบบอื่นเกิดเป็นมนุษย์ ขั้น 7 และ 8 ใช้ช่วงค่าสถานะ อายุขัย และน้ำหนักของมนุษย์ จนติดตั้งครั้งแรก (co.b2 ทาง ก หรือ co.t1) จึงเปลี่ยนเป็นค่าของลูกผสมตาม [races/18-construct.md](races/18-construct.md) ตุ๊กตาที่รู้ตัวจาก co.b1 ทาง ข หลังขั้น 7 และ 8 แปลงค่าและอายุขัยด้วยกติกาการติดตั้งครั้งแรกในปีเกิด"
+   },
+   {
+    "id": "woken",
+    "races": [
+     "soulmachine",
+     "mummy",
+     "ghoul"
+    ],
+    "age": 17,
+    "text": "วันตื่นคือวันเกิดของตัวละคร นับเป็นอายุเทียบมนุษย์ 17 อายุขัยนับจากวันตื่น ([../../lore/world/world-time.md](../../lore/world/world-time.md) หัวข้อ 3)"
+   }
+  ],
+  "raceShare": [
+   {
+    "id": "human",
+    "w": 29.5
+   },
+   {
+    "id": "beast",
+    "w": 7
+   },
+   {
+    "id": "winged",
+    "w": 5
+   },
+   {
+    "id": "orc",
+    "w": 8
+   },
+   {
+    "id": "elf",
+    "w": 6
+   },
+   {
+    "id": "merfolk",
+    "w": 5
+   },
+   {
+    "id": "dwarf",
+    "w": 7
+   },
+   {
+    "id": "halfling",
+    "w": 4
+   },
+   {
+    "id": "demonkin",
+    "w": 4
+   },
+   {
+    "id": "darkelf",
+    "w": 3
+   },
+   {
+    "id": "slime",
+    "w": 3
+   },
+   {
+    "id": "fae",
+    "w": 3
+   },
+   {
+    "id": "lavakin",
+    "w": 2.5
+   },
+   {
+    "id": "naga",
+    "w": 2
+   },
+   {
+    "id": "dragonkin",
+    "w": 2
+   },
+   {
+    "id": "construct",
+    "w": 2
+   },
+   {
+    "id": "giant",
+    "w": 1.5
+   },
+   {
+    "id": "soulmachine",
+    "w": 1.5
+   },
+   {
+    "id": "mummy",
+    "w": 1.5
+   },
+   {
+    "id": "ghoul",
+    "w": 1.5
+   },
+   {
+    "id": "vampire",
+    "w": 1
+   }
+  ],
+  "birthplaces": [
+   {
+    "race": "human",
+    "main": [
+     "AL-01",
+     "AL-02",
+     "AL-03",
+     "AL-04",
+     "AL-05",
+     "AL-06",
+     "AL-07",
+     "AL-08",
+     "AL-09",
+     "AL-10",
+     "AL-11",
+     "AL-12",
+     "AL-13",
+     "AL-14",
+     "AL-15",
+     "AL-16",
+     "AL-17",
+     "AL-18",
+     "AL-19",
+     "AL-20",
+     "AL-21",
+     "AL-22",
+     "AL-23",
+     "AL-24",
+     "AL-25",
+     "AL-26",
+     "AL-27",
+     "AL-28",
+     "SH-01",
+     "SH-04",
+     "SH-05",
+     "SH-08",
+     "SH-09",
+     "NR-01",
+     "NR-10",
+     "MK-01",
+     "MK-04",
+     "MK-05"
+    ],
+    "mainPct": 85,
+    "diaspora": [
+     "MH-06",
+     "MH-07",
+     "KD-08",
+     "SV-17",
+     "NB-01",
+     "NB-14"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 9,
+    "outPct": 6,
+    "halfPct": 6,
+    "mainText": "AL-01 ถึง AL-28 ทั้งหมด · SH-01 SH-04 SH-05 SH-08 SH-09 · NR-01 NR-10 · MK-01 MK-04 MK-05",
+    "diasporaText": "MH-06 MH-07 · KD-08 · SV-17 · NB-01 NB-14"
+   },
+   {
+    "race": "elf",
+    "main": [
+     "SV-01",
+     "SV-02",
+     "SV-03",
+     "SV-04",
+     "SV-05",
+     "SV-06",
+     "SV-07",
+     "SV-08",
+     "SV-09",
+     "SV-10",
+     "SV-11",
+     "SV-12",
+     "SV-13",
+     "SV-14",
+     "SV-15"
+    ],
+    "mainPct": 88,
+    "diaspora": [
+     "AL-22",
+     "MK-11",
+     "SV-05"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 8,
+    "outPct": 4,
+    "halfPct": 3,
+    "mainText": "SV-01 ถึง SV-15",
+    "diasporaText": "AL-22 · MK-11 · SV-05"
+   },
+   {
+    "race": "darkelf",
+    "main": [
+     "KD-05",
+     "NB-13"
+    ],
+    "mainPct": 80,
+    "diaspora": [
+     "SV-05",
+     "NB-05",
+     "NB-06"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 14,
+    "outPct": 6,
+    "halfPct": 3,
+    "mainText": "KD-05 · NB-13",
+    "diasporaText": "SV-05 · NB-05 · NB-06"
+   },
+   {
+    "race": "dwarf",
+    "main": [
+     "KD-01",
+     "KD-02",
+     "KD-03",
+     "KD-04",
+     "KD-08",
+     "KD-09",
+     "KD-10",
+     "KD-11",
+     "KD-12"
+    ],
+    "mainPct": 85,
+    "diaspora": [
+     "MK-07",
+     "AL-21",
+     "MH-05",
+     "SH-07",
+     "SH-15"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 10,
+    "outPct": 5,
+    "halfPct": 2,
+    "mainText": "KD-01 ถึง KD-04 KD-08 KD-09 KD-10 KD-11 KD-12",
+    "diasporaText": "MK-07 · AL-21 · MH-05 · SH-07 SH-15"
+   },
+   {
+    "race": "orc",
+    "main": [
+     "MH-01",
+     "MH-04",
+     "MH-05",
+     "MH-06"
+    ],
+    "mainPct": 82,
+    "diaspora": [
+     "SH-11",
+     "MK-16",
+     "MH-11"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 12,
+    "outPct": 6,
+    "halfPct": 4,
+    "mainText": "MH-01 MH-04 MH-05 MH-06",
+    "diasporaText": "SH-11 · MK-16 · MH-11"
+   },
+   {
+    "race": "halfling",
+    "main": [
+     "AL-16"
+    ],
+    "mainPct": 55,
+    "diaspora": [
+     "MK-12",
+     "AL-01",
+     "AL-10",
+     "AL-21",
+     "AL-22",
+     "NR-01",
+     "MH-09"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 36,
+    "outPct": 9,
+    "halfPct": 4,
+    "mainText": "AL-16",
+    "diasporaText": "MK-12 · AL-01 AL-10 AL-21 AL-22 · NR-01 · MH-09"
+   },
+   {
+    "race": "beast",
+    "main": [
+     "SV-16",
+     "SV-09",
+     "MH-04"
+    ],
+    "mainPct": 72,
+    "diaspora": [
+     "AL-23",
+     "SH-10",
+     "AL-24"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 22,
+    "outPct": 6,
+    "halfPct": 5,
+    "mainText": "SV-16 SV-09 · MH-04",
+    "diasporaText": "AL-23 · SH-10 · AL-24"
+   },
+   {
+    "race": "naga",
+    "main": [
+     "NR-07",
+     "NR-02"
+    ],
+    "mainPct": 82,
+    "diaspora": [
+     "NR-09",
+     "NR-13",
+     "SV-17"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 14,
+    "outPct": 4,
+    "halfPct": 3,
+    "mainText": "NR-07 NR-02",
+    "diasporaText": "NR-09 NR-13 · SV-17"
+   },
+   {
+    "race": "dragonkin",
+    "main": [
+     "KD-07",
+     "AZ-02"
+    ],
+    "mainPct": 85,
+    "diaspora": [
+     "AZ-01",
+     "AZ-02",
+     "AZ-03",
+     "AZ-04",
+     "AZ-05",
+     "AZ-06",
+     "AZ-07",
+     "AZ-08",
+     "AZ-09",
+     "AZ-10"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 9,
+    "outPct": 6,
+    "halfPct": 4,
+    "mainText": "KD-07 AZ-02",
+    "diasporaText": "AZ-01 ถึง AZ-10"
+   },
+   {
+    "race": "vampire",
+    "main": [
+     "NB-02"
+    ],
+    "mainPct": 78,
+    "diaspora": [
+     "NB-13",
+     "NB-05"
+    ],
+    "diasporaBigCity": true,
+    "diasporaPct": 17,
+    "outPct": 5,
+    "halfPct": 1,
+    "mainText": "NB-02",
+    "diasporaText": "NB-13 NB-05 · เมืองใหญ่ทั่วโลก"
+   },
+   {
+    "race": "fae",
+    "main": [
+     "SV-04",
+     "SV-11"
+    ],
+    "mainPct": 72,
+    "diaspora": [
+     "NB-03",
+     "NR-15",
+     "NR-13"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 22,
+    "outPct": 6,
+    "halfPct": 2,
+    "mainText": "SV-04 SV-11",
+    "diasporaText": "NB-03 · NR-15 NR-13"
+   },
+   {
+    "race": "slime",
+    "main": [
+     "SV-12",
+     "SV-18"
+    ],
+    "mainPct": 70,
+    "diaspora": [
+     "NR-03",
+     "NR-13"
+    ],
+    "diasporaBigCity": true,
+    "diasporaPct": 25,
+    "outPct": 5,
+    "halfPct": 0,
+    "mainText": "SV-12 SV-18",
+    "diasporaText": "NR-03 · NR-13 · เมืองใหญ่"
+   },
+   {
+    "race": "demonkin",
+    "main": [
+     "MH-02",
+     "MH-09",
+     "MH-07",
+     "MH-11"
+    ],
+    "mainPct": 85,
+    "diaspora": [
+     "KD-06",
+     "KD-07",
+     "KD-08",
+     "MK-16",
+     "AL-25"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 9,
+    "outPct": 6,
+    "halfPct": 4,
+    "mainText": "MH-02 MH-09 MH-07 MH-11",
+    "diasporaText": "KD-06 KD-07 KD-08 · MK-16 · AL-25"
+   },
+   {
+    "race": "merfolk",
+    "main": [
+     "NR-06",
+     "NR-04",
+     "NR-08",
+     "NR-09",
+     "NR-13"
+    ],
+    "mainPct": 87,
+    "diaspora": [
+     "NR-01",
+     "NR-11",
+     "NR-14"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 8,
+    "outPct": 5,
+    "halfPct": 3,
+    "mainText": "NR-06 NR-04 NR-08 NR-09 NR-13",
+    "diasporaText": "NR-01 NR-11 · NR-14"
+   },
+   {
+    "race": "winged",
+    "main": [
+     "AZ-01",
+     "AZ-02",
+     "AZ-03",
+     "AZ-04",
+     "AZ-05",
+     "AZ-06",
+     "AZ-07",
+     "AZ-08",
+     "AZ-09",
+     "AZ-10"
+    ],
+    "mainPct": 80,
+    "diaspora": [
+     "SH-09",
+     "SH-16"
+    ],
+    "diasporaBigCity": true,
+    "diasporaPct": 14,
+    "outPct": 6,
+    "halfPct": 4,
+    "mainText": "AZ-01 ถึง AZ-10",
+    "diasporaText": "SH-09 SH-16 · เมืองใหญ่"
+   },
+   {
+    "race": "giant",
+    "main": [
+     "SH-03",
+     "SH-06",
+     "SH-07",
+     "SH-13",
+     "SH-17"
+    ],
+    "mainPct": 92,
+    "diaspora": [
+     "KD-02",
+     "AL-18"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 5,
+    "outPct": 3,
+    "halfPct": 1,
+    "mainText": "SH-03 SH-06 SH-07 SH-13 SH-17",
+    "diasporaText": "KD-02 · AL-18"
+   },
+   {
+    "race": "lavakin",
+    "main": [
+     "KD-06",
+     "KD-02",
+     "KD-11"
+    ],
+    "mainPct": 88,
+    "diaspora": [
+     "KD-12"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 7,
+    "outPct": 5,
+    "halfPct": 2,
+    "mainText": "KD-06 KD-02 KD-11",
+    "diasporaText": "KD-12"
+   },
+   {
+    "race": "construct",
+    "main": [
+     "MK-02",
+     "MK-08",
+     "MK-10"
+    ],
+    "mainPct": 70,
+    "diaspora": [
+     "NB-10",
+     "AL-13",
+     "MK-16"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 25,
+    "outPct": 5,
+    "halfPct": 0,
+    "mainText": "MK-02 MK-08 MK-10",
+    "diasporaText": "NB-10 · AL-13 · MK-16"
+   },
+   {
+    "race": "soulmachine",
+    "main": [
+     "MK-03",
+     "MK-12",
+     "MK-10"
+    ],
+    "mainPct": 82,
+    "diaspora": [
+     "NB-10"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 12,
+    "outPct": 6,
+    "halfPct": 0,
+    "mainText": "MK-03 MK-12 MK-10",
+    "diasporaText": "NB-10"
+   },
+   {
+    "race": "mummy",
+    "main": [
+     "SH-02",
+     "SH-14"
+    ],
+    "mainPct": 90,
+    "diaspora": [
+     "SH-17"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 6,
+    "outPct": 4,
+    "halfPct": 0,
+    "mainText": "SH-02 SH-14",
+    "diasporaText": "SH-17"
+   },
+   {
+    "race": "ghoul",
+    "main": [
+     "MH-03",
+     "MH-10",
+     "MH-12"
+    ],
+    "mainPct": 85,
+    "diaspora": [
+     "AL-19"
+    ],
+    "diasporaBigCity": false,
+    "diasporaPct": 9,
+    "outPct": 6,
+    "halfPct": 0,
+    "mainText": "MH-03 MH-10 MH-12",
+    "diasporaText": "AL-19"
+   }
+  ],
+  "halfPairs": [
+   {
+    "main": "human",
+    "second": [
+     {
+      "id": "elf",
+      "w": 24
+     },
+     {
+      "id": "dwarf",
+      "w": 14
+     },
+     {
+      "id": "halfling",
+      "w": 12
+     },
+     {
+      "id": "orc",
+      "w": 12
+     },
+     {
+      "id": "beast",
+      "w": 10
+     },
+     {
+      "id": "naga",
+      "w": 6
+     },
+     {
+      "id": "merfolk",
+      "w": 6
+     },
+     {
+      "id": "demonkin",
+      "w": 6
+     },
+     {
+      "id": "winged",
+      "w": 4
+     },
+     {
+      "id": "vampire",
+      "w": 3
+     },
+     {
+      "id": "dragonkin",
+      "w": 3
+     }
+    ],
+    "worldNames": [
+     "เอลฟ์เลือดผสม",
+     "ลูกคนแคระ",
+     "ฮาล์ฟออร์ค",
+     "นาคาลูกครึ่ง (SV-17)",
+     "ลูกแวมไพร์"
+    ],
+    "despised": "SV-01 ถึง SV-15 (เอลฟ์เลือดผสม) · AL-02 (เผ่าปีศาจ แวมไพร์)",
+    "despisedCountries": [
+     "SV-01",
+     "SV-02",
+     "SV-03",
+     "SV-04",
+     "SV-05",
+     "SV-06",
+     "SV-07",
+     "SV-08",
+     "SV-09",
+     "SV-10",
+     "SV-11",
+     "SV-12",
+     "SV-13",
+     "SV-14",
+     "SV-15",
+     "AL-02"
+    ]
+   },
+   {
+    "main": "elf",
+    "second": [
+     {
+      "id": "human",
+      "w": 45
+     },
+     {
+      "id": "fae",
+      "w": 20
+     },
+     {
+      "id": "darkelf",
+      "w": 15
+     },
+     {
+      "id": "beast",
+      "w": 20
+     }
+    ],
+    "worldNames": [
+     "เอลฟ์เลือดผสม",
+     "เด็กลาเฟธิล (SV-09)"
+    ],
+    "despised": "SV-01 SV-10 (เลือดผสมไม่นับว่าเป็นเอลฟ์ แต่ SV-09 ยอมรับ)",
+    "despisedCountries": [
+     "SV-01",
+     "SV-10",
+     "SV-09"
+    ]
+   },
+   {
+    "main": "darkelf",
+    "second": [
+     {
+      "id": "elf",
+      "w": 40
+     },
+     {
+      "id": "human",
+      "w": 30
+     },
+     {
+      "id": "vampire",
+      "w": 15
+     },
+     {
+      "id": "demonkin",
+      "w": 15
+     }
+    ],
+    "worldNames": [
+     "ลูกเงา"
+    ],
+    "despised": "KD-05 (ถ้าไม่ใช่เลือดแท้ ถูกส่งออกจากประเทศ)",
+    "despisedCountries": [
+     "KD-05"
+    ]
+   },
+   {
+    "main": "dwarf",
+    "second": [
+     {
+      "id": "human",
+      "w": 60
+     },
+     {
+      "id": "halfling",
+      "w": 20
+     },
+     {
+      "id": "lavakin",
+      "w": 20
+     }
+    ],
+    "worldNames": [
+     "ลูกช่างตี",
+     "ลูกเตาไฟ"
+    ],
+    "despised": "KD-03 (ฝ่ายปิดรูนไม่รับ)",
+    "despisedCountries": [
+     "KD-03"
+    ]
+   },
+   {
+    "main": "orc",
+    "second": [
+     {
+      "id": "human",
+      "w": 50
+     },
+     {
+      "id": "demonkin",
+      "w": 25
+     },
+     {
+      "id": "beast",
+      "w": 25
+     }
+    ],
+    "worldNames": [
+     "ฮาล์ฟออร์ค",
+     "ลูกโอเกอร์"
+    ],
+    "despised": "MH-01 (ธงกระดูกถือว่าอ่อน)",
+    "despisedCountries": [
+     "MH-01"
+    ]
+   },
+   {
+    "main": "halfling",
+    "second": [
+     {
+      "id": "human",
+      "w": 70
+     },
+     {
+      "id": "dwarf",
+      "w": 15
+     },
+     {
+      "id": "elf",
+      "w": 15
+     }
+    ],
+    "worldNames": [
+     "ลูกไชร์"
+    ],
+    "despised": "ไม่มี",
+    "despisedCountries": []
+   },
+   {
+    "main": "beast",
+    "second": [
+     {
+      "id": "human",
+      "w": 40
+     },
+     {
+      "id": "elf",
+      "w": 40
+     },
+     {
+      "id": "orc",
+      "w": 20
+     }
+    ],
+    "worldNames": [
+     "เด็กลาเฟธิล (SV-09)",
+     "ลูกหมาป่า"
+    ],
+    "despised": "SV-16 (ถือว่าไม่บริสุทธิ์)",
+    "despisedCountries": [
+     "SV-16"
+    ]
+   },
+   {
+    "main": "naga",
+    "second": [
+     {
+      "id": "human",
+      "w": 55
+     },
+     {
+      "id": "merfolk",
+      "w": 45
+     }
+    ],
+    "worldNames": [
+     "นาคาลูกครึ่ง",
+     "ลูกน้ำเก่า"
+    ],
+    "despised": "NR-06 NR-07 (สงครามน้ำเก่า WR-20)",
+    "despisedCountries": [
+     "NR-06",
+     "NR-07"
+    ]
+   },
+   {
+    "main": "dragonkin",
+    "second": [
+     {
+      "id": "winged",
+      "w": 60
+     },
+     {
+      "id": "human",
+      "w": 25
+     },
+     {
+      "id": "demonkin",
+      "w": 15
+     }
+    ],
+    "worldNames": [
+     "ปีกเกล็ด",
+     "ลูกมังกรร่างคน"
+    ],
+    "despised": "KD-07 (ถ้าไม่ใช่เลือดมังกรเกินครึ่ง)",
+    "despisedCountries": [
+     "KD-07"
+    ]
+   },
+   {
+    "main": "vampire",
+    "second": [
+     {
+      "id": "human",
+      "w": 70
+     },
+     {
+      "id": "darkelf",
+      "w": 30
+     }
+    ],
+    "worldNames": [
+     "ลูกแวมไพร์"
+    ],
+    "despised": "NB-02 (ไม่รับ ยกเว้นตระกูลเก่า)",
+    "despisedCountries": [
+     "NB-02"
+    ]
+   },
+   {
+    "main": "fae",
+    "second": [
+     {
+      "id": "elf",
+      "w": 60
+     },
+     {
+      "id": "human",
+      "w": 40
+     }
+    ],
+    "worldNames": [
+     "ลูกภูต"
+    ],
+    "despised": "SV-04 (ภูตเก็บหนี้ลูกครึ่ง)",
+    "despisedCountries": [
+     "SV-04"
+    ]
+   },
+   {
+    "main": "demonkin",
+    "second": [
+     {
+      "id": "orc",
+      "w": 35
+     },
+     {
+      "id": "human",
+      "w": 40
+     },
+     {
+      "id": "darkelf",
+      "w": 25
+     }
+    ],
+    "worldNames": [
+     "ลูกสัญญา"
+    ],
+    "despised": "MH-02 (สัญญาผูกเลือดครึ่งหนึ่งไปให้พ่อแม่ ลูกครึ่งที่เกิด MH-02 ได้ c_souldebt 30% ตามกำเนิด)",
+    "despisedCountries": [
+     "MH-02"
+    ]
+   },
+   {
+    "main": "merfolk",
+    "second": [
+     {
+      "id": "human",
+      "w": 55
+     },
+     {
+      "id": "naga",
+      "w": 45
+     }
+    ],
+    "worldNames": [
+     "ลูกคลื่น"
+    ],
+    "despised": "NR-06 (ราชวงศ์ไม่ยอมรับ)",
+    "despisedCountries": [
+     "NR-06"
+    ]
+   },
+   {
+    "main": "winged",
+    "second": [
+     {
+      "id": "dragonkin",
+      "w": 45
+     },
+     {
+      "id": "human",
+      "w": 55
+     }
+    ],
+    "worldNames": [
+     "ปีกเกล็ด",
+     "ปีกสั้น"
+    ],
+    "despised": "AZ-01 (ลัทธิบูชามังกรไม่รับปีกสั้น)",
+    "despisedCountries": [
+     "AZ-01"
+    ]
+   },
+   {
+    "main": "giant",
+    "second": [
+     {
+      "id": "human",
+      "w": 100
+     }
+    ],
+    "worldNames": [
+     "ไซคลอปส์ (ถ้าเป็นตาเดียว)",
+     "ลูกยักษ์"
+    ],
+    "despised": "SH-06 (ซากกัชถือว่าเป็นเสียงของไททัน)",
+    "despisedCountries": [
+     "SH-06"
+    ]
+   },
+   {
+    "main": "lavakin",
+    "second": [
+     {
+      "id": "dwarf",
+      "w": 100
+     }
+    ],
+    "worldNames": [
+     "ลูกเตาไฟ"
+    ],
+    "despised": "KD-06 (ถูกมองว่าเย็นตัวเร็ว)",
+    "despisedCountries": [
+     "KD-06"
+    ]
+   }
+  ],
+  "noHalf": [
+   "slime",
+   "construct",
+   "soulmachine",
+   "mummy",
+   "ghoul"
+  ],
+  "meetingRules": [
+   {
+    "n": 1,
+    "rule": "สุ่มประเภทถิ่น: ถิ่นพบกัน 70% · ถิ่นหลักของเผ่าใดเผ่าหนึ่ง 30%"
+   },
+   {
+    "n": 2,
+    "rule": "ถิ่นพบกัน: สุ่มประเทศตามน้ำหนักในตารางด้านล่าง (รวม 100)"
+   },
+   {
+    "n": 3,
+    "rule": "ถิ่นหลัก: เลือกได้เฉพาะประเทศที่ตารางระบุ และพ่อแม่ต้องมี \"เหตุพิเศษ\" ตามที่ตารางเขียน (ลูกทูต ผู้ลี้ภัย เชลย ผู้ถูกเนรเทศ ลูกผู้ติดสัญญา ฯลฯ) ถ้าไม่ผ่านเหตุ ให้สุ่มถิ่นพบกันแทน"
+   },
+   {
+    "n": 4,
+    "rule": "สุ่ม เหตุที่พ่อแม่พบกัน ตามน้ำหนักในตาราง (รวม 100) ผลของแต่ละเหตุอยู่ในตารางหลังตารางคู่"
+   },
+   {
+    "n": 5,
+    "rule": "ถ้าถิ่นที่ได้รังเกียจลูกครึ่ง (ตารางคู่ที่เป็นไปได้ด้านบน) ใช้ผล c_outcast 40% และ c_lonely 25% ตามเดิม ยกเว้นเหตุ \"ทูต\" ที่ลดเป็น 20% และ 10%"
+   }
+  ],
+  "meetingPlaces": [
+   {
+    "pair": [
+     "human",
+     "elf"
+    ],
+    "places": [
+     {
+      "id": "AL-22",
+      "w": 40
+     },
+     {
+      "id": "SV-09",
+      "w": 35
+     },
+     {
+      "id": "SV-05",
+      "w": 25
+     }
+    ],
+    "mainOnly": "SV-01 ถึง SV-15 เฉพาะลูกทูตหรือผู้ลี้ภัยป่า",
+    "mainOnlyCountries": [
+     "SV-01",
+     "SV-02",
+     "SV-03",
+     "SV-04",
+     "SV-05",
+     "SV-06",
+     "SV-07",
+     "SV-08",
+     "SV-09",
+     "SV-10",
+     "SV-11",
+     "SV-12",
+     "SV-13",
+     "SV-14",
+     "SV-15"
+    ],
+    "causes": [
+     {
+      "id": "craft",
+      "w": 40,
+      "note": "ย่านเอลฟ์ นักปราชญ์"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "ป่าป่วย"
+     },
+     {
+      "id": "envoy",
+      "w": 30,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:122"
+   },
+   {
+    "pair": [
+     "human",
+     "dwarf"
+    ],
+    "places": [
+     {
+      "id": "AL-21",
+      "w": 50
+     },
+     {
+      "id": "KD-08",
+      "w": 50
+     }
+    ],
+    "mainOnly": "KD-01 ถึง KD-04 เฉพาะลูกช่างรับจ้าง (KD-03 ไม่รับ)",
+    "mainOnlyCountries": [
+     "KD-01",
+     "KD-02",
+     "KD-03",
+     "KD-04"
+    ],
+    "causes": [
+     {
+      "id": "trade",
+      "w": 40,
+      "note": "ธนาคาร"
+     },
+     {
+      "id": "craft",
+      "w": 40,
+      "note": ""
+     },
+     {
+      "id": "refugee",
+      "w": 20,
+      "note": "เหมืองถล่ม"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:123"
+   },
+   {
+    "pair": [
+     "human",
+     "halfling"
+    ],
+    "places": [
+     {
+      "id": "AL-16",
+      "w": 50
+     },
+     {
+      "id": "AL-01",
+      "w": 25
+     },
+     {
+      "id": "AL-10",
+      "w": 25
+     }
+    ],
+    "mainOnly": "ไม่จำกัด",
+    "mainOnlyCountries": [],
+    "causes": [
+     {
+      "id": "trade",
+      "w": 50,
+      "note": ""
+     },
+     {
+      "id": "love",
+      "w": 30,
+      "note": ""
+     },
+     {
+      "id": "refugee",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:124"
+   },
+   {
+    "pair": [
+     "human",
+     "orc"
+    ],
+    "places": [
+     {
+      "id": "MH-06",
+      "w": 70
+     },
+     {
+      "id": "MH-07",
+      "w": 30
+     }
+    ],
+    "mainOnly": "MH-01 เฉพาะลูกเชลยหรือผู้ถูกเนรเทศ",
+    "mainOnlyCountries": [
+     "MH-01"
+    ],
+    "causes": [
+     {
+      "id": "captive",
+      "w": 40,
+      "note": "WR-03"
+     },
+     {
+      "id": "trade",
+      "w": 30,
+      "note": "ทุ่งเถ้า"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "ความอดอยาก"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:125"
+   },
+   {
+    "pair": [
+     "human",
+     "beast"
+    ],
+    "places": [
+     {
+      "id": "AL-23",
+      "w": 40
+     },
+     {
+      "id": "AL-24",
+      "w": 30
+     },
+     {
+      "id": "SH-10",
+      "w": 30
+     }
+    ],
+    "mainOnly": "SV-16 เฉพาะลูกผู้ลี้ภัย",
+    "mainOnlyCountries": [
+     "SV-16"
+    ],
+    "causes": [
+     {
+      "id": "refugee",
+      "w": 40,
+      "note": "ป่าถูกตัด BIO-09"
+     },
+     {
+      "id": "trade",
+      "w": 35,
+      "note": "ของป่า"
+     },
+     {
+      "id": "exile",
+      "w": 25,
+      "note": "ล่าผิดกฎลำต้น"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:126"
+   },
+   {
+    "pair": [
+     "human",
+     "naga"
+    ],
+    "places": [
+     {
+      "id": "SV-17",
+      "w": 100
+     }
+    ],
+    "mainOnly": "NR-07 NR-02 เฉพาะลูกทูตหรือผู้ผ่านการทดสอบนาคา",
+    "mainOnlyCountries": [
+     "NR-07",
+     "NR-02"
+    ],
+    "causes": [
+     {
+      "id": "refugee",
+      "w": 40,
+      "note": "ทางน้ำ"
+     },
+     {
+      "id": "trade",
+      "w": 35,
+      "note": "พ่อค้าเรือ"
+     },
+     {
+      "id": "envoy",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:127"
+   },
+   {
+    "pair": [
+     "human",
+     "merfolk"
+    ],
+    "places": [
+     {
+      "id": "NR-01",
+      "w": 100
+     }
+    ],
+    "mainOnly": "NR-06 ชายฝั่งประภาคาร เฉพาะลูกผู้ดูแลประภาคารหรือชาวเรือที่ถูกช่วย",
+    "mainOnlyCountries": [
+     "NR-06"
+    ],
+    "causes": [
+     {
+      "id": "love",
+      "w": 40,
+      "note": "เรือล่มแล้วถูกช่วย"
+     },
+     {
+      "id": "trade",
+      "w": 35,
+      "note": "ท่าเรือ"
+     },
+     {
+      "id": "refugee",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:128"
+   },
+   {
+    "pair": [
+     "human",
+     "demonkin"
+    ],
+    "places": [
+     {
+      "id": "AL-25",
+      "w": 40
+     },
+     {
+      "id": "MH-07",
+      "w": 35
+     },
+     {
+      "id": "KD-08",
+      "w": 25
+     }
+    ],
+    "mainOnly": "MH-02 เฉพาะลูกผู้ติดสัญญา",
+    "mainOnlyCountries": [
+     "MH-02"
+    ],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 45,
+      "note": "สัญญาเลือด"
+     },
+     {
+      "id": "trade",
+      "w": 30,
+      "note": "ตลาดเลือด"
+     },
+     {
+      "id": "captive",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:129"
+   },
+   {
+    "pair": [
+     "human",
+     "winged"
+    ],
+    "places": [
+     {
+      "id": "SH-09",
+      "w": 50
+     },
+     {
+      "id": "AZ-02",
+      "w": 25
+     },
+     {
+      "id": "AZ-08",
+      "w": 25
+     }
+    ],
+    "mainOnly": "AZ-01 เฉพาะลูกผู้ปรนนิบัติ (ปีกสั้นไม่รับ)",
+    "mainOnlyCountries": [
+     "AZ-01"
+    ],
+    "causes": [
+     {
+      "id": "craft",
+      "w": 40,
+      "note": "ชาวพื้นรับใช้"
+     },
+     {
+      "id": "refugee",
+      "w": 35,
+      "note": "หลัง DR-01"
+     },
+     {
+      "id": "love",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:130"
+   },
+   {
+    "pair": [
+     "human",
+     "vampire"
+    ],
+    "places": [
+     {
+      "id": "NB-02",
+      "w": 40
+     },
+     {
+      "id": "NB-05",
+      "w": 30
+     },
+     {
+      "id": "NB-13",
+      "w": 30
+     }
+    ],
+    "mainOnly": "NB-02 เฉพาะตระกูลเก่า",
+    "mainOnlyCountries": [
+     "NB-02"
+    ],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 40,
+      "note": "หนี้เลือด"
+     },
+     {
+      "id": "refugee",
+      "w": 35,
+      "note": "ปราสาทเปิดรับ"
+     },
+     {
+      "id": "love",
+      "w": 25,
+      "note": "รักต้องห้าม"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:131"
+   },
+   {
+    "pair": [
+     "human",
+     "dragonkin"
+    ],
+    "places": [
+     {
+      "id": "AZ-02",
+      "w": 60
+     },
+     {
+      "id": "AZ-08",
+      "w": 40
+     }
+    ],
+    "mainOnly": "KD-07 เฉพาะลูกผู้รับใช้ (ถิ่นรังเกียจ เพราะเลือดมังกรไม่ถึงครึ่ง)",
+    "mainOnlyCountries": [
+     "KD-07"
+    ],
+    "causes": [
+     {
+      "id": "craft",
+      "w": 45,
+      "note": "ชาวพื้นรับใช้ตระกูลมังกร"
+     },
+     {
+      "id": "refugee",
+      "w": 35,
+      "note": "หลัง DR-01"
+     },
+     {
+      "id": "love",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:132"
+   },
+   {
+    "pair": [
+     "elf",
+     "fae"
+    ],
+    "places": [
+     {
+      "id": "SV-04",
+      "w": 60
+     },
+     {
+      "id": "SV-11",
+      "w": 40
+     }
+    ],
+    "mainOnly": "—",
+    "mainOnlyCountries": [],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 45,
+      "note": "แลกพร"
+     },
+     {
+      "id": "love",
+      "w": 35,
+      "note": "วงภูตในป่า"
+     },
+     {
+      "id": "trade",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:133"
+   },
+   {
+    "pair": [
+     "elf",
+     "darkelf"
+    ],
+    "places": [
+     {
+      "id": "SV-05",
+      "w": 100
+     }
+    ],
+    "mainOnly": "KD-05 เฉพาะเอลฟ์ที่ถูกจับ",
+    "mainOnlyCountries": [
+     "KD-05"
+    ],
+    "causes": [
+     {
+      "id": "exile",
+      "w": 45,
+      "note": "ขึ้นผิวดิน"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "สงครามถ้ำ"
+     },
+     {
+      "id": "craft",
+      "w": 25,
+      "note": "เวทต้องห้าม"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:134"
+   },
+   {
+    "pair": [
+     "elf",
+     "beast"
+    ],
+    "places": [
+     {
+      "id": "SV-09",
+      "w": 100
+     }
+    ],
+    "mainOnly": "SV-16 SV-01 เฉพาะลูกผู้ลี้ภัยหรือทูต",
+    "mainOnlyCountries": [
+     "SV-16",
+     "SV-01"
+    ],
+    "causes": [
+     {
+      "id": "love",
+      "w": 45,
+      "note": "ขี่หมาป่าร่วมกัน"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "ป่าถูกตัด"
+     },
+     {
+      "id": "envoy",
+      "w": 25,
+      "note": "สงครามป่า"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:135"
+   },
+   {
+    "pair": [
+     "darkelf",
+     "human"
+    ],
+    "places": [
+     {
+      "id": "NB-05",
+      "w": 50
+     },
+     {
+      "id": "NB-13",
+      "w": 50
+     }
+    ],
+    "mainOnly": "KD-05 เฉพาะลูกเชลยมนุษย์ที่ถูกส่งออก",
+    "mainOnlyCountries": [
+     "KD-05"
+    ],
+    "causes": [
+     {
+      "id": "exile",
+      "w": 40,
+      "note": ""
+     },
+     {
+      "id": "trade",
+      "w": 35,
+      "note": "ตลาดมืด"
+     },
+     {
+      "id": "captive",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:136"
+   },
+   {
+    "pair": [
+     "darkelf",
+     "vampire"
+    ],
+    "places": [
+     {
+      "id": "NB-05",
+      "w": 50
+     },
+     {
+      "id": "NB-13",
+      "w": 50
+     }
+    ],
+    "mainOnly": "NB-02 เฉพาะตระกูลเก่า",
+    "mainOnlyCountries": [
+     "NB-02"
+    ],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 45,
+      "note": "ตระกูลเงา"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "หมอก"
+     },
+     {
+      "id": "love",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:137"
+   },
+   {
+    "pair": [
+     "darkelf",
+     "demonkin"
+    ],
+    "places": [
+     {
+      "id": "KD-08",
+      "w": 60
+     },
+     {
+      "id": "KD-05",
+      "w": 40
+     }
+    ],
+    "mainOnly": "MH-02 เฉพาะลูกผู้ติดสัญญา",
+    "mainOnlyCountries": [
+     "MH-02"
+    ],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 40,
+      "note": "ปากเหวนรก cv.5"
+     },
+     {
+      "id": "captive",
+      "w": 35,
+      "note": "สงครามถ้ำ"
+     },
+     {
+      "id": "trade",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:138"
+   },
+   {
+    "pair": [
+     "dwarf",
+     "halfling"
+    ],
+    "places": [
+     {
+      "id": "AL-21",
+      "w": 100
+     }
+    ],
+    "mainOnly": "AL-16 เฉพาะลูกพ่อค้าช่างตี",
+    "mainOnlyCountries": [
+     "AL-16"
+    ],
+    "causes": [
+     {
+      "id": "trade",
+      "w": 45,
+      "note": "ธนาคารและร้านซ่อม"
+     },
+     {
+      "id": "craft",
+      "w": 35,
+      "note": ""
+     },
+     {
+      "id": "refugee",
+      "w": 20,
+      "note": "เหมือง"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:139"
+   },
+   {
+    "pair": [
+     "dwarf",
+     "lavakin"
+    ],
+    "places": [
+     {
+      "id": "KD-11",
+      "w": 50
+     },
+     {
+      "id": "KD-02",
+      "w": 50
+     }
+    ],
+    "mainOnly": "KD-06 เฉพาะลูกช่างตีเตา (KD-03 ไม่รับ)",
+    "mainOnlyCountries": [
+     "KD-06",
+     "KD-03"
+    ],
+    "causes": [
+     {
+      "id": "craft",
+      "w": 50,
+      "note": "โรงตีร่วม"
+     },
+     {
+      "id": "refugee",
+      "w": 30,
+      "note": "ถ้ำร้อน"
+     },
+     {
+      "id": "love",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:140"
+   },
+   {
+    "pair": [
+     "orc",
+     "demonkin"
+    ],
+    "places": [
+     {
+      "id": "MH-11",
+      "w": 60
+     },
+     {
+      "id": "MK-16",
+      "w": 40
+     }
+    ],
+    "mainOnly": "MH-02 เฉพาะลูกผู้ติดสัญญา",
+    "mainOnlyCountries": [
+     "MH-02"
+    ],
+    "causes": [
+     {
+      "id": "captive",
+      "w": 45,
+      "note": "ทัพรับจ้าง"
+     },
+     {
+      "id": "contract",
+      "w": 35,
+      "note": ""
+     },
+     {
+      "id": "trade",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:141"
+   },
+   {
+    "pair": [
+     "orc",
+     "beast"
+    ],
+    "places": [
+     {
+      "id": "MH-04",
+      "w": 100
+     }
+    ],
+    "mainOnly": "SV-16 เฉพาะลูกผู้ลี้ภัย",
+    "mainOnlyCountries": [
+     "SV-16"
+    ],
+    "causes": [
+     {
+      "id": "love",
+      "w": 40,
+      "note": "ค่ายล่าสัตว์"
+     },
+     {
+      "id": "refugee",
+      "w": 35,
+      "note": "ความอดอยาก"
+     },
+     {
+      "id": "captive",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:142"
+   },
+   {
+    "pair": [
+     "halfling",
+     "elf"
+    ],
+    "places": [
+     {
+      "id": "AL-22",
+      "w": 100
+     }
+    ],
+    "mainOnly": "AL-16 เฉพาะลูกพ่อค้าเดินทาง",
+    "mainOnlyCountries": [
+     "AL-16"
+    ],
+    "causes": [
+     {
+      "id": "trade",
+      "w": 45,
+      "note": "อาหาร"
+     },
+     {
+      "id": "love",
+      "w": 35,
+      "note": ""
+     },
+     {
+      "id": "refugee",
+      "w": 20,
+      "note": "ป่าป่วย"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:143"
+   },
+   {
+    "pair": [
+     "naga",
+     "merfolk"
+    ],
+    "places": [
+     {
+      "id": "NR-09",
+      "w": 50
+     },
+     {
+      "id": "NR-13",
+      "w": 50
+     }
+    ],
+    "mainOnly": "NR-06 NR-07 เฉพาะช่วงพักรบ (WR-20 ยังไม่เกิดหรือจบแล้ว)",
+    "mainOnlyCountries": [
+     "NR-06",
+     "NR-07"
+    ],
+    "causes": [
+     {
+      "id": "envoy",
+      "w": 25,
+      "note": "ตัวประกัน"
+     },
+     {
+      "id": "refugee",
+      "w": 35,
+      "note": "สงครามน้ำเก่า"
+     },
+     {
+      "id": "love",
+      "w": 40,
+      "note": "พักรบ"
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:144"
+   },
+   {
+    "pair": [
+     "dragonkin",
+     "winged"
+    ],
+    "places": [
+     {
+      "id": "AZ-02",
+      "w": 40
+     },
+     {
+      "id": "AZ-01",
+      "w": 30
+     },
+     {
+      "id": "AZ-03",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-04",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-05",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-06",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-07",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-08",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-09",
+      "w": 3.75
+     },
+     {
+      "id": "AZ-10",
+      "w": 3.75
+     }
+    ],
+    "mainOnly": "KD-07 เฉพาะเลือดมังกรเกินครึ่ง",
+    "mainOnlyCountries": [
+     "KD-07"
+    ],
+    "causes": [
+     {
+      "id": "love",
+      "w": 50,
+      "note": "ตระกูลบนเกาะเดียวกัน"
+     },
+     {
+      "id": "craft",
+      "w": 30,
+      "note": "พิธีไวเวิร์น"
+     },
+     {
+      "id": "refugee",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:145"
+   },
+   {
+    "pair": [
+     "dragonkin",
+     "demonkin"
+    ],
+    "places": [
+     {
+      "id": "KD-07",
+      "w": 100
+     }
+    ],
+    "mainOnly": "MH-02 เฉพาะลูกผู้ติดสัญญา",
+    "mainOnlyCountries": [
+     "MH-02"
+    ],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 45,
+      "note": "ผูกมังกร"
+     },
+     {
+      "id": "captive",
+      "w": 30,
+      "note": "ทหารรับจ้างของจักรพรรดิ"
+     },
+     {
+      "id": "trade",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:146"
+   },
+   {
+    "pair": [
+     "fae",
+     "human"
+    ],
+    "places": [
+     {
+      "id": "SV-04",
+      "w": 100
+     }
+    ],
+    "mainOnly": "—",
+    "mainOnlyCountries": [],
+    "causes": [
+     {
+      "id": "contract",
+      "w": 45,
+      "note": "ลูกค้าติดหนี้"
+     },
+     {
+      "id": "love",
+      "w": 35,
+      "note": "เด็กที่ได้รับเชิญ"
+     },
+     {
+      "id": "trade",
+      "w": 20,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:147"
+   },
+   {
+    "pair": [
+     "giant",
+     "human"
+    ],
+    "places": [
+     {
+      "id": "SH-06",
+      "w": 50
+     },
+     {
+      "id": "AL-18",
+      "w": 50
+     }
+    ],
+    "mainOnly": "SH-03 SH-07 เฉพาะลูกผู้ลี้ภัยหรือช่างตี",
+    "mainOnlyCountries": [
+     "SH-03",
+     "SH-07"
+    ],
+    "causes": [
+     {
+      "id": "love",
+      "w": 40,
+      "note": "สาวกมนุษย์ของลัทธิไททัน"
+     },
+     {
+      "id": "craft",
+      "w": 35,
+      "note": "ช่างตีที่ SH-07"
+     },
+     {
+      "id": "refugee",
+      "w": 25,
+      "note": ""
+     }
+    ],
+    "src": "docs/systems/character/01-origin.md:148"
+   }
+  ],
+  "meetCauses": [
+   {
+    "id": "trade",
+    "name": "ค้าขาย",
+    "start": [
+     {
+      "k": "stat",
+      "stat": "ทองเริ่มต้น",
+      "delta": 30
+     }
+    ],
+    "startText": "ทองเริ่มต้น +30",
+    "hbText": "ทาง ก ×1.3",
+    "hbMul": [
+     {
+      "path": "a",
+      "mul": 1.3
+     }
+    ]
+   },
+   {
+    "id": "craft",
+    "name": "งานช่าง/วิชา",
+    "start": [],
+    "startText": "ความถนัดที่เกี่ยวหนึ่งอย่างระดับ 1",
+    "hbText": "ทาง ก ×1.2",
+    "hbMul": [
+     {
+      "path": "a",
+      "mul": 1.2
+     }
+    ]
+   },
+   {
+    "id": "refugee",
+    "name": "ผู้ลี้ภัย",
+    "start": [
+     {
+      "k": "stat",
+      "stat": "ไว้ใจผู้ช่วยเหลือ",
+      "delta": 1
+     }
+    ],
+    "startText": "ทองเริ่มต้น 0 · ไว้ใจผู้ช่วยเหลือ +1",
+    "hbText": "ทาง ข ×1.5 (อีกฝ่ายตายหรือพลัดพราก)",
+    "hbMul": [
+     {
+      "path": "b",
+      "mul": 1.5
+     }
+    ]
+   },
+   {
+    "id": "captive",
+    "name": "เชลยสงคราม",
+    "start": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_lonely",
+      "chance": 0.05
+     }
+    ],
+    "startText": "c_lonely 5%",
+    "hbText": "ทาง ข ×2",
+    "hbMul": [
+     {
+      "path": "b",
+      "mul": 2
+     }
+    ]
+   },
+   {
+    "id": "contract",
+    "name": "สัญญา",
+    "start": [],
+    "startText": "ตั้งธงมีชื่อในบัญชี (ชุด ct) หรือหนี้ภูต (ชุด fy)",
+    "hbText": "ทาง ก ×0.7",
+    "hbMul": [
+     {
+      "path": "a",
+      "mul": 0.7
+     }
+    ]
+   },
+   {
+    "id": "exile",
+    "name": "ถูกเนรเทศ",
+    "start": [],
+    "startText": "พ่อแม่เป็นผู้พลัดถิ่น ถิ่นเดิมของพ่อแม่รังเกียจ",
+    "hbText": "ทาง ค ×1.5 (ญาติรับเลี้ยง)",
+    "hbMul": [
+     {
+      "path": "c",
+      "mul": 1.5
+     }
+    ]
+   },
+   {
+    "id": "envoy",
+    "name": "ทูต",
+    "start": [
+     {
+      "k": "stat",
+      "stat": "ไว้ใจสองเผ่า",
+      "delta": 1
+     }
+    ],
+    "startText": "ไว้ใจสองเผ่า +1",
+    "hbText": "ทาง ก ×1.2 · ผู้ค้ำใน hb.t1 ผ่านเพิ่ม 5",
+    "hbMul": [
+     {
+      "path": "a",
+      "mul": 1.2
+     }
+    ]
+   },
+   {
+    "id": "love",
+    "name": "ความรัก/ชุมชนร่วม",
+    "start": [],
+    "startText": "ไม่มีผลพิเศษ",
+    "hbText": "ทาง ก ×1.2",
+    "hbMul": [
+     {
+      "path": "a",
+      "mul": 1.2
+     }
+    ]
+   }
+  ],
+  "halfOfHalf": [
+   {
+    "partner": "P = A",
+    "child": "เผ่า A เต็ม",
+    "note": "เลือด B เจือจาง: ได้แท็กเผ่าจาก B หนึ่งแท็กด้วยโอกาส 25% (ไม่นับแท็ก #weak_*) ไม่ถูกนับเป็นลูกครึ่ง ถิ่นที่รังเกียจลูกครึ่งไม่ใช้กับลูก"
+   },
+   {
+    "partner": "P = B",
+    "child": "เผ่า B เต็ม",
+    "note": "เลือด A เจือจางแบบเดียวกัน"
+   },
+   {
+    "partner": "P = เผ่า C อื่น และมีคู่ C กับ A ในตารางคู่ที่เป็นไปได้",
+    "child": "ลูกครึ่ง เผ่าหลัก C เผ่าที่สอง A",
+    "note": "สุ่มถิ่นเกิดและเหตุที่พ่อแม่พบกันตามตารางของคู่ C กับ A"
+   },
+   {
+    "partner": "P = เผ่า C อื่น และไม่มีคู่ C กับ A",
+    "child": "เผ่า C เต็ม",
+    "note": "เลือดของผู้ปกครองหายไป ตัวละครได้พร nb_homeland_call 10%"
+   },
+   {
+    "partner": "ผู้ปกครองสองคนเป็นลูกครึ่งทั้งคู่",
+    "child": "เผ่าหลักของผู้ปกครองที่เลี้ยงลูก",
+    "note": "อีกเผ่าเป็นเลือดเจือจางตามแถวแรก"
+   }
+  ],
+  "halfBlood": [
+   "เผ่าหลัก คือเผ่าที่ผู้เล่นสุ่มได้ในขั้น 1 และ เผ่าที่สอง คือเผ่าที่ได้จากตารางด้านบน",
+   "ค่าสถานะทั้ง 6 ค่าสุ่มแยกกัน แต่ละค่าโยนเหรียญ 50/50 ว่าใช้ช่วงของเผ่าหลักหรือเผ่าที่สอง แล้วสุ่มจากช่วงนั้น",
+   "อายุขัยธรรมชาติสุ่มจากช่วงกลางของสองเผ่า (ค่ากลางของเผ่าหลัก บวกค่ากลางของเผ่าที่สอง หารสอง ± 15%)",
+   "แท็กเผ่า (เช่น #darkvision #weak_sun) เผ่าหลักได้ครบ เผ่าที่สองได้แต่ละแท็ก 50% ยกเว้นแท็กอ่อนแอ (#weak_*) ที่ได้ 100% เสมอ",
+   "พรและคำสาปเฉพาะเผ่า เลือกได้จากทั้งสองเผ่า ระดับ L ของเผ่าที่สองเข้ามาไม่ได้",
+   "นิสัย ได้นิสัยเพิ่มหนึ่งอย่างจากรายการเสริมของเผ่าที่สอง",
+   "ถิ่นเกิด ใช้ตารางถิ่นพบกันด้านล่าง (หัวข้อ ถิ่นเกิดและเหตุที่พ่อแม่พบกัน) ถ้าถิ่นนั้นรังเกียจลูกครึ่ง (ตารางด้านบน) มีโอกาส 40% ได้คำสาปผู้ถูกเนรเทศ c_outcast และ 25% ได้คำสาปไร้เพื่อนตลอดกาล c_lonely",
+   "เส้นเรื่อง ลูกครึ่งเดินตามเส้นของเผ่าหลักและมีโหนดเพิ่มตาม [../../lore/storylines/22-halfblood.md](../../lore/storylines/22-halfblood.md)",
+   "การผสมที่ผิดธรรมชาติ ลูกครึ่งของเผ่าที่สายเลือดขัดกัน (เช่น นาคาลูกครึ่งเงือกในยุคสงครามน้ำเก่า WR-20) มีโอกาส 20% ได้พร nb_both_banks ในไฟล์ [05-new-blessings.md](05-new-blessings.md) เพราะเป็นคนเดียวที่เดินข้ามทั้งสองฝั่งได้"
+  ],
+  "outsideRules": [
+   "เหตุการณ์ใน 194 รายการนับเป็นผลโดยตรงต่อตัวละครเฉพาะเมื่อตัวละครอยู่ในทวีปที่เหตุการณ์นั้นเกิด เหตุการณ์ของสายบ้านเกิดเผ่าให้ผลเป็นข่าวและตัวเลือกเดินทางกลับ",
+   "ตัวละครที่เกิดนอกถิ่นได้นิสัย homebody หรือ freedom เพิ่มหนึ่งตัว (สุ่ม 50/50) และมีโอกาส 30% ได้พร nb_homeland_call ในไฟล์ [05-new-blessings.md](05-new-blessings.md)",
+   "ถ้าถิ่นหลักของเผ่าหายไปแล้วก่อนตัวละครเกิด (เช่น อัซการ์หลัง DR-01) ตัวละครนับเป็น ผู้ลี้ภัยรุ่นสอง และสายบ้านเกิดเผ่าเปลี่ยนเป็นสายบ้านที่หายไป ผู้ที่เกิดนอกถิ่นก่อนเหตุการณ์จึงรอดจากการสูญเสียแผ่นดินโดยบังเอิญ",
+   "เรื่องที่ทิ้งไว้ที่ประเทศอื่น: NPC ในถิ่นหลักที่เกี่ยวกับเผ่าของตัวละคร (เช่น ครอบครัว ผู้ปกครอง) มีโอกาสส่งข่าวมาหรือเดินทางมา ตามความสัมพันธ์ที่ตั้งตอนเกิด"
+  ],
+  "outsideStories": [
+   {
+    "id": "outside_1",
+    "name": "สายบ้านเกิดเผ่า",
+    "meaning": "เรื่องของถิ่นหลักของเผ่า (เหตุการณ์ในทวีปนั้น)",
+    "effect": "ไม่เข้ามาหาตัวละครเอง เข้ามาเป็น \"ข่าวจากบ้านเก่า\" ผ่านผู้เดินทาง พ่อค้า จดหมาย"
+   },
+   {
+    "id": "outside_2",
+    "name": "สายถิ่นที่อยู่",
+    "meaning": "เรื่องของประเทศและทวีปที่เกิดจริง",
+    "effect": "เหตุการณ์ในทวีปนี้กระทบตัวละครเต็มที่"
+   }
+  ],
+  "continentGifts": [
+   {
+    "continent": "AZ",
+    "name": "อัซการ์",
+    "blessings": [
+     {
+      "ids": [
+       "b_falcon",
+       "nb_sky_born",
+       "nb_cloud_nap"
+      ],
+      "chance": 0.18,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_vertigo"
+      ],
+      "chance": 0.09,
+      "cond": "ตัวละครไม่ใช่เผ่าปีก"
+     }
+    ]
+   },
+   {
+    "continent": "MH",
+    "name": "มอร์เฮเวน",
+    "blessings": [
+     {
+      "ids": [
+       "b_courage",
+       "b_ironstomach",
+       "nb_ash_lung"
+      ],
+      "chance": 0.16,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_hunger",
+       "c_rage"
+      ],
+      "chance": 0.12,
+      "cond": ""
+     }
+    ]
+   },
+   {
+    "continent": "KD",
+    "name": "คาซ-ดูรัม",
+    "blessings": [
+     {
+      "ids": [
+       "b_flameward",
+       "b_mountain",
+       "nb_forge_born"
+      ],
+      "chance": 0.2,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_fireweak"
+      ],
+      "chance": 0.08,
+      "cond": "เผ่าไม่ทนไฟ"
+     },
+     {
+      "ids": [
+       "nc_ash_cough"
+      ],
+      "chance": 0.1,
+      "cond": ""
+     }
+    ]
+   },
+   {
+    "continent": "NR",
+    "name": "เนเรีย",
+    "blessings": [
+     {
+      "ids": [
+       "b_waterwalk",
+       "b_seacalm",
+       "nb_tide_born"
+      ],
+      "chance": 0.2,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_hydrophobia"
+      ],
+      "chance": 0.04,
+      "cond": "เผ่าไม่ใช่สายน้ำ"
+     },
+     {
+      "ids": [
+       "c_seasick"
+      ],
+      "chance": 0.08,
+      "cond": ""
+     }
+    ]
+   },
+   {
+    "continent": "AL",
+    "name": "อัลเดรีย",
+    "blessings": [
+     {
+      "ids": [
+       "b_clover",
+       "b_harvest",
+       "b_friendmaker"
+      ],
+      "chance": 0.15,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "nc_war_orphan"
+      ],
+      "chance": 0.1,
+      "cond": "ถิ่นสงคราม"
+     }
+    ]
+   },
+   {
+    "continent": "MK",
+    "name": "เมคาเรีย",
+    "blessings": [
+     {
+      "ids": [
+       "b_tireless",
+       "nb_gear_sense",
+       "b_memory"
+      ],
+      "chance": 0.14,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "nc_smoke_lung"
+      ],
+      "chance": 0.1,
+      "cond": ""
+     },
+     {
+      "ids": [
+       "c_insomnia"
+      ],
+      "chance": 0.06,
+      "cond": ""
+     }
+    ]
+   },
+   {
+    "continent": "SH",
+    "name": "ซาฮารัน",
+    "blessings": [
+     {
+      "ids": [
+       "b_sunward",
+       "nb_dust_blood",
+       "b_poisonward"
+      ],
+      "chance": 0.16,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_sunburn"
+      ],
+      "chance": 0.06,
+      "cond": "ผิวบางไม่ทน"
+     },
+     {
+      "ids": [
+       "nc_thirst_mark"
+      ],
+      "chance": 0.08,
+      "cond": ""
+     }
+    ]
+   },
+   {
+    "continent": "SV",
+    "name": "ซิลวาเนล",
+    "blessings": [
+     {
+      "ids": [
+       "b_animaltongue",
+       "b_lucid",
+       "nb_root_sense"
+      ],
+      "chance": 0.18,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_allergy"
+      ],
+      "chance": 0.06,
+      "cond": ""
+     },
+     {
+      "ids": [
+       "nc_leaf_fever"
+      ],
+      "chance": 0.12,
+      "cond": "ถ้า BIO-01 เกิดแล้ว"
+     }
+    ]
+   },
+   {
+    "continent": "NB",
+    "name": "เนบูเลีย",
+    "blessings": [
+     {
+      "ids": [
+       "b_nighteye",
+       "b_mindward",
+       "nb_fog_walker"
+      ],
+      "chance": 0.16,
+      "cond": ""
+     }
+    ],
+    "curses": [
+     {
+      "ids": [
+       "c_nightmare",
+       "c_whisper"
+      ],
+      "chance": 0.14,
+      "cond": ""
+     },
+     {
+      "ids": [
+       "nc_fog_shadow"
+      ],
+      "chance": 0.15,
+      "cond": "ถ้า FG-01 เกิดแล้ว"
+     }
+    ]
+   }
+  ],
+  "gender": {
+   "human": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "elf": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "darkelf": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "dwarf": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "orc": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "halfling": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "beast": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "naga": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "dragonkin": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "vampire": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "fae": {
+    "m": 40,
+    "f": 45,
+    "n": 15
+   },
+   "slime": {
+    "m": 0,
+    "f": 0,
+    "n": 100
+   },
+   "demonkin": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "merfolk": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "winged": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "giant": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "lavakin": {
+    "m": 50,
+    "f": 50,
+    "n": 0
+   },
+   "construct": {
+    "m": 50,
+    "f": 50,
+    "n": 0,
+    "note": "ตามเผ่าเดิมก่อนติดตั้ง"
+   },
+   "soulmachine": {
+    "m": 40,
+    "f": 40,
+    "n": 20,
+    "note": "เลือกเองตอนตื่น (สุ่ม 40 ชาย 40 หญิง 20 ไร้เพศ)"
+   },
+   "mummy": {
+    "m": 50,
+    "f": 50,
+    "n": 0,
+    "note": "ตามเพศเดิมตอนมีชีวิต"
+   },
+   "ghoul": {
+    "m": 50,
+    "f": 50,
+    "n": 0,
+    "note": "ตามเพศเดิมตอนมีชีวิต"
+   }
+  },
+  "institutions": [
+   {
+    "id": "inst_1",
+    "name": "ศาสนจักรแห่งแสง (AL-02)",
+    "countries": [
+     "AL-02"
+    ],
+    "allCountries": false,
+    "limit": "ตำแหน่ง พระ และสังฆราชบวชให้ชายเท่านั้น หญิงเป็น ผู้รับใช้ศาสนจักร ได้ (เช่น ผู้ดูแลวงเวท) และเป็นผู้พิพากษาศาลศาสนาได้ แต่บวชเป็นพระไม่ได้",
+    "classText": "พระชั้น 2 ขึ้นไป ชั้น 1 ต้องพ้นพันธะก่อน · สังฆราชและนักบวชระดับสูงเป็นชั้น 4 ถึง 5 ตามตำแหน่ง",
+    "classes": {
+     "min": 2
+    },
+    "alt": "หญิงที่อยากเป็นพระออกไปขบวนการผู้ไม่ก้มหัว (GD-03) หรือเทพีแห่งจันทรา",
+    "genderOnly": "m"
+   },
+   {
+    "id": "inst_2",
+    "name": "เทพีแห่งจันทรา (SV-05 NB-03)",
+    "countries": [
+     "SV-05",
+     "NB-03"
+    ],
+    "allCountries": false,
+    "limit": "นักบวชหลักเป็นหญิงเท่านั้น ชายเป็นผู้พิทักษ์ (ถือดาบ ถือโคม) ไม่ใช่ผู้ประกอบพิธี",
+    "classText": "นักบวชชั้น 2 ขึ้นไป · ผู้พิทักษ์ไม่จำกัดชั้น",
+    "classes": {
+     "min": 2
+    },
+    "alt": "ชายที่อยากเป็นนักบวชไปสายศาสนาอื่น",
+    "genderOnly": "f"
+   },
+   {
+    "id": "inst_3",
+    "name": "ลัทธิบูชามังกร (AZ-01)",
+    "countries": [
+     "AZ-01"
+    ],
+    "allCountries": false,
+    "limit": "ผู้ปรนนิบัติที่ถวายตัวต่อมังกรเป็นเผ่าปีกเท่านั้น (เผ่าอื่นเป็นผู้ช่วยได้)",
+    "classText": "ผู้ปรนนิบัติผิวขาว (อาเวียนขาว) เป็นชั้น 4 ถึง 5 · ปีกสั้นและชาวพื้นเป็นผู้ช่วยชั้น 2 ถึง 3 ([../economy/03-classes.md](../economy/03-classes.md) หัวข้อ 7)",
+    "classes": {
+     "min": 4,
+     "max": 5
+    },
+    "alt": "เผ่าอื่นที่อยากถวายตัวไปลัทธิอื่น"
+   },
+   {
+    "id": "inst_4",
+    "name": "พญานาคราช (NR-07)",
+    "countries": [
+     "NR-07"
+    ],
+    "allCountries": false,
+    "limit": "ผู้ผ่านการทดสอบเป็นนาคา มนุษย์ และเงือก (ไม่ใช่เผ่าสัตว์)",
+    "classText": "ไม่จำกัด การทดสอบไม่ดูฐานะ",
+    "classes": {},
+    "alt": "ผู้ไม่ผ่านกลายเป็นหินตามธรรมเนียม"
+   },
+   {
+    "id": "inst_5",
+    "name": "ราชวงศ์ฟาโรห์ (SH-02)",
+    "countries": [
+     "SH-02"
+    ],
+    "allCountries": false,
+    "limit": "บัลลังก์สืบตามสายเลือดฟาโรห์ ไม่จำกัดเพศ",
+    "classText": "ชั้น 5 โดยสายเลือด",
+    "classes": {
+     "min": 5
+    },
+    "alt": "ไม่มี"
+   },
+   {
+    "id": "inst_6",
+    "name": "สภาช่างศึก นอคดรีน (MH-05)",
+    "countries": [
+     "MH-05"
+    ],
+    "allCountries": false,
+    "limit": "ไม่จำกัดเพศ จำกัดเผ่าให้ผู้มีมือช่าง (โอเกอร์ ออร์คช่าง คนแคระ)",
+    "classText": "ชั้น 3 ขึ้นไป (ช่างฝีมือ)",
+    "classes": {
+     "min": 3
+    },
+    "alt": "เผ่าอื่นเป็นผู้ช่วย"
+   },
+   {
+    "id": "inst_7",
+    "name": "ไชร์ฮาล์ฟลิง (AL-16)",
+    "countries": [
+     "AL-16"
+    ],
+    "allCountries": false,
+    "limit": "ไม่จำกัดเพศ",
+    "classText": "ไม่จำกัด เป็นสหกรณ์แบ่งปัน",
+    "classes": {},
+    "alt": "ไม่มี"
+   },
+   {
+    "id": "inst_8",
+    "name": "ผู้ถือกุญแจน้ำตก (NR-02)",
+    "countries": [
+     "NR-02"
+    ],
+    "allCountries": false,
+    "limit": "ผู้ถือเจ็ดคนมีที่นั่งตามเผ่า (นาคา เงือกปีก มนุษย์) ไม่จำกัดเพศ",
+    "classText": "ไม่จำกัดชั้นเดิม ได้ชั้น 5 เมื่อรับตำแหน่ง",
+    "classes": {
+     "min": 5
+    },
+    "alt": "ไม่มี"
+   },
+   {
+    "id": "inst_9",
+    "name": "ผู้ฟังวิญญาณ (SV-13)",
+    "countries": [
+     "SV-13"
+    ],
+    "allCountries": false,
+    "limit": "เอลฟ์ผู้เฒ่าเท่านั้น (ต้องมีอายุเกินร้อยแปดสิบปี)",
+    "classText": "ไม่จำกัด",
+    "classes": {},
+    "alt": "เผ่าอื่นเป็นผู้ช่วย"
+   },
+   {
+    "id": "inst_10",
+    "name": "ผู้เฝ้าประตูเมืองปฐม (NB-08)",
+    "countries": [
+     "NB-08"
+    ],
+    "allCountries": false,
+    "limit": "ชาวหมอกหรือผีเมืองปฐม เท่านั้น",
+    "classText": "ไม่จำกัด ผู้ไร้เงาชั้น 1 รับได้",
+    "classes": {
+     "min": 1
+    },
+    "alt": "เผ่าอื่นเป็นผู้ช่วยภายนอกประตู"
+   },
+   {
+    "id": "inst_11",
+    "name": "ตระกูลมารดาแห่งอิรมอร์ (KD-05)",
+    "countries": [
+     "KD-05"
+    ],
+    "allCountries": false,
+    "limit": "ตำแหน่งมารดาสืบทางหญิงเท่านั้น",
+    "classText": "ชั้น 5 โดยสายตระกูล",
+    "classes": {
+     "min": 5
+    },
+    "alt": "ชายเป็นที่ปรึกษาเงาหรือนักฆ่า",
+    "genderOnly": "f"
+   },
+   {
+    "id": "inst_12",
+    "name": "ศาลและสภาเมือง (ทุกประเทศ)",
+    "countries": [],
+    "allCountries": true,
+    "limit": "ไม่จำกัดเพศและเผ่า",
+    "classText": "ศาลชั้น 3 ขึ้นไป (ชั้น 1 ไม่มีสิทธิ์ในศาล ยกเว้นประเทศที่สหกรณ์รับ AL-19 MK-12) · สภาเมืองชั้น 4 ขึ้นไปในระบอบที่เปิด",
+    "classes": {
+     "min": 3
+    },
+    "alt": "ใช้ผู้แทนชั้นสูงกว่า หรือขึ้นชั้นตาม [../economy/03-classes.md](../economy/03-classes.md) หัวข้อ 5"
+   },
+   {
+    "id": "inst_13",
+    "name": "กิลด์พ่อค้าและช่าง (ทุกประเทศ)",
+    "countries": [],
+    "allCountries": true,
+    "limit": "ไม่จำกัดเพศและเผ่า",
+    "classText": "ชั้น 3 ขึ้นไป การรับเข้ากิลด์เป็นเงื่อนไขขึ้นชั้น 4",
+    "classes": {
+     "min": 3
+    },
+    "alt": "ชั้น 2 เป็นลูกมือของสมาชิก"
+   }
+  ],
+  "birthSigns": [
+   {
+    "id": "comet",
+    "name": "ดาวหาง",
+    "kind": "sign",
+    "likes": [
+     "dragonkin",
+     "human",
+     "winged"
+    ],
+    "clashes": [
+     "mummy",
+     "ghoul"
+    ],
+    "effect": "พรเกี่ยวกับชะตา (#hero_luck #fate_shift) ได้ง่ายขึ้น 3 เท่า",
+    "likesText": "เผ่ามังกร มนุษย์ เผ่าปีก",
+    "clashesText": "มัมมี่ กูล",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#hero_luck"
+     },
+     {
+      "k": "grant",
+      "kind": "tag",
+      "id": "#fate_shift"
+     }
+    ]
+   },
+   {
+    "id": "eclipse",
+    "name": "สุริยคราส",
+    "kind": "sign",
+    "likes": [
+     "vampire",
+     "darkelf",
+     "demonkin"
+    ],
+    "clashes": [
+     "winged"
+    ],
+    "effect": "โอกาส 25% ได้พร nb_eclipse_born ใน [05-new-blessings.md](05-new-blessings.md) และมีโอกาสได้คำสาปเงา c_shadow",
+    "likesText": "แวมไพร์ ดาร์กเอลฟ์ เผ่าปีศาจ",
+    "clashesText": "เผ่าปีก เอลฟ์ฟ้า",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "nb_eclipse_born"
+     },
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_shadow"
+     }
+    ]
+   },
+   {
+    "id": "fullmoon",
+    "name": "จันทร์เต็มดวง",
+    "kind": "sign",
+    "likes": [
+     "beast",
+     "merfolk",
+     "vampire",
+     "elf"
+    ],
+    "clashes": [
+     "orc"
+    ],
+    "effect": "คำสาปมนุษย์หมาป่า c_moonfrenzy เพิ่ม 3 เท่าในเผ่าสัตว์",
+    "likesText": "เผ่าสัตว์ เงือก แวมไพร์ เอลฟ์ จันทรา",
+    "clashesText": "ออร์ค",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_moonfrenzy"
+     }
+    ]
+   },
+   {
+    "id": "storm",
+    "name": "พายุ",
+    "kind": "sign",
+    "likes": [
+     "winged",
+     "fae",
+     "merfolk"
+    ],
+    "clashes": [
+     "lavakin"
+    ],
+    "effect": "พรสายฟ้าและลมได้ง่ายขึ้น 3 เท่า",
+    "likesText": "เผ่าปีก ภูตพราย เงือก",
+    "clashesText": "เผ่าลาวา",
+    "fx": []
+   },
+   {
+    "id": "night",
+    "name": "กลางคืน",
+    "kind": "time",
+    "likes": [
+     "vampire",
+     "darkelf",
+     "mummy"
+    ],
+    "clashes": [
+     "lavakin"
+    ],
+    "effect": "ได้ b_nighteye หรือ b_nightowl ง่ายขึ้น",
+    "likesText": "แวมไพร์ ดาร์กเอลฟ์ มัมมี่",
+    "clashesText": "เผ่าลาวา",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_nighteye"
+     },
+     {
+      "k": "grant",
+      "kind": "blessing",
+      "id": "b_nightowl"
+     }
+    ]
+   },
+   {
+    "id": "day",
+    "name": "กลางวัน",
+    "kind": "time",
+    "likes": [
+     "human",
+     "halfling",
+     "dragonkin"
+    ],
+    "clashes": [
+     "vampire"
+    ],
+    "effect": "แวมไพร์ที่เกิดกลางวันได้คำสาป c_sunburn ทันที (หายาก แต่เป็นที่รู้จักว่าผิดธรรมชาติ)",
+    "likesText": "มนุษย์ ฮาล์ฟลิง เผ่ามังกร",
+    "clashesText": "แวมไพร์",
+    "fx": [
+     {
+      "k": "grant",
+      "kind": "curse",
+      "id": "c_sunburn"
+     }
+    ]
+   },
+   {
+    "id": "dawn",
+    "name": "รุ่งอรุณ",
+    "kind": "time",
+    "likes": [
+     "elf",
+     "fae"
+    ],
+    "clashes": [
+     "ghoul"
+    ],
+    "effect": "โอกาสได้พรแสงเพิ่ม",
+    "likesText": "เอลฟ์ ภูตพราย",
+    "clashesText": "กูล",
+    "fx": []
+   },
+   {
+    "id": "dusk",
+    "name": "สนธยา",
+    "kind": "time",
+    "likes": [
+     "orc",
+     "darkelf",
+     "mummy"
+    ],
+    "clashes": [],
+    "effect": "พรและคำสาปสายความตายได้ง่ายขึ้น",
+    "likesText": "ออร์ค ดาร์กเอลฟ์ มัมมี่",
+    "clashesText": "",
+    "fx": []
+   }
+  ],
+  "birthSignWeights": {
+   "time": [
+    "dawn",
+    "day",
+    "dusk",
+    "night"
+   ],
+   "sign": [
+    {
+     "id": "none",
+     "w": 70
+    },
+    {
+     "id": "comet",
+     "w": 6
+    },
+    {
+     "id": "eclipse",
+     "w": 6
+    },
+    {
+     "id": "fullmoon",
+     "w": 10
+    },
+    {
+     "id": "storm",
+     "w": 8
+    }
+   ]
+  },
+  "halfStat": {
+   "coin": 0.5,
+   "lifespanWiggle": 0.15,
+   "weakTagAlways": true,
+   "secondTagChance": 0.5
+  }
+ }
+}
