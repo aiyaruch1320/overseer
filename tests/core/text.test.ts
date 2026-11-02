@@ -4,7 +4,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { Game, makeCtx, versions, type Ctx, type GameData } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
 import { MAX_NAME, VOICES } from '../../src/core/text/tuning';
-import { describe as say, displayLevel, fill, labels, leaks, lines, nameCharacter, nameTaken, pickText, questionOf, registerName, scrub, sentence, slotsOf, textSystem, unphrased, type LibLine } from '../../src/core/text';
+import { chronicleText, describe as say, displayLevel, fill, fxLine, fxPhrases, fxSplit, godTemplate, isIndirect, labels, leaks, lines, nameCharacter, nameTaken, pickText, questionOf, reasonText, registerName, scrub, sentence, slotsOf, spaceDigits, textSystem, unphrased, type LibLine } from '../../src/core/text';
 import type { Country, NpcsFile } from '../../src/core/data/types-npcs';
 import type { TemplatesData } from '../../src/core/data/types-text';
 import type { LifeState, LogEntry } from '../../src/core/types';
@@ -471,5 +471,101 @@ describe('text: the hand of the god and the calls of the game', () => {
     // a glow and a missed card are for the log, not for the player
     expect(say(data, e({ sys: 'attention', kind: 'glow', level: 1, data: { why: 'gap' } }), { raw: true })).toBeNull();
     expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toBeNull();
+  });
+});
+
+describe('text: a prayer that needs a system not built yet is told as a promise (review M2 G6)', () => {
+  const g = (kind: string, over: Partial<LogEntry> = {}): LogEntry => e({ sys: 'god', kind, level: 2, age: 20, ...over });
+  const give = (id: string, fx: string, over: Partial<LogEntry['data']> = {}) => say(data, g('prayer.give', { id, data: { n: 5, name: 'ขอพร', price: 12, fx, npcName: 'ไอรัสวาร์', ...over } }))!;
+
+  it('never says that a lover or a child came: the words are a blessing that waits', () => {
+    const words = fxSplit(data, 'rel:+lover');
+    expect(words.done).toEqual([]);
+    expect(words.promised.join('')).toMatch(/รอโอกาส/);
+    expect(fxSplit(data, 'child').promised.join('')).toMatch(/รอโอกาส/);
+    for (const fx of ['rel:+lover', 'child', 'child hp+10']) {
+      for (const t of fxPhrases(data, fx)) expect(t).not.toMatch(/^ได้พบคนรัก$|^ได้ลูก$/);
+    }
+    // the effects that did come are told as done, the promise apart
+    expect(fxLine(data, 'hp+45 rel:+lover')).toMatch(/^ร่างกายฟื้นขึ้น \(คำมั่นที่ยังไม่เป็นจริง: .*รอโอกาส/);
+    expect(fxLine(data, 'gold+50')).toBe('ได้ทอง 50');
+  });
+
+  it('the line of the game and the chronicle both carry the promise, whichever scene is picked', () => {
+    // a variant is picked by the content of the entry: many entries, every scene of the kind comes up
+    const seen = new Set<string>();
+    for (let n = 1; n < 40; n++) {
+      for (const [id, fx] of [['love', 'rel:+lover'], ['heir', 'child']] as const) {
+        const t = give(id, fx, { n });
+        seen.add(t);
+        expect(t, t).toMatch(/คำมั่นที่ยังไม่เป็นจริง: .*รอโอกาสอยู่/);
+        expect(t, t).not.toMatch(/ได้พบคนรัก|ได้ลูก|ทารกก็ดังขึ้น|มือสองมือแตะกัน/);
+        expect(leaks(t), t).toEqual([]);
+      }
+    }
+    expect(seen.size).toBeGreaterThan(1);
+    const c = chronicleText(data, { kind: 'prayer.give', id: 'love', result: 'rel:+lover' });
+    expect(c).toMatch(/คำมั่นที่ยังไม่เป็นจริง/);
+    expect(c).not.toMatch(/ได้พบคนรัก/);
+  });
+
+  it('a granted prayer is never told with the scene of "what was asked did not come, but ..."', () => {
+    // every kind of prayer whose effect came true, many entries: the scene never has the frame of a refusal
+    for (const [id, fx] of [['heal', 'hp+45'], ['rain', 'country:-famine gold+10'], ['peace', 'country:-war'], ['wealth', 'gold+50'], ['wisdom', 'int+1'], ['courage', 'brave+20 hp+15'], ['uncurse', 'uncurse:c_poverty'], ['kin_sick', 'npc:heal npc:att+15'], ['mother', 'vit+1 hp+10']] as const) {
+      for (let n = 1; n < 25; n++) {
+        const t = give(id, fx, { n });
+        expect(t, `${id} ${t}`).not.toMatch(/(?:ไม่|ยัง)[^—]*\sแต่/);
+      }
+    }
+  });
+
+  it('a strange gift is told as something that came instead of what was asked', () => {
+    let told = 0;
+    for (let n = 1; n < 25; n++) {
+      const t = give('wealth', '', { n, gift: 'nb_craft_eye' });
+      if (/\sแต่/.test(t.split('—').slice(1).join('—'))) told++;
+      expect(t, t).toMatch(/ด้วยของแปลก/);
+    }
+    expect(told).toBeGreaterThan(20);
+  });
+
+  it('knows the two scenes of each prayer: the one that happened and the one that came instead', () => {
+    const ts = (data['templates-god'].items as TemplatesData).templates.filter((t) => t.family === 'prayer_give');
+    const kinds = new Set(ts.map((t) => t.keys['ชนิด']));
+    for (const k of kinds) {
+      const mine = ts.filter((t) => t.keys['ชนิด'] === k);
+      expect(mine.some((t) => isIndirect(t.text)), k).toBe(true);
+      expect(mine.some((t) => !isIndirect(t.text)), k).toBe(true);
+    }
+    const hash = (t: string) => t.length;
+    expect(godTemplate(data, 'prayer_give', { ชนิด: 'ขอพบรัก' }, { ชื่อตัวละคร: 'ก' }, 'x', hash, 'indirect')).toMatch(/ไม่มีคนรัก แต่/);
+    expect(godTemplate(data, 'prayer_give', { ชนิด: 'ขอพบรัก' }, { ชื่อตัวละคร: 'ก' }, 'x', hash, 'direct')).not.toMatch(/ไม่มีคนรัก/);
+  });
+});
+
+describe('text: the words of a reason and the space after a number', () => {
+  it('keeps the numbers and what the player typed, drops the codes of parameters', () => {
+    expect(reasonText(data, 'ชะลอได้ ×0.2 ถึง ×0.9')).toBe('ชะลอได้ ×0.2 ถึง ×0.9');
+    expect(reasonText(data, 'เร่งได้ ×1.1 ถึง ×3')).toBe('เร่งได้ ×1.1 ถึง ×3');
+    expect(reasonText(data, 'ความหวาดกลัวไม่พอ (ต้อง 20 มี 11)')).toBe('ความหวาดกลัวไม่พอ (ต้อง 20 มี 11)');
+    expect(reasonText(data, 'ต้องระบุตัวคูณ (mul) ที่ไม่ใช่ 1')).toBe('ต้องระบุตัวคูณ ที่ไม่ใช่ 1');
+    expect(reasonText(data, 'ไม่มีคำใบ้ "foo"')).toBe('ไม่มีคำใบ้ "foo"');
+    expect(reasonText(data, 'ไม่ระบุมังกร (dragon 0 ถึง 14)')).toBe('ไม่ระบุมังกร (0 ถึง 14)');
+    expect(reasonText(data, `ไม่มีคำใบ้ "${'ก'.repeat(500)}"`).length).toBeLessThan(80);
+    // the table-cell scrub is for sentences of the documents: it cuts the numbers, which a reason must not
+    expect(scrub(data, 'ชะลอได้ ×0.2 ถึง ×0.9')).not.toMatch(/0\.2/);
+    expect(scrub(data, 'ชะลอได้ ×0.2 ถึง ×0.9', { keepNumbers: true })).toMatch(/×0\.2 ถึง ×0\.9/);
+  });
+
+  it('puts a space between a number and the Thai word after it', () => {
+    expect(spaceDigits('กอร์ทาที่ 44หายใจแผ่วลง')).toBe('กอร์ทาที่ 44 หายใจแผ่วลง');
+    expect(spaceDigits('เขาเลือกถึงยุคที่ 4โดยไม่ลังเล')).toBe('เขาเลือกถึงยุคที่ 4 โดยไม่ลังเล');
+    expect(spaceDigits('อายุ 20 ปี ×0.5 ศ.ม. 10,420')).toBe('อายุ 20 ปี ×0.5 ศ.ม. 10,420');
+    expect(say(data, e({ sys: 'npc', kind: 'npc', level: 2, id: 'AL01-1', data: { what: 'ally', holder: 'กอร์ทาที่ 44' } }))).toMatch(/กอร์ทาที่ 44 ยินดี/);
+  });
+
+  it('names the blessing of a people, so that a gift of the god does not go unnamed', () => {
+    expect(labels(data).name.get('rb_orc_r')).toBe('ธงของผู้นำ');
+    expect(say(data, e({ sys: 'god', kind: 'chest', id: 'pick', level: 2, data: { slot: 1, thing: 'rb_orc_r', kind: 'bless', tier: 'R', paid: 19, warded: false } }))).toMatch(/ประทานพร ธงของผู้นำ ระดับหายาก/);
   });
 });

@@ -3,6 +3,7 @@
 import { makeCtx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
 import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, scrub, unphrased } from '../../src/core/text';
+import { OUTCOME_TH } from '../../src/core/text/tuning';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
 
 /** The short tag in front of a line: which part of the game said it. */
@@ -138,6 +139,9 @@ export function statusLines(data: GameData, state: GameState): string[] {
   const blessings = named(life.blessings, L.kind.blessing);
   const curses = named(life.curses, L.kind.curse);
   if (blessings.length || curses.length) out.push(`พร ${blessings.join(' · ') || 'ไม่มี'} · คำสาป ${curses.join(' · ') || 'ไม่มี'}`);
+  // what the god gave that is carried: a weapon or a thing shows here, so that "ประทาน" can be seen in the status (review M2 P5)
+  const carried = named(life.items, L.name);
+  if (carried.length) out.push(`ของติดตัว ${carried.join(' · ')}`);
   const last = [...state.log].reverse().find((e) => e.sys === 'npc' && e.data.what === 'meet');
   if (last) {
     const role = last.data.role ? ` (${scrub(data, String(last.data.role))})` : '';
@@ -208,7 +212,10 @@ export function godLines(data: GameData, state: GameState, policy?: string): str
   const g = state.god;
   // a prayer that ran out unanswered is in the chronicle (the silence is part of the hand), but it is not a use of power
   const lapsed = g.chronicle.filter((c) => c.kind === 'prayer.lapse').length;
-  const acts = g.chronicle.filter((c) => c.kind !== 'prayer.lapse');
+  // the chronicle holds a dream twice: when it was sent and when the character reached the crossroads; only the sending is a use of power (review M2 P16)
+  const isOutcome = (c: { kind: string; result?: string }) => c.kind === 'dream' && !String(c.result ?? '').startsWith('sent:');
+  const outcomes = g.chronicle.filter(isOutcome);
+  const acts = g.chronicle.filter((c) => c.kind !== 'prayer.lapse' && !isOutcome(c));
   if (!policy && !acts.length) return lapsed ? [`คำอธิษฐานที่ไม่ได้ตอบ ${lapsed} ใบ`] : [];
   const out: string[] = [];
   const round = (n: number) => Math.round(n * 10) / 10;
@@ -219,10 +226,19 @@ export function godLines(data: GameData, state: GameState, policy?: string): str
     used[k] = (used[k] ?? 0) + 1;
   }
   out.push(`ใช้พลัง ${acts.length} ครั้ง${acts.length ? `: ${Object.entries(used).map(([k, v]) => `${k} ×${v}`).join(' · ')}` : ''}`);
+  if (outcomes.length) {
+    const tally: Record<string, number> = {};
+    for (const c of outcomes) {
+      const r = String(c.result ?? '');
+      const k = r === 'faded' ? 'เลือนหายก่อนถึงทางแยก' : (OUTCOME_TH[r.split(':')[1]]?.plain ?? r).replace('ของท่าน', '').trim();
+      tally[k] = (tally[k] ?? 0) + 1;
+    }
+    out.push(`ผลของฝันที่ส่งไป ${outcomes.length} ครั้ง: ${Object.entries(tally).map(([k, v]) => `${k} ×${v}`).join(' · ')}`);
+  }
   if (lapsed) out.push(`คำอธิษฐานที่ไม่ได้ตอบ ${lapsed} ใบ`);
-  if (acts.length) {
+  if (acts.length || outcomes.length) {
     out.push('พงศาวดารพระหัตถ์:');
-    for (const c of acts) {
+    for (const c of g.chronicle.filter((x) => x.kind !== 'prayer.lapse')) {
       out.push(`  ${c.hAge !== undefined ? `อายุ ${c.hAge} · ` : ''}ศ.ม. ${calendarYear(c.worldYear).toLocaleString('en-US')} │ ${chronicleText(data, c) || CHRONICLE_KIND[c.kind] || 'พระหัตถ์'}`);
     }
   }

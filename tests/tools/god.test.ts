@@ -12,7 +12,8 @@ import { actsOf, cardsOf, fateCost, fateTargets, grantPrice, kindOf, whisperPric
 import { currentChest, dreamsOf, offerCards } from '../../src/core/god';
 import { write } from '../../src/core/log';
 import { leaks } from '../../src/core/text';
-import { GodConsole, callLines, parseGod, refOf, waitingLines } from '../../scripts/tools/god-commands';
+import { GodConsole, callLines, cardEffect, parseGod, refOf, waitingLines } from '../../scripts/tools/god-commands';
+import { statusLines } from '../../scripts/tools/report';
 import { runLifeReport } from '../../scripts/tools/life-run';
 import { loadAll } from '../../scripts/tools/node-data';
 import { POLICIES, afterBeat, createSession, runToCall, startLife, type Session } from '../../scripts/tools/session';
@@ -185,7 +186,7 @@ describe('the console on the real god', () => {
     expect(actsOf(g.state).whisper.used).toEqual(['ระวัง']);
     expect(said(god.handle('whisper ระวัง'))).toContain('ทำไม่ได้ — คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว');
     // a hint that names somebody needs the name
-    expect(said(god.handle('whisper คนนั้นโกหก'))).toContain('ต้องชี้เป้า');
+    expect(said(god.handle('whisper คนนั้นโกหก'))).toContain('ต้องชี้คน');
     expect(said(god.handle('whisper ช่วย ผู้ที่ไม่มี'))).toContain('ไม่รู้จัก NPC');
   });
 
@@ -310,6 +311,152 @@ describe('the console on the real god', () => {
   });
 });
 
+describe('the console: the review of M2 (words, previews, errors)', () => {
+  function pray2(g: Game, kind: string) {
+    const a = actsOf(g.state);
+    const tick = g.state.life!.hAge * 4 + g.state.clock.quarter;
+    const card = { n: ++a.prayerN, kind, tick, exp: tick + 14, year: g.state.clock.worldYear };
+    cardsOf(g.ctx).push(card);
+    return card;
+  }
+
+  it('G6: the preview of a prayer for a lover or a child is a promise, and the scene and the chronicle say the same', () => {
+    const { g, god } = atFirstCall();
+    const love = pray2(g, 'love');
+    const p = said(god.handle(`answer ${love.n} ให้`));
+    expect(p).toContain('ผลที่คาด: ยังไม่เกิดผลทันที');
+    expect(p).toMatch(/คำมั่นที่ยังไม่เป็นจริง: พรให้พบคนรักรอโอกาสอยู่/);
+    expect(p).not.toContain('ได้พบคนรัก');
+    const done = said(god.handle('yes'));
+    expect(done).toMatch(/คำมั่นที่ยังไม่เป็นจริง/);
+    expect(done).not.toMatch(/ได้พบคนรัก|ได้ลูก/);
+    const chronicle = g.state.god.chronicle.filter((c) => c.kind === 'prayer.give').map((c) => c.result);
+    expect(chronicle.join()).toContain('rel:+lover');
+    // the strange answer says what it is: the blessing comes, what was asked does not
+    const heir = pray2(g, 'heir');
+    const q = said(god.handle(`answer ${heir.n} แปลก 1`));
+    expect(q).toMatch(/ของแปลกที่ให้เลือก: 1 .+ \(ระดับ.+\)/);
+    expect(q).toContain('สิ่งที่ขอตรง ๆ ไม่เกิด');
+    expect(q).toMatch(/ราคาสุทธิหลังได้คืน: แสงศรัทธา \d+/);
+  });
+
+  it('a prayer to lift a curse says which curses it may lift', () => {
+    const { g, god } = atFirstCall();
+    const life = g.state.life!;
+    life.curses = ['c_poverty', 'c_lonely'];
+    const card = pray2(g, 'uncurse');
+    const p = said(god.handle(`answer ${card.n} ให้`));
+    expect(p).toMatch(/คำสาปข้อหนึ่งหลุดไป \(สุ่มจาก .+ · .+\)/);
+    expect(p).toContain('ราคาสุทธิหลังได้คืน');
+  });
+
+  it('errors keep their numbers and the words the player typed', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.dread = 100;
+    const t = fateTargets(g.ctx)[0];
+    expect(said(god.handle(`decree ${t.name} 0.19`))).toMatch(/ชะลอได้ ×0\.2 ถึง ×0\.9/);
+    expect(said(god.handle(`decree ${t.name} 3.01`))).toMatch(/เร่งได้ ×1\.1 ถึง ×3/);
+    expect(said(god.handle(`decree ${t.name} 1`))).toContain('ที่ไม่ใช่ 1');
+    expect(said(god.handle('whisper foo'))).toContain('ไม่มีคำใบ้ "foo"');
+    expect(said(god.handle('whisper foo'))).toContain('คำใบ้ที่มี: ระวัง');
+    g.state.god.dread = 1;
+    expect(said(god.handle(`decree ${t.name} 2`))).toMatch(/ความหวาดกลัวไม่พอ \(ต้อง \d+ มี 1\)/);
+    // the multiplier is typed the way the help writes it
+    expect(parseGod('decree', ['WR-04', '×0.5'])).toEqual({ action: 'decree', args: { event: 'WR-04', mul: 0.5 } });
+    expect(parseGod('decree', ['WR-04', 'x2'])).toEqual({ action: 'decree', args: { event: 'WR-04', mul: 2 } });
+  });
+
+  it('a hint that points says what to name, and a name that fits two is not guessed', () => {
+    const { g } = atFirstCall();
+    const ref = refOf(g, data);
+    const a = parseGod('whisper', ['จงไป'], ref);
+    expect('error' in a && a.error).toMatch(/ต้องชี้ที่ — พิมพ์ชื่อประเทศหรือทวีป/);
+    const b = parseGod('whisper', ['ช่วย'], ref);
+    expect('error' in b && b.error).toMatch(/ต้องชี้คน/);
+    const dragons = g.state.world.dragons.map((d) => d.id);
+    // a syllable shared by two dragons picks neither; a whole name picks that one
+    const shared = [...dragons[0]].map((_, i) => dragons[0].slice(i, i + 1)).find((ch) => dragons.filter((d) => d.includes(ch)).length > 1)!;
+    expect(ref.dragon(shared)).toBeUndefined();
+    const m = parseGod('miracle', ['MR-23', shared], ref);
+    expect('error' in m && m.error).toMatch(/เป็นชื่อมังกรได้หลายแห่ง|ไม่รู้จักมังกร/);
+    expect(ref.dragon(dragons[3])).toBe(3);
+  });
+
+  it('options: a hint said this year does not hide the others', () => {
+    const { g, god } = atFirstCall();
+    god.autoYes = true;
+    god.handle('whisper ระวัง');
+    const o = said(god.options());
+    expect(o).toMatch(/whisper .*— ทำได้ · ราคา แสงศรัทธา/);
+    expect(o).toMatch(/ใช้ได้ตอนนี้: .*กล้าเถิด/);
+    expect(o).toMatch(/ใช้ไม่ได้: ระวัง \(คำใบ้เดียวกันซ้ำไม่ได้ภายในปีเดียว\)/);
+    expect(o).toMatch(/ต้องชี้เป้าด้วย: จงไป <ที่>/);
+    expect(god.doableNow()).toContain('whisper');
+    // the decree is told by a range, and `decree list` lists them all
+    expect(o).toMatch(/decree .*— ทำได้ · ราคา 15 ถึง 60 ตามขนาดของเหตุการณ์/);
+    expect(said(god.handle('decree list')).split('\n').length).toBe(1 + fateTargets(g.ctx).length);
+  });
+
+  it('after the life ends nothing can be done: options and doable say so', () => {
+    const { g, god } = atFirstCall();
+    g.state.life!.dead = { year: g.state.clock.worldYear, hAge: 20, cause: 'old' };
+    expect(god.doableNow()).toEqual([]);
+    expect(said(god.options())).toContain('ชีวิตนี้จบแล้ว');
+    expect(said(god.power())).toContain('ส่วนที่ส่งต่อให้ผู้สืบทอด');
+  });
+
+  it('a miracle of ruin says what comes back, a miracle that clears nothing says so', () => {
+    const { g, god } = atFirstCall();
+    g.state.god.dread = 100;
+    g.state.god.light = 100;
+    const ruin = said(god.handle('miracle MR-07'));
+    expect(ruin).toMatch(/เมื่อเหตุเกิดขึ้น ท่านได้ความหวาดกลัวคืน \d+ \(ราคาสุทธิ ความหวาดกลัว \d+\)/);
+    expect(ruin).not.toMatch(/สิ่งที่ประเทศนั้นเป็นอยู่: *$/m);
+    g.state.world.countryFlags[g.state.life!.country] = [];
+    const rain = said(god.handle('miracle MR-01'));
+    expect(rain).toContain('ผลที่คาด: ฝนตกหนึ่งฤดู');
+    expect(rain).toContain('คำเตือน: ประเทศนั้นไม่มีข้าวยากหมากแพงให้ปลด');
+    g.state.world.countryFlags[g.state.life!.country] = ['famine'];
+    expect(said(god.handle('miracle MR-01'))).not.toContain('คำเตือน');
+  });
+
+  it('a whisper preview keeps the multipliers, and a dream warns about the burden of the heart', () => {
+    const { g, god } = atFirstCall();
+    const w = said(god.handle('whisper ระวัง'));
+    expect(w).toMatch(/คำใบ้ “ระวัง”: ทางปลอดภัย ×2/);
+    const offers = offerCards(g.ctx);
+    const against = offers.findIndex((o) => o.reasons.some((r) => r.includes('ขัดกับนิสัย')));
+    if (against >= 0) {
+      const d = said(god.handle(`dream ${against + 1}`));
+      expect(d).toMatch(/คำเตือน: ถ้าเขาทำตามทางนี้ ภาระใจจะเพิ่มอีก 1 \(ตอนนี้ \d+ จาก 2\)/);
+    }
+    const d1 = said(god.handle('dream 1'));
+    expect(d1).toMatch(/โอกาสทำตามราว \d+–\d+%/);
+  });
+
+  it('the cards of the chest say what they do', () => {
+    const { g, god } = atFirstCall();
+    god.handle('chest');
+    god.handle('yes');
+    const ch = currentChest(g.ctx)!;
+    const lines = waitingLines(g, data).filter((l) => l.startsWith('  ใบที่'));
+    const withEffect = ch.slots.filter((x) => x && (x.kind === 'bless' || x.kind === 'curse') && cardEffect(data, x));
+    expect(withEffect.length).toBeGreaterThan(0);
+    for (const x of withEffect) expect(lines.find((l) => l.startsWith(`  ใบที่ ${x!.slot}:`))).toContain(` — ${cardEffect(data, x!)}`);
+    expect(cardEffect(data, { kind: 'bless', id: 'rb_orc_r' })).toBe('ลูกน้องรบแข็งขึ้นเมื่ออยู่ใกล้ผู้ถือ');
+    expect(cardEffect(data, { kind: 'weapon', id: 'x', variant: 'cursed' })).toContain('ต้องสาป');
+  });
+
+  it('the status shows what the god gave that is carried', () => {
+    const { g } = atFirstCall();
+    const life = g.state.life!;
+    life.items = ['rb_orc_r'];
+    life.blessings = [...life.blessings, 'rb_orc_r'];
+    const st = statusLines(data, g.state).join('\n');
+    expect(st).toContain('ธงของผู้นำ');
+  });
+});
+
 describe('the call of the game', () => {
   it('stops at an attention call and tells why: an age stop, a prayer, a window', () => {
     const s = createSession(data, { seed: 7 });
@@ -319,14 +466,17 @@ describe('the call of the game', () => {
       const r = runToCall(s.game);
       if (r.stoppedBy !== 'call') break;
       expect(r.call?.sys).toBe('attention');
-      calls.push(callLines(data, r.call!).join('\n'));
+      calls.push(callLines(data, r.call!, false, s.game).join('\n'));
     }
     const all = calls.join('\n');
     expect(all).toContain('เกมเรียกเพราะ: ถึงจุดหยุดตามอายุ 5');
     expect(all).toContain('เกมเรียกเพราะ: มีคำอธิษฐานใหม่: ');
     expect(all).toContain('ถึงทางแยกที่พระเจ้าแทรกได้');
+    // the call says what it lets the player do, and for a prayer which card waits
+    expect(all).toMatch(/ทำได้เพราะเรื่องนี้: คำอธิษฐานใบที่ \d+ \(.+\) เหลือเวลาราว [\d.]+ ปี — answer \d+/);
+    expect(all).toContain('ทำได้เพราะเรื่องนี้: จุดหยุดตามอายุเป็นหน้าต่างพระเจ้า');
     expect(all).toMatch(/เกมหยุดรอท่าน|มีเรื่องรอท่าน/);
-    expect(leaks(all.replace(/^เกมเรียกเพราะ: /gm, '')), all).toEqual([]);
+    expect(leaks(all.replace(/^เกมเรียกเพราะ: /gm, '').replace(/^ทำได้เพราะเรื่องนี้: .*$/gm, '')), all).toEqual([]);
   });
 
   it('without the attention system the old rule holds: an entry of level 3', () => {
@@ -378,11 +528,55 @@ describe('npm run play', () => {
     }
   });
 
+  it('a policy stays in the save, says so on every run, and `--policy=ไม่มี` takes it out (review M2 L7)', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-god-'));
+    try {
+      const first = cli('play', ['--seed=7', '--new', '--policy=เมตตา', '--cmd=advance 2'], { OVERSEER_PLAY_DIR: dir });
+      expect(first).toContain('นโยบาย "เมตตา" ทำงานอยู่');
+      const second = cli('play', ['--seed=7', '--cmd=advance 2'], { OVERSEER_PLAY_DIR: dir });
+      expect(second).toContain('นโยบาย "เมตตา" ทำงานอยู่ ระบบพระเจ้าจะเล่นแทนท่านทุกจังหวะ · ใส่ --policy=ไม่มี เพื่อปิด');
+      const off = cli('play', ['--seed=7', '--policy=ไม่มี', '--cmd=advance 2'], { OVERSEER_PLAY_DIR: dir });
+      expect(off).toContain('ปิดนโยบายแล้ว');
+      const after = cli('play', ['--seed=7', '--cmd=advance 2'], { OVERSEER_PLAY_DIR: dir });
+      expect(after).not.toContain('ทำงานอยู่');
+      expect(after).not.toContain('ปิดนโยบายแล้ว');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('a new life that is already waiting at birth shows that call, and help explains the words of the game', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-god-'));
+    try {
+      const out = cli('play', ['--seed=302', '--new', '--cmd=help'], { OVERSEER_PLAY_DIR: dir });
+      expect(out).toContain('-- เกมหยุดรอท่านตั้งแต่เกิด --');
+      expect(out).toContain('เกมเรียกเพราะ: ถึงทางแยกที่พระเจ้าแทรกได้');
+      expect(out).toContain('ทำได้เพราะเรื่องนี้:');
+      expect(out).toContain('จังหวะ = หนึ่งในสี่ของปีชีวิต');
+      expect(out).toContain('ศ.ม. = ศักราชมังกร');
+      // once the life is over the end shows the hand of the god and no power
+      const end = cli('play', ['--seed=302', '--policy=เมตตา', '--cmd=advance 400'], { OVERSEER_PLAY_DIR: dir });
+      expect(end).toContain('-- พระหัตถ์ของท่านในชีวิตนี้ --');
+      expect(end).toMatch(/ใช้พลัง \d+ ครั้ง/);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('the count of what the god did counts a dream once, and the outcomes apart (review M2 P16)', () => {
+    const run = runLifeReport(data, { seed: 303, policy: 'เมตตา' });
+    const sent = run.state.god.chronicle.filter((c) => c.kind === 'dream' && String(c.result).startsWith('sent:')).length;
+    const outcomes = run.state.god.chronicle.filter((c) => c.kind === 'dream' && !String(c.result).startsWith('sent:')).length;
+    expect(sent).toBeGreaterThan(0);
+    expect(run.text).toContain(`ฝัน ×${sent}`);
+    if (outcomes) expect(run.text).toContain(`ผลของฝันที่ส่งไป ${outcomes} ครั้ง`);
+  });
+
   it('rejects a policy name that is not one of the eight', () => {
     expect(POLICIES).toHaveLength(8);
     const r = spawnSync('npx', ['tsx', 'scripts/tools/play.ts', '--seed=1', '--policy=เทพบุตร'], { cwd: root, encoding: 'utf8' });
     expect(r.status).toBe(2);
-    expect(r.stderr).toContain('--policy must be one of');
+    expect(r.stderr).toContain('--policy ต้องเป็นหนึ่งใน');
   });
 });
 

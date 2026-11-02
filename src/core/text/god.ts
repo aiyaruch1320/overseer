@@ -8,7 +8,7 @@ import type { LogEntry } from '../types';
 import type { Template, TemplatesData } from '../data/types-text';
 import { items, labels } from './labels';
 import { plainName, scrub, sentence } from './plain';
-import { CHEST_KIND_TH, EFFECT_WORD_TH, FLAG_TH, FOLDED_TH, OUTCOME_TH, STAT_TH, TIER_TH } from './tuning';
+import { CHEST_KIND_TH, EFFECT_WORD_TH, FLAG_TH, FOLDED_TH, OUTCOME_TH, PENDING_FX_TH, PENDING_NOTE, STAT_TH, TIER_TH } from './tuning';
 
 type D = LogEntry['data'];
 const s = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
@@ -21,8 +21,11 @@ export interface GodCx {
   who: string;
   /** The country the character is in (an id). */
   country: string;
-  /** Picks a template of `family` with the row keys and fills it; undefined when none can be filled. `variant` makes the pick stable. */
-  tpl(family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string): string | undefined;
+  /**
+   * Picks a template of `family` with the row keys and fills it; undefined when none can be filled. `variant` makes the pick stable.
+   * `style` keeps only the templates that tell a thing as it happened (`direct`) or as the other thing that came instead (`indirect`, review M2 G6).
+   */
+  tpl(family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, style?: TemplateStyle): string | undefined;
 }
 
 const nm = (cx: GodCx, id: unknown): string => plainName(cx.data, id);
@@ -44,12 +47,23 @@ function fillTemplate(text: string, vars: Record<string, string | undefined>): s
   return miss ? undefined : out;
 }
 
-export function godTemplate(data: GameData, family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, hash: (t: string) => number): string | undefined {
+export type TemplateStyle = 'direct' | 'indirect';
+
+/**
+ * A small story that says what was asked did not come, and something else did (`ไข้ไม่ลด แต่หญิงขายยา…`, `ไม่มีคนรัก แต่…`). The prayer files hold two for each
+ * kind: the one that happened and the one that came instead. A prayer that was really granted may not be told with the second (review M2 G6).
+ */
+export function isIndirect(text: string): boolean {
+  return /(?:ไม่|ยัง)[^{}]*?\sแต่/.test(text);
+}
+
+export function godTemplate(data: GameData, family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, hash: (t: string) => number, style?: TemplateStyle): string | undefined {
   const t = items<TemplatesData>(data, 'templates-god');
   if (!t) return undefined;
   const list: string[] = [];
   for (const x of t.templates as Template[]) {
     if (x.family !== family || !Object.entries(keys).every(([k, v]) => x.keys[k] === v)) continue;
+    if (style && isIndirect(x.text) !== (style === 'indirect')) continue;
     const filled = fillTemplate(x.text, vars);
     if (filled) list.push(filled);
   }
@@ -74,28 +88,58 @@ export function prayerName(data: GameData, kind: string): string {
 
 // ---------- the words of an effect ----------
 
-/** The effect words of a prayer (`hp+45` `country:-famine` `gold+10`) as short Thai phrases; a word with nothing to tell the player is left out. */
-export function fxPhrases(data: GameData, fx: unknown): string[] {
-  const out: string[] = [];
+/** Is this effect word a promise (its result waits for a system that does not exist yet)? */
+export const isPendingFx = (word: string): boolean => Object.prototype.hasOwnProperty.call(PENDING_FX_TH, word);
+
+/** Does the effect of a prayer hold a word that is only a promise? */
+export function hasPendingFx(fx: unknown): boolean {
+  return s(fx).split(/\s+/).some(isPendingFx);
+}
+
+/**
+ * The effect words of a prayer (`hp+45` `country:-famine` `gold+10`) as short Thai phrases, in two parts: what came true (`done`) and what is only
+ * promised (`promised`: a lover, a child; no system keeps them yet, so the player is told the blessing waits). A word with nothing to tell is left out.
+ */
+export function fxSplit(data: GameData, fx: unknown): { done: string[]; promised: string[] } {
+  const done: string[] = [];
+  const promised: string[] = [];
   for (const word of s(fx).split(/\s+/).filter(Boolean)) {
     let m: RegExpExecArray | null;
-    if ((m = /^hp([+-])\d+$/.exec(word))) out.push(m[1] === '+' ? 'ร่างกายฟื้นขึ้น' : 'ร่างกายบาดเจ็บ');
-    else if ((m = /^country:([+-])(\w+)$/.exec(word))) out.push(`${FLAG_TH[m[2]] ?? 'ภัย'}${m[1] === '-' ? 'ผ่านพ้นไป' : 'ลามมาถึง'}`);
-    else if ((m = /^gold([+-])(\d+)$/.exec(word))) out.push(`${m[1] === '+' ? 'ได้' : 'เสีย'}ทอง ${m[2]}`);
-    else if ((m = /^([a-z]+)([+-])(\d+)$/.exec(word)) && STAT_TH[m[1]]) out.push(`${STAT_TH[m[1]]}${m[2] === '+' ? 'เพิ่ม' : 'ลด'}`);
+    if (isPendingFx(word)) promised.push(PENDING_FX_TH[word]);
+    else if ((m = /^hp([+-])\d+$/.exec(word))) done.push(m[1] === '+' ? 'ร่างกายฟื้นขึ้น' : 'ร่างกายบาดเจ็บ');
+    else if ((m = /^country:([+-])(\w+)$/.exec(word))) done.push(`${FLAG_TH[m[2]] ?? 'ภัย'}${m[1] === '-' ? 'ผ่านพ้นไป' : 'ลามมาถึง'}`);
+    else if ((m = /^gold([+-])(\d+)$/.exec(word))) done.push(`${m[1] === '+' ? 'ได้' : 'เสีย'}ทอง ${m[2]}`);
+    else if ((m = /^([a-z]+)([+-])(\d+)$/.exec(word)) && STAT_TH[m[1]]) done.push(`${STAT_TH[m[1]]}${m[2] === '+' ? 'เพิ่ม' : 'ลด'}`);
     else if ((m = /^curse:(.+)$/.exec(word))) {
-      const n = nm({ data } as GodCx, m[1]);
-      out.push(n ? `ติดคำสาป ${n}` : m[1] === 'none' ? '' : 'ติดคำสาป');
+      const n = plainName(data, m[1]);
+      done.push(n ? `ติดคำสาป ${n}` : m[1] === 'none' ? '' : 'ติดคำสาป');
     } else if ((m = /^uncurse:(.+)$/.exec(word))) {
-      const n = nm({ data } as GodCx, m[1]);
-      out.push(m[1] === 'none' ? '' : n ? `คำสาป ${n} หลุดไป` : 'คำสาปหลุดไป');
+      const n = plainName(data, m[1]);
+      done.push(m[1] === 'none' ? '' : n ? `คำสาป ${n} หลุดไป` : 'คำสาปหลุดไป');
     } else if ((m = /^skill:(.+)$/.exec(word))) {
-      const n = nm({ data } as GodCx, m[1]);
-      out.push(n ? `ได้ฝีมือ ${n}` : '');
-    } else if (EFFECT_WORD_TH[word]) out.push(EFFECT_WORD_TH[word]);
-    else if (/^relkill:/.test(word) && word !== 'relkill:none') out.push('คู่อาฆาตสิ้นชีวิต');
+      const n = plainName(data, m[1]);
+      done.push(n ? `ได้ฝีมือ ${n}` : '');
+    } else if (EFFECT_WORD_TH[word]) done.push(EFFECT_WORD_TH[word]);
+    else if ((m = /^relkill:(.+)$/.exec(word)) && m[1] !== 'none') {
+      const n = plainName(data, m[1]);
+      done.push(n ? `คู่อาฆาต ${n} สิ้นชีวิต` : 'คู่อาฆาตสิ้นชีวิต');
+    }
   }
-  return out.filter(Boolean);
+  return { done: done.filter(Boolean), promised };
+}
+
+/** The effect words of a prayer as short phrases: what came true first, then what is only promised. */
+export function fxPhrases(data: GameData, fx: unknown): string[] {
+  const { done, promised } = fxSplit(data, fx);
+  return [...done, ...promised];
+}
+
+/** `ได้ทอง 10 (คำมั่นที่ยังไม่เป็นจริง: พรให้พบคนรักรอโอกาสอยู่)`: the effects of a prayer told so that a promise is never read as done. */
+export function fxLine(data: GameData, fx: unknown): string {
+  const { done, promised } = fxSplit(data, fx);
+  const now = done.join(' · ');
+  const later = promised.length ? `${PENDING_NOTE}: ${promised.join(' · ')}` : '';
+  return now && later ? `${now} (${later})` : now || later;
 }
 
 // ---------- the lines ----------
@@ -178,10 +222,14 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
     case 'prayer.give': {
       const name = s(d.name) || prayerName(cx.data, s(e.id));
       const key = prayerKey(cx.data, 'prayer_give', s(e.id));
-      const story = key ? cx.tpl('prayer_give', { ชนิด: key }, { ชื่อตัวละคร: who, NPC: s(d.npcName), ชื่อของที่นี่: nm(cx, cx.country) || undefined }, variant) : undefined;
       const gift = nm(cx, d.gift);
-      const fx = fxPhrases(cx.data, d.fx).join(' · ');
-      const tail = story ?? (fx || undefined);
+      // the small story must not contradict the effect: a prayer that came true is told as it happened; a promise or a strange gift
+      // (something else than what was asked) is told as "what was asked did not come, and this came" (review M2 G6)
+      const style: TemplateStyle = gift || hasPendingFx(d.fx) ? 'indirect' : 'direct';
+      const story = key ? cx.tpl('prayer_give', { ชนิด: key }, { ชื่อตัวละคร: who, NPC: s(d.npcName), ชื่อของที่นี่: nm(cx, cx.country) || undefined }, variant, style) : undefined;
+      const { promised } = fxSplit(cx.data, d.fx);
+      const later = promised.length ? `${PENDING_NOTE}: ${promised.join(' · ')}` : '';
+      const tail = story ? (later ? `${story} (${later})` : story) : fxLine(cx.data, d.fx) || undefined;
       return `ท่านให้ตามคำอธิษฐานใบที่ ${num(d.n)} (${name})${gift ? ` ด้วยของแปลก: ${gift}` : ''}${tail ? ` — ${tail}` : ''}`;
     }
     case 'prayer.deny': {
@@ -325,8 +373,8 @@ export function chronicleText(data: GameData, c: { kind: string; id: string; tar
     }
     case 'prayer.give':
     case 'prayer.strange': {
-      const fx = fxPhrases(data, c.result).join(' · ');
       const gift = c.kind === 'prayer.strange' ? name(c.result) : '';
+      const fx = c.kind === 'prayer.strange' ? '' : fxLine(data, c.result);
       return `ให้ตามคำอธิษฐาน: ${prayerName(data, c.id)}${gift ? ` (ของแปลก ${gift})` : ''}${fx ? ` → ${fx}` : ''}`;
     }
     case 'prayer.deny':

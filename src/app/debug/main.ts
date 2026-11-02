@@ -136,7 +136,7 @@ loadData().then(async (data) => {
       god?.drop();
       const r = runToCall(session.game, undefined, () => void afterBeat(session!));
       show();
-      if (r.call && god) el('godout').textContent = [...callLines(data, r.call, true), `ทำได้ตอนนี้: ${god.doableNow().join(' ') || '(ยังไม่มีพลังใด)'}`, '', el('godout').textContent ?? ''].join('\n');
+      if (r.call && god) el('godout').textContent = [...callLines(data, r.call, true, session.game), `ทำได้ตอนนี้: ${god.doableNow().join(' ') || '(ยังไม่มีพลังใด)'}`, '', el('godout').textContent ?? ''].join('\n');
     } else if (b.dataset.death) {
       god?.drop();
       runToDeath(session.game, undefined, () => void afterBeat(session!));
