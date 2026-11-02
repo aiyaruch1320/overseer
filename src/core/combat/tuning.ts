@@ -26,13 +26,13 @@ export const TIER_DC_SHIFT: Record<string, number> = { grunt: 0, normal: 2, vete
  * near the old code" (one failed roll took DC × 2.4); a hero of 80 hit points who meets that once a fight never reaches the yield line, which is why
  * only bosses ever beat him. With the factor a fight of three failed beats against a chief costs most of his hit points.
  */
-export const DAMAGE_SCALE = 1.3;
+export const DAMAGE_SCALE = 1.35;
 /**
  * Chance that a lost fight ends in death, by the tier id of the foe, and the factor when the blow took the hero to zero (assumption). The doc lets
  * the hero die at zero hit points (01-core.md §7 "ตาย") but a hero at 20% who is struck again almost never reached zero, so no fight killed (M3
  * review C1 target: about 2.5% of lives end in battle, the ways of the story that say so included). A hero beaten by a boss may still be left alive.
  */
-export const DEATH_ON_LOSS: Record<string, number> = { grunt: 0, normal: 0.0005, veteran: 0.001, chief: 0.003, elite: 0.005, boss: 0.01, legend: 0.03 };
+export const DEATH_ON_LOSS: Record<string, number> = { grunt: 0, normal: 0.0007, veteran: 0.0013, chief: 0.004, elite: 0.007, boss: 0.013, legend: 0.04 };
 export const DEATH_AT_ZERO_MUL = 3;
 /** … and ×this again when the hero began the fight at or under the yield line (he fought on while hurt; assumption). */
 export const DEATH_LOW_START_MUL = 3;
