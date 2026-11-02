@@ -81,6 +81,8 @@ export interface Track {
   skyBorn: boolean;
   /** Chronicle length the sky scan has read up to. */
   scan: number;
+  /** The falls of dragons the sky scan has looked at (each is judged once, by where he stood when it fell). */
+  falls?: string[];
   /** Bondage at birth, and freed since. */
   boundAtBirth: boolean;
   /** The world ended (`world.ended`) inside this life. */
@@ -94,6 +96,8 @@ export interface GoalsLife {
   v: 1;
   /** The vows offered at birth; the vows offered again at the age stop of 15 (for the one change). */
   offers: string[];
+  /** The line that tells the vows on the table has been written (it waits for the first beat). */
+  told?: boolean;
   reoffers: string[];
   /** The vow taken (null for none yet or none at all) and whether the one change was used. */
   vow: string | null;
