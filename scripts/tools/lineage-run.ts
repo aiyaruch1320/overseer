@@ -1,6 +1,6 @@
 // Several lives in a row in one world, as readable text (docs/guide/code-plan.md §11 row M4: "สามชีวิตต่อกันในโลกเดียว").
 // `npm run life -- --seed=N --lives=3`: the first life is born as in `npm run life`; when it dies the lineage bears the next one (the heir of the bond
-// book; a newcomer after a gap when the family has none, unless `strict`), and so on. After each life the ending card; at the end the summary of
+// book; when the family has none the lineage ends and the world is left, 05 §4, unless a newcomer is asked for with `newcomer`), and so on. After each life the ending card; at the end the summary of
 // the world and the collection. Same seed and options give the same text.
 import type { GameData } from '../../src/core/game';
 import { runAsync, runSync } from './drive';
@@ -23,13 +23,13 @@ export interface LineageRun {
 }
 
 const WHY: Record<string, string> = {
-  extinct: 'ตระกูลสิ้นสาย: ไม่มีทายาทหรือผู้สืบเรื่อง (เอกสารให้เริ่มโลกใหม่ ไม่ใส่ --strict เพื่อให้คนใหม่เกิดในโลกเดิมต่อ)',
+  extinct: 'ตระกูลสิ้นสาย: ไม่มีทายาทหรือผู้สืบเรื่อง สายจบและโลกเดิมถูกทิ้ง (เอกสาร 05 หัวข้อ 4) · ใส่ --newcomer ถ้าอยากให้คนใหม่ที่ไม่ใช่คนของตระกูลเกิดในโลกเดิมต่อ',
   'world-ended': 'โลกจบแล้ว',
   alive: 'ชีวิตยังไม่จบ',
   'no-life': 'ไม่มีชีวิต',
 };
 
-type LineageOpts = SessionOpts & { lives: number; minLevel?: 0 | 1 | 2 | 3; strict?: boolean };
+type LineageOpts = SessionOpts & { lives: number; minLevel?: 0 | 1 | 2 | 3; newcomer?: boolean };
 
 /** Stops after each death, where the end summary of that life may be asked for before its card is laid out. */
 function* lineageSteps(data: GameData, opts: LineageOpts): Generator<GameState, LineageRun> {
@@ -48,7 +48,7 @@ function* lineageSteps(data: GameData, opts: LineageOpts): Generator<GameState, 
     const mark = g.state.logN;
     if (i === 0) startLife(s);
     else {
-      const r = nextLife(g, { newcomer: !opts.strict });
+      const r = nextLife(g, { newcomer: !!opts.newcomer });
       if (!r.ok) {
         stopped = WHY[r.reason] ?? r.reason;
         out.push('', `-- สายตระกูลหยุด: ${stopped} --`);

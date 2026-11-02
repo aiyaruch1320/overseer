@@ -19,9 +19,9 @@ import { npcsAt } from '../../src/core/npc';
 import { load, save } from '../../src/core/save';
 import { extOf as bondsOf, hAgeOf, isLive, tiesOf } from '../../src/core/bonds';
 import { cardOf, collectionView } from '../../src/core/ending';
-import { nextLife, pickHeir, pickHeirTie, worldSummary } from '../../src/core/lineage';
+import { candidates, nextLife, pickHeir, pickHeirTie, previewHeir, worldSummary } from '../../src/core/lineage';
 import { cardLines, collectionLines, howWord, originWord, worldSummaryLines } from '../../src/core/text/ending';
-import { placeName } from '../../src/core/text';
+import { labels, placeName } from '../../src/core/text';
 import { godLines, timeline, statusLines, worldLines } from './report';
 import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
 import { intArg, parseArgs } from './args';
@@ -154,9 +154,12 @@ async function run(cmdText: string): Promise<boolean> {
       if (!st.life.dead) return say('ชีวิตนี้ยังไม่จบ (advance เพื่อเดินต่อ)'), true;
       say(...god.drop());
       const mark = st.logN;
-      const r = nextLife(g, { newcomer: rest[0] === 'newcomer' || rest[0] === 'คนใหม่' });
+      const r = nextLife(g, { newcomer: rest[0] === 'newcomer' || rest[0] === 'คนใหม่' || args.newcomer === 'true' });
       if (!r.ok) {
-        say(r.reason === 'extinct' ? 'ตระกูลสิ้นสาย: ไม่มีทายาทหรือผู้สืบเรื่อง (เอกสารให้เริ่มโลกใหม่ด้วย --new; พิมพ์ next newcomer เพื่อให้คนใหม่เกิดในโลกเดิมต่อ)' : r.reason === 'world-ended' ? 'โลกจบแล้ว' : `ไปต่อไม่ได้: ${r.reason}`);
+        if (r.reason === 'extinct') {
+          // the family ends: the lineage ends and the old world is left (docs 05 §4); the world is told once more, a newcomer is the way to stay
+          say('ตระกูลสิ้นสาย: ไม่มีทายาทหรือผู้สืบเรื่อง สายจบและโลกเดิมถูกทิ้ง (เริ่มโลกใหม่ด้วย --new) · พิมพ์ next newcomer ถ้าอยากให้คนใหม่ที่ไม่ใช่คนของตระกูลเกิดในโลกเดิมต่อ', '', ...worldSummaryLines(worldSummary(st, data)));
+        } else say(r.reason === 'world-ended' ? 'โลกจบแล้ว' : `ไปต่อไม่ได้: ${r.reason}`);
         return true;
       }
       say(`-- รุ่นต่อไป · ${originWord(r.origin)} --`, ...seen(mark), '-- สถานะ --', ...statusLines(g.ctx.data, st));
@@ -167,9 +170,15 @@ async function run(cmdText: string): Promise<boolean> {
     case 'heirs': {
       if (!st.life) return say('ยังไม่มีชีวิต'), true;
       const heir = pickHeir(g.ctx);
-      const kids = tiesOf(bondsOf(st.life)).filter((t) => isLive(t) && (t.kin === 'child' || t.kin === 'adopted'));
-      say('-- ผู้สืบ --', heir ? `ผู้สืบตอนนี้: ${heir.name} (${howWord(heir.how)} อายุ ${heir.age}) รหัส ${heir.tie ?? '-'}` : 'ตอนนี้ไม่มีผู้สืบ (next newcomer ให้คนใหม่เกิดในโลกเดิม)');
-      for (const k of kids) say(`  ${k.id} ${k.name} (${k.kin === 'adopted' ? 'ลูกบุญธรรม' : 'ลูก'} อายุ ${Math.floor(hAgeOf(g.ctx, k))})`);
+      const L = labels(data);
+      const cand = candidates(g.ctx);
+      const traitWord = (ids: string[]) => ids.map((i) => L.kind.trait.get(i) ?? L.name.get(i) ?? i).join(' · ');
+      const aptWord = (ids: string[]) => ids.slice(0, 2).map((i) => L.kind.aptitude.get(i) ?? L.name.get(i) ?? i).join(' · ');
+      say('-- ผู้สืบ --', heir ? `ผู้สืบตอนนี้: ${heir.name} (${howWord(heir.how)} อายุ ${heir.age}) รหัส ${heir.tie ?? '-'}` : 'ตอนนี้ไม่มีผู้สืบ (ตระกูลจะสิ้นสาย · next newcomer ให้คนใหม่เกิดในโลกเดิม)');
+      for (const k of cand) {
+        const pv = previewHeir(g.ctx, k);
+        say(`  ${k.tie} ${k.name} (${k.how === 'adopted' ? 'ลูกบุญธรรม' : `ลูก${k.gender === 'm' ? 'ชาย' : k.gender === 'f' ? 'หญิง' : ''}`} ${(k.rank ?? 0) === 0 ? 'คนโต' : `คนที่ ${(k.rank ?? 0) + 1}`} อายุ ${k.age}) · นิสัย ${traitWord(pv.traits)} · ถนัด ${aptWord(pv.aptitudes)}${k.married ? ` · แต่งกับ ${k.married}` : ''}${k.other ? ` · อีกฝ่ายของพ่อแม่คือ ${k.other}` : ''}`);
+      }
       say('เลือกผู้สืบด้วย heir <รหัส> ก่อน next (ไม่เลือก = คนโต)');
       return true;
     }
