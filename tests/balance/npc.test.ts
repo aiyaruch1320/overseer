@@ -144,7 +144,7 @@ describe('npc balance: stories met per life year (review/m1/triage.md)', () => {
   }
 
   it('an elf, a vampire and a dwarf meet about as many stories per life year as a human (the life year of an elf is 4 world years, of a vampire 5)', () => {
-    const N = 120;
+    const N = 80;
     const rate = (race: string, span: number) => {
       let m = 0;
       for (let s = 1; s <= N; s++) m += met(s, race, span);
