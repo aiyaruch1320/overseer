@@ -233,9 +233,11 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
 
   // the title line (07 §5.2): the title the story gave, in one of the forms that use one title
   const base: SlotValues = { name: life.name, race: raceName(ctx, life.race), home: placeName(ctx, life.home) ?? '', title_1: ending ?? '' };
-  const forms = ending ? ['1', '4', '5', '6'] : ['7', '8', '9'];
-  const titleCands = family(ctx, 'card_title').filter((t) => forms.includes(t.keys['แบบ']));
-  const title = pickFrom(ctx, titleCands, base, { key: `${life.id}|title`, max: LIMIT.titleLine });
+  // a title too long for the line falls back to the forms with no title (7 and 8; 9 says "no title", which would be false); the name alone is the last resort
+  const cands = (forms: string[]) => family(ctx, 'card_title').filter((t) => forms.includes(t.keys['แบบ']));
+  const title =
+    (ending ? pickFrom(ctx, cands(['1', '4', '5', '6']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) : null) ??
+    pickFrom(ctx, cands(ending ? ['7', '8'] : ['7', '8', '9']), base, { key: `${life.id}|title`, max: LIMIT.titleLine }) ?? { text: trimTo(life.name, LIMIT.titleLine), id: 'card_title.name' };
 
   // the epitaph (07 §6)
   const ep = epitaphOf(ctx, { name: life.name, age: deadAge, place: g.place, home: placeName(ctx, life.home) ?? '', ...(g.enemy ? { enemy: g.enemy } : {}) }, life.race, g.group, life.id);
