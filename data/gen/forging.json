@@ -489,128 +489,824 @@
    {
     "id": "ทั่งฟังเสียง",
     "ask": "เคาะทั่งปฐมหนึ่งครั้ง",
-    "a": "45 เคาะ ทอย `pow` 13 (`smithing` +2 · `ns_anvil_voice` ผ่านเลย) · ผ่าน ไว้ใจ +2",
-    "b": "35 ขอฝึกเป็นลูกมือหนึ่งฤดู · ไว้ใจ +2 · `smithing` +1",
-    "c": "20 จ่ายทองสองเท่าแทน (`greedy` `proud` ×2) · ช่างไม่ตีระดับ E ให้"
+    "a": {
+     "key": "a",
+     "text": "45 เคาะ ทอย `pow` 13 (`smithing` +2 · `ns_anvil_voice` ผ่านเลย) · ผ่าน ไว้ใจ +2",
+     "weight": 45,
+     "label": "เคาะ ทอย `pow` 13 (`smithing` +2 · `ns_anvil_voice` ผ่านเลย) · ผ่าน ไว้ใจ +2",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "stat": "pow",
+      "dc": 13,
+      "bonus": [
+       {
+        "id": "smithing",
+        "delta": 2
+       }
+      ],
+      "autoPass": [
+       "ns_anvil_voice"
+      ]
+     },
+     "trust": 2
+    },
+    "b": {
+     "key": "b",
+     "text": "35 ขอฝึกเป็นลูกมือหนึ่งฤดู · ไว้ใจ +2 · `smithing` +1",
+     "weight": 35,
+     "label": "ขอฝึกเป็นลูกมือหนึ่งฤดู · ไว้ใจ +2 · `smithing` +1",
+     "skills": [
+      {
+       "id": "smithing",
+       "delta": 1
+      }
+     ],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "trust": 2
+    },
+    "c": {
+     "key": "c",
+     "text": "20 จ่ายทองสองเท่าแทน (`greedy` `proud` ×2) · ช่างไม่ตีระดับ E ให้",
+     "weight": 20,
+     "label": "จ่ายทองสองเท่าแทน (`greedy` `proud` ×2) · ช่างไม่ตีระดับ E ให้",
+     "skills": [],
+     "weightMods": [
+      {
+       "ids": [
+        "greedy",
+        "proud"
+       ],
+       "mul": 2
+      }
+     ],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "วัสดุที่ไม่มีใครใช้",
     "ask": "นำวัสดุแปลกมาหนึ่งชิ้น",
-    "a": "40 นำวัสดุพิเศษ (หัวข้อ 3) · ไว้ใจ +3",
-    "b": "40 ไปขุดในเหมือง · ศึก `rune_guardian`",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "40 นำวัสดุพิเศษ (หัวข้อ 3) · ไว้ใจ +3",
+     "weight": 40,
+     "label": "นำวัสดุพิเศษ (หัวข้อ 3) · ไว้ใจ +3",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "trust": 3
+    },
+    "b": {
+     "key": "b",
+     "text": "40 ไปขุดในเหมือง · ศึก `rune_guardian`",
+     "weight": 40,
+     "label": "ไปขุดในเหมือง · ศึก `rune_guardian`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "rune_guardian"
+     ],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "พิธีเช้า",
     "ask": "ร่วมพิธีตีโด่งเจ็ดวัน",
-    "a": "50 ร่วม (`devout` ×2) · ไว้ใจ +2 · `nb_faith_forge` 10%",
-    "b": "30 ช่วยป้องกันเตาจากปีศาจที่ขึ้นมาจากปากเหว · ศึก `hellmouth_imps`",
-    "c": "20 ไม่ศรัทธา ช่างตีให้แค่ R"
+    "a": {
+     "key": "a",
+     "text": "50 ร่วม (`devout` ×2) · ไว้ใจ +2 · `nb_faith_forge` 10%",
+     "weight": 50,
+     "label": "ร่วม (`devout` ×2) · ไว้ใจ +2 · `nb_faith_forge` 10%",
+     "skills": [],
+     "weightMods": [
+      {
+       "ids": [
+        "devout"
+       ],
+       "mul": 2
+      }
+     ],
+     "traits": [],
+     "battle": [],
+     "grants": [
+      {
+       "id": "nb_faith_forge",
+       "chance": 0.1
+      }
+     ],
+     "trust": 2
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ช่วยป้องกันเตาจากปีศาจที่ขึ้นมาจากปากเหว · ศึก `hellmouth_imps`",
+     "weight": 30,
+     "label": "ช่วยป้องกันเตาจากปีศาจที่ขึ้นมาจากปากเหว · ศึก `hellmouth_imps`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "hellmouth_imps"
+     ],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ไม่ศรัทธา ช่างตีให้แค่ R",
+     "weight": 20,
+     "label": "ไม่ศรัทธา ช่างตีให้แค่ R",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "ถ้ำเยติ",
     "ask": "นำน้ำแข็งก้อนที่ไม่ละลายจากถ้ำ",
-    "a": "50 เข้าถ้ำ · ศึก `yeti`",
-    "b": "30 ซื้อจากนักล่าเยติ (KD12-2 ไอซ์วาร์ด) · ทอง +80",
-    "c": "20 ล่อเยติออกจากถ้ำ (ท่าทีหลอกล่อ)"
+    "a": {
+     "key": "a",
+     "text": "50 เข้าถ้ำ · ศึก `yeti`",
+     "weight": 50,
+     "label": "เข้าถ้ำ · ศึก `yeti`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "yeti"
+     ],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ซื้อจากนักล่าเยติ (KD12-2 ไอซ์วาร์ด) · ทอง +80",
+     "weight": 30,
+     "label": "ซื้อจากนักล่าเยติ (KD12-2 ไอซ์วาร์ด) · ทอง +80",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "gold": 80
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ล่อเยติออกจากถ้ำ (ท่าทีหลอกล่อ)",
+     "weight": 20,
+     "label": "ล่อเยติออกจากถ้ำ (ท่าทีหลอกล่อ)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "สองไฟ",
     "ask": "พาคนแคระเหนือกับเผ่าลาวามาคุยกัน",
-    "a": "40 เป็นคนกลาง (`ns_mediate` ×2)",
-    "b": "35 ตามหลัง cv.8 ทาง ก",
-    "c": "25 ถอย"
+    "a": {
+     "key": "a",
+     "text": "40 เป็นคนกลาง (`ns_mediate` ×2)",
+     "weight": 40,
+     "label": "เป็นคนกลาง (`ns_mediate` ×2)",
+     "skills": [],
+     "weightMods": [
+      {
+       "ids": [
+        "ns_mediate"
+       ],
+       "mul": 2
+      }
+     ],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "35 ตามหลัง cv.8 ทาง ก",
+     "weight": 35,
+     "label": "ตามหลัง cv.8 ทาง ก",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "25 ถอย",
+     "weight": 25,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "ทรายแก้ว",
     "ask": "นำทรายจากคาซิบา (SH-08)",
-    "a": "50 เดินทางไปเอง · ศึก `sand_raiders`",
-    "b": "30 ซื้อจากพ่อค้า · ทอง +60",
-    "c": "20 ใช้ทรายธรรมดา ได้ระดับต่ำลงหนึ่งขั้น"
+    "a": {
+     "key": "a",
+     "text": "50 เดินทางไปเอง · ศึก `sand_raiders`",
+     "weight": 50,
+     "label": "เดินทางไปเอง · ศึก `sand_raiders`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "sand_raiders"
+     ],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ซื้อจากพ่อค้า · ทอง +60",
+     "weight": 30,
+     "label": "ซื้อจากพ่อค้า · ทอง +60",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "gold": 60
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ใช้ทรายธรรมดา ได้ระดับต่ำลงหนึ่งขั้น",
+     "weight": 20,
+     "label": "ใช้ทรายธรรมดา ได้ระดับต่ำลงหนึ่งขั้น",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "ยกค้อน",
     "ask": "ยกค้อนของยักษ์ช่างให้ขึ้นจากพื้น",
-    "a": "40 ทอย `pow` 15 (ยักษ์ผ่านเลย)",
-    "b": "40 ทำงานในโรงตีหนึ่งฤดูแทน",
-    "c": "20 ขอให้ทูมิ (SH07-3) ช่วยยก · ไว้ใจทูมิ ≥ 2"
+    "a": {
+     "key": "a",
+     "text": "40 ทอย `pow` 15 (ยักษ์ผ่านเลย)",
+     "weight": 40,
+     "label": "ทอย `pow` 15 (ยักษ์ผ่านเลย)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "stat": "pow",
+      "dc": 15,
+      "bonus": [],
+      "autoPass": [
+       "ยักษ์"
+      ]
+     }
+    },
+    "b": {
+     "key": "b",
+     "text": "40 ทำงานในโรงตีหนึ่งฤดูแทน",
+     "weight": 40,
+     "label": "ทำงานในโรงตีหนึ่งฤดูแทน",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ขอให้ทูมิ (SH07-3) ช่วยยก · ไว้ใจทูมิ ≥ 2",
+     "weight": 20,
+     "label": "ขอให้ทูมิ (SH07-3) ช่วยยก · ไว้ใจทูมิ ≥ 2",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "trustReq": {
+      "toward": "ทูมิ",
+      "min": 2
+     }
+    }
    },
    {
     "id": "สองเผ่า",
     "ask": "ไว้ใจทั้งยักษ์และคนแคระ ≥ 3",
-    "a": "50 ทำภารกิจให้ทั้งสองคน",
-    "b": "30 ไกล่เกลี่ยเรื่องแร่",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ทำภารกิจให้ทั้งสองคน",
+     "weight": 50,
+     "label": "ทำภารกิจให้ทั้งสองคน",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ไกล่เกลี่ยเรื่องแร่",
+     "weight": 30,
+     "label": "ไกล่เกลี่ยเรื่องแร่",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "คำสัญญาของมือปืน",
     "ask": "สัญญาว่าจะไม่ยิงคนที่หนี",
-    "a": "55 สัญญา (`honest` ×2) · ผิดสัญญาแล้วอาวุธติดขัด",
-    "b": "25 โกหก (`liar`) · `c_oathbreaker` ถ้าถูกจับได้",
-    "c": "20 ปฏิเสธ"
+    "a": {
+     "key": "a",
+     "text": "55 สัญญา (`honest` ×2) · ผิดสัญญาแล้วอาวุธติดขัด",
+     "weight": 55,
+     "label": "สัญญา (`honest` ×2) · ผิดสัญญาแล้วอาวุธติดขัด",
+     "skills": [],
+     "weightMods": [
+      {
+       "ids": [
+        "honest"
+       ],
+       "mul": 2
+      }
+     ],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "25 โกหก (`liar`) · `c_oathbreaker` ถ้าถูกจับได้",
+     "weight": 25,
+     "label": "โกหก (`liar`) · `c_oathbreaker` ถ้าถูกจับได้",
+     "skills": [],
+     "weightMods": [],
+     "traits": [
+      "liar"
+     ],
+     "battle": [],
+     "grants": [
+      {
+       "id": "c_oathbreaker",
+       "when": "ถ้าถูกจับได้"
+      }
+     ]
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ปฏิเสธ",
+     "weight": 20,
+     "label": "ปฏิเสธ",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "มือช่าง",
     "ask": "ต้องเป็นโอเกอร์ ออร์คช่าง หรือคนแคระ ไม่เช่นนั้นเป็นผู้ช่วย",
-    "a": "60 เผ่าที่ผ่าน · ทอยงานช่าง",
-    "b": "40 เผ่าอื่นทำงานเป็นผู้ช่วยหนึ่งปี",
-    "c": "—"
+    "a": {
+     "key": "a",
+     "text": "60 เผ่าที่ผ่าน · ทอยงานช่าง",
+     "weight": 60,
+     "label": "เผ่าที่ผ่าน · ทอยงานช่าง",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "what": "งานช่าง",
+      "bonus": [],
+      "autoPass": []
+     }
+    },
+    "b": {
+     "key": "b",
+     "text": "40 เผ่าอื่นทำงานเป็นผู้ช่วยหนึ่งปี",
+     "weight": 40,
+     "label": "เผ่าอื่นทำงานเป็นผู้ช่วยหนึ่งปี",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "—",
+     "weight": null,
+     "label": "—",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    }
    },
    {
     "id": "ทดลองในศึก",
     "ask": "ใช้เครื่องต้นแบบในศึกจริงหนึ่งครั้ง",
-    "a": "50 ใช้ · ศึกตามธงโลก",
-    "b": "30 รายงานข้อบกพร่องหลังศึก (`meticulous` ×2) · ไว้ใจ +2",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ใช้ · ศึกตามธงโลก",
+     "weight": 50,
+     "label": "ใช้ · ศึกตามธงโลก",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "battleWorld": true
+    },
+    "b": {
+     "key": "b",
+     "text": "30 รายงานข้อบกพร่องหลังศึก (`meticulous` ×2) · ไว้ใจ +2",
+     "weight": 30,
+     "label": "รายงานข้อบกพร่องหลังศึก (`meticulous` ×2) · ไว้ใจ +2",
+     "skills": [],
+     "weightMods": [
+      {
+       "ids": [
+        "meticulous"
+       ],
+       "mul": 2
+      }
+     ],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "trust": 2
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "คำสาบาน",
     "ask": "สาบานตนเป็นอัศวินหรือสาบานต่อดาบ",
-    "a": "50 สาบาน (`knight` หรือ `loyal_love`)",
-    "b": "30 ไม่สาบานแต่ปกป้องคนอ่อนแอให้ช่างเห็น · ศึก `npc_bandit`",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 สาบาน (`knight` หรือ `loyal_love`)",
+     "weight": 50,
+     "label": "สาบาน (`knight` หรือ `loyal_love`)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [
+      "knight",
+      "loyal_love"
+     ],
+     "battle": [],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ไม่สาบานแต่ปกป้องคนอ่อนแอให้ช่างเห็น · ศึก `npc_bandit`",
+     "weight": 30,
+     "label": "ไม่สาบานแต่ปกป้องคนอ่อนแอให้ช่างเห็น · ศึก `npc_bandit`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "npc_bandit"
+     ],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "ยิงเป้าเคลื่อนที่",
     "ask": "ยิงนกบินสามตัวจากหลังม้า",
-    "a": "50 ทอย `spd` 14 (`bow` +2)",
-    "b": "30 ฝึกกับอีวาหนึ่งฤดู · `bow` +1",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ทอย `spd` 14 (`bow` +2)",
+     "weight": 50,
+     "label": "ทอย `spd` 14 (`bow` +2)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "stat": "spd",
+      "dc": 14,
+      "bonus": [
+       {
+        "id": "bow",
+        "delta": 2
+       }
+      ],
+      "autoPass": []
+     }
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ฝึกกับอีวาหนึ่งฤดู · `bow` +1",
+     "weight": 30,
+     "label": "ฝึกกับอีวาหนึ่งฤดู · `bow` +1",
+     "skills": [
+      {
+       "id": "bow",
+       "delta": 1
+      }
+     ],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "ยืนในลมหายใจมังกร",
     "ask": "ยืนหน้าเตาตอนมังกรเพลิงหายใจใส่",
-    "a": "40 ทอย `vit` 15 (`b_flameward` ผ่านเลย) · ไม่ผ่าน บาดแผลไฟ",
-    "b": "40 ให้คาโรซาตีด้วยไฟธรรมดา ได้ระดับต่ำลงหนึ่งขั้น",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "40 ทอย `vit` 15 (`b_flameward` ผ่านเลย) · ไม่ผ่าน บาดแผลไฟ",
+     "weight": 40,
+     "label": "ทอย `vit` 15 (`b_flameward` ผ่านเลย) · ไม่ผ่าน บาดแผลไฟ",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "stat": "vit",
+      "dc": 15,
+      "bonus": [],
+      "autoPass": [
+       "b_flameward"
+      ]
+     }
+    },
+    "b": {
+     "key": "b",
+     "text": "40 ให้คาโรซาตีด้วยไฟธรรมดา ได้ระดับต่ำลงหนึ่งขั้น",
+     "weight": 40,
+     "label": "ให้คาโรซาตีด้วยไฟธรรมดา ได้ระดับต่ำลงหนึ่งขั้น",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "ซ่อมเรือในพายุ",
     "ask": "ช่วยอู่ซ่อมเรือกลางพายุ",
-    "a": "50 ทอย `vit` 13 (`sailing` +2)",
-    "b": "30 ช่วยงานอู่หนึ่งฤดู",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ทอย `vit` 13 (`sailing` +2)",
+     "weight": 50,
+     "label": "ทอย `vit` 13 (`sailing` +2)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "roll": {
+      "stat": "vit",
+      "dc": 13,
+      "bonus": [
+       {
+        "id": "sailing",
+        "delta": 2
+       }
+      ],
+      "autoPass": []
+     }
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ช่วยงานอู่หนึ่งฤดู",
+     "weight": 30,
+     "label": "ช่วยงานอู่หนึ่งฤดู",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "น้ำมันโคม",
     "ask": "นำน้ำมันโคม (หายากหลัง FG-13)",
-    "a": "50 หาน้ำมัน · ศึกกับผู้ลักลอบ `npc_smuggler`",
-    "b": "30 ใช้แสงของภูตแสงแทน (NB03-3 พิป)",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 หาน้ำมัน · ศึกกับผู้ลักลอบ `npc_smuggler`",
+     "weight": 50,
+     "label": "หาน้ำมัน · ศึกกับผู้ลักลอบ `npc_smuggler`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "npc_smuggler"
+     ],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 ใช้แสงของภูตแสงแทน (NB03-3 พิป)",
+     "weight": 30,
+     "label": "ใช้แสงของภูตแสงแทน (NB03-3 พิป)",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "โซ่ปากเหว",
     "ask": "ช่วยลากโซ่ลงปากเหวหนึ่งคืน",
-    "a": "50 ช่วย · ศึก `hellmouth_imps`",
-    "b": "30 จ่ายทองสองเท่า",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ช่วย · ศึก `hellmouth_imps`",
+     "weight": 50,
+     "label": "ช่วย · ศึก `hellmouth_imps`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "hellmouth_imps"
+     ],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 จ่ายทองสองเท่า",
+     "weight": 30,
+     "label": "จ่ายทองสองเท่า",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    },
    {
     "id": "สมอที่หลุด",
     "ask": "งมสมอที่หลุดจากเรือของซาร์ดรีน",
-    "a": "50 ดำลงไป · ศึก `reef_serpent`",
-    "b": "30 จ้างคนดำน้ำ",
-    "c": "20 ถอย"
+    "a": {
+     "key": "a",
+     "text": "50 ดำลงไป · ศึก `reef_serpent`",
+     "weight": 50,
+     "label": "ดำลงไป · ศึก `reef_serpent`",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [
+      "reef_serpent"
+     ],
+     "grants": []
+    },
+    "b": {
+     "key": "b",
+     "text": "30 จ้างคนดำน้ำ",
+     "weight": 30,
+     "label": "จ้างคนดำน้ำ",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": []
+    },
+    "c": {
+     "key": "c",
+     "text": "20 ถอย",
+     "weight": 20,
+     "label": "ถอย",
+     "skills": [],
+     "weightMods": [],
+     "traits": [],
+     "battle": [],
+     "grants": [],
+     "retreat": true
+    }
    }
   ],
   "order": {
