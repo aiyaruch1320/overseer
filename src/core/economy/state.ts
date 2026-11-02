@@ -41,7 +41,7 @@ export interface EconomyExt {
   /** Set when poverty sold the life into bondage: the bondage system picks it up. */
   bondageEntry?: boolean;
   /** What the year now running has taken in besides the formula: shares of a battle or a war paid by the combat system (`payShare`), and the debt at its start. */
-  yr: { share: number; shares: number; debt0: number };
+  yr: { share: number; shares: number; debt0: number; debtPaid?: number };
 }
 
 export function emptyExt(): EconomyExt {
