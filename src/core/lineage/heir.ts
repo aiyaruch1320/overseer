@@ -11,8 +11,6 @@ import { items as dataItems } from '../text/labels';
 import type { LifeState, StatBlock } from '../types';
 import { lx, type HeirHow, type HeirSpec } from './state';
 
-/** Races whose people are not born of a mother (the heirs doc §1): none of them is a child of the blood, but any can be a student or a partner. */
-const NO_BLOOD = new Set(['soulmachine', 'mummy', 'ghoul']);
 
 /** Share of the gold that passes, by the generation of the heir (01 §4 "ภาษีรุ่น"). */
 export const GOLD_SHARE = [{ from: 6, share: 0.5 }, { from: 4, share: 0.6 }, { from: 2, share: 0.7 }];
@@ -130,14 +128,13 @@ export function inherit(ctx: Ctx, parent: LifeState, heir: LifeState, how: HeirS
     const give: string[] = [];
     if (weapon) give.push(weapon);
     for (const id of parent.items) if (id.startsWith('ar_') || id.startsWith('lt_')) give.push(id);
-    const halved: Record<string, string[]> = {};
-    for (const id of parent.items) {
-      const p = HALVED.find((q) => id.startsWith(q));
-      if (p) (halved[id] ??= []).push(id);
-    }
-    for (const ids of Object.values(halved)) give.push(...ids.slice(0, Math.floor((ids.length * share) / 2 + (share < 1 ? 0 : 0))));
+    // materials and consumables: half of each kind, rounded down (01 §2), a partner's share of that
+    const count: Record<string, number> = {};
+    for (const id of parent.items) if (HALVED.some((q) => id.startsWith(q))) count[id] = (count[id] ?? 0) + 1;
+    for (const [id, n] of Object.entries(count)) for (let i = 0; i < Math.floor((n * Math.min(share, 1)) / 2); i++) give.push(id);
     for (const id of give) {
-      if (!heir.items.includes(id) || id.startsWith('mt_') || id.startsWith('cn_')) {
+      // a piece the heir has already (the birth gave it one) is not given twice; materials stack
+      if (!heir.items.includes(id) || HALVED.some((q) => id.startsWith(q))) {
         heir.items.push(id);
         out.items++;
       }

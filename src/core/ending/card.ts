@@ -9,7 +9,7 @@ import { currentThreads } from '../lineage/threads';
 import { lx } from '../lineage/state';
 import { keep, lifeEntries } from './collection';
 import { gatherFacts, handOf, lifeLog, num, type RawFact } from './facts';
-import { CAUSE_WORD, CULTURE, FACT_KINDS, LIMIT, MARK, NOT_MOMENT, SCORE, TARGET, stageOf } from './tuning';
+import { CULTURE, FACT_KINDS, LIMIT, MARK, NOT_MOMENT, SCORE, TARGET, stageOf } from './tuning';
 import type { CauseGroup, EndingCard, EndingInput, Moment, QuestionGrade, SummaryFact, WorldMark } from './types';
 import { family, flagWords, pickFrom, timeGroup, whenHolds } from './words';
 import type { SlotValues } from '../text/pick';
@@ -155,9 +155,8 @@ function freshPick(ctx: Ctx, cands: Template[], slots: SlotValues, key: string):
 }
 
 /** The mark of the life on the world (03 §2; assumption: the doc names three levels and no rule). */
-function markOf(ctx: Ctx, passedCv: number, bigEvents: number, fame: number, classUp: boolean): { level: WorldMark; label: string } {
+function markOf(passedCv: number, bigEvents: number, fame: number, classUp: boolean): { level: WorldMark; label: string } {
   const level: WorldMark = passedCv >= MARK.eraConverge && bigEvents >= MARK.eraEvents ? 'era' : passedCv >= MARK.localConverge || fame >= MARK.localFame || classUp ? 'local' : 'none';
-  void ctx;
   return { level, label: MARK.labels[level] };
 }
 
@@ -257,7 +256,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const bigEvents = log.filter((e) => e.sys === 'world' && e.kind === 'event' && e.worldYear >= life.birthYear && String(e.data.mark).includes('⭐')).length;
   const fame = num((life.ext.character as { fame?: number } | undefined)?.fame);
   const classUp = log.some((e) => e.sys === 'character' && e.kind === 'class' && num(/\d/.exec(String(e.data.to))?.[0]) > num(/\d/.exec(String(e.data.from))?.[0]));
-  const mark = markOf(ctx, passedCv, bigEvents, fame, classUp);
+  const mark = markOf(passedCv, bigEvents, fame, classUp);
   const generation = st.lineage.lives.length + 1;
 
   const card: EndingCard = {
@@ -302,6 +301,5 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     names,
     earned,
   };
-  void CAUSE_WORD;
   return { card, input };
 }

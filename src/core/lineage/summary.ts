@@ -1,12 +1,12 @@
 // The summary of the world as data (docs/systems/experience/03-ending-and-collection.md §7 "หน้าสรุปโลก", docs/systems/llm/07-ending-templates.md §9): what
 // happened in the world over the lives of the lineage. Not a screen: plain JSON that a screen or the text of the legend reads. The doc shows the page
 // when the world reaches an ending scene; the lineage shows it at any time (the same fields), with `ended` null while the world goes on.
-import { dataOf, makeCtx, type GameData } from '../game';
+import { makeCtx, type GameData } from '../game';
 import { collectionView } from '../ending/collection';
 import { lx } from './state';
 import { knownName } from '../text/labels';
 import { calendarYear, placeName, raceName } from '../text/pick';
-import { family, pickFrom } from '../ending/words';
+import { family } from '../ending/words';
 import { HAND_WORD, LIMIT, dragonName } from '../ending/tuning';
 import type { SlotValues } from '../text/pick';
 import type { GameState } from '../types';
@@ -148,7 +148,5 @@ function legendText(ctx: ReturnType<typeof makeCtx>, state: GameState, fallen: {
   const topKind = Object.entries(byKind).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0];
   if (handTotal === 0) put('world_fact', { ชนิด: 'พระหัตถ์ของโลก', แบบ: '3' }, {}, 'hand');
   else put('world_fact', { ชนิด: 'พระหัตถ์ของโลก' }, { god_total: handTotal, god_top: HAND_WORD[topKind], mr_n: byKind.miracle ?? 0, dream_n: byKind.dream ?? 0 }, 'hand');
-  void pickFrom;
-  void dataOf;
   return sentences.slice(0, 7).join(' ');
 }

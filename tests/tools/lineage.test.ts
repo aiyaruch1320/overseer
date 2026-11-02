@@ -1,4 +1,9 @@
 // M4: the ending card, the collection and the lineage (docs/guide/code-plan.md §11 row M4: "สามชีวิตต่อกันในโลกเดียว").
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, rmSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { runLineageReport } from '../../scripts/tools/lineage-run';
 import { loadAll } from '../../scripts/tools/node-data';
@@ -300,5 +305,38 @@ describe('npm run life --lives', () => {
     const r = runLineageReport(data, { seed: 1, lives: 3, strict: true });
     expect(r.lives).toBe(1);
     expect(r.stopped).toMatch(/สิ้นสาย/);
+  });
+});
+
+describe('npm run play: the next life after the death stop', () => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+  const cli = (args: string[], dir: string) => execFileSync('npx', ['tsx', 'scripts/tools/play.ts', ...args], { cwd: root, encoding: 'utf8', env: { ...process.env, OVERSEER_PLAY_DIR: dir }, timeout: 50000 });
+
+  it('shows the card at the death, `next` bears the heir, the state is kept for the next command, and the third life follows', () => {
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'overseer-play-lineage-'));
+    try {
+      const first = cli(['--seed=5', '--new', '--cmd=advance 1000'], dir);
+      expect(first).toContain('-- การ์ดตอนจบ --');
+      expect(first).toContain('พิมพ์ next');
+      const heirs = cli(['--seed=5', '--cmd=heirs; card; summary; collection'], dir);
+      expect(heirs).toContain('ผู้สืบตอนนี้:');
+      expect(heirs).toContain('== สรุปโลก');
+      expect(heirs).toContain('== ของสะสม');
+      const second = cli(['--seed=5', '--cmd=next; advance 1000'], dir);
+      expect(second).toContain('-- รุ่นต่อไป · ทายาท --');
+      expect(second).toContain('รับช่วงต่อจาก');
+      expect(second).toContain('การ์ดตอนจบ · รุ่นที่ 2');
+      // the third life: the family has no heir that can take over (see the lineage test), so a newcomer is asked for
+      const refused = cli(['--seed=5', '--cmd=next'], dir);
+      expect(refused).toContain('ตระกูลสิ้นสาย');
+      const third = cli(['--seed=5', '--cmd=next newcomer; advance 1000'], dir);
+      expect(third).toContain('-- รุ่นต่อไป · คนใหม่ในโลกเดิม --');
+      expect(third).toContain('การ์ดตอนจบ · รุ่นที่ 3');
+      // a life that is still alive is not left for the next
+      const alive = cli(['--seed=5', '--cmd=next; next'], dir);
+      expect(alive).toContain('ชีวิตนี้ยังไม่จบ');
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
