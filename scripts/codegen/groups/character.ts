@@ -48,7 +48,7 @@ import type {
   WishCost,
   WishFile,
 } from '../../../src/core/data/types-character';
-import { parseCell } from '../lib/effects';
+import { parseCell, parseConditionX } from '../lib/effects';
 import { idIndex } from '../lib/ids';
 import { Unparsed, readDoc, rel, tables, writeGen, type Table } from '../lib/table';
 import type { GenReport } from '../run-all';
@@ -529,6 +529,10 @@ function atom(raw: string, file: string, line: number): CharCond {
     const of = evs.map((id): CharCond => ({ k: 'event', id, happened: !neg }));
     return neg && of.length > 1 ? { k: 'and', of } : or(of);
   }
+  // the shared condition forms of code-plan §5.2 (place, faith, sign, bond, count ...); race, continent and plain ids stay
+  // with the rules above, because a list like "เผ่าสัตว์ ออร์ค เด่น" names favoured races, not a requirement
+  const px = parseConditionX(s, ids, false);
+  if (px && ['place', 'faith', 'sign', 'bond', 'count', 'npc', 'gender', 'class', 'cmp', 'stance'].includes(px.k)) return px;
   // what is left is reported by settle(), once, with the place it came from
   return { k: 'text', text: clean(s) };
 }

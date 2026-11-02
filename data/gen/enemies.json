@@ -1,5 +1,5 @@
 {
- "version": "f93825037c22",
+ "version": "446cb8729b0c",
  "sources": [
   "docs/systems/combat/03-enemies.md"
  ],
@@ -3029,7 +3029,7 @@
     ],
     "note": "ไม่อยากสู้ เจรจาได้ ▲",
     "opens": "DM-03 หรือ DM-06 (ถ้าเจรจา)",
-    "src": "docs/systems/combat/03-enemies.md:124"
+    "src": "docs/systems/combat/03-enemies.md:126"
    },
    {
     "id": "MH01-1",
@@ -3061,7 +3061,7 @@
     "negotiate": [],
     "note": "ยอมรับคนที่ส่งอาหารให้",
     "opens": "DM-01 ถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:125"
+    "src": "docs/systems/combat/03-enemies.md:127"
    },
    {
     "id": "NB02-1",
@@ -3098,7 +3098,7 @@
     "negotiate": [],
     "note": "ไม่เคยสู้ในปราสาทตัวเอง",
     "opens": "ปราสาทเปิดให้ผู้ลี้ภัยต่อหรือล่ม",
-    "src": "docs/systems/combat/03-enemies.md:126"
+    "src": "docs/systems/combat/03-enemies.md:128"
    },
    {
     "id": "NB05-1",
@@ -3130,7 +3130,7 @@
     "negotiate": [],
     "note": "ซุ่มเสมอ",
     "opens": "กิลด์เงาแตก",
-    "src": "docs/systems/combat/03-enemies.md:127"
+    "src": "docs/systems/combat/03-enemies.md:129"
    },
    {
     "id": "NR05-1",
@@ -3160,7 +3160,7 @@
     "negotiate": [],
     "note": "ฆ่าไม่ได้จนกว่าจะพบหีบ",
     "opens": "WR-06 เปลี่ยน",
-    "src": "docs/systems/combat/03-enemies.md:128"
+    "src": "docs/systems/combat/03-enemies.md:130"
    },
    {
     "id": "AL02-3",
@@ -3191,7 +3191,7 @@
     ],
     "note": "ไม่อยากเป็นอาวุธ",
     "opens": "DM-05 ถูกตัดถ้าเจรจาสำเร็จ",
-    "src": "docs/systems/combat/03-enemies.md:129"
+    "src": "docs/systems/combat/03-enemies.md:131"
    },
    {
     "id": "AL08-2",
@@ -3217,7 +3217,7 @@
     "negotiate": [],
     "note": "มีกองทัพหนุน +4",
     "opens": "WR-16 เปลี่ยน",
-    "src": "docs/systems/combat/03-enemies.md:130"
+    "src": "docs/systems/combat/03-enemies.md:132"
    },
    {
     "id": "MH07-3",
@@ -3243,7 +3243,7 @@
     "negotiate": [],
     "note": "หวังให้มีคนชนะ",
     "opens": "ตัวละครได้ชื่อเสียงสูงสุดในเทนเซอริส",
-    "src": "docs/systems/combat/03-enemies.md:131"
+    "src": "docs/systems/combat/03-enemies.md:133"
    },
    {
     "id": "MH10-3",
@@ -3269,7 +3269,7 @@
     "negotiate": [],
     "note": "ไม่อยากรับมงกุฎ",
     "opens": "DM-01 ถูกตัดถ้าตัวละครขัดขวาง",
-    "src": "docs/systems/combat/03-enemies.md:132"
+    "src": "docs/systems/combat/03-enemies.md:134"
    },
    {
     "id": "KD05-2",
@@ -3301,7 +3301,7 @@
     "negotiate": [],
     "note": "ซุ่ม",
     "opens": "ไว้ชีวิตได้ (คืนบุญ)",
-    "src": "docs/systems/combat/03-enemies.md:133"
+    "src": "docs/systems/combat/03-enemies.md:135"
    },
    {
     "id": "KD06-2",
@@ -3339,7 +3339,7 @@
     "negotiate": [],
     "note": "ไฟ ✕",
     "opens": "GI-04 ชะลอ",
-    "src": "docs/systems/combat/03-enemies.md:134"
+    "src": "docs/systems/combat/03-enemies.md:136"
    },
    {
     "id": "SH02-1",
@@ -3371,7 +3371,7 @@
     "negotiate": [],
     "note": "ร่างแห้ง",
     "opens": "WR-24 เปลี่ยน",
-    "src": "docs/systems/combat/03-enemies.md:135"
+    "src": "docs/systems/combat/03-enemies.md:137"
    },
    {
     "id": "SV14-1",
@@ -3397,7 +3397,7 @@
     "negotiate": [],
     "note": "ไม่เปิดเผยตัว",
     "opens": "BIO-02 ถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:136"
+    "src": "docs/systems/combat/03-enemies.md:138"
    },
    {
     "id": "NB07-2",
@@ -3423,7 +3423,7 @@
     "negotiate": [],
     "note": "ผู้ติดตามรุม (ฝูง +2)",
     "opens": "FG-05 ล่ม",
-    "src": "docs/systems/combat/03-enemies.md:137"
+    "src": "docs/systems/combat/03-enemies.md:139"
    },
    {
     "id": "MK02-1",
@@ -3455,7 +3455,7 @@
     "negotiate": [],
     "note": "คลั่งเหล็ก",
     "opens": "MC-02 ชะลอ",
-    "src": "docs/systems/combat/03-enemies.md:138"
+    "src": "docs/systems/combat/03-enemies.md:140"
    },
    {
     "id": "MK16-4",
@@ -3487,7 +3487,7 @@
     "negotiate": [],
     "note": "ไม่รู้ว่าสู้เพื่ออะไร (เจรจา ▲)",
     "opens": "MC-08 เปลี่ยน",
-    "src": "docs/systems/combat/03-enemies.md:139"
+    "src": "docs/systems/combat/03-enemies.md:141"
    },
    {
     "id": "AL27-1",
@@ -3513,7 +3513,7 @@
     "negotiate": [],
     "note": "แก๊งหนุน +2",
     "opens": "แดนทองไร้นายอำเภอ",
-    "src": "docs/systems/combat/03-enemies.md:140"
+    "src": "docs/systems/combat/03-enemies.md:142"
    },
    {
     "id": "SV08-1",
@@ -3539,7 +3539,7 @@
     "negotiate": [],
     "note": "ยิงธนูไม่พลาด",
     "opens": "ชายแดนใต้ซิลวาเนลอ่อนแอ",
-    "src": "docs/systems/combat/03-enemies.md:141"
+    "src": "docs/systems/combat/03-enemies.md:143"
    },
    {
     "id": "NR11-2",
@@ -3571,7 +3571,7 @@
     "negotiate": [],
     "note": "สงบได้ถ้าไม่ขโมย",
     "opens": "ไข่มุกน้ำตาไม่มีผู้เฝ้า",
-    "src": "docs/systems/combat/03-enemies.md:142"
+    "src": "docs/systems/combat/03-enemies.md:144"
    },
    {
     "id": "NB08-1",
@@ -3597,7 +3597,7 @@
     "negotiate": [],
     "note": "ไม่สู้ถ้าไม่ถูกบังคับ",
     "opens": "DM-09 เร็วขึ้น",
-    "src": "docs/systems/combat/03-enemies.md:143"
+    "src": "docs/systems/combat/03-enemies.md:145"
    },
    {
     "id": "AZ02-1",
@@ -3623,7 +3623,7 @@
     "negotiate": [],
     "note": "ดวลตามกติกา ยอมแพ้ได้ · ไม่เคยแพ้ดวลมาสามสิบปี",
     "opens": "แพ้ครองเกาะต่อไม่ได้ หรือตาย → ผู้สืบทอด AZ02-2",
-    "src": "docs/systems/combat/03-enemies.md:144"
+    "src": "docs/systems/combat/03-enemies.md:146"
    },
    {
     "id": "AZ10-3",
@@ -3660,7 +3660,7 @@
     ],
     "note": "ซุ่ม · ไม่อยากฆ่าอีก เจรจา ▲",
     "opens": "เส้นนักบวชเปิดหรือถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:145"
+    "src": "docs/systems/combat/03-enemies.md:147"
    },
    {
     "id": "MH01-3",
@@ -3691,7 +3691,7 @@
     ],
     "note": "ไม่อยากสู้ เจรจา ▲ · สู้เต็มฝีมือเมื่อถูกบังคับ",
     "opens": "ผู้พาข้ามเขตทัพ หรือเส้นชาวนาที่วีซาเฮเวนปิด",
-    "src": "docs/systems/combat/03-enemies.md:146"
+    "src": "docs/systems/combat/03-enemies.md:148"
    },
    {
     "id": "MH02-4",
@@ -3717,7 +3717,7 @@
     "negotiate": [],
     "note": "ดวลเพื่อเกียรติ ยอมแพ้ได้ · เคารพผู้ชนะ",
     "opens": "DM-03 ถูกตัดในรอบนี้",
-    "src": "docs/systems/combat/03-enemies.md:147"
+    "src": "docs/systems/combat/03-enemies.md:149"
    },
    {
     "id": "MH12-1",
@@ -3760,7 +3760,7 @@
     "negotiate": [],
     "note": "กายภาพ ✕ · ทหารผีหนุน +2",
     "opens": "กองทัพห้าธงหลับหรือสลาย",
-    "src": "docs/systems/combat/03-enemies.md:148"
+    "src": "docs/systems/combat/03-enemies.md:150"
    },
    {
     "id": "KD08-1",
@@ -3803,7 +3803,7 @@
     ],
     "note": "ทหารป้อมหนุน +2 · เจรจาด้วยความจริงเรื่องผู้ถูกกักขัง ▲",
     "opens": "GI-08 ถูกตัด WR-13 น้ำหนักเพิ่ม",
-    "src": "docs/systems/combat/03-enemies.md:149"
+    "src": "docs/systems/combat/03-enemies.md:151"
    },
    {
     "id": "AL02-2",
@@ -3834,7 +3834,7 @@
     ],
     "note": "เวทแสง ★ ต่อผู้ตายและปีศาจ · เจรจาด้วยหลักฐาน ▲",
     "opens": "ลัทธิลับยึดศาล หรือเธอลาออก",
-    "src": "docs/systems/combat/03-enemies.md:150"
+    "src": "docs/systems/combat/03-enemies.md:152"
    },
    {
     "id": "AL18-1",
@@ -3860,7 +3860,7 @@
     "negotiate": [],
     "note": "ทดสอบฝีมือ ยอมแพ้ได้ · ศิษย์หนุน +2",
     "opens": "ผู้กล้ารุ่นใหม่ขาดครู",
-    "src": "docs/systems/combat/03-enemies.md:151"
+    "src": "docs/systems/combat/03-enemies.md:153"
    },
    {
     "id": "MK04-1",
@@ -3897,7 +3897,7 @@
     ],
     "note": "ทหารเฝ้าหนุน +2 · เจรจา ▲ ถ้าตัวละครได้ยินเสียงเดียวกัน",
     "opens": "MC-05 น้ำหนักเพิ่ม END-06 ถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:152"
+    "src": "docs/systems/combat/03-enemies.md:154"
    },
    {
     "id": "SV08-2",
@@ -3923,7 +3923,7 @@
     "negotiate": [],
     "note": "ซุ่มเสมอ · ยิงจากที่กำบัง",
     "opens": "ป้อมใต้ซิลวาเนลขาดนักล่า",
-    "src": "docs/systems/combat/03-enemies.md:153"
+    "src": "docs/systems/combat/03-enemies.md:155"
    },
    {
     "id": "SH03-1",
@@ -3955,7 +3955,7 @@
     "negotiate": [],
     "note": "ร่างหินใหญ่ · ทดสอบแล้วไม่ฆ่าผู้ผ่าน",
     "opens": "GI-01 น้ำหนักเพิ่ม",
-    "src": "docs/systems/combat/03-enemies.md:154"
+    "src": "docs/systems/combat/03-enemies.md:156"
    },
    {
     "id": "NB05-3",
@@ -3987,7 +3987,7 @@
     "negotiate": [],
     "note": "ซุ่ม · ภาพหลอนเหยื่อทำให้ตัวละครสะดุ้งจังหวะแรก",
     "opens": "เส้นเสียสติถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:155"
+    "src": "docs/systems/combat/03-enemies.md:157"
    },
    {
     "id": "AZ04-1",
@@ -4018,7 +4018,7 @@
     ],
     "note": "ร่างหนักปีกสั้น เกราะแข็ง · เจรจาเรื่องยักษ์ ▲",
     "opens": "WR-02 ถูกตัดหรือ HP-03 เปิดทาง",
-    "src": "docs/systems/combat/03-enemies.md:156"
+    "src": "docs/systems/combat/03-enemies.md:158"
    },
    {
     "id": "SV03-1",
@@ -4056,7 +4056,7 @@
     "negotiate": [],
     "note": "พิษ ✕ · ไกล่เกลี่ยก่อนสงคราม ▲",
     "opens": "WR-04 ชะลอหรือถูกตัด",
-    "src": "docs/systems/combat/03-enemies.md:157"
+    "src": "docs/systems/combat/03-enemies.md:159"
    },
    {
     "id": "SV03-2",
@@ -4094,7 +4094,7 @@
     "negotiate": [],
     "note": "พิษ ✕ · ไม่รับกลิ่น ซุ่มด้วยกลิ่นไม่ได้",
     "opens": "เส้น ค ร่วม หรือถอนจากโรงกลั่น",
-    "src": "docs/systems/combat/03-enemies.md:158"
+    "src": "docs/systems/combat/03-enemies.md:160"
    },
    {
     "id": "NR07-1",
@@ -4126,7 +4126,7 @@
     "negotiate": [],
     "note": "ไม่ลุกจากเตียงไข่ · สงบได้ถ้าไม่แตะไข่ ▲",
     "opens": "BIO-08 เปลี่ยน หรือไข่ไม่มีผู้เฝ้า",
-    "src": "docs/systems/combat/03-enemies.md:159"
+    "src": "docs/systems/combat/03-enemies.md:161"
    },
    {
     "id": "MH03-3",
@@ -4168,7 +4168,7 @@
     ],
     "note": "กองกูลหนุน +2 · เจรจาด้วยอาหารที่ไม่ใช่เนื้อ ▲",
     "opens": "กองกูลแตกหรือตั้งกองใหม่",
-    "src": "docs/systems/combat/03-enemies.md:160"
+    "src": "docs/systems/combat/03-enemies.md:162"
    },
    {
     "id": "AL20-1",
@@ -4194,7 +4194,7 @@
     "negotiate": [],
     "note": "ทหารป้อมหนุน +2 · โคมไล่หมอก",
     "opens": "ป้อมแตกหรือยืนต่อ",
-    "src": "docs/systems/combat/03-enemies.md:161"
+    "src": "docs/systems/combat/03-enemies.md:163"
    },
    {
     "id": "KD12-1",
@@ -4225,7 +4225,7 @@
     ],
     "note": "อาวุธเย็นไม่แตก · ไม่อยากรบ เจรจา ▲",
     "opens": "ทวีปเถ้าเปลี่ยนศูนย์กลาง",
-    "src": "docs/systems/combat/03-enemies.md:162"
+    "src": "docs/systems/combat/03-enemies.md:164"
    },
    {
     "id": "AL15-2",
@@ -4257,7 +4257,7 @@
     "negotiate": [],
     "note": "รถหุ้มเกราะหนุน +2 · เสียเปรียบเมื่อรถพัง",
     "opens": "หน่วยถอยหรือติดตามตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:163"
+    "src": "docs/systems/combat/03-enemies.md:165"
    },
    {
     "id": "AZ01-2",
@@ -4294,7 +4294,7 @@
     ],
     "note": "ไวเวิร์น \"ซาก\" หนุน +2 · ไวเวิร์นล้มแล้วเสียเปรียบ · เจรจาเรื่องความเงียบของโอรัน-ซัล ▲",
     "opens": "WR-01 เปลี่ยนหรือกองบินแตก",
-    "src": "docs/systems/combat/03-enemies.md:164"
+    "src": "docs/systems/combat/03-enemies.md:166"
    },
    {
     "id": "AZ10-1",
@@ -4326,7 +4326,7 @@
     "negotiate": [],
     "note": "ซุ่มเสมอ · ไม่สู้ในที่สว่าง · ซื้อตัวได้ด้วยความลับ ▲",
     "opens": "ความลับของเกาะถูกเปิดโปงหรือเขากลายเป็นสายให้ตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:165"
+    "src": "docs/systems/combat/03-enemies.md:167"
    },
    {
     "id": "AZ03-1",
@@ -4357,7 +4357,7 @@
     "negotiate": [],
     "note": "กองเรือลมหนุน +2 · ไม่วางแผนเกินสามวัน เสียเปรียบเมื่อศึกยืดเกินวันที่สอง",
     "opens": "เรือลมขายให้ MK-09 หรือไปช่วยผู้ลี้ภัย",
-    "src": "docs/systems/combat/03-enemies.md:166"
+    "src": "docs/systems/combat/03-enemies.md:168"
    },
    {
     "id": "MH03-1",
@@ -4399,7 +4399,7 @@
     ],
     "note": "ความหิวไม่ใช่ความโกรธ · กองกูลหนุน +2 · อาหารที่ไม่ใช่เนื้อทำให้หยุดชั่วครู่ ▲ · เจรจาด้วยชื่อบนหลุมของเขา ▲",
     "opens": "MH-03 กลืนเมืองติดกันหรือสนธิสัญญากับ MH-06",
-    "src": "docs/systems/combat/03-enemies.md:167"
+    "src": "docs/systems/combat/03-enemies.md:169"
    },
    {
     "id": "MH09-1",
@@ -4430,7 +4430,7 @@
     ],
     "note": "ผู้คุ้มกันตลาดหนุน +2 · ทุกอย่างมีราคา เจรจาด้วยสัญญาใหม่ ▲ · เกลียดสงครามจริง",
     "opens": "MC-08 เปลี่ยนหรือตลาดเลือดแตก",
-    "src": "docs/systems/combat/03-enemies.md:168"
+    "src": "docs/systems/combat/03-enemies.md:170"
    },
    {
     "id": "MH11-2",
@@ -4467,7 +4467,7 @@
     ],
     "note": "เรือเล็กไว หนุน +1 · ไม่ยอมเปิดหีบของน้อง · เจรจาเมื่อตัวละครช่วยตามหาน้อง ▲",
     "opens": "น้องถูกพบที่ MH-09 หรือเธอถูกแขวนบนเรือหลวง",
-    "src": "docs/systems/combat/03-enemies.md:169"
+    "src": "docs/systems/combat/03-enemies.md:171"
    },
    {
     "id": "KD08-2",
@@ -4504,7 +4504,7 @@
     ],
     "note": "ทนแสง ✕ · เกราะสวดหนุน +1 · เจรจาเมื่อได้เห็นว่าผู้ถูกกักขังคือคนจริง ▲",
     "opens": "ผู้ถูกกักขังถูกปล่อยหรือสงครามศักดิ์สิทธิ์ WR-13 เร็วขึ้น",
-    "src": "docs/systems/combat/03-enemies.md:170"
+    "src": "docs/systems/combat/03-enemies.md:172"
    },
    {
     "id": "KD12-2",
@@ -4541,7 +4541,7 @@
     ],
     "note": "เขี้ยวสัตว์ใหญ่ทำให้สัตว์ป่าหวาดกลัว · ศึกในหิมะ +1 · เจรจาเมื่อตัวละครล่าด้วยกัน ▲",
     "opens": "ธรอ-ดูเปลี่ยนตำนานหรือเขาตายจากการล่า",
-    "src": "docs/systems/combat/03-enemies.md:171"
+    "src": "docs/systems/combat/03-enemies.md:173"
    },
    {
     "id": "NR05-2",
@@ -4577,7 +4577,7 @@
     ],
     "note": "ลูกเรือผีหนุน +2 · ห้องเก็บหมวกลูกเรือ · เจรจาเมื่อตัวละครทำลายทองสาป ▲",
     "opens": "ทองสาปถูกทำลายหรือเขาตายในเรือผี",
-    "src": "docs/systems/combat/03-enemies.md:172"
+    "src": "docs/systems/combat/03-enemies.md:174"
    },
    {
     "id": "NR07-2",
@@ -4614,7 +4614,7 @@
     ],
     "note": "ผู้ผ่านการทดสอบไม่ถูกฆ่า · ผู้แพ้ขาข้างหนึ่งเป็นหิน · เจรจาด้วยการทดสอบที่ไม่ใช่การต่อสู้ ▲",
     "opens": "NR07-3 แก้แค้นหรือถอนหิน",
-    "src": "docs/systems/combat/03-enemies.md:173"
+    "src": "docs/systems/combat/03-enemies.md:175"
    },
    {
     "id": "AL04-2",
@@ -4650,7 +4650,7 @@
     ],
     "note": "เรือหลวงหนุน +2 · กลล่อที่ไม่เคยเปิดเผย (ทอยรับรู้ตัวละคร −1 ในจังหวะแรก) · เจรจาเมื่อตัวละครรู้กลล่อ ▲",
     "opens": "เขาถูกโจรสลัดจับ แปรพักตร์ หรือเข้ากองเรือตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:174"
+    "src": "docs/systems/combat/03-enemies.md:176"
    },
    {
     "id": "AL23-2",
@@ -4681,7 +4681,7 @@
     ],
     "note": "ล่าเฉพาะสัตว์ที่ท้า · เสือเงียบ (ซุ่มเสมอ) · เจรจาเมื่อตัวละครไม่ได้ท้าสัตว์ใดในเขตเขา ▲",
     "opens": "เขาถูกจ้างเป็นองครักษ์หรือเป็นพันธมิตร",
-    "src": "docs/systems/combat/03-enemies.md:175"
+    "src": "docs/systems/combat/03-enemies.md:177"
    },
    {
     "id": "AL07-3",
@@ -4712,7 +4712,7 @@
     ],
     "note": "ผู้ช่วยในเงา +1 · บันทึกส่วนตัวในสมุดที่เขาไม่ยอมเสีย · เจรจาด้วยการสัญญาจดจำเขา ▲",
     "opens": "เขาขายบันทึกให้ AL-06 ถูกฆ่า หรือเป็นแหล่งข่าวของตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:176"
+    "src": "docs/systems/combat/03-enemies.md:178"
    },
    {
     "id": "MK02-2",
@@ -4753,7 +4753,7 @@
     ],
     "note": "ยิงสองกระบอกพร้อมกัน · ไม่เคยหลับ จังหวะแรกของศึกไวกว่าปกติ · เจรจาเมื่อเรียกชื่อแขนเดิม ▲",
     "opens": "เขาเสียสติ ถูกส่งไป MK-16 หรือเข้าร่วมตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:177"
+    "src": "docs/systems/combat/03-enemies.md:179"
    },
    {
     "id": "MK16-2",
@@ -4784,7 +4784,7 @@
     ],
     "note": "เกราะค่ายบริษัทหนุน +1 · เหรียญในผ้าขาวม้าไม่ยอมเสีย · เจรจาด้วยค่าจ้างที่ค้างครบ ▲",
     "opens": "เขาลาออกกลับมอร์เฮเวนหรือเข้าร่วมตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:178"
+    "src": "docs/systems/combat/03-enemies.md:180"
    },
    {
     "id": "SH03-4",
@@ -4823,7 +4823,7 @@
     ],
     "note": "ร่างหินใหญ่ · ถือดวงตาศิลาห่อผ้า · เจรจาเมื่อพา SH01-2 ยัสมีนมาถึง ▲",
     "opens": "ดวงตาถูกส่งให้ผู้ชี้ทางหรือถูกปล้นตอนสงครามธุลี",
-    "src": "docs/systems/combat/03-enemies.md:179"
+    "src": "docs/systems/combat/03-enemies.md:181"
    },
    {
     "id": "SH10-2",
@@ -4862,7 +4862,7 @@
     ],
     "note": "หมาป่าทรายหนุน +1 · ซุ่มกลางคืน · เจรจาเมื่อตัวละครพาเด็กหรือสัตว์ที่มีลูกเดินด้วยกัน ▲",
     "opens": "ผู้นำทางรอดหรือเขาเป็นผู้ล่านำทางของตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:180"
+    "src": "docs/systems/combat/03-enemies.md:182"
    },
    {
     "id": "SH11-1",
@@ -4898,7 +4898,7 @@
     ],
     "note": "ทัพออร์คหนุน +2 · ไม่ยอมแพ้ · เจรจาเมื่อตัวละครเสนอที่ทำกินให้ทัพที่ถูกทอดทิ้ง ▲",
     "opens": "เขาเข้าร่วมกวาดล้างกับ MH-01 ทัพสลาย หรือเป็นพันธมิตรกับตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:181"
+    "src": "docs/systems/combat/03-enemies.md:183"
    },
    {
     "id": "SV03-3",
@@ -4938,7 +4938,7 @@
     ],
     "note": "ทนบาดแผลทั่วไป · ร่างค่อย ๆ เทา · เจรจาเมื่อตัวละครมียาแก้พิษ ▲",
     "opens": "เขาหนีไปนิวเฮเวน เสียสติ หรือเป็นทหารหน้าด่านให้ตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:182"
+    "src": "docs/systems/combat/03-enemies.md:184"
    },
    {
     "id": "SV16-2",
@@ -4969,7 +4969,7 @@
     ],
     "note": "กับดักซ่อนในพื้นที่ล่า · ซุ่มเสมอ · เจรจาเมื่อให้ผู้ที่เคยจับสัตว์ไถ่โทษต่อหน้าเขา ▲",
     "opens": "เขาถูกจับ ตายระหว่างล่า หรือเป็นผู้ล่านำทางของตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:183"
+    "src": "docs/systems/combat/03-enemies.md:185"
    },
    {
     "id": "NB05-2",
@@ -5010,7 +5010,7 @@
     ],
     "note": "ซุ่มเสมอ · ขโมยสมุดของเป้าหมายเป็นงานเสริม · เจรจาเมื่อตัวละครปกป้องเป้าหมายที่เป็นเด็ก ▲",
     "opens": "เธอทรยศกิลด์ ถูกลงโทษ หรือเป็นผู้ช่วยตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:184"
+    "src": "docs/systems/combat/03-enemies.md:186"
    },
    {
     "id": "NB05-5",
@@ -5047,7 +5047,7 @@
     ],
     "note": "สมุดเงาไม่เสียหายง่าย · ซุ่ม · เจรจาเมื่อตัวละครแลกชื่อผู้จ่ายด้วยสิ่งที่ไม่ใช่ทอง ▲",
     "opens": "วีวาขึ้นเป็นเจ้าแห่งเงา ขายสมุด หรือลบชื่อตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:185"
+    "src": "docs/systems/combat/03-enemies.md:187"
    },
    {
     "id": "AZ09-4",
@@ -5083,7 +5083,7 @@
     ],
     "note": "ไม่เชื่อเทพทุกองค์ · โจมตีสัญลักษณ์ศาสนาก่อน · เจรจาเมื่อตัวละครไม่อ้างเทพ ▲",
     "opens": "GD-07 เปิด หรือเธอตายก่อนถึงวัยผู้ใหญ่",
-    "src": "docs/systems/combat/03-enemies.md:186"
+    "src": "docs/systems/combat/03-enemies.md:188"
    },
    {
     "id": "AZ10-4",
@@ -5119,7 +5119,7 @@
     ],
     "note": "ไวเวิร์นราตรีหนุน +2 · พูดกับไวเวิร์นโดยไม่ใช้ปาก · เจรจาเมื่อตัวละครให้ไวเวิร์นเลือกเอง ▲",
     "opens": "ไวเวิร์นถูกส่งให้ MK-09 หรือไวเวิร์นกัดเขาตาย",
-    "src": "docs/systems/combat/03-enemies.md:187"
+    "src": "docs/systems/combat/03-enemies.md:189"
    },
    {
     "id": "AZ02-4",
@@ -5155,7 +5155,7 @@
     ],
     "note": "ตัดสินแล้วไม่กลับคำ · กรรมการกลางดวลทั้งสอง · เจรจาเมื่อตัวละครให้หลักฐานดวลถูกซื้อ ▲",
     "opens": "เขาเปิดโปงดวลที่ถูกซื้อ หรือถูกลอบฆ่า",
-    "src": "docs/systems/combat/03-enemies.md:188"
+    "src": "docs/systems/combat/03-enemies.md:190"
    },
    {
     "id": "AZ08-1",
@@ -5191,7 +5191,7 @@
     ],
     "note": "ผู้คุ้มกันเหมืองหนุน +2 · ยัดสินบนก่อนสู้ · เจรจาเมื่อตัวละครเสนอส่วนแบ่ง ▲",
     "opens": "เขาถูกเปิดโปงหรือถูกลอบสังหารโดยคนงาน",
-    "src": "docs/systems/combat/03-enemies.md:189"
+    "src": "docs/systems/combat/03-enemies.md:191"
    },
    {
     "id": "MH04-1",
@@ -5227,7 +5227,7 @@
     ],
     "note": "ฝูงหมาป่าเถ้าหนุน +2 · ไม่เคยอยู่ที่เดียวสองคืน · เจรจาด้วยค่าจ้างล่วงหน้า ▲",
     "opens": "ศึกบ่อน้ำเปลี่ยน หรือเขาเข้าร่วมตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:190"
+    "src": "docs/systems/combat/03-enemies.md:192"
    },
    {
     "id": "MH04-3",
@@ -5266,7 +5266,7 @@
     ],
     "note": "หมาป่าขี่หนุน +1 · เก็บเงินไว้ซื้อที่นา · เจรจาด้วยข่าวของแม่ ▲",
     "opens": "เขาถอนตัวไปปลูกข้าว หรือตายในศึกกับ MK-16",
-    "src": "docs/systems/combat/03-enemies.md:191"
+    "src": "docs/systems/combat/03-enemies.md:193"
    },
    {
     "id": "MH05-2",
@@ -5302,7 +5302,7 @@
     ],
     "note": "กำแพงรูนหนุน +2 · ไม่ปิดรูน · เจรจาเมื่อตัวละครยอมรับแบบกำแพง ▲",
     "opens": "เขาสอนรูนหรือถูกฝ่ายปิดรูนฆ่า",
-    "src": "docs/systems/combat/03-enemies.md:192"
+    "src": "docs/systems/combat/03-enemies.md:194"
    },
    {
     "id": "MH08-3",
@@ -5343,7 +5343,7 @@
     ],
     "note": "ขายข่าวทุกฝ่าย · ซุ่มเสมอ · เจรจาเมื่อตัวละครซื้อข่าวด้วยข่าวเท่ากัน ▲",
     "opens": "เธอถูกจับโดยธงที่ถูกหลอก หนีไป MH-09 หรือขายข่าวให้ตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:193"
+    "src": "docs/systems/combat/03-enemies.md:195"
    },
    {
     "id": "MH09-2",
@@ -5382,7 +5382,7 @@
     ],
     "note": "ทหารรับจ้างฝีมือมาตรฐาน · สัญญาขายตัวเองเขียนด้วยลายมือที่ดีที่สุดในตลาด · เจรจาด้วยการไถ่หรืออ่านข้อสุดท้ายของสัญญา ▲",
     "opens": "เขาตายไกลบ้าน กลับมามีเงินแต่ครอบครัวหาย หรือถูกไถ่",
-    "src": "docs/systems/combat/03-enemies.md:194"
+    "src": "docs/systems/combat/03-enemies.md:196"
    },
    {
     "id": "MH10-1",
@@ -5424,7 +5424,7 @@
     ],
     "note": "ตัดสินศึกไม่เคยผิด · ผู้ตัดสินกูลหนุน +2 · เจรจาด้วยความจริงเรื่องมงกุฎ ▲",
     "opens": "ศึกชิงมงกุฎเปิด หรือฮรอด-กาธเลือกจอมมาร",
-    "src": "docs/systems/combat/03-enemies.md:195"
+    "src": "docs/systems/combat/03-enemies.md:197"
    },
    {
     "id": "MH11-1",
@@ -5460,7 +5460,7 @@
     ],
     "note": "กองเรือเถ้าหนุน +2 · ไม่อยากให้ลูกเรือปล้น · เจรจาด้วยใบอนุญาตค้าจาก NR-01 ▲",
     "opens": "WR-07 เปลี่ยนหรือกองเรือค้าขาย",
-    "src": "docs/systems/combat/03-enemies.md:196"
+    "src": "docs/systems/combat/03-enemies.md:198"
    },
    {
     "id": "MH12-2",
@@ -5502,7 +5502,7 @@
     ],
     "note": "กายภาพทนครึ่ง · ลืมชื่อตัวเอง · เจรจาด้วยการส่งจดหมายถึงแม่ ▲",
     "opens": "เขาได้พักผ่อน หายไปในหมอก หรือส่งจดหมายสำเร็จ",
-    "src": "docs/systems/combat/03-enemies.md:197"
+    "src": "docs/systems/combat/03-enemies.md:199"
    },
    {
     "id": "KD03-4",
@@ -5538,7 +5538,7 @@
     ],
     "note": "ตัดสินรูนไม่เคยผิด · ไม่เคยตัดสินให้ตัวเองได้ฟัง · เจรจาด้วยอาหารและยาให้หลานโดยไม่ขอสิ่งตอบแทน ▲",
     "opens": "ฝ่ายเปิดซื้อเขาสำเร็จ หรือเขายืนหยัดจนโดดเดี่ยว",
-    "src": "docs/systems/combat/03-enemies.md:198"
+    "src": "docs/systems/combat/03-enemies.md:200"
    },
    {
     "id": "KD07-1",
@@ -5574,7 +5574,7 @@
     ],
     "note": "รู้สึกอารมณ์เพลิงนิรันดร์ทุกวัน · เกล็ดทนไฟ ✕ · เจรจาเมื่อตัวละครรับรู้อารมณ์เพลิงนั้น ▲",
     "opens": "ความศรัทธาถ่ายทอดผ่านคัลดราต่อ หรือเขาตายเมื่อเพลิงนิรันดร์ล้ม",
-    "src": "docs/systems/combat/03-enemies.md:199"
+    "src": "docs/systems/combat/03-enemies.md:201"
    },
    {
     "id": "KD03-3",
@@ -5613,7 +5613,7 @@
     ],
     "note": "ยามประตูหนุน +1 · จำรูนได้ทั้งผืน · เจรจาเมื่อตัวละครให้เขาวาดรูนลงกระดาษแทนการตาย ▲",
     "opens": "เขาหนีไปบาร์ดินพร้อมรูน หรือถูกประหารโดยฝ่ายปิด",
-    "src": "docs/systems/combat/03-enemies.md:200"
+    "src": "docs/systems/combat/03-enemies.md:202"
    },
    {
     "id": "KD05-1",
@@ -5649,7 +5649,7 @@
     ],
     "note": "กลอุบายสามชั้น (ทอยรับรู้ตัวละคร −1) · ไม่ลืมผู้ที่หักหลัง · เจรจาเมื่อตัวละครรักษาคำเดิมที่เคยให้ ▲",
     "opens": "เธอเป็นพันธมิตรตัวละคร ถูกเผ่าลาวาลอบสังหาร หรือชี้ทางลงปากเหว",
-    "src": "docs/systems/combat/03-enemies.md:201"
+    "src": "docs/systems/combat/03-enemies.md:203"
    },
    {
     "id": "NR01-4",
@@ -5688,7 +5688,7 @@
     ],
     "note": "จำเรือจากเสียงสมอได้ · ไม่เคยปิดท่า · เจรจาเมื่อตัวละครเฝ้าท่าแทนหนึ่งคืน ▲",
     "opens": "เขาถูกซื้อให้เปิดทางเรือโจร ตายในท่า หรือบอกเส้นทางลับ",
-    "src": "docs/systems/combat/03-enemies.md:202"
+    "src": "docs/systems/combat/03-enemies.md:204"
    },
    {
     "id": "NR06-4",
@@ -5724,7 +5724,7 @@
     ],
     "note": "เกราะประภาคารเก่า +1 · จำว่าใครยิงลูกธนูลูกแรก · เจรจาเมื่อตัวละครขอให้เล่าความจริง ▲",
     "opens": "ความจริงเรื่องสงครามต้นน้ำถูกเปิดหรือเขาตายก่อนบอก",
-    "src": "docs/systems/combat/03-enemies.md:203"
+    "src": "docs/systems/combat/03-enemies.md:205"
    },
    {
     "id": "NR04-3",
@@ -5763,7 +5763,7 @@
     ],
     "note": "ร่างสัตว์ทะเลลึกยักษ์ · ปกป้องธาลาสซาที่หลับ · เจรจาด้วยเพลงกล่อมที่เขาร้องทุกคืน ▲",
     "opens": "PL-04 เปลี่ยนหรือเขาสืบเรื่องขึ้นผิวน้ำ",
-    "src": "docs/systems/combat/03-enemies.md:204"
+    "src": "docs/systems/combat/03-enemies.md:206"
    },
    {
     "id": "NR05-3",
@@ -5799,7 +5799,7 @@
     ],
     "note": "ตีสมอสาปสู้ได้ · ไม่แตะสมอที่ตีเสร็จ · เจรจาเมื่อตัวละครสัญญาไม่ใช้สมอสาป ▲",
     "opens": "เขาตีสมอที่ผู้แตะกลายเป็นผี ทรยศ หรือได้รับไว้ชีวิต",
-    "src": "docs/systems/combat/03-enemies.md:205"
+    "src": "docs/systems/combat/03-enemies.md:207"
    },
    {
     "id": "AL01-3",
@@ -5835,7 +5835,7 @@
     ],
     "note": "กองรักษาสภาหนุน +2 · ไม่รับคำสั่งจากประเทศใด · เจรจาเมื่อตัวละครนำหลักฐานผู้ซื้อมา ▲",
     "opens": "ประตูสภาเปิดให้ผู้ลอบสังหารหรือเขากลับมาคุ้มกัน",
-    "src": "docs/systems/combat/03-enemies.md:206"
+    "src": "docs/systems/combat/03-enemies.md:208"
    },
    {
     "id": "AL03-3",
@@ -5871,7 +5871,7 @@
     ],
     "note": "เกราะอัศวินหนุน +1 · สาบานต่อบัลลังก์ที่ยังว่าง · เจรจาด้วยทางที่ไม่ต้องฆ่าผู้อ้าง ▲",
     "opens": "เขาฆ่าผู้อ้างที่สาม เขาถูกฆ่าก่อนสำเร็จ หรือกลับมาเป็นอัศวินของตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:207"
+    "src": "docs/systems/combat/03-enemies.md:209"
    },
    {
     "id": "AL10-2",
@@ -5907,7 +5907,7 @@
     ],
     "note": "ลูกน้องหนุน +2 (เขาไม่ลงมือเอง) · เสียเปรียบเมื่อต้องลงมือเอง · เจรจาด้วยค่าจ้างที่ธนาคารหยุดจ่าย ▲",
     "opens": "เขาทรยศฝ่ายหนึ่ง ถูกลูกน้องฆ่า หรือเข้าร่วมตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:208"
+    "src": "docs/systems/combat/03-enemies.md:210"
    },
    {
     "id": "AL15-1",
@@ -5946,7 +5946,7 @@
     ],
     "note": "ทัพตรึงแนวหนุน +3 · ไม่เคยถอยมาสองปี · เจรจาด้วยเสบียงและคำสั่งเปลี่ยนแนวที่ไม่ใช่ถอย ▲",
     "opens": "WR-16 แนวแตก ตรึงจนฟอร์เทียล้า หรือเสบียงถึง",
-    "src": "docs/systems/combat/03-enemies.md:209"
+    "src": "docs/systems/combat/03-enemies.md:211"
    },
    {
     "id": "MK04-4",
@@ -5982,7 +5982,7 @@
     ],
     "note": "ผู้คุมกักกันหนุน +1 · ทุกคนเรียกเขาว่าคุณพ่อ · เจรจาเมื่อตัวละครให้เขาอยู่ข้างผู้คลั่งโดยไม่ต้องยิง ▲",
     "opens": "ผู้ติดตั้งแหกคุก เขาสั่งยิง หรือตัวละครห้ามจนไม่ต้องยิง",
-    "src": "docs/systems/combat/03-enemies.md:210"
+    "src": "docs/systems/combat/03-enemies.md:212"
    },
    {
     "id": "MK06-4",
@@ -6024,7 +6024,7 @@
     ],
     "note": "ตั้งโปรแกรมให้ไม่คิด · ปืนรูนยิงไม่ออกเมื่อคิด · เจรจาเมื่อตัวละครตอบว่าทำไมเป้าหมายถึงร้องไห้ ▲",
     "opens": "เขาตื่นเป็นวิญญาณและหนีไปโนวามินด์ ถูกทำลาย หรือถูกปล่อยออกจากสนามทดสอบ",
-    "src": "docs/systems/combat/03-enemies.md:211"
+    "src": "docs/systems/combat/03-enemies.md:213"
    },
    {
     "id": "MK09-1",
@@ -6063,7 +6063,7 @@
     ],
     "note": "กองเรือเหาะหนุน +2 · ฝันถึงเมืองลอยฟ้าเทียม · เจรจาเมื่อตัวละครมีที่ให้เมืองของเขา ▲",
     "opens": "MC-10 เปลี่ยน หรือ WR-01 สงครามท้องฟ้า",
-    "src": "docs/systems/combat/03-enemies.md:212"
+    "src": "docs/systems/combat/03-enemies.md:214"
    },
    {
     "id": "MK16-5",
@@ -6099,7 +6099,7 @@
     ],
     "note": "ค่ายพักไม่ถามเผ่า · ผู้พักหนุน +1 · เจรจาเมื่อตัวละครเคารพกฎของค่าย ▲",
     "opens": "เขาส่งทัพให้ซื้อสัญญากับ MK16-1 พบญาติ หรือเป็นค่ายประจำตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:213"
+    "src": "docs/systems/combat/03-enemies.md:215"
    },
    {
     "id": "MK05-4",
@@ -6135,7 +6135,7 @@
     ],
     "note": "ตู้ปลอมซ่อนอาวุธ · ไม่เคยยิงใคร · เจรจาเมื่อตัวละครซื้อตู้ทั้งหมดเป็นสินค้า ▲",
     "opens": "เขาถูกจับที่ด่านอาร์เคียพอร์ต ขายสำเร็จให้ AL-08 หรือถูกตัวละครจับ",
-    "src": "docs/systems/combat/03-enemies.md:214"
+    "src": "docs/systems/combat/03-enemies.md:216"
    },
    {
     "id": "SH01-3",
@@ -6174,7 +6174,7 @@
     ],
     "note": "หนอนทรายยักษ์หนุน +3 (หนอนไม่กินเจ้าของ) · เสียเปรียบเมื่อหนอนถูกยั่ว · เจรจาเมื่อตัวละครไม่ยั่วหนอนและจ่ายค่านั่ง ▲",
     "opens": "เขาถูกกินโดยหนอน พาไปทางเหนือ หรือตัวละครได้นั่งหนอน",
-    "src": "docs/systems/combat/03-enemies.md:215"
+    "src": "docs/systems/combat/03-enemies.md:217"
    },
    {
     "id": "SH03-2",
@@ -6213,7 +6213,7 @@
     ],
     "note": "ร่างหินยักษ์ · ถามคำถามก่อนลงมือ · เจรจาเมื่อตัวละครตอบว่าจะไม่ฆ่าด้วยเหตุผลของตน ▲",
     "opens": "ตัวละครผ่านการทดสอบ ถูกห้ามขึ้นบันไดตลอดชีวิต หรือบรูมาเป็นผู้นำทางสิบขั้นแรก",
-    "src": "docs/systems/combat/03-enemies.md:216"
+    "src": "docs/systems/combat/03-enemies.md:218"
    },
    {
     "id": "SH06-4",
@@ -6249,7 +6249,7 @@
     ],
     "note": "ร่างหินยักษ์ · ฟังหัวใจหินทุกวัน · เจรจาเมื่อตัวละครไม่แตะหินและรอฟังจนจบจังหวะ ▲",
     "opens": "จังหวะเปลี่ยนเร็วขึ้น หยุด หรือตัวละครได้ฟังหัวใจไททัน",
-    "src": "docs/systems/combat/03-enemies.md:217"
+    "src": "docs/systems/combat/03-enemies.md:219"
    },
    {
     "id": "SH17-1",
@@ -6288,7 +6288,7 @@
     ],
     "note": "ร่างหินภูเขา · เชื่อว่าภูเขาทุกลูกคือบรรพบุรุษ · เจรจาเมื่อตัวละครเรียกชื่อบรรพบุรุษของภูเขาตามพิธี ▲",
     "opens": "ผู้เฝ้าเสาค้ำฟ้าตื่น กรอม-บาดูตาย หรือตัวละครได้แตะหินศักดิ์สิทธิ์",
-    "src": "docs/systems/combat/03-enemies.md:218"
+    "src": "docs/systems/combat/03-enemies.md:220"
    },
    {
     "id": "SV06-1",
@@ -6327,7 +6327,7 @@
     ],
     "note": "ผู้เฝ้าหนุน +2 · ตรวจดินและน้ำด้วยมือ ไม่เชื่อเครื่องมือ · เจรจาเมื่อตัวละครนำตัวอย่างดินที่ไม่ปนเปื้อน ▲",
     "opens": "BIO-04 หมอกรุก WR-08 สงคราม หรือตัวละครได้ยากรองหมอก",
-    "src": "docs/systems/combat/03-enemies.md:219"
+    "src": "docs/systems/combat/03-enemies.md:221"
    },
    {
     "id": "SV13-2",
@@ -6368,7 +6368,7 @@
     ],
     "note": "กายภาพทนครึ่ง · ตายมาสามพันปี · เจรจาเมื่อตัวละครฟังเรื่องมหาล่มสลายจนจบ ▲",
     "opens": "เธอเล่าความจริงให้ผู้ฟัง หายไปเมื่อวิญญาณถูกเรียกกลับ หรือตัวละครได้ฟัง",
-    "src": "docs/systems/combat/03-enemies.md:220"
+    "src": "docs/systems/combat/03-enemies.md:222"
    },
    {
     "id": "SV08-4",
@@ -6407,7 +6407,7 @@
     ],
     "note": "ยิงจากหอสูง +1 · สัญญาณไฟเตือนกองทัพ · เจรจาเมื่อตัวละครรับสารไฟแทนเขา ▲",
     "opens": "เขาเตือนทัน เตือนไม่ทัน หรือตัวละครรับสาร",
-    "src": "docs/systems/combat/03-enemies.md:221"
+    "src": "docs/systems/combat/03-enemies.md:223"
    },
    {
     "id": "SV01-2",
@@ -6448,7 +6448,7 @@
     ],
     "note": "พันตัวกับรากซิลเวรา · รากหนุน +2 · เจรจาเมื่อตัวละครไม่แตะรากและฟังเสียงมังกรกับเขา ▲",
     "opens": "เขาตายพร้อมซิลเวรา ถูกมังกรบอกให้ปล่อยราก หรือตัวละครได้ฟังเสียงมังกร",
-    "src": "docs/systems/combat/03-enemies.md:222"
+    "src": "docs/systems/combat/03-enemies.md:224"
    },
    {
     "id": "NB12-1",
@@ -6487,7 +6487,7 @@
     ],
     "note": "เปลี่ยนไปจากหมอก · จำภารกิจเมฆาได้ครึ่งเดียว · เจรจาเมื่อตัวละครบอกชื่อผู้ลงนามภารกิจ ▲",
     "opens": "เขาถูกพบว่าเสียชีวิต อยู่ในหมอกและเปลี่ยนไป หรือตัวละครค้นพบความจริง",
-    "src": "docs/systems/combat/03-enemies.md:223"
+    "src": "docs/systems/combat/03-enemies.md:225"
    },
    {
     "id": "NB12-4",
@@ -6523,7 +6523,7 @@
     ],
     "note": "ทหารมิสต์วอตช์หนุน +1 · ไม่ให้อภัยตัวเอง · เจรจาเมื่อตัวละครบอกว่าสามวันนั้นไม่ใช่ความผิดเขา ▲",
     "opens": "เขาขอบคุณตัวละคร ลาออก หรือกลับเป็นผู้บังคับของตัวละคร",
-    "src": "docs/systems/combat/03-enemies.md:224"
+    "src": "docs/systems/combat/03-enemies.md:226"
    },
    {
     "id": "NB08-2",
@@ -6565,7 +6565,7 @@
     ],
     "note": "กายภาพทนครึ่ง · จำเมืองปฐมก่อนจม · เจรจาเมื่อตัวละครฟังเรื่องกุญแจความทรงจำเมฆาจนจบ ▲",
     "opens": "เธอเล่าความจริงเรื่องกุญแจ หายไปเมื่อเมืองปฐมโผล่ หรือตัวละครได้ฟัง",
-    "src": "docs/systems/combat/03-enemies.md:225"
+    "src": "docs/systems/combat/03-enemies.md:227"
    },
    {
     "id": "awakened_titan",
@@ -6596,7 +6596,7 @@
     "negotiate": [],
     "event": "GI-02",
     "note": "ไม่ได้ฆ่า แต่ทำให้หลับต่อได้ (ดนตรี ★ ถ้าเป็นเพลงกล่อมของ SH-06)",
-    "src": "docs/systems/combat/03-enemies.md:231"
+    "src": "docs/systems/combat/03-enemies.md:233"
    },
    {
     "id": "hellgate_lord",
@@ -6622,7 +6622,7 @@
     "negotiate": [],
     "event": "DM-07",
     "note": "ปิดประตูได้ด้วยรูนหรือพิธี",
-    "src": "docs/systems/combat/03-enemies.md:232"
+    "src": "docs/systems/combat/03-enemies.md:234"
    },
    {
     "id": "lich_king",
@@ -6653,7 +6653,7 @@
     "negotiate": [],
     "event": "DM-09",
     "note": "ผูกประตูเมืองปฐม",
-    "src": "docs/systems/combat/03-enemies.md:233"
+    "src": "docs/systems/combat/03-enemies.md:235"
    },
    {
     "id": "rift_speaker",
@@ -6689,7 +6689,7 @@
     ],
     "event": "FG-12",
     "note": "เจรจาได้ ▲ เปิดเส้นปิดรอยแยก FG-10",
-    "src": "docs/systems/combat/03-enemies.md:234"
+    "src": "docs/systems/combat/03-enemies.md:236"
    },
    {
     "id": "primordial_engine",
@@ -6716,7 +6716,7 @@
     "negotiate": [],
     "event": "MC-12 END-06",
     "note": "ไม่ฆ่า ตัดสินว่าจะปิดหรือให้เลือกทาง",
-    "src": "docs/systems/combat/03-enemies.md:235"
+    "src": "docs/systems/combat/03-enemies.md:237"
    },
    {
     "id": "leviathan",
@@ -6742,7 +6742,7 @@
     "negotiate": [],
     "event": "PL-04 END-04",
     "note": "สัตว์ของธาลาสซา ไม่ใช่มังกรสิบห้า · ฟัน `wl_leviathan` ได้เฉพาะหลัง END-04",
-    "src": "docs/systems/combat/03-enemies.md:236"
+    "src": "docs/systems/combat/03-enemies.md:238"
    }
   ]
  }

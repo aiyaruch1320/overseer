@@ -489,12 +489,11 @@ describe('M5: birth signs raise the draw weight, they do not grant', () => {
     expect(sign('fullmoon').fx).toEqual([{ k: 'if', cond: { k: 'race', ids: ['beast'] }, then: [{ k: 'favour', kind: 'curse', id: 'c_moonfrenzy', mul: 3 }] }]);
     expect(sign('day').fx).toEqual([{ k: 'if', cond: { k: 'race', ids: ['vampire'] }, then: [{ k: 'grant', kind: 'curse', id: 'c_sunburn' }] }]);
   });
-  it('the eclipse blessing keeps its 25% and the curse chance the doc leaves out is reported', () => {
+  it('the eclipse blessing keeps its 25% and the curse has the 15% M0-c2 wrote into the doc', () => {
     expect(sign('eclipse').fx).toEqual([
       { k: 'grant', kind: 'blessing', id: 'nb_eclipse_born', chance: 0.25 },
-      { k: 'grant', kind: 'curse', id: 'c_shadow' },
+      { k: 'grant', kind: 'curse', id: 'c_shadow', chance: 0.15 },
     ]);
-    expect(unparsedRows.some((r) => r.includes('01-origin.md:255') && r.includes('c_shadow'))).toBe(true);
   });
   it('no sign whose effect says "ง่ายขึ้น" or "เพิ่ม n เท่า" grants anything outside an if', () => {
     for (const b of origin.birthSigns) {
@@ -505,20 +504,18 @@ describe('M5: birth signs raise the draw weight, they do not grant', () => {
 });
 
 describe('M9: jobs read as has / not race, and the music curse names a job that does not exist', () => {
-  it('noble needs `noble` only; farmer is anyone but a giant', () => {
-    expect(jobOf('noble').req).toEqual([{ k: 'has', kind: 'job', id: 'noble' }]);
+  it('noble needs the noble class (no longer itself); farmer is anyone but a giant', () => {
+    expect(jobOf('noble').req).toEqual([{ k: 'class', min: 5 }]);
     expect(jobOf('farmer').req[0]).toEqual({ k: 'not', of: { k: 'race', ids: ['giant'] } });
-    expect(jobOf('royal_guard').req).toEqual([{ k: 'or', of: [{ k: 'has', kind: 'job', id: 'noble' }, { k: 'cmp', stat: 'fame', op: '>=', value: 15 }] }]);
+    expect(jobOf('royal_guard').req).toEqual([{ k: 'or', of: [{ k: 'class', min: 5 }, { k: 'cmp', stat: 'fame', op: '>=', value: 15 }] }]);
   });
   it('mummies and ghouls do not take the jobs the cell says they refuse', () => {
     const refuse = jobs.jobs.filter((j) => j.req.some((c) => c.k === 'not' && c.of.k === 'race' && c.of.ids.includes('ghoul')));
     expect(refuse.length).toBeGreaterThan(0);
   });
-  it('nc_tone_deaf lists "นักดนตรี" but no job has that name: only dancer matches, and the gap is in the report', () => {
+  it('nc_tone_deaf names jobs that exist (the doc now says กวีพเนจร instead of นักดนตรี)', () => {
     const c = curses.find((x) => x.id === 'nc_tone_deaf')!;
-    expect(c.jobs).toEqual(['dancer']);
-    expect(jobs.jobs.some((j) => j.name === 'นักดนตรี')).toBe(false);
-    expect(unparsedRows.some((r) => r.includes('nc_tone_deaf: นักดนตรี'))).toBe(true);
+    expect(c.jobs).toEqual(['bard', 'dancer']);
   });
   it('dragon_whisperer asks for any dragon mark, as one anyOf over the marks that exist', () => {
     const flat = JSON.stringify(jobOf('dragon_whisperer').req);

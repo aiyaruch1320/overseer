@@ -3021,7 +3021,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 262,
-   "bytes": 51012,
+   "bytes": 51013,
    "headings": [
     "1. ลำดับการสุ่มเกิด",
     "2. สัดส่วนเผ่าของคนที่เกิดในโลก",
@@ -3055,7 +3055,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 125,
-   "bytes": 19288,
+   "bytes": 19532,
    "headings": [
     "แท็กเผ่า",
     "ก. ธาตุ แสง ความมืด ต่อเผ่า",
@@ -3088,7 +3088,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 142,
-   "bytes": 18504,
+   "bytes": 18578,
    "headings": [
     "ก. พรถิ่นเกิด",
     "ข. พรสายเลือดและกำเนิดพิเศษ",
@@ -3106,7 +3106,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 72,
-   "bytes": 10915,
+   "bytes": 11156,
    "headings": [
     "ก. คำสาปถิ่นเกิด",
     "ข. คำสาปจากการรอดเหตุการณ์",
@@ -3140,7 +3140,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 134,
-   "bytes": 16302,
+   "bytes": 16327,
    "headings": [
     "จำนวน",
     "1. การเสนออาชีพทั่วไป",
@@ -3159,7 +3159,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 183,
-   "bytes": 31042,
+   "bytes": 32149,
    "headings": [
     "ก. อาชีพเดิมในโค้ด 39 อย่าง",
     "ข. อาชีพใหม่ 61 อย่าง",
@@ -3174,7 +3174,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 153,
-   "bytes": 28694,
+   "bytes": 28830,
    "headings": [
     "ก. อาชีพลับเดิมในโค้ด 15 อย่าง",
     "ข. อาชีพลับใหม่ 8 อย่าง",
@@ -3201,7 +3201,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 104,
-   "bytes": 17198,
+   "bytes": 20318,
    "headings": [
     "ก. ความถนัดใหม่ 20 หมวด",
     "ข. นิสัยใหม่ 8 อย่าง",
@@ -3273,7 +3273,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 58,
-   "bytes": 15941,
+   "bytes": 15946,
    "headings": [
     "ก. เรื่องสำหรับทุกคน",
     "ข. เรื่องสำหรับอาชีพกลุ่ม A (เกี่ยวข้อง)",
@@ -3288,7 +3288,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 59,
-   "bytes": 9937,
+   "bytes": 10090,
    "headings": [
     "ก. skill ใหม่ 12 อย่าง",
     "ข. พรใหม่ 8 อย่าง",
@@ -3304,7 +3304,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 67,
-   "bytes": 25290,
+   "bytes": 25616,
    "headings": [
     "1. กติกา",
     "2. ชะตา 22 อย่าง",
@@ -3760,8 +3760,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 239,
-   "bytes": 65721,
+   "lines": 241,
+   "bytes": 66497,
    "headings": [
     "ก. มอนสเตอร์เดิมในโค้ด 32 ตัว",
     "ข. มอนสเตอร์ใหม่ผูกกับโลก 40 ตัว",
@@ -3828,8 +3828,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 1600,
-   "bytes": 229481,
+   "lines": 1612,
+   "bytes": 232501,
    "headings": [
     "1. หลักการ",
     "2. เงื่อนไขเปิดศึก",
@@ -3857,8 +3857,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 248,
-   "bytes": 37995,
+   "lines": 250,
+   "bytes": 39066,
    "headings": [
     "1. เงินและความเชื่อมั่น",
     "2. สินค้า 9 หมวด",
@@ -3894,7 +3894,7 @@
    "group": "systems/economy",
    "kind": "data",
    "lines": 211,
-   "bytes": 26359,
+   "bytes": 26507,
    "headings": [
     "1. ห้าชั้น",
     "2. ชนชั้นที่เกิดตาม W และ G",
@@ -4339,7 +4339,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 143,
-   "bytes": 18035,
+   "bytes": 18085,
    "headings": [
     "1. รายได้",
     "2. ราคา",
@@ -4357,7 +4357,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 114,
-   "bytes": 18456,
+   "bytes": 18581,
    "headings": [
     "1. หกช่อง",
     "2. ใครได้อะไร (ตัวกรอง)",
@@ -4374,8 +4374,8 @@
    "layer": "systems",
    "group": "systems/god",
    "kind": "data",
-   "lines": 132,
-   "bytes": 22465,
+   "lines": 173,
+   "bytes": 29624,
    "headings": [
     "1. ทางทั้งสามมาจากไหน",
     "2. ความฝันหนึ่งทางประกอบด้วยอะไร",
@@ -4393,7 +4393,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 160,
-   "bytes": 41976,
+   "bytes": 42094,
    "headings": [
     "1. ทำงานอย่างไร",
     "2. กติกาเหล็ก",
@@ -4431,7 +4431,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 212,
-   "bytes": 44741,
+   "bytes": 44771,
    "headings": [
     "1. โครงข้อมูล",
     "2. ลำดับการทำ",
@@ -4885,8 +4885,8 @@
    "layer": "systems",
    "group": "systems/llm",
    "kind": "data",
-   "lines": 519,
-   "bytes": 146942,
+   "lines": 521,
+   "bytes": 147333,
    "headings": [
     "1. ช่องและกติกาเขียน",
     "2. ความฝัน",

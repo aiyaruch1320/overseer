@@ -1,5 +1,5 @@
 {
- "version": "549476241f89",
+ "version": "c664622a4f25",
  "sources": [
   "docs/lore/religions/README.md",
   "docs/systems/character/13-companions-overview.md",
@@ -5313,11 +5313,13 @@
     "id": "cs_orphan_of_war",
     "name": "ผู้รอดจากสนามรบ",
     "group": "all",
-    "cond": "ถิ่นมีธงสงคราม (war)",
+    "cond": "ถิ่นมีสงคราม (war)",
     "condCond": [
      {
-      "k": "text",
-      "text": "ถิ่นมีธงสงคราม (war)"
+      "k": "place",
+      "kinds": [
+       "war"
+      ]
      }
     ],
     "condNotes": [],
@@ -5355,20 +5357,14 @@
     "id": "cs_gift_from_ally",
     "name": "ของขวัญจากผู้ไว้ใจ",
     "group": "all",
-    "cond": "NPC ที่ไว้ใจ +4 ขึ้นไปและมีสัตว์",
+    "cond": "ไว้ใจ ≥ 4 (NPC ที่ไว้ใจและมีสัตว์)",
     "condCond": [
      {
-      "k": "and",
-      "of": [
-       {
-        "k": "text",
-        "text": "NPC ที่ไว้ใจ +4 ขึ้นไป"
-       },
-       {
-        "k": "text",
-        "text": "สัตว์"
-       }
-      ]
+      "k": "cmp",
+      "stat": "trust",
+      "op": ">=",
+      "value": 4,
+      "label": "ไว้ใจ"
      }
     ],
     "condNotes": [],
@@ -5446,11 +5442,13 @@
     "id": "cs_market_cage",
     "name": "กรงในตลาด",
     "group": "all",
-    "cond": "พบพ่อค้าสัตว์ในเมืองใหญ่",
+    "cond": "อยู่เมืองใหญ่ (พบพ่อค้าสัตว์)",
     "condCond": [
      {
-      "k": "text",
-      "text": "พบพ่อค้าสัตว์ในเมืองใหญ่"
+      "k": "place",
+      "kinds": [
+       "city"
+      ]
      }
     ],
     "condNotes": [],

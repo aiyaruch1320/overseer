@@ -1,5 +1,5 @@
 {
- "version": "ce5c070486df",
+ "version": "9c962d48d45f",
  "sources": [
   "docs/systems/llm/06-god-templates.md"
  ],
@@ -2996,7 +2996,7 @@
      "ชื่อตัวละคร",
      "ชื่อทาง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:174"
+    "src": "docs/systems/llm/06-god-templates.md:176"
    },
    {
     "id": "decision_result.ทำตาม.แบบ 2",
@@ -3010,7 +3010,7 @@
      "ชื่อตัวละคร",
      "ชื่อทาง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:174"
+    "src": "docs/systems/llm/06-god-templates.md:176"
    },
    {
     "id": "decision_result.ทำตาม.แบบ 3",
@@ -3025,7 +3025,7 @@
      "สัญลักษณ์",
      "ชื่อทาง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:174"
+    "src": "docs/systems/llm/06-god-templates.md:176"
    },
    {
     "id": "decision_result.ตีความผิด.แบบ 1",
@@ -3040,7 +3040,7 @@
      "สัญลักษณ์",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:175"
+    "src": "docs/systems/llm/06-god-templates.md:177"
    },
    {
     "id": "decision_result.ตีความผิด.แบบ 2",
@@ -3054,7 +3054,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:175"
+    "src": "docs/systems/llm/06-god-templates.md:177"
    },
    {
     "id": "decision_result.ตีความผิด.แบบ 3",
@@ -3068,7 +3068,7 @@
      "ชื่อตัวละคร",
      "สัญลักษณ์"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:175"
+    "src": "docs/systems/llm/06-god-templates.md:177"
    },
    {
     "id": "decision_result.ปฏิเสธ.แบบ 1",
@@ -3081,7 +3081,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:176"
+    "src": "docs/systems/llm/06-god-templates.md:178"
    },
    {
     "id": "decision_result.ปฏิเสธ.แบบ 2",
@@ -3094,7 +3094,7 @@
     "slots": [
      "สัญลักษณ์"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:176"
+    "src": "docs/systems/llm/06-god-templates.md:178"
    },
    {
     "id": "decision_result.ปฏิเสธ.แบบ 3",
@@ -3107,7 +3107,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:176"
+    "src": "docs/systems/llm/06-god-templates.md:178"
    },
    {
     "id": "decision_result.ขัดขืน.แบบ 1",
@@ -3121,7 +3121,7 @@
      "ชื่อตัวละคร",
      "สัญลักษณ์"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:177"
+    "src": "docs/systems/llm/06-god-templates.md:179"
    },
    {
     "id": "decision_result.ขัดขืน.แบบ 2",
@@ -3134,7 +3134,7 @@
     "slots": [
      "สัญลักษณ์"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:177"
+    "src": "docs/systems/llm/06-god-templates.md:179"
    },
    {
     "id": "decision_result.ขัดขืน.แบบ 3",
@@ -3148,7 +3148,7 @@
      "ชื่อตัวละคร",
      "ชื่อทาง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:177"
+    "src": "docs/systems/llm/06-god-templates.md:179"
    },
    {
     "id": "misread.งู.บรรทัดตีความผิด",
@@ -3162,7 +3162,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:183"
+    "src": "docs/systems/llm/06-god-templates.md:185"
    },
    {
     "id": "misread.ไฟ.บรรทัดตีความผิด",
@@ -3176,7 +3176,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:184"
+    "src": "docs/systems/llm/06-god-templates.md:186"
    },
    {
     "id": "misread.แม่น้ำ.บรรทัดตีความผิด",
@@ -3190,7 +3190,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:185"
+    "src": "docs/systems/llm/06-god-templates.md:187"
    },
    {
     "id": "misread.ดาบ.บรรทัดตีความผิด",
@@ -3204,7 +3204,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:186"
+    "src": "docs/systems/llm/06-god-templates.md:188"
    },
    {
     "id": "misread.ดวงตา.บรรทัดตีความผิด",
@@ -3218,7 +3218,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:187"
+    "src": "docs/systems/llm/06-god-templates.md:189"
    },
    {
     "id": "misread.ดวงจันทร์.บรรทัดตีความผิด",
@@ -3232,7 +3232,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:188"
+    "src": "docs/systems/llm/06-god-templates.md:190"
    },
    {
     "id": "misread.ดอกไม้.บรรทัดตีความผิด",
@@ -3246,7 +3246,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:189"
+    "src": "docs/systems/llm/06-god-templates.md:191"
    },
    {
     "id": "misread.อีกา.บรรทัดตีความผิด",
@@ -3260,7 +3260,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:190"
+    "src": "docs/systems/llm/06-god-templates.md:192"
    },
    {
     "id": "misread.มงกุฎ.บรรทัดตีความผิด",
@@ -3274,7 +3274,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:191"
+    "src": "docs/systems/llm/06-god-templates.md:193"
    },
    {
     "id": "misread.ประตู.บรรทัดตีความผิด",
@@ -3288,7 +3288,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:192"
+    "src": "docs/systems/llm/06-god-templates.md:194"
    },
    {
     "id": "misread.หัวใจ.บรรทัดตีความผิด",
@@ -3302,7 +3302,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:193"
+    "src": "docs/systems/llm/06-god-templates.md:195"
    },
    {
     "id": "misread.ภูเขา.บรรทัดตีความผิด",
@@ -3316,7 +3316,7 @@
      "ชื่อตัวละคร",
      "ชื่อทางอื่น"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:194"
+    "src": "docs/systems/llm/06-god-templates.md:196"
    },
    {
     "id": "burden.ตั้งคำถามกับพระเจ้า.แบบ 1",
@@ -3329,7 +3329,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:202"
+    "src": "docs/systems/llm/06-god-templates.md:204"
    },
    {
     "id": "burden.ตั้งคำถามกับพระเจ้า.แบบ 2",
@@ -3342,7 +3342,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:202"
+    "src": "docs/systems/llm/06-god-templates.md:204"
    },
    {
     "id": "burden.หนีงานหรือหนีบ้านหนึ่งฤดู.แบบ 1",
@@ -3357,7 +3357,7 @@
      "อาชีพ",
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:203"
+    "src": "docs/systems/llm/06-god-templates.md:205"
    },
    {
     "id": "burden.หนีงานหรือหนีบ้านหนึ่งฤดู.แบบ 2",
@@ -3371,7 +3371,7 @@
      "ฤดู",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:203"
+    "src": "docs/systems/llm/06-god-templates.md:205"
    },
    {
     "id": "burden.นิสัยเปลี่ยน.แบบ 1",
@@ -3385,7 +3385,7 @@
      "ชื่อตัวละคร",
      "นิสัย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:204"
+    "src": "docs/systems/llm/06-god-templates.md:206"
    },
    {
     "id": "burden.นิสัยเปลี่ยน.แบบ 2",
@@ -3400,7 +3400,7 @@
      "นิสัย",
      "นิสัยใหม่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:204"
+    "src": "docs/systems/llm/06-god-templates.md:206"
    },
    {
     "id": "whisper.ระวัง|เมือง.ลาง 1",
@@ -3412,7 +3412,7 @@
     "col": "ลาง 1",
     "text": "แมวทุกตัวบนหลังคาหันไปมองทางเดียวกันและไม่ขยับ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:218"
+    "src": "docs/systems/llm/06-god-templates.md:220"
    },
    {
     "id": "whisper.ระวัง|เมือง.ลาง 2",
@@ -3426,7 +3426,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:218"
+    "src": "docs/systems/llm/06-god-templates.md:220"
    },
    {
     "id": "whisper.ระวัง|เมือง.ลาง 3",
@@ -3438,7 +3438,7 @@
     "col": "ลาง 3",
     "text": "เงาของกำแพงทอดยาวผิดทาง เหมือนมีใครยืนอยู่ข้างหลังเขา",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:218"
+    "src": "docs/systems/llm/06-god-templates.md:220"
    },
    {
     "id": "whisper.ระวัง|ป่าและทาง.ลาง 1",
@@ -3450,7 +3450,7 @@
     "col": "ลาง 1",
     "text": "นกทุกตัวในพงไม้เงียบลงพร้อมกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:219"
+    "src": "docs/systems/llm/06-god-templates.md:221"
    },
    {
     "id": "whisper.ระวัง|ป่าและทาง.ลาง 2",
@@ -3462,7 +3462,7 @@
     "col": "ลาง 2",
     "text": "ฝูงกวางยืนหันหัวไปทางเดียวและไม่ยอมกินหญ้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:219"
+    "src": "docs/systems/llm/06-god-templates.md:221"
    },
    {
     "id": "whisper.ระวัง|ป่าและทาง.ลาง 3",
@@ -3474,7 +3474,7 @@
     "col": "ลาง 3",
     "text": "ใบไม้ข้างทางสั่นทั้งที่ไม่มีลม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:219"
+    "src": "docs/systems/llm/06-god-templates.md:221"
    },
    {
     "id": "whisper.ระวัง|ศึก.ลาง 1",
@@ -3486,7 +3486,7 @@
     "col": "ลาง 1",
     "text": "ฝุ่นปลายสนามลอยขึ้นก่อนที่เสียงเท้าจะมาถึง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:220"
+    "src": "docs/systems/llm/06-god-templates.md:222"
    },
    {
     "id": "whisper.ระวัง|ศึก.ลาง 2",
@@ -3498,7 +3498,7 @@
     "col": "ลาง 2",
     "text": "ธงฝั่งเดียวกันสะบัดกลับทางทั้งที่ลมไม่เปลี่ยน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:220"
+    "src": "docs/systems/llm/06-god-templates.md:222"
    },
    {
     "id": "whisper.ระวัง|ศึก.ลาง 3",
@@ -3510,7 +3510,7 @@
     "col": "ลาง 3",
     "text": "ม้าตัวหนึ่งในแถวหลังร้องและถอยโดยไม่มีใครดึง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:220"
+    "src": "docs/systems/llm/06-god-templates.md:222"
    },
    {
     "id": "whisper.กล้าเถิด|เมือง.ลาง 1",
@@ -3522,7 +3522,7 @@
     "col": "ลาง 1",
     "text": "เตาของช่างตีเหล็กข้างบ้านลุกวาบขึ้นสูงเองโดยไม่เติมฟืน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:221"
+    "src": "docs/systems/llm/06-god-templates.md:223"
    },
    {
     "id": "whisper.กล้าเถิด|เมือง.ลาง 2",
@@ -3534,7 +3534,7 @@
     "col": "ลาง 2",
     "text": "ระฆังหน้าศาลดังหนึ่งทีเหมือนเรียกให้ก้าวออกจากที่ยืน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:221"
+    "src": "docs/systems/llm/06-god-templates.md:223"
    },
    {
     "id": "whisper.กล้าเถิด|เมือง.ลาง 3",
@@ -3548,7 +3548,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:221"
+    "src": "docs/systems/llm/06-god-templates.md:223"
    },
    {
     "id": "whisper.กล้าเถิด|ป่าและทาง.ลาง 1",
@@ -3560,7 +3560,7 @@
     "col": "ลาง 1",
     "text": "ฝุ่นบนทางที่ไม่มีใครเลือกปลิวขึ้นเป็นสาย เหมือนมีคนเพิ่งเดินนำไป",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:222"
+    "src": "docs/systems/llm/06-god-templates.md:224"
    },
    {
     "id": "whisper.กล้าเถิด|ป่าและทาง.ลาง 2",
@@ -3572,7 +3572,7 @@
     "col": "ลาง 2",
     "text": "หมาป่าตัวหนึ่งหยุดอยู่ปลายทางแล้วมองมา เหมือนรอให้ตามไป",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:222"
+    "src": "docs/systems/llm/06-god-templates.md:224"
    },
    {
     "id": "whisper.กล้าเถิด|ป่าและทาง.ลาง 3",
@@ -3584,7 +3584,7 @@
     "col": "ลาง 3",
     "text": "ประกายไฟจากกองไฟค่ายลอยสูงผิดปกติ ไปหยุดเหนือทางที่ยังไม่มีรอยเท้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:222"
+    "src": "docs/systems/llm/06-god-templates.md:224"
    },
    {
     "id": "whisper.กล้าเถิด|ศึก.ลาง 1",
@@ -3596,7 +3596,7 @@
     "col": "ลาง 1",
     "text": "กลองศึกฝั่งตรงข้ามเงียบลงหนึ่งจังหวะ เหมือนรอให้ใครสักคนก้าวออกมาก่อน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:223"
+    "src": "docs/systems/llm/06-god-templates.md:225"
    },
    {
     "id": "whisper.กล้าเถิด|ศึก.ลาง 2",
@@ -3608,7 +3608,7 @@
     "col": "ลาง 2",
     "text": "ธงฝ่ายเดียวกันตั้งตรงกลางลมที่พัดสวน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:223"
+    "src": "docs/systems/llm/06-god-templates.md:225"
    },
    {
     "id": "whisper.กล้าเถิด|ศึก.ลาง 3",
@@ -3622,7 +3622,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:223"
+    "src": "docs/systems/llm/06-god-templates.md:225"
    },
    {
     "id": "whisper.จงไป|เมือง.ลาง 1",
@@ -3637,7 +3637,7 @@
      "ชื่อตัวละคร",
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:224"
+    "src": "docs/systems/llm/06-god-templates.md:226"
    },
    {
     "id": "whisper.จงไป|เมือง.ลาง 2",
@@ -3651,7 +3651,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:224"
+    "src": "docs/systems/llm/06-god-templates.md:226"
    },
    {
     "id": "whisper.จงไป|เมือง.ลาง 3",
@@ -3665,7 +3665,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:224"
+    "src": "docs/systems/llm/06-god-templates.md:226"
    },
    {
     "id": "whisper.จงไป|ป่าและทาง.ลาง 1",
@@ -3679,7 +3679,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:225"
+    "src": "docs/systems/llm/06-god-templates.md:227"
    },
    {
     "id": "whisper.จงไป|ป่าและทาง.ลาง 2",
@@ -3693,7 +3693,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:225"
+    "src": "docs/systems/llm/06-god-templates.md:227"
    },
    {
     "id": "whisper.จงไป|ป่าและทาง.ลาง 3",
@@ -3707,7 +3707,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:225"
+    "src": "docs/systems/llm/06-god-templates.md:227"
    },
    {
     "id": "whisper.จงไป|ศึก.ลาง 1",
@@ -3721,7 +3721,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:226"
+    "src": "docs/systems/llm/06-god-templates.md:228"
    },
    {
     "id": "whisper.จงไป|ศึก.ลาง 2",
@@ -3735,7 +3735,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:226"
+    "src": "docs/systems/llm/06-god-templates.md:228"
    },
    {
     "id": "whisper.จงไป|ศึก.ลาง 3",
@@ -3749,7 +3749,7 @@
     "slots": [
      "จุดหมาย"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:226"
+    "src": "docs/systems/llm/06-god-templates.md:228"
    },
    {
     "id": "whisper.จงอยู่|เมือง.ลาง 1",
@@ -3761,7 +3761,7 @@
     "col": "ลาง 1",
     "text": "ต้นไม้หน้าบ้านผลิใบใหม่ทั้งที่ยังไม่ถึงฤดู",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:227"
+    "src": "docs/systems/llm/06-god-templates.md:229"
    },
    {
     "id": "whisper.จงอยู่|เมือง.ลาง 2",
@@ -3775,7 +3775,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:227"
+    "src": "docs/systems/llm/06-god-templates.md:229"
    },
    {
     "id": "whisper.จงอยู่|เมือง.ลาง 3",
@@ -3787,7 +3787,7 @@
     "col": "ลาง 3",
     "text": "ขนมที่เพิ่งออกเตาวางอยู่หน้าประตู ไม่มีใครบอกว่าใครเป็นคนวาง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:227"
+    "src": "docs/systems/llm/06-god-templates.md:229"
    },
    {
     "id": "whisper.จงอยู่|ป่าและทาง.ลาง 1",
@@ -3799,7 +3799,7 @@
     "col": "ลาง 1",
     "text": "รากไม้กลางทางโผล่ขึ้นมาขวางเท้าไม่ให้ก้าวต่อ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:228"
+    "src": "docs/systems/llm/06-god-templates.md:230"
    },
    {
     "id": "whisper.จงอยู่|ป่าและทาง.ลาง 2",
@@ -3811,7 +3811,7 @@
     "col": "ลาง 2",
     "text": "หมอกลงหนาเฉพาะข้างหน้า ข้างหลังยังเห็นทางกลับชัด",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:228"
+    "src": "docs/systems/llm/06-god-templates.md:230"
    },
    {
     "id": "whisper.จงอยู่|ป่าและทาง.ลาง 3",
@@ -3825,7 +3825,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:228"
+    "src": "docs/systems/llm/06-god-templates.md:230"
    },
    {
     "id": "whisper.จงอยู่|ศึก.ลาง 1",
@@ -3837,7 +3837,7 @@
     "col": "ลาง 1",
     "text": "ดินใต้เท้าแน่นผิดปกติ เหมือนยึดรองเท้าไว้ในแนว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:229"
+    "src": "docs/systems/llm/06-god-templates.md:231"
    },
    {
     "id": "whisper.จงอยู่|ศึก.ลาง 2",
@@ -3849,7 +3849,7 @@
     "col": "ลาง 2",
     "text": "ธงฝ่ายเดียวกันตกลงจากเสาหนึ่งขั้น เหมือนบอกให้ยึดที่ไว้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:229"
+    "src": "docs/systems/llm/06-god-templates.md:231"
    },
    {
     "id": "whisper.จงอยู่|ศึก.ลาง 3",
@@ -3861,7 +3861,7 @@
     "col": "ลาง 3",
     "text": "เสียงกลองถอยดังขึ้นจากฝั่งตรงข้าม ไม่ใช่ฝั่งเรา",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:229"
+    "src": "docs/systems/llm/06-god-templates.md:231"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|เมือง.ลาง 1",
@@ -3875,7 +3875,7 @@
     "slots": [
      "ศัตรู"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:230"
+    "src": "docs/systems/llm/06-god-templates.md:232"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|เมือง.ลาง 2",
@@ -3887,7 +3887,7 @@
     "col": "ลาง 2",
     "text": "รอยร้าวบนก้อนหินหน้าบ้านแตกเป็นเส้นตรงเส้นเดียว ปลายเส้นชี้ไปที่ประตูเมือง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:230"
+    "src": "docs/systems/llm/06-god-templates.md:232"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|เมือง.ลาง 3",
@@ -3899,7 +3899,7 @@
     "col": "ลาง 3",
     "text": "เด็กคนหนึ่งวาดตัวประหลาดบนพื้น แล้วชี้นิ้วไปที่จุดเดียวใต้คางของมัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:230"
+    "src": "docs/systems/llm/06-god-templates.md:232"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ป่าและทาง.ลาง 1",
@@ -3911,7 +3911,7 @@
     "col": "ลาง 1",
     "text": "น้ำค้างบนใยแมงมุมหยดลงตรงจุดเดียว แล้วใยทั้งผืนขาด",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:231"
+    "src": "docs/systems/llm/06-god-templates.md:233"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ป่าและทาง.ลาง 2",
@@ -3923,7 +3923,7 @@
     "col": "ลาง 2",
     "text": "เปลือกไม้ลอกออกตรงที่นกหัวขวานเคยเจาะ ข้างในอ่อนนุ่มเหมือนแป้ง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:231"
+    "src": "docs/systems/llm/06-god-templates.md:233"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ป่าและทาง.ลาง 3",
@@ -3935,7 +3935,7 @@
     "col": "ลาง 3",
     "text": "รอยกีบสัตว์ใหญ่ในโคลนลึกที่ขาหน้าข้างหนึ่งและตื้นที่ขาหลัง เหมือนมันเคยบาดเจ็บ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:231"
+    "src": "docs/systems/llm/06-god-templates.md:233"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ศึก.ลาง 1",
@@ -3949,7 +3949,7 @@
     "slots": [
      "ศัตรู"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:232"
+    "src": "docs/systems/llm/06-god-templates.md:234"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ศึก.ลาง 2",
@@ -3963,7 +3963,7 @@
     "slots": [
      "ศัตรู"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:232"
+    "src": "docs/systems/llm/06-god-templates.md:234"
    },
    {
     "id": "whisper.จุดอ่อนของศัตรู|ศึก.ลาง 3",
@@ -3977,7 +3977,7 @@
     "slots": [
      "ศัตรู"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:232"
+    "src": "docs/systems/llm/06-god-templates.md:234"
    },
    {
     "id": "whisper.คนนั้นโกหก|เมือง.ลาง 1",
@@ -3991,7 +3991,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:233"
+    "src": "docs/systems/llm/06-god-templates.md:235"
    },
    {
     "id": "whisper.คนนั้นโกหก|เมือง.ลาง 2",
@@ -4005,7 +4005,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:233"
+    "src": "docs/systems/llm/06-god-templates.md:235"
    },
    {
     "id": "whisper.คนนั้นโกหก|เมือง.ลาง 3",
@@ -4019,7 +4019,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:233"
+    "src": "docs/systems/llm/06-god-templates.md:235"
    },
    {
     "id": "whisper.คนนั้นโกหก|ป่าและทาง.ลาง 1",
@@ -4033,7 +4033,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:234"
+    "src": "docs/systems/llm/06-god-templates.md:236"
    },
    {
     "id": "whisper.คนนั้นโกหก|ป่าและทาง.ลาง 2",
@@ -4047,7 +4047,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:234"
+    "src": "docs/systems/llm/06-god-templates.md:236"
    },
    {
     "id": "whisper.คนนั้นโกหก|ป่าและทาง.ลาง 3",
@@ -4061,7 +4061,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:234"
+    "src": "docs/systems/llm/06-god-templates.md:236"
    },
    {
     "id": "whisper.คนนั้นโกหก|ศึก.ลาง 1",
@@ -4075,7 +4075,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:235"
+    "src": "docs/systems/llm/06-god-templates.md:237"
    },
    {
     "id": "whisper.คนนั้นโกหก|ศึก.ลาง 2",
@@ -4089,7 +4089,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:235"
+    "src": "docs/systems/llm/06-god-templates.md:237"
    },
    {
     "id": "whisper.คนนั้นโกหก|ศึก.ลาง 3",
@@ -4103,7 +4103,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:235"
+    "src": "docs/systems/llm/06-god-templates.md:237"
    },
    {
     "id": "whisper.ช่วย|เมือง.ลาง 1",
@@ -4118,7 +4118,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:236"
+    "src": "docs/systems/llm/06-god-templates.md:238"
    },
    {
     "id": "whisper.ช่วย|เมือง.ลาง 2",
@@ -4132,7 +4132,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:236"
+    "src": "docs/systems/llm/06-god-templates.md:238"
    },
    {
     "id": "whisper.ช่วย|เมือง.ลาง 3",
@@ -4146,7 +4146,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:236"
+    "src": "docs/systems/llm/06-god-templates.md:238"
    },
    {
     "id": "whisper.ช่วย|ป่าและทาง.ลาง 1",
@@ -4160,7 +4160,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:237"
+    "src": "docs/systems/llm/06-god-templates.md:239"
    },
    {
     "id": "whisper.ช่วย|ป่าและทาง.ลาง 2",
@@ -4175,7 +4175,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:237"
+    "src": "docs/systems/llm/06-god-templates.md:239"
    },
    {
     "id": "whisper.ช่วย|ป่าและทาง.ลาง 3",
@@ -4189,7 +4189,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:237"
+    "src": "docs/systems/llm/06-god-templates.md:239"
    },
    {
     "id": "whisper.ช่วย|ศึก.ลาง 1",
@@ -4203,7 +4203,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:238"
+    "src": "docs/systems/llm/06-god-templates.md:240"
    },
    {
     "id": "whisper.ช่วย|ศึก.ลาง 2",
@@ -4218,7 +4218,7 @@
      "ชื่อตัวละคร",
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:238"
+    "src": "docs/systems/llm/06-god-templates.md:240"
    },
    {
     "id": "whisper.ช่วย|ศึก.ลาง 3",
@@ -4232,7 +4232,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:238"
+    "src": "docs/systems/llm/06-god-templates.md:240"
    },
    {
     "id": "whisper.สางเรื่อง|เมือง.ลาง 1",
@@ -4244,7 +4244,7 @@
     "col": "ลาง 1",
     "text": "กล่องไม้เก่าใต้เตียงแง้มฝาเอง เห็นปมเชือกเส้นหนึ่ง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:239"
+    "src": "docs/systems/llm/06-god-templates.md:241"
    },
    {
     "id": "whisper.สางเรื่อง|เมือง.ลาง 2",
@@ -4256,7 +4256,7 @@
     "col": "ลาง 2",
     "text": "ชื่อของบรรพบุรุษถูกเรียกในตลาดโดยคนแปลกหน้า แล้วเขาก็หายไปในฝูงชน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:239"
+    "src": "docs/systems/llm/06-god-templates.md:241"
    },
    {
     "id": "whisper.สางเรื่อง|เมือง.ลาง 3",
@@ -4268,7 +4268,7 @@
     "col": "ลาง 3",
     "text": "กระดาษเก่าที่ติดผนังบ้านหลุดลงมา เผยรอยเขียนที่ไม่เคยเห็น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:239"
+    "src": "docs/systems/llm/06-god-templates.md:241"
    },
    {
     "id": "whisper.สางเรื่อง|ป่าและทาง.ลาง 1",
@@ -4282,7 +4282,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:240"
+    "src": "docs/systems/llm/06-god-templates.md:242"
    },
    {
     "id": "whisper.สางเรื่อง|ป่าและทาง.ลาง 2",
@@ -4294,7 +4294,7 @@
     "col": "ลาง 2",
     "text": "เศษผ้าผูกกิ่งไม้แบบเดียวกับที่ปู่เคยผูก เกี่ยวมือเขาตอนเดินผ่าน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:240"
+    "src": "docs/systems/llm/06-god-templates.md:242"
    },
    {
     "id": "whisper.สางเรื่อง|ป่าและทาง.ลาง 3",
@@ -4306,7 +4306,7 @@
     "col": "ลาง 3",
     "text": "เสียงระฆังเก่าดังมาจากหุบที่ไม่เคยมีระฆัง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:240"
+    "src": "docs/systems/llm/06-god-templates.md:242"
    },
    {
     "id": "whisper.สางเรื่อง|ศึก.ลาง 1",
@@ -4318,7 +4318,7 @@
     "col": "ลาง 1",
     "text": "ธงเก่าของสายตระกูลผืนหนึ่งปรากฏท่ามกลางฝุ่นศึก แล้วหายไป",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:241"
+    "src": "docs/systems/llm/06-god-templates.md:243"
    },
    {
     "id": "whisper.สางเรื่อง|ศึก.ลาง 2",
@@ -4330,7 +4330,7 @@
     "col": "ลาง 2",
     "text": "ลูกธนูที่ตกข้างเท้ามีรอยสลักเดียวกับของที่บ้านเคยเก็บไว้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:241"
+    "src": "docs/systems/llm/06-god-templates.md:243"
    },
    {
     "id": "whisper.สางเรื่อง|ศึก.ลาง 3",
@@ -4344,7 +4344,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:241"
+    "src": "docs/systems/llm/06-god-templates.md:243"
    },
    {
     "id": "whisper.ชี้ทายาท|เมือง.ลาง 1",
@@ -4358,7 +4358,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:242"
+    "src": "docs/systems/llm/06-god-templates.md:244"
    },
    {
     "id": "whisper.ชี้ทายาท|เมือง.ลาง 2",
@@ -4370,7 +4370,7 @@
     "col": "ลาง 2",
     "text": "ต้นกล้าที่ปลูกไว้ข้างบ้านงอกก่อนต้นอื่นทั้งสวน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:242"
+    "src": "docs/systems/llm/06-god-templates.md:244"
    },
    {
     "id": "whisper.ชี้ทายาท|เมือง.ลาง 3",
@@ -4384,7 +4384,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:242"
+    "src": "docs/systems/llm/06-god-templates.md:244"
    },
    {
     "id": "whisper.ชี้ทายาท|ป่าและทาง.ลาง 1",
@@ -4396,7 +4396,7 @@
     "col": "ลาง 1",
     "text": "เมล็ดผลไม้ที่ตกข้างทางงอกเป็นต้นอ่อนภายในหนึ่งคืน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:243"
+    "src": "docs/systems/llm/06-god-templates.md:245"
    },
    {
     "id": "whisper.ชี้ทายาท|ป่าและทาง.ลาง 2",
@@ -4410,7 +4410,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:243"
+    "src": "docs/systems/llm/06-god-templates.md:245"
    },
    {
     "id": "whisper.ชี้ทายาท|ป่าและทาง.ลาง 3",
@@ -4422,7 +4422,7 @@
     "col": "ลาง 3",
     "text": "นกตัวเล็กบินมาเกาะแขนเขา แล้วบินไปเกาะไหล่ของอีกคนที่ตามมา",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:243"
+    "src": "docs/systems/llm/06-god-templates.md:245"
    },
    {
     "id": "whisper.ชี้ทายาท|ศึก.ลาง 1",
@@ -4434,7 +4434,7 @@
     "col": "ลาง 1",
     "text": "เสียงเด็กร้องดังขึ้นท่ามกลางศึก ทุกคนหยุดฟังแล้วศึกก็ดำเนินต่อ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:244"
+    "src": "docs/systems/llm/06-god-templates.md:246"
    },
    {
     "id": "whisper.ชี้ทายาท|ศึก.ลาง 2",
@@ -4446,7 +4446,7 @@
     "col": "ลาง 2",
     "text": "ธงผืนเล็กที่ทำจากผ้าห่อตัวเด็กผูกอยู่บนหอกที่ยื่นมาให้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:244"
+    "src": "docs/systems/llm/06-god-templates.md:246"
    },
    {
     "id": "whisper.ชี้ทายาท|ศึก.ลาง 3",
@@ -4458,7 +4458,7 @@
     "col": "ลาง 3",
     "text": "เศษเหล็กชิ้นเล็กกระเด็นมาตกในมือของเด็กหนุ่มที่ยืนหลังแนว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:244"
+    "src": "docs/systems/llm/06-god-templates.md:246"
    },
    {
     "id": "prayer_ask.ขอหายเจ็บ (`heal`).แบบ ก",
@@ -4471,7 +4471,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:256"
+    "src": "docs/systems/llm/06-god-templates.md:258"
    },
    {
     "id": "prayer_ask.ขอหายเจ็บ (`heal`).แบบ ข",
@@ -4484,7 +4484,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:256"
+    "src": "docs/systems/llm/06-god-templates.md:258"
    },
    {
     "id": "prayer_ask.ขอฝน.แบบ ก",
@@ -4498,7 +4498,7 @@
      "ชื่อของที่นี่",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:257"
+    "src": "docs/systems/llm/06-god-templates.md:259"
    },
    {
     "id": "prayer_ask.ขอฝน.แบบ ข",
@@ -4511,7 +4511,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:257"
+    "src": "docs/systems/llm/06-god-templates.md:259"
    },
    {
     "id": "prayer_ask.ขอให้พ้นโรค.แบบ ก",
@@ -4524,7 +4524,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:258"
+    "src": "docs/systems/llm/06-god-templates.md:260"
    },
    {
     "id": "prayer_ask.ขอให้พ้นโรค.แบบ ข",
@@ -4537,7 +4537,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:258"
+    "src": "docs/systems/llm/06-god-templates.md:260"
    },
    {
     "id": "prayer_ask.ขอสันติ.แบบ ก",
@@ -4551,7 +4551,7 @@
      "ชื่อของที่นี่",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:259"
+    "src": "docs/systems/llm/06-god-templates.md:261"
    },
    {
     "id": "prayer_ask.ขอสันติ.แบบ ข",
@@ -4564,7 +4564,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:259"
+    "src": "docs/systems/llm/06-god-templates.md:261"
    },
    {
     "id": "prayer_ask.ขอพบรัก.แบบ ก",
@@ -4577,7 +4577,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:260"
+    "src": "docs/systems/llm/06-god-templates.md:262"
    },
    {
     "id": "prayer_ask.ขอพบรัก.แบบ ข",
@@ -4590,7 +4590,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:260"
+    "src": "docs/systems/llm/06-god-templates.md:262"
    },
    {
     "id": "prayer_ask.ขอบุตร.แบบ ก",
@@ -4603,7 +4603,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:261"
+    "src": "docs/systems/llm/06-god-templates.md:263"
    },
    {
     "id": "prayer_ask.ขอบุตร.แบบ ข",
@@ -4616,7 +4616,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:261"
+    "src": "docs/systems/llm/06-god-templates.md:263"
    },
    {
     "id": "prayer_ask.ขอพ้นความจน.แบบ ก",
@@ -4629,7 +4629,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:262"
+    "src": "docs/systems/llm/06-god-templates.md:264"
    },
    {
     "id": "prayer_ask.ขอพ้นความจน.แบบ ข",
@@ -4642,7 +4642,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:262"
+    "src": "docs/systems/llm/06-god-templates.md:264"
    },
    {
     "id": "prayer_ask.ขอปัญญา.แบบ ก",
@@ -4655,7 +4655,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:263"
+    "src": "docs/systems/llm/06-god-templates.md:265"
    },
    {
     "id": "prayer_ask.ขอปัญญา.แบบ ข",
@@ -4668,7 +4668,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:263"
+    "src": "docs/systems/llm/06-god-templates.md:265"
    },
    {
     "id": "prayer_ask.ขอความกล้า.แบบ ก",
@@ -4681,7 +4681,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:264"
+    "src": "docs/systems/llm/06-god-templates.md:266"
    },
    {
     "id": "prayer_ask.ขอความกล้า.แบบ ข",
@@ -4694,7 +4694,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:264"
+    "src": "docs/systems/llm/06-god-templates.md:266"
    },
    {
     "id": "prayer_ask.ขอล้างแค้น.แบบ ก",
@@ -4708,7 +4708,7 @@
      "ชื่อตัวละคร",
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:265"
+    "src": "docs/systems/llm/06-god-templates.md:267"
    },
    {
     "id": "prayer_ask.ขอล้างแค้น.แบบ ข",
@@ -4722,7 +4722,7 @@
      "ชื่อตัวละคร",
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:265"
+    "src": "docs/systems/llm/06-god-templates.md:267"
    },
    {
     "id": "prayer_ask.ขอให้พ้นคำสาป.แบบ ก",
@@ -4735,7 +4735,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:266"
+    "src": "docs/systems/llm/06-god-templates.md:268"
    },
    {
     "id": "prayer_ask.ขอให้พ้นคำสาป.แบบ ข",
@@ -4748,7 +4748,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:266"
+    "src": "docs/systems/llm/06-god-templates.md:268"
    },
    {
     "id": "prayer_ask.ขอชื่อเสียง.แบบ ก",
@@ -4761,7 +4761,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:267"
+    "src": "docs/systems/llm/06-god-templates.md:269"
    },
    {
     "id": "prayer_ask.ขอชื่อเสียง.แบบ ข",
@@ -4774,7 +4774,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:267"
+    "src": "docs/systems/llm/06-god-templates.md:269"
    },
    {
     "id": "prayer_ask.ขอให้ทำมาค้าขึ้น.แบบ ก",
@@ -4787,7 +4787,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:268"
+    "src": "docs/systems/llm/06-god-templates.md:270"
    },
    {
     "id": "prayer_ask.ขอให้ทำมาค้าขึ้น.แบบ ข",
@@ -4800,7 +4800,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:268"
+    "src": "docs/systems/llm/06-god-templates.md:270"
    },
    {
     "id": "prayer_ask.ขออุ้มหลาน.แบบ ก",
@@ -4813,7 +4813,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:269"
+    "src": "docs/systems/llm/06-god-templates.md:271"
    },
    {
     "id": "prayer_ask.ขออุ้มหลาน.แบบ ข",
@@ -4826,7 +4826,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:269"
+    "src": "docs/systems/llm/06-god-templates.md:271"
    },
    {
     "id": "prayer_ask.ท้าฟ้า.แบบ ก",
@@ -4839,7 +4839,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:270"
+    "src": "docs/systems/llm/06-god-templates.md:272"
    },
    {
     "id": "prayer_ask.ท้าฟ้า.แบบ ข",
@@ -4852,7 +4852,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:270"
+    "src": "docs/systems/llm/06-god-templates.md:272"
    },
    {
     "id": "prayer_ask.ขอให้คนใกล้ตัวหาย (`kin_sick`).แบบ ก",
@@ -4866,7 +4866,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:271"
+    "src": "docs/systems/llm/06-god-templates.md:273"
    },
    {
     "id": "prayer_ask.ขอให้คนใกล้ตัวหาย (`kin_sick`).แบบ ข",
@@ -4880,7 +4880,7 @@
      "ชื่อตัวละคร",
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:271"
+    "src": "docs/systems/llm/06-god-templates.md:273"
    },
    {
     "id": "prayer_ask.แม่ขอให้ลูกแข็งแรง (`mother`).แบบ ก",
@@ -4893,7 +4893,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:272"
+    "src": "docs/systems/llm/06-god-templates.md:274"
    },
    {
     "id": "prayer_ask.แม่ขอให้ลูกแข็งแรง (`mother`).แบบ ข",
@@ -4904,7 +4904,7 @@
     "col": "แบบ ข",
     "text": "ลูกไอเบา ๆ ในห้องนอน แม่ลุกขึ้นกลางดึกและสวดคำเดิมซ้ำทั้งคืน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:272"
+    "src": "docs/systems/llm/06-god-templates.md:274"
    },
    {
     "id": "prayer_give.ขอหายเจ็บ.ให้",
@@ -4917,7 +4917,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:280"
+    "src": "docs/systems/llm/06-god-templates.md:282"
    },
    {
     "id": "prayer_give.ขอหายเจ็บ.ให้แบบแปลก",
@@ -4928,7 +4928,7 @@
     "col": "ให้แบบแปลก",
     "text": "ไข้ไม่ลด แต่หญิงขายยาที่ไม่เคยแวะมาก่อนเคาะประตูบ้าน แล้วนั่งดูแผลนั้นนานอย่างคนที่เคยเห็นแบบนี้มาแล้ว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:280"
+    "src": "docs/systems/llm/06-god-templates.md:282"
    },
    {
     "id": "prayer_give.ขอฝน.ให้",
@@ -4941,7 +4941,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:281"
+    "src": "docs/systems/llm/06-god-templates.md:283"
    },
    {
     "id": "prayer_give.ขอฝน.ให้แบบแปลก",
@@ -4952,7 +4952,7 @@
     "col": "ให้แบบแปลก",
     "text": "ฝนไม่ตก แต่น้ำพุเล็กผุดขึ้นที่ท้ายหมู่บ้าน ไม่มีใครรู้ว่ามันอยู่ใต้ดินมานานเท่าไร",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:281"
+    "src": "docs/systems/llm/06-god-templates.md:283"
    },
    {
     "id": "prayer_give.ขอให้พ้นโรค.ให้",
@@ -4963,7 +4963,7 @@
     "col": "ให้",
     "text": "เสียงไอในซอยค่อยหายไป ภายในสามวันไม่มีใครต้องทาไม้กากบาทอีก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:282"
+    "src": "docs/systems/llm/06-god-templates.md:284"
    },
    {
     "id": "prayer_give.ขอให้พ้นโรค.ให้แบบแปลก",
@@ -4974,7 +4974,7 @@
     "col": "ให้แบบแปลก",
     "text": "โรคยังอยู่ในเมือง แต่หมอเร่คนหนึ่งเคาะประตูขอที่พัก และอยู่ช่วยดูแลคนในบ้านจนโรคผ่านพ้นซอยนี้ไป",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:282"
+    "src": "docs/systems/llm/06-god-templates.md:284"
    },
    {
     "id": "prayer_give.ขอสันติ.ให้",
@@ -4985,7 +4985,7 @@
     "col": "ให้",
     "text": "ทูตของสองฝ่ายพบกันกลางสะพานโดยไม่มีใครนัด ภายในสามวันกองทัพเก็บค่าย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:283"
+    "src": "docs/systems/llm/06-god-templates.md:285"
    },
    {
     "id": "prayer_give.ขอสันติ.ให้แบบแปลก",
@@ -4998,7 +4998,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:283"
+    "src": "docs/systems/llm/06-god-templates.md:285"
    },
    {
     "id": "prayer_give.ขอพบรัก.ให้",
@@ -5011,7 +5011,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:284"
+    "src": "docs/systems/llm/06-god-templates.md:286"
    },
    {
     "id": "prayer_give.ขอพบรัก.ให้แบบแปลก",
@@ -5024,7 +5024,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:284"
+    "src": "docs/systems/llm/06-god-templates.md:286"
    },
    {
     "id": "prayer_give.ขอบุตร.ให้",
@@ -5035,7 +5035,7 @@
     "col": "ให้",
     "text": "ในฤดูถัดมา หญิงชราในหมู่บ้านลูบท้องแล้วยิ้ม ไม่นานเสียงร้องของทารกก็ดังขึ้นในบ้าน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:285"
+    "src": "docs/systems/llm/06-god-templates.md:287"
    },
    {
     "id": "prayer_give.ขอบุตร.ให้แบบแปลก",
@@ -5046,7 +5046,7 @@
     "col": "ให้แบบแปลก",
     "text": "บ้านยังไม่มีเด็ก แต่ต้นไม้ในสวนออกผลสองลูกตอนไม่ถึงฤดู และหมอตำแยบอกว่าไม่ต้องรีบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:285"
+    "src": "docs/systems/llm/06-god-templates.md:287"
    },
    {
     "id": "prayer_give.ขอพ้นความจน.ให้",
@@ -5059,7 +5059,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:286"
+    "src": "docs/systems/llm/06-god-templates.md:288"
    },
    {
     "id": "prayer_give.ขอพ้นความจน.ให้แบบแปลก",
@@ -5070,7 +5070,7 @@
     "col": "ให้แบบแปลก",
     "text": "ไม่มีเงินตก แต่ช่างซ่อมชื่อดังคนหนึ่งเดินเข้ามาถามหาคนช่วยงาน และจ่ายล่วงหน้าครึ่งหนึ่ง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:286"
+    "src": "docs/systems/llm/06-god-templates.md:288"
    },
    {
     "id": "prayer_give.ขอปัญญา.ให้",
@@ -5083,7 +5083,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:287"
+    "src": "docs/systems/llm/06-god-templates.md:289"
    },
    {
     "id": "prayer_give.ขอปัญญา.ให้แบบแปลก",
@@ -5094,7 +5094,7 @@
     "col": "ให้แบบแปลก",
     "text": "ตำราไม่ง่ายขึ้น แต่ครูเก่าคนหนึ่งผ่านมาและสอนโดยไม่เรียกเงินสามบ่าย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:287"
+    "src": "docs/systems/llm/06-god-templates.md:289"
    },
    {
     "id": "prayer_give.ขอความกล้า.ให้",
@@ -5107,7 +5107,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:288"
+    "src": "docs/systems/llm/06-god-templates.md:290"
    },
    {
     "id": "prayer_give.ขอความกล้า.ให้แบบแปลก",
@@ -5118,7 +5118,7 @@
     "col": "ให้แบบแปลก",
     "text": "ความกลัวยังอยู่ แต่เด็กเลี้ยงสัตว์คนหนึ่งเดินสวนมา เสนอนำทางออกอีกด้านตามทางที่ปลอดภัย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:288"
+    "src": "docs/systems/llm/06-god-templates.md:290"
    },
    {
     "id": "prayer_give.ขอล้างแค้น.ให้",
@@ -5132,7 +5132,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:289"
+    "src": "docs/systems/llm/06-god-templates.md:291"
    },
    {
     "id": "prayer_give.ขอล้างแค้น.ให้แบบแปลก",
@@ -5146,7 +5146,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:289"
+    "src": "docs/systems/llm/06-god-templates.md:291"
    },
    {
     "id": "prayer_give.ขอให้พ้นคำสาป.ให้",
@@ -5159,7 +5159,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:290"
+    "src": "docs/systems/llm/06-god-templates.md:292"
    },
    {
     "id": "prayer_give.ขอให้พ้นคำสาป.ให้แบบแปลก",
@@ -5172,7 +5172,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:290"
+    "src": "docs/systems/llm/06-god-templates.md:292"
    },
    {
     "id": "prayer_give.ขอชื่อเสียง.ให้",
@@ -5185,7 +5185,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:291"
+    "src": "docs/systems/llm/06-god-templates.md:293"
    },
    {
     "id": "prayer_give.ขอชื่อเสียง.ให้แบบแปลก",
@@ -5196,7 +5196,7 @@
     "col": "ให้แบบแปลก",
     "text": "ชื่อไม่ดัง แต่ผู้อาวุโสคนหนึ่งในเมืองเรียกเขาไปพบ และฝากกิจเล็กที่ฝากกันแต่คนที่ไว้ใจ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:291"
+    "src": "docs/systems/llm/06-god-templates.md:293"
    },
    {
     "id": "prayer_give.ขอให้ทำมาค้าขึ้น.ให้",
@@ -5207,7 +5207,7 @@
     "col": "ให้",
     "text": "ลูกค้าที่ไม่เคยเห็นหน้าเข้าร้านต่อกันเป็นแถว ภายในสัปดาห์เดียวของที่ค้างหมดชั้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:292"
+    "src": "docs/systems/llm/06-god-templates.md:294"
    },
    {
     "id": "prayer_give.ขอให้ทำมาค้าขึ้น.ให้แบบแปลก",
@@ -5218,7 +5218,7 @@
     "col": "ให้แบบแปลก",
     "text": "ผลผลิตไม่ล้น แต่พ่อค้าจากต่างถิ่นเสนอเป็นคู่ค้าถาวรในราคาที่เป็นธรรม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:292"
+    "src": "docs/systems/llm/06-god-templates.md:294"
    },
    {
     "id": "prayer_give.ขออุ้มหลาน.ให้",
@@ -5231,7 +5231,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:293"
+    "src": "docs/systems/llm/06-god-templates.md:295"
    },
    {
     "id": "prayer_give.ขออุ้มหลาน.ให้แบบแปลก",
@@ -5244,7 +5244,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:293"
+    "src": "docs/systems/llm/06-god-templates.md:295"
    },
    {
     "id": "prayer_give.ท้าฟ้า.ให้",
@@ -5257,7 +5257,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:294"
+    "src": "docs/systems/llm/06-god-templates.md:296"
    },
    {
     "id": "prayer_give.ท้าฟ้า.ให้แบบแปลก",
@@ -5270,7 +5270,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:294"
+    "src": "docs/systems/llm/06-god-templates.md:296"
    },
    {
     "id": "prayer_give.ขอให้คนใกล้ตัวหาย.ให้",
@@ -5283,7 +5283,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:295"
+    "src": "docs/systems/llm/06-god-templates.md:297"
    },
    {
     "id": "prayer_give.ขอให้คนใกล้ตัวหาย.ให้แบบแปลก",
@@ -5296,7 +5296,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:295"
+    "src": "docs/systems/llm/06-god-templates.md:297"
    },
    {
     "id": "prayer_give.แม่ขอให้ลูกแข็งแรง.ให้",
@@ -5309,7 +5309,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:296"
+    "src": "docs/systems/llm/06-god-templates.md:298"
    },
    {
     "id": "prayer_give.แม่ขอให้ลูกแข็งแรง.ให้แบบแปลก",
@@ -5320,7 +5320,7 @@
     "col": "ให้แบบแปลก",
     "text": "ลูกยังเป็นหวัดตามประสาเด็ก แต่หญิงชราข้างบ้านแวะมาเยี่ยม และสอนแม่วิธีต้มน้ำสมุนไพรประจำฤดู",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:296"
+    "src": "docs/systems/llm/06-god-templates.md:298"
    },
    {
     "id": "prayer_deny.ขอหายเจ็บ.ปฏิเสธ",
@@ -5333,7 +5333,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:302"
+    "src": "docs/systems/llm/06-god-templates.md:304"
    },
    {
     "id": "prayer_deny.ขอหายเจ็บ.ลงโทษ",
@@ -5346,7 +5346,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:302"
+    "src": "docs/systems/llm/06-god-templates.md:304"
    },
    {
     "id": "prayer_deny.ขอหายเจ็บ.นิ่ง",
@@ -5357,7 +5357,7 @@
     "col": "นิ่ง",
     "text": "คืนนั้นไม่มีลางตอบ เทียนไหม้จนหมดและไข้ยังอยู่ เช้ามาเขาตัดสินใจรักษาตัวเอง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:302"
+    "src": "docs/systems/llm/06-god-templates.md:304"
    },
    {
     "id": "prayer_deny.ขอฝน.ปฏิเสธ",
@@ -5370,7 +5370,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:303"
+    "src": "docs/systems/llm/06-god-templates.md:305"
    },
    {
     "id": "prayer_deny.ขอฝน.ลงโทษ",
@@ -5381,7 +5381,7 @@
     "col": "ลงโทษ",
     "text": "ลมร้อนหอบฝุ่นทับแปลงพืชทั้งผืน น้ำในบ่อสุดท้ายหายไปในคืนเดียว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:303"
+    "src": "docs/systems/llm/06-god-templates.md:305"
    },
    {
     "id": "prayer_deny.ขอฝน.นิ่ง",
@@ -5395,7 +5395,7 @@
      "ชื่อของที่นี่",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:303"
+    "src": "docs/systems/llm/06-god-templates.md:305"
    },
    {
     "id": "prayer_deny.ขอให้พ้นโรค.ปฏิเสธ",
@@ -5408,7 +5408,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:304"
+    "src": "docs/systems/llm/06-god-templates.md:306"
    },
    {
     "id": "prayer_deny.ขอให้พ้นโรค.ลงโทษ",
@@ -5421,7 +5421,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:304"
+    "src": "docs/systems/llm/06-god-templates.md:306"
    },
    {
     "id": "prayer_deny.ขอให้พ้นโรค.นิ่ง",
@@ -5432,7 +5432,7 @@
     "col": "นิ่ง",
     "text": "เทียนหมดไปหลายเล่มโดยไม่มีอะไรตอบ วันผ่านไปทีละวัน และกากบาทบนประตูในซอยยังอยู่ที่เดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:304"
+    "src": "docs/systems/llm/06-god-templates.md:306"
    },
    {
     "id": "prayer_deny.ขอสันติ.ปฏิเสธ",
@@ -5445,7 +5445,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:305"
+    "src": "docs/systems/llm/06-god-templates.md:307"
    },
    {
     "id": "prayer_deny.ขอสันติ.ลงโทษ",
@@ -5456,7 +5456,7 @@
     "col": "ลงโทษ",
     "text": "เสียงกลองศึกใกล้กว่าเมื่อวาน ไฟจากสนามรบลามมาถึงหน้าบ้านในคืนนั้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:305"
+    "src": "docs/systems/llm/06-god-templates.md:307"
    },
    {
     "id": "prayer_deny.ขอสันติ.นิ่ง",
@@ -5467,7 +5467,7 @@
     "col": "นิ่ง",
     "text": "ไม่มีนิมิต ไม่มีเสียง ธูปหมดดอก และข่าวจากแนวหน้ามาถึงอีกฉบับ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:305"
+    "src": "docs/systems/llm/06-god-templates.md:307"
    },
    {
     "id": "prayer_deny.ขอพบรัก.ปฏิเสธ",
@@ -5480,7 +5480,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:306"
+    "src": "docs/systems/llm/06-god-templates.md:308"
    },
    {
     "id": "prayer_deny.ขอพบรัก.ลงโทษ",
@@ -5493,7 +5493,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:306"
+    "src": "docs/systems/llm/06-god-templates.md:308"
    },
    {
     "id": "prayer_deny.ขอพบรัก.นิ่ง",
@@ -5504,7 +5504,7 @@
     "col": "นิ่ง",
     "text": "ถนนหน้าบ้านเงียบเหมือนเดิม ไม่มีใครมาและไม่มีคำตอบ ดอกไม้ในแจกันเริ่มแห้ง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:306"
+    "src": "docs/systems/llm/06-god-templates.md:308"
    },
    {
     "id": "prayer_deny.ขอบุตร.ปฏิเสธ",
@@ -5515,7 +5515,7 @@
     "col": "ปฏิเสธ",
     "text": "เทียนที่ศาลดับก่อนข้าวที่ถวายจะเย็น หมอยาจึงบอกให้รออีกปี",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:307"
+    "src": "docs/systems/llm/06-god-templates.md:309"
    },
    {
     "id": "prayer_deny.ขอบุตร.ลงโทษ",
@@ -5528,7 +5528,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:307"
+    "src": "docs/systems/llm/06-god-templates.md:309"
    },
    {
     "id": "prayer_deny.ขอบุตร.นิ่ง",
@@ -5539,7 +5539,7 @@
     "col": "นิ่ง",
     "text": "ศาลบนเนินเงียบกว่าปีก่อน ข้าวที่ถวายไว้กลายเป็นอาหารนก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:307"
+    "src": "docs/systems/llm/06-god-templates.md:309"
    },
    {
     "id": "prayer_deny.ขอพ้นความจน.ปฏิเสธ",
@@ -5552,7 +5552,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:308"
+    "src": "docs/systems/llm/06-god-templates.md:310"
    },
    {
     "id": "prayer_deny.ขอพ้นความจน.ลงโทษ",
@@ -5563,7 +5563,7 @@
     "col": "ลงโทษ",
     "text": "เหรียญสุดท้ายหลุดจากมือลงช่องท่อ ทั้งสัปดาห์ราคาของทุกร้านขึ้นเฉพาะที่เขาซื้อ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:308"
+    "src": "docs/systems/llm/06-god-templates.md:310"
    },
    {
     "id": "prayer_deny.ขอพ้นความจน.นิ่ง",
@@ -5576,7 +5576,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:308"
+    "src": "docs/systems/llm/06-god-templates.md:310"
    },
    {
     "id": "prayer_deny.ขอปัญญา.ปฏิเสธ",
@@ -5587,7 +5587,7 @@
     "col": "ปฏิเสธ",
     "text": "เปลวตะเกียงนิ่งทั้งคืน ไม่ไหว ไม่หรี่ เหมือนบอกให้อ่านต่อเอง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:309"
+    "src": "docs/systems/llm/06-god-templates.md:311"
    },
    {
     "id": "prayer_deny.ขอปัญญา.ลงโทษ",
@@ -5598,7 +5598,7 @@
     "col": "ลงโทษ",
     "text": "ตัวอักษรไหลเป็นเส้นคดบนกระดาษ ตลอดเช้าเขาอ่านประโยคเดิมไม่จบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:309"
+    "src": "docs/systems/llm/06-god-templates.md:311"
    },
    {
     "id": "prayer_deny.ขอปัญญา.นิ่ง",
@@ -5609,7 +5609,7 @@
     "col": "นิ่ง",
     "text": "ตะเกียงดับตอนเช้าโดยไม่มีอะไรเปลี่ยน ตำราเล่มเดิมยังเปิดค้างหน้าเดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:309"
+    "src": "docs/systems/llm/06-god-templates.md:311"
    },
    {
     "id": "prayer_deny.ขอความกล้า.ปฏิเสธ",
@@ -5620,7 +5620,7 @@
     "col": "ปฏิเสธ",
     "text": "ลมพัดสวนจากป่ามาแตะหน้า เย็น ไม่ใช่การขู่ แต่เป็นคำตอบว่าเขาต้องก้าวเอง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:310"
+    "src": "docs/systems/llm/06-god-templates.md:312"
    },
    {
     "id": "prayer_deny.ขอความกล้า.ลงโทษ",
@@ -5631,7 +5631,7 @@
     "col": "ลงโทษ",
     "text": "ขาสองข้างอ่อนจนต้องนั่งลงกลางทาง ความกลัวหนักกว่าก่อนสวดและตามเขาไปทั้งวัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:310"
+    "src": "docs/systems/llm/06-god-templates.md:312"
    },
    {
     "id": "prayer_deny.ขอความกล้า.นิ่ง",
@@ -5642,7 +5642,7 @@
     "col": "นิ่ง",
     "text": "เขารออยู่นานจนขาเมื่อย ไม่มีอะไรตอบ จึงเดินต่อพร้อมความกลัวเดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:310"
+    "src": "docs/systems/llm/06-god-templates.md:312"
    },
    {
     "id": "prayer_deny.ขอล้างแค้น.ปฏิเสธ",
@@ -5656,7 +5656,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:311"
+    "src": "docs/systems/llm/06-god-templates.md:313"
    },
    {
     "id": "prayer_deny.ขอล้างแค้น.ลงโทษ",
@@ -5669,7 +5669,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:311"
+    "src": "docs/systems/llm/06-god-templates.md:313"
    },
    {
     "id": "prayer_deny.ขอล้างแค้น.นิ่ง",
@@ -5680,7 +5680,7 @@
     "col": "นิ่ง",
     "text": "ไม่มีคำตอบ เทียนที่จุดให้ชื่อนั้นไหม้เปล่าจนสุด และความแค้นยังอยู่ที่เดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:311"
+    "src": "docs/systems/llm/06-god-templates.md:313"
    },
    {
     "id": "prayer_deny.ขอให้พ้นคำสาป.ปฏิเสธ",
@@ -5693,7 +5693,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:312"
+    "src": "docs/systems/llm/06-god-templates.md:314"
    },
    {
     "id": "prayer_deny.ขอให้พ้นคำสาป.ลงโทษ",
@@ -5704,7 +5704,7 @@
     "col": "ลงโทษ",
     "text": "เงาบนผนังหนาขึ้นอีกชั้น เขารู้ทันทีว่าบางสิ่งมาฟังที่สวดและเพิ่มของให้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:312"
+    "src": "docs/systems/llm/06-god-templates.md:314"
    },
    {
     "id": "prayer_deny.ขอให้พ้นคำสาป.นิ่ง",
@@ -5715,7 +5715,7 @@
     "col": "นิ่ง",
     "text": "ไม่มีอะไรหลุด ไม่มีอะไรเพิ่ม ทุกอย่างอยู่เท่าเดิม แต่เขาเลิกมองข้อมือในกระจก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:312"
+    "src": "docs/systems/llm/06-god-templates.md:314"
    },
    {
     "id": "prayer_deny.ขอชื่อเสียง.ปฏิเสธ",
@@ -5728,7 +5728,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:313"
+    "src": "docs/systems/llm/06-god-templates.md:315"
    },
    {
     "id": "prayer_deny.ขอชื่อเสียง.ลงโทษ",
@@ -5741,7 +5741,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:313"
+    "src": "docs/systems/llm/06-god-templates.md:315"
    },
    {
     "id": "prayer_deny.ขอชื่อเสียง.นิ่ง",
@@ -5752,7 +5752,7 @@
     "col": "นิ่ง",
     "text": "ไม่มีเสียงตอบ ไม่มีเพลงใหม่ และชื่อบนทรายถูกรอยเท้าลบไปตอนเช้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:313"
+    "src": "docs/systems/llm/06-god-templates.md:315"
    },
    {
     "id": "prayer_deny.ขอให้ทำมาค้าขึ้น.ปฏิเสธ",
@@ -5765,7 +5765,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:314"
+    "src": "docs/systems/llm/06-god-templates.md:316"
    },
    {
     "id": "prayer_deny.ขอให้ทำมาค้าขึ้น.ลงโทษ",
@@ -5778,7 +5778,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:314"
+    "src": "docs/systems/llm/06-god-templates.md:316"
    },
    {
     "id": "prayer_deny.ขอให้ทำมาค้าขึ้น.นิ่ง",
@@ -5789,7 +5789,7 @@
     "col": "นิ่ง",
     "text": "ปีนั้นผ่านไปโดยไม่มีอะไรเปลี่ยน เหรียญบนหิ้งยังอยู่ ไม่มีใครมารับ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:314"
+    "src": "docs/systems/llm/06-god-templates.md:316"
    },
    {
     "id": "prayer_deny.ขออุ้มหลาน.ปฏิเสธ",
@@ -5800,7 +5800,7 @@
     "col": "ปฏิเสธ",
     "text": "เสียงเด็กที่ได้ยินมาจากถนนเป็นของเด็กบ้านอื่น และเสียงนั้นเงียบเมื่อผ่านประตูบ้านของเขาไป",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:315"
+    "src": "docs/systems/llm/06-god-templates.md:317"
    },
    {
     "id": "prayer_deny.ขออุ้มหลาน.ลงโทษ",
@@ -5811,7 +5811,7 @@
     "col": "ลงโทษ",
     "text": "ถนนหน้าบ้านเงียบกว่าเดิม จดหมายที่รอมาปีหนึ่งถูกส่งกลับ มีเพียงตราประทับว่าไม่มีผู้รับ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:315"
+    "src": "docs/systems/llm/06-god-templates.md:317"
    },
    {
     "id": "prayer_deny.ขออุ้มหลาน.นิ่ง",
@@ -5824,7 +5824,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:315"
+    "src": "docs/systems/llm/06-god-templates.md:317"
    },
    {
     "id": "prayer_deny.ท้าฟ้า.ปฏิเสธ",
@@ -5837,7 +5837,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:316"
+    "src": "docs/systems/llm/06-god-templates.md:318"
    },
    {
     "id": "prayer_deny.ท้าฟ้า.ลงโทษ",
@@ -5848,7 +5848,7 @@
     "col": "ลงโทษ",
     "text": "ฟ้าผ่าลงบนเสาข้างตัว ไหม้รอยดำยาว เขารอดมาได้ และเกลียดฟ้ากว่าเดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:316"
+    "src": "docs/systems/llm/06-god-templates.md:318"
    },
    {
     "id": "prayer_deny.ท้าฟ้า.นิ่ง",
@@ -5859,7 +5859,7 @@
     "col": "นิ่ง",
     "text": "ไม่มีคำตอบ ไม่มีฟ้าร้อง ผ่านไปหนึ่งคืนก็เหมือนไม่มีใครเคยท้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:316"
+    "src": "docs/systems/llm/06-god-templates.md:318"
    },
    {
     "id": "prayer_deny.ขอให้คนใกล้ตัวหาย.ปฏิเสธ",
@@ -5873,7 +5873,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:317"
+    "src": "docs/systems/llm/06-god-templates.md:319"
    },
    {
     "id": "prayer_deny.ขอให้คนใกล้ตัวหาย.ลงโทษ",
@@ -5887,7 +5887,7 @@
      "NPC",
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:317"
+    "src": "docs/systems/llm/06-god-templates.md:319"
    },
    {
     "id": "prayer_deny.ขอให้คนใกล้ตัวหาย.นิ่ง",
@@ -5900,7 +5900,7 @@
     "slots": [
      "NPC"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:317"
+    "src": "docs/systems/llm/06-god-templates.md:319"
    },
    {
     "id": "prayer_deny.แม่ขอให้ลูกแข็งแรง.ปฏิเสธ",
@@ -5911,7 +5911,7 @@
     "col": "ปฏิเสธ",
     "text": "ควันธูปลอยตรงขึ้นแล้วหักเป็นสองส่วน แม่มองมันนิ่ง ๆ แล้วอุ้มลูกแน่นกว่าเดิม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:318"
+    "src": "docs/systems/llm/06-god-templates.md:320"
    },
    {
     "id": "prayer_deny.แม่ขอให้ลูกแข็งแรง.ลงโทษ",
@@ -5924,7 +5924,7 @@
     "slots": [
      "ชื่อตัวละคร"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:318"
+    "src": "docs/systems/llm/06-god-templates.md:320"
    },
    {
     "id": "prayer_deny.แม่ขอให้ลูกแข็งแรง.นิ่ง",
@@ -5935,7 +5935,7 @@
     "col": "นิ่ง",
     "text": "ธูปหมดดอกโดยไม่มีอะไรตอบ แม่จุดอีกดอก และอีกดอก จนเช้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:318"
+    "src": "docs/systems/llm/06-god-templates.md:320"
    },
    {
     "id": "omen_event.⭐|มังกร.ลาง 1",
@@ -5947,7 +5947,7 @@
     "col": "ลาง 1",
     "text": "สัตว์ในป่าขึ้นเขาในคืนเดียว และผู้ปรนนิบัติมังกรร้องไห้โดยไม่บอกเหตุผล",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:330"
+    "src": "docs/systems/llm/06-god-templates.md:332"
    },
    {
     "id": "omen_event.⭐|มังกร.ลาง 2",
@@ -5961,7 +5961,7 @@
     "slots": [
      "ทวีป"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:330"
+    "src": "docs/systems/llm/06-god-templates.md:332"
    },
    {
     "id": "omen_event.⭐|สงคราม.ลาง 1",
@@ -5973,7 +5973,7 @@
     "col": "ลาง 1",
     "text": "ม้าศึกถูกซื้อหมดตลาดภายในสัปดาห์เดียว และช่างตีเหล็กทุกร้านรับแต่งานดาบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:331"
+    "src": "docs/systems/llm/06-god-templates.md:333"
    },
    {
     "id": "omen_event.⭐|สงคราม.ลาง 2",
@@ -5985,7 +5985,7 @@
     "col": "ลาง 2",
     "text": "ทูตจากทุกเมืองเดินทางกลับบ้านพร้อมกันโดยไม่บอกเหตุผล",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:331"
+    "src": "docs/systems/llm/06-god-templates.md:333"
    },
    {
     "id": "omen_event.⭐|โรคและทุกข์ภัย.ลาง 1",
@@ -5999,7 +5999,7 @@
     "slots": [
      "ทวีป"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:332"
+    "src": "docs/systems/llm/06-god-templates.md:334"
    },
    {
     "id": "omen_event.⭐|โรคและทุกข์ภัย.ลาง 2",
@@ -6011,7 +6011,7 @@
     "col": "ลาง 2",
     "text": "เสบียงในยุ้งแพงขึ้นสามเท่า ผู้คนตุนของโดยไม่พูดกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:332"
+    "src": "docs/systems/llm/06-god-templates.md:334"
    },
    {
     "id": "omen_event.⭐|ศรัทธาและเทพ.ลาง 1",
@@ -6023,7 +6023,7 @@
     "col": "ลาง 1",
     "text": "ผู้ศรัทธาทุกศาสนานัดสวดพร้อมกันที่ลานกลางเมืองโดยไม่มีใครประกาศ เสียงสวดต่างภาษาแต่หยุดพร้อมกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:333"
+    "src": "docs/systems/llm/06-god-templates.md:335"
    },
    {
     "id": "omen_event.⭐|ศรัทธาและเทพ.ลาง 2",
@@ -6035,7 +6035,7 @@
     "col": "ลาง 2",
     "text": "รูปเคารพทุกองค์ในศาลหันหน้าไปทางเดียวกันตอนเช้า ผู้ดูแลศาลสาบานว่าไม่มีใครขยับ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:333"
+    "src": "docs/systems/llm/06-god-templates.md:335"
    },
    {
     "id": "omen_event.⭐|ทะเลและฟ้า.ลาง 1",
@@ -6047,7 +6047,7 @@
     "col": "ลาง 1",
     "text": "ปลาตายลอยเต็มฝั่งยาวสุดสายตา และนกน้ำไม่ลงเกาะ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:334"
+    "src": "docs/systems/llm/06-god-templates.md:336"
    },
    {
     "id": "omen_event.⭐|ทะเลและฟ้า.ลาง 2",
@@ -6061,7 +6061,7 @@
     "slots": [
      "ทวีป"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:334"
+    "src": "docs/systems/llm/06-god-templates.md:336"
    },
    {
     "id": "omen_event.⭐|แผ่นดิน.ลาง 1",
@@ -6073,7 +6073,7 @@
     "col": "ลาง 1",
     "text": "น้ำในบ่อทุกบ่อสั่นเป็นวงโดยไม่มีลม และสุนัขทุกตัวเห่าไปทางเดียวกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:335"
+    "src": "docs/systems/llm/06-god-templates.md:337"
    },
    {
     "id": "omen_event.⭐|แผ่นดิน.ลาง 2",
@@ -6085,7 +6085,7 @@
     "col": "ลาง 2",
     "text": "รอยแยกเล็กโผล่กลางทุ่ง ทุกเช้ายาวขึ้นกว่าเมื่อวาน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:335"
+    "src": "docs/systems/llm/06-god-templates.md:337"
    },
    {
     "id": "omen_event.●|มังกร.ลาง 1",
@@ -6097,7 +6097,7 @@
     "col": "ลาง 1",
     "text": "ผู้ปรนนิบัติเล่าว่ามังกรตัวนั้นไม่กินไม่ขยับมาสามวันแล้ว และไม่ยอมให้ใครเข้าใกล้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:336"
+    "src": "docs/systems/llm/06-god-templates.md:338"
    },
    {
     "id": "omen_event.●|มังกร.ลาง 2",
@@ -6111,7 +6111,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:336"
+    "src": "docs/systems/llm/06-god-templates.md:338"
    },
    {
     "id": "omen_event.●|สงคราม.ลาง 1",
@@ -6123,7 +6123,7 @@
     "col": "ลาง 1",
     "text": "ทหารเกณฑ์เดินผ่านเมืองทุกเช้า ธงไม่ใช่ของนายเดียวกับปีก่อน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:337"
+    "src": "docs/systems/llm/06-god-templates.md:339"
    },
    {
     "id": "omen_event.●|สงคราม.ลาง 2",
@@ -6135,7 +6135,7 @@
     "col": "ลาง 2",
     "text": "ราคาเหล็กขึ้นสองเท่า ทหารรับจ้างขอเงินล่วงหน้า",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:337"
+    "src": "docs/systems/llm/06-god-templates.md:339"
    },
    {
     "id": "omen_event.●|โรคและทุกข์ภัย.ลาง 1",
@@ -6147,7 +6147,7 @@
     "col": "ลาง 1",
     "text": "คนขายยาปิดร้านหายไปจากตลาด ก่อนที่ใครจะรู้ว่ายาหมดจริงหรือแค่ซ่อน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:338"
+    "src": "docs/systems/llm/06-god-templates.md:340"
    },
    {
     "id": "omen_event.●|โรคและทุกข์ภัย.ลาง 2",
@@ -6159,7 +6159,7 @@
     "col": "ลาง 2",
     "text": "ผู้ลี้ภัยกลุ่มแรกมาถึงประตูเมืองพร้อมของที่ขนได้ในมือ และไม่เล่าว่าหนีอะไร",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:338"
+    "src": "docs/systems/llm/06-god-templates.md:340"
    },
    {
     "id": "omen_event.●|ศรัทธาและเทพ.ลาง 1",
@@ -6171,7 +6171,7 @@
     "col": "ลาง 1",
     "text": "นักบวชสองนิกายเถียงกันหน้าศาลเกินเที่ยงคืนจนต้องมีทหารมาแยก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:339"
+    "src": "docs/systems/llm/06-god-templates.md:341"
    },
    {
     "id": "omen_event.●|ศรัทธาและเทพ.ลาง 2",
@@ -6183,7 +6183,7 @@
     "col": "ลาง 2",
     "text": "ผู้ทำนายประจำเมืองปิดประตูไม่รับคนมาสามสัปดาห์",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:339"
+    "src": "docs/systems/llm/06-god-templates.md:341"
    },
    {
     "id": "omen_event.●|ทะเลและฟ้า.ลาง 1",
@@ -6195,7 +6195,7 @@
     "col": "ลาง 1",
     "text": "ลมเปลี่ยนทิศสามครั้งในหนึ่งวัน และเรือประมงที่ออกไปไม่กลับมาครบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:340"
+    "src": "docs/systems/llm/06-god-templates.md:342"
    },
    {
     "id": "omen_event.●|ทะเลและฟ้า.ลาง 2",
@@ -6209,7 +6209,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:340"
+    "src": "docs/systems/llm/06-god-templates.md:342"
    },
    {
     "id": "omen_event.●|แผ่นดิน.ลาง 1",
@@ -6221,7 +6221,7 @@
     "col": "ลาง 1",
     "text": "ลำธารตื้นขึ้นทุกวันจนเด็ก ๆ เดินข้ามได้ ทั้งที่ฝนยังตก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:341"
+    "src": "docs/systems/llm/06-god-templates.md:343"
    },
    {
     "id": "omen_event.●|แผ่นดิน.ลาง 2",
@@ -6233,7 +6233,7 @@
     "col": "ลาง 2",
     "text": "ต้นไม้ใหญ่ริมถนนทิ้งใบก่อนฤดูโดยไม่มีโรค",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:341"
+    "src": "docs/systems/llm/06-god-templates.md:343"
    },
    {
     "id": "omen_event.○|มังกร.ลาง 1",
@@ -6245,7 +6245,7 @@
     "col": "ลาง 1",
     "text": "ผู้ปรนนิบัติบ่นว่ามังกรนอนไม่หลับช่วงนี้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:342"
+    "src": "docs/systems/llm/06-god-templates.md:344"
    },
    {
     "id": "omen_event.○|มังกร.ลาง 2",
@@ -6257,7 +6257,7 @@
     "col": "ลาง 2",
     "text": "ชาวบ้านบอกว่าเสียงคำรามในถ้ำเบากว่าเดิม ไม่มีใครรู้ว่าดีหรือร้าย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:342"
+    "src": "docs/systems/llm/06-god-templates.md:344"
    },
    {
     "id": "omen_event.○|สงคราม.ลาง 1",
@@ -6269,7 +6269,7 @@
     "col": "ลาง 1",
     "text": "พ่อค้าบ่นว่าด่านเก็บภาษีเข้มขึ้นกว่าเดิมเล็กน้อย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:343"
+    "src": "docs/systems/llm/06-god-templates.md:345"
    },
    {
     "id": "omen_event.○|สงคราม.ลาง 2",
@@ -6281,7 +6281,7 @@
     "col": "ลาง 2",
     "text": "ทหารเวรแจกแผ่นประกาศที่ไม่มีใครอ่านจบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:343"
+    "src": "docs/systems/llm/06-god-templates.md:345"
    },
    {
     "id": "omen_event.○|โรคและทุกข์ภัย.ลาง 1",
@@ -6293,7 +6293,7 @@
     "col": "ลาง 1",
     "text": "ข้าวแพงขึ้นนิดเดียว แต่แม่บ้านจำได้ทุกร้าน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:344"
+    "src": "docs/systems/llm/06-god-templates.md:346"
    },
    {
     "id": "omen_event.○|โรคและทุกข์ภัย.ลาง 2",
@@ -6305,7 +6305,7 @@
     "col": "ลาง 2",
     "text": "เด็กไอแห้ง ๆ มากกว่าปีก่อน แต่ยังไม่มีใครป่วยหนัก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:344"
+    "src": "docs/systems/llm/06-god-templates.md:346"
    },
    {
     "id": "omen_event.○|ศรัทธาและเทพ.ลาง 1",
@@ -6317,7 +6317,7 @@
     "col": "ลาง 1",
     "text": "ผู้คนวางดอกไม้หน้าศาลมากกว่าปกติโดยไม่มีวันสำคัญ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:345"
+    "src": "docs/systems/llm/06-god-templates.md:347"
    },
    {
     "id": "omen_event.○|ศรัทธาและเทพ.ลาง 2",
@@ -6329,7 +6329,7 @@
     "col": "ลาง 2",
     "text": "นักบวชหนุ่มเปลี่ยนบทสวดเล็กน้อยและไม่มีใครรู้เหตุผล",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:345"
+    "src": "docs/systems/llm/06-god-templates.md:347"
    },
    {
     "id": "omen_event.○|ทะเลและฟ้า.ลาง 1",
@@ -6341,7 +6341,7 @@
     "col": "ลาง 1",
     "text": "คลื่นเข้าฝั่งสูงกว่าที่ชาวประมงจำได้ แต่ไม่มีพายุ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:346"
+    "src": "docs/systems/llm/06-god-templates.md:348"
    },
    {
     "id": "omen_event.○|ทะเลและฟ้า.ลาง 2",
@@ -6353,7 +6353,7 @@
     "col": "ลาง 2",
     "text": "ฟ้าแลบเงียบ ๆ หนึ่งทีโดยไม่มีเสียงร้องตาม เด็ก ๆ เถียงกันว่าใครเห็นก่อน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:346"
+    "src": "docs/systems/llm/06-god-templates.md:348"
    },
    {
     "id": "omen_event.○|แผ่นดิน.ลาง 1",
@@ -6365,7 +6365,7 @@
     "col": "ลาง 1",
     "text": "ต้นไม้ผลิดอกก่อนเวลา ผึ้งมากผิดปกติ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:347"
+    "src": "docs/systems/llm/06-god-templates.md:349"
    },
    {
     "id": "omen_event.○|แผ่นดิน.ลาง 2",
@@ -6377,7 +6377,7 @@
     "col": "ลาง 2",
     "text": "ดินแตกระแหงแปลงเดียวกลางทุ่ง ส่วนที่เหลือยังชุ่ม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:347"
+    "src": "docs/systems/llm/06-god-templates.md:349"
    },
    {
     "id": "omen_miracle.MR-17 ดาวตก.ลาง 1",
@@ -6390,7 +6390,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:355"
+    "src": "docs/systems/llm/06-god-templates.md:357"
    },
    {
     "id": "omen_miracle.MR-17 ดาวตก.ลาง 2",
@@ -6401,7 +6401,7 @@
     "col": "ลาง 2",
     "text": "ผู้คนเริ่มเก็บของใส่เกวียน ยังไม่รู้ว่าจะหนีไปไหน แต่ไม่มีใครอยากนอนข้างนอก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:355"
+    "src": "docs/systems/llm/06-god-templates.md:357"
    },
    {
     "id": "omen_miracle.MR-18 แผ่นดินกลืนเมือง.ลาง 1",
@@ -6412,7 +6412,7 @@
     "col": "ลาง 1",
     "text": "น้ำในบ่อหายหมดทุกบ่อภายในสามวัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:356"
+    "src": "docs/systems/llm/06-god-templates.md:358"
    },
    {
     "id": "omen_miracle.MR-18 แผ่นดินกลืนเมือง.ลาง 2",
@@ -6423,7 +6423,7 @@
     "col": "ลาง 2",
     "text": "รอยร้าวเป็นวงกว้างล้อมเมืองโผล่กลางทุ่ง ชาวนากลัวจนไม่ยอมไถ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:356"
+    "src": "docs/systems/llm/06-god-templates.md:358"
    },
    {
     "id": "omen_miracle.MR-19 น้ำท่วมใหญ่.ลาง 1",
@@ -6434,7 +6434,7 @@
     "col": "ลาง 1",
     "text": "ปลาตายลอยเต็มฝั่งและน้ำขุ่นเป็นสีโคลน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:357"
+    "src": "docs/systems/llm/06-god-templates.md:359"
    },
    {
     "id": "omen_miracle.MR-19 น้ำท่วมใหญ่.ลาง 2",
@@ -6445,7 +6445,7 @@
     "col": "ลาง 2",
     "text": "นกน้ำบินขึ้นที่สูงทั้งฝูงและไม่ลงมาอีก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:357"
+    "src": "docs/systems/llm/06-god-templates.md:359"
    },
    {
     "id": "omen_miracle.MR-20 ยกแผ่นดินใหม่.ลาง 1",
@@ -6456,7 +6456,7 @@
     "col": "ลาง 1",
     "text": "ทะเลนอกชายฝั่งเดือดเป็นจุดและฟองขาวลอยทั่ว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:358"
+    "src": "docs/systems/llm/06-god-templates.md:360"
    },
    {
     "id": "omen_miracle.MR-20 ยกแผ่นดินใหม่.ลาง 2",
@@ -6469,7 +6469,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:358"
+    "src": "docs/systems/llm/06-god-templates.md:360"
    },
    {
     "id": "omen_miracle.MR-21 ปาฏิหาริย์แห่งพระเจ้า.ลาง 1",
@@ -6480,7 +6480,7 @@
     "col": "ลาง 1",
     "text": "ทุกคนฝันคืนเดียวกัน ตื่นมาจำไม่ได้ว่าฝันอะไร มีแต่ใจที่โล่งผิดปกติ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:359"
+    "src": "docs/systems/llm/06-god-templates.md:361"
    },
    {
     "id": "omen_miracle.MR-21 ปาฏิหาริย์แห่งพระเจ้า.ลาง 2",
@@ -6491,7 +6491,7 @@
     "col": "ลาง 2",
     "text": "นกทุกฝูงบินวนเหนือศาลของทุกศาสนาและไม่ยอมลง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:359"
+    "src": "docs/systems/llm/06-god-templates.md:361"
    },
    {
     "id": "omen_miracle.MR-22 พระพิโรธ.ลาง 1",
@@ -6504,7 +6504,7 @@
     "slots": [
      "ทวีป"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:360"
+    "src": "docs/systems/llm/06-god-templates.md:362"
    },
    {
     "id": "omen_miracle.MR-22 พระพิโรธ.ลาง 2",
@@ -6515,7 +6515,7 @@
     "col": "ลาง 2",
     "text": "ไม่มีเสียงนกทั้งเมือง ทุกคนพูดเบาลงโดยไม่ได้นัดกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:360"
+    "src": "docs/systems/llm/06-god-templates.md:362"
    },
    {
     "id": "chest_reason.ตรงกับโหนดเส้นเรื่องที่จะถึง (×3).แบบ 1",
@@ -6528,7 +6528,7 @@
     "slots": [
      "เรื่องที่จะถึง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:368"
+    "src": "docs/systems/llm/06-god-templates.md:370"
    },
    {
     "id": "chest_reason.ตรงกับโหนดเส้นเรื่องที่จะถึง (×3).แบบ 2",
@@ -6541,7 +6541,7 @@
     "slots": [
      "เรื่องที่จะถึง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:368"
+    "src": "docs/systems/llm/06-god-templates.md:370"
    },
    {
     "id": "chest_reason.ตรงกับโหนดเส้นเรื่องที่จะถึง (×3).แบบ 3",
@@ -6554,7 +6554,7 @@
     "slots": [
      "เรื่องที่จะถึง"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:368"
+    "src": "docs/systems/llm/06-god-templates.md:370"
    },
    {
     "id": "chest_reason.ตรงกับอาชีพ ความถนัด หรือสัตว์คู่หู (×2).แบบ 1",
@@ -6567,7 +6567,7 @@
     "slots": [
      "อาชีพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:369"
+    "src": "docs/systems/llm/06-god-templates.md:371"
    },
    {
     "id": "chest_reason.ตรงกับอาชีพ ความถนัด หรือสัตว์คู่หู (×2).แบบ 2",
@@ -6580,7 +6580,7 @@
     "slots": [
      "ความถนัด"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:369"
+    "src": "docs/systems/llm/06-god-templates.md:371"
    },
    {
     "id": "chest_reason.ตรงกับอาชีพ ความถนัด หรือสัตว์คู่หู (×2).แบบ 3",
@@ -6593,7 +6593,7 @@
     "slots": [
      "สัตว์คู่หู"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:369"
+    "src": "docs/systems/llm/06-god-templates.md:371"
    },
    {
     "id": "chest_reason.ตรงกับถิ่นที่อยู่ (×1.5).แบบ 1",
@@ -6606,7 +6606,7 @@
     "slots": [
      "ชื่อของที่นี่"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:370"
+    "src": "docs/systems/llm/06-god-templates.md:372"
    },
    {
     "id": "chest_reason.ตรงกับถิ่นที่อยู่ (×1.5).แบบ 2",
@@ -6619,7 +6619,7 @@
     "slots": [
      "ทวีป"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:370"
+    "src": "docs/systems/llm/06-god-templates.md:372"
    },
    {
     "id": "chest_reason.ตรงกับถิ่นที่อยู่ (×1.5).แบบ 3",
@@ -6630,7 +6630,7 @@
     "col": "แบบ 3",
     "text": "ถิ่นนี้ขาดสิ่งนี้มานาน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:370"
+    "src": "docs/systems/llm/06-god-templates.md:372"
    },
    {
     "id": "chest_reason.ตรงกับเหตุการณ์โลกที่เพิ่งเกิดหรือมีลาง (×2).แบบ 1",
@@ -6643,7 +6643,7 @@
     "slots": [
      "เหตุการณ์โลก"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:371"
+    "src": "docs/systems/llm/06-god-templates.md:373"
    },
    {
     "id": "chest_reason.ตรงกับเหตุการณ์โลกที่เพิ่งเกิดหรือมีลาง (×2).แบบ 2",
@@ -6656,7 +6656,7 @@
     "slots": [
      "เหตุการณ์โลก"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:371"
+    "src": "docs/systems/llm/06-god-templates.md:373"
    },
    {
     "id": "chest_reason.ตรงกับเหตุการณ์โลกที่เพิ่งเกิดหรือมีลาง (×2).แบบ 3",
@@ -6669,7 +6669,7 @@
     "slots": [
      "เหตุการณ์โลก"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:371"
+    "src": "docs/systems/llm/06-god-templates.md:373"
    },
    {
     "id": "chest_reason.ระดับ E และ L ในยุค 3 และ 4 (×1.5).แบบ 1",
@@ -6680,7 +6680,7 @@
     "col": "แบบ 1",
     "text": "ในยุคนี้ของล้ำค่าหลุดมาถึงมือคนง่ายขึ้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:372"
+    "src": "docs/systems/llm/06-god-templates.md:374"
    },
    {
     "id": "chest_reason.ระดับ E และ L ในยุค 3 และ 4 (×1.5).แบบ 2",
@@ -6691,7 +6691,7 @@
     "col": "แบบ 2",
     "text": "ยุคที่มังกรล้มมากอย่างนี้ ทำให้ของหายากโผล่ออกมาจากที่ซ่อน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:372"
+    "src": "docs/systems/llm/06-god-templates.md:374"
    },
    {
     "id": "chest_reason.ระดับ E และ L ในยุค 3 และ 4 (×1.5).แบบ 3",
@@ -6702,7 +6702,7 @@
     "col": "แบบ 3",
     "text": "ยุคมืดทำให้ของที่หลับมานานตื่นขึ้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:372"
+    "src": "docs/systems/llm/06-god-templates.md:374"
    },
    {
     "id": "chest_reason.ศรัทธาเทพสูง (×1.3 พรระดับ R ขึ้นไป).แบบ 1",
@@ -6713,7 +6713,7 @@
     "col": "แบบ 1",
     "text": "เขาเชื่อท่านมากพอที่พรระดับสูงจะมาถึงเขา",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:373"
+    "src": "docs/systems/llm/06-god-templates.md:375"
    },
    {
     "id": "chest_reason.ศรัทธาเทพสูง (×1.3 พรระดับ R ขึ้นไป).แบบ 2",
@@ -6724,7 +6724,7 @@
     "col": "แบบ 2",
     "text": "ใจของเขาเปิดให้ท่านกว้างกว่าเคย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:373"
+    "src": "docs/systems/llm/06-god-templates.md:375"
    },
    {
     "id": "chest_reason.ศรัทธาเทพสูง (×1.3 พรระดับ R ขึ้นไป).แบบ 3",
@@ -6735,7 +6735,7 @@
     "col": "แบบ 3",
     "text": "ศรัทธาของเขาทำให้พรใหญ่เข้าใกล้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:373"
+    "src": "docs/systems/llm/06-god-templates.md:375"
    },
    {
     "id": "chest_reason.ศรัทธาเทพต่ำ (×1.3 คำสาประดับ R ขึ้นไป).แบบ 1",
@@ -6746,7 +6746,7 @@
     "col": "แบบ 1",
     "text": "ความชิงชังของเขาสะสมจนคำสาปแรงขึ้นมาได้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:374"
+    "src": "docs/systems/llm/06-god-templates.md:376"
    },
    {
     "id": "chest_reason.ศรัทธาเทพต่ำ (×1.3 คำสาประดับ R ขึ้นไป).แบบ 2",
@@ -6757,7 +6757,7 @@
     "col": "แบบ 2",
     "text": "ใจที่ปิดต่อท่านเปิดทางให้คำสาปหนักขึ้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:374"
+    "src": "docs/systems/llm/06-god-templates.md:376"
    },
    {
     "id": "chest_reason.ศรัทธาเทพต่ำ (×1.3 คำสาประดับ R ขึ้นไป).แบบ 3",
@@ -6768,7 +6768,7 @@
     "col": "แบบ 3",
     "text": "ความขมในใจเขาทำให้สิ่งนี้เข้าถึงตัวได้ง่ายขึ้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:374"
+    "src": "docs/systems/llm/06-god-templates.md:376"
    },
    {
     "id": "chest_reason.ช่องคำสาปเมื่อกำลังอยู่ในศึก (×2).แบบ 1",
@@ -6779,7 +6779,7 @@
     "col": "แบบ 1",
     "text": "ใช้กับศัตรูตรงหน้าได้เลย",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:375"
+    "src": "docs/systems/llm/06-god-templates.md:377"
    },
    {
     "id": "chest_reason.ช่องคำสาปเมื่อกำลังอยู่ในศึก (×2).แบบ 2",
@@ -6790,7 +6790,7 @@
     "col": "แบบ 2",
     "text": "ศึกกำลังเดือด คำสาปนี้เล็งที่ศัตรูได้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:375"
+    "src": "docs/systems/llm/06-god-templates.md:377"
    },
    {
     "id": "chest_reason.ช่องคำสาปเมื่อกำลังอยู่ในศึก (×2).แบบ 3",
@@ -6801,7 +6801,7 @@
     "col": "แบบ 3",
     "text": "ศัตรูตรงหน้าเป็นพวกที่คำสาปแบบนี้ได้ผลดี",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:375"
+    "src": "docs/systems/llm/06-god-templates.md:377"
    },
    {
     "id": "chest_reason.ตัวชดเชยความหายาก.แบบ 1",
@@ -6812,7 +6812,7 @@
     "col": "แบบ 1",
     "text": "หีบก่อนหน้าไม่มีของดี หีบนี้จึงมีโอกาสมากขึ้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:376"
+    "src": "docs/systems/llm/06-god-templates.md:378"
    },
    {
     "id": "chest_reason.ตัวชดเชยความหายาก.แบบ 2",
@@ -6823,7 +6823,7 @@
     "col": "แบบ 2",
     "text": "ท่านไม่ได้ของดีมาหลายใบ หีบนี้ชดเชยให้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:376"
+    "src": "docs/systems/llm/06-god-templates.md:378"
    },
    {
     "id": "chest_reason.ตัวชดเชยความหายาก.แบบ 3",
@@ -6834,7 +6834,7 @@
     "col": "แบบ 3",
     "text": "ความหายากที่ค้างมาจากหีบก่อน ๆ ถูกเพิ่มให้ใบนี้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:376"
+    "src": "docs/systems/llm/06-god-templates.md:378"
    },
    {
     "id": "chest_reason.หีบที่หน้าต่างพระเจ้า.แบบ 1",
@@ -6845,7 +6845,7 @@
     "col": "แบบ 1",
     "text": "หน้าต่างนี้ระบุของชิ้นนี้ไว้ จึงไม่ใช่การสุ่ม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:377"
+    "src": "docs/systems/llm/06-god-templates.md:379"
    },
    {
     "id": "chest_reason.หีบที่หน้าต่างพระเจ้า.แบบ 2",
@@ -6856,7 +6856,7 @@
     "col": "แบบ 2",
     "text": "เรื่องของเขากำหนดไว้ว่าต้องมีสิ่งนี้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:377"
+    "src": "docs/systems/llm/06-god-templates.md:379"
    },
    {
     "id": "chest_reason.หีบที่หน้าต่างพระเจ้า.แบบ 3",
@@ -6867,7 +6867,7 @@
     "col": "แบบ 3",
     "text": "สิ่งนี้ถูกเขียนไว้ในหน้าต่างนี้แล้ว",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:377"
+    "src": "docs/systems/llm/06-god-templates.md:379"
    },
    {
     "id": "chest_reason.หีบจากคำอธิษฐาน.แบบ 1",
@@ -6878,7 +6878,7 @@
     "col": "แบบ 1",
     "text": "ตรงกับคำที่เขาสวดไว้",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:378"
+    "src": "docs/systems/llm/06-god-templates.md:380"
    },
    {
     "id": "chest_reason.หีบจากคำอธิษฐาน.แบบ 2",
@@ -6889,7 +6889,7 @@
     "col": "แบบ 2",
     "text": "สิ่งนี้ตอบคำขอของเขาในอีกแบบ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:378"
+    "src": "docs/systems/llm/06-god-templates.md:380"
    },
    {
     "id": "chest_reason.หีบจากคำอธิษฐาน.แบบ 3",
@@ -6900,7 +6900,7 @@
     "col": "แบบ 3",
     "text": "ช่วยเรื่องเดียวกับที่เขาอธิษฐานถึง",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:378"
+    "src": "docs/systems/llm/06-god-templates.md:380"
    },
    {
     "id": "miracle_day.ให้กำเนิด.จังหวะ 1 นิ่ง",
@@ -6913,7 +6913,7 @@
     "slots": [
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:388"
+    "src": "docs/systems/llm/06-god-templates.md:390"
    },
    {
     "id": "miracle_day.ให้กำเนิด.จังหวะ 2 ลางสุดท้าย",
@@ -6924,7 +6924,7 @@
     "col": "จังหวะ 2 ลางสุดท้าย",
     "text": "จุดแสงเล็กจุดหนึ่งปรากฏกลางแผนที่ เหมือนเมล็ดที่ยังไม่แตก",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:388"
+    "src": "docs/systems/llm/06-god-templates.md:390"
    },
    {
     "id": "miracle_day.ให้กำเนิด.จังหวะ 3 สิ่งที่เกิด",
@@ -6937,7 +6937,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:388"
+    "src": "docs/systems/llm/06-god-templates.md:390"
    },
    {
     "id": "miracle_day.ให้กำเนิด.จังหวะ 4 หลังเหตุ",
@@ -6948,7 +6948,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "ฝุ่นแสงตกลงทีละเม็ด ผู้คนยื่นมือรับโดยไม่รู้ว่าทำไม",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:388"
+    "src": "docs/systems/llm/06-god-templates.md:390"
    },
    {
     "id": "miracle_day.ให้กำเนิด.จังหวะ 5 ชื่อ",
@@ -6962,7 +6962,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:388"
+    "src": "docs/systems/llm/06-god-templates.md:390"
    },
    {
     "id": "miracle_day.ทำลาย.จังหวะ 1 นิ่ง",
@@ -6975,7 +6975,7 @@
     "slots": [
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:389"
+    "src": "docs/systems/llm/06-god-templates.md:391"
    },
    {
     "id": "miracle_day.ทำลาย.จังหวะ 2 ลางสุดท้าย",
@@ -6988,7 +6988,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:389"
+    "src": "docs/systems/llm/06-god-templates.md:391"
    },
    {
     "id": "miracle_day.ทำลาย.จังหวะ 3 สิ่งที่เกิด",
@@ -7002,7 +7002,7 @@
      "ภาพ",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:389"
+    "src": "docs/systems/llm/06-god-templates.md:391"
    },
    {
     "id": "miracle_day.ทำลาย.จังหวะ 4 หลังเหตุ",
@@ -7013,7 +7013,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "ฝุ่นและเถ้าลอยค้างแล้วตกลงเป็นชั้น ๆ ไม่มีใครพูด",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:389"
+    "src": "docs/systems/llm/06-god-templates.md:391"
    },
    {
     "id": "miracle_day.ทำลาย.จังหวะ 5 ชื่อ",
@@ -7027,7 +7027,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:389"
+    "src": "docs/systems/llm/06-god-templates.md:391"
    },
    {
     "id": "miracle_day.เปลี่ยน.จังหวะ 1 นิ่ง",
@@ -7038,7 +7038,7 @@
     "col": "จังหวะ 1 นิ่ง",
     "text": "ภาพค้าง เส้นขอบของทุกสิ่งสั่นเหมือนผ้าบนผิวน้ำ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:390"
+    "src": "docs/systems/llm/06-god-templates.md:392"
    },
    {
     "id": "miracle_day.เปลี่ยน.จังหวะ 2 ลางสุดท้าย",
@@ -7051,7 +7051,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:390"
+    "src": "docs/systems/llm/06-god-templates.md:392"
    },
    {
     "id": "miracle_day.เปลี่ยน.จังหวะ 3 สิ่งที่เกิด",
@@ -7064,7 +7064,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:390"
+    "src": "docs/systems/llm/06-god-templates.md:392"
    },
    {
     "id": "miracle_day.เปลี่ยน.จังหวะ 4 หลังเหตุ",
@@ -7075,7 +7075,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "สิ่งใหม่ยังอุ่น ผู้คนมองมันนานโดยไม่มีใครกล้าแตะ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:390"
+    "src": "docs/systems/llm/06-god-templates.md:392"
    },
    {
     "id": "miracle_day.เปลี่ยน.จังหวะ 5 ชื่อ",
@@ -7089,7 +7089,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:390"
+    "src": "docs/systems/llm/06-god-templates.md:392"
    },
    {
     "id": "miracle_day.ปลุก.จังหวะ 1 นิ่ง",
@@ -7100,7 +7100,7 @@
     "col": "จังหวะ 1 นิ่ง",
     "text": "ทุกอย่างหยุด เว้นสิ่งหนึ่งในภาพที่ยังหายใจช้า ๆ",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:391"
+    "src": "docs/systems/llm/06-god-templates.md:393"
    },
    {
     "id": "miracle_day.ปลุก.จังหวะ 2 ลางสุดท้าย",
@@ -7113,7 +7113,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:391"
+    "src": "docs/systems/llm/06-god-templates.md:393"
    },
    {
     "id": "miracle_day.ปลุก.จังหวะ 3 สิ่งที่เกิด",
@@ -7126,7 +7126,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:391"
+    "src": "docs/systems/llm/06-god-templates.md:393"
    },
    {
     "id": "miracle_day.ปลุก.จังหวะ 4 หลังเหตุ",
@@ -7137,7 +7137,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "ลมหายใจแรงของสิ่งนั้นพัดผ่านผู้คน ทุกคนเงยหน้าพร้อมกัน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:391"
+    "src": "docs/systems/llm/06-god-templates.md:393"
    },
    {
     "id": "miracle_day.ปลุก.จังหวะ 5 ชื่อ",
@@ -7151,7 +7151,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:391"
+    "src": "docs/systems/llm/06-god-templates.md:393"
    },
    {
     "id": "miracle_day.สงบ.จังหวะ 1 นิ่ง",
@@ -7164,7 +7164,7 @@
     "slots": [
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:392"
+    "src": "docs/systems/llm/06-god-templates.md:394"
    },
    {
     "id": "miracle_day.สงบ.จังหวะ 2 ลางสุดท้าย",
@@ -7177,7 +7177,7 @@
     "slots": [
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:392"
+    "src": "docs/systems/llm/06-god-templates.md:394"
    },
    {
     "id": "miracle_day.สงบ.จังหวะ 3 สิ่งที่เกิด",
@@ -7190,7 +7190,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:392"
+    "src": "docs/systems/llm/06-god-templates.md:394"
    },
    {
     "id": "miracle_day.สงบ.จังหวะ 4 หลังเหตุ",
@@ -7201,7 +7201,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "ผู้คนหยุดและถอนหายใจพร้อมกัน ไหล่ลดลงหนึ่งขั้น",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:392"
+    "src": "docs/systems/llm/06-god-templates.md:394"
    },
    {
     "id": "miracle_day.สงบ.จังหวะ 5 ชื่อ",
@@ -7215,7 +7215,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:392"
+    "src": "docs/systems/llm/06-god-templates.md:394"
    },
    {
     "id": "miracle_day.เผย.จังหวะ 1 นิ่ง",
@@ -7226,7 +7226,7 @@
     "col": "จังหวะ 1 นิ่ง",
     "text": "ภาพค้างหนึ่งเฟรม แล้วมีเส้นบางพาดผ่านเหมือนม่าน",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:393"
+    "src": "docs/systems/llm/06-god-templates.md:395"
    },
    {
     "id": "miracle_day.เผย.จังหวะ 2 ลางสุดท้าย",
@@ -7239,7 +7239,7 @@
     "slots": [
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:393"
+    "src": "docs/systems/llm/06-god-templates.md:395"
    },
    {
     "id": "miracle_day.เผย.จังหวะ 3 สิ่งที่เกิด",
@@ -7252,7 +7252,7 @@
     "slots": [
      "ภาพ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:393"
+    "src": "docs/systems/llm/06-god-templates.md:395"
    },
    {
     "id": "miracle_day.เผย.จังหวะ 4 หลังเหตุ",
@@ -7263,7 +7263,7 @@
     "col": "จังหวะ 4 หลังเหตุ",
     "text": "ผู้คนมองสิ่งที่เพิ่งเห็นเป็นครั้งแรก และรู้ว่ามันอยู่ตรงนั้นมาตลอด",
     "slots": [],
-    "src": "docs/systems/llm/06-god-templates.md:393"
+    "src": "docs/systems/llm/06-god-templates.md:395"
    },
    {
     "id": "miracle_day.เผย.จังหวะ 5 ชื่อ",
@@ -7277,7 +7277,7 @@
      "ชื่อปาฏิหาริย์",
      "ที่เกิดเหตุ"
     ],
-    "src": "docs/systems/llm/06-god-templates.md:393"
+    "src": "docs/systems/llm/06-god-templates.md:395"
    }
   ],
   "lists": [
@@ -7321,7 +7321,7 @@
       "เงามืด"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:399"
+    "src": "docs/systems/llm/06-god-templates.md:401"
    },
    {
     "id": "tribe_groups",
@@ -7399,7 +7399,7 @@
       "ตัวละครอยู่ในศึกหรือก่อนศึกที่ทัพรวมพลแล้ว"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:210"
+    "src": "docs/systems/llm/06-god-templates.md:212"
    }
   ],
   "tables": [
@@ -8170,7 +8170,7 @@
       "\"ข้าไม่ใช่เครื่องมือของเทพองค์ไหน\" {ชื่อตัวละคร} พูดกับท้องฟ้า แล้วหันหลังให้{ชื่อทาง}"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:172"
+    "src": "docs/systems/llm/06-god-templates.md:174"
    },
    {
     "headings": [
@@ -8231,7 +8231,7 @@
       "{ชื่อตัวละคร} คิดว่าภูเขาคือสิ่งกีดขวางที่ต้องข้าม จึงไม่ยอมอยู่ที่เดิม ไป{ชื่อทางอื่น}แทน"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:181"
+    "src": "docs/systems/llm/06-god-templates.md:183"
    },
    {
     "headings": [
@@ -8260,7 +8260,7 @@
       "คนรอบตัวสังเกตก่อนเขา: {ชื่อตัวละคร} ไม่ใช่คนเดิมแล้ว {นิสัย}เก่าถูกแทนด้วย{นิสัยใหม่}"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:200"
+    "src": "docs/systems/llm/06-god-templates.md:202"
    },
    {
     "headings": [
@@ -8284,7 +8284,7 @@
       "ตัวละครอยู่ในศึกหรือก่อนศึกที่ทัพรวมพลแล้ว"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:210"
+    "src": "docs/systems/llm/06-god-templates.md:212"
    },
    {
     "headings": [
@@ -8488,7 +8488,7 @@
       "เศษเหล็กชิ้นเล็กกระเด็นมาตกในมือของเด็กหนุ่มที่ยืนหลังแนว"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:216"
+    "src": "docs/systems/llm/06-god-templates.md:218"
    },
    {
     "headings": [
@@ -8587,7 +8587,7 @@
       "ลูกไอเบา ๆ ในห้องนอน แม่ลุกขึ้นกลางดึกและสวดคำเดิมซ้ำทั้งคืน"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:254"
+    "src": "docs/systems/llm/06-god-templates.md:256"
    },
    {
     "headings": [
@@ -8686,7 +8686,7 @@
       "ลูกยังเป็นหวัดตามประสาเด็ก แต่หญิงชราข้างบ้านแวะมาเยี่ยม และสอนแม่วิธีต้มน้ำสมุนไพรประจำฤดู"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:278"
+    "src": "docs/systems/llm/06-god-templates.md:280"
    },
    {
     "headings": [
@@ -8803,7 +8803,7 @@
       "ธูปหมดดอกโดยไม่มีอะไรตอบ แม่จุดอีกดอก และอีกดอก จนเช้า"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:300"
+    "src": "docs/systems/llm/06-god-templates.md:302"
    },
    {
     "headings": [
@@ -8926,7 +8926,7 @@
       "ดินแตกระแหงแปลงเดียวกลางทุ่ง ส่วนที่เหลือยังชุ่ม"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:328"
+    "src": "docs/systems/llm/06-god-templates.md:330"
    },
    {
     "headings": [
@@ -8970,7 +8970,7 @@
       "ไม่มีเสียงนกทั้งเมือง ทุกคนพูดเบาลงโดยไม่ได้นัดกัน"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:353"
+    "src": "docs/systems/llm/06-god-templates.md:355"
    },
    {
     "headings": [
@@ -9050,7 +9050,7 @@
       "ช่วยเรื่องเดียวกับที่เขาอธิษฐานถึง"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:366"
+    "src": "docs/systems/llm/06-god-templates.md:368"
    },
    {
     "headings": [
@@ -9115,7 +9115,7 @@
       "ชื่อ \"{ชื่อปาฏิหาริย์}\" ถูกเขียนด้วยสีเงินเหนือ{ที่เกิดเหตุ}"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:386"
+    "src": "docs/systems/llm/06-god-templates.md:388"
    },
    {
     "headings": [
@@ -9160,7 +9160,7 @@
       "เงามืด"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:399"
+    "src": "docs/systems/llm/06-god-templates.md:401"
    },
    {
     "headings": [
@@ -9244,7 +9244,7 @@
       "1"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:418"
+    "src": "docs/systems/llm/06-god-templates.md:420"
    },
    {
     "headings": [
@@ -9281,7 +9281,7 @@
       "บรรทัดของหัวข้อ 3 และ 5 ที่เอ่ยถึงทะเล ชายฝั่ง เรือ หรือคลื่น ใช้เฉพาะเมื่อที่ที่ตัวละครอยู่ติดทะเล ถ้าไม่ติด เกมข้ามบรรทัดนั้นไปแบบอื่นของชุด ทุกชุดในสองหัวข้อนี้มีแบบที่เข้ากับที่ไกลทะเลอย่างน้อยหนึ่งแบบ"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:437"
+    "src": "docs/systems/llm/06-god-templates.md:439"
    },
    {
     "headings": [
@@ -9338,7 +9338,7 @@
       "ปาฏิหาริย์ในรายการใช้ชื่อของตัวเอง เสกตามใจใช้ชื่อจากทะเบียน ([03-naming.md](03-naming.md))"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:448"
+    "src": "docs/systems/llm/06-god-templates.md:450"
    },
    {
     "headings": [
@@ -9379,7 +9379,7 @@
       "ฉากของตัวเอง ก่อนฉากของแบบใกล้ที่สุดในสายเดียวกัน ก่อนแม่แบบกริยา (หัวข้อ 8.5)"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:464"
+    "src": "docs/systems/llm/06-god-templates.md:466"
    },
    {
     "headings": [
@@ -9433,7 +9433,7 @@
       "สายทำลายระดับใหญ่ ที่ดินจมลงในน้ำ"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:478"
+    "src": "docs/systems/llm/06-god-templates.md:480"
    },
    {
     "headings": [
@@ -9526,7 +9526,7 @@
       "**539**"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:491"
+    "src": "docs/systems/llm/06-god-templates.md:493"
    },
    {
     "headings": [
@@ -9550,7 +9550,7 @@
       "ไม่มีตัวเลขผลหรือรหัสในข้อความ ยกเว้นชื่อปาฏิหาริย์ในตารางหัวข้อ 5.2"
      ]
     ],
-    "src": "docs/systems/llm/06-god-templates.md:514"
+    "src": "docs/systems/llm/06-god-templates.md:516"
    }
   ]
  }

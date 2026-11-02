@@ -1,5 +1,5 @@
 {
- "version": "8b197d00bc18",
+ "version": "8738a044c061",
  "sources": [
   "docs/lore/religions/README.md",
   "docs/systems/character/18-fates.md"
@@ -46,11 +46,22 @@
      22,
      45
     ],
-    "eligible": "มีสหายหรือคู่หูระดับ 3 ขึ้นไป",
+    "eligible": "สายสหายระดับ 3 ขึ้นไป หรือ สายคู่หูระดับ 3 ขึ้นไป",
     "eligibleCond": [
      {
-      "k": "text",
-      "text": "สหายหรือคู่หูระดับ 3 ขึ้นไป"
+      "k": "or",
+      "of": [
+       {
+        "k": "bond",
+        "line": "สหาย",
+        "level": 3
+       },
+       {
+        "k": "bond",
+        "line": "คู่หู",
+        "level": 3
+       }
+      ]
      }
     ],
     "eligibleNotes": [],
@@ -283,14 +294,15 @@
      20,
      60
     ],
-    "eligible": "มีคู่แข่ง หรือ NPC ที่แกนแค้นต่อเขา 2 ขึ้นไป ถ้าไม่มีเมื่อถึงอายุ คู่อาฆาตมาจากศึกที่เขาชนะในวัยรุ่น",
+    "eligible": "สายคู่แข่งระดับ 1 ขึ้นไป หรือ NPC ที่แกนแค้นต่อเขา 2 ขึ้นไป ถ้าไม่มีเมื่อถึงอายุ คู่อาฆาตมาจากศึกที่เขาชนะในวัยรุ่น",
     "eligibleCond": [
      {
       "k": "or",
       "of": [
        {
-        "k": "text",
-        "text": "คู่แข่ง"
+        "k": "bond",
+        "line": "คู่แข่ง",
+        "level": 1
        },
        {
         "k": "text",
@@ -331,14 +343,51 @@
      15,
      55
     ],
-    "eligible": "อยู่ชายฝั่ง มีอาชีพทางทะเล หรือข้ามทะเลในช่วงอายุ ถ้าไม่เคยลงเรือ ชะตาจางไปตามข้อ 8",
+    "eligible": "ถิ่นติดทะเล หรือ อาชีพ fisher หรือ อาชีพ sailor หรือ อาชีพ pirate หรือ อาชีพ navigator หรือ อาชีพ shipowner หรือ อาชีพ lighthouse_keeper หรือ อาชีพ shipwright หรือ ข้ามทะเลในช่วงอายุ ถ้าไม่เคยลงเรือ ชะตาจางไปตามข้อ 8",
     "eligibleCond": [
      {
       "k": "or",
       "of": [
        {
-        "k": "text",
-        "text": "อยู่ชายฝั่ง มีอาชีพทางทะเล"
+        "k": "place",
+        "kinds": [
+         "coast"
+        ]
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "fisher"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "sailor"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "pirate"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "navigator"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "shipowner"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "lighthouse_keeper"
+       },
+       {
+        "k": "has",
+        "kind": "job",
+        "id": "shipwright"
        },
        {
         "k": "text",
@@ -364,7 +413,15 @@
      "events": [],
      "countries": [],
      "nodes": [],
-     "ids": []
+     "ids": [
+      "fisher",
+      "sailor",
+      "pirate",
+      "navigator",
+      "shipowner",
+      "lighthouse_keeper",
+      "shipwright"
+     ]
     },
     "src": "docs/systems/character/18-fates.md:48"
    },
@@ -652,32 +709,25 @@
      22,
      45
     ],
-    "eligible": "มีคู่ชีวิตและเผ่าที่มีลูกได้ (ไม่ใช่หุ่นวิญญาณ มัมมี่ กูล · สไลม์ใช้การแบ่งตัว)",
+    "eligible": "มีคู่ชีวิต · ไม่ใช่หุ่นวิญญาณ มัมมี่ กูล (เผ่าที่มีลูกได้ สไลม์ใช้การแบ่งตัว)",
     "eligibleCond": [
      {
-      "k": "and",
-      "of": [
-       {
-        "k": "text",
-        "text": "คู่ชีวิตและเผ่าที่มีลูกได้"
-       },
-       {
-        "k": "not",
-        "of": {
-         "k": "race",
-         "ids": [
-          "soulmachine",
-          "mummy",
-          "ghoul"
-         ]
-        }
-       }
-      ]
+      "k": "text",
+      "text": "คู่ชีวิต"
+     },
+     {
+      "k": "not",
+      "of": {
+       "k": "race",
+       "ids": [
+        "soulmachine",
+        "mummy",
+        "ghoul"
+       ]
+      }
      }
     ],
-    "eligibleNotes": [
-     "สไลม์ใช้การแบ่งตัว"
-    ],
+    "eligibleNotes": [],
     "omen": "ดาวดวงใหม่ปรากฏบนฟ้า",
     "question": "ลูกคนนี้จะสืบอะไรจากเขา",
     "outcomes": [

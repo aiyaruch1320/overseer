@@ -289,7 +289,7 @@ describe('the generator', () => {
     expect(b).toEqual(a);
     expect(rep.group).toBe('events');
     expect(rep.files).toEqual(['world-events.json', 'local-events.json']);
-    expect(rep.strict).toBe(false);
+    expect(rep.strict).toBe(true); // on since M0-c2
   });
   it('keeps the unparsed report equal to the count it returns', () => {
     const rep = run();

@@ -1,5 +1,5 @@
 {
- "version": "4e3a70072af5",
+ "version": "9935eea5a926",
  "sources": [
   "docs/systems/character/01-origin.md"
  ],
@@ -2238,12 +2238,17 @@
     "name": "ผู้ลี้ภัย",
     "start": [
      {
+      "k": "statMul",
+      "stat": "ทองเริ่มต้น",
+      "mul": 0
+     },
+     {
       "k": "trust",
       "toward": "ผู้ช่วยเหลือ",
       "delta": 1
      }
     ],
-    "startText": "ทองเริ่มต้น 0 · ไว้ใจผู้ช่วยเหลือ +1",
+    "startText": "ทองเริ่มต้น ×0 · ไว้ใจผู้ช่วยเหลือ +1",
     "hbText": "ทาง ข ×1.5 (อีกฝ่ายตายหรือพลัดพราก)",
     "hbMul": [
      {
@@ -2985,7 +2990,7 @@
     "clashes": [
      "winged"
     ],
-    "effect": "โอกาส 25% ได้พร nb_eclipse_born ใน [05-new-blessings.md](05-new-blessings.md) และมีโอกาสได้คำสาปเงา c_shadow",
+    "effect": "โอกาส 25% ได้พร nb_eclipse_born ใน [05-new-blessings.md](05-new-blessings.md) และโอกาส 15% ได้คำสาปเงา c_shadow",
     "likesText": "แวมไพร์ ดาร์กเอลฟ์ เผ่าปีศาจ",
     "clashesText": "เผ่าปีก เอลฟ์ฟ้า",
     "fx": [
@@ -2998,7 +3003,8 @@
      {
       "k": "grant",
       "kind": "curse",
-      "id": "c_shadow"
+      "id": "c_shadow",
+      "chance": 0.15
      }
     ]
    },

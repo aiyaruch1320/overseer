@@ -32,7 +32,7 @@ describe('storyline generator (code-plan §5.1 row 1)', () => {
   it('reports itself and writes both files', () => {
     expect(report.group).toBe('storylines');
     expect(report.files).toEqual(['storylines.json', 'convergence.json']);
-    expect(report.strict).toBe(false); // the lead turns this on after M0-ค
+    expect(report.strict).toBe(true); // turned on when M0-c2 brought the docs to zero
     // phrases the grammar did not read (the text conditions that are left are counted apart, see the H2 M1 tests)
     const md = readFileSync(path.join(genDir, '_unparsed/storylines.md'), 'utf8');
     const textCount = md.split('\n').filter((l) => l.endsWith('| text in condition |')).length;

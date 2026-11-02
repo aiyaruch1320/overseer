@@ -1,5 +1,5 @@
 {
- "version": "aaca06f47f33",
+ "version": "c6678c003d87",
  "sources": [
   "docs/systems/combat/07-npc-clashes.md"
  ],
@@ -155,7 +155,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:87"
+      "src": "docs/systems/combat/07-npc-clashes.md:99"
      },
      {
       "outcome": "ชนะ (เขายอมแพ้)",
@@ -179,7 +179,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:88"
+      "src": "docs/systems/combat/07-npc-clashes.md:100"
      },
      {
       "outcome": "ชนะ (ดวลถึงตาย)",
@@ -206,24 +206,24 @@
         "id": "AZ02-4"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:89"
+      "src": "docs/systems/combat/07-npc-clashes.md:101"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาประกาศเสมอตามกติกา ดวลซ้ำได้ปีหน้า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:90"
+      "src": "docs/systems/combat/07-npc-clashes.md:102"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขารับการยอมแพ้ ไม่ทอยบาดแผลถาวร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:91"
+      "src": "docs/systems/combat/07-npc-clashes.md:103"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:78"
+    "src": "docs/systems/combat/07-npc-clashes.md:90"
    },
    {
     "id": "NF-AZ10-3",
@@ -256,7 +256,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:102"
+      "src": "docs/systems/combat/07-npc-clashes.md:114"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -272,7 +272,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:103"
+      "src": "docs/systems/combat/07-npc-clashes.md:115"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -291,7 +291,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:104"
+      "src": "docs/systems/combat/07-npc-clashes.md:116"
      },
      {
       "outcome": "เสมอ",
@@ -304,17 +304,17 @@
         "text": "เธอหายเข้าวัด ซ้ำได้ปีหน้าถ้ายังถูกตามล่า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:105"
+      "src": "docs/systems/combat/07-npc-clashes.md:117"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอไม่ลงมือซ้ำ หนีเข้าความมืด เส้น ข) เดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:106"
+      "src": "docs/systems/combat/07-npc-clashes.md:118"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:93"
+    "src": "docs/systems/combat/07-npc-clashes.md:105"
    },
    {
     "id": "NF-AZ04-1",
@@ -352,7 +352,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:117"
+      "src": "docs/systems/combat/07-npc-clashes.md:129"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -365,7 +365,7 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:118"
+      "src": "docs/systems/combat/07-npc-clashes.md:130"
      },
      {
       "outcome": "เสมอ",
@@ -377,17 +377,17 @@
         "id": "SH03-2"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:119"
+      "src": "docs/systems/combat/07-npc-clashes.md:131"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:120"
+      "src": "docs/systems/combat/07-npc-clashes.md:132"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:108"
+    "src": "docs/systems/combat/07-npc-clashes.md:120"
    },
    {
     "id": "NF-AZ01-2",
@@ -431,7 +431,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:131"
+      "src": "docs/systems/combat/07-npc-clashes.md:143"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -452,7 +452,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:132"
+      "src": "docs/systems/combat/07-npc-clashes.md:144"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -470,7 +470,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:133"
+      "src": "docs/systems/combat/07-npc-clashes.md:145"
      },
      {
       "outcome": "เสมอ",
@@ -483,17 +483,17 @@
         "text": "ซากบินขึ้นพาเขาถอย ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:134"
+      "src": "docs/systems/combat/07-npc-clashes.md:146"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครออกจากรังด้วยไวเวิร์นอีกตัว เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:135"
+      "src": "docs/systems/combat/07-npc-clashes.md:147"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:122"
+    "src": "docs/systems/combat/07-npc-clashes.md:134"
    },
    {
     "id": "NF-AZ10-1",
@@ -526,7 +526,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:146"
+      "src": "docs/systems/combat/07-npc-clashes.md:158"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -538,7 +538,7 @@
         "id": "AZ05-2"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:147"
+      "src": "docs/systems/combat/07-npc-clashes.md:159"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -552,7 +552,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:148"
+      "src": "docs/systems/combat/07-npc-clashes.md:160"
      },
      {
       "outcome": "เสมอ",
@@ -565,17 +565,17 @@
         "text": "เขาหายเข้าความมืด ซ้ำได้เมื่อตัวละครถือความลับใหม่"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:149"
+      "src": "docs/systems/combat/07-npc-clashes.md:161"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครพร้อมความลับหนึ่งอย่างที่ฝังไว้ในกระเป๋าตัวละคร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:150"
+      "src": "docs/systems/combat/07-npc-clashes.md:162"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:137"
+    "src": "docs/systems/combat/07-npc-clashes.md:149"
    },
    {
     "id": "NF-AZ03-1",
@@ -612,7 +612,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:161"
+      "src": "docs/systems/combat/07-npc-clashes.md:173"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -633,7 +633,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:162"
+      "src": "docs/systems/combat/07-npc-clashes.md:174"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -655,7 +655,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:163"
+      "src": "docs/systems/combat/07-npc-clashes.md:175"
      },
      {
       "outcome": "เสมอ",
@@ -668,17 +668,17 @@
         "text": "ลมหยุดทั้งสองฝ่าย ซ้ำได้ฤดูถัดไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:164"
+      "src": "docs/systems/combat/07-npc-clashes.md:176"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครลงเรือเล็กที่ไม่มีใบ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:165"
+      "src": "docs/systems/combat/07-npc-clashes.md:177"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:152"
+    "src": "docs/systems/combat/07-npc-clashes.md:164"
    },
    {
     "id": "NF-AZ09-4",
@@ -711,7 +711,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:176"
+      "src": "docs/systems/combat/07-npc-clashes.md:188"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -730,7 +730,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:177"
+      "src": "docs/systems/combat/07-npc-clashes.md:189"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -750,7 +750,7 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:178"
+      "src": "docs/systems/combat/07-npc-clashes.md:190"
      },
      {
       "outcome": "เสมอ",
@@ -763,17 +763,17 @@
         "text": "เธอปีนลงจากลานและไม่ตามต่อ ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:179"
+      "src": "docs/systems/combat/07-npc-clashes.md:191"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอตัดสายลูกประคำตัวละครแล้วทิ้งไว้ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:180"
+      "src": "docs/systems/combat/07-npc-clashes.md:192"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:167"
+    "src": "docs/systems/combat/07-npc-clashes.md:179"
    },
    {
     "id": "NF-AZ10-4",
@@ -806,7 +806,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:191"
+      "src": "docs/systems/combat/07-npc-clashes.md:203"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -822,7 +822,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:192"
+      "src": "docs/systems/combat/07-npc-clashes.md:204"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -841,7 +841,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:193"
+      "src": "docs/systems/combat/07-npc-clashes.md:205"
      },
      {
       "outcome": "เสมอ",
@@ -854,17 +854,17 @@
         "text": "ไวเวิร์นตัวหัวหน้ากางปีกกั้นระหว่างสองฝ่าย ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:194"
+      "src": "docs/systems/combat/07-npc-clashes.md:206"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาให้ไวเวิร์นเหวี่ยงตัวละครออกจากคอก เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:195"
+      "src": "docs/systems/combat/07-npc-clashes.md:207"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:182"
+    "src": "docs/systems/combat/07-npc-clashes.md:194"
    },
    {
     "id": "NF-AZ02-4",
@@ -901,7 +901,7 @@
         "id": "AZ02-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:206"
+      "src": "docs/systems/combat/07-npc-clashes.md:218"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -915,7 +915,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:207"
+      "src": "docs/systems/combat/07-npc-clashes.md:219"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -936,24 +936,24 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:208"
+      "src": "docs/systems/combat/07-npc-clashes.md:220"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาขีดเส้นขาวสามเส้นแทนสองเส้นและให้ดวลซ้ำ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:209"
+      "src": "docs/systems/combat/07-npc-clashes.md:221"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาบันทึกชื่อตัวละครในรายชื่อผู้เสนอสินบน เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:210"
+      "src": "docs/systems/combat/07-npc-clashes.md:222"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:197"
+    "src": "docs/systems/combat/07-npc-clashes.md:209"
    },
    {
     "id": "NF-AZ08-1",
@@ -986,7 +986,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:221"
+      "src": "docs/systems/combat/07-npc-clashes.md:233"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1005,7 +1005,7 @@
         "delta": -5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:222"
+      "src": "docs/systems/combat/07-npc-clashes.md:234"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1026,24 +1026,24 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:223"
+      "src": "docs/systems/combat/07-npc-clashes.md:235"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดห้องบัญชีและแจ้งฝ่ายความมั่นคง ตัวละครถูกห้ามเข้าเหมืองหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:224"
+      "src": "docs/systems/combat/07-npc-clashes.md:236"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ผู้คุ้มกันยึดทองตัวละครครึ่งหนึ่งในนามค่าปรับ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:225"
+      "src": "docs/systems/combat/07-npc-clashes.md:237"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:212"
+    "src": "docs/systems/combat/07-npc-clashes.md:224"
    },
    {
     "id": "NF-MH02-1",
@@ -1099,7 +1099,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:238"
+      "src": "docs/systems/combat/07-npc-clashes.md:250"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1117,14 +1117,14 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:239"
+      "src": "docs/systems/combat/07-npc-clashes.md:251"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขายกมือเลิกสู้ เจรจาเปิดอีกครั้งในฤดูถัดไป",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:240"
+      "src": "docs/systems/combat/07-npc-clashes.md:252"
      },
      {
       "outcome": "แพ้",
@@ -1147,10 +1147,10 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:241"
+      "src": "docs/systems/combat/07-npc-clashes.md:253"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:229"
+    "src": "docs/systems/combat/07-npc-clashes.md:241"
    },
    {
     "id": "NF-MH01-1",
@@ -1187,7 +1187,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:252"
+      "src": "docs/systems/combat/07-npc-clashes.md:264"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1205,7 +1205,7 @@
         "id": "DM-01"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:253"
+      "src": "docs/systems/combat/07-npc-clashes.md:265"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1225,7 +1225,7 @@
         "op": "weight"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:254"
+      "src": "docs/systems/combat/07-npc-clashes.md:266"
      },
      {
       "outcome": "เสมอ",
@@ -1238,17 +1238,17 @@
         "unit": "ปี"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:255"
+      "src": "docs/systems/combat/07-npc-clashes.md:267"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาโยนตัวละครออกนอกค่าย ไม่ฆ่าคนมือเปล่า เส้น ก) เดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:256"
+      "src": "docs/systems/combat/07-npc-clashes.md:268"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:243"
+    "src": "docs/systems/combat/07-npc-clashes.md:255"
    },
    {
     "id": "NF-MH07-3",
@@ -1276,7 +1276,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:267"
+      "src": "docs/systems/combat/07-npc-clashes.md:279"
      },
      {
       "outcome": "เสมอ",
@@ -1289,14 +1289,14 @@
         "text": "เขาบอกให้กลับมาปีหน้า ครั้งที่ 2 เปิดอัตโนมัติ"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:268"
+      "src": "docs/systems/combat/07-npc-clashes.md:280"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครออกจากลาน เส้น ข) หรือ ค) ยังเปิดได้ (เด็กไม่มีชื่อ หรือไม่มีผู้สืบทอด) ไม่มีบาดแผลถาวร",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:269"
+      "src": "docs/systems/combat/07-npc-clashes.md:281"
      },
      {
       "outcome": "ล้ม (ฆ่า)",
@@ -1314,10 +1314,10 @@
         "text": "ทำไม่ได้ใน นี้ ตัวละครที่ฆ่าเขาเมื่อเขาไม่ป้องกัน ถูกนับเป็น ในมอร์เฮเวน"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:270"
+      "src": "docs/systems/combat/07-npc-clashes.md:282"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:258"
+    "src": "docs/systems/combat/07-npc-clashes.md:270"
    },
    {
     "id": "NF-MH10-3",
@@ -1347,7 +1347,7 @@
         "line": "สหาย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:281"
+      "src": "docs/systems/combat/07-npc-clashes.md:293"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1364,7 +1364,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:282"
+      "src": "docs/systems/combat/07-npc-clashes.md:294"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1386,24 +1386,24 @@
         "line": "สหาย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:283"
+      "src": "docs/systems/combat/07-npc-clashes.md:295"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหนีไปกับแม่ ตามเส้น ก) ต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:284"
+      "src": "docs/systems/combat/07-npc-clashes.md:296"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาวิ่งหนี ไม่ตามฆ่า เส้น ก) เดินต่อ นักล่ารายอื่นจับเขาได้ในปีถัดไป",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:285"
+      "src": "docs/systems/combat/07-npc-clashes.md:297"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:272"
+    "src": "docs/systems/combat/07-npc-clashes.md:284"
    },
    {
     "id": "NF-MH01-3",
@@ -1436,7 +1436,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:296"
+      "src": "docs/systems/combat/07-npc-clashes.md:308"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1457,7 +1457,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:297"
+      "src": "docs/systems/combat/07-npc-clashes.md:309"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1477,7 +1477,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:298"
+      "src": "docs/systems/combat/07-npc-clashes.md:310"
      },
      {
       "outcome": "เสมอ",
@@ -1490,7 +1490,7 @@
         "text": "เธอหนีเข้าเขา ซ้ำได้ปีหน้าถ้ายังถูกตามล่า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:299"
+      "src": "docs/systems/combat/07-npc-clashes.md:311"
      },
      {
       "outcome": "แพ้",
@@ -1506,10 +1506,10 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:300"
+      "src": "docs/systems/combat/07-npc-clashes.md:312"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:287"
+    "src": "docs/systems/combat/07-npc-clashes.md:299"
    },
    {
     "id": "NF-MH02-4",
@@ -1557,14 +1557,14 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:311"
+      "src": "docs/systems/combat/07-npc-clashes.md:323"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "ดวลซ้ำได้ปีหน้า เธอสนใจตัวละครมากขึ้น",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:312"
+      "src": "docs/systems/combat/07-npc-clashes.md:324"
      },
      {
       "outcome": "แพ้",
@@ -1576,7 +1576,7 @@
         "id": "DM-03"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:313"
+      "src": "docs/systems/combat/07-npc-clashes.md:325"
      },
      {
       "outcome": "ล้ม (ฆ่าเธอ)",
@@ -1607,10 +1607,10 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:314"
+      "src": "docs/systems/combat/07-npc-clashes.md:326"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:302"
+    "src": "docs/systems/combat/07-npc-clashes.md:314"
    },
    {
     "id": "NF-MH12-1",
@@ -1644,7 +1644,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:325"
+      "src": "docs/systems/combat/07-npc-clashes.md:337"
      },
      {
       "outcome": "ชนะ (ด้วยแสง)",
@@ -1664,7 +1664,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:326"
+      "src": "docs/systems/combat/07-npc-clashes.md:338"
      },
      {
       "outcome": "เสมอ",
@@ -1677,17 +1677,17 @@
         "text": "ทหารผีถอยเข้าหมอก ซ้ำได้ในคืนถัดไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:327"
+      "src": "docs/systems/combat/07-npc-clashes.md:339"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ทหารผีไล่ตัวละครออกจากสนาม เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:328"
+      "src": "docs/systems/combat/07-npc-clashes.md:340"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:316"
+    "src": "docs/systems/combat/07-npc-clashes.md:328"
    },
    {
     "id": "NF-MH03-3",
@@ -1727,7 +1727,7 @@
         "rel": "ผูก"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:339"
+      "src": "docs/systems/combat/07-npc-clashes.md:351"
      },
      {
       "outcome": "ชนะ (ด้วยแสง)",
@@ -1739,7 +1739,7 @@
         "id": "MH03-4"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:340"
+      "src": "docs/systems/combat/07-npc-clashes.md:352"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1757,24 +1757,24 @@
         "id": "MH03-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:341"
+      "src": "docs/systems/combat/07-npc-clashes.md:353"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยกองกูลเข้าเงามืด นับใหม่ แล้วบุกอีกครั้งในฤดูถัดไป",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:342"
+      "src": "docs/systems/combat/07-npc-clashes.md:354"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "กองกูลไล่ตัวละครออกนอกสุสานโดยไม่ตามฆ่า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:343"
+      "src": "docs/systems/combat/07-npc-clashes.md:355"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:330"
+    "src": "docs/systems/combat/07-npc-clashes.md:342"
    },
    {
     "id": "NF-MH03-1",
@@ -1818,7 +1818,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:354"
+      "src": "docs/systems/combat/07-npc-clashes.md:366"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1839,7 +1839,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:355"
+      "src": "docs/systems/combat/07-npc-clashes.md:367"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1859,7 +1859,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:356"
+      "src": "docs/systems/combat/07-npc-clashes.md:368"
      },
      {
       "outcome": "เสมอ",
@@ -1872,17 +1872,17 @@
         "text": "เขากลับหลุมโดยไม่ลงมือซ้ำ ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:357"
+      "src": "docs/systems/combat/07-npc-clashes.md:369"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาหยุดกินเมื่ออิ่มเนื้อสัตว์ปีเดียว ตัวละครถูกขับออกจากสุสาน เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:358"
+      "src": "docs/systems/combat/07-npc-clashes.md:370"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:345"
+    "src": "docs/systems/combat/07-npc-clashes.md:357"
    },
    {
     "id": "NF-MH09-1",
@@ -1917,7 +1917,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:369"
+      "src": "docs/systems/combat/07-npc-clashes.md:381"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -1941,7 +1941,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:370"
+      "src": "docs/systems/combat/07-npc-clashes.md:382"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -1956,24 +1956,24 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:371"
+      "src": "docs/systems/combat/07-npc-clashes.md:383"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดห้องสัญญา ตลาดห้ามขายของให้ตัวละครหนึ่งปี",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:372"
+      "src": "docs/systems/combat/07-npc-clashes.md:384"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดทองของตัวละครครึ่งหนึ่งตามราคาสัญญาที่พิพาท เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:373"
+      "src": "docs/systems/combat/07-npc-clashes.md:385"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:360"
+    "src": "docs/systems/combat/07-npc-clashes.md:372"
    },
    {
     "id": "NF-MH11-2",
@@ -2012,7 +2012,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:384"
+      "src": "docs/systems/combat/07-npc-clashes.md:396"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2033,7 +2033,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:385"
+      "src": "docs/systems/combat/07-npc-clashes.md:397"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2046,24 +2046,24 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:386"
+      "src": "docs/systems/combat/07-npc-clashes.md:398"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เรือเล็กเลี้ยวหนี เรธอยังตามเรือสินค้าลำเดิม",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:387"
+      "src": "docs/systems/combat/07-npc-clashes.md:399"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอเก็บสินค้าครึ่งหนึ่งและปล่อยตัวละคร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:388"
+      "src": "docs/systems/combat/07-npc-clashes.md:400"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:375"
+    "src": "docs/systems/combat/07-npc-clashes.md:387"
    },
    {
     "id": "NF-MH04-1",
@@ -2101,7 +2101,7 @@
         "text": "เขาพาตัวละครผ่านทะเลทรายเถ้า ไว้ใจ +2 ฝูงหนุนหนึ่ง"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:399"
+      "src": "docs/systems/combat/07-npc-clashes.md:411"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2120,7 +2120,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:400"
+      "src": "docs/systems/combat/07-npc-clashes.md:412"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2132,7 +2132,7 @@
         "id": "LC-114"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:401"
+      "src": "docs/systems/combat/07-npc-clashes.md:413"
      },
      {
       "outcome": "เสมอ",
@@ -2145,17 +2145,17 @@
         "text": "เขาย้ายค่ายก่อนรุ่งและ ซ้ำได้ตามเส้นทางของฝูง"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:402"
+      "src": "docs/systems/combat/07-npc-clashes.md:414"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ฝูงปล้นถุงน้ำของตัวละครแล้วปล่อย เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:403"
+      "src": "docs/systems/combat/07-npc-clashes.md:415"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:390"
+    "src": "docs/systems/combat/07-npc-clashes.md:402"
    },
    {
     "id": "NF-MH04-3",
@@ -2188,7 +2188,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:414"
+      "src": "docs/systems/combat/07-npc-clashes.md:426"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2210,7 +2210,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:415"
+      "src": "docs/systems/combat/07-npc-clashes.md:427"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2225,7 +2225,7 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:416"
+      "src": "docs/systems/combat/07-npc-clashes.md:428"
      },
      {
       "outcome": "เสมอ",
@@ -2238,17 +2238,17 @@
         "text": "เขาถอยกลับค่ายและไม่ขี่ตามอีก ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:417"
+      "src": "docs/systems/combat/07-npc-clashes.md:429"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาตัดสายหมาป่าของตัวละครและปล่อยตัวละครไป เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:418"
+      "src": "docs/systems/combat/07-npc-clashes.md:430"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:405"
+    "src": "docs/systems/combat/07-npc-clashes.md:417"
    },
    {
     "id": "NF-MH05-2",
@@ -2281,7 +2281,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:429"
+      "src": "docs/systems/combat/07-npc-clashes.md:441"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2297,7 +2297,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:430"
+      "src": "docs/systems/combat/07-npc-clashes.md:442"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2312,24 +2312,24 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:431"
+      "src": "docs/systems/combat/07-npc-clashes.md:443"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดห้องและเปลี่ยนรูนในกำแพงตามที่เห็นว่าตัวละครอ่านออก",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:432"
+      "src": "docs/systems/combat/07-npc-clashes.md:444"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไล่ตัวละครออกจากห้องและทำลายแบบที่ตัวละครเห็นครึ่งหนึ่ง เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:433"
+      "src": "docs/systems/combat/07-npc-clashes.md:445"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:420"
+    "src": "docs/systems/combat/07-npc-clashes.md:432"
    },
    {
     "id": "NF-MH08-3",
@@ -2362,7 +2362,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:444"
+      "src": "docs/systems/combat/07-npc-clashes.md:456"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2389,7 +2389,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:445"
+      "src": "docs/systems/combat/07-npc-clashes.md:457"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2402,24 +2402,24 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:446"
+      "src": "docs/systems/combat/07-npc-clashes.md:458"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอหายเข้าซอยที่ห้าและไม่ปรากฏหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:447"
+      "src": "docs/systems/combat/07-npc-clashes.md:459"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอขโมยข่าวของตัวละครและขายให้ธงอื่น เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:448"
+      "src": "docs/systems/combat/07-npc-clashes.md:460"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:435"
+    "src": "docs/systems/combat/07-npc-clashes.md:447"
    },
    {
     "id": "NF-MH09-2",
@@ -2452,7 +2452,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:459"
+      "src": "docs/systems/combat/07-npc-clashes.md:471"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2471,7 +2471,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:460"
+      "src": "docs/systems/combat/07-npc-clashes.md:472"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2486,7 +2486,7 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:461"
+      "src": "docs/systems/combat/07-npc-clashes.md:473"
      },
      {
       "outcome": "เสมอ",
@@ -2499,17 +2499,17 @@
         "text": "เขาถอนตัวจากการส่งและถูกเจ้าของสัญญากักไว้ ซ้ำได้เมื่อเขาถูกปล่อย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:462"
+      "src": "docs/systems/combat/07-npc-clashes.md:474"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครส่งตัวแทนและไม่พูดอะไร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:463"
+      "src": "docs/systems/combat/07-npc-clashes.md:475"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:450"
+    "src": "docs/systems/combat/07-npc-clashes.md:462"
    },
    {
     "id": "NF-MH10-1",
@@ -2547,7 +2547,7 @@
         "text": "เขาเล่าความจริงเรื่องมงกุฎ ไว้ใจ +2 ชิงมงกุฎเลื่อนหนึ่งฤดู"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:474"
+      "src": "docs/systems/combat/07-npc-clashes.md:486"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2560,7 +2560,7 @@
         "text": "เขาประกาศ ตามกำหนด เดินต่อ แต่ไม่ตัดสินตัวละครเป็นผู้พ่าย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:475"
+      "src": "docs/systems/combat/07-npc-clashes.md:487"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2579,24 +2579,24 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:476"
+      "src": "docs/systems/combat/07-npc-clashes.md:488"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยจากลานและประกาศให้ตัวละครออกจากสนามโดยไม่ตัดสิน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:477"
+      "src": "docs/systems/combat/07-npc-clashes.md:489"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาประกาศชื่อตัวละครเป็นผู้พ่ายและเสียสิทธิ์เข้าสนามหนึ่งปี เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:478"
+      "src": "docs/systems/combat/07-npc-clashes.md:490"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:465"
+    "src": "docs/systems/combat/07-npc-clashes.md:477"
    },
    {
     "id": "NF-MH11-1",
@@ -2640,7 +2640,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:489"
+      "src": "docs/systems/combat/07-npc-clashes.md:501"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2661,7 +2661,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:490"
+      "src": "docs/systems/combat/07-npc-clashes.md:502"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2674,24 +2674,24 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:491"
+      "src": "docs/systems/combat/07-npc-clashes.md:503"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอนสมอและทิ้งอ่าวหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:492"
+      "src": "docs/systems/combat/07-npc-clashes.md:504"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดสินค้าตัวละครครึ่งหนึ่งเป็นค่าผ่านท่า เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:493"
+      "src": "docs/systems/combat/07-npc-clashes.md:505"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:480"
+    "src": "docs/systems/combat/07-npc-clashes.md:492"
    },
    {
     "id": "NF-MH12-2",
@@ -2724,7 +2724,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:504"
+      "src": "docs/systems/combat/07-npc-clashes.md:516"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -2743,7 +2743,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:505"
+      "src": "docs/systems/combat/07-npc-clashes.md:517"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2763,24 +2763,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:506"
+      "src": "docs/systems/combat/07-npc-clashes.md:518"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหายเข้าหมอกและกลับมาทุกคืนที่มีป้ายหินว่าง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:507"
+      "src": "docs/systems/combat/07-npc-clashes.md:519"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ลงมือแต่กักตัวละครในหมอกหนึ่งคืน เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:508"
+      "src": "docs/systems/combat/07-npc-clashes.md:520"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:495"
+    "src": "docs/systems/combat/07-npc-clashes.md:507"
    },
    {
     "id": "NF-NB02-1",
@@ -2808,7 +2808,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:521"
+      "src": "docs/systems/combat/07-npc-clashes.md:533"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2828,14 +2828,14 @@
         "mul": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:522"
+      "src": "docs/systems/combat/07-npc-clashes.md:534"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยเข้าห้องนอน ปิดประตู ปราสาทปิดต่อตัวละคร",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:523"
+      "src": "docs/systems/combat/07-npc-clashes.md:535"
      },
      {
       "outcome": "แพ้",
@@ -2848,10 +2848,10 @@
         "id": "c_vampbite"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:524"
+      "src": "docs/systems/combat/07-npc-clashes.md:536"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:512"
+    "src": "docs/systems/combat/07-npc-clashes.md:524"
    },
    {
     "id": "NF-NB05-1",
@@ -2883,7 +2883,7 @@
         "id": "PO-08"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:535"
+      "src": "docs/systems/combat/07-npc-clashes.md:547"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -2900,7 +2900,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:536"
+      "src": "docs/systems/combat/07-npc-clashes.md:548"
      },
      {
       "outcome": "เสมอ",
@@ -2913,7 +2913,7 @@
         "text": "เขาหายเข้ามืด ครั้งที่ 2 เปิดได้ เขาเลือกซุ่มแบบอื่น"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:537"
+      "src": "docs/systems/combat/07-npc-clashes.md:549"
      },
      {
       "outcome": "แพ้",
@@ -2925,10 +2925,10 @@
         "id": "PO-08"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:538"
+      "src": "docs/systems/combat/07-npc-clashes.md:550"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:526"
+    "src": "docs/systems/combat/07-npc-clashes.md:538"
    },
    {
     "id": "NF-NB07-2",
@@ -2960,7 +2960,7 @@
         "id": "FG-05"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:549"
+      "src": "docs/systems/combat/07-npc-clashes.md:561"
      },
      {
       "outcome": "เสมอ",
@@ -2974,7 +2974,7 @@
         "mul": 0.5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:550"
+      "src": "docs/systems/combat/07-npc-clashes.md:562"
      },
      {
       "outcome": "แพ้",
@@ -2987,7 +2987,7 @@
         "pct": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:551"
+      "src": "docs/systems/combat/07-npc-clashes.md:563"
      },
      {
       "outcome": "ล้ม (ฆ่าเธอ)",
@@ -3004,10 +3004,10 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:552"
+      "src": "docs/systems/combat/07-npc-clashes.md:564"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:540"
+    "src": "docs/systems/combat/07-npc-clashes.md:552"
    },
    {
     "id": "NF-NB08-1",
@@ -3028,7 +3028,7 @@
       "kind": "talk",
       "text": "เขาเปิดช่องให้ผ่านครั้งเดียว เส้น ค) ตัวละครส่งกำลังมาช่วยจึงจะเปิดทางถาวร",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:563"
+      "src": "docs/systems/combat/07-npc-clashes.md:575"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3042,24 +3042,24 @@
         "mul": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:564"
+      "src": "docs/systems/combat/07-npc-clashes.md:576"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยไปกลางประตู ผู้เฝ้ารุมล้อม ตัวละครถูกขอให้ออก",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:565"
+      "src": "docs/systems/combat/07-npc-clashes.md:577"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาโยนตัวละครออกจากประตู ไม่ตาม เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:566"
+      "src": "docs/systems/combat/07-npc-clashes.md:578"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:554"
+    "src": "docs/systems/combat/07-npc-clashes.md:566"
    },
    {
     "id": "NF-NB05-3",
@@ -3093,7 +3093,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:577"
+      "src": "docs/systems/combat/07-npc-clashes.md:589"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3107,7 +3107,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:578"
+      "src": "docs/systems/combat/07-npc-clashes.md:590"
      },
      {
       "outcome": "เสมอ",
@@ -3123,17 +3123,17 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:579"
+      "src": "docs/systems/combat/07-npc-clashes.md:591"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาทิ้งตัวละครไว้ในตรอกเพราะเห็นเงาใหม่ในสายตา",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:580"
+      "src": "docs/systems/combat/07-npc-clashes.md:592"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:568"
+    "src": "docs/systems/combat/07-npc-clashes.md:580"
    },
    {
     "id": "NF-NB05-2",
@@ -3166,7 +3166,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:591"
+      "src": "docs/systems/combat/07-npc-clashes.md:603"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3179,7 +3179,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:592"
+      "src": "docs/systems/combat/07-npc-clashes.md:604"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3192,7 +3192,7 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:593"
+      "src": "docs/systems/combat/07-npc-clashes.md:605"
      },
      {
       "outcome": "เสมอ",
@@ -3205,17 +3205,17 @@
         "text": "เธอหายเข้าหมอกและเด็กถูกซ่อนในที่ใหม่ ซ้ำได้เมื่อกิลด์ส่งเธอกลับ"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:594"
+      "src": "docs/systems/combat/07-npc-clashes.md:606"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอไม่ฆ่าตัวละครแต่ขโมยสมุดของตัวละครไป เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:595"
+      "src": "docs/systems/combat/07-npc-clashes.md:607"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:582"
+    "src": "docs/systems/combat/07-npc-clashes.md:594"
    },
    {
     "id": "NF-NB05-5",
@@ -3248,7 +3248,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:606"
+      "src": "docs/systems/combat/07-npc-clashes.md:618"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3264,7 +3264,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:607"
+      "src": "docs/systems/combat/07-npc-clashes.md:619"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3284,24 +3284,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:608"
+      "src": "docs/systems/combat/07-npc-clashes.md:620"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอปิดสมุดและให้เวลาตัวละครหนึ่งฤดูก่อนลงมือซ้ำ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:609"
+      "src": "docs/systems/combat/07-npc-clashes.md:621"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอจดชื่อตัวละครเป็นผู้จ่ายอันดับต้นของสมุดและปล่อยตัวละคร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:610"
+      "src": "docs/systems/combat/07-npc-clashes.md:622"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:597"
+    "src": "docs/systems/combat/07-npc-clashes.md:609"
    },
    {
     "id": "NF-NB12-1",
@@ -3339,14 +3339,14 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:621"
+      "src": "docs/systems/combat/07-npc-clashes.md:633"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
       "kind": "win_spare",
       "text": "เขาหายกลับหมอกและเส้น ข) ดำเนินต่อโดยไม่มีผู้สอบสวน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:622"
+      "src": "docs/systems/combat/07-npc-clashes.md:634"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3359,24 +3359,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:623"
+      "src": "docs/systems/combat/07-npc-clashes.md:635"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหายไปในหมอกและปรากฏที่ท่าอื่นหนึ่งฤดูต่อมา",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:624"
+      "src": "docs/systems/combat/07-npc-clashes.md:636"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจำตัวละครผิดเป็นผู้ที่เขาเคยตามหาและกักตัวหนึ่งคืน เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:625"
+      "src": "docs/systems/combat/07-npc-clashes.md:637"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:612"
+    "src": "docs/systems/combat/07-npc-clashes.md:624"
    },
    {
     "id": "NF-NB12-4",
@@ -3409,7 +3409,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:636"
+      "src": "docs/systems/combat/07-npc-clashes.md:648"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3425,7 +3425,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:637"
+      "src": "docs/systems/combat/07-npc-clashes.md:649"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3444,24 +3444,24 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:638"
+      "src": "docs/systems/combat/07-npc-clashes.md:650"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดค่ายและส่งคนอื่นออกสืบแทน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:639"
+      "src": "docs/systems/combat/07-npc-clashes.md:651"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครเป็นผู้ต้องสงสัยหนึ่งฤดู เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:640"
+      "src": "docs/systems/combat/07-npc-clashes.md:652"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:627"
+    "src": "docs/systems/combat/07-npc-clashes.md:639"
    },
    {
     "id": "NF-NB08-2",
@@ -3499,7 +3499,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:651"
+      "src": "docs/systems/combat/07-npc-clashes.md:663"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3513,7 +3513,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:652"
+      "src": "docs/systems/combat/07-npc-clashes.md:664"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3526,24 +3526,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:653"
+      "src": "docs/systems/combat/07-npc-clashes.md:665"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอหายเข้าหมอกแข็งและห้องเงียบไปหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:654"
+      "src": "docs/systems/combat/07-npc-clashes.md:666"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "หมอกแข็งพันตัวละครไว้หนึ่งคืนก่อนคลาย เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:655"
+      "src": "docs/systems/combat/07-npc-clashes.md:667"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:642"
+    "src": "docs/systems/combat/07-npc-clashes.md:654"
    },
    {
     "id": "NF-NR05-1",
@@ -3569,7 +3569,7 @@
         "id": "WR-06"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:668"
+      "src": "docs/systems/combat/07-npc-clashes.md:680"
      },
      {
       "outcome": "ชนะ (ไม่มีหีบ)",
@@ -3582,7 +3582,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:669"
+      "src": "docs/systems/combat/07-npc-clashes.md:681"
      },
      {
       "outcome": "เจรจา (ยอมจ่ายหรือแบ่ง)",
@@ -3596,17 +3596,17 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:670"
+      "src": "docs/systems/combat/07-npc-clashes.md:682"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ตัวละครถูกจับเป็นลูกเรือหรือถูกโยนลงทะเล ทอยหนีตามปกติ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:671"
+      "src": "docs/systems/combat/07-npc-clashes.md:683"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:659"
+    "src": "docs/systems/combat/07-npc-clashes.md:671"
    },
    {
     "id": "NF-NR11-2",
@@ -3634,7 +3634,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:682"
+      "src": "docs/systems/combat/07-npc-clashes.md:694"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3647,24 +3647,24 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:683"
+      "src": "docs/systems/combat/07-npc-clashes.md:695"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาลากเรือจมแต่ปล่อยผู้คนขึ้นฝั่ง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:684"
+      "src": "docs/systems/combat/07-npc-clashes.md:696"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาเหวี่ยงตัวละครขึ้นฝั่งแล้วร้องไห้ ไข่มุกกลับมา",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:685"
+      "src": "docs/systems/combat/07-npc-clashes.md:697"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:673"
+    "src": "docs/systems/combat/07-npc-clashes.md:685"
    },
    {
     "id": "NF-NR07-1",
@@ -3697,7 +3697,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:696"
+      "src": "docs/systems/combat/07-npc-clashes.md:708"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3718,14 +3718,14 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:697"
+      "src": "docs/systems/combat/07-npc-clashes.md:709"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอฟาดหางครบรอบเตียงแล้วนิ่ง ตัวละครถูกขอให้ออก",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:698"
+      "src": "docs/systems/combat/07-npc-clashes.md:710"
      },
      {
       "outcome": "แพ้",
@@ -3738,10 +3738,10 @@
         "unit": "ปี"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:699"
+      "src": "docs/systems/combat/07-npc-clashes.md:711"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:687"
+    "src": "docs/systems/combat/07-npc-clashes.md:699"
    },
    {
     "id": "NF-NR05-2",
@@ -3778,7 +3778,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:710"
+      "src": "docs/systems/combat/07-npc-clashes.md:722"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3794,7 +3794,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:711"
+      "src": "docs/systems/combat/07-npc-clashes.md:723"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3809,7 +3809,7 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:712"
+      "src": "docs/systems/combat/07-npc-clashes.md:724"
      },
      {
       "outcome": "เสมอ",
@@ -3822,17 +3822,17 @@
         "text": "เรือผีถอยกลับเขตหมอก ซ้ำได้เมื่อผ่านเขตเดิม"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:713"
+      "src": "docs/systems/combat/07-npc-clashes.md:725"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ลูกเรือผีลากตัวละครกลับเรือเล็ก เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:714"
+      "src": "docs/systems/combat/07-npc-clashes.md:726"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:701"
+    "src": "docs/systems/combat/07-npc-clashes.md:713"
    },
    {
     "id": "NF-NR07-2",
@@ -3869,7 +3869,7 @@
         "id": "NR07-3"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:725"
+      "src": "docs/systems/combat/07-npc-clashes.md:737"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3887,7 +3887,7 @@
         "id": "NR07-3"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:726"
+      "src": "docs/systems/combat/07-npc-clashes.md:738"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3907,24 +3907,24 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:727"
+      "src": "docs/systems/combat/07-npc-clashes.md:739"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอนตัวและส่งเด็กนาคามาเฝ้าตัวละครหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:728"
+      "src": "docs/systems/combat/07-npc-clashes.md:740"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ขาข้างหนึ่งของตัวละครเป็นหินเย็นหนึ่งฤดู ปลดได้เมื่อผ่านการทดสอบ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:729"
+      "src": "docs/systems/combat/07-npc-clashes.md:741"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:716"
+    "src": "docs/systems/combat/07-npc-clashes.md:728"
    },
    {
     "id": "NF-NR01-4",
@@ -3957,7 +3957,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:740"
+      "src": "docs/systems/combat/07-npc-clashes.md:752"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -3971,7 +3971,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:741"
+      "src": "docs/systems/combat/07-npc-clashes.md:753"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -3990,24 +3990,24 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:742"
+      "src": "docs/systems/combat/07-npc-clashes.md:754"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดท่าหนึ่งคืนและเรือที่ตัวละครนำถูกกักนอกท่า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:743"
+      "src": "docs/systems/combat/07-npc-clashes.md:755"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาตีระฆังท่าและกองยามจับตัวละครหนึ่งคืน เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:744"
+      "src": "docs/systems/combat/07-npc-clashes.md:756"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:731"
+    "src": "docs/systems/combat/07-npc-clashes.md:743"
    },
    {
     "id": "NF-NR06-4",
@@ -4045,7 +4045,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:755"
+      "src": "docs/systems/combat/07-npc-clashes.md:767"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4064,7 +4064,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:756"
+      "src": "docs/systems/combat/07-npc-clashes.md:768"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4083,24 +4083,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:757"
+      "src": "docs/systems/combat/07-npc-clashes.md:769"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดห้องเก็บเกราะและขอให้ตัวละครกลับมาเมื่อพร้อมฟัง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:758"
+      "src": "docs/systems/combat/07-npc-clashes.md:770"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ลงมือซ้ำ แต่ห้ามตัวละครเข้าประภาคารหนึ่งฤดู เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:759"
+      "src": "docs/systems/combat/07-npc-clashes.md:771"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:746"
+    "src": "docs/systems/combat/07-npc-clashes.md:758"
    },
    {
     "id": "NF-NR04-3",
@@ -4133,7 +4133,7 @@
         "delta": -10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:770"
+      "src": "docs/systems/combat/07-npc-clashes.md:782"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4152,7 +4152,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:771"
+      "src": "docs/systems/combat/07-npc-clashes.md:783"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4165,7 +4165,7 @@
         "delta": 15
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:772"
+      "src": "docs/systems/combat/07-npc-clashes.md:784"
      },
      {
       "outcome": "เสมอ",
@@ -4178,17 +4178,17 @@
         "text": "เขากลับร่องและร้องดังขึ้นหนึ่งคืน ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:773"
+      "src": "docs/systems/combat/07-npc-clashes.md:785"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "คลื่นเสียงจากร่องดันตัวละครกลับผิวน้ำ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:774"
+      "src": "docs/systems/combat/07-npc-clashes.md:786"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:761"
+    "src": "docs/systems/combat/07-npc-clashes.md:773"
    },
    {
     "id": "NF-NR05-3",
@@ -4226,7 +4226,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:785"
+      "src": "docs/systems/combat/07-npc-clashes.md:797"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4240,7 +4240,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:786"
+      "src": "docs/systems/combat/07-npc-clashes.md:798"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4253,7 +4253,7 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:787"
+      "src": "docs/systems/combat/07-npc-clashes.md:799"
      },
      {
       "outcome": "เสมอ",
@@ -4266,17 +4266,17 @@
         "text": "เขาปิดโรงตีและย้ายเตาไปท่าอื่น ซ้ำได้เมื่อตัวละครพบเรือผี"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:788"
+      "src": "docs/systems/combat/07-npc-clashes.md:800"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาตีสมอสาปครึ่งใบแล้ววางไว้ข้างตัวละครให้ตัวละครเลือกเอง เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:789"
+      "src": "docs/systems/combat/07-npc-clashes.md:801"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:776"
+    "src": "docs/systems/combat/07-npc-clashes.md:788"
    },
    {
     "id": "NF-AL02-3",
@@ -4312,7 +4312,7 @@
         "line": "สหาย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:802"
+      "src": "docs/systems/combat/07-npc-clashes.md:814"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4329,7 +4329,7 @@
         "delta": -1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:803"
+      "src": "docs/systems/combat/07-npc-clashes.md:815"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4347,7 +4347,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:804"
+      "src": "docs/systems/combat/07-npc-clashes.md:816"
      },
      {
       "outcome": "แพ้",
@@ -4359,10 +4359,10 @@
         "id": "DM-05"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:805"
+      "src": "docs/systems/combat/07-npc-clashes.md:817"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:793"
+    "src": "docs/systems/combat/07-npc-clashes.md:805"
    },
    {
     "id": "NF-AL08-2",
@@ -4396,14 +4396,14 @@
         "id": "WR-16"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:816"
+      "src": "docs/systems/combat/07-npc-clashes.md:828"
      },
      {
       "outcome": "เจรจา",
       "kind": "talk",
       "text": "ไม่เปิด เขาไม่ยอมแพ้ถ้าไม่ได้สู้",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:817"
+      "src": "docs/systems/combat/07-npc-clashes.md:829"
      },
      {
       "outcome": "เสมอ",
@@ -4419,7 +4419,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:818"
+      "src": "docs/systems/combat/07-npc-clashes.md:830"
      },
      {
       "outcome": "แพ้",
@@ -4432,10 +4432,10 @@
         "pct": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:819"
+      "src": "docs/systems/combat/07-npc-clashes.md:831"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:807"
+    "src": "docs/systems/combat/07-npc-clashes.md:819"
    },
    {
     "id": "NF-AL27-1",
@@ -4469,7 +4469,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:830"
+      "src": "docs/systems/combat/07-npc-clashes.md:842"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4483,7 +4483,7 @@
         "op": "weight"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:831"
+      "src": "docs/systems/combat/07-npc-clashes.md:843"
      },
      {
       "outcome": "เจรจา",
@@ -4501,17 +4501,17 @@
         "line": "สหาย"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:832"
+      "src": "docs/systems/combat/07-npc-clashes.md:844"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครเมื่อไม่มีใครเห็น เส้นดำเนินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:833"
+      "src": "docs/systems/combat/07-npc-clashes.md:845"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:821"
+    "src": "docs/systems/combat/07-npc-clashes.md:833"
    },
    {
     "id": "NF-AL02-2",
@@ -4539,7 +4539,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:844"
+      "src": "docs/systems/combat/07-npc-clashes.md:856"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4553,7 +4553,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:845"
+      "src": "docs/systems/combat/07-npc-clashes.md:857"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4572,7 +4572,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:846"
+      "src": "docs/systems/combat/07-npc-clashes.md:858"
      },
      {
       "outcome": "เสมอ",
@@ -4585,7 +4585,7 @@
         "text": "เธอสั่งพักการพิจารณา ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:847"
+      "src": "docs/systems/combat/07-npc-clashes.md:859"
      },
      {
       "outcome": "แพ้",
@@ -4598,10 +4598,10 @@
         "pct": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:848"
+      "src": "docs/systems/combat/07-npc-clashes.md:860"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:835"
+    "src": "docs/systems/combat/07-npc-clashes.md:847"
    },
    {
     "id": "NF-AL18-1",
@@ -4620,7 +4620,7 @@
      {
       "outcome": "ชนะ",
       "kind": "win_spare",
-      "text": "เส้น ค) บังคับเกิด ตัวละครได้เรียนดาบ (`sword_*` +1 ระดับ ไม่เกินระดับ 3) ไว้ใจ +2",
+      "text": "เส้น ค) บังคับเกิด ตัวละครได้เรียนดาบ ความถนัด `sword` +1 ระดับ (ไม่เกินระดับ 3) ไว้ใจ +2",
       "effects": [
        {
         "k": "npcPath",
@@ -4634,9 +4634,9 @@
         "delta": 2
        },
        {
-        "k": "grant",
-        "kind": "unknown",
-        "id": "sword_*"
+        "k": "stat",
+        "stat": "sword",
+        "delta": 1
        },
        {
         "k": "level",
@@ -4646,7 +4646,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:859"
+      "src": "docs/systems/combat/07-npc-clashes.md:871"
      },
      {
       "outcome": "เสมอ",
@@ -4659,7 +4659,7 @@
         "text": "เขาบอกให้กลับมาเมื่อพร้อม ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:860"
+      "src": "docs/systems/combat/07-npc-clashes.md:872"
      },
      {
       "outcome": "แพ้",
@@ -4672,7 +4672,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:861"
+      "src": "docs/systems/combat/07-npc-clashes.md:873"
      },
      {
       "outcome": "ล้ม (ฆ่า)",
@@ -4702,10 +4702,10 @@
         "text": "ทำไม่ได้ใน นี้ ถ้าตัวละครฆ่าเขาขณะยอมแพ้นับเป็น ผู้กล้ารุ่นใหม่ขาดครู"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:862"
+      "src": "docs/systems/combat/07-npc-clashes.md:874"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:850"
+    "src": "docs/systems/combat/07-npc-clashes.md:862"
    },
    {
     "id": "NF-AL20-1",
@@ -4738,7 +4738,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:873"
+      "src": "docs/systems/combat/07-npc-clashes.md:885"
      },
      {
       "outcome": "ชนะ",
@@ -4752,14 +4752,14 @@
         "mul": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:874"
+      "src": "docs/systems/combat/07-npc-clashes.md:886"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดประตูป้อมและเปิดใหม่ตอนเช้า ตัวละครต้องรอ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:875"
+      "src": "docs/systems/combat/07-npc-clashes.md:887"
      },
      {
       "outcome": "แพ้",
@@ -4780,10 +4780,10 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:876"
+      "src": "docs/systems/combat/07-npc-clashes.md:888"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:864"
+    "src": "docs/systems/combat/07-npc-clashes.md:876"
    },
    {
     "id": "NF-AL15-2",
@@ -4816,7 +4816,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:887"
+      "src": "docs/systems/combat/07-npc-clashes.md:899"
      },
      {
       "outcome": "ชนะ (รถพัง)",
@@ -4830,31 +4830,31 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:888"
+      "src": "docs/systems/combat/07-npc-clashes.md:900"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย หน่วยแตก รถถูกขายทิ้ง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:889"
+      "src": "docs/systems/combat/07-npc-clashes.md:901"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยเพื่อซ่อมและกลับมาในฤดูถัดไป",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:890"
+      "src": "docs/systems/combat/07-npc-clashes.md:902"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "รถเหยียบแนวตัวละครถอย ไม่ตาม",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:891"
+      "src": "docs/systems/combat/07-npc-clashes.md:903"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:878"
+    "src": "docs/systems/combat/07-npc-clashes.md:890"
    },
    {
     "id": "NF-AL04-2",
@@ -4896,7 +4896,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:902"
+      "src": "docs/systems/combat/07-npc-clashes.md:914"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4912,7 +4912,7 @@
         "unit": "add"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:903"
+      "src": "docs/systems/combat/07-npc-clashes.md:915"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -4926,7 +4926,7 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:904"
+      "src": "docs/systems/combat/07-npc-clashes.md:916"
      },
      {
       "outcome": "เสมอ",
@@ -4939,17 +4939,17 @@
         "text": "เขาถอยกองเรือกลับท่า ซ้ำได้ฤดูถัดไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:905"
+      "src": "docs/systems/combat/07-npc-clashes.md:917"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปล่อยตัวละครบนเรือเล็กพร้อมค่าหัวที่ตั้งใหม่ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:906"
+      "src": "docs/systems/combat/07-npc-clashes.md:918"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:893"
+    "src": "docs/systems/combat/07-npc-clashes.md:905"
    },
    {
     "id": "NF-AL23-2",
@@ -4982,7 +4982,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:917"
+      "src": "docs/systems/combat/07-npc-clashes.md:929"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -4995,7 +4995,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:918"
+      "src": "docs/systems/combat/07-npc-clashes.md:930"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5009,24 +5009,24 @@
         "op": "cut"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:919"
+      "src": "docs/systems/combat/07-npc-clashes.md:931"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยเข้าป่าและไม่ล่าตัวละครในฤดูนี้",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:920"
+      "src": "docs/systems/combat/07-npc-clashes.md:932"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ลงมือซ้ำ ปล่อยตัวละครกลับเมืองโดยเฉือนผ้าคลุมไว้เป็นสัญญาณ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:921"
+      "src": "docs/systems/combat/07-npc-clashes.md:933"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:908"
+    "src": "docs/systems/combat/07-npc-clashes.md:920"
    },
    {
     "id": "NF-AL07-3",
@@ -5059,7 +5059,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:932"
+      "src": "docs/systems/combat/07-npc-clashes.md:944"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5075,7 +5075,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:933"
+      "src": "docs/systems/combat/07-npc-clashes.md:945"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5094,7 +5094,7 @@
         "id": "AL07-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:934"
+      "src": "docs/systems/combat/07-npc-clashes.md:946"
      },
      {
       "outcome": "เสมอ",
@@ -5107,17 +5107,17 @@
         "text": "เขาปิดสมุดและยอมให้ตัวละครออกจากห้อง ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:935"
+      "src": "docs/systems/combat/07-npc-clashes.md:947"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครสอบสวนหนึ่งคืนแล้วปล่อยพร้อมชื่อใหม่ในรายงาน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:936"
+      "src": "docs/systems/combat/07-npc-clashes.md:948"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:923"
+    "src": "docs/systems/combat/07-npc-clashes.md:935"
    },
    {
     "id": "NF-AL01-3",
@@ -5150,7 +5150,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:947"
+      "src": "docs/systems/combat/07-npc-clashes.md:959"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5169,7 +5169,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:948"
+      "src": "docs/systems/combat/07-npc-clashes.md:960"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5188,7 +5188,7 @@
         "id": "AL01-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:949"
+      "src": "docs/systems/combat/07-npc-clashes.md:961"
      },
      {
       "outcome": "เสมอ",
@@ -5201,17 +5201,17 @@
         "text": "เขาปิดประตูสภาเอง ซ้ำได้เมื่อฟอร์เทียส่งซ้ำ"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:950"
+      "src": "docs/systems/combat/07-npc-clashes.md:962"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาขับตัวละครออกจากสภาและบันทึกชื่อในรายชื่อผู้ถูกห้าม เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:951"
+      "src": "docs/systems/combat/07-npc-clashes.md:963"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:938"
+    "src": "docs/systems/combat/07-npc-clashes.md:950"
    },
    {
     "id": "NF-AL03-3",
@@ -5244,7 +5244,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:962"
+      "src": "docs/systems/combat/07-npc-clashes.md:974"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5263,7 +5263,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:963"
+      "src": "docs/systems/combat/07-npc-clashes.md:975"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5278,7 +5278,7 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:964"
+      "src": "docs/systems/combat/07-npc-clashes.md:976"
      },
      {
       "outcome": "เสมอ",
@@ -5291,17 +5291,17 @@
         "text": "เขาถอยกลับปราสาทหลักและส่งคนอื่นแทน ซ้ำได้ฤดูถัดไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:965"
+      "src": "docs/systems/combat/07-npc-clashes.md:977"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาขับตัวละครออกปราสาทและตั้งยามหน้าห้องผู้อ้างที่สามเป็นสองเท่า เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:966"
+      "src": "docs/systems/combat/07-npc-clashes.md:978"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:953"
+    "src": "docs/systems/combat/07-npc-clashes.md:965"
    },
    {
     "id": "NF-AL10-2",
@@ -5334,7 +5334,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:977"
+      "src": "docs/systems/combat/07-npc-clashes.md:989"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5353,14 +5353,14 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:978"
+      "src": "docs/systems/combat/07-npc-clashes.md:990"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย ลูกน้องแตกและสัญญาถูกขายให้ผู้เสนอราคาสูงสุดโดยไม่มีคนควบคุม",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:979"
+      "src": "docs/systems/combat/07-npc-clashes.md:991"
      },
      {
       "outcome": "เสมอ",
@@ -5373,17 +5373,17 @@
         "text": "เขาสั่งลูกน้องถอยและส่งผู้แทนไปเจรจาแทน ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:980"
+      "src": "docs/systems/combat/07-npc-clashes.md:992"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ลูกน้องจับตัวละครและยึดสิ่งของตามราคาสัญญา เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:981"
+      "src": "docs/systems/combat/07-npc-clashes.md:993"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:968"
+    "src": "docs/systems/combat/07-npc-clashes.md:980"
    },
    {
     "id": "NF-AL15-1",
@@ -5421,7 +5421,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:992"
+      "src": "docs/systems/combat/07-npc-clashes.md:1004"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5437,7 +5437,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:993"
+      "src": "docs/systems/combat/07-npc-clashes.md:1005"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5450,7 +5450,7 @@
         "delta": 15
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:994"
+      "src": "docs/systems/combat/07-npc-clashes.md:1006"
      },
      {
       "outcome": "เสมอ",
@@ -5463,17 +5463,17 @@
         "text": "เธอตรึงแนวต่อโดยไม่รับเสบียงและ ซ้ำได้ฤดูถัดไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:995"
+      "src": "docs/systems/combat/07-npc-clashes.md:1007"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอยึดเสบียงตัวละครเพื่อทัพและปล่อยตัวละครกลับผ่านแนว เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:996"
+      "src": "docs/systems/combat/07-npc-clashes.md:1008"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:983"
+    "src": "docs/systems/combat/07-npc-clashes.md:995"
    },
    {
     "id": "NF-KD05-2",
@@ -5510,7 +5510,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1009"
+      "src": "docs/systems/combat/07-npc-clashes.md:1021"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5527,7 +5527,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1010"
+      "src": "docs/systems/combat/07-npc-clashes.md:1022"
      },
      {
       "outcome": "เสมอ",
@@ -5543,7 +5543,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1011"
+      "src": "docs/systems/combat/07-npc-clashes.md:1023"
      },
      {
       "outcome": "แพ้",
@@ -5556,10 +5556,10 @@
         "id": "c_fever"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1012"
+      "src": "docs/systems/combat/07-npc-clashes.md:1024"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1000"
+    "src": "docs/systems/combat/07-npc-clashes.md:1012"
    },
    {
     "id": "NF-KD06-2",
@@ -5591,7 +5591,7 @@
         "id": "GI-04"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1023"
+      "src": "docs/systems/combat/07-npc-clashes.md:1035"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5603,7 +5603,7 @@
         "id": "GI-04"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1024"
+      "src": "docs/systems/combat/07-npc-clashes.md:1036"
      },
      {
       "outcome": "เจรจา (ร่วมหนีเถ้า)",
@@ -5617,7 +5617,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1025"
+      "src": "docs/systems/combat/07-npc-clashes.md:1037"
      },
      {
       "outcome": "เสมอ",
@@ -5633,17 +5633,17 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1026"
+      "src": "docs/systems/combat/07-npc-clashes.md:1038"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดอิรมอร์ ตัวละครถูกขับออกจากเมือง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1027"
+      "src": "docs/systems/combat/07-npc-clashes.md:1039"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1014"
+    "src": "docs/systems/combat/07-npc-clashes.md:1026"
    },
    {
     "id": "NF-KD08-1",
@@ -5675,7 +5675,7 @@
         "id": "GI-08"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1038"
+      "src": "docs/systems/combat/07-npc-clashes.md:1050"
      },
      {
       "outcome": "ชนะ (ด้วยน้ำ)",
@@ -5695,7 +5695,7 @@
         "mul": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1039"
+      "src": "docs/systems/combat/07-npc-clashes.md:1051"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5714,7 +5714,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1040"
+      "src": "docs/systems/combat/07-npc-clashes.md:1052"
      },
      {
       "outcome": "เสมอ",
@@ -5727,7 +5727,7 @@
         "text": "เขาถอยเข้าป้อม ปิดประตู ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1041"
+      "src": "docs/systems/combat/07-npc-clashes.md:1053"
      },
      {
       "outcome": "แพ้",
@@ -5741,10 +5741,10 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1042"
+      "src": "docs/systems/combat/07-npc-clashes.md:1054"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1029"
+    "src": "docs/systems/combat/07-npc-clashes.md:1041"
    },
    {
     "id": "NF-KD12-1",
@@ -5774,7 +5774,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1053"
+      "src": "docs/systems/combat/07-npc-clashes.md:1065"
      },
      {
       "outcome": "ชนะ",
@@ -5793,24 +5793,24 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1054"
+      "src": "docs/systems/combat/07-npc-clashes.md:1066"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาตีดาบให้ครึ่งเล่ม ตัวละครต้องกลับมารับครึ่งที่เหลือ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1055"
+      "src": "docs/systems/combat/07-npc-clashes.md:1067"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาปฏิเสธไม่ขายอาวุธ ไม่แตะตัวละคร",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1056"
+      "src": "docs/systems/combat/07-npc-clashes.md:1068"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1044"
+    "src": "docs/systems/combat/07-npc-clashes.md:1056"
    },
    {
     "id": "NF-KD08-2",
@@ -5848,7 +5848,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1067"
+      "src": "docs/systems/combat/07-npc-clashes.md:1079"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5864,7 +5864,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1068"
+      "src": "docs/systems/combat/07-npc-clashes.md:1080"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5884,7 +5884,7 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1069"
+      "src": "docs/systems/combat/07-npc-clashes.md:1081"
      },
      {
       "outcome": "เสมอ",
@@ -5897,17 +5897,17 @@
         "text": "เขาถอยเข้าหอสวดและปิดประตู ซ้ำได้เมื่อตัวละครกลับมา"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1070"
+      "src": "docs/systems/combat/07-npc-clashes.md:1082"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครขังหนึ่งฤดูแล้วปล่อยเมื่อศาสนจักรสอบเสร็จ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1071"
+      "src": "docs/systems/combat/07-npc-clashes.md:1083"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1058"
+    "src": "docs/systems/combat/07-npc-clashes.md:1070"
    },
    {
     "id": "NF-KD12-2",
@@ -5940,7 +5940,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1082"
+      "src": "docs/systems/combat/07-npc-clashes.md:1094"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -5956,7 +5956,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1083"
+      "src": "docs/systems/combat/07-npc-clashes.md:1095"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -5976,7 +5976,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1084"
+      "src": "docs/systems/combat/07-npc-clashes.md:1096"
      },
      {
       "outcome": "เสมอ",
@@ -5989,17 +5989,17 @@
         "text": "เขายกเขี้ยวคารวะตามธรรมเนียมนักล่า ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1085"
+      "src": "docs/systems/combat/07-npc-clashes.md:1097"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาแบกตัวละครกลับหมู่บ้านโดยไม่เอ่ยคำ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1086"
+      "src": "docs/systems/combat/07-npc-clashes.md:1098"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1073"
+    "src": "docs/systems/combat/07-npc-clashes.md:1085"
    },
    {
     "id": "NF-KD03-4",
@@ -6032,7 +6032,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1097"
+      "src": "docs/systems/combat/07-npc-clashes.md:1109"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6053,31 +6053,31 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1098"
+      "src": "docs/systems/combat/07-npc-clashes.md:1110"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย ฝ่ายปิดแตกและฝ่ายเปิดเข้าครองหอรูนโดยไม่มีผู้ตัดสิน หลานของเขาถูกฝ่ายเปิดรับเลี้ยง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1099"
+      "src": "docs/systems/combat/07-npc-clashes.md:1111"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาสั่งปิดห้องตัดสินและปล่อยตัวละครออกโดยไม่ตัดสิน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1100"
+      "src": "docs/systems/combat/07-npc-clashes.md:1112"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาตัดสินตัวละครเป็นผู้ต้องห้ามหอรูนหนึ่งปี เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1101"
+      "src": "docs/systems/combat/07-npc-clashes.md:1113"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1088"
+    "src": "docs/systems/combat/07-npc-clashes.md:1100"
    },
    {
     "id": "NF-KD07-1",
@@ -6110,7 +6110,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1112"
+      "src": "docs/systems/combat/07-npc-clashes.md:1124"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6124,7 +6124,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1113"
+      "src": "docs/systems/combat/07-npc-clashes.md:1125"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6139,7 +6139,7 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1114"
+      "src": "docs/systems/combat/07-npc-clashes.md:1126"
      },
      {
       "outcome": "เสมอ",
@@ -6152,17 +6152,17 @@
         "text": "เขายืนบังเพลิงและขอให้ตัวละครออก ซ้ำได้เมื่อเพลิงเปลี่ยนสี"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1115"
+      "src": "docs/systems/combat/07-npc-clashes.md:1127"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาฟาดหางกวาดตัวละครออกจากห้องและห้ามเข้าธรอกาดหนึ่งฤดู เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1116"
+      "src": "docs/systems/combat/07-npc-clashes.md:1128"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1103"
+    "src": "docs/systems/combat/07-npc-clashes.md:1115"
    },
    {
     "id": "NF-KD03-3",
@@ -6195,7 +6195,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1127"
+      "src": "docs/systems/combat/07-npc-clashes.md:1139"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6211,14 +6211,14 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1128"
+      "src": "docs/systems/combat/07-npc-clashes.md:1140"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย รูนทั้งผืนหายไปพร้อมกับเขา ฝ่ายปิดโล่งอกและฝ่ายเปิดไม่ได้รูนที่ตั้งใจ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1129"
+      "src": "docs/systems/combat/07-npc-clashes.md:1141"
      },
      {
       "outcome": "เสมอ",
@@ -6231,17 +6231,17 @@
         "text": "เขาปิดประตูและหนีเข้าเหมืองลึก ซ้ำได้เมื่อฝ่ายปิดตามอีก"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1130"
+      "src": "docs/systems/combat/07-npc-clashes.md:1142"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ทำร้ายแต่เอาแผ่นรูนของตัวละครไป เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1131"
+      "src": "docs/systems/combat/07-npc-clashes.md:1143"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1118"
+    "src": "docs/systems/combat/07-npc-clashes.md:1130"
    },
    {
     "id": "NF-KD05-1",
@@ -6274,7 +6274,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1142"
+      "src": "docs/systems/combat/07-npc-clashes.md:1154"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6290,7 +6290,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1143"
+      "src": "docs/systems/combat/07-npc-clashes.md:1155"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6316,24 +6316,24 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1144"
+      "src": "docs/systems/combat/07-npc-clashes.md:1156"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอเปิดทางหนีลับให้ตัวละครและเก็บบัญชีหนี้ไว้",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1145"
+      "src": "docs/systems/combat/07-npc-clashes.md:1157"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอขังตัวละครไว้หนึ่งฤดูแล้วปล่อยพร้อมคำสาปเล็กของตระกูลเธอ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1146"
+      "src": "docs/systems/combat/07-npc-clashes.md:1158"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1133"
+    "src": "docs/systems/combat/07-npc-clashes.md:1145"
    },
    {
     "id": "NF-SH02-1",
@@ -6361,7 +6361,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1159"
+      "src": "docs/systems/combat/07-npc-clashes.md:1171"
      },
      {
       "outcome": "ชนะ (ด้วยไฟ)",
@@ -6373,7 +6373,7 @@
         "id": "WR-24"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1160"
+      "src": "docs/systems/combat/07-npc-clashes.md:1172"
      },
      {
       "outcome": "เสมอ",
@@ -6386,17 +6386,17 @@
         "unit": "ปี"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1161"
+      "src": "docs/systems/combat/07-npc-clashes.md:1173"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ตัวละครถูกจับ เส้นลุกล่าเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1162"
+      "src": "docs/systems/combat/07-npc-clashes.md:1174"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1150"
+    "src": "docs/systems/combat/07-npc-clashes.md:1162"
    },
    {
     "id": "NF-SH03-1",
@@ -6429,7 +6429,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1173"
+      "src": "docs/systems/combat/07-npc-clashes.md:1185"
      },
      {
       "outcome": "ชนะ",
@@ -6451,14 +6451,14 @@
         "mul": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1174"
+      "src": "docs/systems/combat/07-npc-clashes.md:1186"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหลีกทางครึ่งหนึ่ง ตัวละครขึ้นได้ถึงขั้นที่สองร้อย",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1175"
+      "src": "docs/systems/combat/07-npc-clashes.md:1187"
      },
      {
       "outcome": "แพ้",
@@ -6470,10 +6470,10 @@
         "id": "WR-02"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1176"
+      "src": "docs/systems/combat/07-npc-clashes.md:1188"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1164"
+    "src": "docs/systems/combat/07-npc-clashes.md:1176"
    },
    {
     "id": "NF-SH03-4",
@@ -6510,7 +6510,7 @@
         "id": "SH01-2"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1187"
+      "src": "docs/systems/combat/07-npc-clashes.md:1199"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6523,7 +6523,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1188"
+      "src": "docs/systems/combat/07-npc-clashes.md:1200"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6538,24 +6538,24 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1189"
+      "src": "docs/systems/combat/07-npc-clashes.md:1201"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาจับดวงตาที่ห่อผ้ากอดแน่นและถอยลงใต้ภูเขา",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1190"
+      "src": "docs/systems/combat/07-npc-clashes.md:1202"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาโยนตัวละครลงบันไดสามร้อยขั้นและผ้าห่อไม่เปิด เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1191"
+      "src": "docs/systems/combat/07-npc-clashes.md:1203"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1178"
+    "src": "docs/systems/combat/07-npc-clashes.md:1190"
    },
    {
     "id": "NF-SH10-2",
@@ -6588,7 +6588,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1202"
+      "src": "docs/systems/combat/07-npc-clashes.md:1214"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6611,7 +6611,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1203"
+      "src": "docs/systems/combat/07-npc-clashes.md:1215"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6623,24 +6623,24 @@
         "id": "SH11-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1204"
+      "src": "docs/systems/combat/07-npc-clashes.md:1216"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยเข้ากลางคืนและล่าผู้นำทางคนอื่นในฤดูนี้",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1205"
+      "src": "docs/systems/combat/07-npc-clashes.md:1217"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ทำร้ายตัวละครแต่เอาน้ำและเสบียงของผู้นำทางไป เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1206"
+      "src": "docs/systems/combat/07-npc-clashes.md:1218"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1193"
+    "src": "docs/systems/combat/07-npc-clashes.md:1205"
    },
    {
     "id": "NF-SH11-1",
@@ -6673,7 +6673,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1217"
+      "src": "docs/systems/combat/07-npc-clashes.md:1229"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6692,7 +6692,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1218"
+      "src": "docs/systems/combat/07-npc-clashes.md:1230"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6711,7 +6711,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1219"
+      "src": "docs/systems/combat/07-npc-clashes.md:1231"
      },
      {
       "outcome": "เสมอ",
@@ -6724,17 +6724,17 @@
         "text": "เขาถอนทัพไปบ่อน้ำถัดไป ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1220"
+      "src": "docs/systems/combat/07-npc-clashes.md:1232"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ฆ่าแต่ยึดเสบียงตัวละคร เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1221"
+      "src": "docs/systems/combat/07-npc-clashes.md:1233"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1208"
+    "src": "docs/systems/combat/07-npc-clashes.md:1220"
    },
    {
     "id": "NF-SH01-3",
@@ -6767,7 +6767,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1232"
+      "src": "docs/systems/combat/07-npc-clashes.md:1244"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6786,7 +6786,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1233"
+      "src": "docs/systems/combat/07-npc-clashes.md:1245"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6799,7 +6799,7 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1234"
+      "src": "docs/systems/combat/07-npc-clashes.md:1246"
      },
      {
       "outcome": "เสมอ",
@@ -6812,17 +6812,17 @@
         "text": "เขาให้หนอนมุดทรายและหายไปทั้งสองฝ่าย ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1235"
+      "src": "docs/systems/combat/07-npc-clashes.md:1247"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "หนอนเหวี่ยงตัวละครออกจากรังด้วยหาง เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1236"
+      "src": "docs/systems/combat/07-npc-clashes.md:1248"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1223"
+    "src": "docs/systems/combat/07-npc-clashes.md:1235"
    },
    {
     "id": "NF-SH03-2",
@@ -6855,7 +6855,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1247"
+      "src": "docs/systems/combat/07-npc-clashes.md:1259"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6871,7 +6871,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1248"
+      "src": "docs/systems/combat/07-npc-clashes.md:1260"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6884,14 +6884,14 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1249"
+      "src": "docs/systems/combat/07-npc-clashes.md:1261"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอปิดการทดสอบและขอให้ตัวละครกลับมาใหม่เมื่อตอบได้",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1250"
+      "src": "docs/systems/combat/07-npc-clashes.md:1262"
      },
      {
       "outcome": "แพ้",
@@ -6905,10 +6905,10 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1251"
+      "src": "docs/systems/combat/07-npc-clashes.md:1263"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1238"
+    "src": "docs/systems/combat/07-npc-clashes.md:1250"
    },
    {
     "id": "NF-SH06-4",
@@ -6941,7 +6941,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1262"
+      "src": "docs/systems/combat/07-npc-clashes.md:1274"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -6955,7 +6955,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1263"
+      "src": "docs/systems/combat/07-npc-clashes.md:1275"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -6970,24 +6970,24 @@
         "how": "default"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1264"
+      "src": "docs/systems/combat/07-npc-clashes.md:1276"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดลานและให้ตัวละครกลับมาเมื่อจังหวะนิ่ง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1265"
+      "src": "docs/systems/combat/07-npc-clashes.md:1277"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาเหวี่ยงตัวละครออกจากลานและวางมือบนหินปรับจังหวะ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1266"
+      "src": "docs/systems/combat/07-npc-clashes.md:1278"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1253"
+    "src": "docs/systems/combat/07-npc-clashes.md:1265"
    },
    {
     "id": "NF-SH17-1",
@@ -7020,7 +7020,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1277"
+      "src": "docs/systems/combat/07-npc-clashes.md:1289"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7034,7 +7034,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1278"
+      "src": "docs/systems/combat/07-npc-clashes.md:1290"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7047,24 +7047,24 @@
         "delta": 15
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1279"
+      "src": "docs/systems/combat/07-npc-clashes.md:1291"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขากลับเป็นหินและไม่ขยับหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1280"
+      "src": "docs/systems/combat/07-npc-clashes.md:1292"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาทับตัวละครด้วยเงาและฝ่ามือหินและสั่งผู้ดูแลที่เหลือขับออก เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1281"
+      "src": "docs/systems/combat/07-npc-clashes.md:1293"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1268"
+    "src": "docs/systems/combat/07-npc-clashes.md:1280"
    },
    {
     "id": "NF-SV08-1",
@@ -7094,7 +7094,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1294"
+      "src": "docs/systems/combat/07-npc-clashes.md:1306"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7108,24 +7108,24 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1295"
+      "src": "docs/systems/combat/07-npc-clashes.md:1307"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหยุดยิง ตัวละครออกจากเขต",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1296"
+      "src": "docs/systems/combat/07-npc-clashes.md:1308"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ตัวละครถูกขับออกจากซิลวาเนล",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1297"
+      "src": "docs/systems/combat/07-npc-clashes.md:1309"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1285"
+    "src": "docs/systems/combat/07-npc-clashes.md:1297"
    },
    {
     "id": "NF-SV14-1",
@@ -7151,7 +7151,7 @@
         "id": "BIO-02"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1308"
+      "src": "docs/systems/combat/07-npc-clashes.md:1320"
      },
      {
       "outcome": "เสมอ",
@@ -7163,7 +7163,7 @@
         "id": "BIO-02"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1309"
+      "src": "docs/systems/combat/07-npc-clashes.md:1321"
      },
      {
       "outcome": "แพ้",
@@ -7175,10 +7175,10 @@
         "id": "BIO-02"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1310"
+      "src": "docs/systems/combat/07-npc-clashes.md:1322"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1299"
+    "src": "docs/systems/combat/07-npc-clashes.md:1311"
    },
    {
     "id": "NF-SV08-2",
@@ -7215,7 +7215,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1321"
+      "src": "docs/systems/combat/07-npc-clashes.md:1333"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7229,7 +7229,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1322"
+      "src": "docs/systems/combat/07-npc-clashes.md:1334"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7243,7 +7243,7 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1323"
+      "src": "docs/systems/combat/07-npc-clashes.md:1335"
      },
      {
       "outcome": "เสมอ",
@@ -7256,17 +7256,17 @@
         "text": "เธอหายเข้าป่า ซ้ำได้เมื่อตัวละครข้ามชายแดนอีกครั้ง"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1324"
+      "src": "docs/systems/combat/07-npc-clashes.md:1336"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "ธนูปักรอบเท้าเป็นวงบอกให้ออกจากเขต",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1325"
+      "src": "docs/systems/combat/07-npc-clashes.md:1337"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1312"
+    "src": "docs/systems/combat/07-npc-clashes.md:1324"
    },
    {
     "id": "NF-SV03-1",
@@ -7303,7 +7303,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1336"
+      "src": "docs/systems/combat/07-npc-clashes.md:1348"
      },
      {
       "outcome": "ชนะ (ด้วยไฟ)",
@@ -7326,14 +7326,14 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1337"
+      "src": "docs/systems/combat/07-npc-clashes.md:1349"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอนตัวและเลื่อนประกาศสงครามหนึ่งปี",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1338"
+      "src": "docs/systems/combat/07-npc-clashes.md:1350"
      },
      {
       "outcome": "แพ้",
@@ -7346,10 +7346,10 @@
         "id": "c_fever"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1339"
+      "src": "docs/systems/combat/07-npc-clashes.md:1351"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1327"
+    "src": "docs/systems/combat/07-npc-clashes.md:1339"
    },
    {
     "id": "NF-SV03-2",
@@ -7386,31 +7386,31 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1350"
+      "src": "docs/systems/combat/07-npc-clashes.md:1362"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตายตามเส้น ก) แต่ก่อนโจมตี โรงกลั่นรอด",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1351"
+      "src": "docs/systems/combat/07-npc-clashes.md:1363"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอถอยกลับป่า รอรอบถัดไป",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1352"
+      "src": "docs/systems/combat/07-npc-clashes.md:1364"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เธอเดินเข้าโรงกลั่นต่อ ตัวละครไม่เป็นเป้า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1353"
+      "src": "docs/systems/combat/07-npc-clashes.md:1365"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1341"
+    "src": "docs/systems/combat/07-npc-clashes.md:1353"
    },
    {
     "id": "NF-SV03-3",
@@ -7443,7 +7443,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1364"
+      "src": "docs/systems/combat/07-npc-clashes.md:1376"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7459,7 +7459,7 @@
         "unit": "year"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1365"
+      "src": "docs/systems/combat/07-npc-clashes.md:1377"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7477,7 +7477,7 @@
         "delta": -1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1366"
+      "src": "docs/systems/combat/07-npc-clashes.md:1378"
      },
      {
       "outcome": "เสมอ",
@@ -7490,17 +7490,17 @@
         "text": "เขาถอยเข้าป่าและเริ่มหนีไปนิวเฮเวน ซ้ำได้เมื่อตัวละครตามไป"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1367"
+      "src": "docs/systems/combat/07-npc-clashes.md:1379"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ลงมือซ้ำ แต่ผิวเทาของเขาแตะข้อมือตัวละครทิ้งรอยหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1368"
+      "src": "docs/systems/combat/07-npc-clashes.md:1380"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1355"
+    "src": "docs/systems/combat/07-npc-clashes.md:1367"
    },
    {
     "id": "NF-SV16-2",
@@ -7537,7 +7537,7 @@
         "id": "SV16-7"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1379"
+      "src": "docs/systems/combat/07-npc-clashes.md:1391"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7556,7 +7556,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1380"
+      "src": "docs/systems/combat/07-npc-clashes.md:1392"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7569,24 +7569,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1381"
+      "src": "docs/systems/combat/07-npc-clashes.md:1393"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขากลับเข้าป่าและดักรอที่ทางที่ตัวละครต้องผ่าน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1382"
+      "src": "docs/systems/combat/07-npc-clashes.md:1394"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ฆ่าตัวละครแต่ผูกตัวไว้กับเสาไม้และไปตามทาร์นต่อ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1383"
+      "src": "docs/systems/combat/07-npc-clashes.md:1395"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1370"
+    "src": "docs/systems/combat/07-npc-clashes.md:1382"
    },
    {
     "id": "NF-SV06-1",
@@ -7624,7 +7624,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1394"
+      "src": "docs/systems/combat/07-npc-clashes.md:1406"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7638,7 +7638,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1395"
+      "src": "docs/systems/combat/07-npc-clashes.md:1407"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7651,14 +7651,14 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1396"
+      "src": "docs/systems/combat/07-npc-clashes.md:1408"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดเขตตรวจหนึ่งฤดูและห้ามตัวละครเข้า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1397"
+      "src": "docs/systems/combat/07-npc-clashes.md:1409"
      },
      {
       "outcome": "แพ้",
@@ -7672,10 +7672,10 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1398"
+      "src": "docs/systems/combat/07-npc-clashes.md:1410"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1385"
+    "src": "docs/systems/combat/07-npc-clashes.md:1397"
    },
    {
     "id": "NF-SV13-2",
@@ -7712,7 +7712,7 @@
         "id": "SV13-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1409"
+      "src": "docs/systems/combat/07-npc-clashes.md:1421"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7731,31 +7731,31 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1410"
+      "src": "docs/systems/combat/07-npc-clashes.md:1422"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "วิญญาณสลาย เรื่องของเธอหายไปครึ่งหนึ่ง ผู้ฟังรุ่นหลังรู้แค่ท่อนที่เธอเคยเล่า",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1411"
+      "src": "docs/systems/combat/07-npc-clashes.md:1423"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เธอหายเข้ารากและกลับมาในคืนจันทร์เสี้ยว",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1412"
+      "src": "docs/systems/combat/07-npc-clashes.md:1424"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "รากรัดตัวละครไว้ในห้องหนึ่งคืนเพื่อให้ฟัง เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1413"
+      "src": "docs/systems/combat/07-npc-clashes.md:1425"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1400"
+    "src": "docs/systems/combat/07-npc-clashes.md:1412"
    },
    {
     "id": "NF-SV08-4",
@@ -7788,7 +7788,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1424"
+      "src": "docs/systems/combat/07-npc-clashes.md:1436"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7804,31 +7804,31 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1425"
+      "src": "docs/systems/combat/07-npc-clashes.md:1437"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตายและหอสังเกตดับไฟสองกอง กองทัพถึงป้อมเร็วขึ้นหนึ่งวัน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1426"
+      "src": "docs/systems/combat/07-npc-clashes.md:1438"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอนตัวลงบันไดและหอสังเกตว่างหนึ่งคืน",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1427"
+      "src": "docs/systems/combat/07-npc-clashes.md:1439"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายิงธนูข้างหูและสั่งให้ตัวละครลงจากหอ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1428"
+      "src": "docs/systems/combat/07-npc-clashes.md:1440"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1415"
+    "src": "docs/systems/combat/07-npc-clashes.md:1427"
    },
    {
     "id": "NF-SV01-2",
@@ -7861,7 +7861,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1439"
+      "src": "docs/systems/combat/07-npc-clashes.md:1451"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -7875,7 +7875,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1440"
+      "src": "docs/systems/combat/07-npc-clashes.md:1452"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7888,24 +7888,24 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1441"
+      "src": "docs/systems/combat/07-npc-clashes.md:1453"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดห้องรากและตัวละครถูกห้ามเข้าหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1442"
+      "src": "docs/systems/combat/07-npc-clashes.md:1454"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "รากรัดตัวละครไว้ในห้องหนึ่งคืนก่อนปล่อยให้ออก เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1443"
+      "src": "docs/systems/combat/07-npc-clashes.md:1455"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1430"
+    "src": "docs/systems/combat/07-npc-clashes.md:1442"
    },
    {
     "id": "NF-MK02-1",
@@ -7942,7 +7942,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1456"
+      "src": "docs/systems/combat/07-npc-clashes.md:1468"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -7965,7 +7965,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1457"
+      "src": "docs/systems/combat/07-npc-clashes.md:1469"
      },
      {
       "outcome": "เสมอ",
@@ -7985,7 +7985,7 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1458"
+      "src": "docs/systems/combat/07-npc-clashes.md:1470"
      },
      {
       "outcome": "แพ้",
@@ -7997,10 +7997,10 @@
         "id": "MC-02"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1459"
+      "src": "docs/systems/combat/07-npc-clashes.md:1471"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1447"
+    "src": "docs/systems/combat/07-npc-clashes.md:1459"
    },
    {
     "id": "NF-MK16-4",
@@ -8037,7 +8037,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1470"
+      "src": "docs/systems/combat/07-npc-clashes.md:1482"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8053,7 +8053,7 @@
         "id": "MK16-1"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1471"
+      "src": "docs/systems/combat/07-npc-clashes.md:1483"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8076,7 +8076,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1472"
+      "src": "docs/systems/combat/07-npc-clashes.md:1484"
      },
      {
       "outcome": "เสมอ",
@@ -8090,17 +8090,17 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1473"
+      "src": "docs/systems/combat/07-npc-clashes.md:1485"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาเดินผ่านไปโดยไม่หันกลับ เส้นเดินต่อ ไม่มีแค้น",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1474"
+      "src": "docs/systems/combat/07-npc-clashes.md:1486"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1461"
+    "src": "docs/systems/combat/07-npc-clashes.md:1473"
    },
    {
     "id": "NF-MK04-1",
@@ -8133,7 +8133,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1485"
+      "src": "docs/systems/combat/07-npc-clashes.md:1497"
      },
      {
       "outcome": "ชนะ",
@@ -8157,7 +8157,7 @@
         "id": "END-06"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1486"
+      "src": "docs/systems/combat/07-npc-clashes.md:1498"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8174,7 +8174,7 @@
         "mul": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1487"
+      "src": "docs/systems/combat/07-npc-clashes.md:1499"
      },
      {
       "outcome": "เสมอ",
@@ -8187,17 +8187,17 @@
         "text": "เขาถอยปิดทางเข้า ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1488"
+      "src": "docs/systems/combat/07-npc-clashes.md:1500"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาโยนตัวละครออกนอกเขตซาก ไม่ตาม",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1489"
+      "src": "docs/systems/combat/07-npc-clashes.md:1501"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1476"
+    "src": "docs/systems/combat/07-npc-clashes.md:1488"
    },
    {
     "id": "NF-MK02-2",
@@ -8235,7 +8235,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1500"
+      "src": "docs/systems/combat/07-npc-clashes.md:1512"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8260,7 +8260,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1501"
+      "src": "docs/systems/combat/07-npc-clashes.md:1513"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8278,14 +8278,14 @@
         "text": "ตาย ชิ้นส่วนของเขาถูกบริษัทเก็บไป ษา"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1502"
+      "src": "docs/systems/combat/07-npc-clashes.md:1514"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาถอยลงห้องซ่อมและเงียบหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1503"
+      "src": "docs/systems/combat/07-npc-clashes.md:1515"
      },
      {
       "outcome": "แพ้",
@@ -8299,10 +8299,10 @@
         ]
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1504"
+      "src": "docs/systems/combat/07-npc-clashes.md:1516"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1491"
+    "src": "docs/systems/combat/07-npc-clashes.md:1503"
    },
    {
     "id": "NF-MK16-2",
@@ -8335,7 +8335,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1515"
+      "src": "docs/systems/combat/07-npc-clashes.md:1527"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8351,7 +8351,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1516"
+      "src": "docs/systems/combat/07-npc-clashes.md:1528"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8364,7 +8364,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1517"
+      "src": "docs/systems/combat/07-npc-clashes.md:1529"
      },
      {
       "outcome": "เสมอ",
@@ -8377,17 +8377,17 @@
         "text": "เขาถอยกลับแนวและจดวันที่ในผ้าขาวม้า ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1518"
+      "src": "docs/systems/combat/07-npc-clashes.md:1530"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาจับตัวละครส่งให้บริษัทแล้วขอค่าจ้างเพิ่มครึ่งเหรียญ เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1519"
+      "src": "docs/systems/combat/07-npc-clashes.md:1531"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1506"
+    "src": "docs/systems/combat/07-npc-clashes.md:1518"
    },
    {
     "id": "NF-MK04-4",
@@ -8425,7 +8425,7 @@
         "delta": 3
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1530"
+      "src": "docs/systems/combat/07-npc-clashes.md:1542"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8439,7 +8439,7 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1531"
+      "src": "docs/systems/combat/07-npc-clashes.md:1543"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8452,7 +8452,7 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1532"
+      "src": "docs/systems/combat/07-npc-clashes.md:1544"
      },
      {
       "outcome": "เสมอ",
@@ -8465,17 +8465,17 @@
         "text": "เขาปิดลานกักกันและเรียกกำลังเสริม ซ้ำได้ปีหน้า"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1533"
+      "src": "docs/systems/combat/07-npc-clashes.md:1545"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดผู้คลั่งและส่งตัวละครออกจากลานโดยไม่ทำร้าย เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1534"
+      "src": "docs/systems/combat/07-npc-clashes.md:1546"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1521"
+    "src": "docs/systems/combat/07-npc-clashes.md:1533"
    },
    {
     "id": "NF-MK06-4",
@@ -8513,7 +8513,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1545"
+      "src": "docs/systems/combat/07-npc-clashes.md:1557"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8529,7 +8529,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1546"
+      "src": "docs/systems/combat/07-npc-clashes.md:1558"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8543,24 +8543,24 @@
         "op": "force"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1547"
+      "src": "docs/systems/combat/07-npc-clashes.md:1559"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาหยุดกลางสนามและสถานะระบบแสดงเป็นเสียงรบกวนหนึ่งฤดู",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1548"
+      "src": "docs/systems/combat/07-npc-clashes.md:1560"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาไม่ลงมือซ้ำ แต่ส่งสัญญาณถึงบริษัท ตัวละครถูกขับจากสนาม เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1549"
+      "src": "docs/systems/combat/07-npc-clashes.md:1561"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1536"
+    "src": "docs/systems/combat/07-npc-clashes.md:1548"
    },
    {
     "id": "NF-MK09-1",
@@ -8603,7 +8603,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1560"
+      "src": "docs/systems/combat/07-npc-clashes.md:1572"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8619,7 +8619,7 @@
         "unit": "mul"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1561"
+      "src": "docs/systems/combat/07-npc-clashes.md:1573"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8632,7 +8632,7 @@
         "delta": 10
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1562"
+      "src": "docs/systems/combat/07-npc-clashes.md:1574"
      },
      {
       "outcome": "เสมอ",
@@ -8645,17 +8645,17 @@
         "text": "เขาสั่งเรือเหาะถอยสู่เมฆและเปิด ซ้ำเมื่อฟ้าโปร่ง"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1563"
+      "src": "docs/systems/combat/07-npc-clashes.md:1575"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขายึดสินค้าและตัวละครเป็นผู้โดยสารตามสัญญา เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1564"
+      "src": "docs/systems/combat/07-npc-clashes.md:1576"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1551"
+    "src": "docs/systems/combat/07-npc-clashes.md:1563"
    },
    {
     "id": "NF-MK16-5",
@@ -8688,7 +8688,7 @@
         "delta": 2
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1575"
+      "src": "docs/systems/combat/07-npc-clashes.md:1587"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8702,31 +8702,31 @@
         "op": "delay"
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1576"
+      "src": "docs/systems/combat/07-npc-clashes.md:1588"
      },
      {
       "outcome": "ชนะ (ล้ม)",
       "kind": "win_kill",
       "text": "ตาย ค่ายแตกและผู้พักกระจายไปหลายเผ่าโดยไม่มีที่กำบัง",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1577"
+      "src": "docs/systems/combat/07-npc-clashes.md:1589"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปิดทางเข้าค่ายหนึ่งวันและให้ตัวละครกลับมาใหม่ด้วยกฎ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1578"
+      "src": "docs/systems/combat/07-npc-clashes.md:1590"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาตีระฆังค่ายและผู้พักล้อมตัวละครออกประตู เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1579"
+      "src": "docs/systems/combat/07-npc-clashes.md:1591"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1566"
+    "src": "docs/systems/combat/07-npc-clashes.md:1578"
    },
    {
     "id": "NF-MK05-4",
@@ -8770,7 +8770,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1590"
+      "src": "docs/systems/combat/07-npc-clashes.md:1602"
      },
      {
       "outcome": "ชนะ (ไว้ชีวิต)",
@@ -8790,7 +8790,7 @@
         "delta": 1
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1591"
+      "src": "docs/systems/combat/07-npc-clashes.md:1603"
      },
      {
       "outcome": "ชนะ (ล้ม)",
@@ -8803,24 +8803,24 @@
         "delta": 5
        }
       ],
-      "src": "docs/systems/combat/07-npc-clashes.md:1592"
+      "src": "docs/systems/combat/07-npc-clashes.md:1604"
      },
      {
       "outcome": "เสมอ",
       "kind": "draw",
       "text": "เขาปล่อยรถไฟและเปลี่ยนตู้ทั้งหมดในคืนเดียว",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1593"
+      "src": "docs/systems/combat/07-npc-clashes.md:1605"
      },
      {
       "outcome": "แพ้",
       "kind": "lose",
       "text": "เขาล็อกตัวละครไว้ในตู้ปลอมหนึ่งคืนและส่งไปปลายทาง เส้นเดินต่อ",
       "effects": [],
-      "src": "docs/systems/combat/07-npc-clashes.md:1594"
+      "src": "docs/systems/combat/07-npc-clashes.md:1606"
      }
     ],
-    "src": "docs/systems/combat/07-npc-clashes.md:1581"
+    "src": "docs/systems/combat/07-npc-clashes.md:1593"
    }
   ]
  }

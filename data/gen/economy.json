@@ -1,5 +1,5 @@
 {
- "version": "f7c4baebf7f1",
+ "version": "1686150d5dd5",
  "sources": [
   "docs/systems/economy/01-world-economy.md",
   "docs/systems/economy/02-countries.md",
@@ -64,7 +64,7 @@
      "lt": 15,
      "max": null,
      "stack": true,
-     "effect": "ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก",
+     "effect": "ใช้ซ้อนกับแถว ต่ำกว่า 40 (C ต่ำกว่า 15 ย่อมต่ำกว่า 40 ด้วย) ผลของแถว ต่ำกว่า 40 ยังอยู่ครบ แล้วเพิ่ม: ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก",
      "priceMul": 1,
      "src": "docs/systems/economy/01-world-economy.md:22"
     }
@@ -147,7 +147,7 @@
      "AZ-07",
      "MH-06"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:44"
+    "src": "docs/systems/economy/01-world-economy.md:46"
    },
    {
     "code": "M",
@@ -160,7 +160,7 @@
      "AZ-08",
      "KD"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:45"
+    "src": "docs/systems/economy/01-world-economy.md:47"
    },
    {
     "code": "T",
@@ -174,7 +174,7 @@
      "SH-04",
      "NB-11"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:46"
+    "src": "docs/systems/economy/01-world-economy.md:48"
    },
    {
     "code": "W",
@@ -186,7 +186,7 @@
      "AL-23",
      "SV"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:47"
+    "src": "docs/systems/economy/01-world-economy.md:49"
    },
    {
     "code": "S",
@@ -197,7 +197,7 @@
      "MH-11",
      "NR"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:48"
+    "src": "docs/systems/economy/01-world-economy.md:50"
    },
    {
     "code": "H",
@@ -212,7 +212,7 @@
      "NR-13",
      "NB-06"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:49"
+    "src": "docs/systems/economy/01-world-economy.md:51"
    },
    {
     "code": "X",
@@ -225,7 +225,7 @@
      "AL-12",
      "NR-11"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:50"
+    "src": "docs/systems/economy/01-world-economy.md:52"
    },
    {
     "code": "E",
@@ -239,7 +239,7 @@
      "AL-08",
      "AL-09"
     ],
-    "src": "docs/systems/economy/01-world-economy.md:51"
+    "src": "docs/systems/economy/01-world-economy.md:53"
    },
    {
     "code": "V",
@@ -247,7 +247,7 @@
     "base": null,
     "examples": "ทหารรับจ้าง นำทาง ขนส่ง ค่าตัดสิน ค่าบริจาค",
     "producers": [],
-    "src": "docs/systems/economy/01-world-economy.md:52"
+    "src": "docs/systems/economy/01-world-economy.md:54"
    }
   ],
   "balance": {
@@ -374,7 +374,7 @@
     "w": "−2 ถาวร (ส่วยหาย) · SH-09 SH-16 +0 แต่มีผู้ลี้ภัยหลายหมื่น",
     "price": "อาหารใน SH ×1.3 สามปี · ศิลาลอยดิบ (X) ×0.6 จากซากถูกเก็บ",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:126"
+    "src": "docs/systems/economy/01-world-economy.md:128"
    },
    {
     "events": [
@@ -384,7 +384,7 @@
     "w": "−1 · KD-12 KD-10 −2",
     "price": "อาหาร KD ×2 สองปี · ถ่านและความร้อน (M) ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:127"
+    "src": "docs/systems/economy/01-world-economy.md:129"
    },
    {
     "events": [
@@ -394,7 +394,7 @@
     "w": "−1",
     "price": "ของทะเล (S) ×0.8 (ล้น) · อาหารจากไร่ท่วม ×1.4",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:128"
+    "src": "docs/systems/economy/01-world-economy.md:130"
    },
    {
     "events": [
@@ -404,7 +404,7 @@
     "w": "0",
     "price": "ต้นทุนขนส่งทะเล +30% 20 ปี แล้ว +10% ถาวร (ยุคลมสุ่ม)",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:129"
+    "src": "docs/systems/economy/01-world-economy.md:131"
    },
    {
     "events": [
@@ -414,7 +414,7 @@
     "w": "−1 ใน AL-08 AL-15 AL-17",
     "price": "ต้นทุนขนส่งบกในทุ่งราบ +40%",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:130"
+    "src": "docs/systems/economy/01-world-economy.md:132"
    },
    {
     "events": [
@@ -424,7 +424,7 @@
     "w": "AL-17 +1 (ผู้ขาย) · MH −1",
     "price": "อาหารใน MH ×2 · AL ×1.3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:131"
+    "src": "docs/systems/economy/01-world-economy.md:133"
    },
    {
     "events": [
@@ -434,7 +434,7 @@
     "w": "SV-15 +1 · SV-01 −1",
     "price": "น้ำเลี้ยง (X) ×3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:132"
+    "src": "docs/systems/economy/01-world-economy.md:134"
    },
    {
     "events": [
@@ -444,7 +444,7 @@
     "w": "NR-01 −1",
     "price": "ต้นทุนขนส่งทะเลของ AL ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:133"
+    "src": "docs/systems/economy/01-world-economy.md:135"
    },
    {
     "events": [
@@ -454,7 +454,7 @@
     "w": "SH-04 SH-15 +1 (ค่าผ่าน) · AL-10 −0",
     "price": "ต้นทุนข้ามทะเลทราย ×2 · ผ้าและอัญมณีใน AL ×1.4",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:134"
+    "src": "docs/systems/economy/01-world-economy.md:136"
    },
    {
     "events": [
@@ -464,7 +464,7 @@
     "w": "−1 ทุกประเทศที่ทำสงคราม · E-hub (KD-01 MK-06 AL-08) +1",
     "price": "จักรกลและอาวุธ (E) ×1.5 · ยา (H) ×1.4 · อาหาร ×1.3",
     "trust": -40,
-    "src": "docs/systems/economy/01-world-economy.md:135"
+    "src": "docs/systems/economy/01-world-economy.md:137"
    },
    {
     "events": [
@@ -474,7 +474,7 @@
     "w": "−1 ใน MK-01 MK-05 · MK-06 +1",
     "price": "E ผันผวน ±30% · ธนาคารและบัญชีในเมคาเรียหยุดจ่าย",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:136"
+    "src": "docs/systems/economy/01-world-economy.md:138"
    },
    {
     "events": [
@@ -484,7 +484,7 @@
     "w": "−1 NB MK · −0 ที่เหลือ",
     "price": "ยา (H) ×3 · ผู้ค้าที่ผ่านเมืองถูกกักตัว",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:137"
+    "src": "docs/systems/economy/01-world-economy.md:139"
    },
    {
     "events": [
@@ -494,7 +494,7 @@
     "w": "−1",
     "price": "อาหารและน้ำ ×2 · SH-05 +1 (ผู้คุมน้ำ)",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:138"
+    "src": "docs/systems/economy/01-world-economy.md:140"
    },
    {
     "events": [
@@ -504,7 +504,7 @@
     "w": "−1 NR AL ชายฝั่ง",
     "price": "อาหาร ×1.5",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:139"
+    "src": "docs/systems/economy/01-world-economy.md:141"
    },
    {
     "events": [
@@ -514,7 +514,7 @@
     "w": "−1 (ผู้ปลูก) · ผู้ขายอาหารต่างทวีป +1",
     "price": "อาหารในทวีปนั้น ×3",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:140"
+    "src": "docs/systems/economy/01-world-economy.md:142"
    },
    {
     "events": [
@@ -524,7 +524,7 @@
     "w": "+0",
     "price": "ต้นทุนขนส่ง −10% · ศุลกากรลด",
     "trust": 10,
-    "src": "docs/systems/economy/01-world-economy.md:141"
+    "src": "docs/systems/economy/01-world-economy.md:143"
    },
    {
     "events": [
@@ -534,7 +534,7 @@
     "w": "+1 ในประเทศ M ผสมหรือเต็ม (ไม่เกิน 4 ยกเว้น W 5 เดิม)",
     "price": "ต้นทุนขนส่ง −20% · ราคาส่วนต่างลดเร็ว (ปีละ 45%)",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:142"
+    "src": "docs/systems/economy/01-world-economy.md:144"
    },
    {
     "events": [
@@ -544,7 +544,7 @@
     "w": "+1 MH ทุกประเทศ (ไม่รวม MH-02)",
     "price": "อาหารใน MH ×0.6",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:143"
+    "src": "docs/systems/economy/01-world-economy.md:145"
    },
    {
     "events": [
@@ -554,7 +554,7 @@
     "w": "+0",
     "price": "ยา (H) ×0.9 · ความรู้ราคาลด",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:144"
+    "src": "docs/systems/economy/01-world-economy.md:146"
    },
    {
     "events": [
@@ -564,7 +564,7 @@
     "w": "0",
     "price": "ต้นทุนขนส่ง −5%",
     "trust": 20,
-    "src": "docs/systems/economy/01-world-economy.md:145"
+    "src": "docs/systems/economy/01-world-economy.md:147"
    },
    {
     "events": [
@@ -574,7 +574,7 @@
     "w": "MK-09 −2 · NR-12 +1",
     "price": "ต้นทุนขนส่งอากาศ ×3 หายไป ต้นทุนทะเล −10%",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:146"
+    "src": "docs/systems/economy/01-world-economy.md:148"
    },
    {
     "events": [
@@ -584,7 +584,7 @@
     "w": "NR-01 +1",
     "price": "ต้นทุนขนส่งทะเลของทุกทวีปอื่น +20%",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:147"
+    "src": "docs/systems/economy/01-world-economy.md:149"
    },
    {
     "events": [
@@ -594,7 +594,7 @@
     "w": "−1",
     "price": "สินค้านำเข้าในทวีปนั้น ×2 · ส่งออกหยุด · ตลาดมืดโต",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:148"
+    "src": "docs/systems/economy/01-world-economy.md:150"
    },
    {
     "events": [
@@ -604,7 +604,7 @@
     "w": "NB-09 +0 (เต็มอยู่แล้ว) · ที่อื่นที่ติดต่อ −1",
     "price": "ภาษีรั่ว 20% · ของเถื่อนถูกลง ×0.7",
     "trust": -15,
-    "src": "docs/systems/economy/01-world-economy.md:149"
+    "src": "docs/systems/economy/01-world-economy.md:151"
    },
    {
     "events": [
@@ -614,7 +614,7 @@
     "w": "0",
     "price": "ธนาคารสันนิบาตหยุดจ่าย 1 ปี",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:150"
+    "src": "docs/systems/economy/01-world-economy.md:152"
    },
    {
     "events": [
@@ -624,7 +624,7 @@
     "w": "+1 AL-28 MK-05 AL-07",
     "price": "ต้นทุนขนส่งทางรถไฟ 4% · ผู้ขนส่งทางบกตกงาน",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:151"
+    "src": "docs/systems/economy/01-world-economy.md:153"
    },
    {
     "events": [
@@ -634,7 +634,7 @@
     "w": "−1 ในเมืองที่ถูกกลืน",
     "price": "อาหาร ×2 · โคมน้ำมัน ×3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:152"
+    "src": "docs/systems/economy/01-world-economy.md:154"
    },
    {
     "events": [
@@ -644,7 +644,7 @@
     "w": "+1",
     "price": "โคมเป็นเงินตรา (M น้อย)",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:153"
+    "src": "docs/systems/economy/01-world-economy.md:155"
    },
    {
     "events": [
@@ -654,7 +654,7 @@
     "w": "−1",
     "price": "น้ำมันโคม ×5 · โคม (E) ×3",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:154"
+    "src": "docs/systems/economy/01-world-economy.md:156"
    },
    {
     "events": [
@@ -664,7 +664,7 @@
     "w": "AZ-08 +1",
     "price": "ศิลาลอย (X) ×0.7",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:155"
+    "src": "docs/systems/economy/01-world-economy.md:157"
    },
    {
     "events": [
@@ -674,7 +674,7 @@
     "w": "SH-16 +1",
     "price": "ที่ดินและบ้าน ×0.8",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:156"
+    "src": "docs/systems/economy/01-world-economy.md:158"
    },
    {
     "events": [
@@ -684,7 +684,7 @@
     "w": "−1",
     "price": "ถ่านและความร้อน ×3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:157"
+    "src": "docs/systems/economy/01-world-economy.md:159"
    },
    {
     "events": [
@@ -694,7 +694,7 @@
     "w": "−2 ถาวร",
     "price": "เหล็กไหล (M) ×1.5",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:158"
+    "src": "docs/systems/economy/01-world-economy.md:160"
    },
    {
     "events": [
@@ -704,7 +704,7 @@
     "w": "NR-12 +1",
     "price": "ต้นทุนขนส่งทะเล −30%",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:159"
+    "src": "docs/systems/economy/01-world-economy.md:161"
    },
    {
     "events": [
@@ -714,7 +714,7 @@
     "w": "−1",
     "price": "น้ำเลี้ยง (X) ×4 · SV-15 +1",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:160"
+    "src": "docs/systems/economy/01-world-economy.md:162"
    },
    {
     "events": [
@@ -724,7 +724,7 @@
     "w": "MK-10 +0",
     "price": "ชิ้นส่วนกลไก ×0.6 (เก็บจากซาก) · ผู้เก็บได้รายได้ +20%",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:161"
+    "src": "docs/systems/economy/01-world-economy.md:163"
    },
    {
     "events": [
@@ -734,7 +734,7 @@
     "w": "NB-09 −1",
     "price": "ของเถื่อนหายากขึ้น ×1.2",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:162"
+    "src": "docs/systems/economy/01-world-economy.md:164"
    },
    {
     "events": [
@@ -744,7 +744,7 @@
     "w": "AZ-01 −1 (ส่วยลดตามเกาะที่จม)",
     "price": "ศิลาลอย (X) ×1.3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:163"
+    "src": "docs/systems/economy/01-world-economy.md:165"
    },
    {
     "events": [
@@ -754,7 +754,7 @@
     "w": "0",
     "price": "อาหาร ×1.3 (ฤดูเพาะปลูกเพี้ยน)",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:164"
+    "src": "docs/systems/economy/01-world-economy.md:166"
    },
    {
     "events": [
@@ -764,7 +764,7 @@
     "w": "−1 สองทวีปนั้นตลอดศึก",
     "price": "สินค้าหลักของสองทวีป (คอลัมน์ ผลิตมากที่ หัวข้อ 2) ×1.5",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:165"
+    "src": "docs/systems/economy/01-world-economy.md:167"
    },
    {
     "events": [
@@ -774,7 +774,7 @@
     "w": "−1 ประเทศ W 1 ถึง 2 ที่ส่งบรรณาการ หนึ่งทศวรรษ",
     "price": "ของวิเศษ (X) ×1.5 (ถูกส่งให้มังกร)",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:166"
+    "src": "docs/systems/economy/01-world-economy.md:168"
    },
    {
     "events": [
@@ -784,7 +784,7 @@
     "w": "−1 ประเทศที่ตก 20 ปี",
     "price": "ของวิเศษ (X) ×0.7 (เศษดาวหาง) · อาหารในทวีปนั้น ×1.5",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:167"
+    "src": "docs/systems/economy/01-world-economy.md:169"
    },
    {
     "events": [
@@ -794,7 +794,7 @@
     "w": "ธง `famine` ประเทศ W 1 ถึง 2 สามปี",
     "price": "อาหาร ×2 · ไม้และถ่าน ×1.5",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:168"
+    "src": "docs/systems/economy/01-world-economy.md:170"
    },
    {
     "events": [
@@ -804,7 +804,7 @@
     "w": "−1 ประเทศผลิตอาหารหลัก (AL-17 AL-03 NR-09 MH-06) ตลอดคราส",
     "price": "อาหาร ×2 · ไม้และน้ำมันโคม ×1.5",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:169"
+    "src": "docs/systems/economy/01-world-economy.md:171"
    },
    {
     "events": [
@@ -814,7 +814,7 @@
     "w": "0",
     "price": "ของวิเศษ (X) ×0.8 (ผลึกตกตามพายุ)",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:170"
+    "src": "docs/systems/economy/01-world-economy.md:172"
    },
    {
     "events": [
@@ -824,7 +824,7 @@
     "w": "ธง `war` ทุกประเทศ MH",
     "price": "ทหารรับจ้างจาก MH หายจากตลาด (V) ×2 · อาหารใน MH ×1.5",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:171"
+    "src": "docs/systems/economy/01-world-economy.md:173"
    },
    {
     "events": [
@@ -834,7 +834,7 @@
     "w": "ธง `war` ประเทศที่มีประตู",
     "price": "อาวุธ (E) ×1.5 · ทหารรับจ้าง (V) ×2",
     "trust": -15,
-    "src": "docs/systems/economy/01-world-economy.md:172"
+    "src": "docs/systems/economy/01-world-economy.md:174"
    },
    {
     "events": [
@@ -844,7 +844,7 @@
     "w": "−1 ทุกประเทศ MK ระหว่างลุกฮือ · MK-03 +1 หลังจบ",
     "price": "จักรกล (E) ×2",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:173"
+    "src": "docs/systems/economy/01-world-economy.md:175"
    },
    {
     "events": [
@@ -854,7 +854,7 @@
     "w": "−2",
     "price": "ของวิเศษ (X) ×1.5 · จักรกล (E) ×1.3",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:174"
+    "src": "docs/systems/economy/01-world-economy.md:176"
    },
    {
     "events": [
@@ -864,7 +864,7 @@
     "w": "เมืองใหม่เริ่ม W 4",
     "price": "ศิลาลอย (X) ×1.5",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:175"
+    "src": "docs/systems/economy/01-world-economy.md:177"
    },
    {
     "events": [
@@ -874,7 +874,7 @@
     "w": "MK-06 −1 (ถูกคว่ำบาตร)",
     "price": "จักรกล (E) ×1.2",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:176"
+    "src": "docs/systems/economy/01-world-economy.md:178"
    },
    {
     "events": [
@@ -884,7 +884,7 @@
     "w": "0",
     "price": "จักรกล (E) ผันผวน ±30% จนโลกเลือก",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:177"
+    "src": "docs/systems/economy/01-world-economy.md:179"
    },
    {
     "events": [
@@ -894,7 +894,7 @@
     "w": "0",
     "price": "น้ำเลี้ยง (X) ×1.5 · ยา (H) จากป่า ×1.3",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:178"
+    "src": "docs/systems/economy/01-world-economy.md:180"
    },
    {
     "events": [
@@ -904,7 +904,7 @@
     "w": "SV-01 −2 ถาวร · SV ที่เหลือ −1",
     "price": "น้ำเลี้ยง (X) ×5 · ไม้และของป่า (W) ×1.5 · ยา (H) ×1.5",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:179"
+    "src": "docs/systems/economy/01-world-economy.md:181"
    },
    {
     "events": [
@@ -914,7 +914,7 @@
     "w": "−1 ประเทศชายแดนที่หมอกถึง",
     "price": "อาหาร ×1.5 · น้ำมันโคม ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:180"
+    "src": "docs/systems/economy/01-world-economy.md:182"
    },
    {
     "events": [
@@ -924,7 +924,7 @@
     "w": "+1 ทุกประเทศ NB (ไม่เกิน 4)",
     "price": "น้ำมันโคม ×0.3 (หมดค่าเป็นเงิน) · อาหารใน NB ×0.7",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:181"
+    "src": "docs/systems/economy/01-world-economy.md:183"
    },
    {
     "events": [
@@ -934,7 +934,7 @@
     "w": "−1 NR-09 NR-13",
     "price": "ของทะเล (S) ×1.5 · มุก ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:182"
+    "src": "docs/systems/economy/01-world-economy.md:184"
    },
    {
     "events": [
@@ -944,7 +944,7 @@
     "w": "0",
     "price": "ของบูชาและค่าบริจาค (V) ×2",
     "trust": 10,
-    "src": "docs/systems/economy/01-world-economy.md:183"
+    "src": "docs/systems/economy/01-world-economy.md:185"
    },
    {
     "events": [
@@ -954,7 +954,7 @@
     "w": "เกาะใหม่เริ่ม W 2",
     "price": "ศิลาลอย (X) ×0.8",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:184"
+    "src": "docs/systems/economy/01-world-economy.md:186"
    },
    {
     "events": [
@@ -964,7 +964,7 @@
     "w": "ประเทศเมืองหลวงจักรวรรดิ +1 · ประเทศที่ถูกยึด −1",
     "price": "ต้นทุนขนส่งบกในทุ่งราบ −20% (ไม่มีด่าน)",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:185"
+    "src": "docs/systems/economy/01-world-economy.md:187"
    },
    {
     "events": [
@@ -974,7 +974,7 @@
     "w": "−1 ประเทศบนเส้นทางเดินของไททัน",
     "price": "ต้นทุนข้ามทะเลทราย ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:186"
+    "src": "docs/systems/economy/01-world-economy.md:188"
    },
    {
     "events": [
@@ -984,7 +984,7 @@
     "w": "−1 AL-15 AL-17",
     "price": "อาหาร ×1.3",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:187"
+    "src": "docs/systems/economy/01-world-economy.md:189"
    },
    {
     "events": [
@@ -994,7 +994,7 @@
     "w": "KD-08 +1",
     "price": "ถ่านและความร้อน ×1.5 (ความร้อนจากปากเหวหาย)",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:188"
+    "src": "docs/systems/economy/01-world-economy.md:190"
    },
    {
     "events": [
@@ -1004,7 +1004,7 @@
     "w": "−1 KD-10 KD-11",
     "price": "แร่และโลหะ (M) ×1.5 · ถ่านและความร้อน ×0.7",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:189"
+    "src": "docs/systems/economy/01-world-economy.md:191"
    },
    {
     "events": [
@@ -1014,7 +1014,7 @@
     "w": "0",
     "price": "ต้นทุนขนส่งทะเล +30% สิบปี",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:190"
+    "src": "docs/systems/economy/01-world-economy.md:192"
    },
    {
     "events": [
@@ -1024,7 +1024,7 @@
     "w": "MK-01 −1",
     "price": "จักรกล (E) ×1.5",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:191"
+    "src": "docs/systems/economy/01-world-economy.md:193"
    },
    {
     "events": [
@@ -1034,7 +1034,7 @@
     "w": "0",
     "price": "ไม้และของป่า (W) ×0.6 · ต้นทุนขนส่งบกเข้า SV ×2 (ด่านถูกกลืน)",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:192"
+    "src": "docs/systems/economy/01-world-economy.md:194"
    },
    {
     "events": [
@@ -1044,7 +1044,7 @@
     "w": "−1 หนึ่งฤดูในประเทศที่หมอกไหลถึง",
     "price": "น้ำมันโคม ×1.5",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:193"
+    "src": "docs/systems/economy/01-world-economy.md:195"
    },
    {
     "events": [
@@ -1054,7 +1054,7 @@
     "w": "−1 หนึ่งฤดู",
     "price": "การค้าเข้าออก NB หยุดหนึ่งฤดู · น้ำมันโคม ×2",
     "trust": -5,
-    "src": "docs/systems/economy/01-world-economy.md:194"
+    "src": "docs/systems/economy/01-world-economy.md:196"
    },
    {
     "events": [
@@ -1064,7 +1064,7 @@
     "w": "0",
     "price": "อาหารใน AL-15 AL-20 ×1.3 (ผู้ลี้ภัย)",
     "trust": 0,
-    "src": "docs/systems/economy/01-world-economy.md:195"
+    "src": "docs/systems/economy/01-world-economy.md:197"
    },
    {
     "events": [
@@ -1074,7 +1074,7 @@
     "w": "+1 ประเทศชายแดน NB",
     "price": "น้ำมันโคม ×0.6",
     "trust": 5,
-    "src": "docs/systems/economy/01-world-economy.md:196"
+    "src": "docs/systems/economy/01-world-economy.md:198"
    },
    {
     "events": [
@@ -1084,7 +1084,7 @@
     "w": "−2 ทุกประเทศ NB · −1 ประเทศชายแดน",
     "price": "สินค้าทุกหมวดจาก NB หยุด · น้ำมันโคม ×5 · อาหารในชายแดน ×1.5",
     "trust": -15,
-    "src": "docs/systems/economy/01-world-economy.md:197"
+    "src": "docs/systems/economy/01-world-economy.md:199"
    },
    {
     "events": [
@@ -1094,7 +1094,7 @@
     "w": "ธง `war` ประเทศที่ถือกุญแจ",
     "price": "ของวิเศษ (X) ×2 · อาวุธ (E) ×1.5",
     "trust": -10,
-    "src": "docs/systems/economy/01-world-economy.md:198"
+    "src": "docs/systems/economy/01-world-economy.md:200"
    },
    {
     "events": [
@@ -1104,7 +1104,7 @@
     "w": "−1 ทุกประเทศ W 3 ขึ้นไป",
     "price": "อาวุธ (E) ×2 · อาหาร ×1.5",
     "trust": -20,
-    "src": "docs/systems/economy/01-world-economy.md:199"
+    "src": "docs/systems/economy/01-world-economy.md:201"
    },
    {
     "events": [
@@ -1115,7 +1115,7 @@
     "w": "−1 ถาวรทุกประเทศในทวีป",
     "price": "สินค้าหลักของทวีป (หัวข้อ 2) ×2",
     "trust": -15,
-    "src": "docs/systems/economy/01-world-economy.md:200"
+    "src": "docs/systems/economy/01-world-economy.md:202"
    }
   ],
   "faucets": [
@@ -3813,7 +3813,7 @@
      ],
      [
       "ต่ำกว่า 15",
-      "ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก"
+      "ใช้ซ้อนกับแถว ต่ำกว่า 40 (C ต่ำกว่า 15 ย่อมต่ำกว่า 40 ด้วย) ผลของแถว ต่ำกว่า 40 ยังอยู่ครบ แล้วเพิ่ม: ทองกลางถูกปฏิเสธนอกศูนย์กลาง W 5 (AL-01 AL-10 AL-21 NR-01 MK-01) ตลาดมืดกลายเป็นตลาดหลัก"
      ]
     ],
     "src": "docs/systems/economy/01-world-economy.md:17"
@@ -3864,7 +3864,7 @@
       "ทุกคนในชุมชนได้ส่วนแบ่งตามความต้องการ ไม่มีค่าจ้างตายตัว"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:28"
+    "src": "docs/systems/economy/01-world-economy.md:30"
    },
    {
     "headings": [
@@ -3942,7 +3942,7 @@
       "ไม่ซื้อขายเป็นหน่วย เป็นรายได้ของอาชีพ"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:42"
+    "src": "docs/systems/economy/01-world-economy.md:44"
    },
    {
     "headings": [
@@ -3966,7 +3966,7 @@
       "0.4"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:58"
+    "src": "docs/systems/economy/01-world-economy.md:60"
    },
    {
     "headings": [
@@ -3994,7 +3994,7 @@
       "×1.1 เมื่อ C 40 ถึง 69 · ×1.25 เมื่อ C ต่ำกว่า 40"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:72"
+    "src": "docs/systems/economy/01-world-economy.md:74"
    },
    {
     "headings": [
@@ -4032,7 +4032,7 @@
       "8 × 0.7 × 1.5 × ตัวคูณหมอก = 8.4 ถึง 17"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:83"
+    "src": "docs/systems/economy/01-world-economy.md:85"
    },
    {
     "headings": [
@@ -4100,7 +4100,7 @@
       "SH-03 ↔ AZ"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:94"
+    "src": "docs/systems/economy/01-world-economy.md:96"
    },
    {
     "headings": [
@@ -4138,7 +4138,7 @@
       "ตามฉากจบ"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:112"
+    "src": "docs/systems/economy/01-world-economy.md:114"
    },
    {
     "headings": [
@@ -4678,7 +4678,7 @@
       "−15"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:124"
+    "src": "docs/systems/economy/01-world-economy.md:126"
    },
    {
     "headings": [
@@ -4714,7 +4714,7 @@
       "ตามเส้นเรื่อง"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:208"
+    "src": "docs/systems/economy/01-world-economy.md:210"
    },
    {
     "headings": [
@@ -4762,7 +4762,7 @@
       "ปล้น ทองสาป (`c_cursedgold`) ล้มละลาย"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:217"
+    "src": "docs/systems/economy/01-world-economy.md:219"
    },
    {
     "headings": [
@@ -4794,7 +4794,7 @@
       "กองทัพเอกชน ขายอาวุธ"
      ]
     ],
-    "src": "docs/systems/economy/01-world-economy.md:233"
+    "src": "docs/systems/economy/01-world-economy.md:235"
    },
    {
     "headings": [

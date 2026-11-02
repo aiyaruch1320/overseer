@@ -1,5 +1,5 @@
 {
- "version": "dd68c353e36e",
+ "version": "ba89110caf75",
  "sources": [
   "docs/_generated/character-catalog/curses.md",
   "docs/lore/religions/README.md",
@@ -3479,11 +3479,13 @@
    ],
    "fxRaw": "#war_orphan brave-10",
    "desc": "",
-   "from": "เกิดในประเทศที่มีสงคราม",
+   "from": "ถิ่นมีสงคราม (เกิดในประเทศที่มีธงสงคราม war)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เกิดในประเทศที่มีสงคราม"
+     "k": "place",
+     "kinds": [
+      "war"
+     ]
     }
    ],
    "fromNotes": [],
@@ -3491,7 +3493,9 @@
     "events": [],
     "countries": [],
     "nodes": [],
-    "ids": []
+    "ids": [
+     "war"
+    ]
    },
    "world": "",
    "cure": "สงครามจบ หรือรับเลี้ยงโดย NPC ที่ไว้ใจ",
@@ -3747,14 +3751,11 @@
    ],
    "fxRaw": "#homeland_ghost piety-5",
    "desc": "",
-   "from": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย (SR-65)",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย (SR-65)"
-    }
+   "from": "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย ตาม SR-65",
+   "fromCond": [],
+   "fromNotes": [
+    "เกิดภายในสิบปีรอบเหตุการณ์ที่ถิ่นหาย ตาม SR-65"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4233,14 +4234,11 @@
    ],
    "fxRaw": "#fog_whisper piety-10",
    "desc": "",
-   "from": "ได้ยินเสียงกระซิบเนบูเลีย",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "ได้ยินเสียงกระซิบเนบูเลีย"
-    }
+   "from": "ทุกคน (ได้ยินเสียงกระซิบเนบูเลีย)",
+   "fromCond": [],
+   "fromNotes": [
+    "ได้ยินเสียงกระซิบเนบูเลีย"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [
@@ -4325,14 +4323,11 @@
    ],
    "fxRaw": "fame+10 #false_saint",
    "desc": "",
-   "from": "ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่"
-    }
+   "from": "ทุกคน (ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่)",
+   "fromCond": [],
+   "fromNotes": [
+    "ผู้คนเชื่อว่าตัวละครคือนักบุญทั้งที่ไม่ใช่"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4401,14 +4396,11 @@
    ],
    "fxRaw": "#dragon_grief",
    "desc": "",
-   "from": "เห็นมังกรตาย ต่อหน้า",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "เห็นมังกรตาย ต่อหน้า"
-    }
+   "from": "ทุกคน (เห็นมังกรตาย ต่อหน้า)",
+   "fromCond": [],
+   "fromNotes": [
+    "เห็นมังกรตาย ต่อหน้า"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4474,14 +4466,11 @@
    ],
    "fxRaw": "#favor_unpaid",
    "desc": "",
-   "from": "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน"
-    }
+   "from": "ทุกคน (ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน)",
+   "fromCond": [],
+   "fromNotes": [
+    "ได้รับความช่วยเหลือจาก NPC แล้วไม่ตอบแทน"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4509,14 +4498,11 @@
    ],
    "fxRaw": "#blood_feud",
    "desc": "",
-   "from": "ตัวละครทำร้าย NPC สำคัญ ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) แกน แค้น ระดับ +4",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "ตัวละครทำร้าย NPC สำคัญ ตาม แกน แค้น ระดับ +4"
-    }
+   "from": "ทุกคน (ตัวละครทำร้าย NPC สำคัญ ตาม [../../lore/npcs/README.md](../../lore/npcs/README.md) แกน แค้น ระดับ +4)",
+   "fromCond": [],
+   "fromNotes": [
+    "ตัวละครทำร้าย NPC สำคัญ ตาม แกน แค้น ระดับ +4"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4549,14 +4535,11 @@
    ],
    "fxRaw": "honest-5 #distrust",
    "desc": "",
-   "from": "NPC ที่ไว้ใจสูงสุดหักหลัง",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "NPC ที่ไว้ใจสูงสุดหักหลัง"
-    }
+   "from": "ทุกคน (NPC ที่ไว้ใจสูงสุดหักหลัง)",
+   "fromCond": [],
+   "fromNotes": [
+    "NPC ที่ไว้ใจสูงสุดหักหลัง"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4635,14 +4618,11 @@
    ],
    "fxRaw": "fame-20 #name_lost",
    "desc": "",
-   "from": "อยู่ในหมอกทึบนานเกินหนึ่งปี",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "อยู่ในหมอกทึบนานเกินหนึ่งปี"
-    }
+   "from": "ทุกคน (อยู่ในหมอกทึบนานเกินหนึ่งปี)",
+   "fromCond": [],
+   "fromNotes": [
+    "อยู่ในหมอกทึบนานเกินหนึ่งปี"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4670,14 +4650,11 @@
    ],
    "fxRaw": "#guardian_debt",
    "desc": "",
-   "from": "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง"
-    }
+   "from": "ทุกคน (ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง)",
+   "fromCond": [],
+   "fromNotes": [
+    "ตัวละครได้รับการช่วยชีวิตจาก NPC ที่ตายภายหลัง"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -4710,14 +4687,17 @@
    ],
    "fxRaw": "social-10 #exile",
    "desc": "",
-   "from": "เกิดนอกถิ่นหลักและถูกรังเกียจ",
+   "from": "เกิดนอกถิ่นหลัก · ทุกคน (ถูกรังเกียจ)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "เกิดนอกถิ่นหลักและถูกรังเกียจ"
+     "k": "has",
+     "kind": "flag",
+     "id": "born_outside"
     }
    ],
-   "fromNotes": [],
+   "fromNotes": [
+    "ถูกรังเกียจ"
+   ],
    "refs": {
     "events": [],
     "countries": [],
@@ -4745,14 +4725,15 @@
    ],
    "fxRaw": "#half_blood",
    "desc": "",
-   "from": "ลูกครึ่งที่ถิ่นไม่รับ (ดู [01-origin.md](01-origin.md) หัวข้อ 4)",
+   "from": "เป็นลูกครึ่ง · ทุกคน (ถิ่นไม่รับ) (ดู [01-origin.md](01-origin.md) หัวข้อ 4)",
    "fromCond": [
     {
-     "k": "text",
-     "text": "ลูกครึ่งที่ถิ่นไม่รับ"
+     "k": "half"
     }
    ],
-   "fromNotes": [],
+   "fromNotes": [
+    "ถิ่นไม่รับ"
+   ],
    "refs": {
     "events": [],
     "countries": [],
@@ -4868,8 +4849,13 @@
    },
    "world": "",
    "cure": "อาชีพเบาลง",
-   "jobsText": "ผู้ใช้แรงงาน",
-   "jobs": [],
+   "jobsText": "ชาวนา คนงานเหมือง คนตัดไม้ ช่างหิน",
+   "jobs": [
+    "farmer",
+    "miner",
+    "woodcutter",
+    "stonemason"
+   ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
    "src": "doc",
    "at": "docs/systems/character/12-job-support.md:78"
@@ -4898,8 +4884,13 @@
    },
    "world": "",
    "cure": "พักหนึ่งปี",
-   "jobsText": "นักเขียน ช่างเย็บ ช่างตี",
-   "jobs": [],
+   "jobsText": "เสมียน นักบันทึกประวัติศาสตร์ ช่างตัดเสื้อ ช่างตีเหล็ก",
+   "jobs": [
+    "scribe",
+    "chronicler",
+    "tailor",
+    "smith"
+   ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
    "src": "doc",
    "at": "docs/systems/character/12-job-support.md:79"
@@ -4928,8 +4919,9 @@
    },
    "world": "",
    "cure": "ไม่มี",
-   "jobsText": "นักดนตรี นักเต้น",
+   "jobsText": "กวีพเนจร นักเต้น",
    "jobs": [
+    "bard",
     "dancer"
    ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
@@ -4992,9 +4984,14 @@
    },
    "world": "",
    "cure": "พรมือเขียวจากวัดหรือผู้ศรัทธา",
-   "jobsText": "ชาวนา ผู้ทำสวน",
+   "jobsText": "ชาวนา คนทำสวนผัก คนทำสวนผลไม้ คนปลูกชา คนปลูกดอกไม้ ผู้ดูแลสวนวัด",
    "jobs": [
-    "farmer"
+    "farmer",
+    "vegetable_gardener",
+    "orchardist",
+    "tea_grower",
+    "flower_grower",
+    "temple_gardener"
    ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
    "src": "doc",
@@ -5057,9 +5054,10 @@
    },
    "world": "",
    "cure": "พรสัตว์ไว้ใจ",
-   "jobsText": "คนส่งสาร ผู้คุ้มกัน",
+   "jobsText": "คนส่งสาร ผู้คุ้มกันคาราวาน",
    "jobs": [
-    "courier"
+    "courier",
+    "caravan_guard"
    ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
    "src": "doc",
@@ -5089,8 +5087,23 @@
    },
    "world": "",
    "cure": "ฝึกนิสัย patient หรือ easygoing",
-   "jobsText": "อาชีพชีวิตช้า",
-   "jobs": [],
+   "jobsText": "ผู้ดูแลประภาคาร บรรณารักษ์ เจ้าของฟาร์ม คนทำสวนผัก คนทำสวนผลไม้ คนเลี้ยงผึ้ง คนปลูกชา คนปลูกดอกไม้ คนทำเนยแข็ง คนสีข้าว เจ้าของร้านสมุนไพร เจ้าของร้านน้ำชา เจ้าของร้านหนังสือ ผู้ดูแลสวนวัด",
+   "jobs": [
+    "lighthouse_keeper",
+    "librarian",
+    "farm_owner",
+    "vegetable_gardener",
+    "orchardist",
+    "beekeeper",
+    "tea_grower",
+    "flower_grower",
+    "cheesemaker",
+    "miller",
+    "herb_shop",
+    "tea_house",
+    "bookshop",
+    "temple_gardener"
+   ],
    "group": "ง. คำสาปใหม่ 10 อย่าง",
    "src": "doc",
    "at": "docs/systems/character/12-job-support.md:85"
@@ -5113,14 +5126,11 @@
    ],
    "fxRaw": "brave-5 #pet_grief",
    "desc": "",
-   "from": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ [13](13-companions-overview.md))",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "สัตว์คู่หูตาย (โอกาสตามหัวข้อ 5 ของ 13)"
-    }
+   "from": "ทุกคน (สัตว์คู่หูตาย โอกาสตามกติกาใน [13](13-companions-overview.md) หัวข้อ 5)",
+   "fromCond": [],
+   "fromNotes": [
+    "สัตว์คู่หูตาย โอกาสตามกติกาใน 13 หัวข้อ 5"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5148,14 +5158,11 @@
    ],
    "fxRaw": "#beast_fear",
    "desc": "",
-   "from": "พิธีล้มเหลวหรือเคยทำร้ายสัตว์",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "พิธีล้มเหลวหรือเคยทำร้ายสัตว์"
-    }
+   "from": "ทุกคน (พิธีล้มเหลวหรือเคยทำร้ายสัตว์)",
+   "fromCond": [],
+   "fromNotes": [
+    "พิธีล้มเหลวหรือเคยทำร้ายสัตว์"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5232,14 +5239,11 @@
    ],
    "fxRaw": "#allergic_fur",
    "desc": "",
-   "from": "เกิดตามธรรมชาติ",
-   "fromCond": [
-    {
-     "k": "text",
-     "text": "เกิดตามธรรมชาติ"
-    }
+   "from": "ทุกคน (เกิดตามธรรมชาติ)",
+   "fromCond": [],
+   "fromNotes": [
+    "เกิดตามธรรมชาติ"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
@@ -5317,32 +5321,11 @@
    ],
    "fxRaw": "#hunted_for_beast",
    "desc": "",
-   "from": "เลี้ยงสัตว์ ระดับ E หรือ L และข่าวรั่ว",
-   "fromCond": [
-    {
-     "k": "and",
-     "of": [
-      {
-       "k": "or",
-       "of": [
-        {
-         "k": "text",
-         "text": "เลี้ยงสัตว์ ระดับ E"
-        },
-        {
-         "k": "text",
-         "text": "L"
-        }
-       ]
-      },
-      {
-       "k": "text",
-       "text": "ข่าวรั่ว"
-      }
-     ]
-    }
+   "from": "ทุกคน (เลี้ยงสัตว์ระดับ E หรือ L และข่าวรั่ว)",
+   "fromCond": [],
+   "fromNotes": [
+    "เลี้ยงสัตว์ระดับ E หรือ L และข่าวรั่ว"
    ],
-   "fromNotes": [],
    "refs": {
     "events": [],
     "countries": [],
