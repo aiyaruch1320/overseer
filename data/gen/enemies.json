@@ -35,6 +35,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ฝูง 4–8 ตัว",
     "src": "docs/systems/combat/03-enemies.md:13"
    },
@@ -61,6 +63,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ใช้ในเหตุการณ์ฝูงหมาป่าบุกหมู่บ้าน",
     "src": "docs/systems/combat/03-enemies.md:14"
    },
@@ -80,6 +84,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:15"
    },
@@ -111,6 +117,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไฟ ★",
     "src": "docs/systems/combat/03-enemies.md:16"
    },
@@ -132,6 +140,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "MH-12 บ่อยสุด",
     "src": "docs/systems/combat/03-enemies.md:17"
    },
@@ -156,6 +166,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "กลางวันอ่อนแรง",
     "src": "docs/systems/combat/03-enemies.md:18"
    },
@@ -175,6 +187,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ผูก DM-09 ถ้าเกิดในเนบูเลีย",
     "src": "docs/systems/combat/03-enemies.md:19"
    },
@@ -198,6 +212,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่ใช่มังกรสิบห้า ฆ่าได้โดยไม่เกิด DR",
     "src": "docs/systems/combat/03-enemies.md:20"
    },
@@ -219,6 +235,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "มังกรป่า ลูกหลานไม่ใช่หนึ่งในสิบห้า (ดู [06-dragon-encounters.md](06-dragon-encounters.md))",
     "src": "docs/systems/combat/03-enemies.md:21"
    },
@@ -242,6 +260,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "มังกรป่า เหมือนข้างบน",
     "src": "docs/systems/combat/03-enemies.md:22"
    },
@@ -264,6 +284,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ชนใต้ทรายสงบได้",
     "src": "docs/systems/combat/03-enemies.md:23"
    },
@@ -286,6 +308,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:24"
    },
@@ -307,6 +331,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ผูก SH-02 ถ้าเป็นข้ารับใช้ของฟาโรห์",
     "src": "docs/systems/combat/03-enemies.md:25"
    },
@@ -331,6 +357,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:26"
    },
@@ -353,6 +381,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไซเรนลาโอทอล (NR-08) ไม่ใช่ศัตรู",
     "src": "docs/systems/combat/03-enemies.md:27"
    },
@@ -376,6 +406,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "คราเคนผู้เฝ้า (NR11-2) สงบได้ถ้าไม่ขโมยไข่มุก",
     "src": "docs/systems/combat/03-enemies.md:28"
    },
@@ -399,6 +431,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "จากปากเหว",
     "src": "docs/systems/combat/03-enemies.md:29"
    },
@@ -420,6 +454,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "มักเกิดหลัง BIO-01",
     "src": "docs/systems/combat/03-enemies.md:30"
    },
@@ -444,6 +480,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "สงบได้ อาจเป็นสัตว์คู่หู",
     "src": "docs/systems/combat/03-enemies.md:31"
    },
@@ -467,6 +505,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:32"
    },
@@ -498,6 +538,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "รูน ★",
     "src": "docs/systems/combat/03-enemies.md:33"
    },
@@ -520,6 +562,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:34"
    },
@@ -542,6 +586,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:35"
    },
@@ -567,6 +613,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ผู้มี `c_moonfrenzy` กลายเป็นตัวนี้ได้",
     "src": "docs/systems/combat/03-enemies.md:36"
    },
@@ -586,6 +634,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "`#truth` `u_appraisal` เห็นก่อน",
     "src": "docs/systems/combat/03-enemies.md:37"
    },
@@ -609,6 +659,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "โอเกอร์ของ MH-01 เป็นคน เจรจาได้",
     "src": "docs/systems/combat/03-enemies.md:38"
    },
@@ -631,6 +683,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:39"
    },
@@ -653,6 +707,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:40"
    },
@@ -673,6 +729,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:41"
    },
@@ -694,6 +752,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ดูหมวด NPC",
     "src": "docs/systems/combat/03-enemies.md:42"
    },
@@ -715,6 +775,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ผูก DM-01 DM-02",
     "src": "docs/systems/combat/03-enemies.md:43"
    },
@@ -736,6 +798,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "กัปปะ NR-09 เป็นเผ่าที่สุภาพ โค้งคำนับก่อนแล้วไม่สู้",
     "src": "docs/systems/combat/03-enemies.md:44"
    },
@@ -778,6 +842,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "lightning",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:50"
@@ -814,6 +880,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "pierce",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:51"
@@ -851,6 +919,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blunt",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:52"
@@ -888,6 +958,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:53"
@@ -932,6 +1004,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "curse",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:54"
@@ -970,11 +1044,13 @@
     ],
     "resist": [
      {
-      "tag": "กายภาพ",
+      "tag": "physical",
       "name": "กายภาพ",
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "dark",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:55"
@@ -1011,6 +1087,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "curse hunger",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:56"
@@ -1054,6 +1132,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:57"
@@ -1091,6 +1171,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:58"
@@ -1118,16 +1200,19 @@
      {
       "tag": "rune",
       "name": "รูน",
-      "mark": "★"
+      "mark": "★",
+      "note": "ฝ่ายเปิด"
      }
     ],
     "resist": [
      {
-      "tag": "กายภาพ",
+      "tag": "physical",
       "name": "กายภาพ",
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blunt",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:59"
@@ -1171,6 +1256,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:60"
@@ -1203,6 +1290,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:61"
@@ -1242,6 +1331,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "water",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:62"
@@ -1278,6 +1369,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:63"
@@ -1321,6 +1414,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "curse",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:64"
@@ -1357,11 +1452,13 @@
     ],
     "resist": [
      {
-      "tag": "ความมืด",
+      "tag": "dark",
       "name": "ความมืด",
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "pierce",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:65"
@@ -1386,14 +1483,15 @@
     "countries": [
      "AL-15"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [],
+    "negotiate": [
      {
-      "tag": "talk",
-      "name": "เจรจา",
+      "text": "เจรจา",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:66"
@@ -1435,6 +1533,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:67"
@@ -1466,6 +1566,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blunt",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:68"
@@ -1491,11 +1593,18 @@
     "weak": [],
     "resist": [
      {
-      "tag": "กายภาพ",
+      "tag": "physical",
       "name": "กายภาพ",
       "mark": "✕"
      }
     ],
+    "weakText": [
+     {
+      "text": "ความฝัน (`#lucid`)",
+      "mark": "★"
+     }
+    ],
+    "negotiate": [],
     "attack": "mind",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:69"
@@ -1539,6 +1648,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "—",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:70"
@@ -1577,6 +1688,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:71"
@@ -1619,6 +1732,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "ranged",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:72"
@@ -1651,6 +1766,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:73"
@@ -1693,6 +1810,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:74"
@@ -1724,11 +1843,13 @@
     ],
     "resist": [
      {
-      "tag": "กายภาพ",
+      "tag": "physical",
       "name": "กายภาพ",
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "mind",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:75"
@@ -1771,6 +1892,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "wind",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:76"
@@ -1795,14 +1918,15 @@
     "countries": [
      "SH-11"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [],
+    "negotiate": [
      {
-      "tag": "talk",
-      "name": "เจรจา",
+      "text": "เจรจา",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:77"
@@ -1840,6 +1964,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:78"
@@ -1879,6 +2005,8 @@
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:79"
@@ -1923,6 +2051,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:80"
@@ -1943,18 +2073,7 @@
      "NB"
     ],
     "countries": [],
-    "weak": [
-     {
-      "tag": "light",
-      "name": "แสง",
-      "mark": "★"
-     },
-     {
-      "tag": "fire",
-      "name": "ไฟ",
-      "mark": "▲"
-     }
-    ],
+    "weak": [],
     "resist": [
      {
       "tag": "charm",
@@ -1962,6 +2081,13 @@
       "mark": "✕"
      }
     ],
+    "weakText": [
+     {
+      "text": "แสง ★ (โคมสีขาว) ไฟ",
+      "mark": "▲"
+     }
+    ],
+    "negotiate": [],
     "attack": "grab",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:81"
@@ -1997,6 +2123,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "attack": "poison",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:82"
@@ -2031,6 +2159,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "bind",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:83"
@@ -2053,14 +2183,15 @@
      "NB"
     ],
     "countries": [],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ranged",
-      "name": "ยิง",
+      "text": "ยิง ▲ ความเงียบ (`#stealth`)",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [],
     "attack": "sound",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:84"
@@ -2103,6 +2234,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blood",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:85"
@@ -2134,6 +2267,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blade",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:86"
@@ -2165,11 +2300,13 @@
     ],
     "resist": [
      {
-      "tag": "กายภาพ",
+      "tag": "physical",
       "name": "กายภาพ",
       "mark": "✕"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "sound",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:87"
@@ -2212,6 +2349,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "blunt",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:88"
@@ -2249,6 +2388,8 @@
       "mark": "▼"
      }
     ],
+    "weakText": [],
+    "negotiate": [],
     "attack": "fire",
     "note": "",
     "src": "docs/systems/combat/03-enemies.md:89"
@@ -2269,6 +2410,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ซุ่ม"
@@ -2298,6 +2441,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ"
     ],
@@ -2329,6 +2474,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ตั้งรับ"
@@ -2353,6 +2500,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ตั้งรับ"
@@ -2382,6 +2531,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ขี่ม้า"
@@ -2410,6 +2561,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "เวทแสง",
      "(★",
@@ -2441,6 +2594,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ซุ่ม",
      "มีดพิษ"
@@ -2471,6 +2626,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ"
     ],
@@ -2499,6 +2656,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "สวดภาวนา"
@@ -2527,6 +2686,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "เวทมืด",
      "สัญญาปีศาจ"
@@ -2556,6 +2717,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "เวทธาตุ"
     ],
@@ -2579,6 +2742,8 @@
     "countries": [],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ"
     ],
@@ -2606,6 +2771,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ยิง"
@@ -2636,6 +2803,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "สัตว์คู่หูของศัตรู",
      "(เพิ่มหนึ่งตัวในฝูง)"
@@ -2664,6 +2833,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ตั้งรับ"
@@ -2694,6 +2865,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "หนี",
      "ลอบ"
@@ -2722,6 +2895,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "เวทโลหิต"
     ],
@@ -2750,6 +2925,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ"
     ],
@@ -2777,6 +2954,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "เวทแสง"
@@ -2805,6 +2984,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "stances": [
      "ปะทะ",
      "ไฟ"
@@ -2839,6 +3020,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาได้",
+      "mark": "▲"
+     }
+    ],
     "note": "ไม่อยากสู้ เจรจาได้ ▲",
     "opens": "DM-03 หรือ DM-06 (ถ้าเจรจา)",
     "src": "docs/systems/combat/03-enemies.md:124"
@@ -2869,6 +3057,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ยอมรับคนที่ส่งอาหารให้",
     "opens": "DM-01 ถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:125"
@@ -2904,6 +3094,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่เคยสู้ในปราสาทตัวเอง",
     "opens": "ปราสาทเปิดให้ผู้ลี้ภัยต่อหรือล่ม",
     "src": "docs/systems/combat/03-enemies.md:126"
@@ -2934,6 +3126,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ซุ่มเสมอ",
     "opens": "กิลด์เงาแตก",
     "src": "docs/systems/combat/03-enemies.md:127"
@@ -2958,6 +3152,12 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ไม่ตายด้วยดาบ ต้องหาหีบหัวใจก่อน"
+     }
+    ],
+    "negotiate": [],
     "note": "ฆ่าไม่ได้จนกว่าจะพบหีบ",
     "opens": "WR-06 เปลี่ยน",
     "src": "docs/systems/combat/03-enemies.md:128"
@@ -2980,14 +3180,15 @@
     "countries": [
      "AL-02"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [],
+    "negotiate": [
      {
-      "tag": "เจรจาเรื่องบ้าน",
-      "name": "เจรจาเรื่องบ้าน",
+      "text": "เจรจาเรื่องบ้าน",
       "mark": "★"
      }
     ],
-    "resist": [],
     "note": "ไม่อยากเป็นอาวุธ",
     "opens": "DM-05 ถูกตัดถ้าเจรจาสำเร็จ",
     "src": "docs/systems/combat/03-enemies.md:129"
@@ -3012,6 +3213,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "มีกองทัพหนุน +4",
     "opens": "WR-16 เปลี่ยน",
     "src": "docs/systems/combat/03-enemies.md:130"
@@ -3036,6 +3239,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "หวังให้มีคนชนะ",
     "opens": "ตัวละครได้ชื่อเสียงสูงสุดในเทนเซอริส",
     "src": "docs/systems/combat/03-enemies.md:131"
@@ -3060,6 +3265,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่อยากรับมงกุฎ",
     "opens": "DM-01 ถูกตัดถ้าตัวละครขัดขวาง",
     "src": "docs/systems/combat/03-enemies.md:132"
@@ -3090,6 +3297,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ซุ่ม",
     "opens": "ไว้ชีวิตได้ (คืนบุญ)",
     "src": "docs/systems/combat/03-enemies.md:133"
@@ -3119,7 +3328,15 @@
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "resist": [
+     {
+      "tag": "fire",
+      "name": "ไฟ",
+      "mark": "✕"
+     }
+    ],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไฟ ✕",
     "opens": "GI-04 ชะลอ",
     "src": "docs/systems/combat/03-enemies.md:134"
@@ -3150,6 +3367,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ร่างแห้ง",
     "opens": "WR-24 เปลี่ยน",
     "src": "docs/systems/combat/03-enemies.md:135"
@@ -3174,6 +3393,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่เปิดเผยตัว",
     "opens": "BIO-02 ถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:136"
@@ -3198,6 +3419,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ผู้ติดตามรุม (ฝูง +2)",
     "opens": "FG-05 ล่ม",
     "src": "docs/systems/combat/03-enemies.md:137"
@@ -3228,6 +3451,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "คลั่งเหล็ก",
     "opens": "MC-02 ชะลอ",
     "src": "docs/systems/combat/03-enemies.md:138"
@@ -3258,6 +3483,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่รู้ว่าสู้เพื่ออะไร (เจรจา ▲)",
     "opens": "MC-08 เปลี่ยน",
     "src": "docs/systems/combat/03-enemies.md:139"
@@ -3282,6 +3509,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "แก๊งหนุน +2",
     "opens": "แดนทองไร้นายอำเภอ",
     "src": "docs/systems/combat/03-enemies.md:140"
@@ -3306,6 +3535,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ยิงธนูไม่พลาด",
     "opens": "ชายแดนใต้ซิลวาเนลอ่อนแอ",
     "src": "docs/systems/combat/03-enemies.md:141"
@@ -3336,6 +3567,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "สงบได้ถ้าไม่ขโมย",
     "opens": "ไข่มุกน้ำตาไม่มีผู้เฝ้า",
     "src": "docs/systems/combat/03-enemies.md:142"
@@ -3360,6 +3593,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่สู้ถ้าไม่ถูกบังคับ",
     "opens": "DM-09 เร็วขึ้น",
     "src": "docs/systems/combat/03-enemies.md:143"
@@ -3384,6 +3619,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ดวลตามกติกา ยอมแพ้ได้ · ไม่เคยแพ้ดวลมาสามสิบปี",
     "opens": "แพ้ครองเกาะต่อไม่ได้ หรือตาย → ผู้สืบทอด AZ02-2",
     "src": "docs/systems/combat/03-enemies.md:144"
@@ -3414,6 +3651,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจา",
+      "mark": "▲"
+     }
+    ],
     "note": "ซุ่ม · ไม่อยากฆ่าอีก เจรจา ▲",
     "opens": "เส้นนักบวชเปิดหรือถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:145"
@@ -3438,6 +3682,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจา",
+      "mark": "▲"
+     }
+    ],
     "note": "ไม่อยากสู้ เจรจา ▲ · สู้เต็มฝีมือเมื่อถูกบังคับ",
     "opens": "ผู้พาข้ามเขตทัพ หรือเส้นชาวนาที่วีซาเฮเวนปิด",
     "src": "docs/systems/combat/03-enemies.md:146"
@@ -3462,6 +3713,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ดวลเพื่อเกียรติ ยอมแพ้ได้ · เคารพผู้ชนะ",
     "opens": "DM-03 ถูกตัดในรอบนี้",
     "src": "docs/systems/combat/03-enemies.md:147"
@@ -3489,14 +3742,22 @@
       "tag": "light",
       "name": "แสง",
       "mark": "★"
-     },
+     }
+    ],
+    "resist": [
      {
-      "tag": "ข่าวสงบศึก",
-      "name": "ข่าวสงบศึก",
+      "tag": "physical",
+      "name": "กายภาพ",
+      "mark": "✕"
+     }
+    ],
+    "weakText": [
+     {
+      "text": "ข่าวสงบศึก",
       "mark": "★"
      }
     ],
-    "resist": [],
+    "negotiate": [],
     "note": "กายภาพ ✕ · ทหารผีหนุน +2",
     "opens": "กองทัพห้าธงหลับหรือสลาย",
     "src": "docs/systems/combat/03-enemies.md:148"
@@ -3524,14 +3785,22 @@
       "tag": "water",
       "name": "น้ำ",
       "mark": "▲"
-     },
+     }
+    ],
+    "resist": [
      {
       "tag": "fire",
       "name": "ไฟ",
       "mark": "✕"
      }
     ],
-    "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยความจริงเรื่องผู้ถูกกักขัง",
+      "mark": "▲"
+     }
+    ],
     "note": "ทหารป้อมหนุน +2 · เจรจาด้วยความจริงเรื่องผู้ถูกกักขัง ▲",
     "opens": "GI-08 ถูกตัด WR-13 น้ำหนักเพิ่ม",
     "src": "docs/systems/combat/03-enemies.md:149"
@@ -3556,6 +3825,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยหลักฐาน",
+      "mark": "▲"
+     }
+    ],
     "note": "เวทแสง ★ ต่อผู้ตายและปีศาจ · เจรจาด้วยหลักฐาน ▲",
     "opens": "ลัทธิลับยึดศาล หรือเธอลาออก",
     "src": "docs/systems/combat/03-enemies.md:150"
@@ -3580,6 +3856,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ทดสอบฝีมือ ยอมแพ้ได้ · ศิษย์หนุน +2",
     "opens": "ผู้กล้ารุ่นใหม่ขาดครู",
     "src": "docs/systems/combat/03-enemies.md:151"
@@ -3610,6 +3888,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจา",
+      "mark": "▲"
+     }
+    ],
     "note": "ทหารเฝ้าหนุน +2 · เจรจา ▲ ถ้าตัวละครได้ยินเสียงเดียวกัน",
     "opens": "MC-05 น้ำหนักเพิ่ม END-06 ถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:152"
@@ -3634,6 +3919,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ซุ่มเสมอ · ยิงจากที่กำบัง",
     "opens": "ป้อมใต้ซิลวาเนลขาดนักล่า",
     "src": "docs/systems/combat/03-enemies.md:153"
@@ -3664,6 +3951,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ร่างหินใหญ่ · ทดสอบแล้วไม่ฆ่าผู้ผ่าน",
     "opens": "GI-01 น้ำหนักเพิ่ม",
     "src": "docs/systems/combat/03-enemies.md:154"
@@ -3694,6 +3983,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ซุ่ม · ภาพหลอนเหยื่อทำให้ตัวละครสะดุ้งจังหวะแรก",
     "opens": "เส้นเสียสติถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:155"
@@ -3718,6 +4009,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเรื่องยักษ์",
+      "mark": "▲"
+     }
+    ],
     "note": "ร่างหนักปีกสั้น เกราะแข็ง · เจรจาเรื่องยักษ์ ▲",
     "opens": "WR-02 ถูกตัดหรือ HP-03 เปิดทาง",
     "src": "docs/systems/combat/03-enemies.md:156"
@@ -3747,7 +4045,15 @@
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "weakText": [],
+    "negotiate": [],
     "note": "พิษ ✕ · ไกล่เกลี่ยก่อนสงคราม ▲",
     "opens": "WR-04 ชะลอหรือถูกตัด",
     "src": "docs/systems/combat/03-enemies.md:157"
@@ -3777,7 +4083,15 @@
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "resist": [
+     {
+      "tag": "poison",
+      "name": "พิษ",
+      "mark": "✕"
+     }
+    ],
+    "weakText": [],
+    "negotiate": [],
     "note": "พิษ ✕ · ไม่รับกลิ่น ซุ่มด้วยกลิ่นไม่ได้",
     "opens": "เส้น ค ร่วม หรือถอนจากโรงกลั่น",
     "src": "docs/systems/combat/03-enemies.md:158"
@@ -3808,6 +4122,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ไม่ลุกจากเตียงไข่ · สงบได้ถ้าไม่แตะไข่ ▲",
     "opens": "BIO-08 เปลี่ยน หรือไข่ไม่มีผู้เฝ้า",
     "src": "docs/systems/combat/03-enemies.md:159"
@@ -3843,6 +4159,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยอาหารที่ไม่ใช่เนื้อ",
+      "mark": "▲"
+     }
+    ],
     "note": "กองกูลหนุน +2 · เจรจาด้วยอาหารที่ไม่ใช่เนื้อ ▲",
     "opens": "กองกูลแตกหรือตั้งกองใหม่",
     "src": "docs/systems/combat/03-enemies.md:160"
@@ -3867,6 +4190,8 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ทหารป้อมหนุน +2 · โคมไล่หมอก",
     "opens": "ป้อมแตกหรือยืนต่อ",
     "src": "docs/systems/combat/03-enemies.md:161"
@@ -3891,6 +4216,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจา",
+      "mark": "▲"
+     }
+    ],
     "note": "อาวุธเย็นไม่แตก · ไม่อยากรบ เจรจา ▲",
     "opens": "ทวีปเถ้าเปลี่ยนศูนย์กลาง",
     "src": "docs/systems/combat/03-enemies.md:162"
@@ -3921,6 +4253,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "รถหุ้มเกราะหนุน +2 · เสียเปรียบเมื่อรถพัง",
     "opens": "หน่วยถอยหรือติดตามตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:163"
@@ -3951,6 +4285,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเรื่องความเงียบของโอรัน-ซัล",
+      "mark": "▲"
+     }
+    ],
     "note": "ไวเวิร์น \"ซาก\" หนุน +2 · ไวเวิร์นล้มแล้วเสียเปรียบ · เจรจาเรื่องความเงียบของโอรัน-ซัล ▲",
     "opens": "WR-01 เปลี่ยนหรือกองบินแตก",
     "src": "docs/systems/combat/03-enemies.md:164"
@@ -3981,6 +4322,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "note": "ซุ่มเสมอ · ไม่สู้ในที่สว่าง · ซื้อตัวได้ด้วยความลับ ▲",
     "opens": "ความลับของเกาะถูกเปิดโปงหรือเขากลายเป็นสายให้ตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:165"
@@ -4003,14 +4346,15 @@
     "countries": [
      "AZ-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ปีกฟ้าเสียสมดุลเมื่อลมหยุด",
-      "name": "ปีกฟ้าเสียสมดุลเมื่อลมหยุด",
+      "text": "ปีกฟ้าเสียสมดุลเมื่อลมหยุด",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [],
     "note": "กองเรือลมหนุน +2 · ไม่วางแผนเกินสามวัน เสียเปรียบเมื่อศึกยืดเกินวันที่สอง",
     "opens": "เรือลมขายให้ MK-09 หรือไปช่วยผู้ลี้ภัย",
     "src": "docs/systems/combat/03-enemies.md:166"
@@ -4046,6 +4390,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยชื่อบนหลุมของเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "ความหิวไม่ใช่ความโกรธ · กองกูลหนุน +2 · อาหารที่ไม่ใช่เนื้อทำให้หยุดชั่วครู่ ▲ · เจรจาด้วยชื่อบนหลุมของเขา ▲",
     "opens": "MH-03 กลืนเมืองติดกันหรือสนธิสัญญากับ MH-06",
     "src": "docs/systems/combat/03-enemies.md:167"
@@ -4070,6 +4421,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยสัญญาใหม่",
+      "mark": "▲"
+     }
+    ],
     "note": "ผู้คุ้มกันตลาดหนุน +2 · ทุกอย่างมีราคา เจรจาด้วยสัญญาใหม่ ▲ · เกลียดสงครามจริง",
     "opens": "MC-08 เปลี่ยนหรือตลาดเลือดแตก",
     "src": "docs/systems/combat/03-enemies.md:168"
@@ -4100,6 +4458,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครช่วยตามหาน้อง",
+      "mark": "▲"
+     }
+    ],
     "note": "เรือเล็กไว หนุน +1 · ไม่ยอมเปิดหีบของน้อง · เจรจาเมื่อตัวละครช่วยตามหาน้อง ▲",
     "opens": "น้องถูกพบที่ MH-09 หรือเธอถูกแขวนบนเรือหลวง",
     "src": "docs/systems/combat/03-enemies.md:169"
@@ -4123,7 +4488,20 @@
      "KD-08"
     ],
     "weak": [],
-    "resist": [],
+    "resist": [
+     {
+      "tag": "light",
+      "name": "แสง",
+      "mark": "✕"
+     }
+    ],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อได้เห็นว่าผู้ถูกกักขังคือคนจริง",
+      "mark": "▲"
+     }
+    ],
     "note": "ทนแสง ✕ · เกราะสวดหนุน +1 · เจรจาเมื่อได้เห็นว่าผู้ถูกกักขังคือคนจริง ▲",
     "opens": "ผู้ถูกกักขังถูกปล่อยหรือสงครามศักดิ์สิทธิ์ WR-13 เร็วขึ้น",
     "src": "docs/systems/combat/03-enemies.md:170"
@@ -4154,6 +4532,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครล่าด้วยกัน",
+      "mark": "▲"
+     }
+    ],
     "note": "เขี้ยวสัตว์ใหญ่ทำให้สัตว์ป่าหวาดกลัว · ศึกในหิมะ +1 · เจรจาเมื่อตัวละครล่าด้วยกัน ▲",
     "opens": "ธรอ-ดูเปลี่ยนตำนานหรือเขาตายจากการล่า",
     "src": "docs/systems/combat/03-enemies.md:171"
@@ -4176,14 +4561,20 @@
     "countries": [
      "NR-05"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ทองสาปทำให้เขาลังเล",
-      "name": "ทองสาปทำให้เขาลังเล",
+      "text": "ทองสาปทำให้เขาลังเล",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครทำลายทองสาป",
+      "mark": "▲"
+     }
+    ],
     "note": "ลูกเรือผีหนุน +2 · ห้องเก็บหมวกลูกเรือ · เจรจาเมื่อตัวละครทำลายทองสาป ▲",
     "opens": "ทองสาปถูกทำลายหรือเขาตายในเรือผี",
     "src": "docs/systems/combat/03-enemies.md:172"
@@ -4214,6 +4605,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยการทดสอบที่ไม่ใช่การต่อสู้",
+      "mark": "▲"
+     }
+    ],
     "note": "ผู้ผ่านการทดสอบไม่ถูกฆ่า · ผู้แพ้ขาข้างหนึ่งเป็นหิน · เจรจาด้วยการทดสอบที่ไม่ใช่การต่อสู้ ▲",
     "opens": "NR07-3 แก้แค้นหรือถอนหิน",
     "src": "docs/systems/combat/03-enemies.md:173"
@@ -4236,14 +4634,20 @@
     "countries": [
      "AL-04"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เรือหลวงล่มแล้วเสียเปรียบ",
-      "name": "เรือหลวงล่มแล้วเสียเปรียบ",
+      "text": "เรือหลวงล่มแล้วเสียเปรียบ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครรู้กลล่อ",
+      "mark": "▲"
+     }
+    ],
     "note": "เรือหลวงหนุน +2 · กลล่อที่ไม่เคยเปิดเผย (ทอยรับรู้ตัวละคร −1 ในจังหวะแรก) · เจรจาเมื่อตัวละครรู้กลล่อ ▲",
     "opens": "เขาถูกโจรสลัดจับ แปรพักตร์ หรือเข้ากองเรือตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:174"
@@ -4268,6 +4672,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครไม่ได้ท้าสัตว์ใดในเขตเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "ล่าเฉพาะสัตว์ที่ท้า · เสือเงียบ (ซุ่มเสมอ) · เจรจาเมื่อตัวละครไม่ได้ท้าสัตว์ใดในเขตเขา ▲",
     "opens": "เขาถูกจ้างเป็นองครักษ์หรือเป็นพันธมิตร",
     "src": "docs/systems/combat/03-enemies.md:175"
@@ -4292,6 +4703,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยการสัญญาจดจำเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "ผู้ช่วยในเงา +1 · บันทึกส่วนตัวในสมุดที่เขาไม่ยอมเสีย · เจรจาด้วยการสัญญาจดจำเขา ▲",
     "opens": "เขาขายบันทึกให้ AL-06 ถูกฆ่า หรือเป็นแหล่งข่าวของตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:176"
@@ -4322,6 +4740,17 @@
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "แขนที่สี่ไม่ตอบสนองเมื่อช็อต"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อเรียกชื่อแขนเดิม",
+      "mark": "▲"
+     }
+    ],
     "note": "ยิงสองกระบอกพร้อมกัน · ไม่เคยหลับ จังหวะแรกของศึกไวกว่าปกติ · เจรจาเมื่อเรียกชื่อแขนเดิม ▲",
     "opens": "เขาเสียสติ ถูกส่งไป MK-16 หรือเข้าร่วมตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:177"
@@ -4346,6 +4775,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยค่าจ้างที่ค้างครบ",
+      "mark": "▲"
+     }
+    ],
     "note": "เกราะค่ายบริษัทหนุน +1 · เหรียญในผ้าขาวม้าไม่ยอมเสีย · เจรจาด้วยค่าจ้างที่ค้างครบ ▲",
     "opens": "เขาลาออกกลับมอร์เฮเวนหรือเข้าร่วมตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:178"
@@ -4368,14 +4804,23 @@
     "countries": [
      "SH-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ผู้ที่มาพร้อมผู้ชี้ทางตามตำนาน",
-      "name": "ผู้ที่มาพร้อมผู้ชี้ทางตามตำนาน",
+      "text": "ไม่มองสิ่งที่ถือ"
+     },
+     {
+      "text": "ผู้ที่มาพร้อมผู้ชี้ทางตามตำนาน",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อพา SH01-2 ยัสมีนมาถึง",
+      "mark": "▲"
+     }
+    ],
     "note": "ร่างหินใหญ่ · ถือดวงตาศิลาห่อผ้า · เจรจาเมื่อพา SH01-2 ยัสมีนมาถึง ▲",
     "opens": "ดวงตาถูกส่งให้ผู้ชี้ทางหรือถูกปล้นตอนสงครามธุลี",
     "src": "docs/systems/combat/03-enemies.md:179"
@@ -4398,14 +4843,23 @@
     "countries": [
      "SH-10"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เสียเปรียบเมื่อต้องทำร้ายผู้นำทางที่พาเด็กมา",
-      "name": "เสียเปรียบเมื่อต้องทำร้ายผู้นำทางที่พาเด็กมา",
+      "text": "ไม่ล่าสัตว์ที่มีลูก"
+     },
+     {
+      "text": "เสียเปรียบเมื่อต้องทำร้ายผู้นำทางที่พาเด็กมา",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครพาเด็กหรือสัตว์ที่มีลูกเดินด้วยกัน",
+      "mark": "▲"
+     }
+    ],
     "note": "หมาป่าทรายหนุน +1 · ซุ่มกลางคืน · เจรจาเมื่อตัวละครพาเด็กหรือสัตว์ที่มีลูกเดินด้วยกัน ▲",
     "opens": "ผู้นำทางรอดหรือเขาเป็นผู้ล่านำทางของตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:180"
@@ -4428,14 +4882,20 @@
     "countries": [
      "SH-11"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ทัพขาดเสบียงเสียเปรียบ",
-      "name": "ทัพขาดเสบียงเสียเปรียบ",
+      "text": "ทัพขาดเสบียงเสียเปรียบ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครเสนอที่ทำกินให้ทัพที่ถูกทอดทิ้ง",
+      "mark": "▲"
+     }
+    ],
     "note": "ทัพออร์คหนุน +2 · ไม่ยอมแพ้ · เจรจาเมื่อตัวละครเสนอที่ทำกินให้ทัพที่ถูกทอดทิ้ง ▲",
     "opens": "เขาเข้าร่วมกวาดล้างกับ MH-01 ทัพสลาย หรือเป็นพันธมิตรกับตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:181"
@@ -4458,19 +4918,24 @@
     "countries": [
      "SV-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "พิษทำให้แผลที่เขารับไม่ปิด",
-      "name": "พิษทำให้แผลที่เขารับไม่ปิด",
+      "text": "พิษทำให้แผลที่เขารับไม่ปิด",
       "mark": "▲"
      },
      {
-      "tag": "ยาที่ตัวละครมีมีผลต่อเขา",
-      "name": "ยาที่ตัวละครมีมีผลต่อเขา",
+      "text": "ยาที่ตัวละครมีมีผลต่อเขา",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครมียาแก้พิษ",
+      "mark": "▲"
+     }
+    ],
     "note": "ทนบาดแผลทั่วไป · ร่างค่อย ๆ เทา · เจรจาเมื่อตัวละครมียาแก้พิษ ▲",
     "opens": "เขาหนีไปนิวเฮเวน เสียสติ หรือเป็นทหารหน้าด่านให้ตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:182"
@@ -4495,6 +4960,13 @@
     ],
     "weak": [],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อให้ผู้ที่เคยจับสัตว์ไถ่โทษต่อหน้าเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "กับดักซ่อนในพื้นที่ล่า · ซุ่มเสมอ · เจรจาเมื่อให้ผู้ที่เคยจับสัตว์ไถ่โทษต่อหน้าเขา ▲",
     "opens": "เขาถูกจับ ตายระหว่างล่า หรือเป็นผู้ล่านำทางของตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:183"
@@ -4525,6 +4997,17 @@
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ไม่ลงมือกับเด็ก"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครปกป้องเป้าหมายที่เป็นเด็ก",
+      "mark": "▲"
+     }
+    ],
     "note": "ซุ่มเสมอ · ขโมยสมุดของเป้าหมายเป็นงานเสริม · เจรจาเมื่อตัวละครปกป้องเป้าหมายที่เป็นเด็ก ▲",
     "opens": "เธอทรยศกิลด์ ถูกลงโทษ หรือเป็นผู้ช่วยตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:184"
@@ -4555,6 +5038,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครแลกชื่อผู้จ่ายด้วยสิ่งที่ไม่ใช่ทอง",
+      "mark": "▲"
+     }
+    ],
     "note": "สมุดเงาไม่เสียหายง่าย · ซุ่ม · เจรจาเมื่อตัวละครแลกชื่อผู้จ่ายด้วยสิ่งที่ไม่ใช่ทอง ▲",
     "opens": "วีวาขึ้นเป็นเจ้าแห่งเงา ขายสมุด หรือลบชื่อตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:185"
@@ -4577,14 +5067,20 @@
     "countries": [
      "AZ-09"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เทพที่ไม่ใช่เทพจริงทำให้เธอลังเล",
-      "name": "เทพที่ไม่ใช่เทพจริงทำให้เธอลังเล",
+      "text": "เทพที่ไม่ใช่เทพจริงทำให้เธอลังเล",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครไม่อ้างเทพ",
+      "mark": "▲"
+     }
+    ],
     "note": "ไม่เชื่อเทพทุกองค์ · โจมตีสัญลักษณ์ศาสนาก่อน · เจรจาเมื่อตัวละครไม่อ้างเทพ ▲",
     "opens": "GD-07 เปิด หรือเธอตายก่อนถึงวัยผู้ใหญ่",
     "src": "docs/systems/combat/03-enemies.md:186"
@@ -4607,14 +5103,20 @@
     "countries": [
      "AZ-10"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เสียงดังที่ไวเวิร์นไม่ฟัง",
-      "name": "เสียงดังที่ไวเวิร์นไม่ฟัง",
+      "text": "เสียงดังที่ไวเวิร์นไม่ฟัง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครให้ไวเวิร์นเลือกเอง",
+      "mark": "▲"
+     }
+    ],
     "note": "ไวเวิร์นราตรีหนุน +2 · พูดกับไวเวิร์นโดยไม่ใช้ปาก · เจรจาเมื่อตัวละครให้ไวเวิร์นเลือกเอง ▲",
     "opens": "ไวเวิร์นถูกส่งให้ MK-09 หรือไวเวิร์นกัดเขาตาย",
     "src": "docs/systems/combat/03-enemies.md:187"
@@ -4637,14 +5139,20 @@
     "countries": [
      "AZ-02"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "จึงเสียเปรียบเมื่อถูกขอให้ลำเอียง",
-      "name": "จึงเสียเปรียบเมื่อถูกขอให้ลำเอียง",
+      "text": "ถูกซื้อไม่ได้ จึงเสียเปรียบเมื่อถูกขอให้ลำเอียง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครให้หลักฐานดวลถูกซื้อ",
+      "mark": "▲"
+     }
+    ],
     "note": "ตัดสินแล้วไม่กลับคำ · กรรมการกลางดวลทั้งสอง · เจรจาเมื่อตัวละครให้หลักฐานดวลถูกซื้อ ▲",
     "opens": "เขาเปิดโปงดวลที่ถูกซื้อ หรือถูกลอบฆ่า",
     "src": "docs/systems/combat/03-enemies.md:188"
@@ -4667,14 +5175,20 @@
     "countries": [
      "AZ-08"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ผู้คุ้มกันของเขาไม่ภักดี",
-      "name": "ผู้คุ้มกันของเขาไม่ภักดี",
+      "text": "ผู้คุ้มกันของเขาไม่ภักดี",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครเสนอส่วนแบ่ง",
+      "mark": "▲"
+     }
+    ],
     "note": "ผู้คุ้มกันเหมืองหนุน +2 · ยัดสินบนก่อนสู้ · เจรจาเมื่อตัวละครเสนอส่วนแบ่ง ▲",
     "opens": "เขาถูกเปิดโปงหรือถูกลอบสังหารโดยคนงาน",
     "src": "docs/systems/combat/03-enemies.md:189"
@@ -4697,14 +5211,20 @@
     "countries": [
      "MH-04"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "น้ำและเสบียงขาด",
-      "name": "น้ำและเสบียงขาด",
+      "text": "น้ำและเสบียงขาด",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยค่าจ้างล่วงหน้า",
+      "mark": "▲"
+     }
+    ],
     "note": "ฝูงหมาป่าเถ้าหนุน +2 · ไม่เคยอยู่ที่เดียวสองคืน · เจรจาด้วยค่าจ้างล่วงหน้า ▲",
     "opens": "ศึกบ่อน้ำเปลี่ยน หรือเขาเข้าร่วมตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:190"
@@ -4727,14 +5247,23 @@
     "countries": [
      "MH-04"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "คิดถึงบ้าน",
-      "name": "คิดถึงบ้าน",
+      "text": "คิดถึงบ้าน",
+      "mark": "▲"
+     },
+     {
+      "text": "ไม่ฆ่าคนที่พูดถึงแม่"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยข่าวของแม่",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "หมาป่าขี่หนุน +1 · เก็บเงินไว้ซื้อที่นา · เจรจาด้วยข่าวของแม่ ▲",
     "opens": "เขาถอนตัวไปปลูกข้าว หรือตายในศึกกับ MK-16",
     "src": "docs/systems/combat/03-enemies.md:191"
@@ -4757,14 +5286,20 @@
     "countries": [
      "MH-05"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "รูนที่เปิดตกลงมาเป็นของตัวเขาเอง",
-      "name": "รูนที่เปิดตกลงมาเป็นของตัวเขาเอง",
+      "text": "รูนที่เปิดตกลงมาเป็นของตัวเขาเอง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครยอมรับแบบกำแพง",
+      "mark": "▲"
+     }
+    ],
     "note": "กำแพงรูนหนุน +2 · ไม่ปิดรูน · เจรจาเมื่อตัวละครยอมรับแบบกำแพง ▲",
     "opens": "เขาสอนรูนหรือถูกฝ่ายปิดรูนฆ่า",
     "src": "docs/systems/combat/03-enemies.md:192"
@@ -4795,6 +5330,17 @@
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ซุ่มเสมอ"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครซื้อข่าวด้วยข่าวเท่ากัน",
+      "mark": "▲"
+     }
+    ],
     "note": "ขายข่าวทุกฝ่าย · ซุ่มเสมอ · เจรจาเมื่อตัวละครซื้อข่าวด้วยข่าวเท่ากัน ▲",
     "opens": "เธอถูกจับโดยธงที่ถูกหลอก หนีไป MH-09 หรือขายข่าวให้ตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:193"
@@ -4817,14 +5363,23 @@
     "countries": [
      "MH-09"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ลายมือของเขาเอง",
-      "name": "ลายมือของเขาเอง",
+      "text": "ลายมือของเขาเอง",
+      "mark": "▲"
+     },
+     {
+      "text": "สัญญาของตนมีข้อที่ไม่เคยอ่าน"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยการไถ่หรืออ่านข้อสุดท้ายของสัญญา",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ทหารรับจ้างฝีมือมาตรฐาน · สัญญาขายตัวเองเขียนด้วยลายมือที่ดีที่สุดในตลาด · เจรจาด้วยการไถ่หรืออ่านข้อสุดท้ายของสัญญา ▲",
     "opens": "เขาตายไกลบ้าน กลับมามีเงินแต่ครอบครัวหาย หรือถูกไถ่",
     "src": "docs/systems/combat/03-enemies.md:194"
@@ -4860,6 +5415,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยความจริงเรื่องมงกุฎ",
+      "mark": "▲"
+     }
+    ],
     "note": "ตัดสินศึกไม่เคยผิด · ผู้ตัดสินกูลหนุน +2 · เจรจาด้วยความจริงเรื่องมงกุฎ ▲",
     "opens": "ศึกชิงมงกุฎเปิด หรือฮรอด-กาธเลือกจอมมาร",
     "src": "docs/systems/combat/03-enemies.md:195"
@@ -4882,14 +5444,20 @@
     "countries": [
      "MH-11"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เสียขวัญเมื่อธงตก",
-      "name": "เสียขวัญเมื่อธงตก",
+      "text": "ลูกเรือไม่อยากปล้น เสียขวัญเมื่อธงตก",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยใบอนุญาตค้าจาก NR-01",
+      "mark": "▲"
+     }
+    ],
     "note": "กองเรือเถ้าหนุน +2 · ไม่อยากให้ลูกเรือปล้น · เจรจาด้วยใบอนุญาตค้าจาก NR-01 ▲",
     "opens": "WR-07 เปลี่ยนหรือกองเรือค้าขาย",
     "src": "docs/systems/combat/03-enemies.md:196"
@@ -4917,14 +5485,21 @@
       "tag": "light",
       "name": "แสง",
       "mark": "★"
-     },
-     {
-      "tag": "ข่าวสงบศึก",
-      "name": "ข่าวสงบศึก",
-      "mark": "★"
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ข่าวสงบศึก",
+      "mark": "★"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยการส่งจดหมายถึงแม่",
+      "mark": "▲"
+     }
+    ],
     "note": "กายภาพทนครึ่ง · ลืมชื่อตัวเอง · เจรจาด้วยการส่งจดหมายถึงแม่ ▲",
     "opens": "เขาได้พักผ่อน หายไปในหมอก หรือส่งจดหมายสำเร็จ",
     "src": "docs/systems/combat/03-enemies.md:197"
@@ -4947,14 +5522,20 @@
     "countries": [
      "KD-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "หลานป่วยทำให้เขาลังเล",
-      "name": "หลานป่วยทำให้เขาลังเล",
+      "text": "หลานป่วยทำให้เขาลังเล",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยอาหารและยาให้หลานโดยไม่ขอสิ่งตอบแทน",
+      "mark": "▲"
+     }
+    ],
     "note": "ตัดสินรูนไม่เคยผิด · ไม่เคยตัดสินให้ตัวเองได้ฟัง · เจรจาด้วยอาหารและยาให้หลานโดยไม่ขอสิ่งตอบแทน ▲",
     "opens": "ฝ่ายเปิดซื้อเขาสำเร็จ หรือเขายืนหยัดจนโดดเดี่ยว",
     "src": "docs/systems/combat/03-enemies.md:198"
@@ -4977,14 +5558,20 @@
     "countries": [
      "KD-07"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "น้ำเย็นและความเงียบของเพลิง",
-      "name": "น้ำเย็นและความเงียบของเพลิง",
+      "text": "น้ำเย็นและความเงียบของเพลิง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครรับรู้อารมณ์เพลิงนั้น",
+      "mark": "▲"
+     }
+    ],
     "note": "รู้สึกอารมณ์เพลิงนิรันดร์ทุกวัน · เกล็ดทนไฟ ✕ · เจรจาเมื่อตัวละครรับรู้อารมณ์เพลิงนั้น ▲",
     "opens": "ความศรัทธาถ่ายทอดผ่านคัลดราต่อ หรือเขาตายเมื่อเพลิงนิรันดร์ล้ม",
     "src": "docs/systems/combat/03-enemies.md:199"
@@ -5007,14 +5594,23 @@
     "countries": [
      "KD-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "รูนที่เขาจำไว้ในหัว",
-      "name": "รูนที่เขาจำไว้ในหัว",
+      "text": "รูนที่เขาจำไว้ในหัว",
+      "mark": "▲"
+     },
+     {
+      "text": "ความจำทำให้เขาลังเลเมื่อต้องฆ่าคนที่อ่านรูนได้"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครให้เขาวาดรูนลงกระดาษแทนการตาย",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ยามประตูหนุน +1 · จำรูนได้ทั้งผืน · เจรจาเมื่อตัวละครให้เขาวาดรูนลงกระดาษแทนการตาย ▲",
     "opens": "เขาหนีไปบาร์ดินพร้อมรูน หรือถูกประหารโดยฝ่ายปิด",
     "src": "docs/systems/combat/03-enemies.md:200"
@@ -5037,14 +5633,20 @@
     "countries": [
      "KD-05"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "พันธมิตรที่เธอเคยหักหลังตอนนี้ไม่เชื่อ",
-      "name": "พันธมิตรที่เธอเคยหักหลังตอนนี้ไม่เชื่อ",
+      "text": "พันธมิตรที่เธอเคยหักหลังตอนนี้ไม่เชื่อ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครรักษาคำเดิมที่เคยให้",
+      "mark": "▲"
+     }
+    ],
     "note": "กลอุบายสามชั้น (ทอยรับรู้ตัวละคร −1) · ไม่ลืมผู้ที่หักหลัง · เจรจาเมื่อตัวละครรักษาคำเดิมที่เคยให้ ▲",
     "opens": "เธอเป็นพันธมิตรตัวละคร ถูกเผ่าลาวาลอบสังหาร หรือชี้ทางลงปากเหว",
     "src": "docs/systems/combat/03-enemies.md:201"
@@ -5067,14 +5669,23 @@
     "countries": [
      "NR-01"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ไม่ได้หลับมาสิบสองปี",
-      "name": "ไม่ได้หลับมาสิบสองปี",
+      "text": "ไม่ได้หลับมาสิบสองปี",
+      "mark": "▲"
+     },
+     {
+      "text": "ไม่ทันเมื่อมีเสียงสมอซ้อน"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครเฝ้าท่าแทนหนึ่งคืน",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "จำเรือจากเสียงสมอได้ · ไม่เคยปิดท่า · เจรจาเมื่อตัวละครเฝ้าท่าแทนหนึ่งคืน ▲",
     "opens": "เขาถูกซื้อให้เปิดทางเรือโจร ตายในท่า หรือบอกเส้นทางลับ",
     "src": "docs/systems/combat/03-enemies.md:202"
@@ -5097,14 +5708,20 @@
     "countries": [
      "NR-06"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ความจริงที่ไม่เคยเล่า",
-      "name": "ความจริงที่ไม่เคยเล่า",
+      "text": "ความจริงที่ไม่เคยเล่า",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครขอให้เล่าความจริง",
+      "mark": "▲"
+     }
+    ],
     "note": "เกราะประภาคารเก่า +1 · จำว่าใครยิงลูกธนูลูกแรก · เจรจาเมื่อตัวละครขอให้เล่าความจริง ▲",
     "opens": "ความจริงเรื่องสงครามต้นน้ำถูกเปิดหรือเขาตายก่อนบอก",
     "src": "docs/systems/combat/03-enemies.md:203"
@@ -5127,14 +5744,23 @@
     "countries": [
      "NR-04"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เพลงกล่อม",
-      "name": "เพลงกล่อม",
+      "text": "เพลงกล่อม",
+      "mark": "▲"
+     },
+     {
+      "text": "แสงผิวน้ำทำให้เขาสับสน"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยเพลงกล่อมที่เขาร้องทุกคืน",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ร่างสัตว์ทะเลลึกยักษ์ · ปกป้องธาลาสซาที่หลับ · เจรจาด้วยเพลงกล่อมที่เขาร้องทุกคืน ▲",
     "opens": "PL-04 เปลี่ยนหรือเขาสืบเรื่องขึ้นผิวน้ำ",
     "src": "docs/systems/combat/03-enemies.md:204"
@@ -5157,14 +5783,20 @@
     "countries": [
      "NR-05"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ค้อนตีสมอสั่นเมื่อถูกสมอสาปแตะ",
-      "name": "ค้อนตีสมอสั่นเมื่อถูกสมอสาปแตะ",
+      "text": "ค้อนตีสมอสั่นเมื่อถูกสมอสาปแตะ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครสัญญาไม่ใช้สมอสาป",
+      "mark": "▲"
+     }
+    ],
     "note": "ตีสมอสาปสู้ได้ · ไม่แตะสมอที่ตีเสร็จ · เจรจาเมื่อตัวละครสัญญาไม่ใช้สมอสาป ▲",
     "opens": "เขาตีสมอที่ผู้แตะกลายเป็นผี ทรยศ หรือได้รับไว้ชีวิต",
     "src": "docs/systems/combat/03-enemies.md:205"
@@ -5187,14 +5819,20 @@
     "countries": [
      "AL-01"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ถูกซื้อแล้วไม่สบายใจ",
-      "name": "ถูกซื้อแล้วไม่สบายใจ",
+      "text": "ถูกซื้อแล้วไม่สบายใจ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครนำหลักฐานผู้ซื้อมา",
+      "mark": "▲"
+     }
+    ],
     "note": "กองรักษาสภาหนุน +2 · ไม่รับคำสั่งจากประเทศใด · เจรจาเมื่อตัวละครนำหลักฐานผู้ซื้อมา ▲",
     "opens": "ประตูสภาเปิดให้ผู้ลอบสังหารหรือเขากลับมาคุ้มกัน",
     "src": "docs/systems/combat/03-enemies.md:206"
@@ -5217,14 +5855,20 @@
     "countries": [
      "AL-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "คำสาบานที่ยังไม่มีผู้รับ",
-      "name": "คำสาบานที่ยังไม่มีผู้รับ",
+      "text": "คำสาบานที่ยังไม่มีผู้รับ",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยทางที่ไม่ต้องฆ่าผู้อ้าง",
+      "mark": "▲"
+     }
+    ],
     "note": "เกราะอัศวินหนุน +1 · สาบานต่อบัลลังก์ที่ยังว่าง · เจรจาด้วยทางที่ไม่ต้องฆ่าผู้อ้าง ▲",
     "opens": "เขาฆ่าผู้อ้างที่สาม เขาถูกฆ่าก่อนสำเร็จ หรือกลับมาเป็นอัศวินของตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:207"
@@ -5247,14 +5891,20 @@
     "countries": [
      "AL-10"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ลูกน้องหนีเมื่อไม่ได้ค่าจ้าง",
-      "name": "ลูกน้องหนีเมื่อไม่ได้ค่าจ้าง",
+      "text": "ลูกน้องหนีเมื่อไม่ได้ค่าจ้าง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยค่าจ้างที่ธนาคารหยุดจ่าย",
+      "mark": "▲"
+     }
+    ],
     "note": "ลูกน้องหนุน +2 (เขาไม่ลงมือเอง) · เสียเปรียบเมื่อต้องลงมือเอง · เจรจาด้วยค่าจ้างที่ธนาคารหยุดจ่าย ▲",
     "opens": "เขาทรยศฝ่ายหนึ่ง ถูกลูกน้องฆ่า หรือเข้าร่วมตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:208"
@@ -5277,14 +5927,23 @@
     "countries": [
      "AL-15"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เสบียงขาด",
-      "name": "เสบียงขาด",
+      "text": "เสบียงขาด",
+      "mark": "▲"
+     },
+     {
+      "text": "ไม่รู้จักคำสั่งถอย"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาด้วยเสบียงและคำสั่งเปลี่ยนแนวที่ไม่ใช่ถอย",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ทัพตรึงแนวหนุน +3 · ไม่เคยถอยมาสองปี · เจรจาด้วยเสบียงและคำสั่งเปลี่ยนแนวที่ไม่ใช่ถอย ▲",
     "opens": "WR-16 แนวแตก ตรึงจนฟอร์เทียล้า หรือเสบียงถึง",
     "src": "docs/systems/combat/03-enemies.md:209"
@@ -5307,14 +5966,20 @@
     "countries": [
      "MK-04"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ผู้ติดตั้งที่เขาเลี้ยงรบกับเขาไม่ได้",
-      "name": "ผู้ติดตั้งที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "text": "ผู้ติดตั้งที่เขาเลี้ยงรบกับเขาไม่ได้",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครให้เขาอยู่ข้างผู้คลั่งโดยไม่ต้องยิง",
+      "mark": "▲"
+     }
+    ],
     "note": "ผู้คุมกักกันหนุน +1 · ทุกคนเรียกเขาว่าคุณพ่อ · เจรจาเมื่อตัวละครให้เขาอยู่ข้างผู้คลั่งโดยไม่ต้องยิง ▲",
     "opens": "ผู้ติดตั้งแหกคุก เขาสั่งยิง หรือตัวละครห้ามจนไม่ต้องยิง",
     "src": "docs/systems/combat/03-enemies.md:210"
@@ -5339,17 +6004,24 @@
     ],
     "weak": [
      {
-      "tag": "คำถามที่เขาตอบไม่ได้",
-      "name": "คำถามที่เขาตอบไม่ได้",
-      "mark": "▲"
-     },
-     {
       "tag": "lightning",
       "name": "สายฟ้า",
       "mark": "▲"
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "คำถามที่เขาตอบไม่ได้",
+      "mark": "▲"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครตอบว่าทำไมเป้าหมายถึงร้องไห้",
+      "mark": "▲"
+     }
+    ],
     "note": "ตั้งโปรแกรมให้ไม่คิด · ปืนรูนยิงไม่ออกเมื่อคิด · เจรจาเมื่อตัวละครตอบว่าทำไมเป้าหมายถึงร้องไห้ ▲",
     "opens": "เขาตื่นเป็นวิญญาณและหนีไปโนวามินด์ ถูกทำลาย หรือถูกปล่อยออกจากสนามทดสอบ",
     "src": "docs/systems/combat/03-enemies.md:211"
@@ -5372,14 +6044,23 @@
     "countries": [
      "MK-09"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ฝันของเขาคือเมืองลอยฟ้า",
-      "name": "ฝันของเขาคือเมืองลอยฟ้า",
+      "text": "ฝันของเขาคือเมืองลอยฟ้า",
+      "mark": "▲"
+     },
+     {
+      "text": "เรือเหาะธงที่ถูกตัดเสียเปรียบ"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครมีที่ให้เมืองของเขา",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "กองเรือเหาะหนุน +2 · ฝันถึงเมืองลอยฟ้าเทียม · เจรจาเมื่อตัวละครมีที่ให้เมืองของเขา ▲",
     "opens": "MC-10 เปลี่ยน หรือ WR-01 สงครามท้องฟ้า",
     "src": "docs/systems/combat/03-enemies.md:212"
@@ -5402,14 +6083,20 @@
     "countries": [
      "MK-16"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ค่ายที่เขาเลี้ยงรบกับเขาไม่ได้",
-      "name": "ค่ายที่เขาเลี้ยงรบกับเขาไม่ได้",
+      "text": "ค่ายที่เขาเลี้ยงรบกับเขาไม่ได้",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครเคารพกฎของค่าย",
+      "mark": "▲"
+     }
+    ],
     "note": "ค่ายพักไม่ถามเผ่า · ผู้พักหนุน +1 · เจรจาเมื่อตัวละครเคารพกฎของค่าย ▲",
     "opens": "เขาส่งทัพให้ซื้อสัญญากับ MK16-1 พบญาติ หรือเป็นค่ายประจำตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:213"
@@ -5432,14 +6119,20 @@
     "countries": [
      "MK-05"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ตู้สินค้าปลอมที่ถูกเปิดตกอยู่ในตัวเขาเอง",
-      "name": "ตู้สินค้าปลอมที่ถูกเปิดตกอยู่ในตัวเขาเอง",
+      "text": "ตู้สินค้าปลอมที่ถูกเปิดตกอยู่ในตัวเขาเอง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครซื้อตู้ทั้งหมดเป็นสินค้า",
+      "mark": "▲"
+     }
+    ],
     "note": "ตู้ปลอมซ่อนอาวุธ · ไม่เคยยิงใคร · เจรจาเมื่อตัวละครซื้อตู้ทั้งหมดเป็นสินค้า ▲",
     "opens": "เขาถูกจับที่ด่านอาร์เคียพอร์ต ขายสำเร็จให้ AL-08 หรือถูกตัวละครจับ",
     "src": "docs/systems/combat/03-enemies.md:214"
@@ -5462,14 +6155,23 @@
     "countries": [
      "SH-01"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "เสียงสั่นที่ทำให้หนอนสับสน",
-      "name": "เสียงสั่นที่ทำให้หนอนสับสน",
+      "text": "เสียงสั่นที่ทำให้หนอนสับสน",
+      "mark": "▲"
+     },
+     {
+      "text": "หนอนไม่ทำร้ายเขาเอง"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครไม่ยั่วหนอนและจ่ายค่านั่ง",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "หนอนทรายยักษ์หนุน +3 (หนอนไม่กินเจ้าของ) · เสียเปรียบเมื่อหนอนถูกยั่ว · เจรจาเมื่อตัวละครไม่ยั่วหนอนและจ่ายค่านั่ง ▲",
     "opens": "เขาถูกกินโดยหนอน พาไปทางเหนือ หรือตัวละครได้นั่งหนอน",
     "src": "docs/systems/combat/03-enemies.md:215"
@@ -5492,14 +6194,23 @@
     "countries": [
      "SH-03"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "คำตอบที่ตรงกับตนเอง",
-      "name": "คำตอบที่ตรงกับตนเอง",
+      "text": "คำตอบที่ตรงกับตนเอง",
+      "mark": "▲"
+     },
+     {
+      "text": "ไม่ฆ่าผู้ที่ตอบถูก"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครตอบว่าจะไม่ฆ่าด้วยเหตุผลของตน",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ร่างหินยักษ์ · ถามคำถามก่อนลงมือ · เจรจาเมื่อตัวละครตอบว่าจะไม่ฆ่าด้วยเหตุผลของตน ▲",
     "opens": "ตัวละครผ่านการทดสอบ ถูกห้ามขึ้นบันไดตลอดชีวิต หรือบรูมาเป็นผู้นำทางสิบขั้นแรก",
     "src": "docs/systems/combat/03-enemies.md:216"
@@ -5522,14 +6233,20 @@
     "countries": [
      "SH-06"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "จังหวะหัวใจหินที่ผิด",
-      "name": "จังหวะหัวใจหินที่ผิด",
+      "text": "จังหวะหัวใจหินที่ผิด",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครไม่แตะหินและรอฟังจนจบจังหวะ",
+      "mark": "▲"
+     }
+    ],
     "note": "ร่างหินยักษ์ · ฟังหัวใจหินทุกวัน · เจรจาเมื่อตัวละครไม่แตะหินและรอฟังจนจบจังหวะ ▲",
     "opens": "จังหวะเปลี่ยนเร็วขึ้น หยุด หรือตัวละครได้ฟังหัวใจไททัน",
     "src": "docs/systems/combat/03-enemies.md:217"
@@ -5552,14 +6269,23 @@
     "countries": [
      "SH-17"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "พิธีบรรพบุรุษที่ผิด",
-      "name": "พิธีบรรพบุรุษที่ผิด",
+      "text": "พิธีบรรพบุรุษที่ผิด",
+      "mark": "▲"
+     },
+     {
+      "text": "ตัวละครไม่ถอดรองเท้า"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครเรียกชื่อบรรพบุรุษของภูเขาตามพิธี",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ร่างหินภูเขา · เชื่อว่าภูเขาทุกลูกคือบรรพบุรุษ · เจรจาเมื่อตัวละครเรียกชื่อบรรพบุรุษของภูเขาตามพิธี ▲",
     "opens": "ผู้เฝ้าเสาค้ำฟ้าตื่น กรอม-บาดูตาย หรือตัวละครได้แตะหินศักดิ์สิทธิ์",
     "src": "docs/systems/combat/03-enemies.md:218"
@@ -5582,14 +6308,23 @@
     "countries": [
      "SV-06"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ดินปนเปื้อน",
-      "name": "ดินปนเปื้อน",
+      "text": "ดินปนเปื้อน",
+      "mark": "▲"
+     },
+     {
+      "text": "รากอ่อนแรงทำให้เขาเสียสมาธิ"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครนำตัวอย่างดินที่ไม่ปนเปื้อน",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ผู้เฝ้าหนุน +2 · ตรวจดินและน้ำด้วยมือ ไม่เชื่อเครื่องมือ · เจรจาเมื่อตัวละครนำตัวอย่างดินที่ไม่ปนเปื้อน ▲",
     "opens": "BIO-04 หมอกรุก WR-08 สงคราม หรือตัวละครได้ยากรองหมอก",
     "src": "docs/systems/combat/03-enemies.md:219"
@@ -5620,6 +6355,17 @@
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ผู้ฟังที่ยังไม่ได้ฟังจบ"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครฟังเรื่องมหาล่มสลายจนจบ",
+      "mark": "▲"
+     }
+    ],
     "note": "กายภาพทนครึ่ง · ตายมาสามพันปี · เจรจาเมื่อตัวละครฟังเรื่องมหาล่มสลายจนจบ ▲",
     "opens": "เธอเล่าความจริงให้ผู้ฟัง หายไปเมื่อวิญญาณถูกเรียกกลับ หรือตัวละครได้ฟัง",
     "src": "docs/systems/combat/03-enemies.md:220"
@@ -5642,14 +6388,23 @@
     "countries": [
      "SV-08"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "สัญญาณไฟดับ",
-      "name": "สัญญาณไฟดับ",
+      "text": "สัญญาณไฟดับ",
+      "mark": "▲"
+     },
+     {
+      "text": "ไม่ยิงผู้ที่ถือสาร"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครรับสารไฟแทนเขา",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "ยิงจากหอสูง +1 · สัญญาณไฟเตือนกองทัพ · เจรจาเมื่อตัวละครรับสารไฟแทนเขา ▲",
     "opens": "เขาเตือนทัน เตือนไม่ทัน หรือตัวละครรับสาร",
     "src": "docs/systems/combat/03-enemies.md:221"
@@ -5680,6 +6435,17 @@
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ไม่ทำร้ายผู้ที่ไม่แตะราก"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครไม่แตะรากและฟังเสียงมังกรกับเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "พันตัวกับรากซิลเวรา · รากหนุน +2 · เจรจาเมื่อตัวละครไม่แตะรากและฟังเสียงมังกรกับเขา ▲",
     "opens": "เขาตายพร้อมซิลเวรา ถูกมังกรบอกให้ปล่อยราก หรือตัวละครได้ฟังเสียงมังกร",
     "src": "docs/systems/combat/03-enemies.md:222"
@@ -5702,14 +6468,23 @@
     "countries": [
      "NB-12"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "หมอกทึบที่ตามเขามา",
-      "name": "หมอกทึบที่ตามเขามา",
+      "text": "หมอกทึบที่ตามเขามา",
+      "mark": "▲"
+     },
+     {
+      "text": "แสงโคม"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครบอกชื่อผู้ลงนามภารกิจ",
       "mark": "▲"
      }
     ],
-    "resist": [],
     "note": "เปลี่ยนไปจากหมอก · จำภารกิจเมฆาได้ครึ่งเดียว · เจรจาเมื่อตัวละครบอกชื่อผู้ลงนามภารกิจ ▲",
     "opens": "เขาถูกพบว่าเสียชีวิต อยู่ในหมอกและเปลี่ยนไป หรือตัวละครค้นพบความจริง",
     "src": "docs/systems/combat/03-enemies.md:223"
@@ -5732,14 +6507,20 @@
     "countries": [
      "NB-12"
     ],
-    "weak": [
+    "weak": [],
+    "resist": [],
+    "weakText": [
      {
-      "tag": "ความผิดของตัวเอง",
-      "name": "ความผิดของตัวเอง",
+      "text": "ความผิดของตัวเอง",
       "mark": "▲"
      }
     ],
-    "resist": [],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครบอกว่าสามวันนั้นไม่ใช่ความผิดเขา",
+      "mark": "▲"
+     }
+    ],
     "note": "ทหารมิสต์วอตช์หนุน +1 · ไม่ให้อภัยตัวเอง · เจรจาเมื่อตัวละครบอกว่าสามวันนั้นไม่ใช่ความผิดเขา ▲",
     "opens": "เขาขอบคุณตัวละคร ลาออก หรือกลับเป็นผู้บังคับของตัวละคร",
     "src": "docs/systems/combat/03-enemies.md:224"
@@ -5767,14 +6548,21 @@
       "tag": "light",
       "name": "แสง",
       "mark": "★"
-     },
-     {
-      "tag": "ผู้ฟังที่ไม่ขัดจังหวะ",
-      "name": "ผู้ฟังที่ไม่ขัดจังหวะ",
-      "mark": "▲"
      }
     ],
     "resist": [],
+    "weakText": [
+     {
+      "text": "ผู้ฟังที่ไม่ขัดจังหวะ",
+      "mark": "▲"
+     }
+    ],
+    "negotiate": [
+     {
+      "text": "เจรจาเมื่อตัวละครฟังเรื่องกุญแจความทรงจำเมฆาจนจบ",
+      "mark": "▲"
+     }
+    ],
     "note": "กายภาพทนครึ่ง · จำเมืองปฐมก่อนจม · เจรจาเมื่อตัวละครฟังเรื่องกุญแจความทรงจำเมฆาจนจบ ▲",
     "opens": "เธอเล่าความจริงเรื่องกุญแจ หายไปเมื่อเมืองปฐมโผล่ หรือตัวละครได้ฟัง",
     "src": "docs/systems/combat/03-enemies.md:225"
@@ -5804,6 +6592,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "event": "GI-02",
     "note": "ไม่ได้ฆ่า แต่ทำให้หลับต่อได้ (ดนตรี ★ ถ้าเป็นเพลงกล่อมของ SH-06)",
     "src": "docs/systems/combat/03-enemies.md:231"
@@ -5828,6 +6618,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "event": "DM-07",
     "note": "ปิดประตูได้ด้วยรูนหรือพิธี",
     "src": "docs/systems/combat/03-enemies.md:232"
@@ -5857,6 +6649,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "event": "DM-09",
     "note": "ผูกประตูเมืองปฐม",
     "src": "docs/systems/combat/03-enemies.md:233"
@@ -5886,6 +6680,13 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [
+     {
+      "text": "เจรจาได้",
+      "mark": "▲"
+     }
+    ],
     "event": "FG-12",
     "note": "เจรจาได้ ▲ เปิดเส้นปิดรอยแยก FG-10",
     "src": "docs/systems/combat/03-enemies.md:234"
@@ -5906,10 +6707,13 @@
      {
       "tag": "rune",
       "name": "รูน",
-      "mark": "★"
+      "mark": "★",
+      "note": "รหัสปฐม"
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "event": "MC-12 END-06",
     "note": "ไม่ฆ่า ตัดสินว่าจะปิดหรือให้เลือกทาง",
     "src": "docs/systems/combat/03-enemies.md:235"
@@ -5934,6 +6738,8 @@
      }
     ],
     "resist": [],
+    "weakText": [],
+    "negotiate": [],
     "event": "PL-04 END-04",
     "note": "สัตว์ของธาลาสซา ไม่ใช่มังกรสิบห้า · ฟัน `wl_leviathan` ได้เฉพาะหลัง END-04",
     "src": "docs/systems/combat/03-enemies.md:236"

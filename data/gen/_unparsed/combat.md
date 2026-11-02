@@ -4,4 +4,4 @@
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
-| docs/systems/combat/07-npc-clashes.md:859 | เส้น ค) บังคับเกิด ตัวละครได้เรียนดาบ (`sword_*` +1 ระดับ ไม่เกินระดับ 3) ไว้ใจ +2 | clash outcome |
+| docs/systems/combat/07-npc-clashes.md:859 | ตัวละครได้เรียนดาบ (`sword_*` +1 ระดับ ไม่เกินระดับ 3) ไว้ใจ +2 | clash outcome |

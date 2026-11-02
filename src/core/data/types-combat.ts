@@ -19,8 +19,24 @@ export interface Stance {
 }
 
 export interface Reaction {
+  /** An attack tag of the weakness matrix (`fire` `holy`) · `physical` for all physical tags · `sun` · `#truth` style tags. */
   tag: string;
   name: string;
+  mark: Mark;
+  /** A parenthesis the table puts after the symbol: `รูน ★ (รหัสปฐม)`. */
+  note?: string;
+}
+
+/** A weakness the table writes as a sentence (`ทองสาปทำให้เขาลังเล ▲`): not an attack tag, so the roll cannot use it; the story does. */
+export interface WeakText {
+  text: string;
+  /** ▲ weak · ★ very weak when the condition in the sentence holds; none when the table gives no symbol. */
+  mark?: Mark;
+}
+
+/** A way to talk the enemy down (`เจรจาเมื่อตัวละครสัญญาไม่ใช้สมอสาป ▲`) with its symbol. */
+export interface Negotiate {
+  text: string;
   mark: Mark;
 }
 
@@ -115,8 +131,14 @@ export interface Enemy {
   where: string;
   continents: string[];
   countries: string[];
+  /** Attack tags that hurt it (★ ▲). Only tags of the weakness matrix; sentences are in `weakText` and `negotiate`. */
   weak: Reaction[];
+  /** Attack tags it resists (▼ ✕), also those the table lists in the notes column (`ไฟ ✕`). */
   resist: Reaction[];
+  /** Story weaknesses written as sentences. */
+  weakText: WeakText[];
+  /** Ways to negotiate that carry a symbol. */
+  negotiate: Negotiate[];
   attack?: string;
   stances?: string[];
   negotiable?: string;
@@ -131,12 +153,23 @@ export interface EnemiesData {
   items: Enemy[];
 }
 
+/** `npcPath` with what the contract leaves out: how `n` is read, and "happens by default" (`เกิดโดยปริยาย` `สำเร็จโดยปริยาย`). Proposed for types.ts. */
+export type ClashPathEffect = Extract<Effect, { k: 'npcPath' }> & {
+  /** weight: `add` is +10 · −5 points, `mul` is ×2 · ×0.5; delay: `year` is the length of the delay in years (a season is 0.25). */
+  unit?: 'add' | 'mul' | 'year';
+  how?: 'default';
+};
+/** `น้ำหนัก ×2` on a world event: `eventWeight` with a multiplier instead of points (`delta` is 0). Proposed for types.ts. */
+export type ClashEventWeight = Extract<Effect, { k: 'eventWeight' }> & { mul?: number };
+export type ClashEffect = Effect | ClashPathEffect | ClashEventWeight;
+
 export interface ClashOutcome {
   outcome: string;
   /** Standard kinds of combat/02 §3: win_kill win_spare talk draw lose flee, when the row names one. */
   kind: string;
   text: string;
-  effects: Effect[];
+  /** Results on the NPC's own lines are `npcPath` (the clash's NPC is the owner); denied effects ("ไม่ทอยบาดแผลถาวร") are not listed. */
+  effects: ClashEffect[];
   src: string;
 }
 
