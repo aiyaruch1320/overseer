@@ -452,6 +452,13 @@ describe('H8: synergy chances stay with the thing granted', () => {
     expect(rule('SR-44').effects).toEqual([]);
     expect(rule('SR-44').mul).toBe(2);
   });
+  it('a percent that has a chance beside it is not read as a favour, and the aptitude rules carry their +1', () => {
+    expect(rule('SR-45').effects).toEqual([
+      { k: 'favour', kind: 'tag', id: 'polyglot' },
+      { k: 'favour', kind: 'tag', id: 'copycat' },
+    ]);
+    for (const id of ['SR-50', 'SR-51', 'SR-52', 'SR-56']) expect(rule(id).effects, id).toEqual([{ k: 'stat', stat: 'aptMain', delta: 1 }]);
+  });
   it('the values that matched the docs still match', () => {
     expect(rule('SR-01').mul).toBe(1.5);
     expect(rule('SR-07').mul).toBe(2);

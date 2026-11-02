@@ -341,7 +341,7 @@ function fixGrants(text: string, parsed: Effect[], at: { file: string; line: num
       const after = cl.slice((m.index ?? 0) + m[0].length);
       if (/(?:ลบ|เสีย)\s*$/.test(before)) here.push({ k: 'remove', kind, id: cid });
       else if (/^\s*[^\d%`#]{0,24}ผลเป็น/.test(after)) continue;
-      else if (FAVOUR_WORDS.test(cl)) {
+      else if (FAVOUR_WORDS.test(cl) || (!pctIn.length && /เร็วขึ้น/.test(cl))) {
         const mm = after.match(/([\d.]+)\s*เท่า/) ?? cl.match(/([\d.]+)\s*เท่า/);
         here.push({ k: 'favour', kind, id: cid, ...(mm ? { mul: Number(mm[1]) } : {}) });
       } else {
@@ -962,7 +962,8 @@ function buildRaces(): RacesFile {
 /** The shared parser reads Thai words before a number as a stat (`ระดับ 1 ถึง 3` `เพิ่ม +1`); only ASCII stat keys are stats. */
 function synergyJunk(text: string, effects: Effect[]): Effect[] {
   const out = effects.filter((e) => !((e.k === 'stat' || e.k === 'range') && !/^[A-Za-z][A-Za-z.]*$/.test(e.stat)));
-  const m = text.match(/เพิ่ม\s*\+(\d+)\s*ของสถานะหลัก/);
+  // the aptitude rules (SR-50..56) open with the +1 on the main stat of the aptitude: "เพิ่ม +1 ของสถานะหลัก" "เช่นเดียวกัน +1" "+1 และ ..."
+  const m = text.match(/เพิ่ม\s*\+(\d+)\s*ของสถานะหลัก/) ?? text.match(/^(?:เช่นเดียวกัน\s*)?\+(\d+)(?:\s|$)/);
   if (m) out.push({ k: 'stat', stat: 'aptMain', delta: Number(m[1]) });
   return out;
 }

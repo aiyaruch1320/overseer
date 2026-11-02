@@ -5791,12 +5791,12 @@
     "why": "",
     "effects": [
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
       "id": "polyglot"
      },
      {
-      "k": "grant",
+      "k": "favour",
       "kind": "tag",
       "id": "copycat"
      }
@@ -5877,7 +5877,13 @@
     "cond": "ความถนัดเวทมืด (dark) กับดาร์กเอลฟ์ แวมไพร์",
     "effect": "เช่นเดียวกัน +1",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5894,7 +5900,13 @@
     "cond": "ความถนัด ตีเหล็ก (smithing) กับคนแคระ เผ่าลาวา ยักษ์",
     "effect": "+1 และสร้างอาวุธระดับ R ขึ้นไปได้เร็วกว่า 1 ระดับความสำเร็จ",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5911,7 +5923,13 @@
     "cond": "ความถนัดเดินเรือ (sailing) กับเงือก นาคา มนุษย์เรือ",
     "effect": "+1 และเดินเรือในน้ำลึกได้",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5928,7 +5946,13 @@
     "cond": "ความถนัดฝึกสัตว์ (taming) กับเผ่าสัตว์ ออร์ค",
     "effect": "+1 สัตว์ที่ฝึกไม่หนีเมื่อเจ้านายตาย",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5945,7 +5969,13 @@
     "cond": "ความถนัดอักษรรูน (rune) กับคนแคระ ลูกผสมจักรกล มัมมี่",
     "effect": "+1 และอ่านรูนปฐมที่ถอดรหัสแล้วได้",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
@@ -5962,7 +5992,13 @@
     "cond": "ความถนัดค้าขาย (trade) กับฮาล์ฟลิง แวมไพร์",
     "effect": "+1 และธนาคารเลือดหรือเรือสินค้าเป็นช่องทางเสริมของ skill",
     "why": "",
-    "effects": [],
+    "effects": [
+     {
+      "k": "stat",
+      "stat": "aptMain",
+      "delta": 1
+     }
+    ],
     "refs": {
      "events": [],
      "countries": [],
