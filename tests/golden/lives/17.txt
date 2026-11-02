@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 17 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,160 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -109,6 +109,6 @@
 
 -- สรุป --
 โบโดรีน ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,243 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 46 · character 11 · npc 42 · story 64 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 46 · character 11 · npc 42 · story 64 · text 4 · attention 17 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:ความถนัดสายงานบ้าน cond:stat:travel.countries effect:stat:B cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×19 story/jobpath ×1 story/llm ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×11 npc/npc ×19 attention/glow ×4 story/jobpath ×1 attention/missed ×2 story/llm ×1

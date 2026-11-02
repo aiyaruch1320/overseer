@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 10 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 12,110 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -106,6 +106,6 @@
 
 -- สรุป --
 ธรรา ตายเมื่ออายุ 75 (ชราภาพ) ศ.ม. 12,175 · 300 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 114 · character 5 · npc 37 · story 69 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 114 · character 5 · npc 37 · story 69 · text 4 · attention 15 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B effect:stat: cond:stat:รายได้ cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×16
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×11 attention/glow ×2 npc/npc ×16 attention/missed ×2

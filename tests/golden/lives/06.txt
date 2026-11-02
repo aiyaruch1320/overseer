@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 6 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,590 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -112,6 +112,6 @@
 
 -- สรุป --
 ไอรอนซันรัก ตายเมื่ออายุ 74 (อุบัติเหตุ) ศ.ม. 10,754 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 17 · character 5 · story 67 · text 4 · npc 47 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 17 · character 5 · story 67 · text 4 · npc 47 · attention 15 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B cond:bond cond:stat:country.W
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×19
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×19 attention/call ×11 attention/glow ×4

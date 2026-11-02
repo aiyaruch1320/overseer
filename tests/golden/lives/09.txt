@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 9 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,570 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -77,6 +77,6 @@
 
 -- สรุป --
 ลูเบิร์ต ตายเมื่ออายุ 75 (ชราภาพ) ศ.ม. 10,639 · 300 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 12 · character 5 · npc 26 · story 28 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 12 · character 5 · npc 26 · story 28 · text 4 · attention 14 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:รายได้
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×8 story/jobpath ×1 story/llm ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×8 attention/glow ×3 npc/npc ×8 attention/missed ×3 story/jobpath ×1 story/llm ×1

@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 20 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,360 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -85,6 +85,6 @@
 
 -- สรุป --
 ไอวีนา ตายเมื่ออายุ 74 (อุบัติเหตุ) ศ.ม. 11,556 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 72 · character 7 · text 4 · npc 23 · story 46 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 72 · character 7 · text 4 · npc 23 · story 46 · attention 19 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×8
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×8 attention/call ×11 attention/glow ×2 attention/missed ×6

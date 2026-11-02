@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 5 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,280 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -121,6 +121,6 @@
 
 -- สรุป --
 ดอร์ซันดา ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,499 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 74 · character 6 · text 4 · npc 60 · story 52 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 74 · character 6 · text 4 · npc 60 · story 52 · attention 19 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:level effect:stat:B effect:stat:ชื่อเสียงช่างในตระกูล
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×33 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×14 npc/npc ×33 attention/glow ×2 attention/missed ×3 story/jobpath ×1

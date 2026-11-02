@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 3 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,450 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -84,6 +84,6 @@
 
 -- สรุป --
 โธกริม ตายเมื่ออายุ 74 (อุบัติเหตุ) ศ.ม. 10,668 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 14 · character 6 · npc 27 · story 40 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 14 · character 6 · npc 27 · story 40 · text 4 · attention 14 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:level effect:stat:ใบเชิญจากยักษ์ท่าที effect:stat:B
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×13
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×13 attention/call ×13 attention/glow ×1

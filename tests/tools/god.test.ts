@@ -201,6 +201,9 @@ describe('the call of the game', () => {
 
   it('without the attention system the old rule holds: an entry of level 3', () => {
     const s = fresh(5);
+    // take the attention system out to see the rule that holds without it
+    const at = s.game.systems.findIndex((x) => x.name === 'attention');
+    if (at >= 0) s.game.systems.splice(at, 1);
     s.game.systems.push({ name: 'noise', beat: (ctx) => void (ctx.state.life!.hAge === 1 && !ctx.state.log.some((e) => e.kind === 'x') && write(ctx.state, { sys: 'story', kind: 'x', level: 3, data: {} })) });
     const r = runToCall(s.game);
     expect(r.stoppedBy).toBe('call');

@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 19 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,810 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -98,6 +98,6 @@
 
 -- สรุป --
 ซานาซิล ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 12,101 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 123 · character 3 · text 4 · story 35 · npc 34 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 123 · character 3 · text 4 · story 35 · npc 34 · attention 28 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat: effect:stat:B cond:stat:รายได้ cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×15 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×15 attention/call ×20 attention/glow ×3 attention/missed ×5 story/jobpath ×1

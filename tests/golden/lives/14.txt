@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 14 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,270 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -102,6 +102,6 @@
 
 -- สรุป --
 โรริก ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,356 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 58 · character 10 · text 4 · story 54 · npc 39 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 58 · character 10 · text 4 · story 54 · attention 16 · npc 39 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×20 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×12 npc/npc ×20 attention/glow ×2 attention/missed ×2 story/jobpath ×1

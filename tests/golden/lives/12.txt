@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 12 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,700 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -111,6 +111,6 @@
 
 -- สรุป --
 เมอรินริก ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 10,809 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 20 · character 6 · text 4 · npc 45 · story 44 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 20 · character 6 · text 4 · npc 45 · story 44 · attention 13 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:ลูกกระจ๊อก cond:stat:capital effect:stat:ผลตอบแทน effect:stat:B cond:bond effect:stat:ความหิวมอร์เฮเวน cond:stat:ได้กำไร
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×19
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×10 npc/npc ×19 attention/glow ×2 attention/missed ×1

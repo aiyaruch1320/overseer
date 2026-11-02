@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 18 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,300 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -80,6 +80,6 @@
 
 -- สรุป --
 เซโลเบิร์ต ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,391 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 56 · character 4 · text 4 · story 60 · npc 29 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 56 · character 4 · text 4 · story 60 · attention 12 · npc 29 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:travel.countries effect:stat:B cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×14 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×9 attention/glow ×2 npc/npc ×14 story/jobpath ×1 attention/missed ×1

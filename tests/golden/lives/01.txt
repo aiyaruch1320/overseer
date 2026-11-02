@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 1 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,450 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -91,6 +91,6 @@
 
 -- สรุป --
 มัลฮาร์ด ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,562 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 77 · character 8 · npc 29 · story 66 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 77 · character 8 · npc 29 · story 66 · text 4 · attention 15 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:ค่าสถานะ effect:stat:แค้นชั้นล่าง effect:stat:ชื่อเสียงหุ่น effect:stat:กุญแจที่รวมได้ effect:stat:โบนัสหลบ effect:stat:B cond:stat:capital effect:stat:ผลตอบแทน cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×12 story/jobpath ×1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×14 npc/npc ×12 attention/glow ×1 story/jobpath ×1

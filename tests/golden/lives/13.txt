@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 13 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,380 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -94,6 +94,6 @@
 
 -- สรุป --
 ฮุกมอร์ ตายเมื่ออายุ 74 (ตายในศึก) ศ.ม. 11,428 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 60 · character 8 · story 32 · text 4 · npc 32 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 60 · character 8 · story 32 · attention 14 · text 4 · npc 32 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:hunger:MH cond:stat:hunger effect:stat:ความหิวมอร์เฮเวน cond:stat:รายได้
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×12
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×12 npc/npc ×12 attention/glow ×1 attention/missed ×1

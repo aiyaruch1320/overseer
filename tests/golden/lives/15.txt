@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 15 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,680 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -97,6 +97,6 @@
 
 -- สรุป --
 บรอดุสธา ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,740 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 68 · character 5 · story 52 · text 4 · npc 41 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 68 · character 5 · story 52 · attention 12 · text 4 · npc 41 · game 1
 กติกาที่ยังไม่มีใครรับ: cond:stat:hunger:MH effect:stat:B cond:stat:travel.countries effect:stat: cond:stat:hunger cond:stat:รายได้
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×17
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×10 attention/glow ×1 npc/npc ×17 attention/missed ×1

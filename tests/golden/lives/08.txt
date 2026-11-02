@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 8 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,410 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -116,6 +116,6 @@
 
 -- สรุป --
 ฮัลคาซ ตายเมื่ออายุ 74 (อุบัติเหตุ) ศ.ม. 10,638 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 16 · character 3 · text 4 · npc 72 · story 55 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 16 · character 3 · text 4 · npc 72 · story 55 · attention 14 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B cond:stat:level cond:bond
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×39
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×39 attention/call ×9 attention/glow ×2 attention/missed ×3

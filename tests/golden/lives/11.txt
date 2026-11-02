@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 11 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 11,870 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -111,6 +111,6 @@
 
 -- สรุป --
 ธีเวนมอน ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 11,958 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 99 · character 9 · text 4 · npc 41 · story 74 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 99 · character 9 · text 4 · npc 41 · story 74 · attention 15 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:B cond:stat:travel.countries cond:stat:capital effect:stat:ผลตอบแทน cond:bond cond:stat:สินทรัพย์เสี่ยง cond:stat:country.W
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×17 story/jobpath ×2
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×11 attention/glow ×3 npc/npc ×17 story/jobpath ×2 attention/missed ×1

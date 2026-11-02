@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 16 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,430 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -81,6 +81,6 @@
 
 -- สรุป --
 เซตันลาน ตายเมื่ออายุ 62 (โรคภัย) ศ.ม. 10,492 · 248 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 6 · character 3 · npc 26 · story 56 · text 4 · game 1
+บันทึกระดับ 1 ขึ้นไป: world 6 · character 3 · npc 26 · story 56 · text 4 · attention 9 · game 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:ความถนัดสายงานบ้าน effect:stat:B effect:stat:ฝีมือของงานนั้น
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×10
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×8 npc/npc ×10 attention/glow ×1

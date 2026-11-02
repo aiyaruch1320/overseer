@@ -1,5 +1,5 @@
 == ชีวิตหนึ่ง · เมล็ด 4 ==
-ระบบที่ทำงาน: world character npc story text
+ระบบที่ทำงาน: world character npc story text attention
 โลกเดินมาถึง ศ.ม. 10,460 แล้วตัวละครเกิด
 
 -- บันทึก --
@@ -77,5 +77,5 @@
 
 -- สรุป --
 ธอร์คาซ ตายเมื่ออายุ 74 (ชราภาพ) ศ.ม. 10,600 · 296 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 15 · character 4 · text 4 · story 16 · npc 42 · game 1
-บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): npc/npc ×21
+บันทึกระดับ 1 ขึ้นไป: world 15 · character 4 · text 4 · story 16 · attention 17 · npc 42 · game 1
+บันทึกที่ยังไม่มีข้อความ (ไม่แสดงต่อผู้เล่น): attention/call ×11 npc/npc ×21 attention/missed ×5 attention/glow ×1
