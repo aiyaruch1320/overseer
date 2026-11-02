@@ -28,7 +28,7 @@ function usable(ctx: Ctx, f: RawFact): boolean {
 }
 
 /** The sentences of the kind that hold for the fact: the ones whose "ใช้เมื่อ" holds, and for a strict fact only the ones that ask for a condition. */
-function templatesFor(ctx: Ctx, f: RawFact): Template[] {
+export function templatesFor(ctx: Ctx, f: RawFact): Template[] {
   const words = flagWords(f.flags);
   return family(ctx, 'life_fact').filter((t) => t.keys['ชนิด'] === f.kind && whenHolds(t, words) && (!f.strict || !!t.when));
 }
@@ -258,7 +258,8 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const fame = num((life.ext.character as { fame?: number } | undefined)?.fame);
   const classUp = log.some((e) => e.sys === 'character' && e.kind === 'class' && num(/\d/.exec(String(e.data.to))?.[0]) > num(/\d/.exec(String(e.data.from))?.[0]));
   const mark = markOf(passedCv, bigEvents, fame, classUp);
-  const generation = st.lineage.lives.length + 1;
+  // a newcomer in the old world is not a generation of the family (0 = none; 05 §4)
+  const generation = x.recs.find((r) => r.id === life.id)?.origin === 'newcomer' ? 0 : st.lineage.lives.length + 1;
   const passed = threads.map((t) => t.text);
 
   // the vow and its page (07 §7), the people and the traces (03 §1)
@@ -333,7 +334,7 @@ const baseOfMoment = (kind: string): number | undefined => FACT_KINDS[kind]?.bas
  * family), the same stage of life twice costs 3 (the age of a fact with no age is unknown, so it has no stage). Two facts about one person or one event are one thing. The fact
  * of the question comes last: the card holds the question line already. Ordered by age at the end.
  */
-function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, lifeId: string): Moment[] {
+export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, lifeId: string): Moment[] {
   const pool: { f: RawFact; s: number }[] = [];
   for (const f of all) {
     const base = baseOfMoment(f.kind);

@@ -3,7 +3,7 @@
 // when the world reaches an ending scene; the lineage shows it at any time (the same fields), with `ended` null while the world goes on.
 import { makeCtx, type GameData } from '../game';
 import { collectionView } from '../ending/collection';
-import { lx } from './state';
+import { familyLives, lx } from './state';
 import { knownName } from '../text/labels';
 import { calendarYear, placeName, raceName } from '../text/pick';
 import { family } from '../ending/words';
@@ -113,7 +113,8 @@ export function worldSummary(state: GameState, data: GameData): WorldSummary {
     hand: { total: handTotal, byKind, byLife },
     family: {
       dynasty: x.dynasty,
-      generations: state.lineage.lives.length + (state.life && !state.life.dead ? 1 : 0),
+      // the family only: a newcomer in the old world is not a generation of it (05 §4); a family that ended counts to its last
+      generations: x.extinct?.generation ?? familyLives(state),
       threads: { open: x.threads.filter((t) => t.state === 'open').length, closed: x.threads.filter((t) => t.state === 'closed').length, legend: x.threads.filter((t) => t.state === 'legend').length, faded: x.threads.filter((t) => t.state === 'faded').length },
       extinct: !!x.extinct,
       gaps: x.gaps.reduce((n, g) => n + g.years, 0),
