@@ -9,7 +9,7 @@ import { HAND_WORD } from '../ending/tuning';
 
 const HOW_WORD: Record<string, string> = { child: 'ลูกของตน', adopted: 'ลูกบุญธรรม', student: 'ศิษย์', partner: 'คู่ที่ยังอยู่', helped: 'ผู้ที่ตนเคยช่วย', newcomer: 'คนใหม่ในโลกเดิม' };
 const ORIGIN_WORD: Record<string, string> = { first: 'ชีวิตแรกของโลก', heir: 'ทายาท', successor: 'ผู้สืบเรื่อง', newcomer: 'คนใหม่ในโลกเดิม' };
-const CATEGORY_WORD: Record<string, string> = { node: 'เส้นเรื่อง', convergence: 'จุดบรรจบ', job: 'อาชีพลับ', companion: 'สัตว์คู่หู', talisman: 'เครื่องราง', legend: 'อาวุธตำนาน', event: 'เหตุการณ์ใหญ่', ending: 'ปลายทาง', mode: 'แบบเริ่มต้น' };
+const CATEGORY_WORD: Record<string, string> = { node: 'เส้นเรื่อง', convergence: 'จุดบรรจบ', job: 'อาชีพลับ', companion: 'สัตว์คู่หู', talisman: 'เครื่องราง', legend: 'อาวุธตำนาน', event: 'เหตุการณ์ใหญ่', ending: 'ปลายทาง', mode: 'แบบเริ่มต้น', vow: 'คำปฏิญาณที่สำเร็จ', title: 'ฉายาชีวิต', godtitle: 'ฉายาของพระเจ้า', miracle: 'ปาฏิหาริย์ในรายการ', conjure: 'ปาฏิหาริย์ที่เสก', reaction: 'ปฏิกิริยาของการเสก' };
 
 // ---------- the log entries of the ending and the lineage (the reader of the text system calls these) ----------
 
@@ -39,9 +39,12 @@ export function cardLines(card: EndingCard): string[] {
   for (const l of card.lines) out.push(`│ ${l}`);
   out.push('╰──');
   out.push('บทสรุปชีวิต:', `  ${card.summary.text}`);
+  if (card.vow) out.push(card.vow.head, ...card.vow.lines.map((l) => `  ${l}`));
+  if (card.people.length) out.push('ผู้คน:', ...card.people.map((l) => `  ${l}`));
+  if (card.traces.length) out.push('ร่องรอยที่ทิ้งไว้:', ...card.traces.map((l) => `  ${l}`));
   if (card.hand.total) {
     const kinds = Object.entries(card.hand.byKind).map(([k, n]) => `${HAND_WORD[k] ?? k} ${n}`).join(' · ');
-    out.push(`มือของพระเจ้า: ${card.hand.total} ครั้ง (${kinds})${card.hand.top ? ` · ครั้งที่เปลี่ยนชีวิตมากที่สุด: ${HAND_WORD[card.hand.top.kind] ?? card.hand.top.kind}${card.hand.top.age !== undefined ? ` เมื่ออายุ ${card.hand.top.age}` : ''}` : ''}`);
+    out.push(`มือของพระเจ้า: ${card.hand.total} ครั้ง (${kinds})${card.hand.top ? ` · ครั้งที่เปลี่ยนชีวิตมากที่สุด: ${card.hand.top.name ? `เสก${card.hand.top.name}` : HAND_WORD[card.hand.top.kind] ?? card.hand.top.kind}${card.hand.top.age !== undefined ? ` เมื่ออายุ ${card.hand.top.age}` : ''}` : ''}`);
   } else out.push(`มือของพระเจ้า: ไม่ได้แทรกแซง${card.hand.silent ? ` · คำอธิษฐานที่เงียบไป ${card.hand.silent}` : ''}`);
   out.push(`ผลต่อโลก: ${card.mark.label}`);
   if (card.earned.length) {
@@ -77,7 +80,7 @@ export function collectionLines(v: CollectionView): string[] {
   const out = [`== ของสะสม ${v.have}/${v.total} ==`];
   for (const c of v.categories) {
     const names = c.found.slice(0, 6).map((f) => f.name || '?').join(' · ');
-    out.push(`  ${c.name}: ${c.have}/${c.total}${names ? ` — ${names}${c.found.length > 6 ? ` และอีก ${c.found.length - 6}` : ''}` : ''}`);
+    out.push(`  ${c.name}: ${c.unlimited ? `${c.have} ชื่อ` : `${c.have}/${c.total}`}${names ? ` — ${names}${c.found.length > 6 ? ` และอีก ${c.found.length - 6}` : ''}` : ''}`);
   }
   out.push(`แบบเริ่มต้น: ${v.modes.map((m) => (m.open ? `${m.name}${m.used ? ' ✓' : ''}` : '▒▒▒')).join(' · ')}`);
   return out;

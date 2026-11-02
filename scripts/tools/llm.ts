@@ -74,6 +74,10 @@ export function summaryInputOf(data: GameData, state: GameState, lifeId?: string
     ending: input.ending ?? '',
     facts,
     names: input.names,
+    // the vow with its result and its page, the titles of the life, and the names of the others of this world that the text may not take (the check refuses them)
+    ...(input.vow ? { vow: `${input.vow.result === 'kept' ? 'คำปฏิญาณที่เป็นจริง' : 'คำปฏิญาณที่ไม่เป็นจริง'} · ${input.vow.name}: ${input.vow.lines.join(' ')}` } : {}),
+    ...(input.titles.length ? { titles: input.titles } : {}),
+    ...(input.others.length ? { others: input.others } : {}),
     // the template tier's summary: what the card holds if no answer comes. When the card already holds an LLM text, the template is the one it replaced and is not known here
     template: card.summary.text,
   };

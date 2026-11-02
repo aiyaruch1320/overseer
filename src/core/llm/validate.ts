@@ -68,3 +68,112 @@ export function parseObject(text: string): Checked<Record<string, unknown>> {
   }
   return { ok: false, reason: 'not a JSON object' };
 }
+
+// ---------- the facts of a retelling: numbers and names (review M4 G5) ----------
+
+const THAI_DIGIT = '๐๑๒๓๔๕๖๗๘๙';
+const NUMBER = /[0-9๐-๙][0-9๐-๙,]*(?:\.[0-9๐-๙]+)?/g;
+
+/** A number as the game writes it: Thai digits to Arabic, no thousands comma (`10,450` and `10450` are one year). */
+function plainNumber(raw: string): string {
+  return raw
+    .replace(/[๐-๙]/g, (d) => String(THAI_DIGIT.indexOf(d)))
+    .replace(/,/g, '')
+    .replace(/\.$/, '');
+}
+
+/** Every number written with digits in the text, normalised. */
+export function numbersIn(text: string): string[] {
+  return (text.match(NUMBER) ?? []).map(plainNumber);
+}
+
+const WORD_DIGIT: Record<string, number> = { หนึ่ง: 1, เอ็ด: 1, สอง: 2, ยี่: 2, สาม: 3, สี่: 4, ห้า: 5, หก: 6, เจ็ด: 7, แปด: 8, เก้า: 9 };
+const WORD_UNIT: Record<string, number> = { สิบ: 10, ร้อย: 100, พัน: 1000 };
+const NUMBER_WORDS = /(?:หนึ่ง|เอ็ด|สอง|ยี่|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ร้อย|พัน)+/g;
+const WORD_KEYS = [...Object.keys(WORD_DIGIT), ...Object.keys(WORD_UNIT)];
+
+/** The value of a number written in Thai words (`ยี่สิบห้า` 25, `สามสิบ` 30, `สิบเอ็ด` 11); undefined when the words do not make one. */
+export function wordValue(words: string): number | undefined {
+  let total = 0;
+  let cur = 0;
+  let rest = words;
+  while (rest) {
+    const w = WORD_KEYS.find((k) => rest.startsWith(k));
+    if (!w) return undefined;
+    rest = rest.slice(w.length);
+    if (w in WORD_DIGIT) cur = WORD_DIGIT[w];
+    else {
+      total += (cur || 1) * WORD_UNIT[w];
+      cur = 0;
+    }
+  }
+  return total + cur;
+}
+
+/** The numbers the text says in words where they count years of life (`อายุสามสิบ` `ห้าสิบปี`): an age told without digits is a number too. */
+export function wordNumbersIn(text: string): number[] {
+  const out: number[] = [];
+  for (const m of text.matchAll(NUMBER_WORDS)) {
+    const after = text.slice((m.index ?? 0) + m[0].length);
+    const before = text.slice(0, m.index ?? 0);
+    // only where the words count years of life: right after "อายุ", or right before "ปี" (not `หนึ่งในสี่` or `สองฝั่ง`)
+    if (!/^\s*ปี/.test(after) && !/อายุ\s*$/.test(before)) continue;
+    const v = wordValue(m[0]);
+    if (v !== undefined) out.push(v);
+  }
+  return out;
+}
+
+export interface FactRules {
+  /** Everything the game gave as text (the facts, the name, the ending, the vow ...): the numbers in it are the numbers the retelling may say. */
+  given: string[];
+  /** Numbers the game gave beside the text (the age at death). */
+  numbers?: number[];
+  /** Names the retelling may use. */
+  names: string[];
+  /** Names of other people of the world that it may not use. */
+  others?: string[];
+  /** The game gave a vow / a title or an ending: a retelling that speaks of one when the game gave none is wrong. */
+  hasVow: boolean;
+  hasTitle: boolean;
+}
+
+/** Longest names first, so a short name inside a long one does not cut it. */
+const byLength = (list: string[]): string[] => [...new Set(list.filter(Boolean))].sort((a, b) => b.length - a.length);
+
+const MARK = '\u0001';
+
+/** The text with the allowed names hidden, to look for the names that are left. */
+function maskNames(text: string, names: string[]): string {
+  let t = text;
+  for (const n of byLength(names)) t = t.split(n).join(MARK);
+  return t;
+}
+
+/** Words that follow `ชื่อ` without being a name (`ชื่อเสียง` fame, `ชื่อนี้` this name ...). */
+const NOT_A_NAME = /^(?:เสียง|นี้|นั้น|สกุล|เดิม|ตน|ของ|ตระกูล)/;
+
+/**
+ * The check of a retelling against the facts of the game: every number it says is a number the game gave (a year, an age, a count; in digits or in Thai words), and every name
+ * is a name the game gave. Thai has no capital letters, so a name that the game did not give is found by what can be known: a name of another person of the world (`others`),
+ * and the name after `ชื่อ` ("named"). A name invented with no such mark cannot be found by a rule and is the work of the prompt (llm/04-story.md §2); this check catches the
+ * ones that can be found, and the text goes back to tier 0 when it does.
+ */
+export function checkFacts(text: string, r: FactRules): Checked<string> {
+  const allowed = new Set<string>([...r.given.flatMap(numbersIn), ...r.given.flatMap(wordNumbersIn).map(String), ...(r.numbers ?? []).map(String)]);
+  for (const n of numbersIn(text)) if (!allowed.has(n)) return { ok: false, reason: `a number the facts do not carry (${n})` };
+  for (const v of wordNumbersIn(text)) if (!allowed.has(String(v))) return { ok: false, reason: `a number the facts do not carry (${v})` };
+  const masked = maskNames(text, r.names);
+  for (const o of byLength(r.others ?? [])) {
+    if (o.length < 2 || r.names.some((n) => n.includes(o) || o.includes(n))) continue;
+    if (masked.includes(o)) return { ok: false, reason: `a name that is not this life's (${o})` };
+  }
+  for (const m of masked.matchAll(/ชื่อ(?:ว่า)?\s*([฀-๿]+)/g)) {
+    const after = m[1];
+    if (after.startsWith(MARK) || NOT_A_NAME.test(after)) continue;
+    return { ok: false, reason: `a name the game did not give (${after.slice(0, 12)})` };
+  }
+  if (!r.hasVow && /คำปฏิญาณ/.test(text)) return { ok: false, reason: 'a vow the game did not give' };
+  if (!r.hasTitle && /ฉายา/.test(text)) return { ok: false, reason: 'a title the game did not give' };
+  return { ok: true, value: text };
+}
