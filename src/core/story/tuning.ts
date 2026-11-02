@@ -177,6 +177,12 @@ export const LAST_YEAR_EXTRA = 1;
 /** A node that waits for a free year may slip this many years past the end of its table age (assumption; the age window of the table is a target). */
 export const SLIP_YEARS = 5;
 
+/**
+ * An overlay line that waited for a free place (one journey at a time) plays a node this many years past the end of its table age at most; later the node is
+ * lost (assumption; without it a mercenary signs his first contract at 59 and his veteran's last stand follows in the same year, M3 wiring).
+ */
+export const LATE_OVERLAY_YEARS = 10;
+
 /** Battles fought in one life year (storylines/README.md §8: "นับในเพดานศึก 4 ครั้งต่อปี"). A battle over the number does not happen. */
 export const BATTLES_PER_YEAR = 4;
 

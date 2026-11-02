@@ -11,7 +11,7 @@ import { initTalismans, talismanStep } from './talisman';
 import { equip, gearTags } from './wield';
 
 // the tags of the gear he wears are tags of the character (items README §3 `#แท็ก`)
-onTags((ctx, life) => (ctx.state.life === life ? gearTags(ctx) : []));
+onTags((ctx, life) => (ctx.state.life === life && ctx.data.weapons && ctx.data.items && ctx.data.materials ? gearTags(ctx) : []));
 
 export { wielded, armorOf, shieldMult, damageFloor, gearStats, gearTags, engravedBonus, worn, describe, nearAtHand, equip, type Wielded, type Armor } from './wield';
 export { afterBattle, grantable, shopMax, scan, jobWeapons, shop, upkeep, releaseLegends } from './gain';

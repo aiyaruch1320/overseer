@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadGen } from '../../scripts/tools/load-gen';
 import { birth, characterSystem, chooseJob, extOf } from '../../src/core/character';
+import { UNTIMELY } from '../../src/core/character/tuning';
 import { Game, type System } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
 import type { OriginFile } from '../../src/core/data/types-character';
@@ -72,9 +73,10 @@ describe('character balance', () => {
         expect(Math.abs((race[r.id] ?? 0) / LIVES - p), r.id).toBeLessThanOrEqual(tol);
       }
 
-      // about 21% die before 75: 0.4% a life year from 15 (god/06-implementation.md §4)
-      expect(early / LIVES).toBeGreaterThan(0.19);
-      expect(early / LIVES).toBeLessThan(0.235);
+      // the untimely deaths of the years: UNTIMELY.perYear from 15 to 74. The 21% of god/06-implementation.md §4 is the share of the whole core (the ways of the
+      // story that say the character dies add to it: tests/balance/story-ending.test.ts), so the character system alone takes the part its rate gives
+      const expectedEarly = 1 - Math.pow(1 - UNTIMELY.perYear, 75 - UNTIMELY.fromAge);
+      expect(Math.abs(early / LIVES - expectedEarly)).toBeLessThan(0.008);
       expect(lateNatural).toBe(0);
 
       // half-bloods: the share of the table, race by race (humans 6%, none for slime, mummy ...), summoned humans excluded
