@@ -6,7 +6,6 @@
 ขั้นปัจจุบัน: M3 ต่อระบบเข้าหากัน (ระบบ M3 ครบห้าระบบในรายการแล้ว)
 งานที่กำลังทำ: สอง agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
   - ต่อระบบ (story EXTERNAL_LINES canGo ลบ battle-stub · combat ใช้ items bonds · npc onClash → combat · god acts ใช้ npc combat · character tagsOf ชั้น chooseJob · economy toolBonus debt) และวัดเป้า · a1597f6c22e4d3286
-  - ข้อความของบันทึก M3 ทั้งหมด ปลด T4 และ PENDING_FX_TH status ของ play · a6646761a8694aa0c
 งานถัดไป:
   1. รวมสองสาขา สร้างชีวิตทองคำใหม่ test:balance ครบ
   2. รอบตรวจ M3 ผู้เล่นจำลองสี่ชีวิต (พ่อค้า นักรบ ผู้ถูกผูกตัว ผู้มีพวกพ้องมาก) → review/m3/ · triage · ปิด M3
@@ -14,6 +13,7 @@
 ด่านล่าสุด: 2026-11-02 20.10 typecheck ผ่าน · test 996/996 · golden 20/20 · หลังรวมครบ: โหนดต่อชีวิตเต็ม 35.8 ชีวิตถึงวัยชรา 192 จาก 300 (รอ agent ต่อระบบวัดและปรับ)
 
 ## บันทึก (ใหม่อยู่บน)
+2026-11-02 · M3 รวมข้อความ: ทุกชนิดบันทึกของ M3 มีข้อความ อารมณ์ของพวกพ้องจริงแสดงได้ status ครบ · เทสต์สถิติของ god ย้ายไป test:balance (npm test 48 วินาที ไม่มี error)
 
 2026-11-02 · M3 รวม bonds bondage travel items: ระบบ M3 ครบห้าระบบในรายการ · เทสต์ 996 ผ่าน
 2026-11-02 17.40 · พักเครื่อง: รวม economy npc combat แล้ว (ec ปิดไว้ โหนดต่อชีวิต 31.8) · bonds+bondage travel+items ยังทำงาน
