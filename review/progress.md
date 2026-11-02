@@ -7,7 +7,6 @@
 งานที่กำลังทำ: สี่ agent ส่ง 2026-11-02 ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
   - god G0–G2 (พลัง หีบ ฝัน godSystem power.ts) · ac5db3c5f0c559ee7
   - god G3–G4 (src/core/god/acts: กระซิบ คำอธิษฐาน ปาฏิหาริย์ ลิขิต) · aaf8bc63dc2171798
-  - attention (src/core/attention) · a51caa09648348854
 งานถัดไป:
   1. รวมทีละสาขา: ต่อ acts/pay.ts เข้ากับ god/power.ts · story เรียก dreamWeight · play หยุดที่ attention call · เติม systems.ts (god god.acts attention)
   2. เป้า sim-god (ส่วนชีวิต) และ sim-attention บนแกน · ชีวิตทองคำ · รอบตรวจ M2 ผู้เล่นจำลองสามบุคลิก (ผู้มาใหม่ พระเจ้าเมตตา นักหาช่อง) ด้วย play
@@ -15,6 +14,7 @@
 ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 460/460 · golden 20/20 · balance ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
+2026-11-02 · M2 รวม attention: เป้าห้าข้อผ่าน (ใช้ตัวแทนคำอธิษฐานและวิกฤตจนกว่าจะมี god และ bonds) หยุด p50 7 การ์ด p50 15 · play หยุดที่การเรียก · ข้อเสนอ: god เขียน god/prayer ระดับ 2 และเรียก prayersWaiting · story ถามก่อนเดินโหนดหน้าต่างพระเจ้า · world เขียนลางล่วงหน้า
 2026-11-02 · M2 รวมเครื่องมือ: คำสั่งพระเจ้าใน play (preview แล้ว yes) หยุดที่ attention call life --policy แปดนโยบาย หน้าดีบัก · ต้องต่อหลังรวม god: ชื่อ args ใน god-commands.ts parseGod และป้าย preview
 2026-11-02 · M1 จบ: รอบตรวจสอง ผู้อ่านเรื่อง ไม่มีบล็อกและหนักใหม่ · บรรทัด NPC กรองเหลือคนที่รู้จัก (เอลฟ์ 68 → 35) · ชั้นคำสั่ง (command/) สำหรับ M2
 2026-11-02 · M1 รวม story character: ปลายทางเลือกครั้งเดียวตอนตาย ทางที่บอกตายทำให้ตายจริง เพดานโหนดและศึกต่อปี บันทึกชนชั้น ความทรงจำผู้กำกับเก็บจุดหักเห · ชีวิตทองคำสร้างใหม่ · balance ผ่าน
