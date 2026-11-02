@@ -6,7 +6,6 @@
 ขั้นปัจจุบัน: M3 ระบบลึก
 งานที่กำลังทำ: ห้า agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
   - combat (แทน story/battle-stub) · aaabae7c4e7ff368f
-  - npc ครบ · a348d38caed4f71cb
   - bonds + bondage (แทน story/stubs) · abab3198795a4781f
   - travel + items · ac64c35f01e427c3b
 งานถัดไป:
@@ -16,6 +15,7 @@
 ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 672/672 · golden 20/20 · balance 44 ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
+2026-11-02 · M3 รวม npc: NT ครบ 54 แบบ ราว 650 ต่อโลก · พบต่อปีชีวิต มนุษย์ 0.095 เอลฟ์ 0.095 (เดิม 0.27) · ป่วย อาฆาต จุดศึก onClash · ค้าง: NT มีชีวิต 0.16 ต่อประเทศ ต่ำกว่าเอกสาร 0.3–0.5 (ตัดสิน: ผ่อนกติกาแม่แบบหรือแก้เอกสาร) · god acts ใช้ isSick nemeses killNpc ของ npc · text ข้อความของ newcomer follow tie sick clash
 2026-11-02 · M3 รวม economy: ทองมัธยฐาน 45 374 (390) 60 578 (524) 30 122 (219) · โหนดต่อชีวิต 31.8 · ec ปิดไว้ · ค้าง: บั๊ก character range ของชั้นทำให้ขึ้นชั้น 5 ราว 15% · อาชีพมีแค่ 43% ที่อายุ 30 (ไม่มีใครเรียก chooseJob) · text แม่แบบ economy/tight default
 2026-11-02 · M3 รวมตัวสร้าง bonds bondage travel: 9 สาย FT 12 KN 8 PR 10 ผู้สืบ 55 · ท่าที 143 ประเทศ · เส้นทาง 15 · แปลไม่ได้ 44 (ไม่ strict)
 2026-11-02 · M2 จบ: รอบสองผู้มาใหม่ หาย 8 ไม่มีบล็อกและหนักใหม่ · ผู้นำแก้ข้อความผลฝันและจุดหยุดที่รวม
