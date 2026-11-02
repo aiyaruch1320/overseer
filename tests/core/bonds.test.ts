@@ -251,6 +251,9 @@ describe('bonds: invitations (03-formation.md §3)', () => {
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10);
     t.arc = { code: 'FT-03', stage: 2, next: 99 };
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15);
+    // a story that is over leaves him free to follow
+    t.arc = { code: 'FT-03', stage: 5, next: 99, end: 'a' };
+    expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15);
     t.arc = { code: 'FT-03', stage: 1, next: 99 };
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15);
     t.arc = { code: 'FT-03', stage: 2, next: 99 };
@@ -259,6 +262,10 @@ describe('bonds: invitations (03-formation.md §3)', () => {
     t.arc = { code: 'FT-03', stage: 3, next: 99 };
     expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 - 25 - 15);
     expect(inviteChance(ctx, life, t, { feared: true })).toBeCloseTo(15 + 35 + 10 + 10 - 25 - 15 - 15);
+    // a crisis the character helped him through is behind them
+    t.arc = { code: 'FT-03', stage: 3, next: 99, helped: true };
+    expect(inviteChance(ctx, life, t)).toBeCloseTo(15 + 35 + 10 + 10 + 15 - 15);
+    t.arc = { code: 'FT-03', stage: 3, next: 99 };
     t.gate = true; // he asked a favour first: the invite carries no burden
     expect(inviteChance(ctx, life, t, { feared: true })).toBeCloseTo(15 + 35 + 10 + 10);
     t.b = 100;

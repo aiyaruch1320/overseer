@@ -28,12 +28,14 @@ export function inviteChance(ctx: Ctx, life: LifeState, t: Tie, opt: { feared?: 
   let fit = 0;
   const arc = t.arc;
   // his own goal helps the invitation while his story is open and not at its crisis (the fit of 03 §3 is read from the story the tie is on)
-  if (arc && !arc.end && arc.stage !== 3) fit += rule.compat[0].delta;
+  // the crisis weighs on him while it is unanswered; one the character helped through is behind them (03 §3: the crisis is a burden, the help a fit)
+  const inCrisis = !!arc && !arc.end && arc.stage === 3 && !arc.helped;
+  if (arc && !inCrisis) fit += rule.compat[0].delta;
   if (t.rapport) fit += rule.compat[1].delta;
   if (t.gratitude >= bondsIndex(ctx).data.ties.npcAxes.gratitudeMin) fit += rule.compat[2].delta;
   let burden = 0;
   if (!t.gate) {
-    if (arc && !arc.end && arc.stage === 3) burden += -rule.burden[0].delta;
+    if (inCrisis) burden += -rule.burden[0].delta;
     if (t.family) burden += -rule.burden[1].delta;
     if (t.country.slice(0, 2) !== life.country.slice(0, 2) && roadClosed(ctx, t.country, life.country)) burden += -rule.burden[2].delta;
     if (opt.feared) burden += -rule.burden[3].delta;
