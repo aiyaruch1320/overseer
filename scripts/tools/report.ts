@@ -21,7 +21,7 @@ export function tagOf(e: LogEntry): string {
     case 'game':
       return 'ตาย';
     case 'text':
-      return 'เกิด';
+      return e.data.heir ? 'รับช่วง' : 'เกิด';
     case 'god':
       return 'พระเจ้า';
     case 'attention':

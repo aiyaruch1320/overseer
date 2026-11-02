@@ -1,7 +1,6 @@
 // What the lineage keeps (docs/lore/heirs/, docs/systems/experience/05-world-across-lives.md): plain JSON in the save.
 // `GameState.lineage` (types.ts) has four fields: `lives` (one line per life), `open` (the texts of the open threads), `chronicle` (the lines of the
-// chronicle of the family) and `collection` (the ids of the collection). The rest lives under `state.lineage.x`, typed here (proposal for types.ts: make
-// these real fields of LineageState). A save of a lineage is the whole state, so a lineage replays from a save made in the middle of any life.
+// chronicle of the family) and `collection` (the ids of the collection). The rest lives under `state.lineage.x` (`LineageState.x` in types.ts), typed here. A save of a lineage is the whole state, so a lineage replays from a save made in the middle of any life.
 import type { EndingCard, EndingInput } from '../ending/types';
 import type { GameState, LifeState, NodeId } from '../types';
 
@@ -138,16 +137,14 @@ export const fresh = (): LineageX => ({
   modes: [],
 });
 
-type WithX = GameState['lineage'] & { x?: LineageX };
-
 /** The extension of the lineage, created on first use. */
 export function lx(state: GameState): LineageX {
-  const l = state.lineage as WithX;
+  const l = state.lineage;
   if (!l.x) l.x = fresh();
   return l.x;
 }
 
-export const hasX = (state: GameState): boolean => !!(state.lineage as WithX).x;
+export const hasX = (state: GameState): boolean => !!state.lineage.x;
 
 /** The record of a life by its id. */
 export function recOf(state: GameState, id: string): LifeRec | undefined {

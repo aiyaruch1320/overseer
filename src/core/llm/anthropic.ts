@@ -1,4 +1,4 @@
-// The real provider: the Anthropic Messages API. It is never built by the tests or the gates; the tools build it only for `--llm=anthropic`.
+// An alternative real provider: the Anthropic Messages API (the docs chose DeepSeek, see deepseek.ts). Never built by the tests or the gates; the tools build it only for `--llm=anthropic`.
 // The key is read from the environment (ANTHROPIC_API_KEY) when the provider is made, never kept in a file or sent anywhere but the API
 // (god/05-llm.md §1 rule 7: the key lives on the server side; a browser build must reach this through a server that holds it).
 // `fetch` is injectable, so the shape of the request and the mapping of failures are tested without a network.
@@ -36,6 +36,7 @@ export function requestBody(req: ProviderRequest): Record<string, unknown> {
   const body: Record<string, unknown> = {
     model: req.model,
     max_tokens: req.maxTokens,
+    temperature: Math.min(1, req.temperature),
     system: [{ type: 'text', text: req.system, cache_control: { type: 'ephemeral' } }],
     messages: [{ role: 'user', content: req.user }],
   };

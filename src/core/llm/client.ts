@@ -5,7 +5,7 @@
 import { hashOf } from './hash';
 import type { CacheStore } from './cache';
 import { MemoryCache } from './cache';
-import { BREAKER, LANG, LIFE_TOKEN_BUDGET, MODEL_OF, PROMPT_VERSION, RETRIES, TIMEOUT_MS, type LlmPoint } from './tuning';
+import { BREAKER, LANG, LIFE_TOKEN_BUDGET, MODEL_OF, PROMPT_VERSION, RETRIES, TEMPERATURE, TIMEOUT_MS, type LlmPoint } from './tuning';
 import { ProviderError, type Checked, type FailKind, type JsonSchema, type LedgerEntry, type Provider, type Source, type Usage } from './types';
 
 export interface LlmConfig {
@@ -133,7 +133,7 @@ export class LlmClient {
             rej(new ProviderError('timeout', 'timeout'));
           }, this.config.timeoutMs ?? TIMEOUT_MS);
         });
-        const res = await Promise.race([this.provider.complete({ point: job.point, model, system: job.system, user: job.user, schema: job.schema, maxTokens: job.maxTokens, signal: ctl.signal }), timeout]);
+        const res = await Promise.race([this.provider.complete({ point: job.point, model, system: job.system, user: job.user, schema: job.schema, maxTokens: job.maxTokens, temperature: TEMPERATURE[job.point], signal: ctl.signal }), timeout]);
         const ms = this.now() - t0;
         if (!res.text.trim()) {
           this.log(job, key, attempt, 'empty', res.usage, ms, res.model, 'empty answer');

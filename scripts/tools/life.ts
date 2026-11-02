@@ -2,11 +2,11 @@
 // Runs a world to the start year, bears a main character and walks the whole life, then prints the readable log
 // (docs/guide/code-plan.md §8.0). With a policy, the god system's `policyStep` plays every life year;
 // the report ends with the power used and the chronicle of the hand.
-// --llm=fake|anthropic adds the summary of the ending from the LLM layer (src/core/llm; default: no LLM, the output is as before).
+// --llm=fake|deepseek|anthropic asks the LLM layer (src/core/llm) for the summary of each ending and puts it on the card (default: no LLM, the output is as before; a bare --llm is deepseek).
 import { intArg, parseArgs } from './args';
-import { runLifeReport } from './life-run';
-import { runLineageReport } from './lineage-run';
-import { llmFromArgs, summaryReport } from './llm';
+import { runLifeReport, runLifeReportLlm } from './life-run';
+import { runLineageReport, runLineageReportLlm } from './lineage-run';
+import { llmFromArgs, usageLines } from './llm';
 import { loadAll } from './node-data';
 import { POLICIES, type Policy } from './session';
 
@@ -29,9 +29,17 @@ const base = {
   minLevel: Math.max(0, Math.min(3, level)) as 0 | 1 | 2 | 3,
 };
 // several lives in a row in one world (the lineage); --strict follows the docs when the family ends (no newcomer in the old world)
-const run = lives > 1 ? runLineageReport(data, { ...base, lives, strict: args.strict === 'true' }) : runLifeReport(data, base);
+const lineage = { ...base, lives, strict: args.strict === 'true' };
+const run = tl
+  ? lives > 1
+    ? await runLineageReportLlm(data, lineage, tl)
+    : await runLifeReportLlm(data, base, tl)
+  : lives > 1
+    ? runLineageReport(data, lineage)
+    : runLifeReport(data, base);
 process.stdout.write(run.text);
 if (tl) {
-  process.stdout.write((await summaryReport(tl, data, run.state, 'beats' in run ? run.beats : 0)).join('\n') + '\n');
+  const used = usageLines(tl);
+  if (used.length) process.stdout.write(used.join('\n') + '\n');
   tl.flush();
 }

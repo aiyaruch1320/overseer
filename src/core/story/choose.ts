@@ -1,6 +1,7 @@
 // Choosing a way at a fork (storylines/README.md §7 "วิธีอ่านตารางโหนด", llm/04-story.md §3.1): the written weight, changed by the
 // traits and events in `mods`, by the node's own notes, by earlier nodes (entryMod, nodeWeight) and by the rule-based director.
 import type { Ctx } from '../game';
+import { combineMul, directorMul, type DirectorPoint } from '../llm/director';
 import { test } from '../rules';
 import type { Choice, Condition, Effect, NodeId } from '../types';
 import { DIRECTOR_CAP, DIRECTOR_TIE, PLACE_SHUT } from './tuning';
@@ -125,13 +126,30 @@ export interface Weighed {
   ties: boolean[];
 }
 
-export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: StoryExt, cut: (c: Choice, i: number) => boolean): Weighed {
-  const director = ctx.state.settings.llm.director;
+/**
+ * The rule-based director is always on (llm/04-story.md §3.1 rules 1 to 2, §3.4 "ไม่มี LLM: ทำงานเหมือนเดิม"): the docs give no switch for it. `Settings.llm.director` is the switch of the
+ * LLM layer above it (`directorMul`), and `master` shuts every point; neither touches this. The hook below is for the tests that measure the layer against no director at all.
+ */
+let ruleDirector = true;
+export function setRuleDirector(on: boolean): void {
+  ruleDirector = on;
+}
+
+/** The id of a fork for the LLM director: the same in the request ahead and at the fork (llm/04-story.md §3.4), `node:year` of the world. */
+export const forkId = (ctx: Ctx, node: NodeId): string => `${node}:${ctx.state.clock.worldYear}`;
+
+/**
+ * The weight of every way at a fork. `point` is the id of the fork (`forkId`): with it the LLM director's choice for this fork, if the layer was asked and answered, adds its factor
+ * to one of the two ways the rule-based director ranks highest (`directorMul`, the two layers together at most ×2.5 by `combineMul`). Without it (previews that must change nothing,
+ * such as the dreams of the god) only the rule-based layer weighs. The first read of a point freezes what it used in the save (llm/director.ts), so a replay reads the same.
+ */
+export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: StoryExt, cut: (c: Choice, i: number) => boolean, point?: string): Weighed {
   const met = metBy(ctx, ex);
   const tie = choices.map((c) => ties(c, met));
-  const weights = choices.map((c, i) => {
-    if (cut(c, i)) return 0;
-    if (c.when && !test(ctx, c.when)) return 0;
+  // [weight without the director, factor of the rule-based director, factor of the place filter]
+  const parts = choices.map((c, i): [number, number, number] => {
+    if (cut(c, i)) return [0, 1, 1];
+    if (c.when && !test(ctx, c.when)) return [0, 1, 1];
     let add = 0;
     let mul = 1;
     for (const m of c.mods) {
@@ -143,10 +161,28 @@ export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: Stor
     for (const m of pull.choice) if (m.choice === c.key && test(ctx, m.cond)) w *= m.mul;
     for (const m of pull.entry) if (m.choice === c.key && test(ctx, m.cond)) w *= m.mul;
     for (const m of pull.label) if (c.label.includes(m.label)) w *= m.mul;
-    if (director && tie[i]) w *= Math.min(DIRECTOR_CAP, DIRECTOR_TIE);
-    if (shut(ctx, c)) w *= PLACE_SHUT;
-    return w;
+    return [w, ruleDirector && tie[i] ? Math.min(DIRECTOR_CAP, DIRECTOR_TIE) : 1, shut(ctx, c) ? PLACE_SHUT : 1];
   });
+  const weights = parts.map(([w, rule, gate]) => w * rule * gate);
+  // the LLM layer: the two ways the rule-based layer ranks highest are the ways the point offers (ties keep the order of the written ways)
+  if (point) {
+    const top = weights
+      .map((w, i) => ({ w, i }))
+      .filter((x) => x.w > 0)
+      .sort((a, b) => b.w - a.w || a.i - b.i)
+      .slice(0, 2);
+    if (top.length === 2) {
+      const ways: DirectorPoint['ways'] = [
+        { key: choices[top[0].i].key, text: choices[top[0].i].label },
+        { key: choices[top[1].i].key, text: choices[top[1].i].label },
+      ];
+      const found = { id: point, ways };
+      for (const { i } of top) {
+        const llm = directorMul(ctx, found, choices[i].key);
+        if (llm > 1) weights[i] = parts[i][0] * combineMul(parts[i][1], llm) * parts[i][2];
+      }
+    }
+  }
   return { weights, ties: tie };
 }
 

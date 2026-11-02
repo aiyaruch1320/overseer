@@ -5,7 +5,8 @@ import type { ConvergenceData, Ending, StoryNodeX, StorylinesData } from '../../
 import { onCond, onEffect, onStat, resetRules, test } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import { write } from '../../src/core/log';
-import { onNode, openLine, registerStoryRules, setPlaceGate, storySystem } from '../../src/core/story';
+import { weigh } from '../../src/core/story/choose';
+import { onNode, openLine, registerStoryRules, setPlaceGate, setRuleDirector, storySystem } from '../../src/core/story';
 import { fresh, extOf as storyExtOf, yearOf } from '../../src/core/story/state';
 import { indexOf as storyIndex } from '../../src/core/story/data';
 import { BATTLES_PER_YEAR, CAUSE, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
@@ -327,6 +328,78 @@ describe('choosing a way', () => {
   });
 });
 
+describe('the director: two layers, two switches', () => {
+  /** A fork of two ways, `a` ties back to someone met; the life has met AL01-1. */
+  const fork = () => {
+    const data = mini([node('hu.b1', [1, 1], [choice('a', 50, { effects: [{ k: 'npc', id: 'AL01-1' }] }), choice('b', 50)])]);
+    const g = new Game(newGame(1), data, [toy, storySystem]);
+    const life = person();
+    life.ext.story = { ...fresh(), line: 'hu', seen: { npcs: ['AL01-1'], events: [] } };
+    g.state.life = life;
+    const choices = (data.storylines!.items as StorylinesData).nodes[0].choices;
+    const no = { choice: [], entry: [], label: [] };
+    const ex = storyExtOf(life);
+    const w = (point?: string) => weigh(g.ctx, choices, no, ex, () => false, point).weights;
+    const offer = (pick: string, id = 'p1') => {
+      g.state.llmAnswers[`director.asked:L1:${id}`] = '1';
+      g.state.llmAnswers[`director.offer:L1:${id}`] = JSON.stringify({ pick, reason: 'old_face' });
+    };
+    return { g, w, offer };
+  };
+
+  it('the rule-based director does not depend on the switch of the LLM layer or on the master', () => {
+    const { g, w } = fork();
+    expect(w()).toEqual([87.5, 50]);
+    g.state.settings.llm.director = false;
+    expect(w('p1')).toEqual([87.5, 50]);
+    g.state.settings.llm.master = false;
+    expect(w('p1')).toEqual([87.5, 50]);
+  });
+
+  it('without a question to the LLM the point leaves no trace in the save', () => {
+    const { g, w } = fork();
+    w('p1');
+    expect(g.state.llmAnswers).toEqual({});
+    expect(g.state.log).toHaveLength(0);
+  });
+
+  it('the LLM layer lifts the way it chose ×1.5, together with the rule-based layer at most ×2.5, and the answer is frozen at the first read', () => {
+    const { g, w, offer } = fork();
+    offer('b');
+    // b is not tied: 50 × 1.5; a keeps the rule-based 87.5
+    expect(w('p1')).toEqual([87.5, 75]);
+    expect(g.state.llmAnswers['director:L1:p1']).toContain('"pick":"b"');
+    expect(g.state.log.filter((e) => e.sys === 'llm' && e.kind === 'director')).toHaveLength(1);
+    // a point with no id (a preview) is not touched by the LLM layer
+    expect(w()).toEqual([87.5, 50]);
+    // the pick on the tied way: 50 × min(2.5, 1.75 × 1.5)
+    const second = fork();
+    second.offer('a', 'p2');
+    expect(second.w('p2')).toEqual([125, 50]);
+  });
+
+  it('the player switch (and the master) turn the LLM layer off, and what was frozen stays frozen', () => {
+    const off = fork();
+    off.offer('b');
+    off.g.state.settings.llm.director = false;
+    expect(off.w('p1')).toEqual([87.5, 50]);
+    expect(off.g.state.llmAnswers['director:L1:p1']).toBe('none');
+    off.g.state.settings.llm.director = true;
+    expect(off.w('p1')).toEqual([87.5, 50]);
+    const master = fork();
+    master.offer('b');
+    master.g.state.settings.llm.master = false;
+    expect(master.w('p1')).toEqual([87.5, 50]);
+  });
+
+  it('a pick that is not one of the two best ways is ignored', () => {
+    const { g, w, offer } = fork();
+    offer('c');
+    expect(w('p1')).toEqual([87.5, 50]);
+    expect(g.state.llmAnswers['director:L1:p1']).toBe('none');
+  });
+});
+
 describe('director', () => {
   const data = mini([node('hu.b1', [1, 1], [choice('a', 50, { effects: [{ k: 'npc', id: 'AL01-1' }] }), choice('b', 50)])]);
   const rate = (director: boolean) => {
@@ -336,16 +409,17 @@ describe('director', () => {
       const life = person();
       life.ext.story = { ...fresh(), line: 'hu', seen: { npcs: ['AL01-1'], events: [] } };
       const g = new Game(newGame(seed), data, [toy, storySystem]);
-      g.state.settings.llm.director = director;
+      setRuleDirector(director);
       g.state.life = life;
       g.born();
       g.runLife();
       if (g.state.life!.passed['hu.b1'] === 'a') a++;
     }
+    setRuleDirector(true);
     return a / n;
   };
 
-  it('a way that ties back to someone met is weighted ×1.75 when the switch is on, and not when it is off', () => {
+  it('a way that ties back to someone met is weighted ×1.75 by the rule-based director, and not when the layer is taken out (a test hook)', () => {
     const on = rate(true);
     const off = rate(false);
     expect(off).toBeGreaterThan(0.44);
@@ -871,7 +945,7 @@ describe('the memory of the director', () => {
       node('hu.a2', [30, 30], [choice('a', 50, { effects: [{ k: 'jobpath', job: 'kingmaker', secret: false }] }), choice('b', 50, { effects: [{ k: 'grant', kind: 'trait', id: 'brave' }] })]),
       node('hu.a3', [40, 40], [choice('a', 50, { effects: [{ k: 'ref', nodes: ['hu.a1'], rel: 'ตรงกับ' }] }), choice('b', 50)]),
     ]);
-    const g = play(1, data, person(), (game) => void (game.state.settings.llm.director = true));
+    const g = play(1, data, person());
     const ex = g.state.life!.ext.story as { seen: { pivots: string[] } };
     expect(ex.seen.pivots).toEqual(expect.arrayContaining(['job:kingmaker', 'bond:คู่หู']));
     const a2 = nodeLog(g).find((e) => e.id === 'hu.a2')!;
@@ -889,7 +963,9 @@ describe('the memory of the director', () => {
       let a = 0;
       for (let seed = 1; seed <= 400; seed++) {
         mocks();
-        const g = play(seed, data, person(), (game) => void (game.state.settings.llm.director = on));
+        setRuleDirector(on);
+        const g = play(seed, data, person());
+        setRuleDirector(true);
         if (g.state.life!.passed['hu.a2'] === 'a') a++;
       }
       return a / 400;

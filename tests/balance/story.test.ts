@@ -11,7 +11,7 @@ import { loadGen } from '../../scripts/tools/load-gen';
 import { Game, type GameData, type System } from '../../src/core/game';
 import { onCond, onEffect, onStat, resetRules } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
-import { registerStoryRules, storySystem } from '../../src/core/story';
+import { registerStoryRules, setRuleDirector, storySystem } from '../../src/core/story';
 import { EXTERNAL_LINES, OPEN_RATE } from '../../src/core/story/tuning';
 import type { LifeState } from '../../src/core/types';
 
@@ -93,11 +93,12 @@ interface Count {
 function live(race: string, seed: number, director: boolean): Count {
   const line = (data.races.items as { races: { id: string; storyPrefix: string }[] }).races.find((r) => r.id === race)!.storyPrefix;
   const g = new Game(newGame(seed), data, [toy, storySystem]);
-  g.state.settings.llm.director = director;
+  setRuleDirector(director);
   g.state.world.era = 4;
   g.state.life = lifeOf(race, line);
   g.born();
   g.runLife();
+  setRuleDirector(true);
   let nodes = 0;
   let extra = 0;
   let chances = 0;

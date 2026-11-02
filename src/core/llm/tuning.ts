@@ -9,13 +9,20 @@ export type LlmPoint = (typeof POINTS)[number];
 export const SWITCH_OF: Record<LlmPoint, 'setup' | 'director' | 'epitaph'> = { command: 'setup', director: 'director', ending: 'epitaph' };
 
 /** Version of the prompts and answer shapes: part of the cache key, bump it when a prompt or a shape changes (god/05-llm.md §5 "แคชตรงตัว"). */
-export const PROMPT_VERSION = 1;
+export const PROMPT_VERSION = 2;
 export const LANG = 'th';
 
-/** Models by task. The docs chose DeepSeek V4.1 Flash (llm/README.md §1); the lead asked for Claude ids, so these are names in config, not facts of the docs. */
-export const MODEL = { light: 'claude-sonnet-5-5', heavy: 'claude-opus-5-5' } as const;
-/** Every point is a light task (a choice from a list, a paragraph): no document asks for the heavy model. */
-export const MODEL_OF: Record<LlmPoint, string> = { command: MODEL.light, director: MODEL.light, ending: MODEL.light };
+/** The model the user chose: DeepSeek V4.1 Flash, API name `deepseek-flash` (llm/README.md §1). One model for every point; no document asks for another. */
+export const MODEL = 'deepseek-flash';
+export const MODEL_OF: Record<LlmPoint, string> = { command: MODEL, director: MODEL, ending: MODEL };
+/** The model the alternative Anthropic provider (`--llm=anthropic`) asks for: a name in config, not a fact of the docs. */
+export const ANTHROPIC_MODEL = 'claude-sonnet-5-5';
+
+/**
+ * Temperature by point (llm/README.md §1: prose 1.3 to 1.5, a choice from a list and JSON 0.3). The end summary is prose. Doc gap: llm/08-live-test.md §3 and §7 found
+ * a stray Japanese inscription at 1.3 and say 1.0 for the epitaph; the README says 1.3 to 1.5. This takes the README's low end; the check of Thai and one new request catch a stray.
+ */
+export const TEMPERATURE: Record<LlmPoint, number> = { command: 0.3, director: 0.3, ending: 1.0 }; // ending 1.0: llm/08-live-test.md §3 (at 1.3 one epitaph came out in Japanese)
 
 /** Longest request time before the call is dropped and tier 0 is used (llm/02-offline.md §5: 15 s). */
 export const TIMEOUT_MS = 15_000;

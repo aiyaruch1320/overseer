@@ -25,6 +25,8 @@ export interface EndingSummaryInput {
   facts: string[];
   /** The summary the game builds itself (tier 0): returned when the LLM is off, fails, or breaks a rule. */
   template: string;
+  /** Names in the registry of the world that the text may use (god/05-llm.md §7: no other name); the live test needed them to keep the LLM from taking one for the character (08 §3). */
+  names?: string[];
   /** The vow of the player and what came of it, when there is one (the character does not know it). */
   vow?: string;
 }
@@ -57,7 +59,7 @@ export async function summarizeEnding(input: EndingSummaryInput, llm: LlmClient 
     }
     if (!pointOn(state, llm, 'ending')) return templateOf(input);
   } else if (!llm || !llm.available('ending')) return templateOf(input);
-  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.vow ? { vow: input.vow } : {}) };
+  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}) };
   const r = await llm!.run({
     point: 'ending',
     input: data,

@@ -2,12 +2,13 @@
 //   1. command the character  `interpretWords`  → a whisper command of the game, or null (the menu)          switch `Settings.llm.setup`
 //   2. the director           `requestDirector` (async, ahead) + `directorMul` (sync, at the point)           switch `Settings.llm.director`
 //   3. the end summary        `summarizeEnding`  → { text, source: 'llm' | 'template' }                      switch `Settings.llm.epitaph`
-// plus the master (server env `OVERSEER_LLM=off`, and `Settings.llm.master` when the lead adds it to the type).
+// plus the master (server env `OVERSEER_LLM=off`, and `Settings.llm.master`).
 //
 // Rules this layer keeps: the core step never waits for it and never calls it; a call is async and outside the step; its answer enters the state only as text
 // in `state.llmAnswers` (with a log entry of level 0), so a save replays without calling; every answer passes a check or the game uses its own text (tier 0);
 // a game with no `Llm` built, or with the switches off, writes nothing and plays exactly as before.
 import { anthropicProvider } from './anthropic';
+import { deepseekProvider } from './deepseek';
 import { MemoryCache, type CacheStore } from './cache';
 import { LlmClient, type LlmConfig } from './client';
 import { interpretWords, type CommandMenu, type CommandOutcome } from './command';
@@ -17,6 +18,7 @@ import { FakeProvider, type Fixtures } from './fake';
 import type { Ctx } from '../game';
 import type { GameState } from '../types';
 import type { Provider } from './types';
+import { ANTHROPIC_MODEL } from './tuning';
 
 export * from './tuning';
 export * from './types';
@@ -24,6 +26,7 @@ export { LlmClient, type LlmConfig, type Job, type JobResult } from './client';
 export { MemoryCache, layered, type CacheStore, type CacheEntry } from './cache';
 export { FakeProvider, estimateTokens, type Fixtures, type FixtureResponse } from './fake';
 export { anthropicProvider, requestBody, KEY_ENV, type AnthropicOpts } from './anthropic';
+export { deepseekProvider, deepseekBody, deepseekEndpoint, DEEPSEEK_URL, DEEPSEEK_KEY_ENV, DEEPSEEK_URL_ENV, type DeepseekOpts } from './deepseek';
 export { hashOf, hashText, stable } from './hash';
 export { checkThai, parseObject, BANNED, type TextRules } from './validate';
 export { playerOn, pointOn } from './switches';
@@ -32,7 +35,7 @@ export { requestDirector, directorMul, directorDecision, directorLine, directorC
 export { summarizeEnding, checkSummary, type EndingSummary, type EndingSummaryInput } from './ending';
 export { keys as answerKeys } from './record';
 
-/** What the environment says (server side). `OVERSEER_LLM`: `off` shuts the layer · `fake` the offline provider · `anthropic` the real one. `OVERSEER_LLM_POINTS_OFF`: comma list of points to shut. */
+/** What the environment says (server side). `OVERSEER_LLM`: `off` shuts the layer · `fake` the offline provider · `deepseek` the real one the docs chose (`anthropic` the alternative). `OVERSEER_LLM_POINTS_OFF`: comma list of points to shut. */
 export function configFromEnv(env: Record<string, string | undefined>): LlmConfig {
   const mode = (env.OVERSEER_LLM ?? 'off').toLowerCase();
   const off = new Set((env.OVERSEER_LLM_POINTS_OFF ?? '').split(',').map((x) => x.trim()).filter(Boolean));
@@ -84,7 +87,14 @@ export function fakeLlm(fixtures: Fixtures, config: Partial<LlmConfig> = {}): { 
   return { llm: makeLlm({ config: { enabled: true, ...config }, provider, cache }), provider, cache };
 }
 
-/** An `Llm` on the real Anthropic API, key from `env[ANTHROPIC_API_KEY]`. Never built by the tests or the gates. */
+/** An `Llm` on the real DeepSeek API (the model the docs chose), key from `env[DEEPSEEK_API_KEY]`. The default real provider. Never built by the tests or the gates on a network. */
+export function realLlm(env: Record<string, string | undefined>, cache?: CacheStore): Llm {
+  return makeLlm({ config: { ...configFromEnv(env), enabled: true }, provider: deepseekProvider({ env }), cache });
+}
+
+/** An `Llm` on the Anthropic API, key from `env[ANTHROPIC_API_KEY]`: the alternative (`--llm=anthropic`). Asks for a Claude model, not the docs' model. Never built by the tests or the gates. */
 export function anthropicLlm(env: Record<string, string | undefined>, cache?: CacheStore): Llm {
-  return makeLlm({ config: { ...configFromEnv(env), enabled: true }, provider: anthropicProvider({ env }), cache });
+  const config = configFromEnv(env);
+  const model = env.OVERSEER_LLM_MODEL ?? ANTHROPIC_MODEL;
+  return makeLlm({ config: { ...config, enabled: true, models: { command: model, director: model, ending: model } }, provider: anthropicProvider({ env }), cache });
 }

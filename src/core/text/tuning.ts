@@ -110,6 +110,12 @@ export const SPECIAL_TH: Record<string, string> = { summoned: 'ผู้ถู�
 /** Where the character was born, by the `born` of the character birth entry. */
 export const BORN_TH: Record<string, string> = { main: 'ในแผ่นดินของเผ่า', diaspora: 'ในถิ่นที่เผ่าไปอยู่', outside: 'นอกถิ่นของเผ่า' };
 
+/**
+ * The first line of a life that begins grown, an heir who takes over (the lineage; `named` with `heir`): the words of 07-ending-templates.md `เกิด` say a birth, so this one says the taking over.
+ * Doc gap: the heir's opening line has no template in the docs; these are the words of the tools until it has.
+ */
+export const HEIR_OPENING = '{name} รับช่วงต่อเมื่ออายุ {age} ที่{home} ในฐานะ{race}ของครอบครัว{class_birth}';
+
 /** The death line for each cause the character system writes; `{who}` `{where}` `{age}` are filled by the reader. */
 export const DEATH_TH: Record<string, string> = {
   old: '{who}จากไปด้วยชราภาพ{where} เมื่ออายุ {age}',

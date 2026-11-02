@@ -10,8 +10,17 @@ import type { LifeState } from '../../src/core/types';
 import {
   FakeProvider,
   MemoryCache,
+  ANTHROPIC_MODEL,
+  MODEL,
+  MODEL_OF,
+  TEMPERATURE,
+  anthropicLlm,
   anthropicProvider,
   checkThai,
+  deepseekBody,
+  deepseekEndpoint,
+  deepseekProvider,
+  realLlm,
   combineMul,
   configFromEnv,
   directorCount,
@@ -109,7 +118,7 @@ describe('checks of an answer', () => {
 
 describe('switches', () => {
   it('badSettings accepts the llm keys as booleans and refuses the rest', () => {
-    expect(badSettings({ llm: { setup: false, director: true, epitaph: false } })).toBeNull();
+    expect(badSettings({ llm: { master: true, setup: false, director: true, epitaph: false } })).toBeNull();
     expect(badSettings({ llm: { master: false } as never })).toBeNull();
     expect(badSettings({ llm: { dream: true } as never })).toMatch(/สวิตช์ LLM dream/);
     expect(badSettings({ llm: { director: 'yes' } as never })).toMatch(/director/);
@@ -128,9 +137,9 @@ describe('switches', () => {
     st.settings.llm.setup = false;
     expect(pointOn(st, llm.client, 'command')).toBe(false);
     expect(pointOn(st, llm.client, 'director')).toBe(true);
-    (st.settings.llm as { master?: boolean }).master = false;
+    st.settings.llm.master = false;
     expect(pointOn(st, llm.client, 'director')).toBe(false);
-    delete (st.settings.llm as { master?: boolean }).master;
+    st.settings.llm.master = true;
     const off = fakeLlm(FX, { points: { director: false } }).llm;
     expect(pointOn(st, off.client, 'director')).toBe(false);
     expect(pointOn(st, off.client, 'ending')).toBe(true);
@@ -222,9 +231,9 @@ describe('point 1: command the character', () => {
     st.settings.llm.setup = false;
     expect(await llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).toEqual({ command: null, source: 'template', reason: 'off' });
     st.settings.llm.setup = true;
-    (st.settings.llm as { master?: boolean }).master = false;
+    st.settings.llm.master = false;
     expect((await llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).reason).toBe('off');
-    delete (st.settings.llm as { master?: boolean }).master;
+    st.settings.llm.master = true;
     expect((await interpretWords(ctx, 'อย่าประมาทนะ', menu, null)).reason).toBe('off');
     expect((await fakeLlm(FX, { enabled: false }).llm.interpretWords(ctx, 'อย่าประมาทนะ', menu)).reason).toBe('off');
     expect(provider.calls).toHaveLength(0);
@@ -527,7 +536,7 @@ describe('failures never reach the player', () => {
     await llm.summarizeEnding(summaryInput());
     await llm.summarizeEnding(summaryInput({ name: 'เอลิเนีย', lifeId: 'L2' }));
     const [ok, bad, bad2] = llm.ledger;
-    expect(ok).toMatchObject({ point: 'ending', life: 'L1', result: 'ok', provider: 'fake', model: 'claude-sonnet-5-5', attempt: 1 });
+    expect(ok).toMatchObject({ point: 'ending', life: 'L1', result: 'ok', provider: 'fake', model: 'deepseek-flash', attempt: 1 });
     expect(ok.usage.input).toBeGreaterThan(0);
     expect(ok.usage.output).toBeGreaterThan(0);
     expect(bad.result).toBe('invalid');
@@ -571,8 +580,8 @@ describe('a game with the layer off plays exactly as before', () => {
       const st = s.game.state;
       const { llm, provider } = fakeLlm(FX);
       if (withLayer) {
-        st.settings.llm = { setup: false, director: false, epitaph: false };
-        (st.settings.llm as { master?: boolean }).master = false;
+        st.settings.llm = { master: true, setup: false, director: false, epitaph: false };
+        st.settings.llm.master = false;
       }
       const after = () => {
         if (!withLayer) return;
@@ -585,7 +594,7 @@ describe('a game with the layer off plays exactly as before', () => {
         const sum = await llm.summarizeEnding(summaryInput({ lifeId: st.life!.id }), st);
         expect(sum.source).toBe('template');
         expect(provider.calls).toHaveLength(0);
-        st.settings.llm = { setup: true, director: true, epitaph: true };
+        st.settings.llm = { master: true, setup: true, director: true, epitaph: true };
       }
       return JSON.stringify(st);
     };
@@ -598,7 +607,7 @@ describe('a game with the layer off plays exactly as before', () => {
 
 describe('the Anthropic provider (a stub fetch; no network)', () => {
   const ok = (body: unknown, init: ResponseInit = {}) => new Response(JSON.stringify(body), { status: 200, ...init });
-  const req = { point: 'ending' as const, model: 'claude-sonnet-5-5', system: 'S', user: 'U', maxTokens: 50 };
+  const req = { point: 'ending' as const, model: 'claude-sonnet-5-5', system: 'S', user: 'U', maxTokens: 50, temperature: 0.7 };
 
   it('builds the request: key in a header, system marked for the prefix cache, a schema as a forced tool', async () => {
     const seen: { url: string; init: RequestInit }[] = [];
@@ -658,5 +667,92 @@ describe('the Anthropic provider (a stub fetch; no network)', () => {
     });
     expect((await llm.summarizeEnding(summaryInput())).source).toBe('template');
     expect(llm.ledger[0].result).toBe('server');
+  });
+});
+
+describe('the DeepSeek provider (a stub fetch; no network)', () => {
+  const ok = (body: unknown, init: ResponseInit = {}) => new Response(JSON.stringify(body), { status: 200, ...init });
+  const req = { point: 'ending' as const, model: 'deepseek-flash', system: 'S', user: 'U', maxTokens: 50, temperature: 1.3 };
+  const usage = { prompt_tokens: 100, completion_tokens: 20, prompt_cache_hit_tokens: 60, prompt_cache_miss_tokens: 40 };
+
+  it('is the model and the temperatures the docs name', () => {
+    expect(MODEL).toBe('deepseek-flash');
+    expect(Object.values(MODEL_OF)).toEqual(['deepseek-flash', 'deepseek-flash', 'deepseek-flash']);
+    expect(TEMPERATURE).toEqual({ command: 0.3, director: 0.3, ending: 1.3 });
+  });
+
+  it('builds the request: thinking off, the fixed part first, no user_id, a key in the bearer header, the plain endpoint for prose', async () => {
+    const seen: { url: string; init: RequestInit }[] = [];
+    const p = deepseekProvider({
+      apiKey: 'sk-test',
+      fetch: (async (url: string, init: RequestInit) => {
+        seen.push({ url, init });
+        return ok({ choices: [{ message: { content: 'สวัสดี' } }], usage, model: 'deepseek-flash' });
+      }) as unknown as typeof fetch,
+    });
+    const r = await p.complete(req);
+    expect(r).toEqual({ text: 'สวัสดี', model: 'deepseek-flash', usage: { input: 100, output: 20, cacheRead: 60, cacheWrite: 40 } });
+    expect(seen[0].url).toBe('https://api.deepseek.com/chat/completions');
+    expect((seen[0].init.headers as Record<string, string>).authorization).toBe('Bearer sk-test');
+    const body = JSON.parse(seen[0].init.body as string);
+    expect(body).toMatchObject({ model: 'deepseek-flash', max_tokens: 50, temperature: 1.3, stream: false, thinking: { type: 'disabled' }, messages: [{ role: 'system', content: 'S' }, { role: 'user', content: 'U' }] });
+    expect(body.user_id).toBeUndefined();
+    expect(body.tools).toBeUndefined();
+    expect(body.response_format).toBeUndefined();
+  });
+
+  it('a schema is a strict tool call at /beta and the arguments are the answer; json mode asks response_format', async () => {
+    const schema = { type: 'object', properties: { pick: { type: 'string', enum: ['a', 'b'] } }, required: ['pick'], additionalProperties: false };
+    const body = deepseekBody({ ...req, temperature: 0.3, schema });
+    expect(body).toMatchObject({ tools: [{ type: 'function', function: { name: 'answer', strict: true, parameters: schema } }], tool_choice: { type: 'function', function: { name: 'answer' } } });
+    expect(deepseekBody({ ...req, jsonMode: true })).toMatchObject({ response_format: { type: 'json_object' } });
+    expect(deepseekEndpoint('https://api.deepseek.com/', { schema })).toBe('https://api.deepseek.com/beta/chat/completions');
+    let url = '';
+    const p = deepseekProvider({
+      apiKey: 'k',
+      fetch: (async (u: string) => {
+        url = u;
+        return ok({ choices: [{ message: { content: null, tool_calls: [{ function: { name: 'answer', arguments: '{"pick":"a"}' } }] } }], usage: {} });
+      }) as unknown as typeof fetch,
+    });
+    expect(JSON.parse((await p.complete({ ...req, schema })).text)).toEqual({ pick: 'a' });
+    expect(url).toBe('https://api.deepseek.com/beta/chat/completions');
+  });
+
+  it('reads the key and the base URL from the environment object it is given, and refuses to call without a key', async () => {
+    const urls: string[] = [];
+    const f = (async (u: string) => {
+      urls.push(u);
+      return ok({ choices: [{ message: { content: 'x' } }], usage: {} });
+    }) as unknown as typeof fetch;
+    await expect(deepseekProvider({ env: {}, fetch: f }).complete(req)).rejects.toMatchObject({ kind: 'bad_request' });
+    expect(urls).toHaveLength(0);
+    await deepseekProvider({ env: { DEEPSEEK_API_KEY: 'sk-env', DEEPSEEK_BASE_URL: 'http://local.test' }, fetch: f }).complete(req);
+    expect(urls).toEqual(['http://local.test/chat/completions']);
+  });
+
+  it('maps the failures of the API', async () => {
+    const fail = (status: number, message: string, headers: Record<string, string> = {}) =>
+      deepseekProvider({ apiKey: 'k', fetch: (async () => new Response(JSON.stringify({ error: { message } }), { status, headers })) as unknown as typeof fetch }).complete(req);
+    await expect(fail(429, 'slow down', { 'retry-after': '3' })).rejects.toMatchObject({ kind: 'rate_limit', retryAfterMs: 3000 });
+    await expect(fail(402, 'Insufficient Balance')).rejects.toMatchObject({ kind: 'credit' });
+    await expect(fail(500, 'boom')).rejects.toMatchObject({ kind: 'server' });
+    await expect(fail(503, 'busy')).rejects.toMatchObject({ kind: 'server' });
+    await expect(fail(401, 'Authentication Fails')).rejects.toMatchObject({ kind: 'bad_request' });
+    await expect(fail(422, 'Invalid Parameters')).rejects.toMatchObject({ kind: 'bad_request' });
+    const net = deepseekProvider({ apiKey: 'k', fetch: (async () => Promise.reject(new TypeError('fetch failed'))) as unknown as typeof fetch });
+    await expect(net.complete(req)).rejects.toMatchObject({ kind: 'network' });
+  });
+
+  it('realLlm builds on DeepSeek by default; the alternative asks for a Claude model; the client sends the model and the temperature of the point', async () => {
+    const real = realLlm({ DEEPSEEK_API_KEY: 'k' });
+    expect(real.client.provider.name).toBe('deepseek');
+    expect(real.client.config.models).toBeUndefined();
+    const alt = anthropicLlm({ ANTHROPIC_API_KEY: 'k' });
+    expect(alt.client.provider.name).toBe('anthropic');
+    expect(alt.client.config.models?.ending).toBe(ANTHROPIC_MODEL);
+    const { llm, provider } = fakeLlm(FX);
+    await llm.summarizeEnding(summaryInput());
+    expect(provider.calls[0]).toMatchObject({ model: 'deepseek-flash', temperature: 1.3 });
   });
 });

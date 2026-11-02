@@ -1,6 +1,8 @@
 // One whole life from birth to death, as readable text (docs/guide/code-plan.md §8.0 "สรุปทั้งชีวิต").
 // Same seed and options give the same text. `npm run life` prints it; tests/tools/life.test.ts runs it twice.
 import type { GameData } from '../../src/core/game';
+import { runAsync, runSync } from './drive';
+import { summarizeDeath, type ToolLlm } from './llm';
 import { cardOf } from '../../src/core/ending';
 import { calendarYear } from '../../src/core/text';
 import { cardLines } from '../../src/core/text/ending';
@@ -15,7 +17,8 @@ export interface LifeRun {
   notes: string[];
 }
 
-export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0 | 1 | 2 | 3 }): LifeRun {
+/** Stops once, at the death, where the end summary may be asked for before the card is laid out. */
+function* lifeSteps(data: GameData, opts: SessionOpts & { minLevel?: 0 | 1 | 2 | 3 }): Generator<GameState, LifeRun> {
   const s = createSession(data, opts);
   const g = s.game;
   const worldMark = g.state.logN;
@@ -25,6 +28,7 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   after();
   const beats = runToDeath(g, undefined, after);
   const st = g.state;
+  yield st;
   const min = opts.minLevel ?? 1;
   const out: string[] = [];
   out.push(`== ชีวิตหนึ่ง · เมล็ด ${opts.seed}${opts.policy ? ` · นโยบายพระเจ้า ${opts.policy}` : ''} ==`);
@@ -48,4 +52,13 @@ export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0
   const hand = godLines(s.data, st, opts.policy);
   if (hand.length) out.push('', '-- พระหัตถ์ --', ...hand);
   return { text: out.join('\n') + '\n', state: st, beats, notes: s.notes };
+}
+
+export function runLifeReport(data: GameData, opts: SessionOpts & { minLevel?: 0 | 1 | 2 | 3 }): LifeRun {
+  return runSync(lifeSteps(data, opts));
+}
+
+/** The same life with the end summary asked for at the death (`--llm`): the card holds the LLM text when it answers. */
+export function runLifeReportLlm(data: GameData, opts: SessionOpts & { minLevel?: 0 | 1 | 2 | 3 }, t: ToolLlm | undefined): Promise<LifeRun> {
+  return runAsync(lifeSteps(data, opts), (st) => summarizeDeath(t, data, st).then(() => undefined));
 }

@@ -3,6 +3,7 @@
 //
 // Rules (code-plan §2): the state is plain JSON (no classes, no functions), every random draw goes
 // through a named seed stream (§6.2), and screens read only the log (§6.3).
+import type { LineageX } from './lineage/state';
 
 // ---------- ids ----------
 
@@ -241,7 +242,8 @@ export interface DataVersions {
 export interface Settings {
   speed: 'pause' | 'normal' | 'fast';
   attention: 'low' | 'normal' | 'high'; // how often the game calls the player (experience/07-attention.md §4)
-  llm: { setup: boolean; director: boolean; epitaph: boolean };
+  /** `master` shuts every LLM point at once; `setup` `director` `epitaph` are the switches of the three points (llm/README.md §3). A save older than `master` has none: that reads as on. */
+  llm: { master: boolean; setup: boolean; director: boolean; epitaph: boolean };
   lang: 'th';
 }
 
@@ -344,6 +346,11 @@ export interface LineageState {
   open: string[]; // unfinished stories handed to heirs
   chronicle: string[];
   collection: string[];
+  /**
+   * What the cross-life systems keep (cards, threads, book, recs, the heir...), typed in src/core/lineage/state.ts and made on first use by `lx(state)`. Plain JSON in the save. It stays one object under
+   * `x`: lifting its fields up to this level would change the shape of every save and needs a migration of the saves that hold `x`.
+   */
+  x?: LineageX;
 }
 
 export interface GameState {
