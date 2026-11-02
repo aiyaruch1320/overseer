@@ -3,14 +3,13 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M2 ระบบพระเจ้าและการเรียก
-งานที่กำลังทำ: สี่ agent ส่ง 2026-11-02 ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
-  - god G3–G4 (src/core/god/acts: กระซิบ คำอธิษฐาน ปาฏิหาริย์ ลิขิต) · aaf8bc63dc2171798
+ขั้นปัจจุบัน: M2 ต่อระบบพระเจ้าสองครึ่ง (รวมสี่สาขาแล้ว)
+งานที่กำลังทำ: agent ต่อระบบ (aa57aa6639025b94b) ใน `.claude/worktrees/agent-aa57aa6639025b94b` สาขา `worktree-agent-aa57aa6639025b94b`: จ่ายพลังที่เดียว นโยบายที่เดียว ลบตัวแทนในเทสต์ balance วัดเป้า god ใหม่ ชื่อ args ของ play ข้อความของบันทึกพระเจ้าและการเรียก
 งานถัดไป:
-  1. รวมทีละสาขา: ต่อ acts/pay.ts เข้ากับ god/power.ts · story เรียก dreamWeight · play หยุดที่ attention call · เติม systems.ts (god god.acts attention)
-  2. เป้า sim-god (ส่วนชีวิต) และ sim-attention บนแกน · ชีวิตทองคำ · รอบตรวจ M2 ผู้เล่นจำลองสามบุคลิก (ผู้มาใหม่ พระเจ้าเมตตา นักหาช่อง) ด้วย play
-  3. ค้างไว้: ข้อเสนอสัญญา M1 (WorldState successors outcomes · NpcSlotState · LifeState fame · countries coast river · ตัวคูณ NPC ในจุดเกิด) · ตัวละคร 74 วลี ไอเทม 209 (M3) · ตัวสร้าง bonds bondage travel (ก่อน M3) รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า และ sl.b2 c_slimelove
-ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 460/460 · golden 20/20 · balance ผ่าน · run-all --check ผ่าน
+  1. รวม · รอบตรวจ M2 ผู้เล่นจำลองสามบุคลิก (ผู้มาใหม่ พระเจ้าเมตตา นักหาช่อง) เล่นด้วย play → review/m2/ · triage · ปิด M2
+  2. M3: ตัวสร้าง bonds bondage travel ก่อน · economy · bonds+bondage · combat · travel+items · npc ครบ (ศึก NPC ผู้สืบ NT อัตราการพบต่อปีชีวิต)
+  3. ค้างไว้: ข้อเสนอสัญญา M1 · ตัวละคร 74 วลี ไอเทม 209 (M3) · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · ข้อเสนอของ attention: story ถามก่อนเดินโหนดหน้าต่างพระเจ้า world เขียนลางล่วงหน้า combat เขียน prelude
+ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 610/610 · golden 20/20 · balance 41/42 (god-acts นโยบายลงโทษ รอ agent ต่อระบบ)
 
 ## บันทึก (ใหม่อยู่บน)
 2026-11-02 · M2 รวม god G0–G2 และ acts G3–G4: ฝันทำตาม 4.9 ต่อชีวิต (เป้า 3–8) ศรัทธา ≤ −70 0% หีบ 10,000 ใบไม่ผิดตัวกรอง · เร่งจบ ×1.75 (เป้า ≤ ×2) · ค้าง: balance นโยบายลงโทษตกเมื่อสองระบบรวมกัน pay.ts ซ้ำ power.ts ชื่อ args ของเครื่องมือ ข้อความของบันทึกพระเจ้า
