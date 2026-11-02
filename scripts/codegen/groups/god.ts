@@ -257,19 +257,44 @@ function dreams() {
   };
 }
 
-// ---------- legacy prayers (docs say "17 kinds in the code") ----------
+// ---------- 03-dreams §7 prayers ----------
 function prayers() {
-  const file = path.join(root, 'legacy/data/prayers.ts');
-  const body = readFileSync(file, 'utf8');
-  const list: GodData['prayers']['kinds'] = [];
-  for (const m of body.matchAll(/\{ id: '(\w+)', w: (\d+), icon: '(\w+)'.*?\n\s+grant: \{ cost: (\d+), fx: '([^']*)'.*?punish: \{ gain: (\d+), fx: '([^']*)'/gs)) {
-    list.push({ id: m[1], weight: Number(m[2]), icon: m[3], grantCost: Number(m[4]), grantFx: m[5], punishGain: Number(m[6]), punishFx: m[7], trouble: ['heal', 'rain', 'plague', 'peace', 'kin_sick'].includes(m[1]) });
-  }
-  if (list.length !== 17) throw new Error('god: prayers in legacy/data/prayers.ts are not 17: ' + list.length);
+  const f = G + '03-dreams.md';
+  const kindsT = findTable(f, /คำอธิษฐาน 17 ชนิด/, 'รหัส');
+  const tickT = findTable(f, /ตัวเกิดคำอธิษฐาน/, 'ค่า');
+  const code = (c: string) => c.replace(/`/g, '').trim();
+  const list: GodData['prayers']['kinds'] = kindsT.rows.map((r) => ({
+    id: r.cells[0],
+    weight: Number(r.cells[2]),
+    icon: r.cells[3],
+    grantCost: Number(r.cells[5]),
+    grantFx: code(r.cells[6]),
+    punishGain: Number(r.cells[7]),
+    punishFx: code(r.cells[8]),
+    trouble: r.cells[9] === 'ใช่',
+  }));
+  if (list.length !== 17) throw new Error('god: 03-dreams.md §7.1 should list 17 prayers, found ' + list.length);
+  const tv = (label: RegExp) => {
+    const row = tickT.rows.find((r) => label.test(r.cells[0]));
+    if (!row) throw new Error('god: 03-dreams.md §7.2 has no row ' + label);
+    return Number(row.cells[1].replace('−', '-').replace(/[^\d.\-]/g, ''));
+  };
   return {
-    source: 'legacy/data/prayers.ts (the docs only say "17 kinds in the code"; docs/systems/god/01-power.md section 2)',
+    source: 'docs/systems/god/03-dreams.md section 7.1 and 7.2',
     kinds: list,
-    tick: { ticksPerYear: 4, base: 0.035, pietyDiv: 2500, oracle: 0.02, troubleMul: 3, troubleShare: 0.2, maxPending: 2, expiryTicks: 14, repeatCooldownTicks: 24, silentBelow: -70, assumedNote: 'base, pietyDiv, oracle, repeatCooldown come from prayerTick in legacy/sim/game.ts; troubleShare 0.2 from god/06-implementation.md section 4' },
+    tick: {
+      ticksPerYear: tv(/ช่วงเวลาต่อปีชีวิต/),
+      base: tv(/โอกาสพื้นฐาน/),
+      pietyDiv: tv(/แกนศรัทธา/),
+      oracle: tv(/oracle/),
+      troubleMul: tv(/คูณเมื่อมีชนิดความทุกข์/),
+      troubleShare: tv(/สัดส่วนช่วงเวลา/),
+      maxPending: tv(/ค้างพร้อมกัน/),
+      expiryTicks: tv(/หมดเวลา/),
+      repeatCooldownTicks: tv(/เกิดซ้ำได้หลังจาก/),
+      silentBelow: tv(/ศรัทธาเทพต่ำกว่า/),
+      assumedNote: 'troubleShare is an assumption of the simulator (03-dreams.md 7.2)',
+    },
   };
 }
 

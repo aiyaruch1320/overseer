@@ -1105,7 +1105,7 @@
    ]
   },
   "prayers": {
-   "source": "legacy/data/prayers.ts (the docs only say \"17 kinds in the code\"; docs/systems/god/01-power.md section 2)",
+   "source": "docs/systems/god/03-dreams.md section 7.1 and 7.2",
    "kinds": [
     {
      "id": "heal",
@@ -1289,7 +1289,7 @@
     "expiryTicks": 14,
     "repeatCooldownTicks": 24,
     "silentBelow": -70,
-    "assumedNote": "base, pietyDiv, oracle, repeatCooldown come from prayerTick in legacy/sim/game.ts; troubleShare 0.2 from god/06-implementation.md section 4"
+    "assumedNote": "troubleShare is an assumption of the simulator (03-dreams.md 7.2)"
    }
   },
   "miracles": {
