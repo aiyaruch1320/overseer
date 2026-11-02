@@ -105,26 +105,27 @@ export function describe(data: GameData, e: LogEntry): string | null {
   if (e.sys === 'npc' && e.kind === 'npc') {
     const who = s(d.holder);
     const role = d.role ? ` (${s(d.role)})` : '';
+    const w = ` ${who} `;
     switch (d.what) {
       case 'open':
-        return `เรื่องของ${who}${role}เริ่มขึ้น${at(d.place)}`;
+        return `เรื่องของ${w}${role}เริ่มขึ้น${at(d.place)}`;
       case 'event':
         return `${who}: ${nm(d.id)} เปิดเรื่องของเขา`;
       case 'end': {
         if (d.path === '-' || d.path === undefined) return `${who}${role}: เรื่องจางหายไปโดยไม่เกิดอะไร`;
         const forced = d.forced ? ' (เกิดโดยปริยาย)' : '';
-        return `${who}${role} ทาง ${s(d.path)}) ${s(d.text)}${forced}`;
+        return `${who}${role} · ทาง ${s(d.path)}) ${s(d.text)}${forced}`;
       }
       case 'die':
         return `${who}${role} ตาย${at(d.place)} อายุ ${s(d.age)} · ${s(d.cause)}`;
       case 'vanish':
         return `${who}${role} หายสาบสูญ${at(d.place)}`;
       case 'succeed':
-        return `${who} รับตำแหน่ง${s(d.role)}${at(d.place)}ต่อจาก${s(d.from)}${d.twist ? ` · ${s(d.twist)}` : ''}`;
+        return `${who} รับตำแหน่ง${s(d.role)}${at(d.place)}${d.from ? ` ต่อจาก ${s(d.from)}` : ''}${d.twist ? ` · ${s(d.twist)}` : ''}`;
       case 'move':
         return `${who} ย้ายไปอยู่ที่${nm(d.to)}${d.cause ? ` · ${s(d.cause)}` : ''}`;
       case 'meet':
-        return `ได้พบ${who}${role}${at(d.place)}`;
+        return `ได้พบ${w}${role}${at(d.place)}`;
       case 'ally':
         return `${who} ยินดีเป็นพวกพ้อง`;
     }

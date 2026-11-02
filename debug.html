@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>หน้าทดสอบ (debug)</title>
+  </head>
+  <body>
+    <h1>หน้าทดสอบช่วงทำระบบ</h1>
+    <p>HTML ล้วน ไม่มีสไตล์ ไม่มีภาพ ใช้กับ <code>npm run dev</code> แล้วเปิด <code>/debug.html</code> (docs/guide/code-plan.md หัวข้อ 8.0)</p>
+    <p id="loading">กำลังโหลดข้อมูล...</p>
+
+    <form id="new" hidden>
+      <label>เมล็ด <input id="seed" type="number" value="1" /></label>
+      <label>เผ่า <input id="race" type="text" placeholder="hu หรือ human" size="10" /></label>
+      <label>ปีเริ่ม <input id="year" type="number" value="450" /></label>
+      <label>
+        นโยบายพระเจ้า
+        <select id="policy">
+          <option value="">(ไม่ระบุ)</option>
+          <option>เงียบ</option>
+          <option>เมตตา</option>
+          <option>ลงโทษ</option>
+          <option>สุ่ม</option>
+        </select>
+      </label>
+      <button type="submit">สร้างโลกใหม่และให้เกิด</button>
+    </form>
+
+    <div id="controls" hidden>
+      <button data-beats="1">เดิน 1 จังหวะ</button>
+      <button data-beats="4">เดิน 1 ปีชีวิต (4)</button>
+      <button data-beats="40">เดิน 10 ปีชีวิต (40)</button>
+      <button data-call="1">เดินจนเกมเรียก</button>
+      <button data-death="1">เดินจนตาย</button>
+      <label>
+        ระดับบันทึกต่ำสุด
+        <select id="level">
+          <option value="0">0 ทั้งหมด</option>
+          <option value="1" selected>1 เรื่องราว</option>
+          <option value="2">2 การ์ด</option>
+          <option value="3">3 การเรียก</option>
+        </select>
+      </label>
+    </div>
+
+    <h2>หมายเหตุ</h2>
+    <pre id="notes"></pre>
+    <h2>สถานะ</h2>
+    <pre id="status"></pre>
+    <h2>บันทึก</h2>
+    <pre id="log"></pre>
+    <h2>NPC ในถิ่นของตัวละคร</h2>
+    <pre id="npcs"></pre>
+    <h2>ค่าของชีวิต (JSON)</h2>
+    <pre id="life"></pre>
+
+    <script type="module" src="/src/app/debug/main.ts"></script>
+  </body>
+</html>

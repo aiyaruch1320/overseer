@@ -108,13 +108,20 @@ function visible(ctx: Ctx, slot: NpcSlotX): LogLevel {
 }
 
 function note(ctx: Ctx, slot: NpcSlotX, row: NpcRow, what: string, extra: Record<string, string | number | boolean | null> = {}, level?: LogLevel) {
+  const lv = level ?? visible(ctx, slot);
+  if (lv === 0 && !npcState(ctx.state).trace && !(ctx.state.life && !ctx.state.life.dead)) return;
   write(ctx.state, {
     sys: 'npc',
     kind: 'npc',
     id: row.id,
-    level: level ?? visible(ctx, slot),
+    level: lv,
     data: { what, holder: slot.name, gen: slot.gen, role: row.role, place: slot.place ?? row.country, ...extra },
   });
+}
+
+/** An age in world years as the human-equivalent life years the player reads (ending-templates slot `age`). */
+export function lifeAge(ctx: Ctx, row: NpcRow, worldYears: number): number {
+  return Math.max(0, Math.round(worldYears / lifeOfRow(npcIndex(ctx), row).rate));
 }
 
 // ---------- paths ----------
@@ -178,10 +185,10 @@ function resolve(ctx: Ctx, slot: NpcSlotX, row: NpcRow, byDeath: boolean): void 
   slot.step = 2;
   slot.path = chosen ? chosen.key : undefined;
   if (!chosen) {
-    note(ctx, slot, row, 'end', { path: '-', mc: s.mc });
+    note(ctx, slot, row, 'end', { path: '-', mc: s.mc, byDeath });
     return;
   }
-  note(ctx, slot, row, 'end', { path: chosen.key, text: chosen.text, mc: s.mc, pct: chosen.pct });
+  note(ctx, slot, row, 'end', { path: chosen.key, text: chosen.text, mc: s.mc, pct: chosen.pct, byDeath });
   applyPath(ctx, slot, row, chosen, year);
 }
 
@@ -231,7 +238,7 @@ export function end(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number, how: 'd
     s.state = 'done';
     s.result = s.result ?? '-';
   }
-  note(ctx, slot, row, how === 'dead' ? 'die' : 'vanish', { cause, year: Math.round(year), age: Math.floor(year - slot.born) });
+  note(ctx, slot, row, how === 'dead' ? 'die' : 'vanish', { cause, year: Math.round(year), age: lifeAge(ctx, row, year - slot.born) });
   if (!opt.noSuccessor) succeed(ctx, slot, row, year);
 }
 
@@ -240,7 +247,7 @@ function succeed(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number): void {
   const idx = npcIndex(ctx);
   const rng = ctx.rng('npc');
   const life = lifeOfRow(idx, row);
-  const before = slot.name;
+  const before = slot.status === 'absent' ? '' : slot.name;
   const gen = slot.gen + 1;
   const ally = row.succession.allySuccessor;
   let age = Math.round(u(rng, life.adult, life.elder));
@@ -276,7 +283,7 @@ function succeed(ctx: Ctx, slot: NpcSlotX, row: NpcRow, year: number): void {
     // a successor stays where the position is
     place: slot.home,
   } satisfies Partial<NpcSlotX>);
-  note(ctx, slot, row, 'succeed', { from: before, age, twist: twist ?? null, year });
+  note(ctx, slot, row, 'succeed', { from: before || null, age: lifeAge(ctx, row, age), twist: twist ?? null, year: Math.round(year) });
 }
 
 // ---------- the clock ----------
@@ -289,7 +296,7 @@ export function advanceSlot(ctx: Ctx, slot: NpcSlotX, row: NpcRow, now: number):
       s.state = 'open';
       s.endAt = Math.min(tDeath, s.openAt + row.clock.window * slot.span);
       slot.step = 1;
-      note(ctx, slot, row, 'open', { mode: s.mode, year: Math.round(s.openAt) });
+      note(ctx, slot, row, 'open', { mode: s.mode, year: Math.round(s.openAt) }, 0);
       continue;
     }
     if (s.state === 'open' && (s.endAt ?? Infinity) <= now) {
@@ -304,17 +311,30 @@ export function advanceSlot(ctx: Ctx, slot: NpcSlotX, row: NpcRow, now: number):
   }
 }
 
-/** The first of the row's events that happened by `now`, as a world year. */
-function eventYear(state: GameState, events: string[], now: number): number | undefined {
-  let best: number | undefined;
+/**
+ * A row whose roster person did not appear (README §1) is a position held by someone without a story. When that holder's time
+ * is up the position is filled like any other (succession.md §2: the density of 3.6 stories per country counts the positions).
+ */
+function relieveAbsent(ctx: Ctx, slot: NpcSlotX, row: NpcRow, now: number): void {
+  for (let guard = 0; guard < 20 && slot.status === 'absent'; guard++) {
+    const tDeath = slot.born + slot.span;
+    if (tDeath > now) return;
+    if (!slot.refill) return;
+    succeed(ctx, slot, row, tDeath);
+  }
+}
+
+/** The first of the row's events that happened by `now`: its id and its world year. */
+function firstEvent(state: GameState, events: string[], now: number): { id: string; year: number } | undefined {
+  let best: { id: string; year: number } | undefined;
   for (const e of events) {
     const y = state.world.happened[e];
-    if (y !== undefined && y <= now && (best === undefined || y < best)) best = y;
+    if (y !== undefined && y <= now && (best === undefined || y < best.year)) best = { id: e, year: y };
   }
   return best;
 }
 
-function fireEvent(ctx: Ctx, slot: NpcSlotX, row: NpcRow, y: number): void {
+function fireEvent(ctx: Ctx, slot: NpcSlotX, row: NpcRow, id: string, y: number): void {
   slot.evFired = true;
   if (slot.status !== 'alive') return;
   slot.evGen = slot.gen;
@@ -331,7 +351,7 @@ function fireEvent(ctx: Ctx, slot: NpcSlotX, row: NpcRow, y: number): void {
   } else {
     s.mode = 'event';
   }
-  note(ctx, slot, row, 'event', { id: row.clock.events[0] ?? null, year: y });
+  note(ctx, slot, row, 'event', { id, year: y });
 }
 
 export function stepWorld(ctx: Ctx): void {
@@ -341,14 +361,17 @@ export function stepWorld(ctx: Ctx): void {
   const slots = slotsOf(st);
   for (const id of Object.keys(slots)) {
     const slot = slots[id];
-    if (slot.status === 'absent') continue;
     const row = idx.rows.get(id);
     if (!row) continue;
+    if (slot.status === 'absent') {
+      relieveAbsent(ctx, slot, row, now);
+      continue;
+    }
     if (!slot.evFired && row.clock.open === 'event') {
-      const y = eventYear(st, row.clock.events, now);
-      if (y !== undefined) {
-        advanceSlot(ctx, slot, row, y);
-        fireEvent(ctx, slot, row, y);
+      const ev = firstEvent(st, row.clock.events, now);
+      if (ev) {
+        advanceSlot(ctx, slot, row, ev.year);
+        fireEvent(ctx, slot, row, ev.id, ev.year);
       }
     }
     advanceSlot(ctx, slot, row, now);
@@ -432,7 +455,7 @@ export function meetZone(ctx: Ctx): void {
     slot.story.mc = true;
     const row = idx.rows.get(id)!;
     bumpRel(ctx, slot, 'known', 1);
-    note(ctx, slot, row, 'meet', { age: Math.floor(st.clock.worldYear - slot.born) }, 2);
+    note(ctx, slot, row, 'meet', { age: lifeAge(ctx, row, st.clock.worldYear - slot.born) }, 2);
   }
 }
 

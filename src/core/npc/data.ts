@@ -60,13 +60,13 @@ export function npcIndex(ctx: Ctx): NpcIndex {
 }
 
 /** The people entry of a row; a half-blood row (two people) takes the mean of the two spans as sim-npc-timeline does. */
-export function lifeOfRow(idx: NpcIndex, row: NpcRow): { lo: number; hi: number; adult: number; elder: number; idx: number } {
+export function lifeOfRow(idx: NpcIndex, row: NpcRow): { lo: number; hi: number; adult: number; elder: number; rate: number; idx: number } {
   const lives = idx.file.rules.lives;
   const i = idx.lifeOf.get(row.id) ?? 0;
   const a = lives[i];
   if (row.halfPeopleId && idx.lifeById.has(row.halfPeopleId)) {
     const b = lives[idx.lifeById.get(row.halfPeopleId)!];
-    if (b !== a) return { lo: (a.lifeLo + b.lifeLo) / 2, hi: (a.lifeHi + b.lifeHi) / 2, adult: (a.adult + b.adult) / 2, elder: (a.elder + b.elder) / 2, idx: i };
+    if (b !== a) return { lo: (a.lifeLo + b.lifeLo) / 2, hi: (a.lifeHi + b.lifeHi) / 2, adult: (a.adult + b.adult) / 2, elder: (a.elder + b.elder) / 2, rate: (a.rate + b.rate) / 2, idx: i };
   }
-  return { lo: a.lifeLo, hi: a.lifeHi, adult: a.adult, elder: a.elder, idx: i };
+  return { lo: a.lifeLo, hi: a.lifeHi, adult: a.adult, elder: a.elder, rate: a.rate, idx: i };
 }

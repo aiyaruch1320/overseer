@@ -61,6 +61,8 @@ export interface NpcStateX extends NpcState {
   phase?: string;
   phaseAt?: number;
   rollAt?: number;
+  /** Write trace entries (level 0) too, also while no main character lives. Off by default: a world run would write thousands. */
+  trace?: boolean;
 }
 
 export function slotsOf(state: { npcs: NpcState }): Record<string, NpcSlotX> {
