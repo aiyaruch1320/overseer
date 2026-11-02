@@ -3,13 +3,15 @@
 แผน: [../docs/guide/code-plan.md](../docs/guide/code-plan.md) · การตัดสินใจ: [decisions.md](decisions.md)
 
 ## สถานะ
-ขั้นปัจจุบัน: M2 แก้ตามรอบตรวจ (review/m2/triage.md)
-งานที่กำลังทำ: สอง agent ใน `.claude/worktrees/agent-<id>` สาขา `worktree-agent-<id>`
+ขั้นปัจจุบัน: M2 รอบตรวจซ้ำ · เตรียม M3
+งานที่กำลังทำ:
+  - ผู้มาใหม่รอบสอง (ab98f276165dc1221) ใน checkout ของผู้นำ เขียน review/m2/ผู้มาใหม่-รอบสอง.md
+  - ตัวสร้าง bonds bondage travel (a722a533c235d5582) ใน `.claude/worktrees/agent-a722a533c235d5582` สาขา `worktree-agent-a722a533c235d5582`
 งานถัดไป:
-  1. รวม สร้างชีวิตทองคำใหม่ รอบตรวจซ้ำบุคลิกเดิมหนึ่งตัว (ผู้มาใหม่) ปิด M2
-  2. M3: ตัวสร้าง bonds bondage travel ก่อน · economy · bonds+bondage · combat · travel+items · npc ครบ
-  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 · ตัวละคร 74 วลี ไอเทม 209 (M3) · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world เขียนลางล่วงหน้า combat เขียน prelude
-ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test ผ่าน · golden 20/20 · balance 44 ผ่าน · run-all --check ผ่าน
+  1. ปิด M2 ตามผลรอบสอง · รวมตัวสร้าง bonds bondage travel
+  2. M3 ห้า agent: economy · bonds+bondage · combat · travel+items · npc ครบ (ศึก NPC ผู้สืบ NT อัตราการพบต่อปีชีวิต) · วัดโหนดต่อชีวิตรวมทุกระบบใหม่ (ฐาน M1 28.1 หลัง M2 27.7) · ตัวละคร 74 วลี ไอเทม 209
+  3. ค้างไว้: ข้อเสนอสัญญา M1 M2 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world เขียนลางล่วงหน้าและตั้งธง famine plague · combat เขียน prelude · กระซิบเข้าน้ำหนักเรื่อง (choiceWhisperMul) · คำของค่าพระเจ้าใน effects.ts แทนธงใน 31-divine · บันทึกปาฏิหาริย์ MR-01/02 เมื่อไม่มีภัย
+ด่านล่าสุด: 2026-11-02 typecheck ผ่าน · test 672/672 · golden 20/20 · balance 44 ผ่าน · run-all --check ผ่าน
 
 ## บันทึก (ใหม่อยู่บน)
 2026-11-02 · M2 รวมจังหวะ: หน้าต่างประกาศก่อนทางแยก ฝันทอยตอนโหนด ค่าตัวเลขของพระเจ้าสำหรับ dp ทุกชีวิตตามวัยได้หยุดใกล้ตาย คำอธิษฐานที่ไม่ตรงถูกถอน · ชีวิตทองคำสร้างใหม่
