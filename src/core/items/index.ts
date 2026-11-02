@@ -13,7 +13,7 @@ export { wielded, armorOf, shieldMult, damageFloor, gearStats, gearTags, engrave
 export { afterBattle, grantable, shopMax, scan, jobWeapons, shop, upkeep, releaseLegends } from './gain';
 export { priceOf, sellPrice, weaponPrice, pieceFactor } from './price';
 export { toolBonus, toolsOf, bonusOf, paybackYears, wantedTool } from './tools';
-export { forgeYear, forgeBeat, start as startForge } from './forge';
+export { forgeYear, forgeBeat, forgeOutcome, SMITH_KIND, start as startForge } from './forge';
 export { initTalismans, talismanYear, talismanStep, activeCount, ancients, CAP as TALISMAN_CAP } from './talisman';
 export { catalog, lookup, nameOf, tierOf, RANK, TIERS } from './data';
 export { worldOf as itemsWorld } from './world';

@@ -222,7 +222,7 @@ export function equip(ctx: Ctx, life: LifeState): void {
     for (const i of owned(life, (id) => c.items.get(id))) {
       if (i.cat !== 'talisman' && i.cat !== 'folk') continue;
       if (life.traits.includes('skeptic') && RANK[i.tier] >= RANK.E) {
-        if (!ex.refused.includes(i.id) && rng.chance(SKEPTIC_REFUSE)) ex.refused.push(i.id);
+        if (!ex.refused.includes(i.id) && !ex.trusted.includes(i.id)) (rng.chance(SKEPTIC_REFUSE) ? ex.refused : ex.trusted).push(i.id);
         if (ex.refused.includes(i.id)) continue;
       }
       const s = charmScore(ctx, life, i);

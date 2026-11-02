@@ -60,6 +60,8 @@ export interface ItemsExt {
   mods: Record<string, WeaponMod>;
   /** Charms the character refused (a skeptic with a charm of tier E or more, half the time). */
   refused: string[];
+  /** Charms the character took after the same thought (decided once). */
+  trusted: string[];
   /** Tool id → hAge it came. */
   since: Record<string, number>;
   /** Jobs whose first weapon was given. */
@@ -73,7 +75,7 @@ export interface ItemsExt {
 
 export function fresh(): ItemsExt {
   return {
-    seen: {}, acc: [], uses: {}, dull: [], losses: {}, engraved: {}, mods: {}, refused: [], since: {}, given: [], forgeLast: -99,
+    seen: {}, acc: [], uses: {}, dull: [], losses: {}, engraved: {}, mods: {}, refused: [], trusted: [], since: {}, given: [], forgeLast: -99,
     stats: { bought: 0, spent: 0, sold: 0, forged: 0, repaired: 0, lost: 0 },
   };
 }

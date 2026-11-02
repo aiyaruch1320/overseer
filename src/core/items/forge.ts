@@ -284,6 +284,17 @@ function resumeSave(ctx: Ctx, life: LifeState, f: ForgeState): void {
   }
 }
 
+/** §8: the outcome of a roll. A natural 20 is a masterpiece, and so is a 19 when the smith can make better than what was ordered; a 1 or a sum 5 under the difficulty fails; under it is flawed. */
+export function forgeOutcome(d20: number, sum: number, diff: number, smithAbove: boolean): 'fail' | 'flawed' | 'ordered' | 'masterpiece' {
+  if (d20 === 20 || (d20 === 19 && smithAbove)) return 'masterpiece';
+  if (d20 === 1 || sum <= diff - 5) return 'fail';
+  if (sum < diff) return 'flawed';
+  return 'ordered';
+}
+
+/** What a smith of each kind adds to the roll and the best tier it can make (10-forging.md §4). */
+export const SMITH_KIND = SMITH;
+
 /** The roll of the result (§8) and what it gives. */
 function result(ctx: Ctx, life: LifeState, f: ForgeState): void {
   const c = catalog(ctx);
@@ -299,11 +310,7 @@ function result(ctx: Ctx, life: LifeState, f: ForgeState): void {
   const d20 = rng.int(1, 20);
   const diff = roll.difficulty[f.tier] ?? 9;
   const sum = d20 + skill + mat + trust + god;
-  let outcome: 'fail' | 'flawed' | 'ordered' | 'masterpiece';
-  if (d20 === 20 || (d20 === 19 && SMITH[f.kind].max > RANK[f.tier as Rarity])) outcome = 'masterpiece';
-  else if (d20 === 1 || sum <= diff - 5) outcome = 'fail';
-  else if (sum < diff) outcome = 'flawed';
-  else outcome = 'ordered';
+  const outcome = forgeOutcome(d20, sum, diff, SMITH[f.kind].max > RANK[f.tier as Rarity]);
   ex.forge = undefined;
   ex.forgeLast = life.hAge;
   if (outcome === 'fail') {
