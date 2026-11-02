@@ -13,7 +13,7 @@ import { items, labels, type Labels } from './labels';
 import { endingTail, isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
 import { endingSay, isEnding } from './ending';
 import { hashText as hash, plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
-import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, SEASONS, SPECIAL_TH } from './tuning';
+import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, HEIR_OPENING, SEASONS, SPECIAL_TH } from './tuning';
 import { BOND_LEVEL_TH, MOOD_TH } from './words';
 
 type D = LogEntry['data'];
@@ -450,6 +450,10 @@ export class Reader {
     const data = this.data;
     switch (e.kind) {
       case 'named': {
+        if (d.heir) {
+          const opening = HEIR_OPENING.replace('{name}', s(d.name)).replace('{age}', s(d.age)).replace('{home}', s(d.home)).replace('{race}', s(d.race)).replace('{class_birth}', s(d.cls));
+          return opening.replace(/ครอบครัว\s*ชนชั้น\s*(?=ชนชั้น)/g, 'ครอบครัว');
+        }
         const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e));
         const line = t && sub(t, { name: s(d.name), race: s(d.race), home: s(d.home), class_birth: s(d.cls), year: s(d.year) });
         // the templates say `ชนชั้น{class_birth}` and the class names of the economy file begin with ชนชั้น themselves
@@ -460,7 +464,7 @@ export class Reader {
         const parts: string[] = [];
         if (d.gender === 'f') parts.push('เป็นเพศหญิง');
         else if (d.gender === 'm') parts.push('เป็นเพศชาย');
-        if (s(d.born) && BORN_TH[s(d.born)]) parts.push(`เกิด${BORN_TH[s(d.born)]}`);
+        if (s(d.born) && BORN_TH[s(d.born)]) parts.push(`${d.heir ? 'เติบโต' : 'เกิด'}${BORN_TH[s(d.born)]}`);
         if (s(d.cls)) parts.push(`ครอบครัวเป็น${classWord(data, d.cls)}`);
         const tail: string[] = [];
         if (s(d.second)) tail.push(`เลือดผสมกับ${this.L.kind.race.get(s(d.second)) ?? ''}`);

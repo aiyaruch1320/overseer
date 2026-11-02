@@ -400,6 +400,18 @@ describe('npm run life --lives', () => {
     expect(strip(a.text)).not.toMatch(/undefined|\[object|NaN|\{[a-z_]+\}/);
   });
 
+  it('an heir who takes over grown is not told as a newborn: the opening lines say the taking over, a first life still says the birth', () => {
+    const r = runLineageReport(data, { seed: 5, lives: 2, minLevel: 1 });
+    const [first, second] = r.text.split('=== ชีวิตที่ 2 ===');
+    const head = second.split('\n').slice(1, 6).join('\n');
+    expect(head).toMatch(/\[รับช่วง\] \S+ รับช่วงต่อเมื่ออายุ \d+ ที่/);
+    expect(head).not.toContain('[เกิด]');
+    expect(head).not.toMatch(/ชีวิตของ\S+เริ่มที่/);
+    expect(head).toContain('เติบโตใน');
+    expect(first).toContain('[เกิด]');
+    expect(first).not.toContain('[รับช่วง]');
+  });
+
   it('--strict stops when the family has no heir', () => {
     const r = runLineageReport(data, { seed: 1, lives: 3, strict: true });
     expect(r.lives).toBe(1);

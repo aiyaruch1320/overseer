@@ -39,6 +39,8 @@ export const textSystem: System = {
         cls: classLabel(ctx, life.cls),
         year: calendarYear(ctx.state.clock.worldYear).toLocaleString('en-US'),
         country: life.country,
+        // a life that begins grown (an heir takes over at 46) is not born in the words: the reader says it took over
+        ...(life.hAge > 0 ? { heir: true, age: life.hAge } : {}),
       },
     });
     write(ctx.state, {
@@ -55,12 +57,13 @@ export const textSystem: System = {
         meet: ext.meet ?? null,
         special: (bd.special as string | undefined) ?? null,
         sign: (bd.sign as string | undefined) ?? null,
+        ...(life.hAge > 0 ? { heir: true } : {}),
       },
     });
     const traits = life.traits.slice(0, TRAITS_SHOWN).map((t) => L.kind.trait.get(t)).filter((t): t is string => !!t);
-    if (traits.length) write(ctx.state, { sys: 'text', kind: 'traits', id: life.id, level: 1, data: { traits: traits.join(',') } });
+    if (traits.length) write(ctx.state, { sys: 'text', kind: 'traits', id: life.id, level: 1, data: { traits: traits.join(','), ...(life.hAge > 0 ? { heir: true } : {}) } });
     const question = questionOf(ctx.data, peopleCode(ctx, life.race));
-    if (question) write(ctx.state, { sys: 'text', kind: 'question', id: life.id, level: 1, data: { question } });
+    if (question) write(ctx.state, { sys: 'text', kind: 'question', id: life.id, level: 1, data: { question, ...(life.hAge > 0 ? { heir: true } : {}) } });
   },
 };
 
