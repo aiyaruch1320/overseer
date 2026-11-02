@@ -69,3 +69,4 @@ export * from './names';
 export * from './pick';
 export * from './plain';
 export * from './render';
+export { lineWord } from './m3';

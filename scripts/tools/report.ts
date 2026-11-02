@@ -1,10 +1,10 @@
 // Readable text of a game for the test tools: the log as a timeline, the NPCs met, the status of the life, the summary of a life.
 // Pure TypeScript, shared by `npm run life`, `npm run play` and the debug page.
 import { extOf as bondageOf } from '../../src/core/bondage';
-import { crisesWaiting, extOf as bondsOf, hAgeOf, isChild, isLive, isPartner, levelOf as bondLevelOf, tiesOf, type Tie } from '../../src/core/bonds';
+import { adultAgeOf, crisesWaiting, extOf as bondsOf, hAgeOf, isChild, isLive, isPartner, levelOf as bondLevelOf, stageOfAge, tiesOf, type Tie } from '../../src/core/bonds';
 import { makeCtx, type Ctx, type GameData } from '../../src/core/game';
 import { countSlots } from '../../src/core/npc';
-import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
+import { calendarYear, causeWord, chronicleText, classLabel, formatLine, labels, lineWord, lines, peopleCode, placeName, questionOf, raceName, Reader, scrub, unphrased } from '../../src/core/text';
 import { OUTCOME_TH } from '../../src/core/text/tuning';
 import { BOND_LEVEL_TH, TRAVEL_LEVEL_TH } from '../../src/core/text/words';
 import type { GameState, LogEntry, LogLevel } from '../../src/core/types';
@@ -126,7 +126,7 @@ const STAGE_TH = { infant: 'ทารก', child: 'วัยเรียน', yo
 function tieWord(ctx: Ctx, data: GameData, t: Tie): string {
   const lv = bondLevelOf(ctx, t);
   const names = (data.bonds?.items as { ties?: { levels?: { n: number; name: string }[] } } | undefined)?.ties?.levels;
-  return `${t.name} (${t.line} ${names?.find((l) => l.n === lv)?.name ?? BOND_LEVEL_TH[lv] ?? ''})`.replace(' )', ')');
+  return `${t.name} (${lineWord(t.line, t.kin)} ${names?.find((l) => l.n === lv)?.name ?? BOND_LEVEL_TH[lv] ?? ''})`.replace(' )', ')');
 }
 
 /** The allies and the family of the life, the travel, the arm in hand, the debt and the bondage: what the systems of M3 keep that the player may ask about. */
@@ -146,7 +146,7 @@ export function systemStatus(data: GameData, state: GameState): string[] {
   const partnerId = data.bonds ? bondsOf(life).partner : null;
   const partner = ties.find((t) => t.id === partnerId) ?? ties.find(isPartner);
   if (partner) out.push(`${partner.spouse ? 'คู่ชีวิต' : 'คนรัก'} ${tieWord(ctx, data, partner)}${partner.country !== life.country ? ` · อยู่ที่${placeName(ctx, partner.country) ?? ''}` : ''}`);
-  if (children.length) out.push(`ลูก ${children.map((c) => `${c.name} (อายุ ${Math.floor(hAgeOf(ctx, c))} ${STAGE_TH[c.stage ?? 'adult']}${c.kin === 'adopted' ? ' · ลูกบุญธรรม' : ''}${c.otherName ? ` · อีกฝ่ายคือ ${c.otherName}` : ''})`).join(' · ')}`);
+  if (children.length) out.push(`ลูก ${children.map((c) => `${c.name} (อายุ ${Math.floor(hAgeOf(ctx, c))} ${STAGE_TH[stageOfAge(Math.floor(hAgeOf(ctx, c)), adultAgeOf(ctx, c))]}${c.kin === 'adopted' ? ' · ลูกบุญธรรม' : ''}${c.otherName ? ` · อีกฝ่ายคือ ${c.otherName}` : ''})`).join(' · ')}`);
   const allies = ties.filter((t) => !KIN_LINES.has(t.line) && t.id !== partner?.id).sort(byCloseness);
   const waiting = data.bonds ? crisesWaiting(ctx) : [];
   if (waiting.length) out.push(`วิกฤตที่รอคำตอบ ${waiting.map((w) => `${w.tie.name} (${w.tie.line}): ${scrub(data, w.crisis.text)}`).join(' · ')}`);

@@ -625,7 +625,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'refuse', tie: 'T1', by: 'liar', after: true }), /^วิกฤตของ ไลลินา \(สหาย\): มิราไม่ได้ช่วยเขา เพราะท่านกระซิบว่าเขาโกหก$/],
     [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'refuse', tie: 'T1', by: 'dream', after: true }), /มิราไม่ได้ช่วยเขา แม้ท่านส่งฝันถึงเขา$/],
     [b('trouble', { code: 'KN-05', level: 5, text: '', what: 'พี่กลับมา', answer: 'small', tie: 'T1', by: null, after: true }), /^วิกฤตของ ไลลินา \(สหาย\): มิราช่วยได้เพียงเล็กน้อย$/],
-    [b('trouble', { code: 'FT-01', level: 3, text: 'ผู้ให้กู้ขู่จะผูกตัวเขา (ตามท่าทีของประเทศใน)', answer: 'full' }), /ผู้ให้กู้ขู่จะผูกตัวเขา — มิราช่วยเขาเต็มกำลัง$/],
+    [b('trouble', { code: 'FT-01', level: 3, text: 'ผู้ให้กู้ขู่จะผูกตัวเขา (ตามท่าทีของประเทศใน)', answer: 'full' }), /ผู้ให้กู้ขู่จะผูกตัวเขา — เรื่องจบในพริบตา ไม่มีเวลาให้ท่านแทรก มิราช่วยเขาเต็มกำลัง$/],
     [b('ending', { code: 'FT-12', key: 'c', text: 'ความลับร้ายแรงจนสายแตก', kind: 'split', involved: true }), /^เรื่อง “ความลับที่เพื่อนเก็บ”ของ ไลลินา \(สหาย\) จบลง: ความลับร้ายแรงจนสายแตก$/],
     [b('end', { way: 'death', why: 'ตาย', level: 5, cause: 'old' }, 'T2', 0), /จากไป \(ชราภาพ\)/],
     [b('end', { way: 'fade', why: 'ห่างจนไม่มีข่าว', level: 1 }, 'T3', 0), /จนสายจางหายไป/],
@@ -637,7 +637,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [b('end', { way: 'death', why: 'ตาย', level: 3, reason: 'ตาย', cause: 'old', kin: 'child', partner: false, spouse: false, age: 60, gender: 'f' }, 'T14'), /^ไลลินา ลูกของมิรา จากไปแล้ว$/],
     [b('end', { way: 'fade', why: 'x', level: 3, reason: 'หายไป', kin: 'child', partner: false, spouse: false, age: 50, gender: 'f' }, 'T15'), /^ไลลินา ลูกของมิรา หายไปโดยไม่มีใครรู้ว่าไปไหน$/],
     [b('funeral', { cause: 'old', level: 5 }, 'T6', 2), /^งานศพของ ไลลินา \(สหาย\) · ชราภาพ: มิราไปส่งเขาเป็นครั้งสุดท้าย$/],
-    [b('letter', { from: 'SV-05' }), /^จดหมายจาก ไลลินา \(สหาย\) ถึงมือมิรา ส่งมาจาก\S+$/],
+    [b('letter', { from: 'SV-05' }), /^(จดหมายจาก ไลลินา \(สหาย\) ถึงมือมิรา ส่งมาจาก\S+|มิราได้จดหมายจาก ไลลินา \(สหาย\) ที่ฝากมาจาก\S+|ไลลินา \(สหาย\) เขียนจาก\S+มาหามิรา)$/],
     [b('invite', { ask: 'travel', ok: true, chance: 70 }), /^มิราชวน ไลลินา ออกเดินทางด้วยกัน — เขาตกลง$/],
     [b('invite', { ask: 'lover', ok: false, chance: 40, refusal: 'hurt' }), /ขอให้ ไลลินา เป็นคนรัก — เขาปฏิเสธและเสียน้ำใจ$/],
     [b('child', { adopted: false, from: 'couple', b: 40 }, 'T7', 2), /^มิรามีลูกชื่อ ไลลินา$/],
@@ -653,7 +653,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [at(n++, { sys: 'bonds', kind: 'pair-story', id: 'T1+T2', level: 0, data: { a: 'ไลลินา', b: 'อาริน', line: 'สหาย', key: 'a', text: 'ตั้งงานร่วมกัน (ร้าน ทีม ขบวน)' } }), /^ไลลินา กับ อาริน: ตั้งงานร่วมกัน/],
     [b('successor', { npc: 'SV05-5', origin: 'เรียนก้าวเงาคู่', text: 'ศิษย์ใต้จันทรา' }, 'T9'), /ผู้สืบทอดต่อจาก.*เรียนก้าวเงาคู่/],
     [b('ally', { npc: 'AL18-2', origin: 'เป็นครูพิเศษ' }, 'T9'), /ได้มาเป็นพวกพ้องของมิรา — เป็นครูพิเศษ/],
-    [b('thread', { code: 'FT-07', stage: 4 }), /ยังค้างอยู่ที่ขั้นที่ 4/],
+    [b('thread', { code: 'FT-07', stage: 4 }), /ยังค้างอยู่ไม่ทันได้จบ จะตกไปถึงผู้สืบทอด$/],
     [b('freed', { how: 'owner' }, 'T10'), /เป็นอิสระแล้ว/],
 
     [sys('bondage', 'enter', { route: 'ถูกขาย', level: 2, country: 'NB-13', owner: 'นอคโรลิธ', price: 101, moved: false, stance: 'H' }, 'B2', 2), /ตกอยู่ในพันธะ: ผู้รับใช้ตามสัญญา \(ถูกขาย\) ที่\S+ ภายใต้ นอคโรลิธ · ค่าไถ่ราว 101 ทอง/],
@@ -666,7 +666,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('bondage', 'escape', { ok: false, to: null }, '', 2), /ถูกจับกลับมา/],
     [sys('bondage', 'escape', { ok: true, name: 'ฟีทิส', who: 'held' }, 'H1', 2), /^ฟีทิส ผู้ที่มิราถือสัญญาไว้ หนีไปได้$/],
     [sys('bondage', 'buy', { name: 'ฟีทิส', level: 'B2', price: 91, country: 'AL-01', npc: null }, 'H1'), /^มิราซื้อสัญญาของ ฟีทิส \(ผู้รับใช้ตามสัญญา\) ราคา 91 ทอง ที่\S+$/],
-    [sys('bondage', 'free', { name: 'ฟีทิส', how: 'ransom', price: 229 }, 'ฟีทิส'), /ฟีทิส เป็นอิสระแล้ว — มิราไถ่เขาออกมาด้วยทอง 229 ทอง/],
+    [sys('bondage', 'free', { name: 'ฟีทิส', how: 'ransom', price: 229 }, 'ฟีทิส'), /ฟีทิส เป็นอิสระแล้ว — มิราไถ่เขาออกมาในราคา 229 ทอง/],
     [sys('bondage', 'free', { name: 'โบธัน', how: 'bribe' }, 'โบธัน'), /ติดสินบนให้ปล่อยเขา/],
     [sys('bondage', 'sell', { name: 'ฟีทิส', gain: 120 }, 'H1'), /ขายสัญญาของ ฟีทิส ต่อ ได้ 120 ทอง/],
     [sys('bondage', 'sued', { name: 'ฟีทิส' }, 'H1'), /ฟีทิส ฟ้องร้อง/],
@@ -678,7 +678,7 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     [sys('travel', 'trip', { from: 'SV-09', to: 'NB-04', why: 'job:merchant', legs: 2, days: 30, fare: 5, smuggle: true }, 'NB-04'), /^เดินทางไปทำงานพ่อค้า: จาก\S+ ไป\S+ 2 ช่วงทาง ราว 30 วัน ค่าเดินทาง 5 ทอง โดยลักลอบข้ามด่าน$/],
     [sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'exile', legs: 3, days: 40, fare: 0, smuggle: false }, 'AL-06'), /^ถูกเนรเทศหรือหนีโทษ: จาก\S+ ไป\S+ 3 ช่วงทาง ราว 40 วัน$/],
     [sys('travel', 'trip', { from: 'SV-09', to: 'AL-06', why: 'story:hu.b2', legs: 3, days: 40, fare: 9, smuggle: false }, 'AL-06'), /^เดินทางตามเรื่อง “.+”: จาก\S+ ไป\S+ 3 ช่วงทาง/],
-    [sys('travel', 'stay', { node: 'hu.b2', to: 'AL-06', here: 'SV-09', why: 'chance' }, 'AL-06'), /^มิราไม่ได้ไปที่\S+ตามเรื่อง “.+” ยังอยู่ที่\S+$/],
+    [sys('travel', 'stay', { node: 'hu.b2', to: 'AL-06', here: 'SV-09', why: 'chance' }, 'AL-06'), /^มิราไม่ได้ไปที่\S+ตามเรื่อง “.+” ยังอยู่ที่\S+ เพราะยังเลือกอยู่ที่เดิม$/],
     [sys('travel', 'blocked', { from: 'KD-03', why: 'bound', cause: 'sc' }, 'KD-01', 0), null],
     [sys('travel', 'blocked', { from: 'KD-03', why: 'route closed', cause: 'story:hu.b2' }, 'KD-01', 1), /^มิราตามเรื่อง “.+” ไป\S+ไม่ได้ เพราะเส้นทางถูกปิด$/],
     [sys('travel', 'road', { from: 'KD-05', to: 'KD-03', note: 'bandits', name: 'x', why: 'sc' }, 'd2'), /^ระหว่างทาง: ถูกโจรหรือสัตว์ร้ายดักทาง$/],
@@ -840,5 +840,122 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     expect(clashStory(data, 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ')).toBe('เขาโยนตัวละครลงบันไดสองร้อยขั้น');
     // the name of the one who lives the life stands where the document says `ตัวละคร`
     expect(clashStory(data, 'เขาโยนตัวละครลงบันไดสองร้อยขั้น เส้น ข) เดินต่อ', 'มิรา')).toBe('เขาโยน มิรา ลงบันไดสองร้อยขั้น');
+  });
+
+  // ---------- round two of the review (R5 to R9) ----------
+
+  const read = (...log: LogEntry[]): string[] => lines(data, [birth, named, ...log], 0).filter((l) => log.includes(l.entry)).map((l) => l.text);
+
+  it('R5: the news of the death of a lover, a life partner or a child is told at level 2, of a friend at level 1', () => {
+    const lv = (entry: LogEntry) => lines(data, [birth, named, entry], 0).find((l) => l.entry === entry)!.level;
+    const news = (extra: LogEntry['data'], level: 0 | 1 | 2 | 3) => b('news', { kind: 'death', text: 'ไลลินา จากไป (old)', ...extra }, 'T1', level);
+    expect(lv(news({ partner: true, line: 'คนรัก' }, 2))).toBe(2);
+    expect(lv(news({ kin: 'child', line: 'ญาติรุ่นเยาว์' }, 2))).toBe(2);
+    expect(lv(news({}, 1))).toBe(1);
+  });
+
+  it('R5: after a child dies the parent has a line of grief, and a child is a child, not "ญาติรุ่นเยาว์"', () => {
+    const out = read(b('grief', { kin: 'child', gender: 'f', age: 12, cause: 'illness', line: 'ญาติรุ่นเยาว์' }, 'T7', 2));
+    expect(out).toHaveLength(1);
+    expect(out[0]).toMatch(/มิรา/);
+    expect(out[0]).toMatch(/ไลลินา/);
+    expect(out[0]).toMatch(/ลูก/);
+    expect(leaks(out[0])).toEqual([]);
+    const adopted = read(b('grief', { kin: 'adopted', age: 9, line: 'ญาติรุ่นเยาว์' }, 'T8', 2));
+    expect(adopted[0]).toMatch(/ลูกบุญธรรม/);
+    // the grief is a mark of the life: it is told at level 2
+    expect(lines(data, [birth, named, b('grief', { kin: 'child', age: 12, line: 'ญาติรุ่นเยาว์' }, 'T7', 2)], 0).at(-1)!.level).toBe(2);
+  });
+
+  it('R6: the thread left at death does not speak of a stage number', () => {
+    expect(read(b('thread', { code: 'FT-07', stage: 3 }))[0]).not.toMatch(/ขั้นที่/);
+  });
+
+  it('R7: a way of the story that named a place and was not followed says why, from what the travel knew', () => {
+    const stay = (why: string) => read(sys('travel', 'stay', { node: 'hu.b2', to: 'AL-06', here: 'SV-09', why }, 'AL-06'))[0];
+    expect(stay('bound')).toMatch(/เพราะถูกผูกตัวอยู่/);
+    expect(stay('purse')).toMatch(/เพราะเงินไม่พอค่าเดินทาง/);
+    expect(stay('war')).toMatch(/เพราะสงครามปิดเส้นทาง/);
+    expect(stay('route closed')).toMatch(/เพราะเส้นทางไปที่นั่นถูกปิด/);
+    expect(stay('far')).toMatch(/เพราะข้ามทวีปไกลเกินไป/);
+    expect(stay('chance')).toMatch(/เพราะยังเลือกอยู่ที่เดิม/);
+    for (const why of ['bound', 'purse', 'war', 'route closed', 'far', 'chance', 'wanted', 'closed']) expect(stay(why), why).toMatch(/ ยังอยู่ที่\S+ เพราะ/);
+  });
+
+  it('R7: the stays of one node to several places in one year are one line', () => {
+    const one = (to: string) => sys('travel', 'stay', { node: 'hu.b2', to, here: 'SV-09', why: 'far' }, to);
+    const out = lines(data, [birth, named, one('AL-06'), one('AL-07'), one('AL-08')], 1).filter((l) => l.sys === 'travel');
+    expect(out).toHaveLength(1);
+    expect(out[0].text).toMatch(/ไม่ได้ไปที่\S+ \S+ และ\S+ตามเรื่อง/);
+  });
+
+  it('R7: a way shut to the character on the road says why, with the same words as a stay', () => {
+    const blocked = (why: string) => lines(data, [birth, named, sys('travel', 'blocked', { from: 'SV-09', why, cause: 'story:hu.b2' }, 'AL-06', 0)], 0).find((l) => l.sys === 'travel')!.text;
+    expect(blocked('war')).toMatch(/เพราะสงครามปิดเส้นทาง/);
+    expect(blocked('purse')).toMatch(/เพราะเงินไม่พอค่าเดินทาง/);
+  });
+
+  it('R8: a partner who parts says why: a story node, a feeling, the distance, the silence or the years', () => {
+    const split = (extra: LogEntry['data']) => read(b('end', { way: 'split', why: 'FT-12 c', level: 4, reason: 'แยกทาง', kin: null, partner: true, spouse: true, age: 40, gender: 'f', ...extra }, 'T11'))[0];
+    expect(split({ why: 'bn.a3' })).toMatch(/จบลงแล้ว เพราะความรักไปต่อไม่ได้$/);
+    expect(split({ because: 'mood', bmood: 'หึง' })).toMatch(/จบลงแล้ว เพราะความหึงหวง$/);
+    expect(split({ because: 'far' })).toMatch(/เพราะอยู่ห่างกันคนละแดน$/);
+    expect(split({ because: 'silent' })).toMatch(/เพราะไม่ได้พบหน้ากันมานาน$/);
+    expect(split({ because: 'drift' })).toMatch(/เพราะใจห่างกันไปทีละน้อย$/);
+    // the words of the ending of the story, when they read as a sentence; a jargon cell is not used as the reason
+    expect(split({ because: 'drift', btext: 'ตัวละครไม่ไว้ใจเขาอีกเพราะความลับที่ถูกเปิดเผย' })).toMatch(/เพราะเรื่องที่เกิดขึ้น: ตัวละคร|เพราะเรื่องที่เกิดขึ้น: มิรา/);
+    expect(split({ because: 'drift', btext: 'ตัดขาด B ตก' })).toMatch(/เพราะใจห่างกันไปทีละน้อย$/);
+    for (const x of [split({ because: 'mood', bmood: 'โกรธ' }), split({ why: 'bn.a3' })]) expect(leaks(x), x).toEqual([]);
+    // a lover who goes back to being a friend says the same reason, not the title of the story
+    const line = read(b('line', { from: 'คนรัก', to: 'สหาย', why: 'bn.a3', level: 3, partner: true }))[0];
+    expect(line).toMatch(/\(เพราะความรักไปต่อไม่ได้\)/);
+    expect(line).not.toMatch(/เพราะเรื่อง “/);
+  });
+
+  it('R9: the pieces left by a cut link are gone: "(กติกาตาม)", "ประเทศใน)", "ประเทศท่าที A"', () => {
+    expect(scrub(data, 'ถูกหลอกขายเป็นทาสหนี้ (กติกาตาม )')).toBe('ถูกหลอกขายเป็นทาสหนี้');
+    expect(scrub(data, 'ค้าสิ่งที่ทำร้ายเผ่าหนึ่ง (ล่าสัตว์เพื่อหนัง จับภูต ค้าคนตามท่าทีของประเทศใน )')).toBe('ค้าสิ่งที่ทำร้ายเผ่าหนึ่ง (ล่าสัตว์เพื่อหนัง จับภูต ค้าคน)');
+    expect(scrub(data, 'หนีข้ามแดนไปประเทศท่าที A ที่ใกล้ที่สุด')).toBe('หนีข้ามแดนไปประเทศเสรี ที่ใกล้ที่สุด');
+  });
+
+  it('R9: a holder whose name already ends in a number is told apart from his generation ("ที่ 9ที่ 22")', () => {
+    expect(scrub(data, 'สังฆราชบอนิฟาซิอุสที่ 9ที่ 22')).toBe('สังฆราชบอนิฟาซิอุสที่ 9 (รุ่นที่ 22)');
+    expect(scrub(data, 'กอร์ทาที่ 44')).toBe('กอร์ทาที่ 44');
+  });
+
+  it('R9: a ransom names the price once ("ไถ่เขาออกมาในราคา 49 ทอง", not "ด้วยทอง 49 ทอง")', () => {
+    const out = read(sys('bondage', 'free', { name: 'ไลลินา', how: 'ransom', price: 49 }, 'B1', 2))[0];
+    expect(out).toMatch(/ไถ่เขาออกมาในราคา 49 ทอง$/);
+    expect(out).not.toMatch(/ทอง \d+ ทอง/);
+  });
+
+  it('R9: a life born in bondage says the name of the character on the first line, though it is written before the birth lines', () => {
+    const enter = sys('bondage', 'enter', { route: 'เกิดในพันธะ', level: 2, country: 'AL-01', owner: 'นอคโรลิธ', price: 28, moved: false }, 'B2', 2);
+    const out = lines(data, [birth, enter, named], 1).find((l) => l.sys === 'bondage')!;
+    expect(out.text).toMatch(/^มิราตกอยู่ในพันธะ/);
+    expect(out.text).not.toMatch(/ตัวละคร/);
+  });
+
+  it('R9: a young relative is said as a child, a taken-in child or a grandchild by his kin, not by the name of the line', () => {
+    const letter = (kin: LogEntry['data']['kin']) => read(b('letter', { from: 'AL-01', line: 'ญาติรุ่นเยาว์', kin }))[0];
+    expect(letter('child')).toMatch(/\(ลูก\)/);
+    expect(letter('adopted')).toMatch(/\(ลูกบุญธรรม\)/);
+    expect(letter('grandchild')).toMatch(/\(หลาน\)/);
+    for (const kin of ['child', 'adopted', 'grandchild']) expect(letter(kin)).not.toMatch(/ญาติรุ่นเยาว์/);
+  });
+
+  it('R9: a crisis that is decided at once reads differently from one that waited for the god', () => {
+    const now = read(b('trouble', { code: 'FT-01', level: 3, text: 'ผู้ให้กู้ขู่จะผูกตัวเขา', answer: 'full' }))[0];
+    const waited = read(b('trouble', { code: 'KN-05', level: 5, text: '', answer: 'full', after: true, by: 'whisper' }))[0];
+    expect(now).toMatch(/ไม่มีเวลาให้ท่านแทรก/);
+    expect(waited).not.toMatch(/ไม่มีเวลาให้ท่านแทรก/);
+    expect(waited).toMatch(/^วิกฤตของ/);
+  });
+
+  it('R4: the year line says what went to the debt when the economy gives it, and still reads without it', () => {
+    const year = (extra: LogEntry['data']) => read(sys('economy', 'year', { kind: 'work', income: 20, tax: 2, living: 5, fare: 0, loss: 3, share: 0, gain: 0, gold: 10, debt: 30, debtChange: -10, ...extra }, 'y', 1))[0];
+    expect(year({})).toMatch(/จ่าย 10 ทอง/);
+    expect(year({ debtPaid: 10, loss: 0 })).toMatch(/ใช้หนี้ 10/);
+    expect(year({ debtPaid: 10 })).toMatch(/จ่าย 20 ทอง \(ภาษี 2 · ค่าครองชีพ 5 · ใช้หนี้ 10 · การซื้อและค่าใช้จ่ายอื่น 3\)/);
   });
 });
