@@ -150,7 +150,9 @@ const PHRASES: Record<string, ConditionX> = {
   ปิดเรื่องค้างครบ: { k: 'cmp', stat: 'lineage.open', op: '==', value: 0, label: 'เรื่องค้าง' },
   มีลูกที่ยังมีชีวิต: { k: 'count', what: 'family.childrenAlive', min: 1 },
   ชื่อเสียงสูงกว่ารุ่นก่อน: { k: 'cmp', stat: 'fame.overParent', op: '>', value: 0, label: 'ชื่อเสียงเทียบรุ่นก่อน' },
-  อยู่รอดสองยุค: { k: 'count', what: 'eras.lived', min: 2 },
+  ตระกูลอยู่รอดสองยุค: { k: 'count', what: 'lineage.eras', min: 2 },
+  มีผู้สืบเรื่อง: { k: 'count', what: 'lineage.successors', min: 1 },
+  เรื่องค้างเป็นศึกสายเลือด: { k: 'has', kind: 'flag', id: 'thread.blood_feud' },
   ย้ายออกจากถิ่นตระกูล: { k: 'has', kind: 'flag', id: 'left_home' },
   ถิ่นรังเกียจลูกครึ่ง: { k: 'place', kinds: ['halfDislike'] },
 };
@@ -318,6 +320,10 @@ export function parseCondition(text: string, ids: IdIndex): Condition | null {
 
 /** Country flags of the world state (code-plan §6.1) that the docs write in ticks. */
 const FLAG_WORDS = new Set(['war', 'famine', 'plague', 'golden', 'fallen', 'god_ruin']);
+/** A leftover still carries a number (names like `ไวรอน-1` and `(หัวข้อ 4)` references do not count). */
+function looksNumeric(text: string): boolean {
+  return /\d|%|×/.test(text.replace(/[฀-๿]+-\d+/g, '').replace(/หัวข้อ\s*\d+(?:\.\d+)?/g, ''));
+}
 const THAI_NUM: Record<string, number> = { สอง: 2, สาม: 3, สี่: 4 };
 /** `ถิ่นติดทะเล` `อยู่เมืองใหญ่` `ถิ่นมีสงคราม` → place kinds (Condition `place`). */
 const PLACE_WORDS: Record<string, string> = { ชายฝั่ง: 'coast', ทะเล: 'coast', แม่น้ำ: 'river', เมืองใหญ่: 'city', สงคราม: 'war', ทุพภิกขภัย: 'famine', โรคระบาด: 'plague' };
@@ -374,7 +380,7 @@ export function parseWeightCell(cell: string, ids: IdIndex): WeightCell {
     // names who is favoured without saying by how much (a condition word like `ยุค ≥ 3` is kept as words too)
     out.note = [out.note, part].filter(Boolean).join(' · ');
     const plain = part.replace(COUNTRY, ' ').replace(NPC, ' ');
-    if (/\d|%|×/.test(plain) && !parseConditionX(plain, ids, false)) out.unparsed.push(part);
+    if (looksNumeric(plain) && !parseConditionX(plain, ids, false)) out.unparsed.push(part);
   }
   return out;
 }
@@ -1065,7 +1071,7 @@ function pickSegment(seg: string, ids: IdIndex, out: Parsed, opts: ParseOpts): s
   out.effects.push({ k: 'pick', of });
   const left = subs.map((x) => x.rest).join(' ');
   for (const x of subs) out.unparsed.push(...x.sub.unparsed);
-  return /\d|%|×/.test(left.replace(/\s+/g, ' ')) ? left : '';
+  return looksNumeric(left.replace(/\s+/g, ' ')) ? left : '';
 }
 
 /** One segment: a condition around its effects, a choice between them, or plain effects. Returns what was left unread. */
@@ -1156,7 +1162,7 @@ export function parseCell(cell: string, ids: IdIndex, opts: ParseOpts = {}): Par
     if (picked) labels.push(seg.replace(/`/g, '').replace(/\{[^}]*\}/g, '').replace(/\s+/g, ' ').trim());
     else if (label) labels.push(label);
     const left = rest.replace(/\s+/g, ' ').trim();
-    if (/\d|%|×/.test(left)) out.unparsed.push(seg.trim());
+    if (looksNumeric(left)) out.unparsed.push(seg.trim());
   }
   out.label = labels.join(' · ');
   // a cell made only of codes ("`soldier` หรือ `mercenary`") has no words left: say the codes (review L1)

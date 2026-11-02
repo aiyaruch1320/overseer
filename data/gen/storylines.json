@@ -1,5 +1,5 @@
 {
- "version": "1d75034e41a2",
+ "version": "6c09bb139779",
  "sources": [
   "docs/lore/storylines/01-human.md",
   "docs/lore/storylines/02-elf.md",
@@ -28802,13 +28802,14 @@
      {
       "key": "c",
       "weight": 25,
-      "label": "ทิ้งเรื่องค้าง · เรื่องค้างเปลี่ยนรูปตามชนิด (หัวข้อ 3 ของเรื่องค้าง) · ถ้าเป็นศึกสายเลือด",
+      "label": "ทิ้งเรื่องค้าง · เรื่องค้างเปลี่ยนรูปตามชนิด (หัวข้อ 3 ของเรื่องค้าง) · ถ้าเรื่องค้างเป็นศึกสายเลือด",
       "effects": [
        {
         "k": "if",
         "cond": {
-         "k": "text",
-         "text": "ศึกสายเลือด"
+         "k": "has",
+         "kind": "flag",
+         "id": "thread.blood_feud"
         },
         "then": [
          {
@@ -44485,64 +44486,47 @@
    {
     "line": "heir",
     "title": "ผู้ปิดสมุดตระกูล",
-    "condRaw": "ปิดเรื่องค้างครบทุกข้อ",
+    "condRaw": "ปิดเรื่องค้างครบ",
     "nodes": [],
     "events": [],
     "legend": "สมุดที่ไม่มีหนี้ค้าง",
     "src": "docs/lore/storylines/23-heir.md:48",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "cmp",
-       "stat": "lineage.open",
-       "op": "==",
-       "value": 0,
-       "label": "เรื่องค้าง"
-      },
-      {
-       "k": "text",
-       "text": "ทุกข้อ"
-      }
-     ]
+     "k": "cmp",
+     "stat": "lineage.open",
+     "op": "==",
+     "value": 0,
+     "label": "เรื่องค้าง"
     }
    },
    {
     "line": "heir",
     "title": "ผู้พาตระกูลข้ามยุค",
-    "condRaw": "ตระกูลอยู่รอดเหตุการณ์ใหญ่สองยุค",
+    "condRaw": "ตระกูลอยู่รอดสองยุค",
     "nodes": [],
     "events": [],
     "legend": "ชื่อสกุลที่อยู่ในสองยุค",
     "src": "docs/lore/storylines/23-heir.md:49",
     "cond": {
-     "k": "text",
-     "text": "ตระกูลอยู่รอดเหตุการณ์ใหญ่สองยุค"
+     "k": "count",
+     "what": "lineage.eras",
+     "min": 2
     }
    },
    {
     "line": "heir",
     "title": "ผู้ถูกเทียบกับบรรพบุรุษ",
-    "condRaw": "ชื่อเสียงสูงกว่ารุ่นก่อนสูงสุด",
+    "condRaw": "ชื่อเสียงสูงกว่ารุ่นก่อน",
     "nodes": [],
     "events": [],
     "legend": "คำกล่าวว่าลูกเก่งกว่าพ่อแม่",
     "src": "docs/lore/storylines/23-heir.md:50",
     "cond": {
-     "k": "and",
-     "of": [
-      {
-       "k": "cmp",
-       "stat": "fame.overParent",
-       "op": ">",
-       "value": 0,
-       "label": "ชื่อเสียงเทียบรุ่นก่อน"
-      },
-      {
-       "k": "text",
-       "text": "สูงสุด"
-      }
-     ]
+     "k": "cmp",
+     "stat": "fame.overParent",
+     "op": ">",
+     "value": 0,
+     "label": "ชื่อเสียงเทียบรุ่นก่อน"
     }
    },
    {
@@ -57612,39 +57596,32 @@
      "a1",
      "a7"
     ],
-    "condRaw": "มีเรื่องที่ผูกตามข้อ 4",
+    "condRaw": "มีเรื่องค้าง",
     "src": "docs/lore/storylines/23-heir.md:26",
     "cond": {
-     "k": "text",
-     "text": "มีเรื่องที่ผูกตามข้อ 4"
+     "k": "count",
+     "what": "lineage.open",
+     "min": 1
     }
    },
    {
     "node": "hr.a4",
     "nodesRaw": "แทรกที่อายุ 40 ถึง 50",
     "replaces": [],
-    "condRaw": "ทายาทมีลูกที่ยังมีชีวิต หรือผู้สืบเรื่อง",
+    "condRaw": "มีลูกที่ยังมีชีวิต หรือมีผู้สืบเรื่อง",
     "src": "docs/lore/storylines/23-heir.md:27",
     "cond": {
      "k": "or",
      "of": [
       {
-       "k": "and",
-       "of": [
-        {
-         "k": "count",
-         "what": "family.childrenAlive",
-         "min": 1
-        },
-        {
-         "k": "text",
-         "text": "ทายาท"
-        }
-       ]
+       "k": "count",
+       "what": "family.childrenAlive",
+       "min": 1
       },
       {
-       "k": "text",
-       "text": "ผู้สืบเรื่อง"
+       "k": "count",
+       "what": "lineage.successors",
+       "min": 1
       }
      ]
     }

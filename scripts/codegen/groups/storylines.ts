@@ -760,7 +760,7 @@ export default function run(): GenReport {
   writeGen('convergence', conv, [`${DIR}/00-convergence.md`], BY);
   void sources;
   unparsed.write();
-  return { group: GROUP, files: ['storylines.json', 'convergence.json'], unparsed: unparsed.count, strict: false };
+  return { group: GROUP, files: ['storylines.json', 'convergence.json'], unparsed: unparsed.count, strict: true };
 }
 
 /** `and[node so.t1, text "คำถามแรก"]` where "คำถามแรก" is the title of so.t1: drop the text. */

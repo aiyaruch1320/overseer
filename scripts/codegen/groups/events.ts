@@ -608,7 +608,7 @@ export default function run(): GenReport {
   writeGen('local-events', local, [F.local, F.localGen], 'scripts/codegen/groups/events.ts');
   unp.write();
 
-  return { group: 'events', files: ['world-events.json', 'local-events.json'], unparsed: unp.count, strict: false };
+  return { group: 'events', files: ['world-events.json', 'local-events.json'], unparsed: unp.count, strict: true };
 }
 
 const MINUS_RE = /[−–]/g;
