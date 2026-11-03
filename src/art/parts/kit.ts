@@ -66,6 +66,22 @@ export function headOf(r: Rig): Head {
   const [hx, hy] = r.head, [rx, ry] = r.hr;
   return { hx: Math.round(hx), hy: Math.round(hy), rx, ry, top: Math.round(hy - ry), bot: Math.round(hy + ry) - 1, l: Math.round(hx - rx), rgt: Math.round(hx + rx) - 1 };
 }
+/**
+ * A shape that hugs the head: every pixel of the head's ellipse (grown by `grow`) for which `pred` holds. `nx` runs from the back of the head (-1)
+ * to the face (+1), `ny` from the crown (-1) to the chin (+1), both relative to the head's own radii. Hair, caps and helmets are drawn with it.
+ */
+export function cap(r: Rig, mat: number, grow: number, pred: (nx: number, ny: number) => boolean, clearEar = false): void {
+  const h = headOf(r), [cx, cy] = r.head, rx = h.rx + grow, ry = h.ry + grow;
+  const ear = clearEar && ['long', 'pointed', 'fin'].includes(r.look.body.ears);
+  for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++)
+    for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) {
+      const dx = x + 0.5 - cx, dy = y + 0.5 - cy;
+      if ((dx / rx) ** 2 + (dy / ry) ** 2 > 1) continue;
+      const nx = dx / h.rx, ny = dy / h.ry;
+      if (ear && nx < -0.35 && ny > -0.5 && ny < 0.5) continue;
+      if (pred(nx, ny)) r.p.px(x, y, mat);
+    }
+}
 /** Draw something over the head and keep the face (the lower front of the head) as it was: hoods, cowls, turbans. */
 export function keepFace(r: Rig, draw: () => void): void {
   const { hx, hy, rx, ry } = headOf(r), { p } = r, keep: [number, number, number][] = [];

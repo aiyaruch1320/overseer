@@ -3,28 +3,14 @@
 // covers the head drops the parts that stand above it (a bun, a topknot, a crest), so the hat never has hair growing through it.
 // Beards draw in the `face` layer: over the chest when they hang, under the hat.
 import type { Part, Rig } from '../rig';
-import { TONE, hash, headOf, mix, seedOf } from './kit';
+import { TONE, cap as kitCap, hash, headOf, mix, seedOf } from './kit';
 
 /** Hats under which hair can stand above the head (the rest cover it). */
 const LOW_HATS = new Set(['', 'circlet', 'laurel', 'bandana', 'goggles', 'feather']);
 const standsUp = (r: Rig): boolean => LOW_HATS.has(r.look.hat);
 
-/**
- * Hair that hugs the head: every pixel of the head's ellipse (grown by `grow`) for which `pred` holds. `nx` runs from the back of the head (-1)
- * to the face (+1), `ny` from the crown (-1) to the chin (+1), both relative to the head's own radii.
- */
-function cap(r: Rig, grow: number, pred: (nx: number, ny: number) => boolean, mat = r.m.hair): void {
-  const h = headOf(r), [cx, cy] = r.head, rx = h.rx + grow, ry = h.ry + grow;
-  const clearEar = ['long', 'pointed', 'fin'].includes(r.look.body.ears);
-  for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++)
-    for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) {
-      const dx = x + 0.5 - cx, dy = y + 0.5 - cy;
-      if ((dx / rx) ** 2 + (dy / ry) ** 2 > 1) continue;
-      const nx = dx / h.rx, ny = dy / h.ry;
-      if (clearEar && nx < -0.35 && ny > -0.5 && ny < 0.5) continue;
-      if (pred(nx, ny)) r.p.px(x, y, mat);
-    }
-}
+/** Hair that hugs the head (see `cap` of the kit); the ear of a pointed-eared race is kept clear. */
+const cap = (r: Rig, grow: number, pred: (nx: number, ny: number) => boolean, mat = r.m.hair): void => kitCap(r, mat, grow, pred, true);
 /** Short hair's outline: over the crown, the back and the side of the head, a fringe over the brow. */
 const shortCap = (r: Rig, grow = 0.6): void => cap(r, grow, (nx, ny) => ny < -0.32 || (nx < -0.1 && ny < 0.5));
 const sz = (r: Rig, v: number) => Math.max(1, Math.round(v * r.k));
