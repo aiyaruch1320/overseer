@@ -533,7 +533,9 @@ export const FEATS: Record<string, Part> = {
   },
   // ── winged ──
   'wings:feather': {
-    back: (r) => { const lite = mixHex(r.look.accent, '#ffffff', r.look.accent.toLowerCase() === '#ffffff' ? 0 : 0.55); featherWing(r, lite, shadowOf(lite)); },
+    // the wing is the look's accent (the docs' wing colour), only a little lightened, so a blue, a gold or a grey wing reads as that colour and not as white;
+    // a docs-white wing is a warm white that the shading still models
+    back: (r) => { const a = r.look.accent.toLowerCase(), lite = a === '#ffffff' ? '#ece8e0' : mixHex(r.look.accent, '#ffffff', 0.16); featherWing(r, lite, shadowOf(lite)); },
   },
   sunstrap: {
     // the chest strap that holds the wings: leather across the chest to the far hip, a gold sun where it crosses

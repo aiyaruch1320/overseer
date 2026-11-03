@@ -37,6 +37,13 @@ describe('the feats', () => {
       expect(changes(id)).toBe(true);
     });
 
+  it('the war paint and the scars of an orc are on grown orcs only: a child has none', () => {
+    for (const id of ['warpaint', 'scars']) {
+      expect(changes(id, 'adult'), id).toBe(true);
+      expect(changes(id, 'child'), id).toBe(false);
+    }
+  });
+
   it('the races of 02-races.md show their marks in the order of the doc: no race looks like another', () => {
     // every race as an adult man in the same pose is a different picture, and so is every woman
     const fs = RACES.map((r) => paintPerson(raceLook(r), 'idle', 0));

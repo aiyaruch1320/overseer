@@ -99,8 +99,8 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait, rest?: number): Key
       ];
       // a thrust: drawn back with the body behind it, driven out the full length with the far hand on the shaft, pulled back
       return [
-        { L: -2, fa: 1, ba: -3, hand: [-3, 3], far: [-4, 4], ang: -8 * DEG, push: -5 },
-        { b: 1, L: 2, fa: 4, ba: -3, hand: [6, 2], far: [2, 3], ang: -3 * DEG, push: 3, flap: 2 },
+        { L: -1, fa: 1, ba: -2, hand: [-1, 3], far: [-3, 4], ang: -8 * DEG, push: -3.5 },
+        { b: 1, L: 1, fa: 4, ba: -3, hand: [5, 2], far: [2, 3], ang: -3 * DEG, push: 2, flap: 2 },
         { L: 1, fa: 2, ba: -1, hand: [4, 3], far: [0, 4], ang: -18 * DEG, push: -1, flap: 1 },
       ];
     case 'cast': return castKeys(up);
@@ -172,7 +172,9 @@ function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: K
   const key: Key = st === 'elder' && pose === 'walk' ? { ...key0, fa: Math.round((key0.fa ?? 0) * 0.6), ba: Math.round((key0.ba ?? 0) * 0.6), b: 0 } : key0;
   // a big race's young are still big: a giant's child is taller than a human adult, so the stage shrinks a race that is above human size by less
   const sc = L.body.scale > 1 && st !== 'infant' ? 1 - (1 - STAGE_SCALE[st]) / (L.body.scale * L.body.scale) : STAGE_SCALE[st];
-  const H = Math.max(10, Math.round(ADULT_H * L.body.scale * sc));
+  // a giant's or an ogre's child stands clearly above a grown human (four pixels at least), and still below its own grown people
+  const bigYoung = L.body.scale >= 1.25 && (st === 'child' || st === 'teen') ? ADULT_H + (st === 'child' ? 4 : 5) : 0;
+  const H = Math.max(10, bigYoung, Math.round(ADULT_H * L.body.scale * sc));
   const k = H / ADULT_H;
   // a big-headed little race (the fae) keeps a head tall enough to show a face
   const hh = Math.max(L.body.head >= 1.15 && H >= 14 ? 6 : 5, Math.round(H * HEAD_SHARE[st] * Math.min(1.25, Math.max(0.8, L.body.head))));
