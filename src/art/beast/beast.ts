@@ -10,6 +10,7 @@ import { paintConstruct } from './construct';
 import { paintDragon } from './dragon';
 import { paintFlyer } from './flyer';
 import { ghostFrame, GHOST_IDS } from './ghost';
+import { isGhoul, paintGhoul } from './ghoul';
 import { paintGiant } from './giant';
 import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, mix, motion, ovEll, over, type Ctx, type Info } from './kit';
 import { personLookOf, type BeastLook } from './look';
@@ -40,7 +41,7 @@ const OFFSETS: Record<number, [number, number][]> = {
   3: [[-8, -5], [8, -6], [0, -1]],
 };
 
-const isPerson = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'person' || L.form === 'wolfman');
+const isPerson = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'person' || L.form === 'wolfman') && !isGhoul(L);
 const isSiren = (L: BeastLook): boolean => L.kind === 'enemy' && L.form === 'siren';
 const isGhost = (L: BeastLook): L is EnemyLook => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'ghost' || GHOST_IDS.includes(L.id));
 
@@ -115,7 +116,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
     L, p, w: fr.w, h: fr.h, foot: fr.foot, cx, mo, px: targetHeight(L) * k,
     mat: (h, o) => p.mat(h, o), pen: (s) => new Pen(p, cx, fr.foot, s),
   };
-  const painter: (c: Ctx<any>) => Info = L.kind === 'dragon' ? paintDragon : L.size === 'XXL' ? paintColossus : L.kind === 'enemy' && isSpecial(L) ? paintSpecial : PLAN[L.plan];
+  const painter: (c: Ctx<any>) => Info = L.kind === 'dragon' ? paintDragon : L.size === 'XXL' ? paintColossus : L.kind === 'enemy' && isSpecial(L) ? paintSpecial : L.kind === 'enemy' && isGhoul(L) ? paintGhoul : PLAN[L.plan];
   const info = painter(c);
   if (mo.die) {
     const kind = L.kind === 'enemy' ? L.dieKind : 'sag';
@@ -136,6 +137,7 @@ export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h), offs = OFFSETS[group];
   const spec = POSE_OF[pose];
   const order = [...offs.keys()].sort((a, b) => offs[a][1] - offs[b][1]);
-  for (const i of order) over(out, one(spec.loop ? (f + i) % spec.n : f, i), offs[i][0], offs[i][1]);
+  const spread = L.kind === 'enemy' && isGhoul(L) ? 1.7 : 1; // the ghouls run in a loose pack, not a heap
+  for (const i of order) over(out, one(spec.loop ? (f + i) % spec.n : f, i), Math.round(offs[i][0] * spread), offs[i][1]);
   return out;
 }
