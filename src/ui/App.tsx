@@ -5,6 +5,7 @@ import { EndScreen } from './end';
 import { GodPanel, openGod } from './god';
 import { WorldMap } from '../map';
 import { LifeScene } from './LifeScene';
+import { Layers } from './Layers';
 import './god-map';
 import { StartScreen } from './start';
 import { WatchScreen } from './watch';
@@ -29,6 +30,7 @@ export function App() {
         map={store.gameData && store.state ? <WorldMap data={store.gameData} state={store.state} mini width={MINI_MAP_WIDTH} /> : undefined}
         scene={<LifeScene />}
       />
+      <Layers />
       <GodPanel />
     </>
   );
