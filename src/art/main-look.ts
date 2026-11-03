@@ -131,6 +131,14 @@ export function toolOfWeapon(name: string, type: string): string {
       return known(has(/ลูกแก้ว/) ? 'orbstaff' : has(/ตำรา|สัญญา/) ? 'book' : has(/พิณ|ขลุ่ย/) ? 'lute' : has(/ไม้เท้า|คทา/) ? 'staff' : 'wand');
     case 'โล่':
       return known('shield');
+    case 'ปืน':
+      return known(has(/ไรเฟิล|ยาว|ซุ่ม/) ? 'rifle' : has(/คาบศิลา|มัสเก็ต|ใหญ่/) ? 'musket' : 'pistol');
+    case 'แส้':
+      return known('whip');
+    case 'หนังสติ๊ก':
+      return known('sling');
+    case 'มวย':
+      return known('knuckles');
     default:
       return '';
   }
