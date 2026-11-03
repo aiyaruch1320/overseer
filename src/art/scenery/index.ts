@@ -1,31 +1,39 @@
-// The painter of scene backgrounds (M7 ก2). This first version is a placeholder of the contract in types.ts: a flat sky and ground, so the
-// stage (ก1) can be built against it while the real painter is written.
-import type { Frame } from '../paint';
-import { GROUND_Y, SCENE_H, SCENE_W, type Scenery, type ScenerySpec } from './types';
+// The painter of scene backgrounds (M7 ก2): for a continent and a setting (outdoor, town, indoor) the layers sky, far, mid and ground, painted
+// once from the UI values of the docs (docs/appearance/01-continents.md, countries/*.md) and handed over as pixel frames. Pure and deterministic:
+// the same spec gives the same pixels, no DOM, so Node tests run it. Contract: types.ts.
+import { makeCtx } from './ctx';
+import { COUNTRIES } from './countries';
+import { indoorPainter } from './indoor';
+import { AL, AZ, KD, MH, NR, type Painter } from './outdoor-a';
+import { MK, NB, SH, SV } from './outdoor-b';
+import { profileOf, type Base } from './profiles';
+import { townPainter } from './town';
+import { type Scenery, type ScenerySpec, type SceneryLayer } from './types';
+import { Grade } from './util';
 
 export * from './types';
 
-function flat(w: number, h: number, top: number, bottom: number, rgb: [number, number, number]): Frame {
-  const data = new Uint8ClampedArray(w * h * 4);
-  for (let y = top; y < bottom; y++)
-    for (let x = 0; x < w; x++) {
-      const i = (y * w + x) * 4;
-      data[i] = rgb[0];
-      data[i + 1] = rgb[1];
-      data[i + 2] = rgb[2];
-      data[i + 3] = 255;
-    }
-  return { w, h, data };
-}
+const OUTDOOR: Record<Base, Painter> = { AZ, MH, KD, NR, AL, MK, SH, SV, NB };
+
+/** The speed of each layer (the share of the camera's move it follows). */
+const SPEED = { sky: 0, far: 0.2, mid: 0.5, ground: 1 } as const;
 
 /** The layers of a place, painted once (the caller keeps them). */
 export function paintScenery(spec: ScenerySpec): Scenery {
-  return {
-    spec,
-    layers: [
-      { name: 'sky', speed: 0, frame: flat(SCENE_W, SCENE_H, 0, SCENE_H, [26, 28, 36]) },
-      { name: 'ground', speed: 1, frame: flat(SCENE_W * 2, SCENE_H, GROUND_Y - 6, SCENE_H, [12, 13, 18]) },
-    ],
-    light: '#c8d4ee',
-  };
+  const P = profileOf(spec.continent, spec.country);
+  const season = spec.season !== undefined && Number.isFinite(spec.season) ? Math.min(3, Math.max(0, Math.floor(spec.season))) : undefined;
+  const g = new Grade(season, P.snow);
+  const country = spec.country ? COUNTRIES[spec.country] : undefined;
+  const cx = makeCtx(P, g, spec.setting, country, Math.floor(spec.seed ?? 0) | 0);
+  const pt = spec.setting === 'indoor' ? indoorPainter(cx) : spec.setting === 'town' ? townPainter(cx, OUTDOOR[P.base]) : OUTDOOR[P.base];
+  const make = (name: SceneryLayer['name'], f: (c: typeof cx) => SceneryLayer['frame']): SceneryLayer => ({ name, speed: SPEED[name], frame: f(cx) });
+  const layers: SceneryLayer[] = [make('sky', pt.sky), make('far', pt.far), make('mid', pt.mid), make('ground', pt.ground)];
+  const ambient = ambientOf(cx.country?.ambient, spec.setting, P.ambient);
+  return { spec, layers, light: spec.setting === 'indoor' ? P.lamp : P.light, ...(ambient ? { ambient } : {}) };
+}
+
+/** The ambient particle: the country's own when it names one, else the continent's (outdoors and in town); inside only a fire's or a machine's. */
+function ambientOf(country: string | undefined, setting: string, continent: string): string | undefined {
+  if (setting === 'indoor') return continent === 'embers' || continent === 'smoke' ? continent : 'dust';
+  return country && country !== 'none' ? country : continent;
 }
