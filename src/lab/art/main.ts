@@ -1,6 +1,6 @@
 // The art lab (art-lab.html): the same pixel sprites drawn by each way the browser can draw, side by side, with a meter, plus a map, a cut
 // scene and the god's effects drawn the ways that suit them. Only one tab runs at a time, so the meter measures that tab alone.
-import { METHODS, METHOD_NAME, legacyVector, mountBench, sheetFile, type Bench, type Method } from './benches';
+import { METHODS, METHOD_NAME, mountBench, sheetFile, type Bench, type Method } from './benches';
 import { mountCutscene } from './cutscene';
 import { mountEffects } from './effects';
 import { mountMap } from './map';
@@ -102,14 +102,6 @@ async function compare(el: HTMLElement): Promise<() => void> {
     grid.append(cell);
     benches.push(await mountBench(m, host, { W: 380, H: 220, sheets, zoom, count: 1 }));
   }
-  const cell = document.createElement('div');
-  cell.className = 'cell';
-  cell.innerHTML = '<h3>เทียบ · เวกเตอร์เดิม (legacy/render)</h3>';
-  const host = document.createElement('div');
-  cell.append(host);
-  cell.insertAdjacentHTML('beforeend', '<div class="note">ตัววาดเวกเตอร์ที่มีอยู่แล้ว (แนวสมจริง) วาดใหม่ตามซูม จึงคมทุกระดับ แต่ต้องวาดใหม่ทุกครั้งที่ซูมเปลี่ยน</div>');
-  grid.append(cell);
-  const stopVec = await legacyVector(host, 380, 220, () => zoom);
   const z = el.querySelector<HTMLInputElement>('#cz')!, zv = el.querySelector('#czv')!, wob = el.querySelector<HTMLInputElement>('#cwob')!;
   const set = (v: number) => { zoom = v; zv.textContent = `${v.toFixed(1)}×`; benches.forEach((b) => b.setZoom(v)); };
   z.oninput = () => set(Number(z.value));
@@ -120,7 +112,7 @@ async function compare(el: HTMLElement): Promise<() => void> {
   };
   id = requestAnimationFrame(wobble);
   benchCost = () => benches.reduce((t, b) => t + b.cost(), 0);
-  return () => { cancelAnimationFrame(id); benches.forEach((b) => b.destroy()); stopVec(); };
+  return () => { cancelAnimationFrame(id); benches.forEach((b) => b.destroy()); };
 }
 
 // tab: one way under load

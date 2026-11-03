@@ -1,4 +1,4 @@
-// The five ways to put the lab's sprites on a page (and the vector painter of legacy/ for its look). Each bench draws the same walkers
+// The five ways to put the lab's sprites on a page. Each bench draws the same walkers
 // from the same sheets in a stage of W × H, takes a zoom (screen pixels per art pixel) and a count, and reports the JS time of its last frame.
 import { ANIMS, COLS, FRAME_MS, FRAME_N, frameIndex, type Anim, type Sheet } from './pixel';
 
@@ -337,31 +337,4 @@ export function mountBench(m: Method, host: HTMLElement, o: BenchOpts): Promise<
     case 'webgl': return webglBench(host, o);
     case 'bitmap': return bitmapBench(host, o);
   }
-}
-
-// ── the vector painter of legacy/ (the realistic look the docs chose before), for its look only ──────────────────────────────────────
-export async function legacyVector(host: HTMLElement, W: number, H: number, getZoom: () => number): Promise<() => void> {
-  const path = '/legacy/render/characters/portrait.ts';
-  const mod = (await import(/* @vite-ignore */ path)) as { renderFrame: (L: unknown, frame: number, ppu: number, into?: HTMLCanvasElement) => HTMLCanvasElement };
-  const look = { race: 'human', role: 'guard', skin: 0xd8a878, hair: 0x2a1e18, hairStyle: 2, beard: 0, eye: 0x2a2a2a, mark: 0, build: 1, tall: false, outfit: 'armor', cloth: 0x5a6a4a, cloth2: 0x6a4a32, pattern: 0, hat: 'hood', tool: 'spear', child: false, elder: false, fem: false };
-  const stage = document.createElement('div');
-  stage.style.cssText = `position:relative;width:${W}px;height:${H}px;overflow:hidden;background:#c8cdd5`;
-  const cv = document.createElement('canvas');
-  const dpr = window.devicePixelRatio || 1;
-  cv.width = W * dpr; cv.height = H * dpr; cv.style.cssText = `width:${W}px;height:${H}px`;
-  stage.append(cv); host.append(stage);
-  const c = cv.getContext('2d')!;
-  // frames painted once per zoom (the painter is slow to run every frame: it is cached like the legacy atlas does)
-  const cache = new Map<string, HTMLCanvasElement>();
-  let id = 0;
-  const tick = (now: number) => {
-    const z = getZoom(), ppu = z * dpr * 0.5, f = 2 + (Math.floor(now / 110) % 8), key = `${ppu.toFixed(2)}:${f}`;
-    let fr = cache.get(key);
-    if (!fr) { if (cache.size > 64) cache.clear(); fr = mod.renderFrame(look, f, ppu); cache.set(key, fr); }
-    c.clearRect(0, 0, cv.width, cv.height);
-    c.drawImage(fr, Math.round((cv.width - fr.width) / 2), Math.round((cv.height - fr.height) / 2));
-    id = requestAnimationFrame(tick);
-  };
-  id = requestAnimationFrame(tick);
-  return () => { cancelAnimationFrame(id); stage.remove(); };
 }
