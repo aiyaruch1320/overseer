@@ -345,8 +345,9 @@ describe('a bare card is never left bare (balance A: seed 17, third life)', () =
     lineage(17, 3, (sess) => {
       const card = cardOf(sess.game.state)!;
       const [, , , ...rest] = card.lines;
-      const factLines = rest.length - 1; // the epitaph is the last
-      expect(factLines, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
+      expect(rest.length, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
+      // fact lines between the title and the epitaph: the moments, the fallback, the vow, the ending (the question line may or may not be there)
+      expect(card.lines.length - 2 - (card.question.line ? 1 : 0) - 1, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
       // the fallback are lines, not moments: the moments stay the turning points
       for (const m of card.moments) expect(['การเดินทาง', 'ศึก', 'อาชีพ', 'ถิ่นที่อยู่นานที่สุด']).not.toContain(m.kind);
       checked++;
