@@ -11,13 +11,14 @@ const npcs = (JSON.parse(readFileSync('data/gen/npcs.json', 'utf8')) as { items:
 const solid = (f: { data: Uint8ClampedArray }) => { let n = 0; for (let i = 3; i < f.data.length; i += 4) if (f.data[i] > 120) n++; return n; };
 
 describe('NPCs that are creatures', () => {
-  it('lists 23 ids, all of them NPCs of the docs', () => {
-    expect(NPC_BEAST_IDS.length).toBe(23);
+  it('lists 22 ids, all of them NPCs of the docs', () => {
+    expect(NPC_BEAST_IDS.length).toBe(22);
     const ids = new Set(npcs.map((n) => n.id));
     for (const id of NPC_BEAST_IDS) expect(ids.has(id), id).toBe(true);
   });
   it('every NPC without a people id is either a creature of the list or a person we name here', () => {
-    const people = new Set(['AL19-4', 'AL20-4', 'AL26-3', 'AL28-4', 'NB09-1']);
+    // SH14-1 the shadow queen is a person (a crowned woman of smoke who floats: her look carries it), not a ghost of the beast painter
+    const people = new Set(['AL19-4', 'AL20-4', 'AL26-3', 'AL28-4', 'NB09-1', 'SH14-1']);
     for (const n of npcs) if (!n.peopleId) expect(NPC_BEAST_IDS.includes(n.id) || people.has(n.id), n.id).toBe(true);
     for (const id of people) expect(npcBeast(id), id).toBeNull();
     expect(npcBeast('AZ01-1')).toBeNull();
@@ -50,7 +51,7 @@ describe('NPCs that are creatures', () => {
   });
   it('the slimes are slimes and the ghosts are see-through', () => {
     expect((npcBeast('NR03-3') as EnemyLook).plan).toBe('amorphous');
-    const g = paintBeast(npcBeast('SH14-1')!, 'idle', 0);
+    const g = paintBeast(npcBeast('SH14-3')!, 'idle', 0);
     let a = 0, n = 0;
     for (let i = 3; i < g.data.length; i += 4) if (g.data[i] > 120) { a += g.data[i]; n++; }
     expect(a / n).toBeLessThan(200);

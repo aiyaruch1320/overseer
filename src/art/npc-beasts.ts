@@ -16,7 +16,7 @@
 //   SV18-6  เบลล่า                    [สไลม์สีเขียวมะนาวตัวสูงเท่าหมวกคน]  a slime as tall as a hat
 //   NB06-2  นักเล่นแร่ สไลม์ซอส        [สไลม์วัยห้าสิบห้าปี ขนาดเท่าเด็กห้าขวบ]  a slime the size of a five-year-old
 //   SV18-4  เด็กเผ่าเห็ด สปอร์       [เด็กตัวเล็กหมวกเห็ดสีเทาซีด ผิวขาวนวล]  a child with a pale mushroom cap, drawn by the person painter (beast/named.ts)
-//   MH12-1 MH12-2 AL25-3 SH14-1 SH14-3 SH14-4 SV13-2 NB08-2 NB08-4   [วิญญาณ โปร่งแสง] ghosts: see-through people of the dead; no people id
+//   MH12-1 MH12-2 AL25-3 SH14-3 SH14-4 SV13-2 NB08-2 NB08-4   [วิญญาณ โปร่งแสง] ghosts: see-through people of the dead; no people id (SH14-1 the shadow queen is a person: a crowned smoke-violet woman who floats, her look carries it)
 //   NB13-3  วิญญาณเงา ซิล              [วิญญาณเงารูปร่างคนบางโปร่งสีดำควัน]  a shadow spirit: a ghost
 // Not mapped (they are people, drawn from their own race): AL19-4 AL20-4 AL26-3 AL28-4 NB09-1 (no people id, but a child, a pale traveller, a
 // patient, a passenger and a masked broker), the beast-folk (race beast: AL12-4 AL23-x SH04-4 SH05-2 SH10-x SV03-3 SV09-2 SV11-x SV16-x), the
@@ -30,7 +30,7 @@ const rows = (raw as unknown as { items: LooksData }).items.npcs;
 
 /** The ids of the enemy table that an NPC row is the same body as. */
 const ENEMY_BODY = ['NR11-2', 'NR04-3', 'SV14-1'] as const;
-const GHOSTS = ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-1', 'SH14-3', 'SH14-4', 'SV13-2', 'NB08-2', 'NB08-4', 'NB13-3'] as const;
+const GHOSTS = ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-3', 'SH14-4', 'SV13-2', 'NB08-2', 'NB08-4', 'NB13-3'] as const;
 /** Slimes: [size class, scale, the colour of the nucleus (the doc's, or the second colour)] */
 const SLIMES: Record<string, [SizeClass, number, string]> = {
   'NR03-3': ['S', 0.7, '#4aa8f0'], 'NR03-6': ['S', 0.45, '#e8c060'], 'SV12-2': ['S', 0.45, '#e8d050'], 'SV12-6': ['S', 0.4, '#c0e0f0'], 'SV18-6': ['S', 0.4, '#f0e8a0'], 'NB06-2': ['S', 0.65, '#c4e84a'],
