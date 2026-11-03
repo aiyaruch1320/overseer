@@ -1,6 +1,7 @@
 // Stories of the battle view and the war panel (code-plan §8.1 rule 5): a won fight, a lost one, a draw, a boss, a last stand, a clash with a named
 // NPC and the war of a soldier. Each reads a sample life, adds the fight to its log as the core writes it (sample.ts), and draws the model of it.
 import { battleModel, warModel, type WarInput } from '../../app/views/battle';
+import { mainLookOf } from '../../app/views/looks';
 import type { GameData } from '../../core/game';
 import type { GameState, LogEntry } from '../../core/types';
 import { story } from '../stories';
@@ -27,11 +28,11 @@ const play = (name: string, spec: FightSpec, o: { at?: number; startStep?: numbe
     name,
     seed: 1,
     at: o.at ?? 60,
-    render: ({ data, state }) => <BattleView model={fight(data, state, spec)} autoplay={o.autoplay ?? false} startStep={o.startStep ?? 0} />,
+    render: ({ data, state }) => <BattleView hero={mainLookOf(data, state)} model={fight(data, state, spec)} autoplay={o.autoplay ?? false} startStep={o.startStep ?? 0} />,
   });
 
 // a story opens at the result so the whole page is there to check; the first one plays from the start
-story({ group: GROUP, name: 'ชนะ (เล่นตั้งแต่ต้น)', seed: 1, at: 60, render: ({ data, state }) => <BattleView model={fight(data, state, FIGHTS.won)} autoplay /> });
+story({ group: GROUP, name: 'ชนะ (เล่นตั้งแต่ต้น)', seed: 1, at: 60, render: ({ data, state }) => <BattleView hero={mainLookOf(data, state)} model={fight(data, state, FIGHTS.won)} autoplay /> });
 play('ชนะ ผลหลังศึก', FIGHTS.won, { startStep: 99 });
 play('ชนะ ความฝัน ×3 และกระซิบจุดอ่อน', FIGHTS.dreamed, { startStep: 99 });
 play('แพ้ แผลเป็นและเดินกะเผลก', FIGHTS.lost, { startStep: 99 });
@@ -45,7 +46,7 @@ story({
   name: 'ปะทะผู้มีชื่อ (ดวลกับดยุก)',
   seed: 1,
   at: 60,
-  render: ({ data, state }) => <BattleView model={fight(data, state, FIGHTS.clash, (n) => [clashEntry(data, 'NF-AZ02-1', 'win_spare', 'win', 'T', n + 1)])} autoplay={false} startStep={99} />,
+  render: ({ data, state }) => <BattleView hero={mainLookOf(data, state)} model={fight(data, state, FIGHTS.clash, (n) => [clashEntry(data, 'NF-AZ02-1', 'win_spare', 'win', 'T', n + 1)])} autoplay={false} startStep={99} />,
 });
 
 story({
@@ -59,7 +60,7 @@ story({
     const { rolls: _r, max: _m, ...data0 } = e.data;
     void [_r, _m];
     const st = withEntries(state, [{ ...e, data: data0 }]);
-    return <BattleView model={battleModel(data, st, st.log[st.log.length - 1])} autoplay={false} startStep={99} />;
+    return <BattleView hero={mainLookOf(data, state)} model={battleModel(data, st, st.log[st.log.length - 1])} autoplay={false} startStep={99} />;
   },
 });
 

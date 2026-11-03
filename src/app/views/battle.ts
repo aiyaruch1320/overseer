@@ -78,6 +78,8 @@ export interface ReactionView {
 
 export interface FoeView {
   ids: string[];
+  /** The one of the group who leads it (the highest DC), or the dragon `dragon:<name>`; the figure on the stage is his (src/app/views/looks.ts `foeBeastOf`). */
+  lead: string;
   name: string;
   tier: string;
   tierId: string;
@@ -203,7 +205,7 @@ export function foeView(data: GameData, d: LogEntry['data'], whisper = false): F
   if (!rows.length) {
     // a dragon of the fifteen (`dragon:<name>`) is not in enemies.json: legend tier
     const t = tiers.get('ตำนาน') ?? { id: 'legend', wounds: 8, maxBeats: 8 };
-    return { ids, name, tier: 'ตำนาน', tierId: t.id, heavy: true, named: true, wounds: num(d.foeWounds) || t.wounds, maxBeats: t.maxBeats, weak: [], resist: [] };
+    return { ids, lead: ids[0] ?? '', name, tier: 'ตำนาน', tierId: t.id, heavy: true, named: true, wounds: num(d.foeWounds) || t.wounds, maxBeats: t.maxBeats, weak: [], resist: [] };
   }
   const lead = rows.reduce((a, b) => (b.dc > a.dc ? b : a), rows[0]);
   const info = tiers.get(lead.tier) ?? tiers.get('ปกติ') ?? { id: 'normal', wounds: 2, maxBeats: 3 };
@@ -219,6 +221,7 @@ export function foeView(data: GameData, d: LogEntry['data'], whisper = false): F
   const resist = rows.length === 1 ? lead.resist : lead.resist.filter((r) => rows.every((e) => e.resist.some((x) => x.tag === r.tag)));
   return {
     ids,
+    lead: lead.id,
     name,
     tier: lead.tier,
     tierId: info.id,

@@ -11,6 +11,7 @@ import type { LooksData } from '../../src/core/data/types-looks';
 import type { GameData } from '../../src/core/game';
 import type { LifeState } from '../../src/core/types';
 import { items } from '../../src/core/text/labels';
+import { foeBeastOf, mainLookOf, tieLooks } from '../../src/app/views/looks';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, startLife } from '../../scripts/tools/session';
 
@@ -168,6 +169,35 @@ describe('main look', () => {
       expect(unknownParts(L), `seed ${seed}`).toEqual([]);
       expect(L.race).toBe(l.race);
       expect(lookKey(L)).toBe(lookKey(mainLook(l, data)));
+    }
+  });
+});
+
+describe('the looks the screens draw', () => {
+  it('every enemy of enemies.json and every dragon of a fight has a beast', () => {
+    const ids = (items<{ items: { id: string }[] }>(data, 'enemies')?.items ?? []).map((e) => e.id);
+    expect(ids.length).toBeGreaterThan(150);
+    expect(ids.filter((id) => !foeBeastOf(id))).toEqual([]);
+    expect(foeBeastOf('dragon:ราหู')?.kind).toBe('dragon');
+    expect(foeBeastOf('no_such_foe')).toBeUndefined();
+  });
+
+  it('every tie of a life with a circle gets a figure, an ally of the roster by its own id', () => {
+    for (const seed of [38, 24]) {
+      const s = createSession(data, { seed });
+      startLife(s);
+      for (let i = 0; i < 220 && s.game.state.life && !s.game.state.life.dead; i++) s.game.beat();
+      const st = s.game.state;
+      const ties = Object.values((st.life!.ext.bonds as { ties?: Record<string, { id: string; npc?: string }> } | undefined)?.ties ?? {});
+      const looks = tieLooks(data, st);
+      expect(looks.size, `seed ${seed}`).toBe(ties.length);
+      for (const t of ties) {
+        const L = looks.get(t.id)!;
+        expect(unknownParts(L), t.id).toEqual([]);
+        if (t.npc && L.key !== t.npc) expect(L.key.startsWith('race:') || L.key === t.npc).toBe(true);
+      }
+      const m = mainLookOf(data, st)!;
+      expect(m.race).toBe(st.life!.race);
     }
   });
 });

@@ -6,8 +6,14 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { BATTLE_WORDS as W } from '../../app/views/battle-words';
 import { hpAt, leftAt, stepsOf, type BattleModel, type BeatView } from '../../app/views/battle';
+import { foeBeastOf, mainLookOf } from '../../app/views/looks';
+import { targetHeight } from '../../art/beast/beast';
+import type { BeastLook } from '../../art/beast/look';
+import type { PersonLook } from '../../art/look';
+import { store } from '../../app/store';
 import { Silhouette } from '../../scene/Stage';
 import type { ActorView } from '../../scene/timeline';
+import { BEAST_POSE, BeastSprite, PERSON_POSE, PersonSprite } from '../figure';
 import { color, font, size } from '../tokens';
 import { box, button, chip, css, heading, tint, toneColor } from './style';
 import { BEAT_MS, FIGURE, MEET_MS, RESULT_MS, SPEEDS, STAGE } from './tuning';
@@ -20,6 +26,8 @@ export interface BattleViewProps {
   autoplay?: boolean;
   startStep?: number;
   onClose?: () => void;
+  /** The Look of the hero on the stage (src/app/views/looks.ts `mainLookOf`); the default is the life in the store. Without a look the hero is a silhouette. */
+  hero?: PersonLook | null;
 }
 
 // ---------- the picture of a step ----------
@@ -54,8 +62,21 @@ export function posesAt(m: BattleModel, step: number): { hero: Pose; foe: Pose; 
 
 const actor = (id: string, label: string, pose: Pose, tintColor: string): ActorView => ({ id, label, x: 0.5, pose, tint: tintColor, count: 1 });
 
-function Stage({ m, step }: { m: BattleModel; step: number }) {
+/** Whole pixels per art pixel for a fighter `artRows` tall whose box is `boxPx` high (kept to 1..5 and inside the stage). */
+const zoomFor = (boxPx: number, artRows: number): number => Math.max(1, Math.min(5, Math.round(boxPx / artRows), Math.floor((STAGE.height * 0.96) / artRows)));
+const HERO_ROWS = 30;
+
+/** The hero's pose on the sheet of a person: the stage's pose word (posesAt) as the pose of the art; a strike and a victory are not the same raised arm. */
+function heroPose(p: Pose, final: boolean): import('../../art/anim').Pose {
+  if (p === 'raise') return final ? 'cheer' : 'attack';
+  if (p === 'bow') return final ? 'pray' : 'hurt';
+  if (p === 'kneel') return 'hurt';
+  return PERSON_POSE[p] ?? 'idle';
+}
+
+function Stage({ m, step, hero, foe }: { m: BattleModel; step: number; hero: PersonLook | null; foe: BeastLook | undefined }) {
   const p = posesAt(m, step);
+  const final = step >= m.beats.length + 1;
   const tone = toneColor[m.tone];
   const at = (s: number) => (s <= 0 ? null : m.beats[Math.min(s, m.beats.length) - 1]);
   const here = step >= 1 && step <= m.beats.length ? at(step) : null;
@@ -66,9 +87,20 @@ function Stage({ m, step }: { m: BattleModel; step: number }) {
   const heroHit = here && m.exact && hpNow < hpPrev ? hpPrev - hpNow : 0;
   const foeHit = here && m.exact && leftNow !== null && leftPrev !== null && leftNow < leftPrev ? leftPrev - leftNow : 0;
   const foeH = m.foe.heavy ? FIGURE.heavy : FIGURE.foe;
+  const heroH = STAGE.height * FIGURE.hero;
+  const foeBox = STAGE.height * foeH;
+  const foeZoom = foe ? zoomFor(foeBox, Math.max(12, targetHeight(foe))) : 1;
+  const sprite = (a: ActorView) =>
+    a.id === 'hero' && hero ? (
+      <PersonSprite key={`${step}${a.pose}`} look={hero} pose={heroPose(a.pose, final)} zoom={zoomFor(heroH, HERO_ROWS)} label={a.label} testid="hero-sprite" glow={step === 0 && m.first === 'hero' ? color.light : undefined} />
+    ) : a.id === 'foe' && foe ? (
+      <BeastSprite key={`${step}${a.pose}`} beast={foe} pose={a.pose === 'raise' ? 'attack' : BEAST_POSE[a.pose] ?? 'idle'} zoom={foeZoom} flip label={a.label} testid="foe-sprite" />
+    ) : (
+      <Silhouette a={a} frame={a.tint ?? color.fate} />
+    );
   const figure = (x: number, h: number, a: ActorView, pop: string | null, popColor: string) => (
     <div style={{ position: 'absolute', left: `${x * 100}%`, bottom: '14%', height: `${h * 100}%`, width: 90, transform: 'translateX(-50%)', transition: 'left 0.8s ease-in-out' }}>
-      <Silhouette a={a} frame={a.tint ?? color.fate} />
+      {sprite(a)}
       <div style={{ position: 'absolute', left: '50%', top: '100%', transform: 'translateX(-50%)', fontSize: size.small, color: color.textDim, whiteSpace: 'nowrap', paddingTop: 4 }}>{a.label}</div>
       {pop && (
         <div key={`${step}${pop}`} class="bt-pop" style={{ position: 'absolute', left: '50%', top: '8%', transform: 'translateX(-50%)', color: popColor, fontFamily: font.mono, fontSize: size.title, textShadow: '0 1px 6px #000', whiteSpace: 'nowrap' }}>
@@ -304,7 +336,10 @@ function Aftermath({ m }: { m: BattleModel }) {
 
 // ---------- the view ----------
 
-export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }: BattleViewProps) {
+export function BattleView({ model: m, autoplay = true, startStep = 0, onClose, hero: heroProp }: BattleViewProps) {
+  void store.rev.value;
+  const hero = heroProp !== undefined ? heroProp : store.gameData && store.state ? mainLookOf(store.gameData, store.state) : null;
+  const foe = useMemo(() => foeBeastOf(m.foe.lead), [m.foe.lead]);
   const last = stepsOf(m) - 1;
   const [step, setStep] = useState(Math.min(startStep, last));
   const [playing, setPlaying] = useState(autoplay && startStep < last);
@@ -400,7 +435,7 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
       )}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 330px', gap: size.pad }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: size.pad, minWidth: 0 }}>
-          <Stage m={m} step={step} />
+          <Stage m={m} step={step} hero={hero} foe={foe} />
           <div style={{ display: 'flex', alignItems: 'center', gap: size.gap, flexWrap: 'wrap' }}>
             <button type="button" class="bt-btn" style={button} onClick={toggle} data-testid="play">
               {playing ? W.controls.pause : done ? W.controls.again : W.controls.play} <span style={{ color: color.textDim }}>{done ? W.keys.again : W.keys.play}</span>

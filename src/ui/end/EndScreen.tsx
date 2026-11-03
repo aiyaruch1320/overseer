@@ -2,11 +2,13 @@
 // record with the card, and the choice of the heir. From here the player goes on (`store.nextLife`) or to the legend, the collection, the summary of the world.
 import { useMemo, useState } from 'preact/hooks';
 import { store } from '../../app/store';
+import { mainLookOf } from '../../app/views/looks';
 import { cardView, deathOf, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
 import type { Ctx, GameData } from '../../core/game';
 import { makeCtx } from '../../core/game';
 import type { GameState } from '../../core/types';
 import { color, font, motion, size } from '../tokens';
+import { Portrait } from '../figure';
 import { Button, Heading, paper, Styles } from '../start/parts';
 import { CardPanel } from './CardPanel';
 import { CollectionScreen, LegendScreen, WorldSummaryScreen } from './Pages';
@@ -36,11 +38,18 @@ export function EndScreen(props: EndProps) {
 
 function DeathScene({ data, state, onNext }: { data: GameData; state: GameState; onNext: () => void }) {
   const lifeCard = deathOf(state);
+  // the figure of the life that ended, at the age it died (src/art/main-look.ts)
+  const look = useMemo(() => mainLookOf(data, state), [data, state, state.log.length]);
   return (
     <div style={{ display: 'grid', placeItems: 'center', minHeight: '80vh', textAlign: 'center' }}>
       <div style={{ maxWidth: 560 }}>
         {/* the placeholder of the scene: one candle going out in the dark (the picture comes later) */}
         <div aria-hidden="true" style={{ margin: '0 auto 28px', width: 8, height: 8, borderRadius: '50%', background: color.light, boxShadow: `0 0 30px 12px ${color.light}55`, animation: `flicker ${motion.flicker} ease-in-out infinite` }} />
+        {look && (
+          <div style={{ margin: '0 auto 18px', display: 'flex', justifyContent: 'center', opacity: 0.92 }} data-testid="death-portrait">
+            <Portrait look={look} scale={4} label={lifeCard?.name ?? look.key} />
+          </div>
+        )}
         {lifeCard && (
           <>
             <div style={{ fontFamily: font.title, fontSize: size.title + 8, color: color.light }}>{lifeCard.name}</div>

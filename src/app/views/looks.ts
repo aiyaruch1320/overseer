@@ -7,6 +7,7 @@ import { makeCtx, type Ctx, type GameData } from '../../core/game';
 import { items } from '../../core/text/labels';
 import type { GameState, LifeState } from '../../core/types';
 import { mainLook } from '../../art/main-look';
+import { DRAGONS, beastOf, type BeastLook } from '../../art/beast/look';
 import type { PersonLook } from '../../art/look';
 import { stageOf } from '../../art/look';
 import { npcLook, raceLook } from '../../art/resolve';
@@ -49,4 +50,13 @@ export function tieLooks(data: GameData, state: GameState): Map<string, PersonLo
     if (L) out.set(t.id, L);
   }
   return out;
+}
+
+/** The beast that stands for the foe of a fight: an enemy of the 200 by id, a dragon of the fifteen by `dragon:<name>`. Undefined where the docs hold no look for it. */
+export function foeBeastOf(lead: string): BeastLook | undefined {
+  if (lead.startsWith('dragon:')) {
+    const name = lead.slice('dragon:'.length);
+    return DRAGONS.find((d) => d.name === name || d.id === name);
+  }
+  return beastOf(lead);
 }
