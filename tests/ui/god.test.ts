@@ -176,7 +176,7 @@ describe('the fixes of the M5 review on the god screens', () => {
       const shown = c!.belief;
       const pv = ask(g, data, 'chest.pick', { slot: c!.slot });
       expect(pv.ok).toBe(true);
-      expect(Math.abs((pv as { preview: { belief: number } }).preview.belief - shown)).toBeLessThan(0.11);
+      if (pv.ok) expect(Math.abs(Number(pv.preview.belief) - shown)).toBeLessThan(0.11);
     }
     const bless = chestView(g, data).cards.find((x) => x && x.kind === 'bless')!;
     const start = g.state.life!.godFaith;

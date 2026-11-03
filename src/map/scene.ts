@@ -425,7 +425,7 @@ class MapScene extends Phaser.Scene {
     for (const r of m.ruins) {
       const c = L.byId.get(r.country);
       if (!c) continue;
-      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.4 : r.kind === 'fallen' ? 0.55 : 0.72).setDepth(DEPTH.ruins).setVisible(true);
+      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.5 : r.kind === 'fallen' ? 0.78 : 0.93).setDepth(DEPTH.ruins).setVisible(true);
       if (r.kind === 'fallen') continue;
       // the pit: a black ring with a glassy rim (MR-17), or green-black water (MR-18, or a ruin that became a lake)
       const cap = L.citiesOf(c.id)[0];

@@ -354,6 +354,11 @@ export function paintCity(canvas: PaintCanvas, plan: CityPlan, look: CityLook = 
   ctx.fillStyle = shade(plan.road, 0.15);
   ctx.beginPath(); ctx.arc(plan.plaza.x, plan.plaza.y, plan.plaza.r, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = 'rgba(40,30,20,0.35)'; ctx.lineWidth = 0.08; ctx.stroke();
+  // a ruin lies under ash: the streets, the fields and the ground turn the grey of ash before the houses are set on it (20-god-ui.md §7.4)
+  if (ruin > 0.2) {
+    ctx.fillStyle = `rgba(90,86,80,${(0.7 * ruin).toFixed(2)})`;
+    ctx.fillRect(0, 0, plan.w, plan.h);
+  }
   // trees under the houses
   for (const t of plan.trees) tree(ctx, t, look.fate);
   // houses, back to front
@@ -366,6 +371,17 @@ export function paintCity(canvas: PaintCanvas, plan: CityPlan, look: CityLook = 
   if (plan.wall) wallDraw(ctx, plan.wall, plan);
   centreDraw(ctx, plan.centre, plan.plaza.r, look.fate);
   if (ruin > 0.2) {
+    // glassy shards of the fall on the streets (a black glass with one bright edge), and a few embers that still glow
+    const sr = new Stream(planSeed(plan.id, 41));
+    for (let i = 0; i < 70 * ruin; i++) {
+      const x = sr.float(plan.plaza.x - plan.rx, plan.plaza.x + plan.rx), y = sr.float(plan.plaza.y - plan.ry, plan.plaza.y + plan.ry), r = sr.float(0.1, 0.28);
+      ctx.fillStyle = '#12131a'; ctx.beginPath(); ctx.moveTo(x, y - r); ctx.lineTo(x + r * 0.7, y + r * 0.5); ctx.lineTo(x - r * 0.6, y + r * 0.6); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(160,190,200,0.55)'; ctx.lineWidth = 0.03; ctx.beginPath(); ctx.moveTo(x, y - r); ctx.lineTo(x + r * 0.7, y + r * 0.5); ctx.stroke();
+    }
+    for (let i = 0; i < 14 * ruin; i++) {
+      const x = sr.float(plan.plaza.x - plan.rx, plan.plaza.x + plan.rx), y = sr.float(plan.plaza.y - plan.ry, plan.plaza.y + plan.ry);
+      ctx.fillStyle = 'rgba(216,106,58,0.85)'; ctx.beginPath(); ctx.arc(x, y, 0.07, 0, Math.PI * 2); ctx.fill();
+    }
     // rubble and scorch marks in the streets
     for (let i = 0; i < 90 * ruin; i++) {
       ctx.fillStyle = rng.chance(0.5) ? 'rgba(30,26,22,0.35)' : 'rgba(120,110,100,0.5)';
@@ -413,9 +429,20 @@ function building(ctx: CanvasRenderingContext2D, b: PlanBuilding, broken: boolea
   const lift = b.floors * 0.12;
   const bw = b.w, bh = b.h;
   if (broken) {
-    ctx.fillStyle = shade(wall, -0.35); ctx.fillRect(-bw / 2, -bh / 2, bw, bh);
-    ctx.fillStyle = 'rgba(30,24,20,0.6)';
-    ctx.beginPath(); ctx.moveTo(-bw / 2, -bh / 2); ctx.lineTo(0, -bh * 0.1); ctx.lineTo(bw / 2, -bh / 2); ctx.lineTo(bw / 2, bh / 2); ctx.lineTo(-bw / 2, bh / 2); ctx.closePath(); ctx.fill();
+    // a house that fell (20-god-ui.md §7.4): the footprint of ash and rubble, three stumps of wall at different heights, the roof a black stub, soot over it
+    const seed = Math.abs(Math.round(b.x * 131 + b.y * 71)) % 97;
+    const j = (k: number) => ((seed * (k + 3) * 7919) % 100) / 100;
+    ctx.fillStyle = '#4a4742'; ctx.fillRect(-bw / 2, -bh / 2, bw, bh);
+    ctx.fillStyle = 'rgba(20,18,16,0.55)';
+    ctx.beginPath(); ctx.moveTo(-bw / 2, bh / 2); ctx.lineTo(-bw * (0.5 - 0.2 * j(1)), -bh * 0.1); ctx.lineTo(-bw * 0.1, bh * 0.15); ctx.lineTo(bw * (0.1 + 0.2 * j(2)), -bh * 0.2); ctx.lineTo(bw / 2, bh / 2); ctx.closePath(); ctx.fill();
+    // stumps of wall: short, uneven, the colour of the wall gone grey
+    ctx.fillStyle = shade(wall, -0.2);
+    const stub = (x: number, y: number, w: number, h: number) => { ctx.fillRect(x, y, w, h); ctx.fillStyle = '#16140f'; ctx.fillRect(x, y, w, h * 0.35); ctx.fillStyle = shade(wall, -0.2); };
+    stub(-bw / 2, -bh / 2, bw * 0.18, bh * (0.35 + 0.4 * j(3)));
+    stub(bw / 2 - bw * 0.2, -bh / 2 + bh * 0.1, bw * 0.2, bh * (0.3 + 0.4 * j(4)));
+    stub(-bw * 0.1, bh / 2 - bh * 0.3, bw * 0.4, bh * 0.3);
+    // the roof, a black stub where the beams burned
+    ctx.fillStyle = '#0e0d0b'; ctx.beginPath(); ctx.moveTo(-bw * 0.28, -bh * 0.05); ctx.lineTo(-bw * 0.05, -bh * (0.35 + 0.2 * j(5))); ctx.lineTo(bw * 0.12, -bh * 0.05); ctx.closePath(); ctx.fill();
     ctx.restore();
     return;
   }
