@@ -20,6 +20,8 @@ export const TOOL_IDS = [
   'spear', 'trident', 'staff', 'orbstaff', 'crook', 'cane', 'scepter', 'wand', 'banner', 'scythe', 'censer', 'sword', 'greatsword',
   'dagger', 'mace', 'club', 'hammer', 'axe', 'pickaxe', 'hoe', 'shovel', 'broom', 'ladle', 'bow', 'rod', 'book', 'ledger', 'scroll',
   'lute', 'mug', 'bowl', 'flask', 'lantern', 'shield',
+  // added after the first set (tools-extra.ts): guns, instruments, a fan, scissors, a whip, a sling, a fist weapon
+  'pistol', 'musket', 'rifle', 'spyglass', 'compass', 'pocketwatch', 'fan', 'scissors', 'gauge', 'whip', 'sling', 'knuckles',
 ] as const;
 
 /** Race feats (02-races.md ลักษณะที่วาดเพิ่ม) and personal marks. A feat with a kind is written `name:kind` (wings:feather). */
@@ -33,4 +35,6 @@ export const FEAT_IDS = [
   'claws', 'ribs', 'hunger', 'sunkeneyes',
   // people
   'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'missingarm',
+  // added after the first set (feats-extra.ts): spirits, tentacles, one eye, a kappa's dish, face items
+  'ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle',
 ] as const;
