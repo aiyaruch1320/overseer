@@ -1,6 +1,7 @@
 // The wish in the core (docs/systems/character/19-wish.md, 20-wish-synonyms.md): the parser that reads it, and the birth that applies each ask deterministically
 // within the rules of the doc; the asks the doc forbids are refused with a reason the screen can show. Every test lives a real life of the real data.
 import { beforeAll, describe, expect, it } from 'vitest';
+import { lifeGoals } from '../../src/core/god/goals';
 import { birth, extOf, readWish, START_MODE_IDS, type WishRead } from '../../src/core/character';
 import { MODES } from '../../src/core/ending';
 import { Game, makeCtx, versions, type GameData } from '../../src/core/game';
@@ -386,5 +387,32 @@ describe('the wish in the core', () => {
     expect(versions(data)).toBeDefined();
     expect(newGame(1, versions(data)).life).toBeNull();
     void life;
+  });
+});
+
+describe('the vows follow the wish (M5 review round two R4, 19-wish.md §2 "ส่วนเรื่อง")', () => {
+  const offered = (text: string, seed: number): string[] => lifeGoals(born(text, seed).life).offers;
+
+  it('the wishes of the story part are read as the asks of the story', () => {
+    for (const [text, id] of [['อยากมีความรัก', 'love'], ['พบรักแท้', 'love'], ['อยากเดินทาง', 'travel']] as const) expect(read(text).ask.story ?? [], text).toContain(id);
+  });
+
+  it('a wish for love puts the vow of love among the three, whatever the seed', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      const o = offered('อยากมีความรัก', seed);
+      expect(o, `seed ${seed}`).toContain('GV-06');
+      expect(o).toHaveLength(3);
+      expect(new Set(o).size).toBe(3);
+    }
+  });
+
+  it('the other story wishes bring their vows; a life without a wish is drawn as before', () => {
+    for (let seed = 1; seed <= 6; seed++) {
+      expect(offered('อยากเดินทาง', seed)).toContain('GV-04');
+      expect(offered('อยากล้างแค้น', seed)).toEqual(expect.arrayContaining(['GV-07', 'GV-08']));
+      expect(offered('อยากเป็นผู้กล้า', seed)).toContain('GV-09');
+    }
+    const plain = lifeGoals(startLife(createSession(data, { seed: 3 }))).offers;
+    expect(plain).toHaveLength(3);
   });
 });

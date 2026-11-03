@@ -8,7 +8,7 @@ import { peopleCode, questionOf } from '../../text';
 import { godData } from '../state';
 import { badFates, factsOf, type Facts } from './facts';
 import { lifeGoals, living, metaOf, peekGoals, peekLife } from './state';
-import { BORN_FITS, CHANGE_AT, ELDER_AGE, ERA4_FROM, FIT_MUL, HEIR_FORM_NAME, HEIR_FORM_RACES, OFFER, QUESTION_WORDS, SET_ONE_LAST, SIGN_FITS, SPECIAL_FITS, VOW_NUMBERS } from './tuning';
+import { BORN_FITS, CHANGE_AT, ELDER_AGE, ERA4_FROM, FIT_MUL, HEIR_FORM_NAME, HEIR_FORM_RACES, OFFER, QUESTION_WORDS, SET_ONE_LAST, SIGN_FITS, SPECIAL_FITS, STORY_VOWS, VOW_NUMBERS, WISHED_MAX } from './tuning';
 import { unlocked } from './unlocks';
 import { charOf } from './facts';
 
@@ -115,12 +115,21 @@ export function fits(ctx: Ctx, life: LifeState): Set<string> {
   return out;
 }
 
-/** Draws `n` vows from `ids`, weighted, without repeating: from the stream `god.vow`. */
-function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number): string[] {
-  const rng = ctx.rng('god.vow');
-  const left = [...ids];
+/** The vows the wish of the player names by its story part (love: GV-06 ...), in the order of the wish; only those the pool allows (the life can do them, the set is open). */
+export function wished(life: LifeState, ids: readonly string[]): string[] {
+  const story = (charOf(life) as { wish?: { ask?: { story?: string[] } } } | undefined)?.wish?.ask?.story ?? [];
   const out: string[] = [];
-  for (let k = 0; k < n && left.length; k++) {
+  for (const s of story) for (const v of STORY_VOWS[s] ?? []) if (ids.includes(v) && !out.includes(v)) out.push(v);
+  return out.slice(0, WISHED_MAX);
+}
+
+/** Draws `n` vows from `ids`, weighted, without repeating: from the stream `god.vow`. The vows of the wish stand first (M5 review round two R4), the draw fills the rest. */
+function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number, life?: LifeState): string[] {
+  const rng = ctx.rng('god.vow');
+  const first = life ? wished(life, ids) : [];
+  const left = ids.filter((id) => !first.includes(id));
+  const out: string[] = [...first];
+  while (out.length < n && left.length) {
     const i = rng.weighted(left.map((id) => (fit.has(id) ? FIT_MUL : 1)));
     if (i < 0) break;
     out.push(left.splice(i, 1)[0]);
@@ -131,7 +140,7 @@ function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number): string[] {
 /** Offers the vows to a newborn life (the `birth` hook). */
 export function offer(ctx: Ctx, life: LifeState): string[] {
   const g = lifeGoals(life);
-  g.offers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER);
+  g.offers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER, life);
   g.reoffers = [];
   g.vow = null;
   g.decided = false;
@@ -144,7 +153,7 @@ export function offer(ctx: Ctx, life: LifeState): string[] {
 export function reoffer(ctx: Ctx, life: LifeState): string[] {
   const g = lifeGoals(life);
   if (g.reoffers.length || g.changed) return g.reoffers;
-  g.reoffers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER);
+  g.reoffers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER, life);
   return g.reoffers;
 }
 
