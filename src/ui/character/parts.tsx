@@ -157,7 +157,7 @@ export function SkillLine({ s }: { s: SkillView }) {
 // ---------- blessings and curses ----------
 
 export function GiftCard({ g, curse }: { g: GiftView; curse?: boolean }) {
-  const tone = curse ? color.dread : color.light;
+  const tone = curse ? color.dreadText : color.light;
   return (
     <div style={{ ...frame(g.tier, { borderColor: rarity[g.tier], borderLeft: `5px solid ${tone}` }), padding: '6px 10px', marginBottom: 6 }} data-testid={curse ? 'curse' : 'blessing'}>
       <div style={{ display: 'flex', alignItems: 'center', gap: size.gap }}>

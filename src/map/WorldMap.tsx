@@ -147,7 +147,11 @@ function FullMap(props: WorldMapProps) {
   return (
     <div
       ref={host}
+      class="wm-root"
+      data-world-map
       tabIndex={0}
+      role="group"
+      aria-label="แผนที่โลก (ลูกศรหรือ W A S D เลื่อน · + − ซูม · Home กลับ)"
       onKeyDown={key(true) as never}
       onKeyUp={key(false) as never}
       onPointerDown={() => host.current?.focus()}
@@ -155,6 +159,7 @@ function FullMap(props: WorldMapProps) {
       onPointerLeave={() => setHover(null)}
       style={{ position: 'relative', width: '100%', height: '100%', minHeight: 240, overflow: 'hidden', background: '#14355a', outline: 'none', touchAction: 'none', cursor: props.aim ? 'crosshair' : 'grab', ...props.style }}
     >
+      <style>{`.wm-root:focus-visible { box-shadow: inset 0 0 0 3px ${color.light}; }`}</style>
       {!env && <div style={{ ...hudBase, left: size.pad, top: size.pad }}>กำลังวาดแผนที่…</div>}
       <div style={{ ...hudBase, right: size.pad, top: size.pad, display: 'flex', gap: 4, alignItems: 'center' }}>
         <span style={{ marginRight: 6 }}>{levelName(props.data, level.id)}</span>
@@ -227,7 +232,7 @@ function MiniMap(props: WorldMapProps) {
     props.onPick?.(kind === 'continent' ? { kind, id: c.continent } : { kind, id: c.id });
   };
 
-  return <canvas ref={cv} width={w * 2} height={h * 2} onClick={click} style={{ width: w, height: h, borderRadius: size.radius, border: `1px solid ${color.line}`, background: '#14355a', cursor: props.onPick ? 'pointer' : 'default', ...props.style }} />;
+  return <canvas ref={cv} role="img" aria-label="แผนที่เล็ก: ทวีปของตัวละคร" width={w * 2} height={h * 2} onClick={click} style={{ width: w, height: h, borderRadius: size.radius, border: `1px solid ${color.line}`, background: '#14355a', cursor: props.onPick ? 'pointer' : 'default', ...props.style }} />;
 }
 
 function paintMini(ctx: CanvasRenderingContext2D, W: number, H: number, m: MapModel, layout: MapLayout, base: TileImage | null, time: number): void {

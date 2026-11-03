@@ -212,7 +212,7 @@ function TieCard({ t }: { t: TieView }) {
             {ALLIES_W.married} {t.married}
           </span>
         )}
-        {t.goneNote && <span class="al-pill" style={{ color: color.dread }}>{t.goneNote}</span>}
+        {t.goneNote && <span class="al-pill" style={{ color: color.dreadText }}>{t.goneNote}</span>}
       </div>
       <h4 style={{ margin: '14px 0 4px', fontWeight: 'normal', color: color.textDim }}>{ALLIES_W.history}</h4>
       {t.history.length === 0 ? (

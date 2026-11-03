@@ -4,6 +4,7 @@
 // right after, before the first beat. Every word is from `src/app/views/start.ts`; the colours are from tokens.
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../../app/store';
+import { SAVE_WORDS } from '../../app/save-words';
 import { certificate, chipValues, emptyDraft, handFields, launch, readWish, sheetParts, startModes, START_LABELS, WISH_CHIPS, type StartDraft, type WishRead } from '../../app/views/start';
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
@@ -54,6 +55,19 @@ function StartInner(props: StartProps & { data: GameData }) {
   const handOpen = byHand || read.byHand;
   const rowOf = (row: string) => cert.items.filter((i) => i.row === row);
   const partName = (i: number) => parts[i]?.part ?? '';
+  // a save in the browser: the button goes on with that life (not in the storybook, which hands its own `onStart`)
+  const saved = useMemo(() => (props.onStart ? null : store.localSave()), [props.onStart]);
+  const [resuming, setResuming] = useState(false);
+  const [resumeError, setResumeError] = useState('');
+  const resume = async () => {
+    setResuming(true);
+    setResumeError('');
+    const r = await store.loadLocal();
+    if (!r.ok) {
+      setResumeError(r.reason);
+      setResuming(false);
+    }
+  };
   const start = () => {
     const r = (props.onStart ?? ((rd: WishRead, dr: StartDraft) => launch(store, rd, dr)))(read, draft);
     if (r && !r.ok) setError(r.reason ?? '');
@@ -115,6 +129,13 @@ function StartInner(props: StartProps & { data: GameData }) {
 
       {/* the box of the wish */}
       <section style={{ display: 'grid', gridAutoRows: 'max-content', alignContent: 'start', gap: size.gap, minWidth: 0, overflowY: 'auto' }}>
+        {saved && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 4 }} data-testid="resume">
+            <Button onClick={() => void resume()}>{resuming ? SAVE_WORDS.loading : SAVE_WORDS.resume}</Button>
+            <span style={{ color: color.textDim, fontSize: size.small }}>{SAVE_WORDS.resumeNote(saved.age, saved.at ? new Date(saved.at).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' }) : '')}</span>
+            {resumeError && <div role="alert" style={{ flexBasis: '100%', textAlign: 'center', color: color.dreadText, fontSize: size.small }}>{resumeError}</div>}
+          </div>
+        )}
         <div aria-hidden="true" style={{ alignSelf: 'center', width: 10, height: 10, borderRadius: '50%', background: color.light, boxShadow: `0 0 18px 6px ${color.light}66`, margin: '28px 0 6px', animation: 'flicker 2.4s ease-in-out infinite' }} />
         <label htmlFor="wish" style={{ fontFamily: font.title, fontSize: size.title, color: color.light, textAlign: 'center' }}>
           {START_LABELS.prompt}

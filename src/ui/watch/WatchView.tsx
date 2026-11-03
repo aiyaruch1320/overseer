@@ -11,7 +11,7 @@ import { CardStack, StopPanel } from './calls';
 import { Candle, GodPanel, LifeLine, Slot, SpeedControl, StoryLog } from './parts';
 import { SettingsPanel } from './SettingsPanel';
 import { button, css, layout } from './style';
-import { color, font, size } from '../tokens';
+import { TITLE_LINE, color, font, size } from '../tokens';
 
 export interface WatchActions {
   /** Open a god screen (another agent builds them). */
@@ -23,7 +23,8 @@ export interface WatchActions {
   resume: () => void;
   /** A patch of the settings; returns why the core refused it, or null. */
   setSettings: (patch: Partial<Settings>) => string | null;
-  save?: () => void;
+  /** Saves the game; says what came of it (a short line for the player: saved, or why not). */
+  save?: () => Promise<{ ok: boolean; text: string }> | void;
 }
 
 export interface WatchViewProps {
@@ -48,6 +49,17 @@ const KEY_GOD: Record<string, GodKind> = { c: 'chest', d: 'dream', w: 'whisper',
 
 export function WatchView({ data, model, settings, actions, candlePct, onCandlePct, scene, map, settingsOpen = false }: WatchViewProps) {
   const [settingsShown, showSettings] = useState(settingsOpen);
+  const [saveNote, setSaveNote] = useState<{ ok: boolean; text: string } | null>(null);
+  const saveTimer = useRef(0);
+  const doSave = async () => {
+    const r = await actions.save?.();
+    if (!r) return;
+    setSaveNote(r);
+    clearTimeout(saveTimer.current);
+    // a failure stays until the next try: the player must not miss that nothing was stored
+    if (r.ok) saveTimer.current = window.setTimeout(() => setSaveNote(null), 4000);
+  };
+  useEffect(() => () => clearTimeout(saveTimer.current), []);
   const live = useRef({ model, actions, settingsShown });
   live.current = { model, actions, settingsShown };
 
@@ -56,6 +68,8 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
     const down = (e: KeyboardEvent) => {
       const { model: m, actions: a, settingsShown: s } = live.current;
       if (typing(e.target) || e.ctrlKey || e.metaKey || e.altKey || s) return;
+      // W A S D move a map that has the focus: they are not the whisper then
+      if ('wasd'.includes(e.key.toLowerCase()) && e.key.length === 1 && (e.target as Element | null)?.closest?.('[data-world-map]')) return;
       if (e.key === ' ') {
         e.preventDefault();
         if (m.stop && !m.stop.death) a.resume();
@@ -90,7 +104,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
 
           <div style={{ position: 'absolute', left: size.pad * 2, top: size.pad * 2, display: 'flex', flexDirection: 'column', gap: size.gap, zIndex: 1 }}>
             <div data-testid="who">
-              <div style={{ fontFamily: font.title, fontSize: size.title }}>{model.name}</div>
+              <div style={{ fontFamily: font.title, fontSize: size.title, lineHeight: TITLE_LINE }}>{model.name}</div>
               {model.age !== null && (
                 <div style={{ color: color.textDim, fontSize: size.small }}>
                   {W.age} {model.age}
@@ -120,10 +134,13 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
             {W.settings.open}
           </button>
           {actions.save && (
-            <button class="wt-btn" style={{ ...button, flex: 1 }} onClick={actions.save} data-testid="save">
+            <button class="wt-btn" style={{ ...button, flex: 1 }} onClick={() => void doSave()} data-testid="save">
               {W.save}
             </button>
           )}
+        </div>
+        <div role="status" aria-live="polite" style={{ minHeight: saveNote ? undefined : 0, fontSize: size.small, lineHeight: 1.35, color: saveNote?.ok ? color.light : color.dreadText }} data-testid="save-note">
+          {saveNote?.text}
         </div>
       </aside>
 
