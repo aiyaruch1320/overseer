@@ -52,3 +52,38 @@ export const FIGURE = { height: 0.5, width: 0.16, crowdScale: 0.72 } as const;
 
 /** The words of the player's own controls (not game text). */
 export const WORDS = { play: 'เล่น', pause: 'หยุด', skip: 'ข้าม', speed: 'ความเร็ว', again: 'ดูอีกครั้ง', layer: 'ชั้นแผนที่', close: 'ปิด' } as const;
+
+// ---------- the Phaser stage (M7 ก1) ----------
+
+/** The stage in art pixels (docs/appearance/21-pixel-art.md §4); shown at the largest whole multiple that fits its box. Same numbers as the scenery contract. */
+export const ART = { w: 320, h: 180, groundY: 150 } as const;
+
+/** The camera of the pixel stage. Zoom is kept to whole steps (a pixel stretched to 1.12 draws uneven), so a frame's eased zoom snaps: at or over `snapAt` the view is `close` times. */
+export const VIEW = { snapAt: 1.3, close: 2, panPx: 48, focusY: ART.groundY - 30, slack: 4 } as const;
+
+/** Crowd: art pixels between two figures of a crowd, and the rows a crowd is staggered over (each row one pixel row deeper). */
+export const CROWD = { gap: 17, rows: 3 } as const;
+
+/** The size of text over the stage, in screen pixels per art pixel (so a word keeps its place in the picture at any multiple) and the smallest size ever drawn. */
+export const TEXT = { title: 9, name: 13, strike: 8, strikeTo: 14, line: 6.5, result: 7, stage: 4.5, label: 4, min: 11 } as const;
+
+/** How strongly the mood colours of the beats (`bg` and `tone`) tint the painted layers: over the sky rows and over the ground rows. The beats' colours are the story's mood; the painter's are the place. */
+export const MOOD = { sky: 0.4, ground: 0.4 } as const;
+
+/** The bands of the light overlays (an even gradient would break the pixel look): how many steps from full strength to none. */
+export const LIGHT_BANDS = 6;
+
+/** How much of an actor's `tint` colour is mixed into its sprite (a cast, not a stain), and of the place's light into everyone. */
+export const CAST = { tint: 0.45, place: 0.12 } as const;
+
+/** The soft shadow under a figure: width as a share of the figure's frame width, alpha. */
+export const SHADOW = { alpha: 0.32, w: 14, h: 4 } as const;
+
+/** How many painted backgrounds the stage keeps (the layers of a place are painted once; the oldest unused goes when a ninth would come). */
+export const SCENERY_KEEP = 8;
+
+/** Depths on the stage, back to front: painted layers, mood, shadows, figures (plus the row of their feet), light and wash. */
+export const DEPTH = { layer: 0, mood: 40, shadow: 50, figure: 100, light: 10000, wash: 10001 } as const;
+
+/** The placeholder silhouette in art pixels: the canvas, and where the raised arm ends. */
+export const SIL = { w: 24, h: 40, head: 4, cloakTop: 10 } as const;

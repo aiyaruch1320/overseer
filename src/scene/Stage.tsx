@@ -1,128 +1,177 @@
-// Draws one `Frame` of a scene (timeline.ts) with DOM, CSS and a canvas for the particles. It holds no time and no state: the same frame
-// draws the same picture, so the player, the storybook and a test of the frame all agree. The art of M6 to M7 comes in at two places:
-// `slot` (a character) and the background (a picture instead of the gradient), without changing the player.
-import type { ComponentChildren } from 'preact';
-import { useEffect, useRef } from 'preact/hooks';
+// Draws one `Frame` of a scene (timeline.ts). It holds no time and no state: the same frame draws the same picture, so the player, the storybook and a
+// test of the frame all agree. The picture is a Phaser game of 320 × 180 art pixels (stage/controller.ts, loaded on demand: its own chunk) shown at the
+// largest whole multiple that fits the box (21-pixel-art.md §4); the Thai words are DOM over it, sized by the same multiple so a line keeps its place in
+// the picture. The particles are still the canvas of particles.ts over the Phaser canvas (M7 ก3 replaces them).
+import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
+import type { ScenerySpec } from '../art/scenery';
 import { color, font } from '../ui/tokens';
-import type { ActorView, Frame } from './timeline';
+import { allSilhouettes, type FigureOf } from './figures';
+export { Silhouette } from './Silhouette';
+import { cameraOf, fitScale, project } from './layout';
 import { drawFx, seedOf } from './particles';
-import { CAMERA, FIGURE, LIGHT, POSE, STAGE } from './tuning';
-
-export type CharacterSlot = (a: ActorView, frameColor: string) => ComponentChildren;
+import type { SceneStage } from './stage/controller';
+import type { Frame } from './timeline';
+import { ART, CAMERA, STAGE, TEXT } from './tuning';
 
 const CANVAS = { w: 960, h: 540 } as const;
 
-/** The placeholder silhouette of a character slot (art comes in M6): a head and a cloak, dark with a light rim. */
-export function Silhouette({ a, frame }: { a: ActorView; frame: string }) {
-  const pose = POSE[a.pose];
-  const rim = a.tint ?? frame;
-  const one = (k: number, n: number) => (
-    <svg
-      key={k}
-      viewBox="0 0 60 120"
-      style={{
-        height: '100%',
-        aspectRatio: '1 / 2',
-        overflow: 'visible',
-        transformOrigin: '50% 100%',
-        transform: `translate(${(k - (n - 1) / 2) * 38}%, ${pose.drop * 100}%) rotate(${pose.rot}deg) scale(${pose.scale * (n > 1 ? FIGURE.crowdScale : 1)})`,
-        transition: 'transform 0.4s',
-      }}
-    >
-      <ellipse cx="30" cy="14" rx="9" ry="10" fill="#07080c" stroke={rim} stroke-opacity="0.55" stroke-width="1.2" />
-      <path d="M13 114 L18 42 Q30 28 42 42 L47 114 Z" fill="#07080c" fill-opacity="0.92" stroke={rim} stroke-opacity="0.55" stroke-width="1.2" />
-      {pose.arm ? <path d="M42 46 L54 14" stroke={rim} stroke-opacity="0.8" stroke-width="3" stroke-linecap="round" /> : null}
-    </svg>
-  );
-  return <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: '100%' }}>{Array.from({ length: a.count }, (_, k) => one(k, a.count))}</div>;
-}
+/** The scenery of a stage that was told none: a plain place of the first continent. */
+export const PLAIN_SCENERY: ScenerySpec = { continent: 'AZ', setting: 'outdoor' };
+
+/** The scenery of a scene by the place the frame names (the setting of a place is guessed from its words: src/app/views/scene.ts `sceneryOf`). */
+export type SceneryOf = (place: string) => ScenerySpec;
 
 const zone = { position: 'absolute', left: 0, right: 0, padding: '0 6%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, pointerEvents: 'none' } as const;
 
-export function Stage({ frame, frameColor, seed, slot }: { frame: Frame; frameColor: string; seed: string; slot?: CharacterSlot }) {
+export interface StageProps {
+  frame: Frame;
+  frameColor: string;
+  seed: string;
+  /** The place of the scene for the painted layers; omit for a plain place. */
+  scenery?: SceneryOf;
+  /** Who each actor is; omit and everyone is the dark silhouette. */
+  figureOf?: FigureOf;
+}
+
+export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes }: StageProps) {
+  const box = useRef<HTMLDivElement>(null);
+  const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const ctl = useRef<SceneStage | null>(null);
+  const [k, setK] = useState(3);
+  const [ready, setReady] = useState(false);
   const sd = seedOf(seed);
+
+  // the whole multiple that fits the box, kept as the box changes size
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const fit = () => setK(fitScale(el.clientWidth, el.clientHeight));
+    fit();
+    if (typeof ResizeObserver !== 'function') return;
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Phaser comes in its own chunk, the first time a stage is shown; until it does the box shows the colours of the frame
+  const zoom = useRef(k);
+  zoom.current = k;
+  useEffect(() => {
+    let dead = false;
+    let made: SceneStage | null = null;
+    import('./stage/controller').then(({ SceneStage }) => {
+      if (dead || !host.current) return;
+      made = new SceneStage(host.current, zoom.current);
+      ctl.current = made;
+      made.set(input.current);
+      setReady(true);
+    });
+    return () => {
+      dead = true;
+      made?.destroy();
+      ctl.current = null;
+      setReady(false);
+    };
+  }, []);
+
+  const input = useRef<Parameters<SceneStage['set']>[0]>(null as never);
+  input.current = { frame, frameColor, scenery: (scenery ?? (() => PLAIN_SCENERY))(frame.place), figureOf };
+  useEffect(() => {
+    ctl.current?.set(input.current);
+  });
+  useEffect(() => {
+    ctl.current?.setZoom(k);
+  }, [k]);
   useEffect(() => {
     const c = canvas.current?.getContext('2d');
     if (c) drawFx(c, CANVAS.w, CANVAS.h, frame.fx, frame.motion, sd);
   });
 
-  const cam = frame.camera;
-  const L = LIGHT[frame.light.mode];
-  const lc = frame.light.color ?? L.color;
-  const lightBg =
-    L.from === 'front'
-      ? `linear-gradient(to top, ${lc} 0%, transparent 70%)`
-      : L.from === 'back'
-        ? `linear-gradient(to bottom, ${lc} 0%, transparent 65%)`
-        : L.from === 'centre'
-          ? `radial-gradient(ellipse at 50% 55%, ${lc} 0%, transparent 70%)`
-          : lc;
+  const cam = cameraOf(frame.camera);
   const by = (role: string) => frame.texts.filter((x) => x.role === role);
+  const px = (n: number) => Math.max(TEXT.min, n * k);
 
   return (
     <div
+      ref={box}
       data-scene-frame
+      data-scale={k}
+      data-stage-ready={ready ? '' : undefined}
       style={{
         position: 'relative',
         width: '100%',
         maxWidth: STAGE.maxWidth,
         aspectRatio: String(STAGE.ratio),
         overflow: 'hidden',
-        background: `linear-gradient(to bottom, ${frame.sky} 0%, ${frame.sky} 58%, ${frame.ground} 58%, ${frame.ground} 100%)`,
-        border: `3px solid ${frameColor}`,
+        background: '#0c0d12',
         borderRadius: 6,
         boxSizing: 'border-box',
         fontFamily: font.body,
         color: color.text,
       }}
     >
-      <div style={{ position: 'absolute', inset: 0, transformOrigin: '50% 60%', transform: `translate(${cam.x * 10}%, ${cam.lift * 100}%) scale(${cam.zoom})` }}>
-        <div style={{ position: 'absolute', left: 0, right: 0, top: '30%', textAlign: 'center', fontFamily: font.title, fontSize: 'clamp(14px, 3.2vw, 30px)', color: color.text, opacity: 0.14, padding: '0 8%' }}>{frame.place}</div>
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: '42%', height: 1, background: 'rgba(255,255,255,0.12)' }} />
-        {frame.actors.map((a) => (
-          <div key={a.id} data-slot="character" data-actor={a.id} style={{ position: 'absolute', left: `${a.x * 100}%`, bottom: '36%', height: `${FIGURE.height * 100}%`, width: `${a.count > 1 ? FIGURE.width * 100 * 1.6 : FIGURE.width * 100 * 0.56}%`, transform: 'translateX(-50%)' }}>
-            {slot ? slot(a, frameColor) : <Silhouette a={a} frame={frameColor} />}
-            <div style={{ position: 'absolute', left: '50%', top: '100%', transform: 'translateX(-50%)', fontSize: 11, color: color.textDim, whiteSpace: 'nowrap' }}>{a.label}</div>
-          </div>
-        ))}
-      </div>
-      <canvas ref={canvas} width={CANVAS.w} height={CANVAS.h} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', inset: 0, background: lightBg, opacity: L.alpha, pointerEvents: 'none' }} />
-      {frame.wash && <div style={{ position: 'absolute', inset: 0, background: frame.wash.color, opacity: frame.wash.amount, pointerEvents: 'none' }} />}
+      {/* the picture: 320 × 180 art pixels at k× (a box that is not a whole multiple keeps dark bars) */}
+      <div
+        data-pixel-stage
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          width: ART.w * k,
+          height: ART.h * k,
+          transform: 'translate(-50%, -50%)',
+          background: `linear-gradient(to bottom, ${frame.sky} 0%, ${frame.sky} 58%, ${frame.ground} 58%, ${frame.ground} 100%)`,
+        }}
+      >
+        <div ref={host} style={{ position: 'absolute', inset: 0, lineHeight: 0, overflow: 'hidden' }} />
+        <canvas ref={canvas} width={CANVAS.w} height={CANVAS.h} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
 
-      <div style={{ ...zone, top: '5%', alignItems: 'flex-start' }}>
-        {by('title').map((x, i) => (
-          <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: 'clamp(16px, 3vw, 28px)', textShadow: '0 1px 6px #000' }}>{x.text}</div>
-        ))}
-      </div>
-      <div style={{ ...zone, top: '5%', alignItems: 'flex-end' }}>
-        {by('stage').map((x, i) => (
-          <div key={i} style={{ opacity: x.alpha * 0.8, fontSize: 12, color: color.textDim }}>{x.text}</div>
-        ))}
-      </div>
-      <div style={{ ...zone, top: '38%' }}>
-        {by('name').map((x, i) => (
-          <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: 'clamp(20px, 4.4vw, 40px)', textShadow: '0 2px 10px #000', textAlign: 'center' }}>{x.text}</div>
-        ))}
-        {frame.strike && (
-          <div style={{ textAlign: 'center', textShadow: '0 2px 10px #000' }}>
-            <div style={{ fontSize: 'clamp(16px, 2.6vw, 26px)', color: color.textDim, textDecoration: 'line-through', textDecorationColor: color.dread, textDecorationThickness: 3, opacity: 1 - frame.strike.progress * 0.5 }}>{frame.strike.from}</div>
-            <div style={{ fontFamily: font.title, fontSize: 'clamp(22px, 4.6vw, 44px)', opacity: frame.strike.progress }}>{frame.strike.to}</div>
-          </div>
+        {frame.actors.map((a) => {
+          const p = project(cam, a.x * ART.w, ART.groundY);
+          return (
+            <div key={a.id} data-slot="character" data-actor={a.id} style={{ position: 'absolute', left: p.x * k, top: (p.y + 3 * cam.zoom) * k, transform: 'translateX(-50%)', fontSize: px(TEXT.label), color: color.textDim, whiteSpace: 'nowrap', textShadow: '0 1px 3px #000', pointerEvents: 'none' }}>
+              {a.label}
+            </div>
+          );
+        })}
+
+        <div style={{ ...zone, top: '5%', alignItems: 'flex-start' }}>
+          {by('title').map((x, i) => (
+            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.title), textShadow: '0 1px 6px #000' }}>{x.text}</div>
+          ))}
+        </div>
+        <div style={{ ...zone, top: '5%', alignItems: 'flex-end' }}>
+          {by('stage').map((x, i) => (
+            <div key={i} style={{ opacity: x.alpha * 0.8, fontSize: px(TEXT.stage), color: color.textDim }}>{x.text}</div>
+          ))}
+        </div>
+        <div style={{ ...zone, top: '30%' }}>
+          {by('name').map((x, i) => (
+            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.name), textShadow: '0 2px 10px #000', textAlign: 'center' }}>{x.text}</div>
+          ))}
+          {frame.strike && (
+            <div style={{ textAlign: 'center', textShadow: '0 2px 10px #000' }}>
+              <div style={{ fontSize: px(TEXT.strike), color: color.textDim, textDecoration: 'line-through', textDecorationColor: color.dread, textDecorationThickness: 3, opacity: 1 - frame.strike.progress * 0.5 }}>{frame.strike.from}</div>
+              <div style={{ fontFamily: font.title, fontSize: px(TEXT.strikeTo), opacity: frame.strike.progress }}>{frame.strike.to}</div>
+            </div>
+          )}
+        </div>
+        <div style={{ ...zone, bottom: '5%' }}>
+          {by('line').map((x, i) => (
+            <div key={i} style={{ opacity: x.alpha, fontSize: px(TEXT.line), textAlign: 'center', textShadow: '0 1px 6px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.38)', padding: '2px 10px', borderRadius: 4 }}>{x.text}</div>
+          ))}
+          {by('result').map((x, i) => (
+            <div key={i} style={{ opacity: x.alpha, fontSize: px(TEXT.result), textAlign: 'center', color: color.light, textShadow: '0 1px 6px #000', background: 'rgba(0,0,0,0.44)', padding: '2px 12px', borderRadius: 4 }}>{x.text}</div>
+          ))}
+        </div>
+        <div style={{ position: 'absolute', right: 8, bottom: 6, fontSize: px(TEXT.label), color: color.textDim, opacity: 0.5, pointerEvents: 'none' }}>{frame.place}</div>
+        {frame.sounds.length > 0 && (
+          <div style={{ position: 'absolute', left: 10, bottom: 6, fontSize: px(TEXT.label), color: color.textDim, opacity: 0.85 }}>♪ {frame.sounds.join(' · ')}</div>
         )}
       </div>
-      <div style={{ ...zone, bottom: '5%' }}>
-        {by('line').map((x, i) => (
-          <div key={i} style={{ opacity: x.alpha, fontSize: 'clamp(13px, 2vw, 20px)', textAlign: 'center', textShadow: '0 1px 6px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.28)', padding: '2px 10px', borderRadius: 4 }}>{x.text}</div>
-        ))}
-        {by('result').map((x, i) => (
-          <div key={i} style={{ opacity: x.alpha, fontSize: 'clamp(14px, 2.2vw, 22px)', textAlign: 'center', color: color.light, textShadow: '0 1px 6px #000', background: 'rgba(0,0,0,0.34)', padding: '2px 12px', borderRadius: 4 }}>{x.text}</div>
-        ))}
-      </div>
-      {frame.sounds.length > 0 && (
-        <div style={{ position: 'absolute', left: 10, bottom: 8, fontSize: 11, color: color.textDim, opacity: 0.85 }}>♪ {frame.sounds.join(' · ')}</div>
-      )}
+      {/* the rim of the frame lies over the edge of the picture, so the box is measured whole */}
+      <div style={{ position: 'absolute', inset: 0, border: `3px solid ${frameColor}`, borderRadius: 6, boxSizing: 'border-box', pointerEvents: 'none' }} />
     </div>
   );
 }

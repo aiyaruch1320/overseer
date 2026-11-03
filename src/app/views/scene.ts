@@ -8,6 +8,17 @@ import { describe, plainName } from '../../core/text';
 import { SEASONS } from '../../core/text/tuning';
 import type { GameState } from '../../core/types';
 import { allLines, lifeStartN } from './watch';
+import { mainLook } from '../../art/main-look';
+import { DRAGONS } from '../../art/beast/look';
+import { npcBeast } from '../../art/npc-beasts';
+import { npcLook, raceLook } from '../../art/resolve';
+import type { LooksData } from '../../core/data/types-looks';
+import type { Country } from '../../core/data/types-npcs';
+import type { ScenerySpec, Setting } from '../../art/scenery/types';
+import type { Figure, FigureOf } from '../../scene/figures';
+import { seedOf } from '../../scene/particles';
+import type { SceneryOf } from '../../scene/Stage';
+import { mainLookOf, scarredOf, tieLooks } from './looks';
 import { items } from '../../core/text/labels';
 import type { LogEntry } from '../../core/types';
 import { cardFrom, plainCard, type CardModel } from '../../scene/card';
@@ -196,4 +207,154 @@ export function idleView(data: GameData, state: GameState): IdleView {
   const c = IDLE_SKY[quarter];
   const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
   return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption };
+}
+
+
+// ---------- who is on the stage and where (M7 ก1) ----------
+
+const looksOf = (data: GameData): LooksData | undefined => items<LooksData>(data, 'looks');
+
+/** The age the child of a rite is drawn at (the script's `เด็ก`: the main character before the rite). */
+const RITE_CHILD_AGE = 9;
+
+/** Stages of the people of a crowd, in the order the figures stand (a few children and elders among the grown). */
+const CROWD_STAGES = ['adult', 'adult', 'elder', 'teen', 'adult', 'child'] as const;
+
+/** The labels of the scripts for the main character, the other person and the crowd (data/gen/scenes.json: scripts/codegen/groups/scenes.ts). */
+const MAIN_LABELS = new Set(['ตัวละคร', 'เด็ก']);
+const CROWD_LABELS = new Set(['ผู้คน']);
+const OTHER_LABELS = new Set(['อีกคน']);
+/** The label of the foe in the standard closings of a clash (`std.clash`). */
+const FOE_LABEL = 'คู่ต่อสู้';
+
+/** The people of the NPC table by the name a script gives them (`NF-AZ02-1` names its foe: เรเวน); built once per data. */
+const byName = new WeakMap<LooksData, Map<string, string>>();
+function npcByName(looks: LooksData, name: string): string | undefined {
+  let m = byName.get(looks);
+  if (!m) {
+    m = new Map();
+    for (const [id, row] of Object.entries(looks.npcs)) if (!m.has(row.name)) m.set(row.name, id);
+    byName.set(looks, m);
+  }
+  return m.get(name);
+}
+
+/** The NPC a scene is about: the id the entry carries, else the id in the name of a clash script (`NF-AZ02-1`). */
+export function npcOfScene(v: SceneView): string | undefined {
+  const d = v.entry.data;
+  if (str(d.npc)) return str(d.npc);
+  if (v.kind === 'script') {
+    const m = v.script.id.match(/^NF-(.+)$/);
+    if (m) return m[1];
+  }
+  return undefined;
+}
+
+/** The look of one NPC as a figure: a creature as its beast (src/art/npc-beasts.ts), a person by the table of NPCs (a grown one), nothing when the table lacks it. */
+function npcFigure(looks: LooksData, id: string): Figure | undefined {
+  const beast = npcBeast(id);
+  if (beast) return { kind: 'beast', look: beast };
+  if (!looks.npcs[id]) return undefined;
+  return { kind: 'person', looks: [npcLook(looks, id, { stage: 'adult' })] };
+}
+
+/** A dragon the script names (its label is the dragon's name) or the entry points at (`data.dragon`, 0 to 14, when the label says only `มังกร`). */
+function dragonFigure(v: SceneView, label: string): Figure | undefined {
+  const named = DRAGONS.find((d) => d.name === label);
+  if (named) return { kind: 'beast', look: named };
+  const i = v.entry.data.dragon;
+  if (label === 'มังกร' && typeof i === 'number' && DRAGONS[i]) return { kind: 'beast', look: DRAGONS[i] };
+  return undefined;
+}
+
+/**
+ * Who each actor of a scene is, as the figure the stage draws. The main character is the figure of the life (the child of a rite at the age of nine); the
+ * foe of a clash is the NPC of the entry (its beast, or the person of the table); the other person of an ally scene is the ally of the tie; a crowd is
+ * people of the life's race; a dragon is its beast; anyone else, and anyone whose look the data lacks, is the silhouette.
+ */
+export function figuresOf(data: GameData, state: GameState | null | undefined, v: SceneView): FigureOf {
+  const looks = looksOf(data);
+  const life = state?.life ?? null;
+  const cache = new Map<string, Figure>();
+  const sil: Figure = { kind: 'silhouette' };
+  const make = (id: string, label: string, count: number): Figure => {
+    const dragon = dragonFigure(v, label);
+    if (dragon) return dragon;
+    if (id === 'a' && MAIN_LABELS.has(label) && count === 1) {
+      if (!state || !life || !looks) return sil;
+      const look = label === 'เด็ก' ? mainLook(life, data, { scarred: scarredOf(state), hAge: RITE_CHILD_AGE }) : mainLookOf(data, state);
+      return look ? { kind: 'person', looks: [look] } : sil;
+    }
+    if (!looks) return sil;
+    if (CROWD_LABELS.has(label) || id === 'crowd') {
+      const race = life && looks.races[life.race] ? life.race : looks.races.human ? 'human' : '';
+      if (!race) return sil;
+      const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
+      return { kind: 'person', looks: Array.from({ length: Math.max(1, count) }, (_, i) => raceLook(looks, race, { stage: CROWD_STAGES[i % CROWD_STAGES.length], fem: i % 2 === 1, seed: `crowd:${seed}:${i}` })) };
+    }
+    if (id === 'b') {
+      const isClash = v.kind === 'script' && v.script.kind === 'clash';
+      // the foe of a clash: the NPC of the entry (the standard closings label it only คู่ต่อสู้; a clash of its own names it)
+      if (isClash) {
+        const npc = npcOfScene(v) ?? (label === FOE_LABEL ? undefined : npcByName(looks, label));
+        const f = npc ? npcFigure(looks, npc) : undefined;
+        if (f) return f;
+      }
+      // the other person of an ally's scene: the person of the tie (the entry's id), else the NPC the entry names
+      if (OTHER_LABELS.has(label)) {
+        const tie = state && v.entry.id ? tieLooks(data, state).get(v.entry.id) : undefined;
+        if (tie) return tie.kind === 'person' ? { kind: 'person', looks: [tie] } : { kind: 'beast', look: tie };
+        const npc = npcOfScene(v);
+        const f = npc ? npcFigure(looks, npc) : undefined;
+        if (f) return f;
+      }
+    }
+    // an actor the script names: the NPC of that name, when the table has it
+    const named = npcByName(looks, label);
+    return (named && npcFigure(looks, named)) || sil;
+  };
+  return ({ id, label, count }) => {
+    const k = `${id}|${label}|${count}`;
+    let f = cache.get(k);
+    if (!f) cache.set(k, (f = make(id, label, count)));
+    return f;
+  };
+}
+
+// ---------- the place ----------
+
+/**
+ * Words of a place that put the scene inside a building, and words that put it among the houses of a town (indoor is asked first). The docs give no list:
+ * these are read from the place names of the bg beats in data/gen/scenes.json.
+ */
+const INDOOR = ['ห้อง', 'ในอาคาร', 'ภายใน', 'โรงตี', 'โรงเรียน', 'มหาวิทยาลัย', 'หอ', 'ตึก', 'วิหาร', 'โบสถ์', 'ใต้ดิน', 'หน้าต่าง', 'เตาหลอม', 'ถ้ำ', 'รัง', 'โถง', 'อุโมงค์'];
+const TOWN = ['เมือง', 'ตลาด', 'ท่าเรือ', 'ถนน', 'ลาน', 'หมู่บ้าน', 'บ้าน', 'ย่าน', 'ประตู', 'สะพาน', 'โรงงาน', 'ค่าย', 'จัตุรัส', 'ร้าน', 'ท่า', 'สถาบัน', 'วัง', 'ปราสาท', 'ป้อม', 'สภา', 'ทางเดิน', 'บันได'];
+
+/** Where a place the script names is: under the sky, among the houses, or inside. A name that says neither is under the sky. */
+export function settingOf(place: string): Setting {
+  if (INDOOR.some((w) => place.includes(w))) return 'indoor';
+  if (TOWN.some((w) => place.includes(w))) return 'town';
+  return 'outdoor';
+}
+
+/** The continent and country a scene is in: the life's, else the country of the NPC of the entry (`AZ02-1` is the second country of AZ), else nothing. */
+export function placeOf(data: GameData, state: GameState | null | undefined, e: LogEntry): { continent: string; country?: string } | undefined {
+  const countries = (data.countries?.items as Country[] | undefined) ?? [];
+  const life = state?.life;
+  const home = life ? countries.find((c) => c.id === life.country) : undefined;
+  if (home) return { continent: home.continent as string, country: home.id };
+  const m = (str(e.data.npc) ?? '').match(/^([A-Z]{2})(\d{2})-/);
+  if (m) return { continent: m[1], country: `${m[1]}-${m[2]}` };
+  return undefined;
+}
+
+/** The painted place of a scene as a function of the place the frame names (the bg beats change it): the life's continent and country, the setting from the words, a seed from the scene. */
+export function sceneryOf(data: GameData, state: GameState | null | undefined, v: SceneView): SceneryOf {
+  const at = placeOf(data, state, v.entry);
+  const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
+  return (place) => {
+    const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: settingOf(place), seed };
+    if (at?.country) spec.country = at.country;
+    return spec;
+  };
 }

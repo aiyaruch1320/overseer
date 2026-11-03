@@ -4,9 +4,9 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../app/store';
 import { mainLookOf } from '../app/views/looks';
-import { idleView, sceneFor, type IdleView, type SceneView } from '../app/views/scene';
+import { figuresOf, idleView, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
 import type { PersonLook } from '../art/look';
-import { EventCard, ScenePlayer, Silhouette, type ActorView, type CharacterSlot } from '../scene';
+import { EventCard, ScenePlayer, Silhouette, type ActorView } from '../scene';
 import { GodEffectLine } from './god';
 import type { LogEntry } from '../core/types';
 import { PERSON_POSE, PersonSprite, useFitZoom } from './figure';
@@ -37,29 +37,8 @@ function newestScene(entries: readonly LogEntry[], data: NonNullable<typeof stor
 
 /** Rows of art that fill the box of the figure: the height of a grown human is 28 (src/art/person.ts ADULT_H) with a little air over the head. */
 const IDLE_ART_ROWS = 30;
-/** The box of a character on the stage is half the stage high (src/scene/tuning.ts FIGURE); a grown human's 28 art rows fill it. */
-const STAGE_ART_ROWS = 40;
 /** The sprite carries the age in its own size (a child is drawn smaller), so its box is the grown height whatever the age. */
 const IDLE_ADULT_HEIGHT = 0.4;
-/**
- * The actor of a script that is the main character: `a` labelled `ตัวละคร` (or `เด็ก`, the child of a rite) in data/gen/scenes.json (the other `a`s are `ผู้คน`, `b` is the other
- * person, `crowd` the crowd). The character is drawn from the life; every other actor keeps the silhouette until its own look comes (M6 NPC).
- */
-export const isMainActor = (a: ActorView): boolean => a.id === 'a' && (a.label === 'ตัวละคร' || a.label === 'เด็ก') && a.count === 1;
-
-function MainOnStage({ a, look }: { a: ActorView; look: PersonLook }) {
-  const box = useRef<HTMLDivElement>(null);
-  const zoom = useFitZoom(box, STAGE_ART_ROWS);
-  return (
-    <div ref={box} style={{ position: 'absolute', inset: 0 }} data-testid="stage-main">
-      <PersonSprite look={look} pose={PERSON_POSE[a.pose] ?? 'idle'} zoom={zoom} label={look.key} testid="stage-sprite" />
-    </div>
-  );
-}
-
-/** The character slot of the scene player: the main character as a sprite of his Look, anyone else as the silhouette. */
-export const mainSlot = (look: PersonLook | null): CharacterSlot | undefined =>
-  look ? (a, frame) => (isMainActor(a) ? <MainOnStage a={a} look={look} /> : <Silhouette a={a} frame={frame} />) : undefined;
 
 const IDLE_ACTOR: ActorView = { id: 'idle', label: '', x: 0.5, pose: 'stand', count: 1 };
 
@@ -95,7 +74,8 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
   const [played, setPlayed] = useState(-1);
   const found = useMemo(() => (st && data ? newestScene(st.log, data, st.clock.worldYear) : {}), [st?.logN]);
   const play = found.play && found.play.entry.n > played ? found.play : undefined;
-  const slot = st && data ? mainSlot(mainLookOf(data, st)) : undefined;
+  // who is on the stage and where it is: resolved once per scene (src/app/views/scene.ts)
+  const staged = useMemo(() => (play && data ? { figureOf: figuresOf(data, st, play), scenery: sceneryOf(data, st, play) } : undefined), [play?.entry.n, data]);
   // The stage is a 16:9 box that fits what is left of the scene area: the controls under it, the layer bar above, the name and the map at the sides.
   // A stage as wide as the area would run over the story log, and its title over the name of the character.
   const fit = `min(100cqw, calc((100cqh - ${CONTROLS}px) * 16 / 9), 960px)`;
@@ -103,7 +83,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
     <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }} data-testid="life-scene">
       <div style={{ width: fit, maxWidth: '100%' }}>
         {play && play.kind === 'script' ? (
-          <ScenePlayer script={play.script} controls slot={slot} onDone={() => setPlayed(play.entry.n)} />
+          <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} onDone={() => setPlayed(play.entry.n)} />
         ) : found.card ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', maxHeight: '100cqh', overflowY: 'auto' }}>
             <EventCard card={found.card.card} />
