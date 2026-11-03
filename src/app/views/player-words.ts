@@ -15,6 +15,8 @@ const WRITER_WORDS: [RegExp, string][] = [
   [/\s*ใบเกิดแสดงในแถว\s*["“”]?ห้าม["“”]?/g, ''],
   [/(?:และ)?\s*(?:ขึ้น|แสดง|แจ้ง)(?:อยู่)?(?:ใน)?ใบเกิด(?:ว่า)?/g, ''],
   [/ผู้แปล/g, 'เกม'],
+  // NPC is the writer's word for a person of the world (M5 review round two R5: it stood in the text of a vow)
+  [/\bNPC\b/g, 'คนในโลก'],
   [/ตามขั้น\s*\d+[ก-ฮ]?\s*:?/g, ':'],
   [/ตัวแปลคำพ้อง/g, 'เกม'],
   [/น้ำหนักเป็น 0/g, 'จึงไม่ให้เกิด'],

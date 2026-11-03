@@ -2,6 +2,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { GameStore } from '../../src/app/store';
 import { cardView, collectionPage, deathOf, goOn, heirChoice, legendView, worldPage, worldEnded, END_LABELS } from '../../src/app/views/end';
+import { playerWords } from '../../src/app/views/player-words';
 import { certificate, emptyDraft, launch, normalize, readWish, scratchLife, sessionOpts, startModes, START_LABELS, vowChoiceView, vowLineOf } from '../../src/app/views/start';
 import { reoffer } from '../../src/core/god/goals';
 import { command } from '../../src/core/command';
@@ -121,6 +122,17 @@ describe('the end card says what a broken vow lacked (review round two R3)', () 
     const k = cardView(data, lived(data, { seed: 5, vow: 'kept' }).state);
     expect(k?.vow?.kept).toBe(true);
     expect(k?.vow?.missing).toEqual([]);
+  });
+});
+
+describe('the text of a vow has no writer word (review round two R5)', () => {
+  it('no NPC and no id in the condition of any vow', () => {
+    const rows = (data.god?.items as { goals: { vows: { id: string; done: string }[] } }).goals.vows;
+    for (const v of rows) {
+      const t = playerWords(data, v.done);
+      expect(t, v.id).not.toMatch(/NPC|GV-\d/);
+    }
+    expect(playerWords(data, rows.find((v) => v.id === 'GV-07')!.done)).toContain('คนในโลก');
   });
 });
 

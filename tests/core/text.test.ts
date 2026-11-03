@@ -992,3 +992,30 @@ describe('text: the systems of M3 are told in Thai (bonds, bondage, travel, item
     expect(year({ debtPaid: 10 })).toMatch(/จ่าย 20 ทอง \(ภาษี 2 · ค่าครองชีพ 5 · ใช้หนี้ 10 · การซื้อและค่าใช้จ่ายอื่น 3\)/);
   });
 });
+
+describe('text: one spelling for a name, no number of the choice in the log (M5 review round two R5)', () => {
+  it('a name of a place or a foe has the spelling of the data in every line of a life, and a vow offer holds no "ข้อ 4"', async () => {
+    const { createSession, runToDeath, startLife } = await import('../../scripts/tools/session');
+    const spell = new Map<string, string>();
+    // the spellings of the data: a Thai name that differs from another by one letter must not both be in use
+    for (const w of ['ทอร์ตูโมอา', 'นักดาบท้าดวล']) spell.set(w, w);
+    const bad = /ทอร์ดูโมอา|นักดาบกำดวล|นักดาบ[ก-ฮ]?ำดวล/;
+    for (const seed of [1, 2, 3, 4, 5, 6]) {
+      const s = createSession(data, { seed });
+      startLife(s);
+      runToDeath(s.game);
+      const texts = lines(data, s.game.state.log, 1).map((l) => l.text);
+      for (const t of texts) {
+        expect(t, `seed ${seed}`).not.toMatch(bad);
+        expect(t, `seed ${seed}`).not.toMatch(/หรือไม่ปฏิญาณ: ข้อ/);
+      }
+      const offer = texts.find((t) => t.includes('เสนอคำปฏิญาณ'));
+      expect(offer).toBeDefined();
+      expect(offer).not.toMatch(/\bข้อ \d|[:·] \d /);
+    }
+    // the names in the data are written one way
+    const all = JSON.stringify([data.countries.items, data.npcs.items, data.enemies?.items ?? null]);
+    expect(all).not.toMatch(bad);
+    void spell;
+  });
+});

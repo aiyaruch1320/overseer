@@ -9,13 +9,9 @@ const s = (v: unknown): string => (v === undefined || v === null ? '' : String(v
 const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);
 const quote = (t: string) => `“${t}”`;
 
-/** The numbered list of the names of vows: `1 ก · 2 ข · 3 ค`. */
-function numbered(names: string): string {
-  return names
-    .split(' · ')
-    .filter(Boolean)
-    .map((n, i) => `${i + 1} ${n}`)
-    .join(' · ');
+/** The names of the vows offered, as the player reads them: `ก · ข · ค`. No numbers: the player picks one on the screen, and "ข้อ 4" read as a code (M5 review round two R5). */
+function listed(names: string): string {
+  return names.split(' · ').filter(Boolean).join(' · ');
 }
 
 /** The name of a place in a conjuring: a country or a continent by its code. */
@@ -27,9 +23,9 @@ export function goalsText(cx: GodCx, e: LogEntry): string | undefined {
   const who = cx.who || 'ตัวละคร';
   switch (e.kind) {
     case 'vow.offer':
-      return `เมื่อ${s(d.name) || who}เกิด เกมเสนอคำปฏิญาณแก่ท่าน ${num(d.n)} ข้อ: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
+      return `เมื่อ${s(d.name) || who}เกิด เกมเสนอคำปฏิญาณแก่ท่าน ${num(d.n)} ข้อ: ${listed(s(d.names))} (หรือจะไม่ปฏิญาณก็ได้)`;
     case 'vow.reoffer':
-      return `${who}ถึงอายุ 15 ${d.current ? `ท่านเปลี่ยนคำปฏิญาณ ${quote(s(d.current))} ได้ครั้งเดียว` : 'ท่านเลือกคำปฏิญาณได้อีกครั้งเดียว'}: ${numbered(s(d.names))} (หรือไม่ปฏิญาณ: ข้อ ${num(d.n) + 1})`;
+      return `${who}ถึงอายุ 15 ${d.current ? `ท่านเปลี่ยนคำปฏิญาณ ${quote(s(d.current))} ได้ครั้งเดียว` : 'ท่านเลือกคำปฏิญาณได้อีกครั้งเดียว'}: ${listed(s(d.names))} (หรือจะไม่ปฏิญาณก็ได้)`;
     case 'vow.take':
       return e.id === 'GV-20' ? `ท่านไม่ปฏิญาณในชีวิตของ${who}` : `ท่านปฏิญาณ ${quote(s(d.name))}`;
     case 'vow.change':

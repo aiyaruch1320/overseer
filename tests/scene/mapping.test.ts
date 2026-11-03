@@ -123,3 +123,30 @@ describe('the scene of an entry', () => {
     expect(sceneFor(bare, e('world', 'event', 'DR-04', { name: 'x' })).kind).toBe('card');
   });
 });
+
+// ---- the card shows no code of the data (M5 review round two R5) ----
+import { EventCard } from '../../src/scene/EventCard';
+import { leaks } from '../../src/core/text/plain';
+
+/** The text of a vnode tree (what a player would read on the card). */
+function textOf(v: unknown): string {
+  if (v === null || v === undefined || typeof v === 'boolean') return '';
+  if (typeof v === 'string' || typeof v === 'number') return String(v);
+  if (Array.isArray(v)) return v.map(textOf).join(' ');
+  const node = v as { type?: unknown; props?: { children?: unknown } };
+  if (typeof node.type === 'function' && node.type.name === 'Picture') return '';
+  return textOf(node.props?.children);
+}
+
+describe('the event card reads as words', () => {
+  it('no id of the data (HP-02) on any card of the world events and the local events, and no icon pill made of an id', () => {
+    const cards = Object.values(scenes().cards ?? {}) as { id: string; name: string; icon: string; form: string; mark: string; frame: string; sky: string; fx: string[]; sound: string; picture: string }[];
+    expect(cards.length).toBeGreaterThan(50);
+    for (const c of cards) {
+      const text = textOf(EventCard({ card: { id: c.id, title: c.name, body: '', frame: c.frame, icon: c.icon, mark: c.mark, form: c.form as never, sound: '', picture: '', fx: [], sky: c.sky } }));
+      expect(text, c.id).not.toContain(c.id);
+      expect(leaks(text.replace(c.name, '').replace(/\s+/g, ' ').trim()).filter((x) => x !== 'latin word' && x !== 'double space'), c.id).toEqual([]);
+      expect(text, c.id).not.toMatch(/\b[A-Z]{2,4}\b(?:-\d+)?/);
+    }
+  });
+});
