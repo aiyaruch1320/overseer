@@ -356,7 +356,7 @@ export function paintCity(canvas: PaintCanvas, plan: CityPlan, look: CityLook = 
   ctx.strokeStyle = 'rgba(40,30,20,0.35)'; ctx.lineWidth = 0.08; ctx.stroke();
   // a ruin lies under ash: the streets, the fields and the ground turn the grey of ash before the houses are set on it (20-god-ui.md §7.4)
   if (ruin > 0.2) {
-    ctx.fillStyle = `rgba(90,86,80,${(0.7 * ruin).toFixed(2)})`;
+    ctx.fillStyle = `rgba(90,86,80,${(0.85 * ruin).toFixed(2)})`;
     ctx.fillRect(0, 0, plan.w, plan.h);
   }
   // trees under the houses
