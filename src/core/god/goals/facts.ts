@@ -12,7 +12,7 @@ import type { ItemsExt } from '../../items/state';
 import type { StoryExt } from '../../story/state';
 import type { TravelExt } from '../../travel/state';
 import { bondsIndex } from '../../bonds/data';
-import { STAY_YEARS } from './tuning';
+import { STAY_YEARS, VOW_NUMBERS } from './tuning';
 import { classNumber } from '../../economy/data';
 import { slotsOf } from '../../npc/types';
 import { nemeses } from '../../npc/status';
@@ -72,7 +72,11 @@ export function fights(l: LifeState): number {
 
 const liveTies = (l: LifeState): Tie[] => Object.values(bondsOf(l)?.ties ?? {}).filter((t) => t.state === 'alive');
 
-/** The highest level of a bond line the character has now (0 when none); the level of a bond is the bond system's reading of its B. */
+/**
+ * The highest level a love of the character reached (0 when none): 08-goals.md GV-06 says "มีสายคนรักระดับ 4 ขึ้นไป", not "at the hour of death". A lover who died
+ * or faded before him was still loved, so every tie of the line counts whatever its state (a split sets B to zero and a betrayal lowers it, so a broken love falls out
+ * by its own B), and a life partner (the tie asked to be one at level 4) counts at least the level the vow asks.
+ */
 export function loverLevel(ctx: Ctx, l: LifeState): number {
   let lv: (b: number) => number = (b) => Math.floor(b / 20) + 1;
   if (ctx.data.bonds) {
@@ -84,7 +88,10 @@ export function loverLevel(ctx: Ctx, l: LifeState): number {
     }
   }
   let best = 0;
-  for (const t of Object.values(bondsOf(l)?.ties ?? {})) if (t.state === 'alive' && t.line === 'คนรัก') best = Math.max(best, lv(t.b));
+  for (const t of Object.values(bondsOf(l)?.ties ?? {})) {
+    if (t.line !== 'คนรัก' && !t.spouse) continue;
+    best = Math.max(best, lv(t.b), t.spouse && t.state !== 'ended' ? VOW_NUMBERS.loverLevel : 0);
+  }
   return best;
 }
 
