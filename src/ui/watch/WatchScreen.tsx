@@ -70,7 +70,7 @@ export function WatchScreen({ onOpenGod, scene, map }: WatchScreenProps) {
       const r = store.setSettings(patch);
       return r.ok ? null : r.reason;
     },
-    save: () => void store.saveLocal(),
+    save: () => store.saveLocal(),
   };
 
   const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, gates: store.game ? godGates(store.game.ctx) : {} });

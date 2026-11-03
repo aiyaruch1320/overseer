@@ -128,7 +128,7 @@ function TreeBody({ tree, dead }: { tree: TreeView; dead: boolean }) {
         <span class="al-dim">
           {tree.generations.length} {ALLIES_W.generation.replace('ที่', '')}
         </span>
-        {tree.extinct && <span style={{ color: color.dread }}>{ALLIES_W.extinct}</span>}
+        {tree.extinct && <span style={{ color: color.dreadText }}>{ALLIES_W.extinct}</span>}
       </div>
       <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start' }}>
         <div style={{ flex: '0 0 auto' }}>

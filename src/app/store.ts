@@ -15,10 +15,27 @@ import type { Command, CommandResult, GameState, LogEntry, Settings } from '../c
 import { createSession, resumeSession, startLife, type Session, type SessionOpts } from '../../scripts/tools/session';
 import { MAX_BEATS_PER_FRAME, SAVE_KEY, SEC_PER_BEAT, SPEED_MUL } from './tuning';
 import { versions } from '../core/game';
+import { pack, unpack } from './save-text';
+import { SAVE_WORDS } from './save-words';
+import { clockOf } from './view';
 
 export type Phase = 'loading' | 'start' | 'watch' | 'stop' | 'death';
 
 export interface NewLife extends SessionOpts {}
+
+/** What a save brought: the text for the player, and whether it worked. */
+export type SaveOutcome = { ok: true; text: string; bytes: number } | { ok: false; text: string };
+
+/** What a load brought. `stale` lists the data files that moved since the save was made (it opens, but a replay may differ). */
+export type LoadOutcome = { ok: true; stale: string[] } | { ok: false; reason: string };
+
+/** The key of the small note beside the save (when, and at what age): the start screen reads it without unpacking the save. */
+const META_KEY = `${SAVE_KEY}.meta`;
+
+export interface SaveMeta {
+  at: string;
+  age: number | null;
+}
 
 /** The one game of the page. */
 export class GameStore {
@@ -32,6 +49,8 @@ export class GameStore {
   readonly stopCall = signal<LogEntry | null>(null);
   /** The last result of a command (a preview to confirm, or why it was refused). */
   readonly lastResult = signal<CommandResult | null>(null);
+  /** A line the page shows over every screen until the player takes it in (the data moved since a save that was loaded). */
+  readonly notice = signal<string | null>(null);
 
   private session: Session | null = null;
   private data: GameData | null = null;
@@ -65,6 +84,7 @@ export class GameStore {
     this.session = createSession(this.data, opts);
     startLife(this.session);
     this.stopCall.value = null;
+    this.notice.value = null;
     this.phase.value = 'watch';
     this.bump();
     this.play();
@@ -166,33 +186,74 @@ export class GameStore {
 
   // ---------- save ----------
 
-  saveLocal(): boolean {
-    if (!this.state) return false;
+  /** The state to the storage of the browser, packed (src/app/save-text.ts). A full storage or a refusing browser says so; the old save stays then. */
+  async saveLocal(): Promise<SaveOutcome> {
+    const st = this.state;
+    if (!st) return { ok: false, text: `${SAVE_WORDS.failed}: ${SAVE_WORDS.nothing}` };
+    const age = clockOf(st).age;
+    let stored: string;
     try {
-      localStorage.setItem(SAVE_KEY, save(this.state));
-      return true;
+      stored = await pack(save(st));
     } catch {
-      return false;
+      return { ok: false, text: SAVE_WORDS.failed };
     }
+    try {
+      localStorage.setItem(SAVE_KEY, stored);
+    } catch (e) {
+      const full = e instanceof DOMException && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22 || e.code === 1014);
+      return { ok: false, text: `${SAVE_WORDS.failed}: ${full ? SAVE_WORDS.full : SAVE_WORDS.blocked}` };
+    }
+    try {
+      localStorage.setItem(META_KEY, JSON.stringify({ at: new Date().toISOString(), age } satisfies SaveMeta));
+    } catch {
+      // the note is a convenience; the save itself is stored
+    }
+    return { ok: true, text: SAVE_WORDS.saved(age), bytes: stored.length };
   }
 
-  /** Loads the save of the browser; returns the data files whose version moved since (the replay may differ), or null when there is none. */
-  loadLocal(): string[] | null {
-    if (!this.data) return null;
-    let text: string | null = null;
+  /** When the browser has a save: the note beside it (null: no save). A save without a note answers with empty fields. */
+  localSave(): SaveMeta | null {
     try {
-      text = localStorage.getItem(SAVE_KEY);
+      if (localStorage.getItem(SAVE_KEY) === null) return null;
+      const raw = localStorage.getItem(META_KEY);
+      const m = raw ? (JSON.parse(raw) as Partial<SaveMeta>) : {};
+      return { at: typeof m.at === 'string' ? m.at : '', age: typeof m.age === 'number' ? m.age : null };
     } catch {
       return null;
     }
-    if (!text) return null;
-    const { state, stale } = load(text, versions(this.data));
-    this.session = resumeSession(this.data, state, { seed: state.seed });
-    this.stopCall.value = null;
-    this.phase.value = state.life?.dead ? 'death' : 'watch';
-    this.running.value = false;
-    this.bump();
-    return stale;
+  }
+
+  /**
+   * Loads the save of the browser (packed or an older plain one). On success the game goes on from it, paused; `stale` lists the data files
+   * whose version moved since (code-plan §5.3: the save opens, the screen warns that a replay may differ).
+   */
+  async loadLocal(): Promise<LoadOutcome> {
+    if (!this.data) return { ok: false, reason: SAVE_WORDS.unreadable };
+    let stored: string | null;
+    try {
+      stored = localStorage.getItem(SAVE_KEY);
+    } catch {
+      return { ok: false, reason: SAVE_WORDS.blocked };
+    }
+    if (!stored) return { ok: false, reason: SAVE_WORDS.unreadable };
+    let text: string;
+    try {
+      text = await unpack(stored);
+    } catch {
+      return { ok: false, reason: SAVE_WORDS.noUnpack };
+    }
+    try {
+      const { state, stale } = load(text, versions(this.data));
+      this.session = resumeSession(this.data, state, { seed: state.seed });
+      this.stopCall.value = null;
+      this.phase.value = state.life?.dead ? 'death' : 'watch';
+      this.running.value = false;
+      this.notice.value = stale.length ? SAVE_WORDS.stale(stale) : null;
+      this.bump();
+      return { ok: true, stale };
+    } catch {
+      return { ok: false, reason: SAVE_WORDS.unreadable };
+    }
   }
 
   private bump(): void {

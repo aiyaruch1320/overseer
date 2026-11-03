@@ -4,7 +4,7 @@ import { useEffect, useState } from 'preact/hooks';
 import { CARD_SWITCHES, cardsPatch, llmPatch, type LlmKey, type SettingsView } from '../../app/views/watch';
 import { WATCH_WORDS as W } from '../../app/views/watch-words';
 import type { Settings } from '../../core/types';
-import { color, font, size } from '../tokens';
+import { TITLE_LINE, color, font, size } from '../tokens';
 import { button, tint } from './style';
 
 export interface SettingsPanelProps {
@@ -52,9 +52,9 @@ export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct
   }, [onClose]);
   return (
     <div style={{ position: 'absolute', inset: 0, background: tint(color.panel, 60), zIndex: 10, display: 'flex', justifyContent: 'flex-end' }} onClick={(e) => e.target === e.currentTarget && onClose()} data-testid="settings">
-      <section role="dialog" aria-label={W.settings.title} style={{ width: 420, maxWidth: '100%', height: '100%', overflowY: 'auto', background: color.panel, borderLeft: `1px solid ${color.line}`, padding: size.pad * 1.5, display: 'flex', flexDirection: 'column', gap: size.pad * 1.5 }}>
+      <section role="dialog" aria-modal="true" aria-label={W.settings.title} style={{ width: 420, maxWidth: '100%', height: '100%', overflowY: 'auto', background: color.panel, borderLeft: `1px solid ${color.line}`, padding: size.pad * 1.5, display: 'flex', flexDirection: 'column', gap: size.pad * 1.5 }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ margin: 0, fontFamily: font.title, fontWeight: 400, fontSize: size.title }}>{W.settings.title}</h2>
+          <h2 style={{ margin: 0, fontFamily: font.title, fontWeight: 400, fontSize: size.title, lineHeight: TITLE_LINE }}>{W.settings.title}</h2>
           <button class="wt-btn" style={button} onClick={onClose} autoFocus data-testid="settings-close">
             {W.settings.close}
           </button>
@@ -107,7 +107,7 @@ export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct
         </div>
 
         {error && (
-          <p role="alert" style={{ margin: 0, color: color.dread, fontSize: size.small }} data-testid="settings-error">
+          <p role="alert" style={{ margin: 0, color: color.dreadText, fontSize: size.small }} data-testid="settings-error">
             {W.settings.refused}: {error}
           </p>
         )}
