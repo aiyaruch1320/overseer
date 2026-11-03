@@ -7,7 +7,7 @@ import { color } from '../tokens';
 import { useView } from './bridge';
 import { askGod } from './confirm';
 import { Drop, Empty, Gate, Section } from './parts';
-import { col, row } from './style';
+import { box, col, row } from './style';
 
 const R = 150;
 
@@ -40,9 +40,9 @@ function Ring(p: { hints: WhisperHint[]; sel: string | null; onPick: (h: string)
   );
 }
 
-function Detail(p: { h: WhisperHint }) {
+function Detail(p: { h: WhisperHint; pre?: string }) {
   const h = p.h;
-  const [target, setTarget] = useState('');
+  const [target, setTarget] = useState(h.targets.find((t) => !!p.pre && (t.id === p.pre || t.plain === p.pre))?.id ?? '');
   const groups = [...new Set(h.targets.map((t) => t.group))];
   const ready = !h.needs || !!target;
   const args = h.needs ? { hint: h.hint, target } : { hint: h.hint };
@@ -79,20 +79,37 @@ function Detail(p: { h: WhisperHint }) {
   );
 }
 
-export function Whisper(p: { hint?: string }) {
+/**
+ * `why` and `id` come from the card that opened the whisper: a crisis card brings the id of the ally in crisis, and the whisper opens on the
+ * hint of help with him picked (20-god-ui.md §2: the card is the way in, so the screen must know whom it is about).
+ */
+export function Whisper(p: { hint?: string; why?: string; id?: string; target?: string }) {
   const v = useView((g, d) => whisperView(g, d));
-  const [sel, setSel] = useState<string | null>(p.hint ?? null);
+  const crisis = v ? v.crises.find((c) => c.id === p.id || c.id === p.target || c.name === p.target) ?? (p.why === 'crisis' ? v.crises[0] : undefined) : undefined;
+  const [sel, setSel] = useState<string | null>(p.hint ?? (crisis || p.target ? W.whisper.helpHint : null));
   if (!v) return <Empty>{W.noGame}</Empty>;
   if (!v.alive) return <Empty>{W.noLife}</Empty>;
   const cur = v.hints.find((h) => h.hint === sel);
   return (
     <div>
+      {crisis && (
+        <div role="note" style={{ ...box, borderColor: '#b4364a', marginBottom: 8 }}>
+          <b style={{ color: '#d4616f' }}>
+            {W.whisper.crisisMark} {crisis.name}
+          </b>{' '}
+          <span class="g-small g-dim">
+            ({crisis.line}) · {W.whisper.inCrisis}
+          </span>
+          {crisis.text && <div class="g-small">{crisis.text}</div>}
+          <div class="g-small g-dim">{W.whisper.crisisFor} {crisis.name}</div>
+        </div>
+      )}
       <div class="g-small g-dim">
         {W.whisper.left} {v.left} {W.whisper.times}
       </div>
       <div style={{ ...row, alignItems: 'flex-start', flexWrap: 'wrap', gap: 20 }}>
         <Ring hints={v.hints} sel={sel} onPick={setSel} />
-        {cur ? <Detail key={cur.hint} h={cur} /> : <Empty>{W.whisper.ring}</Empty>}
+        {cur ? <Detail key={cur.hint} h={cur} pre={crisis?.id ?? p.target} /> : <Empty>{W.whisper.ring}</Empty>}
       </div>
       {v.active.length > 0 && (
         <Section title={W.whisper.active} tone="fate">

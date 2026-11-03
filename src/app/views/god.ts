@@ -4,7 +4,7 @@
 import { command } from '../../core/command';
 import { alliesOf, crisesWaiting } from '../../core/bonds';
 import type { Game, GameData } from '../../core/game';
-import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards } from '../../core/god';
+import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards, slotBelief, switchPenalty } from '../../core/god';
 import { actsOf, cardsOf, fateCost, fateTargets, hintsOf, implementedMiracles, nameOfKind, obeyChance as whisperChance, omenQuarters, strangeOptions, whisperPrice, activeWhispers, miracleOf } from '../../core/god/acts';
 import { allCountries, continentOf, countriesOf, countryName } from '../../core/god/acts/geo';
 import { allMixes, viewConj } from '../../core/god/conjure';
@@ -174,6 +174,16 @@ export function confirmView(game: Game, data: GameData, action: GodAction, args:
   const isMiracle = action === 'miracle' || action === 'decree' || action === 'conjure';
   const cancelling = p.cancel !== undefined;
   const lines = previewLines(data, p, false, action, envOf(game, data, args));
+  // paying in the other line within the same year of his life costs the character belief (01-power.md §2): said before, not found in the log after
+  const sw = cancelling ? 0 : switchPenalty(game.ctx, cost);
+  if (sw > 0) lines.push(`${W.belief}ของเขา −${sw}: ${W.switchLine}`);
+  if (action === 'whisper' && typeof args.target === 'string') {
+    // a hint that points names who it points at, and says when that ally is in a crisis now (his answer is what the hint leans on)
+    const ally = alliesOf(game.ctx).find((t) => t.id === args.target || t.npc === args.target || t.name === args.target);
+    const hot = !!ally && crisesWaiting(game.ctx).some((w) => w.tie.id === ally.id);
+    const who = ally?.name ?? whisperTargets(game, data, 'npc').concat(whisperTargets(game, data, 'place')).find((t) => t.id === args.target)?.name;
+    if (who) lines.splice(1, 0, `${W.whisper.to}: ${who}${hot ? ` (${W.whisper.inCrisis})` : ''}`);
+  }
   return {
     ...base,
     title: titleOf(action, args, p),
@@ -258,7 +268,7 @@ export function chestView(game: Game, data: GameData): ChestView {
           pay: s.pay,
           price: s.price,
           afford: (s.pay === 'dread' ? st.god.dread : st.god.light) >= s.price,
-          belief: s.belief,
+          belief: Math.round(slotBelief(ctx, s) * 10) / 10,
           why: s.why.map((w) => WHY_TH[w]).filter(Boolean),
           locked: ch?.locked === s.slot,
         }
@@ -368,6 +378,10 @@ export interface WhisperTarget {
   id: string;
   name: string;
   group: string;
+  /** The ally is in a crisis now (the character has not answered it yet). */
+  crisis?: boolean;
+  /** The name without the mark of a crisis. */
+  plain?: string;
 }
 
 export interface WhisperHint {
@@ -384,6 +398,8 @@ export interface WhisperHint {
 
 export interface WhisperView {
   alive: boolean;
+  /** The allies in a crisis now (the whisper of help is for them). */
+  crises: { id: string; name: string; line: string; text: string }[];
   hints: WhisperHint[];
   active: { hint: string; target: string }[];
   left: number;
@@ -395,7 +411,10 @@ export function whisperTargets(game: Game, data: GameData, needs: 'place' | 'npc
   if (!life) return [];
   if (needs === 'npc') {
     const people = npcsAt(ctx, life.country).map((v) => ({ id: v.id, name: v.name, group: W.whisper.people }));
-    const allies = alliesOf(ctx).map((t) => ({ id: t.id, name: t.name, group: W.whisper.allies }));
+    const hot = new Set(crisesWaiting(ctx).map((w) => w.tie.id));
+    const allies = alliesOf(ctx)
+      .map((t): WhisperTarget => ({ id: t.id, name: hot.has(t.id) ? `${W.whisper.crisisMark} ${t.name} · ${W.whisper.inCrisis}` : t.name, group: W.whisper.allies, plain: t.name, ...(hot.has(t.id) ? { crisis: true } : {}) }))
+      .sort((a, b) => Number(!!b.crisis) - Number(!!a.crisis));
     return [...allies, ...people];
   }
   const cont = (data.continents?.items as { continents?: { id: string; name: string }[] } | undefined)?.continents ?? [];
@@ -433,6 +452,7 @@ export function whisperView(game: Game, data: GameData): WhisperView {
     : hintsOf(ctx).map((h) => ({ hint: h, glyph: W.icons.hint[h] ?? '·', effect: '', price: 0, needs: NEEDS[h] ?? null, level: '', ok: false, reason: W.noLife, targets: [] }));
   return {
     alive: !!life,
+    crises: life ? crisesWaiting(ctx).map(({ tie, crisis }) => ({ id: tie.id, name: tie.name, line: tie.line, text: crisis.text })) : [],
     hints,
     active: life ? activeWhispers(ctx).map((w) => ({ hint: w.hint, target: w.target ? plainName(data, w.target) || w.target : '' })) : [],
     left: Math.max(0, pv.caps.whisper.limit - pv.caps.whisper.used),

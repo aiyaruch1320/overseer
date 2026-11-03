@@ -11,7 +11,7 @@ import { color, size } from '../tokens';
 import { BridgeCtx, storeBridge, useView, type GodBridge } from './bridge';
 import { Chest } from './chest';
 import { Chronicle } from './chronicle';
-import { ConfirmDialog, DoneBox, doneBox, pendingAct } from './confirm';
+import { ConfirmDialog, DoneBox, doneBox, pendingAct, registerPanelHook } from './confirm';
 import { Conjure } from './conjure';
 import { Dream } from './dream';
 import { Miracle } from './miracle';
@@ -51,6 +51,12 @@ export function closeGod(): void {
   resumeAfter = false;
 }
 
+const KIND_OF_ACTION: Record<string, GodKind> = { whisper: 'whisper', miracle: 'miracle', decree: 'miracle', conjure: 'conjure', 'dream.send': 'dream', 'prayer.answer': 'prayer' };
+registerPanelHook({
+  isOpen: () => !!godOpen.value,
+  open: (action, args) => openGod(KIND_OF_ACTION[action] ?? 'chest', action === 'whisper' ? { hint: args.hint, target: args.target } : action === 'miracle' && typeof args.id === 'string' ? { id: args.id } : {}),
+});
+
 function Body(p: { open: GodOpen }): JSX.Element {
   const a = p.open.args;
   switch (p.open.kind) {
@@ -59,7 +65,7 @@ function Body(p: { open: GodOpen }): JSX.Element {
     case 'dream':
       return <Dream />;
     case 'whisper':
-      return <Whisper hint={typeof a.hint === 'string' ? a.hint : undefined} />;
+      return <Whisper hint={typeof a.hint === 'string' ? a.hint : undefined} why={typeof a.why === 'string' ? a.why : undefined} id={typeof a.id === 'string' ? a.id : undefined} target={typeof a.target === 'string' ? a.target : undefined} />;
     case 'prayer':
       return <Prayer id={typeof a.id === 'number' ? a.id : undefined} />;
     case 'miracle':

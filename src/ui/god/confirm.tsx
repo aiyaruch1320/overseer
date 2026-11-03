@@ -20,7 +20,19 @@ export interface PendingAct {
 export const pendingAct = signal<PendingAct | null>(null);
 export const doneBox = signal<{ title: string; lines: string[]; moved: string[] } | null>(null);
 
+/** What the panel tells the dialog: whether a power is open, and how to open the one an action belongs to (the dialog lives inside the panel). */
+interface PanelHook {
+  isOpen(): boolean;
+  open(action: GodAction, args: Record<string, unknown>): void;
+}
+let panelHook: PanelHook | null = null;
+export function registerPanelHook(h: PanelHook | null): void {
+  panelHook = h;
+}
+
 export function askGod(action: GodAction, args: Record<string, unknown> = {}, onDone?: (r: CommandResult) => void): void {
+  // asked from a screen that has no power open (the allies' layer): open the panel first, or the dialog would have nowhere to be
+  if (panelHook && !panelHook.isOpen()) panelHook.open(action, args);
   doneBox.value = null;
   pendingAct.value = { action, args, onDone };
 }
