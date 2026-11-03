@@ -3,6 +3,7 @@
 import type { GenFile } from '../../core/types';
 import type { LooksData } from '../../core/data/types-looks';
 import looksFile from '../../../data/gen/looks.json';
+import { NPC_BEAST_IDS } from '../npc-beasts';
 import { npcLook, raceLook, successorLook } from '../resolve';
 import type { Entry, SetDef } from './sets';
 
@@ -33,9 +34,11 @@ export const SET_DEFS: Record<string, SetDef> = {
 };
 
 for (const file of [...new Set(Object.values(looks.npcs).map((n) => n.file))]) {
-  const ids = Object.keys(looks.npcs).filter((id) => looks.npcs[id].file === file);
+  // the NPCs that are creatures (slimes, ghosts, the kraken …) are drawn by the beast painter: beasts.html?set=npc-beasts
+  const ids = Object.keys(looks.npcs).filter((id) => looks.npcs[id].file === file && !NPC_BEAST_IDS.includes(id));
+  const beasts = Object.keys(looks.npcs).filter((id) => looks.npcs[id].file === file && NPC_BEAST_IDS.includes(id)).length;
   SET_DEFS[`npc:${file}`] = {
-    label: `NPC ${FILE_LABEL[file] ?? file} (${ids.length})`,
+    label: `NPC ${FILE_LABEL[file] ?? file} (${ids.length}${beasts ? ` · สัตว์และผี ${beasts} ตัวอยู่ที่ beasts.html` : ''})`,
     entries: () => ids.map((id) => ({ id, label: `${id} ${looks.npcs[id].name}`, look: npcLook(looks, id) })),
   };
 }
