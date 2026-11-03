@@ -8,7 +8,7 @@ import type { Condition, IdKind, LifeState } from '../types';
 import type { EconomyData } from '../data/types-economy';
 import { classNum, extOf, idx } from './data';
 import { boundBan, holds, jobAptitude, raiseAptitude } from './life';
-import { ADULT_AGE, JOBS, SECRET } from './tuning';
+import { ADULT_AGE, JOBS, SECRET, WISH_WEIGHT } from './tuning';
 
 /**
  * Evaluates a job condition. `and` `or` `not` `anyOf` and prose (`text`) are read here; every other kind goes through the rules registry.
@@ -76,6 +76,14 @@ export function grantJob(ctx: Ctx, id: string, src: Pick<EffectSource, 'sys' | '
 
 // ---------- the offer of common jobs (08-jobs-overview.md §1) ----------
 
+/** The job the player asked for weighs x3 in the offer, the jobs refused weigh 0 (19-wish.md §2, negationResults). */
+export function wishJobMul(life: LifeState, jobId: string): number {
+  const w = extOf(life).wish?.ask;
+  if (!w) return 1;
+  if (w.ban?.job?.includes(jobId)) return 0;
+  return w.job === jobId ? WISH_WEIGHT : 1;
+}
+
 /** Weight of a common job for this character; 0 when it cannot be offered. */
 export function jobWeight(ctx: Ctx, job: Job): number {
   const life = ctx.state.life!;
@@ -92,7 +100,7 @@ export function jobWeight(ctx: Ctx, job: Job): number {
   const byClass = (ctx.data.economy?.items as EconomyData | undefined)?.classJobs.find((r) => r.cls === classNum(life));
   if (byClass?.closed.includes(job.id)) return 0;
   const classMul = byClass?.boosted.includes(job.id) ? JOBS.classBoost : 1;
-  return classMul * (1 + match * (rules?.aptMatchWeight ?? JOBS.aptMatch) + statValue / 6 + raceBonus) * root;
+  return classMul * wishJobMul(life, job.id) * (1 + match * (rules?.aptMatchWeight ?? JOBS.aptMatch) + statValue / 6 + raceBonus) * root;
 }
 
 /**

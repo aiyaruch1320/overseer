@@ -2,6 +2,7 @@
 // branch is merged (docs/guide/code-plan.md §12.7). Importing a system also registers its rules (rules/).
 import { attentionSystem } from './attention';
 import { characterSystem } from './character';
+import './character/wish-system'; // registers the late parts of the wish with the character system
 import { combatSystem } from './combat';
 import { economySystem } from './economy';
 import { endingSystem } from './ending';
