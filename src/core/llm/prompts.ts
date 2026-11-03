@@ -29,5 +29,6 @@ export const ENDING_SYSTEM = [
   'Do not add events, causes, feelings or numbers that are not in the facts. Write ages and years in Thai words, with no digits. No Latin letters, no ids, no lists, no headings.',
   'If `allowed_names` is given, those are the only names besides the character that you may write.',
   'The vow of the player, if given, belongs to the player: the character does not know it. Never write "ข้า" or "เรา".',
+  'The `wish`, if given, is what the player asked of this life; the character does not know it. Never write it as his own words or plans, and add no fact from it that the facts do not carry.',
   'Answer the text alone.',
 ].join('\n');

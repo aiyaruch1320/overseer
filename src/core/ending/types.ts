@@ -58,6 +58,16 @@ export interface HandSummary {
   silent: number;
 }
 
+/**
+ * A life the player ordered (character/19-wish.md §6: the card shows it as "ถูกสั่ง"): the words he typed, what the birth gave (a sure ask is `sure`, a weight is
+ * `lean`) and what it could not (with the reason). Read from the saved sheet `life.ext.character.wish`; absent for a life nobody ordered.
+ */
+export interface WishOnCard {
+  text: string;
+  granted: { field: string; value: string; row: 'sure' | 'lean' }[];
+  refused: { field: string; value: string; reason: string }[];
+}
+
 /** The numbers and ids the llm layer reads: `endingInput(state)`. Stable: the keys do not change between versions. */
 export interface EndingInput {
   v: 1;
@@ -79,6 +89,8 @@ export interface EndingInput {
   /** The people of the life and the traces it left (the lines of the card). */
   people: string[];
   traces: string[];
+  /** The wish of the player, when the life was ordered: the retelling may say the life was asked for, and may not add what was not given. */
+  wish?: WishOnCard;
   /** Names in the registry of the world that the text may use (no other name is allowed). */
   names: string[];
   /** Names of other people in this world that the text may not use for this life (the neighbours, the kin of the earlier lives): a retelling that takes one is wrong. */
@@ -127,4 +139,6 @@ export interface EndingCard {
   people: string[];
   /** "ร่องรอยที่ทิ้งไว้" of 03 §1: the children, the things left, the threads, what the world keeps. */
   traces: string[];
+  /** The life was ordered (19-wish.md §6 "ถูกสั่ง"): what was asked, what the birth gave and what it refused. Absent for a life nobody ordered. */
+  wish?: WishOnCard;
 }

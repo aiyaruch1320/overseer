@@ -392,6 +392,38 @@ describe('a fight (01-core.md §2)', () => {
     expect(String(e.data.stances).length).toBeGreaterThan(0);
   });
 
+  it('the entry keeps the fight beat by beat for the battle screen: rolls with hit points and wounds left, the dream, the max, the wounds at the start', () => {
+    const m = mk(2, { aptitudes: { sword: 1 } });
+    dreamStance(m.ctx, 'melee');
+    const mark = m.s.game.state.logN;
+    const r = fight(m.ctx, ['wolf'], { kind: 'story', lethal: false })!;
+    const e = m.s.game.state.log.find((x) => x.n >= mark && x.sys === 'combat' && x.kind === 'battle')!;
+    const beats = String(e.data.rolls).split(';').map((b) => b.split('/'));
+    expect(beats.length).toBe(r.beats);
+    beats.forEach((f, i) => {
+      expect(f.length).toBe(7);
+      expect(f[0]).toBe(r.rolls[i].stance);
+      expect(Number(f[1])).toBe(r.rolls[i].roll);
+      expect(f[4]).toBe(r.rolls[i].ok ? '1' : '0');
+    });
+    // the last beat leaves the foe as the fight left it; hit points only fall
+    expect(Number(beats[beats.length - 1][6])).toBe(r.left);
+    const hps = beats.map((f) => Number(f[5]));
+    expect(hps.every((h, i) => i === 0 || h <= hps[i - 1] || beats[i][0] === 'pray')).toBe(true);
+    expect(e.data).toMatchObject({ dream: 'melee', whisper: 0, lastStand: 0, foeWounds: foeOf(m.ctx, ['wolf'])!.wounds });
+    expect(e.data.max).toBe(maxHpOf(m.ctx, m.life));
+    expect(String(e.data.stances).split(',')).toEqual(beats.map((f) => f[0]));
+  });
+
+  it('recording the rolls draws nothing: the fight is the same with the log on or off', () => {
+    const a = mk(7, { aptitudes: { sword: 1 } });
+    const b = mk(7, { aptitudes: { sword: 1 } });
+    const ra = fight(a.ctx, ['wolf'], { lethal: false })!;
+    const rb = fight(b.ctx, ['wolf'], { lethal: false, log: false })!;
+    expect(ra.rolls).toEqual(rb.rolls);
+    expect(ra.hpAfter).toBe(rb.hpAfter);
+  });
+
   it('a perception roll gives the first beat to one side; an ambush costs the roll of the hero and a hunt gives it', () => {
     const m = mk(3, { aptitudes: { sword: 1 } });
     const hunt = fight(m.ctx, ['slime'], { kind: 'hunt', log: false, lethal: false })!;

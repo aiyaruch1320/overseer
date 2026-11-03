@@ -37,6 +37,15 @@ story({
 
 story({
   group: GROUP,
+  name: 'บันทึกชีวิตที่ถูกสั่ง (ได้บางอย่าง ทำไม่ได้บางอย่าง)',
+  render: ({ data }) => {
+    const l = lived(data, { seed: 5, wish: 'อยากเป็นดาร์กเอลฟ์ ชาย ขี้ขลาด ผู้กล้า อมตะ รวยมาก ดาบ' });
+    return <EndScreen data={data} state={l.state} ctx={l.ctx} start="record" onContinue={noop} />;
+  },
+});
+
+story({
+  group: GROUP,
   name: 'เลือกผู้สืบตระกูล',
   render: ({ data }) => {
     const l = lived(data, { seed: 5 });

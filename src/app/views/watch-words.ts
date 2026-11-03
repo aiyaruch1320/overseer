@@ -44,6 +44,11 @@ export const WATCH_WORDS = {
     candle: 'เทียนศรัทธาเทพ',
     candlePct: 'แสดงเป็นร้อยละ',
     refused: 'ตั้งค่าไม่ได้',
+    cards: 'การ์ดที่เกมเรียก',
+    cardsNote: 'ปิดชนิดไหนก็ได้ มีผลตั้งแต่การเรียกครั้งถัดไป หน้าต่างพระเจ้ายังเรืองบนเส้นชีวิตเสมอ',
+    cardKinds: { prayer: 'คำอธิษฐาน', omen: 'ลาง', battle: 'ศึก', crisis: 'พวกพ้อง', majorOmen: 'ลาง ⭐ ที่ทวีปของตัวละคร' } as Record<string, string>,
   },
+  /** The grey button of the god panel: the hourglass and the time left. */
+  gate: { hourglass: '⌛', wait: (years: number) => `อีก ${Math.ceil(years)} ปี` },
   save: 'บันทึก',
 } as const;

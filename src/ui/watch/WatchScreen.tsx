@@ -4,7 +4,7 @@ import type { ComponentChildren } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import { store } from '../../app/store';
 import { prefs, setPrefs } from '../../app/views/prefs';
-import { watchModel, type GodOpen } from '../../app/views/watch';
+import { godGates, watchModel, type GodOpen } from '../../app/views/watch';
 import type { Settings } from '../../core/types';
 import { WatchView, type WatchActions } from './WatchView';
 
@@ -73,6 +73,6 @@ export function WatchScreen({ onOpenGod, scene, map }: WatchScreenProps) {
     save: () => void store.saveLocal(),
   };
 
-  const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards });
+  const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, gates: store.game ? godGates(store.game.ctx) : {} });
   return <WatchView data={data} model={model} settings={st.settings} actions={actions} candlePct={prefs.value.candlePct} onCandlePct={(on) => setPrefs({ candlePct: on })} scene={scene} map={map} />;
 }

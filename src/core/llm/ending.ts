@@ -29,6 +29,8 @@ export interface EndingSummaryInput {
   names?: string[];
   /** The vow of the player and what came of it, when there is one (the character does not know it). */
   vow?: string;
+  /** What the player asked of this life and what it was given (the life was "ถูกสั่ง"): the retelling may tell the life was asked for and may not add a fact from it. The character does not know it. */
+  wish?: string;
   /** The titles the life earned (one to three), when it has any: the retelling may name them and may not add one. */
   titles?: string[];
   /** Names of other people of this world that the text may not use for this life (neighbours, the kin of earlier lives). A retelling that takes one is wrong. */
@@ -40,7 +42,7 @@ export interface EndingSummary {
   source: 'llm' | 'template';
 }
 
-const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.vow ?? '', ...(i.titles ?? []), ...i.facts];
+const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.vow ?? '', i.wish ?? '', ...(i.titles ?? []), ...i.facts];
 const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(/[^0-9๐-๙]/g, '') + String(i.age);
 
 /**
@@ -77,7 +79,7 @@ export async function summarizeEnding(input: EndingSummaryInput, llm: LlmClient 
     }
     if (!pointOn(state, llm, 'ending')) return templateOf(input);
   } else if (!llm || !llm.available('ending')) return templateOf(input);
-  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}), ...(input.titles?.length ? { titles: input.titles } : {}) };
+  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}), ...(input.wish ? { wish: input.wish } : {}), ...(input.titles?.length ? { titles: input.titles } : {}) };
   const r = await llm!.run({
     point: 'ending',
     input: data,

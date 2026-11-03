@@ -192,6 +192,11 @@ describe('battle: the entries a screen can open', () => {
       expect(m.foe.wounds).toBeGreaterThan(0);
       expect(m.hero.hpBefore - m.hero.hpAfter).toBe(m.hpLost);
       expect(hpAt(m, stepsOf(m) - 1)).toBe(m.hero.hpAfter);
+      // the core keeps the rolls, so the screen follows the fight beat by beat
+      expect(m.exact).toBe(true);
+      expect(m.beats.every((b) => b.roll && b.hp !== null && b.left !== null)).toBe(true);
+      expect(m.foe.wounds).toBe(Number(e.data.foeWounds));
+      expect(m.hero.max).toBe(Number(e.data.max));
     }
   });
 });

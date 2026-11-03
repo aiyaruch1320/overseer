@@ -12,7 +12,8 @@ import { knownName } from '../text/labels';
 import { questionOf } from '../text/render';
 import type { LifeState, LogEntry } from '../types';
 import { CAUSE_WORD, DEATH_ROLE_BONUS, RUIN_NODES, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
-import type { CauseGroup, HandSummary, QuestionGrade } from './types';
+import type { WishSheet } from '../character/wish';
+import type { CauseGroup, HandSummary, QuestionGrade, WishOnCard } from './types';
 
 /** Ties the family web puts into the book of an heir at the takeover (lineage/family.ts). */
 const CARRIED_FROM = ['parent', 'family', 'inherited'];
@@ -44,6 +45,22 @@ export function lifeLog(ctx: Ctx): LogEntry[] {
 }
 
 /** A year of the calendar as the player reads it: `ศ.ม. 11,479`. */
+/**
+ * The wish of a life as the card shows it (character/19-wish.md §6 "ถูกสั่ง"), read from the sheet the birth saved in `life.ext.character.wish`: the sure and the lean asks the birth
+ * applied (`born.applied`), and what it refused (`born.refused` with the reason, and the asks the sheet itself marked as impossible). Undefined for a life nobody ordered.
+ */
+export function wishCard(life: LifeState): WishOnCard | undefined {
+  const sheet = (life.ext.character as { wish?: WishSheet } | undefined)?.wish;
+  if (!sheet) return undefined;
+  const applied = new Set(sheet.born?.applied ?? []);
+  const granted = sheet.items.filter((i) => (i.row === 'sure' || i.row === 'lean') && i.value && applied.has(i.key)).map((i) => ({ field: i.field, value: i.value, row: i.row as 'sure' | 'lean' }));
+  const refused: WishOnCard['refused'] = [];
+  const fieldOf = (key: string) => sheet.items.find((i) => i.key === key && i.field)?.field ?? '';
+  for (const r of sheet.born?.refused ?? []) refused.push({ field: fieldOf(r.key), value: r.value, reason: r.reason });
+  for (const i of sheet.items) if (i.row === 'cannot' && i.value && !refused.some((r) => r.value === i.value)) refused.push({ field: i.field, value: i.value, reason: i.note });
+  return { text: sheet.text, granted, refused };
+}
+
 export const yr = (worldYear: number): string => calendarYear(worldYear).toLocaleString('en-US');
 
 export const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);

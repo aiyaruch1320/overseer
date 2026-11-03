@@ -83,7 +83,7 @@ export function rescueOf(ctx: Ctx, hero: Hero): number {
 
 export interface Fought extends Outcome {
   /** Rolls, for the tests: one per beat. */
-  rolls: { stance: string; roll: number; bonus: number; dc: number; ok: boolean }[];
+  rolls: { stance: string; roll: number; bonus: number; dc: number; ok: boolean; hp: number; left: number }[];
   /** Wounds of the foe left. */
   left: number;
   earned: string[];
@@ -111,6 +111,9 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   // the hero knows the weak points of a foe he met, and when a hint of the god or a gift of sight tells him (01-core.md §6)
   const known = foe.ids.some((id) => ext.met.includes(id)) || hero.seer || weakStanceMul(ctx) > 1;
   let knows = known;
+  // what the god's hand did to this fight, read before the fight spends it (the battle screen shows it: dream ×3, weak-point whisper)
+  const dreamed = opts.dream ?? (ext.dream && ext.dream.until >= life.hAge ? ext.dream.stance : undefined);
+  const whispered = weakStanceMul(ctx) > 1;
 
   // ---- step 0: perceive (01-core.md §2) ----
   let first = 0;
@@ -176,7 +179,13 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
         }
       }
     }
-    rolls.push({ stance: pick.id, roll: r, bonus: pick.bonus, dc: pick.dc, ok });
+    const cur = { stance: pick.id, roll: r, bonus: pick.bonus, dc: pick.dc, ok, hp, left };
+    rolls.push(cur);
+    // the state after the beat, recorded for the battle screen (no draws)
+    const snap = () => {
+      cur.hp = hp;
+      cur.left = left;
+    };
     dodge = 0;
     let hit = false;
 
@@ -217,6 +226,7 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
       }
     }
 
+    snap();
     if (killedBy || result === 'flee') break;
     if (left <= 0) {
       result = 'win';
@@ -239,11 +249,13 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
             result = 'dead';
           }
         } else if (down) hp = Math.max(1, Math.round(hero.maxHp * YIELD_AT));
+        snap();
         break;
       }
     }
     // a foe that mends: one wound back after a beat that took none, unless fire burned it (02-type-matrix.md §5)
     if (!hit && foe.traits.includes('regen') && left < foe.wounds && !pick.tags.includes('fire')) left += 1;
+    snap();
     if (beat + 1 === limit && !extended && left > 0 && left <= OVERTIME.maxLeft) {
       limit += OVERTIME.beats;
       extended = true;
@@ -308,6 +320,7 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
   else if (result === 'lose') sx.battles.lose++;
   else if (result === 'flee' || result === 'draw') sx.battles.flee++;
 
+  const startWounds = opts.lastStand ? foe.wounds * LAST_STAND.wounds : foe.wounds;
   const out: Fought = {
     result,
     word: WORD[result],
@@ -345,6 +358,13 @@ export function resolve(ctx: Ctx, foe: Foe, opts: FightOpts = {}): Fought {
         first: side,
         wounds: wounds.join(','),
         loot: loot.join(','),
+        // the fight beat by beat for the battle screen: `stance/d20/bonus/dc/ok/hpAfter/foeWoundsLeft` joined by ';'
+        rolls: rolls.map((x) => `${x.stance}/${x.roll}/${x.bonus}/${x.dc}/${x.ok ? 1 : 0}/${x.hp}/${x.left}`).join(';'),
+        dream: dreamed ?? null,
+        whisper: whispered ? 1 : 0,
+        max: hero.maxHp,
+        lastStand: opts.lastStand ? 1 : 0,
+        foeWounds: startWounds,
       },
       level: foe.named || opts.kind === 'story' || opts.kind === 'clash' ? 2 : 1,
     });

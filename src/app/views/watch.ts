@@ -1,14 +1,15 @@
 // View models of the watch screen (code-plan §8.2 rows "หน้าเฝ้ามอง" "การเรียก" "ตั้งค่า"): pure functions over (data, state).
 // No game text is made here: lines come from src/core/text, the reason of a call from `callReason`, the words of the chrome from watch-words.ts.
 import { LIFE_YEARS, isStop, liveCards } from '../../core/attention';
+import { allCardsOn, canDo, type CanDo } from '../../core/command';
 import { rulesOf } from '../../core/attention/tuning';
 import type { AttentionData } from '../../core/data/types-attention';
-import type { GameData } from '../../core/game';
+import type { Ctx, GameData } from '../../core/game';
 import { bandOf, type BeliefBand } from '../../core/god/belief';
 import { POWER_CAP } from '../../core/god/tuning';
 import { callReason, lines, plainName, type Line } from '../../core/text';
 import { items } from '../../core/text/labels';
-import type { GameState, LogEntry, Settings } from '../../core/types';
+import { CARD_KINDS, type GameState, type GodAction, type LogEntry, type Settings } from '../../core/types';
 import { LOG_KEEP } from '../tuning';
 import { clockOf, purseOf } from '../view';
 import { CANDLE_MIN_FILL, GLOW_OPEN_YEARS, RECAP_MAX } from './watch-tuning';
@@ -359,6 +360,15 @@ export function candleOf(data: GameData, belief: number): CandleView {
   };
 }
 
+/** A button of the god panel that cannot be used now: grey, with the hourglass, the reason and the time left (20-god-ui.md §2). */
+export interface GodGate {
+  /** The reason the core gave (`canDo`). */
+  reason: string;
+  why: Exclude<CanDo, { ok: true }>['why'];
+  /** World years until it is ready, when the core says. */
+  wait?: number;
+}
+
 export interface GodPanelView {
   light: Vial;
   dread: Vial;
@@ -368,6 +378,27 @@ export interface GodPanelView {
   windowOpen: boolean;
   /** A life is on the stage (the buttons work). */
   alive: boolean;
+  /** The buttons the god may not press now, with the reason. A button not listed may be pressed. */
+  gates: Partial<Record<GodKind, GodGate>>;
+}
+
+/** The god action whose check says whether the button itself is any use now (the button takes no arguments): a screen that needs a choice first has no gate here. */
+export const BUTTON_ACTION: Partial<Record<GodKind, { action: GodAction; args: Record<string, unknown> }>> = {
+  chest: { action: 'chest.open', args: {} },
+  whisper: { action: 'whisper', args: { hint: 'ระวัง' } },
+};
+
+/** The reasons that grey a button: the year's cap, the cost, the wait (a reason that only asks for a choice, like a missing target, does not). */
+const GATING: readonly GodGate['why'][] = ['cap', 'cost', 'cooldown'];
+
+/** The buttons of the god panel the core says no to (`canDo`): the screen asks it each time it draws. Pure. */
+export function godGates(ctx: Ctx): Partial<Record<GodKind, GodGate>> {
+  const out: Partial<Record<GodKind, GodGate>> = {};
+  for (const [k, a] of Object.entries(BUTTON_ACTION) as [GodKind, { action: GodAction; args: Record<string, unknown> }][]) {
+    const r = canDo(ctx, a.action, a.args);
+    if (!r.ok && GATING.includes(r.why)) out[k] = { reason: r.reason, why: r.why, wait: r.wait };
+  }
+  return out;
 }
 
 export const GOD_BUTTONS: GodKind[] = ['chest', 'dream', 'whisper', 'miracle', 'chronicle'];
@@ -395,6 +426,8 @@ export interface WatchUi {
   stop: LogEntry | null;
   /** The live cards (the store's `cards`). */
   cards: LogEntry[];
+  /** The buttons of the god the core refuses now (`godGates`); the pure model has no game to ask. */
+  gates?: Partial<Record<GodKind, GodGate>>;
 }
 
 export function watchModel(data: GameData, state: GameState, ui: WatchUi): WatchModel {
@@ -415,6 +448,7 @@ export function watchModel(data: GameData, state: GameState, ui: WatchUi): Watch
       buttons: GOD_BUTTONS,
       windowOpen: alive && (line.glows.some((g) => g.open) || (!!stop && (stop.why === 'window' || stop.why === 'age'))),
       alive,
+      gates: alive ? ui.gates ?? {} : {},
     },
     line,
     log: allLines(data, state).slice(-LOG_KEEP),
@@ -437,7 +471,11 @@ export interface SettingsView {
   master: boolean;
   /** The three points of the LLM; each is on only if the master is on too. */
   llm: Record<LlmKey, boolean>;
+  /** The switch of each kind of card (07-attention.md §4); a setting without the switches reads as all on. */
+  cards: Record<CardKind, boolean>;
 }
+
+export const CARD_SWITCHES: readonly CardKind[] = CARD_KINDS;
 
 const LEVELS: Settings['attention'][] = ['low', 'normal', 'high'];
 
@@ -455,7 +493,13 @@ export function settingsView(data: GameData, s: Settings): SettingsView {
     attentionNotes: notes,
     master,
     llm: { setup: s.llm?.setup !== false, director: s.llm?.director !== false, epitaph: s.llm?.epitaph !== false },
+    cards: { ...allCardsOn(), ...s.cards },
   };
+}
+
+/** The patch that switches one kind of card (the whole `cards` object, so the type holds). */
+export function cardsPatch(s: Settings, kind: CardKind, on: boolean): Partial<Settings> {
+  return { cards: { ...allCardsOn(), ...s.cards, [kind]: on } };
 }
 
 /** The patch that changes one LLM switch (the whole `llm` object, so the type holds). */
