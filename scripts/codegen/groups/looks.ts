@@ -11,7 +11,7 @@ import type { NpcRow } from '../../../src/core/data/types-npcs';
 import type { Successor } from '../../../src/core/data/types-bonds';
 import {
   ANIMAL_EARS, BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_EXTRA, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
-  SILVER, SILVER_CROWN, SPIRIT, SPIRIT_SKIN, skinLeadColour, nearestOrOwn, skinToneOf, stripNegated, wingAccentOf, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
+  crownAccentOf, SPIRIT, SPIRIT_SKIN, skinLeadColour, nearestOrOwn, skinToneOf, stripNegated, wingAccentOf, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
   mix, nearest, outfitFromGarments, hatOfRace, dressColours, RACE_TOOL_RULES, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
 } from '../lib/look-words';
 import { genDir, listDocs, readDoc, tables, Unparsed, writeGen } from '../lib/table';
@@ -180,10 +180,10 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   // beard (not for women, not for the hairless)
   // a race with a beard of its own (the dwarves) gives it to a man whose description says nothing of one
   const beard = fem === true || hairless ? '' : beardOf(clauseOf(text, BEARD_START)) ?? (NO_BEARD.test(text) ? '' : R.beard);
-  // hat (a hat the text turns away, `ไม่สวมมงกุฎ` `ทิ้งหมวกไว้`, is none; a crown of silver is the tiara in silver, since the crown part is gold)
+  // hat (a hat the text turns away, `ไม่สวมมงกุฎ` `ทิ้งหมวกไว้`, is none; a crown of silver, iron or bone takes that metal as the accent)
   const pos = stripNegated(text);
   const hat = hatOf(text) ?? '';
-  let accent: string | undefined = SILVER_CROWN.test(pos) ? SILVER : undefined;
+  let accent: string | undefined = crownAccentOf(pos);
   // eyes
   const eyeHit = eyeColourOf(desc);
   if (!eyeHit && /ตาสี/.test(desc)) miss('สีตา', (desc.match(/ตาสี[ก-๙]{0,6}/) ?? [''])[0]);

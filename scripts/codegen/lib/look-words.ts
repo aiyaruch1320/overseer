@@ -338,7 +338,6 @@ export const HAT_RULES: Rule<(typeof HAT_IDS)[number]>[] = [
   ['turban', /ผ้าโพก(?:ศีรษะ|หัว)|ผ้าพันศีรษะ|โพกหัว/],
   ['bandana', /ผ้าคาดหัว|ผ้าคาดผม|ผ้ารัดผม|ผ้าคาดตา|ผ้าปิดตาครึ่ง/],
   ['veil', /ผ้าคลุมหน้า|ผ้าคลุมศีรษะ|ผ้าคลุมหัว/],
-  ['tiara', /มงกุฎ(?:สี)?เงิน/],
   ['hood', /ผ้าคลุม[ก-๙]*ตั้งแต่หัว/],
   ['crown', /มงกุฎ/],
   ['tiara', /เทียรา|ทีอารา/],
@@ -672,6 +671,8 @@ export function wingAccentOf(text: string): string | null {
 }
 /** Animal ears on a person of another race (a half-beast: `หูแหลมมีขนที่ปลาย` `หูหมาป่า`). */
 export const ANIMAL_EARS = /หู(?:แหลม)?มีขน|หู(?:สัตว์|หมาป่า|หมา|แมว|เสือ|ขนฟู)/;
-/** A crown of silver is drawn as the tiara in the silver accent, since the crown part is gold. */
-export const SILVER_CROWN = /มงกุฎ(?:สี)?เงิน/;
-export const SILVER = '#c8ccd8';
+/** A crown of a pale or dull metal: the crown part takes the accent when the accent has little colour (silver, iron, bone), else it is gold. */
+export const CROWN_ACCENTS: [RegExp, string][] = [
+  [/มงกุฎ(?:สี)?เงิน/, '#c8ccd8'], [/มงกุฎกระดูก/, '#d9cfb2'], [/มงกุฎเหล็ก/, '#6a6e78'],
+];
+export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS.find(([re]) => re.test(text))?.[1];

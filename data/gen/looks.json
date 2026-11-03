@@ -1,5 +1,5 @@
 {
- "version": "85aef7f311a3",
+ "version": "ad3a4e20e80f",
  "sources": [
   "data/gen/bonds.json",
   "data/gen/npcs.json",
@@ -4286,6 +4286,7 @@
      "มงกุฎเหล็กเรียบ"
     ],
     "pose": "ยืนกางขาแตะทั่งด้วยฝ่ามือ",
+    "accent": "#6a6e78",
     "file": "03-kaz-durum",
     "country": "KD-01",
     "continent": "KD",
@@ -4879,6 +4880,7 @@
      "มงกุฎเหล็กเผาแดง"
     ],
     "pose": "ยืนบนระเบียงเหนือปากเหวโดยไม่จับราว",
+    "accent": "#6a6e78",
     "file": "03-kaz-durum",
     "country": "KD-06",
     "continent": "KD",
@@ -14315,7 +14317,7 @@
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#c8b890",
-    "second": "#8ac8e0",
+    "second": "#9a8e70",
     "outfit": "cloak",
     "hair": "braid",
     "beard": "",
@@ -15206,7 +15208,7 @@
     "outfit": "robe",
     "hair": "wild",
     "beard": "",
-    "hat": "tiara",
+    "hat": "crown",
     "tool": "",
     "feats": [
      "ghost",
@@ -16746,7 +16748,7 @@
     "main": "#5a8a5a",
     "second": "#e8d8a0",
     "outfit": "leather",
-    "hair": "short",
+    "hair": "ponytail",
     "beard": "",
     "hat": "",
     "tool": "bow",
@@ -16931,7 +16933,7 @@
     "outfit": "tunic",
     "hair": "short",
     "beard": "",
-    "hat": "tiara",
+    "hat": "crown",
     "tool": "",
     "feats": [],
     "wear": 0.4,
