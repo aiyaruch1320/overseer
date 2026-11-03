@@ -13,7 +13,7 @@ export type Setting = 'outdoor' | 'town' | 'indoor';
 export const SETTINGS: readonly Setting[] = ['outdoor', 'town', 'indoor'];
 
 export interface ScenerySpec {
-  /** Continent id of data/gen/continents.json (AZ MH KZ NR AD MK SH SV NB) or of a new continent after a world change. */
+  /** Continent id of data/gen/continents.json (AZ MH KD NR AL MK SH SV NB) or of a new continent after a world change. */
   continent: string;
   /** Country id (AZ-01): its `ui` values colour the town and the inside when given. */
   country?: string;

@@ -5,10 +5,9 @@ import type { ComponentChildren } from 'preact';
 import { BEAT_KINDS } from '../core/data/types-scenes';
 import type { GameData } from '../core/game';
 import type { LogEntry } from '../core/types';
-import { mainLookOf } from '../app/views/looks';
-import { cardOfEntry, sceneFor } from '../app/views/scene';
+import { cardOfEntry, figuresOf, sceneFor, sceneryOf } from '../app/views/scene';
 import type { GameState } from '../core/types';
-import { LifeScene, mainSlot } from './LifeScene';
+import { LifeScene } from './LifeScene';
 import { BEAT_DEMOS } from '../scene/demo';
 import { EventCard } from '../scene/EventCard';
 import { ScenePlayer } from '../scene/ScenePlayer';
@@ -19,12 +18,13 @@ const entry = (sys: string, kind: string, id: string, data: LogEntry['data'], n 
 
 function Scene({ data, e, state }: { data: GameData; e: LogEntry; state?: GameState }) {
   const v = sceneFor(data, e);
-  // the main character on the stage is the figure of the life (src/art/main-look.ts); the others stay silhouettes until their looks come
-  const slot = state ? mainSlot(mainLookOf(data, state)) : undefined;
+  // who is on the stage: the figure of the life, the NPC of the clash, the crowd (src/app/views/scene.ts)
+  const figureOf = figuresOf(data, state, v);
+  const scenery = sceneryOf(data, state, v);
   return (
     <div style={{ padding: size.pad, display: 'flex', flexWrap: 'wrap', gap: size.pad, alignItems: 'flex-start' }}>
       <div style={{ flex: '1 1 640px', maxWidth: 960 }}>
-        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} slot={slot} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
+        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} figureOf={figureOf} scenery={scenery} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
       </div>
       <EventCard card={v.card} />
     </div>

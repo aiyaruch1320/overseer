@@ -5,7 +5,6 @@
 ## สถานะ
 ขั้นปัจจุบัน: M7 ฉากและภาพแผนที่ (M6 เสร็จ 2026-11-03)
 งานที่กำลังทำ (ส่ง 2026-11-03 23.05 โหมดประหยัด 2 agent สัญญากลาง `src/art/scenery/types.ts` 9a17c58):
-  - ก1 เวทีฉาก Phaser · สาขา `worktree-agent-a8996f724d31cef80` · `.claude/worktrees/agent-a8996f724d31cef80` · เจ้าของ src/scene/ src/app/views/scene.ts (หานักแสดงและ ScenerySpec) · ภาพ review/m7/k1/
   - ก2 ฉากหลังพิกเซล · สาขา `worktree-agent-a0ed660897ec47ae7` · `.claude/worktrees/agent-a0ed660897ec47ae7` · เจ้าของ src/art/scenery/ scenery.html src/art/dev/scenery.ts · ภาพ review/m7/k2/
 งานถัดไป:
   1. **M7 ตามแผน [m7/plan.md](m7/plan.md)**: แกนก่อน (ก1 เวทีฉากเป็น Phaser · ก2 ฉากหลังพิกเซลต่อทวีป · ก3 เอฟเฟกต์ของจังหวะ · ก4 ฉากว่างและการ์ด · ก5 ตรวจภาพ 2 คน) แล้วที่เหลือ (ข1 ชุดฉาก §8.3 · ข2 แผนที่เมืองพิกเซล · ข3 ลบ legacy/ · ข4 รอบตรวจ · ข5 ข้อค้าง M6 · ข6 final-report) · **ใช้โหมดประหยัด (plan.md หัวข้อ 3)** เมื่อทำบน account โควตาน้อย
@@ -42,6 +41,7 @@
 - โควตา: ตรวจด้วยเครื่องมือ get_usage · M6 ใช้ agent 29 ตัว ราว 8.8M token ของ agent · ใกล้เพดานให้ agent commit WIP แล้วจดสาขาใน progress
 
 ## บันทึก (ใหม่อยู่บน)
+- 2026-11-03 M7 ก1 รวม: เวทีฉาก Phaser 320×180 ขยายเป็นเท่าเต็ม (`src/scene/stage/controller.ts` ไฟล์เดียวที่ import Phaser · `layout.ts` คณิตบริสุทธิ์) · นักแสดงเป็นสไปรต์จาก Look (ตัวหลัก NPC พวกพ้อง ฝูงคนเผ่าของชีวิต มังกร) ไม่รู้จักเป็นเงาพิกเซล · `figuresOf` `sceneryOf` `settingOf` ใน scene.ts (setting เดาจากคำของ bg 593 แบบ ต้องตรวจเมื่อ ก2 เข้า) · กล้อง zoom ปัดเป็น 1× หรือ 2× · อนุภาคยังเป็นแคนวาสเดิม (ก3) · ข้อเสนอค้าง: facing walking ใน ActorView · Scenery.ambient เป็น FxKind · tieLookOf · test 2311 golden 22 build · vitest มี worker timeout (onTaskUpdate) ตอนเครื่องหนัก ไม่ใช่เทสต์แดง
 - 2026-11-03 **M6 เสร็จ**: คลื่น 5 รวมครบ (ตัววาดคน ข้อมูล ตัววาดสัตว์) · ด่านทั้งหมดผ่าน (test 2284 golden 22 check:looks 0 build) · รอบตรวจภาพสาม: บล็อก 0 หนัก 0 (SH14-1 แก้ท้ายสุด) · ข้อกลางเบาที่ค้างอยู่ท้าย review/m6/triage.md
 - 2026-11-03 M6 คลื่น 4 รวมครบ: ของถือใหม่ 23 คำปฏิเสธ สายเลือดย่อยและเผ่าสัตว์ 11 สาย ตัวพิเศษ สีตาม review · มงกุฎตาม accent เงินหรือกระดูก · ด่านทั้งหมดผ่าน (test 2221 golden 22 check:looks 0 build) · ภาพรอบสอง review/m6/r2/
 - 2026-11-03 M6 คลื่น 4 รวม 1 จาก 3: ร่างต่อสู้ของ NPC มีชื่อ (named.ts) KD07-1 มังกรทองแดง ยักษ์บอส 5 ตัวต่างกัน นาคาบอส ศัตรูตาม triage ผี NPC (ghost.ts) SV18-4 · ค้าง: SV18-4 สีผิวใน looks.json ผิด · vampire ผิวซีดอ่านก่อนเทาอมน้ำเงิน

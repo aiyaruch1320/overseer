@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import type { SceneScript } from '../core/data/types-scenes';
 import { color, font, size } from '../ui/tokens';
-import { Stage, type CharacterSlot } from './Stage';
+import type { FigureOf } from './figures';
+import { Stage, type SceneryOf } from './Stage';
 import { frameAt, soundsBetween } from './timeline';
 import { MAX_STEP, SPEEDS, STAGE, WORDS } from './tuning';
 
@@ -21,11 +22,13 @@ export interface ScenePlayerProps {
   loop?: boolean;
   /** Called when the clock passes a sound cue; the player has no sound of its own yet (art and sound come in M6 to M7). */
   onSound?: (cue: string) => void;
-  /** A character slot: art replaces the placeholder silhouette without changing the player. */
-  slot?: CharacterSlot;
+  /** Who each actor is (src/app/views/scene.ts `figuresOf`); omit and everyone is a silhouette. */
+  figureOf?: FigureOf;
+  /** The place of the scene for the painted layers (src/app/views/scene.ts `sceneryOf`); omit for a plain place. */
+  scenery?: SceneryOf;
 }
 
-export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, slot }: ScenePlayerProps) {
+export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, figureOf, scenery }: ScenePlayerProps) {
   const [t, setT] = useState(startAt);
   const [playing, setPlaying] = useState(autoplay);
   const [speed, setSpeed] = useState(speed0);
@@ -113,7 +116,7 @@ export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true
       style={{ width: '100%', maxWidth: STAGE.maxWidth, outline: 'none' }}
       data-scene={script.id}
     >
-      <Stage frame={frame} frameColor={script.frame} seed={script.id} slot={slot} />
+      <Stage frame={frame} frameColor={script.frame} seed={script.id} figureOf={figureOf} scenery={scenery} />
       {controls && (
         <div style={{ display: 'flex', alignItems: 'center', gap: size.gap, marginTop: 6, fontFamily: font.body, fontSize: size.small, color: color.textDim }}>
           <button style={btn} onClick={() => (atEnd ? again() : setPlaying(!playing))}>
