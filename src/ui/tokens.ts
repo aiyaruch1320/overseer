@@ -15,7 +15,7 @@ export const color = {
 } as const;
 
 /** Frames of the rarity of a thing in the chest, the same as the weapons (20-god-ui.md §1, 05-weapons-rules.md). */
-export const rarity = { C: '#a0a0a8', U: '#6aa05a', E: '#a05ac8', L: '#d8a030' } as const;
+export const rarity = { C: '#a0a0a8', U: '#6aa05a', R: '#5a8ac8', E: '#a05ac8', L: '#d8a030' } as const;
 
 export const font = {
   body: '"Sarabun", "Noto Sans Thai", system-ui, sans-serif',

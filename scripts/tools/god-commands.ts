@@ -41,7 +41,7 @@ export interface GodConsoleOpts {
   pending?: PendingGod | null;
 }
 
-const TITLE: Record<GodAction, string> = {
+export const TITLE: Record<GodAction, string> = {
   'chest.open': 'เปิดหีบประทาน',
   'chest.pick': 'เลือกการ์ดในหีบ',
   'chest.reroll': 'ทอยหีบใหม่',
@@ -174,7 +174,7 @@ function fmtValue(data: GameData, key: string, v: unknown): string | undefined {
 }
 
 /** A price `{faith, dread}` as `แสงศรัทธา 15` (nothing when free). */
-function costWords(c: unknown): string | undefined {
+export function costWords(c: unknown): string | undefined {
   if (!c || typeof c !== 'object') return undefined;
   const o = c as { faith?: number; dread?: number };
   const parts: string[] = [];
@@ -204,7 +204,7 @@ const MIRACLES = (data: GameData) =>
   ((data.god?.items as { miracles?: { list: { id: string; tier?: string; world?: string; story?: string; immediate?: string; flagsClear?: string[]; cost: { dread?: number } }[] } } | undefined)?.miracles?.list ?? []);
 
 /** The text of a whisper effect as the player reads it: the numbers stay (×2, +2), a branch word in brackets stays as a word. */
-function whisperEffect(data: GameData, text: string): string {
+export function whisperEffect(data: GameData, text: string): string {
   return scrub(data, text.replace(/ทาง\s*`?\[([^\]]+)\]`?/g, 'ทาง$1'), { keepNumbers: true });
 }
 
@@ -529,13 +529,13 @@ export function refOf(game: Game, data: GameData): TargetRef {
 type Parsed = { action: GodAction; args: Record<string, unknown> } | { error: string };
 
 /** What kind of target each miracle names (04-miracles.md §3); a miracle that is not here takes no target. */
-const MIRACLE_TARGET: Record<string, 'country' | 'countries' | 'continent' | 'npc' | 'dragon'> = {
+export const MIRACLE_TARGET: Record<string, 'country' | 'countries' | 'continent' | 'npc' | 'dragon'> = {
   'MR-01': 'country', 'MR-02': 'country', 'MR-03': 'country', 'MR-04': 'country', 'MR-05': 'countries', 'MR-06': 'npc', 'MR-07': 'country', 'MR-08': 'country',
   'MR-09': 'continent', 'MR-10': 'country', 'MR-11': 'country', 'MR-12': 'country', 'MR-13': 'country', 'MR-14': 'country', 'MR-15': 'country', 'MR-16': 'country',
   'MR-17': 'country', 'MR-18': 'country', 'MR-19': 'country', 'MR-20': 'country', 'MR-22': 'continent', 'MR-23': 'dragon', 'MR-24': 'dragon',
 };
 
-const NEEDS: Record<string, 'place' | 'npc'> = { จงไป: 'place', คนนั้นโกหก: 'npc', ช่วย: 'npc', ชี้ทายาท: 'npc' };
+export const NEEDS: Record<string, 'place' | 'npc'> = { จงไป: 'place', คนนั้นโกหก: 'npc', ช่วย: 'npc', ชี้ทายาท: 'npc' };
 
 /** Turns the words of a line into an action and its arguments, or says how to type it. */
 export function parseGod(word: string, rest: string[], ref: TargetRef = ID_REF): Parsed | { meta: Meta } {
