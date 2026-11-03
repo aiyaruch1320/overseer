@@ -25,6 +25,8 @@ declare module '../rig' {
     infant: boolean;
     /** the whole body is gel (the slime has no clothes, no ears, no face) */
     gel: boolean;
+    /** free-floating glow pixels (sparks, dust, steam, sparkle): laid on the finished frame, so they get no outline and no shading */
+    fx: { x: number; y: number; hex: string; a: number }[];
   }
 }
 
@@ -314,7 +316,7 @@ export const EARS: Record<Ears, Part> = {
     // a fan of three rays in the accent colour, open to the back, a little see-through
     front: (r) => {
       const { p } = r, x = earX(r), y = r.head[1], len = Math.max(2, Math.round(r.hr[0] * 0.95));
-      const fan = p.mat(r.look.accent, { alpha: 0.9 }), rib = p.mat(tone(r.look.accent, 0), { flat: true });
+      const fan = p.mat(mixHex(r.look.skin, r.look.accent, 0.35), { alpha: 0.92 }), rib = p.mat(r.look.accent, { flat: true });
       p.poly([[x + 0.5, y - 1.5], [x - len, y - len * 0.7 - 0.5], [x - len - 0.5, y + 0.5], [x - len * 0.7, y + len * 0.5 + 1], [x + 0.5, y + 2]], fan);
       p.px(x - len * 0.55, y - 0.5, rib);
       p.px(x - len * 0.3, y + 1, rib);

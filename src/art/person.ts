@@ -182,7 +182,7 @@ function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: K
     p, look: L, pose, f, k, H, foot, hip, sh, x0, tw, head, hr, shoulderNear, shoulderFar, hand, farHand, near, far,
     kneel: !!key.kneel, sit: !!key.sit, ang: key.ang ?? -70 * DEG, push: sk(key.push), flap: key.flap ?? 0, glow: !!key.glow,
     holds: HOLDS[pose] && tool.kind !== 'none' && !infant, m,
-    legs, lean, hover, reach, spread, hh, infant, gel,
+    legs, lean, hover, reach, spread, hh, infant, gel, fx: [],
   };
   return { r, key };
 }
@@ -223,6 +223,18 @@ export function unknownParts(L: PersonLook): string[] {
   return miss;
 }
 
+/** Lay the free-floating glow pixels on the finished frame: flat colour, see-through where asked, no outline. */
+function overlay(f: Frame, fx: Rig['fx']): void {
+  for (const { x, y, hex, a } of fx) {
+    const xi = Math.round(x), yi = Math.round(y);
+    if (xi < 0 || yi < 0 || xi >= f.w || yi >= FRAME.foot) continue;
+    const o = (yi * f.w + xi) * 4, c = [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+    const under = f.data[o + 3] / 255, out = a + under * (1 - a);
+    for (let k = 0; k < 3; k++) f.data[o + k] = Math.round((c[k] * a + f.data[o + k] * under * (1 - a)) / (out || 1));
+    f.data[o + 3] = Math.round(out * 255);
+  }
+}
+
 /** A figure that has fallen lies on the ground line, wherever the turn put it, and inside the frame. */
 function settle(p: Paint): void {
   let minX = 99, maxX = -1, maxY = -1;
@@ -256,5 +268,7 @@ export function paintPerson(L: PersonLook, pose: Pose, f: number): Frame {
   // the ground shadow: as wide as what stands on the ground (a coil, a hem, a gel), smaller under what hovers
   const wide = L.body.lower === 'serpent' ? coils(r).rx1 + 2 : L.body.lower === 'gown' ? r.tw * 0.5 + 5 : L.body.lower === 'blob' ? r.tw * 0.8 + 2 : r.tw * 0.7 + 2;
   const sh = r.hover ? 0.7 : 1;
-  return p.finish({ cx: CX + 1, cy: FRAME.foot, rx: Math.max(4, wide * sh), ry: Math.max(1.2, 2 * Math.max(0.7, r.k) * sh) });
+  const out = p.finish({ cx: CX + 1, cy: FRAME.foot, rx: Math.max(4, wide * sh), ry: Math.max(1.2, 2 * Math.max(0.7, r.k) * sh) });
+  if (!key.fall) overlay(out, r.fx);
+  return out;
 }

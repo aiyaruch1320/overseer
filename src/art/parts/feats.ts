@@ -13,6 +13,8 @@ const DEG = Math.PI / 180;
 const flat = (r: Rig, hex: string, alpha = 1): number => r.p.mat(hex, { flat: true, alpha });
 const solid = (r: Rig, hex: string, alpha = 1): number => r.p.mat(hex, { alpha });
 const ink = (r: Rig, over = 0.7): number => r.p.mat(mixHex(r.look.skin, '#1a1210', over), { flat: true });
+/** A glow pixel on the finished frame (no outline). */
+const glowPx = (r: Rig, x: number, y: number, hex: string, a = 1): void => { r.fx.push({ x, y, hex, a }); };
 /** The eye of the face (where body.ts draws it). */
 const eyeAt = (r: Rig): Pt => [Math.round(r.head[0] + r.hr[0] * 0.5), Math.round(r.head[1] - 0.4)];
 const topY = (r: Rig): number => r.head[1] - r.hr[1];
@@ -291,7 +293,7 @@ export const FEATS: Record<string, Part> = {
       const { p } = r, [hx, hy] = r.head, [rx, ry] = r.hr, wide = isAngry(r);
       const body = p.mat(shadowOf(r.look.skin), { deep: true }), edge = p.mat(r.look.accent);
       const cx = hx - rx * 0.7, rw = wide ? rx * 2.1 : rx * 1.3, rh = wide ? ry * 1.5 : ry * 1.15;
-      p.ell(cx, hy + (wide ? 0.5 : 0), rw + 0.6, rh + 0.6, edge);
+      if (wide) p.ell(cx, hy + 0.5, rw + 0.6, rh + 0.6, edge);
       p.ell(cx, hy + (wide ? 0.5 : 0), rw - 0.4, rh - 0.4, body);
       if (wide) p.px(cx - 1, hy, p.mat(tone(r.look.skin, 3), { flat: true }));
     },
@@ -316,10 +318,16 @@ export const FEATS: Record<string, Part> = {
       const { p, k } = r, [hx] = r.head, top = Math.round(topY(r)) + 1, col = horn(r), old = r.look.stage === 'elder', child = r.look.stage === 'child' || r.look.stage === 'infant';
       const len = Math.max(2, Math.round(r.hh * (old ? 0.85 : child ? 0.35 : 0.7))), w = 1;
       const h = p.mat(col), lite = p.mat(tone(col, 3), { flat: true });
-      const near: Pt = [hx - 1, top], mid: Pt = [near[0] - len * 0.35, top - len * 0.8], end: Pt = [near[0] - len * 0.1 - (r.look.race === 'demonkin' ? -1 : 1.5), top - len * 1.15];
-      stroke(p, [hx + r.hr[0] * 0.5, top + 1], [hx + r.hr[0] * 0.55, top - len * 0.8], 1, h, lite, 0.5); // the far one, straight up
-      stroke(p, near, mid, r.look.fem || child ? 1 : 2, h, h, 0.5, 0.5);
-      stroke(p, mid, end, 1, h, lite, 0.6);
+      const demon = r.look.race === 'demonkin', thin = r.look.fem || child ? 1 : 2;
+      // dragon horns sweep back from the brow; a demon's rise and hook, both are two: the near one whole, the far one past it
+      const back = demon ? 0.25 : 0.9, rise = demon ? 1.1 : 0.8;
+      const horn1 = (bx: number, by: number, w: number, scale: number, sweep = 1) => {
+        const mid: Pt = [bx - len * back * 0.4 * scale * sweep, by - len * rise * 0.55 * scale], end: Pt = [bx - len * back * scale * sweep - (demon ? -0.5 : 0), by - len * rise * scale];
+        stroke(p, [bx, by], mid, w, h, h, 0.5, 0.3);
+        stroke(p, mid, end, 1, h, lite, 0.6);
+      };
+      horn1(hx + r.hr[0] * 0.55, top + 1, 1, 0.85, 0.35);
+      horn1(hx - 0.5, top, thin, 1);
     },
   },
   'tail:lizard': {
@@ -382,12 +390,13 @@ export const FEATS: Record<string, Part> = {
   // ── fae ──
   'wings:insect': { back: insectWing },
   sparkle: {
-    // dust that glitters round the figure: three of four specks at a time, one of them a little star (flat)
+    // dust that glitters round the figure: three of four specks at a time, one of them a little star (flat, no outline)
     front: (r) => {
-      const { p, H } = r, g = flat(r, r.look.accent), w = flat(r, '#ffffff'), cx = cxOf(r), cy = r.sh + r.H * 0.15;
+      const { H } = r, cx = cxOf(r), cy = r.sh + r.H * 0.15, g = r.look.accent;
       const spots: Pt[] = [[-H * 0.55, -H * 0.2], [H * 0.5, -H * 0.4], [H * 0.6, H * 0.1], [-H * 0.4, H * 0.35]];
-      spots.forEach(([dx, dy], i) => { if ((i + r.f + (r.pose === 'walk' ? 1 : 0)) % 4 === 0) return; p.px(cx + dx, cy + dy + ((r.f + i) % 2), i % 2 ? g : w); });
-      const [sx, sy] = spots[(r.f + 1) % 4]; p.px(cx + sx + 1, cy + sy, w); p.px(cx + sx - 1, cy + sy, w); p.px(cx + sx, cy + sy - 1, w); p.px(cx + sx, cy + sy + 1, w);
+      spots.forEach(([dx, dy], i) => { if ((i + r.f + (r.pose === 'walk' ? 1 : 0)) % 4 === 0) return; glowPx(r, cx + dx, cy + dy + ((r.f + i) % 2), i % 2 ? g : '#ffffff'); });
+      const [sx, sy] = spots[(r.f + 1) % 4];
+      for (const [dx, dy] of [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]]) glowPx(r, cx + sx + dx, cy + sy + dy, '#ffffff', dx || dy ? 0.7 : 1);
     },
   },
   antenna: {
@@ -402,10 +411,10 @@ export const FEATS: Record<string, Part> = {
     // a nucleus that beats in the chest (a flat core with a pale halo), and the shine on the gel; no eye and no mouth
     front: (r) => {
       const { p } = r, cx = Math.round(cxOf(r)), ny = Math.round(r.sh + Math.max(2, (r.hip - r.sh) * 0.4)), beat = r.f % 2 === 0 || r.pose === 'walk' && r.f === 2;
-      const halo = p.mat(mixHex(r.look.skin, '#ffffff', 0.55), { alpha: 0.85, flat: true }), core = flat(r, r.look.accent);
-      const big = r.tw >= 8;
-      p.rect(cx - 1 - (beat ? 1 : 0), ny - 1 - (beat ? 1 : 0), 3 + (beat ? 2 : 0), 3 + (beat ? 2 : 0), halo);
-      p.rect(cx - (big ? 1 : 0), ny - (big ? 1 : 0), big ? 3 : 2, big ? 3 : 2, core);
+      const halo = p.mat(mixHex(r.look.skin, '#ffffff', 0.4), { alpha: 0.9, flat: true }), core = flat(r, r.look.accent);
+      const big = r.tw >= 8, hs = big ? 5 : 4, e = beat ? 0 : 1;
+      p.rect(cx - (hs >> 1) + e, ny - (hs >> 1) + e, hs - e * 2, hs - e * 2, halo);
+      p.rect(cx - (big ? 1 : 0), ny - (big ? 1 : 0), 2, 2, core);
       const sh = flat(r, '#ffffff', 0.85);
       p.px(r.head[0] - r.hr[0] * 0.6, topY(r) + 1.5, sh); p.px(r.head[0] - r.hr[0] * 0.6 + 1, topY(r) + 1, sh);
       p.px(r.x0 + 1, r.sh + 3, sh); p.px(r.x0 + 1, r.sh + 4, sh);
@@ -457,7 +466,7 @@ export const FEATS: Record<string, Part> = {
     front: (r) => {
       const { p } = r, w = flat(r, '#e8f6ff'), drip = flat(r, '#bfe4f0', 0.8), top = Math.round(topY(r));
       p.px(r.head[0] - 1, top + 1, w); p.px(r.x0 + 1, r.sh + 1, w); armMarks(r, [0.35, 0.75], w);
-      p.px(r.hand[0], r.hand[1] + 2 + r.f % 2, drip);
+      glowPx(r, r.hand[0], r.hand[1] + 2 + (r.f % 2), '#bfe4f0', 0.85); void drip;
     },
   },
   // ── winged ──
@@ -524,10 +533,10 @@ export const FEATS: Record<string, Part> = {
     },
   },
   embers: {
-    // embers rise from the shoulders: three sparks, each higher at the next frame (flat)
+    // embers rise from the shoulders: three sparks, each higher at the next frame (flat, no outline)
     front: (r) => {
-      const { p } = r, c = [flat(r, r.look.accent), flat(r, '#ffc040'), flat(r, tone(r.look.accent, 1))];
-      for (let i = 0; i < 3; i++) p.px(r.x0 + 1 + i * Math.max(2, Math.round(r.tw / 3)) + ((r.f + i) % 2), r.sh - 1 - ((r.f * 2 + i * 3) % 7), c[i]);
+      const c = [r.look.accent, '#ffc040', tone(r.look.accent, 1)];
+      for (let i = 0; i < 3; i++) glowPx(r, r.x0 + 1 + i * Math.max(2, Math.round(r.tw / 3)) + ((r.f + i) % 2), r.sh - 1 - ((r.f * 2 + i * 3) % 7), c[i]);
     },
   },
   flamehair: {
@@ -574,10 +583,10 @@ export const FEATS: Record<string, Part> = {
   steam: {
     // steam from the joints: two puffs rise and thin out (a pale, see-through white)
     front: (r) => {
-      const { p } = r, s = flat(r, '#f2f4f8', 0.7), t = flat(r, '#f2f4f8', 0.4);
       for (let i = 0; i < 2; i++) {
         const x = r.x0 + r.tw - 1 + i * 2 + (r.f % 2), y = r.sh - 1 - ((r.f * 2 + i * 3) % 6);
-        p.rect(x, y, 2, 2, s); p.px(x + 1, y - 1, t);
+        for (const [dx, dy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) glowPx(r, x + dx, y + dy, '#f2f4f8', 0.75);
+        glowPx(r, x + 1, y - 1, '#f2f4f8', 0.45);
       }
     },
   },
@@ -673,10 +682,10 @@ export const FEATS: Record<string, Part> = {
     },
   },
   dust: {
-    // dust that falls from the wraps and the feet: sand-coloured specks that drop one row a frame (flat)
+    // dust that falls from the wraps and the feet: sand-coloured specks that drop one row a frame (no outline)
     front: (r) => {
-      const { p } = r, c = flat(r, '#d4bc88', 0.75), n = r.f % 4;
-      p.px(r.hand[0], r.hand[1] + 2 + n % 3, c); p.px(r.x0 + 1, r.hip + 2 + (n + 1) % 3, c); p.px(r.x0 + r.tw, r.foot - 2 - ((n + 2) % 3), c);
+      const n = r.f % 4;
+      glowPx(r, r.hand[0], r.hand[1] + 2 + n % 3, '#d4bc88', 0.8); glowPx(r, r.x0 + 1, r.hip + 2 + (n + 1) % 3, '#d4bc88', 0.8); glowPx(r, r.x0 + r.tw, r.foot - 2 - ((n + 2) % 3), '#d4bc88', 0.8);
     },
   },
   // ── ghoul ──
