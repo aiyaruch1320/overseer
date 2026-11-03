@@ -46,6 +46,27 @@ describe('battle: the foe', () => {
   });
 });
 
+describe('battle: a draw says why it is one (review round two R6)', () => {
+  it('the beats ran out with the foe standing: the model says so, and what the missed beats cost', () => {
+    const m = model(FIGHTS.draw);
+    expect(m.end).toBe('draw');
+    expect(m.why).toContain('ครบ');
+    expect(m.why).toContain('ศัตรูยังไม่ล้ม');
+    const missed = m.beats.filter((b) => b.ok === false).length;
+    if (missed) expect(m.why).toContain('พลาด');
+    expect(model(FIGHTS.won).why).toBe('');
+    expect(model(FIGHTS.lost).why).toBe('');
+  });
+
+  it('a fight in which every beat missed reads as a draw that cost hit points, not as a defeat', () => {
+    const m = model({ enemies: 'skeleton', foe: 'กองทัพโครงกระดูก', end: 'draw', kind: 'hunt', hpBefore: 64, rolls: [['melee', 4, 2, 11, 0, 48, 2], ['melee', 3, 2, 11, 0, 32, 2], ['melee', 6, 2, 11, 0, 16, 2]] });
+    expect(m.hpLost).toBe(48);
+    expect(m.why).toContain('พลาดทุกจังหวะ');
+    expect(m.why).toContain('48');
+    expect(m.why).toContain('เสมอ');
+  });
+});
+
 describe('battle: the beats', () => {
   it('each beat has its stance by name, its roll and whether it passed', () => {
     const m = model(FIGHTS.won);

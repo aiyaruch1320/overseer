@@ -255,6 +255,11 @@ function Aftermath({ m }: { m: BattleModel }) {
         </span>
         <span style={{ color: color.textDim, fontSize: size.small }}>{W.hpLost(m.hpLost)}</span>
       </div>
+      {m.why && (
+        <div style={{ marginTop: size.gap / 2, color: color.textDim }} data-testid="result-why">
+          {m.why}
+        </div>
+      )}
       {m.line && <div style={{ marginTop: size.gap / 2 }}>{m.line}</div>}
       {c && (c.result || c.story) && (
         <div style={{ marginTop: size.gap / 2, color: color.text }} data-testid="clash-result">
