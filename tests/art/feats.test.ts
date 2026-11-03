@@ -116,3 +116,31 @@ describe('wings fold at rest and open when roused', () => {
     expect(seen.size).toBeGreaterThanOrEqual(5);
   });
 });
+
+describe('the beast people, the bird, the lizard, the doll', () => {
+  const beast = RACES.find((r) => r.id === 'beast')!;
+  const kind = (feats: string[], key: string) => paintPerson({ ...raceLook(beast, { key, feats }), hair: 'short' }, 'idle', 0);
+  const KINDS: Record<string, string[]> = {
+    wolf: ['fur', 'tail:fluffy', 'pawhands', 'muzzle'], tiger: ['fur', 'tail:fluffy', 'pawhands', 'muzzle', 'stripes'], rabbit: ['fur', 'tail:fluffy', 'pawhands', 'muzzle', 'longears'],
+    deer: ['fur', 'tail:fluffy', 'pawhands', 'muzzle', 'antlers', 'spots'], lion: ['fur', 'tail:fluffy', 'pawhands', 'muzzle', 'mane'], bird: ['feathers', 'beak'], lizard: ['crest', 'scales', 'tail:lizard'],
+  };
+  it('every kind is a different picture, and none is the plain beastfolk', () => {
+    const plain = kind(['fur', 'tail:fluffy', 'pawhands', 'beads'], 'x');
+    const fs = Object.entries(KINDS).map(([id, f]) => [id, kind(f, 'x')] as const);
+    for (const [id, f] of fs) expect(same(f, plain), id).toBe(false);
+    for (let a = 0; a < fs.length; a++) for (let b = a + 1; b < fs.length; b++) expect(same(fs[a][1], fs[b][1]), `${fs[a][0]} ${fs[b][0]}`).toBe(false);
+  });
+  it('a bird has no fur tail: the fur feats draw nothing beside the feathers', () => {
+    expect(same(kind(['feathers', 'beak'], 'x'), kind(['feathers', 'beak', 'fur', 'tail:fluffy', 'pawhands'], 'x'))).toBe(true);
+  });
+  it('the rabbit and the deer stand taller than the wolf (long ears, antlers)', () => {
+    const top = (f: Frame) => { for (let y = 0; y < f.h; y++) for (let x = 0; x < f.w; x++) if (f.data[(y * f.w + x) * 4 + 3] > 100) return y; return 99; };
+    expect(top(kind(KINDS.rabbit, 'x'))).toBeLessThan(top(kind(KINDS.wolf, 'x')));
+    expect(top(kind(KINDS.deer, 'x'))).toBeLessThan(top(kind(KINDS.wolf, 'x')));
+  });
+  it('the four-armed has more arm pixels than the two-armed', () => {
+    const L0 = { ...base(), feats: [] as string[] }, L1 = { ...L0, feats: ['fourarms'] };
+    const count = (f: Frame) => { let n = 0; for (let i = 3; i < f.data.length; i += 4) if (f.data[i] > 100) n++; return n; };
+    expect(count(paintPerson(L1, 'idle', 0))).toBeGreaterThan(count(paintPerson(L0, 'idle', 0)) + 2);
+  });
+});

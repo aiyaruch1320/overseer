@@ -7,6 +7,7 @@ import { BEAST_POSES, FRAMES, poseN } from '../../src/art/beast/kit';
 import { BEASTS, DRAGONS, ENEMIES, personLookOf } from '../../src/art/beast/look';
 import { paintBeastSheet, sheetSize } from '../../src/art/beast/sheet';
 import type { EnemyLook } from '../../src/core/data/types-beast-looks';
+import { npcBeast } from '../../src/art/npc-beasts';
 import { unknownParts } from '../../src/art/person';
 
 type Box = { n: number; x0: number; y0: number; x1: number; y1: number };
@@ -112,5 +113,26 @@ describe('beast painters', () => {
     const one = BEASTS.find((b) => b.id === 'npc_bandit')!;
     // the group of goblins is wider than a single person of the same size class
     expect(box(paintBeast(gob, 'idle', 0)).x1 - box(paintBeast(gob, 'idle', 0)).x0).toBeGreaterThan(box(paintBeast(one, 'idle', 0)).x1 - box(paintBeast(one, 'idle', 0)).x0 - 1);
+  });
+  it('the named giants are their NPCs: five stone keepers that are not the same picture, nagas on a coil, Throkad a dragon', () => {
+    const by = (id: string) => BEASTS.find((b) => b.id === id)!;
+    const keepers = ['SH03-1', 'SH03-2', 'SH03-4', 'SH06-4', 'SH17-1'].map((id) => paintBeast(by(id), 'idle', 0).data.join());
+    expect(new Set(keepers).size).toBe(5);
+    for (const id of ['NR07-1', 'NR07-2', 'MK02-1', 'MH02-1', 'MH10-3']) expect(box(paintBeast(by(id), 'idle', 0)).n, id).toBeGreaterThan(300);
+    const kd = by('KD07-1') as EnemyLook;
+    expect([kd.plan, kd.form]).toEqual(['dragon', 'copper']);
+    // the XL fighters are big: the tallest keeper is taller than the shortest by the doc's scales (4.0× against 2.4×)
+    const h = (id: string) => { const b = box(paintBeast(by(id), 'idle', 0)); return b.y1 - b.y0; };
+    expect(h('SH17-1')).toBeGreaterThan(h('SH03-4') * 1.25);
+  });
+  it('the ghost NPCs differ and show: the key of NB08-4, the black smoke of NB13-3', () => {
+    const fr = (id: string) => paintBeast(npcBeast(id)!, 'idle', 0);
+    const lum = (f: { data: Uint8ClampedArray }) => { let s = 0, n = 0; for (let i = 0; i < f.data.length; i += 4) if (f.data[i + 3] > 120) { s += f.data[i] * 0.3 + f.data[i + 1] * 0.59 + f.data[i + 2] * 0.11; n++; } return s / Math.max(1, n); };
+    const key = fr('NB08-4');
+    let blue = 0;
+    for (let i = 0; i < key.data.length; i += 4) if (key.data[i + 3] > 200 && key.data[i] < 170 && key.data[i + 2] > 220) blue++;
+    expect(blue).toBeGreaterThanOrEqual(8);
+    expect(lum(fr('NB13-3'))).toBeLessThan(lum(fr('NB08-2')) - 40);
+    expect(fr('NB08-2').data.join()).not.toBe(fr('NB08-4').data.join());
   });
 });

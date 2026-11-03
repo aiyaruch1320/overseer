@@ -14,14 +14,34 @@ export interface RaceRow { id: string; name: string; scale: number }
 /** The 21 races, in the order of the docs. */
 export const RACES: RaceRow[] = Object.values(looks.races).map((r) => ({ id: r.id, name: r.name, scale: r.body.scale }));
 
-export interface RaceOpts { stage?: Stage; fem?: boolean; line?: string; tool?: string; hat?: string; feats?: string[]; key?: string }
+export interface RaceOpts { coat?: string; skin?: string; stage?: Stage; fem?: boolean; line?: string; tool?: string; hat?: string; feats?: string[]; key?: string }
+
+/**
+ * Feats the sub-lines will carry once the words are mapped (the beast people, the dolls): the set shows them now, so the painter's feats can be
+ * checked by eye before the data has them. `add` joins the feats of the data, `set` replaces them (the bird has no fur and no brush of a tail).
+ */
+const LINE_FEATS: Record<string, { add?: string[]; set?: string[]; coat?: string; skin?: string }> = {
+  'beast:หมาป่า': { add: ['muzzle'], coat: '#7a7a80' },
+  'beast:เสือและแมวใหญ่': { add: ['muzzle', 'stripes'], coat: '#c8782a' },
+  'beast:กวางและวัว': { add: ['antlers', 'spots', 'muzzle'], coat: '#9a6a3a' },
+  'beast:นก': { set: ['feathers', 'beak', 'beads'], coat: '#8a7a68' },
+  'beast:อูฐและจิ้งจกทราย': { set: ['crest', 'scales', 'slit', 'tail:lizard', 'beads'], coat: '#6a7a4a', skin: '#8a9a5a' },
+  'construct:ผู้รอดชีวิตตุ๊กตา': { add: ['puppet'] },
+};
+/** Looks that are not lines of their own but kinds of the beast people the words name (rabbit, lion, fox, leopard, tiger). */
+const BEAST_KINDS: [string, string, string[], string][] = [
+  ['rabbit', 'กระต่าย', ['longears'], '#b8a898'], ['lion', 'สิงโต', ['muzzle', 'mane'], '#c89850'], ['fox', 'จิ้งจอก', ['muzzle'], '#c85a20'],
+  ['leopard', 'เสือดาว', ['muzzle', 'spots'], '#c8a050'], ['tiger', 'เสือโคร่ง', ['muzzle', 'stripes'], '#c8782a'],
+];
 
 /** The look of a race at a stage from the data; `tool`, `hat` and `feats` replace what the data gives. The same options give the same figure. */
 export function raceLook(row: RaceRow, o: RaceOpts = {}): PersonLook {
   const stage = o.stage ?? 'adult', fem = !!o.fem;
   const seed = o.key ?? `${row.id}${o.line ? ':' + o.line : ''}${fem ? '-f' : ''}`;
   const L = dataLook(looks, row.id, { line: o.line, stage, fem, seed });
-  return { ...L, tool: o.tool ?? L.tool, hat: o.hat ?? L.hat, feats: o.feats ?? L.feats, wear: stage === 'elder' ? 0.6 : 0.2 };
+  const t = o.line ? LINE_FEATS[`${row.id}:${o.line}`] : undefined;
+  const feats = o.feats ?? t?.set ?? [...new Set([...L.feats, ...(t?.add ?? [])])];
+  return { ...L, hairColor: o.coat ?? t?.coat ?? L.hairColor, skin: o.skin ?? t?.skin ?? L.skin, tool: o.tool ?? L.tool, hat: o.hat ?? L.hat, feats, wear: stage === 'elder' ? 0.6 : 0.2 };
 }
 
 const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
@@ -38,7 +58,25 @@ const withLines = (): Entry[] =>
     ),
   );
 
+/** The sub-lines of one race (the race itself first), men then women. */
+const linesOf = (row: RaceRow): Entry[] =>
+  [undefined, ...looks.races[row.id].lines.map((l) => l.name)].flatMap((line) =>
+    [false, true].map((fem) => ({ id: `${line ?? row.id}${fem ? '-f' : ''}`, label: `${row.name}${line ? ' · ' + line : ''} ${fem ? 'หญิง' : 'ชาย'}`, look: raceLook(row, { line, fem }) })),
+  );
+
 export const SET_DEFS: Record<string, SetDef> = {
+  // the same id is in sets-npcs.ts; this file is read after it, so this one is the one the page shows
+  'races:lines': { label: 'เผ่า 21 พร้อมสายเลือดย่อย (ผู้ใหญ่ ชายและหญิง; ลักษณะของสายที่คำยังไม่ใส่ ใส่ให้ในชุดนี้)', entries: withLines },
+  'beast:kinds': {
+    label: 'เผ่าสัตว์ทุกแบบ (สายเลือดย่อย กระต่าย สิงโต จิ้งจอก เสือดาว เสือโคร่ง) และสี่แขน',
+    entries: () => [
+      ...linesOf(one('beast')),
+      ...BEAST_KINDS.flatMap(([id, name, feats, coat]) => [false, true].map((fem) => ({ id: `${id}${fem ? '-f' : ''}`, label: `${name} ${fem ? 'หญิง' : 'ชาย'}`, look: raceLook(one('beast'), { fem, coat, feats: [...looks.races.beast.feats, ...feats], key: `kind-${id}` }) }))),
+      { id: 'fourarms', label: 'สี่แขน มือเปล่า', look: raceLook(one('construct'), { feats: ['plates', 'fourarms'], tool: '', key: 'kind-fourarms' }) },
+      { id: 'fourarms-gun', label: 'สี่แขน ปืน', look: raceLook(one('construct'), { feats: ['plates', 'fourarms'], tool: 'pistol', key: 'kind-fourarms' }) },
+      { id: 'fourarms-sword', label: 'สี่แขน ดาบ', look: raceLook(one('construct'), { feats: ['plates', 'fourarms'], tool: 'sword', key: 'kind-fourarms' }) },
+    ],
+  },
   // 'races' is also in sets-npcs.ts; this file is read after it (the files are read in name order), so this one is the one the page shows
   races: { label: 'เผ่า 21 พร้อมสายเลือดย่อย (ผู้ใหญ่ ชายและหญิง)', entries: withLines },
   'races:main': {
@@ -66,6 +104,9 @@ export const SET_DEFS: Record<string, SetDef> = {
     entries: () => ['book', 'ledger', 'scroll', 'mug', 'bowl', 'flask', 'lantern', 'censer', 'bow'].map((tool) => ({ id: tool, label: tool, look: raceLook(one('human'), { tool }) })),
   },
 };
+
+// the sub-lines of each race on their own page (fits one screen)
+for (const row of RACES) SET_DEFS[`lines:${row.id}`] = { label: `${row.name} สายเลือดย่อย`, entries: () => linesOf(row) };
 
 // one race at every stage, and one race with tools and a hat (the page plays the pose chosen on it)
 for (const row of RACES) {

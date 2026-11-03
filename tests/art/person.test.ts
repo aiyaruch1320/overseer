@@ -225,3 +225,52 @@ describe('the painter: warm shadows and glow pixels', () => {
     expect(a(5, 5)).toBe(128);
   });
 });
+
+describe('the race painter after the visual review', () => {
+  const h = (f: Frame) => { const s = span(f); return s.bottom - s.top + 1; };
+  it('a big race keeps its size when young: a giant child is taller than a human child and a human adult', () => {
+    const giantChild = h(paintPerson(raceLook(row('giant'), { stage: 'child' }), 'idle', 0));
+    expect(giantChild).toBeGreaterThan(h(paintPerson(raceLook(row('human'), { stage: 'child' }), 'idle', 0)));
+    expect(giantChild).toBeGreaterThanOrEqual(h(paintPerson(raceLook(row('human')), 'idle', 0)));
+    for (const s of STAGES.slice(1)) expect(h(paintPerson(raceLook(row('giant'), { stage: s }), 'idle', 0)), s).toBeGreaterThan(h(paintPerson(raceLook(row('human'), { stage: s }), 'idle', 0)));
+  });
+  it('a small race is still scaled down by its stage', () => {
+    expect(h(paintPerson(raceLook(row('halfling'), { stage: 'child' }), 'idle', 0))).toBeLessThanOrEqual(h(paintPerson(raceLook(row('halfling')), 'idle', 0)));
+  });
+  it('an unarmed attack is a punch: the fist goes out in front, and it differs from standing', () => {
+    const L = raceLook(row('human'), { tool: '' });
+    const idle = paintPerson(L, 'idle', 0), hit = [0, 1, 2].map((i) => paintPerson(L, 'attack', i));
+    for (const f of hit) expect(same(f, idle)).toBe(false);
+    expect(hit.some((f) => !same(f, hit[0]))).toBe(true);
+    expect(span(hit[1]).right).toBeGreaterThan(span(idle).right + 3);
+  });
+  it('the elf keeps its hair: the crest is a circlet, the hair colour shows above it', () => {
+    const L = { ...raceLook(row('elf')), hair: 'short', hairColor: '#d03030', hat: '' };
+    const f = paintPerson(L, 'idle', 0);
+    let reds = 0;
+    for (let i = 0; i < f.data.length; i += 4) if (f.data[i + 3] > 200 && f.data[i] > 90 && f.data[i] > f.data[i + 1] * 2.2 && f.data[i] > f.data[i + 2] * 2.2) reds++;
+    expect(reds).toBeGreaterThanOrEqual(8);
+  });
+  it('the fae are muted: no pixel of the figure is a bright saturated magenta', () => {
+    for (const fem of [false, true]) {
+      const f = paintPerson(raceLook(row('fae'), { fem }), 'idle', 0);
+      for (let i = 0; i < f.data.length; i += 4) if (f.data[i + 3] > 200) expect(f.data[i] > 150 && f.data[i + 2] > 150 && f.data[i + 1] < 70, `px ${i / 4}`).toBe(false);
+    }
+  });
+  it('the hem of a merfolk is not white', () => {
+    const a = paintPerson(raceLook(row('merfolk'), { key: 'a' }), 'idle', 0);
+    let hemWhite = 0;
+    for (let y = 44; y < 52; y++) for (let x = 0; x < a.w; x++) { const i = (y * a.w + x) * 4; if (a.data[i + 3] > 200 && a.data[i] > 215 && a.data[i + 1] > 215 && a.data[i + 2] > 215) hemWhite++; }
+    expect(hemWhite).toBe(0);
+  });
+  it('merfolk fin ears vary with the look', () => {
+    const fs = ['a', 'b', 'c', 'd', 'e', 'f'].map((key) => paintPerson(raceLook(row('merfolk'), { key }), 'idle', 0));
+    expect(new Set(fs.map((f) => Array.from(f.data).join(','))).size).toBeGreaterThan(2);
+  });
+  it('constructs and soul machines have different heads by look', () => {
+    for (const [id, feat] of [['construct', 'mecheye'], ['soulmachine', 'visor']]) {
+      const frames = ['k1', 'k2', 'k3', 'k4', 'k5', 'k6'].map((key) => paintPerson({ ...raceLook(row(id), { key }), feats: [feat], second: key === 'k1' ? '#7a2a2a' : '#2a4a7a' }, 'idle', 0));
+      expect(new Set(frames.map((f) => Array.from(f.data).join(','))).size, id).toBeGreaterThan(2);
+    }
+  });
+});

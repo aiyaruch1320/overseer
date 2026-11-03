@@ -10,6 +10,7 @@ import { mainLook } from '../../art/main-look';
 import { DRAGONS, beastOf, type BeastLook } from '../../art/beast/look';
 import type { PersonLook } from '../../art/look';
 import { stageOf } from '../../art/look';
+import { npcBeast } from '../../art/npc-beasts';
 import { npcLook, raceLook } from '../../art/resolve';
 import { lifeStartN } from './watch';
 
@@ -39,13 +40,15 @@ export function tieLookOf(data: GameData, ctx: Ctx, t: Tie): PersonLook | null {
   return raceLook(looks, t.race, { stage, fem, seed: t.id });
 }
 
-/** The Looks of every tie of the life, by tie id. */
-export function tieLooks(data: GameData, state: GameState): Map<string, PersonLook> {
-  const out = new Map<string, PersonLook>();
+/** The Looks of every tie of the life, by tie id; an NPC who is a creature (src/art/npc-beasts.ts) is its beast. */
+export function tieLooks(data: GameData, state: GameState): Map<string, PersonLook | BeastLook> {
+  const out = new Map<string, PersonLook | BeastLook>();
   const life = state.life;
   if (!life || !life.ext.bonds || !looksOf(data)) return out;
   const ctx = makeCtx(state, data);
   for (const t of tiesOf(bondsExt(life))) {
+    const beast = t.npc ? npcBeast(t.npc) : null;
+    if (beast) { out.set(t.id, beast); continue; }
     const L = tieLookOf(data, ctx, t);
     if (L) out.set(t.id, L);
   }

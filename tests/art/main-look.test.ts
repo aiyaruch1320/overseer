@@ -193,6 +193,8 @@ describe('the looks the screens draw', () => {
       expect(looks.size, `seed ${seed}`).toBe(ties.length);
       for (const t of ties) {
         const L = looks.get(t.id)!;
+        // an NPC who is a creature is its beast (src/art/npc-beasts.ts)
+        if (L.kind !== 'person') { expect(L.id, t.id).toBe(t.npc); continue; }
         expect(unknownParts(L), t.id).toEqual([]);
         if (t.npc && L.key !== t.npc) expect(L.key.startsWith('race:') || L.key === t.npc).toBe(true);
       }

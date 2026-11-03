@@ -5,6 +5,7 @@
 import type { Ears, Lower } from '../look';
 import { tones, type Paint, type Pt, type Rgb } from '../paint';
 import type { Part, Rig } from '../rig';
+import { seedOf } from './kit';
 
 // What the person painter adds to the Rig (kept here so the Rig of rig.ts stays as the lead wrote it).
 
@@ -264,42 +265,68 @@ export const EARS: Record<Ears, Part> = {
     },
   },
   long: {
-    // up and back, as long as the head is wide; the old ones droop
+    // up and back, as long as the head is wide, a leaf and not a needle: thick at the root, tapering to the tip, a dark hollow inside; the old ones droop
     front: (r) => {
-      const { p, k } = r, x = earX(r), y = r.head[1] - 0.5, len = Math.max(3, Math.round(r.hr[0] * 1.5 + 1)), droop = r.look.stage === 'elder';
-      const tx = x - len * 0.9, ty = droop ? y + 2 : y - len * 0.8 - (r.f === 1 && r.pose === 'idle' ? 0 : 0.5);
-      p.poly([[x + 0.5, y - 1.2], [tx, ty], [x + 0.5, y + 1.8]], r.m.skin);
-      p.px(x - 0.5, y - 0.5, earMat(r));
-      void k;
+      const { p } = r, x = earX(r), y = r.head[1] - 0.5, len = Math.max(3, Math.round(r.hr[0] * 1.3 + 1)), droop = r.look.stage === 'elder';
+      const w = r.hh >= 6 ? 3 : 2, tx = x - len * 0.85, ty = droop ? y + 2.5 : y - len * 0.7 - (r.f === 1 && r.pose === 'idle' ? 0.6 : 0);
+      stroke(p, [x + 0.5, y + 0.5], [tx, ty], w, r.m.skin, r.m.skin, 0.5, 0.8);
+      const hollow = earInner(r), m = r.p.mat(mixHex(r.look.skin, '#1a1210', 0.35));
+      p.px(x - 0.5, y, m);
+      if (len >= 5) p.px(x - 1.5 - (droop ? 0 : 0), y - (droop ? 0 : 1), hollow);
     },
   },
   pointed: {
     front: (r) => {
       const { p } = r, x = earX(r), y = r.head[1], len = Math.max(2, Math.round(r.hr[0] * 0.8));
-      p.poly([[x + 0.5, y - 1], [x - len, y - len * 0.6 - 0.5], [x + 0.5, y + 1.5]], r.m.skin);
+      const up = r.look.race === 'fae' ? 0.9 : 0.6;
+      p.poly([[x + 0.5, y - 1], [x - len, y - len * up - 0.5], [x + 0.5, y + 1.5]], r.m.skin);
     },
   },
   animal: {
-    // up on the head, in the fur colour with a darker inside; they swivel in the idle
+    // on the head, in the fur colour with a lighter inside; they swivel in the idle. The feats of the look say which animal: a rabbit's are tall,
+    // a deer's go out sideways, a big cat's are round, a lion's small and round, a bird and a lizard have none
     front: (r) => {
-      const { p, k } = r, [hx, hy] = r.head, top = hy - r.hr[1], sz = Math.max(2, Math.round(3.5 * k)), t = twitch(r);
-      const fur = r.m.hair, inner = p.mat(shadowOf(r.look.skin), { flat: true });
+      const f = r.look.feats;
+      if (f.includes('beak') || f.includes('feathers') || f.includes('crest')) return;
+      const { p, k } = r, [hx, hy] = r.head, top = Math.round(hy - r.hr[1]), t = twitch(r), fur = r.m.hair;
+      const inner = p.mat(mixHex(r.look.skin, '#e8c0b0', 0.5), { flat: true });
+      if (f.includes('longears')) return; // the feat draws them
+      if (f.includes('antlers')) {
+        // a deer's: a leaf that points out and back from the side of the head, and a small one past it on the far side
+        const sz = Math.max(2, Math.round(3 * k));
+        p.poly([[hx - r.hr[0] * 0.5, top + 2.2], [hx - r.hr[0] * 0.5 - sz * 1.4 - t, top + 0.2], [hx - r.hr[0] * 0.5, top + 3.6]], fur);
+        p.px(hx - r.hr[0] * 0.5 - 1, top + 2, inner);
+        p.poly([[hx + r.hr[0] * 0.1, top + 1.4], [hx + r.hr[0] * 0.1 + sz * 0.9, top - 0.8], [hx + r.hr[0] * 0.5, top + 1.8]], fur);
+        return;
+      }
+      if (f.includes('mane')) {
+        const dab2 = (cx: number) => { p.rect(Math.round(cx), top - 1, 2, 2, fur); p.px(cx + 0.5, top, inner); };
+        dab2(hx - r.hr[0] * 0.55); dab2(hx + r.hr[0] * 0.25);
+        return;
+      }
+      const cat = f.includes('stripes') || f.includes('spots');
+      const sz = cat ? Math.max(2, Math.round(2.6 * k)) : Math.max(2, Math.round(3.5 * k));
+      const base = cat ? 0.7 : 0.45;
       const ear = (cx: number, lean: number) => {
-        p.poly([[cx - sz * 0.45, top + 1.2], [cx + lean, top - sz], [cx + sz * 0.45, top + 1.2]], fur);
+        p.poly([[cx - sz * base, top + 1.2], [cx + lean, top - sz], [cx + sz * base, top + 1.2]], fur);
         p.px(cx + lean * 0.3, top - sz * 0.35 + 0.5, inner);
       };
-      ear(hx - r.hr[0] * 0.45, -t * 1.5 - 0.5);
-      ear(hx + r.hr[0] * 0.45, t * 0.5 + 0.5);
+      ear(hx - r.hr[0] * 0.45, cat ? -0.5 : -t * 1.5 - 0.5);
+      ear(hx + r.hr[0] * 0.45, cat ? 0.5 : t * 0.5 + 0.5);
     },
   },
   fin: {
-    // a fan of three rays in the accent colour, open to the back, a little see-through
+    // a fan of rays at the side of the head, a little see-through: how many rays, how long and what colour change from one look to the next
     front: (r) => {
-      const { p } = r, x = earX(r), y = r.head[1], len = Math.max(2, Math.round(r.hr[0] * 0.95));
-      const fan = p.mat(mixHex(r.look.skin, r.look.accent, 0.35), { alpha: 0.92 }), rib = p.mat(r.look.accent, { flat: true });
-      p.poly([[x + 0.5, y - 1.5], [x - len, y - len * 0.7 - 0.5], [x - len - 0.5, y + 0.5], [x - len * 0.7, y + len * 0.5 + 1], [x + 0.5, y + 2]], fan);
+      const { p } = r, x = earX(r), y = r.head[1], sd = seedOf(r), rays = 2 + (sd % 2);
+      const len = Math.max(2, Math.round(r.hr[0] * (0.7 + (sd % 3) * 0.12)));
+      const tint = sd % 3 === 0 ? r.look.second : r.look.accent;
+      const fan = p.mat(mixHex(r.look.skin, tint, 0.5 + (sd % 4) * 0.06), { alpha: 0.92 }), rib = p.mat(mixHex(tint, '#10202a', 0.35), { flat: true });
+      const tipY = y - len * (0.4 + ((sd >> 3) % 3) * 0.15) - 0.5;
+      if (rays === 3) p.poly([[x + 0.5, y - 1.5], [x - len, tipY], [x - len - 0.5, y + 0.5], [x - len * 0.7, y + len * 0.5 + 1], [x + 0.5, y + 2]], fan);
+      else p.poly([[x + 0.5, y - 1.5], [x - len, tipY], [x - len * 0.6, y + len * 0.5 + 0.5], [x + 0.5, y + 1.8]], fan);
       p.px(x - len * 0.55, y - 0.5, rib);
-      p.px(x - len * 0.3, y + 1, rib);
+      if (rays === 3) p.px(x - len * 0.3, y + 1, rib);
     },
   },
   none: {},
@@ -353,7 +380,8 @@ export const LOWER: Record<Lower, Part> = {
       const { p } = r, gy = r.foot, top = r.hip - 1, cx = r.x0 + r.tw / 2, fl = r.flap - 1, k = r.k;
       const len = Math.max(6, gy - top), knee = gy - Math.max(3, Math.round(len * 0.4));
       const skirt = p.mat(r.look.second), back = p.mat(mixHex(r.look.main, '#101830', 0.3)), seam = p.mat(tone(r.look.second, 1), { flat: true });
-      const fin = p.mat(mixHex(r.look.accent, '#ffffff', 0.3)), finBack = p.mat(mixHex(r.look.accent, r.look.main, 0.35)), rib = p.mat(tone(r.look.accent, 1), { flat: true });
+      // the hem takes the second colour (a hint of the signature colour at the tips), so it never reads white like a ghost
+      const hemHex = mixHex(r.look.second, r.look.accent, 0.22), fin = p.mat(mixHex(hemHex, '#6a9ab0', 0.4)), finBack = p.mat(mixHex(r.look.second, r.look.main, 0.5)), rib = p.mat(tone(hemHex, 0), { flat: true });
       // the back panel, a little wider at the hip, leaning with the flutter
       p.poly([[r.x0 + 1, top], [r.x0 + r.tw - 1, top], [cx + 1.5, knee], [cx - 2.5 - fl, knee + 1]], back);
       // the fitted skirt: hips to knee, narrowing
@@ -368,7 +396,7 @@ export const LOWER: Record<Lower, Part> = {
       p.poly([[r.x0 + 1, knee - 0.5], [r.x0 + r.tw - 1, knee - 0.5], [lobes[3][0], lobes[3][1]], [(lobes[2][0] + lobes[3][0]) / 2 + 0.4, gy - 3.6], [lobes[2][0], lobes[2][1]], [(lobes[1][0] + lobes[2][0]) / 2, gy - 3.4], [lobes[1][0] + 1, lobes[1][1] - 0.5]], fin);
       // the ribs of the fin
       for (const [x] of lobes) p.line([cx + (x - cx) * 0.25 + (x < cx ? 0 : 1), knee + 1], [x + (x < cx ? 0.6 : -0.4), gy - 1.5], rib);
-      p.rect(Math.round(r.x0 - 0.5), knee - 1, r.tw + 1, 1, p.mat(r.look.accent));
+      p.rect(Math.round(r.x0 - 0.5), knee - 1, r.tw + 1, 1, p.mat(mixHex(r.look.accent, r.look.second, 0.35)));
     },
   },
   blob: { lower: gelLower },

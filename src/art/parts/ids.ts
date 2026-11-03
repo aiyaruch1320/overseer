@@ -40,4 +40,6 @@ export const FEAT_IDS = [
   'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'missingarm',
   // added after the first set (feats-extra.ts): spirits, tentacles, one eye, a kappa's dish, face items
   'ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle',
+  // added after the visual review (feats-extra.ts): the beast people's animals, the bird, the lizard, the doll, the four-armed
+  'beak', 'feathers', 'stripes', 'longears', 'antlers', 'mane', 'muzzle', 'spots', 'crest', 'puppet', 'fourarms',
 ] as const;

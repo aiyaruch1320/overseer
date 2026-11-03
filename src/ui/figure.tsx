@@ -54,6 +54,38 @@ export function Portrait({ look, scale = 3, pose = 'idle', i = 0, crop: cropIn, 
   );
 }
 
+/** A person or a beast (an NPC who is a creature: a slime, a ghost, the kraken: src/art/npc-beasts.ts). */
+export type Figure = PersonLook | BeastLook;
+export const isPerson = (f: Figure): f is PersonLook => f.kind === 'person';
+
+/** The idle frame of a beast fitted into the box a person's portrait takes at this scale (a big beast is shown smaller, pixels kept square where it fits). */
+export function BeastPortrait({ beast, scale = 3, label, frame = color.line, testid = 'portrait' }: { beast: BeastLook; scale?: number; label?: string; frame?: string; testid?: string }) {
+  const host = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = host.current;
+    if (!el) return;
+    try {
+      const fr = FRAMES[beast.size], box = FRAME.w * scale;
+      const k = Math.min(box / fr.w, box / fr.h);
+      const c = document.createElement('canvas');
+      c.width = fr.w; c.height = fr.h;
+      const g = c.getContext('2d')!;
+      g.drawImage(beastSheetCanvas(beast), 0, poseRow('idle') * fr.h, fr.w, fr.h, 0, 0, fr.w, fr.h);
+      c.style.width = `${Math.round(fr.w * k)}px`; c.style.height = `${Math.round(fr.h * k)}px`; c.style.imageRendering = 'pixelated';
+      el.replaceChildren(c);
+    } catch {
+      el.replaceChildren();
+    }
+  }, [beastKey(beast), scale]);
+  return <span ref={host} role="img" aria-label={label ?? beast.id} data-testid={testid} data-beast={beast.id} style={{ display: 'inline-block', lineHeight: 0, verticalAlign: 'top', boxSizing: 'border-box', border: `1px solid ${frame}`, borderRadius: 4, background: '#14151c', overflow: 'hidden' }} />;
+}
+
+/** The portrait of a person or a beast. */
+export function FigurePortrait(p: Omit<PortraitProps, 'look'> & { fig: Figure }) {
+  const { fig, ...rest } = p;
+  return isPerson(fig) ? <Portrait look={fig} {...rest} /> : <BeastPortrait beast={fig} scale={rest.scale} label={rest.label} frame={rest.frame} testid={rest.testid} />;
+}
+
 // ---------- the sprite ----------
 
 /** The poses of the stage and the battle (src/scene/tuning.ts POSE) as the poses of a person's sheet. */

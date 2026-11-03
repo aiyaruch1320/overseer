@@ -32,6 +32,14 @@ function resolve(table: Record<string, unknown>, id: string): string {
   return '';
 }
 
+/** What the docs say of a person enemy that the generic reading of its row does not give (the mummy's wraps, the gas ghoul's iron mask, the vampire's grey-blue skin, the assassin's dark cowl). */
+const FIX: Record<string, Partial<PersonLook>> = {
+  mummy: { feats: ['wraps'], skin: '#b09a78', main: '#c8b890', second: '#6a5a3a' },
+  gas_ghoul: { skin: '#a8b050', second: '#6a6e78', feats: ['mask', 'gaunt', 'sunkeneyes'], hair: 'bald', eye: '#d03020' },
+  vampire_spawn: { skin: '#8a98b0', outfit: 'rags', hair: 'wild', hairColor: '#2a1218', feats: ['fangs', 'redeyes'], eye: '#e03040', main: '#7a7a8a' },
+  npc_assassin: { hat: 'cowl', second: '#2a2a30', main: '#1c1c22' },
+};
+
 /** The person that draws a humanoid enemy (plan `humanoid`, form `person`, `wolfman`; also the siren and the riders). */
 export function personLookOf(e: EnemyLook): PersonLook {
   // a named NPC who fights (the enemy table's NPC rows) is the same figure as on the map and the cards: the NPC's own look, at the enemy row's size
@@ -42,6 +50,7 @@ export function personLookOf(e: EnemyLook): PersonLook {
   }
   const pt = e.parts;
   const scale = Math.min(1.5, e.scale ?? 1);
+  const fix = FIX[e.id];
   const siren = e.form === 'siren', wolf = e.form === 'wolfman', wrapped = e.words.includes('bandage') && e.kinds.includes('undead');
   return {
     kind: 'person', key: `enemy-${e.id}`, race: 'enemy', stage: 'adult', fem: siren,
@@ -52,6 +61,6 @@ export function personLookOf(e: EnemyLook): PersonLook {
     outfit: siren ? '' : resolve(OUTFITS, pt?.outfit ?? 'tunic') || 'tunic',
     hair: siren ? 'long' : wolf ? 'long' : resolve(HAIR, pt?.hair ?? 'short'),
     hat: resolve(HATS, pt?.hat ?? ''), beard: resolve(BEARDS, pt?.beard ?? ''), tool: resolve(TOOLS, pt?.tool ?? ''),
-    feats: (pt?.feats ?? []).filter((f) => FEATS[f]), wear: 0.35,
+    feats: (pt?.feats ?? []).filter((f) => FEATS[f]), wear: 0.35, ...fix,
   };
 }

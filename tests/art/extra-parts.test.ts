@@ -10,7 +10,7 @@ import { FEAT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import { TOOLS_EXTRA } from '../../src/art/parts/tools-extra';
 
 const NEW_TOOLS = ['pistol', 'musket', 'rifle', 'spyglass', 'compass', 'pocketwatch', 'fan', 'scissors', 'gauge', 'whip', 'sling', 'knuckles'];
-const NEW_FEATS = ['ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle'];
+const NEW_FEATS = ['ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle', 'beak', 'feathers', 'stripes', 'longears', 'antlers', 'mane', 'muzzle', 'spots', 'crest', 'puppet', 'fourarms'];
 const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
 const bare: PersonLook = {
   kind: 'person', key: 'extra', race: 'human', stage: 'adult', fem: false, body: HUMAN_BODY, skin: '#e8b48a', hairColor: '#3a2a20', eye: '#1e1a22',

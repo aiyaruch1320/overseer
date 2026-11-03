@@ -10,8 +10,10 @@ export interface Pal {
   acc: number; accD: number; accL: number; mem: number; memD: number; memL: number;
   horn: number; hornD: number; claw: number; tooth: number; ink: number; mouth: number; eye: number; glow: number; glowL: number;
 }
-export function makePal(p: Paint, main: string, second: string, eye: string, o: { A?: number; belly?: string; horn?: string; mouth?: string } = {}): Pal {
+export function makePal(p: Paint, main: string, second: string, eye: string, o: { A?: number; belly?: string; horn?: string; mouth?: string; trim?: string } = {}): Pal {
   const A = o.A ?? 1;
+  const glowC = second;
+  if (o.trim) second = o.trim; // the colour of the trim (membranes, ridge, accents); the row's second colour stays the glow
   const horn = o.horn ?? mix(second, '#e8dcc0', 0.55);
   return {
     body: p.mat(main, { deep: true, alpha: A }), bodyD: p.mat(dark(main, 0.32), { alpha: A }), bodyL: p.mat(light(main, 0.3), { alpha: A }),
@@ -19,7 +21,7 @@ export function makePal(p: Paint, main: string, second: string, eye: string, o: 
     acc: p.mat(second, { alpha: A }), accD: p.mat(dark(second, 0.3), { alpha: A }), accL: p.mat(light(second, 0.25), { alpha: A }),
     mem: p.mat(second, { alpha: Math.min(A, 0.92) }), memD: p.mat(dark(second, 0.22), { alpha: Math.min(A, 0.92) }), memL: p.mat(light(second, 0.16), { alpha: Math.min(A, 0.92) }),
     horn: p.mat(horn), hornD: p.mat(dark(horn, 0.35)), claw: p.mat(mix(horn, '#fff8e8', 0.3), { flat: true }), tooth: p.mat('#f0e8d0', { flat: true }), ink: p.mat('#14121a', { flat: true }),
-    mouth: p.mat(o.mouth ?? '#7a1e22', { flat: true }), eye: p.mat(eye, { flat: true }), glow: p.mat(second, { flat: true }), glowL: p.mat(light(second, 0.5), { flat: true }),
+    mouth: p.mat(o.mouth ?? '#7a1e22', { flat: true }), eye: p.mat(eye, { flat: true }), glow: p.mat(glowC, { flat: true }), glowL: p.mat(light(glowC, 0.5), { flat: true }),
   };
 }
 
