@@ -8,6 +8,7 @@ import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards } 
 import { actsOf, cardsOf, fateCost, fateTargets, hintsOf, implementedMiracles, nameOfKind, obeyChance as whisperChance, omenQuarters, strangeOptions, whisperPrice, activeWhispers, miracleOf } from '../../core/god/acts';
 import { allCountries, continentOf, countriesOf, countryName } from '../../core/god/acts/geo';
 import { allMixes, viewConj } from '../../core/god/conjure';
+import { coreName, scaleName, verbName } from '../../core/god/conjure/plan';
 import { unlocked, titlesOf } from '../../core/god/goals';
 import { ruinLabel } from '../../core/god/ruin/names';
 import { ruinsNow } from '../../core/god/ruin';
@@ -603,20 +604,22 @@ export function miracleTargets(game: Game, data: GameData, kind: TargetKind): Ta
   }
 }
 
-/** The arguments a miracle command takes for a target the player picked. */
-export function miracleArgs(id: string, kind: TargetKind, target?: TargetOption): Record<string, unknown> {
-  if (!target || kind === 'none') return { id };
+/** The arguments a miracle command takes for the target(s) the player picked (`countries` takes several). */
+export function miracleArgs(id: string, kind: TargetKind, target?: TargetOption | TargetOption[]): Record<string, unknown> {
+  const list = target === undefined ? [] : Array.isArray(target) ? target : [target];
+  const first = list[0];
+  if (!first || kind === 'none') return { id };
   switch (kind) {
     case 'country':
-      return { id, country: target.id };
+      return { id, country: first.id };
     case 'countries':
-      return { id, countries: [target.id] };
+      return { id, countries: list.map((t) => t.id) };
     case 'continent':
-      return { id, continent: target.id };
+      return { id, continent: first.id };
     case 'npc':
-      return { id, npc: target.id };
+      return { id, npc: first.id };
     case 'dragon':
-      return { id, dragon: target.index ?? Number(target.id) };
+      return { id, dragon: first.index ?? Number(first.id) };
   }
 }
 
@@ -686,7 +689,7 @@ export function miracleView(game: Game, data: GameData): MiracleView {
     omens,
     ruins: ruinViews(game, data),
     fate,
-    day: last ? { name: plainName(data, last.id) || str(last.id), lines: textLines(data, [last], 0).map((l) => l.text) } : null,
+    day: last ? { name: miracleOf(ctx, str(last.id))?.name ?? '', lines: textLines(data, [last], 0).map((l) => l.text) } : null,
   };
 }
 
@@ -819,6 +822,21 @@ export interface ChronicleView {
 
 const DREAD_KINDS = new Set(['prayer.punish']);
 
+/** What a row of the chronicle is about, in words: a miracle by its name, a conjuring by its three parts, a prayer by its kind, a chest card by its name. */
+function chronicleName(game: Game, data: GameData, kind: string, id: string): string {
+  const ctx = game.ctx;
+  if (kind.startsWith('miracle')) return miracleOf(ctx, id)?.name ?? '';
+  if (kind.startsWith('conjure')) {
+    const [v, c, sc] = id.split('.');
+    return v && c && sc ? `${verbName(ctx, v)} ${coreName(ctx, c)} ${scaleName(ctx, sc)}` : '';
+  }
+  if (kind.startsWith('prayer')) return nameOfKind(ctx, id);
+  if (kind === 'whisper') return id;
+  if (kind === 'dream') return id.startsWith('ally:') ? alliesOf(ctx).find((t) => t.id === id.slice(5))?.name ?? '' : '';
+  if (kind === 'chest.pick') return plainName(data, id);
+  return '';
+}
+
 export function chronicleView(game: Game, data: GameData): ChronicleView {
   const ctx = game.ctx;
   const st = game.state;
@@ -827,9 +845,11 @@ export function chronicleView(game: Game, data: GameData): ChronicleView {
     const kindWord = W.chronicle.kinds[c.kind] ?? c.kind;
     const row = ((ctx.data.god?.items as { miracles?: { list: { id: string; cost: { dread?: number; faith?: number } }[] } } | undefined)?.miracles?.list ?? []).find((m) => m.id === c.id);
     const line: ChronicleRow['line'] = c.id === 'MR-25' ? 'fate' : DREAD_KINDS.has(c.kind) ? 'dread' : row && row.cost.dread && !row.cost.faith ? 'dread' : 'faith';
-    const name = plainName(data, c.id) || (c.kind.startsWith('conjure') ? c.id.split('.').slice(0, 3).join(' ') : c.id);
-    const where = c.target ? (c.target.length === 2 ? countryOrContinentName(game, data, c.target) : plainName(data, c.target) || countryName(ctx, c.target)) : '';
-    const result = c.result ? W.chronicle.results[c.result] ?? c.result.replace(/^[^:]*:/, '') : '';
+    const name = chronicleName(game, data, c.kind, c.id);
+    // only the acts that aim at something name a target (the chest and the dream write the id of the life there)
+    const aims = /^(miracle|conjure|whisper|prayer)/.test(c.kind);
+    const where = aims && c.target ? (c.target.length === 2 ? countryOrContinentName(game, data, c.target) : plainName(data, c.target) || countryName(ctx, c.target)) : '';
+    const result = c.result ? W.chronicle.results[c.result] ?? (/^[a-z]+:|^[a-z_]+$/i.test(c.result) ? '' : c.result) : '';
     const ruin = c.kind === 'miracle' && c.target ? ruins.find((r) => r.country === c.target) : undefined;
     return {
       year: c.worldYear,

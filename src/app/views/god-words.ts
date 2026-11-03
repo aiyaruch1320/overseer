@@ -133,6 +133,8 @@ export const W = {
     dayScene: 'ที่ของฉากวันเกิดเหตุ (ตัวเล่นฉากมาต่อภายหลัง)',
     wait: 'รออีก',
     ready: 'พร้อม',
+    decree: 'ลิขิต',
+    lake: 'ทะเลสาบ',
     fateTitle: 'ลิขิต: เหตุการณ์ที่มีลาง',
     fateNone: 'ตอนนี้ยังไม่มีเหตุการณ์ของโลกที่มีลางให้ลิขิต',
     slow: 'ชะลอ',
@@ -202,9 +204,9 @@ export const W = {
   icons: {
     // small glyphs for the chrome (until the drawn icons of the art layer replace them)
     kind: { bless: '✦', curse: '☾', skill: '✋', item: '◈', weapon: '⚔' } as Record<string, string>,
-    hint: { ระวัง: '👁', กล้าเถิด: '🔥', จงไป: '➤', จงอยู่: '⌂', จุดอ่อนของศัตรู: '⚡', คนนั้นโกหก: '◐', ช่วย: '✋', สางเรื่อง: '⌘', ชี้ทายาท: '🌱' } as Record<string, string>,
+    hint: { ระวัง: '◉', กล้าเถิด: '▲', จงไป: '➤', จงอยู่: '⌂', จุดอ่อนของศัตรู: '⚡', คนนั้นโกหก: '◐', ช่วย: '✋', สางเรื่อง: '⌘', ชี้ทายาท: '❦' } as Record<string, string>,
     verb: { create: '❋', destroy: '✊', change: '⥁', wake: '◉', calm: '✋', reveal: '▤' } as Record<string, string>,
-    core: { fire: '🔥', water: '💧', earth: '⛰', wind: '≋', life: '❦', death: '☠', light: '✸', shadow: '☾' } as Record<string, string>,
+    core: { fire: '▲', water: '◡', earth: '▭', wind: '≋', life: '❦', death: '☠', light: '✸', shadow: '☾' } as Record<string, string>,
     answer: { give: '◌', strange: '✧', deny: '✋', punish: '◍', silent: '…' } as Record<string, string>,
   },
 } as const;

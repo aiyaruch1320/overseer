@@ -1,2 +1,3 @@
 // Imports every screen module so its stories register (the storybook imports this file). Each M5 screen adds one line here.
+import './god/stories';
 export {};
