@@ -5,8 +5,8 @@ import type { Ctx } from '../../game';
 import { neighboursOf } from '../acts/geo';
 import { livingOf } from '../acts/state';
 import { sealAt } from '../ruin';
-import { registerPolicyPart, type PolicyName } from '../policy';
-import { checkConjure, runConjure } from './run';
+import { dreadReserve, registerPolicyPart, type PolicyName } from '../policy';
+import { checkConjure, previewConjure, runConjure } from './run';
 
 interface Try {
   verb: string;
@@ -50,6 +50,9 @@ export function policyConjure(ctx: Ctx, policy: PolicyName): void {
     if (!country) continue;
     const args = { verb: t.verb, core: t.core, scale: t.scale, country };
     if (checkConjure(ctx, args)) continue;
+    // the dread a policy keeps back for a deed of the world (a ruin, a blow on a seal) is not spent on a conjuring
+    const keep = dreadReserve(ctx, policy);
+    if (keep && ctx.state.god.dread - ((previewConjure(ctx, args).cost as { dread?: number } | undefined)?.dread ?? 0) < keep) continue;
     runConjure(ctx, args);
     return;
   }

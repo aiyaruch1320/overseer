@@ -93,6 +93,8 @@ function track(ctx: Ctx, life: LifeState): void {
     if (life.godFaith >= 50) t.years50 += 1;
     if ((bondageOf(life)?.level ?? 0) > 0) t.bound += 1;
   }
+  t.stay = t.stay ?? {};
+  t.stay[life.country] = (t.stay[life.country] ?? 0) + 1;
   if (healJob(life)) t.heal += 1;
   const c = classOf(life);
   t.clsMax = Math.max(t.clsMax, c);

@@ -22,7 +22,21 @@ export function registerPolicyPart(fn: PolicyPart, when: 'first' | 'last' = 'las
 }
 export function clearPolicyParts(): void {
   parts.length = 0;
+  reserveFn = () => 0;
 }
+
+/**
+ * Dread a policy keeps back from the chests so the deed of the world can be paid when its turn comes (a ruin costs 60, a blow on a seal 30 or 55).
+ * Without it the chests of the punishing god spend every point on curses and the dread never reaches the price of a ruin (M4 review round two, R2).
+ * Owned by the acts file, which knows the deeds; 0 when nothing is waiting for dread.
+ */
+export type DreadReserve = (ctx: Ctx, policy: PolicyName) => number;
+let reserveFn: DreadReserve = () => 0;
+export function registerDreadReserve(fn: DreadReserve): void {
+  reserveFn = fn;
+}
+/** The dread a policy holds back now (0 for most). */
+export const dreadReserve = (ctx: Ctx, policy: PolicyName): number => reserveFn(ctx, policy);
 
 /** Thai or English name of a policy (`เมตตา` `merciful`) to the one name used here; undefined for a name nobody knows. */
 export function policyName(raw: string | undefined): PolicyName | undefined {
@@ -31,21 +45,24 @@ export function policyName(raw: string | undefined): PolicyName | undefined {
 
 // ---------- chests ----------
 
+/** The cheapest curse in a window (6 × 0.7 rounded up): a chest is not opened for less than this above the reserve. */
+const CURSE_MIN = 5;
+
 const PRAISE = new Set(['bless', 'skill', 'item']);
 
 /** The slot a policy that gives picks: the biggest change of belief it can pay for, the higher tier first. */
-function bestOf(ctx: Ctx, ch: { slots: (ChestSlot | null)[] }, line: 'faith' | 'dread'): ChestSlot | undefined {
-  const ok = ch.slots.filter((s): s is ChestSlot => !!s && s.pay === line && (line === 'faith' ? PRAISE.has(s.kind) || s.variant === 'holy' : s.kind === 'curse' || s.variant === 'cursed') && canPay(ctx, slotPrice(ctx, s).cost));
+function bestOf(ctx: Ctx, ch: { slots: (ChestSlot | null)[] }, line: 'faith' | 'dread', keep = 0): ChestSlot | undefined {
+  const ok = ch.slots.filter((s): s is ChestSlot => !!s && s.pay === line && (line === 'faith' ? PRAISE.has(s.kind) || s.variant === 'holy' : s.kind === 'curse' || s.variant === 'cursed') && canPay(ctx, slotPrice(ctx, s).cost) && (line === 'faith' || dreadOf(ctx) - (slotPrice(ctx, s).cost.dread ?? 0) >= keep));
   return ok.sort((a, b) => Math.abs(b.belief) - Math.abs(a.belief) || tierIndex(b.tier) - tierIndex(a.tier) || a.slot - b.slot)[0];
 }
 
 /** Opens chests while the year allows and the power is there; picks the best thing of the line, or skips. Returns the chests opened. */
-function chestRounds(ctx: Ctx, line: 'faith' | 'dread', enough: () => boolean, max: number): number {
+function chestRounds(ctx: Ctx, line: 'faith' | 'dread', enough: () => boolean, max: number, keep = 0): number {
   let n = 0;
   while (n < max && chestsLeft(ctx) > 0 && !checkOpen(ctx) && enough()) {
     const ch = openChest(ctx);
     n++;
-    const s = bestOf(ctx, ch, line);
+    const s = bestOf(ctx, ch, line, keep);
     if (s && !checkPick(ctx, s.slot)) pickSlot(ctx, s.slot);
     else {
       skipChest(ctx);
@@ -109,9 +126,12 @@ export function policyStep(ctx: Ctx, policy: string): void {
       chestRounds(ctx, 'faith', () => lightOf(ctx) >= CHEST_MIN_LIGHT, 2);
       break;
     case 'punish':
-    case 'seal':
-      chestRounds(ctx, 'dread', () => dreadOf(ctx) >= (inWindow(ctx) ? 0 : 20), 2);
+    case 'seal': {
+      // the dread of a deed in the world is kept back; a chest is opened only when a curse can be paid above it
+      const keep = reserveFn(ctx, name);
+      chestRounds(ctx, 'dread', () => dreadOf(ctx) - keep >= (inWindow(ctx) ? (keep ? CURSE_MIN : 0) : 20), 2, keep);
       break;
+    }
     case 'random': {
       // a moment for every node played this year and every age stop; at half of them the god does one thing at random
       const moments = momentsOf(ctx);
@@ -121,7 +141,8 @@ export function policyStep(ctx: Ctx, policy: string): void {
         if (x === 0) dreamRounds(ctx, rng, false, 1);
         else if (x === 2 && chestsLeft(ctx) > 0 && !checkOpen(ctx)) {
           const ch = openChest(ctx);
-          const ok = ch.slots.filter((s): s is ChestSlot => !!s && !checkPick(ctx, s.slot));
+          const keep = reserveFn(ctx, name);
+          const ok = ch.slots.filter((s): s is ChestSlot => !!s && !checkPick(ctx, s.slot) && (s.pay !== 'dread' || dreadOf(ctx) - (slotPrice(ctx, s).cost.dread ?? 0) >= keep));
           if (ok.length) pickSlot(ctx, ok[rng.int(0, ok.length - 1)].slot);
           else skipChest(ctx);
         }

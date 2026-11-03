@@ -12,6 +12,7 @@ import type { ItemsExt } from '../../items/state';
 import type { StoryExt } from '../../story/state';
 import type { TravelExt } from '../../travel/state';
 import { bondsIndex } from '../../bonds/data';
+import { STAY_YEARS } from './tuning';
 import { classNumber } from '../../economy/data';
 import { slotsOf } from '../../npc/types';
 import { nemeses } from '../../npc/status';
@@ -143,6 +144,8 @@ export interface Facts {
   where: string;
   continents: string[];
   countries: string[];
+  /** Countries he lived in for at least `STAY_YEARS` life years (the road through a country is not a stay). */
+  stayed: number;
   heir: boolean;
   love: number;
   rivalFell: boolean;
@@ -205,6 +208,7 @@ export function factsOf(ctx: Ctx, l: LifeState): Facts {
     where,
     continents: continentsSeen(l),
     countries: countriesLived(l),
+    stayed: Object.values(t.stay ?? {}).filter((y) => y >= STAY_YEARS).length,
     heir: heirAlive(l),
     love: loverLevel(ctx, l),
     rivalFell: rivals.length > 0 && rivals.some((id) => fallen(ctx, id)),

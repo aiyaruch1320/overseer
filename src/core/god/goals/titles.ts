@@ -34,7 +34,8 @@ export const TEST: Record<string, (c: Ctxd) => boolean> = {
     return t.adult > 0 && t.years50 > t.adult / 2;
   },
   ผู้ไม่มีใครเห็น: ({ l, f }) => convergences(l).length === 0 && (charOf(l)?.fame ?? 0) <= 0 && (storyOf(l)?.seen.events.length ?? 0) === 0 && f.cv === 0,
-  นักเดินทาง: ({ f }) => f.countries.length > THRESH.countries,
+  // "อยู่" five countries: lived in, for some years each; the road through a country, or a short stop, does not make a traveller of a man who stayed 68 years at home
+  นักเดินทาง: ({ f }) => f.stayed > THRESH.countries,
   // a child who died before he could leave has not stayed (M4 review T1)
   ผู้อยู่ที่เดิม: ({ f }) => f.hAge >= ADULT_FROM && f.countries.length <= 1 && f.continents.length <= 1,
   ผู้รบ: ({ l }) => fights(l) > THRESH.fights,
@@ -68,6 +69,13 @@ export function titlesHeld(ctx: Ctx, l: LifeState, f: Facts = factsOf(ctx, l)): 
 export const LACKS: ReadonlySet<string> = new Set(['ผู้อยู่ที่เดิม', 'ผู้ไม่มีใครเห็น']);
 
 /**
+ * A title of a state, not a deed. Under a merciful god the belief passes 50 before the character is grown (a child's whisper, a prayer given, +8 each) and stays, so the
+ * covering of 08-goals.md §3 ("ศรัทธาเทพ ≥ 50 นานกว่าครึ่งชีวิตผู้ใหญ่") holds on every life of the family (M4 review round two R6: 9 of 9). The condition is the document's and is kept; what is
+ * decided here (assumption) is that the page of a lineage tells it once, and a later life shows it again only when no other title covers that life.
+ */
+export const STATES: ReadonlySet<string> = new Set(['ผู้ศรัทธา']);
+
+/**
  * The titles the life gets: at most three, none that the table of rows cannot show. A title the lineage has not earned yet comes before one it has (the
  * chronicle is a page of the lineage, and the same pair three lives running says nothing); among those, the rarer first.
  */
@@ -76,6 +84,7 @@ export function titlesOf(ctx: Ctx, l: LifeState, f?: Facts): string[] {
   let held = titlesHeld(ctx, l, f);
   // a lack is told once by a lineage: the second life of a family that never left home has not earned it again
   held = held.filter((t) => !LACKS.has(t) || (!seen.has(t) && !held.some((x) => !LACKS.has(x))));
+  held = held.filter((t) => !STATES.has(t) || !seen.has(t) || held.every((x) => STATES.has(x) || LACKS.has(x)));
   const rank = (t: string) => {
     const i = PRIORITY.indexOf(t);
     return i < 0 ? PRIORITY.length : i;
