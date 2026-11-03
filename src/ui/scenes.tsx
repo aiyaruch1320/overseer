@@ -17,7 +17,7 @@ import { color, font, size } from './tokens';
 const entry = (sys: string, kind: string, id: string, data: LogEntry['data'], n = 1): LogEntry => ({ n, worldYear: 0, sys, kind, id, data, level: 2 });
 
 function Scene({ data, e, state }: { data: GameData; e: LogEntry; state?: GameState }) {
-  const v = sceneFor(data, e);
+  const v = sceneFor(data, e, state);
   // who is on the stage: the figure of the life, the NPC of the clash, the crowd (src/app/views/scene.ts)
   const figureOf = figuresOf(data, state, v);
   const scenery = sceneryOf(data, state, v);
@@ -61,9 +61,9 @@ for (const [form, id, name] of FORMS) {
   story({
     group: 'การ์ดเหตุการณ์',
     name: `${form} · ${id}`,
-    render: ({ data }) => {
+    render: ({ data, state }) => {
       const e = entry('world', 'event', id, { name, mark: '●' });
-      const v = sceneFor(data, e);
+      const v = sceneFor(data, e, state);
       return (
         <div style={{ padding: size.pad, display: 'flex', gap: size.pad, flexWrap: 'wrap', alignItems: 'flex-start' }}>
           <EventCard card={cardOfEntry(data, e)} width={360} />
@@ -81,11 +81,24 @@ for (const [form, id, name] of FORMS) {
 story({
   group: 'การ์ดเหตุการณ์',
   name: 'ไม่มีสคริปต์ (รายการอื่น)',
-  render: ({ data }) => (
+  render: ({ data, state }) => (
     <div style={{ padding: size.pad, display: 'flex', gap: size.pad, flexWrap: 'wrap' }}>
-      <EventCard card={cardOfEntry(data, entry('world', 'event', 'XX-99', { name: 'เหตุการณ์ที่ไม่มีในตาราง', mark: '○' }))} />
-      <EventCard card={cardOfEntry(data, entry('god', 'miracle.omen', 'MR-09', { name: 'ลางของปาฏิหาริย์', n: 1 }))} />
-      <EventCard card={cardOfEntry(data, entry('story', 'node', 'hu.a3', { title: 'งานแรก', choice: 'a', label: 'รับงาน' }))} />
+      <EventCard card={cardOfEntry(data, entry('world', 'event', 'XX-99', { name: 'เหตุการณ์ที่ไม่มีในตาราง', mark: '○' }), state)} />
+      <EventCard card={cardOfEntry(data, entry('god', 'miracle.omen', 'MR-09', { name: 'ลางของปาฏิหาริย์', n: 1 }), state)} />
+      <EventCard card={cardOfEntry(data, entry('story', 'node', 'hu.a3', { title: 'งานแรก', choice: 'a', label: 'รับงาน' }), state)} />
+    </div>
+  ),
+});
+
+// the picture of a card is the place of the event: one event named in four countries (the entry carries `place`), and one with none (the life's own place)
+story({
+  group: 'การ์ดเหตุการณ์',
+  name: 'ภาพการ์ด · เหตุการณ์เดียวในสี่ทวีป',
+  render: ({ data, state }) => (
+    <div style={{ padding: size.pad, display: 'flex', gap: size.pad, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+      {['AZ-01', 'KD-01', 'SH-02', 'NR-03', ''].map((place) => (
+        <EventCard key={place} card={cardOfEntry(data, entry('world', 'event', 'DR-04', { name: 'ฤดูหนาวเถ้า', mark: '●', ...(place ? { place } : {}) }), state)} width={300} />
+      ))}
     </div>
   ),
 });
