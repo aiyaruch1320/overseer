@@ -9,7 +9,8 @@ import type { Paint } from '../paint';
 type BL = EnemyLook | DragonLook;
 interface Pal { body: number; bodyD: number; bodyL: number; acc: number; accD: number; accF: number; eye: number; tooth: number; ink: number; glow: number; ghost: number }
 
-const W = 100, H = 56;
+const W = 112, H = 56;
+const WIDE = new Set(['slender', 'wyvern', 'ashdrake', 'serpent', 'twohead', 'eel', 'mist', 'coil']);
 
 // ── parts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 interface HeadOpt { sz: number; ang: number; open: number; snout?: number; horns?: number; shut?: boolean; fangs?: boolean; frill?: boolean; eyes?: number; blind?: boolean; round?: boolean }
@@ -88,7 +89,7 @@ export function paintDragon(c: Ctx<BL>): Info {
   const { L, mo, p } = c;
   const form = L.form;
   const words: string[] = L.words;
-  const s = Math.min(c.px / H, (c.w * 0.97) / W);
+  const s = Math.min(c.px / H, (c.w * 0.9) / (WIDE.has(form) ? 132 : W));
   const pen = c.pen(s).at(0, mo.bob * 0.8);
   const translucent = words.includes('translucent');
   const A = translucent ? 0.62 : 1;
@@ -134,7 +135,7 @@ const SHAPES: Record<string, Shape> = {
   serpent: (pen, p, c, z) => serpentine(pen, p, c, z, 'serpent'),
   eel: (pen, p, c, z) => serpentine(pen, p, c, z, 'eel'),
   mist: (pen, p, c, z) => serpentine(pen, p, c, z, 'mist'),
-  twohead: (pen, p, c, z) => serpentine(pen, p, c, z, 'twohead'),
+  twohead: (pen, p, c, z) => twoHead(pen, p, c, z),
   coil: (pen, p, c, z) => coil(pen, p, c, z),
   // ── short heavy bodies
   stout: (pen, p, c, z) => stout(pen, p, c, z, false),
@@ -192,6 +193,30 @@ function serpentine(pen: Pen, p: Paint, c: Ctx<BL>, z: Sets, kind: 'serpent' | '
   }
   head(pen, hd[0] + 3, hd[1], opt, pal);
   return { mouth: [hd[0] + 12, hd[1]], shadow: { cx: c.cx, cy: c.foot, rx: 38 * pen.s, ry: Math.max(2, 3 * pen.s * 0.5) } };
+}
+
+function twoHead(pen: Pen, p: Paint, c: Ctx<BL>, z: Sets): ReturnType<Shape> {
+  const { pal, ph } = z;
+  const alt = z.alt!;
+  const a = { m: p.mat(alt.main, { deep: true }), d: p.mat(dark(alt.main, 0.3)), mem: p.mat(alt.second), acc: p.mat(light(alt.main, 0.3)) };
+  const path = spine(18, (u) => [-46 + u * 62, -14 - 4 * Math.sin(u * 5 + ph) * (1 - u * 0.5) - u * 6]);
+  const rad = path.map((_, i) => 1 + 5 * Math.min(1, (i / 18) * 2) ** 0.8);
+  // the dark wing is behind, the bright one in front: one wing of the sun, one of the moon
+  wing(pen, [path[12][0], path[12][1] - 3], 40, Math.max(0, z.flap - 0.2), a.mem, a.d, { fingers: 4, ragged: true });
+  pen.chain(path, rad, pal.body);
+  for (let i = 3; i < 18; i += 2) pen.line([path[i][0] - 1.2, path[i][1] + rad[i] * 0.55], [path[i][0] + 1.2, path[i][1] + rad[i] * 0.55], a.m, 0.9);
+  const S = path[18];
+  // the far neck and head: silver, black eyes
+  const endB: [number, number] = [S[0] + 8, S[1] - 31 + Math.sin(ph + 1) * 2];
+  pen.chain([[S[0] - 3, S[1] - 1], [S[0] + 1, S[1] - 15], endB], [4.2, 3.6, 3.1], a.m);
+  head(pen, endB[0] + 3, endB[1] - 1, { sz: 1.1, ang: -0.3, open: 0.25, horns: 1 }, { ...pal, body: a.m, bodyD: a.d, bodyL: a.acc, acc: a.acc }, p.mat(alt.eye, { flat: true }), a.m);
+  // the near neck and head: gold, white eyes
+  const endA: [number, number] = [S[0] + 21, S[1] - 17 + z.strike * 6];
+  pen.chain([S, [S[0] + 10, S[1] - 6], endA], [5.2, 4.6, 3.8], pal.body);
+  head(pen, endA[0] + 3, endA[1], { sz: 1.2, ang: 0.1 + z.strike * 0.3, open: z.open, horns: 1, shut: z.shut }, pal);
+  wing(pen, [path[12][0] - 1, path[12][1] - 4], 42, z.flap, pal.accF, pal.bodyD, { fingers: 4 });
+  pen.chain([[-46, -14], [-52, -10 + Math.sin(ph) * 2]], [1, 0.6], pal.body);
+  return { mouth: [endA[0] + 15, endA[1] + 2], shadow: { cx: c.cx, cy: c.foot, rx: 36 * pen.s, ry: Math.max(2, 3 * pen.s * 0.5) } };
 }
 
 function cloudWings(pen: Pen, p: Paint, z: Sets, root: [number, number]): void {

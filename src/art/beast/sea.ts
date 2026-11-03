@@ -5,7 +5,7 @@ import { dark, light, mix, type Ctx, type Info } from './kit';
 
 export function paintSea(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 38, (c.w * 0.95) / 74);
+  const s = Math.min(c.px / 38, (c.w * 0.95) / 100);
   const pen = c.pen(s).at(mo.push, mo.bob);
   const body = p.mat(L.main, { deep: true }), bodyD = p.mat(dark(L.second, 0.4)), fin = p.mat(L.second, { deep: true }), lure = p.mat(L.eye, { flat: true }), halo = p.mat(L.eye, { flat: true, alpha: 0.35 });
   const tooth = p.mat('#e8e4d0', { flat: true }), ink = p.mat('#06080e', { flat: true }), eye = p.mat('#c8d0d8', { flat: true }), mud = p.mat('#2a2a30', { alpha: 0.8 });

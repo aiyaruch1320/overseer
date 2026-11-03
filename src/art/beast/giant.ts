@@ -21,7 +21,7 @@ const SPECS: Record<string, Spec> = {
   ghoul: { hunch: 0.9, belly: -0.8, head: 3.5, arm: 1.4, weapon: 'none', gaunt: true, shroud: true },
   brass: { hunch: 0.2, belly: 0.5, head: 3.2, arm: 1.1, weapon: 'none', brass: true },
   brute: { hunch: 0.5, belly: 0.8, head: 3.5, arm: 1.1, weapon: 'club', loin: true },
-  mutant: { hunch: 0.8, belly: 0.4, head: 3.3, arm: 1, weapon: 'none', bigArm: true },
+  mutant: { hunch: 0.8, belly: 0.4, head: 4.1, arm: 1, weapon: 'none', bigArm: true },
   titan: { hunch: 0.3, belly: 1.4, head: 3.4, arm: 1.3, weapon: 'none', stone: true },
 };
 
@@ -37,6 +37,10 @@ export function paintGiant(c: Ctx<EnemyLook>): Info {
   const pen = c.pen(s).at(mo.push, mo.bob);
   const sk = L.main;
   const skin = p.mat(sk, { deep: true }), skinD = p.mat(dark(sk, 0.3)), skinL = p.mat(light(sk, 0.2));
+  // parts that overlap get their own shade, so the head, the shoulder and the near arm read as separate masses
+  const pale = parseInt(sk.slice(1, 3), 16) + parseInt(sk.slice(3, 5), 16) + parseInt(sk.slice(5, 7), 16) > 560;
+  const lift = (t: number) => (pale ? dark(sk, t * 1.4) : light(sk, t));
+  const headM = p.mat(pale ? dark(sk, 0.14) : mix(sk, light(sk, 0.3), 0.55), { deep: true }), armN = p.mat(lift(0.1), { deep: true }), shoulderM = p.mat(lift(0.07), { deep: true });
   const cloth = p.mat(L.second, { deep: true }), clothD = p.mat(dark(L.second, 0.3));
   const eye = p.mat(L.eye, { flat: true }), ink = p.mat('#15131a', { flat: true }), tooth = p.mat('#e8e0c8', { flat: true });
   const glowC = p.mat(L.second, { flat: true }), bone = p.mat('#d8d0b8');
@@ -64,7 +68,7 @@ export function paintGiant(c: Ctx<EnemyLook>): Info {
   // torso
   const bellyR = 7.2 + sp.belly;
   pen.ell(tx + 0.5, (hip + shy) / 2 + 1, bellyR, (hip - shy) / 2 + 3.2, skin);
-  pen.ell(tx + 1 + sp.hunch * 1.5, shy + 1, 8.6, 4.4, skin);
+  pen.ell(tx + 1 + sp.hunch * 1.5, shy + 1, 8.6, 4.4, shoulderM);
   if (sp.fur) for (let i = 0; i < 7; i++) pen.poly([[tx - 7 + i * 2.4, shy + 2 + (i % 2)], [tx - 6 + i * 2.4, shy + 7 + (i % 3)], [tx - 8 + i * 2.4, shy + 6]], skinL);
   if (sp.gaunt) for (let i = 0; i < 4; i++) pen.line([tx - 3, shy + 3 + i * 2.2], [tx + 4, shy + 4 + i * 2.2], skinD, 0.7);
   if (sp.stone) { for (let i = 0; i < 5; i++) pen.line([tx - 6 + rnd(L.id, i) * 12, shy + rnd(L.id, i + 3) * 10], [tx - 6 + rnd(L.id, i) * 12 + 2, shy + 3 + rnd(L.id, i + 3) * 10], glowC, 0.8); for (let i = 0; i < 3; i++) pen.rect(tx - 8 + i * 6, shy - 1.4, 4, 3, skinL); }
@@ -80,9 +84,11 @@ export function paintGiant(c: Ctx<EnemyLook>): Info {
   }
   if (sit) pen.ell(tx + 2, hip - 1, 6, 3, skin);
   // head
-  const hr = sp.head, hxc = tx + 3.5 + hx0 * 1.4, hyc = shy - 1.2 + sp.hunch * 1.8 + (mo.dead ? 2 : 0);
-  pen.cap([tx + 2, shy + 1], [hxc, hyc], 4, 3, skin);
-  pen.ell(hxc, hyc, hr, hr * 0.95, skin);
+  const hr = sp.head + 0.9, hxc = tx + 3.5 + hx0 * 1.2, hyc = shy - 4.2 + sp.hunch * 1.2 + (mo.dead ? 2 : 0);
+  pen.cap([tx + 2, shy + 1], [hxc, hyc], 4, 3, skinD);
+  pen.ell(hxc, hyc, hr, hr * 0.95, headM);
+  if (L.form === 'ape') { pen.ell(hxc + 1.9, hyc + 0.8, 2.9, 2.5, p.mat(L.second, { deep: true })); pen.rect(hxc + 0.8, hyc + 2.2, 3, 0.8, ink); }
+  pen.rect(hxc - hr * 0.2, hyc - 2.1, hr * 1.3, 0.9, skinD);
   if (sp.bearHead) { pen.ell(hxc + 3.3, hyc + 1.2, 3.1, 2.4, p.mat(L.second)); pen.dot(hxc + 5.8, hyc + 0.4, ink, 1.4); pen.ell(hxc - 1.5, hyc - hr + 0.6, 1.5, 1.6, skinD); pen.ell(hxc + 2.3, hyc - hr + 0.7, 1.5, 1.6, skinD); }
   else { pen.rect(hxc - 1.8, hyc + hr * 0.45, hr * 1.4, 1.1, skinD); if (sp.tusks) { pen.poly([[hxc + 1.2, hyc + 1.4], [hxc + 2, hyc - 1.4], [hxc + 2.8, hyc + 1.4]], tooth); pen.poly([[hxc + 3.6, hyc + 1.4], [hxc + 4.2, hyc - 1.2], [hxc + 4.9, hyc + 1.4]], tooth); } }
   if (sp.ears) pen.poly([[hxc - hr, hyc - 1], [hxc - hr - 3, hyc - 3], [hxc - hr, hyc + 1]], skin);
@@ -110,9 +116,9 @@ export function paintGiant(c: Ctx<EnemyLook>): Info {
   } else if (walk) { hand = [sh[0] + 3 + 2.5 * Math.sin(mo.ph), idleY + 1]; ang = -1.0 + 0.2 * Math.sin(mo.ph); }
   else { hand = [sh[0] + 4 + hx0 * 0.4, idleY + 2 + (mo.pose === 'hurt' ? -4 : 0)]; ang = -1.15 + mo.breath * 0.06; }
   if (sit) { hand = att ? hand : [tx + 7, hip - 1]; }
-  if (sp.bigArm) { pen.cap(sh, [hand[0] + 5, hand[1] + 9], 5.2, 5.8, skin); pen.ell(hand[0] + 5, hand[1] + 11, 5.2, 5.4, skin); for (let i = 0; i < 3; i++) pen.line([sh[0] + 1, sh[1] + 2 + i * 3], [hand[0] + 4, hand[1] + 7 + i * 2], p.mat(L.second, { flat: true }), 0.8); }
-  else pen.cap(sh, hand, 3.2 * (sp.fur ? 1.15 : 1), 2.6 * (sp.fur ? 1.25 : 1), skin);
-  if (sp.fur) pen.ell(hand[0], hand[1] + 1, 2.8, 2.6, skin);
+  if (sp.bigArm) { pen.cap(sh, [hand[0] + 6, -9], 5.6, 6.4, p.mat(mix(sk, L.second, 0.4), { deep: true })); pen.ell(hand[0] + 6, -6, 6.2, 6, p.mat(mix(sk, L.second, 0.5), { deep: true })); for (let i = 0; i < 3; i++) pen.line([sh[0] + 1 + i, sh[1] + 2 + i * 3], [hand[0] + 4 + i, -12 + i * 2], p.mat(L.second, { flat: true }), 0.9); }
+  else pen.cap(sh, hand, 3.2 * (sp.fur ? 1.15 : 1), 2.6 * (sp.fur ? 1.25 : 1), armN);
+  if (sp.fur) pen.ell(hand[0], hand[1] + 1, 2.8, 2.6, skinL);
   else if (!sp.bigArm) pen.ell(hand[0], hand[1], 2.4, 2.2, skinL);
   if (wpn !== 'none') {
     const len = wpn === 'club' ? 19 : wpn === 'sword' ? 24 : wpn === 'spear' ? 24 : 17;

@@ -102,7 +102,7 @@ function pop(c: Ctx<EnemyLook>): Info {
 
 function legion(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 30, (c.w * 0.9) / 44);
+  const s = Math.min(c.px / 30, (c.w * 0.9) / 56);
   const pen = c.pen(s).at(mo.push * 0.5, mo.bob);
   const flags = L.extra.filter((e) => e.label === 'ธง').map((e) => e.hex);
   const step = mo.pose === 'walk' ? mo.f % 2 : mo.pose === 'attack' ? mo.a : 0;
@@ -237,7 +237,7 @@ function rift(c: Ctx<EnemyLook>): Info {
 
 function reactor(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 40, (c.w * 0.9) / 36);
+  const s = Math.min(c.px / 40, (c.w * 0.9) / 46);
   const hover = -12 + Math.sin(mo.ph) * 1.5 + (mo.pose === 'idle' ? mo.breath * 1.6 : 0);
   const pen = c.pen(s).at(mo.push, mo.bob + hover);
   const fire = p.mat(L.main, { deep: true }), arc = p.mat(L.second, { flat: true }), white = p.mat(L.eye, { flat: true }), ring = p.mat('#6a6a74', { deep: true }), hot = p.mat(light(L.main, 0.45), { flat: true });
@@ -253,7 +253,7 @@ function reactor(c: Ctx<EnemyLook>): Info {
   const arcs = mo.pose === 'attack' ? 3 : 1;
   for (let k = 0; k < arcs; k++) {
     let x = 10, y = -2 + k * 3;
-    for (let i = 0; i < 6; i++) { const nx = x + 3.2 + (mo.pose === 'attack' ? 2 : 0), ny = y + (rnd(L.id, i + k * 9 + mo.f * 3) - 0.5) * 7; pen.line([x, y], [nx, ny], arc, 0.9); x = nx; y = ny; }
+    for (let i = 0; i < 4; i++) { const nx = x + 3.2 + (mo.pose === 'attack' ? 2 : 0), ny = y + (rnd(L.id, i + k * 9 + mo.f * 3) - 0.5) * 7; pen.line([x, y], [nx, ny], arc, 0.9); x = nx; y = ny; }
   }
   return { shadow: { cx: c.cx, cy: c.foot, rx: 8 * s, ry: Math.max(1.2, 1.4 * s) }, tall: false, ground: [c.cx, c.foot - hover * s] };
 }

@@ -1142,7 +1142,7 @@
      "die": "ละลายเป็นไอเย็นและกระซิบสุดท้าย"
     },
     "atkKind": "slam",
-    "dieKind": "melt",
+    "dieKind": "dissolve",
     "words": [
      "tusks",
      "water",
@@ -1506,7 +1506,28 @@
     "eye": "#1e1a22",
     "eyeLabel": "ตา",
     "eyeGiven": false,
-    "extra": [],
+    "extra": [
+     {
+      "label": "ธง",
+      "hex": "#8a8a8a"
+     },
+     {
+      "label": "ธง",
+      "hex": "#a02a2a"
+     },
+     {
+      "label": "ธง",
+      "hex": "#3a3a3a"
+     },
+     {
+      "label": "ธง",
+      "hex": "#c8b040"
+     },
+     {
+      "label": "ธง",
+      "hex": "#e8e8e8"
+     }
+    ],
     "plan": "spirit",
     "form": "legion",
     "planBy": "kind",

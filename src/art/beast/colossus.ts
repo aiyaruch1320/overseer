@@ -82,10 +82,11 @@ function titan(c: Ctx<EnemyLook>): Info {
   // moss and rubble on the shoulder ledge
   for (let i = 0; i < 9; i++) pen.rect(-140 + i * 30, -126 + sag + (i % 3) * 3, 22, 4, rockL);
   // the right fist is raised, then swung across the ground (the doc: it never dies, it sits and closes its eyes when music calms it)
-  const fx = -40 + strike * 120, fy = -88 + strike * 56 + (mo.a === 0 ? -34 : 0);
-  pen.chain([[150, -100 + sag], [(150 + fx) / 2 + 20, fy - 20], [fx, fy]], [30, 24, 20], rock);
-  pen.ell(fx, fy, 30, 26, rockL);
-  for (let i = 0; i < 4; i++) pen.line([fx + 6 + i * 6, fy + 10], [fx + 8 + i * 6, fy + 24], rockD, 1.4);
+  const fx = mo.pose === 'attack' ? [-90, 40, -20][mo.a] : -70, fy = mo.pose === 'attack' ? [-130, -40, -60][mo.a] : -46 + breath * 0.5;
+  pen.chain([[150, -100 + sag], [(150 + fx) / 2 + 30, Math.min(fy - 24, -92)], [fx + 6, fy - 14]], [34, 28, 24], p.mat(mix(L.main, '#000000', 0.12), { deep: true }));
+  pen.ell(fx, fy, 28, 24, rockL);
+  for (let i = 0; i < 4; i++) { pen.ell(fx + 16 - i * 11, fy + 12, 7, 7, rockL); pen.line([fx + 16 - i * 11, fy + 4], [fx + 16 - i * 11, fy + 18], rockD, 1.2); }
+  pen.ell(fx - 20, fy - 10, 9, 7, rockL);
   if (mo.a === 1) for (let i = 0; i < 12; i++) pen.dot(fx - 50 + i * 12, -4 - (i % 3) * 3, p.mat('#a09a88', { flat: true }), 2.4);
   // a slit of an eye on the chest-plate (a second face of stone)
   pen.rect(-92, -146 + sag, 22, 5, mo.dead ? rockD : eye);

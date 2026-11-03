@@ -24,7 +24,7 @@ function slime(c: Ctx<EnemyLook>): Info {
   const hop = mo.pose === 'walk' ? Math.abs(Math.sin(mo.ph / 2)) : 0;
   const stretch = mo.pose === 'attack' ? mo.strike : 0;
   const breathe = mo.pose === 'idle' ? mo.breath : 0;
-  const w = 11 + breathe * 0.9 + stretch * 4 - hop * 1.5, h = 10.5 - breathe * 1.1 - stretch * 3 + hop * 3;
+  const w = 8.6 + breathe * 0.8 + stretch * 3.4 - hop * 1.2, h = 10.5 - breathe * 1.1 - stretch * 3 + hop * 3;
   const x0 = stretch * 3 + mo.push * 0.3, lift = hop * 3;
   pen.ell(x0, -h * 0.5 - lift, w, h * 0.52, gel);
   pen.rect(x0 - w * 0.98, -h * 0.4 - lift, w * 1.96, h * 0.4, gel);
@@ -152,10 +152,10 @@ function spider(c: Ctx<EnemyLook>): Info {
   const bend = mo.pose === 'walk' ? Math.sin(mo.ph) * 2 : mo.pose === 'attack' ? 3 * mo.strike : 0;
   for (let i = 0; i < 4; i++) for (const far of [true, false]) {
     const sx = (far ? -1 : 1) * 0.6, a = i * 0.55 - 0.7 + (far ? 0.25 : 0);
-    const kx = sx + (far ? -1 : 1) * (7 + i * 0.5), ky = -10 - 4 + a * 2 - 3 + (i % 2) * 2 + bend * (far ? 0.4 : 0.8);
-    const fx = kx + (far ? -1 : 1) * 3, fy = 4 + i * 2.2 + (far ? 1 : 0);
+    const kx = sx + (far ? -1 : 1) * (5 + i * 0.4), ky = -12 + a * 2 - 2 + (i % 2) * 2 + bend * (far ? 0.4 : 0.8);
+    const fx = kx + (far ? -1 : 1) * 2, fy = 9 + i * 2.2 + (far ? 1 : 0);
     const col = far ? legM : body;
-    pen.line([sx, -9], [kx, ky], col, 1.1); pen.line([kx, ky], [fx + (far ? 0 : 6), fy + bend], col, 1.0);
+    pen.line([sx, -9], [kx, ky], col, 1.1); pen.line([kx, ky], [fx + (far ? 0 : 2), fy + bend], col, 1.0);
   }
   pen.ell(0.5, -8, 5, 4.4, body); pen.ell(5.4, -9.4, 3.2, 2.9, body);
   pen.poly([[-1.5, -11], [0.5, -7.2], [2.5, -11]], mark); pen.rect(-1.5, -9, 4, 0.8, mark);

@@ -118,6 +118,7 @@ function atkKindOf(t: string): AtkKind {
 function dieKindOf(t: string): DieKind | null {
   if (/ไม่ตาย/.test(t)) return 'sag';
   if (/จม/.test(t)) return 'sink';
+  if (/ละลายเป็น(ไอ|หมอก|ควัน)/.test(t)) return 'dissolve';
   if (/แตกเป็นน้ำ|ละลาย|ซึม|เมือก|น้ำเหนียว/.test(t)) return 'melt';
   if (/ถ่านร้อน|ควันแดง|ระเบิด|หดเป็นดวงไฟ/.test(t)) return 'burst';
   if (/ไอ|หมอก|ควัน|ผง|เถ้า|จาง|สลาย|ระเหย|หายไป|หายเข้า|ฟอง|อากาศร้อน/.test(t)) return 'dissolve';

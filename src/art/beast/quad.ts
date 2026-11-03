@@ -13,11 +13,11 @@ interface Spec {
   mane?: boolean; ribs?: boolean; cracks?: boolean; ash?: boolean; wisps?: boolean; oldface?: boolean; thick?: number;
 }
 const SPECS: Record<string, Spec> = {
-  wolf: { H: 20, W: 40, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', mane: true, ribs: true },
-  ashwolf: { H: 20, W: 40, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', ribs: true, ash: true },
-  shadowwolf: { H: 20, W: 40, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', mane: true, wisps: true },
-  manticore: { H: 26, W: 48, bx: 13, by: 7, leg: 10, head: 'feline', tail: 'scorp', mane: true, oldface: true, thick: 1.2 },
-  salamander: { H: 12, W: 48, bx: 14, by: 4, leg: 4, head: 'flat', tail: 'long', cracks: true },
+  wolf: { H: 20, W: 46, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', mane: true, ribs: true },
+  ashwolf: { H: 20, W: 46, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', ribs: true, ash: true },
+  shadowwolf: { H: 20, W: 46, bx: 11, by: 5, leg: 8, head: 'canine', tail: 'bush', mane: true, wisps: true },
+  manticore: { H: 26, W: 60, bx: 13, by: 7, leg: 10, head: 'feline', tail: 'scorp', mane: true, oldface: true, thick: 1.2 },
+  salamander: { H: 12, W: 62, bx: 14, by: 4, leg: 4, head: 'flat', tail: 'long', cracks: true },
 };
 
 export function paintQuad(c: Ctx<EnemyLook>): Info {

@@ -31,8 +31,8 @@ void (null as unknown as Painter);
 const SHOWN = { S: 3, M: 2, L: 1, XL: 1, XXL: 1 } as const;
 const OFFSETS: Record<number, [number, number][]> = {
   1: [[0, 0]],
-  2: [[-11, -1], [10, 2]],
-  3: [[-9, -2], [9, -3], [0, 3]],
+  2: [[-5, -2], [5, 0]],
+  3: [[-8, -5], [8, -6], [0, -1]],
 };
 
 const isPerson = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'person' || L.form === 'wolfman');
@@ -53,13 +53,13 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   return pose === 'hurt' && f === 0 ? flash(out) : out;
 }
 
-function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string): Frame {
+function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): Frame {
   const fr = FRAMES[L.size];
   const p = new Paint(fr.w, fr.h);
   const mo = motion(pose, f, L.kind === 'enemy' ? L.atkKind : 'lash');
   const cx = Math.round(fr.w / 2);
   const c: Ctx<BeastLook> = {
-    L, p, w: fr.w, h: fr.h, foot: fr.foot, cx, mo, px: targetHeight(L),
+    L, p, w: fr.w, h: fr.h, foot: fr.foot, cx, mo, px: targetHeight(L) * k,
     mat: (h, o) => p.mat(h, o), pen: (s) => new Pen(p, cx, fr.foot, s),
   };
   const painter = L.kind === 'dragon' ? paintDragon : L.size === 'XXL' ? paintColossus : PLAN[L.plan];
@@ -74,9 +74,9 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string): Frame {
 
 /** One frame of a beast: the family of one body, or the several bodies of a swarm. */
 export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
-  const one = (ff: number, i: number): Frame =>
-    isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`);
   const group = L.kind === 'enemy' && !!L.swarm && !L.cloud && L.plan !== 'swarm' ? SHOWN[L.size] : 1;
+  const one = (ff: number, i: number): Frame =>
+    isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
   if (group === 1) return one(f, 0);
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h), offs = OFFSETS[group];
   const spec = POSE_OF[pose];

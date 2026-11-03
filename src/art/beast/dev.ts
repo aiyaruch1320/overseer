@@ -4,7 +4,7 @@
 import Phaser from 'phaser';
 import { BEAST_POSES, FRAMES } from './kit';
 import { beastOf } from './look';
-import { addBeast } from './phaser';
+import { addBeast, frameIndex } from './phaser';
 import { BEAST_SETS, type BeastEntry } from '../dev/sets-beasts';
 import type { Pose } from '../anim';
 
@@ -40,7 +40,8 @@ new Phaser.Game({
       entries.forEach((e, i) => {
         const fr = FRAMES[e.look.size];
         const cx = (i % cols) * CELL.w + CELL.w / 2, cy = Math.floor(i / cols) * CELL.h + (CELL.h - 14 - fr.h) / 2;
-        addBeast(this, e.look, cx, cy + fr.foot, pose);
+        const sp = addBeast(this, e.look, cx, cy + fr.foot, pose);
+        if (q.has('f')) sp.stop().setFrame(frameIndex(pose, Number(q.get('f'))));
         this.add.text(cx, (Math.floor(i / cols) + 1) * CELL.h - 12, e.id, { fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '24px', color: '#2a2c36' }).setOrigin(0.5, 0).setScale(1 / 4).setResolution(1);
       });
     },

@@ -109,7 +109,7 @@ function cloudSerpent(c: Ctx<EnemyLook>): Info {
 // ── reef serpent: coral-coloured rings in the coral, a yellow eye ────────────────────────────────────────────────────────────────────
 function reef(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 18, (c.w * 0.92) / 42);
+  const s = Math.min(c.px / 18, (c.w * 0.92) / 56);
   const pen = c.pen(s).at(mo.push * 0.5, mo.bob);
   const sk = p.mat(L.main, { deep: true }), skD = p.mat(L.second, { deep: true }), eye = p.mat(L.eye, { flat: true });
   const cor = [p.mat('#e86a8a'), p.mat('#c85a9a'), p.mat('#f0a070'), p.mat('#7a4a8a')];
@@ -131,13 +131,13 @@ function reef(c: Ctx<EnemyLook>): Info {
 // ── tentacle: a pale arm of the fog, thickest at the root, with a curled tip ────────────────────────────────────────────────────────────
 function tentacle(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 52, (c.w * 0.9) / 44);
+  const s = Math.min(c.px / 62, (c.w * 0.9) / 50);
   const pen = c.pen(s);
   const sk = p.mat(L.main, { deep: true, alpha: 0.92 }), skD = p.mat(L.second, { alpha: 0.9 }), fog = p.mat('#eef0f6', { alpha: 0.7, flat: true });
   const strike = mo.pose === 'attack' ? [0.1, 1, 0.5][mo.a] : 0;
   const sway = mo.pose === 'idle' ? mo.breath * 3 : mo.pose === 'walk' ? Math.sin(mo.ph) * 4 : 0;
-  const path = spine(18, (u) => [Math.sin(u * 4 + (mo.pose === 'idle' ? mo.breath : mo.ph * 0.5)) * 5 * u + sway * u + strike * (u * 24 - 6 * u * u) , -(48 - strike * 22) * u + Math.cos(u * 3) * 2 * u + strike * 12 * u * u]);
-  pen.chain(path, path.map((_, i) => 5.4 * (1 - i / 18) ** 0.8 + 0.7), sk);
+  const path = spine(18, (u) => [Math.sin(u * 6 + (mo.pose === 'idle' ? mo.breath : mo.ph * 0.5)) * 8 * u + sway * u + strike * (u * 24 - 6 * u * u) , -(48 - strike * 22) * u + Math.cos(u * 3) * 2 * u + strike * 12 * u * u]);
+  pen.chain(path, path.map((_, i) => 3.8 * (1 - i / 18) ** 0.8 + 0.7), sk);
   // curled tip
   const tip = path[18];
   pen.chain([tip, [tip[0] + 3, tip[1] - 2], [tip[0] + 5, tip[1] + 1], [tip[0] + 3, tip[1] + 3]], [0.9, 0.8, 0.7, 0.6], sk);

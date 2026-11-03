@@ -37,7 +37,7 @@ function locusts(c: Ctx<EnemyLook>): Info {
 
 function moths(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 22, (c.w * 0.9) / 32);
+  const s = Math.min(c.px / 22, (c.w * 0.9) / 46);
   const pen = c.pen(s);
   const wing = p.mat(L.main, { deep: true }), wingD = p.mat(L.second), eye = p.mat(L.eye, { flat: true }), glow = p.mat('#ffd890', { flat: true, alpha: 0.5 }), core = p.mat('#fff0c0', { flat: true });
   // the flame they circle

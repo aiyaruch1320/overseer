@@ -6,7 +6,7 @@ import { BEAST_POSES, FRAMES, poseN, poseRow } from './kit';
 import { beastKey, type BeastLook } from './look';
 import { beastSheetCanvas } from './sheet';
 
-const frameIndex = (pose: Pose, i: number): number => poseRow(pose) * SHEET_COLS + i;
+export const frameIndex =(pose: Pose, i: number): number => poseRow(pose) * SHEET_COLS + i;
 
 /** The texture key of a beast in this scene (added the first time). */
 export function beastTexture(scene: Phaser.Scene, L: BeastLook): string {

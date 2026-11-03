@@ -156,7 +156,7 @@ export function applyDie(p: Paint, kind: DieKind, prog: number, ground: Pt, heig
       remap(p, (x, y) => [x - (prog > 0.9 ? 0 : 0), gy - (gy - y) / k]);
     }
   } else if (kind === 'melt') {
-    const ky = 1 - 0.82 * prog, kx = 1 + 0.7 * prog;
+    const ky = 1 - 0.7 * prog, kx = 1 + 0.5 * prog;
     remap(p, (x, y) => [gx + (x - gx) / kx, gy - (gy - y) / ky]);
   } else if (kind === 'crumble') {
     const ky = 1 - 0.78 * prog, kx = 1 + 0.3 * prog;
@@ -168,7 +168,7 @@ export function applyDie(p: Paint, kind: DieKind, prog: number, ground: Pt, heig
       return [x, y + prog * 5];
     });
   } else if (kind === 'sink') {
-    const d = prog * height * 0.85;
+    const d = prog * height * 0.55;
     remap(p, (x, y) => (y > gy + 1 ? null : [x, y - d]));
   } else if (kind === 'burst') {
     const k = 1 - 0.6 * prog;
