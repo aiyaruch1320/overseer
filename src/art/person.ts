@@ -28,9 +28,11 @@ interface Key {
   kneel?: boolean; sit?: boolean; fall?: boolean; nod?: number; glow?: boolean;
 }
 
-const HOLD = { thrust: -78, swing: -60, cast: -84, shoot: -70, none: -70 } as const;
+const HOLD = { thrust: -78, swing: -60, cast: -84, shoot: -70, carry: -90, none: -70 } as const;
 /** An arm that hangs: the hand a torso's length below the shoulder. */
 const HANG: Pt = [1, 9], HANG_FAR: Pt = [-2, 8];
+/** An arm that carries: the hand out in front of the chest, the other hand beneath it. */
+const CARRY: Pt = [5, 2], CARRY_FAR: Pt = [2, 4];
 
 /** The walk of each gait (21-pixel-art.md §3: 4 frames): feet, body bob, lifts. Hop and float change more than the feet. */
 interface Step { fa: number[]; ba: number[]; b: number[]; ln: number[]; lf: number[]; flap: number[]; sw: number }
@@ -50,11 +52,11 @@ const STEP: Record<Gait, Step> = {
 };
 
 function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
-  const up = HOLD[kind] * DEG, armed = kind !== 'none';
+  const up = HOLD[kind] * DEG, armed = kind !== 'none', carry = kind === 'carry';
   switch (pose) {
     case 'idle': return [
-      { hand: armed ? [3, 4] : HANG, far: armed ? [-1, 5] : HANG_FAR, ang: up, b: gait === 'hop' ? 1 : 0 },
-      { b: gait === 'float' ? -1 : gait === 'hop' ? 0 : 1, hand: armed ? [3, 4] : [1, 8], far: armed ? [-1, 5] : [-2, 9], ang: up, flap: 1 },
+      { hand: carry ? CARRY : armed ? [3, 4] : HANG, far: carry ? CARRY_FAR : armed ? [-1, 5] : HANG_FAR, ang: up, b: gait === 'hop' ? 1 : 0 },
+      { b: gait === 'float' ? -1 : gait === 'hop' ? 0 : 1, hand: carry ? CARRY : armed ? [3, 4] : [1, 8], far: carry ? CARRY_FAR : armed ? [-1, 5] : [-2, 9], ang: up, flap: 1 },
     ];
     case 'walk': {
       const s = STEP[gait];
@@ -62,8 +64,9 @@ function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         const sw = s.fa[i] * s.sw, high = gait === 'hop' && s.b[i] < -1;
         return {
           b: s.b[i], fa: s.fa[i], ba: s.ba[i], ln: s.ln[i], lf: s.lf[i], flap: s.flap[i],
-          hand: (armed ? [3 - sw / 2, 4] : [1 - sw * 0.8, high ? 6 : 9]) as Pt,
-          far: (armed ? [-1 + sw / 2, 5] : [-2 + sw * 0.8, high ? 5 : 8]) as Pt,
+          // a carried thing stays out in front, steady; the arm does not swing
+          hand: (carry ? [CARRY[0] - sw * 0.12, CARRY[1]] : armed ? [3 - sw / 2, 4] : [1 - sw * 0.8, high ? 6 : 9]) as Pt,
+          far: (carry ? CARRY_FAR : armed ? [-1 + sw / 2, 5] : [-2 + sw * 0.8, high ? 5 : 8]) as Pt,
           ang: kind === 'thrust' ? -32 * DEG : up,
         };
       });
@@ -75,6 +78,18 @@ function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         { L: 1, fa: 2, ba: -1, hand: [4, 4], far: [-1, 5], ang: -10 * DEG, flap: 1 },
       ];
       if (kind === 'cast') return castKeys(up);
+      // the thing stays upright in front: a small push forward and back
+      if (kind === 'carry') return [
+        { L: -1, fa: 1, ba: -1, hand: [4, 2], far: [1, 4], ang: up },
+        { b: 1, L: 1, fa: 2, ba: -1, hand: [8, 1], far: [3, 3], ang: up, flap: 2 },
+        { L: 1, fa: 1, ba: -1, hand: [6, 2], far: [2, 4], ang: up, flap: 1 },
+      ];
+      // the bow: arm out, the string drawn on frames 0 and 1, loosed on frame 2 (the far hand snaps back)
+      if (kind === 'shoot') return [
+        { L: -1, fa: 1, ba: -1, hand: [6, -1], far: [7, 0], ang: -4 * DEG },
+        { L: -1, fa: 1, ba: -1, hand: [6, -1], far: [9.5, -0.5], ang: -4 * DEG, flap: 1 },
+        { L: 0, fa: 1, ba: -1, hand: [6, -1], far: [4, 2], ang: -2 * DEG, flap: 2 },
+      ];
       return [
         { L: -1, fa: 1, ba: -2, hand: [0, 2], far: [-2, 4], ang: -12 * DEG, push: -3 },
         { b: 1, L: 1, fa: 3, ba: -2, hand: [4, 2], far: [1, 3], ang: -4 * DEG, push: 1, flap: 2 },
@@ -87,7 +102,12 @@ function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
       { kneel: true, nod: 2, hand: [2, 7], far: [0, 7], ang: 10 * DEG },
       { kneel: true, fall: true, nod: 2, hand: [2, 7], far: [0, 7], ang: 10 * DEG },
     ];
-    case 'work': return [
+    case 'work': if (carry) return [
+      { hand: CARRY, far: CARRY_FAR, ang: up },
+      { b: 1, hand: [5, 3], far: CARRY_FAR, ang: up },
+      { hand: CARRY, far: [2, 3], ang: up },
+    ];
+    return [
       { L: -1, hand: [-1, -2], far: [1, -1], ang: -110 * DEG },
       { b: 1, L: 1, hand: [5, 4], far: [4, 4], ang: 40 * DEG },
       { L: 1, hand: [4, 4], far: [3, 4], ang: 20 * DEG },
@@ -182,7 +202,7 @@ function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: K
     p, look: L, pose, f, k, H, foot, hip, sh, x0, tw, head, hr, shoulderNear, shoulderFar, hand, farHand, near, far,
     kneel: !!key.kneel, sit: !!key.sit, ang: key.ang ?? -70 * DEG, push: sk(key.push), flap: key.flap ?? 0, glow: !!key.glow,
     holds: HOLDS[pose] && tool.kind !== 'none' && !infant, m,
-    legs, lean, hover, reach, spread, hh, infant, gel, fx: [],
+    legs, lean, hover, reach, spread, hh, infant, gel, fx: p.glows,
   };
   return { r, key };
 }
@@ -223,18 +243,6 @@ export function unknownParts(L: PersonLook): string[] {
   return miss;
 }
 
-/** Lay the free-floating glow pixels on the finished frame: flat colour, see-through where asked, no outline. */
-function overlay(f: Frame, fx: Rig['fx']): void {
-  for (const { x, y, hex, a } of fx) {
-    const xi = Math.round(x), yi = Math.round(y);
-    if (xi < 0 || yi < 0 || xi >= f.w || yi >= FRAME.foot) continue;
-    const o = (yi * f.w + xi) * 4, c = [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
-    const under = f.data[o + 3] / 255, out = a + under * (1 - a);
-    for (let k = 0; k < 3; k++) f.data[o + k] = Math.round((c[k] * a + f.data[o + k] * under * (1 - a)) / (out || 1));
-    f.data[o + 3] = Math.round(out * 255);
-  }
-}
-
 /** A figure that has fallen lies on the ground line, wherever the turn put it, and inside the frame. */
 function settle(p: Paint): void {
   let minX = 99, maxX = -1, maxY = -1;
@@ -262,13 +270,11 @@ export function paintPerson(L: PersonLook, pose: Pose, f: number): Frame {
     // the face is drawn again over a hood (eye and nose stay visible)
     if (layer === 'hat' && L.hat && !r.gel) BODY_PARTS.head.face?.(r);
   }
-  if (key.fall) { p.turn(-1, [CX, FRAME.foot]); settle(p); }
+  if (key.fall) { p.turn(-1, [CX, FRAME.foot]); settle(p); p.glows.length = 0; }
   // nothing stands below the ground line (a hem or a sleeve that hangs past it is cut there)
   for (let y = FRAME.foot; y < p.h; y++) for (let x = 0; x < p.w; x++) p.m[y * p.w + x] = 0;
   // the ground shadow: as wide as what stands on the ground (a coil, a hem, a gel), smaller under what hovers
   const wide = L.body.lower === 'serpent' ? coils(r).rx1 + 2 : L.body.lower === 'gown' ? r.tw * 0.5 + 5 : L.body.lower === 'blob' ? r.tw * 0.8 + 2 : r.tw * 0.7 + 2;
   const sh = r.hover ? 0.7 : 1;
-  const out = p.finish({ cx: CX + 1, cy: FRAME.foot, rx: Math.max(4, wide * sh), ry: Math.max(1.2, 2 * Math.max(0.7, r.k) * sh) });
-  if (!key.fall) overlay(out, r.fx);
-  return out;
+  return p.finish({ cx: CX + 1, cy: FRAME.foot, rx: Math.max(4, wide * sh), ry: Math.max(1.2, 2 * Math.max(0.7, r.k) * sh) });
 }

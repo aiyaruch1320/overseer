@@ -2,7 +2,7 @@
 // draws in one or more layers; the person painter calls the layers in a fixed order, so parts never need to know about each other.
 import type { Pose } from './anim';
 import type { PersonLook } from './look';
-import type { Paint, Pt } from './paint';
+import type { Glow, Paint, Pt } from './paint';
 
 /** The materials every figure has (ids of the grid). Parts make more with `r.p.mat(hex)`. */
 export interface Mats {
@@ -68,8 +68,8 @@ export interface Rig {
   infant: boolean;
   /** the whole body is gel (the slime has no clothes, no ears, no face) */
   gel: boolean;
-  /** free-floating glow pixels (sparks, dust, steam, sparkle): laid on the finished frame, so they get no outline and no shading */
-  fx: { x: number; y: number; hex: string; a: number }[];
+  /** free-floating glow pixels (sparks, dust, steam, sparkle): the same list as `p.glows`, so `r.fx.push(...)` and `r.p.glow(...)` are one thing; they get no outline and no shading */
+  fx: Glow[];
 }
 
 /** The layers in the order they are painted. */
@@ -78,8 +78,8 @@ export const LAYERS: readonly Layer[] = ['back', 'farArm', 'lower', 'torso', 'he
 
 export type Part = Partial<Record<Layer, (r: Rig) => void>>;
 
-/** How a tool is swung: it picks the attack and work frames. */
-export type ToolKind = 'thrust' | 'swing' | 'cast' | 'shoot' | 'none';
+/** How a tool is used: it picks the attack and work frames. `carry` holds the thing upright out in front and only pushes it forward (a book, a mug, a lantern); `shoot` draws and looses a bow. */
+export type ToolKind = 'thrust' | 'swing' | 'cast' | 'shoot' | 'carry' | 'none';
 export interface Tool extends Part { kind: ToolKind }
 
 /** The point `t` pixels along the held thing from the hand (with the frame's push). */
