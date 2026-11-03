@@ -14,7 +14,7 @@ export interface WarPanelProps {
 function Stat({ label, value, tone, id }: { label: string; value: string | number; tone?: string; id: string }) {
   return (
     <div style={{ ...box, flex: 1, minWidth: 130, textAlign: 'center' }} data-testid={id}>
-      <div style={{ fontFamily: font.title, fontSize: size.title + 8, color: tone ?? color.text, lineHeight: 1.1 }}>{value}</div>
+      <div style={{ fontFamily: font.title, fontSize: size.title + 8, color: tone ?? color.text, lineHeight: 1.3 }}>{value}</div>
       <div style={{ color: color.textDim, fontSize: size.small }}>{label}</div>
     </div>
   );
@@ -80,7 +80,7 @@ export function WarPanel({ war, onClose }: WarPanelProps) {
         <Stat id="war-battles" label={W.battles} value={war.battles} />
         <Stat id="war-won" label={W.won} value={war.won} tone={color.light} />
         <Stat id="war-held" label={W.held} value={war.held} />
-        <Stat id="war-lost" label={W.lost} value={war.lost} tone={war.lost ? color.dread : color.textDim} />
+        <Stat id="war-lost" label={W.lost} value={war.lost} tone={war.lost ? color.dreadText : color.textDim} />
         <Stat id="war-pay" label={`${W.pay} (${W.gold})`} value={war.pay} tone={color.light} />
       </div>
 

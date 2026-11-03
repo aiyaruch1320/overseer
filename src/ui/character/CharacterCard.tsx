@@ -6,7 +6,7 @@ import { characterCardView, type CardModel } from '../../app/views/character';
 import { CHAR_WORDS as W } from '../../app/views/character-words';
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
-import { color, font, size } from '../tokens';
+import { TITLE_LINE, color, font, size } from '../tokens';
 import { Dim, frame, Meter, TierMark, tint } from './parts';
 
 export interface CharacterCardProps {
@@ -22,7 +22,7 @@ const BELIEF_TONE: Record<CardModel['god']['tone'], string> = { loyal: color.lig
 export function CharacterCardView({ m, onOpen, width = 200 }: { m: CardModel; onOpen?: () => void; width?: number }) {
   const body = (
     <>
-      <div style={{ fontFamily: font.title, fontSize: size.text + 3, lineHeight: 1.2 }} data-testid="card-name">
+      <div style={{ fontFamily: font.title, fontSize: size.text + 3, lineHeight: TITLE_LINE }} data-testid="card-name">
         {m.name}
       </div>
       <Dim>{m.line}</Dim>
@@ -30,7 +30,7 @@ export function CharacterCardView({ m, onOpen, width = 200 }: { m: CardModel; on
         {m.cls}
         {m.job && ` · ${m.job}`}
       </div>
-      {m.dead && <div style={{ color: color.dread, fontSize: size.small }}>{W.dead}</div>}
+      {m.dead && <div style={{ color: color.dreadText, fontSize: size.small }}>{W.dead}</div>}
       <div style={{ marginTop: 6 }} title={`${W.hp} ${m.hp.now} / ${m.hp.max}`}>
         <Meter label={W.hp} valueText={`${m.hp.now} / ${m.hp.max}`} pct={m.hp.pct} tone={m.hp.pct < 35 ? color.dread : color.light} height={6} />
       </div>
@@ -43,7 +43,7 @@ export function CharacterCardView({ m, onOpen, width = 200 }: { m: CardModel; on
       </div>
       <div style={{ marginTop: 6, fontSize: size.small }}>
         {W.gold} <span style={{ fontFamily: font.mono, color: color.light }}>{m.gold}</span>
-        {m.bound && <span style={{ color: color.dread, marginLeft: 8 }}>{m.bound}</span>}
+        {m.bound && <span style={{ color: color.dreadText, marginLeft: 8 }}>{m.bound}</span>}
       </div>
       {m.hand && (
         <div style={{ ...frame(m.hand.tier), padding: '3px 6px', marginTop: 6, fontSize: size.small, display: 'flex', gap: 6, alignItems: 'center' }} data-testid="card-hand">
@@ -56,7 +56,7 @@ export function CharacterCardView({ m, onOpen, width = 200 }: { m: CardModel; on
         <span style={{ color: color.light }}>
           {W.blessings} {m.blessings}
         </span>
-        <span style={{ color: color.dread }}>
+        <span style={{ color: color.dreadText }}>
           {W.curses} {m.curses}
         </span>
       </div>

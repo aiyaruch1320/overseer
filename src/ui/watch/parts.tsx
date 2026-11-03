@@ -65,7 +65,7 @@ export function Candle({ candle, showPct }: { candle: CandleView; showPct: boole
 // ---------- the god panel ----------
 
 /** A drop-shaped glass; the level is a liquid (20-god-ui.md §2 "ดวงไฟสองดวงซ้อนแนวตั้ง"). */
-function Drop({ vial, tone, label, id }: { vial: Vial; tone: string; label: string; id: string }) {
+function Drop({ vial, tone, text = tone, label, id }: { vial: Vial; tone: string; text?: string; label: string; id: string }) {
   const top = 6 + (1 - vial.fill) * 50;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: size.gap }} title={`${label} ${vial.value} / ${vial.cap}`} data-testid={id}>
@@ -79,7 +79,7 @@ function Drop({ vial, tone, label, id }: { vial: Vial; tone: string; label: stri
         <rect x={0} y={top} width={40} height={62 - top} fill={tint(tone, 85)} clip-path={`url(#clip-${id})`} class="wt-flame" />
       </svg>
       <div style={{ fontSize: size.small, lineHeight: 1.25 }}>
-        <div style={{ color: tone, fontFamily: font.mono, fontSize: size.text }}>{vial.value}</div>
+        <div style={{ color: text, fontFamily: font.mono, fontSize: size.text }}>{vial.value}</div>
         <div style={{ color: color.textDim }}>{label}</div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export function GodPanel({ panel, onOpen }: { panel: GodPanelView; onOpen: (kind
   return (
     <section aria-label="god" style={{ ...panelBox, display: 'flex', flexDirection: 'column', gap: size.gap }}>
       <Drop vial={panel.light} tone={color.light} label={W.light} id="light" />
-      <Drop vial={panel.dread} tone={color.dread} label={W.dread} id="dread" />
+      <Drop vial={panel.dread} tone={color.dread} text={color.dreadText} label={W.dread} id="dread" />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
         {panel.buttons.map((k) => {
           const glow = panel.windowOpen && (k === 'chest' || k === 'dream');
