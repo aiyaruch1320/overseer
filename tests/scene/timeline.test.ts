@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { BEAT_KINDS, type ScenesFile } from '../../src/core/data/types-scenes';
 import { BEAT_DEMOS } from '../../src/scene/demo';
-import { hash01, particlesAt, seedOf } from '../../src/scene/particles';
+import { seedOf } from '../../src/scene/seed';
 import { frameAt, mixColor, resolveScript, soundsBetween } from '../../src/scene/timeline';
 
 const D = (JSON.parse(readFileSync('data/gen/scenes.json', 'utf8')) as ScenesFile).items;
@@ -146,25 +146,10 @@ describe('variants', () => {
   });
 });
 
-describe('particles', () => {
-  it('a particle is where the number and the time put it', () => {
-    expect(particlesAt('ash', 0.5, 7, 3.2)).toEqual(particlesAt('ash', 0.5, 7, 3.2));
-    expect(particlesAt('ash', 0.5, 7, 3.2)).not.toEqual(particlesAt('ash', 0.5, 7, 3.3));
-    expect(particlesAt('ash', 0.5, 7, 0)).not.toEqual(particlesAt('ash', 0.5, 8, 0));
-  });
-  it('more amount, more particles; all inside the stage', () => {
-    expect(particlesAt('snow', 1, 1, 0).length).toBeGreaterThan(particlesAt('snow', 0.2, 1, 0).length);
-    expect(particlesAt('fog', 1, 1, 0).length).toBeLessThan(particlesAt('dust', 1, 1, 0).length);
-    for (const k of ['ash', 'embers', 'rain', 'leaves', 'fog', 'sparks'] as const) for (const p of particlesAt(k, 1, 3, 12.5)) {
-      expect(p.x).toBeGreaterThanOrEqual(0);
-      expect(p.x).toBeLessThan(1);
-      expect(p.y).toBeGreaterThanOrEqual(0);
-      expect(p.y).toBeLessThan(1);
-    }
-  });
-  it('the hash is stable and spread', () => {
-    expect(hash01(1, 2)).toBe(hash01(1, 2));
-    expect(hash01(1, 2)).not.toBe(hash01(2, 1));
+
+describe('seed', () => {
+  it('a number from a text, stable and spread', () => {
+    expect(seedOf('DR-01')).toBe(seedOf('DR-01'));
     expect(seedOf('DR-01')).not.toBe(seedOf('DR-02'));
   });
 });

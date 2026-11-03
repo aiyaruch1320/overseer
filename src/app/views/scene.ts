@@ -16,7 +16,7 @@ import type { LooksData } from '../../core/data/types-looks';
 import type { Country } from '../../core/data/types-npcs';
 import type { ScenerySpec, Setting } from '../../art/scenery/types';
 import type { Figure, FigureOf } from '../../scene/figures';
-import { seedOf } from '../../scene/particles';
+import { seedOf } from '../../scene/seed';
 import type { SceneryOf } from '../../scene/Stage';
 import { mainLookOf, scarredOf, tieLooks } from './looks';
 import { items } from '../../core/text/labels';
@@ -133,7 +133,15 @@ function indexOf(data: GameData): Index | null {
 }
 
 /** The card of an entry: its card of the data when there is one, else the words and the colour of the system that wrote it. */
-export function cardOfEntry(data: GameData, e: LogEntry): CardModel {
+export function cardOfEntry(data: GameData, e: LogEntry, state?: GameState | null): CardModel {
+  const card = cardBase(data, e);
+  // the picture of the card is the place of the event: the country or continent the entry carries, else the life's (an event of no place shows the first continent's plain look)
+  const at = placeOf(data, state, e);
+  card.scenery = { continent: at?.continent ?? 'AZ', setting: 'outdoor', seed: seedOf(card.id), ...(at?.country ? { country: at.country } : {}) };
+  return card;
+}
+
+function cardBase(data: GameData, e: LogEntry): CardModel {
   const ix = indexOf(data);
   const body = describe(data, e) ?? '';
   const def = e.id ? ix?.card.get(e.id) : undefined;
@@ -145,8 +153,8 @@ export function cardOfEntry(data: GameData, e: LogEntry): CardModel {
 }
 
 /** The scene of a log entry: its script (the rest of the scene chosen by the result in the entry) or its card. */
-export function sceneFor(data: GameData, e: LogEntry): SceneView {
-  const card = cardOfEntry(data, e);
+export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null): SceneView {
+  const card = cardOfEntry(data, e, state);
   const ix = indexOf(data);
   if (!ix) return { kind: 'card', card, entry: e };
   const { keys, variants } = sceneKeys(e, (id) => ix.template.get(id));
@@ -179,6 +187,8 @@ export interface IdleView {
   latest: string;
   /** The line under the picture. */
   caption: string;
+  /** The painted place of the picture: the continent and country of the life, under the sky, in the season (the four seasons are four pictures). */
+  scenery: ScenerySpec;
 }
 
 /** Sky, ground and glow of the four seasons (the beat of a life year is one season: ฤดูหว่าน ฤดูฝน ฤดูเก็บเกี่ยว ฤดูหนาว). The docs give no colours. */
@@ -206,7 +216,9 @@ export function idleView(data: GameData, state: GameState): IdleView {
   const latest = [...t].length > LATEST_MAX ? `${[...t].slice(0, LATEST_MAX - 1).join('')}…` : t;
   const c = IDLE_SKY[quarter];
   const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
-  return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption };
+  const at = lifePlace(data, state);
+  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
+  return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption, scenery };
 }
 
 
@@ -324,31 +336,85 @@ export function figuresOf(data: GameData, state: GameState | null | undefined, v
 // ---------- the place ----------
 
 /**
- * Words of a place that put the scene inside a building, and words that put it among the houses of a town (indoor is asked first). The docs give no list:
- * these are read from the place names of the bg beats in data/gen/scenes.json.
+ * Words of a place that put the scene inside a building, words of open land, and words that put it among the houses of a town. The docs give no list: these are
+ * read from the place names of the bg beats in data/gen/scenes.json (sentences, with the main place first: `ห้องสภาครึ่งหนึ่งยื่นออกเหนือหุบ` is a room, `ปากถ้ำบนเขา` a cave).
+ * The word that comes first in the name decides; a name that says none of them is under the sky. A place `ริม` (beside) a cliff, a shore, a road or a forest is that
+ * open land whatever stands there (`ลานดวลริมหน้าผา` is a duel on a cliff, not a town square), unless a room or a hall is named before it.
  */
-const INDOOR = ['ห้อง', 'ในอาคาร', 'ภายใน', 'โรงตี', 'โรงเรียน', 'มหาวิทยาลัย', 'หอ', 'ตึก', 'วิหาร', 'โบสถ์', 'ใต้ดิน', 'หน้าต่าง', 'เตาหลอม', 'ถ้ำ', 'รัง', 'โถง', 'อุโมงค์'];
-const TOWN = ['เมือง', 'ตลาด', 'ท่าเรือ', 'ถนน', 'ลาน', 'หมู่บ้าน', 'บ้าน', 'ย่าน', 'ประตู', 'สะพาน', 'โรงงาน', 'ค่าย', 'จัตุรัส', 'ร้าน', 'ท่า', 'สถาบัน', 'วัง', 'ปราสาท', 'ป้อม', 'สภา', 'ทางเดิน', 'บันได'];
+const INDOOR = ['ห้อง', 'ในอาคาร', 'ภายใน', 'โรงตี', 'โรงเรียน', 'มหาวิทยาลัย', 'หอ(?!ก)', 'ตึก', 'วิหาร', 'โบสถ์', 'ใต้ดิน', 'หน้าต่าง', 'เตาหลอม', 'ถ้ำ', 'รัง', 'โถง', 'อุโมงค์', 'คุก', 'ในเต็นท์'];
+const OPEN = ['หน้าผา', 'หุบ', 'เหว', 'ทุ่ง', 'ไร่', 'ป่า', 'ชายฝั่ง', 'ชายหาด', 'ชายทะเล', 'ฝั่ง', 'ทะเล', 'มหาสมุทร', 'แม่น้ำ', 'ลำธาร', 'หนอง', 'บึง', 'สันเขา', 'ภูเขา', 'ยอดเขา', 'เนิน', 'ที่ราบ', 'ทะเลทราย', 'สนามรบ', 'สนาม', 'ทางหลวง', 'ท้องฟ้า', 'เกาะ', 'ถนน', 'ริมน้ำ'];
+const TOWN = ['เมือง', 'ตลาด', 'ท่าเรือ', 'ลาน', 'หมู่บ้าน', 'บ้าน', 'ย่าน', 'ประตู', 'สะพาน', 'โรงงาน', 'ค่าย', 'จัตุรัส', 'ร้าน', '(?<!เ)ท่า', 'สถาบัน', 'วัง(?!วน)', 'ปราสาท', 'ป้อม', 'สภา', 'ทางเดิน', 'บันได'];
+const BESIDE = new RegExp(`ริม(?:${OPEN.join('|')}|น้ำ)`);
+const GROUPS: [Setting, RegExp][] = [
+  ['indoor', new RegExp(INDOOR.join('|'))],
+  ['outdoor', new RegExp(OPEN.join('|'))],
+  ['town', new RegExp(TOWN.join('|'))],
+];
 
-/** Where a place the script names is: under the sky, among the houses, or inside. A name that says neither is under the sky. */
+/** Where a place the script names is: under the sky, among the houses, or inside. */
 export function settingOf(place: string): Setting {
-  if (INDOOR.some((w) => place.includes(w))) return 'indoor';
-  if (TOWN.some((w) => place.includes(w))) return 'town';
-  return 'outdoor';
+  let best: Setting = 'outdoor';
+  let at = Infinity;
+  for (const [setting, re] of GROUPS) {
+    const i = place.search(re);
+    if (i >= 0 && i < at) [best, at] = [setting, i];
+  }
+  const beside = place.search(BESIDE);
+  if (beside >= 0 && !(best === 'indoor' && at < beside)) return 'outdoor';
+  return best;
 }
 
-/** The continent and country a scene is in: the life's, else the country of the NPC of the entry (`AZ02-1` is the second country of AZ), else nothing. */
-export function placeOf(data: GameData, state: GameState | null | undefined, e: LogEntry): { continent: string; country?: string } | undefined {
+
+export interface Place {
+  continent: string;
+  country?: string;
+}
+
+/** The place of a person of the NPC table (`AZ02-1` lives in `AZ-02`). */
+const npcPlace = (npc: string | undefined): Place | undefined => {
+  const m = (npc ?? '').match(/^([A-Z]{2})(\d{2})-/);
+  return m ? { continent: m[1], country: `${m[1]}-${m[2]}` } : undefined;
+};
+
+/** The countries and continents the data knows, to tell the id of a place from any other text. */
+function placeIds(data: GameData): { byId: Map<string, Place>; continents: Set<string> } {
   const countries = (data.countries?.items as Country[] | undefined) ?? [];
-  const life = state?.life;
-  const home = life ? countries.find((c) => c.id === life.country) : undefined;
-  if (home) return { continent: home.continent as string, country: home.id };
-  const m = (str(e.data.npc) ?? '').match(/^([A-Z]{2})(\d{2})-/);
-  if (m) return { continent: m[1], country: `${m[1]}-${m[2]}` };
+  return { byId: new Map(countries.map((c) => [c.id as string, { continent: c.continent as string, country: c.id as string }])), continents: new Set(countries.map((c) => c.continent as string)) };
+}
+
+/** The place an entry names itself: a country id or a continent id in the fields that a world event, a miracle's target, a fallen dragon or a local event carries. */
+function namedPlace(data: GameData, d: LogEntry['data']): Place | undefined {
+  const { byId, continents } = placeIds(data);
+  for (const k of ['country', 'place', 'target', 'home']) {
+    const v = str(d[k]);
+    if (!v) continue;
+    const c = byId.get(v);
+    if (c) return { ...c };
+    if (continents.has(v)) return { continent: v };
+  }
   return undefined;
 }
 
-/** The painted place of a scene as a function of the place the frame names (the bg beats change it): the life's continent and country, the setting from the words, a seed from the scene. */
+/** The continent and country of the life now (the place of the calm picture, and of whatever an entry does not place), nothing without a life. */
+export function lifePlace(data: GameData, state: GameState | null | undefined): Place | undefined {
+  const home = state?.life ? placeIds(data).byId.get(state.life.country) : undefined;
+  return home ? { ...home } : undefined;
+}
+
+/**
+ * The continent and country a scene is in. The entry's own place first (a country or continent it names); the NPC of a clash is in the NPC's country (`NF-AZ02-1` is in
+ * `AZ-02`, wherever the life is); everything else (the rites and destinations of the tribe, an ally's crisis, the nodes of the story) is where the life is; with no life, the
+ * country of the NPC the entry names; with nothing, nothing.
+ */
+export function placeOf(data: GameData, state: GameState | null | undefined, e: LogEntry): Place | undefined {
+  const named = namedPlace(data, e.data);
+  if (named) return named;
+  const npc = npcPlace(str(e.data.npc)) ?? (e.id?.startsWith('NF-') ? npcPlace(e.id.slice(3)) : undefined);
+  if (npc && e.sys === 'combat' && e.kind === 'clash') return npc;
+  return lifePlace(data, state) ?? npc;
+}
+
+/** The painted place of a scene as a function of the place the frame names (the bg beats change it): the continent and country of the scene, the setting from the words, a seed from the scene. */
 export function sceneryOf(data: GameData, state: GameState | null | undefined, v: SceneView): SceneryOf {
   const at = placeOf(data, state, v.entry);
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);

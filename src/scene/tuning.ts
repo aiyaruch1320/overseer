@@ -68,7 +68,7 @@ export const CROWD = { gap: 17, rows: 3 } as const;
 export const TEXT = { title: 9, name: 13, strike: 8, strikeTo: 14, line: 6.5, result: 7, stage: 4.5, label: 4, min: 11 } as const;
 
 /** How strongly the mood colours of the beats (`bg` and `tone`) tint the painted layers: over the sky rows and over the ground rows. The beats' colours are the story's mood; the painter's are the place. */
-export const MOOD = { sky: 0.4, ground: 0.4 } as const;
+export const MOOD = { sky: 0.18, ground: 0.1 } as const;
 
 /** The bands of the light overlays (an even gradient would break the pixel look): how many steps from full strength to none. */
 export const LIGHT_BANDS = 6;
@@ -151,3 +151,8 @@ export const GOD_FX = {
   dread: { rx: 100, ry: 64, core: 54, smoke: 12 },
   fate: { threads: [-19, 0, 18], ringRx: 92, ringRy: 20, stitches: 56, end: 124 },
 } as const;
+
+// ---------- the picture of an event card (M7 ka4) ----------
+
+/** The still frame of a card picture: the motion time its particles are drawn at, how many of them, how strongly the card sky tints the sky rows and the ground rows of the painted place, how many pictures are kept. */
+export const CARD_PIC = { motion: 5.5, amount: 0.7, sky: 0.28, ground: 0.12, keep: 32 } as const;

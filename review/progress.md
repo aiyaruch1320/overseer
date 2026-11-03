@@ -4,8 +4,7 @@
 
 ## สถานะ
 ขั้นปัจจุบัน: M7 ฉากและภาพแผนที่ (M6 เสร็จ 2026-11-03)
-งานที่กำลังทำ (โหมดประหยัด):
-  - ก4 ฉากว่างและการ์ดใช้เวทีใหม่ แก้สีโทนแรง ศึก NPC ใช้ประเทศของ NPC คำเดา setting (ส่ง 23.55) · สาขา `worktree-agent-a95ced0b22cf73bce` · `.claude/worktrees/agent-a95ced0b22cf73bce` · เจ้าของ LifeScene.tsx EventCard.tsx card.ts particles.ts stage/controller.ts Stage.tsx scene/index.ts app/views/scene.ts ui/scenes.tsx · ภาพ review/m7/k4/
+งานที่กำลังทำ: ก5 รอบตรวจภาพ (ผู้นำถ่ายภาพ)
 งานถัดไป:
   1. **M7 ตามแผน [m7/plan.md](m7/plan.md)**: แกนก่อน (ก1 เวทีฉากเป็น Phaser · ก2 ฉากหลังพิกเซลต่อทวีป · ก3 เอฟเฟกต์ของจังหวะ · ก4 ฉากว่างและการ์ด · ก5 ตรวจภาพ 2 คน) แล้วที่เหลือ (ข1 ชุดฉาก §8.3 · ข2 แผนที่เมืองพิกเซล · ข3 ลบ legacy/ · ข4 รอบตรวจ · ข5 ข้อค้าง M6 · ข6 final-report) · **ใช้โหมดประหยัด (plan.md หัวข้อ 3)** เมื่อทำบน account โควตาน้อย
   2. ยังไม่ตรวจบนจอ: การ์ดวิกฤตในหน้าหยุดเปิดกระซิบ · การ์ดตอนจบบอกเงื่อนไขคำปฏิญาณที่ขาด (มีเทสต์หน่วย)
@@ -41,6 +40,7 @@
 - โควตา: ตรวจด้วยเครื่องมือ get_usage · M6 ใช้ agent 29 ตัว ราว 8.8M token ของ agent · ใกล้เพดานให้ agent commit WIP แล้วจดสาขาใน progress
 
 ## บันทึก (ใหม่อยู่บน)
+- 2026-11-04 M7 ก4 รวม: ฉากว่างในหน้าเฝ้ามองเป็นเวทีพิกเซล (ฉากหลังกลางแจ้งของประเทศที่อยู่ ฤดู ตัวหลักตามวัย ambient ~7fps หยุดเมื่อแท็บซ่อน) · การ์ดเหตุการณ์มีภาพพิกเซล 320×180 บนแคนวาสธรรมดา (`src/scene/cardpic.ts` ไม่ใช้ Phaser ต่อการ์ด) · particles.ts ลบแล้ว (`seed.ts` `scenery.ts`) · สีโทนลดเหลือ sky 0.18 ground 0.10 · `placeOf`: ศึกใช้ประเทศของ NPC ช่องประเทศในบันทึกก่อน ไม่งั้นที่อยู่ของชีวิต · `settingOf` คำใหม่ (ลานดวลริมหน้าผา → กลางแจ้ง) · แก้ controller พังเมื่อกลุ่มเงาไม่มี anim · ค้าง: กล่องฉาก ~600px ได้ 1× มีขอบมืด (ต้อง ≥636 สำหรับ 2×) · สคริปต์และการ์ดไม่มีประเทศของตัวเอง (ข้อเสนอ CardDef.place และแกนเขียน country ลงบันทึกเหตุการณ์โลก/ท้องถิ่น) · test 2379 golden 22 build · ภาพ review/m7/k4/
 - 2026-11-03 ข3 ลบ legacy/ ยังทำไม่ได้ (ลองแล้วคืน): ห้องทดลองตัดตัวโหลดเวกเตอร์เดิมแล้ว แต่ยังพึ่ง legacy: `server/prompts.ts` (setupCatalog, เซิร์ฟเวอร์ LLM ของ POC ที่ vite.config.ts เสียบและ `npm run build` สร้าง โค้ดใหม่ใน src ไม่เรียก /api) · `scripts/codegen/export-character-catalog.ts` `gen-visual-docs.ts` (`gen:docs`) · `scripts/sim/simtest.ts` `sim-gold.ts` (`sim` `sim:gold`) · `gen-countries.ts` `gen-npc-cast.ts` `gen-birth.ts` (`gen:data:legacy` เขียนลง legacy/data) · `scripts/llm/build-library.mjs` `test-deepseek.mjs` (อ่าน legacy/data) · ต้องตัดสินว่าเซิร์ฟเวอร์ LLM ใหม่จะเป็นอย่างไร (ตัวแทน server/ ที่ใช้ src/core/llm) ก่อนลบ · ความเห็นที่มาของค่าใน src/core อ้าง legacy/ ได้ต่อผ่าน git
 - 2026-11-03 M7 ก3 รวม: เอฟเฟกต์ 13 FxKind เป็นพิกเซลเต็มในเวที (`src/scene/fx/` บริสุทธิ์ ตามเวลา motion หยุดใต้ hold) แสงห้าโหมด สีพลังพระเจ้าสามสีจากสีของ glow (ศรัทธา เสาแสงขอบสั่น · ความหวาดกลัว แดงดำมีควัน · ลิขิต ด้ายเงิน) ambient ของฉากหลังจาง ๆ · particles.ts ยังอยู่ให้ EventCard (ลบใน ก4) · ภาพ review/m7/k3/ และ merged/s58-fx s59-fx · ข้อเสนอค้าง: Frame.fx มี age/left ให้เฟด · Frame.light บอกชนิดพลัง · ambient=sand ยังไม่วาด · test 2368 golden 22 build
 - 2026-11-03 ภาพหลังรวม ก1+ก2 `review/m7/merged/` (storybook s54 s59 s61): ฉากหลังจริงเข้าเวทีแล้ว · พบ (ส่งต่อ ก4): สีโทน sky/ground ของจังหวะทับชั้นแรงจนสีทวีปซีด · ศึก NPC ใช้ทวีปของชีวิตไม่ใช่ประเทศของ NPC (NF-AZ02-1 ควรเป็น AZ-02) · "ลานดวลริมหน้าผา" ถูกเดาเป็น town

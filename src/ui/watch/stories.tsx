@@ -5,6 +5,7 @@ import { refusedSettings, uiOfState, watchModel, type GodOpen } from '../../app/
 import type { GameData } from '../../core/game';
 import type { GameState, Settings } from '../../core/types';
 import { story, type StoryCtx } from '../stories';
+import { LifeScene } from '../LifeScene';
 import { WatchView, type WatchActions } from './WatchView';
 
 function Sample({ ctx, stop = false, running = false, settingsOpen = false }: { ctx: StoryCtx; stop?: boolean; running?: boolean; settingsOpen?: boolean }) {
@@ -32,7 +33,7 @@ function Sample({ ctx, stop = false, running = false, settingsOpen = false }: { 
   };
   return (
     <>
-      <WatchView data={data as GameData} model={model} settings={settings} actions={actions} candlePct={pct} onCandlePct={setPct} settingsOpen={settingsOpen} />
+      <WatchView data={data as GameData} model={model} settings={settings} actions={actions} candlePct={pct} onCandlePct={setPct} settingsOpen={settingsOpen} scene={<LifeScene data={data as GameData} state={shown} />} />
       {last && (
         <div style={{ position: 'fixed', left: 12, bottom: 12, background: '#000a', padding: 8, fontSize: 12, zIndex: 99 }} data-testid="opened">
           onOpenGod {last.kind} {JSON.stringify(last.args)}

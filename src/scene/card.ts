@@ -1,5 +1,6 @@
 // The event card (code-plan §8.3 step 2): one layout for every world event; the colour of the frame, the corner marks and the picture
 // change. This file is the model of a card and how it is made from a card of data/gen/scenes.json; the layout is EventCard.tsx.
+import type { ScenerySpec } from '../art/scenery/types';
 import type { CardDef, EventForm, FxKind, ScenesData } from '../core/data/types-scenes';
 
 export interface CardModel {
@@ -19,6 +20,8 @@ export interface CardModel {
   picture: string;
   fx: FxKind[];
   sky: string;
+  /** Where the event is, for the painted picture (the country or continent the entry names, else the life's); omitted: a plain place. */
+  scenery?: ScenerySpec;
 }
 
 /** The colours a card takes when its entry has no card of its own: by the system that wrote it. */
