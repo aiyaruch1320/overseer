@@ -12,6 +12,7 @@ import { paintFlyer } from './flyer';
 import { ghostFrame, GHOST_IDS } from './ghost';
 import { isGhoul, paintGhoul } from './ghoul';
 import { paintGiant } from './giant';
+import { isLegion, legionFrame } from './legion';
 import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, mix, motion, ovEll, over, type Ctx, type Info } from './kit';
 import { personLookOf, type BeastLook } from './look';
 import { paintMounted } from './mount';
@@ -130,9 +131,9 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
 
 /** One frame of a beast: the family of one body, or the several bodies of a swarm. */
 export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
-  const group = L.kind === 'enemy' && !!L.swarm && !L.mount && !L.cloud && L.plan !== 'swarm' && !(L.plan === 'flyer' && (L.form === 'harpy' || L.form === 'storm')) ? SHOWN[L.size] : 1;
+  const group = L.kind === 'enemy' && !!L.swarm && !L.mount && !isLegion(L) && !L.cloud && L.plan !== 'swarm' && !(L.plan === 'flyer' && (L.form === 'harpy' || L.form === 'storm')) ? SHOWN[L.size] : 1;
   const one = (ff: number, i: number): Frame =>
-    L.kind === 'enemy' && isNamed(L) ? paintNamed(L, pose, ff) : L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isGhost(L) ? ghostFrame(L, pose, ff) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
+    L.kind === 'enemy' && isLegion(L) ? legionFrame(L, pose, ff) : L.kind === 'enemy' && isNamed(L) ? paintNamed(L, pose, ff) : L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isGhost(L) ? ghostFrame(L, pose, ff) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
   if (group === 1) return one(f, 0);
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h), offs = OFFSETS[group];
   const spec = POSE_OF[pose];
