@@ -4,7 +4,9 @@
 
 ## สถานะ
 ขั้นปัจจุบัน: M7 ฉากและภาพแผนที่ (M6 เสร็จ 2026-11-03)
-งานที่กำลังทำ: ก5 รอบตรวจภาพ 2 คน (ส่ง 00.30 ใน checkout ของผู้นำ ไม่ใช้ worktree) · ภาพ review/m7/k5/ · ผลจะอยู่ที่ review/m7/k5/viewer-scenes.md viewer-watch-cards.md
+งานที่กำลังทำ (คลื่นแก้ ก5 ส่ง 2026-11-04 00.45 ตาม review/m7/k5/triage.md):
+  - A เวที เอฟเฟกต์ การ์ด (K5-1–16 K5-30 ยกเว้น 7 10) · สาขา `worktree-agent-a9d7f372be95970ed` · `.claude/worktrees/agent-a9d7f372be95970ed` · เจ้าของ src/scene/** src/app/views/scene.ts LifeScene.tsx scenes.tsx watch/stories.tsx · ภาพ review/m7/k5/after/
+  - B ฉากหลัง (K5-7 NB สีสด · K5-10 ฤดูทุกทวีป) · สาขา `worktree-agent-a31236f94105bfed7` · `.claude/worktrees/agent-a31236f94105bfed7` · เจ้าของ src/art/scenery/** · ภาพ review/m7/k5/after-scenery/
 งานถัดไป:
   1. **M7 ตามแผน [m7/plan.md](m7/plan.md)**: แกนก่อน (ก1 เวทีฉากเป็น Phaser · ก2 ฉากหลังพิกเซลต่อทวีป · ก3 เอฟเฟกต์ของจังหวะ · ก4 ฉากว่างและการ์ด · ก5 ตรวจภาพ 2 คน) แล้วที่เหลือ (ข1 ชุดฉาก §8.3 · ข2 แผนที่เมืองพิกเซล · ข3 ลบ legacy/ · ข4 รอบตรวจ · ข5 ข้อค้าง M6 · ข6 final-report) · **ใช้โหมดประหยัด (plan.md หัวข้อ 3)** เมื่อทำบน account โควตาน้อย
   2. ยังไม่ตรวจบนจอ: การ์ดวิกฤตในหน้าหยุดเปิดกระซิบ · การ์ดตอนจบบอกเงื่อนไขคำปฏิญาณที่ขาด (มีเทสต์หน่วย)
@@ -40,6 +42,7 @@
 - โควตา: ตรวจด้วยเครื่องมือ get_usage · M6 ใช้ agent 29 ตัว ราว 8.8M token ของ agent · ใกล้เพดานให้ agent commit WIP แล้วจดสาขาใน progress
 
 ## บันทึก (ใหม่อยู่บน)
+- 2026-11-04 M7 ก5 รอบตรวจภาพ 2 คน: บล็อก 0 หนัก 11 กลาง 12 เบา 6 · triage review/m7/k5/triage.md · ของประกอบเฉพาะฉาก (โต๊ะช่าง ราก ทั่ง ไข่ DR-03 เพลิงและผู้ชมของศึก) ยกไป ข1 · ตัดสินขนาดเวที: ต่ำกว่า 2× ขยายเต็มกว้างแบบ pixelated (decisions.md · 21-pixel-art §4)
 - 2026-11-04 M7 ก4 รวม: ฉากว่างในหน้าเฝ้ามองเป็นเวทีพิกเซล (ฉากหลังกลางแจ้งของประเทศที่อยู่ ฤดู ตัวหลักตามวัย ambient ~7fps หยุดเมื่อแท็บซ่อน) · การ์ดเหตุการณ์มีภาพพิกเซล 320×180 บนแคนวาสธรรมดา (`src/scene/cardpic.ts` ไม่ใช้ Phaser ต่อการ์ด) · particles.ts ลบแล้ว (`seed.ts` `scenery.ts`) · สีโทนลดเหลือ sky 0.18 ground 0.10 · `placeOf`: ศึกใช้ประเทศของ NPC ช่องประเทศในบันทึกก่อน ไม่งั้นที่อยู่ของชีวิต · `settingOf` คำใหม่ (ลานดวลริมหน้าผา → กลางแจ้ง) · แก้ controller พังเมื่อกลุ่มเงาไม่มี anim · ค้าง: กล่องฉาก ~600px ได้ 1× มีขอบมืด (ต้อง ≥636 สำหรับ 2×) · สคริปต์และการ์ดไม่มีประเทศของตัวเอง (ข้อเสนอ CardDef.place และแกนเขียน country ลงบันทึกเหตุการณ์โลก/ท้องถิ่น) · test 2379 golden 22 build · ภาพ review/m7/k4/
 - 2026-11-03 ข3 ลบ legacy/ ยังทำไม่ได้ (ลองแล้วคืน): ห้องทดลองตัดตัวโหลดเวกเตอร์เดิมแล้ว แต่ยังพึ่ง legacy: `server/prompts.ts` (setupCatalog, เซิร์ฟเวอร์ LLM ของ POC ที่ vite.config.ts เสียบและ `npm run build` สร้าง โค้ดใหม่ใน src ไม่เรียก /api) · `scripts/codegen/export-character-catalog.ts` `gen-visual-docs.ts` (`gen:docs`) · `scripts/sim/simtest.ts` `sim-gold.ts` (`sim` `sim:gold`) · `gen-countries.ts` `gen-npc-cast.ts` `gen-birth.ts` (`gen:data:legacy` เขียนลง legacy/data) · `scripts/llm/build-library.mjs` `test-deepseek.mjs` (อ่าน legacy/data) · ต้องตัดสินว่าเซิร์ฟเวอร์ LLM ใหม่จะเป็นอย่างไร (ตัวแทน server/ ที่ใช้ src/core/llm) ก่อนลบ · ความเห็นที่มาของค่าใน src/core อ้าง legacy/ ได้ต่อผ่าน git
 - 2026-11-03 M7 ก3 รวม: เอฟเฟกต์ 13 FxKind เป็นพิกเซลเต็มในเวที (`src/scene/fx/` บริสุทธิ์ ตามเวลา motion หยุดใต้ hold) แสงห้าโหมด สีพลังพระเจ้าสามสีจากสีของ glow (ศรัทธา เสาแสงขอบสั่น · ความหวาดกลัว แดงดำมีควัน · ลิขิต ด้ายเงิน) ambient ของฉากหลังจาง ๆ · particles.ts ยังอยู่ให้ EventCard (ลบใน ก4) · ภาพ review/m7/k3/ และ merged/s58-fx s59-fx · ข้อเสนอค้าง: Frame.fx มี age/left ให้เฟด · Frame.light บอกชนิดพลัง · ambient=sand ยังไม่วาด · test 2368 golden 22 build
