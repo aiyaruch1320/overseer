@@ -1,8 +1,9 @@
 // M5 ui: the view models of the start screen and the ending screens (src/app/views/start.ts and end.ts). Pure over (data, state); the components only draw them.
 import { beforeAll, describe, expect, it } from 'vitest';
 import { GameStore } from '../../src/app/store';
-import { cardView, collectionPage, deathOf, goOn, heirChoice, legendView, worldPage, END_LABELS } from '../../src/app/views/end';
-import { certificate, emptyDraft, launch, normalize, readWish, scratchLife, sessionOpts, startModes, START_LABELS } from '../../src/app/views/start';
+import { cardView, collectionPage, deathOf, goOn, heirChoice, legendView, worldPage, worldEnded, END_LABELS } from '../../src/app/views/end';
+import { certificate, emptyDraft, launch, normalize, readWish, scratchLife, sessionOpts, startModes, START_LABELS, vowChoiceView, vowLineOf } from '../../src/app/views/start';
+import { reoffer } from '../../src/core/god/goals';
 import { command } from '../../src/core/command';
 import { endingInput } from '../../src/core/ending';
 import { summaryInputOf } from '../../scripts/tools/llm';
@@ -335,5 +336,74 @@ describe('the ending card of an ordered life', () => {
     // the llm layer is told the life was asked for, and what it was given
     expect(summaryInputOf(data, s.game.state)?.wish).toMatch(/ดาร์กเอลฟ์.*ไม่ได้: อมตะ/);
     expect(summaryInputOf(data, plain.game.state)?.wish).toBeUndefined();
+  });
+});
+
+describe('M5 fix S5 S7 M1 M4: the start sheet, the vows, the words and the pages', () => {
+  const sheetOf = (text: string, mode: string | null = null) => {
+    const d = { ...emptyDraft(7), text, mode };
+    return certificate(data, d, readWish(data, d));
+  };
+  const dev = /[A-Za-z]{3,}|\]\(|\.md|แถว/;
+
+  it('the blurb tells only what the granted rows say, and the reasons are in player words', () => {
+    const c = sheetOf('ไม่เอาคนจน อยากเป็นแวมไพร์ ชอบผจญภัย');
+    const granted = c.items.filter((i) => i.row === 'sure' || i.row === 'lean').map((i) => i.value);
+    expect(c.story[0]).toContain('แวมไพร์');
+    expect(c.story.join(' ')).not.toMatch(/ครอบครัว|ฐานะ|ดวง|ชนชั้น/);
+    expect(granted.length).toBeGreaterThan(0);
+    for (const i of c.items.filter((x) => x.row === 'cannot')) expect(i.note).not.toMatch(dev);
+    const imp = sheetOf('อยากเป็นเอลฟ์ อมตะ').items.find((i) => i.key === 'impossible');
+    expect(imp?.note).not.toMatch(dev);
+    expect(imp?.note).toContain('เอลฟ์');
+  });
+
+  it('a blank wish has a blurb of no granted rows', () => {
+    expect(sheetOf('').story[0]).toMatch(/ยังไม่มีอะไรถูกกำหนด/);
+  });
+
+  it('choosing a mode puts the mode and its race in the rows of what is sure and gives its mood line', () => {
+    const c = sheetOf('', 'dragonkin');
+    const sure = c.items.filter((i) => i.row === 'sure');
+    expect(sure.map((i) => i.key)).toEqual(expect.arrayContaining(['startMode', 'race']));
+    expect(sure.find((i) => i.key === 'startMode')?.value).toBe('ผู้ขี่มังกร');
+    const modes = startModes(data, null, 'dragonkin');
+    for (const m of modes) expect(m.mood.length).toBeGreaterThan(5);
+    expect(modes.find((m) => m.chosen)?.mood).toMatch(/ไม่ได้แน่นอน/);
+    expect(modes.map((m) => m.mood).join(' ')).not.toMatch(/dk\.|\.md/);
+  });
+
+  it('the vow conditions carry no link or id; a life that begins past 15 has no vow to take', () => {
+    const c = sheetOf('');
+    for (const v of c.vows) expect(v.done).not.toMatch(/\]\(|\.md|GV-/);
+    expect(c.vowOpen).toBe(true);
+    expect(sheetOf('', 'summoned').vowOpen).toBe(false);
+  });
+
+  it('VowChoice has its table at birth and at 15, and the pick reaches the life', () => {
+    const s = createSession(data, { seed: 5 });
+    const life = startLife(s);
+    const first = vowChoiceView(s.game.ctx);
+    expect(first?.phase).toBe('first');
+    expect(first?.vows).toHaveLength(3);
+    expect(first?.vows.every((v) => !/\]\(|GV-/.test(v.name + v.done))).toBe(true);
+    expect(command(s.game.ctx, { type: 'god', action: 'vow.pick' as Extract<Command, { type: 'god' }>['action'], args: { pick: 2 }, confirm: true }).ok).toBe(true);
+    expect(vowLineOf(s.game.ctx)?.name).toBe(first?.vows[1].name);
+    expect(vowChoiceView(s.game.ctx)).toBeNull();
+    life.hAge = 15;
+    reoffer(s.game.ctx, life);
+    const change = vowChoiceView(s.game.ctx);
+    expect(change?.phase).toBe('change');
+    expect(change?.current).toBe(first?.vows[1].name);
+  });
+
+  it('the ending pages hold no id or link, and the world summary is for the fall of the world only', () => {
+    const s = createSession(data, { seed: 5 });
+    startLife(s);
+    runToDeath(s.game);
+    const v = cardView(data, s.game.state)!;
+    const all = [v.head, v.summary.text, v.epitaph.text, ...v.sections.flatMap((x) => x.lines), ...v.titles, ...(v.vow ? [v.vow.head, ...v.vow.lines] : []), ...v.earned.flatMap((g) => g.names)];
+    for (const t of all) expect(t).not.toMatch(/\b[A-Z]{2,4}-\d{1,3}\b|\]\(|\.md/);
+    expect(worldEnded(data, s.game.state)).toBe(false);
   });
 });

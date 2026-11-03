@@ -7,7 +7,7 @@ import { extOf, readWish, type FatePoints, type Row, type SheetItem, type WishRe
 import { rhythms, table, vowName, vowRow } from '../../core/god/goals';
 import { peekLife } from '../../core/god/goals/state';
 import { modeOf, MODES, collectionView } from '../../core/ending';
-import { versions, type GameData } from '../../core/game';
+import { versions, type Ctx, type GameData } from '../../core/game';
 import { newGame } from '../../core/state';
 import { placeName, raceName } from '../../core/text/pick';
 import type { GameState, LifeState } from '../../core/types';
@@ -31,6 +31,13 @@ export const START_LABELS = {
   fate: 'แต้มชะตา', // 19-wish.md §4
   rhythm: 'จังหวะชะตา', // 08-goals.md §5
   vow: 'คำปฏิญาณ', // 08-goals.md §2
+  vowFirst: 'เลือกคำปฏิญาณของชีวิตนี้',
+  vowChange: 'เปลี่ยนคำปฏิญาณได้ครั้งเดียว',
+  vowFirstNote: 'เลือกได้จนถึงอายุ 15 ปี คำปฏิญาณไม่ให้พลัง ไม่เปลี่ยนราคา และตัดสินตอนตัวละครตาย',
+  vowChangeNote: 'ถ้าเปลี่ยนแล้วจะเปลี่ยนอีกไม่ได้',
+  vowKeep: 'คงข้อเดิม',
+  vowLater: 'ตัดสินใจทีหลัง',
+  vowNow: 'ตอนนี้',
   vowClosed: 'ชีวิตนี้เริ่มเมื่อโตเกิน 15 ปีแล้ว จึงไม่มีคำปฏิญาณให้เลือก',
   vowReward: (kept: number, broken: number) => `แต้มพงศาวดารสายตระกูล +${kept} ถ้าสำเร็จ +${broken} ถ้าไม่`,
   noVow: 'ไม่ปฏิญาณ', // 20-god-ui.md §10 "แผ่นที่สี่"
@@ -283,4 +290,38 @@ export function launch(store: GameStore, read: WishRead, draft: StartDraft): Lau
     if (!r.ok) return { ok: false, reason: r.reason };
   }
   return { ok: true };
+}
+
+// ---------- the vow on the table of a living life (the choice at birth and the one change at 15: 08-goals.md §2) ----------
+
+export interface VowChoiceView {
+  life: string;
+  phase: 'first' | 'change';
+  /** The vow held now (at the change), or null. */
+  current: string | null;
+  vows: { n: number; id: string; name: string; done: string }[];
+}
+
+/** The vows the player can pick now, or null while no choice is open for the living life. */
+export function vowChoiceView(ctx: Ctx): VowChoiceView | null {
+  const life = ctx.state.life;
+  if (!life || life.dead) return null;
+  const t = table(ctx, life);
+  if (!t.phase || !t.ids.length) return null;
+  const mine = peekLife(life).vow;
+  return {
+    life: life.id,
+    phase: t.phase,
+    current: mine ? vowName(ctx, mine, life.race) : null,
+    vows: t.ids.map((id, i) => ({ n: i + 1, id, name: vowName(ctx, id, life.race), done: playerWords(ctx.data, vowRow(ctx, id)?.done ?? '') })),
+  };
+}
+
+/** The vow of the living life for the corner of the screen and the character screen (08-goals.md: "ข้อความเล็กข้อเดียว"), or null when there is none. */
+export function vowLineOf(ctx: Ctx): { name: string; done: string } | null {
+  const life = ctx.state.life;
+  if (!life) return null;
+  const id = peekLife(life).vow;
+  if (!id || id === 'GV-20') return null;
+  return { name: vowName(ctx, id, life.race), done: playerWords(ctx.data, vowRow(ctx, id)?.done ?? '') };
 }
