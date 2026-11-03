@@ -5,14 +5,7 @@ import { BEARD_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS, FEAT_IDS } from '..
 import type { Ears, Gait, Lower, Stage } from '../../../src/art/look';
 import type { LineOverrides } from '../../../src/core/data/types-looks';
 
-/**
- * Feats of M6 wave 4 that the race painter draws (src/art/parts/feats-more.ts of the race branch). The words map to them now; they join FEAT_IDS
- * when the two branches merge, and then this list can go (tests/codegen/looks.test.ts reads it to accept them until then).
- */
-export const PENDING_FEATS = ['beak', 'feathers', 'stripes', 'longears', 'antlers', 'mane', 'muzzle', 'spots', 'crest', 'puppet', 'fourarms'] as const;
-type FeatId = (typeof FEAT_IDS)[number] | (typeof PENDING_FEATS)[number];
-
-export const VOCABULARY = { outfit: OUTFIT_IDS, hair: HAIR_IDS, beard: BEARD_IDS, hat: HAT_IDS, tool: TOOL_IDS, feat: [...FEAT_IDS, ...PENDING_FEATS] } as const;
+export const VOCABULARY = { outfit: OUTFIT_IDS, hair: HAIR_IDS, beard: BEARD_IDS, hat: HAT_IDS, tool: TOOL_IDS, feat: FEAT_IDS } as const;
 
 type Rule<T extends string> = [T, RegExp];
 const first = <T extends string>(text: string, rules: Rule<T>[]): T | null => {
@@ -483,7 +476,7 @@ export function toolOf(items: string[], desc: string): ToolPick {
 
 // ---------- personal feats ----------
 
-export const FEAT_RULES: Rule<FeatId>[] = [
+export const FEAT_RULES: Rule<(typeof FEAT_IDS)[number]>[] = [
   ['eyepatch', /ผ้าปิดตา(?!ครึ่ง)|ปิดตาข้างหนึ่ง|ผ้าปิดตาข้าง/],
   ['missingarm', /แขนขาด|ไร้แขน|แขนข้างหนึ่งหาย|แขนเดียว|ไม่มีแขน|แขนข้างหนึ่งไม่มี|แขนซ้ายขาด|แขนขวาขาด/],
   ['blind', /ตาบอด|ตาขาวขุ่น|ตาขาวโพลน|ตาฟ้าขุ่น/],
@@ -628,17 +621,17 @@ export const LINE_OVERRIDES: Record<string, (raceFeats: string[]) => LineOverrid
   'dwarf/คนแคระเหนือ': () => ({ skin: '#e8dcd4', hairColor: '#f0f2f6' }),
   'orc/โอเกอร์': () => ({ scale: 1.29 }),
   'orc/ออร์คเถ้า': () => ({ skin: '#8a8a82' }),
-  'beast/หมาป่า': (f) => ({ feats: [...f, 'muzzle'] }),
-  'beast/เสือ': (f) => ({ feats: [...f, 'stripes'] }),
-  'beast/สิงโต': (f) => ({ feats: [...f, 'mane'] }),
-  'beast/แมวใหญ่': (f) => ({ feats: [...f, 'spots'] }),
-  'beast/กวาง': (f) => ({ feats: [...f, 'antlers', 'spots'] }),
-  'beast/วัว': (f) => ({ feats: [...f, 'horns'] }),
-  'beast/นก': () => ({ feats: ['feathers', 'beak', 'beads'], ears: 'none' }),
-  'beast/อูฐ': (f) => ({ skin: '#d8b888', feats: [...f, 'muzzle'] }),
-  'beast/จิ้งจก': () => ({ skin: '#8a9a5a', feats: ['scales', 'crest', 'tail:lizard', 'slit', 'beads'], ears: 'none' }),
-  'beast/หมี': (f) => ({ feats: [...f, 'muzzle'] }),
-  'beast/กระต่าย': (f) => ({ feats: [...f, 'longears'], ears: 'none' }),
+  'beast/หมาป่า': (f) => ({ hairColor: '#7a7a80', feats: [...f, 'muzzle'] }),
+  'beast/เสือ': (f) => ({ hairColor: '#c8782a', feats: [...f, 'muzzle', 'stripes'] }),
+  'beast/สิงโต': (f) => ({ hairColor: '#c89850', feats: [...f, 'muzzle', 'mane'] }),
+  'beast/แมวใหญ่': (f) => ({ hairColor: '#c8a050', feats: [...f, 'muzzle', 'spots'] }),
+  'beast/กวาง': (f) => ({ hairColor: '#9a6a3a', feats: [...f, 'muzzle', 'antlers', 'spots'] }),
+  'beast/วัว': (f) => ({ hairColor: '#6a4a30', feats: [...f, 'muzzle', 'horns'] }),
+  'beast/นก': () => ({ hairColor: '#8a7a68', feats: ['feathers', 'beak', 'beads'], ears: 'none' }),
+  'beast/อูฐ': (f) => ({ skin: '#d8b888', hairColor: '#c8a878', feats: [...f, 'muzzle'] }),
+  'beast/จิ้งจก': () => ({ skin: '#8a9a5a', hairColor: '#6a7a4a', feats: ['crest', 'scales', 'slit', 'tail:lizard', 'beads'], ears: 'none' }),
+  'beast/หมี': (f) => ({ hairColor: '#5a3a28', feats: [...f, 'muzzle'] }),
+  'beast/กระต่าย': (f) => ({ hairColor: '#b8a898', feats: [...f, 'muzzle', 'longears'], ears: 'none' }),
   'merfolk/เงือกน้ำลึก': (f) => ({ skin: '#2a4a5a', feats: [...f, 'glow-eyes'] }),
   'merfolk/กัปปะ': (f) => ({ skin: '#5a8a4a', feats: [...f, 'wet'] }),
   'winged/ปีกราตรี': (f) => ({ feats: f.map((x) => (x === 'wings:feather' ? 'wings:night' : x)) }),

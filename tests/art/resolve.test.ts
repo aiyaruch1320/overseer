@@ -1,7 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { LooksData } from '../../src/core/data/types-looks';
-import { PENDING_FEATS } from '../../scripts/codegen/lib/look-words';
 import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import { npcLook, raceLook, successorLook } from '../../src/art/resolve';
 import type { PersonLook, Stage } from '../../src/art/look';
@@ -19,7 +18,7 @@ function check(L: PersonLook, what: string): void {
   expect(has(L.beard, BEARD_IDS), `${what} beard ${L.beard}`).toBe(true);
   expect(has(L.hat, HAT_IDS), `${what} hat ${L.hat}`).toBe(true);
   expect(has(L.tool, TOOL_IDS), `${what} tool ${L.tool}`).toBe(true);
-  for (const f of L.feats) expect([...FEAT_IDS, ...PENDING_FEATS] as readonly string[], `${what} feat ${f}`).toContain(f);
+  for (const f of L.feats) expect(FEAT_IDS as readonly string[], `${what} feat ${f}`).toContain(f);
   expect(L.body.scale, what).toBeGreaterThan(0);
   expect(L.wear, what).toBeGreaterThanOrEqual(0);
   expect(L.wear, what).toBeLessThanOrEqual(1);

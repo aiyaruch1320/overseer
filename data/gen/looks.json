@@ -459,6 +459,7 @@
      {
       "name": "หมาป่า",
       "overrides": {
+       "hairColor": "#7a7a80",
        "feats": [
         "fur",
         "tail:fluffy",
@@ -479,6 +480,7 @@
      {
       "name": "นก",
       "overrides": {
+       "hairColor": "#8a7a68",
        "feats": [
         "feathers",
         "beak",
@@ -494,11 +496,13 @@
      {
       "name": "เสือ",
       "overrides": {
+       "hairColor": "#c8782a",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "stripes"
        ]
       }
@@ -506,11 +510,13 @@
      {
       "name": "สิงโต",
       "overrides": {
+       "hairColor": "#c89850",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "mane"
        ]
       }
@@ -518,11 +524,13 @@
      {
       "name": "แมวใหญ่",
       "overrides": {
+       "hairColor": "#c8a050",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "spots"
        ]
       }
@@ -530,11 +538,13 @@
      {
       "name": "กวาง",
       "overrides": {
+       "hairColor": "#9a6a3a",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "antlers",
         "spots"
        ]
@@ -543,11 +553,13 @@
      {
       "name": "วัว",
       "overrides": {
+       "hairColor": "#6a4a30",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "horns"
        ]
       }
@@ -556,6 +568,7 @@
       "name": "อูฐ",
       "overrides": {
        "skin": "#d8b888",
+       "hairColor": "#c8a878",
        "feats": [
         "fur",
         "tail:fluffy",
@@ -569,11 +582,12 @@
       "name": "จิ้งจก",
       "overrides": {
        "skin": "#8a9a5a",
+       "hairColor": "#6a7a4a",
        "feats": [
-        "scales",
         "crest",
-        "tail:lizard",
+        "scales",
         "slit",
+        "tail:lizard",
         "beads"
        ],
        "ears": "none"
@@ -582,6 +596,7 @@
      {
       "name": "หมี",
       "overrides": {
+       "hairColor": "#5a3a28",
        "feats": [
         "fur",
         "tail:fluffy",
@@ -594,11 +609,13 @@
      {
       "name": "กระต่าย",
       "overrides": {
+       "hairColor": "#b8a898",
        "feats": [
         "fur",
         "tail:fluffy",
         "pawhands",
         "beads",
+        "muzzle",
         "longears"
        ],
        "ears": "none"
@@ -3066,7 +3083,7 @@
     "stage": "adult",
     "fem": null,
     "skin": "#f0e0d0",
-    "hairColor": "#3a2a20",
+    "hairColor": "#7a7a80",
     "eye": "#d8c030",
     "main": "#b4b8c4",
     "second": "#c8a030",
@@ -3083,7 +3100,6 @@
     "defaults": [
      "outfit",
      "hair",
-     "hairColor",
      "skin"
     ],
     "items": [
@@ -10721,7 +10737,7 @@
     "stage": "elder",
     "fem": true,
     "skin": "#8a6a4a",
-    "hairColor": "#c0c0c4",
+    "hairColor": "#8a7a68",
     "eye": "#d9a030",
     "main": "#7c6440",
     "second": "#d8c880",
@@ -10736,7 +10752,6 @@
     ],
     "wear": 0,
     "defaults": [
-     "hairColor",
      "skin"
     ],
     "items": [
@@ -17123,7 +17138,7 @@
     "stage": "adult",
     "fem": false,
     "skin": "#6a5a4a",
-    "hairColor": "#3a2a20",
+    "hairColor": "#8a7a68",
     "eye": "#d8c030",
     "main": "#5a5a60",
     "second": "#8a8a86",
@@ -17135,8 +17150,7 @@
     "feats": [],
     "wear": 0.85,
     "defaults": [
-     "hair",
-     "hairColor"
+     "hair"
     ],
     "items": [
      "ถุงสารที่ยังไม่ส่งถึง"

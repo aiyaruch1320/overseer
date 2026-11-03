@@ -5,7 +5,7 @@ import type { NpcRow } from '../../src/core/data/types-npcs';
 import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import {
   BEARD_RULES, FEAT_RULES, HAIR_RULES, HAT_RULES, HEX, LINE_OVERRIDES, OUTFIT_RULES, TOOL_RULES, earsOf, featsOf, femOf, gaitOf, lowerOf, outfitFromGarments, skinHint,
-  PENDING_FEATS, stageFromDescription, stageWord, stripNegated, toolOf, wearOf,
+  stageFromDescription, stageWord, stripNegated, toolOf, wearOf,
 } from '../../scripts/codegen/lib/look-words';
 
 const L = (JSON.parse(readFileSync('data/gen/looks.json', 'utf8')) as { items: LooksData }).items;
@@ -13,8 +13,7 @@ const npcs = (JSON.parse(readFileSync('data/gen/npcs.json', 'utf8')) as { items:
 const bonds = JSON.parse(readFileSync('data/gen/bonds.json', 'utf8')) as { items: { successors: { list: unknown[] } } };
 
 const inSet = (id: string, all: readonly string[]) => id === '' || all.includes(id);
-// the feats of wave 4 that the race branch adds to FEAT_IDS (look-words.ts PENDING_FEATS): accepted here until the branches merge
-const FEATS_OK: readonly string[] = [...FEAT_IDS, ...PENDING_FEATS];
+const FEATS_OK: readonly string[] = FEAT_IDS;
 
 describe('looks generator: counts match the docs', () => {
   it('21 races, each with a ค่า UI line, a body, skins and accents', () => {
