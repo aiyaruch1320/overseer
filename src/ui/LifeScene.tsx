@@ -3,7 +3,7 @@
 // src/app/views/scene.ts, the player src/scene.
 import { useMemo, useState } from 'preact/hooks';
 import { store } from '../app/store';
-import { sceneFor, type SceneView } from '../app/views/scene';
+import { idleView, sceneFor, type IdleView, type SceneView } from '../app/views/scene';
 import { EventCard, ScenePlayer, Silhouette, type ActorView } from '../scene';
 import { GodEffectLine } from './god';
 import type { LogEntry } from '../core/types';
@@ -34,17 +34,20 @@ function newestScene(entries: readonly LogEntry[], data: NonNullable<typeof stor
 
 const IDLE_ACTOR: ActorView = { id: 'idle', label: '', x: 0.5, pose: 'stand', count: 1 };
 
-/** The calm picture between scenes: dusk over a horizon, the character standing, the light breathing. */
-function Idle() {
+/** The calm picture between scenes: the sky of the season, the figure of the age, the place, and the latest thing that happened (M5 review round two R7: one still picture for decades). */
+function Idle({ v }: { v: IdleView }) {
   return (
-    <div role="img" aria-label="ชีวิตดำเนินไป" style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', overflow: 'hidden', boxSizing: 'border-box', border: `3px solid ${color.line}`, borderRadius: 6, background: 'linear-gradient(to bottom, #1b1a2a 0%, #1b1a2a 58%, #11121a 58%, #11121a 100%)' }} data-testid="idle-scene">
+    <div role="img" aria-label={`ชีวิตดำเนินไป · ${v.caption}`} style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', overflow: 'hidden', boxSizing: 'border-box', border: `3px solid ${color.line}`, borderRadius: 6, background: `linear-gradient(to bottom, ${v.sky} 0%, ${v.sky} 58%, ${v.ground} 58%, ${v.ground} 100%)` }} data-testid="idle-scene" data-season={v.season} data-stage={v.figure.stage}>
       <style>{'@keyframes ls-breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } } .ls-breathe { animation: ls-breathe 6s ease-in-out infinite; } @media (prefers-reduced-motion: reduce) { .ls-breathe { animation: none; } }'}</style>
-      <div class="ls-breathe" style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 58%, #e8c36a33 0%, transparent 60%)' }} />
+      <div class="ls-breathe" style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 50% 58%, ${v.glow} 0%, transparent 60%)` }} />
       <div style={{ position: 'absolute', left: 0, right: 0, top: '58%', height: 1, background: 'rgba(255,255,255,0.12)' }} />
-      <div style={{ position: 'absolute', left: '50%', bottom: '36%', height: '40%', width: '12%', transform: 'translateX(-50%)' }}>
-        <Silhouette a={IDLE_ACTOR} frame={color.textDim} />
+      <div style={{ position: 'absolute', left: '50%', bottom: '36%', height: `${v.figure.height * 100}%`, width: '12%', transform: 'translateX(-50%)' }} data-testid="idle-figure">
+        <Silhouette a={{ ...IDLE_ACTOR, pose: v.figure.pose }} frame={color.textDim} />
       </div>
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: '6%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.textDim }}>ชีวิตดำเนินไป</div>
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: '6%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.textDim, padding: '0 8%' }}>
+        <div>{v.caption}</div>
+        {v.latest && <div style={{ marginTop: 2, opacity: 0.8 }} data-testid="idle-latest">{v.latest}</div>}
+      </div>
     </div>
   );
 }
@@ -69,7 +72,7 @@ export function LifeScene() {
             <EventCard card={found.card.card} />
           </div>
         ) : (
-          <Idle />
+          st && data ? <Idle v={idleView(data, st)} /> : null
         )}
         {/* what the god's hand did lately (a small or middle miracle has no script of its own): one line under the stage */}
         {!play && <GodEffectLine />}

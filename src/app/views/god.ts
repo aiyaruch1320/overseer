@@ -535,7 +535,8 @@ export function prayerView(game: Game, data: GameData): { alive: boolean; cards:
       const arg = { give: 'ให้', strange: 'แปลก', deny: 'ปฏิเสธ', punish: 'ลงโทษ', silent: 'นิ่ง' }[key];
       const args = key === 'strange' ? { id: c.n, answer: arg, option: 0 } : { id: c.n, answer: arg };
       const a = ask(game, data, 'prayer.answer', args);
-      const lines = a.ok ? previewLines(data, a.preview, false, 'prayer.answer', envOf(game, data, args)).slice(1) : [];
+      // the price is the line of `cost` on the card; the preview tells it too, and the card showed it twice (M5 review round two R7)
+      const lines = a.ok ? previewLines(data, a.preview, false, 'prayer.answer', envOf(game, data, args)).slice(1).filter((l) => !/^ราคา/.test(l)) : [];
       return {
         key,
         word: W.prayer.answers[key],

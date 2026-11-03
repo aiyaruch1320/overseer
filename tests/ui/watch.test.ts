@@ -6,6 +6,7 @@ import { createSession, startLife } from '../../scripts/tools/session';
 import type { GameData } from '../../src/core/game';
 import { write } from '../../src/core/log';
 import type { GameState } from '../../src/core/types';
+import { idleView } from '../../src/app/views/scene';
 import { candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
 
 let data: GameData;
@@ -263,5 +264,54 @@ describe('watch: the switches of the cards', () => {
     expect(r.ok).toBe(true);
     expect(settingsView(data, s.game.state.settings).cards.omen).toBe(false);
     expect(settingsView(data, s.game.state.settings).cards.prayer).toBe(true);
+  });
+});
+
+describe('watch: the calm picture between scenes changes with the life (review round two R7)', () => {
+  it('the season, the age, the place and the latest event are on it, and two moments of one life do not look alike', () => {
+    const sess = createSession(data, { seed: 3 });
+    startLife(sess);
+    const seen = new Set<string>();
+    const stages = new Set<string>();
+    const lasts = new Set<string>();
+    for (let i = 0; i < 700 && sess.game.state.life && !sess.game.state.life.dead; i++) {
+      sess.game.beat();
+      if (i % 10 !== 0) continue;
+      const v = idleView(data, sess.game.state);
+      seen.add(`${v.season}|${v.figure.stage}|${v.age}`);
+      stages.add(v.figure.stage);
+      if (v.latest) lasts.add(v.latest);
+      expect(v.caption).toContain(`อายุ ${v.age}`);
+      expect(v.caption).toContain(v.seasonName);
+      expect(v.place.length).toBeGreaterThan(0);
+      expect([...v.latest].length).toBeLessThanOrEqual(70);
+    }
+    // six decades of one life: more than one stage of the figure, more than one season, many different looks and several things told
+    expect(stages.size).toBeGreaterThanOrEqual(3);
+    expect(seen.size).toBeGreaterThan(20);
+    expect(lasts.size).toBeGreaterThan(5);
+    // the sky follows the season
+    const skies = new Set<string>();
+    for (let q = 0; q < 4; q++) {
+      const st = sess.game.state;
+      const was = st.clock.quarter;
+      st.clock.quarter = q;
+      skies.add(idleView(data, st).sky);
+      st.clock.quarter = was;
+    }
+    expect(skies.size).toBe(4);
+  });
+
+  it('a child is a smaller figure than a grown person, and an old one bows', () => {
+    const sess = createSession(data, { seed: 3 });
+    startLife(sess);
+    const st = sess.game.state;
+    const at = (age: number) => {
+      st.life!.hAge = age;
+      return idleView(data, st).figure;
+    };
+    expect(at(6).height).toBeLessThan(at(35).height);
+    expect(at(35).pose).toBe('stand');
+    expect(at(65).pose).toBe('bow');
   });
 });
