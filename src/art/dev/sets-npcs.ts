@@ -25,7 +25,7 @@ const raceEntries = (): Entry[] =>
   );
 
 export const SET_DEFS: Record<string, SetDef> = {
-  races: { label: 'เผ่า 21 พร้อมสายเลือดย่อย (ผู้ใหญ่ ชายและหญิง)', entries: raceEntries },
+  'races:lines': { label: 'เผ่า 21 พร้อมสายเลือดย่อย จาก looks.json (ผู้ใหญ่ ชายและหญิง)', entries: raceEntries },
   successors: {
     label: 'ผู้สืบของพวกพ้องตัวหลัก 55 คน',
     entries: () => Object.entries(looks.successors).map(([id, r]) => ({ id, label: `${id} ${r.name}`, look: successorLook(looks, id) })),
