@@ -32,7 +32,7 @@ const FIT: Record<string, Fit> = {
   twohead: { w: 128, h: 96 },
   stout: { w: 124, h: 76 }, fire: { w: 124, h: 76 }, ice: { w: 124, h: 76 }, wyrmling: { w: 104, h: 66 }, skeletal: { w: 134, h: 84 }, lava: { w: 140, h: 100 },
   slender: { w: 112, h: 88 }, wyvern: { w: 112, h: 80 }, ashdrake: { w: 116, h: 80 },
-  turtle: { w: 82, h: 52 }, round: { w: 120, h: 70 }, sleeper: { w: 170, h: 100 }, rock: { w: 150, h: 112 },
+  copper: { w: 130, h: 88 }, turtle: { w: 82, h: 52 }, round: { w: 120, h: 70 }, sleeper: { w: 170, h: 100 }, rock: { w: 150, h: 112 },
 };
 
 const FIT_ID: Record<string, Fit> = { dragon_04: { w: 112, h: 72 }, dragon_05: { w: 78, h: 44 } };
@@ -60,7 +60,8 @@ function zOf(c: Ctx<BL>, pen: Pen, s: number): Z {
   const translucent = words.includes('translucent');
   const A = translucent ? 0.66 : 1;
   const alt = L.kind === 'dragon' ? L.alt : null;
-  const P = makePal(p, L.main, L.second, L.eye, { A, ...palOpts(L) });
+  const o = palOpts(L);
+  const P = makePal(p, L.main, L.second, o.eye ?? L.eye, { A, ...o });
   const shut = (L.kind === 'dragon' ? L.eyeShut : false) || mo.dead;
   const open = Math.min(1, mo.open * (mo.pose === 'attack' ? 1 : 0.6) + (mo.pose === 'idle' ? 0.14 * mo.breath : 0));
   const walk = mo.pose === 'walk';
@@ -102,8 +103,9 @@ export function paintDragon(c: Ctx<BL>): Info {
 }
 
 /** The belly and horn colours a dragon wants besides the two in its row. */
-function palOpts(L: BL): { belly?: string; horn?: string; mouth?: string } {
+function palOpts(L: BL): { belly?: string; horn?: string; mouth?: string; trim?: string; eye?: string } {
   const id = L.id;
+  if (id === 'KD07-1') return { belly: '#a0582c', horn: '#34302e', mouth: '#7a1e22', trim: '#b02a1a', eye: '#f0c040' };
   if (id === 'dragon_08') return { belly: '#5a4a4c', horn: '#c8c0b0', mouth: '#3a1014' };
   if (id === 'dragon_09') return { belly: '#2a2020', horn: '#4a3a34', mouth: '#ff7a20' };
   if (id === 'dragon_02') return { belly: '#d8683a', horn: '#d8c8a0', mouth: '#ff8a28' };
@@ -118,6 +120,6 @@ function palOpts(L: BL): { belly?: string; horn?: string; mouth?: string } {
 type Shape = (z: Z) => Out;
 const SHAPES: Record<string, Shape> = {
   serpent: longShape, eel: longShape, mist: longShape, coil: longShape, twohead: westShape,
-  stout: westShape, fire: westShape, ice: westShape, wyrmling: westShape, skeletal: westShape, lava: westShape, slender: westShape, wyvern: westShape, ashdrake: westShape,
+  stout: westShape, copper: westShape, fire: westShape, ice: westShape, wyrmling: westShape, skeletal: westShape, lava: westShape, slender: westShape, wyvern: westShape, ashdrake: westShape,
   turtle: earthShape, round: earthShape, sleeper: earthShape, rock: earthShape,
 };

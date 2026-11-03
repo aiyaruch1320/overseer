@@ -11,8 +11,8 @@ const npcs = (JSON.parse(readFileSync('data/gen/npcs.json', 'utf8')) as { items:
 const solid = (f: { data: Uint8ClampedArray }) => { let n = 0; for (let i = 3; i < f.data.length; i += 4) if (f.data[i] > 120) n++; return n; };
 
 describe('NPCs that are creatures', () => {
-  it('lists 22 ids, all of them NPCs of the docs', () => {
-    expect(NPC_BEAST_IDS.length).toBe(22);
+  it('lists 23 ids, all of them NPCs of the docs', () => {
+    expect(NPC_BEAST_IDS.length).toBe(23);
     const ids = new Set(npcs.map((n) => n.id));
     for (const id of NPC_BEAST_IDS) expect(ids.has(id), id).toBe(true);
   });
@@ -28,6 +28,12 @@ describe('NPCs that are creatures', () => {
     expect(npcBeast('SV18-1')!.size).toBe('L');
     for (const id of ['NR03-3', 'NR03-6', 'SV12-2', 'SV12-6', 'SV18-6', 'NB06-2']) expect(npcBeast(id)!.size, id).toBe('S');
     for (const id of ['MH04-2', 'SV09-3']) expect(npcBeast(id)!.size, id).toBe('M');
+  });
+  it('the mushroom child is a child with a cap (a person drawn by the beast painter), not the slime of SV18-6', () => {
+    const child = npcBeast('SV18-4')!, bella = npcBeast('SV18-6')!;
+    expect(child.kind === 'enemy' && child.plan).toBe('humanoid');
+    expect(bella.kind === 'enemy' && bella.plan).toBe('amorphous');
+    expect(solid(paintBeast(child, 'idle', 0))).toBeGreaterThan(40);
   });
   it('every one paints every pose in the frame of its class', () => {
     for (const id of NPC_BEAST_IDS) {

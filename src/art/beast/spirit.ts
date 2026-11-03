@@ -242,25 +242,39 @@ function rift(c: Ctx<EnemyLook>): Info {
 
 function reactor(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 40, (c.w * 0.9) / 46);
-  const hover = -12 + Math.sin(mo.ph) * 1.5 + (mo.pose === 'idle' ? mo.breath * 1.6 : 0);
+  // a see-through figure of the furnace's heat: an engineer's coat that floats, a face that is a white hole, cable arms that burn, blue-white arcs
+  const s = Math.min(c.px / 36, (c.w * 0.9) / 40);
+  const hover = -5 + Math.sin(mo.ph) * 1.2 + (mo.pose === 'idle' ? mo.breath * 1.4 : 0);
   const pen = c.pen(s).at(mo.push, mo.bob + hover);
-  const fire = p.mat(L.main, { deep: true }), arc = p.mat(L.second, { flat: true }), white = p.mat(L.eye, { flat: true }), ring = p.mat('#6a6a74', { deep: true }), hot = p.mat(light(L.main, 0.45), { flat: true });
-  // a ring of the furnace it was sealed in
-  pen.ell(0, 0, 16, 16, ring);
-  pen.ell(0, 0, 13, 13, p.mat('#24242c', { flat: true }));
-  const pulse = mo.pose === 'idle' ? mo.breath : mo.pose === 'attack' ? [0, 1, 0.4][mo.a] : mo.f % 2;
-  pen.ell(0, 0, 10 + pulse, 10 + pulse, fire);
-  pen.ell(0, 0, 6.5 + pulse * 0.6, 6.5 + pulse * 0.6, hot);
-  pen.ell(0, 0, 3.2, 3.2, white);
-  // flames lick up, arcs of the second colour leap out
-  for (let i = 0; i < 7; i++) { const a = -Math.PI + (i / 6) * Math.PI; pen.poly([[Math.cos(a) * 8, Math.sin(a) * 8], [Math.cos(a + 0.18) * (14 + ((mo.f + i) % 3) * 2), Math.sin(a + 0.18) * (14 + ((mo.f + i) % 3) * 2)], [Math.cos(a + 0.4) * 8, Math.sin(a + 0.4) * 8]], fire); }
-  const arcs = mo.pose === 'attack' ? 3 : 1;
+  const A = 0.7;
+  const body = p.mat(L.main, { deep: true, alpha: A }), bodyD = p.mat(dark(L.main, 0.3), { alpha: A }), hot = p.mat(light(L.main, 0.45), { flat: true, alpha: 0.85 });
+  const white = p.mat(L.eye, { flat: true }), arc = p.mat(L.second, { flat: true }), arcL = p.mat('#e8f8ff', { flat: true }), ember = p.mat('#ffd060', { flat: true });
+  const fl = mo.pose === 'walk' ? Math.sin(mo.ph) * 1.6 + 2 : 1.4 + mo.breath * 1.4;
+  const strike = mo.pose === 'attack' ? [0.2, 1, 0.5][mo.a] : 0;
+  // the coat: a flared body whose hem floats in tongues
+  pen.poly([[-6.5, -26], [6.5, -26], [9, -12], [8 + fl, -2], [4, -5], [1.5 + fl * 0.5, 1], [-2, -4], [-5 - fl, 0.5], [-8, -6], [-9, -14]], body);
+  for (const dx of [-4, 0, 4]) pen.line([dx, -20], [dx - fl * 0.4, -5], bodyD, 0.8);
+  pen.ell(0.5, -17, 3.4, 5.2, hot); // the glow inside the chest
+  // head and the hole of a face
+  pen.ell(0.6, -31, 4.6, 5.2, body);
+  pen.ell(1.4, -31, 2.8, 3.2, hot);
+  pen.ell(1.6, -31, 2, 2.4, white);
+  // arms of burning cable: long, they sag and flick; at the strike one lashes out
+  const reach = 4 + strike * 12;
+  const armA: [number, number][] = [[4, -25], [8 + reach * 0.4, -20 + (mo.f % 2)], [12 + reach * 0.8, -15 - strike * 3], [15 + reach, -12 - strike * 4 + Math.sin(mo.ph + mo.f) * 1.5]];
+  pen.chain(armA, [1.8, 1.4, 1.2, 0.9], bodyD);
+  const hand = armA[3];
+  pen.dot(hand[0], hand[1], ember, 2.2); pen.dot(hand[0] + 1.6, hand[1] - 1.6 - (mo.f % 2), ember, 1.2);
+  const armB: [number, number][] = [[-4, -25], [-9, -19], [-12 - mo.breath, -13], [-13, -7]];
+  pen.chain(armB, [1.7, 1.3, 1.1, 0.8], bodyD);
+  pen.dot(armB[3][0], armB[3][1], ember, 1.6);
+  // electric arcs, a jagged line from the body (more at the strike)
+  const arcs = mo.pose === 'attack' ? 3 : 1 + (mo.f % 2);
   for (let k = 0; k < arcs; k++) {
-    let x = 10, y = -2 + k * 3;
-    for (let i = 0; i < 4; i++) { const nx = x + 3.2 + (mo.pose === 'attack' ? 2 : 0), ny = y + (rnd(L.id, i + k * 9 + mo.f * 3) - 0.5) * 7; pen.line([x, y], [nx, ny], arc, 0.9); x = nx; y = ny; }
+    let x = 6 + k, y = -22 + k * 5;
+    for (let i = 0; i < 5; i++) { const nx = x + 2.8 + (strike ? 2 : 0), ny = y + (rnd(L.id, i + k * 9 + mo.f * 3) - 0.5) * 7; pen.line([x, y], [nx, ny], i % 2 ? arcL : arc, 0.8); x = nx; y = ny; }
   }
-  return { shadow: { cx: c.cx, cy: c.foot, rx: 8 * s, ry: Math.max(1.2, 1.4 * s) }, tall: false, ground: [c.cx, c.foot - hover * s] };
+  return { shadow: { cx: c.cx, cy: c.foot, rx: 6 * s, ry: Math.max(1.2, 1.2 * s) }, tall: false, ground: [c.cx, c.foot - hover * s] };
 }
 
 function djinn(c: Ctx<EnemyLook>): Info {

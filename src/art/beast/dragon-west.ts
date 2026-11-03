@@ -9,10 +9,12 @@ interface Q {
   bulk: number; bodyY: number; legR: number; legLen: number; neckUp: number; neckLen?: number;
   wing: 'big' | 'small' | 'bone' | 'none'; ridge: 'spikes' | 'flames' | 'crystal' | 'bones' | 'none';
   ribs?: boolean; crater?: boolean; seams?: boolean; tail: 'spade' | 'blade' | 'club' | 'flame' | 'none'; head: Partial<HeadO>; headSz: number; eyeShut?: boolean;
-  twin?: boolean; bones?: boolean; crack?: boolean; scaleGlow?: boolean; breath: NonNullable<Out['breath']>; low?: boolean; legs4?: boolean; pipes?: boolean; silk?: boolean; barb?: boolean; headDown?: number;
+  twin?: boolean; bones?: boolean; crack?: boolean; scaleGlow?: boolean; breath: NonNullable<Out['breath']>; low?: boolean; legs4?: boolean; pipes?: boolean; silk?: boolean; barb?: boolean; headDown?: number; fold?: boolean;
 }
 const Qs: Record<string, Q> = {
   stout: { bulk: 1, bodyY: -25, legR: 3.5, legLen: 11, neckUp: 1, wing: 'small', ridge: 'flames', tail: 'flame', head: { horns: 'swept', fangs: true, eye: 'big' }, headSz: 1.38, scaleGlow: true, breath: 'fire' },
+  // Throkad the Flame (KD07-1): a big copper dragon, the wings folded like heavy cloth, long curved horns, a black stone crown
+  copper: { bulk: 1.12, bodyY: -26, legR: 3.9, legLen: 12, neckUp: 0.95, wing: 'small', ridge: 'spikes', tail: 'spade', head: { horns: 'swept', fangs: true, eye: 'big', hk: 1.3 }, headSz: 1.45, breath: 'fire', fold: true },
   fire: { bulk: 1, bodyY: -25, legR: 3.5, legLen: 11, neckUp: 1, wing: 'big', ridge: 'flames', tail: 'flame', head: { horns: 'swept', fangs: true }, headSz: 1.35, breath: 'fire' },
   ice: { bulk: 1, bodyY: -25, legR: 3.5, legLen: 11, neckUp: 1, wing: 'big', ridge: 'crystal', tail: 'spade', head: { horns: 'antler', fangs: true }, headSz: 1.3, breath: 'ice' },
   wyrmling: { bulk: 0.9, bodyY: -22, legR: 3, legLen: 10, neckUp: 0.9, wing: 'small', ridge: 'spikes', tail: 'spade', head: { horns: 'stub', fangs: false }, headSz: 1.5, breath: 'fire' },
@@ -58,7 +60,7 @@ function quad(z: Z, q: Q): Out {
   const wopt = (up: number, span: number, far: boolean) => ({ span, up, mem: far ? P2.mem : P.mem, memD: far ? P2.memD : P.memD, memL: far ? P2.memL : P.memL, bone: far ? P2.horn : P.horn, bone2: P.horn, ol: P.seam, hip: [-14, b + 3] as Pt, fingers: q.wing === 'small' ? 3 : 4, ragged: q.wing === 'bone' });
   const sh: Pt = [8, b - 8];
   const span = q.wing === 'big' ? 54 : q.wing === 'bone' ? 60 : 38;
-  if (q.wing !== 'none') wing(pen, [sh[0] - 3, sh[1] + 1], { ...wopt(Math.max(0, z.flap - 0.18), span * 0.92, true), hip: [-18, b + 2] });
+  if (q.wing !== 'none') wing(pen, [sh[0] - 3, sh[1] + 1], { ...wopt(q.fold ? 0 : Math.max(0, z.flap - 0.18), span * (q.fold ? 0.7 : 0.92), true), hip: [-18, b + 2] });
   // the second neck of a two-headed dragon rises behind the first, dark where the other is bright
   let far: { mouth: Pt; ang: number } | null = null;
   if (q.twin) {
@@ -99,7 +101,7 @@ function quad(z: Z, q: Q): Out {
   // the near legs
   L(hindX, 0, false, true); L(frontX, Math.PI * 0.8 + 0.2, false, false);
   // the shoulder and hip are heavier than the tube alone says
-  if (q.wing !== 'none') wing(pen, sh, wopt(z.flap, span, false));
+  if (q.wing !== 'none') wing(pen, sh, wopt(q.fold ? 0.05 : z.flap, span * (q.fold ? 0.8 : 1), false));
   if (q.crater) crater(z, pts, rad);
   // the head
   const end = pts[11];
@@ -108,6 +110,12 @@ function quad(z: Z, q: Q): Out {
     sz: q.headSz, ang, open: z.open, eye: z.shut && q.head.eye !== 'shut' ? 'shut' : q.head.eye ?? 'normal', pupil: P.ink, ...q.head,
   }, P);
   void rnd; void light; void dark;
+  if (z.L.id === 'KD07-1') {
+    // a thin black stone crown on the horns, a little tilted
+    const [x, y] = hd.top;
+    pen.poly([[x - 5.5, y - 0.5], [x + 4.5, y - 3.2], [x + 5.2, y - 0.8], [x - 4.8, y + 1.8]], P.ink);
+    for (let i = 0; i < 4; i++) pen.poly([[x - 4.2 + i * 2.7, y + 0.8 - i * 0.7], [x - 3.2 + i * 2.7, y - 3.4 - i * 0.7 - (i % 2)], [x - 2.2 + i * 2.7, y + 0.4 - i * 0.7]], P.ink);
+  }
   if (q.head.eye === 'shut' && !z.mo.dead && q.crater) { const e = hd.eye; pen.line([e[0] - 1.6, e[1] + 0.9], [e[0] + 2.6, e[1] + 1.1], P.glow, 0.9); }
   // a glow in the mouth and nose at the strike
   const out: Out = { mouth: hd.mouth, ang: ang + 0.3, breath: q.breath };

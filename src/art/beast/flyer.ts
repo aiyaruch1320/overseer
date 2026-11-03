@@ -30,13 +30,13 @@ function wing(pen: Pen, root: [number, number], len: number, up: number, k: numb
 function harpy(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
   const storm = L.form === 'storm';
-  const s = Math.min(c.px / 24, (c.w * 0.9) / 30);
+  const s = Math.min(c.px / 18, (c.w * 0.9) / 30);
   const flying = mo.pose === 'walk' || mo.pose === 'attack';
   const lift = flying ? 3 + (mo.pose === 'walk' ? [0, -2, 0, -2][mo.f] : mo.a === 0 ? 2 : -1) : 0;
   const pen = c.pen(s).at(mo.push, mo.bob - lift);
   const feather = p.mat(L.main, { deep: true }), featherD = p.mat(dark(L.main, 0.3)), chest = p.mat(L.second), skin = p.mat(storm ? '#aab4c8' : '#c8a890'), eye = p.mat(L.eye, { flat: true }), claw = p.mat('#d8c8a0');
   const up = mo.pose === 'walk' ? [1, 0.45, 0, 0.45][mo.f] : mo.pose === 'attack' ? [1, 0, 0.5][mo.a] : mo.pose === 'idle' ? 0 : mo.pose === 'hurt' ? 0.8 : 0.1;
-  const fold = mo.pose === 'idle' || mo.dead ? 0.85 : 0;
+  const fold = mo.pose === 'idle' || mo.dead ? 0.45 : 0;
   // far wing
   wing(pen.at(1, 0), [0, -17], 15, up, featherD, p.mat(dark(L.main, 0.45)), fold);
   // legs and talons
