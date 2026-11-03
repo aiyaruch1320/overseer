@@ -3,7 +3,7 @@
 // reported by the looks generator in data/gen/_unparsed/looks.md; the NPC still gets a complete Look from the defaults.
 import { BEARD_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS, FEAT_IDS } from '../../../src/art/parts/ids';
 import type { Ears, Gait, Lower, Stage } from '../../../src/art/look';
-import type { LineOverrides } from '../../../src/core/data/types-looks';
+import type { LineOverrides, PersonLookRow } from '../../../src/core/data/types-looks';
 
 export const VOCABULARY = { outfit: OUTFIT_IDS, hair: HAIR_IDS, beard: BEARD_IDS, hat: HAT_IDS, tool: TOOL_IDS, feat: FEAT_IDS } as const;
 
@@ -327,7 +327,7 @@ export const HAT_RULES: Rule<(typeof HAT_IDS)[number]>[] = [
   ['wizard', /หมวกพ่อมด|หมวกแหลมสูง|หมวกทรงสูงสี/],
   ['mitre', /หมวกนักบวช|หมวกสูงนักบวช|มิเตอร์|หมวกทรงสูง/],
   ['minerhat', /หมวกเหมือง|หมวกไฟ|ไฟติดหน้า|หมวกกันกระแทก/],
-  ['goggles', /แว่นนักบิน|แว่นตากัน|แว่นดำน้ำ|หมวกดำน้ำ|แว่นกันลม/],
+  ['goggles', /แว่นนักบิน|แว่นตากัน|แว่นดำน้ำ|หมวกดำน้ำ|แว่นกันลม|แว่นกันไฟ/],
   ['chef', /หมวกพ่อครัว/],
   ['horned', /หมวกมีเขา|หมวกเขา/],
   ['helmet', /หมวกเหล็ก|หมวกเกราะ|หมวกนักรบ|หมวกทหาร|หมวกศึก/],
@@ -365,15 +365,23 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   ['scythe', /เคียว/],
   ['censer', /กระถางธูป|ธูป|กระถางหอม|ที่เผาธูป/],
   ['sword', /ดาบ|กระบี่|เรเพียร์|ซามูไร/],
-  ['dagger', /มีด|กริช|สิ่ว|ดาบสั้น/],
+  ['chisel', /สกัด|สิ่ว/],
+  ['dagger', /มีด|กริช|ดาบสั้น/],
   ['mace', /กระบองหนาม|คทาศึก|ตะบอง/],
   ['club', /กระบอง/],
   // the things of wave 4 (src/art/parts/tools-extra.ts): each has its own look, so the thing the docs name shows and not a generic book or box.
   // They sit before the generic book / scroll / ledger / mug / flask rules so that the named thing wins inside one item.
+  ['twinpistol', /ปืนสั้นสองกระบอก|ปืนสองกระบอก|ปืนคู่/],
   ['mallet', /ไม้ตี|ค้อนตี|ค้อนไม้/],
+  ['smallhammer', /ค้อนเล็ก|ค้อนจิ๋ว/],
+  ['wrench', /ประแจ/],
+  ['slate', /กระดานชอล์ก|กระดานดำ|กระดานเขียน/],
+  ['anklebells', /กำไลข้อเท้า|กำไลระฆัง/],
+  ['drum', /กลอง/],
   ['hotiron', /เหล็กร้อน/],
   ['keyring', /กุญแจ/],
   ['basket', /ตะกร้า/],
+  ['bouquet', /ช่อดอกไม้|ดอกไม้(?:ป่า)?ช่อ|ช่อเล็ก/],
   ['garland', /พวงมาลัย/],
   ['bellrope', /เชือกระฆัง|กระดิ่ง|ระฆังมือ/],
   ['beads', /ลูกประคำ|ประคำ/],
@@ -405,7 +413,7 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   ['ledger', /สมุดบัญชี|ม้วนบัญชี|บัญชี/],
   ['book', /หนังสือ|สมุด|ตำรา|คัมภีร์|ไดอารี|แฟ้ม/],
   ['scroll', /ม้วน|กระดาษ|จดหมาย|แผนที่|สัญญา|แผ่นไม้บท|แผ่นหนัง|ใบ(?:ประกาศ|สั่ง)/],
-  ['lute', /พิณ|ซอ|กีตาร์|ระฆัง|กลอง|เครื่องดนตรี|ฉาบ/],
+  ['lute', /พิณ|ซอ|กีตาร์|ระฆัง|เครื่องดนตรี|ฉาบ/],
   ['mug', /(?<!มงกุฎ)(?<!แหวน)(?<!กล่อง)(?<!ไม้เป่า)(?<!หลอดเป่า)แก้ว|ถ้วยเบียร์|เหยือก|จอก/],
   ['bowl', /ชาม|ถ้วย|กระถาง/],
   ['flask', /ขวด|กระบอกน้ำ|กระติก|หม้อต้ม|หม้อ/],
@@ -433,7 +441,8 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   ['book', /กระดาน|แผ่น(?:รูน|หิน|เหล็ก|รหัส|บันทึก|ตัวเลข|กระดูก)|ภาพวาด|แบบ(?:แปลน|เตา|เครื่อง|ป้อม)/],
   ['crook', /ไม้เลี้ยง|ตะขอ/],
   ['staff', /ไม้พาย|ไม้เหล็ก|ไม้(?:ท่อน|แห้ง)|กิ่งไม้/],
-  ['hammer', /ประแจ|สกัด|ไขควง|เกรียง|คีม|เหล็กเคาะ|เกจ|วาล์ว/],
+  ['hammer', /ไขควง|เกรียง|คีม|เหล็กเคาะ|เกจ|วาล์ว/],
+  ['gauge', /แผงควบคุม/],
   ['shovel', /ช้อนดิน|ช้อนไม้|ช้อนทราย/],
   ['bowl', /ครก|กระป๋อง/],
     ['wand', /แท่ง/],
@@ -468,9 +477,20 @@ export function toolOf(items: string[], desc: string): ToolPick {
     const t = first(h, TOOL_RULES);
     if (t) return { tool: t, miss };
   }
+  // a thing carried under the arm (`กระดานชอล์กใต้แขน`): the word before it
+  const under = desc.match(/([ก-๙]{2,14})(?:ใต้แขน|พาดไหล่)/);
+  if (under) { const t = first(under[1], TOOL_RULES); if (t) return { tool: t, miss }; }
   const w = desc.match(/(?:ดาบ|หอก|ธนู|ขวาน|ค้อน|มีดสั้น|ไม้เท้า|คทา|โล่)/);
   if (w) { const t = first(w[0], TOOL_RULES); if (t) return { tool: t, miss }; }
   return { tool: null, miss };
+}
+
+/** A sword the text keeps in its sheath (`ไม่เคยชัก` `อยู่ในฝัก` `ดาบพิธี`): it is drawn at the hip, not in the hand. */
+const SHEATHED = /ในฝัก|ไม่เคยชัก|ไม่ชักออก|ไม่เคยถูกชัก|ฝักดาบ|ดาบพิธี/;
+export function sheathOf(tool: string | null, text: string): string | null {
+  if (!tool || !['sword', 'greatsword'].includes(tool) || !SHEATHED.test(text)) return tool;
+  if (/ฝักทอง/.test(text)) return 'goldsheath';
+  return tool === 'greatsword' ? 'greatsheath' : 'sheathed';
 }
 
 // ---------- personal feats ----------
@@ -613,7 +633,8 @@ export const LINE_OVERRIDES: Record<string, (raceFeats: string[]) => LineOverrid
   'elf/เอลฟ์จันทรา': () => ({ skin: '#e6eef6', hairColor: '#d8dce8' }),
   'elf/เอลฟ์สูง': () => ({ scale: 1.17 }),
   'elf/เอลฟ์ราก': () => ({ skin: '#8a6a48' }),
-  'elf/เอลฟ์ฟ้า': (f) => ({ skin: '#e4eef2', hairColor: '#b8d8f0', accent: '#bfe3ff', feats: [...f, 'wings:insect'] }),
+  // the sky elves: wings folded behind (`ปีกลมใสบางพับข้างหลัง`: the clear insect wing lies flat and pale on the back and is not seen on a pale ground, so the pale feather wing in the blue accent shows them), and none of the forest elves' leaves and vines
+  'elf/เอลฟ์ฟ้า': () => ({ skin: '#e4eef2', hairColor: '#b8d8f0', accent: '#8ac0f0', feats: ['wings:feather'] }),
   'elf/เอลฟ์ใต้ดิน': () => ({ skin: '#8a7a9a', hairColor: '#e0e0e8' }),
   'dwarf/ผู้ปิดรูน': (f) => ({ feats: [...f, 'mask'] }),
   'dwarf/คนเหมืองลึก': () => ({ skin: '#efd8c8' }),
@@ -644,7 +665,8 @@ export const LINE_OVERRIDES: Record<string, (raceFeats: string[]) => LineOverrid
   'giant/ไซคลอปส์': (f) => ({ feats: [...f, 'cyclops'] }),
   'giant/จอตุน': () => ({ skin: '#a8c8d8' }),
   'demonkin/ปีศาจเพลิง': (f) => ({ skin: '#a8382a', feats: [...f, 'embers'] }),
-  'construct/ผู้รอดชีวิตตุ๊กตา': (f) => ({ skin: '#ece6dc', feats: [...f, 'tattoo', 'puppet'] }),
+  // the doll survivors are dolls, not machines: the plates, rivets, steam and brass of the construct race are left off
+  'construct/ผู้รอดชีวิตตุ๊กตา': () => ({ skin: '#ece6dc', feats: ['tattoo', 'puppet'] }),
   'construct/ลูกผสมนีออน': (f) => ({ accent: '#3a8aff', feats: [...f, 'sparkle'] }),
 };
 
@@ -663,11 +685,35 @@ export const WING_COLOURS: [RegExp, string][] = [
   [/^ขาวทอง/, '#f4e6b0'], [/^น้ำตาลเทา/, '#b8a898'], [/^น้ำตาลทราย/, '#d8c090'], [/^น้ำตาล/, '#c8a070'], [/^ขาวหม่น/, '#d0ccc4'],
   [/^ขาวนวล/, '#f0ead8'], [/^เทา/, '#b4b4b8'], [/^ฟ้าเข้ม/, '#5a8ac0'], [/^ฟ้า/, '#9ad0f0'],
 ];
+/**
+ * The wing colour a text names: every `ปีก…` of the text is read (`เผ่าปีกพลัดถิ่น อายุ… ปีกขนสีน้ำตาลทราย…` names its colour at the second), the first that gives a colour wins.
+ * The feather wing paints its accent paled toward white (feats.ts 'wings:feather'), so the accent returned is half way to the colour that the paling turns into the one the
+ * docs name (all the way would turn a pale blue into a strong one).
+ */
 export function wingAccentOf(text: string): string | null {
-  const m = text.match(/ปีก([ก-๙]{1,16})/);
-  if (!m) return null;
-  const w = m[1].replace(/^(?:ขนนก|ขน)?(?:สี)?/, '');
-  return WING_COLOURS.find(([re]) => re.test(w))?.[1] ?? null;
+  for (const m of text.matchAll(/ปีก([ก-๙]{1,16})/g)) {
+    const w = m[1].replace(/^(?:ขนนก|ขน)?(?:สี)?/, '');
+    const c = WING_COLOURS.find(([re]) => re.test(w))?.[1];
+    if (c) return mix(c, unpale(c), 0.5);
+  }
+  return null;
+}
+/** The accent that the feather wing's paling (55% toward white) turns into `c`; a colour that is already near white stays. */
+export const unpale = (c: string): string => {
+  const A = rgb(c).map((v) => Math.max(0, Math.round((v - 255 * 0.55) / 0.45)));
+  return hex(A);
+};
+/**
+ * The colour a description gives to the clothes (`ชุดซิสเตอร์สีเทา` `เสื้อคลุมสีดำปิดไหล่`): the first garment phrase that names one. A successor's text names its own
+ * clothes, so the heir does not simply take the colours of the person it succeeds.
+ */
+export function garmentColour(desc: string): string | null {
+  for (const t of garmentPhrases(desc)) {
+    const m = t.match(/(?:ชุด|เสื้อ|ผ้าคลุม|เกราะ)[ก-๙]*?สี([ก-๙]{1,10})/);
+    const c = m && colourIn(m[1]);
+    if (c) return c;
+  }
+  return null;
 }
 /** Animal ears on a person of another race (a half-beast: `หูแหลมมีขนที่ปลาย` `หูหมาป่า`). */
 export const ANIMAL_EARS = /หู(?:แหลม)?มีขน|หู(?:สัตว์|หมาป่า|หมา|แมว|เสือ|ขนฟู)/;
@@ -676,3 +722,153 @@ export const CROWN_ACCENTS: [RegExp, string][] = [
   [/มงกุฎ(?:สี)?เงิน/, '#c8ccd8'], [/มงกุฎกระดูก/, '#d9cfb2'], [/มงกุฎเหล็ก/, '#6a6e78'],
 ];
 export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS.find(([re]) => re.test(text))?.[1];
+
+// ---------- what the words cannot carry: one person at a time (M6 wave 5) ----------
+
+/**
+ * The fields of one person's Look that the words of the row cannot give (the visual review of M6 found the person's identity lost: a body the race
+ * does not have, a skin of iron, a colour that is not on any list). Each entry follows the words of that person's own row (the doc cell is quoted in
+ * the comment above it); a field named here replaces what the words gave, `feats` replaces the personal marks and `raceFeats` the race's. check:looks
+ * does not count a field named here as a default. Applied by scripts/codegen/groups/looks.ts; an id that is neither an NPC nor a successor fails the run.
+ */
+export type PersonFix = Partial<Pick<PersonLookRow, 'stage' | 'line' | 'fem' | 'skin' | 'hairColor' | 'eye' | 'main' | 'second' | 'outfit' | 'hair' | 'beard' | 'hat' | 'tool' | 'feats' | 'accent' | 'ears' | 'body' | 'raceFeats' | 'wear'>>;
+export const PERSON_FIX: Record<string, PersonFix> = {
+  // ── Saharan ──
+  // ราชินีเงา "ร่างสูงโปร่งแสงสีดำควันอมม่วง ผมยาวลอยเหมือนอยู่ใต้น้ำ มงกุฎสีเงินจางประดับดาว ผ้าคลุมยาวพริ้วไร้ลม ตาสองดวงเรืองสีม่วงอ่อน เท้าไม่แตะพื้น": a tall queen in a smoke-violet
+  // gown that hovers, not a ghoul (the race of the "ผีเมือง" rule) and not the pale `ghost` mark (which turns everything the grey of a fog): she keeps her dark
+  'SH14-1': { skin: '#4a3c5c', hairColor: '#2e2244', eye: '#c8b0f8', outfit: 'robe', hair: 'long', hat: 'crown', accent: '#c8ccd8', tool: '', feats: ['glow-eyes', 'tallcollar', 'sparkle'], raceFeats: [], body: { scale: 1.16, shoulders: 0.9, head: 0.96, ears: 'pointed', gait: 'float' }, wear: 0 },
+  // พ่อค้าเงา "ผิวสีเทาน้ำเงินจางเหมือนหมอก ชุดพ่อค้าสีม่วงเข้มลายทองเลือนหาย ผ้าโพกศีรษะบังตา ตาขาวเรืองแสง รถเข็นอาหารที่ควันลอยเป็นรูปคน": mist-grey skin, a turban down over the eyes, white glowing eyes, a dish of food in hand
+  'SH14-2': { skin: '#7a86a6', eye: '#ffffff', outfit: 'robe', hair: '', hat: 'turban', tool: 'bowl', feats: ['glow-eyes'], body: { gait: 'glide' } },
+  // โอลมา "ตาเดียวใหญ่กลางหน้าผากสีฟ้าอ่อนเรืองจางเห็นเส้นแรงของหิน ผมดำปนเทาถักยาว": a pale-blue glowing eye, grey-black braid; "สูงกว่าคนทั่วไปแต่ต่ำกว่ายักษ์เต็มตัว" a half-giant (smaller than her race)
+  'SH06-5': { eye: '#a8dcf8', hairColor: '#585860', feats: ['cyclops', 'glow-eyes'], body: { scale: 1.16, shoulders: 1.2 } },
+  // เจ้าด่าน "ร่างอ้วนล่ำ ผิวไหม้แดง หนวดเคราดำเรียบประดับลูกปัด ผ้าโพกศีรษะสีเขียวเข้ม ชุดเจ้าด่านผ้าไหมสีเข้มปักทอง ดาบโค้งและถุงเหรียญเหล็กห้อยเอว": fat (broad shoulders), a beaded beard, the silk coat, gold at the waist
+  'SH15-1': { outfit: 'noble', beard: 'braided', feats: ['beads', 'goldjewel'], body: { shoulders: 1.42, scale: 0.98 }, accent: '#d9a030' },
+
+  // ── Mecharia ──
+  // ซีโร่ "ร่างสูงกำยำลำตัวเหล็กดำหนา ไหล่เสริมแผ่นเกราะ ใบหน้าเรียบไม่มีปาก ตาแดงเรืองสองดวง แขนซ้ายเป็นปืนกลหมุน": a tall black-iron fighting machine (the doc column says ทารก because it is 3 years old: it is not small)
+  'MK06-4': { stage: 'adult', skin: '#3c3c46', eye: '#ff3a2a', outfit: 'tunic', main: '#1e1e24', second: '#3a3a46', feats: ['glow-eyes'], body: { scale: 1.28, shoulders: 1.32, head: 0.94 } },
+  // เรกซ์ "แขนที่สี่ติดตั้งจากสีข้างซ้ายเป็นเหล็กดำหยาบ เสื้อกั๊กหนังเปิดแขนทุกข้าง ปืนสั้นสองกระบอก": four arms, a bare-armed leather vest, a pistol in each of two hands
+  'MK02-2': { skin: '#7a4c34', outfit: 'leather', hairColor: '#1e1a1c', feats: ['fourarms'], raceFeats: ['rivets', 'plates'], body: { shoulders: 1.22, scale: 1.1 } },
+  // ซิลเวอร์สไตน์ "ชายวัยห้าสิบสามร่างใหญ่ ผมสีเงินหวีเรียบ ชุดประธานสีเทาเงิน นาฬิกาพกทองและแหวนตราบริษัทสีเงินใหญ่": a big man, slicked silver hair (a crop, not a hood of hair), a pale skin, a gold watch and chain
+  'MK16-1': { fem: false, skin: '#e8bc94', hair: 'cropped', tool: 'pocketwatch', feats: ['goldjewel'], body: { shoulders: 1.2, scale: 1.02 } },
+  // คอนราด "เครื่องแบบนายพลสีเขียวเข้มปักเหรียญ ดาบพิธีไม่เคยชักออก": a dark-green coat with medals, not chain mail; the sword stays in its sheath
+  'MK04-1': { outfit: 'noble', feats: ['goldjewel'], body: { shoulders: 1.1 } },
+  // มาร์ธา "คนแคระหญิง เคราบางถักเปียพันสายทองแดง ผมเทาเหล็กรวบสูง ชุดวิศวกรสีน้ำเงินเข้มเปื้อนจาระบี แว่นกันไฟ": iron-grey hair tied high, blue grease-stained work clothes, fire goggles
+  'MK01-2': { hairColor: '#6a6e78', hair: 'ponytail', outfit: 'miner', hat: 'goggles', wear: 0.5 },
+  // ลูซี่ "ผิวขาวซีดสะอาด ผมสีขาวเงินสั้นเหมือนเด็กชาย ชุดผ้าเทาเก่าเปื้อนน้ำมัน": a doll (joints), not a machine; the grey oil-stained cloth
+  'MK10-2': { skin: '#f2eae2', hair: 'cropped', wear: 0.55 },
+
+  // ── Aldria ──
+  // ฮารุโตะ "เด็กหนุ่มอายุสิบเจ็ดจากต่างภพ ชุดเกราะผู้กล้าสีขาวทองที่ถูกตัดให้พอดีโดยไม่ถามไซส์ ดาบที่ใหญ่เกินกว่าท่าทางจะถือได้": hero armour in white and gold, a sword too big for him
+  'AL02-3': { outfit: 'knight', tool: 'greatsword', accent: '#d9a030' },
+  // เซลีน "ผมสีน้ำตาลอ่อนถักเปียพันหมวกคลุม ชุดนักบวชขาวมีรอยชอล์กและผงเวทเปื้อนทั่วชายกระโปรง มือเปื้อนหมึกเงิน": a white robe stained with chalk and magic dust, a veil over the plait, silver chalk in the hand
+  'AL02-4': { hat: 'veil', tool: 'chalk', feats: ['sparkle'], wear: 0.5 },
+  // ไอรัสเมอร์ "ผิวสีแทน ผมสีเงินขาวหวีเรียบ เกล็ดจาง ๆ ที่ขมับและหลังมือสีน้ำเงินเข้ม ดวงตาแนวตั้งสีทอง": a tan man with faint dark-blue scales, no horns, no tail: nothing of the red dragon
+  'AL01-2': { skin: '#c8a074', accent: '#2a4a9a', feats: [], raceFeats: ['scales', 'slit'], body: { gait: 'normal' } },
+  // หลี่หมิง "ร่างกายครึ่งหนึ่งเป็นแผ่นเหล็กขัดเงาและสายเคเบิลสีส้ม แขนซ้ายเป็นจักรกลทั้งแถว ตาขวาเลนส์เรืองแดง": a machine arm, a red lens eye, plates of iron
+  'AL13-1': { eye: '#ff3a3a', feats: ['mecharm', 'mecheye', 'seams'], accent: '#ff7a30' },
+  // บาลาร์ "ชุดช่างหินสีเทาเข้มลายทอง ผ้าคลุมเก่าที่เคยเป็นของประธาน ตาสีเทาเหล็ก": dark-grey stone-mason's clothes (not a mustard cloak: a cloak is painted in the second colour)
+  'AL21-1': { outfit: 'cape', main: '#6a6a76', second: '#4a4a56', accent: '#c8a030' },
+
+  // ── Nebulia ──
+  // ศูนย์ "ผ้าคลุมเทาเข้มหนาตั้งแต่หัวจรดเท้า ใบหน้าถูกหน้ากากเหล็กขัดเงาปิดสนิท ตัวเลขศูนย์สลักที่อกด้วยเงิน ถุงมือหนังดำ": a dark-grey cloak (the cloak is the second colour), the face an iron plate, the silver zero on the chest
+  'NB09-1': { skin: '#8c909c', main: '#b8b8c8', second: '#2c2c34', feats: [], eye: '#a8acb8', hat: 'hood' },
+  // แจ็ก "หุ่นขนาดมนุษย์เล็ก ผิวสีน้ำเงินกรมท่าลอกเป็นแผ่นบนลำตัวเหล็ก ตาสีเหลืองเรืองจางเป็นเลนส์กลม": a small human-sized machine (the doc column says ทารก for its 8 years), navy paint peeling off
+  'NB10-3': { stage: 'teen', skin: '#2e4068', eye: '#f0dc40', feats: ['glow-eyes'], wear: 0.7 },
+  // มาร์คัส "ชายวัยสี่สิบสองผิวซีดเปื้อนฝุ่น ผมน้ำตาลเทาบางตัดหยาบ ชุดผู้ลี้ภัยเก่าที่ปะหลายครั้ง แผลเจาะเล็กสองรูที่ข้อมือซ้ายพันผ้าไว้ ... อุ้มลูกสาวไว้ในอ้อมแขน": a ragged father with his sleeping daughter in his arms (the wrist bandage is not a bandage across the eyes)
+  'NB02-3': { tool: 'sleepingchild', feats: [], hair: 'short' },
+  // อัลโรเซีย "ผ้าคลุมซิสเตอร์สีขาวที่รีดจนแข็ง ... สร้อยกางเขนเงิน ... ลูกประคำเงินและถุงมือกำมะหยี่": a nun: the stiff white wimple, the habit, beads; fangs and red eyes, no vampire's ledger
+  'NB02-6': { outfit: 'priest', hat: 'veil', raceFeats: ['fangs', 'redeyes'] },
+
+  // ── Silvanel ──
+  // ผู้ถือขวานโค่นโลก "ผ้าคลุมสีเขียวดำหนามีฮู้ดลึกมองไม่เห็นหน้า ขวานโค่นขนาดใหญ่ด้ามรากไม้ดำ เปลวใบไม้ร่วงไปทุกก้าว ผมสีดำยาวห้อยจากฮู้ด แสงตาสีส้มจางใต้ฮู้ด ร่างสูง": a tall figure in a thick black-green hooded cloak, orange eye-glow, a great axe, embers falling
+  'SV14-1': { skin: '#2a2220', eye: '#ff9a30', main: '#5a3a2a', second: '#1a2a1a', feats: ['glow-eyes', 'embers'], body: { scale: 1.3, shoulders: 1.2 } },
+  // ลีเรียล "ชุดสีดำเรียบสวมผ้าคลุมไหล่ลายใบไม้ ตาเขียวแดงเพราะร้องไห้ ถือดอกไม้ป่าช่อเล็กทุกวัน": a plain black dress (not a lime cape: the cape is painted in the second colour), the bunch of wild flowers
+  'SV13-3': { outfit: 'dress', tool: 'bouquet', hair: 'long' },
+  // เอลลี่ "ผมสีน้ำตาลอ่อนถักเปียมีดอกไม้ลอย ชุดผ้าขาวสะอาดผ้าคลุมสีเขียว เท้าเปล่า": a white dress with a green cloak (a cloak is the second colour), flowers about the head
+  'SV04-4': { skin: '#f0cfae', main: '#f0e8d8', second: '#a8c89a', hat: 'laurel' },
+
+  // ── Kaz-Durum ──
+  // ธรอกาด "เขาโค้งทองสองข้างผ่านผมสีแดงเข้ม เกล็ดแดงเข้มที่แขนและแก้ม ... เสื้อคลุมราชาสีทองเข้ม ถือดาบใหญ่ในฝักทอง สูงเกือบสองเมตรครึ่ง": copper-and-dark-red scales like the dragon he turns into (not green), taller than the others
+  'KD07-1': { skin: '#8a3a22', accent: '#a05a30', body: { scale: 1.36, shoulders: 1.2 } },
+
+  'KD03-1': { skin: '#e8d4c4', beard: 'short', body: { scale: 0.96, shoulders: 1.45 } },
+  'KD03-3': { body: { scale: 0.74, shoulders: 1.15 } },
+  // มอร์ดินเกียร์ "ผิวเทาดำเรืองส้มซีดเป็นเส้นบาง เกราะเหล็กชุบเงินสีขาวนวล": a dark skin with the pale glow of the lava in cracks, pearl-white armour; the priest-soldier KD08-2 wears silver over cream
+  'KD08-1': { main: '#e4e0d0', second: '#8a8a92', skin: '#3a3a3e', feats: ['cracks'] },
+  'KD08-2': { outfit: 'knight', main: '#d4d4de', second: '#e8e0c8' },
+
+  // ── Aldria: the grey-haired men in navy (one thing each) ──
+  // "ดาบประดับเรียบไม่เคยถูกชักออกจากฝัก": the governor's sword stays in its sheath
+  'AL04-4': { tool: 'sheathed' },
+  'AL06-1': { body: { shoulders: 1.18, scale: 1.02 } },
+  // "เครื่องแบบจักรพรรดิสีน้ำเงินเข้มจัดปักทองตราอินทรี เหรียญตรานับสิบเรียงอก": the emperor's coat is regal, the medals are gold on the chest
+  'AL08-1': { outfit: 'regal', feats: ['goldjewel'], body: { scale: 1.05 } },
+  // "หมวกทหารบุขนนก ผมสีน้ำตาลโกนเกรียน": a plumed cap, a shaved head
+  'AL08-4': { hat: 'feather', hair: 'cropped' },
+  'AL10-4': { wear: 0.5 },
+
+  // ── Nebulia ──
+  // "ชุดกัปตันท่าสีเทาน้ำเงินหม่น ... ทิ้งหมวกกัปตันไว้บนเสากระโดง": a grey-blue coat, not the sailor's striped shirt, no hat
+  'NB12-1': { outfit: 'noble', hat: '' },
+  // "ตะเกียงโคมเก่าสีทองห้อยที่ปลายไม้เท้า": the old lamp at the end of the staff
+  'NB03-1': { tool: 'lantern' },
+
+  // ── the spirits of Nebulia ──
+  // ไลเซีย "ผมยาวลอยเหมือนอยู่ใต้น้ำ" / เก็บกุญแจ "เกราะโบราณผุกร่อน ... กุมกุญแจความทรงจำเมฆาเรืองสีฟ้าอ่อนแน่นไว้ที่อก"
+  'NB08-2': { hair: 'long', hairColor: '#aabfd8' },
+  'NB08-4': { outfit: 'armor', tool: 'keyring' },
+  'SH02-6': { tool: 'papyrus' },
+  'SH01-1': { hat: 'turban' },
+
+  // ── Mohaven ──
+  // กรอมกาธ "โอเกอร์ร่างใหญ่เกือบสองเท่าของออร์ค ไหล่กว้างเหมือนประตู" / ซาวาธาร์ "หญิงชราตัวเล็กผอมหลังค่อม"
+  'MH01-1': { body: { scale: 1.62, shoulders: 1.5 } },
+  'MH01-2': { body: { scale: 0.84, shoulders: 0.9 } },
+
+  // ── Saharan ──
+  // ผู้ส่งสารเมฆ "ผ้าคลุมสองสี ... ผมทองครึ่งดำ": a dark cloak over the yellow of the other court (the cloak is the second colour)
+  'AZ05-3': { main: '#b09840', second: '#3a3a42' },
+
+  // ── Azgar ──
+  // ธีวาสกรอม "ชายร่างเตี้ยกว้างหนักเหมือนหินทรงสี่เหลี่ยม": short and square
+  'AZ04-1': { body: { scale: 0.88, shoulders: 1.5, gait: 'heavy' } },
+
+  // ── Silvanel: the archers ──
+  'SV08-1': { hair: 'ponytail' },
+  'SV08-2': { outfit: 'cloak', main: '#6a7a6a', second: '#3a4a3a' },
+  'SV08-4': { tool: 'lantern' },
+
+  // ── the heirs (19-ally-successors.md: ภาพที่เห็น) ──
+  // เมือกน้อย "ก้อนใสขนาดกำปั้น มีเส้นสีน้ำเงินลอยภายใน ถือเข็มทิศจิ๋วไว้ในเนื้อ": a clear blue blob the size of a fist (not a pink one), the compass inside it
+  'NR03-6S': { skin: '#a8c8e8', feats: ['swallowed'], body: { scale: 0.55 } },
+  // ไรเวอร์-10 "ลำตัวใหม่ยังไม่มีรอยขีดข่วน ตาสีน้ำเงินเรืองจาง ผิวเหล็กสีเทาอ่อน": a new light-grey body of the size of the machine it succeeds (a teen), blue eyes; the doc's age (1) is the age of the body, not its height
+  'MK03-6S': { stage: 'teen', skin: '#b8c0cc', eye: '#4a7aff', feats: ['glow-eyes'], hair: '' },
+  // ปีกน้อย "ขนปีกยังไม่ครบ กระบอกสารเล็กผูกขา ผมสีน้ำตาลสั้นฟู ตาสีเหลือง": a young bird like the one it succeeds (the beak, the feathers) with small wings not yet full, no human hair
+  'SV11-2S': { hair: 'cropped', hairColor: '#8a6a48', feats: ['wings:feather'], accent: '#c8a070', tool: 'letter', main: '#b0845a' },
+  // ปราณ "ถุงจดหมายผ้าใบซีดพาดไหล่ ... ชุดเดินทางสีเทาฟ้า": a child with the mail bag over the shoulder
+  'AZ03-3S': { feats: [] },
+  // ฟลอร่า "เกล็ดปลาติดผมและเสื้อ มือถือประแจเล็ก ผมสีน้ำตาลแดงหยิกสั้น": of the sky-water people she succeeds (blue skin, gills)
+  'AZ06-4S': { line: 'ชาวน้ำฟ้า', skin: '#8ab8e0', accent: '#9ad0f0', raceFeats: ['wings:feather', 'sunstrap', 'goldcirclet', 'gills'] },
+  // กอร์ทา "ไหล่กว้างกว่าวัย ขวานด้ามสั้นไม่เคยลับ": a youth with a man's shoulders
+  'MH01-3S': { stage: 'teen', body: { shoulders: 1.3 } },
+  // โทบี "ผ้ากันเปื้อนมีแป้งเกาะ หมวกพ่อค้าใบเล็ก ถือเครื่องชั่งเล็ก ลูกคิดไม้ห้อยคอ": a flour-white apron, a small merchant's cap
+  'MH09-3S': { second: '#c8b890' },
+  // เวสต์ "เกล็ดคอเขียวเข้ม แว่นนักบินแตกร้าว เสื้อหนังนักบิน": red-copper skin with the green scales of the neck
+  'KD07-3S': { skin: '#8a4a2a', accent: '#2a5a3a' },
+  // โบรกา "ค้อนเก่าห้อยเอว ไม่ถือเลย": the hammer hangs at the belt, the hands are empty
+  'KD01-2S': { tool: '' },
+  // ธอร์เวน "เครายังไม่ยาว ชอล์กเรืองแสงในกระเป๋า": a short beard, nothing in the hand
+  'KD04-3S': { beard: 'short', tool: '' },
+  // เซเรน "ชุดซิสเตอร์สีเทา ผิวซีดเรียบ ผมสีดำยาวเกล้าต่ำ": a grey nun
+  'NB02-6S': { hat: 'veil', main: '#5a5a63' },
+  // ซูรา "เงาด้านซ้ายหายไป เสื้อคลุมสีดำปิดไหล่ ผมสีขาวเงินสั้นยุ่ง": a black short cloak, silver hair
+  'NB13-5S': { outfit: 'cloak', main: '#8a8d9f', second: '#1e1a24', hair: 'wild' },
+  // the shades of the heirs that sat too near a neighbour of the same country (check:looks)
+  'AL16-2S': { main: '#b3d3a6' },
+  'MK07-4S': { main: '#6a6e78' },
+  'NB04-3S': { main: '#4a5878' },
+  'NB05-5S': { main: '#33241a' },
+  'SH01-7S': { main: '#5c4b33' },
+  'SH01-2S': { main: '#d8c8a0' },
+};

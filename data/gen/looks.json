@@ -171,11 +171,9 @@
       "overrides": {
        "skin": "#e4eef2",
        "hairColor": "#b8d8f0",
-       "accent": "#bfe3ff",
+       "accent": "#8ac0f0",
        "feats": [
-        "leafcrest",
-        "vines",
-        "wings:insect"
+        "wings:feather"
        ]
       }
      },
@@ -1225,11 +1223,6 @@
       "overrides": {
        "skin": "#ece6dc",
        "feats": [
-        "plates",
-        "rivets",
-        "steam",
-        "mecheye",
-        "mecharm",
         "tattoo",
         "puppet"
        ]
@@ -1595,7 +1588,7 @@
      "ไม้ไผ่ชี้ท่า"
     ],
     "pose": "ยกมือห้ามเด็กโดยไม่ต้องพูด",
-    "accent": "#d0ccc4",
+    "accent": "#b4ada0",
     "file": "01-azgar",
     "country": "AZ-02",
     "continent": "AZ",
@@ -1688,7 +1681,7 @@
      "แว่นนักบิน"
     ],
     "pose": "ยืนกางขาไหวเท้า",
-    "accent": "#9ad0f0",
+    "accent": "#5db4e7",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1719,7 +1712,7 @@
      "กังหันวัดลมเล็ก"
     ],
     "pose": "เงยหน้าดูทิศลม",
-    "accent": "#9ad0f0",
+    "accent": "#5db4e7",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1778,7 +1771,7 @@
      "โครงว่าวยักษ์ในมือ"
     ],
     "pose": "แหงนมองเมฆแล้วขีดเส้นในอากาศ",
-    "accent": "#9ad0f0",
+    "accent": "#5db4e7",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1807,6 +1800,11 @@
      "กุญแจเหล็กหนา"
     ],
     "pose": "ยืนหันหน้าเข้าบันไดไม่ขยับ",
+    "body": {
+     "scale": 0.88,
+     "shoulders": 1.5,
+     "gait": "heavy"
+    },
     "file": "01-azgar",
     "country": "AZ-04",
     "continent": "AZ",
@@ -1890,7 +1888,7 @@
     "hair": "short",
     "beard": "",
     "hat": "cap",
-    "tool": "dagger",
+    "tool": "chisel",
     "feats": [],
     "wear": 0.3,
     "defaults": [],
@@ -1930,7 +1928,7 @@
      "คทาตะวัน"
     ],
     "pose": "กางแขนต้อนรับ",
-    "accent": "#f4e6b0",
+    "accent": "#eed780",
     "file": "01-azgar",
     "country": "AZ-05",
     "continent": "AZ",
@@ -1972,8 +1970,8 @@
     "skin": "#f6e0d0",
     "hairColor": "#d9a030",
     "eye": "#a8acb8",
-    "main": "#3a3a42",
-    "second": "#e8d070",
+    "main": "#b09840",
+    "second": "#3a3a42",
     "outfit": "cloak",
     "hair": "cropped",
     "beard": "",
@@ -2047,7 +2045,7 @@
      "แผ่นไม้บทกลอน"
     ],
     "pose": "ยืนหลังตรงแล้วอ่านออกเสียง",
-    "accent": "#9ad0f0",
+    "accent": "#5db4e7",
     "file": "01-azgar",
     "country": "AZ-06",
     "continent": "AZ",
@@ -2082,7 +2080,7 @@
      "ตะเกียงน้ำ"
     ],
     "pose": "ยืนชิดขอบน้ำตกไม่กะพริบตา",
-    "accent": "#5a8ac0",
+    "accent": "#2d459a",
     "file": "01-azgar",
     "country": "AZ-06",
     "continent": "AZ",
@@ -2410,7 +2408,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [
      "glasses"
     ],
@@ -2443,7 +2441,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [
      "scar"
     ],
@@ -2675,6 +2673,10 @@
      "ค้อนศึกยักษ์"
     ],
     "pose": "ยืนมองกองไฟแล้วนับคน",
+    "body": {
+     "scale": 1.62,
+     "shoulders": 1.5
+    },
     "file": "02-morhaven",
     "country": "MH-01",
     "continent": "MH",
@@ -2706,6 +2708,10 @@
      "ไม้เท้ากะโหลก"
     ],
     "pose": "เขย่ากระดูกแล้วเงยหน้ามองฟ้า",
+    "body": {
+     "scale": 0.84,
+     "shoulders": 0.9
+    },
     "file": "02-morhaven",
     "country": "MH-01",
     "continent": "MH",
@@ -2725,7 +2731,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "sword",
+    "tool": "sheathed",
     "feats": [
      "scar"
     ],
@@ -4171,6 +4177,7 @@
      "ธงหัก"
     ],
     "pose": "ยกมือสั่งกองทัพที่ไม่มีใครเห็น",
+    "raceFeats": [],
     "file": "02-morhaven",
     "country": "MH-12",
     "continent": "MH",
@@ -4200,6 +4207,7 @@
      "ซองจดหมายเรืองจาง"
     ],
     "pose": "ยืนนิ่งชูซองขึ้น",
+    "raceFeats": [],
     "file": "02-morhaven",
     "country": "MH-12",
     "continent": "MH",
@@ -4504,14 +4512,14 @@
     "race": "dwarf",
     "stage": "elder",
     "fem": false,
-    "skin": "#e0a07a",
+    "skin": "#e8d4c4",
     "hairColor": "#e8e6e0",
     "eye": "#6a6e78",
     "main": "#30343e",
     "second": "#8a8a86",
     "outfit": "plate",
     "hair": "cropped",
-    "beard": "long",
+    "beard": "short",
     "hat": "",
     "tool": "wand",
     "feats": [],
@@ -4522,6 +4530,10 @@
      "คทาหิน"
     ],
     "pose": "เดินตรงโดยไม่เหลียวมองผนังรูน",
+    "body": {
+     "scale": 0.96,
+     "shoulders": 1.45
+    },
     "file": "03-kaz-durum",
     "country": "KD-03",
     "continent": "KD",
@@ -4582,6 +4594,10 @@
      "หอกด้ามสั้น"
     ],
     "pose": "ยืนหันหลังให้ปากเหมืองแล้วขยับริมฝีปากท่องรูน",
+    "body": {
+     "scale": 0.74,
+     "shoulders": 1.15
+    },
     "file": "03-kaz-durum",
     "country": "KD-03",
     "continent": "KD",
@@ -4692,7 +4708,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -5006,7 +5022,7 @@
     "race": "dragonkin",
     "stage": "elder",
     "fem": false,
-    "skin": "#2a8a5a",
+    "skin": "#8a3a22",
     "hairColor": "#6a1a1a",
     "eye": "#d9a030",
     "main": "#c89a2a",
@@ -5015,19 +5031,23 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "greatsword",
+    "tool": "goldsheath",
     "feats": [
      "horns"
     ],
     "wear": 0,
     "defaults": [
-     "hair",
-     "skin"
+     "hair"
     ],
     "items": [
      "ดาบใหญ่ในฝักทอง"
     ],
     "pose": "เงยหน้าฟังเสียงที่ไกลเกินกว่าห้อง",
+    "accent": "#a05a30",
+    "body": {
+     "scale": 1.36,
+     "shoulders": 1.2
+    },
     "file": "03-kaz-durum",
     "country": "KD-07",
     "continent": "KD",
@@ -5190,17 +5210,19 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": null,
-    "skin": "#4a4a4e",
+    "skin": "#3a3a3e",
     "hairColor": "#2a2a2e",
     "eye": "#ffc040",
-    "main": "#6a6a72",
-    "second": "#e8e0c8",
+    "main": "#e4e0d0",
+    "second": "#8a8a92",
     "outfit": "plate",
     "hair": "short",
     "beard": "",
     "hat": "",
     "tool": "spear",
-    "feats": [],
+    "feats": [
+     "cracks"
+    ],
     "wear": 0.45,
     "defaults": [],
     "items": [
@@ -5220,9 +5242,9 @@
     "skin": "#f6d2b0",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
-    "main": "#e8e0c8",
-    "second": "#3a4a8a",
-    "outfit": "plate",
+    "main": "#d4d4de",
+    "second": "#e8e0c8",
+    "outfit": "knight",
     "hair": "cropped",
     "beard": "",
     "hat": "",
@@ -5287,7 +5309,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "helmet",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -5493,7 +5515,7 @@
     "hair": "short",
     "beard": "short",
     "hat": "helmet",
-    "tool": "hammer",
+    "tool": "chisel",
     "feats": [
      "scar"
     ],
@@ -5612,7 +5634,7 @@
     "hair": "bun",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -5703,7 +5725,7 @@
     "hair": "ponytail",
     "beard": "braided",
     "hat": "goggles",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [
      "glasses"
     ],
@@ -7930,7 +7952,7 @@
     "race": "dragonkin",
     "stage": "elder",
     "fem": false,
-    "skin": "#9a3a2a",
+    "skin": "#c8a074",
     "hairColor": "#c8ccd8",
     "eye": "#d9a030",
     "main": "#2a3a6a",
@@ -7947,6 +7969,14 @@
      "ตราผู้แทนมังกรที่ยืมมา"
     ],
     "pose": "ลูบเกล็ดที่หลังมือเมื่อมีคนถามถิ่นกำเนิด",
+    "accent": "#2a4a9a",
+    "raceFeats": [
+     "scales",
+     "slit"
+    ],
+    "body": {
+     "gait": "normal"
+    },
     "file": "05-aldria-a",
     "country": "AL-01",
     "continent": "AL",
@@ -8092,11 +8122,11 @@
     "eye": "#1e1a1c",
     "main": "#f4efd8",
     "second": "#3a3a4a",
-    "outfit": "otherworld",
+    "outfit": "knight",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "sword",
+    "tool": "greatsword",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -8105,6 +8135,7 @@
      "เสื้อยืดจากบ้านเก่า"
     ],
     "pose": "ยืนมองมือตัวเองเหมือนนับนิ้ว",
+    "accent": "#d9a030",
     "file": "05-aldria-a",
     "country": "AL-02",
     "continent": "AL",
@@ -8123,10 +8154,12 @@
     "outfit": "priest",
     "hair": "braid",
     "beard": "",
-    "hat": "hood",
-    "tool": "book",
-    "feats": [],
-    "wear": 0.3,
+    "hat": "veil",
+    "tool": "chalk",
+    "feats": [
+     "sparkle"
+    ],
+    "wear": 0.5,
     "defaults": [
      "skin"
     ],
@@ -8365,7 +8398,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "letter",
+    "tool": "sheathed",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -8524,6 +8557,10 @@
      "โพเดียมไม้โอ๊ก"
     ],
     "pose": "ยกมือเดียวขึ้นเมื่อฝูงชนโห่",
+    "body": {
+     "shoulders": 1.18,
+     "scale": 1.02
+    },
     "file": "05-aldria-a",
     "country": "AL-06",
     "continent": "AL",
@@ -8743,12 +8780,14 @@
     "eye": "#8a8a90",
     "main": "#1a2a5a",
     "second": "#d8b040",
-    "outfit": "noble",
+    "outfit": "regal",
     "hair": "cropped",
     "beard": "moustache",
     "hat": "",
     "tool": "map",
-    "feats": [],
+    "feats": [
+     "goldjewel"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -8756,6 +8795,9 @@
      "แผนที่ทวีปฟอร์เทีย"
     ],
     "pose": "ยืนมือไขว้หลังมองแผนที่ผนัง",
+    "body": {
+     "scale": 1.05
+    },
     "file": "05-aldria-a",
     "country": "AL-08",
     "continent": "AL",
@@ -8833,9 +8875,9 @@
     "main": "#2a3a5a",
     "second": "#6a6a6a",
     "outfit": "noble",
-    "hair": "bald",
+    "hair": "cropped",
     "beard": "",
-    "hat": "helmet",
+    "hat": "feather",
     "tool": "book",
     "feats": [],
     "wear": 0.25,
@@ -8927,7 +8969,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [],
     "wear": 0.3,
     "defaults": [],
@@ -9075,7 +9117,7 @@
     "hat": "",
     "tool": "sword",
     "feats": [],
-    "wear": 0.45,
+    "wear": 0.5,
     "defaults": [
      "skin"
     ],
@@ -9342,7 +9384,7 @@
     "fem": false,
     "skin": "#c98e62",
     "hairColor": "#a8acb8",
-    "eye": "#2a2024",
+    "eye": "#ff3a3a",
     "main": "#2a1a3a",
     "second": "#ff4aa0",
     "outfit": "noble",
@@ -9350,10 +9392,13 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "mecharm",
+     "mecheye",
+     "seams"
+    ],
     "wear": 0,
     "defaults": [
-     "eye",
      "skin"
     ],
     "items": [
@@ -9361,6 +9406,7 @@
      "ตาเลนส์แดง"
     ],
     "pose": "นั่งเก้าอี้หนังมองเมืองผ่านจอหลายจอ",
+    "accent": "#ff7a30",
     "file": "05-aldria-a",
     "country": "AL-13",
     "continent": "AL",
@@ -9621,7 +9667,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "cap",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -10372,8 +10418,8 @@
     "hairColor": "#e8e6e0",
     "eye": "#6a6e78",
     "main": "#6a6a76",
-    "second": "#c8a030",
-    "outfit": "cloak",
+    "second": "#4a4a56",
+    "outfit": "cape",
     "hair": "braid",
     "beard": "braided",
     "hat": "",
@@ -10386,6 +10432,7 @@
      "ค้อนช่างหิน"
     ],
     "pose": "กุมกุญแจไว้ในกำมือใต้เสื้อคลุม",
+    "accent": "#c8a030",
     "file": "06-aldria-b",
     "country": "AL-21",
     "continent": "AL",
@@ -11029,6 +11076,7 @@
      "ดาบหักโปร่งแสง"
     ],
     "pose": "ยืนเฝ้าป้ายหลุมของตัวเองไม่ยอมนอน",
+    "raceFeats": [],
     "file": "06-aldria-b",
     "country": "AL-25",
     "continent": "AL",
@@ -11202,7 +11250,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "wide",
-    "tool": "pistol",
+    "tool": "twinpistol",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -11470,17 +11518,17 @@
     "stage": "adult",
     "fem": true,
     "skin": "#d08a62",
-    "hairColor": "#d9a030",
+    "hairColor": "#6a6e78",
     "eye": "#2a2024",
     "main": "#2a3a5a",
     "second": "#c87a3a",
-    "outfit": "scholar",
-    "hair": "braid",
+    "outfit": "miner",
+    "hair": "ponytail",
     "beard": "",
-    "hat": "",
-    "tool": "",
+    "hat": "goggles",
+    "tool": "gauge",
     "feats": [],
-    "wear": 0.3,
+    "wear": 0.5,
     "defaults": [
      "eye",
      "skin"
@@ -11593,7 +11641,7 @@
     "race": "construct",
     "stage": "adult",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#7a4c34",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
     "main": "#3a3a3a",
@@ -11602,7 +11650,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "pistol",
+    "tool": "twinpistol",
     "feats": [
      "fourarms"
     ],
@@ -11613,6 +11661,14 @@
      "แขนเหล็กที่สี่"
     ],
     "pose": "ถือปืนสองกระบอกพร้อมกันแล้วยิ้มโดยไม่ลงมือ",
+    "raceFeats": [
+     "rivets",
+     "plates"
+    ],
+    "body": {
+     "shoulders": 1.22,
+     "scale": 1.1
+    },
     "file": "07-mecharia",
     "country": "MK-02",
     "continent": "MK",
@@ -11865,12 +11921,14 @@
     "eye": "#9a2a1a",
     "main": "#3a4a3a",
     "second": "#8a7a5a",
-    "outfit": "armor",
+    "outfit": "noble",
     "hair": "cropped",
     "beard": "stubble",
     "hat": "",
-    "tool": "sword",
-    "feats": [],
+    "tool": "sheathed",
+    "feats": [
+     "goldjewel"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
@@ -11880,6 +11938,9 @@
      "ผ้าปิดหูหนึ่งข้าง"
     ],
     "pose": "ยืนสาบานเสียงดังแล้วเอียงหูฟังซาก",
+    "body": {
+     "shoulders": 1.1
+    },
     "file": "07-mecharia",
     "country": "MK-04",
     "continent": "MK",
@@ -12191,14 +12252,14 @@
    "MK06-4": {
     "name": "ผู้ทดสอบหุ่นรบ ซีโร่",
     "race": "soulmachine",
-    "stage": "infant",
+    "stage": "adult",
     "fem": null,
-    "skin": "#a8b0bc",
+    "skin": "#3c3c46",
     "hairColor": "#3a2a20",
-    "eye": "#9a2a1a",
-    "main": "#2a2a30",
-    "second": "#d84a3a",
-    "outfit": "armor",
+    "eye": "#ff3a2a",
+    "main": "#1e1e24",
+    "second": "#3a3a46",
+    "outfit": "tunic",
     "hair": "",
     "beard": "",
     "hat": "",
@@ -12207,13 +12268,16 @@
      "glow-eyes"
     ],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "ปืนกลหมุนแขนซ้าย"
     ],
     "pose": "เอียงศีรษะลงแล้วถามว่าทำไมเป้าหมายร้องไห้",
+    "body": {
+     "scale": 1.28,
+     "shoulders": 1.32,
+     "head": 0.94
+    },
     "file": "07-mecharia",
     "country": "MK-06",
     "continent": "MK",
@@ -12624,18 +12688,18 @@
     "line": "ผู้รอดชีวิตตุ๊กตา",
     "stage": "adult",
     "fem": true,
-    "skin": "#f0c8a0",
+    "skin": "#f2eae2",
     "hairColor": "#dcdee8",
     "eye": "#9ebde0",
     "main": "#c8d0d8",
     "second": "#7a8a96",
     "outfit": "tunic",
-    "hair": "short",
+    "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [],
-    "wear": 0.3,
+    "wear": 0.55,
     "defaults": [
      "outfit"
     ],
@@ -12662,7 +12726,7 @@
     "outfit": "miner",
     "hair": "tied",
     "beard": "short",
-    "hat": "",
+    "hat": "goggles",
     "tool": "",
     "feats": [],
     "wear": 0.6,
@@ -12931,7 +12995,7 @@
     "hair": "short",
     "beard": "short",
     "hat": "",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -13116,7 +13180,7 @@
     "outfit": "tunic",
     "hair": "short",
     "beard": "short",
-    "hat": "",
+    "hat": "goggles",
     "tool": "gauge",
     "feats": [],
     "wear": 0.4,
@@ -13323,27 +13387,32 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#e8bc94",
     "hairColor": "#c8ccd8",
     "eye": "#2a2024",
     "main": "#8a94a4",
     "second": "#d8d8e8",
     "outfit": "noble",
-    "hair": "short",
+    "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
-    "feats": [],
+    "tool": "pocketwatch",
+    "feats": [
+     "goldjewel"
+    ],
     "wear": 0,
     "defaults": [
-     "eye",
-     "skin"
+     "eye"
     ],
     "items": [
      "แหวนตราบริษัท",
      "สัญญากองทัพ"
     ],
     "pose": "เซ็นสัญญากองทัพด้วยปากกาทอง",
+    "body": {
+     "shoulders": 1.2,
+     "scale": 1.02
+    },
     "file": "07-mecharia",
     "country": "MK-16",
     "continent": "MK",
@@ -13518,7 +13587,7 @@
     "outfit": "robe",
     "hair": "braid",
     "beard": "",
-    "hat": "",
+    "hat": "turban",
     "tool": "sword",
     "feats": [],
     "wear": 0,
@@ -13759,7 +13828,7 @@
     "hair": "bald",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "chisel",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -13790,7 +13859,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "ledger",
+    "tool": "papyrus",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -14205,7 +14274,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "drum",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -14235,7 +14304,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "chisel",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -14263,7 +14332,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "anklebells",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -14314,8 +14383,8 @@
     "stage": "adult",
     "fem": null,
     "skin": "#b0a498",
-    "hairColor": "#1e1a1c",
-    "eye": "#2a2024",
+    "hairColor": "#585860",
+    "eye": "#a8dcf8",
     "main": "#c8b890",
     "second": "#9a8e70",
     "outfit": "cloak",
@@ -14324,17 +14393,20 @@
     "hat": "",
     "tool": "staff",
     "feats": [
-     "cyclops"
+     "cyclops",
+     "glow-eyes"
     ],
     "wear": 0,
-    "defaults": [
-     "eye"
-    ],
+    "defaults": [],
     "items": [
      "ไม้เท้าฟังหิน",
      "แถบหินสลัก"
     ],
     "pose": "แตะไม้เท้ากับหินแล้วหลับตาข้างเดียวที่เหลือ",
+    "body": {
+     "scale": 1.16,
+     "shoulders": 1.2
+    },
     "file": "08-saharan",
     "country": "SH-06",
     "continent": "SH",
@@ -14381,7 +14453,7 @@
     "hair": "braid",
     "beard": "short",
     "hat": "",
-    "tool": "hammer",
+    "tool": "smallhammer",
     "feats": [],
     "wear": 0.35,
     "defaults": [
@@ -14657,6 +14729,7 @@
      "ผ้าพันมือ"
     ],
     "pose": "ปีนบันไดทีละขั้นด้วยมือเปล่าแล้วหยุดหายใจ",
+    "accent": "#c09a4c",
     "file": "08-saharan",
     "country": "SH-09",
     "continent": "SH",
@@ -15200,29 +15273,36 @@
     "race": "ghoul",
     "stage": "adult",
     "fem": true,
-    "skin": "#1e1a1c",
-    "hairColor": "#3a2a20",
-    "eye": "#9e7fb3",
+    "skin": "#4a3c5c",
+    "hairColor": "#2e2244",
+    "eye": "#c8b0f8",
     "main": "#261938",
     "second": "#a890d0",
     "outfit": "robe",
-    "hair": "wild",
+    "hair": "long",
     "beard": "",
     "hat": "crown",
     "tool": "",
     "feats": [
-     "ghost",
-     "glow-eyes"
+     "glow-eyes",
+     "tallcollar",
+     "sparkle"
     ],
-    "wear": 0.4,
-    "defaults": [
-     "hairColor"
-    ],
+    "wear": 0,
+    "defaults": [],
     "items": [
      "มงกุฎเงินจาง"
     ],
     "pose": "ลอยกลางลานนั่งบนบัลลังก์ที่โปร่งแสง",
     "accent": "#c8ccd8",
+    "raceFeats": [],
+    "body": {
+     "scale": 1.16,
+     "shoulders": 0.9,
+     "head": 0.96,
+     "ears": "pointed",
+     "gait": "float"
+    },
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -15233,25 +15313,28 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#9a9a9a",
+    "skin": "#7a86a6",
     "hairColor": "#1e1a1c",
-    "eye": "#e8e6e0",
+    "eye": "#ffffff",
     "main": "#4a3a5a",
     "second": "#8a90a8",
-    "outfit": "tunic",
-    "hair": "wild",
+    "outfit": "robe",
+    "hair": "",
     "beard": "",
     "hat": "turban",
-    "tool": "",
-    "feats": [],
-    "wear": 0.55,
-    "defaults": [
-     "outfit"
+    "tool": "bowl",
+    "feats": [
+     "glow-eyes"
     ],
+    "wear": 0.55,
+    "defaults": [],
     "items": [
      "รถเข็นอาหารเงา"
     ],
     "pose": "ยื่นอาหารให้ลูกค้าแล้วหันหน้าหนีเมื่อถูกถามชื่อ",
+    "body": {
+     "gait": "glide"
+    },
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -15284,6 +15367,7 @@
      "ไม่มี"
     ],
     "pose": "เกาะแขนผู้ผ่านทางแล้วถามว่ารู้จักพ่อแม่ไหม",
+    "raceFeats": [],
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -15313,6 +15397,7 @@
      "หอกยามโปร่งแสง"
     ],
     "pose": "ยืนเฝ้าประตูเมืองไม่ขยับตลอดวัน",
+    "raceFeats": [],
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -15356,21 +15441,27 @@
     "eye": "#3f2918",
     "main": "#3a5a3a",
     "second": "#2f4a2f",
-    "outfit": "tunic",
+    "outfit": "noble",
     "hair": "short",
-    "beard": "short",
+    "beard": "braided",
     "hat": "turban",
     "tool": "sword",
-    "feats": [],
-    "wear": 0,
-    "defaults": [
-     "outfit"
+    "feats": [
+     "beads",
+     "goldjewel"
     ],
+    "wear": 0,
+    "defaults": [],
     "items": [
      "ถุงเหรียญเหล็ก",
      "ดาบโค้ง"
     ],
     "pose": "นับเหรียญเหล็กทีละเหรียญลงโต๊ะ",
+    "body": {
+     "shoulders": 1.42,
+     "scale": 0.98
+    },
+    "accent": "#d9a030",
     "file": "08-saharan",
     "country": "SH-15",
     "continent": "SH",
@@ -15493,6 +15584,7 @@
      "เศษเกาะหินจิ๋ว"
     ],
     "pose": "ลูบเศษเกาะแล้วบอกว่าเกาะเคยอยู่ที่นี่",
+    "accent": "#8d7359",
     "file": "08-saharan",
     "country": "SH-16",
     "continent": "SH",
@@ -15637,7 +15729,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "veil",
-    "tool": "hammer",
+    "tool": "chisel",
     "feats": [],
     "wear": 0.35,
     "defaults": [
@@ -16204,21 +16296,19 @@
     "race": "human",
     "stage": "child",
     "fem": true,
-    "skin": "#7a4a2a",
+    "skin": "#f0cfae",
     "hairColor": "#947f6f",
     "eye": "#3a7a3a",
-    "main": "#a8c89a",
-    "second": "#f0e8d8",
+    "main": "#f0e8d8",
+    "second": "#a8c89a",
     "outfit": "cloak",
     "hair": "braid",
     "beard": "",
-    "hat": "",
+    "hat": "laurel",
     "tool": "",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "ดอกไม้ลอยรอบศีรษะ"
     ],
@@ -16689,7 +16779,7 @@
     "main": "#4a6a4a",
     "second": "#e8e0c0",
     "outfit": "leather",
-    "hair": "braid",
+    "hair": "ponytail",
     "beard": "",
     "hat": "",
     "tool": "bow",
@@ -16716,9 +16806,9 @@
     "skin": "#d8b890",
     "hairColor": "#3f2918",
     "eye": "#3a7a3a",
-    "main": "#3a4a3a",
-    "second": "#c8c0a0",
-    "outfit": "leather",
+    "main": "#6a7a6a",
+    "second": "#3a4a3a",
+    "outfit": "cloak",
     "hair": "braid",
     "beard": "",
     "hat": "cap",
@@ -16780,7 +16870,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "spyglass",
+    "tool": "lantern",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -17370,6 +17460,7 @@
      "กิ่งไม้ไม่เหี่ยว"
     ],
     "pose": "ลอยนิ่งเหนือพื้นมองฟ้าไม่ยอมหลับ",
+    "raceFeats": [],
     "file": "09-silvanel",
     "country": "SV-13",
     "continent": "SV",
@@ -17385,11 +17476,11 @@
     "eye": "#3a7a3a",
     "main": "#3a3a40",
     "second": "#c8d070",
-    "outfit": "cape",
-    "hair": "wild",
+    "outfit": "dress",
+    "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bouquet",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -17440,25 +17531,30 @@
     "race": "human",
     "stage": "adult",
     "fem": null,
-    "skin": "#c98e62",
+    "skin": "#2a2220",
     "hairColor": "#1e1a1c",
-    "eye": "#e0a278",
-    "main": "#1a2a1a",
-    "second": "#5a3a2a",
+    "eye": "#ff9a30",
+    "main": "#5a3a2a",
+    "second": "#1a2a1a",
     "outfit": "cloak",
     "hair": "long",
     "beard": "",
     "hat": "hood",
     "tool": "axe",
-    "feats": [],
-    "wear": 0,
-    "defaults": [
-     "skin"
+    "feats": [
+     "glow-eyes",
+     "embers"
     ],
+    "wear": 0,
+    "defaults": [],
     "items": [
      "ขวานโค่นโลกด้ามรากไม้ดำ"
     ],
     "pose": "ยืนนิ่งใต้ต้นไม้ที่เหี่ยวแล้วยกขวานช้า ๆ",
+    "body": {
+     "scale": 1.3,
+     "shoulders": 1.2
+    },
     "file": "09-silvanel",
     "country": "SV-14",
     "continent": "SV",
@@ -17748,7 +17844,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "drum",
     "feats": [
      "antlers"
     ],
@@ -18286,13 +18382,11 @@
     "main": "#7a7a7a",
     "second": "#a02a3a",
     "outfit": "rags",
-    "hair": "wild",
+    "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [
-     "bandage"
-    ],
+    "tool": "sleepingchild",
+    "feats": [],
     "wear": 0.75,
     "defaults": [],
     "items": [
@@ -18343,10 +18437,10 @@
     "eye": "#9a2a1a",
     "main": "#f0f0f0",
     "second": "#6a1a1a",
-    "outfit": "cape",
+    "outfit": "priest",
     "hair": "long",
     "beard": "",
-    "hat": "",
+    "hat": "veil",
     "tool": "beads",
     "feats": [],
     "wear": 0.4,
@@ -18359,6 +18453,10 @@
      "ถุงมือกำมะหยี่"
     ],
     "pose": "คุกเข่าสวดข้างหน้าต่างกระจกสีแล้วถอยหนีเงาแสงจากกระจก",
+    "raceFeats": [
+     "fangs",
+     "redeyes"
+    ],
     "file": "10-nebulia",
     "country": "NB-02",
     "continent": "NB",
@@ -18379,7 +18477,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "staff",
+    "tool": "lantern",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -19044,7 +19142,7 @@
     "hair": "short",
     "beard": "moustache",
     "hat": "",
-    "tool": "greatsword",
+    "tool": "greatsheath",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -19064,12 +19162,12 @@
     "stage": "adult",
     "fem": true,
     "skin": "#8a8a90",
-    "hairColor": "#3a2a20",
+    "hairColor": "#aabfd8",
     "eye": "#6a9ad0",
     "main": "#83a1bd",
     "second": "#d8e0f0",
     "outfit": "priest",
-    "hair": "wild",
+    "hair": "long",
     "beard": "",
     "hat": "",
     "tool": "",
@@ -19078,13 +19176,12 @@
      "glow-eyes"
     ],
     "wear": 0,
-    "defaults": [
-     "hairColor"
-    ],
+    "defaults": [],
     "items": [
      "ผ้าคลุมพิธีเมืองปฐม"
     ],
     "pose": "ลอยนิ่งหน้าประตูมองเมืองที่จมไปแล้ว",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-08",
     "continent": "NB",
@@ -19146,6 +19243,7 @@
      "กุญแจความทรงจำเมฆาเรืองฟ้า"
     ],
     "pose": "ยืนกุมกุญแจแน่นที่อกและหันหลังเมื่อมีคนเข้าใกล้",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-08",
     "continent": "NB",
@@ -19156,23 +19254,19 @@
     "race": "human",
     "stage": "adult",
     "fem": null,
-    "skin": "#7a4a2a",
+    "skin": "#8c909c",
     "hairColor": "#616165",
     "eye": "#a8acb8",
-    "main": "#2a2a30",
-    "second": "#b8b8c8",
+    "main": "#b8b8c8",
+    "second": "#2c2c34",
     "outfit": "cloak",
     "hair": "cropped",
     "beard": "",
     "hat": "hood",
     "tool": "",
-    "feats": [
-     "mask"
-    ],
+    "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "หน้ากากเหล็กตัวเลขศูนย์"
     ],
@@ -19339,11 +19433,11 @@
    "NB10-3": {
     "name": "หุ่นหนีนาย แจ็ค",
     "race": "soulmachine",
-    "stage": "infant",
+    "stage": "teen",
     "fem": null,
-    "skin": "#7a8294",
+    "skin": "#2e4068",
     "hairColor": "#3a2a20",
-    "eye": "#d8c030",
+    "eye": "#f0dc40",
     "main": "#3a4a6a",
     "second": "#c8a030",
     "outfit": "tunic",
@@ -19351,8 +19445,10 @@
     "beard": "",
     "hat": "",
     "tool": "bag",
-    "feats": [],
-    "wear": 0.4,
+    "feats": [
+     "glow-eyes"
+    ],
+    "wear": 0.7,
     "defaults": [
      "outfit"
     ],
@@ -19410,7 +19506,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "dagger",
+    "tool": "chisel",
     "feats": [
      "mask"
     ],
@@ -19440,7 +19536,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "dagger",
+    "tool": "chisel",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -19532,7 +19628,7 @@
     "eye": "#616165",
     "main": "#344e66",
     "second": "#8a7a5a",
-    "outfit": "sailor",
+    "outfit": "noble",
     "hair": "tied",
     "beard": "",
     "hat": "",
@@ -19722,6 +19818,7 @@
      "ไม่มี"
     ],
     "pose": "เดินวนรอบผู้คนเพื่อดูว่าใครมีเงาที่ขาด",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-13",
     "continent": "NB",
@@ -19906,7 +20003,7 @@
     "skin": "#f0c49a",
     "hairColor": "#5a3a22",
     "eye": "#5a3a22",
-    "main": "#8a9d71",
+    "main": "#295529",
     "second": "#a89a60",
     "outfit": "scholar",
     "hair": "curly",
@@ -19933,7 +20030,7 @@
     "skin": "#7a4a2a",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
-    "main": "#a27a42",
+    "main": "#6a9ad0",
     "second": "#d8d0b0",
     "outfit": "sailor",
     "hair": "braid",
@@ -19959,7 +20056,7 @@
     "skin": "#a06a42",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
-    "main": "#d39351",
+    "main": "#5c4b33",
     "second": "#e8d8a0",
     "outfit": "light",
     "hair": "curly",
@@ -20015,7 +20112,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "slate",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -20036,7 +20133,7 @@
     "skin": "#f0c8a0",
     "hairColor": "#8a6030",
     "eye": "#3a7a3a",
-    "main": "#756f37",
+    "main": "#295529",
     "second": "#a89868",
     "outfit": "leather",
     "hair": "wild",
@@ -20092,7 +20189,7 @@
     "hairColor": "#8a6030",
     "eye": "#5a3a22",
     "main": "#a4a249",
-    "second": "#e04848",
+    "second": "#c8b890",
     "outfit": "apron",
     "hair": "curly",
     "beard": "",
@@ -20113,7 +20210,7 @@
    "MH01-3S": {
     "name": "กอร์ทา",
     "race": "orc",
-    "stage": "adult",
+    "stage": "teen",
     "fem": null,
     "skin": "#6f9a4f",
     "hairColor": "#1e1a1c",
@@ -20132,6 +20229,9 @@
     ],
     "items": [],
     "pose": "",
+    "body": {
+     "shoulders": 1.3
+    },
     "of": "MH01-3",
     "age": 16,
     "seen": "ไหล่กว้างกว่าวัย ขวานด้ามสั้นไม่เคยลับ ผมสีดำถักเปียสั้น ตาสีเหลืองอำพัน ชุดหนังหยาบ",
@@ -20173,13 +20273,13 @@
     "skin": "#c98e62",
     "hairColor": "#1e1a1c",
     "eye": "#5a3a22",
-    "main": "#8091a0",
+    "main": "#8a8a90",
     "second": "#f0f0f0",
     "outfit": "cloak",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "letter",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -20201,7 +20301,7 @@
     "skin": "#c89870",
     "hairColor": "#3f2918",
     "eye": "#9ebde0",
-    "main": "#8991a2",
+    "main": "#5a3a22",
     "second": "#a8a8b0",
     "outfit": "leather",
     "hair": "short",
@@ -20253,25 +20353,32 @@
     "race": "winged",
     "stage": "adult",
     "fem": null,
-    "skin": "#e0b890",
+    "skin": "#8ab8e0",
     "hairColor": "#3a2a20",
     "eye": "#8a8a90",
-    "main": "#97b6a6",
+    "main": "#6a9ad0",
     "second": "#f0f8ff",
     "outfit": "light",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrench",
     "feats": [],
     "wear": 0.4,
     "defaults": [
      "hair",
-     "hairColor",
-     "skin"
+     "hairColor"
     ],
     "items": [],
     "pose": "",
+    "line": "ชาวน้ำฟ้า",
+    "accent": "#9ad0f0",
+    "raceFeats": [
+     "wings:feather",
+     "sunstrap",
+     "goldcirclet",
+     "gills"
+    ],
     "of": "AZ06-4",
     "age": 34,
     "seen": "เกล็ดปลาติดผมและเสื้อ มือถือประแจเล็ก ผมสีน้ำตาลแดงหยิกสั้น ตาสีเทาฟ้า เสื้อฝ้ายสีฟ้าซีด",
@@ -20338,7 +20445,7 @@
     "skin": "#c06070",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
-    "main": "#7d3c4c",
+    "main": "#8a8a90",
     "second": "#8ac84a",
     "outfit": "light",
     "hair": "curly",
@@ -20401,7 +20508,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "",
-    "tool": "hammer",
+    "tool": "",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -20451,7 +20558,7 @@
     "second": "#c8a030",
     "outfit": "light",
     "hair": "braid",
-    "beard": "long",
+    "beard": "short",
     "hat": "",
     "tool": "",
     "feats": [],
@@ -20474,7 +20581,7 @@
     "skin": "#6a5a80",
     "hairColor": "#c8ccd8",
     "eye": "#8a7ac0",
-    "main": "#8d4771",
+    "main": "#8a8a90",
     "second": "#e8e0f0",
     "outfit": "leather",
     "hair": "wild",
@@ -20500,7 +20607,7 @@
     "race": "dragonkin",
     "stage": "adult",
     "fem": null,
-    "skin": "#b04a3a",
+    "skin": "#8a4a2a",
     "hairColor": "#1e1a1c",
     "eye": "#d9a030",
     "main": "#2a2a2f",
@@ -20512,11 +20619,10 @@
     "tool": "",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [],
     "pose": "",
+    "accent": "#2a5a3a",
     "of": "KD07-3",
     "age": 48,
     "seen": "เกล็ดคอเขียวเข้ม แว่นนักบินแตกร้าว ผมสีดำสั้นเกรียน เสื้อหนังนักบิน",
@@ -20527,7 +20633,7 @@
     "race": "slime",
     "stage": "adult",
     "fem": null,
-    "skin": "#e07ab0",
+    "skin": "#a8c8e8",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#5f80ad",
@@ -20537,15 +20643,19 @@
     "beard": "",
     "hat": "",
     "tool": "compass",
-    "feats": [],
+    "feats": [
+     "swallowed"
+    ],
     "wear": 0,
     "defaults": [
      "outfit",
-     "eye",
-     "skin"
+     "eye"
     ],
     "items": [],
     "pose": "",
+    "body": {
+     "scale": 0.55
+    },
     "of": "NR03-6",
     "age": 44,
     "seen": "ก้อนใสขนาดกำปั้น มีเส้นสีน้ำเงินลอยภายใน ถือเข็มทิศจิ๋วไว้ในเนื้อ",
@@ -20559,7 +20669,7 @@
     "skin": "#5a9a6a",
     "hairColor": "#2a4a2a",
     "eye": "#c8d030",
-    "main": "#747d70",
+    "main": "#8a8a90",
     "second": "#e8e8f0",
     "outfit": "cape",
     "hair": "braid",
@@ -20616,7 +20726,7 @@
     "skin": "#a0d8c0",
     "hairColor": "#2a6a8a",
     "eye": "#8a8a90",
-    "main": "#86bbdc",
+    "main": "#3a7a3a",
     "second": "#f4e8f0",
     "outfit": "light",
     "hair": "long",
@@ -20670,7 +20780,7 @@
     "skin": "#d8b890",
     "hairColor": "#e8e6e0",
     "eye": "#3a7a3a",
-    "main": "#52784f",
+    "main": "#2a4a2a",
     "second": "#b8a060",
     "outfit": "leather",
     "hair": "ponytail",
@@ -20697,7 +20807,7 @@
     "skin": "#e0a878",
     "hairColor": "#5a3a22",
     "eye": "#5a3a22",
-    "main": "#669f5e",
+    "main": "#b3d3a6",
     "second": "#8ab0c8",
     "outfit": "light",
     "hair": "curly",
@@ -20724,7 +20834,7 @@
     "skin": "#d08a62",
     "hairColor": "#6a6e78",
     "eye": "#8a8a90",
-    "main": "#8a7564",
+    "main": "#3f2918",
     "second": "#a8a8b0",
     "outfit": "leather",
     "hair": "braid",
@@ -20801,11 +20911,11 @@
    "MK03-6S": {
     "name": "ไรเวอร์-10",
     "race": "soulmachine",
-    "stage": "infant",
+    "stage": "teen",
     "fem": null,
-    "skin": "#7a8294",
+    "skin": "#b8c0cc",
     "hairColor": "#3a2a20",
-    "eye": "#2a3a7a",
+    "eye": "#4a7aff",
     "main": "#80a3b7",
     "second": "#6a8a6a",
     "outfit": "tunic",
@@ -20813,7 +20923,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "glow-eyes"
+    ],
     "wear": 0,
     "defaults": [
      "outfit"
@@ -20833,7 +20945,7 @@
     "skin": "#d8a070",
     "hairColor": "#3f2918",
     "eye": "#5a3a22",
-    "main": "#5d5057",
+    "main": "#6a6e78",
     "second": "#c87a3a",
     "outfit": "scholar",
     "hair": "ponytail",
@@ -20863,7 +20975,7 @@
     "skin": "#ece6dc",
     "hairColor": "#dcdee8",
     "eye": "#6a9ad0",
-    "main": "#c6bba9",
+    "main": "#e8e6e0",
     "second": "#7a8a96",
     "outfit": "light",
     "hair": "long",
@@ -20942,7 +21054,7 @@
     "skin": "#f6e0d0",
     "hairColor": "#d9a030",
     "eye": "#6a9ad0",
-    "main": "#b5bdad",
+    "main": "#e8e6e0",
     "second": "#5a8a6a",
     "outfit": "robe",
     "hair": "wild",
@@ -20970,7 +21082,7 @@
     "skin": "#e8b48a",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
-    "main": "#6a6459",
+    "main": "#978622",
     "second": "#e8e0c8",
     "outfit": "light",
     "hair": "braid",
@@ -21051,7 +21163,7 @@
     "skin": "#8a7aa0",
     "hairColor": "#dcdee8",
     "eye": "#8a7ac0",
-    "main": "#613c40",
+    "main": "#8c8f97",
     "second": "#a8b0d8",
     "outfit": "robe",
     "hair": "long",
@@ -21078,7 +21190,7 @@
     "skin": "#f0e0d0",
     "hairColor": "#8a8a90",
     "eye": "#c8a030",
-    "main": "#704a4c",
+    "main": "#616165",
     "second": "#8a8a86",
     "outfit": "leather",
     "hair": "wild",
@@ -21104,22 +21216,25 @@
     "stage": "adult",
     "fem": null,
     "skin": "#e0b080",
-    "hairColor": "#5a3a22",
+    "hairColor": "#8a6a48",
     "eye": "#d8c030",
-    "main": "#af8160",
+    "main": "#b0845a",
     "second": "#6a8a5a",
     "outfit": "light",
-    "hair": "curly",
+    "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
+    "tool": "letter",
+    "feats": [
+     "wings:feather"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
     ],
     "items": [],
     "pose": "",
+    "accent": "#c8a070",
     "of": "SV11-2",
     "age": 30,
     "seen": "ขนปีกยังไม่ครบ กระบอกสารเล็กผูกขา ผมสีน้ำตาลสั้นฟู ตาสีเหลือง เสื้อฝ้ายสีน้ำตาลอ่อน",
@@ -21133,12 +21248,12 @@
     "skin": "#f0e8e0",
     "hairColor": "#1e1a1c",
     "eye": "#bd756a",
-    "main": "#d1b0b5",
+    "main": "#5a5a63",
     "second": "#6a1a1a",
     "outfit": "priest",
     "hair": "bun",
     "beard": "",
-    "hat": "",
+    "hat": "veil",
     "tool": "",
     "feats": [],
     "wear": 0.4,
@@ -21158,7 +21273,7 @@
     "skin": "#6a5a80",
     "hairColor": "#c8ccd8",
     "eye": "#8a7ac0",
-    "main": "#8d3c34",
+    "main": "#33241a",
     "second": "#1a1a20",
     "outfit": "leather",
     "hair": "tied",
@@ -21186,8 +21301,8 @@
     "hairColor": "#dcdee8",
     "eye": "#8a7ac0",
     "main": "#8a8d9f",
-    "second": "#5a4a6a",
-    "outfit": "robe",
+    "second": "#1e1a24",
+    "outfit": "cloak",
     "hair": "wild",
     "beard": "",
     "hat": "",
@@ -21212,7 +21327,7 @@
     "skin": "#e8b48a",
     "hairColor": "#3f2918",
     "eye": "#8a8a90",
-    "main": "#978564",
+    "main": "#3f2918",
     "second": "#8a6a6a",
     "outfit": "rags",
     "hair": "braid",
@@ -21239,7 +21354,7 @@
     "skin": "#f6d2b0",
     "hairColor": "#1e1a1c",
     "eye": "#5a3a22",
-    "main": "#354f68",
+    "main": "#4a5878",
     "second": "#b8a060",
     "outfit": "light",
     "hair": "long",
@@ -21266,7 +21381,7 @@
     "skin": "#f0c8a0",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
-    "main": "#a36f55",
+    "main": "#d8c8a0",
     "second": "#c8c0a0",
     "outfit": "cloak",
     "hair": "braid",
@@ -21348,7 +21463,7 @@
     "skin": "#a06a42",
     "hairColor": "#8a6030",
     "eye": "#6a9ad0",
-    "main": "#6d705d",
+    "main": "#757fa9",
     "second": "#6a5a3a",
     "outfit": "light",
     "hair": "short",

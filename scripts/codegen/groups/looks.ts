@@ -11,7 +11,7 @@ import type { NpcRow } from '../../../src/core/data/types-npcs';
 import type { Successor } from '../../../src/core/data/types-bonds';
 import {
   ANIMAL_EARS, BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_EXTRA, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
-  crownAccentOf, SPIRIT, SPIRIT_SKIN, skinLeadColour, nearestOrOwn, skinToneOf, stripNegated, wingAccentOf, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
+  crownAccentOf, garmentColour, PERSON_FIX, sheathOf, SPIRIT, SPIRIT_SKIN, skinLeadColour, nearestOrOwn, skinToneOf, stripNegated, wingAccentOf, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
   mix, nearest, outfitFromGarments, hatOfRace, dressColours, RACE_TOOL_RULES, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
 } from '../lib/look-words';
 import { genDir, listDocs, readDoc, tables, Unparsed, writeGen } from '../lib/table';
@@ -207,6 +207,7 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   }
   // tool
   const tp = toolOf(s.items, desc);
+  tp.tool = sheathOf(tp.tool, `${s.items.join(' ')} ${pos}`);
   for (const m of tp.miss) miss('ของ', m);
   // colours
   if (!s.main) defaults.push('main');
@@ -224,7 +225,15 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
     name: s.name, race: s.race, ...(ln ? { line: ln.name } : {}), stage: s.stage, fem, skin, hairColor, eye, main, second, outfit,
     hair, beard, hat, tool: tp.tool ?? '', feats: [...(spirit ? ['ghost'] : []), ...featsOf(pos, s.items)], wear: wearOf(text), defaults, items: s.items, pose: s.pose,
     ...(accent ? { accent } : {}), ...(ears ? { ears } : {}),
+    // a spirit has the body of its race but none of its flesh: the ribs, the claws and the hunger of a ghoul are not drawn on a ghost
+    ...(spirit ? { raceFeats: [] as string[] } : {}),
   };
+  // what the words cannot carry for this one person (PERSON_FIX of look-words.ts); a field the fix sets is no default any more
+  const fix = PERSON_FIX[s.id];
+  if (fix) {
+    Object.assign(row, fix);
+    row.defaults = defaults.filter((d) => !(d in fix) && !(d === 'main' && fix.main) && !(d === 'second' && fix.second));
+  }
   return row;
 }
 
@@ -275,7 +284,7 @@ function successorSources(races: Record<string, RaceLookRow>, succ: Successor[],
     const proto = npcLooks[s.proto];
     const raceAcc = races[race].accents;
     // the colours of the original, the main one blended toward the race's accent so the heir reads as the next in the line
-    const main = proto ? mix(proto.main, pickBy(raceAcc, code), 0.3) : null;
+    const main = garmentColour(seen) ?? (proto ? mix(proto.main, pickBy(raceAcc, code), 0.3) : null);
     out.push({
       s,
       src: { id: code, name, role: '', raceText: s.race, stage, desc: seen, items: [], pose: '', main, second: proto?.second ?? null, race, file: SUCC_DOC, line: r.line, extra: oddity },
@@ -311,6 +320,7 @@ export default function run() {
     successors[src.id] = { ...personLook(src, ui), of: s.proto, age: s.age, seen: src.desc, oddity: src.extra ?? '' };
   }
 
+  for (const id of Object.keys(PERSON_FIX)) if (!npcs[id] && !successors[id]) fail(`PERSON_FIX names ${id}, who is neither an NPC nor a successor`);
   const counts = { races: Object.keys(ui).length, lines: Object.values(ui).reduce((n, r) => n + r.lines.length, 0), npcs: Object.keys(npcs).length, successors: Object.keys(successors).length, unmatched: un.count };
   const data: LooksData = { counts, races: ui, npcs, successors };
   const sources = [RACES_DOC, LORE_RACES, SUCC_DOC, ...listDocs('docs/appearance/npcs', NPC_FILE), 'data/gen/npcs.json', 'data/gen/races.json', 'data/gen/bonds.json'];
