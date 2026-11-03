@@ -11,6 +11,7 @@ import { paintFlyer } from './flyer';
 import { paintGiant } from './giant';
 import { FRAMES, MAX_H, Pen, applyDie, blank, flash, motion, over, type Ctx, type Info } from './kit';
 import { personLookOf, type BeastLook } from './look';
+import { paintMounted } from './mount';
 import { paintPlant } from './plant';
 import { paintQuad } from './quad';
 import { paintSea } from './sea';
@@ -79,7 +80,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
 export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
   const group = L.kind === 'enemy' && !!L.swarm && !L.cloud && L.plan !== 'swarm' ? SHOWN[L.size] : 1;
   const one = (ff: number, i: number): Frame =>
-    isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
+    L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
   if (group === 1) return one(f, 0);
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h), offs = OFFSETS[group];
   const spec = POSE_OF[pose];

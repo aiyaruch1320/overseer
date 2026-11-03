@@ -27,6 +27,9 @@ export interface PersonParts {
   feats: string[];
 }
 
+/** What a rider sits on (the mount painter draws it under the person): a war horse, a wolf, a sand worm. */
+export type MountKind = 'horse' | 'wolf' | 'worm';
+
 export interface EnemyLook {
   kind: 'enemy';
   id: string;
@@ -67,6 +70,8 @@ export interface EnemyLook {
   words: string[];
   /** only for the humanoid plan */
   parts: PersonParts | null;
+  /** a rider on a mount (words of the name, the description or the idle pose: `ขี่ม้า` `นั่งบนหมาป่า` `ผู้ขี่หนอน`); null on foot */
+  mount: MountKind | null;
 }
 
 export interface DragonLook {

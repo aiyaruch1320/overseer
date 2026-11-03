@@ -3,7 +3,7 @@
 // Nothing is guessed from chance: every field is a value of the row, a word of the row mapped to a painter feature, or (for the few non-human
 // bodies that no kind word names) the form table below, which says `guess` in the `planBy` field.
 import type {
-  AtkKind, BeastLooksData, BeastPlan, DieKind, DragonLook, EnemyLook, PersonParts, SizeClass,
+  AtkKind, BeastLooksData, BeastPlan, DieKind, DragonLook, EnemyLook, MountKind, PersonParts, SizeClass,
 } from '../../../src/core/data/types-beast-looks';
 import { FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../../src/art/parts/ids';
 import { finish, Unparsed } from '../helpers-m0b';
@@ -62,6 +62,10 @@ const FEATURE_WORDS: [string, RegExp][] = [
   ['moss', /มอส/], ['mushrooms', /เห็ด|สปอร์/], ['runes', /รูน/], ['gears', /เฟือง/], ['chain', /โซ่/], ['lantern', /โคม|ตะเกียง/], ['book', /คัมภีร์|สมุด/], ['throne', /บัลลังก์/],
   ['tentacles', /หนวด/], ['tail', /หาง/], ['eggs', /ไข่/], ['horse', /บนม้า/], ['bandage', /ผ้าพัน/], ['armor', /เกราะ/], ['sand', /ทราย/], ['coral', /ปะการัง/],
 ];
+
+/** The mount of a rider: the words of the name cell, the description or the idle pose that put a person on an animal. */
+const MOUNT_WORDS: [RegExp, MountKind][] = [[/ขี่ม้า|บนม้า|ม้าศึก/, 'horse'], [/นั่งบนหมาป่า|ขี่หมาป่า/, 'wolf'], [/ขี่หนอน|ผู้ขี่หนอน/, 'worm']];
+const mountOf = (text: string): MountKind | null => { for (const [re, m] of MOUNT_WORDS) if (re.test(text)) return m; return null; };
 
 // ── vocabulary of the parts of a person ─────────────────────────────────────────────────────────────────────────────────────────────
 const pick = <T extends string>(set: readonly T[], id: string): T | '' => (set as readonly string[]).includes(id) ? (id as T) : '';
@@ -183,6 +187,7 @@ function parseEnemy(r: Raw): EnemyLook {
     main: colors[1].toLowerCase(), second: colors[2].toLowerCase(), eye: (eyeC?.hex ?? '#1e1a22').toLowerCase(), eyeLabel: eyeC?.label ?? 'ตา', eyeGiven: !!eyeC,
     extra: named.filter((n) => n !== eyeC), plan, form, planBy,
     poses: { idle: poses[1].trim(), atk: atk.trim(), die: die.trim() }, atkKind: atkKindOf(atk), dieKind: dk, words, parts,
+    mount: plan === 'humanoid' && form === 'person' ? mountOf(`${r.nameCell} ${r.desc} ${poses[1]}`) : null,
   };
 }
 
