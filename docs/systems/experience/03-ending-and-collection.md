@@ -48,7 +48,7 @@
 | --- | --- | --- |
 | เส้นเรื่อง (โหนดที่เคยผ่าน) | 523 (ไม่นับโหนดสำรอง 43 จาก 566) | [../../lore/storylines/README.md](../../lore/storylines/README.md) |
 | อาชีพลับ | 26 | [../character/10-jobs-secret.md](../character/10-jobs-secret.md) |
-| สัตว์คู่หู | 103 ชนิด | [../character/15-companion-species.md](../character/15-companion-species.md) 102 · `sp_slime_lover` ของ [../character/17-slime-romance.md](../character/17-slime-romance.md) 1 |
+| สัตว์คู่หู | 103 ชนิด | [../character/15-companion-species.md](../character/15-companion-species.md) 102 · `sp_slime_lover` ของ [../character/17-companion-support.md](../character/17-companion-support.md) 1 |
 | เครื่องรางโบราณ | 24 | [../items/14-talismans.md](../items/14-talismans.md) |
 | อาวุธระดับตำนาน | 36 | [../items/08-legendary.md](../items/08-legendary.md) |
 | จุดบรรจบ | 16 | [../../lore/storylines/00-convergence.md](../../lore/storylines/00-convergence.md) |
