@@ -1,0 +1,114 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+import type { LooksData } from '../../src/core/data/types-looks';
+import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
+import { npcLook, raceLook, successorLook } from '../../src/art/resolve';
+import type { PersonLook, Stage } from '../../src/art/look';
+
+const looks = (JSON.parse(readFileSync('data/gen/looks.json', 'utf8')) as { items: LooksData }).items;
+const HEX = /^#[0-9a-f]{6}$/i;
+const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
+const has = (id: string, all: readonly string[]) => id === '' || all.includes(id);
+
+function check(L: PersonLook, what: string): void {
+  expect(L.kind, what).toBe('person');
+  for (const c of [L.skin, L.hairColor, L.eye, L.accent, L.main, L.second]) expect(c, what).toMatch(HEX);
+  expect(has(L.outfit, OUTFIT_IDS), `${what} outfit ${L.outfit}`).toBe(true);
+  expect(has(L.hair, HAIR_IDS), `${what} hair ${L.hair}`).toBe(true);
+  expect(has(L.beard, BEARD_IDS), `${what} beard ${L.beard}`).toBe(true);
+  expect(has(L.hat, HAT_IDS), `${what} hat ${L.hat}`).toBe(true);
+  expect(has(L.tool, TOOL_IDS), `${what} tool ${L.tool}`).toBe(true);
+  for (const f of L.feats) expect(FEAT_IDS as readonly string[], `${what} feat ${f}`).toContain(f);
+  expect(L.body.scale, what).toBeGreaterThan(0);
+  expect(L.wear, what).toBeGreaterThanOrEqual(0);
+  expect(L.wear, what).toBeLessThanOrEqual(1);
+}
+
+describe('resolve: NPCs', () => {
+  it('every NPC resolves to a complete Look keyed by its id', () => {
+    const ids = Object.keys(looks.npcs);
+    expect(ids.length).toBe(614);
+    for (const id of ids) {
+      const L = npcLook(looks, id);
+      check(L, id);
+      expect(L.key).toBe(id);
+      expect(L.race).toBe(looks.npcs[id].race);
+    }
+  });
+  it('is deterministic and JSON-clean', () => {
+    for (const id of Object.keys(looks.npcs)) {
+      const a = npcLook(looks, id), b = npcLook(looks, id);
+      expect(a).toEqual(b);
+      expect(JSON.parse(JSON.stringify(a))).toEqual(a);
+    }
+  });
+  it('a sub-line changes the body and the race feats it shows', () => {
+    const scale = npcLook(looks, 'AZ01-2'); // ปีกเกล็ด
+    expect(scale.feats).toContain('wings:scale');
+    expect(scale.feats).not.toContain('wings:feather');
+    expect(npcLook(looks, 'AZ01-1').feats).toContain('wings:feather');
+  });
+  it('opts change the stage and the sex of one Look only', () => {
+    const base = npcLook(looks, 'KD01-1');
+    const kid = npcLook(looks, 'KD01-1', { stage: 'child', fem: true });
+    expect(kid.stage).toBe('child');
+    expect(kid.fem).toBe(true);
+    expect(kid.beard).toBe('');
+    expect(base.beard).toBe('long');
+    expect(npcLook(looks, 'KD01-1')).toEqual(base);
+  });
+  it('an unknown id is an error', () => {
+    expect(() => npcLook(looks, 'XX00-0')).toThrow();
+    expect(() => successorLook(looks, 'XX00-0S')).toThrow();
+  });
+  it('the Looks of one continent are mostly told apart by their drawn fields', () => {
+    const sig = (L: PersonLook) => JSON.stringify([L.race, L.line, L.stage, L.fem, L.outfit, L.main, L.second, L.hair, L.hat, L.tool]);
+    const seen = new Map<string, string>();
+    let same = 0;
+    for (const id of Object.keys(looks.npcs)) {
+      const s = sig(npcLook(looks, id));
+      if (seen.has(s)) same++;
+      seen.set(s, id);
+    }
+    expect(same).toBeLessThan(10);
+  });
+});
+
+describe('resolve: successors', () => {
+  it('55 of them resolve, keyed by their code, deterministic', () => {
+    const ids = Object.keys(looks.successors);
+    expect(ids).toHaveLength(55);
+    for (const id of ids) {
+      const L = successorLook(looks, id);
+      check(L, id);
+      expect(L.key).toBe(id);
+      expect(successorLook(looks, id)).toEqual(L);
+    }
+  });
+});
+
+describe('resolve: races', () => {
+  it('every race, sub-line, stage and sex resolves; same seed, same figure', () => {
+    for (const r of Object.values(looks.races)) {
+      for (const line of [undefined, ...r.lines.map((l) => l.name)]) {
+        for (const stage of STAGES) {
+          for (const fem of [false, true]) {
+            const a = raceLook(looks, r.id, { line, stage, fem, seed: 'x' });
+            check(a, `${r.id}/${line}/${stage}`);
+            expect(raceLook(looks, r.id, { line, stage, fem, seed: 'x' })).toEqual(a);
+            expect(a.stage).toBe(stage);
+            expect(a.fem).toBe(fem);
+          }
+        }
+      }
+    }
+  });
+  it('the seed picks among the skins of the race', () => {
+    const skins = new Set(Array.from({ length: 40 }, (_, i) => raceLook(looks, 'human', { stage: 'adult', fem: false, seed: `s${i}` }).skin));
+    expect(skins.size).toBeGreaterThan(2);
+    for (const s of skins) expect(looks.races.human.skins).toContain(s);
+  });
+  it('the slime has no hair', () => {
+    expect(raceLook(looks, 'slime', { stage: 'adult', fem: true, seed: 'a' }).hair).toBe('');
+  });
+});

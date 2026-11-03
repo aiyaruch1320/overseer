@@ -1,0 +1,419 @@
+// The words of the appearance docs that mean a part of the painter (code-plan §9.2: "ตารางคำ ขยายเมื่อพบคำใหม่").
+// Every id here must be in src/art/parts/ids.ts (tests/codegen/looks.test.ts checks it). A word that no table knows is
+// reported by the looks generator in data/gen/_unparsed/looks.md; the NPC still gets a complete Look from the defaults.
+import { BEARD_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS, FEAT_IDS } from '../../../src/art/parts/ids';
+import type { Ears, Gait, Lower, Stage } from '../../../src/art/look';
+import type { LineOverrides } from '../../../src/core/data/types-looks';
+
+export const VOCABULARY = { outfit: OUTFIT_IDS, hair: HAIR_IDS, beard: BEARD_IDS, hat: HAT_IDS, tool: TOOL_IDS, feat: FEAT_IDS } as const;
+
+type Rule<T extends string> = [T, RegExp];
+const first = <T extends string>(text: string, rules: Rule<T>[]): T | null => {
+  for (const [id, re] of rules) if (re.test(text)) return id;
+  return null;
+};
+
+// ---------- the words of 02-races.md ค่า UI (docs/appearance/README.md "คำของโค้ดที่ UI ใช้ตอนนี้") ----------
+
+export const EARS_RULES: Rule<Ears>[] = [
+  ['none', /ไม่มีหู/], ['fin', /ครีบ/], ['animal', /สัตว์/], ['long', /ยาว/], ['pointed', /แหลม/], ['round', /กลม/],
+];
+export const LOWER_RULES: Rule<Lower>[] = [
+  ['serpent', /หางงู/], ['blob', /เจล/], ['gown', /ชายผ้า/], ['legs', /สองขา/],
+];
+export const GAIT_RULES: Rule<Gait>[] = [
+  ['float', /ลอย/], ['hop', /กระโดด/], ['shuffle', /ลากเท้า/], ['glide', /ลื่น/], ['heavy', /หนัก/], ['normal', /ปกติ/],
+];
+export const earsOf = (w: string) => first(w, EARS_RULES);
+export const lowerOf = (w: string) => first(w, LOWER_RULES);
+export const gaitOf = (w: string) => first(w, GAIT_RULES);
+
+// ---------- life stage (the วัย column) ----------
+
+const STAGE_WORDS: [string, Stage][] = [['ทารก', 'infant'], ['วัยรุ่น', 'teen'], ['ผู้เฒ่า', 'elder'], ['ผู้ใหญ่', 'adult'], ['เด็ก', 'child']];
+export function stageWord(w: string): Stage | null {
+  for (const [k, s] of STAGE_WORDS) if (w.includes(k)) return s;
+  return null;
+}
+/** When the วัย column is `-` (ghosts, the dead): the description says it. */
+export function stageFromDescription(d: string): Stage {
+  if (/ทารก|เด็กอ่อน/.test(d)) return 'infant';
+  if (/เด็ก(ชาย|หญิง)?(อายุ|วัย)?[ก-๙ ]{0,6}ขวบ|^เด็ก|เด็กชาย|เด็กหญิง|ผีเด็ก/.test(d.slice(0, 40))) return 'child';
+  if (/วัยรุ่น/.test(d.slice(0, 40))) return 'teen';
+  if (/ชรา|เฒ่า|แก่|ผมหงอก/.test(d.slice(0, 60))) return 'elder';
+  return 'adult';
+}
+
+// ---------- sex ----------
+
+const FEM_RE = /หญิง|สาว|ราชินี|นาง|ยาย|ย่า|แม่|มารดา|ภิกษุณี|เลดี้|เจ้าหญิง|ซิสเตอร์|เธอ/g;
+const MALE_RE = /ชาย|หนุ่ม|ลุง|ปู่|พ่อ(?!ค้า|ครัว|มด)|กษัตริย์|ราชา(?!นี)|บิดา|เซอร์|ลอร์ด|เคานต์|จักรพรรดิ|ฟาโรห์|ขุนศึก|เจ้าชาย|สุลต่าน|ทหารเฒ่า/g;
+/** true = female, false = male, null = the docs do not say. The earliest word of the first 70 characters wins. */
+export function femOf(desc: string, name: string, role: string): boolean | null {
+  const at = (re: RegExp, s: string) => { re.lastIndex = 0; const m = re.exec(s); return m ? m.index : Infinity; };
+  const head = desc.slice(0, 120);
+  const f = at(FEM_RE, head), m = at(MALE_RE, head);
+  if (f !== m) return f < m;
+  const head2 = `${name} ${role}`;
+  const f2 = at(FEM_RE, head2), m2 = at(MALE_RE, head2);
+  if (f2 !== m2) return f2 < m2;
+  return null;
+}
+
+// ---------- colours ----------
+
+export const HEX = /^#[0-9a-f]{6}$/i;
+const rgb = (h: string): [number, number, number] => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const hex = (c: number[]) => '#' + c.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+export const mix = (a: string, b: string, t: number) => { const A = rgb(a), B = rgb(b); return hex(A.map((v, i) => v + (B[i] - v) * t)); };
+export const lum = (h: string) => { const [r, g, b] = rgb(h); return 0.299 * r + 0.587 * g + 0.114 * b; };
+
+/** Colour words (longest first inside a window). Hair and eyes use the same table. */
+export const COLOURS: [string, string][] = [
+  ['น้ำตาลแดง', '#6a3420'], ['น้ำตาลเทา', '#6a5a4a'], ['น้ำตาลทอง', '#8a6030'], ['ทองแดง', '#a05a30'], ['น้ำตาล', '#5a3a22'],
+  ['เทาน้ำเงิน', '#6a7488'], ['เทาเงิน', '#a8acb8'], ['เทาเหล็ก', '#6a6e78'], ['เทาขาว', '#c0c0c4'], ['เทาดำ', '#4a4a50'], ['เทา', '#8a8a90'],
+  ['ขาวเงิน', '#dcdee8'], ['ทองขาว', '#e8dca0'], ['บลอนด์', '#d8b858'], ['ทอง', '#d9a030'], ['อำพัน', '#c88a20'], ['เหลือง', '#d8c030'],
+  ['ขาว', '#e8e6e0'], ['เงิน', '#c8ccd8'], ['หงอก', '#c8c8c8'], ['ม่วงดำ', '#3a2a4a'], ['ม่วง', '#6a3a8a'],
+  ['แดงเข้ม', '#6a1a1a'], ['แดงคล้ำ', '#7a2a22'], ['แดง', '#9a2a1a'], ['ส้ม', '#d07030'], ['ชมพู', '#e08aa8'],
+  ['เขียวมรกต', '#2a9a5a'], ['เขียวเข้ม', '#2a4a2a'], ['เขียว', '#3a7a3a'], ['ฟ้า', '#6a9ad0'], ['น้ำเงิน', '#2a3a7a'], ['ดำ', '#1e1a1c'], ['น้ำทะเล', '#2a6a8a'], ['ทราย', '#c8b080'], ['ถ่าน', '#2a2a2e'], ['ครีม', '#e8dcc0'], ['เข้ม', '#2a1e18'],
+];
+const DARKER = /เข้ม|คล้ำ|หม่น/, LIGHTER = /อ่อน|จาง/;
+/** The first colour word inside `window`; "เข้ม" and "อ่อน" right after it darken or lighten it. */
+export function colourIn(window: string): string | null {
+  let best: { at: number; len: number; hex: string; end: number } | null = null;
+  for (const [w, h] of COLOURS) {
+    const at = window.indexOf(w);
+    if (at < 0) continue;
+    if (!best || at < best.at || (at === best.at && w.length > best.len)) best = { at, len: w.length, hex: h, end: at + w.length };
+  }
+  if (!best) return null;
+  const tail = window.slice(best.end, best.end + 4);
+  if (DARKER.test(tail)) return mix(best.hex, '#000000', 0.3);
+  if (LIGHTER.test(tail)) return mix(best.hex, '#ffffff', 0.35);
+  return best.hex;
+}
+
+/** Hair colour from the hair clause (`ผมสีเงินยาวถักเปีย`), the beard colour is not painted apart from it. */
+export function hairColourOf(token: string): string | null {
+  const m = token.match(/ผม(?:สี|และเครา)?(.{0,12})/) ?? token.match(/(?:เปีย|เครา|หนวด)(?:สี)?(.{0,10})/);
+  return m ? colourIn(m[1]) : null;
+}
+export function eyeColourOf(desc: string): string | null {
+  for (const m of desc.matchAll(/ตา(?:สี)?([ก-๙]{0,10})/g)) {
+    const c = colourIn(m[1]);
+    if (c) return c;
+  }
+  return null;
+}
+
+/** The colour a description gives to the skin (`ผิวสีเทาเขียว`), or null. */
+export function skinColourOf(desc: string): string | null {
+  const m = desc.match(/ผิว(?:สี)?([ก-๙]{1,10})/);
+  return m ? colourIn(m[1]) : null;
+}
+/** The entry of the race's skins nearest to a colour. */
+export function nearest(skins: readonly string[], c: string): string {
+  const d = (a: string) => { const A = rgb(a), B = rgb(c); return (A[0] - B[0]) ** 2 + (A[1] - B[1]) ** 2 + (A[2] - B[2]) ** 2; };
+  return [...skins].sort((a, b) => d(a) - d(b))[0];
+}
+/** "ผิวคล้ำ" picks a darker entry of the race's skins, "ผิวซีด" a lighter one; null = the docs say nothing. */
+export function skinHint(desc: string): 'dark' | 'light' | null {
+  const dark = /ผิว(?:สี)?(?:คล้ำ|ไหม้|แทน|ทองแดง|น้ำตาล|เข้ม|แดงเกรียม|เกรียม|ดำ)/.test(desc);
+  const light = /ผิว(?:สี)?(?:ซีด|ขาว|บาง|เผือก)/.test(desc);
+  return dark === light ? null : dark ? 'dark' : 'light';
+}
+
+// ---------- outfit ----------
+
+export const OUTFIT_RULES: Rule<(typeof OUTFIT_IDS)[number]>[] = [
+  ['otherworld', /ต่างภพ|อัญเชิญ|ชุดนักเรียน|เสื้อยืด|กางเกงยีน/],
+  ['sailor', /กะลาสี|ลูกเรือ|นักนำร่อง|นายท่า|ชุดกัปตัน|ผ้าใบกันน้ำ|ดำน้ำ|ชุดสาหร่าย|ชุดผ้ากันน้ำ/],
+  ['apron', /ผ้ากันเปื้อน/],
+  ['miner', /เหมือง|กรรมกร|ชุดคนงาน|เสื้อผ้าคนงาน|คนเฝ้าบ่อ|ชุดขี่หนอน|ชุดช่างไฟ|ชุดคนงานท่อ/],
+  ['regal', /ชุด(?:กษัตริย์|สุลต่าน|ราช|ฟาโรห์|จักรพรรดิ|รัชทายาท)|เสื้อคลุม(?:กษัตริย์|ราช)|ฉลองพระองค์|ชุดเต็มยศ/],
+  ['priest', /ชุด(?:ซิสเตอร์|ผู้เคร่ง|นักบวช|ภิกษุ|นักพรต|พิธี|ลัทธิ|ผู้ตีระฆัง|ผู้ช่วยตี|มารดา|อธิการ|ผู้ศรัทธา|บูชา|ผู้ฟังวิญญาณ|ผู้ตีความ|ผู้จุดประ)|ผ้านักบวช|เสื้อคลุมนักบวช|ผ้าคลุมนักบวช|ผ้าคลุมพยากรณ์|ผ้าสไบ|ผ้าขาวผู้แสวงบุญ|เสื้อผ้าลัทธิ/],
+  ['scholar', /ชุด(?:ผู้ตรวจบัญชี|ผู้เก็บบัญชี|ผู้ฝึกเขียน|ผู้ถอดเสียง|นักปราชญ์|ครู|นักเขียน|บรรณารักษ์|เสมียน|นักวิชาการ|ศาสตราจารย์|นักดาราศาสตร์|นักบันทึก|นักอ่าน|นักถอดรหัส|นักบัญชี|คลุมกวี|หมอ|ผ่าตัด|ผู้ตัดสิน|นักประดิษฐ์|นักเล่นแร่|ผู้ทดสอบ|นักวิทยาศาสตร์|วิศวกร|นักบำบัด|ผู้ทำยา|นักปรุงยา|ผู้ผสม)|เสื้อกาวน์|เสื้อแล็บ|เสื้อคลุมนักเขียน|เสื้อคลุมนัก/],
+  ['fur', /เสื้อหนังสัตว์|ขนสัตว์|เสื้อขน|หนังหมี|เสื้อหนังหมี|ผ้าคลุมขน|เสื้อคลุมขน/],
+  ['knight', /อัศวิน|เกราะพิธี|เกราะผู้กล้า|ชุดเกราะผู้ก/],
+  ['plate', /เกราะ(?:เหล็ก|เต็ม|เงิน|ทอง|ขั|ชุบ)/],
+  ['leather', /(?:ชุด|เสื้อ)[ก-๙]{0,8}หนัง|นักล่า|นักฆ่า|นักสำรวจ|ขี่หมาป่า|ขี่ม้า|ขี่หนอน|เกราะ(?:หนัง|กระดูก|ไม้|เกล็ด|ฝึกหัด|เบา)|ชุดเกราะเบา|เสื้อหนัง|ชุดหนัง|แจ็กเก็ตหนัง|เสื้อกั๊กหนัง|ชุดนักบินหนัง|ชุดนักรบหนัง|เสื้อโค้ตหนัง|เสื้อกันหนัง/],
+  ['armor', /เกราะ|ชุดทหาร|เครื่องแบบทหาร|เครื่องแบบนายพล|ชุดทหารรับจ้าง|เครื่องแบบ(?:จอม|เก)/],
+  ['noble', /เครื่องแบบ|ชุดขุนนาง|ชุดสูท|เสื้อโค้ต|ชุดประธาน|ชุดนายกนคร|ชุดสมาชิกสภา|ชุดสภา|ชุดผู้แทน|ชุดนายธนาคาร|ชุดนายหน้า|ชุดไหม|ชุดผ้าไหม|ชุดทูต|ชุดผู้อำนวยการ|ชุดเลขา|ชุดสหภาพ|ชุดตัวแทน|ชุดผู้นำ|ชุดรัชทายาท|ชุดสุภาพ|ชุดพลเมือง/],
+  ['dress', /ชุดเดรส|กระโปรง|ราตรี|ชุดนางรำ|กลีบดอก|ชุดยาวกรอมพื้น|ชุดกลีบ/],
+  ['sarong', /ผ้าถุง|โสร่ง|ผ้านุ่ง|ผ้าขาวม้า/],
+  ['rags', /ผู้ลี้ภัย|ชุดผ้า(?:ขาด|เก่า)|เสื้อผ้า(?:ขาด|เก่า)|ผ้าขี้ริ้ว|ชุดขาด|ผ้าห่อตัว|ผ้าห่ม|ผ้าห่อหนัง|ผ้าดำบางพัน|ชุดเก่า|ชุดมีคราบ|ผ้าพันขาดเป็นริ้ว|ผ้าพันตัว/],
+  ['robe', /นักเวท|เสื้อคลุม|ชุดคลุม|ชุดหลวม|ผ้าคลุมยาว|ชุดทูตบางพลิ้ว/],
+  ['cloak', /(?:ชุด|เสื้อผ้า)เดินทาง|ชุดนักเดินทาง|ผ้าคลุม(?:สี|เดินทาง|กันฝน|กันหมอก|หนา|ผืน|เก่า|ดำ|เทา|เขียว|น้ำเงิน|เนมส์)|เสื้อกันฝน|ผ้ากันฝุ่น|ผ้าคลุมสองสี|ผ้าคลุมกัน/],
+  ['cape', /ผ้าคลุมไหล่|ผ้าคลุม/],
+  ['light', /ชุดบาง|ชุดเบา|เสื้อผ้าเบา|ชุดผ้าบาง|ชุดผ้าลินิน|ชุดลินิน|เสื้อฝ้าย|ชุดผ้าฝ้าย|เสื้อผ้าฝ้าย|ชุดผ้าเบา|ชุดสีขาวบาง|เสื้อผ้าใบไม้|ชุดสีพิษ/],
+];
+/** Words that name a garment; one of these with no rule above is reported. */
+/** A plain `ชุด…` `เสื้อ…` `กางเกง…` is plain clothing (the tunic); these garment words are not: one with no rule above is reported. */
+export const GARMENT_TOKEN = /^(เครื่องแบบ|เกราะ|กระโปรง|ผ้าคลุม|ผ้าห่ม|ผ้ากัน|ผ้าห่อ|แจ็กเก็ต)/;
+export const outfitOf = (d: string) => first(d, OUTFIT_RULES);
+
+// ---------- hair (a hair clause is a token: `ผมสีเงินยาวถักเปีย`) ----------
+
+export const HAIR_RULES: Rule<(typeof HAIR_IDS)[number]>[] = [
+  ['cropped', /โกนข้าง/],
+  ['bald', /โล้น|ล้าน|โกน|ไม่มีผม|หัวเถิก/],
+  ['mohawk', /โมฮอว์ก|ยอดสูง|หงอน|ขนยอด/],
+  ['braid', /เปีย|ถักสองข้าง|ถัก/],
+  ['bun', /มวย|เกล้า|ห่อใต้|ห่อผ้า|พันศีรษะ/],
+  ['ponytail', /หางม้า|รวบหาง|รวบสูง|หางเดียว/],
+  ['topknot', /ปมสูง|ปมกลาง/],
+  ['curly', /หยิก|หยักศก|ลอน|ฟู/],
+  ['tied', /รวบ|มัด|รัด/],
+  ['wild', /ยุ่ง|รุงรัง|สยาย|ลอย|หยาบ|ดกหนา/],
+  ['cropped', /เกรียน|ตัดสั้น|ตัดเรียบ|ตัดทรงทหาร|ตัดเท่า/],
+  ['long', /ยาว|พลิ้ว|ถึงเอว|ถึงบ่า|ถึงสะโพก|ถึงข้อเท้า/],
+  ['short', /สั้น|บาง|หวี/],
+];
+/** Where a hair clause starts inside a description. */
+export const HAIR_START = /ผม|เปีย(?!ก)|ศีรษะ(?:โล้น|โกน|ล้าน|มีขน)|หัว(?:โล้น|ล้าน)/;
+/** The words that end a clause when the doc runs the clauses together without a space. */
+const CLAUSE_END = /สวม|ใส่|ถือ|ตาสี|ตาเ|ตาก|ผิว|มือ|เสื้อ|ชุด|หมวก|ผ้า|เกราะ|เท้า|ร่าง|หน้า|ปีก|เขาโ|หู|แก้ม|แขน|ขา(?!ว)|กาง|ยืน|เดิน|นั่ง|ท่า/;
+/** The clause of a description that starts at the first match of `start`: up to the next space or clause word, 24 characters at most. */
+export function clauseOf(desc: string, start: RegExp): string {
+  const m = start.exec(desc);
+  if (!m) return '';
+  let t = desc.slice(m.index, m.index + 24).split(/\s/)[0];
+  const tail = t.slice(2);
+  const e = tail.search(CLAUSE_END);
+  if (e >= 0) t = t.slice(0, e + 2);
+  return t;
+}
+export const hairStyleOf = (token: string) => first(token, HAIR_RULES);
+
+// ---------- beard ----------
+
+export const BEARD_RULES: Rule<(typeof BEARD_IDS)[number]>[] = [
+  ['braided', /(?:เครา|หนวด)[ก-๙]{0,6}ถัก|เคราเปีย/],
+  ['long', /(?:เครา|หนวด)[ก-๙]{0,8}ยาว|เคราหนา|เคราขาวหนา/],
+  ['stubble', /ขึ้นรก|เหลือเพียงเงา|ไม่เรียบ|หนวดเคราแห้ง|ตอเครา|ไม่ได้โกน/],
+  ['moustache', /หนวด(?:โค้ง|ตกแต่ง|บาง|เรียบ|สั้น|ตัด)|หนวดขาว/],
+  ['short', /เครา|หนวด/],
+];
+export const BEARD_START = /เครา|หนวด(?!สิบ|ยาวสิบ)/;
+export function beardOf(desc: string): (typeof BEARD_IDS)[number] | null {
+  // tentacles (`หนวดสิบกว่าเส้น`) are not beards
+  const d = desc.replace(/หนวด(?:สิบ|ยาวสิบ|ข้าง|แมงมุม|ปลา)[ก-๙]{0,6}เส้น|หนวดสิบ/g, '');
+  return first(d, BEARD_RULES);
+}
+
+// ---------- hat ----------
+
+export const HAT_RULES: Rule<(typeof HAT_IDS)[number]>[] = [
+  ['wizard', /หมวกพ่อมด|หมวกแหลมสูง|หมวกทรงสูงสี/],
+  ['mitre', /หมวกนักบวช|หมวกสูงนักบวช|มิเตอร์|หมวกทรงสูง/],
+  ['minerhat', /หมวกเหมือง|หมวกไฟ|ไฟติดหน้า|หมวกกันกระแทก/],
+  ['goggles', /แว่นนักบิน|แว่นตากัน|แว่นดำน้ำ|หมวกดำน้ำ|แว่นกันลม/],
+  ['chef', /หมวกพ่อครัว/],
+  ['horned', /หมวกมีเขา|หมวกเขา/],
+  ['helmet', /หมวกเหล็ก|หมวกเกราะ|หมวกนักรบ|หมวกทหาร|หมวกศึก/],
+  ['wide', /หมวกปีกกว้าง|หมวกคาวบอย|หมวกกว้าง|หมวกฟางปีกกว้าง/],
+  ['straw', /หมวกฟาง/],
+  ['feather', /หมวกขนนก|หมวกประดับขน/],
+  ['furhat', /หมวกขนสัตว์|หมวกทหารบุขน|หมวกขน/],
+  ['turban', /ผ้าโพก(?:ศีรษะ|หัว)|ผ้าพันศีรษะ|โพกหัว/],
+  ['bandana', /ผ้าคาดหัว|ผ้าคาดผม|ผ้ารัดผม|ผ้าคาดตา|ผ้าปิดตาครึ่ง/],
+  ['veil', /ผ้าคลุมหน้า|ผ้าคลุมศีรษะ|ผ้าคลุมหัว/],
+  ['crown', /มงกุฎ/],
+  ['tiara', /เทียรา|ทีอารา/],
+  ['circlet', /เทริด|วงแหวนศีรษะ|ห่วงศีรษะ|แถบศีรษะ/],
+  ['laurel', /พวงหรีด|ช่อลอเรล|ใบลอเรล/],
+  ['hood', /ฮู้ด|หมวกคลุม/],
+  ['cowl', /ผ้าคลุมศีรษะ|ผ้าคลุมหัว/],
+  ['cap', /หมวกหนัง|หมวกผ้า|หมวกกันแก๊ป|หมวกเหลี่ยม|หมวกสามเหลี่ยม|หมวกทรงเฟือง|หมวกพ่อค้า|หมวกกลม|หมวก/],
+];
+export const HAT_TOKEN = /(หมวก|ฮู้ด|มงกุฎ|เทริด|ผ้าโพก|ผ้าคลุมศีรษะ|ผ้าคลุมหน้า|ผ้าคลุมหัว|ผ้าคาดหัว|ผ้าพันศีรษะ)/;
+export const hatOf = (d: string) => first(d, HAT_RULES);
+
+// ---------- tool (from the ของ list, then the description) ----------
+
+export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
+  ['greatsword', /ดาบใหญ่|ดาบยักษ์|ดาบสองมือ|ดาบมหึมา|ดาบหนัก/],
+  ['trident', /ตรีศูล|สามง่าม/],
+  ['spear', /หอก|ทวน|หลาว/],
+  ['orbstaff', /ไม้เท้า(?:ลูกแก้ว|ผลึก|แก้ว)|คทาผลึก|ไม้เท้าประดับ(?:แก้ว|ผลึก)/],
+  ['crook', /ไม้เท้าคนเลี้ยง|ไม้เกี่ยว|ไม้เท้าโค้ง/],
+  ['scepter', /คทา|ราชทัณฑ์/],
+  ['wand', /ไม้กายสิทธิ์|ไม้ขีด|ไม้เล็ก|ไม้ไผ่ชี้/],
+  ['staff', /ไม้เท้า|ไม้พลอง|ไม้ค้ำ|ไม้ยาว|ไม้กระบอง/],
+  ['banner', /ธง/],
+  ['scythe', /เคียว/],
+  ['censer', /กระถางธูป|ธูป|กระถางหอม|ที่เผาธูป/],
+  ['sword', /ดาบ|กระบี่|เรเพียร์|ซามูไร/],
+  ['dagger', /มีด|กริช|สิ่ว|ดาบสั้น/],
+  ['mace', /กระบองหนาม|คทาศึก|ตะบอง/],
+  ['club', /กระบอง/],
+  ['hammer', /ค้อน/],
+  ['axe', /ขวาน/],
+  ['pickaxe', /พลั่วเหมือง|ฆ้อน|เสียม|ตะแกรง.*ขุด|ที่ขุด/],
+  ['hoe', /จอบ|คราด/],
+  ['shovel', /พลั่ว|ที่ตัก/],
+  ['broom', /ไม้กวาด|ไม้ถู/],
+  ['ladle', /ทัพพี|ตะหลิว/],
+  ['bow', /ธนู|หน้าไม้|ศร/],
+  ['rod', /คันเบ็ด|เบ็ด|ไม้ตกปลา/],
+  ['ledger', /สมุดบัญชี|ม้วนบัญชี|บัญชี/],
+  ['book', /หนังสือ|สมุด|ตำรา|คัมภีร์|ไดอารี|แฟ้ม/],
+  ['scroll', /ม้วน|กระดาษ|จดหมาย|แผนที่|สัญญา|แผ่นไม้บท|แผ่นหนัง|ใบ(?:ประกาศ|สั่ง)/],
+  ['lute', /พิณ|ซอ|ขลุ่ย|กีตาร์|ระฆัง|กลอง|ปี่|เครื่องดนตรี|ฉาบ/],
+  ['mug', /แก้ว|ถ้วยเบียร์|เหยือก|จอก/],
+  ['bowl', /ชาม|ถ้วย|กระถาง/],
+  ['flask', /ขวด|กระบอกน้ำ|กระติก|หม้อต้ม|หม้อ/],
+  ['lantern', /ตะเกียง|โคม|ไฟฉาย|คบเพลิง|เทียน/],
+  ['shield', /โล่/],
+  // small tools of the trade the painter has no part for: the nearest shape
+  ['wand', /ปากกา|พู่กัน|ชอล์ก|ดินสอ|ไม้บรรทัด|ไม้วัด|ไม้คาน|ไม้ชั่ง|เข็ม(?!ทิศ)|ที่ปิดปากเหล็ก/],
+  ['ledger', /ลูกคิด|ตารางตัวเลข|กราฟ|ตั๋ว|บัตร|ใบสมัคร/],
+  ['book', /กระดาน|แผ่น(?:รูน|หิน|เหล็ก|รหัส|บันทึก|ตัวเลข|กระดูก)|ภาพวาด|แบบ(?:แปลน|เตา|เครื่อง|ป้อม)/],
+  ['crook', /ไม้เลี้ยง|ตะขอ/],
+  ['staff', /ไม้พาย|ไม้เหล็ก|ไม้(?:ท่อน|แห้ง)|กิ่งไม้/],
+  ['hammer', /ประแจ|สกัด|ไขควง|เกรียง|คีม|เหล็กเคาะ|เกจ|วาล์ว/],
+  ['shovel', /ช้อนดิน|ช้อนไม้|ช้อนทราย/],
+  ['bowl', /ครก|ถัง|กระป๋อง/],
+  ['lute', /แตร|นกหวีด|กระดิ่ง/],
+];
+/** Things in an ของ list that are not held in the hand (a pocket, a mark, a pet): ignored, not reported. */
+export const NOT_TOOL = /เสื้อ|เครื่องแบบ|แถบ|ดาวนาย|หางพ่อ|เห็ดงอก|ดวงตา|ตาเลนส์|ใบไม้|เครื่องประดับ|ได้ยินเสียง|เอว|ห่อ|สมบัติ|เตียง|หีบ|หมอน|หมายเลข|ก้อนหิน|ดอกไม้|ดอกเห็ด|ดอกบัว|หมอกสปอร์|สายแบก|สายรัด|สายข้อมูล|กำไล|จี้|กล่อง|กิ่ง|ฟืน|เปลือก|ชุดหมึก|ชิป|ชิ้นส่วน|แกน|อะไหล่|ที่อุดหู|เลข|โซ่|พวงมาลัย|อาน|เป้|แขน|เศษ|ห่วง|ศาล|กระเป๋า|ถุง|ตรา|กุญแจ|เหรียญ|แว่น|เชือก|ผ้า|เกราะ|หน้ากาก|ลูกประคำ|สร้อย|แหวน|ไม่มี|สัตว์|หมาป่า|ปีก|หมวก|มงกุฎ|เข็มขัด|รองเท้า|ตุ๊กตา|ของเล่น|ประคำ|ป้าย|กรง|แส้|ตลับ|ตะกร้า|เนื้อ|ขนม|ยา|เครื่องมือ|ถ่าน|ด้าย|ไม้ขีด|เม็ด|เมล็ด|เก้าอี้|โต๊ะ|ตู้|ผง|ธูปที่/;
+const TOOL_SKIP = /ในกระเป๋า|ในอก|ซ่อนในรองเท้า|ในถุง|ในเสื้อ|ในฝัก|ในกระเป๋า/;
+export interface ToolPick { tool: string | null; miss: string[] }
+/** The tool a person holds: the first item of the ของ list a rule knows; the items nothing knows are returned to be reported. */
+export function toolOf(items: string[], desc: string): ToolPick {
+  const miss: string[] = [];
+  const parts = items.flatMap((i) => i.split(/และ|,|\/|แล้ว/).map((s) => s.trim()).filter(Boolean));
+  for (const p of parts) {
+    if (TOOL_SKIP.test(p) && !/^(ดาบ|หอก|มีด|ธนู)/.test(p)) continue;
+    const t = first(p, TOOL_RULES);
+    if (t) return { tool: t, miss };
+    if (!NOT_TOOL.test(p)) miss.push(p);
+  }
+  // not in the list: a weapon the description puts in the hand or at the belt
+  const held = desc.match(/(?:ถือ|แบก|พาด|ห้อยเอว|แขวนเอว|ห้อยข้างเอว|ในมือ|กุม|เสียบเอว)([ก-๙]{0,12})/g) ?? [];
+  for (const h of held) {
+    const t = first(h, TOOL_RULES);
+    if (t) return { tool: t, miss };
+  }
+  const w = desc.match(/(?:ดาบ|หอก|ธนู|ขวาน|ค้อน|มีดสั้น|ไม้เท้า|คทา|โล่)/);
+  if (w) { const t = first(w[0], TOOL_RULES); if (t) return { tool: t, miss }; }
+  return { tool: null, miss };
+}
+
+// ---------- personal feats ----------
+
+export const FEAT_RULES: Rule<(typeof FEAT_IDS)[number]>[] = [
+  ['eyepatch', /ผ้าปิดตา(?!ครึ่ง)|ปิดตาข้างหนึ่ง|ผ้าปิดตาข้าง/],
+  ['missingarm', /แขนขาด|ไร้แขน|แขนข้างหนึ่งหาย|แขนเดียว|ไม่มีแขน|แขนข้างหนึ่งไม่มี|แขนซ้ายขาด|แขนขวาขาด/],
+  ['blind', /ตาบอด|ตาขาวขุ่น|ตาขาวโพลน|ตาฟ้าขุ่น/],
+  ['halo', /รัศมี|วงแหวนแสง|วงแสงเหนือหัว/],
+  ['mask', /หน้ากาก/],
+  ['tattoo', /รอยสัก|ลายสัก|สักลาย|สัก(?:เต็ม|ไล่)/],
+  ['bandage', /ผ้าพันแผล|ผ้าพันแขน|ผ้าพันมือ|พันผ้าที่(?:มือ|ข้อ)|เฝือก/],
+  ['scar', /แผลเป็น|รอยแผล|รอยดาบ|รอยไหม้เป็นทาง|รอยฟัน|รอยกรงเล็บ/],
+  ['freckles', /(?:มี|เต็มไปด้วย|ลาย|จุด|รอย|แก้ม|จมูก|หน้า)กระ(?![ก-๙])|กระ(?:บนแก้ม|ที่แก้ม|บนจมูก|แดด|เต็มหน้า)/],
+];
+export function featsOf(desc: string): string[] {
+  const out: string[] = [];
+  for (const [id, re] of FEAT_RULES) if (re.test(desc)) out.push(id);
+  return out;
+}
+
+// ---------- how worn the clothes are (0..1) ----------
+
+const WEAR_RULES: [number, RegExp][] = [
+  [0.75, /ขาดวิ่น|ผุพัง|ผุกร่อน|ฉีกขาด|ขาดเป็นริ้ว|ขี้ริ้ว|ชำรุด|เป็นรูหลายรู|เศษผ้า/],
+  [0.55, /ขาด|เป็นรู|ไหม้เป็นรู|ปะหลาย|ปะทับ/],
+  [0.4, /ปะ|สึก|ซีดจาง|ซีด|เก่า|ซ่อมแล้วซ่อมอีก|ซ้ำ|แห้งกรอบ|ซักบ่อย/],
+  [0.25, /เปื้อน|คราบ|เขม่า|ฝุ่น|เปียก|หม่น|เหม็น/],
+  [0.1, /ยับ|รุ่ย/],
+];
+const WEAR_NEW = /สะอาด|ใหม่|เรียบร้อย|เรียบสะอาด|รีดเรียบ|ขัดมัน|เงางาม/;
+export function wearOf(text: string): number {
+  let w = 0, n = 0;
+  for (const [v, re] of WEAR_RULES) {
+    const m = text.match(new RegExp(re.source, 'g'));
+    if (m) { w = Math.max(w, v); n += m.length; }
+  }
+  if (n > 1) w += Math.min(0.2, 0.05 * (n - 1));
+  if (WEAR_NEW.test(text)) w = Math.max(0, w - 0.2);
+  return Math.round(Math.min(1, w) * 100) / 100;
+}
+
+// ---------- a stable hash ----------
+
+export function hash(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+export const pickBy = <T>(a: readonly T[], seed: string): T => a[hash(seed) % a.length];
+
+/** A skin of the race: a darker or a lighter half by the hint, else any; always the same for the same seed. */
+export function pickSkin(skins: readonly string[], hint: 'dark' | 'light' | null, seed: string): string {
+  if (!skins.length) return '#e8b48a';
+  if (!hint || skins.length < 3) {
+    if (!hint) return pickBy(skins, seed);
+    const sorted = [...skins].sort((a, b) => lum(a) - lum(b));
+    return hint === 'dark' ? sorted[0] : sorted[sorted.length - 1];
+  }
+  const sorted = [...skins].sort((a, b) => lum(a) - lum(b));
+  const half = Math.max(1, Math.floor(sorted.length / 2));
+  return pickBy(hint === 'dark' ? sorted.slice(0, half) : sorted.slice(sorted.length - half), seed);
+}
+
+// ---------- races and sub-lines ----------
+
+/** A race named in a free text (a successor row, an NPC whose people code is empty): the first rule that matches. */
+export const RACE_BY_WORD: Rule<string>[] = [
+  ['darkelf', /ดาร์กเอลฟ์/], ['elf', /เอลฟ์/], ['dwarf', /แคระ/], ['orc', /ออร์ค|โอเกอร์/], ['halfling', /ฮาล์ฟลิง/],
+  ['naga', /นาคา/], ['dragonkin', /มังกร/], ['vampire', /แวมไพร์/], ['fae', /ภูต/], ['slime', /สไลม์|เห็ด/], ['demonkin', /ปีศาจ/],
+  ['merfolk', /เงือก|ไซเรน|กัปปะ|สัตว์ทะเล|สัตว์ยักษ์ทะเล|คราเคน/], ['winged', /อาเวียน|ปีก/], ['giant', /ยักษ์|ไซคลอปส์|จอตุน/],
+  ['lavakin', /ลาวา/], ['construct', /จักรกล|ตุ๊กตา|ผู้ติดตั้ง/], ['soulmachine', /หุ่น/], ['mummy', /มัมมี่/], ['ghoul', /กูล|ผี|วิญญาณ/],
+  ['beast', /สัตว์|หมาป่า|เสือ|แมว|กวาง|วัว|นก|อูฐ|จิ้งจก|จิ้งจอก|หมี|สิงโต/], ['human', /มนุษย์|ชาว|ชน/],
+];
+/** Spirits and the dead drawn as a pale body: the colour word after `โปร่งแสงสี` of the description, else this. */
+export const SPIRIT = /^(ผี|วิญญาณ)/;
+export const SPIRIT_SKIN = '#8a9aa8';
+
+/** Which words of the race text of an NPC mean a sub-line of the lore table (docs/lore/races/README.md). A line with no entry matches its own name. */
+export const LINE_MATCH: Record<string, Record<string, RegExp>> = {
+  human: { ผู้ถูกอัญเชิญ: /อัญเชิญ|ต่างภพ/, ผู้กลับชาติ: /กลับชาติ/ },
+  dwarf: { ช่างตี: /ช่างตี|คนแคระช่าง/, คนแคระเหนือ: /แคระเหนือ/ },
+  orc: { ออร์คสันติ: /สันติ/ },
+  beast: { หมาป่า: /หมาป่า|จิ้งจอก/, เสือและแมวใหญ่: /เสือ|แมว|สิงโต/, กวางและวัว: /กวาง|วัว/, นก: /นก/, อูฐและจิ้งจกทราย: /อูฐ|จิ้งจก/ },
+  merfolk: { เงือก: /^เงือก$/ },
+  winged: { ชาวน้ำฟ้า: /ชาวน้ำฟ้า|ปีกฟ้า/, ปีกสั้น: /ปีกสั้น/, ปีกฟ้า: /ปีกฟ้า/ },
+  construct: { ผู้รอดชีวิตตุ๊กตา: /ตุ๊กตา/, ลูกผสมนีออน: /นีออน/ },
+  slime: { เห็ด: /เห็ด/ },
+};
+
+/** What a sub-line shows over its race: only words the docs write (02-races.md สายเลือดย่อย, 01-human หน้าและผิว). */
+export const LINE_OVERRIDES: Record<string, (raceFeats: string[]) => LineOverrides> = {
+  'human/ชาวหมอก': () => ({ skin: '#f0e8e4' }),
+  'human/ชนผืนทราย': () => ({ skin: '#a06a42' }),
+  'elf/เอลฟ์จันทรา': () => ({ skin: '#e6eef6', hairColor: '#d8dce8' }),
+  'elf/เอลฟ์สูง': () => ({ scale: 1.17 }),
+  'elf/เอลฟ์ราก': () => ({ skin: '#8a6a48' }),
+  'dwarf/ผู้ปิดรูน': (f) => ({ feats: [...f, 'mask'] }),
+  'dwarf/คนเหมืองลึก': () => ({ skin: '#efd8c8' }),
+  'orc/โอเกอร์': () => ({ scale: 1.29 }),
+  'orc/ออร์คเถ้า': () => ({ skin: '#8a8a82' }),
+  'merfolk/เงือกน้ำลึก': (f) => ({ skin: '#2a4a5a', feats: [...f, 'glow-eyes'] }),
+  'merfolk/กัปปะ': (f) => ({ skin: '#5a8a4a', feats: [...f, 'wet'] }),
+  'winged/ปีกราตรี': (f) => ({ feats: f.map((x) => (x === 'wings:feather' ? 'wings:night' : x)) }),
+  'winged/ปีกเกล็ด': (f) => ({ feats: f.map((x) => (x === 'wings:feather' ? 'wings:scale' : x)) }),
+  'winged/ชาวน้ำฟ้า': () => ({ accent: '#9ad0f0' }),
+  'giant/จอตุน': () => ({ skin: '#a8c8d8' }),
+  'construct/ผู้รอดชีวิตตุ๊กตา': (f) => ({ feats: [...f, 'tattoo'] }),
+  'construct/ลูกผสมนีออน': (f) => ({ accent: '#3a8aff', feats: [...f, 'sparkle'] }),
+};
+
+/** Eye colour of a race when the description names none (02-races.md หน้าและผิว). */
+export const RACE_EYE: Record<string, string> = {
+  dragonkin: '#d9a030', vampire: '#a02030', demonkin: '#d02a4a', lavakin: '#ffc040', naga: '#c8d030', darkelf: '#8a7ac0', beast: '#c8a030',
+};
+export const DEFAULT_EYE = '#2a2024';
+export const DEFAULT_HAIR = '#3a2a20';
+export const ELDER_HAIR = '#c0c0c4';
