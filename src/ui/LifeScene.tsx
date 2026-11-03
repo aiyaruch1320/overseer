@@ -5,6 +5,7 @@ import { useMemo, useState } from 'preact/hooks';
 import { store } from '../app/store';
 import { sceneFor, type SceneView } from '../app/views/scene';
 import { EventCard, ScenePlayer, Silhouette, type ActorView } from '../scene';
+import { GodEffectLine } from './god';
 import type { LogEntry } from '../core/types';
 import { color, font, size } from './tokens';
 
@@ -70,6 +71,8 @@ export function LifeScene() {
         ) : (
           <Idle />
         )}
+        {/* what the god's hand did lately (a small or middle miracle has no script of its own): one line under the stage */}
+        {!play && <GodEffectLine />}
       </div>
     </div>
   );

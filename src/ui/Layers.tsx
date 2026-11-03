@@ -10,7 +10,7 @@ import { CharacterScreen } from './character';
 import { BridgeCtx, storeBridge } from './god/bridge';
 import { ConfirmDialog, DoneBox, doneBox, pendingAct, askGod } from './god/confirm';
 import { GodStyles } from './god/style';
-import { godOpen } from './god';
+import { canWhisperTo, godOpen, openGod } from './god';
 import { color, font, size } from './tokens';
 
 type Layer = 'character' | 'allies' | 'battle' | 'war';
@@ -118,7 +118,13 @@ export function Layers() {
           <div style={{ flex: 'none', height: size.bar, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: `1px solid ${color.line}` }}>{bar}</div>
           <div class="ly-body" style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
             {l === 'character' && <CharacterScreen onBack={close} />}
-            {l === 'allies' && <AlliesScreen onClose={close} onWhisper={(name) => askGod('whisper', { hint: HELP_HINT, target: name })} />}
+            {l === 'allies' && (
+              <AlliesScreen
+                onClose={close}
+                // a tie the god may whisper to goes straight to the confirm; one the rules do not let him reach (family: 20-god-ui.md §5 names no such target) opens the whisper screen, which says who can be reached
+                onWhisper={(name) => (store.game && canWhisperTo(store.game, name) ? askGod('whisper', { hint: HELP_HINT, target: name }) : openGod('whisper', {}))}
+              />
+            )}
             {l === 'battle' && lastBattle && (() => {
               const m = battleModelAt(data, st, lastBattle.n);
               return m ? <BattleView model={m} autoplay onClose={close} /> : null;
