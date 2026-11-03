@@ -39,7 +39,7 @@ const FORMS: Record<string, Form> = {
   fog_weaver: ['insect', 'spider'], flesh_flyer: ['flyer', 'flesh'], bell_wraith: ['spirit', 'bell'], titan_shard: ['giant', 'titan'], scale_wyrmling: ['dragon', 'wyrmling'],
   // ง. named fighters that are not a person
   'NR11-2': ['sea', 'kraken', ['temple']], 'NR07-1': ['serpent', 'naga', ['eggs']], 'NR07-2': ['serpent', 'naga'], 'NR04-3': ['sea', 'deepbeast', ['glow']],
-  'KD07-1': ['dragon', 'coil'], 'SH03-1': ['giant', 'stone', ['sit']], 'SH03-2': ['giant', 'stone', ['sit']], 'SH03-4': ['giant', 'stone', ['sit']],
+  'KD07-1': ['dragon', 'copper'], 'SH03-1': ['giant', 'stone', ['sit']], 'SH03-2': ['giant', 'stone', ['sit']], 'SH03-4': ['giant', 'stone', ['sit']],
   'SH06-4': ['giant', 'stone', ['sit']], 'SH17-1': ['giant', 'stone', ['sit']], 'MH01-1': ['giant', 'orc'], 'MH02-1': ['giant', 'demon'], 'SH11-1': ['giant', 'orc'],
   'SV03-3': ['giant', 'bear'], 'MH12-1': ['humanoid', 'ghost'], 'SV13-2': ['humanoid', 'ghost'], 'MH12-2': ['humanoid', 'ghost'], 'NB08-2': ['humanoid', 'ghost'], 'MH03-1': ['giant', 'ghoul'], 'MK02-1': ['giant', 'brass'], 'SV14-1': ['giant', 'brute'], 'KD08-1': ['giant', 'brute'],
   // จ. the six world bosses
