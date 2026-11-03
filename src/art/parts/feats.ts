@@ -7,6 +7,7 @@
 import type { Pt } from '../paint';
 import type { Part, Rig } from '../rig';
 import { coils, feet, hexOf, mixHex, shadowOf, stroke, tone, armW } from './body';
+import { seedOf } from './kit';
 
 // ── small helpers ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 const DEG = Math.PI / 180;
@@ -140,6 +141,19 @@ const eyeGlow = (r: Rig): void => {
   r.p.px(ex, ey, core); r.p.px(ex - 1, ey, core);
 };
 
+/** The light of a machine's eye: the eye colour if it is bright, else the signature colour (`other` takes the one the first did not). */
+const glowOf = (r: Rig, other = false): string => {
+  const bright = (h: string) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) + parseInt(h.slice(5, 7), 16)) / 3 > 110;
+  const pick = bright(r.look.eye) ? r.look.eye : r.look.accent;
+  return other ? (pick === r.look.accent ? mixHex(r.look.accent, '#ffffff', 0.4) : r.look.accent) : pick;
+};
+/** The colour of the iron plates: grey iron turned toward the second colour of the look. */
+const plateHex = (r: Rig): string => mixHex('#9a9ea6', r.look.second, 0.4);
+const plateOf = (r: Rig): number => r.p.mat(plateHex(r));
+
+/** A bird and a lizard have no fur, whatever else the look carries. */
+const noFur = (r: Rig): boolean => r.look.feats.includes('feathers') || r.look.feats.includes('crest');
+
 /** A thin line of marks across the near forearm. */
 const armMarks = (r: Rig, ts: number[], k: number): void => { for (const t of ts) { const [x, y] = nearArm(r, t); r.p.px(x, y, k); } };
 
@@ -147,14 +161,18 @@ const armMarks = (r: Rig, ts: number[], k: number): void => { for (const t of ts
 export const FEATS: Record<string, Part> = {
   // ── elf ──
   leafcrest: {
-    // a crest of leaves swept back from the top of the head (not a flower, not a bow)
+    // a thin circlet of leaves across the brow and behind the ear: the hair above it and its colour stay visible (not a cap)
     front: (r) => {
-      const { p } = r, top = topY(r), hx = r.head[0], leaf = p.mat(r.look.accent), lite = p.mat(tone(r.look.accent, 3), { flat: true });
-      for (let i = 0; i < 3; i++) {
-        const b: Pt = [hx - 1.5 + i * 1.8, top + 1.5], t: Pt = [b[0] - 1.5 - i * 0.4, top - 2.2 - (i === 1 ? 1 : 0) + (r.pose === 'idle' && r.f ? 0.5 : 0)];
-        stroke(p, b, t, 2, leaf, leaf, 0.5, 0.7);
-        p.px(t[0], t[1], lite);
-      }
+      const { p } = r, [hx] = r.head, rx = r.hr[0], y = Math.round(topY(r)) + (r.hh >= 6 ? 2 : 1);
+      const leaf = p.mat(r.look.accent), vein = p.mat(tone(r.look.accent, 0), { flat: true }), lite = p.mat(tone(r.look.accent, 3), { flat: true });
+      // the hair falls over the circlet and the leaves: nothing is drawn where there is hair
+      const put = (x: number, y2: number, m: number) => { if (p.at(x, y2) !== r.m.hair) p.px(x, y2, m); };
+      for (let x = Math.round(hx - rx * 0.8); x <= Math.round(hx + rx * 0.7); x++) put(x, y, vein);
+      const fx = Math.round(hx + rx * 0.35), flick = r.pose === 'idle' && r.f ? 1 : 0;
+      // two leaves at the brow, one up and forward, one up and back; a third drops behind the ear
+      put(fx, y, leaf); put(fx + 1, y, lite); put(fx - 1, y, leaf); put(fx, y - 1, leaf); put(fx + 1, y - 1 - flick, lite);
+      const bx = Math.round(hx - rx * 0.75);
+      put(bx, y + 1, leaf); put(bx - 1, y + 2 + flick, leaf);
     },
   },
   vines: {
@@ -234,21 +252,19 @@ export const FEATS: Record<string, Part> = {
     },
   },
   warpaint: {
-    // two stripes of blood-red paint across the cheek and three on the chest
+    // a stripe of dried blood-red paint under the eye and a mark on the chest (dull, a few pixels: not a rash)
     front: (r) => {
-      const [ex, ey] = eyeAt(r), red = flat(r, '#9a2a1a');
-      r.p.px(ex - 1, ey + 1, red); r.p.px(ex, ey + 2, red); r.p.px(ex - 2, ey + 2, red); r.p.px(ex - 1, ey + 3, red);
-      for (let i = 0; i < 3; i++) r.p.line([r.x0 + 1 + i * 2, r.sh + 2], [r.x0 + 2 + i * 2, r.sh + 4], red);
+      const [ex, ey] = eyeAt(r), red = flat(r, '#7a2a20');
+      r.p.px(ex - 1, ey + 2, red); r.p.px(ex - 2, ey + 3, red);
+      r.p.line([r.x0 + 2, r.sh + 2], [r.x0 + 3, r.sh + 4], red);
     },
   },
   scars: {
-    // old scars: a line across the face, two across the chest, one on the arm (pale, not bloody)
+    // old scars: a short pale line across the cheek and one across the chest (pale, not bloody)
     front: (r) => {
-      const [ex, ey] = eyeAt(r), pale = flat(r, mixHex(r.look.skin, '#e8d8c8', 0.55));
-      r.p.line([ex - 3, ey - 2], [ex - 2, ey + 3], pale);
+      const [ex, ey] = eyeAt(r), pale = flat(r, mixHex(r.look.skin, '#e8d8c8', 0.4));
+      r.p.line([ex - 3, ey - 1], [ex - 2, ey + 2], pale);
       r.p.line([r.x0 + 1, r.sh + 3], [r.x0 + 4, r.sh + 5], pale);
-      r.p.line([r.x0 + 3, r.sh + 2], [r.x0 + 5, r.sh + 6], pale);
-      const [ax, ay] = nearArm(r, 0.8); r.p.px(ax, ay, pale);
     },
   },
   // ── halfling ──
@@ -269,31 +285,41 @@ export const FEATS: Record<string, Part> = {
   },
   // ── beast people ──
   fur: {
-    // fur on the cheek and along the forearm: the edge of the face is ragged and the arm is striped in the coat colour
+    // fur on the cheek and along the forearm: the edge of the face is ragged and the arm is striped in the coat colour (a bird and a lizard have none)
     front: (r) => {
+      if (noFur(r)) return;
       const [, ey] = eyeAt(r), x = Math.round(r.head[0] + r.hr[0]) - 1;
       r.p.px(x, ey + 2, r.m.hair); r.p.px(x - 1, ey + 3, r.m.hair); r.p.px(x + 1, ey + 2, r.m.hair);
     },
-    nearArm: (r) => armMarks(r, [0.6, 0.72, 0.84], r.m.hair),
-    farArm: (r) => { const [x, y] = farArm(r, 0.75); r.p.px(x, y, r.m.hair); },
+    nearArm: (r) => { if (!noFur(r)) armMarks(r, [0.6, 0.72, 0.84], r.m.hair); },
+    farArm: (r) => { if (noFur(r)) return; const [x, y] = farArm(r, 0.75); r.p.px(x, y, r.m.hair); },
   },
   'tail:fluffy': {
-    // a thick brush of a tail, curling up behind, tipped light; it tells the mood and moves all the time
+    // the tail of the animal the feats name: a thick brush (wolf, fox), a long thin one that curls (the big cats, banded or plain), a round puff
+    // (rabbit), a short blade (deer); a bird has none. It tells the mood and moves all the time
     back: (r) => {
+      const f = r.look.feats;
+      if (f.includes('feathers') || f.includes('crest')) return;
       const { p, k } = r, s = sway(r), root = tailRoot(r), c = r.m.hair, tipc = p.mat(tone(r.look.hairColor, 3));
+      if (f.includes('longears')) { p.ell(root[0] - 1.5, root[1] + 0.5, 1.6 * Math.max(1, k), 1.6 * Math.max(1, k), p.mat(tone(r.look.hairColor, 3))); return; }
+      if (f.includes('antlers')) { p.poly([root, [root[0] - 3.5 * k - s * 0.5, root[1] - 1.5 * k], [root[0] - 0.5, root[1] + 2.2]], c); p.px(root[0] - 1, root[1] + 1, tipc); return; }
+      const cat = f.includes('stripes') || f.includes('spots') || f.includes('mane');
+      const band = f.includes('stripes') ? flat(r, '#241810') : undefined;
       // a curve out and up from the hips, fat in the middle: a chain of ovals
-      const P: Pt[] = [root, [root[0] - 5 * k - s * 0.5, root[1] + 1.5 * k], [root[0] - 7 * k - s, root[1] - 6 * k]];
-      const N = 7;
+      const P: Pt[] = cat ? [root, [root[0] - 6 * k - s * 0.5, root[1] + 3 * k], [root[0] - 8 * k - s, root[1] - 5 * k]] : [root, [root[0] - 5 * k - s * 0.5, root[1] + 1.5 * k], [root[0] - 7 * k - s, root[1] - 6 * k]];
+      const N = cat ? 9 : 7;
       for (let i = 0; i <= N; i++) {
         const t = i / N, u = 1 - t, x = u * u * P[0][0] + 2 * u * t * P[1][0] + t * t * P[2][0], y = u * u * P[0][1] + 2 * u * t * P[1][1] + t * t * P[2][1];
-        const rad = (1.1 + 1.9 * Math.sin(Math.min(1, t * 1.15) * Math.PI * 0.9)) * Math.max(0.8, k);
-        p.ell(x, y, rad, rad, i >= N - 1 ? tipc : c);
+        const rad = cat ? 0.9 + 0.35 * k * Math.sin(t * Math.PI) : (1.1 + 1.9 * Math.sin(Math.min(1, t * 1.15) * Math.PI * 0.9)) * Math.max(0.8, k);
+        const dark = cat && (i >= N - 1 || (band && i % 3 === 1));
+        p.ell(x, y, rad, rad, dark ? (band ?? p.mat('#241810')) : i >= N - 1 ? tipc : c);
       }
     },
   },
   pawhands: {
-    // the hands are paws: fur to the wrist, a dark pad
+    // the hands are paws: fur to the wrist, a dark pad (not on a bird or a lizard)
     front: (r) => {
+      if (noFur(r)) return;
       const w = armW(r), pad = flat(r, '#5a3a3a');
       for (const h of [r.hand, r.farHand]) { r.p.rect(Math.round(h[0]) - (w >> 1), Math.round(h[1]) - (w >> 1), w, w, r.m.hair); r.p.px(h[0], h[1] + (w > 1 ? 0 : 0), pad); }
     },
@@ -425,13 +451,13 @@ export const FEATS: Record<string, Part> = {
   // ── fae ──
   'wings:insect': { back: insectWing },
   sparkle: {
-    // dust that glitters round the figure: three of four specks at a time, one of them a little star (flat, no outline)
+    // dust that glitters round the figure: two or three faint specks at a time, one a little brighter (flat, no outline, dim: the fae are not a cartoon)
     front: (r) => {
-      const { H } = r, cx = cxOf(r), cy = r.sh + r.H * 0.15, g = r.look.accent;
+      const { H } = r, cx = cxOf(r), cy = r.sh + r.H * 0.15, g = mixHex(r.look.accent, '#8a8a98', 0.35);
       const spots: Pt[] = [[-H * 0.55, -H * 0.2], [H * 0.5, -H * 0.4], [H * 0.6, H * 0.1], [-H * 0.4, H * 0.35]];
-      spots.forEach(([dx, dy], i) => { if ((i + r.f + (r.pose === 'walk' ? 1 : 0)) % 4 === 0) return; glowPx(r, cx + dx, cy + dy + ((r.f + i) % 2), i % 2 ? g : '#ffffff'); });
+      spots.forEach(([dx, dy], i) => { if ((i + r.f + (r.pose === 'walk' ? 1 : 0)) % 4 === 0) return; glowPx(r, cx + dx, cy + dy + ((r.f + i) % 2), i % 2 ? g : '#d8d6e0', 0.55); });
       const [sx, sy] = spots[(r.f + 1) % 4];
-      for (const [dx, dy] of [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]]) glowPx(r, cx + sx + dx, cy + sy + dy, '#ffffff', dx || dy ? 0.7 : 1);
+      glowPx(r, cx + sx, cy + sy, '#e8e6f0', 0.8); glowPx(r, cx + sx + 1, cy + sy, '#e8e6f0', 0.35); glowPx(r, cx + sx, cy + sy + 1, '#e8e6f0', 0.35);
     },
   },
   antenna: {
@@ -479,18 +505,19 @@ export const FEATS: Record<string, Part> = {
     },
   },
   pearls: {
-    // a string of pearls at the throat and one at the temple (white, with the shadow of the painter)
+    // a string of pearls at the throat (how many, and whether there is a pearl at the temple, change from look to look)
     front: (r) => {
-      const { p } = r, w = p.mat('#f4f0f0'), cx = Math.round(cxOf(r)) + 1;
-      [[-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]].forEach(([dx, dy]) => p.px(cx + dx, r.sh + dy, w));
-      p.px(r.head[0] - r.hr[0] * 0.85, Math.round(topY(r)) + 3, w); // the pearl at the temple, behind the eye
+      const { p } = r, sd = seedOf(r), w = p.mat(mixHex('#f4f0f0', r.look.skin, 0.2 + (sd % 3) * 0.1)), cx = Math.round(cxOf(r)) + 1;
+      const row = [[-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]].slice(sd % 2, 5 - ((sd >> 1) % 2));
+      row.forEach(([dx, dy]) => p.px(cx + dx, r.sh + dy, w));
+      if ((sd >> 2) % 3 !== 0) p.px(r.head[0] - r.hr[0] * 0.85, Math.round(topY(r)) + 3, w);
     },
   },
   finskirt: {
     // a ribbon fin that trails from the back of the hip to the hem, thin and a little see-through; it flutters even when nothing moves
     lower: (r) => {
       const { p } = r, gy = r.foot, fl = r.flap, x = r.x0;
-      const fin = p.mat(mixHex(r.look.accent, '#ffffff', 0.35), { alpha: 0.85 }), rib = p.mat(tone(r.look.accent, 0), { flat: true, alpha: 0.9 });
+      const fin = p.mat(mixHex(r.look.second, r.look.accent, 0.25), { alpha: 0.85 }), rib = p.mat(tone(r.look.second, 0), { flat: true, alpha: 0.9 });
       p.poly([[x + 1, r.hip + 1], [x - 3 - fl, gy - 4], [x - 2 - fl * 0.5, gy - 1], [x + 2, gy - 6]], fin);
       p.line([x, r.hip + 3], [x - 2 - fl, gy - 3], rib);
     },
@@ -593,17 +620,28 @@ export const FEATS: Record<string, Part> = {
   'glow-eyes': { front: eyeGlow },
   // ── hybrid and golem ──
   plates: {
-    // iron plates: a pauldron on the shoulder, a bracer on the forearm, a plate on the knee
+    // iron plates in the second colour: a pauldron on the shoulder, a bracer on the forearm, a plate on the knee, and on the head a crown plate
+    // (the soul machines) or a plate at the temple (the constructs)
     torso: (r) => {
-      const { p } = r, m = r.m.metal, lt = flat(r, tone('#9a9ea6', 3));
+      const { p } = r, m = plateOf(r), lt = flat(r, tone(plateHex(r), 3));
       p.rect(r.x0 + r.tw - 4, r.sh, 4, 3, m); p.rect(r.x0 + r.tw - 4, r.sh, 3, 1, lt);
       p.rect(r.x0, r.sh, 2, 2, m);
     },
-    nearArm: (r) => { const [x, y] = nearArm(r, 0.7), w = armW(r); r.p.rect(Math.round(x) - (w >> 1), Math.round(y) - 1, w, 2, r.m.metal); },
+    nearArm: (r) => { const [x, y] = nearArm(r, 0.7), w = armW(r); r.p.rect(Math.round(x) - (w >> 1), Math.round(y) - 1, w, 2, plateOf(r)); },
     lower: (r) => {
       if (r.sit || r.kneel || r.infant) return;
       const w = Math.max(2, Math.round(r.tw / 3.2)), y = Math.round(r.hip + r.legs * 0.45);
-      r.p.rect(r.near.x + (r.near.fx - r.near.x) * 0.45, y, w, 2, r.m.metal);
+      r.p.rect(r.near.x + (r.near.fx - r.near.x) * 0.45, y, w, 2, plateOf(r));
+    },
+    hair: (r) => {
+      const { p } = r, [hx, hy] = r.head, [rx, ry] = r.hr, top = Math.round(topY(r)), pl = plateOf(r), seam = flat(r, tone(plateHex(r), 0));
+      if (r.look.race === 'soulmachine' || r.look.feats.includes('hairless')) {
+        for (let x = Math.round(hx - rx); x < Math.round(hx + rx * 0.3); x++) p.rect(x, top, 1, x < hx - rx * 0.6 ? 3 : 2, pl);
+        p.px(Math.round(hx - rx * 0.2), top + 2, seam); p.px(Math.round(hx - rx * 0.2), top + 3, seam);
+        p.px(Math.round(hx - rx * 0.8), Math.round(hy), seam);
+      } else if (r.hh >= 6) {
+        p.rect(Math.round(hx - rx * 0.7), Math.round(hy - ry * 0.2), 2, 2, pl);
+      }
     },
   },
   rivets: {
@@ -625,10 +663,11 @@ export const FEATS: Record<string, Part> = {
     },
   },
   mecheye: {
-    // an eye of brass and glass: a brass ring and a cyan lens (flat)
+    // an eye of metal and glass: a ring (brass, steel or copper, square or cut-cornered) and a lens that takes the signature colour (flat)
     front: (r) => {
-      const [ex, ey] = eyeAt(r), br = r.p.mat('#c08a3a');
-      r.p.rect(ex - 1, ey - 1, 3, 3, br); r.p.px(ex, ey, flat(r, '#6ad0ff'));
+      const [ex, ey] = eyeAt(r), sd = seedOf(r), ring = r.p.mat(['#c08a3a', '#8a94a4', '#a86a3a'][sd % 3]);
+      if ((sd >> 2) % 2) { r.p.rect(ex - 1, ey - 1, 3, 3, ring); } else { r.p.rect(ex - 1, ey, 3, 1, ring); r.p.rect(ex, ey - 1, 1, 3, ring); r.p.px(ex - 1, ey - 1, ring); r.p.px(ex + 1, ey + 1, ring); }
+      r.p.px(ex, ey, flat(r, glowOf(r)));
     },
   },
   mecharm: {
@@ -653,11 +692,15 @@ export const FEATS: Record<string, Part> = {
     },
   },
   visor: {
-    // a dark band across the eyes with two points of fire (flat)
+    // a dark plate across the eyes with points of fire in the eye colour and the signature colour (flat); the shape of the plate changes from look to look:
+    // a band, a narrow slit under a brow, one round lens, two round lenses
     front: (r) => {
-      const { p } = r, [ex, ey] = eyeAt(r), band = p.mat('#24242c', { flat: true }), e = flat(r, r.look.eye);
-      p.rect(ex - 3, ey - 1, 5, 3, band);
-      p.px(ex - 2, ey, e); p.px(ex, ey, e);
+      const { p } = r, [ex, ey] = eyeAt(r), sd = seedOf(r) % 4, band = p.mat(mixHex('#24242c', r.look.second, 0.3), { flat: true });
+      const a = flat(r, glowOf(r)), b = flat(r, glowOf(r, true));
+      if (sd === 0) { p.rect(ex - 3, ey - 1, 5, 3, band); p.px(ex - 2, ey, a); p.px(ex, ey, b); }
+      else if (sd === 1) { p.rect(ex - 4, ey - 2, 6, 1, band); p.rect(ex - 3, ey - 1, 5, 2, band); p.px(ex - 2, ey, a); p.px(ex - 1, ey, a); p.px(ex, ey, b); }
+      else if (sd === 2) { p.rect(ex - 2, ey - 1, 4, 3, band); p.rect(ex - 3, ey, 6, 1, band); p.px(ex - 1, ey, a); p.px(ex, ey, b); p.px(ex - 1, ey - 1, b); }
+      else { p.rect(ex - 3, ey - 1, 2, 3, band); p.rect(ex, ey - 1, 2, 3, band); p.px(ex - 2, ey, a); p.px(ex, ey, b); p.line([ex - 4, ey], [Math.round(r.head[0] - r.hr[0]) + 1, ey], band); }
     },
   },
   seams: {
