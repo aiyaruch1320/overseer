@@ -119,7 +119,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
     <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }} data-testid="life-scene">
       <div style={{ width: fit, maxWidth: '100%' }}>
         {play && play.kind === 'script' ? (
-          <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} labelOf={staged?.labelOf} onDone={() => setPlayed(play.entry.n)} />
+          <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} labelOf={staged?.labelOf} caption={st && data ? idleView(data, st).caption : undefined} onDone={() => setPlayed(play.entry.n)} />
         ) : found.card ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', maxHeight: '100cqh', overflowY: 'auto' }}>
             <EventCard card={found.card.card} />

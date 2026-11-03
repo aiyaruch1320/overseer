@@ -28,7 +28,7 @@ function Picture({ card, src }: { card: CardModel; src?: string }) {
           {WORDS.layer}
         </div>
       )}
-      {!src && card.picture && <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '14px 8px 5px', fontSize: 11, color: color.text, lineHeight: 1.35, textShadow: '0 1px 3px #000', background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.62))' }}>{card.picture}</div>}
+      {!src && card.picture && <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '14px 8px 5px', fontSize: 11, color: color.text, lineHeight: 1.35, textShadow: '0 0 2px #000, 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000, 0 2px 5px #000', background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.78))' }}>{card.picture}</div>}
     </div>
   );
 }

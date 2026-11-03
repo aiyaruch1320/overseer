@@ -28,9 +28,11 @@ export interface ScenePlayerProps {
   scenery?: SceneryOf;
   /** The words under an actor: its name when it has one (src/app/views/scene.ts `labelsOf`). */
   labelOf?: (a: { id: string; label: string }) => string;
+  /** A line in the row of controls: where and when the life is (season · age · place), the same words as under the calm picture. */
+  caption?: string;
 }
 
-export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, figureOf, scenery, labelOf }: ScenePlayerProps) {
+export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, figureOf, scenery, labelOf, caption }: ScenePlayerProps) {
   const [t, setT] = useState(startAt);
   const [playing, setPlaying] = useState(autoplay);
   const [speed, setSpeed] = useState(speed0);
@@ -124,6 +126,11 @@ export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true
           <button style={btn} onClick={() => (atEnd ? again() : setPlaying(!playing))}>
             {atEnd ? WORDS.again : playing ? WORDS.pause : WORDS.play}
           </button>
+          {caption && (
+            <span data-testid="scene-caption" style={{ color: color.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '42%' }}>
+              {caption}
+            </span>
+          )}
           <div style={{ flex: 1, height: 4, background: color.line, borderRadius: 2 }}>
             <div style={{ width: `${(t / script.seconds) * 100}%`, height: '100%', background: script.frame, borderRadius: 2 }} />
           </div>

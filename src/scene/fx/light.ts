@@ -129,6 +129,9 @@ function beam(t: number, seed: number, s: Sink): void {
     const r = Math.round(cx + h + wobble(y, t, 1));
     // the body is gold laid over the sky (covering, so it stays gold and does not wash to white), the core is added light
     s.rect(l, y, r - l, 1, gold, B.body * flick, false);
+    // a softer halo of light round it (added: it warms the sky beside the beam instead of greying it)
+    s.rect(Math.round(l - h * 0.35), y, l - Math.round(l - h * 0.35), 1, gold, 0.16 * flick, true);
+    s.rect(r, y, Math.round(r + h * 0.35) - r, 1, gold, 0.16 * flick, true);
     const cl = Math.round(cx - h * 0.55 + wobble(y, t, 2) * 0.5);
     const cr = Math.round(cx + h * 0.55 + wobble(y, t, 3) * 0.5);
     s.rect(cl, y, cr - cl, 1, pale, B.core * flick, true);
@@ -192,7 +195,7 @@ function meteor(t: number, seed: number, s: Sink): void {
       for (let i = 1; i <= M.tail; i++) {
         const [tx, ty] = at(Math.max(0, fall - i * 0.018));
         const k = i / M.tail;
-        s.blob(tx + Math.sin(i * 1.9 + t * 2) * 1.5, ty, r * (0.7 + k * 1.6), r * (0.6 + k * 1.2), i % 2 ? 0x6a5a5a : 0x8a7a76, 0.5 * (1 - k * 0.8), false, 2);
+        s.blob(tx + Math.sin(i * 1.9 + t * 2) * 1.5, ty, r * (0.7 + k * 1.6), r * (0.6 + k * 1.2), i % 2 ? 0x6a5a5a : 0x8a7a76, 0.8 * (1 - k * 0.7), false, 2);
         if (i < 5) s.blob(tx, ty, r * (1.3 - k), r * (1.1 - k), 0xff8a3a, 0.35 * (1 - k), true, 2);
       }
     // a halo that breathes, then the red star: a core with a pale heart (visible on a day sky: it covers, it does not only add)
@@ -222,9 +225,9 @@ function meteor(t: number, seed: number, s: Sink): void {
   const open = Math.min(1, tau / 1.2);
   const rx = M.crater.rx * open;
   const ry = M.crater.ry * open;
-  s.blob(ix, iy + 8, rx * 1.12, ry * 1.2, 0x1a1218, 0.85, false, 3);
-  s.blob(ix, iy + 8, rx * 0.8, ry * 0.8, 0x050306, 0.95, false, 3);
-  s.blob(ix, iy + 9, rx * 0.5, ry * 0.5, 0xff5a2a, 0.22 + 0.06 * Math.sin(t * 4), true, 3);
+  s.blob(ix, iy + 8, rx * 1.12, ry * 1.2, 0x1a1218, 0.95, false, 4);
+  s.blob(ix, iy + 8, rx * 0.8, ry * 0.8, 0x050306, 1, false, 4);
+  s.blob(ix, iy + 9, rx * 0.5, ry * 0.5, 0xff5a2a, 0.12 + 0.04 * Math.sin(t * 4), true, 3);
   for (let i = 0; i < 40; i++) {
     const th = (i / 40) * Math.PI * 2;
     const glint = Math.sin(t * 3 + i * 2.3) > 0.55;

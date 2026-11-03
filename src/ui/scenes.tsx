@@ -5,6 +5,8 @@ import type { ComponentChildren } from 'preact';
 import { BEAT_KINDS } from '../core/data/types-scenes';
 import type { GameData } from '../core/game';
 import type { LogEntry } from '../core/types';
+import { mainLookOf } from '../app/views/looks';
+import type { FigureOf } from '../scene/figures';
 import { cardOfEntry, figuresOf, labelsOf, sceneFor, sceneryOf } from '../app/views/scene';
 import type { GameState } from '../core/types';
 import { LifeScene } from './LifeScene';
@@ -39,20 +41,25 @@ function Heading({ children }: { children: ComponentChildren }) {
 story({
   group: 'ฉาก',
   name: 'จังหวะทั้งสิบชนิด',
-  render: () => (
+  render: ({ data, state }) => {
+    // the specimens' character is the life's own look (a silhouette stands for nobody): the main character is never the black placeholder
+    const look = mainLookOf(data, state);
+    const figureOf: FigureOf | undefined = look ? () => ({ kind: 'person', looks: [look] }) : undefined;
+    return (
     <div style={{ padding: size.pad }}>
       <div style={{ color: color.textDim, marginBottom: size.pad }}>หนึ่งตัวอย่างต่อหนึ่งชนิดของจังหวะ: {BEAT_KINDS.join(' · ')}</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: size.pad }}>
         {BEAT_KINDS.map((k) => (
           <figure key={k} style={{ margin: 0 }} data-beat={k}>
-            <ScenePlayer script={BEAT_DEMOS[k]} loop controls={false} />
+            <ScenePlayer script={BEAT_DEMOS[k]} loop controls={false} figureOf={figureOf} />
             {/* the name of the beat under its frame: ten small frames on one place look alike */}
             <figcaption style={{ marginTop: 4, fontFamily: font.body, fontSize: size.text, color: color.text }}>{BEAT_DEMOS[k].title}</figcaption>
           </figure>
         ))}
       </div>
     </div>
-  ),
+    );
+  },
 });
 
 // one event of each display form (12-event-visuals "รูปแบบการแสดง 4 แบบ")

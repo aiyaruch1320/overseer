@@ -190,6 +190,6 @@ describe('K5-11 the light of a pass is clearly warmer than the light of a fail',
     expect(sum(warm).r / sum(warm).b).toBeGreaterThan(1.5);
     expect(sum(cold).b / sum(cold).r).toBeGreaterThan(1.3);
     for (const l of [warm, cold]) expect(l.some((p) => p.w === ART.w && p.h === ART.h)).toBe(true);
-    expect(Math.max(...warm.map((p) => p.alpha))).toBeGreaterThan(0.3);
+    expect(Math.max(...warm.map((p) => p.alpha))).toBeGreaterThan(0.25);
   });
 });

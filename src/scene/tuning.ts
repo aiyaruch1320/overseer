@@ -26,7 +26,7 @@ export const CAMERA: Record<CameraFrame, { zoom: number; lift: number }> = {
 
 /** The light of a scene (13-storyline-scenes §1 "แสง"): colour, strength, and where it comes from. */
 export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'front' | 'back' | 'all' | 'centre'; add: boolean }> = {
-  'warm-front': { color: '#ffb25a', alpha: 0.44, from: 'front', add: true },
+  'warm-front': { color: '#ffb25a', alpha: 0.3, from: 'front', add: true },
   'cold-back': { color: '#5a78cc', alpha: 0.4, from: 'back', add: true },
   diffuse: { color: '#ffffff', alpha: 0.06, from: 'all', add: true },
   glow: { color: '#fff0c0', alpha: 0.14, from: 'centre', add: true },
@@ -34,7 +34,7 @@ export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'fro
 };
 
 /** The share of a front or back light that lies over the whole picture besides its bands (a pass reads warm and a fail cold from across the room). */
-export const LIGHT_WASH = 0.55;
+export const LIGHT_WASH = 0.5;
 
 /** The placeholder silhouette per pose: rotation (deg), drop as a share of the figure height, scale, and whether an arm is raised. */
 export const POSE: Record<Pose, { rot: number; drop: number; scale: number; arm: number }> = {
@@ -163,9 +163,9 @@ export const GOD_FX = {
   centre: { x: ART.w / 2, y: 112 },
   pillar: { top: 5, ground: 15, shake: 1.6, embers: 22, alpha: 0.2, core: 0.3 },
   // MR-04: half width at the top and at the ground (the beam is a third of the picture wide where it lands), opacity of the gold body and the pale core and rim, seconds to open, motes, the white wisps of the dead
-  beam: { top: 30, ground: 54, body: 0.42, core: 0.32, rim: 0.85, open: 1.6, motes: 30, wisps: 9, wispsAt: 14.5 },
+  beam: { top: 30, ground: 54, body: 0.72, core: 0.3, rim: 0.7, open: 1.6, motes: 30, wisps: 9, wispsAt: 14.5 },
   // MR-17: where the star starts and lands, its radius at the start and at the last night, the second it begins to fall and the second it lands, the tail's length, the length of the flash (seconds), the wave, the crater
-  meteor: { from: [236, 34], land: [160, 138], r0: 1.2, r1: 6.5, fallAt: 8, hitAt: 12.8, tail: 14, flash: 0.1, wave: 8, waveSpeed: 24, crater: { rx: 62, ry: 12 } },
+  meteor: { from: [236, 34], land: [160, 138], r0: 1.2, r1: 6.5, fallAt: 8, hitAt: 12.8, tail: 20, flash: 0.1, wave: 8, waveSpeed: 24, crater: { rx: 62, ry: 12 } },
   dread: { rx: 100, ry: 64, core: 54, smoke: 12 },
   fate: { threads: [-19, 0, 18], ringRx: 92, ringRy: 20, stitches: 56, end: 124 },
 } as const;
