@@ -64,3 +64,55 @@ describe('the feats', () => {
     }
   });
 });
+
+describe('wings fold at rest and open when roused', () => {
+  const WINGS = ['wings:feather', 'wings:scale', 'wings:night', 'wings:insect'];
+  const bare = (): PersonLook => ({ ...base(), tool: '' });
+  const solid = (f: Frame, x: number, y: number) => f.data[(y * f.w + x) * 4 + 3] > 100;
+  const leftOf = (f: Frame): number => { let l = 99; for (let y = 0; y < f.h; y++) for (let x = 0; x < f.w; x++) if (solid(f, x, y)) l = Math.min(l, x); return l; };
+  /** The pixels the wing adds to the figure (what differs from the same figure without it) and how far back they reach. */
+  function added(wing: string, pose: Parameters<typeof paintPerson>[1], i: number): { left: number; px: number } {
+    const g = paintPerson({ ...bare(), feats: [wing] }, pose, i), n = paintPerson(bare(), pose, i);
+    let left = 99, px = 0;
+    for (let y = 0; y < g.h; y++) for (let x = 0; x < g.w; x++) {
+      const o = (y * g.w + x) * 4;
+      if (solid(g, x, y) && !(solid(n, x, y) && g.data[o] === n.data[o] && g.data[o + 1] === n.data[o + 1] && g.data[o + 2] === n.data[o + 2])) { left = Math.min(left, x); px++; }
+    }
+    return { left, px };
+  }
+
+  it('every kind stays small and close to the back at rest (idle, walk, sit, pray, work)', () => {
+    for (const w of WINGS)
+      for (const [pose, n] of [['idle', 2], ['walk', 4], ['sit', 1], ['pray', 2], ['work', 3]] as const)
+        for (let i = 0; i < n; i++) {
+          const s = added(w, pose, i), bodyLeft = leftOf(paintPerson(bare(), pose, i));
+          expect(bodyLeft - s.left, `${w} ${pose}${i} reaches back`).toBeLessThanOrEqual(9);
+          expect(s.px, `${w} ${pose}${i} size`).toBeLessThan(170);
+          expect(s.px, `${w} ${pose}${i} shows`).toBeGreaterThan(6);
+        }
+  });
+
+  it('every kind opens wider on cheer, cast and attack, and stays inside the frame', () => {
+    for (const w of WINGS) {
+      const rest = added(w, 'idle', 0);
+      for (const [pose, i] of [['cheer', 0], ['cheer', 1], ['cast', 2], ['attack', 2]] as const) {
+        const s = added(w, pose, i);
+        expect(s.px, `${w} ${pose}${i} opens`).toBeGreaterThan(rest.px);
+        expect(s.left, `${w} ${pose}${i} inside`).toBeGreaterThanOrEqual(1);
+      }
+    }
+  });
+
+  it('a giant spreads its wings without passing the frame edge', () => {
+    for (const w of WINGS) {
+      const L = { ...raceLook(RACES.find((r) => r.id === 'giant')!), feats: [w] };
+      for (const [pose, i] of [['cheer', 1], ['cast', 2], ['attack', 2]] as const) expect(leftOf(paintPerson(L, pose, i)), `${w} ${pose}${i}`).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it('a feather wing has feathers: several tones in its rows when open', () => {
+    const f = paintPerson({ ...bare(), feats: ['wings:feather'], accent: '#d9a030' }, 'cheer', 1), n = paintPerson(bare(), 'cheer', 1), seen = new Set<string>();
+    for (let k = 0; k < f.data.length; k += 4) if (f.data[k + 3] > 200 && (f.data[k] !== n.data[k] || f.data[k + 1] !== n.data[k + 1])) seen.add(`${f.data[k]},${f.data[k + 1]},${f.data[k + 2]}`);
+    expect(seen.size).toBeGreaterThanOrEqual(5);
+  });
+});

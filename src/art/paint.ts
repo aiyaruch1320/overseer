@@ -31,12 +31,19 @@ const toward = (h: number, to: number, by: number): number => {
   return (h + Math.sign(d) * Math.min(Math.abs(d), by) + 360) % 360;
 };
 
-/** The four tones of a material: outline, shadow, base, light. */
+/** How warm a hue is, 0 (not at all) to 1 (red, orange, skin): the hues from red round to yellow-orange. */
+const warmth = (h: number): number => (h <= 70 ? Math.min(1, (70 - h) / 20) : h >= 330 ? Math.min(1, (h - 320) / 20) : 0);
+
+/**
+ * The four tones of a material: outline, shadow, base, light. A shadow leans blue; but a warm hue (skin, orange) made more saturated and
+ * turned toward blue goes a raw red-orange, so the shadow of a warm hue is a good deal less saturated and turns a little toward the red-violet.
+ */
 export function tones(hex: string): Rgb[] {
   const [h, s, l] = toHsl(parse(hex));
+  const w = warmth(h);
   return [
     toRgb(toward(h, 245, 25), s * 0.75, Math.max(0.05, l * 0.3)),
-    toRgb(toward(h, 240, 14), s * 1.05, l - 0.13),
+    toRgb(w ? toward(h, 345, 10 * w) : toward(h, 240, 14), s * (1.05 - 0.37 * w), l - 0.13),
     parse(hex),
     toRgb(toward(h, 50, 10), s * 0.95, l + 0.1),
   ];
@@ -46,11 +53,15 @@ export function tones(hex: string): Rgb[] {
 interface Mat { t: Rgb[]; flat: boolean; deep: boolean; alpha: number }
 export interface MatOpts { flat?: boolean; deep?: boolean; alpha?: number }
 export type Pt = [number, number];
+/** A free-floating pixel laid on the finished frame (sparks, embers, dust, steam): flat colour, no shading, no outline. */
+export interface Glow { x: number; y: number; hex: string; a: number }
 
 export class Paint {
   readonly m: Uint8Array;
   readonly mats: Mat[] = [{ t: [], flat: true, deep: false, alpha: 255 }];
   private readonly known = new Map<string, number>();
+  /** The glow pixels, laid by `finish` over everything else (the ground shadow too). */
+  readonly glows: Glow[] = [];
   constructor(readonly w: number, readonly h: number) { this.m = new Uint8Array(w * h); }
   /** A material of this colour (the same colour and options give the same id). `flat` keeps one tone (eyes, glows); `deep` shades two pixels in (big shapes); `alpha` 0..1 for gel and ghosts. */
   mat(hex: string, o: MatOpts = {}): number {
@@ -63,6 +74,8 @@ export class Paint {
     this.known.set(key, this.mats.length - 1);
     return this.mats.length - 1;
   }
+  /** A pixel of `hex` (`alpha` 0..1) that is laid after the shading, the outline and the ground shadow: it gets no dark ring. Anywhere on the grid above the ground line. */
+  glow(x: number, y: number, hex: string, alpha = 1): void { this.glows.push({ x, y, hex, a: alpha }); }
   /** Turn what is drawn a quarter turn around a point (`dir` 1 clockwise, -1 counter-clockwise): a figure that falls. */
   turn(dir: 1 | -1, about: Pt): void {
     const old = this.m.slice();
@@ -142,6 +155,14 @@ export class Paint {
         const dx = (x + 0.5 - shadow.cx) / shadow.rx, dy = (y + 0.5 - shadow.cy) / shadow.ry;
         if (dx * dx + dy * dy <= 1) put(i, [24, 26, 44], 70);
       }
+    // the glow pixels on top: blended over what is there, above the ground line only
+    for (const { x, y, hex, a } of this.glows) {
+      const xi = Math.round(x), yi = Math.round(y);
+      if (xi < 0 || yi < 0 || xi >= w || yi >= Math.min(h, shadow.cy)) continue;
+      const o = (yi * w + xi) * 4, c = parse(hex), under = out[o + 3] / 255, res = a + under * (1 - a);
+      for (let q = 0; q < 3; q++) out[o + q] = Math.round((c[q] * a + out[o + q] * under * (1 - a)) / (res || 1));
+      out[o + 3] = Math.round(res * 255);
+    }
     return { w, h, data: out };
   }
 }

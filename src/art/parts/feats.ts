@@ -14,7 +14,7 @@ const flat = (r: Rig, hex: string, alpha = 1): number => r.p.mat(hex, { flat: tr
 const solid = (r: Rig, hex: string, alpha = 1): number => r.p.mat(hex, { alpha });
 const ink = (r: Rig, over = 0.7): number => r.p.mat(mixHex(r.look.skin, '#1a1210', over), { flat: true });
 /** A glow pixel on the finished frame (no outline). */
-const glowPx = (r: Rig, x: number, y: number, hex: string, a = 1): void => { r.fx.push({ x, y, hex, a }); };
+const glowPx = (r: Rig, x: number, y: number, hex: string, a = 1): void => r.p.glow(x, y, hex, a);
 /** The eye of the face (where body.ts draws it). */
 const eyeAt = (r: Rig): Pt => [Math.round(r.head[0] + r.hr[0] * 0.5), Math.round(r.head[1] - 0.4)];
 const topY = (r: Rig): number => r.head[1] - r.hr[1];
@@ -34,63 +34,98 @@ function blade(r: Rig, base: Pt, deg: number, len: number, wid: number, k: numbe
 }
 const tip = (base: Pt, deg: number, len: number): Pt => [base[0] - Math.sin(deg * DEG) * len, base[1] - Math.cos(deg * DEG) * len];
 
-/** How far a wing is open this frame: 0 folded, 1 half, 2 spread. Wings fold on the ground and open for anger or joy. */
-function wingOpen(r: Rig): number {
-  if (r.pose === 'cheer') return 2;
-  if (r.pose === 'attack' || r.pose === 'cast') return r.f === 0 ? 1 : 2;
-  if (r.pose === 'hurt') return 1;
-  if (r.pose === 'die') return r.f === 0 ? 1 : 0;
-  if (r.pose === 'walk') return r.flap >= 2 ? 1 : 0;
-  return r.pose === 'idle' && r.f === 1 ? 1 : 0;
-}
-
-/** A wing of long feathers fanning from the shoulder blade: a filled fan with a ragged edge, the feathers marked by lines, shorter ones under. */
-function featherWing(r: Rig, light: string, shade: string): void {
-  const { p } = r, open = wingOpen(r), base: Pt = [r.x0 + 2 + r.lean * 0.5, r.sh + 3];
-  const deg = [160, 68, 32][open], span = [24, 38, 50][open], len = r.H * [0.52, 0.5, 0.64][open];
-  const a = p.mat(light), sh = p.mat(mixHex(shade, '#9aa4c8', 0.4)), line = p.mat(shade, { flat: true });
-  const n = 6, tips: Pt[] = [], under: Pt[] = [];
-  for (let i = 0; i < n; i++) {
-    const d = deg + (i / (n - 1) - 0.5) * span, ln = len * (0.7 + 0.3 * Math.sin((i / (n - 1)) * Math.PI * 0.9 + 0.35));
-    tips.push(tip(base, d, ln)); under.push(tip(base, d + 4, ln * 0.55));
+/** How far a wing is open this frame: 0 folded against the back, 1 half, 2 spread. Wings are folded at rest (idle, walk, sit, pray, work) and open for attack, cast, cheer and hurt. */
+export function wingOpen(r: Rig): 0 | 1 | 2 {
+  switch (r.pose) {
+    case 'cheer': return 2;
+    case 'attack': case 'cast': return r.f === 0 ? 1 : 2;
+    case 'hurt': return 1;
+    case 'die': return r.f === 0 ? 1 : 0;
+    default: return 0;
   }
-  p.poly([base, ...tips], sh);
-  p.poly([base, ...tips.map((t) => lerp(base, t, 0.92))], a);
-  p.poly([base, ...under], sh);
-  tips.forEach((t, i) => { p.line(lerp(base, t, 0.45), lerp(base, t, 0.95), line); if (i % 2) p.px(t[0], t[1], a); });
-  p.ell(base[0] - 0.5, base[1] - 0.5, 2.2, 2.6, a);
 }
 
-/** A bat's wing: an arm bone out and up, two finger bones, a membrane with a scalloped edge between them. */
+/** Where a wing joins the back: the shoulder blade. */
+const wingRoot = (r: Rig): Pt => [r.x0 + 1 + r.lean * 0.5, r.sh + 2];
+/** The scale of a wing in pixels per unit: the figure's, shrunk when `reach` units would pass the left edge of the frame (a giant's spread wing). */
+const wingScale = (r: Rig, reach: number): number => r.k * Math.min(1, Math.max(0.4, (wingRoot(r)[0] - 3) / (reach * r.k)));
+const at = (b: Pt, dx: number, dy: number, s: number): Pt => [b[0] + dx * s, b[1] + dy * s];
+
+/** A row of feathers: each a pointed blade from a root on the line `from`→`to`, with its own angle and length (the row is shaded by the painter where it meets the row above). */
+function featherRow(r: Rig, from: Pt, to: Pt, degs: number[], lens: number[], wid: number, mat: number, tipMat?: number): void {
+  const n = degs.length;
+  for (let i = 0; i < n; i++) {
+    const base = lerp(from, to, n > 1 ? i / (n - 1) : 0);
+    blade(r, base, degs[i], lens[i], wid, mat);
+    if (tipMat !== undefined) { const e = tip(base, degs[i], lens[i] * 0.96); r.p.px(e[0], e[1], tipMat); }
+  }
+}
+const spread = (a: number, b: number, n: number): number[] => Array.from({ length: n }, (_, i) => a + ((b - a) * i) / Math.max(1, n - 1));
+
+/** A wing of feathers: folded it is the arch of the wing over the shoulder and three layered rows hanging down the back; open it is a long arm with a fan of primaries from the wrist, secondaries along the arm and short coverts on top. */
+function featherWing(r: Rig, light: string, shade: string): void {
+  const { p } = r, open = wingOpen(r), B = wingRoot(r);
+  const dark = p.mat(shade), mid = p.mat(light), top = p.mat(mixHex(light, '#ffffff', 0.4)), edge = p.mat(mixHex(shade, '#000000', 0.2), { flat: true });
+  if (open === 0) {
+    const s = r.k, W = at(B, -2.2, -2.6, s), wid = 1.05 * s + 0.15;
+    featherRow(r, W, at(B, -1.4, 1, s), spread(172, 163, 4), [13.2 * s, 12 * s, 10.6 * s, 9 * s], wid, dark, edge);
+    featherRow(r, at(B, -0.6, -1.4, s), at(B, -0.4, 3, s), spread(178, 168, 4), [10 * s, 9 * s, 8 * s, 7 * s], wid, mid);
+    featherRow(r, at(B, -0.8, -2.3, s), at(B, -0.2, 1.5, s), spread(180, 172, 4), [5.5 * s, 5 * s, 4.5 * s, 4 * s], wid * 0.9, top);
+    p.ell(W[0] + 0.4, W[1] + 0.6, 1.6 * s + 0.3, 1.9 * s + 0.3, top);
+    return;
+  }
+  const s = wingScale(r, open === 2 ? 24 : 17);
+  // the arm rises up and back to the wrist; the primaries fan from the wrist (the first goes on along the arm), the secondaries and coverts trail from the arm toward the ground side
+  const W = open === 2 ? at(B, -6, -8.5, s) : at(B, -4, -7, s);
+  const wid = 1.25 * s + 0.2;
+  const pri = open === 2 ? spread(34, 128, 6) : spread(12, 96, 5);
+  const plen = pri.map((_, i) => (open === 2 ? 17 : 12) * s * (0.8 + 0.2 * Math.sin((i / (pri.length - 1)) * Math.PI * 0.85 + 0.55)));
+  featherRow(r, W, at(W, -0.8, 0.8, s), pri, plen, wid, dark, edge);
+  const sec = open === 2 ? spread(118, 152, 6) : spread(112, 150, 5);
+  featherRow(r, lerp(W, B, 0.15), lerp(W, B, 0.95), sec, sec.map((_, i) => (open === 2 ? 14 - i * 1.1 : 10.5 - i) * s), wid, mid, edge);
+  const cov = open === 2 ? spread(112, 150, 6) : spread(110, 148, 5);
+  featherRow(r, W, lerp(W, B, 0.9), cov, cov.map((_, i) => (open === 2 ? 7 - i * 0.4 : 5.2 - i * 0.3) * s), wid * 0.95, top);
+  p.ell(W[0] + 0.3, W[1] + 0.4, 1.4 * s + 0.3, 1.6 * s + 0.3, top);
+}
+
+/** A bat's wing: folded it is a hunched arm over the shoulder with the membrane hanging in scallops down the back; open it is an arm out and up, three finger bones, a scalloped membrane between them. */
 function batWing(r: Rig, membrane: string, bone: string, scaled: boolean): void {
-  const { p } = r, open = wingOpen(r), base: Pt = [r.x0 + 2 + r.lean * 0.5, r.sh + 3];
-  const mem = p.mat(membrane, { deep: true }), bn = p.mat(bone, { flat: true });
-  const arm = [[-14, 14], [-22, -4], [-12, -24]][open].map((v) => v * (r.H / 28)) as Pt; // elbow-to-wrist as (dx,dy)
-  const wrist: Pt = [base[0] + arm[0], base[1] + arm[1]];
-  const tips: Pt[] = [
-    [[wrist[0] - 5, wrist[1] + 5], [wrist[0] - 8, wrist[1] - 6], [wrist[0] - 3, wrist[1] - 9]][open].map((v, i) => v * 1) as Pt,
-    [[wrist[0] - 1, wrist[1] + 9], [wrist[0] - 2, wrist[1] + 4], [wrist[0] + 2, wrist[1] - 1]][open] as Pt,
-    [[base[0] - 2, wrist[1] + 11], [base[0] - 6, wrist[1] + 11], [base[0] - 3, wrist[1] + 9]][open] as Pt,
-  ];
-  const lower: Pt = [base[0], base[1] + 9 * (r.H / 28)];
-  // the membrane between the bones, with scallops along the trailing edge
-  p.poly([base, wrist, tips[0], [(tips[0][0] + tips[1][0]) / 2 + 1, (tips[0][1] + tips[1][1]) / 2 - 1], tips[1], [(tips[1][0] + tips[2][0]) / 2 + 1, (tips[1][1] + tips[2][1]) / 2 - 1], tips[2], lower], mem);
-  stroke(p, base, wrist, 1, bn);
-  for (const t of tips) stroke(p, wrist, t, 1, bn);
-  stroke(p, base, tips[1], 1, bn);
-  if (scaled) for (let i = 0; i < 5; i++) p.px(lerp(base, tips[1], 0.25 + i * 0.14)[0] - 1, lerp(base, tips[1], 0.25 + i * 0.14)[1] + 1, p.mat(tone(membrane, 3), { flat: true }));
+  const { p } = r, open = wingOpen(r), B = wingRoot(r);
+  const mem = p.mat(membrane), bn = p.mat(bone, { flat: true });
+  let W: Pt, tips: Pt[], L: Pt, s: number;
+  if (open === 0) {
+    s = r.k; W = at(B, -3, -4.5, s);
+    tips = [at(B, -0.5, 8, s), at(B, -3, 10.5, s), at(B, -5.5, 8.5, s)];
+    L = at(B, 0, 7, s);
+    const notch = (a: Pt, b: Pt): Pt => [(a[0] + b[0]) / 2 + 0.6 * s, (a[1] + b[1]) / 2 - 1.8 * s];
+    p.poly([B, W, tips[2], notch(tips[2], tips[1]), tips[1], notch(tips[1], tips[0]), tips[0], L], mem);
+  } else {
+    s = wingScale(r, open === 2 ? 23 : 15);
+    const rel: Pt[] = open === 2 ? [[-4, -6], [-11, -2], [-11, 8]] : [[-3, -4.5], [-7, 0], [-6.5, 6.5]];
+    W = open === 2 ? at(B, -11, -12, s) : at(B, -7, -8, s);
+    tips = rel.map((v) => at(W, v[0], v[1], s));
+    L = at(B, -0.5, open === 2 ? 10 : 8.5, s);
+    const pull = (a: Pt, b: Pt): Pt => { const m: Pt = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; return lerp(m, W, 0.36); };
+    p.poly([B, W, tips[0], pull(tips[0], tips[1]), tips[1], pull(tips[1], tips[2]), tips[2], pull(tips[2], L), L], mem);
+  }
+  stroke(p, B, W, 1, bn);
+  for (const t of tips) stroke(p, W, t, 1, bn);
+  p.px(W[0] - 1, W[1] - 1, bn); // the thumb claw
+  if (scaled) for (let i = 0; i < 4; i++) { const q = lerp(B, tips[1], 0.3 + i * 0.16); p.px(q[0] - 1, q[1] + 1, p.mat(tone(membrane, 3), { flat: true })); }
 }
 
-/** A wing of a fairy: thin and clear, two pairs, beating all the time. */
+/** A wing of a fairy: thin and clear, two pairs, flat down the back at rest (a small flutter), spread when she is roused. */
 function insectWing(r: Rig): void {
-  const { p } = r, base: Pt = [r.x0 + 2 + r.lean * 0.5, r.sh + 2], beat = r.f % 2 ? 2 : 0;
+  const { p, H } = r, open = wingOpen(r), B: Pt = [r.x0 + 1 + r.lean * 0.5, r.sh + 1], flick = r.f % 2;
   const pale = p.mat('#f4eaff', { alpha: 0.6, deep: true }), edge = p.mat(r.look.accent, { alpha: 0.9, flat: true }), vein = p.mat('#ffffff', { alpha: 0.9, flat: true });
-  const L = r.H * 0.7;
-  for (const [off, ln, wd] of [[0, L, 2.6], [22, L * 0.72, 2]] as [number, number, number][]) {
-    const d = [150, 128, 110][beat === 2 ? 2 : r.pose === 'walk' ? 1 : 0] - (beat ? 8 : 0) + off * 0.3;
-    blade(r, base, d, ln, wd * Math.max(1, r.k * 1.4), pale);
-    const t = tip(base, d, ln);
-    p.line(base, [(base[0] + t[0]) / 2, (base[1] + t[1]) / 2], vein);
+  const spec: [number, number, number][] = open === 0
+    ? [[172 - flick * 7, H * 0.48, 1.3], [180 - flick * 4, H * 0.36, 1.1]]
+    : [[(open === 2 ? 108 : 128) - flick * 10, H * 0.66, 2.4], [(open === 2 ? 146 : 156) - flick * 6, H * 0.5, 1.9]];
+  for (const [d, len0, wd] of spec) {
+    const ln = Math.min(len0, (B[0] - 3) / Math.max(0.3, Math.abs(Math.sin(d * DEG)))); // never past the left edge of the frame
+    blade(r, B, d, ln, wd * Math.max(1, r.k * 1.2), pale);
+    const t = tip(B, d, ln);
+    p.line(B, lerp(B, t, 0.6), vein);
     p.px(t[0], t[1], edge);
   }
 }
@@ -275,7 +310,7 @@ export const FEATS: Record<string, Part> = {
     // scales on the cheek, the neck and the forearm: a light and a dark one in turn
     front: (r) => {
       const lt = flat(r, tone(r.look.skin, 3)), dk = flat(r, shadowOf(r.look.skin)), [ex, ey] = eyeAt(r);
-      r.p.px(ex, ey + 2, dk); r.p.px(ex - 1, ey + 3, lt); r.p.px(ex - 2, ey + 2, lt); r.p.px(ex - 3, ey + 1, dk);
+      r.p.px(ex - 3, ey + 1, dk); r.p.px(ex - 4, ey, lt); // a pair at the cheek, back from the eye: the face stays clear
       armMarks(r, [0.62, 0.74, 0.86], dk);
       const [ax, ay] = nearArm(r, 0.68); r.p.px(ax + 1, ay, lt);
     },
@@ -448,17 +483,16 @@ export const FEATS: Record<string, Part> = {
     front: (r) => {
       const { p } = r, w = p.mat('#f4f0f0'), cx = Math.round(cxOf(r)) + 1;
       [[-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]].forEach(([dx, dy]) => p.px(cx + dx, r.sh + dy, w));
-      p.px(r.head[0] - r.hr[0] * 0.3, Math.round(topY(r)) + 2, w);
+      p.px(r.head[0] - r.hr[0] * 0.85, Math.round(topY(r)) + 3, w); // the pearl at the temple, behind the eye
     },
   },
   finskirt: {
-    // fins that flare from the hem on both sides, thin and a little see-through; they flutter even when nothing moves
+    // a ribbon fin that trails from the back of the hip to the hem, thin and a little see-through; it flutters even when nothing moves
     lower: (r) => {
-      const { p } = r, gy = r.foot, cx = cxOf(r), wb = r.tw + 4 + Math.round(r.k * 2), left = cx - wb / 2 - r.flap * 0.5, right = cx + wb / 2 + 1;
+      const { p } = r, gy = r.foot, fl = r.flap, x = r.x0;
       const fin = p.mat(mixHex(r.look.accent, '#ffffff', 0.35), { alpha: 0.85 }), rib = p.mat(tone(r.look.accent, 0), { flat: true, alpha: 0.9 });
-      p.poly([[left + 1, gy - 8], [left - 3 - r.flap, gy - 1], [left + 3, gy - 1]], fin);
-      p.poly([[right - 1, gy - 8], [right + 3 + r.flap, gy - 1], [right - 3, gy - 1]], fin);
-      p.px(left - 1, gy - 3, rib); p.px(right + 1, gy - 3, rib);
+      p.poly([[x + 1, r.hip + 1], [x - 3 - fl, gy - 4], [x - 2 - fl * 0.5, gy - 1], [x + 2, gy - 6]], fin);
+      p.line([x, r.hip + 3], [x - 2 - fl, gy - 3], rib);
     },
   },
   wet: {
@@ -786,7 +820,7 @@ export const FEATS: Record<string, Part> = {
   },
   'wings:night': {
     // wings like a bat's, black-violet
-    back: (r) => batWing(r, '#34283f', '#161020', false),
+    back: (r) => batWing(r, '#34283f', '#6a5a86', false),
   },
   missingarm: {
     // the far arm is gone: the empty sleeve is knotted short at the shoulder

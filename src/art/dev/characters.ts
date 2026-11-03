@@ -8,7 +8,7 @@ import { SETS } from './sets';
 
 const q = new URLSearchParams(location.search);
 const setId = q.get('set') ?? 'sample';
-const pose = (q.get('pose') ?? 'idle') as Pose;
+const pose = (q.get('pose') ?? SETS[setId]?.pose ?? 'idle') as Pose;
 const zoom = Number(q.get('zoom') ?? 3);
 const app = document.getElementById('app')!;
 app.innerHTML = `<div class="bar">
