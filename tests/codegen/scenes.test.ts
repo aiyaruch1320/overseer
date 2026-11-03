@@ -132,4 +132,8 @@ describe('the composer', () => {
     const seed = { id: 'T', kind: 'local' as const, title: 'ทดสอบ', frame: '#e8c36a', src: 't', sky: '#223344', ground: '#112233', place: 'ลาน', seconds: 8, lines: ['ก', 'ข'], sounds: ['เสียงหนึ่ง'], fx: ['dust' as const] };
     expect(JSON.stringify(composeShort(seed))).toBe(JSON.stringify(composeShort(seed)));
   });
+  it('no caption of a card points at a document (M5 review M1: "ดู 11-world-changes หัวข้อ 3" is for the writer of the doc)', () => {
+    for (const c of D.cards) expect(c.picture, c.id).not.toMatch(/\d\d-[a-z][a-z0-9-]+|\.md|หัวข้อ/);
+    expect(C.get('DR-01')!.picture).toBe('เกาะลอยฟ้าร่วงทั้งทวีป');
+  });
 });
