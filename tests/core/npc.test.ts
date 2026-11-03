@@ -485,6 +485,25 @@ describe('npc: newcomers NT-01 to NT-54 (succession.md §5)', () => {
     expect(npcState(g.state).newcomers.length).toBeGreaterThan(first);
   });
 
+  it('writes an `npc/arrive` entry for each newcomer with the template (the key of its NT-xx scene), the country and whether it came to the character', () => {
+    const g = world(3, true);
+    g.worldSteps(10);
+    const made = npcState(g.state).newcomers;
+    const arrivals = g.state.log.filter((e) => e.sys === 'npc' && e.kind === 'arrive');
+    expect(made.length).toBeGreaterThan(10);
+    expect(arrivals.map((e) => e.id).sort()).toEqual([...made].sort());
+    for (const e of arrivals) {
+      const s = slotsOf(g.state)[e.id!];
+      expect(e.data).toMatchObject({ template: s.nt!.tpl, name: s.name, place: s.home, near: false });
+      expect(e.data.template).toMatch(/^NT-\d+$/);
+      expect(e.level).toBe(0);
+    }
+    // without a life and without the trace nothing is written (the world run of 1,800 years keeps its log small)
+    const quiet = world(3);
+    quiet.worldSteps(10);
+    expect(quiet.state.log.filter((e) => e.kind === 'arrive')).toHaveLength(0);
+  });
+
   it('a template is used once per country, the id follows the highest number of the country, the continent templates stay on their continent', () => {
     const g = world(5);
     g.worldSteps(150);

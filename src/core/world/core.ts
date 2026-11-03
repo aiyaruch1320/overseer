@@ -130,7 +130,17 @@ export function fall(ctx: Ctx, i: number, via: Mark | null, opts: { fireEvent?: 
   if (def.awakeEvent) close(ctx, def.awakeEvent); // the dragon was the anchor of its awakening (world-events.md §0.4 rule 8)
   if (!via) shut(ctx, def.fallEvent);
   setEra(ctx);
-  if (via && opts.fireEvent !== false && !happened(ctx, def.fallEvent)) fire(ctx, def.fallEvent, via, { dragon: i });
+  const withEvent = !!via && opts.fireEvent !== false && !happened(ctx, def.fallEvent);
+  if (withEvent) fire(ctx, def.fallEvent, via!, { dragon: i });
+  // the fall itself, for the scene of a dragon's end (appearance/11-world-changes.md §3: fall.<n>) also when no event carries it (the god's hand, the last dragon)
+  const home = t.byId.get(def.fallEvent)?.home;
+  write(ctx.state, {
+    sys: 'world',
+    kind: 'dragonFall',
+    id: w.dragons[i].id,
+    level: 2,
+    data: { dragon: i, name: def.name, place: home?.countries[0] ?? home?.continents[0] ?? '', event: withEvent ? def.fallEvent : null },
+  });
   fire(ctx, 'DR-15');
   applyVarChanges(ctx, 'fall');
   addVar(ctx, 'F.A', rules.mourn.faithA); // channel-A faith +10 for five years (decays at the next decade)
