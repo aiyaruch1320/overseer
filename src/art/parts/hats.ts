@@ -149,14 +149,18 @@ export const HATS: Record<string, Part> = {
 
   // ── crown: a band with points and red stones: gold, or the accent when the accent is a metal or bone (a silver crown, a crown of bones) ──
   crown: {
+    // a band with three broad points (not a comb of needles) and one stone: red on gold, pale blue on silver
     hat: (r) => {
-      const h = headOf(r), { p } = r, metal = crownMetal(r.look.accent), gold = p.mat(metal), gem = p.mat(TONE.blood, { flat: true });
-      const x0 = h.hx - Math.round(h.rx) + 1, n = Math.round(h.rx * 2) - 1;
+      const h = headOf(r), { p } = r, metal = crownMetal(r.look.accent), silver = metal !== TONE.gold, gold = p.mat(metal), hi = p.mat(lighter(metal, 0.35), { flat: true });
+      const gem = p.mat(silver ? '#8ab8d8' : TONE.blood, { flat: true });
+      const x0 = h.hx - Math.round(h.rx) + 1, n = Math.round(h.rx * 2) - 1, ph = sz(r, 3);
       p.rect(x0 - 1, h.top - 1, n + 2, 3, gold);
-      for (let i = 0; i < n; i += 2) p.rect(x0 + i - 0, h.top - 1 - sz(r, 3), 1, sz(r, 3), gold);
-      p.px(h.hx - 1 + 1, h.top, gem); p.px(x0, h.top, gem);
-      p.px(x0 + n - 1, h.top, gem);
-      p.px(x0 + 2, h.top - sz(r, 3) - 1, p.mat(lighter(metal, 0.4), { flat: true }));
+      for (const i of [0, Math.floor((n - 2) / 2), n - 2]) {
+        p.rect(x0 + i, h.top - 2, 2, 1, gold);
+        p.rect(x0 + i, h.top - 1 - ph, 1 + (ph > 2 ? 1 : 0), ph - 1, gold);
+      }
+      p.px(x0 + Math.floor((n - 2) / 2), h.top, gem);
+      p.px(x0 - 1, h.top - 1, hi);
     },
   },
 

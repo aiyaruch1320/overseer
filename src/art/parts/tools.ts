@@ -196,7 +196,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   mace: {
-    kind: 'swing',
+    kind: 'swing', rest: -42,
     held: (r) => {
       const { p, m } = r, ir = iron(r), c = at(r, 12);
       stroke(r, -5, 9, wood(r));
@@ -208,7 +208,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   club: {
-    kind: 'swing',
+    kind: 'swing', rest: -42,
     held: (r) => {
       const { p } = r;
       poly(r, [[-4, 0.7], [3, 1.1], [10, 1.7], [13, 1.8], [14, 0], [13, -1.8], [10, -1.7], [3, -1.1], [-4, -0.7]], wood(r));
@@ -219,9 +219,27 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   hammer: {
-    kind: 'swing',
+    kind: 'swing', rest: -42,
+    // three hammers by the owner: a sledge (a square head), a smith's hammer (a short haft, a head with a peen that tapers to a point) and a maul (a long haft, a big head banded with the trim colour)
     held: (r) => {
-      const { p } = r, ir = iron(r);
+      const { p } = r, ir = iron(r), v = seedOf(r) % 3, band = p.mat(lighter(darker(r.look.second, 0.1), 0.05));
+      if (v === 1) {
+        stroke(r, -3, 9, wood(r));
+        poly(r, [[7, -2.6], [7, 2.6], [10, 2.6], [10, -2.6]], ir);
+        poly(r, [[10, 2.6], [10, -2.6], [13, 0]], ir);
+        stroke(r, 7.5, 9.5, steel(r), 1, 2.4);
+        marks(r, 7, 12, p.mat('#6a6f78'), 1);
+        return;
+      }
+      if (v === 2) {
+        stroke(r, -8, 11, wood(r), thick(r));
+        poly(r, [[8, -4.6], [8, 4.6], [12.5, 4.6], [12.5, -4.6]], ir);
+        stroke(r, 8.5, 12, steel(r), 1, 4.2);
+        stroke(r, 10, 10, band, 1, 4.6); stroke(r, 10, 10, band, 1, -4.6);
+        p.px(...at(r, 10, 0), band);
+        marks(r, 8, 12, p.mat('#6a6f78'), 1);
+        return;
+      }
       stroke(r, -5, 11, wood(r));
       poly(r, [[8, -3.4], [8, 3.4], [12.5, 3.4], [12.5, -3.4]], ir);
       stroke(r, 9, 12, steel(r), 1, 3.2);
@@ -230,7 +248,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   axe: {
-    kind: 'swing',
+    kind: 'swing', rest: -42,
     held: (r) => {
       const { p } = r;
       stroke(r, -4, 14, wood(r));
@@ -241,7 +259,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   pickaxe: {
-    kind: 'swing',
+    kind: 'swing', rest: -42,
     held: (r) => {
       const { p } = r, ir = iron(r), pts: [number, number][] = [[10, -5.8], [12, -3.4], [13.2, 0], [12, 3.4], [10, 5.8]];
       stroke(r, -5, 13, wood(r));

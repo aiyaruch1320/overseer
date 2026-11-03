@@ -43,12 +43,19 @@ describe('every race, stage and pose', () => {
 describe('life stages', () => {
   it('grow from the infant to the adult and the elder stoops', () => {
     for (const r of RACES) {
-      const h = Object.fromEntries(STAGES.map((st) => { const s = span(paintPerson(raceLook(r, { stage: st }), 'idle', 0)); return [st, s.bottom - s.top]; }));
+      // (the figure's own height: a tool carried up or forward would add to the span)
+      const h = Object.fromEntries(STAGES.map((st) => { const s = span(paintPerson({ ...raceLook(r, { stage: st }), tool: '' }, 'idle', 0)); return [st, s.bottom - s.top]; }));
       expect(h.infant, r.id).toBeLessThan(h.child);
       expect(h.child, r.id).toBeLessThan(h.teen);
       expect(h.teen, r.id).toBeLessThanOrEqual(h.adult);
       expect(h.elder, r.id).toBeLessThanOrEqual(h.adult);
     }
+  });
+
+  it('the child of a giant stands taller than a grown human', () => {
+    const h = (L: PersonLook) => { const s = span(paintPerson({ ...L, tool: '' }, 'idle', 0)); return s.bottom - s.top; };
+    expect(h(raceLook(row('giant'), { stage: 'child' }))).toBeGreaterThan(h(raceLook(row('human'), { stage: 'adult' })) + 2);
+    expect(h(raceLook(row('giant'), { stage: 'child' }))).toBeLessThan(h(raceLook(row('giant'), { stage: 'adult' })));
   });
 
   it('draws no tool for an infant in any pose', () => {
@@ -155,19 +162,34 @@ function cellsWide(f: Frame, y: number): number {
 
 describe('carried things and the bow', () => {
   const DEG = Math.PI / 180;
-  it('a carried thing is held out in front, upright, with no swing in walk, attack or work', () => {
-    for (const pose of ['idle', 'walk', 'attack', 'work'] as const)
+  it('a carried thing is held upright at the chest, not at the face; the attack and the work move it', () => {
+    for (const pose of ['idle', 'walk', 'work'] as const)
       for (const k of keys(pose, 'carry', 'normal')) {
         expect(k.ang ?? -90 * DEG, pose).toBeCloseTo(-90 * DEG, 5);
-        expect(k.hand[0], pose).toBeGreaterThanOrEqual(4); // forward of the shoulder
-        expect(k.hand[1], pose).toBeLessThanOrEqual(4);
-        expect(k.hand[1], pose).toBeGreaterThanOrEqual(1);
+        expect(k.hand[0], pose).toBeGreaterThanOrEqual(3); // forward of the shoulder
+        if (pose !== 'work') expect(k.hand[1], pose).toBeGreaterThanOrEqual(5); // below the chin: the chest or the belly
+        expect(k.hand[1], pose).toBeLessThanOrEqual(9);
       }
     const walk = keys('walk', 'carry', 'normal').map((k) => k.hand[0]);
-    expect(Math.max(...walk) - Math.min(...walk)).toBeLessThan(0.7);
+    expect(Math.max(...walk) - Math.min(...walk)).toBeLessThan(1.8);
+    const idle = keys('idle', 'carry', 'normal')[0].hand;
+    // the attack draws the thing in and shows it out at arm's length: a different place than at rest
     const atk = keys('attack', 'carry', 'normal').map((k) => k.hand[0]);
-    expect(Math.max(...atk) - Math.min(...atk)).toBeLessThanOrEqual(4); // a small push
+    expect(Math.max(...atk) - idle[0]).toBeGreaterThanOrEqual(4);
     expect(atk[1]).toBeGreaterThan(atk[0]);
+    // the work lifts it toward the face and puts it down again
+    const work = keys('work', 'carry', 'normal').map((k) => k.hand[1]);
+    expect(Math.max(...work) - Math.min(...work)).toBeGreaterThanOrEqual(3);
+  });
+
+  it('the walk moves the arms and the legs more than a little (a figure in walk is not an idle figure)', () => {
+    const human = raceLook(row('human'));
+    const idle = paintPerson(human, 'idle', 0);
+    const frames = [0, 1, 2, 3].map((i) => paintPerson(human, 'walk', i));
+    const diff = (a: Frame, b: Frame) => { let n = 0; for (let i = 3; i < a.data.length; i += 4) if ((a.data[i] > 100) !== (b.data[i] > 100)) n++; return n; };
+    expect(Math.max(...frames.map((f) => diff(f, idle)))).toBeGreaterThanOrEqual(18);
+    const stride = (f: Frame) => cellsWide(f, FRAME.foot - 1);
+    expect(Math.max(...frames.map(stride))).toBeGreaterThanOrEqual(stride(idle) + 4);
   });
 
   it('the bow: arm out, drawn on frames 0 and 1, loosed on frame 2', () => {

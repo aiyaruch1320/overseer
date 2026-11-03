@@ -31,28 +31,28 @@ export interface Key {
 const HOLD = { thrust: -78, swing: -60, cast: -84, shoot: -70, carry: -90, none: -70 } as const;
 /** An arm that hangs: the hand a torso's length below the shoulder. */
 const HANG: Pt = [1, 9], HANG_FAR: Pt = [-2, 8];
-/** An arm that carries: the hand out in front of the chest, the other hand beneath it. */
-const CARRY: Pt = [5, 2], CARRY_FAR: Pt = [2, 4];
+/** An arm that carries: the hand at the chest, a little forward (a book, a letter or a card is held there, not at the face), the other hand beneath it. */
+const CARRY: Pt = [4, 6], CARRY_FAR: Pt = [1, 7];
 
 /** The walk of each gait (21-pixel-art.md §3: 4 frames): feet, body bob, lifts. Hop and float change more than the feet. */
 interface Step { fa: number[]; ba: number[]; b: number[]; ln: number[]; lf: number[]; flap: number[]; sw: number }
 const STEP: Record<Gait, Step> = {
   // contact, passing (far foot up), contact, passing (near foot up): the body rises on the passing frames
-  normal: { fa: [2, 0, -2, 0], ba: [-2, 0, 2, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 1], lf: [0, 1, 0, 0], flap: [1, 2, 1, 2], sw: 1 },
+  normal: { fa: [3, 0, -3, 0], ba: [-3, 0, 3, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 2], lf: [0, 2, 0, 0], flap: [1, 2, 1, 2], sw: 1.3 },
   // wide stance, the body drops on each step, small lifts
-  heavy: { fa: [2, 0, -2, 0], ba: [-2, 0, 2, 0], b: [1, 0, 1, 0], ln: [0, 0, 0, 1], lf: [0, 1, 0, 0], flap: [1, 1, 1, 1], sw: 0.6 },
+  heavy: { fa: [3, 0, -3, 0], ba: [-3, 0, 3, 0], b: [1, 0, 1, 0], ln: [0, 0, 0, 1], lf: [0, 1, 0, 0], flap: [1, 1, 1, 1], sw: 0.9 },
   // long steps, no bob, the feet do not leave the ground
-  glide: { fa: [3, 0, -3, 0], ba: [-3, 0, 3, 0], b: [0, 0, 0, 0], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.6 },
+  glide: { fa: [4, 0, -4, 0], ba: [-4, 0, 4, 0], b: [0, 0, 0, 0], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.9 },
   // both feet together: crouch, push, apex, fall
   hop: { fa: [0, 1, 1, 0], ba: [0, 1, 1, 0], b: [1, -2, -3, -1], ln: [0, 2, 3, 1], lf: [0, 2, 3, 1], flap: [0, 2, 2, 1], sw: 0.3 },
   // short steps that drag: the feet stay on the ground and the body sinks a little between them
-  shuffle: { fa: [1, 0, -1, 0], ba: [-1, 0, 1, 0], b: [0, 1, 0, 1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 1, 1, 1], sw: 0.5 },
+  shuffle: { fa: [2, 0, -2, 0], ba: [-2, 0, 2, 0], b: [0, 1, 0, 1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 1, 1, 1], sw: 0.7 },
   // no feet on the ground at all: the legs hang and trail, the body rocks
-  float: { fa: [1, 0, -1, 0], ba: [-1, 0, 1, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.5 },
+  float: { fa: [2, 0, -2, 0], ba: [-2, 0, 2, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.7 },
 };
 
-export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
-  const up = HOLD[kind] * DEG, armed = kind !== 'none', carry = kind === 'carry';
+export function keys(pose: Pose, kind: ToolKind, gait: Gait, rest?: number): Key[] {
+  const up = (rest ?? HOLD[kind]) * DEG, armed = kind !== 'none', carry = kind === 'carry';
   switch (pose) {
     case 'idle': return [
       { hand: carry ? CARRY : armed ? [3, 4] : HANG, far: carry ? CARRY_FAR : armed ? [-1, 5] : HANG_FAR, ang: up, b: gait === 'hop' ? 1 : 0 },
@@ -64,9 +64,9 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         const sw = s.fa[i] * s.sw, high = gait === 'hop' && s.b[i] < -1;
         return {
           b: s.b[i], fa: s.fa[i], ba: s.ba[i], ln: s.ln[i], lf: s.lf[i], flap: s.flap[i],
-          // a carried thing stays out in front, steady; the arm does not swing
-          hand: (carry ? [CARRY[0] - sw * 0.12, CARRY[1]] : armed ? [3 - sw / 2, 4] : [1 - sw * 0.8, high ? 6 : 9]) as Pt,
-          far: (carry ? CARRY_FAR : armed ? [-1 + sw / 2, 5] : [-2 + sw * 0.8, high ? 5 : 8]) as Pt,
+          // a carried thing stays at the chest and rocks with the step; a weapon swings a little; an empty arm swings wide
+          hand: (carry ? [CARRY[0] - sw * 0.2, CARRY[1] - (s.b[i] < 0 ? 1 : 0)] : armed ? [3 - sw * 0.75, 4] : [1 - sw * 1.1, high ? 6 : 9]) as Pt,
+          far: (carry ? [CARRY_FAR[0] - sw * 0.15, CARRY_FAR[1]] : armed ? [-1 + sw * 0.75, 5] : [-2 + sw * 1.1, high ? 5 : 8]) as Pt,
           ang: kind === 'thrust' ? -32 * DEG : up,
         };
       });
@@ -78,11 +78,11 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         { L: 1, fa: 2, ba: -1, hand: [4, 4], far: [-1, 5], ang: -10 * DEG, flap: 1 },
       ];
       if (kind === 'cast') return castKeys(up);
-      // the thing stays upright in front: a small push forward and back
+      // the thing is drawn in to the belly, then thrust out at arm's length and a little up (shown, flung, offered), then held out a moment: not the idle
       if (kind === 'carry') return [
-        { L: -1, fa: 1, ba: -1, hand: [4, 2], far: [1, 4], ang: up },
-        { b: 1, L: 1, fa: 2, ba: -1, hand: [8, 1], far: [3, 3], ang: up, flap: 2 },
-        { L: 1, fa: 1, ba: -1, hand: [6, 2], far: [2, 4], ang: up, flap: 1 },
+        { L: -2, fa: 1, ba: -2, hand: [1, 8], far: [-1, 8], ang: up },
+        { b: 1, L: 2, fa: 3, ba: -2, hand: [10, 2], far: [6, 4], ang: up, flap: 2 },
+        { L: 1, fa: 2, ba: -1, hand: [8, 3], far: [4, 5], ang: up, flap: 1 },
       ];
       // the bow: arm out, the string drawn on frames 0 and 1, loosed on frame 2 (the far hand snaps back)
       if (kind === 'shoot') return [
@@ -97,10 +97,11 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         { b: 1, L: 2, fa: 3, ba: -2, hand: [10, 0], far: [3, 2], ang: up, flap: 2 },
         { L: 1, fa: 2, ba: -1, hand: [6, 1], far: [3, 2], ang: up, flap: 1 },
       ];
+      // a thrust: drawn back with the body behind it, driven out the full length with the far hand on the shaft, pulled back
       return [
-        { L: -1, fa: 1, ba: -2, hand: [0, 2], far: [-2, 4], ang: -12 * DEG, push: -3 },
-        { b: 1, L: 1, fa: 3, ba: -2, hand: [4, 2], far: [1, 3], ang: -4 * DEG, push: 1, flap: 2 },
-        { L: 1, fa: 2, ba: -1, hand: [5, 3], far: [0, 4], ang: -20 * DEG, push: 1, flap: 1 },
+        { L: -1, fa: 1, ba: -2, hand: [-1, 3], far: [-3, 4], ang: -8 * DEG, push: -3.5 },
+        { b: 1, L: 1, fa: 4, ba: -3, hand: [5, 2], far: [2, 3], ang: -3 * DEG, push: 2, flap: 2 },
+        { L: 1, fa: 2, ba: -1, hand: [4, 3], far: [0, 4], ang: -18 * DEG, push: -1, flap: 1 },
       ];
     case 'cast': return castKeys(up);
     case 'hurt': return [{ L: -1, hand: [1, 5], far: [-2, 4], ang: -60 * DEG }, { L: -2, b: 1, nod: 1, hand: [0, 5], far: [-3, 3], ang: -50 * DEG }];
@@ -111,8 +112,8 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
     ];
     case 'work': if (carry) return [
       { hand: CARRY, far: CARRY_FAR, ang: up },
-      { b: 1, hand: [5, 3], far: CARRY_FAR, ang: up },
-      { hand: CARRY, far: [2, 3], ang: up },
+      { b: 1, hand: [5, 4], far: [2, 5], ang: up },
+      { hand: [3, 8], far: [0, 8], ang: up },
     ];
     return [
       { L: -1, hand: [-1, -2], far: [1, -1], ang: -110 * DEG },
@@ -165,13 +166,15 @@ function reachOf(L: PersonLook): number {
 function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: Key } {
   const tool = TOOLS[L.tool] ?? NO_TOOL;
   const st = L.stage, infant = st === 'infant', gel = L.feats.includes('gel'), gait = L.body.gait;
-  const all = infant ? infantKeys(pose) : keys(pose, tool.kind, gait);
+  const all = infant ? infantKeys(pose) : keys(pose, tool.kind, gait, tool.rest != null && L.body.scale > 1.15 ? -58 : tool.rest);
   const key0 = all[Math.min(f, all.length - 1)];
   // the old take short steps and do not bob
   const key: Key = st === 'elder' && pose === 'walk' ? { ...key0, fa: Math.round((key0.fa ?? 0) * 0.6), ba: Math.round((key0.ba ?? 0) * 0.6), b: 0 } : key0;
   // a big race's young are still big: a giant's child is taller than a human adult, so the stage shrinks a race that is above human size by less
   const sc = L.body.scale > 1 && st !== 'infant' ? 1 - (1 - STAGE_SCALE[st]) / (L.body.scale * L.body.scale) : STAGE_SCALE[st];
-  const H = Math.max(10, Math.round(ADULT_H * L.body.scale * sc));
+  // a giant's or an ogre's child stands clearly above a grown human (four pixels at least), and still below its own grown people
+  const bigYoung = L.body.scale >= 1.25 && (st === 'child' || st === 'teen') ? ADULT_H + (st === 'child' ? 4 : 5) : 0;
+  const H = Math.max(10, bigYoung, Math.round(ADULT_H * L.body.scale * sc));
   const k = H / ADULT_H;
   // a big-headed little race (the fae) keeps a head tall enough to show a face
   const hh = Math.max(L.body.head >= 1.15 && H >= 14 ? 6 : 5, Math.round(H * HEAD_SHARE[st] * Math.min(1.25, Math.max(0.8, L.body.head))));

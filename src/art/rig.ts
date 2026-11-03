@@ -80,7 +80,11 @@ export type Part = Partial<Record<Layer, (r: Rig) => void>>;
 
 /** How a tool is used: it picks the attack and work frames. `carry` holds the thing upright out in front and only pushes it forward (a book, a mug, a lantern); `shoot` draws and looses a bow. */
 export type ToolKind = 'thrust' | 'swing' | 'cast' | 'shoot' | 'carry' | 'none';
-export interface Tool extends Part { kind: ToolKind }
+export interface Tool extends Part {
+  kind: ToolKind;
+  /** the angle of the thing at rest, in degrees (negative is up; the default is the kind's): a heavy head is carried low and forward, so it does not hide the face */
+  rest?: number;
+}
 
 /** The point `t` pixels along the held thing from the hand (with the frame's push). */
 export function along(r: Rig, t: number): Pt {
