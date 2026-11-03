@@ -1,19 +1,17 @@
 // Draws one `Frame` of a scene (timeline.ts). It holds no time and no state: the same frame draws the same picture, so the player, the storybook and a
 // test of the frame all agree. The picture is a Phaser game of 320 × 180 art pixels (stage/controller.ts, loaded on demand: its own chunk) shown at the
 // largest whole multiple that fits the box (21-pixel-art.md §4); the Thai words are DOM over it, sized by the same multiple so a line keeps its place in
-// the picture. The particles are still the canvas of particles.ts over the Phaser canvas (M7 ก3 replaces them).
+// the picture. The particles and the light are pixels inside the Phaser game too (../scene/fx, drawn by the stage), not a canvas laid over it.
 import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import type { ScenerySpec } from '../art/scenery';
 import { color, font } from '../ui/tokens';
 import { allSilhouettes, type FigureOf } from './figures';
 export { Silhouette } from './Silhouette';
 import { cameraOf, fitScale, project } from './layout';
-import { drawFx, seedOf } from './particles';
+import { seedOf } from './particles';
 import type { SceneStage } from './stage/controller';
 import type { Frame } from './timeline';
 import { ART, CAMERA, STAGE, TEXT } from './tuning';
-
-const CANVAS = { w: 960, h: 540 } as const;
 
 /** The scenery of a stage that was told none: a plain place of the first continent. */
 export const PLAIN_SCENERY: ScenerySpec = { continent: 'AZ', setting: 'outdoor' };
@@ -36,7 +34,6 @@ export interface StageProps {
 export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes }: StageProps) {
   const box = useRef<HTMLDivElement>(null);
   const host = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
   const ctl = useRef<SceneStage | null>(null);
   const [k, setK] = useState(3);
   const [ready, setReady] = useState(false);
@@ -76,17 +73,13 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
   }, []);
 
   const input = useRef<Parameters<SceneStage['set']>[0]>(null as never);
-  input.current = { frame, frameColor, scenery: (scenery ?? (() => PLAIN_SCENERY))(frame.place), figureOf };
+  input.current = { frame, frameColor, scenery: (scenery ?? (() => PLAIN_SCENERY))(frame.place), figureOf, seed: sd };
   useEffect(() => {
     ctl.current?.set(input.current);
   });
   useEffect(() => {
     ctl.current?.setZoom(k);
   }, [k]);
-  useEffect(() => {
-    const c = canvas.current?.getContext('2d');
-    if (c) drawFx(c, CANVAS.w, CANVAS.h, frame.fx, frame.motion, sd);
-  });
 
   const cam = cameraOf(frame.camera);
   const by = (role: string) => frame.texts.filter((x) => x.role === role);
@@ -125,7 +118,6 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
         }}
       >
         <div ref={host} style={{ position: 'absolute', inset: 0, lineHeight: 0, overflow: 'hidden' }} />
-        <canvas ref={canvas} width={CANVAS.w} height={CANVAS.h} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
 
         {frame.actors.map((a) => {
           const p = project(cam, a.x * ART.w, ART.groundY);
