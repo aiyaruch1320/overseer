@@ -46,12 +46,15 @@ const FIX: Record<string, Partial<PersonLook>> = {
   npc_tamer: { outfit: 'fur', main: '#5a4a3a', second: '#8a6a4a', tool: 'whip', hair: 'braid', hairColor: '#3a2a1c' },
   // the demon champion: dark-red skin with glowing marks, two short horns, a heavy blood-flag breastplate, a great axe
   npc_demon_champion: { skin: '#8a2a22', outfit: 'armor', main: '#2a2a30', second: '#7a1a1a', hair: 'bald', feats: ['horns', 'tattoo'], tool: 'axe', eye: '#f0c030', accent: '#f08030' },
+  // the siren: pale silver-grey skin, long sea-green hair, eyes of pure black, gills; she rises half out of the water (the waterline is laid over her in beast.ts)
+  siren: { skin: '#b4c0c6', hairColor: '#2a8a70', eye: '#101820', accent: '#2a8a70', feats: ['gills'], hair: 'long', outfit: '' },
   npc_assassin: { hat: 'cowl', second: '#2a2a30', main: '#1c1c22' },
 };
 
 /** The build the generic reading of a row does not give (the mummy is tall: 04-enemies.md "ศพชายสูงใหญ่"). */
 const BODY: Record<string, Partial<PersonLook['body']>> = {
   mummy: { scale: 1.3, shoulders: 1.1 },
+  siren: { scale: 1.5 },
 };
 
 /** The person that draws a humanoid enemy (plan `humanoid`, form `person`, `wolfman`; also the siren and the riders). */

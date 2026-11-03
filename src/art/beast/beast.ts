@@ -63,7 +63,23 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   if (L.id === 'npc_tamer' && pose !== 'die') tamerBird(out, per, px0, fr.foot - FRAME.foot, f);
   if (L.id === 'gas_ghoul') gas(out, f, pose === 'die');
   if (L.id === 'mummy' && pose !== 'die') mummyMarks(out, L, pose);
+  if (L.form === 'siren') waterline(out, f, pose === 'die');
   return pose === 'hurt' && f === 0 ? flash(out) : out;
+}
+
+/** The siren rises half out of the water: everything under the waist goes under a rippled surface of sea-water (04-enemies.md: ลอยครึ่งตัวเหนือน้ำ). */
+function waterline(out: Frame, f: number, dying: boolean): void {
+  let top = -1, bot = -1, x0 = out.w, x1 = -1;
+  for (let y = 0; y < out.h; y++) for (let x = 0; x < out.w; x++) if (out.data[(y * out.w + x) * 4 + 3] > 120) { if (top < 0) top = y; bot = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
+  if (top < 0) return;
+  const wl = Math.round(top + (bot - top) * (dying ? 0.5 : 0.66)) + (f % 2 ? 1 : 0), cx = (x0 + x1) / 2;
+  for (let y = wl + 1; y < out.h; y++) for (let x = 0; x < out.w; x++) out.data[(y * out.w + x) * 4 + 3] = 0;
+  const rx = Math.max(16, (x1 - x0) / 2 + 9);
+  ovEll(out, cx, wl + 3, rx, 3.6, '#2a5a78', 0.92);
+  ovEll(out, cx, wl + 2, rx - 2, 2.2, '#3a82a8', 0.95);
+  for (let i = -3; i <= 3; i++) { const wx = cx + i * 4.6 + (f % 2 ? 1.5 : -1.5); blend(out, wx, wl + 1.5, '#b8e0f0', 0.95); blend(out, wx + 1, wl + 1.5, '#b8e0f0', 0.95); blend(out, wx - 1.5, wl + 4, '#8ac0d8', 0.8); }
+  // rings spreading from where she rises, and the foam at her waist
+  for (let x = Math.round(cx - 4); x <= Math.round(cx + 4); x++) blend(out, x, wl, '#e8f4f8', 0.8);
 }
 
 /** The tamer's own beast that walks behind (04-enemies.md: สัตว์ศัตรูตัวหนึ่งเดินตามเงียบ ๆ): a small grey wolf at the heel. */
