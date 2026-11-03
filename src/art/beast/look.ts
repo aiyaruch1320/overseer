@@ -1,9 +1,12 @@
 // The Looks of the beasts: the 200 enemies and 15 dragons of data/gen/beast-looks.json (generated from the appearance docs), and the PersonLook
 // of an enemy that is drawn by the person painter.
 import raw from '../../../data/gen/beast-looks.json';
+import looksRaw from '../../../data/gen/looks.json';
+import type { LooksData } from '../../core/data/types-looks';
 import type { BeastLooksData, DragonLook, EnemyLook, SizeClass } from '../../core/data/types-beast-looks';
 import { HUMAN_BODY, type PersonLook } from '../look';
 import { BEARDS, FEATS, HAIR, HATS, OUTFITS, TOOLS } from '../parts';
+import { npcLook } from '../resolve';
 
 export type BeastLook = EnemyLook | DragonLook;
 const data = (raw as unknown as { items: BeastLooksData }).items;
@@ -31,6 +34,12 @@ function resolve(table: Record<string, unknown>, id: string): string {
 
 /** The person that draws a humanoid enemy (plan `humanoid`, form `person`, `wolfman`; also the siren and the riders). */
 export function personLookOf(e: EnemyLook): PersonLook {
+  // a named NPC who fights (the enemy table's NPC rows) is the same figure as on the map and the cards: the NPC's own look, at the enemy row's size
+  const looks = (looksRaw as unknown as { items: LooksData }).items;
+  if (looks.npcs[e.id]) {
+    const L = npcLook(looks, e.id);
+    return e.scale && e.scale > L.body.scale ? { ...L, body: { ...L.body, scale: Math.min(1.5, e.scale) } } : L;
+  }
   const pt = e.parts;
   const scale = Math.min(1.5, e.scale ?? 1);
   const siren = e.form === 'siren', wolf = e.form === 'wolfman', wrapped = e.words.includes('bandage') && e.kinds.includes('undead');
