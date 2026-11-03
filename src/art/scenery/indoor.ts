@@ -147,6 +147,7 @@ function backWall(cx: Ctx, I: In): Frame {
   vignette(px, W);
   // the skirting where wall meets floor
   px.rect(0, FLOOR - 4, W, 4, dark(I.wall2, 0.5)); px.rect(0, FLOOR - 4, W, 1, dark(I.wall2, 0.2));
+  px.rect(0, FLOOR, W, H - FLOOR, dark(I.floor2, 0.3)); // under the floor layer, so the sky layer has no hole
   void g; void toHex;
   return px.frame();
 }
