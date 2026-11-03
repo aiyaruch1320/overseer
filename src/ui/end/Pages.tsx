@@ -12,7 +12,10 @@ import { CardPanel } from './CardPanel';
 export interface PageProps {
   data?: GameData;
   state?: GameState | null;
+  /** The way back: every page has the button (the storybook has nowhere to go back to, so there it does nothing). */
   onBack?: () => void;
+  /** The legend page reaches the summary of the world for the endings that are not the fall of the world (03 §7). */
+  onWorld?: () => void;
 }
 
 const stage = { height: '100vh', minHeight: size.minHeight, minWidth: size.minWidth, boxSizing: 'border-box', padding: size.pad, color: color.text, fontFamily: font.body, fontSize: size.text, background: color.panel, overflowY: 'auto' } as const;
@@ -27,7 +30,7 @@ function useSource(p: PageProps): { data: GameData; state: GameState } | null {
 function Top({ title, onBack, children }: { title: string; onBack?: () => void; children?: preact.ComponentChildren }) {
   return (
     <header style={{ display: 'flex', alignItems: 'baseline', gap: size.pad, marginBottom: size.pad }}>
-      {onBack && <Button onClick={onBack}>{END_LABELS.back}</Button>}
+      <Button onClick={onBack ?? (() => undefined)}>{END_LABELS.back}</Button>
       <Heading>{title}</Heading>
       <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>{children}</div>
     </header>
@@ -53,6 +56,7 @@ export function LegendScreen(props: PageProps) {
         <span style={{ color: color.textDim }}>
           {END_LABELS.seed} {view.seed}
         </span>
+        {props.onWorld && <Button onClick={props.onWorld}>{END_LABELS.world}</Button>}
         <Button onClick={() => store.newLife({ seed: view.seed })} title={END_LABELS.replay}>
           {END_LABELS.replay}
         </Button>
@@ -76,6 +80,7 @@ export function LegendScreen(props: PageProps) {
                     {l.generation}. {l.name}
                   </div>
                   <div style={{ color: color.textDim, fontSize: size.small }}>{l.line}</div>
+                  {l.card && <div style={{ color: color.light, fontSize: size.small }}>{open === l.id ? END_LABELS.opened : END_LABELS.open}</div>}
                   {l.titles.length > 0 && <div style={{ fontSize: size.small }}>{l.titles.join(' · ')}</div>}
                   {l.vow && <div style={{ fontSize: size.small, color: l.vowResult === 'kept' ? color.light : color.textDim }}>{l.vow}</div>}
                 </button>
@@ -92,7 +97,12 @@ export function LegendScreen(props: PageProps) {
         {/* the chronicle: what each threshold opened (a fruit on the branch) and the lines of the lives */}
         <section style={{ display: 'grid', gap: size.pad }}>
           {card ? (
-            <CardPanel card={card} />
+            <>
+              <div>
+                <Button onClick={() => setOpen(null)}>{END_LABELS.backToChronicle}</Button>
+              </div>
+              <CardPanel card={card} />
+            </>
           ) : (
             <>
               <div style={panel()}>
