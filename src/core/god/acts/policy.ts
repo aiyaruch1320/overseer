@@ -5,9 +5,9 @@
 import type { Ctx } from '../../game';
 import { moodOf } from '../../world';
 import { crisesWaiting } from '../../bonds';
-import { momentsOf, policyName, type PolicyName } from '../policy';
+import { momentsOf, policyName, registerDreadReserve, type PolicyName } from '../policy';
 import { checkAnswer, runAnswer, cardsOf } from './prayers';
-import { checkMiracle, runMiracle } from './miracles';
+import { checkMiracle, previewMiracle, runMiracle } from './miracles';
 import { fateTargets } from './fate';
 import { checkWhisper, runWhisper } from './whisper';
 import { allCountries, godOf, hasFlag, neighboursOf } from './geo';
@@ -179,3 +179,34 @@ export function actsPolicyStep(ctx: Ctx, policy: string, phase: ActsPhase = 'bea
     if (p === 'merciful' || p === 'shaper' || p === 'random') for (let m = momentsOf(ctx); m > 0 && livingOf(ctx); m--) whisperAtMoment(ctx, p);
   }
 }
+
+// ---------- the dread kept for the deed ----------
+
+const DREAD_SHORT = 'ความหวาดกลัวไม่พอ';
+/** The dread a miracle costs, when it can be done now or the dread is the only thing that stops it (caps, waits and the target are fine); else 0, nothing to wait for. */
+function dreadHeldFor(ctx: Ctx, args: Record<string, unknown>): number {
+  const why = checkMiracle(ctx, args);
+  if (why && !why.startsWith(DREAD_SHORT)) return 0;
+  return Number((previewMiracle(ctx, args).cost as { dread?: number }).dread ?? 0);
+}
+
+/**
+ * The chests of a god who punishes spend every point of dread on curses, so the 60 of a ruin (MR-17) was never in hand (review round two R2: the real income is
+ * 0.3 a year and a punished prayer 6 to 10, while the sim measured its 2.0 a year *after* the prayers with no chests). A policy that wants a deed of the world keeps its dread back
+ * for it: the punishing god for the ruin, the one who strikes the seals for the blow, the random one for the ruin it may draw. Once the deed cannot be done for another reason (the cap of the life, the wait
+ * of the world) nothing is held and the chests spend as before.
+ */
+registerDreadReserve((ctx, p) => {
+  if (!livingOf(ctx)) return 0;
+  if (p === 'punish' || p === 'random') {
+    const c = ruinCandidates(ctx)[0];
+    return c ? dreadHeldFor(ctx, { id: RUIN_MIRACLE, country: c }) : 0;
+  }
+  if (p === 'seal') {
+    const y = yearOf(ctx);
+    const protect = (ctx.state.god.ext.ruin as { protect?: Record<string, number> } | undefined)?.protect ?? {};
+    const home = ctx.state.world.dragons.flatMap((d, i) => (d.alive ? homesOf(ctx, i) : [])).find((c) => ready(ctx, 'seal.' + c) && (protect[c] ?? 0) <= y);
+    return home ? dreadHeldFor(ctx, { id: STRIKE.mid, country: home }) : 0;
+  }
+  return 0;
+});
