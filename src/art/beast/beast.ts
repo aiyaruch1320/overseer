@@ -14,7 +14,7 @@ import { isGhoul, paintGhoul } from './ghoul';
 import { paintGiant } from './giant';
 import { isLegion, legionFrame } from './legion';
 import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, mix, motion, ovEll, over, type Ctx, type Info } from './kit';
-import { personLookOf, type BeastLook } from './look';
+import { beastOf, personLookOf, type BeastLook } from './look';
 import { paintMounted } from './mount';
 import { isNamed, paintNamed } from './named';
 import { paintPlant } from './plant';
@@ -57,10 +57,32 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   const fr = FRAMES[L.size];
   const out = blank(fr.w, fr.h);
   if (L.kind !== 'enemy') return out;
-  over(out, paintPerson(personLookOf(L), pose, f), Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot);
+  if (L.id === 'npc_tamer') tamerCompanion(out, L, pose, f);
+  const per = paintPerson(personLookOf(L), pose, f), px0 = Math.round(fr.w / 2 - 22) + (L.id === 'npc_tamer' ? 7 : 0);
+  over(out, per, px0, fr.foot - FRAME.foot);
+  if (L.id === 'npc_tamer' && pose !== 'die') tamerBird(out, per, px0, fr.foot - FRAME.foot, f);
   if (L.id === 'gas_ghoul') gas(out, f, pose === 'die');
   if (L.id === 'mummy' && pose !== 'die') mummyMarks(out, L, pose);
   return pose === 'hurt' && f === 0 ? flash(out) : out;
+}
+
+/** The tamer's own beast that walks behind (04-enemies.md: สัตว์ศัตรูตัวหนึ่งเดินตามเงียบ ๆ): a small grey wolf at the heel. */
+function tamerCompanion(out: Frame, L: EnemyLook, pose: Pose, f: number): void {
+  const wolf = beastOf('wolf');
+  if (!wolf || wolf.kind !== 'enemy') return;
+  over(out, nativeFrame({ ...wolf, scale: 0.8, main: '#6a6a72', second: '#a8a8ae' }, pose, f, `${L.id}-wolf`, 0.78), -13, 0);
+}
+
+/** A small bird on the tamer's shoulder (04-enemies.md: นกหรือสัตว์เล็กเกาะไหล่ตลอดเวลา). */
+function tamerBird(out: Frame, per: Frame, ox: number, oy: number, f: number): void {
+  let top = -1, x0 = per.w, x1 = -1;
+  for (let y = 0; y < per.h && top < 0; y++) for (let x = 0; x < per.w; x++) if (per.data[(y * per.w + x) * 4 + 3] > 200) top = y;
+  if (top < 0) return;
+  for (let y = top; y < top + 10; y++) for (let x = 0; x < per.w; x++) if (per.data[(y * per.w + x) * 4 + 3] > 200) { if (x < x0) x0 = x; if (x > x1) x1 = x; }
+  const bx = ox + x0 + 2, by = oy + top + 12 + (f % 2 ? 0.5 : 0);
+  ovEll(out, bx, by, 3.4, 2.5, '#2a2018', 1); ovEll(out, bx, by, 2.8, 1.9, '#8a5a38', 1); ovEll(out, bx + 2.2, by - 2.2, 1.9, 1.7, '#2a2018', 1); ovEll(out, bx + 2.2, by - 2.2, 1.3, 1.2, '#d8b080', 1);
+  blend(out, bx + 4.4, by - 2, '#e0b040', 1); blend(out, bx + 5.4, by - 1.4, '#e0b040', 1); blend(out, bx + 2.8, by - 2.8, '#101010', 1);
+  for (let i = 0; i < 3; i++) blend(out, bx - 3 - i, by + 1 + i * 0.5, '#4a3020', 1);
 }
 
 /** The mummy's green eye under the linen and the dull gold shield on the far arm (04-enemies.md: ตาเขียวจางเรืองใต้ผ้า · โล่ทองหมอง). */

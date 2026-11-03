@@ -38,6 +38,14 @@ const FIX: Record<string, Partial<PersonLook>> = {
   mummy: { feats: ['wraps', 'dust'], skin: '#a08c68', outfit: '', hair: 'bald', hat: '', main: '#d4c49a', second: '#b8a578', eye: '#5ac880', accent: '#5ad0f0' },
   gas_ghoul: { skin: '#a8b050', second: '#6a6e78', feats: ['mask', 'gaunt', 'sunkeneyes'], hair: 'bald', eye: '#d03020' },
   vampire_spawn: { skin: '#8a98b0', outfit: 'rags', hair: 'wild', hairColor: '#2a1218', feats: ['fangs', 'redeyes'], eye: '#e03040', main: '#7a7a8a' },
+  // the pirate: a red kerchief on the hair, a striped shirt, one gold earring, a short sword (04-enemies.md)
+  npc_pirate: { hat: 'bandana', outfit: 'sailor', main: '#a02e2e', second: '#e8dcc0', accent: '#c03030', skin: '#c08a68', hair: 'long', hairColor: '#2a1c14', tool: 'sword', feats: ['scar'] },
+  // the arena fighter: bare to the waist and scarred, one shoulder in armour, a dark red waistcloth, a shaved head
+  npc_gladiator: { outfit: 'sarong', main: '#8a2a2a', second: '#8a6a4a', skin: '#c89a74', hair: 'bald', feats: ['scars', 'scar'], tool: 'trident' },
+  // the beast-handler: a thick fur-stained leather coat, a whip over the shoulder
+  npc_tamer: { outfit: 'fur', main: '#5a4a3a', second: '#8a6a4a', tool: 'whip', hair: 'braid', hairColor: '#3a2a1c' },
+  // the demon champion: dark-red skin with glowing marks, two short horns, a heavy blood-flag breastplate, a great axe
+  npc_demon_champion: { skin: '#8a2a22', outfit: 'armor', main: '#2a2a30', second: '#7a1a1a', hair: 'bald', feats: ['horns', 'tattoo'], tool: 'axe', eye: '#f0c030', accent: '#f08030' },
   npc_assassin: { hat: 'cowl', second: '#2a2a30', main: '#1c1c22' },
 };
 
