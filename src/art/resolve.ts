@@ -74,13 +74,16 @@ export function raceLook(looks: LooksData, race: string, o: { line?: string; sta
   const ov = ln?.overrides;
   const hairless = (ov?.feats ?? R.feats).includes('hairless');
   const key = `race:${race}:${ln?.name ?? ''}:${o.stage}:${o.fem ? 'f' : 'm'}:${o.seed}`;
+  const young = o.stage === 'infant' || o.stage === 'child';
+  // what the docs say the race wears and does (02-races.md เครื่องแต่ง and หน้าและผิว, read into the race row): clothes and their colours, a hat,
+  // the hair, the beard its men wear, a thing carried by habit; the young have no hat, no beard and carry nothing
+  const hair = hairless ? '' : (o.fem ? R.hairFem : R.hair) || (o.fem ? 'long' : 'short');
   return {
     kind: 'person', key, race, ...(ln ? { line: ln.name } : {}), stage: o.stage, fem: o.fem,
     body: { ...asBody(R.body), scale: ov?.scale ?? R.body.scale },
-    skin: ov?.skin ?? pick(R.skins, key), hairColor: ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : '#3a2a20'), eye: ov?.eye ?? '#2a2024',
-    accent: ov?.accent ?? R.accents[0], main: R.accents[1] ?? R.accents[0], second: R.accents[2] ?? R.accents[0],
-    // the race's usual clothes (the dwarves' apron) and the beard its men wear (02-races.md); the young and the women have no beard
-    outfit: R.outfit || 'tunic', hair: hairless ? '' : o.fem ? (R.feats.includes('beadbeard') ? 'braid' : 'long') : 'short', hat: '',
-    beard: o.fem || hairless || o.stage === 'infant' || o.stage === 'child' || o.stage === 'teen' ? '' : R.beard, tool: '', feats: [...(ov?.feats ?? R.feats)], wear: 0,
+    skin: ov?.skin ?? pick(R.skins, key), hairColor: ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : R.hairColor || '#3a2a20'), eye: ov?.eye ?? '#2a2024',
+    accent: ov?.accent ?? R.accents[0], main: R.main, second: R.second,
+    outfit: R.outfit || 'tunic', hair, hat: young ? '' : R.hat,
+    beard: o.fem || hairless || young || o.stage === 'teen' ? '' : R.beard, tool: young ? '' : R.tool, feats: [...(ov?.feats ?? R.feats)], wear: 0,
   };
 }

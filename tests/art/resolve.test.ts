@@ -120,6 +120,37 @@ describe('resolve: races', () => {
     expect(woman.hair).toBe('braid');
     expect(raceLook(looks, 'elf', { stage: 'adult', fem: false, seed: 'a' }).beard).toBe('');
   });
+  it('a race is dressed as its เครื่องแต่ง says: clothes, hat, colours, hair, a thing carried by habit', () => {
+    const adult = (race: string, fem = false) => raceLook(looks, race, { stage: 'adult', fem, seed: 'z' });
+    const dwarf = adult('dwarf');
+    expect(dwarf).toMatchObject({ outfit: 'apron', tool: 'hammer', beard: 'braided' });
+    expect(dwarf.main).toBe('#6a4a30'); // leather
+    expect(dwarf.second).toBe('#8a90a0'); // tempered iron
+    expect(adult('dragonkin')).toMatchObject({ outfit: 'armor', hat: 'crown' });
+    expect(adult('halfling')).toMatchObject({ hat: 'cap', hair: 'curly' });
+    expect(adult('elf').hair).toBe('braid');
+    expect(adult('elf').outfit).toBe('light');
+    expect(adult('darkelf').hairColor).toBe('#dcdee8');
+    expect(adult('vampire')).toMatchObject({ outfit: 'robe', main: '#1e1a1c' });
+    expect(adult('orc').hat).toBe(''); // "ไม่ใส่หมวกในที่อบอุ่น"
+    expect(adult('giant').tool).toBe('hammer');
+    expect(adult('slime')).toMatchObject({ outfit: 'tunic', hat: '', tool: '' });
+    // no race looks like the plain tunic in the colours of its accents any more
+    const dressed = Object.keys(looks.races).filter((r) => adult(r).outfit !== 'tunic' || adult(r).hat || adult(r).tool || adult(r).hair !== 'short');
+    expect(dressed.length).toBeGreaterThanOrEqual(12);
+    for (const r of Object.values(looks.races)) {
+      expect(r.main, r.id).toMatch(HEX);
+      expect(r.second, r.id).toMatch(HEX);
+      expect(r.main, r.id).not.toBe(r.second);
+    }
+  });
+  it('the young of a race wear its clothes but no hat, no beard and carry nothing', () => {
+    for (const stage of ['infant', 'child'] as const) {
+      const L = raceLook(looks, 'dwarf', { stage, fem: false, seed: 'z' });
+      expect(L).toMatchObject({ hat: '', beard: '', tool: '', outfit: 'apron' });
+    }
+    expect(raceLook(looks, 'dragonkin', { stage: 'child', fem: false, seed: 'z' }).hat).toBe('');
+  });
   it('a spirit NPC keeps its ghost feat through the resolver', () => {
     expect(npcLook(looks, 'MH12-1').feats).toContain('ghost');
   });

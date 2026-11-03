@@ -12,7 +12,7 @@ import type { Successor } from '../../../src/core/data/types-bonds';
 import {
   BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
   SPIRIT, SPIRIT_SKIN, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
-  mix, nearest, outfitFromGarments, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
+  mix, nearest, outfitFromGarments, hatOfRace, dressColours, RACE_TOOL_RULES, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
 } from '../lib/look-words';
 import { genDir, listDocs, readDoc, tables, Unparsed, writeGen } from '../lib/table';
 import { stageOf } from '../../../src/art/look';
@@ -56,11 +56,25 @@ function raceUi(file: string, races: RaceBase[]): Record<string, RaceLookRow> {
       lower: lowerOf(word('ท่อนล่าง')) ?? fail(`${file}:${i + 1} lower ${word('ท่อนล่าง')}`),
       gait: gaitOf(word('ท่าเดิน')) ?? fail(`${file}:${i + 1} gait ${word('ท่าเดิน')}`),
     };
-    // the clothes and the beard the race gives its people (the เครื่องแต่ง and หน้าและผิว cells of the race)
+    // what the race wears when the docs give no more (the เครื่องแต่ง and หน้าและผิว cells of the race): clothes, hat, colours, hair, a thing carried by habit
     const dress = prose.match(/\*\*เครื่องแต่ง\*\* (.*?) \*\*ท่วงท่า\*\*/)?.[1] ?? '';
     const face = prose.match(/\*\*หน้าและผิว\*\* (.*?) \*\*เครื่องแต่ง\*\*/)?.[1] ?? '';
-    const beard = NO_BEARD.test(face) || feats.includes('hairless') ? '' : beardOf(clauseOf(face, BEARD_START)) ?? '';
-    out[cur.id] = { id: cur.id, name: cur.name, body, skins: hexes('สีผิว'), accents: hexes('สีประจำเผ่า'), feats, outfit: feats.includes('gel') ? '' : outfitFromGarments(dress) ?? '', beard, lines: [], src: `${file}:${i + 1}` };
+    const gel = feats.includes('gel'), hairless = feats.includes('hairless');
+    const beard = NO_BEARD.test(face) || hairless ? '' : beardOf(clauseOf(face, BEARD_START)) ?? '';
+    // hair: the words about the head with the beard left out; what follows "ผู้หญิง" is about the women
+    const head = `${face} ${dress}`.replace(/(?:หนวด|เครา)\S*/g, '');
+    const menText = head.split('ผู้หญิง')[0], womenText = head.split('ผู้หญิง')[1] ?? '';
+    const hairOf = (t: string) => { const c = clauseOf(t, HAIR_START); return c ? hairStyleOf(c) ?? '' : ''; };
+    const hairCol = (t: string) => { const c = clauseOf(t, HAIR_START); return c ? hairColourOf(c) ?? '' : ''; };
+    const [main, second] = dressColours(dress);
+    const acc = hexes('สีประจำเผ่า');
+    out[cur.id] = {
+      id: cur.id, name: cur.name, body, skins: hexes('สีผิว'), accents: acc, feats,
+      outfit: gel ? '' : outfitFromGarments(dress) ?? '', beard, hat: gel ? '' : hatOfRace(dress) ?? '',
+      hair: hairless || gel ? '' : hairOf(menText), hairFem: hairless || gel ? '' : hairOf(womenText) || hairOf(menText), hairColor: hairless || gel ? '' : hairCol(menText),
+      main: main ?? mix(acc[1] ?? acc[0], '#5a5a5a', 0.5), second: second ?? (main ? mix(main, '#000000', 0.35) : mix(acc[2] ?? acc[0], '#3a3a3a', 0.4)),
+      tool: gel ? '' : RACE_TOOL_RULES.find(([, re]) => re.test(dress))?.[0] ?? '', lines: [], src: `${file}:${i + 1}`,
+    };
   });
   for (const r of races) if (!out[r.id]) fail(`no ค่า UI for ${r.id} in ${file}`);
   return out;

@@ -41,6 +41,14 @@ export interface RaceLookRow {
   outfit: string;
   /** the beard the men of the race wear when the docs give none ('' for races that have none) */
   beard: string;
+  /** the hat, the hair of men and of women (the women's falls back to the men's), the hair colour ('' = the generic one), the clothes' two colours and a thing carried by habit, all from the same cells */
+  hat: string;
+  hair: string;
+  hairFem: string;
+  hairColor: string;
+  main: string;
+  second: string;
+  tool: string;
   lines: RaceLine[];
   src: string;
 }

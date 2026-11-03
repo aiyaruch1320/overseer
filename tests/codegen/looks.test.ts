@@ -199,6 +199,16 @@ describe('looks generator: the second set of words reaches the rows', () => {
     for (const r of Object.values(L.races)) {
       expect(inSet(r.outfit, OUTFIT_IDS), r.id).toBe(true);
       expect(inSet(r.beard, BEARD_IDS), r.id).toBe(true);
+      expect(inSet(r.hat, HAT_IDS), r.id).toBe(true);
+      expect(inSet(r.hair, HAIR_IDS), r.id).toBe(true);
+      expect(inSet(r.hairFem, HAIR_IDS), r.id).toBe(true);
+      expect(inSet(r.tool, TOOL_IDS), r.id).toBe(true);
+      expect(r.main, r.id).toMatch(HEX);
+      expect(r.second, r.id).toMatch(HEX);
+      if (r.hairColor) expect(r.hairColor, r.id).toMatch(HEX);
     }
+    // the dwarf women braid their hair in place of a beard; the slime is gel and has none of it
+    expect(L.races.dwarf).toMatchObject({ hair: '', hairFem: 'braid', hat: '', tool: 'hammer' });
+    expect(L.races.slime).toMatchObject({ outfit: '', hat: '', hair: '', tool: '' });
   });
 });

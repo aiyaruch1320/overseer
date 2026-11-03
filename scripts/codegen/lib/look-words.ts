@@ -78,20 +78,46 @@ export const COLOURS: [string, string][] = [
   ['เขียวมรกต', '#2a9a5a'], ['เขียวเข้ม', '#2a4a2a'], ['เขียว', '#3a7a3a'], ['ฟ้า', '#6a9ad0'], ['น้ำเงิน', '#2a3a7a'], ['ดำ', '#1e1a1c'], ['น้ำทะเล', '#2a6a8a'], ['ทราย', '#c8b080'], ['ถ่าน', '#2a2a2e'], ['ครีม', '#e8dcc0'], ['เข้ม', '#2a1e18'],
 ];
 const DARKER = /เข้ม|คล้ำ|หม่น/, LIGHTER = /อ่อน|จาง/;
-/** The first colour word inside `window`; "เข้ม" and "อ่อน" right after it darken or lighten it. */
-export function colourIn(window: string): string | null {
+/** The first colour word inside `window` with where it ends; "เข้ม" and "อ่อน" right after it darken or lighten it. */
+function colourAt(window: string, table: readonly [string, string][] = COLOURS): { hex: string; end: number } | null {
   let best: { at: number; len: number; hex: string; end: number } | null = null;
-  for (const [w, h] of COLOURS) {
+  for (const [w, h] of table) {
     const at = window.indexOf(w);
     if (at < 0) continue;
     if (!best || at < best.at || (at === best.at && w.length > best.len)) best = { at, len: w.length, hex: h, end: at + w.length };
   }
   if (!best) return null;
   const tail = window.slice(best.end, best.end + 4);
-  if (DARKER.test(tail)) return mix(best.hex, '#000000', 0.3);
-  if (LIGHTER.test(tail)) return mix(best.hex, '#ffffff', 0.35);
-  return best.hex;
+  if (DARKER.test(tail)) return { hex: mix(best.hex, '#000000', 0.3), end: best.end };
+  if (LIGHTER.test(tail)) return { hex: mix(best.hex, '#ffffff', 0.35), end: best.end };
+  return { hex: best.hex, end: best.end };
 }
+/** The first colour word inside `window`; "เข้ม" and "อ่อน" right after it darken or lighten it. */
+export function colourIn(window: string): string | null { return colourAt(window)?.hex ?? null; }
+
+/** What a race's clothes are made of, when the เครื่องแต่ง gives a material and no colour (leather, iron, soot, earth, leaves). Used only for the races' dress. */
+export const MATERIAL_COLOURS: [string, string][] = [
+  ['หนัง', '#6a4a30'], ['เหล็ก', '#8a90a0'], ['ไหม้', '#3a3028'], ['สีดิน', '#8a7458'], ['ใบไม้', '#4a8a4a'], ['กลีบดอก', '#e8a0c0'], ['กระดูก', '#d9cfb2'], ['ผ้าดิบ', '#b8a888'],
+];
+/** The first two different colours a text names, in the order written (colour words, then the materials above); fewer when the text names fewer. */
+export function dressColours(text: string): string[] {
+  const out: string[] = [];
+  let rest = text;
+  while (out.length < 2) {
+    const c = colourAt(rest, [...COLOURS, ...MATERIAL_COLOURS]);
+    if (!c) break;
+    if (!out.includes(c.hex)) out.push(c.hex);
+    rest = rest.slice(c.end);
+  }
+  return out;
+}
+/** The thing a race carries by habit, where the เครื่องแต่ง says it (the dwarves' tools at the waist, the giants' stone tools). */
+export const RACE_TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
+  ['hammer', /เครื่องมือ(?:อยู่ที่เอว|หิน)/],
+  ['book', /หนังสือสัญญา/],
+];
+/** A hat the race text puts on, not one it says is left off (`ไม่ใส่หมวก`). */
+export const hatOfRace = (text: string) => hatOf(text.replace(/ไม่(?:ใส่|มี)หมวก[ก-๙]*/g, ''));
 
 /** Hair colour from the hair clause (`ผมสีเงินยาวถักเปีย`), the beard colour is not painted apart from it. */
 export function hairColourOf(token: string): string | null {
@@ -145,7 +171,7 @@ export const OUTFIT_RULES: Rule<(typeof OUTFIT_IDS)[number]>[] = [
   ['robe', /นักเวท|เสื้อคลุม|ชุดคลุม|ชุดหลวม|ผ้าคลุมยาว|ชุดทูตบางพลิ้ว/],
   ['cloak', /(?:ชุด|เสื้อผ้า)เดินทาง|ชุดนักเดินทาง|ผ้าคลุม(?:สี|เดินทาง|กันฝน|กันหมอก|หนา|ผืน|เก่า|ดำ|เทา|เขียว|น้ำเงิน|เนมส์)|เสื้อกันฝน|ผ้ากันฝุ่น|ผ้าคลุมสองสี|ผ้าคลุมกัน/],
   ['cape', /ผ้าคลุมไหล่|ผ้าคลุม/],
-  ['light', /ชุดบาง|ชุดเบา|เสื้อผ้าเบา|ชุดผ้าบาง|ชุดผ้าลินิน|ชุดลินิน|เสื้อฝ้าย|ชุดผ้าฝ้าย|เสื้อผ้าฝ้าย|ชุดผ้าเบา|ชุดสีขาวบาง|เสื้อผ้าใบไม้|ชุดสีพิษ/],
+  ['light', /เสื้อลินิน|ชุดบาง|ชุดเบา|เสื้อผ้าเบา|ชุดผ้าบาง|ชุดผ้าลินิน|ชุดลินิน|เสื้อฝ้าย|ชุดผ้าฝ้าย|เสื้อผ้าฝ้าย|ชุดผ้าเบา|ชุดสีขาวบาง|เสื้อผ้าใบไม้|ชุดสีพิษ/],
 ];
 /** Words that name a garment; one of these with no rule above is reported. */
 /** A plain `ชุด…` `เสื้อ…` `กางเกง…` is plain clothing (the tunic); these garment words are not: one with no rule above is reported. */
