@@ -24,6 +24,20 @@ export const DEFAULT_RULES: Record<'low' | 'normal' | 'high', AttentionRule> = {
 export const DEFAULT_DEADLINES: Record<CardKind, number> = { prayer: 3.5, omen: 2, battle: 2, crisis: 1, majorOmen: 1 };
 export const DEFAULT_AGE_STOPS = [5, 15, 30, 50, 70];
 
+/**
+ * How much faster the speed `fast` runs. The app clock reads it (src/app/tuning.ts); it is here because the least time a card stays up is counted in
+ * real seconds at the fastest speed (07-attention.md §1 rule 6: the annoyance is in the player's seconds, not the character's years).
+ */
+export const FAST_SPEED_MUL = 3;
+
+/**
+ * The least real seconds a card stays on the screen before it runs out, counted at the fastest speed (M5 review round two R1: a battle omen with 0.3 years
+ * left at "fast" was gone in two seconds). 07 sets the waits in life years and the gap in real seconds but no floor for a card shown late; this is that floor,
+ * about nine seconds, as the review proposed (8 to 10). At normal speed it is three times as long in real time.
+ */
+export const CARD_MIN_SEC = 9;
+export const CARD_MIN_YEARS = (CARD_MIN_SEC * FAST_SPEED_MUL) / SEC_PER_YEAR;
+
 /** Cards on the screen at most (07-attention.md §2): the third waits in the queue of the rules until a place frees. */
 export const MAX_CARDS = 2;
 

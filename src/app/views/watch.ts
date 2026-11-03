@@ -135,7 +135,7 @@ export function cardView(data: GameData, state: GameState, e: LogEntry): CardVie
     n: e.n,
     kind: why,
     id,
-    text: callReason(data, e, crisisOf(state)),
+    text: callReason(data, e, crisisOf(state), (n) => entryAt(state, n)),
     tone: CARD_TONE[why],
     left,
     frac: left === null || !total ? 1 : Math.min(1, left / total),
@@ -156,7 +156,7 @@ export function foldedCards(data: GameData, state: GameState, stop: LogEntry): C
     // the id comes from the entry the card stands for: the `ids` of the stop are joined with commas and a battle has several
     const id = entryAt(state, n)?.id ?? '';
     const entry: LogEntry = { ...stop, data: { call: 'card', why: kind, ids: id, n: String(n), cards: '', until: null, age: null }, id };
-    out.push({ n, kind, id, text: callReason(data, entry, crisisOf(state)), tone: CARD_TONE[kind], left: null, frac: 1, options: optionsOf(kind, id) });
+    out.push({ n, kind, id, text: callReason(data, entry, crisisOf(state), (n) => entryAt(state, n)), tone: CARD_TONE[kind], left: null, frac: 1, options: optionsOf(kind, id) });
   });
   return out;
 }
@@ -202,7 +202,7 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
     n: e.n,
     why,
     age: typeof e.data.age === 'number' ? e.data.age : null,
-    reason: callReason(data, e, crisisOf(state)),
+    reason: callReason(data, e, crisisOf(state), (n) => entryAt(state, n)),
     options: optionsOf(why, first),
     cards: foldedCards(data, state, e),
     recap,

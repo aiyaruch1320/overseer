@@ -4,13 +4,16 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, runToDeath, startLife } from '../../scripts/tools/session';
 import {
-  DEFAULT_AGE_STOPS, DEFAULT_DEADLINES, DEFAULT_RULES, SEC_PER_YEAR, agesOf, attentionSystem, callsOf, closed, liveCards, newMem, settled, sourcesOf, tick,
+  CARD_MIN_SEC, CARD_MIN_YEARS, DEFAULT_AGE_STOPS, DEFAULT_DEADLINES, FAST_SPEED_MUL, DEFAULT_RULES, SEC_PER_YEAR, agesOf, attentionSystem, callsOf, closed, liveCards, newMem, settled, sourcesOf, tick,
   type Out, type Plan,
 } from '../../src/core/attention';
 import { addTie, bondsSystem, extOf, type Tie } from '../../src/core/bonds';
 import { arcsYear } from '../../src/core/bonds/arcs';
 import { godActsSystem } from '../../src/core/god/acts';
 import { sortSystems, type Ctx, type GameData, type System } from '../../src/core/game';
+import { ready } from '../../src/core/combat/launch';
+import { callReason } from '../../src/core/text';
+import { SPEED_MUL } from '../../src/app/tuning';
 import { write } from '../../src/core/log';
 import { newGame } from '../../src/core/state';
 import type { GameState, LifeState, LogEntry } from '../../src/core/types';
@@ -224,5 +227,73 @@ describe('on real lives', () => {
     write(b.g.state, { sys: 'god', kind: 'whisper', id: 'help', data: {}, level: 1 });
     b.g.beat();
     expect(b.e.crises.some((c) => c.n === nb)).toBe(false);
+  });
+});
+
+describe('a card stays up a readable minimum of real seconds (M5 review round two R1)', () => {
+  const plan: Plan = { ages: [], nearAt: null, waitOf: (k) => DEFAULT_DEADLINES[k] * S };
+  const rule = DEFAULT_RULES.normal;
+
+  it('the floor is CARD_MIN_SEC real seconds at the fastest speed, and the app runs the same fast speed', () => {
+    expect(SPEED_MUL.fast).toBe(FAST_SPEED_MUL);
+    expect((CARD_MIN_YEARS * S) / FAST_SPEED_MUL).toBeCloseTo(CARD_MIN_SEC, 6);
+  });
+
+  it('a card the gap holds back until 0.3 years of its wait are left is still up for the floor, whatever its kind', () => {
+    for (const kind of ['prayer', 'omen', 'battle', 'crisis'] as const) {
+      const m = newMem(0, 0);
+      const out: Out[] = [];
+      const t0 = 10 * S;
+      const wait = DEFAULT_DEADLINES[kind] * S;
+      m.lastCard = t0 + wait - 0.3 * S - rule.cardGap; // the last call keeps the gap shut until 0.3 years before the card runs out
+      m.last = t0;
+      tick(m, rule, plan, t0, [{ kind, n: 1 }], out, { slots: 2 });
+      expect(out, kind).toEqual([]);
+      tick(m, rule, plan, t0 + wait - 0.3 * S, [], out, { slots: 2 });
+      const call = out.find((o) => o.t === 'call');
+      expect(call, kind).toBeDefined();
+      if (call?.t !== 'call') continue;
+      expect(call.until! - call.sec / S, kind).toBeGreaterThanOrEqual(CARD_MIN_YEARS - 0.02);
+      // and in real seconds at the fastest speed, the card lasts at least the floor
+      expect(((call.until! - call.sec / S) * S) / FAST_SPEED_MUL, kind).toBeGreaterThanOrEqual(CARD_MIN_SEC - 0.5);
+    }
+  });
+
+  it('a card shown early keeps the wait of its kind (the floor only lifts a short one)', () => {
+    const m = newMem(0, 0);
+    const out: Out[] = [];
+    const t0 = 10 * S;
+    tick(m, rule, plan, t0, [{ kind: 'battle', n: 1 }], out, { slots: 2 });
+    const call = out.find((o) => o.t === 'call');
+    expect(call?.t === 'call' && call.until).toBeCloseTo(t0 / S + DEFAULT_DEADLINES.battle, 1);
+  });
+});
+
+describe('the fight waits for its card (R1)', () => {
+  it('past the wait cap of the fight, a card that is up still holds it until the card runs out', () => {
+    const { st, e } = withCard('battle', { sys: 'combat', kind: 'prelude', id: 'lich', data: {} }, 9);
+    st.life!.hAge = 8;
+    const ctx = { state: st } as unknown as Ctx;
+    // due long ago, the cap passed, but the card runs out at age 9
+    expect(ready(ctx, { due: 2, prelude: e.n }, 40)).toBe(false);
+    st.life!.hAge = 9;
+    expect(ready(ctx, { due: 2, prelude: e.n }, 40)).toBe(true);
+    // no card was called for it: the cap lets it go
+    const lone = newGame(1);
+    lone.life = life();
+    lone.life.ext.attention = newMem(0, 0);
+    const pn = write(lone, { sys: 'combat', kind: 'prelude', id: 'lich', data: {}, level: 2 });
+    expect(ready({ state: lone } as unknown as Ctx, { due: 2, prelude: pn.n }, 40)).toBe(true);
+  });
+});
+
+describe('the battle card names the foe and its tier (R1)', () => {
+  it('callReason reads the foe from the prelude the call stands for', () => {
+    const { st, e, call } = withCard('battle', { sys: 'combat', kind: 'prelude', id: 'lich', data: { foe: 'ลิชแห่งสุสาน', tier: 'บอส' } }, 10);
+    const text = callReason(data, call, undefined, (n) => (n === e.n ? e : undefined));
+    expect(text).toContain('ลิชแห่งสุสาน');
+    expect(text).toContain('บอส');
+    expect(text).toContain('ศึกกำลังจะมาถึง');
+    void st;
   });
 });

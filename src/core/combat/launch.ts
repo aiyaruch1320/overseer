@@ -1,6 +1,6 @@
 // Starting a fight: the year's cap (04-encounters.md §1), the call before a fight with a name (07-attention.md §2), and the queue the
 // call waits in so that the god has a beat or two to whisper before the blades meet.
-import { settled } from '../attention';
+import { called, settled } from '../attention';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { extOf as storyExt, yearOf } from '../story/state';
@@ -67,11 +67,14 @@ export function launch(ctx: Ctx, ids: readonly string[], opts: FightOpts, announ
   return { how: 'queued', due };
 }
 
-/** Is a waiting fight to be fought this beat? Its day has come and the call that announced it is settled, or it waited PRELUDE_MAX_BEATS (M3 review C3). */
+/**
+ * Is a waiting fight to be fought this beat? Its day has come and the call that announced it is settled, or it waited PRELUDE_MAX_BEATS (M3 review C3).
+ * The wait limit does not cut a card that is up: the fight waits for the card's own time, which keeps a readable minimum (M5 review round two R1).
+ */
 export function ready(ctx: Ctx, p: { due: number; prelude?: number }, tick: number): boolean {
   if (p.due > tick) return false;
   if (p.prelude === undefined || settled(ctx.state, p.prelude)) return true;
-  return tick - (p.due - PRELUDE_BEATS) >= PRELUDE_MAX_BEATS;
+  return tick - (p.due - PRELUDE_BEATS) >= PRELUDE_MAX_BEATS && !called(ctx.state, p.prelude);
 }
 
 /** Fights that are due this beat (the day after their call, once the player has had the card). */
