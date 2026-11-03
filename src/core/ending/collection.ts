@@ -6,7 +6,7 @@ import { extOf as characterExt } from '../character';
 import { knownName } from '../text/labels';
 import type { GameState, LifeState, LogEntry } from '../types';
 import { lx } from '../lineage/state';
-import { NO_VOW, peekGoals } from '../god/goals';
+import { NO_VOW, lifeGoals, peekGoals } from '../god/goals';
 import { lifeLog } from './facts';
 
 export interface Category {
@@ -156,6 +156,11 @@ export function lifeEntries(ctx: Ctx, life: LifeState, log: LogEntry[] = lifeLog
   const ending = (life.ext.story as { ended?: string } | undefined)?.ended;
   if (ending && ok('ending', ending)) out.add(key('ending', ending));
   out.add(key('mode', modeOf(ctx.state, life)));
+  // the titles of the life and the vow it kept are found in this life too (the page of the collection counts them): the card counts what the page counts (R7). They are listed
+  // here so `keep` tells which are new; the page itself reads them from the goals (`GOALS_CATEGORIES`)
+  const goals = lifeGoals(life).result;
+  for (const t of goals?.titles ?? []) out.add(key('title', t));
+  if (goals?.result === 'kept' && goals.vow && goals.vow !== NO_VOW) out.add(key('vow', goals.vow));
   return [...out].sort();
 }
 

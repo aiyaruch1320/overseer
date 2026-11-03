@@ -8,6 +8,7 @@ import { extOf as bondsExt, isLive, tiesOf } from '../bonds';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { LifeState } from '../types';
+import { pickHeir } from './heir';
 import { lx, type Thread } from './state';
 
 /** Weights of the kinds when the threads are cut to three (03 §2 second table). */
@@ -39,6 +40,30 @@ const FALLBACK_OUTCOME = { settle: 'เรื่องจบลงตามท�
 
 const feud = (life: LifeState): string[] => [...life.curses.filter((c) => c === 'c_feud' || c === 'c_wanted'), ...life.skills.filter((s) => s === 'nc_blood_feud')];
 
+/**
+ * The words of a blood feud the book names nobody for (M4 review R7: one title for every feud told the heir nothing). The person the character holds the most against, else the
+ * node or convergence the curse came from; the generic words are the last resort.
+ */
+function feudText(ctx: Ctx, life: LifeState): string {
+  const b = life.ext.bonds ? bondsExt(life) : undefined;
+  const foes = b ? tiesOf(b).filter((t) => !t.light && (/ศัตรู|แค้น/.test(t.line) || t.grudge >= 2)).sort((a, c) => c.grudge - a.grudge || c.peak - a.peak) : [];
+  if (foes.length) return `แค้นกับ ${foes[0].name}`;
+  const ids = new Set(feud(life));
+  let birthN = 0;
+  for (const e of ctx.state.log) if (e.sys === 'character' && e.kind === 'birth') birthN = e.n;
+  const grant = ctx.state.log.find((e) => e.n >= birthN && e.sys === 'character' && e.kind === 'grant' && e.data.kind === 'curse' && ids.has(String(e.id)));
+  // a convergence point has a name of a place or an event; the title of an ordinary node is a choice ("pay or leave the debt"), which names nobody, so it is not used
+  const where = typeof grant?.data.from === 'string' && grant.data.from.startsWith('cv.') ? convergenceTitle(ctx, grant.data.from) : undefined;
+  if (where) return `แค้นที่ยังไม่จบและค่าหัวที่ตามมาจาก${where}`;
+  return grant?.age !== undefined ? `แค้นที่ยังไม่จบและค่าหัวที่ติดตัวมาตั้งแต่อายุ ${grant.age}` : 'แค้นที่ยังไม่จบและค่าหัวที่ยังตามอยู่';
+}
+
+const convergenceTitle = (ctx: Ctx, id: string): string | undefined => {
+  const points = (ctx.data.convergence?.items as { points?: { id: string; title?: string; name?: string }[] } | undefined)?.points;
+  const p = points?.find((q) => q.id === id);
+  return p?.title ?? p?.name;
+};
+
 /** The threads the dead life leaves by itself (no inherited ones). Reads only. */
 export function detect(ctx: Ctx): Thread[] {
   const life = ctx.state.life;
@@ -58,7 +83,7 @@ export function detect(ctx: Ctx): Thread[] {
   }
   // blood feuds the character carried
   for (const name of b?.feuds ?? []) add('ศึกสายเลือด', `แค้นกับ ${name}`, `feud:${name}`, 7);
-  if (!out.some((t) => t.kind === 'ศึกสายเลือด') && feud(life).length) add('ศึกสายเลือด', 'แค้นที่ยังไม่จบและค่าหัวที่ยังตามอยู่', `curse:${feud(life)[0]}`);
+  if (!out.some((t) => t.kind === 'ศึกสายเลือด') && feud(life).length) add('ศึกสายเลือด', feudText(ctx, life), `curse:${feud(life)[0]}`);
   // a debt in gold
   const debt = Number((life.ext.economy as { debt?: number } | undefined)?.debt ?? 0);
   if (debt > 0) add('หนี้', `หนี้ทอง ${Math.round(debt)}`, 'debt', debt > DEBT_BIG ? 5 : 3);
@@ -114,7 +139,9 @@ export function keepThreads(ctx: Ctx): Thread[] {
   for (const t of p.closed) set(t, 'closed');
   for (const t of p.legend) set(t, 'legend');
   for (const t of p.faded) set(t, 'faded');
-  for (const t of p.kept) set(t, 'open');
+  // a family with no one to take over leaves the threads to fade at once (heirs/03 §3): the summary of the world does not count them open (R4)
+  const heir = pickHeir(ctx);
+  for (const t of p.kept) set(t, heir ? 'open' : 'faded');
   return p.kept;
 }
 

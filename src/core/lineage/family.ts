@@ -61,6 +61,12 @@ function place(heir: LifeState, src: Tie, over: Partial<Tie>): Tie {
   return copy;
 }
 
+/** The age of the dead life when the lover line of a tie began: the line change of the log, else the day the two met. */
+function loveSince(ctx: Ctx, t: Tie): number {
+  const became = [...ctx.state.log].reverse().find((e) => e.sys === 'bonds' && e.kind === 'line' && e.id === t.id && e.data.to === 'คนรัก');
+  return became?.age !== undefined ? Math.max(t.opened, became.age) : t.opened;
+}
+
 const parentKin = (gender: Tie['gender']): string => (gender === 'm' ? 'father' : gender === 'f' ? 'mother' : 'parent');
 
 /** The kin word of a brother or sister by who is older. */
@@ -90,7 +96,10 @@ export function bindFamily(ctx: Ctx, parent: LifeState, heir: LifeState, how: He
     id: '', name: parent.name, line, past: [], b: 80, gratitude: how.how === 'helped' ? 3 : 0, grudge: 0, known: 5, trust: 3, acc: 0, from: 'parent', light: true, kin, race: parent.race, gender: parent.gender,
     country: parent.country, age0: dead.age, t0: worldYear, perYear: worldYearsPerLifeYear(parent.lifespan, parent.race), dieAge: dead.age, opened: heir.hAge, last: heir.hAge, state: 'dead', died: dead, moods: [], peak: 80, family: false, rapport: false,
     ...(how.how === 'partner' ? { spouse: true } : {}),
-  } as Tie, {});
+  } as Tie, {
+    // the partner who takes over was the lover of the dead life for as long as the book of the dead life says: the card tells when it began, not the day of the takeover (R1)
+    ...(how.how === 'partner' && mine ? { opened: Math.max(0, heir.hAge - Math.max(0, Math.round(dead.age - loveSince(ctx, mine)))) } : {}),
+  });
   d.gone = { age: heir.hAge, year: worldYear, way: 'death', why: 'ตาย', reason: 'ตาย' };
 
   if (blood && pe) {
@@ -125,7 +134,7 @@ export function bindFamily(ctx: Ctx, parent: LifeState, heir: LifeState, how: He
         id: '', name: mine.married.name, line: 'คนรัก', past: [], b: 75, gratitude: 0, grudge: 0, known: 4, trust: 3, acc: 0, from: 'family', light: false, race: heir.race, gender: heir.gender === 'm' ? 'f' : 'm',
         country: heir.country, age0, t0: worldYear, perYear: worldYearsPerLifeYear(heir.lifespan, heir.race), opened: wedAge, last: heir.hAge, state: 'alive', moods: [], peak: 75, family: false, rapport: true, spouse: true,
         dieAge: Math.round(Math.max(Math.min(DEATH_AGE.max, DEATH_AGE.mean + rng.gauss() * DEATH_AGE.sd), DEATH_AGE.min, age0 + 8)),
-      } as Tie, {});
+      } as Tie, { opened: wedAge });
       s.workedWith = wedAge;
       reindex(e);
       // the children are drawn year by year from the wedding, the way the life years draw them

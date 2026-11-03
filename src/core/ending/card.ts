@@ -13,7 +13,7 @@ import { folkOf } from './people';
 import { vowPage } from './vow';
 import { lifeGoals } from '../god/goals';
 import { knownName } from '../text/labels';
-import { CAUSE_WORD, CULTURE, EXTRA_MOMENT, FACT_KINDS, LIFE_EPITAPH, LIMIT, MARK, MOMENT, NOT_MOMENT, SCORE, TARGET, TIME_WORD, stageOf } from './tuning';
+import { CAUSE_WORD, CULTURE, EXTRA_MOMENT, FACT_KINDS, LIFE_EPITAPH, LIMIT, MARK, MOMENT, NOT_MOMENT, FILLER_MOMENT, SCORE, TARGET, TIME_WORD, stageOf } from './tuning';
 import type { CauseGroup, EndingCard, EndingInput, Moment, QuestionGrade, SummaryFact, WorldMark } from './types';
 import { family, flagWords, pickFrom, timeGroup, whenHolds } from './words';
 import type { SlotValues } from '../text/pick';
@@ -125,8 +125,8 @@ function sentenceOf(ctx: Ctx, f: RawFact, lifeId: string, local: Set<string>): {
   return pickFrom(ctx, templatesFor(ctx, f), f.slots, { key: `${lifeId}|fact|${f.kind}|${f.age ?? ''}`, local, max: LIMIT.sentence, words: flagWords(f.flags) });
 }
 
-function lineOf(ctx: Ctx, fam: string, keys: Record<string, string>, slots: SlotValues, key: string, max: number, local: Set<string>, onlyFresh = false): { text: string; id: string } | null {
-  const cands = family(ctx, fam).filter((t) => Object.entries(keys).every(([k, v]) => t.keys[k] === v));
+function lineOf(ctx: Ctx, fam: string, keys: Record<string, string>, slots: SlotValues, key: string, max: number, local: Set<string>, onlyFresh = false, need = ''): { text: string; id: string } | null {
+  const cands = family(ctx, fam).filter((t) => Object.entries(keys).every(([k, v]) => t.keys[k] === v) && (!need || t.text.includes(need)));
   const x = lx(ctx.state);
   const fit = cands.filter((t) => {
     const text = fill(t.text, slots);
@@ -207,7 +207,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const qf = g.facts.find((f) => f.kind === 'คำตอบของคำถามชีวิต');
   const question = String(qf?.slots.question ?? '');
   const qLine = question
-    ? lineOf(ctx, 'card_question', { จบแบบ: GRADE_WORD[g.grade] }, { question, answer: qf?.slots.answer, age: deadAge }, `${life.id}|question`, LIMIT.questionLine, new Set())
+    ? lineOf(ctx, 'card_question', { จบแบบ: GRADE_WORD[g.grade] }, { question, answer: qf?.slots.answer, age: deadAge }, `${life.id}|question`, LIMIT.questionLine, new Set(), false, '{question}')
     : null;
 
   // the three moments (07 §5.4, 03 §1): the turning points of the life, chosen by the scores of 07 §2.3 from all the facts (children, a lover lost, a curse, a betrayal, the
@@ -338,9 +338,9 @@ export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, life
   const pool: { f: RawFact; s: number }[] = [];
   for (const f of all) {
     const base = baseOfMoment(f.kind);
-    if (base === undefined || NOT_MOMENT.includes(f.kind)) continue;
+    if (base === undefined || NOT_MOMENT.includes(f.kind) || FILLER_MOMENT.includes(f.kind)) continue;
     // a lover who was a friend first: the card says when they became lovers, not "met" (the short line of the lover says "met")
-    if (f.kind === 'คนรัก' && f.flags.includes('late')) continue;
+    if (f.kind === 'คนรัก' && (f.flags.includes('late') || f.flags.includes('carried'))) continue;
     const s = f.kind === 'คำตอบของคำถามชีวิต' ? MOMENT.question : base + (f.bonus ?? 0) + (MOMENT.heardKinds.includes(f.kind) ? MOMENT.heard : 0) + (inSummary.has(`${f.kind}|${f.age ?? ''}`) ? MOMENT.inSummary : 0);
     const dup = f.tags.length ? pool.findIndex((q) => q.f.tags.some((t) => f.tags.includes(t))) : -1;
     if (dup >= 0) {
@@ -350,7 +350,7 @@ export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, life
     pool.push({ f, s });
   }
   const out: { f: RawFact; line: string }[] = [];
-  const familyOf = (kind: string) => (MOMENT.lossFamily.includes(kind) ? 'loss' : kind);
+  const familyOf = (kind: string) => (MOMENT.lossFamily.includes(kind) ? 'loss' : MOMENT.ruinFamily.includes(kind) ? 'ruin' : kind);
   while (out.length < 3 && pool.length) {
     let best = -1;
     let bestScore = -Infinity;

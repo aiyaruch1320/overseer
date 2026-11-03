@@ -38,7 +38,14 @@ export const EXTRA_MOMENT: Record<string, { base: number; line: string }> = {
   คนรักเริ่ม: { base: 6, line: 'อายุ {age}: รักกับ{lover}' },
   คนรักตาย: { base: 8, line: 'อายุ {age}: สูญเสีย{npc} (คนรัก)' },
   ลูกตาย: { base: 8, line: 'อายุ {age}: สูญเสีย{npc} (ลูก)' },
+  // a ruin that reached him (R2; 04-miracles.md §5.1: the character in the country, his people in it, the nodes mr.a1 to mr.a4)
+  ซากถึงตัว: { base: 9, line: 'อายุ {age}: อยู่ในซาก{ruin}' },
+  ซากพรากคน: { base: 8, line: 'อายุ {age}: ซาก{ruin}พราก{npc}' },
+  ซากตามมา: { base: 8, line: 'อายุ {age}: {reach}' },
 };
+
+/** The story nodes that tell a ruin has come to the character's door: refugees, the news of the star iron, the cult of the pit, the god-hunters (31-divine.md mr.a1 to mr.a4). */
+export const RUIN_NODES = ['mr.a1', 'mr.a2', 'mr.a3', 'mr.a4'];
 
 /** What a person of the family or the heart weighs when he dies (07 §2.3 gives no score for who died: assumption, a lover or a child counts as the kinds above). */
 export const DEATH_ROLE_BONUS = 2;
@@ -182,6 +189,13 @@ export const MARK = { eraConverge: 2, eraEvents: 1, localConverge: 1, localFame:
 export const NOT_MOMENT = ['เกิด', 'ความตาย', 'ทายาท', 'เรื่องค้าง', 'ฉายาชีวิต'];
 
 /**
+ * Facts whose short line is only a count or a stretch of time ("1 ประเทศ 1 ทวีป", "รบ 9 ครั้ง", "อยู่ที่…นาน 68 ปีชีวิต", the question that "reached an answer" with no question and no
+ * answer beside it): the summary tells them, but they are not turning points, so the card does not fill an empty place with them (M4 review R3; assumption: 07 §5.4 lists their lines
+ * for the chronicle of the family, which is not the card).
+ */
+export const FILLER_MOMENT = ['การเดินทาง', 'ศึก', 'อาชีพ', 'ถิ่นที่อยู่นานที่สุด', 'คำตอบของคำถามชีวิต'];
+
+/**
  * The connectors of time that say how long it was (07 §4.1 lists them by the age group of the next fact; the doc does not say they tell a gap). "ไม่กี่ปีให้หลัง" says a few
  * years and is kept for a gap of five or less; "หลายปีผ่านไป" says many and needs eight or more (assumption: the words are only true then).
  */
@@ -192,7 +206,7 @@ export const TIME_WORD: Record<string, { minGap?: number; maxGap?: number; minAg
 };
 
 /** Moments of the card (03 §1 "สามถึงห้าเหตุการณ์"; 07 §5.4): the question line is on the card already, so its fact comes last, and a fact the summary tells is a little ahead. */
-export const MOMENT = { question: -100, inSummary: 1, heard: -2, heardKinds: ['เหตุการณ์โลก'], lossFamily: ['คนใกล้ตัวตาย', 'คนรักตาย', 'ลูกตาย'] };
+export const MOMENT = { question: -100, inSummary: 1, heard: -2, heardKinds: ['เหตุการณ์โลก'], lossFamily: ['คนใกล้ตัวตาย', 'คนรักตาย', 'ลูกตาย', 'ซากพรากคน'], ruinFamily: ['ซากและประเทศล่ม', 'ซากถึงตัว', 'ซากพรากคน', 'ซากตามมา'] };
 
 /**
  * Lines of an epitaph that tell the life itself (03 §1 "จารึก" is written from the real data of the life; 07 §6 gives only the voice of the culture and the cause). Used beside

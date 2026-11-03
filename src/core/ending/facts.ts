@@ -11,8 +11,11 @@ import { calendarYear, classLabel, continentName, placeName, raceName } from '..
 import { knownName } from '../text/labels';
 import { questionOf } from '../text/render';
 import type { LifeState, LogEntry } from '../types';
-import { CAUSE_WORD, DEATH_ROLE_BONUS, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
+import { CAUSE_WORD, DEATH_ROLE_BONUS, RUIN_NODES, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
 import type { CauseGroup, HandSummary, QuestionGrade } from './types';
+
+/** Ties the family web puts into the book of an heir at the takeover (lineage/family.ts). */
+const CARRIED_FROM = ['parent', 'family', 'inherited'];
 
 type Slots = Record<string, string | number>;
 
@@ -56,7 +59,8 @@ export function placeAtFn(ctx: Ctx, life: LifeState, log: LogEntry[]): (year: nu
   };
 }
 
-const ageAtYear = (life: LifeState, year: number): number => Math.max(0, Math.round((year - life.birthYear) / worldYearsPerLifeYear(life.lifespan, life.race)));
+// the age is the whole years lived, the way the log counts it (`hAge` goes up by one a life year): rounding told a world event one year later than the log did (R7)
+const ageAtYear = (life: LifeState, year: number): number => Math.max(0, Math.floor((year - life.birthYear) / worldYearsPerLifeYear(life.lifespan, life.race) + 1e-9));
 
 /** How the question of the life was answered (07 §5.3). Assumption: the story keeps no answer, so an ending after the elder age is a good answer, none at that age is an open one. */
 export function gradeOf(life: LifeState, ending: string | null): QuestionGrade {
@@ -203,7 +207,11 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     const became = [...log].reverse().find((e) => e.sys === 'bonds' && e.kind === 'line' && e.id === partner.id && e.data.to === 'คนรัก');
     const since = became ? Math.max(partner.opened, hAgeOf(became)) : partner.opened;
     const late = since > partner.opened;
-    add('คนรัก', { lover: partner.name, tie_level: levelOf(ctx, partner), years_together: Math.max(1, until - since), age: apart ? until : partner.opened }, { age: since, flags: [live ? 'together' : apart ? 'apart' : 'gone', ...(late ? ['late'] : [])], strict: apart, tags: [`npc:${partner.id}`] });
+    // a partner the family web gave the heir at the takeover (the dead life, the spouse of the years before) was not met on the day he took over: when the book does not
+    // know the start the fact tells no age of meeting, and the card has no "met" moment for it (R1)
+    const startAge = lx(st).recs.find((r) => r.id === life.id)?.startAge ?? 0;
+    const carried = CARRIED_FROM.includes(partner.from) && partner.opened >= startAge && startAge > 0;
+    add('คนรัก', { lover: partner.name, tie_level: levelOf(ctx, partner), years_together: Math.max(1, until - since), ...(carried && !apart ? {} : { age: apart ? until : partner.opened }) }, { age: since, flags: [live ? 'together' : apart ? 'apart' : 'gone', ...(late ? ['late'] : []), ...(carried ? ['carried'] : [])], strict: apart, tags: [`npc:${partner.id}`] });
     if (late) add('คนรักเริ่ม', { lover: partner.name, age: since }, { age: since, tags: [`love:${partner.id}`], moment: true });
   }
   // the people who ended in the life: a lover or a child lost counts for more, a betrayal is a turning point of its own
@@ -225,6 +233,22 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     const lover = e.data.partner === true || str(e.data.line) === 'คนรัก';
     add('คนใกล้ตัวตาย', { npc: str(e.data.name), npc_role: str(e.data.line), npc_cause: str(e.data.cause) === 'old' ? 'ชราภาพ' : '', age: e.age ?? 0, place: placeAt(e.worldYear) ?? '' }, { age: e.age, tags: [`npc:${e.id}`], bonus: lover || str(e.data.kin) === 'child' ? DEATH_ROLE_BONUS : 0 });
   }
+  // a ruin that reached him: he stood in it, a person of his died in it, or the people it made came to his door (a story node of the line `mr`); a turning point of the card, no sentence
+  // of the summary (R2)
+  for (const e of log) {
+    if (e.sys === 'god' && e.kind === 'ruin' && e.id === 'main') {
+      const at = placeName(ctx, str(e.data.country));
+      if (at) add('ซากถึงตัว', { ruin: at, age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
+    if (e.sys === 'god' && e.kind === 'ruin' && e.id === 'kin' && e.data.fate === 'died') {
+      const at = placeName(ctx, str(e.data.country));
+      if (at) add('ซากพรากคน', { ruin: at, npc: str(e.data.name), age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
+    if (e.sys === 'story' && e.kind === 'node' && RUIN_NODES.includes(str(e.id))) {
+      const title = str(e.data.title).replace(/\s*\(.*\)\s*$/, '');
+      if (title) add('ซากตามมา', { reach: title, age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
+  }
   // the curses the life took: a turning point of the card, no sentence of the summary
   for (const e of log) {
     if (e.sys !== 'character' || e.kind !== 'grant' || e.data.kind !== 'curse') continue;
@@ -237,8 +261,8 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   const heir = pickHeir(ctx);
   if (kids.length) add('ลูกเกิด', { child: kids[0].name, child_count: kids.length, age: kids[0].born ?? kids[0].opened }, { age: kids[0].born ?? kids[0].opened, tags: [`npc:${kids[0].id}`], moment: true });
   if (kids.length || !heir) {
-    // {age} of the sentence "the first child was born when he was {age}" is the age of the parent at the birth, not the age at death (E1)
-    add('ทายาท', { child_count: kids.length, child: kids[0]?.name ?? '', heir: heir?.name ?? '', heir_age: heir?.age ?? '', age: kids[0] ? kids[0].born ?? kids[0].opened : deadAge }, { age: deadAge, flags: [...(heir ? [] : ['noHeir'])], tags: [] });
+    // this fact is told after the death: the sentence "the first child was born when he was {age}" would put a birth after the death, so it has no {age} and falls away; the birth of the first child is a moment of the card (R3)
+    add('ทายาท', { child_count: kids.length, child: kids[0]?.name ?? '', heir: heir?.name ?? '', heir_age: heir?.age ?? '' }, { age: deadAge, flags: [...(heir ? [] : ['noHeir'])], tags: [] });
   }
   const threads = currentThreads(ctx);
   if (threads.length) {
@@ -320,7 +344,8 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   }
   stay.set(at, (stay.get(at) ?? 0) + Math.max(0, deadAge - since));
   const longest = [...stay.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
-  if (longest && longest[1] > 0) add('ถิ่นที่อยู่นานที่สุด', { place: placeName(ctx, longest[0]) ?? '', years: longest[1] }, {});
+  // a life titled a traveller did not "stay in one place" for most of its years: the two lines on one card contradict each other (R7; the title itself is the goals' to judge)
+  if (longest && longest[1] > 0 && !goals?.titles.includes('นักเดินทาง')) add('ถิ่นที่อยู่นานที่สุด', { place: placeName(ctx, longest[0]) ?? '', years: longest[1] }, {});
 
   return { facts: out, group, grade, enemy, place: where };
 }

@@ -42,10 +42,12 @@ export function updateBook(ctx: Ctx): void {
 }
 
 /** Sets the book into the story state of the heir before its first year is played. */
-export function presetStory(ctx: Ctx, heir: LifeState): void {
+export function presetStory(ctx: Ctx, heir: LifeState, newcomer = false): void {
   const x = lx(ctx.state);
   const sx = storyExt(heir);
   x.preset = [];
+  // a newcomer in the old world has no book of the family to close: the line of the heirs (hr.a1 "settle as the parent began") stays shut for it (R4)
+  if (newcomer) sx.open.hr = false;
   for (const id of x.book.burnt) {
     if (id.startsWith('cv.')) {
       if (heir.passed[id] === undefined) {
