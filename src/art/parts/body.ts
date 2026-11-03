@@ -7,28 +7,6 @@ import { tones, type Paint, type Pt, type Rgb } from '../paint';
 import type { Part, Rig } from '../rig';
 
 // What the person painter adds to the Rig (kept here so the Rig of rig.ts stays as the lead wrote it).
-declare module '../rig' {
-  interface Rig {
-    /** length of a leg at rest, in pixels (the hip is this far above the ground) */
-    legs: number;
-    /** pixels the head and shoulders lean forward (the stoop of the old, the shuffle, the hunger) */
-    lean: number;
-    /** pixels the figure hovers above the ground (float gait) */
-    hover: number;
-    /** how long the arms are, as a multiple of normal (the orc's long arms, the ghoul's to the knee) */
-    reach: number;
-    /** pixels the feet stand wider apart (the heavy stance) */
-    spread: number;
-    /** head height in pixels */
-    hh: number;
-    /** a baby: carried, swaddled, holds nothing */
-    infant: boolean;
-    /** the whole body is gel (the slime has no clothes, no ears, no face) */
-    gel: boolean;
-    /** free-floating glow pixels (sparks, dust, steam, sparkle): laid on the finished frame, so they get no outline and no shading */
-    fx: { x: number; y: number; hex: string; a: number }[];
-  }
-}
 
 // ── colour helpers (feats use them too) ─────────────────────────────────────────────────────────────────────────────────────────────
 export const hexOf = ([r, g, b]: Rgb): string => `#${[r, g, b].map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('')}`;
