@@ -15,7 +15,7 @@ export function human(over: Partial<PersonLook> = {}): PersonLook {
   };
 }
 
-export const SETS: Record<string, SetDef> = {
+const BASE: Record<string, SetDef> = {
   sample: {
     label: 'ตัวอย่างฐาน (มนุษย์ ทุกวัย ทุกชิ้นส่วนเริ่มต้น)',
     entries: () => [
@@ -27,3 +27,7 @@ export const SETS: Record<string, SetDef> = {
     ],
   },
 };
+
+// more sets live in sets-*.ts files beside this one (one file per piece of work, so they never collide), each exporting SET_DEFS
+const more = import.meta.glob<{ SET_DEFS: Record<string, SetDef> }>('./sets-*.ts', { eager: true });
+export const SETS: Record<string, SetDef> = Object.assign({}, BASE, ...Object.values(more).map((m) => m.SET_DEFS));
