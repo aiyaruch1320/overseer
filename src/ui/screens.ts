@@ -2,6 +2,7 @@
 import './watch';
 import './start';
 import './end';
+import './allies';
 import './god/stories';
 import './scenes';
 import '../map/stories';
