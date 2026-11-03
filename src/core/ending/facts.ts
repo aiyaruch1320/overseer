@@ -11,7 +11,7 @@ import { calendarYear, classLabel, continentName, placeName, raceName } from '..
 import { knownName } from '../text/labels';
 import { questionOf } from '../text/render';
 import type { LifeState, LogEntry } from '../types';
-import { CAUSE_WORD, DEATH_ROLE_BONUS, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
+import { CAUSE_WORD, DEATH_ROLE_BONUS, RUIN_NODES, SCORE, ELDER_AGE, dragonName, FACT_KINDS, HAND_WEIGHT, HAND_WORD, SILENT_KINDS, groupOf, isHandAct } from './tuning';
 import type { CauseGroup, HandSummary, QuestionGrade } from './types';
 
 /** Ties the family web puts into the book of an heir at the takeover (lineage/family.ts). */
@@ -231,6 +231,22 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     if (e.sys !== 'bonds' || e.kind !== 'funeral') continue;
     const lover = e.data.partner === true || str(e.data.line) === 'คนรัก';
     add('คนใกล้ตัวตาย', { npc: str(e.data.name), npc_role: str(e.data.line), npc_cause: str(e.data.cause) === 'old' ? 'ชราภาพ' : '', age: e.age ?? 0, place: placeAt(e.worldYear) ?? '' }, { age: e.age, tags: [`npc:${e.id}`], bonus: lover || str(e.data.kin) === 'child' ? DEATH_ROLE_BONUS : 0 });
+  }
+  // a ruin that reached him: he stood in it, a person of his died in it, or the people it made came to his door (a story node of the line `mr`); a turning point of the card, no sentence
+  // of the summary (R2)
+  for (const e of log) {
+    if (e.sys === 'god' && e.kind === 'ruin' && e.id === 'main') {
+      const at = placeName(ctx, str(e.data.country));
+      if (at) add('ซากถึงตัว', { ruin: at, age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
+    if (e.sys === 'god' && e.kind === 'ruin' && e.id === 'kin' && e.data.fate === 'died') {
+      const at = placeName(ctx, str(e.data.country));
+      if (at) add('ซากพรากคน', { ruin: at, npc: str(e.data.name), age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
+    if (e.sys === 'story' && e.kind === 'node' && RUIN_NODES.includes(str(e.id))) {
+      const title = str(e.data.title).replace(/\s*\(.*\)\s*$/, '');
+      if (title) add('ซากตามมา', { reach: title, age: hAgeOf(e), place: placeAt(e.worldYear) ?? '' }, { age: hAgeOf(e), tags: [`reach:${e.n}`], moment: true });
+    }
   }
   // the curses the life took: a turning point of the card, no sentence of the summary
   for (const e of log) {

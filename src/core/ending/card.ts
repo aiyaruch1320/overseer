@@ -350,7 +350,7 @@ export function momentsOf(ctx: Ctx, all: RawFact[], inSummary: Set<string>, life
     pool.push({ f, s });
   }
   const out: { f: RawFact; line: string }[] = [];
-  const familyOf = (kind: string) => (MOMENT.lossFamily.includes(kind) ? 'loss' : kind);
+  const familyOf = (kind: string) => (MOMENT.lossFamily.includes(kind) ? 'loss' : MOMENT.ruinFamily.includes(kind) ? 'ruin' : kind);
   while (out.length < 3 && pool.length) {
     let best = -1;
     let bestScore = -Infinity;
