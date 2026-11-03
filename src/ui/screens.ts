@@ -6,5 +6,6 @@ import './end';
 import './allies';
 import './god/stories';
 import './scenes';
+import './battle';
 import '../map/stories';
 export {};

@@ -1,0 +1,95 @@
+// The words of the chrome of the battle view and the war panel: names of panels, stages and results of a fight (docs/systems/combat/01-core.md §2 §7).
+// They are labels of the interface, not text of the game: what the game says (the line of the battle, the names of foes, stances, wounds and
+// loot, the words of a clash) comes from src/core/text and the generated data (code-plan §8.1 rule 2).
+import type { FightResult } from '../../core/combat/types';
+
+export const BATTLE_WORDS = {
+  title: 'ศึก',
+  /** The results of 01-core.md §7. */
+  result: {
+    win: 'ชนะ',
+    flawless: 'ชนะเด็ดขาด',
+    talk: 'สงบศึกด้วยการเจรจา',
+    tame: 'ฝึกให้เชื่อง',
+    draw: 'เสมอ',
+    flee: 'หนีรอด',
+    lose: 'พ่ายแพ้',
+    dead: 'ตายในศึก',
+  } as Record<FightResult, string>,
+  /** The kinds of fight (04-encounters.md §2). */
+  kind: {
+    story: 'ศึกของเส้นเรื่อง',
+    travel: 'พบกลางทาง',
+    raid: 'ศึกบุกเมือง',
+    clash: 'ปะทะผู้มีชื่อ',
+    hunt: 'ล่า',
+    duel: 'ดวล',
+    war: 'สงคราม',
+    dragon: 'มังกร',
+    other: 'ศึก',
+  } as Record<string, string>,
+  first: { hero: 'ได้เปรียบจังหวะแรก', foe: 'ถูกซุ่มโจมตี', even: 'เริ่มพร้อมกัน' },
+  lastStand: 'ศึกสุดท้าย ไม่มีทางหนี',
+  foe: 'ศัตรู',
+  wounds: 'แผลของศัตรู',
+  weak: 'จุดอ่อน',
+  resist: 'ทนทาน',
+  hero: 'ตัวละคร',
+  hp: 'พลังชีวิต',
+  beat: (n: number) => `จังหวะที่ ${n}`,
+  meet: 'เผชิญหน้า',
+  /** Roll of one beat: `14 +3 = 17 · DC 12` (the die is a d20). */
+  roll: (d20: number, bonus: number, dc: number) => `${d20} ${bonus >= 0 ? '+' : '−'}${Math.abs(bonus)} = ${d20 + bonus} · DC ${dc}`,
+  unknownRoll: 'ไม่ได้บันทึกการทอย',
+  ok: 'สำเร็จ',
+  miss: 'พลาด',
+  crit: 'ทอย 20',
+  fumble: 'ทอย 1',
+  after: 'หลังศึก',
+  hpLost: (n: number) => (n > 0 ? `เสียพลังชีวิต ${n}` : 'ไม่เสียพลังชีวิตเลย'),
+  noWound: 'ไม่มีบาดแผลถาวร',
+  woundTitle: 'บาดแผล',
+  lootTitle: 'ของที่ได้',
+  noLoot: 'ไม่ได้อะไรกลับมา',
+  god: {
+    title: 'พระหัตถ์ในศึก',
+    dream: (stance: string) => `ความฝันบอกท่า “${stance}” (น้ำหนัก ×3)`,
+    whisper: 'กระซิบจุดอ่อนของศัตรู (น้ำหนัก ×3)',
+    none: 'ท่านไม่ได้แทรกมือในศึกนี้',
+    dreamMark: 'ฝัน ×3',
+    whisperMark: 'กระซิบ',
+  },
+  clash: {
+    title: 'ปะทะกับผู้มีชื่อ',
+    opener: 'เหตุที่เกิด',
+    place: 'ที่',
+    result: 'ผล',
+  },
+  /** Gains in the loot list: `gold+8` `fame+1` `karma+2` `kind+1`. */
+  gain: { gold: 'ทอง', fame: 'ชื่อเสียง', karma: 'กรรมดี', kind: 'ความเมตตา' } as Record<string, string>,
+  skillUp: (name: string) => `${name} เพิ่มหนึ่งขั้น`,
+  controls: { play: 'เล่น', pause: 'หยุด', step: 'ถัดไป', skip: 'ข้ามไปจบ', again: 'ดูอีกครั้ง', close: 'ปิด', speed: 'ความเร็ว' },
+  keys: { play: 'Space', step: '→', skip: 'Enter', again: 'R', close: 'Esc' },
+  empty: 'ไม่พบศึกนี้ในบันทึก',
+} as const;
+
+export const WAR_WORDS = {
+  title: 'สงคราม',
+  untitled: (place: string) => `ศึกใหญ่${place ? `ที่${place}` : ''}`,
+  rank: 'ยศ',
+  next: 'ยศถัดไป',
+  top: 'ยศสูงสุดแล้ว',
+  progress: 'แต้มสู่ยศถัดไป',
+  battles: 'ศึกที่ร่วมรบ',
+  held: 'ยืนหยัดได้',
+  won: 'ชนะขาด',
+  lost: 'พ่าย',
+  pay: 'ส่วนแบ่งศึก',
+  gold: 'ทอง',
+  foes: 'ข้าศึก',
+  since: (years: number) => (years > 0 ? `ร่วมรบมา ${years} ปี` : 'เพิ่งเข้าร่วมรบ'),
+  recent: 'ศึกล่าสุด',
+  none: 'ตัวละครไม่ได้อยู่ในสงคราม',
+  rate: 'ชนะหรือยืนหยัดได้',
+  close: 'ปิด',
+} as const;
