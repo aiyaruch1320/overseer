@@ -4177,6 +4177,7 @@
      "ธงหัก"
     ],
     "pose": "ยกมือสั่งกองทัพที่ไม่มีใครเห็น",
+    "raceFeats": [],
     "file": "02-morhaven",
     "country": "MH-12",
     "continent": "MH",
@@ -4206,6 +4207,7 @@
      "ซองจดหมายเรืองจาง"
     ],
     "pose": "ยืนนิ่งชูซองขึ้น",
+    "raceFeats": [],
     "file": "02-morhaven",
     "country": "MH-12",
     "continent": "MH",
@@ -11074,6 +11076,7 @@
      "ดาบหักโปร่งแสง"
     ],
     "pose": "ยืนเฝ้าป้ายหลุมของตัวเองไม่ยอมนอน",
+    "raceFeats": [],
     "file": "06-aldria-b",
     "country": "AL-25",
     "continent": "AL",
@@ -13584,7 +13587,7 @@
     "outfit": "robe",
     "hair": "braid",
     "beard": "",
-    "hat": "",
+    "hat": "turban",
     "tool": "sword",
     "feats": [],
     "wear": 0,
@@ -13856,7 +13859,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "ledger",
+    "tool": "papyrus",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -15364,6 +15367,7 @@
      "ไม่มี"
     ],
     "pose": "เกาะแขนผู้ผ่านทางแล้วถามว่ารู้จักพ่อแม่ไหม",
+    "raceFeats": [],
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -15393,6 +15397,7 @@
      "หอกยามโปร่งแสง"
     ],
     "pose": "ยืนเฝ้าประตูเมืองไม่ขยับตลอดวัน",
+    "raceFeats": [],
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -17455,6 +17460,7 @@
      "กิ่งไม้ไม่เหี่ยว"
     ],
     "pose": "ลอยนิ่งเหนือพื้นมองฟ้าไม่ยอมหลับ",
+    "raceFeats": [],
     "file": "09-silvanel",
     "country": "SV-13",
     "continent": "SV",
@@ -19156,12 +19162,12 @@
     "stage": "adult",
     "fem": true,
     "skin": "#8a8a90",
-    "hairColor": "#3a2a20",
+    "hairColor": "#aabfd8",
     "eye": "#6a9ad0",
     "main": "#83a1bd",
     "second": "#d8e0f0",
     "outfit": "priest",
-    "hair": "wild",
+    "hair": "long",
     "beard": "",
     "hat": "",
     "tool": "",
@@ -19170,13 +19176,12 @@
      "glow-eyes"
     ],
     "wear": 0,
-    "defaults": [
-     "hairColor"
-    ],
+    "defaults": [],
     "items": [
      "ผ้าคลุมพิธีเมืองปฐม"
     ],
     "pose": "ลอยนิ่งหน้าประตูมองเมืองที่จมไปแล้ว",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-08",
     "continent": "NB",
@@ -19238,6 +19243,7 @@
      "กุญแจความทรงจำเมฆาเรืองฟ้า"
     ],
     "pose": "ยืนกุมกุญแจแน่นที่อกและหันหลังเมื่อมีคนเข้าใกล้",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-08",
     "continent": "NB",
@@ -19812,6 +19818,7 @@
      "ไม่มี"
     ],
     "pose": "เดินวนรอบผู้คนเพื่อดูว่าใครมีเงาที่ขาด",
+    "raceFeats": [],
     "file": "10-nebulia",
     "country": "NB-13",
     "continent": "NB",

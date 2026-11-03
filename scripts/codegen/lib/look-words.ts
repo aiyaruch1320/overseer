@@ -814,6 +814,13 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   // "ตะเกียงโคมเก่าสีทองห้อยที่ปลายไม้เท้า": the old lamp at the end of the staff
   'NB03-1': { tool: 'lantern' },
 
+  // ── the spirits of Nebulia ──
+  // ไลเซีย "ผมยาวลอยเหมือนอยู่ใต้น้ำ" / เก็บกุญแจ "เกราะโบราณผุกร่อน ... กุมกุญแจความทรงจำเมฆาเรืองสีฟ้าอ่อนแน่นไว้ที่อก"
+  'NB08-2': { hair: 'long', hairColor: '#aabfd8' },
+  'NB08-4': { outfit: 'armor', tool: 'keyring' },
+  'SH02-6': { tool: 'papyrus' },
+  'SH01-1': { hat: 'turban' },
+
   // ── Mohaven ──
   // กรอมกาธ "โอเกอร์ร่างใหญ่เกือบสองเท่าของออร์ค ไหล่กว้างเหมือนประตู" / ซาวาธาร์ "หญิงชราตัวเล็กผอมหลังค่อม"
   'MH01-1': { body: { scale: 1.62, shoulders: 1.5 } },

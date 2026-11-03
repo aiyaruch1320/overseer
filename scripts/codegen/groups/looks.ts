@@ -225,6 +225,8 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
     name: s.name, race: s.race, ...(ln ? { line: ln.name } : {}), stage: s.stage, fem, skin, hairColor, eye, main, second, outfit,
     hair, beard, hat, tool: tp.tool ?? '', feats: [...(spirit ? ['ghost'] : []), ...featsOf(pos, s.items)], wear: wearOf(text), defaults, items: s.items, pose: s.pose,
     ...(accent ? { accent } : {}), ...(ears ? { ears } : {}),
+    // a spirit has the body of its race but none of its flesh: the ribs, the claws and the hunger of a ghoul are not drawn on a ghost
+    ...(spirit ? { raceFeats: [] as string[] } : {}),
   };
   // what the words cannot carry for this one person (PERSON_FIX of look-words.ts); a field the fix sets is no default any more
   const fix = PERSON_FIX[s.id];
