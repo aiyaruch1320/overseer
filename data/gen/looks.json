@@ -11806,7 +11806,7 @@
     "hair": "",
     "beard": "",
     "hat": "",
-    "tool": "card",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -11816,6 +11816,10 @@
      "กล่องชิ้นส่วนพร้อมป้ายชื่อ"
     ],
     "pose": "ลูบชิ้นส่วนที่ไม่ใช้แล้วเอ่ยชื่อเบา ๆ",
+    "body": {
+     "scale": 0.84,
+     "shoulders": 0.86
+    },
     "file": "07-mecharia",
     "country": "MK-03",
     "continent": "MK",
@@ -11906,6 +11910,10 @@
      "แผ่นเหล็กเล็กสลักชื่อที่เลือนแล้ว"
     ],
     "pose": "ยืนหันหน้าออกนอกหน้าต่างราวรอคนเรียก",
+    "body": {
+     "scale": 1.12,
+     "shoulders": 0.92
+    },
     "file": "07-mecharia",
     "country": "MK-03",
     "continent": "MK",
@@ -17239,7 +17247,9 @@
     "beard": "",
     "hat": "",
     "tool": "bag",
-    "feats": [],
+    "feats": [
+     "gaunt"
+    ],
     "wear": 0.85,
     "defaults": [
      "hair"
@@ -17248,6 +17258,10 @@
      "ถุงสารที่ยังไม่ส่งถึง"
     ],
     "pose": "ยืนปลายหอแล้วเหม่อมองเนบูเลีย",
+    "body": {
+     "shoulders": 0.84,
+     "scale": 1.04
+    },
     "file": "09-silvanel",
     "country": "SV-11",
     "continent": "SV",

@@ -733,6 +733,8 @@ export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS
  */
 export type PersonFix = Partial<Pick<PersonLookRow, 'stage' | 'line' | 'fem' | 'skin' | 'hairColor' | 'eye' | 'main' | 'second' | 'outfit' | 'hair' | 'beard' | 'hat' | 'tool' | 'feats' | 'accent' | 'ears' | 'body' | 'raceFeats' | 'wear'>>;
 export const PERSON_FIX: Record<string, PersonFix> = {
+  // เอเกิล "ปีกสีเทาเข้มปลายดำพับผอมแห้ง ผ้าคลุมเดินทางเก่าขาดวิ่น ใบหน้าอ่อนล้า": a gaunt, worn traveller under a ragged cloak (he was the shape of ลาร์ก SV11-2)
+  'SV11-4': { body: { shoulders: 0.84, scale: 1.04 }, feats: ['gaunt'] },
   // ── Saharan ──
   // ราชินีเงา "ร่างสูงโปร่งแสงสีดำควันอมม่วง ผมยาวลอยเหมือนอยู่ใต้น้ำ มงกุฎสีเงินจางประดับดาว ผ้าคลุมยาวพริ้วไร้ลม ตาสองดวงเรืองสีม่วงอ่อน เท้าไม่แตะพื้น": a tall queen in a smoke-violet
   // gown that hovers, not a ghoul (the race of the "ผีเมือง" rule) and not the pale `ghost` mark (which turns everything the grey of a fog): she keeps her dark
@@ -745,6 +747,9 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   'SH15-1': { outfit: 'noble', beard: 'braided', feats: ['beads', 'goldjewel'], body: { shoulders: 1.42, scale: 0.98 }, accent: '#d9a030' },
 
   // ── Mecharia ──
+  // โอมิ "ร่างผอมเตี้ยกว่าหุ่นทั่วไป แขนยาว กล่องชิ้นส่วนเก่าแขวนหลัง" and ไรเวอร์-9 "ร่างสูงเพรียว": a short thin one with a box of parts on his back, a tall slim one (they were one shape)
+  'MK03-2': { tool: 'bag', body: { scale: 0.84, shoulders: 0.86 } },
+  'MK03-6': { body: { scale: 1.12, shoulders: 0.92 } },
   // ซีโร่ "ร่างสูงกำยำลำตัวเหล็กดำหนา ไหล่เสริมแผ่นเกราะ ใบหน้าเรียบไม่มีปาก ตาแดงเรืองสองดวง แขนซ้ายเป็นปืนกลหมุน": a tall black-iron fighting machine (the doc column says ทารก because it is 3 years old: it is not small)
   'MK06-4': { stage: 'adult', skin: '#3c3c46', eye: '#ff3a2a', outfit: 'tunic', main: '#1e1e24', second: '#3a3a46', feats: ['glow-eyes'], body: { scale: 1.28, shoulders: 1.32, head: 0.94 } },
   // เรกซ์ "แขนที่สี่ติดตั้งจากสีข้างซ้ายเป็นเหล็กดำหยาบ เสื้อกั๊กหนังเปิดแขนทุกข้าง ปืนสั้นสองกระบอก": four arms, a bare-armed leather vest, a pistol in each of two hands
