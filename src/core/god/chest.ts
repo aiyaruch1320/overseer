@@ -10,7 +10,7 @@ import { apply, test } from '../rules';
 import type { Item, Weapon } from '../data/types-items';
 import type { Aptitude, Gift, Skill } from '../data/types-character';
 import type { Condition, Effect, LifeState } from '../types';
-import { addBelief } from './belief';
+import { addBelief, beliefMade } from './belief';
 import { canPay, isImmune, lightOf, dreadOf, notePunished, pay, priceOf, type Cost } from './power';
 import { upcomingKeys, windowIds } from './story-view';
 import { bump, count, godData, gx, inWindow, lifeOf, touch } from './state';
@@ -550,6 +550,14 @@ export function effectsOf(s: ChestSlot, mercyDrop = -10): Effect[] {
         ...(s.variant === 'cursed' ? [{ k: 'stat', stat: 'kind', delta: mercyDrop } as Effect] : []),
       ];
   }
+}
+
+/** The change of belief that picking this slot would really make now: a character who does not know the god feels half, a ward turns a curse back. */
+export function slotBelief(ctx: Ctx, s: ChestSlot): number {
+  const life = lifeOf(ctx);
+  if (!life) return 0;
+  if (s.kind === 'curse' && life.blessings.includes(CURSE_WARD.blessing)) return beliefMade(ctx, CURSE_WARD.belief);
+  return beliefMade(ctx, s.belief, { gift: true });
 }
 
 /** Picks a slot: pays, gives the thing, changes the belief, closes the chest, writes the chronicle. */

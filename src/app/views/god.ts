@@ -2,18 +2,19 @@
 // for previews (which never roll and never change the state) and read the state; they write nothing. No game text is made here: the words are
 // the core text system's (`src/core/text`) and the tools' text helpers (scripts/tools/god-commands.ts), the chrome words are `god-words.ts`.
 import { command } from '../../core/command';
-import { alliesOf, crisesWaiting } from '../../core/bonds';
+import { alliesOf, crisesWaiting, findAlly } from '../../core/bonds';
 import type { Game, GameData } from '../../core/game';
-import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards } from '../../core/god';
+import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards, slotBelief, switchPenalty } from '../../core/god';
 import { actsOf, cardsOf, fateCost, fateTargets, hintsOf, implementedMiracles, nameOfKind, obeyChance as whisperChance, omenQuarters, strangeOptions, whisperPrice, activeWhispers, miracleOf } from '../../core/god/acts';
-import { allCountries, continentOf, countriesOf, countryName } from '../../core/god/acts/geo';
+import { allCountries, continentOf, countriesOf, countryName, hasCountry } from '../../core/god/acts/geo';
+import { targetName } from '../../core/god/acts/whisper';
 import { allMixes, viewConj } from '../../core/god/conjure';
 import { coreName, scaleName, verbName } from '../../core/god/conjure/plan';
 import { unlocked, titlesOf } from '../../core/god/goals';
 import { ruinLabel } from '../../core/god/ruin/names';
 import { ruinsNow } from '../../core/god/ruin';
 import { npcsAt } from '../../core/npc';
-import { lines as textLines, plainName, reasonText, scrub, sentence } from '../../core/text';
+import { calendarYear, fxPhrases, lines as textLines, plainName, reasonText, scrub, sentence } from '../../core/text';
 import { CHEST_KIND_TH, TIER_TH, WHY_TH } from '../../core/text/tuning';
 import type { GodAction, LogEntry } from '../../core/types';
 import type { CommandResult } from '../../core/types';
@@ -29,10 +30,28 @@ export type Ask = { ok: true; preview: Record<string, unknown> } | { ok: false; 
 export function ask(game: Game, data: GameData, action: GodAction, args: Record<string, unknown>): Ask {
   try {
     const r = command(game.ctx, { type: 'god', action, args, confirm: false });
-    return r.ok ? { ok: true, preview: r.preview ?? {} } : { ok: false, reason: reasonText(data, r.reason) || W.refused };
+    return r.ok ? { ok: true, preview: r.preview ?? {} } : { ok: false, reason: words(game, data, reasonText(data, r.reason)) || W.refused };
   } catch {
     return { ok: false, reason: W.refused };
   }
+}
+
+/**
+ * The ids and links the core's texts may still hold, turned into what the player reads (M1 of the M5 triage): a miracle code is the miracle's name, a
+ * ruin event code the name of the event, a country code the country, a link to a document is cut to its words, an id of the data its name or nothing.
+ */
+export function words(game: Game, data: GameData, text: string): string {
+  const ctx = game.ctx;
+  const ruinNames = (ctx.data.god?.items as { miracles?: { ruin?: { events?: { id: string; name: string }[] } } } | undefined)?.miracles?.ruin?.events ?? [];
+  const out = text
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\(\s*(?:\.\.?\/)[^)]*\.md[^)]*\)/g, ' ')
+    .replace(/\bMR-\d\d\b/g, (m) => miracleOf(ctx, m)?.name ?? ' ')
+    .replace(/\bRU-0\d\b/g, (m) => ruinNames.find((e) => e.id === m)?.name ?? ' ')
+    .replace(/\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d\d\b/g, (m) => (hasCountry(ctx, m) ? countryName(ctx, m) : plainName(data, m) || ' '))
+    .replace(/\b[a-z]{1,3}_[a-z0-9_]+\b/g, (m) => plainName(data, m) || ' ')
+    .replace(/\bdocs?\/[\w./-]*/g, ' ');
+  return out.replace(/[ \t]{2,}/g, ' ').replace(/\s+([,.·])/g, '$1').trim();
 }
 
 const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);
@@ -173,7 +192,17 @@ export function confirmView(game: Game, data: GameData, action: GodAction, args:
   const tier = str(p.tier);
   const isMiracle = action === 'miracle' || action === 'decree' || action === 'conjure';
   const cancelling = p.cancel !== undefined;
-  const lines = previewLines(data, p, false, action, envOf(game, data, args));
+  const lines = previewLines(data, p, false, action, envOf(game, data, args)).map((l) => words(game, data, l)).filter(Boolean);
+  // paying in the other line within the same year of his life costs the character belief (01-power.md §2): said before, not found in the log after
+  const sw = cancelling ? 0 : switchPenalty(game.ctx, cost);
+  if (sw > 0) lines.push(`${W.belief}ของเขา −${sw}: ${W.switchLine}`);
+  if (action === 'whisper' && typeof args.target === 'string') {
+    // a hint that points names who it points at, and says when that ally is in a crisis now (his answer is what the hint leans on)
+    const ally = alliesOf(game.ctx).find((t) => t.id === args.target || t.npc === args.target || t.name === args.target);
+    const hot = !!ally && crisesWaiting(game.ctx).some((w) => w.tie.id === ally.id);
+    const who = ally?.name ?? whisperTargets(game, data, 'npc').concat(whisperTargets(game, data, 'place')).find((t) => t.id === args.target)?.name;
+    if (who) lines.splice(1, 0, `${W.whisper.to}: ${who}${hot ? ` (${W.whisper.inCrisis})` : ''}`);
+  }
   return {
     ...base,
     title: titleOf(action, args, p),
@@ -258,7 +287,7 @@ export function chestView(game: Game, data: GameData): ChestView {
           pay: s.pay,
           price: s.price,
           afford: (s.pay === 'dread' ? st.god.dread : st.god.light) >= s.price,
-          belief: s.belief,
+          belief: Math.round(slotBelief(ctx, s) * 10) / 10,
           why: s.why.map((w) => WHY_TH[w]).filter(Boolean),
           locked: ch?.locked === s.slot,
         }
@@ -368,6 +397,10 @@ export interface WhisperTarget {
   id: string;
   name: string;
   group: string;
+  /** The ally is in a crisis now (the character has not answered it yet). */
+  crisis?: boolean;
+  /** The name without the mark of a crisis. */
+  plain?: string;
 }
 
 export interface WhisperHint {
@@ -384,6 +417,8 @@ export interface WhisperHint {
 
 export interface WhisperView {
   alive: boolean;
+  /** The allies in a crisis now (the whisper of help is for them). */
+  crises: { id: string; name: string; line: string; text: string }[];
   hints: WhisperHint[];
   active: { hint: string; target: string }[];
   left: number;
@@ -395,7 +430,10 @@ export function whisperTargets(game: Game, data: GameData, needs: 'place' | 'npc
   if (!life) return [];
   if (needs === 'npc') {
     const people = npcsAt(ctx, life.country).map((v) => ({ id: v.id, name: v.name, group: W.whisper.people }));
-    const allies = alliesOf(ctx).map((t) => ({ id: t.id, name: t.name, group: W.whisper.allies }));
+    const hot = new Set(crisesWaiting(ctx).map((w) => w.tie.id));
+    const allies = alliesOf(ctx)
+      .map((t): WhisperTarget => ({ id: t.id, name: hot.has(t.id) ? `${W.whisper.crisisMark} ${t.name} · ${W.whisper.inCrisis}` : t.name, group: W.whisper.allies, plain: t.name, ...(hot.has(t.id) ? { crisis: true } : {}) }))
+      .sort((a, b) => Number(!!b.crisis) - Number(!!a.crisis));
     return [...allies, ...people];
   }
   const cont = (data.continents?.items as { continents?: { id: string; name: string }[] } | undefined)?.continents ?? [];
@@ -405,6 +443,16 @@ export function whisperTargets(game: Game, data: GameData, needs: 'place' | 'npc
     ...countriesOf(ctx, home).filter((c) => c !== life.country).map((c) => ({ id: c, name: countryName(ctx, c), group: W.whisper.countries })),
     ...cont.map((c) => ({ id: c.id, name: c.name, group: W.whisper.continents })),
   ];
+}
+
+/**
+ * May the god whisper about this person (an id, a tie id or a name)? An ally (a story of his own, or a child) or someone near the character; the
+ * frame of parents, uncles and cousins is not (04 and 03-dreams.md: a hint that points needs a story to lean on, and the core refuses the rest).
+ */
+export function canWhisperTo(game: Game, ref: string): boolean {
+  const life = lifeOf(game);
+  if (!life || !ref) return false;
+  return !!findAlly(game.ctx, ref) || npcsAt(game.ctx, life.country).some((v) => v.id === ref || v.name === ref);
 }
 
 export function whisperView(game: Game, data: GameData): WhisperView {
@@ -433,6 +481,7 @@ export function whisperView(game: Game, data: GameData): WhisperView {
     : hintsOf(ctx).map((h) => ({ hint: h, glyph: W.icons.hint[h] ?? '·', effect: '', price: 0, needs: NEEDS[h] ?? null, level: '', ok: false, reason: W.noLife, targets: [] }));
   return {
     alive: !!life,
+    crises: life ? crisesWaiting(ctx).map(({ tie, crisis }) => ({ id: tie.id, name: tie.name, line: tie.line, text: crisis.text })) : [],
     hints,
     active: life ? activeWhispers(ctx).map((w) => ({ hint: w.hint, target: w.target ? plainName(data, w.target) || w.target : '' })) : [],
     left: Math.max(0, pv.caps.whisper.limit - pv.caps.whisper.used),
@@ -567,8 +616,21 @@ export interface FateRow {
   id: string;
   name: string;
   mark: string;
+  /** One line of what the event is (the data's own words, scrubbed). */
+  about: string;
+  /** The multiplier range the event can take (a fall of a dragon is narrower). */
+  range: [number, number];
   slow: CostView;
   fast: CostView;
+}
+
+/** The multipliers the fate screen offers as steps (the data allows ×0.2 to ×0.9 to slow and ×1.1 to ×3 to speed). */
+export const FATE_STEPS = [0.2, 0.5, 0.8, 1.5, 2, 3] as const;
+
+/** The price of bending an event by `mul`, in the line that pays. */
+export function fateCostOf(game: Game, mark: string, mul: number): CostView {
+  const c = fateCost(game.ctx, mark as never, mul);
+  return { faith: num(c.faith), dread: num(c.dread) };
 }
 
 export interface MiracleView {
@@ -630,10 +692,10 @@ export function ruinViews(game: Game, data: GameData): RuinView[] {
     return {
       country: r.country,
       name: ruinLabel(ctx, r.country),
-      kind: r.kind,
+      kind: miracleOf(ctx, r.kind)?.name ?? r.kind,
       year: r.year,
       popPct: Math.round(r.pop * 100),
-      events: ids.map((id) => ({ id, name: plainName(data, id) || id, done: r.done[id] !== undefined, year: r.done[id] ?? r.due[id] })).sort((a, b) => a.year - b.year),
+      events: ids.map((id) => ({ id, name: words(game, data, id) || plainName(data, id) || W.miracle.ruinEvent, done: r.done[id] !== undefined, year: r.done[id] ?? r.due[id] })).sort((a, b) => a.year - b.year),
       cult: r.cult ?? '',
       city: r.city ?? '',
       lake: !!r.lake,
@@ -679,8 +741,21 @@ export function miracleView(game: Game, data: GameData): MiracleView {
         ...viewConj(st).pending.map((p): OmenView => ({ n: p.n, id: p.mix, name: p.name, where: '', left: p.left, total: p.quarters, fraction: p.quarters ? p.left / p.quarters : 0, of: 'conjure' })),
       ]
     : [];
+  const fateCfg = (ctx.data.god?.items as { miracles?: { fate?: { dragonFloor: number; dragonCap: number } } } | undefined)?.miracles?.fate;
+  const events = (data['world-events']?.items as { events?: { id: string; whatText?: string }[] } | undefined)?.events ?? [];
   const fate: FateRow[] = life
-    ? fateTargets(ctx).map((t) => ({ id: t.id, name: t.name, mark: t.mark, slow: { faith: num(fateCost(ctx, t.mark, 0.5).faith), dread: 0 }, fast: { faith: 0, dread: num(fateCost(ctx, t.mark, 2).dread) } }))
+    ? fateTargets(ctx).map((t) => {
+        const about = scrub(data, events.find((e) => e.id === t.id)?.whatText ?? '');
+        return {
+          id: t.id,
+          name: t.name,
+          mark: t.mark,
+          about: about.length > 120 ? `${about.slice(0, 118).trim()}…` : about,
+          range: t.dragon !== undefined && fateCfg ? [fateCfg.dragonFloor, fateCfg.dragonCap] : [0.2, 3],
+          slow: { faith: num(fateCost(ctx, t.mark, 0.5).faith), dread: 0 },
+          fast: { faith: 0, dread: num(fateCost(ctx, t.mark, 2).dread) },
+        };
+      })
     : [];
   const last = [...st.log].reverse().find((e) => e.sys === 'god' && e.kind === 'miracle');
   return {
@@ -762,25 +837,26 @@ export function conjurePreview(game: Game, data: GameData, args: Record<string, 
   const r = ask(game, data, 'conjure', args);
   if (!r.ok) return { ...empty, reason: r.reason };
   const p = r.preview;
-  const lines = previewLines(data, p, false, 'conjure', envOf(game, data, args));
+  const w = (t: string): string => words(game, data, t);
+  const lines = previewLines(data, p, false, 'conjure', envOf(game, data, args)).map(w).filter(Boolean);
   const q = rec(p.quota);
   const sh = num(rec(p.chance).shadow);
   const seal = rec(p.seal);
   const reaction = rec(p.reaction);
   return {
     ok: true,
-    name: str(p.name),
-    result: str(p.result),
-    expected: p.expected ? scrub(data, str(p.expected), { keepNumbers: true }) : '',
-    effects: (Array.isArray(p.effects) ? p.effects : []).map((e) => scrub(data, str(e), { keepNumbers: true })),
-    reaction: p.reaction ? { say: str(reaction.say), text: scrub(data, str(reaction.text), { keepNumbers: true }) } : null,
+    name: w(str(p.name)),
+    result: w(str(p.result)),
+    expected: p.expected ? w(scrub(data, str(p.expected), { keepNumbers: true })) : '',
+    effects: (Array.isArray(p.effects) ? p.effects : []).map((e) => w(scrub(data, str(e), { keepNumbers: true }))),
+    reaction: p.reaction ? { say: w(str(reaction.say)), text: w(scrub(data, str(reaction.text), { keepNumbers: true })) } : null,
     cost: costOf(p),
     priceNote: num(p.priceMul) > 1 ? `${W.conjure.base} ${num(p.priceBase)} ×${num(p.priceMul)} — ${W.conjure.priceUp[str(p.priceWhy)] ?? ''}` : '',
     shadow: sh >= 1 ? W.conjure.shadowSure : sh > 0 ? `${W.conjure.shadow} ${Math.round(sh * 100)}%` : W.conjure.noShadow,
-    omen: num(p.omen) ? `${str(p.omenLine)} — ${W.miracle.omenLeft} ${num(p.omen)} ${W.seasons}` : '',
+    omen: num(p.omen) ? `${w(str(p.omenLine))} — ${W.miracle.omenLeft} ${num(p.omen)} ${W.seasons}` : '',
     quota: q.limit !== undefined ? { used: num(q.used), limit: num(q.limit) } : null,
-    seal: seal.note ? str(seal.note) : '',
-    listed: p.listed ? `${str(p.listed)}` : '',
+    seal: seal.note ? w(str(seal.note)) : '',
+    listed: p.listed ? w(str(p.listed)) : '',
     lines,
   };
 }
@@ -804,6 +880,8 @@ export const mixCount = (game: Game): number => allMixes(game.ctx).length;
 
 export interface ChronicleRow {
   year: number;
+  /** The year as the world writes it (ศ.ม. 10,428). */
+  yearWord: string;
   /** The age of the character then (when there was one). */
   age: number | null;
   kind: string;
@@ -822,6 +900,23 @@ export interface ChronicleView {
 
 const DREAD_KINDS = new Set(['prayer.punish']);
 
+/** A string that is a code of the data (an id, a `kind:value`, an effect word like `hp+10`), not a word a player reads. */
+const looksLikeCode = (t: string): boolean => /^[A-Za-z]{1,6}[:_-]?[\w-]*\d|^[a-z_]+$|^[a-z]+[:+-]/i.test(t.trim()) && !/[ก-๙]/.test(t);
+
+/** The name of a person, an ally, a place or a continent the chronicle points at; empty when the data has no name for it. */
+function whereName(game: Game, data: GameData, ref: string): string {
+  const id = ref.replace(/^npc:/, '');
+  if (!id) return '';
+  if (id.length === 2) return countryOrContinentName(game, data, id);
+  const ally = alliesOf(game.ctx).find((t) => t.id === id || t.npc === id);
+  const t = ally?.name ?? plainName(data, id) ?? '';
+  if (t && !looksLikeCode(t)) return t;
+  const slot = targetName(game.ctx, id);
+  if (slot && !looksLikeCode(slot)) return slot;
+  const place = countryName(game.ctx, id);
+  return place && !looksLikeCode(place) ? place : '';
+}
+
 /** What a row of the chronicle is about, in words: a miracle by its name, a conjuring by its three parts, a prayer by its kind, a chest card by its name. */
 function chronicleName(game: Game, data: GameData, kind: string, id: string): string {
   const ctx = game.ctx;
@@ -832,9 +927,36 @@ function chronicleName(game: Game, data: GameData, kind: string, id: string): st
   }
   if (kind.startsWith('prayer')) return nameOfKind(ctx, id);
   if (kind === 'whisper') return id;
-  if (kind === 'dream') return id.startsWith('ally:') ? alliesOf(ctx).find((t) => t.id === id.slice(5))?.name ?? '' : '';
+  if (kind === 'dream') {
+    if (id.startsWith('ally:')) {
+      const ally = alliesOf(ctx).find((t) => t.id === id.slice(5));
+      return ally ? `${W.chronicle.dreamTo} ${ally.name}` : W.chronicle.dreamAlly;
+    }
+    const n = plainName(data, id);
+    return n && !looksLikeCode(n) ? n : '';
+  }
   if (kind === 'chest.pick') return plainName(data, id);
   return '';
+}
+
+/** The result field of a row in words (the core writes ids, levels and effect words there for the tools). */
+function chronicleResult(game: Game, data: GameData, kind: string, result: string | undefined): string {
+  if (!result) return '';
+  if (W.chronicle.results[result]) return W.chronicle.results[result];
+  if (kind === 'dream') {
+    // `sent:<heart>` (sent, waits for the crossroads) · `<heart>:<outcome>` (the outcome at the crossroads) · `faded`
+    const [a, b] = result.split(':');
+    if (a === 'sent') return `${W.chronicle.sent} (${W.dream.heart} ${b})`;
+    const word = W.dream.outcomes[b] ?? W.chronicle.results[b] ?? '';
+    return word ? `${word} (${W.dream.heart} ${a})` : '';
+  }
+  if (kind === 'prayer.give' || kind === 'prayer.strange' || kind === 'prayer.punish') {
+    const gift = plainName(data, result);
+    if (gift && !looksLikeCode(gift)) return gift;
+    return fxPhrases(data, result).join(' · ');
+  }
+  if (kind === 'chest.pick' || kind === 'chest.skip') return '';
+  return looksLikeCode(result) ? '' : result;
 }
 
 export function chronicleView(game: Game, data: GameData): ChronicleView {
@@ -848,16 +970,17 @@ export function chronicleView(game: Game, data: GameData): ChronicleView {
     const name = chronicleName(game, data, c.kind, c.id);
     // only the acts that aim at something name a target (the chest and the dream write the id of the life there)
     const aims = /^(miracle|conjure|whisper|prayer)/.test(c.kind);
-    const where = aims && c.target ? (c.target.length === 2 ? countryOrContinentName(game, data, c.target) : plainName(data, c.target) || countryName(ctx, c.target)) : '';
-    const result = c.result ? W.chronicle.results[c.result] ?? (/^[a-z]+:|^[a-z_]+$/i.test(c.result) ? '' : c.result) : '';
+    const where = aims && c.target ? whereName(game, data, c.target) : '';
+    const result = chronicleResult(game, data, c.kind, c.result);
     const ruin = c.kind === 'miracle' && c.target ? ruins.find((r) => r.country === c.target) : undefined;
     return {
       year: c.worldYear,
+      yearWord: `${W.chronicle.era} ${calendarYear(c.worldYear).toLocaleString('en-US')}`,
       age: c.hAge ?? null,
       kind: c.kind,
       kindWord,
       line,
-      text: [name && name !== '-' ? name : '', where, result].filter(Boolean).join(' · '),
+      text: [name && name !== '-' ? name : '', where, result].filter(Boolean).join(' · ') || kindWord,
       after: ruin ? ruin.events.filter((e) => e.done).map((e) => ({ text: e.name, done: true })) : [],
     };
   });
@@ -871,6 +994,41 @@ export function chronicleView(game: Game, data: GameData): ChronicleView {
     }
   }
   return { epithets, rows };
+}
+
+// ---------- what a small or middle miracle did, for the scene area (20-god-ui.md §7.3) ----------
+
+/** How long after its day (world years) the line of a small or middle miracle stays on the scene area: about a season. */
+export const EFFECT_LINE_YEARS = 0.3;
+
+export interface EffectLine {
+  name: string;
+  where: string;
+  /** What fell, in the words of the data. */
+  text: string;
+  line: 'faith' | 'dread';
+  /** 1 on the day, 0 when the line is gone. */
+  fresh: number;
+}
+
+/**
+ * The line the scene area shows when a small or middle miracle fell and no scene (script) is playing for it: the miracle, where, and what it did.
+ * Null when there is none lately. The watch screen decides when "no script" is true and mounts `<GodEffectLine />`.
+ */
+export function effectLine(game: Game, data: GameData): EffectLine | null {
+  const st = game.state;
+  const list = (game.ctx.data.god?.items as { miracles?: { list: { id: string; name: string; tier: string; immediate?: string; cost: { faith?: number; dread?: number } }[] } } | undefined)?.miracles?.list ?? [];
+  for (let i = st.god.chronicle.length - 1; i >= 0; i--) {
+    const c = st.god.chronicle[i];
+    if (c.kind !== 'miracle') continue;
+    const age = st.clock.worldYear - c.worldYear;
+    if (age >= EFFECT_LINE_YEARS) return null;
+    const m = list.find((x) => x.id === c.id);
+    if (!m || (m.tier !== 'เล็ก' && m.tier !== 'กลาง')) continue;
+    const text = c.result && !looksLikeCode(c.result) ? words(game, data, c.result) : m.immediate ? scrub(data, unlink(m.immediate), { keepNumbers: true }) : '';
+    return { name: m.name, where: c.target ? whereName(game, data, c.target) : '', text, line: m.cost.dread && !m.cost.faith ? 'dread' : 'faith', fresh: Math.max(0, 1 - age / EFFECT_LINE_YEARS) };
+  }
+  return null;
 }
 
 // ---------- which god panel kinds exist ----------

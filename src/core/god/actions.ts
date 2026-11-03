@@ -2,7 +2,7 @@
 // confirm screen shows (no rolls, no changes), `run` does it. The prayer, whisper, miracle and decree commands are registered by acts/.
 import { hasAction, onAction } from '../command';
 import type { Ctx } from '../game';
-import { checkOpen, checkPick, checkReroll, chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, slotPrice } from './chest';
+import { checkOpen, checkPick, checkReroll, chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, slotBelief, slotPrice } from './chest';
 import { checkAllyDream, checkDream, offerCards, previewAllyDream, previewDream, sendAllyDream, sendDream } from './dream';
 import { lightOf } from './power';
 import { inWindow } from './state';
@@ -32,7 +32,7 @@ export function registerGodActions(force = false): void {
     preview: (ctx, a) => {
       const s = currentChest(ctx)!.slots[slotArg(a) - 1]!;
       const { price } = slotPrice(ctx, s);
-      return { slot: s.slot, kind: s.kind, id: s.id, name: s.name, tier: s.tier, pay: s.pay, price, belief: s.belief, why: s.why };
+      return { slot: s.slot, kind: s.kind, id: s.id, name: s.name, tier: s.tier, pay: s.pay, price, belief: slotBelief(ctx, s), why: s.why };
     },
     run: (ctx, a) => void pickSlot(ctx, slotArg(a)),
   });

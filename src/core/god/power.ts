@@ -187,6 +187,22 @@ export function whyNot(ctx: Ctx, cost: Cost): string | null {
 }
 
 /**
+ * The belief the character would lose if this cost were paid now: paying in the other line within the same year of his life is a switch (−4,
+ * at most −25 in a life, 01-power.md §2). Pure: `pay` takes it, and the preview of a screen says it before the god confirms.
+ */
+export function switchPenalty(ctx: Ctx, cost: Cost): number {
+  const life = lifeOf(ctx);
+  const f = cost.faith ?? 0;
+  const d = cost.dread ?? 0;
+  if (!life || (f > 0) === (d > 0)) return 0;
+  const line = f > 0 ? 'faith' : 'dread';
+  const last = gx(ctx).lastLine;
+  if (!last || last.line === line || last.age !== life.hAge) return 0;
+  const sw = godData(ctx).prices.mods.switchLine;
+  return Math.max(0, Math.min(-sw.belief, -sw.cap - count(ctx, 'l.switch')));
+}
+
+/**
  * Takes the cost from the powers. Using the other power line inside the same life year costs the character belief
  * (−4 per switch, at most −25 in a life, 01-power.md §2 "สลับสายพลัง"). Throws when the god cannot pay: callers check `canPay` first.
  */
@@ -208,17 +224,12 @@ export function pay(ctx: Ctx, cost: Cost, why: string): void {
   const life = lifeOf(ctx);
   if (life && (f > 0) !== (d > 0)) {
     const line = f > 0 ? 'faith' : 'dread';
-    const e = gx(ctx);
-    const sw = godData(ctx).prices.mods.switchLine;
-    if (e.lastLine && e.lastLine.line !== line && e.lastLine.age === life.hAge) {
-      const used = count(ctx, 'l.switch');
-      const take = Math.min(-sw.belief, -sw.cap - used);
-      if (take > 0) {
-        bump(ctx, 'l.switch', take);
-        addBelief(ctx, -take, 'switch-line');
-      }
+    const take = switchPenalty(ctx, cost);
+    if (take > 0) {
+      bump(ctx, 'l.switch', take);
+      addBelief(ctx, -take, 'switch-line');
     }
-    e.lastLine = { line, age: life.hAge };
+    gx(ctx).lastLine = { line, age: life.hAge };
   }
   write(ctx.state, { sys: 'god', kind: 'pay', id: why, data: { faith: f, dread: d, light: Math.round(god.light * 100) / 100, fear: Math.round(god.dread * 100) / 100 }, level: 0 });
 }

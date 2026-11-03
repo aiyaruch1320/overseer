@@ -43,7 +43,7 @@ function Card(p: { c: ChestCard; locked: boolean; onHover: (c: ChestCard | null)
         </div>
       </button>
       {p.locks && (
-        <button class="g-btn g-small" style={{ position: 'absolute', top: 6, right: 6, padding: '1px 8px', borderColor: p.locked ? '#a03a3a' : color.line, color: p.locked ? '#d4616f' : color.textDim }} aria-pressed={p.locked} aria-label={p.locked ? W.chest.unlock : W.chest.lock} onClick={p.onLock}>
+        <button class="g-btn g-small" style={{ position: 'absolute', top: 6, right: 6, padding: '1px 8px', borderColor: p.locked ? '#a03a3a' : color.line, color: p.locked ? color.dreadText : color.textDim }} aria-pressed={p.locked} aria-label={p.locked ? W.chest.unlock : W.chest.lock} onClick={p.onLock}>
           {p.locked ? `⛓ ${W.chest.locked}` : `⛓ ${W.chest.lock}`}
         </button>
       )}
@@ -88,7 +88,7 @@ function Cloth(p: { v: ChestView }) {
               {W.chest.belief} {hover.belief > 0 ? '+' : ''}
               {hover.belief}
             </span>
-            {!hover.afford && <span style={{ color: '#d4616f' }}> · {W.chest.cantAfford}</span>}
+            {!hover.afford && <span style={{ color: color.dreadText }}> · {W.chest.cantAfford}</span>}
           </>
         ) : (
           <span class="g-dim">{W.chest.noteFree}</span>

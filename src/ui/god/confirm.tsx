@@ -7,7 +7,7 @@ import { confirmView, resultView } from '../../app/views/god';
 import { W } from '../../app/views/god-words';
 import type { CommandResult, GodAction } from '../../core/types';
 import { color, size } from '../tokens';
-import { useBridge } from './bridge';
+import { useBridge, type GodBridge } from './bridge';
 import { box, col, row, toneColor } from './style';
 
 export interface PendingAct {
@@ -20,9 +20,34 @@ export interface PendingAct {
 export const pendingAct = signal<PendingAct | null>(null);
 export const doneBox = signal<{ title: string; lines: string[]; moved: string[] } | null>(null);
 
+/** What the panel tells the dialog: whether a power is open, and how to open the one an action belongs to (the dialog lives inside the panel). */
+interface PanelHook {
+  isOpen(): boolean;
+  open(action: GodAction, args: Record<string, unknown>): void;
+}
+let panelHook: PanelHook | null = null;
+export function registerPanelHook(h: PanelHook | null): void {
+  panelHook = h;
+}
+
 export function askGod(action: GodAction, args: Record<string, unknown> = {}, onDone?: (r: CommandResult) => void): void {
+  // asked from a screen that has no power open (the allies' layer): open the panel first, or the dialog would have nowhere to be
+  if (panelHook && !panelHook.isOpen()) panelHook.open(action, args);
   doneBox.value = null;
   pendingAct.value = { action, args, onDone };
+}
+
+/** Runs an action the god has confirmed (a click in the dialog, or the hold of the aim) and leaves what it brought in `doneBox`. */
+export function runGod(b: GodBridge, action: GodAction, args: Record<string, unknown>, title: string): CommandResult {
+  const g = b.game();
+  const data = b.data();
+  if (!g || !data) return { ok: false, reason: W.noGame } as CommandResult;
+  const before = { light: g.state.god.light, dread: g.state.god.dread };
+  const r = b.run(action, args, true);
+  if (!r.ok) return r;
+  const rv = resultView(g, data, r, before);
+  doneBox.value = { title, lines: rv.lines, moved: rv.moved };
+  return r;
 }
 
 export function dropAct(): void {
@@ -103,14 +128,11 @@ export function ConfirmDialog() {
   const v = confirmView(g, data, pending.action, pending.args);
   const c = toneColor[v.tone];
   const go = () => {
-    const before = { light: g.state.god.light, dread: g.state.god.dread };
-    const r = b.run(pending.action, pending.args, true);
+    const r = runGod(b, pending.action, pending.args, v.title);
     if (!r.ok) {
       setError(r.reason);
       return;
     }
-    const rv = resultView(g, data, r, before);
-    doneBox.value = { title: v.title, lines: rv.lines, moved: rv.moved };
     pendingAct.value = null;
     pending.onDone?.(r);
   };
@@ -119,7 +141,7 @@ export function ConfirmDialog() {
       <div class="g-rise" style={{ ...box, background: color.panel, border: `1px solid ${c}`, boxShadow: `0 0 28px ${c}44`, width: 'min(560px, 92vw)', maxHeight: '88vh', overflow: 'auto', ...col }}>
         <div class="g-title" style={{ color: c }}>{v.title}</div>
         {!v.ok ? (
-          <div style={{ color: '#d4616f' }} role="alert">
+          <div style={{ color: color.dreadText }} role="alert">
             <b>{W.refused}</b>
             <div>{v.reason}</div>
           </div>
@@ -148,7 +170,7 @@ export function ConfirmDialog() {
           </>
         )}
         {error && (
-          <div role="alert" style={{ color: '#d4616f' }}>
+          <div role="alert" style={{ color: color.dreadText }}>
             {error}
           </div>
         )}

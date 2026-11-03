@@ -4,3 +4,5 @@ export { askGod } from './confirm';
 export { registerGodMap, type GodMapProps } from './map-slot';
 export { storeBridge, sampleBridge, type GodBridge } from './bridge';
 export { GOD_KINDS, type GodKind } from '../../app/views/god';
+export { GodEffectLine } from './effect-line';
+export { canWhisperTo } from '../../app/views/god';

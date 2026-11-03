@@ -38,6 +38,14 @@ export interface BeliefOpts {
   gift?: boolean;
 }
 
+/** The change `addBelief` would make now (after the halving and the clamp), without making it: what a preview tells. */
+export function beliefMade(ctx: Ctx, delta: number, opts: BeliefOpts = {}): number {
+  const life = lifeOf(ctx);
+  if (!life || delta === 0) return 0;
+  const d = opts.gift && life.godFaith < KNOWS_GOD_AT ? delta / 2 : delta;
+  return clamp(life.godFaith + d, -100, 100) - life.godFaith;
+}
+
 /**
  * Changes the belief of the living character; returns the change that was made (after halving and the clamp).
  * The cause is written to the log at level 0 so a tool can show why the number moved.

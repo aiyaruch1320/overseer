@@ -425,7 +425,7 @@ class MapScene extends Phaser.Scene {
     for (const r of m.ruins) {
       const c = L.byId.get(r.country);
       if (!c) continue;
-      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.4 : r.kind === 'fallen' ? 0.55 : 0.72).setDepth(DEPTH.ruins).setVisible(true);
+      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.5 : r.kind === 'fallen' ? 0.78 : 0.93).setDepth(DEPTH.ruins).setVisible(true);
       if (r.kind === 'fallen') continue;
       // the pit: a black ring with a glassy rim (MR-17), or green-black water (MR-18, or a ruin that became a lake)
       const cap = L.citiesOf(c.id)[0];
@@ -550,6 +550,18 @@ class MapScene extends Phaser.Scene {
       else if (cont) { cx = cont.box.x + cont.box.w / 2; cy = cont.box.y + cont.box.h / 2; rad = Math.max(cont.box.w, cont.box.h) * 0.45; }
       else continue;
       this.ring(g, cx * WU, cy * WU, rad * WU, hex(o.color), time, px);
+    }
+    // the mark of a small or middle miracle: a ring on the place it fell on, fading over the year after its day (20-god-ui.md §7.3)
+    for (const k of m.marks ?? []) {
+      const c = k.country ? L.byId.get(k.country) : undefined;
+      const cont = k.continent ? L.continents[k.continent as ContId] : undefined;
+      const cx = c ? c.x : cont ? cont.box.x + cont.box.w / 2 : -1;
+      const cy = c ? c.y : cont ? cont.box.y + cont.box.h / 2 : -1;
+      if (cx < 0) continue;
+      const rad = c ? Math.max(7, Math.min(30, Math.sqrt(c.area / Math.PI) * 0.7)) : Math.max(cont!.box.w, cont!.box.h) * 0.35;
+      const wave = ((time / 1800) % 1);
+      g.lineStyle(Math.max(2.4 * px, 2.2), hex(k.color), 0.25 + 0.6 * k.fresh).strokeCircle(cx * WU, cy * WU, rad * WU * 0.75);
+      g.lineStyle(Math.max(1.6 * px, 1.4), hex(k.color), (1 - wave) * 0.7 * (0.3 + 0.7 * k.fresh)).strokeCircle(cx * WU, cy * WU, rad * WU * (0.75 + 0.5 * wave));
     }
     if (lvIdx === 4) this.walkers(g, cam, time, px);
     if (m.character && !m.character.dead) this.beacon(g, m.character, time, px, lvIdx);

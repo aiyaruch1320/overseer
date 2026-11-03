@@ -269,6 +269,16 @@ function paintMini(ctx: CanvasRenderingContext2D, W: number, H: number, m: MapMo
     ctx.beginPath(); ctx.arc(x * k, y * k, 9 * k * (c ? 1 : 3) + pulse * 2, 0, Math.PI * 2); ctx.stroke();
     ctx.globalAlpha = 1;
   }
+  // the marks of small and middle miracles: a ring that fades over the year
+  for (const o of m.marks ?? []) {
+    const c = o.country ? layout.byId.get(o.country) : undefined;
+    const cont = o.continent ? layout.continents[o.continent as ContId] : undefined;
+    const x = c ? c.x : cont ? cont.box.x + cont.box.w / 2 : -1, y = c ? c.y : cont ? cont.box.y + cont.box.h / 2 : -1;
+    if (x < 0) continue;
+    ctx.strokeStyle = o.color; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.3 + 0.6 * o.fresh;
+    ctx.beginPath(); ctx.arc(x * k, y * k, 7 * k * (c ? 1 : 3) + 2 + pulse * 2, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
   // the character
   const ch = m.character;
   if (ch && !ch.dead) {

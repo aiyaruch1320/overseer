@@ -22,6 +22,8 @@ export interface GodMapProps {
   /** Omens waiting (their rings on the map) and ruins (their marks). */
   omens: OmenView[];
   ruins: RuinView[];
+  /** The map fills the box it is in (the aim of a miracle) instead of a fixed height. */
+  fill?: boolean;
 }
 
 /** The map component, once the map layer has registered one. */

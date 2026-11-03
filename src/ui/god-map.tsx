@@ -22,7 +22,7 @@ function GodMap(p: GodMapProps) {
       onPick={(m) => {
         if (ok.has(m.id)) p.onPick(m.id);
       }}
-      style={{ height: 360 }}
+      style={{ height: p.fill ? '100%' : 360 }}
     />
   );
 }
