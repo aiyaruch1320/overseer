@@ -34,6 +34,12 @@ export const END_LABELS = {
   death: 'ฉากความตาย',
   record: 'บันทึกชีวิต',
   mark: 'ผลต่อโลก', // 03 §2
+  // 19-wish.md §6 (the card shows the life was "ถูกสั่ง") and §5 (the rows of the sheet)
+  ordered: 'ถูกสั่ง',
+  asked: 'สิ่งที่ขอ',
+  sure: 'ได้แน่นอน',
+  lean: 'มีแนวโน้ม',
+  cannot: 'ทำไม่ได้',
   heir: 'ผู้สืบตระกูล', // 04-start-modes.md / heirs
   family: 'ตระกูล',
   modes: 'แบบเริ่มต้น', // 04-start-modes.md
@@ -105,6 +111,16 @@ export interface EarnedGroup {
   more: number;
 }
 
+/** The wish of an ordered life as the card tells it: the words typed, what the birth gave (sure, then lean) and what it could not, each with the reason. */
+export interface WishView {
+  /** "ถูกสั่ง". */
+  mark: string;
+  text: string;
+  sure: string[];
+  lean: string[];
+  refused: { text: string; reason: string }[];
+}
+
 export interface CardView {
   life: string;
   generation: number;
@@ -120,7 +136,21 @@ export interface CardView {
   earned: EarnedGroup[];
   heir: { name: string; how: string; age: number; line: string } | null;
   threads: string[];
+  /** The life was ordered by the player; null for a life nobody ordered. */
+  wish: WishView | null;
   seed: number;
+}
+
+const pairOf = (field: string, value: string): string => (field ? `${field}: ${value}` : value);
+
+export function wishView(w: NonNullable<EndingCard['wish']>): WishView {
+  return {
+    mark: END_LABELS.ordered,
+    text: w.text,
+    sure: w.granted.filter((g) => g.row === 'sure').map((g) => pairOf(g.field, g.value)),
+    lean: w.granted.filter((g) => g.row === 'lean').map((g) => pairOf(g.field, g.value)),
+    refused: w.refused.map((r) => ({ text: pairOf(r.field, r.value), reason: r.reason })),
+  };
 }
 
 /** The names of the interventions of a life, as the card counts them. */
@@ -182,6 +212,7 @@ export function cardView(data: GameData, state: GameState, lifeId?: string): Car
     earned: earnedGroups(data, card.earned),
     heir: card.heir ? { ...card.heir, line: `${card.heir.name} · อายุ ${card.heir.age}` } : null,
     threads: card.threads,
+    wish: card.wish ? wishView(card.wish) : null,
     seed: state.seed,
   };
 }

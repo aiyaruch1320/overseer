@@ -223,7 +223,7 @@ describe('watch: the grey buttons of the god', () => {
   it('a dead hero greys nothing more: the buttons are off for the dead and have no gate', () => {
     const st = life(1, 5);
     const gates = { chest: { reason: 'x', why: 'cap' as const } };
-    st.life!.dead = true;
+    st.life!.dead = { year: 0, hAge: 30, cause: 'x' };
     expect(watchModel(data, st, { ...uiOfState(st), gates }).panel.gates).toEqual({});
   });
 });

@@ -4,6 +4,8 @@ import { GameStore } from '../../src/app/store';
 import { cardView, collectionPage, deathOf, goOn, heirChoice, legendView, worldPage, END_LABELS } from '../../src/app/views/end';
 import { certificate, emptyDraft, launch, normalize, readWish, scratchLife, sessionOpts, startModes, START_LABELS } from '../../src/app/views/start';
 import { command } from '../../src/core/command';
+import { endingInput } from '../../src/core/ending';
+import { summaryInputOf } from '../../scripts/tools/llm';
 import type { GameData } from '../../src/core/game';
 import { nextLife } from '../../src/core/lineage';
 import { peekLife } from '../../src/core/god/goals';
@@ -297,5 +299,41 @@ describe('ending screens', () => {
     expect(w.legend.text.length).toBeGreaterThan(20);
     expect(w.ended).toBe(false);
     expect(END_LABELS.world).toBe('หน้าสรุปโลก');
+  });
+});
+
+describe('the ending card of an ordered life', () => {
+  const ordered = () => {
+    const r = read('อยากเป็นดาร์กเอลฟ์ ชาย ขี้ขลาด ผู้กล้า อมตะ รวยมาก ดาบ');
+    const s = createSession(data, { seed: 5, race: r.ask.race, wish: r.sheet });
+    startLife(s);
+    runToDeath(s.game);
+    return s;
+  };
+
+  it('shows "ถูกสั่ง", what the birth gave (sure, then a tendency) and what it could not, with the reason', () => {
+    const s = ordered();
+    const v = cardView(data, s.game.state)!;
+    expect(v.wish?.mark).toBe('ถูกสั่ง');
+    expect(v.wish?.text).toContain('ดาร์กเอลฟ์');
+    expect(v.wish?.sure).toEqual(expect.arrayContaining(['เผ่า: ดาร์กเอลฟ์', 'เพศ: ชาย']));
+    expect(v.wish?.lean).toEqual(expect.arrayContaining(['นิสัย: ขี้ขลาด', 'ความถนัด: ดาบ']));
+    const cut = v.wish?.refused.find((r) => r.text.includes('อมตะ'));
+    expect(cut?.reason).toMatch(/เอลฟ์/);
+  });
+
+  it('a life nobody ordered has no mark; the saved card and the input of the llm layer carry the wish only for the ordered one', () => {
+    const plain = createSession(data, { seed: 5 });
+    startLife(plain);
+    runToDeath(plain.game);
+    expect(cardView(data, plain.game.state)!.wish).toBeNull();
+    expect(endingInput(plain.game.state)!.wish).toBeUndefined();
+    const s = ordered();
+    const input = endingInput(s.game.state)!;
+    expect(input.wish?.granted.map((g) => g.value)).toContain('ดาร์กเอลฟ์');
+    expect(JSON.parse(JSON.stringify(input.wish))).toEqual(input.wish);
+    // the llm layer is told the life was asked for, and what it was given
+    expect(summaryInputOf(data, s.game.state)?.wish).toMatch(/ดาร์กเอลฟ์.*ไม่ได้: อมตะ/);
+    expect(summaryInputOf(data, plain.game.state)?.wish).toBeUndefined();
   });
 });

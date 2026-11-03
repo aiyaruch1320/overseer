@@ -8,7 +8,7 @@ import type { Template } from '../data/types-text';
 import { currentThreads } from '../lineage/threads';
 import { lx } from '../lineage/state';
 import { keep, lifeEntries } from './collection';
-import { gatherFacts, handOf, lifeLog, num, str, type RawFact } from './facts';
+import { gatherFacts, handOf, lifeLog, num, str, wishCard, type RawFact } from './facts';
 import { folkOf } from './people';
 import { vowPage } from './vow';
 import { lifeGoals } from '../god/goals';
@@ -265,6 +265,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   // the vow and its page (07 §7), the people and the traces (03 §1)
   const vow = vowPage(ctx, life, log, CAUSE_WORD[g.group], mark.label);
   const folk = folkOf(ctx, life, { deadAge, titles, conjured: hand.conjured ?? [], mark });
+  const wish = wishCard(life);
 
   // the card (07 §5.1): head, title, question, three moments, the vow, the ending of the story, the epitaph
   const head = [life.name, raceName(ctx, life.race), placeName(ctx, life.home) ?? '', `อายุ ${deadAge}`].filter(Boolean);
@@ -302,6 +303,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     ...(vow ? { vow } : {}),
     people: folk.people,
     traces: folk.traces,
+    ...(wish ? { wish } : {}),
   };
   const names = [...new Set([life.name, ...facts.flatMap((f) => ['name', 'lover', 'child', 'heir', 'npc', 'enemy'].map((k) => (f.slots[k] === undefined ? '' : String(f.slots[k])))), ...folk.names].filter(Boolean))];
   const input: EndingInput = {
@@ -319,6 +321,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     ...(vow ? { vow: { name: vow.name, result: vow.result, lines: vow.lines } } : {}),
     people: folk.people,
     traces: folk.traces,
+    ...(wish ? { wish } : {}),
     names,
     others: [...new Set([...st.lineage.lives.map((l) => l.name), ...folk.others])].filter((n) => !names.includes(n)),
     earned,

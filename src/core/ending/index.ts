@@ -12,7 +12,7 @@ import type { EndingCard, EndingInput, SourcedText } from './types';
 
 export { collectionView, entryName, catalog, keep, lifeEntries, modeOf, CATEGORIES, MODES, type CollectionView, type CategoryView } from './collection';
 export { lifeLog } from './facts';
-export type { EndingCard, EndingInput, SummaryFact, Moment, HandSummary, SourcedText, TextSource, QuestionGrade, CauseGroup, WorldMark } from './types';
+export type { EndingCard, EndingInput, WishOnCard, SummaryFact, Moment, HandSummary, SourcedText, TextSource, QuestionGrade, CauseGroup, WorldMark } from './types';
 
 /** The card of a life (the last one that ended when no id is given); undefined when the life has none. */
 export function cardOf(state: GameState, lifeId?: string): EndingCard | undefined {

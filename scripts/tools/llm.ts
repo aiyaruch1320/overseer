@@ -49,6 +49,13 @@ export function llmFromArgs(args: Record<string, string>, env: Record<string, st
   return { llm: mode === 'deepseek' ? realLlm(env, cache) : anthropicLlm(env, cache), mode, flush };
 }
 
+/** One line of what the player asked of the life and what the birth gave (the LLM may say the life was asked for; it may not add anything that was not given). */
+export function wishLine(w: NonNullable<ReturnType<typeof endingInput>>['wish'] & object): string {
+  const given = w.granted.map((g) => g.value).join(' ');
+  const cut = w.refused.map((r) => r.value).filter(Boolean).join(' ');
+  return `${w.text}${given ? ` · ได้: ${given}` : ''}${cut ? ` · ไม่ได้: ${cut}` : ''}`;
+}
+
 const PRONOUN: Record<string, string> = { m: 'เขา', f: 'เธอ', n: 'ผู้นั้น' };
 /** The summary tells at most this many facts (llm/04-story.md §2 "สามถึงแปดบรรทัด" of the record); the first and the last are kept. */
 const MAX_FACTS = 8;
@@ -77,6 +84,8 @@ export function summaryInputOf(data: GameData, state: GameState, lifeId?: string
     // the vow with its result and its page, the titles of the life, and the names of the others of this world that the text may not take (the check refuses them)
     ...(input.vow ? { vow: `${input.vow.result === 'kept' ? 'คำปฏิญาณที่เป็นจริง' : 'คำปฏิญาณที่ไม่เป็นจริง'} · ${input.vow.name}: ${input.vow.lines.join(' ')}` } : {}),
     ...(input.titles.length ? { titles: input.titles } : {}),
+    // a life the player ordered: what was asked and given, for the tone only (the character does not know it)
+    ...(input.wish ? { wish: wishLine(input.wish) } : {}),
     ...(input.others.length ? { others: input.others } : {}),
     // the template tier's summary: what the card holds if no answer comes. When the card already holds an LLM text, the template is the one it replaced and is not known here
     template: card.summary.text,
