@@ -3,7 +3,7 @@
 // Nothing is guessed from chance: every field is a value of the row, a word of the row mapped to a painter feature, or (for the few non-human
 // bodies that no kind word names) the form table below, which says `guess` in the `planBy` field.
 import type {
-  AtkKind, BeastLooksData, BeastPlan, DieKind, DragonLook, EnemyLook, PersonParts, SizeClass,
+  AtkKind, BeastLooksData, BeastPlan, DieKind, DragonLook, EnemyLook, MountKind, PersonParts, SizeClass,
 } from '../../../src/core/data/types-beast-looks';
 import { FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../../src/art/parts/ids';
 import { finish, Unparsed } from '../helpers-m0b';
@@ -38,10 +38,10 @@ const FORMS: Record<string, Form> = {
   blighted_ent: ['plant', 'blight'], shadow_pack: ['quadruped', 'shadowwolf'], fog_tentacle: ['serpent', 'tentacle'], fog_moth_swarm: ['swarm', 'moth'],
   fog_weaver: ['insect', 'spider'], flesh_flyer: ['flyer', 'flesh'], bell_wraith: ['spirit', 'bell'], titan_shard: ['giant', 'titan'], scale_wyrmling: ['dragon', 'wyrmling'],
   // ง. named fighters that are not a person
-  'NR11-2': ['sea', 'kraken', ['temple']], 'NR07-1': ['serpent', 'naga', ['eggs']], 'NR07-2': ['serpent', 'naga'], 'NR04-3': ['serpent', 'naga', ['glow']],
+  'NR11-2': ['sea', 'kraken', ['temple']], 'NR07-1': ['serpent', 'naga', ['eggs']], 'NR07-2': ['serpent', 'naga'], 'NR04-3': ['sea', 'deepbeast', ['glow']],
   'KD07-1': ['dragon', 'coil'], 'SH03-1': ['giant', 'stone', ['sit']], 'SH03-2': ['giant', 'stone', ['sit']], 'SH03-4': ['giant', 'stone', ['sit']],
   'SH06-4': ['giant', 'stone', ['sit']], 'SH17-1': ['giant', 'stone', ['sit']], 'MH01-1': ['giant', 'orc'], 'MH02-1': ['giant', 'demon'], 'SH11-1': ['giant', 'orc'],
-  'SV03-3': ['giant', 'bear'], 'MH03-1': ['giant', 'ghoul'], 'MK02-1': ['giant', 'brass'], 'SV14-1': ['giant', 'brute'], 'KD08-1': ['giant', 'brute'],
+  'SV03-3': ['giant', 'bear'], 'MH12-1': ['humanoid', 'ghost'], 'SV13-2': ['humanoid', 'ghost'], 'MH12-2': ['humanoid', 'ghost'], 'NB08-2': ['humanoid', 'ghost'], 'MH03-1': ['giant', 'ghoul'], 'MK02-1': ['giant', 'brass'], 'SV14-1': ['giant', 'brute'], 'KD08-1': ['giant', 'brute'],
   // จ. the six world bosses
   awakened_titan: ['giant', 'titan'], hellgate_lord: ['elemental', 'gate'], lich_king: ['skeleton', 'lichking'], rift_speaker: ['spirit', 'rift'],
   primordial_engine: ['construct', 'engine'], leviathan: ['sea', 'leviathan'],
@@ -62,6 +62,10 @@ const FEATURE_WORDS: [string, RegExp][] = [
   ['moss', /มอส/], ['mushrooms', /เห็ด|สปอร์/], ['runes', /รูน/], ['gears', /เฟือง/], ['chain', /โซ่/], ['lantern', /โคม|ตะเกียง/], ['book', /คัมภีร์|สมุด/], ['throne', /บัลลังก์/],
   ['tentacles', /หนวด/], ['tail', /หาง/], ['eggs', /ไข่/], ['horse', /บนม้า/], ['bandage', /ผ้าพัน/], ['armor', /เกราะ/], ['sand', /ทราย/], ['coral', /ปะการัง/],
 ];
+
+/** The mount of a rider: the words of the name cell, the description or the idle pose that put a person on an animal. */
+const MOUNT_WORDS: [RegExp, MountKind][] = [[/ขี่ม้า|บนม้า|ม้าศึก/, 'horse'], [/นั่งบนหมาป่า|ขี่หมาป่า/, 'wolf'], [/ขี่หนอน|ผู้ขี่หนอน/, 'worm']];
+const mountOf = (text: string): MountKind | null => { for (const [re, m] of MOUNT_WORDS) if (re.test(text)) return m; return null; };
 
 // ── vocabulary of the parts of a person ─────────────────────────────────────────────────────────────────────────────────────────────
 const pick = <T extends string>(set: readonly T[], id: string): T | '' => (set as readonly string[]).includes(id) ? (id as T) : '';
@@ -176,13 +180,14 @@ function parseEnemy(r: Raw): EnemyLook {
   if (plan === 'humanoid' && form === 'person' && scale !== null && scale > 1.5) { plan = 'giant'; form = 'brute'; planBy = 'words'; }
   for (const [w, re] of FEATURE_WORDS) if (re.test(text) && !words.includes(w)) words.push(w);
   if (flying && !words.includes('flying')) words.push('flying');
-  const parts = plan === 'humanoid' && (form === 'person' || form === 'wolfman') ? personParts(id, kinds, form, text, atk, colors[1], colors[2]) : null;
+  const parts = plan === 'humanoid' && (form === 'person' || form === 'wolfman' || form === 'ghost') ? personParts(id, kinds, form, text, atk, colors[1], colors[2]) : null;
   const dk = dieKindOf(die) ?? DIE_PLAN[plan] ?? 'topple';
   return {
     kind: 'enemy', id, name, group: r.group, tier, kinds, size, scale, scaleNote, swarm: sw ? [Number(sw[1]), Number(sw[2])] : null, cloud,
     main: colors[1].toLowerCase(), second: colors[2].toLowerCase(), eye: (eyeC?.hex ?? '#1e1a22').toLowerCase(), eyeLabel: eyeC?.label ?? 'ตา', eyeGiven: !!eyeC,
     extra: named.filter((n) => n !== eyeC), plan, form, planBy,
     poses: { idle: poses[1].trim(), atk: atk.trim(), die: die.trim() }, atkKind: atkKindOf(atk), dieKind: dk, words, parts,
+    mount: plan === 'humanoid' && form === 'person' ? mountOf(`${r.nameCell} ${r.desc} ${poses[1]}`) : null,
   };
 }
 

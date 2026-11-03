@@ -172,23 +172,28 @@ function dream(c: Ctx<EnemyLook>): Info {
 
 function mirage(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 30, (c.w * 0.9) / 36);
+  const s = Math.min(c.px / 38, (c.w * 0.9) / 36);
   const pen = c.pen(s).at(mo.push * 0.5, mo.bob);
-  // three overlapping images of a walker, drifting apart and together; the nearest is the clearest
-  const shimmer = mo.pose === 'idle' ? mo.breath : mo.f % 2;
-  const imgs: [number, number, number][] = [[-8 + shimmer * 2, -1, 0.4], [9 - shimmer * 2, -2, 0.5], [0, 1, 0.82]];
-  imgs.forEach(([x, y, a]) => {
-    const body = p.mat(L.main, { deep: true, alpha: a }), edge = p.mat(L.second, { alpha: a }), eye = p.mat(L.eye, { flat: true });
-    pen.poly([[x - 6, y - 16], [x + 6, y - 16], [x + 7, y - 2], [x - 7, y - 2]], body);
-    pen.line([x - 6, y - 15], [x - 7, y - 2], edge, 1);
-    pen.ell(x + 0.5, y - 21, 3.6, 4, body);
-    pen.dot(x + 2, y - 21.4, eye, 1.2);
-    pen.line([x + 4, y - 14], [x + 9 + (mo.pose === 'attack' ? mo.strike * 5 : 0), y - 11], body, 1.6);
-    pen.line([x - 3, y - 2], [x - 3 - Math.sin(mo.ph) * 2, y + 0.5], edge, 1.4); pen.line([x + 3, y - 2], [x + 3 + Math.sin(mo.ph) * 2, y + 0.5], edge, 1.4);
-  });
-  // heat shimmer bars
-  for (let i = 0; i < 4; i++) pen.line([-14 + i * 3, -26 + ((i + mo.f) % 2)], [-9 + i * 3, -26 + ((i + mo.f) % 2)], p.mat(L.second, { flat: true, alpha: 0.5 }), 0.7);
-  return { shadow: { cx: c.cx, cy: c.foot, rx: 14 * s, ry: Math.max(1.2, 1.4 * s) }, tall: false };
+  // a tall thin figure of sand and sky, see-through, its hem streaming as under water; a second image drifts behind it
+  const shimmer = mo.pose === 'idle' ? mo.breath : mo.f % 2, reach = mo.pose === 'attack' ? mo.strike : 0;
+  const draw = (x: number, y: number, a: number, solid: boolean): void => {
+    const sand = p.mat(L.main, { deep: true, alpha: a }), sandD = p.mat(mix(L.main, L.second, 0.5), { alpha: a }), sky = p.mat(L.second, { alpha: a }), ink = p.mat('#2a3a44', { flat: true, alpha: Math.min(1, a + 0.1) });
+    const w = Math.sin(mo.ph + y) * 0.8;
+    // robe: narrow at the shoulders, flaring into a long hem with three streaming tails
+    pen.poly([[x - 4, y - 31], [x + 4, y - 31], [x + 5.4, y - 18], [x + 8 + w, y - 3], [x + 5, y - 1 + shimmer], [x + 2, y - 4], [x - 1, y + 0.4], [x - 4 - w, y - 3.4], [x - 8, y - 2 + shimmer], [x - 6, y - 18]], sand);
+    pen.poly([[x + 1, y - 31], [x + 4, y - 31], [x + 5.4, y - 18], [x + 8 + w, y - 3], [x + 4, y - 3]], sky);
+    for (let i = 0; i < 3; i++) pen.line([x - 3 + i * 3, y - 24], [x - 5 + i * 4.4 + w, y - 4], i % 2 ? sandD : sky, 0.8);
+    // a long thin arm, reaching on the attack
+    pen.chain([[x + 3, y - 27], [x + 7 + reach * 3, y - 21 + reach * 2], [x + 11 + reach * 9, y - 19 + reach * 4]], [1.5, 1.2, 1], sand);
+    pen.dot(x + 12.4 + reach * 9, y - 19 + reach * 4, sand, 1.8);
+    // the head: a pale oval whose face is never the same, empty eyes
+    pen.ell(x, y - 35, 3.6, 4.4, sand);
+    if (solid) { pen.dot(x + 1.4, y - 35.6, ink, 1.4); pen.dot(x - 1, y - 35.4, ink, 1.2); pen.line([x - 0.6, y - 33], [x + 1.4, y - 33], ink, 0.7); }
+    pen.poly([[x - 3.6, y - 37], [x + 3.4, y - 38.4], [x + 4.4, y - 33], [x - 3, y - 31]], sandD);
+  };
+  draw(-9 + shimmer * 2, -1, 0.34, false);
+  draw(0, 0, 0.8, true);
+  return { shadow: { cx: c.cx, cy: c.foot, rx: 11 * s, ry: Math.max(1.2, 1.4 * s) }, tall: false, fade: (_x, y) => 0.45 + 0.55 * Math.min(1, Math.max(0, (c.foot - y) / (c.px * 0.55))) };
 }
 
 function bell(c: Ctx<EnemyLook>): Info {

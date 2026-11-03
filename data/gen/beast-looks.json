@@ -57,7 +57,8 @@
      "tool": "club",
      "ears": "long",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -97,7 +98,8 @@
      "tusks",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -133,7 +135,8 @@
      "tusks",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -172,7 +175,8 @@
      "moss",
      "mushrooms"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -214,7 +218,8 @@
      "tusks",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -262,7 +267,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -299,7 +305,8 @@
      "fire",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -339,7 +346,8 @@
      "tail",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -376,7 +384,8 @@
      "fire",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -414,7 +423,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -450,7 +460,8 @@
     "words": [
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -488,7 +499,8 @@
      "tail",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -542,7 +554,8 @@
      "feats": [
       "bandage"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -581,7 +594,8 @@
      "ice",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -617,7 +631,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -656,7 +671,8 @@
      "water",
      "tentacles"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -694,7 +710,8 @@
      "wings",
      "fire"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -729,7 +746,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -766,7 +784,8 @@
      "water",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -807,7 +826,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -843,7 +863,8 @@
      "moss",
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -879,7 +900,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -914,7 +936,8 @@
     "words": [
      "tusks"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -962,7 +985,8 @@
      "tool": "",
      "ears": "animal",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -997,7 +1021,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1035,7 +1060,8 @@
      "tusks",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1073,7 +1099,8 @@
      "water",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1110,7 +1137,8 @@
      "water",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1149,7 +1177,8 @@
      "smoke",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1205,7 +1234,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1246,7 +1276,8 @@
      "chain",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1281,7 +1312,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1319,7 +1351,8 @@
      "water",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1359,7 +1392,8 @@
      "smoke",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1394,7 +1428,8 @@
     "words": [
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1434,7 +1469,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1482,7 +1518,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1544,7 +1581,8 @@
      "smoke",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1584,7 +1622,8 @@
      "tusks",
      "throne"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1624,7 +1663,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1663,7 +1703,8 @@
      "smoke",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1701,7 +1742,8 @@
      "water",
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1745,7 +1787,8 @@
      "smoke",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1784,7 +1827,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1833,7 +1877,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1869,7 +1914,8 @@
      "water",
      "coral"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1920,7 +1966,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -1955,7 +2002,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2005,7 +2053,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2051,7 +2100,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2088,7 +2138,8 @@
      "ice",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2124,7 +2175,8 @@
      "water",
      "tentacles"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2162,7 +2214,8 @@
      "fire",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2209,7 +2262,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2248,7 +2302,8 @@
      "smoke",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2288,7 +2343,8 @@
      "water",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2327,7 +2383,8 @@
      "smoke",
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2363,7 +2420,8 @@
      "water",
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2400,7 +2458,8 @@
      "water",
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2451,7 +2510,8 @@
      "tool": "sword",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": "worm"
    },
    {
     "kind": "enemy",
@@ -2492,7 +2552,8 @@
      "fire",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2542,7 +2603,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2583,7 +2645,8 @@
      "fire",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2621,7 +2684,8 @@
      "lantern",
      "tentacles"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2658,7 +2722,8 @@
      "fire",
      "lantern"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2694,7 +2759,8 @@
      "tusks",
      "fire"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2731,7 +2797,8 @@
      "water",
      "flying"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2779,7 +2846,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2828,7 +2896,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2865,7 +2934,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2902,7 +2972,8 @@
      "water",
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2941,7 +3012,8 @@
      "water",
      "smoke"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -2991,7 +3063,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3041,7 +3114,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3094,7 +3168,8 @@
      "feats": [
       "scar"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3145,7 +3220,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3195,7 +3271,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": "horse"
    },
    {
     "kind": "enemy",
@@ -3242,7 +3319,8 @@
      "tool": "book",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3290,7 +3368,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3340,7 +3419,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3386,7 +3466,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3434,7 +3515,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3482,7 +3564,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3528,7 +3611,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3578,7 +3662,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3621,7 +3706,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3668,7 +3754,8 @@
      "tool": "club",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3715,7 +3802,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3760,7 +3848,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3809,7 +3898,8 @@
      "feats": [
       "scar"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3855,7 +3945,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3904,7 +3995,8 @@
      "tool": "axe",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3942,7 +4034,8 @@
      "fire",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -3979,7 +4072,8 @@
      "horns",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4027,7 +4121,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4075,7 +4170,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4122,7 +4218,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4168,7 +4265,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4214,7 +4312,8 @@
      "tool": "club",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4260,7 +4359,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4306,7 +4406,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4353,7 +4454,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4403,7 +4505,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4452,7 +4555,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4489,7 +4593,8 @@
      "cape",
      "hood"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4532,7 +4637,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4571,7 +4677,8 @@
      "gears",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4620,7 +4727,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4666,7 +4774,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4713,7 +4822,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4751,7 +4861,8 @@
      "tentacles",
      "eggs"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4797,7 +4908,8 @@
      "tool": "greatsword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4843,7 +4955,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4892,7 +5005,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4939,7 +5053,8 @@
      "feats": [
       "scar"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -4986,7 +5101,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5009,8 +5125,8 @@
     "eyeGiven": false,
     "extra": [],
     "plan": "humanoid",
-    "form": "person",
-    "planBy": "kind",
+    "form": "ghost",
+    "planBy": "guess",
     "poses": {
      "idle": "ยืนถือธงขาดนิ่งในหมอก",
      "atk": "ชี้ดาบสั่งให้ทหารผีเข้า",
@@ -5034,7 +5150,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5070,7 +5187,8 @@
      "axe",
      "armor"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5118,7 +5236,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5167,7 +5286,8 @@
      "feats": [
       "scar"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5213,7 +5333,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5261,7 +5382,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5299,7 +5421,8 @@
      "runes",
      "tentacles"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5347,7 +5470,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5394,7 +5518,8 @@
      "tool": "club",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5441,7 +5566,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5488,7 +5614,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5526,7 +5653,8 @@
      "water",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5574,7 +5702,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5624,7 +5753,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5672,7 +5802,8 @@
      "tool": "hammer",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5720,7 +5851,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5769,7 +5901,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5818,7 +5951,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5866,7 +6000,8 @@
      "tool": "banner",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5904,7 +6039,8 @@
      "water",
      "bandage"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -5949,7 +6085,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6000,7 +6137,8 @@
      "feats": [
       "scar"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6049,7 +6187,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6098,7 +6237,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6144,7 +6284,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6179,7 +6320,8 @@
     "words": [
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6224,7 +6366,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6274,7 +6417,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6323,7 +6467,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6366,7 +6511,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6414,7 +6560,8 @@
      "tool": "greatsword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6453,7 +6600,8 @@
      "moss",
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6501,7 +6649,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6541,7 +6690,8 @@
      "armor",
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6576,7 +6726,8 @@
     "words": [
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6624,7 +6775,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6670,7 +6822,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6718,7 +6871,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6764,7 +6918,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6810,7 +6965,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6856,7 +7012,8 @@
      "tool": "book",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6902,7 +7059,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6949,7 +7107,8 @@
      "tool": "axe",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -6998,7 +7157,8 @@
      "tool": "spear",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": "wolf"
    },
    {
     "kind": "enemy",
@@ -7044,7 +7204,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7093,7 +7254,8 @@
      "tool": "dagger",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7139,7 +7301,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7186,7 +7349,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7234,7 +7398,8 @@
      "tool": "axe",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7257,8 +7422,8 @@
     "eyeGiven": false,
     "extra": [],
     "plan": "humanoid",
-    "form": "person",
-    "planBy": "kind",
+    "form": "ghost",
+    "planBy": "guess",
     "poses": {
      "idle": "ยืนข้างป้ายหินยื่นมือเปล่า",
      "atk": "ชักดาบสนิมแล้วฟาด",
@@ -7281,7 +7446,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7328,7 +7494,8 @@
      "tool": "hammer",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7367,7 +7534,8 @@
      "fire",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7414,7 +7582,8 @@
      "tool": "hammer",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7459,7 +7628,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7506,7 +7676,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7554,7 +7725,8 @@
      "tool": "spear",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7576,8 +7748,8 @@
     "eyeLabel": "ตา",
     "eyeGiven": false,
     "extra": [],
-    "plan": "serpent",
-    "form": "naga",
+    "plan": "sea",
+    "form": "deepbeast",
     "planBy": "guess",
     "poses": {
      "idle": "ขดอยู่ปากร่องร้องเพลงกล่อม",
@@ -7592,7 +7764,8 @@
      "tentacles",
      "tail"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7642,7 +7815,8 @@
      "feats": [
       "tusks"
      ]
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7688,7 +7862,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7737,7 +7912,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7785,7 +7961,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7832,7 +8009,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7879,7 +8057,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7926,7 +8105,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -7972,7 +8152,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8019,7 +8200,8 @@
      "tool": "club",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8065,7 +8247,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8113,7 +8296,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": "worm"
    },
    {
     "kind": "enemy",
@@ -8151,7 +8335,8 @@
      "water",
      "sand"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8189,7 +8374,8 @@
      "cape",
      "moss"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8227,7 +8413,8 @@
      "cape",
      "moss"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8273,7 +8460,8 @@
      "tool": "staff",
      "ears": "pointed",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8296,8 +8484,8 @@
     "eyeGiven": false,
     "extra": [],
     "plan": "humanoid",
-    "form": "person",
-    "planBy": "kind",
+    "form": "ghost",
+    "planBy": "guess",
     "poses": {
      "idle": "ลอยกลางห้องมือประสาน",
      "atk": "ชี้ดาบโปร่งแล้วรากพุ่ง",
@@ -8320,7 +8508,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8369,7 +8558,8 @@
      "tool": "bow",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8415,7 +8605,8 @@
      "tool": "staff",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8460,7 +8651,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8507,7 +8699,8 @@
      "tool": "sword",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8530,8 +8723,8 @@
     "eyeGiven": false,
     "extra": [],
     "plan": "humanoid",
-    "form": "person",
-    "planBy": "kind",
+    "form": "ghost",
+    "planBy": "guess",
     "poses": {
      "idle": "นั่งม้านั่งหินเล่าเรื่องให้ผนังฟัง",
      "atk": "หันเร็วและหมอกพุ่ง",
@@ -8552,7 +8745,8 @@
      "tool": "",
      "ears": "round",
      "feats": []
-    }
+    },
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8587,7 +8781,8 @@
      "water",
      "runes"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8624,7 +8819,8 @@
      "fire",
      "chain"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8661,7 +8857,8 @@
      "water",
      "throne"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8694,7 +8891,8 @@
     "words": [
      "tusks"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8728,7 +8926,8 @@
      "water",
      "gears"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    },
    {
     "kind": "enemy",
@@ -8762,7 +8961,8 @@
      "shield",
      "water"
     ],
-    "parts": null
+    "parts": null,
+    "mount": null
    }
   ],
   "dragons": [

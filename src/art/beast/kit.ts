@@ -115,6 +115,10 @@ export interface Info {
   tall?: boolean;
   /** where the body stands (for the die warps): the middle of the feet in the frame */
   ground?: Pt;
+  /** drawn over the finished frame, with no outline (mist, glow, what floats around a body); not called while the body is dying away */
+  after?: (f: Frame) => void;
+  /** alpha 0..1 of the finished body at a pixel (a body that fades into mist) */
+  fade?: (x: number, y: number) => number;
 }
 
 /** Hash of a string and a number into 0..1 (for placing things that must not change between frames). */
@@ -224,4 +228,30 @@ export interface Ctx<L> {
   mat: (hex: string, o?: MatOpts) => number;
   /** a pen at the middle of the feet, `s` pixels per design unit */
   pen: (s: number) => Pen;
+}
+
+// ── overlays: soft things laid over a finished frame (no outline, normal alpha) ─────────────────────────────────────────────────────────
+/** One pixel of a colour at alpha `a` laid over the frame (the frame's own alpha grows). */
+export function blend(f: Frame, x: number, y: number, hex: string, a: number): void {
+  x = Math.round(x); y = Math.round(y);
+  if (x < 0 || y < 0 || x >= f.w || y >= f.h || a <= 0) return;
+  const [r, g, b] = rgb(hex), i = (y * f.w + x) * 4, da = f.data[i + 3] / 255, oa = a + da * (1 - a);
+  f.data[i] = (r * a + f.data[i] * da * (1 - a)) / oa; f.data[i + 1] = (g * a + f.data[i + 1] * da * (1 - a)) / oa; f.data[i + 2] = (b * a + f.data[i + 2] * da * (1 - a)) / oa;
+  f.data[i + 3] = oa * 255;
+}
+/** A flat ellipse of alpha `a`, in frame pixels. */
+export function ovEll(f: Frame, cx: number, cy: number, rx: number, ry: number, hex: string, a: number): void {
+  for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++)
+    for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
+      const dx = (x + 0.5 - cx) / rx, dy = (y + 0.5 - cy) / ry;
+      if (dx * dx + dy * dy <= 1) blend(f, x, y, hex, a);
+    }
+}
+/** A small cloud puff: a light top, a shaded underside, 2-3 round lobes (what floats around the cloud and mist dragons). */
+export function ovPuff(f: Frame, cx: number, cy: number, r: number, hex: string, a: number): void {
+  const lo = mix(hex, '#8a94a8', 0.45), hi = mix(hex, '#ffffff', 0.6);
+  ovEll(f, cx, cy + r * 0.3, r * 1.25, r * 0.55, lo, a);
+  ovEll(f, cx - r * 0.45, cy - r * 0.1, r * 0.62, r * 0.62, hex, a);
+  ovEll(f, cx + r * 0.35, cy - r * 0.2, r * 0.75, r * 0.75, hex, a);
+  ovEll(f, cx + r * 0.1, cy - r * 0.45, r * 0.4, r * 0.3, hi, a);
 }
