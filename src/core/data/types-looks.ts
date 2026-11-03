@@ -79,6 +79,10 @@ export interface PersonLookRow {
   accent?: string;
   /** set only when this person's ears differ from the race's (a half-beast has animal ears) */
   ears?: LookBody['ears'];
+  /** set only when this person's body differs from the race's and the line's (a fat gatekeeper's shoulders, a ghost queen's hovering gait, a machine that is tall): replaces those fields of the body */
+  body?: Partial<LookBody>;
+  /** set only when this person does not carry the feats of the race (a ghost queen is no ghoul, a winged elf has the wings of her line only): replaces the race's and the line's feats */
+  raceFeats?: string[];
   wear: number;
   /** the fields the docs said nothing of and the generator filled from its defaults (outfit hair hairColor eye skin main second); check:looks counts them */
   defaults: string[];

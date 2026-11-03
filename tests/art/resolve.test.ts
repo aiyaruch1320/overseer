@@ -158,3 +158,26 @@ describe('resolve: races', () => {
     expect(raceLook(looks, 'slime', { stage: 'adult', fem: true, seed: 'a' }).hair).toBe('');
   });
 });
+
+describe('resolve: what one person has that the race has not (M6 wave 5)', () => {
+  it('a row body replaces only the fields it names', () => {
+    const q = npcLook(looks, 'SH14-1'), race = looks.races[looks.npcs['SH14-1'].race].body;
+    expect(q.body.gait).toBe('float');
+    expect(q.body.scale).toBeGreaterThan(race.scale);
+    expect(q.body.lower).toBe(race.lower);
+    // a fat man is as tall as his race and wider
+    const fat = npcLook(looks, 'SH15-1');
+    expect(fat.body.shoulders).toBeGreaterThan(1.3);
+    expect(fat.body.gait).toBe('normal');
+  });
+  it('a row of its own race feats replaces the race one: the shadow queen is no ghoul, the sky-water heir keeps the gills', () => {
+    expect(npcLook(looks, 'SH14-1').feats).not.toContain('gaunt');
+    expect(npcLook(looks, 'SH14-1').feats).toContain('glow-eyes');
+    expect(successorLook(looks, 'AZ06-4S').feats).toContain('gills');
+  });
+  it('an heir the doc calls small or new is as tall as the doc says, not as the age column makes it', () => {
+    expect(successorLook(looks, 'MK03-6S').stage).toBe('teen');
+    expect(npcLook(looks, 'MK06-4').stage).toBe('adult');
+    expect(npcLook(looks, 'NB10-3').stage).toBe('teen');
+  });
+});

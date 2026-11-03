@@ -5,7 +5,7 @@ import type { NpcRow } from '../../src/core/data/types-npcs';
 import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import {
   BEARD_RULES, FEAT_RULES, HAIR_RULES, HAT_RULES, HEX, LINE_OVERRIDES, OUTFIT_RULES, TOOL_RULES, earsOf, featsOf, femOf, gaitOf, lowerOf, outfitFromGarments, skinHint,
-  stageFromDescription, stageWord, stripNegated, toolOf, wearOf,
+  stageFromDescription, stageWord, stripNegated, toolOf, wearOf, PERSON_FIX, garmentColour, sheathOf, wingAccentOf,
 } from '../../scripts/codegen/lib/look-words';
 
 const L = (JSON.parse(readFileSync('data/gen/looks.json', 'utf8')) as { items: LooksData }).items;
@@ -145,7 +145,8 @@ describe('look-words: the word tables', () => {
   });
   it('the second set of held things: guns, instruments, a fan, scissors, a whip', () => {
     const tool = (w: string) => toolOf([w], '').tool;
-    expect(tool('ปืนสองกระบอก')).toBe('pistol');
+    expect(tool('ปืนสองกระบอก')).toBe('twinpistol');
+    expect(tool('ปืนสั้น')).toBe('pistol');
     expect(tool('ปืนยาว')).toBe('musket');
     expect(tool('รูนปืนไรเฟิล')).toBe('rifle');
     expect(tool('กล้องส่องทางไกลทองเหลือง')).toBe('spyglass');
@@ -183,12 +184,14 @@ describe('looks generator: the second set of words reaches the rows', () => {
     expect(readFileSync('data/gen/_unparsed/looks.md', 'utf8')).toContain('0 รายการ');
   });
   it('spirits are ghosts, in whatever race they were', () => {
-    for (const id of ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-1', 'SH14-3', 'SH14-4', 'SV13-2', 'NB08-2', 'NB08-4', 'NB13-3']) expect(L.npcs[id].feats, id).toContain('ghost');
+    for (const id of ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-3', 'SH14-4', 'SV13-2', 'NB08-2', 'NB08-4', 'NB13-3']) expect(L.npcs[id].feats, id).toContain('ghost');
     expect(L.npcs['MH10-1'].feats).not.toContain('ghost');
+    // the shadow queen is a spirit but keeps her dark: the pale ghost mark would turn her to fog (PERSON_FIX)
+    expect(L.npcs['SH14-1'].feats).not.toContain('ghost');
   });
   it('the sampled rows carry their new things', () => {
     expect(L.npcs['MH11-1'].tool).toBe('compass');
-    expect(L.npcs['AL27-1'].tool).toBe('pistol');
+    expect(L.npcs['AL27-1'].tool).toBe('twinpistol');
     expect(L.npcs['AL09-2'].tool).toBe('pocketwatch');
     expect(L.npcs['NR09-1'].feats).toContain('dish');
     expect(L.npcs['SH06-5'].feats).toContain('cyclops');
@@ -211,5 +214,43 @@ describe('looks generator: the second set of words reaches the rows', () => {
     // the dwarf women braid their hair in place of a beard; the slime is gel and has none of it
     expect(L.races.dwarf).toMatchObject({ hair: '', hairFem: 'braid', hat: '', tool: 'hammer' });
     expect(L.races.slime).toMatchObject({ outfit: '', hat: '', hair: '', tool: '' });
+  });
+});
+
+describe('looks generator: M6 wave 5', () => {
+  it('every PERSON_FIX entry is a real NPC or successor and a named field is not counted as a default', () => {
+    for (const id of Object.keys(PERSON_FIX)) {
+      const row = L.npcs[id] ?? L.successors[id];
+      expect(row, id).toBeDefined();
+      for (const k of Object.keys(PERSON_FIX[id])) expect(row.defaults, `${id} ${k}`).not.toContain(k);
+    }
+  });
+  it('wings take the colour the docs name, wherever the words `ปีก` stand', () => {
+    expect(wingAccentOf('หญิงสาวเผ่าปีกพลัดถิ่น อายุสามสิบหก ปีกขนสีน้ำตาลทรายหักพับ')).not.toBeNull();
+    expect(L.npcs['SH09-3'].accent).toBeDefined();
+    expect(L.npcs['SH16-1'].accent).toBeDefined();
+    expect(wingAccentOf('ไม่มีปีกเลย')).toBeNull();
+  });
+  it('a heir takes the colour its own clothes are called, not the original one', () => {
+    expect(garmentColour('ชุดซิสเตอร์สีเทา ผิวซีดเรียบ')).not.toBeNull();
+    expect(garmentColour('ผมสีดำยาว ตาสีแดง')).toBeNull();
+  });
+  it('a sword that stays in its sheath is not held in the hand', () => {
+    expect(sheathOf('sword', 'ดาบพิธีไม่เคยชักออก')).toBe('sheathed');
+    expect(sheathOf('greatsword', 'ดาบใหญ่ในฝักทอง')).toBe('goldsheath');
+    expect(sheathOf('greatsword', 'ดาบใหญ่ในฝัก')).toBe('greatsheath');
+    expect(sheathOf('sword', 'ดาบยาวชักขึ้น')).toBe('sword');
+    expect(L.npcs['MK04-1'].tool).toBe('sheathed');
+    expect(L.npcs['NB08-1'].tool).toBe('greatsheath');
+  });
+  it('the things the docs name each have their own tool', () => {
+    expect(toolOf(['กลองหิน'], '').tool).toBe('drum');
+    expect(toolOf(['ประแจยาว'], '').tool).toBe('wrench');
+    expect(toolOf(['ค้อนเล็ก'], '').tool).toBe('smallhammer');
+    expect(toolOf(['สกัดหินเล็ก'], '').tool).toBe('chisel');
+    expect(toolOf(['กำไลข้อเท้าระฆังเล็ก'], '').tool).toBe('anklebells');
+    expect(toolOf([], 'กระดานชอล์กใต้แขน').tool).toBe('slate');
+    expect(toolOf(['ดอกไม้ป่าช่อเล็ก'], '').tool).toBe('bouquet');
+    expect(toolOf(['ปืนสั้นสองกระบอก'], '').tool).toBe('twinpistol');
   });
 });

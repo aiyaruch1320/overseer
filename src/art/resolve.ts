@@ -38,8 +38,10 @@ function person(looks: LooksData, key: string, row: PersonLookRow, opts: Resolve
   const ov = R.lines.find((l) => l.name === row.line)?.overrides;
   const stage: Stage = opts?.stage ?? asStage(row.stage);
   const fem = opts?.fem ?? row.fem ?? hash(key) % 2 === 1;
+  // a person's own body fields (the row names only the ones that differ) win over the race's and the line's
   const body: Body = { ...asBody(R.body), scale: ov?.scale ?? R.body.scale, ears: row.ears ?? ov?.ears ?? R.body.ears };
-  const feats = [...new Set([...(ov?.feats ?? R.feats), ...row.feats])];
+  if (row.body) Object.assign(body, asBody({ ...body, ...row.body }));
+  const feats = [...new Set([...(row.raceFeats ?? ov?.feats ?? R.feats), ...row.feats])];
   const young = stage === 'infant' || stage === 'child';
   return {
     kind: 'person', key, race: row.race, ...(row.line ? { line: row.line } : {}), stage, fem, body,
