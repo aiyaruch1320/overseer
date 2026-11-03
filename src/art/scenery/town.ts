@@ -34,6 +34,13 @@ function wallColour(cx: Ctx, style: HouseStyle, v: number): string {
   const m = earthy(cx.country?.mats ?? []), I = cx.P.inside;
   const stone = ['stone', 'keep', 'carved', 'tower'].includes(style), clay = ['adobe', 'terrace', 'dome'].includes(style);
   if (style === 'brick' || style === 'boomtown') return cx.P.base === 'MK' ? '#8a5a48' : m[1] ?? '#8a5a48';
+  // Nebulia §9: low stone and wood houses, every colour held down: the country's materials only tint a grey stone or a grey weathered timber
+  if (cx.P.base === 'NB') {
+    const base: Rgb = stone || style === 'tower' ? [112, 114, 120] : [124, 116, 106], pal = [[92, 94, 100], [110, 106, 102], [128, 124, 118]][(v * 4) % 3 | 0] as Rgb;
+    return toHex(mix(mix(base, pal, 0.5), m.length ? hex(m[(v * 4) % m.length | 0]) : base, 0.18));
+  }
+  // Kaz-Durum §3: black stone forts cut into the mine wall (not the pale boulders of a plain stone)
+  if (stone && cx.P.base === 'KD') return toHex(mix(m[0] ? hex(m[0]) : [58, 52, 56], [44, 40, 46], 0.65));
   if (stone) return m[0] ? toHex(mix(hex(m[0]), [138, 138, 144], 0.5)) : '#8a8a90';
   if (clay) return m[1] ?? m[0] ?? (cx.P.base === 'SH' ? '#d8b080' : I.wall);
   return m[(v * 3) | 0] ?? I.wall;

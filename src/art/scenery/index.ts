@@ -7,6 +7,7 @@ import { indoorPainter } from './indoor';
 import { AL, AZ, KD, MH, NR, type Painter } from './outdoor-a';
 import { MK, NB, SH, SV } from './outdoor-b';
 import { profileOf, type Base } from './profiles';
+import { finish, seasonLight } from './season';
 import { townPainter } from './town';
 import { type Scenery, type ScenerySpec, type SceneryLayer } from './types';
 import { Grade } from './util';
@@ -28,8 +29,10 @@ export function paintScenery(spec: ScenerySpec): Scenery {
   const pt = spec.setting === 'indoor' ? indoorPainter(cx) : spec.setting === 'town' ? townPainter(cx, OUTDOOR[P.base]) : OUTDOOR[P.base];
   const make = (name: SceneryLayer['name'], f: (c: typeof cx) => SceneryLayer['frame']): SceneryLayer => ({ name, speed: SPEED[name], frame: f(cx) });
   const layers: SceneryLayer[] = [make('sky', pt.sky), make('far', pt.far), make('mid', pt.mid), make('ground', pt.ground)];
+  // the finishing grade over every pixel: the season's climate of the continent (outdoors and in town) and the continent's ceiling of colour
+  for (const l of layers) finish(l.frame, l.name, P.base, season, spec.setting !== 'indoor');
   const ambient = ambientOf(cx.country?.ambient, spec.setting, P.ambient);
-  return { spec, layers, light: spec.setting === 'indoor' ? P.lamp : P.light, ...(ambient ? { ambient } : {}) };
+  return { spec, layers, light: spec.setting === 'indoor' ? P.lamp : seasonLight(P.light, P.base, season), ...(ambient ? { ambient } : {}) };
 }
 
 /** The ambient particle: the country's own when it names one, else the continent's (outdoors and in town); inside only a fire's or a machine's. */

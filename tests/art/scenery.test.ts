@@ -151,6 +151,73 @@ describe('M7 ก2: the same and different', () => {
   });
 });
 
+/** HSV saturation of an opaque pixel of a frame at index i (value and saturation as the largest and the smallest channel say). */
+const satAt = (d: Uint8ClampedArray, i: number): { s: number; v: number } => {
+  const mx = Math.max(d[i], d[i + 1], d[i + 2]), mn = Math.min(d[i], d[i + 1], d[i + 2]);
+  return { s: mx ? (mx - mn) / mx : 0, v: mx };
+};
+
+describe('M7 K5-7: Nebulia holds every colour down (01-continents §9)', () => {
+  it('no pixel of any NB layer is more saturated than the ceiling, whatever the country, the setting and the season', () => {
+    const nb = countries.filter((c) => c.id.startsWith('NB')).map((c) => c.id);
+    expect(nb.length).toBeGreaterThan(5);
+    for (const country of nb)
+      for (const setting of SETTINGS)
+        for (const season of [undefined, 0, 1, 2, 3]) {
+          const s = paintScenery({ continent: 'NB', country, setting, season });
+          let worst = 0;
+          for (const l of s.layers) for (let i = 0; i < l.frame.data.length; i += 4) if (l.frame.data[i + 3]) { const { s: sat, v } = satAt(l.frame.data, i); if (v >= 48) worst = Math.max(worst, sat); }
+          expect(worst, `${country} ${setting} season ${season}`).toBeLessThanOrEqual(0.37);
+        }
+  }, 120000);
+
+  it('a country that gives NB bright colours (NB-03 gold, NB-11 pastel, NB-09 wine) still paints a grey town; the others are not held down', () => {
+    const meanSat = (id: string, country: string): number => {
+      const s = paintScenery({ continent: id, country, setting: 'town' });
+      let sum = 0, n = 0;
+      for (const l of s.layers) for (let i = 0; i < l.frame.data.length; i += 16) if (l.frame.data[i + 3]) { sum += satAt(l.frame.data, i).s; n++; }
+      return sum / n;
+    };
+    for (const c of ['NB-03', 'NB-09', 'NB-11']) expect(meanSat('NB', c), c).toBeLessThan(0.2);
+    for (const id of ['AZ', 'AL', 'SH']) expect(meanSat(id, `${id}-01`), id).toBeGreaterThan(0.2);
+  });
+});
+
+describe('M7 K5-10: the season reaches every continent (outdoor and town)', () => {
+  const MIN = 5;
+  it('the four seasons of every continent differ pairwise by a mean colour distance above the threshold', () => {
+    for (const setting of ['outdoor', 'town'] as const)
+      for (const id of IDS) {
+        const ls = [0, 1, 2, 3].map((n) => look(paintScenery(spec(id, setting, { season: n })), LAYERS));
+        for (let a = 0; a < 4; a++) for (let b = a + 1; b < 4; b++) expect(distance(ls[a], ls[b]), `${id} ${setting}: season ${a} and ${b}`).toBeGreaterThan(MIN);
+      }
+  }, 60000);
+
+  it('a season moves the light of the place the stage tints the characters with, and a green forest is not green in the winter', () => {
+    for (const id of IDS) expect(new Set([0, 1, 2, 3].map((n) => paintScenery(spec(id, 'outdoor', { season: n })).light)).size, id).toBe(4);
+    const green = (season: number): number => {
+      const s = paintScenery(spec('SV', 'outdoor', { season }));
+      let g = 0, n = 0;
+      for (const l of s.layers) for (let i = 0; i < l.frame.data.length; i += 16) if (l.frame.data[i + 3]) { const d = l.frame.data; g += d[i + 1] - Math.max(d[i], d[i + 2]); n++; }
+      return g / n;
+    };
+    expect(green(3)).toBeLessThan(green(0) * 0.35);
+    expect(green(3)).toBeLessThan(green(1) * 0.5);
+  });
+
+  it('snow only where the land keeps it: the deep cover of the plain, none on the lava land or the desert', () => {
+    const white = (id: string): number => {
+      const g = paintScenery(spec(id, 'outdoor', { season: 3 })).layers[3].frame;
+      let n = 0, w = 0;
+      for (let y = GROUND_Y; y < SCENE_H; y++) for (let x = 0; x < g.w; x += 2) { n++; const i = (y * g.w + x) * 4; if (Math.min(g.data[i], g.data[i + 1], g.data[i + 2]) > 200) w++; }
+      return w / n;
+    };
+    expect(white('AL')).toBeGreaterThan(0.3);
+    expect(white('KD')).toBe(0);
+    expect(white('SH')).toBeLessThan(0.03); // the salt specks of the sand, not snow
+  });
+});
+
 describe('M7 ก2: light, ambient and the continent ids', () => {
   it('every place has a light #rrggbb, an ambient outdoors and in town', () => {
     for (const id of IDS)
