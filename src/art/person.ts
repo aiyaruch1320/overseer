@@ -5,7 +5,7 @@ import { FRAME, type Pose } from './anim';
 import { STAGE_SCALE, type Gait, type PersonLook } from './look';
 import { Paint, type Frame, type Pt } from './paint';
 import { EARS, FEATS, HAIR, HATS, LOWER, NO_TOOL, OUTFITS, TOOLS, BEARDS, part } from './parts';
-import { BODY_PARTS, GEL_BODY, coils } from './parts/body';
+import { BODY_PARTS, GEL_BODY, coils, mixHex } from './parts/body';
 import { LAYERS, type Layer, type Part, type Rig, type ToolKind } from './rig';
 
 /** A human adult is this many art pixels tall (21-pixel-art.md §2). */
@@ -90,6 +90,13 @@ export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
         { L: -1, fa: 1, ba: -1, hand: [6, -1], far: [9.5, -0.5], ang: -4 * DEG, flap: 1 },
         { L: 0, fa: 1, ba: -1, hand: [6, -1], far: [4, 2], ang: -2 * DEG, flap: 2 },
       ];
+      // empty hands: a punch. The fist is drawn back at the hip, driven out straight in front of the shoulder with the body behind it, then pulled back; the
+      // other hand stays up as a guard
+      if (kind === 'none') return [
+        { L: -1, fa: 1, ba: -2, hand: [-2, 4], far: [3, 1], ang: up },
+        { b: 1, L: 2, fa: 3, ba: -2, hand: [10, 0], far: [3, 2], ang: up, flap: 2 },
+        { L: 1, fa: 2, ba: -1, hand: [6, 1], far: [3, 2], ang: up, flap: 1 },
+      ];
       return [
         { L: -1, fa: 1, ba: -2, hand: [0, 2], far: [-2, 4], ang: -12 * DEG, push: -3 },
         { b: 1, L: 1, fa: 3, ba: -2, hand: [4, 2], far: [1, 3], ang: -4 * DEG, push: 1, flap: 2 },
@@ -162,7 +169,8 @@ function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: K
   const key0 = all[Math.min(f, all.length - 1)];
   // the old take short steps and do not bob
   const key: Key = st === 'elder' && pose === 'walk' ? { ...key0, fa: Math.round((key0.fa ?? 0) * 0.6), ba: Math.round((key0.ba ?? 0) * 0.6), b: 0 } : key0;
-  const sc = STAGE_SCALE[st];
+  // a big race's young are still big: a giant's child is taller than a human adult, so the stage shrinks a race that is above human size by less
+  const sc = L.body.scale > 1 && st !== 'infant' ? 1 - (1 - STAGE_SCALE[st]) / (L.body.scale * L.body.scale) : STAGE_SCALE[st];
   const H = Math.max(10, Math.round(ADULT_H * L.body.scale * sc));
   const k = H / ADULT_H;
   // a big-headed little race (the fae) keeps a head tall enough to show a face
@@ -256,7 +264,14 @@ function settle(p: Paint): void {
   for (let y = 0; y < p.h; y++) for (let x = 0; x < p.w; x++) { const k = old[y * p.w + x]; if (k) p.px(x + dx, y + dy, k); }
 }
 
-export function paintPerson(L: PersonLook, pose: Pose, f: number): Frame {
+/** The fae are dim, not sugar: their pink and their glow are muted toward a cold grey (the tone of the world, appearance/README). */
+function tame(L: PersonLook): PersonLook {
+  if (L.race !== 'fae') return L;
+  return { ...L, skin: mixHex(L.skin, '#9c9aa4', 0.3), accent: mixHex(L.accent, '#8a8a98', 0.3) };
+}
+
+export function paintPerson(L0: PersonLook, pose: Pose, f: number): Frame {
+  const L = tame(L0);
   const p = new Paint(FRAME.w, FRAME.h);
   const { r, key } = rigOf(p, L, pose, f);
   const { replace, add } = partsOf(L);
