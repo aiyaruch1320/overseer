@@ -508,6 +508,122 @@ function chalk(r: Rig): void {
   p.glow(r.hand[0] + 1, r.hand[1] + 2 + (r.f % 2), '#f4f0e4', 0.6);
 }
 
+
+// ── wave 5: a sword in its sheath, a second pistol, a stone drum, ankle bells, a chisel, a small hammer, a wrench, a chalk slate ──────────────────────
+/**
+ * A sword that stays in its scabbard (`ไม่เคยชัก` `ในฝัก`): it hangs at the near hip and the hands stay free (kind `none`: the tool draws in the front layer,
+ * not in the hand). The hilt shows above the belt, the scabbard runs back and down behind the leg, its tip a little off the ground.
+ */
+function sheath(r: Rig, len: number, cover: string, fit: string): void {
+  const { p } = r, k = r.k;
+  const bx = r.x0 + r.tw - 1.5, by = r.hip - 1;
+  const ux = -0.55, uy = 0.83;
+  const tip: Pt = [bx + ux * len * k, Math.min(r.foot - 2, by + uy * len * k)];
+  const body = p.mat(cover), band = p.mat(fit, { flat: true }), pommel = p.mat(lighter(fit, 0.2), { flat: true }), grip = p.mat('#3a2a22');
+  p.line([bx, by], tip, body, 2);
+  for (const t of [0.12, 0.5, 0.92]) p.px(bx + (tip[0] - bx) * t, by + (tip[1] - by) * t, band);
+  p.px(tip[0], tip[1], band);
+  // the hilt above the belt, the cross-guard across it
+  const gx = bx - ux * 3.2 * k, gy = by - uy * 3.2 * k;
+  p.line([bx, by], [gx, gy], grip, 2);
+  p.line([bx - 1.6 * k - 0.4, by - 0.3], [bx + 1.6 * k + 0.4, by - 0.3], band, 1);
+  p.px(gx, gy - 1, pommel);
+}
+function sheathedSword(r: Rig): void { sheath(r, 12, '#6a4a30', '#d8d0b0'); }
+function greatSheath(r: Rig): void { sheath(r, 18, '#4a4a58', '#c4c4d4'); }
+function goldSheath(r: Rig): void { sheath(r, 18, '#a88628', '#f0d070'); }
+
+/** Two pistols: one in the hand, the other in the lower hand of a man with four arms (held out in front of the belly), else holstered at the hip. */
+function twinPistol(r: Rig): void {
+  pistol(r);
+  const four = r.look.feats.includes('fourarms');
+  const second: Pt = four ? [r.x0 + r.tw + 1.5, r.sh + (r.hip - r.sh) * 0.72] : [r.x0 + 1.5, r.hip - 1];
+  pistol({ ...r, hand: second, pose: four ? r.pose : 'idle' });
+}
+
+function drum(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, rx = 4 * r.k + 0.4, ry = 3.2 * r.k + 0.4, cx = hx + 3 * r.k, cy = hy + 3 * r.k;
+  const stone = p.mat('#8a8478'), skin = p.mat('#c8b48a'), rim = p.mat('#5a5448', { flat: true }), crack = flat(r, '#3a362e');
+  // a drum cut from the rock: a grey body, a head of hide on top, two cracks down the side, struck on the beat
+  p.ell(cx, cy + 1.6 * r.k, rx, ry, stone);
+  p.rect(Math.round(cx - rx), Math.round(cy - 1), Math.round(rx * 2), Math.max(2, Math.round(3 * r.k)), stone);
+  p.ell(cx, cy - 1.2 * r.k, rx, ry * 0.55, skin);
+  for (let i = -1; i <= 1; i += 2) p.px(cx + i * (rx - 0.3), cy - 1.2 * r.k, rim);
+  p.px(cx - 1, cy + 1, crack); p.px(cx - 1, cy + 2, crack); p.px(cx + 2, cy + 2, crack);
+  if (r.f % 2) p.glow(cx, cy - 3.4 * r.k, '#d8d0b8', 0.7);
+}
+
+function ankleBells(r: Rig): void {
+  const { p } = r, g = flat(r, '#d8b040'), d = flat(r, '#8a6a20');
+  // small brass bells on the ankles: a bead and its dark mouth at each foot
+  for (const L of [r.near, r.far]) {
+    const x = Math.round(L.fx) + 1, y = Math.round(r.foot - 3 - L.lift - r.hover);
+    p.px(x, y, g); p.px(x + 1, y, g); p.px(x, y + 1, d);
+  }
+}
+
+function chisel(r: Rig): void {
+  const { p } = r;
+  // a stonecutter's chisel: a wooden handle, a steel shank that widens to a bevelled edge, chips that fly off the edge
+  stroke(r, -4, 2, wood(r), thick(r));
+  stroke(r, 2, 9, steel(r), thick(r));
+  poly2(r, [[9, -0.7], [10.6, -1.5], [10.6, 1.5], [9, 0.7]], iron(r));
+  p.px(...at(r, 2, 1), brass(r));
+  if (r.pose !== 'idle' || r.f % 2) p.glow(...at(r, 11, -1.6 - (r.f % 3)), '#d8d0b8', 0.8);
+}
+const poly2 = (r: Rig, pts: [number, number][], mat: number): void => r.p.poly(pts.map(([t, s]) => at(r, t, s)), mat);
+
+function smallHammer(r: Rig): void {
+  const { p } = r;
+  // a small hammer: a short haft and a small iron head, one face and one peen (no bigger than the fist that holds it)
+  stroke(r, -3, 7, wood(r), thick(r));
+  poly2(r, [[6, -1.9], [6, 1.9], [9, 1.9], [9, -1.9]], iron(r));
+  p.px(...at(r, 9.6, 1.6), steel(r));
+  p.px(...at(r, 8, -1), p.mat(lighter(TONE.darkSteel, 0.3), { flat: true }));
+  worn(r, at(r, 6), at(r, 9), p.mat('#6a6f78'));
+}
+
+function wrench(r: Rig): void {
+  const { p } = r, st = steel(r);
+  // a long wrench: a flat bar of steel with an open jaw at the far end (two prongs and the gap between them) and a ring at the near end
+  stroke(r, -5, 11, st, thick(r));
+  poly2(r, [[10, -2.2], [10, 2.2], [13.4, 2.2], [13.4, 0.9], [11.6, 0.9], [11.6, -0.9], [13.4, -0.9], [13.4, -2.2]], iron(r));
+  p.px(...at(r, -5.8, 0), iron(r)); p.px(...at(r, -5.8, 1), iron(r));
+  p.px(...at(r, 3, 0.8), p.mat('#c0a050', { flat: true }));
+  worn(r, at(r, -3), at(r, 10), p.mat('#5a3a24'));
+}
+
+function slate(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, w = sz(r, 7), h = sz(r, 6), x = Math.round(hx) + 1, y = Math.round(hy) - h - sz(r, 1);
+  const frame = p.mat('#8a6238'), board = p.mat('#2e3a36'), chalkm = flat(r, '#eae6da');
+  // a school slate: a wooden frame round a dark board with a line of chalk on it, held upright before the body
+  p.rect(x, y, w, h, frame);
+  p.rect(x + 1, y + 1, w - 2, h - 2, board);
+  p.line([x + 1.5, y + 1.6], [x + w - 2, y + 1.6], chalkm);
+  p.line([x + 1.5, y + 3], [x + w - 3.5, y + 3], chalkm);
+  p.px(x + w - 2.5, y + h - 1.6, chalkm);
+}
+
+function bouquet(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), stem = p.mat('#4a6a3a', { flat: true }), leaf = flat(r, '#5a8a48');
+  // a small bunch of wild flowers held upright: three stems from the fist, a white, a pink and a yellow head, a leaf
+  p.line([cx, cy + 2.4 * r.k], [cx - 1.6, cy - 1], stem); p.line([cx, cy + 2.4 * r.k], [cx + 0.4, cy - 2.4 * r.k], stem); p.line([cx, cy + 2.4 * r.k], [cx + 2, cy - 0.6], stem);
+  p.px(cx - 1.8, cy - 1.6, flat(r, '#f0ecd8')); p.px(cx + 0.4, cy - 3 * r.k, flat(r, '#e8a0c0')); p.px(cx + 2.2, cy - 1.2, flat(r, '#e8d060'));
+  p.px(cx - 0.8, cy + 0.4, leaf); p.px(cx + 1.4, cy + 0.8, leaf);
+}
+
+function sleepingChild(r: Rig): void {
+  const { p } = r, k = r.k, cx = r.hand[0] - 0.5, cy = r.hand[1] + 1.4 * k;
+  const blanket = p.mat('#b4a68a'), edge = p.mat('#8a7a5c'), skin = p.mat('#ecc8a0'), hair = p.mat('#6a4a30'), shut = flat(r, '#4a3028');
+  // a child asleep in the crook of the arm: a bundle of blanket laid across the chest, the small head at the chest side with the hair over it, one eye shut
+  p.ell(cx + 0.5, cy, 4.6 * k + 0.4, 2.2 * k + 0.6, blanket);
+  p.line([cx - 3, cy + 1.6 * k], [cx + 4, cy + 1.6 * k], edge);
+  p.ell(cx - 4.2 * k, cy - 0.8 * k, 1.9 * k + 0.2, 1.9 * k + 0.2, skin);
+  p.rect(Math.round(cx - 6 * k), Math.round(cy - 2.6 * k), Math.max(2, Math.round(3.4 * k)), 1, hair);
+  p.px(cx - 3.4 * k, cy - 0.8 * k, shut);
+  p.px(cx + 4.6, cy + 0.6, p.mat('#d8c8a8', { flat: true }));
+}
+
 export const TOOLS_EXTRA: Record<string, Tool> = {
   pistol: { kind: 'shoot', held: pistol },
   musket: { kind: 'shoot', held: musket },
@@ -545,4 +661,17 @@ export const TOOLS_EXTRA: Record<string, Tool> = {
   tank: { kind: 'carry', held: tank },
   quill: { kind: 'swing', held: quill },
   chalk: { kind: 'swing', held: chalk },
+  // wave 5: a sheathed sword and ankle bells draw at the body (front layer), the hands stay free
+  sheathed: { kind: 'none', front: sheathedSword },
+  greatsheath: { kind: 'none', front: greatSheath },
+  goldsheath: { kind: 'none', front: goldSheath },
+  anklebells: { kind: 'none', front: ankleBells },
+  twinpistol: { kind: 'shoot', held: twinPistol },
+  drum: { kind: 'carry', held: drum },
+  chisel: { kind: 'swing', held: chisel },
+  smallhammer: { kind: 'swing', held: smallHammer },
+  wrench: { kind: 'swing', held: wrench },
+  slate: { kind: 'carry', held: slate },
+  bouquet: { kind: 'carry', held: bouquet },
+  sleepingchild: { kind: 'carry', held: sleepingChild },
 };
