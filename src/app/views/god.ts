@@ -6,14 +6,15 @@ import { alliesOf, crisesWaiting } from '../../core/bonds';
 import type { Game, GameData } from '../../core/game';
 import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards, slotBelief, switchPenalty } from '../../core/god';
 import { actsOf, cardsOf, fateCost, fateTargets, hintsOf, implementedMiracles, nameOfKind, obeyChance as whisperChance, omenQuarters, strangeOptions, whisperPrice, activeWhispers, miracleOf } from '../../core/god/acts';
-import { allCountries, continentOf, countriesOf, countryName } from '../../core/god/acts/geo';
+import { allCountries, continentOf, countriesOf, countryName, hasCountry } from '../../core/god/acts/geo';
+import { targetName } from '../../core/god/acts/whisper';
 import { allMixes, viewConj } from '../../core/god/conjure';
 import { coreName, scaleName, verbName } from '../../core/god/conjure/plan';
 import { unlocked, titlesOf } from '../../core/god/goals';
 import { ruinLabel } from '../../core/god/ruin/names';
 import { ruinsNow } from '../../core/god/ruin';
 import { npcsAt } from '../../core/npc';
-import { lines as textLines, plainName, reasonText, scrub, sentence } from '../../core/text';
+import { calendarYear, fxPhrases, lines as textLines, plainName, reasonText, scrub, sentence } from '../../core/text';
 import { CHEST_KIND_TH, TIER_TH, WHY_TH } from '../../core/text/tuning';
 import type { GodAction, LogEntry } from '../../core/types';
 import type { CommandResult } from '../../core/types';
@@ -29,10 +30,28 @@ export type Ask = { ok: true; preview: Record<string, unknown> } | { ok: false; 
 export function ask(game: Game, data: GameData, action: GodAction, args: Record<string, unknown>): Ask {
   try {
     const r = command(game.ctx, { type: 'god', action, args, confirm: false });
-    return r.ok ? { ok: true, preview: r.preview ?? {} } : { ok: false, reason: reasonText(data, r.reason) || W.refused };
+    return r.ok ? { ok: true, preview: r.preview ?? {} } : { ok: false, reason: words(game, data, reasonText(data, r.reason)) || W.refused };
   } catch {
     return { ok: false, reason: W.refused };
   }
+}
+
+/**
+ * The ids and links the core's texts may still hold, turned into what the player reads (M1 of the M5 triage): a miracle code is the miracle's name, a
+ * ruin event code the name of the event, a country code the country, a link to a document is cut to its words, an id of the data its name or nothing.
+ */
+export function words(game: Game, data: GameData, text: string): string {
+  const ctx = game.ctx;
+  const ruinNames = (ctx.data.god?.items as { miracles?: { ruin?: { events?: { id: string; name: string }[] } } } | undefined)?.miracles?.ruin?.events ?? [];
+  const out = text
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\(\s*(?:\.\.?\/)[^)]*\.md[^)]*\)/g, ' ')
+    .replace(/\bMR-\d\d\b/g, (m) => miracleOf(ctx, m)?.name ?? ' ')
+    .replace(/\bRU-0\d\b/g, (m) => ruinNames.find((e) => e.id === m)?.name ?? ' ')
+    .replace(/\b(?:AZ|MH|KD|NR|AL|MK|SH|SV|NB)-\d\d\b/g, (m) => (hasCountry(ctx, m) ? countryName(ctx, m) : plainName(data, m) || ' '))
+    .replace(/\b[a-z]{1,3}_[a-z0-9_]+\b/g, (m) => plainName(data, m) || ' ')
+    .replace(/\bdocs?\/[\w./-]*/g, ' ');
+  return out.replace(/[ \t]{2,}/g, ' ').replace(/\s+([,.·])/g, '$1').trim();
 }
 
 const num = (v: unknown): number => (typeof v === 'number' ? v : Number(v) || 0);
@@ -173,7 +192,7 @@ export function confirmView(game: Game, data: GameData, action: GodAction, args:
   const tier = str(p.tier);
   const isMiracle = action === 'miracle' || action === 'decree' || action === 'conjure';
   const cancelling = p.cancel !== undefined;
-  const lines = previewLines(data, p, false, action, envOf(game, data, args));
+  const lines = previewLines(data, p, false, action, envOf(game, data, args)).map((l) => words(game, data, l)).filter(Boolean);
   // paying in the other line within the same year of his life costs the character belief (01-power.md §2): said before, not found in the log after
   const sw = cancelling ? 0 : switchPenalty(game.ctx, cost);
   if (sw > 0) lines.push(`${W.belief}ของเขา −${sw}: ${W.switchLine}`);
@@ -650,10 +669,10 @@ export function ruinViews(game: Game, data: GameData): RuinView[] {
     return {
       country: r.country,
       name: ruinLabel(ctx, r.country),
-      kind: r.kind,
+      kind: miracleOf(ctx, r.kind)?.name ?? r.kind,
       year: r.year,
       popPct: Math.round(r.pop * 100),
-      events: ids.map((id) => ({ id, name: plainName(data, id) || id, done: r.done[id] !== undefined, year: r.done[id] ?? r.due[id] })).sort((a, b) => a.year - b.year),
+      events: ids.map((id) => ({ id, name: words(game, data, id) || plainName(data, id) || W.miracle.ruinEvent, done: r.done[id] !== undefined, year: r.done[id] ?? r.due[id] })).sort((a, b) => a.year - b.year),
       cult: r.cult ?? '',
       city: r.city ?? '',
       lake: !!r.lake,
@@ -782,25 +801,26 @@ export function conjurePreview(game: Game, data: GameData, args: Record<string, 
   const r = ask(game, data, 'conjure', args);
   if (!r.ok) return { ...empty, reason: r.reason };
   const p = r.preview;
-  const lines = previewLines(data, p, false, 'conjure', envOf(game, data, args));
+  const w = (t: string): string => words(game, data, t);
+  const lines = previewLines(data, p, false, 'conjure', envOf(game, data, args)).map(w).filter(Boolean);
   const q = rec(p.quota);
   const sh = num(rec(p.chance).shadow);
   const seal = rec(p.seal);
   const reaction = rec(p.reaction);
   return {
     ok: true,
-    name: str(p.name),
-    result: str(p.result),
-    expected: p.expected ? scrub(data, str(p.expected), { keepNumbers: true }) : '',
-    effects: (Array.isArray(p.effects) ? p.effects : []).map((e) => scrub(data, str(e), { keepNumbers: true })),
-    reaction: p.reaction ? { say: str(reaction.say), text: scrub(data, str(reaction.text), { keepNumbers: true }) } : null,
+    name: w(str(p.name)),
+    result: w(str(p.result)),
+    expected: p.expected ? w(scrub(data, str(p.expected), { keepNumbers: true })) : '',
+    effects: (Array.isArray(p.effects) ? p.effects : []).map((e) => w(scrub(data, str(e), { keepNumbers: true }))),
+    reaction: p.reaction ? { say: w(str(reaction.say)), text: w(scrub(data, str(reaction.text), { keepNumbers: true })) } : null,
     cost: costOf(p),
     priceNote: num(p.priceMul) > 1 ? `${W.conjure.base} ${num(p.priceBase)} ×${num(p.priceMul)} — ${W.conjure.priceUp[str(p.priceWhy)] ?? ''}` : '',
     shadow: sh >= 1 ? W.conjure.shadowSure : sh > 0 ? `${W.conjure.shadow} ${Math.round(sh * 100)}%` : W.conjure.noShadow,
-    omen: num(p.omen) ? `${str(p.omenLine)} — ${W.miracle.omenLeft} ${num(p.omen)} ${W.seasons}` : '',
+    omen: num(p.omen) ? `${w(str(p.omenLine))} — ${W.miracle.omenLeft} ${num(p.omen)} ${W.seasons}` : '',
     quota: q.limit !== undefined ? { used: num(q.used), limit: num(q.limit) } : null,
-    seal: seal.note ? str(seal.note) : '',
-    listed: p.listed ? `${str(p.listed)}` : '',
+    seal: seal.note ? w(str(seal.note)) : '',
+    listed: p.listed ? w(str(p.listed)) : '',
     lines,
   };
 }
@@ -824,6 +844,8 @@ export const mixCount = (game: Game): number => allMixes(game.ctx).length;
 
 export interface ChronicleRow {
   year: number;
+  /** The year as the world writes it (ศ.ม. 10,428). */
+  yearWord: string;
   /** The age of the character then (when there was one). */
   age: number | null;
   kind: string;
@@ -842,6 +864,23 @@ export interface ChronicleView {
 
 const DREAD_KINDS = new Set(['prayer.punish']);
 
+/** A string that is a code of the data (an id, a `kind:value`, an effect word like `hp+10`), not a word a player reads. */
+const looksLikeCode = (t: string): boolean => /^[A-Za-z]{1,6}[:_-]?[\w-]*\d|^[a-z_]+$|^[a-z]+[:+-]/i.test(t.trim()) && !/[ก-๙]/.test(t);
+
+/** The name of a person, an ally, a place or a continent the chronicle points at; empty when the data has no name for it. */
+function whereName(game: Game, data: GameData, ref: string): string {
+  const id = ref.replace(/^npc:/, '');
+  if (!id) return '';
+  if (id.length === 2) return countryOrContinentName(game, data, id);
+  const ally = alliesOf(game.ctx).find((t) => t.id === id || t.npc === id);
+  const t = ally?.name ?? plainName(data, id) ?? '';
+  if (t && !looksLikeCode(t)) return t;
+  const slot = targetName(game.ctx, id);
+  if (slot && !looksLikeCode(slot)) return slot;
+  const place = countryName(game.ctx, id);
+  return place && !looksLikeCode(place) ? place : '';
+}
+
 /** What a row of the chronicle is about, in words: a miracle by its name, a conjuring by its three parts, a prayer by its kind, a chest card by its name. */
 function chronicleName(game: Game, data: GameData, kind: string, id: string): string {
   const ctx = game.ctx;
@@ -852,9 +891,36 @@ function chronicleName(game: Game, data: GameData, kind: string, id: string): st
   }
   if (kind.startsWith('prayer')) return nameOfKind(ctx, id);
   if (kind === 'whisper') return id;
-  if (kind === 'dream') return id.startsWith('ally:') ? alliesOf(ctx).find((t) => t.id === id.slice(5))?.name ?? '' : '';
+  if (kind === 'dream') {
+    if (id.startsWith('ally:')) {
+      const ally = alliesOf(ctx).find((t) => t.id === id.slice(5));
+      return ally ? `${W.chronicle.dreamTo} ${ally.name}` : W.chronicle.dreamAlly;
+    }
+    const n = plainName(data, id);
+    return n && !looksLikeCode(n) ? n : '';
+  }
   if (kind === 'chest.pick') return plainName(data, id);
   return '';
+}
+
+/** The result field of a row in words (the core writes ids, levels and effect words there for the tools). */
+function chronicleResult(game: Game, data: GameData, kind: string, result: string | undefined): string {
+  if (!result) return '';
+  if (W.chronicle.results[result]) return W.chronicle.results[result];
+  if (kind === 'dream') {
+    // `sent:<heart>` (sent, waits for the crossroads) · `<heart>:<outcome>` (the outcome at the crossroads) · `faded`
+    const [a, b] = result.split(':');
+    if (a === 'sent') return `${W.chronicle.sent} (${W.dream.heart} ${b})`;
+    const word = W.dream.outcomes[b] ?? W.chronicle.results[b] ?? '';
+    return word ? `${word} (${W.dream.heart} ${a})` : '';
+  }
+  if (kind === 'prayer.give' || kind === 'prayer.strange' || kind === 'prayer.punish') {
+    const gift = plainName(data, result);
+    if (gift && !looksLikeCode(gift)) return gift;
+    return fxPhrases(data, result).join(' · ');
+  }
+  if (kind === 'chest.pick' || kind === 'chest.skip') return '';
+  return looksLikeCode(result) ? '' : result;
 }
 
 export function chronicleView(game: Game, data: GameData): ChronicleView {
@@ -868,16 +934,17 @@ export function chronicleView(game: Game, data: GameData): ChronicleView {
     const name = chronicleName(game, data, c.kind, c.id);
     // only the acts that aim at something name a target (the chest and the dream write the id of the life there)
     const aims = /^(miracle|conjure|whisper|prayer)/.test(c.kind);
-    const where = aims && c.target ? (c.target.length === 2 ? countryOrContinentName(game, data, c.target) : plainName(data, c.target) || countryName(ctx, c.target)) : '';
-    const result = c.result ? W.chronicle.results[c.result] ?? (/^[a-z]+:|^[a-z_]+$/i.test(c.result) ? '' : c.result) : '';
+    const where = aims && c.target ? whereName(game, data, c.target) : '';
+    const result = chronicleResult(game, data, c.kind, c.result);
     const ruin = c.kind === 'miracle' && c.target ? ruins.find((r) => r.country === c.target) : undefined;
     return {
       year: c.worldYear,
+      yearWord: `${W.chronicle.era} ${calendarYear(c.worldYear).toLocaleString('en-US')}`,
       age: c.hAge ?? null,
       kind: c.kind,
       kindWord,
       line,
-      text: [name && name !== '-' ? name : '', where, result].filter(Boolean).join(' · '),
+      text: [name && name !== '-' ? name : '', where, result].filter(Boolean).join(' · ') || kindWord,
       after: ruin ? ruin.events.filter((e) => e.done).map((e) => ({ text: e.name, done: true })) : [],
     };
   });

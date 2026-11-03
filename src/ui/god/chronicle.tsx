@@ -26,7 +26,7 @@ export function Chronicle() {
           <li key={i}>
             <div style={{ ...row, alignItems: 'baseline' }}>
               <span class="g-small g-dim" style={{ minWidth: 120 }}>
-                {r.year}
+                {r.yearWord}
                 {r.age !== null ? ` · ${W.ageWord} ${r.age}` : ''}
               </span>
               <span class="g-chip g-small" style={{ color: LINE_COLOR[r.line], borderColor: LINE_COLOR[r.line] + '88' }}>

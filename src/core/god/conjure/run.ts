@@ -305,13 +305,15 @@ function personRun(ctx: Ctx, pl: Plan, rng: ReturnType<typeof detail>): string {
     }
     case 'create': {
       if (pl.cell.person === 'companion') {
-        const species = ((ctx.data.companions?.items as { species?: { id: string; tier: string }[] } | undefined)?.species ?? []).filter((s) => s.tier === 'C' || s.tier === 'U').map((s) => s.id).sort();
+        const all = ((ctx.data.companions?.items as { species?: { id: string; name?: string; tier: string }[] } | undefined)?.species ?? []).filter((s) => s.tier === 'C' || s.tier === 'U');
+        const species = all.map((s) => s.id).sort();
         const sp = species.length ? rng.pick(species) : 'sp_companion';
+        const spName = all.find((s) => s.id === sp)?.name ?? 'สัตว์ตัวหนึ่ง';
         if (id) {
           put('companion', `${sp}:${id}`);
           favourNpc(ctx, id, 1);
         } else if (life) apply(ctx, [{ k: 'grant', kind: 'companion', id: sp }], { sys: 'god', id: pl.key, stream: 'god.acts' });
-        return `สัตว์คู่หู ${sp} มาหา${id ? ' NPC' : 'ตัวละคร'}`;
+        return `สัตว์คู่หู ${spName} มาหา${id ? ' NPC' : 'ตัวละคร'}`;
       }
       put('gift', `${pl.cell.person === 'amulet' ? 'amulet' : 'boon'}:${mix.core}${id ? `:${id}` : ''}`);
       if (id) favourNpc(ctx, id, 1);
