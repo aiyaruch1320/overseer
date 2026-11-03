@@ -211,10 +211,11 @@ const antlers: Part = {
     const { p } = r, [hx] = r.head, top = topOf(r), u = r.hh >= 7 ? 1.1 : r.hh >= 6 ? 0.9 : 0.7;
     const near = p.mat('#c4ac80'), far = p.mat(mixHex('#c4ac80', '#2a2018', 0.4)), tip = flat(r, '#eadcb8');
     const bx = hx - 1;
-    p.line([hx + r.hr[0] * 0.4, top + 1], [hx + r.hr[0] * 0.4 + 0.5, top - 3 * u], far);
-    p.line([bx, top + 1], [bx - 1.5, top - 3 * u], near);
-    p.line([bx - 1.5, top - 3 * u], [bx - 2.5, top - 7 * u], near);
-    p.line([bx - 1.5, top - 3 * u], [bx + 1.5, top - 5.5 * u], near);
+    // sturdy beams two pixels thick that taper to a point, tines of one pixel: not wire
+    stroke(p, [hx + r.hr[0] * 0.4, top + 1], [hx + r.hr[0] * 0.4 + 0.5, top - 3 * u], 2, far, far, 0.5, 0.4);
+    stroke(p, [bx, top + 1], [bx - 1.5, top - 3 * u], 2, near, near, 0.5, 0.15);
+    stroke(p, [bx - 1.5, top - 3 * u], [bx - 2.5, top - 7 * u], 2, near, near, 0.5, 0.5);
+    stroke(p, [bx - 1.5, top - 3 * u], [bx + 1.5, top - 5.5 * u], 2, near, near, 0.5, 0.6);
     p.line([bx - 2.2, top - 5.6 * u], [bx - 5, top - 7.4 * u], near);
     p.px(bx + 1.5, top - 5.5 * u - 1, tip); p.px(bx - 2.5, top - 7 * u - 1, tip);
   },
@@ -291,11 +292,12 @@ const joint = (r: Rig, at: Pt, w = 3): void => {
   r.p.rect(x - (w >> 1), y, w, 1, puppetInk(r)); r.p.px(x, y - 1, flat(r, '#d9cfb2'));
 };
 const puppet: Part = {
-  // a doll: the seam down the cheek, the hinge of the jaw at the mouth, and visible joints at the elbow, the wrist and the knee
+  // a doll: a broken seam low on the cheek (never across the eye: a line there reads as an eyepatch), the hinge of the jaw at the mouth, and visible joints at the elbow, the wrist and the knee
   front: (r) => {
     const { p } = r, [hx, hy] = r.head, [ex, ey] = eyeOf(r), k = puppetInk(r), top = topOf(r);
-    p.line([ex - 3, top + 2], [ex - 3, Math.round(hy + r.hr[1]) - 1], k);
-    p.px(ex - 1, ey + 3, k); if (r.hh >= 7) p.px(ex - 1, ey + 4, k);
+    const chin = Math.round(hy + r.hr[1]) - 1;
+    for (let y = ey + 2; y <= chin; y += 2) p.px(ex - 3, y, k);
+    p.px(ex - 1, ey + 3, k);
     p.px(Math.round(hx), top + 2, flat(r, '#d9cfb2'));
   },
   nearArm: (r) => { joint(r, nearAt(r, 0.5), armW(r) + 1); joint(r, nearAt(r, 0.88), armW(r)); },

@@ -252,16 +252,17 @@ export const FEATS: Record<string, Part> = {
     },
   },
   warpaint: {
-    // a stripe of dried blood-red paint under the eye and a mark on the chest (dull, a few pixels: not a rash)
+    // a stripe of dried blood-red paint under the eye (dull, two pixels: not a rash); only grown orcs wear it, and not all of them: the young have none
     front: (r) => {
+      if (r.look.stage === 'infant' || r.look.stage === 'child' || r.look.stage === 'teen') return;
       const [ex, ey] = eyeAt(r), red = flat(r, '#7a2a20');
       r.p.px(ex - 1, ey + 2, red); r.p.px(ex - 2, ey + 3, red);
-      r.p.line([r.x0 + 2, r.sh + 2], [r.x0 + 3, r.sh + 4], red);
     },
   },
   scars: {
-    // old scars: a short pale line across the cheek and one across the chest (pale, not bloody)
+    // old scars: a short pale line across the cheek and one across the chest (pale, not bloody); the young have none
     front: (r) => {
+      if (r.look.stage === 'infant' || r.look.stage === 'child') return;
       const [ex, ey] = eyeAt(r), pale = flat(r, mixHex(r.look.skin, '#e8d8c8', 0.4));
       r.p.line([ex - 3, ey - 1], [ex - 2, ey + 2], pale);
       r.p.line([r.x0 + 1, r.sh + 3], [r.x0 + 4, r.sh + 5], pale);
@@ -379,15 +380,16 @@ export const FEATS: Record<string, Part> = {
       const { p, k } = r, [hx] = r.head, top = Math.round(topY(r)) + 1, col = horn(r), old = r.look.stage === 'elder', child = r.look.stage === 'child' || r.look.stage === 'infant';
       const len = Math.max(2, Math.round(r.hh * (old ? 0.85 : child ? 0.35 : 0.7))), w = 1;
       const h = p.mat(col), lite = p.mat(tone(col, 3), { flat: true });
-      const demon = r.look.race === 'demonkin', thin = r.look.fem || child ? 1 : 2;
+      const demon = r.look.race === 'demonkin', thin = child ? 2 : r.look.fem ? 2 : 3;
       // dragon horns sweep back from the brow; a demon's rise and hook, both are two: the near one whole, the far one past it
       const back = demon ? 0.25 : 0.9, rise = demon ? 1.1 : 0.8;
       const horn1 = (bx: number, by: number, w: number, scale: number, sweep = 1) => {
         const mid: Pt = [bx - len * back * 0.4 * scale * sweep, by - len * rise * 0.55 * scale], end: Pt = [bx - len * back * scale * sweep - (demon ? -0.5 : 0), by - len * rise * scale];
+        // sturdy: three pixels at the root, two at the middle, one at the point (a horn is not an antenna)
         stroke(p, [bx, by], mid, w, h, h, 0.5, 0.3);
-        stroke(p, mid, end, 1, h, lite, 0.6);
+        stroke(p, mid, end, Math.max(2, w - 1), h, lite, 0.6, 0.55);
       };
-      horn1(hx + r.hr[0] * 0.55, top + 1, 1, 0.85, 0.35);
+      horn1(hx + r.hr[0] * 0.55, top + 1, 2, 0.85, 0.35);
       horn1(hx - 0.5, top, thin, 1);
     },
   },
