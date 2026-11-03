@@ -5,7 +5,7 @@ import type { ComponentChildren } from 'preact';
 import { BEAT_KINDS } from '../core/data/types-scenes';
 import type { GameData } from '../core/game';
 import type { LogEntry } from '../core/types';
-import { cardOfEntry, figuresOf, sceneFor, sceneryOf } from '../app/views/scene';
+import { cardOfEntry, figuresOf, labelsOf, sceneFor, sceneryOf } from '../app/views/scene';
 import type { GameState } from '../core/types';
 import { LifeScene } from './LifeScene';
 import { BEAT_DEMOS } from '../scene/demo';
@@ -21,10 +21,11 @@ function Scene({ data, e, state }: { data: GameData; e: LogEntry; state?: GameSt
   // who is on the stage: the figure of the life, the NPC of the clash, the crowd (src/app/views/scene.ts)
   const figureOf = figuresOf(data, state, v);
   const scenery = sceneryOf(data, state, v);
+  const labelOf = labelsOf(data, state, v);
   return (
     <div style={{ padding: size.pad, display: 'flex', flexWrap: 'wrap', gap: size.pad, alignItems: 'flex-start' }}>
       <div style={{ flex: '1 1 640px', maxWidth: 960 }}>
-        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} figureOf={figureOf} scenery={scenery} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
+        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} figureOf={figureOf} scenery={scenery} labelOf={labelOf} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
       </div>
       <EventCard card={v.card} />
     </div>
@@ -43,7 +44,11 @@ story({
       <div style={{ color: color.textDim, marginBottom: size.pad }}>หนึ่งตัวอย่างต่อหนึ่งชนิดของจังหวะ: {BEAT_KINDS.join(' · ')}</div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: size.pad }}>
         {BEAT_KINDS.map((k) => (
-          <ScenePlayer key={k} script={BEAT_DEMOS[k]} loop controls={false} />
+          <figure key={k} style={{ margin: 0 }} data-beat={k}>
+            <ScenePlayer script={BEAT_DEMOS[k]} loop controls={false} />
+            {/* the name of the beat under its frame: ten small frames on one place look alike */}
+            <figcaption style={{ marginTop: 4, fontFamily: font.body, fontSize: size.text, color: color.text }}>{BEAT_DEMOS[k].title}</figcaption>
+          </figure>
         ))}
       </div>
     </div>
@@ -84,7 +89,7 @@ story({
   render: ({ data, state }) => (
     <div style={{ padding: size.pad, display: 'flex', gap: size.pad, flexWrap: 'wrap' }}>
       <EventCard card={cardOfEntry(data, entry('world', 'event', 'XX-99', { name: 'เหตุการณ์ที่ไม่มีในตาราง', mark: '○' }), state)} />
-      <EventCard card={cardOfEntry(data, entry('god', 'miracle.omen', 'MR-09', { name: 'ลางของปาฏิหาริย์', n: 1 }), state)} />
+      <EventCard card={cardOfEntry(data, entry('god', 'miracle.omen', 'MR-09', { name: 'แสงศักดิ์สิทธิ์', n: 1, quarters: 3 }), state)} />
       <EventCard card={cardOfEntry(data, entry('story', 'node', 'hu.a3', { title: 'งานแรก', choice: 'a', label: 'รับงาน' }), state)} />
     </div>
   ),
@@ -121,17 +126,17 @@ story({
 story({
   group: 'ฉาก',
   name: 'ฉากปลายทาง · เผ่าปีก',
-  render: ({ data }) => <Scene data={data} e={entry('story', 'node', 'wi.e1', { title: 'ปลายทาง', choice: 'a', label: 'ปลดเกษียณ' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'wi.e1', { title: 'ปลายทาง', choice: 'a', label: 'ปลดเกษียณ' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'วันเกิดเหตุของปาฏิหาริย์ · ดาวตก',
-  render: ({ data }) => <Scene data={data} e={entry('god', 'miracle', 'MR-17', { name: 'ดาวตก', target: 'AZ-04', result: 'ok', tier: 'ใหญ่' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('god', 'miracle', 'MR-17', { name: 'ดาวตก', target: 'AZ-04', result: 'ok', tier: 'ใหญ่' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'วันเกิดเหตุของปาฏิหาริย์ · แสงศักดิ์สิทธิ์',
-  render: ({ data }) => <Scene data={data} e={entry('god', 'miracle', 'MR-04', { name: 'แสงศักดิ์สิทธิ์', target: 'AZ-04', result: 'ok', tier: 'ใหญ่' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('god', 'miracle', 'MR-04', { name: 'แสงศักดิ์สิทธิ์', target: 'AZ-04', result: 'ok', tier: 'ใหญ่' })} />,
 });
 story({
   group: 'ฉาก',

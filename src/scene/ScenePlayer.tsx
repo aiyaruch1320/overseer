@@ -26,9 +26,11 @@ export interface ScenePlayerProps {
   figureOf?: FigureOf;
   /** The place of the scene for the painted layers (src/app/views/scene.ts `sceneryOf`); omit for a plain place. */
   scenery?: SceneryOf;
+  /** The words under an actor: its name when it has one (src/app/views/scene.ts `labelsOf`). */
+  labelOf?: (a: { id: string; label: string }) => string;
 }
 
-export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, figureOf, scenery }: ScenePlayerProps) {
+export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true, startAt = 0, controls = true, loop = false, onSound, figureOf, scenery, labelOf }: ScenePlayerProps) {
   const [t, setT] = useState(startAt);
   const [playing, setPlaying] = useState(autoplay);
   const [speed, setSpeed] = useState(speed0);
@@ -116,7 +118,7 @@ export function ScenePlayer({ script, onDone, speed: speed0 = 1, autoplay = true
       style={{ width: '100%', maxWidth: STAGE.maxWidth, outline: 'none' }}
       data-scene={script.id}
     >
-      <Stage frame={frame} frameColor={script.frame} seed={script.id} figureOf={figureOf} scenery={scenery} />
+      <Stage frame={frame} frameColor={script.frame} seed={script.id} figureOf={figureOf} scenery={scenery} labelOf={labelOf} />
       {controls && (
         <div style={{ display: 'flex', alignItems: 'center', gap: size.gap, marginTop: 6, fontFamily: font.body, fontSize: size.small, color: color.textDim }}>
           <button style={btn} onClick={() => (atEnd ? again() : setPlaying(!playing))}>

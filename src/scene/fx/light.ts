@@ -1,7 +1,7 @@
 // The light of a beat (`LightMode`) as pixels, and the effects of the god's three powers (20-god-ui.md §1) that ride on a coloured `glow`. Pure, like ./pixels.ts.
 // Light is drawn in bands (an even gradient would blur the pixels) and added to the picture; only `dim` covers it.
 import type { LightMode } from '../../core/data/types-scenes';
-import { ART, GOD, GOD_FX, LIGHT, LIGHT_BANDS } from '../tuning';
+import { ART, GOD, GOD_FX, GOD_VARIANT, LIGHT, LIGHT_BANDS, LIGHT_WASH, type GodVariant } from '../tuning';
 import { hexNum, rnd, Sink, type Px } from './pixels';
 
 /**
@@ -34,6 +34,8 @@ export function lightPixels(mode: LightMode, color: string | undefined, placeLig
     }
     return s.out;
   }
+  // a wash of the light's colour over the whole picture too, so a warm scene reads warm and a cold one cold at a glance (the bands alone sat on one end of the picture)
+  s.rect(0, 0, ART.w, ART.h, col, L.alpha * LIGHT_WASH, L.add);
   const span = ART.h * 0.7;
   for (let b = 0; b < n; b++) {
     const a = L.alpha * (1 - (b + 0.5) / n);
@@ -108,6 +110,136 @@ function faith(t: number, seed: number, s: Sink): void {
   }
 }
 
+/**
+ * The pillar of MR-04 (20-god-ui §7.3: "ลำแสงทองกว้างเท่าลานเมืองตกนิ่ง ผีลอยออกจากหลุมศพเป็นควันขาวหนีไปขอบเมือง"): gold (#e8c36a, the colour of faith), a third of the picture
+ * wide, with a bright rim that shimmers a row at a time, a pool of light where it lands, gold motes, and from the second half white wisps that leave the foot of it for the edges of the town.
+ */
+function beam(t: number, seed: number, s: Sink): void {
+  const B = GOD_FX.beam;
+  const cx = GOD_FX.centre.x;
+  const gold = hexNum(GOD.faith);
+  const pale = hexNum('#fff2c0');
+  const ground = ART.groundY;
+  const half = (y: number) => B.top + (B.ground - B.top) * (y / ground);
+  const open = Math.min(1, t / B.open);
+  for (let y = 0; y < ground; y++) {
+    const h = half(y) * (0.4 + 0.6 * open);
+    const flick = 0.88 + 0.12 * Math.sin(y * 0.2 + t * 5);
+    const l = Math.round(cx - h + wobble(y, t, 0));
+    const r = Math.round(cx + h + wobble(y, t, 1));
+    // the body is gold laid over the sky (covering, so it stays gold and does not wash to white), the core is added light
+    s.rect(l, y, r - l, 1, gold, B.body * flick, false);
+    const cl = Math.round(cx - h * 0.55 + wobble(y, t, 2) * 0.5);
+    const cr = Math.round(cx + h * 0.55 + wobble(y, t, 3) * 0.5);
+    s.rect(cl, y, cr - cl, 1, pale, B.core * flick, true);
+    // the rim: two bright pixels each side that flicker on and off along the height (shimmer)
+    const lit = (side: number) => (Math.sin(y * 0.9 + t * 9 + side * 1.7) > -0.35 ? 1 : 0.35);
+    s.rect(l, y, 2, 1, pale, B.rim * lit(0), true);
+    s.rect(r - 2, y, 2, 1, pale, B.rim * lit(1), true);
+    s.rect(l - 1, y, 1, 1, gold, B.rim * 0.7 * lit(2), false);
+    s.rect(r, y, 1, 1, gold, B.rim * 0.7 * lit(3), false);
+  }
+  // slow lighter streaks slide down inside it
+  for (let i = 0; i < 6; i++) {
+    const u = (t * (0.18 + 0.05 * rnd(seed, i, 1)) + rnd(seed, i, 2)) % 1;
+    const x = cx + (rnd(seed, i, 3) - 0.5) * 2 * half(u * ground) * 0.8;
+    s.rect(x, u * ground, 1, 14 + rnd(seed, i, 4) * 12, pale, 0.28, true);
+  }
+  // the pool of light where it lands
+  s.blob(cx, ground, B.ground * 1.5, 7, gold, 0.5 + 0.06 * Math.sin(t * 3), false, 3);
+  s.blob(cx, ground, B.ground * 1.1, 4, pale, 0.4, true, 3);
+  // gold motes rise out of it
+  for (let i = 0; i < B.motes; i++) {
+    const life = 2.4 + rnd(seed, i, 1) * 2.4;
+    const c = t / life + rnd(seed, i, 2);
+    const k = Math.floor(c);
+    const u = c - k;
+    const ph = rnd(seed, i, 3 + k) * 6.3;
+    const x = cx + (rnd(seed, i, 4 + k) - 0.5) * 2 * half(ground) + Math.sin(ph + u * 5) * 3;
+    const y = ground - 2 - u * life * (14 + rnd(seed, i, 5) * 18);
+    s.rect(x, y, 1, 1, u < 0.6 ? pale : gold, (1 - u) ** 0.8 * (0.7 + 0.3 * Math.sin(ph * 3 + t * 9)), true);
+  }
+  // the dead rise out of their graves as white smoke and leave for the edge of the town
+  if (t >= B.wispsAt)
+    for (let i = 0; i < B.wisps; i++) {
+      const u = ((t - B.wispsAt) * (0.09 + 0.04 * rnd(seed, i, 7)) + rnd(seed, i, 8)) % 1;
+      const side = i % 2 ? 1 : -1;
+      const x0 = cx + (rnd(seed, i, 9) - 0.5) * B.ground * 1.6;
+      const x = x0 + side * u * (60 + rnd(seed, i, 10) * 70);
+      const y = ground - 6 - u * (22 + rnd(seed, i, 11) * 30) + Math.sin(u * 9 + i) * 3;
+      const r = 3 + u * 5 + rnd(seed, i, 12) * 2;
+      s.blob(x, y, r, r * 1.3, 0xeeeae4, 0.55 * Math.sin(Math.PI * u) ** 0.7, false, 3);
+    }
+}
+
+/**
+ * The shooting star of MR-17 (20-god-ui §7.3, 11-world-changes §1.2): a blood-pork red star that grows every night, then falls into the middle of the town with a tail of smoke, one white frame
+ * where it lands, the round wave of dust that sweeps out, and the black crater with its glass rim that stays. Before and after the fall there is no red wash: the star is a star.
+ */
+function meteor(t: number, seed: number, s: Sink): void {
+  const M = GOD_FX.meteor;
+  const red = hexNum('#d8362e');
+  const [sx, sy] = M.from;
+  const [ix, iy] = M.land;
+  const grow = Math.min(1, t / M.fallAt);
+  const fall = Math.max(0, Math.min(1, (t - M.fallAt) / (M.hitAt - M.fallAt)));
+  const at = (p: number) => [sx + (ix - sx) * p ** 1.7, sy + (iy - sy) * p ** 1.7] as const;
+  if (t < M.hitAt) {
+    const [x, y] = at(fall);
+    const r = M.r0 + (M.r1 - M.r0) * grow ** 1.4;
+    // the tail: grey smoke blobs left behind along the path, wider and fainter the older they are, with fire at the head
+    if (fall > 0)
+      for (let i = 1; i <= M.tail; i++) {
+        const [tx, ty] = at(Math.max(0, fall - i * 0.018));
+        const k = i / M.tail;
+        s.blob(tx + Math.sin(i * 1.9 + t * 2) * 1.5, ty, r * (0.7 + k * 1.6), r * (0.6 + k * 1.2), i % 2 ? 0x6a5a5a : 0x8a7a76, 0.5 * (1 - k * 0.8), false, 2);
+        if (i < 5) s.blob(tx, ty, r * (1.3 - k), r * (1.1 - k), 0xff8a3a, 0.35 * (1 - k), true, 2);
+      }
+    // a halo that breathes, then the red star: a core with a pale heart (visible on a day sky: it covers, it does not only add)
+    s.blob(x, y, r * 3.2, r * 3.2, red, (0.28 + 0.06 * Math.sin(t * 3)) * (0.5 + 0.5 * grow), true, 4);
+    s.blob(x, y, r * 1.5, r * 1.5, 0x8a1a1e, 0.9, false, 3);
+    s.blob(x, y, r, r, red, 1, false, 2);
+    s.blob(x, y, r * 0.45, r * 0.45, 0xffd8b8, 1, false, 1);
+    return;
+  }
+  const tau = t - M.hitAt;
+  // one white frame (a tenth of a second, so it is never missed and never a flood)
+  if (tau < M.flash) s.rect(0, 0, ART.w, ART.h, 0xffffff, 0.95 * (1 - tau / M.flash) ** 0.5, false);
+  // the round wave of dust: a ring that grows along the ground and thins
+  for (let w = 0; w < 2; w++) {
+    const k = tau - w * 0.5;
+    if (k <= 0 || k > M.wave) continue;
+    const rx = 12 + k * M.waveSpeed;
+    const ry = Math.max(2, rx * 0.16);
+    const a = 0.7 * (1 - k / M.wave);
+    const n = 90;
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * Math.PI * 2;
+      s.rect(ix + Math.cos(th) * rx - 1, iy + 6 + Math.sin(th) * ry - (Math.sin(th) < 0 ? 2 : 0), 3, 3, 0xcfc0a0, a, false);
+    }
+  }
+  // the crater: opens over a second, black, a rim of glass that glints, embers deep in it
+  const open = Math.min(1, tau / 1.2);
+  const rx = M.crater.rx * open;
+  const ry = M.crater.ry * open;
+  s.blob(ix, iy + 8, rx * 1.12, ry * 1.2, 0x1a1218, 0.85, false, 3);
+  s.blob(ix, iy + 8, rx * 0.8, ry * 0.8, 0x050306, 0.95, false, 3);
+  s.blob(ix, iy + 9, rx * 0.5, ry * 0.5, 0xff5a2a, 0.22 + 0.06 * Math.sin(t * 4), true, 3);
+  for (let i = 0; i < 40; i++) {
+    const th = (i / 40) * Math.PI * 2;
+    const glint = Math.sin(t * 3 + i * 2.3) > 0.55;
+    s.rect(ix + Math.cos(th) * rx * 1.12, iy + 8 + Math.sin(th) * ry * 1.2, 2, 1, glint ? 0xdadae8 : 0x2a2a38, glint ? 0.95 : 0.8, false);
+  }
+  // smoke climbs out of the hole
+  for (let i = 0; i < 8; i++) {
+    const u = (t * 0.12 + rnd(seed, i, 1)) % 1;
+    const x = ix + (rnd(seed, i, 2) - 0.5) * rx * 1.4 + Math.sin(u * 7 + i) * 4;
+    const y = iy + 4 - u * 46;
+    const r = 5 + u * 9;
+    s.blob(x, y, r, r * 0.8, 0x3a3236, 0.5 * Math.sin(Math.PI * u) ** 0.7 * open, false, 2);
+  }
+}
+
 function dread(t: number, seed: number, s: Sink): void {
   const D = GOD_FX.dread;
   const { x: cx, y: cy } = GOD_FX.centre;
@@ -153,10 +285,18 @@ function fate(t: number, seed: number, s: Sink): void {
   }
 }
 
+/** The special effect of a miracle by the name of its place (the `bg` beat of a miracle's script is the miracle's name): the shooting star, the wide gold beam. Others have none. */
+export function variantOf(place: string): GodVariant | undefined {
+  return GOD_VARIANT[place];
+}
+
 /** The effects of one of the god's powers at motion time `t`: the pillar of faith light with its shaking rim and rising gold embers, the red and black smoke of dread, the sewn silver thread of fate. */
-export function godPixels(god: God, t: number, seed: number): Px[] {
+export function godPixels(god: God | null, t: number, seed: number, variant?: GodVariant): Px[] {
   const s = new Sink();
-  if (god === 'faith') faith(t, seed, s);
+  if (variant === 'meteor') meteor(t, seed, s);
+  else if (god === 'faith' && variant === 'beam') beam(t, seed, s);
+  else if (!god) return s.out;
+  else if (god === 'faith') faith(t, seed, s);
   else if (god === 'dread') dread(t, seed, s);
   else fate(t, seed, s);
   return s.out;

@@ -26,12 +26,15 @@ export const CAMERA: Record<CameraFrame, { zoom: number; lift: number }> = {
 
 /** The light of a scene (13-storyline-scenes §1 "แสง"): colour, strength, and where it comes from. */
 export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'front' | 'back' | 'all' | 'centre'; add: boolean }> = {
-  'warm-front': { color: '#ffd89a', alpha: 0.24, from: 'front', add: true },
-  'cold-back': { color: '#7a96d8', alpha: 0.28, from: 'back', add: true },
+  'warm-front': { color: '#ffb25a', alpha: 0.44, from: 'front', add: true },
+  'cold-back': { color: '#5a78cc', alpha: 0.4, from: 'back', add: true },
   diffuse: { color: '#ffffff', alpha: 0.06, from: 'all', add: true },
   glow: { color: '#fff0c0', alpha: 0.14, from: 'centre', add: true },
   dim: { color: '#000000', alpha: 0.32, from: 'all', add: false },
 };
+
+/** The share of a front or back light that lies over the whole picture besides its bands (a pass reads warm and a fail cold from across the room). */
+export const LIGHT_WASH = 0.55;
 
 /** The placeholder silhouette per pose: rotation (deg), drop as a share of the figure height, scale, and whether an arm is raised. */
 export const POSE: Record<Pose, { rot: number; drop: number; scale: number; arm: number }> = {
@@ -59,13 +62,17 @@ export const WORDS = { play: 'เล่น', pause: 'หยุด', skip: 'ข�
 export const ART = { w: 320, h: 180, groundY: 150 } as const;
 
 /** The camera of the pixel stage. Zoom is kept to whole steps (a pixel stretched to 1.12 draws uneven), so a frame's eased zoom snaps: at or over `snapAt` the view is `close` times. */
-export const VIEW = { snapAt: 1.3, close: 2, panPx: 48, focusY: ART.groundY - 30, slack: 4 } as const;
+export const VIEW = { snapAt: 1.3, close: 2, panPx: 48, focusY: ART.groundY - 30, slack: 4, wholeFrom: 640 } as const;
 
 /** Crowd: art pixels between two figures of a crowd, and the rows a crowd is staggered over (each row one pixel row deeper). */
 export const CROWD = { gap: 17, rows: 3 } as const;
 
 /** The size of text over the stage, in screen pixels per art pixel (so a word keeps its place in the picture at any multiple) and the smallest size ever drawn. */
-export const TEXT = { title: 9, name: 13, strike: 8, strikeTo: 14, line: 6.5, result: 7, stage: 4.5, label: 4, min: 11 } as const;
+export const TEXT = {
+  title: 9, name: 13, strike: 8, strikeTo: 14, line: 6.5, result: 7, stage: 5, label: 5, min: 12,
+  /** A line of the story runs at most `lineWidth` of the picture wide, in at most the room under the feet: the smallest font it may shrink to, the average width of a Thai letter in ems, the leading, the room kept under the feet and the padding. */
+  lineWidth: 0.8, lineMin: 4.5, thai: 0.5, leading: 1.3, feetGap: 4, pad: 3,
+} as const;
 
 /** How strongly the mood colours of the beats (`bg` and `tone`) tint the painted layers: over the sky rows and over the ground rows. The beats' colours are the story's mood; the painter's are the place. */
 export const MOOD = { sky: 0.18, ground: 0.1 } as const;
@@ -78,6 +85,9 @@ export const CAST = { tint: 0.45, place: 0.12 } as const;
 
 /** The soft shadow under a figure: width as a share of the figure's frame width, alpha. */
 export const SHADOW = { alpha: 0.32, w: 14, h: 4 } as const;
+
+/** The faint light rim round a figure: its colour, alpha and the four one-pixel offsets of the copies (a dark infant or elder does not vanish into a dark ground). */
+export const RIM = { color: 0xe6e0d0, alpha: 0.34, offsets: [[-1, 0], [1, 0], [0, -1], [0, 1]] as readonly (readonly [number, number])[] } as const;
 
 /** How many painted backgrounds the stage keeps (the layers of a place are painted once; the oldest unused goes when a ninth would come). */
 export const SCENERY_KEEP = 8;
@@ -145,9 +155,17 @@ export const GOD = { faith: '#e8c36a', dread: '#8a2433', fate: '#b8c0cc', near: 
  * The effects of the god's powers (drawn when the beat's `glow` light is one of the three colours): the pillar of faith light (half width at the top and at the ground, the
  * shake of its rim, how many gold embers rise), the dread (the red then black core, the smoke on its rim), the fate (threads, stitches of the ring).
  */
+/** The effects that belong to one miracle, by the place name its script gives (the miracle's own name): MR-17 the shooting star, MR-04 the wide gold beam. */
+export type GodVariant = 'meteor' | 'beam';
+export const GOD_VARIANT: Record<string, GodVariant> = { ดาวตก: 'meteor', แสงศักดิ์สิทธิ์: 'beam' };
+
 export const GOD_FX = {
   centre: { x: ART.w / 2, y: 112 },
   pillar: { top: 5, ground: 15, shake: 1.6, embers: 22, alpha: 0.2, core: 0.3 },
+  // MR-04: half width at the top and at the ground (the beam is a third of the picture wide where it lands), opacity of the gold body and the pale core and rim, seconds to open, motes, the white wisps of the dead
+  beam: { top: 30, ground: 54, body: 0.42, core: 0.32, rim: 0.85, open: 1.6, motes: 30, wisps: 9, wispsAt: 14.5 },
+  // MR-17: where the star starts and lands, its radius at the start and at the last night, the second it begins to fall and the second it lands, the tail's length, the length of the flash (seconds), the wave, the crater
+  meteor: { from: [236, 34], land: [160, 138], r0: 1.2, r1: 6.5, fallAt: 8, hitAt: 12.8, tail: 14, flash: 0.1, wave: 8, waveSpeed: 24, crater: { rx: 62, ry: 12 } },
   dread: { rx: 100, ry: 64, core: 54, smoke: 12 },
   fate: { threads: [-19, 0, 18], ringRx: 92, ringRy: 20, stitches: 56, end: 124 },
 } as const;
@@ -155,4 +173,4 @@ export const GOD_FX = {
 // ---------- the picture of an event card (M7 ka4) ----------
 
 /** The still frame of a card picture: the motion time its particles are drawn at, how many of them, how strongly the card sky tints the sky rows and the ground rows of the painted place, how many pictures are kept. */
-export const CARD_PIC = { motion: 5.5, amount: 0.7, sky: 0.28, ground: 0.12, keep: 32 } as const;
+export const CARD_PIC = { motion: 5.5, amount: 1, sky: 0.62, ground: 0.34, plainSky: 0.12, plainGround: 0.06, dull: 0.12, drain: 0.55, speck: 2, keep: 32 } as const;

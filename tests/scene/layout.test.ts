@@ -16,8 +16,18 @@ describe('the scale', () => {
   });
   it('takes a box a few pixels short of a multiple, never less than 1', () => {
     expect(fitScale(958, 539)).toBe(3);
+    expect(fitScale(640, 360)).toBe(2);
+    expect(fitScale(700, 100)).toBe(1);
+  });
+  it('fills the width with a fraction when the box is under 640 px wide (a 630 px box is not 1×)', () => {
+    expect(fitScale(630, 354.4)).toBeCloseTo(630 / 320, 5);
+    expect(fitScale(630, 354.4)).toBeGreaterThan(1.9);
     expect(fitScale(320, 180)).toBe(1);
-    expect(fitScale(100, 50)).toBe(1);
+    expect(fitScale(480, 270)).toBeCloseTo(1.5, 5);
+    expect(fitScale(639, 360)).toBeCloseTo(639 / 320, 5);
+  });
+  it('never scales past the height of a short box', () => {
+    expect(fitScale(600, 180)).toBe(1);
   });
 });
 
