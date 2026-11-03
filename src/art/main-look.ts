@@ -111,7 +111,7 @@ const NATURAL_HAIR = ['#3a2a20', '#241a14', '#5a3a22', '#7a5a30', '#1a1614'] as 
 
 const known = (id: string): string => (id && TOOLS[id] ? id : '');
 
-/** The tool a weapon is drawn as: the type of the weapons table (README §2) refined by the words of the name; a type the painter has no tool for (guns, whips, slings, fists) draws nothing. */
+/** The tool a weapon is drawn as: the type of the weapons table (README §2) refined by the words of the name; a type the painter has no tool for draws nothing. */
 export function toolOfWeapon(name: string, type: string): string {
   const has = (re: RegExp) => re.test(name);
   switch (type) {
