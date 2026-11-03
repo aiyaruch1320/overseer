@@ -63,6 +63,8 @@ export interface Track {
   /** Adult life years, and the ones with belief ≥ 50. */
   adult: number;
   years50: number;
+  /** Life years lived in each country (where the character stood at the turn of the year): "อยู่มากกว่าห้าประเทศ" is about the countries he lived in, not those he passed. Absent in a save of before. */
+  stay?: Record<string, number>;
   /** Life years at a healing job. */
   heal: number;
   /** Adult life years held in bondage. */

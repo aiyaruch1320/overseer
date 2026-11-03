@@ -163,7 +163,7 @@ describe('taking a vow', () => {
 /** Facts of a life that kept nothing, to be changed by a test. */
 function blank(over: Partial<Facts> = {}): Facts {
   return {
-    life: {} as LifeState, hAge: 40, cause: 'illness', natural: false, battle: false, elder: false, belief: 0, peak: 0, curses: 0, born: 'AZ-01', where: 'AZ-01', continents: ['AZ'], countries: ['AZ-01'],
+    life: {} as LifeState, hAge: 40, cause: 'illness', natural: false, battle: false, elder: false, belief: 0, peak: 0, curses: 0, born: 'AZ-01', where: 'AZ-01', continents: ['AZ'], countries: ['AZ-01'], stayed: 1,
     heir: false, love: 0, rivalFell: false, forgave: false, betrayals: 0, killedKin: false, secret: false, legend: false, cv: 0, kind: 0, interventions: 0, boundNow: false, wasBound: false, freed: false,
     dragon: false, homeLost: false, built: false, keySide: false, badFate: false, ...over,
   };

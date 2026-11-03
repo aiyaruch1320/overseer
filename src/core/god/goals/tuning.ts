@@ -14,6 +14,9 @@ export const ELDER_AGE = 55;
 /** Adult years count from here for the titles "ผู้ศรัทธา" and "ผู้ถูกผูก" (world-time.md §3). */
 export const ADULT_FROM = ADULT_AGE;
 
+/** Life years in a country that make it a place he lived in, for the title "นักเดินทาง" (08-goals.md §3 "อยู่มากกว่าห้าประเทศ"; the document gives no length, assumption). */
+export const STAY_YEARS = 2;
+
 /** GV-11 reads the belief at any time; GV-04 needs this many continents; GV-06 this level of the lover line. */
 export const VOW_NUMBERS = { belief: 85, hate: -70, continents: 4, loverLevel: 4, interventions: 5, kind: 30, legendCv: 2 };
 
