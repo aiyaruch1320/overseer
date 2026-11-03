@@ -103,7 +103,7 @@ function eel(z: Z): Out {
 function thalassa(z: Z): Out {
   const { pen, p, P, ph, strike, t, L } = z;
   const niv = L.id === 'dragon_15', N = 36, lunge = Math.max(0, strike);
-  const pts = spine(N, (u) => [-94 + 160 * u + lunge * 8 * u, -40 - 18 * u ** 1.4 - (niv ? 20 : 26) * Math.sin(u * 7.4 + ph * 0.6) * (0.5 + 0.5 * u) + lunge * 8 * smooth(0.84, 1, u)]);
+  const pts = spine(N, (u) => [-94 + 160 * u + lunge * 8 * u, -52 - 12 * u ** 1.4 - (niv ? 30 : 36) * Math.sin(u * 8.2 + ph * 0.6) * (0.55 + 0.45 * u) + lunge * 8 * smooth(0.84, 1, u)]);
   const rad = pts.map((_, i) => { const u = i / N; return (niv ? 0.8 + 8.2 : 0.9 + 11) * Math.min(1, u * 2.2) ** 0.75 * (1 - 0.3 * smooth(0.7, 1, u)) + 0.4; });
   const finM = z.P.mem;
   // fins along the back

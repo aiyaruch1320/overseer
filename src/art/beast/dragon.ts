@@ -90,7 +90,7 @@ export function paintDragon(c: Ctx<BL>): Info {
     shadow: out.shadow ? { ...out.shadow, cx: cxo } : { cx: cxo, cy: c.foot, rx: (r.left + r.right) * k * 0.36, ry: Math.max(2, 1.6 * s) }, tall: false, ground: [cxo, c.foot], fade: out.fade,
     after: (f) => {
       out.after?.(f, pen);
-      if (amb !== 'none') ambient(f, amb, box, L.second, L.id, t + (mo.pose === 'walk' ? 1 : 0), mo.pose === 'attack' ? 8 : 12);
+      if (amb !== 'none') ambient(f, amb, box, L.second, L.id, t + (mo.pose === 'walk' ? 1 : 0), c.w <= 64 ? 6 : mo.pose === 'attack' ? 8 : 12);
       if (mo.a === 1 && out.mouth && breathKind && !mo.dead) {
         const mx = pen.X(out.mouth[0]), my = pen.Y(out.mouth[1]), ang = out.ang ?? 0.3;
         // a plume stays inside the frame

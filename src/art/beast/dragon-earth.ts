@@ -109,9 +109,9 @@ function andar(z: Z): Out {
     if (i % 5 === 2) { const f = fl[(i >> 1) % 4]; pen.dot(x + sway, y - h - 1, f, 2.2); pen.px(x + sway, y - h - 1, fl[2]); }
   }
   // the head rests on the front paws, eyes closed, a long breath through the nose
-  const hx = 62 + lunge * 6, hy = -11 + lunge * 2;
+  const hx = 60 + lunge * 6, hy = -15 + lunge * 2;
   pen.chain([[46, cy + 8], [hx - 6, hy - 6]], [14, 8], P.body);
-  const h = head(pen, hx + 2, hy, { sz: 1.9, ang: 0.28 + lunge * 0.15, open: z.open * 0.5, style: 'sleep', horns: 'stub', hk: 0.9, eye: 'shut', cheek: false, pupil: P.ink }, P);
+  const h = head(pen, hx + 2, hy, { sz: 2.3, ang: 0.28 + lunge * 0.15, open: z.open * 0.5, style: 'sleep', horns: 'stub', hk: 0.9, eye: 'shut', cheek: false, pupil: P.ink }, P);
   // the whiskers, long, wound round the roots of the grass
   for (const [dy, k] of [[0, 0], [5, 1]] as const) {
     const wp = spine(8, (u) => [h.mouth[0] - 6 + u * 16, h.mouth[1] - 1 + dy + Math.sin(u * 5.5 + ph * 0.7 + k) * 3 + u * (k ? 4 : 1) - (k ? 1 : 0)]);

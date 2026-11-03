@@ -305,8 +305,8 @@ export function ambient(f: Frame, kind: Amb, box: [number, number, number, numbe
     else if (kind === 'smoke') { y = y1 - ((ry + ph * 0.6) % 1) * H; ovEll(f, x, y, 2 + ph * 3, 1.4 + ph * 2, '#4a4650', 0.32 - ph * 0.2); }
     else if (kind === 'drops') { y = y0 + ((ry + ph) % 1) * H; blend(f, x, y, '#bfe6f4', 0.8); blend(f, x, y + 1, '#7ac0d8', 0.7); }
     else if (kind === 'wind') { y = y0 + ry * H; x = x0 + ((rx + ph * 0.5) % 1) * W; for (let k = 0; k < 6; k++) blend(f, x - k, y + Math.sin(k * 0.8 + ph * 6) * 0.9, '#ffffff', 0.55 - k * 0.07); }
-    else if (kind === 'cloud') { const r = 3 + rnd(seed, i + 7) * 3.2; const px = x0 + ((rx + ph * 0.15) % 1) * W, py = y0 + ry * H; if (!body?.(px, py)) ovPuff(f, px, py, r, mix(col, '#ffffff', 0.7), 0.5); }
-    else if (kind === 'mist') { const r = 3.2 + rnd(seed, i + 7) * 3.6; ovEll(f, x0 + ((rx + ph * 0.12) % 1) * W, y0 + ry * H, r * 1.8, r * 0.6, mix(col, '#e8f0f4', 0.55), 0.2); }
+    else if (kind === 'cloud') { const r = (3 + rnd(seed, i + 7) * 3.2) * Math.min(1, W / 120); const px = x0 + ((rx + ph * 0.15) % 1) * W, py = y0 + ry * H; if (!body?.(px, py)) ovPuff(f, px, py, r, mix(col, '#ffffff', 0.7), 0.5); }
+    else if (kind === 'mist') { const r = (3.2 + rnd(seed, i + 7) * 3.6) * Math.min(1, W / 120); ovEll(f, x0 + ((rx + ph * 0.12) % 1) * W, y0 + ry * H, r * 1.8, r * 0.6, mix(col, '#e8f0f4', 0.55), 0.2); }
   }
 }
 
