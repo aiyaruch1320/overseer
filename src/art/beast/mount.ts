@@ -134,7 +134,7 @@ export function paintMounted(L: EnemyLook, pose: Parameters<typeof motion>[0], f
   const riderLook = { ...person, body: { ...person.body, scale: rs } };
   const seatH = 26 * rs; // a seated person's height in pixels, about
   const room = fr.foot - 5 - (kind === 'worm' ? seatH * 0.9 : kind === 'wolf' ? seatH * 0.8 : seatH * 0.55);
-  const s = k * Math.min(room / (kind === 'horse' ? 74 : kind === 'wolf' ? 44 : 34), (fr.w * 0.92) / (kind === 'horse' ? 80 : kind === 'wolf' ? 60 : 78) / k);
+  const s = k * Math.min(room / (kind === 'horse' ? 74 : kind === 'wolf' ? 44 : 34), (fr.w * (k < 1 ? 0.78 : 0.92)) / (kind === 'horse' ? 80 : kind === 'wolf' ? 60 : 78) / k);
   const out = paintMount(kind, c, s, { main: L.main, second: L.second });
   if (mo.die) applyDie(p, 'topple', mo.die, out.ground, 40 * s, false, p.mat(L.second, { flat: true }), seed);
   const frame = p.finish(out.shadow);

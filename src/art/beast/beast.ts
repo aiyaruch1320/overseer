@@ -39,6 +39,7 @@ const OFFSETS: Record<number, [number, number][]> = {
 
 const isPerson = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'person' || L.form === 'wolfman');
 const isSiren = (L: BeastLook): boolean => L.kind === 'enemy' && L.form === 'siren';
+const isGhost = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && L.form === 'ghost';
 
 /** The size a body is drawn at: its scale times a 28-pixel human, kept inside the frame. */
 export function targetHeight(L: BeastLook): number {
@@ -52,6 +53,32 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   const out = blank(fr.w, fr.h);
   if (L.kind !== 'enemy') return out;
   over(out, paintPerson(personLookOf(L), pose, f), Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot);
+  return pose === 'hurt' && f === 0 ? flash(out) : out;
+}
+
+/** A person of the person painter turned into a ghost: tinted, see-through, fading toward the feet, floating (the ghost soldiers, the shadow queen). */
+function ghostFrame(L: BeastLook, pose: Pose, f: number): Frame {
+  const fr = FRAMES[L.size], out = blank(fr.w, fr.h);
+  if (L.kind !== 'enemy') return out;
+  const dying = pose === 'die' ? [0.34, 0.67, 1][f] ?? 1 : 0;
+  const body = paintPerson(personLookOf(L), pose === 'die' ? 'idle' : pose, pose === 'die' ? 0 : f);
+  let y0 = body.h, y1 = -1;
+  for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) if (body.data[(y * body.w + x) * 4 + 3] > 120) { if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  const tint = [parseInt(L.main.slice(1, 3), 16), parseInt(L.main.slice(3, 5), 16), parseInt(L.main.slice(5, 7), 16)];
+  const hover = pose === 'idle' ? 3 + (f % 2) : 3, h = Math.max(1, y1 - y0);
+  for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) {
+    const i = (y * body.w + x) * 4;
+    if (body.data[i + 3] === 0) continue;
+    const solid = body.data[i + 3] > 120, k = Math.max(0, Math.min(1, (y1 - y) / (h * 0.5)));
+    if (!solid) { body.data[i + 3] = 0; continue; }
+    for (let c = 0; c < 3; c++) body.data[i + c] = body.data[i + c] * 0.4 + tint[c] * 0.45 + 255 * 0.15;
+    const keep = dying === 0 || (((x * 7 + y * 13) % 16) / 16) >= dying; // a dying ghost thins out in a dither
+    body.data[i + 3] = keep ? Math.round(170 * (0.08 + 0.92 * k ** 0.7)) : 0;
+  }
+  // a faint shadow, smaller than a body's: it floats
+  const cx = Math.round(fr.w / 2 - 22) + 22;
+  for (let y = 0; y < fr.h; y++) for (let x = 0; x < fr.w; x++) { const dx = (x + 0.5 - cx) / 8, dy = (y + 0.5 - fr.foot) / 1.6; if (dx * dx + dy * dy <= 1) { const i = (y * fr.w + x) * 4; out.data[i] = 24; out.data[i + 1] = 26; out.data[i + 2] = 44; out.data[i + 3] = 40 * (1 - dying); } }
+  over(out, body, Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot - hover);
   return pose === 'hurt' && f === 0 ? flash(out) : out;
 }
 
@@ -80,7 +107,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
 export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
   const group = L.kind === 'enemy' && !!L.swarm && !L.cloud && L.plan !== 'swarm' ? SHOWN[L.size] : 1;
   const one = (ff: number, i: number): Frame =>
-    L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
+    L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isGhost(L) ? ghostFrame(L, pose, ff) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
   if (group === 1) return one(f, 0);
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h), offs = OFFSETS[group];
   const spec = POSE_OF[pose];
