@@ -99,10 +99,12 @@ describe('synonym parser', () => {
     expect(read('').understood).toBe('empty');
   });
 
-  it('marks what the core does not apply yet as pending', () => {
+  it('marks as pending only what no system binds yet: the asks of the story part that the vows of the god will read', () => {
     const r = read('ขี้ขลาด รวย');
-    expect(r.items.filter((i) => i.row !== 'random').every((i) => i.pending)).toBe(true);
+    expect(r.items.filter((i) => i.row !== 'random').every((i) => !i.pending)).toBe(true);
     expect(read('คนแคระ').items.find((i) => i.key === 'race')?.pending).toBe(false);
+    expect(read('อยากมีความรัก').items.find((i) => i.key === 'story')?.pending).toBe(true);
+    expect(read('อยากเดินทาง').items.find((i) => i.key === 'story')?.pending).toBe(false);
   });
 });
 
@@ -133,6 +135,15 @@ describe('start modes', () => {
 });
 
 describe('sheet of birth', () => {
+  it('moves what the birth refused to the row of what cannot be done, with its reason', () => {
+    const c = certificate(data, { ...emptyDraft(5), text: 'ผู้ถูกอัญเชิญ กำพร้า' });
+    const fam = c.items.find((i) => i.key === 'family');
+    expect(fam?.row).toBe('cannot');
+    expect(fam?.note.length).toBeGreaterThan(0);
+    expect(c.modeHeld).toBe(true);
+    expect(c.born.mode).toBe('summoned');
+  });
+
   it('shows the life that the request makes: the race and the gender asked for are born', () => {
     const d = { ...emptyDraft(5), text: 'คนแคระ ชาย' };
     const c = certificate(data, d);
@@ -187,9 +198,10 @@ describe('sheet of birth', () => {
     expect(res.reason).toBeTruthy();
   });
 
-  it('builds the options of the bridge: a birther only when the request needs one', () => {
+  it('builds the options of the bridge: the sheet of the wish goes to the birth of the core, no birther of the view', () => {
+    expect(sessionOpts(read(''), 3).wish).toBeUndefined();
     expect(sessionOpts(read('คนแคระ'), 3).birther).toBeUndefined();
-    expect(sessionOpts(read('คนแคระ ชาย'), 3).birther).toBeTypeOf('function');
+    expect(sessionOpts(read('คนแคระ ชาย'), 3).wish?.ask).toMatchObject({ race: 'dwarf', gender: 'm' });
     const a = scratchLife(data, sessionOpts(read('คนแคระ ชาย'), 3), 'k1');
     expect(a.life.gender).toBe('m');
   });
