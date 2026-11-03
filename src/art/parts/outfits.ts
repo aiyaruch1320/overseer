@@ -15,6 +15,11 @@ function shell(r: Rig, mat: number, grow = 0): void {
   p.px(r.x0 - grow, r.sh, 0); p.px(r.x0 + r.tw - 1 + grow, r.sh, 0);
 }
 
+/** The steel of an armour takes the colour of the house: a blackened plate for a dark `main`, a bleached one for a pale one (t: how much of the colour). */
+const steelOf = (r: Rig, t: number): number => r.p.mat(mix('#9a9ea6', r.look.main, t));
+/** The trim of an armour: the second colour of the look, lit a little, so two grey figures differ by their trim. */
+const trimOf = (r: Rig): number => r.p.mat(mix(r.look.second, '#e8e2d0', 0.12));
+
 type ArmFn = (r: Rig, far: boolean) => SleeveOpts;
 const arms = (f: ArmFn): Pick<Part, 'farArm' | 'nearArm'> => ({
   farArm: (r) => sleeve(r, r.shoulderFar, r.farHand, f(r, true)),
@@ -107,46 +112,51 @@ export const OUTFITS: Record<string, Part> = {
   // ── armor: a mail shirt with a belted skirt of mail and leather bracers ─────────────────────────────────────────────────────────────
   armor: {
     torso: (r) => {
-      const { p, m } = r, x0 = r.x0, x1 = x0 + r.tw, dk = p.mat(darker(TONE.steel, 0.3)), rows = big(r) ? 4 : 3;
-      shell(r, m.metal);
+      const { p, m } = r, x0 = r.x0, x1 = x0 + r.tw, dk = p.mat(darker(mix(TONE.steel, r.look.main, 0.3), 0.3)), rows = big(r) ? 4 : 3, mail = steelOf(r, 0.3), trim = trimOf(r);
+      shell(r, mail);
       for (let y = r.sh + 1; y < r.hip - 2; y++) for (let x = x0; x < x1; x++) if ((x + y * 2) % 4 === 0) p.px(x, y, dk);
-      p.rect(x0 - 1, r.hip - 1, r.tw + 2, rows, m.metal);
+      p.rect(x0 - 1, r.hip - 1, r.tw + 2, rows, mail);
       for (let x = x0 - 1; x < x1 + 1; x += 2) p.px(x, r.hip + rows - 2, dk);
       for (let x = x0 - 1; x < x1 + 1; x++) if ((x - x0) % 2 !== 0) p.px(x, r.hip + rows - 1, 0);
       belt(r, r.hip - 2, m.leather, m.accent);
+      // a collar and a hem of the trim colour, so the mail is not just grey
+      p.rect(x0 + 1, r.sh, r.tw - 2, 1, trim);
+      p.rect(x0 - 1, r.hip + rows - 3, r.tw + 2, 1, trim);
       p.px(x0 + 1, r.sh + 1, m.main); p.px(x0 + 2, r.sh + 1, m.main);
       patches(r, { x: x0 + 1, y: r.sh + 2, w: r.tw - 2, h: 4 }, p.mat('#6c717a'));
     },
-    ...arms((r) => ({ cloth: r.m.metal, bare: r.m.leather, cuff: r.m.leather, reach: 0.5 })),
+    ...arms((r) => ({ cloth: steelOf(r, 0.3), bare: r.m.leather, cuff: r.m.leather, reach: 0.5 })),
   },
 
   // ── plate: full steel — big round pauldrons, a breastplate with a ridge, lames at the waist, steel legs ────────────────────────────────
   plate: {
     torso: (r) => {
-      const { p, m } = r, x0 = r.x0, x1 = x0 + r.tw, hi = p.mat(lighter(TONE.steel, 0.4)), dk = p.mat(TONE.darkSteel);
-      shell(r, m.metal);
+      const { p, m } = r, x0 = r.x0, x1 = x0 + r.tw, pl = steelOf(r, 0.5), hi = p.mat(lighter(mix(TONE.steel, r.look.main, 0.45), 0.4)), dk = p.mat(darker(mix(TONE.darkSteel, r.look.main, 0.4), 0.15)), trim = trimOf(r);
+      shell(r, pl);
       p.rect(x0 + 1, r.sh + 1, r.tw - 2, Math.max(1, r.hip - r.sh - 4), hi);
       p.line([x0 + r.tw - 3, r.sh + 1], [x0 + r.tw - 3, r.hip - 4], dk);
       for (let y = r.hip - 3; y < r.hip + (big(r) ? 3 : 2); y += 2) p.rect(x0 - 1, y, r.tw + 2, 1, dk);
-      p.rect(x0 - 1, r.hip - 2, r.tw + 2, 1, m.metal);
-      // a cloth tassets strip at the front in the colour of the house
+      p.rect(x0 - 1, r.hip - 2, r.tw + 2, 1, pl);
+      // a stripe of the trim colour down the breastplate and a band at the waist, and a cloth tassets strip at the front in the colour of the house
+      p.rect(x0 + 2, r.sh + 2, 1, Math.max(1, r.hip - r.sh - 6), trim);
+      p.rect(x0 - 1, r.hip - 3, r.tw + 2, 1, trim);
       p.rect(x1 - 4, r.hip, 3, sz(r, 4), m.main);
       patches(r, { x: x0 + 1, y: r.sh + 2, w: r.tw - 2, h: 3 }, p.mat('#6a6f78'));
     },
-    lower: (r) => legs(r, { pants: r.m.metal, shoe: r.p.mat(TONE.darkSteel), knee: r.p.mat(lighter(TONE.steel, 0.35)) }),
+    lower: (r) => legs(r, { pants: steelOf(r, 0.5), shoe: r.p.mat(TONE.darkSteel), knee: r.p.mat(lighter(mix(TONE.steel, r.look.main, 0.4), 0.35)) }),
     front: (r) => {
-      const { p, m } = r, sx = r.shoulderNear[0] + 0.5, sy = r.shoulderNear[1], fx = r.shoulderFar[0] - 0.5;
-      const hi = p.mat(lighter(TONE.steel, 0.35)), dk = p.mat(TONE.darkSteel), rr = Math.max(1.7, 2.7 * r.k);
-      // the gorget round the neck, then a pauldron on each shoulder: a dark rim, a lit plate and a rivet
+      const { p } = r, sx = r.shoulderNear[0] + 0.5, sy = r.shoulderNear[1], fx = r.shoulderFar[0] - 0.5;
+      const hi = p.mat(lighter(mix(TONE.steel, r.look.main, 0.45), 0.35)), dk = p.mat(darker(mix(TONE.darkSteel, r.look.main, 0.4), 0.15)), rr = Math.max(1.7, 2.7 * r.k), trim = trimOf(r);
+      // the gorget round the neck, then a pauldron on each shoulder: a rim of the trim colour, a lit plate and a rivet
       p.rect(r.x0 + 1, r.sh + 1, r.tw - 2, 1, dk);
       for (const x of [sx, fx]) {
-        p.ell(x, sy, rr + 0.8, rr + 0.5, dk);
-        p.ell(x, sy - 0.2, rr - 0.2, rr - 0.4, x === sx ? hi : m.metal);
+        p.ell(x, sy, rr + 0.8, rr + 0.5, trim);
+        p.ell(x, sy - 0.2, rr - 0.2, rr - 0.4, x === sx ? hi : steelOf(r, 0.5));
       }
       p.px(sx - 1, sy - 1, p.mat('#e8eaee'));
       p.px(sx + 1, sy + 1, dk);
     },
-    ...arms((r) => ({ cloth: r.m.metal, bare: r.p.mat(TONE.darkSteel), reach: 0.62, cuff: r.p.mat(TONE.darkSteel) })),
+    ...arms((r) => ({ cloth: steelOf(r, 0.5), bare: r.p.mat(TONE.darkSteel), reach: 0.62, cuff: trimOf(r) })),
   },
 
   // ── knight: mail under a surcoat of the house colour with a cross of the accent, short mantle ───────────────────────────────────────
@@ -158,11 +168,11 @@ export const OUTFITS: Record<string, Part> = {
     },
     lower: (r) => {
       const { p, m } = r;
-      legs(r, { pants: m.pants, shoe: m.metal, calf: m.metal, calfFrom: 0.5, knee: p.mat(lighter(TONE.steel, 0.3)) });
+      legs(r, { pants: m.pants, shoe: steelOf(r, 0.2), calf: steelOf(r, 0.2), calfFrom: 0.5, knee: p.mat(lighter(TONE.steel, 0.3)) });
     },
     torso: (r) => {
       const { p, m } = r, x0 = r.x0, x1 = x0 + r.tw, cx = x1 - 3, cy = r.sh + 3, rows = sz(r, 4);
-      shell(r, m.metal);
+      shell(r, steelOf(r, 0.2));
       // the surcoat: house colour down the chest and over the thigh
       p.rect(x0, r.sh + 1, r.tw, r.hip - r.sh, m.main);
       p.rect(x0 - 1, r.hip - 1, r.tw + 2, rows, m.main);
@@ -174,7 +184,7 @@ export const OUTFITS: Record<string, Part> = {
       else p.px(cx, cy, m.accent);
       patches(r, { x: x0, y: r.sh + 4, w: 3, h: 3 }, patchOf(r, r.look.main));
     },
-    ...arms((r) => ({ cloth: r.m.metal, cuff: r.m.main, reach: 0.9 })),
+    ...arms((r) => ({ cloth: steelOf(r, 0.2), cuff: r.m.main, reach: 0.9 })),
   },
 
   // ── leather: a jerkin laced up the front, crossed straps, studs, bracers ──────────────────────────────────────────────────────────────
@@ -266,7 +276,9 @@ export const OUTFITS: Record<string, Part> = {
   // ── apron: a tunic under a long apron with a bib, straps and a pocket; sleeves rolled ───────────────────────────────────────────────
   apron: {
     torso: (r) => {
-      const { p } = r, x0 = r.x0, x1 = x0 + r.tw, ap = p.mat(TONE.cream), ln = p.mat(darker(TONE.cream, 0.25));
+      // the apron is canvas, leather or soot-dark by the worker: it takes a share of the trim colour, and the more worn the darker
+      const base = mix(mix(TONE.cream, r.look.second, 0.5), '#3a2a20', Math.min(0.5, r.look.wear * 0.45));
+      const { p } = r, x0 = r.x0, x1 = x0 + r.tw, ap = p.mat(base), ln = p.mat(darker(base, 0.25));
       tunicTorso(r);
       p.rect(x0 + 2, r.sh + 2, r.tw - 3, r.hip - r.sh - 1, ap);
       p.rect(x0 + 1, r.hip - 1, r.tw, sz(r, 6), ap);

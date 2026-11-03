@@ -51,8 +51,8 @@ const STEP: Record<Gait, Step> = {
   float: { fa: [2, 0, -2, 0], ba: [-2, 0, 2, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.7 },
 };
 
-export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
-  const up = HOLD[kind] * DEG, armed = kind !== 'none', carry = kind === 'carry';
+export function keys(pose: Pose, kind: ToolKind, gait: Gait, rest?: number): Key[] {
+  const up = (rest ?? HOLD[kind]) * DEG, armed = kind !== 'none', carry = kind === 'carry';
   switch (pose) {
     case 'idle': return [
       { hand: carry ? CARRY : armed ? [3, 4] : HANG, far: carry ? CARRY_FAR : armed ? [-1, 5] : HANG_FAR, ang: up, b: gait === 'hop' ? 1 : 0 },
@@ -166,7 +166,7 @@ function reachOf(L: PersonLook): number {
 function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: Key } {
   const tool = TOOLS[L.tool] ?? NO_TOOL;
   const st = L.stage, infant = st === 'infant', gel = L.feats.includes('gel'), gait = L.body.gait;
-  const all = infant ? infantKeys(pose) : keys(pose, tool.kind, gait);
+  const all = infant ? infantKeys(pose) : keys(pose, tool.kind, gait, tool.rest);
   const key0 = all[Math.min(f, all.length - 1)];
   // the old take short steps and do not bob
   const key: Key = st === 'elder' && pose === 'walk' ? { ...key0, fa: Math.round((key0.fa ?? 0) * 0.6), ba: Math.round((key0.ba ?? 0) * 0.6), b: 0 } : key0;

@@ -514,12 +514,11 @@ export const FEATS: Record<string, Part> = {
     },
   },
   finskirt: {
-    // a ribbon fin that trails from the back of the hip to the hem, thin and a little see-through; it flutters even when nothing moves
+    // a short ribbon of fin that trails from the back of the hip: thin and a little see-through, it flutters even when nothing moves (the tail itself is the `gown` lower)
     lower: (r) => {
-      const { p } = r, gy = r.foot, fl = r.flap, x = r.x0;
-      const fin = p.mat(mixHex(r.look.second, r.look.accent, 0.25), { alpha: 0.85 }), rib = p.mat(tone(r.look.second, 0), { flat: true, alpha: 0.9 });
-      p.poly([[x + 1, r.hip + 1], [x - 3 - fl, gy - 4], [x - 2 - fl * 0.5, gy - 1], [x + 2, gy - 6]], fin);
-      p.line([x, r.hip + 3], [x - 2 - fl, gy - 3], rib);
+      const { p } = r, fl = r.flap, x = r.x0, end = Math.min(r.foot - 6, r.hip + 5);
+      const fin = p.mat(mixHex(r.look.second, r.look.accent, 0.25), { alpha: 0.85 });
+      p.poly([[x + 1, r.hip + 1], [x - 2 - fl, end], [x - 1 - fl * 0.5, end + 1], [x + 2, r.hip + 4]], fin);
     },
   },
   wet: {
@@ -609,11 +608,15 @@ export const FEATS: Record<string, Part> = {
       p.px(hx - r.hr[0] - L * 0.4, hy - 1 - L * 0.3, y);
     },
     hair: (r) => {
+      // the flame is the hair and only the hair: a few tongues stand up from the crown with the dark hair showing between them; the brow and the face stay clear
       const { p } = r, [hx] = r.head, top = Math.round(topY(r)) + 1, c = flat(r, r.look.accent), y = flat(r, '#ffc040'), d = flat(r, tone(r.look.accent, 1));
-      const h = [[3, 5, 4, 3], [4, 3, 5, 4], [5, 4, 3, 5], [3, 4, 5, 3]][r.f % 4];
+      const h = [[3, 5, 4], [4, 3, 5], [5, 4, 3], [3, 4, 5]][r.f % 4];
       h.forEach((ht, i) => {
-        const x = Math.round(hx - r.hr[0] * 0.8 + i * (r.hr[0] * 1.5 / 3));
-        p.rect(x, top - ht + 1, 2, ht, i % 2 ? c : d); p.px(x, top - ht, c); p.px(x + (i % 2), top - ht + 1, y);
+        const x = Math.round(hx - r.hr[0] * 0.75 + i * (r.hr[0] * 0.78));
+        p.rect(x, top, 2, 1, i % 2 ? c : d);
+        p.rect(x + (i % 2 ? 0 : 1), top - ht + 1, 1, ht, i % 2 ? c : d);
+        p.px(x + (i % 2 ? 0 : 1), top - ht, y);
+        if (ht > 3) p.px(x + (i % 2 ? 1 : 0), top - 1, y);
       });
     },
   },

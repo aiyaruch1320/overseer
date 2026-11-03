@@ -377,27 +377,26 @@ export const LOWER: Record<Lower, Part> = {
     },
   },
   gown: {
-    // a fitted skirt that narrows to the knee, then splits at the hem into a fin: a fan of pointed lobes with ribs, trailing to the back, fluttering even when nothing moves (not a bell)
+    // a tail: a fitted column from the hip that narrows toward the knee, then a fluke of two rounded lobes that rests on the ground (a hem of fin, never spikes), scale marks on the column,
+    // one dark rib in each lobe; the back lobe sways with the step
     lower: (r) => {
       const { p } = r, gy = r.foot, top = r.hip - 1, cx = r.x0 + r.tw / 2, fl = r.flap - 1, k = r.k;
-      const len = Math.max(6, gy - top), knee = gy - Math.max(3, Math.round(len * 0.4));
-      const skirt = p.mat(r.look.second), back = p.mat(mixHex(r.look.main, '#101830', 0.3)), seam = p.mat(tone(r.look.second, 1), { flat: true });
-      // the hem takes the second colour (a hint of the signature colour at the tips), so it never reads white like a ghost
-      const hemHex = mixHex(r.look.second, r.look.accent, 0.22), fin = p.mat(mixHex(hemHex, '#6a9ab0', 0.4)), finBack = p.mat(mixHex(r.look.second, r.look.main, 0.5)), rib = p.mat(tone(hemHex, 0), { flat: true });
-      // the back panel, a little wider at the hip, leaning with the flutter
-      p.poly([[r.x0 + 1, top], [r.x0 + r.tw - 1, top], [cx + 1.5, knee], [cx - 2.5 - fl, knee + 1]], back);
-      // the fitted skirt: hips to knee, narrowing
-      p.poly([[r.x0 - 0.5, top], [r.x0 + r.tw + 0.5, top], [r.x0 + r.tw - 0.8, knee], [r.x0 + 1.2, knee]], skirt);
-      p.line([r.x0 + 1, knee - 2], [r.x0 + r.tw - 1, knee - 2], seam);
-      // the fin: a fan from the knee to the ground, wider than the skirt, two big lobes behind and two in front, a notch between
-      const half = r.tw * 0.5 + 3.2 * k, left = cx - half - 1.5 + fl, right = cx + half - 0.5;
-      const lobes: [number, number][] = [[left, gy - 0.5 + (fl > 0 ? 0 : 0)], [cx - 1.5 + fl * 0.5, gy - 1.5], [cx + 1, gy - 0.5], [right, gy - 2.5]];
-      // behind: the long lobes
-      p.poly([[cx - 2, knee], [lobes[0][0], lobes[0][1]], [(lobes[0][0] + lobes[1][0]) / 2 + 0.6, gy - 4.2], [lobes[1][0], lobes[1][1]], [cx + 0.5, knee + 2]], finBack);
-      // in front: the short lobes, over the skirt hem
-      p.poly([[r.x0 + 1, knee - 0.5], [r.x0 + r.tw - 1, knee - 0.5], [lobes[3][0], lobes[3][1]], [(lobes[2][0] + lobes[3][0]) / 2 + 0.4, gy - 3.6], [lobes[2][0], lobes[2][1]], [(lobes[1][0] + lobes[2][0]) / 2, gy - 3.4], [lobes[1][0] + 1, lobes[1][1] - 0.5]], fin);
-      // the ribs of the fin
-      for (const [x] of lobes) p.line([cx + (x - cx) * 0.25 + (x < cx ? 0 : 1), knee + 1], [x + (x < cx ? 0.6 : -0.4), gy - 1.5], rib);
+      const len = Math.max(6, gy - top), knee = gy - Math.max(3, Math.round(len * 0.38));
+      const col = p.mat(mixHex(r.look.second, r.look.main, 0.25)), back = p.mat(mixHex(r.look.main, '#101830', 0.3)), seam = p.mat(tone(r.look.second, 1), { flat: true });
+      const finHex = mixHex(mixHex(r.look.second, r.look.accent, 0.3), '#5a8ca4', 0.35), fin = p.mat(finHex), finBack = p.mat(mixHex(finHex, '#10202a', 0.28)), rib = p.mat(tone(finHex, 0), { flat: true });
+      // the back panel, leaning with the sway
+      p.poly([[r.x0 + 1, top], [r.x0 + r.tw - 1, top], [cx + 1.5, knee], [cx - 2.5 - fl * 0.5, knee + 1]], back);
+      // the column: hips to knee, narrowing
+      p.poly([[r.x0 - 0.5, top], [r.x0 + r.tw + 0.5, top], [r.x0 + r.tw - 1.2, knee], [r.x0 + 1.4, knee]], col);
+      for (let y = top + 3; y < knee - 1; y += 3) for (let x = r.x0 + 2 + (((y - top) / 3) % 2); x < r.x0 + r.tw - 1; x += 2) p.px(x, y, seam);
+      // the fluke: a neck from the knee, a lobe behind (longer, it trails) and a lobe in front, a shallow notch between
+      const half = r.tw * 0.5 + 3 * k, h = Math.max(2.2, (gy - knee) * 0.5);
+      p.poly([[cx - 2.5, knee - 0.5], [cx + 1.5, knee - 0.5], [cx + 2.5, gy - h], [cx - 3, gy - h]], finBack);
+      p.ell(cx - half * 0.62 + fl, gy - h + 0.2, half * 0.62 + 0.4, h, finBack);
+      p.ell(cx + half * 0.5, gy - h, half * 0.55, h - 0.2, fin);
+      p.poly([[cx - 2.2, knee - 0.5], [cx + 1.8, knee - 0.5], [cx + 2.6, gy - h], [cx - 2.4, gy - h]], fin);
+      p.line([cx - half * 0.55 + fl, gy - h * 1.6], [cx - half * 0.55 + fl, gy - 1.5], rib);
+      p.line([cx + half * 0.6, gy - h * 1.6], [cx + half * 0.6, gy - 1.5], rib);
       p.rect(Math.round(r.x0 - 0.5), knee - 1, r.tw + 1, 1, p.mat(mixHex(r.look.accent, r.look.second, 0.35)));
     },
   },
