@@ -95,20 +95,30 @@ export function GodPanel({ panel, onOpen }: { panel: GodPanelView; onOpen: (kind
         {panel.buttons.map((k) => {
           const glow = panel.windowOpen && (k === 'chest' || k === 'dream');
           const off = !panel.alive;
+          const gate = panel.gates[k];
+          const grey = off || !!gate;
           return (
-            <button
-              key={k}
-              class={`wt-btn${glow ? ' wt-edge' : ''}`}
-              style={{ ...(off ? buttonOff : button), display: 'flex', justifyContent: 'space-between', alignItems: 'center', ...(glow ? { borderColor: color.light } : {}) }}
-              disabled={off}
-              aria-disabled={off}
-              aria-keyshortcuts={W.keys[k]}
-              onClick={() => onOpen(k)}
-              data-testid={`god-${k}`}
-            >
-              <span>{W.god[k]}</span>
-              <kbd style={{ fontFamily: font.mono, fontSize: 11, color: color.textDim }}>{W.keys[k]}</kbd>
-            </button>
+            <div key={k} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <button
+                class={`wt-btn${glow && !gate ? ' wt-edge' : ''}`}
+                style={{ ...(grey ? buttonOff : button), display: 'flex', justifyContent: 'space-between', alignItems: 'center', ...(glow && !gate ? { borderColor: color.light } : {}) }}
+                disabled={off}
+                aria-disabled={grey}
+                aria-keyshortcuts={W.keys[k]}
+                title={gate?.reason}
+                onClick={() => !gate && onOpen(k)}
+                data-testid={`god-${k}`}
+              >
+                <span>{W.god[k]}</span>
+                <kbd style={{ fontFamily: font.mono, fontSize: 11, color: color.textDim }}>{W.keys[k]}</kbd>
+              </button>
+              {gate && (
+                <span role="note" style={{ color: color.textDim, fontSize: size.small, lineHeight: 1.3 }} data-testid={`god-${k}-why`}>
+                  {W.gate.hourglass} {gate.reason}
+                  {gate.wait !== undefined && !gate.reason.includes('ปี') ? ` · ${W.gate.wait(gate.wait)}` : ''}
+                </span>
+              )}
+            </div>
           );
         })}
       </div>

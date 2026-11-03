@@ -6,7 +6,7 @@ import { createSession, startLife } from '../../scripts/tools/session';
 import type { GameData } from '../../src/core/game';
 import { write } from '../../src/core/log';
 import type { GameState } from '../../src/core/types';
-import { candleOf, entryAt, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
+import { candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
 
 let data: GameData;
 beforeAll(() => {
@@ -200,5 +200,52 @@ describe('watch: the settings', () => {
     expect(v.llm.setup).toBe(true);
     st.settings.llm.master = false;
     expect(settingsView(data, st.settings).master).toBe(false);
+  });
+});
+
+describe('watch: the grey buttons of the god', () => {
+  it('a button the core says no to is listed with the reason; the rest are not', () => {
+    const s = createSession(data, { seed: 1 });
+    startLife(s);
+    for (let i = 0; i < 5; i++) s.game.beat();
+    const g = s.game;
+    g.state.god.light = 0;
+    const gates = godGates(g.ctx);
+    expect(gates.whisper).toMatchObject({ why: 'cost' });
+    expect(gates.whisper?.reason).toMatch(/ไม่พอ/);
+    const m = watchModel(data, g.state, { ...uiOfState(g.state), gates });
+    expect(m.panel.gates.whisper).toEqual(gates.whisper);
+    expect(m.panel.gates.chronicle).toBeUndefined();
+    g.state.god.light = 150;
+    expect(godGates(g.ctx).whisper).toBeUndefined();
+  });
+
+  it('a dead hero greys nothing more: the buttons are off for the dead and have no gate', () => {
+    const st = life(1, 5);
+    const gates = { chest: { reason: 'x', why: 'cap' as const } };
+    st.life!.dead = true;
+    expect(watchModel(data, st, { ...uiOfState(st), gates }).panel.gates).toEqual({});
+  });
+});
+
+describe('watch: the switches of the cards', () => {
+  it('all on in a setting that has none; the patch changes one kind and keeps the others', () => {
+    const st = life(1, 5);
+    expect(settingsView(data, st.settings).cards).toEqual({ prayer: true, omen: true, battle: true, crisis: true, majorOmen: true });
+    const p = cardsPatch(st.settings, 'battle', false);
+    expect(p.cards).toEqual({ prayer: true, omen: true, battle: false, crisis: true, majorOmen: true });
+    expect(refusedSettings(p)).toBeNull();
+    const old = { ...st.settings, cards: undefined } as never;
+    expect(settingsView(data, old).cards.prayer).toBe(true);
+  });
+
+  it('applied through the store command the switch holds and the view follows', async () => {
+    const { command } = await import('../../src/core/command');
+    const s = createSession(data, { seed: 1 });
+    startLife(s);
+    const r = command(s.game.ctx, { type: 'settings', patch: cardsPatch(s.game.state.settings, 'omen', false) });
+    expect(r.ok).toBe(true);
+    expect(settingsView(data, s.game.state.settings).cards.omen).toBe(false);
+    expect(settingsView(data, s.game.state.settings).cards.prayer).toBe(true);
   });
 });

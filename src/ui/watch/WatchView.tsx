@@ -64,7 +64,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
       }
       if (e.key === '1') a.setSpeed('normal');
       else if (e.key === '2') a.setSpeed('fast');
-      else if (KEY_GOD[e.key.toLowerCase()] && m.panel.alive) a.onOpenGod({ kind: KEY_GOD[e.key.toLowerCase()], args: {} });
+      else if (KEY_GOD[e.key.toLowerCase()] && m.panel.alive && !m.panel.gates[KEY_GOD[e.key.toLowerCase()]]) a.onOpenGod({ kind: KEY_GOD[e.key.toLowerCase()], args: {} });
     };
     // a button that has the focus would also press itself on the key up of the space: the space is the screen's
     const up = (e: KeyboardEvent) => {

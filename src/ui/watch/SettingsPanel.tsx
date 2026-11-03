@@ -1,7 +1,7 @@
 // The settings panel (07-attention.md §4, llm/README.md §3): speed, how often the game calls, the LLM switches, the candle as a percentage.
 // Every change goes out as a patch of `Settings`; the core refuses a value it does not know (`badSettings`) and the reason is shown.
 import { useEffect, useState } from 'preact/hooks';
-import { llmPatch, type LlmKey, type SettingsView } from '../../app/views/watch';
+import { CARD_SWITCHES, cardsPatch, llmPatch, type LlmKey, type SettingsView } from '../../app/views/watch';
 import { WATCH_WORDS as W } from '../../app/views/watch-words';
 import type { Settings } from '../../core/types';
 import { color, font, size } from '../tokens';
@@ -77,6 +77,16 @@ export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct
             ))}
           </div>
           {view.attentionNotes[view.attention] && <p style={{ margin: '8px 0 0', fontSize: size.small, color: color.textDim, lineHeight: 1.5 }}>{view.attentionNotes[view.attention]}</p>}
+        </div>
+
+        <div>
+          <div style={heading}>{W.settings.cards}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {CARD_SWITCHES.map((k) => (
+              <Switch key={k} id={`set-card-${k}`} on={view.cards[k]} label={W.settings.cardKinds[k]} onToggle={(on) => send(cardsPatch(settings, k, on))} />
+            ))}
+          </div>
+          <p style={{ margin: '8px 0 0', fontSize: size.small, color: color.textDim, lineHeight: 1.5 }}>{W.settings.cardsNote}</p>
         </div>
 
         <div>
