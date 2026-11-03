@@ -1,5 +1,5 @@
 {
- "version": "5e410d648894",
+ "version": "edcfd07d8d7a",
  "sources": [
   "docs/systems/character/20-wish-synonyms.md"
  ],
@@ -6628,7 +6628,7 @@
      }
     ],
     "declaredValues": 8,
-    "declaredSyn": 79
+    "declaredSyn": 83
    },
    {
     "key": "era",
@@ -6975,7 +6975,7 @@
    "values": 506,
    "synonyms": 3566,
    "declaredValues": 506,
-   "declaredSynonyms": 3562
+   "declaredSynonyms": 3566
   },
   "negation": [
    {
