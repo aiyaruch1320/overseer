@@ -475,9 +475,9 @@ describe('text: the hand of the god and the calls of the game', () => {
     expect(lines(data, [crisis, card], 0).map((l) => l.text).pop()).toBe('ไลลินา (สหาย) ตกอยู่ในวิกฤต · รอท่านอยู่จนอายุ 26');
     const stop = att({ why: 'age', age: 30, cards: 'crisis', n: '7', ids: 'T3' });
     expect(lines(data, [crisis, stop], 0).map((l) => l.text).pop()).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 30 · มีเรื่องรออยู่ด้วย: วิกฤตของ ไลลินา (สหาย)');
-    // a glow and a missed card are for the log, not for the player
+    // a glow is for the log, not for the player; a missed card is told in the log (tests/core/attention-cards.test.ts holds its phrasing)
     expect(say(data, e({ sys: 'attention', kind: 'glow', level: 1, data: { why: 'gap' } }), { raw: true })).toBeNull();
-    expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toBeNull();
+    expect(say(data, e({ sys: 'attention', kind: 'missed', level: 1, data: { kind: 'prayer' } }), { raw: true })).toMatch(/คำอธิษฐาน/);
   });
 });
 

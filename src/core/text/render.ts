@@ -353,6 +353,8 @@ export class Reader {
       if (e.kind === 'omen') return ev ? `ลางของเหตุการณ์โลก: ${ev}${where}` : null;
       if (e.kind === 'ending') return ev ? `โลกถึงจุดจบ: ${ev}${year}` : 'โลกถึงจุดจบ';
       if (e.kind === 'era') return `ยุคที่ ${s(d.era ?? d.to)} เริ่มขึ้น${year}`;
+      // the fall of a dragon: the event that carries it tells it; a fall with no event (the god's hand, the last dragon) is told here
+      if (e.kind === 'dragonFall') return d.event ? null : `มังกร ${s(d.name)} ล้มลง${where}${year}`;
       if (e.kind === 'dragon') {
         const dn = s(d.name) || this.nm(e.id);
         return `มังกร${dn ? ` ${dn}` : ''} ${scrub(data, s(d.what ?? d.state)) || 'ล้ม'}${year}`;

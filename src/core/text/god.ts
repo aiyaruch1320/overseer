@@ -382,9 +382,45 @@ export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) =
   return `${why}${age}${d.call === 'stop' && uniq.length ? ` · มีเรื่องรออยู่ด้วย: ${uniq.join(' · ')}` : ''}`;
 }
 
-/** The line of an `attention` entry: a stop (the game waits for the player) or a card (time goes on); the glow and the missed card are not told. */
+/**
+ * The line of a card that was not called, whether it came too late or its kind is switched off (07-attention.md §1 rule 5, §4): the character
+ * acted alone and the log tells it, naming the person or the foe when the entry has one. A character who died before the card could be shown
+ * has a line of his own.
+ */
+export function missedText(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined): string {
+  const d = e.data;
+  const ids = s(e.id).split(',').filter(Boolean);
+  const name = (id: string) => plainName(data, id);
+  const first = ids[0] ?? '';
+  const dead = d.death === true;
+  switch (s(d.kind)) {
+    case 'prayer': {
+      const p = prayerName(data, first);
+      return dead ? `เขาตายไปก่อนที่ใครจะตอบคำอธิษฐาน${p ? `เรื่อง ${p}` : ''}` : `คำอธิษฐาน${p ? `เรื่อง ${p}` : 'ของเขา'} จางหายไปโดยไม่มีใครตอบ`;
+    }
+    case 'battle': {
+      const foe = ids.map(name).find((x) => !!x);
+      return dead ? `เขาตายในศึก${foe ? `กับ ${foe} ` : ''}โดยไม่มีใครกระซิบ` : `เขาออกศึก${foe ? `กับ ${foe} ` : ''}โดยไม่มีใครกระซิบ`;
+    }
+    case 'crisis': {
+      const who = crisisOf?.(Number(d.n));
+      return dead ? `${who ?? 'คนใกล้ตัว'} ตกอยู่ในวิกฤต แต่เขาจากไปก่อนจะมีใครช่วย` : `${who ?? 'คนใกล้ตัว'} ผ่านวิกฤตไปโดยไม่มีใครเอ่ยปากช่วย`;
+    }
+    case 'majorOmen': {
+      const ev = name(first);
+      return `ลางใหญ่${ev ? `ของ ${ev} ` : ''}ผ่านหน้าเขาไปโดยไม่มีใครบอก`;
+    }
+    default: {
+      const ev = name(first);
+      return `ลาง${ev ? `ของ ${ev} ` : 'ของเหตุการณ์โลก'}ผ่านไปโดยไม่มีใครสังเกต`;
+    }
+  }
+}
+
+/** The line of an `attention` entry: a stop (the game waits for the player) or a card (time goes on), or a card that was not called (`missedText`); the glow is not told. */
 export function attentionText(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined): string | null | undefined {
-  if (e.kind === 'glow' || e.kind === 'missed') return null;
+  if (e.kind === 'missed') return missedText(data, e, crisisOf);
+  if (e.kind === 'glow') return null;
   if (e.kind !== 'call') return undefined;
   const d = e.data;
   const reason = callReason(data, e, crisisOf);
