@@ -102,3 +102,6 @@ export const DEPTH = { terrain: 0, borders: 10, fate: 15, ruins: 20, cities: 30,
 export const PAN_SPEED = 700;
 export const WHEEL_ZOOM = 1.12;
 export const KEY_ZOOM = 1.9;
+
+/** Size category of each dragon in MU of the shadow it casts (03-dragons.md UI table: S M L XL). */
+export const DRAGON_SIZE: number[] = [16, 11, 11, 7, 7, 11, 11, 11, 16, 16, 16, 11, 16, 16, 16];

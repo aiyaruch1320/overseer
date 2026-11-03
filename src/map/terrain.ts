@@ -145,7 +145,7 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         }
         const tex = nTex(x / 7, y / 7, 3) - 0.5;
         const slope = (nShade((x + 1.3) / 10, (y + 1.3) / 10, 2) - nShade((x - 1.3) / 10, (y - 1.3) / 10, 2)) * 5;
-        let k = 1 + tex * 0.2 + slope * 0.16 + Math.min(v, 70) / 700;
+        let k = 1 + tex * 0.12 + slope * 0.1 + Math.min(v, 70) / 700;
         const o = fine || borders ? layout.owner[Math.floor(y / g.cell) * g.cols + Math.floor(x / g.cell)] : -1;
         if (borders && o >= 0) k *= countryTint[o];
         col = [col[0] * k, col[1] * k, col[2] * k];
