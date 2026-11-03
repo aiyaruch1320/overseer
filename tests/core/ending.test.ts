@@ -92,8 +92,8 @@ describe('E1: the facts tell the relations as they were', () => {
     kid.kin = 'child';
     kid.born = 22;
     const fact = gatherFacts(ctx, null).facts.find((f) => f.kind === 'ทายาท')!;
-    expect(fact.slots.age).toBe(22);
-    expect(fact.slots.age).not.toBe(st.life!.dead?.hAge);
+    // the fact is told after the death, so it holds no age of the birth (a birth told after the death, M4 review R3); the card holds the age
+    expect(fact.slots.age).toBeUndefined();
     expect(gatherFacts(ctx, null).facts.some((f) => f.kind === 'ลูกเกิด' && f.age === 22 && f.moment)).toBe(true);
   });
 
@@ -128,7 +128,8 @@ describe('E2: the three moments are turning points', () => {
   it('the question is a moment only when nothing better exists', () => {
     const ctx = ctxOf();
     const m = momentsOf(ctx, [f('คำตอบของคำถามชีวิต', 70, { question: 'ก' }, { bonus: 4 }), f('หักหลัง', 46, { npc: 'ผู้ทรยศ' }, { moment: true })], new Set(), 'L1');
-    expect(m.map((x) => x.kind)).toEqual(['หักหลัง', 'คำตอบของคำถามชีวิต']);
+    // the question line is on the card already, and a line "the question reached its answer" with no question beside it is no turning point (R3)
+    expect(m.map((x) => x.kind)).toEqual(['หักหลัง']);
     expect(MOMENT.question).toBeLessThan(0);
   });
 
@@ -155,7 +156,8 @@ describe('E3: an ending is taken once per family', () => {
       const ends = x.recs.map((r) => r.ending).filter(Boolean);
       expect(new Set(ends).size).toBe(ends.length);
       for (const r of x.recs) {
-        if (r.ending === 'ผู้ปิดสมุดตระกูล') expect(x.threads.some((t) => t.holder === r.id && t.tried === 'closed')).toBe(true);
+        // the thread the life closed is told in the log of the life (the book closes it at the death: no holder is left on it)
+        if (r.ending === 'ผู้ปิดสมุดตระกูล') expect(s.game.state.log.some((e) => e.n >= r.startN && e.n <= r.endN && e.sys === 'lineage' && e.kind === 'thread' && e.data.way !== 'drop')).toBe(true);
         if (r.origin === 'newcomer') expect(['ผู้ปิดสมุดตระกูล', 'ผู้พาตระกูลข้ามยุค', 'ผู้ถูกเทียบกับบรรพบุรุษ', 'ผู้เริ่มสายใหม่']).not.toContain(r.ending);
       }
     }
@@ -271,5 +273,64 @@ describe('M7: the collection holds the categories of the goals', () => {
     expect(by.title.found.every((f) => f.name === f.id)).toBe(true);
     expect(buildCard).toBeTruthy();
     expect(lifeLog).toBeTruthy();
+  });
+});
+
+describe('M4 round two: the card does not tell what the family web carried as if it happened in the life (R1 to R7)', () => {
+  const cardsOf = (seed: number, n = 3) => {
+    const s = lineage(seed, n);
+    return { s, x: lx(s.game.state), cards: Object.values(lx(s.game.state).cards) };
+  };
+
+  it('R1: an heir does not "meet" a partner of the family on the day of the takeover', () => {
+    for (const seed of [3, 9]) {
+      const { x, cards } = cardsOf(seed);
+      for (const r of x.recs.filter((q) => q.origin !== 'first' && q.origin !== 'newcomer')) {
+        const c = cards.find((q) => q.life === r.id)!;
+        expect(c.moments.some((m) => m.kind === 'คนรัก' && m.age === r.startAge)).toBe(false);
+      }
+    }
+  });
+
+  it('R3: no moment is a bare count and no line says "reached the answer" without the question', () => {
+    for (const seed of [3, 5, 9, 13]) {
+      for (const c of cardsOf(seed).cards) {
+        for (const m of c.moments) expect(m.line).not.toMatch(/ประเทศ \d+ ทวีป|^รบ \d+ ครั้ง|นาน \d+ ปีชีวิต|ถึงคำตอบ$/);
+        expect(c.question.line).not.toMatch(/^คำถามของชีวิตนี้/);
+        expect(c.summary.text).not.toMatch(/ลูกคนแรกชื่อ.*เกิดเมื่อเขาอายุ/);
+      }
+    }
+  });
+
+  it('R5: an heir who closed the thread he took is the one who closed the book', () => {
+    const { x } = cardsOf(3);
+    expect(x.recs.some((r) => r.ending === 'ผู้ปิดสมุดตระกูล')).toBe(true);
+  });
+
+  it('R4: a newcomer opens no line of the heirs, and a family with no heir leaves no thread open', () => {
+    for (const seed of [9, 5]) {
+      const { s, x } = cardsOf(seed, 5);
+      for (const r of x.recs.filter((q) => q.origin === 'newcomer')) {
+        expect(s.game.state.log.some((e) => e.n >= r.startN && e.n <= r.endN && e.sys === 'lineage' && e.kind === 'thread')).toBe(false);
+        expect(s.game.state.log.some((e) => e.n >= r.startN && e.n <= r.endN && e.sys === 'story' && String(e.id).startsWith('hr.'))).toBe(false);
+      }
+      const last = x.recs[x.recs.length - 1];
+      if (!last.heir) expect(x.threads.filter((t) => t.state === 'open').length).toBe(0);
+    }
+  });
+
+  it('R7: what the card says it earned counts the titles and the vow, like the page of the collection', () => {
+    const { s, cards } = cardsOf(5, 2);
+    expect(cards.flatMap((c) => c.titles).length).toBeGreaterThan(0);
+    expect(cards.flatMap((c) => c.earned).some((e) => e.startsWith('title:'))).toBe(true);
+    expect(s.game.state.lineage.collection.some((e) => e.startsWith('title:'))).toBe(true);
+  });
+
+  it('R7: a traveller who stayed most of his years in one place is not also told as one who stayed', () => {
+    for (const seed of [17, 13, 5]) {
+      for (const c of cardsOf(seed).cards) {
+        if (c.titles.includes('นักเดินทาง')) expect(c.facts.some((f) => f.kind === 'ถิ่นที่อยู่นานที่สุด')).toBe(false);
+      }
+    }
   });
 });

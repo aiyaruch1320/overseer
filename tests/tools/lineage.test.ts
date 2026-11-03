@@ -132,7 +132,8 @@ describe('collection', () => {
     const view = collectionView(s.game.state, data);
     // the categories of the goals are read from the goals' book, not from the list of entries
     const base = view.categories.filter((c) => !['vow', 'title', 'godtitle', 'miracle', 'conjure', 'reaction'].includes(c.id));
-    expect(base.reduce((n, c) => n + c.have, 0)).toBe(s.game.state.lineage.collection.length);
+    // titles and vows are listed in the save only so the card can tell which are new; the page reads them from the goals
+    expect(base.reduce((n, c) => n + c.have, 0)).toBe(s.game.state.lineage.collection.filter((e) => !/^(title|vow):/.test(e)).length);
     expect(view.total).toBeGreaterThan(900);
     const nodes = view.categories.find((c) => c.id === 'node')!;
     expect(nodes.have).toBeGreaterThan(20);
