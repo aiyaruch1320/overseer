@@ -12,6 +12,15 @@ const brow = (h: Head) => h.hy - Math.max(1, Math.round(h.ry * 0.4));
 const dome = (r: Rig, mat: number, grow: number, back = 0.1): void => cap(r, mat, grow, (nx, ny) => ny < -0.3 || (nx < -0.25 && ny < back));
 const wearDark = (r: Rig, base: string) => r.p.mat(mix(base, '#b8a98a', 0.3));
 
+/** The metal of a crown: the look's accent when it has little colour (silver, iron, bone, jet), else gold. */
+function crownMetal(accent: string): string {
+  const v = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(accent);
+  if (!v) return TONE.gold;
+  const [r, g, b] = v.slice(1).map((x) => parseInt(x, 16) / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+  return mx - mn < 0.18 ? accent : TONE.gold;
+}
+
 export const HATS: Record<string, Part> = {
   // ── hood: a cloth hood over the head with a peak at the back, the face open, a drape at the neck ─────────────────────────────────────
   hood: {
@@ -138,16 +147,16 @@ export const HATS: Record<string, Part> = {
     },
   },
 
-  // ── crown: a gold band with points and red stones ───────────────────────────────────────────────────────────────────────────────────
+  // ── crown: a band with points and red stones: gold, or the accent when the accent is a metal or bone (a silver crown, a crown of bones) ──
   crown: {
     hat: (r) => {
-      const h = headOf(r), { p } = r, gold = p.mat(TONE.gold), gem = p.mat(TONE.blood, { flat: true });
+      const h = headOf(r), { p } = r, metal = crownMetal(r.look.accent), gold = p.mat(metal), gem = p.mat(TONE.blood, { flat: true });
       const x0 = h.hx - Math.round(h.rx) + 1, n = Math.round(h.rx * 2) - 1;
       p.rect(x0 - 1, h.top - 1, n + 2, 3, gold);
       for (let i = 0; i < n; i += 2) p.rect(x0 + i - 0, h.top - 1 - sz(r, 3), 1, sz(r, 3), gold);
       p.px(h.hx - 1 + 1, h.top, gem); p.px(x0, h.top, gem);
       p.px(x0 + n - 1, h.top, gem);
-      p.px(x0 + 2, h.top - sz(r, 3) - 1, p.mat(lighter(TONE.gold, 0.4), { flat: true }));
+      p.px(x0 + 2, h.top - sz(r, 3) - 1, p.mat(lighter(metal, 0.4), { flat: true }));
     },
   },
 
