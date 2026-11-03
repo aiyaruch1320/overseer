@@ -29,7 +29,7 @@ export const CITY_H = (CITY_W * 101) / 162;
 export const TOWN_SPACING = 0.95;
 
 /** Pixels per MU of the tile of each level (the tile is painted once at this size and cached). */
-export const TILE_PX: Record<ZoomId, number> = { world: 0.8, continent: 2.2, country: 5, city: 24, inside: 40 };
+export const TILE_PX: Record<ZoomId, number> = { world: 0.8, continent: 2, country: 5, city: 24, inside: 40 };
 /** MU added around a continent/country box on its tile. */
 export const TILE_PAD: Record<ZoomId, number> = { world: 0, continent: 14, country: 8, city: 0, inside: 0 };
 /** Tiles kept at once in the scene (oldest dropped). */

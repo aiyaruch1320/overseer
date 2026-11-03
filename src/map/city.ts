@@ -155,7 +155,7 @@ export function planCity(country: Country, continent: string, cityId: string, ca
   }
 
   // occupancy of the ground so that nothing is built twice in one place
-  const CELL = 0.5;
+  const CELL = 0.25;
   const oc = new Uint8Array(Math.ceil(W / CELL) * Math.ceil(H / CELL));
   const ocW = Math.ceil(W / CELL);
   const taken = (x: number, y: number, w: number, h: number): boolean => {
@@ -227,9 +227,9 @@ export function planCity(country: Country, continent: string, cityId: string, ca
         const bw = rng.float(1.0, 1.7) * (0.9 + near * 0.35), bh = rng.float(0.9, 1.4) * (0.9 + near * 0.3);
         for (const side of [-1, 1]) {
           if (!rng.chance(0.55 + near * 0.4)) continue;
-          const off = s.width / 2 + bh / 2 + 0.12;
+          const off = s.width / 2 + Math.max(bw, bh) * 0.5 + 0.3;
           const x = px + nx * off * side, y = py + ny * off * side;
-          if (!inEll(x, y, 1.02) || taken(x, y, Math.max(bw, bh) * 0.9, Math.max(bw, bh) * 0.9)) continue;
+          if (!inEll(x, y, 1.02) || taken(x, y, Math.max(bw, bh) * 0.8, Math.max(bw, bh) * 0.8)) continue;
           place(x, y, bw, bh, rot + (side < 0 ? Math.PI : 0), pickStyle(), undefined, near > 0.55 && rng.chance(0.5) ? 2 : 1);
         }
         t += bw * 0.95;
@@ -239,10 +239,20 @@ export function planCity(country: Country, continent: string, cityId: string, ca
   // a second row behind the first where there is room
   const rowTwo = buildings.slice();
   for (const bd of rowTwo) {
-    if (bd.special || !rng.chance(0.35)) continue;
+    if (bd.special || !rng.chance(0.6)) continue;
     const dx = bd.x - cx, dy = bd.y - cy, d = Math.hypot(dx, dy) || 1;
     const x = bd.x + (dx / d) * 1.4, y = bd.y + (dy / d) * 1.4;
     if (inEll(x, y, 0.98) && !taken(x, y, 1.1, 1.1)) place(x, y, rng.float(0.9, 1.3), rng.float(0.8, 1.2), bd.rot, pickStyle());
+  }
+
+  // infill between the streets, thinner toward the edge
+  for (let tries = 0; tries < 600 && buildings.length < 60 + scale * 28; tries++) {
+    const a = rng.float(0, Math.PI * 2), d = Math.sqrt(rng.next()) * 0.96;
+    const x = cx + Math.cos(a) * rx * d, y = cy + Math.sin(a) * ry * d;
+    if (!rng.chance(0.9 - d * 0.6)) continue;
+    const bw = rng.float(0.9, 1.4), bh = rng.float(0.8, 1.2);
+    if (taken(x, y, bw * 0.85, bh * 0.85)) continue;
+    place(x, y, bw, bh, rng.pick([0, 0, Math.PI / 2, rng.float(-0.4, 0.4)]), pickStyle(), undefined, d < 0.4 && rng.chance(0.4) ? 2 : 1);
   }
 
   // wall and gates

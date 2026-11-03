@@ -20,6 +20,8 @@ for (const d of DEFS)
     ZONES.push({ z, cont: d.cont, box: [z.x - r, z.y - r, z.x + r, z.y + r], col: rgb(ZONE_COLOR[z.kind] ?? '#888888') });
   }
 
+const ZONES_OF: ZoneRef[][] = CONT_IDS.map((_, ci) => ZONES.filter((z) => z.cont === ci));
+
 const SAND = rgb('#e2d3a0'), INK = rgb('#2c2418'), FOAM = rgb(SEA.foam);
 const SEA_SH = rgb(SEA.shallow), SEA_MID = rgb(SEA.mid), SEA_DEEP = rgb(SEA.deep);
 const CLIFF = rgb('#6a5a48');
@@ -37,7 +39,11 @@ function zoneWeight(zr: ZoneRef, x: number, y: number): number {
 function contAt(layout: MapLayout, x: number, y: number): number {
   const g = layout.grid;
   const i = Math.floor(x / g.cell), j = Math.floor(y / g.cell);
-  for (let r = 0; r <= 2; r++)
+  if (i >= 0 && j >= 0 && i < g.cols && j < g.rows) {
+    const d0 = g.def[j * g.cols + i];
+    if (d0 >= 0) return DEFS[d0].cont;
+  }
+  for (let r = 1; r <= 2; r++)
     for (let dj = -r; dj <= r; dj++)
       for (let di = -r; di <= r; di++) {
         if (r && Math.abs(di) < r && Math.abs(dj) < r) continue;
@@ -66,6 +72,20 @@ export function ownerSmooth(layout: MapLayout, x: number, y: number): number {
     else if (b < 0 || wb < w) { b = o; wb = w; }
   }
   return wa >= wb ? a : b;
+}
+
+/** True when a cell next to the point has another owner (a border may run here). */
+function nearEdge(layout: MapLayout, x: number, y: number, o: number): boolean {
+  const g = layout.grid;
+  const i = Math.floor(x / g.cell), j = Math.floor(y / g.cell);
+  for (let dj = -1; dj <= 1; dj++)
+    for (let di = -1; di <= 1; di++) {
+      const a = i + di, b = j + dj;
+      if (a < 0 || b < 0 || a >= g.cols || b >= g.rows) continue;
+      const q = layout.owner[b * g.cols + a];
+      if (q >= 0 && q !== o) return true;
+    }
+  return false;
 }
 
 export interface PaintOpts {
@@ -115,8 +135,8 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         const fate = fates[cid] ? FATE_BY_ID[fates[cid]!] : undefined;
         let col: RGB = groundOf[ci < 0 ? 4 : ci];
         // zones (later ones paint over earlier ones)
-        for (const zr of ZONES) {
-          if (zr.cont !== ci || x < zr.box[0] || x > zr.box[2] || y < zr.box[1] || y > zr.box[3]) continue;
+        for (const zr of ci >= 0 ? ZONES_OF[ci] : []) {
+          if (x < zr.box[0] || x > zr.box[2] || y < zr.box[1] || y > zr.box[3]) continue;
           const w = zoneWeight(zr, x, y);
           if (w <= 0.01) continue;
           let zc = zr.col;
@@ -158,7 +178,7 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         const inkA = 1 - smooth(bw * 0.4, bw * 1.8 + 0.18, v);
         if (inkA > 0) col = mixRGB(col, INK, inkA * 0.75);
         // borders between the countries of one continent
-        if (borders && o >= 0 && v > 0.8) {
+        if (borders && o >= 0 && v > 0.8 && nearEdge(layout, x, y, o)) {
           const d = bw * 1.1;
           const a = ownerSmooth(layout, x + d, y + d), b2 = ownerSmooth(layout, x - d, y - d);
           const c2 = ownerSmooth(layout, x + d, y - d), d2 = ownerSmooth(layout, x - d, y + d);
