@@ -10,6 +10,9 @@ import { StartScreen } from './start';
 import { WatchScreen } from './watch';
 import { color, font, size } from './tokens';
 
+/** The mini-map slot of the watch screen is 200 px wide (src/ui/watch/style.ts `layout.mapWidth`). */
+const MINI_MAP_WIDTH = 200;
+
 const page = { background: color.panel, color: color.text, fontFamily: font.body, fontSize: size.text, minHeight: '100vh', padding: size.pad } as const;
 
 export function App() {
@@ -23,7 +26,7 @@ export function App() {
     <>
       <WatchScreen
         onOpenGod={(o) => (o.kind === 'decree' ? openGod('miracle', { id: 'MR-25', tab: 'fate', ...o.args }) : openGod(o.kind, o.args))}
-        map={store.gameData && store.state ? <WorldMap data={store.gameData} state={store.state} mini /> : undefined}
+        map={store.gameData && store.state ? <WorldMap data={store.gameData} state={store.state} mini width={MINI_MAP_WIDTH} /> : undefined}
         scene={<LifeScene />}
       />
       <GodPanel />

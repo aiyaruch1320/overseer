@@ -31,6 +31,12 @@ export function LifeScene() {
   const found = useMemo(() => (st && data ? newestScene(st.log, data) : {}), [st?.logN]);
   const play = found.play && found.play.entry.n > played ? found.play : undefined;
   if (play && play.kind === 'script') return <ScenePlayer script={play.script} controls onDone={() => setPlayed(play.entry.n)} />;
-  if (found.card) return <EventCard card={found.card.card} />;
+  // the card stands in the middle of the scene area: the name and the candle of the watch screen lie over its top-left corner
+  if (found.card)
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+        <EventCard card={found.card.card} />
+      </div>
+    );
   return null;
 }
