@@ -5,6 +5,7 @@
 ## สถานะ
 ขั้นปัจจุบัน: M7 ฉากและภาพแผนที่ (M6 เสร็จ 2026-11-03)
 งานที่กำลังทำ (ส่ง 2026-11-03 23.05 โหมดประหยัด 2 agent สัญญากลาง `src/art/scenery/types.ts` 9a17c58):
+  - ก3 เอฟเฟกต์ของจังหวะ (ส่ง 23.25) · สาขา `worktree-agent-a21857613f440436d` · `.claude/worktrees/agent-a21857613f440436d` · เจ้าของ src/scene/fx/ ส่วน fx ของ stage/controller.ts Stage.tsx particles.ts · ภาพ review/m7/k3/
   - ก2 ฉากหลังพิกเซล · สาขา `worktree-agent-a0ed660897ec47ae7` · `.claude/worktrees/agent-a0ed660897ec47ae7` · เจ้าของ src/art/scenery/ scenery.html src/art/dev/scenery.ts · ภาพ review/m7/k2/
 งานถัดไป:
   1. **M7 ตามแผน [m7/plan.md](m7/plan.md)**: แกนก่อน (ก1 เวทีฉากเป็น Phaser · ก2 ฉากหลังพิกเซลต่อทวีป · ก3 เอฟเฟกต์ของจังหวะ · ก4 ฉากว่างและการ์ด · ก5 ตรวจภาพ 2 คน) แล้วที่เหลือ (ข1 ชุดฉาก §8.3 · ข2 แผนที่เมืองพิกเซล · ข3 ลบ legacy/ · ข4 รอบตรวจ · ข5 ข้อค้าง M6 · ข6 final-report) · **ใช้โหมดประหยัด (plan.md หัวข้อ 3)** เมื่อทำบน account โควตาน้อย
