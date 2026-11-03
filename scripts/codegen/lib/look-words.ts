@@ -78,20 +78,46 @@ export const COLOURS: [string, string][] = [
   ['เขียวมรกต', '#2a9a5a'], ['เขียวเข้ม', '#2a4a2a'], ['เขียว', '#3a7a3a'], ['ฟ้า', '#6a9ad0'], ['น้ำเงิน', '#2a3a7a'], ['ดำ', '#1e1a1c'], ['น้ำทะเล', '#2a6a8a'], ['ทราย', '#c8b080'], ['ถ่าน', '#2a2a2e'], ['ครีม', '#e8dcc0'], ['เข้ม', '#2a1e18'],
 ];
 const DARKER = /เข้ม|คล้ำ|หม่น/, LIGHTER = /อ่อน|จาง/;
-/** The first colour word inside `window`; "เข้ม" and "อ่อน" right after it darken or lighten it. */
-export function colourIn(window: string): string | null {
+/** The first colour word inside `window` with where it ends; "เข้ม" and "อ่อน" right after it darken or lighten it. */
+function colourAt(window: string, table: readonly [string, string][] = COLOURS): { hex: string; end: number } | null {
   let best: { at: number; len: number; hex: string; end: number } | null = null;
-  for (const [w, h] of COLOURS) {
+  for (const [w, h] of table) {
     const at = window.indexOf(w);
     if (at < 0) continue;
     if (!best || at < best.at || (at === best.at && w.length > best.len)) best = { at, len: w.length, hex: h, end: at + w.length };
   }
   if (!best) return null;
   const tail = window.slice(best.end, best.end + 4);
-  if (DARKER.test(tail)) return mix(best.hex, '#000000', 0.3);
-  if (LIGHTER.test(tail)) return mix(best.hex, '#ffffff', 0.35);
-  return best.hex;
+  if (DARKER.test(tail)) return { hex: mix(best.hex, '#000000', 0.3), end: best.end };
+  if (LIGHTER.test(tail)) return { hex: mix(best.hex, '#ffffff', 0.35), end: best.end };
+  return { hex: best.hex, end: best.end };
 }
+/** The first colour word inside `window`; "เข้ม" and "อ่อน" right after it darken or lighten it. */
+export function colourIn(window: string): string | null { return colourAt(window)?.hex ?? null; }
+
+/** What a race's clothes are made of, when the เครื่องแต่ง gives a material and no colour (leather, iron, soot, earth, leaves). Used only for the races' dress. */
+export const MATERIAL_COLOURS: [string, string][] = [
+  ['หนัง', '#6a4a30'], ['เหล็ก', '#8a90a0'], ['ไหม้', '#3a3028'], ['สีดิน', '#8a7458'], ['ใบไม้', '#4a8a4a'], ['กลีบดอก', '#e8a0c0'], ['กระดูก', '#d9cfb2'], ['ผ้าดิบ', '#b8a888'],
+];
+/** The first two different colours a text names, in the order written (colour words, then the materials above); fewer when the text names fewer. */
+export function dressColours(text: string): string[] {
+  const out: string[] = [];
+  let rest = text;
+  while (out.length < 2) {
+    const c = colourAt(rest, [...COLOURS, ...MATERIAL_COLOURS]);
+    if (!c) break;
+    if (!out.includes(c.hex)) out.push(c.hex);
+    rest = rest.slice(c.end);
+  }
+  return out;
+}
+/** The thing a race carries by habit, where the เครื่องแต่ง says it (the dwarves' tools at the waist, the giants' stone tools). */
+export const RACE_TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
+  ['hammer', /เครื่องมือ(?:อยู่ที่เอว|หิน)/],
+  ['book', /หนังสือสัญญา/],
+];
+/** A hat the race text puts on, not one it says is left off (`ไม่ใส่หมวก`). */
+export const hatOfRace = (text: string) => hatOf(text.replace(/ไม่(?:ใส่|มี)หมวก[ก-๙]*/g, ''));
 
 /** Hair colour from the hair clause (`ผมสีเงินยาวถักเปีย`), the beard colour is not painted apart from it. */
 export function hairColourOf(token: string): string | null {
@@ -145,12 +171,44 @@ export const OUTFIT_RULES: Rule<(typeof OUTFIT_IDS)[number]>[] = [
   ['robe', /นักเวท|เสื้อคลุม|ชุดคลุม|ชุดหลวม|ผ้าคลุมยาว|ชุดทูตบางพลิ้ว/],
   ['cloak', /(?:ชุด|เสื้อผ้า)เดินทาง|ชุดนักเดินทาง|ผ้าคลุม(?:สี|เดินทาง|กันฝน|กันหมอก|หนา|ผืน|เก่า|ดำ|เทา|เขียว|น้ำเงิน|เนมส์)|เสื้อกันฝน|ผ้ากันฝุ่น|ผ้าคลุมสองสี|ผ้าคลุมกัน/],
   ['cape', /ผ้าคลุมไหล่|ผ้าคลุม/],
-  ['light', /ชุดบาง|ชุดเบา|เสื้อผ้าเบา|ชุดผ้าบาง|ชุดผ้าลินิน|ชุดลินิน|เสื้อฝ้าย|ชุดผ้าฝ้าย|เสื้อผ้าฝ้าย|ชุดผ้าเบา|ชุดสีขาวบาง|เสื้อผ้าใบไม้|ชุดสีพิษ/],
+  ['light', /เสื้อลินิน|ชุดบาง|ชุดเบา|เสื้อผ้าเบา|ชุดผ้าบาง|ชุดผ้าลินิน|ชุดลินิน|เสื้อฝ้าย|ชุดผ้าฝ้าย|เสื้อผ้าฝ้าย|ชุดผ้าเบา|ชุดสีขาวบาง|เสื้อผ้าใบไม้|ชุดสีพิษ/],
 ];
 /** Words that name a garment; one of these with no rule above is reported. */
 /** A plain `ชุด…` `เสื้อ…` `กางเกง…` is plain clothing (the tunic); these garment words are not: one with no rule above is reported. */
 export const GARMENT_TOKEN = /^(เครื่องแบบ|เกราะ|กระโปรง|ผ้าคลุม|ผ้าห่ม|ผ้ากัน|ผ้าห่อ|แจ็กเก็ต)/;
 export const outfitOf = (d: string) => first(d, OUTFIT_RULES);
+
+/** The words that begin what a person holds or carries (not wears): the rest of a phrase from here on is the held thing. */
+const HELD_START = /ถือ|แบก|กุม|ห้อยเอว|แขวนเอว|ห้อยข้างเอว|เสียบเอว|ในมือ|หิ้ว|อุ้ม|ประคอง/;
+/** A word that makes a phrase a garment phrase (what the person wears). */
+const WEAR_HEAD = /ชุด|เสื้อ|ผ้า|เกราะ|เครื่องแบบ|กระโปรง|แจ็กเก็ต|กางเกง|เดรส|โสร่ง|ฮู้ด|ฉลองพระองค์|ราตรี|กลีบ|สวม|ใส่|นุ่ง|ห่ม/;
+/**
+ * The phrases of a description that say what the person wears: each space-separated phrase is cut where a held thing begins (`ชุดคลุมถือไม้เท้า`
+ * keeps `ชุดคลุม`), so a staff, a cloak carried on the arm or a bundle in the hand never sets the outfit.
+ */
+export function wornPhrases(desc: string): string[] {
+  // a phrase ends where the held things begin (what follows `ถือ` is a list of held things, `และ` included); the rest is split at `และ`
+  return desc.split(/\s+/).flatMap((t) => { const m = HELD_START.exec(t); return (m ? t.slice(0, m.index) : t).split('และ'); }).filter(Boolean);
+}
+/** Phrases about the hair and the head, which may name a cloth (`ผมรวบใต้ผ้าคลุมพยาบาล`) that is no outfit. */
+const HEAD_PHRASE = /^(?:ผม|หัว|ศีรษะ|เปีย|หมวก|ผ้าโพก|ผ้าคาด(?:หัว|ผม)|ผ้าคลุม(?:หัว|ศีรษะ|หน้า)|ฮู้ด)/;
+/**
+ * The outfit a description names. The phrases that name a garment (ชุด เสื้อ ผ้า เกราะ …, not the hair, a hat or a thing held) are tried
+ * first, as one text, so the rules keep their order of priority; if they give nothing, the job and place words of the rest of the worn text
+ * (a miner's pit, a sailor's crew) are tried, never what is held.
+ */
+/** The phrases of a description that name a garment worn on the body: the veil of a head, the hair and what is held are left out. */
+export const garmentPhrases = (desc: string): string[] =>
+  wornPhrases(desc).flatMap((t) => {
+    if (!HEAD_PHRASE.test(t)) return [t];
+    // a run-together phrase (`ศีรษะโล้นชุดนักบวช`): the head part is dropped, what follows from the first garment word stays
+    const g = t.slice(2).search(/ชุด|เสื้อ|เกราะ|เครื่องแบบ|กระโปรง|แจ็กเก็ต|กางเกง/);
+    return g >= 0 ? [t.slice(g + 2)] : [];
+  });
+export function outfitFromGarments(desc: string): (typeof OUTFIT_IDS)[number] | null {
+  const parts = garmentPhrases(desc);
+  return outfitOf(parts.filter((t) => WEAR_HEAD.test(t)).join(' ')) ?? outfitOf(parts.join(' '));
+}
 
 // ---------- hair (a hair clause is a token: `ผมสีเงินยาวถักเปีย`) ----------
 
@@ -195,6 +253,8 @@ export const BEARD_RULES: Rule<(typeof BEARD_IDS)[number]>[] = [
   ['short', /เครา|หนวด/],
 ];
 export const BEARD_START = /เครา|หนวด(?!สิบ|ยาวสิบ)/;
+/** Words that say a person has no beard: a race that has one by default (the dwarves) does not give it to him. */
+export const NO_BEARD = /ไม่มี(?:หนวด|เครา)|โกน(?:เกลี้ยง|หนวด|เครา)|หน้าเกลี้ยง|ไร้(?:หนวด|เครา)/;
 export function beardOf(desc: string): (typeof BEARD_IDS)[number] | null {
   // tentacles (`หนวดสิบกว่าเส้น`) are not beards
   const d = desc.replace(/หนวด(?:สิบ|ยาวสิบ|ข้าง|แมงมุม|ปลา)[ก-๙]{0,6}เส้น|หนวดสิบ/g, '');
@@ -265,6 +325,22 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   ['flask', /ขวด|กระบอกน้ำ|กระติก|หม้อต้ม|หม้อ/],
   ['lantern', /ตะเกียง|โคม|ไฟฉาย|คบเพลิง|เทียน/],
   ['shield', /โล่/],
+  // the things of the second set (src/art/parts/tools-extra.ts): guns, instruments, a fan, scissors, a whip, a sling, a fist weapon
+  ['rifle', /ไรเฟิล|ปืนกล/],
+  ['musket', /มัสเกต|ปืนยาว|ปืนคาบศิลา/],
+  ['pistol', /ปืน/],
+  ['spyglass', /กล้องส่อง|กล้องดูดาว|กล้องทางไกล|กล้องโทรทรรศน์/],
+  ['compass', /เข็มทิศ/],
+  ['pocketwatch', /นาฬิกา/],
+  ['fan', /พัด/],
+  ['scissors', /กรรไกร/],
+  ['gauge', /เครื่องวัด|เครื่องมือวัด|เครื่องชั่ง|มาตรวัด|เกจ|สายวัด|กังหันวัดลม|หูฟัง|กล้องบันทึก|ไม้วัดมุม/],
+  ['whip', /แส้|สายหวด|โซ่ฟาด/],
+  ['sling', /หนังสติ๊ก|สลิง|ที่ขว้าง/],
+  ['knuckles', /สนับมือ|สนับเหล็ก|นวมมวย|ถุงมือเหล็ก|ถุงมือมวย|กำปั้นเหล็ก/],
+  ['banner', /ว่าว/],
+  ['scepter', /แท่งผลึก|แท่งประจำตำแหน่ง/],
+  ['book', /แล็ปท็อป|แท็บเล็ต|โน้ตบุ๊ก/],
   // small tools of the trade the painter has no part for: the nearest shape
   ['wand', /ปากกา|พู่กัน|ชอล์ก|ดินสอ|ไม้บรรทัด|ไม้วัด|ไม้คาน|ไม้ชั่ง|เข็ม(?!ทิศ)|ที่ปิดปากเหล็ก/],
   ['ledger', /ลูกคิด|ตารางตัวเลข|กราฟ|ตั๋ว|บัตร|ใบสมัคร/],
@@ -275,10 +351,11 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   ['shovel', /ช้อนดิน|ช้อนไม้|ช้อนทราย/],
   ['bowl', /ครก|ถัง|กระป๋อง/],
   ['lute', /แตร|นกหวีด|กระดิ่ง/],
+  ['wand', /แท่ง/],
 ];
 /** Things in an ของ list that are not held in the hand (a pocket, a mark, a pet): ignored, not reported. */
-export const NOT_TOOL = /เสื้อ|เครื่องแบบ|แถบ|ดาวนาย|หางพ่อ|เห็ดงอก|ดวงตา|ตาเลนส์|ใบไม้|เครื่องประดับ|ได้ยินเสียง|เอว|ห่อ|สมบัติ|เตียง|หีบ|หมอน|หมายเลข|ก้อนหิน|ดอกไม้|ดอกเห็ด|ดอกบัว|หมอกสปอร์|สายแบก|สายรัด|สายข้อมูล|กำไล|จี้|กล่อง|กิ่ง|ฟืน|เปลือก|ชุดหมึก|ชิป|ชิ้นส่วน|แกน|อะไหล่|ที่อุดหู|เลข|โซ่|พวงมาลัย|อาน|เป้|แขน|เศษ|ห่วง|ศาล|กระเป๋า|ถุง|ตรา|กุญแจ|เหรียญ|แว่น|เชือก|ผ้า|เกราะ|หน้ากาก|ลูกประคำ|สร้อย|แหวน|ไม่มี|สัตว์|หมาป่า|ปีก|หมวก|มงกุฎ|เข็มขัด|รองเท้า|ตุ๊กตา|ของเล่น|ประคำ|ป้าย|กรง|แส้|ตลับ|ตะกร้า|เนื้อ|ขนม|ยา|เครื่องมือ|ถ่าน|ด้าย|ไม้ขีด|เม็ด|เมล็ด|เก้าอี้|โต๊ะ|ตู้|ผง|ธูปที่/;
-const TOOL_SKIP = /ในกระเป๋า|ในอก|ซ่อนในรองเท้า|ในถุง|ในเสื้อ|ในฝัก|ในกระเป๋า/;
+export const NOT_TOOL = /เสื้อ|เครื่องแบบ|แถบ|ดาวนาย|หางพ่อ|เห็ดงอก|ดวงตา|ตาเลนส์|ใบไม้|เครื่องประดับ|ได้ยินเสียง|เอว|ห่อ|สมบัติ|เตียง|หีบ|หมอน|หมายเลข|ก้อนหิน|ดอกไม้|ดอกเห็ด|ดอกบัว|หมอกสปอร์|สายแบก|สายรัด|สายข้อมูล|กำไล|จี้|กล่อง|กิ่ง|ฟืน|เปลือก|ชุดหมึก|ชิป|ชิ้นส่วน|แกน|อะไหล่|ที่อุดหู|เลข|โซ่|พวงมาลัย|อาน|เป้|แขน|เศษ|ห่วง|ศาล|กระเป๋า|ถุง|ตรา|กุญแจ|เหรียญ|แว่น|เชือก|ผ้า|เกราะ|หน้ากาก|ลูกประคำ|สร้อย|แหวน|ไม่มี|สัตว์|หมาป่า|ปีก|หมวก|มงกุฎ|เข็มขัด|รองเท้า|ตุ๊กตา|ของเล่น|ประคำ|ป้าย|กรง|ตลับ|ตะกร้า|เนื้อ|ขนม|ยา|เครื่องมือ|ถ่าน|ด้าย|ไม้ขีด|เม็ด|เมล็ด|เก้าอี้|โต๊ะ|ตู้|ผง|ธูปที่|โพเดียม|รถเข็น|นกส่งสาร|ท่อปอด|หินทำนาย|รูปสลัก/;
+const TOOL_SKIP = /ในกระเป๋า|ในอก|ฝังอก|ในเนื้อ|ซ่อนในรองเท้า|ในถุง|ในเสื้อ|ในฝัก|ในกระเป๋า/;
 export interface ToolPick { tool: string | null; miss: string[] }
 /** The tool a person holds: the first item of the ของ list a rule knows; the items nothing knows are returned to be reported. */
 export function toolOf(items: string[], desc: string): ToolPick {
@@ -313,11 +390,21 @@ export const FEAT_RULES: Rule<(typeof FEAT_IDS)[number]>[] = [
   ['bandage', /ผ้าพันแผล|ผ้าพันแขน|ผ้าพันมือ|พันผ้าที่(?:มือ|ข้อ)|เฝือก/],
   ['scar', /แผลเป็น|รอยแผล|รอยดาบ|รอยไหม้เป็นทาง|รอยฟัน|รอยกรงเล็บ/],
   ['freckles', /(?:มี|เต็มไปด้วย|ลาย|จุด|รอย|แก้ม|จมูก|หน้า)กระ(?![ก-๙])|กระ(?:บนแก้ม|ที่แก้ม|บนจมูก|แดด|เต็มหน้า)/],
+  // the feats of the second set (src/art/parts/feats-extra.ts); a spirit's `ghost` comes from the race text (see SPIRIT), not from here
+  ['tentacles', /หนวด(?:สิบ|ยาวสิบ|ในหัว|รอบ)|ตามหนวด|หนวดเรือง|ปลาหมึก/],
+  ['cyclops', /ตาเดียว|ตาหนึ่งดวง|ตากลางหน้าผาก|ไซคลอปส์/],
+  ['dish', /จานน้ำบนหัว|แอ่งน้ำบนหัว|จานบนหัว/],
+  // glasses of the face (a magnifier, goggles and flying glasses are held or worn on a hat, not these)
+  ['monocle', /แว่นเลนส์เดียว|แว่นข้างเดียว|โมโนเคิล/],
+  ['glasses', /แว่น(?!กัน|บิน|นักบิน|ช่าง|ขยาย|ดู|บัง|เลนส์เดียว|ข้างเดียว)|แว่นตา(?!กัน)/],
 ];
-export function featsOf(desc: string): string[] {
+/** The personal feats of a text (the description) and of the ของ list (a pair of glasses may be named only there). */
+export function featsOf(desc: string, items: readonly string[] = []): string[] {
   const out: string[] = [];
-  for (const [id, re] of FEAT_RULES) if (re.test(desc)) out.push(id);
-  return out;
+  const text = items.length ? `${desc} ${items.join(' ')}` : desc;
+  for (const [id, re] of FEAT_RULES) if (re.test(text)) out.push(id);
+  // one of the two face items, not both, and a monocle wins
+  return out.includes('monocle') ? out.filter((x) => x !== 'glasses') : out;
 }
 
 // ---------- how worn the clothes are (0..1) ----------

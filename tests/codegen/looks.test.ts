@@ -4,8 +4,8 @@ import type { LooksData } from '../../src/core/data/types-looks';
 import type { NpcRow } from '../../src/core/data/types-npcs';
 import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import {
-  BEARD_RULES, FEAT_RULES, HAIR_RULES, HAT_RULES, HEX, LINE_OVERRIDES, OUTFIT_RULES, TOOL_RULES, earsOf, femOf, gaitOf, lowerOf, skinHint, stageFromDescription,
-  stageWord, toolOf, wearOf,
+  BEARD_RULES, FEAT_RULES, HAIR_RULES, HAT_RULES, HEX, LINE_OVERRIDES, OUTFIT_RULES, TOOL_RULES, earsOf, featsOf, femOf, gaitOf, lowerOf, outfitFromGarments, skinHint,
+  stageFromDescription, stageWord, toolOf, wearOf,
 } from '../../scripts/codegen/lib/look-words';
 
 const L = (JSON.parse(readFileSync('data/gen/looks.json', 'utf8')) as { items: LooksData }).items;
@@ -139,6 +139,76 @@ describe('look-words: the word tables', () => {
     expect(wearOf('ชุดขาดวิ่นเปื้อน')).toBeGreaterThan(wearOf('ชุดเก่า'));
     expect(wearOf('ชุดสะอาด')).toBe(0);
     expect(toolOf(['หอกยาวและเกราะเต็มยศ'], '').tool).toBe('spear');
-    expect(toolOf(['ปืนสั้น'], '').miss).toEqual(['ปืนสั้น']);
+    expect(toolOf(['ปืนสั้น'], '').tool).toBe('pistol');
+    expect(toolOf(['เครื่องยิงลำแสง'], '').miss).toEqual(['เครื่องยิงลำแสง']);
+  });
+  it('the second set of held things: guns, instruments, a fan, scissors, a whip', () => {
+    const tool = (w: string) => toolOf([w], '').tool;
+    expect(tool('ปืนสองกระบอก')).toBe('pistol');
+    expect(tool('ปืนยาว')).toBe('musket');
+    expect(tool('รูนปืนไรเฟิล')).toBe('rifle');
+    expect(tool('กล้องส่องทางไกลทองเหลือง')).toBe('spyglass');
+    expect(tool('เข็มทิศทองเหลือง')).toBe('compass');
+    expect(tool('นาฬิกาพกรถไฟ')).toBe('pocketwatch');
+    expect(tool('พัดขนนก')).toBe('fan');
+    expect(tool('กรรไกรตัดกิ่ง')).toBe('scissors');
+    expect(tool('เครื่องวัดแรงสั่น')).toBe('gauge');
+    expect(tool('แส้ม้า')).toBe('whip');
+    expect(tool('หนังสติ๊กไม้')).toBe('sling');
+    expect(tool('สนับมือเหล็ก')).toBe('knuckles');
+    // not held in the hand: a cart, a podium, a pet bird (ignored, not reported)
+    for (const w of ['รถเข็นอาหาร', 'โพเดียมไม้โอ๊ก', 'นกส่งสาร']) expect(toolOf([w], ''), w).toEqual({ tool: null, miss: [] });
+  });
+  it('a held thing never sets the outfit; a head cloth is no outfit either', () => {
+    expect(outfitFromGarments('ชุดคลุมสีเทาถือผ้าคลุมกันฝน')).toBe('robe');
+    expect(outfitFromGarments('ผมรวบใต้ผ้าคลุมสีเทา ชุดเดินทางสีน้ำตาล')).toBe('cloak');
+    expect(outfitFromGarments('ศีรษะโล้นชุดนักบวชสีเทาเข้มคลุมหลวม')).toBe('priest');
+    expect(outfitFromGarments('ผมดำพันผ้าขาวม้า กางเกงขาก๊วยสีคราม')).toBeNull();
+    expect(outfitFromGarments('หญิงสาว ถือแผนที่และเกราะเหล็กของพ่อ ชุดผ้าฝ้ายสีทราย')).toBe('light');
+  });
+  it('the face items and the spirits', () => {
+    expect(featsOf('แว่นตากรอบทองบนจมูก')).toEqual(['glasses']);
+    expect(featsOf('ชายเฒ่า', ['แว่นเลนส์เดียว'])).toEqual(['monocle']);
+    expect(featsOf('ผมสั้น', ['แว่นขยาย'])).toEqual([]);
+    expect(featsOf('กัปปะชราจานน้ำบนหัวใหญ่')).toEqual(['dish']);
+    expect(featsOf('ไซคลอปส์ตาเดียวใหญ่กลางหน้าผาก')).toEqual(['cyclops']);
+    expect(featsOf('หนวดสิบกว่าเส้นห่อกันเหมือนผ้า')).toEqual(['tentacles']);
+  });
+});
+
+describe('looks generator: the second set of words reaches the rows', () => {
+  it('nothing the docs name is left unmatched', () => {
+    expect(L.counts.unmatched).toBe(0);
+    expect(readFileSync('data/gen/_unparsed/looks.md', 'utf8')).toContain('0 รายการ');
+  });
+  it('spirits are ghosts, in whatever race they were', () => {
+    for (const id of ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-1', 'SH14-3', 'SH14-4', 'SV13-2', 'NB08-2', 'NB08-4', 'NB13-3']) expect(L.npcs[id].feats, id).toContain('ghost');
+    expect(L.npcs['MH10-1'].feats).not.toContain('ghost');
+  });
+  it('the sampled rows carry their new things', () => {
+    expect(L.npcs['MH11-1'].tool).toBe('compass');
+    expect(L.npcs['AL27-1'].tool).toBe('pistol');
+    expect(L.npcs['AL09-2'].tool).toBe('pocketwatch');
+    expect(L.npcs['NR09-1'].feats).toContain('dish');
+    expect(L.npcs['SH06-5'].feats).toContain('cyclops');
+  });
+  it('the dwarves have a beard and an apron by default, the races that have none have none', () => {
+    expect(L.races.dwarf).toMatchObject({ outfit: 'apron', beard: 'braided' });
+    expect(L.races.elf.beard).toBe('');
+    expect(L.races.human.beard).toBe('');
+    for (const r of Object.values(L.races)) {
+      expect(inSet(r.outfit, OUTFIT_IDS), r.id).toBe(true);
+      expect(inSet(r.beard, BEARD_IDS), r.id).toBe(true);
+      expect(inSet(r.hat, HAT_IDS), r.id).toBe(true);
+      expect(inSet(r.hair, HAIR_IDS), r.id).toBe(true);
+      expect(inSet(r.hairFem, HAIR_IDS), r.id).toBe(true);
+      expect(inSet(r.tool, TOOL_IDS), r.id).toBe(true);
+      expect(r.main, r.id).toMatch(HEX);
+      expect(r.second, r.id).toMatch(HEX);
+      if (r.hairColor) expect(r.hairColor, r.id).toMatch(HEX);
+    }
+    // the dwarf women braid their hair in place of a beard; the slime is gel and has none of it
+    expect(L.races.dwarf).toMatchObject({ hair: '', hairFem: 'braid', hat: '', tool: 'hammer' });
+    expect(L.races.slime).toMatchObject({ outfit: '', hat: '', hair: '', tool: '' });
   });
 });

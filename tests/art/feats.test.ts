@@ -6,7 +6,7 @@ import type { PersonLook } from '../../src/art/look';
 import type { Frame } from '../../src/art/paint';
 import { paintPerson } from '../../src/art/person';
 import { FEAT_IDS } from '../../src/art/parts/ids';
-import { FEATS } from '../../src/art/parts/feats';
+import { FEATS } from '../../src/art/parts';
 
 const human = RACES.find((r) => r.id === 'human')!;
 const base = (over: Partial<PersonLook> = {}): PersonLook => ({ ...raceLook(human, { tool: 'spear' }), hair: 'short', ...over });
