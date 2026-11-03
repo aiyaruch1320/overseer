@@ -76,7 +76,7 @@ export type Out =
   /** A window or major omen the game did not stop for: it glows on the life line and the player may open it. */
   | { t: 'glow'; n: number; id?: string; why: 'setting' | 'joined' | 'death' | 'gap' | 'late' }
   /** A card that came too late: the character acted alone and the log tells it. */
-  | { t: 'missed'; kind: CardKind; n: number; id?: string; waited: number; death?: true };
+  | { t: 'missed'; kind: CardKind; n: number; id?: string; waited: number; death?: true; off?: true };
 
 const secOf = (age: number): number => age * SEC_PER_YEAR;
 const lastCall = (m: Mem): number => Math.max(m.lastStop, m.lastCard);

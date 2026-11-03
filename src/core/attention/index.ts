@@ -7,6 +7,7 @@
 // What did not call stays in the log: `attention/glow` (a window that only glows on the life line) and `attention/missed` (a card that ran out).
 // Time is real seconds at normal speed on the life clock (tuning SEC_PER_YEAR); the speed setting is the screen's business.
 import type { Ctx, Game, System } from '../game';
+import { cardOn } from '../command';
 import { write } from '../log';
 import type { GameState, LifeState, LogEntry } from '../types';
 import type { AttentionData, AttentionRule } from '../data/types-attention';
@@ -84,7 +85,7 @@ function emit(ctx: Ctx, out: Out[]): void {
     } else if (o.t === 'glow') {
       write(st, { sys: 'attention', kind: 'glow', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { why: o.why, n: o.n } });
     } else {
-      write(st, { sys: 'attention', kind: 'missed', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { kind: o.kind, n: o.n, waited: o.waited, ...(o.death ? { death: true } : {}) } });
+      write(st, { sys: 'attention', kind: 'missed', ...(o.id !== undefined ? { id: o.id } : {}), level: 1, data: { kind: o.kind, n: o.n, waited: o.waited, ...(o.death ? { death: true } : {}), ...(o.off ? { off: true } : {}) } });
     }
   }
 }
@@ -96,7 +97,13 @@ function step(ctx: Ctx, mode: 'tick' | 'dying'): void {
   const m = memOf(life);
   if (!m) return;
   const out: Out[] = [];
-  const trigs = fresh(ctx, m);
+  const all = fresh(ctx, m);
+  // a kind the player switched off is not called (07-attention.md §4): the log tells it like a card that came too late (§1 rule 5)
+  const trigs = all.filter((t) => {
+    if (t.kind === 'window' || cardOn(st.settings, t.kind)) return true;
+    out.push({ t: 'missed', kind: t.kind, n: t.n, id: t.id, waited: 0, off: true });
+    return false;
+  });
   const plan = planOf(ctx, life, m);
   const rule = ruleOf(ctx);
   const now = nowOf(st, life);

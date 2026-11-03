@@ -239,11 +239,17 @@ export interface DataVersions {
   [file: string]: string;
 }
 
+/** The kinds of card the attention system raises (experience/07-attention.md §2). `majorOmen` is a ⭐ omen on the character's own continent. */
+export type CardKind = 'prayer' | 'omen' | 'battle' | 'crisis' | 'majorOmen';
+export const CARD_KINDS: readonly CardKind[] = ['prayer', 'omen', 'battle', 'crisis', 'majorOmen'];
+
 export interface Settings {
   speed: 'pause' | 'normal' | 'fast';
   attention: 'low' | 'normal' | 'high'; // how often the game calls the player (experience/07-attention.md §4)
   /** `master` shuts every LLM point at once; `setup` `director` `epitaph` are the switches of the three points (llm/README.md §3). A save older than `master` has none: that reads as on. */
   llm: { master: boolean; setup: boolean; director: boolean; epitaph: boolean };
+  /** A switch for each kind of card (07-attention.md §4): a kind switched off is not called, the log tells it. A save older than this has none: that reads as all on. */
+  cards: Record<CardKind, boolean>;
   lang: 'th';
 }
 
