@@ -6,11 +6,22 @@
 ขั้นปัจจุบัน: M7 ฉากและภาพแผนที่ (M6 เสร็จ 2026-11-03)
 งานที่กำลังทำ: ไม่มี
 งานถัดไป:
-  1. M7 ฉากและภาพแผนที่ (code-plan §11 §8.3 §12.3): เวทีฉากเป็น Phaser 320×180 ตาม 21-pixel-art.md §4 · ชุดฉากตาม §8.3 · ภาพแผนที่ระดับเมืองเป็นพิกเซล · ลบ legacy/ · ข้อกลางเบาของ M6 ใน review/m6/triage.md
+  1. **M7 ตามแผน [m7/plan.md](m7/plan.md)**: แกนก่อน (ก1 เวทีฉากเป็น Phaser · ก2 ฉากหลังพิกเซลต่อทวีป · ก3 เอฟเฟกต์ของจังหวะ · ก4 ฉากว่างและการ์ด · ก5 ตรวจภาพ 2 คน) แล้วที่เหลือ (ข1 ชุดฉาก §8.3 · ข2 แผนที่เมืองพิกเซล · ข3 ลบ legacy/ · ข4 รอบตรวจ · ข5 ข้อค้าง M6 · ข6 final-report) · **ใช้โหมดประหยัด (plan.md หัวข้อ 3)** เมื่อทำบน account โควตาน้อย
   2. ยังไม่ตรวจบนจอ: การ์ดวิกฤตในหน้าหยุดเปิดกระซิบ · การ์ดตอนจบบอกเงื่อนไขคำปฏิญาณที่ขาด (มีเทสต์หน่วย)
-  3. M7 ฉากและภาพแผนที่ที่สร้าง
-  4. ค้างไว้: ข้อเสนอสัญญา (LifeState hp fame · NpcSlotState · WorldState.ext) · NT มีชีวิต 0.16 ต่อประเทศ · ขึ้นชั้นราว 35–40% เทียบเอกสาร 15% · 25-journeys หน้าต่างอายุ · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world ลางล่วงหน้าและธง famine plague · คำของค่าพระเจ้าใน effects.ts · OPEN_EC · ฝันถึงพวกพ้องไม่มีนโยบายส่ง
-ด่านล่าสุด: 2026-11-03 typecheck ผ่าน · test 1,620 ผ่าน · golden 22/22 · run-all --check ผ่าน · vite build ผ่าน · balance 18 ไฟล์ผ่าน
+  3. ค้างไว้: ข้อเสนอสัญญา (LifeState hp fame · NpcSlotState · WorldState.ext) · NT มีชีวิต 0.16 ต่อประเทศ · ขึ้นชั้นราว 35–40% เทียบเอกสาร 15% · 25-journeys หน้าต่างอายุ · ตัวละคร 74 วลี ไอเทม 209 · รูปลักษณ์ (ก่อน M6) · เอกสาร: ผล death ในทาง e2 ทุกเผ่า sl.b2 · world ลางล่วงหน้าและธง famine plague · คำของค่าพระเจ้าใน effects.ts · OPEN_EC · ฝันถึงพวกพ้องไม่มีนโยบายส่ง
+ด่านล่าสุด: 2026-11-03 typecheck ผ่าน · test 2,284 ผ่าน · golden 22/22 · run-all --check ผ่าน · check:looks 0 คู่ · docs:check ผ่าน · vite build ผ่าน (balance ไม่ได้รันตั้งแต่ M5: M6 ไม่แตะแกน)
+
+## เริ่ม session ใหม่ (account อื่นหรือหลังสรุปบทสนทนา)
+
+วางข้อความนี้เป็นข้อความแรก (session ใหม่ไม่มีบทสนทนาเดิม ทุกอย่างอยู่ใน repo):
+
+```
+อ่าน docs/guide/code-plan.md หัวข้อ 11 12 14 ถึง 17, review/progress.md และ review/m7/plan.md แล้วทำ M7 ต่อเป็น session ยาวตาม prompt เริ่มงานในหัวข้อ 17
+- เริ่มด้วย "เมื่อกลับมาทำต่อ" ของหัวข้อ 15 (git status · worktree ของ agent · ด่าน) บนสาขา code-phase
+- ทำแกนของ M7 ก่อน (plan.md หัวข้อ 2 ก1–ก5) ใช้โหมดประหยัด (plan.md หัวข้อ 3): agent sonnet ไม่เกิน 2 ตัวพร้อมกัน commit และ push ทุกงานย่อย
+- ใกล้เพดานโควตา: ให้ agent commit WIP จดสาขาและ commit ใน review/progress.md แล้วหยุด
+- ตอบผู้ใช้เป็นภาษาไทย commit ไม่มีบรรทัด attribution
+```
 
 ## หมายเหตุสำหรับผู้นำ (วิธีทำงานที่เรียนรู้ระหว่างทาง)
 - commit หลังด่านผ่านเท่านั้น: ต่อคำสั่งด้วย `&&` ไม่ใช่ `;` (เคย commit ทั้งที่เทสต์แดงหลายครั้ง) · รัน `UPDATE_GOLDEN=1 npm run test:golden` ทุกครั้งที่ค่า tuning เปลี่ยน
@@ -22,6 +33,11 @@
 - agent ไม่มีเบราว์เซอร์: ใช้ `node scripts/tools/shot.mjs <url> <png>` (Chrome headless มี GPU) · แผงเบราว์เซอร์ที่ถูกซ่อนวัดความเร็วไม่ได้
 - LLM: ไม่เคยเรียกผู้ให้บริการจริง (DeepSeek มีค่าใช้จ่าย) ใช้ `--llm=fake` เท่านั้น
 - ผู้ใช้ให้ตอบเป็นภาษาไทย (brief ของ agent เป็นอังกฤษได้)
+- ภาพ (M6): แนวภาพ docs/appearance/21-pixel-art.md · ตัววาด `src/art/` (คน) `src/art/beast/` (สัตว์) ข้อมูล `data/gen/looks.json` `beast-looks.json` · ดูภาพ `characters.html?set=<id>&zoom=4&pose=<pose>` และ `beasts.html?set=<id>` หรือ `?id=a,b` · ตรวจแยกออก `npm run check:looks` (ต้อง 0) · ไฟล์ส่วนเพิ่ม `parts/tools-extra.ts` `feats-extra.ts` ให้หลาย agent ทำพร้อมกัน · `ids.ts` แยก TOOL_IDS กับ FEAT_IDS ให้คนละ agent
+- ถ่ายภาพรอบตรวจ: `bash scripts/tools/review-shots.sh review/<รอบ>/shots` (ทุกไฟล์ NPC ศัตรูต่อทวีป ผู้สืบ เผ่า เครื่องมือ มังกร) · ภาพขนาดเท่ากันหมดแปลว่า dev server ล้ม: เปิดใหม่ด้วย preview_start (isekai-dev)
+- codegen: กลุ่มที่อ่านผลของกลุ่มอื่นประกาศ `export const after = [...]` (run-all เรียงตามนี้) · agent ข้อมูลห้าม commit data/gen ถ้าสองตัวแก้เอกสารพร้อมกัน ผู้นำสร้างใหม่หลังรวม
+- python3 บนเครื่องนี้ (3.15) `re.sub` พังกับบาง pattern ไทย: แก้ไฟล์ด้วย str.replace หรือแยกบรรทัดแทน
+- โควตา: ตรวจด้วยเครื่องมือ get_usage · M6 ใช้ agent 29 ตัว ราว 8.8M token ของ agent · ใกล้เพดานให้ agent commit WIP แล้วจดสาขาใน progress
 
 ## บันทึก (ใหม่อยู่บน)
 - 2026-11-03 **M6 เสร็จ**: คลื่น 5 รวมครบ (ตัววาดคน ข้อมูล ตัววาดสัตว์) · ด่านทั้งหมดผ่าน (test 2284 golden 22 check:looks 0 build) · รอบตรวจภาพสาม: บล็อก 0 หนัก 0 (SH14-1 แก้ท้ายสุด) · ข้อกลางเบาที่ค้างอยู่ท้าย review/m6/triage.md
