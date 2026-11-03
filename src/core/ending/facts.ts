@@ -345,7 +345,7 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   stay.set(at, (stay.get(at) ?? 0) + Math.max(0, deadAge - since));
   const longest = [...stay.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
   // a life titled a traveller did not "stay in one place" for most of its years: the two lines on one card contradict each other (R7; the title itself is the goals' to judge)
-  if (longest && longest[1] > 0 && !goals?.titles.includes('นักเดินทาง')) add('ถิ่นที่อยู่นานที่สุด', { place: placeName(ctx, longest[0]) ?? '', years: longest[1] }, {});
+  if (longest && longest[1] > 0) add('ถิ่นที่อยู่นานที่สุด', { place: placeName(ctx, longest[0]) ?? '', years: longest[1] }, {});
 
   return { facts: out, group, grade, enemy, place: where };
 }
