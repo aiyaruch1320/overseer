@@ -10,9 +10,9 @@ import type { LineOverrides, LooksData, NpcLookRow, PersonLookRow, RaceLine, Rac
 import type { NpcRow } from '../../../src/core/data/types-npcs';
 import type { Successor } from '../../../src/core/data/types-bonds';
 import {
-  BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, HEX, LINE_MATCH, LINE_OVERRIDES, RACE_BY_WORD, RACE_EYE,
+  BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
   SPIRIT, SPIRIT_SKIN, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
-  mix, nearest, outfitOf, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
+  mix, nearest, outfitFromGarments, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
 } from '../lib/look-words';
 import { genDir, listDocs, readDoc, tables, Unparsed, writeGen } from '../lib/table';
 import { stageOf } from '../../../src/art/look';
@@ -34,13 +34,16 @@ function raceUi(file: string, races: RaceBase[]): Record<string, RaceLookRow> {
   const lines = readDoc(file).split('\n');
   const out: Record<string, RaceLookRow> = {};
   let cur: RaceBase | null = null;
+  let prose = '';
   lines.forEach((l, i) => {
     const h = l.match(/^## (\d+)\. (.+)$/);
     if (h) {
+      prose = '';
       cur = races.find((r) => r.n === Number(h[1])) ?? fail(`race ${h[1]} not in races.json`);
       if (cur.name !== h[2].trim()) fail(`${file}:${i + 1} heading ${h[2]} is not ${cur.name}`);
       return;
     }
+    if (l.startsWith('**ร่าง**')) prose = l;
     if (!l.startsWith('**ค่า UI**') || !cur) return;
     const num = (k: string) => Number(l.match(new RegExp(`${k} ([\\d.]+)×`))?.[1] ?? fail(`${file}:${i + 1} no ${k}`));
     const word = (k: string) => l.match(new RegExp(`${k} (.+?) ·`))?.[1] ?? fail(`${file}:${i + 1} no ${k}`);
@@ -53,7 +56,11 @@ function raceUi(file: string, races: RaceBase[]): Record<string, RaceLookRow> {
       lower: lowerOf(word('ท่อนล่าง')) ?? fail(`${file}:${i + 1} lower ${word('ท่อนล่าง')}`),
       gait: gaitOf(word('ท่าเดิน')) ?? fail(`${file}:${i + 1} gait ${word('ท่าเดิน')}`),
     };
-    out[cur.id] = { id: cur.id, name: cur.name, body, skins: hexes('สีผิว'), accents: hexes('สีประจำเผ่า'), feats, lines: [], src: `${file}:${i + 1}` };
+    // the clothes and the beard the race gives its people (the เครื่องแต่ง and หน้าและผิว cells of the race)
+    const dress = prose.match(/\*\*เครื่องแต่ง\*\* (.*?) \*\*ท่วงท่า\*\*/)?.[1] ?? '';
+    const face = prose.match(/\*\*หน้าและผิว\*\* (.*?) \*\*เครื่องแต่ง\*\*/)?.[1] ?? '';
+    const beard = NO_BEARD.test(face) || feats.includes('hairless') ? '' : beardOf(clauseOf(face, BEARD_START)) ?? '';
+    out[cur.id] = { id: cur.id, name: cur.name, body, skins: hexes('สีผิว'), accents: hexes('สีประจำเผ่า'), feats, outfit: feats.includes('gel') ? '' : outfitFromGarments(dress) ?? '', beard, lines: [], src: `${file}:${i + 1}` };
   });
   for (const r of races) if (!out[r.id]) fail(`no ค่า UI for ${r.id} in ${file}`);
   return out;
@@ -133,49 +140,60 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   const text = `${desc} ${s.extra ?? ''}`;
   const miss = (what: string, w: string) => un.add(s.file, s.line, `${s.id} ${w}`, what);
   const fem = femOf(desc, s.name, s.role);
-  const tokens = text.split(/\s+/).filter(Boolean);
+  // the fields the docs said nothing of, filled from the defaults (check:looks lists the people who have too many of them)
+  const defaults: string[] = [];
 
   // outfit
-  let outfit = outfitOf(text);
+  let outfit: string | null = outfitFromGarments(text);
   if (!outfit) {
+    defaults.push('outfit');
     outfit = 'tunic';
-    const g = tokens.find((t) => GARMENT_TOKEN.test(t));
+    const g = garmentPhrases(text).find((t) => GARMENT_TOKEN.test(t));
     if (g) miss('ชุด', g.slice(0, 16));
   }
   // hair
   const hairTok = clauseOf(text, HAIR_START);
   const hairless = R.feats.includes('hairless');
-  const hair = hairless ? '' : (hairTok && hairStyleOf(hairTok)) || (fem ? 'long' : 'short');
+  const hairHit = hairTok ? hairStyleOf(hairTok) : null;
+  const hair = hairless ? '' : hairHit || (fem ? 'long' : 'short');
+  if (!hairless && !hairHit) defaults.push('hair');
   let hairColor = hairColourOf(hairTok);
   if (!hairColor && /ผมสี/.test(hairTok)) miss('สีผม', hairTok.slice(0, 14));
+  if (!hairless && !hairColor && !ln?.overrides.hairColor) defaults.push('hairColor');
   hairColor = hairColor ?? ln?.overrides.hairColor ?? (s.stage === 'elder' ? ELDER_HAIR : DEFAULT_HAIR);
   // beard (not for women, not for the hairless)
-  const beard = fem === true || hairless ? '' : beardOf(clauseOf(text, BEARD_START)) ?? '';
+  // a race with a beard of its own (the dwarves) gives it to a man whose description says nothing of one
+  const beard = fem === true || hairless ? '' : beardOf(clauseOf(text, BEARD_START)) ?? (NO_BEARD.test(text) ? '' : R.beard);
   // hat
   const hat = hatOf(text) ?? '';
   // eyes
   const eyeHit = eyeColourOf(desc);
   if (!eyeHit && /ตาสี/.test(desc)) miss('สีตา', (desc.match(/ตาสี[ก-๙]{0,6}/) ?? [''])[0]);
+  if (!eyeHit && !ln?.overrides.eye && !RACE_EYE[s.race]) defaults.push('eye');
   const eye = eyeHit ?? ln?.overrides.eye ?? RACE_EYE[s.race] ?? DEFAULT_EYE;
   // skin
   const hint = skinHint(desc);
   let skin: string;
-  if (SPIRIT.test(s.raceText) && s.race === 'ghoul') skin = colourIn(desc.split('โปร่งแสง')[1]?.slice(0, 14) ?? '') ?? SPIRIT_SKIN;
+  const spirit = SPIRIT.test(s.raceText);
+  if (spirit) skin = colourIn(desc.split('โปร่งแสง')[1]?.slice(0, 14) ?? '') ?? SPIRIT_SKIN;
   else if (hint) skin = pickSkin(R.skins, hint, s.id);
   else {
     const sc = skinColourOf(desc);
+    if (!sc && !ln?.overrides.skin) defaults.push('skin');
     skin = sc ? nearest(R.skins, sc) : ln?.overrides.skin ?? pickSkin(R.skins, null, s.id);
   }
   // tool
   const tp = toolOf(s.items, desc);
   for (const m of tp.miss) miss('ของ', m);
   // colours
+  if (!s.main) defaults.push('main');
+  if (!s.second) defaults.push('second');
   const main = s.main ?? mix(pickBy(R.accents, s.id + 'm'), '#5a5a5a', 0.5);
   const second = s.second ?? mix(pickBy(R.accents, s.id + 's'), '#3a3a3a', 0.4);
 
   const row: PersonLookRow = {
     name: s.name, race: s.race, ...(ln ? { line: ln.name } : {}), stage: s.stage, fem, skin, hairColor, eye, main, second, outfit,
-    hair, beard, hat, tool: tp.tool ?? '', feats: featsOf(text), wear: wearOf(text), items: s.items, pose: s.pose,
+    hair, beard, hat, tool: tp.tool ?? '', feats: [...(spirit ? ['ghost'] : []), ...featsOf(text, s.items)], wear: wearOf(text), defaults, items: s.items, pose: s.pose,
   };
   return row;
 }

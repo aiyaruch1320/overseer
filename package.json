@@ -28,6 +28,7 @@
     "test:balance": "vitest run --config vitest.balance.config.ts",
     "gen": "tsx scripts/codegen/run-all.ts",
     "gen:data:legacy": "tsx scripts/codegen/gen-countries.ts && tsx scripts/codegen/gen-npc-cast.ts && tsx scripts/codegen/gen-birth.ts",
+    "check:looks": "tsx scripts/tools/check-looks.ts",
     "life": "tsx scripts/tools/life.ts",
     "play": "tsx scripts/tools/play.ts"
   },

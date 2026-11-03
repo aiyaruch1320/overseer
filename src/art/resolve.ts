@@ -79,6 +79,8 @@ export function raceLook(looks: LooksData, race: string, o: { line?: string; sta
     body: { ...asBody(R.body), scale: ov?.scale ?? R.body.scale },
     skin: ov?.skin ?? pick(R.skins, key), hairColor: ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : '#3a2a20'), eye: ov?.eye ?? '#2a2024',
     accent: ov?.accent ?? R.accents[0], main: R.accents[1] ?? R.accents[0], second: R.accents[2] ?? R.accents[0],
-    outfit: 'tunic', hair: hairless ? '' : o.fem ? 'long' : 'short', hat: '', beard: '', tool: '', feats: [...(ov?.feats ?? R.feats)], wear: 0,
+    // the race's usual clothes (the dwarves' apron) and the beard its men wear (02-races.md); the young and the women have no beard
+    outfit: R.outfit || 'tunic', hair: hairless ? '' : o.fem ? (R.feats.includes('beadbeard') ? 'braid' : 'long') : 'short', hat: '',
+    beard: o.fem || hairless || o.stage === 'infant' || o.stage === 'child' || o.stage === 'teen' ? '' : R.beard, tool: '', feats: [...(ov?.feats ?? R.feats)], wear: 0,
   };
 }

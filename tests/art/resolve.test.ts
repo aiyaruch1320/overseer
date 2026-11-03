@@ -108,6 +108,21 @@ describe('resolve: races', () => {
     expect(skins.size).toBeGreaterThan(2);
     for (const s of skins) expect(looks.races.human.skins).toContain(s);
   });
+  it('a dwarf man has the beard and the apron of his race; women and children have no beard, a dwarf woman braids her hair', () => {
+    const man = raceLook(looks, 'dwarf', { stage: 'adult', fem: false, seed: 'a' });
+    expect(man.beard).toBe(looks.races.dwarf.beard);
+    expect(man.beard).not.toBe('');
+    expect(man.outfit).toBe('apron');
+    expect(raceLook(looks, 'dwarf', { stage: 'elder', fem: false, seed: 'a' }).beard).not.toBe('');
+    expect(raceLook(looks, 'dwarf', { stage: 'child', fem: false, seed: 'a' }).beard).toBe('');
+    const woman = raceLook(looks, 'dwarf', { stage: 'adult', fem: true, seed: 'a' });
+    expect(woman.beard).toBe('');
+    expect(woman.hair).toBe('braid');
+    expect(raceLook(looks, 'elf', { stage: 'adult', fem: false, seed: 'a' }).beard).toBe('');
+  });
+  it('a spirit NPC keeps its ghost feat through the resolver', () => {
+    expect(npcLook(looks, 'MH12-1').feats).toContain('ghost');
+  });
   it('the slime has no hair', () => {
     expect(raceLook(looks, 'slime', { stage: 'adult', fem: true, seed: 'a' }).hair).toBe('');
   });
