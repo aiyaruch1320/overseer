@@ -2,8 +2,9 @@
 // only one of the scene player that imports Phaser; the component (../Stage.tsx) loads it on demand so a page that plays no scene never loads Phaser.
 //
 // The stage holds no time. `set()` hands it the latest frame and it draws that: the painted layers of the place (moved by the camera's pan, each at its own
-// speed), the mood colours of the beats over them, the figures of the actors (sprites of their looks, in the pose of the beat), the light and the wash. The
-// words are not here: Thai text is DOM over the canvas (../Stage.tsx).
+// speed), the mood colours of the beats over them, the figures of the actors (sprites of their looks, in the pose of the beat), the particles, the light and the wash.
+// The particles and the light are lists of rectangles of whole art pixels from the pure part (../fx/), drawn here on the screen of the picture (not the world: the
+// camera's zoom does not make a particle two pixels), light added to what is behind it. The words are not here: Thai text is DOM over the canvas (../Stage.tsx).
 import Phaser from 'phaser';
 import { addBeast, playBeast } from '../../art/beast/phaser';
 import { BEAST_POSES } from '../../art/beast/kit';
@@ -12,9 +13,10 @@ import { addLook, playPose } from '../../art/phaser';
 import { paintScenery, type Scenery, type ScenerySpec } from '../../art/scenery';
 import { BEAST_POSE, PERSON_POSE } from '../../ui/figure';
 import { figureKey, type Figure, type FigureOf } from '../figures';
+import { fxPixels, godOf, godPixels, lightPixels, type Px } from '../fx';
 import { cameraOf, clampPan, layerX, slotsOf, type Cam } from '../layout';
 import { mixColor, type ActorView, type Frame } from '../timeline';
-import { ART, CAST, DEPTH, LIGHT, LIGHT_BANDS, MOOD, POSE, SCENERY_KEEP, SHADOW, SIL } from '../tuning';
+import { ART, CAST, DEPTH, MOOD, POSE, SCENERY_KEEP, SHADOW, SIL } from '../tuning';
 
 const hex = (s: string): number => parseInt(s.replace('#', '').slice(0, 6), 16) || 0;
 
@@ -25,6 +27,8 @@ export interface StageInput {
   frameColor: string;
   scenery: ScenerySpec;
   figureOf: FigureOf;
+  /** Makes the particles of this scene differ from another's (a number from its id). */
+  seed: number;
 }
 
 // ---------- the painted backgrounds: painted once per place and kept, whatever number of stages ask ----------
@@ -53,6 +57,27 @@ interface Shown {
   images: { image: Phaser.GameObjects.Image; w: number; speed: number }[];
 }
 
+/**
+ * Two graphics for a list of pixels: what covers and what adds light. They are drawn in the 320 × 180 screen of the picture and placed over whatever the camera
+ * shows (scaled by 1/zoom, moved to its corner), so a pixel of a particle is one art pixel at any camera.
+ */
+class PxLayer {
+  private readonly cover: Phaser.GameObjects.Graphics;
+  private readonly add: Phaser.GameObjects.Graphics;
+  constructor(scene: Phaser.Scene, depth: number) {
+    this.cover = scene.add.graphics().setDepth(depth);
+    this.add = scene.add.graphics().setDepth(depth + 1).setBlendMode(Phaser.BlendModes.ADD);
+  }
+  place(cam: Cam): void {
+    for (const g of [this.cover, this.add]) g.setScale(1 / cam.zoom).setPosition(cam.cx - ART.w / 2 / cam.zoom, cam.cy - ART.h / 2 / cam.zoom);
+  }
+  draw(list: readonly Px[]): void {
+    this.cover.clear();
+    this.add.clear();
+    for (const p of list) (p.add ? this.add : this.cover).fillStyle(p.color, p.alpha).fillRect(p.x, p.y, p.w, p.h);
+  }
+}
+
 interface Figured {
   sprite: Phaser.GameObjects.Sprite;
   key: string;
@@ -69,9 +94,10 @@ class StageScene extends Phaser.Scene {
   private before = new Map<string, number>();
   private mood!: Phaser.GameObjects.Graphics;
   private shadows!: Phaser.GameObjects.Graphics;
-  private light!: Phaser.GameObjects.Graphics;
+  private fx!: PxLayer;
+  private light!: PxLayer;
   private wash!: Phaser.GameObjects.Graphics;
-  private drawn = { mood: '', light: '', wash: '' };
+  private drawn = { mood: '', light: '', wash: '', fx: '' };
 
   constructor() {
     super('scene-stage');
@@ -81,7 +107,8 @@ class StageScene extends Phaser.Scene {
     this.cameras.main.setRoundPixels(true);
     this.mood = this.add.graphics().setDepth(DEPTH.mood);
     this.shadows = this.add.graphics().setDepth(DEPTH.shadow);
-    this.light = this.add.graphics().setDepth(DEPTH.light);
+    this.fx = new PxLayer(this, DEPTH.fx);
+    this.light = new PxLayer(this, DEPTH.light);
     this.wash = this.add.graphics().setDepth(DEPTH.wash);
     this.ready = true;
   }
@@ -104,7 +131,8 @@ class StageScene extends Phaser.Scene {
     for (const l of sc.images) l.image.setX(layerX(l.w, l.speed, pan));
     this.paintMood(f);
     this.figures(w, view);
-    this.paintLight(f, sc.scenery.light);
+    this.paintLight(f, sc.scenery.light, view);
+    this.paintFx(f, sc.scenery.ambient, w.seed, view);
     this.paintWash(f);
   }
 
@@ -142,32 +170,28 @@ class StageScene extends Phaser.Scene {
     this.mood.fillStyle(hex(f.ground), MOOD.ground).fillRect(0, horizon, ART.w, ART.h - horizon);
   }
 
-  /** The light of the beat in bands (an even gradient would blur the pixels): from the front below, from behind above, from the middle in rings, or over all. */
-  private paintLight(f: Frame, placeLight: string): void {
-    const L = LIGHT[f.light.mode];
-    const col = f.light.color ?? (f.light.mode === 'diffuse' ? placeLight : L.color);
-    const k = `${f.light.mode}|${col}`;
+  /** The light of the beat (../fx/light.ts: bands from the front below, from behind above, in rings from the middle, over all), added to the picture; drawn again only when the beat's light changes. */
+  private paintLight(f: Frame, placeLight: string, cam: Cam): void {
+    this.light.place(cam);
+    const k = `${f.light.mode}|${f.light.color ?? ''}|${placeLight}`;
     if (this.drawn.light === k) return;
     this.drawn.light = k;
-    const g = this.light.clear();
-    g.fillStyle(hex(col), 1);
-    const n = LIGHT_BANDS;
-    if (L.from === 'all') {
-      g.fillStyle(hex(col), L.alpha).fillRect(0, 0, ART.w, ART.h);
-      return;
-    }
-    for (let b = 0; b < n; b++) {
-      const a = L.alpha * (1 - (b + 0.5) / n);
-      g.fillStyle(hex(col), a);
-      if (L.from === 'centre') {
-        const k2 = 1 - b / n;
-        g.fillEllipse(ART.w / 2, ART.h * 0.55, ART.w * 0.9 * k2, ART.h * 1.1 * k2);
-      } else {
-        const span = ART.h * 0.7;
-        const y0 = L.from === 'front' ? ART.h - ((b + 1) * span) / n : (b * span) / n;
-        g.fillRect(0, Math.round(y0), ART.w, Math.ceil(span / n));
-      }
-    }
+    this.light.draw(lightPixels(f.light.mode, f.light.color, placeLight));
+  }
+
+  /**
+   * The particles of the beats, the faint ambient of the place under them, and the god's effects when the light is the glow of one of his powers (the pillar of faith
+   * with its shaking rim, the smoke of dread, the thread of fate). They depend on the motion clock alone, so they stand still while it is held.
+   */
+  private paintFx(f: Frame, ambient: string | undefined, seed: number, cam: Cam): void {
+    this.fx.place(cam);
+    const god = f.light.mode === 'glow' ? godOf(f.light.color) : null;
+    const k = `${f.motion}|${seed}|${ambient ?? ''}|${god ?? ''}|${f.fx.map((x) => `${x.kind}:${x.amount}:${x.color ?? ''}`).join(',')}`;
+    if (this.drawn.fx === k) return;
+    this.drawn.fx = k;
+    const list = fxPixels(f.fx, f.motion, seed, ambient);
+    if (god) list.push(...godPixels(god, f.motion, seed));
+    this.fx.draw(list);
   }
 
   private paintWash(f: Frame): void {
