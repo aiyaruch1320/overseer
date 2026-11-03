@@ -9,7 +9,7 @@ import { WorldMap } from '../map';
 import { LifeScene } from './LifeScene';
 import { Layers } from './Layers';
 import './god-map';
-import { StartScreen } from './start';
+import { StartScreen, VowChoice } from './start';
 import { WatchScreen } from './watch';
 import { color, font, size } from './tokens';
 
@@ -57,6 +57,10 @@ function Screen() {
         scene={<LifeScene />}
       />
       <Layers />
+      {/* the vow chosen at birth and changed once at 15 (08-goals): the box draws nothing while no choice is open */}
+      <div style={{ position: 'fixed', left: '50%', bottom: size.pad * 6, transform: 'translateX(-50%)', width: 'min(560px, 92vw)', zIndex: 6 }}>
+        <VowChoice only="change" />
+      </div>
       <GodPanel />
     </>
   );
