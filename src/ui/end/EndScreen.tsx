@@ -163,7 +163,7 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
             </div>
           )}
           {error && (
-            <div role="alert" style={{ color: color.dread, marginTop: 8 }}>
+            <div role="alert" style={{ color: color.dreadText, marginTop: 8 }}>
               {error}
             </div>
           )}

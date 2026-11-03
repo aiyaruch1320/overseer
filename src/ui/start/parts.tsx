@@ -54,11 +54,11 @@ export function Button({ children, onClick, disabled, primary, title, pressed }:
 
 const SEGMENT_COLOR: Record<string, string> = {
   value: color.light,
-  neg: color.dread,
+  neg: color.dreadText,
   level: color.fate,
   random: color.dreamMist,
   off: color.textDim,
-  imp: color.dread,
+  imp: color.dreadText,
   fname: color.textDim,
 };
 

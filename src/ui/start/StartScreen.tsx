@@ -311,7 +311,7 @@ function StartInner(props: StartProps & { data: GameData }) {
         </div>
 
         <div style={{ flex: 'none', display: 'grid', gap: 6, paddingTop: 6, borderTop: `1px solid ${color.line}` }}>
-        {error && <div role="alert" style={{ color: color.dread }}>{error}</div>}
+        {error && <div role="alert" style={{ color: color.dreadText }}>{error}</div>}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <Button primary onClick={start}>
             {START_LABELS.start}

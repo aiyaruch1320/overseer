@@ -204,7 +204,7 @@ function GodPanel({ m }: { m: BattleModel }) {
 
 function BeatCard({ b, state, onPick }: { b: BeatView; state: 'future' | 'now' | 'past'; onPick: () => void }) {
   const on = state !== 'future';
-  const c = b.ok === true ? color.light : b.ok === false ? color.dread : color.textDim;
+  const c = b.ok === true ? color.light : b.ok === false ? color.dreadText : color.textDim;
   return (
     <button
       type="button"

@@ -77,7 +77,7 @@ export function VowChoice(props: VowChoiceProps) {
         </button>
       </div>
       <div style={{ color: color.textDim, fontSize: size.small }}>{view.phase === 'change' ? START_LABELS.vowChangeNote : START_LABELS.vowFirstNote}</div>
-      {error && <div role="alert" style={{ color: color.dread }}>{error}</div>}
+      {error && <div role="alert" style={{ color: color.dreadText }}>{error}</div>}
       <div>
         <Button onClick={leave}>{view.phase === 'change' ? START_LABELS.vowKeep : START_LABELS.vowLater}</Button>
       </div>
