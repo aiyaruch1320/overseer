@@ -38,7 +38,7 @@ function person(looks: LooksData, key: string, row: PersonLookRow, opts: Resolve
   const ov = R.lines.find((l) => l.name === row.line)?.overrides;
   const stage: Stage = opts?.stage ?? asStage(row.stage);
   const fem = opts?.fem ?? row.fem ?? hash(key) % 2 === 1;
-  const body: Body = { ...asBody(R.body), scale: ov?.scale ?? R.body.scale };
+  const body: Body = { ...asBody(R.body), scale: ov?.scale ?? R.body.scale, ears: row.ears ?? ov?.ears ?? R.body.ears };
   const feats = [...new Set([...(ov?.feats ?? R.feats), ...row.feats])];
   const young = stage === 'infant' || stage === 'child';
   return {
@@ -46,7 +46,7 @@ function person(looks: LooksData, key: string, row: PersonLookRow, opts: Resolve
     skin: row.skin,
     // an older self has the grey of age whatever the docs say of the younger
     hairColor: stage === 'elder' && row.stage !== 'elder' ? mix(row.hairColor, ELDER_GREY, 0.75) : row.hairColor,
-    eye: row.eye, accent: ov?.accent ?? R.accents[0], main: row.main, second: row.second,
+    eye: row.eye, accent: row.accent ?? ov?.accent ?? R.accents[0], main: row.main, second: row.second,
     outfit: row.outfit, hair: row.hair, hat: young ? '' : row.hat, beard: fem || young || stage === 'teen' ? '' : row.beard, tool: row.tool,
     feats, wear: row.wear,
   };
@@ -80,7 +80,7 @@ export function raceLook(looks: LooksData, race: string, o: { line?: string; sta
   const hair = hairless ? '' : (o.fem ? R.hairFem : R.hair) || (o.fem ? 'long' : 'short');
   return {
     kind: 'person', key, race, ...(ln ? { line: ln.name } : {}), stage: o.stage, fem: o.fem,
-    body: { ...asBody(R.body), scale: ov?.scale ?? R.body.scale },
+    body: { ...asBody(R.body), scale: ov?.scale ?? R.body.scale, ears: ov?.ears ?? R.body.ears },
     skin: ov?.skin ?? pick(R.skins, key), hairColor: ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : R.hairColor || '#3a2a20'), eye: ov?.eye ?? '#2a2024',
     accent: ov?.accent ?? R.accents[0], main: R.main, second: R.second,
     outfit: R.outfit || 'tunic', hair, hat: young ? '' : R.hat,

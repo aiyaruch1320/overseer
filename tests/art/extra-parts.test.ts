@@ -32,7 +32,8 @@ describe('the extra parts: tables', () => {
       expect(FEATS_EXTRA[id], id).toBeDefined();
       expect(FEATS[id]).toBe(FEATS_EXTRA[id]);
     }
-    expect(Object.keys(TOOLS_EXTRA).sort()).toEqual([...NEW_TOOLS].sort());
+    // the wave-4 things sit in the same file and are tested in extra-tools.test.ts
+    expect(Object.keys(TOOLS_EXTRA)).toEqual(expect.arrayContaining(NEW_TOOLS));
     expect(Object.keys(FEATS_EXTRA).sort()).toEqual([...NEW_FEATS].sort());
   });
   it('a look naming them names nothing the painter lacks', () => {
