@@ -20,6 +20,12 @@ export interface RaceAges {
   elderAge: number;
 }
 
+/** What a wish asks of the start point (19-wish.md §2: the early era, the fall of the dragons): the rule fixed, and the events to prefer (by id prefix) when the rule is the anchor. */
+export interface StartWanted {
+  rule?: 'early' | 'anchor';
+  prefer?: string[];
+}
+
 export interface StartPoint {
   worldYear: number;
   rule: 'early' | 'anchor' | 'none';
@@ -48,7 +54,7 @@ function mainEvents(data: GameData): Set<string> {
  * The start year for a life of this race in the world of this seed. `world` is the world system (passed in so this
  * module does not pick a system list); its walk runs on a scratch state and draws from the `world` stream only.
  */
-export function chooseStart(data: GameData, seed: number, ages: RaceAges, world: System): StartPoint {
+export function chooseStart(data: GameData, seed: number, ages: RaceAges, world: System, wanted?: StartWanted): StartPoint {
   const scratch = new Game(newGame(seed), data, [world]);
   scratch.init();
   const steps = HORIZON / WORLD_STEP;
@@ -61,12 +67,16 @@ export function chooseStart(data: GameData, seed: number, ages: RaceAges, world:
   const adult = ages.adultAge;
   const span = Math.max(1, ages.elderAge - ages.adultAge);
   const maxBirth = Math.max(0, end - adult - 5);
-  if (r.chance(P_EARLY)) return { worldYear: Math.floor(r.next() * Math.min(EARLY_YEARS, maxBirth)), rule: 'early' };
+  // the draw is made even when the wish fixes the rule, so what follows does not move
+  const rolledEarly = r.chance(P_EARLY);
+  if (wanted?.rule ? wanted.rule === 'early' : rolledEarly) return { worldYear: Math.floor(r.next() * Math.min(EARLY_YEARS, maxBirth)), rule: 'early' };
 
   const main = mainEvents(data);
-  const pool = Object.entries(happened)
+  const all = Object.entries(happened)
     .filter(([id, y]) => main.has(id) && y >= adult * 0.5 && y <= end - 0.5 * span)
     .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]));
+  const liked = wanted?.prefer?.length ? all.filter(([id]) => wanted.prefer!.some((p) => id.startsWith(p))) : [];
+  const pool = liked.length ? liked : all;
   if (!pool.length) return { worldYear: Math.floor(r.next() * Math.min(EARLY_YEARS, maxBirth)), rule: 'none' };
   const [anchor, y] = pool[Math.floor(r.next() * pool.length)];
   const birth = Math.max(0, Math.round(y - adult - r.next() * 0.3 * span));

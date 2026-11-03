@@ -10,6 +10,8 @@ export interface BirthRequest {
   race?: string;
   /** Country id (`AL-01`); drawn when missing. */
   country?: string;
+  /** The wish sheet of the player (`readWish`), for the character system's birth; the toy ignores it. */
+  wish?: import('../../src/core/character').WishSheet;
 }
 
 interface RaceRow {
