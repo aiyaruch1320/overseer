@@ -13,6 +13,8 @@ export const layout = {
   mapWidth: 200,
   mapHeight: 130,
   cardWidth: 250,
+  /** Below the name and the candle at the top left of the scene. */
+  cardsTop: 190,
 } as const;
 
 export const toneColor: Record<Tone, string> = { light: color.light, dread: color.dread, fate: color.fate };

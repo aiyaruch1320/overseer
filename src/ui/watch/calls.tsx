@@ -10,8 +10,14 @@ export const MAX_CARDS = 2;
 const RING = 15;
 const CIRC = 2 * Math.PI * RING;
 
-/** The edge of a card as a ring that shrinks with the time left. */
-function Ring({ frac, tone }: { frac: number; tone: string }) {
+/** The edge of a card as a ring that shrinks with the time left; a card with no time (folded into a stop, the clock is stopped) is a full dot. */
+function Ring({ frac, tone, stopped }: { frac: number; tone: string; stopped: boolean }) {
+  if (stopped)
+    return (
+      <svg width={38} height={38} viewBox="0 0 38 38" aria-hidden="true" style={{ flex: 'none' }}>
+        <circle cx={19} cy={19} r={7} fill={tone} />
+      </svg>
+    );
   return (
     <svg width={38} height={38} viewBox="0 0 38 38" aria-hidden="true" style={{ flex: 'none' }}>
       <circle cx={19} cy={19} r={RING} fill="none" stroke={color.line} stroke-width={3} />
@@ -42,7 +48,7 @@ export function Card({ card, onOpen }: { card: CardView; onOpen: (o: GodOpen) =>
       data-testid="card"
     >
       <div style={{ display: 'flex', gap: size.gap, alignItems: 'center' }}>
-        <Ring frac={card.frac} tone={tone} />
+        <Ring frac={card.frac} tone={tone} stopped={card.left === null} />
         <div style={{ fontSize: size.small, lineHeight: 1.45 }}>
           <div>{card.text}</div>
           {card.left !== null && <div style={{ color: color.textDim, fontFamily: font.mono, fontSize: 11 }}>{W.card.left(card.left)}</div>}
@@ -57,7 +63,7 @@ export function Card({ card, onOpen }: { card: CardView; onOpen: (o: GodOpen) =>
 export function CardStack({ cards, onOpen }: { cards: CardView[]; onOpen: (o: GodOpen) => void }) {
   if (!cards.length) return null;
   return (
-    <div role="region" aria-live="polite" style={{ position: 'absolute', left: size.pad, top: size.pad + 120, display: 'flex', flexDirection: 'column', gap: size.gap, zIndex: 2 }} data-testid="cards">
+    <div role="region" aria-live="polite" style={{ position: 'absolute', left: size.pad, top: layout.cardsTop, display: 'flex', flexDirection: 'column', gap: size.gap, zIndex: 2 }} data-testid="cards">
       {cards.slice(0, MAX_CARDS).map((c) => (
         <Card key={c.n} card={c} onOpen={onOpen} />
       ))}
