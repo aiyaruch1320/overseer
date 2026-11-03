@@ -338,3 +338,19 @@ describe('M4 round two: the card does not tell what the family web carried as if
     }
   });
 });
+
+describe('a bare card is never left bare (balance A: seed 17, third life)', () => {
+  it('the facts every life has (the place lived longest, the job, the death) stand in as lines when the moments, the vow and the ending give fewer than two', () => {
+    let checked = 0;
+    lineage(17, 3, (sess) => {
+      const card = cardOf(sess.game.state)!;
+      const [, , , ...rest] = card.lines;
+      const factLines = rest.length - 1; // the epitaph is the last
+      expect(factLines, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
+      // the fallback are lines, not moments: the moments stay the turning points
+      for (const m of card.moments) expect(['การเดินทาง', 'ศึก', 'อาชีพ', 'ถิ่นที่อยู่นานที่สุด']).not.toContain(m.kind);
+      checked++;
+    });
+    expect(checked).toBe(3);
+  });
+});
