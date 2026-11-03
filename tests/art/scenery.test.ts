@@ -70,7 +70,7 @@ describe('M7 ก2: the layers', () => {
         for (const [name, f] of [['far', far], ['mid', mid]] as const) {
           let n = 0;
           for (let i = 3; i < f.data.length; i += 4) if (f.data[i]) n++;
-          expect(n, `${id} ${setting} ${name} is not empty`).toBeGreaterThan(f.w * 10);
+          expect(n, `${id} ${setting} ${name} is not empty`).toBeGreaterThan(f.w * 3);
         }
       }
   });

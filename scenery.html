@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scenery</title>
+    <style>
+      html, body { margin: 0; background: #0e0f14; color: #e6e0d0; color-scheme: dark; font-family: "Sukhumvit Set", "Thonburi", "Leelawadee UI", "Noto Sans Thai", Tahoma, system-ui, sans-serif; font-size: 13px; }
+      .bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 8px 16px; }
+      select, input { background: #16171e; color: #e6e0d0; border: 1px solid #2a2c36; border-radius: 6px; padding: 3px 8px; font: inherit; }
+      #stage { padding: 0 16px 16px; }
+      .grid { display: grid; gap: 6px 6px; }
+      .cell { position: relative; line-height: 0; }
+      .cell span { position: absolute; left: 4px; top: 3px; line-height: 1.2; font-size: 11px; color: #fff; text-shadow: 0 1px 2px #000, 0 0 3px #000; font-family: ui-monospace, Menlo, monospace; }
+      canvas { image-rendering: pixelated; display: block; }
+      pre { padding: 0 16px; color: #8a8e98; margin: 4px 0; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/art/dev/scenery.ts"></script>
+  </body>
+</html>

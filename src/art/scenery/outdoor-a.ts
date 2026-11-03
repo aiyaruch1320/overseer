@@ -268,7 +268,7 @@ export const NR: Painter = {
     const { g } = cx, px = new Pix(GND_W, H, true), r = cx.rand(42);
     paintGround(px, {
       base: g.c('#8a8e90', 'ground'), shade: g.c('#6a7078', 'ground'), lit: g.c('#a8aeb0', 'ground'), haze: g.c('#c8d4d4', 'sky'),
-      specks: [g.c('#c8cccc', 'ground'), g.c('#5a6068', 'ground'), g.c('#b87a3a', 'ground'), g.c('#e8e8f0', 'ground')], speckDens: 0.12, vignette: 0.15, snow: g.snowAmt, seed: cx.seed + 4,
+      specks: [g.c('#c8cccc', 'ground'), g.c('#5a6068', 'ground'), g.c('#e8e8f0', 'ground')], speckDens: 0.1, vignette: 0.15, snow: g.snowAmt, seed: cx.seed + 4,
     });
     // pebbles with a lit top, then the tide line: foam and shallow water down to the bottom
     for (let i = 0; i < 220; i++) { const x = Math.floor(r() * GND_W), y = GY + 2 + Math.floor(r() * 24), a = 1 + Math.floor(r() * 2); px.rect(x, y, a + 1, a, g.c('#a0a6a8', 'ground')); px.rect(x, y + a, a + 1, 1, g.c('#50565c', 'ground')); px.set(x, y, g.c('#c8cccc', 'ground')); }
