@@ -7,7 +7,7 @@ import type { GameData } from '../../src/core/game';
 import { write } from '../../src/core/log';
 import type { GameState } from '../../src/core/types';
 import { idleView } from '../../src/app/views/scene';
-import { candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
+import { cardView, foldedCards, candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
 
 let data: GameData;
 beforeAll(() => {
@@ -141,6 +141,21 @@ describe('watch: the cards', () => {
     expect(d.kind).toBe('dream');
     // no name known: still the hint of help, no empty target
     expect(optionsOf('crisis', 'T3')[0].args).toEqual({ why: 'crisis', id: 'T3', hint: 'ช่วย' });
+  });
+});
+
+describe('watch: the crisis card names its person (review round two R2)', () => {
+  it('a card and a card folded into a stop open the whisper of help on the person of the crisis entry', () => {
+    const st = life(2, 40);
+    const crisis = write(st, { sys: 'bonds', kind: 'crisis', id: 'T7', data: { name: 'ซาเล็ม', line: 'น้อง', tie: 'T7' }, level: 2 });
+    const card = write(st, { sys: 'attention', kind: 'call', id: 'T7', data: { call: 'card', why: 'crisis', n: String(crisis.n), ids: 'T7', cards: 'crisis', until: 99, sec: 0 }, level: 3 });
+    const v = cardView(data, st, card)!;
+    expect(v.options[0]).toEqual({ kind: 'whisper', args: { why: 'crisis', id: 'T7', hint: 'ช่วย', target: 'ซาเล็ม' } });
+    expect(v.text).toContain('ซาเล็ม');
+    const stop = write(st, { sys: 'attention', kind: 'call', id: 'age.30', data: { call: 'stop', why: 'age', age: 30, n: String(crisis.n), ids: 'T7', cards: 'crisis', until: null }, level: 3 });
+    const folded = foldedCards(data, st, stop);
+    expect(folded).toHaveLength(1);
+    expect(folded[0].options[0].args).toMatchObject({ hint: 'ช่วย', target: 'ซาเล็ม', id: 'T7' });
   });
 });
 
