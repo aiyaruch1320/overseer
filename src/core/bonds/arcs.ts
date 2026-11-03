@@ -10,7 +10,7 @@ import { openLine } from '../story';
 import { bondsIndex } from './data';
 import { addGratitude, changeB, endTie, hAgeOf, setLine } from './people';
 import { showMood } from './moods';
-import { answered } from '../attention';
+import { settled } from '../attention';
 import { extOf, isLive, levelOf, type ArcState, type BondsExt, type Nudge, type Tie } from './state';
 import { CRISIS_CARD, CRISIS_MAX_BEATS, ENDING_B, HELP, HELP_BASE, KIN_TEMPLATES, STAGE_GAP, STAGE_PATIENCE } from './tuning';
 import { grantPair } from './items';
@@ -260,7 +260,7 @@ export function decideCrises(ctx: Ctx, life: LifeState): void {
       e.crises = e.crises.filter((x) => x !== c);
       continue;
     }
-    if (c.beats < CRISIS_MAX_BEATS && !answered(ctx.state, c.n)) continue;
+    if (c.beats < CRISIS_MAX_BEATS && !settled(ctx.state, c.n)) continue;
     e.crises = e.crises.filter((x) => x !== c);
     const nudge = takeNudge(e, t, life);
     const answer = crisisAnswer(ctx, life, e, t, nudge?.bonus ?? 0);

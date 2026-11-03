@@ -104,7 +104,7 @@ describe('watch: the candle and the purse', () => {
 
 describe('watch: the cards', () => {
   it('two cards at most, the one that runs out first on top, with a ring and options', () => {
-    const st = life(2, 107);
+    const st = life(5, 250); // (M5 fix: the stale cards of answered or lapsed prayers no longer fill the two places, so the pair is found at a later beat)
     const m = watchModel(data, st, uiOfState(st, { running: true }));
     expect(m.cards.length).toBe(2);
     expect(m.cards[0].left!).toBeLessThanOrEqual(m.cards[1].left!);
@@ -129,14 +129,14 @@ describe('watch: the cards', () => {
 
 describe('watch: the stop', () => {
   it('an age stop names the age, tells the recap, and holds the cards that waited', () => {
-    const st = life(2, 200);
+    const st = life(2, 61); // the age stop of 15 that holds a prayer (the stop of 50 held one only because a lapsed prayer was still listed)
     const stop = lastStop(st);
     expect(stop).not.toBeNull();
     const m = watchModel(data, st, uiOfState(st, { stop: true }));
     expect(m.stop).not.toBeNull();
     expect(m.stop!.why).toBe('age');
-    expect(m.stop!.age).toBe(50);
-    expect(m.stop!.reason).toContain('50');
+    expect(m.stop!.age).toBe(15);
+    expect(m.stop!.reason).toContain('15');
     expect(m.stop!.cards.length).toBe(String(stop!.data.cards).split(',').length);
     expect(m.stop!.cards.map((c) => c.kind)).toEqual(String(stop!.data.cards).split(','));
     for (const c of m.stop!.cards) {

@@ -126,7 +126,8 @@ describe('combat balance (whole lives of the real core)', () => {
     // and every call is followed by its battle (unless the life ended first)
     for (const l of lives) {
       const fought = new Set(l.battles.map((e) => e.id));
-      const missing = l.preludes.filter((p) => !fought.has(p.id));
+      // a fight waits for its card (up to PRELUDE_MAX_BEATS beats, M5 review S6): a call in the last two years of a life may be left unfought by the death
+      const missing = l.preludes.filter((p) => !fought.has(p.id) && (p.age ?? 0) + PRELUDE_MAX_BEATS / 4 <= l.deathAge);
       if (l.cause === 'alive') expect(missing.length).toBe(0);
       expect(missing.length).toBeLessThanOrEqual(2);
     }

@@ -24,6 +24,9 @@ export const DEFAULT_RULES: Record<'low' | 'normal' | 'high', AttentionRule> = {
 export const DEFAULT_DEADLINES: Record<CardKind, number> = { prayer: 3.5, omen: 2, battle: 2, crisis: 1, majorOmen: 1 };
 export const DEFAULT_AGE_STOPS = [5, 15, 30, 50, 70];
 
+/** Cards on the screen at most (07-attention.md §2): the third waits in the queue of the rules until a place frees. */
+export const MAX_CARDS = 2;
+
 /** A prayer is at most two cards at once; the third does not happen (07-attention.md §3). */
 export const MAX_WAITING_PRAYERS = 2;
 
