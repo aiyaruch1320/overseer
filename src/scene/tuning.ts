@@ -26,10 +26,10 @@ export const CAMERA: Record<CameraFrame, { zoom: number; lift: number }> = {
 
 /** The light of a scene (13-storyline-scenes §1 "แสง"): colour, strength, and where it comes from. */
 export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'front' | 'back' | 'all' | 'centre'; add: boolean }> = {
-  'warm-front': { color: '#ffd89a', alpha: 0.3, from: 'front', add: true },
+  'warm-front': { color: '#ffd89a', alpha: 0.24, from: 'front', add: true },
   'cold-back': { color: '#7a96d8', alpha: 0.28, from: 'back', add: true },
   diffuse: { color: '#ffffff', alpha: 0.06, from: 'all', add: true },
-  glow: { color: '#fff0c0', alpha: 0.2, from: 'centre', add: true },
+  glow: { color: '#fff0c0', alpha: 0.14, from: 'centre', add: true },
   dim: { color: '#000000', alpha: 0.32, from: 'all', add: false },
 };
 
@@ -115,19 +115,19 @@ export interface FxLook {
 }
 
 export const FX_LOOK: Record<FxKind, FxLook> = {
-  ash: { model: 'drift', shape: 'dot', count: 80, colors: ['#b8b4ac', '#8e8a84', '#d0ccc4'], add: false, alpha: [0.45, 0.9], vy: [8, 22], vx: [-5, 4], sway: [3, 1.2], life: [0, 0], size: [1, 2] },
-  embers: { model: 'ember', shape: 'dot', count: 46, colors: ['#ffe6a0', '#ffb040', '#ff7a2a', '#c8421e', '#6a2414'], add: true, alpha: [0.7, 1], vy: [-30, -10], vx: [-4, 6], sway: [4, 2.2], life: [2.6, 4.6], size: [1, 2] },
-  snow: { model: 'drift', shape: 'dot', count: 100, colors: ['#f0f4fa', '#d8e4f4'], add: false, alpha: [0.6, 1], vy: [10, 26], vx: [-4, 4], sway: [5, 1], life: [0, 0], size: [1, 2] },
+  ash: { model: 'drift', shape: 'dot', count: 120, colors: ['#b8b4ac', '#8e8a84', '#d0ccc4'], add: false, alpha: [0.45, 0.9], vy: [8, 22], vx: [-5, 4], sway: [3, 1.2], life: [0, 0], size: [1, 2] },
+  embers: { model: 'ember', shape: 'dot', count: 80, colors: ['#ffe6a0', '#ffb040', '#ff7a2a', '#e0521e', '#a02e16'], add: true, alpha: [0.85, 1], vy: [-30, -10], vx: [-4, 6], sway: [4, 2.2], life: [2.6, 4.6], size: [1, 2] },
+  snow: { model: 'drift', shape: 'dot', count: 130, colors: ['#f0f4fa', '#d8e4f4'], add: false, alpha: [0.6, 1], vy: [10, 26], vx: [-4, 4], sway: [5, 1], life: [0, 0], size: [1, 2] },
   rain: { model: 'drift', shape: 'streak', count: 90, colors: ['#a8c4e8', '#7a96c0'], add: false, alpha: [0.35, 0.75], vy: [220, 300], vx: [-46, -38], sway: [0, 0], life: [0, 0], size: [3, 5] },
-  leaves: { model: 'drift', shape: 'tumble', count: 24, colors: ['#6aa05a', '#8ab05a', '#b08a3a', '#a05a2a'], add: false, alpha: [0.8, 1], vy: [10, 22], vx: [-16, 14], sway: [12, 2], life: [0, 0], size: [2, 2] },
-  dust: { model: 'drift', shape: 'twinkle', count: 64, colors: ['#c8b48a', '#a8946a', '#e0d0a8'], add: false, alpha: [0.3, 0.8], vy: [-2, 4], vx: [5, 13], sway: [4, 1], life: [0, 0], size: [1, 1] },
+  leaves: { model: 'drift', shape: 'tumble', count: 40, colors: ['#6aa05a', '#8ab05a', '#b08a3a', '#a05a2a'], add: false, alpha: [0.8, 1], vy: [10, 22], vx: [-16, 14], sway: [12, 2], life: [0, 0], size: [3, 3] },
+  dust: { model: 'drift', shape: 'twinkle', count: 110, colors: ['#d8c498', '#b8a47a', '#f0e0b8'], add: false, alpha: [0.5, 1], vy: [-2, 4], vx: [5, 13], sway: [4, 1], life: [0, 0], size: [1, 1] },
   fog: { model: 'band', shape: 'blob', count: 7, colors: ['#d4d6dc'], add: false, alpha: [0.1, 0.18], vy: [0, 0], vx: [3, 8], sway: [0, 0], life: [0, 0], size: [60, 100] },
   motes: { model: 'drift', shape: 'twinkle', count: 50, colors: ['#fff2c0', '#ffe6a0', '#e8c36a'], add: true, alpha: [0.5, 1], vy: [-8, -2], vx: [-3, 3], sway: [6, 0.9], life: [0, 0], size: [1, 1] },
-  smoke: { model: 'plume', shape: 'blob', count: 10, colors: ['#6a6a72', '#54545c', '#84848c'], add: false, alpha: [0.22, 0.4], vy: [-18, -9], vx: [2, 6], sway: [5, 1], life: [4, 7], size: [5, 15] },
-  sparks: { model: 'burst', shape: 'dot', count: 36, colors: ['#fff6d0', '#ffd070', '#ff9a3a', '#c0501e'], add: true, alpha: [0.8, 1], vy: [0, 0], vx: [0, 0], sway: [0, 0], life: [0.6, 1.2], size: [1, 1] },
-  petals: { model: 'drift', shape: 'tumble', count: 28, colors: ['#f0b8c8', '#e89ab0', '#f8d0dc'], add: false, alpha: [0.8, 1], vy: [10, 20], vx: [4, 16], sway: [10, 1.6], life: [0, 0], size: [2, 2] },
-  water: { model: 'spray', shape: 'dot', count: 70, colors: ['#d8f0fc', '#8fc4e8', '#6aa8d8'], add: false, alpha: [0.6, 0.95], vy: [0, 0], vx: [0, 0], sway: [0, 0], life: [0, 0], size: [1, 1] },
-  feathers: { model: 'drift', shape: 'tumble', count: 18, colors: ['#f0eadc', '#d8d0c0'], add: false, alpha: [0.7, 1], vy: [6, 14], vx: [-6, 6], sway: [14, 1.3], life: [0, 0], size: [3, 3] },
+  smoke: { model: 'plume', shape: 'blob', count: 12, colors: ['#6a6a72', '#54545c', '#84848c'], add: false, alpha: [0.35, 0.6], vy: [-18, -9], vx: [2, 6], sway: [5, 1], life: [4, 7], size: [9, 26] },
+  sparks: { model: 'burst', shape: 'dot', count: 56, colors: ['#fff6d0', '#ffd070', '#ff9a3a', '#c0501e'], add: true, alpha: [0.8, 1], vy: [0, 0], vx: [0, 0], sway: [0, 0], life: [0.6, 1.2], size: [1, 1] },
+  petals: { model: 'drift', shape: 'tumble', count: 44, colors: ['#f0b8c8', '#e89ab0', '#f8d0dc'], add: false, alpha: [0.85, 1], vy: [10, 20], vx: [4, 16], sway: [10, 1.6], life: [0, 0], size: [3, 3] },
+  water: { model: 'spray', shape: 'dot', count: 120, colors: ['#d8f0fc', '#8fc4e8', '#6aa8d8'], add: false, alpha: [0.6, 0.95], vy: [0, 0], vx: [0, 0], sway: [0, 0], life: [0, 0], size: [1, 1] },
+  feathers: { model: 'drift', shape: 'tumble', count: 30, colors: ['#f0eadc', '#d8d0c0'], add: false, alpha: [0.7, 1], vy: [6, 14], vx: [-6, 6], sway: [14, 1.3], life: [0, 0], size: [4, 4] },
 };
 
 /** The place's own `ambient` particle, when it names an effect: a few of them, faint, under the beats' own. */

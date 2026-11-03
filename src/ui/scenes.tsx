@@ -117,6 +117,11 @@ story({
 });
 story({
   group: 'ฉาก',
+  name: 'วันเกิดเหตุของปาฏิหาริย์ · แสงศักดิ์สิทธิ์',
+  render: ({ data }) => <Scene data={data} e={entry('god', 'miracle', 'MR-04', { name: 'แสงศักดิ์สิทธิ์', target: 'AZ-04', result: 'ok', tier: 'ใหญ่' })} />,
+});
+story({
+  group: 'ฉาก',
   name: 'ศึกของ NPC · อัซการ์ แพ้',
   render: ({ data, state }) => <Scene data={data} state={state} e={entry('combat', 'clash', 'NF-AZ02-1', { npc: 'AZ02-1', outcome: 'แพ้', kind: 'lose', result: 'แพ้' })} />,
 });

@@ -114,15 +114,15 @@ function dread(t: number, seed: number, s: Sink): void {
   const red = hexNum(GOD.dread);
   // blood-pork red that goes black in the middle, its edge smoke
   s.blob(cx, cy, D.rx, D.ry, red, 0.38, false, 4);
-  s.blob(cx, cy, D.core, D.core * 0.62, 0x0a0206, 0.55, false, 4);
+  s.blob(cx, cy, D.core, D.core * 0.62, 0x0a0206, 0.7, false, 4);
   for (let i = 0; i < D.smoke; i++) {
     const th = (i / D.smoke + rnd(seed, i, 1) * 0.08) * Math.PI * 2 + t * (0.12 + 0.05 * rnd(seed, i, 2));
     const r = 0.85 + 0.2 * rnd(seed, i, 3);
     const rise = ((t * (4 + 4 * rnd(seed, i, 4)) + rnd(seed, i, 5) * 40) % 40) * 0.6;
     const x = cx + Math.cos(th) * D.rx * r;
     const y = cy + Math.sin(th) * D.ry * r - rise + Math.sin(t * 0.9 + i) * 3;
-    const rad = 7 + rnd(seed, i, 6) * 7 + 2 * Math.sin(t + i);
-    s.blob(x, y, rad, rad * 0.8, i % 2 ? 0x3a0e18 : 0x180610, 0.3 * (1 - rise / 28), false, 3);
+    const rad = 9 + rnd(seed, i, 6) * 9 + 2 * Math.sin(t + i);
+    s.blob(x, y, rad, rad * 0.8, i % 2 ? 0x3a0e18 : 0x180610, 0.5 * (1 - rise / 28), false, 3);
   }
 }
 
