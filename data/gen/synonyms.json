@@ -1,5 +1,5 @@
 {
- "version": "26bc903eb79e",
+ "version": "5e410d648894",
  "sources": [
   "docs/systems/character/20-wish-synonyms.md"
  ],
@@ -6524,7 +6524,11 @@
        "รักเศร้า",
        "พบรักแท้",
        "มีแฟน",
-       "อยากแต่งงาน"
+       "อยากแต่งงาน",
+       "พบรัก",
+       "ได้พบรัก",
+       "เจอรัก",
+       "เจอคนที่ใช่"
       ]
      },
      {
@@ -6969,7 +6973,7 @@
   ],
   "totals": {
    "values": 506,
-   "synonyms": 3562,
+   "synonyms": 3566,
    "declaredValues": 506,
    "declaredSynonyms": 3562
   },
