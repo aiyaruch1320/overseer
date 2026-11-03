@@ -31,7 +31,7 @@ export const ALLIES_W = {
   age: 'อายุ',
   crisis: 'วิกฤตที่รอการตัดสินใจ',
   whisper: 'กระซิบถึงเขา',
-  whisperHint: 'ตัวละครยังไม่ได้ตัดสินใจว่าจะช่วยหรือไม่',
+  whisperHint: 'ท่านกระซิบถึงเขาได้ก่อนที่เขาจะตัดสินใจ',
   gone: 'ผู้จากไป',
   moreHistory: 'ก่อนหน้านี้',
   // the tree
@@ -260,7 +260,11 @@ export function circleOf(data: GameData, state: GameState): Circle {
     const w = waiting.find((x) => x.tie.id === t.id);
     return w ? { text: byN.get(w.crisis.n)?.text ?? w.crisis.text, since: w.crisis.age, code: w.crisis.code } : null;
   };
-  const view = (t: Tie) => tieView(ctx, life, t, e.party, by.get(t.id), crisisOf(t));
+  // the line that announced the crisis is told once, in the box of the crisis, not again in the story between the two (M5 review: the same text three times)
+  const view = (t: Tie) => {
+    const w = waiting.find((x) => x.tie.id === t.id);
+    return tieView(ctx, life, t, e.party, w ? by.get(t.id)?.filter((h) => h.n !== w.crisis.n) : by.get(t.id), crisisOf(t));
+  };
   // the allies are the ties the god's word can name (alive, with a story of their own or a child); the frame of the family stays in the family group
   const named = new Set(alliesOf(ctx).map((t) => t.id));
   const live = ties.filter(isLive).filter((t) => named.has(t.id) || (t.light && GROUPS[0].lines.includes(t.line)) || life.dead).map(view);

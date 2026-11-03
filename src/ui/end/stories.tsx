@@ -7,6 +7,8 @@ import { lived } from './sample';
 
 const GROUP = 'จบชีวิต';
 const noop = () => ({ ok: true });
+/** The storybook has no page before these ones, so the back button has nowhere to go (it is there to be reached and to be focused). */
+const back = () => undefined;
 
 story({
   group: GROUP,
@@ -65,17 +67,17 @@ story({
 story({
   group: 'ตำนาน',
   name: 'หน้าตำนาน สามรุ่น',
-  render: ({ data }) => <LegendScreen data={data} state={lived(data, { seed: 5, lives: 3, vow: 'kept' }).state} />,
+  render: ({ data }) => <LegendScreen data={data} state={lived(data, { seed: 5, lives: 3, vow: 'kept' }).state} onBack={back} onWorld={back} />,
 });
 
 story({
   group: 'ของสะสม',
   name: 'หลังสามชีวิต',
-  render: ({ data }) => <CollectionScreen data={data} state={lived(data, { seed: 5, lives: 3 }).state} />,
+  render: ({ data }) => <CollectionScreen data={data} state={lived(data, { seed: 5, lives: 3 }).state} onBack={back} />,
 });
 
 story({
   group: 'หน้าสรุปโลก',
   name: 'โลกที่ยังดำเนินอยู่ หลังสองชีวิต',
-  render: ({ data }) => <WorldSummaryScreen data={data} state={lived(data, { seed: 5, lives: 2 }).state} />,
+  render: ({ data }) => <WorldSummaryScreen data={data} state={lived(data, { seed: 5, lives: 2 }).state} onBack={back} />,
 });

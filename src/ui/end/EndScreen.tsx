@@ -2,12 +2,12 @@
 // record with the card, and the choice of the heir. From here the player goes on (`store.nextLife`) or to the legend, the collection, the summary of the world.
 import { useMemo, useState } from 'preact/hooks';
 import { store } from '../../app/store';
-import { cardView, deathOf, END_LABELS, goOn, heirChoice, type HeirCandidate } from '../../app/views/end';
+import { cardView, deathOf, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
 import type { Ctx, GameData } from '../../core/game';
 import { makeCtx } from '../../core/game';
 import type { GameState } from '../../core/types';
 import { color, font, motion, size } from '../tokens';
-import { Button, Heading, panel, Styles } from '../start/parts';
+import { Button, Heading, paper, Styles } from '../start/parts';
 import { CardPanel } from './CardPanel';
 import { CollectionScreen, LegendScreen, WorldSummaryScreen } from './Pages';
 
@@ -59,6 +59,9 @@ function DeathScene({ data, state, onNext }: { data: GameData; state: GameState;
   );
 }
 
+/** The paper of the card of the record: the heirs and the end of a family are written on the same hide (M5 review: they were bare dark boxes). */
+const sheet = { background: paper.bg, color: paper.ink, border: `2px solid ${paper.edge}`, borderRadius: 4, boxShadow: `inset 0 0 22px ${paper.edge}88` } as const;
+
 function HeirCard({ h, on, pickable, onPick }: { h: HeirCandidate; on: boolean; pickable: boolean; onPick: () => void }) {
   return (
     <button
@@ -68,24 +71,23 @@ function HeirCard({ h, on, pickable, onPick }: { h: HeirCandidate; on: boolean; 
       onClick={onPick}
       disabled={!pickable}
       style={{
+        ...sheet,
         textAlign: 'left',
         cursor: pickable ? 'pointer' : 'default',
         fontFamily: font.body,
         fontSize: size.text,
-        color: color.text,
-        background: on ? '#2a2618' : '#16171f',
-        border: `1px solid ${on ? color.light : color.line}`,
-        boxShadow: on ? `0 0 10px ${color.light}55` : 'none',
-        borderRadius: size.radius,
+        borderColor: on ? color.light : paper.edge,
+        boxShadow: on ? `0 0 12px ${color.light}, inset 0 0 22px ${paper.edge}88` : sheet.boxShadow,
+        opacity: pickable && !on ? 0.82 : 1,
         padding: size.pad,
         display: 'grid',
         gap: 4,
       }}
     >
       <span style={{ fontFamily: font.title, fontSize: size.title }}>{h.name}</span>
-      <span style={{ color: color.textDim }}>{h.line}</span>
+      <span style={{ color: paper.inkBrown }}>{h.line}</span>
       {h.traits.length > 0 && <span>{h.traits.join(' · ')}</span>}
-      {h.aptitudes.length > 0 && <span style={{ color: color.fate }}>{h.aptitudes.join(' · ')}</span>}
+      {h.aptitudes.length > 0 && <span style={{ color: paper.inkBrown }}>{h.aptitudes.join(' · ')}</span>}
     </button>
   );
 }
@@ -99,15 +101,22 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
   const [tie, setTie] = useState<string | null>(null);
   const [error, setError] = useState('');
   const picked = tie ?? heirs.candidates.find((c) => c.chosen)?.tie ?? null;
+  // the summary of the world is a rare scene (03 §7): its button comes only when the world fell; the legend page reaches it otherwise
+  const fell = useMemo(() => worldEnded(data, state), [data, state]);
+  const [from, setFrom] = useState<Page>('record');
+  const go = (to: Page) => {
+    if (to === 'legend' || to === 'collection' || to === 'world') setFrom(page);
+    setPage(to);
+  };
 
   const next = (opts: { tie?: string; newcomer?: boolean }) => {
     const r = props.onContinue ? props.onContinue(opts) : (goOn(store, opts) as { ok: boolean; reason?: string } | null);
     if (r && !r.ok) setError(END_LABELS.noHeir);
   };
 
-  if (page === 'legend') return <LegendScreen data={data} state={state} onBack={() => setPage('record')} />;
-  if (page === 'collection') return <CollectionScreen data={data} state={state} onBack={() => setPage('record')} />;
-  if (page === 'world') return <WorldSummaryScreen data={data} state={state} onBack={() => setPage('record')} />;
+  if (page === 'legend') return <LegendScreen data={data} state={state} onBack={() => setPage(from)} onWorld={() => setPage('world')} />;
+  if (page === 'collection') return <CollectionScreen data={data} state={state} onBack={() => setPage(from)} />;
+  if (page === 'world') return <WorldSummaryScreen data={data} state={state} onBack={() => setPage(fell ? 'record' : 'legend')} />;
 
   return (
     <div style={stage} className="ov-start">
@@ -117,13 +126,13 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
       {page === 'record' && (
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           {card ? <CardPanel card={card} /> : null}
-          <div style={{ display: 'flex', gap: 8, marginTop: size.pad, flexWrap: 'wrap' }}>
+          <div style={{ position: 'sticky', bottom: 0, display: 'flex', gap: 8, marginTop: size.pad, padding: `${size.gap}px 0`, flexWrap: 'wrap', background: color.panel }}>
             <Button primary onClick={() => setPage('heir')}>
               {END_LABELS.next}
             </Button>
-            <Button onClick={() => setPage('legend')}>{END_LABELS.toLegend}</Button>
-            <Button onClick={() => setPage('collection')}>{END_LABELS.toCollection}</Button>
-            <Button onClick={() => setPage('world')}>{END_LABELS.world}</Button>
+            <Button onClick={() => go('legend')}>{END_LABELS.toLegend}</Button>
+            <Button onClick={() => go('collection')}>{END_LABELS.toCollection}</Button>
+            {fell && <Button onClick={() => go('world')}>{END_LABELS.world}</Button>}
           </div>
         </div>
       )}
@@ -133,7 +142,7 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
           <Heading>
             {END_LABELS.heir} · {END_LABELS.family} {heirs.family.dynasty}
           </Heading>
-          {heirs.blocked && <div style={panel()}>{END_LABELS.ended}</div>}
+          {heirs.blocked && <div style={{ ...sheet, padding: size.pad }}>{END_LABELS.ended}</div>}
           {!heirs.blocked && heirs.candidates.length > 0 && (
             <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: size.gap }}>
               {heirs.candidates.map((h) => (
@@ -147,26 +156,25 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
             </div>
           )}
           {!heirs.blocked && heirs.extinct && (
-            <div style={panel()}>
-              <div style={{ fontFamily: font.title, fontSize: size.title }}>{END_LABELS.extinct}</div>
-              <div style={{ color: color.textDim, margin: '4px 0 10px' }}>{END_LABELS.noHeir}</div>
+            <div style={{ ...sheet, padding: size.pad + 4 }}>
+              <div style={{ fontFamily: font.title, fontSize: size.title + 4 }}>{END_LABELS.extinct}</div>
+              <div style={{ color: paper.inkBrown, margin: '4px 0 10px' }}>{END_LABELS.noHeir}</div>
               <Button onClick={() => next({ newcomer: true })}>{END_LABELS.newcomer}</Button>
             </div>
           )}
           {error && (
-            <div role="alert" style={{ color: color.dread, marginTop: 8 }}>
+            <div role="alert" style={{ color: color.dreadText, marginTop: 8 }}>
               {error}
             </div>
           )}
-          <div style={{ display: 'flex', gap: 8, marginTop: size.pad }}>
+          <div style={{ display: 'flex', gap: 8, marginTop: size.pad, flexWrap: 'wrap' }}>
             {!heirs.blocked && !heirs.extinct && (
               <Button primary onClick={() => next({ tie: picked ?? undefined })}>
                 {END_LABELS.next}
               </Button>
             )}
             <Button onClick={() => setPage('record')}>{END_LABELS.back}</Button>
-            <Button onClick={() => setPage('legend')}>{END_LABELS.toLegend}</Button>
-            <Button onClick={() => setPage('world')}>{END_LABELS.world}</Button>
+            <Button onClick={() => go('legend')}>{END_LABELS.toLegend}</Button>
           </div>
         </div>
       )}

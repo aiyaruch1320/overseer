@@ -59,6 +59,17 @@ function Identity({ m }: { m: CharacterModel }) {
         </Row>
         <Row label={W.faith}>{i.faith || W.none}</Row>
       </div>
+      {m.vow && (
+        <div style={{ marginTop: size.gap, paddingTop: size.gap, borderTop: `1px solid ${color.line}` }} data-testid="vow">
+          <Dim>{W.vow}</Dim>
+          <div style={{ fontFamily: font.title, fontSize: size.text + 2, color: m.vow.result === 'broken' ? color.textDim : color.light, lineHeight: 1.45 }}>
+            {m.vow.name}
+            {m.vow.result && <Dim> · {m.vow.result === 'kept' ? W.vowKept : W.vowBroken}</Dim>}
+          </div>
+          {m.vow.done && <Dim>{m.vow.done}</Dim>}
+          {m.vow.changeable && <div><Dim>{W.vowChange}</Dim></div>}
+        </div>
+      )}
       {m.question && (
         <div style={{ marginTop: size.gap, paddingTop: size.gap, borderTop: `1px solid ${color.line}` }} data-testid="question">
           <Dim>{W.question}</Dim>

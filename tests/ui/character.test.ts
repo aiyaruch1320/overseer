@@ -5,7 +5,8 @@ import { characterCardView, characterView, type CharacterModel } from '../../src
 import { STAT_NAMES } from '../../src/app/views/character-words';
 import type { GameData } from '../../src/core/game';
 import { leaks } from '../../src/core/text';
-import type { GameState } from '../../src/core/types';
+import { command } from '../../src/core/command';
+import type { Command, GameState } from '../../src/core/types';
 import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, startLife } from '../../scripts/tools/session';
 
@@ -162,5 +163,20 @@ describe('character view', () => {
       for (const t of strings(characterCardView(data, life(k)))) if (t && leaks(t).length) bad.push(`${k} card: ${t}`);
     }
     expect(bad).toEqual([]);
+  });
+});
+
+describe('M5 fix S7: the vow of the life on the character screen', () => {
+  it('shows the vow taken, in words, from birth; and none when none was taken', () => {
+    const s = createSession(data, { seed: 12 });
+    startLife(s);
+    expect(characterView(data, s.game.state)?.vow).toBeNull();
+    expect(command(s.game.ctx, { type: 'god', action: 'vow.pick' as Extract<Command, { type: 'god' }>['action'], args: { pick: 1 }, confirm: true }).ok).toBe(true);
+    const v = characterView(data, s.game.state)?.vow;
+    expect(v?.name).toBeTruthy();
+    expect(v?.done).toBeTruthy();
+    expect(v?.changeable).toBe(true);
+    expect(leaks(String(v?.name) + ' ' + String(v?.done)).filter((x) => x !== "latin word")).toEqual([]);
+    expect(v?.result).toBeNull();
   });
 });

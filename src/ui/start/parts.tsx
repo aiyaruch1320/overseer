@@ -54,11 +54,11 @@ export function Button({ children, onClick, disabled, primary, title, pressed }:
 
 const SEGMENT_COLOR: Record<string, string> = {
   value: color.light,
-  neg: color.dread,
+  neg: color.dreadText,
   level: color.fate,
   random: color.dreamMist,
   off: color.textDim,
-  imp: color.dread,
+  imp: color.dreadText,
   fname: color.textDim,
 };
 
@@ -139,5 +139,5 @@ export function Beads({ beads, label }: { beads: ('spent' | 'refund' | 'free')[]
 
 /** Makes the keyframe of the flicker once per page (the god's effects tremble at the edge: 20-god-ui.md §1). */
 export function Styles() {
-  return <style>{`@keyframes flicker{0%,100%{opacity:1}50%{opacity:.78}} .ov-start button:focus-visible,.ov-start textarea:focus-visible,.ov-start select:focus-visible{outline:2px solid ${color.light};outline-offset:2px}`}</style>;
+  return <style>{`@keyframes flicker{0%,100%{opacity:1}50%{opacity:.78}} .ov-mood{display:none} .ov-mood[data-on=true],.ov-start button:hover .ov-mood,.ov-start button:focus-visible .ov-mood{display:block} .ov-start button:focus-visible,.ov-start textarea:focus-visible,.ov-start select:focus-visible{outline:2px solid ${color.light};outline-offset:2px}`}</style>;
 }

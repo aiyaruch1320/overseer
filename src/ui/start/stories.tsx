@@ -1,6 +1,12 @@
 // Stories of the start screen (code-plan §8.1 rule 5): the empty sheet, a wish typed, the vows on the stones.
 import { story } from '../stories';
+import { command } from '../../core/command';
+import type { Ctx, GameData } from '../../core/game';
+import { reoffer } from '../../core/god/goals';
+import type { Command } from '../../core/types';
+import { createSession, startLife } from '../../../scripts/tools/session';
 import { StartScreen } from './StartScreen';
+import { VowChoice } from './VowChoice';
 
 const GROUP = 'เริ่ม';
 /** The storybook has no game to start: the button does nothing here. */
@@ -37,3 +43,23 @@ story({
   at: 0,
   render: ({ data }) => <StartScreen onStart={onStart} data={data} state={null} initial={{ seed: 9, mode: 'dragonkin' }} />,
 });
+
+// the vows on the table of a living life, as the watch screen mounts them (VowChoice): at birth, and the one change at 15
+const games = new Map<number, Ctx>();
+const vowGame = (data: GameData, age: number): Ctx => {
+  const hit = games.get(age);
+  if (hit) return hit;
+  const s = createSession(data, { seed: 5 });
+  const life = startLife(s);
+  if (age >= 15) {
+    command(s.game.ctx, { type: 'god', action: 'vow.pick' as Extract<Command, { type: 'god' }>['action'], args: { pick: 1 }, confirm: true });
+    life.hAge = 15;
+    reoffer(s.game.ctx, life);
+  }
+  games.set(age, s.game.ctx);
+  return s.game.ctx;
+};
+const noPick = () => ({ ok: true });
+
+story({ group: GROUP, name: 'คำปฏิญาณ ตอนเกิด (VowChoice)', at: 0, render: ({ data }) => <div style={{ maxWidth: 460, margin: 24 }}><VowChoice ctx={vowGame(data, 0)} onPick={noPick} /></div> });
+story({ group: GROUP, name: 'คำปฏิญาณ เปลี่ยนได้ที่อายุ 15 (VowChoice)', at: 0, render: ({ data }) => <div style={{ maxWidth: 460, margin: 24 }}><VowChoice ctx={vowGame(data, 15)} onPick={noPick} /></div> });

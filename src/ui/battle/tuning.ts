@@ -3,6 +3,8 @@
 /** Milliseconds a beat stays on the screen at speed 1; the meeting stays a little longer. */
 export const BEAT_MS = 1600;
 export const MEET_MS = 1800;
+/** The step from the last beat to the result is short: the result is what the player waits for. */
+export const RESULT_MS = 500;
 export const SPEEDS = [1, 2, 4] as const;
 
 /** The stage: its height and where the two figures stand (share of the width). */

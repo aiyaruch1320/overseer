@@ -13,6 +13,7 @@ import { labels } from '../../core/text/labels';
 import { placeName } from '../../core/text/pick';
 import type { GameState } from '../../core/types';
 import type { GameStore } from '../store';
+import { clean, playerWords } from './player-words';
 
 // ---------- the words of the screens ----------
 
@@ -53,6 +54,9 @@ export const END_LABELS = {
   toCollection: 'ไปของสะสม',
   back: 'กลับ',
   open: 'เปิดบันทึกชีวิต',
+  opened: 'กำลังเปิดอยู่',
+  backToChronicle: 'กลับไปพงศาวดาร',
+  toWorld: 'ดูหน้าสรุปโลก',
   replay: 'เปิดชีวิตซ้ำด้วยเมล็ดเดิม', // 03 §3
   seed: 'เมล็ด',
   unknown: 'ยังไม่พบ',
@@ -143,13 +147,14 @@ export interface CardView {
 
 const pairOf = (field: string, value: string): string => (field ? `${field}: ${value}` : value);
 
-export function wishView(w: NonNullable<EndingCard['wish']>): WishView {
+export function wishView(w: NonNullable<EndingCard['wish']>, data?: GameData): WishView {
+  const say = (t: string) => (data ? playerWords(data, t) : t);
   return {
     mark: END_LABELS.ordered,
     text: w.text,
     sure: w.granted.filter((g) => g.row === 'sure').map((g) => pairOf(g.field, g.value)),
     lean: w.granted.filter((g) => g.row === 'lean').map((g) => pairOf(g.field, g.value)),
-    refused: w.refused.map((r) => ({ text: pairOf(r.field, r.value), reason: r.reason })),
+    refused: w.refused.map((r) => ({ text: pairOf(r.field, r.value), reason: say(r.reason) })),
   };
 }
 
@@ -181,7 +186,7 @@ export function earnedGroups(data: GameData, earned: string[], cap = 10): Earned
   }
   const out: EarnedGroup[] = [];
   for (const [cat, list] of by) {
-    const names = list.map((e) => entryName(data, e) || (cat === 'title' || cat === 'vow' ? e.split(':').slice(1).join(':') : '')).filter(Boolean);
+    const names = list.map((e) => clean(data, entryName(data, e) || (cat === 'title' || cat === 'vow' ? e.split(':').slice(1).join(':') : ''))).filter(Boolean);
     out.push({ category: categoryName.get(cat) ?? cat, names: names.slice(0, cap), more: list.length - Math.min(names.length, cap) });
   }
   return out.sort((a, b) => b.names.length - a.names.length);
@@ -197,22 +202,24 @@ export function cardView(data: GameData, state: GameState, lifeId?: string): Car
   sections.push({ id: 'people', title: END_LABELS.people, lines: card.people });
   sections.push({ id: 'traces', title: END_LABELS.traces, lines: card.traces });
   sections.push({ id: 'hand', title: END_LABELS.hand, lines: handLines(card.hand) });
+  const c = (t: string) => clean(data, t);
+  const cs = (l: string[]) => l.map(c);
   return {
     life: card.life,
     generation: card.generation,
-    head: card.lines[0] ?? '',
-    titleLine: card.titleLine,
+    head: c(card.lines[0] ?? ''),
+    titleLine: c(card.titleLine),
     mark: card.mark,
-    ending: card.ending,
-    sections,
-    summary: card.summary,
-    epitaph: card.epitaph,
-    vow: card.vow ? { name: card.vow.name, kept: card.vow.result === 'kept', head: card.vow.head, lines: card.vow.lines } : null,
-    titles: card.titles,
+    ending: card.ending ? c(card.ending) : null,
+    sections: sections.map((x) => ({ ...x, lines: cs(x.lines) })),
+    summary: { ...card.summary, text: c(card.summary.text) },
+    epitaph: { ...card.epitaph, text: c(card.epitaph.text) },
+    vow: card.vow ? { name: c(card.vow.name), kept: card.vow.result === 'kept', head: c(card.vow.head), lines: cs(card.vow.lines) } : null,
+    titles: cs(card.titles),
     earned: earnedGroups(data, card.earned),
-    heir: card.heir ? { ...card.heir, line: `${card.heir.name} · อายุ ${card.heir.age}` } : null,
-    threads: card.threads,
-    wish: card.wish ? wishView(card.wish) : null,
+    heir: card.heir ? { ...card.heir, line: c(`${card.heir.name} · อายุ ${card.heir.age}`) } : null,
+    threads: cs(card.threads),
+    wish: card.wish ? wishView(card.wish, data) : null,
     seed: state.seed,
   };
 }
@@ -358,14 +365,14 @@ export function legendView(data: GameData, state: GameState): LegendView {
         mark: l.mark ? (MARK_LEVEL_LABEL[l.mark] ?? l.mark) : null,
         hand: l.hand,
         alive: l.alive,
-        vow: line?.vow ?? '',
+        vow: clean(data, line?.vow ?? ''),
         vowResult: line?.vowResult ?? 'none',
-        titles: line?.titles ?? [],
+        titles: (line?.titles ?? []).map((t) => clean(data, t)),
         card: !!x.cards[l.id],
         line: `${l.raceName} · ${ORIGIN_WORD[l.origin] ?? l.origin} · ศ.ม. ${l.born}${l.died !== undefined ? ` – ${l.died}` : ''}${l.age !== undefined ? ` · อายุ ${l.age}` : ''}`,
       };
     }),
-    chronicle: { points: meta.points, fruits: unlocks.map((u) => ({ at: u.at, opens: u.opens.replace(/\s*\(\[[^\]]*\]\([^)]*\)\)/g, '').trim(), open: meta.points >= u.at })), lines: lines.map((c) => c.text) },
+    chronicle: { points: meta.points, fruits: unlocks.map((u) => ({ at: u.at, opens: u.opens.replace(/\s*\(\[[^\]]*\]\([^)]*\)\)/g, '').trim(), open: meta.points >= u.at })), lines: lines.map((c) => clean(data, c.text)) },
     threads: ws.family.threads,
   };
 }
@@ -412,7 +419,7 @@ export function collectionPage(data: GameData, state: GameState): CollectionPage
       total: c.total,
       ratio: c.total ? c.have / c.total : 0,
       unlimited: !!c.unlimited,
-      found: c.found.filter((f) => f.name || c.id === 'conjure').map((f) => ({ id: f.id, name: f.name || f.id })),
+      found: c.found.filter((f) => f.name || c.id === 'conjure').map((f) => ({ id: f.id, name: clean(data, f.name || f.id) })),
       shadows: c.unlimited ? 0 : Math.min(SHADOW_CAP, Math.max(0, c.total - c.have)),
     })),
   };
@@ -432,6 +439,14 @@ export interface WorldPage {
   title: string;
   sections: WorldSection[];
   legend: { text: string; source: 'template' | 'llm' };
+}
+
+/**
+ * Does the page of the world's summary belong to this ending? 03-ending-and-collection.md §7: it is shown when the world falls (END-10, END-11, END-12) while the
+ * character lives; the world falls in about 0-1% of lives, so the page is a rare scene and not the usual end. The legend page reaches it for the rest.
+ */
+export function worldEnded(data: GameData, state: GameState): boolean {
+  return !!worldSummary(state, data).ended;
 }
 
 /** The page of the summary of the world, one section for each row of 03 §7. */
@@ -459,5 +474,6 @@ export function worldPage(data: GameData, state: GameState): WorldPage {
     sec('you', you.filter(Boolean)),
     sec('hand', [w.hand.total ? `แทรกแซง ${w.hand.total} ครั้ง` : 'ไม่มีพระหัตถ์ในโลกนี้เลย', ...Object.entries(w.hand.byKind).map(([k, n]) => `${HAND_WORD[k] ?? k} ${n}`)]),
   ];
-  return { ended: !!w.ended, title: w.ended ? w.ended.name : END_LABELS.world, sections, legend: w.legend };
+  const c = (t: string) => clean(data, t);
+  return { ended: !!w.ended, title: w.ended ? c(w.ended.name) : END_LABELS.world, sections: sections.map((x) => ({ ...x, lines: x.lines.map(c) })), legend: { ...w.legend, text: c(w.legend.text) } };
 }

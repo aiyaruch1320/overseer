@@ -23,6 +23,10 @@ export const CHAR_WORDS = {
   secret: 'ลับ',
   faith: 'ศาสนา',
   question: 'คำถามของชีวิต',
+  vow: 'คำปฏิญาณของชีวิตนี้',
+  vowKept: 'สำเร็จ',
+  vowBroken: 'ไม่เป็นจริง',
+  vowChange: 'เปลี่ยนได้อีกครั้งเดียวที่อายุ 15',
   // body and stats
   body: 'ร่างกาย',
   hp: 'พลังชีวิต',

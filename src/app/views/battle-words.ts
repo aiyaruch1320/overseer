@@ -41,6 +41,7 @@ export const BATTLE_WORDS = {
   /** Roll of one beat: `14 +3 = 17 · DC 12` (the die is a d20). */
   roll: (d20: number, bonus: number, dc: number) => `${d20} ${bonus >= 0 ? '+' : '−'}${Math.abs(bonus)} = ${d20 + bonus} · DC ${dc}`,
   unknownRoll: 'ไม่ได้บันทึกการทอย',
+  guessed: 'ไม่ได้บันทึกการทอย · ผลคิดจากการจบศึก',
   ok: 'สำเร็จ',
   miss: 'พลาด',
   crit: 'ทอย 20',

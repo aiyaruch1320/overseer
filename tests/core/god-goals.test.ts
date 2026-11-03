@@ -33,6 +33,7 @@ import { TEST, THRESH } from '../../src/core/god/goals/titles';
 import { armNode, settleNode } from '../../src/core/god/goals/rhythm';
 import { extOf as storyExt } from '../../src/core/story/state';
 import { factsOf } from '../../src/core/god/goals';
+import { extOf as bondsExt, type Tie } from '../../src/core/bonds/state';
 import { godGoalsSystem } from '../../src/core/god/goals';
 import { tablesOf } from '../../src/core/world';
 
@@ -238,6 +239,19 @@ describe('a life ends', () => {
     expect(line.gain).toBeGreaterThanOrEqual(line.vowResult === 'kept' ? 3 : 1);
     if (line.vowResult === 'kept') expect(goalsOf(c.st).meta.vowsKept).toContain('GV-12');
     expect(c.st.log.some((e) => e.kind === 'vow.result')).toBe(true);
+  });
+
+  it('M5 fix S7: the love vow is kept by a life partner who died or went before him, not only by one who is alive at his death', () => {
+    const c = mk(6);
+    const e = bondsExt(c.life);
+    const base = { id: 't1', name: 'อาลีมีรา', line: 'คนรัก', b: 70, spouse: true } as unknown as Tie;
+    e.ties.t1 = { ...base, state: 'dead' };
+    expect(factsOf(c.ctx, c.life).love).toBeGreaterThanOrEqual(4);
+    expect(JUDGE['GV-06'](factsOf(c.ctx, c.life))).toBe(true);
+    e.ties.t1 = { ...base, spouse: false, line: 'สหาย' };
+    expect(factsOf(c.ctx, c.life).love).toBe(0);
+    e.ties.t1 = { ...base, spouse: false, b: 0, state: 'ended' };
+    expect(JUDGE['GV-06'](factsOf(c.ctx, c.life))).toBe(false);
   });
 
   it('opens what the chronicle opens when a threshold is crossed (a line of the log says so)', () => {
