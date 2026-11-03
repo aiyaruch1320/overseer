@@ -10,13 +10,19 @@ import type { PersonLook } from '../look';
 import { FRAMES, blank, blend, flash, mix, ovEll, over, rnd } from './kit';
 import { personLookOf } from './look';
 
-type Held = 'stone' | 'eyestone' | 'tablet' | 'necklace';
+type Held = 'stone' | 'eyestone' | 'tablet' | 'necklace' | 'farclub';
 interface Marks {
   feats?: string[]; hat?: string; tool?: string; beard?: string; hair?: string; ears?: PersonLook['body']['ears']; eye?: string; accent?: string; skin?: string; outfit?: string; main?: string; second?: string;
   /** the thing in the hand (laid over the figure at the hand), or on the body */
   held?: Held;
   /** a crown of bone laid over the head, too big for it */
   boneCrown?: boolean;
+  /** a crown of bone far too big for the head, sagging over the brow (laid over the figure, drawn at the figure's pixel size) */
+  bigCrown?: boolean;
+  /** a heavier build: shoulder and head width, and a growth of the row's size */
+  body?: { shoulders?: number; head?: number }; grow?: number;
+  /** the fighter sits on a chair of stone (the figure is drawn seated, the chair behind it) */
+  throne?: boolean;
   /** the bed of eggs a naga coils around */
   eggs?: boolean;
   /** white steam from the joints, a lit core in the chest */
@@ -39,8 +45,16 @@ const MARKS: Record<string, Marks> = {
   'SH11-1': {},
   'KD08-1': {},
   'MH02-1': { tool: '', boneCrown: true },
-  'MH10-3': { boneCrown: true, tool: 'sword' },
-  'MK02-1': { feats: ['mecharm', 'mecheye', 'rivets', 'plates', 'core'], hat: '', tool: '', hair: 'bald', outfit: 'tunic', main: '#b8903a', second: '#6a1a1a', skin: '#b8903a', eye: '#ff4040', accent: '#ff4040', steam: true, core: '#ffe040' },
+  // the ogre's son: a big heavy body, a bone crown so big it sags over the brow, a heavy bone sword held like a tool he dislikes
+  'MH10-3': { bigCrown: true, hat: '', tool: 'sword', body: { shoulders: 1.4, head: 1.12 }, grow: 1.07 },
+  // the winged stone guard: a thick armoured body, a stone club in each hand (the near one in the hand, the second planted at the far side)
+  'AZ04-1': { held: 'farclub', body: { shoulders: 1.4, head: 1.0 } },
+  // the dark-elf mother on her chair of stone: seated, the chair behind her
+  'KD05-1': { throne: true },
+  // the second Cronz gone mad on iron: the NPC's own figure with the right arm of brass and a red lens eye, steam from the joints, the chest core lit
+  'MK02-1': { feats: ['mecharm', 'mecheye', 'rivets'], eye: '#ff4040', accent: '#ff4040', steam: true, core: '#ffe040', body: { shoulders: 1.2, head: 1 } },
+  // the bear warrior going grey: the NPC's own figure (so map, card and fight are one bear), bulked up
+  'SV03-3': { body: { shoulders: 1.2, head: 1.05 }, without: ['bandage'], grow: 1.5 },
   'NR07-1': { eggs: true },
   'NR07-2': {},
   // the mushroom child: pale cream skin, a pale grey cap with no spots, round yellow eyes (09-silvanel.md)
@@ -54,7 +68,7 @@ export function namedLook(e: EnemyLook): PersonLook {
   return {
     ...base, ...(m.hat !== undefined ? { hat: m.hat } : {}), ...(m.tool !== undefined ? { tool: m.tool } : {}), ...(m.beard ? { beard: m.beard } : {}),
     ...(m.eye ? { eye: m.eye } : {}), ...(m.accent ? { accent: m.accent } : {}), ...(m.skin ? { skin: m.skin } : {}), ...(m.hair ? { hair: m.hair } : {}), ...(m.outfit ? { outfit: m.outfit } : {}), ...(m.main ? { main: m.main } : {}), ...(m.second ? { second: m.second } : {}),
-    body: m.ears ? { ...base.body, ears: m.ears } : base.body,
+    body: { ...base.body, ...(m.ears ? { ears: m.ears } : {}), ...(m.body ?? {}) },
     feats: [...new Set([...base.feats, ...(m.feats ?? [])])].filter((x) => !(m.without ?? []).includes(x)),
   };
 }
@@ -112,7 +126,7 @@ function boneCrowned(L: PersonLook, pose: Pose, f: number): Frame {
 }
 
 /** What the fighter holds or wears, laid over the scaled figure (frame pixels). */
-function lay(out: Frame, L: PersonLook, m: Marks, hand: [number, number] | null, k: number, ox: number, oy: number, f: number): void {
+function lay(out: Frame, L: PersonLook, m: Marks, hand: [number, number] | null, k: number, ox: number, oy: number, f: number, refTop: { x: number; y: number } | null = null): void {
   const hx = hand ? ox + hand[0] * k : null, hy = hand ? oy + hand[1] * k : null;
   if (m.held && hx !== null && hy !== null) {
     if (m.held === 'stone') { disc(out, hx + k, hy - k, 3 * k, '#9a9a96', '#3a3a3e', '#cfcfc8'); }
@@ -122,6 +136,20 @@ function lay(out: Frame, L: PersonLook, m: Marks, hand: [number, number] | null,
       disc(out, hx + k, hy - 2 * k, 2.6 * k, '#e8f4ff', '#3a5a6a', '#ffffff');
       ovEll(out, hx + k, hy - 2 * k, 1.2 * k, 1.2 * k, '#6ac0e0', 1);
     } else if (m.held === 'tablet') { for (let i = 0; i < 4 * k; i++) for (let j = 0; j < 5 * k; j++) blend(out, hx + i, hy - 3 * k + j, '#8a8a84', 1); }
+  }
+  if (m.held === 'farclub') {
+    // the second club, planted on the far side: a stone shaft and a knobbed head
+    const t = refTop;
+    if (t) { const x = Math.round(t.x - 9 * k), y1 = Math.round(oy + FRAME.foot * k - 2 * k), y0 = Math.round(t.y + 12 * k); for (let y = y0; y < y1; y++) for (let i = 0; i < 3 * k; i++) blend(out, x + i, y, i === 0 ? '#5a5a62' : '#8a8a92', 1); ovEll(out, x + 1.5 * k, y0 - 1, 4.2 * k, 4.6 * k, '#3a3a40', 1); ovEll(out, x + 1.5 * k, y0 - 1, 3.4 * k, 3.8 * k, '#8a8a92', 1); ovEll(out, x + 0.6 * k, y0 - 2.4, 1.4 * k, 1.2 * k, '#c0c0c6', 1); }
+  }
+  if (m.bigCrown) {
+    // a bone crown made for a bigger head: wider than the skull, spikes up, the band sagging over the brow
+    const t = refTop;
+    if (t) {
+      const cx = Math.round(t.x), top = Math.round(t.y), hw = 7 * k, band = '#d8cfb0', bandD = '#8a7e64', edge = '#3a3022', hi = '#f4ecd2';
+      for (let i = -hw; i <= hw; i++) { const sag = i > 0 ? 2 : 0; for (let y = top - 1; y <= top + 3 + sag; y++) blend(out, cx + i, y, y === top - 1 || y === top + 3 + sag || Math.abs(i) === hw ? edge : y === top + 2 + sag ? bandD : band, 1); }
+      for (const dx of [-hw + 1, -hw / 2, 0, hw / 2, hw - 1]) { const h = 4 + (Math.abs(dx) < 1 ? 1 : 0); for (let j = 0; j < h; j++) for (let w = -1; w <= 1; w++) if (Math.abs(w) <= (h - j) / 3) blend(out, cx + dx + w, top - 2 - j, w === 0 && j > 0 ? hi : band, 1); blend(out, cx + dx, top - 2 - h, edge, 1); }
+    }
   }
   if (m.held === 'necklace') {
     // a string of dark stones across the chest, a little below the head
@@ -148,9 +176,10 @@ function lay(out: Frame, L: PersonLook, m: Marks, hand: [number, number] | null,
 /** One frame of a named fighter in the frame of its size class. */
 export function paintNamed(E: EnemyLook, pose: Pose, f: number): Frame {
   const fr = FRAMES[E.size], out = blank(fr.w, fr.h), m = MARKS[E.id] ?? {};
-  const target = E.scale ?? 1, { k, sp } = figureScale(target);
+  const target = (E.scale ?? 1) * (m.grow ?? 1), { k, sp } = figureScale(target);
   const L0 = namedLook(E);
   const L: PersonLook = { ...L0, body: { ...L0.body, scale: sp } };
+  if (m.throne) return thronePiece(E, L, m, pose, f, fr, out);
   const fig = m.boneCrown ? boneCrowned(L, pose, f) : paintPerson(L, pose, f);
   const ox = Math.round(fr.w / 2 - 25 * k), oy = fr.foot - FRAME.foot * k;
   const big = blank(fig.w * k, fig.h * k);
@@ -160,6 +189,34 @@ export function paintNamed(E: EnemyLook, pose: Pose, f: number): Frame {
     for (let j = 0; j < k; j++) for (let i = 0; i < k; i++) { const di = ((y * k + j) * big.w + x * k + i) * 4; big.data[di] = fig.data[si]; big.data[di + 1] = fig.data[si + 1]; big.data[di + 2] = fig.data[si + 2]; big.data[di + 3] = fig.data[si + 3]; }
   }
   over(out, big, ox, oy);
-  lay(out, L, m, handOf(L, pose, f), k, ox, oy, f);
+  // where the head is, read from the figure without its tool and hat (a sword's tip must not be taken for the top of the head)
+  let refTop: { x: number; y: number } | null = null;
+  if (m.bigCrown || m.held === 'farclub') { const r = headTop(paintPerson({ ...L, tool: '', hat: m.bigCrown ? '' : L.hat }, pose, f)); if (r) refTop = { x: ox + r.x * k, y: oy + r.y * k }; }
+  lay(out, L, m, handOf(L, pose, f), k, ox, oy, f, refTop);
+  return pose === 'hurt' && f === 0 ? flash(out) : out;
+}
+
+/** A fighter seated on a chair of stone (04-enemies.md: ท่านั่งตรงแน่วแน่): the seated figure, a tall stone back behind her, a block of a seat, arms of stone. */
+function thronePiece(E: EnemyLook, L: PersonLook, m: Marks, pose: Pose, f: number, fr: { w: number; h: number; foot: number }, out: Frame): Frame {
+  const seated = paintPerson(L, 'sit', 0);
+  const ox = Math.round(fr.w / 2 - 25) + (pose === 'attack' && f === 1 ? 2 : 0), oy = fr.foot - FRAME.foot + (pose === 'die' ? Math.min(f, 2) * 2 : 0);
+  let x0 = seated.w, x1 = -1, y0 = seated.h, y1 = -1;
+  for (let y = 0; y < seated.h; y++) for (let x = 0; x < seated.w; x++) if (seated.data[(y * seated.w + x) * 4 + 3] > 120) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  const X0 = ox + x0, X1 = ox + x1, T = oy + y0, B = fr.foot - 1;
+  const st = '#7c7c88', stD = '#4a4a56', stL = '#a4a4b0', edge = '#2a2a34';
+  const rect = (xa: number, ya: number, xb: number, yb: number, c: string): void => { for (let y = ya; y <= yb; y++) for (let x = xa; x <= xb; x++) blend(out, x, y, c, 1); };
+  // the high back with a pointed top, behind the figure
+  rect(X0 - 7, T - 9, X0 + 8, B, edge); rect(X0 - 6, T - 8, X0 + 7, B - 1, st); rect(X0 - 6, T - 8, X0 - 3, B - 1, stD); rect(X0 + 5, T - 8, X0 + 7, T + 4, stL);
+  for (const [dx, dy] of [[-4, T - 12], [0, T - 14], [4, T - 12]]) { rect(X0 + dx - 1, dy, X0 + dx + 1, T - 9, edge); rect(X0 + dx, dy + 1, X0 + dx, T - 9, stL); }
+  // the seat block and the foot-step under the figure
+  rect(X0 - 7, y1 + oy - 6, X1 + 6, B, edge); rect(X0 - 6, y1 + oy - 5, X1 + 5, B - 1, st); rect(X0 - 6, y1 + oy - 5, X1 + 5, y1 + oy - 4, stL); rect(X0 - 6, B - 4, X1 + 5, B - 1, stD);
+  // a small spider carved on the back (the house sign) and a crack
+  for (const [dx, dy] of [[-2, 0], [-3, 1], [-1, 1], [-4, 2], [0, 2], [-2, 2], [-5, 3], [1, 3]]) blend(out, X0 + 1 + dx, T + 4 + dy, stL, 0.9);
+  const over2 = blank(out.w, out.h);
+  over(over2, seated, ox, oy);
+  over(out, over2, 0, 0);
+  // the near arm of the chair, in front of the figure's knee
+  rect(X1 - 5, y1 + oy - 9, X1 + 5, y1 + oy - 7, edge); rect(X1 - 4, y1 + oy - 8, X1 + 4, y1 + oy - 8, stL);
+  void m; void E;
   return pose === 'hurt' && f === 0 ? flash(out) : out;
 }

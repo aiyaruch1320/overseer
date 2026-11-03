@@ -6,7 +6,7 @@ import { FRAME, type Pose } from '../anim';
 import type { Frame } from '../paint';
 import { paintPerson } from '../person';
 import type { PersonLook } from '../look';
-import { FRAMES, blank, blend, flash, ovEll, over, rnd } from './kit';
+import { FRAMES, blank, blend, flash, mix, ovEll, over, rnd } from './kit';
 import { personLookOf } from './look';
 
 interface Style {
@@ -34,7 +34,9 @@ export function ghostFrame(L: EnemyLook, pose: Pose, f: number): Frame {
   const body = paintPerson(look, pose === 'die' ? 'idle' : pose, pose === 'die' ? 0 : f);
   let y0 = body.h, y1 = -1, x0 = body.w, x1 = -1;
   for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) if (body.data[(y * body.w + x) * 4 + 3] > 120) { if (y < y0) y0 = y; if (y > y1) y1 = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
-  const tint = [parseInt(L.main.slice(1, 3), 16), parseInt(L.main.slice(3, 5), 16), parseInt(L.main.slice(5, 7), 16)];
+  // a pale ghost is drawn with a deeper tone (so it stays ghostly but does not vanish on a light ground)
+  const tc = st.smoke ? L.main : mix(L.main, '#34486e', 0.42);
+  const tint = [parseInt(tc.slice(1, 3), 16), parseInt(tc.slice(3, 5), 16), parseInt(tc.slice(5, 7), 16)];
   const hover = pose === 'idle' ? 3 + (f % 2) : 3, h = Math.max(1, y1 - y0);
   const smoke = !!st.smoke;
   for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) {
@@ -47,7 +49,19 @@ export function ghostFrame(L: EnemyLook, pose: Pose, f: number): Frame {
     for (let c = 0; c < 3; c++) body.data[i + c] = smoke ? tint[c] * (0.5 + lum * 0.7) + 8 : body.data[i + c] * 0.3 + tint[c] * 0.64 + 255 * 0.02;
     const keep = dying === 0 || (((x * 7 + y * 13) % 16) / 16) >= dying; // a dying ghost thins out in a dither
     // solid enough to show on a light ground: the base alpha is high and fades only at the hem
-    body.data[i + 3] = keep ? Math.round((smoke ? 235 : 205) * (0.22 + 0.78 * k ** 0.6)) : 0;
+    body.data[i + 3] = keep ? Math.round((smoke ? 235 : 215) * (0.42 + 0.58 * k ** 0.6)) : 0;
+  }
+  // a dark misty rim round the whole figure: it reads on a light ground and on a dark one, and is still see-through
+  {
+    const rim = new Uint8ClampedArray(body.data);
+    const solidAt = (x: number, y: number): number => (x < 0 || y < 0 || x >= body.w || y >= body.h ? 0 : body.data[(y * body.w + x) * 4 + 3]);
+    for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) {
+      const i = (y * body.w + x) * 4;
+      if (body.data[i + 3] > 40) continue;
+      const a = Math.max(solidAt(x - 1, y), solidAt(x + 1, y), solidAt(x, y - 1), solidAt(x, y + 1));
+      if (a > 90) { rim[i] = 28; rim[i + 1] = 40; rim[i + 2] = 70; rim[i + 3] = Math.round(a * 0.78 * (1 - dying)); }
+    }
+    body.data.set(rim);
   }
   // the light a ghost holds (the key, the gold): solid, with a halo, at the chest
   if (st.glow) {

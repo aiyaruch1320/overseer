@@ -110,7 +110,7 @@ function cloudSerpent(c: Ctx<EnemyLook>): Info {
 // ── reef serpent: coral-coloured rings in the coral, a yellow eye ────────────────────────────────────────────────────────────────────
 function reef(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 24, (c.w * 0.94) / 90);
+  const s = Math.min(c.px / 24, (c.w * 0.78) / 84);
   const pen = c.pen(s).at(mo.push * 0.5 - 4, mo.bob);
   const P = makePal(p, L.main, L.second, L.eye, { belly: '#f0b090', horn: '#e8c8a0', mouth: '#7a2a3a' });
   const cor = [p.mat('#e86a8a', { deep: true }), p.mat('#c85a9a', { deep: true }), p.mat('#f0a070', { deep: true }), p.mat('#7a4a8a', { deep: true })], corL = p.mat('#f8c0c8');
@@ -121,19 +121,22 @@ function reef(c: Ctx<EnemyLook>): Info {
     pen.chain([[x + d * 1.4, -h * 0.5], [x - d * 3, -h * 0.9]], [1.4, 0.6], cor[(k + 1) % 4]); pen.chain([[x + d * 1.6, -h * 0.35], [x + d * 5.6, -h * 0.65]], [1.2, 0.5], cor[(k + 2) % 4]);
     pen.dot(top[0], top[1], corL, 1.4);
   };
-  for (let i = 0; i < 7; i++) coral(-30 + i * 9, 14 + (i % 3) * 5, i % 4, i % 2 ? 1 : -1);
-  // the body winds through the coral, banded red-orange and violet
-  const body = spine(22, (u) => [-26 + u * 46, -8 - 4.4 * Math.sin(u * 13 + mo.ph) * (1 - u * 0.35) - u * 5]);
-  const rad = body.map((_, i) => 1.2 + 4.8 * Math.min(1, (i / 22) * 2.6) ** 0.8);
+  // a few low heads of coral behind (the serpent lies in the reef, twice as long as a man)
+  for (let i = 0; i < 4; i++) coral(-34 + i * 20, 7 + (i % 2) * 4, i % 4, i % 2 ? 1 : -1);
+  // the body winds through the coral in long S-waves, banded red-orange and violet
+  const N = 28;
+  const body = spine(N, (u) => [-35 + u * 62, -7 - 5 * Math.sin(u * 15 + mo.ph) * (1 - u * 0.3) - u * 3]);
+  const rad = body.map((_, i) => 1.1 + 4.3 * Math.min(1, (i / N) * 3) ** 0.8);
   tube(pen, body, rad, P.body, { ol: P.seam, belly: P.belly, from: 3, plate: 2, plateK: P.seam, bellyW: 0.4 });
-  for (let i = 3; i < 22; i += 3) { const q = body[i], r = rad[i]; pen.line([q[0] - 0.6, q[1] - r + 0.6], [q[0] + 0.6, q[1] + r - 0.6], glowing ? P.glowL : P.acc, 1.3); if (i % 4 === 1) pen.px(q[0] + 1, q[1] - r * 0.4, P.accL); }
-  const nk = spine(7, (u) => [20 + u * 7 + strike * u * 14, -12 - u * 14 + strike * u * 10 + Math.sin(mo.ph + u * 3) * 0.8]);
-  tube(pen, nk, nk.map((_, i) => 5.2 - i * 0.2), P.body, { ol: P.seam });
+  for (let i = 2; i < N; i += 2) { const q = body[i], r = rad[i]; pen.line([q[0] - 0.8, q[1] - r + 0.6], [q[0] + 0.8, q[1] + r - 0.6], glowing ? P.glowL : i % 4 === 0 ? P.acc : cor[3], 1.9); if (i % 4 === 1) pen.px(q[0] + 1, q[1] - r * 0.4, P.accL); }
+  const e0 = body[N];
+  const nk = spine(7, (u) => [e0[0] + u * 6 + strike * u * 14, e0[1] - u * 7 + strike * u * 8 + Math.sin(mo.ph + u * 3) * 0.8]);
+  tube(pen, nk, nk.map((_, i) => 4.8 - i * 0.15), P.body, { ol: P.seam });
   const h = nk[7];
-  head(pen, h[0] + 2, h[1], { sz: 1.15, ang: 0.15 + strike * 0.6, open: mo.open, style: 'east', horns: 'none', cheek: false, eye: mo.dead ? 'shut' : 'normal', pupil: P.ink }, P);
+  head(pen, h[0] + 2, h[1], { sz: 1.3, ang: 0.1 + strike * 0.6, open: mo.open, style: 'east', horns: 'none', cheek: false, eye: mo.dead ? 'shut' : 'normal', pupil: P.ink }, P);
   // two small pieces of coral in front
-  coral(-22, 7, 0, -1); coral(24, 8, 2, 1);
-  return { shadow: { cx: c.cx, cy: c.foot, rx: 32 * s, ry: Math.max(1.4, 1.8 * s) }, tall: false };
+  coral(-28, 6, 0, -1); coral(8, 5, 2, 1);
+  return { shadow: { cx: c.cx, cy: c.foot, rx: 32 * s, ry: Math.max(1.4, 1.8 * s) }, tall: false, height: 22 * s };
 }
 
 // ── tentacle: a pale arm of the fog, thickest at the root, with a curled tip ────────────────────────────────────────────────────────────

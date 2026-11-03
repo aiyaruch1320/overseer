@@ -48,8 +48,21 @@ function kraken(c: Ctx<EnemyLook>): Info {
     pen.rect(-150, -60, 300, 50, p.mat('#1a3a50', { deep: true }));
     pen.rect(-160, -74, 320, 8, rim);
     for (let i = 0; i < 6; i++) pen.rect(-150 + i * 54, -72, 4, 70, rim);
-    const n = mo.pose === 'attack' ? 11 : 1;
-    for (let i = 0; i < n; i++) tentacle(pen, p, c, -120 + i * (240 / Math.max(1, n - 1)) * (n > 1 ? 1 : 0) + (n === 1 ? 30 : 0), 90 + (i % 3) * 18, (n > 1 ? (i - 5) * 0.06 : -0.5) * (1 + strike), sw + i, k, kd, suck, 10);
+    // the guardian's one great eye looks up out of the water of the basin (amber, a horizontal pupil), with cold blue lights along its brow
+    const ex = 24, ey = -36, lidK = mo.dead ? 0.15 : mo.pose === 'hurt' ? 0.5 : 0.82 + mo.breath * 0.08;
+    pen.ell(ex, ey + 6, 58, 30, p.mat('#241636', { deep: true }));
+    pen.ell(ex, ey, 40, 26 * lidK, p.mat('#16101e', { flat: true }));
+    pen.ell(ex, ey, 36, 23 * lidK, p.mat('#e0b040', { deep: true }));
+    pen.ell(ex, ey, 22, 14 * lidK, p.mat('#f0c860', { deep: true }));
+    pen.rect(ex - 14, ey - 3 * lidK, 28, 6 * lidK, ink);
+    pen.dot(ex - 10, ey - 8 * lidK, p.mat('#fff4c0', { flat: true }), 3);
+    for (let i = 0; i < 9; i++) pen.dot(ex - 52 + i * 13, ey - 24 + Math.abs(i - 4) * 2.6 + ((i + mo.f) % 3 === 0 ? 0 : 1), suck, 2.4);
+    // eight arms of the beast: some lie over the rim, some rise out of the water on both sides
+    const n = mo.pose === 'attack' ? 11 : 6;
+    for (let i = 0; i < n; i++) {
+      const x = n > 6 ? -120 + i * (240 / (n - 1)) : [-128, -88, -50, 78, 112, 142][i];
+      tentacle(pen, p, c, x, (n > 6 ? 90 + (i % 3) * 18 : [96, 74, 52, 60, 88, 70][i]) * (1 + strike * 0.3), (n > 6 ? (i - 5) * 0.06 : [-0.3, 0.2, 0.5, -0.4, 0.15, -0.5][i]) * (1 + strike), sw + i * 1.3, i % 2 ? k : kd, kd, suck, 10);
+    }
     return info(c);
   }
   sea(pen, p, c, -76, '#10202e');

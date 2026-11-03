@@ -79,7 +79,7 @@ function worm(c: Ctx<EnemyLook>, pen: Pen, s: number, lunge: number): Out {
   const { mo, p } = c;
   const sand = p.mat('#b49868', { deep: true }), band = p.mat('#8a6e48'), bandL = p.mat('#d0b684'), ol = p.mat('#4a3a24', { flat: true }), mouth = p.mat('#8a3a2a', { flat: true }), tooth = p.mat('#ece4cc', { flat: true });
   const w = mo.pose === 'walk' ? mo.ph : mo.breath * 0.9;
-  const pts: Pt[] = spine(9, (u) => [-30 + u * 58 + lunge * 5 * u, -9 - 3.4 * Math.sin(u * 7 + w) * (1 - u * 0.5) - 14 * u ** 2.2 - lunge * 3 * u]);
+  const pts: Pt[] = spine(9, (u) => [-30 + u * 58 + lunge * 5 * u, -9 - 3.4 * Math.sin(u * 7 + w) * (1 - u * 0.5) - 21 * u ** 2.2 - lunge * 3 * u]);
   const rad = pts.map((_, i) => { const u = i / 9; return 2.4 + 7.4 * Math.min(1, u * 3) - 1.2 * u * u; });
   tube(pen, pts, rad, sand, { ol });
   // the rings of the body

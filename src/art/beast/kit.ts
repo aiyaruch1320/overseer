@@ -117,6 +117,8 @@ export interface Info {
   ground?: Pt;
   /** drawn over the finished frame, with no outline (mist, glow, what floats around a body); not called while the body is dying away */
   after?: (f: Frame) => void;
+  /** the body's height in pixels for the die warps, when it is not the target height (a long low body that sinks by its own height) */
+  height?: number;
   /** alpha 0..1 of the finished body at a pixel (a body that fades into mist) */
   fade?: (x: number, y: number) => number;
 }
