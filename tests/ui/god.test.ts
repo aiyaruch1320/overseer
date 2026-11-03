@@ -264,6 +264,9 @@ describe('the fixes of the M5 review on the god screens', () => {
     expect(hot.length).toBeGreaterThan(0);
     expect(hot[0].name).toContain('ขณะวิกฤต');
     expect(help.targets[0].crisis).toBe(true);
+    // a person is listed once: no two rows with one name, and no person of the country repeats an ally
+    const names = help.targets.map((t) => t.plain ?? t.name);
+    expect(new Set(names).size).toBe(names.length);
     const c = confirmView(g, data, 'whisper', { hint: 'ช่วย', target: tieId });
     expect(c.lines.join('\n')).toContain('ขณะวิกฤต');
   });

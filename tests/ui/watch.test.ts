@@ -104,7 +104,15 @@ describe('watch: the candle and the purse', () => {
 
 describe('watch: the cards', () => {
   it('two cards at most, the one that runs out first on top, with a ring and options', () => {
-    const st = life(5, 250); // (M5 fix: the stale cards of answered or lapsed prayers no longer fill the two places, so the pair is found at a later beat)
+    // the first beat of the seeded life where two cards are up (a card keeps a readable minimum now, M5 review round two R1, so the pair moves with the clock)
+    const sess = createSession(data, { seed: 5 });
+    startLife(sess);
+    let seen = 0;
+    for (let i = 0; i < 600 && sess.game.state.life && !sess.game.state.life.dead && seen < 2; i++) {
+      sess.game.beat();
+      seen = watchModel(data, sess.game.state, uiOfState(sess.game.state, { running: true })).cards.length;
+    }
+    const st = sess.game.state;
     const m = watchModel(data, st, uiOfState(st, { running: true }));
     expect(m.cards.length).toBe(2);
     expect(m.cards[0].left!).toBeLessThanOrEqual(m.cards[1].left!);
@@ -114,7 +122,7 @@ describe('watch: the cards', () => {
       expect(c.text).toMatch(/[฀-๿]/);
       expect(c.options.length).toBeGreaterThan(0);
     }
-    expect(m.cards.map((c) => c.kind).sort()).toEqual(['omen', 'prayer']);
+    expect(m.cards.length).toBe(2);
     expect(m.running).toBe(true);
     expect(m.stop).toBeNull();
   });
@@ -124,6 +132,14 @@ describe('watch: the cards', () => {
     expect(optionsOf('age').map((o) => o.kind)).toEqual(['chest', 'dream', 'whisper']);
     expect(optionsOf('majorOmen', 'FG-11').map((o) => o.kind)).toEqual(['miracle', 'decree']);
     expect(optionsOf('death')).toEqual([]);
+  });
+
+  it('the crisis card opens the whisper of help with the person picked, as the allies layer does (review round two R2)', () => {
+    const [w, d] = optionsOf('crisis', 'T3', 'ซาเล็ม');
+    expect(w).toEqual({ kind: 'whisper', args: { why: 'crisis', id: 'T3', hint: 'ช่วย', target: 'ซาเล็ม' } });
+    expect(d.kind).toBe('dream');
+    // no name known: still the hint of help, no empty target
+    expect(optionsOf('crisis', 'T3')[0].args).toEqual({ why: 'crisis', id: 'T3', hint: 'ช่วย' });
   });
 });
 

@@ -429,9 +429,15 @@ export function whisperTargets(game: Game, data: GameData, needs: 'place' | 'npc
   const life = lifeOf(game);
   if (!life) return [];
   if (needs === 'npc') {
-    const people = npcsAt(ctx, life.country).map((v) => ({ id: v.id, name: v.name, group: W.whisper.people }));
+    // a person who is an ally too is listed once, as the ally (M5 review round two R2: the same name stood in two rows)
+    const kin = alliesOf(ctx);
+    const known = new Set(kin.flatMap((t) => [t.name, ...(t.npc ? [t.npc] : [])]));
+    const seen = new Set<string>();
+    const people = npcsAt(ctx, life.country)
+      .filter((v) => !known.has(v.id) && !known.has(v.name) && !seen.has(v.name) && (seen.add(v.name), true))
+      .map((v) => ({ id: v.id, name: v.name, group: W.whisper.people }));
     const hot = new Set(crisesWaiting(ctx).map((w) => w.tie.id));
-    const allies = alliesOf(ctx)
+    const allies = kin
       .map((t): WhisperTarget => ({ id: t.id, name: hot.has(t.id) ? `${W.whisper.crisisMark} ${t.name} · ${W.whisper.inCrisis}` : t.name, group: W.whisper.allies, plain: t.name, ...(hot.has(t.id) ? { crisis: true } : {}) }))
       .sort((a, b) => Number(!!b.crisis) - Number(!!a.crisis));
     return [...allies, ...people];
