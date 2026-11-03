@@ -34,6 +34,9 @@ export const END_LABELS = {
   // the scenes
   death: 'ฉากความตาย',
   record: 'บันทึกชีวิต',
+  /** The button of the death scene: it opens the life record, it saves nothing (M5 review round two R3: "บันทึก" read as a save). */
+  readRecord: 'อ่านบันทึกชีวิตของเขา',
+  missing: 'ข้อที่ขาด',
   mark: 'ผลต่อโลก', // 03 §2
   // 19-wish.md §6 (the card shows the life was "ถูกสั่ง") and §5 (the rows of the sheet)
   ordered: 'ถูกสั่ง',
@@ -135,7 +138,7 @@ export interface CardView {
   sections: CardSection[];
   summary: { text: string; source: 'template' | 'llm' };
   epitaph: { text: string; source: 'template' | 'llm' };
-  vow: { name: string; kept: boolean; head: string; lines: string[] } | null;
+  vow: { name: string; kept: boolean; head: string; lines: string[]; missing: string[] } | null;
   titles: string[];
   earned: EarnedGroup[];
   heir: { name: string; how: string; age: number; line: string } | null;
@@ -214,7 +217,7 @@ export function cardView(data: GameData, state: GameState, lifeId?: string): Car
     sections: sections.map((x) => ({ ...x, lines: cs(x.lines) })),
     summary: { ...card.summary, text: c(card.summary.text) },
     epitaph: { ...card.epitaph, text: c(card.epitaph.text) },
-    vow: card.vow ? { name: c(card.vow.name), kept: card.vow.result === 'kept', head: c(card.vow.head), lines: cs(card.vow.lines) } : null,
+    vow: card.vow ? { name: c(card.vow.name), kept: card.vow.result === 'kept', head: c(card.vow.head), lines: cs(card.vow.lines), missing: cs(card.vow.missing ?? []) } : null,
     titles: cs(card.titles),
     earned: earnedGroups(data, card.earned),
     heir: card.heir ? { ...card.heir, line: c(`${card.heir.name} · อายุ ${card.heir.age}`) } : null,

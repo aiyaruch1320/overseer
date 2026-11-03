@@ -60,6 +60,38 @@ export const JUDGE: Record<string, (f: Facts) => boolean> = {
 
 export type VowResult = 'kept' | 'broken' | 'none';
 
+/**
+ * What a broken vow lacked, in words (M5 review round two R3): the same conditions as `JUDGE`, told one by one. Empty when the vow was kept; it never holds a
+ * condition the life met.
+ */
+export const MISSED: Record<string, (f: Facts) => string[]> = {
+  'GV-01': (f) => [...(f.natural ? [] : ['เขาไม่ได้ตายตามธรรมชาติ']), ...(f.hAge >= ELDER_AGE ? [] : [`เขาตายตอนอายุ ${Math.floor(f.hAge)} ยังไม่ถึงวัยผู้เฒ่า (${ELDER_AGE})`])],
+  'GV-02': (f) => [...(f.battle ? ['เขาตายในศึก'] : []), ...(f.curses !== 0 ? ['คำสาปยังติดตัวเขาอยู่'] : []), ...(f.belief < 0 ? ['ศรัทธาเทพของเขาติดลบ'] : [])],
+  'GV-03': (f) => [...(f.where === f.born ? [] : ['เขาไม่ได้ตายในประเทศที่เกิด']), ...(f.continents.length > 1 ? [] : ['เขาไม่เคยออกจากทวีปที่เกิด'])],
+  'GV-04': (f) => [`เขาเคยอยู่ ${f.continents.length} ทวีป ไม่ถึง ${VOW_NUMBERS.continents}`],
+  'GV-05': () => ['ไม่มีทายาทที่มีชีวิตตอนเขาตาย'],
+  'GV-06': (f) => [`สายคนรักของเขาสูงสุดถึงระดับ ${f.love} ไม่ถึงระดับ ${VOW_NUMBERS.loverLevel}`],
+  'GV-07': () => ['คู่แข่งหรือผู้แค้นของเขายังอยู่หลังเขาตาย'],
+  'GV-08': () => ['เขาไม่ได้เลือกทางคืนดีกับผู้แค้นหรือผู้ทรยศสักครั้ง'],
+  'GV-09': () => [`เขาไม่ได้อาชีพลับ ไม่ได้อาวุธตำนาน และผ่านจุดบรรจบไม่ถึง ${VOW_NUMBERS.legendCv} จุด`],
+  'GV-10': (f) => [...(f.secret || f.cv !== 0 ? ['เขาได้อาชีพลับหรือผ่านจุดบรรจบ'] : []), ...(f.kind >= VOW_NUMBERS.kind ? [] : [`แกนเมตตาของเขา ${Math.round(f.kind)} ไม่ถึง ${VOW_NUMBERS.kind}`])],
+  'GV-11': (f) => [`ศรัทธาเทพของเขาสูงสุด ${Math.round(f.peak)} ไม่ถึง ${VOW_NUMBERS.belief}`],
+  'GV-12': (f) => [`ท่านแทรกแซง ${f.interventions} ครั้ง เกิน ${VOW_NUMBERS.interventions}`],
+  'GV-13': () => ['ชะตาร้ายของเขายังเกิดขึ้น'],
+  'GV-14': (f) => [...(f.wasBound ? [] : ['เขาไม่เคยเป็นผู้ถูกผูกตัว']), ...(f.freed ? [] : ['เขาไม่เคยพ้นพันธะ']), ...(f.boundNow ? ['เขาตายขณะยังถูกผูกตัว'] : [])],
+  'GV-15': () => ['เขาไม่เคยอยู่ในฉากเดียวกับมังกรตำนาน'],
+  'GV-16': () => ['ถิ่นเกิดของเขาเป็นซาก ล่ม หรือถูกกลืนในชีวิตเขา'],
+  'GV-17': () => ['เขาไม่ได้ทิ้งร้าน ตำแหน่ง อาวุธที่ตีเอง หรือลูกศิษย์ไว้'],
+  'GV-18': () => ['เขาไม่ได้เลือกฝ่ายของกุญแจในวันสุดท้ายของโลก'],
+  'GV-19': (f) => [...(f.belief <= VOW_NUMBERS.hate ? [] : [`ศรัทธาเทพตอนตาย ${Math.round(f.belief)} ยังไม่ต่ำถึง ${VOW_NUMBERS.hate}`]), ...(f.hAge >= ELDER_AGE ? [] : [`เขาตายตอนอายุ ${Math.floor(f.hAge)} ก่อนวัยผู้เฒ่า (${ELDER_AGE})`])],
+};
+
+/** What the vow lacked when it was broken: the conditions that were not met (nothing for a vow that holds). */
+export function missed(vow: string, f: Facts): string[] {
+  if (JUDGE[vow]?.(f)) return [];
+  return MISSED[vow]?.(f) ?? [];
+}
+
 /** The result of a vow for a dead life, from the facts of its life (`factsOf`). */
 export function judge(ctx: Ctx, life: LifeState, vow: string | null, f: Facts = factsOf(ctx, life)): VowResult {
   if (!vow || vow === NO_VOW) return 'none';

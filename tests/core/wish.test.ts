@@ -304,11 +304,11 @@ describe('the wish in the core', () => {
       expect(h.ask.second === 'demonkin' || h.items.some((i) => i.key === 'story' && i.row === 'cannot')).toBe(true);
     });
 
-    it('love, the hero and no god are kept on the sheet for the god, and say that no system binds them yet', () => {
+    it('love, the hero and no god are kept on the sheet and the vows of the god read them (no longer pending)', () => {
       for (const t of ['อยากมีความรัก', 'อยากเป็นผู้กล้า', 'ไม่ให้พระเจ้ายุ่ง']) {
         const r = read(t);
         expect(r.ask.story).toHaveLength(1);
-        expect(r.items.find((i) => i.key === 'story')?.pending).toBe(true);
+        expect(r.items.find((i) => i.key === 'story')?.pending).toBe(false);
         expect(born(t, 3).life.ext.character).toBeDefined();
       }
     });

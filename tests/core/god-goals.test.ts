@@ -8,6 +8,8 @@ import type { Game, GameData } from '../../src/core/game';
 import type { GodData } from '../../src/core/data/types-god';
 import {
   JUDGE,
+  MISSED,
+  missed,
   applyCarry,
   chooseRhythm,
   checkRhythm,
@@ -450,5 +452,52 @@ describe('the titles of a lineage (M4 review T1)', () => {
     const e = st.log.find((x) => x.sys === 'god' && x.kind === 'vow.offer')!;
     expect(e.data.name).toBe(st.life!.name);
     expect(e.data.name).not.toBe('');
+  });
+});
+
+describe('a broken vow tells what it lacked (M5 review round two R3)', () => {
+  const blank = (): Facts => ({
+    life: {} as LifeState, hAge: 70, cause: '', natural: true, battle: false, elder: true, belief: 10, peak: 40, curses: 0, born: 'AL-01', where: 'AL-01', continents: ['AL'], countries: ['AL-01'],
+    stayed: 1, heir: true, love: 0, rivalFell: false, forgave: false, betrayals: 0, killedKin: false, secret: false, legend: false, cv: 0, kind: 10, interventions: 9, boundNow: false,
+    wasBound: false, freed: false, dragon: false, homeLost: false, built: false, keySide: false, badFate: false,
+  });
+
+  it('every judged vow has its words, and the words are told exactly when the judge says broken', () => {
+    let k = 12345;
+    const rnd = () => (k = (k * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    for (const id of Object.keys(JUDGE)) {
+      if (id === 'GV-20') continue;
+      expect(MISSED[id], id).toBeDefined();
+      for (let i = 0; i < 300; i++) {
+        const f = blank();
+        for (const key of Object.keys(f) as (keyof Facts)[]) {
+          const v = f[key];
+          if (typeof v === 'boolean') (f[key] as boolean) = rnd() < 0.5;
+          else if (typeof v === 'number') (f[key] as number) = Math.floor(rnd() * 120) - 80;
+        }
+        f.continents = Array.from({ length: Math.floor(rnd() * 6) }, (_, j) => `C${j}`);
+        const text = missed(id, f);
+        if (JUDGE[id](f)) expect(text, id).toEqual([]);
+        else {
+          expect(text.length, `${id} ${JSON.stringify(f)}`).toBeGreaterThan(0);
+          for (const t of text) expect(t).not.toMatch(/GV-|NPC|undefined|NaN/);
+        }
+      }
+    }
+  });
+
+  it('the death writes the missing words on the result of a broken vow, and none for a kept one', () => {
+    // GV-19 ("hate me") breaks in nearly every life of a god who does nothing: the faith stays above -70
+    const c = mk(6);
+    lifeGoals(c.life).vow = 'GV-19';
+    runToDeath(c.g);
+    const r = lifeGoals(c.life).result!;
+    expect(r.result).toBe('broken');
+    expect(r.missing?.length).toBeGreaterThan(0);
+    expect(r.missing!.join(' ')).toMatch(/ศรัทธาเทพ|ผู้เฒ่า/);
+    const k = mk(6);
+    lifeGoals(k.life).vow = 'GV-20';
+    runToDeath(k.g);
+    expect(lifeGoals(k.life).result!.missing).toBeUndefined();
   });
 });

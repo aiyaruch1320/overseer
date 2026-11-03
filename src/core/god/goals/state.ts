@@ -106,7 +106,7 @@ export interface GoalsLife {
   decided: boolean;
   changed: boolean;
   /** Set at death. */
-  result?: { vow: string | null; result: 'kept' | 'broken' | 'none'; titles: string[]; line: ChronicleLine };
+  result?: { vow: string | null; result: 'kept' | 'broken' | 'none'; titles: string[]; line: ChronicleLine; /** a broken vow: the conditions it lacked, in words */ missing?: string[] };
   track: Track;
 }
 

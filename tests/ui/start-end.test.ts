@@ -102,12 +102,25 @@ describe('synonym parser', () => {
     expect(read('').understood).toBe('empty');
   });
 
-  it('marks as pending only what no system binds yet: the asks of the story part that the vows of the god will read', () => {
+  it('marks as pending only what no system binds yet: the asks of the story part are read by the vows of the god now', () => {
     const r = read('ขี้ขลาด รวย');
     expect(r.items.filter((i) => i.row !== 'random').every((i) => !i.pending)).toBe(true);
     expect(read('คนแคระ').items.find((i) => i.key === 'race')?.pending).toBe(false);
-    expect(read('อยากมีความรัก').items.find((i) => i.key === 'story')?.pending).toBe(true);
+    expect(read('อยากมีความรัก').items.find((i) => i.key === 'story')?.pending).toBe(false);
     expect(read('อยากเดินทาง').items.find((i) => i.key === 'story')?.pending).toBe(false);
+  });
+});
+
+describe('the end card says what a broken vow lacked (review round two R3)', () => {
+  it('the view of the card carries the missing words of a broken vow and none for a kept one', async () => {
+    const { lived } = await import('../../src/ui/end/sample');
+    const { cardView } = await import('../../src/app/views/end');
+    const b = cardView(data, lived(data, { seed: 5, vow: 'broken' }).state);
+    if (b?.vow && !b.vow.kept) expect(b.vow.missing.length).toBeGreaterThan(0);
+    expect(b?.vow?.kept).toBe(false);
+    const k = cardView(data, lived(data, { seed: 5, vow: 'kept' }).state);
+    expect(k?.vow?.kept).toBe(true);
+    expect(k?.vow?.missing).toEqual([]);
   });
 });
 

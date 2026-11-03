@@ -30,6 +30,11 @@ export function VowStone({ vow }: { vow: NonNullable<CardView['vow']> }) {
           {l}
         </div>
       ))}
+      {!vow.kept && vow.missing.length > 0 && (
+        <div data-testid="vow-missing" style={{ fontSize: size.small + 1, marginTop: 6, paddingTop: 4, borderTop: '1px solid #e6e0d055' }}>
+          {END_LABELS.missing}: {vow.missing.join(' · ')}
+        </div>
+      )}
     </div>
   );
 }

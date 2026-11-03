@@ -205,6 +205,10 @@ describe('E5: the vow and the titles are on the card', () => {
         expect(card.vow?.lines.length).toBeGreaterThanOrEqual(1);
         expect(card.lines).toContain(card.vow!.line);
         expect(card.vow!.line).toMatch(/^ปฏิญาณ: .+ · (สำเร็จ|ไม่สำเร็จ)$/);
+        // a broken vow says what it lacked (M5 review round two R3); a kept one has nothing to add
+        if (g.result === 'broken') expect(card.vow!.missing).toEqual(g.missing);
+        else expect(card.vow!.missing).toBeUndefined();
+        if (g.result === 'broken') expect(card.vow!.missing!.length).toBeGreaterThan(0);
         expect([...card.vow!.line].length).toBeLessThanOrEqual(56);
         expect(input.vow?.result).toBe(card.vow?.result);
         expect(input.titles).toEqual(g.titles);

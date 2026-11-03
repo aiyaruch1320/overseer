@@ -51,7 +51,7 @@ function DeathScene({ data, state, onNext }: { data: GameData; state: GameState;
         )}
         <div style={{ marginTop: 28 }}>
           <Button primary onClick={onNext}>
-            {END_LABELS.record}
+            {END_LABELS.readRecord}
           </Button>
         </div>
       </div>
