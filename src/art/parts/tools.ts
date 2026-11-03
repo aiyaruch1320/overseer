@@ -24,11 +24,11 @@ function marks(r: Rig, t0: number, t1: number, mark: number, s = 0): void {
   const seed = seedOf(r), n = w > 0.6 ? 3 : w > 0.4 ? 2 : 1;
   for (let i = 0; i < n; i++) { const p = at(r, t0 + (t1 - t0) * hash(seed, i, 11), s); r.p.px(p[0], p[1], mark); }
 }
-/** Sparks round a point on the frames where a thing glows (deterministic for the frame). */
-function sparks(r: Rig, c: Pt, n: number, mat: number, reach = 3): void {
+/** Sparks round a point on the frames where a thing glows (deterministic for the frame): glow pixels in the accent colour, laid after the outline, so they have no dark ring. */
+function sparks(r: Rig, c: Pt, n: number, reach = 3): void {
   for (let i = 0; i < n; i++) {
-    const a = hash(r.f + 1, i, 3) * Math.PI * 2, d = (1.6 + hash(r.f + 1, i, 4) * reach) * Math.max(0.8, r.k);
-    r.p.px(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, mat);
+    const a = hash(r.f + 1, i, 3) * Math.PI * 2, d = (2.6 + hash(r.f + 1, i, 4) * reach) * Math.max(0.8, r.k);
+    r.p.glow(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, r.look.accent, i % 2 ? 0.75 : 1);
   }
 }
 /** A held book, ledger or scroll sits in front of the chest, upright. */
@@ -74,7 +74,7 @@ export const TOOLS: Record<string, Tool> = {
       poly(r, [[16.5, 0.7], [16.5, 2], [8, 2], [8, 0.7]], p.mat(d));
       p.px(...at(r, 12.5, 4), m.accent); p.px(...at(r, 12.5, 5), m.accent); p.px(...at(r, 11.5, 4.5), m.accent);
       if (r.look.wear > 0.3) { p.px(...at(r, 9.5, 6 + f), 0); p.px(...at(r, 14, 7 + f), 0); }
-      if (r.glow) sparks(r, at(r, 20), 4, m.glow, 4);
+      if (r.glow) sparks(r, at(r, 20), 4, 4);
     },
   },
   dagger: {
@@ -114,7 +114,7 @@ export const TOOLS: Record<string, Tool> = {
       stroke(r, 12, 16, wood(r), 1, 1.6); stroke(r, 12, 16, wood(r), 1, -1.6);
       const c = at(r, 15);
       p.ell(c[0], c[1], 1.4 * r.k + 0.4, 1.4 * r.k + 0.4, stone);
-      if (on) sparks(r, c, 4, m.glow, 3);
+      if (on) sparks(r, c, 4, 3);
       marks(r, -8, 10, 0, 0);
     },
   },
@@ -127,7 +127,7 @@ export const TOOLS: Record<string, Tool> = {
       stroke(r, 13, 17, wood(r), 1, 2.4); stroke(r, 13, 17, wood(r), 1, -2.4);
       p.ell(c[0], c[1], rad, rad, orb);
       p.px(c[0] - 0.6, c[1] - 0.8, p.mat('#ffffff', { flat: true }));
-      if (on) sparks(r, c, 6, m.glow, 4);
+      if (on) sparks(r, c, 6, 4);
     },
   },
   wand: {
@@ -139,11 +139,11 @@ export const TOOLS: Record<string, Tool> = {
       p.px(...at(r, 3, 1), p.mat('#4a3626'));
       p.px(tip[0], tip[1], on ? m.glow : p.mat(lighter(r.look.accent, 0.55), { flat: true }));
       p.px(tip[0], tip[1] - 1, on ? m.glow : p.mat(lighter(r.look.accent, 0.55), { flat: true }));
-      if (on) { p.px(tip[0] + 1, tip[1], m.glow); p.px(tip[0] - 1, tip[1], m.glow); p.px(tip[0], tip[1] - 2, m.glow); sparks(r, tip, 5, m.glow, 4); }
+      if (on) { p.glow(tip[0] + 1, tip[1], r.look.accent); p.glow(tip[0] - 1, tip[1], r.look.accent); p.glow(tip[0], tip[1] - 2, r.look.accent); sparks(r, tip, 5, 4); }
     },
   },
   book: {
-    kind: 'cast',
+    kind: 'carry',
     held: (r) => {
       const { p, m } = r, [x, y] = hold(r, 1.4, -0.8), w = sz(r, 5), h = sz(r, 6), cover = p.mat(darker(r.look.second, 0.15));
       p.rect(x, y - h + 1, w, h, cover);
@@ -152,11 +152,11 @@ export const TOOLS: Record<string, Tool> = {
       p.px(x + Math.floor(w / 2), y - Math.floor(h / 2), m.accent);
       p.px(x + w - 1, y, m.metal);
       if (r.look.wear > 0.3) p.px(x + w - 1, y - h + 1, p.mat(TONE.cream));
-      if (r.glow) { p.px(x + 1, y - h - 1, m.glow); p.px(x + 3, y - h - 3, m.glow); p.px(x + w - 1, y - h - 2, m.glow); sparks(r, [x + w / 2, y - h], 3, m.glow, 4); }
+      if (r.glow) { p.glow(x + 1, y - h - 1, r.look.accent); p.glow(x + 3, y - h - 3, r.look.accent); p.glow(x + w - 1, y - h - 2, r.look.accent); sparks(r, [x + w / 2, y - h], 3, 4); }
     },
   },
   scroll: {
-    kind: 'cast',
+    kind: 'carry',
     held: (r) => {
       const { p, m } = r, [x, y] = hold(r, 1.2, -0.6), len = sz(r, 7), w = Math.max(2, Math.round(2.5 * r.k)), pa = p.mat(TONE.cream);
       p.rect(x, y - len + 1, w, len, pa);
@@ -165,7 +165,7 @@ export const TOOLS: Record<string, Tool> = {
       p.px(x, y - Math.floor(len / 2), p.mat('#8a7a60'));
       p.px(x + 1, y - Math.floor(len / 2) + 1, p.mat(TONE.blood, { flat: true }));
       p.px(x + w - 1, y - len + 2, m.accent);
-      if (r.glow) { p.px(x, y - len - 1, m.glow); p.px(x + 2, y - len - 3, m.glow); sparks(r, [x + w / 2, y - len], 3, m.glow, 4); }
+      if (r.glow) { p.glow(x, y - len - 1, r.look.accent); p.glow(x + 2, y - len - 3, r.look.accent); sparks(r, [x + w / 2, y - len], 3, 4); }
     },
   },
 
@@ -337,7 +337,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   censer: {
-    kind: 'swing',
+    kind: 'carry',
     // hangs from the hand on a chain, whatever the angle of the arm
     held: (r) => {
       const { p } = r, [hx, hy] = r.hand, len = 5 * r.k, c: Pt = [hx + 1, hy + len + 2.4 * r.k], g = gold(r), dk = p.mat(darker(TONE.gold, 0.45));
@@ -346,8 +346,7 @@ export const TOOLS: Record<string, Tool> = {
       p.rect(Math.round(c[0] - 1), Math.round(c[1] - 0.5), Math.max(2, Math.round(2 * r.k)), 1, dk);
       p.px(c[0] - 1, c[1] + 1, dk);
       // smoke: pale wisps that rise and drift, a little different in each frame
-      const smoke = p.mat('#d8d4cc', { flat: true });
-      for (let i = 0; i < 4; i++) p.px(c[0] + Math.sin(r.f * 1.7 + i * 1.3) * 1.2 + i * 0.3, c[1] - 3 * r.k - i * 1.7, smoke);
+      for (let i = 0; i < 4; i++) p.glow(c[0] + Math.sin(r.f * 1.7 + i * 1.3) * 1.2 + i * 0.3, c[1] - 3 * r.k - i * 1.7, '#d8d4cc', 0.8 - i * 0.12);
     },
   },
   rod: {
@@ -364,19 +363,19 @@ export const TOOLS: Record<string, Tool> = {
   },
   bow: {
     kind: 'shoot',
-    // kept upright whatever the arm does; an arrow is nocked in the attack frames before the shot
+    // kept upright whatever the arm does; on the draw frames of an attack the far hand pulls the nocked arrow back and the string runs to it
     held: (r) => {
       const { p } = r, [hx, hy] = r.hand, h = 11.5 * r.k, bow = p.mat('#6e4a2c'), cord = p.mat(TONE.cream);
       const top: Pt = [hx - 1.5, hy - h], bot: Pt = [hx - 1.5, hy + h * 0.85];
       const curve: Pt[] = [top, [hx + 0.6, hy - h * 0.6], [hx + 2.2, hy - h * 0.25], [hx + 2.8, hy], [hx + 2.2, hy + h * 0.25], [hx + 0.6, hy + h * 0.55], bot];
       for (let i = 0; i < curve.length - 1; i++) p.line(curve[i], curve[i + 1], bow, i >= 2 && i <= 3 ? thick(r) : 1);
-      p.line([top[0] - 0.4, top[1]], [bot[0] - 0.4, bot[1]], cord);
       if (r.pose === 'attack' && r.f < 2) {
-        const tail: Pt = [hx - 2, hy], head: Pt = [hx + 8 * r.k, hy];
-        p.line(tail, head, p.mat('#8a7a5a'));
+        const nock: Pt = [Math.min(r.farHand[0] + 1, hx - 2), hy], head: Pt = [hx + 8 * r.k, hy];
+        p.line([top[0] - 0.4, top[1]], nock, cord); p.line(nock, [bot[0] - 0.4, bot[1]], cord);
+        p.line(nock, head, p.mat('#8a7a5a'));
         p.px(head[0] + 1, head[1], steel(r));
-        p.px(tail[0] - 0.5, tail[1] - 1, cord); p.px(tail[0] - 0.5, tail[1] + 1, cord);
-      }
+        p.px(nock[0] - 0.5, nock[1] - 1, cord); p.px(nock[0] - 0.5, nock[1] + 1, cord);
+      } else p.line([top[0] - 0.4, top[1]], [bot[0] - 0.4, bot[1]], cord);
     },
     // the quiver on the back, arrows showing over the shoulder
     back: (r) => {
@@ -389,7 +388,7 @@ export const TOOLS: Record<string, Tool> = {
 
   // ── thrust: things carried in the hand ──────────────────────────────────────────────────────────────────────────────────────────
   ledger: {
-    kind: 'thrust',
+    kind: 'carry',
     held: (r) => {
       const { p, m } = r, [x, y] = hold(r, 1.3, -0.8), w = sz(r, 6), h = sz(r, 7), cover = p.mat(darker(r.look.second, 0.45));
       p.rect(x, y - h + 1, w, h, cover);
@@ -415,7 +414,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   mug: {
-    kind: 'thrust',
+    kind: 'carry',
     held: (r) => {
       const { p, m } = r, [x, y] = hold(r, 1.4, -0.4), w = sz(r, 4), h = sz(r, 5);
       p.rect(x, y - h + 1, w, h, p.mat('#8a6a3a'));
@@ -426,19 +425,19 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   bowl: {
-    kind: 'thrust',
+    kind: 'carry',
     held: (r) => {
       const { p } = r, [x, y] = hold(r, 1.0, 0.4), w = sz(r, 6), wd = p.mat('#a88458');
       p.rect(x, y - 2, w, 1, p.mat('#6a4a2a'));
       p.rect(x, y - 1, w, 1, wd);
       p.rect(x + 1, y, w - 2, 1, wd);
       p.rect(x + Math.floor(w / 2) - 1, y + 1, 2, 1, wd);
-      p.px(x - 0, y - 3, p.mat('#cfc8b6', { flat: true }));
-      if (r.f % 2 === 0) p.px(x + 2, y - 4, p.mat('#d8d4cc', { flat: true }));
+      p.glow(x, y - 3, '#cfc8b6', 0.8);
+      if (r.f % 2 === 0) p.glow(x + 2, y - 4, '#d8d4cc', 0.6);
     },
   },
   flask: {
-    kind: 'thrust',
+    kind: 'carry',
     held: (r) => {
       const { p } = r, [x, y] = hold(r, 1.4, 0), liquid = p.mat('#86b0a4'), cork = p.mat('#9a7a4a'), rad = 2.2 * r.k + 0.3;
       p.ell(x + 1, y - 1.5 * r.k, rad, rad, liquid);
@@ -448,7 +447,7 @@ export const TOOLS: Record<string, Tool> = {
     },
   },
   lantern: {
-    kind: 'swing',
+    kind: 'carry',
     // hangs from the hand by its ring
     held: (r) => {
       const { p, m } = r, [hx, hy] = r.hand, w = sz(r, 4), h = sz(r, 5), x = hx - Math.floor(w / 2) + 1, y = hy + sz(r, 2);
