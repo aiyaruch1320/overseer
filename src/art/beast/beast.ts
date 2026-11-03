@@ -69,6 +69,8 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
     applyDie(p, kind, mo.die, info.ground ?? [cx, fr.foot], c.px, info.tall ?? false, p.mat(L.second, { flat: true }), seed);
   }
   const frame = p.finish(info.shadow);
+  if (info.fade) for (let y = 0; y < frame.h; y++) for (let x = 0; x < frame.w; x++) { const i = (y * frame.w + x) * 4 + 3; if (frame.data[i] > 80) frame.data[i] *= Math.max(0, Math.min(1, info.fade(x, y))); }
+  if (info.after && mo.die < 0.6) info.after(frame);
   return mo.flash ? flash(frame) : frame;
 }
 
