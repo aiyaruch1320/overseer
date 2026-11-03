@@ -3,6 +3,7 @@
 import type { Ctx } from '../game';
 import type { Aptitude, Axis, Gift, Job, JobsFile, OriginFile, Race, RacesFile, Skill, StatKey, Trait } from '../data/types-character';
 import type { Condition, Effect, LifeState } from '../types';
+import type { WishSheet } from './wish';
 
 export const AXES: readonly Axis[] = ['brave', 'kind', 'ambition', 'piety', 'curious', 'honest', 'temper', 'social'];
 export const STAT_KEYS: readonly StatKey[] = ['pow', 'mag', 'spd', 'luk', 'int', 'vit'];
@@ -199,6 +200,15 @@ export interface CharacterExt {
   jobSince?: number;
   /** World year the life began (the life year count of the Game starts at 0 here). */
   startYear: number;
+  /**
+   * The wish this life was ordered by (19-wish.md §6): the sheet as read (`ask`, the rows, the points) and in `born` what the birth applied and refused with the reason.
+   * Kept in the save: a replay uses it and does not read the text again. The ending card and the LLM read it as plain data.
+   */
+  wish?: WishSheet;
+  /** The childhood meeting with the companion species the wish asked for: the age it comes at; set when it came. */
+  wishChild?: { age: number; id: string; done?: boolean };
+  /** The late parts of the wish (the family of the infant, the story lines) were done. */
+  wishLate?: boolean;
 }
 
 export function emptyExt(): CharacterExt {

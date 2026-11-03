@@ -4,10 +4,10 @@
 // Systems come from `allSystems()` (src/core/systems.ts, filled by the lead as branches merge). The npc and text systems are
 // added when the list does not hold them yet. If no `character` system is in the list, a toy life stands in (toy-character.ts).
 // The life is made by `birth()` of the character system (src/core/character), or by `opts.birther`.
-import { birth as characterBirth } from '../../src/core/character';
+import { birth as characterBirth, type WishSheet } from '../../src/core/character';
 import { Game, versions, type Ctx, type GameData, type System } from '../../src/core/game';
 import { newGame } from '../../src/core/state';
-import { chooseStart, type StartPoint } from '../../src/core/start';
+import { chooseStart, type StartPoint, type StartWanted } from '../../src/core/start';
 import { allSystems } from '../../src/core/systems';
 import { npcSystem } from '../../src/core/npc';
 import { textSystem } from '../../src/core/text';
@@ -32,6 +32,8 @@ export interface SessionOpts {
   persona?: string;
   /** The character system's way to make a life; defaults to the one found on the system, then the toy. */
   birther?: Birther;
+  /** The wish of the player, read by the core (`readWish`): the birth applies it (`BirthOpts.wish`) and the world start reads its era. */
+  wish?: WishSheet;
 }
 
 export type Birther = (ctx: Ctx, req: BirthRequest) => LifeState | void;
@@ -79,7 +81,7 @@ export function findBirther(systems: System[]): Birther | undefined {
   return (ctx, req) => {
     // the tools name a race by its story prefix (`hu`) or its id (`human`); the character system takes the id
     const race = req.race ? resolveRace(ctx, req.race).id : undefined;
-    return characterBirth(ctx, { race, country: req.country });
+    return characterBirth(ctx, { race, country: req.country, ...(req.wish ? { wish: req.wish } : {}) });
   };
 }
 
@@ -97,16 +99,17 @@ export function createSession(data: GameData, opts: SessionOpts): Session {
   }
   if (opts.persona) state.god.ext.persona = opts.persona;
   game.init();
-  let year = opts.startYear;
+  // the era of the wish (19-wish.md §2): "ยุคปัจจุบัน" is the opening year of the main story (ศ.ม. 10,400), the early era and the dragons' fall lean the start rule
+  let year = opts.startYear ?? (opts.wish?.ask.era === 'present' ? 0 : undefined);
   const world = systems.find((x) => x.name === 'world');
   if (year === undefined && world && !toy) {
     // the start rule of world-time.md §8.1 needs the race first: draw it as the real birth would, on a scratch state
-    const race = opts.race ? resolveRace(game.ctx, opts.race).id : scratchRace(data, opts.seed, systems);
+    const race = opts.race ? resolveRace(game.ctx, opts.race).id : scratchRace(data, opts.seed, systems, opts.wish);
     opts = { ...opts, race };
     const r = (data.races.items as { races?: RaceRow[] } | RaceRow[]);
     const row = (Array.isArray(r) ? r : r.races ?? []).find((x) => x.id === race);
     if (row) {
-      const start: StartPoint = chooseStart(data, opts.seed, { adultAge: row.adultAge, elderAge: row.elderAge }, world);
+      const start: StartPoint = chooseStart(data, opts.seed, { adultAge: row.adultAge, elderAge: row.elderAge }, world, startWanted(opts.wish));
       year = start.worldYear;
       state.god.ext.start = start as unknown as Record<string, unknown>;
     }
@@ -115,15 +118,24 @@ export function createSession(data: GameData, opts: SessionOpts): Session {
   return { game, data, notes, opts };
 }
 
+/** What the wish asks of the start point of the world (world-time.md §8.1): the early years, or the main events of the fall of the dragons and the last era. */
+function startWanted(wish: WishSheet | undefined): StartWanted | undefined {
+  const a = wish?.ask;
+  if (!a) return undefined;
+  if (a.era === 'early') return { rule: 'early' };
+  if (a.story?.includes('dragonfall')) return { rule: 'anchor', prefer: ['DR-', 'LE-'] };
+  return undefined;
+}
+
 interface RaceRow {
   id: string;
   adultAge: number;
   elderAge: number;
 }
 
-function scratchRace(data: GameData, seed: number, systems: System[]): string {
+function scratchRace(data: GameData, seed: number, systems: System[], wish?: WishSheet): string {
   const g = new Game(newGame(seed, versions(data)), data, systems.filter((x) => x.name === 'character'));
-  return characterBirth(g.ctx, {}).race;
+  return characterBirth(g.ctx, wish ? { wish } : {}).race;
 }
 
 /** Restores a saved state into a running game (play keeps the state in a file between commands). */
@@ -135,7 +147,7 @@ export function resumeSession(data: GameData, state: GameState, opts: SessionOpt
 /** Makes the main character (the real system's birth function, or the toy) and runs the birth hooks. */
 export function startLife(s: Session): LifeState {
   const g = s.game;
-  const req: BirthRequest = { race: s.opts.race, country: s.opts.country };
+  const req: BirthRequest = { race: s.opts.race, country: s.opts.country, ...(s.opts.wish ? { wish: s.opts.wish } : {}) };
   const birther = s.opts.birther ?? findBirther(g.systems);
   if (birther) {
     const made = birther(g.ctx, req);

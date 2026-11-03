@@ -1,6 +1,8 @@
 // Birth of the main character, following docs/systems/character/01-origin.md §1 step by step:
 // race → special births → half-blood → gender → birth country and parents' cause → class and gold → faith → sign and time →
 // lifespan → stats → traits, aptitudes, gifts. Draws come from the streams `life.birth` (who, where, when) and `life.character` (what they are).
+// A wish (`BirthOpts.wish`, wish.ts) replaces the draw of the step it names and leaves every other draw where it was (19-wish.md rule 6); what the
+// birth could not keep it refuses with a reason and writes both to `life.ext.character.wish`.
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply } from '../rules';
@@ -21,6 +23,8 @@ import {
   FAITH_FROM_PIETY,
   PRIMARY_FAITH_WEIGHT,
   RARITY_WEIGHT,
+  WISH_WEIGHT,
+  WISH_WORDS,
   SIGN_CLASH,
   SIGN_LIKE,
   START_GOLD_FALLBACK,
@@ -29,6 +33,8 @@ import {
   WOKEN_AGE,
 } from './tuning';
 import { LATE_WAKERS } from '../clock';
+import type { WishAsk, WishSheet } from './wish';
+import { startWishLife } from './wish-apply';
 
 /** Options for tools and tests; every field left out is drawn. */
 export interface BirthOpts {
@@ -45,6 +51,8 @@ export interface BirthOpts {
   time?: string;
   /** Allow the special births (summoned, reincarnated) even though race or country was named. */
   special?: boolean;
+  /** The wish of the player, read by `readWish` (wish.ts): what it asks is applied, the rest is drawn. The fields above stand over it. */
+  wish?: WishSheet;
 }
 
 const SUB_HUMAN: Record<string, string> = { NB: 'sub_human_2', AZ: 'sub_human_5', 'SH-01': 'sub_human_3', 'NR-10': 'sub_human_4' };
@@ -119,22 +127,43 @@ function placeOfRace(ctx: Ctx, ix: Indexes, rng: Rng, bp: Birthplace, raceName: 
 }
 
 /** 01-origin.md §4 "ถิ่นเกิดและเหตุที่พ่อแม่พบกัน": 70% a meeting land, 30% the main land of one of the two races for children with a special cause. */
-function placeOfHalf(ctx: Ctx, ix: Indexes, rng: Rng, o: OriginFile, a: string, b: string): Place | null {
+function placeOfHalf(ctx: Ctx, ix: Indexes, rng: Rng, o: OriginFile, a: string, b: string, allow?: (id: string) => boolean): Place | null {
   const row = o.meetingPlaces.find((m) => (m.pair[0] === a && m.pair[1] === b) || (m.pair[0] === b && m.pair[1] === a));
   if (!row) return null;
-  const places = row.places.filter((p) => ix.countries.has(p.id) && !lost(ctx, p.id));
+  const places = row.places.filter((p) => ix.countries.has(p.id) && !lost(ctx, p.id) && (!allow || allow(p.id)));
+  if (allow && !places.length) return null; // the wish names a land where this pair does not meet
   const meet = (): Place => ({ country: weightedId(rng, places.length ? places : row.places).id, born: 'diaspora', meet: weightedId(rng, row.causes).id });
-  if (rng.chance(0.7) || !row.mainOnlyCountries.length) return meet();
+  if (rng.chance(0.7) || !row.mainOnlyCountries.length || (allow && !row.mainOnlyCountries.some((id) => !lost(ctx, id) && allow(id)))) return meet();
   const allowed = CAUSE_WORDS.filter(([re]) => re.test(row.mainOnly)).map(([, id]) => id);
   const causes = allowed.length ? row.causes.filter((c) => allowed.includes(c.id)) : row.causes;
-  const lands = row.mainOnlyCountries.filter((id) => !lost(ctx, id));
+  const lands = row.mainOnlyCountries.filter((id) => !lost(ctx, id) && (!allow || allow(id)));
   if (!causes.length || !lands.length) return meet();
   return { country: weightedCountry(rng, ix, lands, scaleOf), born: 'main', meet: weightedId(rng, causes).id };
 }
 
+/**
+ * Where a wish that names a continent, a faith, a kind of land or refuses a continent is born (19-wish.md §2 "ถิ่นเกิด", 01-origin.md §3): the same three kinds of land as
+ * `placeOfRace` (the main land, the diaspora, outside) inside what `allow` lets through; `kind` fixes the kind. Null when no land fits, and the birth then draws as it would.
+ */
+function placeWished(ctx: Ctx, ix: Indexes, rng: Rng, bp: Birthplace | undefined, raceName: string, allow: (id: string) => boolean, kind?: Place['born']): Place | null {
+  const roll = rng.next() * 100;
+  const main = (bp?.main ?? []).filter((id) => ix.countries.has(id) && !lost(ctx, id) && allow(id));
+  const diaAll = bp ? diasporaOf(ctx, ix, bp, raceName) : [];
+  const dia = diaAll.filter((d) => allow(d.id));
+  const taken = new Set([...(bp?.main ?? []), ...diaAll.map((d) => d.id)]);
+  const out = ix.countryList.map((c) => c.id).filter((id) => !taken.has(id) && !lost(ctx, id) && allow(id));
+  const natural: Place['born'][] = !bp ? ['outside'] : roll < bp.mainPct ? ['main', 'diaspora', 'outside'] : roll < bp.mainPct + bp.diasporaPct ? ['diaspora', 'main', 'outside'] : ['outside', 'diaspora', 'main'];
+  for (const k of kind ? [kind] : natural) {
+    if (k === 'main' && main.length) return { country: weightedCountry(rng, ix, main, scaleOf), born: 'main' };
+    if (k === 'diaspora' && dia.length) return { country: weightedId(rng, dia).id, born: 'diaspora' };
+    if (k === 'outside' && out.length) return { country: weightedCountry(rng, ix, out, scaleOf), born: 'outside' };
+  }
+  return null;
+}
+
 // ---------- step 4ก: class and gold ----------
 
-function classOf(ix: Indexes, rng: Rng, country: CountryLite | undefined, life: LifeState, cause: string | undefined): number {
+function classPct(ix: Indexes, country: CountryLite | undefined, life: LifeState, cause: string | undefined): number[] {
   const w = country?.w ?? 3;
   const g = country?.g ?? 'กลาง';
   const row = ix.economy?.classByWG.find((r) => r.w === w && r.g === g);
@@ -150,8 +179,21 @@ function classOf(ix: Indexes, rng: Rng, country: CountryLite | undefined, life: 
   if (['sub_winged_4', 'sub_winged_5', 'sub_winged_6', 'sub_human_5'].includes(life.blood ?? '')) keep(2, 3);
   if ((life.race === 'soulmachine' || life.race === 'construct') && life.home.startsWith('MK-')) keep(1, 2);
   if (cause === 'refugee') keep(1, 2);
+  return pct;
+}
+
+/** The class of the birth. The draw is made as ever; a wish refuses classes (the draw skips them) and may name one the land and the race allow (19-wish.md §2 "ฐานะ"). */
+function classOf(ix: Indexes, rng: Rng, country: CountryLite | undefined, life: LifeState, cause: string | undefined, wish?: { cls?: number; ban?: number[]; refuse: (reason: string) => void }): number {
+  const base = classPct(ix, country, life, cause);
+  const ban = wish?.ban ?? [];
+  const pct = base.map((v, i) => (ban.includes(i + 1) ? 0 : v));
+  if (!pct.some((v) => v > 0)) pct.splice(0, pct.length, ...base); // a refusal that would leave no class is not kept
   const i = rng.weighted(pct);
-  return i < 0 ? 3 : i + 1;
+  const drawn = i < 0 ? 3 : i + 1;
+  if (!wish?.cls) return drawn;
+  if (base[wish.cls - 1] > 0) return wish.cls;
+  wish.refuse(WISH_WORDS.classNotHere);
+  return drawn;
 }
 
 function startGold(ctx: Ctx, rng: Rng, cls: number): number {
@@ -184,14 +226,19 @@ function applyBirthSign(ctx: Ctx, life: LifeState, signId: string, timeId: strin
 
 const affinity = (plus: readonly string[], minus: readonly string[], id: string) => (plus.includes(id) ? AFFINITY.plus : minus.includes(id) ? AFFINITY.minus : 1);
 
-function drawTraits(ctx: Ctx, rng: Rng, life: LifeState, race: Race, second: Race | undefined, outside: boolean): void {
+function drawTraits(ctx: Ctx, rng: Rng, life: LifeState, race: Race, second: Race | undefined, outside: boolean, wish: WishAsk = {}): void {
   const ix = idx(ctx);
+  // a wish (19-wish.md §2): the one trait asked for sure is given first and takes a place of the three; the others asked weigh x3; the refused weigh 0
+  const sure = wish.traits?.find((t) => t.sure && ix.traits.has(t.id));
+  const asked = new Set([...(wish.traits ?? []).filter((t) => !t.sure).map((t) => t.id), ...(wish.story?.includes('travel') ? ['freedom'] : [])]);
+  const banned = new Set(wish.ban?.trait ?? []);
   const draw = (plus: readonly string[], minus: readonly string[]): boolean => {
     const pool = ix.traitList.filter((t) => !life.traits.includes(t.id) && !t.conflicts.some((c) => life.traits.includes(c)) && !life.traits.some((o) => ix.traits.get(o)?.conflicts.includes(t.id)));
-    const i = rng.weighted(pool.map((t) => affinity(plus, minus, t.id)));
+    const i = rng.weighted(pool.map((t) => (banned.has(t.id) ? 0 : affinity(plus, minus, t.id) * (asked.has(t.id) ? WISH_WEIGHT : 1))));
     return i >= 0 && grantTrait(ctx, life, pool[i].id);
   };
-  for (let n = 0; n < 3; n++) draw(race.traitPlus, race.traitMinus);
+  if (sure) grantTrait(ctx, life, sure.id);
+  for (let n = life.traits.length; n < 3; n++) draw(race.traitPlus, race.traitMinus);
   if (second) {
     // a half-blood takes one more trait from the second race's list (01-origin.md §4)
     const pool = second.traitPlus.filter((t) => ix.traits.has(t) && !life.traits.includes(t));
@@ -200,13 +247,18 @@ function drawTraits(ctx: Ctx, rng: Rng, life: LifeState, race: Race, second: Rac
   if (outside) grantTrait(ctx, life, rng.chance(0.5) ? 'homebody' : 'freedom'); // 01-origin.md §5
 }
 
-function drawAptitudes(ctx: Ctx, rng: Rng, life: LifeState, race: Race): void {
+function drawAptitudes(ctx: Ctx, rng: Rng, life: LifeState, race: Race, wish: WishAsk = {}): void {
   const ix = idx(ctx);
   const n = APTITUDES_AT_BIRTH.base + (rng.chance(APTITUDES_AT_BIRTH.threeChance) ? 1 : 0);
   if (race.id === 'slime') raiseAptitude(ctx, life, 'absorb', 1);
+  // a wish (19-wish.md §2): the first aptitude asked is given for certain at the lowest level, the other weighs x3, the refused weigh 0
+  const sure = wish.aptitudes?.find((a) => a.sure && ix.aptitudes.has(a.id) && (a.id !== 'absorb' || race.id === 'slime'));
+  if (sure) raiseAptitude(ctx, life, sure.id, 1);
+  const asked = new Set((wish.aptitudes ?? []).filter((a) => !a.sure).map((a) => a.id));
+  const banned = new Set(wish.ban?.aptitude ?? []);
   while (Object.keys(life.aptitudes).length < n) {
     const pool = ix.aptitudeList.filter((a) => life.aptitudes[a.id] === undefined && a.id !== 'absorb');
-    const i = rng.weighted(pool.map((a) => affinity(race.aptPlus, race.aptMinus, a.id)));
+    const i = rng.weighted(pool.map((a) => (banned.has(a.id) ? 0 : affinity(race.aptPlus, race.aptMinus, a.id) * (asked.has(a.id) ? WISH_WEIGHT : 1))));
     if (i < 0) break;
     raiseAptitude(ctx, life, pool[i].id, 1);
   }
@@ -233,11 +285,11 @@ function giftWeight(ctx: Ctx, life: LifeState, race: Race, second: Race | undefi
   return w;
 }
 
-function drawGift(ctx: Ctx, rng: Rng, life: LifeState, race: Race, second: Race | undefined, curse: boolean): void {
+function drawGift(ctx: Ctx, rng: Rng, life: LifeState, race: Race, second: Race | undefined, curse: boolean, banned: readonly string[] = []): void {
   const ix = idx(ctx);
   const have = curse ? life.curses : life.blessings;
   const pool = (curse ? ix.curses : ix.blessings).filter((g) => !have.includes(g.id));
-  const i = rng.weighted(pool.map((g) => giftWeight(ctx, life, race, second, g)));
+  const i = rng.weighted(pool.map((g) => (banned.includes(g.id) ? 0 : giftWeight(ctx, life, race, second, g))));
   if (i >= 0) grantGift(ctx, life, curse ? 'curse' : 'blessing', pool[i].id);
 }
 
@@ -310,22 +362,35 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
   const brng = ctx.rng('life.birth');
   const crng = ctx.rng('life.character');
 
+  // the wish: what it asks stands in the place of the draw of that step; the draws are still made, so the steps after it do not move (19-wish.md rule 6)
+  const w: WishAsk = opts.wish?.ask ?? {};
+  const ban = w.ban ?? {};
+  const refused: { key: string; value: string; reason: string }[] = [];
+  const refuse = (key: string, value: string, reason: string) => refused.push({ key, value, reason });
+  const wantRace = opts.race ?? w.race;
+  const wantCountry = opts.country ?? w.country;
+  const wantSecond = opts.second !== undefined ? opts.second : w.second;
+  const forced = w.specialBirth;
+
   // step 1: race (drawn even when named, so naming it does not move the later draws)
-  const drawnRace = weightedId(brng, origin.raceShare).id;
-  const raceId = opts.race ?? drawnRace;
+  const needNeuter = !!w.neuter && !wantRace;
+  const raceWeights = origin.raceShare.map((r) => (ban.race?.includes(r.id) || (needNeuter && !((origin.gender[r.id]?.n ?? 0) > 0)) ? 0 : r.w));
+  const drawnRace = (origin.raceShare[brng.weighted(raceWeights)] ?? origin.raceShare[0]).id;
+  const raceId = wantRace ?? drawnRace;
   const race = required(ix.races.get(raceId), `races (race ${raceId})`);
   const bp = origin.birthplaces.find((b) => b.race === raceId);
-  const free = opts.race === undefined && opts.country === undefined;
-  const allowSpecial = free || opts.special === true;
+  const free = wantRace === undefined && wantCountry === undefined;
+  const allowSpecial = free || opts.special === true || w.special === true;
 
   // step 1ข: special births of humans
-  const summoned = allowSpecial && raceId === 'human' && brng.chance(origin.specialBirths.find((s) => s.id === 'summoned')?.chance ?? 0);
+  const summonedRoll = allowSpecial && raceId === 'human' && brng.chance(origin.specialBirths.find((s) => s.id === 'summoned')?.chance ?? 0);
+  const summoned = forced === 'summoned' ? raceId === 'human' : forced === 'reincarnated' ? false : summonedRoll;
   // step 2: half-blood
   const halfRoll = brng.chance((bp?.halfPct ?? 0) / 100);
   let secondId: string | undefined;
   if (!summoned && !origin.noHalf.includes(raceId)) {
-    if (opts.second === null) secondId = undefined;
-    else if (opts.second) secondId = opts.second;
+    if (wantSecond === null) secondId = undefined;
+    else if (wantSecond) secondId = wantSecond;
     else if (halfRoll) {
       const pair = origin.halfPairs.find((p) => p.main === raceId);
       if (pair) secondId = weightedId(brng, pair.second).id;
@@ -337,39 +402,75 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
   // step 3: gender
   const g = origin.gender[raceId] ?? { m: 50, f: 50, n: 0 };
   const gi = brng.weighted([g.m, g.f, g.n]);
-  const neuter = gi === 2;
-  const gender: 'm' | 'f' = opts.gender ?? (gi === 0 ? 'm' : gi === 1 ? 'f' : brng.chance(0.5) ? 'm' : 'f');
+  let neuter = gi === 2;
+  const drawnGender: 'm' | 'f' = gi === 0 ? 'm' : gi === 1 ? 'f' : brng.chance(0.5) ? 'm' : 'f';
+  let gender: 'm' | 'f' = opts.gender ?? drawnGender;
+  // a wish: a gender the race has, or none where the race can be without (01-origin.md §7; 20-wish-synonyms.md §9 "เพศไม่มีในเผ่า")
+  if (w.neuter) {
+    if (g.n > 0) neuter = true;
+    else refuse('gender', 'ไร้เพศ', WISH_WORDS.neuterNotInRace);
+  }
+  if (w.gender && opts.gender === undefined) {
+    if ((w.gender === 'm' ? g.m : g.f) > 0) gender = w.gender;
+    else refuse('gender', w.gender === 'm' ? 'ชาย' : 'หญิง', WISH_WORDS.genderNotInRace);
+  }
 
   // step 4: country and the cause of the parents' meeting
-  let place: Place;
+  let place: Place | undefined;
+  // the land of a forced special birth (origin.specialBirths): the summoned appear at AL-02, the reincarnated are born at MH-07
+  const forcedLand = summoned ? 'AL-02' : forced === 'reincarnated' && raceId === 'human' ? 'MH-07' : undefined;
+  let landCountry = forcedLand ?? wantCountry;
+  if (forcedLand && wantCountry && wantCountry !== forcedLand) refuse('country', wantCountry, summoned ? WISH_WORDS.summonedPlace : WISH_WORDS.reincarnatedPlace);
+  let kind = w.placeKind;
+  if (!forcedLand && landCountry && lost(ctx, landCountry) && !opts.country) {
+    // a land the world lost cannot be born in: the diaspora of that land stands in (19-wish.md §6)
+    refuse('country', landCountry, WISH_WORDS.lostCountry);
+    landCountry = undefined;
+    kind = 'diaspora';
+  }
+  const wishedPlace = !!(w.continent || w.faith || kind || ban.continent?.length);
+  const allow = (id: string): boolean => (!w.continent || id.startsWith(w.continent)) && !(ban.continent ?? []).some((c) => id.startsWith(c)) && (!w.faith || !!ix.countries.get(id)?.religions.some((r) => r.id === w.faith));
   if (summoned) place = { country: 'AL-02', born: 'diaspora' };
-  else if (opts.country) {
-    const inMain = bp?.main.includes(opts.country);
-    place = { country: opts.country, born: inMain ? 'main' : bp?.diaspora.includes(opts.country) ? 'diaspora' : 'outside' };
+  else if (landCountry) {
+    const inMain = bp?.main.includes(landCountry);
+    place = { country: landCountry, born: inMain ? 'main' : bp?.diaspora.includes(landCountry) ? 'diaspora' : 'outside' };
     if (second) {
       const row = origin.meetingPlaces.find((m) => m.pair.includes(raceId) && m.pair.includes(secondId!));
       if (row) place.meet = weightedId(brng, row.causes).id;
     }
-  } else if (second) {
-    place = placeOfHalf(ctx, ix, brng, origin, raceId, secondId!) ?? (bp ? placeOfRace(ctx, ix, brng, bp, race.name) : { country: weightedCountry(brng, ix, ix.countryList.map((c) => c.id), scaleOf), born: 'outside' });
-  } else if (bp) place = placeOfRace(ctx, ix, brng, bp, race.name);
-  else place = { country: weightedCountry(brng, ix, ix.countryList.map((c) => c.id), scaleOf), born: 'outside' };
+  } else if (wishedPlace) {
+    const found = second ? placeOfHalf(ctx, ix, brng, origin, raceId, secondId!, allow) : placeWished(ctx, ix, brng, bp, race.name, allow, kind);
+    if (found) place = found;
+    else refuse(w.continent ? 'continent' : w.faith ? 'religion' : 'placeKind', w.continent ?? w.faith ?? kind ?? '', WISH_WORDS.placeNotFound);
+  }
+  if (!place) {
+    if (second) place = placeOfHalf(ctx, ix, brng, origin, raceId, secondId!) ?? (bp ? placeOfRace(ctx, ix, brng, bp, race.name) : { country: weightedCountry(brng, ix, ix.countryList.map((c) => c.id), scaleOf), born: 'outside' });
+    else if (bp) place = placeOfRace(ctx, ix, brng, bp, race.name);
+    else place = { country: weightedCountry(brng, ix, ix.countryList.map((c) => c.id), scaleOf), born: 'outside' };
+  }
   const country = ix.countries.get(place.country);
 
   // reincarnated: a human born in MH-07 is one half the time
-  const reincarnated = !summoned && allowSpecial && raceId === 'human' && place.country === 'MH-07' && brng.chance(origin.specialBirths.find((s) => s.id === 'reincarnated')?.chance ?? 0);
+  const reincarnatedRoll = !summoned && allowSpecial && raceId === 'human' && place.country === 'MH-07' && brng.chance(origin.specialBirths.find((s) => s.id === 'reincarnated')?.chance ?? 0);
+  const reincarnated = forced === 'reincarnated' ? !summoned && raceId === 'human' : reincarnatedRoll;
 
   // blood: the sub-lineage
   const blood = pickBlood(ctx, brng, race, place.country, summoned, reincarnated, second ? `${raceId}+${secondId}` : undefined);
 
   // faith of the land
-  const faith = pickFaith(brng, country);
+  let faith = pickFaith(brng, country, ban.faith);
+  if (w.faith) {
+    if (country?.religions.some((r) => r.id === w.faith)) faith = w.faith;
+    else refuse('religion', w.faith, WISH_WORDS.faithNotHere);
+  }
 
   // step 6: sign and time
-  const signs = origin.birthSignWeights.sign;
-  const sign = opts.sign ?? weightedId(brng, signs).id;
+  const signsAll = origin.birthSignWeights.sign;
+  const signs = signsAll.filter((x) => !ban.sign?.includes(x.id)).length ? signsAll.filter((x) => !ban.sign?.includes(x.id)) : signsAll;
+  const sign = opts.sign ?? w.sign ?? weightedId(brng, signs).id;
   const timeIds = origin.birthSignWeights.time;
-  const time = opts.time ?? timeIds[brng.weighted(timeIds.map((t) => BIRTH_TIME_WEIGHT[t] ?? 1))] ?? 'day';
+  const timeOk = timeIds.map((t) => (ban.time?.includes(t) ? 0 : BIRTH_TIME_WEIGHT[t] ?? 1));
+  const time = opts.time ?? w.time ?? timeIds[brng.weighted(timeOk.some((x) => x > 0) ? timeOk : timeIds.map((t) => BIRTH_TIME_WEIGHT[t] ?? 1))] ?? 'day';
 
   // lifespan: drawn once, hidden, whole world years (world-time.md §3); a half-blood takes the middle of the two ± 15%
   const lifespan = pickLifespan(brng, race, second, blood, place.country);
@@ -440,16 +541,20 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
   for (const a of AXES) e.axes[a as Axis] = Math.max(-100, Math.min(100, (race.axisShift[a as Axis] ?? 0) + crng.int(-AXIS_SPREAD, AXIS_SPREAD)));
 
   // step 4ก: class and gold
-  let cls = summoned ? SUMMONED_CLASS : classOf(ix, brng, country, life, place.meet);
+  const clsBan = (ban.class ?? []).map(Number);
+  let cls = summoned ? SUMMONED_CLASS : classOf(ix, brng, country, life, place.meet, { cls: w.cls, ban: clsBan, refuse: (why) => refuse('class', `ชนชั้น ${w.cls}`, why) });
+  if (summoned && w.cls && w.cls !== SUMMONED_CLASS) refuse('class', `ชนชั้น ${w.cls}`, WISH_WORDS.summonedFamily);
+  if (summoned && w.family) refuse('family', w.family, WISH_WORDS.familyNone);
   const despised = (origin.halfPairs.find((p) => p.main === raceId)?.despisedCountries ?? []).includes(place.country);
-  if (second && despised && brng.chance(0.4)) cls = Math.max(1, cls - 1); // economy/03-classes.md §2
+  const classKept = !summoned && !!w.cls && cls === w.cls && !refused.some((r) => r.key === 'class');
+  if (second && despised && brng.chance(0.4) && !classKept) cls = Math.max(1, cls - 1); // economy/03-classes.md §2
   life.cls = classId(cls);
   life.gold = summoned ? 0 : startGold(ctx, brng, cls);
   if (cls === 5) life.flags.push('noble');
 
   // step 8: traits, aptitudes, then the gifts
-  drawTraits(ctx, crng, life, race, second, place.born === 'outside' && !summoned);
-  drawAptitudes(ctx, crng, life, race);
+  drawTraits(ctx, crng, life, race, second, place.born === 'outside' && !summoned, w);
+  drawAptitudes(ctx, crng, life, race, w);
   life.skills = [...new Set(life.skills)];
   life.godFaith = Math.round(e.axes.piety / FAITH_FROM_PIETY);
 
@@ -466,8 +571,17 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
     life.flags.push('born_outside');
     if (crng.chance(0.3)) grantGift(ctx, life, 'blessing', 'nb_homeland_call');
   }
-  if (crng.chance(BIRTH_GIFT.blessing)) drawGift(ctx, crng, life, race, second, false);
-  if (crng.chance(BIRTH_GIFT.curse)) drawGift(ctx, crng, life, race, second, true);
+  // the gifts asked for (19-wish.md §2: one blessing of tier C or U, and a curse for a harder life), before the draws; the draws skip what the life has
+  for (const [curse, id] of [[false, w.blessing], [true, w.curse]] as const) {
+    if (!id) continue;
+    const gift = ix.gifts.get(id);
+    const clash = curse ? race.curseClash : race.blessClash;
+    if (!gift || gift.curse !== curse) refuse(curse ? 'curse' : 'blessing', id, WISH_WORDS.unknownValue);
+    else if (clash.includes(id)) refuse(curse ? 'curse' : 'blessing', gift.name, curse ? WISH_WORDS.curseClash : WISH_WORDS.blessingClash);
+    else grantGift(ctx, life, curse ? 'curse' : 'blessing', id);
+  }
+  if (crng.chance(BIRTH_GIFT.blessing)) drawGift(ctx, crng, life, race, second, false, ban.blessing);
+  if (crng.chance(BIRTH_GIFT.curse)) drawGift(ctx, crng, life, race, second, true, ban.curse);
   if (crng.chance(BIRTH_GIFT.uniqueSkill) && ix.uniqueSkills.length) grantSkill(ctx, life, ix.uniqueSkills[crng.int(0, ix.uniqueSkills.length - 1)].id);
 
   if (place.meet && second) applyMeetCause(ctx, life, crng, place.meet, [raceId, secondId!]);
@@ -477,6 +591,9 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
   if (secondId) life.flags.push('half');
   recomputeDeathAge(ctx, life);
   if (life.dead) delete life.dead;
+  // the class asked for stands over what the gifts of the birth did to it (a curse of poverty): the player asked for this class and reads it on the sheet
+  if (classKept && life.cls !== classId(w.cls!)) life.cls = classId(w.cls!);
+  if (opts.wish) startWishLife(ctx, life, opts.wish, refused);
 
   write(state, {
     sys: 'character',
@@ -524,8 +641,9 @@ function pickBlood(ctx: Ctx, rng: Rng, race: Race, country: string, summoned: bo
   return pool[rng.int(0, pool.length - 1)].id;
 }
 
-function pickFaith(rng: Rng, country: CountryLite | undefined): string {
-  const list = (country?.religions ?? []).filter((r) => r.id);
+function pickFaith(rng: Rng, country: CountryLite | undefined, banned: readonly string[] = []): string {
+  const all = (country?.religions ?? []).filter((r) => r.id);
+  const list = all.filter((r) => !banned.includes(r.id ?? '')).length ? all.filter((r) => !banned.includes(r.id ?? '')) : all;
   if (!list.length) return '';
   const i = rng.weighted(list.map((r) => (r.primary ? PRIMARY_FAITH_WEIGHT : 1)));
   return list[i < 0 ? 0 : i].id ?? '';

@@ -115,3 +115,42 @@ export const JOBS = {
  * B1 keeps a say over the work he does for the creditor (assumption: the doc forbids him only to leave).
  */
 export const BOUND_BANS: Record<number, readonly ('move' | 'job' | 'class')[]> = { 1: ['move', 'class'], 2: ['move', 'job', 'class'], 3: ['move', 'job', 'class'] };
+
+// ---------- the wish (19-wish.md, 20-wish-synonyms.md) ----------
+
+/** A trait or an aptitude the player asked for as a tendency weighs this much in the draw of it at birth (19-wish.md §2 "ส่วนแนวโน้ม": ×3). */
+export const WISH_WEIGHT = 3;
+
+/** The chance of the child's meeting with the companion species asked for: the 2% of 13-companions-overview.md ("เหตุการณ์เด็ก") ×3 (19-wish.md §2), once between these ages. */
+export const WISH_CHILD_ANIMAL = { mul: 3, fromAge: 5, toAge: 14 };
+
+/** The overlay story lines a wish of the story part opens from outside (story `openLine`); assumption: the docs name the question of the life, not the line. */
+export const WISH_LINES: Record<string, string> = { travel: 'wd', revenge: 'kn' };
+
+/** Years of the adult life in which the travel of a life that asked to see the world weighs more (19-wish.md §2: "การเดินทาง x1.5 สิบปีแรกของวัยผู้ใหญ่"). Kept on the sheet for the travel system. */
+export const WISH_TRAVEL = { mul: 1.5, years: 10 };
+
+/** Reasons the wish gives for an ask it cannot keep (the sheet of birth prints them on the row of what cannot be done). */
+export const WISH_WORDS = {
+  oneCurse: 'ขอคำสาปได้หนึ่งอย่าง เก็บข้อที่พิมพ์ก่อน',
+  jobNotCommon: 'อาชีพลับและอาชีพพิเศษขอไม่ได้ ได้จากเส้นเรื่องเท่านั้น',
+  specialNeedsRace: 'กำเนิดพิเศษเป็นของมนุษย์ (ตุ๊กตาเป็นของลูกผสมจักรกล) จึงตัดเผ่าที่ขอ',
+  noHalf: 'เผ่านี้เกิดเป็นลูกครึ่งไม่ได้',
+  summonedNoHalf: 'ผู้ถูกอัญเชิญไม่มีครอบครัวในโลกนี้และไม่เป็นลูกครึ่ง',
+  demonNeedsRace: 'เผ่านี้เป็นลูกครึ่งปีศาจไม่ได้ ใช้เผ่าที่ขอต่อไป',
+  absorbSlime: 'ความถนัดกลืนกินเป็นของสไลม์เท่านั้น',
+  summonedPlace: 'ผู้ถูกอัญเชิญปรากฏที่อัลเดรีย (AL-02) เท่านั้น',
+  reincarnatedPlace: 'ผู้กลับชาติเกิดที่มอร์เฮเวน (MH-07) เท่านั้น',
+  summonedFamily: 'ผู้ถูกอัญเชิญไม่มีครอบครัวในโลกนี้ เริ่มที่ชนชั้น 2',
+  classNotHere: 'ถิ่นหรือเผ่านี้ไม่ให้เกิดชนชั้นที่ขอ ใช้การสุ่ม',
+  genderNotInRace: 'เผ่านี้ไม่มีเพศที่ขอ ใช้เพศตามเผ่า',
+  neuterNotInRace: 'เผ่านี้ไม่มีเพศไร้เพศ ใช้เพศตามเผ่า',
+  lostCountry: 'ประเทศนี้เป็นซากแล้ว ใช้ถิ่นพลัดถิ่นของเผ่าแทน',
+  placeNotFound: 'หาถิ่นที่ตรงคำขอไม่ได้ ใช้การสุ่ม',
+  faithNotHere: 'ถิ่นที่ขอไม่มีศาสนานี้ ใช้ศาสนาของถิ่น',
+  blessingClash: 'พรนี้ขัดกับเผ่า (ตารางความขัดของเผ่า) ไม่ให้',
+  curseClash: 'คำสาปนี้ขัดกับเผ่า ไม่ให้',
+  jobCannot: 'อาชีพนี้เผ่าหรือชนชั้นนี้ทำไม่ได้ น้ำหนักเป็น 0',
+  familyNone: 'ผู้ถูกอัญเชิญไม่มีครอบครัวในโลกนี้',
+  unknownValue: 'ไม่มีค่านี้ในข้อมูล',
+} as const;
