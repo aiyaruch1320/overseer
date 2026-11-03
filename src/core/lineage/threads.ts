@@ -8,7 +8,6 @@ import { extOf as bondsExt, isLive, tiesOf } from '../bonds';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { LifeState } from '../types';
-import { indexOf } from '../story/data';
 import { pickHeir } from './heir';
 import { lx, type Thread } from './state';
 
@@ -52,9 +51,11 @@ function feudText(ctx: Ctx, life: LifeState): string {
   const ids = new Set(feud(life));
   let birthN = 0;
   for (const e of ctx.state.log) if (e.sys === 'character' && e.kind === 'birth') birthN = e.n;
-  const from = ctx.state.log.find((e) => e.n >= birthN && e.sys === 'character' && e.kind === 'grant' && e.data.kind === 'curse' && ids.has(String(e.id)))?.data.from;
-  const where = typeof from === 'string' ? (indexOf(ctx).nodes.get(from)?.title ?? convergenceTitle(ctx, from)) : undefined;
-  return where ? `แค้นที่ยังไม่จบและค่าหัวที่ตามมาจาก${where}` : 'แค้นที่ยังไม่จบและค่าหัวที่ยังตามอยู่';
+  const grant = ctx.state.log.find((e) => e.n >= birthN && e.sys === 'character' && e.kind === 'grant' && e.data.kind === 'curse' && ids.has(String(e.id)));
+  // a convergence point has a name of a place or an event; the title of an ordinary node is a choice ("pay or leave the debt"), which names nobody, so it is not used
+  const where = typeof grant?.data.from === 'string' && grant.data.from.startsWith('cv.') ? convergenceTitle(ctx, grant.data.from) : undefined;
+  if (where) return `แค้นที่ยังไม่จบและค่าหัวที่ตามมาจาก${where}`;
+  return grant?.age !== undefined ? `แค้นที่ยังไม่จบและค่าหัวที่ติดตัวมาตั้งแต่อายุ ${grant.age}` : 'แค้นที่ยังไม่จบและค่าหัวที่ยังตามอยู่';
 }
 
 const convergenceTitle = (ctx: Ctx, id: string): string | undefined => {
