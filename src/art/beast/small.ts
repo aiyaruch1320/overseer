@@ -175,16 +175,19 @@ function spider(c: Ctx<EnemyLook>): Info {
   const drop = mo.pose === 'attack' ? 6 * mo.strike : 0;
   const pen = c.pen(s).at(mo.push * 0.6, mo.bob + sway - 14 + drop);
   const body = p.mat(L.main, { deep: true }), mark = p.mat(L.second, { flat: true }), legM = p.mat(dark(L.main, 0.15)), eye = p.mat(L.eye, { flat: true }), web = p.mat(mix(L.second, L.main, 0.55), { flat: true });
-  // threads up to the fog ceiling and a few down to the ground
+  // one thread up to the fog ceiling (a single line reads as a spider on a thread, three read as ears)
   const top = -((c.foot - 8) / s) + 14;
-  pen.line([0, top], [0, -14], web, 0.5); pen.line([-6, top], [-1.5, -13], web, 0.4); pen.line([6, top], [2, -13], web, 0.4);
+  pen.line([0.5, top], [0.5, -12], web, 0.45);
+  for (let i = 0; i < 3; i++) pen.dot(0.5, top * (0.3 + i * 0.25), web, 0.7);
+  // eight long thin legs: four a side, fanned wide apart so each can be counted (far legs thin and dark, near legs lit)
   const bend = mo.pose === 'walk' ? Math.sin(mo.ph) * 2 : mo.pose === 'attack' ? 3 * mo.strike : 0;
-  for (let i = 0; i < 4; i++) for (const far of [true, false]) {
-    const sx = (far ? -1 : 1) * 0.6, a = i * 0.55 - 0.7 + (far ? 0.25 : 0);
-    const kx = sx + (far ? -1 : 1) * (5 + i * 0.4), ky = -12 + a * 2 - 2 + (i % 2) * 2 + bend * (far ? 0.4 : 0.8);
-    const fx = kx + (far ? -1 : 1) * 2, fy = 10.4 + i * 0.9 + (far ? 0.8 : 0);
+  const foot = [-14, -7, 6, 13.5];
+  for (const far of [true, false]) for (let i = 0; i < 4; i++) {
+    const wob = mo.pose === 'walk' ? Math.sin(mo.ph + i * 1.6 + (far ? Math.PI : 0)) * 1.6 : 0;
+    const fx = foot[i] + (far ? (i < 2 ? -2 : 2) : 0) + wob + (i >= 2 ? bend * 0.3 : 0), fy = 10.4 + (far ? 0.6 : 0) - Math.max(0, wob) * 0.5;
+    const sx = -2 + i * 1.7 + (far ? 0.6 : 0), kx = sx + (fx - sx) * 0.62, ky = -19 - (i === 1 || i === 2 ? 2 : 0) + bend * (far ? 0.3 : 0.6) - (far ? 1 : 0);
     const col = far ? legM : body;
-    pen.line([sx, -9], [kx, ky], col, 1.1); pen.line([kx, ky], [fx + (far ? 0 : 2), fy + bend], col, 1.0);
+    pen.line([sx, -9], [kx, ky], col, far ? 0.9 : 1.1); pen.line([kx, ky], [fx, fy], col, far ? 0.8 : 1.0);
   }
   pen.ell(0.5, -8, 5, 4.4, body); pen.ell(5.4, -9.4, 3.2, 2.9, body);
   pen.poly([[-1.5, -11], [0.5, -7.2], [2.5, -11]], mark); pen.rect(-1.5, -9, 4, 0.8, mark);
