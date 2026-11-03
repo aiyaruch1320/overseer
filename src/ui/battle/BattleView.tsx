@@ -10,7 +10,7 @@ import { Silhouette } from '../../scene/Stage';
 import type { ActorView } from '../../scene/timeline';
 import { color, font, size } from '../tokens';
 import { box, button, chip, css, heading, tint, toneColor } from './style';
-import { BEAT_MS, FIGURE, MEET_MS, SPEEDS, STAGE } from './tuning';
+import { BEAT_MS, FIGURE, MEET_MS, RESULT_MS, SPEEDS, STAGE } from './tuning';
 
 type Pose = ActorView['pose'];
 
@@ -100,7 +100,7 @@ function Stage({ m, step }: { m: BattleModel; step: number }) {
         </div>
       )}
       {step >= m.beats.length + 1 && (
-        <div class="bt-in" style={{ position: 'absolute', left: 0, right: 0, bottom: 6, textAlign: 'center', fontFamily: font.title, fontSize: size.title + 4, color: tone, textShadow: '0 2px 10px #000' }} data-testid="stage-result">
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 6, textAlign: 'center', fontFamily: font.title, fontSize: size.title + 4, color: tone, textShadow: '0 2px 10px #000' }} data-testid="stage-result">
           {m.resultLabel}
         </div>
       )}
@@ -230,7 +230,7 @@ function BeatCard({ b, state, onPick }: { b: BeatView; state: 'future' | 'now' |
       </div>
       <div style={{ fontSize: size.text, margin: '2px 0' }}>{on ? b.name : '···'}</div>
       {on && (
-        <div style={{ fontFamily: font.mono, fontSize: size.small, color: color.textDim, minHeight: 18 }}>{b.roll ? W.roll(b.roll.d20, b.roll.bonus, b.roll.dc) : W.unknownRoll}</div>
+        <div style={{ fontFamily: font.mono, fontSize: size.small, color: color.textDim, minHeight: 18 }}>{b.roll ? W.roll(b.roll.d20, b.roll.bonus, b.roll.dc) : b.guessed ? W.guessed : W.unknownRoll}</div>
       )}
       {on && (
         <div style={{ fontSize: size.small, color: c, marginTop: 2 }}>
@@ -248,7 +248,7 @@ function Aftermath({ m }: { m: BattleModel }) {
   const tone = toneColor[m.tone];
   const c = m.clash;
   return (
-    <div class="bt-in" style={{ ...box, borderColor: tint(tone, 55) }} data-testid="aftermath">
+    <div style={{ ...box, borderColor: tint(tone, 55) }} data-testid="aftermath">
       <div style={{ display: 'flex', alignItems: 'baseline', gap: size.pad }}>
         <span style={{ fontFamily: font.title, fontSize: size.title + 2, color: tone }} data-testid="result-label">
           {m.resultLabel}
@@ -319,7 +319,7 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
       setPlaying(false);
       return;
     }
-    const t = setTimeout(() => setStep((s) => Math.min(last, s + 1)), (step === 0 ? MEET_MS : BEAT_MS) / speed);
+    const t = setTimeout(() => setStep((s) => Math.min(last, s + 1)), (step === 0 ? MEET_MS : step === last - 1 ? RESULT_MS : BEAT_MS) / speed);
     return () => clearTimeout(t);
   }, [playing, step, speed, last]);
 
@@ -357,6 +357,8 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
   const meetText = useMemo(() => W.first[m.first], [m.first]);
   const c = m.clash;
   const done = step >= last;
+  // the panel of the result comes with the last beat: the player need not wait for one more step to know how the fight went
+  const shown = step >= m.beats.length;
   return (
     <div
       class="bt-root"
@@ -438,7 +440,7 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
             <HpBar value={hp} max={m.hero.max} shown={m.exact || done || step === 0} />
           </div>
           <GodPanel m={m} />
-          {done && <Aftermath m={m} />}
+          {shown && <Aftermath m={m} />}
         </div>
       </div>
     </div>

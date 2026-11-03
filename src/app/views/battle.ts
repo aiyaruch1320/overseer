@@ -65,6 +65,8 @@ export interface BeatView {
   left: number | null;
   /** The stance is the one a god dream named. */
   dream: boolean;
+  /** The result of the beat is worked out from the end of the fight and the wounds (the entry kept no rolls), not read from a roll. */
+  guessed: boolean;
 }
 
 export interface ReactionView {
@@ -288,6 +290,29 @@ function clashView(data: GameData, state: GameState, e: LogEntry, who: string): 
 
 // ---------- the whole model ----------
 
+/**
+ * A fight whose rolls were not kept still has an end and the wounds of the foe: a won fight took one success for each wound, a lost one ended on a failure and fell short of the
+ * wounds. Which beats failed is not known, so they are placed in an order fixed by the number of the fight (the same fight always plays the same) and the beats say that they are
+ * worked out (M5 review: beats 1 and 2 of such a fight showed no result at all).
+ */
+function guessResults(beats: BeatView[], end: string, wounds: number, seed: number): void {
+  const total = beats.length;
+  if (!total) return;
+  const won = ['win', 'flawless', 'talk', 'tame', 'flee'].includes(end);
+  const lost = ['lose', 'dead'].includes(end);
+  if (!won && !lost) return;
+  const early = total - 1;
+  // successes among the beats before the last one: all the wounds but the one the last success deals (won), or at most the wounds less one (lost)
+  const fails = end === 'flawless' ? 0 : won ? Math.max(0, total - Math.max(1, wounds)) : Math.max(0, early - Math.max(0, wounds - 1));
+  const order = Array.from({ length: early }, (_, i) => i).sort((a, b) => ((a + 1) * 7919 + seed * 104729) % 97 - (((b + 1) * 7919 + seed * 104729) % 97));
+  const failed = new Set(order.slice(0, Math.min(early, fails)));
+  for (let i = 0; i < early; i++) {
+    beats[i].ok = !failed.has(i);
+    beats[i].guessed = true;
+  }
+  if (beats[total - 1].ok !== null) beats[total - 1].guessed = true;
+}
+
 /** The model of the battle entry `e`. `state` gives the name of the hero, the line of the log and the clash entry that follows. */
 export function battleModel(data: GameData, state: GameState, e: LogEntry): BattleModel {
   const d = e.data;
@@ -317,8 +342,10 @@ export function battleModel(data: GameData, state: GameState, e: LogEntry): Batt
       hp: r ? r.hp : null,
       left: r ? r.left : null,
       dream: !!dreamId && stance === dreamId,
+      guessed: false,
     };
   });
+  if (!exact) guessResults(beats, end, foe.wounds, e.n);
   const who = state.life?.name ?? '';
   const fightLine = describe(data, e) ?? '';
   const kind = str(d.kind) || 'other';

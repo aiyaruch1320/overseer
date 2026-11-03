@@ -102,12 +102,16 @@ describe('battle: the entry as the core writes it today (no rolls)', () => {
     return battleModel(data, st, st.log[st.log.length - 1]);
   };
 
-  it('keeps the stances and the end, reads only the last beat from the result, and never invents a count', () => {
+  it('keeps the stances and the end, never invents a roll or a count, and gives every beat a result worked out from the end (M5 fix M4)', () => {
     const m = plain();
     expect(m.exact).toBe(false);
     expect(m.beats.map((b) => b.stance)).toEqual(['melee', 'magic', 'melee']);
     expect(m.beats.map((b) => b.roll)).toEqual([null, null, null]);
-    expect(m.beats.map((b) => b.ok)).toEqual([null, null, true]);
+    // a won fight with W wounds in B beats took W successes: every beat has a result, marked as worked out, and the same fight always gives the same ones
+    expect(m.beats.every((b) => typeof b.ok === 'boolean' && b.guessed)).toBe(true);
+    expect(m.beats[m.beats.length - 1].ok).toBe(true);
+    expect(m.beats.filter((b) => b.ok).length).toBe(Math.min(m.beats.length, Math.max(1, m.foe.wounds)));
+    expect(plain().beats.map((b) => b.ok)).toEqual(m.beats.map((b) => b.ok));
     expect(hpAt(plain(), 1)).toBe(m.hero.hpBefore);
     expect(leftAt(m, 1)).toBe(m.foe.wounds);
     expect(leftAt(m, stepsOf(m) - 1)).toBe(0);
