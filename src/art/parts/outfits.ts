@@ -135,11 +135,16 @@ export const OUTFITS: Record<string, Part> = {
     },
     lower: (r) => legs(r, { pants: r.m.metal, shoe: r.p.mat(TONE.darkSteel), knee: r.p.mat(lighter(TONE.steel, 0.35)) }),
     front: (r) => {
-      const { p, m } = r, sx = r.shoulderNear[0], sy = r.shoulderNear[1], fx = r.shoulderFar[0], hi = p.mat(lighter(TONE.steel, 0.35));
-      const rr = Math.max(1.6, 2.5 * r.k);
-      p.ell(sx + 0.5, sy, rr + 0.5, rr, m.metal);
-      p.ell(fx, sy, rr, rr, m.metal);
-      p.px(sx - 1, sy - 1, hi);
+      const { p, m } = r, sx = r.shoulderNear[0] + 0.5, sy = r.shoulderNear[1], fx = r.shoulderFar[0] - 0.5;
+      const hi = p.mat(lighter(TONE.steel, 0.35)), dk = p.mat(TONE.darkSteel), rr = Math.max(1.7, 2.7 * r.k);
+      // the gorget round the neck, then a pauldron on each shoulder: a dark rim, a lit plate and a rivet
+      p.rect(r.x0 + 1, r.sh + 1, r.tw - 2, 1, dk);
+      for (const x of [sx, fx]) {
+        p.ell(x, sy, rr + 0.8, rr + 0.5, dk);
+        p.ell(x, sy - 0.2, rr - 0.2, rr - 0.4, x === sx ? hi : m.metal);
+      }
+      p.px(sx - 1, sy - 1, p.mat('#e8eaee'));
+      p.px(sx + 1, sy + 1, dk);
     },
     ...arms((r) => ({ cloth: r.m.metal, bare: r.p.mat(TONE.darkSteel), reach: 0.62, cuff: r.p.mat(TONE.darkSteel) })),
   },
@@ -297,8 +302,8 @@ export const OUTFITS: Record<string, Part> = {
   // ── noble: a fitted long coat — high collar, buttons, trim down the front, lace at the cuffs, tall boots ─────────────────────────────
   noble: {
     lower: (r) => {
-      const { p, m } = r, to = r.hip + sz(r, 8);
-      legs(r, { pants: m.pants, calf: m.leather, calfFrom: 0.5, shoe: m.leather });
+      const { p, m } = r, to = r.hip + sz(r, 6);
+      legs(r, { pants: m.pants, calf: m.leather, calfFrom: 0.45, shoe: m.leather });
       skirt(r, { mat: m.main, to, flare: 2, top: r.hip - 1 });
       p.line([r.x0 + r.tw - 1, r.hip + 1], [r.x0 + r.tw + 1, to - 1], m.second);
       band(r, to - 1, { mat: m.second, to, flare: 2, top: r.hip - 1 });

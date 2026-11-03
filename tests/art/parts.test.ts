@@ -72,6 +72,14 @@ describe('the part tables', () => {
     expect(top('helmet')).toBeGreaterThan(top(''));
   });
 
+  it('outfits and tools paint on every lower body (legs, serpent tail, gown, gel) and every ear', () => {
+    for (const lower of ['legs', 'serpent', 'gown', 'blob'] as const)
+      for (const ears of ['round', 'long', 'pointed', 'animal', 'fin', 'none'] as const)
+        for (const id of OUTFIT_IDS)
+          for (const pose of ['idle', 'walk', 'sit', 'pray', 'die'] as const)
+            expect(() => paintPerson(look({ outfit: id, hair: 'long', hat: 'hood', tool: 'sword', body: { ...HUMAN_BODY, lower, ears, scale: 1.4, shoulders: 1.2, head: 1.2 } }), pose, 0)).not.toThrow();
+  });
+
   it('wear shows: a worn outfit differs from a new one', () => {
     for (const id of ['tunic', 'rags', 'apron', 'cloak', 'knight'])
       expect(same(paintPerson(look({ outfit: id, wear: 0.9 }), 'idle', 0).data, paintPerson(look({ outfit: id, wear: 0 }), 'idle', 0).data), id).toBe(false);
