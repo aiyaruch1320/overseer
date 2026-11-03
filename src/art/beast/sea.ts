@@ -8,34 +8,41 @@ import type { Pt } from '../paint';
 export function paintSea(c: Ctx<EnemyLook>): Info {
   if (c.L.form === 'deepbeast') return deepBeast(c);
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 38, (c.w * 0.95) / 100);
+  const s = Math.min(c.px / 30, (c.w * 0.95) / 112);
   const pen = c.pen(s).at(mo.push, mo.bob);
   const body = p.mat(L.main, { deep: true }), bodyD = p.mat(dark(L.second, 0.4)), fin = p.mat(L.second, { deep: true }), lure = p.mat(L.eye, { flat: true }), halo = p.mat(L.eye, { flat: true, alpha: 0.35 });
   const tooth = p.mat('#e8e4d0', { flat: true }), ink = p.mat('#06080e', { flat: true }), eye = p.mat('#c8d0d8', { flat: true }), mud = p.mat('#2a2a30', { alpha: 0.8 });
   const open = mo.pose === 'attack' ? [0.3, 1, 0.6][mo.a] : mo.pose === 'idle' ? 0.12 : mo.pose === 'hurt' ? 0.6 : mo.dead ? 0.7 : 0.2;
   const glow = mo.pose === 'idle' ? mo.breath : mo.f % 2;
   const sway = Math.sin(mo.ph) * 1.4;
-  // tail fin and body
-  pen.poly([[-34, -16], [-48, -26 + sway], [-45, -14], [-49, -4 - sway], [-34, -9]], fin);
-  pen.ell(-8, -17, 30, 15, body);
-  pen.poly([[-22, -29], [-14, -40], [-8, -29]], fin); pen.poly([[-2, -30], [4, -37], [8, -28]], fin);
-  pen.ell(-4, -9, 24, 4, bodyD);
-  for (let i = 0; i < 7; i++) pen.dot(-26 + i * 6, -22 - (i % 2) * 3, bodyD, 1.4);
+  // a flat ray lying on the mud (04-enemies.md: ตัวแบนกว้างเหมือนกระเบนผสมปลาตกเบ็ด): a broad low disc whose rippling edge spreads over the bottom, a whip of a tail,
+  // a very wide mouth at the front, two small milk-white eyes on top, and blue lights over the brow
+  const ripple = (i: number): number => Math.sin(i * 1.3 + (mo.pose === 'walk' ? mo.ph : mo.breath * 0.9)) * 1.3;
+  pen.chain([[-32, -10], [-44, -8 + sway * 0.5], [-54, -10 - sway]], [3, 1.6, 0.8], bodyD);
+  pen.ell(-4, -14, 33, 15, body); pen.ell(-14, -22, 18, 7, p.mat(mix(L.main, L.second, 0.25), { deep: true }));
+  // the wing-edges of the ray: lobes that spread and ripple along the foot of the disc
+  const lobes: Pt[] = [[-38, -8]];
+  for (let i = 0; i <= 12; i++) lobes.push([-38 + i * 6, -2 + ripple(i) * 0.4 - Math.sin((i / 12) * Math.PI) * 0.5]);
+  lobes.push([34, -8]);
+  pen.poly([...lobes, [30, -14], [-34, -14]], fin);
+  pen.ell(-6, -3, 32, 3, bodyD);
+  for (let i = 0; i < 9; i++) pen.dot(-26 + i * 5.4, -22 - (i % 2) * 3 + Math.abs(i - 4) * 0.8, i % 3 === 0 ? lure : bodyD, i % 3 === 0 ? 1.2 : 1.6);
   // the head is mostly mouth: a lower jaw that drops, rows of needles
-  const jaw = open * 11;
-  pen.poly([[8, -17], [34, -9 + jaw * 0.5], [36, -2 + jaw], [14, 0 + jaw * 0.7], [4, -4]], bodyD);
-  pen.ell(18, -22, 17, 12, body);
-  pen.poly([[10, -20], [36, -23], [37, -16], [26, -12 + jaw * 0.2], [10, -10]], body);
-  pen.rect(12, -18, 24, 3 + jaw * 0.8, ink);
+  const jaw = open * 8;
+  pen.poly([[14, -10], [36, -8 + jaw * 0.4], [38, -2 + jaw], [18, 0 + jaw * 0.5], [10, -3]], bodyD);
+  pen.ell(22, -17, 14, 11, body);
+  pen.poly([[14, -18], [38, -18], [39, -10], [28, -7 + jaw * 0.2], [14, -7]], body);
+  pen.rect(16, -13, 22, 2.4 + jaw * 0.8, ink);
   for (let i = 0; i < 8; i++) {
-    pen.poly([[13 + i * 3, -18], [14.4 + i * 3, -18 + 4 + (i % 2) * 2], [15.8 + i * 3, -18]], tooth);
-    pen.poly([[14 + i * 3, -14.5 + jaw * 0.85], [15.4 + i * 3, -14.5 + jaw * 0.85 - 3.4 - (i % 2) * 2], [16.8 + i * 3, -14.5 + jaw * 0.85]], tooth);
+    pen.poly([[17 + i * 2.8, -13], [18.2 + i * 2.8, -13 + 3.4 + (i % 2) * 1.6], [19.4 + i * 2.8, -13]], tooth);
+    pen.poly([[18 + i * 2.8, -10.6 + jaw * 0.85], [19.2 + i * 2.8, -10.6 + jaw * 0.85 - 3 - (i % 2) * 1.6], [20.4 + i * 2.8, -10.6 + jaw * 0.85]], tooth);
   }
-  pen.dot(24, -27, mo.dead ? bodyD : eye, 3); pen.dot(24.5, -27, ink, 1.4);
+  // two small, pale, milky eyes on the brow
+  for (const [ex, ey] of [[17, -24.5], [23.5, -25.5]] as const) { pen.dot(ex, ey, mo.dead ? bodyD : eye, 2.4); pen.dot(ex + 0.4, ey, ink, 0.9); }
   // the lure: a stalk arching over the mouth, and the light that blinks
-  pen.chain([[10, -32], [18, -46], [30, -48], [37, -41 + open * 3]], [1.3, 1.1, 0.9, 0.8], bodyD);
-  if (!mo.dead) { pen.ell(38, -40 + open * 3, 4.6 + glow, 4.6 + glow, halo); pen.ell(38, -40 + open * 3, 2.4, 2.4, lure); pen.dot(37.4, -40.8 + open * 3, p.mat(light(L.eye, 0.6), { flat: true }), 1); }
-  pen.ell(-4, -1, 34, 2.6, mud);
+  pen.chain([[14, -26], [18, -43], [31, -46], [39, -39 + open * 3]], [1.3, 1.1, 0.9, 0.8], bodyD);
+  if (!mo.dead) { pen.ell(40, -38 + open * 3, 4.6 + glow, 4.6 + glow, halo); pen.ell(40, -38 + open * 3, 2.4, 2.4, lure); pen.dot(39.4, -38.8 + open * 3, p.mat(light(L.eye, 0.6), { flat: true }), 1); }
+  pen.ell(-4, -0.5, 42, 2.2, mud);
   void mix;
   return { shadow: { cx: c.cx, cy: c.foot, rx: 34 * s, ry: Math.max(2, 2.4 * s * 0.5) }, tall: false };
 }
