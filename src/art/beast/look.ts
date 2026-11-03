@@ -34,10 +34,16 @@ function resolve(table: Record<string, unknown>, id: string): string {
 
 /** What the docs say of a person enemy that the generic reading of its row does not give (the mummy's wraps, the gas ghoul's iron mask, the vampire's grey-blue skin, the assassin's dark cowl). */
 const FIX: Record<string, Partial<PersonLook>> = {
-  mummy: { feats: ['wraps'], skin: '#b09a78', main: '#c8b890', second: '#6a5a3a' },
+  // a tall corpse wound in layers of pale linen from head to heel (the wraps feat covers head, chest, legs and arms); the loose ends hang, the dust of the tomb falls
+  mummy: { feats: ['wraps', 'dust'], skin: '#a08c68', outfit: '', hair: 'bald', hat: '', main: '#d4c49a', second: '#b8a578', eye: '#5ac880', accent: '#5ad0f0' },
   gas_ghoul: { skin: '#a8b050', second: '#6a6e78', feats: ['mask', 'gaunt', 'sunkeneyes'], hair: 'bald', eye: '#d03020' },
   vampire_spawn: { skin: '#8a98b0', outfit: 'rags', hair: 'wild', hairColor: '#2a1218', feats: ['fangs', 'redeyes'], eye: '#e03040', main: '#7a7a8a' },
   npc_assassin: { hat: 'cowl', second: '#2a2a30', main: '#1c1c22' },
+};
+
+/** The build the generic reading of a row does not give (the mummy is tall: 04-enemies.md "ศพชายสูงใหญ่"). */
+const BODY: Record<string, Partial<PersonLook['body']>> = {
+  mummy: { scale: 1.3, shoulders: 1.1 },
 };
 
 /** The person that draws a humanoid enemy (plan `humanoid`, form `person`, `wolfman`; also the siren and the riders). */
@@ -54,7 +60,7 @@ export function personLookOf(e: EnemyLook): PersonLook {
   const siren = e.form === 'siren', wolf = e.form === 'wolfman', wrapped = e.words.includes('bandage') && e.kinds.includes('undead');
   return {
     kind: 'person', key: `enemy-${e.id}`, race: 'enemy', stage: 'adult', fem: siren,
-    body: { ...HUMAN_BODY, scale, ears: siren ? 'fin' : pt?.ears ?? 'round', lower: siren ? 'serpent' : 'legs', head: e.id === 'goblin' ? 1.25 : 1, shoulders: wolf ? 1.2 : 1 },
+    body: { ...HUMAN_BODY, scale, ears: siren ? 'fin' : pt?.ears ?? 'round', lower: siren ? 'serpent' : 'legs', head: e.id === 'goblin' ? 1.25 : 1, shoulders: wolf ? 1.2 : 1, ...BODY[e.id] },
     skin: siren ? '#9ab8bc' : wolf || wrapped ? e.main : pt?.skin ?? '#d9a47a',
     hairColor: wolf ? e.second : pt?.hairColor ?? '#3a2a20', eye: e.eye, accent: e.eye,
     main: siren ? e.main : wolf ? e.second : e.main, second: e.second,

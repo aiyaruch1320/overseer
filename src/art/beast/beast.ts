@@ -11,7 +11,7 @@ import { paintDragon } from './dragon';
 import { paintFlyer } from './flyer';
 import { ghostFrame, GHOST_IDS } from './ghost';
 import { paintGiant } from './giant';
-import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, motion, ovEll, over, type Ctx, type Info } from './kit';
+import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, mix, motion, ovEll, over, type Ctx, type Info } from './kit';
 import { personLookOf, type BeastLook } from './look';
 import { paintMounted } from './mount';
 import { isNamed, paintNamed } from './named';
@@ -57,7 +57,33 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   if (L.kind !== 'enemy') return out;
   over(out, paintPerson(personLookOf(L), pose, f), Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot);
   if (L.id === 'gas_ghoul') gas(out, f, pose === 'die');
+  if (L.id === 'mummy' && pose !== 'die') mummyMarks(out, L, pose);
   return pose === 'hurt' && f === 0 ? flash(out) : out;
+}
+
+/** The mummy's green eye under the linen and the dull gold shield on the far arm (04-enemies.md: ตาเขียวจางเรืองใต้ผ้า · โล่ทองหมอง). */
+function mummyMarks(out: Frame, L: EnemyLook, pose: Pose): void {
+  let top = -1, x0 = out.w, x1 = -1, bot = -1;
+  const at = (x: number, y: number): number => out.data[(y * out.w + x) * 4 + 3];
+  for (let y = 0; y < out.h; y++) for (let x = 0; x < out.w; x++) if (at(x, y) > 200) { if (top < 0) top = y; bot = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
+  if (top < 0) return;
+  // the dark slit left for the eyes: the first run of near-black pixels under the top of the head
+  for (let y = top; y < top + 14; y++) {
+    let run = 0;
+    for (let x = x0; x <= x1 + 1; x++) {
+      const i = (y * out.w + x) * 4, dk = at(x, y) > 200 && out.data[i] < 48 && out.data[i + 1] < 48 && out.data[i + 2] < 48;
+      run = dk ? run + 1 : 0;
+      if (run === 3) {
+        const eye = L.eye;
+        blend(out, x - 1, y, eye, 1); blend(out, x, y, mix(eye, '#ffffff', 0.5), 1);
+        ovEll(out, x - 1, y, 3, 2, eye, 0.18);
+        y = top + 99; break;
+      }
+    }
+  }
+  // the shield on the far arm (the left of a figure that faces right): a round disc of dull gold with a boss
+  const cy = Math.round(top + (bot - top) * 0.5), cx = x0 + 1;
+  if (pose !== 'attack') { ovEll(out, cx, cy, 5, 5, '#3a2e14', 1); ovEll(out, cx, cy, 4, 4, '#a8903a', 1); ovEll(out, cx - 1, cy - 1, 1.6, 1.6, '#d8c470', 1); ovEll(out, cx + 0.5, cy + 1, 3, 2, '#7a6628', 0.6); }
 }
 
 /** Lemon-yellow gas that leaks from the mask's vents and the hem of the coat (gas_ghoul), over the figure. */
