@@ -33,8 +33,8 @@ describe('every race, stage and pose', () => {
                 const f = paintPerson(raceLook(r, { stage, fem, tool }), p.id, i);
                 const s = span(f);
                 if (s.bottom < 0) bad.push(`${r.id} ${stage} ${p.id}${i}: empty`);
-                // (a spear or a staff held by a body bigger than 1.1x reaches the frame's top or right edge: the frame is 48 wide, 21 columns behind the body and 26 in front)
-                else if (s.left <= 0 || (s.top <= 0 && !(tool && r.scale > 1.1)) || (!tool && s.right >= FRAME.w - 1) || s.bottom > FRAME.foot) bad.push(`${r.id} ${stage}${fem ? '-f' : ''} ${tool || 'bare'} ${p.id}${i}: ${JSON.stringify(s)}`);
+                // (only a giant, bigger than 1.25x, with a spear or a staff reaches the frame's top or right edge: the frame is 56 wide, 24 columns behind the body and 31 in front)
+                else if (s.left <= 0 || ((s.top <= 0 || s.right >= FRAME.w - 1) && !(tool && r.scale > 1.25)) || s.bottom > FRAME.foot) bad.push(`${r.id} ${stage}${fem ? '-f' : ''} ${tool || 'bare'} ${p.id}${i}: ${JSON.stringify(s)}`);
               }
     expect(bad.slice(0, 20)).toEqual([]);
   });
@@ -137,13 +137,13 @@ describe('gaits', () => {
     const w = (id: string) => { const s = span(paintPerson(raceLook({ ...row(id), scale: 1, shoulders: 1, feats: [], ears: 'none' }), 'idle', 0)); return s.right - s.left; };
     const normal = { ...row('human') };
     const heavy = { ...row('human'), gait: 'heavy' as const };
-    const width = (r: typeof normal) => { const f = paintPerson(raceLook(r), 'idle', 0); return cellsWide(f, 41); };
+    const width = (r: typeof normal) => { const f = paintPerson(raceLook(r), 'idle', 0); return cellsWide(f, FRAME.foot - 3); };
     expect(width(heavy)).toBeGreaterThan(width(normal));
     void w;
   });
 
   it('shuffle steps are shorter than normal steps', () => {
-    const reach = (gait: 'normal' | 'shuffle') => { const fs = [0, 2].map((i) => cellsWide(paintPerson(raceLook({ ...row('human'), gait }), 'walk', i), 42)); return Math.max(...fs); };
+    const reach = (gait: 'normal' | 'shuffle') => { const fs = [0, 2].map((i) => cellsWide(paintPerson(raceLook({ ...row("human"), gait }), "walk", i), FRAME.foot - 2)); return Math.max(...fs); };
     expect(reach('shuffle')).toBeLessThan(reach('normal'));
   });
 });

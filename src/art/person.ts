@@ -11,7 +11,7 @@ import { LAYERS, type Layer, type Part, type Rig, type ToolKind } from './rig';
 /** A human adult is this many art pixels tall (21-pixel-art.md §2). */
 export const ADULT_H = 28;
 /** The column the body stands on (room in front for what it holds). */
-const CX = 21;
+const CX = 24;
 const DEG = Math.PI / 180;
 
 /** One key of a pose, in pixels of a 28-pixel adult (scaled by the figure). Hands are relative to their shoulders. */

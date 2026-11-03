@@ -40,7 +40,7 @@ export const TOOLS: Record<string, Tool> = {
   // ── thrust: spears and the like ─────────────────────────────────────────────────────────────────────────────────────────────────
   spear: {
     kind: 'thrust',
-    // the grip is near the middle of the shaft: the butt rests behind, the head reaches 12 forward (the frame is 48 wide)
+    // the grip is near the middle of the shaft: the butt rests behind, the head reaches 12 forward (the frame is 56 wide)
     held: (r) => {
       const { p, m } = r;
       stroke(r, -15, 9, wood(r));

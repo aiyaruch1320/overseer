@@ -16,8 +16,8 @@ export const POSES: readonly { id: Pose; n: number; ms: number; loop: boolean }[
 ];
 export const POSE_OF = Object.fromEntries(POSES.map((p) => [p.id, p])) as Record<Pose, (typeof POSES)[number]>;
 
-/** A person's frame in art pixels: 48 × 48 with the feet on row 44 (21-pixel-art.md §2). */
-export const FRAME = { w: 48, h: 48, foot: 44 } as const;
+/** A person's frame in art pixels: 56 × 56 with the feet on row 52 (21-pixel-art.md §2): room for a raised staff on a tall race and a thrust in front. */
+export const FRAME = { w: 56, h: 56, foot: 52 } as const;
 /** Frames per row of a sheet (the longest pose); one row per pose in the order of POSES. */
 export const SHEET_COLS = 4;
 
