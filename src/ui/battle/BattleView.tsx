@@ -91,8 +91,8 @@ function Stage({ m, step }: { m: BattleModel; step: number }) {
       }}
     >
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: '34%', height: 1, background: tint(color.text, 10) }} />
-      {m.lastStand && <div style={{ position: 'absolute', top: 8, left: 0, right: 0, textAlign: 'center', color: color.dread, fontFamily: font.title, fontSize: size.title }}>{W.lastStand}</div>}
-      {figure(p.heroX, FIGURE.hero, actor('hero', m.hero.name, p.hero, color.light), heroHit ? `−${heroHit}` : null, color.dread)}
+      {m.lastStand && <div style={{ position: 'absolute', top: 8, left: 0, right: 0, textAlign: 'center', color: color.dreadText, fontFamily: font.title, fontSize: size.title }}>{W.lastStand}</div>}
+      {figure(p.heroX, FIGURE.hero, actor('hero', m.hero.name, p.hero, color.light), heroHit ? `−${heroHit}` : null, color.dreadText)}
       {figure(STAGE.foeX, foeH, actor('foe', m.foe.name, p.foe, m.foe.heavy ? color.dread : color.fate), foeHit ? `${W.wounds} −${foeHit}` : null, color.light)}
       {here?.dream && (
         <div class="bt-god" style={{ position: 'absolute', top: 8, left: 8, ...chip(color.dreamMist), background: tint(color.dream, 70) }}>
@@ -141,9 +141,9 @@ function FoePanel({ m, left }: { m: BattleModel; left: number | null }) {
   return (
     <div style={box} data-testid="foe-panel">
       <div style={heading}>{W.foe}</div>
-      <div style={{ fontFamily: font.title, fontSize: size.title, color: f.heavy ? color.dread : color.text, lineHeight: 1.5 }}>{f.name}</div>
+      <div style={{ fontFamily: font.title, fontSize: size.title, color: f.heavy ? color.dreadText : color.text, lineHeight: 1.5 }}>{f.name}</div>
       <div style={{ margin: `${size.gap / 2}px 0 ${size.gap}px` }}>
-        <span style={chip(f.heavy ? color.dread : color.fate)} data-testid="foe-tier">
+        <span style={chip(f.heavy ? color.dreadText : color.fate)} data-testid="foe-tier">
           {f.tier}
         </span>
       </div>
@@ -269,7 +269,7 @@ function Aftermath({ m }: { m: BattleModel }) {
           {m.wounds.length ? (
             <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }} data-testid="wounds">
               {m.wounds.map((w) => (
-                <span key={w} style={chip(color.dread)}>
+                <span key={w} style={chip(color.dreadText)}>
                   {w}
                 </span>
               ))}
@@ -369,7 +369,7 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
       <style>{css}</style>
       <header style={{ display: 'flex', alignItems: 'center', gap: size.pad }}>
         <span style={chip(color.fate)}>{c ? W.clash.title : m.kindLabel}</span>
-        <h1 style={{ margin: 0, fontFamily: font.title, fontSize: size.title + 6, fontWeight: 400, color: m.foe.heavy ? color.dread : color.text }}>{m.foe.name}</h1>
+        <h1 style={{ margin: 0, fontFamily: font.title, fontSize: size.title + 6, fontWeight: 400, color: m.foe.heavy ? color.dreadText : color.text }}>{m.foe.name}</h1>
         {m.node && <span style={{ color: color.textDim, fontSize: size.small }}>“{m.node}”</span>}
         <span style={{ flex: 1 }} />
         {onClose && (
@@ -423,7 +423,7 @@ export function BattleView({ model: m, autoplay = true, startStep = 0, onClose }
               style={{ width: 176, textAlign: 'left', font: 'inherit', color: color.text, background: step === 0 ? tint(color.text, 10) : tint(color.text, 3), border: `1px solid ${step === 0 ? color.textDim : color.line}`, borderRadius: size.radius, padding: `${size.gap - 2}px ${size.pad - 2}px` }}
             >
               <div style={{ fontSize: size.small, color: color.textDim }}>{W.meet}</div>
-              <div style={{ color: m.first === 'hero' ? color.light : m.first === 'foe' ? color.dread : color.text }}>{meetText}</div>
+              <div style={{ color: m.first === 'hero' ? color.light : m.first === 'foe' ? color.dreadText : color.text }}>{meetText}</div>
             </button>
             {m.beats.map((b) => (
               <BeatCard key={b.n} b={b} state={step === b.n ? 'now' : step > b.n ? 'past' : 'future'} onPick={() => go(b.n)} />

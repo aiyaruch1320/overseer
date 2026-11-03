@@ -8,7 +8,7 @@ type CSS = JSX.CSSProperties;
 export const tint = (c: string, pct: number): string => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
 
 /** The colour of the result: the light for a win, the dread for a loss, the fate grey for a standoff or a quiet end. */
-export const toneColor: Record<Tone, string> = { win: color.light, lose: color.dread, draw: color.fate, quiet: color.fate };
+export const toneColor: Record<Tone, string> = { win: color.light, lose: color.dreadText, draw: color.fate, quiet: color.fate };
 
 export const box: CSS = { background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, padding: size.pad };
 

@@ -2,7 +2,7 @@
 // of the category at the left, the size of the effect at the right) and the picture. The picture slot is a gradient and drifting
 // particles drawn in code; a picture file replaces it through `src` in M6 to M7 without changing the card.
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { color, font, size } from '../ui/tokens';
+import { TITLE_LINE, color, font, size } from '../ui/tokens';
 import type { CardModel } from './card';
 import { drawFx, seedOf } from './particles';
 import { WORDS } from './tuning';
@@ -65,7 +65,7 @@ export function EventCard({ card, src, width = 340, onClose }: { card: CardModel
         <span data-corner="mark" style={{ fontSize: size.title, color: card.frame }}>{card.mark}</span>
       </div>
       <Picture card={card} src={src} />
-      <div style={{ fontFamily: font.title, fontSize: size.title, lineHeight: 1.2 }}>{card.title}</div>
+      <div style={{ fontFamily: font.title, fontSize: size.title, lineHeight: TITLE_LINE }}>{card.title}</div>
       {card.form && <div style={{ fontSize: 11, color: card.frame }}>{card.id} · {FORM_NAME[card.form]}</div>}
       {card.body && <div style={{ fontSize: size.text, lineHeight: 1.5 }}>{card.body}</div>}
       {card.sound && <div style={{ fontSize: 11, color: color.textDim }}>♪ {card.sound}</div>}

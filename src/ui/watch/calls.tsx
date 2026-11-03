@@ -1,7 +1,7 @@
 // The calls of the game on the watch screen (07-attention.md §2, 20-god-ui.md §2 "การเรียกผู้เล่น"): the stop panel, the cards, the ring of time.
 import type { CardView, GodOpen, StopView } from '../../app/views/watch';
 import { WATCH_WORDS as W } from '../../app/views/watch-words';
-import { color, font, size } from '../tokens';
+import { TITLE_LINE, color, font, size } from '../tokens';
 import { button, layout, tint, toneColor } from './style';
 
 /** Cards on the screen at most (07-attention.md §2). */
@@ -74,11 +74,12 @@ export function CardStack({ cards, onOpen }: { cards: CardView[]; onOpen: (o: Go
 /** The stop (20-god-ui.md §2 "หยุด"): the scene dims, a black cloth panel holds the reason, what the god can do, and the cards that waited. */
 export function StopPanel({ stop, onOpen, onContinue }: { stop: StopView; onOpen: (o: GodOpen) => void; onContinue: () => void }) {
   return (
-    <div class="wt-veil" style={{ position: 'absolute', inset: 0, background: tint(color.panel, 72), display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5 }} data-testid="stop">
-      <section role="dialog" aria-label={W.stop.title} style={{ width: 'min(860px, 92%)', maxHeight: '92%', overflowY: 'auto', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, padding: size.pad * 1.5, display: 'flex', flexDirection: 'column', gap: size.pad }}>
+    <div class="wt-veil" style={{ position: 'absolute', inset: 0, background: tint(color.panel, 72), display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5, boxSizing: 'border-box', paddingTop: size.bar }} data-testid="stop">
+      <section role="dialog" aria-label={W.stop.title} style={{ width: 'min(860px, 92%)', maxHeight: '100%', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: size.pad * 1.5, display: 'flex', flexDirection: 'column', gap: size.pad }} data-testid="stop-body">
         <header>
           <div style={{ color: color.textDim, fontSize: size.small }}>{W.stop.title}</div>
-          <h2 style={{ margin: '4px 0 0', fontFamily: font.title, fontWeight: 400, fontSize: size.title, color: color.light }} data-testid="stop-reason">
+          <h2 style={{ margin: '4px 0 0', fontFamily: font.title, fontWeight: 400, fontSize: size.title, lineHeight: TITLE_LINE, color: color.light }} data-testid="stop-reason">
             {stop.reason}
           </h2>
         </header>
@@ -106,8 +107,10 @@ export function StopPanel({ stop, onOpen, onContinue }: { stop: StopView; onOpen
             </div>
           </div>
         )}
+        </div>
         {!stop.death && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          // outside the scrolling body: the way on is always in view, at the bottom right (20-god-ui.md §2)
+          <div style={{ flex: 'none', display: 'flex', justifyContent: 'flex-end', padding: `${size.gap}px ${size.pad * 1.5}px`, borderTop: `1px solid ${color.line}` }}>
             <button class="wt-btn" autoFocus style={{ ...button, borderColor: color.light, color: color.light, padding: `${size.gap}px ${size.pad * 1.5}px` }} onClick={onContinue} data-testid="continue">
               {W.stop.cont} <kbd style={{ fontFamily: font.mono, fontSize: 11, color: color.textDim }}>{W.stop.contKey}</kbd>
             </button>

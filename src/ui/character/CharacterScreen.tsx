@@ -182,7 +182,7 @@ function Standing({ m }: { m: CharacterModel }) {
         </Row>
         {s.debt > 0 && (
           <Row label={W.debt}>
-            <span style={{ color: color.dread, fontFamily: font.mono }}>{s.debt}</span>
+            <span style={{ color: color.dreadText, fontFamily: font.mono }}>{s.debt}</span>
           </Row>
         )}
         <Row label={W.fame}>
@@ -198,7 +198,7 @@ function Standing({ m }: { m: CharacterModel }) {
       </div>
       <div style={{ marginTop: size.gap, paddingTop: size.gap, borderTop: `1px solid ${color.line}` }} data-testid="bondage">
         <Row label={W.bondage}>
-          <span style={{ color: b.level > 0 ? color.dread : color.text }}>{b.name}</span>
+          <span style={{ color: b.level > 0 ? color.dreadText : color.text }}>{b.name}</span>
         </Row>
         {b.rows.map(([k, v]) => (
           <Row key={k} label={k}>
@@ -249,7 +249,7 @@ export function CharacterScreen(props: CharacterScreenProps) {
         </h1>
         <Dim>{W.title}</Dim>
         {model.dead && (
-          <span style={{ ...box, padding: '2px 10px', color: color.dread, borderColor: color.dread }} data-testid="dead">
+          <span style={{ ...box, padding: '2px 10px', color: color.dreadText, borderColor: color.dread }} data-testid="dead">
             {W.dead} · {W.age} {model.dead.age}
           </span>
         )}
