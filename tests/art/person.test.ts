@@ -4,8 +4,8 @@ import { describe, expect, it } from 'vitest';
 import { FRAME, POSES, type Pose } from '../../src/art/anim';
 import { RACES, raceLook } from '../../src/art/dev/sets-races';
 import type { PersonLook, Stage } from '../../src/art/look';
-import type { Frame } from '../../src/art/paint';
-import { paintPerson, unknownParts } from '../../src/art/person';
+import { Paint, tones, type Frame } from '../../src/art/paint';
+import { keys, paintPerson, unknownParts } from '../../src/art/person';
 
 const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
 const row = (id: string) => RACES.find((r) => r.id === id)!;
@@ -134,16 +134,14 @@ describe('gaits', () => {
   });
 
   it('heavy stands wider than normal', () => {
-    const w = (id: string) => { const s = span(paintPerson(raceLook({ ...row(id), scale: 1, shoulders: 1, feats: [], ears: 'none' }), 'idle', 0)); return s.right - s.left; };
-    const normal = { ...row('human') };
-    const heavy = { ...row('human'), gait: 'heavy' as const };
-    const width = (r: typeof normal) => { const f = paintPerson(raceLook(r), 'idle', 0); return cellsWide(f, FRAME.foot - 3); };
-    expect(width(heavy)).toBeGreaterThan(width(normal));
-    void w;
+    const human = raceLook(row('human'));
+    const width = (gait: 'normal' | 'heavy') => cellsWide(paintPerson({ ...human, body: { ...human.body, gait } }, 'idle', 0), FRAME.foot - 3);
+    expect(width('heavy')).toBeGreaterThan(width('normal'));
   });
 
   it('shuffle steps are shorter than normal steps', () => {
-    const reach = (gait: 'normal' | 'shuffle') => { const fs = [0, 2].map((i) => cellsWide(paintPerson(raceLook({ ...row("human"), gait }), "walk", i), FRAME.foot - 2)); return Math.max(...fs); };
+    const human = raceLook(row('human'));
+    const reach = (gait: 'normal' | 'shuffle') => { const fs = [0, 2].map((i) => cellsWide(paintPerson({ ...human, body: { ...human.body, gait } }, 'walk', i), FRAME.foot - 2)); return Math.max(...fs); };
     expect(reach('shuffle')).toBeLessThan(reach('normal'));
   });
 });
@@ -154,3 +152,76 @@ function cellsWide(f: Frame, y: number): number {
   for (let x = 0; x < f.w; x++) if (f.data[(y * f.w + x) * 4 + 3] > 100) { l = Math.min(l, x); r = Math.max(r, x); }
   return r < 0 ? 0 : r - l + 1;
 }
+
+describe('carried things and the bow', () => {
+  const DEG = Math.PI / 180;
+  it('a carried thing is held out in front, upright, with no swing in walk, attack or work', () => {
+    for (const pose of ['idle', 'walk', 'attack', 'work'] as const)
+      for (const k of keys(pose, 'carry', 'normal')) {
+        expect(k.ang ?? -90 * DEG, pose).toBeCloseTo(-90 * DEG, 5);
+        expect(k.hand[0], pose).toBeGreaterThanOrEqual(4); // forward of the shoulder
+        expect(k.hand[1], pose).toBeLessThanOrEqual(4);
+        expect(k.hand[1], pose).toBeGreaterThanOrEqual(1);
+      }
+    const walk = keys('walk', 'carry', 'normal').map((k) => k.hand[0]);
+    expect(Math.max(...walk) - Math.min(...walk)).toBeLessThan(0.7);
+    const atk = keys('attack', 'carry', 'normal').map((k) => k.hand[0]);
+    expect(Math.max(...atk) - Math.min(...atk)).toBeLessThanOrEqual(4); // a small push
+    expect(atk[1]).toBeGreaterThan(atk[0]);
+  });
+
+  it('the bow: arm out, drawn on frames 0 and 1, loosed on frame 2', () => {
+    const ks = keys('attack', 'shoot', 'normal');
+    expect(ks).toHaveLength(3);
+    expect(ks.every((k) => k.hand[0] >= 5 && k.hand[1] <= 0)).toBe(true);
+    expect(ks[1].far[0]).toBeGreaterThan(ks[0].far[0]);
+    expect(ks[2].far[0]).toBeLessThan(ks[1].far[0] - 3);
+    // the arrow is nocked on the draw frames and gone after the shot
+    const L = { ...raceLook(row('human')), tool: 'bow' }, bareL = { ...L, tool: '' };
+    const right = (i: number) => span(paintPerson(L, 'attack', i)).right;
+    expect(right(0)).toBeGreaterThan(right(2) + 3);
+    expect(right(1)).toBeGreaterThan(right(2) + 3);
+    void bareL;
+  });
+
+  it('every carry tool and the bow paint on every pose without leaving the frame', () => {
+    for (const tool of ['book', 'ledger', 'scroll', 'mug', 'bowl', 'flask', 'lantern', 'censer', 'bow'])
+      for (const p of POSES)
+        for (let i = 0; i < p.n; i++) {
+          const s = span(paintPerson({ ...raceLook(row('human')), tool }, p.id, i));
+          expect(s.left, `${tool} ${p.id}${i}`).toBeGreaterThan(0);
+          expect(s.right, `${tool} ${p.id}${i}`).toBeLessThan(FRAME.w - 1);
+        }
+  });
+});
+
+describe('the painter: warm shadows and glow pixels', () => {
+  const sat = ([r, g, b]: number[]) => { const mx = Math.max(r, g, b) / 255, mn = Math.min(r, g, b) / 255, l = (mx + mn) / 2; return mx === mn ? 0 : (mx - mn) / (1 - Math.abs(2 * l - 1)); };
+  const hue = ([r, g, b]: number[]) => { const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (!d) return 0; const h = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; return h * 60; };
+
+  it('the shadow of skin and orange is less saturated than the base, and not turned to a raw red-orange', () => {
+    for (const hex of ['#e8b48a', '#d08a62', '#c98f5a', '#f6e0c8', '#ff6a1a']) {
+      const t = tones(hex), base = sat(t[2]), shadow = sat(t[1]);
+      expect(shadow, hex).toBeLessThan(base * 0.8);
+      expect(hue(t[1]) <= hue(t[2]) + 0.01 || hue(t[1]) >= 340, hex).toBe(true);
+    }
+  });
+
+  it('the shadow of a cool hue still leans blue and keeps its colour', () => {
+    const t = tones('#4a8a5a');
+    expect(sat(t[1])).toBeGreaterThan(sat(t[2]) * 0.95);
+    expect(hue(t[1])).toBeGreaterThan(hue(t[2]));
+  });
+
+  it('a glow pixel has no outline and does not need a body under it', () => {
+    const p = new Paint(20, 20);
+    p.glow(10, 8, '#ffcc40');
+    p.glow(5, 5, '#ffffff', 0.5);
+    const f = p.finish({ cx: 10, cy: 18, rx: 3, ry: 1 });
+    const a = (x: number, y: number) => f.data[(y * f.w + x) * 4 + 3];
+    expect(a(10, 8)).toBe(255);
+    expect([f.data[(8 * f.w + 10) * 4], f.data[(8 * f.w + 10) * 4 + 1]]).toEqual([255, 204]);
+    for (const [x, y] of [[9, 8], [11, 8], [10, 7], [10, 9]]) expect(a(x, y), `ring ${x},${y}`).toBe(0);
+    expect(a(5, 5)).toBe(128);
+  });
+});

@@ -15,7 +15,7 @@ const CX = 24;
 const DEG = Math.PI / 180;
 
 /** One key of a pose, in pixels of a 28-pixel adult (scaled by the figure). Hands are relative to their shoulders. */
-interface Key {
+export interface Key {
   /** body drop (down is positive) */
   b?: number;
   /** the whole body shifts forward */
@@ -51,7 +51,7 @@ const STEP: Record<Gait, Step> = {
   float: { fa: [1, 0, -1, 0], ba: [-1, 0, 1, 0], b: [0, -1, 0, -1], ln: [0, 0, 0, 0], lf: [0, 0, 0, 0], flap: [1, 2, 1, 2], sw: 0.5 },
 };
 
-function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
+export function keys(pose: Pose, kind: ToolKind, gait: Gait): Key[] {
   const up = HOLD[kind] * DEG, armed = kind !== 'none', carry = kind === 'carry';
   switch (pose) {
     case 'idle': return [
@@ -165,7 +165,8 @@ function rigOf(p: Paint, L: PersonLook, pose: Pose, f: number): { r: Rig; key: K
   const sc = STAGE_SCALE[st];
   const H = Math.max(10, Math.round(ADULT_H * L.body.scale * sc));
   const k = H / ADULT_H;
-  const hh = Math.max(5, Math.round(H * HEAD_SHARE[st] * Math.min(1.25, Math.max(0.8, L.body.head))));
+  // a big-headed little race (the fae) keeps a head tall enough to show a face
+  const hh = Math.max(L.body.head >= 1.15 && H >= 14 ? 6 : 5, Math.round(H * HEAD_SHARE[st] * Math.min(1.25, Math.max(0.8, L.body.head))));
   let legs = Math.max(2, Math.round(H * LEG_SHARE[st]));
   if (H - hh - legs < 4) legs = Math.max(2, H - hh - 4);
   const sk = (v = 0) => Math.round(v * k);

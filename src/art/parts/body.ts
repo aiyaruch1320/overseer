@@ -226,6 +226,8 @@ export const BODY_PARTS: { torso: Part; arms: Part; legs: Part; head: Part } = {
       const ink = p.mat(mixHex(r.look.skin, '#1a1210', 0.7), { flat: true }), shade = p.mat(mixHex(r.look.skin, '#3a2018', 0.45));
       const white = p.mat(mixHex(r.look.skin, '#ffffff', 0.8), { flat: true });
       if (shut) { p.px(ex, ey, ink); p.px(ex - 1, ey, ink); } else { p.px(ex, ey, m.eye); p.px(ex - 1, ey, r.hh >= 6 ? white : m.eye); }
+      // big eyes (the fae's round, bright ones): a second row, so the face reads at 3x
+      if (!shut && !r.infant && r.look.body.head >= 1.15) { p.px(ex, ey + 1, m.eye); p.px(ex - 1, ey + 1, m.eye); }
       if (r.hh >= 6 && !r.infant) { p.px(ex, ey - 1, shade); p.px(ex - 1, ey - 1, shade); } // the brow
       p.px(Math.round(hx + rx), ey + 1, m.skin); // the nose
       if (r.hh >= 7) p.px(ex, ey + 2, shade); // the mouth
@@ -346,24 +348,27 @@ export const LOWER: Record<Lower, Part> = {
     },
   },
   gown: {
-    // a long skirt that trails: the hem is cut into points like a fin and moves even when nothing moves
+    // a fitted skirt that narrows to the knee, then splits at the hem into a fin: a fan of pointed lobes with ribs, trailing to the back, fluttering even when nothing moves (not a bell)
     lower: (r) => {
-      const { p } = r, sway = r.flap, gy = r.foot, w0 = r.tw, wb = r.tw + 4 + Math.round(r.k * 2);
-      const back = p.mat(mixHex(r.look.main, '#101830', 0.25)), hem = p.mat(r.look.accent), front = p.mat(r.look.second);
-      const top = r.hip - 1, cx = r.x0 + w0 / 2;
-      // the back panel, darker, leaning the other way
-      p.poly([[r.x0 + 1, top], [r.x0 + w0 - 1, top], [cx + wb / 2 - 1 - sway * 0.5, gy], [cx - wb / 2 - 2 + sway, gy]], back);
-      // the front panel with a cut hem
-      const left = cx - wb / 2 - sway * 0.5, right = cx + wb / 2 + 1;
-      p.poly([[r.x0, top], [r.x0 + w0, top], [right, gy - 2], [left, gy - 2]], front);
-      const teeth = 4, tw = (right - left) / teeth;
-      for (let i = 0; i < teeth; i++) {
-        const x = left + i * tw, tip = gy - (i % 2 ? 0 : 1) + (i === teeth - 1 ? -1 : 0);
-        p.poly([[x, gy - 2.5], [x + tw, gy - 2.5], [x + tw / 2 + sway * 0.4 * (i % 2 ? 1 : -1), tip]], front);
-      }
-      p.rect(Math.round(left + 1), gy - 4, Math.round(right - left - 1), 1, hem);
-      // the toe of a slipper at the front
-      p.rect(Math.round(right - 3), gy - 1, 2, 1, hem);
+      const { p } = r, gy = r.foot, top = r.hip - 1, cx = r.x0 + r.tw / 2, fl = r.flap - 1, k = r.k;
+      const len = Math.max(6, gy - top), knee = gy - Math.max(3, Math.round(len * 0.4));
+      const skirt = p.mat(r.look.second), back = p.mat(mixHex(r.look.main, '#101830', 0.3)), seam = p.mat(tone(r.look.second, 1), { flat: true });
+      const fin = p.mat(mixHex(r.look.accent, '#ffffff', 0.3)), finBack = p.mat(mixHex(r.look.accent, r.look.main, 0.35)), rib = p.mat(tone(r.look.accent, 1), { flat: true });
+      // the back panel, a little wider at the hip, leaning with the flutter
+      p.poly([[r.x0 + 1, top], [r.x0 + r.tw - 1, top], [cx + 1.5, knee], [cx - 2.5 - fl, knee + 1]], back);
+      // the fitted skirt: hips to knee, narrowing
+      p.poly([[r.x0 - 0.5, top], [r.x0 + r.tw + 0.5, top], [r.x0 + r.tw - 0.8, knee], [r.x0 + 1.2, knee]], skirt);
+      p.line([r.x0 + 1, knee - 2], [r.x0 + r.tw - 1, knee - 2], seam);
+      // the fin: a fan from the knee to the ground, wider than the skirt, two big lobes behind and two in front, a notch between
+      const half = r.tw * 0.5 + 3.2 * k, left = cx - half - 1.5 + fl, right = cx + half - 0.5;
+      const lobes: [number, number][] = [[left, gy - 0.5 + (fl > 0 ? 0 : 0)], [cx - 1.5 + fl * 0.5, gy - 1.5], [cx + 1, gy - 0.5], [right, gy - 2.5]];
+      // behind: the long lobes
+      p.poly([[cx - 2, knee], [lobes[0][0], lobes[0][1]], [(lobes[0][0] + lobes[1][0]) / 2 + 0.6, gy - 4.2], [lobes[1][0], lobes[1][1]], [cx + 0.5, knee + 2]], finBack);
+      // in front: the short lobes, over the skirt hem
+      p.poly([[r.x0 + 1, knee - 0.5], [r.x0 + r.tw - 1, knee - 0.5], [lobes[3][0], lobes[3][1]], [(lobes[2][0] + lobes[3][0]) / 2 + 0.4, gy - 3.6], [lobes[2][0], lobes[2][1]], [(lobes[1][0] + lobes[2][0]) / 2, gy - 3.4], [lobes[1][0] + 1, lobes[1][1] - 0.5]], fin);
+      // the ribs of the fin
+      for (const [x] of lobes) p.line([cx + (x - cx) * 0.25 + (x < cx ? 0 : 1), knee + 1], [x + (x < cx ? 0.6 : -0.4), gy - 1.5], rib);
+      p.rect(Math.round(r.x0 - 0.5), knee - 1, r.tw + 1, 1, p.mat(r.look.accent));
     },
   },
   blob: { lower: gelLower },

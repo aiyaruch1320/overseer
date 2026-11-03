@@ -27,7 +27,7 @@ function marks(r: Rig, t0: number, t1: number, mark: number, s = 0): void {
 /** Sparks round a point on the frames where a thing glows (deterministic for the frame): glow pixels in the accent colour, laid after the outline, so they have no dark ring. */
 function sparks(r: Rig, c: Pt, n: number, reach = 3): void {
   for (let i = 0; i < n; i++) {
-    const a = hash(r.f + 1, i, 3) * Math.PI * 2, d = (1.6 + hash(r.f + 1, i, 4) * reach) * Math.max(0.8, r.k);
+    const a = hash(r.f + 1, i, 3) * Math.PI * 2, d = (2.6 + hash(r.f + 1, i, 4) * reach) * Math.max(0.8, r.k);
     r.p.glow(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, r.look.accent, i % 2 ? 0.75 : 1);
   }
 }

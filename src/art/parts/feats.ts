@@ -74,17 +74,17 @@ function featherWing(r: Rig, light: string, shade: string): void {
     p.ell(W[0] + 0.4, W[1] + 0.6, 1.6 * s + 0.3, 1.9 * s + 0.3, top);
     return;
   }
-  const s = wingScale(r, open === 2 ? 20 : 15);
-  const W = open === 2 ? at(B, -8.5, -9.5, s) : at(B, -5, -8, s);
-  const wid = 1.15 * s + 0.15;
-  const pri = open === 2 ? spread(30, 128, 6) : spread(14, 90, 5);
-  const plen = pri.map((_, i) => (open === 2 ? 13.5 : 10) * s * (0.82 + 0.18 * Math.sin((i / (pri.length - 1)) * Math.PI * 0.9 + 0.5)));
+  const s = wingScale(r, open === 2 ? 24 : 17);
+  // the arm rises up and back to the wrist; the primaries fan from the wrist (the first goes on along the arm), the secondaries and coverts trail from the arm toward the ground side
+  const W = open === 2 ? at(B, -6, -8.5, s) : at(B, -4, -7, s);
+  const wid = 1.25 * s + 0.2;
+  const pri = open === 2 ? spread(34, 128, 6) : spread(12, 96, 5);
+  const plen = pri.map((_, i) => (open === 2 ? 17 : 12) * s * (0.8 + 0.2 * Math.sin((i / (pri.length - 1)) * Math.PI * 0.85 + 0.55)));
   featherRow(r, W, at(W, -0.8, 0.8, s), pri, plen, wid, dark, edge);
-  const sec = open === 2 ? spread(138, 166, 5) : spread(150, 170, 4);
-  featherRow(r, lerp(W, B, 0.22), lerp(W, B, 0.95), sec, sec.map((_, i) => (open === 2 ? 10.5 : 8) * s * (1 - i * 0.04)), wid, mid);
-  const cov = open === 2 ? spread(120, 160, 6) : spread(130, 165, 5);
-  featherRow(r, W, lerp(W, B, 0.92), cov, cov.map((_, i) => (open === 2 ? 6 : 4.6) * s * (1 - i * 0.05)), wid * 0.9, top);
-  stroke(r.p, W, lerp(W, B, 0.9), 1, top);
+  const sec = open === 2 ? spread(118, 152, 6) : spread(112, 150, 5);
+  featherRow(r, lerp(W, B, 0.15), lerp(W, B, 0.95), sec, sec.map((_, i) => (open === 2 ? 14 - i * 1.1 : 10.5 - i) * s), wid, mid, edge);
+  const cov = open === 2 ? spread(112, 150, 6) : spread(110, 148, 5);
+  featherRow(r, W, lerp(W, B, 0.9), cov, cov.map((_, i) => (open === 2 ? 7 - i * 0.4 : 5.2 - i * 0.3) * s), wid * 0.95, top);
   p.ell(W[0] + 0.3, W[1] + 0.4, 1.4 * s + 0.3, 1.6 * s + 0.3, top);
 }
 
@@ -105,7 +105,7 @@ function batWing(r: Rig, membrane: string, bone: string, scaled: boolean): void 
     W = open === 2 ? at(B, -11, -12, s) : at(B, -7, -8, s);
     tips = rel.map((v) => at(W, v[0], v[1], s));
     L = at(B, -0.5, open === 2 ? 10 : 8.5, s);
-    const pull = (a: Pt, b: Pt): Pt => { const m: Pt = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; return lerp(m, W, 0.22); };
+    const pull = (a: Pt, b: Pt): Pt => { const m: Pt = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; return lerp(m, W, 0.36); };
     p.poly([B, W, tips[0], pull(tips[0], tips[1]), tips[1], pull(tips[1], tips[2]), tips[2], pull(tips[2], L), L], mem);
   }
   stroke(p, B, W, 1, bn);
@@ -121,7 +121,8 @@ function insectWing(r: Rig): void {
   const spec: [number, number, number][] = open === 0
     ? [[172 - flick * 7, H * 0.48, 1.3], [180 - flick * 4, H * 0.36, 1.1]]
     : [[(open === 2 ? 108 : 128) - flick * 10, H * 0.66, 2.4], [(open === 2 ? 146 : 156) - flick * 6, H * 0.5, 1.9]];
-  for (const [d, ln, wd] of spec) {
+  for (const [d, len0, wd] of spec) {
+    const ln = Math.min(len0, (B[0] - 3) / Math.max(0.3, Math.abs(Math.sin(d * DEG)))); // never past the left edge of the frame
     blade(r, B, d, ln, wd * Math.max(1, r.k * 1.2), pale);
     const t = tip(B, d, ln);
     p.line(B, lerp(B, t, 0.6), vein);
@@ -309,7 +310,7 @@ export const FEATS: Record<string, Part> = {
     // scales on the cheek, the neck and the forearm: a light and a dark one in turn
     front: (r) => {
       const lt = flat(r, tone(r.look.skin, 3)), dk = flat(r, shadowOf(r.look.skin)), [ex, ey] = eyeAt(r);
-      r.p.px(ex, ey + 2, dk); r.p.px(ex - 1, ey + 3, lt); r.p.px(ex - 2, ey + 2, lt); r.p.px(ex - 3, ey + 1, dk);
+      r.p.px(ex - 3, ey + 1, dk); r.p.px(ex - 4, ey, lt); // a pair at the cheek, back from the eye: the face stays clear
       armMarks(r, [0.62, 0.74, 0.86], dk);
       const [ax, ay] = nearArm(r, 0.68); r.p.px(ax + 1, ay, lt);
     },
@@ -482,17 +483,16 @@ export const FEATS: Record<string, Part> = {
     front: (r) => {
       const { p } = r, w = p.mat('#f4f0f0'), cx = Math.round(cxOf(r)) + 1;
       [[-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]].forEach(([dx, dy]) => p.px(cx + dx, r.sh + dy, w));
-      p.px(r.head[0] - r.hr[0] * 0.3, Math.round(topY(r)) + 2, w);
+      p.px(r.head[0] - r.hr[0] * 0.85, Math.round(topY(r)) + 3, w); // the pearl at the temple, behind the eye
     },
   },
   finskirt: {
-    // fins that flare from the hem on both sides, thin and a little see-through; they flutter even when nothing moves
+    // a ribbon fin that trails from the back of the hip to the hem, thin and a little see-through; it flutters even when nothing moves
     lower: (r) => {
-      const { p } = r, gy = r.foot, cx = cxOf(r), wb = r.tw + 4 + Math.round(r.k * 2), left = cx - wb / 2 - r.flap * 0.5, right = cx + wb / 2 + 1;
+      const { p } = r, gy = r.foot, fl = r.flap, x = r.x0;
       const fin = p.mat(mixHex(r.look.accent, '#ffffff', 0.35), { alpha: 0.85 }), rib = p.mat(tone(r.look.accent, 0), { flat: true, alpha: 0.9 });
-      p.poly([[left + 1, gy - 8], [left - 3 - r.flap, gy - 1], [left + 3, gy - 1]], fin);
-      p.poly([[right - 1, gy - 8], [right + 3 + r.flap, gy - 1], [right - 3, gy - 1]], fin);
-      p.px(left - 1, gy - 3, rib); p.px(right + 1, gy - 3, rib);
+      p.poly([[x + 1, r.hip + 1], [x - 3 - fl, gy - 4], [x - 2 - fl * 0.5, gy - 1], [x + 2, gy - 6]], fin);
+      p.line([x, r.hip + 3], [x - 2 - fl, gy - 3], rib);
     },
   },
   wet: {
@@ -820,7 +820,7 @@ export const FEATS: Record<string, Part> = {
   },
   'wings:night': {
     // wings like a bat's, black-violet
-    back: (r) => batWing(r, '#34283f', '#161020', false),
+    back: (r) => batWing(r, '#34283f', '#6a5a86', false),
   },
   missingarm: {
     // the far arm is gone: the empty sleeve is knotted short at the shoulder
