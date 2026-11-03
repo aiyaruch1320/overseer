@@ -6,14 +6,14 @@ import { W } from '../../app/views/god-words';
 import { color } from '../tokens';
 import { col } from './style';
 
-export function TargetList(p: { targets: TargetOption[]; picked: string[]; multi?: boolean; onPick: (id: string) => void; label: string }) {
+export function TargetList(p: { targets: TargetOption[]; picked: string[]; multi?: boolean; onPick: (id: string) => void; label: string; fill?: boolean }) {
   const [q, setQ] = useState('');
   const shown = p.targets.filter((t) => !q || t.name.includes(q) || t.id.toLowerCase().includes(q.toLowerCase()));
   const groups = [...new Set(shown.map((t) => t.group))];
   return (
-    <div style={col}>
+    <div style={{ ...col, ...(p.fill ? { flex: 1, minHeight: 0 } : {}) }}>
       {p.targets.length > 8 && <input type="search" placeholder={`${p.label}…`} aria-label={p.label} value={q} onInput={(e) => setQ((e.target as HTMLInputElement).value)} style={{ background: '#1a1b24', color: color.text, border: `1px solid ${color.line}`, borderRadius: 4, padding: '6px 8px' }} />}
-      <div class="g-scroll" role="listbox" aria-label={p.label} aria-multiselectable={p.multi} style={{ maxHeight: 220, border: `1px solid ${color.line}`, borderRadius: 4, padding: 6 }}>
+      <div class="g-scroll" role="listbox" aria-label={p.label} aria-multiselectable={p.multi} style={{ ...(p.fill ? { flex: 1, minHeight: 0 } : { maxHeight: 220 }), border: `1px solid ${color.line}`, borderRadius: 4, padding: 6 }}>
         {groups.map((gr) => (
           <div key={gr}>
             <div class="g-small g-dim" style={{ margin: '4px 0 2px' }}>

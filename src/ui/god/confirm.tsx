@@ -7,7 +7,7 @@ import { confirmView, resultView } from '../../app/views/god';
 import { W } from '../../app/views/god-words';
 import type { CommandResult, GodAction } from '../../core/types';
 import { color, size } from '../tokens';
-import { useBridge } from './bridge';
+import { useBridge, type GodBridge } from './bridge';
 import { box, col, row, toneColor } from './style';
 
 export interface PendingAct {
@@ -35,6 +35,19 @@ export function askGod(action: GodAction, args: Record<string, unknown> = {}, on
   if (panelHook && !panelHook.isOpen()) panelHook.open(action, args);
   doneBox.value = null;
   pendingAct.value = { action, args, onDone };
+}
+
+/** Runs an action the god has confirmed (a click in the dialog, or the hold of the aim) and leaves what it brought in `doneBox`. */
+export function runGod(b: GodBridge, action: GodAction, args: Record<string, unknown>, title: string): CommandResult {
+  const g = b.game();
+  const data = b.data();
+  if (!g || !data) return { ok: false, reason: W.noGame } as CommandResult;
+  const before = { light: g.state.god.light, dread: g.state.god.dread };
+  const r = b.run(action, args, true);
+  if (!r.ok) return r;
+  const rv = resultView(g, data, r, before);
+  doneBox.value = { title, lines: rv.lines, moved: rv.moved };
+  return r;
 }
 
 export function dropAct(): void {
@@ -115,14 +128,11 @@ export function ConfirmDialog() {
   const v = confirmView(g, data, pending.action, pending.args);
   const c = toneColor[v.tone];
   const go = () => {
-    const before = { light: g.state.god.light, dread: g.state.god.dread };
-    const r = b.run(pending.action, pending.args, true);
+    const r = runGod(b, pending.action, pending.args, v.title);
     if (!r.ok) {
       setError(r.reason);
       return;
     }
-    const rv = resultView(g, data, r, before);
-    doneBox.value = { title: v.title, lines: rv.lines, moved: rv.moved };
     pendingAct.value = null;
     pending.onDone?.(r);
   };

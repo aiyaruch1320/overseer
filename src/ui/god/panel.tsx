@@ -14,6 +14,7 @@ import { Chronicle } from './chronicle';
 import { ConfirmDialog, DoneBox, doneBox, pendingAct, registerPanelHook } from './confirm';
 import { Conjure } from './conjure';
 import { Dream } from './dream';
+import { godFull } from './layout';
 import { Miracle } from './miracle';
 import { Prayer } from './prayer';
 import { GodStyles, col, row } from './style';
@@ -113,14 +114,15 @@ export function GodPanel(p: { bridge?: GodBridge; kind?: GodKind; args?: Record<
     return () => window.removeEventListener('keydown', key);
   }, [!!open]);
   if (!open) return null;
+  const full = godFull.value && open.kind === 'miracle';
   const shell: JSX.CSSProperties = p.inline
-    ? { position: 'relative', minHeight: 480 }
+    ? { position: 'relative', minHeight: full ? 620 : 480, height: full ? 640 : undefined }
     : { position: 'fixed', inset: 0, zIndex: 50, background: '#000d', display: 'flex', alignItems: 'center', justifyContent: 'center' };
   return (
     <BridgeCtx.Provider value={bridge}>
       <GodStyles />
       <div class="g-root" style={shell}>
-        <div role="region" aria-label={godKindTitle(open.kind)} style={{ position: 'relative', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius + 2, width: p.inline ? '100%' : 'min(1100px, 96vw)', maxHeight: p.inline ? undefined : '94vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div role="region" aria-label={godKindTitle(open.kind)} style={{ position: 'relative', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius + 2, width: p.inline || full ? '100%' : 'min(1100px, 96vw)', height: full ? '100%' : undefined, maxHeight: p.inline || full ? undefined : '94vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <header style={{ ...row, justifyContent: 'space-between', padding: `${size.gap}px ${size.pad}px`, borderBottom: `1px solid ${color.line}` }}>
             <span class="g-title" style={{ color: color.light }}>
               {godKindTitle(open.kind)}
@@ -130,7 +132,7 @@ export function GodPanel(p: { bridge?: GodBridge; kind?: GodKind; args?: Record<
               {W.close} ✕
             </button>
           </header>
-          {!p.kind && (
+          {!p.kind && !full && (
             <nav aria-label="powers" style={{ ...row, flexWrap: 'wrap', padding: `${size.gap}px ${size.pad}px 0` }}>
               {GOD_KINDS.map((k) => (
                 <button key={k} class="g-chip" aria-pressed={open.kind === k} onClick={() => openGod(k)}>
@@ -139,8 +141,8 @@ export function GodPanel(p: { bridge?: GodBridge; kind?: GodKind; args?: Record<
               ))}
             </nav>
           )}
-          <div style={{ ...col, padding: size.pad, overflow: 'auto', flex: 1, gap: 0 }}>
-            <DoneBox />
+          <div style={{ ...col, padding: full ? 0 : size.pad, overflow: full ? 'hidden' : 'auto', flex: 1, minHeight: 0, gap: 0 }}>
+            {!full && <DoneBox />}
             <Body open={open} />
           </div>
           <ConfirmDialog />

@@ -606,8 +606,21 @@ export interface FateRow {
   id: string;
   name: string;
   mark: string;
+  /** One line of what the event is (the data's own words, scrubbed). */
+  about: string;
+  /** The multiplier range the event can take (a fall of a dragon is narrower). */
+  range: [number, number];
   slow: CostView;
   fast: CostView;
+}
+
+/** The multipliers the fate screen offers as steps (the data allows ×0.2 to ×0.9 to slow and ×1.1 to ×3 to speed). */
+export const FATE_STEPS = [0.2, 0.5, 0.8, 1.5, 2, 3] as const;
+
+/** The price of bending an event by `mul`, in the line that pays. */
+export function fateCostOf(game: Game, mark: string, mul: number): CostView {
+  const c = fateCost(game.ctx, mark as never, mul);
+  return { faith: num(c.faith), dread: num(c.dread) };
 }
 
 export interface MiracleView {
@@ -718,8 +731,21 @@ export function miracleView(game: Game, data: GameData): MiracleView {
         ...viewConj(st).pending.map((p): OmenView => ({ n: p.n, id: p.mix, name: p.name, where: '', left: p.left, total: p.quarters, fraction: p.quarters ? p.left / p.quarters : 0, of: 'conjure' })),
       ]
     : [];
+  const fateCfg = (ctx.data.god?.items as { miracles?: { fate?: { dragonFloor: number; dragonCap: number } } } | undefined)?.miracles?.fate;
+  const events = (data['world-events']?.items as { events?: { id: string; whatText?: string }[] } | undefined)?.events ?? [];
   const fate: FateRow[] = life
-    ? fateTargets(ctx).map((t) => ({ id: t.id, name: t.name, mark: t.mark, slow: { faith: num(fateCost(ctx, t.mark, 0.5).faith), dread: 0 }, fast: { faith: 0, dread: num(fateCost(ctx, t.mark, 2).dread) } }))
+    ? fateTargets(ctx).map((t) => {
+        const about = scrub(data, events.find((e) => e.id === t.id)?.whatText ?? '');
+        return {
+          id: t.id,
+          name: t.name,
+          mark: t.mark,
+          about: about.length > 120 ? `${about.slice(0, 118).trim()}…` : about,
+          range: t.dragon !== undefined && fateCfg ? [fateCfg.dragonFloor, fateCfg.dragonCap] : [0.2, 3],
+          slow: { faith: num(fateCost(ctx, t.mark, 0.5).faith), dread: 0 },
+          fast: { faith: 0, dread: num(fateCost(ctx, t.mark, 2).dread) },
+        };
+      })
     : [];
   const last = [...st.log].reverse().find((e) => e.sys === 'god' && e.kind === 'miracle');
   return {
@@ -958,6 +984,41 @@ export function chronicleView(game: Game, data: GameData): ChronicleView {
     }
   }
   return { epithets, rows };
+}
+
+// ---------- what a small or middle miracle did, for the scene area (20-god-ui.md §7.3) ----------
+
+/** How long after its day (world years) the line of a small or middle miracle stays on the scene area: about a season. */
+export const EFFECT_LINE_YEARS = 0.3;
+
+export interface EffectLine {
+  name: string;
+  where: string;
+  /** What fell, in the words of the data. */
+  text: string;
+  line: 'faith' | 'dread';
+  /** 1 on the day, 0 when the line is gone. */
+  fresh: number;
+}
+
+/**
+ * The line the scene area shows when a small or middle miracle fell and no scene (script) is playing for it: the miracle, where, and what it did.
+ * Null when there is none lately. The watch screen decides when "no script" is true and mounts `<GodEffectLine />`.
+ */
+export function effectLine(game: Game, data: GameData): EffectLine | null {
+  const st = game.state;
+  const list = (game.ctx.data.god?.items as { miracles?: { list: { id: string; name: string; tier: string; immediate?: string; cost: { faith?: number; dread?: number } }[] } } | undefined)?.miracles?.list ?? [];
+  for (let i = st.god.chronicle.length - 1; i >= 0; i--) {
+    const c = st.god.chronicle[i];
+    if (c.kind !== 'miracle') continue;
+    const age = st.clock.worldYear - c.worldYear;
+    if (age >= EFFECT_LINE_YEARS) return null;
+    const m = list.find((x) => x.id === c.id);
+    if (!m || (m.tier !== 'เล็ก' && m.tier !== 'กลาง')) continue;
+    const text = c.result && !looksLikeCode(c.result) ? words(game, data, c.result) : m.immediate ? scrub(data, unlink(m.immediate), { keepNumbers: true }) : '';
+    return { name: m.name, where: c.target ? whereName(game, data, c.target) : '', text, line: m.cost.dread && !m.cost.faith ? 'dread' : 'faith', fresh: Math.max(0, 1 - age / EFFECT_LINE_YEARS) };
+  }
+  return null;
 }
 
 // ---------- which god panel kinds exist ----------

@@ -10,7 +10,7 @@ import type { DragonDef } from '../../core/data/types-events';
 import type { GameState } from '../../core/types';
 import type { Looks } from '../../map/provider';
 import { CONT_IDS, type ContId } from '../../map/geo';
-import { DRAGON_BEDS, DRAGON_COLOR, FATES, OMEN_COLOR, type FateId } from '../../map/tuning';
+import { DRAGON_BEDS, DRAGON_COLOR, EFFECT_MARK_YEARS, FATES, OMEN_COLOR, type FateId } from '../../map/tuning';
 
 export interface FateMark {
   continent: ContId | '*';
@@ -63,6 +63,18 @@ export interface OmenMark {
   color: string;
 }
 
+/** The mark a small or middle miracle leaves on the place it fell on, for a year after its day. */
+export interface EffectMark {
+  /** The miracle (MR-xx). */
+  id: string;
+  name: string;
+  country?: string;
+  continent?: string;
+  color: string;
+  /** 1 on the day, 0 when the mark is gone. */
+  fresh: number;
+}
+
 export interface CharacterMark {
   name: string;
   country: string;
@@ -90,6 +102,8 @@ export interface MapModel {
   ruins: RuinMark[];
   dragons: DragonMark[];
   omens: OmenMark[];
+  /** Small and middle miracles of the last year (a ring on the place they fell on). */
+  marks: EffectMark[];
   character: CharacterMark | null;
   lands: LandMark[];
 }
@@ -168,12 +182,24 @@ export function mapModel(data: GameData, state: GameState): MapModel {
     };
   });
 
+  const marks: EffectMark[] = [];
+  for (const c of state.god.chronicle) {
+    if (c.kind !== 'miracle' || !c.target) continue;
+    const age = state.clock.worldYear - c.worldYear;
+    if (age < 0 || age >= EFFECT_MARK_YEARS) continue;
+    const m = miracles.find((x) => x.id === c.id);
+    if (!m || (m.tier !== 'เล็ก' && m.tier !== 'กลาง')) continue;
+    const line = m.cost.dread && !m.cost.faith ? 'dread' : 'faith';
+    const onContinent = c.target.length === 2;
+    marks.push({ id: m.id, name: m.name, ...(onContinent ? { continent: c.target } : { country: c.target }), color: OMEN_COLOR[line], fresh: 1 - age / EFFECT_MARK_YEARS });
+  }
+
   const life = state.life;
   const character: CharacterMark | null = life ? { name: life.name, country: life.country, countryName: nameOf(life.country), city: `${life.country}/0`, dead: !!life.dead } : null;
 
   const lands: LandMark[] = viewRuin(state).lands.map((l) => ({ id: l.id, name: l.name, beside: l.beside, continent: l.continent, founded: l.founded !== undefined }));
 
-  return { looks, fates, fallen, flags, ruins, dragons, omens, character, lands };
+  return { looks, fates, fallen, flags, ruins, dragons, omens, marks, character, lands };
 }
 
 /** The ids of the continents in the order the map keeps them. */
@@ -181,7 +207,7 @@ export const continentIds = (): readonly ContId[] => CONT_IDS;
 
 /** A sample model for the storybook: the state of a game with something done to it (a ruin, a changed continent, an omen). */
 export function withSample(model: MapModel, pick: { fate?: FateId; ruin?: string; omen?: { country: string; id: string; name: string }; fallen?: string }): MapModel {
-  const m: MapModel = { ...model, looks: { ...model.looks, fates: { ...model.looks.fates }, ruin: { ...(model.looks.ruin ?? {}) } }, fates: [...model.fates], ruins: [...model.ruins], omens: [...model.omens], fallen: [...model.fallen] };
+  const m: MapModel = { ...model, looks: { ...model.looks, fates: { ...model.looks.fates }, ruin: { ...(model.looks.ruin ?? {}) } }, fates: [...model.fates], ruins: [...model.ruins], omens: [...model.omens], marks: [...model.marks], fallen: [...model.fallen] };
   if (pick.fate) {
     const f = FATES.find((x) => x.id === pick.fate)!;
     if (f.continent === '*') m.looks.flood = true;

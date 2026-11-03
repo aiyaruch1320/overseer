@@ -90,6 +90,9 @@ export const DRAGON_COLOR: string[] = [
 ];
 
 /** Colours of the omen circle by the line that paid (20-god-ui.md §1). */
+/** How many world years the mark of a small or middle miracle stays on the map after its day (20-god-ui.md §7.3: the effect shows where it fell). */
+export const EFFECT_MARK_YEARS = 1;
+
 export const OMEN_COLOR = { faith: '#e8c36a', dread: '#8a2433', fate: '#b8c0cc' } as const;
 
 /** Sizes of the labels in screen pixels and the zoom at which each kind appears. */

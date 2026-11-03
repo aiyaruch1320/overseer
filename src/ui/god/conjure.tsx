@@ -2,37 +2,16 @@
 // silhouettes without a name; on the side the expected result, the price with its multipliers, the chance of the shadow, the omen and the quota
 // (three fingerprints). A mix that is a listed miracle says so and costs no fingerprint.
 import { useState } from 'preact/hooks';
-import { conjureArgs, conjurePreview, conjureTargets, conjureView, type CircleCell, type ConjureView } from '../../app/views/god';
+import { conjureArgs, conjurePreview, conjureTargets, conjureView, type ConjureView } from '../../app/views/god';
 import { W } from '../../app/views/god-words';
 import { color, size } from '../tokens';
 import { useBridge, useView } from './bridge';
 import { askGod } from './confirm';
 import { MapSlot } from './map-slot';
 import { Drop, Empty, Gate } from './parts';
+import { Wheel } from './wheel';
 import { TargetList } from './target';
 import { box, col, row } from './style';
-
-function RingRow(p: { title: string; cells: CircleCell[]; sel: string | null; onPick: (id: string) => void; baseOf?: (id: string) => string }) {
-  return (
-    <div role="radiogroup" aria-label={p.title} style={{ ...col, gap: 4 }}>
-      <div class="g-small g-dim">{p.title}</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-        {p.cells.map((c) =>
-          c.open ? (
-            <button key={c.id} role="radio" aria-checked={p.sel === c.id} class="g-chip" aria-pressed={p.sel === c.id} onClick={() => p.onPick(c.id)} style={{ borderColor: p.sel === c.id ? c.color ?? color.light : undefined, color: c.color }}>
-              <span aria-hidden="true">{c.glyph}</span> {c.name}
-              {p.baseOf && <span class="g-small g-dim"> {p.baseOf(c.id)}</span>}
-            </button>
-          ) : (
-            <span key={c.id} class="g-chip shut" role="radio" aria-checked="false" aria-disabled="true" title={W.conjure.shut} aria-label={`${W.conjure.shut}`}>
-              ▒▒▒
-            </span>
-          ),
-        )}
-      </div>
-    </div>
-  );
-}
 
 function Marks(p: { used: number; limit: number }) {
   return (
@@ -62,19 +41,20 @@ function Circle(p: { v: ConjureView }) {
   const needsTarget = !!sc && pr && !pr.ok && /ต้อง|เป้า/.test(pr.reason ?? '') && !target;
   const tone = pr?.cost.dread && !pr.cost.faith ? 'dread' : 'light';
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: size.pad }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: size.pad }}>
       <div style={col}>
-        <RingRow title={W.conjure.verbs} cells={p.v.verbs} sel={verb} onPick={setVerb} />
-        <RingRow title={W.conjure.cores} cells={p.v.cores} sel={core} onPick={setCore} />
-        <RingRow title={W.conjure.scales} cells={p.v.scales} sel={scale} onPick={(id) => (setScale(id), setTarget(null))} baseOf={(id) => `(${p.v.scales.find((s) => s.id === id)?.base})`} />
-        {scale && (
-          <div style={col}>
-            <div class="g-small g-dim">{W.conjure.target}</div>
-            <MapSlot kind={sc!.target === 'npc' ? 'npc' : sc!.target === 'continent' ? 'continent' : 'country'} targets={targets} picked={target ? [target] : []} onPick={setTarget} tone={tone} omens={[]} ruins={[]} />
-            <TargetList targets={targets} picked={target ? [target] : []} onPick={setTarget} label={W.conjure.pickTarget} />
-          </div>
-        )}
+        <Wheel verbs={p.v.verbs} cores={p.v.cores} scales={p.v.scales} verb={verb} core={core} scale={scale} onVerb={setVerb} onCore={setCore} onScale={(id) => (setScale(id), setTarget(null))} />
+        <div class="g-small g-dim" style={{ textAlign: 'center' }} aria-live="polite">
+          {[p.v.verbs.find((c) => c.id === verb)?.name, p.v.cores.find((c) => c.id === core)?.name, sc ? `${sc.name} (${sc.base})` : undefined].filter(Boolean).join(' · ') || W.conjure.pickAll}
+        </div>
       </div>
+      {scale && (
+        <div style={col}>
+          <div class="g-small g-dim">{W.conjure.target}</div>
+          <MapSlot kind={sc!.target === 'npc' ? 'npc' : sc!.target === 'continent' ? 'continent' : 'country'} targets={targets} picked={target ? [target] : []} onPick={setTarget} tone={tone} omens={[]} ruins={[]} />
+          <TargetList targets={targets} picked={target ? [target] : []} onPick={setTarget} label={W.conjure.pickTarget} />
+        </div>
+      )}
       <div style={{ ...box, ...col, alignContent: 'start' }} aria-live="polite">
         <div style={{ ...row, justifyContent: 'space-between' }}>
           <b>{W.conjure.quota}</b>
