@@ -10,6 +10,7 @@ import { POWER_CAP } from '../../core/god/tuning';
 import { callReason, lines, plainName, type Line } from '../../core/text';
 import { items } from '../../core/text/labels';
 import { CARD_KINDS, type GameState, type GodAction, type LogEntry, type Settings } from '../../core/types';
+import { W } from './god-words';
 import { LOG_KEEP } from '../tuning';
 import { clockOf, purseOf } from '../view';
 import { CANDLE_MIN_FILL, GLOW_OPEN_YEARS, RECAP_MAX } from './watch-tuning';
@@ -53,6 +54,13 @@ function crisisOf(state: GameState): (n: number) => string | undefined {
   };
 }
 
+/** The name of the person a crisis entry announces (the target of the whisper its card opens), or undefined. */
+function personOf(state: GameState, n: number): string | undefined {
+  const c = entryAt(state, n);
+  const name = c && (c.sys === 'bonds' || c.sys === 'bondage') ? String(c.data.name ?? '') : '';
+  return name || undefined;
+}
+
 const ageOf = (e: LogEntry): number | null => (e.age === undefined ? null : e.age + (e.quarter ?? 0) / 4);
 
 /** The running number where the life now on the stage begins (its birth entry); earlier entries belong to the world or to a lineage before. */
@@ -82,7 +90,7 @@ export type CardKind = 'prayer' | 'omen' | 'battle' | 'crisis' | 'majorOmen';
 const CARD_TONE: Record<CardKind, Tone> = { prayer: 'light', omen: 'fate', battle: 'dread', crisis: 'dread', majorOmen: 'light' };
 
 /** What the god can do about a call of this reason: the buttons that open the god screens (20-god-ui.md §2, 07-attention.md §1 rule 1). */
-export function optionsOf(why: string, id?: string): GodOpen[] {
+export function optionsOf(why: string, id?: string, who?: string): GodOpen[] {
   const at = id ? { id } : {};
   switch (why) {
     case 'age':
@@ -99,7 +107,8 @@ export function optionsOf(why: string, id?: string): GodOpen[] {
     case 'battle':
       return [{ kind: 'whisper', args: { why, ...at } }, { kind: 'dream', args: { why } }];
     case 'crisis':
-      return [{ kind: 'whisper', args: { why, ...at } }, { kind: 'dream', args: { why, ...at } }];
+      // the whisper opens on the hint of help with the person in crisis picked, as the allies layer does (M5 review round two R2)
+      return [{ kind: 'whisper', args: { why, ...at, hint: W.whisper.helpHint, ...(who ? { target: who } : {}) } }, { kind: 'dream', args: { why, ...at } }];
     default:
       return [];
   }
@@ -135,11 +144,11 @@ export function cardView(data: GameData, state: GameState, e: LogEntry): CardVie
     n: e.n,
     kind: why,
     id,
-    text: callReason(data, e, crisisOf(state)),
+    text: callReason(data, e, crisisOf(state), (n) => entryAt(state, n)),
     tone: CARD_TONE[why],
     left,
     frac: left === null || !total ? 1 : Math.min(1, left / total),
-    options: optionsOf(why, id),
+    options: optionsOf(why, id, personOf(state, Number(String(e.data.n ?? '').split(',')[0]))),
   };
 }
 
@@ -156,7 +165,7 @@ export function foldedCards(data: GameData, state: GameState, stop: LogEntry): C
     // the id comes from the entry the card stands for: the `ids` of the stop are joined with commas and a battle has several
     const id = entryAt(state, n)?.id ?? '';
     const entry: LogEntry = { ...stop, data: { call: 'card', why: kind, ids: id, n: String(n), cards: '', until: null, age: null }, id };
-    out.push({ n, kind, id, text: callReason(data, entry, crisisOf(state)), tone: CARD_TONE[kind], left: null, frac: 1, options: optionsOf(kind, id) });
+    out.push({ n, kind, id, text: callReason(data, entry, crisisOf(state), (n) => entryAt(state, n)), tone: CARD_TONE[kind], left: null, frac: 1, options: optionsOf(kind, id, personOf(state, n)) });
   });
   return out;
 }
@@ -202,7 +211,7 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
     n: e.n,
     why,
     age: typeof e.data.age === 'number' ? e.data.age : null,
-    reason: callReason(data, e, crisisOf(state)),
+    reason: callReason(data, e, crisisOf(state), (n) => entryAt(state, n)),
     options: optionsOf(why, first),
     cards: foldedCards(data, state, e),
     recap,

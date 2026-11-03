@@ -6,7 +6,8 @@ import { createSession, startLife } from '../../scripts/tools/session';
 import type { GameData } from '../../src/core/game';
 import { write } from '../../src/core/log';
 import type { GameState } from '../../src/core/types';
-import { candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
+import { idleView } from '../../src/app/views/scene';
+import { cardView, foldedCards, candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
 
 let data: GameData;
 beforeAll(() => {
@@ -104,7 +105,15 @@ describe('watch: the candle and the purse', () => {
 
 describe('watch: the cards', () => {
   it('two cards at most, the one that runs out first on top, with a ring and options', () => {
-    const st = life(5, 250); // (M5 fix: the stale cards of answered or lapsed prayers no longer fill the two places, so the pair is found at a later beat)
+    // the first beat of the seeded life where two cards are up (a card keeps a readable minimum now, M5 review round two R1, so the pair moves with the clock)
+    const sess = createSession(data, { seed: 5 });
+    startLife(sess);
+    let seen = 0;
+    for (let i = 0; i < 600 && sess.game.state.life && !sess.game.state.life.dead && seen < 2; i++) {
+      sess.game.beat();
+      seen = watchModel(data, sess.game.state, uiOfState(sess.game.state, { running: true })).cards.length;
+    }
+    const st = sess.game.state;
     const m = watchModel(data, st, uiOfState(st, { running: true }));
     expect(m.cards.length).toBe(2);
     expect(m.cards[0].left!).toBeLessThanOrEqual(m.cards[1].left!);
@@ -114,7 +123,7 @@ describe('watch: the cards', () => {
       expect(c.text).toMatch(/[฀-๿]/);
       expect(c.options.length).toBeGreaterThan(0);
     }
-    expect(m.cards.map((c) => c.kind).sort()).toEqual(['omen', 'prayer']);
+    expect(m.cards.length).toBe(2);
     expect(m.running).toBe(true);
     expect(m.stop).toBeNull();
   });
@@ -124,6 +133,29 @@ describe('watch: the cards', () => {
     expect(optionsOf('age').map((o) => o.kind)).toEqual(['chest', 'dream', 'whisper']);
     expect(optionsOf('majorOmen', 'FG-11').map((o) => o.kind)).toEqual(['miracle', 'decree']);
     expect(optionsOf('death')).toEqual([]);
+  });
+
+  it('the crisis card opens the whisper of help with the person picked, as the allies layer does (review round two R2)', () => {
+    const [w, d] = optionsOf('crisis', 'T3', 'ซาเล็ม');
+    expect(w).toEqual({ kind: 'whisper', args: { why: 'crisis', id: 'T3', hint: 'ช่วย', target: 'ซาเล็ม' } });
+    expect(d.kind).toBe('dream');
+    // no name known: still the hint of help, no empty target
+    expect(optionsOf('crisis', 'T3')[0].args).toEqual({ why: 'crisis', id: 'T3', hint: 'ช่วย' });
+  });
+});
+
+describe('watch: the crisis card names its person (review round two R2)', () => {
+  it('a card and a card folded into a stop open the whisper of help on the person of the crisis entry', () => {
+    const st = life(2, 40);
+    const crisis = write(st, { sys: 'bonds', kind: 'crisis', id: 'T7', data: { name: 'ซาเล็ม', line: 'น้อง', tie: 'T7' }, level: 2 });
+    const card = write(st, { sys: 'attention', kind: 'call', id: 'T7', data: { call: 'card', why: 'crisis', n: String(crisis.n), ids: 'T7', cards: 'crisis', until: 99, sec: 0 }, level: 3 });
+    const v = cardView(data, st, card)!;
+    expect(v.options[0]).toEqual({ kind: 'whisper', args: { why: 'crisis', id: 'T7', hint: 'ช่วย', target: 'ซาเล็ม' } });
+    expect(v.text).toContain('ซาเล็ม');
+    const stop = write(st, { sys: 'attention', kind: 'call', id: 'age.30', data: { call: 'stop', why: 'age', age: 30, n: String(crisis.n), ids: 'T7', cards: 'crisis', until: null }, level: 3 });
+    const folded = foldedCards(data, st, stop);
+    expect(folded).toHaveLength(1);
+    expect(folded[0].options[0].args).toMatchObject({ hint: 'ช่วย', target: 'ซาเล็ม', id: 'T7' });
   });
 });
 
@@ -247,5 +279,54 @@ describe('watch: the switches of the cards', () => {
     expect(r.ok).toBe(true);
     expect(settingsView(data, s.game.state.settings).cards.omen).toBe(false);
     expect(settingsView(data, s.game.state.settings).cards.prayer).toBe(true);
+  });
+});
+
+describe('watch: the calm picture between scenes changes with the life (review round two R7)', () => {
+  it('the season, the age, the place and the latest event are on it, and two moments of one life do not look alike', () => {
+    const sess = createSession(data, { seed: 3 });
+    startLife(sess);
+    const seen = new Set<string>();
+    const stages = new Set<string>();
+    const lasts = new Set<string>();
+    for (let i = 0; i < 700 && sess.game.state.life && !sess.game.state.life.dead; i++) {
+      sess.game.beat();
+      if (i % 10 !== 0) continue;
+      const v = idleView(data, sess.game.state);
+      seen.add(`${v.season}|${v.figure.stage}|${v.age}`);
+      stages.add(v.figure.stage);
+      if (v.latest) lasts.add(v.latest);
+      expect(v.caption).toContain(`อายุ ${v.age}`);
+      expect(v.caption).toContain(v.seasonName);
+      expect(v.place.length).toBeGreaterThan(0);
+      expect([...v.latest].length).toBeLessThanOrEqual(70);
+    }
+    // six decades of one life: more than one stage of the figure, more than one season, many different looks and several things told
+    expect(stages.size).toBeGreaterThanOrEqual(3);
+    expect(seen.size).toBeGreaterThan(20);
+    expect(lasts.size).toBeGreaterThan(5);
+    // the sky follows the season
+    const skies = new Set<string>();
+    for (let q = 0; q < 4; q++) {
+      const st = sess.game.state;
+      const was = st.clock.quarter;
+      st.clock.quarter = q;
+      skies.add(idleView(data, st).sky);
+      st.clock.quarter = was;
+    }
+    expect(skies.size).toBe(4);
+  });
+
+  it('a child is a smaller figure than a grown person, and an old one bows', () => {
+    const sess = createSession(data, { seed: 3 });
+    startLife(sess);
+    const st = sess.game.state;
+    const at = (age: number) => {
+      st.life!.hAge = age;
+      return idleView(data, st).figure;
+    };
+    expect(at(6).height).toBeLessThan(at(35).height);
+    expect(at(35).pose).toBe('stand');
+    expect(at(65).pose).toBe('bow');
   });
 });

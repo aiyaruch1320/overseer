@@ -127,6 +127,8 @@ export interface BattleModel {
   resultLabel: string;
   tone: Tone;
   hpLost: number;
+  /** A draw says why it is one, with the missed beats and the hit points they cost; '' for any other result. */
+  why: string;
   wounds: string[];
   loot: string[];
   god: GodView;
@@ -366,6 +368,7 @@ export function battleModel(data: GameData, state: GameState, e: LogEntry): Batt
     resultLabel: W.result[end],
     tone: toneOf(end),
     hpLost,
+    why: end === 'draw' ? W.drawWhy(total, beats.filter((b) => b.ok === false).length, hpLost) : '',
     wounds: woundNames(data, str(d.wounds)),
     loot: lootNames(data, str(d.loot)),
     god: { dream: dreamId ? { id: dreamId, name: stances.get(dreamId) ?? '' } : null, whisper },

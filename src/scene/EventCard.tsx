@@ -61,12 +61,13 @@ export function EventCard({ card, src, width = 340, onClose }: { card: CardModel
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: size.small }}>
-        <span data-corner="icon" style={{ color: card.frame, border: `1px solid ${card.frame}`, borderRadius: 12, padding: '0 8px' }}>{card.icon || card.id.replace(/-.*/, '')}</span>
+        {/* no code of the data in the player's text (M5 review round two R5): a card with no icon word has no pill */}
+        {card.icon ? <span data-corner="icon" style={{ color: card.frame, border: `1px solid ${card.frame}`, borderRadius: 12, padding: '0 8px' }}>{card.icon}</span> : <span />}
         <span data-corner="mark" style={{ fontSize: size.title, color: card.frame }}>{card.mark}</span>
       </div>
       <Picture card={card} src={src} />
       <div style={{ fontFamily: font.title, fontSize: size.title, lineHeight: TITLE_LINE }}>{card.title}</div>
-      {card.form && <div style={{ fontSize: 11, color: card.frame }}>{card.id} · {FORM_NAME[card.form]}</div>}
+      {card.form && <div style={{ fontSize: 11, color: card.frame }}>{FORM_NAME[card.form]}</div>}
       {card.body && <div style={{ fontSize: size.text, lineHeight: 1.5 }}>{card.body}</div>}
       {card.sound && <div style={{ fontSize: 11, color: color.textDim }}>♪ {card.sound}</div>}
       {onClose && (

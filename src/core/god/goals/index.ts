@@ -21,7 +21,7 @@ import { goalsOf, lifeGoals, living } from './state';
 import { titlesOf } from './titles';
 import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
 import { crossed } from './unlocks';
-import { checkPick, judge, offer, previewPick, reoffer, runPick, tellOffer, vowName, vowRow } from './vows';
+import { checkPick, judge, missed, offer, previewPick, reoffer, runPick, tellOffer, vowName, vowRow } from './vows';
 import { goalsCarry } from './carry';
 import './policy';
 
@@ -29,7 +29,7 @@ export * from './carry';
 export * from './state';
 export { unlocked, unlockedAt, crossed, type Unlocked } from './unlocks';
 export { rhythmMul, rhythmOf, rhythms, chooseRhythm, checkRhythm, overreachMul, pullOn } from './rhythm';
-export { offer, reoffer, table, judge, vowName, vowRow, vowRows, corner, pool, fits, impossible, JUDGE, NO_VOW, checkPick, previewPick, runPick, idOfPick, type VowResult } from './vows';
+export { offer, reoffer, table, judge, missed, MISSED, vowName, vowRow, vowRows, corner, pool, fits, impossible, JUDGE, NO_VOW, checkPick, previewPick, runPick, idOfPick, type VowResult } from './vows';
 export { titlesOf, titlesHeld, PRIORITY as TITLE_ORDER, MAX_TITLES } from './titles';
 export { factsOf, type Facts } from './facts';
 export { gainOf, milestonesOf, lineText } from './chronicle';
@@ -186,7 +186,7 @@ export const godGoalsSystem: System = {
     const result = judge(ctx, life, g.vow, f);
     const titles = titlesOf(ctx, life, f);
     const { line, before } = record(ctx, life, g.vow, result, titles, f);
-    g.result = { vow: g.vow, result, titles, line };
+    g.result = { vow: g.vow, result, titles, line, ...(result === 'broken' && g.vow ? { missing: missed(g.vow, f) } : {}) };
     const w = goalsOf(ctx.state);
     for (const e of lifeChronicle(ctx)) if (e.kind === 'miracle' && !w.meta.miraclesUsed.includes(e.id)) w.meta.miraclesUsed.push(e.id);
     if (g.vow && g.vow !== 'GV-20') say(ctx, 'vow.result', g.vow, { result, name: vowName(ctx, g.vow, life.race), done: vowRow(ctx, g.vow)?.done ?? '' }, 2);

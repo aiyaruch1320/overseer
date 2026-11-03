@@ -51,7 +51,7 @@ function DeathScene({ data, state, onNext }: { data: GameData; state: GameState;
         )}
         <div style={{ marginTop: 28 }}>
           <Button primary onClick={onNext}>
-            {END_LABELS.record}
+            {END_LABELS.readRecord}
           </Button>
         </div>
       </div>
@@ -79,12 +79,15 @@ function HeirCard({ h, on, pickable, onPick }: { h: HeirCandidate; on: boolean; 
         borderColor: on ? color.light : paper.edge,
         boxShadow: on ? `0 0 12px ${color.light}, inset 0 0 22px ${paper.edge}88` : sheet.boxShadow,
         opacity: pickable && !on ? 0.82 : 1,
-        padding: size.pad,
+        // the card of the heir is as big as the card of the record, with the same paper (M5 review round two R7: one small card in the corner of an empty page)
+        padding: size.pad * 2,
+        minHeight: 200,
         display: 'grid',
-        gap: 4,
+        alignContent: 'start',
+        gap: 8,
       }}
     >
-      <span style={{ fontFamily: font.title, fontSize: size.title }}>{h.name}</span>
+      <span style={{ fontFamily: font.title, fontSize: size.title + 8 }}>{h.name}</span>
       <span style={{ color: paper.inkBrown }}>{h.line}</span>
       {h.traits.length > 0 && <span>{h.traits.join(' · ')}</span>}
       {h.aptitudes.length > 0 && <span style={{ color: paper.inkBrown }}>{h.aptitudes.join(' · ')}</span>}
@@ -138,20 +141,20 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
       )}
 
       {page === 'heir' && (
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', minHeight: '86vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} data-testid="heir-page">
           <Heading>
             {END_LABELS.heir} · {END_LABELS.family} {heirs.family.dynasty}
           </Heading>
           {heirs.blocked && <div style={{ ...sheet, padding: size.pad }}>{END_LABELS.ended}</div>}
           {!heirs.blocked && heirs.candidates.length > 0 && (
-            <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: size.gap }}>
+            <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: size.pad }}>
               {heirs.candidates.map((h) => (
                 <HeirCard key={h.tie} h={h} on={picked === h.tie} pickable onPick={() => setTie(h.tie)} />
               ))}
             </div>
           )}
           {!heirs.blocked && heirs.candidates.length === 0 && heirs.successor && (
-            <div style={{ display: 'grid', gap: size.gap }}>
+            <div style={{ display: 'grid', gap: size.pad }}>
               <HeirCard h={heirs.successor} on pickable={false} onPick={() => undefined} />
             </div>
           )}

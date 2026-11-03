@@ -15,7 +15,7 @@ import { agesOf, dying, newMem, tick, type Mem, type Out, type Plan, type Trig }
 import { classify } from './triggers';
 import { MAX_CARDS, NEAR_DEATH_YEARS, SEC_PER_YEAR, rulesOf, type CardKind } from './tuning';
 
-export { SEC_PER_YEAR, LIFE_MINUTES, LIFE_YEARS, DEFAULT_RULES, DEFAULT_DEADLINES, DEFAULT_AGE_STOPS } from './tuning';
+export { SEC_PER_YEAR, FAST_SPEED_MUL, CARD_MIN_SEC, CARD_MIN_YEARS, LIFE_MINUTES, LIFE_YEARS, DEFAULT_RULES, DEFAULT_DEADLINES, DEFAULT_AGE_STOPS } from './tuning';
 export type { CardKind, TriggerKind } from './tuning';
 export { tick, dying, newMem, agesOf } from './schedule';
 export type { Mem, Out, Plan, Trig, Wait, Hold } from './schedule';
@@ -264,6 +264,16 @@ export function settled(state: GameState, n: number): boolean {
     if (typeof e.data.until !== 'number' || e.data.until <= life.hAge + state.clock.quarter / 4) return true;
     for (let j = log.length - 1; j >= 0 && log[j].n > e.n; j--) if (ACTS(log[j])) return true;
     return false;
+  }
+  return false;
+}
+
+/** Has a card call been made for the entry `n` (shown or past)? */
+export function called(state: GameState, n: number): boolean {
+  const log = state.log;
+  for (let i = log.length - 1; i >= 0 && log[i].n > n; i--) {
+    const e = log[i];
+    if (e.sys === 'attention' && e.kind === 'call' && sourcesOf(e).includes(n)) return true;
   }
   return false;
 }

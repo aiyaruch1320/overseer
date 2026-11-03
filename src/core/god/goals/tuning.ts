@@ -116,4 +116,17 @@ export const SPECIAL_FITS: Record<string, string[]> = {
   reincarnated: ['GV-13', 'GV-10'],
   woken: ['GV-17', 'GV-04'],
 };
+/**
+ * The vows a story wish puts on the table (19-wish.md §2 "ส่วนเรื่อง": "คำปฏิญาณที่เสนอมี GV-xx"; the 19 doc says the offer HAS the vow, so these are placed
+ * in the three first, the others are drawn as ever). The order is the order of the wish; at most WISHED_MAX are placed so the draw keeps a place.
+ */
+export const STORY_VOWS: Record<string, string[]> = {
+  travel: ['GV-04'],
+  love: ['GV-06'],
+  revenge: ['GV-07', 'GV-08'],
+  hero: ['GV-09'],
+  plain: ['GV-10'],
+  nogod: ['GV-12'],
+};
+export const WISHED_MAX = 2;
 export const BORN_FITS: Record<string, string[]> = { diaspora: ['GV-03'], outside: ['GV-03', 'GV-16'] };

@@ -3,7 +3,7 @@
 // tick (`Trig`) and what is fixed in the life (age stops, the death stop), and it answers with calls, glows and missed cards.
 // The system (index.ts) turns the answers into log entries; tests drive it with made-up triggers.
 import type { AttentionRule } from '../data/types-attention';
-import { MAX_WAITING_PRAYERS, SEC_PER_YEAR, type CardKind, type TriggerKind } from './tuning';
+import { CARD_MIN_YEARS, MAX_WAITING_PRAYERS, SEC_PER_YEAR, type CardKind, type TriggerKind } from './tuning';
 
 export interface Trig {
   kind: TriggerKind;
@@ -212,7 +212,9 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
         missed(c, when);
         continue;
       }
-      out.push({ t: 'call', call: 'card', why: c.kind, age: null, src: [{ n: c.n, id: c.id }], cards: [c.kind], until: (c.s + c.wait) / SEC_PER_YEAR, sec: Math.round(when) });
+      // a card shown late keeps a readable minimum on the screen (CARD_MIN_YEARS): its time never runs out under the player's eyes
+      const until = Math.max((c.s + c.wait) / SEC_PER_YEAR, when / SEC_PER_YEAR + CARD_MIN_YEARS);
+      out.push({ t: 'call', call: 'card', why: c.kind, age: null, src: [{ n: c.n, id: c.id }], cards: [c.kind], until, sec: Math.round(when) });
       m.lastCard = when;
       slots--;
     }

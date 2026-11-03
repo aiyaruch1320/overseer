@@ -314,7 +314,7 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
 // ---------- the calls of the game ----------
 
 /** The reason the game called the player, in words: `ถึงจุดหยุดตามอายุ 15` `มีคำอธิษฐานใหม่: ขอหายเจ็บ` ... */
-export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined): string {
+export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) => string | undefined, entryOf?: (n: number) => LogEntry | undefined): string {
   const d = e.data;
   const first = s(e.id).split(',')[0];
   const name = (id: string) => plainName(data, id);
@@ -349,9 +349,14 @@ export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) =
       why = `มีคำอธิษฐานใหม่${n ? `: ${n}` : ''}`;
       break;
     }
-    case 'battle':
-      why = 'ศึกกำลังจะมาถึง';
+    case 'battle': {
+      // the card names the foe and its tier (M5 review round two R1): the prelude entry the call stands for holds both
+      const pre = entryOf?.(Number(s(d.n).split(',')[0]));
+      const foe = scrub(data, s(pre?.data.foe)) || name(first);
+      const tier = s(pre?.data.tier);
+      why = foe ? `ศึกกำลังจะมาถึง: ${foe}${tier ? ` (${tier})` : ''}` : 'ศึกกำลังจะมาถึง';
       break;
+    }
     case 'crisis': {
       // the card names the person: the numbers of the entries it stands for are the `bonds/crisis` announcements
       const who = s(d.n)

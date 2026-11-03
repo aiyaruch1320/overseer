@@ -47,6 +47,11 @@ export const BATTLE_WORDS = {
   crit: 'ทอย 20',
   fumble: 'ทอย 1',
   after: 'หลังศึก',
+  /** Why a fight ended in a draw although it cost hit points (01-core.md §2 row 3 and §7: the beats ran out while the foe stood; every failed roll costs hit points). */
+  drawWhy: (beats: number, missed: number, hpLost: number) => {
+    const miss = missed <= 0 ? '' : ` · ${missed >= beats ? 'พลาดทุกจังหวะ' : `พลาด ${missed} จังหวะ`}${hpLost > 0 ? ` ทุกจังหวะที่พลาดทำให้เสียพลังชีวิต รวมเสีย ${hpLost}` : ''}`;
+    return `ครบ ${beats} จังหวะ ศัตรูยังไม่ล้ม ศัตรูถอย ศึกจึงเสมอ${miss}`;
+  },
   hpLost: (n: number) => (n > 0 ? `เสียพลังชีวิต ${n}` : 'ไม่เสียพลังชีวิตเลย'),
   noWound: 'ไม่มีบาดแผลถาวร',
   woundTitle: 'บาดแผล',

@@ -8,7 +8,7 @@ import { peopleCode, questionOf } from '../../text';
 import { godData } from '../state';
 import { badFates, factsOf, type Facts } from './facts';
 import { lifeGoals, living, metaOf, peekGoals, peekLife } from './state';
-import { BORN_FITS, CHANGE_AT, ELDER_AGE, ERA4_FROM, FIT_MUL, HEIR_FORM_NAME, HEIR_FORM_RACES, OFFER, QUESTION_WORDS, SET_ONE_LAST, SIGN_FITS, SPECIAL_FITS, VOW_NUMBERS } from './tuning';
+import { BORN_FITS, CHANGE_AT, ELDER_AGE, ERA4_FROM, FIT_MUL, HEIR_FORM_NAME, HEIR_FORM_RACES, OFFER, QUESTION_WORDS, SET_ONE_LAST, SIGN_FITS, SPECIAL_FITS, STORY_VOWS, VOW_NUMBERS, WISHED_MAX } from './tuning';
 import { unlocked } from './unlocks';
 import { charOf } from './facts';
 
@@ -59,6 +59,38 @@ export const JUDGE: Record<string, (f: Facts) => boolean> = {
 };
 
 export type VowResult = 'kept' | 'broken' | 'none';
+
+/**
+ * What a broken vow lacked, in words (M5 review round two R3): the same conditions as `JUDGE`, told one by one. Empty when the vow was kept; it never holds a
+ * condition the life met.
+ */
+export const MISSED: Record<string, (f: Facts) => string[]> = {
+  'GV-01': (f) => [...(f.natural ? [] : ['เขาไม่ได้ตายตามธรรมชาติ']), ...(f.hAge >= ELDER_AGE ? [] : [`เขาตายตอนอายุ ${Math.floor(f.hAge)} ยังไม่ถึงวัยผู้เฒ่า (${ELDER_AGE})`])],
+  'GV-02': (f) => [...(f.battle ? ['เขาตายในศึก'] : []), ...(f.curses !== 0 ? ['คำสาปยังติดตัวเขาอยู่'] : []), ...(f.belief < 0 ? ['ศรัทธาเทพของเขาติดลบ'] : [])],
+  'GV-03': (f) => [...(f.where === f.born ? [] : ['เขาไม่ได้ตายในประเทศที่เกิด']), ...(f.continents.length > 1 ? [] : ['เขาไม่เคยออกจากทวีปที่เกิด'])],
+  'GV-04': (f) => [`เขาเคยอยู่ ${f.continents.length} ทวีป ไม่ถึง ${VOW_NUMBERS.continents}`],
+  'GV-05': () => ['ไม่มีทายาทที่มีชีวิตตอนเขาตาย'],
+  'GV-06': (f) => [`สายคนรักของเขาสูงสุดถึงระดับ ${f.love} ไม่ถึงระดับ ${VOW_NUMBERS.loverLevel}`],
+  'GV-07': () => ['คู่แข่งหรือผู้แค้นของเขายังอยู่หลังเขาตาย'],
+  'GV-08': () => ['เขาไม่ได้เลือกทางคืนดีกับผู้แค้นหรือผู้ทรยศสักครั้ง'],
+  'GV-09': () => [`เขาไม่ได้อาชีพลับ ไม่ได้อาวุธตำนาน และผ่านจุดบรรจบไม่ถึง ${VOW_NUMBERS.legendCv} จุด`],
+  'GV-10': (f) => [...(f.secret || f.cv !== 0 ? ['เขาได้อาชีพลับหรือผ่านจุดบรรจบ'] : []), ...(f.kind >= VOW_NUMBERS.kind ? [] : [`แกนเมตตาของเขา ${Math.round(f.kind)} ไม่ถึง ${VOW_NUMBERS.kind}`])],
+  'GV-11': (f) => [`ศรัทธาเทพของเขาสูงสุด ${Math.round(f.peak)} ไม่ถึง ${VOW_NUMBERS.belief}`],
+  'GV-12': (f) => [`ท่านแทรกแซง ${f.interventions} ครั้ง เกิน ${VOW_NUMBERS.interventions}`],
+  'GV-13': () => ['ชะตาร้ายของเขายังเกิดขึ้น'],
+  'GV-14': (f) => [...(f.wasBound ? [] : ['เขาไม่เคยเป็นผู้ถูกผูกตัว']), ...(f.freed ? [] : ['เขาไม่เคยพ้นพันธะ']), ...(f.boundNow ? ['เขาตายขณะยังถูกผูกตัว'] : [])],
+  'GV-15': () => ['เขาไม่เคยอยู่ในฉากเดียวกับมังกรตำนาน'],
+  'GV-16': () => ['ถิ่นเกิดของเขาเป็นซาก ล่ม หรือถูกกลืนในชีวิตเขา'],
+  'GV-17': () => ['เขาไม่ได้ทิ้งร้าน ตำแหน่ง อาวุธที่ตีเอง หรือลูกศิษย์ไว้'],
+  'GV-18': () => ['เขาไม่ได้เลือกฝ่ายของกุญแจในวันสุดท้ายของโลก'],
+  'GV-19': (f) => [...(f.belief <= VOW_NUMBERS.hate ? [] : [`ศรัทธาเทพตอนตาย ${Math.round(f.belief)} ยังไม่ต่ำถึง ${VOW_NUMBERS.hate}`]), ...(f.hAge >= ELDER_AGE ? [] : [`เขาตายตอนอายุ ${Math.floor(f.hAge)} ก่อนวัยผู้เฒ่า (${ELDER_AGE})`])],
+};
+
+/** What the vow lacked when it was broken: the conditions that were not met (nothing for a vow that holds). */
+export function missed(vow: string, f: Facts): string[] {
+  if (JUDGE[vow]?.(f)) return [];
+  return MISSED[vow]?.(f) ?? [];
+}
 
 /** The result of a vow for a dead life, from the facts of its life (`factsOf`). */
 export function judge(ctx: Ctx, life: LifeState, vow: string | null, f: Facts = factsOf(ctx, life)): VowResult {
@@ -115,12 +147,21 @@ export function fits(ctx: Ctx, life: LifeState): Set<string> {
   return out;
 }
 
-/** Draws `n` vows from `ids`, weighted, without repeating: from the stream `god.vow`. */
-function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number): string[] {
-  const rng = ctx.rng('god.vow');
-  const left = [...ids];
+/** The vows the wish of the player names by its story part (love: GV-06 ...), in the order of the wish; only those the pool allows (the life can do them, the set is open). */
+export function wished(life: LifeState, ids: readonly string[]): string[] {
+  const story = (charOf(life) as { wish?: { ask?: { story?: string[] } } } | undefined)?.wish?.ask?.story ?? [];
   const out: string[] = [];
-  for (let k = 0; k < n && left.length; k++) {
+  for (const s of story) for (const v of STORY_VOWS[s] ?? []) if (ids.includes(v) && !out.includes(v)) out.push(v);
+  return out.slice(0, WISHED_MAX);
+}
+
+/** Draws `n` vows from `ids`, weighted, without repeating: from the stream `god.vow`. The vows of the wish stand first (M5 review round two R4), the draw fills the rest. */
+function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number, life?: LifeState): string[] {
+  const rng = ctx.rng('god.vow');
+  const first = life ? wished(life, ids) : [];
+  const left = ids.filter((id) => !first.includes(id));
+  const out: string[] = [...first];
+  while (out.length < n && left.length) {
     const i = rng.weighted(left.map((id) => (fit.has(id) ? FIT_MUL : 1)));
     if (i < 0) break;
     out.push(left.splice(i, 1)[0]);
@@ -131,7 +172,7 @@ function draw(ctx: Ctx, ids: string[], fit: Set<string>, n: number): string[] {
 /** Offers the vows to a newborn life (the `birth` hook). */
 export function offer(ctx: Ctx, life: LifeState): string[] {
   const g = lifeGoals(life);
-  g.offers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER);
+  g.offers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER, life);
   g.reoffers = [];
   g.vow = null;
   g.decided = false;
@@ -144,7 +185,7 @@ export function offer(ctx: Ctx, life: LifeState): string[] {
 export function reoffer(ctx: Ctx, life: LifeState): string[] {
   const g = lifeGoals(life);
   if (g.reoffers.length || g.changed) return g.reoffers;
-  g.reoffers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER);
+  g.reoffers = draw(ctx, pool(ctx, life), fits(ctx, life), OFFER, life);
   return g.reoffers;
 }
 

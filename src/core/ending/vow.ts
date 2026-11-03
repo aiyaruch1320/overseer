@@ -85,5 +85,6 @@ export function vowPage(ctx: Ctx, life: LifeState, log: LogEntry[], cause: strin
     head: `${kept ? 'คำปฏิญาณที่เป็นจริง' : 'คำปฏิญาณที่ไม่เป็นจริง'} · ${name}`,
     lines,
     line: trimTo(`ปฏิญาณ: ${name} · ${kept ? 'สำเร็จ' : 'ไม่สำเร็จ'}`, LIMIT.vowLine),
+    ...(!kept && g.missing?.length ? { missing: g.missing } : {}),
   };
 }

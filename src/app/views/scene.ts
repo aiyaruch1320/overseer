@@ -4,7 +4,10 @@
 // The words of a card come from src/core/text (code-plan §8.1 rule 2); the scripts carry the words of the appearance docs.
 import type { CardDef, SceneScript, ScenesData } from '../../core/data/types-scenes';
 import type { GameData } from '../../core/game';
-import { describe } from '../../core/text';
+import { describe, plainName } from '../../core/text';
+import { SEASONS } from '../../core/text/tuning';
+import type { GameState } from '../../core/types';
+import { allLines, lifeStartN } from './watch';
 import { items } from '../../core/text/labels';
 import type { LogEntry } from '../../core/types';
 import { cardFrom, plainCard, type CardModel } from '../../scene/card';
@@ -144,4 +147,53 @@ export function sceneFor(data: GameData, e: LogEntry): SceneView {
     return { kind: 'script', script: resolveScript(script, picked, std), card, entry: e };
   }
   return { kind: 'card', card, entry: e };
+}
+
+
+// ---------- the calm picture between scenes (M5 review round two R7) ----------
+
+/** What the calm picture shows of the life now: the season (the sky), the age (the size of the figure), the place and the latest thing that happened. */
+export interface IdleView {
+  season: number;
+  seasonName: string;
+  /** The sky and the ground, by the season. */
+  sky: string;
+  ground: string;
+  glow: string;
+  /** The figure's height as a share of the stage: a child is small, a grown person full, an old one a little bowed. */
+  figure: { height: number; pose: 'stand' | 'bow'; stage: 'child' | 'young' | 'adult' | 'elder' };
+  place: string;
+  age: number;
+  /** The latest line of the life that is worth telling again, cut short; '' when there is none. */
+  latest: string;
+  /** The line under the picture. */
+  caption: string;
+}
+
+/** Sky, ground and glow of the four seasons (the beat of a life year is one season: ฤดูหว่าน ฤดูฝน ฤดูเก็บเกี่ยว ฤดูหนาว). The docs give no colours. */
+const IDLE_SKY = [
+  { sky: '#1f2a2c', ground: '#142019', glow: '#9ed08a33' },
+  { sky: '#1a2232', ground: '#101624', glow: '#6aa0d833' },
+  { sky: '#2c2218', ground: '#1f160f', glow: '#e8a64a33' },
+  { sky: '#1c2030', ground: '#12141f', glow: '#c8d4ee33' },
+] as const;
+
+/** The ages that change the figure (the docs of the character give childhood to 15 and the elder age 55 for humans; other races take the same here, it is a picture). */
+const IDLE_AGES = { young: 15, adult: 30, elder: 55 } as const;
+const LATEST_MAX = 70;
+
+export function idleView(data: GameData, state: GameState): IdleView {
+  const life = state.life;
+  const quarter = ((state.clock.quarter % 4) + 4) % 4;
+  const age = life ? Math.floor(life.hAge) : 0;
+  const stage = age < IDLE_AGES.young ? 'child' : age < IDLE_AGES.adult ? 'young' : age < IDLE_AGES.elder ? 'adult' : 'elder';
+  const height = { child: 0.26, young: 0.36, adult: 0.4, elder: 0.38 }[stage];
+  const place = life ? plainName(data, life.country) : '';
+  const from = lifeStartN(state);
+  const last = [...allLines(data, state)].reverse().find((l) => l.entry.n >= from && l.level >= 2 && l.sys !== 'attention');
+  const t = last ? last.text.replace(/\s+/g, ' ').trim() : '';
+  const latest = [...t].length > LATEST_MAX ? `${[...t].slice(0, LATEST_MAX - 1).join('')}…` : t;
+  const c = IDLE_SKY[quarter];
+  const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
+  return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption };
 }

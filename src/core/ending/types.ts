@@ -134,7 +134,7 @@ export interface EndingCard {
   /** The titles of the life that the goals gave at the death (08-goals §3), one to three; empty when none holds. */
   titles: string[];
   /** The vow of the life and what came of it: its page (07 §7) and its line on the card. Absent when the player took no vow. */
-  vow?: { id: string; name: string; result: 'kept' | 'broken'; head: string; lines: string[]; line: string };
+  vow?: { id: string; name: string; result: 'kept' | 'broken'; head: string; lines: string[]; line: string; /** A broken vow: what it lacked, from the goals judge (M5 review round two R3). */ missing?: string[] };
   /** "ผู้คน" of 03 §1: the people of the life and how they stood when the character left. */
   people: string[];
   /** "ร่องรอยที่ทิ้งไว้" of 03 §1: the children, the things left, the threads, what the world keeps. */

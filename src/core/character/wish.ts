@@ -359,8 +359,8 @@ function bannedClasses(n: number): number[] {
 const FAMILY: Record<string, NonNullable<WishAsk['family']>> = { กำพร้า: 'orphan', พ่อหรือแม่คนเดียว: 'single', ลูกคนเดียว: 'only', พี่น้องมาก: 'many' };
 const PLACE_KIND: Record<string, NonNullable<WishAsk['placeKind']>> = { ถิ่นหลัก: 'main', พลัดถิ่น: 'diaspora', นอกถิ่น: 'outside' };
 const ERA: Record<string, NonNullable<WishAsk['era']>> = { ยุคต้นโลก: 'early', ยุคปัจจุบัน: 'present' };
-/** The asks of the story part that no system but the god's goals binds yet (the vow offers GV-06 GV-09 GV-12): kept on the sheet for it. */
-const STORY_UNBOUND = new Set<StoryId>(['love', 'hero', 'nogod']);
+/** The asks of the story part that no system binds yet. The god's goals bind love, the hero and no-god now: they put GV-06, GV-09 and GV-12 among the vows offered (M5 review round two R4). */
+const STORY_UNBOUND = new Set<StoryId>();
 
 /** The faith id of a synonym code (`ศาสนา 3` -> `faith.03`). */
 const faithOf = (code: string): string => `faith.${String(Number(/\d+/.exec(code)?.[0])).padStart(2, '0')}`;

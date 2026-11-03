@@ -205,6 +205,10 @@ describe('E5: the vow and the titles are on the card', () => {
         expect(card.vow?.lines.length).toBeGreaterThanOrEqual(1);
         expect(card.lines).toContain(card.vow!.line);
         expect(card.vow!.line).toMatch(/^ปฏิญาณ: .+ · (สำเร็จ|ไม่สำเร็จ)$/);
+        // a broken vow says what it lacked (M5 review round two R3); a kept one has nothing to add
+        if (g.result === 'broken') expect(card.vow!.missing).toEqual(g.missing);
+        else expect(card.vow!.missing).toBeUndefined();
+        if (g.result === 'broken') expect(card.vow!.missing!.length).toBeGreaterThan(0);
         expect([...card.vow!.line].length).toBeLessThanOrEqual(56);
         expect(input.vow?.result).toBe(card.vow?.result);
         expect(input.titles).toEqual(g.titles);
@@ -332,5 +336,22 @@ describe('M4 round two: the card does not tell what the family web carried as if
         if (c.titles.includes('นักเดินทาง')) expect(c.facts.some((f) => f.kind === 'ถิ่นที่อยู่นานที่สุด')).toBe(false);
       }
     }
+  });
+});
+
+describe('a bare card is never left bare (balance A: seed 17, third life)', () => {
+  it('the facts every life has (the place lived longest, the job, the death) stand in as lines when the moments, the vow and the ending give fewer than two', () => {
+    let checked = 0;
+    lineage(17, 3, (sess) => {
+      const card = cardOf(sess.game.state)!;
+      const [, , , ...rest] = card.lines;
+      expect(rest.length, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
+      // fact lines between the title and the epitaph: the moments, the fallback, the vow, the ending (the question line may or may not be there)
+      expect(card.lines.length - 2 - (card.question.line ? 1 : 0) - 1, card.lines.join(' | ')).toBeGreaterThanOrEqual(2);
+      // the fallback are lines, not moments: the moments stay the turning points
+      for (const m of card.moments) expect(['การเดินทาง', 'ศึก', 'อาชีพ', 'ถิ่นที่อยู่นานที่สุด']).not.toContain(m.kind);
+      checked++;
+    });
+    expect(checked).toBe(3);
   });
 });

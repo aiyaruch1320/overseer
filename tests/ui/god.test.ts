@@ -149,6 +149,20 @@ describe('god view models', () => {
     expect(c.fraction).toBeGreaterThan(0);
   });
 
+  it('the price of a prayer answer is told once: the cost line, and not again among the effect lines (review round two R7)', () => {
+    const g = atCall(11);
+    let guard = 0;
+    while (!prayerView(g, data).cards.length && guard++ < 400) g.beat();
+    for (const c of prayerView(g, data).cards) {
+      for (const a of c.answers.filter((x) => x.ok)) {
+        const price = a.cost;
+        // no effect line repeats the cost words
+        for (const l of a.effect) expect(l, `${a.key}: ${l}`).not.toMatch(/^ราคา/);
+        if (price) expect(a.effect.filter((l) => l.includes(price)), `${a.key} ${price}`).toEqual([]);
+      }
+    }
+  });
+
   it('the conjuring: the circle opens some verbs, a preview names the result and the quota', () => {
     const g = atCall();
     const v = conjureView(g);
@@ -264,6 +278,9 @@ describe('the fixes of the M5 review on the god screens', () => {
     expect(hot.length).toBeGreaterThan(0);
     expect(hot[0].name).toContain('ขณะวิกฤต');
     expect(help.targets[0].crisis).toBe(true);
+    // a person is listed once: no two rows with one name, and no person of the country repeats an ally
+    const names = help.targets.map((t) => t.plain ?? t.name);
+    expect(new Set(names).size).toBe(names.length);
     const c = confirmView(g, data, 'whisper', { hint: 'ช่วย', target: tieId });
     expect(c.lines.join('\n')).toContain('ขณะวิกฤต');
   });

@@ -271,7 +271,11 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const head = [life.name, raceName(ctx, life.race), placeName(ctx, life.home) ?? '', `อายุ ${deadAge}`].filter(Boolean);
   let headLine = head.join(' · ');
   if ([...headLine].length > LIMIT.headLine) headLine = trimTo([head[0], head[1], head[3]].join(' · '), LIMIT.headLine);
-  const lines = [headLine, title?.text ?? '', qLine?.text ?? '', ...moments.map((m) => m.line), vow?.line ?? '', ending ? `ปลายทาง: ${ending}` : '', ep.text].filter((l) => l !== '');
+  // 07 §2.2: every life has three kinds of fact with full slots (death, job, the place lived longest), so the card is never left bare: when the turning points, the vow and the ending
+  // together give fewer than two lines, those facts stand in as lines of the card. They are not moments (a count or a stretch of time is no turning point, M4 review R3), only the fallback.
+  const bare = Math.max(0, FALLBACK_MIN - (moments.length + (vow ? 1 : 0) + (ending ? 1 : 0)));
+  const fallback = bare ? fallbackLines(ctx, g.facts, life.id, bare, moments.map((m) => m.line)) : [];
+  const lines = [headLine, title?.text ?? '', qLine?.text ?? '', ...moments.map((m) => m.line), ...fallback, vow?.line ?? '', ending ? `ปลายทาง: ${ending}` : '', ep.text].filter((l) => l !== '');
 
   const card: EndingCard = {
     v: 1,
@@ -327,6 +331,25 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     earned,
   };
   return { card, input };
+}
+
+/** The least lines of fact (moments, vow, ending) a card holds before the three facts of every life stand in. */
+const FALLBACK_MIN = 2;
+/** The facts every life has with full slots (07 §2.2): death, job, the place lived longest. The death has no short line; its sentence is used. */
+const FALLBACK_KINDS = ['ถิ่นที่อยู่นานที่สุด', 'อาชีพ', 'ความตาย'] as const;
+
+/** Up to `n` lines for a bare card from the facts every life has; a line that already stands on the card is not repeated. */
+function fallbackLines(ctx: Ctx, all: RawFact[], lifeId: string, n: number, have: string[]): string[] {
+  const out: string[] = [];
+  for (const kind of FALLBACK_KINDS) {
+    if (out.length >= n) break;
+    const f = all.find((x) => x.kind === kind);
+    if (!f) continue;
+    let line: string | null = lineOf(ctx, 'card_short', { ชนิด: kind }, f.slots, `${lifeId}|fallback|${kind}`, LIMIT.momentLine, new Set())?.text ?? null;
+    if (!line && kind === 'ความตาย') line = sentenceOf(ctx, f, lifeId, new Set())?.text ?? null;
+    if (line && [...line].length <= LIMIT.sentence && !have.includes(line) && !out.includes(line)) out.push(line);
+  }
+  return out;
 }
 
 /** The base of a kind as a moment: the score of 07 §2.2, or the one of a turning point that has no sentence (`EXTRA_MOMENT`). */
