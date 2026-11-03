@@ -4,8 +4,11 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { store } from '../../app/store';
 import { ALLIES_W, circleOf, type Circle as CircleView, type TieView } from '../../app/views/allies';
+import { tieLooks } from '../../app/views/looks';
+import type { PersonLook } from '../../art/look';
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
+import { Portrait } from '../figure';
 import { color } from '../tokens';
 import { FamilyTree } from './FamilyTree';
 import { Emote, LineIcon, Thread } from './glyphs';
@@ -34,6 +37,8 @@ export function AlliesScreen(props: AlliesProps) {
 function Inner({ data, state, onWhisper, onClose, tab: first = 'circle', selected }: AlliesProps & { data: GameData; state: GameState }) {
   const [tab, setTab] = useState<'circle' | 'tree'>(first);
   const circle = circleOf(data, state);
+  // the figure of each person of the circle: the roster person for an ally of the docs, a person of the race for the family frame
+  const looks = useMemo(() => tieLooks(data, state), [data, state, state.log.length, state.clock.worldYear, state.clock.quarter]);
   return (
     <div class="al-root" data-screen="allies">
       <style>{css}</style>
@@ -58,7 +63,7 @@ function Inner({ data, state, onWhisper, onClose, tab: first = 'circle', selecte
           )}
         </div>
       </header>
-      {tab === 'circle' ? <CirclePane circle={circle} onWhisper={onWhisper} selected={selected} /> : <FamilyTree data={data} state={state} />}
+      {tab === 'circle' ? <CirclePane circle={circle} looks={looks} onWhisper={onWhisper} selected={selected} /> : <FamilyTree data={data} state={state} />}
     </div>
   );
 }
@@ -73,13 +78,14 @@ function Mood({ t, size }: { t: TieView; size: number }) {
   );
 }
 
-function Row({ t, on, onPick }: { t: TieView; on: boolean; onPick: () => void }) {
+function Row({ t, on, onPick, look }: { t: TieView; on: boolean; onPick: () => void; look?: PersonLook }) {
   const cls = t.light ? 'al-row frame' : 'al-row';
   return (
     <button type="button" class={cls} aria-current={on} style={{ borderLeftColor: lineOf(t.line) }} onClick={onPick} data-tie={t.id}>
       <span style={{ color: inkOf(t.line), display: 'inline-flex' }}>
         <LineIcon line={t.line} size={20} />
       </span>
+      {look ? <Portrait look={look} scale={1} crop={14} label={t.name} frame={lineOf(t.line)} testid="tie-portrait" /> : <span />}
       <span class="al-name">
         {t.name} <span class="al-dim al-small">{t.word}{t.isChild && t.stage ? ` · ${t.stage}` : ''} · {t.age}</span>
         {t.crisis && <span aria-label={ALLIES_W.crisis} style={{ color: color.fate }}> ✦</span>}
@@ -92,7 +98,7 @@ function Row({ t, on, onPick }: { t: TieView; on: boolean; onPick: () => void })
   );
 }
 
-function CirclePane({ circle, onWhisper, selected }: { circle: CircleView; onWhisper?: (n: string) => void; selected?: string }) {
+function CirclePane({ circle, looks, onWhisper, selected }: { circle: CircleView; looks: Map<string, PersonLook>; onWhisper?: (n: string) => void; selected?: string }) {
   const all = useMemo(() => [...circle.groups.flatMap((g) => g.ties), ...circle.gone], [circle]);
   const [pick, setPick] = useState<string | null>(selected ?? circle.waiting[0]?.id ?? circle.groups[0]?.ties[0]?.id ?? circle.gone[0]?.id ?? null);
   // a state that changed under the screen (a tie that went) leaves the pick on the first one that is still there
@@ -112,7 +118,7 @@ function CirclePane({ circle, onWhisper, selected }: { circle: CircleView; onWhi
                 {g.title} · {g.ties.length}
               </h3>
               {g.ties.map((t) => (
-                <Row key={t.id} t={t} on={t.id === pick} onPick={() => setPick(t.id)} />
+                <Row key={t.id} t={t} on={t.id === pick} onPick={() => setPick(t.id)} look={looks.get(t.id)} />
               ))}
             </section>
           ))}
@@ -122,13 +128,13 @@ function CirclePane({ circle, onWhisper, selected }: { circle: CircleView; onWhi
                 {ALLIES_W.gone} · {circle.gone.length}
               </h3>
               {circle.gone.map((t) => (
-                <Row key={t.id} t={t} on={t.id === pick} onPick={() => setPick(t.id)} />
+                <Row key={t.id} t={t} on={t.id === pick} onPick={() => setPick(t.id)} look={looks.get(t.id)} />
               ))}
             </section>
           )}
           {circle.total === 0 && circle.gone.length === 0 && <p class="al-dim">{ALLIES_W.empty}</p>}
         </div>
-        <Detail circle={circle} t={cur} onWhisper={onWhisper} onPick={setPick} />
+        <Detail circle={circle} t={cur} look={cur ? looks.get(cur.id) : undefined} onWhisper={onWhisper} onPick={setPick} />
       </div>
     </>
   );
@@ -152,7 +158,7 @@ function Crisis({ t, onWhisper }: { t: TieView; onWhisper?: (n: string) => void 
   );
 }
 
-function Detail({ circle, t, onWhisper, onPick }: { circle: CircleView; t: TieView | null; onWhisper?: (n: string) => void; onPick: (id: string) => void }) {
+function Detail({ circle, t, look, onWhisper, onPick }: { circle: CircleView; t: TieView | null; look?: PersonLook; onWhisper?: (n: string) => void; onPick: (id: string) => void }) {
   const others = circle.waiting.filter((w) => w.id !== t?.id);
   return (
     <section class="al-detail" aria-label={t?.name ?? ALLIES_W.circle}>
@@ -165,19 +171,25 @@ function Detail({ circle, t, onWhisper, onPick }: { circle: CircleView; t: TieVi
       ))}
       {!t && <p class="al-dim">{circle.lonely ? ALLIES_W.lonely : ALLIES_W.empty}</p>}
       {t && <Crisis t={t} onWhisper={onWhisper} />}
-      {t && <TieCard t={t} />}
+      {t && <TieCard t={t} look={look} />}
     </section>
   );
 }
 
-function TieCard({ t }: { t: TieView }) {
+function TieCard({ t, look }: { t: TieView; look?: PersonLook }) {
   const ink = inkOf(t.line);
   return (
     <article data-detail={t.id} style={{ opacity: t.alive ? 1 : 0.8 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ color: ink }}>
-          <LineIcon line={t.line} size={28} />
-        </span>
+        {look ? (
+          <span style={{ filter: t.alive ? undefined : 'grayscale(0.8)', lineHeight: 0 }}>
+            <Portrait look={look} label={t.name} frame={lineOf(t.line)} testid="tie-portrait-large" />
+          </span>
+        ) : (
+          <span style={{ color: ink }}>
+            <LineIcon line={t.line} size={28} />
+          </span>
+        )}
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 20 }}>{t.name}</div>
           <div class="al-dim">

@@ -42,7 +42,7 @@ export const css = `
 .al-list { overflow-y: auto; min-height: 0; padding-right: 4px; }
 .al-group { margin-bottom: ${size.pad}px; }
 .al-group h3 { margin: 0 0 6px; font-weight: normal; font-size: ${size.small}px; color: ${color.textDim}; letter-spacing: .04em; }
-.al-row { display: grid; grid-template-columns: 22px 1fr 54px 26px; align-items: center; gap: 8px; width: 100%; text-align: left; background: #13141b; border: 1px solid ${color.line}; border-left-width: 3px; border-radius: ${size.radius}px; padding: 6px 8px; margin-bottom: 4px; }
+.al-row { display: grid; grid-template-columns: 22px 58px 1fr 54px 26px; align-items: center; gap: 8px; width: 100%; text-align: left; background: #13141b; border: 1px solid ${color.line}; border-left-width: 3px; border-radius: ${size.radius}px; padding: 6px 8px; margin-bottom: 4px; }
 .al-row:hover { background: #1a1b24; }
 .al-row[aria-current="true"] { background: #20212c; border-color: ${color.textDim}; }
 .al-row.frame { opacity: .72; }

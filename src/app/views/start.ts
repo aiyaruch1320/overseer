@@ -4,6 +4,8 @@
 // The wish is read by the core (src/core/character/wish.ts, over data/gen/synonyms.json and wish.json) and applied at birth (`BirthOpts.wish`): this module is the
 // view of it, the draft, the modes, the sheet of birth checked against the life it makes, and the launch.
 import { extOf, readWish, type FatePoints, type Row, type SheetItem, type WishRead } from '../../core/character';
+import { mainLook } from '../../art/main-look';
+import type { PersonLook } from '../../art/look';
 import { rhythms, table, vowName, vowRow } from '../../core/god/goals';
 import { peekLife } from '../../core/god/goals/state';
 import { modeOf, MODES, collectionView } from '../../core/ending';
@@ -186,6 +188,13 @@ export function scratchLife(data: GameData, opts: SessionOpts, key: string): Scr
   return out;
 }
 
+
+/** The Look of the child the sheet would bear (the scratch life, drawn at its birth age): the portrait on the sheet. Null where the data holds no looks. */
+export function bornLookOf(data: GameData, draft: StartDraft, read: WishRead = readWish(data, draft)): PersonLook | null {
+  const opts = sessionOpts(read, draft.seed);
+  const { life } = scratchLife(data, opts, JSON.stringify([draft.seed, read.ask]));
+  return data.looks ? mainLook(life, data) : null;
+}
 
 /** The reason of a row of what cannot be done, in a player's words. */
 function noteOf(data: GameData, it: SheetItem): string {

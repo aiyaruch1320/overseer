@@ -4,11 +4,14 @@
 import { useEffect, useMemo } from 'preact/hooks';
 import { store } from '../../app/store';
 import { characterView, type CharacterModel } from '../../app/views/character';
+import { mainLookOf } from '../../app/views/looks';
+import type { PersonLook } from '../../art/look';
 import { CHAR_WORDS as W } from '../../app/views/character-words';
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
 import { Button } from '../start/parts';
 import { Candle } from '../watch/parts';
+import { Portrait } from '../figure';
 import { css as watchCss } from '../watch/style';
 import { color, font, size } from '../tokens';
 import { AptCard, AxisRow, box, Carried, CompanionCard, Dim, GiftCard, Meter, Row, Section, SkillLine, SlotGrid, StatRow, TraitChip } from './parts';
@@ -29,10 +32,16 @@ function useSource(p: CharacterScreenProps): { data: GameData; state: GameState 
   return data && state ? { data, state } : null;
 }
 
-function Identity({ m }: { m: CharacterModel }) {
+function Identity({ m, look }: { m: CharacterModel; look: PersonLook | null }) {
   const i = m.identity;
   return (
     <Section title={W.identity}>
+      {/* the figure of the character, drawn from the birth and the life (src/art/main-look.ts) */}
+      {look && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: size.gap }} data-testid="character-portrait">
+          <Portrait look={look} label={`${i.name} · ${i.job || i.cls}`} frame={color.line} />
+        </div>
+      )}
       <div data-testid="identity">
         <Row label={W.race}>
           {i.race}
@@ -227,6 +236,7 @@ function God({ m }: { m: CharacterModel }) {
 export function CharacterScreen(props: CharacterScreenProps) {
   const src = useSource(props);
   const model = useMemo(() => (src ? characterView(src.data, src.state) : null), [src?.data, src?.state, store.rev.value]);
+  const look = useMemo(() => (src ? mainLookOf(src.data, src.state) : null), [src?.data, src?.state, store.rev.value]);
   const { onBack } = props;
   useEffect(() => {
     if (!onBack) return;
@@ -256,7 +266,7 @@ export function CharacterScreen(props: CharacterScreenProps) {
       </header>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: size.pad, alignItems: 'start' }}>
         <div style={col}>
-          <Identity m={model} />
+          <Identity m={model} look={look} />
           <Body m={model} />
           <Nature m={model} />
         </div>

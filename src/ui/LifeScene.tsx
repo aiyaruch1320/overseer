@@ -1,12 +1,15 @@
 // The scene area of the watch screen (20-god-ui.md §2 "ฉากชีวิต"): the newest entry of the log that has a scene script is played once;
 // between scenes the card of a recent world event stays up, and when there is none a calm picture (never a black box). The scene mapping is
 // src/app/views/scene.ts, the player src/scene.
-import { useMemo, useState } from 'preact/hooks';
+import { useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../app/store';
+import { mainLookOf } from '../app/views/looks';
 import { idleView, sceneFor, type IdleView, type SceneView } from '../app/views/scene';
-import { EventCard, ScenePlayer, Silhouette, type ActorView } from '../scene';
+import type { PersonLook } from '../art/look';
+import { EventCard, ScenePlayer, Silhouette, type ActorView, type CharacterSlot } from '../scene';
 import { GodEffectLine } from './god';
 import type { LogEntry } from '../core/types';
+import { PERSON_POSE, PersonSprite, useFitZoom } from './figure';
 import { color, font, size } from './tokens';
 
 /** How far back in the log the area looks for a scene (the newest entries only: an old scene is not played late). */
@@ -32,17 +35,50 @@ function newestScene(entries: readonly LogEntry[], data: NonNullable<typeof stor
   return { card };
 }
 
+/** Rows of art that fill the box of the figure: the height of a grown human is 28 (src/art/person.ts ADULT_H) with a little air over the head. */
+const IDLE_ART_ROWS = 30;
+/** The box of a character on the stage is half the stage high (src/scene/tuning.ts FIGURE); a grown human's 28 art rows fill it. */
+const STAGE_ART_ROWS = 40;
+/** The sprite carries the age in its own size (a child is drawn smaller), so its box is the grown height whatever the age. */
+const IDLE_ADULT_HEIGHT = 0.4;
+/**
+ * The actor of a script that is the main character: `a` labelled `ตัวละคร` (or `เด็ก`, the child of a rite) in data/gen/scenes.json (the other `a`s are `ผู้คน`, `b` is the other
+ * person, `crowd` the crowd). The character is drawn from the life; every other actor keeps the silhouette until its own look comes (M6 NPC).
+ */
+export const isMainActor = (a: ActorView): boolean => a.id === 'a' && (a.label === 'ตัวละคร' || a.label === 'เด็ก') && a.count === 1;
+
+function MainOnStage({ a, look }: { a: ActorView; look: PersonLook }) {
+  const box = useRef<HTMLDivElement>(null);
+  const zoom = useFitZoom(box, STAGE_ART_ROWS);
+  return (
+    <div ref={box} style={{ position: 'absolute', inset: 0 }} data-testid="stage-main">
+      <PersonSprite look={look} pose={PERSON_POSE[a.pose] ?? 'idle'} zoom={zoom} label={look.key} testid="stage-sprite" />
+    </div>
+  );
+}
+
+/** The character slot of the scene player: the main character as a sprite of his Look, anyone else as the silhouette. */
+export const mainSlot = (look: PersonLook | null): CharacterSlot | undefined =>
+  look ? (a, frame) => (isMainActor(a) ? <MainOnStage a={a} look={look} /> : <Silhouette a={a} frame={frame} />) : undefined;
+
 const IDLE_ACTOR: ActorView = { id: 'idle', label: '', x: 0.5, pose: 'stand', count: 1 };
 
 /** The calm picture between scenes: the sky of the season, the figure of the age, the place, and the latest thing that happened (M5 review round two R7: one still picture for decades). */
-function Idle({ v }: { v: IdleView }) {
+function Idle({ v, look }: { v: IdleView; look: PersonLook | null }) {
+  const box = useRef<HTMLDivElement>(null);
+  // the figure is 28 art pixels tall for a grown person of a human's height: whole pixels per art pixel keep the squares square at any size of the stage
+  const zoom = useFitZoom(box, IDLE_ART_ROWS);
   return (
     <div role="img" aria-label={`ชีวิตดำเนินไป · ${v.caption}`} style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', overflow: 'hidden', boxSizing: 'border-box', border: `3px solid ${color.line}`, borderRadius: 6, background: `linear-gradient(to bottom, ${v.sky} 0%, ${v.sky} 58%, ${v.ground} 58%, ${v.ground} 100%)` }} data-testid="idle-scene" data-season={v.season} data-stage={v.figure.stage}>
       <style>{'@keyframes ls-breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } } .ls-breathe { animation: ls-breathe 6s ease-in-out infinite; } @media (prefers-reduced-motion: reduce) { .ls-breathe { animation: none; } }'}</style>
       <div class="ls-breathe" style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 50% 58%, ${v.glow} 0%, transparent 60%)` }} />
       <div style={{ position: 'absolute', left: 0, right: 0, top: '58%', height: 1, background: 'rgba(255,255,255,0.12)' }} />
-      <div style={{ position: 'absolute', left: '50%', bottom: '36%', height: `${v.figure.height * 100}%`, width: '12%', transform: 'translateX(-50%)' }} data-testid="idle-figure">
-        <Silhouette a={{ ...IDLE_ACTOR, pose: v.figure.pose }} frame={color.textDim} />
+      <div ref={box} style={{ position: 'absolute', left: '50%', bottom: '36%', height: `${(look ? IDLE_ADULT_HEIGHT : v.figure.height) * 100}%`, width: '12%', transform: 'translateX(-50%)' }} data-testid="idle-figure">
+        {look ? (
+          <PersonSprite look={look} pose={PERSON_POSE.stand} zoom={zoom} label={look.key} testid="idle-sprite" />
+        ) : (
+          <Silhouette a={{ ...IDLE_ACTOR, pose: v.figure.pose }} frame={color.textDim} />
+        )}
       </div>
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: '6%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.textDim, padding: '0 8%' }}>
         <div>{v.caption}</div>
@@ -52,13 +88,14 @@ function Idle({ v }: { v: IdleView }) {
   );
 }
 
-export function LifeScene() {
+export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; state?: NonNullable<typeof store.state> } = {}) {
   void store.rev.value;
-  const st = store.state;
-  const data = store.gameData;
+  const st = props.state ?? store.state;
+  const data = props.data ?? store.gameData;
   const [played, setPlayed] = useState(-1);
   const found = useMemo(() => (st && data ? newestScene(st.log, data, st.clock.worldYear) : {}), [st?.logN]);
   const play = found.play && found.play.entry.n > played ? found.play : undefined;
+  const slot = st && data ? mainSlot(mainLookOf(data, st)) : undefined;
   // The stage is a 16:9 box that fits what is left of the scene area: the controls under it, the layer bar above, the name and the map at the sides.
   // A stage as wide as the area would run over the story log, and its title over the name of the character.
   const fit = `min(100cqw, calc((100cqh - ${CONTROLS}px) * 16 / 9), 960px)`;
@@ -66,13 +103,13 @@ export function LifeScene() {
     <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }} data-testid="life-scene">
       <div style={{ width: fit, maxWidth: '100%' }}>
         {play && play.kind === 'script' ? (
-          <ScenePlayer script={play.script} controls onDone={() => setPlayed(play.entry.n)} />
+          <ScenePlayer script={play.script} controls slot={slot} onDone={() => setPlayed(play.entry.n)} />
         ) : found.card ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', maxHeight: '100cqh', overflowY: 'auto' }}>
             <EventCard card={found.card.card} />
           </div>
         ) : (
-          st && data ? <Idle v={idleView(data, st)} /> : null
+          st && data ? <Idle v={idleView(data, st)} look={mainLookOf(data, st)} /> : null
         )}
         {/* what the god's hand did lately (a small or middle miracle has no script of its own): one line under the stage */}
         {!play && <GodEffectLine />}

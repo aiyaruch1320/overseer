@@ -5,9 +5,10 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../../app/store';
 import { SAVE_WORDS } from '../../app/save-words';
-import { certificate, chipValues, emptyDraft, handFields, launch, readWish, sheetParts, startModes, START_LABELS, WISH_CHIPS, type StartDraft, type WishRead } from '../../app/views/start';
+import { bornLookOf, certificate, chipValues, emptyDraft, handFields, launch, readWish, sheetParts, startModes, START_LABELS, WISH_CHIPS, type StartDraft, type WishRead } from '../../app/views/start';
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
+import { Portrait } from '../figure';
 import { color, font, size } from '../tokens';
 import { Beads, Button, Heading, paper, panel, SheetLine, Styles, Understood } from './parts';
 
@@ -38,6 +39,7 @@ function StartInner(props: StartProps & { data: GameData }) {
   const set = (patch: Partial<StartDraft>) => setDraft((d) => ({ ...d, ...patch }));
   const read = useMemo(() => readWish(data, draft), [data, draft.text, draft.mode, draft.picks]);
   const cert = useMemo(() => certificate(data, draft, read), [data, read, draft.seed, draft.rhythm]);
+  const born = useMemo(() => bornLookOf(data, draft, read), [data, read, draft.seed]);
   const modes = useMemo(() => startModes(data, props.state === undefined ? store.state : props.state, draft.mode), [data, props.state, draft.mode]);
   const parts = useMemo(() => sheetParts(data), [data]);
   const hand = useMemo(() => handFields(data), [data]);
@@ -226,7 +228,15 @@ function StartInner(props: StartProps & { data: GameData }) {
               <Beads beads={cert.points.beads} label={`${START_LABELS.fate} ${cert.points.left}`} />
             </div>
           </div>
-          <p style={{ fontStyle: 'italic', margin: '6px 0 8px', lineHeight: 1.5, color: paper.inkBrown }}>{cert.story.join(' ')}</p>
+          <div style={{ display: 'flex', gap: size.pad, alignItems: 'flex-start', margin: '6px 0 8px' }}>
+            {/* the child the sheet would bear, as the life draws it (src/art/main-look.ts) */}
+            {born && (
+              <span data-testid="born-portrait" style={{ flex: 'none', filter: 'sepia(0.25)' }}>
+                <Portrait look={born} label={`${cert.born.name} · ${cert.born.raceName}`} frame={paper.edge} />
+              </span>
+            )}
+            <p style={{ fontStyle: 'italic', margin: 0, lineHeight: 1.5, color: paper.inkBrown }}>{cert.story.join(' ')}</p>
+          </div>
           {(['sure', 'lean', 'cannot', 'random'] as const).map((row, i) => {
             const items = rowOf(row);
             if (!items.length) return null;

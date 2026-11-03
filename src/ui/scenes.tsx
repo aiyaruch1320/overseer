@@ -5,7 +5,10 @@ import type { ComponentChildren } from 'preact';
 import { BEAT_KINDS } from '../core/data/types-scenes';
 import type { GameData } from '../core/game';
 import type { LogEntry } from '../core/types';
+import { mainLookOf } from '../app/views/looks';
 import { cardOfEntry, sceneFor } from '../app/views/scene';
+import type { GameState } from '../core/types';
+import { LifeScene, mainSlot } from './LifeScene';
 import { BEAT_DEMOS } from '../scene/demo';
 import { EventCard } from '../scene/EventCard';
 import { ScenePlayer } from '../scene/ScenePlayer';
@@ -14,12 +17,14 @@ import { color, font, size } from './tokens';
 
 const entry = (sys: string, kind: string, id: string, data: LogEntry['data'], n = 1): LogEntry => ({ n, worldYear: 0, sys, kind, id, data, level: 2 });
 
-function Scene({ data, e }: { data: GameData; e: LogEntry }) {
+function Scene({ data, e, state }: { data: GameData; e: LogEntry; state?: GameState }) {
   const v = sceneFor(data, e);
+  // the main character on the stage is the figure of the life (src/art/main-look.ts); the others stay silhouettes until their looks come
+  const slot = state ? mainSlot(mainLookOf(data, state)) : undefined;
   return (
     <div style={{ padding: size.pad, display: 'flex', flexWrap: 'wrap', gap: size.pad, alignItems: 'flex-start' }}>
       <div style={{ flex: '1 1 640px', maxWidth: 960 }}>
-        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
+        {v.kind === 'script' ? <ScenePlayer key={v.script.id + v.script.seconds} script={v.script} slot={slot} /> : <div style={{ color: color.textDim, fontFamily: font.body }}>ไม่มีสคริปต์ ใช้การ์ดเหตุการณ์แทน</div>}
       </div>
       <EventCard card={v.card} />
     </div>
@@ -88,17 +93,17 @@ story({
 story({
   group: 'ฉาก',
   name: 'พิธีของเผ่า · มนุษย์ ทุ่งราบ ผ่าน',
-  render: ({ data }) => <Scene data={data} e={entry('story', 'node', 'hu.t1', { rite: 'hu.t1', title: 'พิธีของถิ่น', variant: 'ทุ่งราบ', result: 'pass', choice: 'a', label: 'ผ่าน' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'hu.t1', { rite: 'hu.t1', title: 'พิธีของถิ่น', variant: 'ทุ่งราบ', result: 'pass', choice: 'a', label: 'ผ่าน' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'พิธีของเผ่า · เอลฟ์ ไม่ผ่าน',
-  render: ({ data }) => <Scene data={data} e={entry('story', 'node', 'el.t1', { rite: 'el.t1', title: 'พิธีผูกราก', variant: 'ไม่ผ่าน', result: 'fail', choice: 'b', label: 'ไม่ผ่าน' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'el.t1', { rite: 'el.t1', title: 'พิธีผูกราก', variant: 'ไม่ผ่าน', result: 'fail', choice: 'b', label: 'ไม่ผ่าน' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'ฉากปลายทาง · คนแคระ',
-  render: ({ data }) => <Scene data={data} e={entry('story', 'node', 'dw.e1', { title: 'ปลายทาง', choice: 'a', label: 'ตายในศึก' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'dw.e1', { title: 'ปลายทาง', choice: 'a', label: 'ตายในศึก' })} />,
 });
 story({
   group: 'ฉาก',
@@ -113,5 +118,19 @@ story({
 story({
   group: 'ฉาก',
   name: 'ศึกของ NPC · อัซการ์ แพ้',
-  render: ({ data }) => <Scene data={data} e={entry('combat', 'clash', 'NF-AZ02-1', { npc: 'AZ02-1', outcome: 'แพ้', kind: 'lose', result: 'แพ้' })} />,
+  render: ({ data, state }) => <Scene data={data} state={state} e={entry('combat', 'clash', 'NF-AZ02-1', { npc: 'AZ02-1', outcome: 'แพ้', kind: 'lose', result: 'แพ้' })} />,
 });
+
+// the calm picture between scenes: the main character at three ages of one life each, drawn from the life (an infant, a worker, an elder)
+for (const [name, seed, at] of [['ฉากชีวิต · ทารก', 12, 4], ['ฉากชีวิต · วัยทำงาน', 38, 200], ['ฉากชีวิต · ผู้เฒ่า', 17, 250]] as const)
+  story({
+    group: 'ฉาก',
+    name,
+    seed,
+    at,
+    render: ({ data, state }) => (
+      <div style={{ height: 640, padding: size.pad }}>
+        <LifeScene data={data} state={{ ...state, log: [] }} />
+      </div>
+    ),
+  });
