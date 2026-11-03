@@ -849,11 +849,13 @@ export const FEATS: Record<string, Part> = {
     },
   },
   bandage: {
-    // a band round the head with a spot of blood, and one round the forearm
+    // a wound bound with cloth, never on the face: a band round the chest with a spot of blood, and two turns round the forearm
     front: (r) => {
-      const { p } = r, [hx] = r.head, rx = r.hr[0], y = Math.round(topY(r)) + 2, b = r.m.bone;
-      p.rect(Math.round(hx - rx), y, Math.round(rx * 2) + 1, 2, b); p.px(hx + 1, y, flat(r, '#8a2a2a')); p.px(hx - rx - 1, y + 2 + (r.f % 2), b);
-      armMarks(r, [0.7, 0.78], b);
+      const { p } = r, b = r.m.bone, y0 = r.sh + 2, y1 = Math.min(r.hip - 3, y0 + 2);
+      p.rect(r.x0, y0, r.tw, 1, b); p.rect(r.x0, y1, r.tw, 1, b);
+      p.line([r.x0, y1], [r.x0 + r.tw - 1, y0], b);
+      p.px(r.x0 + r.tw - 3, y0 + 1, flat(r, '#8a2a2a'));
+      armMarks(r, [0.55, 0.65, 0.75], b);
     },
   },
   blind: {
