@@ -65,6 +65,7 @@ function StartInner(props: StartProps & { data: GameData }) {
       style={{
         display: 'grid',
         gridTemplateColumns: '270px minmax(380px, 1fr) 430px',
+        gridTemplateRows: 'minmax(0, 1fr)',
         gap: size.pad,
         height: '100vh',
         minHeight: size.minHeight,
@@ -89,6 +90,7 @@ function StartInner(props: StartProps & { data: GameData }) {
                 type="button"
                 disabled={!m.open}
                 aria-pressed={m.chosen}
+                title={m.mood}
                 onClick={() => set({ mode: m.chosen ? null : m.id })}
                 style={{
                   width: '100%',
@@ -107,6 +109,10 @@ function StartInner(props: StartProps & { data: GameData }) {
               >
                 {m.name}
                 {!m.open && <span style={{ float: 'right', fontSize: size.small }}>{START_LABELS.locked}</span>}
+                {/* the mood the mode gives (04-start-modes.md): shown on the chosen mode, and on the one under the pointer or the focus */}
+                <span className="ov-mood" data-on={m.chosen} style={{ fontSize: size.small, color: color.textDim, lineHeight: 1.45, marginTop: 3 }}>
+                  {m.mood}
+                </span>
               </button>
             </li>
           ))}
@@ -186,7 +192,9 @@ function StartInner(props: StartProps & { data: GameData }) {
       </section>
 
       {/* the sheet of birth */}
-      <section aria-label={START_LABELS.sheet} style={{ display: 'grid', gridAutoRows: 'max-content', alignContent: 'start', gap: size.gap, overflowY: 'auto', minWidth: 0 }}>
+      <section aria-label={START_LABELS.sheet} style={{ display: 'flex', flexDirection: 'column', gap: size.gap, minWidth: 0, minHeight: 0 }}>
+        {/* the sheet scrolls by itself; the buttons below it stay in sight at 1280x720 whatever the wish holds */}
+        <div className="ov-sheet-scroll" style={{ flex: 1, minHeight: 0, overflowY: 'auto', display: 'grid', gridAutoRows: 'max-content', alignContent: 'start', gap: size.gap }}>
         <div style={{ background: paper.bg, color: paper.ink, border: `2px solid ${paper.edge}`, borderRadius: 4, padding: size.pad, boxShadow: `inset 0 0 22px ${paper.edge}88` }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
             <div style={{ fontFamily: font.title, fontSize: size.title + 2 }}>{START_LABELS.sheet}</div>
@@ -197,7 +205,7 @@ function StartInner(props: StartProps & { data: GameData }) {
               <Beads beads={cert.points.beads} label={`${START_LABELS.fate} ${cert.points.left}`} />
             </div>
           </div>
-          <p style={{ fontStyle: 'italic', margin: '6px 0 8px', lineHeight: 1.5, color: paper.inkBrown }}>{cert.story.slice(0, 2).join(' ')}</p>
+          <p style={{ fontStyle: 'italic', margin: '6px 0 8px', lineHeight: 1.5, color: paper.inkBrown }}>{cert.story.join(' ')}</p>
           {(['sure', 'lean', 'cannot', 'random'] as const).map((row, i) => {
             const items = rowOf(row);
             if (!items.length) return null;
@@ -212,7 +220,6 @@ function StartInner(props: StartProps & { data: GameData }) {
               </div>
             );
           })}
-          {!cert.modeHeld && <div style={{ fontSize: size.small, color: paper.inkRed, marginTop: 6 }}>{cert.born.modeName}</div>}
         </div>
 
         {/* the rhythm of fate: four cups */}
@@ -251,11 +258,12 @@ function StartInner(props: StartProps & { data: GameData }) {
                   type="button"
                   role="radio"
                   aria-checked={on}
+                  disabled={!cert.vowOpen}
                   onClick={() => set({ vow: on ? null : v.n })}
                   style={{
                     fontFamily: font.body,
                     fontSize: size.small,
-                    cursor: 'pointer',
+                    cursor: cert.vowOpen ? 'pointer' : 'default',
                     minHeight: 64,
                     color: on ? '#1c1710' : color.text,
                     background: on ? color.light : '#1d1e27',
@@ -263,7 +271,7 @@ function StartInner(props: StartProps & { data: GameData }) {
                     borderRadius: none ? '2px 12px 2px 2px' : '10px 10px 2px 2px',
                     transform: none ? 'rotate(4deg)' : 'none',
                     padding: 6,
-                    opacity: draft.vow !== null && !on ? 0.55 : 1,
+                    opacity: !cert.vowOpen ? 0.4 : draft.vow !== null && !on ? 0.55 : 1,
                     boxShadow: on ? `0 0 10px ${color.light}` : 'none',
                   }}
                 >
@@ -273,11 +281,15 @@ function StartInner(props: StartProps & { data: GameData }) {
             })}
           </div>
           <div style={{ color: color.textDim, fontSize: size.small, marginTop: 6, minHeight: 36, lineHeight: 1.4 }}>
-            {chosen?.done}
-            {chosen?.reward && ` (+${chosen.reward.kept} / +${chosen.reward.broken})`}
+            {!cert.vowOpen && START_LABELS.vowClosed}
+            {cert.vowOpen && chosen?.done}
+            {cert.vowOpen && chosen?.reward && ` · ${START_LABELS.vowReward(chosen.reward.kept, chosen.reward.broken)}`}
           </div>
         </div>
 
+        </div>
+
+        <div style={{ flex: 'none', display: 'grid', gap: 6, paddingTop: 6, borderTop: `1px solid ${color.line}` }}>
         {error && <div role="alert" style={{ color: color.dread }}>{error}</div>}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <Button primary onClick={start}>
@@ -287,6 +299,7 @@ function StartInner(props: StartProps & { data: GameData }) {
             {START_LABELS.edit}
           </Button>
           <Button onClick={() => set({ seed: Math.floor(Math.random() * 1e6) })}>{START_LABELS.reroll}</Button>
+        </div>
         </div>
       </section>
     </div>
