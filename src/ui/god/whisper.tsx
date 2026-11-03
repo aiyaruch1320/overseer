@@ -94,7 +94,7 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
     <div>
       {crisis && (
         <div role="note" style={{ ...box, borderColor: '#b4364a', marginBottom: 8 }}>
-          <b style={{ color: '#d4616f' }}>
+          <b style={{ color: color.dreadText }}>
             {W.whisper.crisisMark} {crisis.name}
           </b>{' '}
           <span class="g-small g-dim">
@@ -102,6 +102,11 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
           </span>
           {crisis.text && <div class="g-small">{crisis.text}</div>}
           <div class="g-small g-dim">{W.whisper.crisisFor} {crisis.name}</div>
+        </div>
+      )}
+      {p.target && !crisis && !v.hints.some((h) => h.targets.some((t) => t.id === p.target || t.plain === p.target || t.name === p.target)) && (
+        <div role="note" class="g-small" style={{ color: color.dreadText, marginBottom: 6 }}>
+          {p.target}: {W.whisper.notOffered}
         </div>
       )}
       <div class="g-small g-dim">

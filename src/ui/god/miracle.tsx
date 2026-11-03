@@ -13,7 +13,7 @@ import { TargetList } from './target';
 import { box, col, row, toneColor } from './style';
 
 const LINE_TONE = ['light', 'dread', 'light', 'fate'] as const;
-const LINE_COLOR = [color.light, '#d4616f', '#c8a87a', color.fate];
+const LINE_COLOR = [color.light, color.dreadText, '#c8a87a', color.fate];
 
 function Bar(p: { v: MiracleView; sel: string | null; onPick: (r: MiracleRow) => void }) {
   return (
@@ -75,7 +75,7 @@ function PreviewBox(p: { v: ReturnType<typeof confirmView> | null }) {
   if (!v) return null;
   return (
     <div style={{ ...box, borderColor: v.ok ? toneColor[v.tone] : '#6a2a33', ...col, gap: 3, overflow: 'auto', minHeight: 0 }} aria-live="polite">
-      {v.ok ? v.lines.map((l, i) => <div key={i} class={i ? 'g-small g-dim' : ''}>{l}</div>) : <div style={{ color: '#d4616f' }}>⌛ {v.reason}</div>}
+      {v.ok ? v.lines.map((l, i) => <div key={i} class={i ? 'g-small g-dim' : ''}>{l}</div>) : <div style={{ color: color.dreadText }}>⌛ {v.reason}</div>}
     </div>
   );
 }
@@ -178,7 +178,7 @@ function AimScreen(p: { v: MiracleView; row: MiracleRow; onPick: (r: MiracleRow)
           {v ? <PreviewBox v={v} /> : <div class="g-dim g-small">{W.miracle.pickTarget}</div>}
         </div>
         {error && (
-          <div role="alert" style={{ color: '#d4616f' }} class="g-small">
+          <div role="alert" style={{ color: color.dreadText }} class="g-small">
             {error}
           </div>
         )}
@@ -236,7 +236,7 @@ function Ruins(p: { ruins: RuinView[] }) {
       {p.ruins.map((r) => (
         <article key={r.country} style={{ ...box, ...col, gap: 4, opacity: r.ended ? 0.7 : 1 }}>
           <div>
-            <s style={{ color: '#d4616f' }}>{r.name.replace(/^ซาก/, '')}</s> <b style={{ color: '#9a9486' }}>{r.name}</b>
+            <s style={{ color: color.dreadText }}>{r.name.replace(/^ซาก/, '')}</s> <b style={{ color: '#9a9486' }}>{r.name}</b>
             <span class="g-small g-dim"> · {r.kind} · {r.year}</span>
           </div>
           <div class="g-small g-dim">

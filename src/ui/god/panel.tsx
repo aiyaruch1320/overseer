@@ -86,7 +86,7 @@ function Purse() {
       <span style={{ color: color.light }}>
         ● {W.light} {p.light}
       </span>{' '}
-      <span style={{ color: '#d4616f' }}>
+      <span style={{ color: color.dreadText }}>
         ● {W.dread} {p.dread}
       </span>
       {p.belief !== null && (

@@ -12,7 +12,7 @@ export const sheet = `
 .g-btn:focus-visible, .g-card:focus-visible, .g-door:focus-visible, .g-chip:focus-visible { outline: 2px solid ${color.light}; outline-offset: 2px; }
 .g-btn:disabled, .g-btn[aria-disabled="true"] { color: ${color.textDim}; background: #14151b; border-style: dashed; cursor: not-allowed; }
 .g-btn.light { border-color: ${color.light}; color: ${color.light}; }
-.g-btn.dread { border-color: #b4364a; color: #d4616f; }
+.g-btn.dread { border-color: #b4364a; color: ${color.dreadText}; }
 .g-btn.fate { border-color: ${color.fate}; color: ${color.fate}; }
 .g-btn.dream { border-color: ${color.dreamMist}; color: #b8a8e8; }
 .g-card { background: #15161d; border: 2px solid ${color.line}; border-radius: ${size.radius + 2}px; padding: ${size.pad}px; transition: transform .18s, box-shadow .18s; text-align: left; cursor: pointer; }
@@ -47,7 +47,7 @@ export function GodStyles(): JSX.Element {
   return <style>{sheet}</style>;
 }
 
-export const toneColor: Record<string, string> = { light: color.light, dread: '#d4616f', fate: color.fate, dream: '#b8a8e8' };
+export const toneColor: Record<string, string> = { light: color.light, dread: color.dreadText, fate: color.fate, dream: '#b8a8e8' };
 
 export const frameOf = (tier: string): string => (rarity as Record<string, string>)[tier] ?? color.line;
 

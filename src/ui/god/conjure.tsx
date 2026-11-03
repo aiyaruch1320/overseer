@@ -63,7 +63,7 @@ function Circle(p: { v: ConjureView }) {
         {!complete ? (
           <div class="g-dim">{W.conjure.pickAll}</div>
         ) : !pr || !pr.ok ? (
-          <div style={{ color: '#d4616f' }}>⌛ {pr?.reason}</div>
+          <div style={{ color: color.dreadText }}>⌛ {pr?.reason}</div>
         ) : (
           <>
             {pr.listed && (

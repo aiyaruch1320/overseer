@@ -2,7 +2,7 @@
 // for previews (which never roll and never change the state) and read the state; they write nothing. No game text is made here: the words are
 // the core text system's (`src/core/text`) and the tools' text helpers (scripts/tools/god-commands.ts), the chrome words are `god-words.ts`.
 import { command } from '../../core/command';
-import { alliesOf, crisesWaiting } from '../../core/bonds';
+import { alliesOf, crisesWaiting, findAlly } from '../../core/bonds';
 import type { Game, GameData } from '../../core/game';
 import { chestLimit, chestsLeft, currentChest, dreamsOf, inWindow, offerCards, slotBelief, switchPenalty } from '../../core/god';
 import { actsOf, cardsOf, fateCost, fateTargets, hintsOf, implementedMiracles, nameOfKind, obeyChance as whisperChance, omenQuarters, strangeOptions, whisperPrice, activeWhispers, miracleOf } from '../../core/god/acts';
@@ -443,6 +443,16 @@ export function whisperTargets(game: Game, data: GameData, needs: 'place' | 'npc
     ...countriesOf(ctx, home).filter((c) => c !== life.country).map((c) => ({ id: c, name: countryName(ctx, c), group: W.whisper.countries })),
     ...cont.map((c) => ({ id: c.id, name: c.name, group: W.whisper.continents })),
   ];
+}
+
+/**
+ * May the god whisper about this person (an id, a tie id or a name)? An ally (a story of his own, or a child) or someone near the character; the
+ * frame of parents, uncles and cousins is not (04 and 03-dreams.md: a hint that points needs a story to lean on, and the core refuses the rest).
+ */
+export function canWhisperTo(game: Game, ref: string): boolean {
+  const life = lifeOf(game);
+  if (!life || !ref) return false;
+  return !!findAlly(game.ctx, ref) || npcsAt(game.ctx, life.country).some((v) => v.id === ref || v.name === ref);
 }
 
 export function whisperView(game: Game, data: GameData): WhisperView {

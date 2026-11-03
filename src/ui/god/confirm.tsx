@@ -141,7 +141,7 @@ export function ConfirmDialog() {
       <div class="g-rise" style={{ ...box, background: color.panel, border: `1px solid ${c}`, boxShadow: `0 0 28px ${c}44`, width: 'min(560px, 92vw)', maxHeight: '88vh', overflow: 'auto', ...col }}>
         <div class="g-title" style={{ color: c }}>{v.title}</div>
         {!v.ok ? (
-          <div style={{ color: '#d4616f' }} role="alert">
+          <div style={{ color: color.dreadText }} role="alert">
             <b>{W.refused}</b>
             <div>{v.reason}</div>
           </div>
@@ -170,7 +170,7 @@ export function ConfirmDialog() {
           </>
         )}
         {error && (
-          <div role="alert" style={{ color: '#d4616f' }}>
+          <div role="alert" style={{ color: color.dreadText }}>
             {error}
           </div>
         )}

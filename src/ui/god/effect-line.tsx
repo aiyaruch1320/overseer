@@ -5,7 +5,7 @@ import { color, size } from '../tokens';
 import { useView } from './bridge';
 import { GodStyles } from './style';
 
-const LINE = { faith: color.light, dread: '#d4616f' } as const;
+const LINE = { faith: color.light, dread: color.dreadText } as const;
 
 export function GodEffectLine() {
   const e = useView((g, d) => effectLine(g, d));

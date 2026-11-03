@@ -7,7 +7,7 @@ import { useView } from './bridge';
 import { Empty } from './parts';
 import { box, col, row } from './style';
 
-const LINE_COLOR = { faith: color.light, dread: '#d4616f', fate: color.fate } as const;
+const LINE_COLOR = { faith: color.light, dread: color.dreadText, fate: color.fate } as const;
 
 export function Chronicle() {
   const v = useView((g, d) => chronicleView(g, d));
