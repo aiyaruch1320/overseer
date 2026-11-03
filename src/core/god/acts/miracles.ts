@@ -190,10 +190,10 @@ export function previewMiracle(ctx: Ctx, args: Record<string, unknown>): Record<
     const warn: string[] = [];
     if (m) {
       const tier = tierKey(m);
-      if (tier === 'grand') warn.push('ใช้สิทธิ์ปาฏิหาริย์ระดับมหาของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน จะใช้อีกไม่ได้');
-      else if (tier === 'big') warn.push('นับเป็นปาฏิหาริย์ระดับใหญ่ครั้งหนึ่งของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน');
-      else if (tier === 'mid') warn.push('นับเป็นปาฏิหาริย์ระดับกลางครั้งหนึ่งของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน');
-      if (m.wait) warn.push(`ระยะรอ ${m.wait} ปีโลกยังเดินต่อ`);
+      if (tier === 'grand') warn.push('สิทธิ์ปาฏิหาริย์ระดับมหาของชีวิตนี้ (ใช้ได้ครั้งเดียว จะใช้อีกไม่ได้)');
+      else if (tier === 'big') warn.push('ช่องปาฏิหาริย์ระดับใหญ่ของชีวิตนี้ (นับไปครั้งหนึ่งแล้ว)');
+      else if (tier === 'mid') warn.push('ช่องปาฏิหาริย์ระดับกลางของชีวิตนี้ (นับไปครั้งหนึ่งแล้ว)');
+      if (m.wait) warn.push(`ระยะรอ ${m.wait} ปีโลก (ยังเดินต่อ)`);
     }
     return { cancel: p.n, id: p.id, refund: { faith: Math.floor(p.paid.faith * OMEN.refund), dread: Math.floor(p.paid.dread * OMEN.refund) }, ...(warn.length ? { warn, spent: true } : {}) };
   }

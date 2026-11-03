@@ -290,7 +290,13 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
     case 'decree': {
       if (p.cancel !== undefined) {
         const r = p.refund as { faith?: number; dread?: number } | undefined;
-        return [`ยกเลิกลางใบที่ ${num(p.cancel)}`, `ได้พลังคืน: ${costWords(r) ?? 'ไม่มี'}`];
+        const warn = (Array.isArray(p.warn) ? p.warn : []).map(str).filter(Boolean);
+        const what = str(p.name) || (typeof p.id === 'string' ? nm(p.id) : '');
+        return [
+          `ยกเลิกลาง${what ? ` ${what}` : `ใบที่ ${num(p.cancel)}`} เหตุนั้นจะไม่เกิด`,
+          `ได้พลังคืน: ${costWords(r) ?? 'ไม่มี'} (ครึ่งหนึ่งของที่จ่าย)`,
+          ...(warn.length ? [`ไม่คืน: ${warn.join(' · ')}`] : []),
+        ];
       }
       const out = [`${str(p.name)} (ระดับ${str(p.tier)})`];
       const where = str(p.targetName) || (typeof p.target === 'string' ? nm(p.target.replace(/^[a-z]+:/, '')) : '');

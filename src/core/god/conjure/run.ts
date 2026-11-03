@@ -105,7 +105,7 @@ function priceRise(ctx: Ctx, pl: Plan): Record<string, unknown> {
 export function previewConjure(ctx: Ctx, args: Record<string, unknown>): Record<string, unknown> {
   if (args.cancel !== undefined) {
     const p = viewConj(ctx.state).pending.find((x) => x.n === Number(args.cancel))!;
-    return { conjure: true, cancel: p.n, name: p.name, refund: { faith: Math.floor(p.paid.faith * REFUND), dread: Math.floor(p.paid.dread * REFUND) }, warn: ['นับเป็นการเสกตามใจครั้งหนึ่งของชีวิตนี้ไปแล้ว ยกเลิกก็ไม่คืน'] };
+    return { conjure: true, cancel: p.n, name: p.name, refund: { faith: Math.floor(p.paid.faith * REFUND), dread: Math.floor(p.paid.dread * REFUND) }, warn: ['รอยนิ้วมือที่ใช้ไป (นับการเสกตามใจไปครั้งหนึ่งของชีวิตนี้แล้ว)'] };
   }
   const p = planOf(ctx, args);
   if (!p.ok) return {};

@@ -27,7 +27,7 @@ onNode({ before: (ctx, _n, id) => armNode(ctx, id), after: (ctx, _n, id, key) =>
 export * from './power';
 export * from './belief';
 export { blessingPool, drawBlessing, type GiftChoice } from './chest';
-export { chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, checkOpen, checkPick, checkReroll, slotPrice, tierChances, compOf, effectsOf, type Chest, type ChestSlot } from './chest';
+export { chestLimit, chestsLeft, currentChest, openChest, pickSlot, rerollChest, skipChest, slotBelief, checkOpen, checkPick, checkReroll, slotPrice, tierChances, compOf, effectsOf, type Chest, type ChestSlot } from './chest';
 export { pathsNow, offersNow, offerCards, sourceOf, obeyChance, dreamWeight, dreamsOf, sendDream, checkDream, previewDream, settleDreams, armNode, settleNode, resolveDream, answerQuestion, questionsOpen, dreamPrice, type DreamPath, type Obey } from './dream';
 export { policyStep, policyName, momentsOf, registerPolicyPart, clearPolicyParts, type PolicyName, type PolicyPart } from './policy';
 export { registerGodActions } from './actions';
