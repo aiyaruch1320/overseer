@@ -1,5 +1,5 @@
 {
- "version": "f2dbd9f0a03f",
+ "version": "ad3a4e20e80f",
  "sources": [
   "data/gen/bonds.json",
   "data/gen/npcs.json",
@@ -22,7 +22,7 @@
  "items": {
   "counts": {
    "races": 21,
-   "lines": 54,
+   "lines": 64,
    "npcs": 614,
    "successors": 55,
    "unmatched": 0
@@ -82,7 +82,9 @@
      },
      {
       "name": "มนุษย์เรือ",
-      "overrides": {}
+      "overrides": {
+       "skin": "#b0805a"
+      }
      },
      {
       "name": "ชาวพื้น",
@@ -98,15 +100,21 @@
      },
      {
       "name": "ชนใต้ทราย",
-      "overrides": {}
+      "overrides": {
+       "skin": "#e8e0c8"
+      }
      },
      {
       "name": "ชาวหิน",
-      "overrides": {}
+      "overrides": {
+       "skin": "#a09a90"
+      }
      },
      {
       "name": "มนุษย์น้ำแข็ง",
-      "overrides": {}
+      "overrides": {
+       "skin": "#d8e4ee"
+      }
      }
     ],
     "src": "docs/appearance/02-races.md:15"
@@ -160,7 +168,16 @@
      },
      {
       "name": "เอลฟ์ฟ้า",
-      "overrides": {}
+      "overrides": {
+       "skin": "#e4eef2",
+       "hairColor": "#b8d8f0",
+       "accent": "#bfe3ff",
+       "feats": [
+        "leafcrest",
+        "vines",
+        "wings:insect"
+       ]
+      }
      },
      {
       "name": "เอลฟ์ราก",
@@ -172,6 +189,13 @@
       "name": "เอลฟ์สูง",
       "overrides": {
        "scale": 1.17
+      }
+     },
+     {
+      "name": "เอลฟ์ใต้ดิน",
+      "overrides": {
+       "skin": "#8a7a9a",
+       "hairColor": "#e0e0e8"
       }
      }
     ],
@@ -282,7 +306,10 @@
      },
      {
       "name": "คนแคระเหนือ",
-      "overrides": {}
+      "overrides": {
+       "skin": "#e8dcd4",
+       "hairColor": "#f0f2f6"
+      }
      }
     ],
     "src": "docs/appearance/02-races.md:33"
@@ -431,7 +458,16 @@
     "lines": [
      {
       "name": "หมาป่า",
-      "overrides": {}
+      "overrides": {
+       "hairColor": "#7a7a80",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle"
+       ]
+      }
      },
      {
       "name": "เสือและแมวใหญ่",
@@ -443,11 +479,147 @@
      },
      {
       "name": "นก",
-      "overrides": {}
+      "overrides": {
+       "hairColor": "#8a7a68",
+       "feats": [
+        "feathers",
+        "beak",
+        "beads"
+       ],
+       "ears": "none"
+      }
      },
      {
       "name": "อูฐและจิ้งจกทราย",
       "overrides": {}
+     },
+     {
+      "name": "เสือ",
+      "overrides": {
+       "hairColor": "#c8782a",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "stripes"
+       ]
+      }
+     },
+     {
+      "name": "สิงโต",
+      "overrides": {
+       "hairColor": "#c89850",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "mane"
+       ]
+      }
+     },
+     {
+      "name": "แมวใหญ่",
+      "overrides": {
+       "hairColor": "#c8a050",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "spots"
+       ]
+      }
+     },
+     {
+      "name": "กวาง",
+      "overrides": {
+       "hairColor": "#9a6a3a",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "antlers",
+        "spots"
+       ]
+      }
+     },
+     {
+      "name": "วัว",
+      "overrides": {
+       "hairColor": "#6a4a30",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "horns"
+       ]
+      }
+     },
+     {
+      "name": "อูฐ",
+      "overrides": {
+       "skin": "#d8b888",
+       "hairColor": "#c8a878",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle"
+       ]
+      }
+     },
+     {
+      "name": "จิ้งจก",
+      "overrides": {
+       "skin": "#8a9a5a",
+       "hairColor": "#6a7a4a",
+       "feats": [
+        "crest",
+        "scales",
+        "slit",
+        "tail:lizard",
+        "beads"
+       ],
+       "ears": "none"
+      }
+     },
+     {
+      "name": "หมี",
+      "overrides": {
+       "hairColor": "#5a3a28",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle"
+       ]
+      }
+     },
+     {
+      "name": "กระต่าย",
+      "overrides": {
+       "hairColor": "#b8a898",
+       "feats": [
+        "fur",
+        "tail:fluffy",
+        "pawhands",
+        "beads",
+        "muzzle",
+        "longears"
+       ],
+       "ears": "none"
+      }
      }
     ],
     "src": "docs/appearance/02-races.md:51"
@@ -612,19 +784,31 @@
     "lines": [
      {
       "name": "ภูตแสง",
-      "overrides": {}
+      "overrides": {
+       "skin": "#fff0c0",
+       "accent": "#fff0a0"
+      }
      },
      {
       "name": "ภูตลม",
-      "overrides": {}
+      "overrides": {
+       "skin": "#d0e0ff",
+       "accent": "#bfd8ff"
+      }
      },
      {
       "name": "ภูตน้ำ",
-      "overrides": {}
+      "overrides": {
+       "skin": "#d0f0e0",
+       "accent": "#9af0d8"
+      }
      },
      {
       "name": "ภูตจิ๋ว",
-      "overrides": {}
+      "overrides": {
+       "skin": "#f0d0f0",
+       "scale": 0.46
+      }
      }
     ],
     "src": "docs/appearance/02-races.md:75"
@@ -713,7 +897,16 @@
     "lines": [
      {
       "name": "ปีศาจเพลิง",
-      "overrides": {}
+      "overrides": {
+       "skin": "#a8382a",
+       "feats": [
+        "horns",
+        "tail:spade",
+        "contract",
+        "fangs",
+        "embers"
+       ]
+      }
      }
     ],
     "src": "docs/appearance/02-races.md:87"
@@ -829,7 +1022,7 @@
     "hair": "",
     "hairFem": "",
     "hairColor": "",
-    "main": "#e8e6e0",
+    "main": "#ece4d0",
     "second": "#d9a030",
     "tool": "",
     "lines": [
@@ -859,12 +1052,21 @@
      },
      {
       "name": "ปีกสั้น",
-      "overrides": {}
+      "overrides": {
+       "accent": "#c4bcae"
+      }
      },
      {
       "name": "ชาวน้ำฟ้า",
       "overrides": {
-       "accent": "#9ad0f0"
+       "skin": "#8ab8e0",
+       "accent": "#9ad0f0",
+       "feats": [
+        "wings:feather",
+        "sunstrap",
+        "goldcirclet",
+        "gills"
+       ]
       }
      }
     ],
@@ -909,7 +1111,14 @@
     "lines": [
      {
       "name": "ไซคลอปส์",
-      "overrides": {}
+      "overrides": {
+       "feats": [
+        "stone",
+        "moss",
+        "heavybrow",
+        "cyclops"
+       ]
+      }
      },
      {
       "name": "จอตุน",
@@ -1014,13 +1223,15 @@
      {
       "name": "ผู้รอดชีวิตตุ๊กตา",
       "overrides": {
+       "skin": "#ece6dc",
        "feats": [
         "plates",
         "rivets",
         "steam",
         "mecheye",
         "mecharm",
-        "tattoo"
+        "tattoo",
+        "puppet"
        ]
       }
      },
@@ -1306,7 +1517,7 @@
     "fem": false,
     "skin": "#e0b890",
     "hairColor": "#6a3420",
-    "eye": "#9a2a1a",
+    "eye": "#2a2024",
     "main": "#7a2e24",
     "second": "#a83a2a",
     "outfit": "leather",
@@ -1319,6 +1530,7 @@
     ],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -1344,7 +1556,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "hotiron",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -1383,6 +1595,7 @@
      "ไม้ไผ่ชี้ท่า"
     ],
     "pose": "ยกมือห้ามเด็กโดยไม่ต้องพูด",
+    "accent": "#d0ccc4",
     "file": "01-azgar",
     "country": "AZ-02",
     "continent": "AZ",
@@ -1424,7 +1637,7 @@
     "race": "dragonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#3a6aa0",
+    "skin": "#8a3a2e",
     "hairColor": "#1e1a1c",
     "eye": "#d9a030",
     "main": "#b87a4a",
@@ -1433,8 +1646,10 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
+    "tool": "jar",
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -1462,7 +1677,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "goggles",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -1473,6 +1688,7 @@
      "แว่นนักบิน"
     ],
     "pose": "ยืนกางขาไหวเท้า",
+    "accent": "#9ad0f0",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1503,6 +1719,7 @@
      "กังหันวัดลมเล็ก"
     ],
     "pose": "เงยหน้าดูทิศลม",
+    "accent": "#9ad0f0",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1516,14 +1733,14 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3f2918",
     "main": "#5a8ad0",
     "second": "#f0f0f0",
     "outfit": "light",
     "hair": "short",
     "beard": "",
     "hat": "turban",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -1561,6 +1778,7 @@
      "โครงว่าวยักษ์ในมือ"
     ],
     "pose": "แหงนมองเมฆแล้วขีดเส้นในอากาศ",
+    "accent": "#9ad0f0",
     "file": "01-azgar",
     "country": "AZ-03",
     "continent": "AZ",
@@ -1581,7 +1799,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -1600,7 +1818,7 @@
     "line": "ชาวหิน",
     "stage": "elder",
     "fem": true,
-    "skin": "#f6d2b0",
+    "skin": "#a09a90",
     "hairColor": "#c0c0c4",
     "eye": "#8a8a90",
     "main": "#b09c7c",
@@ -1609,12 +1827,11 @@
     "hair": "bald",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.25,
     "defaults": [
-     "hairColor",
-     "skin"
+     "hairColor"
     ],
     "items": [
      "พวงกุญแจหนัก"
@@ -1633,7 +1850,7 @@
     "fem": false,
     "skin": "#e0b890",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#56627a",
     "second": "#a8a8b0",
     "outfit": "armor",
@@ -1645,6 +1862,7 @@
     "wear": 0,
     "defaults": [
      "hair",
+     "eye",
      "skin"
     ],
     "items": [
@@ -1663,7 +1881,7 @@
     "line": "ชาวหิน",
     "stage": "adult",
     "fem": false,
-    "skin": "#c98e62",
+    "skin": "#9a9a9a",
     "hairColor": "#8a8a90",
     "eye": "#3f2918",
     "main": "#8a8a86",
@@ -1712,6 +1930,7 @@
      "คทาตะวัน"
     ],
     "pose": "กางแขนต้อนรับ",
+    "accent": "#f4e6b0",
     "file": "01-azgar",
     "country": "AZ-05",
     "continent": "AZ",
@@ -1723,7 +1942,7 @@
     "line": "ปีกราตรี",
     "stage": "adult",
     "fem": true,
-    "skin": "#f0d0b0",
+    "skin": "#f6e0d0",
     "hairColor": "#1e1a1c",
     "eye": "#a8acb8",
     "main": "#4a3a8a",
@@ -1759,7 +1978,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -1809,7 +2028,7 @@
     "line": "ชาวน้ำฟ้า",
     "stage": "adult",
     "fem": true,
-    "skin": "#c89870",
+    "skin": "#a4c8e7",
     "hairColor": "#6a7488",
     "eye": "#9a2a1a",
     "main": "#5a6a88",
@@ -1828,6 +2047,7 @@
      "แผ่นไม้บทกลอน"
     ],
     "pose": "ยืนหลังตรงแล้วอ่านออกเสียง",
+    "accent": "#9ad0f0",
     "file": "01-azgar",
     "country": "AZ-06",
     "continent": "AZ",
@@ -1839,7 +2059,7 @@
     "line": "ชาวน้ำฟ้า",
     "stage": "adult",
     "fem": false,
-    "skin": "#c89870",
+    "skin": "#61819d",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#2a5a8a",
@@ -1862,6 +2082,7 @@
      "ตะเกียงน้ำ"
     ],
     "pose": "ยืนชิดขอบน้ำตกไม่กะพริบตา",
+    "accent": "#5a8ac0",
     "file": "01-azgar",
     "country": "AZ-06",
     "continent": "AZ",
@@ -1873,7 +2094,7 @@
     "line": "ชาวน้ำฟ้า",
     "stage": "child",
     "fem": true,
-    "skin": "#f6e0d0",
+    "skin": "#a4c8e7",
     "hairColor": "#947f6f",
     "eye": "#6a9ad0",
     "main": "#a8c8e0",
@@ -1911,7 +2132,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "tank",
     "feats": [
      "glasses"
     ],
@@ -1944,7 +2165,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "basket",
     "feats": [],
     "wear": 0.35,
     "defaults": [
@@ -1969,7 +2190,7 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#3a2a20",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#9ac060",
     "second": "#f4f0e0",
     "outfit": "leather",
@@ -1980,7 +2201,8 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "hairColor"
+     "hairColor",
+     "eye"
     ],
     "items": [
      "เชือกปีน",
@@ -2036,7 +2258,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "doll",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -2057,7 +2279,7 @@
     "line": "อาเวียนขาว",
     "stage": "adult",
     "fem": false,
-    "skin": "#f0d0b0",
+    "skin": "#f6e0d0",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#2a5a3a",
@@ -2150,9 +2372,9 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#8a94a4",
     "second": "#c08a3a",
     "outfit": "miner",
@@ -2214,7 +2436,7 @@
     "fem": false,
     "skin": "#c98e62",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#9a2a1a",
     "main": "#8a94a4",
     "second": "#c08a3a",
     "outfit": "tunic",
@@ -2338,7 +2560,7 @@
     "line": "ปีกราตรี",
     "stage": "adult",
     "fem": false,
-    "skin": "#f0d0b0",
+    "skin": "#f6e0d0",
     "hairColor": "#1e1a1c",
     "eye": "#616165",
     "main": "#8a7048",
@@ -2380,7 +2602,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "dagger",
+    "tool": "beads",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -2433,7 +2655,7 @@
     "line": "โอเกอร์",
     "stage": "elder",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#7f9480",
     "hairColor": "#c0c0c4",
     "eye": "#2a2024",
     "main": "#9a8a6a",
@@ -2463,7 +2685,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": true,
-    "skin": "#5a8a40",
+    "skin": "#8bb077",
     "hairColor": "#c0c0c4",
     "eye": "#3a7a3a",
     "main": "#6a6a50",
@@ -2494,7 +2716,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": true,
-    "skin": "#5a8a40",
+    "skin": "#6f9a4f",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#7a3a32",
@@ -2528,7 +2750,7 @@
     "line": "โอเกอร์",
     "stage": "child",
     "fem": null,
-    "skin": "#7aa860",
+    "skin": "#8bb077",
     "hairColor": "#3a2a20",
     "eye": "#947f6f",
     "main": "#8a9a5a",
@@ -2557,7 +2779,7 @@
     "race": "demonkin",
     "stage": "elder",
     "fem": false,
-    "skin": "#8a3a6a",
+    "skin": "#7a2a48",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#2a1a1a",
@@ -2567,7 +2789,9 @@
     "beard": "",
     "hat": "",
     "tool": "scroll",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "hair"
@@ -2587,7 +2811,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a4a8a",
+    "skin": "#7a5a98",
     "hairColor": "#3a2a20",
     "eye": "#d02a4a",
     "main": "#2a2a4a",
@@ -2596,9 +2820,10 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [
-     "glasses"
+     "glasses",
+     "horns"
     ],
     "wear": 0.3,
     "defaults": [
@@ -2629,7 +2854,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -2649,7 +2874,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#8a3a6a",
+    "skin": "#8a3a2e",
     "hairColor": "#3a2a4a",
     "eye": "#d02a4a",
     "main": "#6a1a1a",
@@ -2659,7 +2884,9 @@
     "beard": "",
     "hat": "",
     "tool": "sword",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.05,
     "defaults": [],
     "items": [
@@ -2676,7 +2903,7 @@
     "race": "ghoul",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a9a8a",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#4a4e56",
@@ -2707,7 +2934,7 @@
     "race": "ghoul",
     "stage": "adult",
     "fem": false,
-    "skin": "#8a9a8a",
+    "skin": "#7f9480",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#8a7a5a",
@@ -2716,7 +2943,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "book",
+    "tool": "chalk",
     "feats": [],
     "wear": 0.5,
     "defaults": [],
@@ -2734,7 +2961,7 @@
     "race": "ghoul",
     "stage": "adult",
     "fem": true,
-    "skin": "#8a9a8a",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#8a3a2a",
@@ -2765,7 +2992,7 @@
     "race": "ghoul",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a9a8a",
+    "skin": "#7f9480",
     "hairColor": "#8a8a90",
     "eye": "#8a8a90",
     "main": "#b8bcb4",
@@ -2792,7 +3019,7 @@
     "race": "ghoul",
     "stage": "child",
     "fem": true,
-    "skin": "#8a9a8a",
+    "skin": "#a79faf",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#8a8aa0",
@@ -2801,7 +3028,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "doll",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -2823,7 +3050,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#7a5230",
@@ -2856,7 +3083,7 @@
     "stage": "adult",
     "fem": null,
     "skin": "#f0e0d0",
-    "hairColor": "#3a2a20",
+    "hairColor": "#7a7a80",
     "eye": "#d8c030",
     "main": "#b4b8c4",
     "second": "#c8a030",
@@ -2866,13 +3093,13 @@
     "hat": "",
     "tool": "",
     "feats": [
-     "scar"
+     "scar",
+     "mane"
     ],
     "wear": 0.55,
     "defaults": [
      "outfit",
      "hair",
-     "hairColor",
      "skin"
     ],
     "items": [
@@ -2889,7 +3116,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": false,
-    "skin": "#5a8a40",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#5a6050",
@@ -2898,7 +3125,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -2950,7 +3177,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#a8885a",
@@ -2960,7 +3187,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "tail:fluffy"
+    ],
     "wear": 0.4,
     "defaults": [
      "hair",
@@ -2970,6 +3199,7 @@
      "ไม่มีอาวุธ"
     ],
     "pose": "วางมือบนหลังหมาป่าเงียบ ๆ",
+    "ears": "animal",
     "file": "02-morhaven",
     "country": "MH-04",
     "continent": "MH",
@@ -2981,7 +3211,7 @@
     "line": "โอเกอร์",
     "stage": "elder",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#4f6a4a",
     "hairColor": "#c0c0c4",
     "eye": "#9a2a1a",
     "main": "#44444c",
@@ -3045,7 +3275,7 @@
     "line": "โอเกอร์",
     "stage": "adult",
     "fem": true,
-    "skin": "#7aa860",
+    "skin": "#8bb077",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#8a9a5a",
@@ -3072,7 +3302,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a4a8a",
+    "skin": "#553f6a",
     "hairColor": "#3a2a20",
     "eye": "#978622",
     "main": "#3a3a5a",
@@ -3082,7 +3312,9 @@
     "beard": "",
     "hat": "",
     "tool": "book",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.25,
     "defaults": [
      "hair",
@@ -3103,7 +3335,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#8fb076",
     "hairColor": "#e8e6e0",
     "eye": "#2a2024",
     "main": "#9a8a68",
@@ -3135,17 +3367,19 @@
     "fem": true,
     "skin": "#c98e62",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#b8a060",
     "second": "#6a8a4a",
     "outfit": "light",
     "hair": "braid",
     "beard": "",
     "hat": "veil",
-    "tool": "bowl",
+    "tool": "bag",
     "feats": [],
     "wear": 0.45,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ถุงเมล็ดข้าวเถ้า"
     ],
@@ -3160,7 +3394,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": true,
-    "skin": "#5a8a40",
+    "skin": "#4a6c38",
     "hairColor": "#c0c0c4",
     "eye": "#2a2024",
     "main": "#6f9a4f",
@@ -3192,7 +3426,7 @@
     "race": "demonkin",
     "stage": "child",
     "fem": true,
-    "skin": "#c06070",
+    "skin": "#c0889e",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#a04a5a",
@@ -3202,7 +3436,9 @@
     "beard": "",
     "hat": "",
     "tool": "bowl",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.45,
     "defaults": [
      "hairColor"
@@ -3221,19 +3457,21 @@
     "race": "orc",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a9a5a",
+    "skin": "#9bac9c",
     "hairColor": "#5a3a22",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#6e5a3e",
     "second": "#b8a060",
     "outfit": "rags",
     "hair": "curly",
     "beard": "",
     "hat": "wide",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ถุงเมล็ดข้าวเถ้า"
     ],
@@ -3257,7 +3495,7 @@
     "outfit": "regal",
     "hair": "short",
     "beard": "",
-    "hat": "crown",
+    "hat": "",
     "tool": "",
     "feats": [],
     "wear": 0.4,
@@ -3280,7 +3518,7 @@
     "line": "ผู้ถูกอัญเชิญ",
     "stage": "teen",
     "fem": true,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#4a4a50",
@@ -3289,7 +3527,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "card",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -3309,7 +3547,7 @@
     "race": "demonkin",
     "stage": "elder",
     "fem": false,
-    "skin": "#8a3a6a",
+    "skin": "#8a3a2e",
     "hairColor": "#c0c0c4",
     "eye": "#978622",
     "main": "#5a4a6a",
@@ -3319,7 +3557,9 @@
     "beard": "",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.3,
     "defaults": [
      "hairColor"
@@ -3369,15 +3609,17 @@
     "fem": null,
     "skin": "#6a4a8a",
     "hairColor": "#1e1a1c",
-    "eye": "#9a2a1a",
+    "eye": "#d8c030",
     "main": "#8a5a4a",
     "second": "#6a5a4a",
     "outfit": "leather",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
+    "tool": "bag",
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
@@ -3396,7 +3638,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#c06070",
+    "skin": "#977eaf",
     "hairColor": "#8a8a90",
     "eye": "#d8c030",
     "main": "#5aa0d8",
@@ -3405,8 +3647,10 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
+    "tool": "keyring",
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -3454,7 +3698,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#c06070",
+    "skin": "#c0889e",
     "hairColor": "#2a1e18",
     "eye": "#d02a4a",
     "main": "#8a5a7a",
@@ -3464,7 +3708,9 @@
     "beard": "",
     "hat": "",
     "tool": "flask",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "hair"
@@ -3484,9 +3730,9 @@
     "race": "human",
     "stage": "child",
     "fem": true,
-    "skin": "#7a4a2a",
+    "skin": "#c98e62",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#7fa97f",
     "main": "#a8cce8",
     "second": "#e8e0c8",
     "outfit": "light",
@@ -3511,7 +3757,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#8a3a6a",
+    "skin": "#8a3a2e",
     "hairColor": "#3a2a20",
     "eye": "#d02a4a",
     "main": "#4a2a2a",
@@ -3576,18 +3822,19 @@
     "fem": true,
     "skin": "#a87048",
     "hairColor": "#5a3a22",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#8ac84a",
     "second": "#e04848",
     "outfit": "tunic",
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -3604,7 +3851,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a4a8a",
+    "skin": "#8a7a96",
     "hairColor": "#e8e6e0",
     "eye": "#d02a4a",
     "main": "#2a2a4a",
@@ -3664,7 +3911,7 @@
     "race": "ghoul",
     "stage": "elder",
     "fem": null,
-    "skin": "#6a7a6a",
+    "skin": "#4a4a4e",
     "hairColor": "#c0c0c4",
     "eye": "#8a8a90",
     "main": "#e8e6e0",
@@ -3672,7 +3919,7 @@
     "outfit": "robe",
     "hair": "short",
     "beard": "",
-    "hat": "crown",
+    "hat": "hood",
     "tool": "staff",
     "feats": [],
     "wear": 0.4,
@@ -3705,7 +3952,8 @@
     "hat": "",
     "tool": "book",
     "feats": [
-     "mask"
+     "mask",
+     "horns"
     ],
     "wear": 0.45,
     "defaults": [],
@@ -3725,7 +3973,7 @@
     "line": "โอเกอร์",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#4f6a4a",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#6f7a4a",
@@ -3755,7 +4003,7 @@
     "race": "orc",
     "stage": "child",
     "fem": true,
-    "skin": "#7aa860",
+    "skin": "#8bb077",
     "hairColor": "#3a2a20",
     "eye": "#1e1a1c",
     "main": "#7a9a6a",
@@ -3784,7 +4032,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#4a6c38",
     "hairColor": "#e8e6e0",
     "eye": "#8a8a90",
     "main": "#4a4644",
@@ -3811,7 +4059,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#a04a5a",
+    "skin": "#9a4a68",
     "hairColor": "#1e1a1c",
     "eye": "#d02a4a",
     "main": "#8a3a4a",
@@ -3821,7 +4069,9 @@
     "beard": "",
     "hat": "",
     "tool": "sword",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -3839,7 +4089,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": true,
-    "skin": "#5a8a40",
+    "skin": "#6f9a4f",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#6f9a4f",
@@ -3869,7 +4119,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#7f9480",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#a8a498",
@@ -3940,7 +4190,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [
      "ghost"
     ],
@@ -3987,7 +4237,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a4a8a",
+    "skin": "#8a7a96",
     "hairColor": "#e8e6e0",
     "eye": "#d02a4a",
     "main": "#6a5a6a",
@@ -4018,7 +4268,7 @@
     "race": "dwarf",
     "stage": "elder",
     "fem": false,
-    "skin": "#b87050",
+    "skin": "#9a6040",
     "hairColor": "#8a8a90",
     "eye": "#6a6e78",
     "main": "#5a4a4a",
@@ -4036,6 +4286,7 @@
      "มงกุฎเหล็กเรียบ"
     ],
     "pose": "ยืนกางขาแตะทั่งด้วยฝ่ามือ",
+    "accent": "#6a6e78",
     "file": "03-kaz-durum",
     "country": "KD-01",
     "continent": "KD",
@@ -4048,7 +4299,7 @@
     "fem": true,
     "skin": "#9a6040",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#8a5a3a",
     "second": "#b8a060",
     "outfit": "apron",
@@ -4058,7 +4309,9 @@
     "tool": "hammer",
     "feats": [],
     "wear": 0.35,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ค้อนปู่ห่อผ้า",
      "คันไถเล็ก"
@@ -4076,7 +4329,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#8a8a90",
     "main": "#8a7a5a",
     "second": "#5a4a4a",
     "outfit": "tunic",
@@ -4162,7 +4415,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": false,
-    "skin": "#3a2a2a",
+    "skin": "#2a2222",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#3a2a2a",
@@ -4171,7 +4424,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "bowl",
+    "tool": "bucket",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -4339,7 +4592,7 @@
     "race": "dwarf",
     "stage": "adult",
     "fem": null,
-    "skin": "#d08a62",
+    "skin": "#c8c8c4",
     "hairColor": "#8a8a90",
     "eye": "#8a8a90",
     "main": "#141214",
@@ -4461,9 +4714,9 @@
     "race": "human",
     "stage": "adult",
     "fem": null,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#1e1a1c",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#b88a30",
     "second": "#3a2a2a",
     "outfit": "apron",
@@ -4475,7 +4728,9 @@
      "blind"
     ],
     "wear": 0.05,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ม้วนสำเนารูน"
     ],
@@ -4490,7 +4745,7 @@
     "race": "darkelf",
     "stage": "elder",
     "fem": true,
-    "skin": "#5a4a70",
+    "skin": "#553f6a",
     "hairColor": "#dcdee8",
     "eye": "#8a7ac0",
     "main": "#4a4c58",
@@ -4520,7 +4775,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#e8e6e0",
     "eye": "#8a7ac0",
     "main": "#14101c",
@@ -4530,7 +4785,9 @@
     "beard": "",
     "hat": "",
     "tool": "dagger",
-    "feats": [],
+    "feats": [
+     "glow-eyes"
+    ],
     "wear": 0,
     "defaults": [
      "outfit"
@@ -4549,7 +4806,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#977eaf",
     "hairColor": "#c8ccd8",
     "eye": "#2a1e18",
     "main": "#3a2a50",
@@ -4576,7 +4833,7 @@
     "race": "darkelf",
     "stage": "child",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#977eaf",
     "hairColor": "#dcdee8",
     "eye": "#8a7ac0",
     "main": "#6a3a90",
@@ -4585,7 +4842,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "chalk",
     "feats": [],
     "wear": 0.45,
     "defaults": [],
@@ -4623,6 +4880,7 @@
      "มงกุฎเหล็กเผาแดง"
     ],
     "pose": "ยืนบนระเบียงเหนือปากเหวโดยไม่จับราว",
+    "accent": "#6a6e78",
     "file": "03-kaz-durum",
     "country": "KD-06",
     "continent": "KD",
@@ -4633,7 +4891,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": true,
-    "skin": "#3a2a2a",
+    "skin": "#2a2222",
     "hairColor": "#2a2a2e",
     "eye": "#9a2a1a",
     "main": "#3c3c44",
@@ -4660,7 +4918,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": true,
-    "skin": "#5a3a30",
+    "skin": "#4a4a4e",
     "hairColor": "#2a2a2e",
     "eye": "#e6d678",
     "main": "#1a1618",
@@ -4687,7 +4945,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a3a30",
+    "skin": "#4a4a4e",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#7a1c1c",
@@ -4717,7 +4975,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": true,
-    "skin": "#3a2a2a",
+    "skin": "#2a2222",
     "hairColor": "#3a2a20",
     "eye": "#e6d678",
     "main": "#6a4a30",
@@ -4758,7 +5016,9 @@
     "beard": "",
     "hat": "",
     "tool": "greatsword",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "hair",
@@ -4778,7 +5038,7 @@
     "race": "dragonkin",
     "stage": "adult",
     "fem": null,
-    "skin": "#9a3a2a",
+    "skin": "#8a3a2e",
     "hairColor": "#3a2a20",
     "eye": "#d9a030",
     "main": "#7a2e24",
@@ -4788,7 +5048,9 @@
     "beard": "",
     "hat": "",
     "tool": "censer",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "hair",
@@ -4817,7 +5079,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -4838,7 +5100,7 @@
     "fem": null,
     "skin": "#b04a3a",
     "hairColor": "#c8ccd8",
-    "eye": "#d9a030",
+    "eye": "#d8c030",
     "main": "#8a6a4a",
     "second": "#d8c890",
     "outfit": "rags",
@@ -4846,7 +5108,9 @@
     "beard": "",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.5,
     "defaults": [
      "skin"
@@ -4865,7 +5129,7 @@
     "race": "dragonkin",
     "stage": "adult",
     "fem": null,
-    "skin": "#9a3a2a",
+    "skin": "#b07289",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#4e2a60",
@@ -4875,7 +5139,9 @@
     "beard": "",
     "hat": "mitre",
     "tool": "scroll",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.45,
     "defaults": [
      "hair",
@@ -4895,7 +5161,7 @@
     "race": "dragonkin",
     "stage": "adult",
     "fem": true,
-    "skin": "#9a3a2a",
+    "skin": "#b04a3a",
     "hairColor": "#1e1a1c",
     "eye": "#d9a030",
     "main": "#2a3a5a",
@@ -4905,7 +5171,9 @@
     "beard": "",
     "hat": "veil",
     "tool": "scroll",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.45,
     "defaults": [],
     "items": [
@@ -4922,7 +5190,7 @@
     "race": "lavakin",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a3a30",
+    "skin": "#4a4a4e",
     "hairColor": "#2a2a2e",
     "eye": "#ffc040",
     "main": "#6a6a72",
@@ -4980,7 +5248,7 @@
     "race": "demonkin",
     "stage": "elder",
     "fem": true,
-    "skin": "#6a4a8a",
+    "skin": "#977eaf",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#9a928a",
@@ -4991,7 +5259,8 @@
     "hat": "",
     "tool": "",
     "feats": [
-     "scar"
+     "scar",
+     "horns"
     ],
     "wear": 0.85,
     "defaults": [],
@@ -5040,7 +5309,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#8e8498",
     "hairColor": "#dcdee8",
     "eye": "#8a7ac0",
     "main": "#4a2a3a",
@@ -5050,7 +5319,9 @@
     "beard": "",
     "hat": "hood",
     "tool": "lantern",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0,
     "defaults": [
      "hair"
@@ -5078,7 +5349,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "",
-    "tool": "mug",
+    "tool": "",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -5101,14 +5372,14 @@
     "fem": true,
     "skin": "#a87048",
     "hairColor": "#5a3a22",
-    "eye": "#d9a030",
+    "eye": "#5a3a22",
     "main": "#8ac84a",
     "second": "#1a1822",
     "outfit": "apron",
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "mug",
+    "tool": "pipe",
     "feats": [],
     "wear": 0.25,
     "defaults": [],
@@ -5131,12 +5402,12 @@
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#8a7a5a",
-    "second": "#1a1822",
+    "second": "#c8b080",
     "outfit": "cloak",
     "hair": "short",
     "beard": "",
     "hat": "turban",
-    "tool": "mug",
+    "tool": "compass",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -5215,7 +5486,7 @@
     "fem": null,
     "skin": "#d08a62",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#4a3a30",
     "second": "#d9a030",
     "outfit": "miner",
@@ -5275,18 +5546,19 @@
     "fem": null,
     "skin": "#f0c8a0",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#6e6a62",
     "second": "#6a5a4a",
     "outfit": "rags",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.55,
     "defaults": [
      "hair",
+     "eye",
      "skin"
     ],
     "items": [
@@ -5303,7 +5575,7 @@
     "race": "dwarf",
     "stage": "adult",
     "fem": null,
-    "skin": "#9a6040",
+    "skin": "#8a3a2e",
     "hairColor": "#c8ccd8",
     "eye": "#c88a20",
     "main": "#5a1a14",
@@ -5454,7 +5726,7 @@
     "stage": "adult",
     "fem": null,
     "skin": "#e0a07a",
-    "hairColor": "#3a2a20",
+    "hairColor": "#f0f2f6",
     "eye": "#6a9ad0",
     "main": "#f0f4f8",
     "second": "#b8c8d8",
@@ -5465,9 +5737,7 @@
     "tool": "axe",
     "feats": [],
     "wear": 0.45,
-    "defaults": [
-     "hairColor"
-    ],
+    "defaults": [],
     "items": [
      "ขวานน้ำแข็งห้อยหลัง"
     ],
@@ -5483,7 +5753,7 @@
     "line": "มนุษย์น้ำแข็ง",
     "stage": "adult",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#d4e2f0",
     "hairColor": "#e8e6e0",
     "eye": "#a8acb8",
     "main": "#8a8e92",
@@ -5543,7 +5813,7 @@
     "line": "มนุษย์น้ำแข็ง",
     "stage": "teen",
     "fem": true,
-    "skin": "#e8b48a",
+    "skin": "#d4e2f0",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#62605e",
@@ -5602,17 +5872,18 @@
     "fem": true,
     "skin": "#e0a878",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#2a5a3a",
     "second": "#c8a030",
     "outfit": "noble",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -5631,7 +5902,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": false,
-    "skin": "#8ac0e0",
+    "skin": "#8aa4b8",
     "hairColor": "#c8ccd8",
     "eye": "#2a2024",
     "main": "#5ad0d0",
@@ -5719,7 +5990,7 @@
     "race": "naga",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a8a4a",
+    "skin": "#6a9a50",
     "hairColor": "#c8ccd8",
     "eye": "#c8d030",
     "main": "#5a8a7a",
@@ -5728,7 +5999,7 @@
     "hair": "short",
     "beard": "",
     "hat": "hood",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.5,
     "defaults": [],
@@ -5746,7 +6017,7 @@
     "race": "merfolk",
     "stage": "adult",
     "fem": true,
-    "skin": "#8ac0e0",
+    "skin": "#8ac0b8",
     "hairColor": "#6a9ad0",
     "eye": "#8a8a90",
     "main": "#8aa8b8",
@@ -5773,7 +6044,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#e8e6e0",
     "eye": "#2a2024",
     "main": "#7a7a5a",
@@ -5782,7 +6053,7 @@
     "hair": "ponytail",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -5862,7 +6133,7 @@
     "race": "merfolk",
     "stage": "child",
     "fem": true,
-    "skin": "#a0d8c0",
+    "skin": "#7f9480",
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#2a3a3a",
@@ -5891,7 +6162,7 @@
     "race": "slime",
     "stage": "adult",
     "fem": null,
-    "skin": "#7ad070",
+    "skin": "#6a9a50",
     "hairColor": "#3a2a20",
     "eye": "#6a9ad0",
     "main": "#6ad0a0",
@@ -5921,7 +6192,7 @@
     "line": "มนุษย์เรือ",
     "stage": "elder",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#b0805a",
     "hairColor": "#8a8a90",
     "eye": "#9a2a1a",
     "main": "#5a4232",
@@ -5933,9 +6204,7 @@
     "tool": "hammer",
     "feats": [],
     "wear": 0.3,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "ค้อนซ่อมเรือ"
     ],
@@ -6011,7 +6280,7 @@
     "line": "เงือกน้ำลึก",
     "stage": "adult",
     "fem": true,
-    "skin": "#8ac0e0",
+    "skin": "#9a9a9a",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#2a5a9a",
@@ -6041,7 +6310,7 @@
     "race": "merfolk",
     "stage": "adult",
     "fem": null,
-    "skin": "#9ad0d0",
+    "skin": "#8ac0e0",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#1a2a4a",
@@ -6134,7 +6403,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": false,
-    "skin": "#a0d8c0",
+    "skin": "#7f9480",
     "hairColor": "#8a8a90",
     "eye": "#2a2024",
     "main": "#3a4a4a",
@@ -6163,7 +6432,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": false,
-    "skin": "#5a8a40",
+    "skin": "#4a6c38",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#5a6a4a",
@@ -6172,7 +6441,7 @@
     "hair": "bald",
     "beard": "moustache",
     "hat": "",
-    "tool": "hammer",
+    "tool": "mallet",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -6193,7 +6462,7 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#f6d2b0",
     "hairColor": "#5a3a22",
     "eye": "#9a2a1a",
     "main": "#8a8a86",
@@ -6256,7 +6525,7 @@
     "line": "เงือก",
     "stage": "elder",
     "fem": true,
-    "skin": "#a0d8c0",
+    "skin": "#6a9a50",
     "hairColor": "#6a9ad0",
     "eye": "#8a8a90",
     "main": "#e0c8d8",
@@ -6285,7 +6554,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": false,
-    "skin": "#8ac0e0",
+    "skin": "#8ab8e0",
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#8a8a96",
@@ -6325,7 +6594,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -6344,7 +6613,7 @@
     "line": "เงือก",
     "stage": "elder",
     "fem": false,
-    "skin": "#a0d8c0",
+    "skin": "#9a9a9a",
     "hairColor": "#c8ccd8",
     "eye": "#2a2024",
     "main": "#3a5a5a",
@@ -6373,7 +6642,7 @@
     "race": "naga",
     "stage": "elder",
     "fem": true,
-    "skin": "#4f8f7a",
+    "skin": "#6a9a50",
     "hairColor": "#e8e6e0",
     "eye": "#c8d030",
     "main": "#e8e4d8",
@@ -6460,7 +6729,7 @@
     "race": "naga",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a8a4a",
+    "skin": "#6a9a50",
     "hairColor": "#e8e6e0",
     "eye": "#c8d030",
     "main": "#144a30",
@@ -6469,7 +6738,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "pipe",
     "feats": [],
     "wear": 0.45,
     "defaults": [],
@@ -6488,7 +6757,7 @@
     "race": "naga",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a8a4a",
+    "skin": "#6a9a50",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#2c7a58",
@@ -6578,7 +6847,7 @@
     "line": "ไซเรน",
     "stage": "adult",
     "fem": true,
-    "skin": "#c0e0f0",
+    "skin": "#d4e2f0",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#a0c0e8",
@@ -6639,7 +6908,7 @@
     "line": "กัปปะ",
     "stage": "adult",
     "fem": null,
-    "skin": "#8ac0e0",
+    "skin": "#4a6c38",
     "hairColor": "#8a8a90",
     "eye": "#d8c030",
     "main": "#3a7a5a",
@@ -6758,9 +7027,9 @@
     "race": "naga",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a8a4a",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
-    "eye": "#2a1e18",
+    "eye": "#c8d030",
     "main": "#5a8a7a",
     "second": "#5ad0d0",
     "outfit": "cape",
@@ -6789,7 +7058,7 @@
     "line": "มนุษย์เรือ",
     "stage": "elder",
     "fem": false,
-    "skin": "#c98e62",
+    "skin": "#7a4a2a",
     "hairColor": "#e8e6e0",
     "eye": "#b3b3b7",
     "main": "#d8c8a0",
@@ -6859,7 +7128,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0.6,
     "defaults": [
@@ -6890,7 +7159,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "chalk",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -6939,7 +7208,7 @@
     "race": "merfolk",
     "stage": "adult",
     "fem": null,
-    "skin": "#8ac0e0",
+    "skin": "#553f6a",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#2a1a3a",
@@ -6973,7 +7242,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": true,
-    "skin": "#8ac0e0",
+    "skin": "#61819d",
     "hairColor": "#1e1a1c",
     "eye": "#9a2a1a",
     "main": "#1a3a6a",
@@ -7062,7 +7331,7 @@
     "race": "merfolk",
     "stage": "adult",
     "fem": null,
-    "skin": "#8ac0e0",
+    "skin": "#61819d",
     "hairColor": "#8a8a90",
     "eye": "#2a2024",
     "main": "#5ad0d0",
@@ -7154,7 +7423,7 @@
     "line": "ภูตน้ำ",
     "stage": "adult",
     "fem": true,
-    "skin": "#d0f0e0",
+    "skin": "#8bb077",
     "hairColor": "#6a9ad0",
     "eye": "#d9a030",
     "main": "#6ad0c8",
@@ -7184,9 +7453,9 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": false,
-    "skin": "#8ac0e0",
+    "skin": "#a0d8c0",
     "hairColor": "#9a2a1a",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#f0a060",
     "second": "#6ad0c8",
     "outfit": "tunic",
@@ -7198,7 +7467,8 @@
     "wear": 0.5,
     "defaults": [
      "outfit",
-     "hair"
+     "hair",
+     "eye"
     ],
     "items": [
      "กรรไกรปะการัง",
@@ -7247,7 +7517,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": true,
-    "skin": "#a0d8c0",
+    "skin": "#9a9a9a",
     "hairColor": "#8a8a90",
     "eye": "#2a2024",
     "main": "#5a7a7a",
@@ -7256,7 +7526,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -7336,7 +7606,7 @@
     "race": "human",
     "stage": "adult",
     "fem": true,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#5a3a22",
     "eye": "#2a2024",
     "main": "#8a8a5a",
@@ -7370,7 +7640,7 @@
     "line": "เงือก",
     "stage": "adult",
     "fem": false,
-    "skin": "#a0d8c0",
+    "skin": "#7f9480",
     "hairColor": "#8a8a90",
     "eye": "#2a2024",
     "main": "#565a62",
@@ -7402,7 +7672,7 @@
     "line": "ภูตลม",
     "stage": "adult",
     "fem": false,
-    "skin": "#fff0c0",
+    "skin": "#d4e2f0",
     "hairColor": "#c8ccd8",
     "eye": "#a8acb8",
     "main": "#5a8ad0",
@@ -7431,17 +7701,19 @@
     "fem": false,
     "skin": "#a06a42",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#78889a",
     "second": "#6a5a40",
     "outfit": "scholar",
     "hair": "braid",
     "beard": "",
     "hat": "cap",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0.25,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "โต๊ะพกพา",
      "ปากกาแผนที่"
@@ -7458,7 +7730,7 @@
     "line": "ภูตลม",
     "stage": "child",
     "fem": true,
-    "skin": "#fff0c0",
+    "skin": "#d4e2f0",
     "hairColor": "#c8ccd8",
     "eye": "#6a9ad0",
     "main": "#8ac8f0",
@@ -7543,7 +7815,7 @@
     "line": "ภูตน้ำ",
     "stage": "adult",
     "fem": true,
-    "skin": "#d0e0ff",
+    "skin": "#8ab8e0",
     "hairColor": "#dcdee8",
     "eye": "#6a9ad0",
     "main": "#f6fbff",
@@ -7600,7 +7872,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#7a4a2a",
     "hairColor": "#e8e6e0",
     "eye": "#2a2024",
     "main": "#c8d4dc",
@@ -7638,7 +7910,7 @@
     "hair": "bun",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.1,
     "defaults": [
@@ -7719,19 +7991,20 @@
     "fem": true,
     "skin": "#c88a5a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#6a7a6a",
     "second": "#4a4a4a",
     "outfit": "scholar",
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "book",
     "feats": [
      "glasses"
     ],
     "wear": 0.25,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -7784,7 +8057,7 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#98a0b0",
     "second": "#2a2a30",
     "outfit": "robe",
@@ -7795,6 +8068,7 @@
     "feats": [],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -7850,7 +8124,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "hood",
-    "tool": "wand",
+    "tool": "book",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -7901,7 +8175,7 @@
     "race": "elf",
     "stage": "adult",
     "fem": true,
-    "skin": "#f2d6b8",
+    "skin": "#f6e0c8",
     "hairColor": "#d8b858",
     "eye": "#7fa97f",
     "main": "#5a8a6a",
@@ -7931,7 +8205,7 @@
     "fem": false,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#8a8a96",
     "second": "#2a2a30",
     "outfit": "plate",
@@ -7942,6 +8216,7 @@
     "feats": [],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -7959,7 +8234,7 @@
     "race": "elf",
     "stage": "infant",
     "fem": false,
-    "skin": "#f2d6b8",
+    "skin": "#f6e0c8",
     "hairColor": "#d8b858",
     "eye": "#3a7a3a",
     "main": "#e8d8b0",
@@ -7990,7 +8265,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#f6d2b0",
     "hairColor": "#5a3a22",
     "eye": "#2a2024",
     "main": "#2a44a0",
@@ -7999,7 +8274,7 @@
     "hair": "curly",
     "beard": "moustache",
     "hat": "crown",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -8052,7 +8327,7 @@
     "fem": false,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a6a5a",
     "second": "#b8a060",
     "outfit": "sailor",
@@ -8063,6 +8338,7 @@
     "feats": [],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -8089,7 +8365,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -8119,7 +8395,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "garland",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -8140,7 +8416,7 @@
     "race": "halfling",
     "stage": "adult",
     "fem": null,
-    "skin": "#e0a878",
+    "skin": "#e8e6e0",
     "hairColor": "#5a3a22",
     "eye": "#5a3a22",
     "main": "#8a6a9a",
@@ -8200,7 +8476,7 @@
     "race": "human",
     "stage": "adult",
     "fem": true,
-    "skin": "#e8b48a",
+    "skin": "#f6d2b0",
     "hairColor": "#947f6f",
     "eye": "#2a2024",
     "main": "#8aa07a",
@@ -8209,7 +8485,7 @@
     "hair": "ponytail",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -8230,7 +8506,7 @@
     "race": "human",
     "stage": "elder",
     "fem": true,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#8a8a90",
     "eye": "#8a8a90",
     "main": "#1a2a4a",
@@ -8260,7 +8536,7 @@
     "fem": null,
     "skin": "#e0a878",
     "hairColor": "#6a3420",
-    "eye": "#9a2a1a",
+    "eye": "#2a2024",
     "main": "#8a5a38",
     "second": "#2a5a3a",
     "outfit": "leather",
@@ -8271,6 +8547,7 @@
     "feats": [],
     "wear": 0.45,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -8328,7 +8605,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -8442,7 +8719,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "lantern",
+    "tool": "beads",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -8470,7 +8747,7 @@
     "hair": "cropped",
     "beard": "moustache",
     "hat": "",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -8498,7 +8775,7 @@
     "hair": "cropped",
     "beard": "short",
     "hat": "",
-    "tool": "scroll",
+    "tool": "mallet",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -8529,7 +8806,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -8590,7 +8867,9 @@
     "beard": "",
     "hat": "",
     "tool": "scepter",
-    "feats": [],
+    "feats": [
+     "stripes"
+    ],
     "wear": 0.45,
     "defaults": [],
     "items": [
@@ -8610,7 +8889,7 @@
     "fem": false,
     "skin": "#f6d2b0",
     "hairColor": "#5a3a22",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#4a3a2a",
     "second": "#b8a060",
     "outfit": "fur",
@@ -8620,7 +8899,9 @@
     "tool": "pocketwatch",
     "feats": [],
     "wear": 0,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "นาฬิกาพกทอง",
      "สมุดบัญชีโรงงาน"
@@ -8637,7 +8918,7 @@
     "line": "ช่างตี",
     "stage": "adult",
     "fem": null,
-    "skin": "#b87050",
+    "skin": "#9a6040",
     "hairColor": "#8a8a90",
     "eye": "#8a8a90",
     "main": "#6a5a3a",
@@ -8665,7 +8946,7 @@
     "race": "human",
     "stage": "child",
     "fem": false,
-    "skin": "#c98e62",
+    "skin": "#7a4a2a",
     "hairColor": "#5a3a22",
     "eye": "#e8e6e0",
     "main": "#3a3a3a",
@@ -8692,7 +8973,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#dcdee8",
     "eye": "#2a2024",
     "main": "#1a4a3a",
@@ -8822,7 +9103,7 @@
     "hair": "long",
     "beard": "long",
     "hat": "cap",
-    "tool": "",
+    "tool": "keyring",
     "feats": [
      "glasses"
     ],
@@ -8855,7 +9136,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "mug",
+    "tool": "jar",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -8877,7 +9158,7 @@
     "fem": true,
     "skin": "#c88a5a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#8a7a5a",
     "second": "#c8b080",
     "outfit": "scholar",
@@ -8890,6 +9171,7 @@
     ],
     "wear": 0.4,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -8938,7 +9220,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#f6d2b0",
     "hairColor": "#c8ccd8",
     "eye": "#6a9ad0",
     "main": "#8ab8e0",
@@ -8977,7 +9259,7 @@
     "hair": "bald",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -9007,7 +9289,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "crystal",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -9120,7 +9402,7 @@
     "race": "human",
     "stage": "adult",
     "fem": true,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#c0c0c4",
     "eye": "#8a8a90",
     "main": "#e8e8ec",
@@ -9158,7 +9440,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -9308,7 +9590,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "mallet",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -9332,7 +9614,7 @@
     "fem": null,
     "skin": "#d08a62",
     "hairColor": "#3a2a20",
-    "eye": "#2a1e18",
+    "eye": "#9a2a1a",
     "main": "#634532",
     "second": "#8a8a86",
     "outfit": "plate",
@@ -9370,7 +9652,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [
      "bandage"
     ],
@@ -9403,7 +9685,7 @@
     "hair": "wild",
     "beard": "stubble",
     "hat": "",
-    "tool": "scroll",
+    "tool": "bag",
     "feats": [],
     "wear": 0.7,
     "defaults": [
@@ -9546,18 +9828,19 @@
     "fem": false,
     "skin": "#f0c49a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#6a7a5a",
     "second": "#3a5a8a",
     "outfit": "tunic",
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "เสื้อกั๊กสองสี",
@@ -9574,7 +9857,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#d9a030",
     "eye": "#2a2024",
     "main": "#8a8a3a",
@@ -9643,7 +9926,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "book",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -9673,7 +9956,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "pipe",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -9726,7 +10009,7 @@
     "fem": true,
     "skin": "#e8c8a8",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#5a6a4a",
     "second": "#b8a060",
     "outfit": "leather",
@@ -9756,7 +10039,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#6a9ad0",
     "main": "#8a8a96",
     "second": "#d8c8a0",
     "outfit": "leather",
@@ -9854,7 +10137,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -9884,7 +10167,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "mallet",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -9907,7 +10190,7 @@
     "fem": false,
     "skin": "#e8b48a",
     "hairColor": "#5a3a22",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#8a7a6a",
     "second": "#6a8aa0",
     "outfit": "tunic",
@@ -9919,6 +10202,7 @@
     "wear": 0.75,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -9944,7 +10228,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "book",
     "feats": [],
     "wear": 0.2,
     "defaults": [
@@ -9998,7 +10282,7 @@
     "fem": true,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#e8e8e0",
     "second": "#6a8a8a",
     "outfit": "scholar",
@@ -10011,6 +10295,7 @@
     ],
     "wear": 0.25,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -10083,7 +10368,7 @@
     "race": "dwarf",
     "stage": "adult",
     "fem": null,
-    "skin": "#b87050",
+    "skin": "#9a6040",
     "hairColor": "#e8e6e0",
     "eye": "#6a6e78",
     "main": "#6a6a76",
@@ -10092,7 +10377,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "",
-    "tool": "hammer",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -10113,7 +10398,7 @@
     "fem": null,
     "skin": "#9a6040",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#8a8a86",
     "outfit": "tunic",
@@ -10124,7 +10409,8 @@
     "feats": [],
     "wear": 0.6,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "กรงนกพิราบ",
@@ -10202,7 +10488,7 @@
     "fem": true,
     "skin": "#a87048",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#79847d",
     "second": "#c8a030",
     "outfit": "tunic",
@@ -10214,6 +10500,7 @@
     "wear": 0,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -10264,7 +10551,7 @@
     "fem": true,
     "skin": "#d8b890",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#5a8a5a",
     "second": "#c8b890",
     "outfit": "tunic",
@@ -10302,7 +10589,7 @@
     "hair": "ponytail",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -10355,7 +10642,7 @@
     "fem": true,
     "skin": "#e8c8a8",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#7a6a8a",
     "second": "#c8b890",
     "outfit": "scholar",
@@ -10367,6 +10654,7 @@
     "wear": 0.25,
     "defaults": [
      "hair",
+     "eye",
      "skin"
     ],
     "items": [
@@ -10396,7 +10684,8 @@
     "hat": "",
     "tool": "axe",
     "feats": [
-     "bandage"
+     "bandage",
+     "tail:fluffy"
     ],
     "wear": 0,
     "defaults": [],
@@ -10413,7 +10702,7 @@
    "AL23-2": {
     "name": "นักล่าเผ่าเสือ ราชา",
     "race": "beast",
-    "line": "เสือและแมวใหญ่",
+    "line": "เสือ",
     "stage": "adult",
     "fem": false,
     "skin": "#6a5a4a",
@@ -10426,7 +10715,9 @@
     "beard": "",
     "hat": "",
     "tool": "spear",
-    "feats": [],
+    "feats": [
+     "stripes"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
@@ -10448,8 +10739,8 @@
     "stage": "elder",
     "fem": true,
     "skin": "#8a6a4a",
-    "hairColor": "#c0c0c4",
-    "eye": "#e8e6e0",
+    "hairColor": "#8a7a68",
+    "eye": "#d9a030",
     "main": "#7c6440",
     "second": "#d8c880",
     "outfit": "cape",
@@ -10457,10 +10748,12 @@
     "beard": "",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "beak",
+     "feathers"
+    ],
     "wear": 0,
     "defaults": [
-     "hairColor",
      "skin"
     ],
     "items": [
@@ -10479,7 +10772,7 @@
     "line": "หมาป่า",
     "stage": "child",
     "fem": null,
-    "skin": "#6a5a4a",
+    "skin": "#8a6a4a",
     "hairColor": "#d07030",
     "eye": "#d9a030",
     "main": "#c86a3a",
@@ -10509,14 +10802,14 @@
     "fem": true,
     "skin": "#f0e0d0",
     "hairColor": "#8a8a90",
-    "eye": "#d9a030",
+    "eye": "#c8a030",
     "main": "#8a7a6a",
     "second": "#c8c0a0",
     "outfit": "leather",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -10538,7 +10831,7 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#5a3a6a",
     "second": "#b8a060",
     "outfit": "robe",
@@ -10602,7 +10895,10 @@
     "beard": "",
     "hat": "",
     "tool": "bow",
-    "feats": [],
+    "feats": [
+     "longears",
+     "tail:fluffy"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
@@ -10682,7 +10978,7 @@
     "race": "ghoul",
     "stage": "elder",
     "fem": false,
-    "skin": "#8a9a8a",
+    "skin": "#7f9480",
     "hairColor": "#8a8a90",
     "eye": "#e8e6e0",
     "main": "#5a6a5a",
@@ -10835,7 +11131,7 @@
     "race": "human",
     "stage": "adult",
     "fem": null,
-    "skin": "#f0c8a0",
+    "skin": "#c8c8c4",
     "hairColor": "#c0c0c4",
     "eye": "#8a8a90",
     "main": "#c8c8c8",
@@ -10844,7 +11140,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "card",
     "feats": [
      "tattoo"
     ],
@@ -11049,7 +11345,7 @@
     "race": "halfling",
     "stage": "adult",
     "fem": null,
-    "skin": "#c88a5a",
+    "skin": "#a87048",
     "hairColor": "#5a3a22",
     "eye": "#947f6f",
     "main": "#2a3a5a",
@@ -11058,7 +11354,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "cap",
-    "tool": "lute",
+    "tool": "pipe",
     "feats": [],
     "wear": 0.35,
     "defaults": [
@@ -11081,7 +11377,7 @@
     "fem": null,
     "skin": "#9a6040",
     "hairColor": "#8a8a90",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#8a8a86",
     "outfit": "tunic",
@@ -11092,7 +11388,8 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "ค้อนราง",
@@ -11118,7 +11415,7 @@
     "hair": "short",
     "beard": "",
     "hat": "wide",
-    "tool": "ledger",
+    "tool": "bag",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -11235,7 +11532,7 @@
     "fem": true,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#8a8a96",
     "second": "#4a4a58",
     "outfit": "noble",
@@ -11248,6 +11545,7 @@
     ],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -11305,7 +11603,9 @@
     "beard": "",
     "hat": "",
     "tool": "pistol",
-    "feats": [],
+    "feats": [
+     "fourarms"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -11325,7 +11625,7 @@
     "fem": true,
     "skin": "#c98e62",
     "hairColor": "#1e1a1c",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#c8a030",
     "outfit": "apron",
@@ -11335,7 +11635,9 @@
     "tool": "",
     "feats": [],
     "wear": 0.25,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ชุดเครื่องมือติดตั้งจิ๋ว"
     ],
@@ -11439,7 +11741,7 @@
     "race": "soulmachine",
     "stage": "teen",
     "fem": null,
-    "skin": "#7a8294",
+    "skin": "#7f9480",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#6a7a6a",
@@ -11448,7 +11750,7 @@
     "hair": "",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "card",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -11477,7 +11779,7 @@
     "hair": "",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -11508,7 +11810,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "ledger",
+    "tool": "card",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -11620,7 +11922,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#6a5a4a",
     "second": "#8a8a86",
     "outfit": "scholar",
@@ -11633,6 +11935,7 @@
     ],
     "wear": 0.25,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -11748,7 +12051,7 @@
     "hair": "cropped",
     "beard": "moustache",
     "hat": "cap",
-    "tool": "ledger",
+    "tool": "card",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -11831,7 +12134,7 @@
     "fem": true,
     "skin": "#9a6040",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#c87a3a",
     "outfit": "apron",
@@ -11841,7 +12144,9 @@
     "tool": "rifle",
     "feats": [],
     "wear": 0.3,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "รูนปืนไรเฟิล",
      "แว่นช่าง"
@@ -11866,7 +12171,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [],
     "wear": 0.1,
     "defaults": [
@@ -11898,7 +12203,9 @@
     "beard": "",
     "hat": "",
     "tool": "rifle",
-    "feats": [],
+    "feats": [
+     "glow-eyes"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
@@ -11954,7 +12261,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "book",
     "feats": [
      "glasses"
     ],
@@ -11980,18 +12287,19 @@
     "fem": null,
     "skin": "#e0a07a",
     "hairColor": "#3a2a20",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#8a94a4",
     "outfit": "scholar",
     "hair": "braid",
     "beard": "braided",
     "hat": "hood",
-    "tool": "book",
+    "tool": "crystal",
     "feats": [],
     "wear": 0.25,
     "defaults": [
      "hairColor",
+     "eye",
      "skin"
     ],
     "items": [
@@ -12010,7 +12318,7 @@
     "fem": true,
     "skin": "#d8a070",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#4a5a6a",
     "second": "#c87a3a",
     "outfit": "tunic",
@@ -12072,7 +12380,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#9a2a1a",
     "main": "#d6cc9c",
     "second": "#6a6a5a",
     "outfit": "scholar",
@@ -12111,7 +12419,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "card",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -12140,7 +12448,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -12191,7 +12499,7 @@
     "fem": false,
     "skin": "#e0a878",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#7a5a3a",
     "second": "#8ab0d0",
     "outfit": "leather",
@@ -12203,6 +12511,7 @@
     "wear": 0,
     "defaults": [
      "hair",
+     "eye",
      "skin"
     ],
     "items": [
@@ -12222,20 +12531,21 @@
     "fem": false,
     "skin": "#e8b48a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#8aa0b8",
     "second": "#c8a030",
     "outfit": "tunic",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "mug",
+    "tool": "crystal",
     "feats": [
      "glasses"
     ],
     "wear": 0,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -12373,7 +12683,7 @@
     "fem": true,
     "skin": "#a06a42",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2a2e",
     "main": "#c89a4a",
     "second": "#8a4a2a",
     "outfit": "apron",
@@ -12433,7 +12743,7 @@
     "fem": true,
     "skin": "#f6e0c8",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#4a5a4a",
     "second": "#c8b080",
     "outfit": "cloak",
@@ -12463,7 +12773,7 @@
     "fem": false,
     "skin": "#d8b890",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#2a3a5a",
     "second": "#8ab07a",
     "outfit": "scholar",
@@ -12553,7 +12863,7 @@
     "fem": true,
     "skin": "#f0c8a0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#8b7f79",
     "second": "#b8a060",
     "outfit": "apron",
@@ -12564,6 +12874,7 @@
     "feats": [],
     "wear": 0.3,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -12682,7 +12993,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "chalk",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -12733,7 +13044,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#6a6a7a",
     "second": "#b8b8c8",
     "outfit": "tunic",
@@ -12747,6 +13058,7 @@
     "wear": 0.25,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -12828,7 +13140,7 @@
     "fem": true,
     "skin": "#a06a42",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#d8d8d0",
     "second": "#8a6a3a",
     "outfit": "scholar",
@@ -12842,6 +13154,7 @@
     ],
     "wear": 0.3,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -12859,7 +13172,7 @@
     "race": "human",
     "stage": "child",
     "fem": false,
-    "skin": "#c98e62",
+    "skin": "#7a4a2a",
     "hairColor": "#8a8a90",
     "eye": "#e8e6e0",
     "main": "#4a4a4a",
@@ -12868,7 +13181,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "bowl",
+    "tool": "bucket",
     "feats": [],
     "wear": 0.75,
     "defaults": [
@@ -12951,7 +13264,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a5a60",
     "second": "#a02a2a",
     "outfit": "priest",
@@ -12962,6 +13275,7 @@
     "feats": [],
     "wear": 0,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -12981,7 +13295,7 @@
     "fem": true,
     "skin": "#a06a42",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#8a8a96",
     "second": "#6a5a4a",
     "outfit": "tunic",
@@ -13040,7 +13354,7 @@
     "race": "demonkin",
     "stage": "adult",
     "fem": false,
-    "skin": "#8a3a6a",
+    "skin": "#8a3a2e",
     "hairColor": "#3a2a20",
     "eye": "#d8c030",
     "main": "#8a2a2a",
@@ -13050,7 +13364,10 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "horns",
+     "tail:spade"
+    ],
     "wear": 0,
     "defaults": [
      "hair",
@@ -13072,7 +13389,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#594f31",
     "second": "#8a6a4a",
     "outfit": "leather",
@@ -13082,7 +13399,9 @@
     "tool": "whip",
     "feats": [],
     "wear": 0,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "แส้ม้า",
      "ปืนฝึกยิงเสียงดัง"
@@ -13107,7 +13426,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "map",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -13129,7 +13448,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": null,
-    "skin": "#5a8a40",
+    "skin": "#6a9a50",
     "hairColor": "#3a2a20",
     "eye": "#e6d678",
     "main": "#5a6a4a",
@@ -13139,7 +13458,10 @@
     "beard": "",
     "hat": "",
     "tool": "ladle",
-    "feats": [],
+    "feats": [
+     "horns",
+     "tail:spade"
+    ],
     "wear": 0.25,
     "defaults": [
      "hair",
@@ -13169,7 +13491,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "letter",
     "feats": [],
     "wear": 0.5,
     "defaults": [],
@@ -13251,7 +13573,7 @@
     "fem": false,
     "skin": "#a06a42",
     "hairColor": "#3a2a20",
-    "eye": "#c8b080",
+    "eye": "#3a7a3a",
     "main": "#7d6532",
     "second": "#c8b890",
     "outfit": "miner",
@@ -13310,7 +13632,7 @@
     "line": "ชนผืนทราย",
     "stage": "teen",
     "fem": null,
-    "skin": "#c98e62",
+    "skin": "#a06a42",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
     "main": "#d18e5f",
@@ -13319,7 +13641,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "bowl",
+    "tool": "bucket",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -13370,14 +13692,14 @@
     "fem": null,
     "skin": "#a88858",
     "hairColor": "#e8e6e0",
-    "eye": "#2a1e18",
+    "eye": "#3a7a3a",
     "main": "#ae9d76",
     "second": "#4a8a5a",
     "outfit": "cape",
     "hair": "short",
     "beard": "",
     "hat": "veil",
-    "tool": "ledger",
+    "tool": "papyrus",
     "feats": [
      "mask"
     ],
@@ -13556,7 +13878,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "basket",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -13579,17 +13901,19 @@
     "fem": null,
     "skin": "#8a8a84",
     "hairColor": "#a8acb8",
-    "eye": "#1e1a1c",
+    "eye": "#2a2024",
     "main": "#4a4a50",
     "second": "#8ac8e0",
     "outfit": "leather",
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "crystal",
     "feats": [],
     "wear": 0,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "ดวงตาศิลาก้อนกลมเรืองจาง"
     ],
@@ -13604,7 +13928,7 @@
     "race": "giant",
     "stage": "elder",
     "fem": true,
-    "skin": "#8a8a84",
+    "skin": "#9a9a9a",
     "hairColor": "#c0c0c4",
     "eye": "#9ebde0",
     "main": "#8a7a62",
@@ -13645,7 +13969,9 @@
     "beard": "moustache",
     "hat": "turban",
     "tool": "ledger",
-    "feats": [],
+    "feats": [
+     "stripes"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -13762,7 +14088,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -13782,7 +14108,7 @@
     "race": "beast",
     "stage": "elder",
     "fem": false,
-    "skin": "#b07a48",
+    "skin": "#8a6a4a",
     "hairColor": "#c8b080",
     "eye": "#c8a030",
     "main": "#3a5a4a",
@@ -13991,7 +14317,7 @@
     "hairColor": "#1e1a1c",
     "eye": "#2a2024",
     "main": "#c8b890",
-    "second": "#8ac8e0",
+    "second": "#9a8e70",
     "outfit": "cloak",
     "hair": "braid",
     "beard": "",
@@ -14019,7 +14345,7 @@
     "race": "giant",
     "stage": "elder",
     "fem": null,
-    "skin": "#9a8a78",
+    "skin": "#4a4a4e",
     "hairColor": "#8a8a90",
     "eye": "#9a2a1a",
     "main": "#3a3a40",
@@ -14077,7 +14403,7 @@
     "race": "giant",
     "stage": "child",
     "fem": null,
-    "skin": "#b0a498",
+    "skin": "#b0b0b0",
     "hairColor": "#5a3a22",
     "eye": "#3a7a3a",
     "main": "#9a9aa0",
@@ -14108,7 +14434,7 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#1e1a1c",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5a4a3a",
     "second": "#c8c0a0",
     "outfit": "tunic",
@@ -14119,7 +14445,8 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "ค้อนเคาะเหล็ก",
@@ -14145,7 +14472,7 @@
     "hair": "short",
     "beard": "short",
     "hat": "turban",
-    "tool": "mug",
+    "tool": "",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -14173,7 +14500,7 @@
     "hair": "wild",
     "beard": "braided",
     "hat": "",
-    "tool": "mug",
+    "tool": "pipe",
     "feats": [],
     "wear": 0.25,
     "defaults": [],
@@ -14222,7 +14549,7 @@
     "fem": false,
     "skin": "#a06a42",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#9a2a1a",
     "main": "#7a6a4a",
     "second": "#8ac8e0",
     "outfit": "leather",
@@ -14257,8 +14584,10 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "ledger",
-    "feats": [],
+    "tool": "quill",
+    "feats": [
+     "stripes"
+    ],
     "wear": 0,
     "defaults": [
      "eye"
@@ -14310,7 +14639,7 @@
     "fem": true,
     "skin": "#e0b890",
     "hairColor": "#1e1a1c",
-    "eye": "#c8b080",
+    "eye": "#6a9ad0",
     "main": "#a87a4a",
     "second": "#5a6a8a",
     "outfit": "cloak",
@@ -14338,7 +14667,7 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#7a4a2a",
+    "skin": "#a06a42",
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
     "main": "#3a8a5a",
@@ -14347,7 +14676,7 @@
     "hair": "cropped",
     "beard": "",
     "hat": "turban",
-    "tool": "ledger",
+    "tool": "card",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -14395,7 +14724,7 @@
    "SH10-1": {
     "name": "หัวหน้าสหพันธ์ อูฐเฒ่าซาลีม",
     "race": "beast",
-    "line": "อูฐและจิ้งจกทราย",
+    "line": "อูฐ",
     "stage": "elder",
     "fem": false,
     "skin": "#8a6a4a",
@@ -14428,7 +14757,7 @@
     "fem": false,
     "skin": "#8a6a4a",
     "hairColor": "#8a8a90",
-    "eye": "#c8b080",
+    "eye": "#d9a030",
     "main": "#a89870",
     "second": "#6a5a3a",
     "outfit": "leather",
@@ -14436,7 +14765,9 @@
     "beard": "",
     "hat": "veil",
     "tool": "bow",
-    "feats": [],
+    "feats": [
+     "tail:fluffy"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -14452,10 +14783,10 @@
    "SH10-3": {
     "name": "หญิงเผ่าจิ้งจก ไวเปอร์",
     "race": "beast",
-    "line": "อูฐและจิ้งจกทราย",
+    "line": "จิ้งจก",
     "stage": "adult",
     "fem": true,
-    "skin": "#8a6a4a",
+    "skin": "#8a9a5a",
     "hairColor": "#1e1a1c",
     "eye": "#c8a030",
     "main": "#7a8a4a",
@@ -14464,12 +14795,12 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
-    "wear": 0,
-    "defaults": [
-     "skin"
+    "tool": "crystal",
+    "feats": [
+     "tail:lizard"
     ],
+    "wear": 0,
+    "defaults": [],
     "items": [
      "เครื่องประดับทองเหลือง",
      "หินทำนาย"
@@ -14483,10 +14814,10 @@
    "SH10-4": {
     "name": "เด็กอูฐ ซูฮา",
     "race": "beast",
-    "line": "อูฐและจิ้งจกทราย",
+    "line": "อูฐ",
     "stage": "child",
     "fem": true,
-    "skin": "#6a5a4a",
+    "skin": "#8a6a4a",
     "hairColor": "#c8b080",
     "eye": "#c8a030",
     "main": "#d8c8a0",
@@ -14513,7 +14844,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": false,
-    "skin": "#5a8a40",
+    "skin": "#6f9a4f",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#7e7f43",
@@ -14541,7 +14872,7 @@
     "race": "orc",
     "stage": "adult",
     "fem": true,
-    "skin": "#5a8a40",
+    "skin": "#4a6c38",
     "hairColor": "#1e1a1c",
     "eye": "#e6d678",
     "main": "#5a7a4a",
@@ -14571,7 +14902,7 @@
     "race": "orc",
     "stage": "elder",
     "fem": false,
-    "skin": "#5a8a40",
+    "skin": "#4a6c38",
     "hairColor": "#c0c0c4",
     "eye": "#2a2024",
     "main": "#40571f",
@@ -14580,7 +14911,7 @@
     "hair": "bald",
     "beard": "",
     "hat": "",
-    "tool": "sword",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -14601,7 +14932,7 @@
     "race": "orc",
     "stage": "child",
     "fem": null,
-    "skin": "#7aa860",
+    "skin": "#8bb077",
     "hairColor": "#1e1a1c",
     "eye": "#d9a030",
     "main": "#8aa06a",
@@ -14668,7 +14999,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [
      "glasses"
     ],
@@ -14701,7 +15032,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "bandana",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -14758,7 +15089,7 @@
     "hair": "bald",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "beads",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -14780,7 +15111,7 @@
     "race": "human",
     "stage": "elder",
     "fem": false,
-    "skin": "#7a4a2a",
+    "skin": "#a06a42",
     "hairColor": "#c0c0c4",
     "eye": "#616165",
     "main": "#4a4a5a",
@@ -14809,7 +15140,7 @@
     "race": "human",
     "stage": "teen",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#8a8a96",
@@ -14839,7 +15170,7 @@
     "race": "giant",
     "stage": "elder",
     "fem": null,
-    "skin": "#8a8a84",
+    "skin": "#6c6c6c",
     "hairColor": "#c0c0c4",
     "eye": "#2a2024",
     "main": "#6a6a70",
@@ -14871,7 +15202,7 @@
     "fem": true,
     "skin": "#1e1a1c",
     "hairColor": "#3a2a20",
-    "eye": "#2a2024",
+    "eye": "#9e7fb3",
     "main": "#261938",
     "second": "#a890d0",
     "outfit": "robe",
@@ -14880,17 +15211,18 @@
     "hat": "crown",
     "tool": "",
     "feats": [
-     "ghost"
+     "ghost",
+     "glow-eyes"
     ],
     "wear": 0.4,
     "defaults": [
-     "hairColor",
-     "eye"
+     "hairColor"
     ],
     "items": [
      "มงกุฎเงินจาง"
     ],
     "pose": "ลอยกลางลานนั่งบนบัลลังก์ที่โปร่งแสง",
+    "accent": "#c8ccd8",
     "file": "08-saharan",
     "country": "SH-14",
     "continent": "SH",
@@ -14901,7 +15233,7 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#9a9a9a",
     "hairColor": "#1e1a1c",
     "eye": "#e8e6e0",
     "main": "#4a3a5a",
@@ -15000,7 +15332,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.9,
     "defaults": [],
@@ -15023,7 +15355,7 @@
     "hairColor": "#1e1a1c",
     "eye": "#3f2918",
     "main": "#3a5a3a",
-    "second": "#b8a060",
+    "second": "#2f4a2f",
     "outfit": "tunic",
     "hair": "short",
     "beard": "short",
@@ -15051,7 +15383,7 @@
     "fem": null,
     "skin": "#9a6040",
     "hairColor": "#5a3a22",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#5e4e30",
     "second": "#8a8a86",
     "outfit": "tunic",
@@ -15062,7 +15394,8 @@
     "feats": [],
     "wear": 0.4,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "แว่นขยาย",
@@ -15081,7 +15414,7 @@
     "fem": true,
     "skin": "#a06a42",
     "hairColor": "#1e1a1c",
-    "eye": "#c8b080",
+    "eye": "#2a2024",
     "main": "#8a6a4a",
     "second": "#8a8a86",
     "outfit": "leather",
@@ -15091,7 +15424,9 @@
     "tool": "wand",
     "feats": [],
     "wear": 0,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "สายรัดแท่งเหล็ก",
      "สมุดราคา"
@@ -15139,7 +15474,7 @@
     "fem": true,
     "skin": "#c89870",
     "hairColor": "#8a8a90",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#8a8a96",
     "second": "#c8b890",
     "outfit": "tunic",
@@ -15151,6 +15486,7 @@
     "wear": 0,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -15168,9 +15504,9 @@
     "line": "ชาวพื้น",
     "stage": "adult",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#7a4a2a",
     "hairColor": "#1e1a1c",
-    "eye": "#9a2a1a",
+    "eye": "#2a2024",
     "main": "#6a4a3a",
     "second": "#8a7a5a",
     "outfit": "tunic",
@@ -15183,7 +15519,8 @@
     ],
     "wear": 0,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "ศาลเล็กมังกรใต้ดิน",
@@ -15202,7 +15539,7 @@
     "fem": false,
     "skin": "#f0d0b0",
     "hairColor": "#1e1a1c",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#6a6a76",
     "second": "#c8a030",
     "outfit": "tunic",
@@ -15214,6 +15551,7 @@
     "wear": 0,
     "defaults": [
      "outfit",
+     "eye",
      "skin"
     ],
     "items": [
@@ -15321,7 +15659,7 @@
     "race": "giant",
     "stage": "elder",
     "fem": true,
-    "skin": "#8a8a84",
+    "skin": "#4a4a4e",
     "hairColor": "#a8acb8",
     "eye": "#2a2024",
     "main": "#4a4a50",
@@ -15330,7 +15668,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -15351,7 +15689,7 @@
     "race": "human",
     "stage": "child",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#f6d2b0",
     "hairColor": "#5a3a22",
     "eye": "#8a8a90",
     "main": "#8a8a8a",
@@ -15442,7 +15780,7 @@
     "fem": null,
     "skin": "#d8b890",
     "hairColor": "#295529",
-    "eye": "#3a7a3a",
+    "eye": "#2a2024",
     "main": "#5a6a3a",
     "second": "#8ab07a",
     "outfit": "light",
@@ -15453,7 +15791,8 @@
     "feats": [],
     "wear": 0.25,
     "defaults": [
-     "hair"
+     "hair",
+     "eye"
     ],
     "items": [
      "ไม้เท้าราก",
@@ -15479,7 +15818,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "keyring",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -15510,7 +15849,7 @@
     "hair": "ponytail",
     "beard": "",
     "hat": "",
-    "tool": "book",
+    "tool": "map",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -15563,17 +15902,18 @@
     "fem": true,
     "skin": "#e8b48a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#e8e8e0",
     "second": "#6a8a6a",
     "outfit": "scholar",
     "hair": "ponytail",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.45,
     "defaults": [
+     "eye",
      "skin"
     ],
     "items": [
@@ -15651,7 +15991,7 @@
     "race": "elf",
     "stage": "elder",
     "fem": null,
-    "skin": "#d8b890",
+    "skin": "#9a9a9a",
     "hairColor": "#616165",
     "eye": "#295529",
     "main": "#6a7a6a",
@@ -15709,11 +16049,12 @@
    "SV03-3": {
     "name": "นักรบเผ่าสัตว์ โรเกอร์",
     "race": "beast",
+    "line": "หมี",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a6a4a",
+    "skin": "#6a5a4a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#5a3a22",
     "main": "#6a5a4a",
     "second": "#8a8a86",
     "outfit": "leather",
@@ -15750,7 +16091,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -15930,7 +16271,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "jar",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -15981,7 +16322,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#c8ccd8",
     "eye": "#e6c178",
     "main": "#5a4a6a",
@@ -16069,7 +16410,7 @@
     "race": "elf",
     "stage": "adult",
     "fem": true,
-    "skin": "#d8b890",
+    "skin": "#b0b0b0",
     "hairColor": "#c8ccd8",
     "eye": "#c8ccd8",
     "main": "#2a2a4a",
@@ -16127,9 +16468,9 @@
     "race": "elf",
     "stage": "adult",
     "fem": true,
-    "skin": "#d8b890",
+    "skin": "#6a9a50",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#d9a030",
     "main": "#5a6a3a",
     "second": "#8ab07a",
     "outfit": "light",
@@ -16159,7 +16500,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#3a7a3a",
     "main": "#376f3c",
     "second": "#8a7a5a",
     "outfit": "tunic",
@@ -16189,14 +16530,14 @@
     "fem": true,
     "skin": "#d8b890",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#3a7a3a",
     "main": "#6a7a6a",
     "second": "#8a94a4",
     "outfit": "tunic",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -16227,7 +16568,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [
      "monocle"
     ],
@@ -16250,9 +16591,9 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#a06a42",
+    "skin": "#7a4a2a",
     "hairColor": "#8a8a90",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#6a7a4a",
     "second": "#d8c880",
     "outfit": "scholar",
@@ -16264,7 +16605,9 @@
      "glasses"
     ],
     "wear": 0.1,
-    "defaults": [],
+    "defaults": [
+     "eye"
+    ],
     "items": [
      "หนังสือใบไม้",
      "แว่นกรอบไม้"
@@ -16282,14 +16625,14 @@
     "fem": true,
     "skin": "#f2d6b8",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#6a7a6a",
     "second": "#c8b890",
     "outfit": "robe",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -16372,7 +16715,7 @@
     "fem": true,
     "skin": "#d8b890",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#3a7a3a",
     "main": "#3a4a3a",
     "second": "#c8c0a0",
     "outfit": "leather",
@@ -16405,7 +16748,7 @@
     "main": "#5a8a5a",
     "second": "#e8d8a0",
     "outfit": "leather",
-    "hair": "short",
+    "hair": "ponytail",
     "beard": "",
     "hat": "",
     "tool": "bow",
@@ -16469,7 +16812,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "tail:fluffy"
+    ],
     "wear": 0.4,
     "defaults": [
      "eye",
@@ -16489,7 +16834,7 @@
     "race": "beast",
     "stage": "adult",
     "fem": false,
-    "skin": "#b07a48",
+    "skin": "#8a6a4a",
     "hairColor": "#616165",
     "eye": "#d8c030",
     "main": "#4e4a53",
@@ -16518,7 +16863,7 @@
     "line": "หมาป่า",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a6a4a",
+    "skin": "#4a4a4e",
     "hairColor": "#1e1a1c",
     "eye": "#d8c030",
     "main": "#2a2a30",
@@ -16528,7 +16873,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "mane"
+    ],
     "wear": 0.4,
     "defaults": [
      "outfit"
@@ -16598,6 +16945,7 @@
      "มงกุฎเงินขนนก"
     ],
     "pose": "นั่งบนเก้าอี้ลอยและไม่มองลงพื้น",
+    "accent": "#c8ccd8",
     "file": "09-silvanel",
     "country": "SV-10",
     "continent": "SV",
@@ -16609,7 +16957,7 @@
     "line": "เอลฟ์ฟ้า",
     "stage": "adult",
     "fem": true,
-    "skin": "#e8c8a8",
+    "skin": "#e4eef2",
     "hairColor": "#9ebde0",
     "eye": "#3a7a3a",
     "main": "#8bb1c0",
@@ -16622,8 +16970,7 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit",
-     "skin"
+     "outfit"
     ],
     "items": [
      "กล้องส่อง",
@@ -16641,7 +16988,7 @@
     "line": "เอลฟ์ฟ้า",
     "stage": "adult",
     "fem": false,
-    "skin": "#f2d6b8",
+    "skin": "#e4eef2",
     "hairColor": "#c8ccd8",
     "eye": "#6a9ad0",
     "main": "#7aa0c8",
@@ -16651,11 +16998,11 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
-    "wear": 0,
-    "defaults": [
-     "skin"
+    "feats": [
+     "stripes"
     ],
+    "wear": 0,
+    "defaults": [],
     "items": [
      "กำไลลมเงิน"
     ],
@@ -16671,7 +17018,7 @@
     "line": "เอลฟ์ฟ้า",
     "stage": "child",
     "fem": null,
-    "skin": "#f6e0c8",
+    "skin": "#e4eef2",
     "hairColor": "#9ebde0",
     "eye": "#6a9ad0",
     "main": "#b0d0f0",
@@ -16683,9 +17030,7 @@
     "tool": "",
     "feats": [],
     "wear": 0.1,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "ไม่มี"
     ],
@@ -16701,17 +17046,19 @@
     "line": "นก",
     "stage": "elder",
     "fem": false,
-    "skin": "#6a5a4a",
+    "skin": "#8a6a4a",
     "hairColor": "#5a3a22",
-    "eye": "#8a8a90",
+    "eye": "#d8c030",
     "main": "#7f7151",
     "second": "#c8a030",
     "outfit": "tunic",
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "scroll",
-    "feats": [],
+    "tool": "bag",
+    "feats": [
+     "spots"
+    ],
     "wear": 0,
     "defaults": [
      "outfit"
@@ -16732,7 +17079,7 @@
     "line": "นก",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a5a4a",
+    "skin": "#8a6a4a",
     "hairColor": "#5a3a22",
     "eye": "#d9a030",
     "main": "#a89870",
@@ -16741,7 +17088,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -16763,7 +17110,7 @@
     "line": "ภูตจิ๋ว",
     "stage": "adult",
     "fem": null,
-    "skin": "#d0e0ff",
+    "skin": "#f0d0f0",
     "hairColor": "#d07030",
     "eye": "#3a7a3a",
     "main": "#e8c860",
@@ -16772,12 +17119,10 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [
      "ขวดน้ำผึ้งจิ๋ว",
      "ม้วนข่าวเล็กเท่าเข็ม"
@@ -16795,7 +17140,7 @@
     "stage": "adult",
     "fem": false,
     "skin": "#6a5a4a",
-    "hairColor": "#3a2a20",
+    "hairColor": "#8a7a68",
     "eye": "#d8c030",
     "main": "#5a5a60",
     "second": "#8a8a86",
@@ -16803,12 +17148,11 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.85,
     "defaults": [
-     "hair",
-     "hairColor"
+     "hair"
     ],
     "items": [
      "ถุงสารที่ยังไม่ส่งถึง"
@@ -16822,9 +17166,10 @@
    "SV12-1": {
     "name": "นักเล่นแร่ใหญ่ ดอร์น",
     "race": "elf",
+    "line": "เอลฟ์ใต้ดิน",
     "stage": "elder",
     "fem": null,
-    "skin": "#d8b890",
+    "skin": "#a497ad",
     "hairColor": "#dcdee8",
     "eye": "#6a3a8a",
     "main": "#3c284d",
@@ -16833,7 +17178,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -16861,7 +17206,7 @@
     "hair": "",
     "beard": "",
     "hat": "",
-    "tool": "bowl",
+    "tool": "bucket",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -16879,9 +17224,10 @@
    "SV12-3": {
     "name": "นักเก็บเห็ด ไมโค",
     "race": "elf",
+    "line": "เอลฟ์ใต้ดิน",
     "stage": "adult",
     "fem": false,
-    "skin": "#d8b890",
+    "skin": "#977eaf",
     "hairColor": "#e8e6e0",
     "eye": "#6a3a8a",
     "main": "#5a4a6a",
@@ -16890,7 +17236,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "dagger",
+    "tool": "basket",
     "feats": [],
     "wear": 0.55,
     "defaults": [
@@ -16909,9 +17255,10 @@
    "SV12-4": {
     "name": "ผู้ฟังเสียงซิลเวรา รูท",
     "race": "elf",
+    "line": "เอลฟ์ใต้ดิน",
     "stage": "adult",
     "fem": false,
-    "skin": "#d8b890",
+    "skin": "#8a7a96",
     "hairColor": "#e8e6e0",
     "eye": "#2a2024",
     "main": "#4a4a5a",
@@ -16920,7 +17267,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "chalk",
     "feats": [],
     "wear": 0.25,
     "defaults": [
@@ -16980,7 +17327,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "bellrope",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -17191,7 +17538,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -17221,7 +17568,9 @@
     "beard": "",
     "hat": "",
     "tool": "wand",
-    "feats": [],
+    "feats": [
+     "stripes"
+    ],
     "wear": 0.45,
     "defaults": [
      "skin"
@@ -17271,7 +17620,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#3a7a3a",
     "main": "#4a5a4a",
     "second": "#8a8a96",
     "outfit": "tunic",
@@ -17301,7 +17650,7 @@
     "fem": true,
     "skin": "#a87048",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#5a3a22",
     "main": "#7a8a5a",
     "second": "#d8c880",
     "outfit": "rags",
@@ -17326,10 +17675,10 @@
    "SV16-1": {
     "name": "หัวหน้าสภาเผ่า รอร์",
     "race": "beast",
-    "line": "เสือและแมวใหญ่",
+    "line": "สิงโต",
     "stage": "elder",
     "fem": false,
-    "skin": "#b07a48",
+    "skin": "#8a6a4a",
     "hairColor": "#a05a30",
     "eye": "#e6c178",
     "main": "#a86a3a",
@@ -17339,7 +17688,10 @@
     "beard": "",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "mane",
+     "tail:fluffy"
+    ],
     "wear": 0,
     "defaults": [],
     "items": [
@@ -17355,7 +17707,7 @@
    "SV16-2": {
     "name": "นักล่าแก่ ฮาร์ด",
     "race": "beast",
-    "line": "เสือและแมวใหญ่",
+    "line": "เสือ",
     "stage": "elder",
     "fem": false,
     "skin": "#b07a48",
@@ -17384,12 +17736,12 @@
    "SV16-3": {
     "name": "หมอผีเผ่าสัตว์ เมอร์",
     "race": "beast",
-    "line": "กวางและวัว",
+    "line": "กวาง",
     "stage": "elder",
     "fem": true,
     "skin": "#b07a48",
     "hairColor": "#947f6f",
-    "eye": "#3a7a3a",
+    "eye": "#1e1a1c",
     "main": "#8a6a4a",
     "second": "#6a8a5a",
     "outfit": "tunic",
@@ -17397,7 +17749,9 @@
     "beard": "",
     "hat": "",
     "tool": "lute",
-    "feats": [],
+    "feats": [
+     "antlers"
+    ],
     "wear": 0,
     "defaults": [
      "outfit",
@@ -17416,10 +17770,10 @@
    "SV16-4": {
     "name": "เด็กสัตว์กำพร้า คูกิ",
     "race": "beast",
-    "line": "เสือและแมวใหญ่",
+    "line": "แมวใหญ่",
     "stage": "child",
     "fem": true,
-    "skin": "#b07a48",
+    "skin": "#8a6a4a",
     "hairColor": "#8a8a90",
     "eye": "#2a9a5a",
     "main": "#8a8a8a",
@@ -17429,7 +17783,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "tail:fluffy"
+    ],
     "wear": 0.7,
     "defaults": [],
     "items": [
@@ -17448,14 +17804,14 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#4a5a3a",
     "second": "#a89868",
     "outfit": "leather",
     "hair": "wild",
     "beard": "stubble",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.4,
     "defaults": [],
@@ -17534,7 +17890,7 @@
     "fem": false,
     "skin": "#7a4a2a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#2a2024",
     "main": "#6a7a5a",
     "second": "#c8b080",
     "outfit": "tunic",
@@ -17545,7 +17901,8 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "ไม้พายสั้น",
@@ -17593,7 +17950,7 @@
     "line": "เผ่าเห็ด",
     "stage": "adult",
     "fem": false,
-    "skin": "#a070e0",
+    "skin": "#8a7a96",
     "hairColor": "#3a2a20",
     "eye": "#6a9ad0",
     "main": "#8a3a5a",
@@ -17633,9 +17990,10 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "flask",
+    "tool": "bottle",
     "feats": [
-     "glasses"
+     "glasses",
+     "glow-eyes"
     ],
     "wear": 0.4,
     "defaults": [
@@ -17687,7 +18045,7 @@
     "line": "เผ่าเห็ด",
     "stage": "child",
     "fem": null,
-    "skin": "#7ad070",
+    "skin": "#ece4d0",
     "hairColor": "#3a2a20",
     "eye": "#2a2024",
     "main": "#c8c8c0",
@@ -17746,7 +18104,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": null,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#3a586e",
@@ -17755,7 +18113,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "bellrope",
     "feats": [],
     "wear": 0.45,
     "defaults": [],
@@ -17805,7 +18163,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": false,
-    "skin": "#e8b48a",
+    "skin": "#d4d4d1",
     "hairColor": "#c0c0c4",
     "eye": "#8a8a90",
     "main": "#628096",
@@ -17837,14 +18195,14 @@
     "fem": false,
     "skin": "#d8a070",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#295529",
     "main": "#6a6a70",
     "second": "#8a7a5a",
     "outfit": "priest",
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "bellrope",
     "feats": [],
     "wear": 0.45,
     "defaults": [
@@ -17874,7 +18232,9 @@
     "beard": "",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "glow-eyes"
+    ],
     "wear": 0.4,
     "defaults": [],
     "items": [
@@ -17901,7 +18261,7 @@
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "quill",
     "feats": [],
     "wear": 0.2,
     "defaults": [],
@@ -17922,7 +18282,7 @@
     "fem": false,
     "skin": "#f0c8a0",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#b3b3b7",
     "main": "#7a7a7a",
     "second": "#a02a3a",
     "outfit": "rags",
@@ -17987,7 +18347,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "beads",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -18010,7 +18370,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": null,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#a8acb8",
     "eye": "#e6d678",
     "main": "#8a7a4a",
@@ -18071,7 +18431,7 @@
     "line": "ภูตแสง",
     "stage": "adult",
     "fem": true,
-    "skin": "#fff0c0",
+    "skin": "#e6d678",
     "hairColor": "#e6d678",
     "eye": "#d8c030",
     "main": "#f0d060",
@@ -18101,7 +18461,7 @@
     "fem": false,
     "skin": "#e8b48a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#6a2a2a",
     "second": "#8a8a86",
     "outfit": "tunic",
@@ -18163,7 +18523,7 @@
     "line": "ชาวหมอก",
     "stage": "adult",
     "fem": true,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#5f6f7f",
@@ -18194,7 +18554,7 @@
     "fem": false,
     "skin": "#a06a42",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#2a2024",
     "main": "#3a4a5a",
     "second": "#b8a060",
     "outfit": "tunic",
@@ -18208,7 +18568,8 @@
     ],
     "wear": 0.4,
     "defaults": [
-     "outfit"
+     "outfit",
+     "eye"
     ],
     "items": [
      "พิณสายสั้นจากเนเรีย"
@@ -18225,7 +18586,7 @@
     "line": "ชาวหมอก",
     "stage": "child",
     "fem": true,
-    "skin": "#e8b48a",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#a8a8b8",
@@ -18254,7 +18615,7 @@
     "race": "darkelf",
     "stage": "elder",
     "fem": null,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#c8ccd8",
     "eye": "#8a7ac0",
     "main": "#2a1a3a",
@@ -18345,7 +18706,7 @@
     "fem": false,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#616165",
     "main": "#3a3a40",
     "second": "#8a8a8a",
     "outfit": "tunic",
@@ -18433,7 +18794,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#c8ccd8",
     "eye": "#d9a030",
     "main": "#285343",
@@ -18494,14 +18855,14 @@
     "fem": false,
     "skin": "#c98e62",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#9a2a1a",
     "main": "#5a6a5a",
     "second": "#7a5a8a",
     "outfit": "tunic",
     "hair": "tied",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "basket",
     "feats": [
      "glasses"
     ],
@@ -18533,7 +18894,7 @@
     "hair": "bun",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.5,
     "defaults": [
@@ -18555,7 +18916,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": null,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#c0c0c4",
     "eye": "#e8e6e0",
     "main": "#8c8c96",
@@ -18645,7 +19006,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": true,
-    "skin": "#e8b48a",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#5a6a7a",
@@ -18674,7 +19035,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": null,
-    "skin": "#e8b48a",
+    "skin": "#c8c8c4",
     "hairColor": "#a8acb8",
     "eye": "#8a8a90",
     "main": "#3b3741",
@@ -18713,7 +19074,8 @@
     "hat": "",
     "tool": "",
     "feats": [
-     "ghost"
+     "ghost",
+     "glow-eyes"
     ],
     "wear": 0,
     "defaults": [
@@ -18734,7 +19096,7 @@
     "line": "ชาวหมอก",
     "stage": "adult",
     "fem": false,
-    "skin": "#f0c8a0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#5a5a60",
@@ -18743,7 +19105,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "wand",
+    "tool": "chalk",
     "feats": [],
     "wear": 0.25,
     "defaults": [],
@@ -18770,9 +19132,10 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [
-     "ghost"
+     "ghost",
+     "glow-eyes"
     ],
     "wear": 0.8,
     "defaults": [
@@ -18801,7 +19164,7 @@
     "outfit": "cloak",
     "hair": "cropped",
     "beard": "",
-    "hat": "",
+    "hat": "hood",
     "tool": "",
     "feats": [
      "mask"
@@ -18854,7 +19217,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": false,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#c8ccd8",
     "eye": "#d9a030",
     "main": "#4a3a5a",
@@ -18886,18 +19249,19 @@
     "fem": false,
     "skin": "#e8b48a",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#2a2024",
     "main": "#6a7a8a",
     "second": "#c8c8d0",
     "outfit": "noble",
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "ledger",
+    "tool": "card",
     "feats": [],
     "wear": 0.3,
     "defaults": [
      "hair",
+     "eye",
      "skin"
     ],
     "items": [
@@ -18925,7 +19289,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "puppet"
+    ],
     "wear": 0.25,
     "defaults": [
      "hair",
@@ -18945,7 +19311,7 @@
     "race": "construct",
     "stage": "adult",
     "fem": null,
-    "skin": "#f0c8a0",
+    "skin": "#c8c8c4",
     "hairColor": "#1e1a1c",
     "eye": "#2a3a7a",
     "main": "#5c6a76",
@@ -18984,7 +19350,7 @@
     "hair": "",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0.4,
     "defaults": [
@@ -19014,8 +19380,10 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
-    "feats": [],
+    "tool": "doll",
+    "feats": [
+     "puppet"
+    ],
     "wear": 0.5,
     "defaults": [],
     "items": [
@@ -19033,7 +19401,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": null,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#8a8a96",
@@ -19065,7 +19433,7 @@
     "fem": true,
     "skin": "#f6d2b0",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#5a3a22",
     "main": "#6a5a4a",
     "second": "#a02a3a",
     "outfit": "tunic",
@@ -19126,7 +19494,7 @@
     "line": "ชาวหมอก",
     "stage": "adult",
     "fem": null,
-    "skin": "#f6d2b0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#5a6a7a",
@@ -19167,7 +19535,7 @@
     "outfit": "sailor",
     "hair": "tied",
     "beard": "",
-    "hat": "cap",
+    "hat": "",
     "tool": "",
     "feats": [],
     "wear": 0.25,
@@ -19188,14 +19556,14 @@
     "fem": true,
     "skin": "#7a4a2a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#6a3420",
     "main": "#85736f",
     "second": "#8a8a8a",
     "outfit": "tunic",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "keyring",
     "feats": [],
     "wear": 0.65,
     "defaults": [
@@ -19247,7 +19615,7 @@
     "fem": false,
     "skin": "#e8b48a",
     "hairColor": "#5a3a22",
-    "eye": "#8a8a90",
+    "eye": "#9a2a1a",
     "main": "#5a5a60",
     "second": "#d8a040",
     "outfit": "noble",
@@ -19273,7 +19641,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#7c7c72",
@@ -19302,7 +19670,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": true,
-    "skin": "#6a5a80",
+    "skin": "#8a7a96",
     "hairColor": "#c8ccd8",
     "eye": "#d9a030",
     "main": "#3a3a4a",
@@ -19364,7 +19732,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#9a9a9a",
     "hairColor": "#c8ccd8",
     "eye": "#b3b3b7",
     "main": "#b1a8a9",
@@ -19391,7 +19759,7 @@
     "race": "darkelf",
     "stage": "adult",
     "fem": null,
-    "skin": "#8a7aa0",
+    "skin": "#b0b0b0",
     "hairColor": "#c8ccd8",
     "eye": "#e6c178",
     "main": "#7a7a8a",
@@ -19400,7 +19768,7 @@
     "hair": "wild",
     "beard": "",
     "hat": "",
-    "tool": "lantern",
+    "tool": "",
     "feats": [],
     "wear": 0.55,
     "defaults": [],
@@ -19419,7 +19787,7 @@
     "line": "ชาวหมอก",
     "stage": "elder",
     "fem": true,
-    "skin": "#e8b48a",
+    "skin": "#c8c8c4",
     "hairColor": "#c8ccd8",
     "eye": "#8a8a90",
     "main": "#5e544c",
@@ -19477,14 +19845,14 @@
     "fem": true,
     "skin": "#d8a070",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#7a7a7a",
     "second": "#8a6a6a",
     "outfit": "tunic",
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "doll",
     "feats": [],
     "wear": 0.5,
     "defaults": [
@@ -19514,7 +19882,7 @@
     "hair": "short",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "bag",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -19597,7 +19965,7 @@
     "hair": "curly",
     "beard": "",
     "hat": "",
-    "tool": "bowl",
+    "tool": "bucket",
     "feats": [],
     "wear": 0,
     "defaults": [],
@@ -19640,7 +20008,7 @@
     "fem": null,
     "skin": "#c98e62",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#88a7c1",
     "second": "#6a7a6a",
     "outfit": "robe",
@@ -19667,7 +20035,7 @@
     "fem": true,
     "skin": "#f0c8a0",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#3a7a3a",
     "main": "#756f37",
     "second": "#a89868",
     "outfit": "leather",
@@ -19690,7 +20058,7 @@
    "SV16-4S": {
     "name": "มิวมิว",
     "race": "beast",
-    "line": "เสือและแมวใหญ่",
+    "line": "แมวใหญ่",
     "stage": "child",
     "fem": null,
     "skin": "#8a6a4a",
@@ -19722,7 +20090,7 @@
     "fem": null,
     "skin": "#f0c49a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#5a3a22",
     "main": "#a4a249",
     "second": "#e04848",
     "outfit": "apron",
@@ -19776,7 +20144,7 @@
     "fem": null,
     "skin": "#d8a070",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#8a8a90",
     "main": "#a2854d",
     "second": "#5a4a4a",
     "outfit": "apron",
@@ -19832,7 +20200,7 @@
     "fem": null,
     "skin": "#c89870",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#9ebde0",
     "main": "#8991a2",
     "second": "#a8a8b0",
     "outfit": "leather",
@@ -19887,7 +20255,7 @@
     "fem": null,
     "skin": "#e0b890",
     "hairColor": "#3a2a20",
-    "eye": "#9a2a1a",
+    "eye": "#8a8a90",
     "main": "#97b6a6",
     "second": "#f0f8ff",
     "outfit": "light",
@@ -19977,7 +20345,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "horns"
+    ],
     "wear": 0.25,
     "defaults": [
      "skin"
@@ -20024,7 +20394,7 @@
     "fem": null,
     "skin": "#9a6040",
     "hairColor": "#6a5a4a",
-    "eye": "#8a8a90",
+    "eye": "#5a3a22",
     "main": "#a45e35",
     "second": "#b8a060",
     "outfit": "cloak",
@@ -20076,7 +20446,7 @@
     "fem": null,
     "skin": "#9a6040",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#8b6437",
     "second": "#c8a030",
     "outfit": "light",
@@ -20272,7 +20642,7 @@
     "fem": null,
     "skin": "#7a4a2a",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#6a9ad0",
     "main": "#a29177",
     "second": "#d8c8a0",
     "outfit": "armor",
@@ -20462,7 +20832,7 @@
     "fem": null,
     "skin": "#d8a070",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#5a3a22",
     "main": "#5d5057",
     "second": "#c87a3a",
     "outfit": "scholar",
@@ -20490,7 +20860,7 @@
     "line": "ผู้รอดชีวิตตุ๊กตา",
     "stage": "teen",
     "fem": null,
-    "skin": "#e8b48a",
+    "skin": "#ece6dc",
     "hairColor": "#dcdee8",
     "eye": "#6a9ad0",
     "main": "#c6bba9",
@@ -20502,9 +20872,7 @@
     "tool": "",
     "feats": [],
     "wear": 0.4,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [],
     "pose": "",
     "of": "MK10-2",
@@ -20843,7 +21211,7 @@
     "fem": null,
     "skin": "#e8b48a",
     "hairColor": "#3f2918",
-    "eye": "#2a1e18",
+    "eye": "#8a8a90",
     "main": "#978564",
     "second": "#8a6a6a",
     "outfit": "rags",
@@ -20877,7 +21245,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "lute",
+    "tool": "pipe",
     "feats": [],
     "wear": 0,
     "defaults": [
@@ -20979,7 +21347,7 @@
     "fem": false,
     "skin": "#a06a42",
     "hairColor": "#8a6030",
-    "eye": "#d9a030",
+    "eye": "#6a9ad0",
     "main": "#6d705d",
     "second": "#6a5a3a",
     "outfit": "light",

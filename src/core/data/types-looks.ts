@@ -25,6 +25,8 @@ export interface LineOverrides {
   scale?: number;
   /** replaces the race's feats */
   feats?: string[];
+  /** replaces body.ears (the bird, the lizard and the rabbit have no wolf's ears) */
+  ears?: LookBody['ears'];
 }
 
 export interface RaceLine { name: string; overrides: LineOverrides }
@@ -73,6 +75,10 @@ export interface PersonLookRow {
   tool: string;
   /** personal marks only (scar, mask, halo ...); the race's feats are added by the resolver */
   feats: string[];
+  /** set only when the docs give this person a colour of the accent (the colour of the wings, a silver crown): replaces the line's and the race's */
+  accent?: string;
+  /** set only when this person's ears differ from the race's (a half-beast has animal ears) */
+  ears?: LookBody['ears'];
   wear: number;
   /** the fields the docs said nothing of and the generator filled from its defaults (outfit hair hairColor eye skin main second); check:looks counts them */
   defaults: string[];

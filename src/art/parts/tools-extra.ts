@@ -16,6 +16,7 @@ const iron = (r: Rig): number => r.p.mat(TONE.darkSteel);
 const brass = (r: Rig): number => r.p.mat('#c2a050');
 const darkBrass = (r: Rig): number => r.p.mat('#7a5a24');
 const flat = (r: Rig, hex: string): number => r.p.mat(hex, { flat: true });
+const wood = (r: Rig): number => r.m.wood;
 /** Where a small instrument sits: just above and in front of the hand. */
 const palm = (r: Rig): Pt => [Math.round(r.hand[0]) + 1, Math.round(r.hand[1]) - sz(r, 2)];
 /** A point `t` pixels along a direction `a` (radians) from the hand and `s` pixels to its lower side. */
@@ -238,6 +239,275 @@ function knuckles(r: Rig): void {
   worn(r, [hx, hy - 1], [hx + 2, hy], p.mat('#6a4a2a'));
 }
 
+// ── things carried that the docs name (wave 4: keys, a basket, a garland, a doll, a bucket ...) ───────────────────────────────────────────────
+/** A ring of pixels of radius `rad` round a centre, between two angles (degrees; 180 to 360 is the upper half). */
+function ring(r: Rig, c: Pt, rad: number, mat: number, from = 0, to = 360): void {
+  const n = Math.max(8, Math.round(rad * 8));
+  for (let i = 0; i <= n; i++) {
+    const a = (from + ((to - from) * i) / n) * DEG;
+    r.p.px(c[0] + Math.cos(a) * rad, c[1] + Math.sin(a) * rad, mat);
+  }
+}
+function mixHex(a: string, b: string): string {
+  const A = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16)), B = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
+  return '#' + A.map((v, i) => Math.round((v + B[i]) / 2).toString(16).padStart(2, '0')).join('');
+}
+
+function keyring(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, c: Pt = [hx + 1, hy + 3 * r.k], sw = [0, 1, 0, -1][r.f % 4] * 0.4;
+  // an iron ring held in the fist with three big keys hanging from it: a round bow, a long shank, teeth
+  ring(r, c, 1.8 * r.k + 0.4, brass(r));
+  const keys: [number, number, number][] = [[-1.6, 5, 0], [0.2, 6.5, 1], [1.8, 4.5, 0]];
+  keys.forEach(([dx, len, tooth], i) => {
+    const x = c[0] + dx * r.k + sw * (i - 1), y0 = c[1] + 1.6 * r.k, y1 = y0 + len * r.k;
+    const mat = i === 1 ? iron(r) : steel(r);
+    p.line([x, y0], [x, y1], mat, 1);
+    p.px(x, y0 - 0.6, darkBrass(r));
+    p.px(x + 1, y1 - 1, mat); p.px(x + 1, y1 - 2.4, iron(r));
+    if (tooth) p.px(x + 1, y1, iron(r));
+  });
+  worn(r, [c[0], c[1] + 2], [c[0], c[1] + 6], p.mat('#5a3a24'));
+}
+
+function basket(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, w = sz(r, 8), h = sz(r, 5), x = Math.round(hx) - Math.floor(w / 2) + 1, y = Math.round(hy) + sz(r, 3);
+  const straw = p.mat('#b08a4a'), dark = p.mat('#7a5a2c'), cloth = p.mat('#d8d0bc');
+  // a woven basket on its arched handle, a cloth over the load
+  ring(r, [hx + 1, y], w / 2 - 0.4, dark, 180, 360);
+  p.rect(x, y, w, h, straw);
+  p.rect(x, y + Math.floor(h / 2), w, 1, dark);
+  for (let i = 1; i < w; i += 2) p.px(x + i, y + 1, dark);
+  p.rect(x - 1, y - 1, w + 2, 1, dark);
+  p.rect(x + 1, y - 2, w - 2, 1, cloth);
+  p.px(x + 2, y - 3, cloth); p.px(x + w - 3, y - 3, p.mat('#e8e0cc'));
+}
+
+function garland(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), R = 3.2 * r.k + 0.6, leaf = p.mat('#4a8a3a'), leaf2 = p.mat('#6aa04a');
+  const bloom = [flat(r, '#e07a9a'), flat(r, '#f0d070'), flat(r, '#f4f0e8')];
+  // a wreath of leaves with a bloom every third, held up in front of the chest, a ribbon trailing
+  const n = 14;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R * 1.05;
+    p.px(x, y, i % 3 === 0 ? bloom[Math.floor(i / 3) % 3] : i % 2 ? leaf : leaf2);
+    if (r.k >= 0.8) p.px(x + Math.cos(a), y + Math.sin(a), i % 3 === 0 ? bloom[(Math.floor(i / 3) + 1) % 3] : leaf);
+  }
+  p.px(cx - R, cy + R * 0.7, p.mat(r.look.accent)); p.px(cx - R - 0.5, cy + R * 0.7 + 1, p.mat(r.look.accent));
+}
+
+function mallet(r: Rig): void {
+  const { p, m } = r, head = p.mat('#8a6238'), band = iron(r);
+  // a short wooden maul for striking armour and bells: a round head of wood with iron bands, a leather-wrapped haft
+  stroke(r, -6, 8, wood(r), thick(r));
+  stroke(r, 8, 13, head, thick(r)); stroke(r, 8, 13, head, 1, 1.6); stroke(r, 8, 13, head, 1, -1.6);
+  p.px(...at(r, 8, 1.8), band); p.px(...at(r, 8, -1.8), band); p.px(...at(r, 13, 1.6), band); p.px(...at(r, 13, -1.6), band);
+  stroke(r, -5, -1, m.leather, 1, 0.5);
+  p.px(...at(r, 13.6), p.mat(lighter('#8a6238', 0.3)));
+  worn(r, at(r, 8), at(r, 13), p.mat('#4a3220'));
+}
+
+function bellrope(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, b = brass(r), rope = p.mat('#c4b080'), dk = p.mat('#7a6a40');
+  const sway = [0, 1, 0, -1][r.f % 4] * 0.5;
+  // a small bronze bell in the fist and the thick rope hanging from it, knotted, ending in a tuft
+  p.poly([[hx - 1, hy - 3 * r.k], [hx + 3, hy - 3 * r.k], [hx + 4, hy - 0.6], [hx - 2, hy - 0.6]], b);
+  p.px(hx + 1, hy - 3 * r.k - 1, darkBrass(r));
+  p.px(hx + 1, hy - 0.2, darkBrass(r));
+  const len = 8 * r.k;
+  for (let i = 0; i <= len; i++) p.px(hx + 1 + Math.sin(i * 0.5) * 0.6 + sway * (i / len), hy + i, i % 3 === 2 ? dk : rope);
+  p.px(hx + 1 + sway, hy + len * 0.5, dk); p.px(hx + 2 + sway, hy + len * 0.5, dk);
+  p.rect(Math.round(hx + sway), Math.round(hy + len) + 1, 3, 2, rope);
+  p.px(hx + sway, hy + len + 3, dk); p.px(hx + 2 + sway, hy + len + 3, dk);
+}
+
+function beads(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, col = [p.mat('#e8e0cc'), p.mat('#a8a49c')];
+  // a string of prayer beads hanging in a loop from the hand, with a tassel and a charm
+  const n = Math.round(10 * r.k) + 2;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    p.px(hx + 0.5 - Math.sin(t * Math.PI) * 2.6 * r.k, hy + 0.5 + t * 5 * r.k, i % 2 ? col[0] : col[1]);
+  }
+  const end: Pt = [hx + 0.5, hy + 6 * r.k];
+  p.px(end[0], end[1], p.mat(r.look.accent)); p.px(end[0], end[1] + 1, p.mat(r.look.accent)); p.px(end[0] + 1, end[1] + 2, p.mat(darker(r.look.accent, 0.3)));
+}
+
+function doll(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), body = p.mat('#c9bba0'), dress = p.mat(darker(r.look.second, 0.1)), face = flat(r, '#2a2420');
+  // a small doll held upright: a round head with two dot eyes, a cloth body, stubby arms and legs
+  p.ell(cx, cy - 3.6 * r.k, 1.8 * r.k + 0.3, 1.8 * r.k + 0.3, body);
+  p.poly([[cx - 2, cy - 1.8 * r.k], [cx + 2, cy - 1.8 * r.k], [cx + 2.4, cy + 1.6 * r.k], [cx - 2.4, cy + 1.6 * r.k]], dress);
+  p.px(cx - 2.6, cy - 0.6, body); p.px(cx + 2.6, cy - 0.2, body);
+  p.px(cx - 1.4, cy + 2.4 * r.k, body); p.px(cx + 1.2, cy + 2.4 * r.k, body);
+  p.px(cx - 0.8, cy - 3.8 * r.k, face); p.px(cx + 0.8, cy - 3.8 * r.k, face);
+  p.px(cx + 1, cy - 5.6 * r.k, p.mat(darker(r.look.accent, 0.1)));
+}
+
+function bucket(r: Rig): void {
+  const { p } = r, [hx, hy] = r.hand, w = sz(r, 6), h = sz(r, 5), x = Math.round(hx) - 1, y = Math.round(hy) + sz(r, 3);
+  const stave = p.mat('#8a6a3a'), water = flat(r, '#9ac0d0');
+  // a wooden pail with two iron hoops, a rope handle arching over the rim, water showing at the top
+  ring(r, [hx + w / 2 - 0.5, y], w / 2, p.mat('#a89868'), 180, 360);
+  p.poly([[x, y], [x + w, y], [x + w - 1, y + h], [x + 1, y + h]], stave);
+  p.rect(x + 1, y, w - 2, 1, water);
+  p.rect(x, y + 1, w, 1, iron(r)); p.rect(x + 1, y + h - 1, w - 2, 1, iron(r));
+  p.px(x + 2, y + 2, p.mat(lighter('#8a6a3a', 0.25)));
+  if (r.f % 2) p.glow(x + 2, y - 1, '#c8e0e8', 0.7);
+}
+
+function papyrus(r: Rig): void {
+  const { p } = r, x = Math.round(r.hand[0]) + 1, y = Math.round(r.hand[1]) - sz(r, 4), w = sz(r, 5), h = sz(r, 9);
+  const sheet = p.mat('#d4b878'), edge = p.mat('#a8884c'), ink = flat(r, '#4a3820');
+  // a long strip of reed paper unrolled from a thin rod, yellow-brown, rows of tiny ink marks, a ragged lower edge
+  p.rect(x - 1, y, w + 2, 1, p.mat('#8a6a3a'));
+  p.rect(x, y + 1, w, h, sheet);
+  for (let j = 2; j < h; j += 2) for (let i = 1; i < w - 1; i += 2) p.px(x + i, y + j, (i + j) % 3 ? ink : edge);
+  p.px(x, y + h + 1, sheet); p.px(x + 2, y + h + 1, edge); p.px(x + w - 1, y + h, edge);
+  p.rect(x, y + 1, 1, h, edge);
+}
+
+function card(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), w = sz(r, 6), h = sz(r, 4), x = Math.round(cx) - 1, y = Math.round(cy) - h;
+  const paper = p.mat('#e4dcc0'), line = flat(r, '#4a4438');
+  // a small hard card or ticket: pale, a dark strip, a stamp in the accent and a hole with a cord
+  p.rect(x, y, w, h, paper);
+  p.rect(x, y + 1, w, 1, line);
+  p.rect(x + w - 2, y + 2, 2, Math.max(1, h - 2), p.mat(r.look.accent));
+  p.px(x + 1, y + h - 1, line); p.px(x + 2, y + h - 1, line);
+  p.px(x - 1, y, r.m.metal);
+  p.line([x - 1, y], [x - 2, y - 2 * r.k], p.mat('#a89868'));
+}
+
+function letter(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), w = sz(r, 7), h = sz(r, 5), x = Math.round(cx) - 1, y = Math.round(cy) - h;
+  const paper = p.mat('#e8e0cc'), fold = p.mat('#b8ac90');
+  // an envelope with a folded flap and a red wax seal, a corner of the letter showing
+  p.rect(x, y, w, h, paper);
+  p.line([x, y], [x + w / 2, y + h / 2], fold); p.line([x + w - 1, y], [x + w / 2, y + h / 2], fold);
+  p.px(x + Math.floor(w / 2), y + Math.floor(h / 2), flat(r, '#a8302a'));
+  p.px(x + Math.floor(w / 2) + 1, y + Math.floor(h / 2), flat(r, '#8a2420'));
+  p.px(x + 1, y - 1, paper); p.px(x + 2, y - 1, paper);
+}
+
+function crystal(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), body = p.mat('#8ad0e8', { alpha: 0.9 }), hi = flat(r, '#e8f8ff'), sh = p.mat('#4a8aa8');
+  // a faceted crystal point-up with a bright facet and a pale glow that pulses
+  const s = r.k >= 0.8 ? 1 : 0.8;
+  p.poly([[cx, cy - 6 * s], [cx + 2.4 * s, cy - 2.6 * s], [cx + 1.8 * s, cy + 1], [cx - 1.8 * s, cy + 1], [cx - 2.4 * s, cy - 2.6 * s]], body);
+  p.line([cx, cy - 6 * s], [cx + 1.8 * s, cy + 0.5], sh);
+  p.px(cx - 1, cy - 3 * s, hi); p.px(cx - 1, cy - 2 * s, hi); p.px(cx - 0.4, cy - 4.4 * s, hi);
+  p.glow(cx + 3, cy - 5 + (r.f % 2), '#cfeef8', 0.8); p.glow(cx - 3, cy - 3, '#cfeef8', 0.6);
+}
+
+function jar(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), w = sz(r, 5), h = sz(r, 6), x = Math.round(cx) - 1, y = Math.round(cy) - h + 1;
+  const glass = p.mat('#c8e0e0', { alpha: 0.75 }), lid = p.mat('#8a6a3a'), stuff = flat(r, mixHex(r.look.accent, '#6a5a3a'));
+  // a glass jar with a cork lid and something dim inside
+  p.rect(x, y, w, h, glass);
+  p.rect(x + 1, y + Math.floor(h / 2), w - 2, Math.ceil(h / 2) - 1, stuff);
+  p.rect(x, y - 1, w, 1, lid); p.rect(x + 1, y - 2, w - 2, 1, lid);
+  p.px(x + 1, y + 1, flat(r, '#f4fbfb'));
+  p.glow(x + w - 1, y + h - 2, mixHex(r.look.accent, '#ffffff'), 0.6);
+}
+
+function net(r: Rig): void {
+  const { p } = r, cord = p.mat('#a8986c'), float = p.mat('#c8503a');
+  // a cast net: a hoop on a pole, a mesh bag below it, a float or two on the rim
+  stroke(r, -8, 4, wood(r));
+  const c = at(r, 8), rad = 4 * r.k + 1;
+  ring(r, c, rad, cord);
+  for (let j = -2; j <= 3; j++) for (let i = -2; i <= 2; i++) if ((i + j) % 2 === 0 && i * i + j * j < 10) p.px(c[0] + i * r.k, c[1] + j * r.k + 1, cord);
+  p.px(c[0] - rad, c[1], float); p.px(c[0] + rad, c[1] + 1, float);
+}
+
+function brush(r: Rig): void {
+  const { p } = r, ink = flat(r, '#2a2430'), paint = p.mat(r.look.accent);
+  // a long thin brush with a tuft dipped in colour
+  stroke(r, -5, 8, wood(r));
+  stroke(r, 8, 11, paint, thick(r) > 1 ? 2 : 1);
+  p.px(...at(r, 11.6), ink); p.px(...at(r, 8, 0.8), r.m.metal);
+  p.px(...at(r, 12.4, 0.8), paint);
+}
+
+function mapPaper(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), w = sz(r, 8), h = sz(r, 6), x = Math.round(cx) - 2, y = Math.round(cy) - h;
+  const sheet = p.mat('#d8cca0'), fold = p.mat('#a89c70'), route = flat(r, '#5a4a30'), mark = flat(r, '#b83a2a'), sea = flat(r, '#8aa8b0');
+  // an opened map with its folds: a coast, a dotted route and a red cross
+  p.rect(x, y, w, h, sheet);
+  p.rect(x + Math.floor(w / 3), y, 1, h, fold); p.rect(x + Math.floor((2 * w) / 3), y, 1, h, fold);
+  p.rect(x, y, Math.max(2, Math.floor(w / 4)), h, sea);
+  for (let i = 2; i < w - 1; i += 2) p.px(x + i, y + 1 + ((i >> 1) % 3), route);
+  p.px(x + w - 2, y + h - 2, mark); p.px(x + w - 3, y + h - 3, mark); p.px(x + w - 1, y + h - 3, mark); p.px(x + w - 3, y + h - 1, mark);
+}
+
+function bottle(r: Rig): void {
+  const { p } = r, [cx, cy] = palm(r), h = sz(r, 8), x = Math.round(cx) - 1, y = Math.round(cy) - h + 1;
+  const glass = p.mat('#7ab0a0', { alpha: 0.85 }), cork = p.mat('#9a7a4a');
+  // a tall corked glass bottle with a neck and a rolled note inside
+  p.rect(x, y + 3, 3, h - 3, glass);
+  p.rect(x + 1, y, 1, 4, glass);
+  p.px(x + 1, y - 1, cork); p.px(x + 1, y, cork);
+  p.px(x + 1, y + 4, flat(r, '#e8e0cc')); p.px(x + 1, y + 5, flat(r, '#e8e0cc'));
+  p.px(x, y + 4, flat(r, '#f4fbf8'));
+}
+
+function pipe(r: Rig): void {
+  const { p } = r, tube = p.mat('#7a5a34'), band = brass(r);
+  // a long thin tube held out to the side, a flute or a blowpipe, with finger holes and brass rings
+  stroke(r, -6, 12, tube);
+  for (const t of [2, 4.5, 7]) p.px(...at(r, t, 0.1), flat(r, '#2a1c10'));
+  p.px(...at(r, -6.4), band); p.px(...at(r, 12.4), band); p.px(...at(r, 9, 0.6), band);
+  if (r.pose === 'cast' || r.f % 2) p.glow(...at(r, 14, -1.6), '#d8e8d0', 0.7);
+}
+
+function bag(r: Rig): void {
+  const { p, m } = r, [hx, hy] = r.hand, w = sz(r, 7), h = sz(r, 6), x = Math.round(hx) - 2, y = Math.round(hy) + sz(r, 2);
+  const canvas = p.mat('#9a8a64'), flap = p.mat('#7a6a48');
+  // a canvas satchel hanging from the hand by its strap: a flap with a buckle and a bulging body
+  p.line([hx, hy], [x + w - 1, y], m.leather);
+  p.rect(x, y, w, h, canvas);
+  p.rect(x, y, w, Math.ceil(h / 2), flap);
+  p.px(x + Math.floor(w / 2), y + Math.ceil(h / 2) - 1, m.metal);
+  p.px(x + 1, y + h - 1, p.mat(darker('#9a8a64', 0.2))); p.px(x + w - 2, y + h - 1, p.mat(darker('#9a8a64', 0.2)));
+}
+
+function hotiron(r: Rig): void {
+  const { p } = r, glowC = ['#ff7a1a', '#ff9a30', '#ffb050'];
+  // an iron bar fresh from the fire: the tip glows orange and sheds sparks
+  stroke(r, -4, 6, iron(r));
+  for (let t = 6; t <= 12; t++) p.px(...at(r, t), flat(r, glowC[Math.min(2, Math.floor((t - 6) / 2.5))]));
+  p.glow(...at(r, 13), '#ffd070', 0.9);
+  for (let i = 0; i < 3; i++) p.glow(...at(r, 8 + i * 2, (i % 2 ? 1 : -1) * (1.6 + ((r.f + i) % 3))), '#ff9a30', 0.8 - i * 0.2);
+}
+
+function tank(r: Rig): void {
+  const { p } = r, sn = r.shoulderNear, w = sz(r, 9), h = sz(r, 7), x = Math.round(sn[0]) - 2, y = Math.round(sn[1]) - h - sz(r, 3);
+  const glass = p.mat('#bcd8e0', { alpha: 0.55 }), water = p.mat('#6a9ab8', { alpha: 0.8 }), fish = flat(r, '#e07a30');
+  // a fish tank floating above the shoulder: a glass box, water in it, a small fish that swims from side to side
+  p.rect(x, y, w, h, glass);
+  p.rect(x + 1, y + 2, w - 2, h - 3, water);
+  p.rect(x, y, w, 1, iron(r)); p.rect(x, y + h - 1, w, 1, iron(r));
+  const fx = x + 2 + (r.f % 3) * 2;
+  p.px(fx, y + 4, fish); p.px(fx + 1, y + 4, fish); p.px(fx - 1, y + 3, fish);
+  p.glow(x + 3, y - 1, '#d8eef4', 0.7);
+}
+
+function quill(r: Rig): void {
+  const { p } = r, vane = p.mat('#e8e2d4'), edge = p.mat('#b4aca0'), ink = flat(r, '#2a2a3a');
+  // a long white feather pen: the shaft, a vane that tapers, the nib dark with ink
+  stroke(r, -2, 10, edge);
+  stroke(r, 2, 10, vane, 1, 0.8); stroke(r, 4, 9, vane, 1, -0.8);
+  p.px(...at(r, 10.6), vane); p.px(...at(r, -2.6), ink); p.px(...at(r, -3.4), ink);
+}
+
+function chalk(r: Rig): void {
+  const { p } = r;
+  // a stick of chalk or charcoal in the fingers with dust falling from the knuckle
+  stroke(r, -1, 4, p.mat('#ece8dc'), thick(r));
+  p.px(...at(r, 4.6), flat(r, '#fffdf2'));
+  p.glow(r.hand[0] + 1, r.hand[1] + 2 + (r.f % 2), '#f4f0e4', 0.6);
+}
+
 export const TOOLS_EXTRA: Record<string, Tool> = {
   pistol: { kind: 'shoot', held: pistol },
   musket: { kind: 'shoot', held: musket },
@@ -251,4 +521,28 @@ export const TOOLS_EXTRA: Record<string, Tool> = {
   whip: { kind: 'swing', held: whip },
   sling: { kind: 'swing', held: sling },
   knuckles: { kind: 'thrust', held: knuckles },
+  // wave 4: the things the docs name that fell to a generic book or box
+  keyring: { kind: 'carry', held: keyring },
+  basket: { kind: 'carry', held: basket },
+  garland: { kind: 'carry', held: garland },
+  mallet: { kind: 'swing', held: mallet },
+  bellrope: { kind: 'carry', held: bellrope },
+  beads: { kind: 'carry', held: beads },
+  doll: { kind: 'carry', held: doll },
+  bucket: { kind: 'carry', held: bucket },
+  papyrus: { kind: 'carry', held: papyrus },
+  card: { kind: 'carry', held: card },
+  letter: { kind: 'carry', held: letter },
+  crystal: { kind: 'cast', held: crystal },
+  jar: { kind: 'carry', held: jar },
+  net: { kind: 'swing', held: net },
+  brush: { kind: 'swing', held: brush },
+  map: { kind: 'carry', held: mapPaper },
+  bottle: { kind: 'carry', held: bottle },
+  pipe: { kind: 'swing', held: pipe },
+  bag: { kind: 'carry', held: bag },
+  hotiron: { kind: 'swing', held: hotiron },
+  tank: { kind: 'carry', held: tank },
+  quill: { kind: 'swing', held: quill },
+  chalk: { kind: 'swing', held: chalk },
 };

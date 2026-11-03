@@ -22,6 +22,9 @@ export const TOOL_IDS = [
   'lute', 'mug', 'bowl', 'flask', 'lantern', 'shield',
   // added after the first set (tools-extra.ts): guns, instruments, a fan, scissors, a whip, a sling, a fist weapon
   'pistol', 'musket', 'rifle', 'spyglass', 'compass', 'pocketwatch', 'fan', 'scissors', 'gauge', 'whip', 'sling', 'knuckles',
+  // wave 4 (tools-extra.ts): the things the docs name that fell to a generic book or box
+  'keyring', 'basket', 'garland', 'mallet', 'bellrope', 'beads', 'doll', 'bucket', 'papyrus', 'card', 'letter', 'crystal', 'jar', 'net',
+  'brush', 'map', 'bottle', 'pipe', 'bag', 'hotiron', 'tank', 'quill', 'chalk',
 ] as const;
 
 /** Race feats (02-races.md ลักษณะที่วาดเพิ่ม) and personal marks. A feat with a kind is written `name:kind` (wings:feather). */

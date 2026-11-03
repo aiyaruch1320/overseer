@@ -10,8 +10,8 @@ import type { LineOverrides, LooksData, NpcLookRow, PersonLookRow, RaceLine, Rac
 import type { NpcRow } from '../../../src/core/data/types-npcs';
 import type { Successor } from '../../../src/core/data/types-bonds';
 import {
-  BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
-  SPIRIT, SPIRIT_SKIN, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
+  ANIMAL_EARS, BEARD_START, DEFAULT_EYE, DEFAULT_HAIR, ELDER_HAIR, GARMENT_TOKEN, HAIR_START, garmentPhrases, HEX, LINE_EXTRA, LINE_MATCH, LINE_OVERRIDES, NO_BEARD, RACE_BY_WORD, RACE_EYE,
+  crownAccentOf, SPIRIT, SPIRIT_SKIN, skinLeadColour, nearestOrOwn, skinToneOf, stripNegated, wingAccentOf, beardOf, clauseOf, colourIn, earsOf, eyeColourOf, featsOf, femOf, gaitOf, hairColourOf, hairStyleOf, hatOf, lowerOf,
   mix, nearest, outfitFromGarments, hatOfRace, dressColours, RACE_TOOL_RULES, pickBy, pickSkin, skinColourOf, skinHint, stageFromDescription, stageWord, toolOf, wearOf,
 } from '../lib/look-words';
 import { genDir, listDocs, readDoc, tables, Unparsed, writeGen } from '../lib/table';
@@ -107,6 +107,8 @@ function loreLines(races: RaceBase[], ui: Record<string, RaceLookRow>): void {
       }
     }
   }
+  // the sub-lines the docs describe that the lore table lists only as a group or not at all (the cats, the deer, the underground elves)
+  for (const r of races) for (const n of LINE_EXTRA[r.id] ?? []) add(r, n);
   // the fae sub-lines sit under "ภูตพราย" in the country table; the sub-lines of 02-races.md that the lore table does not list
   for (const r of races) for (const l of ui[r.id].lines) l.overrides = LINE_OVERRIDES[`${r.id}/${l.name}`]?.(ui[r.id].feats) ?? {};
 }
@@ -178,8 +180,10 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   // beard (not for women, not for the hairless)
   // a race with a beard of its own (the dwarves) gives it to a man whose description says nothing of one
   const beard = fem === true || hairless ? '' : beardOf(clauseOf(text, BEARD_START)) ?? (NO_BEARD.test(text) ? '' : R.beard);
-  // hat
+  // hat (a hat the text turns away, `ไม่สวมมงกุฎ` `ทิ้งหมวกไว้`, is none; a crown of silver, iron or bone takes that metal as the accent)
+  const pos = stripNegated(text);
   const hat = hatOf(text) ?? '';
+  let accent: string | undefined = crownAccentOf(pos);
   // eyes
   const eyeHit = eyeColourOf(desc);
   if (!eyeHit && /ตาสี/.test(desc)) miss('สีตา', (desc.match(/ตาสี[ก-๙]{0,6}/) ?? [''])[0]);
@@ -187,14 +191,19 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   const eye = eyeHit ?? ln?.overrides.eye ?? RACE_EYE[s.race] ?? DEFAULT_EYE;
   // skin
   const hint = skinHint(desc);
+  const tone = skinToneOf(desc);
   let skin: string;
   const spirit = SPIRIT.test(s.raceText);
   if (spirit) skin = colourIn(desc.split('โปร่งแสง')[1]?.slice(0, 14) ?? '') ?? SPIRIT_SKIN;
+  // a skin that is no race tone (blue, purple, grey, green, dark red) takes the colour of the words, not the nearest of the race's list
+  else if (tone) skin = tone;
+  // a phrase that begins with a colour word is that colour (the nearest skin of the race, or the colour itself when none is near), before a shade word later on
+  else if (skinLeadColour(desc)) skin = nearestOrOwn(R.skins, skinLeadColour(desc)!);
   else if (hint) skin = pickSkin(R.skins, hint, s.id);
   else {
     const sc = skinColourOf(desc);
     if (!sc && !ln?.overrides.skin) defaults.push('skin');
-    skin = sc ? nearest(R.skins, sc) : ln?.overrides.skin ?? pickSkin(R.skins, null, s.id);
+    skin = sc ? nearestOrOwn(R.skins, sc) : ln?.overrides.skin ?? pickSkin(R.skins, null, s.id);
   }
   // tool
   const tp = toolOf(s.items, desc);
@@ -205,9 +214,16 @@ function personLook(s: Source, races: Record<string, RaceLookRow>): PersonLookRo
   const main = s.main ?? mix(pickBy(R.accents, s.id + 'm'), '#5a5a5a', 0.5);
   const second = s.second ?? mix(pickBy(R.accents, s.id + 's'), '#3a3a3a', 0.4);
 
+  // the wing colour of a feather-winged person (the docs write `ปีกขนสีน้ำตาลทราย`); the night and scale wings have their own colours
+  const lineFeats = ln?.overrides.feats ?? R.feats;
+  if (lineFeats.includes('wings:feather')) accent = wingAccentOf(pos) ?? accent;
+  // a person of another race with the ears of an animal (a half-beast)
+  const ears = R.id !== 'beast' && ANIMAL_EARS.test(pos) ? ('animal' as const) : undefined;
+
   const row: PersonLookRow = {
     name: s.name, race: s.race, ...(ln ? { line: ln.name } : {}), stage: s.stage, fem, skin, hairColor, eye, main, second, outfit,
-    hair, beard, hat, tool: tp.tool ?? '', feats: [...(spirit ? ['ghost'] : []), ...featsOf(text, s.items)], wear: wearOf(text), defaults, items: s.items, pose: s.pose,
+    hair, beard, hat, tool: tp.tool ?? '', feats: [...(spirit ? ['ghost'] : []), ...featsOf(pos, s.items)], wear: wearOf(text), defaults, items: s.items, pose: s.pose,
+    ...(accent ? { accent } : {}), ...(ears ? { ears } : {}),
   };
   return row;
 }

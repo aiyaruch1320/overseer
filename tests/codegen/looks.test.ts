@@ -5,7 +5,7 @@ import type { NpcRow } from '../../src/core/data/types-npcs';
 import { BEARD_IDS, FEAT_IDS, HAIR_IDS, HAT_IDS, OUTFIT_IDS, TOOL_IDS } from '../../src/art/parts/ids';
 import {
   BEARD_RULES, FEAT_RULES, HAIR_RULES, HAT_RULES, HEX, LINE_OVERRIDES, OUTFIT_RULES, TOOL_RULES, earsOf, featsOf, femOf, gaitOf, lowerOf, outfitFromGarments, skinHint,
-  stageFromDescription, stageWord, toolOf, wearOf,
+  stageFromDescription, stageWord, stripNegated, toolOf, wearOf,
 } from '../../scripts/codegen/lib/look-words';
 
 const L = (JSON.parse(readFileSync('data/gen/looks.json', 'utf8')) as { items: LooksData }).items;
@@ -13,6 +13,7 @@ const npcs = (JSON.parse(readFileSync('data/gen/npcs.json', 'utf8')) as { items:
 const bonds = JSON.parse(readFileSync('data/gen/bonds.json', 'utf8')) as { items: { successors: { list: unknown[] } } };
 
 const inSet = (id: string, all: readonly string[]) => id === '' || all.includes(id);
+const FEATS_OK: readonly string[] = FEAT_IDS;
 
 describe('looks generator: counts match the docs', () => {
   it('21 races, each with a ค่า UI line, a body, skins and accents', () => {
@@ -41,7 +42,7 @@ describe('looks generator: counts match the docs', () => {
     const names = (r: string) => L.races[r].lines.map((l) => l.name);
     expect(names('winged')).toEqual(expect.arrayContaining(['อาเวียนขาว', 'ปีกราตรี', 'ปีกเกล็ด', 'ปีกสั้น', 'ชาวน้ำฟ้า']));
     expect(names('human')).toEqual(expect.arrayContaining(['ชาวทุ่ง', 'ชาวหมอก', 'ชนผืนทราย', 'มนุษย์เรือ', 'ชาวพื้น', 'ผู้กลับชาติ', 'ผู้ถูกอัญเชิญ']));
-    expect(names('elf')).toHaveLength(5);
+    expect(names('elf')).toHaveLength(6); // the five of the lore table and the underground elves of the NPC docs
     expect(names('dwarf')).toHaveLength(6);
     expect(names('giant')).toHaveLength(4);
     expect(L.races.winged.lines.find((l) => l.name === 'ปีกราตรี')!.overrides.feats).toContain('wings:night');
@@ -86,11 +87,11 @@ describe('looks generator: every person is complete and uses only the vocabulary
       expect(inSet(p.beard, BEARD_IDS), `${id} beard ${p.beard}`).toBe(true);
       expect(inSet(p.hat, HAT_IDS), `${id} hat ${p.hat}`).toBe(true);
       expect(inSet(p.tool, TOOL_IDS), `${id} tool ${p.tool}`).toBe(true);
-      for (const f of p.feats) expect(FEAT_IDS as readonly string[], `${id} feat ${f}`).toContain(f);
+      for (const f of p.feats) expect(FEATS_OK, `${id} feat ${f}`).toContain(f);
     }
     for (const r of Object.values(L.races)) {
-      for (const f of r.feats) expect(FEAT_IDS as readonly string[], `${r.id} feat ${f}`).toContain(f);
-      for (const l of r.lines) for (const f of l.overrides.feats ?? []) expect(FEAT_IDS as readonly string[], `${r.id}/${l.name} feat ${f}`).toContain(f);
+      for (const f of r.feats) expect(FEATS_OK, `${r.id} feat ${f}`).toContain(f);
+      for (const l of r.lines) for (const f of l.overrides.feats ?? []) expect(FEATS_OK, `${r.id}/${l.name} feat ${f}`).toContain(f);
     }
   });
   it('every id the word tables can produce is in src/art/parts/ids.ts', () => {
@@ -100,8 +101,8 @@ describe('looks generator: every person is complete and uses only the vocabulary
     for (const id of ids(BEARD_RULES)) expect(BEARD_IDS as readonly string[]).toContain(id);
     for (const id of ids(HAT_RULES)) expect(HAT_IDS as readonly string[]).toContain(id);
     for (const id of ids(TOOL_RULES)) expect(TOOL_IDS as readonly string[]).toContain(id);
-    for (const id of ids(FEAT_RULES)) expect(FEAT_IDS as readonly string[]).toContain(id);
-    for (const fn of Object.values(LINE_OVERRIDES)) for (const f of fn(['wings:feather']).feats ?? []) expect(FEAT_IDS as readonly string[]).toContain(f);
+    for (const id of ids(FEAT_RULES)) expect(FEATS_OK).toContain(id);
+    for (const fn of Object.values(LINE_OVERRIDES)) for (const f of fn(['wings:feather']).feats ?? []) expect(FEATS_OK).toContain(f);
   });
   it('the sub-line of an NPC belongs to its race', () => {
     for (const [id, p] of all) if (p.line) expect(L.races[p.race].lines.map((l) => l.name), id).toContain(p.line);
