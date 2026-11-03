@@ -16,6 +16,8 @@ import { labels, items as dataItems } from '../../core/text/labels';
 import type { GameState, LifeState } from '../../core/types';
 import { AXIS_NAMES, AXIS_ORDER, CHAR_WORDS as W, GENDER_WORDS, OTHER_NAMES, STAT_NAMES, STAT_ORDER } from './character-words';
 import { candleOf, type CandleView } from './watch';
+import { peekLife } from '../../core/god/goals';
+import { vowLineOf } from './start';
 import { STAT_BAR_MAX } from './character-tuning';
 
 // ---------- shapes ----------
@@ -165,8 +167,18 @@ export interface StandingView {
   bondage: BondageView;
 }
 
+/** The vow of the life (08-goals.md §2: the player sees it all through the life). `result` is set once the character has died. */
+export interface VowSheet {
+  name: string;
+  done: string;
+  result: 'kept' | 'broken' | null;
+  /** Can it still be changed (the one change at the age stop of 15)? */
+  changeable: boolean;
+}
+
 export interface CharacterModel {
   dead: { age: number } | null;
+  vow: VowSheet | null;
   identity: IdentityView;
   question: string;
   hp: HpView;
@@ -510,6 +522,15 @@ function standingView(ctx: Ctx, ix: Index, life: LifeState): StandingView {
   };
 }
 
+/** The vow of the life for the sheet: the name and the condition in words, and what came of it once the character has died. */
+function vowSheet(ctx: Ctx, life: LifeState): VowSheet | null {
+  const line = vowLineOf(ctx);
+  if (!line || ctx.state.life !== life) return null;
+  const g = peekLife(life);
+  const result = g.result?.result;
+  return { name: line.name, done: line.done, result: result === 'kept' || result === 'broken' ? result : null, changeable: !life.dead && !g.changed && life.hAge <= 15 };
+}
+
 // ---------- the views ----------
 
 /** The whole sheet of the character on the stage, or null between lives. */
@@ -521,6 +542,7 @@ export function characterView(data: GameData, state: GameState): CharacterModel 
   const gifts = (ids: string[]) => ids.map((id) => giftView(ix, id)).filter((g): g is GiftView => !!g);
   return {
     dead: life.dead ? { age: life.dead.hAge } : null,
+    vow: vowSheet(ctx, life),
     identity: identityOf(ctx, life, ix),
     question: questionOf(data, peopleCode(ctx, life.race)),
     hp: hpOf(ctx, life),
