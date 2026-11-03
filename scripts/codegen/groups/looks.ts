@@ -268,6 +268,9 @@ function successorSources(races: Record<string, RaceLookRow>, succ: Successor[],
   return out;
 }
 
+/** Reads npcs.json, races.json and bonds.json of this run (run-all orders the groups by it). */
+export const after = ['npcs', 'character', 'bonds'];
+
 export default function run() {
   const races = genJson<{ races: RaceBase[] }>('races').races;
   const ui = raceUi(RACES_DOC, races);

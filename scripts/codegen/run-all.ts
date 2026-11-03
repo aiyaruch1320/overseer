@@ -68,10 +68,23 @@ const groups = readdirSync(dir)
   .filter((f) => !only.length || only.includes(f.replace(/\.ts$/, '')))
   .sort();
 
+// A group that reads another group's output names it in `export const after = ['npcs', …]` and runs after it (the order is otherwise by file
+// name: looks.ts read the npcs.json of the run before, so one run left looks.json behind the docs)
+const mods = new Map<string, { default: () => Promise<GenReport> | GenReport; after?: string[] }>();
+for (const g of groups) mods.set(g.replace(/\.ts$/, ''), await import(pathToFileURL(path.join(dir, g)).href));
+const order: string[] = [];
+const visit = (g: string, path: string[] = []) => {
+  if (order.includes(g) || !mods.has(g)) return;
+  if (path.includes(g)) throw new Error(`codegen groups depend on each other in a circle: ${[...path, g].join(' → ')}`);
+  for (const a of mods.get(g)!.after ?? []) visit(a, [...path, g]);
+  order.push(g);
+};
+for (const g of mods.keys()) visit(g);
+
 const before = snapshot();
 let failed = false;
-for (const g of groups) {
-  const mod = await import(pathToFileURL(path.join(dir, g)).href);
+for (const g of order) {
+  const mod = mods.get(g)!;
   const t0 = Date.now();
   const rep: GenReport = await mod.default();
   let flag = '';
