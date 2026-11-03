@@ -1,42 +1,34 @@
 // The event card (code-plan §8.3 step 2): ONE layout for every event. What changes is the colour of the frame, the corner marks (the icon
-// of the category at the left, the size of the effect at the right) and the picture. The picture slot is a gradient and drifting
-// particles drawn in code; a picture file replaces it through `src` in M6 to M7 without changing the card.
-import { useEffect, useRef, useState } from 'preact/hooks';
+// of the category at the left, the size of the effect at the right) and the picture. The picture slot is a small pixel picture of the place of the event with the
+// card's effects (src/scene/cardpic.ts, M7 ก4); a picture file replaces it through `src` without changing the card.
+import { useEffect, useRef } from 'preact/hooks';
 import { TITLE_LINE, color, font, size } from '../ui/tokens';
 import type { CardModel } from './card';
-import { drawFx, seedOf } from './particles';
-import { WORDS } from './tuning';
+import { cardPicture } from './cardpic';
+import { specKey } from './scenery';
+import { ART, WORDS } from './tuning';
 
 const FORM_NAME: Record<string, string> = { X: 'ฉากเต็มจอ', M: 'ชั้นแผนที่', L: 'ฉากท้องถิ่น', C: 'การ์ดและเสียง' };
 
 function Picture({ card, src }: { card: CardModel; src?: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const [t, setT] = useState(0);
-  const seed = seedOf(card.id);
-  useEffect(() => {
-    if (src || !card.fx.length) return;
-    let raf = 0;
-    const t0 = performance.now();
-    const tick = (now: number) => {
-      setT((now - t0) / 1000);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [card.id, src]);
+  const key = `${card.id}|${card.sky}|${card.fx.join(',')}|${card.scenery ? specKey(card.scenery) : ''}`;
+  // the picture: the place of the event and the card's effects, one still frame of 320 × 180 art pixels on a plain canvas (src/scene/cardpic.ts), scaled without smoothing
   useEffect(() => {
     const c = canvas.current?.getContext('2d');
-    if (c) drawFx(c, 480, 320, card.fx.map((kind) => ({ kind, amount: 0.7 })), t, seed);
-  }, [t, card.id]);
+    if (!c || src) return;
+    const pic = cardPicture(card);
+    c.putImageData(new ImageData(pic.data, pic.w, pic.h), 0, 0);
+  }, [key, src]);
   return (
-    <div data-slot="picture" style={{ position: 'relative', aspectRatio: '3 / 2', background: src ? `url(${src}) center / cover` : `linear-gradient(to bottom, ${card.sky} 0%, ${card.sky} 60%, #07070a 100%)`, borderRadius: 4, overflow: 'hidden' }}>
-      {!src && <canvas ref={canvas} width={480} height={320} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
+    <div data-slot="picture" style={{ position: 'relative', aspectRatio: '16 / 9', background: src ? `url(${src}) center / cover` : card.sky, borderRadius: 4, overflow: 'hidden' }}>
+      {!src && <canvas ref={canvas} width={ART.w} height={ART.h} data-card-picture style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated' }} />}
       {!src && card.form === 'M' && (
         <div style={{ position: 'absolute', inset: 0, backgroundImage: `repeating-linear-gradient(45deg, ${card.frame}22 0 6px, transparent 6px 14px)`, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: 6, fontSize: 11, color: card.frame }}>
           {WORDS.layer}
         </div>
       )}
-      {!src && card.picture && <div style={{ position: 'absolute', left: 8, right: 8, bottom: 6, fontSize: 11, color: color.textDim, lineHeight: 1.35 }}>{card.picture}</div>}
+      {!src && card.picture && <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '14px 8px 5px', fontSize: 11, color: color.text, lineHeight: 1.35, textShadow: '0 1px 3px #000', background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.62))' }}>{card.picture}</div>}
     </div>
   );
 }
