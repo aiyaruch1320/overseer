@@ -30,15 +30,15 @@ function wing(pen: Pen, root: [number, number], len: number, up: number, k: numb
 function harpy(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
   const storm = L.form === 'storm';
-  const s = Math.min(c.px / 18, (c.w * 0.9) / 30);
+  const s = Math.min((c.px * 1.4) / 18, (c.w * 0.98) / 34);
   const flying = mo.pose === 'walk' || mo.pose === 'attack';
   const lift = flying ? 3 + (mo.pose === 'walk' ? [0, -2, 0, -2][mo.f] : mo.a === 0 ? 2 : -1) : 0;
   const pen = c.pen(s).at(mo.push, mo.bob - lift);
-  const feather = p.mat(L.main, { deep: true }), featherD = p.mat(dark(L.main, 0.3)), chest = p.mat(L.second), skin = p.mat(storm ? '#aab4c8' : '#c8a890'), eye = p.mat(L.eye, { flat: true }), claw = p.mat('#d8c8a0');
+  const feather = p.mat(L.main, { deep: true }), featherD = p.mat(dark(L.main, 0.3)), chest = p.mat(L.second), skin = p.mat(storm ? '#aab4c8' : '#d6c8bc'), eye = p.mat(L.eye, { flat: true }), claw = p.mat('#d8c8a0');
   const up = mo.pose === 'walk' ? [1, 0.45, 0, 0.45][mo.f] : mo.pose === 'attack' ? [1, 0, 0.5][mo.a] : mo.pose === 'idle' ? 0 : mo.pose === 'hurt' ? 0.8 : 0.1;
-  const fold = mo.pose === 'idle' || mo.dead ? 0.45 : 0;
+  const fold = mo.dead ? 0.45 : mo.pose === 'idle' ? 0.2 : 0;
   // far wing
-  wing(pen.at(1, 0), [0, -17], 15, up, featherD, p.mat(dark(L.main, 0.45)), fold);
+  wing(pen.at(1, 0), [0, -17], 18, up, featherD, p.mat(dark(L.main, 0.45)), fold);
   // legs and talons
   const dive = mo.pose === 'attack' ? mo.strike : 0;
   pen.line([-1, -8], [-1.5 + dive * 4, -2.2 + (flying ? 0 : 0)], feather, 1.4); pen.line([1.5, -8], [2 + dive * 5, -2.2], feather, 1.5);
@@ -56,7 +56,7 @@ function harpy(c: Ctx<EnemyLook>): Info {
   if (storm && flying) for (let i = 0; i < 3; i++) pen.line([2 + dive * 5, -2 + i * 0.4], [3 + i * 2.4 + dive * 8, -1 + (i % 2 ? 2.6 : -2.6) + i], p.mat(L.eye, { flat: true }), 0.7);
   if (storm && mo.a === 1) { pen.line([6, -14], [9, -11], p.mat(L.eye, { flat: true }), 0.9); pen.line([9, -11], [8, -8], p.mat(L.eye, { flat: true }), 0.9); pen.line([8, -8], [12, -3], p.mat(L.eye, { flat: true }), 0.9); }
   // near wing
-  wing(pen, [-0.5, -16.5], 17, up, feather, featherD, fold);
+  wing(pen, [-0.5, -16.5], 21, up, feather, featherD, fold);
   return { shadow: { cx: c.cx, cy: c.foot, rx: (flying ? 5 : 6) * s, ry: Math.max(1.2, 1.4 * s) }, tall: true };
 }
 
