@@ -265,14 +265,16 @@ export const EARS: Record<Ears, Part> = {
     },
   },
   long: {
-    // up and back, as long as the head is wide, a leaf and not a needle: thick at the root, tapering to the tip, a dark hollow inside; the old ones droop
+    // back and up, a leaf and not a needle: a wedge three pixels tall at the root, tapering to the tip, a dark hollow inside; the old ones droop
     front: (r) => {
-      const { p } = r, x = earX(r), y = r.head[1] - 0.5, len = Math.max(3, Math.round(r.hr[0] * 1.3 + 1)), droop = r.look.stage === 'elder';
-      const w = r.hh >= 6 ? 3 : 2, tx = x - len * 0.85, ty = droop ? y + 2.5 : y - len * 0.7 - (r.f === 1 && r.pose === 'idle' ? 0.6 : 0);
-      stroke(p, [x + 0.5, y + 0.5], [tx, ty], w, r.m.skin, r.m.skin, 0.5, 0.8);
-      const hollow = earInner(r), m = r.p.mat(mixHex(r.look.skin, '#1a1210', 0.35));
-      p.px(x - 0.5, y, m);
-      if (len >= 5) p.px(x - 1.5 - (droop ? 0 : 0), y - (droop ? 0 : 1), hollow);
+      const { p } = r, x = earX(r), y = r.head[1] - 0.5, len = Math.max(3, Math.round(r.hr[0] * 1.15 + 0.6)), droop = r.look.stage === 'elder';
+      const root = r.hh >= 6 ? 2 : 1.4, rise = droop ? -len * 0.15 : len * 0.5 + (r.f === 1 && r.pose === 'idle' ? 0.6 : 0);
+      const tx = x - len, ty = y - 0.5 - rise + (droop ? 2.2 : 0);
+      p.poly([[x + 1.2, y - root], [tx, ty], [x + 1.2, y + root + 0.5]], r.m.skin);
+      p.poly([[x + 1.2, y - root + 0.6], [x - len * 0.55, y - 0.6 - rise * 0.5 + (droop ? 1 : 0)], [x + 1.2, y + root - 0.2]], r.m.skin);
+      const hollow = earInner(r);
+      p.px(x - 0.2, y, hollow);
+      if (len >= 5) p.px(x - 1.2, y - (droop ? 0 : 0.6), hollow);
     },
   },
   pointed: {
