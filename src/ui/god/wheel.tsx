@@ -10,7 +10,7 @@ import { color } from '../tokens';
 const C = 190;
 const SIZE = 2 * C;
 /** Radii of the three rings: [inner edge, outer edge]. */
-const RINGS = { verb: [128, 184], core: [78, 126], scale: [36, 76] } as const;
+const RINGS = { verb: [122, 187], core: [76, 120], scale: [36, 74] } as const;
 const GAP = 1.2;
 
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -135,7 +135,7 @@ export function Wheel(p: WheelProps) {
   return (
     <svg viewBox={`0 0 ${SIZE} ${SIZE}`} width="100%" style={{ maxWidth: 380, display: 'block', margin: '0 auto' }} role="group" aria-label={W.conjure.title}>
       <circle cx={C} cy={C} r={188} fill="#0b0c11" stroke={color.line} />
-      <Ring title={W.conjure.verbs} cells={p.verbs} sel={p.verb} radii={RINGS.verb} onPick={p.onVerb} fill={() => '#2a2638'} font={10} />
+      <Ring title={W.conjure.verbs} cells={p.verbs} sel={p.verb} radii={RINGS.verb} onPick={p.onVerb} fill={() => '#2a2638'} font={9} />
       <Ring title={W.conjure.cores} cells={p.cores} sel={p.core} radii={RINGS.core} onPick={p.onCore} fill={(c) => c.color ?? '#3a3a44'} font={9} />
       <Ring title={W.conjure.scales} cells={p.scales} sel={p.scale} radii={RINGS.scale} onPick={p.onScale} fill={() => '#33342a'} font={9} />
       {/* the heart of the wheel: the small image of what is picked */}
