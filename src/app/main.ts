@@ -1,3 +1,11 @@
-// Entry of the game page. The text debug page and the real screens arrive in M1 and M5 (docs/guide/code-plan.md §8, §11).
-const app = document.getElementById('app');
-if (app) app.textContent = 'โค้ดอยู่ระหว่างเขียนใหม่ (code-phase M0) · โค้ดตัวทดลองเดิมอยู่ใน legacy/';
+// Entry of the game page (index.html): loads the data, hands it to the store and draws the app.
+import { h, render } from 'preact';
+import { App } from '../ui/App';
+import { loadGameData } from './data';
+import { store } from './store';
+
+const root = document.getElementById('app');
+if (root) {
+  render(h(App, {}), root);
+  void loadGameData().then((d) => store.setData(d));
+}

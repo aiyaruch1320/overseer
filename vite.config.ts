@@ -16,8 +16,11 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     plugins: [gameApi(env)],
+    // one copy of Preact for the app, its hooks and the signals (two pre-bundled copies break the hooks: "reading '__H'")
+    resolve: { dedupe: ['preact'] },
+    optimizeDeps: { include: ['preact', 'preact/hooks', '@preact/signals'] },
     server: { port: 5173, open: false },
-    build: { chunkSizeWarningLimit: 2500, rollupOptions: { input: { main: 'index.html', debug: 'debug.html' } } },
+    build: { chunkSizeWarningLimit: 2500, rollupOptions: { input: { main: 'index.html', debug: 'debug.html', dev: 'dev.html' } } },
     worker: { format: 'es' },
   };
 });
