@@ -3,4 +3,5 @@ import './watch';
 import './start';
 import './end';
 import './god/stories';
+import './scenes';
 export {};
