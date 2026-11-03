@@ -16,6 +16,7 @@ import { paintQuad } from './quad';
 import { paintSea } from './sea';
 import { paintSerpent } from './serpent';
 import { paintSmall } from './small';
+import { isSpecial, paintSpecial } from './special';
 import { paintSpirit } from './spirit';
 import { paintSwarm } from './swarm';
 import { paintUndead } from './undead';
@@ -62,7 +63,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
     L, p, w: fr.w, h: fr.h, foot: fr.foot, cx, mo, px: targetHeight(L) * k,
     mat: (h, o) => p.mat(h, o), pen: (s) => new Pen(p, cx, fr.foot, s),
   };
-  const painter = L.kind === 'dragon' ? paintDragon : L.size === 'XXL' ? paintColossus : PLAN[L.plan];
+  const painter: (c: Ctx<any>) => Info = L.kind === 'dragon' ? paintDragon : L.size === 'XXL' ? paintColossus : L.kind === 'enemy' && isSpecial(L) ? paintSpecial : PLAN[L.plan];
   const info = painter(c);
   if (mo.die) {
     const kind = L.kind === 'enemy' ? L.dieKind : 'sag';
