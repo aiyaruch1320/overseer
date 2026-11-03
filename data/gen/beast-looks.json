@@ -1,0 +1,9058 @@
+{
+ "version": "8d7b63364011",
+ "sources": [
+  "docs/appearance/03-dragons.md",
+  "docs/appearance/04-enemies.md"
+ ],
+ "generatedBy": "scripts/codegen/groups/beast-looks.ts",
+ "items": {
+  "enemies": [
+   {
+    "kind": "enemy",
+    "id": "goblin",
+    "name": "ฝูงก๊อบลิน",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "S",
+    "scale": 0.6,
+    "scaleNote": "",
+    "swarm": [
+     4,
+     8
+    ],
+    "cloud": false,
+    "main": "#6a7a3a",
+    "second": "#5a3a2a",
+    "eye": "#e8d060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ย่อตัวชะโงกหน้าสลับกัน",
+     "atk": "กระโจนพร้อมกันสองสามตัว",
+     "die": "ล้มคว่ำและกองกันเป็นกอง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "dagger",
+     "fire",
+     "smoke",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "fur",
+     "tool": "club",
+     "ears": "long",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "wolf",
+    "name": "หมาป่าเงา",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "beast"
+    ],
+    "size": "M",
+    "scale": 0.8,
+    "scaleNote": "ที่ไหล่",
+    "swarm": [
+     4,
+     6
+    ],
+    "cloud": false,
+    "main": "#4a4a50",
+    "second": "#8a8a90",
+    "eye": "#e0b040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "quadruped",
+    "form": "wolf",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินอ้อมเป็นวงโดยหัวต่ำ",
+     "atk": "พุ่งกัดขาแล้วถอย",
+     "die": "ล้มตะแคงขาสั่น"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "fangs",
+     "tusks",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "slime",
+    "name": "สไลม์ป่า",
+    "group": "code",
+    "tier": "ลูกกระจ๊อก",
+    "kinds": [
+     "amorphous"
+    ],
+    "size": "S",
+    "scale": 0.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8ab04a",
+    "second": "#d8d870",
+    "eye": "#f0e070",
+    "eyeLabel": "แกน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "amorphous",
+    "form": "slime",
+    "planBy": "kind",
+    "poses": {
+     "idle": "หายใจพองยุบช้า",
+     "atk": "ยืดตัวกระแทกแล้วหดกลับ",
+     "die": "แตกเป็นน้ำเหนียวซึมลงพื้น"
+    },
+    "atkKind": "slam",
+    "dieKind": "melt",
+    "words": [
+     "tusks",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "troll",
+    "name": "โทรลล์ภูเขา",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "giant",
+     "regen"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a6a5a",
+    "second": "#5a7a4a",
+    "eye": "#d8c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "troll",
+    "planBy": "kind",
+    "poses": {
+     "idle": "โยกตัวหายใจหนัก",
+     "atk": "ยกกระบองสองมือฟาดลง",
+     "die": "ทรุดเข่าแล้วล้มหน้า (แผลเขียวหยุดสมาน)"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "water",
+     "moss",
+     "mushrooms"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "skeleton",
+    "name": "กองทัพโครงกระดูก",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     6,
+     12
+    ],
+    "cloud": false,
+    "main": "#d8d0b0",
+    "second": "#5a5040",
+    "eye": "#6ac080",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "skeleton",
+    "form": "skeleton",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนแถวนิ่งหัวเอียงเล็กน้อย",
+     "atk": "ก้าวพร้อมกันแล้วแทงตรง",
+     "die": "กระดูกทรุดกองเสียงกราว"
+    },
+    "atkKind": "lunge",
+    "dieKind": "crumble",
+    "words": [
+     "sword",
+     "dagger",
+     "shield",
+     "tusks",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "vampire",
+    "name": "เคานต์แวมไพร์",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "undead",
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a1a2a",
+    "second": "#a02a3a",
+    "eye": "#e03040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนตรงมือประสานหลัง",
+     "atk": "เคลื่อนฉับพลันเข้าหาลำคอ",
+     "die": "หดเป็นผงเถ้าซีดจากปลายนิ้วขึ้นมา"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "horns",
+     "fangs",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "lich",
+    "name": "ลิชโบราณ",
+    "group": "code",
+    "tier": "บอส 5",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a4a",
+    "second": "#8a5ab0",
+    "eye": "#d0b0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "skeleton",
+    "form": "lich",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยนิ่งผ้าคลุมไหว",
+     "atk": "ชูมือผนึกวงเวทหมุน",
+     "die": "ผ้าคลุมตกลงกองเปล่าและเปลวตาดับช้า"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "cape",
+     "fire",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "wyvern",
+    "name": "ไวเวิร์น",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "dragon"
+    ],
+    "size": "L",
+    "scale": 3,
+    "scaleNote": "ปีกกาง",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a6a50",
+    "second": "#4a3a2a",
+    "eye": "#e8c030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "dragon",
+    "form": "wyvern",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เกาะหน้าผาปีกพับ",
+     "atk": "ร่อนลงจิกด้วยกรงเท้าแล้วหางฟาด",
+     "die": "ร่วงทั้งปีกกางและกระแทกพื้น"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "fire",
+     "water",
+     "smoke",
+     "tail",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "firedragon",
+    "name": "มังกรเพลิง",
+    "group": "code",
+    "tier": "บอส 6",
+    "kinds": [
+     "dragon"
+    ],
+    "size": "XL",
+    "scale": 8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a2a1a",
+    "second": "#e07030",
+    "eye": "#f0c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "dragon",
+    "form": "fire",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ขดนอนหายใจร้อน",
+     "atk": "อ้าปากพ่นไฟเป็นแนวกวาด",
+     "die": "ล้มลงช้า ๆ ไฟในร่องเกล็ดดับทีละช่อง"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "fire",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "icedragon",
+    "name": "มังกรน้ำแข็ง",
+    "group": "code",
+    "tier": "บอส 6",
+    "kinds": [
+     "dragon"
+    ],
+    "size": "XL",
+    "scale": 7,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8d8e8",
+    "second": "#6a90b0",
+    "eye": "#a0e0f8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "dragon",
+    "form": "ice",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นอนบนก้อนน้ำแข็งหายใจเป็นไอ",
+     "atk": "พ่นลมน้ำแข็งเป็นแนวกว้าง",
+     "die": "เกล็ดแตกเป็นเสี่ยงร่วงเป็นหิมะ"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "wings",
+     "ice",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "sandworm",
+    "name": "หนอนทรายยักษ์",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast",
+     "giant"
+    ],
+    "size": "XL",
+    "scale": 6,
+    "scaleNote": "เฉพาะส่วนที่โผล่",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8a070",
+    "second": "#7a5a3a",
+    "eye": "#8a3a2a",
+    "eyeLabel": "ปากใน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "serpent",
+    "form": "sandworm",
+    "planBy": "words",
+    "poses": {
+     "idle": "ฝังตัวใต้ทรายเหลือแต่วงทรายไหล",
+     "atk": "ทะลุพื้นอ้าปากกลืน",
+     "die": "ทรุดลงทรายพร้อมม้วนตัวสั่น"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "scorpion",
+    "name": "แมงป่องเหล็ก",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "beast"
+    ],
+    "size": "M",
+    "scale": 0.9,
+    "scaleNote": "ยาว",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a60",
+    "second": "#8a8a70",
+    "eye": "#202020",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "insect",
+    "form": "scorpion",
+    "planBy": "words",
+    "poses": {
+     "idle": "หางยกสูงก้ามกาง",
+     "atk": "ก้ามหนีบแล้วหางแทง",
+     "die": "หางตกลงขาพับเข้า"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "tusks",
+     "water",
+     "tail",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "mummy",
+    "name": "มัมมี่ฟาโรห์",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#c8b890",
+    "second": "#6a5a3a",
+    "eye": "#5ac880",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [
+     {
+      "label": "ธุลี",
+      "hex": "#5ad0f0"
+     }
+    ],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนแข็งทื่อมือไขว้อก",
+     "atk": "แกว่งดาบเป็นวงกว้าง",
+     "die": "ผ้าพันคลายออกเป็นแถบและร่างยุบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "sword",
+     "shield",
+     "bandage"
+    ],
+    "parts": {
+     "skin": "#9aa08c",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": [
+      "bandage"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "yeti",
+    "name": "เยติ",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "beast",
+     "giant"
+    ],
+    "size": "L",
+    "scale": 1.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8dce0",
+    "second": "#8a9098",
+    "eye": "#90b8d8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "ape",
+    "planBy": "words",
+    "poses": {
+     "idle": "ยืนแกว่งแขนยาวหน้าก้ม",
+     "atk": "ทุบหิมะด้วยสองกำปั้น",
+     "die": "ล้มหงายและหิมะกลบครึ่งตัว"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "horns",
+     "tusks",
+     "ice",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "siren",
+    "name": "ไซเรน",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "fey",
+     "sea"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#7a9aa0",
+    "second": "#2a4a5a",
+    "eye": "#101820",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "sea",
+    "form": "siren",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยครึ่งตัวเหนือน้ำโยกตามเพลง",
+     "atk": "อ้าปากร้องเสียงแหลมจนน้ำสั่น",
+     "die": "จมลงเงียบและฟองลอยขึ้นมา"
+    },
+    "atkKind": "spit",
+    "dieKind": "sink",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "kraken",
+    "name": "คราเคน",
+    "group": "code",
+    "tier": "บอส 5",
+    "kinds": [
+     "beast",
+     "giant",
+     "sea"
+    ],
+    "size": "XXL",
+    "scale": 10,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a1a3a",
+    "second": "#3a8aaa",
+    "eye": "#e0b040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "sea",
+    "form": "kraken",
+    "planBy": "words",
+    "poses": {
+     "idle": "หนวดลอยเป็นวงใต้ผิวน้ำ",
+     "atk": "หนวดฟาดและพันตัวเรือ",
+     "die": "หนวดคลายแล้วจมลงช้า ๆ ทิ้งน้ำหมึกดำ"
+    },
+    "atkKind": "lash",
+    "dieKind": "sink",
+    "words": [
+     "fire",
+     "water",
+     "tentacles"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "firedemon",
+    "name": "อสูรเพลิง",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "demon"
+    ],
+    "size": "L",
+    "scale": 2.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a2a1a",
+    "second": "#f08030",
+    "eye": "#ffd060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "fiend",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกางแขนเปลวสั่น",
+     "atk": "ฟาดแส้ไฟเป็นวงโค้ง",
+     "die": "แตกเป็นถ่านร้อนกองใหญ่และดับช้า"
+    },
+    "atkKind": "lash",
+    "dieKind": "burst",
+    "words": [
+     "sword",
+     "horns",
+     "wings",
+     "fire"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ent",
+    "name": "เอนท์ผู้คลั่งแค้น",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "plant"
+    ],
+    "size": "XL",
+    "scale": 3.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#6a7a3a",
+    "eye": "#e0b040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "plant",
+    "form": "ent",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งเหมือนต้นไม้ตายแล้วกิ่งขยับช้า",
+     "atk": "ฟาดกิ่งแขนลงด้านข้างและเหยียบ",
+     "die": "ล้มทั้งต้นกิ่งหักตามหลัง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "griffon",
+    "name": "กริฟฟอน",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "beast"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b89050",
+    "second": "#e8e0c8",
+    "eye": "#e8c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "flyer",
+    "form": "griffon",
+    "planBy": "words",
+    "poses": {
+     "idle": "ยืนตัวตรงปีกพับกวาดมอง",
+     "atk": "ร่อนลงจิกและตะปบ",
+     "die": "ปีกลู่ลงแล้วล้มเอียง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "water",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "hydra",
+    "name": "ไฮดราเก้าเศียร",
+    "group": "code",
+    "tier": "บอส 5",
+    "kinds": [
+     "beast",
+     "regen"
+    ],
+    "size": "XL",
+    "scale": 5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a5a3a",
+    "second": "#6a4a2a",
+    "eye": "#e0c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [
+     {
+      "label": "ลิ้น",
+      "hex": "#8a3a8a"
+     }
+    ],
+    "plan": "serpent",
+    "form": "hydra",
+    "planBy": "words",
+    "poses": {
+     "idle": "เก้าหัวโยกสลับ",
+     "atk": "สามถึงสี่หัวกัดพร้อมกัน",
+     "die": "หัวล้มทีละหัวร่างจมน้ำ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "sink",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "golem",
+    "name": "โกเลมหินโบราณ",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "construct"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a60",
+    "second": "#3a4a50",
+    "eye": "#5ac0f0",
+    "eyeLabel": "รูน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "golem",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งรูนกะพริบช้า",
+     "atk": "ฟาดกำปั้นหินแนวดิ่ง",
+     "die": "รูนดับและก้อนหินร่วงเป็นกอง"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "moss",
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "krasue",
+    "name": "ผีกระสือ",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead",
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 0.8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8c8c0",
+    "second": "#a02a3a",
+    "eye": "#7ae0a0",
+    "eyeLabel": "แสง",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "krasue",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยโยกเบา ๆ ผมพริ้ว",
+     "atk": "พุ่งเข้าหาลำคอลำไส้ปลิวตาม",
+     "die": "ลอยตกลงและแสงเขียวดับ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "pop",
+    "name": "ผีปอบ",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a9a7a",
+    "second": "#3a2a2a",
+    "eye": "#d8d8c8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "pop",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งยองก้มพื้น",
+     "atk": "ตะครุบด้วยมือเล็บยาว",
+     "die": "ล้มเป็นกองผ้าขาด ๆ และเงาจาง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "tusks"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "werewolf",
+    "name": "มนุษย์หมาป่า",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast",
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#8a7a5a",
+    "eye": "#e8b030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "wolfman",
+    "planBy": "words",
+    "poses": {
+     "idle": "ย่อตัวตะกุยพื้น",
+     "atk": "กระโจนข่วนสองครั้ง",
+     "die": "ล้มกลับเป็นร่างคนครึ่งหนึ่งก่อนหยุดนิ่ง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "fangs",
+     "tusks",
+     "water"
+    ],
+    "parts": {
+     "skin": "#7a6448",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "animal",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "mimic",
+    "name": "มิมิค",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "construct"
+    ],
+    "size": "S",
+    "scale": 0.7,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a3a2a",
+    "second": "#b89030",
+    "eye": "#8a2a2a",
+    "eyeLabel": "ลิ้น",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "mimic",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นิ่งเหมือนหีบจริง",
+     "atk": "ฝางับพร้อมลิ้นฟาด",
+     "die": "ฝาเปิดค้างและลิ้นห้อยออก"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ogre",
+    "name": "โอเกอร์",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "giant",
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#7a8a6a",
+    "second": "#5a4a3a",
+    "eye": "#d8c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "ogre",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเกาท้องมองรอบ ๆ",
+     "atk": "ฟาดกระบองจากบนลงล่าง",
+     "die": "ล้มหงายท้องขึ้นฟ้า"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "tusks",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "harpy",
+    "name": "ฮาร์ปี้",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     4
+    ],
+    "cloud": false,
+    "main": "#8a7a6a",
+    "second": "#c8c0a0",
+    "eye": "#e0c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "flyer",
+    "form": "harpy",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เกาะหน้าผาหันหน้าวกไปมา",
+     "atk": "พุ่งลงตะปบและกรีดร้อง",
+     "die": "ปีกหุบแล้วร่วงจากหน้าผา"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "water",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "manticore",
+    "name": "แมนติคอร์",
+    "group": "code",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a4a2a",
+    "second": "#6a5a4a",
+    "eye": "#e0b840",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "quadruped",
+    "form": "manticore",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งบนโขดหินพลิ้วหางแมงป่อง",
+     "atk": "ฟาดหนามพิษแล้วกระโจน",
+     "die": "หางตกลงหน้าชรามองฟ้าแล้วหลับตา"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "water",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "wraith",
+    "name": "วิญญาณอาฆาต",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead",
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a6a8a",
+    "second": "#2a3a5a",
+    "eye": "#90c0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "wraith",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยเฉียงจากพื้นผ้าพลิ้ว",
+     "atk": "ยื่นมือผ่านเกราะเข้าหาหัวใจ",
+     "die": "ละลายเป็นไอเย็นและกระซิบสุดท้าย"
+    },
+    "atkKind": "slam",
+    "dieKind": "melt",
+    "words": [
+     "tusks",
+     "water",
+     "smoke",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "bandits",
+    "name": "กลุ่มโจรภูเขา",
+    "group": "code",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     4,
+     8
+    ],
+    "cloud": false,
+    "main": "#6a5a4a",
+    "second": "#3a3a3a",
+    "eye": "#6a5a3a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนซุ่มบนสันเขา",
+     "atk": "ขว้างมีดและกรูเข้า",
+     "die": "ทิ้งอาวุธแล้วถอย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "sword",
+     "bow",
+     "dagger",
+     "horns",
+     "tusks",
+     "water",
+     "smoke",
+     "bandage"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "turban",
+     "beard": "",
+     "outfit": "fur",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "demongeneral",
+    "name": "แม่ทัพปีศาจ",
+    "group": "code",
+    "tier": "บอส 5",
+    "kinds": [
+     "demon"
+    ],
+    "size": "XL",
+    "scale": 2.8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a1a1a",
+    "second": "#2a2a30",
+    "eye": "#f0c030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "demon",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเอามือสองข้างวางบนด้ามดาบปักพื้น",
+     "atk": "ยกดาบสองมือฟาดลง",
+     "die": "คุกเข่าก่อนล้มแล้วธงเลือดตกลง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "flag",
+     "wings",
+     "fangs",
+     "chain",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "kappa",
+    "name": "กัปปะ",
+    "group": "code",
+    "tier": "ลูกกระจ๊อก",
+    "kinds": [
+     "fey"
+    ],
+    "size": "S",
+    "scale": 0.7,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a7a4a",
+    "second": "#8a6a3a",
+    "eye": "#90d0e8",
+    "eyeLabel": "จานน้ำ",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "kappa",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนโค้งคำนับลึก",
+     "atk": "ทุ่มศีรษะกระแทกท้อง",
+     "die": "น้ำบนหัวหกแล้วทรุดนั่ง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "storm_harpy",
+    "name": "ฮาร์ปี้พายุ",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "elemental"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a6a8a",
+    "second": "#c8d8f0",
+    "eye": "#f0f0ff",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "flyer",
+    "form": "storm",
+    "planBy": "words",
+    "poses": {
+     "idle": "เกาะเสาหินบนเกาะลอยฟ้า",
+     "atk": "ร่อนลงแล้วปล่อยสายฟ้าสั้น",
+     "die": "ปีกหุบและไหม้ที่ขอบขน"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "fire",
+     "water",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "cloud_serpent",
+    "name": "งูเมฆ",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast"
+    ],
+    "size": "L",
+    "scale": 4,
+    "scaleNote": "ยาว",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8c8d8",
+    "second": "#6a8ab0",
+    "eye": "#c8d8f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "serpent",
+    "form": "cloud",
+    "planBy": "words",
+    "poses": {
+     "idle": "ขดเป็นวงลอยกลางอากาศ",
+     "atk": "พุ่งแทงด้วยเขี้ยวแล้วม้วนตัว",
+     "die": "ตัวสลายเป็นไอเมฆและฝนปรอย"
+    },
+    "atkKind": "lash",
+    "dieKind": "dissolve",
+    "words": [
+     "wings",
+     "fangs",
+     "ice",
+     "water",
+     "smoke",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "sky_debris_golem",
+    "name": "โกเลมซากเกาะ",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "construct"
+    ],
+    "size": "L",
+    "scale": 2.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8a86",
+    "second": "#5a6a50",
+    "eye": "#5ac0f0",
+    "eyeLabel": "รูน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "debris",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนพร้อมฝุ่นร่วงจากไหล่",
+     "atk": "ทุบกำปั้นหินซ้ายขวา",
+     "die": "พังเป็นกองซากเกาะที่ยังมีบันไดโผล่"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ash_wolf_pack",
+    "name": "ฝูงหมาป่าเถ้า",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "beast"
+    ],
+    "size": "M",
+    "scale": 0.8,
+    "scaleNote": "",
+    "swarm": [
+     4,
+     7
+    ],
+    "cloud": false,
+    "main": "#8a8a86",
+    "second": "#3a3a3a",
+    "eye": "#f08030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "quadruped",
+    "form": "ashwolf",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินวนหัวต่ำ",
+     "atk": "พุ่งกัดและทิ้งเถ้ากระจาย",
+     "die": "ล้มและกลายเป็นกองเถ้าร่วน"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "fire",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ghoul_horde",
+    "name": "ฝูงกูลหิว",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     8,
+     15
+    ],
+    "cloud": false,
+    "main": "#6a7a60",
+    "second": "#3a3a30",
+    "eye": "#c8b040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งยองพรูกันเป็นกลุ่ม",
+     "atk": "กระโจนทับจากหลายด้าน",
+     "die": "กองซ้อนกันเป็นเนินศพ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "fire"
+    ],
+    "parts": {
+     "skin": "#8a8e96",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "ghost_legion",
+    "name": "กองทัพผีห้าธง",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     10,
+     20
+    ],
+    "cloud": false,
+    "main": "#8a9aa0",
+    "second": "#5a5a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "spirit",
+    "form": "legion",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนแถวมองหน้าไม่ขยับ",
+     "atk": "ก้าวพร้อมกันและแทงตรง",
+     "die": "แถวหลังชนแถวหน้าแล้วไอจาง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "cape",
+     "flag",
+     "smoke",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "crown_wraith",
+    "name": "เงามงกุฎกระดูก",
+    "group": "world",
+    "tier": "บอส 4",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "L",
+    "scale": 2.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8d0c0",
+    "second": "#2a2a30",
+    "eye": "#101010",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "crown",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยนิ่งบนบัลลังก์เงา",
+     "atk": "ชี้คทาและดูดชีวิตเป็นเส้นแสง",
+     "die": "มงกุฎร่วงลงพื้นเป็นกระดูกกองและเงาดับ"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "staff",
+     "crown",
+     "cape",
+     "fangs",
+     "tusks",
+     "throne"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "lava_slime",
+    "name": "สไลม์ลาวา",
+    "group": "world",
+    "tier": "ลูกกระจ๊อก",
+    "kinds": [
+     "amorphous",
+     "elemental"
+    ],
+    "size": "S",
+    "scale": 0.6,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e06a2a",
+    "second": "#3a2a1a",
+    "eye": "#fff0a0",
+    "eyeLabel": "แกน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "amorphous",
+    "form": "lava",
+    "planBy": "kind",
+    "poses": {
+     "idle": "พองตัวและเดือดช้า",
+     "atk": "กระเด็นหยดลาวา",
+     "die": "เย็นเป็นหินดำแตก"
+    },
+    "atkKind": "slam",
+    "dieKind": "melt",
+    "words": [
+     "tusks",
+     "fire",
+     "ice",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "magma_salamander",
+    "name": "ซาลาแมนเดอร์แมกมา",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "elemental"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "ยาว",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a2a",
+    "second": "#e06a2a",
+    "eye": "#f0d040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "quadruped",
+    "form": "salamander",
+    "planBy": "words",
+    "poses": {
+     "idle": "คลานช้าบนโขดหิน",
+     "atk": "พ่นลาวาเป็นเส้นตรงและหางฟาด",
+     "die": "ผิวเย็นดำแข็งและรอยเรืองดับทีละช่อง"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "horns",
+     "fire",
+     "water",
+     "smoke",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "rune_guardian",
+    "name": "ผู้เฝ้ารูนใต้เหมือง",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "construct"
+    ],
+    "size": "L",
+    "scale": 2.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a6a",
+    "second": "#8a94a4",
+    "eye": "#90d8f8",
+    "eyeLabel": "รูน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "guardian",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งโล่ยกรูนกะพริบ",
+     "atk": "ฟาดค้อนหินตามจังหวะรูน",
+     "die": "รูนค่อย ๆ ดับและทรุดลงทีละส่วน"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "hammer",
+     "shield",
+     "water",
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "hellmouth_imps",
+    "name": "ฝูงอิมพ์ปากเหว",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "demon"
+    ],
+    "size": "S",
+    "scale": 0.6,
+    "scaleNote": "",
+    "swarm": [
+     5,
+     10
+    ],
+    "cloud": false,
+    "main": "#8a2a2a",
+    "second": "#f08030",
+    "eye": "#ffe060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "imp",
+    "planBy": "words",
+    "poses": {
+     "idle": "เกาะขอบปากเหวกระโดดไปมา",
+     "atk": "ฝูงพุ่งแทงส้อมไฟพร้อมกัน",
+     "die": "หดเป็นควันแดงและเสียงหัวเราะดับ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "burst",
+    "words": [
+     "spear",
+     "horns",
+     "wings",
+     "fire",
+     "water",
+     "smoke",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ash_drake",
+    "name": "ไดรค์เถ้า",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "dragon"
+    ],
+    "size": "L",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8a86",
+    "second": "#4a4a4a",
+    "eye": "#f08030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "dragon",
+    "form": "ashdrake",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เกาะซากอาคารปีกขาดพลิ้ว",
+     "atk": "พ่นเถ้าร้อนเป็นกลุ่มก้อน",
+     "die": "ร่วงเป็นกองเถ้าที่ลมพัดกระจาย"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "wings",
+     "fire",
+     "ice",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "drowned_dead",
+    "name": "ผู้จมน้ำ",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     6,
+     12
+    ],
+    "cloud": false,
+    "main": "#5a6a5a",
+    "second": "#3a4a50",
+    "eye": "#c8d0c0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนในน้ำถึงเอวนิ่ง",
+     "atk": "เดินเข้าและกอดดึงลงน้ำ",
+     "die": "ทรุดกลับลงน้ำเป็นฟอง"
+    },
+    "atkKind": "lash",
+    "dieKind": "dissolve",
+    "words": [
+     "fire",
+     "water"
+    ],
+    "parts": {
+     "skin": "#9aa08c",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "reef_serpent",
+    "name": "งูปะการัง",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "sea"
+    ],
+    "size": "M",
+    "scale": 2,
+    "scaleNote": "ยาว",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e07a5a",
+    "second": "#5a3a7a",
+    "eye": "#e8d040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "serpent",
+    "form": "reef",
+    "planBy": "words",
+    "poses": {
+     "idle": "ขดอยู่ในซอกปะการังลวดลายกลืนกับฉาก",
+     "atk": "พุ่งกัดและฉีดพิษ",
+     "die": "ตัวเลื้อยหลุดจากปะการังจมลง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "sink",
+    "words": [
+     "water",
+     "coral"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "ghost_crew",
+    "name": "ลูกเรือผีทองสาป",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     5,
+     10
+    ],
+    "cloud": false,
+    "main": "#5a7a7a",
+    "second": "#c8a030",
+    "eye": "#f0d060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "โยกตามคลื่นที่ไม่มี",
+     "atk": "ถือดาบสนิมฟันตามจังหวะพร้อมกัน",
+     "die": "ทองในอกดับและร่างหายไป"
+    },
+    "atkKind": "slam",
+    "dieKind": "dissolve",
+    "words": [
+     "sword",
+     "fire",
+     "water",
+     "lantern"
+    ],
+    "parts": {
+     "skin": "#9aa08c",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "abyss_lurker",
+    "name": "ผู้ซุ่มร่องลึก",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "sea"
+    ],
+    "size": "L",
+    "scale": 2.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a3a",
+    "second": "#3a8aaa",
+    "eye": "#7ad8f0",
+    "eyeLabel": "เหยื่อล่อ",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "sea",
+    "form": "angler",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นอนก้นทะเลเหยื่อล่อกระพริบ",
+     "atk": "อ้าปากกลืนเหยื่อที่เข้าใกล้ล่อ",
+     "die": "ล่อดับและตัวจมลงโคลน"
+    },
+    "atkKind": "slam",
+    "dieKind": "sink",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "trench_deserters",
+    "name": "ทหารหนีทัพ",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     3,
+     6
+    ],
+    "cloud": false,
+    "main": "#5a5a40",
+    "second": "#3a3a30",
+    "eye": "#8a7a5a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหลบหลังกำแพงกระสอบ",
+     "atk": "ยิงสองครั้งแล้วถอย",
+     "die": "ทิ้งปืนแล้วนั่งยองคลุมหัว"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "gun",
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "helmet",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "gas_ghoul",
+    "name": "ผีก๊าซสนามเพลาะ",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a7a3a",
+    "second": "#3a4a30",
+    "eye": "#d8d040",
+    "eyeLabel": "ก๊าซ",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนไอตัวสั่นท่ามกลางหมอกเหลือง",
+     "atk": "พ่นก๊าซพิษแล้วเดินทับ",
+     "die": "ล้มและก๊าซกระจายหายช้า"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "fire",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#9aa08c",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "glow_mutant",
+    "name": "ผู้กลายพันธุ์ผงเรืองแสง",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid",
+     "beast"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a8a8a",
+    "second": "#4aa8c8",
+    "eye": "#e8f8f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "mutant",
+    "planBy": "words",
+    "poses": {
+     "idle": "นั่งกอดแขนข้างใหญ่",
+     "atk": "ทุบแขนใหญ่ลงพื้น",
+     "die": "เส้นเรืองดับทีละเส้นและล้มนอน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "ice",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "dream_eater",
+    "name": "ผู้กินฝัน",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a8a",
+    "second": "#2a2a5a",
+    "eye": "#d8c8f0",
+    "eyeLabel": "ใน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "dream",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยเหนือเตียงของผู้หลับ",
+     "atk": "ปล่อยหนวดแตะหน้าผาก",
+     "die": "หดลงเป็นฟองและฉากฝันกระจาย"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "water",
+     "tentacles"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "locust_swarm",
+    "name": "ฝูงตั๊กแตนมหาภัย",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast"
+    ],
+    "size": "XL",
+    "scale": 6,
+    "scaleNote": "กลุ่มเมฆ",
+    "swarm": null,
+    "cloud": true,
+    "main": "#a89a4a",
+    "second": "#5a4a2a",
+    "eye": "#202020",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "swarm",
+    "form": "locust",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยเป็นก้อนเมฆหมุนช้า",
+     "atk": "พุ่งกัดกินทุกสิ่ง",
+     "die": "ร่วงเป็นสายฝนตั๊กแตนตาย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "wings",
+     "tusks",
+     "fire",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "rogue_doll",
+    "name": "ตุ๊กตาคลั่ง",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "construct",
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e8e8f0",
+    "second": "#8a8a96",
+    "eye": "#90b0d8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งมือถือมีดแล้วหันหน้าช้า",
+     "atk": "กระโจนกระตุกแทงมีดผ่าตัด",
+     "die": "ล้มแตกกระจายเป็นเศษเซรามิก"
+    },
+    "atkKind": "lunge",
+    "dieKind": "crumble",
+    "words": [
+     "dagger",
+     "water"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "war_automaton",
+    "name": "หุ่นรบบริษัท",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "construct"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a30",
+    "second": "#8a2a2a",
+    "eye": "#f04040",
+    "eyeLabel": "เลนส์",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "automaton",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งเลนส์สแกน",
+     "atk": "ปืนกลหมุนแล้วยิงจรวด",
+     "die": "ไฟช็อตภายในและล้มทั้งตัวพร้อมควัน"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "gun",
+     "fire",
+     "water",
+     "smoke",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "rust_swarm",
+    "name": "ฝูงหนูสนิม",
+    "group": "world",
+    "tier": "ลูกกระจ๊อก",
+    "kinds": [
+     "beast"
+    ],
+    "size": "S",
+    "scale": 0.5,
+    "scaleNote": "",
+    "swarm": [
+     15,
+     30
+    ],
+    "cloud": false,
+    "main": "#6a5a4a",
+    "second": "#8a4a2a",
+    "eye": "#c82020",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "swarm",
+    "form": "rats",
+    "planBy": "words",
+    "poses": {
+     "idle": "แออัดไต่ท่อและกองเหล็ก",
+     "atk": "กรูกันกัดพร้อมกัน",
+     "die": "กระเจิงหนีเข้าท่อ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "fire",
+     "water",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "reactor_wraith",
+    "name": "วิญญาณเตาปฏิกรณ์",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "elemental",
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1.6,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e09030",
+    "second": "#5ac0f0",
+    "eye": "#ffffff",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "elemental",
+    "form": "reactor",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยรอบเตาที่ปิดแล้ว",
+     "atk": "ปล่อยเปลวไฟฟ้าเป็นเส้นโค้ง",
+     "die": "หดเป็นดวงไฟสีขาวแล้วดับ"
+    },
+    "atkKind": "spit",
+    "dieKind": "burst",
+    "words": [
+     "fire",
+     "water",
+     "smoke",
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "mirage_phantom",
+    "name": "ภาพลวงเมืองมายา",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8c890",
+    "second": "#7ab0c0",
+    "eye": "#f0f0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "mirage",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินเข้าหาแล้วถอยห่างในเวลาเดียวกัน",
+     "atk": "ยื่นมือเข้ามาแตะแล้วทำให้เห็นสิ่งที่ผิด",
+     "die": "ภาพระเหยกลายเป็นอากาศร้อน"
+    },
+    "atkKind": "slam",
+    "dieKind": "dissolve",
+    "words": [
+     "water",
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "dust_djinn",
+    "name": "วิญญาณพายุทราย",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "elemental"
+    ],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8903a",
+    "second": "#8a5a2a",
+    "eye": "#f0f0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "elemental",
+    "form": "djinn",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนพายุหมุนแขนกอดอก",
+     "atk": "ฟาดดาบทรายและพายุกระจาย",
+     "die": "ล้มกลายเป็นกองทรายและลมสงบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "burst",
+    "words": [
+     "sword",
+     "water",
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "sand_raiders",
+    "name": "ทัพออร์คทราย",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": [
+     6,
+     12
+    ],
+    "cloud": false,
+    "main": "#7a8a4a",
+    "second": "#a89870",
+    "eye": "#e0c040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ขี่หนอนเล็กหรืออูฐแถวยาว",
+     "atk": "ฟันดาบโค้งเป็นวงกวาด",
+     "die": "ทิ้งอาวุธนั่งลงบนทราย"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "bandage",
+     "armor",
+     "sand"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "turban",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "blighted_ent",
+    "name": "เอนท์ป่วย",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "plant"
+    ],
+    "size": "XL",
+    "scale": 3.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a50",
+    "second": "#7a8a5a",
+    "eye": "#8ab070",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [
+     {
+      "label": "พิษ",
+      "hex": "#a8b8a8"
+     }
+    ],
+    "plan": "plant",
+    "form": "blight",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนโยกเอนเหมือนทรงตัวไม่อยู่",
+     "atk": "ฟาดกิ่งพร้อมสาดน้ำพิษ",
+     "die": "ล้มและเมือกเทาไหลซึมลงพื้น"
+    },
+    "atkKind": "spit",
+    "dieKind": "melt",
+    "words": [
+     "fire",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "spore_thrall",
+    "name": "ทาสสปอร์",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid",
+     "plant"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     6,
+     12
+    ],
+    "cloud": false,
+    "main": "#8a8aa0",
+    "second": "#6a4a7a",
+    "eye": "#c8a8e0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนยิ้มนิ่งสปอร์ลอย",
+     "atk": "เดินเข้ากอดและปล่อยสปอร์ใส่หน้า",
+     "die": "ล้มและเห็ดงอกคลุมร่าง"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "fire",
+     "mushrooms"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "shadow_pack",
+    "name": "ฝูงหมาป่าเงาคลั่ง",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "beast"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     4,
+     8
+    ],
+    "cloud": false,
+    "main": "#2a2a30",
+    "second": "#6a2a2a",
+    "eye": "#e03030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "quadruped",
+    "form": "shadowwolf",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินวนไม่หยุดเขย่าตัว",
+     "atk": "พุ่งกัดจากหลายทิศ",
+     "die": "ล้มชักแล้วหยุด"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "fangs",
+     "tusks",
+     "fire",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "fog_tentacle",
+    "name": "หนวดหมอก",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "fog"
+    ],
+    "size": "L",
+    "scale": 5,
+    "scaleNote": "ยาว",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e8e8f0",
+    "second": "#b8c0c8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "serpent",
+    "form": "tentacle",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยปลิวนิ่งในหมอกเหมือนเส้นผม",
+     "atk": "ฟาดลงตัวพันขาดึงเข้าหมอก",
+     "die": "หดกลับเข้าหมอกและสลายเป็นไอ"
+    },
+    "atkKind": "lash",
+    "dieKind": "dissolve",
+    "words": [
+     "fire",
+     "smoke",
+     "lantern",
+     "tentacles"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "fog_moth_swarm",
+    "name": "ฝูงแมลงปีกขาว",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "fog"
+    ],
+    "size": "S",
+    "scale": 3,
+    "scaleNote": "กลุ่ม",
+    "swarm": null,
+    "cloud": true,
+    "main": "#f0f0f4",
+    "second": "#c8c8d0",
+    "eye": "#202020",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "swarm",
+    "form": "moth",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยรอบแสงไฟเป็นวง",
+     "atk": "พุ่งทิ้งผงปีกพิษ",
+     "die": "ร่วงเป็นผงเงินและเงียบ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "wings",
+     "fire",
+     "lantern"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "fog_weaver",
+    "name": "ใยดำ",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "fog"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a30",
+    "second": "#e8e8f0",
+    "eye": "#f8f8ff",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "insect",
+    "form": "spider",
+    "planBy": "words",
+    "poses": {
+     "idle": "เกาะใยดำบนเพดานหมอก",
+     "atk": "พ่นใยห่อตัวและดึงขึ้น",
+     "die": "ขาพับเข้าและใยสลาย"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "tusks",
+     "fire"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "flesh_flyer",
+    "name": "เนื้อบิน",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "fog"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#c8a0a0",
+    "second": "#8a6a6a",
+    "eye": "#f0e0d0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "flyer",
+    "form": "flesh",
+    "planBy": "words",
+    "poses": {
+     "idle": "ลอยนิ่งในหมอกเกาะเพดาน",
+     "atk": "พุ่งชนและกรีดเสียง",
+     "die": "ตกลงเป็นก้อนเนื้อและละลาย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "melt",
+    "words": [
+     "wings",
+     "water",
+     "flying"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "vampire_spawn",
+    "name": "ลูกแวมไพร์คลั่ง",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "undead",
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8aa0",
+    "second": "#6a2a3a",
+    "eye": "#e03040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งยองกัดนิ้วตัวเอง",
+     "atk": "กระโจนกัดคอ",
+     "die": "ล้มและผิวเกรียมเป็นเถ้า"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "fangs",
+     "water",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "shadowless_stalker",
+    "name": "ผู้ล่าไร้เงา",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a40",
+    "second": "#8a8a96",
+    "eye": "#c8d0d8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งในซอกไม่ขยับ",
+     "atk": "ปรากฏด้านหลังแล้วแทง",
+     "die": "ล้มและเงาปรากฏกลับใต้ตัวเป็นครั้งสุดท้าย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "cape",
+     "tusks",
+     "smoke",
+     "lantern"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "hood",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "bell_wraith",
+    "name": "วิญญาณระฆัง",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "spirit"
+    ],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a6a8a",
+    "second": "#b8c0d0",
+    "eye": "#90c0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "bell",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยแกว่งช้า ๆ เหมือนระฆัง",
+     "atk": "แกว่งเชือกให้เสียงก้อง",
+     "die": "ระฆังเสียงแตกและร่างจางหายเป็นไอ"
+    },
+    "atkKind": "slam",
+    "dieKind": "dissolve",
+    "words": [
+     "tusks",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "titan_shard",
+    "name": "เศษไททัน",
+    "group": "world",
+    "tier": "หัวหน้า",
+    "kinds": [
+     "giant",
+     "construct"
+    ],
+    "size": "XL",
+    "scale": 4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#7a6a5a",
+    "second": "#c86a3a",
+    "eye": "#f0c060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "titan",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนค้างเหมือนหินใหญ่แล้วหินขยับช้า",
+     "atk": "ทุบกำปั้นหินลงเป็นแนวดิ่ง",
+     "die": "แตกเป็นหินก้อนใหญ่และรูนดับ"
+    },
+    "atkKind": "slam",
+    "dieKind": "crumble",
+    "words": [
+     "water",
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "scale_wyrmling",
+    "name": "ลูกมังกรป่า",
+    "group": "world",
+    "tier": "ปกติ",
+    "kinds": [
+     "dragon"
+    ],
+    "size": "M",
+    "scale": 0.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#9a4a2a",
+    "second": "#c88a5a",
+    "eye": "#f0d060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "dragon",
+    "form": "wyrmling",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินเตาะแตะปีกกระตุก",
+     "atk": "พ่นไฟเล็กและกัด",
+     "die": "ล้มนอนหมอบปีกหุบ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "fire",
+     "ice",
+     "water",
+     "smoke"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_bandit",
+    "name": "โจรปล้นทาง",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     5
+    ],
+    "cloud": false,
+    "main": "#6a5a4a",
+    "second": "#3a3a3a",
+    "eye": "#6a5a3a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซุ่มหลังก้อนหินหรือรถม้า",
+     "atk": "กระโจนจากด้านหลังมีดสั้น",
+     "die": "ทิ้งของที่ปล้นแล้ววิ่งหนี"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "dagger",
+     "horns"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "turban",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_deserter",
+    "name": "ทหารหนีทัพ",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     4
+    ],
+    "cloud": false,
+    "main": "#5a5a40",
+    "second": "#3a3a30",
+    "eye": "#8a7a5a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหลังพุ่มระวังรอบด้าน",
+     "atk": "ยิงนัดเดียวแล้วถอยหาที่กำบัง",
+     "die": "ยกมือขึ้นยอมแพ้"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "gun",
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "helmet",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_mercenary",
+    "name": "ทหารรับจ้าง",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     3
+    ],
+    "cloud": false,
+    "main": "#4a4a50",
+    "second": "#8a6a3a",
+    "eye": "#8a8a86",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งมือแตะด้ามอาวุธ",
+     "atk": "ก้าวฟันแนวนอนตามตำรา",
+     "die": "ทรุดเข่าและพยักหน้ายอมรับ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "spear",
+     "water",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": [
+      "scar"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_city_guard",
+    "name": "ทหารยาม",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     4
+    ],
+    "cloud": false,
+    "main": "#4a5a7a",
+    "second": "#a0a0a8",
+    "eye": "#8a7a5a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนประจำจุดหอกตั้งตรง",
+     "atk": "แทงหอกตามคำสั่ง",
+     "die": "ทิ้งหอกแล้วเป่าแตรสุดท้าย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "spear",
+     "chain",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "helmet",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_knight",
+    "name": "อัศวิน",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.3,
+    "scaleNote": "บนม้า 2×",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a94a4",
+    "second": "#2a3a6a",
+    "eye": "#202428",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนม้าโล่ยกครึ่ง",
+     "atk": "ควบเข้าฟันจากข้าง",
+     "die": "คุกเข่าชูดาบถวายศัตรู"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "shield",
+     "cape",
+     "water",
+     "horse",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_inquisitor",
+    "name": "ผู้พิพากษาศาลศาสนา",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e8e0c0",
+    "second": "#b8903a",
+    "eye": "#f0f0e0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนอ่านคัมภีร์ปากขยับ",
+     "atk": "ยกกางเขนแล้วลำแสงขาวพุ่ง",
+     "die": "คุกเข่าสวดคำสุดท้ายแล้วเงียบ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "cape",
+     "tusks",
+     "book"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "book",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_assassin",
+    "name": "นักฆ่า",
+    "group": "npc",
+    "tier": "ยอดฝีมือ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a20",
+    "second": "#4a6a4a",
+    "eye": "#3a3a40",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซ่อนในเงาไม่ขยับ",
+     "atk": "ปรากฏด้านหลังแทงมีดพิษ",
+     "die": "ล้มเงียบและผ้าคลุมหลุดเผยใบหน้าเด็ก"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "cape",
+     "tusks",
+     "water"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "hood",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_pirate",
+    "name": "โจรสลัด",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     3,
+     6
+    ],
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#8a2a2a",
+    "eye": "#6a5a3a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนโยกตามคลื่นที่ไม่มี",
+     "atk": "ฟันดาบสั้นแล้วเตะ",
+     "die": "ตกน้ำหรือล้มหมอบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "gun",
+     "water"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_cultist",
+    "name": "ผู้ศรัทธาคำพิพากษา",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     3,
+     8
+    ],
+    "cloud": false,
+    "main": "#7a7a80",
+    "second": "#b8b8c0",
+    "eye": "#8a94a4",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเรียงแถวสวดภาวนา",
+     "atk": "พุ่งเข้าคุกเข่ากอดขาและฟาดเทียน",
+     "die": "ล้มลงสวดต่อไม่ขาดเสียง"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_warlock",
+    "name": "ผู้ทำสัญญา",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a1a2a",
+    "second": "#8a2a4a",
+    "eye": "#d03060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมือกางสมุดสัญญา",
+     "atk": "ชี้ไม้เท้าเปิดวงเวทมืด",
+     "die": "สมุดสัญญาไหม้ในมือ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "cape",
+     "tusks",
+     "book"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_rogue_mage",
+    "name": "นักเวทนอกรีต",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a7a",
+    "second": "#c86a3a",
+    "eye": "#90c0f0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เดินเคาะนิ้วนับสูตร",
+     "atk": "ปล่อยเวทธาตุสลับกัน",
+     "die": "เวทระเบิดย้อนใส่มือตัวเอง"
+    },
+    "atkKind": "spit",
+    "dieKind": "burst",
+    "words": [
+     "cape",
+     "fire",
+     "ice",
+     "water"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_duelist",
+    "name": "นักดาบท้าดวล",
+    "group": "npc",
+    "tier": "ยอดฝีมือ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.05,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a4a",
+    "second": "#b8b8c0",
+    "eye": "#a02a2a",
+    "eyeLabel": "ผ้าคาด",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเฉียงโค้งคำนับเล็กน้อย",
+     "atk": "ก้าวแทงเส้นตรงเร็ว",
+     "die": "คุกเข่าและโยนดาบทิ้งตามธรรมเนียมดวล"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "water"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_rival_adventurer",
+    "name": "นักผจญภัยคู่แข่ง",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": [
+     2,
+     3
+    ],
+    "cloud": false,
+    "main": "#6a4a3a",
+    "second": "#4a6a8a",
+    "eye": "#7a8a9a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเอามือสะเอวพูดจาเยาะ",
+     "atk": "ฟันแล้วยิงสลับกัน",
+     "die": "ถอยหลังพร้อมยิ้มแหย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "bow",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_tamer",
+    "name": "ผู้ฝึกอสูรศัตรู",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#8a6a4a",
+    "eye": "#4a3a2a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลูบหัวสัตว์คู่หู",
+     "atk": "ชี้สัตว์เข้าโจมตีพร้อมแส้",
+     "die": "ปล่อยสัตว์คู่หูวิ่งหนีเข้าป่า"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "fur",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_slaver",
+    "name": "พ่อค้าทาสตลาดเลือด",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a2a4a",
+    "second": "#b8903a",
+    "eye": "#3a3a3a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหน้ากรงมองสินค้า",
+     "atk": "ฟาดแส้ก่อนสั่งผู้คุมเข้า",
+     "die": "ทิ้งกุญแจแล้วถอย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "cape",
+     "chain"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "club",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_smuggler",
+    "name": "ผู้ลักลอบ",
+    "group": "npc",
+    "tier": "ปกติ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a5a4a",
+    "second": "#4a4a3a",
+    "eye": "#6a5a3a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนพิงกำแพงทำเป็นไม่สนใจ",
+     "atk": "ปาของและวิ่งหนี",
+     "die": "ทิ้งเป้แล้วหายเข้าซอก"
+    },
+    "atkKind": "slam",
+    "dieKind": "dissolve",
+    "words": [
+     "dagger",
+     "cape",
+     "water"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_blood_collector",
+    "name": "ผู้ทวงหนี้เลือด",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a1a2a",
+    "second": "#1a1a20",
+    "eye": "#d03040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "เปิดสมุดบัญชีมองผู้ติดหนี้",
+     "atk": "ปักเข็มเงินแล้วดูดเลือดเป็นเส้น",
+     "die": "สมุดบัญชีตกและหมึกแดงแผ่"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "book"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_gladiator",
+    "name": "นักสู้สังเวียน",
+    "group": "npc",
+    "tier": "ทหารผ่านศึก",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.15,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a6a4a",
+    "second": "#8a2a2a",
+    "eye": "#4a3a2a",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ชูอาวุธให้ฝูงชนที่ไม่มี",
+     "atk": "ตวัดตาข่ายแล้วแทงสามง่าม",
+     "die": "ชูมือขึ้นฟ้ายอมแพ้"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "shield",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": [
+      "scar"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_summoned_hero",
+    "name": "ผู้กล้าที่ถูกอัญเชิญ",
+    "group": "npc",
+    "tier": "ยอดฝีมือ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#f0e8c8",
+    "second": "#d8b040",
+    "eye": "#8aa0c0",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมองมือตัวเอง",
+     "atk": "ฟันแสงแล้วถามชื่อศัตรู",
+     "die": "คุกเข่าถามถึงบ้านเกิด"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "npc_demon_champion",
+    "name": "แชมเปี้ยนปีศาจ",
+    "group": "npc",
+    "tier": "ยอดฝีมือ",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#7a1a1a",
+    "second": "#2a2a30",
+    "eye": "#f0c030",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปักดาบกับพื้น",
+     "atk": "ฟาดขวานใหญ่แนวกว้าง",
+     "die": "คุกเข่าพูดคำสุดท้ายก่อนนอนลง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "sword",
+     "horns",
+     "flag",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "axe",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH02-1",
+    "name": "ดราซาร์โมธ จอมมาร",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 2.8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a1a1a",
+    "second": "#e8c040",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "demon",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนมือกางไม่ถืออาวุธ",
+     "atk": "ยกดาบช้าแล้วหยุดค้างให้เลือกเจรจา",
+     "die": "คุกเข่าและวางดาบลงข้างตัว"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "fire",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "MH01-1",
+    "name": "กรอมกาธ",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 2.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a6a3a",
+    "second": "#8a2a1a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "orc",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนแกว่งกระบองลากพื้น",
+     "atk": "ทุบกระบองลงพื้นแล้วฟาดกวาด",
+     "die": "ทรุดลงนั่งแล้วมองอาหารในมือ"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "horns",
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "NB02-1",
+    "name": "เคานต์วลาดิเมียร์",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a1a2a",
+    "second": "#a02a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมือประสานหลังบนบันได",
+     "atk": "ฟาดไม้เท้าหัวสุนัขแล้วหายตัว",
+     "die": "ผิวเกรียมเมื่อโดนแสงและทรุดลงเงียบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "horns",
+     "tusks",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB05-1",
+    "name": "นิกซ์ เจ้าแห่งเงา",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a1a3a",
+    "second": "#7a5aa8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซ่อนในเงาไม่เห็นตัว",
+     "atk": "ปรากฏด้านหลังแล้วเฉือนสองมีด",
+     "die": "หมอกม่วงสลายและผ้าคลุมตกกองเดียว"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "dagger",
+     "cape",
+     "tusks",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "hood",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR05-1",
+    "name": "เบรนดา \"ธงแดง\"",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a1a1a",
+    "second": "#2a2a30",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยกมือซ้ายป้องอกเมื่อยิ้ม",
+     "atk": "ฟันดาบสั้นคู่ปืนสั้น",
+     "die": "ไม่ตายจนกว่าหีบหัวใจถูกเปิด แล้วล้มพร้อมเสียงเต้นหยุด"
+    },
+    "atkKind": "slam",
+    "dieKind": "sag",
+    "words": [
+     "sword",
+     "gun",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL02-3",
+    "name": "ฮารุโตะ ผู้กล้า",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#f0e8c8",
+    "second": "#3a3a4a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนเปิดเท้ากว้างดาบชี้พื้น",
+     "atk": "ฟันแสงขาวแล้วหยุดชะงัก",
+     "die": "ทิ้งดาบและถามว่าบ้านอยู่ไหน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL08-2",
+    "name": "จอมพลคาร์ล",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a4a",
+    "second": "#b8a060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนเนินมือไขว้หลัง",
+     "atk": "ชี้ไม้ตีเกราะสั่งโจมตี",
+     "die": "ถอดหมวกยอมรับความพ่าย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "flag",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "club",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH07-3",
+    "name": "ผู้ทดสอบเอส",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.15,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a60",
+    "second": "#8a8a96",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางลานดาบห้อยข้าง",
+     "atk": "ฟันแบบตำราช้าพอให้เรียน",
+     "die": "ยิ้มบางแล้ววางดาบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH10-3",
+    "name": "กาธซาร์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8d0c0",
+    "second": "#4a3a2a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนยกมือขึ้นแตะมงกุฎแล้วดึงกลับ",
+     "atk": "ฟันดาบกระดูกช้าและหนัก",
+     "die": "ถอดมงกุฎวางลงบนพื้น"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "crown"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "crown",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD05-2",
+    "name": "เซลวา นักฆ่ามารดา",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a4a",
+    "second": "#5a8a5a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซ่อนในเงาของเสา",
+     "atk": "แทงมีดพิษแล้วหายเข้าเงา",
+     "die": "ล้มและผ้าห่มเด็กหลุดออกมา"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "cape",
+     "tusks"
+    ],
+    "parts": {
+     "skin": "#8a7a9a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD06-2",
+    "name": "ราดาร์ แม่ทัพลาวา",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a2a1a",
+    "second": "#f08030",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางสนามไอร้อนบิดอากาศ",
+     "atk": "ฟาดดาบลาวาแนวกวาด",
+     "die": "เกราะเย็นเป็นหินดำแตก"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "tusks",
+     "fire",
+     "water",
+     "smoke",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH02-1",
+    "name": "ฟาโรห์อัมเมนรา-เนบ",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d8b040",
+    "second": "#2a5aa0",
+    "eye": "#5ac880",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งบัลลังก์คทาขวางอก",
+     "atk": "ยกคทาปล่อยลำแสงธุลี",
+     "die": "ผ้าพันลุกไหม้เป็นริบบิ้นและร่างยุบ"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "staff",
+     "horns",
+     "fire",
+     "throne",
+     "bandage"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV14-1",
+    "name": "ผู้ถือขวานโค่นโลก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.6,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a1a",
+    "second": "#5a3a2a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "brute",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนยกขวานค้างนิ่ง",
+     "atk": "ฟาดขวานลงพื้นแล้วรากแตกกระจาย",
+     "die": "ผ้าคลุมตกลงเปล่าและขวานปักพื้น"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "cape",
+     "hood"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "NB07-2",
+    "name": "มารดาแห่งเสียง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#d0d0d8",
+    "second": "#6a6a80",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนแท่นถ้วยหมอกชูอก",
+     "atk": "ยกมือให้ผู้ติดตามรุมสวดและพุ่ง",
+     "die": "ถ้วยตกและหมอกในถ้วยจางหาย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "long",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK02-1",
+    "name": "ครอนซ์ที่สอง",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.6,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8903a",
+    "second": "#6a1a1a",
+    "eye": "#ff4040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "brass",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนกระตุกแขนทองเหลือง",
+     "atk": "ทุบหมัดเหล็กแล้วพ่นไอร้อน",
+     "die": "ไฟช็อตสุดท้ายแล้วฟังก์ชันหยุดเงียบ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "fire",
+     "water",
+     "smoke",
+     "gears",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "MK16-4",
+    "name": "ริวะ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a3a",
+    "second": "#8a94a4",
+    "eye": "#5ab0e8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งตาเลนส์สแกน",
+     "atk": "ยิงนัดเดียวแล้วฟันเส้นตรง",
+     "die": "ทรุดเข่าและถามว่าสู้เพื่ออะไร"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "gun",
+     "fangs",
+     "water",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL27-1",
+    "name": "เจสซี่ ฮาร์ต",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a1a",
+    "second": "#c8a030",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางถนนมือลอยเหนือปืน",
+     "atk": "ชักปืนยิงสองนัดพร้อมกัน",
+     "die": "ทรุดเข่าพิงเสาและดาวหลุดตก"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "gun",
+     "wings"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV08-1",
+    "name": "ไลกอลัส",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a6a4a",
+    "second": "#e8e0c0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนิ่งน้าวสาย",
+     "atk": "ยิงลูกธนูพุ่งตรงโดยไม่เบี่ยง",
+     "die": "วางธนูและพยักหน้าให้ผู้ท้า"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "cape",
+     "tusks"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR11-2",
+    "name": "คราเคนออร์โธ",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XXL",
+    "scale": 10,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a1a3a",
+    "second": "#3a8aaa",
+    "eye": "#e0b040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "sea",
+    "form": "kraken",
+    "planBy": "guess",
+    "poses": {
+     "idle": "หนวดเดียวพาดบนอ่างวิหาร",
+     "atk": "หนวดสิบกว่าเส้นฟาดพร้อมกันและพัน",
+     "die": "หนวดคลายและจมลงช้า ๆ น้ำตาเรืองฟ้าไหลออกมา"
+    },
+    "atkKind": "lash",
+    "dieKind": "sink",
+    "words": [
+     "temple",
+     "water",
+     "tentacles",
+     "eggs"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "NB08-1",
+    "name": "เนวัน ผู้เฝ้าประตู",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a4a50",
+    "second": "#8a8a96",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกางแขนกั้นประตู",
+     "atk": "ชักดาบใหญ่ฟันครั้งเดียว",
+     "die": "ทรุดเข่าและพูดว่าประตูยังอยู่"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "greatsword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ02-1",
+    "name": "ซากโรวีร์",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a6a2a",
+    "second": "#e8c070",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปีกพับมือหนึ่งแตะด้ามดาบ",
+     "atk": "แทงตรงช้าและแม่น",
+     "die": "ปีกกางครึ่งแล้ววางดาบลง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "wings"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ10-3",
+    "name": "ราตรีซาก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a3a",
+    "second": "#5a6a9a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนใต้เงาหลังคาวัดมือกำประคำ",
+     "atk": "พุ่งต่ำแทงสองมีดแล้วถอยทันที",
+     "die": "ปล่อยมีดทั้งสองหล่นและกุมประคำ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "cape",
+     "wings",
+     "tusks",
+     "water"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH01-3",
+    "name": "เรธวี",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a2a",
+    "second": "#a89878",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนตัวตรงกุมฝักดาบไว้ที่สะโพก",
+     "atk": "ฟันกว้างหนึ่งครั้งแล้วถอย",
+     "die": "นั่งลงวางดาบแล้วเอามือกุมฝัก"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "pointed",
+     "feats": [
+      "scar"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH02-4",
+    "name": "อุลรีเซ",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a1a2a",
+    "second": "#d8a0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "หมุนดาบเล่นยืนผ่อนคลาย",
+     "atk": "ฟันเฉียงเร็วแล้วเข้าประชิด",
+     "die": "ปักดาบลงพื้นแล้วโค้งให้"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH12-1",
+    "name": "เซร์ไกลวัน",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a5a",
+    "second": "#c8d0d0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนถือธงขาดนิ่งในหมอก",
+     "atk": "ชี้ดาบสั่งให้ทหารผีเข้า",
+     "die": "ธงล้มและเกราะยุบลงเป็นกอง"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "sword",
+     "horns",
+     "flag",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD08-1",
+    "name": "มอร์ดินเกียร์",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.6,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a2a",
+    "second": "#e87a20",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "brute",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนหันหน้าเข้าปากเหวขวานปักพื้น",
+     "atk": "ฟาดแนวตั้งหนักจนหินแตก",
+     "die": "ขวานตกแล้วผิวมืดลงทีละส่วน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "armor"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "AL02-2",
+    "name": "แคทเธอรีน แอชฟอร์ด",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a1a",
+    "second": "#f0e8c8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนถือพระคัมภีร์ปิดไม้เท้าตั้ง",
+     "atk": "ชี้ไม้เท้าแสงพุ่งตรงเป็นลำ",
+     "die": "วางไม้เท้าและเปิดพระคัมภีร์หน้าสุดท้าย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "cape",
+     "book",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL18-1",
+    "name": "ซิกฟรีด",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8a90",
+    "second": "#e8e0c0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนพิงดาบหน้าลานฝึก",
+     "atk": "ฟันตั้งช้าและหนักตามแบบแผน",
+     "die": "ปักดาบลงดินและพยักหน้า"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": [
+      "scar"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK04-1",
+    "name": "คอนราด เบรน",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a3a2a",
+    "second": "#a8b098",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนขวางทางเข้าซากเอียงหัวฟังเสียง",
+     "atk": "ฟันตรงและกระแทกด้ามกุญแจ",
+     "die": "คุกเข่าและมือซ้ายกำกุญแจแน่น"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV08-2",
+    "name": "ซิลเวีย",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a4a2a",
+    "second": "#a8b878",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซ่อนในพุ่มไม่เห็นตัว",
+     "atk": "ยิงธนูจากกำบังแล้วย้ายที่ทันที",
+     "die": "ถอดหมวกวางเขี้ยวลงบนพื้น"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "dagger",
+     "cape",
+     "fangs"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH03-1",
+    "name": "โกรม-ทอร์",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a6a70",
+    "second": "#c8c8d0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "stone",
+    "planBy": "guess",
+    "poses": {
+     "idle": "นั่งขวางบันไดมือวางบนเข่า",
+     "atk": "ทุบกำปั้นลงพื้นขั้นบันไดสะเทือน",
+     "die": "ลุกขึ้นช้า ๆ และหลีกทางให้"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sit",
+     "horns",
+     "runes",
+     "tentacles"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "NB05-3",
+    "name": "ครอว์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a4a",
+    "second": "#c0b8b8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนในที่มืดมองไปข้างทางว่างเปล่า",
+     "atk": "พุ่งแทงด้วยมีดเรียวและหันไปมองเงา",
+     "die": "ทรุดลงข้างเงาที่มองเห็น"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "horns",
+     "cape",
+     "tusks"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ04-1",
+    "name": "ธีวาสกรอม",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a6a70",
+    "second": "#c8c0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนขวางประตูกางปีกสั้นครึ่งหนึ่ง",
+     "atk": "ฟาดกระบองคู่ลงพื้น",
+     "die": "วางกระบองลงที่ขั้นบันได"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "wings",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "club",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV03-1",
+    "name": "ธอร์นวาลด์",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a7a6a",
+    "second": "#b8d0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปักไม้เท้ามองต้นน้ำ",
+     "atk": "เรียกรากพุ่งจากพื้น",
+     "die": "ไม้เท้าตกและรากหดกลับพื้น"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "cape",
+     "water"
+    ],
+    "parts": {
+     "skin": "#8a8e96",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV03-2",
+    "name": "ไวร่า",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a5a3a",
+    "second": "#9ab088",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนสูดจมูกแต่ไม่ได้กลิ่นอะไร",
+     "atk": "ยิงธนูแล้วเข้าฟันมีดสั้น",
+     "die": "ทรุดลงข้างเสื้อเกราะที่ถอดครึ่งตัว"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "dagger",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR07-1",
+    "name": "สุวรรณนาคี",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#c8a840",
+    "second": "#3a6a4a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "serpent",
+    "form": "naga",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ขดเฝ้าไข่ไม่ขยับ",
+     "atk": "ฟาดหางรอบเตียงไข่เป็นวง",
+     "die": "ขดแน่นขึ้นบังไข่แล้วหลับตา"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "eggs",
+     "crown",
+     "water",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "MH03-3",
+    "name": "เซกูล",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a5a70",
+    "second": "#c8c0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนนับนิ้วเงียบ",
+     "atk": "ชี้ดาบสั่งกองกูลบุก",
+     "die": "ทรุดลงนับจนถึงเลขสุดท้าย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "cape",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#8a8e96",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL20-1",
+    "name": "จัสติน เวสเตอร์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a40",
+    "second": "#e8d080",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนกำแพงถือโคมหันหน้าหาหมอก",
+     "atk": "ฟันดาบตรงและยกโคมไล่ศัตรู",
+     "die": "วางโคมไว้บนกำแพงแล้วเปิดประตูป้อม"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "cape",
+     "water",
+     "smoke",
+     "lantern"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD12-1",
+    "name": "ธรอดูไกล",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8aa0b0",
+    "second": "#4a5a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างทั่งเย็นลูบอาวุธ",
+     "atk": "ทุบค้อนลงตรงกลางหน้าอก",
+     "die": "วางค้อนบนทั่งและเงยหน้ามองเหนือ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "hammer",
+     "ice",
+     "water",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "armor",
+     "tool": "hammer",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL15-2",
+    "name": "เกรกอร์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a4a",
+    "second": "#c8b878",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างรถลูบเกราะ",
+     "atk": "ตีด้วยประแจแล้วสั่งรถเปิดปืนใหญ่",
+     "die": "นั่งบนรถที่ดับเครื่องและถอดหมวก"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "gun",
+     "horns",
+     "water",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "short",
+     "outfit": "armor",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ01-2",
+    "name": "ธรักซ์มาร์ ราชาปีก",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a6a",
+    "second": "#c8c0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างไวเวิร์นหอกปักพื้น",
+     "atk": "ชี้หอกแล้วซากพุ่งลง",
+     "die": "ทรุดเข่าข้างซากและปีกพับ"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "spear",
+     "horns",
+     "wings",
+     "tail",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ10-1",
+    "name": "นอคโรซ์ เจ้าแห่งเงาที่หนึ่ง",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1e3a",
+    "second": "#8a92a8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ซ่อนในเงาสมุดหนึ่งเล่มในมือ",
+     "atk": "ปรากฏด้านหลังแล้วกรีดมีดบาง",
+     "die": "ปีกพับและกระดาษหลุดจากมือ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "wings",
+     "tusks",
+     "water",
+     "book"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ03-1",
+    "name": "วีร์ดุสโร กัปตันกองเรือลม",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a6aa0",
+    "second": "#e8e0d0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหัวเรือจ้องฟ้า",
+     "atk": "ปล่อยเชือกเรือพุ่งชน",
+     "die": "ทรุดลงข้างเสากระโดงและใบเรือคลุม"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "horns",
+     "flag",
+     "wings",
+     "water"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "banner",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH03-1",
+    "name": "อุลโมธกาธ ราชันย์กูล",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 1.8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a3a30",
+    "second": "#7a5aa0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "ghoul",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนมือกางครึ่งแล้วก้มดมพื้น",
+     "atk": "พุ่งกอดแล้วงับ",
+     "die": "ทรุดเป็นกองผ้าพัน"
+    },
+    "atkKind": "lash",
+    "dieKind": "crumble",
+    "words": [
+     "crown",
+     "cape",
+     "water",
+     "bandage"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "MH09-1",
+    "name": "โมธเซน นายตลาดเลือด",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a2a",
+    "second": "#a89060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหัวโต๊ะเขียนสัญญา",
+     "atk": "ชี้ปากกาแล้วผู้คุ้มกันพุ่ง",
+     "die": "ปากกาหลุดและหมึกไหลบนโต๊ะ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "horns"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH11-2",
+    "name": "เรธอ โจรสลัดปีศาจ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a2a2a",
+    "second": "#c8a060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมือซ้ายแตะหีบที่หลัง",
+     "atk": "พุ่งสองดาบแล้วหมุนตัว",
+     "die": "ทรุดข้างหีบ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "water",
+     "smoke",
+     "chain"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": [
+      "scar"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD08-2",
+    "name": "ซันเรธ ทหารศาสนาแสง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e8e4d8",
+    "second": "#c8a040",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางทางถือโคมและดาบ",
+     "atk": "ฟันลงพื้นแล้วฟาดกวาด",
+     "die": "คุกเข่าและมือแตะอกเสื้อ"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "cape",
+     "lantern",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#f0c8a0",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD12-2",
+    "name": "ไอซ์วาร์ด นักล่ายักษ์น้ำแข็ง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8ab0c8",
+    "second": "#5a4a40",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนไหล่ซากยักษ์",
+     "atk": "เดินวงแล้วพุ่งหอก",
+     "die": "ล้มบนหิมะและเขี้ยวหลุดจากสร้อย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "fangs",
+     "ice",
+     "water",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "fur",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR05-2",
+    "name": "กัปตันเงือก ซาลาซาร์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a4a5a",
+    "second": "#8a8a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งบัลลังก์หน้าห้องเก็บหมวก",
+     "atk": "ฟาดตรีศูลลงน้ำให้คลื่นพุ่ง",
+     "die": "จมลงน้ำและหมวกลอยตาม"
+    },
+    "atkKind": "lunge",
+    "dieKind": "sink",
+    "words": [
+     "water",
+     "throne"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR07-2",
+    "name": "ธารานาค ผู้ทดสอบมนุษย์",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 2.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a7a6a",
+    "second": "#c8c0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "serpent",
+    "form": "naga",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ขดบนหินใหญ่ลืมตาครึ่ง",
+     "atk": "กวาดหางแล้วหินแยกเป็นกำแพง",
+     "die": "ขดตัวและหลับตา"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "AL04-2",
+    "name": "พลเรือเอก ซามูเอล เดรก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a4a",
+    "second": "#c8a850",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหน้าเสาถือแผนที่",
+     "atk": "ชี้แผนที่แล้วเรือเล็กตัดหน้า",
+     "die": "ทรุดเข่าและหมวกหลุด"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL23-2",
+    "name": "ราชา นักล่าเผ่าเสือ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a6a30",
+    "second": "#3a2a1a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนหินมองลงมา",
+     "atk": "กระโดดเส้นโค้งแล้วเฉือน",
+     "die": "ทรุดลงบนใบไม้และผ้าคลุมคลุมตัว"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "horns",
+     "cape",
+     "fangs",
+     "water",
+     "sand"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL07-3",
+    "name": "ไทรอส ตำรวจลับ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "S",
+    "scale": 0.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a3a",
+    "second": "#a89860",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งโต๊ะจดบันทึก",
+     "atk": "ยกปืนสั้นแล้วเงาสองตัวพุ่ง",
+     "die": "ทรุดบนโต๊ะและสมุดหลุด"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "gun",
+     "horns",
+     "tusks",
+     "chain",
+     "book"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK02-2",
+    "name": "เรกซ์ ทหารสี่แขน",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a60",
+    "second": "#c86a2a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมองแขนที่สี่",
+     "atk": "ยิงสองกระบอกพร้อมกัน",
+     "die": "ล้มข้างกองแขน"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK16-2",
+    "name": "ครูส ทหารปีศาจรับจ้าง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a5a",
+    "second": "#c8b060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนมือแตะผ้าขาวม้า",
+     "atk": "ฟาดดาบหนักเป็นเส้นตรง",
+     "die": "ทรุดเข่าและเหรียญหก"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns",
+     "water",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "greatsword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH03-4",
+    "name": "ผู้เก็บดวงตาศิลา",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 2.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a5a48",
+    "second": "#e8e0c8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "stone",
+    "planBy": "guess",
+    "poses": {
+     "idle": "นั่งหันหน้าเข้าผนังกอดห่อผ้า",
+     "atk": "ฟาดด้วยไหล่แล้วพื้นแยก",
+     "die": "ล้มคว่ำทับห่อผ้าและแสงขาวพุ่ง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sit",
+     "horns",
+     "water",
+     "moss",
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SH10-2",
+    "name": "ราสกัล นักล่าหมาป่าทราย",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a7a60",
+    "second": "#3a3a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นอนคว่ำในร่องทรายระหว่างหมาป่า",
+     "atk": "ยิงธนูแล้วพุ่งหลบ",
+     "die": "ล้มคว่ำและธนูไถลลงทราย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "bandage",
+     "armor",
+     "sand"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH11-1",
+    "name": "กรัมชาร์ ขุนศึกออร์ค",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 1.8,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a4a2a",
+    "second": "#8a7a50",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "orc",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนหน้าทัพถือขวาน",
+     "atk": "ฟาดลงพื้นแล้วกวาดขวาน",
+     "die": "ทรุดเข่าและขวานปักทราย"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "horns",
+     "cape",
+     "fangs",
+     "armor",
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SV03-3",
+    "name": "โรเกอร์ นักรบเผ่าหมี",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 1.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a30",
+    "second": "#8a8a8a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "bear",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนหอบเอามือซ้ายกุมไหล่",
+     "atk": "พุ่งตัวชนและกอดบีบ",
+     "die": "ทรุดนั่งโคนไม้"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "water"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SV16-2",
+    "name": "ฮาร์ด นักล่าแก่",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a5a3a",
+    "second": "#8a8a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหลังหินในผ้าคลุม",
+     "atk": "ดีดสายธนูแล้วพุ่งหอก",
+     "die": "ล้มพิงเสาไม้"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "bow",
+     "horns",
+     "cape"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB05-2",
+    "name": "เรเวน นักฆ่าหญิง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a30",
+    "second": "#7a7a8a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ห้อยเชือกจากระเบียงเงียบ",
+     "atk": "ลงมือด้วยมีดสั้นสองเล่มและขโมยสมุด",
+     "die": "ล้มคว่ำโดยสมุดในมือ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "book"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB05-5",
+    "name": "วีวา รองหัวหน้ากิลด์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a20",
+    "second": "#7a2a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งโต๊ะเขียนสมุด",
+     "atk": "ดึงมีดบางจากแขนเสื้อแล้วพุ่ง",
+     "die": "ล้มข้างโต๊ะและสมุดหลุดเปิด"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "fangs",
+     "tusks",
+     "book"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ09-4",
+    "name": "ไนซา ผู้ล่าเทพวัยรุ่น",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a60",
+    "second": "#a0a8b0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนแท่นถือหอกชี้ลง",
+     "atk": "พุ่งลงจากแท่นแล้วแทง",
+     "die": "นั่งบนขั้นบันไดโดยหอกหลุดมือ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "water"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ10-4",
+    "name": "ดุสวาร์ ผู้ฝึกไวเวิร์นราตรี",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a2a",
+    "second": "#6a7090",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางคอกนิ่ง",
+     "atk": "ขยับนิ้วแล้วไวเวิร์นพุ่ง",
+     "die": "ทรุดเข่ากลางคอก"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "water"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ02-4",
+    "name": "อัซโคร ผู้ตัดสินดวล",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#e8e8f0",
+    "second": "#6a6a78",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนเส้นกลางถือไม้เรียว",
+     "atk": "หวดไม้เรียวลงเส้นขาว",
+     "die": "ล้มข้ามเส้นและฝุ่นแป้งฟุ้ง"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "wings",
+     "book"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "book",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AZ08-1",
+    "name": "ผู้ว่าโคดุสธาร์ ผู้ว่าทุจริต",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a3a4a",
+    "second": "#c8c0a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหลังโต๊ะกองบัญชี",
+     "atk": "โบกมือให้ผู้คุ้มกันพุ่งแล้วฟาดไม้เท้า",
+     "die": "ล้มบนโต๊ะ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "wings"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH04-1",
+    "name": "เซวาร์ธวา หัวหน้าฝูงที่หนึ่ง",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a3a",
+    "second": "#8a8a6a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งหน้าเต็นท์ลูบหมาป่า",
+     "atk": "ผิวปากแล้วฝูงพุ่งสามทิศ",
+     "die": "ล้มข้างหมาป่าและเถ้าลอย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "axe",
+     "smoke",
+     "bandage"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "axe",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH04-3",
+    "name": "ดรีนซาร์ ทหารรับจ้างขี่ฝูง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a4a4a",
+    "second": "#8a6a40",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งบนหมาป่าถือหอก",
+     "atk": "พุ่งหอกขณะวิ่ง",
+     "die": "ตกจากหมาป่าและเหรียญหก"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "horns",
+     "water",
+     "smoke",
+     "bandage"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "spear",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH05-2",
+    "name": "ฮาร์ทวิก วิศวกรล้อมเมือง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a3a2a",
+    "second": "#c89a40",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางห้องชี้ไม้บรรทัด",
+     "atk": "ชี้ผนังให้เลื่อนเป็นกำแพง",
+     "die": "ล้มพิงกองแบบ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "smoke",
+     "chain"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH08-3",
+    "name": "เรธไลรา สายลับห้าธง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a60",
+    "second": "#a0a0a8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งขอบบ่อเขียนสมุด",
+     "atk": "ผลักถังล้มแล้วดึงเชือกห้าสี",
+     "die": "ล้มข้างบ่อและสมุดลอยน้ำ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "dagger",
+     "horns",
+     "flag",
+     "water",
+     "book"
+    ],
+    "parts": {
+     "skin": "#8a7a9a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "dagger",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH09-2",
+    "name": "คาร์เวน ทหารที่ขายตัวเอง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#8a8a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างเกวียนมือบนดาบ",
+     "atk": "ฟันตรงเป็นเส้นเดียว",
+     "die": "ทรุดข้างเกวียน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "water"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH10-1",
+    "name": "กูลชราธรอน ผู้ตัดสินศึกสูงสุด",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a3a",
+    "second": "#a8a090",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางวงกะโหลกถือคทา",
+     "atk": "ชี้คทาประกาศชื่อแล้วเทียนดับ",
+     "die": "ล้มกลางวงและควันพุ่ง"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "staff",
+     "cape",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#8a8e96",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH11-1",
+    "name": "กัปตันซาร์ดรีน ประมุขเรือธง",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a2a",
+    "second": "#8a2a2a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหลังโต๊ะนำทาง",
+     "atk": "ฟาดขวานด้ามยาวกวาดดาดฟ้า",
+     "die": "ล้มหน้าแผนที่"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "axe",
+     "flag",
+     "water",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "axe",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MH12-2",
+    "name": "ทหารผีไร้ชื่อ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8a96",
+    "second": "#d8d8e0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างป้ายหินยื่นมือเปล่า",
+     "atk": "ชักดาบสนิมแล้วฟาด",
+     "die": "สลายเป็นหมอกบาง"
+    },
+    "atkKind": "slam",
+    "dieKind": "dissolve",
+    "words": [
+     "sword",
+     "bandage",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD03-4",
+    "name": "ฮอล์มาร์ก ผู้ตัดสินของฝ่ายปิด",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a3a",
+    "second": "#c8a840",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหลังโต๊ะค้อนตัดสิน",
+     "atk": "เคาะค้อนแล้วรูนพุ่ง",
+     "die": "ทรุดนั่งเก้าอี้และรูนบนผนังดับ"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "hammer",
+     "cape",
+     "runes"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "cape",
+     "tool": "hammer",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD07-1",
+    "name": "ธรอกาดเพลิง ราชาแห่งธรอกาด",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 3.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#7a3a1a",
+    "second": "#e8a840",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "dragon",
+    "form": "coil",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ขดข้างเพลิงนิรันดร์",
+     "atk": "เหวี่ยงหางและพ่นลมร้อน",
+     "die": "ขดตัวเงียบข้างเพลิงที่ดับ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "horns",
+     "crown",
+     "wings",
+     "fire",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "KD03-3",
+    "name": "ธรอกาด ยามประตูเหมืองลึก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "S",
+    "scale": 0.9,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a3a",
+    "second": "#a89860",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างประตูแตะขอบหิน",
+     "atk": "ฟาดค้อนลงขอบประตู",
+     "die": "ล้มพิงขอบประตู"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "hammer",
+     "water",
+     "runes"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "hammer",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "KD05-1",
+    "name": "อิรมอร์ไลรา มารดาสูงสุด",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a5a",
+    "second": "#b8b8d0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งเก้าอี้หินยกมือสามนิ้ว",
+     "atk": "ชี้นิ้วให้เงาผนังพุ่ง",
+     "die": "ล้มจากเก้าอี้และผนังดับ"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "tusks"
+    ],
+    "parts": {
+     "skin": "#8a7a9a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "robe",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR01-4",
+    "name": "กัปตัน เรเน่ ฮาร์โบ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a3a",
+    "second": "#8a8a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหัวสะพานถือตะเกียง",
+     "atk": "ลงสะพานแล้วฟันยาว",
+     "die": "ล้มบนสะพานและโคมสั่น"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "water",
+     "lantern"
+    ],
+    "parts": {
+     "skin": "#6a4a38",
+     "hairColor": "#b89050",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR06-4",
+    "name": "ทหารเฒ่า โลเรน",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a6a",
+    "second": "#a8a8a0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปลายห้องกลางผนังเกราะ",
+     "atk": "แทงหอกยาวและกวาด",
+     "die": "ล้มข้างตู้ลูกธนู"
+    },
+    "atkKind": "lash",
+    "dieKind": "topple",
+    "words": [
+     "spear",
+     "bow",
+     "cape",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#8a8e96",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "spear",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NR04-3",
+    "name": "ซีนอส ผู้เฝ้าร่องธาลาสซา",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#0a1a2a",
+    "second": "#5a8ac8",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "serpent",
+    "form": "naga",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ขดอยู่ปากร่องร้องเพลงกล่อม",
+     "atk": "ตวัดหางและหนวดเรืองสะบัด",
+     "die": "จมกลับร่องแสงดับทีละวง"
+    },
+    "atkKind": "lash",
+    "dieKind": "sink",
+    "words": [
+     "glow",
+     "water",
+     "tentacles",
+     "tail"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "NR05-3",
+    "name": "ออร์คกะลาสี ดรัก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#2a2a30",
+    "second": "#c86a2a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนข้างทั่งถือค้อน",
+     "atk": "ฟาดค้อนแล้วประกายพุ่งเป็นวง",
+     "die": "ล้มข้างทั่ง"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "hammer",
+     "tusks",
+     "water",
+     "moss"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "hammer",
+     "ears": "pointed",
+     "feats": [
+      "tusks"
+     ]
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL01-3",
+    "name": "โรแลนด์ ทรูส หัวหน้ากองรักษาสภา",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a4a",
+    "second": "#c8b060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางประตูสภา",
+     "atk": "ก้าวสามก้าวแล้วฟันสั้น",
+     "die": "ล้มบนพรมและตราหลุด"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "horns"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL03-3",
+    "name": "เซอร์ฮาโรลด์ อัศวินที่ภักดีต่อบัลลังก์",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8a96",
+    "second": "#5a5a60",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางทางมือบนด้ามดาบ",
+     "atk": "ฟันตรงเป็นเส้นสามจังหวะ",
+     "die": "ล้มหน้าประตูห้องนอน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "cape",
+     "water",
+     "throne",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL10-2",
+    "name": "ลูกา ซานติ นายทหารรับจ้าง",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a5a4a",
+    "second": "#c8b060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนบนเนินชี้ลูกน้อง",
+     "atk": "ชี้มือสั่งลูกน้องพุ่ง",
+     "die": "ล้มหน้าเต็นท์"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "cape",
+     "water",
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "AL15-1",
+    "name": "จอมพลหญิง มาร์การ์ต ดูวัล",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a4a3a",
+    "second": "#8a8a70",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหน้าแผนที่ในหลุม",
+     "atk": "ชักดาบสั้นแล้วผู้บังคับกองเปิดไฟ",
+     "die": "ล้มข้างโต๊ะแผนที่"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "fire",
+     "armor"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "armor",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK04-4",
+    "name": "ฮานส์ ผู้บัญชาการกักกัน",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a4a",
+    "second": "#8a8a86",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางลานกักกันถือปืนพก",
+     "atk": "ยกปืนแล้วลั่นเสียงเดียว",
+     "die": "ล้มกลางลาน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "gun",
+     "horns",
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK06-4",
+    "name": "ซีโร่ ผู้ทดสอบหุ่นรบ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a6a70",
+    "second": "#7ac87a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางสนามนิ่ง",
+     "atk": "ยกปืนรูนลั่นเงียบ",
+     "die": "ล้มข้างหุ่นฟางและตาดับ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "gun",
+     "smoke",
+     "runes"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK09-1",
+    "name": "พลเรือเอกอากาศ วิลเลียม สกาย",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a2a4a",
+    "second": "#c8b060",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนท้ายเรือถือกล้อง",
+     "atk": "ชี้กล้องแล้วกองเรือยิง",
+     "die": "ล้มข้างราวเรือและแผนที่ลอย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "water",
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#e8b48a",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK16-5",
+    "name": "ฮอร์ตัน ผู้คุมค่ายพัก",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a4a40",
+    "second": "#8a6aa0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปากทางค่ายมือบนกระบอง",
+     "atk": "ตีกระบองหนังแล้วตีระฆัง",
+     "die": "ล้มข้างเสากลางและป้ายหล่น"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "club",
+     "horns",
+     "water"
+    ],
+    "parts": {
+     "skin": "#7a9a4a",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "club",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "MK05-4",
+    "name": "ดีน ผู้ลักลอบขนอาวุธ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a6a",
+    "second": "#a89860",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนพิงตู้มือบนกลอน",
+     "atk": "เลื่อนแผงตู้กั้นแล้วตีด้วยกลอน",
+     "die": "ล้มข้างตู้และอาวุธไถล"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "tusks",
+     "water"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "",
+     "beard": "short",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH01-3",
+    "name": "ธารีค ผู้ขี่หนอนทราย",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a6a3a",
+    "second": "#3a5a8a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งบนสันทรายมือแตะพื้น",
+     "atk": "ยกมือสั่งหนอนพุ่งขึ้น",
+     "die": "ล้มข้างหลุมทราย"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "horns",
+     "cape",
+     "water",
+     "sand"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#7a5a34",
+     "hair": "short",
+     "hat": "turban",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SH03-2",
+    "name": "บรูมา ผู้ทดสอบ",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a7a62",
+    "second": "#5a4a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "stone",
+    "planBy": "guess",
+    "poses": {
+     "idle": "นั่งปลายขั้นบันไดมองลง",
+     "atk": "ยกฝ่ามือกระแทกขั้นหิน",
+     "die": "ทรุดข้างบันไดมือทับหินเรียบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sit",
+     "cape",
+     "water",
+     "sand"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SH06-4",
+    "name": "ผู้เฝ้าภูเขาไททัน",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a8470",
+    "second": "#3a3a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "stone",
+    "planBy": "guess",
+    "poses": {
+     "idle": "นั่งแนบหูกับหินกลางลาน",
+     "atk": "ฟาดฝ่ามือตามจังหวะหิน",
+     "die": "ล้มทับหัวใจหิน"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sit",
+     "horns",
+     "cape",
+     "moss"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SH17-1",
+    "name": "กรอม-บาดู มหาผู้ดูแลหิน",
+    "group": "named",
+    "tier": "บอส 5",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "XL",
+    "scale": 4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#5a5a5a",
+    "second": "#8a7a60",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "giant",
+    "form": "stone",
+    "planBy": "guess",
+    "poses": {
+     "idle": "นั่งเป็นภูเขาลูกที่เจ็ด",
+     "atk": "ยกฝ่ามือหินกระแทกลาน",
+     "die": "ล้มเป็นเนินหินใหม่"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sit",
+     "horns",
+     "cape",
+     "moss"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "SV06-1",
+    "name": "ธาร์ล หัวหน้าผู้เฝ้า",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#4a5a3a",
+    "second": "#a89860",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "คุกเข่ากอบดินด้วยสองมือ",
+     "atk": "ชี้ไม้เท้าให้รากไม้ไล่",
+     "die": "ล้มหน้าลงดิน"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "water"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "staff",
+     "ears": "pointed",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV13-2",
+    "name": "ไอโอเนีย ผีเอลฟ์ผู้เฝ้า",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#8a9a9a",
+    "second": "#3a4a4a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ลอยกลางห้องมือประสาน",
+     "atk": "ชี้ดาบโปร่งแล้วรากพุ่ง",
+     "die": "สลายเป็นผงเรืองและรากเหี่ยว"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "sword",
+     "water",
+     "smoke"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#b89050",
+     "hair": "long",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV08-4",
+    "name": "เรเวน ผู้เฝ้าหอสังเกต",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a5a3a",
+    "second": "#c88a3a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนหลังกองไฟมือบนธนู",
+     "atk": "สะบัดผ้าคลุมแล้วยิงธนู",
+     "die": "ล้มข้างกองไฟและธนูหก"
+    },
+    "atkKind": "spit",
+    "dieKind": "topple",
+    "words": [
+     "bow",
+     "horns",
+     "cape",
+     "fire",
+     "water"
+    ],
+    "parts": {
+     "skin": "#b87a52",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "cap",
+     "beard": "",
+     "outfit": "cape",
+     "tool": "bow",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "SV01-2",
+    "name": "ซิลวาร์ ผู้พิทักษ์ราก",
+    "group": "named",
+    "tier": "บอส 4",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "L",
+    "scale": 1.4,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a4a2a",
+    "second": "#8aa850",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งกลางห้องรากพันตัว",
+     "atk": "ยกมือให้รากพุ่ง",
+     "die": "ล้มเอนบนรากและแสงหรี่"
+    },
+    "atkKind": "lunge",
+    "dieKind": "topple",
+    "words": [
+     "staff",
+     "water"
+    ],
+    "parts": {
+     "skin": "#c98e62",
+     "hairColor": "#3a2a20",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "staff",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB12-1",
+    "name": "กัปตันท่า เมอเนบ",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a4a5a",
+    "second": "#a8a8b0",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนปลายท่าหันหลัง",
+     "atk": "ปรากฏจากหมอกแล้วฟันสั้น",
+     "die": "ล้มที่ปลายท่าและหมอกสลาย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "tentacles"
+    ],
+    "parts": {
+     "skin": "#e0d6d0",
+     "hairColor": "#8a8a86",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB12-4",
+    "name": "โรแลนด์ ผู้บัญชาการมิสต์วอตช์ที่ไปช้า",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a3a40",
+    "second": "#8a8a96",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "ยืนกลางลานถือดาบยาว",
+     "atk": "ฟันเป็นเส้นตรงทีละครั้ง",
+     "die": "ล้มกลางลานและธงตก"
+    },
+    "atkKind": "slam",
+    "dieKind": "topple",
+    "words": [
+     "sword",
+     "flag",
+     "water"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#2a2420",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "tunic",
+     "tool": "sword",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "NB08-2",
+    "name": "ไลเซีย ผู้เฝ้าผีเมืองปฐม",
+    "group": "named",
+    "tier": "หัวหน้า 3",
+    "kinds": [
+     "humanoid"
+    ],
+    "size": "M",
+    "scale": 1.1,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#a8b0b8",
+    "second": "#5a6a7a",
+    "eye": "#1e1a22",
+    "eyeLabel": "ตา",
+    "eyeGiven": false,
+    "extra": [],
+    "plan": "humanoid",
+    "form": "person",
+    "planBy": "kind",
+    "poses": {
+     "idle": "นั่งม้านั่งหินเล่าเรื่องให้ผนังฟัง",
+     "atk": "หันเร็วและหมอกพุ่ง",
+     "die": "สลายเป็นหมอกบางและกุญแจลอย"
+    },
+    "atkKind": "lunge",
+    "dieKind": "dissolve",
+    "words": [
+     "water"
+    ],
+    "parts": {
+     "skin": "#d9a47a",
+     "hairColor": "#5a3a24",
+     "hair": "short",
+     "hat": "",
+     "beard": "",
+     "outfit": "robe",
+     "tool": "",
+     "ears": "round",
+     "feats": []
+    }
+   },
+   {
+    "kind": "enemy",
+    "id": "awakened_titan",
+    "name": "ไททันตื่น",
+    "group": "boss",
+    "tier": "ตำนาน 8",
+    "kinds": [],
+    "size": "XXL",
+    "scale": null,
+    "scaleNote": "ไม่เห็นหัวเมื่ออยู่ใกล้",
+    "swarm": null,
+    "cloud": false,
+    "main": "#6a5a4a",
+    "second": "#e06a30",
+    "eye": "#f0c060",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "giant",
+    "form": "titan",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนโงนเงนหายใจช้า",
+     "atk": "ยกกำปั้นหินทุบลงเป็นแนวกว้าง",
+     "die": "ไม่ตาย ทรุดนั่งแล้วหลับตาเมื่อเสียงดนตรีสงบ"
+    },
+    "atkKind": "slam",
+    "dieKind": "sag",
+    "words": [
+     "horns",
+     "water",
+     "runes"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "hellgate_lord",
+    "name": "เจ้าประตูนรก",
+    "group": "boss",
+    "tier": "บอส 6",
+    "kinds": [],
+    "size": "XXL",
+    "scale": 5,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a0a0a",
+    "second": "#e04020",
+    "eye": "#ffc040",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "elemental",
+    "form": "gate",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนบนธรณีไฟโซ่สั่น",
+     "atk": "กวาดโซ่ไฟและเปิดปากประตู",
+     "die": "ประตูปิดเสียงดังและเขาร้าวลงมาทั้งหมด"
+    },
+    "atkKind": "lash",
+    "dieKind": "burst",
+    "words": [
+     "horns",
+     "wings",
+     "tusks",
+     "fire",
+     "chain"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "lich_king",
+    "name": "ลิชผู้ตื่น",
+    "group": "boss",
+    "tier": "บอส 6",
+    "kinds": [],
+    "size": "XL",
+    "scale": 3,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#1a1a2a",
+    "second": "#8a5ac0",
+    "eye": "#e0c0ff",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "skeleton",
+    "form": "lichking",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ลอยนิ่งบนบัลลังก์วงเวทหมุน",
+     "atk": "กางมือเรียกกระดูกจากพื้นพุ่งใส่",
+     "die": "มงกุฎร่วงบัลลังก์พังและเปลวตาดับช้า"
+    },
+    "atkKind": "spit",
+    "dieKind": "crumble",
+    "words": [
+     "crown",
+     "cape",
+     "fire",
+     "water",
+     "throne"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "rift_speaker",
+    "name": "ผู้มาจากรอยแยกที่พูดได้",
+    "group": "boss",
+    "tier": "บอส 6",
+    "kinds": [],
+    "size": "L",
+    "scale": 2,
+    "scaleNote": "",
+    "swarm": null,
+    "cloud": false,
+    "main": "#b8b8d0",
+    "second": "#6a4aa0",
+    "eye": "#a0f0ff",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "spirit",
+    "form": "rift",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ยืนนิ่งรอยแยกกะพริบ",
+     "atk": "ยื่นมือเรียกรอยแยกเปิดใต้เท้าผู้ท้า",
+     "die": "รอยแยกปิดและร่างพับตัวหายเข้าไป"
+    },
+    "atkKind": "spit",
+    "dieKind": "dissolve",
+    "words": [
+     "tusks"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "primordial_engine",
+    "name": "เครื่องปฐม",
+    "group": "boss",
+    "tier": "ตำนาน 8",
+    "kinds": [],
+    "size": "XXL",
+    "scale": null,
+    "scaleNote": "ใหญ่กว่าห้อง",
+    "swarm": null,
+    "cloud": false,
+    "main": "#3a2a1a",
+    "second": "#5ac0f0",
+    "eye": "#d8a030",
+    "eyeLabel": "น้ำมัน",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "construct",
+    "form": "engine",
+    "planBy": "guess",
+    "poses": {
+     "idle": "เฟืองหมุนทีละชั้น",
+     "atk": "ปล่อยรหัสปฐมเป็นแสงและเฟืองชนกัน",
+     "die": "ไม่ตาย หยุดหมุนทีละชั้นเมื่อรหัสถูกตัดสิน"
+    },
+    "atkKind": "spit",
+    "dieKind": "sag",
+    "words": [
+     "water",
+     "gears"
+    ],
+    "parts": null
+   },
+   {
+    "kind": "enemy",
+    "id": "leviathan",
+    "name": "เลวีอาธาน",
+    "group": "boss",
+    "tier": "ตำนาน 8",
+    "kinds": [],
+    "size": "XXL",
+    "scale": null,
+    "scaleNote": "ยาวเกินจอ",
+    "swarm": null,
+    "cloud": false,
+    "main": "#0a1a2a",
+    "second": "#3a8aaa",
+    "eye": "#c8d0d8",
+    "eyeLabel": "ตา",
+    "eyeGiven": true,
+    "extra": [],
+    "plan": "sea",
+    "form": "leviathan",
+    "planBy": "guess",
+    "poses": {
+     "idle": "ลำตัวเลื้อยผ่านใต้น้ำช้า",
+     "atk": "ยกหัวเหนือคลื่นแล้วกลืนน้ำวน",
+     "die": "ไม่ตาย จมกลับสู่ร่องลึกเมื่อสายฟ้าทำให้ชะงัก"
+    },
+    "atkKind": "slam",
+    "dieKind": "sag",
+    "words": [
+     "shield",
+     "water"
+    ],
+    "parts": null
+   }
+  ],
+  "dragons": [
+   {
+    "kind": "dragon",
+    "id": "dragon_01",
+    "n": 1,
+    "name": "โอรัน-ซัล",
+    "size": "XL",
+    "shape": "เรียวยาว ปีกแผ่นเมฆ",
+    "form": "serpent",
+    "main": "#d8d4cc",
+    "second": "#a8a4a0",
+    "eye": "#8a98a8",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ฝุ่นประกายตกเมื่อเหนื่อย",
+    "ambient": "เมฆ",
+    "words": [
+     "wings",
+     "cloudwings",
+     "chipped"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_02",
+    "n": 2,
+    "name": "เพลิงนิรันดร์",
+    "size": "L",
+    "shape": "ตัวสั้นกำยำ",
+    "form": "stout",
+    "main": "#9a2a1a",
+    "second": "#e0662a",
+    "eye": "#ff9a30",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "เปลวและถ่านร้อนลอยจากหลัง",
+    "ambient": "ถ่านร้อน",
+    "words": [
+     "flames"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_03",
+    "n": 3,
+    "name": "สมุทรอาลัย",
+    "size": "L",
+    "shape": "ยาวลื่นเหมือนปลาไหล",
+    "form": "eel",
+    "main": "#5a7a90",
+    "second": "#8ab0c0",
+    "eye": "#7ac0d8",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "น้ำคลอตาและหยดน้ำรอบหัว",
+    "ambient": "หมอก",
+    "words": [
+     "water"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_04",
+    "n": 4,
+    "name": "พายุไร้ทิศ",
+    "size": "M",
+    "shape": "เรียวสั้น ปีกยาวบางเหมือนผ้า",
+    "form": "slender",
+    "main": "#e8f0f4",
+    "second": "#a8c0d8",
+    "eye": "#d8e8f0",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ลมวนและเมฆบางตามปีก",
+    "ambient": "เมฆ",
+    "words": [
+     "wings",
+     "silkwings"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_05",
+    "n": 5,
+    "name": "ศิลาสะท้าน",
+    "size": "M",
+    "shape": "เตี้ยกว้างเหมือนเต่า",
+    "form": "turtle",
+    "main": "#8a8a86",
+    "second": "#6a7a5a",
+    "eye": "#6a5a4a",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ฝุ่นหินและมอสตามหลัง",
+    "ambient": "ฝุ่น",
+    "words": [
+     "moss",
+     "rock"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_06",
+    "n": 6,
+    "name": "ราหู",
+    "size": "L",
+    "shape": "ยาว สองหัว",
+    "form": "twohead",
+    "main": "#d8b040",
+    "second": "#f4f4e8",
+    "eye": "#fff0a0",
+    "eyeShut": false,
+    "alt": {
+     "main": "#8a8aa0",
+     "second": "#2a2a3a",
+     "eye": "#101018"
+    },
+    "effect": "หัวหนึ่งสว่างหัวหนึ่งมืด",
+    "ambient": "ไม่มี",
+    "words": [
+     "wings",
+     "twotone"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_07",
+    "n": 7,
+    "name": "อีริดาน",
+    "size": "L",
+    "shape": "นุ่มและกลมเหมือนหมอก",
+    "form": "round",
+    "main": "#f0ece0",
+    "second": "#d8c8a0",
+    "eye": "#e8c870",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "เมฆรวมเป็นรูปรอบตัวเมื่อตื่น",
+    "ambient": "เมฆ",
+    "words": [
+     "soft",
+     "cloud"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_08",
+    "n": 8,
+    "name": "ฮรอด-กาธ",
+    "size": "L",
+    "shape": "ผอมเห็นซี่โครง เขี้ยวยาว",
+    "form": "skeletal",
+    "main": "#3a3638",
+    "second": "#6a2a2a",
+    "eye": "#a01818",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ควันดำจากปาก ดินแห้งรอบที่นอน",
+    "ambient": "เถ้า",
+    "words": [
+     "wings",
+     "ribs",
+     "fangs"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_09",
+    "n": 9,
+    "name": "คัลดรา",
+    "size": "XL",
+    "shape": "หนักเหมือนหินหลอม",
+    "form": "lava",
+    "main": "#1a1616",
+    "second": "#e0662a",
+    "eye": "#ff8a2a",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "เส้นส้มตามรอยต่อเกล็ด",
+    "ambient": "ถ่านร้อน",
+    "words": [
+     "seams",
+     "shut"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_10",
+    "n": 10,
+    "name": "ธาลาสซา",
+    "size": "XL",
+    "shape": "เลื้อยโปร่งแสง ตาหลายดวง",
+    "form": "serpent",
+    "main": "#2a6a70",
+    "second": "#7ac0d8",
+    "eye": "#c0e0f0",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "เส้นเรืองฟ้าตามลำตัว",
+    "ambient": "หมอก",
+    "words": [
+     "translucent",
+     "manyeyes"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_11",
+    "n": 11,
+    "name": "อันดาร์",
+    "size": "XL",
+    "shape": "อ้วนกลม หลับ หนวดพันราก",
+    "form": "sleeper",
+    "main": "#6a6a3a",
+    "second": "#8a7a4a",
+    "eye": "#000000",
+    "eyeShut": true,
+    "alt": null,
+    "effect": "หญ้าและดอกไม้งอกตามหลัง",
+    "ambient": "ใบไม้",
+    "words": [
+     "shut",
+     "grass",
+     "whiskers"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_12",
+    "n": 12,
+    "name": "เซเรเน",
+    "size": "L",
+    "shape": "เรียว มีท่อเหล็กปักตลอดตัว",
+    "form": "slender",
+    "main": "#a8acb4",
+    "second": "#1a1a1e",
+    "eye": "#6ad0ff",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "น้ำมันดำไหลจากท่อ แสงฟ้ากะพริบ",
+    "ambient": "ควัน",
+    "words": [
+     "pipes",
+     "oil"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_13",
+    "n": 13,
+    "name": "กรอม-ธาร",
+    "size": "XL",
+    "shape": "ถูกหินกลืน เห็นแค่ไหล่และหาง",
+    "form": "rock",
+    "main": "#8a7a62",
+    "second": "#5a5046",
+    "eye": "#5a3a2a",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ฝุ่นหินและรอยร้าวบนเขา",
+    "ambient": "ฝุ่น",
+    "words": [
+     "swallowed"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_14",
+    "n": 14,
+    "name": "ซิลเวรา",
+    "size": "XL",
+    "shape": "พันรากไม้ มอสขึ้นตัว",
+    "form": "coil",
+    "main": "#2a3a22",
+    "second": "#6a8a3a",
+    "eye": "#e0c060",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ใบไม้และเถาวัลย์ขึ้นตามลำตัว",
+    "ambient": "ใบไม้",
+    "words": [
+     "roots",
+     "moss"
+    ]
+   },
+   {
+    "kind": "dragon",
+    "id": "dragon_15",
+    "n": 15,
+    "name": "นิเวรี",
+    "size": "XL",
+    "shape": "โปร่งซีด เห็นเมื่อหมอกบาง",
+    "form": "mist",
+    "main": "#c8ccd0",
+    "second": "#8a8e96",
+    "eye": "#d8dce0",
+    "eyeShut": false,
+    "alt": null,
+    "effect": "ไอหมอกจากทั้งตัว",
+    "ambient": "หมอก",
+    "words": [
+     "translucent",
+     "wingless"
+    ]
+   }
+  ],
+  "counts": {
+   "enemies": 200,
+   "dragons": 15
+  }
+ }
+}
