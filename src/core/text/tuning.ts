@@ -116,6 +116,17 @@ export const BORN_TH: Record<string, string> = { main: 'ในแผ่นดิ
  */
 export const HEIR_OPENING = '{name} รับช่วงต่อเมื่ออายุ {age} ที่{home} ในฐานะ{race}ของครอบครัว{class_birth}';
 
+/**
+ * The first line of a life that begins grown and is nobody's heir: the late wakers (the ghoul, the mummy, the soul machine wake at 17) and the summoned (16).
+ * They are not taking anything over, so the heir's words are not theirs (review of the wish, 04-start-modes.md "ผู้ถูกกักด้วยความหิว"). Doc gap: no template in the docs.
+ */
+export const WAKE_OPENING: Record<string, string> = {
+  woken: '{name} ตื่นขึ้นเป็น{race}เมื่ออายุ {age} ที่{home} ในครอบครัว{class_birth}',
+  summoned: '{name} ถูกอัญเชิญมาถึง{home}เมื่ออายุ {age} ในฐานะ{race} ไม่มีครอบครัวในโลกนี้',
+};
+/** The tail of the family line for the ways a life begins (the verbs of the line differ: a birth, a waking, a calling). */
+export const SPECIAL_LINE: Record<string, string> = { summoned: 'ถูกอัญเชิญมาจากต่างโลก', reincarnated: 'เกิดพิเศษเป็นผู้กลับชาติ', woken: 'ตื่นขึ้นเป็นครั้งแรก' };
+
 /** The death line for each cause the character system writes; `{who}` `{where}` `{age}` are filled by the reader. */
 export const DEATH_TH: Record<string, string> = {
   old: '{who}จากไปด้วยชราภาพ{where} เมื่ออายุ {age}',

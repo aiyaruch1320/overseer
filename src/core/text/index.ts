@@ -27,6 +27,11 @@ export const textSystem: System = {
     const born = [...ctx.state.log].reverse().find((e) => e.sys === 'character' && e.kind === 'birth' && e.age !== undefined);
     const bd = born?.data ?? {};
     const ext = (life.ext.character ?? {}) as { meet?: string };
+    // only a life the lineage began as an heir or a successor takes over; one that begins grown on its own (the late wakers 17, the summoned 16) wakes or is called
+    const rec = (ctx.state.lineage.x as { recs?: { id: string; origin: string }[] } | undefined)?.recs?.find((r) => r.id === life.id);
+    const heir = life.hAge > 0 && (rec?.origin === 'heir' || rec?.origin === 'successor');
+    const grown = life.hAge > 0 && !heir;
+    const special = (bd.special as string | undefined) ?? null;
     write(ctx.state, {
       sys: 'text',
       kind: 'named',
@@ -40,7 +45,8 @@ export const textSystem: System = {
         year: calendarYear(ctx.state.clock.worldYear).toLocaleString('en-US'),
         country: life.country,
         // a life that begins grown (an heir takes over at 46) is not born in the words: the reader says it took over
-        ...(life.hAge > 0 ? { heir: true, age: life.hAge } : {}),
+        ...(heir ? { heir: true, age: life.hAge } : {}),
+        ...(grown ? { age: life.hAge, special } : {}),
       },
     });
     write(ctx.state, {
@@ -55,15 +61,16 @@ export const textSystem: System = {
         born: (bd.born as string | undefined) ?? null,
         second: (bd.second as string | undefined) ?? null,
         meet: ext.meet ?? null,
-        special: (bd.special as string | undefined) ?? null,
+        special,
         sign: (bd.sign as string | undefined) ?? null,
-        ...(life.hAge > 0 ? { heir: true } : {}),
+        ...(heir ? { heir: true } : {}),
+        ...(grown ? { woke: true } : {}),
       },
     });
     const traits = life.traits.slice(0, TRAITS_SHOWN).map((t) => L.kind.trait.get(t)).filter((t): t is string => !!t);
-    if (traits.length) write(ctx.state, { sys: 'text', kind: 'traits', id: life.id, level: 1, data: { traits: traits.join(','), ...(life.hAge > 0 ? { heir: true } : {}) } });
+    if (traits.length) write(ctx.state, { sys: 'text', kind: 'traits', id: life.id, level: 1, data: { traits: traits.join(','), ...(heir ? { heir: true } : {}) } });
     const question = questionOf(ctx.data, peopleCode(ctx, life.race));
-    if (question) write(ctx.state, { sys: 'text', kind: 'question', id: life.id, level: 1, data: { question, ...(life.hAge > 0 ? { heir: true } : {}) } });
+    if (question) write(ctx.state, { sys: 'text', kind: 'question', id: life.id, level: 1, data: { question, ...(heir ? { heir: true } : {}) } });
   },
 };
 
