@@ -200,8 +200,12 @@ function noteOf(data: GameData, it: SheetItem): string {
  */
 export function blurb(name: string, items: SheetItem[], mode: string | null): string[] {
   const granted = items.filter((i) => (i.row === 'sure' || i.row === 'lean') && i.value);
-  const out = [granted.length ? `${name} · ${granted.map((i) => (i.field && !i.value.includes(i.field) ? `${i.field} ${i.value}` : i.value)).join(' · ')}` : `${name} · ยังไม่มีอะไรถูกกำหนด ที่เหลือทั้งหมดขึ้นกับชะตา`];
-  if (mode && MODE_MOOD[mode]) out.push(MODE_MOOD[mode]);
+  // the values of one field are told together: "นิสัย ขี้ขลาด ใจบุญ"
+  const by = new Map<string, string[]>();
+  for (const i of granted) by.set(i.field, [...(by.get(i.field) ?? []), i.value]);
+  const told = [...by].map(([field, values]) => (field && !values.some((v) => v.includes(field)) ? `${field} ${values.join(' ')}` : values.join(' ')));
+  const out = [told.length ? `${name} · ${told.join(' · ')}` : `${name} · ยังไม่มีอะไรถูกกำหนด ที่เหลือทั้งหมดขึ้นกับชะตา`];
+  if (mode && MODE_MOOD[mode] && items.some((i) => i.key === 'startMode' && i.row === 'sure')) out.push(MODE_MOOD[mode]);
   return out;
 }
 
