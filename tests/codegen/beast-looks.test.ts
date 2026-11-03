@@ -26,7 +26,7 @@ describe('beast-looks generator: the docs state', () => {
       expect(e.poses.idle && e.poses.atk && e.poses.die, e.id).toBeTruthy();
       expect(plans.has(e.plan), e.id).toBe(true);
       expect(e.form, e.id).toBeTruthy();
-      expect(e.parts !== null, e.id).toBe(e.plan === 'humanoid' && (e.form === 'person' || e.form === 'wolfman'));
+      expect(e.parts !== null, e.id).toBe(e.plan === 'humanoid' && (e.form === 'person' || e.form === 'wolfman' || e.form === 'ghost'));
     }
   });
   it('size, scale, swarm and colours are the ones of the row of 04-enemies.md', () => {
@@ -41,6 +41,11 @@ describe('beast-looks generator: the docs state', () => {
       if (e.eyeGiven) expect(row, e.id).toContain(e.eye);
       expect(row, e.id).toContain(`idle=${e.poses.idle}`);
     }
+  });
+  it('the riders: a person on a horse, a wolf or a sand worm (the words of the row say so)', () => {
+    const m = Object.fromEntries(B.enemies.filter((e) => e.mount).map((e) => [e.id, e.mount]));
+    expect(m).toEqual({ npc_knight: 'horse', 'MH04-3': 'wolf', sand_raiders: 'worm', 'SH01-3': 'worm' });
+    for (const e of B.enemies) if (e.mount) expect(e.plan === 'humanoid' && e.form === 'person', e.id).toBe(true);
   });
   it('the plans: the six XXL are background pieces, the swarm plans are crowds, the slimes are amorphous', () => {
     expect(B.enemies.filter((e) => e.size === 'XXL').map((e) => e.id).sort()).toEqual(['NR11-2', 'awakened_titan', 'hellgate_lord', 'kraken', 'leviathan', 'primordial_engine']);

@@ -3,6 +3,7 @@
 import { BEASTS, DRAGONS, ENEMIES, personLookOf, type BeastLook } from '../beast/look';
 import type { SizeClass } from '../../core/data/types-beast-looks';
 import type { PersonLook } from '../look';
+import { NPC_BEAST_IDS, npcBeast } from '../npc-beasts';
 
 export interface BeastEntry { id: string; label: string; look: BeastLook }
 export type BeastSetDef = { label: string; entries: () => BeastEntry[] };
@@ -13,6 +14,7 @@ const entry = (look: BeastLook): BeastEntry => ({ id: look.id, label: look.name,
 export const BEAST_SETS: Record<string, BeastSetDef> = {
   ...Object.fromEntries(SIZES.map((sz) => [`enemies:${sz}`, { label: `ศัตรูชั้น ${sz} (${ENEMIES.filter((e) => e.size === sz).length})`, entries: () => ENEMIES.filter((e) => e.size === sz).map(entry) }])),
   dragons: { label: `มังกรตำนาน ${DRAGONS.length} ตัว`, entries: () => DRAGONS.map(entry) },
+  'npc-beasts': { label: `NPC ที่เป็นสัตว์ (${NPC_BEAST_IDS.length})`, entries: () => NPC_BEAST_IDS.flatMap((id) => { const l = npcBeast(id); return l ? [{ id, label: l.name, look: l }] : []; }) },
   all: { label: `ศัตรูกับมังกรทั้งหมด (${BEASTS.length})`, entries: () => BEASTS.map(entry) },
 };
 

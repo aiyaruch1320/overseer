@@ -1,9 +1,11 @@
 // The beasts page (beasts.html): every enemy and dragon of a set in a grid, drawn by Phaser, with its id under it and a pose to play.
 //   beasts.html?set=enemies:S&pose=attack&zoom=3     sets: enemies:S enemies:M enemies:L enemies:XL enemies:XXL dragons all
+//   beasts.html?set=npc-beasts                       the NPCs that are creatures (src/art/npc-beasts.ts)
 //   beasts.html?id=wolf,goblin,dragon_06             a hand-picked list
 import Phaser from 'phaser';
 import { BEAST_POSES, FRAMES } from './kit';
 import { beastOf } from './look';
+import { npcBeast } from '../npc-beasts';
 import { addBeast, frameIndex } from './phaser';
 import { BEAST_SETS, type BeastEntry } from '../dev/sets-beasts';
 import type { Pose } from '../anim';
@@ -11,7 +13,7 @@ import type { Pose } from '../anim';
 const q = new URLSearchParams(location.search);
 const setId = q.get('set') ?? 'enemies:S';
 const pose = (q.get('pose') ?? 'idle') as Pose;
-const DEFAULT_ZOOM: Record<string, number> = { 'enemies:S': 3, 'enemies:M': 3, 'enemies:L': 2, 'enemies:XL': 1, 'enemies:XXL': 1, dragons: 1, all: 1 };
+const DEFAULT_ZOOM: Record<string, number> = { 'enemies:S': 3, 'enemies:M': 3, 'enemies:L': 2, 'enemies:XL': 1, 'enemies:XXL': 1, dragons: 1, 'npc-beasts': 2, all: 1 };
 const zoom = Number(q.get('zoom') ?? DEFAULT_ZOOM[setId] ?? 2);
 const ids = q.get('id')?.split(',').filter(Boolean);
 const app = document.getElementById('app')!;
@@ -24,7 +26,7 @@ for (const id of ['set', 'pose', 'zoom'])
   (document.getElementById(id) as HTMLSelectElement).onchange = (e) => { q.set(id, (e.target as HTMLSelectElement).value); if (id === 'set') { q.delete('zoom'); q.delete('id'); } location.search = q.toString(); };
 
 const entries: BeastEntry[] = ids
-  ? ids.flatMap((id) => { const l = beastOf(id); return l ? [{ id: l.id, label: l.name, look: l }] : []; })
+  ? ids.flatMap((id) => { const l = beastOf(id) ?? npcBeast(id); return l ? [{ id: l.id, label: l.name, look: l }] : []; })
   : BEAST_SETS[setId]?.entries() ?? [];
 const CELL = entries.reduce((m, e) => ({ w: Math.max(m.w, FRAMES[e.look.size].w + 8), h: Math.max(m.h, FRAMES[e.look.size].h + 14) }), { w: 56, h: 60 });
 const cols = Math.max(1, Math.floor((window.innerWidth - 32) / (CELL.w * zoom)));
