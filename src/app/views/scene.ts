@@ -60,6 +60,8 @@ export function sceneKeys(e: LogEntry, templateOf?: (id: string) => string | und
   switch (e.sys) {
     case 'world':
       if (e.kind === 'event' || e.kind === 'ending') keys.push(id);
+      // the fall of a dragon (`world/dragonFall`, data.dragon = index 0..14): the script `fall.<n>` of appearance/11-world-changes.md §3
+      else if (e.kind === 'dragonFall' && typeof d.dragon === 'number') keys.push(`fall.${d.dragon + 1}`);
       break;
     case 'story':
       if (e.kind === 'node') {

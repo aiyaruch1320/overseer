@@ -211,8 +211,13 @@ describe('world: hooks for the god', () => {
     strikeCap(ctx, 2, 5);
     expect(w.vars['capDrop:2']).toBe(5);
     const dfc = w.dfc;
+    const n0 = ctx.state.log.length;
     fallDragon(ctx, 4);
     fallDragon(ctx, 4); // already fell
+    // one `world/dragonFall` entry for the fall, with the dragon and the place of its fall event; no event carried this fall, so `event` is null
+    const falls = ctx.state.log.slice(n0).filter((e) => e.sys === 'world' && e.kind === 'dragonFall');
+    expect(falls).toHaveLength(1);
+    expect(falls[0]).toMatchObject({ id: w.dragons[4].id, level: 2, data: { dragon: 4, name: 'ศิลาสะท้าน', event: null } });
     expect(w.dfc).toBe(dfc + 1);
     expect(w.dragons[4].alive).toBe(false);
     expect(w.happened['DR-15']).toBeDefined();

@@ -241,7 +241,7 @@ function crisis(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState, v
     return;
   }
   e.counts.cards++;
-  const entry = write(ctx.state, { sys: 'bonds', kind: 'crisis', id: t.id, data: { name: t.name, line: t.line, code: arc.code, level: levelOf(ctx, t), text: v.text, kin: t.kin ?? null, tie: t.id, gender: t.gender }, level: 2 });
+  const entry = write(ctx.state, { sys: 'bonds', kind: 'crisis', id: t.id, data: { name: t.name, line: t.line, code: arc.code, level: levelOf(ctx, t), text: v.text, kin: t.kin ?? null, tie: t.id, npc: t.npc ?? null, gender: t.gender }, level: 2 });
   e.crises.push({ tie: t.id, n: entry.n, beats: 0, age: life.hAge, code: arc.code, text: v.text });
 }
 
@@ -303,7 +303,7 @@ function ending(ctx: Ctx, life: LifeState, e: BondsExt, t: Tie, arc: ArcState): 
   const label = plain(pick.label ?? pick.text ?? '');
   const kind = endingKind(label);
   const involved = !!arc.involved || levelOf(ctx, t) >= 3;
-  write(ctx.state, { sys: 'bonds', kind: 'ending', id: t.id, data: { name: t.name, line: t.line, code: arc.code, key: pick.key, text: label, kind, involved }, level: involved ? 1 : 0 });
+  write(ctx.state, { sys: 'bonds', kind: 'ending', id: t.id, data: { name: t.name, line: t.line, code: arc.code, key: pick.key, text: label, kind, involved, npc: t.npc ?? null }, level: involved ? 1 : 0 });
   withFocus(e, t, () => {
     if (involved) {
       apply(ctx, pick.effects, { ...SRC, id: arc.code });

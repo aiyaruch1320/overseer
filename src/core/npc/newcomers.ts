@@ -252,6 +252,10 @@ function arrive(ctx: Ctx, country: Country, t: NpcTemplate, rng: Rng): string {
   (nx.ntUsed ??= {})[country.id] = [...(nx.ntUsed[country.id] ?? []), t.id];
   nx.newcomers.push(id);
   note(ctx, slot as NpcSlotX, row, 'newcomer', { tpl: t.id, year: now, age: Math.round(age / life.rate) });
+  // the arrival for the scene of the template (NT-xx, appearance/17-npc-newcomers): `template` is the key of its script. A trace (level 0) like the roster
+  // notes far from the character: the line of the player is the `newcomer` note above, so the chronicle does not tell it twice; `near` says it came to the country of the character.
+  if (nx.trace || (st.life && !st.life.dead))
+    write(st, { sys: 'npc', kind: 'arrive', id, level: 0, data: { template: t.id, name: t.name, place: country.id, year: now, people, near: !!st.life && !st.life.dead && st.life.country === country.id } });
   return id;
 }
 

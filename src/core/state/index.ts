@@ -5,7 +5,7 @@ import type { GameState, Settings } from '../types';
 export const START_YEAR = 0; // ศ.ม. at world creation; world-sim.md runs 1,800 years from here
 
 export function defaultSettings(): Settings {
-  return { speed: 'normal', attention: 'normal', llm: { master: true, setup: true, director: true, epitaph: true }, lang: 'th' };
+  return { speed: 'normal', attention: 'normal', llm: { master: true, setup: true, director: true, epitaph: true }, cards: { prayer: true, omen: true, battle: true, crisis: true, majorOmen: true }, lang: 'th' };
 }
 
 export function newGame(seed: number, data: GameState['data'] = {}): GameState {

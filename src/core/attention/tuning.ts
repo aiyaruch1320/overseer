@@ -2,9 +2,10 @@
 // data/gen/attention.json when it is loaded; DEFAULT_* below hold the same numbers so a test that loads only part of the data still runs
 // (tests/core/attention.test.ts checks the two agree).
 import type { AttentionData, AttentionRule } from '../data/types-attention';
+import type { CardKind } from '../types';
 
 /** The kinds of card (07-attention.md §2). `majorOmen` is a ⭐ omen on the character's own continent: a stop when the rules allow, else a card. */
-export type CardKind = 'prayer' | 'omen' | 'battle' | 'crisis' | 'majorOmen';
+export type { CardKind } from '../types';
 export type TriggerKind = 'window' | CardKind;
 
 /** A full life at normal speed in real minutes, and its length in life years (01-one-life.md: 25 to 45 minutes; the sim uses 35). */

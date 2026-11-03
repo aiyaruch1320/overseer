@@ -218,7 +218,7 @@
 
 -- สรุป --
 เวสเบิร์กกริม ตายเมื่ออายุ 75 (ชราภาพ) ศ.ม. 10,645 · 300 จังหวะ
-บันทึกระดับ 1 ขึ้นไป: world 17 · character 3 · text 4 · god 31 · story 34 · bonds 71 · attention 21 · items 2 · npc 23 · economy 7 · combat 9 · travel 1 · game 1 · ending 1 · lineage 1
+บันทึกระดับ 1 ขึ้นไป: world 19 · character 3 · text 4 · god 31 · story 34 · bonds 71 · attention 21 · items 2 · npc 23 · economy 7 · combat 9 · travel 1 · game 1 · ending 1 · lineage 1
 กติกาที่ยังไม่มีใครรับ: effect:stat:แกนศรัทธา
 
 -- การ์ดตอนจบ --

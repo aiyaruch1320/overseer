@@ -3,7 +3,7 @@
 // rolling, and runs it only when the command says `confirm`. Systems register the god actions of their own domain.
 import { write } from '../log';
 import type { Ctx } from '../game';
-import type { Command, CommandResult, GodAction, Settings } from '../types';
+import { CARD_KINDS, type Command, type CommandResult, type GodAction, type Settings } from '../types';
 
 export interface ActionHandler {
   /** Why the action cannot be taken now, or null when it can. Must not roll or change the state. */
@@ -45,6 +45,34 @@ export function command(ctx: Ctx, cmd: Exclude<Command, { type: 'advance' }>): C
   return { ok: true, preview, log: ctx.state.log.filter((e) => e.n >= mark) };
 }
 
+/** The switches of the cards when nothing was chosen (a save older than the setting has none: all on). */
+export const allCardsOn = (): Settings['cards'] => ({ prayer: true, omen: true, battle: true, crisis: true, majorOmen: true });
+
+/** Is this kind of card switched on? A settings object without the switches reads as all on. */
+export const cardOn = (s: Pick<Settings, 'cards'> | { cards?: Partial<Settings['cards']> }, kind: keyof Settings['cards']): boolean => s.cards?.[kind] !== false;
+
+export type CannotWhy = 'noLife' | 'cost' | 'cap' | 'cooldown' | 'unknown' | 'other';
+
+export type CanDo = { ok: true } | { ok: false; why: CannotWhy; reason: string; /** world years until the action is ready, for `cooldown` when the check says */ wait?: number };
+
+/**
+ * Whether a god action can be taken now, and why not (20-god-ui.md §2: a button that cannot be used is grey with an hourglass and the time left).
+ * It is the `check` of the action, sorted by what the reason says: no living character, the cost, a cap, a cooldown (with the years left).
+ * Pure: no roll, no change of state. A screen asks it for each button with the args it has (none for the button itself).
+ */
+export function canDo(ctx: Ctx, action: GodAction, args: Record<string, unknown> = {}): CanDo {
+  const h = actions.get(action);
+  if (!h) return { ok: false, why: 'unknown', reason: `no handler for ${action}` };
+  const reason = h.check(ctx, args);
+  if (!reason) return { ok: true };
+  if (/ไม่มีตัวละคร/.test(reason)) return { ok: false, why: 'noLife', reason };
+  const wait = reason.match(/ต้องรออีก\s*(\d+(?:\.\d+)?)\s*ปี/);
+  if (wait) return { ok: false, why: 'cooldown', reason, wait: Number(wait[1]) };
+  if (/ไม่พอ/.test(reason)) return { ok: false, why: 'cost', reason };
+  if (/ครบ|เพดาน/.test(reason)) return { ok: false, why: 'cap', reason };
+  return { ok: false, why: 'other', reason };
+}
+
 const SPEEDS: readonly Settings['speed'][] = ['pause', 'normal', 'fast'];
 const ATTENTION: readonly Settings['attention'][] = ['low', 'normal', 'high'];
 
@@ -54,6 +82,10 @@ export function badSettings(patch: Partial<Settings>): string | null {
   if (patch.attention !== undefined && !ATTENTION.includes(patch.attention)) return `ไม่รู้จักความถี่ที่เกมเรียก ${String(patch.attention)}`;
   if (patch.lang !== undefined && patch.lang !== 'th') return `ไม่รู้จักภาษา ${String(patch.lang)}`;
   if (patch.llm !== undefined) for (const [k, v] of Object.entries(patch.llm)) if (!['master', 'setup', 'director', 'epitaph'].includes(k) || typeof v !== 'boolean') return `สวิตช์ LLM ${k} ไม่ถูกต้อง`;
+  if (patch.cards !== undefined) {
+    if (typeof patch.cards !== 'object' || patch.cards === null) return 'สวิตช์การ์ดไม่ถูกต้อง';
+    for (const [k, v] of Object.entries(patch.cards)) if (!(CARD_KINDS as readonly string[]).includes(k) || typeof v !== 'boolean') return `สวิตช์การ์ด ${k} ไม่ถูกต้อง`;
+  }
   return null;
 }
 
@@ -62,6 +94,7 @@ function applySettings(s: Settings, patch: Partial<Settings>): void {
   if (patch.attention) s.attention = patch.attention;
   if (patch.lang) s.lang = patch.lang;
   if (patch.llm) s.llm = { ...s.llm, ...patch.llm };
+  if (patch.cards) s.cards = { ...allCardsOn(), ...s.cards, ...patch.cards };
 }
 
 /** Test helper. */

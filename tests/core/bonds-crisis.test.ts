@@ -57,6 +57,7 @@ describe('the crisis of an ally is announced before it is decided (H5)', () => {
     expect(x.level).toBe(2);
     expect(x.id).toBe(t.id);
     expect(x.data).toMatchObject({ name: t.name, line: 'สหาย', tie: t.id });
+    expect(x.data.npc).toBe(t.npc ?? null); // the roster NPC id of the tie, so the scripts `ally.<NPC>.crisis` can match (appearance/16-ally-scenes)
     expect(String(x.data.text).length).toBeGreaterThan(3);
     expect(x.data.answer).toBeUndefined();
     expect(t.arc!.helped).toBeUndefined();

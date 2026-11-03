@@ -38,6 +38,15 @@ describe('which script an entry looks for', () => {
     expect(sceneKeys(e('bonds', 'crisis', 'MH09-7', { code: 'FT-03' })).keys).toEqual(['ally.MH09-7.crisis', 'FT-03']);
     expect(sceneKeys(e('bonds', 'ending', 'MH09-7', { kind: 'stays' })).keys).toEqual([]);
     expect(sceneKeys(e('bonds', 'ending', 'MH09-7', { kind: 'dies' })).keys).toEqual(['ally.MH09-7.end']);
+    // the roster NPC of the tie (the entry's `npc`) finds the script `ally.<NPC>.*` when the tie id is not the NPC id
+    expect(sceneKeys(e('bonds', 'crisis', 'T3', { code: 'FT-03', npc: 'MH09-7' })).keys).toEqual(['ally.T3.crisis', 'ally.MH09-7.crisis', 'FT-03']);
+    expect(sceneKeys(e('bonds', 'ending', 'T3', { kind: 'dies', npc: 'MH09-7' })).keys).toEqual(['ally.T3.end', 'ally.MH09-7.end']);
+    // the fall of a dragon (`world/dragonFall`, dragon index 0..14) plays fall.<n>; a newcomer (`npc/arrive`) its NT template
+    expect(sceneKeys(e('world', 'dragonFall', 'โอรัน-ซัล', { dragon: 0, place: '' })).keys).toEqual(['fall.1']);
+    expect(sceneKeys(e('world', 'dragonFall', 'นิเวรี', { dragon: 14 })).keys).toEqual(['fall.15']);
+    expect(sceneFor(data, e('world', 'dragonFall', 'ราหู', { dragon: 5, place: 'AZ-05' })).kind).toBe('script');
+    expect(sceneKeys(e('npc', 'arrive', 'AZ01-10', { template: 'NT-04', near: true })).keys).toEqual(['NT-04']);
+    expect(sceneFor(data, e('npc', 'arrive', 'AZ01-10', { template: 'NT-04', near: true })).kind).toBe('script');
     expect(sceneKeys(e('god', 'miracle', 'MR-17')).keys).toEqual(['mr.MR-17']);
     expect(sceneKeys(e('god', 'miracle.omen', 'MR-17')).keys).toEqual([]);
     expect(sceneKeys(e('events', 'local', 'LC-104'), () => 'LT-6').keys).toEqual(['LC-104', 'LT-6']);
