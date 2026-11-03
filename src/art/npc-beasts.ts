@@ -15,11 +15,12 @@
 //   SV12-6  ไมสท์                     [สไลม์สีน้ำเงินเทาตัวเท่าถังน้ำเล็ก]  a slime the size of a small pail
 //   SV18-6  เบลล่า                    [สไลม์สีเขียวมะนาวตัวสูงเท่าหมวกคน]  a slime as tall as a hat
 //   NB06-2  นักเล่นแร่ สไลม์ซอส        [สไลม์วัยห้าสิบห้าปี ขนาดเท่าเด็กห้าขวบ]  a slime the size of a five-year-old
+//   SV18-4  เด็กเผ่าเห็ด สปอร์       [เด็กตัวเล็กหมวกเห็ดสีเทาซีด ผิวขาวนวล]  a child with a pale mushroom cap, drawn by the person painter (beast/named.ts)
 //   MH12-1 MH12-2 AL25-3 SH14-1 SH14-3 SH14-4 SV13-2 NB08-2 NB08-4   [วิญญาณ โปร่งแสง] ghosts: see-through people of the dead; no people id
 //   NB13-3  วิญญาณเงา ซิล              [วิญญาณเงารูปร่างคนบางโปร่งสีดำควัน]  a shadow spirit: a ghost
 // Not mapped (they are people, drawn from their own race): AL19-4 AL20-4 AL26-3 AL28-4 NB09-1 (no people id, but a child, a pale traveller, a
 // patient, a passenger and a masked broker), the beast-folk (race beast: AL12-4 AL23-x SH04-4 SH05-2 SH10-x SV03-3 SV09-2 SV11-x SV16-x), the
-// mushroom tribe (SV18-4) and the soul-machines (race construct).
+// soul-machines (race construct).
 import raw from '../../data/gen/looks.json';
 import type { EnemyLook, PersonParts, SizeClass } from '../core/data/types-beast-looks';
 import type { LooksData, NpcLookRow } from '../core/data/types-looks';
@@ -34,7 +35,7 @@ const GHOSTS = ['MH12-1', 'MH12-2', 'AL25-3', 'SH14-1', 'SH14-3', 'SH14-4', 'SV1
 const SLIMES: Record<string, [SizeClass, number, string]> = {
   'NR03-3': ['S', 0.7, '#4aa8f0'], 'NR03-6': ['S', 0.45, '#e8c060'], 'SV12-2': ['S', 0.45, '#e8d050'], 'SV12-6': ['S', 0.4, '#c0e0f0'], 'SV18-6': ['S', 0.4, '#f0e8a0'], 'NB06-2': ['S', 0.65, '#c4e84a'],
 };
-export const NPC_BEAST_IDS: readonly string[] = [...ENEMY_BODY, 'SV18-1', 'MH04-2', 'SV09-3', ...Object.keys(SLIMES), ...GHOSTS];
+export const NPC_BEAST_IDS: readonly string[] = [...ENEMY_BODY, 'SV18-1', 'SV18-4', 'MH04-2', 'SV09-3', ...Object.keys(SLIMES), ...GHOSTS];
 
 function base(id: string, row: NpcLookRow, o: Partial<EnemyLook> & Pick<EnemyLook, 'size' | 'scale' | 'plan' | 'form' | 'atkKind' | 'dieKind' | 'main' | 'second' | 'eye'>): EnemyLook {
   return {
@@ -60,6 +61,7 @@ function build(id: string): BeastLook | null {
   const row = rows[id];
   if (!row) return null;
   if (id === 'SV18-1') return base(id, row, { size: 'L', scale: 3, plan: 'plant', form: 'mushroom', atkKind: 'spit', dieKind: 'sag', main: row.main, second: row.second, eye: '#7ad070', words: ['mushrooms'] });
+  if (id === 'SV18-4') return base(id, row, { size: 'S', scale: 1, plan: 'humanoid', form: 'person', atkKind: 'slam', dieKind: 'topple', main: row.main, second: row.second, eye: '#e8d868', kinds: ['plant'], words: ['mushrooms'] });
   if (id === 'MH04-2') return base(id, row, { size: 'M', scale: 1.25, plan: 'quadruped', form: 'wolf', atkKind: 'lunge', dieKind: 'topple', main: '#8a8a8a', second: '#c0c0c6', eye: '#c8a030', kinds: ['beast'] });
   if (id === 'SV09-3') return base(id, row, { size: 'M', scale: 1.7, plan: 'quadruped', form: 'shadowwolf', atkKind: 'lunge', dieKind: 'topple', main: '#2a2a30', second: '#5a5a66', eye: '#d8a840', kinds: ['beast'] });
   const sl = SLIMES[id];

@@ -4,7 +4,8 @@ import { dark, light, mix, rnd, type Ctx, type Info } from './kit';
 
 export function paintSmall(c: Ctx<EnemyLook>): Info {
   switch (c.L.form) {
-    case 'slime': case 'lava': return slime(c);
+    case 'slime': return slime(c);
+    case 'lava': return lavaBlob(c);
     case 'kappa': return kappa(c);
     case 'imp': return imp(c);
     case 'scorpion': return scorpion(c);
@@ -44,6 +45,34 @@ function slime(c: Ctx<EnemyLook>): Info {
   const beat = mo.pose === 'idle' ? 1.6 + 0.5 * mo.breath : 1.9;
   pen.ell(x0 + 0.5, -h * 0.5 - lift, beat, beat * 0.85, core);
   return { shadow: { cx: c.cx + x0 * s, cy: c.foot, rx: (w + 1) * s * 0.85, ry: Math.max(1.4, 2 * s * 0.5) }, tall: false };
+}
+
+// ── lava slime: a lump of molten gel with a glossy skin, a few cooled black crusts, drips and a white-hot core. No eyes ────────────────────
+function lavaBlob(c: Ctx<EnemyLook>): Info {
+  const { L, mo, p } = c;
+  const s = Math.min(c.px / 12, (c.w * 0.9) / 28);
+  const pen = c.pen(s);
+  const gel = p.mat(L.main, { deep: true }), hotM = p.mat(light(L.main, 0.38), { deep: true }), deepM = p.mat(dark(L.main, 0.3), { deep: true });
+  const crust = p.mat(L.second, { deep: true }), core = p.mat(L.eye, { flat: true }), spark = p.mat('#ffb040', { flat: true }), glint = p.mat('#fff0c0', { flat: true });
+  const hop = mo.pose === 'walk' ? Math.abs(Math.sin(mo.ph / 2)) : 0, stretch = mo.pose === 'attack' ? mo.strike : 0, br = mo.pose === 'idle' ? mo.breath : 0;
+  const w = 8.4 + br * 0.7 + stretch * 3 - hop * 1.2, h = 9.6 - br * 0.9 - stretch * 2.6 + hop * 3, x0 = stretch * 3 + mo.push * 0.3, lift = hop * 3;
+  // a flat puddle it sits in, the body a drooping mound, a bulge on one shoulder
+  pen.ell(x0, -1.6 - lift * 0.3, w * 1.18, 1.9, deepM);
+  pen.ell(x0, -h * 0.46 - lift, w, h * 0.5, gel);
+  pen.ell(x0 - w * 0.28, -h * 0.82 - lift, w * 0.6, h * 0.3, gel);
+  pen.ell(x0 + w * 0.45, -h * 0.62 - lift, w * 0.42, h * 0.3, hotM);
+  // drips running down the sides into the puddle
+  for (const [dx, len] of [[-0.86, 3.4], [0.82, 2.4], [-0.3, 1.8]] as const) pen.cap([x0 + dx * w, -h * 0.38 - lift], [x0 + dx * w * 1.04, -0.8], 1.3, 0.9, gel);
+  // hot veins and the cooled black crust on top, torn open where the glow shows
+  for (let i = 0; i < 4; i++) pen.line([x0 - w * 0.6 + i * w * 0.4, -h * 0.28 - lift], [x0 - w * 0.5 + i * w * 0.38, -h * 0.62 - lift - (i % 2) * 1.4], hotM, 0.8);
+  for (const [dx, dy, rx, ry] of [[-0.45, -0.86, 2.6, 1.1], [0.25, -0.94, 2.1, 0.9], [0.62, -0.74, 1.5, 0.8], [-0.12, -0.7, 1.2, 0.6]] as const) pen.ell(x0 + dx * w, dy * h - lift, rx, ry, crust);
+  pen.rect(x0 - w * 0.55, -h * 0.62 - lift, 1.8, 1, glint);
+  // the core, white-hot and beating slowly; bubbles that pop above it
+  const beat = mo.pose === 'idle' ? 2.1 + 0.5 * mo.breath : 2.4;
+  pen.ell(x0 + 0.4, -h * 0.42 - lift, beat + 0.9, (beat + 0.9) * 0.85, hotM);
+  pen.ell(x0 + 0.4, -h * 0.42 - lift, beat, beat * 0.85, core);
+  for (let i = 0; i < 3; i++) pen.dot(x0 - 3 + i * 3.6, -h - lift - 1.4 - ((mo.f + i) % 2) * 1.6, i % 2 ? spark : glint, 1);
+  return { shadow: { cx: c.cx + x0 * s, cy: c.foot, rx: (w + 1.5) * s * 0.9, ry: Math.max(1.4, 2 * s * 0.5) }, tall: false };
 }
 
 // ── kappa: a green boy-shaped thing with a shell, a beak and a dish of water on its head; bows before it fights ──────────────────────
@@ -141,19 +170,19 @@ function scorpion(c: Ctx<EnemyLook>): Info {
 // ── spider: hangs from black web threads ───────────────────────────────────────────────────────────────────────────────────────────────
 function spider(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 22, (c.w * 0.5) / 26);
+  const s = Math.min(c.px / 35, (c.w * 0.5) / 26);
   const sway = mo.pose === 'idle' ? mo.breath * 1.2 : 0;
   const drop = mo.pose === 'attack' ? 6 * mo.strike : 0;
-  const pen = c.pen(s).at(mo.push * 0.6, mo.bob + sway - 20 + drop);
+  const pen = c.pen(s).at(mo.push * 0.6, mo.bob + sway - 14 + drop);
   const body = p.mat(L.main, { deep: true }), mark = p.mat(L.second, { flat: true }), legM = p.mat(dark(L.main, 0.15)), eye = p.mat(L.eye, { flat: true }), web = p.mat(mix(L.second, L.main, 0.55), { flat: true });
   // threads up to the fog ceiling and a few down to the ground
-  const top = -(c.foot / s) - 10;
+  const top = -((c.foot - 8) / s) + 14;
   pen.line([0, top], [0, -14], web, 0.5); pen.line([-6, top], [-1.5, -13], web, 0.4); pen.line([6, top], [2, -13], web, 0.4);
   const bend = mo.pose === 'walk' ? Math.sin(mo.ph) * 2 : mo.pose === 'attack' ? 3 * mo.strike : 0;
   for (let i = 0; i < 4; i++) for (const far of [true, false]) {
     const sx = (far ? -1 : 1) * 0.6, a = i * 0.55 - 0.7 + (far ? 0.25 : 0);
     const kx = sx + (far ? -1 : 1) * (5 + i * 0.4), ky = -12 + a * 2 - 2 + (i % 2) * 2 + bend * (far ? 0.4 : 0.8);
-    const fx = kx + (far ? -1 : 1) * 2, fy = 9 + i * 2.2 + (far ? 1 : 0);
+    const fx = kx + (far ? -1 : 1) * 2, fy = 10.4 + i * 0.9 + (far ? 0.8 : 0);
     const col = far ? legM : body;
     pen.line([sx, -9], [kx, ky], col, 1.1); pen.line([kx, ky], [fx + (far ? 0 : 2), fy + bend], col, 1.0);
   }

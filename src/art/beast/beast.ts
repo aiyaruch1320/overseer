@@ -3,13 +3,15 @@
 // the way the doc says (kit.applyDie) and shades it (Paint.finish).
 import { FRAME, POSE_OF, type Pose } from '../anim';
 import { Paint, type Frame } from '../paint';
+import type { EnemyLook } from '../../core/data/types-beast-looks';
 import { paintPerson } from '../person';
 import { paintColossus } from './colossus';
 import { paintConstruct } from './construct';
 import { paintDragon } from './dragon';
 import { paintFlyer } from './flyer';
+import { ghostFrame, GHOST_IDS } from './ghost';
 import { paintGiant } from './giant';
-import { FRAMES, MAX_H, Pen, applyDie, blank, flash, motion, over, type Ctx, type Info } from './kit';
+import { FRAMES, MAX_H, Pen, applyDie, blank, blend, flash, motion, ovEll, over, type Ctx, type Info } from './kit';
 import { personLookOf, type BeastLook } from './look';
 import { paintMounted } from './mount';
 import { isNamed, paintNamed } from './named';
@@ -40,7 +42,7 @@ const OFFSETS: Record<number, [number, number][]> = {
 
 const isPerson = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'person' || L.form === 'wolfman');
 const isSiren = (L: BeastLook): boolean => L.kind === 'enemy' && L.form === 'siren';
-const isGhost = (L: BeastLook): boolean => L.kind === 'enemy' && L.plan === 'humanoid' && L.form === 'ghost';
+const isGhost = (L: BeastLook): L is EnemyLook => L.kind === 'enemy' && L.plan === 'humanoid' && (L.form === 'ghost' || GHOST_IDS.includes(L.id));
 
 /** The size a body is drawn at: its scale times a 28-pixel human, kept inside the frame. */
 export function targetHeight(L: BeastLook): number {
@@ -54,33 +56,28 @@ function personFrame(L: BeastLook, pose: Pose, f: number): Frame {
   const out = blank(fr.w, fr.h);
   if (L.kind !== 'enemy') return out;
   over(out, paintPerson(personLookOf(L), pose, f), Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot);
+  if (L.id === 'gas_ghoul') gas(out, f, pose === 'die');
   return pose === 'hurt' && f === 0 ? flash(out) : out;
 }
 
-/** A person of the person painter turned into a ghost: tinted, see-through, fading toward the feet, floating (the ghost soldiers, the shadow queen). */
-function ghostFrame(L: BeastLook, pose: Pose, f: number): Frame {
-  const fr = FRAMES[L.size], out = blank(fr.w, fr.h);
-  if (L.kind !== 'enemy') return out;
-  const dying = pose === 'die' ? [0.34, 0.67, 1][f] ?? 1 : 0;
-  const body = paintPerson(personLookOf(L), pose === 'die' ? 'idle' : pose, pose === 'die' ? 0 : f);
-  let y0 = body.h, y1 = -1;
-  for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) if (body.data[(y * body.w + x) * 4 + 3] > 120) { if (y < y0) y0 = y; if (y > y1) y1 = y; }
-  const tint = [parseInt(L.main.slice(1, 3), 16), parseInt(L.main.slice(3, 5), 16), parseInt(L.main.slice(5, 7), 16)];
-  const hover = pose === 'idle' ? 3 + (f % 2) : 3, h = Math.max(1, y1 - y0);
-  for (let y = 0; y < body.h; y++) for (let x = 0; x < body.w; x++) {
-    const i = (y * body.w + x) * 4;
-    if (body.data[i + 3] === 0) continue;
-    const solid = body.data[i + 3] > 120, k = Math.max(0, Math.min(1, (y1 - y) / (h * 0.5)));
-    if (!solid) { body.data[i + 3] = 0; continue; }
-    for (let c = 0; c < 3; c++) body.data[i + c] = body.data[i + c] * 0.4 + tint[c] * 0.45 + 255 * 0.15;
-    const keep = dying === 0 || (((x * 7 + y * 13) % 16) / 16) >= dying; // a dying ghost thins out in a dither
-    body.data[i + 3] = keep ? Math.round(170 * (0.08 + 0.92 * k ** 0.7)) : 0;
+/** Lemon-yellow gas that leaks from the mask's vents and the hem of the coat (gas_ghoul), over the figure. */
+function gas(out: Frame, f: number, dying: boolean): void {
+  const cx = out.w / 2 + 2, foot = out.h - 4;
+  // the iron mask over the lower face: a plate with two dark eye slits and the vents the gas comes from
+  let top = -1, tx = cx;
+  for (let y = 0; y < out.h && top < 0; y++) { let x0 = out.w, x1 = -1; for (let x = 0; x < out.w; x++) if (out.data[(y * out.w + x) * 4 + 3] > 200) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); } if (x1 - x0 >= 3) { top = y; tx = (x0 + x1) / 2; } }
+  if (top >= 0 && !dying) {
+    const mx = Math.round(tx) - 1, my = top + 3;
+    for (let j = 0; j < 4; j++) for (let i = 0; i < 6; i++) blend(out, mx + i, my + j, j === 0 ? '#8a8e98' : '#5a5e68', 1);
+    for (const i of [1, 4]) blend(out, mx + i, my + 1, '#d03020', 1);
+    for (const i of [2, 3]) blend(out, mx + i, my + 3, '#24262c', 1);
+    for (let i = -1; i < 7; i++) { blend(out, mx + i, my - 1, '#2a2c32', 1); blend(out, mx + i, my + 4, '#2a2c32', 1); }
   }
-  // a faint shadow, smaller than a body's: it floats
-  const cx = Math.round(fr.w / 2 - 22) + 22;
-  for (let y = 0; y < fr.h; y++) for (let x = 0; x < fr.w; x++) { const dx = (x + 0.5 - cx) / 8, dy = (y + 0.5 - fr.foot) / 1.6; if (dx * dx + dy * dy <= 1) { const i = (y * fr.w + x) * 4; out.data[i] = 24; out.data[i + 1] = 26; out.data[i + 2] = 44; out.data[i + 3] = 40 * (1 - dying); } }
-  over(out, body, Math.round(fr.w / 2 - 22), fr.foot - FRAME.foot - hover);
-  return pose === 'hurt' && f === 0 ? flash(out) : out;
+  for (let i = 0; i < 7; i++) {
+    const t = (i + f * 0.5) / 7, drift = ((i * 5 + f * 3) % 11) - 5;
+    const y = foot - 30 + (i % 3) * 9 - ((f + i) % 2) * 1.5, x = cx + drift + (i % 2 ? 6 : -6) * t;
+    ovEll(out, x, y, 2.6 + (i % 3), 1.8 + (i % 2), '#d8d840', (dying ? 0.3 : 0.5) - t * 0.2);
+  }
 }
 
 function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): Frame {
@@ -106,7 +103,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
 
 /** One frame of a beast: the family of one body, or the several bodies of a swarm. */
 export function paintBeast(L: BeastLook, pose: Pose, f: number): Frame {
-  const group = L.kind === 'enemy' && !!L.swarm && !L.cloud && L.plan !== 'swarm' ? SHOWN[L.size] : 1;
+  const group = L.kind === 'enemy' && !!L.swarm && !L.cloud && L.plan !== 'swarm' && !(L.plan === 'flyer' && (L.form === 'harpy' || L.form === 'storm')) ? SHOWN[L.size] : 1;
   const one = (ff: number, i: number): Frame =>
     L.kind === 'enemy' && isNamed(L) ? paintNamed(L, pose, ff) : L.kind === 'enemy' && L.mount ? paintMounted(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1) : isGhost(L) ? ghostFrame(L, pose, ff) : isPerson(L) || isSiren(L) ? personFrame(L, pose, ff) : nativeFrame(L, pose, ff, `${L.id}${i}`, group > 1 ? 0.74 : 1);
   if (group === 1) return one(f, 0);

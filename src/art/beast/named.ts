@@ -21,6 +21,8 @@ interface Marks {
   eggs?: boolean;
   /** white steam from the joints, a lit core in the chest */
   steam?: boolean; core?: string;
+  /** feats taken off the NPC's look; a mushroom cap of this colour laid over the head */
+  without?: string[]; cap?: string;
 }
 
 /** What each named fighter adds to its NPC's look (the words of 04-enemies.md for the fight; the NPC file wins where the two differ). */
@@ -41,6 +43,8 @@ const MARKS: Record<string, Marks> = {
   'MK02-1': { feats: ['mecharm', 'mecheye', 'rivets', 'plates', 'core'], hat: '', tool: '', hair: 'bald', outfit: 'tunic', main: '#b8903a', second: '#6a1a1a', skin: '#b8903a', eye: '#ff4040', accent: '#ff4040', steam: true, core: '#ffe040' },
   'NR07-1': { eggs: true },
   'NR07-2': {},
+  // the mushroom child: pale cream skin, a pale grey cap with no spots, round yellow eyes (09-silvanel.md)
+  'SV18-4': { skin: '#d6d4c8', eye: '#e8d868', without: ['gel'], cap: '#b8b4a8' },
 };
 export const isNamed = (e: EnemyLook): boolean => e.kind === 'enemy' && e.id in MARKS;
 
@@ -51,7 +55,7 @@ export function namedLook(e: EnemyLook): PersonLook {
     ...base, ...(m.hat !== undefined ? { hat: m.hat } : {}), ...(m.tool !== undefined ? { tool: m.tool } : {}), ...(m.beard ? { beard: m.beard } : {}),
     ...(m.eye ? { eye: m.eye } : {}), ...(m.accent ? { accent: m.accent } : {}), ...(m.skin ? { skin: m.skin } : {}), ...(m.hair ? { hair: m.hair } : {}), ...(m.outfit ? { outfit: m.outfit } : {}), ...(m.main ? { main: m.main } : {}), ...(m.second ? { second: m.second } : {}),
     body: m.ears ? { ...base.body, ears: m.ears } : base.body,
-    feats: [...new Set([...base.feats, ...(m.feats ?? [])])],
+    feats: [...new Set([...base.feats, ...(m.feats ?? [])])].filter((x) => !(m.without ?? []).includes(x)),
   };
 }
 
@@ -127,6 +131,15 @@ function lay(out: Frame, L: PersonLook, m: Marks, hand: [number, number] | null,
   if (m.eggs) {
     const eggs: [number, number][] = [[-20, 0], [-13, 3], [-6, 5], [6, 5], [13, 3], [20, 0]];
     eggs.forEach(([dx, dy], i) => { const cx = out.w / 2 + dx * k * 0.8, cy = ox * 0 + oy + FRAME.foot * k - 3 * k + dy * 0.6 * k - (i === 2 || i === 3 ? 0 : 0); disc(out, cx, cy, 2.4 * k + (i % 2) * 0.4 * k, '#efe6c8', '#6a5a38', '#fffbe8'); });
+  }
+  if (m.cap) {
+    const t = headTop(out);
+    if (t) {
+      const cx = t.x + k * 0.5, cy = t.y + 0.5 * k, rx = 7 * k, ry = 4 * k;
+      ovEll(out, cx, cy, rx + 1, ry + 1, '#4a463c', 1); ovEll(out, cx, cy, rx, ry, m.cap, 1);
+      ovEll(out, cx - rx * 0.3, cy - ry * 0.45, rx * 0.4, ry * 0.3, mix(m.cap, '#ffffff', 0.45), 1);
+      for (let i = -rx; i <= rx; i++) blend(out, cx + i, cy + ry * 0.62, mix(m.cap, '#4a463c', 0.35), 1); // the gills' shade under the cap
+    }
   }
   if (m.steam) for (let i = 0; i < 4; i++) { const t = headTop(out); if (!t) break; const c = rnd(L.key, i + f * 7); ovEll(out, t.x + (c - 0.3) * 16 * k, t.y + (10 + 14 * ((i + f) % 3)) * k - i * k, 1.8 * k, 1.4 * k, '#e8e8f0', 0.55); }
   if (m.core) { const t = headTop(out); if (t) { const cy = t.y + (oy + FRAME.foot * k - t.y) * 0.4; ovEll(out, t.x + k, cy, 3 * k, 3 * k, m.core, 0.4); ovEll(out, t.x + k, cy, 1.6 * k, 1.6 * k, mix(m.core, '#ffffff', 0.5), 0.95); } }
