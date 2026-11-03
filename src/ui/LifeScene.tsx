@@ -1,10 +1,10 @@
 // The scene area of the watch screen (20-god-ui.md §2 "ฉากชีวิต"): the newest entry of the log that has a scene script is played once;
 // between scenes the card of a recent world event stays up, and when there is none a calm picture (never a black box). The scene mapping is
 // src/app/views/scene.ts, the player src/scene.
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../app/store';
 import { mainLookOf } from '../app/views/looks';
-import { figuresOf, idleView, labelsOf, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
+import { figuresOf, heldScene, idleView, labelsOf, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
 import type { PersonLook } from '../art/look';
 import { allSilhouettes, EventCard, Stage, ScenePlayer, type Frame, type FigureOf } from '../scene';
 import { sceneryFor, specKey } from '../scene/scenery';
@@ -109,7 +109,9 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
   const data = props.data ?? store.gameData;
   const [played, setPlayed] = useState(-1);
   const found = useMemo(() => (st && data ? newestScene(st.log, data, st.clock.worldYear, st) : {}), [st?.logN]);
-  const play = found.play && found.play.entry.n > played ? found.play : undefined;
+  const held = useRef<SceneView | undefined>(undefined);
+  const play = heldScene(held.current, found.play, played, st?.logN ?? 0);
+  held.current = play;
   // who is on the stage and where it is: resolved once per scene (src/app/views/scene.ts)
   const staged = useMemo(() => (play && data ? { figureOf: figuresOf(data, st, play), scenery: sceneryOf(data, st, play), labelOf: labelsOf(data, st, play) } : undefined), [play?.entry.n, data]);
   // The stage is a 16:9 box that fits what is left of the scene area: the controls under it, the layer bar above, the name and the map at the sides.

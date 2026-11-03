@@ -206,6 +206,17 @@ const IDLE_SKY = [
 const IDLE_AGES = { young: 15, adult: 30, elder: 55 } as const;
 const LATEST_MAX = 70;
 
+/**
+ * The scene on the stage. The choice is made again at every new line of the log and each time gives a new script object, so the scene that is playing is held here: it stays the
+ * same object until it has been played (`played`), a newer scene takes its place, or the log it came from is gone (another save). It also stays when the log has moved past the
+ * lines that are looked at: a scene of 40 seconds outlives many lines.
+ */
+export function heldScene(held: SceneView | undefined, newest: SceneView | undefined, played: number, logN: number): SceneView | undefined {
+  const cur = held && held.entry.n > played && held.entry.n < logN ? held : undefined;
+  if (newest && newest.kind === 'script' && newest.entry.n > played && (!cur || newest.entry.n > cur.entry.n)) return newest;
+  return cur;
+}
+
 export function idleView(data: GameData, state: GameState): IdleView {
   const life = state.life;
   const quarter = ((state.clock.quarter % 4) + 4) % 4;

@@ -1,7 +1,7 @@
 // The choice of a scene for a log entry: a script when there is one, else the event card.
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadAll } from '../../scripts/tools/node-data';
-import { cardOfEntry, sceneFor, sceneKeys, STANDARD_CLOSING } from '../../src/app/views/scene';
+import { cardOfEntry, heldScene, sceneFor, sceneKeys, STANDARD_CLOSING } from '../../src/app/views/scene';
 import type { ScenesData } from '../../src/core/data/types-scenes';
 import type { GameData } from '../../src/core/game';
 import type { LogEntry } from '../../src/core/types';
@@ -148,5 +148,32 @@ describe('the event card reads as words', () => {
       expect(leaks(text.replace(c.name, '').replace(/\s+/g, ' ').trim()).filter((x) => x !== 'latin word' && x !== 'double space'), c.id).toEqual([]);
       expect(text, c.id).not.toMatch(/\b[A-Z]{2,4}\b(?:-\d+)?/);
     }
+  });
+});
+
+describe('the scene on the stage is held while the log moves on', () => {
+  const at = (n: number) => sceneFor(data, { ...e('world', 'event', 'DR-04'), n });
+
+  it('a new line of the log gives a new script object for the same entry, and the scene playing stays the first one (it would start again)', () => {
+    const first = at(5), again = at(5);
+    expect(first.kind).toBe('script');
+    expect(again).not.toBe(first);
+    expect(heldScene(first, again, -1, 6)).toBe(first);
+  });
+  it('stays when the look-back no longer finds it, until it has been played', () => {
+    const first = at(5);
+    expect(heldScene(first, undefined, -1, 90)).toBe(first);
+    expect(heldScene(first, undefined, 5, 90)).toBeUndefined();
+  });
+  it('a newer scene takes the stage; a played one does not come back; another save drops it', () => {
+    const first = at(5), newer = at(9);
+    expect(heldScene(first, newer, -1, 10)).toBe(newer);
+    expect(heldScene(undefined, first, 5, 6)).toBeUndefined();
+    expect(heldScene(at(50), undefined, -1, 10)).toBeUndefined();
+  });
+  it('an entry that has only a card never holds the stage', () => {
+    const card = sceneFor(data, { ...e('world', 'era', 'era.2'), n: 7 });
+    expect(card.kind).toBe('card');
+    expect(heldScene(undefined, card, -1, 8)).toBeUndefined();
   });
 });
