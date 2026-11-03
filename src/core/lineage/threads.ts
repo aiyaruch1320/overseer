@@ -8,6 +8,7 @@ import { extOf as bondsExt, isLive, tiesOf } from '../bonds';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { LifeState } from '../types';
+import { pickHeir } from './heir';
 import { lx, type Thread } from './state';
 
 /** Weights of the kinds when the threads are cut to three (03 §2 second table). */
@@ -114,7 +115,9 @@ export function keepThreads(ctx: Ctx): Thread[] {
   for (const t of p.closed) set(t, 'closed');
   for (const t of p.legend) set(t, 'legend');
   for (const t of p.faded) set(t, 'faded');
-  for (const t of p.kept) set(t, 'open');
+  // a family with no one to take over leaves the threads to fade at once (heirs/03 §3): the summary of the world does not count them open (R4)
+  const heir = pickHeir(ctx);
+  for (const t of p.kept) set(t, heir ? 'open' : 'faded');
   return p.kept;
 }
 

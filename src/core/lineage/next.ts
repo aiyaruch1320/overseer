@@ -75,7 +75,7 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
   // the heir is a person of the bond book: its race, gender, country and name stay; its age is the age the book gives it
   st.life = null;
   const life = spec ? bearHeir(ctx, spec) : characterBirth(ctx, { race: opts.race, country: opts.country });
-  presetStory(ctx, life);
+  presetStory(ctx, life, !spec);
   game.born();
 
   let carried: Carried | undefined;

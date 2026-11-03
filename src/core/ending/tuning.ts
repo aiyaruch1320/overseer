@@ -182,6 +182,13 @@ export const MARK = { eraConverge: 2, eraEvents: 1, localConverge: 1, localFame:
 export const NOT_MOMENT = ['เกิด', 'ความตาย', 'ทายาท', 'เรื่องค้าง', 'ฉายาชีวิต'];
 
 /**
+ * Facts whose short line is only a count or a stretch of time ("1 ประเทศ 1 ทวีป", "รบ 9 ครั้ง", "อยู่ที่…นาน 68 ปีชีวิต", the question that "reached an answer" with no question and no
+ * answer beside it): the summary tells them, but they are not turning points, so the card does not fill an empty place with them (M4 review R3; assumption: 07 §5.4 lists their lines
+ * for the chronicle of the family, which is not the card).
+ */
+export const FILLER_MOMENT = ['การเดินทาง', 'ศึก', 'อาชีพ', 'ถิ่นที่อยู่นานที่สุด', 'คำตอบของคำถามชีวิต'];
+
+/**
  * The connectors of time that say how long it was (07 §4.1 lists them by the age group of the next fact; the doc does not say they tell a gap). "ไม่กี่ปีให้หลัง" says a few
  * years and is kept for a gap of five or less; "หลายปีผ่านไป" says many and needs eight or more (assumption: the words are only true then).
  */

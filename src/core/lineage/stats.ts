@@ -7,8 +7,8 @@ let done = false;
 export function registerStat(): void {
   if (done) return;
   done = true;
-  // the threads the life carries (the heir's open threads), so the nodes hr.a1 to hr.a3 find them
-  onStat('lineage.open', { read: (ctx) => (hasX(ctx.state) ? lx(ctx.state).threads.filter((t) => t.state === 'open' && t.holder === ctx.state.life?.id).length : 0) });
+  // the threads the life carries (the heir's open threads: one this life has closed is not open any more, so "closed all the threads" can hold at the death, R5), so the nodes hr.a1 to hr.a3 find them
+  onStat('lineage.open', { read: (ctx) => (hasX(ctx.state) ? lx(ctx.state).threads.filter((t) => t.state === 'open' && t.tried !== 'closed' && t.holder === ctx.state.life?.id).length : 0) });
   // the people who could take over after the death (the bond book of the dead life): the successors of the doc
   onStat('lineage.successors', { read: (ctx) => (hasX(ctx.state) && ctx.state.lineage.lives.length > 0 ? 1 : 0) });
   onStat('lineage.lives', { read: (ctx) => ctx.state.lineage.lives.length });

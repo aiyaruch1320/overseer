@@ -244,8 +244,8 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   const heir = pickHeir(ctx);
   if (kids.length) add('ลูกเกิด', { child: kids[0].name, child_count: kids.length, age: kids[0].born ?? kids[0].opened }, { age: kids[0].born ?? kids[0].opened, tags: [`npc:${kids[0].id}`], moment: true });
   if (kids.length || !heir) {
-    // {age} of the sentence "the first child was born when he was {age}" is the age of the parent at the birth, not the age at death (E1)
-    add('ทายาท', { child_count: kids.length, child: kids[0]?.name ?? '', heir: heir?.name ?? '', heir_age: heir?.age ?? '', age: kids[0] ? kids[0].born ?? kids[0].opened : deadAge }, { age: deadAge, flags: [...(heir ? [] : ['noHeir'])], tags: [] });
+    // this fact is told after the death: the sentence "the first child was born when he was {age}" would put a birth after the death, so it has no {age} and falls away; the birth of the first child is a moment of the card (R3)
+    add('ทายาท', { child_count: kids.length, child: kids[0]?.name ?? '', heir: heir?.name ?? '', heir_age: heir?.age ?? '' }, { age: deadAge, flags: [...(heir ? [] : ['noHeir'])], tags: [] });
   }
   const threads = currentThreads(ctx);
   if (threads.length) {
