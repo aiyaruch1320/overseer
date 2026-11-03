@@ -8,7 +8,8 @@ import { color, font } from '../ui/tokens';
 import { allSilhouettes, type FigureOf } from './figures';
 export { Silhouette } from './Silhouette';
 import { cameraOf, fitScale, project } from './layout';
-import { seedOf } from './particles';
+import { seedOf } from './seed';
+import { specKey } from './scenery';
 import type { SceneStage } from './stage/controller';
 import type { Frame } from './timeline';
 import { ART, CAMERA, STAGE, TEXT } from './tuning';
@@ -29,9 +30,11 @@ export interface StageProps {
   scenery?: SceneryOf;
   /** Who each actor is; omit and everyone is the dark silhouette. */
   figureOf?: FigureOf;
+  /** Whether the beats' mood colours tint the painted place (default yes). */
+  mood?: boolean;
 }
 
-export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes }: StageProps) {
+export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes, mood = true }: StageProps) {
   const box = useRef<HTMLDivElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const ctl = useRef<SceneStage | null>(null);
@@ -73,10 +76,12 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
   }, []);
 
   const input = useRef<Parameters<SceneStage['set']>[0]>(null as never);
-  input.current = { frame, frameColor, scenery: (scenery ?? (() => PLAIN_SCENERY))(frame.place), figureOf, seed: sd };
+  const spec = (scenery ?? (() => PLAIN_SCENERY))(frame.place);
+  input.current = { frame, frameColor, scenery: spec, figureOf, seed: sd, mood };
+  // handed over when something that shows changed (a calm picture whose parent re-renders often does not wake the stage)
   useEffect(() => {
     ctl.current?.set(input.current);
-  });
+  }, [frame, frameColor, figureOf, sd, mood, specKey(spec)]);
   useEffect(() => {
     ctl.current?.setZoom(k);
   }, [k]);

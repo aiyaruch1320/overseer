@@ -10,13 +10,14 @@ import { addBeast, playBeast } from '../../art/beast/phaser';
 import { BEAST_POSES } from '../../art/beast/kit';
 import type { Pose } from '../../art/anim';
 import { addLook, playPose } from '../../art/phaser';
-import { paintScenery, type Scenery, type ScenerySpec } from '../../art/scenery';
+import type { Scenery, ScenerySpec } from '../../art/scenery';
 import { BEAST_POSE, PERSON_POSE } from '../../ui/figure';
 import { figureKey, type Figure, type FigureOf } from '../figures';
 import { fxPixels, godOf, godPixels, lightPixels, type Px } from '../fx';
 import { cameraOf, clampPan, layerX, slotsOf, type Cam } from '../layout';
+import { sceneryFor, specKey } from '../scenery';
 import { mixColor, type ActorView, type Frame } from '../timeline';
-import { ART, CAST, DEPTH, MOOD, POSE, SCENERY_KEEP, SHADOW, SIL } from '../tuning';
+import { ART, CAST, DEPTH, MOOD, POSE, SHADOW, SIL } from '../tuning';
 
 const hex = (s: string): number => parseInt(s.replace('#', '').slice(0, 6), 16) || 0;
 
@@ -29,26 +30,8 @@ export interface StageInput {
   figureOf: FigureOf;
   /** Makes the particles of this scene differ from another's (a number from its id). */
   seed: number;
-}
-
-// ---------- the painted backgrounds: painted once per place and kept, whatever number of stages ask ----------
-
-const painted = new Map<string, Scenery>();
-const specKey = (s: ScenerySpec): string => `${s.continent}|${s.country ?? ''}|${s.setting}|${s.season ?? ''}|${s.seed ?? ''}`;
-
-/** The layers of a place, from the cache (the oldest unused place is let go past `SCENERY_KEEP`). */
-function sceneryFor(spec: ScenerySpec): Scenery {
-  const key = specKey(spec);
-  const have = painted.get(key);
-  if (have) {
-    painted.delete(key);
-    painted.set(key, have);
-    return have;
-  }
-  const made = paintScenery(spec);
-  painted.set(key, made);
-  if (painted.size > SCENERY_KEEP) painted.delete(painted.keys().next().value!);
-  return made;
+  /** Whether the beats' mood colours tint the painted place (default yes; the calm picture of the watch screen has none: its place is the season's). */
+  mood?: boolean;
 }
 
 interface Shown {
@@ -129,7 +112,7 @@ class StageScene extends Phaser.Scene {
     const view: Cam = { ...cam, pan };
     this.cameras.main.setZoom(view.zoom).centerOn(view.cx, view.cy);
     for (const l of sc.images) l.image.setX(layerX(l.w, l.speed, pan));
-    this.paintMood(f);
+    this.paintMood(f, w.mood !== false);
     this.figures(w, view);
     this.paintLight(f, sc.scenery.light, view);
     this.paintFx(f, sc.scenery.ambient, w.seed, view);
@@ -159,13 +142,14 @@ class StageScene extends Phaser.Scene {
     return this.shown;
   }
 
-  /** The colours of the sky and the ground that the beats set (`bg`, `tone`) laid thinly over the painted place: the mood of the story over the look of the land. */
-  private paintMood(f: Frame): void {
-    const k = `${f.sky}|${f.ground}`;
+  /** The colours of the sky and the ground that the beats set (`bg`, `tone`) laid lightly over the painted place: the mood of the story over the look of the land (the continent stays recognisable, see `MOOD`). */
+  private paintMood(f: Frame, on: boolean): void {
+    const k = on ? `${f.sky}|${f.ground}` : '';
     if (this.drawn.mood === k) return;
     this.drawn.mood = k;
     const horizon = ART.groundY - 6;
     this.mood.clear();
+    if (!on) return;
     this.mood.fillStyle(hex(f.sky), MOOD.sky).fillRect(0, 0, ART.w, horizon);
     this.mood.fillStyle(hex(f.ground), MOOD.ground).fillRect(0, horizon, ART.w, ART.h - horizon);
   }
@@ -227,7 +211,7 @@ class StageScene extends Phaser.Scene {
         have = { sprite: this.build(fig, s.i, x, s.y, a, w), key, pose: '' };
         this.figured.set(s.key, have);
         // a group does not step in time
-        if (a.count > 1) have.sprite.anims?.setProgress((s.i * 0.37) % 1);
+        if (a.count > 1 && have.sprite.anims?.currentAnim) have.sprite.anims.setProgress((s.i * 0.37) % 1);
       }
       this.setPose(have, fig, a, w);
       const sprite = have.sprite;
