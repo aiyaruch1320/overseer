@@ -646,7 +646,7 @@ describe('god G1: the chest (02-bestow.md)', () => {
   });
 
   it('the commands: check and preview roll nothing and change nothing; open, pick and skip run', () => {
-    const w = world(47, { years: 30 });
+    const w = world(48, { years: 30 });
     const { ctx } = w;
     earn(ctx, { faith: 200, dread: 200 }, 'test');
     delete ctx.state.god.counters['y.chest'];

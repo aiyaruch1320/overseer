@@ -378,7 +378,7 @@ export function callReason(data: GameData, e: LogEntry, crisisOf?: (n: number) =
     .filter(Boolean);
   const uniq = [...new Set(folded)];
   // an age stop folded into another call is still named, so the player sees every stop of 07-attention (review M2 รอบสอง ข้อ 3)
-  const age = d.call === 'stop' && s(d.why) !== 'age' && d.age !== undefined && d.age !== null && s(d.age) ? ` · ถึงจุดหยุดตามอายุ ${s(d.age)} ด้วย` : '';
+  const age = d.call === 'stop' && s(d.why) !== 'age' && d.age !== undefined && d.age !== null && s(d.age) ? ` · รวมจุดหยุดตามอายุ ${s(d.age)} มาไว้ที่นี่ (ยังไม่ถึงอายุนั้น)` : '';
   return `${why}${age}${d.call === 'stop' && uniq.length ? ` · มีเรื่องรออยู่ด้วย: ${uniq.join(' · ')}` : ''}`;
 }
 

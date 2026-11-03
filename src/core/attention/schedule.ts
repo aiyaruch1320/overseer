@@ -89,6 +89,8 @@ export function agesOf(stops: readonly number[], from: number): number[] {
 export interface TickOpts {
   /** the character dies now: windows only glow, nothing is held */
   dying?: boolean;
+  /** Places free on the screen for cards (07-attention.md §2: two at most); the cards past that wait in the queue. Default: no limit. */
+  slots?: number;
 }
 
 /** One step of the rules at time `now`. Order: new triggers, the fixed stops that are due, the held window, the waiting cards. */
@@ -191,8 +193,18 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
   // ---- 4. waiting cards ----
   m.queue.sort((a, b) => a.s + a.wait - (b.s + b.wait));
   if (!m.hold && !stopComing() && !deathSoon()) {
+    let slots = opts.slots ?? Infinity;
     while (m.queue.length) {
       const c = m.queue[0];
+      // two cards are on the screen: this one waits for a place, and when its time runs out in the queue the log tells it
+      if (slots <= 0) {
+        if (now - c.s > c.wait) {
+          m.queue.shift();
+          missed(c, now);
+          continue;
+        }
+        break;
+      }
       const when = legal(c.s);
       if (lastCall(m) + rule.cardGap > now) break;
       m.queue.shift();
@@ -202,6 +214,7 @@ export function tick(m: Mem, rule: AttentionRule, plan: Plan, now: number, trigs
       }
       out.push({ t: 'call', call: 'card', why: c.kind, age: null, src: [{ n: c.n, id: c.id }], cards: [c.kind], until: (c.s + c.wait) / SEC_PER_YEAR, sec: Math.round(when) });
       m.lastCard = when;
+      slots--;
     }
   }
   m.last = now;

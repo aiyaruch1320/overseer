@@ -210,6 +210,10 @@ for (const [g, ev] of Object.entries(BRANCH_OF)) {
 const cards: CardDef[] = [];
 const cardIds = new Set<string>();
 const SECTION_REF = /ดู\s*11-world-changes\s*(?:หัวข้อ\s*)?(\d+(?:\.\d+)?)/;
+/** A pointer to another document ("ดูฉากเต็มใน 11-world-changes.md 2.1", "ดูหลักการเดียวกับ 11-world-changes 2.3", "ดู 11-world-changes หัวข้อ 3") is for the writer of the doc, not the player. */
+const DOC_REF = /ดู(?:ฉากเต็ม)?(?:ใน|หลักการเดียวกับ)?\s*\d\d-[a-z0-9-]+(?:\.md)?(?:\s*หัวข้อ)?(?:\s*\d+(?:\.\d+)?)?/g;
+const CODE_REF = /ตามรหัส\s+[a-z][a-z0-9_]*\s+ใน\s*\d\d-[a-z0-9-]+(?:\.md)?/g;
+const stripDocRefs = (t: string): string => t.replace(CODE_REF, ' ').replace(DOC_REF, ' ').replace(/\s{2,}/g, ' ').trim();
 
 function addCard(c: CardDef) {
   if (cardIds.has(c.id)) {
@@ -280,7 +284,7 @@ for (const t of T12) {
       );
       hasScript = true;
     }
-    addCard({ id, name: plain(name), mark: mark as CardDef['mark'], group: g, form, frame: fr.color, icon: fr.icon, sound: fr.sound, picture, fx: fxOf(picture), sky: skyOf(fr.color).sky, script: hasScript, src: at(t, r.line) });
+    addCard({ id, name: plain(name), mark: mark as CardDef['mark'], group: g, form, frame: fr.color, icon: fr.icon, sound: fr.sound, picture: stripDocRefs(picture), fx: fxOf(picture), sky: skyOf(fr.color).sky, script: hasScript, src: at(t, r.line) });
   }
 }
 // events that 11 makes into change scripts but whose rows are cards (DR-15 points to 11 §3 but is a card)
@@ -336,7 +340,7 @@ for (const r of localT?.rows ?? []) {
     );
     hasScript = true;
   }
-  addCard({ id, name: plain(m[2]), mark: '', group: r.cells[2], form, frame: fr.color, icon: fr.icon, sound: snd || fr.sound, picture: [pic, odd].filter(Boolean).join(' '), fx: fxOf(pic), sky: skyOf(fr.color).sky, script: hasScript, src: at(localT!, r.line) });
+  addCard({ id, name: plain(m[2]), mark: '', group: r.cells[2], form, frame: fr.color, icon: fr.icon, sound: snd || fr.sound, picture: stripDocRefs([pic, odd].filter(Boolean).join(' ')), fx: fxOf(pic), sky: skyOf(fr.color).sky, script: hasScript, src: at(localT!, r.line) });
 }
 const tmplT = T17.find((t) => t.header[0] === 'แม่แบบ' && t.header[4] === 'รูปแบบ');
 for (const r of tmplT?.rows ?? []) {
@@ -385,7 +389,7 @@ for (const t of T18) {
       const title = plain(r.cells[0]).replace(/^\S+\s*/, '');
       const still = /^การ์ดนิ่ง/.test(r.cells[1]);
       const pic = lastScene(t, r, id, title, 'lastEra', still ? 6 : 10, still);
-      addCard({ id, name: title, mark: '', group: 'LE', form: still ? 'C' : 'L', frame: LAST, icon: '', sound: plain(r.cells[2]), picture: pic, fx: fxOf(pic, 1), sky: LAST, script: true, src: at(t, r.line) });
+      addCard({ id, name: title, mark: '', group: 'LE', form: still ? 'C' : 'L', frame: LAST, icon: '', sound: plain(r.cells[2]), picture: stripDocRefs(pic), fx: fxOf(pic, 1), sky: LAST, script: true, src: at(t, r.line) });
     }
   } else if (h === 'โหนด') {
     for (const r of t.rows) lastScene(t, r, plain(r.cells[0]), plain(r.cells[0]), 'node', 7, false);

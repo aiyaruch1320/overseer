@@ -28,10 +28,16 @@ function variantOf(e: LogEntry): string {
   return `${e.sys}|${e.kind}|${e.id ?? ''}|${e.worldYear}|${JSON.stringify(e.data)}`;
 }
 
-function templateOf(data: GameData, file: string, family: string, keys: Record<string, string>, variant: string): string | undefined {
+function templateOf(data: GameData, file: string, family: string, keys: Record<string, string>, variant: string, race?: string): string | undefined {
   const t = items<TemplatesData>(data, file);
   if (!t) return undefined;
-  const list = t.templates.filter((x) => x.family === family && Object.entries(keys).every(([k, v]) => x.keys[k] === v));
+  let list = t.templates.filter((x) => x.family === family && Object.entries(keys).every(([k, v]) => x.keys[k] === v));
+  // a row with a race in its "ใช้เมื่อ" column (07-ending-templates.md 3.2 "เกิด" 5 · 6) is for those races only, and is the one they get; the others are for the rest
+  if (race !== undefined) {
+    const forRace = (x: { when?: string }) => (x.when ? x.when.split(/\s+/).filter(Boolean) : []);
+    const own = list.filter((x) => forRace(x).includes(race));
+    list = own.length ? own : list.filter((x) => !x.when);
+  }
   return list.length ? list[hash(variant) % list.length].text : undefined;
 }
 
@@ -199,6 +205,11 @@ export class Reader {
     }
     if (e.sys === 'story' && e.kind === 'node') this.node = { id: s(e.id), title: s(d.title) || this.nm(e.id), year: e.worldYear };
     if (e.sys === 'bonds') {
+      // a person of the book of ties is known, whether or not a meeting was told (M5 review: the lines of an NPC are for the people the character knows)
+      if (s(d.npc)) {
+        this.met.add(s(d.npc));
+        if (s(d.name)) this.metHolders.add(s(d.name));
+      }
       if (e.kind === 'tie' || e.kind === 'mood' || e.kind === 'level') {
         if (s(d.line)) this.bondLines.add(s(d.line));
       } else if (e.kind === 'line' && s(d.to)) this.bondLines.add(s(d.to));
@@ -208,8 +219,8 @@ export class Reader {
   }
 
   /**
-   * NPC lines are for people the character knows (T5): a meeting in the character's country, and the death, heir or end of
-   * the story of a holder the character met in person. Successions of a slot whose holders were never met stay out.
+   * NPC lines are for people the character knows (T5, M5 review): a meeting in the character's country, and the news, death, heir or end of the
+   * story of a holder the character met in person or has in his book of ties. What happens to a stranger of his country stays in the raw log.
    */
   private knows(e: LogEntry): boolean {
     if (this.opts.raw || !this.country) return true;
@@ -217,7 +228,7 @@ export class Reader {
     // a fight the character is in, and a healing he brought about, are always news
     if (what === 'clash' || what === 'clash-open' || what === 'heal') return true;
     if (what === 'die' || what === 'succeed' || what === 'end') return this.metHolders.has(s(e.data.holder)) || this.metHolders.has(s(e.data.from));
-    if (what !== 'meet') return (e.id !== undefined && this.met.has(e.id)) || s(e.data.place) === this.country;
+    if (what !== 'meet') return e.id !== undefined && this.met.has(e.id);
     // a meeting is always news (the character was there), one a life year
     if (e.age === undefined) return true;
     if (this.meetYears.has(e.age)) return false;
@@ -475,7 +486,7 @@ export class Reader {
         // a life that wakes grown or is called from another world is not an heir: it begins, it does not take over
         const wake = WAKE_OPENING[s(d.special)];
         if (wake && d.age) return wake.replace('{name}', s(d.name)).replace('{age}', s(d.age)).replace('{home}', s(d.home)).replace('{race}', s(d.race)).replace('{class_birth}', s(d.cls)).replace(/ครอบครัว\s*ชนชั้น\s*(?=ชนชั้น)/g, 'ครอบครัว');
-        const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e));
+        const t = templateOf(data, 'templates-ending', 'life_fact', { ชนิด: 'เกิด' }, variantOf(e), s(d.race));
         const line = t && sub(t, { name: s(d.name), race: s(d.race), home: s(d.home), class_birth: s(d.cls), year: s(d.year) });
         // the templates say `ชนชั้น{class_birth}` and the class names of the economy file begin with ชนชั้น themselves
         return (line || `${s(d.name)} เกิดเป็น${s(d.race)}ที่${s(d.home)}`).replace(/ชนชั้น\s*(?=ชนชั้น)/g, '');

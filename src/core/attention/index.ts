@@ -13,7 +13,7 @@ import type { GameState, LifeState, LogEntry } from '../types';
 import type { AttentionData, AttentionRule } from '../data/types-attention';
 import { agesOf, dying, newMem, tick, type Mem, type Out, type Plan, type Trig } from './schedule';
 import { classify } from './triggers';
-import { NEAR_DEATH_YEARS, SEC_PER_YEAR, rulesOf, type CardKind } from './tuning';
+import { MAX_CARDS, NEAR_DEATH_YEARS, SEC_PER_YEAR, rulesOf, type CardKind } from './tuning';
 
 export { SEC_PER_YEAR, LIFE_MINUTES, LIFE_YEARS, DEFAULT_RULES, DEFAULT_DEADLINES, DEFAULT_AGE_STOPS } from './tuning';
 export type { CardKind, TriggerKind } from './tuning';
@@ -107,8 +107,10 @@ function step(ctx: Ctx, mode: 'tick' | 'dying'): void {
   const plan = planOf(ctx, life, m);
   const rule = ruleOf(ctx);
   const now = nowOf(st, life);
+  // a card whose matter is closed while it waits (the prayer answered, the fight fought) is not shown and not folded into a stop (07-attention.md §2)
+  m.queue = m.queue.filter((c) => !closed(st, c.kind, c.n));
   if (mode === 'dying') dying(m, rule, plan, now, trigs, out);
-  else if (!life.dead) tick(m, rule, plan, now, trigs, out);
+  else if (!life.dead) tick(m, rule, plan, now, trigs, out, { slots: MAX_CARDS - liveCards(st, 99).length });
   else return; // the character died during this beat: the death hook makes the call
   emit(ctx, out);
   m.mark = st.logN;
@@ -172,16 +174,98 @@ export function answered(state: GameState, n: number): boolean {
   return false;
 }
 
-/** The cards the screen may still show: calls of kind card whose time has not run out, the most urgent first, at most `max` (07-attention.md §2: two). */
-export function liveCards(state: GameState, max = 2): LogEntry[] {
+const PRAYER_ENDS = new Set(['prayer.give', 'prayer.deny', 'prayer.punish', 'prayer.moot', 'prayer.lapse']);
+
+/** The log entry with the number `n` (the log is in the order of the numbers). */
+function entryAt(log: readonly LogEntry[], n: number): LogEntry | undefined {
+  let lo = 0;
+  let hi = log.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (log[mid].n === n) return log[mid];
+    if (log[mid].n < n) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return undefined;
+}
+
+/**
+ * Is the matter a card stands for over (the entry `n` the card was raised for)? A prayer that was answered, taken back as moot or lapsed; a
+ * crisis the character has decided; a named fight that was fought. Such a card leaves the screen and the stop (07-attention.md §2: a card is
+ * about something the player can still do). A card of a kind with no answer to wait for (an omen) is closed only by its time.
+ */
+export function closed(state: GameState, kind: CardKind, n: number): boolean {
+  const life = state.life;
+  const src = entryAt(state.log, n);
+  if (!life || !src) return false;
+  if (kind === 'prayer' && src.sys === 'god' && src.kind === 'prayer') {
+    const pn = src.data.n;
+    for (let i = state.log.length - 1; i >= 0 && state.log[i].n > n; i--) {
+      const e = state.log[i];
+      if (e.sys === 'god' && PRAYER_ENDS.has(e.kind) && e.data.n === pn) return true;
+    }
+    return false;
+  }
+  if (kind === 'crisis' && src.sys === 'bonds') {
+    const crises = (life.ext.bonds as { crises?: { n: number }[] } | undefined)?.crises;
+    return !!crises && !crises.some((c) => c.n === n);
+  }
+  if (kind === 'battle' && src.sys === 'combat') {
+    const pending = (life.ext.combat as { pending?: { prelude?: number }[] } | undefined)?.pending;
+    return !!pending && !pending.some((p) => p.prelude === n);
+  }
+  return false;
+}
+
+/** Cards on the screen at most (07-attention.md §2). */
+export { MAX_CARDS } from './tuning';
+
+/**
+ * The cards the screen may still show: calls of kind card whose time has not run out and whose matter is not closed, the most urgent first, at most
+ * `max` (07-attention.md §2: two). A third card is not lost: it shows when a place frees, and the rules make no new call while two are up.
+ */
+export function liveCards(state: GameState, max = MAX_CARDS): LogEntry[] {
   const life = state.life;
   if (!life || life.dead) return [];
   const age = life.hAge + state.clock.quarter / 4;
   const stopN = Math.max(-1, ...state.log.filter(isStop).map((e) => e.n));
   return state.log
-    .filter((e) => e.sys === 'attention' && e.kind === 'call' && e.data.call === 'card' && e.n > stopN && typeof e.data.until === 'number' && e.data.until > age)
+    .filter(
+      (e) =>
+        e.sys === 'attention' &&
+        e.kind === 'call' &&
+        e.data.call === 'card' &&
+        e.n > stopN &&
+        typeof e.data.until === 'number' &&
+        e.data.until > age &&
+        !closed(state, e.data.why as CardKind, sourcesOf(e)[0] ?? -1),
+    )
     .sort((a, b) => (a.data.until as number) - (b.data.until as number))
     .slice(0, max);
+}
+
+/** Acts of the god that answer a card of fight or crisis: a whisper, a dream sent (not the telling of how one ended), the omen of a miracle. */
+const ACTS = (e: LogEntry): boolean => e.sys === 'god' && (e.kind === 'whisper' || e.kind === 'miracle.omen' || (e.kind === 'dream' && e.data.paid !== undefined));
+
+/**
+ * Has the player had the call for the entry `n`? Like `answered`, but a card on the screen counts only when its time ran out or the player acted on
+ * it (a whisper, a dream, an omen of a miracle after the card): the fight and the crisis the card announces wait for that, so a card of "1.8 years"
+ * gives the player those years (M5 review S6). A stop, a glow and a missed card count at once (the stop holds the clock until the player goes on).
+ */
+export function settled(state: GameState, n: number): boolean {
+  if (!state.life?.ext.attention) return true;
+  const log = state.log;
+  for (let i = log.length - 1; i >= 0 && log[i].n > n; i--) {
+    const e = log[i];
+    if (e.sys === 'attention' && (e.kind === 'glow' || e.kind === 'missed') && e.data.n === n) return true;
+    if (e.sys !== 'attention' || e.kind !== 'call' || !sourcesOf(e).includes(n)) continue;
+    if (e.data.call === 'stop') return true;
+    const life = state.life;
+    if (typeof e.data.until !== 'number' || e.data.until <= life.hAge + state.clock.quarter / 4) return true;
+    for (let j = log.length - 1; j >= 0 && log[j].n > e.n; j--) if (ACTS(log[j])) return true;
+    return false;
+  }
+  return false;
 }
 
 /** Prayers that wait for a card now. The rules allow two (07-attention.md §3): the god system should not make a third, attention drops it. */

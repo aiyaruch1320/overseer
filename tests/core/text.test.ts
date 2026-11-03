@@ -279,6 +279,16 @@ describe('text: words only (review M1 T1 T3)', () => {
     }
   });
 
+  it('honours the race column of the birth templates (M5 review M4): "ตื่นขึ้นเป็น" is for the soul machine and the mummy, "ลุกขึ้นเป็น" for the ghoul, nobody else', () => {
+    const birth = (n: number, race: string) => say(data, e({ n, worldYear: 400 + n, sys: 'text', kind: 'named', id: `L${n}`, data: { name: 'มิรา', race, home: 'ซิลวาเนล', cls: 'สามัญชน', year: '10,450' } }))!;
+    for (let n = 0; n < 40; n++) {
+      for (const race of ['เอลฟ์', 'มนุษย์', 'คนแคระ']) expect(birth(n, race), race).not.toMatch(/ตื่นขึ้นเป็น|ลุกขึ้นเป็น/);
+      expect(birth(n, 'กูล')).toContain('ลุกขึ้นเป็น');
+      expect(birth(n, 'มัมมี่')).toContain('ตื่นขึ้นเป็น');
+      expect(birth(n, 'หุ่นวิญญาณ')).toContain('ตื่นขึ้นเป็น');
+    }
+  });
+
   it('has a detector that finds codes and badly cut sentences', () => {
     expect(leaks('ถูกจ้างโดย MK-16')).toContain('country');
     expect(leaks('งาน WR-21 เกิด')).toContain('event or template');
@@ -370,6 +380,16 @@ describe('text: what the player is told and not told', () => {
     expect(npcLines([birth, named, met, npc(5, 'MH04-1', 'MH-04', 'die')])).toHaveLength(2);
     // before the life there is no country to compare with: nothing is hidden
     expect(npcLines([npc(3, 'MH04-1', 'MH-04', 'die')])).toHaveLength(1);
+  });
+
+  it('does not tell what happens to a stranger of the character’s own country; a person met, or in the book of ties, is told (M5 review, T5)', () => {
+    const sick = (n: number, id: string) => at(n, { id, data: { what: 'event', holder: 'ช่างทำของ', role: 'ช่าง', place: 'AL-01', id: 'x' } });
+    const npcLines = (log: LogEntry[]) => lines(data, log).filter((l) => l.sys === 'npc');
+    expect(npcLines([birth, named, sick(3, 'AL01-3')])).toHaveLength(0);
+    const met = at(4, { id: 'AL01-3', level: 2, data: { what: 'meet', holder: 'ช่างทำของ', role: 'ช่าง', place: 'AL-01' } });
+    expect(npcLines([birth, named, met, sick(5, 'AL01-3')]).length).toBeGreaterThan(1);
+    const tie = at(4, { sys: 'bonds', kind: 'tie', id: 'T1', level: 1, data: { name: 'ช่างทำของ', line: 'สหาย', from: 'x', level: 2, b: 20, race: 'human', npc: 'AL01-3' } });
+    expect(npcLines([birth, named, tie, sick(5, 'AL01-3')])).toHaveLength(1);
   });
 
   it('joins a holder’s death and the succession of the same year in one line', () => {
@@ -465,6 +485,10 @@ describe('text: the hand of the god and the calls of the game', () => {
     expect(say(data, att({ why: 'age', age: 15 }))).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 15');
     expect(say(data, att({ why: 'prayer', call: 'card', until: 19.4 }, 'heal'))).toBe('มีคำอธิษฐานใหม่: ขอหายเจ็บ · ตอบได้จนอายุ 19');
     expect(say(data, att({ why: 'age', age: 30, cards: 'prayer,omen' }))).toBe('เกมหยุดรอท่าน: ถึงจุดหยุดตามอายุ 30 · มีเรื่องรออยู่ด้วย: คำอธิษฐาน · ลาง');
+    // a window at 28 that pulled the stop of 30 to itself says what happened, not that the age is 30 (M5 review S6)
+    const pulled = say(data, att({ why: 'window', age: 30 }, 'hu.b1'));
+    expect(pulled).toContain('รวมจุดหยุดตามอายุ 30 มาไว้ที่นี่');
+    expect(pulled).not.toContain('ถึงจุดหยุดตามอายุ 30');
     expect(say(data, att({ why: 'window', age: null }, 'hu.b1'))).toMatch(/^เกมหยุดรอท่าน: ถึงทางแยกที่พระเจ้าแทรกได้: \S+/);
     expect(say(data, att({ why: 'nearDeath' }))).toContain('ฉากสุดท้าย');
     expect(say(data, att({ why: 'battle', call: 'card', until: 26 }))).toBe('ศึกกำลังจะมาถึง · รอท่านอยู่จนอายุ 26');
