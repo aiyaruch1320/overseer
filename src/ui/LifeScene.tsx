@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { store } from '../app/store';
 import { mainLookOf } from '../app/views/looks';
-import { figuresOf, idleView, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
+import { figuresOf, idleView, labelsOf, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
 import type { PersonLook } from '../art/look';
 import { allSilhouettes, EventCard, Stage, ScenePlayer, type Frame, type FigureOf } from '../scene';
 import { sceneryFor, specKey } from '../scene/scenery';
@@ -111,7 +111,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
   const found = useMemo(() => (st && data ? newestScene(st.log, data, st.clock.worldYear, st) : {}), [st?.logN]);
   const play = found.play && found.play.entry.n > played ? found.play : undefined;
   // who is on the stage and where it is: resolved once per scene (src/app/views/scene.ts)
-  const staged = useMemo(() => (play && data ? { figureOf: figuresOf(data, st, play), scenery: sceneryOf(data, st, play) } : undefined), [play?.entry.n, data]);
+  const staged = useMemo(() => (play && data ? { figureOf: figuresOf(data, st, play), scenery: sceneryOf(data, st, play), labelOf: labelsOf(data, st, play) } : undefined), [play?.entry.n, data]);
   // The stage is a 16:9 box that fits what is left of the scene area: the controls under it, the layer bar above, the name and the map at the sides.
   // A stage as wide as the area would run over the story log, and its title over the name of the character.
   const fit = `min(100cqw, calc((100cqh - ${CONTROLS}px) * 16 / 9), 960px)`;
@@ -119,7 +119,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
     <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }} data-testid="life-scene">
       <div style={{ width: fit, maxWidth: '100%' }}>
         {play && play.kind === 'script' ? (
-          <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} onDone={() => setPlayed(play.entry.n)} />
+          <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} labelOf={staged?.labelOf} caption={st && data ? idleView(data, st).caption : undefined} onDone={() => setPlayed(play.entry.n)} />
         ) : found.card ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', maxHeight: '100cqh', overflowY: 'auto' }}>
             <EventCard card={found.card.card} />

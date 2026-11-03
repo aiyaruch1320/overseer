@@ -8,6 +8,7 @@ import { color, font } from '../ui/tokens';
 import { allSilhouettes, type FigureOf } from './figures';
 export { Silhouette } from './Silhouette';
 import { cameraOf, fitScale, project } from './layout';
+import { paintPlace } from './cardpic';
 import { seedOf } from './seed';
 import { specKey } from './scenery';
 import type { SceneStage } from './stage/controller';
@@ -19,6 +20,9 @@ export const PLAIN_SCENERY: ScenerySpec = { continent: 'AZ', setting: 'outdoor' 
 
 /** The scenery of a scene by the place the frame names (the setting of a place is guessed from its words: src/app/views/scene.ts `sceneryOf`). */
 export type SceneryOf = (place: string) => ScenerySpec;
+
+/** A dark outline and a soft shadow round text, so it reads on a bright sky and on grass. */
+const OUTLINE = '0 0 2px #000, 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000, 0 2px 6px #000';
 
 const zone = { position: 'absolute', left: 0, right: 0, padding: '0 6%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, pointerEvents: 'none' } as const;
 
@@ -32,13 +36,16 @@ export interface StageProps {
   figureOf?: FigureOf;
   /** Whether the beats' mood colours tint the painted place (default yes). */
   mood?: boolean;
+  /** The words under an actor (its name when it has one: the main character's name for the script's `ตัวละคร`); omit for the script's label. */
+  labelOf?: (a: { id: string; label: string }) => string;
 }
 
-export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes, mood = true }: StageProps) {
+export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouettes, mood = true, labelOf }: StageProps) {
   const box = useRef<HTMLDivElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const ctl = useRef<SceneStage | null>(null);
   const [k, setK] = useState(3);
+  const poster = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
   const sd = seedOf(seed);
 
@@ -62,10 +69,9 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
     let made: SceneStage | null = null;
     import('./stage/controller').then(({ SceneStage }) => {
       if (dead || !host.current) return;
-      made = new SceneStage(host.current, zoom.current);
+      made = new SceneStage(host.current, zoom.current, () => !dead && setReady(true));
       ctl.current = made;
       made.set(input.current);
-      setReady(true);
     });
     return () => {
       dead = true;
@@ -78,6 +84,18 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
   const input = useRef<Parameters<SceneStage['set']>[0]>(null as never);
   const spec = (scenery ?? (() => PLAIN_SCENERY))(frame.place);
   input.current = { frame, frameColor, scenery: spec, figureOf, seed: sd, mood };
+  // until Phaser has drawn its first frame the box shows the painted place itself (never a flat colour box: the sky of a miracle is blood red)
+  const posterKey = specKey(spec);
+  useEffect(() => {
+    const c = poster.current?.getContext('2d');
+    if (!c || ready) return;
+    try {
+      const pic = paintPlace(spec);
+      c.putImageData(new ImageData(pic.data, pic.w, pic.h), 0, 0);
+    } catch {
+      /* no canvas (a test without a DOM): the box stays dark */
+    }
+  }, [posterKey, ready]);
   // handed over when something that shows changed (a calm picture whose parent re-renders often does not wake the stage)
   useEffect(() => {
     ctl.current?.set(input.current);
@@ -89,6 +107,15 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
   const cam = cameraOf(frame.camera);
   const by = (role: string) => frame.texts.filter((x) => x.role === role);
   const px = (n: number) => Math.max(TEXT.min, n * k);
+  // a line is cut into at most two short lines that stay under the feet of the actors (below `ART.groundY`): the font is the largest that fits
+  const lineFont = (text: string, base: number) => {
+    const room = (ART.h - ART.groundY - TEXT.feetGap) - TEXT.pad;
+    for (let fs = base; fs > TEXT.lineMin; fs -= 0.25) {
+      const lines = Math.ceil(([...text].length * TEXT.thai * fs) / (ART.w * TEXT.lineWidth));
+      if (lines * fs * TEXT.leading <= room / 1.0) return fs;
+    }
+    return TEXT.lineMin;
+  };
 
   return (
     <div
@@ -119,33 +146,36 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
           width: ART.w * k,
           height: ART.h * k,
           transform: 'translate(-50%, -50%)',
-          background: `linear-gradient(to bottom, ${frame.sky} 0%, ${frame.sky} 58%, ${frame.ground} 58%, ${frame.ground} 100%)`,
+          background: '#0c0d12',
         }}
       >
+        <canvas ref={poster} width={ART.w} height={ART.h} data-stage-poster style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated', display: ready ? 'none' : 'block' }} />
         <div ref={host} style={{ position: 'absolute', inset: 0, lineHeight: 0, overflow: 'hidden' }} />
 
         {frame.actors.map((a) => {
           const p = project(cam, a.x * ART.w, ART.groundY);
+          const name = labelOf ? labelOf(a) : a.label;
+          if (!name) return null;
           return (
-            <div key={a.id} data-slot="character" data-actor={a.id} style={{ position: 'absolute', left: p.x * k, top: (p.y + 3 * cam.zoom) * k, transform: 'translateX(-50%)', fontSize: px(TEXT.label), color: color.textDim, whiteSpace: 'nowrap', textShadow: '0 1px 3px #000', pointerEvents: 'none' }}>
-              {a.label}
+            <div key={a.id} data-slot="character" data-actor={a.id} style={{ position: 'absolute', left: p.x * k, top: (p.y + 3 * cam.zoom) * k, transform: 'translateX(-50%)', fontSize: px(TEXT.label), color: color.text, whiteSpace: 'nowrap', textShadow: OUTLINE, pointerEvents: 'none' }}>
+              {name}
             </div>
           );
         })}
 
         <div style={{ ...zone, top: '5%', alignItems: 'flex-start' }}>
           {by('title').map((x, i) => (
-            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.title), textShadow: '0 1px 6px #000' }}>{x.text}</div>
+            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.title), textShadow: OUTLINE }}>{x.text}</div>
           ))}
         </div>
         <div style={{ ...zone, top: '5%', alignItems: 'flex-end' }}>
           {by('stage').map((x, i) => (
-            <div key={i} style={{ opacity: x.alpha * 0.8, fontSize: px(TEXT.stage), color: color.textDim }}>{x.text}</div>
+            <div key={i} style={{ opacity: x.alpha * 0.9, fontSize: px(TEXT.stage), color: color.text, textShadow: OUTLINE }}>{x.text}</div>
           ))}
         </div>
         <div style={{ ...zone, top: '30%' }}>
           {by('name').map((x, i) => (
-            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.name), textShadow: '0 2px 10px #000', textAlign: 'center' }}>{x.text}</div>
+            <div key={i} style={{ opacity: x.alpha, fontFamily: font.title, fontSize: px(TEXT.name), textShadow: OUTLINE, textAlign: 'center' }}>{x.text}</div>
           ))}
           {frame.strike && (
             <div style={{ textAlign: 'center', textShadow: '0 2px 10px #000' }}>
@@ -154,17 +184,16 @@ export function Stage({ frame, frameColor, seed, scenery, figureOf = allSilhouet
             </div>
           )}
         </div>
-        <div style={{ ...zone, bottom: '5%' }}>
+        <div style={{ ...zone, bottom: '2%', padding: `0 ${((1 - TEXT.lineWidth) / 2) * 100}%` }}>
           {by('line').map((x, i) => (
-            <div key={i} style={{ opacity: x.alpha, fontSize: px(TEXT.line), textAlign: 'center', textShadow: '0 1px 6px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.38)', padding: '2px 10px', borderRadius: 4 }}>{x.text}</div>
+            <div key={i} data-text="line" style={{ opacity: x.alpha, fontSize: px(lineFont(x.text, TEXT.line)), lineHeight: TEXT.leading, textAlign: 'center', textWrap: 'balance', textShadow: OUTLINE, background: 'rgba(0,0,0,0.42)', padding: '1px 10px', borderRadius: 4 }}>{x.text}</div>
           ))}
           {by('result').map((x, i) => (
-            <div key={i} style={{ opacity: x.alpha, fontSize: px(TEXT.result), textAlign: 'center', color: color.light, textShadow: '0 1px 6px #000', background: 'rgba(0,0,0,0.44)', padding: '2px 12px', borderRadius: 4 }}>{x.text}</div>
+            <div key={i} data-text="result" style={{ opacity: x.alpha, fontSize: px(lineFont(x.text, TEXT.result)), lineHeight: TEXT.leading, textAlign: 'center', textWrap: 'balance', color: color.light, textShadow: OUTLINE, background: 'rgba(0,0,0,0.5)', padding: '1px 12px', borderRadius: 4 }}>{x.text}</div>
           ))}
         </div>
-        <div style={{ position: 'absolute', right: 8, bottom: 6, fontSize: px(TEXT.label), color: color.textDim, opacity: 0.5, pointerEvents: 'none' }}>{frame.place}</div>
         {frame.sounds.length > 0 && (
-          <div style={{ position: 'absolute', left: 10, bottom: 6, fontSize: px(TEXT.label), color: color.textDim, opacity: 0.85 }}>♪ {frame.sounds.join(' · ')}</div>
+          <div style={{ position: 'absolute', left: '2%', top: '13%', maxWidth: '38%', fontSize: px(TEXT.label), lineHeight: 1.3, color: color.text, textShadow: OUTLINE, pointerEvents: 'none' }}>♪ {frame.sounds.join(' · ')}</div>
         )}
       </div>
       {/* the rim of the frame lies over the edge of the picture, so the box is measured whole */}

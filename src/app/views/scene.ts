@@ -9,6 +9,7 @@ import { SEASONS } from '../../core/text/tuning';
 import type { GameState } from '../../core/types';
 import { allLines, lifeStartN } from './watch';
 import { mainLook } from '../../art/main-look';
+import type { Stage } from '../../art/look';
 import { DRAGONS } from '../../art/beast/look';
 import { npcBeast } from '../../art/npc-beasts';
 import { npcLook, raceLook } from '../../art/resolve';
@@ -18,6 +19,7 @@ import type { ScenerySpec, Setting } from '../../art/scenery/types';
 import type { Figure, FigureOf } from '../../scene/figures';
 import { seedOf } from '../../scene/seed';
 import type { SceneryOf } from '../../scene/Stage';
+import { extOf as bondsExt, tiesOf } from '../../core/bonds';
 import { mainLookOf, scarredOf, tieLooks } from './looks';
 import { items } from '../../core/text/labels';
 import type { LogEntry } from '../../core/types';
@@ -147,7 +149,8 @@ function cardBase(data: GameData, e: LogEntry): CardModel {
   const def = e.id ? ix?.card.get(e.id) : undefined;
   if (def) return cardFrom(def, body);
   const d = e.data;
-  const title = str(d.name) ?? str(d.title) ?? e.id ?? e.kind;
+  // the name of an entry: its own, else the title of its script (a clash is `NF-AZ02-1` in the log, the card says the foe's name), never the code
+  const title = str(d.name) ?? str(d.title) ?? (e.id ? ix?.script.get(e.id)?.title : undefined) ?? e.id ?? e.kind;
   const group = e.id?.match(/^([A-Z]+)-/)?.[1];
   return plainCard(e.id ?? String(e.n), title, body, e.sys, str(d.mark) ?? '', ix?.scenes, group);
 }
@@ -239,6 +242,16 @@ const OTHER_LABELS = new Set(['อีกคน']);
 /** The label of the foe in the standard closings of a clash (`std.clash`). */
 const FOE_LABEL = 'คู่ต่อสู้';
 
+/** The race of the tribe a rite or a destination belongs to, by the two letters of its script id (`dest.wi`, `rite.el`, `wi.e1`): the first letters of the race ids of data/gen/looks.json. */
+const TRIBE_RACE: Record<string, string> = { hu: 'human', el: 'elf', de: 'darkelf', dw: 'dwarf', or: 'orc', ha: 'halfling', be: 'beast', na: 'naga', dk: 'dragonkin', va: 'vampire', fa: 'fae', sl: 'slime', dm: 'demonkin', me: 'merfolk', wi: 'winged', gi: 'giant', la: 'lavakin', co: 'construct', so: 'soulmachine', mu: 'mummy', gh: 'ghoul' };
+
+/** The race a scene is about: its tribe when the script is a rite or a destination of one, else nothing (the life's own race is the default). */
+function sceneRace(v: SceneView): string | undefined {
+  const id = v.kind === 'script' ? v.script.id : v.entry.id ?? '';
+  const m = id.match(/^(?:rite|dest)\.([a-z]{2})$/) ?? id.match(/^([a-z]{2})\.[a-z]\d+$/);
+  return m ? TRIBE_RACE[m[1]] : undefined;
+}
+
 /** The people of the NPC table by the name a script gives them (`NF-AZ02-1` names its foe: เรเวน); built once per data. */
 const byName = new WeakMap<LooksData, Map<string, string>>();
 function npcByName(looks: LooksData, name: string): string | undefined {
@@ -292,10 +305,16 @@ export function figuresOf(data: GameData, state: GameState | null | undefined, v
   const make = (id: string, label: string, count: number): Figure => {
     const dragon = dragonFigure(v, label);
     if (dragon) return dragon;
+    // a person of a race for whoever has no look of their own: the life's race, else the tribe of the script, else the first race (never the black placeholder while the data has looks)
+    const plain = (stage: Stage, fem: boolean, seed: string, prefer?: string): Figure => {
+      const race = [prefer, life?.race, sceneRace(v), 'human'].find((r) => r && looks?.races[r]);
+      return looks && race ? { kind: 'person', looks: [raceLook(looks, race, { stage, fem, seed })] } : sil;
+    };
+    const sceneSeed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
     if (id === 'a' && MAIN_LABELS.has(label) && count === 1) {
-      if (!state || !life || !looks) return sil;
-      const look = label === 'เด็ก' ? mainLook(life, data, { scarred: scarredOf(state), hAge: RITE_CHILD_AGE }) : mainLookOf(data, state);
-      return look ? { kind: 'person', looks: [look] } : sil;
+      // the main character is the life's look; a stage with no life behind it (a specimen) shows a plain person of the scene's tribe, not a silhouette
+      const look = state && life && looks ? (label === 'เด็ก' ? mainLook(life, data, { scarred: scarredOf(state), hAge: RITE_CHILD_AGE }) : mainLookOf(data, state)) : null;
+      return look ? { kind: 'person', looks: [look] } : plain(label === 'เด็ก' ? 'child' : 'adult', false, `main:${sceneSeed}`, sceneRace(v));
     }
     if (!looks) return sil;
     if (CROWD_LABELS.has(label) || id === 'crowd') {
@@ -321,15 +340,30 @@ export function figuresOf(data: GameData, state: GameState | null | undefined, v
         if (f) return f;
       }
     }
-    // an actor the script names: the NPC of that name, when the table has it
+    // an actor the script names: the NPC of that name, when the table has it; anyone else (the other person, a name the table lacks) is a plain person, never a silhouette
     const named = npcByName(looks, label);
-    return (named && npcFigure(looks, named)) || sil;
+    return (named && npcFigure(looks, named)) || plain('adult', id === 'b' && sceneSeed % 2 === 1, `${id}:${label}:${sceneSeed}`, sceneRace(v));
   };
   return ({ id, label, count }) => {
     const k = `${id}|${label}|${count}`;
     let f = cache.get(k);
     if (!f) cache.set(k, (f = make(id, label, count)));
     return f;
+  };
+}
+
+/**
+ * The words under an actor: the main character is called by name (the script says `ตัวละคร` or `เด็ก`), the other person of an ally's scene by the name of the tie;
+ * anyone else keeps the script's label (a foe's name, `ผู้คน`).
+ */
+export function labelsOf(data: GameData, state: GameState | null | undefined, v: SceneView): (a: { id: string; label: string }) => string {
+  const life = state?.life;
+  const tie = state && v.entry.id && state.life?.ext.bonds ? tiesOf(bondsExt(state.life)).find((t) => t.id === v.entry.id) : undefined;
+  void data;
+  return ({ id, label }) => {
+    if (id === 'a' && MAIN_LABELS.has(label) && life?.name) return life.name;
+    if (OTHER_LABELS.has(label) && tie?.name) return tie.name;
+    return label;
   };
 }
 

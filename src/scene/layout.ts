@@ -5,11 +5,13 @@ import type { ActorView, Frame } from './timeline';
 import { ART, CROWD, VIEW } from './tuning';
 
 /**
- * The largest whole number of screen pixels per art pixel that keeps the 320 × 180 picture inside a box (at least 1: a smaller box clips). A box a few pixels
- * short of a multiple (a 958 px box of 960) takes it: the rim of the frame hides what is cut.
+ * How many screen pixels one art pixel takes in a box (21-pixel-art.md §4, review/decisions.md 2026-11-04). A box `VIEW.wholeFrom` px wide or more takes the largest whole
+ * multiple that fits (sharp pixels; a box a few pixels short of a multiple takes it, the rim of the frame hides what is cut). A smaller box fills its width with a
+ * fraction (a 630 px box is 1.97×, drawn pixelated): at 1× the picture would be 320 px of a 630 px box and the people grains of rice.
  */
 export function fitScale(boxW: number, boxH: number): number {
-  return Math.max(1, Math.floor(Math.min((boxW + VIEW.slack) / ART.w, (boxH + VIEW.slack) / ART.h)));
+  if (boxW >= VIEW.wholeFrom) return Math.max(1, Math.floor(Math.min((boxW + VIEW.slack) / ART.w, (boxH + VIEW.slack) / ART.h)));
+  return Math.max(0.25, Math.min(boxW / ART.w, boxH / ART.h));
 }
 
 /** The camera in art pixels: `zoom` is 1 or `VIEW.close`, `cx cy` the point of the world in the middle of the view, `pan` the whole-pixel shift of the world under the view. */

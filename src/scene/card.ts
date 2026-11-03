@@ -39,6 +39,8 @@ export const SYS_FRAME: Record<string, string> = {
   ending: '#d8d4cc',
 };
 export const NEUTRAL_FRAME = '#6a6a7a';
+/** The sky of a card that has none of its own. */
+export const PLAIN_SKY = '#14161e';
 
 /** A card from its data, with the words of the entry. */
 export function cardFrom(def: CardDef, body: string): CardModel {
@@ -49,5 +51,5 @@ export function cardFrom(def: CardDef, body: string): CardModel {
 export function plainCard(id: string, title: string, body: string, sys: string, mark = '', data?: ScenesData, group?: string): CardModel {
   const f = data?.frames.find((x) => x.group === group);
   const frame = f?.color ?? SYS_FRAME[sys] ?? NEUTRAL_FRAME;
-  return { id, title, body, frame, icon: f?.icon ?? '', mark, sound: f?.sound ?? '', picture: '', fx: [], sky: '#14161e' };
+  return { id, title, body, frame, icon: f?.icon ?? '', mark, sound: f?.sound ?? '', picture: '', fx: [], sky: PLAIN_SKY };
 }

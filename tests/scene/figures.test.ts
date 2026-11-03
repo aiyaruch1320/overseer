@@ -79,10 +79,12 @@ describe('actor to look', () => {
     expect(of({ id: 'd', label: 'มังกร', count: 1 })).toEqual({ kind: 'beast', look: DRAGONS[2] });
   });
 
-  it('anyone unknown is the silhouette, and so is everyone when there is no life', () => {
+  it('anyone unknown is a plain person, never the silhouette (M7 K5-3); the silhouette is only for a stage with no looks at all', () => {
     const v = view(e('story', 'node', 'hu.a3', {}));
-    expect(figuresOf(data, state, v)({ id: 'x', label: 'ใครสักคนที่ไม่มีในตาราง', count: 1 })).toEqual({ kind: 'silhouette' });
-    expect(figuresOf(data, null, v)({ id: 'a', label: 'ตัวละคร', count: 1 })).toEqual({ kind: 'silhouette' });
+    const f = figuresOf(data, state, v)({ id: 'x', label: 'ใครสักคนที่ไม่มีในตาราง', count: 1 });
+    expect(f.kind).toBe('person');
+    const none = { ...data, looks: undefined } as unknown as GameData;
+    expect(figuresOf(none, null, v)({ id: 'a', label: 'ตัวละคร', count: 1 })).toEqual({ kind: 'silhouette' });
   });
 
   it('the answer for an actor is made once', () => {

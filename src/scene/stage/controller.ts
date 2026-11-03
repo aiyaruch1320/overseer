@@ -13,11 +13,11 @@ import { addLook, playPose } from '../../art/phaser';
 import type { Scenery, ScenerySpec } from '../../art/scenery';
 import { BEAST_POSE, PERSON_POSE } from '../../ui/figure';
 import { figureKey, type Figure, type FigureOf } from '../figures';
-import { fxPixels, godOf, godPixels, lightPixels, type Px } from '../fx';
+import { fxPixels, godOf, godPixels, lightPixels, variantOf, type Px } from '../fx';
 import { cameraOf, clampPan, layerX, slotsOf, type Cam } from '../layout';
 import { sceneryFor, specKey } from '../scenery';
 import { mixColor, type ActorView, type Frame } from '../timeline';
-import { ART, CAST, DEPTH, MOOD, POSE, SHADOW, SIL } from '../tuning';
+import { ART, CAST, DEPTH, MOOD, POSE, RIM, SHADOW, SIL } from '../tuning';
 
 const hex = (s: string): number => parseInt(s.replace('#', '').slice(0, 6), 16) || 0;
 
@@ -63,6 +63,8 @@ class PxLayer {
 
 interface Figured {
   sprite: Phaser.GameObjects.Sprite;
+  /** Four copies a pixel off to each side, drawn light and behind: the faint rim that keeps a dark figure from vanishing into the ground. */
+  rims: Phaser.GameObjects.Sprite[];
   key: string;
   pose: string;
 }
@@ -70,6 +72,8 @@ interface Figured {
 class StageScene extends Phaser.Scene {
   want: StageInput | null = null;
   dirty = false;
+  /** Told once, when the first frame is drawn. */
+  onShown?: () => void;
   private ready = false;
   private serial = 0;
   private shown: Shown | null = null;
@@ -97,9 +101,14 @@ class StageScene extends Phaser.Scene {
   }
 
   update(): void {
+    this.syncRims();
     if (!this.ready || !this.want || !this.dirty) return;
     this.dirty = false;
     this.apply(this.want);
+    if (this.onShown) {
+      this.onShown();
+      this.onShown = undefined;
+    }
   }
 
   // ---------- one frame ----------
@@ -169,12 +178,14 @@ class StageScene extends Phaser.Scene {
    */
   private paintFx(f: Frame, ambient: string | undefined, seed: number, cam: Cam): void {
     this.fx.place(cam);
+    const variant = variantOf(f.place);
+    // the shooting star plays on its own clock, the other powers only while their glow is on
     const god = f.light.mode === 'glow' ? godOf(f.light.color) : null;
-    const k = `${f.motion}|${seed}|${ambient ?? ''}|${god ?? ''}|${f.fx.map((x) => `${x.kind}:${x.amount}:${x.color ?? ''}`).join(',')}`;
+    const k = `${f.motion}|${seed}|${ambient ?? ''}|${god ?? ''}|${variant ?? ''}|${f.fx.map((x) => `${x.kind}:${x.amount}:${x.color ?? ''}`).join(',')}`;
     if (this.drawn.fx === k) return;
     this.drawn.fx = k;
     const list = fxPixels(f.fx, f.motion, seed, ambient);
-    if (god) list.push(...godPixels(god, f.motion, seed));
+    if (god || variant === 'meteor') list.push(...godPixels(god, f.motion, seed, variant));
     this.fx.draw(list);
   }
 
@@ -203,12 +214,14 @@ class StageScene extends Phaser.Scene {
       let have = this.figured.get(s.key);
       if (have && have.key !== key) {
         have.sprite.destroy();
+        have.rims.forEach((r) => r.destroy());
         this.figured.delete(s.key);
         have = undefined;
       }
       const x = s.x - cam.pan;
       if (!have) {
-        have = { sprite: this.build(fig, s.i, x, s.y, a, w), key, pose: '' };
+        const sprite = this.build(fig, s.i, x, s.y, a, w);
+        have = { sprite, key, pose: '', rims: fig.kind === 'silhouette' ? [] : RIM.offsets.map(() => this.add.sprite(x, s.y, sprite.texture.key, sprite.frame.name).setOrigin(sprite.originX, sprite.originY).setTintFill(RIM.color).setAlpha(RIM.alpha)) };
         this.figured.set(s.key, have);
         // a group does not step in time
         if (a.count > 1 && have.sprite.anims?.currentAnim) have.sprite.anims.setProgress((s.i * 0.37) % 1);
@@ -220,13 +233,29 @@ class StageScene extends Phaser.Scene {
       const drop = fig.kind === 'silhouette' ? POSE[a.pose].drop * SIL.h * 0.85 : 0;
       sprite.setPosition(x, s.y + drop);
       sprite.setTint(this.cast(a, w, fig));
+      this.syncRim(have);
       this.shadows.fillStyle(0x000000, SHADOW.alpha).fillEllipse(x, s.y, SHADOW.w * (fig.kind === 'beast' ? 2.5 : 1), SHADOW.h);
     }
     for (const [k, v] of this.figured)
       if (!live.has(k)) {
         v.sprite.destroy();
+        v.rims.forEach((r) => r.destroy());
         this.figured.delete(k);
       }
+  }
+
+  /** The rim copies follow their figure: its frame (the animation plays on its own between stage frames), place, side and depth. */
+  private syncRim(h: Figured): void {
+    const sp = h.sprite;
+    h.rims.forEach((r, i) => {
+      const [dx, dy] = RIM.offsets[i];
+      if (r.texture.key !== sp.texture.key || r.frame.name !== sp.frame.name) r.setTexture(sp.texture.key, sp.frame.name);
+      r.setFlipX(sp.flipX).setPosition(sp.x + dx, sp.y + dy).setDepth(sp.depth - 0.5).setOrigin(sp.originX, sp.originY);
+    });
+  }
+
+  private syncRims(): void {
+    for (const h of this.figured.values()) this.syncRim(h);
   }
 
   /** The tint of a figure: a cast of the actor's own colour and of the place's light, white where there is none. */
@@ -306,7 +335,8 @@ class StageScene extends Phaser.Scene {
 export class SceneStage {
   readonly game: Phaser.Game;
   private readonly scene = new StageScene();
-  constructor(parent: HTMLElement, zoom: number) {
+  constructor(parent: HTMLElement, zoom: number, onShown?: () => void) {
+    this.scene.onShown = onShown;
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
       parent,
