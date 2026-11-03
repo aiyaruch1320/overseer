@@ -61,7 +61,7 @@ export function cardLines(card: EndingCard): string[] {
 export function worldSummaryLines(s: WorldSummary): string[] {
   const out: string[] = [];
   out.push(`== สรุปโลก · เมล็ด ${s.seed} ==`);
-  out.push(`ตอนนี้ ศ.ม. ${s.year.toLocaleString('en-US')} · ยุค ${s.era} · ตั้งแต่ ศ.ม. ${s.span.from.toLocaleString('en-US')} ผ่านไป ${s.span.years} ปีโลก${s.ended ? ` · โลกจบด้วย ${s.ended.name} (ศ.ม. ${s.ended.year.toLocaleString('en-US')})` : ' · โลกยังเดินต่อ'}`);
+  out.push(`ตอนนี้ ศ.ม. ${s.year.toLocaleString('en-US')} · ยุค ${s.era} · ตั้งแต่ ศ.ม. ${s.span.from.toLocaleString('en-US')} ผ่านไป ${s.span.years} ปีโลก${s.ended ? ` · โลกจบด้วย ${s.ended.name} (ศ.ม. ${s.ended.year.toLocaleString('en-US')})` : s.family.extinct && !s.lives.some((l) => l.alive) ? ' · สายสิ้นแล้ว โลกเดิมถูกทิ้ง' : ' · โลกยังเดินต่อ'}`);
   out.push(`สายตระกูล${s.family.dynasty}: ${s.family.generations} รุ่น · เรื่องค้างเปิด ${s.family.threads.open} ปิดแล้ว ${s.family.threads.closed} กลายเป็นตำนาน ${s.family.threads.legend}${s.family.extinct ? ' · สิ้นสาย' : ''}`);
   for (const l of s.lives) {
     out.push(`  ${l.origin === 'newcomer' ? '' : `รุ่นที่ ${l.generation} `}${l.name} (${l.raceName}) ${originWord(l.origin)} · ศ.ม. ${l.born.toLocaleString('en-US')}${l.alive ? ' ถึงปัจจุบัน' : ` ถึง ${l.died!.toLocaleString('en-US')} อายุ ${l.age}`}${l.ending ? ` · ${l.ending}` : ''}${l.mark ? ` · ${{ none: 'ไม่ทิ้งรอย', local: 'รอยในถิ่น', era: 'รอยในยุค' }[l.mark] ?? l.mark}` : ''}${l.hand ? ` · พระหัตถ์ ${l.hand}` : ''}`);
