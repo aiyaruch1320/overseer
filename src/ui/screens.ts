@@ -2,3 +2,4 @@
 import './start';
 import './end';
 export {};
+import './watch';
