@@ -159,7 +159,7 @@ function nativeFrame(L: BeastLook, pose: Pose, f: number, seed: string, k = 1): 
   const info = painter(c);
   if (mo.die) {
     const kind = L.kind === 'enemy' ? L.dieKind : 'sag';
-    applyDie(p, kind, mo.die, info.ground ?? [cx, fr.foot], c.px, info.tall ?? false, p.mat(L.second, { flat: true }), seed);
+    applyDie(p, kind, mo.die, info.ground ?? [cx, fr.foot], info.height ?? c.px, info.tall ?? false, p.mat(L.second, { flat: true }), seed);
   }
   const frame = p.finish(info.shadow);
   if (info.fade) for (let y = 0; y < frame.h; y++) for (let x = 0; x < frame.w; x++) { const i = (y * frame.w + x) * 4 + 3; if (frame.data[i] > 80) frame.data[i] *= Math.max(0, Math.min(1, info.fade(x, y))); }

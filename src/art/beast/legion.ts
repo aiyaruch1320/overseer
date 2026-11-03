@@ -20,7 +20,7 @@ export function legionFrame(L: EnemyLook, pose: Pose, f: number): Frame {
   const fr = FRAMES[L.size], out = blank(fr.w, fr.h);
   const flags = L.extra.filter((e) => e.label === 'ธง').map((e) => e.hex);
   // [dx, dy, scale]: the back rank first, so the front rank hides its feet
-  const ranks: [number, number, number][] = [[-9, -5, 0.78], [9, -5, 0.78], [-19, 0, 0.9], [0, 1, 0.95], [19, 0, 0.9]];
+  const ranks: [number, number, number][] = [[-14, -5, 0.78], [1, -5, 0.78], [-22, 0, 0.9], [-7, 1, 0.95], [8, 0, 0.9]];
   for (const i of [0, 1, 2, 4, 3]) {
     const [dx, dy, sc] = ranks[i];
     const flag = flags[i] ?? '#c8c8c8';

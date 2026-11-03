@@ -110,8 +110,8 @@ function cloudSerpent(c: Ctx<EnemyLook>): Info {
 // ── reef serpent: coral-coloured rings in the coral, a yellow eye ────────────────────────────────────────────────────────────────────
 function reef(c: Ctx<EnemyLook>): Info {
   const { L, mo, p } = c;
-  const s = Math.min(c.px / 24, (c.w * 0.96) / 84);
-  const pen = c.pen(s).at(mo.push * 0.5 - 6, mo.bob);
+  const s = Math.min(c.px / 24, (c.w * 0.78) / 84);
+  const pen = c.pen(s).at(mo.push * 0.5 - 4, mo.bob);
   const P = makePal(p, L.main, L.second, L.eye, { belly: '#f0b090', horn: '#e8c8a0', mouth: '#7a2a3a' });
   const cor = [p.mat('#e86a8a', { deep: true }), p.mat('#c85a9a', { deep: true }), p.mat('#f0a070', { deep: true }), p.mat('#7a4a8a', { deep: true })], corL = p.mat('#f8c0c8');
   const strike = mo.pose === 'attack' ? mo.strike : 0, glowing = mo.pose === 'attack' && mo.a === 0;
@@ -125,7 +125,7 @@ function reef(c: Ctx<EnemyLook>): Info {
   for (let i = 0; i < 4; i++) coral(-34 + i * 20, 7 + (i % 2) * 4, i % 4, i % 2 ? 1 : -1);
   // the body winds through the coral in long S-waves, banded red-orange and violet
   const N = 28;
-  const body = spine(N, (u) => [-40 + u * 66, -7 - 5 * Math.sin(u * 15 + mo.ph) * (1 - u * 0.3) - u * 3]);
+  const body = spine(N, (u) => [-35 + u * 62, -7 - 5 * Math.sin(u * 15 + mo.ph) * (1 - u * 0.3) - u * 3]);
   const rad = body.map((_, i) => 1.1 + 4.3 * Math.min(1, (i / N) * 3) ** 0.8);
   tube(pen, body, rad, P.body, { ol: P.seam, belly: P.belly, from: 3, plate: 2, plateK: P.seam, bellyW: 0.4 });
   for (let i = 2; i < N; i += 2) { const q = body[i], r = rad[i]; pen.line([q[0] - 0.8, q[1] - r + 0.6], [q[0] + 0.8, q[1] + r - 0.6], glowing ? P.glowL : i % 4 === 0 ? P.acc : cor[3], 1.9); if (i % 4 === 1) pen.px(q[0] + 1, q[1] - r * 0.4, P.accL); }
@@ -136,7 +136,7 @@ function reef(c: Ctx<EnemyLook>): Info {
   head(pen, h[0] + 2, h[1], { sz: 1.3, ang: 0.1 + strike * 0.6, open: mo.open, style: 'east', horns: 'none', cheek: false, eye: mo.dead ? 'shut' : 'normal', pupil: P.ink }, P);
   // two small pieces of coral in front
   coral(-28, 6, 0, -1); coral(8, 5, 2, 1);
-  return { shadow: { cx: c.cx, cy: c.foot, rx: 32 * s, ry: Math.max(1.4, 1.8 * s) }, tall: false };
+  return { shadow: { cx: c.cx, cy: c.foot, rx: 32 * s, ry: Math.max(1.4, 1.8 * s) }, tall: false, height: 22 * s };
 }
 
 // ── tentacle: a pale arm of the fog, thickest at the root, with a curled tip ────────────────────────────────────────────────────────────

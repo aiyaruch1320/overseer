@@ -53,6 +53,8 @@ const MARKS: Record<string, Marks> = {
   'KD05-1': { throne: true },
   // the second Cronz gone mad on iron: the NPC's own figure with the right arm of brass and a red lens eye, steam from the joints, the chest core lit
   'MK02-1': { feats: ['mecharm', 'mecheye', 'rivets'], eye: '#ff4040', accent: '#ff4040', steam: true, core: '#ffe040', body: { shoulders: 1.2, head: 1 } },
+  // the bear warrior going grey: the NPC's own figure (so map, card and fight are one bear), bulked up
+  'SV03-3': { body: { shoulders: 1.2, head: 1.05 }, without: ['bandage'], grow: 1.5 },
   'NR07-1': { eggs: true },
   'NR07-2': {},
   // the mushroom child: pale cream skin, a pale grey cap with no spots, round yellow eyes (09-silvanel.md)
