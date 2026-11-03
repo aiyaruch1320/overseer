@@ -232,12 +232,12 @@ export const TOOLS: Record<string, Tool> = {
         return;
       }
       if (v === 2) {
-        stroke(r, -8, 12, wood(r), thick(r));
-        poly(r, [[8.5, -4.6], [8.5, 4.6], [14.5, 4.6], [14.5, -4.6]], ir);
-        stroke(r, 9, 14, steel(r), 1, 4.2);
-        stroke(r, 11.5, 11.5, band, 1, 4.6); stroke(r, 11.5, 11.5, band, 1, -4.6);
-        p.px(...at(r, 11.5, 0), band);
-        marks(r, 9, 14, p.mat('#6a6f78'), 1);
+        stroke(r, -8, 11, wood(r), thick(r));
+        poly(r, [[8, -4.6], [8, 4.6], [12.5, 4.6], [12.5, -4.6]], ir);
+        stroke(r, 8.5, 12, steel(r), 1, 4.2);
+        stroke(r, 10, 10, band, 1, 4.6); stroke(r, 10, 10, band, 1, -4.6);
+        p.px(...at(r, 10, 0), band);
+        marks(r, 8, 12, p.mat('#6a6f78'), 1);
         return;
       }
       stroke(r, -5, 11, wood(r));
