@@ -26,11 +26,13 @@ export function applyWishLate(ctx: Ctx, life: LifeState): void {
     const kin = (...names: string[]) => tiesOf(b).filter((t) => t.light && isLive(t) && names.includes(t.kin ?? ''));
     switch (w.family) {
       case 'orphan':
-        for (const t of kin('father', 'mother')) endTie(ctx, t, 'death', 'wish', { cause: 'orphan' });
+        // the peoples of the origin file have one elder 'parent' tie instead of a father and a mother
+        for (const t of kin('father', 'mother', 'parent')) endTie(ctx, t, 'death', 'wish', { cause: 'orphan' });
         break;
       case 'single': {
-        const parents = kin('father', 'mother');
-        if (parents.length > 1) endTie(ctx, parents[rng.int(0, parents.length - 1)], 'death', 'wish', { cause: 'orphan' });
+        const parents = kin('father', 'mother', 'parent');
+        if (!parents.length) refuse('family', 'พ่อหรือแม่คนเดียว', WISH_WORDS.noParents);
+        else if (parents.length > 1) endTie(ctx, parents[rng.int(0, parents.length - 1)], 'death', 'wish', { cause: 'orphan' });
         break;
       }
       case 'only':

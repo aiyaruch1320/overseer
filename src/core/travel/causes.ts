@@ -3,6 +3,7 @@
 // the conditions that the data keeps as prose are written here.
 import type { Ctx } from '../game';
 import { classNum, extOf as charExt, holds } from '../character';
+import { WISH_TRAVEL } from '../character/tuning';
 import { moveMul } from '../god/acts';
 import { write } from '../log';
 import { happened } from '../world/access';
@@ -49,6 +50,9 @@ export function debtOf(life: LifeState): number {
   const e = life.ext.economy as { debt?: number } | undefined;
   return e?.debt ?? 0;
 }
+
+/** A life ordered with the wish to travel, in the first years of its grown life (19-wish.md §2 "ส่วนเรื่อง"). */
+export const wishesTravel = (life: LifeState): boolean => (charExt(life).wish?.ask.story ?? []).includes('travel') && life.hAge < MIN_AGE + WISH_TRAVEL.years;
 
 export const CAUSES: CauseDef[] = [
   {
@@ -112,7 +116,7 @@ export const CAUSES: CauseDef[] = [
     key: 'wd',
     row: 'อยากรู้',
     // the axis `curious` above 40 and no family to look after (dependants are kept by the bonds system: not read here)
-    eligible: (_ctx, life) => ({ ok: curious(life) > 40 && !life.traits.includes('family'), mul: 1 }),
+    eligible: (_ctx, life) => ({ ok: (curious(life) > 40 || wishesTravel(life)) && !life.traits.includes('family'), mul: 1 }),
   },
   {
     key: 'tr',
@@ -144,6 +148,8 @@ export function rollCauses(ctx: Ctx, life: LifeState, ex: TravelExt, fresh: Read
   const settled = life.traits.some((t) => SETTLED_TRAITS.includes(t));
   const adventurous = life.traits.some((t) => ADVENTUROUS_TRAITS.includes(t));
   const rules = g.travel.causeRules;
+  // a wish to travel (19-wish.md §2 "ส่วนเรื่อง"): the first years of the grown life lean toward the road
+  const wishes = wishesTravel(life);
   for (const c of CAUSES) {
     const row = rows(ctx).find((r) => r.cause === c.row);
     if (!row) continue;
@@ -157,6 +163,7 @@ export function rollCauses(ctx: Ctx, life: LifeState, ex: TravelExt, fresh: Read
     if (!c.disaster) {
       if (settled) p *= rules.mods.find((m) => m.mul === 0.5 && m.raw.includes('settled'))?.mul ?? 0.5;
       if (adventurous) p *= rules.mods.find((m) => m.raw.includes('adventurous'))?.mul ?? 1.5;
+      if (wishes) p *= WISH_TRAVEL.mul;
       p *= moveMul(ctx);
     }
     // §2: a travel event that no disaster caused comes at most once in three years

@@ -394,6 +394,14 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
     else if (halfRoll) {
       const pair = origin.halfPairs.find((p) => p.main === raceId);
       if (pair) secondId = weightedId(brng, pair.second).id;
+      // a half-blood nobody asked for does not take a named land or faith from the wish (T2-1): where this pair does not meet, the life is not a half-blood
+      if (secondId && (w.continent || w.faith || ban.continent?.length)) {
+        const row = origin.meetingPlaces.find((m) => m.pair.includes(raceId) && m.pair.includes(secondId!));
+        const fits = (id: string) =>
+          ix.countries.has(id) && !lost(ctx, id) && (!w.continent || id.startsWith(w.continent)) && !(ban.continent ?? []).some((c) => id.startsWith(c)) &&
+          (!w.faith || !!ix.countries.get(id)?.religions.some((r) => r.id === w.faith));
+        if (!row || !row.places.some((q) => fits(q.id))) secondId = undefined;
+      }
     }
   }
   const second = secondId ? ix.races.get(secondId) : undefined;

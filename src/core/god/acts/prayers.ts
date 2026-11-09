@@ -16,6 +16,7 @@ import { blessingPool, drawBlessing } from '../chest';
 import { syncFlags } from '../stats';
 import { canPay, earn, noteAnswered, notePunished, pay, scaleCost, whyNot } from '../power';
 import { touch } from '../state';
+import { isLive, tiesOf } from '../../bonds/state';
 import { actsOf, livingOf, tickOf, viewActs, yearOf, type PrayerCard } from './state';
 import { WEALTH_MAX_CLASS } from './tuning';
 
@@ -38,6 +39,13 @@ function family(life: LifeState): { partner: boolean; children: number } {
   const b = life.ext.bonds as { partner?: unknown; spouse?: unknown; children?: unknown } | undefined;
   const kids = Array.isArray(b?.children) ? b.children.length : Number(b?.children ?? 0) || (life.flags.includes('god_child') ? 1 : 0);
   return { partner: !!(b?.partner || b?.spouse), children: kids };
+}
+
+/** The one who prays in 'mother' is the mother (or the parent of a people with no mother): an orphan, or a child whose mother has died, has none to pray (T2-1). */
+function motherLives(life: LifeState): boolean {
+  const b = life.ext.bonds as Parameters<typeof tiesOf>[0] | undefined;
+  if (!b) return true; // a life before the bonds system: nobody has been told dead
+  return tiesOf(b).some((t) => t.light && isLive(t) && (t.kin === 'mother' || t.kin === 'parent'));
 }
 
 const FARM_JOBS = ['farmer', 'merchant', 'fisher', 'shepherd', 'innkeeper'];
@@ -66,7 +74,7 @@ export function holdsKind(ctx: Ctx, id: string): boolean {
     case 'grandchild': return stage === 'elder' && fam.children > 0;
     case 'challenge': return life.godFaith < -10 && stage !== 'infant';
     case 'kin_sick': return sickInCircle(ctx).length > 0;
-    case 'mother': return stage === 'infant' || stage === 'child';
+    case 'mother': return (stage === 'infant' || stage === 'child') && motherLives(life);
   }
   return false;
 }
