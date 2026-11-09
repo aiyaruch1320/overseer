@@ -18,8 +18,9 @@ export type Needs = 'place' | 'npc' | 'heir';
 /** What the player may whisper now: the hints, and the names a target can be. Built by the game (`commandMenu` in `menu.ts`) or by a test. */
 export interface CommandMenu {
   hints: { hint: string; needs?: Needs }[];
-  places: { id: string; name: string }[];
-  people: { id: string; name: string }[];
+  /** `roles`: words that stand for the entry in a sentence ("บ้าน" for the home country, "ครู" for the mentor); a pointing hint with no name in the words may resolve by one. */
+  places: { id: string; name: string; roles?: string[] }[];
+  people: { id: string; name: string; roles?: string[] }[];
   /** The colloquial phrases of each hint (docs/systems/god/09-whisper-words.md): tier 0 reads them beside the hint's own name. Never sent to the LLM. */
   says?: Record<string, string[]>;
 }
@@ -34,8 +35,10 @@ export interface CommandOutcome {
   command: Extract<Command, { type: 'god' }> | null;
   /** `template` tier 0: the words named the hint (or nothing fit: the menu) · `llm` / `cache` the translator chose. */
   source: Source;
-  /** When there is no command: why the menu is shown (`no_match` the words fit nothing · `off` · `breaker` ...). */
+  /** When there is no command: why the menu is shown (`no_match` the words fit nothing · `off` · `breaker` · `need_target` the words named a pointing hint but not whom or where). */
   reason?: string;
+  /** With `need_target`: the hint the words named and what it points at, so the screen asks for the target instead of refusing. */
+  ask?: { hint: string; needs: Needs };
 }
 
 /** The words as the layer takes them: control characters out, spaces folded, cut at 300 characters (llm/README.md §5 rule 3). */
@@ -43,28 +46,45 @@ export function cleanWords(words: string): string {
   return words.replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, WORDS_MAX);
 }
 
-const targetsOf = (menu: CommandMenu, need: Needs | undefined): { id: string; name: string }[] => (need === 'place' ? menu.places : need === 'npc' || need === 'heir' ? menu.people : []);
+const targetsOf = (menu: CommandMenu, need: Needs | undefined): { id: string; name: string; roles?: string[] }[] => (need === 'place' ? menu.places : need === 'npc' || need === 'heir' ? menu.people : []);
+
+/** What tier 0 found in the words: the draft when the hint (and its target, if it needs one) is clear, else the hint that lacks its target. */
+export interface Match {
+  draft: Draft | null;
+  ask?: { hint: string; needs: Needs };
+}
 
 /**
- * Tier 0: the words hold the name of one hint or one of its phrases (09-whisper-words.md), and for a hint that needs a target, the name (or the id) of one entry.
- * The longest match wins. Nothing else is guessed.
+ * Tier 0: the words hold the name of one hint or one of its phrases (09-whisper-words.md), and for a hint that needs a target, the name (or the id) of one entry,
+ * or a role word of one ("ครู" "พ่อ" "แม่" "เพื่อน" "บ้าน", `roles` of the menu). The longest phrase wins; when the longest hint lacks its target a shorter hint
+ * whose target is there may win instead ("จงไปหาครู" is the help of the teacher, not a trip). A hint that matched but has no target is returned as `ask`.
  */
-export function matchWords(words: string, menu: CommandMenu): Draft | null {
+export function matchTier0(words: string, menu: CommandMenu): Match {
   const w = cleanWords(words).replace(/\s+/g, '');
   const flat = (x: string) => x.replace(/\s+/g, '');
-  let best: { h: CommandMenu['hints'][number]; len: number } | null = null;
+  const found: { h: CommandMenu['hints'][number]; len: number }[] = [];
   for (const h of menu.hints) {
+    let len = 0;
     for (const p of [h.hint, ...(menu.says?.[h.hint] ?? [])]) {
       const f = flat(p);
-      if (f && w.includes(f) && (!best || f.length > best.len)) best = { h, len: f.length };
+      if (f && w.includes(f) && f.length > len) len = f.length;
     }
+    if (len) found.push({ h, len });
   }
-  if (!best) return null;
-  const h = best.h;
-  if (!h.needs) return { hint: h.hint };
-  const t = targetsOf(menu, h.needs).find((x) => w.includes(flat(x.name)) || w.includes(x.id));
-  return t ? { hint: h.hint, target: t.id } : null;
+  found.sort((a, b) => b.len - a.len);
+  let ask: Match['ask'];
+  for (const { h } of found) {
+    if (!h.needs) return { draft: { hint: h.hint } };
+    const list = targetsOf(menu, h.needs);
+    const t = list.find((x) => w.includes(flat(x.name)) || w.includes(x.id)) ?? list.find((x) => (x.roles ?? []).some((r) => w.includes(flat(r))));
+    if (t) return { draft: { hint: h.hint, target: t.id } };
+    ask ??= { hint: h.hint, needs: h.needs };
+  }
+  return ask ? { draft: null, ask } : { draft: null };
 }
+
+/** The draft of tier 0 alone (see `matchTier0`). */
+export const matchWords = (words: string, menu: CommandMenu): Draft | null => matchTier0(words, menu).draft;
 
 function schemaOf(menu: CommandMenu): JsonSchema {
   const ids = [...new Set([...menu.places, ...menu.people].map((x) => x.id))];
@@ -100,29 +120,33 @@ const toCommand = (d: Draft): NonNullable<CommandOutcome['command']> => ({ type:
 export async function interpretWords(ctx: Ctx, words: string, menu: CommandMenu, client: LlmClient | null | undefined): Promise<CommandOutcome> {
   const w = cleanWords(words);
   if (!w) return { command: null, source: 'template', reason: 'no_words' };
-  const t0 = matchWords(w, menu);
-  if (t0) return { command: toCommand(t0), source: 'template' };
+  const m0 = matchTier0(w, menu);
+  if (m0.draft) return { command: toCommand(m0.draft), source: 'template' };
+  // a pointing hint named without its target: the LLM may still read the target, else the screen asks for it (09-whisper-words.md rule 4)
+  const lack = (o: CommandOutcome): CommandOutcome => (m0.ask && !o.command ? { ...o, reason: 'need_target', ask: m0.ask } : o);
   const life = ctx.state.life;
-  const input = { words: w, menu: { hints: menu.hints, places: menu.places, people: menu.people } };
+  // the roles are for tier 0 only: the LLM (and the hash of its input) sees the ids and names as before
+  const bare = (xs: { id: string; name: string }[]) => xs.map((x) => ({ id: x.id, name: x.name }));
+  const input = { words: w, menu: { hints: menu.hints, places: bare(menu.places), people: bare(menu.people) } };
   const key = keys.command(hashOf({ life: life?.id ?? null, age: life?.hAge ?? null, input }));
   const kept = answerOf(ctx.state, key);
   if (kept !== undefined) {
     const c = checkDraft(kept, menu);
-    if (c.ok) return c.value ? { command: toCommand(c.value), source: 'llm' } : { command: null, source: 'llm', reason: 'no_match' };
+    if (c.ok) return c.value ? { command: toCommand(c.value), source: 'llm' } : lack({ command: null, source: 'llm', reason: 'no_match' });
   }
-  if (!pointOn(ctx.state, client, 'command')) return { command: null, source: 'template', reason: 'off' };
+  if (!pointOn(ctx.state, client, 'command')) return lack({ command: null, source: 'template', reason: 'off' });
   const r = await client!.run({
     point: 'command',
     input,
     life: life?.id,
     system: COMMAND_SYSTEM,
-    user: JSON.stringify({ words: w, hints: menu.hints, places: menu.places, people: menu.people }),
+    user: JSON.stringify({ words: w, hints: menu.hints, places: bare(menu.places), people: bare(menu.people) }),
     schema: schemaOf(menu),
     maxTokens: MAX_TOKENS.command,
     check: (text) => checkDraft(text, menu),
   });
-  if (r.source === 'template') return { command: null, source: 'template', reason: r.reason };
+  if (r.source === 'template') return lack({ command: null, source: 'template', reason: r.reason });
   keep(ctx.state, key, r.text);
   logAnswer(ctx.state, 'command', r.value?.hint ?? 'none', { words: w, answer: r.text, from: r.source });
-  return r.value ? { command: toCommand(r.value), source: r.source } : { command: null, source: r.source, reason: 'no_match' };
+  return r.value ? { command: toCommand(r.value), source: r.source } : lack({ command: null, source: r.source, reason: 'no_match' });
 }

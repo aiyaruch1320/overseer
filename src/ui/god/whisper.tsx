@@ -90,6 +90,8 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
   const [sel, setSel] = useState<string | null>(p.hint ?? (crisis || p.target ? W.whisper.helpHint : null));
   // the target the typed words named, kept until the player picks another hint
   const [typedTarget, setTypedTarget] = useState<string | undefined>(undefined);
+  // true while the picked hint came from typed words: a failed try then clears it, so an old hint does not stay lit as if it were the answer
+  const [fromTyped, setFromTyped] = useState(false);
   if (!v) return <Empty>{W.noGame}</Empty>;
   if (!v.alive) return <Empty>{W.noLife}</Empty>;
   const cur = v.hints.find((h) => h.hint === sel);
@@ -115,9 +117,17 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
       <div class="g-small g-dim">
         {W.whisper.left} {v.left} {W.whisper.times}
       </div>
-      <TypedWhisper initial={p.typed} onUnderstood={(h, t) => (setTypedTarget(t), setSel(h))} />
+      <TypedWhisper
+        initial={p.typed}
+        onUnderstood={(h, t) => (setTypedTarget(t), setFromTyped(true), setSel(h))}
+        onFailed={(h) => {
+          setTypedTarget(undefined);
+          if (h) (setFromTyped(true), setSel(h));
+          else if (fromTyped) (setFromTyped(false), setSel(null));
+        }}
+      />
       <div style={{ ...row, alignItems: 'flex-start', flexWrap: 'wrap', gap: 20 }}>
-        <Ring hints={v.hints} sel={sel} onPick={(h) => (setTypedTarget(undefined), setSel(h))} />
+        <Ring hints={v.hints} sel={sel} onPick={(h) => (setTypedTarget(undefined), setFromTyped(false), setSel(h))} />
         {cur ? <Detail key={`${cur.hint}:${typedTarget ?? ''}`} h={cur} pre={typedTarget ?? crisis?.id ?? p.target} /> : <Empty>{W.whisper.ring}</Empty>}
       </div>
       {v.active.length > 0 && (

@@ -4,6 +4,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, runToCall, startLife } from '../../scripts/tools/session';
 import { understandWords } from '../../src/app/views/typed';
 import type { Game, GameData } from '../../src/core/game';
+import { matchTier0, type CommandMenu } from '../../src/core/llm/command';
 import { commandMenu } from '../../src/core/llm/menu';
 
 let data: GameData;
@@ -63,5 +64,48 @@ describe('the phrase table', () => {
     expect(await understandWords(g, undefined, `${person.name}กำลังลำบาก อย่าทิ้ง`)).toMatchObject({ ok: true, hint: 'ช่วย', target: person.id });
     expect(await understandWords(g, undefined, 'เดินทางไปเถอะ')).toMatchObject({ ok: false });
     expect(await understandWords(g, undefined, 'ขอให้รวยล้นฟ้า')).toMatchObject({ ok: false });
+  });
+});
+
+describe('the phrases the T2 player typed (review/overnight/t2 T2-2)', () => {
+  const tried = ['กลับบ้านเถอะ', 'ไปหาครู', 'จงไปหาครู', 'ไปเถอะ', 'กล้าหน่อย', 'ช่วยเขาหน่อย', 'ช่วยเขาด้วย', 'ระวังตัวด้วย'];
+
+  it('none is refused flatly: each is a draft or asks for its target, with the hint picked', async () => {
+    const g = atCall();
+    for (const words of tried) {
+      const r = await understandWords(g, undefined, words);
+      if (r.ok) continue;
+      expect(r.reason, words).toBe('need_target');
+      expect(r.hint, words).toBeTruthy();
+    }
+    expect(await understandWords(g, undefined, 'กล้าหน่อย')).toMatchObject({ ok: true, hint: 'กล้าเถิด' });
+    expect(await understandWords(g, undefined, 'ระวังตัวด้วย')).toMatchObject({ ok: true, hint: 'ระวัง' });
+    expect(await understandWords(g, undefined, 'ไปเถอะ')).toMatchObject({ ok: false, reason: 'need_target', hint: 'จงไป', needs: 'place' });
+    expect(await understandWords(g, undefined, 'ช่วยเขาด้วย')).toMatchObject({ ok: false, reason: 'need_target', hint: 'ช่วย', needs: 'npc' });
+    expect(await understandWords(g, undefined, 'ขอให้รวยล้นฟ้า')).toMatchObject({ ok: false, reason: 'off' });
+  });
+
+  it('the home word points at the home country', async () => {
+    const g = atCall();
+    const m = commandMenu(g.ctx);
+    const home = g.state.life!.home;
+    expect(m.places.find((p) => p.id === home)?.roles).toEqual(['บ้าน']);
+    expect(await understandWords(g, undefined, 'กลับบ้านเถอะ')).toMatchObject({ ok: true, hint: 'จงไป', target: home });
+  });
+
+  it('a role word resolves to the person of that role, and the shorter hint wins when the longer has no target', () => {
+    const menu: CommandMenu = {
+      hints: [{ hint: 'จงไป', needs: 'place' }, { hint: 'ช่วย', needs: 'npc' }, { hint: 'ระวัง' }],
+      places: [{ id: 'NB', name: 'เนบูเลีย' }],
+      people: [{ id: 'T1', name: 'อารี', roles: ['ครู'] }, { id: 'T2', name: 'บุญ', roles: ['เพื่อน'] }],
+      says: { จงไป: ['ไปเถอะ'], ช่วย: ['ไปหา'], ระวัง: ['อย่าประมาท'] },
+    };
+    expect(matchTier0('ไปหาครู', menu).draft).toEqual({ hint: 'ช่วย', target: 'T1' });
+    expect(matchTier0('จงไปหาครู', menu).draft).toEqual({ hint: 'ช่วย', target: 'T1' });
+    expect(matchTier0('ช่วยเพื่อนหน่อย', menu).draft).toEqual({ hint: 'ช่วย', target: 'T2' });
+    expect(matchTier0('จงไปเนบูเลีย', menu).draft).toEqual({ hint: 'จงไป', target: 'NB' });
+    expect(matchTier0('ไปเถอะ', menu)).toEqual({ draft: null, ask: { hint: 'จงไป', needs: 'place' } });
+    expect(matchTier0('ช่วยเขาหน่อย', menu)).toEqual({ draft: null, ask: { hint: 'ช่วย', needs: 'npc' } });
+    expect(matchTier0('พ่อ', menu)).toEqual({ draft: null });
   });
 });

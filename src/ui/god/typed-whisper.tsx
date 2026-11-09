@@ -10,7 +10,7 @@ import { col, row } from './style';
 const T = W.whisper.typed;
 
 /** `initial` words (a story, or a screen that opens the whisper with words already said) are read once when the box appears. */
-export function TypedWhisper(p: { initial?: string; onUnderstood: (hint: string, target?: string) => void }) {
+export function TypedWhisper(p: { initial?: string; onUnderstood: (hint: string, target?: string) => void; onFailed?: (hint?: string) => void }) {
   const b = useBridge();
   const [words, setWords] = useState(p.initial ?? '');
   const [busy, setBusy] = useState(false);
@@ -25,6 +25,7 @@ export function TypedWhisper(p: { initial?: string; onUnderstood: (hint: string,
     setBusy(false);
     setRes(r);
     if (r.ok) p.onUnderstood(r.hint, r.target);
+    else p.onFailed?.(r.hint);
   };
   return (
     <div style={{ ...col, marginBottom: 10 }} data-testid="typed-whisper">
