@@ -15,6 +15,7 @@ import type { GameData } from '../core/game';
 import type { GameState } from '../core/types';
 import { color, font, size } from '../ui/tokens';
 import { pageProvider } from './assets';
+import { crowdOf } from './crowd';
 import type { CodeProvider } from './codeProvider';
 import { CONT_IDS, type ContId } from './geo';
 import { layoutOf, type MapLayout } from './layout';
@@ -120,7 +121,9 @@ function FullMap(props: WorldMapProps) {
         seed: props.seed ?? SEED,
         palettes: paletteOf(props.data),
         names,
-        plan: env.code ? (id) => env.code!.plan(id, { looks: cur.current.looks, seed: props.seed ?? SEED }) : undefined,
+        town: env.code ? (id) => { const t = env.code!.town(id, { looks: cur.current.looks, seed: props.seed ?? SEED }); return t && { plan: t.plan, look: t.look, ground: t.ground, country: t.country }; } : undefined,
+        crowd: crowdOf(props.data),
+        crowdScale: Number(new URLSearchParams(location.search).get('crowd')) || 1,
         onPick: (p) => cb.current.onPick?.(p),
         onHover: (h) => setHover(h ? { ...h, x: mouse.current.x, y: mouse.current.y } : null),
         onLevel: (id, zoom) => setLevel((o) => (o.id === id && Math.abs(o.zoom - zoom) < 0.005 ? o : { id, zoom })),

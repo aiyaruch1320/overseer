@@ -104,9 +104,10 @@ const capital = (ctx: StoryCtx) => {
 
 story({ group: 'แผนที่', name: 'ระดับโลก', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'world' }} note="โลก (ซูม < 0.33): ทวีป ป้ายทวีป ผู้เล่น มังกร" /> });
 story({ group: 'แผนที่', name: 'ระดับทวีป', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'continent', id: 'AL' }} zoom={0.5} note="ทวีป (0.33–0.75): ภูมิประเทศเต็ม ป้ายประเทศ เมืองหลวง · ลากเพื่อเลื่อน ล้อเมาส์ซูม ลูกศร/WASD +/-" /> });
-story({ group: 'แผนที่', name: 'ระดับประเทศ', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'country', id: capital(ctx).country }} zoom={1.2} note="ประเทศ (0.75–2): ไอคอนและชื่อเมืองทุกแห่ง ธงสงคราม/ทุพภิกขภัย/โรค/ยุคทอง ตัวละครเป็นประกายทอง" /> });
-story({ group: 'แผนที่', name: 'ระดับเมือง', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'city', id: capital(ctx).city }} zoom={4} note="เมือง (2–7): ผังเมืองเต็ม ถนน อาคาร กำแพง ทุ่งนา ตามค่า UI ของประเทศ" /> });
-story({ group: 'แผนที่', name: 'ในเมือง', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'city', id: capital(ctx).city }} zoom={14} note="ในเมือง (7–48): ผังเมืองความละเอียดสูง" /> });
+story({ group: 'แผนที่', name: 'ระดับประเทศ', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'country', id: capital(ctx).country }} zoom={1.2} note="ประเทศ (0.75–6.25): ไอคอนและชื่อเมืองทุกแห่ง ธงสงคราม/ทุพภิกขภัย/โรค/ยุคทอง ตัวละครเป็นประกายทอง" /> });
+story({ group: 'แผนที่', name: 'ระดับเมือง', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'city', id: capital(ctx).city }} zoom={6.25} note="เมือง (6.25–16): พิกเซลอาร์ต 1× ตามค่า UI ของประเทศ พื้นวาดด้วยโค้ดเป็นแผ่น บ้าน ต้นไม้ คนเป็นสไปรต์ · ใส่ ?crowd=10 ในลิงก์เพื่อทดสอบคนมาก" /> });
+story({ group: 'แผนที่', name: 'ในเมือง 3×', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'city', id: capital(ctx).city }} zoom={18.75} note="ในเมือง (16–50): พิกเซลอาร์ต 3× ผู้คนเดินบนถนนและลานของเมือง" /> });
+story({ group: 'แผนที่', name: 'ในเมือง 8×', render: (ctx) => <Level ctx={ctx} focus={{ kind: 'city', id: capital(ctx).city }} zoom={50} note="ในเมือง ซูมสูงสุด 8×: เห็นคนทีละคน" /> });
 story({ group: 'แผนที่', name: 'ซาก', render: (ctx) => <Ruin ctx={ctx} /> });
 story({ group: 'แผนที่', name: 'ทวีปที่เปลี่ยนรูป 8 แบบ', render: (ctx) => <Changed ctx={ctx} /> });
 story({ group: 'แผนที่', name: 'การเล็ง', render: (ctx) => <Aiming ctx={ctx} /> });

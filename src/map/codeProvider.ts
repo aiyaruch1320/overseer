@@ -3,10 +3,12 @@
 // in a small cache, and always answers. Deterministic: the same data, seed and look give the same pixels.
 import type { GameData } from '../core/game';
 import type { Country } from '../core/data/types-npcs';
-import { paintCity, planCity, type CityLook, type CityPlan } from './city';
+import { posterize } from '../art/mapart/pixelize';
+import { planCity, type CityLook, type CityPlan } from './city';
 import { layoutOf, type MapLayout } from './layout';
 import { domCanvas, tileKey, type CanvasFactory, type MapArtProvider, type TileImage, type TileRequest } from './provider';
 import { paintTerrain } from './terrain';
+import { townGround, type TownGround } from './townGround';
 import { tileSize } from './tiles';
 import { FATE_BY_ID } from './tuning';
 
@@ -21,6 +23,8 @@ export interface CodeProvider extends MapArtProvider {
   readonly layout: MapLayout;
   /** The plan of a town (data), for the people of the inside level. */
   plan(cityId: string, req: Pick<TileRequest, 'looks' | 'seed'>): CityPlan | null;
+  /** The plan of a town with its look and the pixel ground (the picture and the grid the people walk on); cached. */
+  town(cityId: string, req: Pick<TileRequest, 'looks' | 'seed'>): { plan: CityPlan; look: CityLook; ground: TownGround; country: string; continent: string } | null;
   /** Tiles painted since the start (for tests and the cache). */
   readonly painted: number;
 }
@@ -58,10 +62,28 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
     return p;
   }
 
+  const grounds = new Map<string, TownGround>();
+  function town(cityId: string, req: Pick<TileRequest, 'looks' | 'seed'>) {
+    const p = plan(cityId, req);
+    const city = layout.cities.find((c) => c.id === cityId);
+    const mc = city && layout.byId.get(city.country);
+    if (!p || !city || !mc) return null;
+    const look = lookOf(req, city.country, mc.continent);
+    const k = `${cityId}|${req.seed}|${look.fate ?? ''}|${(look.ruin ?? 0).toFixed(2)}`;
+    let ground = grounds.get(k);
+    if (!ground) {
+      ground = townGround(p, look);
+      grounds.set(k, ground);
+      if (grounds.size > 12) grounds.delete(grounds.keys().next().value as string);
+    }
+    return { plan: p, look, ground, country: city.country, continent: mc.continent };
+  }
+
   return {
     id: 'code',
     layout,
     plan,
+    town,
     get painted() {
       return painted;
     },
@@ -76,37 +98,27 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
         return hit;
       }
       const size = tileSize(req);
-      const canvas = make(size.w, size.h);
+      let canvas = make(size.w, size.h);
       if (req.level === 'city' || req.level === 'inside') {
-        const p = plan(req.key, req);
-        if (!p) return null;
-        const city = layout.cities.find((c) => c.id === req.key)!;
-        paintCity(canvas, p, lookOf(req, city.country, req.continent ?? 'AL'));
-        feather(canvas);
-      } else paintTerrain(canvas, req, layout);
+        const t = town(req.key, req);
+        if (!t) return null;
+        // the pixel ground of the plan, one art pixel to a canvas pixel
+        canvas = make(t.ground.w, t.ground.h);
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const im = ctx.createImageData(t.ground.w, t.ground.h);
+          im.data.set(t.ground.data);
+          ctx.putImageData(im, 0, 0);
+        }
+      } else {
+        paintTerrain(canvas, req, layout);
+        posterize(canvas);
+      }
       painted++;
-      const img: TileImage = { source: canvas as unknown as CanvasImageSource, width: size.w, height: size.h, rect: req.rect, origin: 'code' };
+      const img: TileImage = { source: canvas as unknown as CanvasImageSource, width: canvas.width, height: canvas.height, rect: req.rect, origin: 'code' };
       cache.set(k, img);
       if (cache.size > keep) cache.delete(cache.keys().next().value as string);
       return img;
     },
   };
-}
-
-/** Fades the rim of a town plan to clear, so the ground of the country shows round it. */
-function feather(canvas: { width: number; height: number; getContext(t: '2d'): CanvasRenderingContext2D | null }): void {
-  const ctx = canvas.getContext('2d');
-  if (!ctx || !ctx.createRadialGradient) return;
-  const { width: w, height: h } = canvas;
-  ctx.save();
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.translate(w / 2, h / 2);
-  ctx.scale(1, h / w);
-  const g = ctx.createRadialGradient(0, 0, 0, 0, 0, w / 2);
-  g.addColorStop(0, 'rgba(0,0,0,1)');
-  g.addColorStop(0.72, 'rgba(0,0,0,1)');
-  g.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = g;
-  ctx.fillRect(-w / 2, -w / 2, w, w);
-  ctx.restore();
 }

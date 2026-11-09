@@ -8,14 +8,22 @@ export const SHEET = { w: 1600, h: 900 };
 export const ZOOM_LEVELS = [
   { id: 'world', min: 0, max: 0.33 },
   { id: 'continent', min: 0.33, max: 0.75 },
-  { id: 'country', min: 0.75, max: 2 },
-  { id: 'city', min: 2, max: 7 },
-  { id: 'inside', min: 7, max: 48 },
+  { id: 'country', min: 0.75, max: 6.25 },
+  { id: 'city', min: 6.25, max: 16 },
+  { id: 'inside', min: 16, max: 50 },
 ] as const;
 export type ZoomId = (typeof ZOOM_LEVELS)[number]['id'];
-/** The camera never goes outside this (the last level ends at 48). */
-export const CAM_MIN = 0.1;
-export const CAM_MAX = 48;
+/**
+ * The camera never goes outside this (the last level ends at 50). The art contract (21-pixel-art.md §4): the town and in-town levels are pixel art at
+ * 1× to 8× (town 24 art px per MU = 6.25 camera zoom per art zoom, so 6.25 → 1× and 50 → 8×), and the prebuilt pictures of the world, continent and
+ * country levels are never shown smaller than 1× (the picture of a level is made at the density of the lowest zoom of that level).
+ */
+export const CAM_MIN = 0.16;
+export const CAM_MAX = 50;
+/** Art pixels per MU of the town ground and its sprites: one art pixel is 1/TOWN_PX MU. */
+export const TOWN_PX = 24;
+/** Camera zoom at which one town art pixel is one screen pixel (art zoom 1×). */
+export const ART_ONE = (TOWN_PX / 3.84);
 /** Country plans start to show on the country level from this zoom (world-map.md: "ผังเมืองเริ่มโผล่บนแผนที่ตั้งแต่ 0.9"). */
 export const PLAN_FROM = 0.9;
 
@@ -29,7 +37,7 @@ export const CITY_H = (CITY_W * 101) / 162;
 export const TOWN_SPACING = 0.95;
 
 /** Pixels per MU of the tile of each level (the tile is painted once at this size and cached). */
-export const TILE_PX: Record<ZoomId, number> = { world: 0.8, continent: 2, country: 5, city: 24, inside: 40 };
+export const TILE_PX: Record<ZoomId, number> = { world: CAM_MIN * WU, continent: 0.33 * WU, country: 0.75 * WU, city: TOWN_PX, inside: TOWN_PX };
 /** MU added around a continent/country box on its tile. */
 export const TILE_PAD: Record<ZoomId, number> = { world: 0, continent: 14, country: 8, city: 0, inside: 0 };
 /** Tiles kept at once in the scene (oldest dropped). */
@@ -99,7 +107,7 @@ export const OMEN_COLOR = { faith: '#e8c36a', dread: '#8a2433', fate: '#b8c0cc' 
 export const LABEL = { continent: 30, country: 17, city: 13, small: 11 };
 
 /** Layers of the Phaser scene, back to front (code-plan §8.4). */
-export const DEPTH = { terrain: 0, borders: 10, fate: 15, ruins: 20, cities: 30, labels: 40, dragons: 45, omens: 50, character: 60, cursor: 70 } as const;
+export const DEPTH = { terrain: 0, borders: 10, fate: 15, ruins: 20, town: 22, cities: 30, labels: 40, dragons: 45, omens: 50, character: 60, cursor: 70 } as const;
 
 /** The camera moves this many screen pixels per second on the arrow keys, and zooms by this factor per wheel notch. */
 export const PAN_SPEED = 700;
