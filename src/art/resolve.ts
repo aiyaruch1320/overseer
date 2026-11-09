@@ -83,7 +83,7 @@ const KIN_HAIR_COLOR = ['#2a1c14', '#4a3020', '#6a4a2a', '#8a6a3a', '#b08a4a', '
  * A person of a race who is not in the docs by name (a main character's body, a crowd member): the race's body and colours, the sub-line's
  * differences, plain clothes in the race colours. `seed` picks the skin; the same seed gives the same figure.
  */
-export function raceLook(looks: LooksData, race: string, o: { line?: string; stage: Stage; fem: boolean; seed: string }): PersonLook {
+export function raceLook(looks: LooksData, race: string, o: { line?: string; stage: Stage; fem: boolean; seed: string; /** a person of the circle (a child, a kin): the seed also picks the hair, beard, hat, tool and clothes among the plain ones, so no two look the same */ kin?: boolean }): PersonLook {
   const R = raceOf(looks, race);
   const ln = o.line ? R.lines.find((l) => l.name === o.line) : undefined;
   const ov = ln?.overrides;
@@ -93,7 +93,7 @@ export function raceLook(looks: LooksData, race: string, o: { line?: string; sta
   // what the docs say the race wears and does (02-races.md เครื่องแต่ง and หน้าและผิว, read into the race row): clothes and their colours, a hat,
   // the hair, the beard its men wear, a thing carried by habit; the young have no hat, no beard and carry nothing
   // people of the peoples whose looks are not fixed by a coat or a body (not the beast people, the dolls, the spirits) differ by their own seed
-  const kin = KIN_RACES.has(race) && !hairless;
+  const kin = o.kin === true && KIN_RACES.has(race) && !hairless;
   const hh = (w: string): number => hash(`${key}:${w}`);
   const raceHair = (o.fem ? R.hairFem : R.hair) || (o.fem ? 'long' : 'short');
   const kinHair = (o.fem ? KIN_HAIR_FEM : KIN_HAIR)[hh('hair') % (o.fem ? KIN_HAIR_FEM.length : KIN_HAIR.length)];
