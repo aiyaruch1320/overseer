@@ -111,7 +111,7 @@ export function lastYearOf(life: LifeState): number {
   return typeof age === 'number' ? age - 1 : LAST_YEAR;
 }
 
-function playable(ex: StoryExt, ix: Index, line: string): StoryNodeX[] {
+export function playable(ex: StoryExt, ix: Index, line: string): StoryNodeX[] {
   const all = ix.seq.get(line) ?? [];
   if (line !== 'xc') return all;
   // one node per race, titled `<race name>: ...` (25-journeys.md §10): the life plays the one about its own race
@@ -210,7 +210,7 @@ function nextNode(life: LifeState, ex: StoryExt, seq: StoryNodeX[]): StoryNodeX 
  * natural death even when their table age has not come (storylines/README.md §6 rule 9). The last one (e2) is the end of the life: its ways
  * say the character dies, so it comes in that last year and the other lines have played their elders before it.
  */
-function ageWindow(ex: StoryExt, life: LifeState, line: string, n: StoryNodeX): { lo: number; hi: number } {
+export function ageWindow(ex: StoryExt, life: LifeState, line: string, n: StoryNodeX): { lo: number; hi: number } {
   const last = lastYearOf(life);
   let lo = Math.max(0, n.age[0] - (ex.earlier[n.id] ?? 0));
   if (line === ex.line && n.stage === 'e') lo = Math.min(lo, last);
@@ -593,7 +593,7 @@ function contentOf(ctx: Ctx, ix: Index, n: StoryNodeX, pre: readonly Effect[]): 
   return { choices: alt ?? choices, after, meta };
 }
 
-function variantOf(ctx: Ctx, list: readonly Effect[]): Choice[] | undefined {
+export function variantOf(ctx: Ctx, list: readonly Effect[]): Choice[] | undefined {
   for (const e of list) {
     if (e.k === 'variant' && e.cond && test(ctx, e.cond)) return e.choices;
     if ((e.k === 'if' || e.k === 'only') && test(ctx, e.cond)) {
@@ -613,7 +613,7 @@ function pickVariant(ctx: Ctx, rite: Rite): RiteOutcome | undefined {
 }
 
 /** `choiceMod`, `entryMod` and `nodeWeight` that act on the weights of this very node. */
-function pullOf(ctx: Ctx, ex: StoryExt, n: StoryNodeX, pre: readonly Effect[]): Pull {
+export function pullOf(ctx: Ctx, ex: StoryExt, n: StoryNodeX, pre: readonly Effect[]): Pull {
   const pull: Pull = { choice: [], entry: [], label: [] };
   const take = (list: readonly Effect[]) => {
     for (const e of list) {
@@ -644,7 +644,9 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
 
   // a way that leads to a convergence that is not open is cut (storylines/README.md §6 rule 6)
   const cut = (c: Choice) => c.effects.some((e) => e.k === 'converge' && !canEnter(ctx, e.to));
-  const w = weigh(ctx, choices, pullOf(ctx, ex, n, pre), ex, cut, forkId(ctx, n.id));
+  // the LLM director stays out of a fork where the god's dream acts (llm/04-story.md §3.3): the dream is the player's power there
+  const dreamed = (ctx.state.god.dreams as { node?: string }[]).some((d) => d.node === n.id);
+  const w = weigh(ctx, choices, pullOf(ctx, ex, n, pre), ex, cut, dreamed ? undefined : forkId(ctx, n.id));
 
   const rng = ctx.rng('life.story');
   let i = -1;
