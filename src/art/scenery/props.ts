@@ -147,6 +147,22 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
       const tx = x - 54 + r() * 108;
       px.line(tx, BASE - 12 - r() * 3, tx + (r() - 0.5) * 14, BASE - 14 - r() * 4, [150, 112, 70]);
     }
+    // the nest is high on the edge of a sky island: pale rock hangs under it, and a bank of cloud lies below and round it, so it reads as in the sky
+    const rock: Rgb = [138, 154, 188];
+    for (let row = 0; row < 34; row++) {
+      const half = Math.round(48 * Math.pow(1 - row / 34, 0.8) + Math.sin(row * 1.7) * 1.2);
+      const y = BASE + row;
+      px.rect(x - half - 1, y, half * 2 + 3, 1, OUT);
+      px.rect(x - half, y, half * 2 + 1, 1, row % 6 === 5 ? dark(rock, 0.3) : rock);
+      px.rect(x - half, y, Math.max(1, Math.round(half * 0.35)), 1, light(rock, 0.3));
+      px.rect(x + Math.round(half * 0.5), y, Math.max(1, Math.round(half * 0.5)) + 1, 1, dark(rock, 0.25));
+    }
+    for (let i = 0; i < 40; i++) {
+      const cx = x - 150 + r() * 300, cy = BASE + 6 + r() * 26, cr = 7 + r() * 9;
+      if (Math.abs(cx - x) < 20 && cy < BASE + 22) continue;
+      px.disc(cx, cy + 2, cr, [196, 208, 232], 235);
+      px.disc(cx, cy, cr, [244, 247, 255], 240);
+    }
   },
   /** The eternal flame: a stone brazier on a pillar with a tall flame and a pool of orange light. */
   flame(px, x, _c, seed) {
@@ -211,12 +227,19 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
       }
       // the Aviyan: a folded wing stands up behind the shoulder (scale red or feather white), so a spectator reads as winged
       const wing: Rgb = i % 3 === 0 ? [168, 66, 54] : i % 3 === 1 ? [226, 222, 212] : [96, 120, 172];
-      const side = i % 2 ? 1 : -1;
-      for (let y = 0; y < h - 2; y++) {
-        const wy = y / (h - 2), ww = Math.round(1 + Math.sin(Math.min(1, wy * 1.1) * Math.PI * 0.8) * 2.4);
-        const wx = px0 + side * (3 + Math.floor(wy * 1.5));
-        px.rect(wx - (side < 0 ? ww : 0) - 1, top + 3 + y, ww + 1, 1, OUT);
-        px.rect(wx - (side < 0 ? ww : 0), top + 3 + y, ww, 1, y % 4 === 0 ? light(wing, 0.3) : wing);
+      // both wings spread out from the shoulders, each a feathered blade that rises above the head and a darker underside, so the row reads as winged
+      for (const side of [-1, 1]) {
+        for (let y = 0; y < h + 2; y++) {
+          const wy = y / (h + 1), ww = Math.max(1, Math.round(1 + Math.sin(Math.min(1, wy * 1.05) * Math.PI) * 4.2));
+          const wx = px0 + side * (3 + Math.floor(wy * 2));
+          const x0 = side < 0 ? wx - ww : wx;
+          px.rect(x0 - 1, top - 3 + y, ww + 2, 1, OUT);
+        }
+        for (let y = 0; y < h + 2; y++) {
+          const wy = y / (h + 1), ww = Math.max(1, Math.round(1 + Math.sin(Math.min(1, wy * 1.05) * Math.PI) * 4.2));
+          const wx = px0 + side * (3 + Math.floor(wy * 2));
+          px.rect(side < 0 ? wx - ww : wx, top - 3 + y, ww, 1, y % 3 === 0 ? light(wing, 0.35) : wy > 0.6 ? dark(wing, 0.2) : wing);
+        }
       }
       px.disc(px0 + 0.5, top + 2.5, 2.4, [214, 178, 146]);
       px.set(px0 - 1, top + 2, [40, 30, 30]); px.set(px0 + 2, top + 2, [40, 30, 30]);
