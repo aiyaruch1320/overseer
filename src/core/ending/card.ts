@@ -1,6 +1,7 @@
 // The ending card of a life, built from the log at its death with the tier 0 templates (docs/systems/llm/07-ending-templates.md).
 // The facts are chosen and ordered by the rules of §2.3; the summary, the card lines and the epitaph are words from the template file.
 // The llm layer may replace the summary and the epitaph (`applyEndingText`); it reads `endingInput(state)` and may not add a fact.
+import { fameOf, storyFacts } from '../types';
 import type { Ctx } from '../game';
 import { hashText } from '../text/plain';
 import { placeName, raceName } from '../text/pick';
@@ -165,7 +166,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const st = ctx.state;
   const life = st.life!;
   const x = lx(st);
-  const ending = (life.ext.story as { ended?: string } | undefined)?.ended ?? null;
+  const ending = storyFacts(life)?.ended ?? null;
   const g = gatherFacts(ctx, ending);
   const deadAge = life.dead?.hAge ?? life.hAge;
   const log = lifeLog(ctx);
@@ -255,7 +256,7 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
   const threads = currentThreads(ctx);
   const passedCv = Object.keys(life.passed).filter((id) => id.startsWith('cv.') && !x.preset.includes(id)).length;
   const bigEvents = log.filter((e) => e.sys === 'world' && e.kind === 'event' && e.worldYear >= life.birthYear && String(e.data.mark).includes('⭐')).length;
-  const fame = num((life.ext.character as { fame?: number } | undefined)?.fame);
+  const fame = num(fameOf(life));
   const classUp = log.some((e) => e.sys === 'character' && e.kind === 'class' && num(/\d/.exec(String(e.data.to))?.[0]) > num(/\d/.exec(String(e.data.from))?.[0]));
   const mark = markOf(passedCv, bigEvents, fame, classUp);
   // a newcomer in the old world is not a generation of the family (0 = none; 05 §4)

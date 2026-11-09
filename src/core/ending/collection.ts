@@ -1,6 +1,7 @@
 // The collection (docs/systems/experience/03-ending-and-collection.md §5, §6): what the lives of the player have found, kept across lives and worlds.
 // An entry is an id `<category>:<id>`; `state.lineage.collection` holds the ids. A view shows the ratio found/total by category; an entry not found is
 // a shadow (no name, no way to earn it). Nothing here draws a random number.
+import { storyFacts } from '../types';
 import type { Ctx, GameData } from '../game';
 import { extOf as characterExt } from '../character';
 import { knownName } from '../text/labels';
@@ -82,7 +83,7 @@ const MODE_OF_RACE: Record<string, string> = { slime: 'slime', soulmachine: 'sou
 
 /** The start mode a life began with. `heir` is set by the lineage (the life is not a first one). */
 export function modeOf(state: GameState, life: LifeState): string {
-  const special = (life.ext.character as { special?: string } | undefined)?.special;
+  const special = life.ext.character?.special;
   if (special === 'summoned' || special === 'reincarnated') return special;
   const rec = lx(state).recs.find((r) => r.id === life.id);
   if (rec && rec.origin !== 'first') return 'heir';
@@ -153,7 +154,7 @@ export function lifeEntries(ctx: Ctx, life: LifeState, log: LogEntry[] = lifeLog
   for (const id of life.items) if (id.startsWith('tm_') && cat.talisman.includes(id)) out.add(key('talisman', id));
   const comps = (life.ext.character ? characterExt(life) : undefined) as { companions?: string[] } | undefined;
   for (const id of comps?.companions ?? []) if (ok('companion', id)) out.add(key('companion', id));
-  const ending = (life.ext.story as { ended?: string } | undefined)?.ended;
+  const ending = storyFacts(life)?.ended;
   if (ending && ok('ending', ending)) out.add(key('ending', ending));
   out.add(key('mode', modeOf(ctx.state, life)));
   // the titles of the life and the vow it kept are found in this life too (the page of the collection counts them): the card counts what the page counts (R7). They are listed

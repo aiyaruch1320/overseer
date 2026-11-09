@@ -196,7 +196,7 @@ export function badFates(ctx: Ctx, l: LifeState): string[] {
 }
 
 /** Where the fates stand at death: a bad fate of his that is still in `life.fate` did happen; the ones that left (`ext.fate.avoided`) did not. */
-export const avoidedFates = (l: LifeState): string[] => ((l.ext.fate as { avoided?: string[] } | undefined)?.avoided ?? []).slice();
+export const avoidedFates = (l: LifeState): string[] => (l.ext.fate?.avoided ?? []).slice();
 
 export function factsOf(ctx: Ctx, l: LifeState): Facts {
   const d = l.dead;

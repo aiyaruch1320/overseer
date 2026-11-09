@@ -115,8 +115,7 @@ function safeNear(ctx: Ctx, id: string): boolean {
 }
 
 function npcAlive(ctx: Ctx, id: string): boolean {
-  const slots = ctx.state.npcs.slots as Record<string, { alive?: boolean; status?: string }>;
-  const s = slots[id];
+  const s = ctx.state.npcs.slots[id];
   return !!s && (s.alive === true || s.status === 'alive');
 }
 

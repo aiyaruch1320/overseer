@@ -85,7 +85,7 @@ export function detect(ctx: Ctx): Thread[] {
   for (const name of b?.feuds ?? []) add('ศึกสายเลือด', `แค้นกับ ${name}`, `feud:${name}`, 7);
   if (!out.some((t) => t.kind === 'ศึกสายเลือด') && feud(life).length) add('ศึกสายเลือด', feudText(ctx, life), `curse:${feud(life)[0]}`);
   // a debt in gold
-  const debt = Number((life.ext.economy as { debt?: number } | undefined)?.debt ?? 0);
+  const debt = Number(life.ext.economy?.debt ?? 0);
   if (debt > 0) add('หนี้', `หนี้ทอง ${Math.round(debt)}`, 'debt', debt > DEBT_BIG ? 5 : 3);
   // a legendary weapon that has to be returned (items/return notes are written at the death by the items system)
   let birthN = 0;

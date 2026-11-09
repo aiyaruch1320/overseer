@@ -1,5 +1,4 @@
-// What the items system keeps for the whole world, across lives: `god.ext.items` (the state has no field of its own for it; proposal for types.ts:
-// `world.ext`). The legendary weapons are one each in the world (08-legendary.md): who holds each, and the ones that broke. The ancient talismans of
+// What the items system keeps for the whole world, across lives: `god.ext.items` (the state has no `world.ext`; `WorldExt` in types.ts names the key). The legendary weapons are one each in the world (08-legendary.md): who holds each, and the ones that broke. The ancient talismans of
 // NPC hands live here too (talisman.ts).
 import type { Ctx } from '../game';
 

@@ -99,7 +99,7 @@ export function jobWeapons(ctx: Ctx, life: LifeState): void {
       continue;
     }
     // "งานของอาชีพ": after some years in the job its next weapon may come
-    const since = (life.ext.character as { jobSince?: number } | undefined)?.jobSince ?? 0;
+    const since = life.ext.character?.jobSince ?? 0;
     if (life.hAge - since >= JOB_GROWTH_FROM && rng.chance(JOB_GROWTH)) {
       const next = set.find((w) => !life.items.includes(w.id) && RANK[w.rarity] > Math.max(0, ...set.filter((x) => life.items.includes(x.id)).map((x) => RANK[x.rarity])) && w.rarity !== 'L');
       if (next) apply(ctx, [{ k: 'grant', kind: 'weapon', id: next.id }], src);

@@ -1,7 +1,6 @@
-// Runtime shape of the NPC state. src/core/types.ts gives NpcSlotState only the fields every system shares;
-// the NPC system keeps its own fields on the same objects (plain JSON, saved with the state).
-// Proposal for the contract: move these fields into NpcSlotState / NpcState in types.ts.
-import type { NpcSlotState, NpcState } from '../types';
+// Runtime shape of the NPC state. src/core/types.ts gives NpcSlotState the fields other systems read (name, status, born, span...; optional there);
+// the NPC system keeps its own fields on the same objects (plain JSON, saved with the state) and here narrows the shared ones to required.
+import type { NpcSlotState, NpcState, SlotStatus } from '../types';
 import type { PathKey } from '../data/types-npcs';
 
 export type { PathKey };
@@ -55,7 +54,7 @@ export interface NewcomerInfo {
   year: number;
 }
 
-export type SlotStatus = 'absent' | 'alive' | 'dead' | 'gone';
+export type { SlotStatus };
 
 export interface NpcSlotX extends NpcSlotState {
   /** Name of the current holder: the roster name for generation 1, "<name>ที่ N" after. */

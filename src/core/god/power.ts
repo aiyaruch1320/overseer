@@ -148,7 +148,7 @@ export function priceOf(ctx: Ctx, action: PriceAction, opts: PriceOpts = {}): Pr
   }
   const price: Price = { base, mul, notes };
   // the shared dream of a conjuring (07-conjure.md wake · shadow) gives the character one free dream
-  const shared = action === 'dream' && (ctx.state.god.ext.conjure as { freeDream?: boolean } | undefined)?.freeDream === true;
+  const shared = action === 'dream' && ctx.state.god.ext.conjure?.freeDream === true;
   const free = shared || ((action === 'dream' || action === 'whisper') && holdsFreeAct(ctx) && count(ctx, 'y.free') === 0);
   if (free) {
     price[line] = 0;
@@ -211,7 +211,7 @@ export function pay(ctx: Ctx, cost: Cost, why: string): void {
   const god = ctx.state.god;
   const f = cost.faith ?? 0;
   const d = cost.dread ?? 0;
-  if ((cost as Price).shared) delete (god.ext.conjure as { freeDream?: boolean }).freeDream;
+  if ((cost as Price).shared) delete god.ext.conjure?.freeDream;
   else if ((cost as Price).free) bump(ctx, 'y.free');
   if (f <= 0 && d <= 0) return;
   god.light -= f;

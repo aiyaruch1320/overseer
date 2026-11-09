@@ -2,6 +2,7 @@
 // the lives of a family in one world. Hooks: birth writes the record of the life; the life year lets the heir settle the threads it inherited;
 // the death keeps the life in the lineage (the line, the book, the threads, the chronicle) and picks the heir. `nextLife(game)` bears the next life.
 // State: `state.lineage` (types.ts) plus the extension `state.lineage.x` (state.ts). The summary of the world is `worldSummary(state, data)`.
+import { storyFacts } from '../types';
 import { registerStat } from './stats';
 import type { System } from '../game';
 import { write } from '../log';
@@ -58,7 +59,7 @@ export const lineageSystem: System = {
     if (!x.dynasty) x.dynasty = st.lineage.lives[0]?.name ?? life.name;
     const rec = x.recs.find((r) => r.id === life.id);
     const card = cardOf(st, life.id);
-    const ending = (life.ext.story as { ended?: string } | undefined)?.ended;
+    const ending = storyFacts(life)?.ended;
     const generation = st.lineage.lives.length + 1;
     // the threads, the book, the heir
     const threads = keepThreads(ctx);

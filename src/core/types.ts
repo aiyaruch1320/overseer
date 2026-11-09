@@ -276,6 +276,8 @@ export interface WorldState {
   ended?: { year: number; id: EventId };
 }
 
+export type SlotStatus = 'absent' | 'alive' | 'dead' | 'gone';
+
 export interface NpcSlotState {
   holder: string; // original id or successor id
   alive: boolean;
@@ -283,6 +285,23 @@ export interface NpcSlotState {
   step: number; // story clock position
   place?: CountryId;
   rel: Record<string, number>; // toward the main character and other NPCs
+  /**
+   * Facts about the holder that systems besides the NPC system read (bonds, the god's dream, the ending). The NPC system writes them on every slot it makes;
+   * optional here so a state made before they were typed (or by a test) still fits. `NpcSlotX` (src/core/npc/types.ts) narrows them to required.
+   */
+  /** Name of the current holder: the roster name for generation 1, "<name>ที่ N" after. */
+  name?: string;
+  gen?: number;
+  status?: SlotStatus;
+  /** World year of birth (negative before the start) and natural lifespan in world years. */
+  born?: number;
+  span?: number;
+  died?: number;
+  cause?: string;
+  /** Home place of the row, to tell a moved holder. */
+  home?: string;
+  /** Gravely ill since this world year. */
+  sick?: number;
 }
 
 export interface NpcState {
@@ -330,9 +349,60 @@ export interface LifeState {
   godFaith: number; // −100..100
   heart: number; // ภาระใจ
   dead?: { year: number; hAge: number; cause: string; node?: NodeId };
-  /** Per-system extras added by later milestones (bonds, bondage, travel, combat), keyed by system. */
-  ext: Record<string, unknown>;
+  /** Per-system extras added by later milestones (bonds, bondage, travel, combat), keyed by system. `LifeExt` types the slices other systems read. */
+  ext: LifeExt;
 }
+
+/** Facts of `life.ext.character` that other systems read (the whole shape is `CharacterExt` in character/data.ts). */
+export interface CharacterFacts {
+  /** Fame points; the one number every system reads (economy climb, ending card, heir inheritance). */
+  fame?: number;
+  axes?: Record<string, number>;
+  /** hAge of the natural death, hidden from the player. */
+  deathAge?: number;
+  /** hAge at which the current job began. */
+  jobSince?: number;
+  special?: string;
+  companions?: string[];
+  /** Maximum-hp bonus from gifts. */
+  hpBonus?: number;
+}
+
+/** Facts of `life.ext.combat` that other systems read (the whole shape is `CombatExt` in combat/state.ts). */
+export interface CombatFacts {
+  /** Hit points now; `null` until first read (the maximum is then computed). */
+  hp?: number | null;
+  /** Rank in the army, 0 to 4; the economy reads it for the wage. */
+  rank?: number;
+  pending?: { prelude?: number }[];
+}
+
+/**
+ * The slices of `life.ext` that more than one system reads, typed once here. Each system keeps the whole of its own slice where it was (plain JSON, `extOf` helpers);
+ * the slices are optional because a slice is made on first use. Any other key stays `unknown`.
+ */
+export interface LifeExt {
+  character?: CharacterFacts;
+  combat?: CombatFacts;
+  economy?: { debt?: number };
+  travel?: { spent?: number };
+  items?: { wield?: string };
+  fate?: { avoided?: string[] };
+  [system: string]: unknown;
+}
+
+/** Facts of `life.ext.story`, `.bondage` and `.bonds` that other systems read. These slices are not fields of `LifeExt` (each system's full shape is wider and tests build them by hand): read them through these. */
+export interface StoryFacts { cur?: { id?: string }; ended?: string; line?: string; skipTo?: NodeId; open?: Record<string, boolean>; external?: string[] }
+export interface BondageFacts { level?: number; held?: { npc?: string; gone?: string }[] }
+export interface BondsFacts { crises?: { n: number }[] }
+export const storyFacts = (life: LifeState): StoryFacts | undefined => life.ext.story as StoryFacts | undefined;
+export const bondageFacts = (life: LifeState): BondageFacts | undefined => life.ext.bondage as BondageFacts | undefined;
+export const bondsFacts = (life: LifeState): BondsFacts | undefined => life.ext.bonds as BondsFacts | undefined;
+
+/** The life's fame (0 when the character system has not made its extras yet). */
+export const fameOf = (life: LifeState): number => life.ext.character?.fame ?? 0;
+/** The life's hit points as saved: `null` while combat has not read them. Combat's `hpOf` is the one that fills it. */
+export const savedHp = (life: LifeState): number | null => life.ext.combat?.hp ?? null;
 
 export interface GodState {
   light: number; // แสงศรัทธา
@@ -344,7 +414,19 @@ export interface GodState {
   prayers: unknown[];
   chronicle: { worldYear: number; hAge?: number; kind: string; id: string; target?: string; result?: string }[];
   vows: string[];
-  ext: Record<string, unknown>;
+  /** The world's own extras (there is no `WorldState.ext`): the slices several systems read are typed in `WorldExt`. */
+  ext: WorldExt;
+}
+
+/** What `god.ext` holds that crosses systems. Other keys (`god`, `goals`, `acts`, `policy`...) belong to one system and stay `unknown`. */
+export interface WorldExt {
+  /** The items system's legends and talismans (items/world.ts `ItemsWorld`). */
+  items?: unknown;
+  /** The god's window is open (set by the god system, read by the acts). */
+  window?: boolean;
+  conjure?: { freeDream?: boolean };
+  ruin?: { protect?: Record<string, number> };
+  [system: string]: unknown;
 }
 
 export interface LineageState {

@@ -5,6 +5,7 @@
 //    (`life.ext.story.skipped`; the convergence points are set as passed with the way `-`, and listed in `x.preset` so the collection does not count them);
 //  - an ending the family earned is not chosen again while another is open (story/ending.ts reads `x.book.endings`);
 //  - the personal nodes (type P) are walked again with the same weights. The doc says the way the parent took weighs ×0.5: the story system has no hook for it (doc gap, in the report).
+import { storyFacts } from '../types';
 import type { Ctx } from '../game';
 import { indexOf } from '../story/data';
 import { extOf as storyExt } from '../story/state';
@@ -38,7 +39,7 @@ export function updateBook(ctx: Ctx): void {
     if (e.sys === 'character' && e.kind === 'job' && e.id) add(e.data.type === 'secret' ? b.secretJobs : b.jobs, e.id);
     if (e.sys === 'items' && e.kind === 'legend') add(b.weapons, e.id);
   }
-  add(b.endings, (life.ext.story as { ended?: string } | undefined)?.ended);
+  add(b.endings, storyFacts(life)?.ended);
 }
 
 /** Sets the book into the story state of the heir before its first year is played. */

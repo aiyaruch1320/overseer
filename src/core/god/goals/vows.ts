@@ -1,6 +1,7 @@
 // The vows of the god (08-goals.md §2): offered at the birth of the character (three, weighted ×3 for those that fit the question, the origin or the
 // omen of the life), taken by the player, changed once at the age stop of 15, judged when the character dies.
 // Offering draws from its own seed stream `god.vow`, so the same seed and the same lineage offer the same vows (G6b "เสร็จเมื่อ").
+import { bondageFacts } from '../../types';
 import type { Ctx } from '../../game';
 import { write } from '../../log';
 import type { LifeState } from '../../types';
@@ -108,7 +109,7 @@ export function impossible(ctx: Ctx, life: LifeState, id: string): string | null
     case 'GV-13':
       return badFates(ctx, life).length ? null : 'ไม่มีชะตาร้ายให้เปลี่ยน';
     case 'GV-14':
-      return t.boundAtBirth || (life.ext.bondage as { level?: number } | undefined)?.level ? null : 'ไม่ได้เป็นผู้ถูกผูกตัว';
+      return t.boundAtBirth || bondageFacts(life)?.level ? null : 'ไม่ได้เป็นผู้ถูกผูกตัว';
     case 'GV-16':
       return (ctx.state.world.countryFlags[life.home] ?? []).some((f) => f === 'god_ruin' || f === 'fallen') ? 'ประเทศเกิดเป็นซากแล้ว' : null;
     case 'GV-18': {
