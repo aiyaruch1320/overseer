@@ -1,5 +1,5 @@
 {
- "version": "ad3a4e20e80f",
+ "version": "e7d5fdd643c2",
  "sources": [
   "data/gen/bonds.json",
   "data/gen/npcs.json",
@@ -968,19 +968,29 @@
      },
      {
       "name": "ไซเรน",
-      "overrides": {}
+      "overrides": {
+       "skin": "#b4c0c8",
+       "hairColor": "#2f8a74",
+       "eye": "#08080c",
+       "feats": [
+        "gills",
+        "scales",
+        "finskirt",
+        "wet",
+        "fangs"
+       ]
+      }
      },
      {
       "name": "กัปปะ",
       "overrides": {
-       "skin": "#5a8a4a",
+       "skin": "#6a7a3a",
        "feats": [
         "gills",
         "scales",
-        "pearls",
         "finskirt",
         "wet",
-        "wet"
+        "dish"
        ]
       }
      }
@@ -1068,7 +1078,7 @@
       }
      }
     ],
-    "src": "docs/appearance/02-races.md:99"
+    "src": "docs/appearance/02-races.md:106"
    },
    "giant": {
     "id": "giant",
@@ -1133,7 +1143,7 @@
       "overrides": {}
      }
     ],
-    "src": "docs/appearance/02-races.md:105"
+    "src": "docs/appearance/02-races.md:112"
    },
    "lavakin": {
     "id": "lavakin",
@@ -1173,7 +1183,7 @@
     "second": "#924e22",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:111"
+    "src": "docs/appearance/02-races.md:118"
    },
    "construct": {
     "id": "construct",
@@ -1247,7 +1257,7 @@
       "overrides": {}
      }
     ],
-    "src": "docs/appearance/02-races.md:117"
+    "src": "docs/appearance/02-races.md:124"
    },
    "soulmachine": {
     "id": "soulmachine",
@@ -1291,7 +1301,7 @@
     "second": "#5a5a5e",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:123"
+    "src": "docs/appearance/02-races.md:130"
    },
    "mummy": {
     "id": "mummy",
@@ -1332,7 +1342,7 @@
     "second": "#d9a030",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:129"
+    "src": "docs/appearance/02-races.md:136"
    },
    "ghoul": {
     "id": "ghoul",
@@ -1373,7 +1383,7 @@
     "second": "#8d8774",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:135"
+    "src": "docs/appearance/02-races.md:142"
    }
   },
   "npcs": {
@@ -6815,7 +6825,7 @@
     "fem": true,
     "skin": "#c0e0f0",
     "hairColor": "#c8ccd8",
-    "eye": "#2a2024",
+    "eye": "#08080c",
     "main": "#e8a0c0",
     "second": "#f4e8f0",
     "outfit": "noble",
@@ -6825,9 +6835,7 @@
     "tool": "",
     "feats": [],
     "wear": 0.25,
-    "defaults": [
-     "eye"
-    ],
+    "defaults": [],
     "items": [
      "ผ้าพันคอปิดเสียง"
     ],
@@ -6992,7 +7000,7 @@
     "line": "กัปปะ",
     "stage": "child",
     "fem": null,
-    "skin": "#5a8a4a",
+    "skin": "#6a7a3a",
     "hairColor": "#2a4a2a",
     "eye": "#d8c030",
     "main": "#8ac888",
@@ -8393,10 +8401,10 @@
     "race": "human",
     "stage": "adult",
     "fem": false,
-    "skin": "#f6d2b0",
+    "skin": "#c89a72",
     "hairColor": "#8a8a90",
     "eye": "#2a2024",
-    "main": "#3a4a6a",
+    "main": "#4a5a7a",
     "second": "#8a7a5a",
     "outfit": "noble",
     "hair": "cropped",
@@ -8404,10 +8412,9 @@
     "hat": "",
     "tool": "sheathed",
     "feats": [],
-    "wear": 0.4,
+    "wear": 0.7,
     "defaults": [
-     "eye",
-     "skin"
+     "eye"
     ],
     "items": [
      "จดหมายร่างถึงเมืองหลวง"
@@ -8543,8 +8550,8 @@
     "race": "human",
     "stage": "elder",
     "fem": true,
-    "skin": "#f6d2b0",
-    "hairColor": "#8a8a90",
+    "skin": "#f4e4d4",
+    "hairColor": "#b8ac98",
     "eye": "#8a8a90",
     "main": "#1a2a4a",
     "second": "#8a2a2a",
@@ -13899,10 +13906,12 @@
     "second": "#5a7a4a",
     "outfit": "tunic",
     "hair": "wild",
-    "beard": "short",
+    "beard": "long",
     "hat": "",
     "tool": "staff",
-    "feats": [],
+    "feats": [
+     "heavybrow"
+    ],
     "wear": 0.25,
     "defaults": [
      "outfit"
@@ -13911,6 +13920,11 @@
      "ไม้เท้าท่อนหินยักษ์"
     ],
     "pose": "ยืนหน้าบันไดหมื่นขั้นเงยหน้าแล้วถอนหายใจ",
+    "body": {
+     "scale": 1.46,
+     "shoulders": 1.55,
+     "head": 0.84
+    },
     "file": "08-saharan",
     "country": "SH-03",
     "continent": "SH",
@@ -13926,20 +13940,24 @@
     "eye": "#8a8a90",
     "main": "#a89878",
     "second": "#3a4a7a",
-    "outfit": "tunic",
+    "outfit": "robe",
     "hair": "braid",
     "beard": "",
     "hat": "hood",
     "tool": "",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "outfit"
-    ],
+    "defaults": [],
     "items": [
      "ก้อนหินคำถาม"
     ],
     "pose": "นั่งขัดสมาธิหน้าบันไดแล้วส่งหินให้ผู้เข้าทดสอบ",
+    "body": {
+     "scale": 1.34,
+     "shoulders": 0.95,
+     "head": 1,
+     "gait": "normal"
+    },
     "file": "08-saharan",
     "country": "SH-03",
     "continent": "SH",
@@ -13990,7 +14008,9 @@
     "beard": "",
     "hat": "",
     "tool": "crystal",
-    "feats": [],
+    "feats": [
+     "gaunt"
+    ],
     "wear": 0,
     "defaults": [
      "eye"
@@ -13999,6 +14019,12 @@
      "ดวงตาศิลาก้อนกลมเรืองจาง"
     ],
     "pose": "กำหินแน่นมือไว้ที่อกแล้วหลับตาครึ่งหนึ่ง",
+    "body": {
+     "scale": 1.2,
+     "shoulders": 1.12,
+     "head": 1.08,
+     "gait": "shuffle"
+    },
     "file": "08-saharan",
     "country": "SH-03",
     "continent": "SH",
@@ -14364,7 +14390,7 @@
     "name": "ผู้เฝ้าภูเขาไททัน",
     "race": "giant",
     "stage": "elder",
-    "fem": null,
+    "fem": false,
     "skin": "#8a8a84",
     "hairColor": "#a8acb8",
     "eye": "#2a2024",
@@ -14384,6 +14410,12 @@
      "แผ่นหินจดจังหวะ"
     ],
     "pose": "แนบหูกับหินแล้วขีดจังหวะใหม่ลงแผ่นหิน",
+    "body": {
+     "scale": 1.36,
+     "shoulders": 1,
+     "head": 0.96,
+     "gait": "glide"
+    },
     "file": "08-saharan",
     "country": "SH-06",
     "continent": "SH",
@@ -15708,12 +15740,15 @@
     "eye": "#2a2024",
     "main": "#738c75",
     "second": "#8a7a5a",
-    "outfit": "leather",
+    "outfit": "cloak",
     "hair": "braid",
-    "beard": "short",
+    "beard": "braided",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "beads",
+     "moss"
+    ],
     "wear": 0,
     "defaults": [
      "eye"
@@ -15722,6 +15757,11 @@
      "สร้อยหินชื่อบรรพบุรุษ"
     ],
     "pose": "วางมือบนก้อนหินใหญ่แล้วกระซิบชื่อบรรพบุรุษ",
+    "body": {
+     "scale": 1.52,
+     "shoulders": 1.4,
+     "head": 0.9
+    },
     "file": "08-saharan",
     "country": "SH-17",
     "continent": "SH",
@@ -20745,7 +20785,7 @@
     "line": "ไซเรน",
     "stage": "adult",
     "fem": null,
-    "skin": "#a0d8c0",
+    "skin": "#b4c0c8",
     "hairColor": "#2a6a8a",
     "eye": "#8a8a90",
     "main": "#3a7a3a",
@@ -20757,9 +20797,7 @@
     "tool": "",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [],
     "pose": "",
     "of": "NR08-3",
