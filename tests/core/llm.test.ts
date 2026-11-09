@@ -103,6 +103,14 @@ describe('checks of an answer', () => {
     // words that only contain the letters are fine
     expect(checkThai('เขาเดินข้ามสะพานไปข้างบ้าน แล้วหัวเราะ', r).ok).toBe(true);
   });
+  it('lets the text quote a banned word the game itself gave (the question of a life), and nowhere else (real DeepSeek trial 2026-11-09)', () => {
+    const quotes = ['คำถามของชีวิต: ร่างที่ถูกเปลี่ยนไปเรื่อย ๆ ยังเป็นตัวเราอยู่ไหม'];
+    const told = 'ตลอดชีวิต เขาถามว่าร่างที่ถูกเปลี่ยนไปเรื่อย ๆ ยังเป็นตัวเราอยู่ไหม';
+    expect(checkThai(told, r)).toMatchObject({ ok: false, reason: 'banned word เรา' });
+    expect(checkThai(told, { ...r, quotes }).ok).toBe(true);
+    // the same word in the voice of the text is still out, even with the quote somewhere else
+    expect(checkThai(`${told} และเราจะจำเขาไว้`, { ...r, quotes })).toMatchObject({ ok: false, reason: 'banned word เรา' });
+  });
   it('rejects text that is too short or far too long, and cuts a little long text at a paragraph', () => {
     expect(checkThai('สั้น', r)).toMatchObject({ ok: false });
     expect(checkThai('ก'.repeat(250), r)).toMatchObject({ ok: false });

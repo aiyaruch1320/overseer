@@ -25,6 +25,29 @@ export interface TextRules {
   allowLatin?: string[];
   /** Paragraphs, at most. */
   paragraphs?: number;
+  /** The words of the game the text may quote: a banned word inside a quote of them is the game's own (a question of life "ยังเป็นตัวเราอยู่ไหม"), not the voice of the text. */
+  quotes?: readonly string[];
+}
+
+/** Letters on each side of a banned word that must match the game's own words for the word to count as quoted. */
+const QUOTE_SIDE = 5;
+const squash = (s: string) => s.replace(/\s+/g, '');
+
+/** Is every place the banned word stands in the text inside a quote of the game's words? */
+function quoted(text: string, re: RegExp, quotes: readonly string[]): boolean {
+  if (!quotes.length) return false;
+  const given = quotes.map(squash);
+  const flat = squash(text);
+  const all = new RegExp(re.source, re.flags.includes('g') ? re.flags : `${re.flags}g`);
+  let m: RegExpExecArray | null;
+  let any = false;
+  while ((m = all.exec(flat))) {
+    any = true;
+    const around = flat.slice(Math.max(0, m.index - QUOTE_SIDE), m.index + m[0].length + QUOTE_SIDE);
+    if (!given.some((g) => g.includes(around))) return false;
+    if (m[0].length === 0) all.lastIndex++;
+  }
+  return any;
 }
 
 /** Thai text for the player: Thai letters, no code or number the game did not give, no banned word, within the length. Returns the text trimmed (and cut at a paragraph when a little long). */
@@ -49,7 +72,7 @@ export function checkThai(raw: string, r: TextRules): Checked<string> {
   if (!letters.length || thai / letters.length < THAI_SHARE) return { ok: false, reason: 'not Thai' };
   const digits = text.match(DIGIT);
   if (digits && digits.some((d) => !(r.allowDigits ?? '').includes(d))) return { ok: false, reason: 'a number the game did not give' };
-  for (const b of BANNED) if (b.re.test(text)) return { ok: false, reason: `banned word ${b.word}` };
+  for (const b of BANNED) if (b.re.test(text) && !quoted(text, b.re, r.quotes ?? [])) return { ok: false, reason: `banned word ${b.word}` };
   // a code of the game (`hu.a1` `b_nobleblood`) must not reach the player
   if (/\b[a-z]{1,3}_[a-z_]+\b/.test(text)) return { ok: false, reason: 'an id of the game' };
   return { ok: true, value: text };

@@ -50,7 +50,8 @@ const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(
  * age or a count that is not in the facts, with digits or in Thai words), no name that is not the life's, no vow or title the game did not give.
  */
 export function checkSummary(text: string, input: EndingSummaryInput) {
-  const thai = checkThai(text, { min: SUMMARY.min, max: SUMMARY.max, paragraphs: SUMMARY.paragraphs, allowDigits: digitsOf(input) });
+  // a banned word the facts carry (the question of the life may say "เรา") may be quoted; anywhere else it is the voice of the text
+  const thai = checkThai(text, { min: SUMMARY.min, max: SUMMARY.max, paragraphs: SUMMARY.paragraphs, allowDigits: digitsOf(input), quotes: input.facts });
   if (!thai.ok) return thai;
   const facts = checkFacts(thai.value, {
     given: givenOf(input),
