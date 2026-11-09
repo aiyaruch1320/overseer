@@ -1,5 +1,5 @@
 {
- "version": "ac2770b75a5a",
+ "version": "2da4a6d03bea",
  "sources": [
   "docs/appearance/11-world-changes.md",
   "docs/appearance/12-event-visuals.md",
@@ -77652,7 +77652,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:133"
+    "src": "docs/appearance/20-god-ui.md:134"
    },
    {
     "id": "mr.MR-04",
@@ -77817,7 +77817,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:134",
+    "src": "docs/appearance/20-god-ui.md:135",
     "fxPreset": "beam"
    },
    {
@@ -77983,7 +77983,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:135"
+    "src": "docs/appearance/20-god-ui.md:136"
    },
    {
     "id": "mr.MR-06",
@@ -78141,7 +78141,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:136"
+    "src": "docs/appearance/20-god-ui.md:137"
    },
    {
     "id": "mr.MR-07",
@@ -78292,7 +78292,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:137"
+    "src": "docs/appearance/20-god-ui.md:138"
    },
    {
     "id": "mr.MR-08",
@@ -78450,7 +78450,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:138"
+    "src": "docs/appearance/20-god-ui.md:139"
    },
    {
     "id": "mr.MR-10",
@@ -78608,7 +78608,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:139"
+    "src": "docs/appearance/20-god-ui.md:140"
    },
    {
     "id": "mr.MR-14",
@@ -78773,7 +78773,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:140"
+    "src": "docs/appearance/20-god-ui.md:141"
    },
    {
     "id": "mr.MR-15",
@@ -78938,7 +78938,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:141"
+    "src": "docs/appearance/20-god-ui.md:142"
    },
    {
     "id": "mr.MR-17",
@@ -79131,7 +79131,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:142",
+    "src": "docs/appearance/20-god-ui.md:143",
     "fxPreset": "meteor"
    },
    {
@@ -79304,7 +79304,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:143"
+    "src": "docs/appearance/20-god-ui.md:144"
    },
    {
     "id": "mr.MR-20",
@@ -79483,7 +79483,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:144"
+    "src": "docs/appearance/20-god-ui.md:145"
    },
    {
     "id": "mr.MR-21",
@@ -79647,7 +79647,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:145"
+    "src": "docs/appearance/20-god-ui.md:146"
    },
    {
     "id": "mr.MR-22",
@@ -79798,7 +79798,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:146"
+    "src": "docs/appearance/20-god-ui.md:147"
    },
    {
     "id": "mr.MR-23",
@@ -79949,7 +79949,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:147"
+    "src": "docs/appearance/20-god-ui.md:148"
    },
    {
     "id": "mr.MR-24",
@@ -80100,7 +80100,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:148"
+    "src": "docs/appearance/20-god-ui.md:149"
    },
    {
     "id": "mr.MR-25",
@@ -80265,7 +80265,7 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:149"
+    "src": "docs/appearance/20-god-ui.md:150"
    }
   ],
   "continents": [

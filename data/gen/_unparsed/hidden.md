@@ -1,6 +1,6 @@
 # ส่วนที่แปลไม่ได้: hidden
 
-76 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+78 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
@@ -50,6 +50,8 @@
 | docs/systems/god/04-miracles.md:42 | สองเท่า | ตัวเลขเป็นคำ |
 | docs/systems/god/04-miracles.md:76 | สองเท่า | ตัวเลขเป็นคำ |
 | docs/systems/god/05-llm.md:89 | สองเท่า | ตัวเลขเป็นคำ |
+| docs/systems/god/05-llm.md:93 | ห้าร้อย | ตัวเลขเป็นคำ |
+| docs/systems/god/05-llm.md:93 | ห้าร้อย | ตัวเลขเป็นคำ |
 | docs/systems/god/06-implementation.md:53 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
 | docs/systems/god/06-implementation.md:73 | ครึ่งหนึ่ง | ตัวเลขเป็นคำ |
 | docs/systems/god/06-implementation.md:84 | สองเท่า | ตัวเลขเป็นคำ |

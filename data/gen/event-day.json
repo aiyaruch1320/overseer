@@ -1,5 +1,5 @@
 {
- "version": "79723daf6692",
+ "version": "9d03173f7ee0",
  "sources": [
   "docs/appearance/20-god-ui.md"
  ],
@@ -14,7 +14,7 @@
     "after": "หยดน้ำบนใบข้าว กลิ่นดินเปียกเป็นไอขาว",
     "sound": "ฝนบนหลังคาฟาง",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:133"
+    "src": "docs/appearance/20-god-ui.md:134"
    },
    {
     "id": "MR-04",
@@ -24,7 +24,7 @@
     "after": "แสงค้างเป็นฝุ่นทองบนหลังคา",
     "sound": "เสียงประสานไม่มีคำหนึ่งคอร์ด",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:134"
+    "src": "docs/appearance/20-god-ui.md:135"
    },
    {
     "id": "MR-05",
@@ -34,7 +34,7 @@
     "after": "ธงสองฝ่ายตกลงพื้นในลมเดียวกัน",
     "sound": "เสียงดาบนับร้อยวางลงบนดิน",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:135"
+    "src": "docs/appearance/20-god-ui.md:136"
    },
    {
     "id": "MR-06",
@@ -44,7 +44,7 @@
     "after": "รอยไหม้รูปกิ่งไม้บนพื้น",
     "sound": "ฟ้าผ่าแห้งไม่มีฝน",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:136"
+    "src": "docs/appearance/20-god-ui.md:137"
    },
    {
     "id": "MR-07",
@@ -54,7 +54,7 @@
     "after": "ประตูบ้านทาสีกากบาท",
     "sound": "ไอและระฆังศพ",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:137"
+    "src": "docs/appearance/20-god-ui.md:138"
    },
    {
     "id": "MR-08",
@@ -64,7 +64,7 @@
     "after": "ฝุ่นหินลอยค้าง",
     "sound": "เสียงหินครางลึก",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:138"
+    "src": "docs/appearance/20-god-ui.md:139"
    },
    {
     "id": "MR-10",
@@ -74,7 +74,7 @@
     "after": "ต้นปาล์มต้นแรกงอกริมแอ่ง",
     "sound": "น้ำกระเซ็นบนทรายร้อน",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:139"
+    "src": "docs/appearance/20-god-ui.md:140"
    },
    {
     "id": "MR-14",
@@ -84,7 +84,7 @@
     "after": "ผู้คนวางเครื่องเซ่นหน้ากำแพง",
     "sound": "เสียงร้องยาวของสัตว์นั้น",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:140"
+    "src": "docs/appearance/20-god-ui.md:141"
    },
    {
     "id": "MR-15",
@@ -94,7 +94,7 @@
     "after": "หมู่บ้านใกล้ร้าง กองไฟของทหารรับจ้าง",
     "sound": "เสียงเล็บขูดหิน",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:141"
+    "src": "docs/appearance/20-god-ui.md:142"
    },
    {
     "id": "MR-17",
@@ -104,7 +104,7 @@
     "after": "หลุมดำกว้างเท่าเมือง ขอบหลุมหินแก้วสีดำวาว ไฟคุทั่ว ฝนเถ้าตก",
     "sound": "ความเงียบหนึ่งวินาที แล้วเสียงทุ้มที่รู้สึกได้มากกว่าได้ยิน",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:142"
+    "src": "docs/appearance/20-god-ui.md:143"
    },
    {
     "id": "MR-18",
@@ -114,7 +114,7 @@
     "after": "หลุมขอบตรงกว้าง น้ำใต้ดินเริ่มซึม",
     "sound": "เสียงไม้และหินหักพร้อมกันเป็นพัน ๆ",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:143"
+    "src": "docs/appearance/20-god-ui.md:144"
    },
    {
     "id": "MR-20",
@@ -124,7 +124,7 @@
     "after": "เกาะใหม่ควันขึ้น นกทะเลบินวนครั้งแรก",
     "sound": "น้ำไหลจากหินที่เพิ่งพ้นทะเล",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:144"
+    "src": "docs/appearance/20-god-ui.md:145"
    },
    {
     "id": "MR-21",
@@ -134,7 +134,7 @@
     "after": "ดวงไฟทองของแผงพระเจ้าเปลี่ยนเป็นดวงอาทิตย์เล็ก",
     "sound": "ความเงียบทั้งโลก แล้วเสียงคนนับล้านพูดคำเดียวกัน",
     "sceneRef": "GD-04",
-    "src": "docs/appearance/20-god-ui.md:145"
+    "src": "docs/appearance/20-god-ui.md:146"
    },
    {
     "id": "MR-22",
@@ -144,7 +144,7 @@
     "after": "ผู้คนออกจากบ้านทีละคนหลังฟ้ากลับ",
     "sound": "เสียงลมดูดยาวที่ไม่หยุด",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:146"
+    "src": "docs/appearance/20-god-ui.md:147"
    },
    {
     "id": "MR-23",
@@ -154,7 +154,7 @@
     "after": "สีของทวีปสดขึ้นหนึ่งระดับ",
     "sound": "เสียงลมหายใจของมังกร",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:147"
+    "src": "docs/appearance/20-god-ui.md:148"
    },
    {
     "id": "MR-24",
@@ -164,7 +164,7 @@
     "after": "ฟ้าทวีปหม่นลงหนึ่งระดับ",
     "sound": "คำรามไกล",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:148"
+    "src": "docs/appearance/20-god-ui.md:149"
    },
    {
     "id": "MR-25",
@@ -174,7 +174,7 @@
     "after": "วงลางหมุนเร็วหรือช้าตามทิศ",
     "sound": "เสียงด้ายดึงตึง",
     "sceneRef": null,
-    "src": "docs/appearance/20-god-ui.md:149"
+    "src": "docs/appearance/20-god-ui.md:150"
    }
   ],
   "seconds": {
