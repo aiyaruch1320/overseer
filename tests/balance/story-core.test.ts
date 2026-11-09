@@ -12,13 +12,14 @@ const FROM = Number(process.env.STORY_CORE_FROM ?? 1);
 describe('nodes per life on the whole core', () => {
   it(
     `${LIVES} lives: 31 to 33 nodes for the lives that reach 70`,
-    () => {
+    async () => {
       const data = loadAll();
       let all = 0;
       let elder = 0;
       let elders = 0;
       const lines: Record<string, number> = {};
       for (let seed = FROM; seed < FROM + LIVES; seed++) {
+        if ((seed - FROM) % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn of the event loop every ten lives (tests/setup/settle.ts)
         const s = createSession(data, { seed });
         startLife(s);
         runToDeath(s.game);

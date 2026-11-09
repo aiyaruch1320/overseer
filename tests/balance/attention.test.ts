@@ -148,7 +148,17 @@ function simTargets(): number[] {
 
 let data: GameData;
 const results: Record<string, Life[]> = {};
-const run = (key: string, setting: Settings['attention'], standIns: boolean) => (results[key] ??= Array.from({ length: LIVES }, (_, i) => playLife(data, i + 1, setting, standIns)));
+async function run(key: string, setting: Settings['attention'], standIns: boolean) {
+  if (!results[key]) {
+    const out = [];
+    for (let i = 0; i < LIVES; i++) {
+      out.push(playLife(data, i + 1, setting, standIns));
+      if (i % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn of the event loop every ten lives (tests/setup/settle.ts)
+    }
+    results[key] = out;
+  }
+  return results[key]!;
+}
 
 beforeAll(() => {
   data = loadAll();
@@ -158,8 +168,8 @@ const fmt = (t: T) =>
   `หยุด p50 ${t.stops} (ดิบ ${t.stopsRaw.toFixed(1)}) · การ์ด p50 ${t.cards} (ดิบ ${t.cardsRaw.toFixed(1)}) · เกิน 2 ใน 2 นาที ${(100 * t.burst).toFixed(0)}% · เงียบ p90 ${t.quietP90.toFixed(1)} นาที · ไม่ทันขึ้น ${t.lost.toFixed(2)} · เรือง ${t.glows.toFixed(1)} · พับเข้าหน้าหยุด ${t.folded.toFixed(1)} · หน้าต่าง ${t.windows.toFixed(1)} · ไม่ทันแยกชนิด ${JSON.stringify(Object.fromEntries(Object.entries(t.lostBy).map(([k, v]) => [k, +v.toFixed(2)])))}`;
 
 describe('attention: the five targets on the lives of the core (07-attention.md §5)', () => {
-  it('with prayers and crises written at the sim rates, the setting normal passes all five', () => {
-    const t = targets(run('normal+', 'normal', true));
+  it('with prayers and crises written at the sim rates, the setting normal passes all five', async () => {
+    const t = targets(await run('normal+', 'normal', true));
     console.log(`[attention] ${LIVES} ชีวิตจริงของแกน + คำอธิษฐาน/วิกฤตแทน (ปกติ): ${fmt(t)}`);
     expect(pass.stops(t), `stops ${t.stops}`).toBe(true);
     expect(pass.cards(t), `cards ${t.cards}`).toBe(true);
@@ -168,8 +178,8 @@ describe('attention: the five targets on the lives of the core (07-attention.md 
     expect(pass.lost(t), `lost ${t.lost}`).toBe(true);
   });
 
-  it('the three settings keep their order on the same lives: low calls least, high most', () => {
-    const low = targets(run('low+', 'low', true)), normal = targets(run('normal+', 'normal', true)), high = targets(run('high+', 'high', true));
+  it('the three settings keep their order on the same lives: low calls least, high most', async () => {
+    const low = targets(await run('low+', 'low', true)), normal = targets(await run('normal+', 'normal', true)), high = targets(await run('high+', 'high', true));
     console.log(`[attention] น้อย: ${fmt(low)}\n[attention] มาก: ${fmt(high)}`);
     expect(low.stopsRaw).toBeLessThanOrEqual(normal.stopsRaw);
     expect(normal.stopsRaw).toBeLessThanOrEqual(high.stopsRaw);
@@ -182,8 +192,8 @@ describe('attention: the five targets on the lives of the core (07-attention.md 
     expect(high.burst).toBeGreaterThan(normal.burst);
   });
 
-  it('the real core alone, without prayers and crises: the targets it can reach pass', () => {
-    const t = targets(run('normal', 'normal', false));
+  it('the real core alone, without prayers and crises: the targets it can reach pass', async () => {
+    const t = targets(await run('normal', 'normal', false));
     console.log(`[attention] ${LIVES} ชีวิตจริงของแกนล้วน ยังไม่มีระบบพระเจ้า/พวกพ้อง (ปกติ): ${fmt(t)}`);
     expect(pass.stops(t), `stops ${t.stops}`).toBe(true);
     expect(pass.burst(t), `burst ${t.burst}`).toBe(true);
@@ -192,22 +202,22 @@ describe('attention: the five targets on the lives of the core (07-attention.md 
 
   // The cards and the silence need the triggers that only the god system (16 prayers a life) and the bonds system bring. When `allSystems()`
   // holds the god system this test starts to run on its own and the core has to reach the targets without the stand-ins.
-  it.runIf(hasGod)('the real core with the god system: cards and silence pass', () => {
-    const t = targets(run('normal', 'normal', false));
+  it.runIf(hasGod)('the real core with the god system: cards and silence pass', async () => {
+    const t = targets(await run('normal', 'normal', false));
     expect(pass.cards(t), `cards ${t.cards}`).toBe(true);
     expect(pass.quiet(t), `quiet ${t.quietP90}`).toBe(true);
   });
-  it.skipIf(hasGod)('the real core without the god system is short of cards and silence (waiting for G3 prayers)', () => {
-    const t = targets(run('normal', 'normal', false));
+  it.skipIf(hasGod)('the real core without the god system is short of cards and silence (waiting for G3 prayers)', async () => {
+    const t = targets(await run('normal', 'normal', false));
     console.log(`[attention] ไม่ผ่านเพราะยังไม่มีระบบพระเจ้า: การ์ด p50 ${t.cards} (เป้า 12 ถึง 22) · เงียบ p90 ${t.quietP90.toFixed(1)} นาที (เป้า ไม่เกิน 6)`);
     expect(pass.cards(t)).toBe(false);
   });
 });
 
 describe('attention: the core against the sim', () => {
-  it('prints both sides and keeps the stop count within two of the sim', () => {
+  it('prints both sides and keeps the stop count within two of the sim', async () => {
     const sim = simTargets();
-    const t = targets(run('normal+', 'normal', true));
+    const t = targets(await run('normal+', 'normal', true));
     console.log(`[attention] sim (3000 ชีวิต): หยุด ${sim[0]} การ์ด ${sim[1]} เกิน2 ${(100 * sim[2]).toFixed(0)}% เงียบ ${sim[3]} ไม่ทัน ${sim[4]}\n[attention] แกน (+แทน): หยุด ${t.stops} การ์ด ${t.cards} เกิน2 ${(100 * t.burst).toFixed(0)}% เงียบ ${t.quietP90.toFixed(1)} ไม่ทัน ${t.lost.toFixed(2)}`);
     expect(sim).toHaveLength(5);
     expect(Math.abs(t.stops - sim[0])).toBeLessThanOrEqual(2);

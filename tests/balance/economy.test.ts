@@ -95,8 +95,12 @@ const sum = (a: number[]) => a.reduce((x, y) => x + y, 0);
 describe('economy balance', () => {
   it(
     `${LIVES} lives: gold by age and class against sim-gold, income against outgoings, class moves and bankruptcy`,
-    () => {
-      const rows = Array.from({ length: LIVES }, (_, i) => playLife(i + 1));
+    async () => {
+      const rows: Row[] = [];
+      for (let i = 0; i < LIVES; i++) {
+        rows.push(playLife(i + 1));
+        if (i % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn of the event loop every ten lives (tests/setup/settle.ts)
+      }
       const gold = (age: (typeof AGES)[number], f: (r: Row) => boolean = () => true) => rows.filter((r) => r.at[age] !== undefined && f(r)).map((r) => r.at[age]!);
 
       const lines: string[] = [`gold held by ${LIVES} lives (sim-gold of RAW_PLAN §3.2 in brackets)`];

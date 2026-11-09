@@ -12,7 +12,7 @@ const LIVES = Number(process.env.ENDING_LIVES ?? 240);
 describe('how lives end and pace', () => {
   it(
     `${LIVES} lives`,
-    () => {
+    async () => {
       const data = loadAll();
       let endings = 0;
       let nodes = 0;
@@ -27,6 +27,7 @@ describe('how lives end and pace', () => {
       const causes: Record<string, number> = {};
       const closed: Record<string, number> = {};
       for (let seed = 1; seed <= LIVES; seed++) {
+        if (seed % 10 === 0) await new Promise((r) => setImmediate(r)); // one turn of the event loop every ten lives (tests/setup/settle.ts)
         const s = createSession(data, { seed: 9000 + seed });
         startLife(s);
         runToDeath(s.game);

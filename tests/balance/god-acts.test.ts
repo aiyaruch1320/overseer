@@ -205,17 +205,26 @@ beforeAll(async () => {
   sim = await import(pathToFileURL(path.join(root, 'scripts/sim/sim-world.mjs')).href);
   for (const [name, policy] of Object.entries(POLICY_OF)) {
     lives[name] = [];
-    for (let i = 0; i < LIVES; i++) lives[name].push(lifeRun(data, 1000 + i * 31, policy));
+    for (let i = 0; i < LIVES; i++) {
+      lives[name].push(lifeRun(data, 1000 + i * 31, policy));
+      if (i % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
+    }
   }
   // the policies of the tools that do the large deeds, for the caps of a life (the rest are counted above)
   for (const [name, policy] of [['เร่งจบ', 'เร่งจบ'], ['ตีหมุด', 'ตีหมุด'], ['ปั้นนิสัย', 'ปั้นนิสัย'], ['ให้ของ', 'ให้ของ'], ['เก็บพลัง', 'เก็บพลัง']] as const) {
     capLives[name] = [];
-    for (let i = 0; i < CAP_LIVES; i++) capLives[name].push(lifeRun(data, 5000 + i * 37, policy));
+    for (let i = 0; i < CAP_LIVES; i++) {
+      capLives[name].push(lifeRun(data, 5000 + i * 37, policy));
+      if (i % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
+    }
   }
   for (const [name, policy, count] of [['ไม่จำลองพระเจ้า', 'base', RATIO_WORLDS], ['เมตตา', 'เมตตา', WORLDS], ['เร่งจบ', 'เร่งจบ', RATIO_WORLDS], ['สุ่ม', 'สุ่ม', WORLDS], ['ลงโทษ (ทำซาก)', 'ลงโทษ', WORLDS], ['ตีหมุดผนึก', 'ตีหมุด', RATIO_WORLDS]] as const) {
     const t0 = Date.now();
     worlds[name] = [];
-    for (let n = 1; n <= count; n++) worlds[name].push(worldRun(data, n, policy));
+    for (let n = 1; n <= count; n++) {
+      worlds[name].push(worldRun(data, n, policy));
+      await new Promise((r) => setImmediate(r)); // a whole world is long: one turn after each (tests/setup/settle.ts)
+    }
     console.log(`${name}: ${count} worlds in ${((Date.now() - t0) / 1000).toFixed(0)}s · ended ${(100 * worlds[name].filter((x) => x.ended).length / count).toFixed(1)}% · miracles ${(worlds[name].reduce((a, x) => a + x.miracles, 0) / count).toFixed(1)}`);
   }
 }, 3_000_000);

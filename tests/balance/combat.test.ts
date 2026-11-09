@@ -77,11 +77,14 @@ function play(seed: number): Life {
   };
 }
 
-beforeAll(() => {
+beforeAll(async () => {
   data = loadAll();
   tierOf = new Map(((data.enemies.items as { items: Enemy[] }).items).map((e) => [e.id, e.tier]));
   expect(allSystems().length).toBeGreaterThan(0);
-  for (let seed = 1; seed <= LIVES; seed++) lives.push(play(seed));
+  for (let seed = 1; seed <= LIVES; seed++) {
+    lives.push(play(seed));
+    if (seed % 10 === 0) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
+  }
 }, 900000);
 
 const tierOfEntry = (e: LogEntry) => tierOf.get(String(e.id).split(',')[0]) ?? '?';

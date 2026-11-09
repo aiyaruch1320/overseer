@@ -151,9 +151,10 @@ interface Life {
 const lives: Life[] = [];
 
 describe('items balance: lives', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     const systems = [...allSystems(), travelSystem, itemsSystem].filter((s, i, a) => a.findIndex((x) => x.name === s.name) === i);
     for (let i = 0; i < LIVES; i++) {
+      if (i % 10 === 9) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
       const g = new Game(newGame(7000 + i * 7919, versions(data)), data, systems);
       g.init();
       g.worldSteps(45);

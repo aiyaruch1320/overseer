@@ -92,7 +92,7 @@ async function lives(policy: PolicyName): Promise<Row[]> {
     const out: Row[] = [];
     for (let i = 0; i < LIVES; i++) {
       out.push(playLife(1000 + i, policy));
-      if (i % 10 === 9) await new Promise((r) => setTimeout(r, 0));
+      if (i % 10 === 9) await new Promise((r) => setImmediate(r));
     }
     rows[policy] = out;
   }

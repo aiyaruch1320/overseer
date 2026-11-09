@@ -33,7 +33,7 @@ async function measure(policy: string, from = 2000) {
     const f = factsOf(g.ctx, life);
     for (const [id, test] of Object.entries(JUDGE)) if (id !== 'GV-20' && test(f)) kept[id] = (kept[id] ?? 0) + 1;
     for (const t of titlesOf(g.ctx, life, f)) titles[t] = (titles[t] ?? 0) + 1;
-    if (i % 10 === 9) await new Promise((r) => setTimeout(r, 0));
+    if (i % 10 === 9) await new Promise((r) => setImmediate(r));
   }
   for (const k of Object.keys(kept)) kept[k] /= LIVES;
   for (const k of Object.keys(titles)) titles[k] /= LIVES;

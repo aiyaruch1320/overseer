@@ -47,10 +47,11 @@ let rows: Row[];
 let ctxOf: Ctx;
 let friends3: { chance: number }[] = [];
 
-beforeAll(() => {
+beforeAll(async () => {
   data = loadAll();
   rows = [];
   for (let seed = 1; seed <= LIVES; seed++) {
+    if (seed % 10 === 0) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
     const s = createSession(data, { seed });
     const list = s.game.systems as System[];
     for (const x of [bondsSystem, bondageSystem]) if (!list.some((y) => y.name === x.name)) list.push(x);

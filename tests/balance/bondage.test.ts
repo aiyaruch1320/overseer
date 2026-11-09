@@ -67,9 +67,10 @@ function play(seed: number): Bound | undefined {
   return out;
 }
 
-beforeAll(() => {
+beforeAll(async () => {
   data = loadAll();
   for (let seed = 500; seed < 500 + LIVES; seed++) {
+    if (seed % 10 === 0) await new Promise((r) => setImmediate(r)); // one turn every ten lives (tests/setup/settle.ts)
     const l = play(seed);
     if (l) lives.push(l);
   }
