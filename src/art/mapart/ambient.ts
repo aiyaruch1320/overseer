@@ -45,7 +45,7 @@ interface Bank {
 type Kind = { particles: Particles } | { bank: Bank } | { bank: Bank; particles: Particles };
 
 const KINDS: Record<string, Kind> = {
-  embers: { particles: { n: 70, colors: ['#ff9a3a', '#ffd070', '#ff6a2a'], vx: 3, vy: -16, size: [1, 1], alpha: 1, sway: 3, twinkle: true } },
+  embers: { particles: { n: 110, colors: ['#ff9a3a', '#ffd070', '#ff6a2a'], vx: 3, vy: -16, size: [2, 2], alpha: 1, sway: 3, twinkle: true } },
   ash: { particles: { n: 90, colors: ['#9a968e', '#6e6a66', '#b4b0a8'], vx: 4, vy: 10, size: [1, 2], alpha: 0.85, sway: 2 } },
   dust: { particles: { n: 120, colors: ['#d8c090', '#c8a870', '#e8d8b0'], vx: 18, vy: 2, size: [1, 1], alpha: 0.55, sway: 2 } },
   sand: { particles: { n: 150, colors: ['#e0c890', '#d0b078'], vx: 26, vy: 3, size: [1, 1], alpha: 0.6, sway: 1 } },
