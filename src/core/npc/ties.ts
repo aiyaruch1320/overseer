@@ -9,11 +9,15 @@ import { apply } from '../rules';
 import type { Ctx } from '../game';
 import type { Effect } from '../types';
 import type { NpcPath, NpcRow } from '../data/types-npcs';
+import { worldYearsPerLifeYear } from '../clock';
+import { leanWeights, forkPoint, type ForkWay } from '../llm/fork';
+import type { DirectorPoint } from '../llm/director';
+import { registerAheadPart } from '../story/ahead';
 import { npcIndex, rowOf } from './data';
 import { anyPathLeft, bumpRel, note, visible } from './engine';
 import { clashFor } from './clash';
 import { FOLLOW_WEIGHTS, NEEDS_PARTNER_RE, PARTNER_GOES_ON_RE } from './tuning';
-import { slotsOf, type NpcSlotX, type PathKey, type Story } from './types';
+import { slotsOf, type Follow, type NpcSlotX, type PathKey, type Story } from './types';
 
 export type DoerKind = 'mc' | 'npc' | 'event' | 'god';
 export interface Doer {
@@ -109,14 +113,24 @@ export function afterEnd(ctx: Ctx, slot: NpcSlotX, row: NpcRow, natural: boolean
 
 // ---------- the follow-up story ----------
 
-/** Draws a, b or c when the follow-up opens: a (revenge) only when the doer is the character or a living NPC (rule 3). */
-function drawKind(ctx: Ctx, slot: NpcSlotX): PathKey {
+/** The id of a follow-up fork: stable from the day the death is decided (`openAt` is set then) and unique in a life by holder, dead position and year. */
+export const followId = (row: NpcRow, f: Follow): string => `npc_death:${row.id}:${f.of}:${Math.floor(f.openAt)}`;
+
+const FOLLOW_WAYS: Record<'a' | 'b' | 'c', string> = { a: 'แค้นแทน', b: 'รับช่วงเป้าหมายของเขา', c: 'ปล่อยวางแล้วเดินจากไป' };
+
+/** The three ways of a follow-up with the written weights (a revenge only when the doer is the character or a living NPC, rule 3). */
+export function followWays(ctx: Ctx, slot: NpcSlotX): ForkWay[] {
   const f = slot.follow!;
   const slots = slotsOf(ctx.state);
   const doerAlive = f.doer === 'mc' || (f.doer === 'npc' && !!f.doerId && slots[f.doerId]?.status === 'alive');
-  const w: PathKey[] = ['a', 'b', 'c'];
+  return (['a', 'b', 'c'] as const).map((k) => ({ key: k, text: FOLLOW_WAYS[k], weight: k === 'a' && !doerAlive ? 0 : FOLLOW_WEIGHTS[k] }));
+}
+
+/** Draws a, b or c when the follow-up opens. The LLM director may lean one of the two likeliest ways (×1.5); with no answer the weights and the one draw are the written ones. */
+function drawKind(ctx: Ctx, slot: NpcSlotX, id: string): PathKey {
+  const ways = followWays(ctx, slot);
   const rng = ctx.rng('npc.follow');
-  return w[rng.weighted(w.map((k) => (k === 'a' && !doerAlive ? 0 : FOLLOW_WEIGHTS[k])))];
+  return ways[rng.weighted(leanWeights(ctx, id, ways))].key as PathKey;
 }
 
 function resolveFollow(ctx: Ctx, slot: NpcSlotX, row: NpcRow): void {
@@ -161,12 +175,42 @@ export function stepFollow(ctx: Ctx, slot: NpcSlotX, row: NpcRow, now: number): 
     // it opens in place of the story when every path of it is cut, otherwise after it
     const s = slot.story;
     if (s.state !== 'done' && anyPathLeft(ctx, row, slot)) return;
+    const id = followId(row, f);
     f.state = 'open';
     f.openAt = now;
     f.endAt = Math.min(slot.born + slot.span, now + row.clock.window * slot.span);
-    f.kind = drawKind(ctx, slot);
+    f.kind = drawKind(ctx, slot, id);
     note(ctx, slot, row, 'follow', { of: f.of, state: 'open' }, 0);
     return;
   }
   if ((f.endAt ?? Infinity) <= now) resolveFollow(ctx, slot, row);
 }
+
+// ---------- the follow-up as a key point of the LLM director ----------
+
+/** The follow-up stories of tied NPCs that draw within a life year: a death that was not old age is decided (the follow waits) and the holder's own story is over, has no path left, or ends within the year. */
+function followAhead(ctx: Ctx): DirectorPoint[] {
+  const life = ctx.state.life!;
+  const now = ctx.state.clock.worldYear;
+  const span = worldYearsPerLifeYear(life.lifespan, life.race);
+  const out: DirectorPoint[] = [];
+  for (const [rid, slot] of Object.entries(slotsOf(ctx.state))) {
+    const f = slot.follow;
+    if (!f || f.state !== 'wait' || slot.status !== 'alive') continue;
+    // the NPCs of the country the life is in and the ones it knows (a world full of NPCs would use the ten points of a life on strangers)
+    if (slot.place !== life.country && (slot.rel['mc.known'] ?? 0) < 1) continue;
+    const row = rowOf(ctx, rid);
+    if (!row) continue;
+    const s = slot.story;
+    // a holder who dies, or falls ill, before the draw takes the follow-up with him (a successor starts clean)
+    const tDeath = slot.born + slot.span;
+    if (slot.sick !== undefined || tDeath - now <= span) continue;
+    const soon = s.state === 'done' || !anyPathLeft(ctx, row, slot) || (s.state === 'open' && (s.endAt ?? Infinity) - now <= span && (s.endAt ?? Infinity) < tDeath);
+    if (!soon) continue;
+    const point = forkPoint(followId(row, f), followWays(ctx, slot));
+    if (point) out.push({ ...point, kind: 'npc_death' });
+  }
+  return out;
+}
+
+registerAheadPart((ctx) => followAhead(ctx));
