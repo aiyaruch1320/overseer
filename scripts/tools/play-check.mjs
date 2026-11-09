@@ -2,6 +2,8 @@
 // node scripts/tools/play-check.mjs [--out=dir] [--max-min=25] [--every=20] [--throttle=4] [--speed=เร็ว] [--size=1300x850] [--port=4174] [--no-build] [--keep=1]
 //   --throttle=N  CPU slowdown (Emulation.setCPUThrottlingRate) for a low-spec run   --every=S  a screenshot + a log line every S seconds (also at every scene change)
 //   --speed=TEXT  label of the speed button to click ("เร็ว"|"ปกติ"|"หยุด")           --keep=1  leave the preview server running
+//   --ab=alternate|seed|off  the A/B of the LLM director for this page (default alternate)   --no-record  do not switch the play record on
+//   The play record (src/app/record.ts) is switched on in the page and exported at the end as <out>/record.json (read m8-report.ts with it: npx tsx scripts/tools/m8-report.ts <out>/record.json).
 // Needs Google Chrome (macOS path) or CHROME=<path>. Builds with `npx vite build`, serves `npx vite preview --port 4174 --strictPort`, writes out/summary.json + summary.md + log.jsonl + png.
 import { spawn, execSync } from 'node:child_process';
 import { writeFileSync, appendFileSync, mkdirSync, mkdtempSync } from 'node:fs';
@@ -70,6 +72,7 @@ try {
   await send('Page.enable'); await send('Runtime.enable'); await send('Log.enable'); await send('Performance.enable');
   await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
   await send('Page.addScriptToEvaluateOnNewDocument', { source: probe });
+  if (!args['no-record']) await send('Page.addScriptToEvaluateOnNewDocument', { source: `try { localStorage.setItem('overseer.record.on', '1'); localStorage.setItem('overseer.ab.1', ${JSON.stringify(args.ab ?? 'alternate')}); } catch {}` });
   if (THROTTLE > 1) await send('Emulation.setCPUThrottlingRate', { rate: THROTTLE });
   await send('Page.navigate', { url: `http://localhost:${PORT}/` });
   await sleep(3000);
@@ -157,6 +160,12 @@ try {
     '| t(s) | age | fps | heap MB | ctx made/lost | scene |', '|---|---|---|---|---|---|', ...rows.map((r) => `| ${r.t} | ${r.age ?? ''} | ${r.fps} | ${r.heapMB} | ${r.ctxCreated}/${r.ctxLost} | ${(r.scene ?? '').replace(/\|/g, '/').slice(0, 60)} |`), '',
     '## errors', ...(errors.length ? errors.map((e) => `- ${e.t}s ${e.kind}: ${e.text}`) : ['none'])].join('\n');
   writeFileSync(join(OUT, 'summary.md'), md);
+  if (!args['no-record']) {
+    await sleep(1200); // the recorder writes to the storage a moment after the last event
+    const rec = await ev(`localStorage.getItem('overseer.record.1')`);
+    if (rec) writeFileSync(join(OUT, 'record.json'), rec);
+    console.log(rec ? `record.json written (${rec.length} bytes)` : 'no record in the page');
+  }
   console.log(md.split('\n').slice(0, 6).join('\n'));
 } finally { cleanup(); }
 process.exit(0);

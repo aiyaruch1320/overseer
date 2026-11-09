@@ -1,0 +1,106 @@
+// The play record (src/app/record.ts, record-facts.ts) and the A/B of the director (src/app/ab.ts): the record is local and opt-in, it notes what the player did and
+// what the game called, it never keeps typed words, and the arm of a life follows the mode. `localStorage` is a stand-in.
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { loadAll } from '../../scripts/tools/node-data';
+import { armFor, setAbMode } from '../../src/app/ab';
+import { RECORD_KEY, Recorder, plainArgs, recorder, type PlayRecord } from '../../src/app/record';
+import { Tally } from '../../src/app/record-facts';
+import { GameStore } from '../../src/app/store';
+import type { GameData } from '../../src/core/game';
+import { runLifeReport } from '../../scripts/tools/life-run';
+
+let data: GameData;
+beforeAll(() => {
+  data = loadAll();
+});
+
+class FakeStorage {
+  items = new Map<string, string>();
+  getItem = (k: string) => this.items.get(k) ?? null;
+  removeItem = (k: string) => void this.items.delete(k);
+  setItem = (k: string, v: string) => void this.items.set(k, v);
+}
+
+let ls: FakeStorage;
+beforeEach(() => {
+  ls = new FakeStorage();
+  (globalThis as { localStorage?: unknown }).localStorage = ls;
+});
+afterEach(() => {
+  recorder.setOn(false);
+  recorder.clear();
+  delete (globalThis as { localStorage?: unknown }).localStorage;
+});
+
+describe('A/B arms', () => {
+  it('off gives no arm; alternate takes turns by life; seed follows the parity', () => {
+    expect(armFor('off', 2, 1)).toBeNull();
+    expect([1, 2, 3, 4].map((n) => armFor('alternate', 2, n))).toEqual(['on', 'off', 'on', 'off']);
+    expect([1, 2, 3, 4].map((n) => armFor('alternate', 3, n))).toEqual(['off', 'on', 'off', 'on']);
+    expect([1, 2, 3].map((n) => armFor('seed', 4, n))).toEqual(['on', 'on', 'on']);
+    expect(armFor('seed', 5, 2)).toBe('off');
+  });
+});
+
+describe('Tally on a simulated life', () => {
+  it('reads one life: a start, the facts, an end with the counts of the nodes', () => {
+    const run = runLifeReport(data, { seed: 3, policy: 'เมตตา' });
+    const t = new Tally({ actsFromLog: true });
+    t.ingest(run.state.log);
+    const start = t.events.filter((e) => e.k === 'life.start');
+    const end = t.events.filter((e) => e.k === 'life.end');
+    expect(start).toHaveLength(1);
+    expect(end).toHaveLength(1);
+    expect(end[0].nodes).toBeGreaterThan(0);
+    expect(t.events.some((e) => e.k === 'vow.take')).toBe(true);
+    // a second read of the same log adds nothing
+    expect(t.ingest(run.state.log)).toHaveLength(0);
+  });
+});
+
+describe('the recorder', () => {
+  it('does nothing until the tester switches it on, then keeps and exports a record', () => {
+    const r = new Recorder();
+    r.note('x');
+    expect(r.size.value).toBe(0);
+    r.setOn(true);
+    r.act('whisper', true, { hint: 'ระวัง', free: 'has a space', target: 'AL-01' });
+    r.flush();
+    const rec = JSON.parse(r.text()) as PlayRecord;
+    expect(rec.format).toBe('overseer.record');
+    const act = rec.events.find((e) => e.k === 'act');
+    expect(act?.args).toEqual({ hint: 'ระวัง', target: 'AL-01' });
+    expect(ls.items.get(RECORD_KEY)).toBeTruthy();
+    r.clear();
+    expect(r.size.value).toBe(0);
+  });
+
+  it('keeps no free text in the args', () => {
+    expect(plainArgs({ a: 1, b: true, c: 'two words', d: 'x'.repeat(50), e: 'ok' })).toEqual({ a: 1, b: true, e: 'ok' });
+  });
+
+  it('records a session of the store: lives, calls, the arm, the commands', () => {
+    recorder.setOn(true);
+    setAbMode('alternate');
+    const store = new GameStore();
+    store.setData(data);
+    store.newLife({ seed: 4 });
+    // a seed with an even number: the first life takes the director on
+    expect(store.state?.settings.llm.director).toBe(true);
+    for (let i = 0; i < 4 * 90 && store.state?.life && !store.state.life.dead; i++) {
+      store.step();
+      if (store.phase.value === 'stop') store.resume();
+    }
+    store.god('whisper', { hint: 'ระวัง' }, false);
+    store.god('whisper', { hint: 'ระวัง' }, true);
+    const rec = JSON.parse(recorder.text()) as PlayRecord;
+    const kinds = new Set(rec.events.map((e) => e.k));
+    for (const k of ['game.new', 'life.start', 'call', 'act', 'clock']) expect(kinds.has(k), k).toBe(true);
+    const start = rec.events.find((e) => e.k === 'life.start');
+    expect(start?.arm).toBe('on');
+    expect(start?.llm).toBeTruthy();
+    // a preview is not an act
+    expect(rec.events.filter((e) => e.k === 'act')).toHaveLength(1);
+    setAbMode('off');
+  });
+});
