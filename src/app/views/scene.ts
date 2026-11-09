@@ -484,7 +484,7 @@ function namedPlace(data: GameData, d: LogEntry['data']): Place | undefined {
 }
 
 /** World events that happen in one named country. */
-const FIXED_PLACE: Record<string, string> = { 'DR-03': 'AZ-01' };
+const FIXED_PLACE: Record<string, string> = { 'DR-03': 'AZ-01', 'DR-04': 'KD-01' };
 
 /** The continent and country of the life now (the place of the calm picture, and of whatever an entry does not place), nothing without a life. */
 export function lifePlace(data: GameData, state: GameState | null | undefined): Place | undefined {
@@ -521,7 +521,9 @@ export function sceneryOf(data: GameData, state: GameState | null | undefined, v
   return (place) => {
     // the props and the kind of place the script asks for (src/scene/props.ts): the craft table, the anvil, the eternal flame ...
     const staged = v.kind === 'script' ? stagingOf(v.script, place) : undefined;
-    const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: staged?.setting ?? settingOf(place), seed };
+    // a world event of one named place is painted the same on its stage and on its card: the open land, whatever the places of its beats call (the ash winter is not the town of a life)
+    const fixed = v.kind === 'script' && FIXED_PLACE[v.entry.id ?? ''] ? 'outdoor' : undefined;
+    const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: staged?.setting ?? fixed ?? settingOf(place), seed };
     if (staged?.props.length) spec.props = staged.props;
     if (staged?.mood) spec.mood = staged.mood;
     if (at?.country) spec.country = at.country;
