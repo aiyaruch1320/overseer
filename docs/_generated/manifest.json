@@ -1,6 +1,6 @@
 {
  "generatedBy": "scripts/docs/build-docs-manifest.mjs",
- "count": 298,
+ "count": 299,
  "layers": {
   "lore": "Facts of the world: history, places, peoples, characters, storylines. No formulas.",
   "systems": "Rules and data the game computes: numbers, tables, conditions and effects.",
@@ -162,7 +162,7 @@
     "ความถนัด",
     "skill เฉพาะตัว"
    ],
-   "source": "scripts/codegen/export-character-catalog.ts"
+   "source": "(static export of the deleted POC data)"
   },
   {
    "path": "_generated/character-catalog/blessings.md",
@@ -173,7 +173,7 @@
    "lines": 116,
    "bytes": 15003,
    "headings": [],
-   "source": "scripts/codegen/export-character-catalog.ts"
+   "source": "(static export of the deleted POC data)"
   },
   {
    "path": "_generated/character-catalog/curses.md",
@@ -184,7 +184,7 @@
    "lines": 112,
    "bytes": 14548,
    "headings": [],
-   "source": "scripts/codegen/export-character-catalog.ts"
+   "source": "(static export of the deleted POC data)"
   },
   {
    "path": "_generated/character-catalog/tags.md",
@@ -195,7 +195,7 @@
    "lines": 195,
    "bytes": 3733,
    "headings": [],
-   "source": "scripts/codegen/export-character-catalog.ts"
+   "source": "(static export of the deleted POC data)"
   },
   {
    "path": "_generated/character-catalog/traits.md",
@@ -208,7 +208,7 @@
    "headings": [
     "นิสัยที่อยู่ร่วมกันไม่ได้"
    ],
-   "source": "scripts/codegen/export-character-catalog.ts"
+   "source": "(static export of the deleted POC data)"
   },
   {
    "path": "_generated/country-links.md",
@@ -294,7 +294,7 @@
    "lines": 602,
    "bytes": 137997,
    "headings": [],
-   "source": "scripts/codegen/gen-visual-docs.ts"
+   "source": "(static export of the deleted POC code)"
   },
   {
    "path": "_generated/poc-visuals/races.md",
@@ -327,7 +327,7 @@
     "มัมมี่ (`mummy`)",
     "กูล (`ghoul`)"
    ],
-   "source": "scripts/codegen/gen-visual-docs.ts"
+   "source": "(static export of the deleted POC code)"
   },
   {
    "path": "_generated/poc-visuals/specials.md",
@@ -338,7 +338,7 @@
    "lines": 67,
    "bytes": 37204,
    "headings": [],
-   "source": "scripts/codegen/gen-visual-docs.ts"
+   "source": "(static export of the deleted POC code)"
   },
   {
    "path": "_generated/storyline-balance.md",
@@ -404,7 +404,7 @@
    "group": "appearance",
    "kind": "visual",
    "lines": 140,
-   "bytes": 41650,
+   "bytes": 42075,
    "headings": [
     "1. มนุษย์",
     "2. เอลฟ์",
@@ -697,7 +697,7 @@
    "group": "appearance",
    "kind": "visual",
    "lines": 76,
-   "bytes": 14445,
+   "bytes": 21428,
    "headings": [
     "1. กติกา",
     "2. รายตัว"
@@ -726,13 +726,31 @@
    ]
   },
   {
+   "path": "appearance/21-pixel-art.md",
+   "title": "ภาพพิกเซลและการวาดบนจอ",
+   "layer": "appearance",
+   "group": "appearance",
+   "kind": "visual",
+   "lines": 103,
+   "bytes": 12216,
+   "headings": [
+    "1. แนวภาพ",
+    "2. ขนาด",
+    "3. ท่า",
+    "4. วาดและแสดง",
+    "5. เอฟเฟกต์",
+    "6. ภาพสำเร็จ (ชั้นเสริม)",
+    "7. ที่วัดแล้ว"
+   ]
+  },
+  {
    "path": "appearance/README.md",
    "title": "รูปลักษณ์ของโลก",
    "layer": "appearance",
    "group": "appearance",
    "kind": "index",
-   "lines": 84,
-   "bytes": 17888,
+   "lines": 85,
+   "bytes": 18832,
    "headings": [
     "น้ำเสียงภาพของโลก",
     "กติกาการเขียน",
@@ -877,7 +895,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 97,
-   "bytes": 39305,
+   "bytes": 40791,
    "headings": []
   },
   {
@@ -887,7 +905,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 119,
-   "bytes": 51252,
+   "bytes": 52111,
    "headings": []
   },
   {
@@ -897,7 +915,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 119,
-   "bytes": 53987,
+   "bytes": 55563,
    "headings": []
   },
   {
@@ -907,7 +925,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 155,
-   "bytes": 66050,
+   "bytes": 67713,
    "headings": []
   },
   {
@@ -917,7 +935,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 132,
-   "bytes": 58325,
+   "bytes": 58956,
    "headings": []
   },
   {
@@ -927,7 +945,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 137,
-   "bytes": 59132,
+   "bytes": 60846,
    "headings": []
   },
   {
@@ -937,7 +955,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 154,
-   "bytes": 67437,
+   "bytes": 68866,
    "headings": []
   },
   {
@@ -947,7 +965,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 166,
-   "bytes": 72160,
+   "bytes": 74861,
    "headings": []
   },
   {
@@ -957,7 +975,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 174,
-   "bytes": 73321,
+   "bytes": 75289,
    "headings": []
   },
   {
@@ -967,7 +985,7 @@
    "group": "appearance/npcs",
    "kind": "visual",
    "lines": 136,
-   "bytes": 58070,
+   "bytes": 58744,
    "headings": []
   },
   {
@@ -987,7 +1005,7 @@
    "group": "appearance/poc-visuals",
    "kind": "index",
    "lines": 97,
-   "bytes": 19232,
+   "bytes": 19960,
    "headings": [
     "วิธีที่ภาพถูกสร้าง",
     "แนวภาพ: จริงจัง สมจริง สีกลมกลืน",
@@ -1035,8 +1053,8 @@
    "layer": "guide",
    "group": "guide",
    "kind": "guide",
-   "lines": 621,
-   "bytes": 101948,
+   "lines": 623,
+   "bytes": 105556,
    "headings": [
     "0. วิธีใช้ไฟล์นี้",
     "1. ที่ตัดสินแล้ว",
@@ -2725,8 +2743,8 @@
    "layer": "lore",
    "group": "lore/storylines",
    "kind": "fact",
-   "lines": 55,
-   "bytes": 11725,
+   "lines": 56,
+   "bytes": 12650,
    "headings": [
     "1. ธีม",
     "2. วิธีใช้",
@@ -2962,8 +2980,8 @@
    "layer": "systems",
    "group": "systems/bonds",
    "kind": "data",
-   "lines": 88,
-   "bytes": 18653,
+   "lines": 90,
+   "bytes": 19020,
    "headings": [
     "1. โครงญาติตอนเกิด",
     "2. แม่แบบญาติ 8 แบบ",
@@ -3336,7 +3354,7 @@
    "group": "systems/character",
    "kind": "data",
    "lines": 957,
-   "bytes": 195455,
+   "bytes": 195561,
    "headings": [
     "1. หลักของตาราง",
     "2. ตารางคำพ้องรายช่อง",
@@ -3723,8 +3741,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 142,
-   "bytes": 18382,
+   "lines": 152,
+   "bytes": 19944,
    "headings": [
     "1. ของเดิมในโค้ดที่เป็นฐาน",
     "2. ลำดับการต่อสู้",
@@ -3776,8 +3794,8 @@
    "layer": "systems",
    "group": "systems/combat",
    "kind": "data",
-   "lines": 117,
-   "bytes": 13164,
+   "lines": 130,
+   "bytes": 14817,
    "headings": [
     "1. ความถี่",
     "2. แบบของเหตุการณ์ต่อสู้",
@@ -4033,8 +4051,8 @@
    "layer": "systems",
    "group": "systems/economy",
    "kind": "data",
-   "lines": 141,
-   "bytes": 22654,
+   "lines": 147,
+   "bytes": 24024,
    "headings": [
     "1. เจตนาของระบบ",
     "2. ระดับการผูกตัว",
@@ -4251,7 +4269,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 84,
-   "bytes": 10052,
+   "bytes": 10230,
    "headings": [
     "1. บันทึกชีวิต",
     "2. ผลของชีวิตต่อโลก",
@@ -4306,7 +4324,7 @@
    "group": "systems/experience",
    "kind": "data",
    "lines": 126,
-   "bytes": 23172,
+   "bytes": 23493,
    "headings": [
     "1. หลัก",
     "2. สามระดับของการเรียก",
@@ -4375,7 +4393,7 @@
    "group": "systems/god",
    "kind": "data",
    "lines": 173,
-   "bytes": 29624,
+   "bytes": 30035,
    "headings": [
     "1. ทางทั้งสามมาจากไหน",
     "2. ความฝันหนึ่งทางประกอบด้วยอะไร",
@@ -4969,7 +4987,7 @@
    "group": "systems/llm",
    "kind": "index",
    "lines": 84,
-   "bytes": 14535,
+   "bytes": 14681,
    "headings": [
     "1. รุ่นที่ใช้",
     "2. ใช้ LLM สามจุด",
@@ -5025,7 +5043,7 @@
    "group": "systems/travel",
    "kind": "data",
    "lines": 213,
-   "bytes": 47773,
+   "bytes": 47774,
    "headings": [
     "1. ระดับการเดินทางของชีวิต",
     "2. เหตุที่ทำให้ได้เดินทาง",
