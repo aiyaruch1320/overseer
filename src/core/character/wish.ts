@@ -24,8 +24,8 @@ export interface WishAsk {
   country?: string;
   /** A continent code (`AL`): the country is drawn inside it. */
   continent?: string;
-  /** `main` `diaspora` `outside` (19-wish.md §2 "ถิ่นเกิด ... ชนิดถิ่น"). */
-  placeKind?: 'main' | 'diaspora' | 'outside';
+  /** `main` `diaspora` `outside` `city` (19-wish.md §2 "ถิ่นเกิด ... ชนิดถิ่น"). */
+  placeKind?: 'main' | 'diaspora' | 'outside' | 'city';
   gender?: 'm' | 'f';
   /** Genderless (19-wish.md "เพศ ... ไร้เพศ"), only for the races that can be (origin.gender `n`). */
   neuter?: boolean;
@@ -144,6 +144,8 @@ export interface WishSheet {
   points: { total: number; used: number; left: number; refunded: number };
   /** Filled by the birth: the fields that were applied, and the asks the birth refused with the reason (a class the land does not give ...). */
   born?: { applied: string[]; refused: { key: string; value: string; reason: string }[] };
+  /** The stretches of the text no word of the tables matched (same as `WishRead.notUnderstood`). */
+  notUnderstood?: string[];
 }
 
 export interface WishRead {
@@ -160,6 +162,8 @@ export interface WishRead {
   ask: WishAsk;
   /** The sheet that goes to the birth and is kept in the save. */
   sheet: WishSheet;
+  /** The stretches of the typed text the parser took for nothing (T3-2): the birth card says "ไม่เข้าใจ: ..." so that a dropped part is never silent. */
+  notUnderstood: string[];
   /** The synonym parser fully understood nothing: the sheet opens as the page of choosing by hand (20-god-ui.md §11 "ไม่มี LLM"). */
   byHand: boolean;
 }
@@ -357,7 +361,7 @@ function bannedClasses(n: number): number[] {
 }
 
 const FAMILY: Record<string, NonNullable<WishAsk['family']>> = { กำพร้า: 'orphan', พ่อหรือแม่คนเดียว: 'single', ลูกคนเดียว: 'only', พี่น้องมาก: 'many' };
-const PLACE_KIND: Record<string, NonNullable<WishAsk['placeKind']>> = { ถิ่นหลัก: 'main', พลัดถิ่น: 'diaspora', นอกถิ่น: 'outside' };
+const PLACE_KIND: Record<string, NonNullable<WishAsk['placeKind']>> = { ถิ่นหลัก: 'main', พลัดถิ่น: 'diaspora', นอกถิ่น: 'outside', ในเมือง: 'city' };
 const ERA: Record<string, NonNullable<WishAsk['era']>> = { ยุคต้นโลก: 'early', ยุคปัจจุบัน: 'present' };
 /** The asks of the story part that no system binds yet. The god's goals bind love, the hero and no-god now: they put GV-06, GV-09 and GV-12 among the vows offered (M5 review round two R4). */
 const STORY_UNBOUND = new Set<StoryId>();
@@ -756,9 +760,11 @@ export function readWish(data: GameData, draft: WishInput): WishRead {
   for (let i = 0; i < total + refunded; i++) beads.push(i < spent ? 'spent' : i >= total ? 'refund' : 'free');
   const points: FatePoints = { total, used, left: total - used, refunded, beads };
   const all = [...sure, ...lean, ...cannot, ...random];
-  const sheet: WishSheet = { v: 1, text, mode, understood, ask, items: all, points: { total, used, left: total - used, refunded } };
+  // the stretches nobody matched, trimmed of the glue marks; a single letter is a stray mark and not a part of the wish
+  const notUnderstood = segments.filter((x) => x.kind === 'unknown').map((x) => x.text.replace(/^[\s,.;:!?()"'-]+|[\s,.;:!?()"'-]+$/g, '')).filter((x) => [...x].length >= 2);
+  const sheet: WishSheet = { v: 1, text, mode, understood, ask, items: all, points: { total, used, left: total - used, refunded }, ...(notUnderstood.length ? { notUnderstood } : {}) };
 
-  return { text, segments, items: all, points, understood, coverage, mode, ask: { ...ask }, sheet, byHand: understood === 'none' || understood === 'part' };
+  return { text, segments, items: all, points, understood, coverage, notUnderstood, mode, ask: { ...ask }, sheet, byHand: understood === 'none' || understood === 'part' };
 }
 
 /** The values a tag offers (the chips under the box): the names of a field of the table. */

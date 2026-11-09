@@ -99,6 +99,9 @@ export const combatSystem: System = {
     if (!life) return;
     delete life.ext.combat;
     extOf(life).hp = maxHpOf(ctx, life);
+    // an heir or a successor takes over a life already begun: its first year has no fight that comes on its own (T3-13). A fight the story asks for stands.
+    const origin = (ctx.state.lineage.x as { recs?: { id: string; origin: string }[] } | undefined)?.recs?.find((r) => r.id === life.id)?.origin;
+    if (life.hAge > 0 && (origin === 'heir' || origin === 'successor')) extOf(life).heirFrom = life.hAge;
   },
   beat(ctx) {
     const life = lifeOf(ctx);
@@ -117,7 +120,8 @@ export const combatSystem: System = {
     if (now < max) addHp(ctx, life, mend + (hero.companion.heal ? 1 : 0));
     else if (now > max) ext.hp = max;
     if (ext.hurt && life.hAge >= ext.hurt.until) ext.hurt = null;
-    // the war calls a soldier; then the roads
+    // the war calls a soldier; then the roads; neither in the first year of an heir
+    if (ext.heirFrom !== undefined && life.hAge <= ext.heirFrom) return;
     if (atWar(ctx, life) && ctx.rng(STREAM.encounter).chance(WAR_BATTLE_PER_YEAR / 4)) {
       warBattle(ctx);
       return;

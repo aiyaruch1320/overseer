@@ -31,6 +31,7 @@ import {
   SUMMONED_AGE,
   SUMMONED_CLASS,
   WOKEN_AGE,
+  WISH_CITY_SCALE,
 } from './tuning';
 import { LATE_WAKERS } from '../clock';
 import type { WishAsk, WishSheet } from './wish';
@@ -145,7 +146,7 @@ function placeOfHalf(ctx: Ctx, ix: Indexes, rng: Rng, o: OriginFile, a: string, 
  * Where a wish that names a continent, a faith, a kind of land or refuses a continent is born (19-wish.md §2 "ถิ่นเกิด", 01-origin.md §3): the same three kinds of land as
  * `placeOfRace` (the main land, the diaspora, outside) inside what `allow` lets through; `kind` fixes the kind. Null when no land fits, and the birth then draws as it would.
  */
-function placeWished(ctx: Ctx, ix: Indexes, rng: Rng, bp: Birthplace | undefined, raceName: string, allow: (id: string) => boolean, kind?: Place['born']): Place | null {
+function placeWished(ctx: Ctx, ix: Indexes, rng: Rng, bp: Birthplace | undefined, raceName: string, allow: (id: string) => boolean, kind?: Place['born'] | 'city'): Place | null {
   const roll = rng.next() * 100;
   const main = (bp?.main ?? []).filter((id) => ix.countries.has(id) && !lost(ctx, id) && allow(id));
   const diaAll = bp ? diasporaOf(ctx, ix, bp, raceName) : [];
@@ -153,6 +154,14 @@ function placeWished(ctx: Ctx, ix: Indexes, rng: Rng, bp: Birthplace | undefined
   const taken = new Set([...(bp?.main ?? []), ...diaAll.map((d) => d.id)]);
   const out = ix.countryList.map((c) => c.id).filter((id) => !taken.has(id) && !lost(ctx, id) && allow(id));
   const natural: Place['born'][] = !bp ? ['outside'] : roll < bp.mainPct ? ['main', 'diaspora', 'outside'] : roll < bp.mainPct + bp.diasporaPct ? ['diaspora', 'main', 'outside'] : ['outside', 'diaspora', 'main'];
+  if (kind === 'city') {
+    // a city (20-wish-synonyms.md §2.5ข "ในเมือง"): any land drawn as a city (scale WISH_CITY_SCALE up), weighed by its size; the kind of the birth is what the land is to the race
+    const diaIds = new Set(diaAll.map((d) => d.id));
+    const cities = ix.countryList.filter((c) => c.scale >= WISH_CITY_SCALE && !lost(ctx, c.id) && allow(c.id)).map((c) => c.id);
+    if (!cities.length) return null;
+    const id = weightedCountry(rng, ix, cities, scaleOf);
+    return { country: id, born: bp?.main.includes(id) ? 'main' : diaIds.has(id) ? 'diaspora' : 'outside' };
+  }
   for (const k of kind ? [kind] : natural) {
     if (k === 'main' && main.length) return { country: weightedCountry(rng, ix, main, scaleOf), born: 'main' };
     if (k === 'diaspora' && dia.length) return { country: weightedId(rng, dia).id, born: 'diaspora' };
@@ -437,7 +446,7 @@ export function birth(ctx: Ctx, opts: BirthOpts = {}): LifeState {
     kind = 'diaspora';
   }
   const wishedPlace = !!(w.continent || w.faith || kind || ban.continent?.length);
-  const allow = (id: string): boolean => (!w.continent || id.startsWith(w.continent)) && !(ban.continent ?? []).some((c) => id.startsWith(c)) && (!w.faith || !!ix.countries.get(id)?.religions.some((r) => r.id === w.faith));
+  const allow = (id: string): boolean => (kind !== 'city' || (ix.countries.get(id)?.scale ?? 0) >= WISH_CITY_SCALE) && (!w.continent || id.startsWith(w.continent)) && !(ban.continent ?? []).some((c) => id.startsWith(c)) && (!w.faith || !!ix.countries.get(id)?.religions.some((r) => r.id === w.faith));
   if (summoned) place = { country: 'AL-02', born: 'diaspora' };
   else if (landCountry) {
     const inMain = bp?.main.includes(landCountry);

@@ -76,6 +76,15 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
   st.life = null;
   const life = spec ? bearHeir(ctx, spec) : characterBirth(ctx, { race: opts.race, country: opts.country });
   presetStory(ctx, life, !spec);
+  // the line of the hand-over is written first, before the systems' birth hooks tell the new life (a job, a first fight, a meeting): the log must open with who takes over (T3-13).
+  // What the inheritance carries is not known yet; it is put into the entry below.
+  const beginEntry = write(st, {
+    sys: 'lineage',
+    kind: 'begin',
+    id: life.id,
+    data: { name: life.name, generation, origin, parent: parent.name, age: life.hAge, how: spec?.how ?? 'newcomer', gold: 0, items: 0, threads: 0, gap: gapYears },
+    level: 2,
+  });
   game.born();
 
   let carried: Carried | undefined;
@@ -89,13 +98,7 @@ export function nextLife(game: Game, opts: NextOpts = {}): NextResult {
   handOver(ctx, life, life.hAge);
   const rec = x.recs.find((r) => r.id === life.id);
   if (rec && carried) rec.carried = { gold: carried.gold, items: carried.items, ...(carried.blessing ? { blessing: carried.blessing } : {}), fame: carried.fame, faith: carried.faith, threads: carried.threads };
-  write(st, {
-    sys: 'lineage',
-    kind: 'begin',
-    id: life.id,
-    data: { name: life.name, generation, origin, parent: parent.name, age: life.hAge, how: spec?.how ?? 'newcomer', gold: carried?.gold ?? 0, items: carried?.items ?? 0, threads: carried?.threads ?? 0, gap: gapYears },
-    level: 2,
-  });
+  Object.assign(beginEntry.data, { gold: carried?.gold ?? 0, items: carried?.items ?? 0, threads: carried?.threads ?? 0 });
   emitLifeChange(ctx, { phase: 'begin', life, from: parent, origin, generation, heir: spec, ...(carried ? { carried } : {}) });
   return { ok: true, life, origin, heir: spec, gapYears, ...(carried ? { carried } : {}) };
 }

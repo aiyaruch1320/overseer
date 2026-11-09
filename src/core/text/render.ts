@@ -13,6 +13,7 @@ import { goalsText } from './goals';
 import { items, labels, type Labels } from './labels';
 import { endingTail, isM3, m3Level, m3Say, npcMore, type M3Cx } from './m3';
 import { endingSay, isEnding } from './ending';
+import { asPronoun, dedupeClass } from './pick';
 import { hashText as hash, plainName, riteSentence, scrub, sentence, spaceDigits, tidy } from './plain';
 import { BORN_TH, CALENDAR_BASE, CAUSE_TH, DEATH_TH, GIFT_TH, HEIR_OPENING, SEASONS, SPECIAL_LINE, WAKE_OPENING } from './tuning';
 import { BOND_LEVEL_TH, MOOD_TH } from './words';
@@ -51,7 +52,7 @@ function sub(text: string, v: Record<string, string | number | undefined>): stri
     }
     return String(x);
   });
-  return miss ? undefined : out;
+  return miss ? undefined : dedupeClass(out);
 }
 
 const s = (v: unknown): string => (v === undefined || v === null ? '' : String(v));
@@ -60,6 +61,15 @@ export function classWord(data: GameData, cls: unknown): string {
   const n = Number(/\d/.exec(s(cls))?.[0]);
   if (!n) return s(cls);
   return items<{ classes?: { n: number; name: string }[] }>(data, 'economy')?.classes?.find((c) => c.n === n)?.name ?? `ชั้น ${n}`;
+}
+
+/**
+ * The way of a node told as words. At the start of a life (a birth node, age 0 to 3) the cell is often a bare noun that names what the life is born into (`กำพร้า`, `ฝูงใหญ่`):
+ * read after the title it looked like a leftover of the table (T3-11 "ฝูงที่เกิด — กำพร้า"), so it is put in a verb. Later nodes keep the cell as the data says it.
+ */
+export function wayWords(way: string, age?: number): string {
+  const bare = [...way].length <= 12 && !/\s/.test(way) && !/^(เลือก|เป็น|ไป|ได้|ให้|ไม่|ช่วย|ขอ|ยอม|มี)/.test(way);
+  return bare && age !== undefined && age <= 3 ? `เป็น${way}` : way;
 }
 
 /** The Thai for a cause of death: a known word, Thai text as written, or nothing (never a code). */
@@ -103,6 +113,8 @@ const DEAD_NPC = new Set(['die', 'vanish']);
  */
 export class Reader {
   name = '';
+  /** The gender of the main character (`m` `f`), from the entry of the family of the life: a woman's life is told with "เธอ" (T3-10). */
+  gender = '';
   country = '';
   readonly met = new Set<string>();
   /** Holders the character met by name: a slot passes to heirs, and a stranger's death or heir is not news (review M1 round 2). */
@@ -161,14 +173,24 @@ export class Reader {
     // a later life too: the hooks of the goals of the god write before the text system names the life, so the line of the offer of the vows says the
     // name of the life that began and not the one before it (M4 review M1)
     let birth: number | undefined;
+    let bornAt: number | undefined;
     for (const e of log) {
       if (e.sys === 'character' && e.kind === 'birth') birth = e.n;
       else if (e.sys === 'text' && e.kind === 'named' && birth !== undefined) {
         this.bornAs.set(birth, s(e.data.name));
+        bornAt = birth;
         birth = undefined;
+      } else if (e.sys === 'text' && e.kind === 'family' && bornAt !== undefined) {
+        this.bornGender.set(bornAt, s(e.data.gender));
+        bornAt = undefined;
       }
     }
+    const fam = log.find((e) => e.sys === 'text' && e.kind === 'family');
+    if (fam && !this.gender) this.gender = s(fam.data.gender);
   }
+
+  /** The gender of each life by the number of its birth entry, as the `family` entry after it tells (read ahead, like the name). */
+  private bornGender = new Map<number, string>();
 
   /** The name each birth entry (by its number) is given by the `named` entry after it. */
   private bornAs = new Map<number, string>();
@@ -176,7 +198,13 @@ export class Reader {
   /** The line of an entry again, without remembering it (a line rewritten when another entry joins it). */
   reread(e: LogEntry): string | null {
     const line = this.say(e);
-    return line === null ? null : spaceDigits(tidy(line, false));
+    return line === null ? null : spaceDigits(tidy(this.she(e, line), false));
+  }
+
+  /** The systems whose lines speak of the main character as "เขา" (the god's lines, the death, the end of the life): told with the pronoun of the life. */
+  private static readonly HERS = new Set(['god', 'game', 'ending', 'lineage']);
+  private she(e: LogEntry, line: string): string {
+    return Reader.HERS.has(e.sys) ? asPronoun(line, this.gender) : line;
   }
 
   /** True when the last entry read was left out on purpose (an NPC the character does not know), not because it has no phrasing. */
@@ -208,17 +236,19 @@ export class Reader {
     this.filtered = false;
     const line = this.say(e);
     this.remember(e);
-    return line === null ? null : spaceDigits(tidy(line, false));
+    return line === null ? null : spaceDigits(tidy(this.she(e, line), false));
   }
 
   private remember(e: LogEntry): void {
     const d = e.data;
+    if (e.sys === 'text' && e.kind === 'family' && s(d.gender)) this.gender = s(d.gender);
     if (e.sys === 'text' && e.kind === 'named') {
       this.name = s(d.name);
       if (s(d.country)) this.country = s(d.country);
     }
     if (e.sys === 'character' && e.kind === 'birth' && s(d.country)) this.country = s(d.country);
     if (e.sys === 'character' && e.kind === 'birth' && this.bornAs.has(e.n)) this.name = this.bornAs.get(e.n)!;
+    if (e.sys === 'character' && e.kind === 'birth' && this.bornGender.get(e.n)) this.gender = this.bornGender.get(e.n)!;
     if (e.sys === 'npc' && d.what === 'meet' && e.id) {
       // the first holder of a slot the character meets is the person known; the heirs that follow are the slot going on
       if (!this.met.has(e.id) && s(d.holder)) this.metHolders.add(s(d.holder));
@@ -478,7 +508,7 @@ export class Reader {
       if (!way) way = sentence(data, given) || sentence(data, L.choice.get(nodeId)?.get(key));
     }
     const t = scrub(data, title) || title;
-    return way ? `${t} — ${way}` : t;
+    return way ? `${t} — ${wayWords(way, e.age)}` : t;
   }
 
   private battle(e: LogEntry): string {

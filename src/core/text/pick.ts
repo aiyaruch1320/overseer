@@ -48,7 +48,23 @@ export function fill(text: string, values: SlotValues): string | null {
     }
     return String(v);
   });
-  return miss ? null : out;
+  return miss ? null : dedupeClass(out);
+}
+
+/** A template that says `ชนชั้น{class}` given a class name that already starts with the word ("ชนชั้นล่าง") would say it twice (T3-11): the word is kept once. */
+export const dedupeClass = (text: string): string => text.replace(/ชนชั้น\s*ชนชั้น/g, 'ชนชั้น');
+
+// ---------- the pronoun of the main character (T3-10) ----------
+
+/** The pronoun of the main character: "เธอ" for a woman, "เขา" for a man and for one with no gender (the templates were written with "เขา"). */
+export const pronounOf = (gender: string | undefined): string => (gender === 'f' ? 'เธอ' : 'เขา');
+
+// "เขา" as a word of its own, not the mountain (ภูเขา, เขาวงกต, เขาสัตว์ ...)
+const HE = /(?<!ภู)เขา(?!วงกต|สัตว์|ควาย|หนัง|ใหญ่|เขียว|หลวง|พระ|ไกรลาส)/g;
+
+/** The text of a line about the main character with the pronoun of the life: the templates of the documents say "เขา", a woman's life says "เธอ". Other genders keep the text as written. */
+export function asPronoun(text: string, gender: string | undefined): string {
+  return gender === 'f' ? text.replace(HE, 'เธอ') : text;
 }
 
 export function slotsOf(text: string): string[] {

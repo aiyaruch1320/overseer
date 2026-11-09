@@ -4,6 +4,7 @@
 import type { Ctx } from '../../game';
 import { apply } from '../../rules';
 import type { Choice, Effect } from '../../types';
+import { wantsToTravel } from '../../character/data';
 import { npcIndex } from '../../npc/data';
 import { changeB, crisisOf, findAlly, nudgeCrisis } from '../../bonds';
 import { chronicle, say } from './record';
@@ -55,6 +56,8 @@ export function obeyChance(ctx: Ctx, hint: string): { p: number; level: 'เต�
   if (l.skills.includes('u_oracle')) p += WHISPER.oracle;
   if (l.blessings.includes('nb_god_whisper')) p += WHISPER.godWhisper;
   if (a.whisper.sent[hint] !== undefined && l.hAge - a.whisper.sent[hint] <= WHISPER.repeatYears) p += WHISPER.repeat;
+  // a life that wished to see the world takes the whisper to go gladly (T3-3: a "จงไป" to a far land was met with "เขาไม่ใส่ใจ")
+  if (hint === 'จงไป' && wantsToTravel(l)) p += WHISPER.travelWish;
   const punished = gx(ctx).punishedAge ?? -99;
   if (l.hAge - punished <= WHISPER.punishedYears) p += WHISPER.punished;
   p = clamp(p, WHISPER.clamp[0], WHISPER.clamp[1]);

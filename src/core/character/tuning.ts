@@ -124,11 +124,14 @@ export const WISH_WEIGHT = 3;
 /** The chance of the child's meeting with the companion species asked for: the 2% of 13-companions-overview.md ("เหตุการณ์เด็ก") ×3 (19-wish.md §2), once between these ages. */
 export const WISH_CHILD_ANIMAL = { mul: 3, fromAge: 5, toAge: 14 };
 
+/** The city size from which a land counts as "a city" for the wish "ในเมือง" (20-wish-synonyms.md §2.5ข): the size the appearance docs draw as a town (13-storyline-scenes.md). */
+export const WISH_CITY_SCALE = 3;
+
 /** The overlay story lines a wish of the story part opens from outside (story `openLine`); assumption: the docs name the question of the life, not the line. */
 export const WISH_LINES: Record<string, string> = { travel: 'wd', revenge: 'kn' };
 
 /** Years of the adult life in which the travel of a life that asked to see the world weighs more (19-wish.md §2: "การเดินทาง x1.5 สิบปีแรกของวัยผู้ใหญ่"). Kept on the sheet for the travel system. */
-export const WISH_TRAVEL = { mul: 3, years: 10 };
+export const WISH_TRAVEL = { mul: 3, years: 25, go: 2, near: 0.4, gap: 1 };
 
 /** Reasons the wish gives for an ask it cannot keep (the sheet of birth prints them on the row of what cannot be done). */
 export const WISH_WORDS = {

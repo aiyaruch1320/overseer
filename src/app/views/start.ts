@@ -53,6 +53,7 @@ export const START_LABELS = {
   maxLen: 'ไม่เกิน',
   /** The link to the record and the A/B, for the testers (review/m8/how-to-test.md). */
   settings: 'ตั้งค่าการทดสอบ (บันทึกการเล่น · A/B)',
+  notUnderstood: 'ไม่เข้าใจ',
 } as const;
 
 /** The six tags of the box of the wish (20-god-ui.md §11): the name on the tag and the field of the synonym table it fills from. */
@@ -270,6 +271,8 @@ export function certificate(data: GameData, draft: StartDraft, read: WishRead = 
     ...fixed.filter((i) => i.row === 'cannot'),
   ];
   const story = blurb(born.name, items, read.mode);
+  // T3-2: what the parser took for nothing is told, so a part of the wish is never dropped in silence
+  if (read.notUnderstood.length) story.push(`${START_LABELS.notUnderstood}: ${read.notUnderstood.join(' · ')}`);
 
   const peek = peekLife(life);
   const chron = (data.god?.items as { goals?: { chronicle?: { vowDone: number; vowFail: number } } } | undefined)?.goals?.chronicle;

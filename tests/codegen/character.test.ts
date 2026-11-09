@@ -121,11 +121,11 @@ describe('character generator: counts (README.md, code-plan §5.1)', () => {
     expect(comp.rules.interactions).toHaveLength(20);
     expect(comp.rules.personalities).toHaveLength(10);
   });
-  it('synonyms: 506 values, 3,566 words, and each field matches its declared count', () => {
-    expect(syn.totals.values).toBe(506);
-    expect(syn.totals.synonyms).toBe(3566);
-    expect(syn.totals.declaredValues).toBe(506);
-    expect(syn.totals.declaredSynonyms).toBe(3566);
+  it('synonyms: 507 values, 3,576 words, and each field matches its declared count', () => {
+    expect(syn.totals.values).toBe(507);
+    expect(syn.totals.synonyms).toBe(3576);
+    expect(syn.totals.declaredValues).toBe(507);
+    expect(syn.totals.declaredSynonyms).toBe(3576);
     for (const f of syn.fields) {
       expect(f.values.length, f.key).toBe(f.declaredValues);
       expect(f.values.reduce((n, v) => n + v.syn.length, 0), f.key).toBe(f.declaredSyn);

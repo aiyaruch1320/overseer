@@ -72,7 +72,8 @@ export function labels(data: GameData): Labels {
       choice.set(n.id, new Map(n.choices.map((c) => [c.key, c.label])));
     }
   }
-  put(items<{ id: string; name: string }[]>(data, 'countries'));
+  // a country is its name (`ธาลาวิน`), not its epithet (`สหพันธ์มนุษย์สัตว์`): the epithet read as a place gave "ถือกำเนิดที่ ผู้ขี่หมาป่า" (T3-11)
+  for (const c of items<{ id: string; name: string }[]>(data, 'countries') ?? []) name.set(c.id, c.name);
   put(items<{ continents: { id: string; name: string }[] }>(data, 'continents')?.continents);
   const npcRows = items<{ npcs: { id: string; name: string }[] }>(data, 'npcs')?.npcs;
   put(npcRows);
