@@ -72,7 +72,7 @@ export function CardStack({ cards, onOpen }: { cards: CardView[]; onOpen: (o: Go
 }
 
 /** The stop (20-god-ui.md §2 "หยุด"): the scene dims, a black cloth panel holds the reason, what the god can do, and the cards that waited. */
-export function StopPanel({ stop, onOpen, onContinue }: { stop: StopView; onOpen: (o: GodOpen) => void; onContinue: () => void }) {
+export function StopPanel({ stop, onOpen, onContinue, warn = false }: { stop: StopView; onOpen: (o: GodOpen) => void; onContinue: () => void; warn?: boolean }) {
   return (
     <div class="wt-veil" style={{ position: 'absolute', inset: 0, background: tint(color.panel, 72), display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5, boxSizing: 'border-box', paddingTop: size.bar }} data-testid="stop">
       <section role="dialog" aria-label={W.stop.title} style={{ width: 'min(860px, 92%)', maxHeight: '100%', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -102,6 +102,16 @@ export function StopPanel({ stop, onOpen, onContinue }: { stop: StopView; onOpen
           </div>
         )}
         <Options options={stop.options} onOpen={onOpen} />
+        {stop.cards.length === 0 && !stop.death && (
+          <div style={{ color: color.textDim, fontSize: size.small }} data-testid="stop-nothing">
+            {W.stop.nothing}
+          </div>
+        )}
+        {warn && (
+          <div role="alert" style={{ color: color.dreadText, fontSize: size.small }} data-testid="stop-warn">
+            {W.stop.crisisWarn}
+          </div>
+        )}
         {stop.cards.length > 0 && (
           <div>
             <div style={{ color: color.textDim, fontSize: size.small, marginBottom: 4 }}>{W.stop.waiting}</div>

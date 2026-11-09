@@ -92,7 +92,7 @@ function Purse() {
       {p.belief !== null && (
         <span class="g-dim">
           {' '}
-          · {W.belief} {p.belief}
+          · {W.belief} {p.belief < 0 ? `−${Math.abs(p.belief)} (${W.beliefNegative})` : p.belief}
         </span>
       )}
     </span>

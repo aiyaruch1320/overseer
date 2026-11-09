@@ -31,6 +31,9 @@ export const START_LABELS = {
   reroll: 'สุ่มส่วนที่ยังสุ่มใหม่',
   sheet: 'ใบเกิด', // 20-god-ui.md §11 "ใบเกิด"
   fate: 'แต้มชะตา', // 19-wish.md §4
+  /** A harder life gives points back (19-wish.md §4: an orphan, a curse): said in words, never as "-2/10", which reads as an error. */
+  fateGiven: (back: number, total: number) => `แต้มชะตา: ชีวิตที่ยากคืนให้ ${back} (ใช้ 0/${total})`,
+  fateOver: (n: number) => `แต้มชะตา: เกินงบ ${n}`,
   rhythm: 'จังหวะชะตา', // 08-goals.md §5
   vow: 'คำปฏิญาณ', // 08-goals.md §2
   vowFirst: 'เลือกคำปฏิญาณของชีวิตนี้',

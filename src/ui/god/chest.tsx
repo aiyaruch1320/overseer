@@ -9,6 +9,9 @@ import { askGod } from './confirm';
 import { Drop, Empty, Gate } from './parts';
 import { col, frameOf, row, toneColor } from './style';
 
+/** The panel keeps one height from the closed chest to the open one and the picked one, so it does not jump between the steps (T2-8). */
+const CHEST_MIN = 560;
+
 const edgeOf = (kind: string): string => (kind === 'curse' ? color.dread : kind === 'bless' ? color.light : color.fate);
 
 function Card(p: { c: ChestCard; locked: boolean; onHover: (c: ChestCard | null) => void; onLock: () => void; locks: boolean }) {
@@ -43,7 +46,7 @@ function Card(p: { c: ChestCard; locked: boolean; onHover: (c: ChestCard | null)
         </div>
       </button>
       {p.locks && (
-        <button class="g-btn g-small" style={{ position: 'absolute', top: 6, right: 6, padding: '1px 8px', borderColor: p.locked ? '#a03a3a' : color.line, color: p.locked ? color.dreadText : color.textDim }} aria-pressed={p.locked} aria-label={p.locked ? W.chest.unlock : W.chest.lock} onClick={p.onLock}>
+        <button class="g-btn g-small" style={{ position: 'absolute', top: 6, right: 6, padding: '1px 8px', borderColor: p.locked ? '#a03a3a' : color.line, color: p.locked ? color.dreadText : color.textDim }} aria-pressed={p.locked} aria-label={p.locked ? W.chest.unlock : W.chest.lock} title={p.locked ? W.chest.unlockTip : W.chest.lockTip} onClick={p.onLock}>
           {p.locked ? `⛓ ${W.chest.locked}` : `⛓ ${W.chest.lock}`}
         </button>
       )}
@@ -61,7 +64,7 @@ function Cloth(p: { v: ChestView }) {
   const rr = rerollInfo(g, data, lock ?? undefined);
   const heads = W.chest.cols;
   return (
-    <div style={{ ...col, gap: 12 }}>
+    <div style={{ ...col, gap: 12, minHeight: CHEST_MIN }}>
       <div style={{ display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap', background: '#0a0a0f', padding: 16, borderRadius: size.radius, border: `1px solid ${color.line}` }}>
         {p.v.columns.map((pair, i) => (
           <div key={i} style={{ ...col, gap: 10, alignItems: 'center' }}>
@@ -76,7 +79,7 @@ function Cloth(p: { v: ChestView }) {
           </div>
         ))}
       </div>
-      <div class="g-small" style={{ minHeight: 22, textAlign: 'center' }} aria-live="polite">
+      <div class="g-small" style={{ minHeight: 40, textAlign: 'center' }} aria-live="polite">
         {hover ? (
           <>
             {hover.why.length > 0 && (
@@ -91,7 +94,7 @@ function Cloth(p: { v: ChestView }) {
             {!hover.afford && <span style={{ color: color.dreadText }}> · {W.chest.cantAfford}</span>}
           </>
         ) : (
-          <span class="g-dim">{W.chest.noteFree}</span>
+          <span class="g-dim">{W.chest.noteOpen}</span>
         )}
       </div>
       <div style={{ ...row, justifyContent: 'flex-end' }}>
@@ -116,7 +119,7 @@ export function Chest() {
   if (!v.alive) return <Empty>{W.noLife}</Empty>;
   if (v.isOpen) return <Cloth v={v} />;
   return (
-    <div style={{ ...col, alignItems: 'center', padding: 24, gap: 12 }}>
+    <div style={{ ...col, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12, minHeight: CHEST_MIN }}>
       <div aria-hidden="true" style={{ width: 160, height: 100, background: 'linear-gradient(#2a2118, #17120d)', border: `2px solid ${color.light}`, borderRadius: '10px 10px 4px 4px', boxShadow: `0 0 24px ${color.light}33` }} />
       <div>
         {W.chest.left}:{' '}

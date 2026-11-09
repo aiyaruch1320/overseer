@@ -17,6 +17,8 @@ export const W = {
   holding: 'กำลังกดค้าง… ปล่อยก่อนเต็มคือยกเลิก',
   free: 'ฟรี',
   none: 'ไม่มี',
+  /** A belief below zero: the character distrusts the god (01-power.md). */
+  beliefNegative: 'ไม่ไว้ใจพระเจ้า',
   noLife: 'ไม่มีตัวละครที่ยังมีชีวิต ท่านไม่มีสิ่งใดให้ทำ',
   noGame: 'ยังไม่มีเกม',
   power: 'พลังที่มี',
@@ -54,12 +56,17 @@ export const W = {
     empty: 'ช่องว่าง',
     rerolls: 'ทอยไปแล้ว',
     cantAfford: 'พลังไม่พอ',
-    noteFree: 'ยังไม่รู้ว่าในหีบมีอะไร จนกว่าจะเปิด (ไม่เสียพลังจนกว่าจะเลือกใบ)',
+    noteFree: 'ยังไม่รู้ว่าในหีบมีอะไร จนกว่าจะเปิด (ไม่เสียพลังจนกว่าจะเปิดและเลือกใบ)',
+    /** The footer of the open chest: what the player can do now (the chest is no longer a mystery). */
+    noteOpen: 'ชี้ที่ใบเพื่อดูเหตุที่ขึ้น · เลือกได้หนึ่งใบ ไม่เสียพลังจนกว่าจะเลือก · “ล็อก” เก็บใบนั้นไว้ตอนทอยใหม่ (ทอยแบบล็อกแพงขึ้น +5)',
+    lockTip: 'ล็อกใบนี้ไว้ ทอยใหม่แล้วใบนี้ไม่ถูกเปลี่ยน (ราคาทอยเพิ่ม +5)',
+    unlockTip: 'ปลดล็อก ใบนี้จะถูกทอยใหม่พร้อมใบอื่น',
     got: 'ตัวละครได้รับ',
   },
   dream: {
     title: 'เข้าฝัน',
-    doors: 'สามทางที่ฝันถึงได้',
+    /** The heading follows how many ways the crossroads has (the doc draws three; a node may hold two). */
+    doors: (n: number) => `${['ทาง', 'ทางเดียว', 'สองทาง', 'สามทาง'][n] ?? `${n} ทาง`}ที่ฝันถึงได้`,
     none: 'ตอนนี้ไม่มีทางแยกให้ฝันถึง',
     heart: 'ใจของเขา',
     flames: { เต็มใจ: 'เปลวสูงนิ่ง', ลังเล: 'เปลวไหวซ้ายขวา', ขัดขืน: 'เปลวต่ำเกือบดับ' } as Record<string, string>,

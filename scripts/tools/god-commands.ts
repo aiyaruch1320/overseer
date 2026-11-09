@@ -278,7 +278,11 @@ export function previewLines(data: GameData, preview: Record<string, unknown> | 
         const { done, promised } = fxSplit(data, p.effect);
         const fx = [...done, ...promised];
         out.push(`ผลที่คาด: ผู้ขอถูกลงโทษ${fx.length ? ` (${fx.join(' · ')})` : ''}`, `ท่านได้ความหวาดกลัว +${num(p.dread)} · ศรัทธาเทพของเขา ${num(p.belief)}`);
-      } else if (ans === 'deny') out.push('ผลที่คาด: ไม่มีผลต่อโลก', `ศรัทธาเทพของเขา ${num(p.belief)}`);
+      } else if (ans === 'deny') {
+        // a prayer against a trouble of the country (war, plague, famine) that is refused does not end it: the world's event goes on by its own rule (T2-11)
+        const trouble = str(p.effect).includes('country:-');
+        out.push(trouble ? `ผลที่คาด: ท่านไม่ช่วย เรื่องที่ขอ (${str(p.name)}) ดำเนินต่อไปตามโลก` : 'ผลที่คาด: ท่านไม่ให้สิ่งที่ขอ ไม่มีอะไรเปลี่ยนจากฝีมือท่าน', `ศรัทธาเทพของเขา ${num(p.belief)}`);
+      }
       else out.push('นิ่งเฉย: คำอธิษฐานยังรออยู่จนหมดเวลา (แล้วศรัทธาเทพลด 2)');
       return out;
     }

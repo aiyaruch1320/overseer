@@ -220,8 +220,11 @@ export function confirmView(game: Game, data: GameData, action: GodAction, args:
 /** What a result brought, for the panel after the action: the log lines it wrote (level 1 and up) and the move of the power. */
 export function resultView(game: Game, data: GameData, r: CommandResult, before?: { light: number; dread: number }): { lines: string[]; moved: string[] } {
   if (!r.ok) return { lines: [r.reason], moved: [] };
-  const ls = textLines(data, r.log, 1).map((l) => l.text);
   const st = game.state;
+  // the lines of one command do not hold the entry that names the life, so the reader would say "ตัวละคร": hand it the entry of the name and keep only the new lines (T2-9)
+  const named = [...st.log].reverse().find((e) => e.sys === 'text' && e.kind === 'named');
+  const first = r.log.length ? Math.min(...r.log.map((e) => e.n)) : -Infinity;
+  const ls = textLines(data, named && !r.log.some((e) => e.n === named.n) ? [named, ...r.log] : r.log, 1, first).map((l) => l.text);
   const moved: string[] = [];
   const round = (n: number) => Math.round(n * 10) / 10;
   if (before && st.god.light !== before.light) moved.push(`${W.light} ${round(before.light)} → ${round(st.god.light)}`);

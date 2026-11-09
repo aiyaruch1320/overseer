@@ -195,6 +195,9 @@ export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null):
 
 // ---------- the calm picture between scenes (M5 review round two R7) ----------
 
+/** Words of the calm picture. */
+const SCENE_WORDS = { birth: 'ถือกำเนิดที่' } as const;
+
 /** What the calm picture shows of the life now: the season (the sky), the age (the size of the figure), the place and the latest thing that happened. */
 export interface IdleView {
   season: number;
@@ -260,7 +263,8 @@ export function idleView(data: GameData, state: GameState): IdleView {
   const t = last ? last.text.replace(/\s+/g, ' ').trim() : '';
   const latest = [...t].length > LATEST_MAX ? `${[...t].slice(0, LATEST_MAX - 1).join('')}…` : t;
   const c = IDLE_SKY[quarter];
-  const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
+  // the first year of a life has its own line: the birth, not the season of a grown life (T2-16)
+  const caption = life && state.clock.worldYear - life.birthYear < 1 && age === 0 ? `${SEASONS[quarter]} · อายุ 0 · ${SCENE_WORDS.birth}${place ? ` ${place}` : ''}` : `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
   const at = lifePlace(data, state);
   const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: isCityCountry(data, at?.country) ? 'town' : 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
   return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption, scenery };

@@ -12,7 +12,7 @@ function Door(p: { d: DreamDoor }) {
   const d = p.d;
   return (
     <div style={{ ...col, alignItems: 'center', width: 250 }}>
-      <button class="g-door" disabled={!d.ok} aria-label={`${d.label} ${d.level}`} style={{ width: '100%', minHeight: 250, opacity: d.ok ? 1 : 0.55, cursor: d.ok ? 'pointer' : 'not-allowed' }} onClick={() => d.ok && askGod('dream.send', { path: d.path })}>
+      <button class="g-door" disabled={!d.ok} aria-label={`${d.label} ${d.level}`} style={{ width: '100%', minHeight: 250, flex: 1, opacity: d.ok ? 1 : 0.55, cursor: d.ok ? 'pointer' : 'not-allowed' }} onClick={() => d.ok && askGod('dream.send', { path: d.path })}>
         <div style={{ fontSize: 34, color: '#b8a8e8' }} aria-hidden="true">
           ☾
         </div>
@@ -69,11 +69,11 @@ export function Dream() {
           ))}
         </span>
       </div>
-      <Section title={W.dream.doors} tone="dream">
+      <Section title={W.dream.doors(v.doors.length)} tone="dream">
         {v.doors.length === 0 ? (
           <Empty>{W.dream.none}</Empty>
         ) : (
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', alignItems: 'stretch' }}>
             {v.doors.map((d) => (
               <Door key={d.path} d={d} />
             ))}
