@@ -41,10 +41,12 @@ interface Stats {
   nodes: number;
   chances: number;
   callbacks: number;
+  /** Callbacks by kind (`story/node.callbackKind`): the end event carries them as `cb_npc` `cb_event` `cb_thread`. */
+  cb: Record<string, number>;
   bondEndings: number;
 }
 
-const blank = (): Stats => ({ nodes: 0, chances: 0, callbacks: 0, bondEndings: 0 });
+const blank = (): Stats => ({ nodes: 0, chances: 0, callbacks: 0, bondEndings: 0, cb: {} });
 
 /** Reads log entries in order and turns them into events; keeps the count of the life it is inside. */
 export class Tally {
@@ -106,7 +108,8 @@ export class Tally {
   }
 
   private close(e: LogEntry | undefined, fields: Record<string, unknown>): void {
-    this.push('life.end', e, { ...fields, ...this.stats, ...(this.partial ? { partial: true } : {}) });
+    const { cb, ...counts } = this.stats;
+    this.push('life.end', e, { ...fields, ...counts, ...Object.fromEntries(Object.entries(cb).map(([k, c]) => [`cb_${k}`, c])), ...(this.partial ? { partial: true } : {}) });
     this.open = false;
     this.partial = false;
     this.stats = blank();
@@ -164,6 +167,7 @@ export class Tally {
         this.stats.nodes++;
         if (d.chance) this.stats.chances++;
         if (d.callback) this.stats.callbacks++;
+        if (typeof d.callbackKind === 'string') this.stats.cb[d.callbackKind] = (this.stats.cb[d.callbackKind] ?? 0) + 1;
         break;
       case 'llm/director':
         this.push('llm.director', e, { pick: d.pick ?? null, reason: d.reason ?? null });

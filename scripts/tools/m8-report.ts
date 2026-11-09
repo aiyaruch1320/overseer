@@ -342,10 +342,6 @@ export async function simulate(data: ReturnType<typeof loadAll>, o: { seed: numb
   t.ingest(st.log);
   t.finish();
   const out = livesOf(t.events, 'sim', o.policy);
-  // the kind of each callback (npc / event / thread) is in the log (`story/node.callbackKind`); the Tally of the app does not read it, so a one-life run adds the counts to the end event here
-  if (o.lives === 1 && out.length === 1 && out[0].end) {
-    for (const k of CALLBACK_KINDS) out[0].end[`cb_${k}`] = st.log.filter((e) => e.sys === 'story' && e.kind === 'node' && e.data.callbackKind === k).length;
-  }
   return out;
 }
 
