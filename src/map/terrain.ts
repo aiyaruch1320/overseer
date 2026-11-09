@@ -1,6 +1,7 @@
 // The code-drawn ground of the map (world-map.md §2): sea by depth, coast, land by continent and zone, borders,
 // then the icons (trees, peaks, dunes, fields) and the great landmarks. One function paints one tile at the pixel size of its zoom level; it is
 // deterministic (the noise and every scatter come from seeded streams), so a tile is the same on every run.
+import { type Buf, bayer, stampLandmark, stampLine, glyphSprite, toneOf, type PixelGlyph } from '../art/mapart/pixelmap';
 import { CONT_IDS, DEFS, type ContId, type Zone } from './geo';
 import { css, mixRGB, rgb, type RGB } from './color';
 import { drawGlyph, drawLandmark, type GlyphKind } from './glyphs';
@@ -91,6 +92,11 @@ function nearEdge(layout: MapLayout, x: number, y: number, o: number): boolean {
 export interface PaintOpts {
   /** Draw the icons (trees, peaks…). Off for the mini-map. */
   icons?: boolean;
+  /**
+   * Pixel art (21-pixel-art.md §4): every value is cut into a few dithered tones, the coast and the borders are one hard pixel, and the icons, landmarks
+   * and clouds are sprites stamped at whole pixels. For the prebuilt pictures of the world, continent and country levels; not for the chunks round a town.
+   */
+  pixel?: boolean;
 }
 
 export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapLayout, opts: PaintOpts = {}): void {
@@ -104,6 +110,7 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
   const out = img.data;
   const fates = req.looks.fates;
   const flood = req.looks.flood;
+  const pix = !!opts.pixel;
   const fine = sx >= 1.5;
   const borders = req.level === 'continent' || req.level === 'country';
   const bw = 0.8 / sx; // border half width in MU
@@ -137,7 +144,8 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         // zones (later ones paint over earlier ones)
         for (const zr of ci >= 0 ? ZONES_OF[ci] : []) {
           if (x < zr.box[0] || x > zr.box[2] || y < zr.box[1] || y > zr.box[3]) continue;
-          const w = zoneWeight(zr, x, y);
+          const w0 = zoneWeight(zr, x, y);
+          const w = pix ? toneOf(w0, 3, i, j) : w0;
           if (w <= 0.01) continue;
           let zc = zr.col;
           if (fate) zc = mixRGB(zc, rgb(fate.ground), Math.min(1, fate.tint + (zr.z.kind === 'lava' ? 0.2 : 0)));
@@ -146,6 +154,7 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         const tex = nTex(x / 7, y / 7, 3) - 0.5;
         const slope = (nShade((x + 1.3) / 10, (y + 1.3) / 10, 2) - nShade((x - 1.3) / 10, (y - 1.3) / 10, 2)) * 5;
         let k = 1 + tex * 0.12 + slope * 0.1 + Math.min(v, 70) / 700;
+        if (pix) k = 0.84 + toneOf((k - 0.84) / 0.32, 4, i, j) * 0.32;
         const o = fine || borders ? layout.owner[Math.floor(y / g.cell) * g.cols + Math.floor(x / g.cell)] : -1;
         if (borders && o >= 0) k *= countryTint[o];
         col = [col[0] * k, col[1] * k, col[2] * k];
@@ -172,28 +181,36 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         if (flood && cid !== 'AZ' && v < FLOOD_RISE + n2f(x, y)) {
           col = mixRGB(col, rgb('#4f7f78'), 0.8 - smooth(0, FLOOD_RISE, v) * 0.5);
         } else if (cid !== 'AZ' && v < 1.4 && !fate) {
-          col = mixRGB(col, SAND, 0.55 * (1 - v / 1.4));
+          col = mixRGB(col, SAND, 0.55 * (pix ? toneOf(1 - v / 1.4, 2, i, j) : 1 - v / 1.4));
         }
-        // ink along the coast
-        const inkA = 1 - smooth(bw * 0.4, bw * 1.8 + 0.18, v);
-        if (inkA > 0) col = mixRGB(col, INK, inkA * 0.75);
+        // ink along the coast (pixel art: one hard pixel)
+        if (pix) {
+          if (v < bw) col = mixRGB(col, INK, 0.88);
+        } else {
+          const inkA = 1 - smooth(bw * 0.4, bw * 1.8 + 0.18, v);
+          if (inkA > 0) col = mixRGB(col, INK, inkA * 0.75);
+        }
         // borders between the countries of one continent
         if (borders && o >= 0 && v > 0.8 && nearEdge(layout, x, y, o)) {
           const d = bw * 1.1;
           const a = ownerSmooth(layout, x + d, y + d), b2 = ownerSmooth(layout, x - d, y - d);
           const c2 = ownerSmooth(layout, x + d, y - d), d2 = ownerSmooth(layout, x - d, y + d);
-          if ((a !== b2 && a >= 0 && b2 >= 0) || (c2 !== d2 && c2 >= 0 && d2 >= 0)) col = mixRGB(col, rgb('#3a2a1a'), 0.42);
+          if ((a !== b2 && a >= 0 && b2 >= 0) || (c2 !== d2 && c2 >= 0 && d2 >= 0)) col = mixRGB(col, rgb('#3a2a1a'), pix ? 0.7 : 0.42);
         }
         r = col[0]; gg = col[1]; b = col[2];
       } else {
         // sea
-        const depth = clamp(-v / 46, 0, 1);
+        const depth = pix ? toneOf(clamp(-v / 46, 0, 1), 6, i, j) : clamp(-v / 46, 0, 1);
         let col = depth < 0.35 ? mixRGB(SEA_SH, SEA_MID, depth / 0.35) : mixRGB(SEA_MID, SEA_DEEP, (depth - 0.35) / 0.65);
         const wave = nWave(x / 2.4, y / 2.4, 2) - 0.5;
         col = [col[0] * (1 + wave * 0.12), col[1] * (1 + wave * 0.12), col[2] * (1 + wave * 0.1)];
-        if (v > -2.2) col = mixRGB(col, FOAM, smooth(-2.2, 0, v) * 0.5);
-        const inkA = 1 - smooth(bw * 0.4, bw * 1.8 + 0.18, -v);
-        if (inkA > 0) col = mixRGB(col, INK, inkA * 0.75);
+        if (v > -2.2) col = mixRGB(col, FOAM, (pix ? toneOf(smooth(-2.2, 0, v), 2, i, j) : smooth(-2.2, 0, v)) * 0.5);
+        if (pix) {
+          if (-v < bw * 0.5) col = mixRGB(col, INK, 0.88);
+        } else {
+          const inkA = 1 - smooth(bw * 0.4, bw * 1.8 + 0.18, -v);
+          if (inkA > 0) col = mixRGB(col, INK, inkA * 0.75);
+        }
         // the shadow and the underside of the sky islands (Azgar hangs over the sea)
         if (x > aj.x - 40 && x < aj.x + aj.w + 40 && y > aj.y - 40 && y < aj.y + aj.h + 60 && v < 0.5) {
           if (contAtFast(layout, x - 5, y - 9)) col = mixRGB(col, rgb('#0c1a2c'), 0.38);
@@ -203,8 +220,14 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
         }
         r = col[0]; gg = col[1]; b = col[2];
       }
+      if (pix) { r = Math.round(r / 10) * 10; gg = Math.round(gg / 10) * 10; b = Math.round(b / 10) * 10; } // a flat palette of a few hundred colours
       out[p] = r; out[p + 1] = gg; out[p + 2] = b; out[p + 3] = 255;
     }
+  }
+  if (pix) {
+    pixelLayer({ data: out, w: W, h: H }, req, layout, sx);
+    ctx.putImageData(img, 0, 0);
+    return;
   }
   ctx.putImageData(img, 0, 0);
 
@@ -266,16 +289,16 @@ const OPEN_ICON: Record<ContId, { glyph: GlyphKind; density: number }> = {
   AL: { glyph: 'oak', density: 0.25 }, MK: { glyph: 'chimney', density: 0.25 }, SH: { glyph: 'dune', density: 0.35 }, SV: { glyph: 'tree', density: 0.9 }, NB: { glyph: 'deadtree', density: 0.2 },
 };
 
-function scatterIcons(ctx: CanvasRenderingContext2D, req: TileRequest, layout: MapLayout, rng: Stream, sx: number): void {
+function scatterIcons(ctx: CanvasRenderingContext2D | null, req: TileRequest, layout: MapLayout, rng: Stream, sx: number, buf?: Buf): void {
   const g = layout.grid;
   const { x: rx0, y: ry0, w, h } = req.rect;
   // spacing between icon sites in MU: about 14 px apart on the screen of the tile
-  const sp = clamp(14 / sx, 0.9, 12);
+  const sp = buf ? clamp(17 / sx, 1.2, 40) : clamp(14 / sx, 0.9, 12); // pixel art: about 17 art pixels apart
   const sizeK = clamp(sx / 2.2, 0.85, 2.4) * (req.level === 'continent' ? 1 : 1);
   const sites: { x: number; y: number; z: number; glyph: GlyphKind; size: number; cid: ContId; col: string }[] = [];
   // a chunk of the ground round a town shares its icons with its neighbours: every site is a cell of one global grid with its own random stream, and
   // a glyph that crosses the edge is painted by both chunks (each clips its half), so no tree is cut by a seam
-  const global = !!req.px, m = global ? 1.6 : 0;
+  const global = !!req.px || !!buf, m = global ? 1.6 : 0;
   const i0 = global ? Math.floor((rx0 - m) / sp) : 0, j0 = global ? Math.floor((ry0 - m) / sp) : 0;
   const i1 = global ? Math.ceil((rx0 + w + m) / sp) : Math.ceil((w - sp / 2) / sp), j1 = global ? Math.ceil((ry0 + h + m) / sp) : Math.ceil((h - sp / 2) / sp);
   for (let j = j0; j < j1; j++)
@@ -308,7 +331,12 @@ function scatterIcons(ctx: CanvasRenderingContext2D, req: TileRequest, layout: M
   sites.sort((a, b) => a.y - b.y);
   for (const s of sites) {
     const fate = s.col ? FATE_BY_ID[s.col as FateId] : undefined;
-    drawGlyph(ctx, s.glyph, (s.x - rx0) * sx, (s.y - ry0) * sx, s.size * sizeK, { cid: s.cid, fate: fate?.id, seed: Math.floor(s.x * 31 + s.y * 17) });
+    if (buf) {
+      const n = s.size * sizeK * (s.glyph === 'field' ? 0.85 : s.glyph === 'tuft' ? 1.1 : 1.6);
+      glyphSprite(s.glyph as PixelGlyph, n, s.cid, fate && { color: fate.after[0], mix: Math.min(0.95, fate.tint * 0.6 + 0.2) }, Math.floor(s.x * 31 + s.y * 17)).stamp(buf, (s.x - rx0) * sx, (s.y - ry0) * sx);
+      continue;
+    }
+    drawGlyph(ctx!, s.glyph, (s.x - rx0) * sx, (s.y - ry0) * sx, s.size * sizeK, { cid: s.cid, fate: fate?.id, seed: Math.floor(s.x * 31 + s.y * 17) });
   }
 }
 
@@ -374,3 +402,40 @@ export function paintCountryMask(canvas: PaintCanvas, rect: { x: number; y: numb
 }
 
 export const fateCss = (id: FateId, i: number): string => css(rgb(FATE_BY_ID[id].after[i]));
+
+/** The icons, the landmarks and the clouds of a pixel-art tile, stamped into its pixel buffer (code-plan §8.4, 21-pixel-art.md §4). */
+function pixelLayer(buf: Buf, req: TileRequest, layout: MapLayout, sx: number): void {
+  const rng = new Stream(hashString(`${req.level}:${req.key}`) ^ req.seed);
+  const { x: rx0, y: ry0, w, h } = req.rect;
+  scatterIcons(null, req, layout, rng, sx, buf);
+  const at = (id: string) => layout.byId.get(id);
+  const inside = (px: number, py: number) => px > rx0 - 30 && px < rx0 + w + 30 && py > ry0 - 30 && py < ry0 + h + 30;
+  const R = clamp(sx * 7.5, 6, 22); // radius of a landmark in art pixels: 7.5 MU, but never a smudge and never a monument
+  const put = (c: ReturnType<typeof at>, kind: Parameters<typeof stampLandmark>[1]) => {
+    if (!c || !inside(c.x, c.y)) return;
+    stampLandmark(buf, kind, (c.x - rx0) * sx, (c.y - ry0) * sx, R, req.looks.fates[c.continent]);
+  };
+  const az6 = at('AZ-06'), nr2 = at('NR-02');
+  if (az6 && nr2 && (inside(az6.x, az6.y) || inside(nr2.x, nr2.y)) && req.level !== 'world') stampLine(buf, (az6.x - rx0) * sx, (az6.y + 6 - ry0) * sx, (nr2.x - rx0) * sx, (nr2.y - 4 - ry0) * sx, [190, 225, 245]);
+  put(at('SV-01'), 'worldtree'); put(at('MK-04'), 'arkea'); put(at('KD-08'), 'abyss'); put(at('NB-08'), 'whirlpool'); put(at('KD-10'), 'volcano');
+  // clouds under the sky islands: a stipple of pale pixels, no soft edge
+  const aj = layout.continents.AZ.box;
+  const fate = req.looks.fates.AZ;
+  const cloud: [number, number, number] = fate ? [150, 140, 120] : [255, 255, 255];
+  const n = req.level === 'world' ? 16 : 10;
+  for (let i = 0; i < n; i++) {
+    const cx = aj.x - 20 + rng.next() * (aj.w + 40), cy = aj.y - 20 + rng.next() * (aj.h + 40);
+    const rr = 10 + rng.next() * 16;
+    if (cx < rx0 - rr || cx > rx0 + w + rr || cy < ry0 - rr || cy > ry0 + h + rr) continue;
+    for (let k = 0; k < 4; k++) {
+      const ex = (cx + (k - 1.5) * rr * 0.4 - rx0) * sx, ey = (cy + (k % 2) * rr * 0.12 - ry0) * sx, rx = rr * 0.5 * sx, ry = rr * 0.26 * sx;
+      for (let j = Math.max(0, Math.floor(ey - ry)); j <= Math.min(buf.h - 1, Math.ceil(ey + ry)); j++)
+        for (let q = Math.max(0, Math.floor(ex - rx)); q <= Math.min(buf.w - 1, Math.ceil(ex + rx)); q++) {
+          const dx = (q - ex) / rx, dy = (j - ey) / ry;
+          if (dx * dx + dy * dy > 1 || bayer(q, j) > 0.34) continue;
+          const p = (j * buf.w + q) * 4;
+          buf.data[p] = Math.round((buf.data[p] + cloud[0]) / 2); buf.data[p + 1] = Math.round((buf.data[p + 1] + cloud[1]) / 2); buf.data[p + 2] = Math.round((buf.data[p + 2] + cloud[2]) / 2);
+        }
+    }
+  }
+}

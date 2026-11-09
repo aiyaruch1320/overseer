@@ -169,8 +169,9 @@ describe('one pixel density (V2-10)', () => {
     expect(chunks.length).toBeGreaterThan(6);
     for (const r of chunks) {
       expect(r.px).toBe(TOWN_PX);
-      expect(r.rect.w).toBe(GROUND_CHUNK);
-      expect(tileSize(r).w).toBe(GROUND_CHUNK * TOWN_PX);
+      // a chunk reaches 6 art pixels over its right and lower neighbour (no line along the seam)
+      expect(r.rect.w).toBeCloseTo(GROUND_CHUNK + 6 / TOWN_PX, 9);
+      expect(tileSize(r).w).toBe(GROUND_CHUNK * TOWN_PX + 6);
     }
     // together they cover the view
     const xs = chunks.map((r) => r.rect.x), ys = chunks.map((r) => r.rect.y);

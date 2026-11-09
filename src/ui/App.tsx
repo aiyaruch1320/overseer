@@ -1,5 +1,5 @@
 // The game page: one screen per phase of the store (code-plan §8.2). The watch screen holds the life's scene (LifeScene) and the mini-map;
-// the miracle's aim draws the full map (god-map.tsx).
+// the miracle's aim draws the full map (god-map.tsx), and a click on the mini-map opens it to browse (MapOverlay.tsx).
 import { SAVE_WORDS } from '../app/save-words';
 import { store } from '../app/store';
 import { useFocusReturn } from './focus';
@@ -7,6 +7,7 @@ import { EndScreen } from './end';
 import { GodPanel, openGod } from './god';
 import { WorldMap } from '../map';
 import { LifeScene } from './LifeScene';
+import { MapOverlay, openMap } from './MapOverlay';
 import { Layers } from './Layers';
 import './god-map';
 import { StartScreen, VowChoice } from './start';
@@ -53,10 +54,11 @@ function Screen() {
     <>
       <WatchScreen
         onOpenGod={(o) => (o.kind === 'decree' ? openGod('miracle', { id: 'MR-25', tab: 'fate', ...o.args }) : openGod(o.kind, o.args))}
-        map={store.gameData && store.state ? <WorldMap data={store.gameData} state={store.state} mini width={MINI_MAP_WIDTH} /> : undefined}
+        map={store.gameData && store.state ? <WorldMap data={store.gameData} state={store.state} mini width={MINI_MAP_WIDTH} onOpen={openMap} /> : undefined}
         scene={<LifeScene />}
       />
       <Layers />
+      <MapOverlay />
       {/* the vow chosen at birth and changed once at 15 (08-goals): the box draws nothing while no choice is open */}
       <div style={{ position: 'fixed', left: '50%', bottom: size.pad * 6, transform: 'translateX(-50%)', width: 'min(560px, 92vw)', zIndex: 6 }}>
         <VowChoice only="change" />
