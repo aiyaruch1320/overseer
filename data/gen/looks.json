@@ -6049,7 +6049,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "wings:fin"
+    ],
     "wear": 0.25,
     "defaults": [],
     "items": [
@@ -6106,7 +6108,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "wings:fin"
+    ],
     "wear": 0.25,
     "defaults": [
      "eye",

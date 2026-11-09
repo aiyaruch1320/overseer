@@ -39,7 +39,7 @@ export const FEAT_IDS = [
   'glow-eyes', 'plates', 'rivets', 'steam', 'mecheye', 'mecharm', 'core', 'visor', 'seams', 'wraps', 'usekh', 'kohl', 'dust', 'gaunt',
   'claws', 'ribs', 'hunger', 'sunkeneyes',
   // people
-  'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'missingarm',
+  'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'wings:fin', 'missingarm',
   // added after the first set (feats-extra.ts): spirits, tentacles, one eye, a kappa's dish, face items
   'ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle',
   // added after the visual review (feats-extra.ts): the beast people's animals, the bird, the lizard, the doll, the four-armed

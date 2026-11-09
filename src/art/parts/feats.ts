@@ -874,6 +874,10 @@ export const FEATS: Record<string, Part> = {
     // wings like a bat's, black-violet
     back: (r) => batWing(r, '#34283f', '#6a5a86', false),
   },
+  'wings:fin': {
+    // the finned wing of a winged merfolk (04-nerea NR02): a thin sea-green membrane on pale ribs, folded flat at rest and spread when she is glad
+    back: (r) => batWing(r, mixHex(r.look.skin, '#2a8aa8', 0.55), mixHex(r.look.skin, '#ffffff', 0.55), false),
+  },
   missingarm: {
     // the far arm is gone: the empty sleeve is knotted short at the shoulder
     farArm: (r) => {

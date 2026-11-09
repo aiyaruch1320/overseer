@@ -733,6 +733,9 @@ export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS
  */
 export type PersonFix = Partial<Pick<PersonLookRow, 'stage' | 'line' | 'fem' | 'skin' | 'hairColor' | 'eye' | 'main' | 'second' | 'outfit' | 'hair' | 'beard' | 'hat' | 'tool' | 'feats' | 'accent' | 'ears' | 'body' | 'raceFeats' | 'wear'>>;
 export const PERSON_FIX: Record<string, PersonFix> = {
+  // เซอร์ลา "เงือกปีก ... ปีกครีบบางที่หลังพับแนบตัว" and ฮินา "ปีกเล็กยังไม่แข็งแรงแต่กางเมื่อดีใจ": the words read `เงือก` first, so the finned wing is named here
+  'NR02-2': { feats: ['wings:fin'] },
+  'NR02-4': { feats: ['wings:fin'] },
   // เอเกิล "ปีกสีเทาเข้มปลายดำพับผอมแห้ง ผ้าคลุมเดินทางเก่าขาดวิ่น ใบหน้าอ่อนล้า": a gaunt, worn traveller under a ragged cloak (he was the shape of ลาร์ก SV11-2)
   'SV11-4': { body: { shoulders: 0.84, scale: 1.04 }, feats: ['gaunt'] },
   // ── Saharan ──

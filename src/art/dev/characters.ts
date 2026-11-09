@@ -19,7 +19,9 @@ app.innerHTML = `<div class="bar">
 for (const id of ['set', 'pose', 'zoom'])
   (document.getElementById(id) as HTMLSelectElement).onchange = (e) => { q.set(id, (e.target as HTMLSelectElement).value); location.search = q.toString(); };
 
-const entries = SETS[setId]?.entries() ?? [];
+// `ids=A,B` shows only those figures of the set (a close look at a few)
+const only = q.get('ids')?.split(',');
+const entries = (SETS[setId]?.entries() ?? []).filter((e) => !only || only.includes(e.id));
 const CELL = { w: 56, h: 60 };
 const cols = Math.max(1, Math.floor((window.innerWidth - 32) / (CELL.w * zoom)));
 const rows = Math.ceil(entries.length / cols);
