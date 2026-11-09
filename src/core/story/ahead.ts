@@ -6,8 +6,11 @@
 // fork to hand to `weigh`, so they are not here):
 //  - `repeat_meet`: the node (a way among the two the rule-based layer ranks highest, or its notes) names (effect `npc`) a holder the character already knows from two meetings or more, so the coming meeting is the third.
 //  - `quiet`: the node is the first one the life plays after a big world event (mark ⭐ or ●) that fell in the last three life years, and the two ways have no fight and no death in them.
-//  - `npc_death`, `heart`: not recognised. The follow-up of a dead NPC (npc/ties.ts, 40/35/25) and the burden event of the heart (god/dream.ts, thirds) are single rolls, not nodes; a node that
-//    merely names a dead NPC is not "the story that follows the death", and the burden leaves no node behind to point at.
+//  - `npc_death`: the follow-up story of a tied NPC whose holder was taken by a death that was not old age (npc/ties.ts, 40/35/25, a fork with the id `npc_death:<row>:<dead position>:<year of the death>`).
+//    The death is known the moment it happens (the follow waits), and the draw comes when the holder's own story is over or has no path left: listed once that is so (or the story ends within a life year),
+//    for NPCs of the country the life is in or ones it knows. See `followAhead`.
+//  - `heart`: the burden event of the heart (god/dream.ts, thirds, the id `heart:<nth burden of the life>`). It fires when a dream against his nature is obeyed and the burden is one step from the limit, at the
+//    moment the story arms the dream's node; listed while such a dream waits on a node that comes within a life year. See `burdenAhead`.
 // Left out always (§3.3): a node with a god window or a dream waiting on it (the god's tools act there), the closing nodes of a race line and every way that fights or dies.
 import { BEATS_PER_LIFE_YEAR, worldYearsPerLifeYear } from '../clock';
 import type { Ctx } from '../game';
@@ -165,7 +168,20 @@ function ahead(ctx: Ctx): DirectorPoint[] {
     const year = queued ? ctx.state.clock.worldYear : yearStepAt;
     out.push({ id: `${n.id}:${year}`, kind, ways: [{ key: ways[0].key, text: ways[0].label }, { key: ways[1].key, text: ways[1].label }] });
   }
+  let dueIds: Set<string> | undefined;
+  const due = (): ReadonlySet<string> => (dueIds ??= new Set(dueNodes(ctx, ex).map((d) => d.node.id)));
+  for (const part of parts) out.push(...part(ctx, ex, due));
   return out;
+}
+
+/**
+ * The key points of the systems that own a plain roll (the NPC follow-up in npc/ties.ts, the burden of the heart in god/dream.ts): each registers a reader at load, so this file does not import
+ * them (the story system loads without the npc and god systems). A reader is pure like `directorAhead`; `due` gives the ids of the nodes that play within a life year.
+ */
+export type AheadPart = (ctx: Ctx, ex: StoryExt, due: () => ReadonlySet<string>) => DirectorPoint[];
+const parts = new Set<AheadPart>();
+export function registerAheadPart(part: AheadPart): void {
+  parts.add(part);
 }
 
 /** How many points of this life were asked (an answer may still be on its way, so the offers alone undercount). */

@@ -10,10 +10,13 @@ import { crisisOf, findAlly, nudgeCrisis } from '../bonds';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import { test } from '../rules';
+import { registerAheadPart } from '../story/ahead';
 import { weigh, type Pull } from '../story/choose';
 import { announcedNodes, canEnter } from '../story/walk';
 import { extOf as storyExt } from '../story/state';
 import { indexOf } from '../story/data';
+import type { DirectorPoint } from '../llm/director';
+import { forkPoint, leanWeights, type ForkWay } from '../llm/fork';
 import { isNear } from '../world/events';
 import type { Choice, Effect, LifeState } from '../types';
 import { addBelief, clamp } from './belief';
@@ -530,15 +533,19 @@ function againstHeart(ctx: Ctx, life: LifeState): void {
   life.heart += b.step;
   if (life.heart < b.at) return;
   life.heart = 0;
+  const id = burdenId(ctx);
   bump(ctx, 'l.burden');
   const rng = ctx.rng('god.dream');
   const x = rng.next();
+  // the thirds of the docs; the LLM director may lean one of the two offered ways (×1.5), and with no answer the cuts are exactly 1/3 and 2/3
+  const w = leanWeights(ctx, id, burdenWays(ctx, life));
+  const total = w[0] + w[1] + w[2];
   let what: string;
-  if (x < 1 / 3) {
+  if (x < w[0] / total) {
     // he prays a plain question: −8 at the end of the year unless the god answers (then +12 instead)
     gx(ctx).questions.push({ age: life.hAge });
     what = 'question';
-  } else if (x < 2 / 3) {
+  } else if (x < (w[0] + w[1]) / total) {
     // he leaves work or home for a season (the job pause and the travel event wait for the economy and travel systems)
     if (!life.flags.includes('burden_flight')) life.flags.push('burden_flight');
     what = 'flight';
@@ -549,11 +556,35 @@ function againstHeart(ctx: Ctx, life: LifeState): void {
   write(ctx.state, { sys: 'god', kind: 'burden', id: what, data: { age: life.hAge }, level: 2 });
 }
 
+/** The id of the next burden event of this life: the ordinal, so it is the same when it is asked ahead and when it fires. */
+export const burdenId = (ctx: Ctx): string => `heart:${count(ctx, 'l.burden') + 1}`;
+
+const BURDEN_WAYS = [
+  { key: 'question', text: 'ตั้งคำถามกับพระเจ้า' },
+  { key: 'flight', text: 'หนีงานหรือหนีบ้านหนึ่งฤดู' },
+  { key: 'nature', text: 'นิสัยเปลี่ยน แทนด้วยนิสัยตรงข้าม' },
+];
+
+/** Can a trait of his be pushed to its opposite (the third event)? */
+const natureOpts = (ctx: Ctx, life: LifeState): string[] => {
+  const ix = idx(ctx);
+  return life.traits.filter((t) => (ix.traits.get(t)?.conflicts ?? []).some((c) => ix.traits.has(c)));
+};
+
+/**
+ * The three results of a burden event in the order they are drawn, each a third (03-dreams.md §4). The docs give no rule-based factor, so the two the director offers are the first two
+ * by weight; the thirds tie, and the tie goes to the change of nature when he has a trait to lose (the cause piles up on the trait he was pushed against), then to the order written.
+ */
+export function burdenWays(ctx: Ctx, life: LifeState): ForkWay[] {
+  const nature = natureOpts(ctx, life).length > 0;
+  return BURDEN_WAYS.map((w) => ({ ...w, weight: 1, fit: w.key === 'nature' && nature ? 1 : 0 }));
+}
+
 /** The trait he was pushed against most is gone and its opposite takes its place (03-dreams.md §4 third event). */
 function changeNature(ctx: Ctx, life: LifeState): boolean {
   const ix = idx(ctx);
   const rng = ctx.rng('god.dream');
-  const opts = life.traits.filter((t) => (ix.traits.get(t)?.conflicts ?? []).some((c) => ix.traits.has(c)));
+  const opts = natureOpts(ctx, life);
   if (!opts.length) return false;
   const gone = opts[rng.int(0, opts.length - 1)];
   const cs = ix.traits.get(gone)!.conflicts.filter((c) => ix.traits.has(c));
@@ -583,6 +614,22 @@ export function answerQuestion(ctx: Ctx): boolean {
   record(ctx, 'burden', 'question', 'answered');
   return true;
 }
+
+// ---------- the burden as a key point of the LLM director ----------
+
+/** The burden event: a dream against his nature waits on a node that comes within a life year and the burden is one step from the limit (it fires when the dream is obeyed, so some points never fire). */
+function burdenAhead(ctx: Ctx, ex: { announced: Record<string, unknown> }, due: () => ReadonlySet<string>): DirectorPoint[] {
+  const life = lifeOf(ctx);
+  if (!life) return [];
+  const b = godData(ctx).dreams.burden;
+  if (life.heart + b.step < b.at) return [];
+  const waiting = dreamsOf(ctx).filter((d) => !d.resolved && !d.applied && d.fit < 0);
+  if (!waiting.some((d) => ex.announced[d.node] || due().has(d.node))) return [];
+  const point = forkPoint(burdenId(ctx), burdenWays(ctx, life));
+  return point ? [{ ...point, kind: 'heart' }] : [];
+}
+
+registerAheadPart((ctx, ex, due) => burdenAhead(ctx, ex, due));
 
 // ---------- the year ----------
 

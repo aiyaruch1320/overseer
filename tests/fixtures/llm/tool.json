@@ -4,6 +4,8 @@
     { "point": "director", "match": "\"ways\":[{\"key\":\"a\"", "answers": ["{\"pick\":\"a\",\"reason\":\"old_face\"}"] },
     { "point": "director", "match": "\"ways\":[{\"key\":\"b\"", "answers": ["{\"pick\":\"b\",\"reason\":\"old_face\"}"] },
     { "point": "director", "match": "\"ways\":[{\"key\":\"c\"", "answers": ["{\"pick\":\"c\",\"reason\":\"old_face\"}"] },
+    { "point": "director", "match": "\"ways\":[{\"key\":\"nature\"", "answers": ["{\"pick\":\"nature\",\"reason\":\"life_question\"}"] },
+    { "point": "director", "match": "\"ways\":[{\"key\":\"question\"", "answers": ["{\"pick\":\"question\",\"reason\":\"life_question\"}"] },
     {
       "point": "ending",
       "answers": ["ชีวิตนี้เริ่มจากที่เล็ก ๆ และเดินไปตามเรื่องที่ชีวิตพาไป ผ่านทั้งวันที่ยากและวันที่อบอุ่น\n\nเมื่อถึงปลายทาง ผู้คนที่เคยพบกันยังจดจำเรื่องของเขาได้\n\nนี่คือบทสรุปทดสอบจากตัวจำลองแบบออฟไลน์ ไม่ได้มาจากโมเดลจริง"]
