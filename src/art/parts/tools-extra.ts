@@ -632,26 +632,29 @@ function trowel(r: Rig): void {
 
 // ── M7: the shadow merchant's cart of smoke (SH14-2) and the box on the chest of the boy who speaks to it (SH12-2S) ──
 function smokeCart(r: Rig): void {
-  const { p } = r, k = r.k, [hx, hy] = r.hand, wd = p.mat('#4a3a5a'), rim = p.mat('#8a90a8'), smoke = p.mat('#9aa2bc', { alpha: 0.75 }), smoke2 = p.mat('#c4cadc', { alpha: 0.6 });
-  const x = Math.round(hx) + 3, y = Math.round(hy) - 1, w = Math.round(12 * k), h = Math.round(5 * k), f = r.f % 2;
-  // a food cart: the handle runs from the hand to a dark box on one wheel, a lid line along the top, a wisp of smoke from it that rises in the shape of a person
+  const { p } = r, k = r.k, [hx, hy] = r.hand, wd = p.mat('#4a3a5a'), rim = p.mat('#8a90a8'), smoke = p.mat('#b4bcd8', { alpha: 0.85 }), smoke2 = p.mat('#e0e6f4', { alpha: 0.7 });
+  const x = Math.round(hx) + 3, y = Math.round(hy) + 1, w = Math.round(13 * k), h = Math.round(5 * k), f = r.f % 2;
+  // a food cart low on two wheels (not an anvil): the handle runs from the hand to the box, a striped awning over it, and above it a person made of smoke
+  // (head, shoulders, two arms) that wavers and thins to a wisp where it meets the cart
   p.line([hx, hy], [x, y + 1], wd);
-  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, rim); p.rect(x + w - 2, y + 1, 1, h - 1, rim);
-  p.ell(x + w * 0.45, y + h + 1.6, 2.1 * k + 0.3, 2.1 * k + 0.3, rim); p.px(x + w * 0.45, y + h + 1.6, wd);
-  const cx = x + Math.round(w * 0.55), top = y - Math.round(10 * k);
-  p.ell(cx + f * 0.5, top + 1, 1.8 * k + 0.4, 1.9 * k + 0.4, smoke);
-  p.rect(cx - 1 - f, top + 3, Math.max(2, Math.round(3.4 * k)), Math.round(5 * k), smoke);
-  p.rect(cx - 2, top + 3 + Math.round(2 * k), Math.max(4, Math.round(5.4 * k)), 1, smoke2);
-  p.px(cx + f - 1, top + 7 * k, smoke2); p.px(cx + 1 - f, y - 1, smoke2);
+  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, rim);
+  for (let i = 0; i < w; i += 2) p.rect(x + i, y - 2, 1, 2, rim);
+  p.ell(x + 2.5, y + h + 1.5, 2 * k + 0.3, 2 * k + 0.3, rim); p.px(x + 2.5, y + h + 1.5, wd);
+  p.ell(x + w - 2.5, y + h + 1.5, 2 * k + 0.3, 2 * k + 0.3, rim); p.px(x + w - 2.5, y + h + 1.5, wd);
+  const cx = x + Math.round(w * 0.5), top = y - Math.round(13 * k);
+  p.ell(cx + f * 0.5, top + 2, 2.2 * k + 0.4, 2.3 * k + 0.4, smoke2);
+  p.poly([[cx - 3 * k - f, top + 5], [cx + 3 * k + f, top + 5], [cx + 1.5, y - 3], [cx - 1.5, y - 3]], smoke);
+  p.line([cx - 3 * k - f, top + 5], [cx - 5 * k, top + 8 * k], smoke2); p.line([cx + 3 * k + f, top + 5], [cx + 5 * k, top + 8 * k + f], smoke2);
+  p.px(cx + f, y - 4, smoke2);
 }
 function chestBox(r: Rig): void {
-  const { p } = r, k = r.k, x = r.x0 + r.tw - 3, y = r.sh + 2, w = Math.max(4, Math.round(5 * k)), h = Math.max(5, Math.round(6 * k));
-  const wd = p.mat('#8a6a42'), dk = p.mat('#3a2a1a', { flat: true }), strap = p.mat('#5a4030');
-  // a wooden box with holes bored in the lid, hung on the chest by a strap over each shoulder
-  p.line([x + 1, y], [r.x0 + 1, r.sh], strap); p.line([x + w - 1, y], [r.x0 + r.tw - 1, r.sh - 1], strap);
-  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, p.mat(lighter('#8a6a42', 0.25)));
-  p.px(x + 1, y + 2, dk); p.px(x + 3, y + 2, dk); p.px(x + 1, y + 4, dk); p.px(x + 3, y + 4, dk);
-  p.px(x + w - 1, y + h - 1, p.mat('#5a4030'));
+  const { p } = r, k = r.k, w = Math.max(5, Math.round(7 * k)), h = Math.max(6, Math.round(8 * k)), x = r.x0 + r.tw - w + 1, y = r.sh + 1;
+  const wd = p.mat('#c8a468'), dk = p.mat('#2a1a0e', { flat: true }), strap = p.mat('#3a2a1a'), edge = p.mat('#6a4a28');
+  // a pale wooden box with a row of holes bored in the front, hung on the chest by a dark strap over each shoulder, its frame a darker wood so it stands out from the shirt
+  p.line([x + 1, y], [r.x0 + 1, r.sh - 1], strap); p.line([x + w - 2, y], [r.x0 + r.tw - 1, r.sh - 1], strap);
+  p.rect(x, y, w, h, edge); p.rect(x + 1, y + 1, w - 2, h - 2, wd); p.rect(x + 1, y + 1, w - 2, 1, p.mat(lighter('#c8a468', 0.3)));
+  for (let i = 0; i < 3; i++) p.px(x + 1 + i * 2 - (w < 6 ? 1 : 0), y + 3, dk);
+  for (let i = 0; i < 3; i++) p.px(x + 1 + i * 2 - (w < 6 ? 1 : 0), y + 5, dk);
 }
 
 function wrench(r: Rig): void {
