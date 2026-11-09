@@ -136,7 +136,11 @@ export const DEBT = { repayShare: 1, defaultMul: 3 };
  * nodes to the 31 to 33 of the code-plan target (about 30 without it, about 42 with it, with `pv` for the poor lands); turn it to false, or
  * open it for a share of lives in `startLife`, if the lead wants the target kept.
  */
-export const OPEN_EC = false; // lead M3: every life on ec pushed nodes to ~42 against 31–33; revisit when all M3 systems are in
+// Decided again in the overnight A5 round (all M3 systems are in): still closed. The 31 to 33 nodes of a life is a number of the docs too (god/06-implementation.md §2:
+// "32 โหนดต่อชีวิตเต็ม", the rhythm of the god's windows) and the sim that gave it does not walk ec. Measured on 120 lives of the whole core (tests/balance/story-core.test.ts,
+// old lives): closed 32.8 · open for every life 42.8 (ec 8.6 nodes a life) · open with at most 3 nodes a life 35.4 (ec 3.0). To open it the lead moves the target (docs) or pays
+// for it elsewhere (pv wk shares carry the income, so not there).
+export const OPEN_EC = false;
 /** Countries with W at most this open `pv` (24-economy.md §2 rule 2: "อยู่ประเทศ W 1 ถึง 2"). */
 export const PV_MAX_W = 2;
 /** Jobs that open `tr` besides the eight trade jobs (24-economy.md §2: "มีอาชีพการค้า"). */
