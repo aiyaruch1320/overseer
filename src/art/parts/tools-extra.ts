@@ -530,7 +530,14 @@ function sheath(r: Rig, len: number, cover: string, fit: string): void {
   p.px(gx, gy - 1, pommel);
 }
 function sheathedSword(r: Rig): void { sheath(r, 12, '#6a4a30', '#d8d0b0'); }
-function greatSheath(r: Rig): void { sheath(r, 18, '#4a4a58', '#c4c4d4'); }
+function greatSheath(r: Rig): void {
+  // a sword too big for a hand: the sheath runs past the knee and the hilt with a wide guard stands up above the hip, in a pale steel so it reads on dark plate
+  sheath(r, 22, '#5a5a6c', '#e4e4f0');
+  const { p } = r, bx = r.x0 + r.tw - 1.5, by = r.hip - 1;
+  p.line([bx, by - 3], [bx + 0.5, by - 8], p.mat('#d8d0b0'), 2);
+  p.line([bx - 3, by - 4], [bx + 3, by - 4], p.mat('#e4e4f0', { flat: true }), 1);
+  p.px(bx + 0.5, by - 9, p.mat('#f4f0d8', { flat: true }));
+}
 function goldSheath(r: Rig): void { sheath(r, 18, '#a88628', '#f0d070'); }
 
 /** Two pistols: one in the hand, the other in the lower hand of a man with four arms (held out in front of the belly), else holstered at the hip. */
