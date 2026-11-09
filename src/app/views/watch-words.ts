@@ -24,6 +24,9 @@ export const WATCH_WORDS = {
   } as Record<GodKind, string>,
   keys: { chest: 'C', dream: 'D', whisper: 'W', miracle: 'M', chronicle: 'H' } as Record<string, string>,
   speed: { pause: 'หยุด', normal: 'ปกติ', fast: 'เร็ว' },
+  beforeLog: { prev: (n: number) => `ชีวิตก่อนหน้า (${n} บรรทัด)`, world: (n: number) => `เหตุการณ์ของโลกก่อนเกิด (${n} บรรทัด)`, hide: 'ซ่อน' },
+  /** What an heir's start has: no request (the heir is a person of the family book); the vow is for a life that starts before 15. */
+  heirNote: (age: number, noVow: boolean) => `ผู้สืบเริ่มที่อายุ ${age} เป็นคนของสมุดตระกูล เผ่าและชื่อมีอยู่แล้ว จึงไม่มีคำขอตอนเริ่ม${noVow ? ' และไม่มีคำปฏิญาณให้เลือก (เลือกได้ตั้งแต่เกิดถึงอายุ 15)' : ' คำปฏิญาณเลือกได้จนถึงอายุ 15'}`,
   olderLog: (n: number) => `ดูบันทึกก่อนหน้า (อีก ${n} บรรทัด)`,
   slowedNote: 'ชะลอเป็นปกติระหว่างมีการ์ด แล้วกลับเป็นเร็ว',
   speedKeys: { pause: 'Space', normal: '1', fast: '2' },

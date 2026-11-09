@@ -124,7 +124,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
           {!stop && <CardStack cards={cards} onOpen={open} />}
           {stop && <StopPanel stop={stop} onOpen={open} onContinue={actions.resume} />}
         </div>
-        <StoryLog log={model.log} />
+        <StoryLog log={model.log} before={model.before} note={model.startNote} />
         <LifeLine line={model.line} />
       </div>
 

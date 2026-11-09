@@ -203,7 +203,8 @@ const LEVEL_COLOR = { 0: color.textDim, 1: color.textDim, 2: color.text, 3: colo
 /** Lines of the story log in the DOM at first; older ones come in pages when the player asks (M7 review P1-15: the nodes grew with the log). */
 const LOG_PAGE = 120;
 
-export function StoryLog({ log }: { log: Line[] }) {
+export function StoryLog({ log, before, note }: { log: Line[]; before?: { lines: Line[]; kind: 'prev' | 'world' }; note?: string | null }) {
+  const [showBefore, setShowBefore] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(LOG_PAGE);
   const first = Math.max(0, log.length - shown);
@@ -228,10 +229,32 @@ export function StoryLog({ log }: { log: Line[] }) {
       data-testid="log"
     >
       {log.length === 0 && <div style={{ color: color.textDim }}>{W.empty}</div>}
+      {/* the buttons stay at the top of the pane while the log scrolls, so they are never cut by its edge */}
+      {before && before.lines.length > 0 && (
+        <div style={{ position: 'sticky', top: 0, zIndex: 1, background: color.panel, padding: '2px 0 4px' }}>
+          <button class="wt-btn" style={{ ...button, fontSize: size.small }} onClick={() => setShowBefore(!showBefore)} aria-expanded={showBefore} data-testid="log-before">
+            {showBefore ? W.beforeLog.hide : W.beforeLog[before.kind](before.lines.length)}
+          </button>
+        </div>
+      )}
+      {showBefore &&
+        before!.lines.map((l) => (
+          <div key={l.n} style={{ color: color.textDim, opacity: 0.8 }}>
+            {l.age !== undefined && <span style={{ fontFamily: font.mono, marginRight: size.gap }}>{`${W.age} ${l.age}`}</span>}
+            {l.text}
+          </div>
+        ))}
+      {note && (
+        <div style={{ color: color.textDim, fontStyle: 'italic' }} data-testid="log-note">
+          {note}
+        </div>
+      )}
       {first > 0 && (
-        <button class="wt-btn" style={{ ...button, fontSize: size.small, marginBottom: 4 }} onClick={() => setShown(shown + LOG_PAGE)} data-testid="log-older">
-          {W.olderLog(first)}
-        </button>
+        <div style={{ position: 'sticky', top: 0, zIndex: 1, background: color.panel, padding: '2px 0 4px' }}>
+          <button class="wt-btn" style={{ ...button, fontSize: size.small }} onClick={() => setShown(shown + LOG_PAGE)} data-testid="log-older">
+            {W.olderLog(first)}
+          </button>
+        </div>
       )}
       {log.slice(first).map((l) => (
         <div key={l.n} style={{ color: LEVEL_COLOR[l.level], fontWeight: l.level >= 3 ? 600 : 400 }}>
