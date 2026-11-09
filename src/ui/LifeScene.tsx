@@ -89,7 +89,8 @@ function Idle({ v, look }: { v: IdleView; look: PersonLook | null }) {
   return (
     <div role="img" aria-label={`ชีวิตดำเนินไป · ${v.caption}`} style={{ position: 'relative', width: '100%' }} data-testid="idle-scene" data-season={v.season} data-stage={v.figure.stage} data-continent={sc.continent}>
       <Stage frame={frame} frameColor={color.line} seed={sceneKey} scenery={scenery} figureOf={figureOf} mood={false} />
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: '6%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.text, padding: '0 8%', pointerEvents: 'none' }}>
+      {/* the line sits in the sky: at the foot of the stage it lay over a child or a short people standing at 1× (M7 review) */}
+      <div style={{ position: 'absolute', left: 0, right: 0, top: '5%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.text, padding: '0 8%', pointerEvents: 'none' }}>
         <div style={{ display: 'inline-block', textShadow: '0 1px 4px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.42)', padding: '2px 10px', borderRadius: 4 }}>{v.caption}</div>
         {v.latest && (
           <div style={{ marginTop: 3 }}>
