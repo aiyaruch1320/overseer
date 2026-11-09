@@ -46,6 +46,8 @@ export interface CombatExt {
   tamed: string[];
   /** Rank in the army, 0 to 4 (tuning RANKS); the economy reads it for the wage (`life.ext.combat.rank`). */
   rank: number;
+  /** hAge the life began at when an heir or a successor took over (set at the birth), so that the first year has no fight of its own (T3-13). */
+  heirFrom?: number;
   /** The war the soldier is in now (M3 review C2): its event, its foes, the count of battles and what a summary of the campaign tells. */
   war?: WarExt;
 }
