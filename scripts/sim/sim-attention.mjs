@@ -20,7 +20,7 @@ const RATE = {
   battle: 3, // battle beats in the storyline paths a life takes (sim-life samples: elf 1.2 dwarf 0.9 beastfolk 1.9 human 3.1 orc 4.6)
   crisis: 1.5, // stage-3 companion crises and bondage escapes per life (assumed: the bonds docs give no rate)
 };
-const DEADLINE = { prayer: 14 / 4, omen: 2, battle: 2, crisis: 1, majorOmen: 1 }; // life-years a call can wait before it is moot
+const DEADLINE = { prayer: 14 / 4, omen: 2, battle: 2, crisis: 2, majorOmen: 1 }; // life-years a call can wait before it is moot
 
 function rng(seed) {
   let s = seed >>> 0;

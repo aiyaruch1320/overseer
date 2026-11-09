@@ -21,7 +21,7 @@ export const DEFAULT_RULES: Record<'low' | 'normal' | 'high', AttentionRule> = {
 };
 
 /** How long a waiting card may wait before it is moot, in life years (07-attention.md §3 second table). */
-export const DEFAULT_DEADLINES: Record<CardKind, number> = { prayer: 3.5, omen: 2, battle: 2, crisis: 1, majorOmen: 1 };
+export const DEFAULT_DEADLINES: Record<CardKind, number> = { prayer: 3.5, omen: 2, battle: 2, crisis: 2, majorOmen: 1 };
 export const DEFAULT_AGE_STOPS = [5, 15, 30, 50, 70];
 
 /**

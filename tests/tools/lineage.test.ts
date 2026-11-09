@@ -191,7 +191,8 @@ describe('lineage: lives in one world', () => {
 
   it('open threads go to the heir, at most three, and are settled, dropped or left to become a legend', () => {
     // a seed whose three lives close a thread (the lives of a seed move with every change of the story's draws)
-    const s = lineage(1, 3);
+    const seed = seedWhere('closed thread', 3, (x) => lx(x.game.state).threads.some((t) => t.state === 'closed'));
+    const s = lineage(seed, 3);
     const x = lx(s.game.state);
     for (const r of x.recs) expect(r.threads.length).toBeLessThanOrEqual(3);
     expect(x.threads.length).toBeGreaterThan(0);

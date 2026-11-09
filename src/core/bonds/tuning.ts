@@ -163,8 +163,8 @@ export const PARTNER_FEELS = {
 
 // ---------- the crisis of a tie, announced before it is decided (M3 review H5) ----------
 
-/** Beats the character waits for the player before he answers a crisis the player was called for: the card runs a life year (attention DEFAULT_DEADLINES.crisis), a beat is a quarter. */
-export const CRISIS_MAX_BEATS = 4;
+/** Beats the character waits for the player before he answers a crisis the player was called for: the card runs two life years (attention DEFAULT_DEADLINES.crisis, 07-attention.md §3), a beat is a quarter. */
+export const CRISIS_MAX_BEATS = 8;
 /** What the god's hand adds to (or takes from) the chance the character helps: a whisper `ช่วย` · a dream of the one in trouble · a whisper that he lies (assumption; the chance is held between 0.1 and 0.95). */
 export const NUDGE = { whisper: 0.2, dream: 0.3, liar: -0.25 };
 /** Life years a nudge waits for the crisis it was meant for. */
