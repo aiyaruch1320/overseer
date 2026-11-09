@@ -836,7 +836,7 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   // ── the spirits of Nebulia ──
   // ไลเซีย "ผมยาวลอยเหมือนอยู่ใต้น้ำ" / เก็บกุญแจ "เกราะโบราณผุกร่อน ... กุมกุญแจความทรงจำเมฆาเรืองสีฟ้าอ่อนแน่นไว้ที่อก"
   // NB08-1: tall and broad (ร่างสูงบึกบึน), the plate in a lighter steel so it does not melt into the grey skin, the great sword on the hip
-  'NB08-1': { main: '#6a6a78', second: '#c4c4d4', body: { scale: 1.2, shoulders: 1.3 } },
+  'NB08-1': { main: '#34508a', second: '#c4c4d4', body: { scale: 1.2, shoulders: 1.3 } },
   'NB08-2': { hair: 'long', hairColor: '#aabfd8' },
   'NB08-4': { outfit: 'armor', tool: 'keyring' },
   'SH02-6': { tool: 'papyrus' },
