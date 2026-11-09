@@ -156,6 +156,8 @@ export interface GodData {
     special: { moment: string; rule: string }[];
     whispers: { hint: string; id: string; cost: number; effect: string; from: string }[];
     whisperCostGroups: { cheap: string[]; dear: string[] };
+    /** The colloquial phrases of each hint (09-whisper-words.md), for reading typed words with no LLM. */
+    whisperWords: Record<string, string[]>;
     prayerAnswers: { answer: string; price: string; effect: string }[];
   };
   prayers: {
