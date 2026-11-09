@@ -127,6 +127,10 @@ export function test(ctx: Ctx, c: Condition | undefined, opts: TestOpts = {}): b
       return c.of.k === 'text' ? (opts.unknown ?? false) : !test(ctx, c.of, opts);
     case 'text':
       return opts.unknown ?? false;
+    case 'parents':
+      // a living parent: false only for a life ordered an orphan (19-wish.md; the ask is on the sheet from birth, the parents are put away at the first beat).
+      // Core, not the character system's, so a story walk without that system keeps the ways open.
+      return ctx.state.life?.ext.character?.wish?.ask?.family !== 'orphan';
     case 'cmp': {
       const v = readStat(ctx, c.stat, c);
       if (v === undefined) return false;

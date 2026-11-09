@@ -367,6 +367,8 @@ export interface CharacterFacts {
   companions?: string[];
   /** Maximum-hp bonus from gifts. */
   hpBonus?: number;
+  /** The wish sheet the life was ordered by (19-wish.md); only the ask's family is read outside the character system. */
+  wish?: { ask?: { family?: string } };
 }
 
 /** Facts of `life.ext.combat` that other systems read (the whole shape is `CombatExt` in combat/state.ts). */

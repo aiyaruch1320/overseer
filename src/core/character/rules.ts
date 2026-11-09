@@ -1,5 +1,5 @@
 // The kinds of the effect grammar this system owns (docs/guide/code-plan.md §5.2, src/core/rules): who the character is and what it holds.
-// Conditions: has race age class half parents gender faith sign country continent.
+// Conditions: has race age class half gender faith sign country continent.
 // Effects: grant remove death wound trust class favour statPct statMul range pct.
 // Numbers: gold fame the six stats, the eight axes, trust, belief, heart, class and their Thai names.
 import type { Ctx } from '../game';
@@ -51,11 +51,6 @@ export function registerCharacterRules(force = false): void {
   onCond('half', (ctx) => {
     const life = alive(ctx);
     return !!life && !!extOf(life).second;
-  });
-  // a living parent: false only for a life that was ordered an orphan (19-wish.md; the family part of the wish puts the parents away at the first beat, but the ask is on the sheet from birth)
-  onCond('parents', (ctx) => {
-    const life = alive(ctx);
-    return !!life && extOf(life).wish?.ask.family !== 'orphan';
   });
   onCond('gender', (ctx, c) => {
     const life = alive(ctx);
