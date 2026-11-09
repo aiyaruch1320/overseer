@@ -3,7 +3,6 @@
 // in a small cache, and always answers. Deterministic: the same data, seed and look give the same pixels.
 import type { GameData } from '../core/game';
 import type { Country } from '../core/data/types-npcs';
-import { posterize } from '../art/mapart/pixelize';
 import { planCity, type CityLook, type CityPlan } from './city';
 import { layoutOf, type MapLayout } from './layout';
 import { domCanvas, tileKey, type CanvasFactory, type MapArtProvider, type TileImage, type TileRequest } from './provider';
@@ -111,8 +110,8 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
           ctx.putImageData(im, 0, 0);
         }
       } else {
-        paintTerrain(canvas, req, layout);
-        posterize(canvas);
+        // the prebuilt pictures are pixel art (21-pixel-art.md §4); the chunks round a town (`px`) keep the painter's own ground
+        paintTerrain(canvas, req, layout, { pixel: !req.px });
       }
       painted++;
       const img: TileImage = { source: canvas as unknown as CanvasImageSource, width: canvas.width, height: canvas.height, rect: req.rect, origin: 'code' };
