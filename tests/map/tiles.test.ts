@@ -28,16 +28,16 @@ describe('zoom levels', () => {
     expect(levelOf(0.33)).toBe('continent');
     expect(levelOf(0.74)).toBe('continent');
     expect(levelOf(0.75)).toBe('country');
-    expect(levelOf(1.99)).toBe('country');
-    expect(levelOf(2)).toBe('city');
-    expect(levelOf(6.9)).toBe('city');
-    expect(levelOf(7)).toBe('inside');
-    expect(levelOf(48)).toBe('inside');
+    expect(levelOf(6.2)).toBe('country');
+    expect(levelOf(6.25)).toBe('city');
+    expect(levelOf(15.9)).toBe('city');
+    expect(levelOf(16)).toBe('inside');
+    expect(levelOf(50)).toBe('inside');
   });
-  it('keeps the camera zoom inside 0.1 to 48', () => {
+  it('keeps the camera zoom inside 0.16 to 50', () => {
     expect(clampZoom(0.001)).toBe(CAM_MIN);
     expect(clampZoom(900)).toBe(CAM_MAX);
-    expect(CAM_MAX).toBe(48);
+    expect(CAM_MAX).toBe(50);
   });
 });
 
