@@ -11,7 +11,8 @@ import { cityYear, openJobLines, jobYear } from './jobs';
 import './rules';
 import { beatOf, extOf, fresh, lifeOf } from './state';
 import { go, move, plan, queueLine, reachable } from './trip';
-import { FOLLOW_STORY, MIN_AGE } from './tuning';
+import { isLive, tiesOf } from '../bonds/state';
+import { ELDER_HOME, FOLLOW_STORY, MIN_AGE } from './tuning';
 import type { Ctx } from '../game';
 
 export { registerTravelRules } from './rules';
@@ -103,6 +104,19 @@ function hookStory(): void {
 }
 hookStory();
 
+/** Roots at home: a relative of the family is alive (the bonds keep them), or the bonds system has not run (nobody is told dead). */
+function hasRoots(life: LifeState): boolean {
+  const b = life.ext.bonds as Parameters<typeof tiesOf>[0] | undefined;
+  return !b || tiesOf(b).some((t) => t.light && isLive(t) && !!t.kin && t.kin !== 'child' && t.kin !== 'adopted');
+}
+
+/** The elder abroad who goes home (ELDER_HOME): his base becomes the country of his birth, if the road is open. */
+function elderHome(ctx: Ctx, life: LifeState, ex: ReturnType<typeof extOf>): void {
+  if (!lifeOf(ctx) || ex.away || life.hAge < ELDER_HOME.age || life.country === ex.born || boundBan(life, 'move') || !hasRoots(life)) return;
+  if (!ctx.rng('life.travel.home').chance(ELDER_HOME.chance)) return;
+  relocate(ctx, ex.born, 'home');
+}
+
 export const travelSystem: System = {
   name: 'travel',
   birth(ctx) {
@@ -155,6 +169,7 @@ export const travelSystem: System = {
     rollCauses(ctx, life, ex, new Set(begins));
     if (!lifeOf(ctx)) return;
     jobYear(ctx, life, ex);
+    elderHome(ctx, life, ex);
     cityYear(ctx, life, ex);
     // §3 of 25-journeys: a stranger comes to a character who stays home (35%, human-equivalent age 24 to 36, L0, not a human)
     if (!ex.spontaneous && life.race !== 'human' && life.hAge >= 24 && life.hAge <= 36 && ex.level === 0) {

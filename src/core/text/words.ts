@@ -54,7 +54,7 @@ export const TRAVEL_CAUSE_TH: Record<string, string> = {
 
 /** Why a trip was made (`why` of a trip), beyond the causes. */
 export const TRIP_WHY_TH: Record<string, string> = {
-  return: 'เดินทางกลับ', city: 'ไปทำงานในเมือง', forge: 'ไปหาช่างตีอาวุธ', visitor: 'ไปตามคำเชิญ', d6: 'ไปตามทางทหารรับจ้าง', pilgrimage: 'ไปแสวงบุญ', ...TRAVEL_CAUSE_TH,
+  return: 'เดินทางกลับ', home: 'กลับบ้านเกิดยามชรา', city: 'ไปทำงานในเมือง', forge: 'ไปหาช่างตีอาวุธ', visitor: 'ไปตามคำเชิญ', d6: 'ไปตามทางทหารรับจ้าง', pilgrimage: 'ไปแสวงบุญ', ...TRAVEL_CAUSE_TH,
 };
 
 /** The things met on the road (`note` of `travel/road`). */

@@ -136,3 +136,9 @@ export const GOODS_SHARE = 0.5;
 
 /** Share of the ways of the story that name a place (the `place` effect) that the character follows by moving there (the filters still apply). */
 export const FOLLOW_STORY = { same: 0.2, cross: 0.015 };
+
+/**
+ * An elder who lives abroad and has family or roots at home may go home to end his days (01-travel-rules.md §2.1, the motif of lore/storylines/25-journeys.md ex.e1):
+ * from `age` (the age of an elder, human equivalent), once a life year, `chance`. Measured so the vow GV-03 of the god does not pass 25% for the random player.
+ */
+export const ELDER_HOME = { age: 55, chance: 0.1 };
