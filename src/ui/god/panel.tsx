@@ -66,7 +66,7 @@ function Body(p: { open: GodOpen }): JSX.Element {
     case 'dream':
       return <Dream />;
     case 'whisper':
-      return <Whisper hint={typeof a.hint === 'string' ? a.hint : undefined} why={typeof a.why === 'string' ? a.why : undefined} id={typeof a.id === 'string' ? a.id : undefined} target={typeof a.target === 'string' ? a.target : undefined} />;
+      return <Whisper hint={typeof a.hint === 'string' ? a.hint : undefined} why={typeof a.why === 'string' ? a.why : undefined} id={typeof a.id === 'string' ? a.id : undefined} target={typeof a.target === 'string' ? a.target : undefined} typed={typeof a.typed === 'string' ? a.typed : undefined} />;
     case 'prayer':
       return <Prayer id={typeof a.id === 'number' ? a.id : undefined} />;
     case 'miracle':

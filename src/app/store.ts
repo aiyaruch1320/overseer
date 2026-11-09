@@ -16,6 +16,7 @@ import { createSession, resumeSession, startLife, type Session, type SessionOpts
 import { MAX_BEATS_PER_FRAME, SAVE_KEY, SEC_PER_BEAT, SPEED_MUL } from './tuning';
 import { versions } from '../core/game';
 import type { Llm } from '../core/llm';
+import { understandWords, type Understood } from './views/typed';
 import { summarizeDeath } from '../core/llm/summary-input';
 import { askAhead } from '../core/story';
 import { pack, unpack } from './save-text';
@@ -195,6 +196,13 @@ export class GameStore {
   /** A god command: `confirm: false` asks for the preview (no random roll, nothing changes), `confirm: true` runs it. */
   god(action: string, args: Record<string, unknown>, confirm: boolean): CommandResult {
     return this.send({ type: 'god', action: action as Extract<Command, { type: 'god' }>['action'], args, confirm });
+  }
+
+  /** The free words of the player read as a whisper draft (src/app/views/typed.ts): the LLM when this store has one, else the offline matcher. Changes nothing. */
+  understand(words: string): Promise<Understood> {
+    const g = this.game;
+    if (!g) return Promise.resolve({ ok: false, reason: 'no_game', line: 'ยังไม่มีเกม' });
+    return understandWords(g, this.llm, words);
   }
 
   setSettings(patch: Partial<Settings>): CommandResult {

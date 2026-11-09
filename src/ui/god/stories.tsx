@@ -86,6 +86,8 @@ power('หีบประทาน (พลังไม่พอ)', 'chest', unde
 });
 power('เข้าฝัน', 'dream');
 power('กระซิบ', 'whisper', { hint: 'จงไป' });
+power('กระซิบ (พิมพ์คำพูด)', 'whisper', { typed: 'ขอให้จงไปเนบูเลีย' });
+power('กระซิบ (พิมพ์แล้วไม่เข้าใจ)', 'whisper', { typed: 'ขอให้รวยล้นฟ้า' });
 power('คำอธิษฐาน', 'prayer');
 power('ปาฏิหาริย์ (เลือกและเล็ง)', 'miracle', { id: 'MR-01' }, (g) => void (g.state.god.light = 120));
 power('ปาฏิหาริย์ (ลางที่รออยู่)', 'miracle', { tab: 'omens' }, withOmen);
