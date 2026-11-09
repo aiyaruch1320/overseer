@@ -37,7 +37,7 @@ export function tieLookOf(data: GameData, ctx: Ctx, t: Tie): PersonLook | null {
   const fem = t.gender === 'f';
   if (t.npc && looks.npcs[t.npc]) return npcLook(looks, t.npc, { stage, fem: looks.npcs[t.npc].fem ?? fem });
   if (!looks.races[t.race]) return null;
-  return raceLook(looks, t.race, { stage, fem, seed: t.id });
+  return raceLook(looks, t.race, { stage, fem, seed: t.id, kin: true });
 }
 
 /** The Looks of every tie of the life, by tie id; an NPC who is a creature (src/art/npc-beasts.ts) is its beast. */

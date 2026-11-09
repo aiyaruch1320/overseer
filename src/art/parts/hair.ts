@@ -13,6 +13,19 @@ const standsUp = (r: Rig): boolean => LOW_HATS.has(r.look.hat);
 const cap = (r: Rig, grow: number, pred: (nx: number, ny: number) => boolean, mat = r.m.hair): void => kitCap(r, mat, grow, pred, true);
 /** Short hair's outline: over the crown, the back and the side of the head, a fringe over the brow. */
 const shortCap = (r: Rig, grow = 0.6): void => cap(r, grow, (nx, ny) => ny < -0.32 || (nx < -0.1 && ny < 0.5));
+/** The hair of the sea-people who sing: it floats. */
+const floating = (r: Rig): boolean => r.look.feats.includes('gills') && r.look.feats.includes('fangs');
+/** Long hair afloat: a wide mass behind the head that sways out in a wave to the knee, with a few loose strands. */
+const drift = (r: Rig): void => {
+  const h = headOf(r), len = Math.round(h.ry * 4.2), hair = r.m.hair, dk = r.p.mat(mix(r.look.hairColor, '#000000', 0.3));
+  for (let i = 0; i < len; i++) {
+    const wave = Math.round(Math.sin(i * 0.55 + r.f * 1.4) * 1.5), w = 4 + Math.min(4, Math.round(i / 4));
+    const x = h.l - 1 - Math.round(i / 4) + wave;
+    r.p.rect(x, h.hy - Math.round(h.ry * 0.5) + i, w, 1, i % 5 === 3 ? dk : hair);
+  }
+  r.p.px(h.l - 5, h.hy + Math.round(h.ry) + Math.round(Math.sin(r.f * 1.4) * 2), hair);
+  r.p.px(h.rgt + 1, h.hy + Math.round(h.ry * 0.6) + (r.f % 2), hair);
+};
 const sz = (r: Rig, v: number) => Math.max(1, Math.round(v * r.k));
 /** A strand that falls behind the head and shoulders. */
 const behind = (r: Rig, len: number, w = 3): void => {
@@ -26,7 +39,10 @@ export const HAIR: Record<string, Part> = {
 
   // ── long: hangs behind the head to the middle of the back ───────────────────────────────────────────────────────────────────────
   long: {
-    back: (r) => { behind(r, sz(r, 6), 3); const h = headOf(r); r.p.rect(h.l - 2, h.hy + Math.round(h.ry), 2, sz(r, 5), r.m.hair); },
+    back: (r) => {
+      // a siren's hair (gills and fangs: 02-races merfolk table "ยาวลอย") is long and floats: it streams far past the shoulders in waves and drifts with the frame
+      if (floating(r)) { drift(r); return; }
+      behind(r, sz(r, 6), 3); const h = headOf(r); r.p.rect(h.l - 2, h.hy + Math.round(h.ry), 2, sz(r, 5), r.m.hair); },
     hair: (r) => shortCap(r, 0.8),
   },
 

@@ -8,6 +8,8 @@ import { sceneryFor, specKey } from './scenery';
 import { seedOf } from './seed';
 import { ART, CARD_PIC } from './tuning';
 import { PLAIN_SKY } from './card';
+import { bayer, glyphSprite, Sprite, toneOf, type Buf } from '../art/mapart/pixelmap';
+import { parse } from '../art/mapart/color';
 
 /** The plain place of a card that carries none (and no life gives one): the first continent under the sky. */
 const PLAIN: ScenerySpec = { continent: 'AZ', setting: 'outdoor' };
@@ -112,46 +114,94 @@ export function paintCard(card: Cardish): CardPicture {
 }
 
 /**
- * The picture of a card of form M (12-event-visuals "รูปแบบการแสดง 4 แบบ": a colour or line layer over the world map, no scene): a dark chart with its grid, nine
- * landmasses, and the layer of the event laid over them in the colour of the card's frame, as a band of hatching with a line along its edge. No scene, no figures.
+ * The picture of a card of form M (12-event-visuals "รูปแบบการแสดง 4 แบบ": a colour or line layer over the world map, no scene): the pixel map of the game (the
+ * painters of src/art/mapart/pixelmap: dithered sea, a one-pixel coast, trees, peaks and hills, small towns), the layer of the event laid over it as a dithered tint
+ * with a line along its edge, and a flag and a sail drifting over the map (the thing the world-event captions of the sea and the wind speak of). No scene, no figures.
  */
 export function paintMapLayer(card: Cardish): CardPicture {
   const w = ART.w;
   const h = ART.h;
   const out: CardPicture = { w, h, data: new Uint8ClampedArray(w * h * 4) };
   const d = out.data;
-  const sea = [18, 28, 44];
-  const land = [52, 64, 70];
-  const edge = [96, 110, 112];
   const layer = rgb(hexNum(card.frame ?? '#a89860'));
   const rnd = (() => { let a = seedOf(card.id) || 1; return () => ((a = (Math.imul(a, 1664525) + 1013904223) >>> 0) / 4294967296); })();
-  // nine blobs of land on a three by three spread, each a union of discs
-  const lands: [number, number, number][] = [];
-  for (let i = 0; i < 9; i++) {
-    const cx = 40 + (i % 3) * 120 + (rnd() - 0.5) * 24;
-    const cy = 30 + Math.floor(i / 3) * 60 + (rnd() - 0.5) * 14;
-    for (let k = 0; k < 4; k++) lands.push([cx + (rnd() - 0.5) * 40, cy + (rnd() - 0.5) * 20, 12 + rnd() * 12]);
-  }
-  const inLand = (x: number, y: number): number => {
-    let m = 0;
-    for (const [cx, cy, r] of lands) m = Math.max(m, 1 - Math.hypot((x - cx) / 1.5, y - cy) / r);
-    return m;
+  // a main landmass and an island: sums of discs with a ragged edge; the sea deepens away from the coast
+  const discs: [number, number, number][] = [];
+  const blob = (cx: number, cy: number, n: number, spread: number, r0: number): void => {
+    for (let k = 0; k < n; k++) discs.push([cx + (rnd() - 0.5) * spread * 2, cy + (rnd() - 0.5) * spread * 0.8, r0 * (0.6 + rnd() * 0.7)]);
   };
-  // the band of the layer: a diagonal strip across the chart, its place from the card
+  blob(70, 80, 9, 62, 26);
+  blob(250, 138, 6, 36, 20);
+  blob(262, 34, 4, 22, 14);
+  const field = (x: number, y: number): number => {
+    let m = 0;
+    for (const [cx, cy, r] of discs) m = Math.max(m, 1 - Math.hypot((x - cx) / 1.35, y - cy) / r);
+    return m + Math.sin(x * 0.31 + y * 0.17) * 0.025;
+  };
+  const m = new Float32Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) m[y * w + x] = field(x, y);
+  const setc = (x: number, y: number, c: readonly number[]): void => {
+    const o = (y * w + x) * 4;
+    d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255;
+  };
+  const seaC = (v: number, x: number, y: number): number[] => {
+    const t = toneOf(v, 3, x, y);
+    return [parse('#1c3c5c'), parse('#24507a'), parse('#2e6490'), parse('#3a78a4')][Math.round(t * 3)];
+  };
+  const landC = (v: number, x: number, y: number): number[] => {
+    const t = toneOf(v, 3, x, y);
+    return [parse('#6a8a4a'), parse('#587a40'), parse('#4a6c38'), parse('#3e5c30')][Math.round(t * 3)];
+  };
+  // the band of the layer: a diagonal strip over the map, its place from the card
   const a = 0.35 + rnd() * 0.3;
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
-      const o = (y * w + x) * 4;
-      const m = inLand(x, y);
-      let c = m > 0.12 ? land : sea;
-      if (m > 0 && m <= 0.12) c = edge;
-      if (x % 32 === 0 || y % 30 === 0) c = c.map((v) => v + 10);
+      const v = m[y * w + x];
+      const isLand = v > 0.1;
+      let c: number[];
+      if (isLand) c = landC(0.7 - v * 0.6 + (bayer(x * 3, y * 3) - 0.5) * 0.05, x, y);
+      else c = seaC(Math.min(1, Math.max(0, 1 + v * 1.4 - 0.15)), x, y);
+      // the coast: a one-pixel sand line round the land, a lighter surf in the sea beside it
+      if (isLand && v < 0.18) c = parse('#d6c58a');
+      else if (!isLand && v > -0.07) c = parse('#8ac0d4');
       const t = (x / w) * 0.6 + (y / h) * 0.4 - a;
-      const on = Math.abs(t) < 0.12;
-      const hatch = (x + y) % 6 < 3;
-      for (let k = 0; k < 3; k++) d[o + k] = on && hatch ? c[k] + (layer[k] - c[k]) * 0.55 : on ? c[k] + (layer[k] - c[k]) * 0.2 : c[k];
-      if (Math.abs(Math.abs(t) - 0.12) < 0.006) for (let k = 0; k < 3; k++) d[o + k] = layer[k];
-      d[o + 3] = 255;
+      const dist = Math.abs(t);
+      if (dist < 0.12 && bayer(x, y) < 0.5 - dist * 2) c = c.map((q, k) => Math.round(q + (layer[k] - q) * 0.45));
+      if (Math.abs(dist - 0.12) < 0.005) c = layer;
+      setc(x, y, c);
     }
+  const b: Buf = { data: d, w, h };
+  const landAt = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < w && y < h && m[Math.floor(y) * w + Math.floor(x)] > 0.28;
+  // the icons of the ground, scattered on the land by the seed of the card, then the towns
+  const marks: ['tree' | 'oak' | 'peak' | 'hill', number][] = [['tree', 7], ['oak', 6], ['tree', 8], ['peak', 11], ['hill', 6], ['oak', 7]];
+  for (let k = 0; k < 46; k++) {
+    const x = Math.floor(rnd() * w), y = Math.floor(rnd() * h);
+    if (!landAt(x, y) || !landAt(x, y + 3)) continue;
+    const [kind, n] = marks[Math.floor(rnd() * marks.length)];
+    glyphSprite(kind, n, 'AZ', undefined, Math.floor(rnd() * 99)).stamp(b, x, y);
+  }
+  let towns = 0;
+  for (let k = 0; k < 400 && towns < 4; k++) {
+    const x = 24 + Math.floor(rnd() * (w - 48)), y = 24 + Math.floor(rnd() * (h - 40));
+    if (!landAt(x, y) || !landAt(x - 6, y) || !landAt(x + 6, y) || !landAt(x, y + 5)) continue;
+    towns++;
+    const t = new Sprite(9, 7);
+    t.rect(0, 3, 4, 4, '#c8b08a'); t.tri([-1, 3], [2, 0], [5, 3], '#a8483a'); t.rect(5, 4, 4, 3, '#b8a07a'); t.rect(5, 3, 4, 1, '#8a4a3a'); t.px(1, 5, '#3a2a20');
+    t.outlined('#1e1a14').stamp(b, x, y);
+  }
+  // a sail drifting over the sea (a torn flag on a mast, a billowed sail) with its wake, and a lone flag on the land: the signs the caption speaks of
+  const sx = 214 + Math.floor(rnd() * 24), sy = 88 + Math.floor(rnd() * 16);
+  const ship = new Sprite(24, 24);
+  ship.rect(0, 20, 18, 2, '#5a3a24'); ship.rect(1, 22, 16, 1, '#3a2418'); ship.line(9, 20, 9, 1, '#4a3424');
+  ship.tri([10, 2], [10, 18], [21, 18], '#efe6cc'); ship.tri([8, 4], [8, 18], [1, 18], '#d8cdb0');
+  ship.rect(10, 0, 5, 2, '#d03a3a'); ship.px(15, 1, '#d03a3a');
+  ship.outlined('#1e1a14').stamp(b, sx, sy);
+  for (let i = 0; i < 5; i++) { setc(Math.max(0, sx - 12 - i * 5), Math.min(h - 1, sy - 2 + (i & 1)), [214, 232, 240]); setc(Math.max(0, sx - 11 - i * 5), Math.min(h - 1, sy - 2 + (i & 1)), [214, 232, 240]); }
+  const fl = new Sprite(10, 14);
+  fl.line(1, 0, 1, 13, '#4a3424'); fl.rect(2, 1, 7, 4, '#d03a3a'); fl.rect(2, 3, 7, 1, '#f0d060'); fl.px(9, 2, '#d03a3a');
+  for (let k = 0; k < 200; k++) {
+    const x = 20 + Math.floor(rnd() * (w - 40)), y = 30 + Math.floor(rnd() * (h - 50));
+    if (landAt(x, y) && landAt(x - 5, y) && landAt(x + 5, y)) { fl.outlined('#1e1a14').stamp(b, x, y); break; }
+  }
   return out;
 }

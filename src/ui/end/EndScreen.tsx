@@ -104,7 +104,7 @@ function HeirCard({ h, fig, on, pickable, onPick }: { h: HeirCandidate; fig?: Fi
       {/* the face of the child, as the circle of allies draws it (M7 review P1-11: the choice showed words only) */}
       {fig && (
         <span style={{ justifySelf: 'start' }} data-testid="heir-portrait">
-          <FigurePortrait fig={fig} scale={4} label={h.name} />
+          <FigurePortrait fig={fig} scale={7} label={h.name} />
         </span>
       )}
       <span style={{ fontFamily: font.title, fontSize: size.title + 8 }}>{h.name}</span>

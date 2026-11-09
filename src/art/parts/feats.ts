@@ -428,7 +428,9 @@ export const FEATS: Record<string, Part> = {
   },
   fangs: {
     // two small fangs at the lip (not shown by a closed mouth: a pixel, no more)
-    front: (r) => { const [ex, ey] = eyeAt(r); r.p.px(ex, ey + 3, flat(r, '#f4f0e8')); if (r.look.race === 'vampire') r.p.px(ex - 2, ey + 3, flat(r, '#f4f0e8')); },
+    front: (r) => { const [ex, ey] = eyeAt(r); const f = flat(r, '#f4f0e8'); r.p.px(ex, ey + 3, f); if (r.look.race === 'vampire') r.p.px(ex - 2, ey + 3, f);
+      // the sea-people's needle teeth: two fangs, one pixel longer, over a dark lip so they read at small size
+      if (r.look.feats.includes('gills')) { r.p.px(ex, ey + 2, flat(r, '#2a3a30')); r.p.px(ex, ey + 4, f); r.p.px(ex - 2, ey + 3, f); r.p.px(ex - 2, ey + 4, f); } },
   },
   'tail:spade': {
     // a thin whip of a tail ending in a spade, curling up behind

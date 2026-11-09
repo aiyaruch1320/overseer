@@ -25,6 +25,8 @@ const mix = (a: string, b: string, t: number): string => {
   const A = rgb(a), B = rgb(b);
   return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join('');
 };
+/** The sub-lines whose hair the docs fix (02-races.md merfolk table: the siren's is long and floats, in either sex). */
+const LINE_HAIR: Record<string, string> = { 'ไซเรน': 'long' };
 const ELDER_GREY = '#c8c8cc';
 
 function raceOf(looks: LooksData, id: string): RaceLookRow {
@@ -49,7 +51,7 @@ function person(looks: LooksData, key: string, row: PersonLookRow, opts: Resolve
     // an older self has the grey of age whatever the docs say of the younger
     hairColor: stage === 'elder' && row.stage !== 'elder' ? mix(row.hairColor, ELDER_GREY, 0.75) : row.hairColor,
     eye: row.eye, accent: row.accent ?? ov?.accent ?? R.accents[0], main: row.main, second: row.second,
-    outfit: row.outfit, hair: row.hair, hat: young ? '' : row.hat, beard: fem || young || stage === 'teen' ? '' : row.beard, tool: row.tool,
+    outfit: row.outfit, hair: (row.line && LINE_HAIR[row.line]) || row.hair, hat: young ? '' : row.hat, beard: fem || young || stage === 'teen' ? '' : row.beard, tool: row.tool,
     feats, wear: row.wear,
   };
 }
@@ -66,11 +68,22 @@ export function successorLook(looks: LooksData, id: string, opts?: ResolveOpts):
   return person(looks, id, row, opts);
 }
 
+const KIN_RACES = new Set(['human', 'elf', 'darkelf', 'dwarf', 'orc', 'halfling', 'vampire', 'fae', 'giant']);
+// What makes two people of one race two people (a family of four children of one dwarf smith): the seed picks among these, a little each, so the race still reads first.
+const KIN_TOOLS = ['', 'staff', 'basket', 'book', 'lantern', 'hoe', 'bow', 'ladle', 'axe', 'quill', 'bucket', 'flask', 'lute', 'shovel', 'hammer'];
+const KIN_HAIR = ['short', 'long', 'braid', 'bun', 'ponytail', 'tied', 'curly', 'cropped'];
+const KIN_HAIR_FEM = ['long', 'braid', 'bun', 'ponytail', 'tied', 'curly'];
+const KIN_BEARD = ['', 'short', 'stubble', 'moustache', 'braided', 'long'];
+const KIN_OUTFIT = ['tunic', 'leather', 'apron', 'cape', 'robe', 'miner'];
+const KIN_HAT = ['', '', '', 'cap', 'hood', 'bandana', 'straw'];
+/** A hair colour near the race's own: one of the plain ones the people of this world have, mixed with the race colour so a fair race stays fair. */
+const KIN_HAIR_COLOR = ['#2a1c14', '#4a3020', '#6a4a2a', '#8a6a3a', '#b08a4a', '#a0522d', '#1a1a1e'];
+
 /**
  * A person of a race who is not in the docs by name (a main character's body, a crowd member): the race's body and colours, the sub-line's
  * differences, plain clothes in the race colours. `seed` picks the skin; the same seed gives the same figure.
  */
-export function raceLook(looks: LooksData, race: string, o: { line?: string; stage: Stage; fem: boolean; seed: string }): PersonLook {
+export function raceLook(looks: LooksData, race: string, o: { line?: string; stage: Stage; fem: boolean; seed: string; /** a person of the circle (a child, a kin): the seed also picks the hair, beard, hat, tool and clothes among the plain ones, so no two look the same */ kin?: boolean }): PersonLook {
   const R = raceOf(looks, race);
   const ln = o.line ? R.lines.find((l) => l.name === o.line) : undefined;
   const ov = ln?.overrides;
@@ -79,13 +92,27 @@ export function raceLook(looks: LooksData, race: string, o: { line?: string; sta
   const young = o.stage === 'infant' || o.stage === 'child';
   // what the docs say the race wears and does (02-races.md เครื่องแต่ง and หน้าและผิว, read into the race row): clothes and their colours, a hat,
   // the hair, the beard its men wear, a thing carried by habit; the young have no hat, no beard and carry nothing
-  const hair = hairless ? '' : (o.fem ? R.hairFem : R.hair) || (o.fem ? 'long' : 'short');
+  // people of the peoples whose looks are not fixed by a coat or a body (not the beast people, the dolls, the spirits) differ by their own seed
+  const kin = o.kin === true && KIN_RACES.has(race) && !hairless;
+  const hh = (w: string): number => hash(`${key}:${w}`);
+  const raceHair = (o.fem ? R.hairFem : R.hair) || (o.fem ? 'long' : 'short');
+  const kinHair = (o.fem ? KIN_HAIR_FEM : KIN_HAIR)[hh('hair') % (o.fem ? KIN_HAIR_FEM.length : KIN_HAIR.length)];
+  const hair = hairless ? '' : (ln && LINE_HAIR[ln.name]) || (kin && hh('hairpick') % 4 !== 0 ? kinHair : raceHair);
+  const baseHair = ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : R.hairColor || '#3a2a20');
+  const hairColor = kin && o.stage !== 'elder' ? mix(baseHair, KIN_HAIR_COLOR[hh('hc') % KIN_HAIR_COLOR.length], 0.5) : baseHair;
+  const baseBeard = o.fem || hairless || young || o.stage === 'teen' ? '' : R.beard;
+  const beard = kin && !o.fem && !young && o.stage !== 'teen' && !hairless ? (hh('beardpick') % 3 === 0 ? R.beard : KIN_BEARD[hh('beard') % KIN_BEARD.length]) : baseBeard;
+  const tool = young ? '' : kin && hh('toolpick') % 4 !== 0 ? KIN_TOOLS[hh('tool') % KIN_TOOLS.length] : R.tool;
+  const hat = young ? '' : kin && hh('hatpick') % 2 === 0 ? KIN_HAT[hh('hat') % KIN_HAT.length] : R.hat;
+  // the clothes keep the race's colours, a step toward a family member's own
+  const main = kin ? mix(R.main, KIN_HAIR_COLOR[hh('main') % KIN_HAIR_COLOR.length], 0.3) : R.main;
+  const outfit = kin && !young && hh('outfitpick') % 3 === 0 ? KIN_OUTFIT[hh('outfit') % KIN_OUTFIT.length] : R.outfit || 'tunic';
   return {
     kind: 'person', key, race, ...(ln ? { line: ln.name } : {}), stage: o.stage, fem: o.fem,
     body: { ...asBody(R.body), scale: ov?.scale ?? R.body.scale, ears: ov?.ears ?? R.body.ears },
-    skin: ov?.skin ?? pick(R.skins, key), hairColor: ov?.hairColor ?? (o.stage === 'elder' ? ELDER_GREY : R.hairColor || '#3a2a20'), eye: ov?.eye ?? '#2a2024',
-    accent: ov?.accent ?? R.accents[0], main: R.main, second: R.second,
-    outfit: R.outfit || 'tunic', hair, hat: young ? '' : R.hat,
-    beard: o.fem || hairless || young || o.stage === 'teen' ? '' : R.beard, tool: young ? '' : R.tool, feats: [...(ov?.feats ?? R.feats)], wear: 0,
+    skin: ov?.skin ?? pick(R.skins, key), hairColor, eye: ov?.eye ?? '#2a2024',
+    accent: ov?.accent ?? R.accents[0], main, second: R.second,
+    outfit, hair, hat,
+    beard, tool, feats: [...(ov?.feats ?? R.feats)], wear: 0,
   };
 }

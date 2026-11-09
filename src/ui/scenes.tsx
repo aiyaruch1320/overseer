@@ -2,6 +2,8 @@
 // the day of a miracle, and an entry with no script (it falls to the card). Scenes and cards are chosen by the same function the game uses
 // (src/app/views/scene.ts) from sample log entries.
 import type { ComponentChildren } from 'preact';
+import { useEffect } from 'preact/hooks';
+import { stageRenderer } from '../scene/stage/renderer';
 import { BEAT_KINDS } from '../core/data/types-scenes';
 import type { GameData } from '../core/game';
 import type { LogEntry } from '../core/types';
@@ -169,12 +171,19 @@ for (const [name, seed, at] of [['ฉากชีวิต · ทารก', 12,
   });
 
 // the rites and endings of the tribes (13-storyline-scenes §2 §3): a stage of each tribe at a still moment, with no life behind it, so the people are plain people of the tribe
+/** Sets the 2D canvas renderer for the stages under it (a grid of many stages would run out of WebGL contexts); set while rendering, so the stages below see it when they mount. */
+function CanvasStages({ children }: { children: ComponentChildren }) {
+  stageRenderer.canvas = true;
+  useEffect(() => () => { stageRenderer.canvas = false; }, []);
+  return <>{children}</>;
+}
+
 const TRIBES: [string, string, number][] = [['hu', 'พิธีของถิ่น', 14], ['el', 'พิธีผูกราก', 5], ['de', 'พิธีเผชิญเงา', 3], ['dw', 'วันทั่งแรก', 5], ['or', 'พิธีกระดูกแรก', 4], ['ha', 'วันให้ของขวัญ', 4], ['na', 'การทดสอบนาคา', 4], ['va', 'คืนแรกแห่งเลือด', 4], ['fa', 'ชื่อจริง', 4], ['wi', 'การบินครั้งแรก', 4], ['gi', 'การสลักชื่อ', 4], ['mu', 'การชั่งหัวใจ', 4], ['be', 'การล่าครั้งแรก', 5], ['sl', 'การกลืนครั้งแรก', 5], ['me', 'พิธีของสาย', 5], ['la', 'การจุ่มลาวา', 5], ['so', 'คำถามแรก', 5]];
 story({
   group: 'ฉาก',
   name: 'พิธีของเผ่า · ฉากหลังและของประกอบ 17 เผ่า',
   render: ({ data }) => (
-    <div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
+    <CanvasStages><div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
       {TRIBES.map(([t, name, at]) => {
         const v = sceneFor(data, entry('story', 'node', `${t}.t1`, { rite: `${t}.t1`, title: name, variant: t === 'hu' ? 'ทุ่งราบ' : '', result: '' }), undefined);
         return (
@@ -184,7 +193,7 @@ story({
           </figure>
         );
       })}
-    </div>
+    </div></CanvasStages>
   ),
 });
 
@@ -193,7 +202,7 @@ story({
   group: 'ฉาก',
   name: 'ปลายทางของเผ่า · ของประกอบ 5 เผ่า',
   render: ({ data }) => (
-    <div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
+    <CanvasStages><div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
       {([['be', 'เผ่าสัตว์'], ['sl', 'สไลม์'], ['me', 'เงือก'], ['la', 'เผ่าลาวา'], ['so', 'หุ่นวิญญาณ']] as const).map(([t, name]) => {
         const v = sceneFor(data, entry('story', 'node', `${t}.e1`, { title: 'ปลายทาง', choice: 'a', label: 'ตาย' }), undefined);
         return (
@@ -203,6 +212,6 @@ story({
           </figure>
         );
       })}
-    </div>
+    </div></CanvasStages>
   ),
 });
