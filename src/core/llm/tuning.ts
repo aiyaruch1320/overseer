@@ -9,8 +9,10 @@ export type LlmPoint = (typeof POINTS)[number];
 export const SWITCH_OF: Record<LlmPoint, 'setup' | 'director' | 'epitaph'> = { command: 'setup', director: 'director', ending: 'epitaph' };
 
 /** Version of the prompts and answer shapes: part of the cache key, bump it when a prompt or a shape changes (god/05-llm.md §5 "แคชตรงตัว"). */
-export const PROMPT_VERSION = 3;
+export const PROMPT_VERSION = 5;
 export const LANG = 'th';
+/** The only era the game names: the years count from the day the god woke (the glossary of the game, scripts/tools/play.ts). The summary may write no other era. */
+export const ERA_NAME = 'ศักราชมังกร';
 
 /** The model the user chose: DeepSeek V4.1 Flash, API name `deepseek-flash` (llm/README.md §1). One model for every point; no document asks for another. */
 export const MODEL = 'deepseek-flash';
