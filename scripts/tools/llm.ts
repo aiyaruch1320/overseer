@@ -9,8 +9,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { GameData } from '../../src/core/game';
+import type { Ctx, GameData } from '../../src/core/game';
 import { FakeProvider, Llm, MemoryCache, anthropicLlm, interpretWords, makeLlm, realLlm, type CacheEntry, type EndingSummary, type Fixtures } from '../../src/core/llm';
+import { askAhead } from '../../src/core/story';
 import { commandMenu } from '../../src/core/llm/menu';
 import { summarizeDeath as coreSummarizeDeath } from '../../src/core/llm/summary-input';
 import type { GameState } from '../../src/core/types';
@@ -54,6 +55,12 @@ export { summaryInputOf, wishLine } from '../../src/core/llm/summary-input';
  * or for a card that already holds an LLM text.
  */
 export const summarizeDeath = (t: ToolLlm | undefined, data: GameData, state: GameState, lifeId?: string): Promise<EndingSummary | undefined> => coreSummarizeDeath(t?.llm, data, state, lifeId);
+
+/**
+ * After a beat: asks the LLM director about the key points that come within a life year (src/core/story/ahead.ts) and waits for the answers, so a tool run (which has no clock to wait) uses them.
+ * Does nothing without an LLM flag.
+ */
+export const askDirector = (t: ToolLlm | undefined, ctx: Ctx): Promise<void> => (t ? askAhead(ctx, t.llm.client).then(() => undefined) : Promise.resolve());
 
 /** The line of the tokens spent so far (the ledger of the client), or none when no request was made. */
 export function usageLines(t: ToolLlm | undefined): string[] {

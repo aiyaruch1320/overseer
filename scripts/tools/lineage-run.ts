@@ -3,15 +3,16 @@
 // book; when the family has none the lineage ends and the world is left, 05 §4, unless a newcomer is asked for with `newcomer`), and so on. After each life the ending card; at the end the summary of
 // the world and the collection. Same seed and options give the same text.
 import type { GameData } from '../../src/core/game';
+import type { Stop } from './life-run';
 import { runAsync, runSync } from './drive';
-import { summarizeDeath, type ToolLlm } from './llm';
+import { askDirector, summarizeDeath, type ToolLlm } from './llm';
 import { cardOf, collectionView } from '../../src/core/ending';
 import { nextLife, worldSummary } from '../../src/core/lineage';
 import { calendarYear } from '../../src/core/text';
 import { cardLines, collectionLines, worldSummaryLines } from '../../src/core/text/ending';
 import type { GameState } from '../../src/core/types';
 import { godLines, timeline, summaryLines } from './report';
-import { afterBeat, createSession, runToDeath, startLife, toolNotes, toolSystems, type SessionOpts } from './session';
+import { afterBeat, createSession, startLife, stepBeat, toolNotes, toolSystems, type SessionOpts } from './session';
 
 export interface LineageRun {
   text: string;
@@ -32,7 +33,7 @@ const WHY: Record<string, string> = {
 type LineageOpts = SessionOpts & { lives: number; minLevel?: 0 | 1 | 2 | 3; newcomer?: boolean };
 
 /** Stops after each death, where the end summary of that life may be asked for before its card is laid out. */
-function* lineageSteps(data: GameData, opts: LineageOpts): Generator<GameState, LineageRun> {
+function* lineageSteps(data: GameData, opts: LineageOpts): Generator<Stop, LineageRun> {
   const s = createSession(data, opts);
   const g = s.game;
   const min = opts.minLevel ?? 2;
@@ -56,10 +57,16 @@ function* lineageSteps(data: GameData, opts: LineageOpts): Generator<GameState, 
       }
     }
     after();
-    const beats = runToDeath(g, undefined, after);
+    let beats = 0;
+    while (g.state.life && !g.state.life.dead && beats < 4 * 400) {
+      stepBeat(g);
+      after();
+      beats++;
+      if (g.state.life && !g.state.life.dead) yield { at: 'beat', state: g.state, ctx: g.ctx };
+    }
     played++;
     const st = g.state;
-    yield st;
+    yield { at: 'death', state: st, ctx: g.ctx };
     out.push('', `=== ชีวิตที่ ${i + 1} ===`);
     out.push(...timeline(s.data, st.log, min, { fromN: mark, notes: toolNotes(st) }));
     out.push('', '-- สรุป --', ...summaryLines(s.data, st, beats).slice(0, 1));
@@ -80,5 +87,5 @@ export function runLineageReport(data: GameData, opts: LineageOpts): LineageRun 
 
 /** The same lineage with the end summary asked for at every death (`--llm`): each card holds the LLM text when it answers. */
 export function runLineageReportLlm(data: GameData, opts: LineageOpts, t: ToolLlm | undefined): Promise<LineageRun> {
-  return runAsync(lineageSteps(data, opts), (st) => summarizeDeath(t, data, st).then(() => undefined));
+  return runAsync(lineageSteps(data, opts), (stop) => (stop.at === 'beat' ? askDirector(t, stop.ctx) : summarizeDeath(t, data, stop.state).then(() => undefined)));
 }
