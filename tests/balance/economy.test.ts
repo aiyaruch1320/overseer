@@ -40,6 +40,10 @@ interface Row {
   gain: number;
   loss: number;
   climbed: boolean;
+  /** a rise into class 2 or 3 above the best class the life had held (08-implementation.md §6: 1→2 and 2→3, a recovery after a fall is not a climb) */
+  climbedLow: boolean;
+  /** a rise into class 4 or 5 above the best class held (3→4 by gold 600 reaches about a quarter of lives, as the p75 of sim-gold at 60 does) */
+  climbedHigh: boolean;
   fell: boolean;
   defaulted: boolean;
   tight: boolean;
@@ -67,6 +71,17 @@ function playLife(seed: number): Row {
   const l = g.state.life!;
   const e = extOf(l);
   const moves = e.moves.map((m) => m.match(/^(\d)>(\d)/)!);
+  let best = Number(cls0.slice(1));
+  let climbedLow = false;
+  let climbedHigh = false;
+  for (const x of g.state.log.filter((e) => e.sys === 'character' && e.kind === 'class')) {
+    const to = Number(String(x.data.to).slice(1));
+    if (to > best) {
+      best = to;
+      if (to <= 3) climbedLow = true;
+      else climbedHigh = true;
+    }
+  }
   return {
     at,
     cls: cls0,
@@ -78,6 +93,8 @@ function playLife(seed: number): Row {
     gain: e.flows.gain,
     loss: e.flows.loss,
     climbed: moves.some((m) => Number(m[2]) > Number(m[1])),
+    climbedLow,
+    climbedHigh,
     fell: moves.some((m) => Number(m[2]) < Number(m[1])),
     defaulted: g.state.log.some((x) => x.sys === 'economy' && x.kind === 'default'),
     tight: g.state.log.some((x) => x.sys === 'economy' && x.kind === 'tight'),
@@ -117,7 +134,7 @@ describe('economy balance', () => {
       const outflow = sum(rows.map((r) => r.tax + r.living + r.loss));
       const share = (f: (r: Row) => boolean) => rows.filter(f).length / rows.length;
       lines.push(`in/out ${(inflow / outflow).toFixed(2)}  (income ${Math.round(sum(rows.map((r) => r.income)) / LIVES)} + other ${Math.round(sum(rows.map((r) => r.gain)) / LIVES)} in; living ${Math.round(sum(rows.map((r) => r.living)) / LIVES)} tax ${Math.round(sum(rows.map((r) => r.tax)) / LIVES)} other ${Math.round(sum(rows.map((r) => r.loss)) / LIVES)} out, per life)`);
-      lines.push(`class: climbed ${(100 * share((r) => r.climbed)).toFixed(1)}%  fell ${(100 * share((r) => r.fell)).toFixed(1)}%  bankrupt ${(100 * share((r) => r.defaulted)).toFixed(1)}%  tight year ${(100 * share((r) => r.tight)).toFixed(1)}%  c_poverty ${(100 * share((r) => r.poverty)).toFixed(1)}%`);
+      lines.push(`class: climbed (any economy rise) ${(100 * share((r) => r.climbed)).toFixed(1)}%  to class 2-3 ${(100 * share((r) => r.climbedLow)).toFixed(1)}%  to class 4-5 ${(100 * share((r) => r.climbedHigh)).toFixed(1)}%  fell ${(100 * share((r) => r.fell)).toFixed(1)}%  bankrupt ${(100 * share((r) => r.defaulted)).toFixed(1)}%  tight year ${(100 * share((r) => r.tight)).toFixed(1)}%  c_poverty ${(100 * share((r) => r.poverty)).toFixed(1)}%`);
       console.log(lines.join('\n'));
 
       // the median against sim-gold, age by age: between a third and one and a half times (the combat, trade and investment faucets are still to come)
@@ -151,9 +168,10 @@ describe('economy balance', () => {
       expect(inflow / outflow).toBeGreaterThan(0.8);
       expect(inflow / outflow).toBeLessThan(2.4);
       // lives that climb a class (08 §6: 15% of lives), lives that go bankrupt (5 to 10%; the loan and the fall are the simple form of P2)
-      expect(share((r) => r.climbed)).toBeGreaterThan(0.05);
-      // every adult has a job now, so "five steady years" (03-classes.md §5) holds for everyone, and each rise counts, a rise after a fall too
-      expect(share((r) => r.climbed)).toBeLessThan(0.5);
+      // the target is the low ladder, 1→2 and 2→3, 15% of lives (08-implementation.md §6); a recovery after a fall is not a climb. 3→4 by 600 gold is a quarter of lives (sim-gold p75 at 60 is 682) and stays a loose bound
+      expect(share((r) => r.climbedLow)).toBeGreaterThan(0.08);
+      expect(share((r) => r.climbedLow)).toBeLessThan(0.25);
+      expect(share((r) => r.climbedHigh)).toBeLessThan(0.4);
       expect(share((r) => r.defaulted)).toBeLessThan(0.2);
       expect(share((r) => r.tight)).toBeLessThan(0.7);
     },

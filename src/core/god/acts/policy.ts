@@ -6,6 +6,8 @@ import type { Ctx } from '../../game';
 import { moodOf } from '../../world';
 import { crisesWaiting } from '../../bonds';
 import { momentsOf, policyName, registerDreadReserve, type PolicyName } from '../policy';
+import { checkAllyDream, dreamPrice, sendAllyDream } from '../dream';
+import { RESERVE } from '../tuning';
 import { checkAnswer, runAnswer, cardsOf } from './prayers';
 import { checkMiracle, previewMiracle, runMiracle } from './miracles';
 import { fateTargets } from './fate';
@@ -65,9 +67,19 @@ function whisperAtMoment(ctx: Ctx, policy: PolicyName): void {
   for (const hint of ['ระวัง', 'กล้าเถิด', 'จงอยู่']) if (try1(ctx, 'whisper', { hint })) return;
 }
 
-/** The merciful god helps an ally whose crisis the game has called him for (M3 review H5): a whisper `ช่วย` on him while the light is above the reserve. */
+/**
+ * The merciful god helps an ally whose crisis the game has called him for (M3 review H5): a whisper `ช่วย` on him while the light is above the reserve, and when the
+ * crisis still waits after it, a dream of the ally (03-dreams.md §5 "วิกฤตขั้น 3 ของพวกพ้อง"; 06-implementation.md §4: the merciful god dreams whenever the light allows) if the
+ * light stays above the reserve after its price.
+ */
 function helpAllies(ctx: Ctx): void {
-  for (const w of crisesWaiting(ctx)) if (ctx.state.god.light >= POLICY.whisperAt) try1(ctx, 'whisper', { hint: 'ช่วย', target: w.tie.id });
+  for (const w of crisesWaiting(ctx)) {
+    if (ctx.state.god.light >= POLICY.whisperAt) try1(ctx, 'whisper', { hint: 'ช่วย', target: w.tie.id });
+    if (!crisesWaiting(ctx).some((x) => x.tie.id === w.tie.id)) continue;
+    const args = { ally: w.tie.id };
+    if (checkAllyDream(ctx, args) || ctx.state.god.light < RESERVE + (dreamPrice(ctx).faith ?? 0)) continue;
+    sendAllyDream(ctx, args);
+  }
 }
 
 /** Slow (sign −1) or speed (sign +1) the fall of the first dragon that shows an omen and carries no fate yet. */

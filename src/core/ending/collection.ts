@@ -213,7 +213,7 @@ export function collectionView(state: GameState, data: GameData): CollectionView
   // the categories of the goals: what the goals kept, with the totals of the data of the god
   const meta = peekGoals(state).meta;
   const gc = goalsCatalog(data);
-  const foundOf: Record<string, string[]> = { vow: meta.vowsKept, title: meta.titlesSeen, godtitle: [], miracle: meta.miraclesUsed, conjure: meta.conjured.map((c) => c.name), reaction: meta.reactionsSeen };
+  const foundOf: Record<string, string[]> = { vow: meta.vowsKept, title: meta.titlesSeen, godtitle: meta.godTitles, miracle: meta.miraclesUsed, conjure: meta.conjured.map((c) => c.name), reaction: meta.reactionsSeen };
   for (const c of GOALS_CATEGORIES) {
     const ids = [...new Set(foundOf[c.id])];
     categories.push({ id: c.id, name: c.name, have: ids.length, total: gc[c.id].total, found: ids.map((id) => ({ id, name: gc[c.id].names.get(id) ?? id })), ...(c.id === 'conjure' ? { unlimited: true } : {}) });

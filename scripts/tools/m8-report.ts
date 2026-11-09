@@ -18,6 +18,9 @@ import { llmFromArgs } from './llm';
 import { loadAll } from './node-data';
 import { POLICIES, type Policy } from './session';
 
+/** The kinds of a callback the log of the story writes (`story/node.callbackKind`, llm/04-story.md §3.5). */
+const CALLBACK_KINDS = ['npc', 'event', 'thread'] as const;
+
 // ---------- lives out of records ----------
 
 export interface Life {
@@ -200,11 +203,12 @@ export function analyse(all: Life[], title = 'M8'): Report {
     const nodes = sum(ls.map((l) => n(l.end!, 'nodes')));
     const chances = sum(ls.map((l) => n(l.end!, 'chances')));
     const callbacks = sum(ls.map((l) => n(l.end!, 'callbacks')));
+    const kinds = ls.some((l) => l.end && CALLBACK_KINDS.some((k) => l.end![`cb_${k}`] !== undefined)) ? CALLBACK_KINDS.map((k) => sum(ls.map((l) => n(l.end!, `cb_${k}`)))) : null;
     const bond = sum(ls.map((l) => n(l.end!, 'bondEndings')));
     const picks = ls.flatMap((l) => l.events.filter((e) => e.k === 'llm.director'));
     const used = picks.filter((e) => e.pick !== 'none');
     const reason = (r: string) => used.filter((e) => e.reason === r).length;
-    return { lives: ls.length, nodes, chances, callbacks, bond, asked: picks.length, used: used.length, old_face: reason('old_face'), dream: reason('dream'), life_question: reason('life_question'), vow: reason('vow'), rest: reason('rest'), tension: reason('tension') };
+    return { lives: ls.length, nodes, chances, callbacks, kinds, bond, asked: picks.length, used: used.length, old_face: reason('old_face'), dream: reason('dream'), life_question: reason('life_question'), vow: reason('vow'), rest: reason('rest'), tension: reason('tension') };
   };
   const dirRaw: Record<string, ReturnType<typeof dir>> = {};
   const dirRows = armKeys
@@ -213,13 +217,13 @@ export function analyse(all: Life[], title = 'M8'): Report {
       const d = dir(armLives(a));
       dirRaw[a] = d;
       const L = d.lives || 1;
-      return [a, d.lives, f1(d.nodes / L), f1(d.chances / L), f1(d.callbacks / L), pct(d.callbacks, d.nodes), f1(d.bond / L), f1(d.asked / L), f1(d.used / L), `${f1(d.old_face / L)} / ${f1(d.dream / L)} / ${f1((d.life_question + d.vow) / L)} / ${f1((d.rest + d.tension) / L)}`];
+      return [a, d.lives, f1(d.nodes / L), f1(d.chances / L), f1(d.callbacks / L), d.kinds ? d.kinds.map((x) => f1(x / L)).join(' / ') : 'n/a (simulated lives only)', pct(d.callbacks, d.nodes), f1(d.bond / L), f1(d.asked / L), f1(d.used / L), `${f1(d.old_face / L)} / ${f1(d.dream / L)} / ${f1((d.life_question + d.vow) / L)} / ${f1((d.rest + d.tension) / L)}`];
     });
   raw.director = dirRaw;
   tables.push(
     table(
       `${title}: director callbacks per life by arm (llm/04-story.md §3.5)`,
-      ['arm (llm_director)', 'lives', 'story nodes', 'forks with a callback way', 'callbacks (way chosen ties back)', 'callbacks per node', 'bond stories settled (involved)', 'LLM points decided', 'LLM picks used', 'picks: old face / dream / question+vow / rest+tension'],
+      ['arm (llm_director)', 'lives', 'story nodes', 'forks with a callback way', 'callbacks (way chosen ties back)', 'by kind per life: npc met again / event of the life / thread settled', 'callbacks per node', 'bond stories settled (involved)', 'LLM points decided', 'LLM picks used', 'picks: old face / dream / question+vow / rest+tension'],
       dirRows,
       'callback = a node whose chosen way names someone or something the life already met (NPC again, event, turning point); "settled" counts the involved endings of ally stories, the nearest thing the log holds to open threads settled',
     ),
@@ -337,7 +341,12 @@ export async function simulate(data: ReturnType<typeof loadAll>, o: { seed: numb
   const t = new Tally({ meta, actsFromLog: true });
   t.ingest(st.log);
   t.finish();
-  return livesOf(t.events, 'sim', o.policy);
+  const out = livesOf(t.events, 'sim', o.policy);
+  // the kind of each callback (npc / event / thread) is in the log (`story/node.callbackKind`); the Tally of the app does not read it, so a one-life run adds the counts to the end event here
+  if (o.lives === 1 && out.length === 1 && out[0].end) {
+    for (const k of CALLBACK_KINDS) out[0].end[`cb_${k}`] = st.log.filter((e) => e.sys === 'story' && e.kind === 'node' && e.data.callbackKind === k).length;
+  }
+  return out;
 }
 
 async function main(): Promise<void> {

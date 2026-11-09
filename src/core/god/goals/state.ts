@@ -41,6 +41,8 @@ export interface GoalsMeta {
   /** Vow ids kept at least once · life titles ever earned · names of the miracles conjured (the world remembers them) · reactions met (ids `<verb>.<core>`) · listed miracles used. */
   vowsKept: string[];
   titlesSeen: string[];
+  /** The titles of the god (01-power.md §7) ever earned. */
+  godTitles: string[];
   conjured: { name: string; mix: string; year: number }[];
   reactionsSeen: string[];
   miraclesUsed: string[];
@@ -106,11 +108,11 @@ export interface GoalsLife {
   decided: boolean;
   changed: boolean;
   /** Set at death. */
-  result?: { vow: string | null; result: 'kept' | 'broken' | 'none'; titles: string[]; line: ChronicleLine; /** a broken vow: the conditions it lacked, in words */ missing?: string[] };
+  result?: { vow: string | null; result: 'kept' | 'broken' | 'none'; titles: string[]; /** the titles of the god this life earned */ godTitles?: string[]; line: ChronicleLine; /** a broken vow: the conditions it lacked, in words */ missing?: string[] };
   track: Track;
 }
 
-export const freshMeta = (): GoalsMeta => ({ v: 1, points: 0, lines: [], vowsKept: [], titlesSeen: [], conjured: [], reactionsSeen: [], miraclesUsed: [], rhythm: 'natural' });
+export const freshMeta = (): GoalsMeta => ({ v: 1, points: 0, lines: [], vowsKept: [], titlesSeen: [], godTitles: [], conjured: [], reactionsSeen: [], miraclesUsed: [], rhythm: 'natural' });
 export const freshWorld = (): GoalsWorld => ({ v: 1, meta: freshMeta(), lives: 0, carried: 0 });
 export const freshTrack = (): Track => ({
   peakBelief: -100, adult: 0, years50: 0, heal: 0, bound: 0, cls0: 3, clsMax: 3, clsMin: 3, rivals: [], homeLost: false, dragon: false, skyBorn: false, scan: 0, boundAtBirth: false, ended: false,

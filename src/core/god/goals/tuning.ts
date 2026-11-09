@@ -56,7 +56,7 @@ export const LOSS_WORDS = ['สูญเสีย', 'เสียไป', 'ล�
 export const EFFORT_WORDS = ['ฝึก', 'ลงทุน', 'เดินทางไกล', 'เดินทาง', 'ออกเดินทาง', 'เรียน', 'ไปหา', 'ตามหา'];
 
 /** Words that tell, in a way taken, what the vow tests (assumption). */
-export const FORGIVE_WORDS = ['ให้อภัย', 'คืนดี'];
+export const FORGIVE_WORDS = ['ให้อภัย', 'คืนดี', 'ขอโทษ', 'ความแค้นเก่าลดลง', 'เลิกแค้น', 'ไกล่เกลี่ย'];
 export const BETRAY_WORDS = ['ทรยศ', 'หักหลัง'];
 export const KILL_WORDS = ['ฆ่า', 'สังหาร'];
 

@@ -72,12 +72,18 @@ export function metBy(ctx: Ctx, ex: StoryExt): Set<string> {
 
 /** A choice ties back when it names someone or something the life already met (llm/04-story.md §3.1 first two rows). */
 export function ties(c: Choice, met: ReadonlySet<string>): boolean {
-  if (met.size === 0) return false;
+  return tieKind(c, met) !== null;
+}
+
+/** What a way ties back to (llm/04-story.md §3.5): `npc` a person met again, `event` a world event of this life, `thread` a turning point or an earlier way of the life (an open thread settled). The first that matches, in that order. */
+export type TieKind = 'npc' | 'event' | 'thread';
+export function tieKind(c: Choice, met: ReadonlySet<string>): TieKind | null {
+  if (met.size === 0) return null;
   const r = refsOf(c.effects);
-  for (const id of r.npcs) if (met.has(id)) return true;
-  for (const id of r.events) if (met.has(id)) return true;
-  for (const id of r.pivots) if (met.has(id)) return true;
-  return false;
+  for (const id of r.npcs) if (met.has(id)) return 'npc';
+  for (const id of r.events) if (met.has(id)) return 'event';
+  for (const id of r.pivots) if (met.has(id)) return 'thread';
+  return null;
 }
 
 /**
@@ -124,6 +130,8 @@ export interface Pull {
 export interface Weighed {
   weights: number[];
   ties: boolean[];
+  /** What each way that ties back ties to (null for a way that does not). */
+  kinds: (TieKind | null)[];
 }
 
 /**
@@ -145,7 +153,8 @@ export const forkId = (ctx: Ctx, node: NodeId): string => `${node}:${ctx.state.c
  */
 export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: StoryExt, cut: (c: Choice, i: number) => boolean, point?: string): Weighed {
   const met = metBy(ctx, ex);
-  const tie = choices.map((c) => ties(c, met));
+  const kinds = choices.map((c) => tieKind(c, met));
+  const tie = kinds.map((k) => k !== null);
   // [weight without the director, factor of the rule-based director, factor of the place filter]
   const parts = choices.map((c, i): [number, number, number] => {
     if (cut(c, i)) return [0, 1, 1];
@@ -179,7 +188,7 @@ export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: Stor
       }
     }
   }
-  return { weights, ties: tie };
+  return { weights, ties: tie, kinds };
 }
 
 /** The two ways with the most weight, best first (ties keep the order of the written ways): the ways a point offers. */

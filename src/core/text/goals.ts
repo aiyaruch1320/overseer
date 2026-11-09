@@ -34,6 +34,8 @@ export function goalsText(cx: GodCx, e: LogEntry): string | undefined {
       return d.result === 'kept' ? `คำปฏิญาณ ${quote(s(d.name))} เป็นจริง` : `คำปฏิญาณ ${quote(s(d.name))} ไม่เป็นจริง ชีวิตของ${who}ไปทางอื่น`;
     case 'title':
       return `ฉายาชีวิตของ${who}: ${s(d.title)}`;
+    case 'godtitle':
+      return `โลกเรียกท่านว่า ${s(d.title)}`;
     case 'lineage':
       return s(d.text);
     case 'unlock':
