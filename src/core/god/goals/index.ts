@@ -23,6 +23,7 @@ import { ADULT_FROM, CHANGE_AT, UNLOCKS } from './tuning';
 import { crossed } from './unlocks';
 import { checkPick, judge, missed, offer, previewPick, reoffer, runPick, tellOffer, vowName, vowRow } from './vows';
 import { goalsCarry } from './carry';
+import { godTitlesOf } from './godtitles';
 import './policy';
 
 export * from './carry';
@@ -185,12 +186,17 @@ export const godGoalsSystem: System = {
     const f = factsOf(ctx, life);
     const result = judge(ctx, life, g.vow, f);
     const titles = titlesOf(ctx, life, f);
+    const godTitles = godTitlesOf(ctx, life, f);
     const { line, before } = record(ctx, life, g.vow, result, titles, f);
-    g.result = { vow: g.vow, result, titles, line, ...(result === 'broken' && g.vow ? { missing: missed(g.vow, f) } : {}) };
+    g.result = { vow: g.vow, result, titles, godTitles, line, ...(result === 'broken' && g.vow ? { missing: missed(g.vow, f) } : {}) };
     const w = goalsOf(ctx.state);
     for (const e of lifeChronicle(ctx)) if (e.kind === 'miracle' && !w.meta.miraclesUsed.includes(e.id)) w.meta.miraclesUsed.push(e.id);
     if (g.vow && g.vow !== 'GV-20') say(ctx, 'vow.result', g.vow, { result, name: vowName(ctx, g.vow, life.race), done: vowRow(ctx, g.vow)?.done ?? '' }, 2);
     for (const t of titles) say(ctx, 'title', t, { title: t }, 2);
+    for (const t of godTitles) {
+      if (!w.meta.godTitles.includes(t)) w.meta.godTitles.push(t);
+      say(ctx, 'godtitle', t, { title: t }, 2);
+    }
     say(ctx, 'lineage', life.id, { text: line.text, gain: line.gain, total: line.total, vow: result }, 1);
     for (const u of crossed(before, line.total)) say(ctx, 'unlock', String(u.at), { at: u.at, opens: opensText(ctx, u.at) }, 2);
   },

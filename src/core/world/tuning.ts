@@ -45,11 +45,11 @@ export const TUNING = {
   /**
    * Country flags the events put on (economy/01-world-economy.md §6 and the war rows: "ธง `famine` ประเทศ W 1 ถึง 2 สามปี" CT-02 · "ธง `war` ทุกประเทศ MH" DM-01).
    * `w` = only countries whose W is in the band; `except` = continents left out; `years` = how long the flag stays. CT-03 is "เก้าทวีป" with the forest as the last
-   * place of cure (world-events.md §14): every country but SV, ten years (assumption: the docs give no length; the length of a decade stands for a plague).
+   * place of cure (world-events.md §14): every country but SV, five years (assumption: the docs give no length; the acute phase of the Black Death was 1347 to 1351, about four to five years, so five stands for a plague).
    */
   flagEvents: {
     'CT-02': { flag: 'famine', w: [1, 2], years: 3 },
-    'CT-03': { flag: 'plague', except: ['SV'], years: 10 },
+    'CT-03': { flag: 'plague', except: ['SV'], years: 5 },
     'DM-01': { flag: 'war', continents: ['MH'], years: 40 },
   } as Record<string, { flag: string; w?: [number, number]; continents?: string[]; except?: string[]; years: number }>,
   /** events that end a flag everywhere (HP-06 "โรคระบาดหายตลอดยุค") */

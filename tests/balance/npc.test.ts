@@ -48,14 +48,14 @@ describe('npc balance: density of stories (sim-npc-density, succession.md §5.1)
       });
     }
     const per = (x: number) => x / n / 143;
-    // doc: 3.6–3.7 alive (with 0.3–0.5 newcomers) and 1.4 open
+    // doc: 3.6–3.7 alive (the newcomers among them 0.15–0.2 in the code, succession.md §5.1) and 1.4 open
     expect(per(alive)).toBeGreaterThan(3.1);
     expect(per(alive)).toBeLessThan(3.9);
     expect(per(open)).toBeGreaterThan(1.1);
     expect(per(open)).toBeLessThan(1.7);
-    // a template fits only part of the countries, and one template is used once per country: fewer than the 0.3–0.5 the sim assumed
-    // (every roll gives one), but a real share of the density
-    expect(per(newcomers)).toBeGreaterThan(0.1);
+    // a template fits only part of the countries, and one template is used once per country: fewer than the 0.3–0.5 the old sim assumed
+    // (every roll gave one); the doc says 0.15–0.2 now (succession.md §5.1)
+    expect(per(newcomers)).toBeGreaterThan(0.12);
     expect(per(newcomers)).toBeLessThan(0.5);
   });
 });
