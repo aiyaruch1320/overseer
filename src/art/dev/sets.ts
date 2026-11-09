@@ -1,11 +1,13 @@
 // The sets the characters page can show (code-plan §9.3: every figure in order, with its id, to check by eye). A set is a list of looks;
 // the work of M6 adds sets here (races, NPCs by continent, successors, enemies, dragons).
 import type { Pose } from '../anim';
+import type { BeastLook } from '../beast/look';
 import { HUMAN_BODY, type PersonLook, type Stage } from '../look';
 
 export interface Entry { id: string; label: string; look: PersonLook }
 /** `pose` is the pose the characters page plays when the address names none (a set of tools opens on the attack). */
-export type SetDef = { label: string; entries: () => Entry[]; pose?: Pose };
+/** `beasts`: the figures of the set that are creatures (a slime, a ghost): the characters page draws them with the beast painter after the people. */
+export type SetDef = { label: string; entries: () => Entry[]; pose?: Pose; beasts?: () => { id: string; look: BeastLook }[] };
 
 const STAGES: Stage[] = ['infant', 'child', 'teen', 'adult', 'elder'];
 

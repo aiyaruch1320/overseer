@@ -3,6 +3,8 @@
 import Phaser from 'phaser';
 import { POSES, FRAME, type Pose } from '../anim';
 import { addLook } from '../phaser';
+import { addBeast } from '../beast/phaser';
+import { FRAMES } from '../beast/kit';
 import { unknownParts } from '../person';
 import { SETS } from './sets';
 
@@ -24,8 +26,11 @@ const only = q.get('ids')?.split(',');
 const entries = (SETS[setId]?.entries() ?? []).filter((e) => !only || only.includes(e.id));
 const CELL = { w: 56, h: 60 };
 const cols = Math.max(1, Math.floor((window.innerWidth - 32) / (CELL.w * zoom)));
-const rows = Math.ceil(entries.length / cols);
-document.getElementById('count')!.textContent = `${entries.length} ตัว`;
+// the creatures of the set (ghosts, slimes …) follow the people, drawn by the beast painter and shrunk to fit a cell
+const beastEntries = (SETS[setId]?.beasts?.() ?? []).filter((e) => !only || only.includes(e.id));
+const total = entries.length + beastEntries.length;
+const rows = Math.ceil(total / cols);
+document.getElementById('count')!.textContent = `${entries.length} ตัว${beastEntries.length ? ` + สัตว์และผี ${beastEntries.length}` : ''}`;
 const miss = new Map<string, string[]>();
 for (const e of entries) for (const u of unknownParts(e.look)) miss.set(u, [...(miss.get(u) ?? []), e.id]);
 document.getElementById('miss')!.textContent = miss.size ? `ชิ้นส่วนที่ยังไม่มี:\n${[...miss].map(([u, ids]) => `${u}  (${ids.length}: ${ids.slice(0, 8).join(' ')}${ids.length > 8 ? ' …' : ''})`).join('\n')}` : '';
@@ -39,6 +44,12 @@ new Phaser.Game({
       entries.forEach((e, i) => {
         const cx = (i % cols) * CELL.w + CELL.w / 2, cy = Math.floor(i / cols) * CELL.h;
         addLook(this, e.look, cx, cy + FRAME.foot, pose);
+        this.add.text(cx, cy + FRAME.foot + 2, e.id, { fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '24px', color: '#2a2c36' }).setOrigin(0.5, 0).setScale(1 / 4).setResolution(1);
+      });
+      beastEntries.forEach((e, k) => {
+        const i = entries.length + k, cx = (i % cols) * CELL.w + CELL.w / 2, cy = Math.floor(i / cols) * CELL.h;
+        const fr = FRAMES[e.look.size];
+        addBeast(this, e.look, cx, cy + FRAME.foot).setScale(Math.min(1, CELL.w / fr.w, FRAME.foot / fr.foot));
         this.add.text(cx, cy + FRAME.foot + 2, e.id, { fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '24px', color: '#2a2c36' }).setOrigin(0.5, 0).setScale(1 / 4).setResolution(1);
       });
     },
