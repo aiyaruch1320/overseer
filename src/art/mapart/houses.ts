@@ -240,7 +240,8 @@ function ordinary(s: HouseSpec): Frame {
 function special(s: HouseSpec): Frame {
   const kind = s.special!;
   const W = clamp(Math.round(s.w * 1.25), 30, 46);
-  const base = SPECIAL_COLOR[kind] ?? s.roof;
+  // the named colour of a building kind is pulled to the roof of the country, so a market or a hall keeps the palette of its town (a red stall in a grey hut town is wrong)
+  const base = SPECIAL_COLOR[kind] ? mixHex(SPECIAL_COLOR[kind], s.roof, kind === 'palace' || kind === 'cathedral' ? 0.25 : 0.6) : s.roof;
   const fh = 48, fw = W + 6;
   const p = new Paint(fw, fh);
   const ox = 3, fy = fh - FOOT;
@@ -263,7 +264,7 @@ function special(s: HouseSpec): Frame {
     for (let x = ox + 4; x < ox + W - 3; x += 5) p.rect(x, fy - 15, 2, 3, Dk);
   } else if (kind === 'market') {
     p.rect(ox + 1, fy - 6, W - 2, 6, Wl);
-    for (let i = 0, x = ox; x < ox + W - 3; i++, x += 5) p.poly([[x, y0 + 6], [x + 5, y0 + 6], [x + 5, y0 + 12], [x, y0 + 12]], i % 2 ? p.mat('#f0e8d8') : R);
+    for (let i = 0, x = ox; x < ox + W - 3; i++, x += 5) p.poly([[x, y0 + 6], [x + 5, y0 + 6], [x + 5, y0 + 12], [x, y0 + 12]], i % 2 ? p.mat(mixHex('#f0e8d8', s.wall, 0.55)) : R);
     p.rect(ox, y0 + 5, W, 2, Dk);
     for (const x of [ox + 1, ox + W - 3]) p.rect(x, y0 + 6, 2, H - 6, p.mat('#6a4a2e'));
   } else if (kind === 'granary' || kind === 'minehead' || kind === 'skydock' || kind === 'forgealtar') {
