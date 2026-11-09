@@ -22,10 +22,12 @@ export interface ScenerySpec {
   season?: number;
   /** A number that varies the details (the seed of the life, of the scene) so two places of one continent are not the same picture. */
   seed?: number;
+  /** Props the scene names (src/art/scenery/props.ts: `anvil`, `egg`, `candle:#b070e0` ...): drawn in a layer over the ground, behind the figures. */
+  props?: string[];
 }
 
 /** The layers back to front; `speed` is the share of the camera's move a layer follows (sky 0, ground 1). */
-export type LayerName = 'sky' | 'far' | 'mid' | 'ground';
+export type LayerName = 'sky' | 'far' | 'mid' | 'ground' | 'props';
 export interface SceneryLayer {
   name: LayerName;
   speed: number;

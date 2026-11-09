@@ -8,6 +8,7 @@ import { AL, AZ, KD, MH, NR, type Painter } from './outdoor-a';
 import { MK, NB, SH, SV } from './outdoor-b';
 import { profileOf, type Base } from './profiles';
 import { finish, seasonLight } from './season';
+import { paintProps } from './props';
 import { townPainter } from './town';
 import { type Scenery, type ScenerySpec, type SceneryLayer } from './types';
 import { Grade } from './util';
@@ -17,7 +18,7 @@ export * from './types';
 const OUTDOOR: Record<Base, Painter> = { AZ, MH, KD, NR, AL, MK, SH, SV, NB };
 
 /** The speed of each layer (the share of the camera's move it follows). */
-const SPEED = { sky: 0, far: 0.2, mid: 0.5, ground: 1 } as const;
+const SPEED = { sky: 0, far: 0.2, mid: 0.5, ground: 1, props: 1 } as const;
 
 /** The layers of a place, painted once (the caller keeps them). */
 export function paintScenery(spec: ScenerySpec): Scenery {
@@ -29,8 +30,11 @@ export function paintScenery(spec: ScenerySpec): Scenery {
   const pt = spec.setting === 'indoor' ? indoorPainter(cx) : spec.setting === 'town' ? townPainter(cx, OUTDOOR[P.base]) : OUTDOOR[P.base];
   const make = (name: SceneryLayer['name'], f: (c: typeof cx) => SceneryLayer['frame']): SceneryLayer => ({ name, speed: SPEED[name], frame: f(cx) });
   const layers: SceneryLayer[] = [make('sky', pt.sky), make('far', pt.far), make('mid', pt.mid), make('ground', pt.ground)];
+  // the props of the scene stand over the ground, not graded by the season (a fire is not snowed on)
+  const props = spec.props?.length ? paintProps(spec.props, Math.floor(spec.seed ?? 0) | 0) : null;
   // the finishing grade over every pixel: the season's climate of the continent (outdoors and in town) and the continent's ceiling of colour
   for (const l of layers) finish(l.frame, l.name, P.base, season, spec.setting !== 'indoor');
+  if (props) layers.push({ name: 'props', speed: SPEED.props, frame: props });
   const ambient = ambientOf(cx.country?.ambient, spec.setting, P.ambient);
   return { spec, layers, light: spec.setting === 'indoor' ? P.lamp : seasonLight(P.light, P.base, season), ...(ambient ? { ambient } : {}) };
 }
