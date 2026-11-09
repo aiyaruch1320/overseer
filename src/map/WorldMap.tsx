@@ -40,6 +40,8 @@ export interface WorldMapProps {
   aim?: MapAim | null;
   /** The mini-map of the watch screen: one picture and a few marks, no camera. */
   mini?: boolean;
+  /** The mini-map was clicked and nothing on it is picked (no `onPick`): the page opens the full map. A key (Enter, Space) does the same. */
+  onOpen?: () => void;
   /** Size of the mini-map in px (the map fills its parent otherwise). */
   width?: number;
   /** Told when the zoom level changes. */
@@ -262,6 +264,7 @@ function MiniMap(props: WorldMapProps) {
   }, []);
 
   const click = (ev: JSX.TargetedMouseEvent<HTMLCanvasElement>) => {
+    if (!props.onPick) { props.onOpen?.(); return; }
     const e = cur.current.env;
     if (!e) return;
     const r = ev.currentTarget.getBoundingClientRect();
@@ -272,7 +275,24 @@ function MiniMap(props: WorldMapProps) {
     props.onPick?.(kind === 'continent' ? { kind, id: c.continent } : { kind, id: c.id });
   };
 
-  return <canvas ref={cv} role="img" aria-label="แผนที่เล็ก: ทวีปของตัวละคร" width={w * 2} height={h * 2} onClick={click} style={{ width: w, height: h, borderRadius: size.radius, border: `1px solid ${color.line}`, background: '#14355a', cursor: props.onPick ? 'pointer' : 'default', ...props.style }} />;
+  const open = !props.onPick && !!props.onOpen;
+  const keyOpen = (e: JSX.TargetedKeyboardEvent<HTMLCanvasElement>) => {
+    if (open && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); props.onOpen?.(); }
+  };
+  return (
+    <canvas
+      ref={cv}
+      role={open ? 'button' : 'img'}
+      tabIndex={open ? 0 : undefined}
+      aria-label={open ? 'แผนที่เล็ก: กดเพื่อเปิดแผนที่โลก' : 'แผนที่เล็ก: ทวีปของตัวละคร'}
+      title={open ? 'เปิดแผนที่โลก' : undefined}
+      width={w * 2}
+      height={h * 2}
+      onClick={click}
+      onKeyDown={keyOpen}
+      style={{ width: w, height: h, borderRadius: size.radius, border: `1px solid ${color.line}`, background: '#14355a', cursor: props.onPick || open ? 'pointer' : 'default', ...props.style }}
+    />
+  );
 }
 
 function paintMini(ctx: CanvasRenderingContext2D, W: number, H: number, m: MapModel, layout: MapLayout, base: TileImage | null, time: number): void {
