@@ -42,6 +42,9 @@ export type Beat = Timed &
     | { k: 'hold' }
   );
 
+/** The effects of a miracle that the god's pillar of light does not cover. */
+export type FxPreset = 'meteor' | 'beam';
+
 export type SceneKind = 'world' | 'change' | 'fall' | 'ending' | 'rite' | 'destination' | 'line' | 'node' | 'clash' | 'ally' | 'local' | 'lastEra' | 'miracle';
 
 /** The part of a scene that depends on a result (a rite passed or failed, the way a clash ended); it plays after the common beats. */
@@ -60,6 +63,8 @@ export interface SceneScript {
   seconds: number;
   beats: Beat[];
   variants?: Record<string, SceneVariant>;
+  /** The effect of its own a miracle has (20-god-ui §7.3 column "ภาพพิเศษ"): the shooting star, the wide gold beam. */
+  fxPreset?: FxPreset;
   src: string;
 }
 
@@ -93,6 +98,8 @@ export interface CardDef {
   sky: string;
   /** The event has its own script in `scripts` (forms X and L). */
   script: boolean;
+  /** Where the event is (12-event-visuals: its home in the world table, or the card place table; 17: the continent column): the picture and the stage are painted there. Omitted: wherever the life is. */
+  place?: { continent: string; country?: string };
   src: string;
 }
 
@@ -105,6 +112,8 @@ export interface ScenesData {
   continents: { id: string; name: string; color: string }[];
   /** The five-beat grammar of the day of the event (11-world-changes §1.2) with its seconds. */
   grammar: { n: number; name: string; from: number; to: number; what: string }[];
+  /** 13-storyline-scenes §6: the rules that place a picture. `cityScale`: the least country scale (`scale=`) drawn as a town in the calm picture; `tribeLand`: the continent a tribe's own scenes are in, by the two letters of the race line. */
+  rules: { cityScale: number; tribeLand: Record<string, string> };
 }
 
 export type ScenesFile = GenFile<ScenesData>;

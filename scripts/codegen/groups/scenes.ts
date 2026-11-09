@@ -29,6 +29,9 @@ const F18 = D + '18-last-era-scenes.md';
 const F20 = D + '20-god-ui.md';
 const GEN = 'scripts/codegen/groups/scenes.ts';
 
+/** This group reads the events (the home of a world event) and the storylines (the code of a race line) written by other groups. */
+export const after = ['events', 'storylines'];
+
 const at = (t: Table, line: number) => `${t.file}:${line}`;
 
 export default function run() {
@@ -304,6 +307,7 @@ for (const r of contT?.rows ?? []) {
 }
 const contByName = new Map(continents.map((c) => [c.name, c]));
 const localT = T17.find((t) => t.header[0] === 'ID · ชื่อ');
+const localContinent = new Map<string, string>();
 for (const r of localT?.rows ?? []) {
   const m = r.cells[0].match(/^\*\*(LC-\d+)\s+(.*?)\*\*$/);
   const parts = plain(r.cells[3]).split(/\s+·\s+/);
@@ -318,6 +322,7 @@ for (const r of localT?.rows ?? []) {
   const fr = frameOf.get(r.cells[2]) ?? frameOf.get('HP')!;
   const id = m[1];
   const cont = contByName.get(r.cells[1]);
+  if (cont) localContinent.set(id, cont.id);
   let hasScript = false;
   if (form === 'L') {
     add(
@@ -620,10 +625,56 @@ for (const r of mrT?.rows ?? []) {
   add(composeStaged({ id: `mr.${m[1]}`, kind: 'miracle', title: m[2], frame, src: at(mrT!, r.line), ...skyOf(frame), stages, seconds: 30 }));
 }
 
+// ---------- the place of each card, the fx preset of a miracle, the rules of the picture ----------
+
+// 12 "ที่ของการ์ดที่ตารางเหตุการณ์ไม่ระบุ": a card whose event the world table calls worldwide but whose picture is in one country
+const fixedPlace = new Map<string, string>();
+for (const t of T12) {
+  if (t.header[0] !== 'การ์ด' || t.header[1] !== 'ประเทศ') continue;
+  for (const r of t.rows) {
+    const c = plain(r.cells[1]);
+    if (/^[A-Z]{2}-\d+$/.test(c) && /^[A-Z]+-\d+$/.test(plain(r.cells[0]))) fixedPlace.set(plain(r.cells[0]), c);
+    else un.add(F12, r.line, r.cells[0], 'card place row');
+  }
+}
+const worldHome = new Map<string, { countries: string[]; continents: string[] }>();
+for (const e of (JSON.parse(readFileSync(path.join(genDir, 'world-events.json'), 'utf8')) as { items: { events: { id: string; home: { countries: string[]; continents: string[] } }[] } }).items.events) worldHome.set(e.id, e.home);
+for (const c of cards) {
+  const country = fixedPlace.get(c.id) ?? worldHome.get(c.id)?.countries[0];
+  const continent = country?.slice(0, 2) ?? worldHome.get(c.id)?.continents[0] ?? localContinent.get(c.id);
+  if (continent) c.place = { continent, ...(country ? { country } : {}) };
+}
+
+// 20 §7.3: the miracles that have an effect of their own
+const FX_PRESETS = new Set(['meteor', 'beam']);
+for (const t of T20) {
+  if (t.header[0] !== 'ปาฏิหาริย์' || t.header[1] !== 'ภาพพิเศษ') continue;
+  for (const r of t.rows) {
+    const id = plain(r.cells[0]);
+    const preset = plain(r.cells[1]).replace(/`/g, '');
+    const sc = scripts.find((x) => x.id === `mr.${id}`);
+    if (sc && FX_PRESETS.has(preset)) sc.fxPreset = preset as 'meteor' | 'beam';
+    else un.add(F20, r.line, id, 'miracle fx preset row');
+  }
+}
+
+// 13 §6: the rules of the picture
+const rules: ScenesData['rules'] = { cityScale: NaN, tribeLand: {} };
+const ruleT = T13.find((t) => t.header[0] === 'กติกา');
+for (const r of ruleT?.rows ?? []) {
+  const k = plain(r.cells[0]);
+  const v = plain(r.cells[1]);
+  const tribe = k.match(/^ฉากพิธีและปลายทางของ(.+?) อยู่ในทวีป$/);
+  if (/^ภาพนิ่งของชีวิต/.test(k) && /^\d+$/.test(v)) rules.cityScale = Number(v);
+  else if (tribe && lineOfName.get(tribe[1]) && /^[A-Z]{2}$/.test(v)) rules.tribeLand[lineOfName.get(tribe[1])!] = v;
+  else if (!/^ฉากตัวอย่าง/.test(k)) un.add(F13, r.line, k, 'picture rule row');
+}
+if (Number.isNaN(rules.cityScale)) throw new Error('scenes: 13-storyline-scenes §6 has no city scale rule');
+
 // ---------- write ----------
 
 for (const s of scripts) if (!s.beats.length && !s.variants) un.add(s.src.split(':')[0], 0, s.id, 'script without beats');
-const data: ScenesData = { frames, forms, cards, scripts, continents, grammar };
+const data: ScenesData = { frames, forms, cards, scripts, continents, grammar, rules };
 const sources = [F11, F12, F13, F15, F16, F17, F18, F20];
 writeGen('scenes', data, sources, GEN);
 un.write();

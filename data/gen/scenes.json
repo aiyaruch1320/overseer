@@ -1,5 +1,5 @@
 {
- "version": "1b3fecf0d621",
+ "version": "ac2770b75a5a",
  "sources": [
   "docs/appearance/11-world-changes.md",
   "docs/appearance/12-event-visuals.md",
@@ -216,7 +216,11 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:41"
+    "src": "docs/appearance/12-event-visuals.md:41",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-01"
+    }
    },
    {
     "id": "DR-03",
@@ -233,7 +237,11 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:42"
+    "src": "docs/appearance/12-event-visuals.md:42",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-01"
+    }
    },
    {
     "id": "DR-04",
@@ -268,7 +276,11 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:44"
+    "src": "docs/appearance/12-event-visuals.md:44",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-06"
+    }
    },
    {
     "id": "DR-06",
@@ -317,7 +329,11 @@
     ],
     "sky": "#5e5e61",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:47"
+    "src": "docs/appearance/12-event-visuals.md:47",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-05"
+    }
    },
    {
     "id": "DR-09",
@@ -487,7 +503,10 @@
     "fx": [],
     "sky": "#35423c",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:62"
+    "src": "docs/appearance/12-event-visuals.md:62",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "PL-04",
@@ -504,7 +523,10 @@
     ],
     "sky": "#35423c",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:63"
+    "src": "docs/appearance/12-event-visuals.md:63",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "PL-05",
@@ -521,7 +543,10 @@
     ],
     "sky": "#35423c",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:64"
+    "src": "docs/appearance/12-event-visuals.md:64",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "PL-06",
@@ -553,7 +578,11 @@
     "fx": [],
     "sky": "#35423c",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:66"
+    "src": "docs/appearance/12-event-visuals.md:66",
+    "place": {
+     "continent": "SH",
+     "country": "SH-17"
+    }
    },
    {
     "id": "PL-08",
@@ -570,7 +599,10 @@
     ],
     "sky": "#35423c",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:67"
+    "src": "docs/appearance/12-event-visuals.md:67",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "PL-09",
@@ -588,7 +620,11 @@
     ],
     "sky": "#35423c",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:68"
+    "src": "docs/appearance/12-event-visuals.md:68",
+    "place": {
+     "continent": "NB",
+     "country": "NB-08"
+    }
    },
    {
     "id": "WR-01",
@@ -618,7 +654,11 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:75"
+    "src": "docs/appearance/12-event-visuals.md:75",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-04"
+    }
    },
    {
     "id": "WR-03",
@@ -633,7 +673,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:76"
+    "src": "docs/appearance/12-event-visuals.md:76",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "WR-04",
@@ -699,7 +742,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:80"
+    "src": "docs/appearance/12-event-visuals.md:80",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "WR-08",
@@ -750,7 +796,10 @@
     ],
     "sky": "#411e24",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:83"
+    "src": "docs/appearance/12-event-visuals.md:83",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "WR-11",
@@ -800,7 +849,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:86"
+    "src": "docs/appearance/12-event-visuals.md:86",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "WR-14",
@@ -868,7 +920,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:90"
+    "src": "docs/appearance/12-event-visuals.md:90",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "WR-18",
@@ -883,7 +938,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:91"
+    "src": "docs/appearance/12-event-visuals.md:91",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "WR-19",
@@ -901,7 +959,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:92"
+    "src": "docs/appearance/12-event-visuals.md:92",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "WR-20",
@@ -918,7 +979,10 @@
     ],
     "sky": "#411e24",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:93"
+    "src": "docs/appearance/12-event-visuals.md:93",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "WR-21",
@@ -1153,7 +1217,10 @@
     ],
     "sky": "#4c4738",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:112"
+    "src": "docs/appearance/12-event-visuals.md:112",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "DM-01",
@@ -1168,7 +1235,10 @@
     "fx": [],
     "sky": "#291824",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:118"
+    "src": "docs/appearance/12-event-visuals.md:118",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "DM-02",
@@ -1185,7 +1255,11 @@
     ],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:119"
+    "src": "docs/appearance/12-event-visuals.md:119",
+    "place": {
+     "continent": "MH",
+     "country": "MH-02"
+    }
    },
    {
     "id": "DM-03",
@@ -1217,7 +1291,11 @@
     ],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:121"
+    "src": "docs/appearance/12-event-visuals.md:121",
+    "place": {
+     "continent": "AL",
+     "country": "AL-02"
+    }
    },
    {
     "id": "DM-05",
@@ -1302,7 +1380,11 @@
     ],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:126"
+    "src": "docs/appearance/12-event-visuals.md:126",
+    "place": {
+     "continent": "NB",
+     "country": "NB-08"
+    }
    },
    {
     "id": "DM-10",
@@ -1349,7 +1431,11 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:134"
+    "src": "docs/appearance/12-event-visuals.md:134",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-01"
+    }
    },
    {
     "id": "MC-02",
@@ -1413,7 +1499,11 @@
     ],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:138"
+    "src": "docs/appearance/12-event-visuals.md:138",
+    "place": {
+     "continent": "MK",
+     "country": "MK-04"
+    }
    },
    {
     "id": "MC-06",
@@ -1430,7 +1520,10 @@
     ],
     "sky": "#353c48",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:139"
+    "src": "docs/appearance/12-event-visuals.md:139",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "MC-07",
@@ -1447,7 +1540,10 @@
     ],
     "sky": "#353c48",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:140"
+    "src": "docs/appearance/12-event-visuals.md:140",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "MC-08",
@@ -1562,7 +1658,11 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:152"
+    "src": "docs/appearance/12-event-visuals.md:152",
+    "place": {
+     "continent": "SV",
+     "country": "SV-01"
+    }
    },
    {
     "id": "BIO-03",
@@ -1580,7 +1680,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:153"
+    "src": "docs/appearance/12-event-visuals.md:153",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "BIO-04",
@@ -1616,7 +1719,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:155"
+    "src": "docs/appearance/12-event-visuals.md:155",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "BIO-06",
@@ -1633,7 +1739,11 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:156"
+    "src": "docs/appearance/12-event-visuals.md:156",
+    "place": {
+     "continent": "NB",
+     "country": "NB-08"
+    }
    },
    {
     "id": "BIO-07",
@@ -1663,7 +1773,11 @@
     "fx": [],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:158"
+    "src": "docs/appearance/12-event-visuals.md:158",
+    "place": {
+     "continent": "NR",
+     "country": "NR-07"
+    }
    },
    {
     "id": "BIO-09",
@@ -1678,7 +1792,10 @@
     "fx": [],
     "sky": "#293c30",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:159"
+    "src": "docs/appearance/12-event-visuals.md:159",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "BIO-10",
@@ -1891,7 +2008,10 @@
     "fx": [],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:182"
+    "src": "docs/appearance/12-event-visuals.md:182",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "HP-05",
@@ -1923,7 +2043,10 @@
     ],
     "sky": "#584d38",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:184"
+    "src": "docs/appearance/12-event-visuals.md:184",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "HP-07",
@@ -1940,7 +2063,10 @@
     ],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:185"
+    "src": "docs/appearance/12-event-visuals.md:185",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "HP-08",
@@ -2096,7 +2222,11 @@
     ],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:205"
+    "src": "docs/appearance/12-event-visuals.md:205",
+    "place": {
+     "continent": "AZ",
+     "country": "AZ-04"
+    }
    },
    {
     "id": "GI-02",
@@ -2113,7 +2243,11 @@
     ],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:206"
+    "src": "docs/appearance/12-event-visuals.md:206",
+    "place": {
+     "continent": "SH",
+     "country": "SH-06"
+    }
    },
    {
     "id": "GI-03",
@@ -2148,7 +2282,10 @@
     ],
     "sky": "#4c3c30",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:208"
+    "src": "docs/appearance/12-event-visuals.md:208",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "GI-05",
@@ -2265,7 +2402,11 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:220"
+    "src": "docs/appearance/12-event-visuals.md:220",
+    "place": {
+     "continent": "AL",
+     "country": "AL-20"
+    }
    },
    {
     "id": "FG-02",
@@ -2299,7 +2440,11 @@
     ],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:222"
+    "src": "docs/appearance/12-event-visuals.md:222",
+    "place": {
+     "continent": "NB",
+     "country": "NB-12"
+    }
    },
    {
     "id": "FG-04",
@@ -2314,7 +2459,11 @@
     "fx": [],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:223"
+    "src": "docs/appearance/12-event-visuals.md:223",
+    "place": {
+     "continent": "NB",
+     "country": "NB-03"
+    }
    },
    {
     "id": "FG-05",
@@ -2331,7 +2480,11 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:224"
+    "src": "docs/appearance/12-event-visuals.md:224",
+    "place": {
+     "continent": "NB",
+     "country": "NB-07"
+    }
    },
    {
     "id": "FG-06",
@@ -2361,7 +2514,11 @@
     "fx": [],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:226"
+    "src": "docs/appearance/12-event-visuals.md:226",
+    "place": {
+     "continent": "AL",
+     "country": "AL-19"
+    }
    },
    {
     "id": "FG-08",
@@ -2378,7 +2535,10 @@
     ],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:227"
+    "src": "docs/appearance/12-event-visuals.md:227",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "FG-09",
@@ -2395,7 +2555,11 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:228"
+    "src": "docs/appearance/12-event-visuals.md:228",
+    "place": {
+     "continent": "NB",
+     "country": "NB-10"
+    }
    },
    {
     "id": "FG-10",
@@ -2413,7 +2577,11 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:229"
+    "src": "docs/appearance/12-event-visuals.md:229",
+    "place": {
+     "continent": "NB",
+     "country": "NB-08"
+    }
    },
    {
     "id": "FG-11",
@@ -2430,7 +2598,10 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:230"
+    "src": "docs/appearance/12-event-visuals.md:230",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "FG-12",
@@ -2447,7 +2618,11 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/12-event-visuals.md:231"
+    "src": "docs/appearance/12-event-visuals.md:231",
+    "place": {
+     "continent": "NB",
+     "country": "NB-04"
+    }
    },
    {
     "id": "FG-13",
@@ -2462,7 +2637,11 @@
     "fx": [],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:232"
+    "src": "docs/appearance/12-event-visuals.md:232",
+    "place": {
+     "continent": "NB",
+     "country": "NB-09"
+    }
    },
    {
     "id": "FG-14",
@@ -2477,7 +2656,11 @@
     "fx": [],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/12-event-visuals.md:233"
+    "src": "docs/appearance/12-event-visuals.md:233",
+    "place": {
+     "continent": "NB",
+     "country": "NB-09"
+    }
    },
    {
     "id": "FG-15",
@@ -3382,7 +3565,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:36"
+    "src": "docs/appearance/17-local-event-visuals.md:36",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-02",
@@ -3397,7 +3583,10 @@
     "fx": [],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:37"
+    "src": "docs/appearance/17-local-event-visuals.md:37",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-03",
@@ -3412,7 +3601,10 @@
     "fx": [],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:38"
+    "src": "docs/appearance/17-local-event-visuals.md:38",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-04",
@@ -3430,7 +3622,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:39"
+    "src": "docs/appearance/17-local-event-visuals.md:39",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-05",
@@ -3447,7 +3642,10 @@
     ],
     "sky": "#5e5e61",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:40"
+    "src": "docs/appearance/17-local-event-visuals.md:40",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-06",
@@ -3462,7 +3660,10 @@
     "fx": [],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:41"
+    "src": "docs/appearance/17-local-event-visuals.md:41",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-07",
@@ -3479,7 +3680,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:42"
+    "src": "docs/appearance/17-local-event-visuals.md:42",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-08",
@@ -3494,7 +3698,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:43"
+    "src": "docs/appearance/17-local-event-visuals.md:43",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-09",
@@ -3509,7 +3716,10 @@
     "fx": [],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:44"
+    "src": "docs/appearance/17-local-event-visuals.md:44",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-10",
@@ -3524,7 +3734,10 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:45"
+    "src": "docs/appearance/17-local-event-visuals.md:45",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-11",
@@ -3541,7 +3754,10 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:46"
+    "src": "docs/appearance/17-local-event-visuals.md:46",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-12",
@@ -3556,7 +3772,10 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:47"
+    "src": "docs/appearance/17-local-event-visuals.md:47",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-13",
@@ -3571,7 +3790,10 @@
     "fx": [],
     "sky": "#35423c",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:48"
+    "src": "docs/appearance/17-local-event-visuals.md:48",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-14",
@@ -3586,7 +3808,10 @@
     "fx": [],
     "sky": "#291824",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:49"
+    "src": "docs/appearance/17-local-event-visuals.md:49",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-15",
@@ -3603,7 +3828,10 @@
     ],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:50"
+    "src": "docs/appearance/17-local-event-visuals.md:50",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-16",
@@ -3618,7 +3846,10 @@
     "fx": [],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:51"
+    "src": "docs/appearance/17-local-event-visuals.md:51",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-17",
@@ -3633,7 +3864,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:52"
+    "src": "docs/appearance/17-local-event-visuals.md:52",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-18",
@@ -3651,7 +3885,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:53"
+    "src": "docs/appearance/17-local-event-visuals.md:53",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-19",
@@ -3666,7 +3903,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:54"
+    "src": "docs/appearance/17-local-event-visuals.md:54",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-20",
@@ -3683,7 +3923,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:55"
+    "src": "docs/appearance/17-local-event-visuals.md:55",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-21",
@@ -3698,7 +3941,10 @@
     "fx": [],
     "sky": "#35423c",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:56"
+    "src": "docs/appearance/17-local-event-visuals.md:56",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-22",
@@ -3713,7 +3959,10 @@
     "fx": [],
     "sky": "#293042",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:57"
+    "src": "docs/appearance/17-local-event-visuals.md:57",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-23",
@@ -3728,7 +3977,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:58"
+    "src": "docs/appearance/17-local-event-visuals.md:58",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-24",
@@ -3743,7 +3995,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:59"
+    "src": "docs/appearance/17-local-event-visuals.md:59",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-25",
@@ -3758,7 +4013,10 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:60"
+    "src": "docs/appearance/17-local-event-visuals.md:60",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-26",
@@ -3773,7 +4031,10 @@
     "fx": [],
     "sky": "#293042",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:61"
+    "src": "docs/appearance/17-local-event-visuals.md:61",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-27",
@@ -3791,7 +4052,10 @@
     ],
     "sky": "#686660",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:62"
+    "src": "docs/appearance/17-local-event-visuals.md:62",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-28",
@@ -3806,7 +4070,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:63"
+    "src": "docs/appearance/17-local-event-visuals.md:63",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-29",
@@ -3821,7 +4088,10 @@
     "fx": [],
     "sky": "#584d38",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:64"
+    "src": "docs/appearance/17-local-event-visuals.md:64",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-30",
@@ -3838,7 +4108,10 @@
     ],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:65"
+    "src": "docs/appearance/17-local-event-visuals.md:65",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-31",
@@ -3855,7 +4128,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:66"
+    "src": "docs/appearance/17-local-event-visuals.md:66",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-32",
@@ -3870,7 +4146,10 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:67"
+    "src": "docs/appearance/17-local-event-visuals.md:67",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-33",
@@ -3887,7 +4166,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:68"
+    "src": "docs/appearance/17-local-event-visuals.md:68",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-34",
@@ -3904,7 +4186,10 @@
     ],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:69"
+    "src": "docs/appearance/17-local-event-visuals.md:69",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-35",
@@ -3919,7 +4204,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:70"
+    "src": "docs/appearance/17-local-event-visuals.md:70",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-36",
@@ -3934,7 +4222,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:71"
+    "src": "docs/appearance/17-local-event-visuals.md:71",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-37",
@@ -3949,7 +4240,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:72"
+    "src": "docs/appearance/17-local-event-visuals.md:72",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-38",
@@ -3964,7 +4258,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:73"
+    "src": "docs/appearance/17-local-event-visuals.md:73",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-39",
@@ -3981,7 +4278,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:74"
+    "src": "docs/appearance/17-local-event-visuals.md:74",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-40",
@@ -3998,7 +4298,10 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:75"
+    "src": "docs/appearance/17-local-event-visuals.md:75",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-41",
@@ -4013,7 +4316,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:76"
+    "src": "docs/appearance/17-local-event-visuals.md:76",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-42",
@@ -4028,7 +4334,10 @@
     "fx": [],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:77"
+    "src": "docs/appearance/17-local-event-visuals.md:77",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-43",
@@ -4046,7 +4355,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:78"
+    "src": "docs/appearance/17-local-event-visuals.md:78",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-44",
@@ -4063,7 +4375,10 @@
     ],
     "sky": "#293c30",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:79"
+    "src": "docs/appearance/17-local-event-visuals.md:79",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-45",
@@ -4080,7 +4395,10 @@
     ],
     "sky": "#293042",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:80"
+    "src": "docs/appearance/17-local-event-visuals.md:80",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-46",
@@ -4097,7 +4415,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:81"
+    "src": "docs/appearance/17-local-event-visuals.md:81",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-47",
@@ -4114,7 +4435,10 @@
     ],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:82"
+    "src": "docs/appearance/17-local-event-visuals.md:82",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-48",
@@ -4131,7 +4455,10 @@
     ],
     "sky": "#585a63",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:83"
+    "src": "docs/appearance/17-local-event-visuals.md:83",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-49",
@@ -4146,7 +4473,10 @@
     "fx": [],
     "sky": "#4c4738",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:84"
+    "src": "docs/appearance/17-local-event-visuals.md:84",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-50",
@@ -4163,7 +4493,10 @@
     ],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:85"
+    "src": "docs/appearance/17-local-event-visuals.md:85",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-51",
@@ -4180,7 +4513,10 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:86"
+    "src": "docs/appearance/17-local-event-visuals.md:86",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-52",
@@ -4197,7 +4533,10 @@
     ],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:87"
+    "src": "docs/appearance/17-local-event-visuals.md:87",
+    "place": {
+     "continent": "AZ"
+    }
    },
    {
     "id": "LC-53",
@@ -4212,7 +4551,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:88"
+    "src": "docs/appearance/17-local-event-visuals.md:88",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-54",
@@ -4227,7 +4569,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:89"
+    "src": "docs/appearance/17-local-event-visuals.md:89",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-55",
@@ -4242,7 +4587,10 @@
     "fx": [],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:90"
+    "src": "docs/appearance/17-local-event-visuals.md:90",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-56",
@@ -4259,7 +4607,10 @@
     ],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:91"
+    "src": "docs/appearance/17-local-event-visuals.md:91",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-57",
@@ -4274,7 +4625,10 @@
     "fx": [],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:92"
+    "src": "docs/appearance/17-local-event-visuals.md:92",
+    "place": {
+     "continent": "KD"
+    }
    },
    {
     "id": "LC-58",
@@ -4291,7 +4645,10 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:93"
+    "src": "docs/appearance/17-local-event-visuals.md:93",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-59",
@@ -4306,7 +4663,10 @@
     "fx": [],
     "sky": "#35423c",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:94"
+    "src": "docs/appearance/17-local-event-visuals.md:94",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-60",
@@ -4321,7 +4681,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:95"
+    "src": "docs/appearance/17-local-event-visuals.md:95",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-61",
@@ -4336,7 +4699,10 @@
     "fx": [],
     "sky": "#686660",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:96"
+    "src": "docs/appearance/17-local-event-visuals.md:96",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-62",
@@ -4353,7 +4719,10 @@
     ],
     "sky": "#4c4738",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:97"
+    "src": "docs/appearance/17-local-event-visuals.md:97",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-63",
@@ -4368,7 +4737,10 @@
     "fx": [],
     "sky": "#291824",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:98"
+    "src": "docs/appearance/17-local-event-visuals.md:98",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-64",
@@ -4385,7 +4757,10 @@
     ],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:99"
+    "src": "docs/appearance/17-local-event-visuals.md:99",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-65",
@@ -4400,7 +4775,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:100"
+    "src": "docs/appearance/17-local-event-visuals.md:100",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-66",
@@ -4415,7 +4793,10 @@
     "fx": [],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:101"
+    "src": "docs/appearance/17-local-event-visuals.md:101",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-67",
@@ -4433,7 +4814,10 @@
     ],
     "sky": "#4c3c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:102"
+    "src": "docs/appearance/17-local-event-visuals.md:102",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-68",
@@ -4450,7 +4834,10 @@
     ],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:103"
+    "src": "docs/appearance/17-local-event-visuals.md:103",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LC-69",
@@ -4465,7 +4852,10 @@
     "fx": [],
     "sky": "#293042",
     "script": false,
-    "src": "docs/appearance/17-local-event-visuals.md:104"
+    "src": "docs/appearance/17-local-event-visuals.md:104",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-70",
@@ -4480,7 +4870,10 @@
     "fx": [],
     "sky": "#585a63",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:105"
+    "src": "docs/appearance/17-local-event-visuals.md:105",
+    "place": {
+     "continent": "NB"
+    }
    },
    {
     "id": "LC-71",
@@ -4495,7 +4888,10 @@
     "fx": [],
     "sky": "#293042",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:106"
+    "src": "docs/appearance/17-local-event-visuals.md:106",
+    "place": {
+     "continent": "MH"
+    }
    },
    {
     "id": "LC-72",
@@ -4510,7 +4906,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:107"
+    "src": "docs/appearance/17-local-event-visuals.md:107",
+    "place": {
+     "continent": "NR"
+    }
    },
    {
     "id": "LC-73",
@@ -4525,7 +4924,10 @@
     "fx": [],
     "sky": "#411e24",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:108"
+    "src": "docs/appearance/17-local-event-visuals.md:108",
+    "place": {
+     "continent": "SH"
+    }
    },
    {
     "id": "LC-74",
@@ -4540,7 +4942,10 @@
     "fx": [],
     "sky": "#353c48",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:109"
+    "src": "docs/appearance/17-local-event-visuals.md:109",
+    "place": {
+     "continent": "MK"
+    }
    },
    {
     "id": "LC-75",
@@ -4555,7 +4960,10 @@
     "fx": [],
     "sky": "#5e5e61",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:110"
+    "src": "docs/appearance/17-local-event-visuals.md:110",
+    "place": {
+     "continent": "AL"
+    }
    },
    {
     "id": "LC-76",
@@ -4572,7 +4980,10 @@
     ],
     "sky": "#293c30",
     "script": true,
-    "src": "docs/appearance/17-local-event-visuals.md:111"
+    "src": "docs/appearance/17-local-event-visuals.md:111",
+    "place": {
+     "continent": "SV"
+    }
    },
    {
     "id": "LE-01",
@@ -77406,7 +77817,8 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:134"
+    "src": "docs/appearance/20-god-ui.md:134",
+    "fxPreset": "beam"
    },
    {
     "id": "mr.MR-05",
@@ -78719,7 +79131,8 @@
       "dur": 1
      }
     ],
-    "src": "docs/appearance/20-god-ui.md:142"
+    "src": "docs/appearance/20-god-ui.md:142",
+    "fxPreset": "meteor"
    },
    {
     "id": "mr.MR-18",
@@ -79938,6 +80351,13 @@
     "to": 40,
     "what": "ชื่อทวีปเดิมขีดฆ่า ชื่อใหม่ขึ้น พร้อมการ์ดเหตุการณ์และตัวเลขผู้ที่หายไป"
    }
-  ]
+  ],
+  "rules": {
+   "cityScale": 3,
+   "tribeLand": {
+    "el": "SV",
+    "fa": "SV"
+   }
+  }
  }
 }
