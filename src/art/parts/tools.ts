@@ -144,26 +144,52 @@ export const TOOLS: Record<string, Tool> = {
   },
   book: {
     kind: 'carry',
+    // three books by the owner: a closed cover with a gilt band, a book held open (two pages with lines of text), a thick one with a ribbon that hangs from the pages
     held: (r) => {
-      const { p, m } = r, [x, y] = hold(r, 1.4, -0.8), w = sz(r, 5), h = sz(r, 6), cover = p.mat(darker(r.look.second, 0.15));
+      const { p, m } = r, [x, y] = hold(r, 1.4, -0.8), w = sz(r, 5), h = sz(r, 6), v = seedOf(r) % 3, cover = p.mat(darker(r.look.second, 0.15)), page = p.mat(TONE.cream), ink = p.mat('#8a7a60', { flat: true });
+      if (v === 1) {
+        // open: two pages side by side, the spine dark between them, the text as short grey lines
+        const hw = Math.max(3, Math.round(w * 0.75));
+        p.rect(x - hw, y - h + 2, hw, h - 1, page); p.rect(x, y - h + 2, hw, h - 1, p.mat(darker(TONE.cream, 0.08)));
+        p.rect(x, y - h + 2, 1, h - 1, cover);
+        p.rect(x - hw - 1, y - h + 3, 1, h - 1, cover); p.rect(x + hw, y - h + 3, 1, h - 1, cover);
+        for (let i = 0; i < h - 3; i += 2) { p.rect(x - hw + 1, y - h + 3 + i, hw - 2, 1, ink); p.rect(x + 1, y - h + 3 + i, hw - 2, 1, ink); }
+        if (r.glow) { p.glow(x - 1, y - h - 1, r.look.accent); p.glow(x + 2, y - h - 3, r.look.accent); sparks(r, [x, y - h], 3, 4); }
+        return;
+      }
       p.rect(x, y - h + 1, w, h, cover);
-      p.rect(x + w, y - h + 2, 1, h - 1, p.mat(TONE.cream));
+      p.rect(x + w, y - h + 2, 1, h - 1, page); p.rect(x + 1, y + 1, w, 1, page);
       p.rect(x, y - h + 1, 1, h, p.mat(darker(r.look.second, 0.4)));
-      p.px(x + Math.floor(w / 2), y - Math.floor(h / 2), m.accent);
-      p.px(x + w - 1, y, m.metal);
-      if (r.look.wear > 0.3) p.px(x + w - 1, y - h + 1, p.mat(TONE.cream));
+      if (v === 2) {
+        // thick, with a ribbon marker that hangs below the pages and a clasp
+        p.px(x + 2, y + 2, m.accent); p.px(x + 2, y + 3, m.accent); p.px(x + w - 1, y - Math.floor(h / 2), m.metal);
+        p.rect(x + 1, y - h + 2, w - 1, 1, p.mat(lighter(r.look.second, 0.25)));
+      } else {
+        // a gilt band across the cover and a stamped boss
+        p.rect(x + 1, y - h + 2, w - 1, 1, m.metal); p.rect(x + 1, y - 1, w - 1, 1, m.metal);
+        p.px(x + Math.floor(w / 2) + 1, y - Math.floor(h / 2), m.accent);
+      }
+      if (r.look.wear > 0.3) p.px(x + w - 1, y - h + 1, page);
       if (r.glow) { p.glow(x + 1, y - h - 1, r.look.accent); p.glow(x + 3, y - h - 3, r.look.accent); p.glow(x + w - 1, y - h - 2, r.look.accent); sparks(r, [x + w / 2, y - h], 3, 4); }
     },
   },
   scroll: {
     kind: 'carry',
+    // a roll of paper with rod ends: by the owner's seed the sheet hangs unrolled from the roll with lines of writing, or the roll is closed with a cord and a red seal
     held: (r) => {
-      const { p, m } = r, [x, y] = hold(r, 1.2, -0.6), len = sz(r, 7), w = Math.max(2, Math.round(2.5 * r.k)), pa = p.mat(TONE.cream);
-      p.rect(x, y - len + 1, w, len, pa);
-      p.rect(x - 1, y - len + 1, 1, 1, p.mat('#8a7040')); p.rect(x + w, y - len + 1, 1, 1, p.mat('#8a7040'));
-      p.rect(x - 1, y, 1, 1, p.mat('#8a7040')); p.rect(x + w, y, 1, 1, p.mat('#8a7040'));
-      p.px(x, y - Math.floor(len / 2), p.mat('#8a7a60'));
-      p.px(x + 1, y - Math.floor(len / 2) + 1, p.mat(TONE.blood, { flat: true }));
+      const { p, m } = r, [x, y] = hold(r, 1.2, -0.6), len = sz(r, 7), w = Math.max(2, Math.round(2.5 * r.k)), pa = p.mat(TONE.cream), rod = p.mat('#8a7040'), v = seedOf(r) % 2;
+      if (v === 0) {
+        const sw = w + 2, top = y - len + 1, sh = Math.max(3, Math.round(len * 0.7));
+        p.rect(x - 1, top, sw + 2, 2, pa); p.rect(x - 2, top, 1, 2, rod); p.rect(x + sw + 1, top, 1, 2, rod);
+        p.rect(x, top + 2, sw, sh, p.mat(darker(TONE.cream, 0.05)));
+        for (let i = 1; i < sh - 1; i += 2) p.rect(x + 1, top + 2 + i, sw - 2, 1, p.mat('#8a7a60', { flat: true }));
+        p.px(x + sw - 1, top + 2 + sh - 1, p.mat(TONE.blood, { flat: true }));
+      } else {
+        p.rect(x, y - len + 1, w, len, pa);
+        p.rect(x - 1, y - len + 1, 1, 1, rod); p.rect(x + w, y - len + 1, 1, 1, rod); p.rect(x - 1, y, 1, 1, rod); p.rect(x + w, y, 1, 1, rod);
+        p.rect(x, y - Math.floor(len / 2), w, 1, p.mat('#8a7a60'));
+        p.px(x + 1, y - Math.floor(len / 2) + 1, p.mat(TONE.blood, { flat: true }));
+      }
       p.px(x + w - 1, y - len + 2, m.accent);
       if (r.glow) { p.glow(x, y - len - 1, r.look.accent); p.glow(x + 2, y - len - 3, r.look.accent); sparks(r, [x + w / 2, y - len], 3, 4); }
     },
@@ -407,13 +433,15 @@ export const TOOLS: Record<string, Tool> = {
   // ── thrust: things carried in the hand ──────────────────────────────────────────────────────────────────────────────────────────
   ledger: {
     kind: 'carry',
+    // a wide, thick account book: the cover with metal corners, the page block showing along the bottom, a strap across it and loose papers at the top
     held: (r) => {
-      const { p, m } = r, [x, y] = hold(r, 1.3, -0.8), w = sz(r, 6), h = sz(r, 7), cover = p.mat(darker(r.look.second, 0.45));
+      const { p, m } = r, [x, y] = hold(r, 1.3, -0.8), w = sz(r, 6), h = sz(r, 7), cover = p.mat(darker(r.look.second, 0.45)), page = p.mat(TONE.cream);
       p.rect(x, y - h + 1, w, h, cover);
-      p.rect(x + w, y - h + 2, 1, h - 1, p.mat(TONE.cream));
+      p.rect(x + w, y - h + 2, 1, h - 1, page); p.rect(x + 1, y + 1, w, 1, page); p.rect(x + 1, y + 2, w - 1, 1, p.mat(darker(TONE.cream, 0.2)));
       p.px(x, y - h + 1, m.metal); p.px(x, y, m.metal); p.px(x + w - 1, y, m.metal); p.px(x + w - 1, y - h + 1, m.metal);
-      p.px(x + 2, y - Math.floor(h / 2), m.accent);
-      p.px(x + w - 2, y + 1, p.mat(TONE.blood, { flat: true }));
+      p.rect(x + 1, y - Math.floor(h / 2), w - 1, 1, m.leather); p.px(x + w - 1, y - Math.floor(h / 2), m.metal);
+      p.px(x + 2, y - h, page); p.px(x + 3, y - h - 1, page); p.px(x + 4, y - h, page);
+      p.px(x + w - 2, y + 3, p.mat(TONE.blood, { flat: true }));
       if (r.look.wear > 0.3) p.px(x + 1, y - h + 2, p.mat(lighter(darker(r.look.second, 0.45), 0.3)));
     },
   },
