@@ -1,5 +1,6 @@
 // The check of an answer (god/05-llm.md §7, llm/08-live-test.md §3): an answer that breaks a rule is not used, the game takes tier 0.
 // Pure functions of the text and the list the game gave; none touches the state.
+import { parseThaiNumber } from './thai-number';
 import { THAI_SHARE } from './tuning';
 import type { Checked } from './types';
 
@@ -110,39 +111,31 @@ export function numbersIn(text: string): string[] {
   return (text.match(NUMBER) ?? []).map(plainNumber);
 }
 
-const WORD_DIGIT: Record<string, number> = { หนึ่ง: 1, เอ็ด: 1, สอง: 2, ยี่: 2, สาม: 3, สี่: 4, ห้า: 5, หก: 6, เจ็ด: 7, แปด: 8, เก้า: 9 };
-const WORD_UNIT: Record<string, number> = { สิบ: 10, ร้อย: 100, พัน: 1000 };
-const NUMBER_WORDS = /(?:หนึ่ง|เอ็ด|สอง|ยี่|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ร้อย|พัน)+/g;
-const WORD_KEYS = [...Object.keys(WORD_DIGIT), ...Object.keys(WORD_UNIT)];
+const NUMBER_WORDS = /(?:หนึ่ง|เอ็ด|สอง|ยี่|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ร้อย|พัน|หมื่น|แสน|ล้าน)+/g;
+/** A digit word right before a place word (`สองพัน` `ห้าร้อย`): the run is a counted number, not a stray syllable (`สามี` `ห้าม` `พันธุ์` `ร้อยกรอง`). */
+const COUNTED = /(?:หนึ่ง|สอง|ยี่|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า)(?:สิบ|ร้อย|พัน|หมื่น|แสน|ล้าน)/;
 
-/** The value of a number written in Thai words (`ยี่สิบห้า` 25, `สามสิบ` 30, `สิบเอ็ด` 11); undefined when the words do not make one. */
+/** The value of a number written in Thai words (`ยี่สิบห้า` 25, `สามสิบ` 30, `สิบเอ็ด` 11, `หนึ่งหมื่นหนึ่งพันห้าร้อยสี่สิบ` 11540); undefined when the words are not a number (thai-number.ts). */
 export function wordValue(words: string): number | undefined {
-  let total = 0;
-  let cur = 0;
-  let rest = words;
-  while (rest) {
-    const w = WORD_KEYS.find((k) => rest.startsWith(k));
-    if (!w) return undefined;
-    rest = rest.slice(w.length);
-    if (w in WORD_DIGIT) cur = WORD_DIGIT[w];
-    else {
-      total += (cur || 1) * WORD_UNIT[w];
-      cur = 0;
-    }
-  }
-  return total + cur;
+  return parseThaiNumber(words);
 }
 
-/** The numbers the text says in words where they count years of life (`อายุสามสิบ` `ห้าสิบปี`): an age told without digits is a number too. */
+/**
+ * The numbers the text says in words that the facts must carry: where they count years of life (`อายุสามสิบ` `ห้าสิบปี`), after a year mark (`ศักราช` `พ.ศ.`), and any counted number
+ * of a hundred or more (a year or a count: `สามพันสองร้อย`). Words that are not a number at all (`สองพันสิบเอ็ดพันห้าร้อยสี่สิบ`) give NaN, which no fact carries.
+ */
 export function wordNumbersIn(text: string): number[] {
   const out: number[] = [];
   for (const m of text.matchAll(NUMBER_WORDS)) {
     const after = text.slice((m.index ?? 0) + m[0].length);
     const before = text.slice(0, m.index ?? 0);
-    // only where the words count years of life: right after "อายุ", or right before "ปี" (not `หนึ่งในสี่` or `สองฝั่ง`)
-    if (!/^\s*ปี/.test(after) && !/อายุ\s*$/.test(before)) continue;
-    const v = wordValue(m[0]);
-    if (v !== undefined) out.push(v);
+    if (m[0].endsWith('พัน') && after.startsWith('ธุ์')) continue;
+    const v = parseThaiNumber(m[0]);
+    // only where the words count years of life: right after "อายุ", or right before "ปี" (not `หนึ่งในสี่` or `สองฝั่ง`); or a year after its mark; or a counted number of a hundred or more
+    const context = /^\s*ปี/.test(after) || /(?:อายุ|ศักราช|พ\.ศ\.|ค\.ศ\.|ศ\.ม\.|ปีที่)\s*$/.test(before);
+    const big = COUNTED.test(m[0]) && (v === undefined || v >= 100);
+    if (!context && !big) continue;
+    out.push(v ?? NaN);
   }
   return out;
 }
@@ -183,9 +176,9 @@ const NOT_A_NAME = /^(?:เสียง|นี้|นั้น|สกุล|เ�
  * ones that can be found, and the text goes back to tier 0 when it does.
  */
 export function checkFacts(text: string, r: FactRules): Checked<string> {
-  const allowed = new Set<string>([...r.given.flatMap(numbersIn), ...r.given.flatMap(wordNumbersIn).map(String), ...(r.numbers ?? []).map(String)]);
+  const allowed = new Set<string>([...r.given.flatMap(numbersIn), ...r.given.flatMap(wordNumbersIn).filter(Number.isFinite).map(String), ...(r.numbers ?? []).map(String)]);
   for (const n of numbersIn(text)) if (!allowed.has(n)) return { ok: false, reason: `a number the facts do not carry (${n})` };
-  for (const v of wordNumbersIn(text)) if (!allowed.has(String(v))) return { ok: false, reason: `a number the facts do not carry (${v})` };
+  for (const v of wordNumbersIn(text)) if (!allowed.has(String(v))) return { ok: false, reason: `a number the facts do not carry (${Number.isNaN(v) ? 'words that are no number' : v})` };
   const masked = maskNames(text, r.names);
   for (const o of byLength(r.others ?? [])) {
     if (o.length < 2 || r.names.some((n) => n.includes(o) || o.includes(n))) continue;
