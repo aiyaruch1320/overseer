@@ -81,7 +81,7 @@ for (const [form, id, name] of FORMS) {
           <EventCard card={cardOfEntry(data, e)} width={360} />
           {v.kind === 'script' && (
             <div style={{ flex: '1 1 560px', maxWidth: 800 }}>
-              <ScenePlayer script={v.script} />
+              <ScenePlayer script={v.script} figureOf={figuresOf(data, state, v)} scenery={sceneryOf(data, state, v)} labelOf={labelsOf(data, state, v)} />
             </div>
           )}
         </div>
@@ -123,16 +123,19 @@ story({
 story({
   group: 'ฉาก',
   name: 'พิธีของเผ่า · เอลฟ์ ไม่ผ่าน',
+  race: 'elf',
   render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'el.t1', { rite: 'el.t1', title: 'พิธีผูกราก', variant: 'ไม่ผ่าน', result: 'fail', choice: 'b', label: 'ไม่ผ่าน' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'ฉากปลายทาง · คนแคระ',
+  race: 'dwarf',
   render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'dw.e1', { title: 'ปลายทาง', choice: 'a', label: 'ตายในศึก' })} />,
 });
 story({
   group: 'ฉาก',
   name: 'ฉากปลายทาง · เผ่าปีก',
+  race: 'winged',
   render: ({ data, state }) => <Scene data={data} state={state} e={entry('story', 'node', 'wi.e1', { title: 'ปลายทาง', choice: 'a', label: 'ปลดเกษียณ' })} />,
 });
 story({
@@ -164,3 +167,23 @@ for (const [name, seed, at] of [['ฉากชีวิต · ทารก', 12,
       </div>
     ),
   });
+
+// the rites and endings of the tribes (13-storyline-scenes §2 §3): a stage of each tribe at a still moment, with no life behind it, so the people are plain people of the tribe
+const TRIBES: [string, string, number][] = [['hu', 'พิธีของถิ่น', 3], ['el', 'พิธีผูกราก', 5], ['de', 'พิธีเผชิญเงา', 3], ['dw', 'วันทั่งแรก', 5], ['or', 'พิธีกระดูกแรก', 4], ['ha', 'วันให้ของขวัญ', 4], ['na', 'การทดสอบนาคา', 4], ['va', 'คืนแรกแห่งเลือด', 4], ['fa', 'ชื่อจริง', 4], ['wi', 'การบินครั้งแรก', 4], ['gi', 'การสลักชื่อ', 4], ['mu', 'การชั่งหัวใจ', 4]];
+story({
+  group: 'ฉาก',
+  name: 'พิธีของเผ่า · ฉากหลังและของประกอบ 12 เผ่า',
+  render: ({ data }) => (
+    <div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
+      {TRIBES.map(([t, name, at]) => {
+        const v = sceneFor(data, entry('story', 'node', `${t}.t1`, { rite: `${t}.t1`, title: name, variant: '', result: '' }), undefined);
+        return (
+          <figure key={t} style={{ margin: 0 }} data-tribe={t}>
+            {v.kind === 'script' ? <ScenePlayer script={v.script} figureOf={figuresOf(data, undefined, v)} scenery={sceneryOf(data, undefined, v)} labelOf={labelsOf(data, undefined, v)} autoplay={false} startAt={at} controls={false} /> : null}
+            <figcaption style={{ fontFamily: font.body, fontSize: size.text, color: color.text }}>{t} · {name}</figcaption>
+          </figure>
+        );
+      })}
+    </div>
+  ),
+});

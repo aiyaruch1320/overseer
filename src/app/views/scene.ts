@@ -24,6 +24,7 @@ import { mainLookOf, scarredOf, tieLooks } from './looks';
 import { items } from '../../core/text/labels';
 import type { LogEntry } from '../../core/types';
 import { cardFrom, plainCard, type CardModel } from '../../scene/card';
+import { stagingOf } from '../../scene/props';
 import { resolveScript } from '../../scene/timeline';
 
 /** Where to look for the script of an entry, and which variants to play after it. */
@@ -140,6 +141,11 @@ export function cardOfEntry(data: GameData, e: LogEntry, state?: GameState | nul
   // the picture of the card is the place of the event: the country or continent the entry carries, else the life's (an event of no place shows the first continent's plain look)
   const at = placeOf(data, state, e);
   card.scenery = { continent: at?.continent ?? 'AZ', setting: 'outdoor', seed: seedOf(card.id), ...(at?.country ? { country: at.country } : {}) };
+  // the things the scene of the event names (the pearl egg of DR-03) are in the picture of its card too
+  const script = e.id ? indexOf(data)?.script.get(e.id) : undefined;
+  const staged = script ? stagingOf(script) : undefined;
+  if (staged?.props.length) card.scenery.props = staged.props;
+  if (staged?.setting) card.scenery.setting = staged.setting;
   return card;
 }
 
@@ -440,6 +446,9 @@ function namedPlace(data: GameData, d: LogEntry['data']): Place | undefined {
   return undefined;
 }
 
+/** World events that happen in one named country. */
+const FIXED_PLACE: Record<string, string> = { 'DR-03': 'AZ-01' };
+
 /** The continent and country of the life now (the place of the calm picture, and of whatever an entry does not place), nothing without a life. */
 export function lifePlace(data: GameData, state: GameState | null | undefined): Place | undefined {
   const home = state?.life ? placeIds(data).byId.get(state.life.country) : undefined;
@@ -454,6 +463,9 @@ export function lifePlace(data: GameData, state: GameState | null | undefined): 
 export function placeOf(data: GameData, state: GameState | null | undefined, e: LogEntry): Place | undefined {
   const named = namedPlace(data, e.data);
   if (named) return named;
+  // events that happen in one place the docs name, wherever the life is (the sky nest is under Orantar, AZ-01: docs/lore/countries/01-azgar.md)
+  const fixed = FIXED_PLACE[e.id ?? ''];
+  if (fixed) return placeIds(data).byId.get(fixed);
   const npc = npcPlace(str(e.data.npc)) ?? (e.id?.startsWith('NF-') ? npcPlace(e.id.slice(3)) : undefined);
   if (npc && e.sys === 'combat' && e.kind === 'clash') return npc;
   return lifePlace(data, state) ?? npc;
@@ -464,7 +476,10 @@ export function sceneryOf(data: GameData, state: GameState | null | undefined, v
   const at = placeOf(data, state, v.entry);
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
   return (place) => {
-    const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: settingOf(place), seed };
+    // the props and the kind of place the script asks for (src/scene/props.ts): the craft table, the anvil, the eternal flame ...
+    const staged = v.kind === 'script' ? stagingOf(v.script, place) : undefined;
+    const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: staged?.setting ?? settingOf(place), seed };
+    if (staged?.props.length) spec.props = staged.props;
     if (at?.country) spec.country = at.country;
     return spec;
   };

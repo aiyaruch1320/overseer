@@ -29,10 +29,10 @@ function blend(d: Uint8ClampedArray, i: number, c: readonly number[], alpha: num
 }
 
 /** The picture of a card: its place (its own, else a plain one), the tint of its sky and its effects. Kept by what it is made of, so the many cards of a storybook cost one painting each. */
-type Cardish = Pick<CardModel, 'id' | 'sky' | 'fx' | 'scenery'>;
+type Cardish = Pick<CardModel, 'id' | 'sky' | 'fx' | 'scenery'> & Partial<Pick<CardModel, 'form' | 'frame'>>;
 
 export function cardPicture(card: Cardish): CardPicture {
-  const key = `${specKey(card.scenery ?? PLAIN)}|${card.sky}|${card.fx.join(',')}|${card.id}`;
+  const key = `${specKey(card.scenery ?? PLAIN)}|${card.sky}|${card.fx.join(',')}|${card.id}|${card.form ?? ''}|${card.frame ?? ''}`;
   const have = cache.get(key);
   if (have) {
     cache.delete(key);
@@ -75,6 +75,8 @@ export function chroma(c: readonly number[]): number {
 
 /** The picture of a card painted afresh (no cache): a pure function of the card. */
 export function paintCard(card: Cardish): CardPicture {
+  // a layer of the world map (form M) is not a place: it is the map with the layer laid over it
+  if (card.form === 'M') return paintMapLayer(card);
   const spec = card.scenery ?? PLAIN;
   const out = paintPlace(spec, card.sky);
   const { w, h, data: d } = out;
@@ -101,5 +103,50 @@ export function paintCard(card: Cardish): CardPicture {
     const grow = p.w === 1 && p.h === 1 ? CARD_PIC.speck - 1 : 0;
     for (let y = p.y; y < Math.min(h, p.y + p.h + grow); y++) for (let x = p.x; x < Math.min(w, p.x + p.w + grow); x++) blend(d, (y * w + x) * 4, c, p.alpha, p.add);
   }
+  return out;
+}
+
+/**
+ * The picture of a card of form M (12-event-visuals "รูปแบบการแสดง 4 แบบ": a colour or line layer over the world map, no scene): a dark chart with its grid, nine
+ * landmasses, and the layer of the event laid over them in the colour of the card's frame, as a band of hatching with a line along its edge. No scene, no figures.
+ */
+export function paintMapLayer(card: Cardish): CardPicture {
+  const w = ART.w;
+  const h = ART.h;
+  const out: CardPicture = { w, h, data: new Uint8ClampedArray(w * h * 4) };
+  const d = out.data;
+  const sea = [18, 28, 44];
+  const land = [52, 64, 70];
+  const edge = [96, 110, 112];
+  const layer = rgb(hexNum(card.frame ?? '#a89860'));
+  const rnd = (() => { let a = seedOf(card.id) || 1; return () => ((a = (Math.imul(a, 1664525) + 1013904223) >>> 0) / 4294967296); })();
+  // nine blobs of land on a three by three spread, each a union of discs
+  const lands: [number, number, number][] = [];
+  for (let i = 0; i < 9; i++) {
+    const cx = 40 + (i % 3) * 120 + (rnd() - 0.5) * 24;
+    const cy = 30 + Math.floor(i / 3) * 60 + (rnd() - 0.5) * 14;
+    for (let k = 0; k < 4; k++) lands.push([cx + (rnd() - 0.5) * 40, cy + (rnd() - 0.5) * 20, 12 + rnd() * 12]);
+  }
+  const inLand = (x: number, y: number): number => {
+    let m = 0;
+    for (const [cx, cy, r] of lands) m = Math.max(m, 1 - Math.hypot((x - cx) / 1.5, y - cy) / r);
+    return m;
+  };
+  // the band of the layer: a diagonal strip across the chart, its place from the card
+  const a = 0.35 + rnd() * 0.3;
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const o = (y * w + x) * 4;
+      const m = inLand(x, y);
+      let c = m > 0.12 ? land : sea;
+      if (m > 0 && m <= 0.12) c = edge;
+      if (x % 32 === 0 || y % 30 === 0) c = c.map((v) => v + 10);
+      const t = (x / w) * 0.6 + (y / h) * 0.4 - a;
+      const on = Math.abs(t) < 0.12;
+      const hatch = (x + y) % 6 < 3;
+      for (let k = 0; k < 3; k++) d[o + k] = on && hatch ? c[k] + (layer[k] - c[k]) * 0.55 : on ? c[k] + (layer[k] - c[k]) * 0.2 : c[k];
+      if (Math.abs(Math.abs(t) - 0.12) < 0.006) for (let k = 0; k < 3; k++) d[o + k] = layer[k];
+      d[o + 3] = 255;
+    }
   return out;
 }
