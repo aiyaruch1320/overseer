@@ -13,7 +13,7 @@ M7 ข ทำแล้ว 2026-11-09: ข1 ของประกอบฉาก 
   4. **M8 ทดสอบกับผู้เล่นจริง** (code-plan §11): A/B ผู้กำกับ คำปฏิญาณ 17 ข้อ อัตราวิกฤตพวกพ้อง (ยังไม่ทันราว 16%) ตัวเลขที่รอผลเล่นจริง
   5. ข้อกลางเบาค้าง: review/m7/k4/triage.md · recheck/report.md · m6/triage.md ท้ายไฟล์ · ของประกอบของเผ่าสัตว์ สไลม์ ลาวา จักรวิญญาณ · ภาพโลก ทวีป ประเทศเป็นพิกเซลเต็ม · fxPreset · CardDef.place · รอยต่อพื้น AZ-01 · NB08-2 ในแผ่น NPC
   6. ค้างไว้ (พักได้): ข้อเสนอสัญญา (LifeState hp fame · NpcSlotState · WorldState.ext) · NT มีชีวิต 0.16 ต่อประเทศ · ขึ้นชั้นราว 35–40% เทียบเอกสาร 15% · 25-journeys หน้าต่างอายุ · ตัวละคร 74 วลี ไอเทม 209 วลีที่ยังแปลไม่ได้ · ผล death ในทาง e2 sl.b2 · world ลางล่วงหน้าและธง famine plague · OPEN_EC · ฝันถึงพวกพ้องไม่มีนโยบายส่ง · คำอธิบายพร 93/200 คำสาป 49/152 · ชื่อไทยในสรุป LLM · ฉายาพระเจ้าหกอย่าง
-ด่านล่าสุด (2026-11-09 หลังคลื่นสอง): typecheck · unit 2,444 ผ่าน exit 0 · golden 22 · balance 166 (ก่อนคลื่นสอง ซึ่งไม่แตะแกน) · build · run-all --check · check:looks 0/0/0 · docs:check 0 error · เล่นจริงบน production build 60 fps ไม่มี error ของเกม
+ด่านล่าสุด (2026-11-09 หลังผู้กำกับครบสี่แบบ): typecheck · unit 2,462 ผ่าน exit 0 · golden 22 · **balance 166 ผ่าน exit 0** (ครั้งแรกที่ไม่มี worker timeout: tests/setup/settle.ts + จุดพักทุกสิบชีวิต) · build · run-all --check · check:looks 0/0/0 · docs:check 0 error
 
 ## เริ่ม session ใหม่ (account อื่นหรือหลังสรุปบทสนทนา)
 
