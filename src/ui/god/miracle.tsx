@@ -9,6 +9,7 @@ import { HoldButton, askGod, pendingAct, runGod } from './confirm';
 import { godFull } from './layout';
 import { MapSlot } from './map-slot';
 import { Drop, Empty, Gate, Section } from './parts';
+import { DayScene } from './day-scene';
 import { TargetList } from './target';
 import { box, col, row, toneColor } from './style';
 
@@ -331,6 +332,9 @@ export function Miracle(p: { id?: string; tab?: string }) {
   const v = useView((g, d) => miracleView(g, d));
   const [tab, setTab] = useState<Tab>((TABS as readonly string[]).includes(p.tab ?? '') ? (p.tab as Tab) : 'aim');
   const [sel, setSel] = useState<string | null>(p.id ?? null);
+  const bridge = useBridge();
+  const dayData = bridge.data();
+  const dayState = bridge.game()?.state ?? null;
   const row_ = v?.rows.find((r) => r.id === sel) ?? null;
   // a miracle with something to point at takes the whole screen for the aim (20-god-ui.md §7.1)
   const aiming = !!v && v.alive && tab === 'aim' && !!row_ && row_.open && row_.target !== 'none';
@@ -368,9 +372,13 @@ export function Miracle(p: { id?: string; tab?: string }) {
             <b>{v.day ? v.day.name : W.none}</b>
             {v.day?.lines.map((l, i) => <div key={i}>{l}</div>)}
           </div>
-          <div class="g-dim" role="note" style={{ ...box, borderStyle: 'dashed', textAlign: 'center', minHeight: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {W.miracle.dayScene}
-          </div>
+          {v.day && dayData && dayState ? (
+            <DayScene key={v.day.n} n={v.day.n} data={dayData} state={dayState} />
+          ) : (
+            <div class="g-dim" role="note" style={{ ...box, borderStyle: 'dashed', textAlign: 'center', minHeight: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {W.miracle.dayScene}
+            </div>
+          )}
         </div>
       )}
     </div>

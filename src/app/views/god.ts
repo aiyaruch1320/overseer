@@ -647,7 +647,7 @@ export interface MiracleView {
   ruins: RuinView[];
   fate: FateRow[];
   /** The miracle that happened last (its log lines), the content of the event day. */
-  day: { name: string; lines: string[] } | null;
+  day: { name: string; lines: string[]; /** Number of the log entry of the miracle, for its scene. */ n: number } | null;
 }
 
 export function miracleTargets(game: Game, data: GameData, kind: TargetKind): TargetOption[] {
@@ -771,7 +771,7 @@ export function miracleView(game: Game, data: GameData): MiracleView {
     omens,
     ruins: ruinViews(game, data),
     fate,
-    day: last ? { name: miracleOf(ctx, str(last.id))?.name ?? '', lines: textLines(data, [last], 0).map((l) => l.text) } : null,
+    day: last ? { name: miracleOf(ctx, str(last.id))?.name ?? '', lines: textLines(data, [last], 0).map((l) => l.text), n: last.n } : null,
   };
 }
 
