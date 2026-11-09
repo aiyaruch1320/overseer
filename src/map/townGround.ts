@@ -9,6 +9,8 @@ import { parse, mixHex, shadeHex, toHex, type Rgb } from '../art/mapart/color';
 
 type Pt = [number, number];
 
+const mixRgb = (a: Rgb, b: Rgb, t: number): Rgb => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+
 const BAYER8 = (() => {
   const m = new Float32Array(64);
   for (let y = 0; y < 8; y++)
@@ -37,7 +39,14 @@ export interface TownGround {
   h: number;
   data: Uint8ClampedArray<ArrayBuffer>;
   walk: WalkGrid;
+  /** 1 where the pixel is open sea (a town on a coast); null for a town wholly on land. Nothing is placed there. */
+  sea: Uint8Array | null;
 }
+
+/** Where the town lies on the map, to follow the real coast: the top-left of the ground in map units and the land value (> 0 is land) at a map point. */
+export interface ShoreOf { x0: number; y0: number; land: (x: number, y: number) => number }
+
+const INK: Rgb = [44, 36, 24];
 
 /** The size in art pixels of the ground of a plan. */
 export const groundSize = (plan: Pick<CityPlan, 'w' | 'h'>): { w: number; h: number } => ({ w: Math.ceil(plan.w * TOWN_PX), h: Math.ceil(plan.h * TOWN_PX) });
@@ -61,13 +70,15 @@ function stroke(mask: Uint8Array, W: number, H: number, pts: Pt[], r: number, va
   }
 }
 
-export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
+export function townGround(plan: CityPlan, look: CityLook = {}, shore?: ShoreOf): TownGround {
   const { w: W, h: H } = groundSize(plan);
   const S = TOWN_PX;
   const seed = hashString(plan.id);
   const noise = makeNoise(seed & 0xffff), noise2 = makeNoise((seed >>> 8) & 0xffff);
   const ruin = look.ruin ?? 0;
   const px = new Uint8ClampedArray(W * H * 4);
+  let sea: Uint8Array | null = null;
+  const inkW = 0.8 / S; // the coast is one art pixel wide, as on the pictures of the levels above
 
   // masks
   const road = new Uint8Array(W * H), water = new Uint8Array(W * H), field = new Uint8Array(W * H), wall = new Uint8Array(W * H);
@@ -125,6 +136,12 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const i = y * W + x, b = bayer(x, y);
+      // the sea is not ours: it is left clear so the shore of the picture under shows, and the ground ends in one pixel of ink on the coast
+      let lv = 1;
+      if (shore) {
+        lv = shore.land(shore.x0 + (x + 0.5) / S, shore.y0 + (y + 0.5) / S);
+        if (lv <= 0) { (sea ??= new Uint8Array(W * H))[i] = 1; continue; }
+      }
       // rim: dithered away
       const ex = (x + 0.5 - W / 2) / (W / 2), ey = (y + 0.5 - H / 2) / (H / 2), e = Math.hypot(ex, ey);
       // (the threshold stays under 1: at 1.0 the last column stayed opaque in dashes and drew a faint line along the rim)
@@ -172,6 +189,7 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
       }
       // a ruin lies under ash
       if (ruin > 0.2 && b < 0.9 * ruin) c = (x + y * 2) % 7 === 0 ? ashD : ash;
+      if (lv < inkW) c = mixRgb(c, INK, 0.88);
       put(i, c);
     }
   if (ruin > 0.2) {
@@ -185,12 +203,12 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
     for (let k = 0; k < area(90); k++) { const [x, y] = spot(); dot(x, y, r.chance(0.5) ? [40, 36, 32] : [120, 110, 100]); dot(x + 1, y, [40, 36, 32]); }
   }
 
-  return { w: W, h: H, data: px, walk: walkGrid(plan, road, water, wall) };
+  return { w: W, h: H, data: px, walk: walkGrid(plan, road, water, wall, sea), sea };
 }
 
 const CELL = 4;
 
-function walkGrid(plan: CityPlan, road: Uint8Array, water: Uint8Array, wall: Uint8Array): WalkGrid {
+function walkGrid(plan: CityPlan, road: Uint8Array, water: Uint8Array, wall: Uint8Array, sea: Uint8Array | null): WalkGrid {
   const { w: W, h: H } = groundSize(plan);
   const S = TOWN_PX;
   const cols = Math.ceil(W / CELL), rows = Math.ceil(H / CELL);
@@ -200,7 +218,7 @@ function walkGrid(plan: CityPlan, road: Uint8Array, water: Uint8Array, wall: Uin
       const x = Math.min(W - 1, i * CELL + CELL / 2), y = Math.min(H - 1, j * CELL + CELL / 2), k = Math.floor(y) * W + Math.floor(x);
       const ex = (x - W / 2) / (W / 2), ey = (y - H / 2) / (H / 2);
       const bridge = road[k] === 1;
-      const good = Math.hypot(ex, ey) < 0.8 && (water[k] !== 1 || bridge) && !wall[k];
+      const good = Math.hypot(ex, ey) < 0.8 && (water[k] !== 1 || bridge) && !wall[k] && !(sea && sea[k]);
       ok[j * cols + i] = good ? 1 : 0;
       rd[j * cols + i] = good && (road[k] === 1 || Math.hypot(x - plan.plaza.x * S, y - plan.plaza.y * S) < plan.plaza.r * S) ? 1 : 0;
     }

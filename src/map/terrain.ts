@@ -5,7 +5,7 @@ import { type Buf, bayer, stampLandmark, stampLine, glyphSprite, toneOf, type Pi
 import { CONT_IDS, DEFS, type ContId, type Zone } from './geo';
 import { css, mixRGB, rgb, type RGB } from './color';
 import { drawGlyph, drawLandmark, type GlyphKind } from './glyphs';
-import { landValue, type MapLayout } from './layout';
+import { landValue, type LandGrid, type MapLayout } from './layout';
 import { Stream, clamp, hashString, makeNoise, smooth } from './noise';
 import type { PaintCanvas, TileRequest } from './provider';
 import { FATE_BY_ID, GROUND, SEA, ZONE_COLOR, type FateId } from './tuning';
@@ -97,6 +97,12 @@ export interface PaintOpts {
    * and clouds are sprites stamped at whole pixels. For the prebuilt pictures of the world, continent and country levels; not for the chunks round a town.
    */
   pixel?: boolean;
+}
+
+/** The land value at a map point as the painter sees it near a coast (the detail noise included), so a town ground can follow the same shore. */
+export function shoreValue(g: LandGrid, x: number, y: number): number {
+  const v = landValue(g, x, y);
+  return v + (nDetail(x / 4.5, y / 4.5, 3) - 0.5) * (v > -3 && v < 3 ? 2.2 : 0);
 }
 
 export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapLayout, opts: PaintOpts = {}): void {
