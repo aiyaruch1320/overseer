@@ -1,4 +1,4 @@
-// The code-drawn ground of the map (world-map.md §2, ported from legacy/render/terrain): sea by depth, coast, land by continent and zone, borders,
+// The code-drawn ground of the map (world-map.md §2): sea by depth, coast, land by continent and zone, borders,
 // then the icons (trees, peaks, dunes, fields) and the great landmarks. One function paints one tile at the pixel size of its zoom level; it is
 // deterministic (the noise and every scatter come from seeded streams), so a tile is the same on every run.
 import { CONT_IDS, DEFS, type ContId, type Zone } from './geo';
