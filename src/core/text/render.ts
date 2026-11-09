@@ -183,7 +183,28 @@ export class Reader {
   filtered = false;
 
   /** The line for this entry (or null), then the entry is remembered. */
+  /** The variant of a template family told in this life: the least recently used one, in the order of the first draw (the log fixes it, so a re-read says the same). */
+  private godUse = new Map<string, { base: number; count: number }>();
+  private godMemo = new Map<string, { at: number; wrapped: boolean }>();
+  /** True when the last template picked for the god had been told in full already in this life (every variant used: it can only be said again). */
+  private godWrapped = false;
+  private rotate(n: number, key: string, len: number, base: number): number {
+    const memo = `${n}|${key}`;
+    let m = this.godMemo.get(memo);
+    if (!m) {
+      const u = this.godUse.get(key) ?? { base, count: 0 };
+      m = { at: (u.base + u.count) % len, wrapped: u.count >= len };
+      u.count++;
+      this.godUse.set(key, u);
+      this.godMemo.set(memo, m);
+    }
+    this.godWrapped = m.wrapped;
+    return m.at;
+  }
+
   read(e: LogEntry): string | null {
+    // a new life tells its prayers again from the first words
+    if (e.sys === 'character' && e.kind === 'birth') this.godUse.clear();
     this.filtered = false;
     const line = this.say(e);
     this.remember(e);
@@ -413,7 +434,9 @@ export class Reader {
       who: this.name,
       country: this.country,
       tpl: (family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, style?: TemplateStyle) =>
-        godTemplate(this.data, family, keys, { ชื่อของที่นี่: place || undefined, ฤดู: season || undefined, ทวีป: continent || undefined, ...vars }, variant, hash, style),
+        godTemplate(this.data, family, keys, { ชื่อของที่นี่: place || undefined, ฤดู: season || undefined, ทวีป: continent || undefined, ...vars }, variant, hash, style, (key, n, base) => this.rotate(e.n, key, n, base)),
+      /** True when the template just picked has been told in full in this life already (T2-4). */
+      again: () => this.godWrapped,
     };
   }
 
@@ -497,7 +520,8 @@ export class Reader {
         if (d.gender === 'f') parts.push('เป็นเพศหญิง');
         else if (d.gender === 'm') parts.push('เป็นเพศชาย');
         if (s(d.born) && BORN_TH[s(d.born)]) parts.push(`${d.heir ? 'เติบโต' : d.woke ? 'ตื่น' : 'เกิด'}${BORN_TH[s(d.born)]}`);
-        if (s(d.cls)) parts.push(`ครอบครัวเป็น${classWord(data, d.cls)}`);
+        if (d.orphan) parts.push('กำพร้าพ่อแม่');
+        if (s(d.cls)) parts.push(`${d.orphan ? 'ครอบครัวที่เลี้ยงเป็น' : 'ครอบครัวเป็น'}${classWord(data, d.cls)}`);
         const tail: string[] = [];
         if (s(d.second)) tail.push(`เลือดผสมกับ${this.L.kind.race.get(s(d.second)) ?? ''}`);
         if (s(d.meet)) tail.push(`พ่อแม่พบกันเพราะ${this.L.kind.meet.get(s(d.meet)) ?? ''}`);

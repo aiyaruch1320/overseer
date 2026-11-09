@@ -25,6 +25,8 @@ export interface GodCx {
    * Picks a template of `family` with the row keys and fills it; undefined when none can be filled. `variant` makes the pick stable.
    * `style` keeps only the templates that tell a thing as it happened (`direct`) or as the other thing that came instead (`indirect`, review M2 G6).
    */
+  /** True when the template picked by the last `tpl` call had all its variants told in this life already, so it can only be said again. */
+  again(): boolean;
   tpl(family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, style?: TemplateStyle): string | undefined;
 }
 
@@ -57,7 +59,7 @@ export function isIndirect(text: string): boolean {
   return /(?:ไม่|ยัง)[^{}]*?\sแต่/.test(text);
 }
 
-export function godTemplate(data: GameData, family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, hash: (t: string) => number, style?: TemplateStyle): string | undefined {
+export function godTemplate(data: GameData, family: string, keys: Record<string, string>, vars: Record<string, string | undefined>, variant: string, hash: (t: string) => number, style?: TemplateStyle, rotate?: (key: string, n: number, base: number) => number): string | undefined {
   const t = items<TemplatesData>(data, 'templates-god');
   if (!t) return undefined;
   const list: string[] = [];
@@ -67,7 +69,9 @@ export function godTemplate(data: GameData, family: string, keys: Record<string,
     const filled = fillTemplate(x.text, vars);
     if (filled) list.push(filled);
   }
-  return list.length ? list[hash(variant) % list.length] : undefined;
+  if (!list.length) return undefined;
+  const key = `${family}|${Object.values(keys).join('|')}|${style ?? ''}`;
+  return list[rotate ? rotate(key, list.length, hash(variant)) : hash(variant) % list.length];
 }
 
 /** The i-th kind of prayer in the data and the key the template files use for it in a family (`prayer_ask` `prayer_give` `prayer_deny`): the files list the 17 kinds in the order of the table. */
@@ -231,7 +235,9 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       const key = prayerKey(cx.data, 'prayer_ask', s(e.id));
       const story = key ? cx.tpl('prayer_ask', { ชนิด: key }, { ชื่อตัวละคร: who, NPC: s(d.npcName), ชื่อของที่นี่: nm(cx, cx.country) || undefined }, variant) : undefined;
       const by = s(d.npcName) ? ` (ผู้ขอคือ ${scrub(cx.data, s(d.npcName))})` : '';
-      return `คำอธิษฐานใบที่ ${num(d.n)}: ${name}${by}${story ? ` — ${story}` : ''}`;
+      // all the words of the kind were said in this life: the line tells the ask is the same again rather than say the same words as new
+      const again = story && cx.again() ? ` (ขอเรื่องเดิมเป็นครั้งที่ ${num(Number(d.seen) + 1)})` : '';
+      return `คำอธิษฐานใบที่ ${num(d.n)}: ${name}${by}${story ? ` — ${story}${again}` : ''}`;
     }
     case 'prayer.give': {
       const name = s(d.name) || prayerName(cx.data, s(e.id));
@@ -243,7 +249,9 @@ export function godText(cx: GodCx, e: LogEntry, variant: string): string | null 
       const story = key ? cx.tpl('prayer_give', { ชนิด: key }, { ชื่อตัวละคร: who, NPC: s(d.npcName), ชื่อของที่นี่: nm(cx, cx.country) || undefined }, variant, style) : undefined;
       const { promised } = fxSplit(cx.data, d.fx);
       const later = promised.length ? `${PENDING_NOTE}: ${promised.join(' · ')}` : '';
-      const tail = story ? (later ? `${story} (${later})` : story) : fxLine(cx.data, d.fx) || undefined;
+      // a kind with one text for this style (or every one told): the answer is told by what came of it, not by the same small story again
+      const fresh = story && !cx.again() ? story : undefined;
+      const tail = fresh ? (later ? `${fresh} (${later})` : fresh) : fxLine(cx.data, d.fx) || story || undefined;
       return `ท่านให้ตามคำอธิษฐานใบที่ ${num(d.n)} (${name})${gift ? ` ด้วยของแปลก: ${gift}` : ''}${tail ? ` — ${tail}` : ''}`;
     }
     case 'prayer.deny': {
