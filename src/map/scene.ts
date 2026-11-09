@@ -27,6 +27,8 @@ export interface ControllerOpts {
   onPick?: (p: MapPick) => void;
   onHover?: (p: MapHover | null) => void;
   onLevel?: (level: ZoomId, zoom: number) => void;
+  /** Told once, when the picture of the whole world is on the screen (the placeholder of the page can go). */
+  onReady?: () => void;
   /** The plan, look and pixel ground of a town (for the sprites and the people of the town levels); the code-drawn provider has it, a picture does not. */
   town?: (cityId: string) => TownInfo | null;
   /** The looks of the people of a country, a handful the crowd repeats. */
@@ -111,7 +113,7 @@ class MapScene extends Phaser.Scene {
   private drag: { sx: number; sy: number; cx: number; cy: number; moved: boolean } | null = null;
   private pointer = { x: 0, y: 0, inside: false };
   private focusWant: { f: MapFocus; zoom?: number } | null = null;
-  private ready = false;
+  private readyFired = false;
   private moved = false;
   private lastHoverKey = '';
   private lastLabelCull = -1e9;
@@ -321,6 +323,7 @@ class MapScene extends Phaser.Scene {
   }
 
   private townSig = '';
+  private ready = false;
   /** The sprites and people of the towns in the view, at the town levels. */
   private syncTowns(cam: Phaser.Cameras.Scene2D.Camera, time: number, delta: number) {
     const sig = JSON.stringify(this.model?.looks ?? '') + (this.model?.ruins.map((r) => r.country + r.healed).join() ?? '');
@@ -409,6 +412,7 @@ class MapScene extends Phaser.Scene {
     // a town ground is one art pixel to a texel: it shows at the scale of its sprites (WU / TOWN_PX), not stretched to a rect
     const img = this.add.image(t.rect.x * WU, t.rect.y * WU, tk).setOrigin(0, 0).setDisplaySize(req.level === 'city' || req.level === 'inside' ? (t.width * WU) / TOWN_PX : t.rect.w * WU, req.level === 'city' || req.level === 'inside' ? (t.height * WU) / TOWN_PX : t.rect.h * WU).setDepth(depth);
     this.shown.set(k, { img, req, used: this.frame });
+    if (req.key === 'world' && req.level === 'world' && !this.readyFired) { this.readyFired = true; this.o.onReady?.(); }
     this.lastSync.z = NaN; // look again at what shows
   }
 
