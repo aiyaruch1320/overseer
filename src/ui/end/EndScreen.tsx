@@ -1,14 +1,16 @@
-// The end of a life (code-plan §8.2 row "จบชีวิต"; 03-ending-and-collection.md §1; 20-god-ui.md §10): the death scene (a placeholder drawn with CSS), the life
+// The end of a life (code-plan §8.2 row "จบชีวิต"; 03-ending-and-collection.md §1; 20-god-ui.md §10): the death scene (played by the scene player), the life
 // record with the card, and the choice of the heir. From here the player goes on (`store.nextLife`) or to the legend, the collection, the summary of the world.
 import { useMemo, useState } from 'preact/hooks';
 import { store } from '../../app/store';
-import { mainLookOf } from '../../app/views/looks';
-import { cardView, deathOf, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
+import { tieLooks } from '../../app/views/looks';
+import { figuresOf, labelsOf, sceneryOf } from '../../app/views/scene';
+import { ScenePlayer } from '../../scene';
+import { cardView, deathOf, deathScene, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
 import type { Ctx, GameData } from '../../core/game';
 import { makeCtx } from '../../core/game';
 import type { GameState } from '../../core/types';
-import { color, font, motion, size } from '../tokens';
-import { Portrait } from '../figure';
+import { color, font, size } from '../tokens';
+import { FigurePortrait, type Figure } from '../figure';
 import { Button, Heading, paper, Styles } from '../start/parts';
 import { CardPanel } from './CardPanel';
 import { CollectionScreen, LegendScreen, WorldSummaryScreen } from './Pages';
@@ -38,27 +40,30 @@ export function EndScreen(props: EndProps) {
 
 function DeathScene({ data, state, onNext }: { data: GameData; state: GameState; onNext: () => void }) {
   const lifeCard = deathOf(state);
-  // the figure of the life that ended, at the age it died (src/art/main-look.ts)
-  const look = useMemo(() => mainLookOf(data, state), [data, state, state.log.length]);
+  // the scene of the death is played by the scene player with the real figure of the life at the age it died (src/app/views/end.ts `deathScene`)
+  const scene = useMemo(() => deathScene(state), [state, state.log.length]);
+  const staged = useMemo(() => (scene ? { figureOf: figuresOf(data, state, scene), scenery: sceneryOf(data, state, scene), labelOf: labelsOf(data, state, scene) } : undefined), [scene, data, state]);
   return (
     <div style={{ display: 'grid', placeItems: 'center', minHeight: '80vh', textAlign: 'center' }}>
-      <div style={{ maxWidth: 560 }}>
-        {/* the placeholder of the scene: one candle going out in the dark (the picture comes later) */}
-        <div aria-hidden="true" style={{ margin: '0 auto 28px', width: 8, height: 8, borderRadius: '50%', background: color.light, boxShadow: `0 0 30px 12px ${color.light}55`, animation: `flicker ${motion.flicker} ease-in-out infinite` }} />
-        {look && (
-          <div style={{ margin: '0 auto 18px', display: 'flex', justifyContent: 'center', opacity: 0.92 }} data-testid="death-portrait">
-            <Portrait look={look} scale={4} label={lifeCard?.name ?? look.key} />
+      <div style={{ width: 'min(100%, 880px)' }}>
+        {scene && scene.kind === 'script' && (
+          <div style={{ margin: '0 auto 18px' }} data-testid="death-scene">
+            <ScenePlayer script={scene.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} labelOf={staged?.labelOf} />
           </div>
         )}
         {lifeCard && (
-          <>
+          <div style={{ maxWidth: 560, margin: '0 auto' }}>
             <div style={{ fontFamily: font.title, fontSize: size.title + 8, color: color.light }}>{lifeCard.name}</div>
             <div style={{ color: color.textDim, margin: '6px 0 14px' }}>{lifeCard.head}</div>
             <p style={{ lineHeight: 1.7, fontSize: size.text + 1 }}>{lifeCard.sentence}</p>
-            <div style={{ color: color.textDim, marginTop: 6 }}>{lifeCard.cause}</div>
-          </>
+            {lifeCard.cause && (
+              <div style={{ color: color.textDim, marginTop: 6 }} data-testid="death-cause">
+                {END_LABELS.cause} · {lifeCard.cause}
+              </div>
+            )}
+          </div>
         )}
-        <div style={{ marginTop: 28 }}>
+        <div style={{ marginTop: 22 }}>
           <Button primary onClick={onNext}>
             {END_LABELS.readRecord}
           </Button>
@@ -71,7 +76,7 @@ function DeathScene({ data, state, onNext }: { data: GameData; state: GameState;
 /** The paper of the card of the record: the heirs and the end of a family are written on the same hide (M5 review: they were bare dark boxes). */
 const sheet = { background: paper.bg, color: paper.ink, border: `2px solid ${paper.edge}`, borderRadius: 4, boxShadow: `inset 0 0 22px ${paper.edge}88` } as const;
 
-function HeirCard({ h, on, pickable, onPick }: { h: HeirCandidate; on: boolean; pickable: boolean; onPick: () => void }) {
+function HeirCard({ h, fig, on, pickable, onPick }: { h: HeirCandidate; fig?: Figure; on: boolean; pickable: boolean; onPick: () => void }) {
   return (
     <button
       type="button"
@@ -96,6 +101,12 @@ function HeirCard({ h, on, pickable, onPick }: { h: HeirCandidate; on: boolean; 
         gap: 8,
       }}
     >
+      {/* the face of the child, as the circle of allies draws it (M7 review P1-11: the choice showed words only) */}
+      {fig && (
+        <span style={{ justifySelf: 'start' }} data-testid="heir-portrait">
+          <FigurePortrait fig={fig} scale={4} label={h.name} />
+        </span>
+      )}
       <span style={{ fontFamily: font.title, fontSize: size.title + 8 }}>{h.name}</span>
       <span style={{ color: paper.inkBrown }}>{h.line}</span>
       {h.traits.length > 0 && <span>{h.traits.join(' · ')}</span>}
@@ -110,6 +121,7 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
   const ctx = useMemo(() => props.ctx ?? store.game?.ctx ?? makeCtx(state, data), [props.ctx, state, data]);
   const heirs = useMemo(() => heirChoice(data, ctx), [data, ctx]);
   const card = useMemo(() => cardView(data, state), [data, state]);
+  const faces = useMemo(() => tieLooks(data, state), [data, state]);
   const [tie, setTie] = useState<string | null>(null);
   const [error, setError] = useState('');
   const picked = tie ?? heirs.candidates.find((c) => c.chosen)?.tie ?? null;
@@ -136,9 +148,12 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
       {page === 'death' && <DeathScene data={data} state={state} onNext={() => setPage('record')} />}
 
       {page === 'record' && (
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          {card ? <CardPanel card={card} /> : null}
-          <div style={{ position: 'sticky', bottom: 0, display: 'flex', gap: 8, marginTop: size.pad, padding: `${size.gap}px 0`, flexWrap: 'wrap', background: color.panel }}>
+        // the card scrolls in its own box and the buttons sit under it in their own row: a bar stuck over the card hid its last lines (M7 review P1-12)
+        <div style={{ maxWidth: 1000, margin: '0 auto', height: `calc(100vh - ${size.pad * 2}px)`, minHeight: 360, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, minHeight: 0, overflowY: 'auto' }} data-testid="record-scroll">
+            {card ? <CardPanel card={card} /> : null}
+          </div>
+          <div style={{ display: 'flex', gap: 8, paddingTop: size.pad, flexWrap: 'wrap' }} data-testid="record-bar">
             <Button primary onClick={() => setPage('heir')}>
               {END_LABELS.next}
             </Button>
@@ -158,13 +173,13 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
           {!heirs.blocked && heirs.candidates.length > 0 && (
             <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: size.pad }}>
               {heirs.candidates.map((h) => (
-                <HeirCard key={h.tie} h={h} on={picked === h.tie} pickable onPick={() => setTie(h.tie)} />
+                <HeirCard key={h.tie} h={h} fig={faces.get(h.tie)} on={picked === h.tie} pickable onPick={() => setTie(h.tie)} />
               ))}
             </div>
           )}
           {!heirs.blocked && heirs.candidates.length === 0 && heirs.successor && (
             <div style={{ display: 'grid', gap: size.pad }}>
-              <HeirCard h={heirs.successor} on pickable={false} onPick={() => undefined} />
+              <HeirCard h={heirs.successor} fig={faces.get(heirs.successor.tie)} on pickable={false} onPick={() => undefined} />
             </div>
           )}
           {!heirs.blocked && heirs.extinct && (

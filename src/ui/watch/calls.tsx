@@ -82,6 +82,11 @@ export function StopPanel({ stop, onOpen, onContinue }: { stop: StopView; onOpen
           <h2 style={{ margin: '4px 0 0', fontFamily: font.title, fontWeight: 400, fontSize: size.title, lineHeight: TITLE_LINE, color: color.light }} data-testid="stop-reason">
             {stop.reason}
           </h2>
+          {stop.notes.map((n) => (
+            <div key={n} style={{ color: color.textDim, fontSize: size.small, marginTop: 4 }} data-testid="stop-note">
+              {n}
+            </div>
+          ))}
         </header>
         {stop.recap.length > 0 && (
           <div>

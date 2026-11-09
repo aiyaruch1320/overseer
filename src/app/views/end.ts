@@ -11,7 +11,10 @@ import type { ChronicleLine } from '../../core/god/goals/state';
 import { candidates, lx, pickHeir, pickHeirTie, previewHeir, worldSummary, type HeirSpec, type NextResult, type WorldSummary } from '../../core/lineage';
 import { labels } from '../../core/text/labels';
 import { placeName } from '../../core/text/pick';
-import type { GameState } from '../../core/types';
+import type { GameState, LogEntry } from '../../core/types';
+import type { SceneScript } from '../../core/data/types-scenes';
+import { plainCard } from '../../scene/card';
+import type { SceneView } from './scene';
 import type { GameStore } from '../store';
 import { clean, playerWords } from './player-words';
 
@@ -33,6 +36,8 @@ export const END_LABELS = {
   summary: 'เล่าย่อ',
   // the scenes
   death: 'ฉากความตาย',
+  /** The label before the group of the cause under the death scene: the sentence of the card reads "เหตุที่<place> ทำให้เขาตาย" (07-ending-templates §10), and without the label the cause looked like a second, different reason (M7 review P1-10). */
+  cause: 'สาเหตุที่ตาย',
   record: 'บันทึกชีวิต',
   /** The button of the death scene: it opens the life record, it saves nothing (M5 review round two R3: "บันทึก" read as a save). */
   readRecord: 'อ่านบันทึกชีวิตของเขา',
@@ -90,6 +95,42 @@ export interface DeathView {
   sentence: string;
   cause: string;
   mark: string;
+}
+
+/** Length of the death scene in seconds (it can be skipped; the words of the card wait under it). */
+export const DEATH_SECONDS = 14;
+
+/**
+ * The death scene as a script for the scene player (20-god-ui.md §10: the scene before the record). No script of data/gen/scenes.json is for the death of the
+ * main character, so this one is built from the card alone: the figure of the life stands at dusk, kneels, and lies down; the name and the head of the card are
+ * its only words. The actor is the main character (`a`, `ตัวละคร`), so the app gives it the real figure of the life at the age it died (`figuresOf`).
+ */
+export function deathScene(state: GameState): SceneView | null {
+  const d = deathOf(state);
+  if (!d) return null;
+  const script: SceneScript = {
+    id: 'death.main',
+    kind: 'ending',
+    title: d.name,
+    frame: '#8a8a96',
+    seconds: DEATH_SECONDS,
+    src: 'src/app/views/end.ts',
+    beats: [
+      { k: 'bg', at: 0, place: 'ที่ราบยามเย็น', sky: '#2c2438', ground: '#1e1b24' },
+      { k: 'camera', at: 0, dur: 4, frame: 'wide' },
+      { k: 'light', at: 0, mode: 'dim' },
+      { k: 'actor', at: 0, dur: 4, id: 'a', label: 'ตัวละคร', x: 0.5, pose: 'stand' },
+      { k: 'camera', at: 4, dur: 10, frame: 'eye' },
+      { k: 'actor', at: 4, dur: 4, id: 'a', label: 'ตัวละคร', x: 0.5, pose: 'kneel' },
+      { k: 'fx', at: 4, kind: 'motes', amount: 0.5, color: '#e8c36a' },
+      { k: 'light', at: 6, mode: 'glow', color: '#e8c36a' },
+      { k: 'actor', at: 8, id: 'a', label: 'ตัวละคร', x: 0.5, pose: 'lie' },
+      { k: 'text', at: 1, dur: 5, role: 'name', text: d.name },
+      { k: 'text', at: 8, role: 'line', text: d.head },
+    ],
+  };
+  const entry: LogEntry = { n: 0, worldYear: state.clock.worldYear, sys: 'ending', kind: 'death', data: {}, level: 1 };
+  return { kind: 'script', script, card: plainCard(script.id, d.name, d.head, 'ending'), entry };
 }
 
 /** The death scene of the last life that ended, or null while no card exists. */

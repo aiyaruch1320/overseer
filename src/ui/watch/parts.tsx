@@ -200,8 +200,13 @@ export function LifeLine({ line }: { line: LifeLineView }) {
 
 const LEVEL_COLOR = { 0: color.textDim, 1: color.textDim, 2: color.text, 3: color.light } as const;
 
+/** Lines of the story log in the DOM at first; older ones come in pages when the player asks (M7 review P1-15: the nodes grew with the log). */
+const LOG_PAGE = 120;
+
 export function StoryLog({ log }: { log: Line[] }) {
   const box = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(LOG_PAGE);
+  const first = Math.max(0, log.length - shown);
   const stick = useRef(true);
   useEffect(() => {
     const el = box.current;
@@ -221,7 +226,12 @@ export function StoryLog({ log }: { log: Line[] }) {
       data-testid="log"
     >
       {log.length === 0 && <div style={{ color: color.textDim }}>{W.empty}</div>}
-      {log.map((l) => (
+      {first > 0 && (
+        <button class="wt-btn" style={{ ...button, fontSize: size.small, marginBottom: 4 }} onClick={() => setShown(shown + LOG_PAGE)} data-testid="log-older">
+          {W.olderLog(first)}
+        </button>
+      )}
+      {log.slice(first).map((l) => (
         <div key={l.n} style={{ color: LEVEL_COLOR[l.level], fontWeight: l.level >= 3 ? 600 : 400 }}>
           {l.age !== undefined && <span style={{ color: color.textDim, fontFamily: font.mono, marginRight: size.gap }}>{`${W.age} ${l.age}`}</span>}
           {l.text}

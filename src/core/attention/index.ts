@@ -108,7 +108,12 @@ function step(ctx: Ctx, mode: 'tick' | 'dying'): void {
   const rule = ruleOf(ctx);
   const now = nowOf(st, life);
   // a card whose matter is closed while it waits (the prayer answered, the fight fought) is not shown and not folded into a stop (07-attention.md §2)
-  m.queue = m.queue.filter((c) => !closed(st, c.kind, c.n));
+  m.queue = m.queue.filter((c) => {
+    if (!closed(st, c.kind, c.n)) return true;
+    // a crisis the character answered alone while its card still waited for a place was never shown: the log tells it (F4: it vanished without a word)
+    if (c.kind === 'crisis') out.push({ t: 'missed', kind: c.kind, n: c.n, id: c.id, waited: Math.round(now - c.s) });
+    return false;
+  });
   if (mode === 'dying') dying(m, rule, plan, now, trigs, out);
   else if (!life.dead) tick(m, rule, plan, now, trigs, out, { slots: MAX_CARDS - liveCards(st, 99).length });
   else return; // the character died during this beat: the death hook makes the call
