@@ -4,6 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../app/store';
 import { mainLookOf } from '../app/views/looks';
+import { lifeStartN } from '../app/views/watch';
 import { figuresOf, heldScene, idleView, labelsOf, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
 import type { PersonLook } from '../art/look';
 import { allSilhouettes, EventCard, Stage, ScenePlayer, type Frame, type FigureOf } from '../scene';
@@ -25,8 +26,11 @@ const SCENE_SYS = new Set(['world', 'story', 'combat', 'god', 'bonds', 'npc']);
 
 function newestScene(entries: readonly LogEntry[], data: NonNullable<typeof store.gameData>, worldYear: number, state: GameState): { play?: SceneView; card?: SceneView } {
   let card: SceneView | undefined;
+  // what happened before the birth of the life on the stage is not its scene (a baby opened under the last era's "การตัดสินกุญแจ", T2-16)
+  const from = lifeStartN(state);
   for (let i = entries.length - 1; i >= Math.max(0, entries.length - LOOK_BACK); i--) {
     const e = entries[i];
+    if (e.n < from) break;
     if (e.level < 1 || !SCENE_SYS.has(e.sys)) continue;
     const v = sceneFor(data, e, state);
     if (v.kind === 'script') return { play: v, card };

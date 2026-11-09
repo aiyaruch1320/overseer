@@ -73,6 +73,22 @@ export function lifeStartN(state: GameState): number {
   return 0;
 }
 
+/**
+ * Where the log of the life on the stage begins: its birth entry, or the line that closed the family's last life ("สายตระกูลไปต่อที่ ...") when that came just before it,
+ * so the heir's story opens with who takes over. Lines before it are the world's era (a first life) or the lives before (an heir).
+ */
+export function logStartN(state: GameState): number {
+  const birth = lifeStartN(state);
+  for (let i = state.log.length - 1; i >= 0; i--) {
+    const e = state.log[i];
+    if (e.n >= birth) continue;
+    if (e.sys === 'lineage' && e.kind === 'end') return e.n;
+    if (e.sys === 'character' && e.kind === 'birth') break;
+    if (e.n < birth - 40) break;
+  }
+  return birth;
+}
+
 const linesCache = new WeakMap<GameState, { data: GameData; n: number; all: Line[] }>();
 
 /** Every line of level 1 and up, read once per change of the log. */
@@ -220,8 +236,10 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
       break;
     }
   }
+  // the first recap of a life holds nothing from before its birth (the world's era is behind the log's own control)
+  const from = logStartN(state);
   const recap = allLines(data, state)
-    .filter((l) => l.entry.n > prev && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
+    .filter((l) => l.entry.n > prev && l.entry.n >= from && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
     .slice(-RECAP_MAX);
   const said = callReason(data, e, crisisOf(state), (n) => entryAt(state, n));
   const age = typeof e.data.age === 'number' ? e.data.age : null;
@@ -442,7 +460,12 @@ export interface WatchModel {
   candle: CandleView | null;
   panel: GodPanelView;
   line: LifeLineView;
+  /** The story of the life on the stage: from its birth (or the heir's takeover) on. */
   log: Line[];
+  /** What came before it, folded behind a control: the lives before (`prev`, an heir) or the world's era before the birth (`world`). */
+  before: { lines: Line[]; kind: 'prev' | 'world' };
+  /** One line above the story of an heir: why the start has no request, and no vow after 15. */
+  startNote: string | null;
   speed: Settings['speed'];
   /** The clock was brought from fast to normal because a card is up; it goes back to fast when the card is gone (07-attention.md §2, 01-one-life.md §6). */
   slowed: boolean;
@@ -461,6 +484,34 @@ export interface WatchUi {
   slowed?: boolean;
   /** The buttons of the god the core refuses now (`godGates`); the pure model has no game to ask. */
   gates?: Partial<Record<GodKind, GodGate>>;
+}
+
+/** The vow age of the god (08-goals.md §2: the vow is chosen from birth to this age). */
+const VOW_UNTIL = 15;
+
+/**
+ * What an heir's start offers, said once above the story: the heir is a person of the family book (race, name and country are already his), so there is no request
+ * of the start sheet; the vow is offered only to a life that begins before 15 (the choice itself is `VowChoice`), so an heir who takes over later is told why none is.
+ */
+export function heirNote(state: GameState): string | null {
+  for (let i = state.log.length - 1; i >= 0; i--) {
+    const e = state.log[i];
+    if (e.sys === 'character' && e.kind === 'birth') break;
+    if (e.sys === 'lineage' && e.kind === 'begin') {
+      const d = e.data as { origin?: string; age?: number };
+      if (d.origin !== 'heir' && d.origin !== 'successor') return null;
+      return WATCH_WORDS.heirNote(Number(d.age ?? 0), Number(d.age ?? 0) >= VOW_UNTIL);
+    }
+  }
+  return null;
+}
+
+function splitLog(data: GameData, state: GameState): { log: Line[]; before: WatchModel['before'] } {
+  const all = allLines(data, state);
+  const at = logStartN(state);
+  const i = all.findIndex((l) => l.n >= at);
+  const cut = i < 0 ? all.length : i;
+  return { log: all.slice(cut).slice(-LOG_KEEP), before: { lines: all.slice(0, cut).slice(-LOG_KEEP), kind: state.lineage.lives.length > 0 ? 'prev' : 'world' } };
 }
 
 export function watchModel(data: GameData, state: GameState, ui: WatchUi): WatchModel {
@@ -484,7 +535,8 @@ export function watchModel(data: GameData, state: GameState, ui: WatchUi): Watch
       gates: alive ? ui.gates ?? {} : {},
     },
     line,
-    log: allLines(data, state).slice(-LOG_KEEP),
+    ...splitLog(data, state),
+    startNote: heirNote(state),
     speed: state.settings.speed,
     slowed: !!ui.slowed && ui.cards.length > 0,
     running: ui.running,

@@ -223,7 +223,11 @@ function StartInner(props: StartProps & { data: GameData }) {
             <div style={{ fontFamily: font.title, fontSize: size.title + 2 }}>{START_LABELS.sheet}</div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: size.small, color: paper.inkBrown }}>
-                {START_LABELS.fate} {cert.points.used}/{cert.points.total}
+                {cert.points.used < 0
+                  ? START_LABELS.fateGiven(-cert.points.used, cert.points.total)
+                  : cert.points.used > cert.points.total
+                    ? START_LABELS.fateOver(cert.points.used - cert.points.total)
+                    : `${START_LABELS.fate} ${cert.points.used}/${cert.points.total}`}
               </div>
               <Beads beads={cert.points.beads} label={`${START_LABELS.fate} ${cert.points.left}`} />
             </div>

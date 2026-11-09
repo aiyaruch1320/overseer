@@ -5,6 +5,7 @@ import { loadAll } from '../../scripts/tools/node-data';
 import { createSession, startLife } from '../../scripts/tools/session';
 import type { GameData } from '../../src/core/game';
 import { write } from '../../src/core/log';
+import { nextLife } from '../../src/core/lineage';
 import type { GameState } from '../../src/core/types';
 import { idleView } from '../../src/app/views/scene';
 import { cardView, foldedCards, candleOf, cardsPatch, entryAt, godGates, lastStop, lifeLineOf, llmPatch, markTone, optionsOf, refusedSettings, settingsView, uiOfState, watchModel } from '../../src/app/views/watch';
@@ -331,5 +332,28 @@ describe('watch: the calm picture between scenes changes with the life (review r
     expect(at(6).height).toBeLessThan(at(35).height);
     expect(at(35).pose).toBe('stand');
     expect(at(65).pose).toBe('bow');
+  });
+});
+
+describe('watch: where the story of the life begins', () => {
+  it('a first life: the world era before the birth is folded away, the story opens with the birth', () => {
+    const m = watchModel(data, life(3, 2), uiOfState(life(3, 2)));
+    expect(m.before.kind).toBe('world');
+    expect(m.before.lines.every((l) => l.n < m.log[0].n)).toBe(true);
+    expect(m.startNote).toBeNull();
+  });
+
+  it('an heir: the lives before are folded behind one control and a note says why there is no request', () => {
+    const s = createSession(data, { seed: 5 });
+    startLife(s);
+    for (let i = 0; i < 4000 && s.game.state.life && !s.game.state.life.dead; i++) s.game.beat();
+    const r = nextLife(s.game, {});
+    expect(r.ok).toBe(true);
+    const st = s.game.state;
+    const m = watchModel(data, st, uiOfState(st));
+    expect(m.before.kind).toBe('prev');
+    expect(m.before.lines.length).toBeGreaterThan(5);
+    expect(Math.min(...m.log.map((l) => l.n))).toBeGreaterThan(Math.max(...m.before.lines.map((l) => l.n)));
+    expect(m.startNote).toContain('ไม่มีคำขอตอนเริ่ม');
   });
 });

@@ -9,8 +9,8 @@ import { W } from './god-words';
 
 export type Understood =
   | { ok: true; hint: string; target?: string; targetName?: string; source: 'template' | 'llm' | 'cache' }
-  /** `line` says why nothing fits; the screen then shows the menu. */
-  | { ok: false; reason: string; line: string };
+  /** `line` says why nothing fits; the screen then shows the menu. With `hint` the words named a pointing hint but not its target: the screen picks the hint and asks. */
+  | { ok: false; reason: string; line: string; hint?: string; needs?: 'place' | 'npc' | 'heir' };
 
 const nameOf = (menu: CommandMenu, id: string): string => [...menu.places, ...menu.people].find((x) => x.id === id)?.name ?? id;
 
@@ -24,6 +24,7 @@ export async function understandWords(game: Game, llm: Llm | undefined, words: s
     const menu = commandMenu(game.ctx);
     const out = llm ? await llm.interpretWords(game.ctx, w, menu) : await interpretWords(game.ctx, w, menu, null);
     const a = out.command?.args as { hint: string; target?: string } | undefined;
+    if (!a && out.ask) return { ok: false, reason: 'need_target', hint: out.ask.hint, needs: out.ask.needs, line: `${W.whisper.typed.needTarget[out.ask.needs]}`.replace('{hint}', out.ask.hint) };
     if (!a) return { ok: false, reason: out.reason ?? out.source, line: whyLine(out.reason) };
     return { ok: true, hint: a.hint, ...(a.target ? { target: a.target, targetName: nameOf(menu, a.target) } : {}), source: out.source as 'template' | 'llm' | 'cache' };
   } catch {

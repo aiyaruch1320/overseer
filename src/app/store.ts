@@ -71,6 +71,14 @@ export class GameStore {
   private arm: Arm | null = null;
   private llmServer = false;
 
+  constructor() {
+    // the record switched on inside a life starts the entry of that life at once (record.ts `joinLife`)
+    recorder.attach = () => {
+      const st = this.state;
+      if (st) recorder.joinLife(st, () => this.lifeMeta());
+    };
+  }
+
   /** The cards of the screen now (07-attention.md §2: two at most), read again after every change. */
   readonly cards = computed(() => (this.rev.value, this.session ? liveCards(this.session.game.state) : []));
 

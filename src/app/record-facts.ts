@@ -41,10 +41,12 @@ interface Stats {
   nodes: number;
   chances: number;
   callbacks: number;
+  /** Callbacks by kind (`story/node.callbackKind`): the end event carries them as `cb_npc` `cb_event` `cb_thread`. */
+  cb: Record<string, number>;
   bondEndings: number;
 }
 
-const blank = (): Stats => ({ nodes: 0, chances: 0, callbacks: 0, bondEndings: 0 });
+const blank = (): Stats => ({ nodes: 0, chances: 0, callbacks: 0, bondEndings: 0, cb: {} });
 
 /** Reads log entries in order and turns them into events; keeps the count of the life it is inside. */
 export class Tally {
@@ -54,6 +56,8 @@ export class Tally {
   /** The log number of the last entry seen: `ingest` skips what it has seen. */
   lastN = -1;
   private open = false;
+  /** The open life began when the record was switched on, not at its birth: its counts hold only what came after. */
+  private partial = false;
   private stats = blank();
   private lastBirth: LogEntry | undefined;
 
@@ -83,14 +87,31 @@ export class Tally {
     this.stats = blank();
   }
 
+  /**
+   * The record was switched on (or a save loaded) inside a life: the entry of that life starts at once with what is known, marked `partial`, so the record never
+   * says "0 lives" while one is running. The birth is not in the log of the record, so the counts of the life cover only what follows.
+   */
+  join(known: Record<string, unknown> = {}, e?: LogEntry): void {
+    if (this.open) return;
+    this.life++;
+    this.open = true;
+    this.partial = true;
+    this.lastBirth = e;
+    this.stats = blank();
+    const m = this.opts.meta?.() ?? {};
+    this.push('life.start', e, { ...m, ...known, partial: true });
+  }
+
   /** Closes a life that ended without a death entry (a tool run that hit its limit, a page that was closed). */
   finish(): void {
     if (this.open) this.close(this.lastBirth, { cause: 'unfinished' });
   }
 
   private close(e: LogEntry | undefined, fields: Record<string, unknown>): void {
-    this.push('life.end', e, { ...fields, ...this.stats });
+    const { cb, ...counts } = this.stats;
+    this.push('life.end', e, { ...fields, ...counts, ...Object.fromEntries(Object.entries(cb).map(([k, c]) => [`cb_${k}`, c])), ...(this.partial ? { partial: true } : {}) });
     this.open = false;
+    this.partial = false;
     this.stats = blank();
   }
 
@@ -101,6 +122,7 @@ export class Tally {
         if (this.open) this.close(e, { cause: 'unfinished' });
         this.life++;
         this.open = true;
+        this.partial = false;
         this.lastBirth = e;
         const m = this.opts.meta?.() ?? {};
         this.push('life.start', e, { ...m, race: d.race ?? null, country: d.country ?? null, born: d.born ?? null });
@@ -145,6 +167,7 @@ export class Tally {
         this.stats.nodes++;
         if (d.chance) this.stats.chances++;
         if (d.callback) this.stats.callbacks++;
+        if (typeof d.callbackKind === 'string') this.stats.cb[d.callbackKind] = (this.stats.cb[d.callbackKind] ?? 0) + 1;
         break;
       case 'llm/director':
         this.push('llm.director', e, { pick: d.pick ?? null, reason: d.reason ?? null });

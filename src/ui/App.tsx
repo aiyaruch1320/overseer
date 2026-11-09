@@ -59,10 +59,8 @@ function Screen() {
       />
       <Layers />
       <MapOverlay />
-      {/* the vow chosen at birth and changed once at 15 (08-goals): the box draws nothing while no choice is open */}
-      <div style={{ position: 'fixed', left: '50%', bottom: size.pad * 6, transform: 'translateX(-50%)', width: 'min(560px, 92vw)', zIndex: 6 }}>
-        <VowChoice only="change" />
-      </div>
+      {/* the vow of an heir who is born before 15, and the one change at 15 (08-goals; the first life takes its vow on the start sheet): the box draws nothing while no choice is open */}
+      <VowChoice modal heirsOnly />
       <GodPanel />
     </>
   );

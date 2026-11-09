@@ -65,6 +65,9 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
   useEffect(() => () => clearTimeout(saveTimer.current), []);
   const live = useRef({ model, actions, settingsShown });
   live.current = { model, actions, settingsShown };
+  // Space past an ally in crisis whose card still waits warns once (the second press goes on): the stop it was said for
+  const [crisisWarn, setCrisisWarn] = useState<number | null>(null);
+  const warned = useRef(new Set<number>());
 
   // Space pauses or goes on; 1 and 2 are the speeds; C D W M H open the god's five screens. Nothing while typing, with a modifier, or over the settings.
   useEffect(() => {
@@ -75,8 +78,15 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
       if ('wasd'.includes(e.key.toLowerCase()) && e.key.length === 1 && (e.target as Element | null)?.closest?.('[data-world-map]')) return;
       if (e.key === ' ') {
         e.preventDefault();
-        if (m.stop && !m.stop.death) a.resume();
-        else if (!m.stop) a.togglePause();
+        if (m.stop && !m.stop.death) {
+          const stopN = m.stop.n;
+          if ([...m.stop.cards, ...m.cards].some((c) => c.kind === 'crisis') && !warned.current.has(stopN)) {
+            warned.current.add(stopN);
+            setCrisisWarn(stopN);
+            return;
+          }
+          a.resume();
+        } else if (!m.stop) a.togglePause();
         return;
       }
       if (e.key === '1') a.setSpeed('normal');
@@ -122,9 +132,9 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
           </div>
 
           {!stop && <CardStack cards={cards} onOpen={open} />}
-          {stop && <StopPanel stop={stop} onOpen={open} onContinue={actions.resume} />}
+          {stop && <StopPanel stop={stop} onOpen={open} onContinue={actions.resume} warn={crisisWarn === stop.n} />}
         </div>
-        <StoryLog log={model.log} />
+        <StoryLog log={model.log} before={model.before} note={model.startNote} />
         <LifeLine line={model.line} />
       </div>
 

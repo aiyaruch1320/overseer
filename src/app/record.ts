@@ -80,6 +80,8 @@ export class Recorder {
   private timer: ReturnType<typeof setTimeout> | undefined;
   private stopAt = 0;
   private metaOf: () => LifeMeta = () => ({});
+  /** Set by the store: when the record is switched on inside a game, it joins the life running (`joinLife`). */
+  attach: (() => void) | undefined;
 
   constructor(private readonly clock: () => number = Date.now) {
     if (this.on.value) this.open();
@@ -97,6 +99,7 @@ export class Recorder {
     if (on) {
       this.open();
       this.note('session', { agent: 'page' });
+      this.attach?.();
     } else {
       this.flush();
       this.tally = null;
@@ -150,13 +153,31 @@ export class Recorder {
     this.note('game.new', fields);
   }
 
-  /** A save was loaded: the log up to now is not read again. */
-  loaded(state: GameState, meta: () => LifeMeta): void {
+  /** The life of a state as the record knows it at once: race, country, age (the birth entry is not in the record, so it is `partial`). */
+  private known(state: GameState): Record<string, unknown> {
+    const l = state.life;
+    return l ? { race: l.race, country: l.country, age: l.hAge, name: l.name } : {};
+  }
+
+  /** The record was switched on inside a game (or a save was loaded): the life running starts its entry now, so the record has a life at once. */
+  joinLife(state: GameState, meta: () => LifeMeta): void {
     if (!this.on.value) return;
     if (!this.rec) this.open();
     this.metaOf = meta;
+    this.tally?.finish();
     this.tally = new Tally({ now: () => this.now(), meta: () => this.metaOf() });
-    this.tally.resume(this.lives.value, state.log.length ? state.log[state.log.length - 1].n : -1, !!state.life && !state.life.dead);
+    this.tally.resume(this.lives.value, state.log.length ? state.log[state.log.length - 1].n : -1, false);
+    if (state.life && !state.life.dead) {
+      this.tally.join(this.known(state));
+      for (const ev of this.tally.events) this.add(ev);
+      this.tally.events.length = 0;
+    }
+  }
+
+  /** A save was loaded: the log up to now is not read again; a life in progress starts its entry at once. */
+  loaded(state: GameState, meta: () => LifeMeta): void {
+    if (!this.on.value) return;
+    this.joinLife(state, meta);
     this.note('game.load', { age: state.life?.hAge ?? null });
   }
 

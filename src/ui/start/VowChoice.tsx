@@ -21,6 +21,10 @@ export interface VowChoiceProps {
   onPick?: (n: number) => { ok: boolean; reason?: string } | void;
   /** Called when the player has chosen or leaves the choice. */
   onDone?: () => void;
+  /** Drawn as a dialog over the screen with a backdrop, above a stop card and the cards (the watch screen). */
+  modal?: boolean;
+  /** The first life of a world takes its vow on the start sheet: do not offer the first choice again over the watch screen (an heir or a newcomer is offered it). */
+  heirsOnly?: boolean;
 }
 
 /** The choices the player turned away from, so the panel does not come back at every frame (a life and a phase). */
@@ -34,6 +38,7 @@ export function VowChoice(props: VowChoiceProps) {
   const data = ctx?.data;
   const view: VowChoiceView | null = ctx && data ? vowChoiceView(ctx) : null;
   if (!view || (props.only && view.phase !== props.only)) return null;
+  if (props.heirsOnly && view.phase === 'first' && !(ctx?.state.lineage.lives.length)) return null;
   const key = `${view.life}:${view.phase}`;
   if (left.has(key)) return null;
   const pick = (n: number) => {
@@ -48,7 +53,7 @@ export function VowChoice(props: VowChoiceProps) {
     redraw((x) => x + 1);
     props.onDone?.();
   };
-  return (
+  const box = (
     <section aria-label={START_LABELS.vow} style={{ ...panel({ padding: size.pad }), color: color.text, fontFamily: font.body, fontSize: size.text, display: 'grid', gap: size.gap }}>
       <div style={{ fontFamily: font.title, fontSize: size.title, color: color.light }}>{view.phase === 'change' ? START_LABELS.vowChange : START_LABELS.vowFirst}</div>
       {view.current && (
@@ -82,6 +87,13 @@ export function VowChoice(props: VowChoiceProps) {
         <Button onClick={leave}>{view.phase === 'change' ? START_LABELS.vowKeep : START_LABELS.vowLater}</Button>
       </div>
     </section>
+  );
+  if (!props.modal) return box;
+  // above the stop card (z 5) and the cards, under the god's panels and the map; the backdrop swallows the clicks so the card below is not pressed by mistake
+  return (
+    <div role="dialog" aria-modal="true" aria-label={START_LABELS.vow} style={{ position: 'fixed', inset: 0, zIndex: 7, background: '#000b', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: size.pad }} data-testid="vow-modal">
+      <div style={{ width: 'min(560px, 92vw)', maxHeight: '90vh', overflowY: 'auto' }}>{box}</div>
+    </div>
   );
 }
 
