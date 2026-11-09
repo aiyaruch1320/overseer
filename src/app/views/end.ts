@@ -10,7 +10,7 @@ import { peekGoals } from '../../core/god/goals';
 import type { ChronicleLine } from '../../core/god/goals/state';
 import { candidates, lx, pickHeir, pickHeirTie, previewHeir, worldSummary, type HeirSpec, type NextResult, type WorldSummary } from '../../core/lineage';
 import { labels } from '../../core/text/labels';
-import { placeName } from '../../core/text/pick';
+import { placeName, pronounOf } from '../../core/text/pick';
 import type { GameState, LogEntry } from '../../core/types';
 import type { SceneScript } from '../../core/data/types-scenes';
 import { plainCard } from '../../scene/card';
@@ -41,6 +41,8 @@ export const END_LABELS = {
   record: 'บันทึกชีวิต',
   /** The button of the death scene: it opens the life record, it saves nothing (M5 review round two R3: "บันทึก" read as a save). */
   readRecord: 'อ่านบันทึกชีวิตของเขา',
+  /** The button of the death scene with the life's own pronoun (เธอ for a woman: overnight review T3-10). */
+  readRecordOf: (gender: string | undefined) => `อ่านบันทึกชีวิตของ${pronounOf(gender)}`,
   missing: 'ข้อที่ขาด',
   mark: 'ผลต่อโลก', // 03 §2
   // 19-wish.md §6 (the card shows the life was "ถูกสั่ง") and §5 (the rows of the sheet)
