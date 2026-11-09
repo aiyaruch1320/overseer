@@ -5,7 +5,7 @@ import { store } from '../../app/store';
 import { tieLooks } from '../../app/views/looks';
 import { figuresOf, labelsOf, sceneryOf } from '../../app/views/scene';
 import { ScenePlayer } from '../../scene';
-import { cardView, deathOf, deathScene, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
+import { cardView, summaryNow, deathOf, deathScene, END_LABELS, goOn, heirChoice, worldEnded, type HeirCandidate } from '../../app/views/end';
 import type { Ctx, GameData } from '../../core/game';
 import { makeCtx } from '../../core/game';
 import type { GameState } from '../../core/types';
@@ -120,7 +120,10 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
   const [page, setPage] = useState<Page>(props.start ?? 'death');
   const ctx = useMemo(() => props.ctx ?? store.game?.ctx ?? makeCtx(state, data), [props.ctx, state, data]);
   const heirs = useMemo(() => heirChoice(data, ctx), [data, ctx]);
-  const card = useMemo(() => cardView(data, state), [data, state]);
+  // read again when the text of the card changes: the end summary of the LLM lands after the card is first drawn (src/app/store.ts summarize)
+  void store.rev.value;
+  const told = summaryNow(state);
+  const card = useMemo(() => cardView(data, state), [data, state, told]);
   const faces = useMemo(() => tieLooks(data, state), [data, state]);
   const [tie, setTie] = useState<string | null>(null);
   const [error, setError] = useState('');

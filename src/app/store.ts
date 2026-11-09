@@ -15,6 +15,8 @@ import type { Command, CommandResult, GameState, LogEntry, Settings } from '../c
 import { createSession, resumeSession, startLife, type Session, type SessionOpts } from '../../scripts/tools/session';
 import { MAX_BEATS_PER_FRAME, SAVE_KEY, SEC_PER_BEAT, SPEED_MUL } from './tuning';
 import { versions } from '../core/game';
+import type { Llm } from '../core/llm';
+import { summarizeDeath } from '../core/llm/summary-input';
 import { pack, unpack } from './save-text';
 import { SAVE_WORDS } from './save-words';
 import { clockOf } from './view';
@@ -54,6 +56,8 @@ export class GameStore {
 
   private session: Session | null = null;
   private data: GameData | null = null;
+  /** The LLM of the page's server (src/app/llm.ts), when it has one on. */
+  private llm: Llm | undefined;
   private frame = 0;
   private last = 0;
   private carry = 0;
@@ -64,6 +68,24 @@ export class GameStore {
   setData(data: GameData): void {
     this.data = data;
     if (this.phase.value === 'loading') this.phase.value = 'start';
+  }
+
+  setLlm(llm: Llm | undefined): void {
+    this.llm = llm;
+    // a save loaded at the death before the server answered still gets its summary
+    if (this.phase.value === 'death') void this.summarize();
+  }
+
+  /**
+   * At the death: the end summary of the LLM (llm/04-story.md §2) replaces the template's in the card when it comes. The game does not wait: the card shows the template
+   * at once, and the screen reads the card again when the answer lands. A card that already holds an LLM text, or the player's switch off, asks nothing.
+   */
+  private async summarize(): Promise<void> {
+    const data = this.data;
+    const state = this.state;
+    if (!this.llm || !data || !state) return;
+    const s = await summarizeDeath(this.llm, data, state).catch(() => undefined);
+    if (s?.source === 'llm' && this.state === state) this.bump();
   }
 
   get game() {
@@ -137,6 +159,7 @@ export class GameStore {
       this.running.value = false;
       this.phase.value = 'death';
       this.stopCall.value = stop ?? null;
+      void this.summarize();
     } else if (stop) {
       this.running.value = false;
       this.phase.value = 'stop';
@@ -250,6 +273,7 @@ export class GameStore {
       this.running.value = false;
       this.notice.value = stale.length ? SAVE_WORDS.stale(stale) : null;
       this.bump();
+      if (state.life?.dead) void this.summarize();
       return { ok: true, stale };
     } catch {
       return { ok: false, reason: SAVE_WORDS.unreadable };

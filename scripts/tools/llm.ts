@@ -10,11 +10,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { GameData } from '../../src/core/game';
-import { makeCtx } from '../../src/core/game';
-import { applyEndingText, cardOf, endingInput } from '../../src/core/ending';
-import { FakeProvider, Llm, MemoryCache, anthropicLlm, interpretWords, makeLlm, realLlm, type CacheEntry, type EndingSummary, type EndingSummaryInput, type Fixtures } from '../../src/core/llm';
+import { FakeProvider, Llm, MemoryCache, anthropicLlm, interpretWords, makeLlm, realLlm, type CacheEntry, type EndingSummary, type Fixtures } from '../../src/core/llm';
 import { commandMenu } from '../../src/core/llm/menu';
-import { raceName } from '../../src/core/text';
+import { summarizeDeath as coreSummarizeDeath } from '../../src/core/llm/summary-input';
 import type { GameState } from '../../src/core/types';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -49,65 +47,13 @@ export function llmFromArgs(args: Record<string, string>, env: Record<string, st
   return { llm: mode === 'deepseek' ? realLlm(env, cache) : anthropicLlm(env, cache), mode, flush };
 }
 
-/** One line of what the player asked of the life and what the birth gave (the LLM may say the life was asked for; it may not add anything that was not given). */
-export function wishLine(w: NonNullable<ReturnType<typeof endingInput>>['wish'] & object): string {
-  const given = w.granted.map((g) => g.value).join(' ');
-  const cut = w.refused.map((r) => r.value).filter(Boolean).join(' ');
-  return `${w.text}${given ? ` · ได้: ${given}` : ''}${cut ? ` · ไม่ได้: ${cut}` : ''}`;
-}
-
-const PRONOUN: Record<string, string> = { m: 'เขา', f: 'เธอ', n: 'ผู้นั้น' };
-/** The summary tells at most this many facts (llm/04-story.md §2 "สามถึงแปดบรรทัด" of the record); the first and the last are kept. */
-const MAX_FACTS = 8;
+export { summaryInputOf, wishLine } from '../../src/core/llm/summary-input';
 
 /**
- * The input of the end summary of a dead life, mapped from `endingInput(state, lifeId)` of the ending system: the person, the question, the facts in the order the card tells them
- * (the sentences the card holds, so the LLM sees what the template tier saw) and the names the text may use. Undefined when the life has no card.
+ * At the death of a life: asks for the end summary and writes it into the card (src/core/llm/summary-input.ts). Does nothing without an LLM flag, with the epitaph switch off,
+ * or for a card that already holds an LLM text.
  */
-export function summaryInputOf(data: GameData, state: GameState, lifeId?: string): EndingSummaryInput | undefined {
-  const input = endingInput(state, lifeId);
-  const card = cardOf(state, input?.life.id);
-  if (!input || !card) return undefined;
-  const ctx = makeCtx(state, data);
-  const sentences = card.facts.map((f) => f.sentence).filter(Boolean);
-  const facts = sentences.length > MAX_FACTS ? [...sentences.slice(0, MAX_FACTS - 1), sentences[sentences.length - 1]] : sentences;
-  if (input.question.text) facts.splice(Math.min(1, facts.length), 0, `คำถามของชีวิต: ${input.question.text}`);
-  return {
-    lifeId: input.life.id,
-    name: input.life.name,
-    pronoun: PRONOUN[input.life.gender] ?? 'เขา',
-    race: input.life.raceName || raceName(ctx, input.life.race),
-    age: input.life.age,
-    ending: input.ending ?? '',
-    facts,
-    names: input.names,
-    // the vow with its result and its page, the titles of the life, and the names of the others of this world that the text may not take (the check refuses them)
-    ...(input.vow ? { vow: `${input.vow.result === 'kept' ? 'คำปฏิญาณที่เป็นจริง' : 'คำปฏิญาณที่ไม่เป็นจริง'} · ${input.vow.name}: ${input.vow.lines.join(' ')}` } : {}),
-    ...(input.titles.length ? { titles: input.titles } : {}),
-    // a life the player ordered: what was asked and given, for the tone only (the character does not know it)
-    ...(input.wish ? { wish: wishLine(input.wish) } : {}),
-    ...(input.others.length ? { others: input.others } : {}),
-    // the template tier's summary: what the card holds if no answer comes. When the card already holds an LLM text, the template is the one it replaced and is not known here
-    template: card.summary.text,
-  };
-}
-
-/**
- * At the death of a life: asks for the end summary and, when the LLM answers (or the save already holds its answer), writes it into the card. Does nothing without an `Llm`, with the
- * epitaph switch off, or for a card that already holds an LLM text. The answer is kept in `state.llmAnswers` by the llm layer, so asking again after a load never calls.
- */
-export async function summarizeDeath(t: ToolLlm | undefined, data: GameData, state: GameState, lifeId?: string): Promise<EndingSummary | undefined> {
-  if (!t) return undefined;
-  const id = lifeId ?? cardOf(state)?.life;
-  const card = id ? cardOf(state, id) : undefined;
-  if (!id || !card) return undefined;
-  if (card.summary.source === 'llm') return { text: card.summary.text, source: 'llm' };
-  const input = summaryInputOf(data, state, id);
-  if (!input) return undefined;
-  const s = await t.llm.summarizeEnding(input, state);
-  if (s.source === 'llm') applyEndingText(state, id, { summary: s.text }, 'llm');
-  return s;
-}
+export const summarizeDeath = (t: ToolLlm | undefined, data: GameData, state: GameState, lifeId?: string): Promise<EndingSummary | undefined> => coreSummarizeDeath(t?.llm, data, state, lifeId);
 
 /** The line of the tokens spent so far (the ledger of the client), or none when no request was made. */
 export function usageLines(t: ToolLlm | undefined): string[] {

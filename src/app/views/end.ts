@@ -236,6 +236,9 @@ export function earnedGroups(data: GameData, earned: string[], cap = 10): Earned
   return out.sort((a, b) => b.names.length - a.names.length);
 }
 
+/** The text the card tells now: it changes when the end summary of the LLM lands (src/app/store.ts), so a screen can read the card again. */
+export const summaryNow = (state: GameState, lifeId?: string): string | undefined => cardOf(state, lifeId)?.summary.text;
+
 export function cardView(data: GameData, state: GameState, lifeId?: string): CardView | null {
   const card = cardOf(state, lifeId);
   if (!card) return null;
