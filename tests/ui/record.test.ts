@@ -103,4 +103,39 @@ describe('the recorder', () => {
     expect(rec.events.filter((e) => e.k === 'act')).toHaveLength(1);
     setAbMode('off');
   });
+
+  it('a record switched on after the life began starts that life at once, marked partial, and ends it at the death', () => {
+    const store = new GameStore();
+    store.setData(data);
+    store.newLife({ seed: 4 });
+    for (let i = 0; i < 40; i++) store.step();
+    expect(recorder.on.value).toBe(false);
+    recorder.setOn(true);
+    expect(recorder.lives.value).toBe(1);
+    let rec = JSON.parse(recorder.text()) as PlayRecord;
+    const start = rec.events.find((e) => e.k === 'life.start');
+    expect(start).toMatchObject({ life: 1, partial: true, race: store.state!.life!.race });
+    for (let i = 0; i < 4 * 400 && store.state?.life && !store.state.life.dead; i++) {
+      store.step();
+      if (store.phase.value === 'stop') store.resume();
+    }
+    rec = JSON.parse(recorder.text()) as PlayRecord;
+    expect(rec.events.find((e) => e.k === 'life.end')).toMatchObject({ life: 1, partial: true });
+    // the log of the life is not read again as a new birth
+    expect(rec.events.filter((e) => e.k === 'life.start')).toHaveLength(1);
+  });
+
+  it('the A/B mode stays set for the next world of the page', () => {
+    setAbMode('alternate');
+    const store = new GameStore();
+    store.setData(data);
+    store.newLife({ seed: 4 });
+    expect(store.currentArm()).toBe('on');
+    store.newLife({ seed: 5 });
+    // an odd seed starts on the arm off (alternate follows the parity of the seed so testers start on both arms evenly)
+    expect(store.currentArm()).toBe('off');
+    store.newLife({ seed: 6 });
+    expect(store.currentArm()).toBe('on');
+    setAbMode('off');
+  });
 });

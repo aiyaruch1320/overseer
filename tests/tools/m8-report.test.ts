@@ -1,4 +1,5 @@
 // The M8 analysis (scripts/tools/m8-report.ts): it reads the lives of a record and of a simulated run with the same code and prints the tables of the numbers.
+import { spawnSync } from 'node:child_process';
 import { writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -61,6 +62,27 @@ describe('m8-report', () => {
     expect(act.rows[0][2]).toBe('1');
     expect(livesOf(events, 'x')).toHaveLength(1);
   });
+
+  it('counts a partial life in its own table, and a record with no life is explained, not a usage error', () => {
+    const events: RecEvent[] = [
+      { t: 0, k: 'session' },
+      { t: 1, k: 'life.start', life: 1, partial: true, age: 20, race: 'human', arm: null },
+      { t: 2, k: 'call', life: 1, call: 'stop', why: 'x', cards: '' },
+    ];
+    const lives = livesOf(events, 'p');
+    expect(lives).toHaveLength(1);
+    expect(lives[0].partial).toBe(true);
+    const text = render(analyse(lives), 'p');
+    expect(text).toContain('partial lives');
+    expect(text).toContain('partial (record switched on mid-life)');
+    expect(livesOf([{ t: 0, k: 'session' }, { t: 1, k: 'clock', what: 'play' }], 'q')).toHaveLength(0);
+    const dir = mkdtempSync(join(tmpdir(), 'm8-'));
+    const file = join(dir, 'none.json');
+    writeFileSync(file, JSON.stringify({ format: 'overseer.record', v: 1, id: 'x', startedAt: '2026-01-01T00:00:00Z', events: [{ t: 0, k: 'session' }] }));
+    const r = spawnSync('npx', ['tsx', 'scripts/tools/m8-report.ts', file], { encoding: 'utf8' });
+    expect(r.status).toBe(0);
+    expect(r.stdout).toContain('no life in this record');
+  }, 60000);
 
   it('refuses a file that is not a record', () => {
     const dir = mkdtempSync(join(tmpdir(), 'm8-'));

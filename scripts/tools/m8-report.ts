@@ -30,6 +30,8 @@ export interface Life {
   switched: boolean;
   llmServer: boolean;
   seed: number | null;
+  /** The record was switched on inside this life: its counts hold only what came after (the entry starts at once, record.ts `joinLife`). */
+  partial: boolean;
   start: RecEvent;
   end: RecEvent | undefined;
   events: RecEvent[];
@@ -52,6 +54,7 @@ export function livesOf(events: RecEvent[], src: string, group = 'player'): Life
       switched,
       llmServer: start.llmServer === true,
       seed: typeof start.seed === 'number' ? start.seed : null,
+      partial: start.partial === true,
       start,
       end: evs.find((e) => e.k === 'life.end'),
       events: evs,
@@ -109,16 +112,30 @@ export function analyse(all: Life[], title = 'M8'): Report {
   tables.push(
     table(
       `${title}: lives read`,
-      ['group', 'lives', 'ended', 'arm on', 'arm off', 'no arm', 'director switched by hand', 'LLM server'],
+      ['group', 'lives', 'ended', 'partial (record switched on mid-life)', 'arm on', 'arm off', 'no arm', 'director switched by hand', 'LLM server'],
       [
         ...groups.map((g) => {
           const ls = lives.filter((l) => l.group === g);
-          return [g, ls.length, ls.filter(finished).length, ls.filter((l) => l.arm === 'on').length, ls.filter((l) => l.arm === 'off').length, ls.filter((l) => !l.arm).length, ls.filter((l) => l.switched).length, ls.filter((l) => l.llmServer).length];
+          return [g, ls.length, ls.filter(finished).length, ls.filter((l) => l.partial).length, ls.filter((l) => l.arm === 'on').length, ls.filter((l) => l.arm === 'off').length, ls.filter((l) => !l.arm).length, ls.filter((l) => l.switched).length, ls.filter((l) => l.llmServer).length];
         }),
-        ['all', lives.length, done.length, lives.filter((l) => l.arm === 'on').length, lives.filter((l) => l.arm === 'off').length, lives.filter((l) => !l.arm).length, lives.filter((l) => l.switched).length, lives.filter((l) => l.llmServer).length],
+        ['all', lives.length, done.length, lives.filter((l) => l.partial).length, lives.filter((l) => l.arm === 'on').length, lives.filter((l) => l.arm === 'off').length, lives.filter((l) => !l.arm).length, lives.filter((l) => l.switched).length, lives.filter((l) => l.llmServer).length],
       ],
     ),
   );
+
+  // -- partial lives: the record was switched on inside them, so every number of theirs counts only what came after
+  const partials = lives.filter((l) => l.partial);
+  if (partials.length) {
+    const cnt = (l: Life, k: string, f?: (e: RecEvent) => boolean) => l.events.filter((e) => e.k === k && (!f || f(e))).length;
+    tables.push(
+      table(
+        `${title}: partial lives`,
+        ['src', 'life', 'age when the record began', 'ended', 'stops', 'cards', 'confirmed acts', 'vow result'],
+        partials.map((l) => [l.src, Number(l.start.life ?? 0), n(l.start, 'age'), l.end ? String(l.end.cause ?? 'yes') : 'no', cnt(l, 'call', (e) => e.call === 'stop'), cnt(l, 'call', (e) => e.call === 'card'), cnt(l, 'act', (e) => e.ok === true), String(l.events.find((e) => e.k === 'vow.result')?.result ?? '-')]),
+        'these lives began before the record was switched on: they are in the lives table above, and their counts of nodes, stops and cards cover only the part after; for whole lives switch the record on before the world starts',
+      ),
+    );
+  }
 
   // -- vows: offered, chosen (the last take or change of the life), kept / broken
   const chosenOf = (l: Life): string | null => {
@@ -229,12 +246,12 @@ export function analyse(all: Life[], title = 'M8'): Report {
   // -- time per life
   const timeRows = groups.map((g) => {
     const ls = done.filter((l) => l.group === g);
-    const wall = ls.filter((l) => l.src !== 'sim').map((l) => (l.end!.t - l.start.t) / 60);
+    const wall = ls.filter((l) => l.src !== 'sim' && !l.partial).map((l) => (l.end!.t - l.start.t) / 60);
     const scripted = ls.map((l) => (n(l.end!, 'hAge') * SEC_PER_YEAR) / 60);
     const ages = ls.map((l) => n(l.end!, 'hAge'));
     return [g, ls.length, wall.length ? f1(median(wall)) : '-', wall.length ? f1(mean(wall)) : '-', f1(median(scripted)), f1(median(ages))];
   });
-  tables.push(table(`${title}: time per life`, ['group', 'lives', 'wall minutes p50', 'wall minutes mean', 'minutes at normal speed (age x SEC_PER_YEAR) p50', 'age at death p50'], timeRows, 'wall time includes pauses and the time between a life ending and the tester going on; target 25-45 minutes at normal speed (experience/01-one-life.md)'));
+  tables.push(table(`${title}: time per life`, ['group', 'lives', 'wall minutes p50', 'wall minutes mean', 'minutes at normal speed (age x SEC_PER_YEAR) p50', 'age at death p50'], timeRows, 'wall time includes pauses and the time between a life ending and the tester going on; a partial life (the record was switched on inside it) has no wall time here; target 25-45 minutes at normal speed (experience/01-one-life.md)'));
 
   // -- interventions
   const actRows = groups.map((g) => {
@@ -327,7 +344,12 @@ async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   const files = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const all: Life[] = [];
-  for (const f of files) all.push(...readRecord(f));
+  const empty: string[] = [];
+  for (const f of files) {
+    const ls = readRecord(f);
+    all.push(...ls);
+    if (!ls.length) empty.push(f);
+  }
   if (args.sim) {
     const policies = args.sim.split(',').filter(Boolean) as Policy[];
     for (const p of policies) if (!POLICIES.includes(p)) throw new Error(`--sim policy must be one of ${POLICIES.join(' ')}, got "${p}"`);
@@ -344,6 +366,11 @@ async function main(): Promise<void> {
       }
       process.stderr.write(`sim ${p}: ${seeds.length * arms.length} runs\n`);
     }
+  }
+  if (!all.length && files.length && !args.sim) {
+    // a record that holds no life is not a usage error: say what the file holds and how to get a life into it
+    process.stdout.write(`${empty.map((f) => `${f}: no life in this record (no life.start event). A record switched on after the life began, by a page older than the one that starts the entry at once, holds events but no life. Switch the record on in the settings before the world starts, then export it again.`).join('\n')}\n`);
+    return;
   }
   if (!all.length) {
     process.stderr.write('usage: m8-report.ts <record.json ...> | --sim=เมตตา,ลงโทษ --seeds=1-20 [--arms] [--lives=1]  [--json] [--out=file]\n');
