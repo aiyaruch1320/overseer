@@ -8,7 +8,7 @@ import type { Frame } from '../paint';
 import { parse } from './color';
 
 /** Side of one tile of an air loop (a power of two: the GPU repeats it). */
-export const AIR_SIDE = 128;
+export const AIR_SIDE = 256;
 /** Frames of a loop and the time of one frame in ms. */
 export const AIR_FRAMES = 8;
 export const AIR_MS = 150;
@@ -45,15 +45,15 @@ interface Bank {
 type Kind = { particles: Particles } | { bank: Bank } | { bank: Bank; particles: Particles };
 
 const KINDS: Record<string, Kind> = {
-  embers: { particles: { n: 26, colors: ['#ff9a3a', '#ffd070', '#ff6a2a'], vx: 3, vy: -16, size: [1, 1], alpha: 1, sway: 3, twinkle: true } },
-  ash: { particles: { n: 34, colors: ['#9a968e', '#6e6a66', '#b4b0a8'], vx: 4, vy: 10, size: [1, 2], alpha: 0.85, sway: 2 } },
-  dust: { particles: { n: 46, colors: ['#d8c090', '#c8a870', '#e8d8b0'], vx: 18, vy: 2, size: [1, 1], alpha: 0.55, sway: 2 } },
-  sand: { particles: { n: 60, colors: ['#e0c890', '#d0b078'], vx: 26, vy: 3, size: [1, 1], alpha: 0.6, sway: 1 } },
-  leaves: { particles: { n: 16, colors: ['#d89a7a', '#e8c08a', '#c8783a', '#9aa050'], vx: 8, vy: 16, size: [2, 1], alpha: 1, sway: 5, leaf: true } },
-  motes: { particles: { n: 30, colors: ['#c8f0ff', '#fff0c0', '#e0d8ff'], vx: 1, vy: -3, size: [1, 1], alpha: 1, sway: 3, twinkle: true } },
+  embers: { particles: { n: 70, colors: ['#ff9a3a', '#ffd070', '#ff6a2a'], vx: 3, vy: -16, size: [1, 1], alpha: 1, sway: 3, twinkle: true } },
+  ash: { particles: { n: 90, colors: ['#9a968e', '#6e6a66', '#b4b0a8'], vx: 4, vy: 10, size: [1, 2], alpha: 0.85, sway: 2 } },
+  dust: { particles: { n: 120, colors: ['#d8c090', '#c8a870', '#e8d8b0'], vx: 18, vy: 2, size: [1, 1], alpha: 0.55, sway: 2 } },
+  sand: { particles: { n: 150, colors: ['#e0c890', '#d0b078'], vx: 26, vy: 3, size: [1, 1], alpha: 0.6, sway: 1 } },
+  leaves: { particles: { n: 40, colors: ['#d89a7a', '#e8c08a', '#c8783a', '#9aa050'], vx: 8, vy: 16, size: [2, 1], alpha: 1, sway: 5, leaf: true } },
+  motes: { particles: { n: 80, colors: ['#c8f0ff', '#fff0c0', '#e0d8ff'], vx: 1, vy: -3, size: [1, 1], alpha: 1, sway: 3, twinkle: true } },
   fog: { bank: { scale: 3, cover: 0.42, color: '#dfe4e6', alpha: 0.36, drift: [1, 0], scroll: [5, 0] } },
-  clouds: { bank: { scale: 2, cover: 0.38, color: '#ffffff', alpha: 0.55, drift: [1, 0], scroll: [5, 0] } },
-  smoke: { bank: { scale: 3, cover: 0.28, color: '#6a6a70', alpha: 0.4, drift: [1, 0], scroll: [5, 0] } },
+  clouds: { bank: { scale: 2, cover: 0.34, color: '#ffffff', alpha: 0.32, drift: [1, 0], scroll: [5, 0] } },
+  smoke: { bank: { scale: 5, cover: 0.28, color: '#6a6a70', alpha: 0.4, drift: [1, 0], scroll: [5, 0] } },
 };
 
 /** What the air of a town of this `ambient=` is made of: a loop, its blend (add for light, normal for the rest) or null when it is only sprites (gulls) or nothing. */
@@ -100,10 +100,12 @@ export function airSheet(ambient: string, colors?: string[]): Frame | null {
   if ('bank' in kind) {
     const b = kind.bank, col = parse(b.color), r = rng(hashStr(ambient));
     // a sum of waves with whole wave numbers in x and y: periodic in the tile; the time term is a whole number of turns per loop
-    const waves = Array.from({ length: 7 }, (_, i) => {
-      let kx = Math.round(r() * b.scale) + 1, ky = Math.round((r() * 2 - 1) * b.scale);
+    const waves = Array.from({ length: 9 }, (_, i) => {
+      const kx = 1 + Math.floor(r() * b.scale * 1.6);
+      let ky = Math.round((r() * 2 - 1) * b.scale * 1.6);
       if (ky === 0) ky = i % 2 ? 1 : -1; // no wave of pure stripes
-      return { kx, ky, ph: r() * Math.PI * 2, kt: i % 3 === 0 ? (r() < 0.5 ? 1 : -1) * b.drift[0] : 0, amp: 0.5 + r() * 0.5 };
+      // the lower the wave number, the more it counts: big banks with ragged edges, not a grid of blobs
+      return { kx, ky, ph: r() * Math.PI * 2, kt: i % 3 === 0 ? (r() < 0.5 ? 1 : -1) * b.drift[0] : 0, amp: (0.6 + r() * 0.4) / (1 + 0.35 * Math.hypot(kx, ky)) };
     });
     const norm = waves.reduce((a, w) => a + w.amp, 0);
     for (let f = 0; f < N; f++)

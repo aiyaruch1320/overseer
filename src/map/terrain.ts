@@ -212,8 +212,8 @@ export function paintTerrain(canvas: PaintCanvas, req: TileRequest, layout: MapL
   const rng = new Stream(hashString(`${req.level}:${req.key}`) ^ seedK);
   const toPx = (x: number, y: number): [number, number] => [(x - rx0) * sx, (y - ry0) * sx];
   if (opts.icons !== false && req.level !== 'world') scatterIcons(ctx, req, layout, rng, sx);
-  if (req.level !== 'world') drawLandmarks(ctx, req, layout, sx, toPx);
-  drawClouds(ctx, req, layout, rng, sx, toPx);
+  if (req.level !== 'world' && !req.px) drawLandmarks(ctx, req, layout, sx, toPx); // not in the chunks round a town: the chain and the great trees are far larger than the chunk
+  if (!req.px) drawClouds(ctx, req, layout, rng, sx, toPx); // the chunks round a town have no painted clouds: the air of the town is the scene's loop
 }
 
 function n2f(x: number, y: number): number {
@@ -273,10 +273,17 @@ function scatterIcons(ctx: CanvasRenderingContext2D, req: TileRequest, layout: M
   const sp = clamp(14 / sx, 0.9, 12);
   const sizeK = clamp(sx / 2.2, 0.85, 2.4) * (req.level === 'continent' ? 1 : 1);
   const sites: { x: number; y: number; z: number; glyph: GlyphKind; size: number; cid: ContId; col: string }[] = [];
-  for (let y = ry0 + sp / 2; y < ry0 + h; y += sp)
-    for (let x = rx0 + sp / 2; x < rx0 + w; x += sp) {
-      const px = x + rng.float(-0.45, 0.45) * sp, py = y + rng.float(-0.45, 0.45) * sp;
-      const keep = rng.next(); // drawn even when skipped so the stream does not shift
+  // a chunk of the ground round a town shares its icons with its neighbours: every site is a cell of one global grid with its own random stream, and
+  // a glyph that crosses the edge is painted by both chunks (each clips its half), so no tree is cut by a seam
+  const global = !!req.px, m = global ? 1.6 : 0;
+  const i0 = global ? Math.floor((rx0 - m) / sp) : 0, j0 = global ? Math.floor((ry0 - m) / sp) : 0;
+  const i1 = global ? Math.ceil((rx0 + w + m) / sp) : Math.ceil((w - sp / 2) / sp), j1 = global ? Math.ceil((ry0 + h + m) / sp) : Math.ceil((h - sp / 2) / sp);
+  for (let j = j0; j < j1; j++)
+    for (let i = i0; i < i1; i++) {
+      const cell = global ? new Stream(((Math.imul(i, 73856093) ^ Math.imul(j, 19349663) ^ req.seed * 83492791) >>> 0) || 1) : rng;
+      const x = global ? (i + 0.5) * sp : rx0 + sp / 2 + (i - i0) * sp, y = global ? (j + 0.5) * sp : ry0 + sp / 2 + (j - j0) * sp;
+      const px = x + cell.float(-0.45, 0.45) * sp, py = y + cell.float(-0.45, 0.45) * sp;
+      const keep = cell.next(); // drawn even when skipped so the stream does not shift
       if (landValue(g, px, py) < 3.2) continue;
       const ci = contAt(layout, px, py);
       if (ci < 0) continue;

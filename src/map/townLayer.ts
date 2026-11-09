@@ -15,7 +15,7 @@ import { Paint, type Frame } from '../art/paint';
 import type { CityLook, CityPlan, PlanBuilding } from './city';
 import { cityRect } from './tiles';
 import type { MapCity, Rect } from './layout';
-import { FATE_BY_ID, TOWN_PX, WU } from './tuning';
+import { CITY_H, CITY_W, FATE_BY_ID, TOWN_PX, WU } from './tuning';
 import type { WalkGrid } from './townGround';
 
 export interface TownInfo {
@@ -61,8 +61,6 @@ interface Town {
   peopleWant: number;
   visible: boolean;
   used: number;
-  /** The loop of the air over the town (fog, embers, leaves ...) and how far it has been scrolled. */
-  air?: { ts: Phaser.GameObjects.TileSprite; vx: number; vy: number; x: number; y: number };
   /** Smoke of the chimneys: a sprite and the frame it starts on. */
   smoke: { img: Phaser.GameObjects.Image; off: number }[];
   gulls: { img: Phaser.GameObjects.Image; x: number; y: number; vx: number; ph: number }[];
@@ -79,6 +77,10 @@ export class TownLayer {
   private towns = new Map<string, Town>();
   private frameNo = 0;
   private rng = 1;
+  private view: Rect = { x: 0, y: 0, w: 1, h: 1 };
+  private show = false;
+  /** The one loop of air over the view: fog, embers or clouds of the nearest town, faded in and out (no edge: it is the whole screen, like the weather of the country). */
+  private sky: { ts: Phaser.GameObjects.TileSprite; key: string; vx: number; vy: number; x: number; y: number } | null = null;
 
   constructor(private scene: Phaser.Scene, private o: TownLayerOpts) {}
 
@@ -90,6 +92,8 @@ export class TownLayer {
   /** Builds the towns in the view (a rect of the sheet in MU), hides the others. `show` is false below the town level. */
   sync(view: Rect, cities: MapCity[], show: boolean): void {
     this.frameNo++;
+    this.view = view;
+    this.show = show;
     const inView = new Set<string>();
     if (show)
       for (const c of cities) {
@@ -129,12 +133,14 @@ export class TownLayer {
   private drop(t: Town): void {
     for (const s of t.sprites) s.destroy();
     for (const p of t.people) p.img.destroy();
-    t.air = undefined; t.smoke = []; t.gulls = [];
+    t.smoke = []; t.gulls = [];
     this.towns.delete(t.id);
   }
 
   destroy(): void {
     this.reset();
+    this.sky?.ts.destroy();
+    this.sky = null;
   }
 
   // ---- building ----
@@ -189,7 +195,7 @@ export class TownLayer {
       }
     }
     for (const b of plan.buildings) t.tasks.push(() => this.house(t, b, ruin, fate?.id));
-    t.tasks.push(() => this.air(t, plan.ambient, leafs));
+    t.tasks.push(() => this.air(t, plan.ambient));
     plan.trees.forEach((tr, i) =>
       t.tasks.push(() => {
         const h = Math.round(Math.min(34, Math.max(16, tr.r * S * 3.2)) / 2) * 2;
@@ -240,8 +246,8 @@ export class TownLayer {
     }
   }
 
-  /** The loop of the air over a whole town, and the gulls of a seaside one. */
-  private air(t: Town, ambient: string, leaf: string[]): void {
+  /** The gulls of a seaside town (the air of the others is the loop of `updateAir`). */
+  private air(t: Town, ambient: string): void {
     if (ambient === 'gulls') {
       const gk = this.texture('gull', () => gullSheet(), GULL.frames, GULL.w);
       if (!gk) return;
@@ -254,17 +260,7 @@ export class TownLayer {
       }
       return;
     }
-    const kind = airKind(ambient);
-    if (!kind) return;
-    const key = `air:${ambient}:${ambient === 'leaves' ? leaf.join('') : ''}`;
-    const k = this.texture(key, () => airSheet(ambient, leaf), AIR_FRAMES, AIR_SIDE);
-    if (!k) return;
-    const g = t.info.ground, sc = airScroll(ambient);
-    const ts = this.scene.add.tileSprite(t.ox, t.oy, g.w, g.h, k, 0).setOrigin(0, 0).setScale(K).setDepth(this.o.depth + 0.9).setVisible(t.visible);
-    if (kind.blend === 'add') ts.setBlendMode(1); // ADD
-    t.sprites.push(ts);
-    t.air = { ts, vx: sc[0], vy: sc[1], x: 0, y: 0 };
-  }
+    }
 
   // ---- frame ----
   /** Builds some of what is waiting, then moves the people. `ms` is the time of the scene. */
@@ -277,17 +273,59 @@ export class TownLayer {
       this.walk(t, ms, dt);
       this.animateAir(t, ms, dt);
     }
+    this.updateAir(ms, dt);
+  }
+
+  /** The air over the view: the ambient of the visible town nearest the centre of the screen; one baked loop played as a tile sprite that covers the screen. */
+  private updateAir(ms: number, dt: number): void {
+    const dtc = Math.min(0.1, dt), v = this.view;
+    let best: Town | null = null, bd = Infinity;
+    if (this.show)
+      for (const t of this.towns.values()) {
+        if (!t.visible || !airKind(t.info.plan.ambient)) continue;
+        const d = Math.hypot(t.ox / WU + CITY_W / 2 - (v.x + v.w / 2), t.oy / WU + CITY_H / 2 - (v.y + v.h / 2));
+        if (d < bd) { bd = d; best = t; }
+      }
+    const want = best ? `air:${best.info.plan.ambient}:${best.info.plan.ambient === 'leaves' ? best.info.plan.leaf.join('') : ''}` : '';
+    if (!this.sky) {
+      if (!best) return;
+      const k = this.texture(want, () => airSheet(best!.info.plan.ambient, best!.info.plan.leaf), AIR_FRAMES, AIR_SIDE);
+      if (!k) return;
+      const ts = this.scene.add.tileSprite(0, 0, 16, 16, k, 0).setOrigin(0, 0).setScale(K).setDepth(this.o.depth + 0.9).setAlpha(0);
+      this.sky = { ts, key: want, vx: 0, vy: 0, x: 0, y: 0 };
+    }
+    const a = this.sky;
+    if (a.key !== want) {
+      // another air (or none): the old one fades out, then the new one comes in
+      a.ts.setAlpha(Math.max(0, a.ts.alpha - dtc * 2));
+      if (a.ts.alpha > 0) { this.placeAir(ms); return; }
+      if (best) {
+        const amb = best.info.plan.ambient;
+        const k = this.texture(want, () => airSheet(amb, best!.info.plan.leaf), AIR_FRAMES, AIR_SIDE);
+        if (k) {
+          a.ts.setTexture(k, 0).setBlendMode(airKind(amb)!.blend === 'add' ? 1 : 0);
+          const sc = airScroll(amb);
+          a.vx = sc[0]; a.vy = sc[1]; a.key = want;
+        }
+      } else a.key = '';
+      return;
+    }
+    if (!want) return;
+    a.x += a.vx * dtc; a.y += a.vy * dtc;
+    a.ts.setAlpha(Math.min(1, a.ts.alpha + dtc * 2));
+    this.placeAir(ms);
+  }
+
+  private placeAir(ms: number): void {
+    const a = this.sky!, v = this.view;
+    a.ts.setFrame(Math.floor(ms / AIR_MS) % AIR_FRAMES);
+    a.ts.setPosition(v.x * WU, v.y * WU).setSize(Math.ceil(v.w * TOWN_PX) + 1, Math.ceil(v.h * TOWN_PX) + 1);
+    a.ts.setTilePosition(Math.round(v.x * TOWN_PX + a.x), Math.round(v.y * TOWN_PX + a.y)); // anchored to the ground, drifting, whole art pixels
   }
 
   /** The baked loops play: the frame of the air and of the smoke from the clock, the sheet of the air scrolls, the gulls fly. */
   private animateAir(t: Town, ms: number, dt: number): void {
     const dtc = Math.min(0.1, dt);
-    if (t.air) {
-      const a = t.air;
-      a.x += a.vx * dtc; a.y += a.vy * dtc;
-      a.ts.setFrame(Math.floor(ms / AIR_MS) % AIR_FRAMES);
-      a.ts.setTilePosition(Math.round(a.x), Math.round(a.y)); // whole art pixels
-    }
     if (t.smoke.length) {
       const f = Math.floor(ms / SMOKE.ms);
       for (const s of t.smoke) s.img.setFrame((f + s.off) % SMOKE.frames);
