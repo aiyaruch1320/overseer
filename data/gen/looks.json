@@ -15612,7 +15612,7 @@
     "eye": "#2a2024",
     "main": "#8a8a96",
     "second": "#c8b890",
-    "outfit": "tunic",
+    "outfit": "robe",
     "hair": "braid",
     "beard": "",
     "hat": "",
@@ -15620,7 +15620,6 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit",
      "eye",
      "skin"
     ],
@@ -15678,7 +15677,7 @@
     "eye": "#2a2024",
     "main": "#6a6a76",
     "second": "#c8a030",
-    "outfit": "tunic",
+    "outfit": "apron",
     "hair": "cropped",
     "beard": "",
     "hat": "",
@@ -15686,7 +15685,6 @@
     "feats": [],
     "wear": 0,
     "defaults": [
-     "outfit",
      "eye",
      "skin"
     ],
@@ -15695,6 +15693,9 @@
      "เชือกยาว"
     ],
     "pose": "เหยียบหินแล้วบอกน้ำหนักที่รับได้",
+    "body": {
+     "shoulders": 1.16
+    },
     "file": "08-saharan",
     "country": "SH-16",
     "continent": "SH",
