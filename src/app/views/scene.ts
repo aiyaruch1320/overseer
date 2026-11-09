@@ -293,6 +293,9 @@ const TRIBE_RACE: Record<string, string> = { hu: 'human', el: 'elf', de: 'darkel
  */
 export const RACE_HOME: Record<string, string> = { human: 'AL-04', elf: 'SV-01', darkelf: 'KD-05', dwarf: 'KD-01', orc: 'MH-01', halfling: 'AL-16', beast: 'SV-16', naga: 'NR-07', dragonkin: 'KD-07', vampire: 'NB-02', fae: 'SV-04', slime: 'SV-12', demonkin: 'MH-02', merfolk: 'NR-06', winged: 'AZ-01', giant: 'SH-03', lavakin: 'KD-06', construct: 'MK-02', soulmachine: 'MK-03', mummy: 'SH-02', ghoul: 'MH-03' };
 
+/** The land a tribe's own scenes are in whatever the country of the life (docs/appearance/13 §2: the elf's world tree and the fae's naming circle stand in a forest). */
+const TRIBE_LAND: Record<string, string> = { elf: 'SV', fae: 'SV' };
+
 /** The race a scene is about: its tribe when the script is a rite or a destination of one, else nothing (the life's own race is the default). */
 export function sceneRace(v: SceneView): string | undefined {
   const id = v.kind === 'script' ? v.script.id : v.entry.id ?? '';
@@ -510,7 +513,10 @@ export function sceneryOf(data: GameData, state: GameState | null | undefined, v
   // with no life behind the scene (a specimen) a tribe's scene is in the tribe's homeland
   const race = sceneRace(v);
   const home = !state?.life && race ? placeIds(data).byId.get(RACE_HOME[race] ?? '') : undefined;
-  const at = namedPlace(data, v.entry.data) ?? home ?? placeOf(data, state, v.entry);
+  let at = namedPlace(data, v.entry.data) ?? home ?? placeOf(data, state, v.entry);
+  // the rites and ends of the tribes that live in one kind of land are played in it wherever the life is born (13 §2: the roots of the world tree and the naming circle are in a forest)
+  const land = v.kind === 'script' && /^(?:rite|dest)\.|^[a-z]{2}\.[a-z]\d+$/.test(v.script.id) && race ? TRIBE_LAND[race] : undefined;
+  if (land && at?.continent !== land) at = { continent: land };
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
   return (place) => {
     // the props and the kind of place the script asks for (src/scene/props.ts): the craft table, the anvil, the eternal flame ...
