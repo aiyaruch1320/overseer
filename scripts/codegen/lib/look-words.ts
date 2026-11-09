@@ -760,6 +760,18 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   // เจ้าด่าน "ร่างอ้วนล่ำ ผิวไหม้แดง หนวดเคราดำเรียบประดับลูกปัด ผ้าโพกศีรษะสีเขียวเข้ม ชุดเจ้าด่านผ้าไหมสีเข้มปักทอง ดาบโค้งและถุงเหรียญเหล็กห้อยเอว": fat (broad shoulders), a beaded beard, the silk coat, gold at the waist
   'SH15-1': { outfit: 'noble', beard: 'braided', feats: ['beads', 'goldjewel'], body: { shoulders: 1.42, scale: 0.98 }, accent: '#d9a030' },
 
+  // The five giant elders of the council and the stone keepers (SH03-1 SH03-2 SH03-4 SH06-4 SH17-1) were one grey box: each gets its own silhouette from its row
+  // โกรม-ทอร์ "สูงเกือบสามเท่า ไหล่กว้างเหมือนผา เคราก้อนหิน": the tallest, a cliff of shoulders, a small head under a heavy brow
+  'SH03-1': { beard: 'long', feats: ['heavybrow'], body: { scale: 1.46, shoulders: 1.55, head: 0.84 } },
+  // บรูมา "ยักษ์หญิงสูงสง่า ชุดผ้าสีคราม หมวกคลุมเรียบ": a tall slim woman in a long indigo gown and a plain hood
+  'SH03-2': { fem: true, outfit: 'robe', hat: 'hood', body: { scale: 1.34, shoulders: 0.95, head: 1.0, gait: 'normal' } },
+  // ผู้เก็บดวงตาศิลา "ร่างสูงใหญ่หลังโก่ง ผมยาวคลุมไหล่": stooped, the head forward and large, gaunt
+  'SH03-4': { feats: ['gaunt'], body: { scale: 1.2, shoulders: 1.12, head: 1.08, gait: 'shuffle' } },
+  // ผู้เฝ้าภูเขาไททัน "ชุดนักบวช ผมประบ่า": a lean priest in a long robe, the ear to the stone
+  'SH06-4': { fem: false, body: { scale: 1.36, shoulders: 1.0, head: 0.96, gait: 'glide' } },
+  // กรอม-บาดู "ผมถักเกลียวเหมือนเชือก เคราก้อนหิน สร้อยหินร้อยดวง": the broadest, a rope of braid, a beard, a necklace of stones
+  'SH17-1': { outfit: 'cloak', beard: 'braided', feats: ['beads', 'moss'], body: { scale: 1.52, shoulders: 1.4, head: 0.9 } },
+
   // ── Mecharia ──
   // โอมิ "ร่างผอมเตี้ยกว่าหุ่นทั่วไป แขนยาว กล่องชิ้นส่วนเก่าแขวนหลัง" and ไรเวอร์-9 "ร่างสูงเพรียว": a short thin one with a box of parts on his back, a tall slim one (they were one shape)
   'MK03-2': { tool: 'bag', body: { scale: 0.84, shoulders: 0.86 } },
@@ -819,8 +831,10 @@ export const PERSON_FIX: Record<string, PersonFix> = {
 
   // ── Aldria: the grey-haired men in navy (one thing each) ──
   // "ดาบประดับเรียบไม่เคยถูกชักออกจากฝัก": the governor's sword stays in its sheath
-  'AL04-4': { tool: 'sheathed' },
-  'AL06-1': { body: { shoulders: 1.18, scale: 1.02 } },
+  // ลีโอนาร์ด "ผิวแห้งจากแดดเกาะ เครื่องแบบสีกรมท่าซีดจากลมทะเล": a sun-dried skin and a faded coat (he was the navy twin of AL06-1 and AL08-1)
+  'AL04-4': { tool: 'sheathed', skin: '#c89a72', main: '#4a5a7a', wear: 0.7 },
+  // ออกัสตา "ผมสีเทาทองสั้นหยักศก ผิวขาวซีด": a grey-gold curl, a pale skin
+  'AL06-1': { hairColor: '#b8ac98', skin: '#f4e4d4', body: { shoulders: 1.18, scale: 1.02 } },
   // "เครื่องแบบจักรพรรดิสีน้ำเงินเข้มจัดปักทองตราอินทรี เหรียญตรานับสิบเรียงอก": the emperor's coat is regal, the medals are gold on the chest
   'AL08-1': { outfit: 'regal', feats: ['goldjewel'], body: { scale: 1.05 } },
   // "หมวกทหารบุขนนก ผมสีน้ำตาลโกนเกรียน": a plumed cap, a shaved head
