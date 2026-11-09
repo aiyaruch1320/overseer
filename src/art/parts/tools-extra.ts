@@ -531,12 +531,15 @@ function sheath(r: Rig, len: number, cover: string, fit: string): void {
 }
 function sheathedSword(r: Rig): void { sheath(r, 12, '#6a4a30', '#d8d0b0'); }
 function greatSheath(r: Rig): void {
-  // a sword too big for a hand: the sheath runs past the knee and the hilt with a wide guard stands up above the hip, in a pale steel so it reads on dark plate
-  sheath(r, 22, '#5a5a6c', '#e4e4f0');
-  const { p } = r, bx = r.x0 + r.tw - 1.5, by = r.hip - 1;
-  p.line([bx, by - 3], [bx + 0.5, by - 8], p.mat('#d8d0b0'), 2);
-  p.line([bx - 3, by - 4], [bx + 3, by - 4], p.mat('#e4e4f0', { flat: true }), 1);
-  p.px(bx + 0.5, by - 9, p.mat('#f4f0d8', { flat: true }));
+  // a sword too big for a hand: a wide dark scabbard runs from the hip past the knee at a slant with pale bands, and a long grip with a broad gold guard and a round pommel
+  // stands up above the hip (past the elbow), so the sword reads on grey plate at zoom 2 as well
+  const { p } = r, k = r.k, bx = r.x0 + r.tw - 1.5, by = r.hip - 1;
+  const tip: Pt = [bx - 0.55 * 22 * k, Math.min(r.foot - 2, by + 0.83 * 22 * k)], dark = p.mat('#1e1a24'), pale = p.mat('#f0f0fa', { flat: true });
+  p.line([bx + 0.5, by], [tip[0] + 0.5, tip[1]], dark, 3);
+  for (const t of [0.2, 0.5, 0.8, 1]) p.rect(Math.round(bx + (tip[0] - bx) * t - 1), Math.round(by + (tip[1] - by) * t), 3, 1, pale);
+  p.line([bx, by - 1], [bx + 0.5, by - 7 * k], p.mat('#6a4a2a'), 2);
+  p.line([bx - 4, by - 3 * k], [bx + 4, by - 3 * k], p.mat('#f0c850', { flat: true }), 2);
+  p.ell(bx + 0.5, by - 8 * k, 1.6, 1.6, p.mat('#f0c850'));
 }
 function goldSheath(r: Rig): void { sheath(r, 18, '#a88628', '#f0d070'); }
 
@@ -639,20 +642,25 @@ function trowel(r: Rig): void {
 
 // ── M7: the shadow merchant's cart of smoke (SH14-2) and the box on the chest of the boy who speaks to it (SH12-2S) ──
 function smokeCart(r: Rig): void {
-  const { p } = r, k = r.k, [hx, hy] = r.hand, wd = p.mat('#4a3a5a'), rim = p.mat('#8a90a8'), smoke = p.mat('#b4bcd8', { alpha: 0.85 }), smoke2 = p.mat('#e0e6f4', { alpha: 0.7 });
-  const x = Math.round(hx) + 3, y = Math.round(hy) + 1, w = Math.round(13 * k), h = Math.round(5 * k), f = r.f % 2;
-  // a food cart low on two wheels (not an anvil): the handle runs from the hand to the box, a striped awning over it, and above it a person made of smoke
-  // (head, shoulders, two arms) that wavers and thins to a wisp where it meets the cart
-  p.line([hx, hy], [x, y + 1], wd);
-  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, rim);
-  for (let i = 0; i < w; i += 2) p.rect(x + i, y - 2, 1, 2, rim);
-  p.ell(x + 2.5, y + h + 1.5, 2 * k + 0.3, 2 * k + 0.3, rim); p.px(x + 2.5, y + h + 1.5, wd);
-  p.ell(x + w - 2.5, y + h + 1.5, 2 * k + 0.3, 2 * k + 0.3, rim); p.px(x + w - 2.5, y + h + 1.5, wd);
-  const cx = x + Math.round(w * 0.5), top = y - Math.round(13 * k);
+  const { p } = r, k = r.k, [hx, hy] = r.hand, wd = p.mat('#5a4668'), wdLite = p.mat('#8a74a0'), rim = p.mat('#c8cce0'), spoke = p.mat('#e4e8f6', { flat: true }), tyre = p.mat('#2a2236', { flat: true });
+  const smoke = p.mat('#b4bcd8', { alpha: 0.85 }), smoke2 = p.mat('#e0e6f4', { alpha: 0.7 });
+  const x = Math.round(hx) + 4, f = r.f % 2;
+  // a small hand cart (not an anvil): two big spoked wheels, a shallow box on the axle, a long handle to the hand, and above the box a person made of smoke
+  // (head, shoulders, two arms) that wavers and thins to a wisp where it meets the box
+  const R = Math.max(3, Math.round(3.6 * k)), w = Math.round(11 * k), h = Math.max(3, Math.round(3.5 * k)), gy = Math.round(hy) + Math.round(8 * k), wy = gy - R;
+  const y = wy - h - 1;
+  p.line([hx, hy], [x, wy - 1], wd, 1);
+  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, wdLite); p.rect(x, y + h - 1, w, 1, tyre);
+  for (const wx of [x + R, x + w - R]) {
+    for (let a = 0; a < 16; a++) { const t = (a / 16) * Math.PI * 2; p.px(wx + Math.cos(t) * R, wy + Math.sin(t) * R, a % 2 ? rim : tyre); }
+    for (let a = 0; a < 4; a++) { const t = (a / 4) * Math.PI * 2 + (r.pose === 'walk' ? f * 0.4 : 0); p.line([wx, wy], [wx + Math.cos(t) * (R - 1), wy + Math.sin(t) * (R - 1)], spoke, 1); }
+    p.px(wx, wy, tyre);
+  }
+  const cx = x + Math.round(w * 0.5), top = y - Math.round(12 * k);
   p.ell(cx + f * 0.5, top + 2, 2.2 * k + 0.4, 2.3 * k + 0.4, smoke2);
-  p.poly([[cx - 3 * k - f, top + 5], [cx + 3 * k + f, top + 5], [cx + 1.5, y - 3], [cx - 1.5, y - 3]], smoke);
+  p.poly([[cx - 3 * k - f, top + 5], [cx + 3 * k + f, top + 5], [cx + 1.5, y - 1], [cx - 1.5, y - 1]], smoke);
   p.line([cx - 3 * k - f, top + 5], [cx - 5 * k, top + 8 * k], smoke2); p.line([cx + 3 * k + f, top + 5], [cx + 5 * k, top + 8 * k + f], smoke2);
-  p.px(cx + f, y - 4, smoke2);
+  p.px(cx + f, y - 2, smoke2);
 }
 function chestBox(r: Rig): void {
   const { p } = r, k = r.k, w = Math.max(5, Math.round(7 * k)), h = Math.max(6, Math.round(8 * k)), x = r.x0 + r.tw - w + 1, y = r.sh + 1;

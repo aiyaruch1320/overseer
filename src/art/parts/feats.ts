@@ -68,12 +68,18 @@ const spread = (a: number, b: number, n: number): number[] => Array.from({ lengt
  * (at zoom 2 too). `scallop` cuts the hem into points (a bat's, a fin's); the rim is a contrasting thin line along the outer edge.
  */
 function foldedWing(r: Rig, body: string, rimHex: string, scallop: boolean): void {
-  const { p } = r, B = wingRoot(r), s = r.k, out = Math.min(4.6 * s, Math.max(2, B[0] - 2)), tipY = r.hip + 2 - B[1];
-  const P = at(B, -0.6 * s, -8.4 * s, 1), M1 = at(B, -out, -4 * s, 1), M2 = at(B, -out - 0.4, 1.5 * s, 1), M3 = at(B, -out * 0.85, tipY * 0.7, 1), T = at(B, -out * 0.35, tipY, 1);
-  const R = at(B, 1.2, 4 * s, 1), mem = p.mat(body), rim = p.mat(rimHex, { flat: true });
-  const hem: Pt[] = scallop ? [at(B, -out * 0.15, tipY - 2.2 * s, 1), at(B, out * 0.1, tipY - 0.2, 1), at(B, out * 0.55, tipY - 2.4 * s, 1)] : [];
-  p.poly([P, M1, M2, M3, T, ...hem, R, at(B, 1, -2 * s, 1)], mem);
-  stroke(p, P, M1, 1, rim); stroke(p, M1, M2, 1, rim); stroke(p, M2, M3, 1, rim);
+  const { p } = r, B = wingRoot(r), s = r.k, out = Math.min(6.4 * s, Math.max(2.5, B[0] - 1.5)), tipY = r.hip + 3 - B[1];
+  // the crest stands above the head (a wing taller than the head reads as a wing at zoom 2), the belly bulges out behind the back and the tip hangs below the hip
+  const topY = Math.min(-8.4 * s, r.head[1] - r.hr[1] - 3 * s - B[1]);
+  const P = at(B, -1, topY, 1), M0 = at(B, -out * 0.55, topY * 0.7, 1), M1 = at(B, -out, topY * 0.3, 1), M2 = at(B, -out - 0.4, 2 * s, 1), M3 = at(B, -out * 0.85, tipY * 0.72, 1), T = at(B, -out * 0.35, tipY, 1);
+  const R = at(B, 1.2, 4 * s, 1), mem = p.mat(body), rim = p.mat(rimHex, { flat: true }), line = p.mat(mixHex(body, '#000000', 0.6), { flat: true });
+  const hem: Pt[] = scallop ? [at(B, -out * 0.15, tipY - 2.6 * s, 1), at(B, out * 0.1, tipY - 0.2, 1), at(B, out * 0.55, tipY - 2.6 * s, 1)] : [];
+  const pts: Pt[] = [P, M0, M1, M2, M3, T, ...hem, R, at(B, 1, -2 * s, 1)];
+  p.poly(pts, mem);
+  // a dark outline all round, then the bright rim along the outer edge and a rib down the middle
+  for (let i = 0; i < pts.length; i++) stroke(p, pts[i], pts[(i + 1) % pts.length], 1, line);
+  stroke(p, P, M0, 1, rim); stroke(p, M0, M1, 1, rim); stroke(p, M1, M2, 1, rim); stroke(p, M2, M3, 1, rim);
+  stroke(p, at(P, 0.6, 1.5, 1), at(T, 0.4, -1.5, 1), 1, p.mat(mixHex(body, rimHex, 0.4), { flat: true }));
   if (scallop) stroke(p, P, T, 1, rim);
 }
 
@@ -892,7 +898,7 @@ export const FEATS: Record<string, Part> = {
   },
   'wings:fin': {
     // the finned wing of a winged merfolk (04-nerea NR02): a thin sea-green membrane on pale ribs, folded flat at rest and spread when she is glad
-    back: (r) => batWing(r, mixHex(r.look.skin, '#1f7f9a', 0.85), '#e6fbff', false),
+    back: (r) => batWing(r, mixHex(r.look.skin, '#145f86', 0.9), '#e6fbff', false),
   },
   'wings:bud': {
     // a child's wing that has no feathers yet (19-ally-successors SH09-5S): small, bare, pink-skinned and folded flat against the back
