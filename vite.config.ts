@@ -7,6 +7,6 @@ export default defineConfig({
   resolve: { dedupe: ['preact'] },
   optimizeDeps: { noDiscovery: true, include: ['preact', 'preact/hooks', 'preact/jsx-dev-runtime', 'preact/jsx-runtime', '@preact/signals', 'phaser'] },
   server: { port: 5173, open: false },
-  build: { chunkSizeWarningLimit: 2500, rollupOptions: { input: { main: 'index.html', debug: 'debug.html', dev: 'dev.html' } } },
+  build: { chunkSizeWarningLimit: 2500, rollupOptions: { input: { main: 'index.html', debug: 'debug.html', dev: 'dev.html', town: 'town.html' } } },
   worker: { format: 'es' },
 });

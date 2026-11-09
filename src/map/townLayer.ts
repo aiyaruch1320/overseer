@@ -8,13 +8,14 @@ import type { PersonLook } from '../art/look';
 import { lookTexture } from '../art/phaser';
 import { centreFrame } from '../art/mapart/centre';
 import { mixHex, hash01 } from '../art/mapart/color';
-import { houseFrame, FOOT, type HouseSpec } from '../art/mapart/houses';
+import { houseFrame, chimneyOf, FOOT, type HouseSpec } from '../art/mapart/houses';
+import { AIR_FRAMES, AIR_MS, AIR_SIDE, GULL, SMOKE, airKind, airScroll, airSheet, gullSheet, smokeSheet } from '../art/mapart/ambient';
 import { treeFrame, type TreeSpec } from '../art/mapart/trees';
 import { Paint, type Frame } from '../art/paint';
 import type { CityLook, CityPlan, PlanBuilding } from './city';
 import { cityRect } from './tiles';
 import type { MapCity, Rect } from './layout';
-import { FATE_BY_ID, TOWN_PX, WU } from './tuning';
+import { CITY_H, CITY_W, FATE_BY_ID, TOWN_PX, WU } from './tuning';
 import type { WalkGrid } from './townGround';
 
 export interface TownInfo {
@@ -53,17 +54,20 @@ interface Town {
   info: TownInfo;
   ox: number; oy: number; // world units of the top-left of the ground
   tasks: (() => void)[];
-  sprites: Phaser.GameObjects.Image[];
+  sprites: (Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite)[];
   people: Person[];
   looks: string[]; // texture keys of the crowd
   looksWant: PersonLook[];
   peopleWant: number;
   visible: boolean;
   used: number;
+  /** Smoke of the chimneys: a sprite and the frame it starts on. */
+  smoke: { img: Phaser.GameObjects.Image; off: number }[];
+  gulls: { img: Phaser.GameObjects.Image; x: number; y: number; vx: number; ph: number }[];
 }
 
 // colours rounded to steps, so that a hundred houses do not make a hundred textures
-const q = (hex: string, step = 24) => {
+const q = (hex: string, step = 16) => {
   const n = parseInt(hex.slice(1), 16);
   const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => Math.min(255, Math.round(v / step) * step));
   return `#${c.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
@@ -73,6 +77,10 @@ export class TownLayer {
   private towns = new Map<string, Town>();
   private frameNo = 0;
   private rng = 1;
+  private view: Rect = { x: 0, y: 0, w: 1, h: 1 };
+  private show = false;
+  /** The one loop of air over the view: fog, embers or clouds of the nearest town, faded in and out (no edge: it is the whole screen, like the weather of the country). */
+  private sky: { ts: Phaser.GameObjects.TileSprite; key: string; vx: number; vy: number; x: number; y: number } | null = null;
 
   constructor(private scene: Phaser.Scene, private o: TownLayerOpts) {}
 
@@ -84,6 +92,8 @@ export class TownLayer {
   /** Builds the towns in the view (a rect of the sheet in MU), hides the others. `show` is false below the town level. */
   sync(view: Rect, cities: MapCity[], show: boolean): void {
     this.frameNo++;
+    this.view = view;
+    this.show = show;
     const inView = new Set<string>();
     if (show)
       for (const c of cities) {
@@ -123,22 +133,27 @@ export class TownLayer {
   private drop(t: Town): void {
     for (const s of t.sprites) s.destroy();
     for (const p of t.people) p.img.destroy();
+    t.smoke = []; t.gulls = [];
     this.towns.delete(t.id);
   }
 
   destroy(): void {
     this.reset();
+    this.sky?.ts.destroy();
+    this.sky = null;
   }
 
   // ---- building ----
-  private texture(key: string, make: () => Frame | null): string | null {
+  /** A texture painted once; `frames` of `fw` pixels cut from it side by side when it is a loop. */
+  private texture(key: string, make: () => Frame | null, frames = 0, fw = 0): string | null {
     if (this.scene.textures.exists(key)) return key;
     const f = make();
     if (!f) return null;
     const c = document.createElement('canvas');
     c.width = f.w; c.height = f.h;
     c.getContext('2d')!.putImageData(new ImageData(f.data, f.w, f.h), 0, 0);
-    this.scene.textures.addCanvas(key, c);
+    const tex = this.scene.textures.addCanvas(key, c);
+    if (tex) for (let i = 0; i < frames; i++) tex.add(i, 0, i * fw, 0, fw, f.h);
     return key;
   }
 
@@ -152,7 +167,7 @@ export class TownLayer {
   }
 
   private make(id: string, info: TownInfo, rect: Rect): Town {
-    const t: Town = { id, info, ox: rect.x * WU, oy: rect.y * WU, tasks: [], sprites: [], people: [], looks: [], looksWant: [], peopleWant: 0, visible: true, used: this.frameNo };
+    const t: Town = { id, info, ox: rect.x * WU, oy: rect.y * WU, tasks: [], sprites: [], people: [], looks: [], looksWant: [], peopleWant: 0, visible: true, used: this.frameNo, smoke: [], gulls: [] };
     const { plan, look } = info;
     const S = TOWN_PX;
     const fate = look.fate ? FATE_BY_ID[look.fate] : undefined;
@@ -180,6 +195,7 @@ export class TownLayer {
       }
     }
     for (const b of plan.buildings) t.tasks.push(() => this.house(t, b, ruin, fate?.id));
+    t.tasks.push(() => this.air(t, plan.ambient));
     plan.trees.forEach((tr, i) =>
       t.tasks.push(() => {
         const h = Math.round(Math.min(34, Math.max(16, tr.r * S * 3.2)) / 2) * 2;
@@ -213,8 +229,38 @@ export class TownLayer {
     };
     const key = `th:${spec.style}:${spec.roof}:${spec.wall}:${Math.round(spec.w)}:${spec.floors}:${spec.special ?? ''}:${broken ? 1 : 0}:${spec.v}:${fate ?? ''}`;
     const k = this.texture(key, () => houseFrame(spec));
-    if (k) this.place(t, k, b.x * S, (b.y + b.h * 0.4) * S, this.scene.textures.get(k).getSourceImage().height, Math.cos(b.rot) < 0);
+    if (!k) return;
+    const flip = Math.cos(b.rot) < 0;
+    const src = this.scene.textures.get(k).getSourceImage();
+    this.place(t, k, b.x * S, (b.y + b.h * 0.4) * S, src.height, flip);
+    // the smoke of a chimney: a loop of puffs from its top (a town of `ambient=smoke`: most of its chimneys smoke)
+    const ch = t.info.plan.ambient === 'smoke' && !broken ? chimneyOf(spec) : null;
+    if (ch && hash01(`${b.x.toFixed(2)}${b.y.toFixed(2)}s`) < 0.75) {
+      const sk = this.texture('smk', () => smokeSheet(), SMOKE.frames, SMOKE.w);
+      if (!sk) return;
+      const ax = b.x * S + (ch[0] - src.width / 2 + 0.5) * (flip ? -1 : 1), ay = (b.y + b.h * 0.4) * S + (ch[1] - (src.height - FOOT));
+      const img = this.scene.add.image(t.ox + ax * K, t.oy + ay * K, sk, 0).setOrigin(0.5, 1).setScale(K);
+      img.setDepth(this.o.depth + 0.9).setVisible(t.visible);
+      t.sprites.push(img);
+      t.smoke.push({ img, off: Math.floor(hash01(`${ax}${ay}`) * SMOKE.frames) });
+    }
   }
+
+  /** The gulls of a seaside town (the air of the others is the loop of `updateAir`). */
+  private air(t: Town, ambient: string): void {
+    if (ambient === 'gulls') {
+      const gk = this.texture('gull', () => gullSheet(), GULL.frames, GULL.w);
+      if (!gk) return;
+      const g = t.info.ground;
+      for (let i = 0; i < 5; i++) {
+        const x = this.rnd() * g.w, y = 20 + this.rnd() * (g.h - 40);
+        const img = this.scene.add.image(t.ox + x * K, t.oy + y * K, gk, 0).setScale(K).setDepth(this.o.depth + 0.95).setVisible(t.visible);
+        t.sprites.push(img);
+        t.gulls.push({ img, x, y, vx: (this.rnd() < 0.5 ? -1 : 1) * (9 + this.rnd() * 8), ph: this.rnd() * 6 });
+      }
+      return;
+    }
+    }
 
   // ---- frame ----
   /** Builds some of what is waiting, then moves the people. `ms` is the time of the scene. */
@@ -225,6 +271,73 @@ export class TownLayer {
       while (t.tasks.length && performance.now() - t0 < 5) t.tasks.shift()!();
       if (!t.tasks.length) this.spawn(t, t0);
       this.walk(t, ms, dt);
+      this.animateAir(t, ms, dt);
+    }
+    this.updateAir(ms, dt);
+  }
+
+  /** The air over the view: the ambient of the visible town nearest the centre of the screen; one baked loop played as a tile sprite that covers the screen. */
+  private updateAir(ms: number, dt: number): void {
+    const dtc = Math.min(0.1, dt), v = this.view;
+    let best: Town | null = null, bd = Infinity;
+    if (this.show)
+      for (const t of this.towns.values()) {
+        if (!t.visible || !airKind(t.info.plan.ambient)) continue;
+        const d = Math.hypot(t.ox / WU + CITY_W / 2 - (v.x + v.w / 2), t.oy / WU + CITY_H / 2 - (v.y + v.h / 2));
+        if (d < bd) { bd = d; best = t; }
+      }
+    const want = best ? `air:${best.info.plan.ambient}:${best.info.plan.ambient === 'leaves' ? best.info.plan.leaf.join('') : ''}` : '';
+    if (!this.sky) {
+      if (!best) return;
+      const k = this.texture(want, () => airSheet(best!.info.plan.ambient, best!.info.plan.leaf), AIR_FRAMES, AIR_SIDE);
+      if (!k) return;
+      const ts = this.scene.add.tileSprite(0, 0, 16, 16, k, 0).setOrigin(0, 0).setScale(K).setDepth(this.o.depth + 0.9).setAlpha(0);
+      this.sky = { ts, key: want, vx: 0, vy: 0, x: 0, y: 0 };
+    }
+    const a = this.sky;
+    if (a.key !== want) {
+      // another air (or none): the old one fades out, then the new one comes in
+      a.ts.setAlpha(Math.max(0, a.ts.alpha - dtc * 2));
+      if (a.ts.alpha > 0) { this.placeAir(ms); return; }
+      if (best) {
+        const amb = best.info.plan.ambient;
+        const k = this.texture(want, () => airSheet(amb, best!.info.plan.leaf), AIR_FRAMES, AIR_SIDE);
+        if (k) {
+          a.ts.setTexture(k, 0).setBlendMode(airKind(amb)!.blend === 'add' ? 1 : 0);
+          const sc = airScroll(amb);
+          a.vx = sc[0]; a.vy = sc[1]; a.key = want;
+        }
+      } else a.key = '';
+      return;
+    }
+    if (!want) return;
+    a.x += a.vx * dtc; a.y += a.vy * dtc;
+    a.ts.setAlpha(Math.min(1, a.ts.alpha + dtc * 2));
+    this.placeAir(ms);
+  }
+
+  private placeAir(ms: number): void {
+    const a = this.sky!, v = this.view;
+    a.ts.setFrame(Math.floor(ms / AIR_MS) % AIR_FRAMES);
+    a.ts.setPosition(v.x * WU, v.y * WU).setSize(Math.ceil(v.w * TOWN_PX) + 1, Math.ceil(v.h * TOWN_PX) + 1);
+    a.ts.setTilePosition(Math.round(v.x * TOWN_PX + a.x), Math.round(v.y * TOWN_PX + a.y)); // anchored to the ground, drifting, whole art pixels
+  }
+
+  /** The baked loops play: the frame of the air and of the smoke from the clock, the sheet of the air scrolls, the gulls fly. */
+  private animateAir(t: Town, ms: number, dt: number): void {
+    const dtc = Math.min(0.1, dt);
+    if (t.smoke.length) {
+      const f = Math.floor(ms / SMOKE.ms);
+      for (const s of t.smoke) s.img.setFrame((f + s.off) % SMOKE.frames);
+    }
+    if (t.gulls.length) {
+      const g = t.info.ground;
+      for (const b of t.gulls) {
+        b.x += b.vx * dtc;
+        if (b.x > g.w + 10) b.x = -10; else if (b.x < -10) b.x = g.w + 10;
+        b.img.setPosition(t.ox + Math.round(b.x) * K, t.oy + Math.round(b.y + Math.sin(ms / 900 + b.ph) * 3) * K).setFlipX(b.vx < 0);
+        b.img.setFrame(Math.floor(ms / 260 + b.ph) % GULL.frames);
+      }
     }
   }
 
@@ -238,13 +351,25 @@ export class TownLayer {
     const walk = t.info.ground.walk;
     let guard = 0;
     while (t.people.length < t.peopleWant && guard++ < 60 && performance.now() - t0 < 6) {
-      const spot = this.randomSpot(walk, true);
+      let spot = this.randomSpot(walk, true);
       if (!spot) { t.peopleWant = t.people.length; return; }
+      // not on top of someone: a few tries for a place with air round it (a crowded plaza keeps its crowd, a dense town stays readable)
+      for (let k = 0; k < 8 && this.crowded(t, spot[0], spot[1], 9); k++) spot = this.randomSpot(walk, true) ?? spot;
       const look = Math.floor(this.rnd() * t.looks.length);
       const img = this.scene.add.image(t.ox + spot[0] * K, t.oy + spot[1] * K, t.looks[look], frameIndex('idle', 0))
         .setOrigin(0.5 - 3 / FRAME.w, FRAME.foot / FRAME.h).setScale(K);
       t.people.push({ img, look, x: spot[0], y: spot[1], tx: spot[0], ty: spot[1], rest: this.rnd() * 3, speed: 15 + this.rnd() * 9, t0: this.rnd() * 1000, moving: false, frame: 0 });
     }
+  }
+
+  /** True when a person stands within `r` art pixels of the point (only the first 400 are asked: the crowd of a speed test does not slow the walk). */
+  private crowded(t: Town, x: number, y: number, r: number): boolean {
+    const n = Math.min(t.people.length, 400), r2 = r * r;
+    for (let i = 0; i < n; i++) {
+      const p = t.people[(i * 7919) % t.people.length];
+      if ((p.x - x) ** 2 + (p.y - y) ** 2 < r2) return true;
+    }
+    return false;
   }
 
   /** A random place a person can stand; on a street or the plaza when `road` and one is found. */
@@ -285,7 +410,7 @@ export class TownLayer {
           // a new place along the way: near, preferably on a street
           const ang = this.rnd() * Math.PI * 2, len = 25 + this.rnd() * 70;
           const nx = p.x + Math.cos(ang) * len, ny = p.y + Math.sin(ang) * len;
-          if (this.clear(g, p.x, p.y, nx, ny)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
+          if (this.clear(g, p.x, p.y, nx, ny) && !this.crowded(t, nx, ny, 7)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
         }
       }
       const pose = p.moving ? walkP : idleP;

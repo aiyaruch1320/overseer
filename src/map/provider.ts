@@ -31,6 +31,8 @@ export interface TileRequest {
   rect: Rect;
   looks: Looks;
   seed: number;
+  /** Pixels per MU of the picture when it is not the density of the level (the ground round a town is painted at the density of the town). */
+  px?: number;
 }
 
 /** A painted or loaded tile: anything a canvas can draw (a canvas, an image, a bitmap) and the area of the sheet it covers. */

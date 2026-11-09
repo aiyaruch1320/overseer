@@ -20,7 +20,7 @@ import type { CodeProvider } from './codeProvider';
 import { CONT_IDS, type ContId } from './geo';
 import { layoutOf, type MapLayout } from './layout';
 import type { MapArtProvider, TileImage } from './provider';
-import { requestFor } from './tiles';
+import { cityRect, requestFor } from './tiles';
 import type { MapAim, MapFocus, MapHover, MapPick } from './types';
 import { DRAGON_SIZE, OMEN_COLOR, RUIN, SHEET, ZOOM_LEVELS, type ZoomId } from './tuning';
 import type { MapController } from './scene';
@@ -77,6 +77,16 @@ const paletteOf = (data: GameData): Record<string, string[]> => {
   return out;
 };
 
+/** The main building style of each country (the heaviest of `styles=`), its first roof and its size, for the icons of its towns. */
+const styleOf = (data: GameData) => {
+  const countries = new Map(((data.countries?.items as Country[] | undefined) ?? []).map((c) => [c.id, c]));
+  return (id: string) => {
+    const ui = countries.get(id)?.ui;
+    const style = Object.entries(ui?.styles ?? {}).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'gable';
+    return { style, roof: ui?.roofs?.[0], scale: ui?.scale ?? 3 };
+  };
+};
+
 const namesOf = (data: GameData) => {
   const conts = new Map<string, string>(((data.continents?.items as ContinentsFile | undefined)?.continents ?? []).map((c: Continent) => [c.id as string, c.name]));
   const countries = new Map(((data.countries?.items as Country[] | undefined) ?? []).map((c) => [c.id, c]));
@@ -102,6 +112,7 @@ function FullMap(props: WorldMapProps) {
   const model = props.model ?? mapModel(props.data, props.state);
   const [hover, setHover] = useState<MapHover | null>(null);
   const [level, setLevel] = useState<{ id: ZoomId; zoom: number }>({ id: 'world', zoom: 0.2 });
+  const [place, setPlace] = useState<{ name: string; sub: string } | null>(null);
   const mouse = useRef({ x: 0, y: 0 });
   const cb = useRef(props);
   cb.current = props;
@@ -123,6 +134,7 @@ function FullMap(props: WorldMapProps) {
         names,
         town: env.code ? (id) => { const t = env.code!.town(id, { looks: cur.current.looks, seed: props.seed ?? SEED }); return t && { plan: t.plan, look: t.look, ground: t.ground, country: t.country }; } : undefined,
         crowd: crowdOf(props.data),
+        styleOf: styleOf(props.data),
         crowdScale: Number(new URLSearchParams(location.search).get('crowd')) || 1,
         onPick: (p) => cb.current.onPick?.(p),
         onHover: (h) => setHover(h ? { ...h, x: mouse.current.x, y: mouse.current.y } : null),
@@ -144,6 +156,25 @@ function FullMap(props: WorldMapProps) {
   useEffect(() => { ctl.current?.setFocus(props.focus ?? { kind: 'world' }, props.zoom); }, [props.focus?.kind, props.focus?.id, props.zoom]);
   useEffect(() => { props.onLevel?.(level.id, level.zoom); }, [level.id]);
 
+  // at the town levels the name of the town under the camera is on the screen (the docs name only the capital; the others are `<country> · <kind> <n>`)
+  useEffect(() => {
+    if (!env || (level.id !== 'city' && level.id !== 'inside')) { setPlace(null); return; }
+    const names = namesOf(props.data);
+    const look = () => {
+      const c = ctl.current?.camera();
+      if (!c) return;
+      const hit = env.layout.cities.find((t) => { const r = cityRect(t); return c.x >= r.x && c.x <= r.x + r.w && c.y >= r.y && c.y <= r.y + r.h; });
+      if (!hit) { setPlace(null); return; }
+      const country = names.country(hit.country);
+      const kind = ['หมู่บ้าน', 'เมือง', 'เมืองหลวง'][hit.size - 1];
+      const next = hit.name ? { name: hit.name, sub: `${kind}${country.title ? ` · ${country.title}` : ''}` } : { name: country.name, sub: `${kind}ที่ ${hit.n + 1}` };
+      setPlace((o) => (o && o.name === next.name && o.sub === next.sub ? o : next));
+    };
+    look();
+    const id = window.setInterval(look, 400);
+    return () => window.clearInterval(id);
+  }, [env, level.id]);
+
   const key = (down: boolean) => (e: KeyboardEvent) => { if (ctl.current?.key(e, down)) e.preventDefault(); };
   const zoomBtn = (k: string) => () => ctl.current?.key({ key: k } as KeyboardEvent, true);
 
@@ -164,6 +195,12 @@ function FullMap(props: WorldMapProps) {
     >
       <style>{`.wm-root:focus-visible { box-shadow: inset 0 0 0 3px ${color.light}; }`}</style>
       {!env && <div style={{ ...hudBase, left: size.pad, top: size.pad }}>กำลังวาดแผนที่…</div>}
+      {place && (
+        <div style={{ ...hudBase, left: size.pad, top: size.pad, pointerEvents: 'none' }} data-town-name>
+          <div style={{ fontFamily: font.title, fontSize: size.title - 4 }}>{place.name}</div>
+          <div style={{ color: color.textDim, fontSize: size.small }}>{place.sub}</div>
+        </div>
+      )}
       <div style={{ ...hudBase, right: size.pad, top: size.pad, display: 'flex', gap: 4, alignItems: 'center' }}>
         <span style={{ marginRight: 6 }}>{levelName(props.data, level.id)}</span>
         <button style={btn} onClick={zoomBtn('+')} aria-label="+">+</button>

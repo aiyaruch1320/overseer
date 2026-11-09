@@ -4,6 +4,7 @@
 // The same plan serves the people of the town (they walk on its grid).
 import type { Country } from '../core/data/types-npcs';
 import { mix, shade } from './color';
+import { roofsFromWords, wallHexes, wallOf } from './palette';
 import { Stream, clamp, hashString, makeNoise } from './noise';
 import { CITY_H, CITY_W, FATE_BY_ID, GROUND, type FateId } from './tuning';
 
@@ -31,6 +32,8 @@ export interface CityPlan {
   h: number;
   continent: string;
   ground: string;
+  /** The packed earth of the built-up part (grey in the iron and fog lands, not the brown of a farm town). */
+  earth: string;
   road: string;
   streets: { pts: Pt[]; width: number; main: boolean }[];
   water: { pts: Pt[]; width: number }[];
@@ -64,6 +67,7 @@ const FLORA: Record<string, string> = { round: 'oak', fern: 'fern', conifer: 'pi
 const LEAF_PRESET: Record<string, string[]> = { DAWN: ['#d89a7a', '#e8c08a', '#b8a060'], TWILIGHT: ['#7a6ab0', '#5a5aa0', '#8a7ac0'], GREEN: ['#3f8a3a', '#4a9a44', '#2e7a3e'] };
 const ROAD: Record<string, string> = { AZ: '#dcd6c8', MH: '#8a7350', KD: '#4f4440', NR: '#b08a5a', AL: '#c8bc9c', MK: '#6a6e72', SH: '#c8a468', SV: '#8a6e4a', NB: '#6a6e72' };
 const GROUND_CITY: Record<string, string> = { AZ: '#a4da7e', MH: '#9d7e5a', KD: '#45382f', NR: '#8cc860', AL: '#9ac870', MK: '#8a8f8c', SH: '#d8b878', SV: '#4a8a4a', NB: '#8c938f' };
+const EARTH: Record<string, string> = { KD: '#2c2420', MK: '#6c6c68', NB: '#767268', SH: '#b89868', SV: '#3a5a34', AZ: '#bcb090' };
 const FALLBACK_ROOFS: Record<string, string[]> = {
   AZ: ['#3d78c4', '#c9a24a', '#e9e9f6'], MH: ['#6d4a36', '#5a3e30', '#8a3c30'], KD: ['#4a3a3a', '#3a3030', '#5a3a30'], NR: ['#4a7ab0', '#e0e0e0', '#3a9ab0'],
   AL: ['#a8503a', '#8a6a4a', '#6a7a8a'], MK: ['#8a3a2a', '#6a3a2a', '#8a94a4'], SH: ['#d8b060', '#b04a2a', '#e8e0c8'], SV: ['#6a5a34', '#8a5a8a', '#4a7a3a'], NB: ['#5a5a6a', '#7a1a2a', '#8a8e94'],
@@ -83,8 +87,14 @@ export function planCity(country: Country, continent: string, cityId: string, ca
   const ext = clamp(0.3 + 0.05 * scale, 0.3, 0.52);
   const cx = W / 2 + rng.float(-1, 1), cy = H / 2 + rng.float(-0.6, 0.6);
   const rx = W * ext, ry = H * ext * 1.05;
-  const plan = ui.plan || 'organic';
-  const roofsIn = ui.roofs.length ? ui.roofs : FALLBACK_ROOFS[continent] ?? FALLBACK_ROOFS.AL;
+  // NB-10 and the like: the docs say the paths run in a spiral to the plaza (no plan value for it; the prose of the aerial line says it)
+  const plan = ui.plan === 'organic' && /เกลียว/.test(`${country.look?.aerial ?? ''}${country.look?.street ?? ''}`) ? 'spiral' : ui.plan || 'organic';
+  const materials = country.look?.materials ?? '';
+  const muted = materials.includes('หม่น');
+  const wallDocs = wallHexes(materials);
+  // `roofs=default`: the colour words of the country's own materials line first, then the continent's fallback
+  const fromWords = ui.roofs.length ? [] : roofsFromWords(materials);
+  const roofsIn = ui.roofs.length ? ui.roofs : fromWords.length >= 2 ? fromWords : FALLBACK_ROOFS[continent] ?? FALLBACK_ROOFS.AL;
   const roofs = fate ? fate.after.slice(0, 3).map((c, i) => mix(roofsIn[i % roofsIn.length], c, fate.tint * 0.8)) : roofsIn;
   const styles = Object.entries(ui.styles);
   const styleW = styles.map(([, w]) => w);
@@ -124,6 +134,20 @@ export function planCity(country: Country, continent: string, cityId: string, ca
     if (plan === 'canal') {
       water.push({ pts: wobble([cx - rx * 1.4, cy + gy * 1.5], [cx + rx * 1.4, cy + gy * 1.5], 16, 0.8, 5), width: 1.0 });
       water.push({ pts: wobble([cx - gx * 1.5, cy - ry * 1.4], [cx - gx * 1.5, cy + ry * 1.4], 14, 0.8, 9), width: 0.8 });
+    }
+  } else if (plan === 'spiral') {
+    // a footpath winds in to the plaza, one lane out to the edge as the way in; short lanes branch off it
+    const turns = 1.6, pts: Pt[] = [];
+    const a0 = rng.float(0, Math.PI * 2), N = 70;
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, a = a0 + t * turns * Math.PI * 2, k = 1.08 * (1 - t) + 0.12 * t;
+      pts.push([cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]);
+    }
+    streets.push({ pts, width: 0.3, main: true });
+    gates.push(pts[0]);
+    for (let i = 8; i < N - 6; i += 9) {
+      const p = pts[i], dx = p[0] - cx, dy = p[1] - cy, L = Math.hypot(dx, dy) || 1;
+      streets.push({ pts: [p, [p[0] + (dx / L) * 2.4, p[1] + (dy / L) * 2.4]], width: 0.24, main: false });
     }
   } else if (plan === 'radial') {
     const spokes = rng.int(7, 11);
@@ -195,10 +219,9 @@ export function planCity(country: Country, continent: string, cityId: string, ca
 
   const buildings: PlanBuilding[] = [];
   const pickStyle = () => (styles.length ? styles[rng.weighted(styleW)][0] : 'gable');
-  const wallOf = (roof: string) => mix(roof, '#efe6d2', 0.72);
   const place = (x: number, y: number, w: number, h: number, rot: number, style: string, special?: string, floors?: number) => {
     const roof = roofs[rng.int(0, roofs.length - 1)];
-    buildings.push({ x, y, w, h, rot, style, roof: shade(roof, rng.float(-0.08, 0.08)), wall: wallOf(roof), floors: floors ?? 1, special, frail: rng.next() });
+    buildings.push({ x, y, w, h, rot, style, roof: shade(roof, rng.float(-0.08, 0.08)), wall: wallOf(style, wallDocs, roof, rng.next(), muted), floors: floors ?? 1, special, frail: rng.next() });
     claim(x, y, Math.abs(w * Math.cos(rot)) + Math.abs(h * Math.sin(rot)), Math.abs(w * Math.sin(rot)) + Math.abs(h * Math.cos(rot)));
   };
 
@@ -285,6 +308,9 @@ export function planCity(country: Country, continent: string, cityId: string, ca
       if (inEll(x, y, 1.18)) continue;
       const w = rng.float(2.2, 4.2), h = rng.float(1.2, 2.4);
       if (taken(x, y, w, h)) continue;
+      // a field is whole or not there: the ground is dithered away toward the rim of the sheet (townGround.ts), which would cut it into blotches
+      const ext = Math.max(w, h) / 2;
+      if ([[-1, -1], [1, -1], [-1, 1], [1, 1]].some(([sx, sy]) => Math.hypot((x + sx * ext - W / 2) / (W / 2), (y + sy * ext - H / 2) / (H / 2)) > 0.66)) continue;
       claim(x, y, w, h);
       fields.push({ x, y, w, h, col: fcols[rng.int(0, fcols.length - 1)], rot: rng.chance(0.5) ? 0 : Math.PI / 2 });
     }
@@ -307,5 +333,5 @@ export function planCity(country: Country, continent: string, cityId: string, ca
   const leafUi = (ui.other?.leaf ?? ui.other?.leafcolors ?? '').trim();
   const leaf = leafUi.startsWith('#') ? leafUi.split(',').map((c) => c.trim()) : LEAF_PRESET[leafUi.toUpperCase()] ?? [];
   const centre = { kind: ui.centre && ui.centre !== 'none' ? ui.centre : 'plaza', x: cx, y: cy };
-  return { id: cityId, w: W, h: H, continent, ground, road, streets, water, fields, plaza, buildings, wall, centre, trees, lamps, leaf, ambient: ui.ambient || 'none', rx, ry };
+  return { id: cityId, w: W, h: H, continent, ground, earth: EARTH[continent] ?? '#78644a', road, streets, water, fields, plaza, buildings, wall, centre, trees, lamps, leaf, ambient: ui.ambient || 'none', rx, ry };
 }

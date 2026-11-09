@@ -41,15 +41,32 @@ export function houseFrame(spec: HouseSpec): Frame {
   return ordinary(spec);
 }
 
-function ordinary(s: HouseSpec): Frame {
+function dims(s: HouseSpec) {
   const W = clamp(Math.round(s.w), 16, 46);
   const floors = clamp(s.floors, 1, 3);
   const style = s.style;
-  const v = s.v ?? 0;
   const tall = style === 'spire' || style === 'tower' || style === 'keep';
   const Hh = tall ? 14 + floors * 6 : style === 'hut' || style === 'tent' || style === 'aframe' ? 7 : 8 + floors * 7;
   const Rh = style === 'spire' ? 16 : style === 'dome' ? Math.round(W * 0.4) : clamp(Math.round(W * 0.36), 7, 14);
   const fw = W + 6, fh = Hh + Rh + FOOT + 7;
+  return { W, floors, style, Hh, Rh, fw, fh };
+}
+
+const CHIMNEY_STYLES = new Set(['gable', 'brick', 'stone', 'forge', 'carved', 'stilt', 'boomtown']);
+
+/** Where the smoke of a house leaves it: the top of its chimney in the pixels of its frame, or null when the style has none. The same numbers as `ordinary`. */
+export function chimneyOf(spec: HouseSpec): [number, number] | null {
+  if (spec.special || spec.broken || !CHIMNEY_STYLES.has(spec.style)) return null;
+  const { W, Hh, Rh, fh } = dims(spec);
+  const lift = spec.style === 'stilt' ? 5 : 0, by = fh - FOOT - Hh - lift, v = spec.v ?? 0;
+  if (spec.style === 'forge') return [3 + W - 7, by - Rh - 7];
+  if (spec.style === 'brick') return [3 + W - 8, by - 9];
+  return [3 + Math.round(W * (0.62 + v * 0.1)) + 1, by - Rh - 3];
+}
+
+function ordinary(s: HouseSpec): Frame {
+  const { W, floors, style, Hh, Rh, fw, fh } = dims(s);
+  const v = s.v ?? 0;
   const p = new Paint(fw, fh);
   const ox = 3, fy = fh - FOOT; // foot line
   const wallC = style === 'stone' || style === 'keep' || style === 'carved' ? shadeHex(s.wall, -0.15) : style === 'adobe' ? '#c89a68' : style === 'brick' ? mixHex(s.wall, '#b07050', 0.5) : s.wall;
@@ -90,8 +107,17 @@ function ordinary(s: HouseSpec): Frame {
     case 'hut':
     case 'aframe': {
       p.rect(ox + 3, fy - 6, W - 6, 6, Wl);
-      p.poly([[ox, fy - 4], [ox + W / 2, fy - 6 - Rh - 3], [ox + W, fy - 4]], R);
-      door(ox + W / 2, 5);
+      if (style === 'hut') {
+        // a hut of old planks and scrap: the wall in bands of different boards, a patch of rust sheet on the roof, a stove pipe
+        const bands = [p.mat(shadeHex(wallC, 0.1)), p.mat(shadeHex(wallC, -0.12)), p.mat(mixHex(wallC, '#8a5a3e', 0.35))];
+        for (let x = ox + 3, i = 0; x < ox + W - 3; x += 3, i++) p.rect(x, fy - 6, Math.min(3, ox + W - 3 - x), 6, bands[(i + Math.floor(v * 3)) % 3]);
+        p.poly([[ox, fy - 4], [ox + W / 2, fy - 6 - Rh - 3], [ox + W, fy - 4]], R);
+        const patch = p.mat(mixHex(s.roof, '#8a5030', 0.55));
+        p.poly([[ox + W * 0.55, fy - 7], [ox + W * 0.55 + 4, fy - 10], [ox + W * 0.55 + 7, fy - 7]], patch);
+        p.rect(ox + Math.round(W * 0.7), fy - 6 - Rh - 3, 2, 5, Ch);
+      } else p.poly([[ox, fy - 4], [ox + W / 2, fy - 6 - Rh - 3], [ox + W, fy - 4]], R);
+      door(ox + W / 2 - (style === 'hut' ? 3 : 0), 5);
+      if (style === 'hut') p.rect(ox + W / 2 + 2, fy - 5, 3, 2, G);
       break;
     }
     case 'tent': {
@@ -128,8 +154,59 @@ function ordinary(s: HouseSpec): Frame {
       door(ox + W / 2, 5);
       break;
     }
+    case 'forge': {
+      // a smithy: a heavy low house of dark granite, an iron roof, a great chimney with its fire, the furnace mouth glowing in the door, an anvil sign
+      const by = y0;
+      p.rect(ox + W - 10, by - Rh - 8, 5, Rh + 9, Ch);
+      p.rect(ox + W - 11, by - Rh - 9, 7, 2, trim);
+      p.rect(ox + 1, by, W - 2, Hh, Wl);
+      for (let y = by + 4; y < by + Hh - 1; y += 4) for (let x = ox + 2 + ((y / 4) % 2) * 3; x < ox + W - 2; x += 6) p.rect(x, y, 3, 1, trim);
+      p.poly([[ox - 1, by + 1], [ox + 3, by - Rh * 0.7], [ox + W - 3, by - Rh * 0.7], [ox + W + 1, by + 1]], R);
+      p.rect(ox + 2, by + 1, W - 4, 1, trim);
+      const dx = ox + Math.round(W * 0.3);
+      p.rect(dx - 3, fy - 8, 7, 8, trim);
+      p.rect(dx - 2, fy - 7, 5, 7, p.mat('#ff8a2a', { flat: true }));
+      p.rect(dx - 1, fy - 5, 3, 5, p.mat('#ffd060', { flat: true }));
+      p.glow(dx, fy - 4, '#ff7a2a', 0.8);
+      for (let f = 0; f < floors; f++) win(ox + W - 15, by + 4 + f * 7);
+      const an = p.mat('#2a2a30');
+      p.rect(ox + 1, by + 4, 4, 2, an); p.rect(ox + 2, by + 6, 2, 2, an); // the anvil sign
+      p.glow(ox + W - 8, by - Rh - 9, '#ff7a2a', 0.95);
+      break;
+    }
+    case 'brick': {
+      // a works-house of dark brick on an iron frame: courses of brick, riveted iron straps, a flat sheet roof with a smoke stack, wide windows
+      const by = y0;
+      const iron = p.mat('#4a4a52'), brickD = p.mat(shadeHex(wallC, -0.22));
+      p.rect(ox + W - 9, by - 10, 4, 12, Ch);
+      p.rect(ox + W - 10, by - 11, 6, 2, iron);
+      p.rect(ox + 1, by, W - 2, Hh, Wl);
+      for (let y = by + 2; y < by + Hh - 1; y += 3) {
+        p.rect(ox + 2, y, W - 4, 1, brickD);
+        for (let x = ox + 3 + ((y - by) / 3 % 2) * 2; x < ox + W - 3; x += 4) p.px(x, y + 1, brickD);
+      }
+      for (const x of [ox + 1, ox + W - 3, ox + Math.round(W / 2) - 1]) p.rect(x, by, 2, Hh, iron);
+      p.rect(ox, by - 2, W, 3, R); p.rect(ox, by - 3, W, 1, iron);
+      door(ox + W * (0.3 + v * 0.2), 6);
+      for (let f = 0; f < floors; f++) { p.rect(ox + W - 14, by + 3 + f * 7, 4, 3, G); if (W > 24) p.rect(ox + 5, by + 3 + f * 7, 4, 3, G); }
+      break;
+    }
+    case 'carved': {
+      // a house of heavy granite blocks: a roof slab with deep eaves, a band of braided carving (a plait pattern) under it and over the door
+      const by = y0;
+      const lite = p.mat(shadeHex(wallC, 0.2));
+      p.rect(ox + 1, by, W - 2, Hh, Wl);
+      for (let y = by + 3; y < by + Hh - 1; y += 4) for (let x = ox + 2 + ((y / 4) % 2) * 4; x < ox + W - 2; x += 8) p.rect(x, y, 4, 1, trim);
+      for (let x = ox + 2; x < ox + W - 3; x += 2) { p.px(x, by + 2, lite); p.px(x + 1, by + 3, lite); } // the plait
+      p.poly([[ox - 1, by + 1], [ox + 2, by - Rh * 0.55], [ox + W - 2, by - Rh * 0.55], [ox + W + 1, by + 1]], R);
+      p.rect(ox - 1, by + 1, W + 2, 1, trim);
+      p.rect(ox + Math.round(W * 0.62), by - Rh * 0.55 - 5, 3, 6, Ch);
+      door(ox + W * (0.35 + v * 0.3), 6);
+      for (let f = 0; f < floors; f++) { p.rect(ox + 3 + Math.round(v * 2), by + 6 + f * 7, 2, 3, G); if (W > 24) p.rect(ox + W - 6, by + 6 + f * 7, 2, 3, G); }
+      break;
+    }
     default: {
-      // gable, brick, stone, terrace, stilt, carved, adobe, boomtown, forge
+      // gable, stone, terrace, stilt, adobe, boomtown
       const lift = style === 'stilt' ? 5 : 0;
       const by = y0 - lift, bh = Hh - 0;
       if (style === 'stilt') { p.rect(ox + 2, fy - lift, 2, lift, Ch); p.rect(ox + W - 4, fy - lift, 2, lift, Ch); p.rect(ox + W / 2 - 1, fy - lift, 2, lift, Ch); }
