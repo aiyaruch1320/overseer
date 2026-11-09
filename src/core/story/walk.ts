@@ -11,7 +11,7 @@ import { entryWeight, forkId, refsOf, weigh, type Pull } from './choose';
 import { indexOf, type Index } from './data';
 import { lastStand } from './laststand';
 import { addOnce, extOf, lifeOf, yearOf, type Key, type StoryExt } from './state';
-import { CAUSE, DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, LINE_CAP, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
+import { CAUSE, DEADLY_OUTCOMES, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LATE_YEARS, JOURNEY_LINES, LAST_YEAR, LAST_YEAR_EXTRA, LINK_ENTER, MEMORY_LINES, NODES_PER_YEAR, OPEN_COND, OPEN_PRED, OPEN_RATE, OPEN_SHARE, OVERLAY_AT_ONCE, PAIR_RATE, RACE_LINE, LINE_CAP, RETRY_OPEN, RITE_PASS, LATE_OVERLAY_YEARS, ROLLING_LINES, SLIP_YEARS, WAIT_STAGES, WINDOW_MAX_BEATS, type Way } from './tuning';
 
 const KEYS: Key[] = ['a', 'b', 'c'];
 const keyOf = (i: number): Key => KEYS[Math.min(i, 2)];
@@ -136,7 +136,7 @@ function advance(ctx: Ctx, ex: StoryExt, ix: Index, line: string, closing: boole
     if (!decideOpen(ctx, ex, ix, line)) return;
     // an overlay line that waited for a free place (one journey at a time) or for its cause comes to a node whose age is long past: the node is lost, as the
     // nodes of a line that read the god's history are (`rolling`); the first contract of a mercenary is not signed at 59 (M3 wiring)
-    if (line !== ex.line && life.hAge > span.hi + LATE_OVERLAY_YEARS) {
+    if (line !== ex.line && life.hAge > span.hi + (JOURNEY_LINES.has(line) ? JOURNEY_LATE_YEARS : LATE_OVERLAY_YEARS)) {
       skip(ctx, ex, n.id, 'late');
       continue;
     }

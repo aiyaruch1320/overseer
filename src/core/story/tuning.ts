@@ -205,6 +205,13 @@ export const SLIP_YEARS = 5;
  */
 export const LATE_OVERLAY_YEARS = 10;
 
+/**
+ * The journey lines (JOURNEY_LINES) are what the character lives through at the age the table gives (25-journeys.md: the age column of each node), so a journey node
+ * is lost sooner than the other overlay lines lose theirs: this many years past the end of its table age (assumption; a contract of the mercenary line meant for 18 to 28
+ * is not signed at 35, the line goes on with the node whose age has come).
+ */
+export const JOURNEY_LATE_YEARS = 3;
+
 /** Battles fought in one life year (storylines/README.md §8: "นับในเพดานศึก 4 ครั้งต่อปี"). A battle over the number does not happen. */
 export const BATTLES_PER_YEAR = 4;
 
