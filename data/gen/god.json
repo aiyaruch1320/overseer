@@ -1,5 +1,5 @@
 {
- "version": "c1dbeb00bd8c",
+ "version": "6abbf6bf3369",
  "sources": [
   "docs/lore/dragons/README.md",
   "docs/systems/god/01-power.md",
@@ -5178,7 +5178,7 @@
       "แม่ขอให้ลูกแข็งแรง",
       "4",
       "home",
-      "ทารกหรือเด็ก",
+      "ทารกหรือเด็ก และแม่ (หรือผู้ปกครองของเผ่าที่ไม่มีแม่) ยังมีชีวิต",
       "6",
       "`vit+1 hp+10`",
       "4",

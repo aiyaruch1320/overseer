@@ -80,6 +80,13 @@ describe('items generator: references across files', () => {
       expect(mats.has(w.from!.material)).toBe(true);
     }
   });
+  it('a plain stance in brackets is a stance ability; one with a condition inside the brackets stays text', () => {
+    const all = W.items.flatMap((w) => w.abilities);
+    const flee = all.filter((a) => a.text.startsWith('ไม่หนีทัพ'));
+    expect(flee.length).toBeGreaterThan(0);
+    for (const a of flee) expect(a).toMatchObject({ k: 'stance', stance: 'หนี', n: -2 });
+    expect(all.filter((a) => a.text.includes('(บนเรือ ท่าทีตั้งรับ')).every((a) => a.k === 'text')).toBe(true);
+  });
   it('repel abilities name enemy codes that exist', () => {
     for (const w of W.items) for (const a of w.abilities) for (const c of a.codes ?? []) if (/^[a-z_]+$/.test(c)) expect(ids.enemies.has(c) || ids.kind(c) !== 'unknown', `${w.id} ${c}`).toBe(true);
   });

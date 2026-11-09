@@ -1,5 +1,5 @@
 {
- "version": "182f223b5e64",
+ "version": "af2524a99fd3",
  "sources": [
   "docs/lore/storylines/25-journeys.md",
   "docs/systems/travel/01-travel-rules.md"
@@ -835,7 +835,7 @@
    {
     "text": "ในทวีปเดียวกันไปได้ทางบกหรือทางน้ำตามผังแผนที่ ()",
     "events": [],
-    "src": "docs/systems/travel/01-travel-rules.md:63"
+    "src": "docs/systems/travel/01-travel-rules.md:69"
    },
    {
     "text": "ข้ามทวีปใช้ได้เฉพาะเส้นใน หัวข้อ 12: คอแผ่นดินทางบกตาม หัวข้อ 1 หรือเรือระหว่างประเทศท่าเรือทั้งสองฝั่ง เส้นทางต้องไม่ถูกปิดด้วยเหตุการณ์โลก (`WR-06` `WR-10` สงครามเส้นทาง โดย `WR-06` หลัง `DR-05` แทนด้วย `DW-04` · `PO-06` ปิดทวีป · `FG-02` ประเทศที่ถูกหมอกกลืนเป็นปิดตาย · `FG-03` ด่านชายแดนติดเนบูเลียปิดถาวร) เส้นที่ปิดยังไปได้โดยลักลอบ (ข้อ 3.4)",
@@ -848,7 +848,7 @@
      "FG-02",
      "FG-03"
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:64"
+    "src": "docs/systems/travel/01-travel-rules.md:70"
    },
    {
     "text": "**ทางฟ้าไปอัซการ์** (ก่อน `DR-01`) มีสี่ทางเท่านั้น: บันไดหมื่นขั้นจากซาฮารันผ่านด่านยักษ์ (ปิดถาวรเมื่อ `WR-02` ทาง ก) · เรือเหาะจากเมคาเรีย (เมื่อ `PO-02` เหลือเรือเหาะเถื่อน ใช้กติกาลักลอบ) · วาฬฟ้าจากเนเรีย ต้องมีคำเชิญ · น้ำตกย้อนฟ้าจาก NR-02 ต้องผ่านพิธีของผู้ถือกุญแจน้ำตก () เวลาและค่าของแต่ละทางอยู่ในข้อ 3.6 เผ่าปีกบินข้ามเองได้ ยกเว้นปีกสั้นที่บินได้ระยะสั้น () ผู้ขี่สัตว์คู่หูที่มี `pa_fly_mount` ระดับ 3 บินข้ามได้เช่นกัน () เผ่าอื่นใช้สี่ทางนี้เท่านั้น (ใครบินได้แค่ไหน: ตาราง 3.5)",
@@ -857,7 +857,7 @@
      "WR-02",
      "PO-02"
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:65"
+    "src": "docs/systems/travel/01-travel-rules.md:71"
    },
    {
     "text": "ปลายทางที่เปลี่ยนรูปใช้รูปหลังเปลี่ยนตาม : หลัง `DR-01` อัซการ์เป็นซากบนพื้น (สกายฟอลล์) ไปทางบกจากซาฮารันตะวันออกหรือทางเรือ ทางฟ้าทั้งสี่ปิด ยกเว้น AZ-09 ที่ยังลอย (`SF-09`) ไปได้ด้วยการบินหรือเรือเหาะ · หลัง `DR-05` เมืองท่าชายฝั่งที่จมตัดออก · หลัง `DR-06` เรือใบออกทะเลเปิดไม่ได้และเรือเหาะจอด 20 ปีโลก เหลือเรือพายและทางบก แล้วเข้ายุคลมสุ่ม (ตารางลมหยุดในข้อ 3.6)",
@@ -867,7 +867,7 @@
      "DR-05",
      "DR-06"
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:66"
+    "src": "docs/systems/travel/01-travel-rules.md:72"
    },
    {
     "text": "เหตุการณ์โลกเปลี่ยนตารางที่เข้าได้: `FG-02` `FG-03` หมอกกลืนเมืองและปิดด่านชายแดนเนบูเลีย · `DR-01` ฟ้าถล่ม (ทางฟ้าปิด อัซการ์เป็นซากบนพื้น ผู้ลี้ภัยออก) · `WR-*` สงครามปิดด่านสองประเทศ · `PO-*` ปิดทวีป · `DR-05` ทุ่งจม (ท่าเรือชายฝั่งบางแห่งหาย) · `DR-06` ลมหยุด (เรือใบหยุดและเรือเหาะจอด 20 ปีโลก) ตามข้อ 3.1 และ 3.6",
@@ -878,12 +878,12 @@
      "DR-05",
      "DR-06"
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:106"
+    "src": "docs/systems/travel/01-travel-rules.md:112"
    },
    {
     "text": "เส้นทางที่ปิดยังข้ามได้ด้วยลักลอบ: ตัวละครต้องมีผู้นำทาง (NPC ผู้ลักลอบ `NB12-*` `NB09-*` `MK05-4`) หรือ skill `stealth` ระดับ 2 ผลคือเหตุการณ์ด่านที่ผ่านหรือถูกจับ ราคาค่าลักลอบ 30 ถึง 100 ทอง และ `c_wanted` 25% ถ้าถูกจับ",
     "events": [],
-    "src": "docs/systems/travel/01-travel-rules.md:107"
+    "src": "docs/systems/travel/01-travel-rules.md:113"
    }
   ],
   "stances": [
@@ -896,7 +896,7 @@
     "extraChecks": 0,
     "helpers": "more",
     "entry": null,
-    "src": "docs/systems/travel/01-travel-rules.md:74"
+    "src": "docs/systems/travel/01-travel-rules.md:80"
    },
    {
     "value": 0,
@@ -907,7 +907,7 @@
     "extraChecks": 0,
     "helpers": "normal",
     "entry": null,
-    "src": "docs/systems/travel/01-travel-rules.md:75"
+    "src": "docs/systems/travel/01-travel-rules.md:81"
    },
    {
     "value": -1,
@@ -918,7 +918,7 @@
     "extraChecks": 1,
     "helpers": "none",
     "entry": null,
-    "src": "docs/systems/travel/01-travel-rules.md:76"
+    "src": "docs/systems/travel/01-travel-rules.md:82"
    },
    {
     "value": -2,
@@ -948,7 +948,7 @@
       }
      ]
     },
-    "src": "docs/systems/travel/01-travel-rules.md:77"
+    "src": "docs/systems/travel/01-travel-rules.md:83"
    }
   ],
   "allRacesStance": [
@@ -972,7 +972,7 @@
     ],
     "mutual": true,
     "raw": "เอลฟ์ ↔ ภูต ↔ ฮาล์ฟลิง",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -990,7 +990,7 @@
     ],
     "mutual": true,
     "raw": "เอลฟ์ ↔ ภูต ↔ ฮาล์ฟลิง",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1012,7 +1012,7 @@
     ],
     "mutual": true,
     "raw": "ฮาล์ฟลิง ↔ มนุษย์ เผ่าสัตว์",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1034,7 +1034,7 @@
     ],
     "mutual": true,
     "raw": "ดาร์กเอลฟ์ ↔ แวมไพร์ เผ่าปีศาจ",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1052,7 +1052,7 @@
     ],
     "mutual": true,
     "raw": "แวมไพร์ ↔ มัมมี่",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1075,7 +1075,7 @@
     ],
     "mutual": true,
     "raw": "คนแคระ ↔ มนุษย์ช่าง เผ่ามังกร",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1093,7 +1093,7 @@
     ],
     "mutual": false,
     "raw": "ยักษ์ → คนแคระ",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1115,7 +1115,7 @@
     ],
     "mutual": true,
     "raw": "ออร์ค ↔ เผ่าปีศาจ กูล",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1133,7 +1133,7 @@
     ],
     "mutual": true,
     "raw": "เผ่าปีศาจ ↔ กูล",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1155,7 +1155,7 @@
     ],
     "mutual": true,
     "raw": "เผ่ามังกร ↔ เผ่าปีก เผ่าลาวา",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1173,7 +1173,7 @@
     ],
     "mutual": true,
     "raw": "เผ่าปีก ↔ เงือก",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1192,7 +1192,7 @@
     ],
     "mutual": true,
     "raw": "เงือก ↔ มนุษย์เรือ",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1215,7 +1215,7 @@
     ],
     "mutual": true,
     "raw": "นาคา ↔ กัปปะ มนุษย์ริมน้ำ",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": 1,
@@ -1233,7 +1233,7 @@
     ],
     "mutual": true,
     "raw": "ลูกผสมจักรกล ↔ หุ่นวิญญาณ",
-    "src": "docs/systems/travel/01-travel-rules.md:83"
+    "src": "docs/systems/travel/01-travel-rules.md:89"
    },
    {
     "value": -1,
@@ -1259,7 +1259,7 @@
     ],
     "mutual": false,
     "raw": "เอลฟ์ → มนุษย์ คนแคระ เผ่าสัตว์",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1281,7 +1281,7 @@
     ],
     "mutual": false,
     "raw": "คนแคระ → ยักษ์ เผ่าลาวา",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1307,7 +1307,7 @@
     ],
     "mutual": false,
     "raw": "ออร์ค → เอลฟ์ เผ่าสัตว์ คนแคระ",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1325,7 +1325,7 @@
     ],
     "mutual": true,
     "raw": "ดาร์กเอลฟ์ ↔ เผ่าลาวา",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1347,7 +1347,7 @@
     ],
     "mutual": false,
     "raw": "ภูต → คนแคระ เผ่าปีศาจ",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1366,7 +1366,7 @@
     ],
     "mutual": false,
     "raw": "แวมไพร์ → ชาวหมอก",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1385,7 +1385,7 @@
     ],
     "mutual": false,
     "raw": "มนุษย์ทั่วไป → ลูกผสมจักรกล",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1413,7 +1413,7 @@
      }
     ],
     "raw": "ทุกเผ่า → กูล (ยกเว้นออร์ค เผ่าปีศาจ)",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -1,
@@ -1431,7 +1431,7 @@
     ],
     "mutual": false,
     "raw": "เผ่าสัตว์ → ออร์ค",
-    "src": "docs/systems/travel/01-travel-rules.md:84"
+    "src": "docs/systems/travel/01-travel-rules.md:90"
    },
    {
     "value": -2,
@@ -1449,7 +1449,7 @@
     ],
     "mutual": true,
     "raw": "เงือก ↔ นาคา",
-    "src": "docs/systems/travel/01-travel-rules.md:85"
+    "src": "docs/systems/travel/01-travel-rules.md:91"
    },
    {
     "value": -2,
@@ -1467,7 +1467,7 @@
     ],
     "mutual": true,
     "raw": "เผ่าปีก ↔ ยักษ์",
-    "src": "docs/systems/travel/01-travel-rules.md:85"
+    "src": "docs/systems/travel/01-travel-rules.md:91"
    },
    {
     "value": -2,
@@ -1498,7 +1498,7 @@
      ]
     },
     "raw": "เผ่าปีศาจ แวมไพร์ กูล มัมมี่ ในถิ่นศาสนาแสง (เช่น AL-02)",
-    "src": "docs/systems/travel/01-travel-rules.md:85"
+    "src": "docs/systems/travel/01-travel-rules.md:91"
    },
    {
     "value": -2,
@@ -1517,7 +1517,7 @@
     ],
     "mutual": false,
     "raw": "มัมมี่ → ซาร์ฮาดีน (SH-01)",
-    "src": "docs/systems/travel/01-travel-rules.md:85"
+    "src": "docs/systems/travel/01-travel-rules.md:91"
    }
   ],
   "stanceModifiers": [
@@ -1531,7 +1531,7 @@
      "value": 3,
      "label": "ผู้ไว้ใจในถิ่น"
     },
-    "src": "docs/systems/travel/01-travel-rules.md:87"
+    "src": "docs/systems/travel/01-travel-rules.md:93"
    },
    {
     "delta": 1,
@@ -1540,7 +1540,7 @@
      "k": "text",
      "text": "ทั้งสองประเทศมีสนธิสัญญาการค้า"
     },
-    "src": "docs/systems/travel/01-travel-rules.md:87"
+    "src": "docs/systems/travel/01-travel-rules.md:93"
    },
    {
     "delta": 1,
@@ -1558,7 +1558,7 @@
       }
      ]
     },
-    "src": "docs/systems/travel/01-travel-rules.md:87"
+    "src": "docs/systems/travel/01-travel-rules.md:93"
    },
    {
     "delta": -1,
@@ -1577,7 +1577,7 @@
       }
      ]
     },
-    "src": "docs/systems/travel/01-travel-rules.md:87"
+    "src": "docs/systems/travel/01-travel-rules.md:93"
    },
    {
     "delta": -1,
@@ -1586,7 +1586,7 @@
      "k": "text",
      "text": "เผ่าเดียวกันของถิ่นกำลังสงครามกับเผ่าของตัวละคร"
     },
-    "src": "docs/systems/travel/01-travel-rules.md:87"
+    "src": "docs/systems/travel/01-travel-rules.md:93"
    }
   ],
   "moral": [
@@ -1604,7 +1604,7 @@
       "id": "c_wanted"
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:95"
+    "src": "docs/systems/travel/01-travel-rules.md:101"
    },
    {
     "condRaw": "ขายอาวุธให้ศัตรูของถิ่น (`SH11-3` บูรัก ขายอาวุธให้สองฝ่าย)",
@@ -1624,7 +1624,7 @@
       "mul": 3
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:96"
+    "src": "docs/systems/travel/01-travel-rules.md:102"
    },
    {
     "condRaw": "ผู้ตายหรือผู้ร่ายวิชาตาย (`#necro` `undead`)",
@@ -1656,7 +1656,7 @@
       "pct": 15
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:97"
+    "src": "docs/systems/travel/01-travel-rules.md:103"
    },
    {
     "condRaw": "`c_wanted` ในประเทศ Y",
@@ -1670,7 +1670,7 @@
     "forbiddenContinents": [],
     "onEnterRaw": "ถูกจับเมื่อผ่านด่าน",
     "onEnter": [],
-    "src": "docs/systems/travel/01-travel-rules.md:98"
+    "src": "docs/systems/travel/01-travel-rules.md:104"
    },
    {
     "condRaw": "ผู้ที่ทำลายต้นไม้โลก หรือเผาป่า",
@@ -1687,7 +1687,7 @@
       "id": "SV14-1"
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:99"
+    "src": "docs/systems/travel/01-travel-rules.md:105"
    },
    {
     "condRaw": "ผู้ที่ขโมยของของเทพหรือมังกร",
@@ -1703,7 +1703,7 @@
       "delta": -20
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:100"
+    "src": "docs/systems/travel/01-travel-rules.md:106"
    }
   ],
   "bodyLimits": [
@@ -1765,7 +1765,7 @@
     "sun": "",
     "canFly": true,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:115"
+    "src": "docs/systems/travel/01-travel-rules.md:121"
    },
    {
     "raceRaw": "ภูตพราย",
@@ -1780,7 +1780,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:116"
+    "src": "docs/systems/travel/01-travel-rules.md:122"
    },
    {
     "raceRaw": "เงือก",
@@ -1795,7 +1795,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": true,
-    "src": "docs/systems/travel/01-travel-rules.md:117"
+    "src": "docs/systems/travel/01-travel-rules.md:123"
    },
    {
     "raceRaw": "นาคา",
@@ -1810,7 +1810,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": true,
-    "src": "docs/systems/travel/01-travel-rules.md:118"
+    "src": "docs/systems/travel/01-travel-rules.md:124"
    },
    {
     "raceRaw": "แวมไพร์",
@@ -1825,7 +1825,7 @@
     "sun": "แพ้แสงแดด เดินขบวนกลางคืน",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:119"
+    "src": "docs/systems/travel/01-travel-rules.md:125"
    },
    {
     "raceRaw": "ดาร์กเอลฟ์",
@@ -1841,7 +1841,7 @@
     "sun": "แพ้แสงจ้า (`weak_light`)",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:120"
+    "src": "docs/systems/travel/01-travel-rules.md:126"
    },
    {
     "raceRaw": "มัมมี่",
@@ -1856,7 +1856,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:121"
+    "src": "docs/systems/travel/01-travel-rules.md:127"
    },
    {
     "raceRaw": "สไลม์",
@@ -1871,7 +1871,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:122"
+    "src": "docs/systems/travel/01-travel-rules.md:128"
    },
    {
     "raceRaw": "ออร์ค ยักษ์ เผ่าลาวา เผ่าปีศาจ กูล",
@@ -1890,7 +1890,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:123"
+    "src": "docs/systems/travel/01-travel-rules.md:129"
    },
    {
     "raceRaw": "เอลฟ์",
@@ -1905,7 +1905,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:124"
+    "src": "docs/systems/travel/01-travel-rules.md:130"
    },
    {
     "raceRaw": "ชาวหมอก (มนุษย์)",
@@ -1920,7 +1920,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:125"
+    "src": "docs/systems/travel/01-travel-rules.md:131"
    },
    {
     "raceRaw": "ลูกผสมจักรกล หุ่นวิญญาณ",
@@ -1936,7 +1936,7 @@
     "sun": "",
     "canFly": false,
     "deepWater": false,
-    "src": "docs/systems/travel/01-travel-rules.md:126"
+    "src": "docs/systems/travel/01-travel-rules.md:132"
    }
   ],
   "deepWater": {
@@ -1949,7 +1949,7 @@
    "needTag": "#water_breath",
    "notEnoughTag": "#water_breath_short",
    "text": "ฉากน้ำลึก ฉากที่ติดป้ายน้ำลึก ได้แก่ ร่องธาลาสซา (NR-04 และทางลัดจาก NR-03) น่านน้ำคราเคนของ NR-11 และห้องไข่นาคาของ NR-07 เข้าได้เฉพาะผู้ที่มี `#water_breath` (จากพร ชุดเกราะ เครื่องประดับ หรือยา ใช้ได้ตามเวลาของของนั้น) หรือเป็นเงือกหรือนาคา หรือเดินทางกับผู้นำทางเงือกหรือนาคา `#water_breath_short` ไม่พอ ผู้ที่ไม่ผ่านตัดปลายทางนั้นออกตามชั้น 3.1",
-   "src": "docs/systems/travel/01-travel-rules.md:128"
+   "src": "docs/systems/travel/01-travel-rules.md:134"
   },
   "smuggle": {
    "cost": [
@@ -1967,7 +1967,7 @@
     "MK05-4"
    ],
    "text": "เส้นทางที่ปิดยังข้ามได้ด้วยลักลอบ: ตัวละครต้องมีผู้นำทาง (NPC ผู้ลักลอบ `NB12-*` `NB09-*` `MK05-4`) หรือ skill `stealth` ระดับ 2 ผลคือเหตุการณ์ด่านที่ผ่านหรือถูกจับ ราคาค่าลักลอบ 30 ถึง 100 ทอง และ `c_wanted` 25% ถ้าถูกจับ",
-   "src": "docs/systems/travel/01-travel-rules.md:107"
+   "src": "docs/systems/travel/01-travel-rules.md:113"
   },
   "routes": [
    {
@@ -2008,7 +2008,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:140"
+    "src": "docs/systems/travel/01-travel-rules.md:146"
    },
    {
     "id": "coast",
@@ -2039,7 +2039,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:141"
+    "src": "docs/systems/travel/01-travel-rules.md:147"
    },
    {
     "id": "isthmus",
@@ -2077,7 +2077,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:142"
+    "src": "docs/systems/travel/01-travel-rules.md:148"
    },
    {
     "id": "rail",
@@ -2107,7 +2107,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:143"
+    "src": "docs/systems/travel/01-travel-rules.md:149"
    },
    {
     "id": "caravan",
@@ -2145,7 +2145,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:144"
+    "src": "docs/systems/travel/01-travel-rules.md:150"
    },
    {
     "id": "sea",
@@ -2213,7 +2213,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:145"
+    "src": "docs/systems/travel/01-travel-rules.md:151"
    },
    {
     "id": "chasm",
@@ -2252,7 +2252,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:146"
+    "src": "docs/systems/travel/01-travel-rules.md:152"
    },
    {
     "id": "roots",
@@ -2282,7 +2282,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:147"
+    "src": "docs/systems/travel/01-travel-rules.md:153"
    },
    {
     "id": "fog",
@@ -2346,7 +2346,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:148"
+    "src": "docs/systems/travel/01-travel-rules.md:154"
    },
    {
     "id": "stair",
@@ -2388,7 +2388,7 @@
      "ky_stair_ticket"
     ],
     "sky": true,
-    "src": "docs/systems/travel/01-travel-rules.md:149"
+    "src": "docs/systems/travel/01-travel-rules.md:155"
    },
    {
     "id": "airship",
@@ -2437,7 +2437,7 @@
     ],
     "needs": [],
     "sky": true,
-    "src": "docs/systems/travel/01-travel-rules.md:150"
+    "src": "docs/systems/travel/01-travel-rules.md:156"
    },
    {
     "id": "whale",
@@ -2476,7 +2476,7 @@
     ],
     "needs": [],
     "sky": true,
-    "src": "docs/systems/travel/01-travel-rules.md:151"
+    "src": "docs/systems/travel/01-travel-rules.md:157"
    },
    {
     "id": "waterfall",
@@ -2505,7 +2505,7 @@
      "ky_waterfall_key"
     ],
     "sky": true,
-    "src": "docs/systems/travel/01-travel-rules.md:152"
+    "src": "docs/systems/travel/01-travel-rules.md:158"
    },
    {
     "id": "fly",
@@ -2532,7 +2532,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:153"
+    "src": "docs/systems/travel/01-travel-rules.md:159"
    },
    {
     "id": "ruin",
@@ -2562,7 +2562,7 @@
     ],
     "needs": [],
     "sky": false,
-    "src": "docs/systems/travel/01-travel-rules.md:154"
+    "src": "docs/systems/travel/01-travel-rules.md:160"
    }
   ],
   "noSmuggleText": "เส้นที่ปิดยังไปได้ด้วยลักลอบ (ข้อ 3.4) ใช้เวลาของเส้นนั้น ค่าลักลอบแทนค่าโดยสาร ยกเว้นเส้นที่เขียนว่าปิดเพราะที่หายหรือเพราะกายภาพ (ยอดบันไดหายหลัง `DR-01` รากตาย ปากเหวถูกผนึก เรือเหาะจอดช่วงลมหยุด) ซึ่งลักลอบไม่ได้",
@@ -2587,7 +2587,7 @@
       "จอดทั้งหมด เส้นปิด ลักลอบไม่ได้",
       "ไม่เปลี่ยน (วาฬฟ้า น้ำตก บันได ทางบก บินเอง)"
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:162"
+     "src": "docs/systems/travel/01-travel-rules.md:168"
     },
     {
      "period": "หลังปีที่ 20 ยุคลมสุ่ม",
@@ -2607,10 +2607,10 @@
       "กลับมาบินตามกติกาเดิม (`PO-02` ยังมีผล)",
       "ไม่เปลี่ยน"
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:163"
+     "src": "docs/systems/travel/01-travel-rules.md:169"
     }
    ],
-   "src": "docs/systems/travel/01-travel-rules.md:158"
+   "src": "docs/systems/travel/01-travel-rules.md:164"
   },
   "encounters": [
    {
@@ -2654,7 +2654,7 @@
      15,
      -1
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:171"
+    "src": "docs/systems/travel/01-travel-rules.md:177"
    },
    {
     "d": 2,
@@ -2664,7 +2664,7 @@
     "nums": [
      2
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:172"
+    "src": "docs/systems/travel/01-travel-rules.md:178"
    },
    {
     "d": 3,
@@ -2674,7 +2674,7 @@
     "nums": [
      1
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:173"
+    "src": "docs/systems/travel/01-travel-rules.md:179"
    },
    {
     "d": 4,
@@ -2685,7 +2685,7 @@
      1.2,
      1.5
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:174"
+    "src": "docs/systems/travel/01-travel-rules.md:180"
    },
    {
     "d": 5,
@@ -2702,7 +2702,7 @@
      }
     ],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:175"
+    "src": "docs/systems/travel/01-travel-rules.md:181"
    },
    {
     "d": 6,
@@ -2734,7 +2734,7 @@
     "nums": [
      1
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:176"
+    "src": "docs/systems/travel/01-travel-rules.md:182"
    },
    {
     "d": 7,
@@ -2765,7 +2765,7 @@
     "nums": [
      15
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:177"
+    "src": "docs/systems/travel/01-travel-rules.md:183"
    },
    {
     "d": 8,
@@ -2773,7 +2773,7 @@
     "effectRaw": "เกวียนหัก เรือรั่ว สัตว์ลากบาดเจ็บ ทอง −มูลค่าซ่อม หรือล่าช้าหนึ่งฤดู",
     "effects": [],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:178"
+    "src": "docs/systems/travel/01-travel-rules.md:184"
    },
    {
     "d": 9,
@@ -2781,7 +2781,7 @@
     "effectRaw": "พักฟรี ฟื้น hp ได้ข่าวหรือเงื่อนงำของเส้นเรื่อง (ความรู้ใหม่)",
     "effects": [],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:179"
+    "src": "docs/systems/travel/01-travel-rules.md:185"
    },
    {
     "d": 10,
@@ -2789,7 +2789,7 @@
     "effectRaw": "ตัวละครได้ยินเหตุการณ์ใหญ่ที่เพิ่งเกิดในทวีปอื่น (ข่าว ไม่ใช่การอยู่ที่นั่น) เปลี่ยนน้ำหนักการตัดสินใจครั้งต่อไป",
     "effects": [],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:180"
+    "src": "docs/systems/travel/01-travel-rules.md:186"
    },
    {
     "d": 11,
@@ -2797,7 +2797,7 @@
     "effectRaw": "NPC ที่เคยรู้จักผ่านมาพอดี (บุญคุณ/แค้นทำงาน)",
     "effects": [],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:181"
+    "src": "docs/systems/travel/01-travel-rules.md:187"
    },
    {
     "d": 12,
@@ -2805,14 +2805,14 @@
     "effectRaw": "ขาเงียบ",
     "effects": [],
     "nums": [],
-    "src": "docs/systems/travel/01-travel-rules.md:182"
+    "src": "docs/systems/travel/01-travel-rules.md:188"
    }
   ],
   "encounterRolls": {
    "perLeg": 1,
    "crossContinent": 2,
    "caravanWithPassengers": 1,
-   "src": "docs/systems/travel/01-travel-rules.md:167"
+   "src": "docs/systems/travel/01-travel-rules.md:173"
   },
   "encounterMods": [
    {
@@ -2829,7 +2829,7 @@
       "mul": 3
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:184"
+    "src": "docs/systems/travel/01-travel-rules.md:190"
    },
    {
     "when": "โรคระบาด",
@@ -2845,7 +2845,7 @@
       "mul": 3
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:184"
+    "src": "docs/systems/travel/01-travel-rules.md:190"
    },
    {
     "when": "ภัยอดอยาก",
@@ -2865,7 +2865,7 @@
       "mul": 2
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:184"
+    "src": "docs/systems/travel/01-travel-rules.md:190"
    },
    {
     "when": "หลัง DR-06 ขาทางเรือหรือเรือเหาะ",
@@ -2880,7 +2880,7 @@
       "mul": 2
      }
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:184",
+    "src": "docs/systems/travel/01-travel-rules.md:190",
     "routes": [
      "sea",
      "airship"
@@ -2897,7 +2897,7 @@
       3,
       2
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:192"
+     "src": "docs/systems/travel/01-travel-rules.md:198"
     },
     {
      "metric": "ประเทศที่เคยเหยียบนอกประเทศเกิด (L0 นับเป็น 0)",
@@ -2906,7 +2906,7 @@
      "nums": [
       2
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:193"
+     "src": "docs/systems/travel/01-travel-rules.md:199"
     },
     {
      "metric": "จุดบรรจบที่เจอ",
@@ -2916,7 +2916,7 @@
       1,
       0.7
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:194"
+     "src": "docs/systems/travel/01-travel-rules.md:200"
     },
     {
      "metric": "ชีวิตที่ไม่เจอต่างเผ่าเลยตลอดชีวิต",
@@ -2926,7 +2926,7 @@
       25,
       35
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:195"
+     "src": "docs/systems/travel/01-travel-rules.md:201"
     }
    ],
    "measured": [
@@ -2939,7 +2939,7 @@
       2.9,
       3
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:203"
+     "src": "docs/systems/travel/01-travel-rules.md:209"
     },
     {
      "metric": "NPC ต่างเผ่าที่เจอ มนุษย์",
@@ -2950,7 +2950,7 @@
       1.4,
       3
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:204"
+     "src": "docs/systems/travel/01-travel-rules.md:210"
     },
     {
      "metric": "ชีวิตที่ไม่เจอต่างเผ่าเลย เฉลี่ยของเผ่าที่ไม่ใช่มนุษย์",
@@ -2961,7 +2961,7 @@
       18,
       25
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:205"
+     "src": "docs/systems/travel/01-travel-rules.md:211"
     },
     {
      "metric": "เผ่าที่ได้ต่ำกว่า 2 NPC",
@@ -2974,7 +2974,7 @@
       20,
       0
      ],
-     "src": "docs/systems/travel/01-travel-rules.md:206"
+     "src": "docs/systems/travel/01-travel-rules.md:212"
     }
    ]
   },
@@ -3189,7 +3189,7 @@
       "เข้าไม่ได้ตามปกติ ต้องมีใบผ่านจากผู้ไว้ใจ ≥ 3 ในถิ่น หรือเป็นทูต/ผู้ถูกเชิญ หรือลักลอบ (ข้อ 3.4)"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:72"
+    "src": "docs/systems/travel/01-travel-rules.md:78"
    },
    {
     "headings": [
@@ -3214,7 +3214,7 @@
       "เงือก ↔ นาคา · เผ่าปีก ↔ ยักษ์ · เผ่าปีศาจ แวมไพร์ กูล มัมมี่ ในถิ่นศาสนาแสง (เช่น AL-02) · มัมมี่ → ซาร์ฮาดีน (SH-01)"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:81"
+    "src": "docs/systems/travel/01-travel-rules.md:87"
    },
    {
     "headings": [
@@ -3258,7 +3258,7 @@
       "ศาสนาตามล่า ศรัทธาเทพ −20"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:93"
+    "src": "docs/systems/travel/01-travel-rules.md:99"
    },
    {
     "headings": [
@@ -3384,7 +3384,7 @@
       "—"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:113"
+    "src": "docs/systems/travel/01-travel-rules.md:119"
    },
    {
     "headings": [
@@ -3521,7 +3521,7 @@
       "ตามเหตุการณ์ `SF-*`"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:138"
+    "src": "docs/systems/travel/01-travel-rules.md:144"
    },
    {
     "headings": [
@@ -3551,7 +3551,7 @@
       "ไม่เปลี่ยน"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:160"
+    "src": "docs/systems/travel/01-travel-rules.md:166"
    },
    {
     "headings": [
@@ -3624,7 +3624,7 @@
       "ขาเงียบ"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:169"
+    "src": "docs/systems/travel/01-travel-rules.md:175"
    },
    {
     "headings": [
@@ -3657,7 +3657,7 @@
       "35%"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:190"
+    "src": "docs/systems/travel/01-travel-rules.md:196"
    },
    {
     "headings": [
@@ -3695,7 +3695,7 @@
       "0"
      ]
     ],
-    "src": "docs/systems/travel/01-travel-rules.md:201"
+    "src": "docs/systems/travel/01-travel-rules.md:207"
    }
   ]
  }

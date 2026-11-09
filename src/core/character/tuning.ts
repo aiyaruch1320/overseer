@@ -128,7 +128,7 @@ export const WISH_CHILD_ANIMAL = { mul: 3, fromAge: 5, toAge: 14 };
 export const WISH_LINES: Record<string, string> = { travel: 'wd', revenge: 'kn' };
 
 /** Years of the adult life in which the travel of a life that asked to see the world weighs more (19-wish.md §2: "การเดินทาง x1.5 สิบปีแรกของวัยผู้ใหญ่"). Kept on the sheet for the travel system. */
-export const WISH_TRAVEL = { mul: 1.5, years: 10 };
+export const WISH_TRAVEL = { mul: 3, years: 10 };
 
 /** Reasons the wish gives for an ask it cannot keep (the sheet of birth prints them on the row of what cannot be done). */
 export const WISH_WORDS = {
@@ -151,6 +151,7 @@ export const WISH_WORDS = {
   blessingClash: 'พรนี้ขัดกับเผ่า (ตารางความขัดของเผ่า) ไม่ให้',
   curseClash: 'คำสาปนี้ขัดกับเผ่า ไม่ให้',
   jobCannot: 'อาชีพนี้เผ่าหรือชนชั้นนี้ทำไม่ได้ น้ำหนักเป็น 0',
+  noParents: 'เผ่านี้ไม่มีพ่อแม่ให้นับ จึงเหลือหนึ่งไม่ได้',
   familyNone: 'ผู้ถูกอัญเชิญไม่มีครอบครัวในโลกนี้',
   unknownValue: 'ไม่มีค่านี้ในข้อมูล',
 } as const;

@@ -26,7 +26,7 @@ export const textSystem: System = {
     // what the character system wrote at birth: how the parents met, the sign, the special birth
     const born = [...ctx.state.log].reverse().find((e) => e.sys === 'character' && e.kind === 'birth' && e.age !== undefined);
     const bd = born?.data ?? {};
-    const ext = (life.ext.character ?? {}) as { meet?: string };
+    const ext = (life.ext.character ?? {}) as { meet?: string; wish?: { ask?: { family?: string } } };
     // only a life the lineage began as an heir or a successor takes over; one that begins grown on its own (the late wakers 17, the summoned 16) wakes or is called
     const rec = (ctx.state.lineage.x as { recs?: { id: string; origin: string }[] } | undefined)?.recs?.find((r) => r.id === life.id);
     const heir = life.hAge > 0 && (rec?.origin === 'heir' || rec?.origin === 'successor');
@@ -61,6 +61,8 @@ export const textSystem: System = {
         born: (bd.born as string | undefined) ?? null,
         second: (bd.second as string | undefined) ?? null,
         meet: ext.meet ?? null,
+        // a wish for an orphan: the line of the birth says it (the parents are put away at the first beat, T2-1)
+        ...(ext.wish?.ask?.family === 'orphan' ? { orphan: true } : {}),
         special,
         sign: (bd.sign as string | undefined) ?? null,
         ...(heir ? { heir: true } : {}),
