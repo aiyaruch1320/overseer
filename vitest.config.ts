@@ -8,5 +8,7 @@ export default defineConfig({
     // full-life tests keep a worker busy for many seconds; fewer workers in their own processes keep the worker RPC from timing out
     pool: 'forks',
     maxWorkers: 4,
+    // one turn of the event loop after each test, so the worker RPC is answered between long synchronous tests (tests/setup/yield.ts)
+    setupFiles: ['tests/setup/yield.ts'],
   },
 });
