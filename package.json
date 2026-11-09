@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "serve": "vite build && tsx server/main.ts",
     "typecheck": "tsc --noEmit",
     "docs:check": "node scripts/docs/check-docs.mjs",
     "docs:build": "node scripts/docs/build-weapon-catalog.mjs && node scripts/docs/build-item-catalog.mjs && node scripts/docs/build-npc-map.mjs && node scripts/docs/build-story-map.mjs && node scripts/docs/build-storyline-balance.mjs && node scripts/docs/build-local-events.mjs && node scripts/docs/build-event-coverage.mjs && node scripts/docs/build-country-links.mjs && node scripts/docs/build-npc-economy.mjs && node scripts/docs/build-docs-manifest.mjs",
