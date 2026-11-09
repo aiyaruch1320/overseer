@@ -142,7 +142,8 @@ export function cardOfEntry(data: GameData, e: LogEntry, state?: GameState | nul
   const at = placeOf(data, state, e);
   card.scenery = { continent: at?.continent ?? 'AZ', setting: 'outdoor', seed: seedOf(card.id), ...(at?.country ? { country: at.country } : {}) };
   // the things the scene of the event names (the pearl egg of DR-03) are in the picture of its card too
-  const script = e.id ? indexOf(data)?.script.get(e.id) : undefined;
+  const ix = indexOf(data);
+  const script = ix ? sceneKeys(e, (id) => ix.template.get(id)).keys.map((k) => ix.script.get(k)).find(Boolean) : undefined;
   const staged = script ? stagingOf(script) : undefined;
   if (staged?.props.length) card.scenery.props = staged.props;
   if (staged?.setting) card.scenery.setting = staged.setting;
@@ -162,6 +163,19 @@ function cardBase(data: GameData, e: LogEntry): CardModel {
   return plainCard(e.id ?? String(e.n), title, body, e.sys, str(d.mark) ?? '', ix?.scenes, group);
 }
 
+/**
+ * A miracle's day (20-god-ui §7.3: "the people see the omen") has people from the first beat: when its script brings its crowd late, a few people stand under the sky from the start,
+ * so the light falls on someone (the crowd of the later beat is the same actor and walks to its place).
+ */
+export function withWitnesses(script: SceneScript): SceneScript {
+  if (script.kind !== 'miracle') return script;
+  const firstActor = script.beats.find((b) => b.k === 'actor');
+  if (!firstActor || firstActor.at <= 1) return script;
+  const crowd = script.beats.find((b) => b.k === 'actor' && b.id === 'crowd');
+  if (!crowd) return script;
+  return { ...script, beats: [{ k: 'actor', at: 0.6, id: 'crowd', label: 'ผู้คน', x: 0.26, pose: 'stand', count: 3 }, ...script.beats] };
+}
+
 /** The scene of a log entry: its script (the rest of the scene chosen by the result in the entry) or its card. */
 export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null): SceneView {
   const card = cardOfEntry(data, e, state);
@@ -173,7 +187,7 @@ export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null):
     if (!script) continue;
     const std = ix.script.get('std.clash');
     const picked = variants.map((group) => group.find((k) => k && (script.variants?.[k] || std?.variants?.[k])));
-    return { kind: 'script', script: resolveScript(script, picked, std), card, entry: e };
+    return { kind: 'script', script: withWitnesses(resolveScript(script, picked, std)), card, entry: e };
   }
   return { kind: 'card', card, entry: e };
 }

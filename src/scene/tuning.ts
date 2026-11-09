@@ -26,7 +26,7 @@ export const CAMERA: Record<CameraFrame, { zoom: number; lift: number }> = {
 
 /** The light of a scene (13-storyline-scenes §1 "แสง"): colour, strength, and where it comes from. */
 export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'front' | 'back' | 'all' | 'centre'; add: boolean }> = {
-  'warm-front': { color: '#ffa44a', alpha: 0.2, from: 'front', add: false },
+  'warm-front': { color: '#b0602a', alpha: 0.3, from: 'front', add: true },
   'cold-back': { color: '#5a78cc', alpha: 0.4, from: 'back', add: true },
   diffuse: { color: '#ffffff', alpha: 0.06, from: 'all', add: true },
   glow: { color: '#fff0c0', alpha: 0.14, from: 'centre', add: true },
@@ -165,7 +165,7 @@ export const GOD_FX = {
   // MR-04: half width at the top and at the ground (the beam is a third of the picture wide where it lands), opacity of the gold body and the pale core and rim, seconds to open, motes, the white wisps of the dead
   beam: { top: 30, ground: 54, body: 0.72, core: 0.3, rim: 0.7, open: 1.6, motes: 30, wisps: 9, wispsAt: 14.5 },
   // MR-17: where the star starts and lands, its radius at the start and at the last night, the second it begins to fall and the second it lands, the tail's length, the length of the flash (seconds), the wave, the crater
-  meteor: { from: [236, 34], land: [160, 138], r0: 1.2, r1: 6.5, fallAt: 8, hitAt: 12.8, tail: 20, flash: 0.1, wave: 8, waveSpeed: 24, crater: { rx: 62, ry: 12 } },
+  meteor: { from: [236, 34], land: [160, 138], r0: 2.6, r1: 7, fallAt: 8, hitAt: 12.8, tail: 20, flash: 0.1, wave: 8, waveSpeed: 24, crater: { rx: 62, ry: 12 } },
   dread: { rx: 100, ry: 64, core: 54, smoke: 12 },
   fate: { threads: [-19, 0, 18], ringRx: 92, ringRy: 20, stitches: 56, end: 124 },
 } as const;
@@ -173,4 +173,4 @@ export const GOD_FX = {
 // ---------- the picture of an event card (M7 ka4) ----------
 
 /** The still frame of a card picture: the motion time its particles are drawn at, how many of them, how strongly the card sky tints the sky rows and the ground rows of the painted place, how many pictures are kept. */
-export const CARD_PIC = { motion: 5.5, amount: 1, sky: 0.62, ground: 0.34, plainSky: 0.12, plainGround: 0.06, dull: 0.12, drain: 0.55, speck: 2, keep: 32 } as const;
+export const CARD_PIC = { motion: 5.5, amount: 1, sky: 0.3, ground: 0.16, plainSky: 0.12, plainGround: 0.06, dull: 0.12, drain: 0.55, speck: 2, keep: 32 } as const;

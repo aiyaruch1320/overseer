@@ -112,27 +112,41 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
   /** The pearl egg the size of a house in a nest of twigs: warm rings of light, a lit side, a shadow side. */
   egg(px, x, _c, seed) {
     const cy = BASE - 38;
-    glow(px, x, cy, 52, [255, 236, 200], 70);
+    // the glow of a pearl: rings of pale rose, mint and gold round it
+    glow(px, x, cy, 62, [255, 226, 236], 80);
+    glow(px, x, cy, 44, [214, 255, 238], 70);
+    glow(px, x, cy, 30, [255, 244, 190], 70);
     const r = rng(seed + 3);
-    for (let i = 0; i < 70; i++) {
-      const a = (i / 70) * Math.PI;
-      const tx = x + Math.cos(a) * (36 + r() * 6) * (i % 2 ? 1 : -1) * 0.9, ty = BASE - 4 - Math.sin(a) * 6 - r() * 5;
-      px.line(tx, ty, tx + (r() - 0.5) * 12, ty + 2, [108, 84, 56]);
-    }
-    for (let y = -26; y <= 26; y++) {
-      const t = y / 26;
-      const half = Math.round(21 * Math.sqrt(1 - t * t) * (1 + (y > 0 ? 0 : 0.1 * -t)));
+    // the egg: pearl, lit from the left, with bands of rose, mint and lilac that slide over it
+    const pale: Rgb[] = [[255, 252, 244], [250, 226, 236], [214, 244, 232], [226, 218, 250]];
+    for (let y = -28; y <= 28; y++) {
+      const t = y / 28;
+      const half = Math.round(22 * Math.sqrt(1 - t * t) * (1 + (y > 0 ? 0 : 0.1 * -t)));
       for (let dx = -half - 1; dx <= half + 1; dx++) {
         const edge = Math.abs(dx) > half;
         const u = dx / Math.max(1, half);
-        const pearl: Rgb = u < -0.3 ? [255, 250, 236] : u < 0.35 ? [238, 224, 214] : [206, 196, 204];
-        const tint: Rgb = (dx + y) % 7 === 0 ? [255, 214, 226] : (dx - y) % 9 === 0 ? [208, 230, 255] : pearl;
-        px.set(x + dx, cy + y, edge ? [150, 122, 120] : tint);
+        const band = pale[((Math.floor((dx + y * 0.6 + 40) / 5) % 4) + 4) % 4];
+        const shade = u < -0.3 ? 1 : u < 0.3 ? 0.9 : 0.74;
+        const c: Rgb = [band[0] * shade, band[1] * shade, Math.min(255, band[2] * shade + (u > 0.3 ? 10 : 0))];
+        px.set(x + dx, cy + y, edge ? [104, 84, 120] : c);
       }
     }
-    px.rect(x - 11, cy - 17, 4, 2, [255, 255, 255]);
-    px.rect(x - 14, cy - 13, 2, 2, [255, 255, 255]);
-    for (let i = 0; i < 7; i++) px.rect(x - 30 + i * 9 + (i % 2) * 2, BASE - 6 - (i % 3), 7, 3, [92, 70, 46]);
+    px.rect(x - 13, cy - 19, 5, 2, [255, 255, 255]);
+    px.rect(x - 16, cy - 15, 2, 3, [255, 255, 255]);
+    // the nest: a wide bowl of woven twigs on the floating rock, dark outline, lit rim, the egg sunk in it
+    for (let row = 0; row < 12; row++) {
+      const half = Math.round(50 - Math.pow(1 - row / 12, 1.5) * 8 + Math.sin(row * 1.3) * 1.5);
+      const y = BASE - 12 + row;
+      px.rect(x - half - 1, y, half * 2 + 3, 1, OUT);
+      for (let xx = -half; xx <= half; xx++) {
+        const w = (xx * 3 + row * 5 + Math.floor(r() * 3)) % 7;
+        px.set(x + xx, y, row < 2 ? [168, 128, 80] : w < 2 ? [64, 46, 32] : w < 4 ? [112, 82, 52] : [136, 100, 62]);
+      }
+    }
+    for (let i = 0; i < 26; i++) {
+      const tx = x - 54 + r() * 108;
+      px.line(tx, BASE - 12 - r() * 3, tx + (r() - 0.5) * 14, BASE - 14 - r() * 4, [150, 112, 70]);
+    }
   },
   /** The eternal flame: a stone brazier on a pillar with a tall flame and a pool of orange light. */
   flame(px, x, _c, seed) {
