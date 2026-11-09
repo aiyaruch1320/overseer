@@ -145,8 +145,9 @@ export class GameStore {
       this.phase.value = 'watch';
       this.lifeNo++;
       this.applyArm();
-      recorder.note('life.next', { newcomer: !!opts.newcomer });
       recorder.sync(g.state);
+      // after the sync, so the marker carries the number of the life it begins: each life has one start (`game.new` for the first of a world, `life.next` for the rest)
+      recorder.note('life.next', { newcomer: !!opts.newcomer });
       this.play();
     }
     this.bump();
@@ -245,7 +246,8 @@ export class GameStore {
   /** `source` says who changed it: the player (the default) or the page itself (a card slows the clock, a play after a pause); the record keeps it. */
   setSettings(patch: Partial<Settings>, source: 'player' | 'auto' = 'player'): CommandResult {
     const r = this.send({ type: 'settings', patch });
-    if (r.ok) recorder.note('settings', { source, ...(patch.speed ? { speed: patch.speed } : {}), ...(patch.attention ? { attention: patch.attention } : {}), ...(patch.llm ? { llm: patch.llm } : {}), ...(patch.cards ? { cards: patch.cards } : {}) });
+    // the changes the page makes itself (a card slows the clock, the arm of the A/B) follow from the call and life.start events: they are not recorded, so the record holds what the player did
+    if (r.ok && source === 'player') recorder.note('settings', { source, ...(patch.speed ? { speed: patch.speed } : {}), ...(patch.attention ? { attention: patch.attention } : {}), ...(patch.llm ? { llm: patch.llm } : {}), ...(patch.cards ? { cards: patch.cards } : {}) });
     return r;
   }
 

@@ -150,7 +150,8 @@ export class Recorder {
     this.tally?.finish();
     this.tally = new Tally({ now: () => this.now(), meta: () => this.metaOf() });
     this.tally.life = this.lives.value;
-    this.note('game.new', fields);
+    // the first life of this world is the next number of the record: `game.new` marks its start as `life.next` marks the others
+    this.note('game.new', { ...fields, life: this.lives.value + 1 });
   }
 
   /** The life of a state as the record knows it at once: race, country, age (the birth entry is not in the record, so it is `partial`). */
