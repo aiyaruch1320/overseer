@@ -775,6 +775,12 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   // กรอม-บาดู "ผมถักเกลียวเหมือนเชือก เคราก้อนหิน สร้อยหินร้อยดวง": the broadest, a rope of braid, a beard, a necklace of stones
   'SH17-1': { outfit: 'cloak', beard: 'braided', feats: ['beads', 'moss'], body: { scale: 1.52, shoulders: 1.4, head: 0.9 } },
 
+  // อาวีนา "ชุดผู้ประสานสีเทาน้ำเงินเรียบ" and ธีโอ "กล้ามแน่น ผมโกนข้าง ชุดช่างผ้า": a plain long coat for her, a broad craftsman's apron for him (they were one winged tunic)
+  'SH16-1': { outfit: 'robe' },
+  'SH16-3': { outfit: 'apron', body: { shoulders: 1.16 } },
+  // ธาร์ล "ผมขาวสั้นแนบหัว หนวดเคราขาวเรียบ": the elder has the white beard that his human helper (SV06-3) has not
+  'SV06-1': { beard: 'short' },
+
   // ── Mecharia ──
   // โอมิ "ร่างผอมเตี้ยกว่าหุ่นทั่วไป แขนยาว กล่องชิ้นส่วนเก่าแขวนหลัง" and ไรเวอร์-9 "ร่างสูงเพรียว": a short thin one with a box of parts on his back, a tall slim one (they were one shape)
   'MK03-2': { tool: 'bag', body: { scale: 0.84, shoulders: 0.86 } },

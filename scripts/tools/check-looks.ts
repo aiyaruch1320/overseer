@@ -110,6 +110,8 @@ export interface Result {
   pairs: Pair[];
   /** the pairs that fail both: they cannot be told apart from afar */
   confusable: Pair[];
+  /** the ten pairs of one country nearest to each other whether they fail or not (shape first, then colour), for the report */
+  nearest: Pair[];
   underspecified: Entry[];
   pairCount: number;
   /** the measure of every compared pair (not only the failing ones), for the percentile table of the report */
@@ -133,7 +135,8 @@ export function checkEntries(entries: Entry[], opts: Opts = {}): Result {
   // 2 and 3. the pairs of one country
   const byCountry = new Map<string, Entry[]>();
   for (const e of entries) byCountry.set(e.country, [...(byCountry.get(e.country) ?? []), e]);
-  const pairs: Pair[] = [], confusable: Pair[] = [];
+  const pairs: Pair[] = [], confusable: Pair[] = [], nearest: Pair[] = [];
+  const closeness = (p: Pair): number => p.silhouette + p.colour / 100;
   let pairCount = 0;
   const dist: Result['dist'] = { silhouette: [], silhouetteGrid: [], colour: [] };
   for (const [country, list] of byCountry)
@@ -146,13 +149,16 @@ export function checkEntries(entries: Entry[], opts: Opts = {}): Result {
         const silhouette = silhouetteDiff(ma, mb, opts.basis ?? 'figure'), silhouetteGrid = silhouetteDiff(ma, mb, 'grid'), colour = deltaE(A.look.main, B.look.main);
         dist.silhouette.push(silhouette); dist.silhouetteGrid.push(silhouetteGrid); dist.colour.push(colour);
         const failSilhouette = silhouette < sMin, failColour = colour < cMin;
-        if (!failSilhouette && !failColour) continue;
         const p: Pair = { country, continent: A.continent, a: A.id, b: B.id, silhouette, silhouetteGrid, colour, failSilhouette, failColour };
+        nearest.push(p);
+        if (nearest.length > 40) { nearest.sort((x, y) => closeness(x) - closeness(y)); nearest.length = 10; }
+        if (!failSilhouette && !failColour) continue;
         pairs.push(p);
         if (failSilhouette && failColour) confusable.push(p);
       }
   const underspecified = entries.filter((e) => e.defaults.length >= uMin);
-  return { entries, signatures, pairs, confusable, underspecified, pairCount, dist };
+  nearest.sort((x, y) => closeness(x) - closeness(y)); nearest.length = Math.min(nearest.length, 10);
+  return { entries, signatures, pairs, confusable, nearest, underspecified, pairCount, dist };
 }
 
 /** An exit code of 1 when a signature repeats or any pair of one country is too close in shape or in colour. */
@@ -193,7 +199,7 @@ export function summary(r: Result, basis: Basis = 'figure'): string[] {
     L.push(`  ${c}: ${ps.filter((p) => p.failSilhouette).length} · ${ps.filter((p) => p.failColour).length} · ${ps.filter((p) => p.failSilhouette && p.failColour).length}`);
   }
   L.push(`NPC ที่เอกสารระบุไม่พอ (ค่าเริ่มต้น ${UNDERSPECIFIED_MIN} ใน 5 ช่องขึ้นไป): ${r.underspecified.filter((e) => e.kind === 'npc').length} NPC, ${r.underspecified.filter((e) => e.kind === 'successor').length} ผู้สืบ`);
-  const worst = [...(r.confusable.length ? r.confusable : r.pairs)].sort((a, b) => a.silhouette + a.colour / 100 - (b.silhouette + b.colour / 100)).slice(0, 10);
+  const worst = r.confusable.length ? [...r.confusable].sort((a, b) => a.silhouette + a.colour / 100 - (b.silhouette + b.colour / 100)).slice(0, 10) : r.nearest;
   L.push(r.confusable.length ? 'คู่ที่ตกทั้งสองข้อ (ใกล้ที่สุด 10 คู่):' : 'คู่ที่ใกล้ที่สุด 10 คู่:');
   for (const p of worst) L.push(`  ${p.country} ${p.a} ${names.get(p.a)!.name} ~ ${p.b} ${names.get(p.b)!.name}  เงา ${pct(p.silhouette)}  สี ΔE ${p.colour.toFixed(1)}`);
   return L;
