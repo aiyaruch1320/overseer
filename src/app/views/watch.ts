@@ -11,6 +11,7 @@ import { callReason, lines, plainName, type Line } from '../../core/text';
 import { items } from '../../core/text/labels';
 import { CARD_KINDS, type GameState, type GodAction, type LogEntry, type Settings } from '../../core/types';
 import { W } from './god-words';
+import { perLifeLines } from '../life-number';
 import { WATCH_WORDS } from './watch-words';
 import { LOG_KEEP } from '../tuning';
 import { clockOf, purseOf } from '../view';
@@ -89,13 +90,22 @@ export function logStartN(state: GameState): number {
   return birth;
 }
 
+/** The running number of the birth entry of the life that the entry `n` belongs to (the last birth at or before it); 0 when none. */
+export function birthBefore(state: GameState, n: number): number {
+  for (let i = state.log.length - 1; i >= 0; i--) {
+    const e = state.log[i];
+    if (e.n <= n && e.sys === 'character' && e.kind === 'birth') return e.n;
+  }
+  return 0;
+}
+
 const linesCache = new WeakMap<GameState, { data: GameData; n: number; all: Line[] }>();
 
 /** Every line of level 1 and up, read once per change of the log. */
 export function allLines(data: GameData, state: GameState): Line[] {
   const hit = linesCache.get(state);
   if (hit && hit.data === data && hit.n === state.logN) return hit.all;
-  const all = lines(data, state.log, 1);
+  const all = perLifeLines(state, lines(data, state.log, 1));
   linesCache.set(state, { data, n: state.logN, all });
   return all;
 }
@@ -236,8 +246,8 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
       break;
     }
   }
-  // the first recap of a life holds nothing from before its birth (the world's era is behind the log's own control)
-  const from = logStartN(state);
+  // the recap of a life holds nothing from before its birth: not the lines that closed the last life ("ไม่มีผู้สืบ") and not the world events of the gap
+  const from = birthBefore(state, e.n);
   const recap = allLines(data, state)
     .filter((l) => l.entry.n > prev && l.entry.n >= from && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
     .slice(-RECAP_MAX);

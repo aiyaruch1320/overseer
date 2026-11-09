@@ -319,6 +319,21 @@ function candidateOf(data: GameData, ctx: Ctx, spec: HeirSpec, chosen: boolean):
   return { line, tie: spec.tie ?? '', name: spec.name, how, age: spec.age, chosen, traits, aptitudes, married: spec.married ?? null, other: spec.other ?? null, blood: spec.blood };
 }
 
+/**
+ * The name of the family the player is in now. The core names the whole save's family after the first life; a newcomer starts a new family, so the name
+ * is the founder of the current line: the last life that began as a newcomer (or the first life).
+ */
+export function lineName(state: GameState): string {
+  const x = lx(state);
+  let at = 0;
+  x.recs.forEach((r, i) => {
+    if (r.origin === 'newcomer') at = i;
+  });
+  const founder = x.recs[at];
+  const name = founder && (state.lineage.lives.find((l) => l.id === founder.id)?.name ?? (state.life?.id === founder.id ? state.life.name : undefined));
+  return name ?? x.dynasty;
+}
+
 /** The heirs of the dead life, read from the bond book (the ctx of the game that ended). */
 export function heirChoice(data: GameData, ctx: Ctx): HeirChoice {
   const x = lx(ctx.state);
@@ -330,7 +345,7 @@ export function heirChoice(data: GameData, ctx: Ctx): HeirChoice {
     successor: heir && heir.rung > 0 ? candidateOf(data, ctx, heir, true) : null,
     extinct: !heir,
     blocked: ctx.state.world.ended ? 'world-ended' : null,
-    family: { dynasty: x.dynasty, generation: x.recs.length },
+    family: { dynasty: lineName(ctx.state), generation: x.recs.length },
   };
 }
 
@@ -390,7 +405,7 @@ export function legendView(data: GameData, state: GameState): LegendView {
   const unlocks = (data.god?.items as { goals?: { unlocks?: { at: number; opens: string }[] } } | undefined)?.goals?.unlocks ?? [];
   const x = lx(state);
   return {
-    dynasty: ws.family.dynasty,
+    dynasty: lineName(state),
     generations: ws.family.generations,
     extinct: ws.family.extinct,
     seed: state.seed,
