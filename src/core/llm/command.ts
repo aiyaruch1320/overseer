@@ -30,6 +30,14 @@ export interface Draft {
   target?: string;
 }
 
+/** How tier 0 read the words: the hint by its own name or by one of its phrases, and a target by its name (or id) or by a role word ("บ้าน"). */
+export interface Via {
+  hint: 'name' | 'phrase';
+  target?: 'name' | 'role';
+  /** With `target: 'role'`: the role word that was in the words. */
+  role?: string;
+}
+
 export interface CommandOutcome {
   /** The whisper to send (`confirm: false` first, for the preview), or null: show the menu. */
   command: Extract<Command, { type: 'god' }> | null;
@@ -37,6 +45,8 @@ export interface CommandOutcome {
   source: Source;
   /** When there is no command: why the menu is shown (`no_match` the words fit nothing · `off` · `breaker` · `need_target` the words named a pointing hint but not whom or where). */
   reason?: string;
+  /** Tier 0 only: what the words matched, so the screen can say how the whisper was read. */
+  via?: Via;
   /** With `need_target`: the hint the words named and what it points at, so the screen asks for the target instead of refusing. */
   ask?: { hint: string; needs: Needs };
 }
@@ -51,6 +61,7 @@ const targetsOf = (menu: CommandMenu, need: Needs | undefined): { id: string; na
 /** What tier 0 found in the words: the draft when the hint (and its target, if it needs one) is clear, else the hint that lacks its target. */
 export interface Match {
   draft: Draft | null;
+  via?: Via;
   ask?: { hint: string; needs: Needs };
 }
 
@@ -62,22 +73,28 @@ export interface Match {
 export function matchTier0(words: string, menu: CommandMenu): Match {
   const w = cleanWords(words).replace(/\s+/g, '');
   const flat = (x: string) => x.replace(/\s+/g, '');
-  const found: { h: CommandMenu['hints'][number]; len: number }[] = [];
+  const found: { h: CommandMenu['hints'][number]; len: number; by: Via['hint'] }[] = [];
   for (const h of menu.hints) {
     let len = 0;
+    let by: Via['hint'] = 'name';
     for (const p of [h.hint, ...(menu.says?.[h.hint] ?? [])]) {
       const f = flat(p);
-      if (f && w.includes(f) && f.length > len) len = f.length;
+      if (f && w.includes(f) && f.length > len) {
+        len = f.length;
+        by = p === h.hint ? 'name' : 'phrase';
+      }
     }
-    if (len) found.push({ h, len });
+    if (len) found.push({ h, len, by });
   }
   found.sort((a, b) => b.len - a.len);
   let ask: Match['ask'];
-  for (const { h } of found) {
-    if (!h.needs) return { draft: { hint: h.hint } };
+  for (const { h, by } of found) {
+    if (!h.needs) return { draft: { hint: h.hint }, via: { hint: by } };
     const list = targetsOf(menu, h.needs);
-    const t = list.find((x) => w.includes(flat(x.name)) || w.includes(x.id)) ?? list.find((x) => (x.roles ?? []).some((r) => w.includes(flat(r))));
-    if (t) return { draft: { hint: h.hint, target: t.id } };
+    const named = list.find((x) => w.includes(flat(x.name)) || w.includes(x.id));
+    if (named) return { draft: { hint: h.hint, target: named.id }, via: { hint: by, target: 'name' } };
+    const roled = list.find((x) => (x.roles ?? []).some((r) => w.includes(flat(r))));
+    if (roled) return { draft: { hint: h.hint, target: roled.id }, via: { hint: by, target: 'role', role: (roled.roles ?? []).find((r) => w.includes(flat(r))) } };
     ask ??= { hint: h.hint, needs: h.needs };
   }
   return ask ? { draft: null, ask } : { draft: null };
@@ -121,7 +138,7 @@ export async function interpretWords(ctx: Ctx, words: string, menu: CommandMenu,
   const w = cleanWords(words);
   if (!w) return { command: null, source: 'template', reason: 'no_words' };
   const m0 = matchTier0(w, menu);
-  if (m0.draft) return { command: toCommand(m0.draft), source: 'template' };
+  if (m0.draft) return { command: toCommand(m0.draft), source: 'template', ...(m0.via ? { via: m0.via } : {}) };
   // a pointing hint named without its target: the LLM may still read the target, else the screen asks for it (09-whisper-words.md rule 4)
   const lack = (o: CommandOutcome): CommandOutcome => (m0.ask && !o.command ? { ...o, reason: 'need_target', ask: m0.ask } : o);
   const life = ctx.state.life;

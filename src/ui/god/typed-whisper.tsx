@@ -52,7 +52,12 @@ export function TypedWhisper(p: { initial?: string; onUnderstood: (hint: string,
           {res.ok ? (
             <>
               {T.understood} <b>{res.hint}</b>
-              {res.targetName ? ` · ${T.toTarget} ${res.targetName}` : ''} ({res.source === 'template' ? T.viaWords : T.viaLlm}) · {T.confirmHint}
+              {res.targetName ? ` · ${T.toTarget} ${res.targetName}` : ''} ({res.source === 'template' ? (res.by === 'phrase' ? T.viaPhrase : T.viaWords) : T.viaLlm}) · {T.confirmHint}
+              {res.guessed && (
+                <div data-testid="typed-guess" style={{ color: color.dreadText }}>
+                  {res.guessed.how === 'role' ? T.guessRole.replace('{role}', res.guessed.role ?? '') : T.guessLlm}
+                </div>
+              )}
             </>
           ) : (
             res.line
