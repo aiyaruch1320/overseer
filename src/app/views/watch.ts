@@ -11,6 +11,7 @@ import { callReason, lines, plainName, type Line } from '../../core/text';
 import { items } from '../../core/text/labels';
 import { CARD_KINDS, type GameState, type GodAction, type LogEntry, type Settings } from '../../core/types';
 import { W } from './god-words';
+import { WATCH_WORDS } from './watch-words';
 import { LOG_KEEP } from '../tuning';
 import { clockOf, purseOf } from '../view';
 import { CANDLE_MIN_FILL, GLOW_OPEN_YEARS, RECAP_MAX } from './watch-tuning';
@@ -175,8 +176,10 @@ export interface StopView {
   /** `age` `window` `majorOmen` `nearDeath` `death` ... */
   why: string;
   age: number | null;
-  /** The reason, in words. */
+  /** The reason, in words: one short sentence, the title of the stop. */
   reason: string;
+  /** What else the stop says, in words for the player (an age stop folded into this one). The cards that wait are listed under it, not told here. */
+  notes: string[];
   /** What the god can do about the reason itself. */
   options: GodOpen[];
   /** The waiting cards folded into the stop. */
@@ -185,6 +188,19 @@ export interface StopView {
   recap: Line[];
   /** The death stop: nothing to do, the end screen follows. */
   death: boolean;
+}
+
+/**
+ * The title and the notes of a stop for the player. `callReason` (src/core/text) writes one line for the log: the reason, then ` · รวมจุดหยุดตามอายุ N มาไว้ที่นี่ (…)` when an age
+ * stop was folded in, then ` · มีเรื่องรออยู่ด้วย: …` when cards wait. On the screen the first part is the title; the folded age stop is a note in plain words; the waiting
+ * cards are drawn under it already, so their names are not said twice (M7 review P1-7: the title read like a raw log line).
+ */
+export function stopWords(said: string, why: string, age: number | null): { title: string; notes: string[] } {
+  const parts = said.split(' · ');
+  const title = parts[0] ?? said;
+  const notes: string[] = [];
+  if (age !== null && why !== 'age' && parts.some((p) => p.startsWith('รวมจุดหยุดตามอายุ'))) notes.push(WATCH_WORDS.stop.ageFolded(age));
+  return { title, notes };
 }
 
 /** The last stop in the log, or null. */
@@ -207,11 +223,15 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
   const recap = allLines(data, state)
     .filter((l) => l.entry.n > prev && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
     .slice(-RECAP_MAX);
+  const said = callReason(data, e, crisisOf(state), (n) => entryAt(state, n));
+  const age = typeof e.data.age === 'number' ? e.data.age : null;
+  const { title, notes } = stopWords(said, why, age);
   return {
     n: e.n,
     why,
-    age: typeof e.data.age === 'number' ? e.data.age : null,
-    reason: callReason(data, e, crisisOf(state), (n) => entryAt(state, n)),
+    age,
+    reason: title,
+    notes,
     options: optionsOf(why, first),
     cards: foldedCards(data, state, e),
     recap,
@@ -424,6 +444,8 @@ export interface WatchModel {
   line: LifeLineView;
   log: Line[];
   speed: Settings['speed'];
+  /** The clock was brought from fast to normal because a card is up; it goes back to fast when the card is gone (07-attention.md §2, 01-one-life.md §6). */
+  slowed: boolean;
   running: boolean;
   stop: StopView | null;
   cards: CardView[];
@@ -435,6 +457,8 @@ export interface WatchUi {
   stop: LogEntry | null;
   /** The live cards (the store's `cards`). */
   cards: LogEntry[];
+  /** The screen slowed the fast speed to normal for the cards. */
+  slowed?: boolean;
   /** The buttons of the god the core refuses now (`godGates`); the pure model has no game to ask. */
   gates?: Partial<Record<GodKind, GodGate>>;
 }
@@ -462,6 +486,7 @@ export function watchModel(data: GameData, state: GameState, ui: WatchUi): Watch
     line,
     log: allLines(data, state).slice(-LOG_KEEP),
     speed: state.settings.speed,
+    slowed: !!ui.slowed && ui.cards.length > 0,
     running: ui.running,
     stop,
     cards: ui.cards.map((e) => cardView(data, state, e)).filter((x): x is CardView => !!x),

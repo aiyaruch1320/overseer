@@ -169,6 +169,7 @@ describe('watch: the stop', () => {
     expect(m.stop!.why).toBe('age');
     expect(m.stop!.age).toBe(15);
     expect(m.stop!.reason).toContain('15');
+    expect(m.stop!.notes).toEqual([]);
     expect(m.stop!.cards.length).toBe(String(stop!.data.cards).split(',').length);
     expect(m.stop!.cards.map((c) => c.kind)).toEqual(String(stop!.data.cards).split(','));
     for (const c of m.stop!.cards) {

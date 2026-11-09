@@ -73,6 +73,6 @@ export function WatchScreen({ onOpenGod, scene, map }: WatchScreenProps) {
     save: () => store.saveLocal(),
   };
 
-  const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, gates: store.game ? godGates(store.game.ctx) : {} });
+  const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, slowed: slowed.current, gates: store.game ? godGates(store.game.ctx) : {} });
   return <WatchView data={data} model={model} settings={st.settings} actions={actions} candlePct={prefs.value.candlePct} onCandlePct={(on) => setPrefs({ candlePct: on })} scene={scene} map={map} />;
 }

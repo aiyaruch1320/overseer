@@ -129,6 +129,11 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
         <GodPanel panel={model.panel} onOpen={(kind) => actions.onOpenGod({ kind, args: {} })} />
         <div style={{ flex: 1 }} />
         <SpeedControl speed={model.speed} running={model.running} onSpeed={actions.setSpeed} />
+        {model.slowed && (
+          <div role="status" style={{ color: color.textDim, fontSize: size.small, lineHeight: 1.4 }} data-testid="slowed-note">
+            {W.slowedNote}
+          </div>
+        )}
         <div style={{ display: 'flex', gap: 4 }}>
           <button class="wt-btn" style={{ ...button, flex: 1 }} onClick={() => showSettings(true)} data-testid="open-settings">
             {W.settings.open}
