@@ -6,6 +6,7 @@ import { W } from '../../app/views/god-words';
 import { color } from '../tokens';
 import { useView } from './bridge';
 import { askGod } from './confirm';
+import { TypedWhisper } from './typed-whisper';
 import { Drop, Empty, Gate, Section } from './parts';
 import { box, col, row } from './style';
 
@@ -87,6 +88,8 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
   const v = useView((g, d) => whisperView(g, d));
   const crisis = v ? v.crises.find((c) => c.id === p.id || c.id === p.target || c.name === p.target) ?? (p.why === 'crisis' ? v.crises[0] : undefined) : undefined;
   const [sel, setSel] = useState<string | null>(p.hint ?? (crisis || p.target ? W.whisper.helpHint : null));
+  // the target the typed words named, kept until the player picks another hint
+  const [typedTarget, setTypedTarget] = useState<string | undefined>(undefined);
   if (!v) return <Empty>{W.noGame}</Empty>;
   if (!v.alive) return <Empty>{W.noLife}</Empty>;
   const cur = v.hints.find((h) => h.hint === sel);
@@ -112,9 +115,10 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
       <div class="g-small g-dim">
         {W.whisper.left} {v.left} {W.whisper.times}
       </div>
+      <TypedWhisper onUnderstood={(h, t) => (setTypedTarget(t), setSel(h))} />
       <div style={{ ...row, alignItems: 'flex-start', flexWrap: 'wrap', gap: 20 }}>
-        <Ring hints={v.hints} sel={sel} onPick={setSel} />
-        {cur ? <Detail key={cur.hint} h={cur} pre={crisis?.id ?? p.target} /> : <Empty>{W.whisper.ring}</Empty>}
+        <Ring hints={v.hints} sel={sel} onPick={(h) => (setTypedTarget(undefined), setSel(h))} />
+        {cur ? <Detail key={`${cur.hint}:${typedTarget ?? ''}`} h={cur} pre={typedTarget ?? crisis?.id ?? p.target} /> : <Empty>{W.whisper.ring}</Empty>}
       </div>
       {v.active.length > 0 && (
         <Section title={W.whisper.active} tone="fate">
