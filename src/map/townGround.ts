@@ -108,8 +108,8 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
   }
 
   // colours
-  const g0 = parse(plan.ground), g1 = parse(shadeHex(plan.ground, -0.07)), g2 = parse(shadeHex(plan.ground, 0.06));
-  const dirt = parse(mixHex(plan.ground, '#78644a', 0.4)), dirtD = parse(mixHex(plan.ground, '#5a4a34', 0.45));
+  const g0 = parse(plan.ground), g1 = parse(shadeHex(plan.ground, -0.04)), g2 = parse(shadeHex(plan.ground, 0.035));
+  const dirt = parse(mixHex(plan.ground, plan.earth, 0.55)), dirtD = parse(shadeHex(mixHex(plan.ground, plan.earth, 0.55), -0.14));
   const roadC = parse(plan.road), roadE = parse(shadeHex(plan.road, -0.35)), roadL = parse(shadeHex(plan.road, 0.08));
   const plazaC = parse(shadeHex(plan.road, 0.14)), plazaD = parse(shadeHex(plan.road, -0.12));
   const waterC = parse('#4a8aa8'), waterD = parse('#2e5e7a'), waterL = parse('#8ac0d8'), bank = parse(mixHex(plan.ground, '#b8a878', 0.5));
@@ -129,13 +129,14 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
       const ex = (x + 0.5 - W / 2) / (W / 2), ey = (y + 0.5 - H / 2) / (H / 2), e = Math.hypot(ex, ey);
       if (e > 0.72 + (1 - b) * 0.28) { px[i * 4 + 3] = 0; continue; }
       // grass in three tones
-      const n = noise(x / 9, y / 9, 2) + (b - 0.5) * 0.3;
-      let c: Rgb = n < 0.42 ? g1 : n > 0.62 ? g2 : g0;
+      // three close tones; the border between two is a fine dither (one pixel), never a block of a different colour
+      const n = noise(x / 14, y / 14, 2) + (b - 0.5) * 0.5;
+      let c: Rgb = n < 0.4 ? g1 : n > 0.62 ? g2 : g0;
       const h = (Math.imul(x * 73856093 ^ y * 19349663, 2654435761) >>> 0) / 4294967296;
       if (h < 0.02) c = g1; else if (h > 0.985) c = g2;
       // packed earth of the built-up part
       const f = 1 - Math.hypot((x + 0.5 - cx) / rx, (y + 0.5 - cy) / ry);
-      if (f > 0 && noise2(x / 6, y / 6, 2) + b * 0.35 < f * 1.25) c = (x + y) % 5 === 0 ? dirtD : dirt;
+      if (f > 0 && noise2(x / 6, y / 6, 2) + b * 0.35 < f * 1.25) c = h < 0.07 || (noise2(x / 3, y / 3, 2) > 0.7 && b > 0.5) ? dirtD : dirt;
       // fields
       const fi = field[i];
       if (fi) {
@@ -200,7 +201,7 @@ function walkGrid(plan: CityPlan, road: Uint8Array, water: Uint8Array, wall: Uin
       const bridge = road[k] === 1;
       const good = Math.hypot(ex, ey) < 0.8 && (water[k] !== 1 || bridge) && !wall[k];
       ok[j * cols + i] = good ? 1 : 0;
-      rd[j * cols + i] = good && (bridge || Math.hypot(x - plan.plaza.x * S, y - plan.plaza.y * S) < plan.plaza.r * S) ? 1 : 0;
+      rd[j * cols + i] = good && (road[k] === 1 || Math.hypot(x - plan.plaza.x * S, y - plan.plaza.y * S) < plan.plaza.r * S) ? 1 : 0;
     }
   // houses, specials and trees take their footprint
   const block = (bx: number, by: number, hw: number, hh: number) => {
