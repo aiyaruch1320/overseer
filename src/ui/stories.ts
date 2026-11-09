@@ -17,6 +17,9 @@ export interface Story {
   /** How far the sample life is run before the story is drawn: beats from birth, or `death`. */
   at?: number | 'death';
   seed?: number;
+  /** The race of the sample life (a story of a race's own scene shows a life of that race in its homeland); omitted: the seed's own. */
+  race?: string;
+  country?: string;
   render: (ctx: StoryCtx) => ComponentChildren;
 }
 
