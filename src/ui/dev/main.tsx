@@ -45,7 +45,7 @@ function Book() {
           </div>
         ))}
       </nav>
-      <main style={{ flex: 1 }}>{!data ? 'กำลังโหลด…' : cur && state ? cur.render({ data, state }) : null}</main>
+      <main style={{ flex: 1, minWidth: 0, overflow: 'auto' }}>{!data ? 'กำลังโหลด…' : cur && state ? cur.render({ data, state }) : null}</main>
     </div>
   );
 }

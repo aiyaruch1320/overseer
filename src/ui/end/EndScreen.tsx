@@ -28,7 +28,7 @@ export interface EndProps {
 
 export type Page = 'death' | 'record' | 'heir' | 'legend' | 'collection' | 'world';
 
-const stage = { height: '100vh', minHeight: size.minHeight, minWidth: size.minWidth, boxSizing: 'border-box', padding: size.pad, color: color.text, fontFamily: font.body, fontSize: size.text, background: color.panel, overflowY: 'auto' } as const;
+const stage = { height: '100vh', minHeight: size.minHeight, minWidth: size.minWidth, boxSizing: 'border-box', padding: size.pad, color: color.text, fontFamily: font.body, fontSize: size.text, background: color.panel, overflow: 'auto' } as const;
 
 export function EndScreen(props: EndProps) {
   void store.rev.value;
@@ -174,7 +174,7 @@ function EndInner(props: EndProps & { data: GameData; state: GameState }) {
           </Heading>
           {heirs.blocked && <div style={{ ...sheet, padding: size.pad }}>{END_LABELS.ended}</div>}
           {!heirs.blocked && heirs.candidates.length > 0 && (
-            <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: size.pad }}>
+            <div role="radiogroup" aria-label={END_LABELS.heir} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(420px, 100%), 1fr))', gap: size.pad }}>
               {heirs.candidates.map((h) => (
                 <HeirCard key={h.tie} h={h} fig={faces.get(h.tie)} on={picked === h.tie} pickable onPick={() => setTie(h.tie)} />
               ))}

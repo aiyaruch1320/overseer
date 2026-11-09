@@ -18,7 +18,7 @@ export interface PageProps {
   onWorld?: () => void;
 }
 
-const stage = { height: '100vh', minHeight: size.minHeight, minWidth: size.minWidth, boxSizing: 'border-box', padding: size.pad, color: color.text, fontFamily: font.body, fontSize: size.text, background: color.panel, overflowY: 'auto' } as const;
+const stage = { height: '100vh', minHeight: size.minHeight, minWidth: size.minWidth, boxSizing: 'border-box', padding: size.pad, color: color.text, fontFamily: font.body, fontSize: size.text, background: color.panel, overflow: 'auto' } as const;
 
 function useSource(p: PageProps): { data: GameData; state: GameState } | null {
   void store.rev.value;
