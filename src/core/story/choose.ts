@@ -166,11 +166,7 @@ export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: Stor
   const weights = parts.map(([w, rule, gate]) => w * rule * gate);
   // the LLM layer: the two ways the rule-based layer ranks highest are the ways the point offers (ties keep the order of the written ways)
   if (point) {
-    const top = weights
-      .map((w, i) => ({ w, i }))
-      .filter((x) => x.w > 0)
-      .sort((a, b) => b.w - a.w || a.i - b.i)
-      .slice(0, 2);
+    const top = topTwo(weights);
     if (top.length === 2) {
       const ways: DirectorPoint['ways'] = [
         { key: choices[top[0].i].key, text: choices[top[0].i].label },
@@ -184,6 +180,15 @@ export function weigh(ctx: Ctx, choices: readonly Choice[], pull: Pull, ex: Stor
     }
   }
   return { weights, ties: tie };
+}
+
+/** The two ways with the most weight, best first (ties keep the order of the written ways): the ways a point offers. */
+export function topTwo(weights: readonly number[]): { w: number; i: number }[] {
+  return weights
+    .map((w, i) => ({ w, i }))
+    .filter((x) => x.w > 0)
+    .sort((a, b) => b.w - a.w || a.i - b.i)
+    .slice(0, 2);
 }
 
 /** Which nodes a `nodeWeight` effect without a label points at: the weight of entering that node among several. */

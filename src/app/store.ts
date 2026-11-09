@@ -17,6 +17,7 @@ import { MAX_BEATS_PER_FRAME, SAVE_KEY, SEC_PER_BEAT, SPEED_MUL } from './tuning
 import { versions } from '../core/game';
 import type { Llm } from '../core/llm';
 import { summarizeDeath } from '../core/llm/summary-input';
+import { askAhead } from '../core/story';
 import { pack, unpack } from './save-text';
 import { SAVE_WORDS } from './save-words';
 import { clockOf } from './view';
@@ -165,6 +166,8 @@ export class GameStore {
       this.phase.value = 'stop';
       this.stopCall.value = stop;
     }
+    // the LLM director is asked ahead about the key points of the next life year; the clock does not wait for the answers (llm/04-story.md §3.4)
+    if (this.llm && !g.state.life?.dead) void askAhead(g.ctx, this.llm.client).catch(() => undefined);
     this.bump();
     return calls;
   }

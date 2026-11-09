@@ -82,7 +82,22 @@ export function onEffect<K extends Effect['k']>(kind: K, fn: EffectFn<K>): void 
   effects.set(kind, fn as (ctx: Ctx, e: Effect, src: EffectSource) => void);
 }
 
+/** Set while a read-only look at the state runs (`quietly`): a kind nobody handles is then not written to the log, so the look leaves no trace. */
+let muted = false;
+
+/** Runs a pure look at the state (conditions only) so that it writes nothing, not even the one-time `rules/unhandled` line. */
+export function quietly<T>(fn: () => T): T {
+  const was = muted;
+  muted = true;
+  try {
+    return fn();
+  } finally {
+    muted = was;
+  }
+}
+
 function report(ctx: Ctx, what: 'cond' | 'effect', kind: string) {
+  if (muted) return;
   const key = `${what}:${kind}`;
   let seen = missing.get(ctx.state);
   if (!seen) missing.set(ctx.state, (seen = new Set(ctx.state.log.filter((e) => e.sys === 'rules' && e.kind === 'unhandled').map((e) => e.id!))));

@@ -25,9 +25,9 @@ import { labels, placeName } from '../../src/core/text';
 import { godLines, timeline, statusLines, worldLines } from './report';
 import { GodConsole, callLines, godHelp, isGodWord, waitingLines, type PendingGod } from './god-commands';
 import { intArg, parseArgs } from './args';
-import { llmFromArgs, sayLines, summarizeDeath, usageLines } from './llm';
+import { askDirector, llmFromArgs, sayLines, summarizeDeath, usageLines } from './llm';
 import { loadAll } from './node-data';
-import { POLICIES, afterBeat, createSession, policyOf, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
+import { POLICIES, afterBeat, createSession, isCall, policyOf, resumeSession, runToCall, startLife, stepBeat, toolNotes, type Policy, type Session } from './session';
 
 const args = parseArgs(process.argv.slice(2));
 const seed = intArg(args.seed, 'seed', 1);
@@ -95,6 +95,22 @@ function readPending(): PendingGod | null {
 
 const god = new GodConsole({ game: g, data, autoYes: !!args.yes, dev: !!args.dev, pending: fresh ? null : readPending() });
 
+/** `runToCall` with the LLM on: the director is asked ahead after each beat and the run waits for the answers (a tool has no clock to leave them to). */
+async function runToCallAsking(after: () => void): Promise<ReturnType<typeof runToCall>> {
+  let beats = 0;
+  while (beats < 4 * 400) {
+    if (!g.state.life || g.state.life.dead) return { beats, stoppedBy: 'death' };
+    const mark = g.state.logN;
+    stepBeat(g);
+    after();
+    await askDirector(tl, g.ctx);
+    beats++;
+    const call = g.state.log.find((e) => e.n >= mark && isCall(g, e));
+    if (call) return { beats, stoppedBy: g.state.life?.dead ? 'death' : 'call', call };
+  }
+  return { beats, stoppedBy: 'limit' };
+}
+
 async function run(cmdText: string): Promise<boolean> {
   const [cmd, ...rest] = cmdText.split(/\s+/).filter(Boolean);
   const st = g.state;
@@ -123,11 +139,12 @@ async function run(cmdText: string): Promise<boolean> {
         while (done < n && st.life && !st.life.dead) {
           stepBeat(g);
           after();
+          await askDirector(tl, g.ctx);
           done++;
         }
         why = `เดิน ${done} จังหวะ`;
       } else {
-        const r = runToCall(g, undefined, after);
+        const r = tl ? await runToCallAsking(after) : runToCall(g, undefined, after);
         call = r.call;
         why = `เดิน ${r.beats} จังหวะ จนถึง${r.stoppedBy === 'call' ? 'จุดที่เกมเรียก' : r.stoppedBy === 'death' ? 'จุดจบของชีวิต' : 'ขีดจำกัด'}`;
       }
