@@ -50,6 +50,7 @@ export type Condition =
   | { k: 'age'; min?: number; max?: number } // hAge
   | { k: 'class'; min?: number; max?: number } // social class 1..5
   | { k: 'half' } // born with a second race
+  | { k: 'parents' } // the life has a living parent: false only for a life ordered an orphan (storylines/README.md §6 rule 10)
   | { k: 'anyOf'; kind: string; ids: string[]; min: number } // "at least 3 of these"
   /** A number the character or the world carries: `trust` `fame` `int` `godFaith` `gold` `country.W` `dfc`; `count` for "≥ 3 จาก 10 เผ่า". */
   | { k: 'cmp'; stat: string; op: '>=' | '>' | '<=' | '<' | '=='; value: number; count?: number; label?: string }

@@ -72,6 +72,14 @@ export function parseAgeLoose(text: string): [number, number] | null {
 }
 
 const uniq = <T>(a: T[]) => [...new Set(a)];
+/**
+ * A way whose words have a living father, mother or parent in the scene (`ช่วยแม่ปิดประตู` `พ่อหรือแม่ซ่อนอาการหิว` `ตามพ่อหรือแม่เข้าโรงตี`) is closed to a life that was ordered an orphan (storylines/README.md §6 rule 10).
+ * Keyed on the words of the way: the parent must be the one the child is with, so ways that only name the parents' past or their people (`ตามหาสัญญาของพ่อแม่` `ฝั่งพ่อหรือแม่`) do not match.
+ */
+const LIVING_PARENT_WAY = /ช่วยแม่ปิด|ตามพ่อ(?!แม่)|พ่อไป|พ่อแม่ทั้งสอง|พ่อแม่ถูกจับ|พ่อแม่พา|^พ่อหรือแม่(?!ที่)|สงบอยู่กับพ่อแม่/;
+/** The same for the title of a node whose scene is a living parent's (`อุโมงค์ถล่มตอนตามพ่อลงเหมือง`): the node is skipped for the orphan. */
+const LIVING_PARENT_NODE = /ตามพ่อ(?!แม่)|ตามแม่(?!น้ำ)/;
+
 const and = (a: ConditionX | undefined, b: ConditionX): ConditionX => (a ? { k: 'and', of: [a as Condition, b as Condition] } : b);
 
 function fileLines(file: string): string[] {
@@ -207,6 +215,8 @@ function nodeFromRow(row: Row, ctx: NodeCtx): StoryNodeX | null {
   if (notes.replaces) node.replaces = uniq([...(node.replaces ?? []), ...notes.replaces]);
   Object.assign(choiceWhen, notes.choiceWhen);
   for (const ch of node.choices) if (choiceWhen[ch.key]) ch.when = and(ch.when, choiceWhen[ch.key]!);
+  for (const ch of node.choices) if (LIVING_PARENT_WAY.test(ch.label)) ch.when = and(ch.when, { k: 'parents' });
+  if (LIVING_PARENT_NODE.test(node.title)) node.when = and(node.when, { k: 'parents' });
   for (const w of nodeWhen) {
     const text = w.k === 'text' && /เหตุการณ์/.test(w.text);
     if (text && titleEvents.length) continue; // the title events already say it
