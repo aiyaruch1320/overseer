@@ -99,7 +99,7 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
       }
       const size = tileSize(req);
       let canvas = make(size.w, size.h);
-      if (req.level === 'city' || req.level === 'inside') {
+      if ((req.level === 'city' || req.level === 'inside') && !req.px) {
         const t = town(req.key, req);
         if (!t) return null;
         // the pixel ground of the plan, one art pixel to a canvas pixel

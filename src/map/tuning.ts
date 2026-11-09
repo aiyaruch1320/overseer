@@ -22,6 +22,8 @@ export const CAM_MIN = 0.16;
 export const CAM_MAX = 50;
 /** Art pixels per MU of the town ground and its sprites: one art pixel is 1/TOWN_PX MU. */
 export const TOWN_PX = 24;
+/** Side in MU of one chunk of the ground painted at the density of the town round a town. */
+export const GROUND_CHUNK = 12;
 /** Camera zoom at which one town art pixel is one screen pixel (art zoom 1×). */
 export const ART_ONE = (TOWN_PX / 3.84);
 /** Country plans start to show on the country level from this zoom (world-map.md: "ผังเมืองเริ่มโผล่บนแผนที่ตั้งแต่ 0.9"). */

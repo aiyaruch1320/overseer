@@ -8,7 +8,7 @@ import { CONT_IDS, type ContId } from './geo';
 import { type MapCity, type MapCountry, type MapLayout } from './layout';
 import { domCanvas, tileKey, type MapArtProvider, type TileImage, type TileRequest } from './provider';
 import { paintCountryMask } from './terrain';
-import { clampCentre, clampZoom, focusOf, levelIndex, levelOf, requestFor, viewRect, visibleKeys } from './tiles';
+import { clampCentre, clampZoom, focusOf, groundChunks, levelIndex, levelOf, requestFor, viewRect, visibleKeys } from './tiles';
 import { CITY_H, CITY_W, DEPTH, TOWN_PX, DRAGON_SIZE, KEY_ZOOM, LABEL, OMEN_COLOR, PAN_SPEED, RUIN, SEA, TILE_KEEP, WHEEL_ZOOM, WU, type ZoomId } from './tuning';
 import type { MapAim, MapFocus, MapHover, MapPick } from './types';
 import { font } from '../ui/tokens';
@@ -33,6 +33,8 @@ export interface ControllerOpts {
   crowd?: (country: string) => PersonLook[];
   /** People per house, 1 by default (a test of speed raises it). */
   crowdScale?: number;
+  /** What a country's towns look like on the country level: the main building style of its UI value, its first roof colour and its size 1..5. */
+  styleOf?: (country: string) => { style: string; roof?: string; scale: number };
   names: { country: (id: string) => { name: string; title: string }; continent: (id: string) => string };
 }
 
@@ -342,7 +344,10 @@ class MapScene extends Phaser.Scene {
     if (this.level === 'world') for (const id of visibleKeys(L, 'continent', view)) wanted.push(requestFor(L, 'world', id, looks, this.o.seed));
     if (li >= 1) for (const k of visibleKeys(L, 'continent', view)) wanted.push(requestFor(L, 'continent', k, looks, this.o.seed));
     if (li >= 2) for (const k of visibleKeys(L, 'country', view)) wanted.push(requestFor(L, 'country', k, looks, this.o.seed));
-    if (li >= 3) for (const k of visibleKeys(L, 'city', view)) wanted.push(requestFor(L, 'city', k, looks, this.o.seed));
+    if (li >= 3) {
+      for (const r of groundChunks(L, view, looks, this.o.seed)) wanted.push(r);
+      for (const k of visibleKeys(L, 'city', view)) wanted.push(requestFor(L, 'city', k, looks, this.o.seed));
+    }
     const want = new Set<string>();
     for (const r of wanted) {
       const k = tileKey(r);
@@ -388,7 +393,7 @@ class MapScene extends Phaser.Scene {
     const src = t.source as unknown as HTMLCanvasElement | HTMLImageElement;
     if (typeof HTMLCanvasElement !== 'undefined' && src instanceof HTMLCanvasElement) this.textures.addCanvas(tk, src);
     else this.textures.addImage(tk, src as HTMLImageElement);
-    const depth = { world: req.key === 'world' ? -5 : DEPTH.terrain + 1, continent: DEPTH.terrain + 2, country: DEPTH.terrain + 3, city: DEPTH.terrain + 4, inside: DEPTH.terrain + 5 }[req.level];
+    const depth = { world: req.key === 'world' ? -5 : DEPTH.terrain + 1, continent: DEPTH.terrain + 2, country: DEPTH.terrain + 3, city: req.key.startsWith('g:') ? DEPTH.terrain + 3.5 : DEPTH.terrain + 4, inside: DEPTH.terrain + 5 }[req.level];
     // a town ground is one art pixel to a texel: it shows at the scale of its sprites (WU / TOWN_PX), not stretched to a rect
     const img = this.add.image(t.rect.x * WU, t.rect.y * WU, tk).setOrigin(0, 0).setDisplaySize(req.level === 'city' || req.level === 'inside' ? (t.width * WU) / TOWN_PX : t.rect.w * WU, req.level === 'city' || req.level === 'inside' ? (t.height * WU) / TOWN_PX : t.rect.h * WU).setDepth(depth);
     this.shown.set(k, { img, req, used: this.frame });
@@ -397,10 +402,10 @@ class MapScene extends Phaser.Scene {
 
   // ---- cities ----
   /** A pixel icon as a sprite: its texture is painted once, it shows at a whole number of screen pixels per art pixel whatever the zoom. */
-  private iconTexture(kind: IconKind, color: string): string {
-    const key = `ic:${kind}:${color}`;
+  private iconTexture(kind: IconKind, color: string, style = 'gable'): string {
+    const key = `ic:${kind}:${color}:${style}`;
     if (!this.textures.exists(key)) {
-      const f = iconFrame(kind, color);
+      const f = iconFrame(kind, color, style);
       const c = document.createElement('canvas');
       c.width = f.w; c.height = f.h;
       c.getContext('2d')!.putImageData(new ImageData(f.data, f.w, f.h), 0, 0);
@@ -429,10 +434,13 @@ class MapScene extends Phaser.Scene {
       const pal = this.o.palettes[mc.continent] ?? [];
       const x = c.x * WU, y = c.y * WU;
       const kind: IconKind = ruined.has(c.country) ? 'ruin' : c.capital ? 'capital' : 'town';
-      const key = this.iconTexture(kind, c.capital ? pal[2] ?? '#e8c36a' : pal[1] ?? '#c9a24a');
+      // the icon is the main building style of the country in the colour of its first roof; the larger the country, the larger its towns
+      const look = this.o.styleOf?.(c.country);
+      const key = this.iconTexture(kind, look?.roof ?? (c.capital ? pal[2] ?? '#e8c36a' : pal[1] ?? '#c9a24a'), look?.style);
+      const big = (c.capital ? 2 : 1.5) * (0.85 + 0.075 * (look?.scale ?? 3)) * (c.size === 1 ? 0.85 : 1);
       let ic = this.icons.get(c.id);
       if (!ic) { ic = this.add.image(x, y, key).setDepth(DEPTH.cities); this.icons.set(c.id, ic); }
-      ic.setTexture(key).setOrigin(0.5, 0.85).setPosition(x, y).setScale((c.capital ? 2 : 1.5) * px).setVisible(true);
+      ic.setTexture(key).setOrigin(0.5, 0.85).setPosition(x, y).setScale(big * px).setVisible(true);
       if (c.capital && z >= 0.75)
         (this.model?.flags[c.country] ?? []).forEach((f, i) => {
           const fx = x + (14 + i * 9) * px, fy = y - 10 * px;
