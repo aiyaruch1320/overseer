@@ -9,16 +9,13 @@ import { createSession, runToDeath, startLife } from '../../../scripts/tools/ses
 import { allStories, type Story } from '../stories';
 import { color, font, size } from '../tokens';
 import '../screens';
+import { RACE_HOME } from '../../app/views/scene';
 
-/** The country where a race lives: the first whose rulers or people the docs name by the race's own name (a story of a race's own scene is a life in its homeland). */
-function homeland(data: GameData, race: string): string | undefined {
-  const name = (data.races?.items as { races?: { id: string; name: string }[] } | undefined)?.races?.find((r) => r.id === race)?.name;
-  const list = (data.countries?.items as { id: string; races?: string }[] | undefined) ?? [];
-  return name ? list.find((c) => c.races?.includes(name))?.id : undefined;
-}
+/** The country where a race lives: its main homeland of the origin doc (a story of a race's own scene is a life in its homeland). */
+const homeland = (race: string): string | undefined => RACE_HOME[race];
 
 function sample(data: GameData, s: Story): GameState {
-  const country = s.country ?? (s.race ? homeland(data, s.race) : undefined);
+  const country = s.country ?? (s.race ? homeland(s.race) : undefined);
   const sess = createSession(data, { seed: s.seed ?? 1, ...(s.race ? { race: s.race } : {}), ...(country ? { country } : {}) });
   startLife(sess);
   if (s.at === 'death') runToDeath(sess.game);

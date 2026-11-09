@@ -26,7 +26,7 @@ export const CAMERA: Record<CameraFrame, { zoom: number; lift: number }> = {
 
 /** The light of a scene (13-storyline-scenes §1 "แสง"): colour, strength, and where it comes from. */
 export const LIGHT: Record<LightMode, { color: string; alpha: number; from: 'front' | 'back' | 'all' | 'centre'; add: boolean }> = {
-  'warm-front': { color: '#ffb25a', alpha: 0.3, from: 'front', add: true },
+  'warm-front': { color: '#ffa44a', alpha: 0.2, from: 'front', add: false },
   'cold-back': { color: '#5a78cc', alpha: 0.4, from: 'back', add: true },
   diffuse: { color: '#ffffff', alpha: 0.06, from: 'all', add: true },
   glow: { color: '#fff0c0', alpha: 0.14, from: 'centre', add: true },

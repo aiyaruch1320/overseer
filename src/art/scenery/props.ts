@@ -12,7 +12,7 @@ export const PROP_KINDS = ['worktable', 'anvil', 'roots', 'egg', 'flame', 'campf
 export type PropKind = (typeof PROP_KINDS)[number];
 
 /** Where a prop stands, as a share of the stage's width (the figures stand at 0.34 · 0.5 · 0.66). */
-const AT: Record<PropKind, number> = { worktable: 0.64, anvil: 0.62, roots: 0.5, egg: 0.5, flame: 0.12, campfire: 0.5, cliff: 0.86, spectators: 0.5, obelisk: 0.64, scales: 0.64, candle: 0.7, cup: 0.66, blossoms: 0.5, stone: 0.66, longtable: 0.5, pearl: 0.66, grave: 0.5 };
+const AT: Record<PropKind, number> = { worktable: 0.5, anvil: 0.62, roots: 0.5, egg: 0.5, flame: 0.12, campfire: 0.5, cliff: 0.86, spectators: 0.5, obelisk: 0.64, scales: 0.64, candle: 0.7, cup: 0.66, blossoms: 0.5, stone: 0.66, longtable: 0.5, pearl: 0.66, grave: 0.5 };
 /** The row the feet of a figure stand on: a prop stands on it too. */
 const BASE = 150;
 const OUT: Rgb = [20, 18, 26];
@@ -154,21 +154,30 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
   cliff(px, x, _c, seed) {
     const r = rng(seed + 5);
     const from = x - 4;
-    let edge = BASE - 6;
-    for (let xx = from; xx < from + 220; xx++) {
+    let edge = BASE - 5;
+    // the rock: the ground ends in a broken lip with a sheer face of warm stone; past it is the drop, open air in dithered blue and mist (never a flat box)
+    for (let xx = from; xx < from + 240; xx++) {
       const gap = xx - from;
-      if (gap < 120 && r() < 0.35) edge += r() < 0.5 ? 1 : -1;
-      edge = Math.max(BASE - 10, Math.min(BASE + 3, edge));
-      const top = gap < 24 ? edge : edge + Math.round((gap - 24) * 0.12);
-      // the face of the rock, then the drop in shades of dark and a pale mist at the bottom
-      for (let y = top; y < H; y++) {
-        const t = (y - top) / 40;
-        const face = gap < 18 ? mix([112, 100, 90], [60, 54, 56], Math.min(1, t)) : mix([46, 44, 56], [96, 100, 124], Math.min(1, (y - 160) / 20 + 0.2));
-        px.set(xx, y, face);
+      if (gap < 28 && r() < 0.4) edge += r() < 0.5 ? 1 : -1;
+      edge = Math.max(BASE - 8, Math.min(BASE + 1, edge));
+      const faceEnd = gap < 6 ? H : Math.max(edge + 2, Math.round(H - (gap - 6) * 4.2 - (r() < 0.3 ? 2 : 0)));
+      for (let y = edge; y < H; y++) {
+        if (gap < 30 && y < faceEnd) {
+          const t = Math.min(1, (y - edge) / 34);
+          const rock = mix([138, 120, 100], [70, 62, 62], t);
+          px.set(xx, y, gap < 3 || y === edge ? OUT : y === edge + 1 ? [176, 158, 130] : (xx + y) % 9 === 0 ? dark(rock, 0.25) : rock);
+        } else {
+          const t = (y - 120) / 60;
+          const sky = mix([150, 176, 214], [232, 236, 246], Math.min(1, Math.max(0, t)));
+          px.set(xx, y, (xx * 7 + y * 3) % 11 === 0 ? [248, 250, 255] : sky);
+        }
       }
-      px.set(xx, top, [150, 138, 120]);
     }
-    for (let k = 0; k < 24; k++) px.rect(from + Math.round(r() * 200), 164 + Math.round(r() * 14), 12 + Math.round(r() * 20), 2, [170, 178, 200], 110);
+    // a wing feather stuck in the rock at the rim (13 §3: the feather in the stone at the edge)
+    const fx = from + 8, fy = edge - 1;
+    px.rect(fx, fy - 14, 1, 14, [236, 230, 214]);
+    for (let k = 0; k < 6; k++) { px.set(fx - 1, fy - 12 + k * 2, [214, 208, 192]); px.set(fx + 1, fy - 11 + k * 2, [250, 246, 234]); }
+    for (let k = 0; k < 14; k++) px.rect(from + 40 + Math.round(r() * 190), 168 + Math.round(r() * 10), 14 + Math.round(r() * 22), 2, [246, 248, 255], 150);
   },
   /** A row of people standing along the rim, still: cloaks in the muted colours of the place, small heads. */
   spectators(px, x, c, seed) {
@@ -186,7 +195,17 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
         const half = y < 5 ? 2 : 2 + Math.floor((y - 5) / 3);
         px.rect(px0 - half - 1, top + y, half * 2 + 3, 1, OUT);
       }
+      // the Aviyan: a folded wing stands up behind the shoulder (scale red or feather white), so a spectator reads as winged
+      const wing: Rgb = i % 3 === 0 ? [168, 66, 54] : i % 3 === 1 ? [226, 222, 212] : [96, 120, 172];
+      const side = i % 2 ? 1 : -1;
+      for (let y = 0; y < h - 2; y++) {
+        const wy = y / (h - 2), ww = Math.round(1 + Math.sin(Math.min(1, wy * 1.1) * Math.PI * 0.8) * 2.4);
+        const wx = px0 + side * (3 + Math.floor(wy * 1.5));
+        px.rect(wx - (side < 0 ? ww : 0) - 1, top + 3 + y, ww + 1, 1, OUT);
+        px.rect(wx - (side < 0 ? ww : 0), top + 3 + y, ww, 1, y % 4 === 0 ? light(wing, 0.3) : wing);
+      }
       px.disc(px0 + 0.5, top + 2.5, 2.4, [214, 178, 146]);
+      px.set(px0 - 1, top + 2, [40, 30, 30]); px.set(px0 + 2, top + 2, [40, 30, 30]);
       for (let y = 5; y < h; y++) {
         const half = 2 + Math.floor((y - 5) / 3);
         px.rect(px0 - half, top + y, half * 2 + 1, 1, cloak);

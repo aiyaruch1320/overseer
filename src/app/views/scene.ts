@@ -146,6 +146,7 @@ export function cardOfEntry(data: GameData, e: LogEntry, state?: GameState | nul
   const staged = script ? stagingOf(script) : undefined;
   if (staged?.props.length) card.scenery.props = staged.props;
   if (staged?.setting) card.scenery.setting = staged.setting;
+  if (staged?.mood) card.scenery.mood = staged.mood;
   return card;
 }
 
@@ -262,8 +263,14 @@ const FOE_LABEL = 'คู่ต่อสู้';
 /** The race of the tribe a rite or a destination belongs to, by the two letters of its script id (`dest.wi`, `rite.el`, `wi.e1`): the first letters of the race ids of data/gen/looks.json. */
 const TRIBE_RACE: Record<string, string> = { hu: 'human', el: 'elf', de: 'darkelf', dw: 'dwarf', or: 'orc', ha: 'halfling', be: 'beast', na: 'naga', dk: 'dragonkin', va: 'vampire', fa: 'fae', sl: 'slime', dm: 'demonkin', me: 'merfolk', wi: 'winged', gi: 'giant', la: 'lavakin', co: 'construct', so: 'soulmachine', mu: 'mummy', gh: 'ghoul' };
 
+/**
+ * The main homeland of each race (docs/systems/character/01-origin.md §5, the first country of its "ถิ่นหลัก"): a life of a race is normally born there, so a specimen of a
+ * tribe's rite with no life behind it is shown in this country (the storybook, the page of the twelve tribes).
+ */
+export const RACE_HOME: Record<string, string> = { human: 'AL-04', elf: 'SV-01', darkelf: 'KD-05', dwarf: 'KD-01', orc: 'MH-01', halfling: 'AL-16', beast: 'SV-16', naga: 'NR-07', dragonkin: 'KD-07', vampire: 'NB-02', fae: 'SV-04', slime: 'SV-12', demonkin: 'MH-02', merfolk: 'NR-06', winged: 'AZ-01', giant: 'SH-03', lavakin: 'KD-06', construct: 'MK-02', soulmachine: 'MK-03', mummy: 'SH-02', ghoul: 'MH-03' };
+
 /** The race a scene is about: its tribe when the script is a rite or a destination of one, else nothing (the life's own race is the default). */
-function sceneRace(v: SceneView): string | undefined {
+export function sceneRace(v: SceneView): string | undefined {
   const id = v.kind === 'script' ? v.script.id : v.entry.id ?? '';
   const m = id.match(/^(?:rite|dest)\.([a-z]{2})$/) ?? id.match(/^([a-z]{2})\.[a-z]\d+$/);
   return m ? TRIBE_RACE[m[1]] : undefined;
@@ -473,13 +480,17 @@ export function placeOf(data: GameData, state: GameState | null | undefined, e: 
 
 /** The painted place of a scene as a function of the place the frame names (the bg beats change it): the continent and country of the scene, the setting from the words, a seed from the scene. */
 export function sceneryOf(data: GameData, state: GameState | null | undefined, v: SceneView): SceneryOf {
-  const at = placeOf(data, state, v.entry);
+  // with no life behind the scene (a specimen) a tribe's scene is in the tribe's homeland
+  const race = sceneRace(v);
+  const home = !state?.life && race ? placeIds(data).byId.get(RACE_HOME[race] ?? '') : undefined;
+  const at = namedPlace(data, v.entry.data) ?? home ?? placeOf(data, state, v.entry);
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
   return (place) => {
     // the props and the kind of place the script asks for (src/scene/props.ts): the craft table, the anvil, the eternal flame ...
     const staged = v.kind === 'script' ? stagingOf(v.script, place) : undefined;
     const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: staged?.setting ?? settingOf(place), seed };
     if (staged?.props.length) spec.props = staged.props;
+    if (staged?.mood) spec.mood = staged.mood;
     if (at?.country) spec.country = at.country;
     return spec;
   };
