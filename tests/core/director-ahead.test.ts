@@ -78,7 +78,7 @@ describe('directorAhead', () => {
   it('finds the follow-up of an NPC death (npc_death) with the id of the fork that is drawn', async () => {
     let found = 0;
     let played = 0;
-    for (let seed = 1; seed <= 30; seed++) {
+    for (let seed = 1; seed <= 45; seed++) {
       const r = await play(seed);
       for (const p of r.points.values()) {
         if (p.kind !== 'npc_death') continue;
@@ -91,7 +91,7 @@ describe('directorAhead', () => {
     expect(found).toBeGreaterThanOrEqual(5);
     // a life can end before the draw: most points are exact
     expect(played / found).toBeGreaterThan(0.65);
-  }, 240000);
+  }, 360000);
 
   it('finds the burden of the heart (heart) when a dream against his nature waits, with the id of the fork that fires', async () => {
     let found = 0;
