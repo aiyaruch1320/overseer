@@ -142,10 +142,12 @@ export function cardOfEntry(data: GameData, e: LogEntry, state?: GameState | nul
   const at = placeOf(data, state, e);
   card.scenery = { continent: at?.continent ?? 'AZ', setting: 'outdoor', seed: seedOf(card.id), ...(at?.country ? { country: at.country } : {}) };
   // the things the scene of the event names (the pearl egg of DR-03) are in the picture of its card too
-  const script = e.id ? indexOf(data)?.script.get(e.id) : undefined;
+  const ix = indexOf(data);
+  const script = ix ? sceneKeys(e, (id) => ix.template.get(id)).keys.map((k) => ix.script.get(k)).find(Boolean) : undefined;
   const staged = script ? stagingOf(script) : undefined;
   if (staged?.props.length) card.scenery.props = staged.props;
   if (staged?.setting) card.scenery.setting = staged.setting;
+  if (staged?.mood) card.scenery.mood = staged.mood;
   return card;
 }
 
@@ -161,6 +163,19 @@ function cardBase(data: GameData, e: LogEntry): CardModel {
   return plainCard(e.id ?? String(e.n), title, body, e.sys, str(d.mark) ?? '', ix?.scenes, group);
 }
 
+/**
+ * A miracle's day (20-god-ui §7.3: "the people see the omen") has people from the first beat: when its script brings its crowd late, a few people stand under the sky from the start,
+ * so the light falls on someone (the crowd of the later beat is the same actor and walks to its place).
+ */
+export function withWitnesses(script: SceneScript): SceneScript {
+  if (script.kind !== 'miracle') return script;
+  const firstActor = script.beats.find((b) => b.k === 'actor');
+  if (!firstActor || firstActor.at <= 1) return script;
+  const crowd = script.beats.find((b) => b.k === 'actor' && b.id === 'crowd');
+  if (!crowd) return script;
+  return { ...script, beats: [{ k: 'actor', at: 0.6, id: 'crowd', label: 'ผู้คน', x: 0.26, pose: 'stand', count: 3 }, ...script.beats] };
+}
+
 /** The scene of a log entry: its script (the rest of the scene chosen by the result in the entry) or its card. */
 export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null): SceneView {
   const card = cardOfEntry(data, e, state);
@@ -172,7 +187,7 @@ export function sceneFor(data: GameData, e: LogEntry, state?: GameState | null):
     if (!script) continue;
     const std = ix.script.get('std.clash');
     const picked = variants.map((group) => group.find((k) => k && (script.variants?.[k] || std?.variants?.[k])));
-    return { kind: 'script', script: resolveScript(script, picked, std), card, entry: e };
+    return { kind: 'script', script: withWitnesses(resolveScript(script, picked, std)), card, entry: e };
   }
   return { kind: 'card', card, entry: e };
 }
@@ -210,7 +225,9 @@ const IDLE_SKY = [
 
 /** The ages that change the figure (the docs of the character give childhood to 15 and the elder age 55 for humans; other races take the same here, it is a picture). */
 const IDLE_AGES = { young: 15, adult: 30, elder: 55 } as const;
-const LATEST_MAX = 70;
+const LATEST_MAX = 110;
+/** The latest line is kept this many world years. */
+const LATEST_YEARS = 1;
 
 /**
  * The scene on the stage. The choice is made again at every new line of the log and each time gives a new script object, so the scene that is playing is held here: it stays the
@@ -223,6 +240,13 @@ export function heldScene(held: SceneView | undefined, newest: SceneView | undef
   return cur;
 }
 
+/** A country whose title says it is a city (`มหานครนีออน`, `นครระฆังกลาง`, `เมืองท่าใหญ่`) is seen among its houses, not in a field (the calm picture of a life in a metropolis). */
+const CITY_TITLE = /^(มหานคร|นคร|เมือง|สหพันธ์นคร|สันนิบาตนคร|สาธารณรัฐเมือง)/;
+function isCityCountry(data: GameData, id: string | undefined): boolean {
+  const c = id ? (data.countries?.items as { id: string; title?: string }[] | undefined)?.find((x) => x.id === id) : undefined;
+  return !!c?.title && CITY_TITLE.test(c.title);
+}
+
 export function idleView(data: GameData, state: GameState): IdleView {
   const life = state.life;
   const quarter = ((state.clock.quarter % 4) + 4) % 4;
@@ -231,13 +255,14 @@ export function idleView(data: GameData, state: GameState): IdleView {
   const height = { child: 0.26, young: 0.36, adult: 0.4, elder: 0.38 }[stage];
   const place = life ? plainName(data, life.country) : '';
   const from = lifeStartN(state);
-  const last = [...allLines(data, state)].reverse().find((l) => l.entry.n >= from && l.level >= 2 && l.sys !== 'attention');
+  // the latest thing told is only news for a world year: an older one is let go (it stood in the sky for years)
+  const last = [...allLines(data, state)].reverse().find((l) => l.entry.n >= from && l.level >= 2 && l.sys !== 'attention' && state.clock.worldYear - l.entry.worldYear <= LATEST_YEARS);
   const t = last ? last.text.replace(/\s+/g, ' ').trim() : '';
   const latest = [...t].length > LATEST_MAX ? `${[...t].slice(0, LATEST_MAX - 1).join('')}…` : t;
   const c = IDLE_SKY[quarter];
   const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
   const at = lifePlace(data, state);
-  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
+  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: isCityCountry(data, at?.country) ? 'town' : 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
   return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption, scenery };
 }
 
@@ -262,8 +287,17 @@ const FOE_LABEL = 'คู่ต่อสู้';
 /** The race of the tribe a rite or a destination belongs to, by the two letters of its script id (`dest.wi`, `rite.el`, `wi.e1`): the first letters of the race ids of data/gen/looks.json. */
 const TRIBE_RACE: Record<string, string> = { hu: 'human', el: 'elf', de: 'darkelf', dw: 'dwarf', or: 'orc', ha: 'halfling', be: 'beast', na: 'naga', dk: 'dragonkin', va: 'vampire', fa: 'fae', sl: 'slime', dm: 'demonkin', me: 'merfolk', wi: 'winged', gi: 'giant', la: 'lavakin', co: 'construct', so: 'soulmachine', mu: 'mummy', gh: 'ghoul' };
 
+/**
+ * The main homeland of each race (docs/systems/character/01-origin.md §5, the first country of its "ถิ่นหลัก"): a life of a race is normally born there, so a specimen of a
+ * tribe's rite with no life behind it is shown in this country (the storybook, the page of the twelve tribes).
+ */
+export const RACE_HOME: Record<string, string> = { human: 'AL-04', elf: 'SV-01', darkelf: 'KD-05', dwarf: 'KD-01', orc: 'MH-01', halfling: 'AL-16', beast: 'SV-16', naga: 'NR-07', dragonkin: 'KD-07', vampire: 'NB-02', fae: 'SV-04', slime: 'SV-12', demonkin: 'MH-02', merfolk: 'NR-06', winged: 'AZ-01', giant: 'SH-03', lavakin: 'KD-06', construct: 'MK-02', soulmachine: 'MK-03', mummy: 'SH-02', ghoul: 'MH-03' };
+
+/** The land a tribe's own scenes are in whatever the country of the life (docs/appearance/13 §2: the elf's world tree and the fae's naming circle stand in a forest). */
+const TRIBE_LAND: Record<string, string> = { elf: 'SV', fae: 'SV' };
+
 /** The race a scene is about: its tribe when the script is a rite or a destination of one, else nothing (the life's own race is the default). */
-function sceneRace(v: SceneView): string | undefined {
+export function sceneRace(v: SceneView): string | undefined {
   const id = v.kind === 'script' ? v.script.id : v.entry.id ?? '';
   const m = id.match(/^(?:rite|dest)\.([a-z]{2})$/) ?? id.match(/^([a-z]{2})\.[a-z]\d+$/);
   return m ? TRIBE_RACE[m[1]] : undefined;
@@ -376,9 +410,12 @@ export function figuresOf(data: GameData, state: GameState | null | undefined, v
 export function labelsOf(data: GameData, state: GameState | null | undefined, v: SceneView): (a: { id: string; label: string }) => string {
   const life = state?.life;
   const tie = state && v.entry.id && state.life?.ext.bonds ? tiesOf(bondsExt(state.life)).find((t) => t.id === v.entry.id) : undefined;
-  void data;
+  // a specimen of a tribe (no life behind it) names the tribe under the figure, so twelve small stages are told apart (21-pixel-art §1)
+  const race = !life ? sceneRace(v) : undefined;
+  const raceName = race ? (data.races?.items as { races?: { id: string; name: string }[] } | undefined)?.races?.find((r) => r.id === race)?.name : undefined;
   return ({ id, label }) => {
     if (id === 'a' && MAIN_LABELS.has(label) && life?.name) return life.name;
+    if (id === 'a' && label === 'เด็ก' && raceName) return `เด็ก${raceName}`;
     if (OTHER_LABELS.has(label) && tie?.name) return tie.name;
     return label;
   };
@@ -473,13 +510,20 @@ export function placeOf(data: GameData, state: GameState | null | undefined, e: 
 
 /** The painted place of a scene as a function of the place the frame names (the bg beats change it): the continent and country of the scene, the setting from the words, a seed from the scene. */
 export function sceneryOf(data: GameData, state: GameState | null | undefined, v: SceneView): SceneryOf {
-  const at = placeOf(data, state, v.entry);
+  // with no life behind the scene (a specimen) a tribe's scene is in the tribe's homeland
+  const race = sceneRace(v);
+  const home = !state?.life && race ? placeIds(data).byId.get(RACE_HOME[race] ?? '') : undefined;
+  let at = namedPlace(data, v.entry.data) ?? home ?? placeOf(data, state, v.entry);
+  // the rites and ends of the tribes that live in one kind of land are played in it wherever the life is born (13 §2: the roots of the world tree and the naming circle are in a forest)
+  const land = v.kind === 'script' && /^(?:rite|dest)\.|^[a-z]{2}\.[a-z]\d+$/.test(v.script.id) && race ? TRIBE_LAND[race] : undefined;
+  if (land && at?.continent !== land) at = { continent: land };
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
   return (place) => {
     // the props and the kind of place the script asks for (src/scene/props.ts): the craft table, the anvil, the eternal flame ...
     const staged = v.kind === 'script' ? stagingOf(v.script, place) : undefined;
     const spec: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: staged?.setting ?? settingOf(place), seed };
     if (staged?.props.length) spec.props = staged.props;
+    if (staged?.mood) spec.mood = staged.mood;
     if (at?.country) spec.country = at.country;
     return spec;
   };

@@ -5,7 +5,7 @@ import { SCENERY_KEEP } from './tuning';
 
 const painted = new Map<string, Scenery>();
 
-export const specKey = (s: ScenerySpec): string => `${s.continent}|${s.country ?? ''}|${s.setting}|${s.season ?? ''}|${s.seed ?? ''}|${(s.props ?? []).join(',')}`;
+export const specKey = (s: ScenerySpec): string => `${s.continent}|${s.country ?? ''}|${s.setting}|${s.season ?? ''}|${s.seed ?? ''}|${s.mood ?? ''}|${(s.props ?? []).join(',')}`;
 
 /** The layers of a place, from the cache (the oldest unused place is let go past `SCENERY_KEEP`). */
 export function sceneryFor(spec: ScenerySpec): Scenery {

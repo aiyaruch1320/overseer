@@ -73,7 +73,7 @@ export const MK: Painter = {
     for (let x = 0; x < GND_W; x++) { px.set(x, 160, g.c('#2a2e38', 'rock')); px.set(x, 161, g.c('#9aa4b4', 'rock')); px.set(x, 168, g.c('#2a2e38', 'rock')); px.set(x, 169, g.c('#9aa4b4', 'rock')); if (x % 9 < 2) { px.set(x, 162, g.c('#4a3a2e', 'rock')); px.set(x, 163, g.c('#4a3a2e', 'rock')); px.set(x, 167, g.c('#4a3a2e', 'rock')); px.set(x, 166, g.c('#4a3a2e', 'rock')); } }
     for (let y = 172; y < H; y++) for (let x = 0; x < GND_W; x++) px.set(x, y, bayer(x + y, y) < 0.3 ? g.c('#a8b83a', 'ground') : g.c('#8a9a3a', 'ground'));
     for (let x = 0; x < GND_W; x++) px.set(x, 171, g.c('#2a2e38', 'rock'));
-    for (let i = 0; i < 8; i++) { const x = 60 + i * 150 + Math.floor(r() * 50); smoke(px, x, 146, 14, g.c('#c8c8c0', 'sky'), g.c('#e8e8e0', 'sky'), 0.1, i + 2); px.rect(x - 2, 146, 5, 2, g.c('#3a3e48', 'man')); }
+    for (let i = 0; i < 8; i++) { const x = 60 + i * 150 + Math.floor(r() * 50); smoke(px, x, 158, 10, g.c('#9a9a94', 'sky'), g.c('#b8b8b0', 'sky'), 0.06, i + 2); px.rect(x - 2, 158, 5, 2, g.c('#3a3e48', 'man')); }
     for (let i = 0; i < 6; i++) place(px, cx.spr('mkl2', () => lamp('#2a2e38', '#e8dc80', 34)), 30 + i * 230 + Math.floor(r() * 50), 149);
     snowDust(px, GY, 171, g.snowAmt);
     return px.frame();

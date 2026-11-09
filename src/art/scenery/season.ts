@@ -101,3 +101,36 @@ export function seasonLight(light: string, base: Base, season: number | undefine
   const o = [0, 1, 2].map((q) => clamp(Math.round((l + (c[q] - l) * k.sat) * k.val)).toString(16).padStart(2, '0'));
   return `#${o.join('')}`;
 }
+
+/**
+ * The dark of a place (docs/appearance/13 §2: the cellar of the dark elves, the room under the castle; 20 §7.3: the last night of a meteor): the layer is dimmed and cast blue-violet,
+ * and the bright things in it (lamps, windows, fire) are kept so they read as light. `night` is the dark under the sky: the sky layer also gets stars.
+ */
+export function darken(f: Frame, name: LayerName, mood: 'dark' | 'night', seed: number): void {
+  const d = f.data, n = f.w * f.h;
+  const base = mood === 'dark' ? 0.42 : 0.5;
+  const cool: Rgb = mood === 'dark' ? hex('#1c1838') : hex('#141c42');
+  for (let p = 0; p < n; p++) {
+    const i = p * 4;
+    if (!d[i + 3]) continue;
+    const c: Rgb = [d[i], d[i + 1], d[i + 2]];
+    const l = lum(c);
+    // what is bright and warm (a flame, a lit window) stays lit
+    const keep = Math.max(0, Math.min(1, (l - 0.62) / 0.3)) * (name === 'sky' ? 0.2 : 0.9);
+    const v = base + (1 - base) * keep;
+    const k = 0.32 * (1 - keep);
+    d[i] = clamp(Math.round((c[0] + (cool[0] - c[0]) * k) * v));
+    d[i + 1] = clamp(Math.round((c[1] + (cool[1] - c[1]) * k) * v));
+    d[i + 2] = clamp(Math.round((c[2] + (cool[2] - c[2]) * k) * v));
+  }
+  if (mood === 'night' && name === 'sky') {
+    let s = (seed * 2654435761 + 12345) >>> 0;
+    const rnd = (): number => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296);
+    for (let q = 0; q < 70; q++) {
+      const x = Math.floor(rnd() * f.w), y = Math.floor(rnd() * rnd() * 96), i = (y * f.w + x) * 4;
+      if (!d[i + 3] || lum([d[i], d[i + 1], d[i + 2]]) > 0.42) continue;
+      const a = 0.5 + rnd() * 0.5;
+      d[i] = Math.round(d[i] + (236 - d[i]) * a); d[i + 1] = Math.round(d[i + 1] + (234 - d[i + 1]) * a); d[i + 2] = Math.round(d[i + 2] + (250 - d[i + 2]) * a);
+    }
+  }
+}

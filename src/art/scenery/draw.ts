@@ -174,7 +174,15 @@ export function paintGround(px: Pix, o: GroundOpts): void {
       }
   }
   if (o.snow) {
-    for (let y = y0; y < H; y++) for (let x = 0; x < w; x++) if (bayer(x, y) < o.snow * 0.85 && wob[x] > 0.3) px.set(x, y, white);
+    // drifts, not columns: the cover is a soft field that changes with the row too (so no bar with a straight edge), dithered at its rim, thicker toward the front
+    for (let y = y0; y < H; y++) {
+      const dy = (y - y0) / (H - y0);
+      for (let x = 0; x < w; x++) {
+        const f = wob[(x + Math.floor(y * 5.3)) % w] * 0.75 + hash2(x >> 3, y >> 2, o.seed + 31) * 0.25;
+        const cover = Math.min(1, Math.max(0, (f - 0.22) * 2.6)) * Math.min(1, o.snow * 1.1) * (0.8 + 0.3 * dy);
+        if (cover > 0 && bayer(x, y) < cover) px.set(x, y, (x + y) % 11 === 0 ? [208, 218, 232] : white);
+      }
+    }
   }
 }
 

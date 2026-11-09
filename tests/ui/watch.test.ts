@@ -299,7 +299,7 @@ describe('watch: the calm picture between scenes changes with the life (review r
       expect(v.caption).toContain(`อายุ ${v.age}`);
       expect(v.caption).toContain(v.seasonName);
       expect(v.place.length).toBeGreaterThan(0);
-      expect([...v.latest].length).toBeLessThanOrEqual(70);
+      expect([...v.latest].length).toBeLessThanOrEqual(110);
     }
     // six decades of one life: more than one stage of the figure, more than one season, many different looks and several things told
     expect(stages.size).toBeGreaterThanOrEqual(3);

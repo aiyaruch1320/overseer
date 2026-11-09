@@ -22,6 +22,8 @@ export interface ScenerySpec {
   season?: number;
   /** A number that varies the details (the seed of the life, of the scene) so two places of one continent are not the same picture. */
   seed?: number;
+  /** The dark of the scene: a room with no daylight (`dark`), or the sky at night (`night`, stars). Omitted: the plain look of the place. */
+  mood?: 'dark' | 'night';
   /** Props the scene names (src/art/scenery/props.ts: `anvil`, `egg`, `candle:#b070e0` ...): drawn in a layer over the ground, behind the figures. */
   props?: string[];
 }

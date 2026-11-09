@@ -8,6 +8,8 @@ import type { Setting } from '../art/scenery/types';
 export interface Staging {
   props: string[];
   setting?: Setting;
+  /** The dark of the place: a room with no daylight, or the sky at night. */
+  mood?: 'dark' | 'night';
 }
 
 /** The two letters of a tribe in the id of its rite (`rite.dw`) or destination (`dest.dw`) and its story nodes (`dw.e1`). */
@@ -50,6 +52,14 @@ const WORDS: [RegExp, string, Setting?][] = [
 const FIRST_LINES = 4;
 const tribeOf = (id: string): string | undefined => id.match(/^(?:rite|dest)\.([a-z]{2})$/)?.[1] ?? id.match(/^([a-z]{2})\.e\d+$/)?.[1];
 
+const DARK_ROOM = /ใต้ดิน|ห้องมืด|มืดใต้|สุสานมืด|มืดหนึ่งเทียน/;
+const NIGHT = /คืนสุดท้าย|กลางคืน|ยามค่ำ|ท้องฟ้ายามค่ำ|เที่ยงคืน|ดึก|สว่างเท่าจันทร์|ดาวตก/;
+function darkOf(text: string, setting: Setting | undefined): 'dark' | 'night' | undefined {
+  if (DARK_ROOM.test(text)) return 'dark';
+  if (NIGHT.test(text)) return setting === 'indoor' ? 'dark' : 'night';
+  return undefined;
+}
+
 /** The staging of a script: the table of its tribe (a rite or an end), else the words of its place and first lines. `place` is the place the frame names now (the variants of a rite change it). */
 export function stagingOf(script: Pick<SceneScript, 'id' | 'beats'>, place = ''): Staging {
   const t = tribeOf(script.id);
@@ -58,13 +68,19 @@ export function stagingOf(script: Pick<SceneScript, 'id' | 'beats'>, place = '')
   let setting: Setting | undefined = tribe?.setting;
   if (tribe) props.push(...(/^rite\./.test(script.id) ? tribe.props : tribe.endProps ?? tribe.props));
   // the human rite changes with the land of birth: the guild yard of the plain has the craft table of the docs (13 §2), the others have their own
-  if (script.id === 'rite.hu' && /ทุ่งราบ/.test(place)) props.push('worktable');
-  const text = [place, ...script.beats.filter((b) => b.k === 'text').slice(0, FIRST_LINES).map((b) => (b as { text: string }).text), ...script.beats.filter((b) => b.k === 'bg').map((b) => (b as { place: string }).place)].join(' ');
+  if (script.id === 'rite.hu' && /ทุ่งราบ/.test(place)) {
+    props.push('worktable');
+    setting = 'town';
+  }
+  const text =[place, ...script.beats.filter((b) => b.k === 'text').slice(0, FIRST_LINES).map((b) => (b as { text: string }).text), ...script.beats.filter((b) => b.k === 'bg').map((b) => (b as { place: string }).place)].join(' ');
   if (!tribe)
     for (const [re, prop, set] of WORDS)
       if (re.test(text) && !props.includes(prop)) {
         props.push(prop);
         if (set) setting = set;
       }
-  return { props, ...(setting ? { setting } : {}) };
+  // the dark of the place: a cellar or a "dark room" is dark inside (13 §2 dark elf, vampire, ghoul), a night is a night sky (20 §7.3 the meteor)
+  
+  const mood = darkOf(text, setting);
+  return { props, ...(setting ? { setting } : {}), ...(mood ? { mood } : {}) };
 }

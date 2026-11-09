@@ -7,7 +7,7 @@ import { indoorPainter } from './indoor';
 import { AL, AZ, KD, MH, NR, type Painter } from './outdoor-a';
 import { MK, NB, SH, SV } from './outdoor-b';
 import { profileOf, type Base } from './profiles';
-import { finish, seasonLight } from './season';
+import { darken, finish, seasonLight } from './season';
 import { paintProps } from './props';
 import { townPainter } from './town';
 import { type Scenery, type ScenerySpec, type SceneryLayer } from './types';
@@ -34,6 +34,7 @@ export function paintScenery(spec: ScenerySpec): Scenery {
   const props = spec.props?.length ? paintProps(spec.props, Math.floor(spec.seed ?? 0) | 0) : null;
   // the finishing grade over every pixel: the season's climate of the continent (outdoors and in town) and the continent's ceiling of colour
   for (const l of layers) finish(l.frame, l.name, P.base, season, spec.setting !== 'indoor');
+  if (spec.mood) for (const l of layers) darken(l.frame, l.name, spec.mood, Math.floor(spec.seed ?? 0) | 0);
   if (props) layers.push({ name: 'props', speed: SPEED.props, frame: props });
   const ambient = ambientOf(cx.country?.ambient, spec.setting, P.ambient);
   return { spec, layers, light: spec.setting === 'indoor' ? P.lamp : seasonLight(P.light, P.base, season), ...(ambient ? { ambient } : {}) };
