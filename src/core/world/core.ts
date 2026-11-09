@@ -57,6 +57,25 @@ export function fire(ctx: Ctx, id: EventId, cls?: Mark, data: Record<string, str
   if (cls) w.chains['cap:' + cls] = y;
   const info = t.info.get(id);
   const ending = t.byId.get(id)?.role === 'ending';
+  const mark = info?.mark ?? '○';
+  // a ⭐ or ● event is announced 1 to 3 seasons before it is told (world-events.md §0.3): while a life runs, the omen is written now and the event follows
+  // on a later beat (`releaseOmens`); the state has changed already. With no life running (the world advancing alone) the event is written at once.
+  if (!ending && (cls === '⭐' || cls === '●') && TUNING.omen.on && lifeRuns(ctx)) {
+    const left = ctx.rng('world.omen').int(TUNING.omen.min, TUNING.omen.max);
+    w.chains['omen:' + id] = left;
+    write(ctx.state, { sys: 'world', kind: 'omen', id, level: TUNING.omen.level, data: { name: info?.name ?? id, mark, seasons: left } });
+    return;
+  }
+  writeEvent(ctx, id, data);
+}
+
+const lifeRuns = (ctx: Ctx): boolean => !!ctx.state.life && !ctx.state.life.dead;
+
+function writeEvent(ctx: Ctx, id: EventId, data: Record<string, string | number | boolean | null> = {}): void {
+  // `omened`: the omen of this event was told before (attention calls on the omen, not on the event)
+  const t = tablesOf(ctx);
+  const info = t.info.get(id);
+  const ending = t.byId.get(id)?.role === 'ending';
   write(ctx.state, {
     sys: 'world',
     kind: 'event',
@@ -64,6 +83,21 @@ export function fire(ctx: Ctx, id: EventId, cls?: Mark, data: Record<string, str
     level: ending ? TUNING.endingLevel : TUNING.level[info?.mark ?? '○'],
     data: { name: info?.name ?? id, mark: info?.mark ?? '○', ...data },
   });
+}
+
+/**
+ * Tells the events whose omen was written: one season (beat) less to wait for each, and an event whose seasons are over is written. `all` tells every one now
+ * (the life ended, or the world steps again without waiting).
+ */
+export function releaseOmens(ctx: Ctx, all = false): void {
+  const c = world(ctx).chains;
+  for (const k of Object.keys(c)) {
+    if (!k.startsWith('omen:')) continue;
+    c[k] -= 1;
+    if (!all && c[k] > 0) continue;
+    delete c[k];
+    writeEvent(ctx, k.slice(5), { omened: true });
+  }
 }
 
 // ---------- slow variables ----------

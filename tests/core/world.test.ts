@@ -7,6 +7,8 @@ import { apply, registered, test } from '../../src/core/rules';
 import { newGame } from '../../src/core/state';
 import type { Condition, Effect, GameState } from '../../src/core/types';
 import type { WorldEventsData } from '../../src/core/data/types-events';
+import { applyEvent, expireWarFlags } from '../../src/core/world/events';
+import { releaseOmens } from '../../src/core/world/core';
 import { openByGod, fallDragon, holdEvent, worldSystem, weightOf, addMood, strikeCap, onWorldPhase, clearWorldHooks } from '../../src/core/world';
 
 const gen = path.resolve(__dirname, '../../data/gen');
@@ -324,5 +326,74 @@ describe('world: the data it reads', () => {
   it('builds the contexts the engine needs from a plain state', () => {
     const ctx = makeCtx(newGame(1), DATA);
     expect(ctx.state.world.dragons).toEqual([]);
+  });
+});
+
+describe('world: omens ahead and the flags of famine and plague', () => {
+  it('a ⭐ or ● event is told after its omen of 1 to 3 seasons while a life runs, an ○ event and a world with no life have none', () => {
+    const none = world(5, 80).state.log.filter((e) => e.sys === 'world' && e.kind === 'omen');
+    expect(none).toEqual([]);
+    const st = newGame(5);
+    st.clock.worldYear = -10;
+    const g = new Game(st, DATA, [worldSystem]);
+    g.init();
+    g.worldSteps(20);
+    st.life = { dead: undefined } as never; // a life runs: the world announces
+    g.worldSteps(60);
+    releaseOmens(g.ctx, true);
+    const omens = st.log.filter((e) => e.sys === 'world' && e.kind === 'omen');
+    expect(omens.length).toBeGreaterThan(5);
+    for (const o of omens) {
+      expect(['⭐', '●']).toContain(o.data.mark);
+      expect(o.data.seasons).toBeGreaterThanOrEqual(1);
+      expect(o.data.seasons).toBeLessThanOrEqual(3);
+      const told = st.log.find((e) => e.sys === 'world' && e.kind === 'event' && e.id === o.id && e.n > o.n && e.data.omened === true);
+      expect(told, String(o.id)).toBeDefined();
+    }
+    // the events with an omen are the ⭐ and ● ones: every event told after the life began, but the endings and the ○ ones, has its omen
+    const after = st.log.filter((e) => e.sys === 'world' && e.kind === 'event' && !e.data.omened && e.n > omens[0].n);
+    for (const e of after) expect(e.data.mark === '○' || e.level === 3 || e.data.mark === undefined, String(e.id)).toBe(true);
+  });
+
+  it('the omen is told one beat at a time: an event waits its seasons', () => {
+    const st = newGame(5);
+    const g = new Game(st, DATA, [worldSystem]);
+    g.init();
+    st.world.chains['omen:DR-13'] = 2;
+    releaseOmens(g.ctx);
+    expect(st.world.chains['omen:DR-13']).toBe(1);
+    expect(st.log.some((e) => e.kind === 'event' && e.id === 'DR-13')).toBe(false);
+    releaseOmens(g.ctx);
+    expect(st.world.chains['omen:DR-13']).toBeUndefined();
+    expect(st.log.some((e) => e.kind === 'event' && e.id === 'DR-13' && e.data.omened === true)).toBe(true);
+  });
+
+  it('CT-02 puts famine on the countries of W 1 to 2 for three years, CT-03 puts plague on every country but the forest for ten, HP-06 cures it', () => {
+    const st = newGame(9);
+    st.clock.worldYear = 1000;
+    const g = new Game(st, DATA, [worldSystem]);
+    g.init();
+    const ev = (id: string) => W.events.find((e) => e.id === id)!;
+    const countries = (DATA.countries.items as { id: string; continent: string; econ?: { w?: number } }[]);
+    applyEvent(g.ctx, ev('CT-02'));
+    for (const c of countries) {
+      const low = (c.econ?.w ?? 3) <= 2;
+      expect(st.world.countryFlags[c.id].includes('famine'), c.id).toBe(low);
+    }
+    expect(countries.some((c) => (c.econ?.w ?? 3) <= 2)).toBe(true);
+    st.clock.worldYear += 4;
+    expireWarFlags(g.ctx);
+    for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('famine');
+    applyEvent(g.ctx, ev('CT-03'));
+    for (const c of countries) expect(st.world.countryFlags[c.id].includes('plague'), c.id).toBe(c.continent !== 'SV');
+    st.clock.worldYear += 5;
+    expireWarFlags(g.ctx);
+    expect(Object.values(st.world.countryFlags).some((f) => f.includes('plague'))).toBe(true);
+    applyEvent(g.ctx, ev('HP-06'));
+    for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('plague');
+    applyEvent(g.ctx, ev('CT-03'));
+    st.clock.worldYear += 11;
+    expireWarFlags(g.ctx);
+    for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('plague');
   });
 });

@@ -46,10 +46,10 @@ const run = (c: Game['ctx'], args: Record<string, unknown>, confirm = true, acti
 const prev = (r: CommandResult) => (r as { ok: true; preview: Record<string, any> }).preview;
 const why = (r: CommandResult) => (r as { ok: false; reason: string }).reason;
 
-/** A country that is not a seal, is not the character's, and has a neighbour: the place to drop a star. */
+/** A country that is not a seal, is not the character's, is not at war (the events of a ruin wait for peace), and has a neighbour: the place to drop a star. */
 function victim(ctx: Game['ctx'], not: string[] = []): string {
   const home = ctx.state.life!.country;
-  const c = allCountries(ctx).find((x) => x !== home && !not.includes(x) && !sealAt(ctx, x) && neighboursOf(ctx, x).length >= 2 && continentOf(x) !== continentOf(home));
+  const c = allCountries(ctx).find((x) => x !== home && !not.includes(x) && !sealAt(ctx, x) && !hasFlag(ctx, x, 'war') && neighboursOf(ctx, x).length >= 2 && continentOf(x) !== continentOf(home));
   if (!c) throw new Error('no country to strike');
   return c;
 }

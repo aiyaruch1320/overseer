@@ -190,8 +190,10 @@ describe('watch: the stop', () => {
     const m = watchModel(data, st, uiOfState(st, { stop: true }));
     expect(m.stop!.why).toBe('nearDeath');
     expect(m.stop!.options.map((o) => o.kind)).toEqual(['dream']);
-    expect(m.stop!.cards.map((c) => c.kind)).toEqual(['prayer']);
-    expect(m.stop!.cards[0].options[0].kind).toBe('prayer');
+    // an omen of the world may fall in the same stop (the world tells its ⭐ and ● events a season ahead): the card of the prayer is what this test reads
+    const cards = m.stop!.cards.filter((c) => c.kind !== 'omen');
+    expect(cards.map((c) => c.kind)).toEqual(['prayer']);
+    expect(cards[0].options[0].kind).toBe('prayer');
     expect(m.stop!.death).toBe(false);
   });
 

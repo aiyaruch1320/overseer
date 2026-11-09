@@ -158,6 +158,7 @@ export function applyEvent(ctx: Ctx, ev: WorldEvent, outcome?: 0 | 1 | 2): void 
     const mood = TUNING.moodOfEvent[ev.id];
     if (mood) moodAll(ctx, mood);
     markWar(ctx, ev);
+    markFlags(ctx, ev);
   } finally {
     acting = null;
   }
@@ -176,13 +177,35 @@ function markWar(ctx: Ctx, ev: WorldEvent): void {
   }
 }
 
+/** Flags other than a war of the WR group (tuning flagEvents): famine of CT-02, plague of CT-03, the war of DM-01; HP-06 cures the plague. */
+function markFlags(ctx: Ctx, ev: WorldEvent): void {
+  const w = world(ctx);
+  const cure = TUNING.flagCures[ev.id];
+  if (cure) {
+    for (const k of Object.keys(w.chains)) if (k.startsWith(`fl:${cure}:`)) delete w.chains[k];
+    for (const c of Object.keys(w.countryFlags)) w.countryFlags[c] = w.countryFlags[c].filter((f) => f !== cure);
+  }
+  const spec = TUNING.flagEvents[ev.id];
+  if (!spec) return;
+  const countries = (ctx.data.countries?.items ?? []) as { id: string; continent: string; econ?: { w?: number } }[];
+  for (const c of countries) {
+    if (spec.continents && !spec.continents.includes(c.continent)) continue;
+    if (spec.except?.includes(c.continent)) continue;
+    if (spec.w && !((c.econ?.w ?? 3) >= spec.w[0] && (c.econ?.w ?? 3) <= spec.w[1])) continue;
+    const flags = (w.countryFlags[c.id] ??= []);
+    if (!flags.includes(spec.flag)) flags.push(spec.flag);
+    w.chains[spec.flag === 'war' ? 'warflag:' + c.id : `fl:${spec.flag}:${c.id}`] = year(ctx) + spec.years;
+  }
+}
+
 export function expireWarFlags(ctx: Ctx): void {
   const w = world(ctx);
   const y = year(ctx);
   for (const k of Object.keys(w.chains)) {
-    if (!k.startsWith('warflag:') || w.chains[k] > y) continue;
-    const c = k.slice(8);
-    w.countryFlags[c] = (w.countryFlags[c] ?? []).filter((f) => f !== 'war');
+    const war = k.startsWith('warflag:');
+    if (!(war || k.startsWith('fl:')) || w.chains[k] > y) continue;
+    const [flag, c] = war ? ['war', k.slice(8)] : k.slice(3).split(':');
+    w.countryFlags[c] = (w.countryFlags[c] ?? []).filter((f) => f !== flag);
     delete w.chains[k];
   }
 }
