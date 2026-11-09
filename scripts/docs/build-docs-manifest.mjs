@@ -58,8 +58,8 @@ const SOURCE = {
   '_generated/local-events-by-country.md': 'scripts/docs/build-local-events.mjs',
   '_generated/weapon-catalog.md': 'scripts/docs/build-weapon-catalog.mjs',
   '_generated/item-catalog.md': 'scripts/docs/build-item-catalog.mjs',
-  '_generated/character-catalog': 'scripts/codegen/export-character-catalog.ts',
-  '_generated/poc-visuals': 'scripts/codegen/gen-visual-docs.ts',
+  '_generated/character-catalog': '(static export of the deleted POC data)',
+  '_generated/poc-visuals': '(static export of the deleted POC code)',
   '_generated/manifest.json': 'scripts/docs/build-docs-manifest.mjs',
 };
 

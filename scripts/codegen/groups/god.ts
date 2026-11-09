@@ -1,6 +1,6 @@
 // God generator (code-plan §5.1, row "พระเจ้า"): prices and caps, income, belief, the chest, dreams, whispers, prayers,
 // the 25 miracles, ruins, conjuring (48 cells), vows, epithets. Writes data/gen/god.json.
-// Every number sim-god.mjs reads is here; numbers that only the sim or the old code (legacy/) has are marked `assumed` or `legacy`.
+// Every number sim-god.mjs reads is here; numbers that only the sim or the old POC code had are marked `assumed` or `legacy`.
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { GodData, Miracle, RawTable } from '../../../src/core/data/types-god';

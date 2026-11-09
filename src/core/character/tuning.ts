@@ -28,25 +28,25 @@ export const UNTIMELY = {
 /** hAge at which a character counts as an adult (world-time.md §3: adult = 20, elder = 55). */
 export const ADULT_AGE = 20;
 
-/** Birth gifts: assumption, taken from legacy/sim/character.ts (30% a blessing, 25% a curse) because the docs give no base chance. */
+/** Birth gifts: assumption, taken from the POC character code (30% a blessing, 25% a curse) because the docs give no base chance. */
 export const BIRTH_GIFT = { blessing: 0.3, curse: 0.25, uniqueSkill: 0.02 };
 
 /** Rarity weights of blessings and curses (character/README.md "ระดับความหายาก"). */
 export const RARITY_WEIGHT: Record<string, number> = { C: 100, U: 38, R: 11, E: 2.6, L: 0.5 };
 
-/** Time of day at birth (01-origin.md §1 step 6 says "ตามโค้ดเดิม"; weights from legacy/sim/character.ts BIRTH_TIMES). */
+/** Time of day at birth (01-origin.md §1 step 6 says "ตามโค้ดเดิม"; weights from the POC birth-time table). */
 export const BIRTH_TIME_WEIGHT: Record<string, number> = { dawn: 20, day: 35, dusk: 15, night: 30 };
 
 /** Weights of trait, aptitude and gift choices at birth (02-race-affinity.md "กติกา": เสริม ×2, ต้าน ×0.4). The data's own values win when loaded. */
 export const AFFINITY = { plus: 2, minus: 0.4, clash: 0.4 };
 
-/** How many aptitudes a newborn has: two, or three with this chance (assumption from legacy/sim/character.ts). */
+/** How many aptitudes a newborn has: two, or three with this chance (assumption from the POC code). */
 export const APTITUDES_AT_BIRTH = { base: 2, threeChance: 0.25 };
 
-/** A random shift of each axis at birth, ± this much (assumption from legacy/sim/character.ts). */
+/** A random shift of each axis at birth, ± this much (assumption from the POC code). */
 export const AXIS_SPREAD = 20;
 
-/** Birth belief in the god is the piety axis divided by this (assumption from legacy/sim/character.ts). */
+/** Birth belief in the god is the piety axis divided by this (assumption from the POC code). */
 export const FAITH_FROM_PIETY = 3;
 
 /** The weight a country's primary religion gets over the others when a child's faith is drawn (assumption). */
@@ -57,7 +57,7 @@ export const BIG_CITY = { scale: 5, listedWeight: 3, bigWeight: 1 };
 
 /** Lifespan shift of `#longevity` by the race's mid lifespan (02-race-affinity.md §ค): ≥230 +5%, <100 +20%; the middle is an assumption. */
 export const LONGEVITY = { highMid: 230, highPct: 0.05, lowMid: 100, lowPct: 0.2, midPct: 0.1 };
-/** hAge removed by `#short_life` and `#fast_aging` (assumption from legacy/sim/character.ts lifespanH). */
+/** hAge removed by `#short_life` and `#fast_aging` (assumption from the POC lifespan code). */
 export const SHORT_LIFE = { shortLife: 22, fastAging: 10 };
 
 /** Default multiplier of a "ได้ง่ายขึ้น" favour that names no number (assumption; the docs use ×3 for the sign tags). */

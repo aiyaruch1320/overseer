@@ -44,11 +44,8 @@ npm run docs:verify
 
 | สคริปต์ | คำสั่ง npm | ทิศทาง | ใช้เมื่อ |
 | --- | --- | --- | --- |
-| `gen-countries.ts` | `npm run gen:data` | `docs/lore/countries/` → `src/data/countries.ts` | แก้ไฟล์ประเทศ |
-| `gen-npc-cast.ts` | `npm run gen:data` | `docs/lore/npcs/` → `src/data/npcCast.ts` | แก้ไฟล์ NPC |
-| `gen-birth.ts` | `npm run gen:data` | `docs/systems/character/01-origin.md` → `src/data/birthTables.ts` | แก้ตารางกำเนิด |
-| `export-character-catalog.ts` | `npm run gen:docs` | `src/data/` → `docs/_generated/character-catalog/` | แก้พร คำสาป skill ในโค้ด ตัวตรวจเอกสารอ่านแคตตาล็อกนี้ |
-| `gen-visual-docs.ts` | `npm run gen:docs` | `src/` → `docs/_generated/poc-visuals/` | **เก่า** ดูหัวข้อสถานะ |
+| `export-character-catalog.ts` (ลบแล้ว) | - | เคยสร้าง `docs/_generated/character-catalog/` จากข้อมูลของ POC | ไฟล์ที่สร้างไว้คงเป็นเอกสารตายตัว `check-docs` และตัวสร้าง `codegen/groups/character.ts` ยังอ่านอยู่ |
+| `gen-visual-docs.ts` (ลบแล้ว) | - | เคยสร้าง `docs/_generated/poc-visuals/` จากโค้ด POC | ไฟล์ที่สร้างไว้คงเป็นเอกสารตายตัว |
 
 ไฟล์ใน `src/data/` ที่ขึ้นต้นด้วย `// Generated` ห้ามแก้ด้วยมือ ผลที่ถูกต้องคือรันซ้ำแล้ว `git diff` ไม่เปลี่ยนเมื่อเอกสารไม่เปลี่ยน
 
@@ -71,12 +68,9 @@ npm run docs:verify
 | `sim-npc-fate.mjs` | `node scripts/sim/sim-npc-fate.mjs [--md]` | ตารางชะตา NPC ยุคปลาย (`branches/04-last-era.md`) เทียบอายุขัย | ไม่กี่วินาที | สัดส่วนอยู่ ย้าย ตาย หายต่อช่วง |
 | `sim-npc-timeline.mjs` | `node scripts/sim/sim-npc-timeline.mjs [โลก] [--md] [--all]` | แถว NPC ที่ผูกเหตุการณ์โลก ผู้ถือคนแรกยังมีชีวิตตอนเหตุการณ์แรกเกิดหรือไม่ (`lore/npcs/README.md` หัวข้อ 2.1 ข้อ 6) | ราว 2 วินาทีต่อ 1,000 โลก | `DEAD` คือเรื่องที่ผู้สืบเล่นเกือบเสมอ ไม่ใช่ข้อผิด ให้ดูว่าข้อความในไฟล์อื่นต้องการตัวผู้ถือคนแรกหรือไม่ |
 | `sim-npc-density.mjs` | `node scripts/sim/sim-npc-density.mjs [โลก] [--nt=0.4] [--ntEvery=ปี] [--tier3=สัดส่วน]` | NPC ที่มีเรื่องของตัวเองต่อประเทศในแต่ละช่วงของนาฬิกาโลก และจำนวนเรื่อง NPC ที่หนึ่งชีวิตเจอ (ตามกติกาผู้สืบและ NPC ที่มาใหม่ใน `succession.md`) ตัวเลือกใช้ทดลองกติกาเติม NPC | ราว 3 วินาทีต่อ 200 โลก | เทียบตัวเลขช่วงต้นกับช่วงหลัง ถ้าช่วงหลังต่ำกว่ามาก NPC กระจุกตัวที่ต้นเรื่อง |
-| `sim-gold.ts` | `npm run sim:gold` | ทองที่ตัวละครของโค้ดสะสมตามอายุ (ใช้ตั้งราคาตีอาวุธ) | ราว 1 นาทีต่อ 300 ชีวิต | รันซ้ำเมื่อโค้ดเปลี่ยนวิธีให้ทอง แล้วแก้ราคาใน `RAW_PLAN.md` หัวข้อ 3.2 |
-| `simtest.ts` | `npm run sim` | ทดสอบควันของเกมในโค้ด: เล่น 200 ชีวิตด้วยการกระทำสุ่ม ตรวจว่าไม่พังและจังหวะเกมสมเหตุผล | ราว 1 นาที | ต้องไม่มี exception ดู `avgTicksPerLife` `hAge at death` |
 
 ตัวจำลองไม่เขียนไฟล์ ผลลัพธ์ที่ควรเก็บให้คัดลอกเข้าเอกสารเอง และบอกชื่อคำสั่งที่ใช้
 
-**ข้อควรระวัง** `sim-gold.ts` และ `simtest.ts` วัดตัวทดลอง (POC) ใน `src/` ซึ่งมี 14 เผ่าและเงื่อนไขอาชีพของตัวเอง ผลใช้เทียบกับเอกสารโดยตรงไม่ได้ เช่น ใน `simtest` อาชีพลับ `godslayer` เป็นอาชีพสุดท้ายที่พบบ่อยที่สุด (43 จาก ~350 ชีวิต) เพราะเงื่อนไขในโค้ดหลวมกว่าเอกสาร เป้าของเอกสารคืออาชีพลับรวมไม่เกิน 3% และ `godslayer` ไม่เกิน 0.1%
 
 ## แก้อะไร รันอะไร
 
@@ -94,11 +88,9 @@ npm run docs:verify
 | สคริปต์ | สถานะ | หมายเหตุ |
 | --- | --- | --- |
 | `docs/*` ทุกตัว | ใช้ประจำ | ต้องผ่านก่อนส่งงานทุกครั้ง |
-| `codegen/gen-*.ts` (ยกเว้น visual) | ใช้ตราบที่โค้ดอ่านข้อมูลจากเอกสาร | เมื่อเกมจริงอ่านเอกสารโดยตรง สคริปต์เหล่านี้เลิกใช้ได้ |
-| `codegen/export-character-catalog.ts` | ใช้ | `check-docs` อ่านแคตตาล็อกที่มันสร้าง |
-| `codegen/gen-visual-docs.ts` | **เก็บไว้ (ยังไม่ทราบว่าใช้อยู่)** | สร้างเอกสารภาพของ POC ที่ถูกแทนที่ด้วย `docs/appearance/` ไม่มีสคริปต์อื่นพึ่ง ผู้ใช้ตัดสินให้เก็บไว้ จนกว่าจะยืนยันว่าไม่มีใครใช้เอกสาร `_generated/poc-visuals/` |
+| `codegen/export-character-catalog.ts` | ลบแล้ว | ไฟล์แคตตาล็อกที่สร้างไว้ยังอยู่และถูกอ่านต่อ |
+| `codegen/gen-visual-docs.ts` | ลบแล้ว | โค้ด POC ถูกลบ ไฟล์ `_generated/poc-visuals/` คงเป็นเอกสารตายตัว |
 | `sim/sim-world.mjs` `sim-items.mjs` | ใช้ | วัดจากเอกสารโดยตรง |
-| `sim/sim-gold.ts` `simtest.ts` | ใช้กับ POC เท่านั้น | จะใช้ไม่ได้เมื่อ `src/sim` ถูกเขียนใหม่ ให้เขียนตัวเทียบเท่าบนเกมใหม่ |
 
 ## เพิ่มสคริปต์ใหม่
 
