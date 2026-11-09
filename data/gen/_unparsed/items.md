@@ -1,18 +1,16 @@
 # ส่วนที่แปลไม่ได้: items
 
-209 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
+201 รายการ (สร้างโดยตัวสร้าง ห้ามแก้มือ)
 
 | ที่ | วลี | เหตุ |
 | --- | --- | --- |
 | docs/systems/items/03-job-weapons-common-1.md:11 | ปีที่ถือ ผลผลิตของไร่ +1 ขั้น | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:16 | พวกพ้อง +1 เพิ่มเมื่อรบเป็นแถว | ability with a number |
-| docs/systems/items/03-job-weapons-common-1.md:17 | ไม่หนีทัพ (ท่าทีหนี −2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:37 | รู้จุดอ่อนศัตรูที่เคยอ่าน (ท่าทีที่ตรงจุดอ่อน +1) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:38 | หลังศึกทุกครั้งบันทึกจุดอ่อนของศัตรูนั้น (ครั้งต่อไป +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:50 | ถ้าผิดคำสาบานพลังเป็น 0 จนกว่าจะไถ่โทษ | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:64 | เสีย hp 5% ต่อการใช้ | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:80 | ฝูงสัตว์ในหมู่บ้านเป็นพวกพ้อง +2 เมื่อบุกหมู่บ้าน | ability with a number |
-| docs/systems/items/03-job-weapons-common-1.md:83 | สร้างที่กำบังในศึกได้ (ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:95 | ลูกศิษย์ที่เคยสอนเป็นพวกพ้อง +2 ในศึก | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:110 | กูลที่ไม่หิวยอมคุย (ท่าทีเจรจากับกูล +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:116 | รู้ตัวก่อนอุโมงค์ถล่ม (ทอยรับรู้ใต้ดิน +3) | ability with a number |
@@ -22,7 +20,6 @@
 | docs/systems/items/03-job-weapons-common-1.md:155 | ซ่อมเรือกลางศึกได้ (บนเรือ ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:29 | ยิงแสงรวม (+3 หนึ่งครั้งต่อศึก) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:32 | `c_whisper` 10% ต่อปีที่ถือ | ability with a number |
-| docs/systems/items/04-job-weapons-common-2.md:38 | หาเส้นทางหนีได้เสมอ (ท่าทีหนี +2) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:52 | เรียกชาวบ้านเป็นพวกพ้อง +2 เมื่อบุกหมู่บ้าน | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:65 | ลดโอกาสบาดแผลถาวรของพวกพ้อง 50% | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:80 | หลัง DR-06 ลมสุ่ม ยังบอกลมถัดไปได้ | ability with a number |
@@ -61,7 +58,6 @@
 | docs/systems/items/06-regional-weapons.md:32 | `nc_crown_hunger` 10% ต่อปีที่ถือ | ability with a number |
 | docs/systems/items/06-regional-weapons.md:43 | ทอย 18 ขึ้นไปนับเป็น 20 | ability with a number |
 | docs/systems/items/06-regional-weapons.md:73 | รู้จุดอ่อนศัตรู +1 ทุกชนิด | ability with a number |
-| docs/systems/items/06-regional-weapons.md:77 | ขุดที่กำบังในศึก (ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/06-regional-weapons.md:84 | `nb_homeland_call` 10% ต่อปีที่ถือ | ability with a number |
 | docs/systems/items/06-regional-weapons.md:88 | ลดบาดแผลถาวรของพวกพ้อง 30% | ability with a number |
 | docs/systems/items/06-regional-weapons.md:115 | คนที่ไม่ใช่ยักษ์ต้องมี `pow` 15 จึงยกได้ | ability with a number |
@@ -123,13 +119,11 @@
 | docs/systems/items/14-talismans.md:69 | คู่ครองไม่เสียความไว้ใจง่าย (ไว้ใจ −1 จากเหตุการณ์เล็กลดครึ่ง) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:11 | ปีที่ถือ ผลผลิตของไร่ +1 ขั้น | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:16 | พวกพ้อง +1 เพิ่มเมื่อรบเป็นแถว | ability with a number |
-| docs/systems/items/03-job-weapons-common-1.md:17 | ไม่หนีทัพ (ท่าทีหนี −2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:37 | รู้จุดอ่อนศัตรูที่เคยอ่าน (ท่าทีที่ตรงจุดอ่อน +1) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:38 | หลังศึกทุกครั้งบันทึกจุดอ่อนของศัตรูนั้น (ครั้งต่อไป +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:50 | ถ้าผิดคำสาบานพลังเป็น 0 จนกว่าจะไถ่โทษ | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:64 | เสีย hp 5% ต่อการใช้ | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:80 | ฝูงสัตว์ในหมู่บ้านเป็นพวกพ้อง +2 เมื่อบุกหมู่บ้าน | ability with a number |
-| docs/systems/items/03-job-weapons-common-1.md:83 | สร้างที่กำบังในศึกได้ (ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:95 | ลูกศิษย์ที่เคยสอนเป็นพวกพ้อง +2 ในศึก | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:110 | กูลที่ไม่หิวยอมคุย (ท่าทีเจรจากับกูล +2) | ability with a number |
 | docs/systems/items/03-job-weapons-common-1.md:116 | รู้ตัวก่อนอุโมงค์ถล่ม (ทอยรับรู้ใต้ดิน +3) | ability with a number |
@@ -139,7 +133,6 @@
 | docs/systems/items/03-job-weapons-common-1.md:155 | ซ่อมเรือกลางศึกได้ (บนเรือ ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:29 | ยิงแสงรวม (+3 หนึ่งครั้งต่อศึก) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:32 | `c_whisper` 10% ต่อปีที่ถือ | ability with a number |
-| docs/systems/items/04-job-weapons-common-2.md:38 | หาเส้นทางหนีได้เสมอ (ท่าทีหนี +2) | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:52 | เรียกชาวบ้านเป็นพวกพ้อง +2 เมื่อบุกหมู่บ้าน | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:65 | ลดโอกาสบาดแผลถาวรของพวกพ้อง 50% | ability with a number |
 | docs/systems/items/04-job-weapons-common-2.md:80 | หลัง DR-06 ลมสุ่ม ยังบอกลมถัดไปได้ | ability with a number |
@@ -178,7 +171,6 @@
 | docs/systems/items/06-regional-weapons.md:32 | `nc_crown_hunger` 10% ต่อปีที่ถือ | ability with a number |
 | docs/systems/items/06-regional-weapons.md:43 | ทอย 18 ขึ้นไปนับเป็น 20 | ability with a number |
 | docs/systems/items/06-regional-weapons.md:73 | รู้จุดอ่อนศัตรู +1 ทุกชนิด | ability with a number |
-| docs/systems/items/06-regional-weapons.md:77 | ขุดที่กำบังในศึก (ท่าทีตั้งรับ +2) | ability with a number |
 | docs/systems/items/06-regional-weapons.md:84 | `nb_homeland_call` 10% ต่อปีที่ถือ | ability with a number |
 | docs/systems/items/06-regional-weapons.md:88 | ลดบาดแผลถาวรของพวกพ้อง 30% | ability with a number |
 | docs/systems/items/06-regional-weapons.md:115 | คนที่ไม่ใช่ยักษ์ต้องมี `pow` 15 จึงยกได้ | ability with a number |

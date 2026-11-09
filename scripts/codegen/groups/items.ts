@@ -36,6 +36,8 @@ function parseAbilities(cell: string, at: string): Ability[] {
       const words = Object.keys(KIND_WORDS).filter((w) => m![1].startsWith(w) || m![1].includes(w + ' '));
       a = { k: 'repel', text: seg, codes: ticks(seg), words: words.map((w) => KIND_WORDS[w]) };
     } else if ((m = seg.match(/^ท่าที(\S+)\s*([+\-−]\d+)/))) a = { k: 'stance', text: seg, stance: m[1], n: Number(m[2].replace('−', '-')) };
+    // a plain stance in brackets after the deed it comes from (`ไม่หนีทัพ (ท่าทีหนี −2)`): the same stance bonus, with the words kept; one with a condition inside the brackets stays text
+    else if ((m = seg.match(/^[^()]+\(ท่าที(หนี|ตั้งรับ)\s*([+\-−]\d+)\)$/))) a = { k: 'stance', text: seg, stance: m[1], n: Number(m[2].replace('−', '-')) };
     else if ((m = seg.match(/ทอยทื่อ(?:เหลือ)?\s*(\d+)%/))) a = { k: 'dull', text: seg, n: Number(m[1]) / 100 };
     else if ((m = seg.match(/^(.+?)\s*([+\-−]\d+(?:\.\d+)?)(%)?(?:\s*\((.*)\))?$/)) && !/ทอยทื่อ/.test(seg)) a = { k: 'bonus', text: seg, subject: m[1].trim(), n: Number(m[2].replace('−', '-')) / (m[3] ? 100 : 1), pct: !!m[3] };
     else {
