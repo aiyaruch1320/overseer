@@ -16,6 +16,7 @@ import { STAY_YEARS, VOW_NUMBERS } from './tuning';
 import { classNumber } from '../../economy/data';
 import { slotsOf } from '../../npc/types';
 import { nemeses } from '../../npc/status';
+import { NEMESIS_GRUDGE } from '../../npc/tuning';
 import { tablesOf } from '../../world';
 import { birthMark, godData } from '../state';
 import { lifeChronicle } from '../stats';
@@ -110,12 +111,19 @@ export const hasStudent = (l: LifeState): boolean => liveTies(l).some((t) => t.l
 /** The NPCs who stand against him now: a grudge that reached a nemesis, and the ties of the line `คู่แข่ง`. */
 export function rivalsNow(ctx: Ctx, l: LifeState): string[] {
   const ids = new Set<string>(nemeses(ctx));
-  for (const t of liveTies(l)) if (t.line === 'คู่แข่ง' && t.npc) ids.add(t.npc);
+  // a rival who is not a position of the roster has no NPC id: he is kept under the id of his tie (`tie:` ...), so his fall can be seen later
+  for (const t of liveTies(l)) if (t.line === 'คู่แข่ง' || t.grudge >= NEMESIS_GRUDGE) ids.add(t.npc ?? `${TIE_PREFIX}${t.id}`);
   return [...ids].sort();
 }
 
-/** Has the NPC fallen or vanished (dead, gone from the roster)? */
-export function fallen(ctx: Ctx, id: string): boolean {
+const TIE_PREFIX = 'tie:';
+
+/** Has the NPC fallen or vanished (dead, gone from the roster)? A rival tie without an NPC id (`tie:` ...) has fallen when the person died or faded from the life. */
+export function fallen(ctx: Ctx, id: string, life?: LifeState): boolean {
+  if (id.startsWith(TIE_PREFIX)) {
+    const t = life ? bondsOf(life)?.ties[id.slice(TIE_PREFIX.length)] : undefined;
+    return !!t && (t.state === 'dead' || t.state === 'faded');
+  }
   const s = slotsOf(ctx.state)[id];
   return !s || s.status !== 'alive';
 }
@@ -218,8 +226,8 @@ export function factsOf(ctx: Ctx, l: LifeState): Facts {
     stayed: Object.values(t.stay ?? {}).filter((y) => y >= STAY_YEARS).length,
     heir: heirAlive(l),
     love: loverLevel(ctx, l),
-    rivalFell: rivals.length > 0 && rivals.some((id) => fallen(ctx, id)),
-    forgave: labels.some((x) => hasWord(x, FORGIVE_WORDS)) || log.some((e) => e.sys === 'bonds' && JSON.stringify(e.data).includes('reconcile')),
+    rivalFell: rivals.length > 0 && rivals.some((id) => fallen(ctx, id, l)),
+    forgave: labels.some((x) => hasWord(x, FORGIVE_WORDS)) || log.some((e) => e.sys === 'bonds' && e.kind === 'invite' && e.data.ask === 'reconcile' && e.data.ok === true),
     betrayals: labels.filter((x) => hasWord(x, BETRAY_WORDS)).length,
     killedKin: labels.some((x) => hasWord(x, KILL_WORDS) && hasWord(x, CLOSE_WORDS)) || endsKin.some((e) => hasWord(String(e.data.cause ?? e.data.why ?? ''), KILL_WORDS)),
     secret: !!l.secretJob,
