@@ -168,7 +168,7 @@ describe('point 1: command the character', () => {
     const { ctx } = mk();
     const { llm, provider } = fakeLlm(FX);
     const out = await llm.interpretWords(ctx, 'อยากให้เขาระวังตัวหน่อย', menu);
-    expect(out).toEqual({ command: { type: 'god', action: 'whisper', args: { hint: 'ระวัง' }, confirm: false }, source: 'template' });
+    expect(out).toEqual({ command: { type: 'god', action: 'whisper', args: { hint: 'ระวัง' }, confirm: false }, source: 'template', via: { hint: 'name' } });
     expect(provider.calls).toHaveLength(0);
     expect(matchWords('จงไป ไวลด์มาร์ก', menu)).toEqual({ hint: 'จงไป', target: 'AL-01' });
     expect(matchWords('ช่วยเคเรนด้วย', menu)).toEqual({ hint: 'ช่วย', target: 'T12' });

@@ -138,4 +138,19 @@ describe('the recorder', () => {
     expect(store.currentArm()).toBe('on');
     setAbMode('off');
   });
+
+  it('keeps the changes the page makes itself out of the record, and gives each life one start marker', () => {
+    // the store first: the recorder joins the life of the store made last (`attach`), and an older one would leave a stale partial life in the record
+    const store = new GameStore();
+    store.setData(data);
+    recorder.setOn(true);
+    store.newLife({ seed: 4 });
+    store.setSettings({ speed: 'normal' }, 'auto');
+    store.setSettings({ speed: 'fast' });
+    const rec = JSON.parse(recorder.text()) as PlayRecord;
+    expect(rec.events.filter((e) => e.k === 'settings' && e.source === 'auto')).toHaveLength(0);
+    expect(rec.events.filter((e) => e.k === 'settings' && e.source === 'player')).toHaveLength(1);
+    expect(rec.events.find((e) => e.k === 'game.new')?.life).toBe(1);
+    expect(rec.events.find((e) => e.k === 'life.start')?.life).toBe(1);
+  });
 });

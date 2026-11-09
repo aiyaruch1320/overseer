@@ -30,7 +30,7 @@ describe('typed words to a whisper draft', () => {
   it('with no LLM: the name of a hint in the words is understood, other words show the menu', async () => {
     const g = atCall();
     const hit = await understandWords(g, undefined, 'ขอให้เขาระวังหน่อย');
-    expect(hit).toEqual({ ok: true, hint: 'ระวัง', source: 'template' });
+    expect(hit).toEqual({ ok: true, hint: 'ระวัง', source: 'template', by: 'name' });
     const miss = await understandWords(g, undefined, 'ไปทางเหนือ');
     expect(miss).toMatchObject({ ok: false, line: W.whisper.typed.noFit });
     expect(await understandWords(g, undefined, '   ')).toMatchObject({ ok: false, line: W.whisper.typed.empty });

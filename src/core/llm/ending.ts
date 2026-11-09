@@ -21,6 +21,8 @@ export interface EndingSummaryInput {
   age: number;
   /** The ending the life earned (its title). */
   ending: string;
+  /** The one era name the game uses; the retelling may name no other era, age or epoch. */
+  era?: string;
   /** The facts of the record in order of time, three to eight lines (the card's moments, the vow and its result, the people met again). */
   facts: string[];
   /** The summary the game builds itself (tier 0): returned when the LLM is off, fails, or breaks a rule. */
@@ -75,7 +77,7 @@ export function bentName(text: string, names: string[]): string | undefined {
   return undefined;
 }
 
-const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.vow ?? '', i.wish ?? '', ...(i.titles ?? []), ...i.facts];
+const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.era ?? '', i.vow ?? '', i.wish ?? '', ...(i.titles ?? []), ...i.facts];
 const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(/[^0-9๐-๙]/g, '') + String(i.age);
 
 /**
@@ -97,6 +99,10 @@ export function checkSummary(raw: string, input: EndingSummaryInput) {
     hasTitle: !!input.ending || !!input.titles?.length,
   });
   if (!facts.ok) return facts;
+  // a count of nothing is not told ("ทายาทอีกศูนย์คน"): say that there is none, in words
+  if (/ศูนย์/.test(thai.value) && !givenOf(input).some((g) => /ศูนย์/.test(g))) return { ok: false as const, reason: 'a zero count is written' };
+  // an era the game does not name is invented: the only era is `era`
+  if (/(?:ยุค|ศักราช|สมัย|กาล)แห่ง/.test(thai.value)) return { ok: false as const, reason: 'an era that the game does not name' };
   // a name is given letter for letter: a text that writes it nearly (a letter dropped, a tone mark added, the ending changed) has bent it
   const bent = bentName(thai.value, [input.name, ...(input.names ?? [])]);
   if (bent) return { ok: false as const, reason: `a name that is not written as given (${bent})` };
@@ -113,6 +119,7 @@ export function requestData(input: EndingSummaryInput) {
     race: input.race,
     age: input.age,
     ending: input.ending,
+    ...(input.era ? { era: input.era } : {}),
     facts: input.facts.map(mark),
     exact_names: [...new Set(exact)],
     ...(input.names?.length ? { allowed_names: input.names } : {}),

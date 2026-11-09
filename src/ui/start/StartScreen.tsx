@@ -9,6 +9,7 @@ import { bornLookOf, certificate, chipValues, emptyDraft, handFields, launch, re
 import type { GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
 import { Portrait } from '../figure';
+import { boundRecordView, RecordSection, type RecordView } from '../watch/RecordSection';
 import { color, font, size } from '../tokens';
 import { Beads, Button, Heading, paper, panel, SheetLine, Styles, Understood } from './parts';
 
@@ -19,6 +20,8 @@ export interface StartProps {
   initial?: Partial<StartDraft>;
   /** Called when the player starts; the default starts the life through the bridge. */
   onStart?: (read: WishRead, draft: StartDraft) => { ok: boolean; reason?: string } | void;
+  /** The play record and the A/B, set before the first life (M8). The default binds them to the app; the storybook hands its own. */
+  record?: RecordView;
 }
 
 const CUP: Record<string, string> = { natural: '#aecbd6', gentle: '#e2b873', sorrow: '#8b9099', irony: '#8f63c8' };
@@ -133,6 +136,7 @@ function StartInner(props: StartProps & { data: GameData }) {
             </li>
           ))}
         </ul>
+        <TestSettings record={props.record} />
       </section>
 
       {/* the box of the wish */}
@@ -337,6 +341,35 @@ function StartInner(props: StartProps & { data: GameData }) {
         </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+/** A small link under the modes that opens the play record and the A/B before the first life (review/m8/how-to-test.md). */
+function TestSettings({ record }: { record?: RecordView }) {
+  const [open, setOpen] = useState(false);
+  const view = record ?? boundRecordView();
+  const box = useRef<HTMLDivElement>(null);
+  // the block opens at the foot of a column that scrolls: bring it into sight
+  useEffect(() => {
+    if (open) box.current?.scrollIntoView?.({ block: 'end' });
+  }, [open]);
+  return (
+    <div ref={box} style={{ marginTop: size.pad, borderTop: `1px solid ${color.line}`, paddingTop: 8 }} data-testid="start-settings">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+        data-testid="start-settings-link"
+        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: color.textDim, fontFamily: font.body, fontSize: size.small, textDecoration: 'underline' }}
+      >
+        {START_LABELS.settings}
+      </button>
+      {open && (
+        <div style={{ marginTop: 8, fontSize: size.small }}>
+          <RecordSection {...view} arm={null} />
+        </div>
+      )}
     </div>
   );
 }

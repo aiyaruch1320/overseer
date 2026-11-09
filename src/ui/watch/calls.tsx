@@ -74,8 +74,9 @@ export function CardStack({ cards, onOpen }: { cards: CardView[]; onOpen: (o: Go
 /** The stop (20-god-ui.md §2 "หยุด"): the scene dims, a black cloth panel holds the reason, what the god can do, and the cards that waited. */
 export function StopPanel({ stop, onOpen, onContinue, warn = false }: { stop: StopView; onOpen: (o: GodOpen) => void; onContinue: () => void; warn?: boolean }) {
   return (
-    <div class="wt-veil" style={{ position: 'absolute', inset: 0, background: tint(color.panel, 72), display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5, boxSizing: 'border-box', paddingTop: size.bar }} data-testid="stop">
-      <section role="dialog" aria-label={W.stop.title} style={{ width: 'min(860px, 92%)', maxHeight: '100%', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div class="wt-veil" style={{ position: 'absolute', inset: 0, background: tint(color.panel, 72), display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 5, boxSizing: 'border-box', paddingTop: size.bar, pointerEvents: 'none' }} data-testid="stop">
+      {/* the veil only dims: a click outside the panel reaches the mini-map under it, and the full map it opens (MapOverlay, z 8) covers the stop */}
+      <section role="dialog" aria-label={W.stop.title} style={{ pointerEvents: 'auto', width: 'min(860px, 92%)', maxHeight: '100%', background: color.panel, border: `1px solid ${color.line}`, borderRadius: size.radius, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: size.pad * 1.5, display: 'flex', flexDirection: 'column', gap: size.pad }} data-testid="stop-body">
         <header>
           <div style={{ color: color.textDim, fontSize: size.small }}>{W.stop.title}</div>

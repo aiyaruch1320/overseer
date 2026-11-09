@@ -9,6 +9,7 @@ import type { GameState, LogEntry } from '../core/types';
 import { statusLines } from '../../scripts/tools/report';
 import { callLines } from '../../scripts/tools/god-commands';
 import { LOG_KEEP } from './tuning';
+import { perLifeLines } from './life-number';
 
 export interface Clock {
   /** Age of the character in life years, or null between lives. */
@@ -33,7 +34,7 @@ export function clockOf(state: GameState): Clock {
 
 /** The story log as the player reads it (level 1 and up by default), the newest `LOG_KEEP` lines. */
 export function storyLines(data: GameData, state: GameState, minLevel: LogEntry['level'] = 1): Line[] {
-  return lines(data, state.log, minLevel).slice(-LOG_KEEP);
+  return perLifeLines(state, lines(data, state.log, minLevel).slice(-LOG_KEEP));
 }
 
 /** The god's purse and standing (20-god-ui.md §2 "เทียนศรัทธาเทพ"). */

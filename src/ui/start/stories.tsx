@@ -16,6 +16,21 @@ story({ group: GROUP, name: 'ว่าง', at: 0, render: ({ data }) => <StartS
 
 story({
   group: GROUP,
+  name: 'ตั้งค่าการทดสอบ (บันทึกการเล่น · A/B)',
+  at: 0,
+  render: ({ data }) => (
+    <StartScreen
+      onStart={onStart}
+      data={data}
+      state={null}
+      initial={{ seed: 5 }}
+      record={{ on: true, size: 0, lives: 0, onToggle: () => {}, onExport: () => null, onClear: () => {}, ab: 'alternate', onAb: () => {}, arm: null }}
+    />
+  ),
+});
+
+story({
+  group: GROUP,
   name: 'พิมพ์คำขอ',
   at: 0,
   render: ({ data }) => (
