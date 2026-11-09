@@ -5,6 +5,7 @@ import { CARD_SWITCHES, cardsPatch, llmPatch, type LlmKey, type SettingsView } f
 import { WATCH_WORDS as W } from '../../app/views/watch-words';
 import type { Settings } from '../../core/types';
 import { TITLE_LINE, color, font, size } from '../tokens';
+import { RecordSection, type RecordView } from './RecordSection';
 import { button, tint } from './style';
 
 export interface SettingsPanelProps {
@@ -16,6 +17,8 @@ export interface SettingsPanelProps {
   onChange: (patch: Partial<Settings>) => string | null;
   onCandlePct: (on: boolean) => void;
   onClose: () => void;
+  /** The play record and the A/B of the director (M8); left out where the page has no record (the storybook). */
+  record?: RecordView;
 }
 
 const SPEEDS: Settings['speed'][] = ['pause', 'normal', 'fast'];
@@ -42,7 +45,7 @@ function Switch({ on, label, onToggle, disabled, id }: { on: boolean; label: str
 
 const heading = { color: color.textDim, fontSize: size.small, marginBottom: 6 } as const;
 
-export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct, onClose }: SettingsPanelProps) {
+export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct, onClose, record }: SettingsPanelProps) {
   const [error, setError] = useState<string | null>(null);
   const send = (patch: Partial<Settings>) => setError(onChange(patch));
   useEffect(() => {
@@ -105,6 +108,8 @@ export function SettingsPanel({ view, settings, candlePct, onChange, onCandlePct
           <div style={heading}>{W.settings.candle}</div>
           <Switch id="set-candle-pct" on={candlePct} label={W.settings.candlePct} onToggle={onCandlePct} />
         </div>
+
+        {record && <RecordSection {...record} />}
 
         {error && (
           <p role="alert" style={{ margin: 0, color: color.dreadText, fontSize: size.small }} data-testid="settings-error">

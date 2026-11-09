@@ -9,6 +9,7 @@ import type { GameData } from '../../core/game';
 import type { Settings } from '../../core/types';
 import { CardStack, StopPanel } from './calls';
 import { Candle, GodPanel, LifeLine, Slot, SpeedControl, StoryLog } from './parts';
+import type { RecordView } from './RecordSection';
 import { SettingsPanel } from './SettingsPanel';
 import { button, css, layout } from './style';
 import { TITLE_LINE, color, font, size } from '../tokens';
@@ -38,6 +39,8 @@ export interface WatchViewProps {
   map?: ComponentChildren;
   /** The storybook opens the settings panel at once. */
   settingsOpen?: boolean;
+  /** The play record and the A/B (settings panel); the storybook leaves it out. */
+  record?: RecordView;
 }
 
 const typing = (t: EventTarget | null): boolean => {
@@ -47,7 +50,7 @@ const typing = (t: EventTarget | null): boolean => {
 
 const KEY_GOD: Record<string, GodKind> = { c: 'chest', d: 'dream', w: 'whisper', m: 'miracle', h: 'chronicle' };
 
-export function WatchView({ data, model, settings, actions, candlePct, onCandlePct, scene, map, settingsOpen = false }: WatchViewProps) {
+export function WatchView({ data, model, settings, actions, candlePct, onCandlePct, scene, map, settingsOpen = false, record }: WatchViewProps) {
   const [settingsShown, showSettings] = useState(settingsOpen);
   const [saveNote, setSaveNote] = useState<{ ok: boolean; text: string } | null>(null);
   const saveTimer = useRef(0);
@@ -150,7 +153,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
       </aside>
 
       {settingsShown && (
-        <SettingsPanel view={settingsView(data, settings)} settings={settings} candlePct={candlePct} onChange={actions.setSettings} onCandlePct={onCandlePct} onClose={() => showSettings(false)} />
+        <SettingsPanel view={settingsView(data, settings)} settings={settings} candlePct={candlePct} onChange={actions.setSettings} onCandlePct={onCandlePct} onClose={() => showSettings(false)} record={record} />
       )}
     </div>
   );

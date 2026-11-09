@@ -22,6 +22,9 @@ import { askAhead } from '../core/story';
 import { pack, unpack } from './save-text';
 import { SAVE_WORDS } from './save-words';
 import { clockOf } from './view';
+import { abMode, armFor, type Arm } from './ab';
+import { recorder } from './record';
+import type { LifeMeta } from './record-facts';
 
 export type Phase = 'loading' | 'start' | 'watch' | 'stop' | 'death';
 
@@ -63,6 +66,10 @@ export class GameStore {
   private frame = 0;
   private last = 0;
   private carry = 0;
+  /** The life of the world now (1 for the first), and the arm the A/B gave it (src/app/ab.ts). */
+  private lifeNo = 0;
+  private arm: Arm | null = null;
+  private llmServer = false;
 
   /** The cards of the screen now (07-attention.md §2: two at most), read again after every change. */
   readonly cards = computed(() => (this.rev.value, this.session ? liveCards(this.session.game.state) : []));
@@ -74,6 +81,8 @@ export class GameStore {
 
   setLlm(llm: Llm | undefined): void {
     this.llm = llm;
+    this.llmServer = !!llm;
+    recorder.note('llm.server', { on: !!llm });
     // a save loaded at the death before the server answered still gets its summary
     if (this.phase.value === 'death') void this.summarize();
   }
@@ -110,6 +119,10 @@ export class GameStore {
     this.stopCall.value = null;
     this.notice.value = null;
     this.phase.value = 'watch';
+    this.lifeNo = 1;
+    this.applyArm();
+    recorder.newGame(() => this.lifeMeta(), { seed: opts.seed, ab: abMode.value });
+    recorder.sync(this.session.game.state);
     this.bump();
     this.play();
   }
@@ -122,6 +135,10 @@ export class GameStore {
     if (r.ok) {
       this.stopCall.value = null;
       this.phase.value = 'watch';
+      this.lifeNo++;
+      this.applyArm();
+      recorder.note('life.next', { newcomer: !!opts.newcomer });
+      recorder.sync(g.state);
       this.play();
     }
     this.bump();
@@ -132,20 +149,25 @@ export class GameStore {
 
   play(): void {
     if (!this.session || this.phase.value === 'death') return;
-    if (this.state?.settings.speed === 'pause') this.setSettings({ speed: 'normal' });
+    if (this.state?.settings.speed === 'pause') this.setSettings({ speed: 'normal' }, 'auto');
+    if (!this.running.value) recorder.clockEvent('play');
     this.running.value = true;
     this.last = 0;
     if (!this.frame && typeof requestAnimationFrame !== 'undefined') this.frame = requestAnimationFrame((t) => this.loop(t));
   }
 
   pause(): void {
+    if (this.running.value) recorder.clockEvent('pause');
     this.running.value = false;
   }
 
   /** The player goes on after a stop. */
   resume(): void {
     this.stopCall.value = null;
-    if (this.phase.value === 'stop') this.phase.value = 'watch';
+    if (this.phase.value === 'stop') {
+      this.phase.value = 'watch';
+      recorder.clockEvent('resume');
+    }
     this.play();
   }
 
@@ -167,6 +189,7 @@ export class GameStore {
       this.phase.value = 'stop';
       this.stopCall.value = stop;
     }
+    recorder.sync(g.state);
     // the LLM director is asked ahead about the key points of the next life year; the clock does not wait for the answers (llm/04-story.md §3.4)
     if (this.llm && !g.state.life?.dead) void askAhead(g.ctx, this.llm.client).catch(() => undefined);
     this.bump();
@@ -195,7 +218,13 @@ export class GameStore {
 
   /** A god command: `confirm: false` asks for the preview (no random roll, nothing changes), `confirm: true` runs it. */
   god(action: string, args: Record<string, unknown>, confirm: boolean): CommandResult {
-    return this.send({ type: 'god', action: action as Extract<Command, { type: 'god' }>['action'], args, confirm });
+    const r = this.send({ type: 'god', action: action as Extract<Command, { type: 'god' }>['action'], args, confirm });
+    // a preview changes nothing; the record keeps the commands that were confirmed (and the refused ones, with why)
+    if (confirm) {
+      recorder.act(action, r.ok, args, r.ok ? undefined : r.reason);
+      if (this.state) recorder.sync(this.state);
+    }
+    return r;
   }
 
   /** The free words of the player read as a whisper draft (src/app/views/typed.ts): the LLM when this store has one, else the offline matcher. Changes nothing. */
@@ -205,8 +234,32 @@ export class GameStore {
     return understandWords(g, this.llm, words);
   }
 
-  setSettings(patch: Partial<Settings>): CommandResult {
-    return this.send({ type: 'settings', patch });
+  /** `source` says who changed it: the player (the default) or the page itself (a card slows the clock, a play after a pause); the record keeps it. */
+  setSettings(patch: Partial<Settings>, source: 'player' | 'auto' = 'player'): CommandResult {
+    const r = this.send({ type: 'settings', patch });
+    if (r.ok) recorder.note('settings', { source, ...(patch.speed ? { speed: patch.speed } : {}), ...(patch.attention ? { attention: patch.attention } : {}), ...(patch.llm ? { llm: patch.llm } : {}), ...(patch.cards ? { cards: patch.cards } : {}) });
+    return r;
+  }
+
+  /** Gives the life that begins the arm of the A/B (the director switch of `Settings.llm`); does nothing when the split is off. */
+  private applyArm(): void {
+    const st = this.state;
+    this.arm = st ? armFor(abMode.value, st.seed, this.lifeNo) : null;
+    if (!st || !this.arm) return;
+    const s = st.settings.llm;
+    this.setSettings({ llm: { master: s?.master !== false, setup: s?.setup !== false, director: this.arm === 'on', epitaph: s?.epitaph !== false } }, 'auto');
+  }
+
+  /** The arm of the life now (null when the A/B is off), for the settings panel. */
+  currentArm(): Arm | null {
+    return this.arm;
+  }
+
+  /** What the record says of the life that is born now. */
+  private lifeMeta(): LifeMeta {
+    const st = this.state;
+    const l = st?.settings.llm;
+    return { seed: st?.seed, arm: this.arm, llmServer: this.llmServer, llm: { master: l?.master !== false, setup: l?.setup !== false, director: l?.director !== false, epitaph: l?.epitaph !== false } };
   }
 
   private send(cmd: Exclude<Command, { type: 'advance' }>): CommandResult {
@@ -283,6 +336,9 @@ export class GameStore {
       this.phase.value = state.life?.dead ? 'death' : 'watch';
       this.running.value = false;
       this.notice.value = stale.length ? SAVE_WORDS.stale(stale) : null;
+      this.lifeNo = state.lineage.lives.length + (state.life?.dead ? 0 : 1);
+      this.arm = null;
+      recorder.loaded(state, () => this.lifeMeta());
       this.bump();
       if (state.life?.dead) void this.summarize();
       return { ok: true, stale };
