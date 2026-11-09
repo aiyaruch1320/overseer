@@ -235,6 +235,9 @@ export function emptyExt(): CharacterExt {
   };
 }
 
+/** Did the player ask for a life that sees the world (the story part of the wish, 19-wish.md §2)? Not a window of years: the want stays for the whole life (a whisper "จงไป" is heeded more). */
+export const wantsToTravel = (life: LifeState): boolean => ((life.ext.character as CharacterExt | undefined)?.wish?.ask.story ?? []).includes('travel');
+
 /** The character extras of a life, created on first use. */
 export function extOf(life: LifeState): CharacterExt {
   let e = life.ext.character as CharacterExt | undefined;

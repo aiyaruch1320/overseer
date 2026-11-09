@@ -167,7 +167,7 @@ export function rollCauses(ctx: Ctx, life: LifeState, ex: TravelExt, fresh: Read
       p *= moveMul(ctx);
     }
     // §2: a travel event that no disaster caused comes at most once in three years
-    if (!c.disaster && life.hAge - ex.lastTrip < rules.oncePerYears) continue;
+    if (!c.disaster && life.hAge - ex.lastTrip < (wishes ? Math.min(WISH_TRAVEL.gap, rules.oncePerYears) : rules.oncePerYears)) continue;
     st.years += 1;
     st.exp += p;
     if (!rng.chance(p)) continue;
@@ -183,8 +183,12 @@ export function rollCauses(ctx: Ctx, life: LifeState, ex: TravelExt, fresh: Read
 export function leave(ctx: Ctx, life: LifeState, ex: TravelExt, cause: string, forced?: string): boolean {
   const shape = shapeOf(cause);
   const rng = ctx.rng('life.travel');
-  if (!forced && !rng.chance(shape.go)) return false;
-  const dest = forced ?? pickDestination(ctx, life, cause, rng.chance(shape.near));
+  // a life that wishes to see the world goes when a cause calls, and goes farther (19-wish.md §2 "ส่วนเรื่อง", T3-3)
+  const wishes = wishesTravel(life);
+  const goChance = wishes ? Math.min(1, shape.go * WISH_TRAVEL.go) : shape.go;
+  const nearShare = wishes ? shape.near * WISH_TRAVEL.near : shape.near;
+  if (!forced && !rng.chance(goChance)) return false;
+  const dest = forced ?? pickDestination(ctx, life, cause, rng.chance(nearShare));
   if (!dest) return false;
   const smuggle = cause === 'ex' || cause === 'exile';
   const free = cause === 'ml' || cause === 'ex' || cause === 'exile';

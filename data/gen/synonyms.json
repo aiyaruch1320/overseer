@@ -1,5 +1,5 @@
 {
- "version": "edcfd07d8d7a",
+ "version": "0717817ed373",
  "sources": [
   "docs/systems/character/20-wish-synonyms.md"
  ],
@@ -658,10 +658,26 @@
        "เกิดนอกถิ่น",
        "ไกลถิ่นเผ่า"
       ]
+     },
+     {
+      "code": "ในเมือง",
+      "name": "ในเมือง",
+      "syn": [
+       "เมืองใหญ่",
+       "โตในเมือง",
+       "โตมาในเมือง",
+       "เติบโตในเมือง",
+       "เกิดในเมือง",
+       "ชาวเมือง",
+       "คนเมือง",
+       "เด็กเมือง",
+       "ลูกเมือง",
+       "มหานคร"
+      ]
      }
     ],
-    "declaredValues": 3,
-    "declaredSyn": 21
+    "declaredValues": 4,
+    "declaredSyn": 31
    },
    {
     "key": "class",
@@ -6972,10 +6988,10 @@
    }
   ],
   "totals": {
-   "values": 506,
-   "synonyms": 3566,
-   "declaredValues": 506,
-   "declaredSynonyms": 3566
+   "values": 507,
+   "synonyms": 3576,
+   "declaredValues": 507,
+   "declaredSynonyms": 3576
   },
   "negation": [
    {

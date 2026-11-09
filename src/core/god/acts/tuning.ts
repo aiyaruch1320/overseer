@@ -51,6 +51,8 @@ export const WHISPER = {
   oracle: 0.1,
   godWhisper: 0.2,
   repeat: 0.1,
+  /** "จงไป" to a character whose wish was to see the world (assumption: 03-dreams.md gives the fit of a path only for the dream; the same size as the oracle skill). */
+  travelWish: 0.2,
   repeatYears: 3,
   punished: -0.1,
   punishedYears: 5,
