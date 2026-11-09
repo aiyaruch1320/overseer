@@ -5,13 +5,14 @@
 // What the core can name as a key point (the forks it has are the nodes of the story walk; the other forks of §3.2 are plain rolls with fixed weights in the npc and god systems, with no
 // fork to hand to `weigh`, so they are not here):
 //  - `repeat_meet`: the node (a way among the two the rule-based layer ranks highest, or its notes) names (effect `npc`) a holder the character already knows from two meetings or more, so the coming meeting is the third.
-//  - `quiet`: the node is the first one the life plays after a big world event (mark ⭐ or ●) that fell in the last three life years, and the two ways have no fight and no death in them.
+//  - `quiet`: the node is the first one the life plays in the rest after a big event (llm/04-story.md §3.4 "นิยามที่ผู้กำกับใช้"): a fight the character was in, the death of a tie (a funeral, a
+//    child lost), a world event ⭐ anywhere or ● in the character's country or continent, within the last three life years. A way into a fight may be leaned (its fight is still rolled by the rules).
 //  - `npc_death`: the follow-up story of a tied NPC whose holder was taken by a death that was not old age (npc/ties.ts, 40/35/25, a fork with the id `npc_death:<row>:<dead position>:<year of the death>`).
 //    The death is known the moment it happens (the follow waits), and the draw comes when the holder's own story is over or has no path left: listed once that is so (or the story ends within a life year),
 //    for NPCs of the country the life is in or ones it knows. See `followAhead`.
 //  - `heart`: the burden event of the heart (god/dream.ts, thirds, the id `heart:<nth burden of the life>`). It fires when a dream against his nature is obeyed and the burden is one step from the limit, at the
 //    moment the story arms the dream's node; listed while such a dream waits on a node that comes within a life year. See `burdenAhead`.
-// Left out always (§3.3): a node with a god window or a dream waiting on it (the god's tools act there), the closing nodes of a race line and every way that fights or dies.
+// Left out always (§3.3): a node with a god window or a dream waiting on it (the god's tools act there), the closing nodes of a race line and a way where the character dies at once.
 import { BEATS_PER_LIFE_YEAR, worldYearsPerLifeYear } from '../clock';
 import type { Ctx } from '../game';
 import type { StoryNodeX } from '../data/types-storylines';
@@ -29,14 +30,18 @@ import { lifeOf, type StoryExt } from './state';
 import { ROLLING_LINES } from './tuning';
 import { canEnter, outcomeChoices, playable, pullOf, splitNotes, variantOf } from './walk';
 
-/** A world event this big counts for the quiet time that follows it. */
-const BIG_MARKS: ReadonlySet<string> = new Set(['⭐', '●']);
+/** A world event of this mark is big anywhere; one of `BIG_NEAR` only in the character's country or continent (llm/04-story.md §3.4). */
+const BIG_ANYWHERE = '⭐';
+const BIG_NEAR = '●';
+/** Log entries of the life that are big events for it: a fight it was in, the death of a tie. */
+const BIG_LOG: ReadonlySet<string> = new Set(['combat/battle', 'bonds/funeral', 'bonds/grief']);
 /** "The last three life years" of the table of llm/04-story.md §3.1. */
 const BIG_YEARS = 3;
 /** The meetings after which the next one is the third (llm/04-story.md §3.4). */
 const KNOWN_BEFORE_THIRD = 2;
 
-const ENDS_THE_WAY: ReadonlySet<string> = new Set(['battle', 'death']);
+/** A way where the character dies at once is not leaned (§3.3: a death must be fair); a way into a fight may be, the fight is rolled by the rules. */
+const ENDS_THE_WAY: ReadonlySet<string> = new Set(['death']);
 
 /** Does a list of effects hold one of these kinds, looking inside the wrappers? */
 function holds(list: readonly Effect[] | undefined, kinds: ReadonlySet<string>): boolean {
@@ -67,20 +72,43 @@ function nextYearStep(ctx: Ctx): number {
   return year;
 }
 
-/** The year of the latest world event of a big mark that fell during this life within the last three life years; undefined when none. */
+/** The year of the latest big event of this life within the last three life years (llm/04-story.md §3.4); undefined when none. */
 function bigEventYear(ctx: Ctx): number | undefined {
   const life = ctx.state.life!;
+  const now = ctx.state.clock.worldYear;
   const span = BIG_YEARS * worldYearsPerLifeYear(life.lifespan, life.race);
+  const inRest = (year: number) => year >= life.birthYear && now - year <= span;
+  let best: number | undefined;
+  const take = (year: number) => {
+    if (inRest(year) && (best === undefined || year > best)) best = year;
+  };
   let tables;
   try {
     tables = tablesOf(ctx);
   } catch {
-    return undefined;
+    tables = undefined;
   }
-  let best: number | undefined;
-  for (const [id, year] of Object.entries(ctx.state.world.happened)) {
-    if (year < life.birthYear || ctx.state.clock.worldYear - year > span || !BIG_MARKS.has(markOf(tables, id))) continue;
-    if (best === undefined || year > best) best = year;
+  if (tables) {
+    const here = life.country;
+    for (const [id, year] of Object.entries(ctx.state.world.happened)) {
+      if (!inRest(year)) continue;
+      const mark = markOf(tables, id);
+      if (mark === BIG_ANYWHERE) take(year);
+      else if (mark === BIG_NEAR) {
+        const home = tables.byId.get(id)?.home;
+        if (home && here && (home.countries.includes(here) || (home.continents as readonly string[]).includes(here.slice(0, 2)))) take(year);
+      }
+    }
+  }
+  // the fights and the deaths of ties the life went through (newest first; stop once out of the rest)
+  const log = ctx.state.log;
+  for (let i = log.length - 1; i >= 0; i--) {
+    const e = log[i];
+    if (!inRest(e.worldYear)) break;
+    if (BIG_LOG.has(`${e.sys}/${e.kind}`)) {
+      take(e.worldYear);
+      break;
+    }
   }
   return best;
 }
