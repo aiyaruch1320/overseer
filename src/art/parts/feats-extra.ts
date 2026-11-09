@@ -89,13 +89,16 @@ const cyclops: Part = {
 
 // ── dish (kappa) ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 const dish: Part = {
-  // a hollow in the crown, a pale rim round it and water inside that glints
+  // a bowl sunk in the crown: a pale raised rim standing above the head, dark hollow, water that fills it and glints
   front: (r) => {
-    const { p } = r, [hx] = r.head, top = topOf(r), rx = Math.max(2, Math.round(r.hr[0] * 0.8));
-    const rim = p.mat(mixHex(r.look.skin, '#d8d0b0', 0.45)), water = flat(r, '#8ad0e0'), glint = flat(r, '#e8fbff');
-    p.rect(Math.round(hx) - rx, top - 1, rx * 2, 2, rim);
-    p.rect(Math.round(hx) - rx + 1, top - 1, rx * 2 - 2, 1, water);
-    p.px(Math.round(hx) - rx + 1 + (r.f % 2) * Math.max(0, rx * 2 - 4), top - 1, glint);
+    const { p } = r, [hx] = r.head, top = topOf(r), rx = Math.max(3, Math.round(r.hr[0] * 0.9));
+    const rim = p.mat(mixHex(r.look.skin, '#e8e0c0', 0.6)), hollow = flat(r, '#2a4a58'), water = flat(r, '#8ad8ec'), glint = flat(r, '#f4ffff');
+    const x0 = Math.round(hx) - rx;
+    p.rect(x0 - 1, top - 2, 1, 2, rim); p.rect(x0 + rx * 2, top - 2, 1, 2, rim);
+    p.rect(x0, top - 1, rx * 2, 2, rim);
+    p.rect(x0 + 1, top - 2, rx * 2 - 2, 1, hollow);
+    p.rect(x0 + 1, top - 1, rx * 2 - 2, 1, water);
+    p.px(x0 + 1 + (r.f % 2) * Math.max(0, rx * 2 - 4), top - 1, glint);
   },
 };
 

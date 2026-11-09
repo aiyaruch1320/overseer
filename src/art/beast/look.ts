@@ -47,7 +47,7 @@ const FIX: Record<string, Partial<PersonLook>> = {
   // the demon champion: dark-red skin with glowing marks, two short horns, a heavy blood-flag breastplate, a great axe
   npc_demon_champion: { skin: '#8a2a22', outfit: 'armor', main: '#2a2a30', second: '#7a1a1a', hair: 'bald', feats: ['horns', 'tattoo'], tool: 'axe', eye: '#f0c030', accent: '#f08030' },
   // the siren: pale silver-grey skin, long sea-green hair, eyes of pure black, gills; she rises half out of the water (the waterline is laid over her in beast.ts)
-  siren: { skin: '#b4c0c6', hairColor: '#2a8a70', eye: '#101820', accent: '#2a8a70', feats: ['gills'], hair: 'long', outfit: '' },
+  siren: { skin: '#b4c0c6', hairColor: '#2a8a70', eye: '#101820', accent: '#2a8a70', feats: ['gills', 'fangs'], hair: 'long', outfit: '' },
   npc_assassin: { hat: 'cowl', second: '#2a2a30', main: '#1c1c22' },
 };
 
