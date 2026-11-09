@@ -15,16 +15,19 @@ export function lightPixels(mode: LightMode, color: string | undefined, placeLig
   const n = LIGHT_BANDS;
   if (L.from === 'all') {
     s.rect(0, 0, ART.w, ART.h, col, L.alpha, L.add);
-    // the dimming is darker at the edges: four steps of a frame
-    if (mode === 'dim')
-      for (let b = 0; b < 4; b++) {
-        const v = 12 - b * 3;
-        const h = 24 - b * 6;
-        s.rect(0, 0, ART.w, v, col, 0.07, false);
-        s.rect(0, ART.h - v, ART.w, v, col, 0.07, false);
-        s.rect(0, 0, h, ART.h, col, 0.07, false);
-        s.rect(ART.w - h, 0, h, ART.h, col, 0.07, false);
+    // the dimming is darker at the edges, a smooth fall of one pixel per step (stepped bands showed as vertical stripes at the sides)
+    if (mode === 'dim') {
+      for (let i = 0; i < 24; i++) {
+        const a = 0.26 * Math.pow(1 - i / 24, 2);
+        s.rect(i, 0, 1, ART.h, col, a, false);
+        s.rect(ART.w - 1 - i, 0, 1, ART.h, col, a, false);
       }
+      for (let i = 0; i < 12; i++) {
+        const a = 0.26 * Math.pow(1 - i / 12, 2);
+        s.rect(0, i, ART.w, 1, col, a, false);
+        s.rect(0, ART.h - 1 - i, ART.w, 1, col, a, false);
+      }
+    }
     return s.out;
   }
   if (L.from === 'centre') {
