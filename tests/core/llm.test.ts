@@ -35,6 +35,7 @@ import {
   matchWords,
   pointOn,
   requestBody,
+  requestData,
   summarizeEnding,
   type CommandMenu,
   type DirectorPoint,
@@ -558,7 +559,7 @@ describe('failures never reach the player', () => {
     const provider = new FakeProvider(FX);
     const llm = makeLlm({ config: { enabled: true }, provider, cache });
     const i = summaryInput();
-    const key = llm.client.keyOf({ point: 'ending', input: { name: i.name, pronoun: i.pronoun, race: i.race, age: i.age, ending: i.ending, facts: i.facts } });
+    const key = llm.client.keyOf({ point: 'ending', input: requestData(i) });
     cache.set(key, { text: 'ข้าคือผู้ตัดสินชีวิตของเขา', point: 'ending', model: 'x' });
     const out = await llm.summarizeEnding(i);
     expect(out.source).toBe('llm');

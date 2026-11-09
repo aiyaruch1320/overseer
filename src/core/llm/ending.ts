@@ -42,6 +42,39 @@ export interface EndingSummary {
   source: 'llm' | 'template';
 }
 
+/** The marks around a name in the data sent to the LLM; the answer must not carry them. */
+export const NAME_MARK = { open: '\u00AB', close: '\u00BB' } as const;
+const MARKS = /[\u00AB\u00BB]/g;
+
+const escapeRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * The text with every name (two letters or more, longest first) wrapped in « », so the LLM sees where a Thai name starts and ends and does not bend, translate or split it
+ * (Thai has no spaces or capitals to show it). The data of the game is never changed, only the copy sent in the request.
+ */
+export function markNames(text: string, names: string[]): string {
+  const list = [...new Set(names.filter((n) => n.length >= 2))].sort((a, b) => b.length - a.length);
+  if (!list.length) return text;
+  return text.replace(new RegExp(list.map(escapeRe).join('|'), 'g'), (m) => `${NAME_MARK.open}${m}${NAME_MARK.close}`);
+}
+
+/**
+ * The first name (of four letters or more) that the text writes only nearly: its first letters, up to the last one, stand where the whole name does not. Thai names are not words of
+ * the language, so a bent one cannot be found by a dictionary; it can be found as a near miss of a name the game gave.
+ */
+export function bentName(text: string, names: string[]): string | undefined {
+  const known = [...new Set(names.filter(Boolean))];
+  for (const n of known) {
+    if (n.length < 4) continue;
+    // the name with its last letter, or its last two letters (only when five stay), cut off
+    for (const cut of n.length >= 7 ? [1, 2] : [1]) {
+      const head = n.slice(0, -cut);
+      for (let i = text.indexOf(head); i >= 0; i = text.indexOf(head, i + 1)) if (!known.some((k) => text.startsWith(k, i))) return n;
+    }
+  }
+  return undefined;
+}
+
 const givenOf = (i: EndingSummaryInput): string[] => [i.name, i.race, i.ending, i.vow ?? '', i.wish ?? '', ...(i.titles ?? []), ...i.facts];
 const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(/[^0-9๐-๙]/g, '') + String(i.age);
 
@@ -49,7 +82,9 @@ const digitsOf = (i: EndingSummaryInput): string => givenOf(i).join('').replace(
  * The check of the retelling against the facts it was given: Thai, within the length, no id, no banned word, and (review M4 G5) no number the facts did not carry (a year, an
  * age or a count that is not in the facts, with digits or in Thai words), no name that is not the life's, no vow or title the game did not give.
  */
-export function checkSummary(text: string, input: EndingSummaryInput) {
+export function checkSummary(raw: string, input: EndingSummaryInput) {
+  // the marks of the request are no part of the story: they are taken off before any check, and the value kept is the clean text
+  const text = raw.replace(MARKS, '');
   // a banned word the facts carry (the question of the life may say "เรา") may be quoted; anywhere else it is the voice of the text
   const thai = checkThai(text, { min: SUMMARY.min, max: SUMMARY.max, paragraphs: SUMMARY.paragraphs, allowDigits: digitsOf(input), quotes: input.facts });
   if (!thai.ok) return thai;
@@ -61,7 +96,30 @@ export function checkSummary(text: string, input: EndingSummaryInput) {
     hasVow: !!input.vow,
     hasTitle: !!input.ending || !!input.titles?.length,
   });
-  return facts.ok ? thai : facts;
+  if (!facts.ok) return facts;
+  // a name is given letter for letter: a text that writes it nearly (a letter dropped, a tone mark added, the ending changed) has bent it
+  const bent = bentName(thai.value, [input.name, ...(input.names ?? [])]);
+  if (bent) return { ok: false as const, reason: `a name that is not written as given (${bent})` };
+  return thai;
+}
+
+/** What the request carries: the facts with every name the text may write marked « » wherever the data says it, and those names listed with their exact spelling. */
+export function requestData(input: EndingSummaryInput) {
+  const exact = [input.name, ...(input.names ?? [])].filter(Boolean);
+  const mark = (t: string): string => markNames(t, exact);
+  return {
+    name: input.name,
+    pronoun: input.pronoun,
+    race: input.race,
+    age: input.age,
+    ending: input.ending,
+    facts: input.facts.map(mark),
+    exact_names: [...new Set(exact)],
+    ...(input.names?.length ? { allowed_names: input.names } : {}),
+    ...(input.vow ? { vow: mark(input.vow) } : {}),
+    ...(input.wish ? { wish: mark(input.wish) } : {}),
+    ...(input.titles?.length ? { titles: input.titles } : {}),
+  };
 }
 
 const templateOf = (i: EndingSummaryInput): EndingSummary => ({ text: i.template, source: 'template' });
@@ -80,7 +138,7 @@ export async function summarizeEnding(input: EndingSummaryInput, llm: LlmClient 
     }
     if (!pointOn(state, llm, 'ending')) return templateOf(input);
   } else if (!llm || !llm.available('ending')) return templateOf(input);
-  const data = { name: input.name, pronoun: input.pronoun, race: input.race, age: input.age, ending: input.ending, facts: input.facts, ...(input.names?.length ? { allowed_names: input.names } : {}), ...(input.vow ? { vow: input.vow } : {}), ...(input.wish ? { wish: input.wish } : {}), ...(input.titles?.length ? { titles: input.titles } : {}) };
+  const data = requestData(input);
   const r = await llm!.run({
     point: 'ending',
     input: data,

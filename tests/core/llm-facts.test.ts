@@ -1,6 +1,6 @@
 // L1 (review M4 G5): the check of a retelling refuses a name the game did not give for this life and a number the facts do not carry.
 import { describe, expect, it } from 'vitest';
-import { checkSummary, fakeLlm, type EndingSummaryInput } from '../../src/core/llm';
+import { bentName, checkSummary, fakeLlm, markNames, requestData, type EndingSummaryInput } from '../../src/core/llm';
 import { numbersIn, wordNumbersIn, wordValue } from '../../src/core/llm/validate';
 
 const input = (over: Partial<EndingSummaryInput> = {}): EndingSummaryInput => ({
@@ -74,5 +74,38 @@ describe('a fake answer that invents a name is not used', () => {
     expect(out).toEqual({ text: input().template, source: 'template' });
     const good = fakeLlm({ responses: [{ point: 'ending', answers: [ok] }] });
     expect((await good.llm.summarizeEnding(input())).source).toBe('llm');
+  });
+});
+
+describe('Thai names are marked in the request and kept exact in the answer', () => {
+  it('marks every given name with « » in the facts and lists them letter for letter', async () => {
+    const i = input();
+    const d = requestData(i);
+    expect(d.facts[1]).toBe('เขาพบ«โรริไลรา»เมื่ออายุ 25');
+    expect(d.exact_names).toEqual(['ธีเวนมอน', 'โรริไลรา', 'เฮฟากริด']);
+    expect(markNames('ธีเวนมอนพบโรริไลรา', ['ธีเวน', 'ธีเวนมอน'])).toBe('«ธีเวนมอน»พบโรริไลรา');
+    const fake = fakeLlm({ responses: [{ point: 'ending', answers: [ok] }] });
+    await fake.llm.summarizeEnding(i);
+    expect(fake.provider.calls[0].user).toContain('«โรริไลรา»');
+    expect(fake.provider.calls[0].system).toContain('exact_names');
+  });
+
+  it('takes the marks off an answer that copies them, and keeps the text clean', () => {
+    const r = check('«ธีเวนมอน»เกิดที่«เฮฟากริด» เมื่ออายุ 25 เขาพบ«โรริไลรา» และจากไปเมื่ออายุ 74', input());
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.value).not.toMatch(/[«»]/);
+  });
+
+  it('refuses a name that is bent: a tone mark added, a letter dropped, the ending changed', () => {
+    for (const bad of ['โรริไลร่า', 'โรริไล', 'โรริไลรี']) {
+      const r = check(`ธีเวนมอนเกิดที่เฮฟากริด เมื่ออายุ 25 เขาพบ${bad} และจากไปเมื่ออายุ 74`, input());
+      expect(r.ok, bad).toBe(false);
+    }
+    expect(bentName('ธีเวนมอนพบโรริไลรา', ['ธีเวนมอน', 'โรริไลรา'])).toBeUndefined();
+  });
+
+  it('a bent name in the fake answer sends the summary back to the template', async () => {
+    const fake = fakeLlm({ responses: [{ point: 'ending', answers: ['ธีเวนมอนเกิดที่เฮฟากริด เมื่ออายุ 25 เขาพบโรริไลร่า และจากไปเมื่ออายุ 74 ท่ามกลางคนที่รัก'] }] });
+    expect((await fake.llm.summarizeEnding(input())).source).toBe('template');
   });
 });
