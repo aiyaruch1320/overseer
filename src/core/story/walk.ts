@@ -659,6 +659,7 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
   const key: Key | '-' = ch ? ch.key : '-';
   const label = ch ? ch.label : n.title;
   const callback = i >= 0 && w.ties[i];
+  const callbackKind = i >= 0 ? w.kinds[i] : null;
 
   ex.cur = { id: n.id, choice: key };
   const at = life.country;
@@ -695,6 +696,7 @@ function play(ctx: Ctx, ex: StoryExt, ix: Index, n: StoryNodeX, o: PlayOpts): Ke
       ties: w.ties.filter(Boolean).length,
       chance: w.ties.some(Boolean),
       callback,
+      ...(callbackKind ? { callbackKind } : {}),
       ...tripOf(ctx, n.line, life, at, [...(ch?.effects ?? []), ...post]),
     },
     level: n.godWindow || n.kind === 'convergence' ? 2 : 1,
