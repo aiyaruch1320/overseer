@@ -282,7 +282,13 @@ class StageScene extends Phaser.Scene {
     if (h.pose === next) return;
     const first = h.pose === '';
     h.pose = next;
-    if (fig.kind === 'person') {
+    if (a.pose === 'lie' && fig.kind !== 'silhouette') {
+      // lying down is the last frame of the die pose held, without the hurt flash of its first frame
+      const die = this.anims.get(`${h.sprite.texture.key}:${fig.kind === 'person' ? PERSON_POSE.lie : this.beastPose(a)}`);
+      const last = die?.frames[die.frames.length - 1];
+      h.sprite.anims.stop();
+      if (last) h.sprite.setTexture(last.textureKey, last.textureFrame);
+    } else if (fig.kind === 'person') {
       if (!first) playPose(h.sprite, PERSON_POSE[a.pose] ?? 'idle');
     } else if (fig.kind === 'beast') {
       if (!first) playBeast(h.sprite, this.beastPose(a));

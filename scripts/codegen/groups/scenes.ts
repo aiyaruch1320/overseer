@@ -431,6 +431,8 @@ for (const r of riteT?.rows ?? []) {
   let seconds = 12;
   let lines = groupClauses(scene, 3);
   const cast = castOf(scene, 'เด็ก');
+  // a child that lies down in the script lies down on the stage
+  if (/นอน(หงาย|ราบ|ลง)/.test(scene)) cast.forEach((c) => { if (c.id === 'a') c.pose = 'lie'; });
   if (line === 'hu') {
     // the human rite changes with the home: the scene of each region plays before the result
     const parts = scene.split(new RegExp(`\\s*·?\\s*(${REGIONS.join('|')}):\\s*`));
