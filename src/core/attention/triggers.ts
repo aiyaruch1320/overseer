@@ -68,7 +68,8 @@ export function classify(ctx: Ctx, e: LogEntry): Trig | null {
     }
     return null;
   }
-  if (e.sys === 'world' && e.kind === 'event' && e.id) {
+  // the omen of a world event (world/omen, 1 to 3 seasons ahead) is the call; the event told after it (`omened`) is not called again
+  if (e.sys === 'world' && (e.kind === 'omen' || (e.kind === 'event' && !e.data.omened)) && e.id) {
     const mark = e.data.mark;
     if (mark !== '⭐' && mark !== '●') return null;
     const r = reach(ctx, e.id);

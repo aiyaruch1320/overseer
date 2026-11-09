@@ -6,7 +6,7 @@ import type { LastEraEvent } from '../data/types-events';
 import { write } from '../log';
 import { NEVER, chainOf, clamp, happened, world, year } from './access';
 import { applyEvent, candidateId, chanceOf, expireWarFlags, faithWeight, readVar, weightOf } from './events';
-import { capFree, fall, fire, liveDragons, moodAll, moodCap } from './core';
+import { capFree, fall, fire, liveDragons, moodAll, moodCap, releaseOmens } from './core';
 import { runPhase } from './hooks';
 import { markOf, tablesOf, type Tables } from './data';
 import { TUNING } from './tuning';
@@ -14,6 +14,7 @@ import { TUNING } from './tuning';
 export function worldDecade(ctx: Ctx): void {
   const w = world(ctx);
   if (w.ended) return;
+  releaseOmens(ctx, true); // a decade passed: the omens of the last one are told
   const f0 = w.vars.F;
   // a war ends when its timer runs out (it stayed on for the rest of the world: M3 review C2); combat/warflag.ts reads the timer between decades
   expireWarFlags(ctx);

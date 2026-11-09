@@ -3,12 +3,15 @@
 import type { Ctx, System } from '../game';
 import './conds';
 import { initWorld } from './init';
+import { releaseOmens } from './core';
 import { worldDecade } from './step';
 
 export const worldSystem: System = {
   name: 'world',
   init: (ctx: Ctx) => initWorld(ctx),
   worldStep: (ctx: Ctx) => worldDecade(ctx),
+  beat: (ctx: Ctx) => releaseOmens(ctx),
+  death: (ctx: Ctx) => releaseOmens(ctx, true),
 };
 
 export * from './api';

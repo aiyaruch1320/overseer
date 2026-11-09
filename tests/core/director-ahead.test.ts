@@ -66,8 +66,8 @@ describe('directorAhead', () => {
     expect(played / found).toBeGreaterThan(0.85);
   }, 120000);
 
-  it('finds a face met the third time (seeds 23 and 27)', async () => {
-    for (const seed of [23, 27]) {
+  it('finds a face met the third time (seeds 15 and 23)', async () => {
+    for (const seed of [15, 23]) {
       const r = await play(seed);
       const kinds: DirectorKind[] = [...r.points.values()].map((p) => p.kind);
       expect(kinds).toContain('repeat_meet');

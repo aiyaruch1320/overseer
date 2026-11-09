@@ -42,6 +42,18 @@ export const TUNING = {
   running: { '⭐': 30, '●': 20, '○': 10 } as Record<Mark, number>,
   /** how long a war flag stays on the countries a war names */
   warFlagYears: 40,
+  /**
+   * Country flags the events put on (economy/01-world-economy.md §6 and the war rows: "ธง `famine` ประเทศ W 1 ถึง 2 สามปี" CT-02 · "ธง `war` ทุกประเทศ MH" DM-01).
+   * `w` = only countries whose W is in the band; `except` = continents left out; `years` = how long the flag stays. CT-03 is "เก้าทวีป" with the forest as the last
+   * place of cure (world-events.md §14): every country but SV, ten years (assumption: the docs give no length; the length of a decade stands for a plague).
+   */
+  flagEvents: {
+    'CT-02': { flag: 'famine', w: [1, 2], years: 3 },
+    'CT-03': { flag: 'plague', except: ['SV'], years: 10 },
+    'DM-01': { flag: 'war', continents: ['MH'], years: 40 },
+  } as Record<string, { flag: string; w?: [number, number]; continents?: string[]; except?: string[]; years: number }>,
+  /** events that end a flag everywhere (HP-06 "โรคระบาดหายตลอดยุค") */
+  flagCures: { 'HP-06': 'plague' } as Record<string, string>,
   /** the mood a revived dragon comes back with (HP-08 `DFC −1`: the heir of the sky) and the dragon it is */
   revive: { mood: 60, dragon: 0 },
   /** `DFC +1` effects do not say which dragon: the dragon of the event, else one of these (index list), picked by the effect stream */
@@ -55,6 +67,8 @@ export const TUNING = {
   dfcIgnore: ['FG-10'] as string[],
   /** the level a world event gets in the log by its mark (log level 0 trace · 1 story · 2 card · 3 call) */
   level: { '⭐': 2, '●': 1, '○': 0 } as Record<Mark, 0 | 1 | 2 | 3>,
+  /** the omen of a ⭐ or ● event comes 1 to 3 seasons (beats) before the event is told (world-events.md §0.3: "1–3 ฤดูก่อนเกิด"); log level 1 (story) */
+  omen: { on: true, min: 1, max: 3, level: 1 as const },
   /** the ending events call the player */
   endingLevel: 3 as const,
   /** the world starts with FG-01 already happened this many years before the first decade (world-events.md §0.4 rule 6: 10,388 vs 10,400) */

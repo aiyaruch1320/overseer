@@ -1,5 +1,5 @@
 {
- "version": "5cc7fa8eb685",
+ "version": "2bf31e963572",
  "sources": [
   "docs/lore/storylines/01-human.md",
   "docs/lore/storylines/02-elf.md",
@@ -13191,15 +13191,10 @@
       "enemies": [
        "npc_rival_adventurer"
       ]
-     },
-     {
-      "k": "grant",
-      "kind": "curse",
-      "id": "c_slimelove"
      }
     ],
     "titleEvents": [],
-    "notesText": "`npc_rival_adventurer` ปกติ (สไลม์คือ \"มอนสเตอร์\" ในสายตาเขา) · ทาง ค: นักผจญภัยคนนั้นได้ `c_slimelove` (สไลม์ตามจีบเขาตลอดชีวิต)",
+    "notesText": "`npc_rival_adventurer` ปกติ (สไลม์คือ \"มอนสเตอร์\" ในสายตาเขา) · ทาง ค: สไลม์ตามจีบนักผจญภัยคนนั้นตลอดชีวิต (คำสาปสไลม์ตามจีบเป็นของเขา ตัวละครหลักไม่ได้รับ)",
     "src": "docs/lore/storylines/12-slime.md:37"
    },
    {

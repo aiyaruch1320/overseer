@@ -146,6 +146,7 @@ export const DEATH_WAYS: Record<string, Way> = {
   'me.e2.b': 'accident', // ตายบนบก
   'wi.e2.b': 'accident', // ตายบนดิน
   'va.e2.b': CAUSE.light, // เดินออกไปรับแสงอาทิตย์
+  'la.e2.b': 'accident', // ระเบิดเป็นเปลวสุดท้าย (as dk.e2.b: the fire of its own)
   // the elders of the overlay lines whose way says the character dies (age 50 to 75, before the closing node)
   'ml.e1.c': CAUSE.battle, // ตายในสนามสุดท้าย
   'sf.e1.c': 'accident', // ตายบนเรือในทะเล
@@ -204,6 +205,13 @@ export const SLIP_YEARS = 5;
  * lost (assumption; without it a mercenary signs his first contract at 59 and his veteran's last stand follows in the same year, M3 wiring).
  */
 export const LATE_OVERLAY_YEARS = 10;
+
+/**
+ * The journey lines (JOURNEY_LINES) are what the character lives through at the age the table gives (25-journeys.md: the age column of each node), so a journey node
+ * is lost sooner than the other overlay lines lose theirs (LATE_OVERLAY_YEARS 10): this many years past the end of its table age (assumption; a contract of the mercenary line meant for 18 to 28
+ * is not signed at 40, the line goes on with the node whose age has come). 3 and 5 took the nodes of a life under the 31 of the target (tests/balance/story.test.ts: 30.98), 7 keeps them.
+ */
+export const JOURNEY_LATE_YEARS = 7;
 
 /** Battles fought in one life year (storylines/README.md §8: "นับในเพดานศึก 4 ครั้งต่อปี"). A battle over the number does not happen. */
 export const BATTLES_PER_YEAR = 4;
