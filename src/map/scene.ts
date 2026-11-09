@@ -5,14 +5,16 @@
 import Phaser from 'phaser';
 import type { CharacterMark, MapModel } from '../app/views/map';
 import { CONT_IDS, type ContId } from './geo';
-import type { CityPlan } from './city';
 import { type MapCity, type MapCountry, type MapLayout } from './layout';
 import { domCanvas, tileKey, type MapArtProvider, type TileImage, type TileRequest } from './provider';
 import { paintCountryMask } from './terrain';
 import { clampCentre, clampZoom, focusOf, levelIndex, levelOf, requestFor, viewRect, visibleKeys } from './tiles';
-import { CITY_H, CITY_W, DEPTH, DRAGON_SIZE, KEY_ZOOM, LABEL, OMEN_COLOR, PAN_SPEED, RUIN, SEA, TILE_KEEP, WHEEL_ZOOM, WU, type ZoomId } from './tuning';
+import { CITY_H, CITY_W, DEPTH, TOWN_PX, DRAGON_SIZE, KEY_ZOOM, LABEL, OMEN_COLOR, PAN_SPEED, RUIN, SEA, TILE_KEEP, WHEEL_ZOOM, WU, type ZoomId } from './tuning';
 import type { MapAim, MapFocus, MapHover, MapPick } from './types';
 import { font } from '../ui/tokens';
+import type { PersonLook } from '../art/look';
+import { iconFrame, type IconKind } from '../art/mapart/icons';
+import { TownLayer, type TownInfo } from './townLayer';
 
 const hex = (s: string) => parseInt(s.replace('#', ''), 16);
 
@@ -25,8 +27,12 @@ export interface ControllerOpts {
   onPick?: (p: MapPick) => void;
   onHover?: (p: MapHover | null) => void;
   onLevel?: (level: ZoomId, zoom: number) => void;
-  /** The plan of a town (for the people of the inside level); the code-drawn provider has it, a picture does not. */
-  plan?: (cityId: string) => CityPlan | null;
+  /** The plan, look and pixel ground of a town (for the sprites and the people of the town levels); the code-drawn provider has it, a picture does not. */
+  town?: (cityId: string) => TownInfo | null;
+  /** The looks of the people of a country, a handful the crowd repeats. */
+  crowd?: (country: string) => PersonLook[];
+  /** People per house, 1 by default (a test of speed raises it). */
+  crowdScale?: number;
   names: { country: (id: string) => { name: string; title: string }; continent: (id: string) => string };
 }
 
@@ -48,7 +54,8 @@ export class MapController {
       audio: { noAudio: true },
       disableContextMenu: true,
       input: { mouse: { preventDefaultWheel: true }, keyboard: false, gamepad: false },
-      render: { antialias: true, powerPreference: 'low-power' },
+      // pixel art (21-pixel-art.md §4): textures are not smoothed, the town and the pictures of the levels show their pixels square
+      render: { pixelArt: true, antialias: false, powerPreference: 'low-power' },
       scene: this.scene,
     });
   }
@@ -107,6 +114,10 @@ class MapScene extends Phaser.Scene {
   private lastHoverKey = '';
   private lastLabelCull = -1e9;
   private lastCityDraw = { z: NaN, sig: '' };
+  private townLayer!: TownLayer;
+  private icons = new Map<string, Phaser.GameObjects.Image>();
+  private dragonIcons: Phaser.GameObjects.Image[] = [];
+  private iconPerson?: Phaser.GameObjects.Image;
 
   constructor(private o: ControllerOpts) {
     super('map');
@@ -120,6 +131,12 @@ class MapScene extends Phaser.Scene {
     this.gOverlay = this.add.graphics().setDepth(DEPTH.ruins + 1);
     this.gAnim = this.add.graphics().setDepth(DEPTH.omens);
     this.buildLabels();
+    this.townLayer = new TownLayer(this, {
+      town: (id) => this.o.town?.(id) ?? null,
+      crowd: (c) => this.o.crowd?.(c) ?? [],
+      crowdScale: this.o.crowdScale,
+      depth: DEPTH.town,
+    });
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
       this.drag = { sx: p.x, sy: p.y, cx: cam.scrollX, cy: cam.scrollY, moved: false };
     });
@@ -154,9 +171,12 @@ class MapScene extends Phaser.Scene {
   }
 
   private makeText(text: string, size: number, col: string, bold = false) {
-    return this.add
+    const t = this.add
       .text(0, 0, text, { fontFamily: font.title, fontSize: `${size}px`, color: col, stroke: '#0a0c12', strokeThickness: Math.max(2, Math.round(size / 6)), fontStyle: bold ? 'bold' : 'normal' })
       .setOrigin(0.5).setDepth(DEPTH.labels).setResolution(Math.min(2, window.devicePixelRatio || 1) * 1.5).setVisible(false);
+    // the text is not pixel art (Thai letters are DOM-like): smooth it
+    t.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+    return t;
   }
 
   private buildLabels() {
@@ -285,15 +305,28 @@ class MapScene extends Phaser.Scene {
       this.lastSync.z = NaN;
       this.lastCityDraw.z = NaN;
       this.lastLabelCull = -1e9;
+      for (const r of this.model?.ruins ?? []) this.ruinImgs.get(r.country)?.setVisible(levelIndex(lv) < 3);
       this.o.onLevel?.(lv, cam.zoom);
     } else if (this.frame % 15 === 0) this.o.onLevel?.(lv, cam.zoom);
 
     this.syncTiles(cam);
+    this.syncTowns(cam, time, delta);
     this.drainQueue();
     this.drawCities(cam);
     this.cullLabels(cam, time);
     this.drawAnim(cam, time);
     this.updateHover();
+  }
+
+  private townSig = '';
+  /** The sprites and people of the towns in the view, at the town levels. */
+  private syncTowns(cam: Phaser.Cameras.Scene2D.Camera, time: number, delta: number) {
+    const sig = JSON.stringify(this.model?.looks ?? '') + (this.model?.ruins.map((r) => r.country + r.healed).join() ?? '');
+    if (sig !== this.townSig) { this.townSig = sig; this.townLayer.reset(); }
+    const show = levelIndex(this.level) >= 3;
+    const view = viewRect((cam.scrollX + cam.width / 2) / WU, (cam.scrollY + cam.height / 2) / WU, cam.zoom, cam.width, cam.height);
+    this.townLayer.sync(view, this.o.layout.cities, show);
+    if (show) this.townLayer.update(time, delta / 1000);
   }
 
   private syncTiles(cam: Phaser.Cameras.Scene2D.Camera) {
@@ -309,7 +342,7 @@ class MapScene extends Phaser.Scene {
     if (this.level === 'world') for (const id of visibleKeys(L, 'continent', view)) wanted.push(requestFor(L, 'world', id, looks, this.o.seed));
     if (li >= 1) for (const k of visibleKeys(L, 'continent', view)) wanted.push(requestFor(L, 'continent', k, looks, this.o.seed));
     if (li >= 2) for (const k of visibleKeys(L, 'country', view)) wanted.push(requestFor(L, 'country', k, looks, this.o.seed));
-    if (li >= 3) for (const k of visibleKeys(L, 'city', view)) wanted.push(requestFor(L, this.level === 'inside' ? 'inside' : 'city', k, looks, this.o.seed));
+    if (li >= 3) for (const k of visibleKeys(L, 'city', view)) wanted.push(requestFor(L, 'city', k, looks, this.o.seed));
     const want = new Set<string>();
     for (const r of wanted) {
       const k = tileKey(r);
@@ -319,11 +352,8 @@ class MapScene extends Phaser.Scene {
       else if (!this.pending.has(k) && !this.queue.some((q) => tileKey(q) === k)) this.queue.push(r);
     }
     this.queue = this.queue.filter((q) => want.has(tileKey(q)));
-    // the town tile stays under its inside tile until that one is ready
     for (const [k, s] of this.shown) {
-      let on = want.has(k);
-      if (!on && s.req.level === 'city' && this.level === 'inside') on = ![...this.shown.values()].some((o) => o.req.level === 'inside' && o.req.key === s.req.key);
-      if (on && s.req.level === 'city' && this.level === 'inside' && want.has(k) === false) on = true;
+      const on = want.has(k);
       s.img.setVisible(on);
       if (on) s.used = this.frame;
     }
@@ -359,12 +389,26 @@ class MapScene extends Phaser.Scene {
     if (typeof HTMLCanvasElement !== 'undefined' && src instanceof HTMLCanvasElement) this.textures.addCanvas(tk, src);
     else this.textures.addImage(tk, src as HTMLImageElement);
     const depth = { world: req.key === 'world' ? -5 : DEPTH.terrain + 1, continent: DEPTH.terrain + 2, country: DEPTH.terrain + 3, city: DEPTH.terrain + 4, inside: DEPTH.terrain + 5 }[req.level];
-    const img = this.add.image(t.rect.x * WU, t.rect.y * WU, tk).setOrigin(0, 0).setDisplaySize(t.rect.w * WU, t.rect.h * WU).setDepth(depth);
+    // a town ground is one art pixel to a texel: it shows at the scale of its sprites (WU / TOWN_PX), not stretched to a rect
+    const img = this.add.image(t.rect.x * WU, t.rect.y * WU, tk).setOrigin(0, 0).setDisplaySize(req.level === 'city' || req.level === 'inside' ? (t.width * WU) / TOWN_PX : t.rect.w * WU, req.level === 'city' || req.level === 'inside' ? (t.height * WU) / TOWN_PX : t.rect.h * WU).setDepth(depth);
     this.shown.set(k, { img, req, used: this.frame });
     this.lastSync.z = NaN; // look again at what shows
   }
 
   // ---- cities ----
+  /** A pixel icon as a sprite: its texture is painted once, it shows at a whole number of screen pixels per art pixel whatever the zoom. */
+  private iconTexture(kind: IconKind, color: string): string {
+    const key = `ic:${kind}:${color}`;
+    if (!this.textures.exists(key)) {
+      const f = iconFrame(kind, color);
+      const c = document.createElement('canvas');
+      c.width = f.w; c.height = f.h;
+      c.getContext('2d')!.putImageData(new ImageData(f.data, f.w, f.h), 0, 0);
+      this.textures.addCanvas(key, c);
+    }
+    return key;
+  }
+
   private drawCities(cam: Phaser.Cameras.Scene2D.Camera) {
     const z = cam.zoom;
     const lvIdx = levelIndex(this.level);
@@ -374,6 +418,7 @@ class MapScene extends Phaser.Scene {
     this.lastCityDraw = { z, sig };
     const g = this.gCity;
     g.clear();
+    for (const i of this.icons.values()) i.setVisible(false);
     if (!show) return;
     const L = this.o.layout;
     const px = 1 / z;
@@ -383,17 +428,18 @@ class MapScene extends Phaser.Scene {
       if (!mc || (!c.capital && z < 0.75)) continue;
       const pal = this.o.palettes[mc.continent] ?? [];
       const x = c.x * WU, y = c.y * WU;
-      const r = (c.capital ? 5 : c.size === 2 ? 3.4 : 2.6) * px;
-      g.fillStyle(0x0a0c12, 0.85).fillCircle(x, y, r + 1.4 * px);
-      g.fillStyle(ruined.has(c.country) ? hex(RUIN.fill) : hex(c.capital ? pal[2] ?? '#e8c36a' : pal[1] ?? '#f4f0e0'), 1).fillCircle(x, y, r);
-      if (c.capital) g.lineStyle(1.2 * px, 0xfff4d8, 0.9).strokeCircle(x, y, r + 3 * px);
+      const kind: IconKind = ruined.has(c.country) ? 'ruin' : c.capital ? 'capital' : 'town';
+      const key = this.iconTexture(kind, c.capital ? pal[2] ?? '#e8c36a' : pal[1] ?? '#c9a24a');
+      let ic = this.icons.get(c.id);
+      if (!ic) { ic = this.add.image(x, y, key).setDepth(DEPTH.cities); this.icons.set(c.id, ic); }
+      ic.setTexture(key).setOrigin(0.5, 0.85).setPosition(x, y).setScale((c.capital ? 2 : 1.5) * px).setVisible(true);
       if (c.capital && z >= 0.75)
         (this.model?.flags[c.country] ?? []).forEach((f, i) => {
-          const fx = x + (9 + i * 9) * px, fy = y - 8 * px;
+          const fx = x + (14 + i * 9) * px, fy = y - 10 * px;
           g.fillStyle(f === 'war' ? 0xd04040 : f === 'famine' ? 0xb08a4a : f === 'plague' ? 0x6aa05a : 0xe8c36a, 1);
           if (f === 'war') g.fillTriangle(fx - 4 * px, fy + 4 * px, fx + 4 * px, fy + 4 * px, fx, fy - 4 * px);
           else if (f === 'golden') g.fillRect(fx - 3.5 * px, fy - 3.5 * px, 7 * px, 7 * px);
-          else g.fillCircle(fx, fy, 3.6 * px);
+          else g.fillRect(fx - 3 * px, fy - 3 * px, 6 * px, 6 * px);
         });
     }
   }
@@ -425,7 +471,7 @@ class MapScene extends Phaser.Scene {
     for (const r of m.ruins) {
       const c = L.byId.get(r.country);
       if (!c) continue;
-      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.5 : r.kind === 'fallen' ? 0.78 : 0.93).setDepth(DEPTH.ruins).setVisible(true);
+      this.maskImage(c, this.ruinImgs).setTint(hex(RUIN.fill)).setAlpha(r.healed ? 0.5 : r.kind === 'fallen' ? 0.78 : 0.93).setDepth(DEPTH.ruins).setVisible(levelIndex(this.level) < 3);
       if (r.kind === 'fallen') continue;
       // the pit: a black ring with a glassy rim (MR-17), or green-black water (MR-18, or a ruin that became a lake)
       const cap = L.citiesOf(c.id)[0];
@@ -516,8 +562,9 @@ class MapScene extends Phaser.Scene {
     const z = cam.zoom, px = 1 / z;
     const L = this.o.layout;
     const lvIdx = levelIndex(this.level);
-    // the dragons sleep as shadow, scale and an eye, never whole (03-dragons.md); a fallen one is bones
+    // the dragons are icons (21-pixel-art.md §4): a sleeping shape with an eye, bones when fallen, at two screen pixels to an art pixel
     const share = new Map<string, number>();
+    const used = new Set<number>();
     for (const d of m.dragons) {
       const c = L.byId.get(d.country);
       if (!c) continue;
@@ -525,22 +572,14 @@ class MapScene extends Phaser.Scene {
       share.set(c.id, n + 1);
       const cap = L.citiesOf(c.id)[0];
       const bx = ((cap?.x ?? c.x) + (n ? 8 : -7)) * WU, by = ((cap?.y ?? c.y) + (n ? 5 : 4)) * WU;
-      const R = DRAGON_SIZE[d.index] * WU * 0.8;
-      const col = hex(d.color);
-      const a = lvIdx <= 1 ? 0.55 : 0.85;
-      if (d.alive) {
-        const breath = 0.5 + 0.5 * Math.sin(time / 900 + d.index);
-        g.fillStyle(0x05060a, 0.35 * a).fillEllipse(bx, by, R * 2, R * 0.8);
-        g.fillStyle(col, (0.12 + 0.08 * breath) * a).fillEllipse(bx, by - R * 0.1, R * 1.7, R * 0.6);
-        g.lineStyle(Math.max(1.5, 2 * px), col, 0.55 * a);
-        for (let i = -2; i <= 2; i++) g.beginPath().arc(bx + i * R * 0.3, by, R * 0.28, Math.PI * 1.1, Math.PI * 1.9).strokePath();
-        g.fillStyle(col, Math.min(1, (0.3 + d.mood / 150) * (0.6 + 0.4 * breath)) * a).fillEllipse(bx + R * 0.82, by - R * 0.05, Math.max(5 * px, R * 0.12), Math.max(2.4 * px, R * 0.05));
-      } else {
-        g.lineStyle(Math.max(1.4, 2 * px), 0x9a9486, 0.6 * a);
-        for (let i = -2; i <= 2; i++) g.beginPath().arc(bx + i * R * 0.26, by, R * 0.34, Math.PI * 1.05, Math.PI * 1.95).strokePath();
-        g.lineBetween(bx - R * 0.8, by, bx + R * 0.8, by);
-      }
+      const key = this.iconTexture(d.alive ? 'dragon' : 'dragon-dead', d.color);
+      let ic = this.dragonIcons[d.index];
+      if (!ic) { ic = this.add.image(bx, by, key).setDepth(DEPTH.dragons); this.dragonIcons[d.index] = ic; }
+      const breath = 0.5 + 0.5 * Math.sin(time / 900 + d.index);
+      ic.setTexture(key).setOrigin(0.5, 0.85).setPosition(bx, by).setScale((lvIdx <= 1 ? 1 : 2) * px).setAlpha(d.alive ? (0.7 + 0.3 * breath) * (lvIdx <= 1 ? 0.8 : 1) : 0.75).setVisible(lvIdx <= 3);
+      used.add(d.index);
     }
+    this.dragonIcons.forEach((ic, i) => { if (ic && !used.has(i)) ic.setVisible(false); });
     // omens: a ring of mist in the colour of the line that paid, turning slowly (20-god-ui.md §7.2)
     for (const o of m.omens) {
       let cx: number, cy: number, rad: number;
@@ -563,40 +602,8 @@ class MapScene extends Phaser.Scene {
       g.lineStyle(Math.max(2.4 * px, 2.2), hex(k.color), 0.25 + 0.6 * k.fresh).strokeCircle(cx * WU, cy * WU, rad * WU * 0.75);
       g.lineStyle(Math.max(1.6 * px, 1.4), hex(k.color), (1 - wave) * 0.7 * (0.3 + 0.7 * k.fresh)).strokeCircle(cx * WU, cy * WU, rad * WU * (0.75 + 0.5 * wave));
     }
-    if (lvIdx === 4) this.walkers(g, cam, time, px);
     if (m.character && !m.character.dead) this.beacon(g, m.character, time, px, lvIdx);
     this.drawAim(g, time, px);
-  }
-
-  /** The people of the town under the camera at the inside level: a few walkers on the streets of its plan, going back and forth (a place for the life of a town to grow). */
-  private people = new Map<string, { s: number; t: number; v: number; col: number }[]>();
-  private walkers(g: Phaser.GameObjects.Graphics, cam: Phaser.Cameras.Scene2D.Camera, time: number, px: number) {
-    const L = this.o.layout;
-    const cx = (cam.scrollX + cam.width / 2) / WU, cy = (cam.scrollY + cam.height / 2) / WU;
-    const city = L.cities.find((c) => Math.abs(c.x - cx) < CITY_W / 2 && Math.abs(c.y - cy) < CITY_H / 2);
-    const plan = city && this.o.plan?.(city.id);
-    if (!city || !plan || !plan.streets.length) return;
-    let list = this.people.get(city.id);
-    if (!list) {
-      let h = 7;
-      for (const ch of city.id) h = (Math.imul(h, 31) + ch.charCodeAt(0)) >>> 0;
-      const rnd = () => ((h = (Math.imul(h, 1664525) + 1013904223) >>> 0) / 4294967296);
-      const cols = [0xe8c36a, 0xd04040, 0x4a8ac0, 0xf0ece0, 0x6aa05a, 0xa05ac8];
-      list = Array.from({ length: 36 }, () => ({ s: Math.floor(rnd() * plan.streets.length), t: rnd(), v: 0.012 + rnd() * 0.02, col: cols[Math.floor(rnd() * cols.length)] }));
-      this.people.set(city.id, list);
-    }
-    const ox = (city.x - CITY_W / 2) * WU, oy = (city.y - CITY_H / 2) * WU;
-    for (const w of list) {
-      const st = plan.streets[w.s];
-      const phase = ((w.t + (time / 1000) * w.v) % 2);
-      const t = phase > 1 ? 2 - phase : phase;
-      const f = t * (st.pts.length - 1), i = Math.min(st.pts.length - 2, Math.floor(f)), k = f - i;
-      const a = st.pts[i], b = st.pts[i + 1];
-      const x = ox + (a[0] + (b[0] - a[0]) * k) * WU, y = oy + (a[1] + (b[1] - a[1]) * k) * WU;
-      g.fillStyle(0x000000, 0.3).fillEllipse(x + 0.5 * px, y + 0.6 * px, 5 * px, 2.4 * px);
-      g.fillStyle(w.col, 1).fillCircle(x, y - 2.2 * px, 2.1 * px);
-      g.fillStyle(0xf0d8b8, 1).fillCircle(x, y - 4.6 * px, 1.4 * px);
-    }
   }
 
   private ring(g: Phaser.GameObjects.Graphics, x: number, y: number, r: number, col: number, time: number, px: number) {
@@ -621,6 +628,9 @@ class MapScene extends Phaser.Scene {
     g.lineStyle(Math.max(2 * px, 0.3), 0xe8c36a, 0.95).strokeCircle(x, y, base * 1.5);
     g.fillStyle(0xfff4d8, 1).fillCircle(x, y, base * 0.7);
     g.lineStyle(Math.max(1.5 * px, 0.2), 0xe8c36a, 0.8).lineBetween(x, y - base * 3.2, x, y - base * 1.9);
+    // the person: an icon at two screen pixels to an art pixel above the town
+    this.iconPerson ??= this.add.image(x, y, this.iconTexture('person', '#e8c36a')).setDepth(DEPTH.character).setOrigin(0.5, 1);
+    this.iconPerson.setPosition(x, y - 6 * px).setScale(2 * px).setVisible(lvIdx < 3);
   }
 
   private drawAim(g: Phaser.GameObjects.Graphics, time: number, px: number) {
