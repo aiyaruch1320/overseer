@@ -227,6 +227,15 @@ describe('on real lives', () => {
     write(b.g.state, { sys: 'god', kind: 'whisper', id: 'help', data: {}, level: 1 });
     b.g.beat();
     expect(b.e.crises.some((c) => c.n === nb)).toBe(false);
+
+    // F4: a card the call gap holds back until the character has answered alone is told as missed, not dropped without a word
+    const c = crisis();
+    const nc = c.e.crises[0].n;
+    (c.life.ext.attention as { lastCard: number }).lastCard = 1e9;
+    let guard = 0;
+    while (c.e.crises.some((x) => x.n === nc) && guard++ < 10) c.g.beat();
+    expect(callsOf(c.g.state.log).some((e) => sourcesOf(e).includes(nc))).toBe(false);
+    expect(c.g.state.log.some((e) => e.sys === 'attention' && e.kind === 'missed' && e.data.n === nc && e.data.kind === 'crisis')).toBe(true);
   });
 });
 
