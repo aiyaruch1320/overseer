@@ -184,7 +184,7 @@ function switchLine(ctx: Ctx, t: Tie, arc: ArcState): void {
 // ---------- the crisis (stage 3) ----------
 
 function traitWeight(life: LifeState): number {
-  const axes = (life.ext.character as { axes?: Record<string, number> } | undefined)?.axes ?? {};
+  const axes = life.ext.character?.axes ?? {};
   return ((axes.kind ?? 0) + (axes.brave ?? 0)) / 400;
 }
 

@@ -1,5 +1,6 @@
 // Operations on a living character: the numbers it carries, what it has, tags, and giving or taking away traits,
 // aptitudes, skills, blessings, curses and flags. Everything here is plain functions over the state (code-plan §2).
+import { bondageFacts, storyFacts } from '../types';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { Axis, Skill, StatKey } from '../data/types-character';
@@ -51,11 +52,11 @@ export function readCanon(ctx: Ctx, life: LifeState, key: string): number {
 
 /** What moved the life when a number changes without a source in hand: the story node being applied (`life.ext.story.cur`), else the year. */
 function causeOf(life: LifeState): string {
-  return (life.ext.story as { cur?: { id?: string } } | undefined)?.cur?.id ?? 'year';
+  return storyFacts(life)?.cur?.id ?? 'year';
 }
 
 /** The level of bondage of the life now (0 free, 1 to 3), read from what the bondage system keeps (`life.ext.bondage`, plain data, so that the systems need not import each other). */
-export const boundLevel = (life: LifeState): number => (life.ext.bondage as { level?: number } | undefined)?.level ?? 0;
+export const boundLevel = (life: LifeState): number => bondageFacts(life)?.level ?? 0;
 
 /** Is a life in bondage shut out of this (BOUND_BANS)? The bondage system itself moves the life (it carries it over the border, buys it free) and is not asked. */
 export const boundBan = (life: LifeState, what: 'move' | 'job' | 'class'): boolean => BOUND_BANS[boundLevel(life)]?.includes(what) ?? false;

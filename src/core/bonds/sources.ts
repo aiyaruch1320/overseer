@@ -1,5 +1,6 @@
 // Where ties come from (docs/systems/bonds/03-formation.md §1, §4.1, §5 and 07-successors.md): the school years, the people of the roster who
 // are met in the country the character lives in, the NPCs whose story made them an ally, and the allies who bind with each other.
+import { bondageFacts } from '../types';
 import type { Ctx } from '../game';
 import { write } from '../log';
 import type { LifeState } from '../types';
@@ -115,7 +116,7 @@ export function rosterYear(ctx: Ctx, life: LifeState, e: BondsExt): void {
     const row = rowOf(ctx, npc);
     if (!row || holderPlace(slot, row) !== life.country) continue;
     // a person the character holds is no ally before he is freed (03 §2)
-    if (((life.ext.bondage as { held?: { npc?: string; gone?: string }[] } | undefined)?.held ?? []).some((h) => h.npc === npc && !h.gone)) continue;
+    if ((bondageFacts(life)?.held ?? []).some((h) => h.npc === npc && !h.gone)) continue;
     const marked = slot.rel['mc.ally'] === 1;
     if (!marked && (life.hAge < FLAG_MEET_AGE || !rng.chance(FLAG_MEET))) continue;
     const succ = gen2(slot) ? ix.successors.get(npc) : undefined;

@@ -164,7 +164,10 @@
         "chance": 0.1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "c",
@@ -3740,6 +3743,9 @@
     "titleEvents": [],
     "notesText": "ศึก: ก๊อบลินในอุโมงค์ `goblin` ฝูง (ทาง ก) · พระเจ้า: คำใบ้ \"จงไป\" ชี้ทางออก",
     "src": "docs/lore/storylines/04-dwarf.md:38",
+    "when": {
+     "k": "parents"
+    },
     "godWindow": {
      "what": "คำใบ้ \"จงไป\"",
      "effect": "ออกจากอุโมงค์ได้โดยไม่ได้คำสาป"
@@ -4760,7 +4766,10 @@
         "delta": 30
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      }
     ],
     "notes": [
@@ -11351,7 +11360,10 @@
         "id": "nc_war_orphan"
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "c",
@@ -23149,7 +23161,10 @@
         "delta": 1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "b",
@@ -23168,7 +23183,10 @@
         "chance": 0.05
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "c",
@@ -24127,7 +24145,10 @@
         "delta": 1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "c",
@@ -25176,7 +25197,10 @@
       "weight": 25,
       "label": "พ่อหรือแม่ปกป้องให้ข้ามพิธีเงียบ ๆ · ตั้งธงข้ามพิธี",
       "effects": [],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      }
     ],
     "notes": [
@@ -25690,7 +25714,10 @@
         "delta": 1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "b",
@@ -25993,7 +26020,10 @@
         "chance": 0.1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "c",
@@ -26284,7 +26314,10 @@
         "level": 1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "b",
@@ -27822,7 +27855,10 @@
         "chance": 0.1
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "b",
@@ -28111,7 +28147,10 @@
         "id": "ns_wave_letter"
        }
       ],
-      "mods": []
+      "mods": [],
+      "when": {
+       "k": "parents"
+      }
      },
      {
       "key": "b",

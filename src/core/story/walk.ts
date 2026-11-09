@@ -1,6 +1,7 @@
 // The walk (code-plan §7 row "story", storylines/README.md §6 rules 6 to 9, 00-convergence.md §3):
 // each life year the nodes whose age has come are played in order, line by line; a node picks a way by weight, applies it through
 // the rules, and may queue a convergence (`life.pending`) that is played on a later beat.
+import { storyFacts } from '../types';
 import type { Ctx } from '../game';
 import { dataOf } from '../game';
 import type { Rite, RiteOutcome, StoryNodeX } from '../data/types-storylines';
@@ -54,7 +55,7 @@ export function begin(ctx: Ctx): void {
   ex.line = lineOfRace(ctx, life.race);
   ex.start = life.hAge;
   // an origin that starts later in the line (`ข้ามไป hu.t2`): the character system may name it in `life.ext.story.skipTo`
-  const skipTo = (life.ext.story as { skipTo?: NodeId } | undefined)?.skipTo;
+  const skipTo = storyFacts(life)?.skipTo;
   if (skipTo) {
     const ix = indexOf(ctx);
     const n = ix.nodes.get(skipTo);
@@ -107,7 +108,7 @@ function room(ex: StoryExt, life: LifeState): boolean {
 
 /** The last life year before the natural death: the hidden death age the character system drew (storylines/README.md §6 rule 9). */
 export function lastYearOf(life: LifeState): number {
-  const age = (life.ext.character as { deathAge?: number } | undefined)?.deathAge;
+  const age = life.ext.character?.deathAge;
   return typeof age === 'number' ? age - 1 : LAST_YEAR;
 }
 

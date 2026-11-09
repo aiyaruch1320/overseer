@@ -6,6 +6,7 @@
 //   data.ids    their ids; data.cards the kinds of the cards folded in; data.age the age stop it stands for; data.until the life age a card runs out
 // What did not call stays in the log: `attention/glow` (a window that only glows on the life line) and `attention/missed` (a card that ran out).
 // Time is real seconds at normal speed on the life clock (tuning SEC_PER_YEAR); the speed setting is the screen's business.
+import { bondsFacts } from '../types';
 import type { Ctx, Game, System } from '../game';
 import { cardOn } from '../command';
 import { write } from '../log';
@@ -40,7 +41,7 @@ function nowOf(state: GameState, life: LifeState): number {
 
 /** The natural end of this life, if the character system says (hidden from the player; it only moves the death scene earlier). */
 function deathAgeOf(life: LifeState): number | null {
-  const d = (life.ext.character as { deathAge?: number } | undefined)?.deathAge;
+  const d = life.ext.character?.deathAge;
   return typeof d === 'number' ? d : null;
 }
 
@@ -212,11 +213,11 @@ export function closed(state: GameState, kind: CardKind, n: number): boolean {
     return false;
   }
   if (kind === 'crisis' && src.sys === 'bonds') {
-    const crises = (life.ext.bonds as { crises?: { n: number }[] } | undefined)?.crises;
+    const crises = bondsFacts(life)?.crises;
     return !!crises && !crises.some((c) => c.n === n);
   }
   if (kind === 'battle' && src.sys === 'combat') {
-    const pending = (life.ext.combat as { pending?: { prelude?: number }[] } | undefined)?.pending;
+    const pending = life.ext.combat?.pending;
     return !!pending && !pending.some((p) => p.prelude === n);
   }
   return false;

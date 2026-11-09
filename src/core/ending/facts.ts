@@ -1,5 +1,6 @@
 // The facts of a life (docs/systems/llm/07-ending-templates.md §2): read from the log of the life and the state at its death.
 // Nothing here draws a random number or writes: the same life always gives the same list.
+import { storyFacts } from '../types';
 import { worldYearsPerLifeYear } from '../clock';
 import type { Ctx } from '../game';
 import { extOf as bondsExt, isLive, levelOf, tiesOf } from '../bonds';
@@ -160,7 +161,7 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
   const question = questionOf(data, life.race);
   if (question) {
     // the title of an ending answers the question only when the ending belongs to the line of the race that asked it: "ผู้ปิดสมุดตระกูล" does not answer what a slime is
-    const raceLine = (life.ext.story as { line?: string } | undefined)?.line;
+    const raceLine = storyFacts(life)?.line;
     const endNode = log.find((e) => e.sys === 'story' && e.kind === 'ending');
     const answer = grade === 'good' && ending && endNode?.data.line === raceLine ? ending : '';
     add('คำตอบของคำถามชีวิต', { question, answer, age: deadAge, place: where }, { age: deadAge, flags: [grade], tags: ['question'], bonus: grade === 'good' ? 4 : 0 });
@@ -178,7 +179,7 @@ export function gatherFacts(ctx: Ctx, ending: string | null): { facts: RawFact[]
     add('อาชีพลับ', { job: knownName(data, str(e.id)) ?? '', age: e.age ?? 0, place: placeAt(e.worldYear) ?? '', year: yr(e.worldYear) }, { age: e.age, tags: [`job:${e.id}`] });
   }
   if (life.job) {
-    const since = num((life.ext.character as { jobSince?: number } | undefined)?.jobSince);
+    const since = num(life.ext.character?.jobSince);
     const years = Math.max(1, deadAge - since);
     add('อาชีพ', { job: knownName(data, life.job) ?? '', years, place: where, age: since }, { age: since, tags: [`job:${life.job}`] });
   }

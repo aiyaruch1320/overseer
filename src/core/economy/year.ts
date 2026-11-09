@@ -5,7 +5,7 @@ import type { Ctx } from '../game';
 import { write } from '../log';
 import { apply } from '../rules';
 import { openLine } from '../story';
-import type { LifeState } from '../types';
+import { fameOf, type LifeState } from '../types';
 import { eco, classNumber, type EcoIndex } from './data';
 import { grossIncome, livingCost, placeOf, taxRate, type Place } from './income';
 import { extOf, type EconomyExt } from './state';
@@ -102,7 +102,7 @@ export function economyYear(ctx: Ctx): void {
   let otherYear = 0;
   if (ext.mark !== undefined) {
     // the fares of the travel system left the purse by its own hand (it keeps the sum in `ext.spent`): they are counted under fares, not as a loss to be reckoned again
-    const spent = (life.ext.travel as { spent?: number } | undefined)?.spent ?? 0;
+    const spent = life.ext.travel?.spent ?? 0;
     const fare = Math.max(0, spent - (ext.fareSeen ?? 0));
     ext.fareSeen = spent;
     ext.flows.fare = (ext.flows.fare ?? 0) + fare;
@@ -112,7 +112,7 @@ export function economyYear(ctx: Ctx): void {
     if (other > 0) ext.flows.gain += other;
     else ext.flows.loss -= other;
   } else {
-    ext.fareSeen = (life.ext.travel as { spent?: number } | undefined)?.spent ?? 0;
+    ext.fareSeen = life.ext.travel?.spent ?? 0;
   }
 
   // the year
@@ -350,14 +350,14 @@ function moveClass(ctx: Ctx, E: EcoIndex, life: LifeState, ext: EconomyExt, plac
   const n = classNumber(life.cls);
   const rng = ctx.rng('economy.class');
   // years in the same job (the character system keeps the age the job began)
-  const since = life.job ? life.hAge - ((life.ext.character as { jobSince?: number } | undefined)?.jobSince ?? life.hAge) : 0;
+  const since = life.job ? life.hAge - (life.ext.character?.jobSince ?? life.hAge) : 0;
   const go = () => rng.chance(CLIMB.chance);
   if (n === 1) {
     if (CLIMB.cooperatives.includes(life.country) && rng.chance(CLIMB.coopChance)) rise(ctx, life, ext, 2, 'co-op');
   } else if (n === 2) {
     if (life.gold >= CLIMB.to3.gold && since >= CLIMB.to3.jobYears && go()) rise(ctx, life, ext, 3, 'gold');
   } else if (n === 3) {
-    const fame = (life.ext.character as { fame?: number } | undefined)?.fame ?? 0;
+    const fame = fameOf(life);
     const trade = life.job !== undefined && E.jobs.get(life.job)?.origin === 'trade';
     if ((life.gold >= CLIMB.to4.gold || (fame >= CLIMB.to4.fame && trade && life.gold >= CLIMB.to4.fameGold)) && go()) rise(ctx, life, ext, 4, 'gold');
   } else if (n === 4) {

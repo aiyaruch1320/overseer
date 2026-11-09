@@ -250,7 +250,7 @@ export function weights(s: Scene, opts: Option[]): number[] {
   const { ctx, hero, foe } = s;
   const life = hero.life;
   const ext = extOf(life);
-  const axes = (life.ext.character as { axes?: Record<string, number> } | undefined)?.axes ?? {};
+  const axes = life.ext.character?.axes ?? {};
   const brave = axes.brave ?? 0;
   const kind = axes.kind ?? 0;
   const temper = axes.temper ?? 0;

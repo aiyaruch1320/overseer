@@ -120,7 +120,7 @@ function makeRuinOnce(ctx: Ctx): boolean {
 function strikeSealOnce(ctx: Ctx, pick: 'lowest' | 'random'): boolean {
   const w = ctx.state.world;
   const y = yearOf(ctx);
-  const protect = (ctx.state.god.ext.ruin as { protect?: Record<string, number> } | undefined)?.protect ?? {};
+  const protect = ctx.state.god.ext.ruin?.protect ?? {};
   const open = w.dragons
     .map((d, i) => ({ d, i, home: homesOf(ctx, i).find((c) => ready(ctx, 'seal.' + c) && (protect[c] ?? 0) <= y) }))
     .filter((x) => x.d.alive && x.home);
@@ -216,7 +216,7 @@ registerDreadReserve((ctx, p) => {
   }
   if (p === 'seal') {
     const y = yearOf(ctx);
-    const protect = (ctx.state.god.ext.ruin as { protect?: Record<string, number> } | undefined)?.protect ?? {};
+    const protect = ctx.state.god.ext.ruin?.protect ?? {};
     const home = ctx.state.world.dragons.flatMap((d, i) => (d.alive ? homesOf(ctx, i) : [])).find((c) => ready(ctx, 'seal.' + c) && (protect[c] ?? 0) <= y);
     return home ? dreadHeldFor(ctx, { id: STRIKE.mid, country: home }) : 0;
   }

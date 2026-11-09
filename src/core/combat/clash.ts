@@ -158,7 +158,7 @@ function play(ctx: Ctx, c: Clash, o: ClashOpts, foe: NonNullable<ReturnType<type
   const hasKill = !!outcomeOf(c, 'win_kill');
   const hasSpare = !!outcomeOf(c, 'win_spare');
   const special = !hasKill && !!killRow(c);
-  const kindAxis = (life.ext.character as { axes?: { kind?: number } } | undefined)?.axes?.kind ?? 0;
+  const kindAxis = life.ext.character?.axes?.kind ?? 0;
   const spareIntent = special && o.toDeath ? false : hasSpare && (!hasKill || rng.chance(Math.max(0, Math.min(1, SPARE.base + (kindAxis / 100) * SPARE.perKind))));
   const duel = DUEL_STYLE.test(c.style) && !o.toDeath;
   const ambush: FightOpts['ambush'] = o.ambush ?? (o.knows ? 'hero' : opener === 'X' || opener === 'S' ? 'foe' : undefined);

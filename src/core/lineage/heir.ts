@@ -9,7 +9,7 @@ import { worldYearsPerLifeYear } from '../clock';
 import { extOf as bondsExt, hAgeOf, isLive, tiesOf, type Tie } from '../bonds';
 import { makeCtx, type Ctx } from '../game';
 import { items as dataItems } from '../text/labels';
-import type { LifeState, StatBlock } from '../types';
+import { fameOf, type LifeState, type StatBlock } from '../types';
 import { bindFamily } from './family';
 import { lx, type HeirHow, type HeirSpec } from './state';
 
@@ -142,7 +142,7 @@ export function inherit(ctx: Ctx, parent: LifeState, heir: LifeState, how: HeirS
   heir.gold = out.gold;
   // things: the weapon in hand, the armour, the tools, half the materials
   if (share > 0) {
-    const worn = (parent.ext.items as { wield?: string } | undefined)?.wield;
+    const worn = parent.ext.items?.wield;
     const weapon = worn && parent.items.includes(worn) && worn.startsWith('ws_') ? worn : parent.items.find((i) => i.startsWith('ws_'));
     const give: string[] = [];
     if (weapon) give.push(weapon);
@@ -172,7 +172,7 @@ export function inherit(ctx: Ctx, parent: LifeState, heir: LifeState, how: HeirS
     if (generation < 4) heir.stats[bestStat(heir.stats)] += 1;
   }
   if (how.rung <= 1) {
-    const fame = Number((parent.ext.character as { fame?: number } | undefined)?.fame ?? 0);
+    const fame = fameOf(parent);
     const f = byGen([{ from: FAME.late.from, share: FAME.late.share }, { from: 1, share: FAME.share }], generation)?.share ?? FAME.share;
     out.fame = Math.min(FAME.cap, Math.floor(Math.max(0, fame) * f));
     if (out.fame) ((heir.ext.character ??= {}) as { fame?: number }).fame = out.fame;
