@@ -146,6 +146,7 @@ export const DEATH_WAYS: Record<string, Way> = {
   'me.e2.b': 'accident', // ตายบนบก
   'wi.e2.b': 'accident', // ตายบนดิน
   'va.e2.b': CAUSE.light, // เดินออกไปรับแสงอาทิตย์
+  'la.e2.b': 'accident', // ระเบิดเป็นเปลวสุดท้าย (as dk.e2.b: the fire of its own)
   // the elders of the overlay lines whose way says the character dies (age 50 to 75, before the closing node)
   'ml.e1.c': CAUSE.battle, // ตายในสนามสุดท้าย
   'sf.e1.c': 'accident', // ตายบนเรือในทะเล

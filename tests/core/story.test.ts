@@ -9,7 +9,7 @@ import { weigh } from '../../src/core/story/choose';
 import { onNode, openLine, registerStoryRules, setPlaceGate, setRuleDirector, storySystem } from '../../src/core/story';
 import { fresh, extOf as storyExtOf, yearOf } from '../../src/core/story/state';
 import { indexOf as storyIndex } from '../../src/core/story/data';
-import { BATTLES_PER_YEAR, CAUSE, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
+import { BATTLES_PER_YEAR, CAUSE, DEATH_WAYS, EXTERNAL_LINES, JOURNEY_AT_ONCE, JOURNEY_LINES, NODES_PER_YEAR, OPEN_RATE, OVERLAY_AT_ONCE, WAR_ENDINGS, WINDOW_MAX_BEATS } from '../../src/core/story/tuning';
 import type { Choice, Condition, Effect, LifeState } from '../../src/core/types';
 
 // ---------- a toy character system and the conditions other systems would answer ----------
@@ -875,8 +875,9 @@ describe('the pace of a year', () => {
   it('one journey line at a time: the second opens when the first is done', () => {
     const data = mini([]);
     const sl = data.storylines.items as StorylinesData;
-    const mk = (line: string, ages: number[]) => ages.map((a, i) => node(`${line}.a${i + 1}`, [a, a], [choice('a', 100)], { line, kind: 'overlay' }));
-    sl.nodes = [...mk('sf', [20, 24, 28]), ...mk('ps', [20, 22, 26])];
+    // the nodes of ps have a wide window: a journey node is lost JOURNEY_LATE_YEARS past it, and ps waits for sf
+    const mk = (line: string, ages: number[], span = 0) => ages.map((a, i) => node(`${line}.a${i + 1}`, [a, a + span], [choice('a', 100)], { line, kind: 'overlay' }));
+    sl.nodes = [...mk('sf', [20, 24, 28]), ...mk('ps', [20, 22, 26], 12)];
     sl.lines.push({ id: 'sf', name: 'sf', file: '', nodeIds: [] }, { id: 'ps', name: 'ps', file: '', nodeIds: [] });
     const g = play(1, data, person(), (game) => {
       openLine(makeCtx(game.state, data), 'sf');
@@ -1159,5 +1160,22 @@ describe('lines and places that belong to other systems', () => {
     } finally {
       setPlaceGate(null);
     }
+  });
+});
+
+describe('the ways that say the character dies', () => {
+  const nodes = (): StoryNodeX[] => {
+    return (loadGen(['storylines']).storylines.items as StorylinesData).nodes;
+  };
+
+  it('every elder or closing way whose label begins with "ตาย" has a listed cause, and the main character never gets the curse of sl.b2', () => {
+    const missing: string[] = [];
+    for (const n of nodes()) {
+      if (n.stage !== 'e') continue;
+      for (const c of n.choices) if (/^ตาย/.test(c.label) && n.id.endsWith('.e1') && !DEATH_WAYS[`${n.id}.${c.key}`]) missing.push(`${n.id}.${c.key}`);
+    }
+    expect(missing).toEqual([]);
+    const b2 = nodes().find((n) => n.id === 'sl.b2')!;
+    expect(JSON.stringify([b2.notes, b2.choices])).not.toContain('c_slimelove');
   });
 });
