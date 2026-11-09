@@ -386,13 +386,14 @@ describe('world: omens ahead and the flags of famine and plague', () => {
     for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('famine');
     applyEvent(g.ctx, ev('CT-03'));
     for (const c of countries) expect(st.world.countryFlags[c.id].includes('plague'), c.id).toBe(c.continent !== 'SV');
-    st.clock.worldYear += 5;
+    // the plague stays five years (TUNING.flagEvents: the acute phase of the Black Death was four to five years)
+    st.clock.worldYear += 4;
     expireWarFlags(g.ctx);
     expect(Object.values(st.world.countryFlags).some((f) => f.includes('plague'))).toBe(true);
     applyEvent(g.ctx, ev('HP-06'));
     for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('plague');
     applyEvent(g.ctx, ev('CT-03'));
-    st.clock.worldYear += 11;
+    st.clock.worldYear += 6;
     expireWarFlags(g.ctx);
     for (const c of countries) expect(st.world.countryFlags[c.id]).not.toContain('plague');
   });
