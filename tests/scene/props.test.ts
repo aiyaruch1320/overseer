@@ -30,6 +30,25 @@ describe('the staging of a scene', () => {
     expect(v('hu.t1', 'พิธีของถิ่น · หมอก').props).toEqual([]);
   });
 
+  it('the tribes of the beast, the slime, the merfolk, the lava and the soul machine have a prop in the rite and in the end (13 §2 §3)', () => {
+    const script = (id: string) => {
+      const s = sceneFor(data, e('story', 'node', id, { rite: id }), null);
+      if (s.kind !== 'script') throw new Error(id);
+      return s.script;
+    };
+    expect(stagingOf(script('be.t1')).props).toEqual(['tallgrass', 'prey']);
+    expect(stagingOf(script('sl.t1')).props).toEqual(['gel']);
+    expect(stagingOf(script('me.t1')).props).toEqual(['lightring']);
+    expect(stagingOf(script('la.t1')).props).toEqual(['lavastream']);
+    expect(stagingOf(script('so.t1')).props).toEqual(['pedestal']);
+    const end = (t: string) => stagingOf(script(`dest.${t}`)).props;
+    expect(end('be')).toEqual(['tallgrass', 'pelt']);
+    expect(end('sl')).toEqual(['gelpool']);
+    expect(end('me')).toEqual(['pearl']);
+    expect(end('la')).toEqual(['blackstone']);
+    expect(end('so')).toEqual(['wisp']);
+  });
+
   it('the words of a scene name its props: DR-03 the egg in the sky, NF-AZ02-1 the flame, the cliff and the watchers', () => {
     const dr = sceneFor(data, e('world', 'event', 'DR-03'), null);
     const nf = sceneFor(data, e('combat', 'clash', 'NF-AZ02-1', { npc: 'AZ02-1' }), null);
