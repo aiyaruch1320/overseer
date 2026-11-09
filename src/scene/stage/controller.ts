@@ -5,6 +5,7 @@
 // speed), the mood colours of the beats over them, the figures of the actors (sprites of their looks, in the pose of the beat), the particles, the light and the wash.
 // The particles and the light are lists of rectangles of whole art pixels from the pure part (../fx/), drawn here on the screen of the picture (not the world: the
 // camera's zoom does not make a particle two pixels), light added to what is behind it. The words are not here: Thai text is DOM over the canvas (../Stage.tsx).
+import { stageRenderer } from './renderer';
 import Phaser from 'phaser';
 import { addBeast, playBeast } from '../../art/beast/phaser';
 import { BEAST_POSES } from '../../art/beast/kit';
@@ -344,7 +345,7 @@ export class SceneStage {
   constructor(parent: HTMLElement, zoom: number, onShown?: () => void) {
     this.scene.onShown = onShown;
     this.game = new Phaser.Game({
-      type: Phaser.AUTO,
+      type: stageRenderer.canvas ? Phaser.CANVAS : Phaser.AUTO,
       parent,
       width: ART.w,
       height: ART.h,
