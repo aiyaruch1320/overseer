@@ -63,11 +63,26 @@ function featherRow(r: Rig, from: Pt, to: Pt, degs: number[], lens: number[], wi
 }
 const spread = (a: number, b: number, n: number): number[] => Array.from({ length: n }, (_, i) => a + ((b - a) * i) / Math.max(1, n - 1));
 
+/**
+ * The silhouette of a folded wing: an arch that stands above the shoulder, bulges out behind the back and hangs down past the hip, so a winged figure reads as winged at rest
+ * (at zoom 2 too). `scallop` cuts the hem into points (a bat's, a fin's); the rim is a contrasting thin line along the outer edge.
+ */
+function foldedWing(r: Rig, body: string, rimHex: string, scallop: boolean): void {
+  const { p } = r, B = wingRoot(r), s = r.k, out = Math.min(4.6 * s, Math.max(2, B[0] - 2)), tipY = r.hip + 2 - B[1];
+  const P = at(B, -0.6 * s, -8.4 * s, 1), M1 = at(B, -out, -4 * s, 1), M2 = at(B, -out - 0.4, 1.5 * s, 1), M3 = at(B, -out * 0.85, tipY * 0.7, 1), T = at(B, -out * 0.35, tipY, 1);
+  const R = at(B, 1.2, 4 * s, 1), mem = p.mat(body), rim = p.mat(rimHex, { flat: true });
+  const hem: Pt[] = scallop ? [at(B, -out * 0.15, tipY - 2.2 * s, 1), at(B, out * 0.1, tipY - 0.2, 1), at(B, out * 0.55, tipY - 2.4 * s, 1)] : [];
+  p.poly([P, M1, M2, M3, T, ...hem, R, at(B, 1, -2 * s, 1)], mem);
+  stroke(p, P, M1, 1, rim); stroke(p, M1, M2, 1, rim); stroke(p, M2, M3, 1, rim);
+  if (scallop) stroke(p, P, T, 1, rim);
+}
+
 /** A wing of feathers: folded it is the arch of the wing over the shoulder and three layered rows hanging down the back; open it is a long arm with a fan of primaries from the wrist, secondaries along the arm and short coverts on top. */
 function featherWing(r: Rig, light: string, shade: string): void {
   const { p } = r, open = wingOpen(r), B = wingRoot(r);
   const dark = p.mat(shade), mid = p.mat(light), top = p.mat(mixHex(light, '#ffffff', 0.4)), edge = p.mat(mixHex(shade, '#000000', 0.2), { flat: true });
   if (open === 0) {
+    foldedWing(r, shade, mixHex(light, '#ffffff', 0.5), false);
     const s = r.k, W = at(B, -2.2, -2.6, s), wid = 1.05 * s + 0.15;
     featherRow(r, W, at(B, -1.4, 1, s), spread(172, 163, 4), [13.2 * s, 12 * s, 10.6 * s, 9 * s], wid, dark, edge);
     featherRow(r, at(B, -0.6, -1.4, s), at(B, -0.4, 3, s), spread(178, 168, 4), [10 * s, 9 * s, 8 * s, 7 * s], wid, mid);
@@ -95,6 +110,7 @@ function batWing(r: Rig, membrane: string, bone: string, scaled: boolean): void 
   const mem = p.mat(membrane), bn = p.mat(bone, { flat: true });
   let W: Pt, tips: Pt[], L: Pt, s: number;
   if (open === 0) {
+    foldedWing(r, membrane, mixHex(bone, '#ffffff', 0.35), true);
     s = r.k; W = at(B, -3, -4.5, s);
     tips = [at(B, -0.5, 8, s), at(B, -3, 10.5, s), at(B, -5.5, 8.5, s)];
     L = at(B, 0, 7, s);
@@ -876,11 +892,11 @@ export const FEATS: Record<string, Part> = {
   },
   'wings:fin': {
     // the finned wing of a winged merfolk (04-nerea NR02): a thin sea-green membrane on pale ribs, folded flat at rest and spread when she is glad
-    back: (r) => batWing(r, mixHex(r.look.skin, '#2a8aa8', 0.55), mixHex(r.look.skin, '#ffffff', 0.55), false),
+    back: (r) => batWing(r, mixHex(r.look.skin, '#1f7f9a', 0.85), '#e6fbff', false),
   },
   'wings:bud': {
     // a child's wing that has no feathers yet (19-ally-successors SH09-5S): small, bare, pink-skinned and folded flat against the back
-    back: (r) => batWing(r, mixHex(r.look.skin, '#d8928a', 0.45), mixHex(r.look.skin, '#8a5a50', 0.5), false),
+    back: (r) => batWing(r, mixHex(r.look.skin, '#d8707a', 0.6), mixHex(r.look.skin, '#6a3a40', 0.5), false),
   },
   missingarm: {
     // the far arm is gone: the empty sleeve is knotted short at the shoulder

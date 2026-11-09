@@ -259,11 +259,14 @@ export const HATS: Record<string, Part> = {
   // ── turban: a big wound cloth with diagonal folds and a stone at the front ─────────────────────────────────────────────────────────
   turban: {
     hat: (r) => {
-      const h = headOf(r), { p } = r, cloth = p.mat(lighter(r.look.second, 0.12)), fold = p.mat(darker(r.look.second, 0.12));
-      keepFace(r, () => cap(r, cloth, 2.3, (nx, ny) => ny < -0.05 || (nx < 0.15 && ny < 0.45)));
-      for (let i = -1; i <= 1; i++) p.line([h.hx + i * 3 - 3, h.top - 3], [h.hx + i * 3 + 2, brow(h) - 1], fold);
+      const h = headOf(r), { p } = r, cloth = p.mat(lighter(r.look.second, 0.1)), fold = p.mat(darker(r.look.second, 0.22)), hi = p.mat(lighter(r.look.second, 0.3));
+      // a round wound cloth wider than the head: a smooth dome, bands that wrap level round it, a knot on top, and the lowest band pulled down over the brow
+      const cx = h.hx - 1, wr = Math.round(h.rx) + 2, top = h.top - 2;
+      p.ell(cx, (top + brow(h)) / 2 + 0.5, wr, (brow(h) - top) / 2 + 1.2, cloth);
+      p.ell(cx - 1, top - 0.5, 2.6, 1.8, hi);
+      for (let y = top + 2; y <= brow(h); y += 2) p.line([cx - wr + 1, y + (y > top + 3 ? 0 : 1)], [cx + wr - 1, y - 1], fold);
+      p.rect(Math.round(cx - wr), brow(h), wr * 2 + 1, 2, fold);
       p.px(h.hx + Math.round(h.rx) - 1, brow(h) - 1, p.mat(TONE.blood, { flat: true }));
-      patches(r, { x: h.l, y: h.top, w: 4, h: 3 }, wearDark(r, r.look.second));
     },
   },
 
