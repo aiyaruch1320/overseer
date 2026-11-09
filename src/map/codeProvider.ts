@@ -7,6 +7,8 @@ import { planCity, type CityLook, type CityPlan } from './city';
 import { layoutOf, type MapLayout } from './layout';
 import { domCanvas, tileKey, type CanvasFactory, type MapArtProvider, type TileImage, type TileRequest } from './provider';
 import { paintTerrain } from './terrain';
+import { cityRect } from './tiles';
+import { shoreValue } from './terrain';
 import { townGround, type TownGround } from './townGround';
 import { tileSize } from './tiles';
 import { FATE_BY_ID } from './tuning';
@@ -71,7 +73,8 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
     const k = `${cityId}|${req.seed}|${look.fate ?? ''}|${(look.ruin ?? 0).toFixed(2)}`;
     let ground = grounds.get(k);
     if (!ground) {
-      ground = townGround(p, look);
+      const r = cityRect(city);
+      ground = townGround(p, look, { x0: r.x, y0: r.y, land: (x, y) => shoreValue(layout.grid, x, y) });
       grounds.set(k, ground);
       if (grounds.size > 12) grounds.delete(grounds.keys().next().value as string);
     }
@@ -111,7 +114,7 @@ export function codeProvider(data: GameData, opts: CodeProviderOpts = {}): CodeP
         }
       } else {
         // the prebuilt pictures are pixel art (21-pixel-art.md §4); the chunks round a town (`px`) keep the painter's own ground
-        paintTerrain(canvas, req, layout, { pixel: !req.px });
+        paintTerrain(canvas, req, layout, { pixel: true });
       }
       painted++;
       const img: TileImage = { source: canvas as unknown as CanvasImageSource, width: canvas.width, height: canvas.height, rect: req.rect, origin: 'code' };

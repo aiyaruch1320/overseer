@@ -21,7 +21,7 @@ import type { WalkGrid } from './townGround';
 export interface TownInfo {
   plan: CityPlan;
   look: CityLook;
-  ground: { walk: WalkGrid; w: number; h: number };
+  ground: { walk: WalkGrid; w: number; h: number; sea?: Uint8Array | null };
   country: string;
 }
 
@@ -159,6 +159,12 @@ export class TownLayer {
 
   private place(t: Town, key: string | null, ax: number, ay: number, h: number, flip = false): Phaser.GameObjects.Image | null {
     if (!key) return null;
+    // nothing stands in the sea (a town on a coast: the ground is clear there)
+    const sea = t.info.ground.sea, gw = t.info.ground.w, gh = t.info.ground.h;
+    if (sea) {
+      const px = Math.min(gw - 1, Math.max(0, Math.floor(ax))), py = Math.min(gh - 1, Math.max(0, Math.floor(ay)));
+      if (sea[py * gw + px]) return null;
+    }
     const img = this.scene.add.image(t.ox + ax * K, t.oy + ay * K, key).setOrigin(0.5, 1 - FOOT / h).setScale(K).setFlipX(flip);
     img.setDepth(this.o.depth + (t.oy + ay * K) / 10000);
     img.setVisible(t.visible);
@@ -232,7 +238,7 @@ export class TownLayer {
     if (!k) return;
     const flip = Math.cos(b.rot) < 0;
     const src = this.scene.textures.get(k).getSourceImage();
-    this.place(t, k, b.x * S, (b.y + b.h * 0.4) * S, src.height, flip);
+    if (!this.place(t, k, b.x * S, (b.y + b.h * 0.4) * S, src.height, flip)) return;
     // the smoke of a chimney: a loop of puffs from its top (a town of `ambient=smoke`: most of its chimneys smoke)
     const ch = t.info.plan.ambient === 'smoke' && !broken ? chimneyOf(spec) : null;
     if (ch && hash01(`${b.x.toFixed(2)}${b.y.toFixed(2)}s`) < 0.75) {

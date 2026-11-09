@@ -28,6 +28,29 @@ describe('town ground', () => {
   });
 });
 
+describe('town ground on a coast', () => {
+  it('leaves the sea clear and keeps people off the water', () => {
+    const p = codeProvider(data);
+    let coastal = 0;
+    // a few towns known to lie on a shore (building the ground of every town takes minutes)
+    for (const c of p.layout.cities.filter((q) => (q.country === 'MH-02' && (q.n === 0 || q.n === 5)) || (q.country === 'AZ-07' && q.n === 0))) {
+      const t = p.town(c.id, { looks: NORMAL_LOOKS, seed: 1 });
+      const sea = t?.ground.sea;
+      if (!t || !sea) continue;
+      coastal++;
+      const { w, h, data: px, walk } = t.ground;
+      for (let i = 0; i < w * h; i++) if (sea[i]) expect(px[i * 4 + 3]).toBe(0);
+      for (let j = 0; j < walk.rows; j++)
+        for (let i = 0; i < walk.cols; i++)
+          if (walk.ok[j * walk.cols + i]) {
+            const x = Math.min(w - 1, i * walk.cell + walk.cell / 2), y = Math.min(h - 1, j * walk.cell + walk.cell / 2);
+            expect(sea[Math.floor(y) * w + Math.floor(x)]).toBe(0);
+          }
+    }
+    expect(coastal).toBeGreaterThan(0);
+  });
+});
+
 describe('map sprites', () => {
   it('keep to the sizes of the art contract', () => {
     for (const style of ['gable', 'dome', 'spire', 'hut', 'tent', 'burrow', 'mushroom', 'brick', 'stone', 'terrace', 'stilt', 'carved', 'keep', 'adobe', 'boomtown', 'forge', 'tree']) {

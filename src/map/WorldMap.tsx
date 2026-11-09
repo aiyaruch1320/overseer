@@ -56,6 +56,20 @@ export interface WorldMapProps {
 
 const SEED = 1;
 
+/** The picture of the whole world last made for a look (the mini-map keeps it): the full map shows it, scaled, until its own scene has drawn. */
+let lastWorld: { key: string; img: TileImage } | null = null;
+
+/** While the watch screen is idle: loads the scene (Phaser) so that the full map opens at once. The provider and its world picture are made by the mini-map. */
+let warmed = false;
+function warmScene(): void {
+  if (warmed || typeof window === 'undefined') return;
+  warmed = true;
+  const go = () => void import('./scene').catch(() => { warmed = false; });
+  const w = window as unknown as { requestIdleCallback?: (f: () => void, o?: { timeout: number }) => void; setTimeout: typeof setTimeout };
+  if (w.requestIdleCallback) w.requestIdleCallback(go, { timeout: 4000 });
+  else w.setTimeout(go, 1500);
+}
+
 interface Env {
   layout: MapLayout;
   provider: MapArtProvider;
@@ -107,6 +121,46 @@ export function WorldMap(props: WorldMapProps) {
 
 // ---------- the full map ----------
 
+/** Until the scene has drawn the world: the picture of the mini-map (or the world tile of the provider) centred on the map, never below one pixel to one pixel. */
+function Placeholder(p: { env: Env | null; model: MapModel; seed: number }) {
+  const cv = useRef<HTMLCanvasElement>(null);
+  const [img, setImg] = useState<TileImage | null>(lastWorld?.img ?? null);
+  const lookSig = JSON.stringify(p.model.looks);
+  useEffect(() => {
+    if (!p.env || (lastWorld && lastWorld.key === lookSig)) { if (lastWorld) setImg(lastWorld.img); return; }
+    let live = true;
+    const env = p.env;
+    Promise.resolve(env.provider.tile(requestFor(env.layout, 'world', 'world', p.model.looks, p.seed))).then((t) => { if (live && t) { lastWorld = { key: lookSig, img: t }; setImg(t); } });
+    return () => { live = false; };
+  }, [p.env, lookSig]);
+  useEffect(() => {
+    const c = cv.current;
+    if (!c || !img) return;
+    const draw = () => {
+      const w = c.clientWidth, h = c.clientHeight;
+      if (!w || !h) return;
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      if (!ctx) return;
+      ctx.imageSmoothingEnabled = false;
+      // the whole picture, centred, at a whole number of screen pixels per art pixel (square pixels), never below 1×; the sea colour fills the rest
+      const sc = Math.max(1, Math.floor(Math.min(w / img.width, h / img.height)));
+      ctx.fillStyle = '#14355a'; ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img.source, 0, 0, img.width, img.height, (w - img.width * sc) / 2, (h - img.height * sc) / 2, img.width * sc, img.height * sc);
+    };
+    draw();
+    const ro = new ResizeObserver(draw);
+    ro.observe(c);
+    return () => ro.disconnect();
+  }, [img]);
+  return (
+    <>
+      <canvas ref={cv} data-map-placeholder aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none', imageRendering: 'pixelated' }} />
+      {!img && <div style={{ ...hudBase, left: size.pad, top: size.pad }}>กำลังวาดแผนที่…</div>}
+    </>
+  );
+}
+
 function FullMap(props: WorldMapProps) {
   const host = useRef<HTMLDivElement>(null);
   const ctl = useRef<MapController | null>(null);
@@ -114,6 +168,7 @@ function FullMap(props: WorldMapProps) {
   const model = props.model ?? mapModel(props.data, props.state);
   const [hover, setHover] = useState<MapHover | null>(null);
   const [level, setLevel] = useState<{ id: ZoomId; zoom: number }>({ id: 'world', zoom: 0.2 });
+  const [ready, setReady] = useState(false);
   const [place, setPlace] = useState<{ name: string; sub: string } | null>(null);
   const mouse = useRef({ x: 0, y: 0 });
   const cb = useRef(props);
@@ -140,6 +195,7 @@ function FullMap(props: WorldMapProps) {
         crowdScale: Number(new URLSearchParams(location.search).get('crowd')) || 1,
         onPick: (p) => cb.current.onPick?.(p),
         onHover: (h) => setHover(h ? { ...h, x: mouse.current.x, y: mouse.current.y } : null),
+        onReady: () => setReady(true),
         onLevel: (id, zoom) => setLevel((o) => (o.id === id && Math.abs(o.zoom - zoom) < 0.005 ? o : { id, zoom })),
       });
       ctl.current = made;
@@ -196,7 +252,7 @@ function FullMap(props: WorldMapProps) {
       style={{ position: 'relative', width: '100%', height: '100%', minHeight: 240, overflow: 'hidden', background: '#14355a', outline: 'none', touchAction: 'none', cursor: props.aim ? 'crosshair' : 'grab', ...props.style }}
     >
       <style>{`.wm-root:focus-visible { box-shadow: inset 0 0 0 3px ${color.light}; }`}</style>
-      {!env && <div style={{ ...hudBase, left: size.pad, top: size.pad }}>กำลังวาดแผนที่…</div>}
+      {!ready && <Placeholder env={env} model={model} seed={props.seed ?? SEED} />}
       {place && (
         <div style={{ ...hudBase, left: size.pad, top: size.pad, pointerEvents: 'none' }} data-town-name>
           <div style={{ fontFamily: font.title, fontSize: size.title - 4 }}>{place.name}</div>
@@ -243,8 +299,9 @@ function MiniMap(props: WorldMapProps) {
     if (!env) return;
     let live = true;
     Promise.resolve(env.provider.tile(requestFor(env.layout, 'world', 'world', model.looks, props.seed ?? SEED))).then((t) => {
-      if (live && t) base.current = { key: lookSig, img: t };
+      if (live && t) { base.current = { key: lookSig, img: t }; lastWorld = { key: lookSig, img: t }; }
     });
+    warmScene();
     return () => { live = false; };
   }, [env, lookSig]);
 
