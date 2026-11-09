@@ -1,5 +1,5 @@
 {
- "version": "ad3a4e20e80f",
+ "version": "e7d5fdd643c2",
  "sources": [
   "data/gen/bonds.json",
   "data/gen/npcs.json",
@@ -968,19 +968,29 @@
      },
      {
       "name": "ไซเรน",
-      "overrides": {}
+      "overrides": {
+       "skin": "#b4c0c8",
+       "hairColor": "#2f8a74",
+       "eye": "#08080c",
+       "feats": [
+        "gills",
+        "scales",
+        "finskirt",
+        "wet",
+        "fangs"
+       ]
+      }
      },
      {
       "name": "กัปปะ",
       "overrides": {
-       "skin": "#5a8a4a",
+       "skin": "#6a7a3a",
        "feats": [
         "gills",
         "scales",
-        "pearls",
         "finskirt",
         "wet",
-        "wet"
+        "dish"
        ]
       }
      }
@@ -1068,7 +1078,7 @@
       }
      }
     ],
-    "src": "docs/appearance/02-races.md:99"
+    "src": "docs/appearance/02-races.md:106"
    },
    "giant": {
     "id": "giant",
@@ -1133,7 +1143,7 @@
       "overrides": {}
      }
     ],
-    "src": "docs/appearance/02-races.md:105"
+    "src": "docs/appearance/02-races.md:112"
    },
    "lavakin": {
     "id": "lavakin",
@@ -1173,7 +1183,7 @@
     "second": "#924e22",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:111"
+    "src": "docs/appearance/02-races.md:118"
    },
    "construct": {
     "id": "construct",
@@ -1247,7 +1257,7 @@
       "overrides": {}
      }
     ],
-    "src": "docs/appearance/02-races.md:117"
+    "src": "docs/appearance/02-races.md:124"
    },
    "soulmachine": {
     "id": "soulmachine",
@@ -1291,7 +1301,7 @@
     "second": "#5a5a5e",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:123"
+    "src": "docs/appearance/02-races.md:130"
    },
    "mummy": {
     "id": "mummy",
@@ -1332,7 +1342,7 @@
     "second": "#d9a030",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:129"
+    "src": "docs/appearance/02-races.md:136"
    },
    "ghoul": {
     "id": "ghoul",
@@ -1373,7 +1383,7 @@
     "second": "#8d8774",
     "tool": "",
     "lines": [],
-    "src": "docs/appearance/02-races.md:135"
+    "src": "docs/appearance/02-races.md:142"
    }
   },
   "npcs": {
@@ -6815,7 +6825,7 @@
     "fem": true,
     "skin": "#c0e0f0",
     "hairColor": "#c8ccd8",
-    "eye": "#2a2024",
+    "eye": "#08080c",
     "main": "#e8a0c0",
     "second": "#f4e8f0",
     "outfit": "noble",
@@ -6825,9 +6835,7 @@
     "tool": "",
     "feats": [],
     "wear": 0.25,
-    "defaults": [
-     "eye"
-    ],
+    "defaults": [],
     "items": [
      "ผ้าพันคอปิดเสียง"
     ],
@@ -6992,7 +7000,7 @@
     "line": "กัปปะ",
     "stage": "child",
     "fem": null,
-    "skin": "#5a8a4a",
+    "skin": "#6a7a3a",
     "hairColor": "#2a4a2a",
     "eye": "#d8c030",
     "main": "#8ac888",
@@ -20777,7 +20785,7 @@
     "line": "ไซเรน",
     "stage": "adult",
     "fem": null,
-    "skin": "#a0d8c0",
+    "skin": "#b4c0c8",
     "hairColor": "#2a6a8a",
     "eye": "#8a8a90",
     "main": "#3a7a3a",
@@ -20789,9 +20797,7 @@
     "tool": "",
     "feats": [],
     "wear": 0,
-    "defaults": [
-     "skin"
-    ],
+    "defaults": [],
     "items": [],
     "pose": "",
     "of": "NR08-3",

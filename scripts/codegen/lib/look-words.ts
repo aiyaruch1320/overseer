@@ -658,7 +658,10 @@ export const LINE_OVERRIDES: Record<string, (raceFeats: string[]) => LineOverrid
   'beast/หมี': (f) => ({ hairColor: '#5a3a28', feats: [...f, 'muzzle'] }),
   'beast/กระต่าย': (f) => ({ hairColor: '#b8a898', feats: [...f, 'muzzle', 'longears'], ears: 'none' }),
   'merfolk/เงือกน้ำลึก': (f) => ({ skin: '#2a4a5a', feats: [...f, 'glow-eyes'] }),
-  'merfolk/กัปปะ': (f) => ({ skin: '#5a8a4a', feats: [...f, 'wet'] }),
+  // ไซเรน (04-enemies.md siren): silver-grey skin, long sea-green hair, black eyes that swallow light, a dark-green lip over needle teeth; no pearls (they are the plain line's)
+  'merfolk/ไซเรน': (f) => ({ skin: '#b4c0c8', hairColor: '#2f8a74', eye: '#08080c', feats: [...f.filter((x) => x !== 'pearls'), 'fangs'] }),
+  // กัปปะ (04-enemies.md kappa): an olive-green child-sized body with the water dish on the head
+  'merfolk/กัปปะ': (f) => ({ skin: '#6a7a3a', feats: [...f.filter((x) => x !== 'pearls'), 'dish'] }),
   'winged/ปีกราตรี': (f) => ({ feats: f.map((x) => (x === 'wings:feather' ? 'wings:night' : x)) }),
   'winged/ปีกเกล็ด': (f) => ({ feats: f.map((x) => (x === 'wings:feather' ? 'wings:scale' : x)) }),
   'winged/ปีกสั้น': () => ({ accent: '#c4bcae' }),
