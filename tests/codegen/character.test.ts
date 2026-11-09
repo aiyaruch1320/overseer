@@ -93,6 +93,11 @@ describe('character generator: counts (README.md, code-plan §5.1)', () => {
     expect(skills.filter((s) => s.kind === 'companion')).toHaveLength(12);
     expect(skills).toHaveLength(292);
   });
+  it('every blessing and curse has a line the game can show (desc, or the world line)', () => {
+    const bare = [...blessings, ...curses].filter((g) => !(g.desc || g.world)).map((g) => g.id);
+    expect(bare).toEqual([]);
+  });
+
   it('200 blessings and 152 curses', () => {
     expect(blessings).toHaveLength(200);
     expect(blessings.filter((b) => b.src === 'code')).toHaveLength(107);

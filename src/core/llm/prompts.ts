@@ -28,6 +28,7 @@ export const ENDING_SYSTEM = [
   'Write in Thai only, in the third person, 3 to 5 short paragraphs separated by a blank line, in the order of the facts, in the voice of a chronicler. Use the name of the character; use the pronoun the data gives.',
   'Do not add events, causes, feelings or numbers that are not in the facts. Write ages and years in Thai words, with no digits. No Latin letters, no ids, no lists, no headings.',
   'If `allowed_names` is given, those are the only names besides the character that you may write.',
+  'Names are marked with « » in the facts and listed letter for letter in `exact_names`. Copy a name exactly as listed, every letter and tone mark: never translate, transliterate, shorten, respell or split it. Never write the marks « » themselves.',
   'The vow of the player, if given, belongs to the player: the character does not know it. Never write "ข้า" or "เรา".',
   'The `wish`, if given, is what the player asked of this life; the character does not know it. Never write it as his own words or plans, and add no fact from it that the facts do not carry.',
   'Answer the text alone.',

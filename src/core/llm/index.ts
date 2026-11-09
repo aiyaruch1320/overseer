@@ -32,7 +32,7 @@ export { checkThai, parseObject, BANNED, type TextRules } from './validate';
 export { playerOn, pointOn } from './switches';
 export { cleanWords, matchWords, checkDraft, interpretWords, type CommandMenu, type CommandOutcome, type Draft, type Needs } from './command';
 export { requestDirector, directorMul, directorDecision, directorLine, directorCount, combineMul, checkPick, pointId, REASON_LINE, type DirectorPoint, type DirectorWay, type DirectorPick, type AskResult } from './director';
-export { summarizeEnding, checkSummary, type EndingSummary, type EndingSummaryInput } from './ending';
+export { summarizeEnding, checkSummary, requestData, markNames, bentName, type EndingSummary, type EndingSummaryInput } from './ending';
 export { keys as answerKeys } from './record';
 
 /** What the environment says (server side). `OVERSEER_LLM`: `off` shuts the layer · `fake` the offline provider · `deepseek` the real one the docs chose (`anthropic` the alternative). `OVERSEER_LLM_POINTS_OFF`: comma list of points to shut. */
