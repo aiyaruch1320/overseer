@@ -94,7 +94,7 @@ function Idle({ v, look }: { v: IdleView; look: PersonLook | null }) {
         <div style={{ display: 'inline-block', textShadow: '0 1px 4px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.42)', padding: '2px 10px', borderRadius: 4 }}>{v.caption}</div>
         {v.latest && (
           <div style={{ marginTop: 3 }}>
-            <span style={{ display: 'inline-block', textShadow: '0 1px 4px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.42)', padding: '2px 10px', borderRadius: 4, color: color.textDim }} data-testid="idle-latest">
+            <span style={{ display: 'inline-block', textShadow: '0 1px 4px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.58)', padding: '2px 10px', borderRadius: 4, color: color.text, whiteSpace: 'normal', overflowWrap: 'anywhere' }} data-testid="idle-latest">
               {v.latest}
             </span>
           </div>
@@ -119,7 +119,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
   // A stage as wide as the area would run over the story log, and its title over the name of the character.
   const fit = `min(100cqw, calc((100cqh - ${CONTROLS}px) * 16 / 9), 960px)`;
   return (
-    <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }} data-testid="life-scene">
+    <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', padding: `${size.bar}px ${GUTTER.right}px 0 ${GUTTER.left}px`, containerType: 'size', display: 'flex', justifyContent: 'center', alignItems: 'center' }} data-testid="life-scene">
       <div style={{ width: fit, maxWidth: '100%' }}>
         {play && play.kind === 'script' ? (
           <ScenePlayer script={play.script} controls figureOf={staged?.figureOf} scenery={staged?.scenery} labelOf={staged?.labelOf} caption={st && data ? idleView(data, st).caption : undefined} onDone={() => setPlayed(play.entry.n)} />

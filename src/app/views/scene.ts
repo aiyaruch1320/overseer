@@ -225,7 +225,9 @@ const IDLE_SKY = [
 
 /** The ages that change the figure (the docs of the character give childhood to 15 and the elder age 55 for humans; other races take the same here, it is a picture). */
 const IDLE_AGES = { young: 15, adult: 30, elder: 55 } as const;
-const LATEST_MAX = 70;
+const LATEST_MAX = 110;
+/** The latest line is kept this many world years. */
+const LATEST_YEARS = 1;
 
 /**
  * The scene on the stage. The choice is made again at every new line of the log and each time gives a new script object, so the scene that is playing is held here: it stays the
@@ -238,6 +240,13 @@ export function heldScene(held: SceneView | undefined, newest: SceneView | undef
   return cur;
 }
 
+/** A country whose title says it is a city (`มหานครนีออน`, `นครระฆังกลาง`, `เมืองท่าใหญ่`) is seen among its houses, not in a field (the calm picture of a life in a metropolis). */
+const CITY_TITLE = /^(มหานคร|นคร|เมือง|สหพันธ์นคร|สันนิบาตนคร|สาธารณรัฐเมือง)/;
+function isCityCountry(data: GameData, id: string | undefined): boolean {
+  const c = id ? (data.countries?.items as { id: string; title?: string }[] | undefined)?.find((x) => x.id === id) : undefined;
+  return !!c?.title && CITY_TITLE.test(c.title);
+}
+
 export function idleView(data: GameData, state: GameState): IdleView {
   const life = state.life;
   const quarter = ((state.clock.quarter % 4) + 4) % 4;
@@ -246,13 +255,14 @@ export function idleView(data: GameData, state: GameState): IdleView {
   const height = { child: 0.26, young: 0.36, adult: 0.4, elder: 0.38 }[stage];
   const place = life ? plainName(data, life.country) : '';
   const from = lifeStartN(state);
-  const last = [...allLines(data, state)].reverse().find((l) => l.entry.n >= from && l.level >= 2 && l.sys !== 'attention');
+  // the latest thing told is only news for a world year: an older one is let go (it stood in the sky for years)
+  const last = [...allLines(data, state)].reverse().find((l) => l.entry.n >= from && l.level >= 2 && l.sys !== 'attention' && state.clock.worldYear - l.entry.worldYear <= LATEST_YEARS);
   const t = last ? last.text.replace(/\s+/g, ' ').trim() : '';
   const latest = [...t].length > LATEST_MAX ? `${[...t].slice(0, LATEST_MAX - 1).join('')}…` : t;
   const c = IDLE_SKY[quarter];
   const caption = `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
   const at = lifePlace(data, state);
-  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
+  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: isCityCountry(data, at?.country) ? 'town' : 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
   return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption, scenery };
 }
 
@@ -397,9 +407,12 @@ export function figuresOf(data: GameData, state: GameState | null | undefined, v
 export function labelsOf(data: GameData, state: GameState | null | undefined, v: SceneView): (a: { id: string; label: string }) => string {
   const life = state?.life;
   const tie = state && v.entry.id && state.life?.ext.bonds ? tiesOf(bondsExt(state.life)).find((t) => t.id === v.entry.id) : undefined;
-  void data;
+  // a specimen of a tribe (no life behind it) names the tribe under the figure, so twelve small stages are told apart (21-pixel-art §1)
+  const race = !life ? sceneRace(v) : undefined;
+  const raceName = race ? (data.races?.items as { races?: { id: string; name: string }[] } | undefined)?.races?.find((r) => r.id === race)?.name : undefined;
   return ({ id, label }) => {
     if (id === 'a' && MAIN_LABELS.has(label) && life?.name) return life.name;
+    if (id === 'a' && label === 'เด็ก' && raceName) return `เด็ก${raceName}`;
     if (OTHER_LABELS.has(label) && tie?.name) return tie.name;
     return label;
   };
