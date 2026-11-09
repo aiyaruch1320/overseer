@@ -373,6 +373,10 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   // They sit before the generic book / scroll / ledger / mug / flask rules so that the named thing wins inside one item.
   ['twinpistol', /ปืนสั้นสองกระบอก|ปืนสองกระบอก|ปืนคู่/],
   ['mallet', /ไม้ตี|ค้อนตี|ค้อนไม้/],
+  ['wrappedhammer', /ค้อน[ก-๙]*ห่อผ้า/],
+  ['blackhammer', /ค้อนหินดำ/],
+  ['smithhammer', /ค้อนช่างตี/],
+  ['trowel', /เกรียงปั้น/],
   ['smallhammer', /ค้อนเล็ก|ค้อนจิ๋ว/],
   ['wrench', /ประแจ/],
   ['slate', /กระดานชอล์ก|กระดานดำ|กระดานเขียน/],
@@ -733,6 +737,8 @@ export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS
  */
 export type PersonFix = Partial<Pick<PersonLookRow, 'stage' | 'line' | 'fem' | 'skin' | 'hairColor' | 'eye' | 'main' | 'second' | 'outfit' | 'hair' | 'beard' | 'hat' | 'tool' | 'feats' | 'accent' | 'ears' | 'body' | 'raceFeats' | 'wear'>>;
 export const PERSON_FIX: Record<string, PersonFix> = {
+  // ทอร์วา "ตีเหล็กรัวเร็ว" with a small hammer: the head glows with the hot iron it strikes
+  'KD11-5': { tool: 'hotsmallhammer' },
   // เซอร์ลา "เงือกปีก ... ปีกครีบบางที่หลังพับแนบตัว" and ฮินา "ปีกเล็กยังไม่แข็งแรงแต่กางเมื่อดีใจ": the words read `เงือก` first, so the finned wing is named here
   'NR02-2': { feats: ['wings:fin'] },
   'NR02-4': { feats: ['wings:fin'] },

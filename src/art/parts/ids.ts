@@ -27,6 +27,8 @@ export const TOOL_IDS = [
   'brush', 'map', 'bottle', 'pipe', 'bag', 'hotiron', 'tank', 'quill', 'chalk',
   // wave 5 (tools-extra.ts): a sword that stays in its sheath, a second pistol, a stone drum, ankle bells, a chisel, a small hammer, a wrench, a slate
   'sheathed', 'greatsheath', 'goldsheath', 'anklebells', 'twinpistol', 'drum', 'chisel', 'smallhammer', 'wrench', 'slate', 'bouquet', 'sleepingchild',
+  // M7: the hammers of the dwarves of Kaz-Durum and a sculptor's trowel
+  'smithhammer', 'wrappedhammer', 'blackhammer', 'hotsmallhammer', 'trowel',
 ] as const;
 
 /** Race feats (02-races.md ลักษณะที่วาดเพิ่ม) and personal marks. A feat with a kind is written `name:kind` (wings:feather). */
