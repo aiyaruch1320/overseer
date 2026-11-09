@@ -1,0 +1,2 @@
+usage: m8-report.ts <record.json ...> | --sim=เมตตา,ลงโทษ --seeds=1-20 [--arms] [--lives=1]  [--json] [--out=file]
+exit 2
