@@ -84,7 +84,7 @@ function Detail(p: { h: WhisperHint; pre?: string }) {
  * `why` and `id` come from the card that opened the whisper: a crisis card brings the id of the ally in crisis, and the whisper opens on the
  * hint of help with him picked (20-god-ui.md §2: the card is the way in, so the screen must know whom it is about).
  */
-export function Whisper(p: { hint?: string; why?: string; id?: string; target?: string }) {
+export function Whisper(p: { hint?: string; why?: string; id?: string; target?: string; typed?: string }) {
   const v = useView((g, d) => whisperView(g, d));
   const crisis = v ? v.crises.find((c) => c.id === p.id || c.id === p.target || c.name === p.target) ?? (p.why === 'crisis' ? v.crises[0] : undefined) : undefined;
   const [sel, setSel] = useState<string | null>(p.hint ?? (crisis || p.target ? W.whisper.helpHint : null));
@@ -115,7 +115,7 @@ export function Whisper(p: { hint?: string; why?: string; id?: string; target?: 
       <div class="g-small g-dim">
         {W.whisper.left} {v.left} {W.whisper.times}
       </div>
-      <TypedWhisper onUnderstood={(h, t) => (setTypedTarget(t), setSel(h))} />
+      <TypedWhisper initial={p.typed} onUnderstood={(h, t) => (setTypedTarget(t), setSel(h))} />
       <div style={{ ...row, alignItems: 'flex-start', flexWrap: 'wrap', gap: 20 }}>
         <Ring hints={v.hints} sel={sel} onPick={(h) => (setTypedTarget(undefined), setSel(h))} />
         {cur ? <Detail key={`${cur.hint}:${typedTarget ?? ''}`} h={cur} pre={typedTarget ?? crisis?.id ?? p.target} /> : <Empty>{W.whisper.ring}</Empty>}
