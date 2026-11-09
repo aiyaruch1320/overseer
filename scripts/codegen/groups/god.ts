@@ -212,6 +212,19 @@ function chest() {
 }
 
 // ---------- 03-dreams ----------
+/** 09-whisper-words.md §2: the colloquial phrases of each whisper hint, for the offline reading of typed words. Every hint has one row of 8 to 20 phrases. */
+function whisperWordsOf(hints: string[]): Record<string, string[]> {
+  const t = findTable(G + '09-whisper-words.md', /คำพูดรายคำใบ้/, 'คำใบ้');
+  const out: Record<string, string[]> = {};
+  for (const r of t.rows) {
+    const list = r.cells[1].split('·').map((x) => x.trim()).filter(Boolean);
+    if (list.length < 8 || list.length > 20) throw new Error(`god: 09-whisper-words.md "${r.cells[0]}" has ${list.length} phrases, expected 8 to 20`);
+    out[r.cells[0]] = list;
+  }
+  for (const h of hints) if (!out[h]) throw new Error('god: 09-whisper-words.md has no row for the hint ' + h);
+  return out;
+}
+
 function dreams() {
   const f = G + '03-dreams.md';
   const srcT = findTable(f, /ทางทั้งสาม/, 'แหล่ง');
@@ -253,6 +266,7 @@ function dreams() {
     special: special.rows.map((r) => ({ moment: r.cells[0], rule: r.cells[1] })),
     whispers: whisperRows.map((r) => ({ hint: r.hint.replace(/\s*\(.*\)$/, ''), id: r.hint, cost: dearHints.includes(r.hint.replace(/\s*\(.*\)$/, '')) ? 8 : 5, effect: r.effect, from: r.src })),
     whisperCostGroups: { cheap: cheapHints, dear: dearHints },
+    whisperWords: whisperWordsOf(whisperRows.map((r) => r.hint.replace(/\s*\(.*\)$/, ''))),
     prayerAnswers: prayer.rows.map((r) => ({ answer: r.cells[0].replace(/\*/g, ''), price: r.cells[1], effect: r.cells[2] })),
   };
 }
@@ -691,7 +705,7 @@ export default function run() {
     rule,
     raw: raws,
   };
-  writeGen('god', data, [...listDocs('docs/systems/god').filter((f) => /\/0[1-8]-/.test(f)), 'docs/lore/dragons/README.md'], GEN);
+  writeGen('god', data, [...listDocs('docs/systems/god').filter((f) => /\/0[1-9]-/.test(f)), 'docs/lore/dragons/README.md'], GEN);
   void dash;
   void tagsOf;
   void parts;
