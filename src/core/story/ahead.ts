@@ -17,7 +17,7 @@ import { requestDirector, type AskResult, type DirectorPoint } from '../llm/dire
 import { keys } from '../llm/record';
 import { DIRECTOR } from '../llm/tuning';
 import { slotsOf } from '../npc/types';
-import { test } from '../rules';
+import { quietly, test } from '../rules';
 import type { Choice, Effect } from '../types';
 import { markOf, tablesOf } from '../world/data';
 import { refsOf, topTwo, weigh } from './choose';
@@ -133,6 +133,10 @@ function repeatMeet(lists: readonly (readonly Effect[])[], slots: ReturnType<typ
  * ranks highest now. The ways are read again at the fork (`directorMul` against `checkPick`), so a guess that went stale costs nothing. Pure: no state, no rng draw.
  */
 export function directorAhead(ctx: Ctx): DirectorPoint[] {
+  return quietly(() => ahead(ctx));
+}
+
+function ahead(ctx: Ctx): DirectorPoint[] {
   const life = lifeOf(ctx);
   const ex = life?.ext.story as StoryExt | undefined;
   if (!life || !ex?.line || !ctx.data.storylines) return [];
