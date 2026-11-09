@@ -8,7 +8,7 @@ export const OMEN = { small: 0, mid: 0, big: 1, grand: 1, dragon: 0, refund: 0.5
 /** A beat is a quarter (a season) of the life year; a prayer tick is a beat (03-dreams.md §7.2). */
 export const TICKS_PER_YEAR = 4;
 
-/** Life stages by hAge (assumption: the thresholds of legacy/render/characters/themes.ts, adult 20 and elder 55 as in world-time.md §3). */
+/** Life stages by hAge (assumption: the thresholds of the POC character themes, adult 20 and elder 55 as in world-time.md §3). */
 export const STAGES = { infant: 4, child: 13, teen: 20, adult: 55 };
 
 /** Prayer fx: a loss of hit points of at least this much wounds the character (assumption, until combat owns the hit points; there is no hit point number before it, a wound stands for it). */

@@ -66,7 +66,9 @@ function srcFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? srcFiles(path.join(dir, e.name)) : /\.ts$/.test(e.name) ? [path.join(dir, e.name)] : []));
 }
 const codeWords = new Set();
-for (const f of ['legacy', 'src'].filter((d) => fs.existsSync(path.join(root, d))).flatMap((d) => srcFiles(path.join(root, d)))) for (const m of fs.readFileSync(f, 'utf8').matchAll(/['"`]([a-z][a-z0-9_]*)['"`]/g)) codeWords.add(m[1]);
+// ids the docs quote from the POC code (now deleted) that the new game code does not spell as string literals
+for (const w of ['bloc', 'bloodmoon', 'child_animal', 'chosen', 'codex', 'curse_ward', 'demon_gate', 'demonbane', 'dragon_awake', 'dragon_bond', 'dragon_raid', 'eruption', 'flags', 'gold_luck', 'holy_war', 'inquisition', 'karma', 'kill', 'long_night', 'pirate_raid', 'safe', 'spec']) codeWords.add(w);
+for (const f of ['src'].flatMap((d) => srcFiles(path.join(root, d)))) for (const m of fs.readFileSync(f, 'utf8').matchAll(/['"`]([a-z][a-z0-9_]*)['"`]/g)) codeWords.add(m[1]);
 // tags defined inside the docs themselves: race tags in the synergy rules, enemy types and traits in the type matrix
 const docTags = new Set([
   ...collect(['systems/character/03-synergy-rules.md'], /\*\*([a-z_]+)\*\*/g),

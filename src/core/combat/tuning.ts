@@ -6,7 +6,7 @@
 /** Seed streams (code-plan §6.2). Their names start with the system. */
 export const STREAM = { fight: 'life.combat', encounter: 'life.combat.enc', loot: 'life.combat.loot', clash: 'life.combat.clash' } as const;
 
-// ---------- hit points (01-core.md §1 "ฐาน": legacy/sim/character.ts maxHp, game.ts regen) ----------
+// ---------- hit points (01-core.md §1 "ฐาน": the POC max hit points and regen) ----------
 
 /** Maximum hit points: 40 + vit × 4 (the base code), plus `hp+n` of gifts (character ext hpBonus). */
 export const HP = { base: 40, perVit: 4, regenPerBeat: 3, regenTag: 6, floor: 10 };
