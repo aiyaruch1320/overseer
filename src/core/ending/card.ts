@@ -18,7 +18,7 @@ import { CAUSE_WORD, CULTURE, EXTRA_MOMENT, FACT_KINDS, LIFE_EPITAPH, LIMIT, MAR
 import type { CauseGroup, EndingCard, EndingInput, Moment, QuestionGrade, SummaryFact, WorldMark } from './types';
 import { family, flagWords, pickFrom, timeGroup, whenHolds } from './words';
 import type { SlotValues } from '../text/pick';
-import { fill } from '../text/pick';
+import { asPronoun, fill } from '../text/pick';
 import { pickHeir } from '../lineage/heir';
 
 const GRADE_WORD: Record<QuestionGrade, string> = { good: 'ตอบได้ดี', bad: 'ตอบแย่', open: 'ยังเปิด', early: 'ตายก่อนถึงคำตอบ', changed: 'กลายเป็นอย่างอื่น' };
@@ -331,7 +331,28 @@ export function buildCard(ctx: Ctx): { card: EndingCard; input: EndingInput } {
     others: [...new Set([...st.lineage.lives.map((l) => l.name), ...folk.others])].filter((n) => !names.includes(n)),
     earned,
   };
+  pronounize(card, input, life.gender);
   return { card, input };
+}
+
+/** The templates of the card say "เขา" for the life; a woman's card says "เธอ" (T3-10). Names, places and the numbers are not touched: only the sentences. */
+function pronounize(card: EndingCard, input: EndingInput, gender: string): void {
+  if (gender !== 'f') return;
+  const he = (t: string): string => asPronoun(t, gender);
+  card.lines = card.lines.map(he);
+  card.summary.text = he(card.summary.text);
+  card.epitaph.text = he(card.epitaph.text);
+  card.titleLine = he(card.titleLine);
+  card.question.line = he(card.question.line);
+  card.moments = card.moments.map((m) => ({ ...m, line: he(m.line) }));
+  card.facts = card.facts.map((f) => (f.sentence ? { ...f, sentence: he(f.sentence) } : f));
+  card.people = card.people.map(he);
+  card.traces = card.traces.map(he);
+  if (card.vow) card.vow = { ...card.vow, head: he(card.vow.head), line: he(card.vow.line), lines: card.vow.lines.map(he), ...(card.vow.missing ? { missing: card.vow.missing.map(he) } : {}) };
+  input.moments = card.moments;
+  input.people = card.people;
+  input.traces = card.traces;
+  if (input.vow) input.vow = { ...input.vow, lines: input.vow.lines.map(he) };
 }
 
 /** The least lines of fact (moments, vow, ending) a card holds before the three facts of every life stand in. */

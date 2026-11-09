@@ -6,6 +6,7 @@ import type { Ctx } from '../../game';
 import { write } from '../../log';
 import type { LifeState } from '../../types';
 import { peopleCode, questionOf } from '../../text';
+import { asPronoun } from '../../text/pick';
 import { godData } from '../state';
 import { badFates, factsOf, type Facts } from './facts';
 import { lifeGoals, living, metaOf, peekGoals, peekLife } from './state';
@@ -30,7 +31,9 @@ export const vowRow = (ctx: Ctx, id: string): VowRow | undefined => vowRows(ctx)
 export function vowName(ctx: Ctx, id: string, race?: string): string {
   const row = vowRow(ctx, id);
   if (!row) return id;
-  return id === 'GV-05' && race && HEIR_FORM_RACES.includes(race) ? HEIR_FORM_NAME : row.name;
+  const name = id === 'GV-05' && race && HEIR_FORM_RACES.includes(race) ? HEIR_FORM_NAME : row.name;
+  // the vow is the life's own ("ให้เขาเห็นโลก"): a woman's life says "เธอ" (T3-10)
+  return asPronoun(name, ctx.state.life?.gender);
 }
 
 // ---------- the judgement: one test for each vow ----------

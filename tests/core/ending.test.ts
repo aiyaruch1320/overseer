@@ -6,6 +6,7 @@ import { cardOf, collectionView, endingInput } from '../../src/core/ending';
 import { buildCard, momentsOf, templatesFor } from '../../src/core/ending/card';
 import { gatherFacts, lifeLog, type RawFact } from '../../src/core/ending/facts';
 import { isHandAct, MOMENT } from '../../src/core/ending/tuning';
+import { asPronoun } from '../../src/core/text/pick';
 import { lifeGoals } from '../../src/core/god/goals';
 import { makeCtx, type GameData } from '../../src/core/game';
 import { lx, nextLife, worldSummary } from '../../src/core/lineage';
@@ -206,7 +207,8 @@ describe('E5: the vow and the titles are on the card', () => {
         expect(card.lines).toContain(card.vow!.line);
         expect(card.vow!.line).toMatch(/^ปฏิญาณ: .+ · (สำเร็จ|ไม่สำเร็จ)$/);
         // a broken vow says what it lacked (M5 review round two R3); a kept one has nothing to add
-        if (g.result === 'broken') expect(card.vow!.missing).toEqual(g.missing);
+        // the card tells a woman's life with "เธอ" (T3-10)
+        if (g.result === 'broken') expect(card.vow!.missing).toEqual(g.missing!.map((m) => asPronoun(m, st.life!.gender)));
         else expect(card.vow!.missing).toBeUndefined();
         if (g.result === 'broken') expect(card.vow!.missing!.length).toBeGreaterThan(0);
         expect([...card.vow!.line].length).toBeLessThanOrEqual(56);
