@@ -13,7 +13,7 @@ import { addLook, playPose } from '../../art/phaser';
 import type { Scenery, ScenerySpec } from '../../art/scenery';
 import { BEAST_POSE, PERSON_POSE } from '../../ui/figure';
 import { figureKey, type Figure, type FigureOf } from '../figures';
-import { fxPixels, godOf, godPixels, lightPixels, variantOf, type Px } from '../fx';
+import { fxPixels, godOf, godPixels, lightPixels, type Px } from '../fx';
 import { cameraOf, clampPan, layerX, slotsOf, type Cam } from '../layout';
 import { sceneryFor, specKey } from '../scenery';
 import { mixColor, type ActorView, type Frame } from '../timeline';
@@ -178,7 +178,7 @@ class StageScene extends Phaser.Scene {
    */
   private paintFx(f: Frame, ambient: string | undefined, seed: number, cam: Cam): void {
     this.fx.place(cam);
-    const variant = variantOf(f.place);
+    const variant = f.fxPreset;
     // the shooting star plays on its own clock, the other powers only while their glow is on
     const god = f.light.mode === 'glow' ? godOf(f.light.color) : null;
     const k = `${f.motion}|${seed}|${ambient ?? ''}|${god ?? ''}|${variant ?? ''}|${f.fx.map((x) => `${x.kind}:${x.amount}:${x.color ?? ''}`).join(',')}`;

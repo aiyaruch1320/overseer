@@ -9,13 +9,13 @@ import { createSession, runToDeath, startLife } from '../../../scripts/tools/ses
 import { allStories, type Story } from '../stories';
 import { color, font, size } from '../tokens';
 import '../screens';
-import { RACE_HOME } from '../../app/views/scene';
+import { raceHome } from '../../app/views/scene';
 
 /** The country where a race lives: its main homeland of the origin doc (a story of a race's own scene is a life in its homeland). */
-const homeland = (race: string): string | undefined => RACE_HOME[race];
+const homeland = (data: GameData, race: string): string | undefined => raceHome(data, race);
 
 function sample(data: GameData, s: Story): GameState {
-  const country = s.country ?? (s.race ? homeland(s.race) : undefined);
+  const country = s.country ?? (s.race ? homeland(data, s.race) : undefined);
   const sess = createSession(data, { seed: s.seed ?? 1, ...(s.race ? { race: s.race } : {}), ...(country ? { country } : {}) });
   startLife(sess);
   if (s.at === 'death') runToDeath(sess.game);

@@ -9,7 +9,7 @@ import type { GameData } from '../../src/core/game';
 import type { GameState, LogEntry } from '../../src/core/types';
 import { PERSON_POSE } from '../../src/ui/figure';
 import { chroma, paintCard } from '../../src/scene/cardpic';
-import { godPixels, lightPixels, variantOf, type Px } from '../../src/scene/fx';
+import { godPixels, lightPixels, type Px } from '../../src/scene/fx';
 import { frameAt } from '../../src/scene/timeline';
 import { ART, GOD, GOD_FX } from '../../src/scene/tuning';
 
@@ -126,7 +126,7 @@ describe('K5-6 the card picture shows the sky and the effects of its card', () =
 
 describe('K5-4 and K5-5 the miracle days', () => {
   it('the shooting star is a red star with a smoke tail, one white frame where it lands, then the crater', () => {
-    expect(variantOf('ดาวตก')).toBe('meteor');
+    expect(frameAt((data.scenes.items as ScenesData).scripts.find((x) => x.id === 'mr.MR-17')!, 9).fxPreset).toBe('meteor');
     const M = GOD_FX.meteor;
     const early = godPixels(null, 0.5, 7, 'meteor');
     const late = godPixels(null, 7.5, 7, 'meteor');
@@ -149,7 +149,7 @@ describe('K5-4 and K5-5 the miracle days', () => {
     expect(godPixels(null, 14, 7, 'meteor').some((p) => p.color === 0xcfc0a0)).toBe(true);
   });
   it('the holy light is gold and a third of the picture wide, with a shimmering rim', () => {
-    expect(variantOf('แสงศักดิ์สิทธิ์')).toBe('beam');
+    expect(frameAt((data.scenes.items as ScenesData).scripts.find((x) => x.id === 'mr.MR-04')!, 9).fxPreset).toBe('beam');
     const gold = parseInt(GOD.faith.slice(1), 16);
     const at = (t: number) => godPixels('faith', t, 3, 'beam');
     const list = at(10);
@@ -167,7 +167,7 @@ describe('K5-4 and K5-5 the miracle days', () => {
     expect(white(at(GOD_FX.beam.wispsAt + 2))).toBeGreaterThan(0);
   });
   it('other miracles keep the old effects (no variant)', () => {
-    expect(variantOf('ฟ้าผ่า')).toBeUndefined();
+    expect(frameAt((data.scenes.items as ScenesData).scripts.find((x) => x.id === 'mr.MR-06')!, 9).fxPreset).toBeUndefined();
     expect(godPixels('faith', 5, 1).length).toBeGreaterThan(0);
     expect(godPixels(null, 5, 1)).toEqual([]);
   });

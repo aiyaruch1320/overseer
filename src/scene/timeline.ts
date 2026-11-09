@@ -1,7 +1,7 @@
 // The time of a scene as pure functions: `frameAt(script, t)` says what is on the stage at second t, from the beats alone, so a scene
 // plays the same at any speed, after a skip, and in a test (code-plan §2.2 rule 2: no clock and no random in the state of a scene).
 // The player (ScenePlayer.tsx) only moves t and draws the frame.
-import type { Beat, CameraFrame, FxKind, LightMode, Pose, SceneScript, TextRole } from '../core/data/types-scenes';
+import type { Beat, CameraFrame, FxKind, FxPreset, LightMode, Pose, SceneScript, TextRole } from '../core/data/types-scenes';
 import { CAMERA, MOVE_TIME, TEXT_FADE } from './tuning';
 
 // ---------- colours ----------
@@ -69,6 +69,8 @@ export interface Frame {
   t: number;
   done: boolean;
   place: string;
+  /** The effect of its own the scene has (a miracle: the shooting star, the wide beam), from the script. */
+  fxPreset?: FxPreset;
   sky: string;
   ground: string;
   wash: { color: string; amount: number } | null;
@@ -159,7 +161,7 @@ export function frameAt(script: SceneScript, tIn: number): Frame {
   let held = 0;
   for (const b of beats) if (isKind(b, 'hold')) held += Math.max(0, Math.min(t, endOf(b, total)) - b.at);
 
-  return { t, done: t >= total, place, sky, ground, wash, camera: cam, light, fx, actors, texts, strike, sounds, motion: t - held };
+  return { t, done: t >= total, place, ...(script.fxPreset ? { fxPreset: script.fxPreset } : {}), sky, ground, wash, camera: cam, light, fx, actors, texts, strike, sounds, motion: t - held };
 }
 
 /** The cues of sound whose time is in (from, to]: the player plays them once as the clock passes. */

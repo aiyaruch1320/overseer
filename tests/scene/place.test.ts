@@ -78,11 +78,18 @@ describe('the calm picture of the watch screen', () => {
       const v = idleView(data, st);
       expect(v.scenery.continent).toBe('KD');
       expect(v.scenery.country).toBe('KD-01');
-      expect(v.scenery.setting).toBe('outdoor');
+      // KD-01 is a city of scale 5: 13-storyline-scenes §6 draws a country of scale 3 or more among its houses
+      expect(v.scenery.setting).toBe('town');
       expect(v.scenery.season).toBe(q);
       keys.add(specKey(v.scenery));
     }
     expect(keys.size).toBe(4);
+  });
+  it('a camp or a small town (scale 1 to 2) is under the sky, a town of scale 3 or more is among its houses', () => {
+    const at = (country: string) => idleView(data, { ...abroad, life: { ...abroad.life!, country } }).scenery.setting;
+    expect(at('MH-01')).toBe('outdoor');
+    expect(at('AZ-08')).toBe('outdoor');
+    expect(at('KD-01')).toBe('town');
   });
   it('another place of the life is another picture', () => {
     expect(specKey(idleView(data, state).scenery)).not.toBe(specKey(idleView(data, abroad).scenery));
@@ -93,7 +100,9 @@ describe('the picture of an event card', () => {
   const card = (en: LogEntry, st: GameState | null = abroad) => cardOfEntry(data, en, st);
   const dr04 = () => card(e('world', 'event', 'DR-04', { name: 'ฤดูหนาวเถ้า', mark: '●' }));
 
-  it('is the place of the event: the entry\'s own, else the life\'s, else a plain one', () => {
+  it('is the place of the event: the entry\'s own, else the card\'s place of the docs, else the life\'s, else a plain one', () => {
+    // DR-03: the card place table of 12-event-visuals puts the nest of the egg in AZ-01 wherever the life is
+    expect(card(e('world', 'event', 'DR-03', { name: 'ไข่ใบที่สิบหก' })).scenery).toMatchObject({ continent: 'AZ', country: 'AZ-01' });
     expect(card(e('world', 'event', 'DR-04', { place: 'SH-02' })).scenery).toMatchObject({ continent: 'SH', country: 'SH-02', setting: 'outdoor' });
     expect(dr04().scenery).toMatchObject({ continent: 'KD', country: 'KD-01' });
     expect(card(e('world', 'event', 'DR-04'), null).scenery).toMatchObject({ continent: 'AZ' });
