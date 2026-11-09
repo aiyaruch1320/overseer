@@ -208,10 +208,12 @@ export function StoryLog({ log }: { log: Line[] }) {
   const [shown, setShown] = useState(LOG_PAGE);
   const first = Math.max(0, log.length - shown);
   const stick = useRef(true);
+  // follow the newest line: keyed on its number, not on the count (the log keeps its last lines only, so once full the count stops moving and the box stayed on old years)
+  const newest = log.length ? log[log.length - 1].n : -1;
   useEffect(() => {
     const el = box.current;
     if (el && stick.current) el.scrollTop = el.scrollHeight;
-  }, [log.length]);
+  }, [newest]);
   return (
     <section
       aria-label={W.story}
