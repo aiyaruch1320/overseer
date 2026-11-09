@@ -31,7 +31,7 @@ describe('typed words to a whisper draft', () => {
     const g = atCall();
     const hit = await understandWords(g, undefined, 'ขอให้เขาระวังหน่อย');
     expect(hit).toEqual({ ok: true, hint: 'ระวัง', source: 'template' });
-    const miss = await understandWords(g, undefined, 'อย่าประมาทนะ');
+    const miss = await understandWords(g, undefined, 'ไปทางเหนือ');
     expect(miss).toMatchObject({ ok: false, line: W.whisper.typed.noFit });
     expect(await understandWords(g, undefined, '   ')).toMatchObject({ ok: false, line: W.whisper.typed.empty });
   });
@@ -63,14 +63,14 @@ describe('typed words to a whisper draft', () => {
   it('the LLM fails (no fixture): the menu is shown, the game goes on', async () => {
     const g = atCall();
     const { llm } = fakeLlm({ responses: [] });
-    expect(await understandWords(g, llm, 'อย่าประมาทนะ')).toMatchObject({ ok: false });
+    expect(await understandWords(g, llm, 'ไปทางเหนือ')).toMatchObject({ ok: false });
   });
 
   it('the switch off: the LLM is not asked, but the name of a hint still works', async () => {
     const g = atCall();
     g.state.settings.llm.setup = false;
     const { llm, provider } = fakeLlm(FX);
-    expect(await understandWords(g, llm, 'อย่าประมาทนะ')).toMatchObject({ ok: false, line: W.whisper.typed.noFit });
+    expect(await understandWords(g, llm, 'ไปทางเหนือ')).toMatchObject({ ok: false, line: W.whisper.typed.noFit });
     expect(provider.calls).toHaveLength(0);
     expect(await understandWords(g, llm, 'ระวังนะ')).toMatchObject({ ok: true, hint: 'ระวัง', source: 'template' });
   });

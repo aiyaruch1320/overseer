@@ -20,6 +20,8 @@ export interface CommandMenu {
   hints: { hint: string; needs?: Needs }[];
   places: { id: string; name: string }[];
   people: { id: string; name: string }[];
+  /** The colloquial phrases of each hint (docs/systems/god/09-whisper-words.md): tier 0 reads them beside the hint's own name. Never sent to the LLM. */
+  says?: Record<string, string[]>;
 }
 
 export interface Draft {
@@ -43,16 +45,24 @@ export function cleanWords(words: string): string {
 
 const targetsOf = (menu: CommandMenu, need: Needs | undefined): { id: string; name: string }[] => (need === 'place' ? menu.places : need === 'npc' || need === 'heir' ? menu.people : []);
 
-/** Tier 0: the words hold the name of one hint, and for a hint that needs a target, the name (or the id) of one entry. Nothing else is guessed. */
+/**
+ * Tier 0: the words hold the name of one hint or one of its phrases (09-whisper-words.md), and for a hint that needs a target, the name (or the id) of one entry.
+ * The longest match wins. Nothing else is guessed.
+ */
 export function matchWords(words: string, menu: CommandMenu): Draft | null {
-  const w = cleanWords(words);
-  const found = menu.hints.filter((h) => w.includes(h.hint));
-  // the longest name wins when one contains another
-  found.sort((a, b) => b.hint.length - a.hint.length);
-  const h = found[0];
-  if (!h) return null;
+  const w = cleanWords(words).replace(/\s+/g, '');
+  const flat = (x: string) => x.replace(/\s+/g, '');
+  let best: { h: CommandMenu['hints'][number]; len: number } | null = null;
+  for (const h of menu.hints) {
+    for (const p of [h.hint, ...(menu.says?.[h.hint] ?? [])]) {
+      const f = flat(p);
+      if (f && w.includes(f) && (!best || f.length > best.len)) best = { h, len: f.length };
+    }
+  }
+  if (!best) return null;
+  const h = best.h;
   if (!h.needs) return { hint: h.hint };
-  const t = targetsOf(menu, h.needs).find((x) => w.includes(x.name) || w.includes(x.id));
+  const t = targetsOf(menu, h.needs).find((x) => w.includes(flat(x.name)) || w.includes(x.id));
   return t ? { hint: h.hint, target: t.id } : null;
 }
 
@@ -93,7 +103,7 @@ export async function interpretWords(ctx: Ctx, words: string, menu: CommandMenu,
   const t0 = matchWords(w, menu);
   if (t0) return { command: toCommand(t0), source: 'template' };
   const life = ctx.state.life;
-  const input = { words: w, menu };
+  const input = { words: w, menu: { hints: menu.hints, places: menu.places, people: menu.people } };
   const key = keys.command(hashOf({ life: life?.id ?? null, age: life?.hAge ?? null, input }));
   const kept = answerOf(ctx.state, key);
   if (kept !== undefined) {

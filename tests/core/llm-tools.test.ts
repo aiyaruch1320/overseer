@@ -101,10 +101,10 @@ describe('tool flag --llm', () => {
     startLife(s);
     const ctx = s.game.ctx;
     expect((await sayLines(undefined, ctx, 'ระวังหน่อย')).cmd).toBe('whisper ระวัง');
-    const none = await sayLines(undefined, ctx, 'อย่าประมาทนะ');
+    const none = await sayLines(undefined, ctx, 'ไปทางเหนือ');
     expect(none.cmd).toBeUndefined();
     expect(none.lines[0]).toContain('options');
     const tl = llmFromArgs({ llm: 'fake' })!;
-    expect((await sayLines(tl, ctx, 'อย่าประมาทนะ')).cmd).toBe('whisper ระวัง');
+    expect((await sayLines(tl, ctx, 'ไปทางเหนือ')).cmd).toBe('whisper ระวัง');
   });
 });

@@ -21,7 +21,9 @@ export function commandMenu(ctx: Ctx): CommandMenu {
     for (const t of alliesOf(ctx)) people.set(t.id, t.name);
     for (const v of npcsAt(ctx, life.country)) if (!people.has(v.id)) people.set(v.id, v.name);
   }
+  const says = (ctx.data.god?.items as { dreams?: { whisperWords?: Record<string, string[]> } } | undefined)?.dreams?.whisperWords;
   return {
+    ...(says ? { says } : {}),
     hints: hintsOf(ctx).map((hint) => ({ hint, ...(NEEDS[hint] ? { needs: NEEDS[hint] } : {}) })),
     places,
     people: [...people].map(([id, name]) => ({ id, name })),
