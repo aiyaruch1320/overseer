@@ -127,7 +127,8 @@ export function townGround(plan: CityPlan, look: CityLook = {}): TownGround {
       const i = y * W + x, b = bayer(x, y);
       // rim: dithered away
       const ex = (x + 0.5 - W / 2) / (W / 2), ey = (y + 0.5 - H / 2) / (H / 2), e = Math.hypot(ex, ey);
-      if (e > 0.72 + (1 - b) * 0.28) { px[i * 4 + 3] = 0; continue; }
+      // (the threshold stays under 1: at 1.0 the last column stayed opaque in dashes and drew a faint line along the rim)
+      if (e > 0.7 + (1 - b) * 0.26) { px[i * 4 + 3] = 0; continue; }
       // grass in three tones
       // three close tones; the border between two is a fine dither (one pixel), never a block of a different colour
       const n = noise(x / 14, y / 14, 2) + (b - 0.5) * 0.5;

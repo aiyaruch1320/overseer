@@ -74,12 +74,17 @@ export function visibleKeys(layout: MapLayout, level: ZoomId, view: Rect): strin
  * The ground round the towns at the density of the towns (21-pixel-art.md §4: one pixel density at the town and in-town levels): the land of the
  * country is repainted in square chunks of GROUND_CHUNK MU at TOWN_PX pixels to the MU, so that the ground under and round a town is as fine as its houses.
  */
+/** Art pixels a ground chunk reaches over its right and lower neighbour (the same content, so the chunks meet with no line). */
+const OVERLAP = 6;
+
 export function groundChunks(layout: MapLayout, view: Rect, looks: Looks, seed: number): TileRequest[] {
   const s = GROUND_CHUNK;
   const out: TileRequest[] = [];
   for (let j = Math.max(0, Math.floor(view.y / s)); j <= Math.min(Math.floor(SHEET.h / s), Math.floor((view.y + view.h) / s)); j++)
     for (let i = Math.max(0, Math.floor(view.x / s)); i <= Math.min(Math.floor(SHEET.w / s), Math.floor((view.x + view.w) / s)); i++) {
-      const rect = { x: i * s, y: j * s, w: s, h: s };
+      // OVERLAP art pixels more than the chunk on the right and below, with the true content of those pixels: without the overlap the picture
+      // under the chunks shows through as a faint dashed line along the seam (review/m7/k4/fix6 AZ-01)
+      const rect = { x: i * s, y: j * s, w: s + OVERLAP / TOWN_PX, h: s + OVERLAP / TOWN_PX };
       const cx = rect.x + s / 2, cy = rect.y + s / 2;
       const owner = layout.cities.reduce<MapCity | null>((b, c) => (!b || Math.hypot(c.x - cx, c.y - cy) < Math.hypot(b.x - cx, b.y - cy) ? c : b), null);
       const continent = owner ? layout.byId.get(owner.country)?.continent ?? null : null;
