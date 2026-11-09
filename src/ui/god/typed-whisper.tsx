@@ -48,7 +48,7 @@ export function TypedWhisper(p: { initial?: string; onUnderstood: (hint: string,
         </div>
       </label>
       {res && (
-        <div role="status" class="g-small" style={{ color: res.ok ? color.fate : color.dreadText }}>
+        <div role="status" class="g-small" style={{ color: res.ok || res.hint ? color.fate : color.dreadText }}>
           {res.ok ? (
             <>
               {T.understood} <b>{res.hint}</b>

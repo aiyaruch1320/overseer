@@ -60,7 +60,7 @@ function Screen() {
       <Layers />
       <MapOverlay />
       {/* the vow of an heir who is born before 15, and the one change at 15 (08-goals; the first life takes its vow on the start sheet): the box draws nothing while no choice is open */}
-      <VowChoice modal />
+      <VowChoice modal heirsOnly />
       <GodPanel />
     </>
   );

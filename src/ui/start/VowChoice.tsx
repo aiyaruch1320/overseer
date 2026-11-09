@@ -23,6 +23,8 @@ export interface VowChoiceProps {
   onDone?: () => void;
   /** Drawn as a dialog over the screen with a backdrop, above a stop card and the cards (the watch screen). */
   modal?: boolean;
+  /** The first life of a world takes its vow on the start sheet: do not offer the first choice again over the watch screen (an heir or a newcomer is offered it). */
+  heirsOnly?: boolean;
 }
 
 /** The choices the player turned away from, so the panel does not come back at every frame (a life and a phase). */
@@ -36,6 +38,7 @@ export function VowChoice(props: VowChoiceProps) {
   const data = ctx?.data;
   const view: VowChoiceView | null = ctx && data ? vowChoiceView(ctx) : null;
   if (!view || (props.only && view.phase !== props.only)) return null;
+  if (props.heirsOnly && view.phase === 'first' && !(ctx?.state.lineage.lives.length)) return null;
   const key = `${view.life}:${view.phase}`;
   if (left.has(key)) return null;
   const pick = (n: number) => {

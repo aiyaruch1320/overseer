@@ -236,8 +236,10 @@ export function stopView(data: GameData, state: GameState, e: LogEntry): StopVie
       break;
     }
   }
+  // the first recap of a life holds nothing from before its birth (the world's era is behind the log's own control)
+  const from = logStartN(state);
   const recap = allLines(data, state)
-    .filter((l) => l.entry.n > prev && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
+    .filter((l) => l.entry.n > prev && l.entry.n >= from && l.entry.n < e.n && l.level >= 2 && l.sys !== 'attention')
     .slice(-RECAP_MAX);
   const said = callReason(data, e, crisisOf(state), (n) => entryAt(state, n));
   const age = typeof e.data.age === 'number' ? e.data.age : null;

@@ -117,7 +117,7 @@ export function GodPanel(p: { bridge?: GodBridge; kind?: GodKind; args?: Record<
   const full = godFull.value && open.kind === 'miracle';
   const shell: JSX.CSSProperties = p.inline
     ? { position: 'relative', minHeight: full ? 620 : 480, height: full ? 640 : undefined }
-    : { position: 'fixed', inset: 0, zIndex: 50, background: '#000d', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+    : { position: 'fixed', inset: 0, zIndex: 50, background: '#000d', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: '3vh', boxSizing: 'border-box' };
   return (
     <BridgeCtx.Provider value={bridge}>
       <GodStyles />
