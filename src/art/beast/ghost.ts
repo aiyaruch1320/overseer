@@ -16,10 +16,12 @@ interface Style {
   glow?: [string, 'key' | 'orb'];
   /** black smoke instead of a body: trails off the figure */
   smoke?: boolean;
+  /** what tells the ghost from the other pale ones of its city (M7): the hair that streams behind with silver waves on the robe, or the rusted plates of an old armour */
+  mark?: 'streaming' | 'plates';
 }
 const STYLE: Record<string, Style> = {
-  'NB08-2': { hair: 'long' },
-  'NB08-4': { glow: ['#7ad0ff', 'key'] },
+  'NB08-2': { hair: 'long', mark: 'streaming' },
+  'NB08-4': { glow: ['#7ad0ff', 'key'], mark: 'plates' },
   'NB13-3': { smoke: true },
   ghost_crew: { glow: ['#ffc830', 'orb'] },
 };
@@ -50,6 +52,21 @@ export function ghostFrame(L: EnemyLook, pose: Pose, f: number): Frame {
     const keep = dying === 0 || (((x * 7 + y * 13) % 16) / 16) >= dying; // a dying ghost thins out in a dither
     // solid enough to show on a light ground: the base alpha is high and fades only at the hem
     body.data[i + 3] = keep ? Math.round((smoke ? 235 : 215) * (0.42 + 0.58 * k ** 0.6)) : 0;
+  }
+  // the marks that make the ghosts of Nebulia (the city of the sunk) two different dead
+  if (st.mark === 'streaming') {
+    // the long hair floats up and back like hair under water (a pale silver, wavy by the frame) and the ceremonial robe has wave lines of faint silver
+    for (let i = 0; i < 5; i++) for (let d = 0; d < Math.round(h * (0.55 + (i % 3) * 0.1)); d++) {
+      const hx = x0 - 1 - i * 0.8 - Math.sin((d + f * 2 + i) * 0.7) * 1.4, hy = y0 + 3 + d * 0.9;
+      blend(body, hx, hy, '#e8f0ff', 0.9 - d / (h * 1.1)); blend(body, hx + 1, hy, '#9ab0d0', 0.5);
+    }
+    for (const t of [0.5, 0.64, 0.78]) for (let x = x0 + 1; x < x1; x++) blend(body, x, y0 + h * t + Math.sin(x * 0.9 + f) * 0.8, '#eef6ff', 0.85);
+  } else if (st.mark === 'plates') {
+    // an old armour that has rotted: broad pauldrons, dark seams between the plates, a rusted rim at the neck and the helm's crest (the body is the person painter's armour)
+    for (const t of [0.34, 0.5, 0.66]) for (let x = x0 + 1; x < x1; x++) blend(body, x, y0 + h * t, '#14202e', 0.7);
+    for (let dy = 0; dy < 4; dy++) { blend(body, x0 - 1, y0 + h * 0.3 + dy, '#a8b8c8', 0.9); blend(body, x1 + 1, y0 + h * 0.3 + dy, '#a8b8c8', 0.9); }
+    for (let x = x0 + 2; x < x1 - 1; x += 2) blend(body, x, y0 + 1, '#c8d8e8', 0.9);
+    for (let i = 0; i < 6; i++) blend(body, x0 + 2 + ((i * 5) % Math.max(3, x1 - x0 - 3)), y0 + h * 0.4 + (i % 3) * 3, '#7a5a40', 0.8);
   }
   // a dark misty rim round the whole figure: it reads on a light ground and on a dark one, and is still see-through
   {

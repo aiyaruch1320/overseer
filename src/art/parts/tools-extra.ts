@@ -583,6 +583,77 @@ function smallHammer(r: Rig): void {
   worn(r, at(r, 6), at(r, 9), p.mat('#6a6f78'));
 }
 
+// ── M7: the hammers of the dwarves of Kaz-Durum, one each (03-kaz-durum.md: the king's smithing hammer, the grandfather's cloth-wrapped hammer, the black stone hammer, the hot small hammer, the sculptor's trowel) ──
+function smithHammer(r: Rig): void {
+  const { p } = r, ir = iron(r), band = brass(r);
+  // the king's hammer: a long haft, a tall soot-black head with a peen that tapers, a gold band at the neck
+  stroke(r, -8, 11, wood(r), thick(r));
+  poly2(r, [[7.5, -3], [7.5, 3], [11, 3], [11, -3]], ir);
+  poly2(r, [[11, 3], [11, -3], [14.2, 0]], ir);
+  stroke(r, 7.5, 7.5, band, 1, 3.2); stroke(r, 7.5, 7.5, band, 1, -3.2);
+  p.px(...at(r, 9, 0), flat(r, '#ffb040'));
+  worn(r, at(r, 8), at(r, 12), p.mat('#6a6f78'));
+}
+function wrappedHammer(r: Rig): void {
+  const { p } = r, cloth = flat(r, '#c8bca0'), dk = flat(r, '#8a7a5c');
+  // the grandfather's hammer wrapped in cloth: a plain haft with a head bound in strips of pale cloth, an end of the cloth hanging
+  stroke(r, -6, 9, wood(r), thick(r));
+  poly2(r, [[7, -3], [7, 3], [11, 3], [11, -3]], cloth);
+  for (const t of [8, 10]) stroke(r, t, t, dk, 1, 2.6), stroke(r, t, t, dk, 1, -2.6);
+  stroke(r, 7, 7, dk, 1, 2.6); stroke(r, 7, 7, dk, 1, -2.6);
+  p.line(at(r, 7, 3), at(r, 4.5, 4.4), cloth);
+}
+function blackHammer(r: Rig): void {
+  const { p } = r, stone = flat(r, '#2a2a34'), lt = flat(r, '#4a4a5a'), frost = flat(r, '#d8ecf8');
+  // a hammer of black stone: a thick haft, a big square head of dark stone with a lit edge and ice that does not melt on the face
+  stroke(r, -7, 10, wood(r), thick(r));
+  poly2(r, [[8, -4.2], [8, 4.2], [12.6, 4.2], [12.6, -4.2]], stone);
+  stroke(r, 8.4, 12.2, lt, 1, 3.8);
+  p.px(...at(r, 12.6, 1.4), frost); p.px(...at(r, 12.6, -1.8), frost); p.px(...at(r, 10, -4.6), frost);
+  worn(r, at(r, 8.5), at(r, 12), p.mat('#4a4a5a'));
+}
+function hotSmallHammer(r: Rig): void {
+  const { p } = r, glow = r.look.accent;
+  // the small hammer of the fire-smith: the head is the colour of the hot iron it strikes, with a spark on every other frame
+  stroke(r, -3, 7, wood(r), thick(r));
+  poly2(r, [[6, -1.9], [6, 1.9], [9, 1.9], [9, -1.9]], flat(r, lighter(glow, 0.1)));
+  p.px(...at(r, 9.6, 1.6), flat(r, lighter(glow, 0.55)));
+  p.glow(...at(r, 9.5, 0), glow, 0.7);
+  if (r.f % 2) p.glow(...at(r, 11, -1.6), '#ffe0a0', 0.9);
+}
+function trowel(r: Rig): void {
+  const { p } = r, st = steel(r);
+  // a sculptor's trowel: a short wooden grip and a flat leaf-shaped blade with a lump of red clay on it
+  stroke(r, -4, 3, wood(r), thick(r));
+  stroke(r, 3, 5, st);
+  poly2(r, [[5, -1], [8.5, -2.6], [12, 0], [8.5, 2.6], [5, 1]], st);
+  poly2(r, [[7, -0.8], [9.4, -1.2], [9.4, 1], [7, 1.2]], flat(r, '#b8603a'));
+}
+
+// ── M7: the shadow merchant's cart of smoke (SH14-2) and the box on the chest of the boy who speaks to it (SH12-2S) ──
+function smokeCart(r: Rig): void {
+  const { p } = r, k = r.k, [hx, hy] = r.hand, wd = p.mat('#4a3a5a'), rim = p.mat('#8a90a8'), smoke = p.mat('#9aa2bc', { alpha: 0.75 }), smoke2 = p.mat('#c4cadc', { alpha: 0.6 });
+  const x = Math.round(hx) + 3, y = Math.round(hy) - 1, w = Math.round(12 * k), h = Math.round(5 * k), f = r.f % 2;
+  // a food cart: the handle runs from the hand to a dark box on one wheel, a lid line along the top, a wisp of smoke from it that rises in the shape of a person
+  p.line([hx, hy], [x, y + 1], wd);
+  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, rim); p.rect(x + w - 2, y + 1, 1, h - 1, rim);
+  p.ell(x + w * 0.45, y + h + 1.6, 2.1 * k + 0.3, 2.1 * k + 0.3, rim); p.px(x + w * 0.45, y + h + 1.6, wd);
+  const cx = x + Math.round(w * 0.55), top = y - Math.round(10 * k);
+  p.ell(cx + f * 0.5, top + 1, 1.8 * k + 0.4, 1.9 * k + 0.4, smoke);
+  p.rect(cx - 1 - f, top + 3, Math.max(2, Math.round(3.4 * k)), Math.round(5 * k), smoke);
+  p.rect(cx - 2, top + 3 + Math.round(2 * k), Math.max(4, Math.round(5.4 * k)), 1, smoke2);
+  p.px(cx + f - 1, top + 7 * k, smoke2); p.px(cx + 1 - f, y - 1, smoke2);
+}
+function chestBox(r: Rig): void {
+  const { p } = r, k = r.k, x = r.x0 + r.tw - 3, y = r.sh + 2, w = Math.max(4, Math.round(5 * k)), h = Math.max(5, Math.round(6 * k));
+  const wd = p.mat('#8a6a42'), dk = p.mat('#3a2a1a', { flat: true }), strap = p.mat('#5a4030');
+  // a wooden box with holes bored in the lid, hung on the chest by a strap over each shoulder
+  p.line([x + 1, y], [r.x0 + 1, r.sh], strap); p.line([x + w - 1, y], [r.x0 + r.tw - 1, r.sh - 1], strap);
+  p.rect(x, y, w, h, wd); p.rect(x, y, w, 1, p.mat(lighter('#8a6a42', 0.25)));
+  p.px(x + 1, y + 2, dk); p.px(x + 3, y + 2, dk); p.px(x + 1, y + 4, dk); p.px(x + 3, y + 4, dk);
+  p.px(x + w - 1, y + h - 1, p.mat('#5a4030'));
+}
+
 function wrench(r: Rig): void {
   const { p } = r, st = steel(r);
   // a long wrench: a flat bar of steel with an open jaw at the far end (two prongs and the gap between them) and a ring at the near end
@@ -670,6 +741,13 @@ export const TOOLS_EXTRA: Record<string, Tool> = {
   drum: { kind: 'carry', held: drum },
   chisel: { kind: 'swing', held: chisel },
   smallhammer: { kind: 'swing', held: smallHammer },
+  smithhammer: { kind: 'swing', held: smithHammer },
+  wrappedhammer: { kind: 'swing', held: wrappedHammer },
+  blackhammer: { kind: 'swing', held: blackHammer },
+  hotsmallhammer: { kind: 'swing', held: hotSmallHammer },
+  trowel: { kind: 'swing', held: trowel },
+  smokecart: { kind: 'carry', held: smokeCart },
+  chestbox: { kind: 'none', front: chestBox },
   wrench: { kind: 'swing', held: wrench },
   slate: { kind: 'carry', held: slate },
   bouquet: { kind: 'carry', held: bouquet },

@@ -373,6 +373,11 @@ export const TOOL_RULES: Rule<(typeof TOOL_IDS)[number]>[] = [
   // They sit before the generic book / scroll / ledger / mug / flask rules so that the named thing wins inside one item.
   ['twinpistol', /ปืนสั้นสองกระบอก|ปืนสองกระบอก|ปืนคู่/],
   ['mallet', /ไม้ตี|ค้อนตี|ค้อนไม้/],
+  ['wrappedhammer', /ค้อน[ก-๙]*ห่อผ้า/],
+  ['blackhammer', /ค้อนหินดำ/],
+  ['smithhammer', /ค้อนช่างตี/],
+  ['trowel', /เกรียงปั้น/],
+  ['smokecart', /รถเข็นอาหารเงา/],
   ['smallhammer', /ค้อนเล็ก|ค้อนจิ๋ว/],
   ['wrench', /ประแจ/],
   ['slate', /กระดานชอล์ก|กระดานดำ|กระดานเขียน/],
@@ -733,6 +738,15 @@ export const crownAccentOf = (text: string): string | undefined => CROWN_ACCENTS
  */
 export type PersonFix = Partial<Pick<PersonLookRow, 'stage' | 'line' | 'fem' | 'skin' | 'hairColor' | 'eye' | 'main' | 'second' | 'outfit' | 'hair' | 'beard' | 'hat' | 'tool' | 'feats' | 'accent' | 'ears' | 'body' | 'raceFeats' | 'wear'>>;
 export const PERSON_FIX: Record<string, PersonFix> = {
+  // เฟลอ "ปีกเล็กพับแนบหลังยังไม่มีขน": a child's bare little wing (not the feather wing of the race)
+  'SH09-5S': { raceFeats: ['sunstrap'], feats: ['wings:bud'] },
+  // ทาริส "กล่องไม้เจาะรูคาดหน้าอก": the box with holes hangs on the chest
+  'SH12-2S': { tool: 'chestbox' },
+  // ทอร์วา "ตีเหล็กรัวเร็ว" with a small hammer: the head glows with the hot iron it strikes
+  'KD11-5': { tool: 'hotsmallhammer' },
+  // เซอร์ลา "เงือกปีก ... ปีกครีบบางที่หลังพับแนบตัว" and ฮินา "ปีกเล็กยังไม่แข็งแรงแต่กางเมื่อดีใจ": the words read `เงือก` first, so the finned wing is named here
+  'NR02-2': { feats: ['wings:fin'] },
+  'NR02-4': { feats: ['wings:fin'] },
   // เอเกิล "ปีกสีเทาเข้มปลายดำพับผอมแห้ง ผ้าคลุมเดินทางเก่าขาดวิ่น ใบหน้าอ่อนล้า": a gaunt, worn traveller under a ragged cloak (he was the shape of ลาร์ก SV11-2)
   'SV11-4': { body: { shoulders: 0.84, scale: 1.04 }, feats: ['gaunt'] },
   // ── Saharan ──
@@ -740,7 +754,7 @@ export const PERSON_FIX: Record<string, PersonFix> = {
   // gown that hovers, not a ghoul (the race of the "ผีเมือง" rule) and not the pale `ghost` mark (which turns everything the grey of a fog): she keeps her dark
   'SH14-1': { skin: '#4a3c5c', hairColor: '#2e2244', eye: '#c8b0f8', outfit: 'robe', hair: 'long', hat: 'crown', accent: '#c8ccd8', tool: '', feats: ['glow-eyes', 'tallcollar', 'sparkle'], raceFeats: [], body: { scale: 1.16, shoulders: 0.9, head: 0.96, ears: 'pointed', gait: 'float' }, wear: 0 },
   // พ่อค้าเงา "ผิวสีเทาน้ำเงินจางเหมือนหมอก ชุดพ่อค้าสีม่วงเข้มลายทองเลือนหาย ผ้าโพกศีรษะบังตา ตาขาวเรืองแสง รถเข็นอาหารที่ควันลอยเป็นรูปคน": mist-grey skin, a turban down over the eyes, white glowing eyes, a dish of food in hand
-  'SH14-2': { skin: '#7a86a6', eye: '#ffffff', outfit: 'robe', hair: '', hat: 'turban', tool: 'bowl', feats: ['glow-eyes'], body: { gait: 'glide' } },
+  'SH14-2': { skin: '#7a86a6', eye: '#ffffff', outfit: 'robe', hair: '', hat: 'turban', tool: 'smokecart', feats: ['glow-eyes'], body: { gait: 'glide' } },
   // โอลมา "ตาเดียวใหญ่กลางหน้าผากสีฟ้าอ่อนเรืองจางเห็นเส้นแรงของหิน ผมดำปนเทาถักยาว": a pale-blue glowing eye, grey-black braid; "สูงกว่าคนทั่วไปแต่ต่ำกว่ายักษ์เต็มตัว" a half-giant (smaller than her race)
   'SH06-5': { eye: '#a8dcf8', hairColor: '#585860', feats: ['cyclops', 'glow-eyes'], body: { scale: 1.16, shoulders: 1.2 } },
   // เจ้าด่าน "ร่างอ้วนล่ำ ผิวไหม้แดง หนวดเคราดำเรียบประดับลูกปัด ผ้าโพกศีรษะสีเขียวเข้ม ชุดเจ้าด่านผ้าไหมสีเข้มปักทอง ดาบโค้งและถุงเหรียญเหล็กห้อยเอว": fat (broad shoulders), a beaded beard, the silk coat, gold at the waist

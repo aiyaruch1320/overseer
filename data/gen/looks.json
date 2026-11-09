@@ -4285,7 +4285,7 @@
     "hair": "tied",
     "beard": "long",
     "hat": "crown",
-    "tool": "hammer",
+    "tool": "smithhammer",
     "feats": [],
     "wear": 0.9,
     "defaults": [],
@@ -4314,7 +4314,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "wrappedhammer",
     "feats": [],
     "wear": 0.35,
     "defaults": [
@@ -5000,7 +5000,7 @@
     "hair": "long",
     "beard": "",
     "hat": "",
-    "tool": "hammer",
+    "tool": "trowel",
     "feats": [],
     "wear": 0.3,
     "defaults": [
@@ -5725,7 +5725,7 @@
     "hair": "ponytail",
     "beard": "braided",
     "hat": "goggles",
-    "tool": "smallhammer",
+    "tool": "hotsmallhammer",
     "feats": [
      "glasses"
     ],
@@ -5815,7 +5815,7 @@
     "hair": "braid",
     "beard": "braided",
     "hat": "",
-    "tool": "hammer",
+    "tool": "blackhammer",
     "feats": [],
     "wear": 0.45,
     "defaults": [],
@@ -6049,7 +6049,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "wings:fin"
+    ],
     "wear": 0.25,
     "defaults": [],
     "items": [
@@ -6106,7 +6108,9 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "wings:fin"
+    ],
     "wear": 0.25,
     "defaults": [
      "eye",
@@ -15330,7 +15334,7 @@
     "hair": "",
     "beard": "",
     "hat": "turban",
-    "tool": "bowl",
+    "tool": "smokecart",
     "feats": [
      "glow-eyes"
     ],
@@ -21075,13 +21079,18 @@
     "beard": "",
     "hat": "",
     "tool": "",
-    "feats": [],
+    "feats": [
+     "wings:bud"
+    ],
     "wear": 0,
     "defaults": [
      "skin"
     ],
     "items": [],
     "pose": "",
+    "raceFeats": [
+     "sunstrap"
+    ],
     "of": "SH09-5",
     "age": 18,
     "seen": "ปีกเล็กพับแนบหลังยังไม่มีขน ผมสีทองสั้นยุ่ง ตาสีฟ้า เสื้อคลุมผ้าฝ้ายสีขาว",
@@ -21102,7 +21111,7 @@
     "hair": "braid",
     "beard": "",
     "hat": "",
-    "tool": "",
+    "tool": "chestbox",
     "feats": [],
     "wear": 0.45,
     "defaults": [],

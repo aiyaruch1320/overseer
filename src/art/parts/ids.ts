@@ -27,6 +27,8 @@ export const TOOL_IDS = [
   'brush', 'map', 'bottle', 'pipe', 'bag', 'hotiron', 'tank', 'quill', 'chalk',
   // wave 5 (tools-extra.ts): a sword that stays in its sheath, a second pistol, a stone drum, ankle bells, a chisel, a small hammer, a wrench, a slate
   'sheathed', 'greatsheath', 'goldsheath', 'anklebells', 'twinpistol', 'drum', 'chisel', 'smallhammer', 'wrench', 'slate', 'bouquet', 'sleepingchild',
+  // M7: the hammers of the dwarves of Kaz-Durum and a sculptor's trowel
+  'smithhammer', 'wrappedhammer', 'blackhammer', 'hotsmallhammer', 'trowel', 'smokecart', 'chestbox',
 ] as const;
 
 /** Race feats (02-races.md ลักษณะที่วาดเพิ่ม) and personal marks. A feat with a kind is written `name:kind` (wings:feather). */
@@ -39,7 +41,7 @@ export const FEAT_IDS = [
   'glow-eyes', 'plates', 'rivets', 'steam', 'mecheye', 'mecharm', 'core', 'visor', 'seams', 'wraps', 'usekh', 'kohl', 'dust', 'gaunt',
   'claws', 'ribs', 'hunger', 'sunkeneyes',
   // people
-  'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'missingarm',
+  'scar', 'eyepatch', 'halo', 'tattoo', 'mask', 'bandage', 'blind', 'freckles', 'wings:scale', 'wings:night', 'wings:fin', 'wings:bud', 'missingarm',
   // added after the first set (feats-extra.ts): spirits, tentacles, one eye, a kappa's dish, face items
   'ghost', 'tentacles', 'cyclops', 'dish', 'glasses', 'monocle',
   // added after the visual review (feats-extra.ts): the beast people's animals, the bird, the lizard, the doll, the four-armed
