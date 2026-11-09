@@ -354,7 +354,7 @@ export class TownLayer {
       let spot = this.randomSpot(walk, true);
       if (!spot) { t.peopleWant = t.people.length; return; }
       // not on top of someone: a few tries for a place with air round it (a crowded plaza keeps its crowd, a dense town stays readable)
-      for (let k = 0; k < 8 && this.crowded(t, spot[0], spot[1], 9); k++) spot = this.randomSpot(walk, true) ?? spot;
+      for (let k = 0; k < 12 && this.crowded(t, spot[0], spot[1], 14); k++) spot = this.randomSpot(walk, true) ?? spot;
       const look = Math.floor(this.rnd() * t.looks.length);
       const img = this.scene.add.image(t.ox + spot[0] * K, t.oy + spot[1] * K, t.looks[look], frameIndex('idle', 0))
         .setOrigin(0.5 - 3 / FRAME.w, FRAME.foot / FRAME.h).setScale(K);
@@ -410,7 +410,7 @@ export class TownLayer {
           // a new place along the way: near, preferably on a street
           const ang = this.rnd() * Math.PI * 2, len = 25 + this.rnd() * 70;
           const nx = p.x + Math.cos(ang) * len, ny = p.y + Math.sin(ang) * len;
-          if (this.clear(g, p.x, p.y, nx, ny) && !this.crowded(t, nx, ny, 7)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
+          if (this.clear(g, p.x, p.y, nx, ny) && !this.crowded(t, nx, ny, 11)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
         }
       }
       const pose = p.moving ? walkP : idleP;
