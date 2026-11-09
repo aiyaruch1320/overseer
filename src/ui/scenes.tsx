@@ -78,7 +78,7 @@ for (const [form, id, name] of FORMS) {
       const v = sceneFor(data, e, state);
       return (
         <div style={{ padding: size.pad, display: 'flex', gap: size.pad, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-          <EventCard card={cardOfEntry(data, e)} width={360} />
+          <EventCard card={cardOfEntry(data, e, state)} width={360} />
           {v.kind === 'script' && (
             <div style={{ flex: '1 1 560px', maxWidth: 800 }}>
               <ScenePlayer script={v.script} figureOf={figuresOf(data, state, v)} scenery={sceneryOf(data, state, v)} labelOf={labelsOf(data, state, v)} />
