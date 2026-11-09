@@ -370,20 +370,32 @@ class MapScene extends Phaser.Scene {
         this.shown.delete(k);
       }
     }
-    this.queue.sort((a, b) => levelIndex(a.level) - levelIndex(b.level) || Math.hypot(a.rect.x + a.rect.w / 2 - mx, a.rect.y + a.rect.h / 2 - my) - Math.hypot(b.rect.x + b.rect.w / 2 - mx, b.rect.y + b.rect.h / 2 - my));
+    // at the town levels the ground chunks come first: the country picture under them is coarse, and a coarse block beside a house is the worst thing to see
+    const rank = (r: TileRequest) => (li >= 3 && r.level === 'city' ? (r.key.startsWith('g:') ? -1 : -2) : levelIndex(r.level));
+    this.queue.sort((a, b) => rank(a) - rank(b) || Math.hypot(a.rect.x + a.rect.w / 2 - mx, a.rect.y + a.rect.h / 2 - my) - Math.hypot(b.rect.x + b.rect.w / 2 - mx, b.rect.y + b.rect.h / 2 - my));
   }
 
   private drainQueue() {
-    if (this.pending.size >= 2) return;
-    const req = this.queue.shift();
-    if (!req) return;
-    const k = tileKey(req);
-    this.pending.add(k);
-    // painting is synchronous in the code provider; one tile a frame keeps the camera moving
-    Promise.resolve(this.o.provider.tile(req))
-      .then((t) => { if (t && this.sys.isActive()) this.addTile(k, req, t); })
-      .catch(() => undefined)
-      .finally(() => this.pending.delete(k));
+    // painting is synchronous in the code provider: take tiles for a few milliseconds a frame (the ground chunks of a town view are dozens), at least one
+    const t0 = performance.now();
+    // a town view with no ground yet (just arrived) takes more at once; then one chunk a frame keeps the camera moving
+    const budget = !this.queue[0]?.key.startsWith('g:') || [...this.shown.keys()].some((k) => k.startsWith('city:g:')) ? 8 : 45;
+    let n = 0;
+    while (this.queue.length && (n === 0 || performance.now() - t0 < budget)) {
+      if (this.pending.size >= 2) return;
+      const req = this.queue.shift()!;
+      const k = tileKey(req);
+      n++;
+      let res: ReturnType<typeof this.o.provider.tile>;
+      try { res = this.o.provider.tile(req); } catch { continue; }
+      if (res && typeof (res as Promise<unknown>).then === 'function') {
+        this.pending.add(k);
+        (res as Promise<TileImage | null>)
+          .then((t) => { if (t && this.sys.isActive()) this.addTile(k, req, t); })
+          .catch(() => undefined)
+          .finally(() => this.pending.delete(k));
+      } else if (res && this.sys.isActive()) this.addTile(k, req, res as TileImage);
+    }
   }
 
   private addTile(k: string, req: TileRequest, t: TileImage) {
