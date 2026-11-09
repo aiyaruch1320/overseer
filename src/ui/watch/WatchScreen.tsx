@@ -2,13 +2,11 @@
 // and sends the player's choices to the store. The god screens are not here: a button emits `onOpenGod` and the host opens the screen.
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
-import { abMode, setAbMode } from '../../app/ab';
-import { downloadRecord, recorder } from '../../app/record';
 import { store } from '../../app/store';
 import { prefs, setPrefs } from '../../app/views/prefs';
 import { godGates, watchModel, type GodOpen } from '../../app/views/watch';
 import type { Settings } from '../../core/types';
-import type { RecordView } from './RecordSection';
+import { boundRecordView } from './RecordSection';
 import { WatchView, type WatchActions } from './WatchView';
 
 export interface WatchScreenProps {
@@ -75,17 +73,7 @@ export function WatchScreen({ onOpenGod, scene, map }: WatchScreenProps) {
     },
     save: () => store.saveLocal(),
   };
-  const record: RecordView = {
-    on: recorder.on.value,
-    size: recorder.size.value,
-    lives: recorder.lives.value,
-    onToggle: (on) => recorder.setOn(on),
-    onExport: () => downloadRecord(),
-    onClear: () => recorder.clear(),
-    ab: abMode.value,
-    onAb: setAbMode,
-    arm: store.currentArm(),
-  };
+  const record = boundRecordView();
 
   const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, slowed: slowed.current, gates: store.game ? godGates(store.game.ctx) : {} });
   return <WatchView data={data} model={model} settings={st.settings} actions={actions} candlePct={prefs.value.candlePct} onCandlePct={(on) => setPrefs({ candlePct: on })} scene={scene} map={map} record={record} />;

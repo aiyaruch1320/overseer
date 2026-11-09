@@ -1,6 +1,8 @@
 // The play record and the A/B of the director, one block of the settings panel (M8). It holds no store: the screen hands it the numbers and the actions.
 import { useState } from 'preact/hooks';
-import { AB_MODES, type AbMode, type Arm } from '../../app/ab';
+import { AB_MODES, abMode, setAbMode, type AbMode, type Arm } from '../../app/ab';
+import { downloadRecord, recorder } from '../../app/record';
+import { store } from '../../app/store';
 import { RECORD_WORDS as R } from '../../app/record-words';
 import { color, size } from '../tokens';
 import { button, tint } from './style';
@@ -18,6 +20,21 @@ export interface RecordView {
   onAb: (m: AbMode) => void;
   /** The arm of the life now (null when the split is off). */
   arm: Arm | null;
+}
+
+/** The record and the A/B bound to the app (the watch screen and the start screen share it). Reads signals, so call it while rendering. */
+export function boundRecordView(): RecordView {
+  return {
+    on: recorder.on.value,
+    size: recorder.size.value,
+    lives: recorder.lives.value,
+    onToggle: (on) => recorder.setOn(on),
+    onExport: () => downloadRecord(),
+    onClear: () => recorder.clear(),
+    ab: abMode.value,
+    onAb: setAbMode,
+    arm: store.currentArm(),
+  };
 }
 
 const heading = { color: color.textDim, fontSize: size.small, marginBottom: 6 } as const;

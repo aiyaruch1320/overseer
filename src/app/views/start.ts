@@ -51,6 +51,8 @@ export const START_LABELS = {
   pending: 'ยังไม่ผูกกับแกน', // the core does not apply this field yet
   chosen: 'เลือกแล้ว',
   maxLen: 'ไม่เกิน',
+  /** The link to the record and the A/B, for the testers (review/m8/how-to-test.md). */
+  settings: 'ตั้งค่าการทดสอบ (บันทึกการเล่น · A/B)',
 } as const;
 
 /** The six tags of the box of the wish (20-god-ui.md §11): the name on the tag and the field of the synonym table it fills from. */
