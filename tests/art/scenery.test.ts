@@ -287,19 +287,36 @@ describe('M7 ก2: the country table', () => {
   }, 120000);
 });
 
+// measured about 15 (6 to 15 depending on the machine); three times that is a painter that has become three times slower
+const LIMIT = 45;
 describe('M7 ก2: speed', () => {
-  it('a spec paints in about 20 ms in Node once warm (under 60 while the full run loads the CPU) (median over every continent and setting)', () => {
+  it('a spec paints in a steady share of a reference workload timed in the same run (a painter 3x slower fails, a loaded CPU does not)', () => {
+    // the reference: pixel work of the same kind (fill, blend, sum a buffer), timed right here, so a busy machine slows both sides alike
+    const reference = (): number => {
+      const buf = new Uint8ClampedArray(320 * 180 * 4);
+      const t0 = performance.now();
+      let sum = 0;
+      for (let k = 0; k < 40; k++) for (let i = 0; i < buf.length; i += 4) { buf[i] = (buf[i] + i + k) & 255; sum += buf[i + 3] = 255 - buf[i]; }
+      if (sum < 0) throw new Error('unreachable');
+      return performance.now() - t0;
+    };
     for (const id of IDS) paintScenery(spec(id, 'town'));
-    const times: number[] = [];
+    const ratios: number[] = [];
     for (const id of IDS)
       for (const setting of SETTINGS) {
-        const t0 = performance.now();
-        paintScenery(spec(id, setting, { season: 1 }));
-        times.push(performance.now() - t0);
+        // the least of three paints and three reference runs taken together: a stall hits one run, not all of them
+        let paint = Infinity;
+        let ref = Infinity;
+        for (let k = 0; k < 3; k++) {
+          ref = Math.min(ref, reference());
+          const t0 = performance.now();
+          paintScenery(spec(id, setting, { season: 1 }));
+          paint = Math.min(paint, performance.now() - t0);
+        }
+        ratios.push(paint / ref);
       }
-    times.sort((a, b) => a - b);
-    // 30 ms is the goal on an idle machine (about 20 alone); the full run shares the CPU with four workers of whole lives, so the gate here is
-    // twice that, enough to catch a painter that became several times slower
-    expect(times[Math.floor(times.length / 2)]).toBeLessThan(60);
+    ratios.sort((x, y) => x - y);
+    const median = ratios[Math.floor(ratios.length / 2)];
+    expect(median).toBeLessThan(LIMIT);
   });
 });

@@ -8,11 +8,11 @@ import { GND_W, H, W } from './ctx';
 import { dark, hex, light, mix, rng, type Rgb, Pix } from './util';
 
 /** The props the painter knows (the mapping from the words of a script is src/scene/props.ts). */
-export const PROP_KINDS = ['worktable', 'anvil', 'roots', 'egg', 'flame', 'campfire', 'cliff', 'spectators', 'obelisk', 'scales', 'candle', 'cup', 'blossoms', 'stone', 'longtable', 'pearl', 'grave'] as const;
+export const PROP_KINDS = ['worktable', 'anvil', 'roots', 'egg', 'flame', 'campfire', 'cliff', 'spectators', 'obelisk', 'scales', 'candle', 'cup', 'blossoms', 'stone', 'longtable', 'pearl', 'grave', 'tallgrass', 'prey', 'pelt', 'gel', 'gelpool', 'lightring', 'lavastream', 'blackstone', 'pedestal', 'wisp'] as const;
 export type PropKind = (typeof PROP_KINDS)[number];
 
 /** Where a prop stands, as a share of the stage's width (the figures stand at 0.34 · 0.5 · 0.66). */
-const AT: Record<PropKind, number> = { worktable: 0.5, anvil: 0.62, roots: 0.5, egg: 0.5, flame: 0.12, campfire: 0.5, cliff: 0.86, spectators: 0.5, obelisk: 0.64, scales: 0.64, candle: 0.7, cup: 0.66, blossoms: 0.5, stone: 0.66, longtable: 0.5, pearl: 0.66, grave: 0.5 };
+const AT: Record<PropKind, number> = { worktable: 0.5, anvil: 0.62, roots: 0.5, egg: 0.5, flame: 0.12, campfire: 0.5, cliff: 0.86, spectators: 0.5, obelisk: 0.64, scales: 0.64, candle: 0.7, cup: 0.66, blossoms: 0.5, stone: 0.66, longtable: 0.5, pearl: 0.66, grave: 0.5, tallgrass: 0.5, prey: 0.78, pelt: 0.5, gel: 0.5, gelpool: 0.5, lightring: 0.5, lavastream: 0.5, blackstone: 0.5, pedestal: 0.5, wisp: 0.56 };
 /** The row the feet of a figure stand on: a prop stands on it too. */
 const BASE = 150;
 const OUT: Rgb = [20, 18, 26];
@@ -363,6 +363,124 @@ const PAINT: Record<PropKind, (px: Pix, x: number, c: Rgb | undefined, seed: num
     for (let y = 0; y < 8; y++) px.rect(x - 22 + y * 2, BASE - 8 + y, 44 - y * 4, 1, y < 2 ? earth.a : earth.b);
     box(px, x - 3, BASE - 30, 7, 24, tones([150, 146, 140]));
   },
+  /** Tall grass in clumps across the ground, leaning one way (the wind of the first hunt, 13 §2 beast). */
+  tallgrass(px, x, c, seed) {
+    const g: Rgb = c ?? [92, 138, 70];
+    const r = rng(seed + 21);
+    for (let i = 0; i < 26; i++) {
+      const bx = x - 150 + Math.round(i * 11.5 + r() * 6);
+      for (let k = 0; k < 4; k++) {
+        const h = 9 + Math.round(r() * 11);
+        const lean = Math.round(h * 0.25);
+        for (let j = 0; j < h; j++) {
+          const sx = bx + k * 2 + Math.round((j / h) * lean);
+          px.set(sx, BASE + 2 - j, j > h - 4 ? light(g, 0.3) : k % 2 ? g : dark(g, 0.3));
+        }
+      }
+    }
+  },
+  /** The prey of the first hunt: a deer standing still with its head up. */
+  prey(px, x, c) {
+    const fur = tones(c ?? [150, 108, 68]);
+    box(px, x - 11, BASE - 24, 22, 9, fur);
+    px.rect(x - 11, BASE - 12, 22, 3, fur.d);
+    for (const lx of [x - 10, x - 6, x + 4, x + 8]) { px.rect(lx - 1, BASE - 16, 4, 17, OUT); px.rect(lx, BASE - 16, 2, 16, fur.c); }
+    px.rect(x + 8, BASE - 36, 5, 14, OUT);
+    px.rect(x + 9, BASE - 35, 3, 13, fur.b);
+    box(px, x + 9, BASE - 40, 9, 6, fur);
+    px.set(x + 15, BASE - 38, [20, 18, 26]);
+    for (const [ax, ay] of [[0, 0], [2, -3], [-2, -3]]) px.rect(x + 12 + ax, BASE - 46 + ay, 1, 6, [200, 190, 170]);
+    px.rect(x - 13, BASE - 22, 3, 3, [236, 232, 220]);
+  },
+  /** The skin or the fur the pack keeps (13 §3 beast): laid out flat on the ground with a pale rim. */
+  pelt(px, x, c) {
+    const fur = tones(c ?? [132, 98, 66]);
+    for (let y = 0; y < 9; y++) {
+      const half = Math.round(30 * Math.sqrt(1 - ((y - 4) / 5) ** 2));
+      px.rect(x - half - 1, BASE - 9 + y, half * 2 + 2, 1, OUT);
+      px.rect(x - half, BASE - 9 + y, half * 2, 1, y < 2 ? fur.a : y > 6 ? fur.c : fur.b);
+    }
+    for (const t of [-30, 28]) px.rect(x + t, BASE - 6, 5, 2, fur.d);
+    for (let i = 0; i < 6; i++) px.rect(x - 20 + i * 8, BASE - 6 + (i % 2), 3, 1, fur.d);
+  },
+  /** A small clear lump of gel with the first thing it swallowed floating in it (a leaf, a grain of sand). */
+  gel(px, x, c) {
+    const jel: Rgb = c ?? [120, 210, 190];
+    glow(px, x, BASE - 20, 36, jel, 40);
+    for (let y = 0; y < 30; y++) {
+      const half = Math.round(24 * Math.sqrt(Math.max(0, 1 - ((y - 20) / 22) ** 2)) + (y > 24 ? 3 : 0));
+      px.rect(x - half - 1, BASE - 32 + y, half * 2 + 2, 1, OUT);
+      px.rect(x - half, BASE - 32 + y, half * 2, 1, y < 4 ? light(jel, 0.5) : mix(jel, [20, 60, 70], y / 40), 190);
+    }
+    px.rect(x - 14, BASE - 26, 6, 2, [240, 255, 250], 200);
+    px.rect(x - 5, BASE - 20, 9, 3, [70, 140, 70]);
+    px.rect(x - 4, BASE - 21, 6, 1, [110, 180, 90]);
+    px.set(x + 1, BASE - 17, [60, 110, 60]);
+  },
+  /** What is left of a slime: the sticky stain on the ground and a last small core that has gone out. */
+  gelpool(px, x, c) {
+    const jel: Rgb = c ?? [110, 190, 170];
+    for (let y = 0; y < 7; y++) {
+      const half = Math.round(34 * Math.sqrt(1 - ((y - 3) / 4) ** 2));
+      px.rect(x - half - 1, BASE - 7 + y, half * 2 + 2, 1, OUT);
+      px.rect(x - half, BASE - 7 + y, half * 2, 1, y < 2 ? light(jel, 0.35) : dark(jel, 0.2), 200);
+    }
+    px.disc(x + 4, BASE - 8, 3, OUT);
+    px.disc(x + 4, BASE - 8, 2, [90, 120, 120]);
+    px.set(x + 8, BASE - 4, light(jel, 0.5));
+  },
+  /** A ring of pale blue light hanging in deep water, a thread of light winding off it (the line of a merfolk's family). */
+  lightring(px, x, c, seed) {
+    const bl: Rgb = c ?? [130, 210, 255];
+    glow(px, x, BASE - 44, 64, bl, 60);
+    for (let a = 0; a < 72; a++) {
+      const t = (a / 72) * Math.PI * 2;
+      const rx = Math.round(x + Math.cos(t) * 40), ry = Math.round(BASE - 44 + Math.sin(t) * 22);
+      px.rect(rx - 1, ry - 1, 3, 3, OUT, 120);
+      px.rect(rx, ry, 1, 1, a % 9 === 0 ? [255, 255, 255] : bl);
+    }
+    const r = rng(seed + 5);
+    for (let i = 0; i < 40; i++) px.set(Math.round(x + 40 + i * 1.5), Math.round(BASE - 40 + Math.sin(i * 0.5) * 6 + i * 0.35), light(bl, 0.3), 200);
+    for (let i = 0; i < 14; i++) px.set(Math.round(x - 60 + r() * 120), Math.round(BASE - 90 + r() * 80), [210, 240, 255], 140);
+  },
+  /** A stream of lava across the ground, a bright core and a dark crust at its edges (the dip of a lava child's hand). */
+  lavastream(px, x, c, seed) {
+    const hot: Rgb = c ?? [250, 140, 40];
+    glow(px, x, BASE - 4, 90, [240, 90, 30], 55);
+    for (let i = -150; i <= 150; i++) {
+      const wob = Math.round(Math.sin(i * 0.07 + seed) * 2);
+      px.rect(x + i, BASE - 8 + wob, 1, 10, OUT);
+      px.rect(x + i, BASE - 7 + wob, 1, 8, [150, 36, 20]);
+      px.rect(x + i, BASE - 6 + wob, 1, 5, hot);
+      px.rect(x + i, BASE - 5 + wob, 1, 2, i % 11 < 4 ? [255, 236, 150] : light(hot, 0.4));
+    }
+  },
+  /** A smooth black stone in the shape of a person sitting (13 §3 lava), the last orange mark fading at its middle. */
+  blackstone(px, x) {
+    const rock = tones([34, 32, 40]);
+    box(px, x - 14, BASE - 22, 28, 22, rock);
+    px.disc(x, BASE - 32, 8, OUT);
+    px.disc(x, BASE - 32, 7, rock.b);
+    px.rect(x - 3, BASE - 36, 4, 3, rock.a);
+    px.rect(x - 1, BASE - 14, 3, 3, [250, 130, 40]);
+    px.set(x, BASE - 13, [255, 220, 140]);
+  },
+  /** A brass stand with a ring of cogs, where the soul machine stands to be asked its first question. */
+  pedestal(px, x) {
+    const brass = tones([186, 146, 58]);
+    box(px, x - 22, BASE - 8, 44, 8, brass);
+    box(px, x - 16, BASE - 14, 32, 6, brass);
+    for (let i = 0; i < 7; i++) { px.rect(x - 21 + i * 7, BASE - 11, 3, 3, i % 2 ? brass.d : brass.a); }
+    glow(px, x, BASE - 12, 40, [250, 210, 90], 30);
+  },
+  /** One light that has left the body, rising (13 §3 soul machine): the pale blue of its core. */
+  wisp(px, x, c) {
+    const bl: Rgb = c ?? [150, 220, 255];
+    glow(px, x, BASE - 70, 42, bl, 80);
+    px.disc(x, BASE - 70, 5, light(bl, 0.2));
+    px.disc(x, BASE - 70, 3, [255, 255, 255]);
+    for (let j = 0; j < 40; j++) px.set(x + Math.round(Math.sin(j * 0.4) * 2), BASE - 66 + j, bl, Math.round(160 * (1 - j / 40)));
+  },
 };
 
 /** The layer of props: the named props painted on a transparent frame as wide as the ground. Empty list: nothing (the caller skips the layer). */
@@ -372,7 +490,7 @@ export function paintProps(props: readonly string[], seed: number): Frame | null
   const px = new Pix(GND_W, H, true);
   const ox = (GND_W - W) / 2;
   // far things first: the cliff and the spectators behind, the big props over them
-  const order: PropKind[] = ['cliff', 'spectators', 'roots', 'egg', 'stone', 'longtable'];
+  const order: PropKind[] = ['cliff', 'spectators', 'lightring', 'tallgrass', 'roots', 'egg', 'stone', 'longtable', 'lavastream'];
   const rank = (k: PropKind): number => (order.includes(k) ? order.indexOf(k) : 99);
   list.sort((a, b) => rank(a.k) - rank(b.k));
   for (const p of list) PAINT[p.k](px, Math.round(ox + AT[p.k] * W), p.c, seed);

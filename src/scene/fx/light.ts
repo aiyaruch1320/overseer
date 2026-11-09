@@ -1,7 +1,7 @@
 // The light of a beat (`LightMode`) as pixels, and the effects of the god's three powers (20-god-ui.md §1) that ride on a coloured `glow`. Pure, like ./pixels.ts.
 // Light is drawn in bands (an even gradient would blur the pixels) and added to the picture; only `dim` covers it.
 import type { LightMode } from '../../core/data/types-scenes';
-import { ART, GOD, GOD_FX, GOD_VARIANT, LIGHT, LIGHT_BANDS, LIGHT_WASH, type GodVariant } from '../tuning';
+import { ART, GOD, GOD_FX, LIGHT, LIGHT_BANDS, LIGHT_WASH, type GodVariant } from '../tuning';
 import { hexNum, rnd, Sink, type Px } from './pixels';
 
 /**
@@ -289,11 +289,6 @@ function fate(t: number, seed: number, s: Sink): void {
     const u = (t * 0.3 + rnd(seed, i, 1)) % 1;
     s.rect(cx + (rnd(seed, i, 2) - 0.5) * 70 + Math.sin(u * 6) * 3, 20 + u * 100, 1, 1, silver, 0.6 * Math.sin(Math.PI * u), true);
   }
-}
-
-/** The special effect of a miracle by the name of its place (the `bg` beat of a miracle's script is the miracle's name): the shooting star, the wide gold beam. Others have none. */
-export function variantOf(place: string): GodVariant | undefined {
-  return GOD_VARIANT[place];
 }
 
 /** The effects of one of the god's powers at motion time `t`: the pillar of faith light with its shaking rim and rising gold embers, the red and black smoke of dread, the sewn silver thread of fate. */

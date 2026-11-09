@@ -18,6 +18,9 @@ export interface CardPicture {
   data: Uint8ClampedArray<ArrayBuffer>;
 }
 
+/** The particles of an event whose air is grey: the card drains the colour of the land. */
+const GREY_FX = new Set(['ash', 'smoke', 'fog', 'dust']);
+
 const cache = new Map<string, CardPicture>();
 
 const rgb = (n: number): [number, number, number] => [(n >> 16) & 255, (n >> 8) & 255, n & 255];
@@ -86,10 +89,12 @@ export function paintCard(card: Cardish): CardPicture {
   const horizon = ART.groundY - 6;
   // a card of an entry that has none of its own (the plain dark sky) is only touched
   const own = card.sky !== PLAIN_SKY;
-  const [skyK, groundK] = own ? [CARD_PIC.sky, CARD_PIC.ground] : [CARD_PIC.plainSky, CARD_PIC.plainGround];
+  // a grey card sky (the category grey most cards of the dragons have) tints lightly, so the picture keeps the colours of its stage; a coloured one tints as before
+  const dull = chroma(sky) < CARD_PIC.dull;
+  const [skyK, groundK] = !own ? [CARD_PIC.plainSky, CARD_PIC.plainGround] : dull ? [CARD_PIC.dullSky, CARD_PIC.dullGround] : [CARD_PIC.sky, CARD_PIC.ground];
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) blend(d, (y * w + x) * 4, sky, y < horizon ? skyK : groundK, false);
-  // a dull sky takes the colour out of the land too (a volcano that has gone out is not red)
-  if (own && chroma(sky) < CARD_PIC.dull) {
+  // the colour goes out of the land only for an event of grey air (a volcano that has gone out is not red): ash, smoke, fog or dust in its words
+  if (own && dull && card.fx.some((k) => GREY_FX.has(k))) {
     for (let i = 0; i < w * h; i++) {
       const o = i * 4;
       const grey = d[o] * 0.3 + d[o + 1] * 0.59 + d[o + 2] * 0.11;

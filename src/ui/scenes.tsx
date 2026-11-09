@@ -169,10 +169,10 @@ for (const [name, seed, at] of [['ฉากชีวิต · ทารก', 12,
   });
 
 // the rites and endings of the tribes (13-storyline-scenes §2 §3): a stage of each tribe at a still moment, with no life behind it, so the people are plain people of the tribe
-const TRIBES: [string, string, number][] = [['hu', 'พิธีของถิ่น', 14], ['el', 'พิธีผูกราก', 5], ['de', 'พิธีเผชิญเงา', 3], ['dw', 'วันทั่งแรก', 5], ['or', 'พิธีกระดูกแรก', 4], ['ha', 'วันให้ของขวัญ', 4], ['na', 'การทดสอบนาคา', 4], ['va', 'คืนแรกแห่งเลือด', 4], ['fa', 'ชื่อจริง', 4], ['wi', 'การบินครั้งแรก', 4], ['gi', 'การสลักชื่อ', 4], ['mu', 'การชั่งหัวใจ', 4]];
+const TRIBES: [string, string, number][] = [['hu', 'พิธีของถิ่น', 14], ['el', 'พิธีผูกราก', 5], ['de', 'พิธีเผชิญเงา', 3], ['dw', 'วันทั่งแรก', 5], ['or', 'พิธีกระดูกแรก', 4], ['ha', 'วันให้ของขวัญ', 4], ['na', 'การทดสอบนาคา', 4], ['va', 'คืนแรกแห่งเลือด', 4], ['fa', 'ชื่อจริง', 4], ['wi', 'การบินครั้งแรก', 4], ['gi', 'การสลักชื่อ', 4], ['mu', 'การชั่งหัวใจ', 4], ['be', 'การล่าครั้งแรก', 5], ['sl', 'การกลืนครั้งแรก', 5], ['me', 'พิธีของสาย', 5], ['la', 'การจุ่มลาวา', 5], ['so', 'คำถามแรก', 5]];
 story({
   group: 'ฉาก',
-  name: 'พิธีของเผ่า · ฉากหลังและของประกอบ 12 เผ่า',
+  name: 'พิธีของเผ่า · ฉากหลังและของประกอบ 17 เผ่า',
   render: ({ data }) => (
     <div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
       {TRIBES.map(([t, name, at]) => {
@@ -180,6 +180,25 @@ story({
         return (
           <figure key={t} style={{ margin: 0 }} data-tribe={t}>
             {v.kind === 'script' ? <ScenePlayer script={v.script} figureOf={figuresOf(data, undefined, v)} scenery={sceneryOf(data, undefined, v)} labelOf={labelsOf(data, undefined, v)} autoplay={false} startAt={at} controls={false} /> : null}
+            <figcaption style={{ fontFamily: font.body, fontSize: size.text, color: color.text }}>{t} · {name}</figcaption>
+          </figure>
+        );
+      })}
+    </div>
+  ),
+});
+
+// the endings of the tribes that had no prop before (13-storyline-scenes §3): the pelt, the stain of the slime, the pearl, the black stone, the light of the core
+story({
+  group: 'ฉาก',
+  name: 'ปลายทางของเผ่า · ของประกอบ 5 เผ่า',
+  render: ({ data }) => (
+    <div style={{ padding: size.pad, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: size.pad }}>
+      {([['be', 'เผ่าสัตว์'], ['sl', 'สไลม์'], ['me', 'เงือก'], ['la', 'เผ่าลาวา'], ['so', 'หุ่นวิญญาณ']] as const).map(([t, name]) => {
+        const v = sceneFor(data, entry('story', 'node', `${t}.e1`, { title: 'ปลายทาง', choice: 'a', label: 'ตาย' }), undefined);
+        return (
+          <figure key={t} style={{ margin: 0 }} data-tribe={t}>
+            {v.kind === 'script' ? <ScenePlayer script={v.script} figureOf={figuresOf(data, undefined, v)} scenery={sceneryOf(data, undefined, v)} labelOf={labelsOf(data, undefined, v)} autoplay={false} startAt={6} controls={false} /> : null}
             <figcaption style={{ fontFamily: font.body, fontSize: size.text, color: color.text }}>{t} · {name}</figcaption>
           </figure>
         );

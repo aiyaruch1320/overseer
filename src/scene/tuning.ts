@@ -1,5 +1,5 @@
 // The numbers of the scene player that the docs do not give (code-plan §2.3 rule 3: one tuning file per system).
-import type { CameraFrame, FxKind, LightMode, Pose } from '../core/data/types-scenes';
+import type { CameraFrame, FxKind, FxPreset, LightMode, Pose } from '../core/data/types-scenes';
 
 /** The stage is 16:9. */
 export const STAGE = { ratio: 16 / 9, maxWidth: 960 } as const;
@@ -156,8 +156,7 @@ export const GOD = { faith: '#e8c36a', dread: '#8a2433', fate: '#b8c0cc', near: 
  * shake of its rim, how many gold embers rise), the dread (the red then black core, the smoke on its rim), the fate (threads, stitches of the ring).
  */
 /** The effects that belong to one miracle, by the place name its script gives (the miracle's own name): MR-17 the shooting star, MR-04 the wide gold beam. */
-export type GodVariant = 'meteor' | 'beam';
-export const GOD_VARIANT: Record<string, GodVariant> = { ดาวตก: 'meteor', แสงศักดิ์สิทธิ์: 'beam' };
+export type GodVariant = FxPreset;
 
 export const GOD_FX = {
   centre: { x: ART.w / 2, y: 112 },
@@ -173,4 +172,4 @@ export const GOD_FX = {
 // ---------- the picture of an event card (M7 ka4) ----------
 
 /** The still frame of a card picture: the motion time its particles are drawn at, how many of them, how strongly the card sky tints the sky rows and the ground rows of the painted place, how many pictures are kept. */
-export const CARD_PIC = { motion: 5.5, amount: 1, sky: 0.3, ground: 0.16, plainSky: 0.12, plainGround: 0.06, dull: 0.12, drain: 0.55, speck: 2, keep: 32 } as const;
+export const CARD_PIC = { motion: 5.5, amount: 1, sky: 0.3, ground: 0.16, dullSky: 0.16, dullGround: 0.07, plainSky: 0.12, plainGround: 0.06, dull: 0.12, drain: 0.55, speck: 2, keep: 32 } as const;

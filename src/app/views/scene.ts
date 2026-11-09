@@ -240,11 +240,11 @@ export function heldScene(held: SceneView | undefined, newest: SceneView | undef
   return cur;
 }
 
-/** A country whose title says it is a city (`มหานครนีออน`, `นครระฆังกลาง`, `เมืองท่าใหญ่`) is seen among its houses, not in a field (the calm picture of a life in a metropolis). */
-const CITY_TITLE = /^(มหานคร|นคร|เมือง|สหพันธ์นคร|สันนิบาตนคร|สาธารณรัฐเมือง)/;
+/** A country of town size or more (`scale=` of its look, 13-storyline-scenes §6 rule "cityScale") is seen among its houses, not in a field (the calm picture of a life). */
 function isCityCountry(data: GameData, id: string | undefined): boolean {
-  const c = id ? (data.countries?.items as { id: string; title?: string }[] | undefined)?.find((x) => x.id === id) : undefined;
-  return !!c?.title && CITY_TITLE.test(c.title);
+  const c = id ? (data.countries?.items as { id: string; ui?: { scale?: number } }[] | undefined)?.find((x) => x.id === id) : undefined;
+  const min = items<ScenesData>(data, 'scenes')?.rules.cityScale;
+  return !!c?.ui?.scale && min !== undefined && c.ui.scale >= min;
 }
 
 export function idleView(data: GameData, state: GameState): IdleView {
@@ -288,13 +288,15 @@ const FOE_LABEL = 'คู่ต่อสู้';
 const TRIBE_RACE: Record<string, string> = { hu: 'human', el: 'elf', de: 'darkelf', dw: 'dwarf', or: 'orc', ha: 'halfling', be: 'beast', na: 'naga', dk: 'dragonkin', va: 'vampire', fa: 'fae', sl: 'slime', dm: 'demonkin', me: 'merfolk', wi: 'winged', gi: 'giant', la: 'lavakin', co: 'construct', so: 'soulmachine', mu: 'mummy', gh: 'ghoul' };
 
 /**
- * The main homeland of each race (docs/systems/character/01-origin.md §5, the first country of its "ถิ่นหลัก"): a life of a race is normally born there, so a specimen of a
- * tribe's rite with no life behind it is shown in this country (the storybook, the page of the twelve tribes).
+ * The main homeland of a race (docs/systems/character/01-origin.md §3, the first country of its "ถิ่นหลัก", data/gen/origin.json `birthplaces`): a life of a race is normally born
+ * there, so a specimen of a tribe's rite with no life behind it is shown in this country (the storybook, the page of the twelve tribes).
  */
-export const RACE_HOME: Record<string, string> = { human: 'AL-04', elf: 'SV-01', darkelf: 'KD-05', dwarf: 'KD-01', orc: 'MH-01', halfling: 'AL-16', beast: 'SV-16', naga: 'NR-07', dragonkin: 'KD-07', vampire: 'NB-02', fae: 'SV-04', slime: 'SV-12', demonkin: 'MH-02', merfolk: 'NR-06', winged: 'AZ-01', giant: 'SH-03', lavakin: 'KD-06', construct: 'MK-02', soulmachine: 'MK-03', mummy: 'SH-02', ghoul: 'MH-03' };
+export function raceHome(data: GameData, race: string): string | undefined {
+  return items<{ birthplaces: { race: string; main: string[] }[] }>(data, 'origin')?.birthplaces.find((b) => b.race === race)?.main[0];
+}
 
-/** The land a tribe's own scenes are in whatever the country of the life (docs/appearance/13 §2: the elf's world tree and the fae's naming circle stand in a forest). */
-const TRIBE_LAND: Record<string, string> = { elf: 'SV', fae: 'SV' };
+/** The line letters of a race (`elf` is `el`): the key of the rules in data/gen/scenes.json. */
+const TRIBE_OF_RACE = Object.fromEntries(Object.entries(TRIBE_RACE).map(([t, r]) => [r, t]));
 
 /** The race a scene is about: its tribe when the script is a rite or a destination of one, else nothing (the life's own race is the default). */
 export function sceneRace(v: SceneView): string | undefined {
@@ -483,9 +485,6 @@ function namedPlace(data: GameData, d: LogEntry['data']): Place | undefined {
   return undefined;
 }
 
-/** World events that happen in one named country. */
-const FIXED_PLACE: Record<string, string> = { 'DR-03': 'AZ-01' };
-
 /** The continent and country of the life now (the place of the calm picture, and of whatever an entry does not place), nothing without a life. */
 export function lifePlace(data: GameData, state: GameState | null | undefined): Place | undefined {
   const home = state?.life ? placeIds(data).byId.get(state.life.country) : undefined;
@@ -500,9 +499,9 @@ export function lifePlace(data: GameData, state: GameState | null | undefined): 
 export function placeOf(data: GameData, state: GameState | null | undefined, e: LogEntry): Place | undefined {
   const named = namedPlace(data, e.data);
   if (named) return named;
-  // events that happen in one place the docs name, wherever the life is (the sky nest is under Orantar, AZ-01: docs/lore/countries/01-azgar.md)
-  const fixed = FIXED_PLACE[e.id ?? ''];
-  if (fixed) return placeIds(data).byId.get(fixed);
+  // events that happen in one place the docs name, wherever the life is (the sky nest is under Orantar, AZ-01: CardDef.place of data/gen/scenes.json)
+  const own = e.id ? indexOf(data)?.card.get(e.id)?.place : undefined;
+  if (own) return (own.country ? placeIds(data).byId.get(own.country) : undefined) ?? { continent: own.continent };
   const npc = npcPlace(str(e.data.npc)) ?? (e.id?.startsWith('NF-') ? npcPlace(e.id.slice(3)) : undefined);
   if (npc && e.sys === 'combat' && e.kind === 'clash') return npc;
   return lifePlace(data, state) ?? npc;
@@ -512,10 +511,10 @@ export function placeOf(data: GameData, state: GameState | null | undefined, e: 
 export function sceneryOf(data: GameData, state: GameState | null | undefined, v: SceneView): SceneryOf {
   // with no life behind the scene (a specimen) a tribe's scene is in the tribe's homeland
   const race = sceneRace(v);
-  const home = !state?.life && race ? placeIds(data).byId.get(RACE_HOME[race] ?? '') : undefined;
+  const home = !state?.life && race ? placeIds(data).byId.get(raceHome(data, race) ?? '') : undefined;
   let at = namedPlace(data, v.entry.data) ?? home ?? placeOf(data, state, v.entry);
-  // the rites and ends of the tribes that live in one kind of land are played in it wherever the life is born (13 §2: the roots of the world tree and the naming circle are in a forest)
-  const land = v.kind === 'script' && /^(?:rite|dest)\.|^[a-z]{2}\.[a-z]\d+$/.test(v.script.id) && race ? TRIBE_LAND[race] : undefined;
+  // the rites and ends of the tribes that live in one kind of land are played in it wherever the life is born (13 §6: the roots of the world tree and the naming circle are in a forest)
+  const land = v.kind === 'script' && /^(?:rite|dest)\.|^[a-z]{2}\.[a-z]\d+$/.test(v.script.id) && race ? items<ScenesData>(data, 'scenes')?.rules.tribeLand[TRIBE_OF_RACE[race]] : undefined;
   if (land && at?.continent !== land) at = { continent: land };
   const seed = seedOf(v.kind === 'script' ? v.script.id : v.card.id);
   return (place) => {
