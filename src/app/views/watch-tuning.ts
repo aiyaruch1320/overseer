@@ -11,3 +11,6 @@ export const CANDLE_MIN_FILL = 0.06;
 
 /** Key of the player's own display choices (not part of the save of the game). */
 export const PREFS_KEY = 'overseer.prefs.1';
+
+/** At most this many items in the "now" box (proposal G1: one to three). */
+export const NOW_MAX = 3;

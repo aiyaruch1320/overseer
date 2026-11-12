@@ -252,6 +252,8 @@ export interface Settings {
   /** A switch for each kind of card (07-attention.md §4): a kind switched off is not called, the log tells it. A save older than this has none: that reads as all on. */
   cards: Record<CardKind, boolean>;
   lang: 'th';
+  /** Hints the player has dismissed for good (the first-life strip of the watch screen). A save older than this has none: that reads as not yet seen. */
+  hintsSeen?: { firstLife?: boolean };
 }
 
 export interface DragonState {

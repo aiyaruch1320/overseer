@@ -1,13 +1,15 @@
 // The registry of the storybook (code-plan §8.1 rule 5): every screen registers one or more stories, each drawn from a sample state,
 // so a screen can be checked without playing to it. `dev.html` lists them; a screen's own file calls `story()` at import time.
 import type { ComponentChildren } from 'preact';
-import type { GameData } from '../core/game';
+import type { Game, GameData } from '../core/game';
 import type { GameState } from '../core/types';
 
 export interface StoryCtx {
   data: GameData;
   /** A state made by `sample` (a seeded life run to some point); the story may use it or not. */
   state: GameState;
+  /** The game that made the state, for a story whose view asks the core (the "now" box). */
+  game?: Game;
 }
 
 export interface Story {

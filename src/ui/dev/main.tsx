@@ -3,7 +3,7 @@
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { loadGameData } from '../../app/data';
-import type { GameData } from '../../core/game';
+import type { Game, GameData } from '../../core/game';
 import type { GameState } from '../../core/types';
 import { createSession, runToDeath, startLife } from '../../../scripts/tools/session';
 import { allStories, type Story } from '../stories';
@@ -14,13 +14,13 @@ import { raceHome } from '../../app/views/scene';
 /** The country where a race lives: its main homeland of the origin doc (a story of a race's own scene is a life in its homeland). */
 const homeland = (data: GameData, race: string): string | undefined => raceHome(data, race);
 
-function sample(data: GameData, s: Story): GameState {
+function sample(data: GameData, s: Story): { state: GameState; game: Game } {
   const country = s.country ?? (s.race ? homeland(data, s.race) : undefined);
   const sess = createSession(data, { seed: s.seed ?? 1, ...(s.race ? { race: s.race } : {}), ...(country ? { country } : {}) });
   startLife(sess);
   if (s.at === 'death') runToDeath(sess.game);
   else for (let i = 0; i < (s.at ?? 40) && sess.game.state.life && !sess.game.state.life.dead; i++) sess.game.beat();
-  return sess.game.state;
+  return { state: sess.game.state, game: sess.game };
 }
 
 function Book() {
@@ -29,13 +29,14 @@ function Book() {
   useEffect(() => void loadGameData().then(setData), []);
   const list = allStories();
   const cur = list[pick];
-  const [state, setState] = useState<GameState | null>(null);
+  const [made, setState] = useState<{ state: GameState; game: Game } | null>(null);
+  const state = made?.state ?? null;
   useEffect(() => {
     if (data && cur) setState(sample(data, cur));
   }, [data, pick]);
   return (
     <div style={{ display: 'flex', background: color.panel, color: color.text, fontFamily: font.body, fontSize: size.text, minHeight: '100vh' }}>
-      <nav style={{ width: 260, borderRight: `1px solid ${color.line}`, padding: size.pad }}>
+      {!new URLSearchParams(location.search).has('bare') && <nav style={{ width: 260, borderRight: `1px solid ${color.line}`, padding: size.pad }}>
         {list.length === 0 && <div>ยังไม่มีหน้าจอลงทะเบียน</div>}
         {list.map((s, i) => (
           <div key={i}>
@@ -44,8 +45,8 @@ function Book() {
             </a>
           </div>
         ))}
-      </nav>
-      <main style={{ flex: 1, minWidth: 0, overflow: 'auto' }}>{!data ? 'กำลังโหลด…' : cur && state ? cur.render({ data, state }) : null}</main>
+      </nav>}
+      <main style={{ flex: 1, minWidth: 0, overflow: 'auto' }}>{!data ? 'กำลังโหลด…' : cur && state ? cur.render({ data, state, game: made!.game }) : null}</main>
     </div>
   );
 }
