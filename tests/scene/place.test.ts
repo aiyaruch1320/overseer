@@ -78,15 +78,15 @@ describe('the calm picture of the watch screen', () => {
       const v = idleView(data, st);
       expect(v.scenery.continent).toBe('KD');
       expect(v.scenery.country).toBe('KD-01');
-      // KD-01 is a city of scale 5: 13-storyline-scenes §6 draws a country of scale 3 or more among its houses
-      expect(v.scenery.setting).toBe('town');
+      // KD-01 is a city of scale 5: 13-storyline-scenes §6 draws a country of scale 3 or more among its houses; the rain and the winter are indoors (S4)
+      expect(v.scenery.setting).toBe(q % 2 === 0 ? 'town' : 'indoor');
       expect(v.scenery.season).toBe(q);
       keys.add(specKey(v.scenery));
     }
     expect(keys.size).toBe(4);
   });
   it('a camp or a small town (scale 1 to 2) is under the sky, a town of scale 3 or more is among its houses', () => {
-    const at = (country: string) => idleView(data, { ...abroad, life: { ...abroad.life!, country } }).scenery.setting;
+    const at = (country: string) => idleView(data, { ...abroad, clock: { ...abroad.clock, quarter: 0 }, life: { ...abroad.life!, country } }).scenery.setting;
     expect(at('MH-01')).toBe('outdoor');
     expect(at('AZ-08')).toBe('outdoor');
     expect(at('KD-01')).toBe('town');

@@ -266,7 +266,9 @@ export function idleView(data: GameData, state: GameState): IdleView {
   // the first year of a life has its own line: the birth, not the season of a grown life (T2-16)
   const caption = life && state.clock.worldYear - life.birthYear < 1 && age === 0 ? `${SEASONS[quarter]} · อายุ 0 · ${SCENE_WORDS.birth}${place ? ` ${place}` : ''}` : `${SEASONS[quarter]} · อายุ ${age}${place ? ` · ${place}` : ''}`;
   const at = lifePlace(data, state);
-  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: isCityCountry(data, at?.country) ? 'town' : 'outdoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
+  // the setting turns with the season (S4): the sowing and the harvest are worked outside (among the houses of a city country, in the fields of the others), the rain and the winter indoors
+  const outside: Setting = isCityCountry(data, at?.country) ? 'town' : 'outdoor';
+  const scenery: ScenerySpec = { continent: at?.continent ?? 'AZ', setting: quarter % 2 === 0 ? outside : 'indoor', season: quarter, seed: seedOf(life?.country ?? ''), ...(at?.country ? { country: at.country } : {}) };
   return { season: quarter, seasonName: SEASONS[quarter], sky: c.sky, ground: c.ground, glow: c.glow, figure: { height, pose: stage === 'elder' ? 'bow' : 'stand', stage }, place, age, latest, caption, scenery };
 }
 
@@ -333,7 +335,7 @@ export function npcOfScene(v: SceneView): string | undefined {
 }
 
 /** The look of one NPC as a figure: a creature as its beast (src/art/npc-beasts.ts), a person by the table of NPCs (a grown one), nothing when the table lacks it. */
-function npcFigure(looks: LooksData, id: string): Figure | undefined {
+export function npcFigure(looks: LooksData, id: string): Figure | undefined {
   const beast = npcBeast(id);
   if (beast) return { kind: 'beast', look: beast };
   if (!looks.npcs[id]) return undefined;
