@@ -15,7 +15,7 @@ import { Paint, type Frame } from '../art/paint';
 import type { CityLook, CityPlan, PlanBuilding } from './city';
 import { cityRect } from './tiles';
 import type { MapCity, Rect } from './layout';
-import { CITY_H, CITY_W, FATE_BY_ID, TOWN_PX, WU } from './tuning';
+import { CITY_H, CITY_W, FATE_BY_ID, TOWN_PEOPLE, TOWN_PX, WU } from './tuning';
 import type { WalkGrid } from './townGround';
 
 export interface TownInfo {
@@ -219,7 +219,7 @@ export class TownLayer {
       });
 
     t.looksWant = this.o.crowd(info.country);
-    const n = Math.round((plan.buildings.length * 1.3 + 12) * (this.o.crowdScale ?? 1));
+    const n = Math.round((plan.buildings.length * TOWN_PEOPLE.perHouse + 12) * (this.o.crowdScale ?? 1));
     t.peopleWant = ruin > 0.5 ? Math.round(n * (1 - ruin) * 0.4) : Math.min(1600, n);
     return t;
   }
@@ -360,11 +360,11 @@ export class TownLayer {
       let spot = this.randomSpot(walk, true);
       if (!spot) { t.peopleWant = t.people.length; return; }
       // not on top of someone: a few tries for a place with air round it (a crowded plaza keeps its crowd, a dense town stays readable)
-      for (let k = 0; k < 12 && this.crowded(t, spot[0], spot[1], 14); k++) spot = this.randomSpot(walk, true) ?? spot;
+      for (let k = 0; k < 12 && this.crowded(t, spot[0], spot[1], TOWN_PEOPLE.space); k++) spot = this.randomSpot(walk, true) ?? spot;
       const look = Math.floor(this.rnd() * t.looks.length);
       const img = this.scene.add.image(t.ox + spot[0] * K, t.oy + spot[1] * K, t.looks[look], frameIndex('idle', 0))
-        .setOrigin(0.5 - 3 / FRAME.w, FRAME.foot / FRAME.h).setScale(K);
-      t.people.push({ img, look, x: spot[0], y: spot[1], tx: spot[0], ty: spot[1], rest: this.rnd() * 3, speed: 15 + this.rnd() * 9, t0: this.rnd() * 1000, moving: false, frame: 0 });
+        .setOrigin(0.5 - 3 / FRAME.w, FRAME.foot / FRAME.h).setScale(K * TOWN_PEOPLE.scale);
+      t.people.push({ img, look, x: spot[0], y: spot[1], tx: spot[0], ty: spot[1], rest: this.rnd() * 3, speed: (15 + this.rnd() * 9) * TOWN_PEOPLE.scale, t0: this.rnd() * 1000, moving: false, frame: 0 });
     }
   }
 
@@ -414,9 +414,9 @@ export class TownLayer {
         p.rest -= dtc;
         if (p.rest < 0) {
           // a new place along the way: near, preferably on a street
-          const ang = this.rnd() * Math.PI * 2, len = 25 + this.rnd() * 70;
+          const ang = this.rnd() * Math.PI * 2, len = (25 + this.rnd() * 70) * TOWN_PEOPLE.scale;
           const nx = p.x + Math.cos(ang) * len, ny = p.y + Math.sin(ang) * len;
-          if (this.clear(g, p.x, p.y, nx, ny) && !this.crowded(t, nx, ny, 11)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
+          if (this.clear(g, p.x, p.y, nx, ny) && !this.crowded(t, nx, ny, TOWN_PEOPLE.space * 0.8)) { p.tx = nx; p.ty = ny; p.moving = true; } else p.rest = 0.2 + this.rnd();
         }
       }
       const pose = p.moving ? walkP : idleP;

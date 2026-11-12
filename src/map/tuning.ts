@@ -22,6 +22,11 @@ export const CAM_MIN = 0.16;
 export const CAM_MAX = 50;
 /** Art pixels per MU of the town ground and its sprites: one art pixel is 1/TOWN_PX MU. */
 export const TOWN_PX = 24;
+/**
+ * The people of the town and in-town levels (21-pixel-art.md §2, review/play-1/proposal.md M1): drawn at half the size of the scene (an adult 14 art px), so a house of
+ * one floor stands about twice a person and a tree over them; they walk at half the speed, keep half the room, and there are more of them per house.
+ */
+export const TOWN_PEOPLE = { scale: 0.5, perHouse: 1.5, space: 7 } as const;
 /** Side in MU of one chunk of the ground painted at the density of the town round a town. */
 export const GROUND_CHUNK = 12;
 /** Camera zoom at which one town art pixel is one screen pixel (art zoom 1×). */
