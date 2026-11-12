@@ -11,6 +11,7 @@ import { mainLookOf } from '../app/views/looks';
 import type { FigureOf } from '../scene/figures';
 import { cardOfEntry, figuresOf, labelsOf, sceneFor, sceneryOf } from '../app/views/scene';
 import type { GameState } from '../core/types';
+import { extOf, tiesOf } from '../core/bonds';
 import { LifeScene } from './LifeScene';
 import { BEAT_DEMOS } from '../scene/demo';
 import { EventCard } from '../scene/EventCard';
@@ -169,6 +170,30 @@ for (const [name, seed, at] of [['ฉากชีวิต · ทารก', 12,
       </div>
     ),
   });
+
+// the calm picture with people and a happening (review play-1 §2.1): a city country in the sowing season with family and passers-by, the rain indoors, a grave, a wedding, a newborn
+const calm = (name: string, quarter: number, told?: [string, string, Record<string, unknown>]) =>
+  story({
+    group: 'ฉาก',
+    name,
+    seed: 38,
+    at: 120,
+    country: 'KD-01',
+    render: ({ data, state }) => {
+      const id = state.life?.ext.bonds ? (tiesOf(extOf(state.life)).find((t) => t.state === 'alive')?.id ?? '') : '';
+      const log: LogEntry[] = told ? [{ n: 1e6, worldYear: state.clock.worldYear, sys: told[0], kind: told[1], id, data: told[2] as LogEntry['data'], level: 2 }] : [];
+      return (
+        <div style={{ height: 640, padding: size.pad }}>
+          <LifeScene data={data} state={{ ...state, log, logN: 1e6 + 1, clock: { ...state.clock, quarter } }} />
+        </div>
+      );
+    },
+  });
+calm('ฉากชีวิต · เมือง คนในชีวิตและคนเดินผ่าน', 0);
+calm('ฉากชีวิต · ฤดูฝนในบ้าน', 1);
+calm('ฉากชีวิต · งานศพ', 3, ['bonds', 'news', { kind: 'death', name: 'x' }]);
+calm('ฉากชีวิต · งานแต่ง', 0, ['bonds', 'line', { to: 'คนรัก', from: 'เพื่อน' }]);
+calm('ฉากชีวิต · ลูกเกิด', 2, ['bonds', 'child', {}]);
 
 // the rites and endings of the tribes (13-storyline-scenes §2 §3): a stage of each tribe at a still moment, with no life behind it, so the people are plain people of the tribe
 /** Sets the 2D canvas renderer for the stages under it (a grid of many stages would run out of WebGL contexts); set while rendering, so the stages below see it when they mount. */
