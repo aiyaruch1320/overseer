@@ -114,7 +114,6 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
       <style>{css}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        {model.firstLife && <FirstLifeStrip onClose={actions.dismissFirstLife} />}
         <div style={{ position: 'relative', flex: 1, minHeight: 0, padding: size.pad }}>
           <div style={{ position: 'absolute', inset: size.pad, filter: stop ? 'brightness(0.55)' : 'none', transition: 'filter 0.5s' }}>{scene ?? <Slot title={W.scene} note={W.sceneNote} style={{ width: '100%', height: '100%' }} />}</div>
 
@@ -138,6 +137,8 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
           {!stop && <CardStack cards={cards} onOpen={open} />}
           {stop && <StopPanel stop={stop} onOpen={open} onContinue={actions.resume} warn={crisisWarn === stop.n} />}
         </div>
+        {/* under the scene, not over it: the bar of the layers sits fixed at the top of the screen */}
+        {model.firstLife && <FirstLifeStrip onClose={actions.dismissFirstLife} />}
         <StoryLog log={model.log} before={model.before} note={model.startNote} />
         <LifeLine line={model.line} />
       </div>

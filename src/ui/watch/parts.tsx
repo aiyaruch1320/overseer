@@ -99,8 +99,8 @@ export function NowBox({ items, onOpen }: { items: NowItem[]; onOpen: (open: God
     <div role="region" aria-label={W.now.title} style={{ display: 'flex', flexDirection: 'column', gap: 9, borderTop: `1px solid ${color.line}`, paddingTop: size.gap }} data-testid="now-box">
       <div style={{ color: color.textDim, fontSize: 11, letterSpacing: 0.4 }}>{W.now.title}</div>
       {items.map((it, i) => (
-        <div key={`${it.id}${i}`} style={{ display: 'flex', flexDirection: 'column', gap: 3, borderLeft: `2px solid ${it.id === 'nothing' ? color.line : toneColor[it.tone]}`, paddingLeft: 6 }} data-testid={`now-${it.id}`}>
-          <div style={{ fontSize: size.small, lineHeight: 1.35, color: it.id === 'nothing' ? color.textDim : color.text }}>{it.text}</div>
+        <div key={`${it.id}${i}`} style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, borderLeft: `2px solid ${it.id === 'nothing' ? color.line : toneColor[it.tone]}`, paddingLeft: 6 }} data-testid={`now-${it.id}`}>
+          <div style={{ fontSize: size.small, lineHeight: 1.35, color: it.id === 'nothing' ? color.textDim : color.text, minWidth: 0, overflowWrap: 'anywhere' }}>{it.text}</div>
           {it.price && <div style={{ fontSize: 11, color: color.textDim }}>{it.price}</div>}
           {it.buttons.length > 0 && (
             <div style={{ display: 'flex', gap: 4 }}>
@@ -325,7 +325,7 @@ export function VowLine({ vow }: { vow: VowView | null }) {
 /** The three steps of the first life, said once (proposal G5). */
 export function FirstLifeStrip({ onClose }: { onClose?: () => void }) {
   return (
-    <div role="note" style={{ display: 'flex', alignItems: 'center', gap: size.gap, padding: `${size.gap}px ${size.pad}px`, background: tint(color.light, 7), borderBottom: `1px solid ${color.line}`, fontSize: size.small, lineHeight: 1.35 }} data-testid="first-life">
+    <div role="note" style={{ display: 'flex', alignItems: 'center', gap: size.gap, padding: `${size.gap}px ${size.pad}px`, background: tint(color.light, 7), borderTop: `1px solid ${color.line}`, fontSize: size.small, lineHeight: 1.35 }} data-testid="first-life">
       <b style={{ color: color.light, whiteSpace: 'nowrap' }}>{W.firstLife.title}</b>
       <ol style={{ display: 'flex', gap: 14, margin: 0, padding: 0, listStyle: 'none', flex: 1, minWidth: 0 }}>
         {W.firstLife.steps.map((t, i) => (
