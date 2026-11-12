@@ -3,10 +3,9 @@
 // src/app/views/scene.ts, the player src/scene.
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { store } from '../app/store';
-import { mainLookOf } from '../app/views/looks';
+import { castAt, idleCast, moves } from '../app/views/idle-cast';
 import { lifeStartN } from '../app/views/watch';
 import { figuresOf, heldScene, idleView, labelsOf, sceneFor, sceneryOf, type IdleView, type SceneView } from '../app/views/scene';
-import type { PersonLook } from '../art/look';
 import { allSilhouettes, EventCard, Stage, ScenePlayer, type Frame, type FigureOf } from '../scene';
 import { sceneryFor, specKey } from '../scene/scenery';
 import { GodEffectLine } from './god';
@@ -64,13 +63,17 @@ function useAmbientClock(on: boolean): number {
  * pictures), the main character standing at the age of the life, the faint particles of the place, and the line under it. The stage is mounted once; it is handed a new frame
  * only when the place, the season, the figure or the pose changes (the watch screen's clock ticks often, and a tick does not wake it).
  */
-function Idle({ v, look }: { v: IdleView; look: PersonLook | null }) {
-  const sc = v.scenery;
-  const sceneKey = specKey(sc);
-  const ambient = useMemo(() => !!sceneryFor(sc).ambient, [sceneKey]);
-  const motion = useAmbientClock(ambient);
-  const scenery = useMemo(() => () => sc, [sceneKey]);
-  const figureOf = useMemo<FigureOf>(() => (look ? () => ({ kind: 'person', looks: [look] }) : allSilhouettes), [look?.key]);
+function Idle({ v, data, state }: { v: IdleView; data: NonNullable<typeof store.gameData>; state: GameState }) {
+  // who is in the picture: the people of the life, the passers-by and the vignette of a recent happening (src/app/views/idle-cast.ts); found again only when the log, the season or the place changes
+  const sceneKey = specKey(v.scenery);
+  const cast = useMemo(() => idleCast(data, state, v), [state.logN, state.life?.hAge, state.clock.worldYear, v.season, sceneKey, data]);
+  const sc = cast.scenery;
+  const ambient = useMemo(() => !!sceneryFor(sc).ambient, [specKey(sc)]);
+  const motion = useAmbientClock(ambient || moves(cast));
+  const scenery = useMemo(() => () => sc, [specKey(sc)]);
+  const figureOf = useMemo<FigureOf>(() => ({ id }) => cast.figures.get(id) ?? allSilhouettes({ id, label: '', count: 1 }), [cast]);
+  const labelOf = useMemo(() => ({ id }: { id: string }) => cast.labels.get(id) ?? '', [cast]);
+  const still = reduced();
   const frame = useMemo<Frame>(
     () => ({
       t: 0,
@@ -82,17 +85,17 @@ function Idle({ v, look }: { v: IdleView; look: PersonLook | null }) {
       camera: { frame: 'eye', zoom: 1, lift: 0, x: 0 },
       light: { mode: 'diffuse' },
       fx: [],
-      actors: [{ id: 'idle', label: '', x: 0.5, pose: v.figure.pose, count: 1 }],
+      actors: castAt(cast, motion, still),
       texts: [],
       strike: null,
       sounds: [],
       motion,
     }),
-    [v.sky, v.ground, v.figure.pose, motion],
+    [v.sky, v.ground, cast, motion, still],
   );
   return (
     <div role="img" aria-label={`ชีวิตดำเนินไป · ${v.caption}`} style={{ position: 'relative', width: '100%' }} data-testid="idle-scene" data-season={v.season} data-stage={v.figure.stage} data-continent={sc.continent}>
-      <Stage frame={frame} frameColor={color.line} seed={sceneKey} scenery={scenery} figureOf={figureOf} mood={false} />
+      <Stage frame={frame} frameColor={color.line} seed={sceneKey} scenery={scenery} figureOf={figureOf} labelOf={labelOf} mood={false} />
       {/* the line sits in the sky: at the foot of the stage it lay over a child or a short people standing at 1× (M7 review) */}
       <div style={{ position: 'absolute', left: 0, right: 0, top: '5%', textAlign: 'center', fontFamily: font.body, fontSize: size.small, color: color.text, padding: '0 8%', pointerEvents: 'none' }}>
         <div style={{ display: 'inline-block', textShadow: '0 1px 4px #000, 0 0 2px #000', background: 'rgba(0,0,0,0.42)', padding: '2px 10px', borderRadius: 4 }}>{v.caption}</div>
@@ -132,7 +135,7 @@ export function LifeScene(props: { data?: NonNullable<typeof store.gameData>; st
             <EventCard card={found.card.card} />
           </div>
         ) : (
-          st && data ? <Idle v={idleView(data, st)} look={mainLookOf(data, st)} /> : null
+          st && data ? <Idle v={idleView(data, st)} data={data} state={st} /> : null
         )}
         {/* what the god's hand did lately (a small or middle miracle has no script of its own): one line under the stage */}
         {!play && <GodEffectLine />}
