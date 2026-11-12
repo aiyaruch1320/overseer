@@ -7,14 +7,14 @@ type CSS = JSX.CSSProperties;
 
 /** The frame of the screen (20-god-ui.md §2: the life line is the lowest eighth of the screen, the god panel is narrow on the right edge). */
 export const layout = {
-  panelWidth: 200,
+  panelWidth: 232,
   lineHeight: 96,
   logHeight: 150,
   mapWidth: 200,
   mapHeight: 130,
   cardWidth: 250,
   /** Below the name and the candle at the top left of the scene. */
-  cardsTop: 190,
+  cardsTop: 250,
 } as const;
 
 export const toneColor: Record<Tone, string> = { light: color.light, dread: color.dread, fate: color.fate };

@@ -2,7 +2,8 @@
 // from src/app/views/watch.ts and callbacks; they know neither the store nor the core.
 import type { ComponentChildren } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import type { CandleView, GodKind, GodPanelView, LifeLineView, Vial } from '../../app/views/watch';
+import type { NowItem } from '../../app/views/now';
+import type { CandleView, GodKind, GodOpen, GodPanelView, VowView, LifeLineView, Vial } from '../../app/views/watch';
 import { WATCH_WORDS as W } from '../../app/views/watch-words';
 import type { Line } from '../../core/text';
 import type { Settings } from '../../core/types';
@@ -68,11 +69,11 @@ export function Candle({ candle, showPct }: { candle: CandleView; showPct: boole
 // ---------- the god panel ----------
 
 /** A drop-shaped glass; the level is a liquid (20-god-ui.md §2 "ดวงไฟสองดวงซ้อนแนวตั้ง"). */
-function Drop({ vial, tone, text = tone, label, id }: { vial: Vial; tone: string; text?: string; label: string; id: string }) {
+function Drop({ vial, tone, text = tone, label, id, from }: { vial: Vial; tone: string; text?: string; label: string; id: string; from: string }) {
   const top = 6 + (1 - vial.fill) * 50;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: size.gap }} title={`${label} ${vial.value} / ${vial.cap}`} data-testid={id}>
-      <svg width={40} height={62} viewBox="0 0 40 62" aria-hidden="true">
+      <svg width={32} height={50} viewBox="0 0 40 62" aria-hidden="true">
         <defs>
           <clipPath id={`clip-${id}`}>
             <path d="M20 3 C20 3 5 24 5 40 a15 15 0 0 0 30 0 C35 24 20 3 20 3Z" />
@@ -84,17 +85,45 @@ function Drop({ vial, tone, text = tone, label, id }: { vial: Vial; tone: string
       <div style={{ fontSize: size.small, lineHeight: 1.25 }}>
         <div style={{ color: text, fontFamily: font.mono, fontSize: size.text }}>{vial.value}</div>
         <div style={{ color: color.textDim }}>{label}</div>
+        <div style={{ color: color.textDim, fontSize: 11, lineHeight: 1.3, marginTop: 2 }} data-testid={`${id}-from`}>
+          {from}
+        </div>
       </div>
     </div>
   );
 }
 
-export function GodPanel({ panel, onOpen }: { panel: GodPanelView; onOpen: (kind: GodKind) => void }) {
+/** The "now" box (proposal G1): one to three things that fit the situation, each with why, the price and a button; one word of rest when nothing waits. */
+export function NowBox({ items, onOpen }: { items: NowItem[]; onOpen: (open: GodOpen) => void }) {
+  return (
+    <div role="region" aria-label={W.now.title} style={{ display: 'flex', flexDirection: 'column', gap: 9, borderTop: `1px solid ${color.line}`, paddingTop: size.gap }} data-testid="now-box">
+      <div style={{ color: color.textDim, fontSize: 11, letterSpacing: 0.4 }}>{W.now.title}</div>
+      {items.map((it, i) => (
+        <div key={`${it.id}${i}`} style={{ display: 'flex', flexDirection: 'column', gap: 3, borderLeft: `2px solid ${it.id === 'nothing' ? color.line : toneColor[it.tone]}`, paddingLeft: 6 }} data-testid={`now-${it.id}`}>
+          <div style={{ fontSize: size.small, lineHeight: 1.35, color: it.id === 'nothing' ? color.textDim : color.text }}>{it.text}</div>
+          {it.price && <div style={{ fontSize: 11, color: color.textDim }}>{it.price}</div>}
+          {it.buttons.length > 0 && (
+            <div style={{ display: 'flex', gap: 4 }}>
+              {it.buttons.map((b) => (
+                <button key={b.label} class="wt-btn" style={{ ...button, flex: 1, padding: '3px 6px', borderColor: tint(toneColor[it.tone], 60) }} onClick={() => onOpen(b.open)} data-testid={`now-${it.id}-btn`}>
+                  {b.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function GodPanel({ panel, onOpen, onOpenNow }: { panel: GodPanelView; onOpen: (kind: GodKind) => void; onOpenNow?: (open: GodOpen) => void }) {
   return (
     <section aria-label="god" style={{ ...panelBox, display: 'flex', flexDirection: 'column', gap: size.gap }}>
-      <Drop vial={panel.light} tone={color.light} label={W.light} id="light" />
-      <Drop vial={panel.dread} tone={color.dread} text={color.dreadText} label={W.dread} id="dread" />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+      <Drop vial={panel.light} tone={color.light} label={W.light} id="light" from={W.lightFrom} />
+      <Drop vial={panel.dread} tone={color.dread} text={color.dreadText} label={W.dread} id="dread" from={W.dreadFrom} />
+      {panel.alive && panel.now.length > 0 && onOpenNow && <NowBox items={panel.now} onOpen={onOpenNow} />}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 2 }}>
         {panel.buttons.map((k) => {
           const glow = panel.windowOpen && (k === 'chest' || k === 'dream');
           const off = !panel.alive;
@@ -104,7 +133,7 @@ export function GodPanel({ panel, onOpen }: { panel: GodPanelView; onOpen: (kind
             <div key={k} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <button
                 class={`wt-btn${glow && !gate ? ' wt-edge' : ''}`}
-                style={{ ...(grey ? buttonOff : button), display: 'flex', justifyContent: 'space-between', alignItems: 'center', ...(glow && !gate ? { borderColor: color.light } : {}) }}
+                style={{ ...(grey ? buttonOff : button), padding: '2px 8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', ...(glow && !gate ? { borderColor: color.light } : {}) }}
                 disabled={off}
                 aria-disabled={grey}
                 aria-keyshortcuts={W.keys[k]}
@@ -115,6 +144,9 @@ export function GodPanel({ panel, onOpen }: { panel: GodPanelView; onOpen: (kind
                 <span>{W.god[k]}</span>
                 <kbd style={{ fontFamily: font.mono, fontSize: 11, color: color.textDim }}>{W.keys[k]}</kbd>
               </button>
+              <span style={{ color: color.textDim, fontSize: 11, lineHeight: 1.3, paddingLeft: 2 }} data-testid={`god-${k}-about`}>
+                {W.godAbout[k]}
+              </span>
               {gate && (
                 <span role="note" style={{ color: color.textDim, fontSize: size.small, lineHeight: 1.3 }} data-testid={`god-${k}-why`}>
                   {W.gate.hourglass} {gate.reason}
@@ -270,6 +302,48 @@ export function StoryLog({ log, before, note }: { log: Line[]; before?: { lines:
 }
 
 /** A box that stands for a part another agent builds (the scene player, the map). */
+/** The vow under the name (proposal G4): a small stone, the vow, and when it comes true. No bar of progress (20-god-ui.md §10). */
+export function VowLine({ vow }: { vow: VowView | null }) {
+  return (
+    <div style={{ display: 'flex', gap: 6, alignItems: 'flex-start', maxWidth: 190, fontSize: size.small, lineHeight: 1.35 }} title={W.vow.label} data-testid="vow">
+      <svg width={14} height={16} viewBox="0 0 14 16" aria-hidden="true" style={{ flex: 'none', marginTop: 2 }}>
+        <path d="M2 15 L1 6 Q1 1 7 1 Q13 1 13 6 L12 15Z" fill={tint(color.text, 14)} stroke={vow ? color.light : color.line} stroke-width={1.2} />
+        {vow && <path d="M7 5 V10 M5 7 H9" stroke={color.light} stroke-width={1} />}
+      </svg>
+      {vow ? (
+        <div>
+          <div style={{ color: color.light }}>{vow.name}</div>
+          <div style={{ color: color.textDim, fontSize: 11 }}>{W.vow.done(vow.done)}</div>
+        </div>
+      ) : (
+        <div style={{ color: color.textDim }}>{W.vow.none}</div>
+      )}
+    </div>
+  );
+}
+
+/** The three steps of the first life, said once (proposal G5). */
+export function FirstLifeStrip({ onClose }: { onClose?: () => void }) {
+  return (
+    <div role="note" style={{ display: 'flex', alignItems: 'center', gap: size.gap, padding: `${size.gap}px ${size.pad}px`, background: tint(color.light, 7), borderBottom: `1px solid ${color.line}`, fontSize: size.small, lineHeight: 1.35 }} data-testid="first-life">
+      <b style={{ color: color.light, whiteSpace: 'nowrap' }}>{W.firstLife.title}</b>
+      <ol style={{ display: 'flex', gap: 14, margin: 0, padding: 0, listStyle: 'none', flex: 1, minWidth: 0 }}>
+        {W.firstLife.steps.map((t, i) => (
+          <li key={i} style={{ flex: 1, minWidth: 0, display: 'flex', gap: 5 }}>
+            <span style={{ color: color.light, fontFamily: font.mono }}>{i + 1}</span>
+            <span>{t}</span>
+          </li>
+        ))}
+      </ol>
+      {onClose && (
+        <button class="wt-btn" style={{ ...button, whiteSpace: 'nowrap' }} onClick={onClose} data-testid="first-life-close">
+          {W.firstLife.close}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function Slot({ title, note, children, style }: { title: string; note?: string; children?: ComponentChildren; style?: Record<string, string | number> }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 4, color: color.textDim, border: `1px dashed ${color.line}`, borderRadius: size.radius, fontSize: size.small, ...style }}>

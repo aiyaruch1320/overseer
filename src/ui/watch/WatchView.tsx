@@ -8,7 +8,7 @@ import { WATCH_WORDS as W } from '../../app/views/watch-words';
 import type { GameData } from '../../core/game';
 import type { Settings } from '../../core/types';
 import { CardStack, StopPanel } from './calls';
-import { Candle, GodPanel, LifeLine, Slot, SpeedControl, StoryLog } from './parts';
+import { Candle, FirstLifeStrip, GodPanel, LifeLine, Slot, SpeedControl, StoryLog, VowLine } from './parts';
 import type { RecordView } from './RecordSection';
 import { SettingsPanel } from './SettingsPanel';
 import { button, css, layout } from './style';
@@ -26,6 +26,8 @@ export interface WatchActions {
   setSettings: (patch: Partial<Settings>) => string | null;
   /** Saves the game; says what came of it (a short line for the player: saved, or why not). */
   save?: () => Promise<{ ok: boolean; text: string }> | void;
+  /** Dismiss the first-life strip for good (kept in the settings of the save). */
+  dismissFirstLife?: () => void;
 }
 
 export interface WatchViewProps {
@@ -112,6 +114,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
       <style>{css}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        {model.firstLife && <FirstLifeStrip onClose={actions.dismissFirstLife} />}
         <div style={{ position: 'relative', flex: 1, minHeight: 0, padding: size.pad }}>
           <div style={{ position: 'absolute', inset: size.pad, filter: stop ? 'brightness(0.55)' : 'none', transition: 'filter 0.5s' }}>{scene ?? <Slot title={W.scene} note={W.sceneNote} style={{ width: '100%', height: '100%' }} />}</div>
 
@@ -124,6 +127,7 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
                 </div>
               )}
             </div>
+            {!model.dead && <VowLine vow={model.vow} />}
             {model.candle && <Candle candle={model.candle} showPct={candlePct} />}
           </div>
 
@@ -138,8 +142,8 @@ export function WatchView({ data, model, settings, actions, candlePct, onCandleP
         <LifeLine line={model.line} />
       </div>
 
-      <aside style={{ display: 'flex', flexDirection: 'column', gap: size.gap, padding: size.pad, borderLeft: `1px solid ${color.line}` }}>
-        <GodPanel panel={model.panel} onOpen={(kind) => actions.onOpenGod({ kind, args: {} })} />
+      <aside style={{ display: 'flex', flexDirection: 'column', gap: size.gap, padding: size.pad, borderLeft: `1px solid ${color.line}`, overflowY: 'auto', minHeight: 0 }}>
+        <GodPanel panel={model.panel} onOpen={(kind) => actions.onOpenGod({ kind, args: {} })} onOpenNow={open} />
         <div style={{ flex: 1 }} />
         <SpeedControl speed={model.speed} running={model.running} onSpeed={actions.setSpeed} />
         {model.slowed && (

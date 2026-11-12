@@ -4,6 +4,7 @@ import { useState } from 'preact/hooks';
 import { refusedSettings, uiOfState, watchModel, type GodOpen } from '../../app/views/watch';
 import type { GameData } from '../../core/game';
 import type { GameState, Settings } from '../../core/types';
+import { withNow } from '../../app/views/now';
 import { story, type StoryCtx } from '../stories';
 import { LifeScene } from '../LifeScene';
 import { WorldMap } from '../../map';
@@ -14,9 +15,11 @@ import { WatchView, type WatchActions } from './WatchView';
 import type { AbMode } from '../../app/ab';
 import type { RecordView } from './RecordSection';
 
-function Sample({ ctx, stop = false, running = false, settingsOpen = false }: { ctx: StoryCtx; stop?: boolean; running?: boolean; settingsOpen?: boolean }) {
+function Sample({ ctx, stop = false, running = false, settingsOpen = false, vow, strip = false }: { ctx: StoryCtx; stop?: boolean; running?: boolean; settingsOpen?: boolean; vow?: string; strip?: boolean }) {
   const { data, state } = ctx;
-  const [settings, setSettings] = useState<Settings>(state.settings);
+  if (vow) state.god.vows = [vow];
+  // the strip of the first life shows only in its own story: the others are drawn with it dismissed
+  const [settings, setSettings] = useState<Settings>(strip ? state.settings : { ...state.settings, hintsSeen: { firstLife: true } });
   const [pct, setPct] = useState(false);
   const [last, setLast] = useState<GodOpen | null>(null);
   const [speed, setSpeed] = useState(state.settings.speed);
@@ -27,10 +30,12 @@ function Sample({ ctx, stop = false, running = false, settingsOpen = false }: { 
   const record: RecordView = { on: recOn, size: recOn ? 137 : 0, lives: recOn ? 1 : 0, onToggle: setRecOn, onExport: () => 'overseer-record-sample.json', onClear: () => setRecOn(false), ab, onAb: setAb, arm: ab === 'off' ? null : 'on' };
   // the model is read from a copy of the state with the settings the story changed
   const shown: GameState = { ...state, settings };
-  const model = { ...watchModel(data, shown, uiOfState(shown, { running: run, stop })), speed };
+  const base = { ...watchModel(data, shown, uiOfState(shown, { running: run, stop })), speed };
+  const model = ctx.game ? withNow(base, ctx.game, data as GameData) : base;
   const actions: WatchActions = {
     onOpenGod: setLast,
     setSpeed: (s) => (setSpeed(s), setRun(s !== 'pause')),
+    dismissFirstLife: () => setSettings((x) => ({ ...x, hintsSeen: { firstLife: true } })),
     togglePause: () => setRun((r) => !r),
     resume: () => undefined,
     setSettings: (patch) => {
@@ -60,3 +65,9 @@ story({ group: 'การเรียก', name: 'หน้าหยุด จ�
 story({ group: 'การเรียก', name: 'หน้าหยุด มีการ์ดรออยู่', seed: 2, at: 200, render: (ctx) => <Sample ctx={ctx} stop /> });
 story({ group: 'การเรียก', name: 'หน้าหยุด ใกล้ตาย', seed: 1, at: 296, render: (ctx) => <Sample ctx={ctx} stop /> });
 story({ group: 'ตั้งค่า', name: 'แผงตั้งค่า', seed: 1, at: 80, render: (ctx) => <Sample ctx={ctx} running settingsOpen /> });
+
+story({ group: 'พระเจ้า', name: 'ไม่มีอะไรรอ', seed: 4, at: 100, render: (ctx) => <Sample ctx={ctx} running /> });
+story({ group: 'พระเจ้า', name: 'คำอธิษฐานรอตอบ', seed: 1, at: 40, render: (ctx) => <Sample ctx={ctx} running /> });
+story({ group: 'พระเจ้า', name: 'หน้าต่างพระเจ้าและคำปฏิญาณ', seed: 2, at: 60, render: (ctx) => <Sample ctx={ctx} running vow="GV-12" /> });
+story({ group: 'พระเจ้า', name: 'คำปฏิญาณบนจอ', seed: 2, at: 107, render: (ctx) => <Sample ctx={ctx} running vow="GV-05" /> });
+story({ group: 'พระเจ้า', name: 'แถบชีวิตแรก', seed: 1, at: 3, render: (ctx) => <Sample ctx={ctx} running strip /> });

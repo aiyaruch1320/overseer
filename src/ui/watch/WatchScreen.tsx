@@ -4,6 +4,7 @@ import type { ComponentChildren } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import { store } from '../../app/store';
 import { prefs, setPrefs } from '../../app/views/prefs';
+import { withNow } from '../../app/views/now';
 import { godGates, watchModel, type GodOpen } from '../../app/views/watch';
 import type { Settings } from '../../core/types';
 import { boundRecordView } from './RecordSection';
@@ -72,9 +73,11 @@ export function WatchScreen({ onOpenGod, scene, map }: WatchScreenProps) {
       return r.ok ? null : r.reason;
     },
     save: () => store.saveLocal(),
+    dismissFirstLife: () => void store.setSettings({ hintsSeen: { firstLife: true } }),
   };
   const record = boundRecordView();
 
-  const model = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, slowed: slowed.current, gates: store.game ? godGates(store.game.ctx) : {} });
+  const base = watchModel(data, st, { running: store.running.value, stop: phase === 'stop' || phase === 'death' ? store.stopCall.value : null, cards, slowed: slowed.current, gates: store.game ? godGates(store.game.ctx) : {} });
+  const model = store.game && base.panel.alive ? withNow(base, store.game, data) : base;
   return <WatchView data={data} model={model} settings={st.settings} actions={actions} candlePct={prefs.value.candlePct} onCandlePct={(on) => setPrefs({ candlePct: on })} scene={scene} map={map} record={record} />;
 }
