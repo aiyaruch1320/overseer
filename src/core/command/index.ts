@@ -86,6 +86,10 @@ export function badSettings(patch: Partial<Settings>): string | null {
     if (typeof patch.cards !== 'object' || patch.cards === null) return 'สวิตช์การ์ดไม่ถูกต้อง';
     for (const [k, v] of Object.entries(patch.cards)) if (!(CARD_KINDS as readonly string[]).includes(k) || typeof v !== 'boolean') return `สวิตช์การ์ด ${k} ไม่ถูกต้อง`;
   }
+  if (patch.hintsSeen !== undefined) {
+    if (typeof patch.hintsSeen !== 'object' || patch.hintsSeen === null) return 'สวิตช์คำแนะนำไม่ถูกต้อง';
+    for (const [k, v] of Object.entries(patch.hintsSeen)) if (k !== 'firstLife' || typeof v !== 'boolean') return `คำแนะนำ ${k} ไม่ถูกต้อง`;
+  }
   return null;
 }
 
@@ -95,6 +99,7 @@ function applySettings(s: Settings, patch: Partial<Settings>): void {
   if (patch.lang) s.lang = patch.lang;
   if (patch.llm) s.llm = { ...s.llm, ...patch.llm };
   if (patch.cards) s.cards = { ...allCardsOn(), ...s.cards, ...patch.cards };
+  if (patch.hintsSeen) s.hintsSeen = { ...s.hintsSeen, ...patch.hintsSeen };
 }
 
 /** Test helper. */
