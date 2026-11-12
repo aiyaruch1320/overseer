@@ -57,4 +57,43 @@ export const WATCH_WORDS = {
   /** The grey button of the god panel: the hourglass and the time left. */
   gate: { hourglass: '⌛', wait: (years: number) => `อีก ${Math.ceil(years)} ปี` },
   save: 'บันทึก',
+  /** One line under each light: where it comes from (proposal G3). */
+  lightFrom: 'ได้จากศรัทธาของเขาและคำอธิษฐานที่ตอบ',
+  dreadFrom: 'ได้จากการลงโทษและปาฏิหาริย์ทำลาย',
+  /** One line under each power button: what it does (proposal G2). */
+  godAbout: { chest: 'ให้พรหรือของหนึ่งอย่าง', dream: 'เลือกทางเมื่อถึงทางแยก', whisper: 'คำใบ้สั้น ราคาถูก', miracle: 'เสกหรือทำลายบนแผนที่', chronicle: 'สิ่งที่ทำไปแล้ว' } as Record<string, string>,
+  /** The "now" box of the god panel (proposal G1): the sentence of why, the price, the button. */
+  now: {
+    title: 'ตอนนี้',
+    nothing: 'ไม่มีอะไรรอ ปล่อยให้ชีวิตเดินก็ได้',
+    price: (c: string) => `ราคา ${c}`,
+    free: 'ไม่เสียอะไร',
+    byChoice: 'ราคาตามที่เลือก',
+    prayer: (name: string, by: string, left: number) => `${by ? `${by} ` : ''}อธิษฐาน “${name}” รอคำตอบ เหลือ ${left} ปี`,
+    prayerBtn: 'ตอบ',
+    dream: 'ทางแยกเปิดอยู่ ส่งฝันชี้ทางให้เขาได้',
+    dreamBtn: 'ส่งฝัน',
+    chestWindow: 'หน้าต่างพระเจ้าเปิดอยู่ หีบถูกลงและมีของเลือก',
+    chest: 'มีแสงศรัทธาพอจะเปิดหีบให้เขา',
+    chestBtn: 'เปิดหีบ',
+    omen: (text: string) => text,
+    omenBtn: 'ดูทาง',
+    battle: (text: string) => text,
+    crisis: (text: string) => text,
+    hint: { ระวัง: 'ระวัง', กล้าเถิด: 'กล้าเถิด', ช่วย: 'ช่วย' } as Record<string, string>,
+    helpBtn: 'ช่วย',
+    heir: 'ให้ผู้สืบเลือดเกิดขึ้น: ชี้ทายาทให้เขาเห็นได้',
+    heirBtn: 'ชี้ทายาท',
+    belief: (now: number, goal: number) => `ศรัทธาเทพของเขา ${now} ต้องถึง ${goal} สักครั้ง`,
+    calm: 'ให้เขาตายอย่างสงบ: ระวังศึกและคำสาป',
+    own: (used: number, limit: number) => `แทรกแซงไปแล้ว ${used} จาก ${limit} ครั้ง ยิ่งน้อยยิ่งตรงคำปฏิญาณ`,
+  },
+  /** The vow under the name (proposal G4). */
+  vow: { none: 'ไม่ได้ปฏิญาณ', done: (text: string) => `จะเป็นจริงเมื่อ ${text}`, label: 'คำปฏิญาณ' },
+  /** The three steps said once in the first life (proposal G5). */
+  firstLife: {
+    title: 'ชีวิตแรก',
+    steps: ['ชีวิตเดินเอง ท่านเฝ้าดู', 'เมื่อมีจังหวะ เกมจะหยุดหรือส่งการ์ดทางซ้าย', 'ช่อง “ตอนนี้” ทางขวาบอกสิ่งที่ทำได้ คำปฏิญาณคือเป้าของชีวิตนี้'],
+    close: 'เข้าใจแล้ว',
+  },
 } as const;

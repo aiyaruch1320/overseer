@@ -11,6 +11,9 @@ import { callReason, lines, plainName, type Line } from '../../core/text';
 import { items } from '../../core/text/labels';
 import { CARD_KINDS, type GameState, type GodAction, type LogEntry, type Settings } from '../../core/types';
 import { W } from './god-words';
+import type { NowItem } from './now';
+import { asPronoun } from '../../core/text/pick';
+import { HEIR_FORM_NAME, HEIR_FORM_RACES } from '../../core/god/goals/tuning';
 import { perLifeLines } from '../life-number';
 import { WATCH_WORDS } from './watch-words';
 import { LOG_KEEP } from '../tuning';
@@ -437,6 +440,8 @@ export interface GodPanelView {
   alive: boolean;
   /** The buttons the god may not press now, with the reason. A button not listed may be pressed. */
   gates: Partial<Record<GodKind, GodGate>>;
+  /** The "now" box: one to three things that fit the situation (now.ts); one word of rest when nothing waits. */
+  now: NowItem[];
 }
 
 /** The god action whose check says whether the button itself is any use now (the button takes no arguments): a screen that needs a choice first has no gate here. */
@@ -482,6 +487,29 @@ export interface WatchModel {
   running: boolean;
   stop: StopView | null;
   cards: CardView[];
+  /** The vow of this life, as the table of 08-goals.md §2 says it; null when none was taken (shown as "ไม่ได้ปฏิญาณ"). */
+  vow: VowView | null;
+  /** The three-step strip of the first life is shown (first life of the save, not dismissed). */
+  firstLife: boolean;
+}
+
+export interface VowView {
+  id: string;
+  name: string;
+  /** The condition, from the table ("สำเร็จเมื่อ"). */
+  done: string;
+}
+
+/** The vow of the living life from the god data (name and condition), or null when none was taken. GV-20 is "no vow". */
+export function vowView(data: GameData, state: GameState): VowView | null {
+  const id = state.god.vows[0];
+  if (!id || id === 'GV-20' || !state.life) return null;
+  const row = items<{ goals?: { vows: { id: string; name: string; done: string }[] } }>(data, 'god')?.goals?.vows.find((v) => v.id === id);
+  if (!row) return null;
+  const name = id === 'GV-05' && HEIR_FORM_RACES.includes(state.life.race) ? HEIR_FORM_NAME : row.name;
+  // the condition may point to a doc: "([../bonds/README.md](...))" is a link for the doc reader, not for the player
+  const done = row.done.replace(/\s*\(\[[^\]]*\]\([^)]*\)\)/g, '').trim();
+  return { id, name: asPronoun(name, state.life.gender), done };
 }
 
 export interface WatchUi {
@@ -494,6 +522,8 @@ export interface WatchUi {
   slowed?: boolean;
   /** The buttons of the god the core refuses now (`godGates`); the pure model has no game to ask. */
   gates?: Partial<Record<GodKind, GodGate>>;
+  /** The items of the "now" box (`nowItems`), read from the game by the host. */
+  now?: NowItem[];
 }
 
 /** The vow age of the god (08-goals.md §2: the vow is chosen from birth to this age). */
@@ -543,6 +573,7 @@ export function watchModel(data: GameData, state: GameState, ui: WatchUi): Watch
       windowOpen: alive && (line.glows.some((g) => g.open) || (!!stop && (stop.why === 'window' || stop.why === 'age'))),
       alive,
       gates: alive ? ui.gates ?? {} : {},
+      now: alive ? ui.now ?? [] : [],
     },
     line,
     ...splitLog(data, state),
@@ -552,6 +583,8 @@ export function watchModel(data: GameData, state: GameState, ui: WatchUi): Watch
     running: ui.running,
     stop,
     cards: ui.cards.map((e) => cardView(data, state, e)).filter((x): x is CardView => !!x),
+    vow: vowView(data, state),
+    firstLife: alive && state.lineage.lives.length === 0 && !state.settings.hintsSeen?.firstLife,
   };
 }
 
